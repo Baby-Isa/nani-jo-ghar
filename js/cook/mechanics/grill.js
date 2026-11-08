@@ -1256,6 +1256,29 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return { img, w: R.w * k, x: (i) => at(i).x, y: at(0).y, line, set: (n) => img.setTexture(`sk3-rack-${Math.max(0, Math.min(4, n))}`), v3: true };
   };
   /**
+   * S19 (Fable's sekelo flaw 2, STD-E2-07; chai's tray): the asker's face circle (the kit's badge, Cook.Kit.badge) on the serving tray
+   * from its first frame, over its top-left corner as chai's tray carries it: the kit's badge size (64 design px), at least 30 CSS px as
+   * seen, at most 90; the badge depth, over the tray and the skewers (SH-183). img: the tray's picture (SK.rack3's, the tray's rows
+   * R.tray). -> the face's picture (null without the face art)
+   */
+  SK.trayFace = function (S, z, img, who) {
+    if (!img || !who || !Cook.Kit || !Cook.Kit.badge) return null;
+    const UI = Cook.UI;
+    const R = V3.rack;
+    const tr = R.tray || [0, 1];
+    const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+    const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
+    const w = R.w * Math.abs(img.scaleX);
+    const h = R.h * Math.abs(img.scaleY);
+    // (the tray's own top-left corner: its picture's left edge and the tray's top row; the face's centre a third of it in)
+    const x0 = img.x - w / 2 + w * 0.035;
+    const y0 = img.y + (tr[0] - 0.5) * h;
+    const face = S.track(S.add.image(x0 + fd * 0.3, y0 + fd * 0.3, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
+    face.setName("sekelo-tray-face");
+    img.face = face; // (the kit's light takes the face into the tray's light: Cook.Coach.parts)
+    return face;
+  };
+  /**
    * v3 (K8, K9): the plate, a picture holding n skewers (plate-0..4, one canvas registered on the rim), the
    * handles off the plate. (x, y): the rim's centre (design px). Returns {img, d (the rim's diameter, screen
    * px), line(j, n) -> [tip, handle] (screen px: the j-th skewer plated, in the picture of n), set(n)}. The
@@ -1431,6 +1454,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         plateImg.shadow = S.contactShadow(plateImg);
       }
       const plateD = plateArt ? plateArt.d / z.k : PLATE.d;
+      // S19 (Fable's sekelo flaw 2): the cooked tray, where their skewers are served, carries the asker's face from its first frame
+      if (plateArt && plateArt.rack) SK.trayFace(S, z, plateArt.img, (params.taste && params.taste.who) || params.who || (ctx.order && ctx.order.who) || "nana");
       /** The plate's picture shows the skewers that have landed, in order; a landed one's pieces lie on its drawn stick. */
       const platePic = () => {
         if (!plateArt) return;

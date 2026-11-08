@@ -50,12 +50,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           await Cook.wait(140);
         }
       } else {
-        S.ghost([[z.X(800), z.Y(380)], [z.X(800), z.Y(430)]], { duration: 500, delay: z.guided ? 200 : 5000 });
+        // (S19, SH-119, contract-102: the kit's one finger pressing the dough, Cook.Coach.demo, not the knead's own S.ghost)
+        const demo = Cook.Coach && Cook.Coach.demo ? Cook.Coach.demo(() => ({ from: { x: z.X(800), y: z.Y(380) }, to: { x: z.X(800), y: z.Y(430) } }), { gesture: "drag", ms: 900, delay: z.guided ? 200 : 5000, step: "knead" }) : null;
         await new Promise((resolve) => {
           const zone = S.track(S.add.zone(c.x, c.y, z.L(520), z.L(360)).setDepth(D.fx + 3));
           S.tappable(zone, () => {
+            if (presses === 0) {
+              if (demo) demo.stop();
+              if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("knead"); // (SH-236)
+            }
             press();
             if (presses >= need) {
+              if (demo) demo.stop();
               S.untap(zone);
               z.expect(null);
               resolve();

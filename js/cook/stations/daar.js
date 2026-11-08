@@ -536,13 +536,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
 
   /* ---------- the flat pieces both phases share ---------- */
   function backdrop(z, S) {
-    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
-    S.track(S.add.rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(SHELF_TOP + FAR), INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
-    const g = S.track(S.add.graphics().setDepth(D.bg + 1.2));
-    g.fillStyle(INK.panel, 1);
-    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - SHELF_TOP + FAR));
-    g.fillStyle(0x2a1a0a, 0.08);
-    g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
+    // S19 (Fable's daar flaw 5; chai's scene, ART-41): the kitchen kit's worktop wash over the marble and chai's stone band with its
+    // stone shelf at the base line (St.stoneBand), in both phases: was a flat cream strip where the band should be
+    const top = z.Y(SHELF_TOP);
+    if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
+    St.stoneBand(S, { top, base: z.Y(BASE), far: FAR, depth: D.bg + 1.2 });
   }
 
   /**
@@ -565,9 +563,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   function shelf(z, S, ids, level, { left = 40, right = 1410 } = {}) {
     const L = global.Shelf.slots([ids], { span: [left, right], pitch: PITCH, groupGap: 0 });
     const pitch = L.slotW;
-    const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
-    plank.fillStyle(INK.grey, 1);
-    plank.fillRoundedRect(z.X(L.x0 + 10), z.Y(BASE - 2), z.L(L.width - 20), z.L(10), z.L(5));
+    // (the stone shelf the jars stand on is the band's own: St.stoneBand's base, as chai's; was a grey plank line)
     // (CSS px per design px, for the classes' 40 CSS px floor)
     const ppw = (() => {
       try {

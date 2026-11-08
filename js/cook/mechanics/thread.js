@@ -94,6 +94,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
       board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(BOARD.w), height: z.L(BOARD.h) });
       const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s });
+      // S19 (Fable's sekelo flaw 2): the tray the skewers go to carries the asker's face from its first frame, as chai's tray does
+      if (rack.v3 && handoff) SK.trayFace(S, z, rack.img, params.who || (ctx.order && ctx.order.who) || "nana");
 
       /* the skewer on the board */
       let sk = null;
