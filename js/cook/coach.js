@@ -563,8 +563,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       },
       note: `${gate.scope}:s14-light`,
     };
+    // (the chaat builder, 740x320: a card taller than the list comes in from its top, and its dotted row stayed under the fold, so the
+    // lesson logged none-in-view: the thing itself is brought in too, clear of the panel's soft foot, before it is measured again)
+    const intoView = (sel) => (card) => {
+      if (lo.intoView) lo.intoView(card);
+      const list = card && card.closest && card.closest("#mission");
+      const x = list && [...card.querySelectorAll(sel)].find((q) => q.offsetParent);
+      if (!x) return;
+      const r = (x.closest(".wc14") || x).getBoundingClientRect();
+      const lr = list.getBoundingClientRect();
+      const fade = 22 * (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--njg-p")) || 1);
+      if (r.bottom > lr.bottom - fade) list.scrollTop += r.bottom - (lr.bottom - fade) + 4;
+      else if (r.top < lr.top) list.scrollTop -= lr.top - r.top + 4;
+    };
     const run = async (kind, sel, k) => {
-      const ok = await Onboard.lesson(kind, sel, Object.assign({}, lo, { onLit: (x) => (gate.spend(k, true), note("reveal-lesson", { step: kind, by: `shown ${why(x)}` })) }));
+      const ok = await Onboard.lesson(kind, sel, Object.assign({}, lo, { intoView: intoView(sel), onLit: (x) => (gate.spend(k, true), note("reveal-lesson", { step: kind, by: `shown ${why(x)}` })) }));
       if (!ok) note("reveal-lesson", { step: kind, by: `none-in-view ${[...document.querySelectorAll(sel)].map(why).join(" ") || "-"}` });
       return ok;
     };
