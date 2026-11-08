@@ -1,5 +1,20 @@
 # The evidence loop: every row proven by the game, judged without Zafar
 
+## A game beside chai: the three-part gate (Sprint 19, s19-checks)
+
+The 8 Nov eye-judge experiment (`build/reports/s18-eye-judge-experiment.md`) caught a third to a half of Zafar's still-visible points
+and missed motion, timing and fine shared-piece detail; its three changes are now the gate for every game's merge:
+1. **The shared pieces present, in code:** contract-100 to -109 (`build/sandbox/lib/contract-s19.mjs`) on every kitchen game at L1-L4
+   in the contract run: the 6 Nov card and type, Nani's box with its drop-down, the kit's light only, no tick/next/X, the card's own
+   picture, the light whole, centred and gone on the move, only shelf items hop, well done last, the shelf's lines.
+2. **Full-size frames beside chai:** `sidebyside.mjs <game>` plays chai and the game at a child's pace (`run.mjs --keyframes`) and
+   writes pairs at seven key moments, close-ups of the order card and Nani's box, and the eye judge's batch.
+3. **Frame strips** round each first-time light, lesson and rung (0.5 s before to 2 s after, about every 110 ms, from the browser's
+   screencast) in the same folder.
+The judge (`.claude/agents/judge.md`, "Side by side") answers `docs/process/eye-judge-rubric.md`, flaws first, and says where the game
+is worse than chai. **The merge rule** (principle 10, proposed 8 Nov, not yet agreed): nothing merges that the side-by-side shows worse
+than chai at the same moment unless a look sheet Zafar accepted says it may differ.
+
 ## The one loop (S13)
 
 Zafar, 26 Oct: one command shoots a builder's rows before and after; the script builds the judge's batch; one side-by-side sheet per shared element is "done"; builders never shoot their own frames; machine checks first; one broad sweep at `/review`. The evidence tool does all of it; there is no second capture path. In order:
@@ -66,7 +81,7 @@ node build/tools/review/evidence.mjs --apply [--dry]                          # 
 
 **The cache** (`build/tools/review/data/verdicts.json`, key = row id): `{hash, dhash, verdict, line, panel, judge, run, commit, png, date}`. `hash` covers the row's issue and Check, its spec, its text captures (dom text, spoken words, expect outcomes) and the git tree of the mode's `js/`, `css/`, `assets/` (and shared) folders (any uncommitted change there forces a re-judge); `dhash` is a 64-bit difference hash per panel, equal within 6 bits. Machine-decided rows are cached with judge `expect`. `--judge` writes `judge/batch-NN.md` (one kind per batch: 10 visual rows, 30 text rows) and an empty `batch-NN.verdicts.md` (first line `judge: <model and session>`, then `ID | PASS: <panel>, <what it shows>`, `ID | FAIL: <panel>, <what is wrong>` or `ID | EVIDENCE: <what is missing>`). `--collect` refuses a file judged by the builder (`--builder` or `NJG_BUILDER` at `--run`), and a PASS that names no panel; EVIDENCE lines go to the index's tool-owner list; `--audit 10` re-judges 10% of the cached PASSes and writes disagreements to `audit-disagreements.md` (Zafar's list). `--apply` writes only verdicts on this very evidence: FAIL → `**reopened** (evidence FAIL <run>: <line>; <png>) · earlier: <old status>`, PASS → `built (evidence PASS <run>: <line>) · earlier: …` (`fixed` stays fixed); keep and retired rows are never touched; a later run replaces the earlier evidence note.
 
-**Running it.** Under the browser lock, on your own port: `COOK_TEST_PORT=8891 flock -w 3600 /tmp/njg-browser.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows …` (a builder's own lock: `NJG_LOCK=/tmp/njg-browser-<port>.lock`, which the tool takes chunk by chunk). Inside a caller's flock it plays one 13-minute chunk and exits 75 if pages are left (run again with `--resume <id>`); on its own it takes and releases the lock chunk by chunk. `run.mjs --gate --evidence <pages.json>` carries the probes of the plain pages (no profile, seed, renderer or pixel ratio) on the gate's own pages, so `--run --from-run <gate run>` plays only the rest.
+**Running it.** Under the browser lock, on your own port: `COOK_TEST_PORT=8891 flock -w 3600 /tmp/njg-browser-all.lock timeout 1200 node build/tools/review/evidence.mjs --run --rows …` (a builder's own lock: `NJG_LOCK=/tmp/njg-browser-<port>.lock`, which the tool takes chunk by chunk). Inside a caller's flock it plays one 13-minute chunk and exits 75 if pages are left (run again with `--resume <id>`); on its own it takes and releases the lock chunk by chunk. `run.mjs --gate --evidence <pages.json>` carries the probes of the plain pages (no profile, seed, renderer or pixel ratio) on the gate's own pages, so `--run --from-run <gate run>` plays only the rest.
 
 ## Fable's review (12 Oct)
 

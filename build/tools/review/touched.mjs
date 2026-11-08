@@ -12,7 +12,7 @@ node build/tools/review/touched.mjs [--base <ref>] [--files a,b,c] [--all-flows]
   Lists the sandbox flows to run for what changed in git diff <base>..HEAD (default base: the merge-base with origin/main, else HEAD~1),
   plus uncommitted changes. --files names files instead of reading git (also handy to ask "what would this reach?").
   Prints: the changed files by area, each flow base id with the file that reaches it, and the ready-to-paste command:
-    COOK_TEST_PORT=8815 flock -w 1800 /tmp/njg-browser.lock timeout 1200 node build/sandbox/run.mjs --touched <ids> --parallel 3 --budget-min 13 --check
+    COOK_TEST_PORT=8815 flock -w 1800 /tmp/njg-browser-all.lock timeout 1200 node build/sandbox/run.mjs --touched <ids> --parallel 3 --budget-min 13 --check
   A base id stands for all its levels and paths (cook:chai-tray = @L2, @L3, #mistake ...). --json prints {files, flows, command}.
   Not runtime (docs, build tools, reports): ignored. A runtime file it cannot place: reported as "unplaced" and every flow is listed.`;
 const a = args(); help(HELP, a);
@@ -101,7 +101,7 @@ if (unplaced.length) chosen = ids;
 if (a.has("all-flows")) chosen = ids;
 const order = new Map(ids.map((x, i) => [x, i]));
 chosen.sort((x, y) => order.get(x) - order.get(y));
-const cmd = chosen.length ? `COOK_TEST_PORT=8815 flock -w 1800 /tmp/njg-browser.lock timeout 1200 node build/sandbox/run.mjs --touched ${chosen.join(",")} --parallel 3 --budget-min 13 --check` : "";
+const cmd = chosen.length ? `COOK_TEST_PORT=8815 flock -w 1800 /tmp/njg-browser-all.lock timeout 1200 node build/sandbox/run.mjs --touched ${chosen.join(",")} --parallel 3 --budget-min 13 --check` : "";
 const pagesN = flows.filter((f) => chosen.includes(baseId(f.id))).reduce((s, f) => s + (f.static ? 1 : (f.sizes || ["x", "x", "x", "x", "x", "x", "x", "x"]).length), 0);
 
 if (a.has("json")) { console.log(JSON.stringify({ files, flows: chosen, sharedTouched: files.some((f) => /^(js|css|data)\/(shared|core|lang)|^css\/shared|^js\/shared/.test(f)), unplaced, command: cmd, pages: pagesN }, null, 1)); process.exit(0); }

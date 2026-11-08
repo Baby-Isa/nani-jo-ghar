@@ -9,7 +9,7 @@
  *   - Cook's lifetime (js/cook/life.js open()) empty; audio contexts closed; <body> classes as before
  *   - no page errors
  * And: no Cook global (window.Cook, window.njgTest?.cook) on the host page; no iframe.
- *   COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser.lock timeout 600 node build/test_cook_mount.mjs [--times 5] [--station fetch]
+ *   COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser-all.lock timeout 600 node build/test_cook_mount.mjs [--times 5] [--station fetch]
  */
 import { BASE, startServer, launch, newPage, sleep } from "./sandbox/lib/env.mjs";
 import { NEEDS } from "../js/cook/main.js";

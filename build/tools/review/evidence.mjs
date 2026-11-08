@@ -46,7 +46,7 @@ node build/tools/review/evidence.mjs --apply  [--run-id id] [--dry]
   --apply    writes the verdicts into docs/process/regressions.md: FAIL -> **reopened** with the run (the line stays in data/verdicts.json;
              a "waiting on ..." note is kept); PASS -> built with the line (keep and retired rows untouched). --dry prints what it would change.
   Port: COOK_TEST_PORT (default 8843). The builder's session: NJG_BUILDER or --builder (recorded; never accepted as judge).
-  Lock: NJG_LOCK (default /tmp/njg-browser.lock; a builder's own is /tmp/njg-browser-<port>.lock).
+  Lock: NJG_LOCK (default /tmp/njg-browser-all.lock; a builder's own is /tmp/njg-browser-<port>.lock).
 
 The one loop (S13; docs/architecture/evidence-loop.md "The one loop (S13)"): a brief's rows, before and after the build
 node build/tools/review/evidence.mjs --before --brief <spec.json> [--check] [--reuse]
@@ -66,7 +66,7 @@ node build/tools/review/evidence.mjs --judge  --brief <spec.json>
              --apply on the after run as usual (a PASS or FAIL there also logs the before's red).`;
 const a = args(); help(HELP, a);
 const PORT = process.env.COOK_TEST_PORT || "8843";
-const LOCK = process.env.NJG_LOCK || "/tmp/njg-browser.lock";
+const LOCK = process.env.NJG_LOCK || "/tmp/njg-browser-all.lock";
 // ---------- a brief (the one loop): its rows, sizes, folder ----------
 const BRIEF_DIR = join(ROOT, "build", "screenshots", "brief");
 function loadBrief(f = a.val("brief"), phaseOf = null) {
@@ -232,7 +232,7 @@ function voiceWindow(text) {
 // ---------- the run ----------
 function underLock() {
   if (process.env.NJG_LOCKED) return true;
-  // an ancestor is "flock ... /tmp/njg-browser.lock ...": the caller holds the lock already (nested flock would wait for itself)
+  // an ancestor is "flock ... /tmp/njg-browser-all.lock ...": the caller holds the lock already (nested flock would wait for itself)
   let pid = process.ppid;
   for (let i = 0; i < 12 && pid > 1; i++) {
     try {

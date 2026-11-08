@@ -11,7 +11,7 @@
  *                      label. Strategies "unlabelled" (fetch the jars with no label), "labelled" (the ones with one) and
  *                      "letters" (the jars whose label text is written on the card) must each win under 10% at every level.
  * Exit 1 if a count row ticks at its number, the cards give a count away, or a pantry strategy wins, more than 10% at any level.
- *   COOK_TEST_PORT=8817 flock -w 1800 /tmp/njg-browser.lock timeout 600 node build/tools/review/leak-games/cook.mjs [--pantry 12]
+ *   COOK_TEST_PORT=8817 flock -w 1800 /tmp/njg-browser-all.lock timeout 600 node build/tools/review/leak-games/cook.mjs [--pantry 12]
  *   (--pantry N: pantry rounds per level, default 12; --pantry 0 skips it; --only pantry: the pantry alone, PAN-15's probe)
  */
 import { startServer, launch, newPage, BASE } from "../../../sandbox/lib/env.mjs";

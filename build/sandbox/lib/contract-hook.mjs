@@ -1054,4 +1054,7 @@ function s17hook() {
   setInterval(() => { try { if (window.__njgFilm) return; litThing(); reveal(); panel(); } catch (e) { /* a probe only */ } }, 100);
 }
 const S17_HOOK = `(${s17hook.toString()})()`;
-export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK;
+// ---- S19 (s19-checks): the shared pieces present (lib/contract-s19.mjs: contract-100 to -109, the probe with them) ----
+import { S19_HOOK } from "./contract-s19.mjs";
+// (each probe its own statement: two IIFEs on adjacent lines with no ";" between would call the first one's result with the second)
+export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";";
