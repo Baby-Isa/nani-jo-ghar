@@ -6,7 +6,8 @@ code (`js/cook/stations/maani-line.js`, its settings `data/stations/maani-line.j
 `roll-tawa` proof). Maani is the Maani line: the dough piles, the chakla, one tawa on one burner, the plates, the tick. Its
 contract run before the build (`cook:maani-line` L1-L4 at 1280x665): every end reached, 0 page errors, 3 breaks (contract-98 at
 L2-L4: a dotted word on the card with no lesson).
-**Scores now:** 11 at 0, 26 at 1, 162 at 2, 3 at 3, 3 at dbd.
+**Updated** the same day after the build (s18-g-maani's commits): a note ending "(build)" is what it changed. Before the build:
+11 at 0, 26 at 1, 162 at 2, 3 at 3, 3 dbd. **Scores now:** 11 at 0, 19 at 1, 168 at 2, 4 at 3, 3 at dbd.
 
 **The scale:** 0 n/a · 1 missing · 2 built, unproven · 3 check green · 4 judged · 5 his "done" · dbd different by design (dated).
 **Next:** Kit (a kit piece still to build) · Adopt (take a kit piece: (a) the stove and worktop, (b) pans, pour and serve, (c) the
@@ -23,20 +24,16 @@ F Family. Audit: what `--standard maani` printed.
 - The tick is the child's count: a wrong maani is redone on the spot, the third wrong try shown (decision 51).
 - KEEP-01 (the underline while a line is spoken; the order card and pop-up). Pass-me stays out (MAA-14 parked).
 
-## What the build does (this sprint, in this order)
+## What the build did (8 Nov)
 
-1. **Game code:** pass-me's call goes (B1-07); a wrong tap brings the hint at once (D2-04); the green at least 2 s at L4 in its
-   settings (B2-05); colours from the tokens (E6-01).
-2. **Adopt:** (a) the worktop wash and the stone band (E3-03); (b) the tick and recast on `NjgServe.round` (B2-08); (c) the word
-   pop on `Juice.P.pop`; (d) the reveal lessons before the first pile (D1-08); (e) the face tap on `UI.hearPerson`. Each copied block
-   deleted (F1-02).
-3. **Words:** the missing lines stay grey English, logged on the recording sheet.
+Game code: pass-me's calls out (B1-07), a wrong tap rushes the hint (D2-04), tokens (E6-01). Adopt: (a) the wash and stone band,
+(b) `NjgServe.round`, (c) `Juice.P.pop`, (d) the lessons (D1-08), (e) `UI.personSay`; each copy deleted (F1-02). B2-05 is asked.
 
 ## 0 Foundations
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-01-01 | H | gap | 2 | Check | the roll to the gold ring, the tawa's flip and lift, the knob (high, low, off), the redo kept; no diff tool |
+| STD-01-01 | H | gap | 2 | Check | the roll, the tawa's flip and lift, the knob, the redo kept (build); no diff tool |
 | STD-01-02 | H | not run | 2 | Words | lines from the engine; "Roll the maani round", the take-off (MAA-15) and the "and" join (MAA-16) unrecorded |
 | STD-01-03 | H | not run | 2 | Check | the chips' words written until used right (Cook.chipWord); contract-16 never run on maani |
 | STD-01-04 | H | not run | 2 | Check | leak-games/cook.mjs plays maani; not run this sprint |
@@ -56,7 +53,7 @@ F Family. Audit: what `--standard maani` printed.
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
 | STD-A1-01 | H | gap | 2 | Check | L1 one maani: maani or bajr ji maani and a number |
-| STD-A1-02 | H | not run | 2 | Adopt | her card (e) |
+| STD-A1-02 | H | not run | 2 | Adopt | her card (e); the face tap reads her card (UI.personSay) (build) |
 | STD-A1-04 | H | judge | 2 | Check | varied orders: "Muke ba bajr ji maani khape." |
 | STD-A1-05 | H | not run | 0 | none | no speaking moment |
 | STD-A2-01 | H | not run | 2 | Adopt | (d) |
@@ -81,17 +78,17 @@ F Family. Audit: what `--standard maani` printed.
 | STD-B1-02 | H | not run | 2 | Check | one person; their face reviews the plates |
 | STD-B1-03 | H | not run | 2 | Adopt | (e) |
 | STD-B1-04 | H | not run | 0 | none | no "no" items |
-| STD-B1-05 | H | not run | 2 | Check | contract-95 not run on maani |
+| STD-B1-05 | H | not run | 2 | Check | the contract ran green (build); contract-95 not named in it |
 | STD-B1-06 | H | not run | dbd | Decision | 8 Nov: the tick is the child's count (ending by itself would tell them the count: non-negotiable 4) |
-| STD-B1-07 | H | fail | 1 | Game code | passMeChance 0, but the tawa still calls passMeAfter |
+| STD-B1-07 | H | fail | 2 | Check | passMeChance 0; the tawa's passMeAfter calls gone (maani-line.js, tawa.js) (build) |
 | STD-B2-01 | F | pass | 2 | Check | cooked on the tawa, then plated |
 | STD-B2-02 | H | gap | 2 | Check | a tap for the pile, a rub to roll, a tap for the tawa, every level |
 | STD-B2-03 | F | gap | 2 | Check | the heat ring on the tawa's rim, its green |
 | STD-B2-04 | F | not run | 1 | Decision | an early tap flips it half-raw, a late one burns it and it still counts: the game's own mechanic; refuse and shake? |
-| STD-B2-05 | F | gap | 1 | Game code | the green at L4 is 1.54 s (side 1) and 1.48 s (side 2); flipAddS in maani-line.json |
+| STD-B2-05 | F | gap | 1 | Decision | L4's green 1.54 s (side 1), 1.48 s (side 2); flipAddS 1.3 gives 2.09 and 2.03 s, but test_cook_levels pins his 0.75 (17 Oct): asked |
 | STD-B2-06 | F | not run | 2 | Check | the next maani rolls while one cooks; the ring never waits for the roll |
 | STD-B2-07 | H | not run | 2 | Check |  |
-| STD-B2-08 | H | gap | 2 | Adopt | (b) NjgServe.round; maani's own copy of the loop |
+| STD-B2-08 | H | gap | 2 | Check | on NjgServe.round: each kind checked, extras taken away, the third try shown (build); #mistake L1, L4 green |
 | STD-B2-09 | F | not run | 0 | none | nothing is lost: a burnt maani is plated |
 | STD-B2-10 | H | pass | 2 | Check | a ball goes back to its pile before the roll (MAA-04) |
 | STD-B2-11 | F | not run | 0 | none | no pour |
@@ -139,13 +136,13 @@ F Family. Audit: what `--standard maani` printed.
 | STD-D1-05 | H | gap | 0 | none | the tawa and the pile are lit whole |
 | STD-D1-06 | H | not run | 1 | Adopt | (d) Cook.Coach.control |
 | STD-D1-07 | H | fail | 1 | Adopt | (d) Cook.Coach.cardLight |
-| STD-D1-08 | H | fail | 1 | Adopt | (d) no reveal lessons in maani: contract-98 breaks at L2-L4 |
+| STD-D1-08 | H | fail | 3 | Check | kit (d)'s lessons before the first pile; contract-98 green L1-L4 (build) |
 | STD-D1-09 | H | not run | 2 | Check | St.firstHold on the first flip (MAA-19) |
 | STD-D1-10 | F | fail | 0 | none | one tawa, one board: no next vessel |
 | STD-D2-01 | H | not run | 2 | Adopt | (d) |
 | STD-D2-02 | H | not run | 2 | Check | the step box names the next pile, the pile glows |
 | STD-D2-03 | H | not run | 2 | Adopt | (d) |
-| STD-D2-04 | H | not run | 1 | Game code | a wrong tap wiggles but brings no hint (Cook.Coach.wrong) |
+| STD-D2-04 | H | not run | 2 | Check | a wrong tap wiggles, rushes the kit's hint (Cook.Coach.wrong) and opens the step's help (build) |
 | STD-D2-05 | H | not run | 2 | Adopt | (d) |
 | STD-D2-06 | F | not run | 2 | Check | the flip's call as the green opens |
 | STD-D3-01 | H | not run | 2 | Adopt | (e) |
@@ -177,8 +174,8 @@ F Family. Audit: what `--standard maani` printed.
 | STD-E2-07 | H | not run | 2 | Check | the face on the hob's front edge (Kit.burner) |
 | STD-E2-08 | H | not run | 2 | Check |  |
 | STD-E3-01 | H | not run | 2 | Check | one camera; the piles by St.shelfFit |
-| STD-E3-02 | H | fail | 1 | Game code | the band, the page wash and the word pop code-drawn; the flip's swatch (B4-05) |
-| STD-E3-03 | F | not run | 1 | Adopt | (a) the band is the panel colour, not the stone |
+| STD-E3-02 | H | fail | 2 | Decision | the band the kit's stone, the pop the kit's (build); the flip's swatch left (B4-05) |
+| STD-E3-03 | F | not run | 2 | Check | Kit.worktop and St.stoneBand, no ledge (build) |
 | STD-E3-04 | F | not run | 2 | Check | the tawa centred on its burner, the ring on its rim |
 | STD-E3-05 | F | gap | 0 | none | the person is a face on the hob |
 | STD-E4-01 | H | fail | 2 | Check |  |
@@ -188,7 +185,7 @@ F Family. Audit: what `--standard maani` printed.
 | STD-E5-01 | H | not run | 2 | Check |  |
 | STD-E5-03 | H | not run | 2 | Check | the sizzle loop under family lines unproven |
 | STD-E5-04 | H | not run | 2 | Check |  |
-| STD-E6-01 | H | not run | 1 | Game code | INK literals (page, panel, grey), the word pop's own colours |
+| STD-E6-01 | H | not run | 2 | Check | the INK literals gone; the roll ring's colours the tokens (build) |
 | STD-E6-02 | H | not run | 2 | Check |  |
 
 ## F Build
@@ -196,10 +193,10 @@ F Family. Audit: what `--standard maani` printed.
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
 | STD-F1-01 | H | gap | 2 | Check |  |
-| STD-F1-02 | H | not run | 1 | Game code | the word pop, the tick-and-recast loop, the wash and the band copied |
+| STD-F1-02 | H | not run | 2 | Check | its word pop, tick-and-recast loop, wash and band deleted (build) |
 | STD-F1-03 | H | gap | 2 | Check | settings file and game file; the base knobs still in data/cook.json |
 | STD-F1-04 | H | not run | 2 | Check |  |
-| STD-F1-05 | H | gap | 2 | Adopt | each piece moved whole |
+| STD-F1-05 | H | gap | 2 | Check | each piece moved whole (build) |
 | STD-F1-06 | H | judge | 3 | Check | brief.mjs --live-check |
 | STD-F2-02 | H | not run | 2 | Kit | the rotis read count.games.maani-line |
 | STD-F2-03 | F | gap | 2 | Kit | the game's numbers in its file; mechanics.roll and .tawa still in data/cook.json |
@@ -261,7 +258,7 @@ F Family. Audit: what `--standard maani` printed.
 | STD-H1-02 | H | judge | 2 | Check |  |
 | STD-H1-03 | H | gap | 2 | Check |  |
 | STD-H1-04 | H | judge | 2 | Check | landed |
-| STD-H1-05 | H | not run | 2 | Art | the band from the stone (E3-03) |
+| STD-H1-05 | H | not run | 2 | Check | the band the landed stone (build) |
 | STD-H1-06 | H | not run | 2 | Check |  |
 | STD-H1-07 | H | not run | 2 | Check |  |
 | STD-H1-08 | H | gap | 2 | Check |  |
