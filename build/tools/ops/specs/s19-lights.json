@@ -24,11 +24,10 @@
     "js/shared/guide.js",
     "js/shared/focus.js",
     "js/cook/hands.js",
-    "build/sandbox/data/evidence.json (your rows' entries only, added in phase 2)",
     "build/reports/s19-lights.md"
   ],
   "readOnly": [
-    "PHASE 2, yours only once the orchestrator messages you that s19-cards is merged (then merge ccr-87413d9b-j48fpk into your branch first): js/cook/mechanics/roll.js; js/cook/mechanics/tawa.js; js/cook/mechanics/assemble.js; js/cook/mechanics/fry.js; js/cook/mechanics/fill-fold.js; js/cook/stations/maani-line.js; js/cook/stations/roll-tawa.js; js/cook/stations/samosa.js; js/cook/stations/chai-tray.js (only where the kit's lights change its calls); data/stations/maani-line.json, data/stations/samosa.json, data/stations/chaat.json; data/cook.json (the coach steps and Nani's lesson lines only); build/sandbox/data/evidence.json (your rows' entries only); build/frozen/chai-tray/**; lab/kit.html (the lights' section)",
+    "PHASE 2, yours only once the orchestrator messages you that s19-cards is merged (then merge ccr-87413d9b-j48fpk into your branch first): js/cook/mechanics/roll.js; js/cook/mechanics/tawa.js; js/cook/mechanics/assemble.js; js/cook/mechanics/fry.js; js/cook/mechanics/fill-fold.js; js/cook/stations/maani-line.js; js/cook/stations/roll-tawa.js; js/cook/stations/samosa.js; js/cook/stations/chai-tray.js (only where the kit's lights change its calls); data/stations/maani-line.json, data/stations/samosa.json, data/stations/chaat.json; data/cook.json (the coach steps and Nani's lesson lines only); build/sandbox/data/evidence.json (your rows' entries only); build/frozen/chai-tray/**; lab/kit.html (the lights' section); build/sandbox/data/evidence.json (your rows' entries only)",
     "js/cook/stations/**, js/cook/mechanics/**, data/**, lab/** until then (s19-cards is changing their order, card and tick paths)",
     "js/cook/stations/mishkaki-grill.js, daar.js, eggs.js, corn.js, chop.js, baking.js (s19-games: they call your light API; keep it stable, or write the change they need in your report)",
     "build/tools/review/**, build/sandbox/lib/**"
