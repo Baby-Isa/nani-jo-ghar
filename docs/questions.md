@@ -2,10 +2,11 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
-### Sprint 18 (7 Nov evening)
-- **Chop's levels and gesture** (s18-chop, `build/reports/s18-chop.md`): (a) the kinds to chop at L1-L3 are 1, 2, 3 (Claude's reading of
-  "1+2, 2+2, 3+3, 4+4"; L4 is 4): yes? (b) chop keeps its swipe, which the standard's principle 5 (tap first) would not choose: keep it
-  as "different by design" (STD-02-03)? Recommendation: yes to both.
+### Sprint 18 (8 Nov)
+- **Maani's L4 flip window** (s18-g-maani): the standard says a timed window is at least 2 s (STD-B2-05); maani's L4 flip is shorter.
+  Lengthen it (`flipAddS` 0.75 -> 1.3 in `data/stations/maani-line.json`)? Recommendation: yes.
+- **Samosa's fry window** (s18-g-samosa): the fry's green lasts only 0.5 s at L3 (the standard's floor is 2 s, STD-B2-05), and L4
+  has no fry row of its own. Lengthen L3's green to 2 s and give L4 its own row (shorter than L3, not under 2 s)? Recommendation: yes.
 
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
