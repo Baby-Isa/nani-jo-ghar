@@ -4,8 +4,7 @@
 s18-g-eggs-before` (205 House and Family rules; the contract run `cook:eggs` and `cook:eggs@L4` at 1280x665: both reach the end,
 5 breaks, contract-24 4 (the next thing glows at once) and contract-98 1 (a dotted word with no lesson, L4); 16 pass, 24 fail,
 33 judge, 44 gap, 88 not run), then my read of `js/cook/stations/eggs.js` (580 lines) and `data/stations/eggs.json`. Many audit
-fails are shared rows read from other games' probes (SH-190, SH-180, SH-195, CHAI-67, MAA-14); the note says so and the score is
-eggs' own.
+fails are other games' probes (SH-190, SH-180, SH-195, CHAI-67, MAA-14); the score is eggs' own.
 
 **Counts (before):** score 0: 14 · 1: 44 · 2: 133 · 3: 14 · 4: 0 · 5: 0.
 
@@ -31,15 +30,11 @@ request pop-up says the orders), `NjgServe` (its faces frown on a wrong dish, so
 
 1. **Game code:** the end never frowns (decision 8): `mood = ok ? "happy" : "neutral"`, the soft sound, no shake. Its settings
    from `Cook.data.settings.eggs` (items, scene, assets): the landed block-1 art in place of the mock-up crops and code shapes
-   (pot by state, pan dry/oil, eggs, fried egg by the ring, the bowl by its count, shakers, egg cups, the served plate, the
-   morning and night kitchens); `Cook.roundDone`.
-2. **Adopt (d):** the first-time gate `Cook.Coach.firsts`; each step's call with its light `Cook.Coach.control` (the first time
-   lit with the call, after that the stuck hint after the level's wait, at once after a wrong move `Cook.Coach.wrong`); the next
+   (the meal's kitchen at the table); `Cook.roundDone`.
+2. **Adopt (d):** the first-time gate `Cook.Coach.firsts`; each step's call with its light `Cook.Coach.control` (with `Cook.Coach.wrong`); the next
    vessel `Cook.Coach.nextLight` choosing the pot or the pan; the reveal lessons `Cook.Coach.lessons`. Deletes eggs' own `first()`
    and its glow-at-once. Fixes contract-24 and -98.
-3. **Adopt (a, b, e)** where eggs has the thing: the burners' flames (`Cook.Kit.burner`), the heat ring (`Cook.Kit.heatRing`),
-   the people's orders (`UI.peopleSay`), the review faces (`NjgServe`) at the table.
-4. **Asks** for what eggs needs and the kit lacks go in the report.
+3. **Adopt (a):** the heat ring (`Cook.Kit.heatRing`). Asks for what the kit lacks go in the report.
 
 ## 0 Foundations
 
