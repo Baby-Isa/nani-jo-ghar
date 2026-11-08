@@ -8,25 +8,23 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, 20261108T142321Z).
+**Handover branch:** `ccr-87413d9b-j48fpk` (Sprint 19's integration branch; `main` is the live site, 20261108T142321Z, unchanged).
 
-**Where things stand (Sun 8 Nov 2026, ~19:00 UK):** Sprint 18's games are live for Zafar's play; he played them all (voice note
-`docs/feedback/kitchen-play-2026-11-08-transcript.md`, rows `docs/feedback/kitchen-play-2026-11-08.md`, both readers clean): chai
-loved, the others far from chai. **Read first: `build/reports/s18-review-and-direction.md`** ("In one page" at the top; then what went
-wrong, his play, the look, the principles, Fable's draft plan, the checks-and-judge experiment). Nothing is running in this repo.
-- **Zafar's ChatGPT mock-up round 1** (free ideas, every gameplay screen, chai the reference) is his to run with Claude in Chrome:
-  `docs/design-language/art-plans/s18-mocks-chrome-block.txt` and `sources/art/s18-mocks/refs.zip`; its results come back as chat links.
-- **Chai's three fixes** (the order card's jerk, the item timings, the half-glass ding) are on the branch, frozen diff clean, **not
-  live**: the session's safety check blocked `publish.mjs` twice; it needs his direct "publish chai's fixes to main now" or a
-  permission rule.
+**Where things stand (8 Nov, evening):** Sprint 19 is open (`docs/sprints/S19-chai-standard-everywhere.md`). Zafar said go on every
+fix that needs no decision plus the checks audit; he has **not** agreed the principles (he reviews them with the art he is running) and
+said **don't publish chai's three fixes**. New rule in CLAUDE.md: plans run back to back, no days or dates.
+- **Running (two builders, the limit):** s19-cards (`/home/user/wt/s19-cards`) and s19-checks (`/home/user/wt/s19-checks`), briefs in
+  `build/tools/ops/specs/`. Queued: s19-lights after s19-cards; s19-games when a slot frees after s19-cards (briefs ready; worktrees
+  made at launch, sparse with no `sources/`).
+- Each builder's work merges only after a look beside chai and the judge on its changed screens; nothing is published without Zafar.
 
-**Next, in order:** 1. publish chai's fixes on his word; 2. look at mock-up round 1 with him; 3. settle the principles (section 6);
-4. agree the plan (section 9) as Sprint 19; 5. start the shared fixes that need no decision while the art runs.
+**Next, in order:** 1. merge each builder as it reports (look beside chai, the judge); 2. launch the queued ones as slots free;
+3. hand Zafar the result and the principles list to review with his art.
 
 **Starting prompt for a new chat:**
-> First `git fetch origin ccr-31767b7f-rfyrg4` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/s18-review-and-direction.md` ("In one page" first).
-> Let's go through it together and make the plan; tell me before launching anything new.
+> First `git fetch origin ccr-87413d9b-j48fpk` and work from that branch (it holds the newest handover; `main` is the live site).
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S19-chai-standard-everywhere.md`.
+> Carry on Sprint 19; tell me before launching anything not in the sprint file.
 
 ## The fix list
 
