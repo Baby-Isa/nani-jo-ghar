@@ -54,7 +54,8 @@
 })(typeof self !== "undefined" ? self : this, function (root) {
   "use strict";
   const Onboard = {};
-  const GESTURES = ["tap", "drag", "hold", "swipe", "circle-stir"];
+  // ("roll": the pressed finger up and down along from -> to and back, the rolling pin under it: MAA-20, s19-lights)
+  const GESTURES = ["tap", "drag", "hold", "swipe", "circle-stir", "roll"];
   Onboard.GESTURES = GESTURES;
   const store = () => root.UIStore || (typeof require === "function" ? require("./uistore.js") : null);
 
@@ -79,7 +80,7 @@
       if (!st || !st.spotlight) out.push(`step ${i}: no spotlight`);
       try {
         const n = Onboard.normalize(st || {});
-        if (n.ghost && n.ghost.gesture === "drag" && !n.ghost.to) out.push(`step ${i}: a drag needs ghost.to`);
+        if (n.ghost && (n.ghost.gesture === "drag" || n.ghost.gesture === "roll") && !n.ghost.to) out.push(`step ${i}: a ${n.ghost.gesture} needs ghost.to`);
       } catch (e) {
         out.push(`step ${i}: ${e.message}`);
       }
@@ -131,6 +132,12 @@
       tap() {
         return this.signal("tap");
       },
+      /** S19: on to step i (a later one: the steps between were not this child's to do now); true when it moved. */
+      jump(i) {
+        if (!live() || !(i > index) || i > steps.length) return false;
+        enter(i);
+        return true;
+      },
       idle() {
         if (phase === "wait" && steps[index].ghost) {
           phase = "show";
@@ -181,6 +188,15 @@
         k.push({ o: 0.16 + (0.76 * i) / N, x: a.x + r * Math.cos(t), y: a.y + r * 0.8 * Math.sin(t), press: 1 });
       }
       k.push({ o: 1, x: a.x + r + 30, y: a.y + 40, press: 0 });
+    } else if (gesture === "roll") {
+      // MAA-20 (Zafar, 8 Nov: "the rolling pin to go up and down and the finger dragging it up and down"): pressed in the middle,
+      // up to `from`, down to `to`, back up, to the middle, lifted; the pin rides under it (the step's carry). No `to`: a third of
+      // the box's height each way.
+      const top = to ? a : { x: a.x, y: a.y - Math.max(30, (box ? box.h : 120) * 0.3) };
+      const bot = to || { x: a.x, y: a.y + Math.max(30, (box ? box.h : 120) * 0.3) };
+      const m = { x: (top.x + bot.x) / 2, y: (top.y + bot.y) / 2 };
+      const n2 = { x: m.x + 46, y: m.y + 56 };
+      k.push({ o: 0, ...n2, press: 0 }, { o: 0.12, ...m, press: 0 }, { o: 0.16, ...m, press: 1, ring: 1 }, { o: 0.34, ...top, press: 1 }, { o: 0.62, ...bot, press: 1 }, { o: 0.84, ...top, press: 1 }, { o: 0.92, ...m, press: 1 }, { o: 0.96, ...m, press: 0 }, { o: 1, ...n2, press: 0 });
     }
     return k;
   };
@@ -327,6 +343,37 @@
     ];
   };
   Onboard.fingerMs = () => Onboard.FINGER.in + Onboard.FINGER.press + Onboard.FINGER.up + Onboard.FINGER.gap;
+  /*
+   * Sprint 19 (s19-lights; Zafar's play, 8 Nov: docs/feedback/kitchen-play-2026-11-08.md P4-P9):
+   *   SH-236  the light goes the moment the child starts the move it shows (a drag begun, a hold started, a stir begun, a tap landed):
+   *           a press inside a light's box, or a game's Onboard.began(by). MOVE.back: a script's step whose move ended with the step
+   *           still open (the child let go half-way) is lit again this long after the release.
+   *   SH-119  one finger: the kit's Onboard.finger is the only one drawn, a script's drag and a game's demo (Onboard.gesture) included.
+   *   MAA-20  the finger's look, Zafar's pick on the lab page: "hand" (the kit's drawn hand, the default until he picks) or "circle"
+   *           (a pulsing circle). Onboard.fingerLook sets it for every finger; a finger's own o.look for one (the lab's pair).
+   *   one light at a time (Fable, maani f8, f11): of the lights up, only the newest that has a thing to light shows (Onboard.raise).
+   */
+  Onboard.MOVE = { back: 2000 };
+  Onboard.fingerLook = "hand";
+  Onboard.FINGER_LOOKS = ["hand", "circle"];
+  /** A gesture's point at t (0..1) on its keyframes (Onboard.path's {o, x, y, press}), eased between two: -> {x, y, press}. */
+  Onboard.pathAt = function (keys, t) {
+    if (!keys || !keys.length) return null;
+    if (t <= keys[0].o) return { x: keys[0].x, y: keys[0].y, press: keys[0].press ? 1 : 0 };
+    for (let i = 1; i < keys.length; i++) {
+      const a = keys[i - 1];
+      const b = keys[i];
+      if (t > b.o) continue;
+      const k = b.o === a.o ? 1 : (t - a.o) / (b.o - a.o);
+      const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      // (pressed between two pressed keys; a press or a lift lands on its key)
+      return { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e, press: a.press && b.press ? 1 : k >= 1 ? (b.press ? 1 : 0) : a.press && !b.press ? 1 : 0 };
+    }
+    const z = keys[keys.length - 1];
+    return { x: z.x, y: z.y, press: z.press ? 1 : 0 };
+  };
+  /** Is page point p inside box b ({x, y, w, h}), give or take pad px? */
+  Onboard.pressIn = (p, b, pad) => !!(p && b && p.x >= b.x - (pad || 0) && p.x <= b.x + b.w + (pad || 0) && p.y >= b.y - (pad || 0) && p.y <= b.y + b.h + (pad || 0));
 
   /* ---------------- the lights and lessons kit (Sprint 18, module map pieces 13-14; pure parts) ---------------- */
   /*
@@ -603,6 +650,101 @@
     }
   };
 
+  /*
+   * S19: ONE LIGHT AT A TIME (Fable, maani f8 and f11: "the tawa's ring and the next pile, the disc and the tawa, never together").
+   * Every light layer (a script's, each spot's and light's) joins the stack as it is made, and a script's again as each step begins
+   * (Onboard.raise); each frame a layer draws its box only if it is the newest layer that wants one (a thing to light, or a move in
+   * hand: a script's step while the child does it holds the light dark). A buried light draws nothing, blocks nothing, its finger and
+   * its game's glow are off; it comes back when the light over it goes.
+   */
+  const stack = [];
+  const stackIn = (layer) => {
+    const i = stack.indexOf(layer);
+    if (i >= 0) stack.splice(i, 1);
+    stack.push(layer);
+  };
+  const stackOut = (layer) => {
+    const i = stack.indexOf(layer);
+    if (i >= 0) stack.splice(i, 1);
+  };
+  const onTop = (layer) => {
+    for (let i = stack.length - 1; i >= 0; i--) {
+      const l = stack[i];
+      if (!l.isConnected) {
+        stack.splice(i, 1);
+        continue;
+      }
+      if (l.__want) return l === layer;
+    }
+    return true;
+  };
+  /** A light layer to the top of the stack (the newest light wins). */
+  Onboard.raise = (layer) => layer && stackIn(layer);
+  /** TEST HOOK (read-only): how many light boxes are drawn now (one at most). */
+  Onboard.lightsShown = () => [...document.querySelectorAll(".njg-onboard.on")].filter((l) => !l.classList.contains("ob-empty") && !l.classList.contains("ob-buried")).length;
+  /*
+   * S19, SH-236: the press that starts the move. One listener for the page (capture, before the game's own): a press inside a light's
+   * drawn box tells that light (a spot closes, a script's step goes dark until the step moves on); its release lets a script's step
+   * count down to MOVE.back.
+   */
+  const pressHooks = new Set();
+  let pressOn = false;
+  const pressWatch = () => {
+    if (pressOn) return;
+    pressOn = true;
+    const each = (k) => (e) => {
+      const p = { x: e.clientX, y: e.clientY };
+      [...pressHooks].forEach((h) => {
+        try {
+          if (h[k]) h[k](p, e);
+        } catch (x) {
+          /* its own */
+        }
+      });
+    };
+    root.addEventListener("pointerdown", each("down"), true);
+    root.addEventListener("pointerup", each("up"), true);
+    root.addEventListener("pointercancel", each("up"), true);
+  };
+  // (the styles the S19 pieces add to css/shared/onboard.css's: the buried light, the circle finger; injected once, so every page that
+  // loads this file has them)
+  let styled = false;
+  const style = () => {
+    if (styled || !document.head) return;
+    styled = true;
+    const s = document.createElement("style");
+    s.dataset.from = "onboard.js";
+    s.textContent = [
+      ".njg-onboard.on.ob-buried, .njg-onboard.on.ob-moving { opacity: 0; }",
+      ".njg-onboard.ob-buried .ob-finger, .njg-onboard.ob-moving .ob-finger { display: none !important; }",
+      ".ob-finger.ob-circle { width: var(--njg-tap, 48px); height: var(--njg-tap, 48px); filter: none; }",
+      ".ob-finger.ob-circle .ob-finger-in { transform-origin: 50% 50%; }",
+      ".ob-finger.ob-circle .ob-dot { position: absolute; inset: 18%; border-radius: 50%; background: rgba(var(--njg-gold-hi-rgb), 0.85); border: 3px solid var(--njg-focus); box-shadow: 0 0 0 0 rgba(var(--njg-focus-rgb), 0.7); }",
+      ".ob-finger.ob-circle .ob-dot { animation: ob-circle-pulse 1.2s ease-out infinite; }",
+      ".ob-finger.ob-circle .ob-finger-in.pressed .ob-dot { inset: 24%; background: rgba(var(--njg-gold-hi-rgb), 1); }",
+      ".ob-finger.ob-circle .ob-finger-in .ob-ripple { left: 0; top: 0; width: 100%; height: 100%; }",
+      "@keyframes ob-circle-pulse { 0% { box-shadow: 0 0 0 0 rgba(var(--njg-focus-rgb), 0.75); } 70% { box-shadow: 0 0 0 14px rgba(var(--njg-focus-rgb), 0); } 100% { box-shadow: 0 0 0 0 rgba(var(--njg-focus-rgb), 0); } }",
+      "@media (prefers-reduced-motion: reduce) { .ob-finger.ob-circle .ob-dot { animation: none; } }",
+    ].join("\n");
+    document.head.appendChild(s);
+  };
+  /** SH-236 (any game): the child has started the move a light shows (a mechanic calls this as its drag, hold or stir begins, or a
+   * tap lands): every light that goes on the move goes now (not one made with o.stay), the script's step goes dark until it moves on,
+   * and a game's demo (Onboard.gesture) stops. */
+  const liveGestures = new Set();
+  Onboard.began = function (by) {
+    [...liveSpots].forEach((sp) => {
+      if (!sp.stay) sp.close();
+    });
+    [...liveGestures].forEach((g) => g.stop());
+    if (active && active.move) active.move(true, false);
+    return true;
+  };
+  /** The move ended (the child let go) with its step still open: the script's light may come back after MOVE.back. */
+  Onboard.ended = function () {
+    if (active && active.move) active.move(false);
+  };
+
   /**
    * SH-120 (Zafar, 22 Oct: "if new player is toggled on, as soon as I load into the game, it should do the walkthrough"): the
    * grown-ups' New player (labs.html: the profile it resets at every launch carries the shell flag "newPlayer"). On, every
@@ -637,14 +779,18 @@
   const liveFingers = [];
   Onboard.finger = function (at, o) {
     o = o || {};
+    style();
     const host = o.container || document.body;
     const el = document.createElement("div");
     el.className = "ob-finger";
     el.setAttribute("aria-hidden", "true");
-    el.innerHTML = `<div class="ob-finger-in"><span class="ob-ripple"></span>${HAND}</div>`;
+    // (MAA-20: the look, Zafar's pick: the kit's hand, or a pulsing circle centred on the point; o.look for one finger, the lab's pair)
+    const circle = (o.look || Onboard.fingerLook) === "circle";
+    el.innerHTML = circle ? `<div class="ob-finger-in"><span class="ob-ripple"></span><span class="ob-dot"></span></div>` : `<div class="ob-finger-in"><span class="ob-ripple"></span>${HAND}</div>`;
+    if (circle) el.classList.add("ob-circle");
     if (!o.container) el.classList.add("page");
     // where the hand lies (o.from): above (pointing down), below (pointing up), right or left of the point (pointing across)
-    const from = o.from || (o.down ? "above" : "below");
+    const from = circle ? "below" : o.from || (o.down ? "above" : "below");
     const hotY = from === "above" ? 80 - HOTSPOT[1] : HOTSPOT[1];
     if (from === "above") el.classList.add("down");
     if (from === "left" || from === "right") el.classList.add(`from-${from}`);
@@ -664,9 +810,13 @@
       if (stopped) return;
       // (only the newest finger up is drawn: S13-F, contract-44; one whose layer went without its stop() no longer counts)
       for (let i = liveFingers.length - 1; i >= 0; i--) if (!liveFingers[i].isConnected) liveFingers.splice(i, 1);
-      const p = liveFingers[liveFingers.length - 1] === el ? pointOf() : null;
+      // (o.hidden(): its light is buried under a newer one, or the child is doing the move: S19)
+      const p = liveFingers[liveFingers.length - 1] === el && !(o.hidden && o.hidden()) ? pointOf() : null;
       el.style.display = p ? "" : "none";
-      if (p) {
+      if (p && circle) {
+        // (the circle's middle on the point)
+        el.style.transform = `translate(${(p.x - (el.offsetWidth || 48) / 2).toFixed(1)}px, ${(p.y - (el.offsetHeight || 48) / 2).toFixed(1)}px)`;
+      } else if (p) {
         // the fingertip (HOTSPOT in the 64x80 hand) on the point, at whatever size the page draws the hand
         const k = (el.offsetWidth || HAND_W) / HAND_W;
         el.style.transform = `translate(${(p.x - HOTSPOT[0] * k).toFixed(1)}px, ${(p.y - hotY * k).toFixed(1)}px)`;
@@ -679,7 +829,8 @@
     else {
       const T = Onboard.fingerMs();
       const keys = Onboard.fingerKeys({ from });
-      const frames = keys.map((kf) => ({ offset: kf.o, transform: `translate(${kf.x}px, ${kf.y}px) scale(${kf.press ? 0.88 : 1})` }));
+      // (the circle stays on its point and pulses with the same cadence: smaller as it presses)
+      const frames = keys.map((kf) => ({ offset: kf.o, transform: circle ? `scale(${kf.press ? 0.78 : 1})` : `translate(${kf.x}px, ${kf.y}px) scale(${kf.press ? 0.88 : 1})` }));
       anims.push(inner.animate(frames, { duration: T, iterations: Infinity, easing: "ease-in-out" }));
       const ring = keys.find((kf) => kf.ring);
       const lift = keys[keys.length - 2].o;
@@ -745,6 +896,13 @@
        *  is not a thing: Onboard.litBox's pad), rings: the canvas things' boxes to ring, els: the HTML controls}. -> the box */
       draw(rects, o) {
         o = o || {};
+        // (S19, one light at a time: this layer wants the light while it has a thing to light, or holds it dark while the child does
+        // the move; it draws only as the newest that wants one, Onboard.raise)
+        layer.__want = rects.length > 0 || !!layer.__hold;
+        const buried = layer.__want && !onTop(layer);
+        layer.classList.toggle("ob-buried", buried);
+        layer.__buried = buried;
+        if (buried) rects = [];
         let b = rects.length ? Onboard.litBox(rects, o.avoid, { pad: o.tight }) : null;
         // (o.round, CHAI-68: a round thing's light is a circle hugging it, e.g. a pan's rim: the box's longer side, centred)
         if (b && o.round) {
@@ -937,6 +1095,9 @@
     // (opts.hand, a picture hand, is gone: one finger in every game, SH-119)
     layer.innerHTML = `${lightSvg(sid)}<div class="ob-ghost" aria-hidden="true"><span class="ob-ripple"></span>${HAND}</div>${opts.skipButton ? SKIP_HTML : ""}`;
     host.appendChild(layer);
+    style();
+    pressWatch();
+    stackIn(layer);
     requestAnimationFrame(() => layer.classList.add("on"));
     const ghost = layer.querySelector(".ob-ghost");
     const hot = HOTSPOT;
@@ -950,14 +1111,32 @@
     let finger = null;
     let resolveRun;
     const result = new Promise((r) => (resolveRun = r));
+    // S19, SH-236: the child started the step's move (a press inside its box, or the game's Onboard.began): no light, no finger, no
+    // dim, nothing blocked, until the step moves on, or MOVE.back after the release with the step still open
+    let moving = false;
+    let pressing = false;
+    let backAt = 0;
+    let shownBox = null;
+    let wasBuried = false;
+    const hiddenNow = () => moving || !!layer.__buried;
 
     // keep the light on its targets (things move, the page resizes)
     const draw = () => {
+      if (moving && !pressing && backAt && Date.now() >= backAt) back();
       const st = m.state().step;
-      const sp = st ? split(st.spotlight) : { els: [], rects: [], canvas: [] };
+      layer.__hold = moving;
+      const sp = st && !moving ? split(st.spotlight) : { els: [], rects: [], canvas: [] };
       lit = sp.rects;
       // (no ring round a canvas thing: Zafar disliked a round glow in the square box; the thing glows by its game)
-      light.draw(sp.rects, { rings: [], els: sp.els });
+      // (S19, SH-230: st.avoid, the neighbours the box keeps clear of: Onboard.litBox's one rule)
+      shownBox = light.draw(sp.rects, { rings: [], els: sp.els, avoid: st && st.avoid && !moving ? rectsOf(st.avoid) : null });
+      // (buried under a newer light: its finger stops; back on top: it plays again)
+      const buried = !!layer.__buried;
+      if (buried !== wasBuried) {
+        wasBuried = buried;
+        if (buried) hideGhost();
+        else replay();
+      }
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
@@ -973,14 +1152,116 @@
       if (finger) finger.stop();
       finger = null;
     };
+    // S19, SH-119 (opts.oneFinger: Cook's coach): a drag, roll, swipe, hold or stir is the kit's one finger (Onboard.finger) moving
+    // along the gesture, pressed while it presses, never a second hand; the step's ghost.carry(dx, dy, t, press) moves the game's own
+    // thing with it (MAA-20: the rolling pin under the finger), dx, dy in page px from the gesture's first press, and home (0, 0) after
+    let pathRaf = 0;
+    let pathT = [];
+    let pathCarry = null;
+    const stopPath = () => {
+      cancelAnimationFrame(pathRaf);
+      pathRaf = 0;
+      pathT.forEach(clearTimeout);
+      pathT = [];
+      const c = pathCarry;
+      pathCarry = null;
+      if (c) {
+        try {
+          c(0, 0, 1, 0);
+        } catch (e) {
+          /* the game's own drawing */
+        }
+      }
+    };
+    const playPath = (keys, dur, carry, done) => {
+      stopPath();
+      stopFinger();
+      let pt = null;
+      finger = Onboard.finger(() => pt, { container: layer, hold: true, hidden: hiddenNow });
+      const inner = finger.el.firstChild;
+      pathCarry = typeof carry === "function" ? carry : null;
+      const a = keys.find((k) => k.press) || keys[0];
+      if (reduced()) {
+        // no motion: the finger pressed at the start, then at the end
+        const b = [...keys].reverse().find((k) => k.press) || a;
+        pt = { x: a.x, y: a.y };
+        pathT.push(setTimeout(() => (pt = { x: b.x, y: b.y }), 700));
+        pathT.push(
+          setTimeout(() => {
+            stopPath();
+            stopFinger();
+            done();
+          }, 1500)
+        );
+        return;
+      }
+      const t0 = performance.now();
+      const tick = (now) => {
+        const t = Math.min(1, (now - t0) / dur);
+        const k = Onboard.pathAt(keys, t);
+        pt = { x: k.x, y: k.y };
+        if (inner) inner.classList.toggle("pressed", !!k.press);
+        if (pathCarry) {
+          try {
+            pathCarry(k.press ? k.x - a.x : 0, k.press ? k.y - a.y : 0, t, k.press);
+          } catch (e) {
+            /* the game's own drawing */
+          }
+        }
+        if (t < 1) return void (pathRaf = requestAnimationFrame(tick));
+        pathRaf = 0;
+        stopPath();
+        stopFinger();
+        done();
+      };
+      pathRaf = requestAnimationFrame(tick);
+    };
+    // (S19: the step's finger and its demo stop: the child is doing the move, or a newer light is up)
+    const hideGhost = () => {
+      clearTimeout(idleTimer);
+      if (anim) anim.cancel();
+      anim = null;
+      stopPath();
+      stopFinger();
+      ghost.classList.remove("on", "pressed");
+    };
+    // (... and play again once the step's light is back)
+    const replay = () => {
+      const s = m.state();
+      if (!s.step || !s.step.ghost || layer.__buried || moving) return;
+      if (s.phase === "wait") m.idle();
+      if (m.state().phase === "show") playGhost();
+    };
+    const back = () => {
+      moving = false;
+      pressing = false;
+      backAt = 0;
+      layer.classList.remove("ob-moving");
+      replay();
+    };
+    const move = (on, press) => {
+      if (on) {
+        if (!moving) {
+          moving = true;
+          hideGhost();
+        }
+        pressing = !!press;
+        backAt = 0;
+        layer.classList.add("ob-moving");
+      } else if (moving) {
+        pressing = false;
+        backAt = Date.now() + Onboard.MOVE.back;
+      }
+    };
     const playGhost = () => {
       const s = m.state();
       const st = s.step;
-      if (!st || !st.ghost) return;
+      if (!st || !st.ghost || hiddenNow()) return;
       const spot = union(rectsOf(st.spotlight));
       const fromR = st.ghost.from ? union(rectsOf(st.ghost.from)) : spot;
       const toR = st.ghost.to ? union(rectsOf(st.ghost.to)) : null;
-      if (!fromR) {
+      // (S19: nothing lit, no finger: a step waiting for its moment shows no move)
+      if (!fromR || !spot) {
         m.ghostDone();
         return armIdle();
       }
@@ -989,7 +1270,7 @@
       if (st.ghost.gesture === "tap") {
         // SH-119: a tap is the one finger, tapping in its cadence until the step is done (no gap, no replay)
         const from = Onboard.fingerFrom(st.spotlight, st.ghost.down || opts.fingerDown ? "above" : "auto");
-        if (!finger && Onboard.look !== "s14") finger = Onboard.finger(() => tipOf(union(rectsOf(st.spotlight)), from), { container: layer, from });
+        if (!finger && Onboard.look !== "s14") finger = Onboard.finger(() => tipOf(union(rectsOf(st.spotlight)), from), { container: layer, from, hidden: hiddenNow });
         setTimeout(() => {
           if (m.state().phase === "show" && m.state().index === s.index) m.ghostDone();
         }, Onboard.fingerMs());
@@ -997,6 +1278,16 @@
       }
       const keys = Onboard.path(st.ghost.gesture, centre(fromR), centre(toR), fromR);
       const dur = st.ghost.ms || DUR[st.ghost.gesture];
+      if (opts.oneFinger || st.ghost.gesture === "roll") {
+        // (S19, SH-119: the one finger along the move, the game's thing riding under it: st.ghost.carry)
+        playPath(keys, dur, st.ghost.carry, () => {
+          if (m.state().phase === "show" && m.state().index === s.index) {
+            m.ghostDone();
+            armIdle();
+          }
+        });
+        return;
+      }
       const tf = (p) => `translate(${p.x - hot[0]}px, ${p.y - hot[1]}px) scale(${p.press ? 0.88 : 1})`;
       ghost.classList.add("on");
       ghost.classList.toggle("hold", st.ghost.gesture === "hold");
@@ -1046,6 +1337,7 @@
     const begin = () => {
       const s = m.state();
       if (s.phase === "done" || s.phase === "skipped") return end(s.phase);
+      stackIn(layer); // (S19: each step's light is the newest)
       layer.dataset.step = s.index;
       if (typeof opts.onStep === "function") opts.onStep(s.step, s.index);
       playAudio(s.step, s.index);
@@ -1053,10 +1345,12 @@
       else armIdle();
     };
     const advanced = () => {
-      clearTimeout(idleTimer);
-      if (anim) anim.cancel();
-      stopFinger();
-      ghost.classList.remove("on", "pressed");
+      hideGhost();
+      // (S19: the step moved on: the next one is lit after the breath, whatever the last move was doing)
+      moving = false;
+      pressing = false;
+      backAt = 0;
+      layer.classList.remove("ob-moving");
       if (root.Sfx) root.Sfx.play("pop", { volume: 0.7 });
       // a short breath between steps, so the child sees what their action did
       layer.classList.add("between");
@@ -1087,6 +1381,8 @@
     const over = () => ["done", "skipped"].includes(m.state().phase);
     const block = (e) => {
       if (skipBtn.contains(e.target) || pass(e) || over()) return;
+      // (S19: nothing lit, no dim: nothing blocked, CHAI-36's rule; the child mid-move, or a newer light over this one, the same)
+      if (moving || !shownBox) return;
       // (C4: the breath between steps never swallows a press on the lit thing: the game gets it (E5, input is live);
       // only the coach's own step count waits for the breath to end, in up())
       if (!onLight(e)) {
@@ -1104,6 +1400,17 @@
     const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu"];
     EV.forEach((t) => root.addEventListener(t, block, { capture: true, passive: false }));
     root.addEventListener("pointerup", up, true);
+    // (S19, SH-236: a press inside the drawn box starts the step's move: the light goes at once; the release starts MOVE.back)
+    const press = {
+      down(p, e) {
+        if (over() || !shownBox || layer.__buried || skipBtn.contains(e.target) || pass(e)) return;
+        if (Onboard.pressIn(p, shownBox)) move(true, true);
+      },
+      up() {
+        if (pressing) move(false);
+      },
+    };
+    pressHooks.add(press);
 
     // the grown-up's skip: hold for a second
     let holdT = 0;
@@ -1133,9 +1440,9 @@
       ended = true;
       clearTimeout(betweenT);
       cancelAnimationFrame(raf);
-      clearTimeout(idleTimer);
-      if (anim) anim.cancel();
-      stopFinger();
+      hideGhost();
+      pressHooks.delete(press);
+      stackOut(layer);
       light.clear();
       EV.forEach((t) => root.removeEventListener(t, block, { capture: true }));
       root.removeEventListener("pointerup", up, true);
@@ -1162,6 +1469,14 @@
       skip: () => finish("skipped"),
       // C4: the game this script belongs to was unmounted (the child left): the overlay and its listeners go, unseen
       leave: () => end("left"),
+      // S19: the step's move started (on) or ended (off): Onboard.began / Onboard.ended
+      move,
+      /** S19: is the step's light off now (the child doing the move, or a newer light over it)? */
+      hidden: () => hiddenNow() || !shownBox,
+      /** S19: on to step i, later in the script (a step whose moment came without the ones before it: Cook's coach, `when`). */
+      jump(i) {
+        if (m.jump(i)) advanced();
+      },
     };
     m.start();
     begin();
@@ -1331,6 +1646,91 @@
   };
 
   /**
+   * S19, SH-119 (Zafar, 8 Nov, maani's roll: "there seems to be two of them overlapping"; no game draws its own ghost, Cook's S.ghost in
+   * the roll, the stir, the knead and the fold): the kit's demo of a move for a game's first time outside a script. The one finger
+   * (Onboard.finger, in Onboard.fingerLook) along the move, pressed while it presses, the game's thing riding under it (o.carry), then
+   * lifted, the finger's half-second wait, again; until the child presses anywhere (unless o.keepOnPress) or Onboard.began.
+   *   at      () -> {from: {x, y}, to: {x, y}} in page px, or {x, y, r} (a stir round a point); null: not yet (looked at again)
+   *   o       {gesture ("drag" default, "roll", "swipe", "circle-stir", "hold"), ms (one play; the kit's own by gesture), delay (before
+   *           the first), carry(dx, dy, t, press) (page px from the first press; home (0, 0) after each play), step (its log name),
+   *           once (one play), keepOnPress, look (the finger's own look: the lab's pair)}
+   * Logged as the kit's ghost (Lifecycle ghost, no `at`: contract-102 tells it from a game's). -> {stop()}
+   */
+  Onboard.gesture = function (at, o) {
+    o = o || {};
+    style();
+    pressWatch();
+    const gesture = GESTURES.includes(o.gesture) && o.gesture !== "tap" ? o.gesture : "drag";
+    const dur = o.ms || DUR[gesture] || 1500;
+    const carry = typeof o.carry === "function" ? o.carry : null;
+    let finger = null;
+    let raf = 0;
+    let timer = 0;
+    let stopped = false;
+    let pt = null;
+    const home = () => {
+      if (!carry) return;
+      try {
+        carry(0, 0, 1, 0);
+      } catch (e) {
+        /* the game's own drawing */
+      }
+    };
+    const press = { down: () => !o.keepOnPress && g.stop() };
+    const g = {
+      stop() {
+        if (stopped) return;
+        stopped = true;
+        clearTimeout(timer);
+        cancelAnimationFrame(raf);
+        if (finger) finger.stop();
+        finger = null;
+        home();
+        liveGestures.delete(g);
+        pressHooks.delete(press);
+      },
+    };
+    const play = () => {
+      if (stopped) return;
+      const v = typeof at === "function" ? at() : at;
+      if (!v) return void (timer = setTimeout(play, 200));
+      const from = v.from || v;
+      const box = v.r ? { w: v.r / 0.28, h: v.r / 0.28 } : v.box || null;
+      const keys = Onboard.path(gesture, { x: from.x, y: from.y }, v.to || null, box);
+      LCghost(o.step != null ? String(o.step) : "kit-gesture", { gesture, kit: true });
+      if (!finger) finger = Onboard.finger(() => pt, { hold: true, look: o.look });
+      const inner = finger.el.firstChild;
+      const a = keys.find((k) => k.press) || keys[0];
+      const t0 = performance.now();
+      const tick = (now) => {
+        if (stopped) return;
+        const t = Math.min(1, (now - t0) / dur);
+        // (reduced motion: the finger pressed where the move starts, still)
+        const k = reduced() ? Object.assign({}, a, { press: 1 }) : Onboard.pathAt(keys, t);
+        pt = { x: k.x, y: k.y };
+        if (inner) inner.classList.toggle("pressed", !!k.press);
+        if (carry && !reduced()) {
+          try {
+            carry(k.press ? k.x - a.x : 0, k.press ? k.y - a.y : 0, t, k.press);
+          } catch (e) {
+            /* the game's own drawing */
+          }
+        }
+        if (t < 1) return void (raf = requestAnimationFrame(tick));
+        pt = null;
+        home();
+        if (o.once) return g.stop();
+        timer = setTimeout(play, Onboard.FINGER.gap);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+    liveGestures.add(g);
+    pressHooks.add(press);
+    timer = setTimeout(play, o.delay || 0);
+    return g;
+  };
+
+  /**
    * The spotlight (the same light as Onboard.run's, EASY-08): the Onboard.DIM dim with ONE rounded hole round `target` (one
    * thing, or several given together: a group in one box), its plain gold edge, the item(s) inside glowing and bouncing, and
    * the kit's finger tapping on o.item (a page point) or the first target (o.finger === false: no finger). o.avoid: neighbours
@@ -1346,10 +1746,20 @@
     if (o.look != null) layer.dataset.look = o.look;
     layer.innerHTML = lightSvg(sid);
     (o.container || document.body).appendChild(layer);
+    style();
+    pressWatch();
+    stackIn(layer); // (S19: the newest light is the one shown)
     requestAnimationFrame(() => layer.classList.add("on"));
     const light = lightOf(layer);
     const bounce = bouncer(o.move, () => (rectsOf(target)[0] || {}).h);
-    if (typeof o.light === "function") o.light(true);
+    let lightOn = false;
+    // (the game's own glow on its thing: on while this light shows, off while a newer light buries it, S19)
+    const gameLight = (on) => {
+      if (typeof o.light !== "function" || lightOn === on) return;
+      lightOn = on;
+      o.light(on);
+    };
+    gameLight(true);
     let raf = 0;
     let shown = null;
     const zoom = o.zoomFrom ? { t0: Date.now() } : null;
@@ -1373,7 +1783,8 @@
       // of a card drawn by o.box, SH-213: shapes that are not a thing with a picture and a pill)
       const tight = o.round || ob ? o.pad : null;
       shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, tight, round: !!o.round, rings: [], els: sp.els });
-      if (!sp.els.length) bounce.tick();
+      gameLight(!layer.__buried);
+      if (!sp.els.length && !layer.__buried) bounce.tick();
       raf = requestAnimationFrame(draw);
     };
     draw();
@@ -1381,7 +1792,7 @@
     // (a game that names the finger's point, o.item, keeps its hand as it was: from above with fingerDown, else below)
     const from = o.item ? (o.fingerDown ? "above" : "below") : Onboard.fingerFrom(target, o.fingerFrom || (o.fingerDown ? "above" : "auto"));
     // (the s14 look: no finger, no target; the lit thing itself shows what to tap)
-    const finger = o.finger === false || Onboard.look === "s14" ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from, hold: o.finger === "hold" });
+    const finger = o.finger === false || Onboard.look === "s14" ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from, hold: o.finger === "hold", hidden: () => !!layer.__buried });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
@@ -1413,18 +1824,32 @@
     const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu", "pointerup", "pointercancel", "touchend"];
     EV.forEach((t) => root.addEventListener(t, block, { capture: true, passive: false }));
     let closed = false;
+    // (S19, SH-236: a press inside the drawn box starts the move it shows: the light goes, unless o.stay; o.onPress(e) returning false
+    // keeps it: Onboard.light's tapped control, whose click does it)
+    const press = {
+      down(p, e) {
+        if (closed || o.stay || !shown || layer.__buried || !Onboard.pressIn(p, shown)) return;
+        if (e && e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
+        if (typeof o.onPress === "function" && o.onPress(e) === false) return;
+        handle.close();
+      },
+    };
+    pressHooks.add(press);
     const handle = {
       layer,
+      stay: !!o.stay,
       box: () => shown,
       close() {
         if (closed) return;
         closed = true;
         liveSpots.delete(handle);
+        pressHooks.delete(press);
+        stackOut(layer);
         cancelAnimationFrame(raf);
         if (finger) finger.stop();
         bounce.stop();
         light.clear();
-        if (typeof o.light === "function") o.light(false);
+        gameLight(false);
         EV.forEach((t) => root.removeEventListener(t, block, { capture: true }));
         layer.classList.remove("on");
         setTimeout(() => layer.remove(), reduced() ? 0 : 300);
@@ -1443,6 +1868,7 @@
   Onboard.stopAll = function () {
     [...liveStuck].forEach((h) => { try { h.stop(); } catch (e) { /* its own */ } });
     [...liveSpots].forEach((sp) => { try { sp.close(); } catch (e) { /* its own */ } });
+    [...liveGestures].forEach((g) => g.stop());
   };
 
   /**
@@ -1459,7 +1885,15 @@
   Onboard.light = function (target, o) {
     o = o || {};
     if (target == null) return { layer: null, box: () => null, close() {}, stop() {}, done: Promise.resolve() };
-    const h = Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom });
+    // (S19, SH-236: it goes on a press inside its box, unless o.stay; a lit control with o.onTap goes on its click instead, so the tap
+    // still reaches onTap; o.onPress(e) is told first, and false keeps it)
+    const tapEl = o.onTap ? htmlOf(target) : null;
+    const onPress = (e) => {
+      if (typeof o.onPress === "function" && o.onPress(e) === false) return false;
+      if (tapEl && e && e.target && tapEl.contains(e.target)) return false;
+      return true;
+    };
+    const h = Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom, stay: !!o.stay, onPress });
     if (o.note != null) LCnote("rung", { step: String(o.note), rung: 0, coach: true });
     let gone;
     h.done = new Promise((r) => (gone = r));
