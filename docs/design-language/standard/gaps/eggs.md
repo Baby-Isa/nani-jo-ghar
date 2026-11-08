@@ -4,10 +4,14 @@
 s18-g-eggs-before` (205 House and Family rules; the contract run `cook:eggs` and `cook:eggs@L4` at 1280x665: both reach the end,
 5 breaks, contract-24 4 (the next thing glows at once) and contract-98 1 (a dotted word with no lesson, L4); 16 pass, 24 fail,
 33 judge, 44 gap, 88 not run), then my read of `js/cook/stations/eggs.js` (580 lines) and `data/stations/eggs.json`. Many audit
-fails are shared rows read from other games' probes (SH-190, SH-180, SH-195, CHAI-67, MAA-14); the note says so and the score is
-eggs' own.
+fails are other games' probes (SH-190, SH-180, SH-195, CHAI-67, MAA-14); the score is eggs' own.
 
 **Counts (before):** score 0: 14 · 1: 44 · 2: 133 · 3: 14 · 4: 0 · 5: 0.
+
+**Updated** 8 Nov after the build (s18-g-eggs's commits; a note ending "(build)" is what it changed), on the contract run of
+`cook:eggs` L1-L4 at 1280x665 (build/reports/s18-g-eggs.md). **Counts (after):** 0: 14 · 1: 23 · 2: 149 · 3: 19 · 4: 0 · 5: 0.
+Not yet taken: the card light (D1-07), the helper card's step help (D3-02), the rungs' word gate (D2-05), `UI.peopleSay` (the
+request pop-up says the orders), `NjgServe` (its faces frown on a wrong dish, so the table keeps its people: decision 8).
 
 **The scale:** 0 n/a · 1 missing · 2 built, unproven · 3 check green · 4 judged · 5 his "done" · dbd different by design (dated).
 **Next:** Kit (a kit piece still to build) · Adopt (take a kit piece: (a) heat, (b) pans and serving, (c) the shelf and pills,
@@ -26,15 +30,11 @@ eggs' own.
 
 1. **Game code:** the end never frowns (decision 8): `mood = ok ? "happy" : "neutral"`, the soft sound, no shake. Its settings
    from `Cook.data.settings.eggs` (items, scene, assets): the landed block-1 art in place of the mock-up crops and code shapes
-   (pot by state, pan dry/oil, eggs, fried egg by the ring, the bowl by its count, shakers, egg cups, the served plate, the
-   morning and night kitchens); `Cook.roundDone`.
-2. **Adopt (d):** the first-time gate `Cook.Coach.firsts`; each step's call with its light `Cook.Coach.control` (the first time
-   lit with the call, after that the stuck hint after the level's wait, at once after a wrong move `Cook.Coach.wrong`); the next
+   (the meal's kitchen at the table); `Cook.roundDone`.
+2. **Adopt (d):** the first-time gate `Cook.Coach.firsts`; each step's call with its light `Cook.Coach.control` (with `Cook.Coach.wrong`); the next
    vessel `Cook.Coach.nextLight` choosing the pot or the pan; the reveal lessons `Cook.Coach.lessons`. Deletes eggs' own `first()`
    and its glow-at-once. Fixes contract-24 and -98.
-3. **Adopt (a, b, e)** where eggs has the thing: the burners' flames (`Cook.Kit.burner`), the heat ring (`Cook.Kit.heatRing`),
-   the people's orders (`UI.peopleSay`), the review faces (`NjgServe`) at the table.
-4. **Asks** for what eggs needs and the kit lacks go in the report.
+3. **Adopt (a):** the heat ring (`Cook.Kit.heatRing`). Asks for what the kit lacks go in the report.
 
 ## 0 Foundations
 
@@ -46,8 +46,8 @@ eggs' own.
 | STD-01-04 | H | not run | 1 | Check | no leak config for eggs |
 | STD-01-05 | H | judge | 1 | Check | never judged (a lab prototype) |
 | STD-01-06 | H | not run | 2 | Check |  |
-| STD-01-07 | H | gap | 1 | Game code | a wrong plate gets a frown at the table (decision 8: chai's progress display) |
-| STD-01-08 | H | not run | 2 | Art | block 1 landed and cut (s18-prep); the game still loads the 1 Nov mock-up crops and draws shapes |
+| STD-01-07 | H | gap | 2 | Check | a wrong plate stays neutral with the soft sound; no frown, no shake (build) |
+| STD-01-08 | H | not run | 2 | Art | block 1 wired from items (pot, pan, eggs, bowl, shakers, cups, plates, the meal's kitchen); the cat a crop (build) |
 | STD-01-09 | H | not run | 2 | Check |  |
 | STD-02-01 | H | gap | 1 | Check | no child-pace play of eggs |
 | STD-02-02 | H | gap | 2 | Check |  |
@@ -105,7 +105,7 @@ eggs' own.
 | STD-B4-02 | H | not run | 0 | none | no control: the burner lights as an egg goes in |
 | STD-B4-03 | F | not run | 2 | Check | the ring grows; steam at the green |
 | STD-B4-04 | H | not run | 2 | Check |  |
-| STD-B4-05 | H | gap | 1 | Game code | the table frowns at a wrong plate |
+| STD-B4-05 | H | gap | 2 | Check | the table never frowns (build) |
 | STD-B4-06 | H | not run | 2 | Check |  |
 
 ## C Progression
@@ -121,7 +121,7 @@ eggs' own.
 | STD-C2-05 | H | not run | 2 | Adopt | (e) |
 | STD-C2-06 | H | not run | 1 | Decision | cookMs grows by level (3.2 to 4.4 s): slower, not quicker |
 | STD-C2-07 | H | not run | 1 | Decision | L3 eggs each 1 after L2's 1-2: a count goes down |
-| STD-C2-08 | H | not run | 1 | Game code | eggs never calls Cook.roundDone |
+| STD-C2-08 | H | not run | 2 | Check | Cook.roundDone with its hints (build) |
 | STD-C2-09 | H | gap | 2 | Check |  |
 | STD-C3-01 | H | not run | 2 | Check |  |
 | STD-C3-02 | H | not run | 2 | Check |  |
@@ -137,20 +137,20 @@ eggs' own.
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-D1-01 | H | not run | 1 | Adopt | (d): its own first() on save.seenStation, lit at once |
-| STD-D1-02 | H | gap | 1 | Adopt | (d): S.glow bounce, no dim, no box |
-| STD-D1-03 | H | judge | 1 | Adopt | (d): the pot and the pan lit together |
+| STD-D1-01 | H | not run | 3 | Check | Cook.Coach.firsts; its own first() deleted; contract-78 green (build) |
+| STD-D1-02 | H | gap | 2 | Check | Cook.Coach.control's light (Onboard.light) with the thing's glow (build) |
+| STD-D1-03 | H | judge | 2 | Check | one step at a time; the pot or the pan, never both (build) |
 | STD-D1-05 | H | gap | 0 | none | nothing small |
-| STD-D1-06 | H | pass | 1 | Adopt | (d): no breath, no call held |
+| STD-D1-06 | H | pass | 3 | Check | Cook.Coach.control: the call held for the light (build) |
 | STD-D1-07 | H | fail | 1 | Adopt | (d): no card light |
-| STD-D1-08 | H | fail | 1 | Adopt | (d): contract-98 broke at L4 |
+| STD-D1-08 | H | fail | 3 | Check | Cook.Coach.lessons; contract-98 green at L4 (build) |
 | STD-D1-09 | H | not run | 0 | none | no timed control |
-| STD-D1-10 | F | fail | 1 | Adopt | (d): the next vessel chooses between the pot and the pan |
-| STD-D2-01 | H | fail | 1 | Adopt | (d): contract-24, 4 breaks (the next thing glows at once) |
+| STD-D1-10 | F | fail | 2 | Check | Cook.Coach.nextLight on the pot or the pan this plate needs, the first time (build) |
+| STD-D2-01 | H | fail | 3 | Check | the stuck hint after the level's wait; contract-24 green L1-L4 (build) |
 | STD-D2-02 | H | not run | 2 | Check | the next plate in the card's order |
-| STD-D2-03 | H | fail | 1 | Adopt | (d) |
-| STD-D2-04 | H | not run | 1 | Adopt | (d): an unready egg wiggles, nothing rushes |
-| STD-D2-05 | H | not run | 1 | Adopt | (d) |
+| STD-D2-03 | H | fail | 3 | Check | the kit's hint clock; contract-24 green (build) |
+| STD-D2-04 | H | not run | 2 | Check | every step a stuck hint; a wrong move (unready egg, full plate, wrong egg or shaker, the tray early) rushes it (build) |
+| STD-D2-05 | H | not run | 2 | Adopt | (d) rungs: eggs names no word in its hint yet (build) |
 | STD-D2-06 | F | pass | 0 | none | no timed control |
 | STD-D3-01 | H | not run | 2 | Check |  |
 | STD-D3-02 | H | fail | 1 | Adopt | (d, e): the helper card is blank |
@@ -180,19 +180,19 @@ eggs' own.
 | STD-E2-06 | H | gap | 2 | Check |  |
 | STD-E2-07 | H | not run | 2 | Check | the plates' faces are the kit's badge |
 | STD-E2-08 | H | judge | 2 | Check |  |
-| STD-E3-01 | H | not run | 1 | Art | mock-up crops and shapes at mixed scale |
-| STD-E3-02 | H | fail | 1 | Art | eggs, plates, cups, shakers, the table and the window drawn in code |
+| STD-E3-01 | H | not run | 2 | Check | items at their drawn sizes from the settings (build) |
+| STD-E3-02 | H | fail | 2 | Check | landed art for every thing; code draws only the steam and the grains (build) |
 | STD-E3-03 | F | not run | 2 | Check |  |
-| STD-E3-04 | F | judge | 1 | Art | chai's pan of water stands in as the pot; the pan a mock-up crop |
+| STD-E3-04 | F | judge | 2 | Check | the pot (water, boiling) and the pan (dry, oil) centred on their burners by their body measures (build) |
 | STD-E3-05 | F | gap | 2 | Check | the people behind the table |
 | STD-E4-01 | H | fail | 2 | Check | SH-180 is the shared row |
 | STD-E4-02 | H | pass | 3 | Check |  |
-| STD-E4-03 | F | gap | 1 | Art | the fried egg never changes as it cooks |
+| STD-E4-03 | F | gap | 2 | Check | the fried egg raw, setting, done by its ring (build) |
 | STD-E4-04 | H | gap | 2 | Check |  |
 | STD-E5-01 | H | pass | 3 | Check |  |
 | STD-E5-03 | H | not run | 2 | Check |  |
 | STD-E5-04 | H | not run | 2 | Check |  |
-| STD-E6-01 | H | not run | 2 | Check | the colours are data (eggs.json station.palette) |
+| STD-E6-01 | H | not run | 2 | Check | the palette cut to the steam's and grains' three; the ring is the kit's (build) |
 | STD-E6-02 | H | not run | 2 | Check |  |
 
 ## F Build
@@ -200,13 +200,13 @@ eggs' own.
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
 | STD-F1-01 | H | gap | 1 | Adopt |  |
-| STD-F1-02 | H | not run | 1 | Game code | its first-time gate copies chai's old one (fresh, seen, first) |
-| STD-F1-03 | H | gap | 1 | Game code | art paths, sizes and places in code; the settings keys unread |
+| STD-F1-02 | H | not run | 2 | Check | its gate, its glow-at-once and its ring drawing deleted for the kit's (build) |
+| STD-F1-03 | H | gap | 2 | Check | its art, sizes and places from items and scene (build) |
 | STD-F1-04 | H | not run | 2 | Check |  |
 | STD-F1-05 | H | gap | 2 | Check |  |
 | STD-F1-06 | H | judge | 2 | Check |  |
 | STD-F2-02 | H | not run | 1 | Kit | the level numbers in eggs.json mechanic.levels, not the rules file |
-| STD-F2-03 | F | gap | 1 | Game code | vessel size, slots, tray and plate places in code |
+| STD-F2-03 | F | gap | 2 | Check | places and measures in eggs.json (items, scene.tray, scene.table) (build) |
 | STD-F2-04 | H | gap | 2 | Check |  |
 | STD-F3-01 | H | fail | 2 | Check | SH-180 is the shared row |
 | STD-F3-02 | H | not run | 2 | Check |  |
@@ -215,7 +215,7 @@ eggs' own.
 | STD-F3-05 | H | not run | 2 | Check | z.expect from nextThing |
 | STD-F3-06 | H | judge | 2 | Check |  |
 | STD-F4-02 | H | judge | 2 | Check |  |
-| STD-F4-03 | H | fail | 1 | Game code | its art list in code; settings.assets unread |
+| STD-F4-03 | H | fail | 2 | Check | only this round's states and this meal's kitchen; loadcheck green (build) |
 | STD-F4-04 | H | not run | 2 | Check |  |
 | STD-F4-05 | H | judge | 2 | Check |  |
 | STD-F4-06 | H | not run | 2 | Check |  |
