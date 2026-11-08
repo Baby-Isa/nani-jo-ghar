@@ -14,11 +14,6 @@
    "tray": "#6b3f22",
    "trayEdge": "#4e2c17",
    "shadow": "#28190a",
-   "white": "#ffffff",
-   "ring": "#fffaf1",
-   "ringBand": "#7e9a76",
-   "ringFill": "#c9962e",
-   "ringDone": "#5c8a4e",
    "smoke": "#ffffff",
    "fru-02": "#f6d74a",
    "spi-16": "#ffffff",
@@ -29,15 +24,36 @@
   }
  },
  "words": {
-  "n.corn-on-the-cob": {"heap": {"kind": "pieces", "color": "#f2c230"}, "bowl": "ceramic"},
-  "spi-04": {"heap": {"kind": "powder", "color": "#d2401e"}, "bowl": "ceramic"}
+  "n.corn-on-the-cob": {
+   "heap": {
+    "kind": "pieces",
+    "color": "#f2c230"
+   },
+   "bowl": "ceramic"
+  },
+  "spi-04": {
+   "heap": {
+    "kind": "powder",
+    "color": "#d2401e"
+   },
+   "bowl": "ceramic"
+  }
  },
  "mechanic": {
   "levels": [
-   {"sideMs": 2600, "slots": 3},
-   {"sideMs": 2800},
-   {"sideMs": 3000},
-   {"sideMs": 3200}
+   {
+    "sideMs": 2600,
+    "slots": 3
+   },
+   {
+    "sideMs": 2800
+   },
+   {
+    "sideMs": 3000
+   },
+   {
+    "sideMs": 3200
+   }
   ]
  },
  "kitchen": {
@@ -125,7 +141,12 @@
    "reuse": true,
    "drawn": {
     "w": 360
-   }
+   },
+   "at": [
+    1310,
+    250
+   ],
+   "angle": 90
   },
   "tray": {
    "drawn": true,
@@ -134,6 +155,76 @@
   },
   "host": {
    "note": "Nani's guide box stands in for Hannah Mami until her approved sheet exists (Zafar, 1 Nov)"
+  },
+  "layout": {
+   "_about": "s18-g-corn (8 Nov): every place and size in the 1600 x 900 design box (the stage, fitted to the window by its height, STD-E1-01; STD-F2-04): the crate left (items.crate.at), the grill at the centre-left (scene.grill.at) and the plate right (scene.plate.at), all on the row y 250, the stage's upper third; the tray across the lower third (590 to 790, 200 deep: the dressings' 150 px and a margin of 25); their word cards under it at 852, inside the stage's foot; the person's face top right over the plate (150, the kit's row face at the stage's scale); the review's face over the plate (230: two thirds of the plate's 360). slotGap: a cob's drawn width (about 84) twice, so two cobs never touch; plateGap: a cob's width less a fifth, so the plate holds three. ring: the kit's heat ring (Cook.Kit.heatRing) above each cob, r 34 so its 15 px stroke clears the cob; lo the sage 'now' band's start (the cob is ready at its end).",
+   "grill": {
+    "slotGap": 170,
+    "y": 250
+   },
+   "plate": {
+    "gap": 64,
+    "cobK": 0.85
+   },
+   "tray": {
+    "x0": 200,
+    "x1": 1400,
+    "y": 590,
+    "h": 200,
+    "pad": 50,
+    "r": 26,
+    "edge": 10,
+    "shadow": [
+     8,
+     10
+    ]
+   },
+   "chips": {
+    "y": 852,
+    "w": 200
+   },
+   "ring": {
+    "r": 34,
+    "dy": 46,
+    "lo": 0.9
+   },
+   "face": {
+    "at": [
+     1310,
+     -40
+    ],
+    "size": 150
+   },
+   "review": {
+    "at": [
+     1310,
+     60
+    ],
+    "size": 230
+   },
+   "drops": {
+    "n": 16,
+    "w": 50,
+    "h": 0.8,
+    "liquidR": 6,
+    "dryR": 3,
+    "liquid": [
+     "ph-lili",
+     "ph-amli",
+     "fru-02"
+    ],
+    "_why": "CO (a dressing drawn on a cob) failed and is on the redo list: the drops stand in (items.onCob), a tint on the cob's picture"
+   },
+   "smoke": {
+    "r": [
+     10,
+     8
+    ],
+    "rise": 120,
+    "grow": 2.2,
+    "chance": 0.03,
+    "stagger": 140
+   }
   }
  },
  "items": {
@@ -237,7 +328,8 @@
   "now": "now",
   "lift": "lift",
   "turn": "guide-firai",
-  "welldone": "welldone"
+  "welldone": "welldone",
+  "dress": "St.addLine (the engine's 'X wiji chad!', as chaat's layers)"
  },
  "end": {
   "display": "progress",
@@ -272,5 +364,16 @@
   "assets/cook/proto/corn/dress-green.webp",
   "assets/cook/proto/corn/dress-amli.webp",
   "assets/cook/proto/corn/dress-pepper.webp"
- ]
+ ],
+ "motion": {
+  "_about": "s18-g-corn: the game's own motion times, ms at speed 1 (the kits' own come from the kits)",
+  "flyMs": 420,
+  "flipMs": 140,
+  "flipK": 0.5,
+  "_flipK": "the turn squashes the cob to half its width and back (was to nothing: the light's box, fading out for 300 ms round it, was then over 3.5 times the cob, contract-53)",
+  "dropMs": 420,
+  "dropInMs": 260,
+  "smokeMs": 1300,
+  "endHoldMs": 500
+ }
 }
