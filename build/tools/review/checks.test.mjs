@@ -59,3 +59,10 @@ test("stdids --check: an extra ID (fine if meant) is a note, not a failure; the 
   assert.equal(r.status === 0, real.length === 0, r.stdout.slice(0, 400));
   assert.doesNotMatch(r.stdout, /^  [^n].*fine if meant/m);
 });
+
+test("the unit step leaves the art block's tests out only where sources/art is missing (a builder's worktree)", async () => {
+  const { unitFiles } = await import("./checks.mjs");
+  assert.ok(unitFiles(false).includes("build/tools/art/artcheck.test.mjs"));
+  assert.ok(!unitFiles(true).includes("build/tools/art/artcheck.test.mjs"));
+  assert.ok(unitFiles(true).includes("build/sandbox/contract-s19.test.mjs") && unitFiles(true).includes("build/tools/review/checks.test.mjs"));
+});
