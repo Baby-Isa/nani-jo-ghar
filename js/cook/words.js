@@ -349,6 +349,16 @@
   };
   /** Nani's guide box line for a guide key (data/cook.json guide: a line key, else the engine's to-record entry). */
   Lang.guideLine = (key, g) => (g && g.line && Lang.hasLine(g.line) ? Lang.line(g.line) : Object.assign(Lang.say(fixed(`cook.guide.${key}`)), { key }));
+  /**
+   * Non-negotiable 2 (Fable's daar flaw 2, 8 Nov): a sentence the engine can't say whole is never stitched from fragments: its English,
+   * shown as the grey-italic placeholder (decision 84: tagged to record, never spoken) until Mum records it. key: the gap's name in
+   * docs/language/recording-sheet.md.
+   */
+  Lang.toRecord = (en, key = null) => {
+    const t = String(en || "").trim();
+    Lang.gapLog.push({ kind: "line", meaning: "Say", key, en: t });
+    return { segs: [{ t, lang: "e" }], en: t, ok: false, rec: true, key, parts: [], plan: [] };
+  };
   /** A phrase said on its own as the first item of a list: "Chana." */
   Lang.bare = (phrase) => Lang.say({ fn: "Say", x: phrase && phrase.m ? phrase.m : { fn: "Join", parts: [] } });
   /**

@@ -1671,7 +1671,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           sizzle.stop();
           sizzle = null;
         }
-        showDone();
       };
 
       /* SEK-09: a mistimed skewer goes back to the rack (false: no room there, so it stays and is scored as before) */
@@ -1762,21 +1761,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
       })();
 
-      /* Done: shown once something is on the plate */
+      /* SH-238 (Zafar, 8 Nov: no ✓): the grill moves on by itself once every skewer asked for is on the plate */
       let resolveDone;
       const done = new Promise((r) => (resolveDone = r));
-      let doneShown = false;
-      let autoDone = false; // the plate can't change any more: it moved on by itself (s04-fxc)
+      let autoDone = false;
       const complete = () => {
         const n = {};
         plate.forEach((p) => p.cls.ok && (n[p.cls.kind] = (n[p.cls.kind] || 0) + 1));
         const kindsOk = Object.keys(want).every((w) => (n[w] || 0) === want[w]) && Object.keys(n).every((w) => n[w] === (want[w] || 0)) && plate.every((p) => p.cls.ok);
         return kindsOk && (!offerChips || chipsOn === !!params.chips);
-      };
-      const showDone = () => {
-        if (doneShown) return UI.glowDone(z.guided && complete());
-        doneShown = true;
-        UI.done({ glow: z.guided && complete() }).then(() => resolveDone());
       };
 
       /* every frame: rings, cooking colour, smoke, and what to do next (for the test) */
@@ -1850,22 +1843,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return z.expect({ kind: "tap", x: next.sk.x, y: next.sk.y, key: "rack", wrongs });
         }
         const n = need();
-        const allIn = Object.keys(n).every((w) => n[w] <= 0) && !grilling.length && plate.length;
+        // (as many skewers as they asked for, right or not: the review judges them; never waiting for the right ones, the leak test)
+        const wantN = Object.values(want).reduce((a, b) => a + (b || 0), 0);
+        const allIn = (Object.keys(n).every((w) => n[w] <= 0) || plate.length >= wantN) && !grilling.length && plate.length;
         const threading = line.threading && line.threading();
-        if (allIn && !threading && offerChips && chipsOn !== !!params.chips) return z.expect({ kind: "tap", x: chips.x, y: chips.y, key: "chips" });
-        if (allIn && !threading && doneShown) {
-          // another skewer still to thread, one still on the rack or the chips still change the plate: the child says
-          // when it's finished (open: C10; moving on at the right plate would give the answer away, NN6). Nothing left
-          // that could change it: the plate is what it is, so the grill moves on by itself (decision 52, 79; s04-fxc)
-          const more = !!z.in || rack.some(Boolean) || !!offerChips;
-          if (more) return z.expect({ kind: "click", selector: "#done-btn", open: true });
-          if (!autoDone) {
-            autoDone = true;
-            UI.hideDone();
-            const L = global.Lifecycle;
-            (L ? L.advance({ reason: "cook:grill", ms: 600, wait: (ms) => Cook.wait(ms) }) : Cook.wait(600)).then(() => !finished && resolveDone(), () => {});
-          }
+        // every skewer asked for is on the plate: complete, it moves on by itself (UI.done's beat; a longer one where the chips
+        // can still be added, so the plate is the child's: the review judges it)
+        if (allIn && !threading && !autoDone) {
+          autoDone = true;
+          UI.done({ ms: offerChips ? 2400 : undefined }).then(() => !finished && resolveDone());
         }
+        if (allIn && !threading && offerChips && chipsOn !== !!params.chips) return z.expect({ kind: "tap", x: chips.x, y: chips.y, key: "chips" });
         z.expect({ kind: "wait" });
       };
 

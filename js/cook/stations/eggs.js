@@ -95,6 +95,8 @@ import { Cook as CookNS } from "../ns.js";
     const objs = [];
     const T = (o) => (objs.push(o), S.track(o));
     const steps = St.steps(ctx);
+    // SH-149 (contract-101): Nani's helper card and its drop-down, as in every kitchen game (eggs runs its own stage, never St.begin)
+    if (St.helperWatch) St.helperWatch(ctx, KEY, { own: true });
     // the kitchen kit's first-time gate (STD-D1-01): each light once for a new player, or the first round ever here
     const gate = Cook.Coach.firsts(KEY, { round: new Set() });
     let hints = 0;
@@ -591,6 +593,8 @@ import { Cook as CookNS } from "../ns.js";
       await Cook.wait(250);
     }
     UI.mission.closeItem([], 0, { all: true });
+    if (St.helperWatch) St.helperWatch(ctx, null);
+    if (UI.helper) UI.helper(null);
     if (allRight) await Promise.race([UI.voice(Lang.line("welldone")).catch(() => {}), Cook.wait(2400)]);
     await Cook.wait(900);
   }

@@ -203,6 +203,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
     if (made.two && !ctx.guided && count2 <= 5) (made.nB0 === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
     steps.done();
+    // SH-239 (contract-108): the samosas are made: every card ticks before their well done at the serve
+    if (ctx.closeItem) ctx.closeItem([], { all: true });
     await serve(yz, { who, plate: fried.plate });
     yz.close();
     St.end();
@@ -582,7 +584,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           Cook.wait(700).then(() => fin({ done: true }));
           return;
         }
-        if (filled) UI.done({ glow: !!(glow && mv.done) }).then(() => fin({ done: true }));
+        // SH-238 (Zafar, 8 Nov: "you can't have an X button"; his idea: "it moves on when done"): complete once as many strips as they
+        // asked for are filled, the last one with as many spoons as they said: on by itself a beat later (UI.done; a tap before it,
+        // a spoon taken back, carries on: fin's UI.hideDone)
+        const total = blocks.reduce((a, b) => a + countOf(b), 0);
+        const spoons = (x) => Object.values(wantOf(blockOf(x) || needBlock() || 1)).reduce((a, n) => a + n, 0);
+        if (filled >= total && (!active || active.order.length >= spoons(active))) UI.done().then(() => fin({ done: true }));
         // T17 / SH-110: Nani calls the strip's first filling as soon as a strip is wanted ("Bhar! Chundo."), the same step
         // when that strip is tapped (so a strip tap never starts a call over the child's next tap), then each next filling
         const ord = filledOf().filter((x) => x !== active).length;
@@ -616,8 +623,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           const c = S.centre(mv.strip);
           z.expect({ kind: "tap", x: c.x, y: c.y, key: "strip", wrongs: [] });
-        } else if (filled) z.expect({ kind: "click", selector: "#done-btn", open: true }); // open: another strip or spoon still changes it (C10)
-        else z.expect({ kind: "wait" });
+        } else z.expect({ kind: "wait" });
       });
     /** The strip being filled sits a little raised (bigger, its shadow wider) so the child sees where the spoons go. */
     const lift = (x, k, ms) => {

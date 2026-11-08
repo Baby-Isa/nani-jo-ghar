@@ -203,19 +203,6 @@
 .oc-card .oc-item.folded > .oc-fold { grid-template-rows: 0fr; opacity: 0; }
 .oc-card .oc-parts { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: var(--oc-gap); min-width: 0; margin-top: var(--oc-gap); padding-left: var(--oc-indent); }
 .oc-card .oc-item.oc-direct .oc-parts { margin-top: 0; padding-left: 0; }
-.oc-card .oc-parts.oc-seq::before {
-  content: ""; position: absolute; left: calc(var(--oc-indent) / 2 - var(--njg-line)); width: var(--njg-line-2); border-radius: var(--njg-line); background: var(--oc-grey);
-  top: calc(var(--oc-gap) * -1); bottom: calc(var(--oc-seq-end, calc(var(--oc-part-h) / 2)) - var(--njg-line));
-}
-.oc-card .oc-parts.oc-seq > .oc-part::before {
-  content: ""; position: absolute; top: calc(50% - var(--njg-line)); height: var(--njg-line-2); background: var(--oc-grey);
-  left: calc(var(--oc-indent) / -2 - var(--njg-line)); width: calc(var(--oc-indent) / 2);
-}
-/* a dish's own ordered steps (no item row above): the line starts at the first step */
-.oc-card .oc-item.oc-direct .oc-parts.oc-seq { padding-left: var(--oc-indent); }
-.oc-card .oc-item.oc-direct .oc-parts.oc-seq::before { top: calc(var(--oc-part-h) / 2 - var(--njg-line)); }
-/* a "no" part ("Dudh na.") is a row like the others, but it isn't a step of the sequence */
-.oc-card .oc-parts.oc-seq > .oc-part.no::before { display: none; }
 /* the "don't" row (design system 14: "dudh na", "marcha na"): no fill, a dashed muted edge, a small
    no-sign before the words, muted ink. It ticks (gold, solid) when the dish goes out without it */
 .oc-card .oc-row.no { background: transparent; border-style: dashed; border-color: var(--njg-no-edge); color: var(--njg-no-ink); }
@@ -289,10 +276,7 @@
 :is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-item:has(> .oc-fold),
 :is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-item.oc-direct { flex: 1 1 100%; }
 :is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-parts,
-:is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-parts.oc-seq { flex-direction: row; flex-wrap: wrap; align-items: flex-start; padding-left: 0; }
 :is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-item:not(.oc-direct) .oc-parts { padding-left: var(--oc-indent); }
-:is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-parts.oc-seq::before,
-:is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-parts.oc-seq > .oc-part::before { display: none; }
 :is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-part,
 :is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-item:not(:has(> .oc-fold)) > .oc-irow { flex: 0 1 auto; max-width: 100%; border-radius: var(--njg-round); padding: 0 var(--njg-s3); }
 :is(html[data-oc-rows="pills"] .oc-card:not(.oc-stack), .oc-card.oc-pills) .oc-part .oc-t,
@@ -323,12 +307,6 @@
 /* phones (<html data-ff="phone">, js/shared/frame.js): a long part list (a mixed skewer's four pieces) takes two
    columns, read left to right, so the order fits without scrolling */
 html[data-ff="phone"] .oc-card .oc-row { padding: 0 var(--njg-s1) 0 var(--njg-s2); }
-html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) { flex-direction: row; flex-wrap: wrap; }
-/* two to a line where both fit whole, else one (a word is never split: TXT-10) */
-html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) > .oc-part { flex: 1 1 max-content; }
-html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3))::before,
-html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) > .oc-part::before { display: none; }
-html[data-ff="phone"]:not([data-oc-rows="pills"]) .oc-card:not(.oc-big):not(.oc-pills) .oc-item:not(.oc-direct) .oc-parts.oc-seq:has(> .oc-part:nth-child(3)) { padding-left: var(--njg-s2); }
 /* S13-A2 (the fix round, 26 Oct): every row that starts with its speaker is a tap tall (SH-134), so on a phone a list of them goes
    two to a line, read left to right: half the lines, the sidebar never past the screen's bottom, and each speaker's 48 x 48 tap
    area beside the other's (it overhangs its row sideways, never over another speaker). The same on any screen when a host's
@@ -463,50 +441,11 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 /* decision 84: the to-record flag is a hidden tag (see above) */
 .oc-card .oc-rec, .oc-card .oc-strip .oc-rec { display: none !important; }
 
-/* ---------- SEK-03 (S05-S): groups (several skewers, samosa kinds): each a plain box of its pieces, no label row (the
-   headline gives the summary), alternate groups tinted; an ordered group is a little skewer: the pieces threaded on a
-   stick left to right, a pointed tip at the end, no numbers, no arrows ---------- */
-.oc-card .oc-item.oc-group { padding: var(--njg-s1); border-radius: var(--njg-radius); border: var(--njg-line) solid var(--oc-edge); background: var(--oc-card); }
-/* SEK-03 (S05-C3): one kind of several (a samosa kind): the same plain group box round its count row and its fillings */
-.oc-card .oc-item.oc-box { padding: var(--njg-s1); border-radius: var(--njg-radius); border: var(--njg-line) solid var(--oc-edge); background: var(--oc-card); }
-.oc-card .oc-item.oc-group.tint { background: var(--oc-card); border-color: var(--oc-edge); } /* SH-53: no tint (above) */
-.oc-card .oc-item.oc-group .oc-group-parts { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--njg-s1); margin: 0; padding: 0; }
-.oc-card .oc-item.oc-group .oc-part { flex: 0 1 auto; max-width: 100%; border-radius: var(--njg-round); padding: 0 var(--njg-s2); }
-.oc-card .oc-item.oc-group .oc-part .oc-t { flex: 0 1 auto; }
-.oc-card .oc-item.oc-skewer .oc-group-parts { position: relative; flex-wrap: nowrap; padding-right: calc(var(--njg-s3) + var(--njg-s1)); }
-.oc-card .oc-item.oc-skewer .oc-group-parts::before {
-  content: ""; position: absolute; z-index: 0; left: calc(var(--njg-s1) * -1); right: var(--njg-s1); top: calc(50% - var(--njg-line));
-  height: var(--njg-line-2); border-radius: var(--njg-line); background: var(--njg-stick);
-}
-.oc-card .oc-item.oc-skewer .oc-group-parts::after {
-  content: ""; position: absolute; right: 0; top: calc(50% - var(--njg-s1)); width: var(--njg-s3); height: var(--njg-s2);
-  background: var(--njg-stick); clip-path: polygon(0 25%, 100% 50%, 0 75%);
-}
-.oc-card .oc-item.oc-skewer .oc-part { position: relative; z-index: 1; min-width: 0; background-color: var(--njg-card, var(--njg-white)); } /* (an opaque pill: the stick never shows through a word, S05-C3) */
-.oc-card .oc-item.oc-skewer .oc-part::before { display: none; }
-/* SH-73 (Zafar, 13 Oct): pills that don't fit side by side stack, one per line, each word whole; a skewer stands upright
-   (the stick down the middle behind the pills, its tip at the bottom), still read as a sequence, top to bottom */
-.oc-card .oc-item.oc-group:not(.oc-stack) .oc-part { flex: none; }
-.oc-card .oc-item.oc-group .oc-part .oc-t { overflow-wrap: normal; word-break: keep-all; }
-.oc-card .oc-item.oc-group.oc-stack .oc-group-parts { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
-.oc-card .oc-item.oc-group.oc-stack .oc-part { justify-content: center; }
-.oc-card .oc-item.oc-group.oc-stack .oc-part .oc-t { flex: 0 1 auto; text-align: center; }
-.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts { padding: 0 0 calc(var(--njg-s3) + var(--njg-s1)); }
-.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::before { left: calc(50% - var(--njg-line)); right: auto; top: calc(var(--njg-s1) * -1); bottom: var(--njg-s1); width: var(--njg-line-2); height: auto; }
-/* S05-C3 (SEK-17): upright, the stick is drawn only in the gaps between the pills and down to the tip, never behind a word
-   (a host that fades its later steps made the pills see-through and the stick crossed the words) */
-.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::before { display: none; }
-.oc-card .oc-item.oc-skewer.oc-stack .oc-part:not(.no)::after {
-  content: ""; position: absolute; left: calc(50% - var(--njg-line)); top: 100%; width: var(--njg-line-2); height: var(--njg-s1);
-  background: var(--njg-stick); border-radius: var(--njg-line);
-}
-.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after { right: auto; left: calc(50% - var(--njg-s1)); top: auto; bottom: 0; width: var(--njg-s2); height: var(--njg-s3); clip-path: polygon(25% 0, 75% 0, 50% 100%); }
-/* CLN-204 (Zafar, 22 Oct: "a stray f on its own line" under the clinic card's last row): upright, the stub and the pointed
-   tip under the last pill read as a letter; the upright list ends at its last pill (the stick between the pills still reads
-   them in order, top to bottom). Lying flat a skewer keeps its tip */
-.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts { padding-bottom: 0; }
-.oc-card .oc-item.oc-skewer.oc-stack .oc-group-parts::after,
-.oc-card .oc-item.oc-skewer.oc-stack .oc-part:last-child::after { display: none; }
+/* SH-241 (Zafar, 8 Nov: "no relic of the old order card"): the groups, the little skewer strip and the count box went with the
+   old card; a game's ordered steps and kinds of several are 6 Nov item cards (js/shared/order-card.js items14) */
+/* DAAR-44 (Fable's daar flaw 6): one order card in the panel: while a station's own card asks (Nani's chop card), the order's cards
+   wait unseen (js/cook/ui.js drawCards) */
+#mission .oc-card.oc-held { display: none; }
 
 /* CK-40 (R4: one card per person): a person who orders two dishes has one card: the first dish's card (their face) and
    each later dish's continuation (its headline and rows, no face) in one outline, a dashed line between the dishes */
@@ -516,7 +455,6 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 
 /* CK-38: a card folded to pills on a short sidebar (ui.js checkFit) packs an upright skewer's pieces closer (sekelo L3's
    two upright skewers, opened by a peek at 800x360, ran 9 px past the sidebar) */
-.oc-card.oc-pills .oc-item.oc-group.oc-stack .oc-group-parts { gap: var(--njg-line-2); }
 
 /* S13-B1 (SH-110, the judge: a card with blanked rows keeps one row a line, never pills): on a sidebar still too short for it
    (Cook's G1 third step, js/cook/ui.js checkFit), its rows and the gaps between them give back a little height instead */

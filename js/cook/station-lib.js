@@ -428,10 +428,11 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
    */
   let helperT = 0;
   let helperKey = null;
-  function helperWatch(ctx, key) {
+  function helperWatch(ctx, key, { own = false } = {}) {
     clearInterval(helperT);
     helperT = 0;
     helperKey = null;
+    if (key == null) return; // (S$.helperWatch(null): a game that runs its own stage stops it at its end)
     if (key === "chai-tray" || !s14On() || !UI.helper || !UI.wordOf) return;
     const rowOf = (id) => {
       for (const L of (UI.mission && UI.mission.ladders && UI.mission.ladders()) || []) {
@@ -440,16 +441,45 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
       }
       return null;
     };
+    // (the first thing still to make; once every row is made, a later phase, the grill or the fry, cooks the order's first thing: that one)
+    const firstOpen = () => {
+      const Ls = (UI.mission && UI.mission.ladders && UI.mission.ladders()) || [];
+      for (const L of Ls) {
+        const x = Cook.Order.rows(L).find((y) => !y.head && !y.no && !y.done);
+        if (x) return x;
+      }
+      for (const L of Ls) {
+        const x = Cook.Order.rows(L, { all: true }).find((y) => !y.no);
+        if (x) return x;
+      }
+      return null;
+    };
     const helped = new Set();
     helperT = setInterval(() => {
-      if (!s14On() || !Cook.inStation) return;
+      // (own: a prototype that runs its own stage, never St.begin's, eggs: its own start and end hold it)
+      if (!s14On() || (!Cook.inStation && !own)) return;
       const e = Cook.expect;
-      const id = e && typeof e.key === "string" && Cook.isItemWord(e.key) ? e.key : null;
-      if (id === helperKey) return;
-      const r = id ? rowOf(id) : null;
-      if (id && !r) return; // (a thing nobody asked for: the helper stays on the last asked item)
+      let id = e && typeof e.key === "string" && Cook.isItemWord(e.key) ? e.key : null;
+      // SH-149 (contract-101: maani, sekelo, samosa never showed it): a step that names no thing (a roll, the tawa, a strip) keeps her
+      // helper card on the first thing on the order still to make, so her drop-down is there in every game, as chai's
+      let r = id ? rowOf(id) : null;
+      if (!id && !helperKey) {
+        r = firstOpen();
+        if (!r) return;
+        id = [...(r.ids || [])].reverse().find((x) => Cook.isItemWord(x)) || (r.ids || []).slice(-1)[0] || null;
+        if (!id) return;
+        helperKey = id;
+        const w0 = UI.wordOf(r, { size: 240, written: true, head: !!r.head });
+        if (w0) w0.onOpen = () => !helped.has(id) && (helped.add(id), Cook.onHelp && Cook.onHelp("hint", { ids: r.ids || [id] }));
+        return UI.helper(w0 || null);
+      }
+      if (!id || id === helperKey) return;
+      // SH-149 (Zafar, 8 Nov, sekelo and daar: "there's no drop down on the Nani hint"): a thing the step asks for that is not an order
+      // row of its own (a skewer's piece, daar's chop on Nani's own card) is her helper card too: its own item card
+      const own = !r && id && UI.itemPart ? UI.itemPart(id, { html: Lang.html(Lang.phrase([id])), en: Cook.english(id), size: 240, say: () => Lang.speak(Lang.phrase([id])) }) : null;
+      if (id && !r && !own) return; // (nothing to show: the helper stays on the last asked item)
       helperKey = id;
-      const w = r ? UI.wordOf(r, { size: 240, written: true }) : null;
+      const w = r ? UI.wordOf(r, { size: 240, written: true }) : own;
       if (w) w.onOpen = () => !helped.has(id) && (helped.add(id), Cook.onHelp && Cook.onHelp("hint", { ids: [id] }));
       UI.helper(w || null);
     }, 250);
@@ -1094,7 +1124,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
 
   /**
    * One free pick: resolves {id, obj} when any item is tapped, or {done}
-   * when Done is pressed (offered if `doneOk`). `next` is what the order
+   * a beat later when the step is complete (`doneOk`: SH-238, no ✓; UI.done moves on by itself). `next` is what the order
    * wants next (for the guided glow and the test only; never shown
    * otherwise). Nothing is refused.
    */
@@ -1124,8 +1154,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
           .filter((k) => k !== next && items[k] && items[k].active)
           .map((k) => S.centre(items[k]));
         z.expect({ kind: "tap", x: c.x, y: c.y, key: next, wrongs });
-      } else if (doneOk) z.expect({ kind: "click", selector: "#done-btn", open: Object.values(items).some((o) => o && o.active) }); // open: a pick still changes it
-      else z.expect({ kind: "wait" });
+      } else z.expect({ kind: "wait" }); // (SH-238: a complete step moves on by itself, UI.done: no ✓ to press)
     });
 
   /** The customer speaks from the sidebar card (their face on it, never over the play area). */

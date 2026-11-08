@@ -1350,8 +1350,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             const r = await St.freePick(z, {
               items,
               next: C.next(got),
-              doneOk: got.length > 0,
-              doneGlow: (guided || help) && got.length >= C.total,
+              // SH-238: the bowl moves on by itself once its layers are in (no ✓)
+              doneOk: got.length >= C.total,
               help,
             });
             if (r.done) break;
@@ -1365,7 +1365,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             else await notIn(r.id, j);
             // SH-105 (decision 6, P26: "it's clear and obvious when you've got the final correct answer ... remove the tick, move
             // on"): the bowl is complete and right, so nothing is left to choose: it goes to the customer by itself
-            if (got.length >= C.total && !C.mistake(got)) break;
+            if (got.length >= C.total) break;
           }
           building = false;
           steps.done();

@@ -237,10 +237,10 @@
    * The 6 Nov type and card (SH-223, SH-224, SH-227), on for chai first (Zafar, 6 Nov: "start with Chai ... let me review it"):
    * <html class="njg-lora"> carries it (css/shared/tokens.css, the "6 Nov type" blocks in css/shared/word-card.css and
    * order-card.css; Tokens.font and Tokens.weight read <html>, so the drawn shelf pills follow). Returns once Lora and Nunito Sans
-   * are in (at most 1.5 s, real time), so Phaser never draws a pill in the fallback face. The roll-out: on for every game
-   * (UI.TYPE_ALL, as S14_ALL did for the s14 look), then the gate goes (docs/design-language/guide-and-card.md, "The 6 Nov card").
+   * are in (at most 1.5 s, real time), so Phaser never draws a pill in the fallback face. The roll-out (SH-227, SH-240, Sprint 19):
+   * on for every game (UI.TYPE_ALL, as S14_ALL did for the s14 look; docs/design-language/guide-and-card.md, "The 6 Nov card").
    */
-  UI.TYPE_ALL = false;
+  UI.TYPE_ALL = true;
   UI.applyType = function (on) {
     if (typeof document === "undefined" || !document.documentElement) return Promise.resolve();
     on = !!on || UI.TYPE_ALL;
@@ -1549,7 +1549,7 @@
     // to the new chai style"): every Cook order (UI.S14_ALL, flow.js preLook says the same before the kitchen is drawn)
     mission.s14 = ladders.length > 0 && (UI.S14_ALL || (mission.wordRows && ladders.every((L) => L.recipe === "chai")));
     UI.applyS14(mission.s14);
-    UI.applyType(ladders.length > 0 && ladders.every((L) => L.recipe === "chai")); // (flow.js preLook says the same, and waits for the faces)
+    UI.applyType(true); // (SH-227: the 6 Nov type for every game's order; flow.js preLook says the same, and waits for the faces)
     // s08 w6B (contract-35, contract-36: the day flows were judged at their flow's label, L1, while day 3's maani and chai are
     // L3 and a seen profile plays later dishes higher): the order's own level, for the checks (the sidebar's data-level and a
     // Lifecycle note "order-level"), never shown to the child
@@ -1902,9 +1902,11 @@
   async function introduceAlong(opts = {}) {
     const m = mission;
     let box = null;
-    const people = orderCards().filter((c) => c.who);
+    // (opts.only: a part of the order revealed mid-station, M.request: only the cards with its rows, only its rows said)
+    const only = opts.only || null;
+    const people = orderCards().filter((c) => c.who && (!only || c.rows.some((r) => only.includes(r))));
     // every person's row waits off the card until it is said
-    m.away = new Set([].concat(...people.map((c) => c.rows.filter((r) => !r.head))));
+    m.away = new Set([].concat(...people.map((c) => c.rows.filter((r) => !r.head && (!only || only.includes(r))))));
     renderOrder();
     // (every person's lines warm before the first is said, so no word waits on its clip: Zafar, 3 Nov)
     if (Lang.warm) document.querySelectorAll("#mission .oc-card").forEach((c) => {
@@ -2305,7 +2307,8 @@
         const c = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
         if (!c || !c._parts) continue;
         if (M.focus) M.focus(who);
-        const parts = c._parts();
+        const onlyRow = (p) => [].concat(p.row || [], (p.line && p.line.rows) || []).some((r) => only.includes(r));
+        const parts = only ? c._parts().filter(onlyRow) : c._parts();
         for (const p of parts) {
           if (!live()) return;
           const r = p.row;
@@ -2396,7 +2399,7 @@
     try {
       await request(
         {
-          reason: "cook:order",
+          reason: only ? "cook:reveal" : "cook:order",
           along: true,
           target: () => $("#mission"),
           lead: ORDER_T.lead,
@@ -2405,7 +2408,8 @@
           // the sidebar card's face is the replay (it is outside the pop-up); a tap on the play area lands everything at once
           // (SH-157: on the central rules, a tap on a bubble, the cog or its menu does its own thing and never skips:
           // global.Rules.skips(target), through the pop-up's zones)
-          zones: s14 && !!global.Rules && typeof global.Rules.skips === "function",
+          // (a part revealed mid-station, opts.only, is not the order's start: its tap is the old reveal's, no skip zones or skip note)
+          zones: s14 && !!global.Rules && typeof global.Rules.skips === "function" && !only,
           // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
@@ -2447,7 +2451,7 @@
       }
       // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
       // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
-      if (tapAt && s14) {
+      if (tapAt && s14 && !only) {
         const left = document.querySelectorAll("#mission .oc-row.oc-away, .wc14-pop, .wc14-flyer").length;
         try {
           if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-skip", { step: String(Date.now() - tapAt), by: `left:${left}` });
@@ -2552,9 +2556,11 @@
     // people order's rows wait off its card meanwhile: they come as they are said)
     // (the S14 roll-out: every order on the s14 look is said this way, a dish's own card as its asker's: item by item, each word's
     // big card popping by the side panel and turning into its row card)
-    const along = !opts.only && global.WordCard && OCard() && UI.w6() && ((people && mission.wordRows) || UI.s14());
+    // (DAAR-44, SH-241: a part revealed mid-station, the tadka's order, is said the same way, one item card at a time: never the old
+    // pop-up's big card of text chips)
+    const along = (!opts.only || UI.s14()) && global.WordCard && OCard() && UI.w6() && ((people && mission.wordRows) || UI.s14());
     if (along) {
-      mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head && !(mission.landed && mission.landed.has(r))))));
+      mission.away = new Set([].concat(...orderCards().filter((c) => c.who).map((c) => c.rows.filter((r) => !r.head && !(mission.landed && mission.landed.has(r)) && (!opts.only || opts.only.includes(r))))));
       renderOrder();
     } else if (mission.preAway && mission.away.size) {
       // (SH-171: an order said another way after all shows its rows now)
@@ -2927,9 +2933,35 @@
     const e = Object.keys(s02).map((k) => s02[k]).find((v) => v && v.ready && v.line === "C5" && v.word === id);
     return (e && e.file) || null;
   };
+  /*
+   * SH-242, SEK-24, CK-62 (Zafar, 8 Nov: "it's a crate of onions but it should be one onion"): an item card shows one of the thing,
+   * the item's own card picture, never the shelf's crate or heap: the catalogue's card (data/cook.json words[id].card), else a
+   * station's settings item named by these words with a card (data/stations/<game>.json items.*.card: the fried egg on its plate).
+   * Chai's shelf jars stay its cards (a jar is one of the thing: Cook.shelfJars). A thing with no card picture keeps the nearest
+   * (its shelf picture) and has an ART row in docs/process/regressions.md.
+   */
+  const cardOfIds = (ids) => {
+    const list = [].concat(ids || []).filter(Boolean);
+    const sets = (Cook.data && Cook.data.settings) || {};
+    let best = null;
+    Object.keys(sets).forEach((g) =>
+      Object.values((sets[g] && sets[g].items) || {}).forEach((it) => {
+        if (!it || typeof it.card !== "string" || it.word == null) return;
+        const w = [].concat(it.word);
+        if (w.length && w.every((x) => list.includes(x)) && (!best || w.length > best.n)) best = { n: w.length, src: it.card };
+      })
+    );
+    return best ? best.src : null;
+  };
+  const cardPic = (id) => {
+    const it = Cook.item ? Cook.item(id) : null;
+    return (it && typeof it.card === "string" && it.card) || cardOfIds([id]);
+  };
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
-  const wcPicSrc = (id) => (Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
+  const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
+  // (a row whose words name a station's own thing together, "hakro tarelo indo": that thing's card first, CK-62)
+  const rowCard = (r) => (r && !Cook.shelfJars ? cardOfIds(r.ids) : null);
   // (Zafar, 5 Nov: "we need that bigger difference shown on item cards, and we also need non-milk tea versions as item cards for
   // non-milk tea orders": a person whose order says no milk has their half and full cards in plain tea; pack s17-art4,
   // build/tools/art/teacards.py)
@@ -2944,7 +2976,7 @@
   };
   const rowPicSrc = (r) => {
     const id = wcWordId(r);
-    return TEA_PIC[id] && noMilk(r) ? TEA_PIC[id] : wcPicSrc(id);
+    return TEA_PIC[id] && noMilk(r) ? TEA_PIC[id] : rowCard(r) || wcPicSrc(id);
   };
   const wcStage = (id) => {
     try {
@@ -2954,6 +2986,9 @@
       return 1;
     }
   };
+  // (Fable's sekelo flaw 4: a card's English is the plain words, never a gloss's note for grown-ups in brackets, "one skewer (a stick) of
+  // tomato", as Cook.english keeps them out of a word's own English)
+  const cardEn = (en) => String(en || "").replace(/\s*\([^)]*\)/g, "").replace(/\s{2,}/g, " ").trim();
   UI.wordOf = function (r, { size = 96, written = false, head = false } = {}) {
     const W = global.WordCard;
     if (!W || !r || (r.head && !head)) return null;
@@ -2963,8 +2998,8 @@
     if (mission && !writtenCard && (mission.compact || 0) >= 2 && size < 200) return null;
     const id = wcWordId(r);
     const src = wcPicSrc(id);
-    // (a kind's row, samosa's "ba samosa", is a word row only when its thing has a picture)
-    if (head && !src) return null;
+    // (a kind's row, samosa's "ba samosa", is a word row only when its thing has a picture; on the s14 look always a card: SAM-31)
+    if (head && !src && !UI.s14()) return null;
     // Zafar, 29 Oct (chai level rules 7): on the s14 look (chai) the card by chai's own row: its Kutchi always written, its English
     // shown at L1 and dotted from L2, its picture blurred from L3 (SH-155: the central rules, data/rules.json levels cardEnglish,
     // cardPicture, through js/shared/rules.js)
@@ -2975,13 +3010,14 @@
       // (Cook.chipWord: the round's snapshot, so a card never changes mid-round)
       const newWord = Cook.chipWord ? Cook.chipWord(wcWordId(r)) : false;
       const at = (k) => (k === "pic" ? RL.cardPicture || newWord : RL.cardEnglish);
-      const srcB = rowPicSrc(r);
+      // (SH-242, contract-104: a step row with no thing of its own, daar's stir "trae aste thi", shows its tool, the ladle, DAAR-19)
+      const srcB = rowPicSrc(r) || r.pic || null;
       const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
       return {
         word: {
           id: wcWordId(r),
           kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), () => false))}</span>` },
-          english: r.line.en || "",
+          english: cardEn(r.line.en),
           rec: !!r.rec,
           // (the big card: the picture itself, already loaded by the shelf; a thumbnail not yet made left "hakro khun" blank: the judge, 29 Oct)
           picture: srcB && size >= 200 ? { src: Cook.v(srcB), fit: "contain" } : picB ? { src: picB, fit: "contain" } : srcB ? { src: Cook.v(srcB), fit: "contain" } : null,
@@ -3004,7 +3040,7 @@
         id,
         // (one span: the slot lays its children out as flex items, which would drop the spaces between the words)
         kutchi: { html: `<span class="wc-kt">${rowText(text6(fullLine(r), written ? () => false : rowHide(r)))}</span>` },
-        english: r.line.en || "",
+        english: cardEn(r.line.en),
         rec: !!r.rec,
         // (the big card said now: its own picture while the small copy is still being made)
         picture: pic ? { src: pic, fit: "contain" } : src && size >= 200 ? { src: Cook.v(src), fit: "contain" } : null,
@@ -3014,6 +3050,31 @@
         slots: { picture: base.picture && !hidden && !!src, english: base.english && !hidden, kutchiText: true },
         progress: Cook.core && Cook.core.progress,
         onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: r.ids }),
+      },
+    };
+  };
+  /**
+   * SH-241, DAAR-44: a station's own card's row (Nani's chop card: "ba dungri") as a 6 Nov item card: the item's card picture, the
+   * station's own Kutchi (its count, dotted where the level dots it), its English by the level (the central rules), the speaker.
+   * o: html (the Kutchi), en, rec (still to record), done, no, key, say (the speaker's voice).
+   */
+  UI.itemPart = function (id, { html = "", en = "", rec = false, done = false, no = false, key = null, say = null, size = 96 } = {}) {
+    const RL = global.Rules ? global.Rules.level((mission && mission.level) || 1) : { cardEnglish: true, cardPicture: true };
+    const newWord = Cook.chipWord ? Cook.chipWord(id) : false;
+    const src = wcPicSrc(id);
+    const pic = src && size < 200 ? thumbOf(Cook.v(src), size) : null;
+    return {
+      label: html,
+      done: !!done,
+      no: !!no,
+      key,
+      say,
+      word: { id, kutchi: { html: `<span class="wc-kt">${rowText(html)}</span>` }, english: cardEn(en), rec: !!rec, picture: pic ? { src: pic, fit: "contain" } : src ? { src: Cook.v(src), fit: "contain" } : null, say },
+      wordOpts: {
+        slots: { picture: (RL.cardPicture || newWord) !== false && !!src, english: RL.cardEnglish === true, kutchiText: RL.cardKutchi !== false },
+        enShown: RL.cardEnglish === true,
+        progress: Cook.core && Cook.core.progress,
+        onReveal: () => Cook.onHelp && Cook.onHelp("reveal", { ids: [id] }),
       },
     };
   };
@@ -3059,99 +3120,63 @@
       const items = [];
       const rowsShown = [];
       peekCard = peeksFor(mission.who);
+      /*
+       * SH-241, SAM-31, DAAR-44 (Zafar, 8 Nov: "no relic of the old order card"): one card path. Every row of a dish's own card is a
+       * 6 Nov item card (OrderCard's items14: picture, Kutchi on its English, the speaker at the foot), in sideways rows: an ordered
+       * list (chaat's layers, the tadka's spices) its cards in their order; a kind of several (samosa's "trae samosa") its own card
+       * first, its fillings' cards after it; a mixed skewer its pieces' cards, a row per skewer. No skewer strip, group box or count box.
+       */
+      const cardOf = (r, gi) => Object.assign(partNode(r, gi), UI.wordOf(r, { head: !!r.head }));
       sections.forEach(({ s, rows, seq }) => {
         if (s.cardOf) return; // drawn under its item
         const flat = rows.filter((x) => !x.r.cards);
         if (s.block && s.head) {
-          // 30 Sept: a second block of the dish (samosa's second kind): its own row ("trae samosa"), its parts under it
-          const parts = flat.map((x) => partNode(x.r, x.gi));
-          // SAM-11 (T16): a block's head is always its own row ("ba samosa", its fillings under it), even when it's the
-          // only block (count 2: never the shared card's "direct" shape, which drops the head)
+          // a block of the dish (samosa's kind): its count and dish ("trae samosa") as the row's first card, its fillings after it;
+          // several of a kind tick together when all its samosas are made (SAM-24's one tick, contract-50), one with its fillings
           const n = s.head.qty || 1;
-          // (the S14 roll-out: on the s14 look the kind's row over its fillings' item cards, as every card's sideways row, ticking together at
-          // the one tick (SAM-24, contract-50); the boxes per samosa are the old look's)
-          if (n > 1 && s.head.made != null && !UI.s14()) {
-            // SH-53 (Zafar, 21 Oct: yes): the kind's row ("trae samosa") over one box per samosa, its fillings in it; a box's
-            // pieces tick as that samosa is made (filled and left for the next strip: progress, never which spoonful was
-            // right, so the counting rule holds); the kind's row ticks only when all of them are made (SAM-24: closeItem)
-            items.push({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: !!s.head.done, key: s.head, src: [], say: sayRow(s.head) });
-            for (let u = 0; u < n; u++) {
-              const made = !!s.head.done || u < s.head.made;
-              items.push({ label: null, count: 1, parts: parts.map((p) => Object.assign({}, p, { done: made || p.done, next: false })), ordered: false, group: true, done: made, src: [] });
-            }
-            rowsShown.push(s.head, ...flat.map((x) => x.r));
-            return;
-          }
-          // S13-B1 (the judge on SH-110: "a box nested inside a 'samosa' box, unlike the flat rows above it"; round 3: "one flat
-          // look at every level", and the pop-up's "nested indented second row"): the kind's row over its fillings as the card's
-          // plain rows, one a line (was the kind's own box round its row and its fillings' chips), each a word row (picture,
-          // speaker, Kutchi) where the thing has a picture
-          // (several of a kind: its rows tick together when all its samosas are made, SAM-24's one tick; one: with its fillings)
-          const all = !!s.head.done || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
-          // (the kind's row ticks with its fillings, as the box's row did: SAM-24's one tick, contract-50)
-          items.push(Object.assign({ label: rowText(text6(s.head.cardLine || s.head.line, rowHide(s.head))), count: 1, parts: [], ordered: false, done: all, key: s.head, src: [], say: sayRow(s.head) }, UI.wordOf(s.head, { head: true })));
-          const pics = flat.every((x) => UI.s14() || (!x.r.no && wcPicSrc(wcWordId(x.r))));
-          items.push({ label: null, count: 1, parts: parts.map((p, i) => Object.assign({}, p, { done: all || (n <= 1 && p.done), next: false }, pics ? UI.wordOf(flat[i].r) : null)), ordered: false, done: all, src: [] });
+          const parts = flat.map((x) => cardOf(x.r, x.gi));
+          const all = !!s.head.done || !!L.closedAll || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
+          const head = Object.assign(cardOf(s.head, 0), { done: all, say: sayRow(s.head) });
+          items.push({ label: null, count: 1, parts: [head].concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
           rowsShown.push(s.head, ...flat.map((x) => x.r));
           return;
         }
         if (flat.length) {
-          // S13-B1 (the judge: one card anatomy): a list whose every row is a thing with its own picture (the pantry's list, the
-          // daar's vegetables) is drawn in word-card rows, as a people order is (picture, speaker, Kutchi, English by the word's
-          // stage); an ordered list (a skewer, chaat's layers) keeps its little skewer of pills
-          // (the S14 roll-out: on the s14 look every such row is an item card, its "no" row too, as chai's: a word with no picture
-          // shows its Kutchi and speaker)
-          const pics = !seq && flat.every((x) => !x.r.head && (UI.s14() || (!x.r.no && wcPicSrc(wcWordId(x.r)))));
-          const parts = flat.map((x) => Object.assign(partNode(x.r, x.gi), pics ? UI.wordOf(x.r) : null));
           // DAAR-26 (s08 w6M; the judge, 20 Oct: "the L4 card at the stir shows only 'Muke daar khape.' with no stir row"): on a
           // card closed for its level the stir row stays written once it has come (she says the laps and the speed: SH-99)
           const keep = s.when === "stir" && !!s.shown && !!(mission.levelClosed || (mission.closed && mission.closed.peek));
-          items.push({ label: null, parts, ordered: seq, at: s.at || 0, src: flat, keep });
+          items.push({ label: null, parts: flat.map((x) => cardOf(x.r, x.gi)), ordered: seq, at: s.at || 0, src: flat, keep });
           rowsShown.push(...flat.map((x) => x.r));
         }
-        // (the S14 roll-out: on the s14 look a dish's cards of plain things, maani's rotis and the grill's plain skewers, are one
-        // sideways row of item cards, each with its count written ("ba wadhi maani"), as chai's; a mixed skewer keeps its little
-        // skewer of pieces)
+        // a dish's cards of plain things, maani's rotis and the grill's plain skewers: one sideways row of item cards, each with its
+        // count written ("ba wadhi maani"), as chai's
         const mixOf = (r) => L.sections.some((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1]);
-        const plain14 = UI.s14() ? rows.filter((x) => x.r.cards && !mixOf(x.r)) : [];
-        if (plain14.length) {
-          items.push({ label: null, parts: plain14.map((x) => Object.assign(partNode(x.r, x.gi), UI.wordOf(x.r))), ordered: false, src: plain14 });
-          rowsShown.push(...plain14.map((x) => x.r));
+        const plain = rows.filter((x) => x.r.cards && !mixOf(x.r));
+        if (plain.length) {
+          items.push({ label: null, parts: plain.map((x) => cardOf(x.r, x.gi)), ordered: false, src: plain });
+          rowsShown.push(...plain.map((x) => x.r));
         }
         rows
-          .filter((x) => x.r.cards && !plain14.includes(x))
+          .filter((x) => x.r.cards && !plain.includes(x))
           .forEach(({ r }) => {
             const mixes = L.sections.filter((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1] && (!y.when || y.shown));
             const src = (ps) => [].concat(...ps.groups.map((g, gi) => g.filter((p) => !p.no).map((p) => ({ r: p, gi }))));
-            const item = (label, ps) => ({ label, count: ps ? 1 : r.qty || 1, parts: ps ? src(ps).map((x) => partNode(x.r, x.gi)) : [], ordered: !!ps, done: !!r.done, wrong: !!r.wrong, key: r, src: ps ? src(ps) : [], say: sayRow(r) });
             rowsShown.push(r);
-            // SEK-03 (S05-C, the shared group box): several different skewers, one plain box each (no label row; the
-            // headline gives the summary), alternate boxes tinted, each drawn as a little skewer
-            if (mixes.length > 1 && (r.qty || 1) === mixes.length) mixes.forEach((ps) => items.push(Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), ps), { group: true })));
-            // SEK-03 (S05-C2): several skewers of one mix ("ba lakri mix") are a box each too, the same little skewer
-            // twice, not one label row over a list of its pieces (a skewer's mix is a sequence; maani's fillings are not)
-            // The pieces tick along the one mix for the first skewer; a later box is done when its skewer is (M.tickCard)
-            else if (mixes.length === 1 && mixes[0].seq) {
-              // contract-30 (SH-99; s08 w3B): the same mix several times is said with its number ("ba lakri mixed"), so the
-              // number is written too: the kind's own row over its boxes (one is the bare item: Zafar, 19 Oct, no row for one)
-              if ((r.qty || 1) > 1) items.push({ label: rowText(text6(fullLine(r), rowHide(r))), count: 1, parts: [], ordered: false, done: !!r.done, wrong: !!r.wrong, key: r, src: [], say: sayRow(r) });
-              for (let u = 0; u < (r.qty || 1); u++) {
-                const it = Object.assign(item(rowText(text6(oneOf(r), rowHide(r))), mixes[0]), { group: true });
-                const unit = !!(r.units && r.units[u]) || !!r.done;
-                // SEK-13 (S06): a later skewer of the same mix ticks its own pieces as they go on (M.tickPiece), never
-                // all at once when it is finished
-                const got = (r.unitGot && r.unitGot[u]) || 0;
-                if (u > 0 || unit) {
-                  it.parts = it.parts.map((p, pi) => Object.assign({}, p, { done: unit || pi < got, next: false }));
-                  it.done = unit;
-                }
-                items.push(it);
-              }
-            } else {
-              const it = item(rowText(text6(fullLine(r), rowHide(r))), mixes[0] || null);
-              it.count = r.qty || 1;
-              items.push(it);
-            }
+            // the skewer's kind ("ba lakri mixed": every number said is written, contract-30), or the skewer itself before its pieces
+            // are shown, as its own card
+            if (!mixes.length || (r.qty || 1) > 1) items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
+            // SEK-03, SEK-13: each skewer's pieces, a row of cards per skewer, ticking as they go on (M.tickUnit for the first skewer
+            // of a mix, M.tickPiece for a later one of the same mix); several different mixes, a row each
+            const each = mixes.length > 1 && (r.qty || 1) === mixes.length ? mixes.map((ps) => [ps, 0]) : mixes.length === 1 ? Array.from({ length: r.qty || 1 }, (_, u) => [mixes[0], u]) : [];
+            each.forEach(([ps, u]) => {
+              const unit = !!(r.units && r.units[u]) || !!r.done;
+              const got = (r.unitGot && r.unitGot[u]) || 0;
+              const parts = src(ps).map((x, pi) => {
+                const p = cardOf(x.r, x.gi);
+                return u > 0 || unit ? Object.assign(p, { done: unit || pi < got, next: false }) : p;
+              });
+              items.push({ label: null, parts, ordered: true, done: unit || (u === 0 && parts.every((p) => p.done)), src: u === 0 ? src(ps) : [] });
+            });
             mixes.forEach((ps) => rowsShown.push(...[].concat(...ps.groups)));
           });
       });
@@ -3209,7 +3234,7 @@
               .then(() => face && face.classList.remove("on"));
           }
         : null;
-      const e = OC.update(before.get(`x:${x.key}`) || null, x.data, { fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace, inProgress: () => mission.focusWho || null });
+      const e = OC.update(before.get(`x:${x.key}`) || null, x.data, { s14: UI.s14(), fold: st, closed: !!x.closed, stamped: !!mission.stamped, foldAfter: 700 / (Cook.speed || 1), onEl: (key, el) => addEl(map, key, el), onFace, inProgress: () => mission.focusWho || null });
       e.dataset.extra = x.key;
       e.dataset.ck = `x:${x.key}`;
       if ((mission.compact || 0) >= 3) e.classList.add(e.querySelector(".oc-said") ? "oc-tight" : "oc-pills");
@@ -3218,6 +3243,9 @@
       box.appendChild(e);
       return e;
     });
+    // (Fable's daar flaw 6, DAAR-44: one order card in the panel: while a station's own card asks, Nani's chop card, the order's cards wait
+    // unseen, and come back as it goes)
+    const held = !big && (mission.extra || []).length > 0;
     const closed = mission.closed || null;
     writtenCard = big; // SH-110: the pop-up writes the order (the sidebar's card may dot it)
     let cards;
@@ -3289,6 +3317,7 @@
       };
       el._rows = c.rows;
       el.dataset.ck = c.key; // (the next redraw finds it: OrderCard.update)
+      el.classList.toggle("oc-held", held);
       // G1, the third step: every open card's rows flow as pills, two to a line (decision 25's layout)
       // (SH-110, the judge: a card with blanked rows keeps one row a line, each with its speaker at its left, never pills)
       if (!big && (mission.compact || 0) >= 3 && !minis.has(c.key)) el.classList.add(el.querySelector(".oc-said") ? "oc-tight" : "oc-pills");
@@ -3694,9 +3723,8 @@
     return r;
   };
   /**
-   * 28 Sept: one of the things made several times is finished (a skewer threaded): its kind's
-   * next mini card ticks. The kind's own row (the count, "ba lakri gos") still ticks only when
-   * the step closes (UX 11). kind: a word id, or a compound kind ("ph-big+cook-maani").
+   * 28 Sept: one of the things made several times is finished (a skewer threaded, a maani on its plate): its kind's next unit is
+   * made; the kind's item card ticks once all its units are (SH-239). kind: a word id, or a compound kind ("ph-big+cook-maani").
    */
   M.tickCard = function (kind, dish = 0) {
     const L = ladderFor(dish);
@@ -3707,6 +3735,10 @@
       .find((x) => x.units && want.every((id) => x.ids.includes(id)) && x.units.some((u) => !u));
     if (!r) return null;
     r.units[r.units.indexOf(false)] = true;
+    // SH-239 (Zafar, 8 Nov: "it needs to be like tea where it ticks off as you go"): the item card ticks the moment its last one is
+    // made, as chai's cards tick as each thing goes in (M.tickItem); the person's "well done" waits for the whole card (the serve)
+    if (r.units.every(Boolean)) markDone(r);
+    if (UI.naniMood) UI.naniMood("happy", 1600);
     renderOrder();
     return r;
   };
@@ -3793,6 +3825,7 @@
       r.done = false;
       r.got = 0;
       r.wrong = false; // CK-32: open again, plain (the red was the review's)
+      if (r.units) r.units = r.units.map(() => false); // (SH-239: its units are made again, ticking it as the last one is)
     });
     if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
     renderOrder();
@@ -4191,20 +4224,29 @@
     heldBy = obj || null;
     doneGlowNow();
   };
+  /*
+   * SH-238 (Zafar, 8 Nov: "no ticks in any of the games anymore ... it's not a good game mechanic"; "you can't have an X button"):
+   * there is no ✓. A station calls UI.done the moment its work is complete (maani when the asked maanis are made, a stir when
+   * stirred, a count when it is filled ...) and the step moves on by itself a beat later, through the kit's one move-on hook
+   * (NjgButtons.moveOn), as UI.go does. No ✓ is made (UI.init) or waited on; a UI.hideDone()
+   * before the beat (the child took something back, the step went another way) cancels it. Resolves when it moves on.
+   */
   UI.done = function (opts = {}) {
     const b = $("#done-btn");
-    b.classList.remove("hidden");
-    doneWant = !!opts.glow;
-    // SH-58 (C8, D5): when the ✓ is the only thing left it glows (the first plays of a station:
-    // its first five rounds), not only in a guided round
+    if (b) b.classList.add("hidden");
+    doneWant = false;
     clearTimeout(doneGlowT);
-    // (S05-C, S's request: at once, the moment it is the only thing left, as every other focal glow; a play counts
-    // once per order, however often a station shows its ✓: chai's showed it on every refresh, so the five plays were
-    // used up in the first round)
-    if (opts.glow !== false && UI.doneGlows()) doneWant = true;
-    doneGlowNow();
+    const kit = global.NjgButtons;
     return new Promise((resolve) => {
-      doneResolve = resolve;
+      const mine = (doneResolve = resolve);
+      const run = Cook.run;
+      const go = () => {
+        if (doneResolve !== mine || run !== Cook.run) return;
+        doneResolve = null;
+        resolve();
+      };
+      if (kit && kit.moveOn) kit.moveOn(go, { reason: "cook:complete", ms: opts.ms });
+      else setTimeout(go, opts.ms != null ? opts.ms : 600);
     });
   };
   UI.glowDone = (on) => {
@@ -4264,7 +4306,7 @@
   };
   UI.hideDone = function () {
     clearTimeout(doneGlowT);
-    $("#done-btn").classList.add("hidden");
+    if ($("#done-btn")) $("#done-btn").classList.add("hidden");
     doneResolve = null;
   };
   UI.toast = function (text) {
@@ -4365,15 +4407,9 @@
       UI.hideGo();
       if (r) r();
     };
-    const pressDone = () => {
-      const r = doneResolve;
-      UI.hideDone();
-      if (r) r();
-    };
+    // SH-238 (Zafar, 8 Nov: "no ticks in any of the games anymore"): no ✓ is made; a complete step moves on by itself (UI.done)
     const kit = global.NjgButtons;
     const stage = $("#stage");
-    if (kit && stage && !$("#done-btn")) kit.done(stage, pressDone, { id: "done-btn" }).classList.add("hidden");
-    else on("#done-btn", () => (Cook.sfx.click(), pressDone()));
     if (kit && stage && !$("#go-btn")) kit.next(stage, "", pressGo, { id: "go-btn" }).classList.add("hidden");
     else on("#go-btn", () => (Cook.sfx.click(), pressGo()));
     if (Cook.life) pageWide();

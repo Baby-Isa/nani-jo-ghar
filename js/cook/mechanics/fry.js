@@ -180,12 +180,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (!f.leave && f.v >= k.burnAt) lift(f);
           });
           drawRings();
-          // Done once everything you dropped is out again
+          // SH-238 (no ✓): complete once as many as they asked for went in and everything you dropped is out again; it moves on
+          // by itself
           const mine = frying.filter((f) => !f.leave);
-          const settled = dropped >= 1 && mine.length === dropped && mine.every((f) => f.out);
+          const settled = dropped >= 1 && mine.length === dropped && mine.length >= count && mine.every((f) => f.out);
           if (settled && !doneShown) {
             doneShown = true;
-            UI.done({ glow: ctx.guided && lifted >= count }).then(() => {
+            UI.done().then(() => {
               stop();
               clearRings();
               z.expect(null);
@@ -201,18 +202,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const wrongs = tray.filter((t) => t.kind !== kind && t.input && t.input.enabled).map((t) => ({ x: t.x, y: t.y }));
           if (ready) z.expect({ kind: "tap", x: ready.x, y: ready.y, key: "lift" });
           else if (next) z.expect({ kind: "tap", x: next.x, y: next.y, key: "drop", wrongs });
-          else if (settled) z.expect({ kind: "click", selector: "#done-btn" });
           else z.expect({ kind: "wait" });
         });
         if (ctx.guided) S.glow(tray.find((t) => t.kind === kind), true);
         if (count === 0) {
-          // nothing to fry (they didn't ask): Done straight away is right
-          UI.done({ glow: ctx.guided }).then(() => {
+          // nothing to fry (they didn't ask): it moves on straight away
+          UI.done().then(() => {
             stop();
             z.expect(null);
             resolve();
           });
-          z.expect({ kind: "click", selector: "#done-btn" });
+          z.expect({ kind: "wait" });
         }
       });
       // Nani takes hers out

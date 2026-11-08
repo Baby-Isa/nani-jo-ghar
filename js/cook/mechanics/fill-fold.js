@@ -459,7 +459,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const next = () => kinds.find((id) => (got[id] || 0) < want[id]) || null;
       let last = 0;
       for (;;) {
-        const r = await St.freePick(z, { items, next: next(), doneOk: blobs.length > 0, doneGlow: ctx.guided && !next() });
+        // SH-238: complete once every filling has as many spoons as they said: it moves on by itself
+        const r = await St.freePick(z, { items, next: next(), doneOk: blobs.length > 0 && !next() });
         if (r.done) break;
         if (performance.now() - last < 220) continue; // a double tap
         last = performance.now();
@@ -537,14 +538,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     [[960, 470], [740, 210]],
     [[630, 430], [970, 430]],
   ];
-  /** One swipe along a line; resolves "done" instead if Done is pressed first (when offered). */
-  function swipe(z, [[x1, y1], [x2, y2]], { minLen, minDot, doneOk, doneExpect, doneGlow }) {
+  /** One swipe along a line (SH-238: no ✓ to end it early; the folding stops by itself at the count). */
+  function swipe(z, [[x1, y1], [x2, y2]], { minLen, minDot }) {
     return new Promise((resolve) => {
       let start = null;
       const offs = [];
       const finish = (r) => {
         offs.forEach((o) => o());
-        UI.hideDone();
         z.expect(null);
         resolve(r);
       };
@@ -564,9 +564,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       );
       // the two-hand fold follows the finger (js/cook/hands.js)
       if (Cook.Hands) offs.push(...Cook.Hands.drag(z, "fold", { k: z.k * 0.55 }));
-      if (doneOk) UI.done({ glow: doneGlow }).then(() => finish("done"));
-      // open: another swipe still folds another, the child says how many (C10, NN6; contract-2, s04-fxc)
-      z.expect(doneExpect ? { kind: "click", selector: "#done-btn", open: true } : { kind: "swipe", x1, y1, x2, y2 });
+      z.expect({ kind: "swipe", x1, y1, x2, y2 });
     });
   }
 
@@ -617,7 +615,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       const folds = F ? F.swipes.map((sw) => [spD(...sw.from), spD(...sw.to)]) : FOLDS.slice(0, k.folds);
       const g = S.track(S.add.graphics().setDepth(D.fx));
-      const most = count ? count + k.maxExtra : 1;
+      // SH-238 (no ✓): the folding stops by itself once as many samosas as they asked for are made
+      const most = count || 1;
       let made = 0;
       const done = [];
       while (made < most) {
@@ -646,9 +645,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           g.fillStyle(0xb24a3a, 1);
           g.fillCircle(x1, y1, z.L(12));
-          const offer = !!count && f === 0 && made > 0;
           const gh = S.ghost([[x1, y1], [x2, y2]], { duration: 700, delay: z.guided || (f === 0 && made === 0) ? 200 : 4000 });
-          const r = await swipe(z, [[x1, y1], [x2, y2]], { minLen: k.minLen, minDot: k.minDot, doneOk: offer, doneExpect: offer && made >= count, doneGlow: offer && ctx.guided && made >= count });
+          const r = await swipe(z, [[x1, y1], [x2, y2]], { minLen: k.minLen, minDot: k.minDot });
           gh.stop();
           if (r === "done") {
             quit = true;

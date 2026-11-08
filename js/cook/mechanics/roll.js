@@ -80,7 +80,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         stack.push(done);
         UI.count(rolled.length, { id: "cook-maani", state: "raw" });
         z.emit({ kind: "maani", sprite: z.out ? done : null, score, n: rolled.length });
-        if (rolled.length >= k.maxCount) break;
+        // SH-238 (no ✓): the rolling ends by itself once as many as they asked for are made
+        if (rolled.length >= k.maxCount || (count > 0 && rolled.length >= count)) break;
         spare.setVisible(true);
         if (z.guided && rolled.length < count) S.glow(spare, true);
         const more = await new Promise((resolve) => {
@@ -88,13 +89,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             z.expect(null);
             S.untap(spare);
             S.glow(spare, false);
-            UI.hideDone();
             resolve(v);
           };
           S.tappable(spare, () => finish(true));
-          UI.done({ glow: z.guided && rolled.length >= count }).then(() => finish(false));
           const c = S.centre(spare);
-          z.expect({ kind: "more", x: c.x, y: c.y, target: count, count: () => rolled.length });
+          z.expect({ kind: "tap", x: c.x, y: c.y, key: "more" });
         });
         if (!more) break;
       }

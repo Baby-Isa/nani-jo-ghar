@@ -306,9 +306,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           UI.go(handoff.label, { glow: false, rec: !!handoff.rec }).then(() => resolveStop());
           SK.goIcon();
         }
-        else UI.done({ glow: false }).then(() => resolveStop());
+        // SH-238: on its own too, the board moves on by itself once it is complete (no ✓)
+        else UI.done().then(() => resolveStop());
       };
-      const doneSel = handoff ? "#go-btn" : "#done-btn";
 
       /* every frame: help timers, glows, what to do next (for the test) */
       let lastT = performance.now();
@@ -358,7 +358,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         if (busy) return z.expect({ kind: "wait" });
         if (!p) {
-          if (!z.out && doneShown && !sk.ids.length) return z.expect({ kind: "click", selector: doneSel });
+          if (!z.out && doneShown && !sk.ids.length) return z.expect({ kind: "wait" });
           return z.expect(null);
         }
         if (p.undo) return z.expect({ kind: "tap", x: hit.x, y: z.Y(SKY), key: "undo" });

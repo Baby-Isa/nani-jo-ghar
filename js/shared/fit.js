@@ -3,7 +3,8 @@
  * cut or ellipsised. A line SHRINKS to fit, never below the 14 px floor (TXT-05), and THEN WRAPS.
  *
  *   class "fit"            one line, shrunk to fit; at the floor it wraps onto more lines (never "...")
- *   class "fit fit2"       up to two lines (Nani's line, a guide box), shrunk to fit in two; at the floor more lines
+ *   class "fit fit2"       one line, shrunk to fit, wherever it fits one line at the floor (SH-240); else up to two lines (Nani's
+ *                          line, a guide box), shrunk to fit in two; at the floor more lines
  *   class "fit fit-wrap"   the same as "fit" (kept for older call sites)
  *   class "fit fit-head"   SH-107 (Zafar, 18 Oct): the order pop-up's headline ONLY (order-card.js sets it on a big card's headline): it wraps at
  *                          full size first, up to two lines, and shrinks only when two lines don't fit; and every such headline on the
@@ -56,6 +57,15 @@
     const two = el.classList.contains("fit2") || el.classList.contains("fit-head");
     el.style.whiteSpace = "";
     el.style.overflowWrap = "";
+    // SH-240, non-negotiable 6 (shrink, then wrap; contract-101): a two-line box (Nani's line) keeps a line that fits one line at the
+    // floor on one line, at the largest size that does ("Dudh wiji chad!" at 14.5 px, chai 930x430); only a longer one wraps. The
+    // order pop-up's headline (fit-head) keeps its own rule: wrap at full size first (SH-107)
+    if (two && !el.classList.contains("fit-head")) {
+      el.style.whiteSpace = "nowrap";
+      const one = F.fit1(el, false);
+      if (one && !el._fitOver) return one;
+      el.style.whiteSpace = "";
+    }
     const size = F.fit1(el, two);
     if (!size || !el._fitOver) return size;
     // at the floor and still too long for one line: wrap, at the largest size that fits two lines (the line

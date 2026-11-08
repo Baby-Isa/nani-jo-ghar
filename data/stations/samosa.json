@@ -3,9 +3,9 @@
  "station": {
   "name": "Samosa",
   "verb": "Fill, fold, fry",
-  "goal": "Fill as many strips as they asked for with what they said, tap the tick, fold each one, then fry them golden.",
+  "goal": "Fill as many strips as they asked for with what they said, fold each one, then fry them golden: each step moves on by itself.",
   "phases": {
-   "fill": "Tap a strip, then the fillings: one spoon each tap, as many spoons as they said. Fill as many strips as they asked for, then tap the tick.",
+   "fill": "Tap a strip, then the fillings: one spoon each tap, as many spoons as they said. Fill as many strips as they asked for: it moves on by itself.",
    "fold": "Swipe the way the arrow shows to fold each samosa. Then they go to the karahi.",
    "fry": "Turn on the hob, put the samosas in, and lift each one out when it's golden.",
    "go": "go-fry"

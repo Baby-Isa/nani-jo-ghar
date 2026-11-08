@@ -296,6 +296,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const xAt = (i) => (guests.length >= 3 ? x0 + ((x1 - x0) * i) / (guests.length - 1) : spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined);
     guests.forEach((w, i) => S().addChar(w, { x: xAt(i) }));
     if (guests.length) S().occluder();
+    cardsDone();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
     else S().setMood("nani", "happy");
     for (const g of guests) await S().talk(g, Lang.line("thanks"), { after: "happy" });
@@ -598,6 +599,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return Lang.join(once.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
   }
   Cook.callBack = callBack;
+  // SH-239 (Zafar, 8 Nov: "say well done when ... the whole menu card is complete"; contract-108): the dish is served, so every row
+  // still open ticks (a step row such as daar's stir, a kind's count) before the well done; a row missed stays as it was, for the review
+  const cardsDone = () => {
+    try {
+      ((UI.mission.ladders && UI.mission.ladders()) || []).forEach((L) => UI.mission.closeItem([], L.dish || 0, { all: true }));
+    } catch (e) {
+      /* no order card: nothing to tick */
+    }
+  };
   const shabash = () => Lang.role(Lang.say({ fn: "Exclaim", x: "intj.well-done" }), "exclaim"); // (contract-23: never read as an item word)
   // wave 1A's flaw 4: "Shabash!" once at the serve. A station that already praised (the review faces say it when every dish is right) said it a
   // moment ago (the guide remembers every line said, js/shared/guide.js recentlySaid): it is not said again at the serve or after the station
@@ -697,7 +707,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       })
     );
     const out = [];
+    // (Fable's daar flaw 11: the review lists the things and numbers learned, never a connective: "ne poi" is how the order was said)
+    const linker = Lang.frames ? Lang.frames().seq_word : null;
     UI.orderWordForms(ctx.ladders).forEach((w) => {
+      if (linker && w.id === linker) return;
       const base = { id: w.id, kutchi: w.kutchi, cell: w.cell, english: Cook.english(w.id), toCheck: !!w.check || undefined };
       const bad = missed.has(w.id);
       if (bad) out.push(Object.assign({}, base, { right: false }));
@@ -1189,6 +1202,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the round, and never a second well done
     const recap = callBack(ctx);
     if (recap) await S().talk("nani", recap, { after: "neutral" });
+    cardsDone();
     if (who === "nani") {
       // Nani's own list (the pantry, T4): Shabash and her happy face; she stays in her kitchen
       if (!praised()) await S().talk("nani", shabash(), { after: "happy" });
@@ -1708,17 +1722,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     p.querySelectorAll("[data-st]").forEach((b) => b.addEventListener("click", () => runLab(b.dataset.st, $("#lab-guided").checked)));
     $("#lab-back").addEventListener("click", showTitle);
   }
-  // the s14 look (chai's cards, light and wider side panel) is on for an order that is all chai (ui.js mission.s14 decides it again,
-  // to the same answer, when the order opens); set it early so the stage is laid out once
-  const CHAI14 = new Set(["chai", "chai-tray"]);
+  // the s14 look (chai's cards, light and wider side panel) and the 6 Nov type are on for every order (the roll-outs: UI.S14_ALL,
+  // UI.TYPE_ALL; ui.js mission.s14 decides it again, to the same answer, when the order opens); set early so the stage is laid out once
   // (the play area takes its new size on the next layout: the stage is resized and two frames pass before anything is drawn)
   const preLook = async (ids) => {
     if (!UI.applyS14) return;
     const was = document.body.classList.contains("njg-s14");
-    // (the S14 roll-out: every dish, UI.S14_ALL; chai alone when it is off)
-    UI.applyS14(ids.length > 0 && (UI.S14_ALL || ids.every((id) => CHAI14.has(id))));
-    // (the 6 Nov type, chai first: ui.js applyType; its faces are in before the kitchen is drawn)
-    if (UI.applyType) await UI.applyType(ids.length > 0 && ids.every((id) => CHAI14.has(id)));
+    UI.applyS14(ids.length > 0);
+    // (the 6 Nov type: ui.js applyType; its faces are in before the kitchen is drawn)
+    if (UI.applyType) await UI.applyType(ids.length > 0);
     if (document.body.classList.contains("njg-s14") === was) return;
     global.dispatchEvent(new Event("resize"));
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
