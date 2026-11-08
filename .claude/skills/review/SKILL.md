@@ -9,7 +9,7 @@ description: Review a finished build session or any change before it goes to Zaf
 ## Steps
 **A game's merge (Sprint 19; the three-part gate):** (1) part 1 green: its flows' contract run at L1-L4 has no break of contract-100 to
 -109 (the shared pieces present: the 6 Nov card and type, Nani's box with its drop-down, the kit's light only, no tick/next/X, the
-card's picture, the light whole and centred and gone on the move, only shelf items hop, praise last, the shelf's line) nor any other;
+card's picture, the light whole and centred and gone on the move, only shelf items hop, praise last, the shelf's line) nor any other; and **0 page errors** on every page (run with `--check`; 8 Nov: s19-cards merged with a page error on every Cook page that its contract run reported but nothing gated);
 (2) `node build/tools/review/sidebyside.mjs <game>` (it takes the browser lock itself: never wrap it), then one `judge` call on its
 `judge-batch.md` with `docs/process/eye-judge-rubric.md`, flaws first; (3) the judge's strips (motion and timing) are in the same batch.
 **The merge rule (principle 10, proposed 8 Nov, not yet agreed by Zafar):** nothing merges that the side-by-side shows worse than chai
