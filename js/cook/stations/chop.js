@@ -163,14 +163,15 @@ import { Cook as CookNS } from "../ns.js";
   /*
    * The chop as a game a recipe calls ("do": "chop-game": chaat's chop step, data/cook.json): its board (the game's own view) and
    * the game's numbers, decoys and step, through play(); the result is what was cut, as the bare mechanic gave it. The first try's
-   * decoys are noted for the round (contract-37).
+   * decoys are noted for the round, and are exactly the central rules' count at the level (exactDecoys; contract-37: chaat's chop
+   * at L1 asks for two things and throws one decoy, not two).
    */
   Mech.define("chop-game", {
     station: KEY,
     view: "wood", // (chaat keeps its wood board: Zafar never asked for a change; the Chop tile keeps its marble)
     knobs: KEY,
     async run(z, p) {
-      return (await play(z, Object.assign({ note: !p.retry }, p, { level: p.level || z.level }))).cut;
+      return (await play(z, Object.assign({ note: !p.retry, exactDecoys: true }, p, { level: p.level || z.level }))).cut;
     },
   });
 

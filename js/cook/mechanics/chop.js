@@ -55,6 +55,8 @@
  *     mirchi!") come inside the work's first step, never as talk after a skipped order (contract-95).
  *   - Wave 3 (s18-w3-chop): params.stepOpen: the caller (chop's game, Cook.Chop.play) opened the step already, before anything of the
  *     chop's could be said (an order heard or skipped); the mechanic does not open it again.
+ *   - params.exactDecoys: the round throws exactly knobs.decoys decoy kinds (the central rules' table), never one per wanted thing
+ *     when there are more of those (chaat's chop step at L1: two things, one decoy; contract-37). Daar's chop keeps "at least".
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
@@ -83,7 +85,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       const S = z.S;
@@ -236,7 +238,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const L = [...new Set(tg.flatMap((t) => LOOK[t] || []))];
         const others = ids.filter((x) => !tg.includes(x));
         const rest = Cook.shuffle(pool.filter((x) => !L.includes(x) && !others.includes(x)).concat(no));
-        const nDecoys = Math.max(k.decoys, tg.length);
+        // (at least as many decoy kinds as things to chop in the round, unless the caller keeps the rules' count exactly: exactDecoys,
+        // chaat's chop step, contract-37)
+        const nDecoys = exactDecoys ? k.decoys : Math.max(k.decoys, tg.length);
         const decoys = [...new Set(L.concat(Cook.shuffle(others), rest))].filter((x) => !tg.includes(x) && Cook.item(x)).slice(0, nDecoys);
         const kinds = tg.concat(decoys);
         // every kind once per cycle, so a wanted one never flies more often than a decoy
