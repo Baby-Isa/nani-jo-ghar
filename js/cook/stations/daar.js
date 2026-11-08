@@ -399,8 +399,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     await St.begin(S, ctx, "daar", "marble");
     if (Cook.Coach) Cook.Coach.stop(false);
     if (!kinds.length) await lessons();
-    // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
-    St.coach(ctx, "daar-cook");
+    // (DAAR-42: the cook phase's first-time lights are kit (d)'s, in cook(); was St.coach(ctx, "daar-cook"), the old overlay, which
+    // ate a wrong tap on a decoy jar while it lit the first spice)
     // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint. It folds before the
     // tadka's pop-up, so the pop-up is the shared closed big card (the order heard, never written; non-negotiable 6)
     const peek = K.ladder === "closed" && UI.mission.closeCards;
@@ -421,7 +421,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     }
     if (phases.cook) UI.gist(phases.cook);
     const kz = Mech.zone(S, ctx, { id: "cook", level });
-    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps });
+    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps, gate });
     if (peek) UI.mission.closeCards(false);
     steps.done();
     await serve(kz, { who, pot: cooked.pot });
@@ -683,10 +683,23 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   }
 
   /* ---------- 2: tadka and stir in the v3 pot on the kit hob (one burner, one pot) ---------- */
-  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps }) {
+  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps, gate }) {
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
+    /*
+     * DAAR-42 (STD-D1-01, D1-06; kit (d)): the first time, the knob, the first pile and the daar's bowl are lit with their call
+     * (Cook.Coach.control on the first-time gate), a light that lets every tap through. The spices are never lit (the light would be
+     * the answer: CHAI-32, non-negotiable 4); the stir keeps its own guide. Was the old overlay (St.coach "daar-cook"), which took
+     * the taps round the thing it lit, so a wrong jar tapped at L2 was eaten (contract-21).
+     */
+    let ctl = null;
+    const lead = (step, obj) => {
+      if (ctl) ctl.close();
+      ctl = null;
+      if (!obj || !gate || !Cook.Coach || !Cook.Coach.control || !gate.first(step)) return;
+      ctl = Cook.Coach.control({ key: "daar", target: Cook.Coach.box(obj), first: true, noHint: true, note: `${gate.scope}:s14-control` });
+    };
     backdrop(z, S);
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
     const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
@@ -782,8 +795,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     burner.knob.baseScale = 1;
     S.tweens.add({ targets: burner.knob, scale: 1.1, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     // T13: Chulo bar! (the step line; at level 1 said as it opens, from level 2 after a pause)
+    lead("cook-fire", burner.knob);
     steps.to("daar:fire");
     await tapOnce(z, S, burner.knobHit, "knob", { glow: z.guided });
+    lead(null);
     steps.done();
     S.tweens.killTweensOf(burner.knob);
     burner.knob.setScale(1);
@@ -913,12 +928,14 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     };
     Cook.daarPhase = "piles";
     let left = Object.keys(hits);
+    lead("cook-veg", left.length ? hits[left[0]] : null); // (its whole row of heaps: the tap's own box, contract-92)
     if (left.length) steps.to("daar:veg"); // T13: [Put the vegetables in]
     while (left.length) {
       const pick = {};
       left.forEach((id) => (pick[id] = hits[id]));
       Object.values(pick).forEach((h) => S.tweens.add({ targets: piles[h.wordId] || h, scale: "*=1.05", duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
       const r = await St.freePick(z, { items: pick, next: left[0], doneOk: false });
+      lead(null);
       left.forEach((id) => S.tweens.killTweensOf(piles[id] || hits[id]));
       left.forEach((id) => (piles[id] || []).forEach((im) => im.setScale(z.L(heapSize(id)) / Math.max(im.width, im.height))));
       if (vbowl) vbowl.setScale(z.L(230) / 484);
@@ -949,11 +966,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     Cook.daarPhase = "veg-in";
     // the daar: its bowl on the trivet tips into the pot, over the tadka. DAAR-10 (D4): only the bowl lifts (the art run's
     // split pictures, else the one picture split here); the mat left behind fades once it's poured (DAAR-33, decision 13)
+    lead("cook-daar", dBowl);
     steps.to("daar:daar"); // T13: [Put the daar in]
     const split = splitTrivet(S, dBowl, plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET);
     S.tweens.add({ targets: dBowl, alpha: 1, duration: 200 });
     S.tweens.add({ targets: dBowl, scale: dBowl.scale * 1.05, duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     await tapOnce(z, S, dBowl, "daar", { glow: z.guided });
+    lead(null);
     steps.done();
     S.tweens.killTweensOf(dBowl);
     const mat = split.lift();
