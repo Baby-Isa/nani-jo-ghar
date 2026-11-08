@@ -1,0 +1,89 @@
+{
+  "name": "s19-games: Fable's eye-judge flaws and today's rows in sekelo, daar, eggs and corn (faces on the serving place, half-built frames, the greeting's hold, the stray sprinkle, the onion's jump, eggs on the shelf band, the pan's light, corn's green)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "four games' own code; judgement against chai's frames",
+  "cost": "about $35-50",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-games in /home/user/wt/s19-games (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "code",
+  "browser": true,
+  "live": false,
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/s18-eye-judge-experiment.md (sections 2 and 4-7)",
+    "build/reports/s18-review-and-direction.md (In one page, section 4)",
+    "build/reports/s19-cards.md (what changed before you)",
+    "docs/process/check-audit.md and build/reports/s19-checks.md (the gate you must pass)",
+    "docs/architecture/module-map.md"
+  ],
+  "owns": [
+    "js/cook/stations/mishkaki-grill.js",
+    "js/cook/stations/daar.js",
+    "js/cook/stations/eggs.js",
+    "js/cook/stations/corn.js",
+    "js/cook/stations/chop.js",
+    "js/cook/mechanics/grill.js",
+    "js/cook/mechanics/thread.js",
+    "js/cook/mechanics/stir.js",
+    "js/cook/mechanics/chop.js",
+    "js/cook/mechanics/pan.js",
+    "js/cook/mechanics/tadka.js",
+    "data/stations/mishkaki-grill.json, daar.json, eggs.json, corn.json, chop.json",
+    "build/sandbox/data/evidence.json (your rows' entries only)",
+    "build/reports/s19-games.md"
+  ],
+  "readOnly": [
+    "js/cook/coach.js, js/shared/** (s19-lights may be running: call the light API as it stands; a change you need goes in your report)",
+    "js/cook/stations/maani-line.js, samosa.js, chai-tray.js, chaat (s19-lights)",
+    "build/tools/review/**, build/sandbox/lib/**"
+  ],
+  "stubs": "none",
+  "port": 8895,
+  "report": "s19-games",
+  "publish": false,
+  "flows": [
+    "cook:mishkaki-grill",
+    "cook:daar",
+    "cook:eggs",
+    "cook:corn",
+    "cook:chop",
+    "cook:chai-tray"
+  ],
+  "rows": [
+    "CK-63",
+    "CK-61",
+    "DAAR-43",
+    "CK-65"
+  ],
+  "tasks": [
+    {
+      "do": "Faces on the serving place from the first frame, as chai's tray (Fable sekelo 2, daar 9): sekelo's trays and daar's katori carry the asker's face circle (the kit's) from the start.",
+      "accept": "a contract row or crop at f3 of each; the flows 0 breaks"
+    },
+    {
+      "do": "Half-built frames (Fable eggs 1): eggs' first frame is never a blank screen with an empty Nani's box, and its play area is never empty while the panel shows the order; final from the first drawn frame, or covered, as chai. The greeting's hold (sekelo 7, eggs 8): no longer than chai's (measure chai's).",
+      "accept": "the films' first frames in the report beside chai's"
+    },
+    {
+      "do": "Daar: the pink sprinkle left hanging in the air (flaw 8) gone; the chopped onion reaches the pot and the pot fills step by step, never empty-to-full in one jump (flaw 10); the chop screen's empty cream strip becomes chai's stone band (`St.stoneBand`) with the vegetables on it, and nothing code-drawn stands in for a thing where a picture exists (flaw 5; the timer circle stays if no picture exists: say so and add an ART row).",
+      "accept": "daar L1-L4 0 breaks; a film strip of the onion into the pot"
+    },
+    {
+      "do": "Eggs: the egg bowl stands on chai's stone band with its pill, not floating (flaw 3); the pot's handle never touches the pan (flaw 4, layout only; its 45-degree art is an ART row); the phone's text and tap floors (flaw 7) met as chai meets them. CK-63: the pan's next-vessel light on its round body (eggs settings body cx, cy, rIn), centred, whole.",
+      "accept": "eggs L1-L4 0 breaks at the four sizes; the s19-checks 'centred and whole' row green on eggs"
+    },
+    {
+      "do": "DAAR-43: daar's first-time light round a pile's picture, not its tap box (`Cook.Coach.box(obj, pad, {bounds})`), so it never covers the next pile at 740x320. CK-61: corn's lights leave the kit's room (contract-92). CK-65: corn's green zone at least as long as chai's green at the same level (measure chai's, set corn's in its settings, give both numbers).",
+      "accept": "contract-92 green on daar@L2 at 740x320 and corn; corn's and chai's green lengths per level in the report"
+    },
+    {
+      "do": "Out of scope (needs Zafar or art): the timed windows' look (sekelo's dial, daar's gauge, eggs' knob and ring), one stir (DAAR-45), the grill and coals art, the scene and shelf angle, the counting rule, eggs' L1 length. Write any you meet in the report.",
+      "accept": "the report lists them"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; the s19-checks gate (part 1 rows and sidebyside, if merged) on your flows; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-games.md with a Proof section and script-made before-and-after crops of each, under 600 words"
+    }
+  ]
+}

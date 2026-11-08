@@ -1,0 +1,35 @@
+# Sprint 19: chai's standard everywhere (the shared layer first)
+
+**Status:** open (Zafar, 8 Nov: "go ahead ... start that now"; most of the plan agreed, no principle agreed yet)
+**Opened:** 8 Nov 2026 · **Closes at:** the publish to `main`, Zafar's play and `/feedback`. Integration branch `ccr-87413d9b-j48fpk`.
+
+## Goal
+Every kitchen game on chai's shared pieces (cards, Nani's box, the ticking order card, the lights and first-time lessons, the stuck
+help), no tick, next or X buttons, Fable's code-fixable eye-judge flaws fixed, and the checks audited one by one and gating every merge.
+
+## What Zafar said (8 Nov, evening)
+- Go: every fix that needs no decision (the shared pieces and Fable's flaws), and the checks: each existing one audited ("written in
+  blood"; kept if it has caught things and costs less than it is worth), plus the three-part gate and the eye judge's rubric.
+- **Not** agreed: the principles (section 6 of `build/reports/s18-review-and-direction.md`) and anything else; he reviews them with the
+  art. **Not** to publish chai's three fixes. He has started the art run himself.
+- Plans run back to back: no days or dates (CLAUDE.md).
+
+## Budget
+About $150-210 for the four builders below; the rest of the plan (the scene, the games onto the house art) waits on his review of the
+principles and the art.
+
+## Sessions (two builders at a time; each starts as a slot frees and its files allow)
+1. **s19-cards** (Opus, high, $40-55): cards, Nani's box, ticking order card, no tick/next/X, relics gone, one-thing card pictures, Fable's text flaws. Running.
+2. **s19-checks** (Opus, high, $40-55): the audit of every check, the shared-piece code checks, `sidebyside.mjs`, frame strips, the rubric. Running.
+3. **s19-lights** (Opus, high, $35-50): one light and finger, room, gone on the move, shelf-only hop, stuck help everywhere; maani's, chaat's and samosa's first times. After s19-cards (shares station files).
+4. **s19-games** (Opus, high, $35-50): Fable's flaws in sekelo, daar, eggs and corn; CK-63, CK-61, DAAR-43, CK-65. After s19-cards and with a free slot.
+
+Each merges only after the orchestrator's look beside chai and the judge on the changed screens; nothing is published without Zafar.
+
+## Waiting on Zafar (his review point: the principles with the art)
+The counting rule (SEK-25, CK-64), sekelo's one skewer per person, the timing floor, samosa's redesign, the scene for every game, the
+shelf angle, the timed windows' look (sekelo, daar, eggs), one stir (DAAR-45), the merge rule, chai's publish.
+
+## Outcome
+
+## Look back (three lines)
