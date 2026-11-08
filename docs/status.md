@@ -10,39 +10,26 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, 20261108T142321Z).
 
-**Update ~14:25: published for Zafar's play** (20261108T142321Z), Fable's round not started (his word): he plays, then describes what each
-game should look like. **Earlier, ~06:00:** Zafar saw baking's play screen (a floating bowl, no shelf, a round light): baking, eggs and the
-corn stall are not in chai's kitchen, and others differ. Fable's review and plan: `build/reports/s18-fable-what-went-wrong.md` (a
-kitchen scene in the kit every game must use, structural and side-by-side checks, one more round); his 7 questions there.
+**Where things stand (Sun 8 Nov 2026, ~16:30 UK):** Sprint 18's three waves are live for Zafar's play. He played every kitchen game
+(voice note, transcript `docs/feedback/kitchen-play-2026-11-08-transcript.md`): chai still loved; the others far from chai's look
+and missing shared pieces. **Read first: `build/reports/s18-review-and-direction.md`** (what went wrong, his play by theme and game,
+the look: shelf option 4, shadows, marble, ChatGPT mocks per screen; ten principles to settle; the decisions recorded). Behind it:
+Fable's `s18-fable-what-went-wrong.md` and `s18-fable-look-review.md`.
+- **Chai's three fixes** (the order card's jerk, the item timings, the half-glass ding) are on the branch, frozen diff clean
+  (`build/reports/frozen-diff-chai-tray-202611081519.md`), **not live**: the session's safety check blocked `publish.mjs`; it needs
+  Zafar's explicit go or a permission rule.
+- **Running at handover:** the /feedback builder (worktree `/home/user/wt/s18-feedback-1108`, branch `s18-feedback-1108`) writing
+  `docs/feedback/kitchen-play-2026-11-08.md` and the rows; merge it into the branch when it hands back (keep both sides of the
+  overnight log).
 
-**Where things stand (Sun 8 Nov 2026, ~05:15 UK):** Sprint 18 (`docs/sprints/S18-kitchen-family.md`): **waves 1-3 done and merged,
-nothing running; waiting on Zafar's word to publish** (decision 9).
-- **Wave 1:** the kits (stove, pans and pouring, serving, the shelf and pills, lights and lessons, the order's flow); chai on all
-  five, each switch proven by its frozen diff; chop its own game; eggs, baking, the corn stall prepared.
-- **Wave 2 (from 00:15, on Zafar's word):** all eight games on their settings files and the kits, copied code deleted, each with its
-  gap page `docs/design-language/standard/gaps/<game>.md` (missing rules down by about a third to a half per game).
-- **Wave 3:** the kit's asks (one page box, the stone band's shade, the word moment's own pair, daar's mistake-path light, chaat's
-  lesson in view), the checks' fixes, chop's step and decoys. Full run `s18-w3-full`: 176 pages (every game L1-L4, four sizes),
-  every end reached, 0 page errors; breaks: art low-res at 1920 (ART-59, ART-60), DAAR-43 (a phone light), the rest flaky on re-play.
-  Standard audits `build/reports/audit-standard-*-2026-11-08.md`. Fable: `build/reports/s18-w3-fable-verdicts.md` (films 9/10,
-  phones 3/10; the orchestrator's read below). All checks green.
-
-**Zafar's play list (after the publish):** 1. Each kitchen game once, L1 on a phone and a laptop. 2. Chai's order strip scrolls
-sideways on phones (signed off as built; Fable calls it clipped): still happy? 3. Chai's two small kit changes (a face tap waits
-while someone speaks during a recast; a fallback line skipped once the round moved on). 4. Chaat keeps its wood board (the chop game
-has marble). 5. Eggs and the corn stall at a phone: Fable saw the screen stay dim through the cooking. 6. Orders said in parts
-("Muke ba samosa khape, ..."): Fable read the bubble as cut at the comma. 7. Baking's word moment at L3 (half, a cup).
-
-**Open rows from tonight:** DAAR-43, CK-61, CK-62 (eggs' order card picture empty), SH-235 (the "?" pop-up on a phone), CHAI-107,
-SAM rows, ART-60. **Questions:** eggs' five (`docs/questions.md`).
-
-**Next:** on Zafar's word, `/publish` (`publish.mjs --force --words "<his words>"`), then his play and `/feedback`; Sprint 18's
-close (Outcome, look back); Sprint 19 (the pantry's polish).
+**Next, in order:** 1. publish chai's fixes on his word; 2. merge the /feedback rows; 3. with Zafar, settle the review's ten
+principles (section 6); 4. plan the next round there (the kit's one scene and compulsory shared pieces with a side-by-side check;
+the chai lab for shadows and marble; ChatGPT mocks per screen; an art run; the games two at a time, each merged only beside chai).
 
 **Starting prompt for a new chat:**
 > First `git fetch origin ccr-31767b7f-rfyrg4` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Sprint 18's three waves are
-> merged; publish only on my word, then take my play notes with /feedback. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/s18-review-and-direction.md`. Let's go through its
+> findings and principles together and make the plan; tell me before launching anything new.
 
 ## The fix list
 
