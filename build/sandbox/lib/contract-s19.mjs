@@ -29,6 +29,9 @@ export const BASE_TOL = 4;         // contract-109: a shelf item's foot this clo
 export const CHIP_TOL = 2;         // ... and its pill's middle this close to the chip line
 export const LOAD_MS = 600;        // contract-104: a picture not in after this long is blank (a card drawn again reloads its pictures)
 export const CARD_PART = 0.5;      // contract-105: a light round less than this share of an item card is on a part of it (contract-97's)
+// contract-105: a picture whose key says it is a shadow, halo, glow, dim or light is never the lit thing (the final 8 Nov run judged
+// two lights against a pan's contact shadow); kept in the probe's scan below, the same words
+export const NOT_A_THING = /shadow|halo|glow|dim|light/i;
 export const CRATE = /(crate|heap|pile|sack|basket)/i;
 export const OLD_CARD = ".oc-box, .oc-strip, .oc-skewer, .oc-group, .oc-item:not(.oc-items14)";
 
@@ -485,7 +488,7 @@ function s19hook() {
             // (a glowing thing hops: its foot is read from where it stands, glowFx.y, not mid-hop)
             const foot = o.glowFx && o.glowFx.y != null ? bt + (o.glowFx.y - o.y) * ky * cam.zoom : bt;
             words.push({ id: String(o.wordId), pic: [l, t, r, bt], chip: chipBox, foot, glow: !!o.glowFx });
-          } else if (o.texture && o.texture.key && !/^__/.test(o.texture.key) && (o.type === "Image" || o.type === "Sprite")) {
+          } else if (o.texture && o.texture.key && !/^__/.test(o.texture.key) && !/shadow|halo|glow|dim|light/i.test(o.texture.key) && (o.type === "Image" || o.type === "Sprite")) {
             pics.push({ id: o.texture.key, box: [l, t, r, bt] });
           }
         }

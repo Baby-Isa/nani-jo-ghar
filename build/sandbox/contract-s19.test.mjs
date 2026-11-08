@@ -2,7 +2,7 @@
 // failure it guards, then the agreed end state), and the probe's registration. No browser. Run: node --test build/sandbox/contract-s19.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { S19_CHECKS, checkS19, check100, check101, check102, check103, check104, check105, check106, check107, check108, check109, stations } from "./lib/contract-s19.mjs";
+import { NOT_A_THING, S19_HOOK, S19_CHECKS, checkS19, check100, check101, check102, check103, check104, check105, check106, check107, check108, check109, stations } from "./lib/contract-s19.mjs";
 import { CHECKS } from "./lib/contract.mjs";
 import { CONTRACT_HOOK } from "./lib/contract-hook.mjs";
 import { CONTRACT_ROWS } from "../tools/review/lib/regressions.mjs";
@@ -166,4 +166,10 @@ test("checkS19 runs every check on one timeline", () => {
   const out = [];
   checkS19(R, [...ST, c(9000, "s19btn", { list: [{ sel: "button#done-btn", kind: "tick" }] })], { lines: [] }, (id) => out.push(id));
   assert.deepEqual(out, ["contract-103"]);
+});
+
+test("contract-105's scan never takes a shadow, halo, glow, dim or light picture for the lit thing (the final run judged two lights against a pan's shadow)", () => {
+  for (const k of ["shadow", "eg-pan-shadow", "kit-halo", "__glow:x"]) assert.ok(NOT_A_THING.test(k) || /^__/.test(k), k);
+  for (const k of ["eg-pan-dry", "mv-velan", "kit-pan-ring-158", "sv3-fold-strip"]) assert.ok(!NOT_A_THING.test(k), k);
+  assert.match(S19_HOOK, /!\/shadow\|halo\|glow\|dim\|light\/i\.test\(o\.texture\.key\)/);
 });
