@@ -192,10 +192,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           glow: (on) => {
             if (lit === on || !target.active) return;
             lit = on;
-            S.glow(target, on, { bounce: true });
+            S.glow(target, on, { bounce: true, now: true });
           },
           onHint: () => Cook.onHelp && Cook.onHelp("hint"),
-          note: "mishkaki-grill:s14-stuck",
         });
       };
       const hintLine = (p) => (SK.kindOfWord(p.w) === "mixed" ? Lang.wordLine(p.id) : Lang.bare(Lang.phrase(Lang.countParts(want[p.w], p.w).flatMap((x) => (typeof x === "string" ? unitOf(x) : [x])))));

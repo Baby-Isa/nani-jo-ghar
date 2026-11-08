@@ -127,10 +127,10 @@ import { setTimeout } from "../life.js";
         noHint: true,
         current,
         busy: () => busy,
-        // (contract-102, SH-236: its glow lasts as long as its light, which goes as the child starts the move; contract-107: it hops only
-        // on the shelf, the kit's own rule, Cook.Coach.onShelf: never the oven or the bowl)
+        // (contract-102, SH-236: its glow lasts as long as its light, which goes as the child starts the move; contract-107: no hop, none
+        // of these is on the shelf)
         onLight: () => {
-          S.glow(o, true, { bounce: !!(Cook.Coach.onShelf && Cook.Coach.onShelf(o)), now: true });
+          S.glow(o, true, { now: true }); // (no hop: a thing tipped over the bowl, the bowl, the oven, the naan are never on the shelf)
           setTimeout(() => {
             const h = ctl && ctl.lit ? ctl.lit() : null;
             const off = () => ctlObj === o && o.active && S.glow(o, false);
@@ -150,7 +150,7 @@ import { setTimeout } from "../life.js";
             hintMs: () => (hintMs() || 7000) * (Cook.speed || 1),
             current,
             busy: () => busy,
-            glow: (on) => o.active && S.glow(o, on, { bounce: on && !!(Cook.Coach.onShelf && Cook.Coach.onShelf(o)) }),
+            glow: (on) => o.active && S.glow(o, on, { now: true }),
             note: `${KEY}:${name}:stuck`,
           })
         : null;

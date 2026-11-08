@@ -724,10 +724,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           ? (on) => {
               if (glowing.on === on || !obj.active) return;
               glowing.on = on;
-              S.glow(obj, on, { bounce: true }); // (SH-237: a jar on the shelf hops in its light; the kit drops the hop off it)
+              S.glow(obj, on, { bounce: true, now: true }); // (SH-237: a jar on the shelf hops in its light; the kit drops the hop off it)
             }
           : null,
-        note: "daar:s14-stuck",
       });
     };
     const stuckOff = () => {
@@ -822,8 +821,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           return im;
         });
         glassOf[id] = glass;
-        const w = z.L(Math.max(1, n) * GL.pitch);
-        const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(GL.d + 10), 0xffffff, 0.001).setDepth(D.item + 0.4));
+        // (its tap area is its bowls' pictures, so the tap box and the light's thing are one: contract-92 measures the tap box)
+        const w = z.L(Math.max(0, n - 1) * GL.pitch + GL.d);
+        const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(GL.d), 0xffffff, 0.001).setDepth(D.item + 0.4));
         hit.wordId = id;
         // DAAR-43 (the phone, 740x320: the light hugged the tap box and covered the next row): its light is round its bowls' pictures, the
         // kit's lights read thing.litBounds (Cook.Coach.box, C.parts)

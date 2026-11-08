@@ -181,7 +181,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     const glow = (o) => {
       if (lit && lit !== o && lit.active) S.glow(lit, false);
       lit = o;
-      if (o) S.glow(o, true, { bounce: true });
+      if (o) S.glow(o, true, { bounce: true, now: true }); // (now: with its light, never the ladder's deferred glow)
     };
     /** The next thing to do, published once: the light, the step, the helper card and the test hooks read it (STD-F3-05). */
     function nextThing() {

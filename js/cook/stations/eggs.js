@@ -339,7 +339,7 @@ import { Cook as CookNS } from "../ns.js";
       if (glowObj === o) return;
       if (glowObj && glowObj.active) S.glow(glowObj, false);
       glowObj = o;
-      if (o) S.glow(o, true, { bounce: true }); // (SH-237: a thing on the band hops in its light; the kit drops the hop off the shelf)
+      if (o) S.glow(o, true, { bounce: true, now: true }); // (SH-237: a thing on the band hops in its light; the kit drops the hop off the shelf)
     };
     let ctl = null;
     let stuck = null;
