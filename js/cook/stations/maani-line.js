@@ -32,6 +32,7 @@
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (Sprint 18 piece 8): the review faces, the tick and the recast
 
 (function (global) {
   const Cook = CookNS;
@@ -86,7 +87,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const DISC_R = 0.44; // every maani state (raw, half, cooked, burnt) shares one canvas: the disc's radius
   const BALL_R = 0.437; // a dough ball's radius (wheat 0.437, millet 0.4347)
   const TURNER = { ox: 0.19, oy: 0.73, len: 220 }; // M6 / Q15: the blade's middle (the origin), its length on screen
-  const INK = { page: 0xf4ecdf, panel: 0xefe5d6, grey: 0xd9d2c7 };
   const ART = [
     ["mv-chakla", V3 + "chakla.webp"],
     ["mv-velan", V3 + "velan.webp"],
@@ -172,14 +172,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (params.order[k] > 0) want[keyOf(type, size)] = params.order[k];
     });
 
-    /* ---------- the scene: the softened marble, the shelf band ---------- */
-    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
-    S.track(S.add.rectangle(-FAR, -FAR, 1600 + 2 * FAR, SHELF_TOP + FAR, INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
-    const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
-    band.fillStyle(INK.panel, 1);
-    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 900 - SHELF_TOP + FAR);
-    band.fillStyle(0x2a1a0a, 0.08);
-    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 3);
+    /* ---------- the scene: the marble's wash, the stone band (the kitchen kit's worktop, piece 4; STD-E3-03) ---------- */
+    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view). No shelf ledge: the piles
+    // and the plates sit on the band itself
+    Kit.worktop(S, { top: SHELF_TOP, far: FAR });
+    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2 });
 
     // two columns, centred as one block: the chakla | the hob
     const hs = Kit.size(1, HOB_K);
@@ -223,10 +220,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       sizzleSync();
       stepNow();
     });
+    // their order said again (the shared kit's piece 18: UI.personSay reads their card along, their face taking the talk motion;
+    // the whole order again where their card can't say it)
+    const sayOrder = async () => {
+      if (who && UI.personSay && (await UI.personSay(who, { obj: burner.face || null }))) return;
+      if (UI.mission && UI.mission.replay) UI.mission.replay();
+    };
     if (burner.face)
       S.tappable(burner.face, () => {
-        // their face: hear what they asked for again
-        if (UI.mission && UI.mission.replay) UI.mission.replay();
+        // their face: hear what they asked for again (one at a time: never over someone speaking)
+        if (!(UI.personSpeaking && UI.personSpeaking())) sayOrder().catch((e) => { if (!(e instanceof Cook.Abort)) throw e; });
         S.tweens.add({ targets: burner.face, scale: burner.face.baseScale * 1.1, duration: 100, yoyo: true });
       });
     // M6 / Q15: the flat wooden turner (the family's tool: a word like "moikyo", to confirm with Mum) rests on
@@ -285,6 +288,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let firstOn = true;
     let doneShown = false;
     let helping = false; // decision 51: a redo round (the right pile glows)
+    let lessoning = false; // the reveal lessons are on (the piles wait)
     const count = (key, where) => items.filter((it) => it.key === key && (!where || it.where === where)).length;
     const plated = () => items.filter((it) => it.where === "plate");
     /** How many more of this dough the order needs (the plan for the test and for guided glows; never shown). */
@@ -324,22 +328,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         UI.mission.step(i);
       }
     };
-    /** The word pops by the action (§4), and the family clip plays. */
+    /** The word pops by the action (§4: the shared kit's word pop, piece 12, Juice.P.pop), and the family clip plays. */
     const wordPop = (id, x, y) => {
-      const pop = S.track(S.add.container(x, y).setDepth(D.fx + 4).setAlpha(0));
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif", fontSize: "34px", fontStyle: "800", color: global.Tokens.hex("ink-kutchi") }).setOrigin(0, 0.5);
-      const w = t.width + 64;
-      const bg = S.add.graphics();
-      bg.fillStyle(0x28190a, 0.1);
-      bg.fillRoundedRect(-w / 2, -28, w, 60, 12);
-      bg.fillStyle(0xffffff, 1);
-      bg.fillRoundedRect(-w / 2, -30, w, 60, 12);
-      const icon = S.add.graphics();
-      Kit.speaker(icon, -w / 2 + 26, 0, 26);
-      t.x = -w / 2 + 48;
-      pop.add([bg, icon, t]);
-      S.tweens.add({ targets: pop, alpha: 1, y: y - 16, duration: 220 });
-      S.tweens.add({ targets: pop, alpha: 0, delay: 1300, duration: 300, onComplete: () => pop.destroy() });
+      const k = Math.max(1, Kit.textFloor(S, 36)); // never under 14 px as rendered
+      global.Juice.P.pop(S, { x, y: y - 16 }, Cook.display(id), { k, depth: D.fx + 4, top: (Cook.view || {}).top || 0 });
       Lang.popWord(id);
     };
 
@@ -423,13 +415,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
     }
 
+    /** STD-D2-04: a wrong move wiggles and brings the step's hint at once (the kit's rush, and the step box's help). */
+    const wrongMove = (obj) => {
+      S.wiggle(obj);
+      if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong("maani-line");
+      steps.help();
+    };
+
     /* ---------- a dough pile -> the chakla -> rolled ---------- */
     async function pick(pl) {
-      if (finished) return;
-      if (waiting) return S.wiggle(waiting.sprite); // the board's taken: put that one on the tawa first
-      if (chakla && (chakla.busy || chakla.started)) return S.wiggle(pl); // one at a time: finish this one first
+      if (finished || lessoning) return;
+      if (waiting) return wrongMove(waiting.sprite); // the board's taken: put that one on the tawa first
+      if (chakla && (chakla.busy || chakla.started)) return wrongMove(pl); // one at a time: finish this one first
       if (chakla && chakla.type === pl.type) return;
-      if (pl.left <= 0) return S.wiggle(pl);
+      if (pl.left <= 0) return wrongMove(pl);
       if (chakla) putBack(chakla);
       // one ball comes off the top of the pile (the art's balls are drawn at the pile's scale) and flies out
       const pc = S.centre(pl);
@@ -493,7 +492,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /* ---------- the board -> the tawa ---------- */
     async function putOn() {
       if (finished || !waiting) return;
-      if (onTawa) return S.wiggle(waiting.sprite); // the tawa's busy: flip or lift that one first
+      if (onTawa) return wrongMove(waiting.sprite); // the tawa's busy: flip or lift that one first
       const it = waiting;
       waiting = null;
       glowOn(it.sprite, false);
@@ -514,7 +513,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       t.busy = false;
       sizzleSync();
       S.tappable(it.sprite, () => tawaTap());
-      zt.passMeAfter(kTawa.passMeAfterMs);
     }
     let sizzle = null;
     // MAA-11 (M6): the sizzle plays only while something is on a lit tawa
@@ -660,18 +658,35 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     step("Roll");
     let finish;
     let finishing = new Promise((resolve) => (finish = resolve));
+    // STD-D1-08 (SH-196, contract-98): the reveal lessons, the dotted word then the blurred picture, once the order has landed and
+    // before the first pile (the kitchen kit's Cook.Coach.lessons on its first-time gate; the piles wait)
+    const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("maani-line", { round: new Set() }) : null;
+    if (gate && Cook.Coach.lessons) {
+      lessoning = true;
+      await Cook.Coach.lessons({ gate, ctx });
+      lessoning = false;
+    }
     update();
 
     /* ---------- the tick: check the count of each kind ----------
-     * Decision 51 (CK-23, S02-F): a wrong maani is redone on the spot, never the whole line. The right ones stay on
-     * their plates; a wrong one (the other dough, the other size, one too many) is lifted off and taken away, and a
-     * missing one's row opens again. The second try has help (the right pile glows); at the third wrong try for that
-     * kind the game shows the right way (its pile glows, a cooked maani lands on the plate) and moves on. Only the
-     * first try is scored. */
+     * Decision 51 (CK-23, S02-F) on the kitchen kit's tick and recast (NjgServe.round): a wrong maani is redone on the spot, never
+     * the whole line. Each kind the child could make is checked (its count against the order's); the right ones stay on their
+     * plates; a wrong one (the other dough, the other size, one too many) is lifted off and taken away, and a missing one's row
+     * opens again. The second try has help (the right pile glows); at the third wrong try for that kind the game shows the right
+     * way (its pile glows, a cooked maani lands on the plate) and moves on. Only the first try is scored. */
+    const serve = NjgServe.for(Cook);
     const redo = St.redo(ctx);
-    let round = 0;
     let allOk = true;
     let made = {};
+    let settled = false; // a redo with nothing left to make (only extras taken away): it ends without another tick
+    let extrasGo = Promise.resolve();
+    const tally = () => {
+      made = {};
+      plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
+    };
+    const missingOf = (key) => Math.max(0, (want[key] || 0) - count(key, "plate"));
+    // every kind on the line (with sizes, each size of each dough), the order's own first
+    const kinds = [...new Set(Object.keys(want).concat(types.flatMap((t) => (sizes ? sizes.map((sz) => keyOf(t, sz.id)) : [t]))))];
     /** Take a wrong maani off its plate: it lifts and goes (a cooked maani can't go back into the dough). */
     const takeAway = async (it) => {
       const d = dones[it.type];
@@ -681,6 +696,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Cook.tween(S, { targets: it.sprite, y: it.sprite.y - 70, alpha: 0, duration: 420, ease: "Sine.easeIn" });
       it.sprite.destroy();
     };
+    /** The maani past each kind's count (the last ones made of it). */
+    const extras = () => kinds.flatMap((key) => plated().filter((it) => it.key === key).slice(want[key] || 0));
     /** The right way, shown (the third wrong try): its pile glows, then a cooked maani of that kind lands on its plate. */
     const showRight = async (key) => {
       const { type, size } = split(key);
@@ -706,78 +723,85 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       S.sparkle(d.x, d.y);
       if (ctx.tickCard) ctx.tickCard(key);
     };
-    for (;;) {
-      await finishing;
-      finished = true;
-      Cook.undoAt = null;
-      UI.hideDone();
-      ring.clear();
-      sizzleSync();
-      steps.done();
-      stopGhost();
-      [zb, zon, zt].forEach((z) => z.expect(null));
-      plates.forEach((b) => glowOn(b, false));
-      made = {};
-      plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
-      allOk = true;
-      const missing = {}; // key -> how many more
-      const extra = []; // the wrong maani on the plates (the last ones of a kind made too many times)
-      new Set(Object.keys(want).concat(Object.keys(made))).forEach((key) => {
+    await serve.round({
+      items: kinds,
+      done: async () => {
+        if (!settled) await finishing;
+        finished = true;
+        Cook.undoAt = null;
+        UI.hideDone();
+        ring.clear();
+        sizzleSync();
+        steps.done();
+        stopGhost();
+        [zb, zon, zt].forEach((z) => z.expect(null));
+        plates.forEach((b) => glowOn(b, false));
+        tally();
+        allOk = kinds.every((key) => (made[key] || 0) === (want[key] || 0));
+      },
+      check: (key, round) => {
         const { type, size } = split(key);
         const w = want[key] || 0;
         const got = made[key] || 0;
-        if (got !== w) allOk = false;
-        if (got < w) missing[key] = w - got;
-        if (got > w) extra.push(...plated().filter((it) => it.key === key).slice(w));
-        if (round) return; // only the first try is scored
-        // the kind as the order says it ("ph-big+cook-maani"): the result card shows "ba wadhi maani"
-        zb.listen(got === w, `made ${got} ${key}, they asked for ${w}`);
-        if (!ctx.guided && w) {
-          const mark = got === w ? Cook.markRight : Cook.markMiss;
-          [Cook.numId(w), type, size].filter(Boolean).forEach((id) => mark(id));
+        // the kind as the order says it ("ph-big+cook-maani"): the result card shows "ba wadhi maani"; only the first try is scored
+        if (!round && (w || got)) {
+          zb.listen(got === w, `made ${got} ${key}, they asked for ${w}`);
+          if (!ctx.guided && w) {
+            const mark = got === w ? Cook.markRight : Cook.markMiss;
+            [Cook.numId(w), type, size].filter(Boolean).forEach((id) => mark(id));
+          }
         }
-      });
-      // the step has closed (Done): its rows tick, count rows too, right or not (UX 11)
-      if (ctx.closeItem) ctx.closeItem([], { all: true });
-      // the review (29 Sept, X10 / Q1: Cook.Kit.review): their big round face over the finished plates,
-      // happy when the counts are right, a gentle frown when they're not (the card shows which)
-      if (who && Cook.Kit.review) {
+        return { ok: got === w };
+      },
+      // the review (29 Sept, X10 / Q1): their big round face over the finished plates, happy when the counts are right, a gentle
+      // frown when they're not (the card shows which); the step has closed (Done): its rows tick, count rows too (UX 11)
+      review: async () => {
+        if (ctx.closeItem) ctx.closeItem([], { all: true });
+        if (settled || !who) return [];
         const ds = Object.values(dones);
         const fx = ds.reduce((a, d) => a + d.x, 0) / ds.length;
-        const look = await Cook.Kit.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 70, size: 230 });
+        const look = await serve.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 70, size: 230 });
         await Cook.wait(allOk ? 300 : 900);
-        await look.close();
-      }
-      if (allOk) break;
-      if (!round && zb.oops) await zb.oops();
-      // the wrong ones go; a missing one is made again (or, its third wrong try, shown)
-      await Promise.all(extra.map(takeAway));
-      const again = [];
-      for (const key of Object.keys(missing)) {
-        const r = redo.wrong(`maani:${key}`);
-        for (let i = 0; i < missing[key]; i++) {
-          if (r.action === "show") await showRight(key);
-          else again.push(key);
+        return [look];
+      },
+      oops: () => (zb.oops ? zb.oops() : null),
+      recast: () => null, // (the order is said again once the rows have opened: again())
+      // the wrong ones go, on every try
+      afterReview: () => {
+        if (!settled) extrasGo = Promise.all(extras().map(takeAway));
+      },
+      redo,
+      key: (key) => `maani:${key}`,
+      showRight: async (key) => {
+        await extrasGo;
+        for (let i = missingOf(key); i > 0; i--) await showRight(key);
+      },
+      reset: () => null,
+      // their rows open again, they say it again, and the right pile glows (help from the second try); a kind only made too many
+      // times has nothing to make again: once its extras have gone the line ends
+      // (the kit doesn't wait for this: the next Done is set up at once; the extras have already left the count as they started to go)
+      again: (keys) => {
+        const need = keys.filter((key) => missingOf(key) > 0);
+        if (!need.length) {
+          settled = true;
+          return;
         }
-      }
-      if (!again.length) {
-        if (ctx.closeItem) ctx.closeItem([], { all: true });
-        allOk = true;
-        made = {};
-        plated().forEach((it) => (made[it.key] = (made[it.key] || 0) + 1));
-        break;
-      }
-      // their rows open again, they say it again, and the right pile glows (help from the second try)
-      round++;
-      if (UI.mission && UI.mission.reopen) UI.mission.reopen([...new Set(again.flatMap((k) => k.split("+")))], ctx.dishAt || 0);
-      if (UI.mission && UI.mission.replay) UI.mission.replay();
-      helping = true;
-      finished = false;
-      doneShown = false;
-      finishing = new Promise((resolve) => (finish = resolve));
-      Cook.undoAt = undoAt;
-      update();
-    }
+        finishing = new Promise((resolve) => (finish = resolve));
+        extrasGo.then(() => {
+          if (UI.mission && UI.mission.reopen) UI.mission.reopen([...new Set(need.flatMap((k) => k.split("+")))], ctx.dishAt || 0);
+          sayOrder().catch((e) => {
+            if (!(e instanceof Cook.Abort)) throw e;
+          });
+          helping = true;
+          finished = false;
+          doneShown = false;
+          Cook.undoAt = undoAt;
+          update();
+        });
+      },
+    });
+    await extrasGo;
+    tally();
     Cook.undoAt = null;
     plates.forEach((b) => S.untap(b));
     ctx.result.maani = plated().length;

@@ -32,7 +32,7 @@
  * the rack holds.
  * Params: skewers ({kind word: count}), pattern (the mixed skewer, or several different ones, in
  * order), line, until, layout {bowlsX, boardX, rowX}, handoff.
- * Knobs (data.mechanics.thread): pieces (per skewer), decoys, decoyPool,
+ * Knobs (data/stations/mishkaki-grill.json mechanic.thread, Cook.Skewer.knobs): pieces (per skewer), decoys, decoyPool,
  * showAfterMs (after Nani's hint, the piece glows: being shown).
  */
 import { Cook as CookNS } from "../ns.js";
@@ -50,10 +50,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     station: "thread",
     view: "marble",
     footprint: { x: 0, y: 0, w: 1600, h: 900 },
-    async run(z, params, k) {
+    async run(z, params) {
       const S = z.S;
       const ctx = z.ctx;
       const SK = Cook.Skewer;
+      const k = SK.knobs("thread", z.level); // (sekelo's settings file)
       SK.resetIcons();
       const want = params.skewers || {};
       const pattern = params.pattern || [];
@@ -102,6 +103,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         sk.setAlpha(0);
         S.tweens.add({ targets: sk, alpha: 1, duration: 250 });
         sk.target = null;
+        // SEK-22 (Zafar, 30 Oct: the light "should include the whole skewer ... fairly tight"): the skewer is the thing the undo step
+        // names (the kit's light hugs the picture whose wordId is the step's key: the whole skewer, handle to tip, with its pieces)
+        sk.wordId = "undo";
       };
       hit = S.track(S.add.zone(z.X(BOARD.x), z.Y(SKY - 40), z.L(170), z.L(560)).setDepth(D.fx + 3));
       fresh();
@@ -150,6 +154,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       line.poke = line.poke || poke;
       // said as the order said it: "Ba lakri gos." (the skewer's `unit` word before the kind)
       const unitOf = (w) => (SK.cfg().unit ? [SK.cfg().unit, w] : [w]);
+      // STD-D2-05 (the leak test, non-negotiable 4): once the deciding word (the kind, or a mix's piece) is past support, no hint says
+      // it and no bowl glows for it, unless it is study (guided); the kit's rule (Onboard.hintHides on the word's stage)
+      const hides = (p) => {
+        const O = global.Onboard;
+        const w = SK.kindOfWord(p.w) === "mixed" ? p.id : p.w;
+        return !!(O && O.hintHides && O.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(w) : null, study: !!z.guided }));
+      };
       const hintLine = (p) => (SK.kindOfWord(p.w) === "mixed" ? Lang.wordLine(p.id) : Lang.bare(Lang.phrase(Lang.countParts(want[p.w], p.w).flatMap((x) => (typeof x === "string" ? unitOf(x) : [x])))));
 
       /* a piece onto the skewer, from the tip */
@@ -170,6 +181,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const e = exp && exp.id ? exp.id : null;
           z.listen(false, e ? `${id} instead of ${e}` : `${id}, not in the order`);
           if (!z.guided) Cook.markMiss(e || id);
+          if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong(); // (STD-D2-04: a wrong move brings every waiting hint at once)
           if (!z.quiet) {
             // level 1: it bounces back to its bowl (the one gentle correction)
             S.wiggle(sk);
@@ -264,6 +276,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // it moves to the rack (upright, bridging the rails), then the next one starts on the board
           const j = doneRow.length;
           doneRow.push(sk);
+          sk.wordId = null; // (done: no longer the board's skewer)
           sk.setDepth(D.item + 0.5 + j * 0.01);
           if (rack.v3) {
             // v3 (K9): it lies along its drawn place in the rack's picture, then the picture holds it
@@ -328,12 +341,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // page (NaniGuide.idleMs, the clock the shared stepper uses), not only from the last piece tapped: a tap on the card's
           // face (a replay) or anywhere else restarts it too (it came 9.2 s after the replay at L3, which waits 11 s)
           const quiet = G && G.idleMs ? Math.min(idle, G.idleMs()) : idle;
+          const hidden = hides(p);
           if (!hinted && quiet > helpPause()) {
             hinted = true;
-            if (Cook.onHelp) Cook.onHelp("hint");
-            St.nani(hintLine(p)).catch(() => {});
+            if (!hidden) {
+              if (Cook.onHelp) Cook.onHelp("hint");
+              St.nani(hintLine(p)).catch(() => {});
+            }
           }
-          if (!shown && (hinted || stepHelped)) {
+          if (!shown && !hidden && (hinted || stepHelped)) {
             shown = target;
             shownAt = Date.now();
             S.glow(target, true, { now: true });

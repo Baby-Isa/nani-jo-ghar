@@ -154,6 +154,8 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - contract-83 is flaky: re-run once before calling it red.
 
 ## Small decisions
+- 8 Nov ~00:30 (Zafar): chop's levels follow the rules' level table (`data/rules.json` count.games.chop: kinds 1-4, chops 2-4-6-8 by
+  level); chop keeps its swipe ("yes to swipe": STD-02-03 different by design).
 - 7 Nov ~15:00 (the orchestrator, from the standard's F1): the module map is `docs/architecture/module-map.md`; the pans and their
   looks go to kit builder (b) with pouring, the worktop wash and the stone band to (a) with the stove's scene.
 - The S18 row in `docs/sprints/plan.md` is the kitchen family only; the pantry's six opening decisions (in Sprint 17's file) wait for
