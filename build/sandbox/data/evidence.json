@@ -24378,5 +24378,623 @@
    "note": "contract-21 on daar's mistake path: no wrong tap eaten by a first-time light",
    "delay": 0
   }
+ ],
+ "SH-227": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:html.njg-lora>=1",
+    "count:#side .oc-it14>=1"
+   ],
+   "note": "maani-line: the 6 Nov item card (its line above the speaker, the Kutchi over its English) and the 6 Nov type, as chai's",
+   "delay": 0
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:html.njg-lora>=1",
+    "count:#side .oc-it14>=1"
+   ],
+   "note": "daar: the 6 Nov item card (its line above the speaker, the Kutchi over its English) and the 6 Nov type, as chai's",
+   "delay": 0
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:html.njg-lora>=1",
+    "count:#side .oc-it14>=1"
+   ],
+   "note": "mishkaki-grill: the 6 Nov item card (its line above the speaker, the Kutchi over its English) and the 6 Nov type, as chai's",
+   "delay": 0
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:html.njg-lora>=1",
+    "count:#side .oc-it14>=1"
+   ],
+   "note": "eggs: the 6 Nov item card (its line above the speaker, the Kutchi over its English) and the 6 Nov type, as chai's",
+   "delay": 0
+  }
+ ],
+ "SH-240": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#guide"
+   ],
+   "expect": [
+    "count:html.njg-lora>=1"
+   ],
+   "note": "Nani's line in chai's 6 Nov type, on one line where it fits (sekelo's 'Thread them.')",
+   "delay": 0
+  }
+ ],
+ "SH-241": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-begin",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0",
+    "count:#side .oc-it14>=2"
+   ],
+   "note": "daar after the tadka: its spices are 6 Nov item cards in their order, no arrow strip or group box",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0",
+    "count:#side .oc-it14>=2"
+   ],
+   "note": "chaat's layers: 6 Nov item cards in their order",
+   "delay": 0
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0",
+    "count:#side .oc-it14>=2"
+   ],
+   "note": "samosa's kind of several ('trae samosa') and its fillings: 6 Nov item cards, no count box",
+   "delay": 0
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0"
+   ],
+   "note": "sekelo: no skewer strip on its card",
+   "delay": 0
+  }
+ ],
+ "DAAR-44": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-slice",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0",
+    "count:#mission .oc-card=1",
+    "count:#side .oc-it14>=1"
+   ],
+   "note": "the chop: one order card (Nani's), its rows 6 Nov item cards",
+   "delay": 0
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-begin",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0",
+    "count:.oc-big=0"
+   ],
+   "note": "after the tadka's order: no old pop-up's big card, the spices 6 Nov item cards",
+   "delay": 0
+  }
+ ],
+ "SH-238": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": [
+    "count:#done-btn=0",
+    "count:#go-btn=0"
+   ],
+   "note": "maani-line: no tick, next or X button; it moves on by itself when complete",
+   "delay": 0
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-swipe",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": [
+    "count:#done-btn=0",
+    "count:#go-btn=0"
+   ],
+   "note": "samosa: no tick, next or X button; it moves on by itself when complete",
+   "delay": 0
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": [
+    "count:#done-btn=0",
+    "count:#go-btn=0"
+   ],
+   "note": "daar: no tick, next or X button; it moves on by itself when complete",
+   "delay": 0
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": [
+    "count:#done-btn=0",
+    "count:#go-btn=0"
+   ],
+   "note": "chaat: no tick, next or X button; it moves on by itself when complete",
+   "delay": 0
+  }
+ ],
+ "SH-239": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-service",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#side .oc-it14.done>=2"
+   ],
+   "note": "maani L1: both item cards ticked before the serve, each as its maani was made",
+   "delay": 0
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-service",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "eggs: the card ticked before the praise",
+   "delay": 0
+  }
+ ],
+ "SH-242": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-slice",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": [
+    "count:#side .oc-it14 .wc14-pic img>=1"
+   ],
+   "note": "daar's chop card: one onion, never the crate",
+   "delay": 0
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": [
+    "count:#side .oc-it14 .wc14-pic img>=1"
+   ],
+   "note": "sekelo's card: one tomato, never the heap",
+   "delay": 0
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": [
+    "count:#side .oc-it14 .wc14-pic img>=1"
+   ],
+   "note": "eggs' card: the egg, never an empty box",
+   "delay": 0
+  }
+ ],
+ "SEK-24": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": [
+    "count:#side .oc-it14 .wc14-pic img>=1"
+   ],
+   "note": "sekelo L1: the tomato skewer's card shows one tomato, not a crate (the skewer itself: an art row)",
+   "delay": 0
+  }
+ ],
+ "CK-62": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": [
+    "count:#side .oc-it14 .wc14-pic img>=1"
+   ],
+   "note": "eggs L1: the card's picture box holds the fried egg",
+   "delay": 0
+  }
+ ],
+ "SH-235": [
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "help-open",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noClip:.njg-gu-pop"
+   ],
+   "note": "the '?' pop-up whole at 740x320 (shrink, wrap, then scroll; never cut); the 60-word goal fixture waits on a driver",
+   "delay": 0
+  }
+ ],
+ "CHAI-107": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/frozen.mjs --diff --quick"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the last glass's ring heard before the praise (sfx/glass on every page of the frozen diff)",
+   "delay": 0
+  }
+ ],
+ "SAM-31": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0",
+    "count:#side .oc-it14>=2"
+   ],
+   "note": "samosa L1: its card is 6 Nov item cards, no count box",
+   "delay": 0
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-item:not(.oc-items14)=0",
+    "count:#side .oc-it14>=2"
+   ],
+   "note": "samosa L1: its card is 6 Nov item cards, no count box",
+   "delay": 0
+  }
+ ],
+ "SEK-25": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "sekelo's card today: a row of piece cards per mixed skewer (s19-cards), one card per plain skewer kind | waits: Sekelo's order: four item cards per skewer, one per piece, ticking as each goes on, and the headline naming the dish (its words wait on Mum, LNG-24): the counting rule and one card per thing wait on Zafar and Mum (s19-cards: out of scope)",
+   "delay": 0
+  }
+ ],
+ "CK-64": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "eggs' card today: one card per person's ask, its picture the egg (CK-62) | waits: Eggs' order: 'I want two fried eggs' and one card per egg with no number (Q1's principle, waiting on Zafar and Mum; s19-cards: out of scope)",
+   "delay": 0
+  }
+ ],
+ "DAAR-45": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "daar's own stir today (its dial) | waits: One stir in the kitchen kit for daar and the stir game (out of scope for s19-cards: the next builder)",
+   "delay": 0
+  }
  ]
 }

@@ -5514,6 +5514,7 @@
       "daal-dry"
      ],
      "files": [
+      "assets/cook/items/veg-*-whole-t.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/tool-ladle-t.webp",
@@ -5539,6 +5540,7 @@
       "chilli"
      ],
      "files": [
+      "assets/cook/items/veg-*-whole-t.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/v3/chaat/*",

@@ -2408,7 +2408,8 @@
           // the sidebar card's face is the replay (it is outside the pop-up); a tap on the play area lands everything at once
           // (SH-157: on the central rules, a tap on a bubble, the cog or its menu does its own thing and never skips:
           // global.Rules.skips(target), through the pop-up's zones)
-          zones: s14 && !!global.Rules && typeof global.Rules.skips === "function",
+          // (a part revealed mid-station, opts.only, is not the order's start: its tap is the old reveal's, no skip zones or skip note)
+          zones: !only && s14 && !!global.Rules && typeof global.Rules.skips === "function",
           // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
@@ -2450,7 +2451,7 @@
       }
       // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
       // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
-      if (tapAt && s14) {
+      if (tapAt && s14 && !only) {
         const left = document.querySelectorAll("#mission .oc-row.oc-away, .wc14-pop, .wc14-flyer").length;
         try {
           if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-skip", { step: String(Date.now() - tapAt), by: `left:${left}` });
@@ -3056,11 +3057,11 @@
    * station's own Kutchi (its count, dotted where the level dots it), its English by the level (the central rules), the speaker.
    * o: html (the Kutchi), en, rec (still to record), done, no, key, say (the speaker's voice).
    */
-  UI.itemPart = function (id, { html = "", en = "", rec = false, done = false, no = false, key = null, say = null } = {}) {
+  UI.itemPart = function (id, { html = "", en = "", rec = false, done = false, no = false, key = null, say = null, size = 96 } = {}) {
     const RL = global.Rules ? global.Rules.level((mission && mission.level) || 1) : { cardEnglish: true, cardPicture: true };
     const newWord = Cook.chipWord ? Cook.chipWord(id) : false;
     const src = wcPicSrc(id);
-    const pic = src ? thumbOf(Cook.v(src), 96) : null;
+    const pic = src && size < 200 ? thumbOf(Cook.v(src), size) : null;
     return {
       label: html,
       done: !!done,
