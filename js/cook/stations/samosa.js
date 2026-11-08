@@ -263,13 +263,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
   /** The shelf: the fillings as top-down heaps on the band, no bowls (S2 / Q2), a chip under each (§4). */
   function shelf(z, S, ids, level) {
-    const n = ids.length;
-    const pitch = Math.min(PITCH, (1600 - 190 - 60) / Math.max(1, n));
-    const width = n * pitch;
-    const x0 = Math.max(30, (1600 - 190 - width) / 2); // clear of the tick, bottom right
+    // the row laid out by the shared kit's shelf (Shelf.slots, module map piece 9): one group across grid.shelfSpan (clear of the
+    // tick, bottom right), centred, each slot the pitch or less
+    const { slotW: pitch, x: at } = global.Shelf.slots([ids], { span: GRID.shelfSpan, pitch: PITCH, groupGap: 0 });
     const items = {};
-    ids.forEach((id, i) => {
-      const x = x0 + pitch * (i + 0.5);
+    ids.forEach((id) => {
+      const x = at[id];
       const w = Math.min(HEAP_W, pitch - 26);
       const key = `sv3-heap-${id}`;
       let img;
@@ -504,7 +503,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SH-196, STD-D1-08 (the kitchen kit's reveal lessons, Cook.Coach.lessons, piece 14): once the order has landed and before the
     // first spoon, the dotted word then the blurred picture, each once per player (once a round for the New player); the board
     // waits, and the first-time coach starts after it (its first thing to point at is the next pick's)
-    if (!retry && Cook.Coach && Cook.Coach.firsts && Cook.Coach.lessons) await Cook.Coach.lessons({ gate: Cook.Coach.firsts("samosa", { round: new Set() }), ctx });
+    const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("samosa", { round: new Set() }) : null;
+    if (!retry && gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx });
     let active = null;
     // (the test hook focus, flow.js: the strip's filling corner, where each spoonful lands and puffs; CK-27's filmstrip)
     Cook.focusBox = () => {
@@ -666,6 +666,35 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       if (changed && UI.mission.refresh) UI.mission.refresh();
     };
+    /*
+     * STD-D1-10 (the kitchen kit's next vessel, Cook.Coach.nextLight, piece 13; kitchen.md: "the next-pastry light"): the first time
+     * a second strip is needed, once the first holds what was asked, a light round the next empty strip (after the kit's breath,
+     * Onboard.WAIT.nextVessel) until a strip is tapped or the tick; once per player (the first-time gate's "next-strip").
+     */
+    let nextStrip = null;
+    const stripRight = (x) => {
+      const w = wantOf(blockOf(x) || 1);
+      return Object.keys(w).every((id) => (x.got[id] || 0) === w[id]) && Object.keys(x.got).every((id) => !(x.got[id] > 0) || w[id]);
+    };
+    const pageBox = (o) => {
+      if (!o || !o.active || !UI.worldToScreen) return null;
+      const b = o.getBounds();
+      const a = UI.worldToScreen(b.x, b.y);
+      const c = UI.worldToScreen(b.right, b.bottom);
+      return [a.x, a.y, c.x - a.x, c.y - a.y];
+    };
+    const nextStripSoon = (done) => {
+      if (nextStrip || !gate || !Cook.Coach.nextLight || graded || filledOf().length !== 1 || !needBlock() || !stripRight(done)) return;
+      const nextEmpty = () => strips.find((x) => x !== done && !x.order.length);
+      nextStrip = Cook.Coach.nextLight({
+        target: () => pageBox(nextEmpty()),
+        round: false,
+        ok: () => active === done && !graded && !!needBlock() && stripRight(done) && !!nextEmpty() && gate.first("next-strip"),
+        quitIf: () => active !== done || graded,
+        who: "strip",
+        note: "samosa:s14-light",
+      });
+    };
     for (;;) {
       markMade();
       const r = await pick();
@@ -701,6 +730,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const mound = await into;
         if (mound && mound.active) mound.tapReady = true;
         z.progress({ filled: id, n: sheet.got[id] });
+        nextStripSoon(sheet);
         continue;
       }
       if (!r.done) continue;
@@ -785,6 +815,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (sayOrder) await Promise.race([UI.personSay(who, { line: () => orderLine(ladderOf(ctx)), hide: St.hideKnown(ctx) }), Cook.wait(8000)]);
     }
     Cook.undoAt = null;
+    if (nextStrip) nextStrip.stop();
     // SAM-24: the fill closes now, for every strip at once: each kind's rows tick together, its samosas all made
     steps.done();
     blocks.forEach((b) => {

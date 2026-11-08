@@ -75,11 +75,15 @@
   }
  },
  "grid": {
-  "_about": "Where samosa's things sit, in the 1600x900 design box (chai v2's grid; the band is the bottom 30%, St.SHELF). heapY, chipY, pitch, heapW: the heaps on the band and their pills (SH-112: a quarter bigger, centred between the band's top gap and the chips). board: the house board (S6; board.webp is 1397 x 847, so h = w x 847 / 1397), bigger for six strips (SAM-25, P43) and its foot above the band. plate: where the folded ones wait (S10). strips: six at every level (SAM-25); stripH: a strip's height at full size; ppu: the fold's canvas px per strip height. fry (S17, S19, Q9): the wide hob's scale and middle, the karahi's body radius (237: at 270 its rim ran over the knob; SH-112: 5% smaller), the plate right of the hob, the raw ones' thalis on the band. oil: a samosa's size in the oil and where they float (degrees round the middle, r a fraction of the oil's radius), by how many fry (the first whose upTo holds; SAM-14: a spot plus half its size stays within 0.8 of the oil).",
+  "_about": "Where samosa's things sit, in the 1600x900 design box (chai v2's grid; the band is the bottom 30%, St.SHELF). heapY, chipY, pitch, heapW, shelfSpan: the heaps on the band and their pills, the row centred in the span (clear of the tick, bottom right; the shared kit's Shelf.slots) (SH-112: a quarter bigger, centred between the band's top gap and the chips). board: the house board (S6; board.webp is 1397 x 847, so h = w x 847 / 1397), bigger for six strips (SAM-25, P43) and its foot above the band. plate: where the folded ones wait (S10). strips: six at every level (SAM-25); stripH: a strip's height at full size; ppu: the fold's canvas px per strip height. fry (S17, S19, Q9): the wide hob's scale and middle, the karahi's body radius (237: at 270 its rim ran over the knob; SH-112: 5% smaller), the plate right of the hob, the raw ones' thalis on the band. oil: a samosa's size in the oil and where they float (degrees round the middle, r a fraction of the oil's radius), by how many fry (the first whose upTo holds; SAM-14: a spot plus half its size stays within 0.8 of the oil).",
   "heapY": 742,
   "chipY": 860,
   "pitch": 182,
   "heapW": 160,
+  "shelfSpan": [
+   30,
+   1380
+  ],
   "board": {
    "x": 640,
    "y": 322,
