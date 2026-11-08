@@ -58,10 +58,10 @@ function held(list, i, tEnd) { const n = list[i + 1]; return (n ? n.t : tEnd) - 
 
 export const S19_CHECKS = {
   "contract-100": { item: "kit-card", title: "chai's 6 Nov card and type on every order card", how: "Cook flows, in a station (the stage samples): every s19card sample (lib/contract-s19.mjs S19_HOOK: the side panel's order cards and the order pop-up) must show the 6 Nov type (<html class=\"njg-lora\">) and no old card piece: an old item (.oc-item that is not the 6 Nov row, .oc-items14), a count box (.oc-box), a top strip (.oc-strip), the old skewer or group box (.oc-skewer, .oc-group). One is a break, once per piece per page (SH-227, SH-241, Zafar 8 Nov: 'the relic of the old order card'; the 6 Nov card was on only for an all-chai order, ui.js applyType)." },
-  "contract-101": { item: "nani-box", title: "Nani's box with its drop-down, her line on one line where it fits", how: "Cook flows: in each station that opens a step (life step-open), Nani's box (#guide) on screen must be the kit's s14 box (.ng-s14) and its drop-down (.ng-arrow) must show at least once before the station ends; a station without it is a break (SH-149; Zafar 8 Nov, maani and chaat: 'Nani only has a drop down', 'the missing drop-down'). Her line (.ng-line) on two or more lines while the same words at the floor size (the larger of 14 px and its --fit-min) fit one line of its box, held 300 ms, is a break too (SH-240: 'it could have easily fit on one line')." },
-  "contract-102": { item: "kit-light", title: "the kit's light only: no game's own ghost finger or glow", how: "Cook flows, in a station: a ghost finger the game plays itself (Lifecycle ghost from Cook's S.ghost, which logs where it points: the mechanics' roll, stir, knead, fold and maani's tap ghosts) is a break, once per step name; the kit's light brings its own finger (Onboard). A glowing picture (njgTest.cook.glowing()) whose middle is outside every light box on screen, held 300 ms, is the game's own glow and a break (Fable's maani flaw 3: a gold ring round the tawa while the light is on the dough; s18 cause 7: mechanics keep their own ghost fingers; MAA-20 'just one finger')." },
+  "contract-101": { item: "nani-box", title: "Nani's box with its drop-down, her line on one line where it fits", how: "Cook flows: in each station that opens a step (life step-open), Nani's box (#guide) on screen must be the kit's s14 box (.ng-s14) and its drop-down (.ng-arrow) must show at least once before the station ends; a station without it is a break (SH-149; Zafar 8 Nov, maani and chaat: 'Nani only has a drop down', 'the missing drop-down'). Her line (.ng-line) on two or more lines while the same words at the floor size (the larger of 14 px and its --fit-min) fit one line of its box, held 300 ms, is a break too (SH-240: 'it could have easily fit on one line'); a grey to-record English line is not judged (it is going away: Zafar, 6 Nov, SH-224)." },
+  "contract-102": { item: "kit-light", title: "the kit's light only: no game's own ghost finger or glow", how: "Cook flows, in a station: a ghost finger the game plays itself (Lifecycle ghost from Cook's S.ghost, which logs where it points: the mechanics' roll, stir, knead, fold and maani's tap ghosts) is a break, once per step name; the kit's light brings its own finger (Onboard). A glowing picture (njgTest.cook.glowing()) whose middle is outside every light box on screen, held 300 ms, is the game's own glow and a break (a kit piece's own glow, kit-*, the pan's heat ring at its window, is the kit's) (Fable's maani flaw 3: a gold ring round the tawa while the light is on the dough; s18 cause 7: mechanics keep their own ghost fingers; MAA-20 'just one finger')." },
   "contract-103": { item: "no-buttons", title: "no tick, next or X button while a station plays", how: "Cook flows, in a station: a tick, next or close button on screen (#done-btn, #go-btn, #samosa-next, .njg-done, .njg-next, [data-go], or a button reading ✓, →, × or labelled done, next or close; not the end screen, the order pop-up, the grown-ups' ? pop-up or the cog) is a break, once per button per page (SH-238, Zafar 8 Nov: 'no ticks in any of the games anymore ... you can't have an X button'). The flow still has to reach its end (the sandbox's own check)." },
-  "contract-104": { item: "card-pic", title: "every item card has the item's own picture", how: "Cook flows: every 6 Nov item card on screen (.wc14 in the side panel or the order pop-up) must show a picture that loaded (an <img> with a source and a natural width, or a background image), and never the shelf's crate, heap, pile, sack or basket (its file name). A blank picture or a crate is a break, once per word per page (SH-242, Zafar 8 Nov: 'it's a crate of onions but it should be one onion'; SEK-24; Fable's eggs flaw 2, the blank card)." },
+  "contract-104": { item: "card-pic", title: "every item card has the item's own picture", how: "Cook flows: every 6 Nov item card on screen (.wc14 in the side panel or the order pop-up) must show a picture that loaded (an <img> with a source and a natural width, or a background image; a picture the card hides at L3, the lesson's eye in its place, only needs its file), and never the shelf's crate, heap, pile, sack or basket (its file name). A blank picture or a crate is a break, once per word per page (SH-242, Zafar 8 Nov: 'it's a crate of onions but it should be one onion'; SEK-24; Fable's eggs flaw 2, the blank card)." },
   "contract-105": { item: "light-whole", title: "the first-time light is whole round its thing and centred on it", how: "Cook flows: every light box on screen, once it has stood 300 ms (s19lit: the kit's drawn holes and the thing under each box's middle: a picture with a word and its pill, else the smallest canvas picture there, else an item card). Round a picture with its pill: the thing whole inside the box (1 px of rounding) and the box's middle within 4 px of the thing's, unless the box meets the screen's edge or stops short of a neighbour on that side (contract-92's rule); a light on a card more than 2.5 times the card's area frames a region (STD-E2-08). Round a picture with no word (a pan, a board): the box covers at least 60% of it and its middle is within a fifth of the picture's size of the picture's middle (a handle may poke out). A light only partly round its thing, or off its middle, is a break, once per thing per page (CK-63, Zafar 8 Nov: 'it's half on the handle ... way too small and it's off-centered like how can that pass'; s18 §6 Q6: contract-92 asked only about the neighbours). A light on a part smaller than a quarter of its thing is contract-97's." },
   "contract-106": { item: "light-goes", title: "the light goes as the child starts the move", how: "Cook flows: a real press (the input sample, a trusted pointerdown) inside a light box on screen starts the move it shows; within 300 ms (plus the probe's 100 ms sampling) that box must be gone (no box, or none round the press). A box still round the press after that is a break, once per page (SH-236, Zafar 8 Nov, maani's roll: 'I start rolling the box should go away')." },
   "contract-107": { item: "hop-shelf", title: "only shelf items hop", how: "Cook flows: every glowing picture that hops (njgTest.cook.glowing() bounce) must stand in the shelf band (its foot in the bottom 30% of the canvas, js/shared/shelf.js Shelf.BAND); a hop off the shelf (a pan, a board, the dough on the board) is a break. A shelf item lit by a light box of its own (its middle inside one) for 300 ms without its hop is a break too. Once per thing per page (SH-237, Zafar 8 Nov: 'items in the bottom bar bounce up and down')." },
@@ -105,7 +105,7 @@ export function check101(r, tl, add) {
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   for (let i = 0; i < gs.length; i++) {
     const e = gs[i];
-    if (!e.shown || !(e.lines > 1) || !e.fits1 || !inStation(st, e.t)) continue;
+    if (!e.shown || !(e.lines > 1) || !e.fits1 || e.rec || !inStation(st, e.t)) continue;
     if (held(gs, i, tEnd) < HOLD_MS) continue;
     add("contract-101", e.t, `Nani's line "${(e.text || "").slice(0, 60)}" is on ${e.lines} lines though it fits one line of ${Math.round(e.room)} px at ${e.floor} px (${Math.round(e.need)} px)`);
     return;
@@ -131,7 +131,8 @@ export function check102(r, tl, add) {
     if (!inStation(st, e.t) || held(glows, i, tEnd) < HOLD_MS) continue;
     // (a light that comes or goes within the hold is the same help: judged at the hold's end too)
     const hs = holesAt(e.t), hs2 = holesAt(e.t + HOLD_MS);
-    const out = (e.list || []).find((g) => { const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)); });
+    // (a kit piece's own glow, its texture named kit-: the pan's heat ring at its window, is the kit's, not the game's)
+    const out = (e.list || []).find((g) => { if (/^kit-/.test(g.key || "")) return false; const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)); });
     if (!out || seen.has("glow:" + out.key)) continue;
     seen.add("glow:" + out.key);
     add("contract-102", e.t, `${out.key} glows ${fmt(box(out.box))} outside the kit's light${hs.length ? ` (the light is at ${hs.map(fmt).join(" ")})` : " (no light up)"}: the game's own glow`);
@@ -161,7 +162,7 @@ export function check104(r, tl, add) {
   for (const e of ev(tl, "s19card")) {
     for (const p of e.pics || []) {
       if (seen.has(p.word)) continue;
-      if (!p.src || !p.ok) { seen.add(p.word); add("contract-104", e.t, `the item card "${p.word}" has no picture${p.src ? ` (${p.src} did not load)` : ""}`); continue; }
+      if (!p.src || (!p.ok && !p.hidden)) { seen.add(p.word); add("contract-104", e.t, `the item card "${p.word}" has no picture${p.src ? ` (${p.src} did not load)` : ""}`); continue; }
       if (CRATE.test(p.src.split("/").pop())) { seen.add(p.word); add("contract-104", e.t, `the item card "${p.word}" shows the shelf's ${CRATE.exec(p.src.split("/").pop())[1]} (${p.src}), not one of the thing`); }
     }
   }
@@ -364,8 +365,9 @@ function s19hook() {
       let src = img ? (img.getAttribute("src") || "") : "";
       let ok = !!(img && img.complete && img.naturalWidth > 0);
       if (!img) { const bg = getComputedStyle(slot).backgroundImage || ""; const m = /url\(["']?([^"')]+)/.exec(bg); if (m) { src = m[1]; ok = true; } }
-      // (a hidden picture, the L3 blur's eye, is still the picture: only its file is read)
-      pics.push({ word, src: src.replace(location.origin + "/", "").split("?")[0], ok });
+      // (a picture the card hides, the L3 lesson's eye in its place, is not loaded yet: only its file is read then)
+      const hidden = !!(w.closest(".wc14-hide-pic") || (img && !shown(img)));
+      pics.push({ word, src: src.replace(location.origin + "/", "").split("?")[0], ok, hidden });
     }
     return { cards: roots.length, lora: document.documentElement.classList.contains("njg-lora"), old: [...old], pics: pics.slice(0, 30) };
   };
@@ -393,7 +395,10 @@ function s19hook() {
       const say = line.parentElement || line;
       const ps = getComputedStyle(say);
       const room = say.clientWidth - (parseFloat(ps.paddingLeft) || 0) - (parseFloat(ps.paddingRight) || 0);
-      Object.assign(out, { text: probe.textContent.slice(0, 80), floor, need: Math.round(need), room: Math.round(room), fits1: need <= room - 1 });
+      // (a grey to-record English line is going away, Zafar 6 Nov, SH-224: "I don't care about the grey grown up adult lines")
+      const REC = ".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line";
+      const rec = !!(line.closest(REC) || line.querySelector(REC));
+      Object.assign(out, { text: probe.textContent.slice(0, 80), floor, need: Math.round(need), room: Math.round(room), fits1: need <= room - 1, rec });
     }
     return out;
   };
@@ -526,9 +531,9 @@ function s19hook() {
       if (window.__njgFilm) return;
       ghosts();
       const c = safe(cardsNow, null);
-      if (c && !same("s19card", [c.cards > 0, c.lora, c.old, c.pics.map((p) => p.word + p.src + p.ok)])) emit({ k: "s19card", ...c });
+      if (c && !same("s19card", [c.cards > 0, c.lora, c.old, c.pics.map((p) => p.word + p.src + p.ok + p.hidden)])) emit({ k: "s19card", ...c });
       const gd = safe(guideNow, null);
-      if (gd && !same("s19guide", [gd.shown, gd.s14, gd.arrow, gd.lines, gd.fits1, gd.text])) emit({ k: "s19guide", ...gd });
+      if (gd && !same("s19guide", [gd.shown, gd.s14, gd.arrow, gd.lines, gd.fits1, gd.text, gd.rec])) emit({ k: "s19guide", ...gd });
       const gl = safe(glowsNow, null);
       if (gl && !same("s19glow", gl.list.map((x) => [x.key, x.bounce, x.box.map((v) => Math.round(v / 8))]))) emit({ k: "s19glow", ...gl });
       const bt = safe(buttonsNow, []);

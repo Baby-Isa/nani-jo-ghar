@@ -96,7 +96,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (c.status !== 0) { console.error(c.stderr); process.exit(1); }
   const man = JSON.parse(readFileSync(join(out, "manifest.json"), "utf8"));
   let breaks = [];
-  try { breaks = (JSON.parse(readFileSync(join(runDir, "contract.json"), "utf8")).breaks || []).map((b) => `${b.check} ${b.flow} @ ${b.size} ${b.at}s: ${b.measured}`); } catch (e) { breaks = ["(no contract.json: the run's contract was not read)"]; }
+  try { const cj = JSON.parse(readFileSync(join(runDir, "contract.json"), "utf8")); breaks = (Array.isArray(cj) ? cj : cj.breaks || []).map((b) => `${b.check} ${b.flow} @ ${b.size} ${b.at}s: ${b.measured}`); } catch (e) { breaks = ["(no contract.json: the run's contract was not read)"]; }
   const rubricFile = join(ROOT, "docs/process/eye-judge-rubric.md");
   const rubric = existsSync(rubricFile) ? rubricByMoment(readFileSync(rubricFile, "utf8")) : {};
   const batch = "judge-batch.md", verdicts = relative(ROOT, join(out, "judge-batch.verdicts.md"));
