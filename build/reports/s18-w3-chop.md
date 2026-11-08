@@ -11,7 +11,8 @@ Opus, high. Commit `df51c907`.
 - `js/cook/mechanics/chop.js`: new `stepOpen` param; the mechanic opens the step itself only when its own pop-up came first.
 - `data/cook.json`: chaat's chop step `"do": "chop-game"`; `mechanics.assemble.levels[0].flyMs` deleted (chaat.json has it).
 - `js/cook/index.js`: `PARTS["chop-game"] = PARTS.chop`.
-- Chaat's chop board is now the chop game's white marble (was wood).
+- `a0f963c0`: chop-game throws the rules' decoys exactly (`exactDecoys`); contract-37 at recipe:chaat L1 (two kinds, two decoys)
+  was new with chop-game (608f531e passes). Now 1/2/3/4 (run c3: L1 two kinds, one decoy). Daar keeps "at least".
 
 ## Proof
 
@@ -23,7 +24,6 @@ Opus, high. Commit `df51c907`.
 - `checks.mjs`: static, words, leak, bump, specs, docs, fixlist, recordings ok; unit 744 pass, 3 fail (the art-block tests: no `sources/`).
 - No BEFORE and no evidence run (orchestrator's override); one size only.
 
-## Ask (a file I don't own)
+## Ask
 
-`js/cook/flow.js` `stationsOf`: add `.map((k) => (k === "chop-game" ? "chop" : k))` before the filter, so chaat's greeting
-still prefetches chop's pictures (the board's begin loads them either way).
+Done by the orchestrator (flow.js maps chop-game to chop; chop-game's view back to wood).
