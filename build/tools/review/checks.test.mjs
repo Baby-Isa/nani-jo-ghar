@@ -43,3 +43,19 @@ test("a browser step takes the one lock unless an ancestor flock holds it (a nes
   assert.equal(underLock(BROWSER_LOCK, (p) => { if (!(p in procs)) throw new Error("gone"); return procs[p]; }), true);
   assert.equal(underLock("/tmp/other.lock", (p) => { if (!(p in procs)) throw new Error("gone"); return procs[p]; }), false);
 });
+
+test("pillcheck waits for the pills at least twice the slowest order intro (27 s at 1920x1080 L4; the 30 s wait failed one run in three)", () => {
+  const src = readFileSync(new URL("./pillcheck.mjs", import.meta.url), "utf8");
+  const ms = +(/export const PILL_WAIT_MS = (\d+)/.exec(src) || [0, 0])[1];
+  assert.ok(ms >= 54000, `PILL_WAIT_MS ${ms}`);
+  assert.match(src, /while \(Date\.now\(\) - t0 < PILL_WAIT_MS\)/);
+});
+
+test("stdids --check: an extra ID (fine if meant) is a note, not a failure; the real problems still fail", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const root = new URL("../../../", import.meta.url).pathname;
+  const r = spawnSync(process.execPath, ["build/tools/review/stdids.mjs", "--check"], { cwd: root, encoding: "utf8" });
+  const real = (r.stdout.match(/^  (?!note: ).*$/gm) || []);
+  assert.equal(r.status === 0, real.length === 0, r.stdout.slice(0, 400));
+  assert.doesNotMatch(r.stdout, /^  [^n].*fine if meant/m);
+});

@@ -155,13 +155,16 @@ if (a.has("check")) {
   const fromFrags = !!a.val("fragments");
   const rows = fromFrags ? fragFiles().flatMap((f) => parseRows(read(f)).map((r) => ({ ...r, file: f }))) : parseRows(read("docs/design-language/standard/placement.md")).map((r) => ({ ...r, file: "placement.md" }));
   const problems = [];
+  // (s19-checks audit: an extra, an ID placed that no source lists, is "fine if meant" in the tool's own words: a note, never a
+  // failure; 38 of them kept --check red on 8 Nov, so a real problem could not be seen among them)
+  const extras = [];
   const seen = new Map();
   for (const r of rows) (seen.get(r.id) || seen.set(r.id, []).get(r.id)).push(r);
   for (const r of rows) {
     if (!KINDS.includes(r.kind)) problems.push(`${r.id}: "${r.kind}" is not one of ${KINDS.join(", ")} (${r.file})`);
     if (r.kind === "rule" && !cites(r.where).length) problems.push(`${r.id}: placed as a rule but Where names no STD- rule (${r.file})`);
     for (const id of cites(r.where)) if (!defs.has(id)) problems.push(`${r.id}: cites ${id}, which no page in docs/design-language/standard/ defines yet (${r.file})`);
-    if (!src.has(r.id)) problems.push(`${r.id}: not a source ID (a typo, or an extra: fine if meant) (${r.file})`);
+    if (!src.has(r.id)) extras.push(`${r.id}: not a source ID (a typo, or an extra: fine if meant) (${r.file})`);
   }
   for (const [id, files] of defs) if (files.length > 1) problems.push(`${id}: defined twice (${files.join(", ")})`);
   if (!a.has("mine")) {
@@ -169,8 +172,9 @@ if (a.has("check")) {
     if (!fromFrags) for (const [id, rs] of seen) if (rs.length > 1) problems.push(`${id}: placed ${rs.length} times`);
   }
   const unplaced = [...src.keys()].filter((id) => !seen.has(id)).length;
-  console.log(`${src.size} source IDs; ${seen.size} placed in ${fromFrags ? "the fragments" : "placement.md"}; ${unplaced} unplaced; ${defs.size} rules defined; ${problems.length} problem(s)`);
+  console.log(`${src.size} source IDs; ${seen.size} placed in ${fromFrags ? "the fragments" : "placement.md"}; ${unplaced} unplaced; ${defs.size} rules defined; ${problems.length} problem(s); ${extras.length} extra(s), noted`);
   for (const p of problems) console.log(`  ${p}`);
+  for (const p of extras) console.log(`  note: ${p}`);
   process.exit(problems.length ? 1 : 0);
 }
 

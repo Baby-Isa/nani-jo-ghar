@@ -11,6 +11,7 @@
  * bump   build/bump_version.py --dry-run (every file it would stamp; writes nothing)
  * specs  evidence.mjs --lint-specs: the static pass over build/sandbox/data/evidence.json (no browser; new flags only, a baseline holds the known ones)
  * docs   build/tools/review/docs.mjs (decision 99): the docs' size limits and unique IDs
+ * stdids build/tools/review/stdids.mjs --check: every source ID placed once in the standard's placement.md, every cited rule defined
  * fixlist  every open row on the fix list starts its status with one label (to fix: code / to fix: check / waiting on Zafar / Mum / art, before app store; Zafar, 21 Oct)
  * recordings  build/tools/ops/recordings.mjs --check (Zafar, 20 Oct): docs/language/recording-sheet.md is current (regenerate: node build/tools/ops/recordings.mjs)
  * art    build/tools/art/artcolour.py --changed (Fable's view, 6 Nov): the colour and look checks on the pictures changed since the merge-base
@@ -34,7 +35,7 @@ import { args, help, ROOT, locked } from "./lib/common.mjs";
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
 const FULL = a.has("full");
-const STEPS = ["unit", "words", "static", "leak", "bump", "specs", "docs", "recordings", "fixlist", "art", "size", "load"];
+const STEPS = ["unit", "words", "static", "leak", "bump", "specs", "docs", "stdids", "recordings", "fixlist", "art", "size", "load"];
 // the steps a run does: --only's, else every step but the browser's load check unless --browser or --full
 export const pick = ({ only = null, full = false, browser = false } = {}) => (only ? only.split(",") : STEPS.filter((s) => s !== "load" || full || browser));
 const only = pick({ only: a.val("only"), full: FULL, browser: a.has("browser") });
@@ -105,6 +106,11 @@ steps.specs = async () => {
 steps.docs = async () => {
   const r = await go(process.execPath, ["build/tools/review/docs.mjs"]);
   return line("docs", r.status === 0, r.stdout.trim().split("\n").pop() || `docs.mjs exited ${r.status}`, r.status !== 0 ? (r.stdout.match(/^FAIL .*$/gm) || []).slice(0, 10) : []);
+};
+steps.stdids = async () => {
+  // the standard's mechanical ID check (it ran only by hand "after a change to the standard folder"; s19-checks: 1 s, so it runs itself)
+  const r = await go(process.execPath, ["build/tools/review/stdids.mjs", "--check"]);
+  return line("stdids", r.status === 0, (r.stdout.split("\n")[0] || `stdids.mjs exited ${r.status}`).trim(), r.status !== 0 ? (r.stdout.match(/^ {2}(?!note: ).*$/gm) || []).slice(0, 8).map((l) => l.trim()) : []);
 };
 steps.fixlist = async () => {
   const { unlabelled } = await import("../ops/publishgate.mjs");

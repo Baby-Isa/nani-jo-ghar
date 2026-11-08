@@ -29,17 +29,12 @@ batch, it does not block alone.
    ```
 3. Run the sandbox command it printed (one browser at a time: `flock -w 1800 ... timeout`). Between fix rounds: only the changed flows, at every size with `--contract`. The full gate (`run.mjs --gate`) runs once, just before a publish (Zafar, 20 Oct).
 3b. **Cook's mount test** whenever the change touches `js/cook/**` or `js/shared/buttons.js` (COOK-16): `COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser-all.lock timeout 600 node build/test_cook_mount.mjs`. Its result goes in the review report. Until the shared sweep handles the shared kits' own leftovers (one sfx AudioContext, the conversations / voice safety timers, the kits' one-time page listeners), those lines are known: watch only that the counts stop growing from mount to mount.
-4. Only what changed:
-   ```
-   node build/tools/review/shotdiff.mjs --run <run id>
-   ```
-   Open `<run>/sheets/changed.png` and look at every shot, zoom ×2.
+4. (Retired 8 Nov, s19-checks audit: `shotdiff.mjs` had no approved run since Sprint 8, so it showed every shot as new; the look is judged beside chai by `sidebyside.mjs` instead. Its code stays.)
 5. Write flaws first: clipping, spacing, padding, alignment, overlap, English for the child, Kutchi leaks. Then each regression row: still fixed / broken. Then side by side with the mock-up and Zafar's last feedback.
 5b. **Every station touched, at L1-L4.** For each station, recipe or clinic game the change reaches, judge its played frames at **L1-L4 for each station touched** (L1, L2, L3, L4, not one level), in the real run's frames, never the code. In every one, look at: the samosa fold (the flap goes over the filling, in the order the card says: SAM-05) and the go-on button (shown, whole, on the bottom of the screen, doing the same in every station). A station with a level not played has not been reviewed (SH-109, SH-111).
 5c. **Told-before rows get a shot.** Every row in the fix list that came back from his earlier feedback (**told before**: `/feedback` reopened it, or its status says so) is judged on its own shot or evidence sheet in this review, flaws first, even when the change did not touch its screen (SH-116).
 6. Leak and word checks if game logic or words changed: `node build/tools/review/leak.mjs <config>`, `node build/lint/words.mjs`.
 7. Start the report: `node build/tools/review/skeleton.mjs <name> --run <run id>`.
-8. Approve the shots only after looking (and from two runs where timing wobbles): `shotdiff.mjs --approve --also <run2>`.
 
 9. **The evidence loop, before every publish:** every row the sprint touched is proven by the game and judged on small sheets, not just the changed screens.
    ```
