@@ -8,6 +8,13 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 - **Samosa's fry window** (s18-g-samosa): the fry's green lasts only 0.5 s at L3 (the standard's floor is 2 s, STD-B2-05), and L4
   has no fry row of its own. Lengthen L3's green to 2 s and give L4 its own row (shorter than L3, not under 2 s)? Recommendation: yes.
 
+- **Eggs at breakfast** (s18-g-eggs; its gap page `gaps/eggs.md`), five ways it differs from chai's standard. Recommendations:
+  1. The "no" item from L2, as in chai (today L4 only): yes.
+  2. L3 asks fewer eggs than L2: make the counts rise level by level (the rules' level table): yes.
+  3. Cooking gets slower by level: make it quicker by level, as every other game: yes.
+  4. No redo at the table: add chai's redo (the tick and recast): yes.
+  5. No overcooking: keep as different by design (nothing makes a child feel bad): yes.
+
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.
