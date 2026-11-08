@@ -10,6 +10,10 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, unchanged since 20261107T120301Z).
 
+**Update ~06:00: publish ON HOLD.** Zafar saw baking's play screen (a floating bowl, no shelf, a round light): baking, eggs and the
+corn stall are not in chai's kitchen, and others differ. Fable's review and plan: `build/reports/s18-fable-what-went-wrong.md` (a
+kitchen scene in the kit every game must use, structural and side-by-side checks, one more round); his 7 questions there.
+
 **Where things stand (Sun 8 Nov 2026, ~05:15 UK):** Sprint 18 (`docs/sprints/S18-kitchen-family.md`): **waves 1-3 done and merged,
 nothing running; waiting on Zafar's word to publish** (decision 9).
 - **Wave 1:** the kits (stove, pans and pouring, serving, the shelf and pills, lights and lessons, the order's flow); chai on all
