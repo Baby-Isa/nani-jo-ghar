@@ -13,6 +13,25 @@ DAAR-43, SH-235, CHAI-107; Fable's second reader `s18-feedback-1108-second-reade
 rows (§4); the mock's plate and today's flaws (§5); the report's seven questions folded into §6 and Fable's seven scene questions as
 principle 12; two decisions (§7); §8 updated; §9 the plan. Disagreements are said in place.
 
+## In one page (read this first)
+
+- **What went wrong:** chai's newer pieces (the 6 Nov cards, Nani's box with its drop-down) were switched on for chai only; the kit's
+  shelf, scene and light were optional, so most games kept their old ones; and every game was merged on "0 contract breaks" without
+  anyone looking at it beside chai. The checks measured the wrong things; the judging asked the wrong question.
+- **What can be fixed now, no decisions needed:** turn chai's cards on everywhere; remove every tick, next and X button; order cards
+  tick as you go; one shared onboarding light (it hugs the thing and its pill, leaves when the child starts, one finger, only shelf
+  items bounce, the stuck hint everywhere), coded once; delete the old relics; the plain bugs (crate pictures and the rest); a
+  side-by-side check against chai that gates every merge.
+- **What needs principles and target art:** the shelf (option 4; its angle, measured at about 29 degrees in the mock against chai's 7),
+  shadows (yes, half the mock's weight), the marble, top-down boards and pans, each game's layout from mock-ups, samosa's redesign.
+- **The principles (section 6):** shared pieces compulsory, variations live in the shared kit; no ticks or next buttons; one card per
+  thing, no "one"; one order per person where it fits; the onboarding rules; a timing floor; the look.
+- **The plan (section 9, Fable's draft):** two tracks: Zafar's (principles, then mock-ups, then an art run, the critical path) and the
+  chat's (the shared fixes now, then the kit's one scene, then the games two at a time, each merged only beside chai). About six days.
+- **Checks (section 10):** about 25 automated checks for objective things; the rest to an eye judge with a rubric, full-size frames
+  and chai beside. A blind test caught a third to a half of his points and about 25 new ones.
+- **Running now:** ChatGPT mock-up round 1 (free ideas, every gameplay screen; `docs/design-language/art-plans/s18-mocks-chrome-block.txt`).
+
 ## 1. Where things stand
 
 - **Chai** is signed off and still loved ("clean, modern, beautiful"). Three fixes from today (the card's jerk at a person change and the

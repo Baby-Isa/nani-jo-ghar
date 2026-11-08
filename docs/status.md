@@ -10,25 +10,23 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, 20261108T142321Z).
 
-**Where things stand (Sun 8 Nov 2026, ~16:30 UK):** Sprint 18's three waves are live for Zafar's play. He played every kitchen game
-(voice note, transcript `docs/feedback/kitchen-play-2026-11-08-transcript.md`): chai still loved; the others far from chai's look
-and missing shared pieces. **Read first: `build/reports/s18-review-and-direction.md`** (what went wrong, his play by theme and game,
-the look: shelf option 4, shadows, marble, ChatGPT mocks per screen; ten principles to settle; the decisions recorded). Behind it:
-Fable's `s18-fable-what-went-wrong.md` and `s18-fable-look-review.md`.
-- **Chai's three fixes** (the order card's jerk, the item timings, the half-glass ding) are on the branch, frozen diff clean
-  (`build/reports/frozen-diff-chai-tray-202611081519.md`), **not live**: the session's safety check blocked `publish.mjs`; it needs
-  Zafar's explicit go or a permission rule.
-- **His play's rows are in:** `docs/feedback/kitchen-play-2026-11-08.md` (41 points, 27 new rows, 7 reopened); Fable's second reader running
-  (its report goes to build/reports, missing or weakened points, to fold in).
+**Where things stand (Sun 8 Nov 2026, ~19:00 UK):** Sprint 18's games are live for Zafar's play; he played them all (voice note
+`docs/feedback/kitchen-play-2026-11-08-transcript.md`, rows `docs/feedback/kitchen-play-2026-11-08.md`, both readers clean): chai
+loved, the others far from chai. **Read first: `build/reports/s18-review-and-direction.md`** ("In one page" at the top; then what went
+wrong, his play, the look, the principles, Fable's draft plan, the checks-and-judge experiment). Nothing is running in this repo.
+- **Zafar's ChatGPT mock-up round 1** (free ideas, every gameplay screen, chai the reference) is his to run with Claude in Chrome:
+  `docs/design-language/art-plans/s18-mocks-chrome-block.txt` and `sources/art/s18-mocks/refs.zip`; its results come back as chat links.
+- **Chai's three fixes** (the order card's jerk, the item timings, the half-glass ding) are on the branch, frozen diff clean, **not
+  live**: the session's safety check blocked `publish.mjs` twice; it needs his direct "publish chai's fixes to main now" or a
+  permission rule.
 
-**Next, in order:** 1. publish chai's fixes on his word; 2. fold in Fable's second reader; 3. with Zafar, settle the review's ten
-principles (section 6); 4. plan the next round there (the kit's one scene and compulsory shared pieces with a side-by-side check;
-the chai lab for shadows and marble; ChatGPT mocks per screen; an art run; the games two at a time, each merged only beside chai).
+**Next, in order:** 1. publish chai's fixes on his word; 2. look at mock-up round 1 with him; 3. settle the principles (section 6);
+4. agree the plan (section 9) as Sprint 19; 5. start the shared fixes that need no decision while the art runs.
 
 **Starting prompt for a new chat:**
 > First `git fetch origin ccr-31767b7f-rfyrg4` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/s18-review-and-direction.md`. Let's go through its
-> findings and principles together and make the plan; tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/s18-review-and-direction.md` ("In one page" first).
+> Let's go through it together and make the plan; tell me before launching anything new.
 
 ## The fix list
 
