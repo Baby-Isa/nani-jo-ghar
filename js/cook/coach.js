@@ -80,14 +80,53 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   C.target = target;
 
   /* ---------------- the shared kit (Wave 6b) ---------------- */
-  // the ghost's gesture for an expectation: the kit's names
-  const GESTURE = { tap: "tap", swipe: "swipe", roll: "drag", stir: "circle-stir", hold: "hold" };
+  // the ghost's gesture for an expectation: the kit's names (S19, MAA-20: a roll is the kit's "roll", the pin riding under the finger)
+  const GESTURE = { tap: "tap", swipe: "swipe", roll: "roll", stir: "circle-stir", hold: "hold" };
   const rectAround = (t, r) => [t.x - r, t.y - r, 2 * r, 2 * r];
   /** A step's signature: it changes when the child has done the thing (never on movement alone). */
   const sig = (e) => (e ? [e.kind, e.key || "", e.selector || "", Cook.acted || 0, e.kind === "stir" && typeof e.count === "function" ? e.count() : ""].join("|") : "");
+  /**
+   * S19 (MAA-19, SAM-30, CHT-18: a script's steps were spent on whatever came first, so the flip's and the fry's never came): a script
+   * step may say when it comes, `when`: the expectation's coach tag or kind ("roll", "timing"), or {kind, key, coach} (key: a regex
+   * source on the expectation's key), or a list of these; and `each: true` keeps it for each thing of its kind (each samosa into the
+   * pan) until a later step's moment comes. A step with no `when` comes with anything (the old scripts, unchanged). -> bool
+   */
+  C.matches = function (when, e) {
+    if (when == null) return true;
+    if (!e) return false;
+    if (Array.isArray(when)) return when.some((w) => C.matches(w, e));
+    if (typeof when === "string") return e.coach === when || e.kind === when;
+    if (when.coach != null && e.coach !== when.coach) return false;
+    if (when.kind != null && e.kind !== when.kind) return false;
+    if (when.key != null && !new RegExp(when.key).test(String(e.key == null ? "" : e.key))) return false;
+    return true;
+  };
+  /** The thing a step names: the expectation's own (e.thing), else the picture its key names nearest its point (thingOf). */
+  const thingFor = (e) => (e && e.thing && e.thing.active ? e.thing : thingOf(e));
+  /** The other things with a word on the stage (their parts' boxes): the lit box keeps clear of them (SH-230's neighbours). */
+  function neighbours(thing) {
+    const S = Cook.scene;
+    const out = [];
+    if (!S || !S.children) return out;
+    const look = (list) =>
+      (list || []).forEach((o) => {
+        if (!o || !o.active || o.visible === false) return;
+        if (o.list) look(o.list);
+        if (o === thing || o.wordId == null || !o.input || !o.input.enabled) return;
+        const p = C.parts(o);
+        if (!p.length) return;
+        const x0 = Math.min(...p.map((r) => r[0]));
+        const y0 = Math.min(...p.map((r) => r[1]));
+        out.push([x0, y0, Math.max(...p.map((r) => r[0] + r[2])) - x0, Math.max(...p.map((r) => r[1] + r[3])) - y0]);
+      });
+    look(S.children.list);
+    return out;
+  }
 
   function runKit(key, script, state) {
     const Onboard = OB();
+    const staged = (state.staged = script.some((st) => st.when != null));
+    state.done = new Set();
     const cur = () => (live === state ? target(Cook.expect) : null);
     // the spotlight: the thing to do next (the whole picture for a chop swipe: the vegetables fly)
     const spot = () => {
@@ -98,34 +137,50 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return c || null;
       }
       // the S14 roll-out (contract-53, the rulebook's light: "one lit box", chai's hugs its thing): the box is the thing's own picture
-      // on screen with the one light rule's margin (SH-230, Onboard.litBox; the picture the step names, thingOf), never a circle round the point (it was 4-6 times a
-      // heap or a bottle in samosa, the pantry, daar and the grill); the circle only where the step names no picture
-      const box = Cook.expect && Cook.expect.x != null && Cook.UI.s14 && Cook.UI.s14() ? hugOf(thingOf(Cook.expect)) : null;
-      if (!box) return rectAround(t, t.r);
-      // (the box always takes in the point the step is tapped at: a thing whose tap point sits at its foot, the pantry's carton, was
-      // outside its own picture's box, so the dim took the tap at the bigger sizes)
-      const x0 = Math.min(box[0], t.x - 14);
-      const y0 = Math.min(box[1], t.y - 14);
-      return [x0, y0, Math.max(box[0] + box[2], t.x + 14) - x0, Math.max(box[1] + box[3], t.y + 14) - y0];
+      // on screen, never a circle round the point; S19 (SH-230, Zafar 8 Nov: "it clips the edge of the images and the pill"): with its
+      // pill and its face circle, where it rests (C.parts), the one rule's margin round their union (Onboard.litBox); the circle only
+      // where the step names no picture
+      const e = Cook.expect;
+      const thing = e && e.x != null && Cook.UI.s14 && Cook.UI.s14() ? thingFor(e) : null;
+      const parts = thing ? C.parts(thing) : [];
+      if (!parts.length || !(parts[0][2] > 8 && parts[0][3] > 8)) return rectAround(t, t.r);
+      // (the box takes in the point the step is tapped at only when it lies outside the thing: the pantry's carton, its tap point at
+      // its foot; inside, the box stays centred on the thing, contract-105)
+      const x0 = Math.min(...parts.map((r) => r[0]));
+      const y0 = Math.min(...parts.map((r) => r[1]));
+      const x1 = Math.max(...parts.map((r) => r[0] + r[2]));
+      const y1 = Math.max(...parts.map((r) => r[1] + r[3]));
+      if (t.x < x0 || t.x > x1 || t.y < y0 || t.y > y1) parts.push([t.x - 14, t.y - 14, 28, 28]);
+      return parts;
     };
+    // (S19: a step's light only once the stage is still after the last move, MAA-22, and only at its moment, `when`)
+    const live14 = (st, i) => live === state && state.calm && !(staged && (state.done.has(i) || !C.matches(st.when, Cook.expect)));
     const steps = script.map((st, i) => ({
-      spotlight: spot,
+      spotlight: () => (live14(st, i) ? spot() : null),
+      avoid: () => (live14(st, i) ? neighbours(thingFor(Cook.expect)) : null),
       ghost: {
         // the script's move (data.onboard: tap, swipe, stir, roll, hold)
         gesture: GESTURE[st.do] || "tap",
         from: () => {
-          const t = cur();
+          const t = live14(st, i) ? cur() : null;
           if (!t) return null;
           if (t.a) return rectAround(t.a, 8);
           if (t.move === "roll") return rectAround({ x: t.x, y: t.y - t.rr * 0.6 }, 8);
           return rectAround(t, Math.max(8, t.move === "stir" ? t.rr : 8));
         },
         to: () => {
-          const t = cur();
+          const t = live14(st, i) ? cur() : null;
           if (!t) return null;
           if (t.b) return rectAround(t.b, 8);
           if (t.move === "roll") return rectAround({ x: t.x, y: t.y + t.rr * 0.6 }, 8);
           return rectAround(t, 8);
+        },
+        // (MAA-20: the game's thing rides under the finger: the expectation's carry(dx, dy, t, press) in world px, the rolling pin)
+        carry: (dx, dy, t, press) => {
+          const e = Cook.expect;
+          if (!e || typeof e.carry !== "function") return;
+          const k = (Cook.UI && Cook.UI.worldScale ? Cook.UI.worldScale() : 1) || 1;
+          e.carry(dx / k, dy / k, t, press);
         },
       },
       wait: "cook-next",
@@ -133,13 +188,42 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       i,
     }));
     state.kit = true;
-    // SH-119 (Zafar, 22 Oct: one finger in every game): the kit's own finger, in its own cadence (no picture hand, no 6 s gap)
+    // SH-119 (Zafar, 22 Oct and 8 Nov: one finger in every game): the kit's own finger, in its own cadence, a drag's too (oneFinger)
     // (the hand from above: a shelf thing's word chip sits under it, never under the hand; the judge, 23 Oct)
-    Onboard.run(obId(key), steps, { fingerDown: true }).then(() => {
+    Onboard.run(obId(key), steps, { fingerDown: true, oneFinger: true }).then(() => {
       if (live !== state) return;
       C.stop(true);
       pointCard(key);
     });
+  }
+  /**
+   * S19: a staged script's next step for a new expectation e: the step now is done once its moment has passed (an `each` step stays
+   * while its kind keeps coming); the first step from here whose moment this is comes next; none: the light waits, dark; the last
+   * step done: the script ends.
+   */
+  function stagedNext(state, e) {
+    const a = OB() && OB().active();
+    if (!a || a.id !== obId(state.key) || !a.machine) return;
+    const sc = state.script;
+    const i = a.machine.state().index;
+    if (i < 0 || i >= sc.length) return;
+    if (state.matched === i && !(sc[i].each && C.matches(sc[i].when, e))) state.done.add(i);
+    for (let k = i; k < sc.length; k++) {
+      if (state.done.has(k) || !C.matches(sc[k].when, e)) continue;
+      if (k > i) a.jump(k);
+      return;
+    }
+    if ([...Array(sc.length - i).keys()].every((d) => state.done.has(i + d))) a.jump(sc.length);
+  }
+  /** MAA-22 (Zafar, 8 Nov: "as it flew onto the pan the dough balls briefly flashed up as highlighted"): a new step's light waits for
+   * the stage to be still (nothing moving that will end, C.mover) for a beat, never more than 1.5 s. */
+  function calmTick(state) {
+    if (state.calm) return;
+    const now = Date.now();
+    if (!state.mover) state.mover = C.mover({ pend: false });
+    if (state.mover()) state.quiet = null;
+    else if (state.quiet == null) state.quiet = now;
+    if ((state.quiet != null && now - state.quiet >= 150) || now - (state.newAt || 0) > 1500) state.calm = true;
   }
   /*
    * The S14 roll-out (CHAI-37, CHAI-42; the rulebook's showing: "when the showing stops, point once at where to look next (the order
@@ -298,6 +382,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   C.firsts = function (key, o = {}) {
     const Onboard = OB();
+    C.hopRule(); // (S19, SH-237: every kitchen game asks for its gate as it starts: its scene's glow hops only shelf things from now)
     const s14 = !!(Cook.UI && Cook.UI.s14 && Cook.UI.s14());
     const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
     const fresh = s14 && (newPlayer() || !(Cook.save.coached || {})[key]);
@@ -314,12 +399,247 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   C.box = (thing, pad = 0, o = {}) => () => {
     const UI = Cook.UI;
     if (!thing || !thing.active || (o.visible && !thing.visible) || !UI || !UI.worldToScreen) return null;
-    const b = o.bounds ? o.bounds(thing) : thing.getBounds();
+    // (S19, SH-230: a thing that names its own lit body, thing.litBounds(): a pan's round body without its handle, a pile's picture
+    // without its tap box; the game says it once and every light uses it)
+    const b = o.bounds ? o.bounds(thing) : typeof thing.litBounds === "function" ? thing.litBounds() : thing.getBounds();
     if (!b) return null;
     const a = UI.worldToScreen(b.x - pad, b.y - pad);
     const z = UI.worldToScreen(b.right + pad, b.bottom + pad);
     return [a.x, a.y, z.x - a.x, z.y - a.y];
   };
+  /*
+   * ---------------- Sprint 19 (s19-lights): one shared first-time light in every game ----------------
+   * Zafar's play, 8 Nov (docs/feedback/kitchen-play-2026-11-08.md P3-P10, P30-P34; build/reports/s18-review-and-direction.md principle 6):
+   *   C.parts(thing) -> [rect]        the lit thing's parts on the page: its picture where it rests (with its hop's room on the shelf), its
+   *                                   word pill, its face circle, its own extra parts: the light hugs their union (SH-230, Onboard.litBox)
+   *   C.thingBox(thing) -> fn          the same as one light target (a function giving the page rects)
+   *   C.onShelf(thing) -> bool         is it a shelf thing (its foot in the bottom band, Shelf.BAND; thing.onShelf says so itself)?
+   *   C.hopRule(S)                     the scene's glow hops only shelf things (SH-237): a pan, a board, a thing in play is lit still
+   *   C.began(by) / C.ended(by)        the child started (ended) the move a light shows: the light goes now (SH-236, Onboard.began)
+   *   C.demo(at, o) -> {stop()}        the kit's one finger showing a move in world points, the game's thing riding under it (SH-119,
+   *                                    MAA-20; Onboard.gesture): what replaces a game's own S.ghost
+   *   C.stuck(o) -> handle             the stuck help, chai's method, in any game (SH-228)
+   * And the coach's script (C.start) lights each step's thing whole with its pill, waits for the stage to be still before a new step's
+   * light (MAA-22), goes dark while the child does the move, and a step may say when it comes (`when`) and stay for each (`each`).
+   */
+  const BAND_TOP = () => {
+    const B = global.Shelf && global.Shelf.BAND;
+    return B ? B.top / 900 : 0.7;
+  };
+  /** The world box of a thing where it rests (a hopping thing's hop taken off), or its own lit body (thing.litBounds). */
+  function restBounds(thing) {
+    const b = typeof thing.litBounds === "function" ? thing.litBounds() : thing.getBounds();
+    if (!b) return null;
+    const dy = thing.glowFx && thing.glowFx.y != null && typeof thing.y === "number" ? thing.glowFx.y - thing.y : 0;
+    return { x: b.x, y: b.y + dy, right: b.right != null ? b.right : b.x + b.width, bottom: (b.bottom != null ? b.bottom : b.y + b.height) + dy };
+  }
+  const pageOf = (b) => {
+    const UI = Cook.UI;
+    if (!b || !UI || !UI.worldToScreen) return null;
+    const a = UI.worldToScreen(b.x, b.y);
+    const z = UI.worldToScreen(b.right, b.bottom);
+    return [a.x, a.y, z.x - a.x, z.y - a.y];
+  };
+  C.onShelf = function (thing) {
+    if (!thing) return false;
+    if (thing.onShelf != null) return !!thing.onShelf;
+    const canvas = global.document && document.querySelector("#game canvas");
+    const b = thing.getBounds ? restBounds(thing) : null;
+    const r = b && pageOf(b);
+    if (!canvas || !r) return true; // (nothing to measure by: as the game asked)
+    const cr = canvas.getBoundingClientRect();
+    // (as contract-107 reads it: its foot in the bottom 30% of the canvas)
+    return r[1] + r[3] >= cr.top + BAND_TOP() * cr.height - 2;
+  };
+  /**
+   * SH-237 (Zafar, 8 Nov: "the bouncing up and down is for items ... items in the bottom bar bounce up and down"): only a shelf thing
+   * hops when it is lit, in every game, whoever asks for its glow: the scene's glow is wrapped once so a hop asked for a thing off the
+   * shelf (a pan, a board, the dough on the board, a plate in play) is dropped; the glow itself stays.
+   */
+  C.hopRule = function (S) {
+    S = S || Cook.scene;
+    if (!S || typeof S.glow !== "function" || S.glow.__hopRule) return S;
+    const g0 = S.glow;
+    const g = function (obj, on = true, o) {
+      if (on && o && o.bounce && obj && !C.onShelf(obj)) o = Object.assign({}, o, { bounce: false });
+      return g0.call(this, obj, on, o);
+    };
+    g.__hopRule = true;
+    S.glow = g;
+    return S;
+  };
+  /**
+   * SH-230 (Zafar, 6 Nov night and 8 Nov: "a general rule ... padding around the object+pill+face icon, or object+pill, or object"):
+   * the lit thing's parts in page px, [x, y, w, h] each: its picture where it rests (thing.litBounds() when the game names its body: a
+   * pan without its handle), on the shelf with its hop's room above it (it hops in the light, Onboard.HOP); its word pill (thing.chip);
+   * its face circle (thing.face); any parts the game adds (thing.litParts(): world boxes, a plate's rim). Onboard.litBox adds the one
+   * margin round their union.
+   */
+  C.parts = function (thing) {
+    if (!thing || !thing.active || !thing.getBounds) return [];
+    const out = [];
+    const b = restBounds(thing);
+    const pic = b && pageOf(b);
+    if (pic) out.push(pic);
+    if (pic && C.onShelf(thing)) {
+      // (its hop, as the glow draws it: Onboard.HOP of its height, 8 to 48 world px)
+      const hop = Math.max(8, Math.min(48, (thing.displayHeight || b.bottom - b.y) * ((OB() && OB().HOP) || 0.1)));
+      const up = pageOf({ x: b.x, y: b.y - hop, right: b.right, bottom: b.y });
+      if (up) out.push(up);
+    }
+    const ch = thing.chip;
+    if (ch && ch.active && ch.visible !== false && ch.cardW) {
+      const sx = Math.abs(ch.scaleX || 1);
+      const sy = Math.abs(ch.scaleY || 1);
+      const hw = (ch.cardW / 2) * sx;
+      const hh = ((ch.cardH || 46) / 2) * sy;
+      const c = pageOf({ x: ch.x - hw, y: ch.y - hh, right: ch.x + hw, bottom: ch.y + hh });
+      if (c) out.push(c);
+    }
+    const f = thing.face;
+    if (f && f.active && f.visible !== false && f.getBounds) {
+      const fb = f.getBounds();
+      const c = fb && pageOf({ x: fb.x, y: fb.y, right: fb.right, bottom: fb.bottom });
+      if (c) out.push(c);
+    }
+    if (typeof thing.litParts === "function") (thing.litParts() || []).forEach((q) => q && out.push(pageOf({ x: q.x, y: q.y, right: q.right != null ? q.right : q.x + q.width, bottom: q.bottom != null ? q.bottom : q.y + q.height })));
+    return out.filter((r) => r && r[2] > 0 && r[3] > 0);
+  };
+  /** The thing whole as a light's target: a function giving its parts (C.parts), null once it is gone. */
+  C.thingBox = (thing) => () => {
+    const p = C.parts(thing);
+    return p.length ? p : null;
+  };
+  /** SH-236: the move a light shows has begun (a mechanic's drag, hold or stir started, or its tap landed): the lights go now. */
+  C.began = (by) => {
+    const Onboard = OB();
+    if (Onboard && Onboard.began) Onboard.began(by);
+  };
+  /** The move ended with its step still open (the child let go before the thing was done). */
+  C.ended = (by) => {
+    const Onboard = OB();
+    if (Onboard && Onboard.ended) Onboard.ended(by);
+  };
+  /**
+   * SH-119, MAA-20: the kit's demo of a move in the kitchen (what replaces S.ghost): the one finger along world points, the game's
+   * thing riding under it. at() -> {from: {x, y}, to: {x, y}} or {x, y, r} in WORLD px (null: not yet); o: Onboard.gesture's
+   * {gesture, ms, delay, step, once, keepOnPress, look} and carry(dx, dy, t, press) in WORLD px. Off at the station's end (C.stop),
+   * on any press, or C.began. -> {stop()}, or null with no kit
+   */
+  const demos = new Set();
+  C.demo = function (at, o = {}) {
+    const Onboard = OB();
+    const UI = Cook.UI;
+    if (!Onboard || !Onboard.gesture || !UI || !UI.worldToScreen) return null;
+    const k = () => (UI.worldScale ? UI.worldScale() : 1) || 1;
+    const page = (p) => (p ? UI.worldToScreen(p.x, p.y) : null);
+    const g = Onboard.gesture(
+      () => {
+        const v = typeof at === "function" ? at() : at;
+        if (!v) return null;
+        if (v.r != null && !v.from) return Object.assign(page(v), { r: v.r * k() });
+        return { from: page(v.from), to: page(v.to) };
+      },
+      Object.assign({}, o, { carry: typeof o.carry === "function" ? (dx, dy, t, p) => o.carry(dx / k(), dy / k(), t, p) : null })
+    );
+    demos.add(g);
+    const stop = g.stop;
+    // (the stage that ends takes it with it)
+    const offEnd = global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => g.stop()) : null;
+    g.stop = () => {
+      demos.delete(g);
+      if (offEnd) offEnd();
+      stop();
+    };
+    return g;
+  };
+  /**
+   * SH-228 (Zafar, 6 Nov: "remove the bulbs from everywhere ... they will be replaced by chai's method"; 8 Nov, chaat: "the hint is not
+   * kicked in even though I'm a new player"): the stuck help, chai's method, any game. While the step is the game's to wait on
+   * (o.current(); o.waiting(): the child's move is due, default yes; o.busy(): the game's own moves in flight hold it), past the level's
+   * hint wait (o.hintMs(), default the central rules' hintS for Cook's level) from the later of the step's opening and the child's last
+   * action, it comes once: Nani's helper card with its drop-down when her box names a thing (UI.helperOpen, by "hint"), else her line
+   * again (UI.stepHelp: her line with the glow), and the light on the thing (o.target, a page box or function; or o.thing, the canvas
+   * thing whole, C.thingBox), with the glow (o.glow(on)). It comes again after the next action and the wait. A wrong move (C.wrong)
+   * brings it at once. o.onHint(): the game counts it. -> {close(), rush(), lit()}
+   */
+  C.stuck = function (o = {}) {
+    const Onboard = OB();
+    const UI = Cook.UI || {};
+    const R = rules();
+    const h = { over: false };
+    let lit = null;
+    let timer = 0;
+    let rushed = false;
+    let helpedAt = 0;
+    const opened = Date.now();
+    const cur = () => !h.over && (!o.current || o.current());
+    const lastAct = () => (global.NaniGuide && global.NaniGuide.lastAction ? global.NaniGuide.lastAction() : opened);
+    const wait = () => (o.hintMs ? o.hintMs() : R && R.hintMs ? R.hintMs(o.level || (Cook.roundLevel ? Cook.roundLevel(Cook.ctx) : 1) || 1) : 7000) / speed();
+    const target = o.target || (o.thing ? C.thingBox(o.thing) : null);
+    const off = Onboard && Onboard.onRush ? Onboard.onRush(() => (rushed = true)) : null;
+    let glowOn = false;
+    const unlight = () => {
+      if (lit) lit.close();
+      lit = null;
+      if (o.glow && glowOn) o.glow(false);
+      glowOn = false;
+    };
+    const hint = () => {
+      helpedAt = Date.now();
+      rushed = false;
+      const helper = !!(UI.helperOpen && UI.helperOpen(true, { by: "hint" }));
+      if (!helper && UI.stepHelp) {
+        // (the ladder's help, not one the child asked for: NaniGuide's same-line rule and its log treat it so)
+        const G = global.NaniGuide;
+        if (G) G.idleHelp = true;
+        try {
+          UI.stepHelp();
+        } finally {
+          if (G) G.idleHelp = false;
+        }
+      }
+      if (target && Onboard && Onboard.light) {
+        unlight();
+        lit = Onboard.light(target, { look: "glow", pass: true, live: [target], quitIf: () => !cur(), note: o.note != null ? String(o.note) : `${o.key || "kit"}:s14-stuck` });
+      }
+      if (o.glow) o.glow(true);
+      glowOn = true;
+      if (o.onHint) o.onHint(helper ? "helper" : "line");
+    };
+    const tick = () => {
+      if (!cur()) return void h.close();
+      const la = lastAct();
+      // (an action since the hint: its light goes, and the clock runs again from that action)
+      if (helpedAt && la > helpedAt) {
+        helpedAt = 0;
+        unlight();
+      }
+      const due = Onboard && Onboard.hintDue ? Onboard.hintDue(opened, la, wait(), rushed) : Math.max(opened, la) + wait();
+      const waiting = !o.waiting || o.waiting();
+      if (!helpedAt && waiting && !(o.busy && o.busy()) && Date.now() >= due) hint();
+      timer = setTimeout(tick, 200);
+    };
+    h.rush = () => (rushed = true);
+    h.lit = () => lit;
+    let offEnd = null;
+    h.close = () => {
+      if (h.over) return;
+      h.over = true;
+      clearTimeout(timer);
+      if (off) off();
+      if (offEnd) offEnd();
+      stucks.delete(h);
+      unlight();
+    };
+    // (the stage that ends takes it with it: no hint after the station, contract-3)
+    if (global.Lifecycle && global.Lifecycle.onStageEnd) offEnd = global.Lifecycle.onStageEnd(() => h.close());
+    timer = setTimeout(tick, 200);
+    stucks.add(h);
+    return h;
+  };
+  const stucks = new Set();
+
   /** STD-D2-04: a wrong move (any game): every hint waiting on its clock comes at once (Onboard.rush). */
   C.wrong = (by) => {
     const Onboard = OB();
@@ -648,15 +968,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     look(S.children.list);
     return best || hit;
   }
-  /**
-   * A picture's box on screen, [x, y, w, h] in page px (null: none, or too small to be the thing). SH-230 (Zafar, 6 Nov night: "a
-   * general rule that works in all cases that leaves some padding around the object"): the picture as drawn with no margin of its
-   * own: the light adds the one rule's (Onboard.litBox; was 8% here, 4-10 px, and the light's 10 px more on top).
-   */
-  function hugOf(obj) {
-    const r = obj && obj.getBounds ? C.box(obj)() : null;
-    return r && r[2] > 8 && r[3] > 8 ? r : null;
-  }
   function lightThing(state, obj) {
     if (state.lit === obj) return;
     const S = Cook.scene;
@@ -669,7 +980,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     } catch (e) {
       /* only a log */
     }
-    S.glow(obj, true, { bounce: true, now: true });
+    // (S19, SH-237: only a shelf thing hops; the dough on the board, a pan, a plate in play is lit still)
+    C.hopRule(S);
+    S.glow(obj, true, { bounce: C.onShelf(obj), now: true });
   }
 
   /**
@@ -685,8 +998,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const box = $("#coach");
     if (!useKit && !box) return;
     const steps = useKit ? script.length : calm().coachSteps || 4;
-    const state = { key, shown: 0, last: null, timer: null, started: false, lost: 0 };
+    const state = { key, shown: 0, last: null, timer: null, started: false, lost: 0, script, calm: false, newAt: Date.now() };
     live = state;
+    C.hopRule();
     const tick = () => {
       if (live !== state) return;
       const e = Cook.expect;
@@ -700,22 +1014,38 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (t) {
             state.started = true;
             state.last = s;
+            state.newAt = Date.now();
             runKit(key, script, state);
+            if (state.staged) stagedNext(state, e);
           }
           return;
         }
+        calmTick(state);
         if (!t) {
           lightThing(state, null);
-          // nothing to point at for a moment: the overlay steps back (it never traps a child)
-          if ((state.lost += 120) > 2500) C.stop(true);
+          // nothing to point at for a moment: the overlay steps back (it never traps a child); a staged script waits for its steps'
+          // moments (it blocks nothing while dark: Onboard.run)
+          if (!state.staged && (state.lost += 120) > 2500) C.stop(true);
           return;
         }
         state.lost = 0;
         if (s !== state.last) {
           state.last = s;
-          OB().signal("cook-next");
+          // (MAA-22: the new step's light after the stage is still)
+          state.calm = false;
+          state.quiet = null;
+          state.newAt = Date.now();
+          if (state.staged) stagedNext(state, e);
+          else OB().signal("cook-next");
         }
-        lightThing(state, OB().active() ? thingOf(e) : null);
+        const a = OB().active();
+        const mine = a && a.id === obId(key);
+        if (mine && state.staged && a.machine) {
+          const i = a.machine.state().index;
+          if (i >= 0 && i < script.length && !state.done.has(i) && C.matches(script[i].when, e)) state.matched = i;
+        }
+        // (the thing glows only while its light is drawn: not while the child does the move, SH-236, nor under a newer light)
+        lightThing(state, mine && !(a.hidden && a.hidden()) ? thingFor(e) : null);
         return;
       }
       if (t && s !== state.last) {
@@ -747,6 +1077,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
   /** C4: Cook is unmounted mid-coach: the overlay goes and its listeners with it, and the station is not marked seen. */
   C.leave = function () {
+    [...demos].forEach((g) => g.stop());
+    [...stucks].forEach((h) => h.close());
     if (!live) return;
     const state = live;
     clearInterval(state.timer);
