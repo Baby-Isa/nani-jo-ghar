@@ -75,6 +75,8 @@ import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
 import { CHAI_CHECKS, check70, check71, check90, S14_TAPS, CHAI_ROW, DECOY_STATIONS, DECOY_AT_LEAST, helpStageRe } from "./contract-chai.mjs";
 import { S17_CHECKS, checkS17 } from "./contract-s17.mjs";
+// contracts 100 and up: the shared pieces present (s19-checks, Sprint 19 part 1), in a file of their own
+import { S19_CHECKS, checkS19 } from "./contract-s19.mjs";
 // contracts 78 and up: what Zafar found on 29 Oct and the checks missed (s14-tools), in a file of their own
 import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, check92, check93, check94, check95, POINT_AFTER_MOVE_MS } from "./contract-s14.mjs";
 
@@ -125,6 +127,7 @@ export const CHECKS = {
   ...CHAI_CHECKS,
   ...S14_CHECKS,
   ...S17_CHECKS,
+  ...S19_CHECKS,
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his
@@ -1620,6 +1623,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check94(tl, add);
   check95(r, tl, v, add);
   checkS17(r, tl, v, add);
+  checkS19(r, tl, v, add);
   return out;
 }
 
