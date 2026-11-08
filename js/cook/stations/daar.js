@@ -1683,6 +1683,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     await Cook.tween(S, { targets: fill ? [bowl, fill] : bowl, alpha: 1, scale: bs, duration: 300, ease: "Back.easeOut" });
     Cook.sfx.pop();
     S.steam(bowl.x, bowl.y - z.L(40), 3);
+    // SH-239 (contract-108): the daar is made: every card ticks (the stir's row too) before their well done
+    if (z.ctx && z.ctx.closeItem) z.ctx.closeItem([], { all: true });
     // the review (X10 / Q1): their big round face over the bowl, no body, no pretend eating
     const look = await Cook.Kit.review(S, { who, ok: true, x: bowl.x, y: bowl.y - z.L(SB.w), size: z.L(SB.w), k: z.L(1), side: "right" });
     await Cook.wait(300);

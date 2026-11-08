@@ -428,10 +428,11 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
    */
   let helperT = 0;
   let helperKey = null;
-  function helperWatch(ctx, key) {
+  function helperWatch(ctx, key, { own = false } = {}) {
     clearInterval(helperT);
     helperT = 0;
     helperKey = null;
+    if (key == null) return; // (S$.helperWatch(null): a game that runs its own stage stops it at its end)
     if (key === "chai-tray" || !s14On() || !UI.helper || !UI.wordOf) return;
     const rowOf = (id) => {
       for (const L of (UI.mission && UI.mission.ladders && UI.mission.ladders()) || []) {
@@ -440,13 +441,39 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
       }
       return null;
     };
+    // (the first thing still to make; once every row is made, a later phase, the grill or the fry, cooks the order's first thing: that one)
+    const firstOpen = () => {
+      const Ls = (UI.mission && UI.mission.ladders && UI.mission.ladders()) || [];
+      for (const L of Ls) {
+        const x = Cook.Order.rows(L).find((y) => !y.head && !y.no && !y.done);
+        if (x) return x;
+      }
+      for (const L of Ls) {
+        const x = Cook.Order.rows(L, { all: true }).find((y) => !y.no);
+        if (x) return x;
+      }
+      return null;
+    };
     const helped = new Set();
     helperT = setInterval(() => {
-      if (!s14On() || !Cook.inStation) return;
+      // (own: a prototype that runs its own stage, never St.begin's, eggs: its own start and end hold it)
+      if (!s14On() || (!Cook.inStation && !own)) return;
       const e = Cook.expect;
-      const id = e && typeof e.key === "string" && Cook.isItemWord(e.key) ? e.key : null;
-      if (id === helperKey) return;
-      const r = id ? rowOf(id) : null;
+      let id = e && typeof e.key === "string" && Cook.isItemWord(e.key) ? e.key : null;
+      // SH-149 (contract-101: maani, sekelo, samosa never showed it): a step that names no thing (a roll, the tawa, a strip) keeps her
+      // helper card on the first thing on the order still to make, so her drop-down is there in every game, as chai's
+      let r = id ? rowOf(id) : null;
+      if (!id && !helperKey) {
+        r = firstOpen();
+        if (!r) return;
+        id = [...(r.ids || [])].reverse().find((x) => Cook.isItemWord(x)) || (r.ids || []).slice(-1)[0] || null;
+        if (!id) return;
+        helperKey = id;
+        const w0 = UI.wordOf(r, { size: 240, written: true, head: !!r.head });
+        if (w0) w0.onOpen = () => !helped.has(id) && (helped.add(id), Cook.onHelp && Cook.onHelp("hint", { ids: r.ids || [id] }));
+        return UI.helper(w0 || null);
+      }
+      if (!id || id === helperKey) return;
       // SH-149 (Zafar, 8 Nov, sekelo and daar: "there's no drop down on the Nani hint"): a thing the step asks for that is not an order
       // row of its own (a skewer's piece, daar's chop on Nani's own card) is her helper card too: its own item card
       const own = !r && id && UI.itemPart ? UI.itemPart(id, { html: Lang.html(Lang.phrase([id])), en: Cook.english(id), size: 240, say: () => Lang.speak(Lang.phrase([id])) }) : null;

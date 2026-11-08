@@ -3010,7 +3010,8 @@
       // (Cook.chipWord: the round's snapshot, so a card never changes mid-round)
       const newWord = Cook.chipWord ? Cook.chipWord(wcWordId(r)) : false;
       const at = (k) => (k === "pic" ? RL.cardPicture || newWord : RL.cardEnglish);
-      const srcB = rowPicSrc(r);
+      // (SH-242, contract-104: a step row with no thing of its own, daar's stir "trae aste thi", shows its tool, the ladle, DAAR-19)
+      const srcB = rowPicSrc(r) || r.pic || null;
       const picB = srcB ? thumbOf(Cook.v(srcB), size) : null;
       return {
         word: {
@@ -3134,7 +3135,7 @@
           // several of a kind tick together when all its samosas are made (SAM-24's one tick, contract-50), one with its fillings
           const n = s.head.qty || 1;
           const parts = flat.map((x) => cardOf(x.r, x.gi));
-          const all = !!s.head.done || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
+          const all = !!s.head.done || !!L.closedAll || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
           const head = Object.assign(cardOf(s.head, 0), { done: all, say: sayRow(s.head) });
           items.push({ label: null, count: 1, parts: [head].concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
           rowsShown.push(s.head, ...flat.map((x) => x.r));

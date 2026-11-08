@@ -296,6 +296,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const xAt = (i) => (guests.length >= 3 ? x0 + ((x1 - x0) * i) / (guests.length - 1) : spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined);
     guests.forEach((w, i) => S().addChar(w, { x: xAt(i) }));
     if (guests.length) S().occluder();
+    cardsDone();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
     else S().setMood("nani", "happy");
     for (const g of guests) await S().talk(g, Lang.line("thanks"), { after: "happy" });
@@ -598,6 +599,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return Lang.join(once.map((ph, i) => (i ? Lang.line(F.any, ph) : Lang.bare(ph))));
   }
   Cook.callBack = callBack;
+  // SH-239 (Zafar, 8 Nov: "say well done when ... the whole menu card is complete"; contract-108): the dish is served, so every row
+  // still open ticks (a step row such as daar's stir, a kind's count) before the well done; a row missed stays as it was, for the review
+  const cardsDone = () => {
+    try {
+      ((UI.mission.ladders && UI.mission.ladders()) || []).forEach((L) => UI.mission.closeItem([], L.dish || 0, { all: true }));
+    } catch (e) {
+      /* no order card: nothing to tick */
+    }
+  };
   const shabash = () => Lang.role(Lang.say({ fn: "Exclaim", x: "intj.well-done" }), "exclaim"); // (contract-23: never read as an item word)
   // wave 1A's flaw 4: "Shabash!" once at the serve. A station that already praised (the review faces say it when every dish is right) said it a
   // moment ago (the guide remembers every line said, js/shared/guide.js recentlySaid): it is not said again at the serve or after the station
@@ -1192,6 +1202,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the round, and never a second well done
     const recap = callBack(ctx);
     if (recap) await S().talk("nani", recap, { after: "neutral" });
+    cardsDone();
     if (who === "nani") {
       // Nani's own list (the pantry, T4): Shabash and her happy face; she stays in her kitchen
       if (!praised()) await S().talk("nani", shabash(), { after: "happy" });

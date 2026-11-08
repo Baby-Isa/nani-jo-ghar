@@ -331,7 +331,9 @@
    "bowl": "brass"
   },
   "ph-chaat": {},
-  "ph-samosa": {},
+  "ph-samosa": {
+   "card": "assets/cook/items/samosa-fried-golden-t.webp"
+  },
   "ph-sekelo": {},
   "ph-mishkaki": {},
   "ph-lakri": {
@@ -5589,6 +5591,7 @@
       "chilli"
      ],
      "files": [
+      "assets/cook/items/samosa-fried-golden-t.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/chai-station/*",

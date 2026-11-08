@@ -203,6 +203,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
     if (made.two && !ctx.guided && count2 <= 5) (made.nB0 === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
     steps.done();
+    // SH-239 (contract-108): the samosas are made: every card ticks before their well done at the serve
+    if (ctx.closeItem) ctx.closeItem([], { all: true });
     await serve(yz, { who, plate: fried.plate });
     yz.close();
     St.end();
