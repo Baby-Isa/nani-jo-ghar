@@ -1,5 +1,5 @@
 {
- "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the baking station's own data (js/cook/stations/baking.js; the card is recipes.baking in data/cook.json, its rows filled from the plan picked here). Zafar's turn-by-turn design (prototype-notes-2026-11-01.md 'Baking'; cook-baking-eggs.md end note): Nani gives one instruction at a time, each tap tips the jar or bag a bit more. A step: id (the container), amt (little: one tap, it stops, 'that's good'; lot: tap until lotTaps, 'enough'; more: a little, tap, 'still a little more', tap, 'enough'; jug: tap until `units` quarter cups in the measuring jug, its lines at a quarter, half, full, one and a half and two and a half, no numbers), parts (the card row's words, through the language engine). `plans` by level (one picked at random); `decoys` how many other containers stand on the shelf; bakeMs the oven's time; `palette` the art colours.",
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the baking station's own data (js/cook/stations/baking.js; the card is recipes.baking in data/cook.json, its rows filled from the plan picked here). Zafar's turn-by-turn design (prototype-notes-2026-11-01.md 'Baking'; cook-baking-eggs.md end note): Nani gives one instruction at a time, each tap tips the jar or bag a bit more. A step: id (the container), amt (little: one tap, it stops, 'that's good'; lot: tap until lotTaps, 'enough'; more: a little, tap, 'still a little more', tap, 'enough'; jug: tap until `units` quarter cups in the measuring jug, its lines at a quarter, half, full, one and a half and two and a half, no numbers), parts (the card row's words, through the language engine). `plans` by level (one picked at random); the decoys (how many other containers stand in the row) are the central rules' (data/rules.json levels.decoys: 1-4, a lookalike at L4; S18); bakeMs the oven's time; `palette` the art colours.",
  "station": {
   "name": "Baking",
   "verb": "Nani's turns: a little, a lot; then the oven",
@@ -9,36 +9,16 @@
    "oven": "Tap the oven to open it, then the naan. Take it out when it's ready."
   },
   "palette": {
-   "wall": "#cfd8c4",
-   "tile": "#b9c6ad",
-   "counter": "#efe4d6",
-   "counterEdge": "#d9c9b4",
-   "cabinet": "#9fae8c",
-   "shadow": "#28190a",
    "white": "#ffffff",
-   "glass": "#e8f3f6",
-   "glassEdge": "#9fb8c0",
-   "line": "#4f6a73",
-   "atto": "#f3ead8",
-   "paani": "#9fd3ee",
-   "dudh": "#fbf8f0",
-   "khun": "#ffffff",
    "loon": "#f1f1f1",
    "dahi": "#fbf6ee",
    "ghee": "#f2c84b",
-   "dough": "#ead2a4",
-   "steel": "#c9cdd1",
-   "steelDark": "#7d8389",
-   "ovenGlass": "#2b2a2e",
-   "ovenGlow": "#f2a43a",
-   "ovenInside": "#5a3a22",
-   "rack": "#d8d2c8",
    "ring": "#fffaf1",
    "ringBand": "#7e9a76",
    "ringFill": "#c9962e",
    "ringDone": "#5c8a4e",
    "steam": "#ffffff",
-   "toast": "#d9a25a"
+   "_note": "S18 (s18-g-baking): the wall, tiles, counter, jug, mound and oven are pictures now (scene, items); what is left is the bake ring, the steam and the drawn drops for the containers with no stream picture yet (salt, yoghurt, ghee)"
   }
  },
  "words": {
@@ -52,7 +32,6 @@
   "levels": [
    {
     "lotTaps": 4,
-    "decoys": 1,
     "bakeMs": 3600,
     "plans": [
      [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-paani", "amt": "little", "parts": ["cook-paani"]}],
@@ -60,7 +39,6 @@
     ]
    },
    {
-    "decoys": 2,
     "plans": [
      [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}, {"id": "cook-paani", "amt": "more", "parts": ["cook-paani"]}],
      [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-khun", "amt": "little", "parts": ["cook-khun"]}, {"id": "cook-dudh", "amt": "more", "parts": ["cook-dudh"]}],
@@ -68,7 +46,6 @@
     ]
    },
    {
-    "decoys": 3,
     "jug": true,
     "plans": [
      [{"id": "cook-atto", "amt": "jug", "units": 4, "parts": [1, "ph-cup", "cook-atto"]}, {"id": "cook-paani", "amt": "jug", "units": 2, "parts": ["ph-half", "cook-paani"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}],
@@ -76,7 +53,6 @@
     ]
    },
    {
-    "decoys": 3,
     "bakeMs": 4200,
     "plans": [
      [{"id": "cook-atto", "amt": "jug", "units": 10, "parts": ["ph-cups-2h", "cook-atto"]}, {"id": "cook-paani", "amt": "jug", "units": 6, "parts": ["ph-cups-1h", "cook-paani"]}, {"id": "ph-dahi", "amt": "jug", "units": 1, "parts": ["ph-quartercup", "ph-dahi"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}],
@@ -144,7 +120,7 @@
      "jug or more",
      "little"
     ],
-    "decoys": 3,
+    "decoys": 4,
     "bakeMs": 4200,
     "jug": true
    }
@@ -163,7 +139,7 @@
   "cat": {
    "file": "assets/cook/proto/cat-peek.webp",
    "placeholder": true,
-   "note": "Placeholder crops (the 1 Nov mock-ups) the station loads today until wave 2 moves it onto this file's art."
+   "note": "A named placeholder (the 1 Nov mock-up's crop of Simba) until his own peek is drawn."
   },
   "oven": {
    "states": {
@@ -232,13 +208,13 @@
     4
    ],
    "drawn": {
-    "w": 150,
-    "h": 230
+    "w": 260
    },
    "at": [
     470,
-    470
+    670
    ],
+   "_at": "the jug's base (origin bottom centre), level with the bowl's foot",
    "partialAlpha": true,
    "fillFor": {
     "cook-paani": "water",
@@ -285,6 +261,10 @@
    "drawn": {
     "w": 260
    },
+   "at": [
+    330,
+    640
+   ],
    "_note": "on its tray, registered with the tray: in the oven by the ring's progress; the tray alone is items.tray",
    "replaces": "assets/cook/proto/bake-naan.webp"
   },
@@ -316,6 +296,9 @@
     "h": 170
    },
    "row_y": 820,
+   "liquid": ["cook-paani", "cook-dudh"],
+   "pour": {"cook-atto": "white", "cook-paani": "white", "cook-dudh": "white", "cook-khun": "white", "spi-16": "loon", "ph-dahi": "dahi", "ph-ghee": "ghee"},
+   "_pour": "liquid: poured as a column, the rest as drops; pour: the palette key of the drawn drops where items.streams has no picture",
    "files": {
     "cook-atto": "assets/cook/items/shelf-cook-atto-bare-f.webp",
     "cook-paani": "assets/cook/items/shelf-cook-paani-bare-f.webp",
@@ -403,7 +386,17 @@
   "_note": "Lang.line keys the station says today; the amounts of the jug are the word moment's job (CHAI-67)"
  },
  "wordMoment": {
-  "call": "UI.wordMoment(ids)",
+  "call": "UI.wordMoment(ids, settings.wordMoment): the kit's call with this game's pieces (the generalised call is asked of the kit's owner in build/reports/s18-g-baking.md; until it lands the call plays chai's moment only and this one is skipped)",
+  "key": "baking:word-moment-jug",
+  "pair": ["ph-half", "ph-cup"],
+  "_pair": "L3's first jug round asks a cup of flour and half a cup of water or milk (mechanic.levels[2].plans): the two the moment shows, side by side, before it names either (STD-A3-03)",
+  "vessel": {"src": "assets/cook/items/shelf-cook-paani-bare-f.webp", "tilt": 70, "placeholder": true},
+  "stream": "assets/shared/word-moment/stream-water-s17.webp",
+  "measures": [
+   {"id": "ph-half", "empty": "assets/cook/proto/baking/jug-empty.webp", "full": "assets/cook/proto/baking/jug-water.webp", "lineAt": 0.672, "fill": 0.29, "card": "assets/cook/proto/baking/jug-water.webp"},
+   {"id": "ph-cup", "empty": "assets/cook/proto/baking/jug-empty.webp", "full": "assets/cook/proto/baking/jug-water.webp", "lineAt": 0.532, "fill": 0.47, "card": "assets/cook/proto/baking/jug-flour.webp"}
+  ],
+  "_measures": "each measure the jug, empty, then its full picture revealed from the bottom up to its line (items.jug.lineAt: 2 quarter cups 0.672, 4 quarter cups 0.532, from the picture's top); fill, the word moment's share of the inside (the jug's inside about 0.12 to 0.90 of the picture: (0.90 - lineAt) / 0.78); placeholders until ART-38 (a vessel tilted into a side-on measure, empty, half and full)",
   "ids": [
    "ph-quartercup",
    "ph-half",
