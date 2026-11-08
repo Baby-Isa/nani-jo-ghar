@@ -6,7 +6,9 @@ To be read in a fresh chat and turned into a plan there.
 
 Sources: Fable `build/reports/s18-fable-what-went-wrong.md` (why) and `build/reports/s18-fable-look-review.md` (the look); the voice
 note's transcript `docs/feedback/kitchen-play-2026-11-08-transcript.md` (times below are its own); its rows and causes in code
-`docs/feedback/kitchen-play-2026-11-08.md` (being written now by the /feedback builder).
+`docs/feedback/kitchen-play-2026-11-08.md` (41 points, each with its cause in code and its layer; 27 new rows and 7 reopened:
+SH-236 to SH-243, MAA-20 to -22, SEK-25, DAAR-44, -45, CHT-18, -19, SAM-30, -31, CK-63 to -65, ART-61 to -64, LNG-24, PRC-12; reopened
+SH-119, -149, -227, -228, -230, MAA-19, SEK-18).
 
 ## 1. Where things stand
 
@@ -151,7 +153,8 @@ and the orchestrator; Fable's full answer in `s18-fable-look-review.md`.
 ## 8. Next (for the planning chat)
 
 1. Zafar's go to publish chai's three fixes (or a permission rule for `publish.mjs`).
-2. Read the /feedback report and rows (`docs/feedback/kitchen-play-2026-11-08.md`).
+2. The /feedback report and rows are in (`docs/feedback/kitchen-play-2026-11-08.md`); its seven questions fold into section 6
+   (the counting rule, one skewer per person, how the pop-up shows a count, samosa, the green floor, judgement, the hop rule's words).
 3. Settle section 6's ten principles.
 4. A plan in that chat: likely (a) the kit's one scene and the shared pieces made compulsory, with the side-by-side check; (b) the
    chai lab (shadows, marble) for his eye; (c) ChatGPT mocks per screen; (d) an art run (top-down boards, trays, the oil pan; the
