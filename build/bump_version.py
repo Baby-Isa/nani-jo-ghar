@@ -59,6 +59,7 @@ IMPORTMAP_RE = re.compile(r'(<script\b[^>]*\btype="importmap"[^>]*\bdata-njg="co
 MODULE_DIRS = ["js/core"]  # always mapped, whole (the core is modules only)
 MODULE_RE = re.compile(r"^(?:import\s[^(]|import\s*\{|export\s)", re.M)
 SKIP_DIRS = ("js/vendor/",)
+IMPORT_SPEC_RE = re.compile(r"^\s*(?:import\s+['\"]|import\s[^('\"]*?\sfrom\s+['\"]|export\s[^('\"]*?\sfrom\s+['\"])([^'\"]+\.js)['\"]", re.M)
 
 
 def is_module(path):
@@ -79,6 +80,19 @@ def module_files():
         rel = os.path.relpath(f, ROOT).replace(os.sep, "/")
         if rel not in out and not rel.startswith(SKIP_DIRS) and is_module(rel):
             out.add(rel)
+    # a classic script a module imports by a relative path for its side effect (js/cook/station-lib.js imports
+    # "../shared/shelf.js"): mapped too, so the import gets the stamp (s19-checks found it unstamped, 8 Nov)
+    for rel in list(out):
+        try:
+            text = open(os.path.join(ROOT, rel), encoding="utf-8").read()
+        except OSError:
+            continue
+        for spec in IMPORT_SPEC_RE.findall(text):
+            if not spec.startswith("."):
+                continue
+            tgt = os.path.normpath(os.path.join(os.path.dirname(rel), spec)).replace(os.sep, "/")
+            if tgt.startswith("js/") and not tgt.startswith(SKIP_DIRS) and os.path.isfile(os.path.join(ROOT, tgt)):
+                out.add(tgt)
     return sorted(out)
 
 

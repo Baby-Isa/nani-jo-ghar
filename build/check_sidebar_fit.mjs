@@ -1,3 +1,4 @@
+// RETIRED 8 Nov (s19-checks audit; docs/process/check-audit.md): kept so it can come back.
 // S13-A2 fix round (26 Oct): nothing in the sidebar past the screen and nothing clipped, at Zafar's laptop (1280x665) and his
 // phone (915x412), once the order has folded into it: every Cook station that takes an order at L1-L4 and the clinic's stages
 // and the eye test. Every visible control (button) and card in the sidebar lies wholly inside the screen, the sidebar never
