@@ -1,10 +1,9 @@
 # Chaat: its gap to the standard
 
 **Made:** 8 Nov 2026, Sprint 18 wave 2 (s18-g-chaat), before any build. `node build/tools/review/audit.mjs --standard chaat` (205 House
-and Family rules; no contract run, no saved checks: 2 pass, 14 fail, 26 judge, 36 gap, 127 not run), then my read of chaat's code
-(`js/cook/mechanics/assemble.js`, its recipe in `data/cook.json` recipes.chaat, its knobs in data.mechanics.assemble, its leak bot
-`build/leak_chaat.mjs`). Chaat is a recipe: the chop step (today the chop mechanic run straight as a station, `"do": "chop"`), then
-the bowl (assemble). Scores are for the chaat round; chop's own rules are on `gaps/chop.md`.
+and Family rules; no contract run, no saved checks: 2 pass, 14 fail, 26 judge, 36 gap, 127 not run), then my read of `js/cook/mechanics/assemble.js`,
+recipes.chaat in `data/cook.json` and `build/leak_chaat.mjs`. Chaat is the chop step (today the chop mechanic run straight,
+`"do": "chop"`), then the bowl. Chop's own rules are on `gaps/chop.md`.
 
 **Before the build (8 Nov):** 205 rules: 0 n/a 25 · 1 missing 25 · 2 built 150 · 3 green 5 · 4-5 none.
 
