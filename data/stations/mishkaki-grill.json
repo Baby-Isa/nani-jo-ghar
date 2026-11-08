@@ -197,5 +197,9 @@
    ],
    "card": "assets/cook/items/skewer-mixed-grilled-t.png"
   }
- }
+ },
+ "assets": [
+  "assets/cook/items/skewer-mixed-grilled-t.png"
+ ],
+ "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations"
 }
