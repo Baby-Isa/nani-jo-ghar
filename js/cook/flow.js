@@ -783,7 +783,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /* ---------------- loading by order (decision 68, J11) ---------------- */
   // the stations a recipe runs (data.recipes[r].run, the steps that are stations), the served picture
   const NOT_STATION = ["serve", "result", "wait", "interrupt"];
-  const stationsOf = (r) => (((Cook.data.recipes || {})[r] || {}).run || []).map((x) => x.do).filter((k) => k && !NOT_STATION.includes(k));
+  const stationsOf = (r) => (((Cook.data.recipes || {})[r] || {}).run || []).map((x) => (x.do === "chop-game" ? "chop" : x.do)).filter((k) => k && !NOT_STATION.includes(k)); // (S18: chaat calls chop as its own game; its pictures preload as chop's)
   const warmed = new Set();
   /** Start loading what these dishes' stations show (their props, sprites and declared files) and their served pictures. */
   Cook.prefetchDishes = function (recipes) {
