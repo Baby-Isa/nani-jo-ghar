@@ -128,6 +128,65 @@
     "juggle": false
    }
   ],
-  "_juggle": "Sekelo v2 (§15): one job at a time at every level (thread, then the grill); the juggle screen is off (it had no shelf band)."
+  "_juggle": "Sekelo v2 (§15): one job at a time at every level (thread, then the grill); the juggle screen is off (it had no shelf band).",
+  "_knobs": "S18 (s18-g-sekelo, 8 Nov; STD-F1-03, STD-F2-03): the thread's and the grill's numbers by level live here, in sekelo's settings file (were data/cook.json mechanics.thread and .grill, which stay only until the orchestrator deletes them; this file wins: Cook.Skewer.knobs). Each level lists only what changes from the one before.",
+  "thread": {
+   "_about": "The Mishkaki grill's board (js/cook/mechanics/thread.js): pieces per skewer (the mixed pattern is 4 long too), decoy bowls from decoyPool (a piece that fits no skewer), and how long after Nani's spoken hint the piece glows (being shown costs the ear star).",
+   "levels": [
+    {
+     "pieces": 4,
+     "decoys": 1,
+     "decoyPool": [
+      "veg-01",
+      "veg-12",
+      "n.corn-on-the-cob",
+      "n.chicken"
+     ],
+     "showAfterMs": 4000
+    },
+    {
+     "decoys": 2
+    },
+    {
+     "decoys": 3
+    },
+    {
+     "decoys": 3
+    }
+   ],
+   "_decoys": "s08 w2A (CK-49, P32): decoy bowls 1, 2, 3, 3 by the round's level, from decoyPool (only veg-01 has sekelo piece art: the rest wait on the art run); every piece bowl is out anyway, so a piece no skewer needs is a decoy too s08 w7A (contract-37; the s08c art plan decision 3): s08c SK5 drew the chilli (mirchi, veg-12) and the corn (makai, n.corn-on-the-cob) as heaps and chunks, so the pool holds three: 1, 2, 3, 3 by level, and the potato is the onion's lookalike at L4 (data.lookalikes). SK5's chicken (murgi, cut and named in data/stations/mishkaki-grill.json) joins the pool now (Zafar, 21 Oct): four in the pool, still 1, 2, 3, 3 drawn by level; until Mum records murgi it has no family clip (data/family-audio.json), so it is on the recording sheet and the device says it while we test, never in the store build."
+  },
+  "grill": {
+   "_about": "The Mishkaki grill (js/cook/mechanics/grill.js): each skewer's ring (band, rate in rings per second, rateSpread so they drift apart), turns before the lift, how many cook at once (spots), rack slots (fixed per level, never the number ordered), burntScore, and ignoreBelow (a tap this early in a ring is ignored: no accidental double taps).",
+   "levels": [
+    {
+     "band": [
+      0.6,
+      0.84
+     ],
+     "rate": 0.2,
+     "rateSpread": 0.3,
+     "turns": 2,
+     "spots": 2,
+     "rack": 4,
+     "burntScore": 40,
+     "ignoreBelow": 0.12
+    },
+    {
+     "spots": 3,
+     "rate": 0.22
+    },
+    {
+     "spots": 4,
+     "rack": 4,
+     "_rack": "30 Sept (K9, Q11): the rack is a picture of 0-4 skewers, so 4 at every level (the order is 3-4 at level 4; was 5)",
+     "rate": 0.24,
+     "band": [
+      0.62,
+      0.85
+     ]
+    }
+   ]
+  }
  }
 }
