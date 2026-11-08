@@ -24994,5 +24994,236 @@
    "note": "daar's own stir today (its dial) | waits: One stir in the kitchen kit for daar and the stir game (out of scope for s19-cards: the next builder)",
    "delay": 0
   }
+ ],
+ "CK-63": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "contract:105",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the pan's next-vessel light on its round body (litBounds: settings body cx, cy, d), centred within 4 px and whole; the handle left out"
+  }
+ ],
+ "CK-61": [
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "contract:92",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "corn's lights leave the kit's room round the thing and its hop (Cook.Coach.parts, part by part)"
+  }
+ ],
+ "DAAR-43": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "contract:92",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the first pile row's light round its glass bowls' pictures (litBounds), never over the next row"
+  }
+ ],
+ "CK-65": [
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stage-start",
+   "after": null,
+   "capture": [
+    "cmd:node -e \"const c=require('./data/stations/corn.json').mechanic.levels;const t=require('./data/stations/chai-tray.json').mechanic.levels;const b=require('./data/cook.json').mechanics.boil.levels;let C={},T={},B={},ok=1;for(let i=0;i<4;i++){Object.assign(C,c[i]||{});Object.assign(T,t[i]||{});Object.assign(B,b[i]||{},(b[i]&&b[i].profiles&&b[i].profiles.tray)||{});const h=T.heat||{band:B.band,rate:B.rate};const g=(h.band[1]-h.band[0])/(h.rate*0.5)*1000;console.log('L'+(i+1),'chai',Math.round(g),'corn',C.greenMs);if(!(C.greenMs>=g))ok=0}process.exit(ok?0:1)\"",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "corn's green (greenMs) at least chai's green at each level: L1 4444/4500, L2 3333/3400, L3 2333/2400, L4 2000/2000 ms"
+  }
+ ],
+ "SH-228": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "hint",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "contract:102",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the stuck help (Cook.Coach.stuck): the helper card or her line with the kit's light round the bowl, no glow of the game's own"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "hint",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "contract:102",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "daar's cook steps: the stuck help on the knob, the piles and the daar (a spice past support never lit)"
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "hint",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "contract:102",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "eggs: the stuck help with the light"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "hint",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "contract:102",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "corn: the stuck help with the light"
+  },
+  {
+   "flow": "cook:baking",
+   "path": "hint",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "contract:102",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "baking's controls: the stuck help (its which-one pick keeps S.step's own help: a kit change)"
+  }
  ]
 }

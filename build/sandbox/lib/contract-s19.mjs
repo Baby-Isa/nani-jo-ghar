@@ -480,7 +480,9 @@ function s19hook() {
           if (!o || o.visible === false || o.alpha === 0) continue;
           if (o.list) walk(o.list);
           if (!o.getBounds) continue;
-          const b = safe(() => o.getBounds());
+          // (a thing that names its lit body, litBounds, is judged by it: eggs' pan without its handle, CK-63; s19-games, 8 Nov)
+          const lb = typeof o.litBounds === "function" ? safe(() => o.litBounds()) : null;
+          const b = lb && lb.right != null ? { x: lb.x, y: lb.y, right: lb.right, bottom: lb.bottom } : safe(() => o.getBounds());
           if (!b) continue;
           const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
           if (o.wordId && o.input && o.input.enabled) {
