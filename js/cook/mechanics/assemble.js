@@ -1282,10 +1282,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
        */
       z.expect({ kind: "wait" });
       await UI.mission.request("assemble");
-      const unfold = foldCard(level >= 4);
       // STD-D1-08 (SH-196): the reveal lessons, the dotted word then the blurred picture, once the order has landed and before the
-      // first layer (the kitchen kit's Cook.Coach.lessons, kit d, as chai and chop have them)
+      // first layer (the kitchen kit's Cook.Coach.lessons, kit d, as chai, chop and daar have them); before L4's card folds, so its
+      // dotted word is still in view
       if (gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
+      const unfold = foldCard(level >= 4);
 
       let tries = 0;
       try {

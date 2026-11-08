@@ -7,6 +7,9 @@ recipes.chaat in `data/cook.json` and `build/leak_chaat.mjs`. Chaat is the chop 
 
 **Before the build (8 Nov):** 205 rules: 0 n/a 25 · 1 missing 25 · 2 built 150 · 3 green 5 · 4-5 none.
 
+**After the build (8 Nov, the same day):** 205 rules: 0 n/a 25 · 1 missing 13 · 2 built 160 · 3 green 7 · 4-5 none. A note
+ending "(build)" is what s18-g-chaat changed.
+
 **The scale:** 0 n/a · 1 missing · 2 built, unproven · 3 check green · 4 judged · 5 his "done" · dbd different by design (dated).
 **Next:** Kit (a kit piece still to build) · Adopt (take a kit piece chai already runs on: (a) the worktop, (b) serving, (c) the
 shelf, pills and word pop, (d) lights and lessons, (e) the order's flow) · Game code · Art · Words · Decision · Check.
@@ -22,17 +25,12 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
   bataato" a layer said twice counting twice (CHT-17); 3, 4, 5, 6 spoons by level.
 - KEEP-01 (the underline while a line is spoken; the order card and pop-up "the bar we want to set").
 
-## What the build does (this sprint, in this order)
+## What the build does (this sprint)
 
-1. **Game code:** `data/stations/chaat.json` (new): the bowl's measures, the pots and strips, the layers' thickness, the shelf's and
-   the bowl's layout, the motions' times; `assemble.js` reads it and keeps only the bowl's own code.
-2. **Adopt (a):** the worktop and the stone band (`Cook.Kit.worktop`, `St.stoneBand`) for chaat's own fill and band.
-3. **Adopt (c):** the word pills (`Shelf.P.chip`, `Shelf.pillWant`, `.pillScale`), the speaker (`Shelf.P.speaker`), the word pop
-   (`Juice.P.pop`); chaat's speaker, chip and pop drawing deleted.
-4. **Adopt (d), (e), (b):** the first-time gate and the reveal lessons (`Cook.Coach.firsts`, `.lessons`), a wrong drop rushing the
-   hint (`Cook.Coach.wrong`); the recast through `UI.personSay`; the review faces through `NjgServe`.
-5. **The chop step as chop's own game** (`Cook.Chop.play`): an ask (chop's files are the daar builder's; the recipe's run is the
-   orchestrator's). CHT-13, CHT-04 (the side-on bowl and its layers) stay on art: the s08b strips are the placeholders.
+1. **Game code:** `data/stations/chaat.json` (new), read by `assemble.js`, which keeps only the bowl.
+2. **Adopt:** (a) the worktop and stone band; (c) the pills, the speaker, the word pop; (d) the gate, lessons, card light, wrong move;
+   (b) the tick and recast; (e) `UI.personSay`.
+3. **Asked:** the chop step as chop's own game (`Cook.Chop.play`). CHT-13, CHT-04 wait on art: the s08b strips stand in.
 
 ## 0 Foundations
 
@@ -40,10 +38,10 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 |---|---|---|---|---|---|
 | STD-01-01 | H | gap | 2 | Check | the bowl, its take-back, the wobble and the auto-serve kept (above); no diff tool yet |
 | STD-01-02 | H | not run | 2 | Words | the order and the layer calls from the engine (Cook.Order.speech, St.addLine) |
-| STD-01-03 | H | not run | 2 | Check | written words only on the pills and the card; contract-16 not run on cook:chaat |
+| STD-01-03 | H | not run | 3 | Check | contract-16 green L1-L4 at 1280x665 (build) |
 | STD-01-04 | H | not run | 2 | Check | `build/leak_chaat.mjs` reads CHAAT_RULES; not in a saved run |
 | STD-01-05 | H | judge | 1 | Check | the bowl never judged on the kits |
-| STD-01-06 | H | not run | 2 | Check | its own pills and pop drawn in the game (Adopt (c)) |
+| STD-01-06 | H | not run | 2 | Check | the kit's pills and pop (build) |
 | STD-01-07 | H | not run | 2 | Check | warm wobble, never red; take-back until the step moves on |
 | STD-01-08 | H | not run | 2 | Art | pots, strips and bowl from runs; the side-on bowl redraw waits (CHT-13) |
 | STD-01-09 | H | not run | 2 | Check | halal toppings; praise only |
@@ -83,7 +81,7 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-B1-02 | H | not run | 2 | Check | one bowl to its asker (the review face) |
 | STD-B1-03 | H | not run | 2 | Adopt | (e) |
 | STD-B1-04 | H | not run | 2 | Check | "no" rows last (kit e's O.ladder on Rules.noLast) |
-| STD-B1-05 | H | not run | 2 | Check | contract-95 not run on cook:chaat |
+| STD-B1-05 | H | not run | 2 | Kit | contract-95 breaks in the chop step at L2-L4 (chop opens no step; asked) |
 | STD-B1-06 | H | not run | 3 | Check | SH-105: complete and right goes by itself (code); Done stays for a short bowl |
 | STD-B1-07 | H | fail | 2 | Check | chaat never calls pass-me; the audit reads the recipe's knob |
 | STD-B2-01 | F | pass | 0 | none | nothing cooks in the bowl |
@@ -93,7 +91,7 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-B2-05 | F | gap | 0 | none |  |
 | STD-B2-06 | F | not run | 0 | none | one bowl |
 | STD-B2-07 | H | not run | 2 | Check | a tap waits only for the spoon in flight (busy) |
-| STD-B2-08 | H | gap | 2 | Check | St.redo: the wrong layer out, its rows said again, the third shown |
+| STD-B2-08 | H | gap | 2 | Check | NjgServe.round: the wrong layer out, its rows said again, the third shown (build) |
 | STD-B2-09 | F | not run | 0 | none | nothing lost |
 | STD-B2-10 | H | pass | 3 | Check | the top layer back with a tap until the bowl moves on; first try scored |
 | STD-B2-11 | F | not run | 0 | none | no pour |
@@ -117,7 +115,7 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-C2-03 | H | not run | 2 | Check | St.tableDecoys on the rules: 1-4, the "no" counting as one |
 | STD-C2-04 | H | not run | 2 | Check | L1 none (the recipe's no slot by level) |
 | STD-C2-05 | H | not run | 2 | Adopt | (e) |
-| STD-C2-06 | H | not run | 1 | Game code | the spoon's flight one time at every level (flyMs) |
+| STD-C2-06 | H | not run | 2 | Check | flyMs 420, 360, 305, 260 by level (build) |
 | STD-C2-07 | H | not run | 2 | Check |  |
 | STD-C2-08 | H | not run | 2 | Adopt |  |
 | STD-C2-09 | H | gap | 2 | Check |  |
@@ -135,19 +133,19 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-D1-01 | H | not run | 2 | Adopt | its own save key (coached "assemble-v2"); the kit's gate (d) |
+| STD-D1-01 | H | not run | 2 | Check | the kit's gate, Cook.Coach.firsts (build) |
 | STD-D1-02 | H | not run | 1 | Decision | the first time is chaat's own ghost demo (row, pot, drop, tick), not the kit's light |
 | STD-D1-03 | H | not run | 2 | Adopt | (d) |
 | STD-D1-05 | H | gap | 0 | none | the pots are whole things |
 | STD-D1-06 | H | not run | 1 | Adopt | (d) |
-| STD-D1-07 | H | fail | 1 | Adopt | (d) the card light |
-| STD-D1-08 | H | fail | 1 | Adopt | (d) Cook.Coach.lessons before the first layer |
+| STD-D1-07 | H | fail | 2 | Check | Cook.Coach.cardLight after the child's first layer, not at L4 (build) |
+| STD-D1-08 | H | fail | 3 | Check | Cook.Coach.lessons before the first layer; contract-98 green L1-L4 at 1280x665 (build) |
 | STD-D1-09 | H | not run | 0 | none | no timed control |
 | STD-D1-10 | F | fail | 0 | none | one bowl a round |
 | STD-D2-01 | H | not run | 2 | Adopt | (d); St.steps calls the next layer as it opens |
 | STD-D2-02 | H | not run | 2 | Check | the next layer is C.next, the order's own |
 | STD-D2-03 | H | not run | 2 | Adopt | (d) |
-| STD-D2-04 | H | not run | 1 | Adopt | (d) Cook.Coach.wrong on a wrong drop |
+| STD-D2-04 | H | not run | 2 | Check | Cook.Coach.wrong on a wrong drop (build) |
 | STD-D2-05 | H | not run | 2 | Adopt | (d) |
 | STD-D2-06 | F | not run | 0 | none |  |
 | STD-D3-01 | H | not run | 2 | Adopt | (e) |
@@ -159,7 +157,7 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-D4-02 | H | fail | 2 | Adopt | (e) |
 | STD-D5-01 | H | not run | 2 | Check |  |
 | STD-D5-02 | H | gap | 2 | Check |  |
-| STD-D5-03 | H | not run | 1 | Adopt | its own save key is not the kit's first-time gate (D1-01) |
+| STD-D5-03 | H | not run | 2 | Check | the kit's gate: the New player sees the demo and lessons again (build) |
 | STD-D5-04 | H | not run | 2 | Check |  |
 
 ## E Presentation
@@ -171,7 +169,7 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-E1-04 | H | not run | 2 | Check |  |
 | STD-E1-05 | H | not run | 2 | Check | CHT-17: L4 ten pots' labels at 740x320 |
 | STD-E2-01 | H | not run | 2 | Check |  |
-| STD-E2-02 | H | not run | 2 | Adopt | (c) the pills' floor and scale, for its own wrap (CHT-17) |
+| STD-E2-02 | H | not run | 2 | Check | the kit's pills; CHT-17: a word with no room shows its speaker alone (build) |
 | STD-E2-03 | H | not run | 2 | Check |  |
 | STD-E2-04 | H | not run | 2 | Check |  |
 | STD-E2-05 | H | not run | 2 | Check |  |
@@ -179,8 +177,8 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-E2-07 | H | not run | 2 | Adopt | (b) the review face |
 | STD-E2-08 | H | not run | 2 | Check |  |
 | STD-E3-01 | H | not run | 2 | Check | identical pots in one camera |
-| STD-E3-02 | H | fail | 1 | Art | the shelf plank and the worktop fill are code-drawn (Adopt (a)); the bowl's layers wait on CHT-13 |
-| STD-E3-03 | F | not run | 1 | Adopt | (a) its own page-colour fill and parchment band, not the marble wash and the stone |
+| STD-E3-02 | H | fail | 2 | Art | fill and plank gone (build); the layers are the s08b strips until CHT-13 |
+| STD-E3-03 | F | not run | 2 | Check | the kit's marble wash and stone band (build) |
 | STD-E3-04 | F | not run | 0 | none | no hob |
 | STD-E3-05 | F | gap | 0 | none | the review face only |
 | STD-E4-01 | H | fail | 2 | Check | spoon flights and settles ease |
@@ -190,21 +188,21 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-E5-01 | H | not run | 2 | Check |  |
 | STD-E5-03 | H | not run | 2 | Check |  |
 | STD-E5-04 | H | not run | 2 | Check | the layer call is said as its step opens |
-| STD-E6-01 | H | not run | 1 | Game code | INK's literal colours, the ghost's own finger and ring |
+| STD-E6-01 | H | not run | 2 | Check | INK, FONT and the ghost's colours gone (build); two art-only fallbacks |
 | STD-E6-02 | H | not run | 2 | Check |  |
 
 ## F Build
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-F1-01 | H | gap | 1 | Adopt | its own pills, speaker, pop and band where the kits have them |
-| STD-F1-02 | H | not run | 1 | Game code | speaker, chip, pop, band copied from chai v2 |
-| STD-F1-03 | H | gap | 1 | Game code | no settings file: its numbers are code constants |
+| STD-F1-01 | H | gap | 2 | Check | the kits' pills, pop, band, serve, lights (build); the chop step asked |
+| STD-F1-02 | H | not run | 2 | Check | speaker, chip, pop, band and serve loop deleted (build) |
+| STD-F1-03 | H | gap | 2 | Check | data/stations/chaat.json and the bowl (build) |
 | STD-F1-04 | H | not run | 2 | Check |  |
 | STD-F1-05 | H | gap | 2 | Check | old code only (no piece half-switched) |
 | STD-F1-06 | H | judge | 3 | Check | brief.mjs --live-check |
 | STD-F2-02 | H | not run | 2 | Check | counts and decoys from the rules |
-| STD-F2-03 | F | gap | 1 | Game code | as F1-03 |
+| STD-F2-03 | F | gap | 2 | Check | as F1-03 (build) |
 | STD-F2-04 | H | gap | 2 | Check | design px on the 1600x900 box |
 | STD-F3-01 | H | fail | 2 | Check |  |
 | STD-F3-02 | H | not run | 2 | Check |  |
@@ -218,7 +216,7 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-F4-05 | H | not run | 2 | Check |  |
 | STD-F4-06 | H | not run | 2 | Check | St.loadArt's real-time cap |
 | STD-F5-01 | H | gap | 2 | Check | the lab's Chaat bowl tile at L1-L4 |
-| STD-F5-02 | H | not run | 2 | Check | chaat-drop notes, Cook.undoAt |
+| STD-F5-02 | H | not run | 2 | Check | chaat-drop, chaat:light notes; Cook.undoAt, Cook.chaatPills (build) |
 | STD-F5-03 | H | not run | 0 | none | no kit piece of its own |
 
 ## G Proof
