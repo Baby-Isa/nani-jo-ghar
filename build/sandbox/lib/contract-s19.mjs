@@ -203,7 +203,9 @@ export function check105(r, tl, add) {
         if (poke.length) { seen.add(id); add("contract-105", e.t, `the light ${fmt(h)} is not whole round ${id} ${fmt(t)} (its picture and pill): it pokes out at the ${poke.join(" and ")}`); return; }
         const dx = hm.x - tm.x, dy = hm.y - tm.y;
         const offX = Math.abs(dx) > CENTRE_PX && !(dx > 0 ? edge.l || near("l") : edge.r || near("r"));
-        const offY = Math.abs(dy) > CENTRE_PX && !(dy > 0 ? edge.t || near("t") : edge.b || near("b"));
+        // (a shelf item's light holds its hop's room above it, Shelf.hop: a tenth of its height; chai at 1920x1080, 8 Nov)
+        const hopRoom = th.shelf ? 0.1 * (t.b - t.t) : 0;
+        const offY = Math.abs(dy) > CENTRE_PX + hopRoom && !(dy > 0 ? edge.t || near("t") : edge.b || near("b"));
         if (offX || offY) { seen.add(id); add("contract-105", e.t, `the light ${fmt(h)} is off the middle of ${id} ${fmt(t)} by ${Math.round(dx)}, ${Math.round(dy)} px (within ${CENTRE_PX} px)`); }
         return;
       }

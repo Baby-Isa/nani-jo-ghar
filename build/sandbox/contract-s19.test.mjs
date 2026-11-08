@@ -124,6 +124,9 @@ test("contract-105: CK-63, the light half on the pan's handle and off its middle
   // samosa L3, 8 Nov: a light on the dotted part of an item card (under half of it) is contract-97's
   const chunda = { kind: "card", id: "card:trae chunda", box: [19, 208, 134, 388] };
   assert.equal(run(check105, R, [...ST, c(1000, "s19lit", { holes: [[32, 283, 122, 344]], things: [chunda], near: [], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })]).length, 0);
+  // chai at 1920x1080: the light round the water bottle holds its hop's room above it (7 px off the middle, the bottle 214 px tall)
+  const paani = { kind: "word", id: "cook-paani", box: [746, 850, 852, 1064], shelf: true };
+  assert.equal(run(check105, R, [...ST, c(1000, "s19lit", { holes: [[733, 821, 865, 1078]], things: [paani], near: [], vw: 1920, vh: 1080 }), c(2000, "s19lit", { holes: [] })]).length, 0);
   const ok = [...ST, c(1000, "s19lit", { holes: [[94, 494, 206, 646]], things: [jar], near: [], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })];
   assert.equal(run(check105, R, ok).length, 0);
 });
