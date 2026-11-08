@@ -13,7 +13,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 **Where things stand (8 Nov, evening):** Sprint 19 is open (`docs/sprints/S19-chai-standard-everywhere.md`). Zafar said go on every
 fix that needs no decision plus the checks audit; he has **not** agreed the principles (he reviews them with the art he is running) and
 said **don't publish chai's three fixes**. New rule in CLAUDE.md: plans run back to back, no days or dates.
-- **Running (two builders, the limit):** s19-cards (`/home/user/wt/s19-cards`) and s19-checks (`/home/user/wt/s19-checks`), briefs in
+- **Running (two builders, the limit):** s19-cards (`/home/user/wt/s19-cards`) and s19-lights phase 1 (`/home/user/wt/s19-lights`, kit files only; message it when s19-cards is merged); s19-checks merged. Briefs in
   `build/tools/ops/specs/`. Queued: s19-lights after s19-cards; s19-games when a slot frees after s19-cards (briefs ready; worktrees
   made at launch, sparse with no `sources/`).
 - Each builder's work merges only after a look beside chai and the judge on its changed screens; nothing is published without Zafar.
