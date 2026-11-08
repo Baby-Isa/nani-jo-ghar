@@ -676,11 +676,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const w = wantOf(blockOf(x) || 1);
       return Object.keys(w).every((id) => (x.got[id] || 0) === w[id]) && Object.keys(x.got).every((id) => !(x.got[id] > 0) || w[id]);
     };
+    // (the strip's own pastry, never its canvas: the canvas has the folds' room and reaches over the next strip's filling, contract-53)
     const pageBox = (o) => {
       if (!o || !o.active || !UI.worldToScreen) return null;
-      const b = o.getBounds();
-      const a = UI.worldToScreen(b.x, b.y);
-      const c = UI.worldToScreen(b.right, b.bottom);
+      const p0 = u2w(o, [0, 0]);
+      const p1 = u2w(o, [LU, 1]);
+      const a = UI.worldToScreen(p0.x, p0.y);
+      const c = UI.worldToScreen(p1.x, p1.y);
       return [a.x, a.y, c.x - a.x, c.y - a.y];
     };
     const nextStripSoon = (done) => {
@@ -692,7 +694,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         ok: () => active === done && !graded && !!needBlock() && stripRight(done) && !!nextEmpty() && gate.first("next-strip"),
         quitIf: () => active !== done || graded,
         who: "strip",
-        note: "samosa:s14-light",
+        note: `${gate.scope}:s14-light`,
       });
     };
     for (;;) {
