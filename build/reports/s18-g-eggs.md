@@ -38,5 +38,4 @@ own ring drawing (455-459); the code-drawn plate, eggs, cup and shakers (117-155
 2. **data/cook.json recipes.eggs (orchestrator):** the order's levels move to `data/stations/eggs.json` `recipe` in wave 3; and
    for Zafar (gap page, Decision): "no" from L2 (now L4 only), L3's eggs each 1 after L2's 1-2 (a count goes down), cookMs
    growing by level (slower, not quicker), no redo at the table, no overcooking (dbd?).
-3. **Not taken, for the next pass:** the card light, the helper card's step help, the rungs' word gate, `UI.peopleSay` (the
-   request pop-up says the orders today), `NjgServe` (its faces frown on a wrong dish; the table keeps its people).
+3. **Not taken yet** (the gap page's list): the card light, the helper card's step help, the rungs' word gate, `UI.peopleSay`, `NjgServe`.
