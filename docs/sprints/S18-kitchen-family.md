@@ -168,6 +168,10 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - contract-83 is flaky: re-run once before calling it red.
 
 ## Small decisions
+- 8 Nov ~06:10 (Zafar): Fable's round is not started; first publish what is built so he can play, then he describes what each game
+  should look like and we decide what is chai's pieces and what is new (art likely). The shelf: the orchestrator's principle, his
+  question answered: the bottom shelf wherever the child picks named things (each with its word pill, one reading line); a flat
+  strip for flat things (maani's rolls, samosa's heaps); none where nothing is picked (chop). To confirm at his play.
 - 8 Nov ~05:30 (Zafar), eggs: 1. the "no" item from L2, as in chai; 2. counts rise level by level; 3. cooking never gets slower at a
   higher level: the same speed at every level for now ("then see"); 4. chai's redo at the table; 5. eggs **can overcook, like chai**,
   and an overcooked egg is redone (back in the pan, try again). Every kitchen game: cooking stays the same or gets quicker by level.
