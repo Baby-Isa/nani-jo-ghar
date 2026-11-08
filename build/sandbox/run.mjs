@@ -8,6 +8,7 @@ import { mkdirSync, writeFileSync, existsSync, readFileSync, readdirSync, append
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { ROOT, SIZES, ALL_SIZES, STORE_SIZES, QUICK_SIZE, PORT, startServer, launch, newPage } from "./lib/env.mjs";
+import { KeyFrames } from "./lib/keyframes.mjs";
 import { Recorder } from "./lib/recorder.mjs";
 import { makeSheets } from "./lib/sheets.mjs";
 import { mergeSound } from "./lib/sound.mjs";
@@ -52,6 +53,8 @@ if (has("--help") || has("-h") || !argv.length) {
                         --check runs them too, on every page of the run (never ratcheted into the baseline)
   --list                list the flows and the labs.html tiles they play, and exit
   --no-sheets           skip the contact sheets
+  --keyframes           the key moments' whole screens and the frame strips round each first-time light, in <run>/keyframes/
+                        (lib/keyframes.mjs; build/tools/review/sidebyside.mjs pairs them with chai's)
   --run-id id           folder name under build/screenshots/sandbox/ (default: a timestamp)
   --resume id           continue run <id>: skip the pages already done
   --evidence plan.json  the evidence loop (decision 82, build/tools/review/evidence.mjs writes the plan): at each probe's moment on a
@@ -216,7 +219,10 @@ if (fromRun) {
       if (probe) { await ctx.addInitScript(EVIDENCE_HOOK(watchList(ev.probes))); await ctx.addInitScript(REC_HOOK); }
       // (a debug hook of one's own while diagnosing: NJG_INIT=<file.js> adds it to every page)
       if (process.env.NJG_INIT) await ctx.addInitScript({ path: process.env.NJG_INIT });
-      sound.onEvent = (e) => { rec.contractShot(e); lightPix(e, page, sound); if (probe) probe.onEvent(e); };
+      // --keyframes (s19-checks): the key moments' whole screens and the frame strips round each first-time light (lib/keyframes.mjs)
+      const kf = has("--keyframes") ? new KeyFrames(page, { dir: runDir, flow: flow.id, size }) : null;
+      if (kf) { const st0 = rec.state.bind(rec); rec.state = async (name, opts) => { const u = await st0(name, opts); kf.onState(name); return u; }; }
+      sound.onEvent = (e) => { rec.contractShot(e); lightPix(e, page, sound); if (probe) probe.onEvent(e); if (kf) { kf.onEvent(e); kf.onLine(e); } };
       const c = { page, rec, errors, size, browser, touch, timeoutMs: (flow.timeoutMs || 300000) * (ev && ev.profile === "second-play" ? 2 : 1), reachedEnd: false, ...(seed != null ? { seed } : {}), ...(ev && ev.profile ? { profile: ev.profile } : {}) };
       let timer, wantMiss = null;
       try {
@@ -238,6 +244,7 @@ if (fromRun) {
       } finally { clearTimeout(timer); }
       if (wantMiss) { await ctx.close().catch(() => {}); if (!quiet) log(`${flow.id} @ ${size} seed ${seed}: ${wantMiss}`); return { wantMiss }; }
       if (probe) { await probe.chain.catch(() => {}); await probe.collectRec(); }
+      if (kf) await kf.finish();
       const vid = process.env.NJG_VIDEO && page.video ? page.video() : null;
       await ctx.close().catch(() => {});
       if (vid) {
