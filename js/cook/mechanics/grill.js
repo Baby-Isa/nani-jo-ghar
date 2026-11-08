@@ -34,7 +34,7 @@
  * with ready skewers: the standalone grill), rackItems ([{pieces}]: the
  * skewers threaded before, Wave 6's one job at a time), line, dx (shift
  * the layout).
- * Knobs (data.mechanics.grill): band, rate, rateSpread, turns, spots, rack,
+ * Knobs (data/stations/mishkaki-grill.json mechanic.grill, SK.knobs): band, rate, rateSpread, turns, spots, rack,
  * burntScore, ignoreBelow.
  *
  * Cook.Skewer (below) is what thread and grill share: which piece is meat
@@ -55,6 +55,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /* ================= Cook.Skewer: shared model and art ================= */
   const SK = (Cook.Skewer = {});
   SK.cfg = () => Mech.spec("mishkaki-grill").skewer || {};
+  /**
+   * S18 (STD-F1-03, STD-F2-03): the thread's or the grill's knobs at a level, from sekelo's settings file
+   * (data/stations/mishkaki-grill.json mechanic.thread | .grill: levels 1..n merged in order); the kit's Mech.knobs when the file
+   * has none (a page without it).
+   */
+  SK.knobs = function (id, level = 1) {
+    const levels = ((Mech.spec("mishkaki-grill") || {})[id] || {}).levels;
+    if (!levels || !levels.length) return Mech.knobs(id, { level });
+    const n = Cook.clamp(Math.round(Number(level)) || 1, 1, levels.length);
+    const out = {};
+    for (let i = 0; i < n; i++) Mech.merge(out, levels[i]);
+    out.level = n;
+    return out;
+  };
   /** "meat" | "veg" | null for a piece. */
   SK.cls = (id) => (SK.cfg().classes || {})[id] || null;
   /** The kind word for "meat" | "veg" | "mixed" (ph-meat, ph-veg, ph-mixed). */
@@ -941,19 +955,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return key;
   }
 
-  /* ================= Sekelo v2 (design system §15): the shared grid, shelf and word pop ================= */
+  /* ================= Sekelo v2 (design system §15): its grid on the shelf band; the shelf, pills and pop are the kits' ================= */
   // the chai v2 grid (design px, 1600x900): the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const V2 = (SK.V2 = {
     SHELF_TOP: Cook.Stations.SHELF.top,
-    BASE: 818, // (front-on shelves: the shelf line)
     BOWL_Y: 740, // Sekelo is top-down (Zafar, 29 Sept): each bowl centred in the band above its chip
     PITCH: 192, // (SH-112: the taller band's bins a fifth bigger) v3 (K5): heaps, their chunks the size of the pieces on a skewer
     GROUP_GAP: 0, // SEK-21 (P38, 17 Oct: "no reason for them to be unevenly distributed"): every bin one pitch apart (was 44 between meat and veg)
     BOWL_W: 168, // one box size per slot (§7): every prep bowl is the same bowl, seen from above
-    CHIP: { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 },
+    CHIP: { w: 128, y: 860 }, // the word pill under each bowl (the kit's Cook.Kit.chip: its height and tap area the shared PILL's)
     RIGHT: 190, // the shelf keeps clear of the phase button and the tick, bottom right
-    INK: { get text() { return global.Tokens.cookInk().text; }, get kutchi() { return global.Tokens.cookInk().kutchi; }, card: 0xffffff, get grey() { return global.Tokens.cookInk().grey; }, get gold() { return global.Tokens.cookInk().gold; }, get panel() { return global.Tokens.cookInk().panel; }, get page() { return global.Tokens.cookInk().page; }, sage: 0x7e9a76, wrong: 0xb24a3a }, // the central tokens (SH-151)
-    get FONT() { return global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"; },
     DIR: "assets/cook/items/sekelo/",
   });
   /** The piece that is meat (ph-meat, gos: SEK-19, decision 11; the cooked all-meat skewer is mishkaki) and a piece's word. */
@@ -1029,36 +1040,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
   /** The taster's faces (happy, neutral) for serve and taste. */
   SK.faceArt = (S, who) => Cook.Stations.loadArt(S, Cook.Kit.faceArt(who), 15000); // real time (loadcap)
-  /** The speaker icon, drawn at (x, y) about `s` px tall (the chai v2 chip's). */
-  SK.speaker = function (g, x, y, s, color = 0x2a2522) {
-    if (Cook.Kit && Cook.Kit.speaker && color === 0x2a2522) return Cook.Kit.speaker(g, x, y, s);
-    const k = s / 24;
-    g.fillStyle(color, 1);
-    g.fillRect(x - 8 * k, y - 3.5 * k, 5 * k, 7 * k);
-    g.fillTriangle(x - 4 * k, y - 3.5 * k, x + 2 * k, y - 9 * k, x + 2 * k, y + 9 * k);
-    g.fillTriangle(x - 4 * k, y + 3.5 * k, x + 2 * k, y - 9 * k, x - 4 * k, y - 3.5 * k);
-    g.lineStyle(2.2 * k, color, 1);
-    g.beginPath();
-    g.arc(x + 3 * k, y, 5 * k, -0.9, 0.9);
-    g.strokePath();
-    g.beginPath();
-    g.arc(x + 3 * k, y, 9.5 * k, -0.9, 0.9);
-    g.strokePath();
-  };
-  /** The softened marble and the shelf band (§3, §7), as chai v2 draws them. */
+  /** The speaker icon, drawn at (x, y) about `s` px tall: the kit's (Cook.Kit.speaker, the shared Shelf.P.speaker). */
+  SK.speaker = (g, x, y, s, color) => Cook.Kit.speaker(g, x, y, s, color);
+  /**
+   * The worktop and the shelf band (§3, §7, ART-41): the kitchen kit's wash over the marble (Cook.Kit.worktop) and its stone band
+   * (St.stoneBand; no shelf strip: sekelo's bowls are top-down, Zafar, 29 Sept). full (s08 w3B, SEK-20): the grill's screen has
+   * no shelf (one job per phase, SEK-08): the wash all the way down, so the cooked rack never straddles the band's edge.
+   * Drawn past the design box (the stage fill shows more worktop above and at the sides, Cook.view).
+   */
   SK.band = function (S, z, { full = false } = {}) {
-    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
     const FAR = 2000;
-    // full (s08 w3B, SEK-20): the grill's screen has no shelf (one job per phase, SEK-08): the softened marble all the way
-    // down, so the cooked rack never straddles the band's edge
-    if (full) return S.track(S.add.rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(900 + 2 * FAR), V2.INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
-    S.track(S.add.rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(V2.SHELF_TOP + FAR), V2.INK.page, 0.5).setOrigin(0).setDepth(D.bg + 1));
-    const band = S.track(S.add.graphics().setDepth(D.bg + 1.2));
-    band.fillStyle(V2.INK.panel, 1);
-    band.fillRect(z.X(-FAR), z.Y(V2.SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - V2.SHELF_TOP + FAR));
-    band.fillStyle(0x2a1a0a, 0.08);
-    band.fillRect(z.X(-FAR), z.Y(V2.SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
-    return band;
+    if (full) return Cook.Kit.worktop(S, { top: 900, far: FAR });
+    Cook.Kit.worktop(S, { top: V2.SHELF_TOP, far: FAR });
+    return Cook.Stations.stoneBand(S, { top: V2.SHELF_TOP, far: FAR, depth: D.bg + 1.2 });
   };
   /**
    * The shelf: identical slots (one bowl size), grouped by kind with a small gap (meat | vegetables),
@@ -1105,23 +1099,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
   };
   SK.shelf = function (S, z, groups, { level = 1, go = null } = {}) {
-    const n = groups.reduce((a, g) => a + g.length, 0);
     // (SH-112: the bigger bins narrow to fit a long row clear of the tick)
     // s08 w8A: and clear of the go-on button where it is wider than V2.RIGHT (a short phone: it covered a bin)
     const goX = go != null ? SK.goLeft(S, go) : null;
     const right = Math.min(1600 - V2.RIGHT, goX != null ? goX - 24 : Infinity);
-    const pitch = Math.min(V2.PITCH, (right - 80 - (groups.length - 1) * V2.GROUP_GAP) / Math.max(1, n));
-    const width = n * pitch + (groups.length - 1) * V2.GROUP_GAP;
-    const x0 = Math.max(40, (right - width) / 2);
+    // (the shared kit's slots, Shelf.slots: one pitch per bowl, the row centred in [0, right] with 40 px kept at each end)
+    const { slotW, x } = global.Shelf.slots(groups, { span: [40, right - 40], pitch: V2.PITCH, groupGap: V2.GROUP_GAP });
     const out = {};
-    let sx = x0 + pitch / 2;
-    groups.forEach((group) => {
-      group.forEach((id) => {
-        out[id] = SK.bowl(S, z, id, sx, level, Math.min(V2.BOWL_W, pitch - 20));
-        sx += pitch;
-      });
-      sx += V2.GROUP_GAP;
-    });
+    groups.forEach((group) => group.forEach((id) => (out[id] = SK.bowl(S, z, id, x[id], level, Math.min(V2.BOWL_W, slotW - 20)))));
     return out;
   };
   SK.bowl = function (S, z, id, x, level, bw = V2.BOWL_W) {
@@ -1136,62 +1121,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     } else img = S.ingredient(id, z.X(x), z.Y(V2.BOWL_Y), { w: z.L(V2.BOWL_W), h: z.L(V2.BOWL_W), label: false, state: "pieces" });
     img.wordId = id;
     img.home = { x: img.x, y: img.y };
-    // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place): the
-    // kitchen kit's (js/cook/kitchen-kit.js), else this file's copy of it
-    const C = V2.CHIP;
+    // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place): the kitchen kit's (Cook.Kit.chip,
+    // the shared Shelf.P.chip), scaled with the zone
     // Zafar, 20 Oct: the word is written until the child has used it right, then the speaker alone (every level)
     const showWord = Cook.chipWord(id, z.ctx);
-    if (Cook.Kit && Cook.Kit.chip && z.k === 1) {
-      img.chip = Cook.Kit.chip(S, id, z.X(x), z.Y(C.y), { word: showWord, w: C.w });
-      return img;
+    img.chip = Cook.Kit.chip(S, id, z.X(x), z.Y(V2.CHIP.y), { word: showWord, w: V2.CHIP.w });
+    if (z.k !== 1) {
+      img.chip.k = z.k;
+      img.chip.setScale(z.k);
     }
-    const chip = S.track(S.add.container(z.X(x), z.Y(C.y)).setDepth(D.item + 2).setScale(z.k));
-    const bg = S.add.graphics();
-    bg.fillStyle(0x28190a, 0.1);
-    bg.fillRoundedRect(-C.w / 2, -C.h / 2 + 2, C.w, C.h, 12);
-    bg.fillStyle(V2.INK.card, 1);
-    bg.fillRoundedRect(-C.w / 2, -C.h / 2, C.w, C.h, 12);
-    chip.add(bg);
-    const icon = S.add.graphics();
-    if (showWord) {
-      const t = S.add.text(0, 0, Cook.display(id), { fontFamily: V2.FONT, fontSize: "25px", fontStyle: "800", color: V2.INK.kutchi }).setOrigin(0, 0.5);
-      const maxT = C.w - 52;
-      if (t.width > maxT) t.setScale(maxT / t.width);
-      const w = 22 + 8 + t.displayWidth;
-      SK.speaker(icon, -w / 2 + 10, 0, 24);
-      t.x = -w / 2 + 30;
-      chip.add([icon, t]);
-    } else {
-      SK.speaker(icon, 1, 0, 26);
-      chip.add(icon);
-    }
-    chip.setSize(C.hitW, C.hitH);
-    chip.setInteractive(new Phaser.Geom.Rectangle(-C.hitW / 2, -C.hitH / 2 + 8, C.hitW, C.hitH), Phaser.Geom.Rectangle.Contains);
-    chip.on("pointerdown", (ptr, lx, ly, ev) => {
-      if (ev && ev.stopPropagation) ev.stopPropagation();
-      Cook.unlockAudio();
-      if (Cook.onLabel) Cook.onLabel(id);
-      Lang.speakWord(id);
-      S.tweens.add({ targets: chip, scale: z.k * 1.08, duration: 90, yoyo: true });
-    });
-    img.chip = chip;
     return img;
   };
   /** The word pop (§4: learning happens during the action): `🔊 word` rises by the action, the clip plays. */
+  // (the shared kit's word pop, Juice.P.pop: the card, the speaker and the word rise into place, hold and fade; placed over (x, y)
+  // inside the view by Juice.popAt; never under 14 px as rendered, Cook.Kit.textFloor). Sekelo says the word (its voice).
   SK.pop = function (S, z, id, x, y, { speak = true } = {}) {
-    const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(Math.max(z.k, Cook.Kit.textFloor(S, 36)))); // never under 14px as rendered
-    const t = S.add.text(0, 0, Cook.display(id), { fontFamily: V2.FONT, fontSize: "36px", fontStyle: "800", color: V2.INK.kutchi }).setOrigin(0, 0.5);
-    const w = 34 + 10 + t.width + 36;
-    const g = S.add.graphics();
-    g.fillStyle(0x28190a, 0.1);
-    g.fillRoundedRect(-w / 2, -28 + 3, w, 56, 12);
-    g.fillStyle(V2.INK.card, 1);
-    g.fillRoundedRect(-w / 2, -28, w, 56, 12);
-    SK.speaker(g, -w / 2 + 30, 0, 26);
-    t.x = -w / 2 + 50;
-    c.add([g, t]);
-    S.tweens.add({ targets: c, alpha: 1, y: y - z.L(18), duration: 180, ease: "Back.easeOut" });
-    S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: 1500, duration: 320, onComplete: () => c.destroy() });
+    const v = Cook.view || {};
+    const k = Math.max(z.k, Cook.Kit.textFloor(S, 36));
+    const c = global.Juice.P.pop(S, (W, H) => global.Juice.popAt({ x, y }, W, H, { top: v.top || 0 }), Cook.display(id), { k, depth: D.fx + 3, top: v.top || 0 });
     if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.popWord(id);
     return c;
   };
@@ -1409,9 +1356,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     station: "grill",
     view: "marble",
     footprint: { x: 0, y: 0, w: 1600, h: 900 },
-    async run(z, params, k) {
+    async run(z, params) {
       const S = z.S;
       const ctx = z.ctx;
+      const k = SK.knobs("grill", z.level); // (sekelo's settings file)
       const want = params.skewers || {};
       const pattern = params.pattern || [];
       const line = params.line || {};
@@ -1425,7 +1373,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // SH-158, the S14 roll-out (SEK-22; the central rules' timed.firstTimeHold): a new player's first turn holds in the green
       // until a skewer is tapped (js/cook/station-lib.js St.firstHold); the lift (the last side) never holds
       const hold14 = Cook.Stations.firstHold(ctx, "grill:turn");
-      const nPieces = Mech.knobs("thread", { level: z.level }).pieces;
+      const nPieces = SK.knobs("thread", z.level).pieces;
       const offerChips = params.chips != null;
 
       /* the scene: the band and the quiet shelf (the bowls you threaded from), then the grill */
@@ -1515,9 +1463,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
 
       /* a skewer's tap zone (the whole skewer, handle and all) */
-      const hitFor = (sk, w, h) => {
+      // SEK-22 (Zafar, 30 Oct: the light "should include the whole skewer ... the handle and the pin ... fairly tight", never its
+      // neighbours): the skewer is named by the step it is the thing of (its wordId: "rack", "turn" or "lift", the expect's key), so the
+      // kit's light hugs the skewer's own box (its stick, drawn or not, and its pieces), not a circle round the tap point
+      const hitFor = (sk, w, h, step) => {
         const hit = S.track(S.add.zone(sk.x, sk.y, w, h).setDepth(D.fx + 3));
         sk.hit = hit;
+        sk.wordId = step;
         return hit;
       };
       /*
@@ -1552,7 +1504,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             SK.onLine(sk, tip, hd);
             land();
           }
-          const hit = hitFor(sk, L(86), L(340));
+          const hit = hitFor(sk, L(86), L(340), "rack");
           hit.setPosition(t.x, t.y);
           S.tappable(hit, () => toGrill(r));
           return r;
@@ -1562,7 +1514,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const r = { sk, pieces: item.pieces, cls: SK.classify(item.pieces, pattern), slot: i, settled: !item.sprite };
         rack[i] = r;
         if (item.sprite) S.tweens.add({ targets: sk, x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut", onComplete: () => (r.settled = true) });
-        const hit = hitFor(sk, L(RK.pitch * RACK.scale * 0.9), L(380));
+        const hit = hitFor(sk, L(RK.pitch * RACK.scale * 0.9), L(380), "rack");
         hit.setPosition(rackX(i), Y(RACK.y));
         S.tappable(hit, () => toGrill(r));
         return r;
@@ -1582,6 +1534,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         rack[r.slot] = null;
         r.sk.hit.destroy();
+        r.sk.wordId = null; // (on its way to the grill: no longer the rack's)
         if (r.glowing) S.glow(r.sk, false);
         if (rackArt.v3) {
           // v3: the rack's picture loses it (its own stick goes with it), and the ones after it slide along
@@ -1638,7 +1591,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           onComplete: () => {
             g.busy = false;
             S.burst(spotX(i), Y(GRILL.skewerY - 60), [0xffb347, 0xffffff], 8, L(60));
-            const hit = hitFor(g.sk, L(Math.min(130, bedW / k.spots)), L(420));
+            const hit = hitFor(g.sk, L(Math.min(130, bedW / k.spots)), L(420), g.phase >= k.turns ? "lift" : "turn");
             hit.setPosition(spotX(i), Y(GRILL.skewerY - 20));
             S.tappable(hit, () => tapGrill(g));
           },
@@ -1671,6 +1624,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         else if (v >= 1) S.wisps(vx, Y(GRILL.skewerY - 60), 3, L(70));
         if (!last) {
           g.phase++;
+          g.sk.wordId = g.phase >= k.turns ? "lift" : "turn";
           g.v = 0;
           g.busy = true;
           Cook.sfx.flip();
@@ -1686,6 +1640,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         spots[g.spot] = null;
         grilling.splice(grilling.indexOf(g), 1);
         g.sk.hit.destroy();
+        g.sk.wordId = null; // (plated)
         Cook.sfx.pop();
         const j = plate.length;
         plate.push({ pieces: g.pieces, cls: g.cls, burnt: g.burnt, sprite: g.sk });
@@ -1727,6 +1682,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         spots[g.spot] = null;
         grilling.splice(grilling.indexOf(g), 1);
         if (g.sk.hit) g.sk.hit.destroy();
+        g.sk.wordId = null;
         if (!grilling.length && sizzle) {
           sizzle.stop();
           sizzle = null;
