@@ -1,5 +1,20 @@
 # The evidence loop: every row proven by the game, judged without Zafar
 
+## A game beside chai: the three-part gate (Sprint 19, s19-checks)
+
+The 8 Nov eye-judge experiment (`build/reports/s18-eye-judge-experiment.md`) caught a third to a half of Zafar's still-visible points
+and missed motion, timing and fine shared-piece detail; its three changes are now the gate for every game's merge:
+1. **The shared pieces present, in code:** contract-100 to -109 (`build/sandbox/lib/contract-s19.mjs`) on every kitchen game at L1-L4
+   in the contract run: the 6 Nov card and type, Nani's box with its drop-down, the kit's light only, no tick/next/X, the card's own
+   picture, the light whole, centred and gone on the move, only shelf items hop, well done last, the shelf's lines.
+2. **Full-size frames beside chai:** `sidebyside.mjs <game>` plays chai and the game at a child's pace (`run.mjs --keyframes`) and
+   writes pairs at seven key moments, close-ups of the order card and Nani's box, and the eye judge's batch.
+3. **Frame strips** round each first-time light, lesson and rung (0.5 s before to 2 s after, about every 110 ms, from the browser's
+   screencast) in the same folder.
+The judge (`.claude/agents/judge.md`, "Side by side") answers `docs/process/eye-judge-rubric.md`, flaws first, and says where the game
+is worse than chai. **The merge rule** (principle 10, proposed 8 Nov, not yet agreed): nothing merges that the side-by-side shows worse
+than chai at the same moment unless a look sheet Zafar accepted says it may differ.
+
 ## The one loop (S13)
 
 Zafar, 26 Oct: one command shoots a builder's rows before and after; the script builds the judge's batch; one side-by-side sheet per shared element is "done"; builders never shoot their own frames; machine checks first; one broad sweep at `/review`. The evidence tool does all of it; there is no second capture path. In order:
