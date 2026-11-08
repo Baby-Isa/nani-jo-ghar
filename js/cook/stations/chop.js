@@ -16,6 +16,8 @@
  *     (true: each round's decoys are reported for contract-37, the first try's); the settings' numbers for that level and the
  *     rules' decoys come with it (params.knobs on top, a caller's own). short: the kinds whose count was not reached.
  *   Cook.Chop.settings() -> Promise of data/stations/chop.json (once); Cook.Chop.knobs(level) its knobs at a level, once loaded.
+ *   "do": "chop-game" (a recipe's step: chaat's chop): the game on its own board, through play(); -> what was cut ({id: n}).
+ * Its step opens before anything of its own is said (play: an order heard or skipped opens it as the board starts; contract-95).
  */
 import { Cook as CookNS } from "../ns.js";
 
@@ -79,7 +81,13 @@ import { Cook as CookNS } from "../ns.js";
     // (the decoys each round threw, reported once for the round: the game's own, daar's and chaat's alike)
     const own = params.onRounds;
     const onRounds = params.note ? (rs) => (noteDecoys(rs, knobs(level).decoys || 0), own && own(rs)) : own;
-    const cut = (await Mech.run(KEY, z, Object.assign({}, params, { level, knobs: k, onRounds }))) || {};
+    // contract-95 (CK-60; wave 3, chaat L2-L4): the chop is the work's step and opens it before anything of its own is said. An order
+    // already heard (read out in its pop-up, or skipped) opens it now, as the board starts, before the knife and the throws are
+    // made ready; an order not yet heard comes up in its pop-up first, and the mechanic opens the step as that folds (DAAR-40)
+    const LC = global.Lifecycle;
+    const stepOpen = !!(LC && LC.asked && LC.asked() && global.PlayLog && global.PlayLog.step);
+    if (stepOpen) global.PlayLog.step(KEY);
+    const cut = (await Mech.run(KEY, z, Object.assign({}, params, { level, knobs: k, onRounds, stepOpen }))) || {};
     let wrong = null;
     const got = {};
     const short = [];
@@ -151,6 +159,20 @@ import { Cook as CookNS } from "../ns.js";
     if (ctx.closeItem) ctx.closeItem([], { all: true });
     return got;
   }
+
+  /*
+   * The chop as a game a recipe calls ("do": "chop-game": chaat's chop step, data/cook.json): its board (the game's own view) and
+   * the game's numbers, decoys and step, through play(); the result is what was cut, as the bare mechanic gave it. The first try's
+   * decoys are noted for the round (contract-37).
+   */
+  Mech.define("chop-game", {
+    station: KEY,
+    view: "marble",
+    knobs: KEY,
+    async run(z, p) {
+      return (await play(z, Object.assign({ note: !p.retry }, p, { level: p.level || z.level }))).cut;
+    },
+  });
 
   Cook.Chop = { settings, knobs, play };
   Mech.lab(KEY, { name: "Chop", verb: "Ninja slicing", run: (L) => game(L) });

@@ -1909,7 +1909,7 @@
    ],
    "run": [
     {
-     "do": "chop",
+     "do": "chop-game",
      "targets": {
       "veg-01": "$potatoes",
       "veg-02": "$onions",
@@ -3107,15 +3107,14 @@
    ]
   },
   "assemble": {
-   "_about": "Chaat v2 (docs/design-language/ui-design-system.md §14, §14a): level 1 has no decoys; from level 2 decoys stand on the shelf with the order's toppings (and, from level 3, the 'don't' item). flyMs: a spoonful's flight to the glass.",
+   "_about": "Chaat v2 (docs/design-language/ui-design-system.md §14, §14a): level 1 has no decoys; from level 2 decoys stand on the shelf with the order's toppings (and, from level 3, the 'don't' item). A spoonful's flight to the glass is data/stations/chaat.json's (flyMs by level).",
    "levels": [
     {
      "decoys": [
       1,
       1
      ],
-     "decoyPick": "random",
-     "flyMs": 420
+     "decoyPick": "random"
     },
     {
      "decoys": [
