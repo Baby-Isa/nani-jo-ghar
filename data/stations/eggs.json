@@ -172,16 +172,17 @@
   "hob": {
    "call": "Cook.Kit.hob",
    "n": 2,
-   "x": 300,
+   "x": 160,
    "y": 70,
-   "k": 0.74
+   "k": 0.74,
+   "_s19": "S19: x 300 -> 160 (the tray moved left with it, clear of the cog's column on a phone)"
   },
   "reuse": true,
   "tray": {
    "file": "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
-   "d": 470,
-   "x": 1090,
-   "y": 165,
+   "d": 440,
+   "x": 870,
+   "y": 90,
    "reuse": true,
    "plate": "assets/cook/items/plate-enamel-empty-t.webp",
    "wells": [
@@ -208,7 +209,7 @@
     "dy": -70,
     "d": 64
    },
-   "_s19": "S19: y 90 -> 165, so on a phone (740x320) the tray's top-right plate is clear of the cog's corner (it sat under it: eggs L3 timed out tapping the plate there); its foot stays above the band (165 + 455 < 630)"
+   "_s19": "S19: x 1090 -> 870 and d 470 -> 440 (and the hob x 300 -> 160), so on a phone (740x320) the tray's right-hand plates are clear of the grown-ups' menu column under the cog (eggs L3 and L4 at 740x320 stopped tapping a plate under it); the wells 191 apart still clear the 168 plates"
   },
   "people": {
    "call": "Cook.Kit.faceArt(who)",
