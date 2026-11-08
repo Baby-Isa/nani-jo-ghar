@@ -224,7 +224,17 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       // light's one rule leaves its room round their union: contract-92); was the picture's box with no room
       const target = [0, 1, 2, 3, 4, 5].map((i) => () => (n.o.active && n.o.visible ? Cook.Coach.parts(n.o)[i] || null : null));
       const current = () => ctlId === id && !served;
-      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, onLight: () => glow(n.o) });
+      // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236)
+      const lightGlow = () => {
+        glow(n.o);
+        setTimeout(() => {
+          const h = ctl && ctl.lit ? ctl.lit() : null;
+          const off = () => lit === n.o && glow(null);
+          if (h && h.done) h.done.then(off);
+          else off();
+        }, 0);
+      };
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, onLight: lightGlow });
       // SH-228 (chai's method): the stuck help after the level's wait from the last action (a child's time: the kit divides a game's wait
       // by the test speed), at once after a wrong move: her helper card naming the thing (an item's step), else her line again, with the
       // light. Never where the light would be the answer (hides: a dressing past support, STD-D2-05)
@@ -235,7 +245,8 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
           hintMs: () => hintMs() * (Cook.speed || 1),
           current,
           busy: () => moving > 0,
-          glow: (on) => glow(on ? n.o : null),
+          // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: contract-8)
+          glow: (on) => Cook.Coach.onShelf(n.o) && glow(on ? n.o : null),
           onHint: () => hints++,
         });
       if (n.line) steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again, noCall: n.noCall || null });

@@ -370,7 +370,17 @@ import { Cook as CookNS } from "../ns.js";
           nextV = Cook.Coach.nextLight({ now: true, target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }), quitIf: () => finished || ctlKey !== key, who: n.obj === pot ? "pot" : "pan", note: NOTE });
       } else first = gate.first(`ctl-${n.what}`);
       const current = () => ctlKey === key && !finished;
-      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => busy > 0, onLight: () => glowOn(n.obj), note: NOTE });
+      // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236)
+      const lightGlow = () => {
+        glowOn(n.obj);
+        setTimeout(() => {
+          const h = ctl && ctl.lit ? ctl.lit() : null;
+          const off = () => glowObj === n.obj && glowOn(null);
+          if (h && h.done) h.done.then(off);
+          else off();
+        }, 0);
+      };
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => busy > 0, onLight: lightGlow, note: NOTE });
       if (Cook.Coach.stuck)
         stuck = Cook.Coach.stuck({
           key: KEY,
@@ -379,7 +389,8 @@ import { Cook as CookNS } from "../ns.js";
           hintMs,
           current,
           busy: () => busy > 0,
-          glow: (on) => glowOn(on ? n.obj : null),
+          // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: one highlight at a time, contract-8)
+          glow: (on) => Cook.Coach.onShelf(n.obj) && glowOn(on ? n.obj : null),
           onHint: () => hints++, // (SH-160: the guide's hint came)
           note: NOTE,
         });
@@ -479,9 +490,12 @@ import { Cook as CookNS } from "../ns.js";
         if (pl[flag]) return hold(null);
         pl[flag] = true;
         const asked = (id === "spi-16" ? pl.q.salt : pl.q.pepper) === "yes";
-        const sh = shakers[id].c;
+        const sh0 = shakers[id].c;
         busy++;
-        if (sh.shadow) sh.shadow.lifted = true; // (off the band: no shadow in the air)
+        // (S19, contract-109: the shaker on the band stays on its line; a copy of it goes to the plate and back)
+        sh0.setAngle(0);
+        const sh = T(S.add.image(sh0.x, sh0.y, sh0.texture.key).setOrigin(0.5, 1).setScale(sh0.scaleX, sh0.scaleY).setDepth(D.fx));
+        sh0.setAlpha(0.35);
         await Cook.tween(S, { targets: sh, x: pl.x + 40, y: pl.y - 70, duration: 280 });
         await Cook.tween(S, { targets: sh, angle: 150, duration: 160 });
         const dots = S.add.graphics();
@@ -496,7 +510,8 @@ import { Cook as CookNS } from "../ns.js";
           if (!guided && Lang.known(id)) Cook.markRight(id);
         } else wrong();
         await Cook.tween(S, { targets: sh, x: shakers[id].x, y: shakers[id].y, angle: 0, duration: 260 });
-        if (sh.shadow) sh.shadow.lifted = false;
+        sh.destroy();
+        sh0.setAlpha(1);
         busy--;
         held = null;
         return refresh();
