@@ -19142,6 +19142,27 @@
    "expect": null,
    "note": "a clinic heal game (the cut): the same finger and cadence",
    "delay": 300
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "strip:#game:8x250",
+    "contract:44",
+    "contract:102"
+   ],
+   "expect": null,
+   "note": "maani's roll: one finger, the kit's, in its rhythm (no roll ghost of the mechanic's own)"
   }
  ],
  "SH-120": [
@@ -22143,6 +22164,28 @@
    "expect": null,
    "note": "maani for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; rotis 2, 3, 4, 5 by level; the tawa flip's first-time hold (L4: the station at play; no first-time help from L3, the rulebook)",
    "delay": 1500
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "1280x665",
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:tawa-1",
+   "after": null,
+   "capture": [
+    "strip:#game:8x250",
+    "contract:105"
+   ],
+   "expect": null,
+   "note": "maani's flip, its first time as a new player: in the green, the dim and the lit box round the maani on the tawa (the coach's staged step; the hold keeps it in the green)"
   }
  ],
  "SEK-22": [
@@ -24053,6 +24096,33 @@
    ],
    "expect": null,
    "note": "the lit box round the first shelf item at step 1 (L1-L4): at least 8 px round picture, pill and face, or 2 px short of a neighbour"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "zoom2:#game",
+    "contract:105",
+    "contract:92"
+   ],
+   "expect": null,
+   "note": "maani's board lit whole (the round board with the dough on it), centred, the margin all round; and the dough pile with its pill"
   }
  ],
  "CHAI-97": {
@@ -25224,6 +25294,402 @@
     "pass"
    ],
    "note": "baking's controls: the stuck help (its which-one pick keeps S.step's own help: a kit change)"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "hint",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "contract:102",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani: the stuck help (Cook.Coach.stuck) on the next pile or the rolled maani: the helper card or her line, with the kit's light"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "hint",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chaat: stuck on a layer past the level's wait: the guide's hint comes (her helper card and call)"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "hint",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "hint-glow",
+   "after": null,
+   "capture": [
+    "contract:91",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa: the stuck help in the fill and the fry"
+  }
+ ],
+ "SH-236": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "contract:106",
+    "strip:#game:8x150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani's roll: the first-time light goes the moment the pin starts rolling (within 300 ms of the first press), L1-L4"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "fold",
+   "after": null,
+   "capture": [
+    "contract:106"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa's fold: the light goes as the fold's drag begins"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "contract:106"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chaat: each topping's light goes as it is tapped"
+  }
+ ],
+ "SH-237": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "contract:107",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani: the board and the dough on it are lit still (no hop); the dough piles on the shelf hop when lit"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "contract:107"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chaat: the shelf's toppings hop when lit; the bowl never"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:samosa",
+   "after": null,
+   "capture": [
+    "contract:107"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa's fry: the samosas on their thali and the karahi are lit without a hop off the shelf"
+  }
+ ],
+ "MAA-22": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:tawa-on",
+   "after": null,
+   "capture": [
+    "strip:#game:10x100",
+    "contract:102"
+   ],
+   "expect": null,
+   "note": "maani: the rolled maani tapped onto the tawa: no light on a dough pile while it flies (the next pile only once it has landed)",
+   "delay": 0
+  }
+ ],
+ "MAA-21": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665",
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "strip:#game:12x250",
+    "voice"
+   ],
+   "expect": null,
+   "note": "maani's first roll as a new player: it stops at the size, the gold ring pulses with the green sound, then the light asks for the tap on the maani with no finger"
+  }
+ ],
+ "MAA-20": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "strip:#game:10x200",
+    "contract:102",
+    "contract:44"
+   ],
+   "expect": null,
+   "note": "maani's roll as a new player: one finger (the kit's), the pin rolling up and down under it, never two; the pair for Zafar's pick (finger, the default, or a pulsing circle) is on the kit lab, lab/sections/kit-lights.html?state=roll-finger and ?state=roll-circle"
+  }
+ ],
+ "SAM-30": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665",
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:samosa",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:105",
+    "contract:106"
+   ],
+   "expect": null,
+   "note": "samosa's fry as a new player: the dim and the lit box on each samosa into the pan (each one), then on the lift in the green"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:lift",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:105"
+   ],
+   "expect": null,
+   "note": "the lift's first time: lit in the green (the hold keeps it there)",
+   "delay": 600
+  }
+ ],
+ "CHT-18": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665",
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:102",
+    "contract:105",
+    "contract:53"
+   ],
+   "expect": null,
+   "note": "chaat's first bowl as a new player: the dim and the lit box on the first topping and each next one (the kit's coach), no ghost finger of its own"
+  }
+ ],
+ "CHT-19": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:step",
+   "after": null,
+   "capture": [
+    "voice",
+    "dom:#mission .oc-card"
+   ],
+   "expect": null,
+   "note": "chaat at L1-L4: each call after a layer is the next layer as he said it (the card's order); the ten-seed replay is in build/reports/s19-lights.md"
   }
  ]
 }
