@@ -574,6 +574,11 @@
    "record": true,
    "_about": "Nani's chop card headline at the daar station (step 4d: was typed in js/cook/stations/daar.js); to record with Mum"
   },
+  "daar-stir-ask": {
+   "e": "Stir it three times, slowly.",
+   "record": true,
+   "_about": "Nani's stir line at the daar station, one whole sentence (its count and speed vary by level); the engine stitched it from fragments, so its English shows in grey italic until Mum records it (Sprint 19, Fable's daar flaw 2; non-negotiable 2)"
+  },
   "go-fry": {
    "e": "Fry them",
    "record": true,
