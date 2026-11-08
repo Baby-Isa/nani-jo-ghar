@@ -24,6 +24,17 @@ test("contract-100 to -109 are registered, numbered and mapped to the rows they 
   assert.deepEqual(stations(ST).map((s) => [s.t0, s.t1]), [[0, 60000]]);
 });
 
+test("the S17 and S19 probes both start: each is its own statement (s19-checks found S19 silently never ran)", () => {
+  // two IIFEs on adjacent lines with no ";" between call the first one's result with the second: the second probe never ran
+  const tail = CONTRACT_HOOK.slice(CONTRACT_HOOK.indexOf("(function s17hook"));
+  const w = { };
+  const doc = { documentElement: {}, addEventListener() {}, querySelectorAll: () => [], querySelector: () => null };
+  const fn = new Function("window", "document", "location", "setInterval", "MutationObserver", "getComputedStyle", tail);
+  fn(w, doc, { pathname: "/cook.html" }, () => 0, class { observe() {} }, () => ({}));
+  assert.equal(w.__njgS17Hook, true);
+  assert.equal(w.__njgS19Hook, true);
+});
+
 test("contract-100: the old card (count box, strip, old item) or the old type is a break; the 6 Nov card passes", () => {
   const red = [...ST, c(1000, "s19card", { cards: 2, lora: false, old: [".oc-item", ".oc-box"], pics: [] })];
   const out = run(check100, R, red);
@@ -46,6 +57,8 @@ test("contract-101: no drop-down in a station, the old box, or a line wrapped th
   const wrapped = [...ST, open, c(1500, "s19guide", { shown: true, s14: true, arrow: true, lines: 2, fits1: true, text: "hakri lakri mishkaki", room: 210, need: 180, floor: 14 }), c(3000, "s19guide", { shown: true, s14: true, arrow: true, lines: 1, fits1: true })];
   assert.match(run(check101, R, wrapped)[0].msg, /on 2 lines though it fits one line/);
   const green = [...ST, open, c(1500, "s19guide", { shown: true, s14: true, arrow: false, lines: 1, fits1: true }), c(2500, "s19guide", { shown: true, s14: true, arrow: true, lines: 2, fits1: false })];
+  // her line at the counter, before the kitchen, is not judged (SH-240 is the hint in play)
+  assert.equal(run(check101, R, [c(100, "s19guide", { shown: true, s14: true, arrow: true, lines: 2, fits1: true, text: "Cook it the way they said." }), c(900, "s19guide", { shown: false }), c(1000, "stage", { key: "cook:station1:maani" })]).length, 0);
   assert.equal(run(check101, R, green).length, 0);
 });
 
@@ -96,6 +109,10 @@ test("contract-105: CK-63, the light half on the pan's handle and off its middle
   // ... unless it stops short of a neighbour on that side (contract-92's rule)
   const short = [...ST, c(1000, "s19lit", { holes: [[90, 496, 202, 644]], things: [jar], near: [[204, 500, 300, 640]], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })];
   assert.equal(run(check105, R, short).length, 0);
+  // a light over the whole side panel round one item card frames a region (maani's card light, 8 Nov smoke run)
+  const card = { kind: "card", id: "card:hakri maani", box: [142, 152, 258, 347] };
+  const region = [...ST, c(1000, "s19lit", { holes: [[1, 73, 351, 376]], things: [card], near: [], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })];
+  assert.match(run(check105, R, region)[0].msg, /frames a region 4\.\d times the size of card:hakri maani/);
   const ok = [...ST, c(1000, "s19lit", { holes: [[94, 494, 206, 646]], things: [jar], near: [], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })];
   assert.equal(run(check105, R, ok).length, 0);
 });

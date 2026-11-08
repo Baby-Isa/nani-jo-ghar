@@ -19,6 +19,7 @@
 export const CENTRE_PX = 4;        // CK-63: the light's middle within this of its thing's middle
 export const WHOLE_PX = 1;         // the thing may poke out of its light by at most this (rounding)
 export const PIC_COVER = 0.6;      // a canvas picture with no word: its light covers at least this share of it (a pan's handle may poke out)
+export const REGION = 2.5;         // a light more than this many times its card's area frames a region, not the card (STD-E2-08)
 export const PIC_OFF = 0.2;        // ... and its middle is within this share of the picture's size of the picture's middle
 export const GOES_MS = 300;        // SH-236: the light gone this soon after the move's first input
 export const SAMPLE_SLACK_MS = 120; // the probe samples every 100 ms
@@ -61,7 +62,7 @@ export const S19_CHECKS = {
   "contract-102": { item: "kit-light", title: "the kit's light only: no game's own ghost finger or glow", how: "Cook flows, in a station: a ghost finger the game plays itself (Lifecycle ghost from Cook's S.ghost, which logs where it points: the mechanics' roll, stir, knead, fold and maani's tap ghosts) is a break, once per step name; the kit's light brings its own finger (Onboard). A glowing picture (njgTest.cook.glowing()) whose middle is outside every light box on screen, held 300 ms, is the game's own glow and a break (Fable's maani flaw 3: a gold ring round the tawa while the light is on the dough; s18 cause 7: mechanics keep their own ghost fingers; MAA-20 'just one finger')." },
   "contract-103": { item: "no-buttons", title: "no tick, next or X button while a station plays", how: "Cook flows, in a station: a tick, next or close button on screen (#done-btn, #go-btn, #samosa-next, .njg-done, .njg-next, [data-go], or a button reading ✓, →, × or labelled done, next or close; not the end screen, the order pop-up, the grown-ups' ? pop-up or the cog) is a break, once per button per page (SH-238, Zafar 8 Nov: 'no ticks in any of the games anymore ... you can't have an X button'). The flow still has to reach its end (the sandbox's own check)." },
   "contract-104": { item: "card-pic", title: "every item card has the item's own picture", how: "Cook flows: every 6 Nov item card on screen (.wc14 in the side panel or the order pop-up) must show a picture that loaded (an <img> with a source and a natural width, or a background image), and never the shelf's crate, heap, pile, sack or basket (its file name). A blank picture or a crate is a break, once per word per page (SH-242, Zafar 8 Nov: 'it's a crate of onions but it should be one onion'; SEK-24; Fable's eggs flaw 2, the blank card)." },
-  "contract-105": { item: "light-whole", title: "the first-time light is whole round its thing and centred on it", how: "Cook flows: every light box on screen, once it has stood 300 ms (s19lit: the kit's drawn holes and the thing under each box's middle: a picture with a word and its pill, else the smallest canvas picture there, else an item card). Round a picture with its pill: the thing whole inside the box (1 px of rounding) and the box's middle within 4 px of the thing's, unless the box meets the screen's edge or stops short of a neighbour on that side (contract-92's rule). Round a picture with no word (a pan, a board): the box covers at least 60% of it and its middle is within a fifth of the picture's size of the picture's middle (a handle may poke out). A light only partly round its thing, or off its middle, is a break, once per thing per page (CK-63, Zafar 8 Nov: 'it's half on the handle ... way too small and it's off-centered like how can that pass'; s18 §6 Q6: contract-92 asked only about the neighbours). A light on a part smaller than a quarter of its thing is contract-97's." },
+  "contract-105": { item: "light-whole", title: "the first-time light is whole round its thing and centred on it", how: "Cook flows: every light box on screen, once it has stood 300 ms (s19lit: the kit's drawn holes and the thing under each box's middle: a picture with a word and its pill, else the smallest canvas picture there, else an item card). Round a picture with its pill: the thing whole inside the box (1 px of rounding) and the box's middle within 4 px of the thing's, unless the box meets the screen's edge or stops short of a neighbour on that side (contract-92's rule); a light on a card more than 2.5 times the card's area frames a region (STD-E2-08). Round a picture with no word (a pan, a board): the box covers at least 60% of it and its middle is within a fifth of the picture's size of the picture's middle (a handle may poke out). A light only partly round its thing, or off its middle, is a break, once per thing per page (CK-63, Zafar 8 Nov: 'it's half on the handle ... way too small and it's off-centered like how can that pass'; s18 §6 Q6: contract-92 asked only about the neighbours). A light on a part smaller than a quarter of its thing is contract-97's." },
   "contract-106": { item: "light-goes", title: "the light goes as the child starts the move", how: "Cook flows: a real press (the input sample, a trusted pointerdown) inside a light box on screen starts the move it shows; within 300 ms (plus the probe's 100 ms sampling) that box must be gone (no box, or none round the press). A box still round the press after that is a break, once per page (SH-236, Zafar 8 Nov, maani's roll: 'I start rolling the box should go away')." },
   "contract-107": { item: "hop-shelf", title: "only shelf items hop", how: "Cook flows: every glowing picture that hops (njgTest.cook.glowing() bounce) must stand in the shelf band (its foot in the bottom 30% of the canvas, js/shared/shelf.js Shelf.BAND); a hop off the shelf (a pan, a board, the dough on the board) is a break. A shelf item lit by a light box of its own (its middle inside one) for 300 ms without its hop is a break too. Once per thing per page (SH-237, Zafar 8 Nov: 'items in the bottom bar bounce up and down')." },
   "contract-108": { item: "praise-last", title: "well done only once the whole card is ticked", how: "Cook flows, in a station: a well done (a line saying shabash) that starts while an order card row on screen is still open (the rows sample just before it: not done and not a no row) is a break, once per page (SH-239, Zafar 8 Nov: 'say well done when ... the whole menu card is complete')." },
@@ -104,7 +105,7 @@ export function check101(r, tl, add) {
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   for (let i = 0; i < gs.length; i++) {
     const e = gs[i];
-    if (!e.shown || !(e.lines > 1) || !e.fits1) continue;
+    if (!e.shown || !(e.lines > 1) || !e.fits1 || !inStation(st, e.t)) continue;
     if (held(gs, i, tEnd) < HOLD_MS) continue;
     add("contract-101", e.t, `Nani's line "${(e.text || "").slice(0, 60)}" is on ${e.lines} lines though it fits one line of ${Math.round(e.room)} px at ${e.floor} px (${Math.round(e.need)} px)`);
     return;
@@ -187,6 +188,7 @@ export function check105(r, tl, add) {
       const edge = { l: h.l <= 1, r: h.r >= W - 1, t: h.t <= 1, b: h.b >= H - 1 };
       if (th.kind === "word" || th.kind === "card") {
         if (inter(h, t) < 0.25 * area(t)) return; // (a light on a part of it: contract-97's)
+        if (area(h) > REGION * area(t)) { seen.add(id); add("contract-105", e.t, `the light ${fmt(h)} frames a region ${Math.round(area(h) / area(t) * 10) / 10} times the size of ${id} ${fmt(t)}: it hugs the one thing`); return; }
         const poke = [["left", t.l < h.l - WHOLE_PX && !edge.l], ["right", t.r > h.r + WHOLE_PX && !edge.r], ["top", t.t < h.t - WHOLE_PX && !edge.t], ["bottom", t.b > h.b + WHOLE_PX && !edge.b]].filter((x) => x[1]).map((x) => x[0]);
         if (poke.length) { seen.add(id); add("contract-105", e.t, `the light ${fmt(h)} is not whole round ${id} ${fmt(t)} (its picture and pill): it pokes out at the ${poke.join(" and ")}`); return; }
         const dx = hm.x - tm.x, dy = hm.y - tm.y;
@@ -493,12 +495,15 @@ function s19hook() {
       const inside = (b) => cx >= b[0] && cx <= b[2] && cy >= b[1] && cy <= b[3];
       const w = s.words.find((x) => inside(u(x.pic, x.chip)));
       if (w) return { kind: "word", id: w.id, box: rnd(u(w.pic, w.chip)), shelf: w.foot >= band };
+      // a light in the page: the item card or order card under its middle that the box fits best (an item card, else its person's card)
       for (const el of document.elementsFromPoint(cx, cy)) {
         if (el.closest(".njg-onboard")) continue;
-        const c = el.closest(".wc14");
-        if (c) return { kind: "card", id: "card:" + (((c.querySelector(".wc14-k, .wc-k") || {}).textContent || "").trim().slice(0, 20)), box: rnd(R(c.getBoundingClientRect())) };
-        if (el.tagName === "CANVAS") break;
-        break;
+        const cands = [el.closest(".wc14"), el.closest(".oc-card")].filter(Boolean);
+        if (!cands.length) break;
+        const iou = (b) => { const i = Math.max(0, Math.min(h[2], b[2]) - Math.max(h[0], b[0])) * Math.max(0, Math.min(h[3], b[3]) - Math.max(h[1], b[1])); return i / ((h[2] - h[0]) * (h[3] - h[1]) + (b[2] - b[0]) * (b[3] - b[1]) - i); };
+        const best = cands.map((c) => ({ c, b: R(c.getBoundingClientRect()) })).sort((a, b) => iou(b.b) - iou(a.b))[0];
+        const name = best.c.matches(".wc14") ? "card:" + (((best.c.querySelector(".wc14-k, .wc-k") || {}).textContent || "").trim().slice(0, 20)) : "order-card:" + (best.c.dataset.who || "?");
+        return { kind: "card", id: name, box: rnd(best.b) };
       }
       const ar = (b) => (b[2] - b[0]) * (b[3] - b[1]);
       const p = s.pics.filter((x) => inside(x.box) && ar(x.box) < 0.3 * cvA && ar(x.box) > 0).sort((a, b) => ar(a.box) - ar(b.box))[0];
