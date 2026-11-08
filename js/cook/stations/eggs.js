@@ -376,6 +376,9 @@ import { Cook as CookNS } from "../ns.js";
       const current = () => ctlKey === key && !finished;
       // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236)
       const lightGlow = () => {
+        // (only a thing on the band glows and hops with its light; anything else is lit alone, so Nani's call reading its row is the
+        // one other highlight: contract-8)
+        if (!Cook.Coach.onShelf(n.obj)) return;
         glowOn(n.obj);
         setTimeout(() => {
           const h = ctl && ctl.lit ? ctl.lit() : null;
