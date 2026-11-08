@@ -352,6 +352,11 @@ import { NjgServe } from "../shared/serve.js";
     const flat = S.track(S.add.graphics().setDepth(depth));
     flat.fillStyle(ST.mean, 1);
     flat.fillRect(-far, top, W, 900 - top + far);
+    // (SAM-29: the band's 3 px top shade, over the tile and the shelf, once here for every game with the band; was chai's own line,
+    // and samosa lost its own when it moved onto the band)
+    const shade = S.track(S.add.graphics().setDepth(depth + 0.05));
+    shade.fillStyle(0x2a1a0a, 0.08);
+    shade.fillRect(-far, top, W, 3);
     const A = Cook.Art;
     if (!A || !A.loadFile || !S.add.tileSprite) return flat;
     A.loadFile(S, "panel-stone", ST.tile).then((ok) => {

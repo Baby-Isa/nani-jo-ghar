@@ -397,12 +397,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (Zafar, 5 Nov: the worktop and the stone "should just sing off each other": the wash in the stone's undertone, St.worktopWash)
     Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR }); // (the kitchen kit's wash: 0.18 over the worktop at D.bg + 1)
     // ART-41 (Zafar, 5 Nov): the band in his stone, with the stone shelf the jars stand on (St.stoneBand; was the parchment fill
-    // and a grey plank line under each group)
+    // and a grey plank line under each group; its 3 px top shade is the band's own now, SAM-29)
     St.stoneBand(S, { top: SHELF_TOP, base: BASE, far: FAR, depth: D.bg + 1.2 });
-    const band = S.track(S.add.graphics().setDepth(D.bg + 1.25));
-    band.fillStyle(0x2a1a0a, 0.08);
-    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 3);
-    band.fillStyle(INK.grey, 1);
 
     /* ---------- the hob: one burner per person ---------- */
     const hobW = Cook.Kit.HOB.w[n - 1];
