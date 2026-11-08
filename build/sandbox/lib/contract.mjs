@@ -82,7 +82,7 @@ export const CHECKS = {
   "contract-19": { item: "counting", title: "the counting rule", how: "From level 2, no line that is only a number word (counting along) starts after the stage's first tap (a line with role countdown or laps, the daar stir's laps, is not counting along). Level 1 counts along and writes the number. (Its other half, no written number from level 3, went with SH-99: every number said is written, contract-30.)" },
   "contract-16": { item: "english", title: "no written English for the child", how: "Every texts sample (lib/contract-hook.mjs: each visible text node, tagged when it is a to-record placeholder, the bulb's English or grown-ups' text in the ? pop-up or a lab panel): a to-record placeholder passes until launch (Zafar, 14 Oct) and is a break on the store build (--store); every other text's words must be lexicon forms (data/lang/lexicon.json with its inflections, loan: en words, family clips: sandbox/lib/evidence.mjs lexiconWords) or numbers; any other word is a break, named with the words." },
   "contract-20": { item: "one-face", title: "one face per person", how: "Every faces sample (lib/contract-hook.mjs: the order cards' faces, the guide's face, a clinic close-up face, with whose they are; the cards' people; whether a clinic patient figure stands 85% on screen and a third of its height or more): in the clinic, a face circle other than the doctor's guide face while the patient stands in full is a break (decision 92: her circle only where she is off screen); anywhere, two face circles of one person (R4: the guide who is also the asker has one card with her face) or two cards for one person is a break." },
-  "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s of the child's time is a break (PAN-16; Cook's test speed shortens the game's waits, so 10 s / speed in the run, and a help line's, role howto, 10 s of the clock) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap) or the game opened a new step whose call it says again on purpose (Lifecycle step-call \"queued-again\": maani's Firai on both turns, MAA-15, Zafar 17 Oct); item words (contract-23) and counts (laps, countdowns, number words) are not judged here. On a #speed1 flow (a child's pace, where clip timing is real) a clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up), by another line's clip starting over it, is a break (PAN-04)." },
+  "contract-22": { item: "once-whole", title: "each line said once and whole", how: "Cook's lines (the sound log, who \"cook\"): the same line (its words, case and marks aside) starting twice within 10 s of the child's time is a break (PAN-16; Cook's test speed shortens the game's waits, so 10 s / speed in the run, and a help line's, role howto, 10 s of the clock) unless the child asked for it (a tap on a card, the pop-up or a button within 0.7 s before, or a one-word line right after a tap) or the game opened a new step whose call it says again on purpose (Lifecycle step-call \"queued-again\": maani's Firai on both turns, MAA-15, Zafar 17 Oct); item words (contract-23; an item with no Kutchi yet, its grey English said by the device, is one too: its lexicon gloss) and counts (laps, countdowns, number words) are not judged here. On a #speed1 flow (a child's pace, where clip timing is real) a clip stopped 150 ms or more before its own end (the file's length) with no stop from the game near it (a voice stop, a stage end, a tap through the pop-up), by another line's clip starting over it, is a break (PAN-04)." },
   "contract-23": { item: "item-word", title: "an item's name only when nothing else speaks", how: "Lines tagged role item (js/cook/words.js Lang.popWord: an item's name as it is tapped or lands) that made a sound: at level 3 or 4 any is a break; one starting while another Cook line is being said (from its call to its end, or a clip of it sounding) is a break; the same item word again within 10 s is a break (SH-94, decision 1 of 17 Oct)." },
   "contract-24": { item: "help-ladder", title: "no help before the idle time", how: "Nani's help and the glow come only after the child has done nothing for the ladder's time by level (7, 8, 11, 15 s: data/cook.json calm.helpMs), counted from the LAST action (a real tap, the stage or the step opening). Three things are measured on every path but #mistake: the game's own help log (Lifecycle help, idle), a step line (role howto) said, and a picture's glow switching on (the sampler's hl). One earlier than the table is a break (SH-60, SH-95). A glow that comes with a rung of the onboarding kit (Lifecycle rung: the first-time box at once, chai's 5 s card; Zafar, 22 Oct, CHAI-32) is that help, not a break." },
   "contract-91": { item: "help-comes", title: "the help comes when stuck", how: "In a play stage on chai's method (a Cook station, the clinic's stages): the stuck clock runs while the game waits for the child's move (the want sample: a move, not wait, end, a button, the pop-up or a timing window) and nothing is being said (the sound log's lines); any action starts it again (a real tap, Lifecycle poke at the end of a pour or spoonful, a step opening, the stage starting). Once it passes the level's hint wait (data/rules.json levels.hintS: 7, 9, 11, 13 s) and 4 s more, the guide's hint must have come since the last action (Lifecycle help, helper-open or helper-call: Nani's or the doctor's helper card and call, or a rung of the showing); none is a break (Zafar, 6 Nov: the bulbs retired, replaced by chai's method, and 'build the help comes now'). Not judged on #mistake, between stations, on the end screen, or on a run with no want samples." },
@@ -928,7 +928,7 @@ function popupWindows(tl) {
   return pops;
 }
 // 22 (PAN-04, PAN-16): each line said once and whole
-function check22(r, tl, segs, v, nums, add) {
+function check22(r, tl, segs, v, nums, add, root) {
   // Cook's test speed shortens the game's own waits (and its clip timers) but not the help's real-time ones: a repeat is judged
   // against 10 s of the child's time (10 s / speed in the run), a help line's against 10 s of the clock; a clip cut short only
   // where the timing is real (a #speed1 flow, a child's pace)
@@ -938,9 +938,12 @@ function check22(r, tl, segs, v, nums, add) {
   // request pop-up reads each person's order in their own words, so two people ordering the same thing say the same line twice there)
   const pops = popupWindows(tl);
   const inPop = (t) => pops.some((p) => t >= p.t0 - 150 && (p.t1 == null || t <= p.t1 + 150));
-  const lines = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && l.role !== "item" && l.role !== "count" && !isCountLine(l, nums)).sort((a, b) => a.t0 - b.t0);
-  const seen = new Set();
   const norm = (s) => normW(s).replace(/\s+/g, " ");
+  // (s18 wave 3: an item with no Kutchi yet is shown in grey English and the device says that English; it is the item's name
+  // as the tap says it, an item word, which may repeat as item words do)
+  const itemEn = root ? itemEnglish(root) : new Set();
+  const lines = v.lines.filter((l) => (l.text || "").trim() && isCookLine(l) && l.role !== "item" && l.role !== "count" && !itemEn.has(norm(l.text)) && !isCountLine(l, nums)).sort((a, b) => a.t0 - b.t0);
+  const seen = new Set();
   // MAA-15 (Zafar, 17 Oct: "she should say it the second time"): a step the game opens with its call said again on purpose
   // (Lifecycle step-call "queued-again": maani's Firai on its second turn) is a new step's call, not a repeat
   const againAt = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "step-call" && e.by === "queued-again").map((e) => e.t);
@@ -1294,13 +1297,31 @@ const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
 const stationOf = (flow) => { const m = /^(?:cook:(?:recipe:)?|lab:cook\/(?:recipe-)?)([\w-]+)/.exec(flow || ""); return m ? m[1] : null; };
 // the written forms of every item word (a thing to pick: data/cook.json words with a bowl, heap, image, layer or piece, and
 // bajri maani and the sekelo meat cube, which have none), from the lexicon with its inflections: what a dotted L3 card must not write in an open row
+const itemIds = (read) => {
+  const cook = read("data/cook.json") || {};
+  return new Set(Object.entries(cook.words || {}).filter(([k, v]) => v && typeof v === "object" && !/^(num|lnk|kin|name)-/.test(k) && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in v) || k === "cook-bajrmaani" || k === "ph-mishkaki")).map(([k]) => k));
+};
+// an item's grey English (Cook.english: the lexicon gloss without its bracketed note, and its plural), normalised: what the game
+// shows and the device says for an item that has no Kutchi yet (contract-22 counts it as an item word, which may repeat)
+const ITEM_EN = new Map();
+export function itemEnglish(root) {
+  if (ITEM_EN.has(root)) return ITEM_EN.get(root);
+  const out = new Set();
+  const read = (f) => { try { return JSON.parse(readFileSync(join(root, f), "utf8")); } catch (e) { return null; } };
+  const ids = itemIds(read);
+  for (const e of (read("data/lang/lexicon.json") || {}).entries || []) {
+    if (!(e.aliases || []).some((a) => ids.has(a))) continue;
+    for (const g of [e.gloss, e.glossPl]) { const n = normW(String(g || "").replace(/\s*\([^)]*\)/g, "")).replace(/\s+/g, " "); if (n) out.add(n); }
+  }
+  ITEM_EN.set(root, out);
+  return out;
+}
 const ITEMS = new Map();
 export function itemForms(root) {
   if (ITEMS.has(root)) return ITEMS.get(root);
   const out = new Set();
   const read = (f) => { try { return JSON.parse(readFileSync(join(root, f), "utf8")); } catch (e) { return null; } };
-  const cook = read("data/cook.json") || {};
-  const ids = new Set(Object.entries(cook.words || {}).filter(([k, v]) => v && typeof v === "object" && !/^(num|lnk|kin|name)-/.test(k) && (["bowl", "heap", "image", "layer", "piece"].some((f) => f in v) || k === "cook-bajrmaani" || k === "ph-mishkaki")).map(([k]) => k));
+  const ids = itemIds(read);
   const lex = read("data/lang/lexicon.json") || {};
   const par = (read("data/lang/paradigms.json") || {}).paradigms || {};
   const split = (x) => String(x || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
@@ -1541,7 +1562,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check20(tl, add);
   check18(tl, segs, add);
   check21(tl, segs, v, add);
-  check22(r, tl, segs, v, numbers || numbersFor(root), add);
+  check22(r, tl, segs, v, numbers || numbersFor(root), add, root);
   check23(r, tl, segs, v, add);
   check24(r, tl, segs, v, add);
   check91(r, tl, segs, v, add);

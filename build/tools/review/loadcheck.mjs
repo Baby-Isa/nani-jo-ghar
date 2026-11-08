@@ -7,6 +7,7 @@
  *   node build/tools/review/loadcheck.mjs                    every page (about a minute and a half)
  *   node build/tools/review/loadcheck.mjs --only cook,cook:chai-tray,clinic:morning,clinic:tooth
  *   node build/tools/review/loadcheck.mjs --list             the pages
+ *   node build/tools/review/loadcheck.mjs --manifest cook:eggs   the pictures a page may load, one per line (no browser)
  *   node build/tools/review/loadcheck.mjs --discover         print what each page asked for that its manifest lacks, as globs
  *                                                            (--json FILE writes every page's pictures)
  *   node build/tools/review/loadcheck.mjs --stray            proves the check: Cook's chai station also asks for samosa's
@@ -17,7 +18,7 @@
  *   Cook   data/cook.json art.assets: shared.images (preloaded) + shared.files (allowed on every Cook page); a station's
  *          stations[key].props (assets/cook/props/<name>.webp or its painted sprite), art.sprites.need[key] (painted
  *          sprites) and stations[key].files (globs: what its own code loads), plus stations[key].uses (the mechanics
- *          inside it, whose entries it may load too)
+ *          inside it, whose entries it may load too), and the station's own settings, data/stations/<k>.json "assets"
  *   Clinic data/clinic/assets.json shared (every clinic page) + data/clinic/heal/<id>.json "assets" (that game's);
  *          a morning may load its first two patients' games (the next one is prefetched); a game page only its own
  *          game's code (js/clinic/heal/games/<id>.js) and art
@@ -68,7 +69,10 @@ function cookStation(key, seen = new Set()) {
   if (seen.has(key)) return [];
   seen.add(key);
   const st = (AS.stations || {})[key] || {};
-  return [].concat((st.props || []).flatMap(propFiles), ((SP.need || {})[key] || []).map(spriteFile), st.files || [], s02Files(key), (st.uses || []).flatMap((k) => cookStation(k, seen)));
+  // (a station's own settings, data/stations/<k>.json "assets", are its manifest too: baking, eggs and corn declare theirs there)
+  const own = `data/stations/${key}.json`;
+  const mine = existsSync(join(ROOT, own)) ? json(own).assets || [] : [];
+  return [].concat((st.props || []).flatMap(propFiles), ((SP.need || {})[key] || []).map(spriteFile), st.files || [], mine, s02Files(key), (st.uses || []).flatMap((k) => cookStation(k, seen)));
 }
 const cookShared = () => Object.values((AS.shared || {}).images || {}).concat((AS.shared || {}).files || [], (cook.art.s02["kitchen-trays"] || {}).ready ? [cook.art.s02["kitchen-trays"].file] : []);
 const clinicAssets = existsSync(join(ROOT, "data/clinic/assets.json")) ? json("data/clinic/assets.json") : { shared: [] };
@@ -87,7 +91,7 @@ const owners = (u) => {
 const OVERSIZE_FILE = join(ROOT, "build/tools/review/data/oversize-known.json");
 const OVERSIZE_KNOWN = new Set(existsSync(OVERSIZE_FILE) ? JSON.parse(readFileSync(OVERSIZE_FILE, "utf8")) : []);
 /* ---------------- the pages ---------------- */
-const STATIONS = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa"];
+const STATIONS = ["fetch", "chai-tray", "maani-line", "mishkaki-grill", "daar", "chop", "tadka", "stir", "assemble", "samosa", "baking", "eggs", "corn"];
 const CLINIC = ["cut", "knee", "ear", "tooth", "taste", "fever", "boing", "eye", "foot"];
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const PAGES = [
@@ -115,6 +119,13 @@ const PAGES = [
 ];
 if (a.has("list")) {
   PAGES.forEach((p) => console.log(p.id.padEnd(22), p.url));
+  process.exit(0);
+}
+// --manifest <page id>: the pictures that page may load (one per line), no browser
+if (a.val("manifest")) {
+  const pg = PAGES.find((p) => p.id === a.val("manifest"));
+  if (!pg || !pg.allow) { console.error(`no manifest for ${a.val("manifest")}`); process.exit(2); }
+  [...new Set(pg.allow(pg).filter(Boolean))].forEach((u) => console.log(u));
   process.exit(0);
 }
 const only = a.val("only") ? a.val("only").split(",") : null;

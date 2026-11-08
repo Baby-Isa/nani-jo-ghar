@@ -806,6 +806,8 @@ const BASE_HOOK = `(() => {
     const holes = [];
     let dark = 0; // CHAI-36: a help layer up and dimming (not marked empty) with no lit box in it
     for (const l of document.querySelectorAll(".njg-onboard")) {
+      // (a closing light's layer keeps its holes for its 300 ms fade: not the light on screen, S18 wave 3)
+      if (!l.classList.contains("on")) continue;
       let hs = [];
       try { hs = JSON.parse(l.dataset.holes || "[]"); } catch (e) {}
       for (const h of hs) holes.push(h);
