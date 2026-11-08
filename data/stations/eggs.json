@@ -1,5 +1,5 @@
 {
- "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes).",
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes). Sprint 18 wave 2 (s18-g-eggs, 8 Nov): the station reads its art and places from items and scene (Cook.data.settings.eggs); mechanic.levels stays its per-level knobs.",
  "station": {
   "name": "Eggs",
   "verb": "Boil or fry, then the plates",
@@ -10,38 +10,9 @@
    "serve": "Tap the tray to take it to the table."
   },
   "palette": {
-   "eggWhite": "#fbf7ee",
-   "shell": "#f3e6cf",
-   "yolk": "#f2b21b",
-   "ink": "#2a2522",
-   "morningTop": "#bfe3f5",
-   "morningBottom": "#fbe7c4",
-   "sun": "#ffd56b",
-   "noonTop": "#6fb8ea",
-   "noonBottom": "#cfeaf8",
-   "noonSun": "#fff3b0",
-   "nightTop": "#14213d",
-   "nightBottom": "#3b3f6b",
-   "moon": "#f4f1de",
-   "shadow": "#28190a",
    "white": "#ffffff",
-   "plateRim": "#e9e2d6",
-   "cupRim": "#d9d2c4",
    "steel": "#c0c4c8",
-   "salt": "#f7f3ea",
-   "pepper": "#4a4542",
-   "track": "#fffaf1",
-   "sage": "#7e9a76",
-   "ringDone": "#5c8a4e",
-   "gold": "#c9962e",
-   "wall": "#f1e3cf",
-   "nightGrass": "#1f3a2a",
-   "grass": "#86b36a",
-   "sill": "#e6d3b8",
-   "nightShade": "#0b1530",
-   "cloth": "#f6efe3",
-   "wood": "#b9824f",
-   "woodGrain": "#8a5a33"
+   "ink": "#2a2522"
   }
  },
  "words": {
@@ -212,12 +183,63 @@
    "x": 1090,
    "y": 90,
    "reuse": true,
-   "plate": "assets/cook/items/plate-enamel-empty-t.webp"
+   "plate": "assets/cook/items/plate-enamel-empty-t.webp",
+   "wells": [
+    [
+     0.283,
+     0.29
+    ],
+    [
+     0.717,
+     0.29
+    ],
+    [
+     0.283,
+     0.708
+    ],
+    [
+     0.717,
+     0.708
+    ]
+   ],
+   "plateW": 168,
+   "face": {
+    "dx": -74,
+    "dy": -70,
+    "d": 64
+   }
   },
   "people": {
    "call": "Cook.Kit.faceArt(who)",
    "reuse": true,
    "note": "Nana, Ma, Ali (cousin), Nani: the counter characters, 470 px, standing behind the table"
+  },
+  "vesselR": 150,
+  "table": {
+   "seats": {
+    "1": [
+     800
+    ],
+    "2": [
+     457,
+     1143
+    ],
+    "3": [
+     457,
+     800,
+     1143
+    ]
+   },
+   "standY": 708,
+   "plateY": 752,
+   "personH": 470,
+   "plateFrom": 1050,
+   "cat": {
+    "x": 120,
+    "y": 706,
+    "h": 190
+   },
+   "_note": "the table scene on the meal's kitchen (scene.bg): the people stand behind the island (its back edge at y 705), each plate slides onto the island at their seat (the breakfast and night kitchens' three wooden trays at x 457, 800, 1143, measured from bg-kitchen-morning.webp); the cat on the island's left end (a placeholder until Simba)"
   }
  },
  "items": {
@@ -239,7 +261,13 @@
     "w": 375
    },
    "replaces": "assets/cook/items-s14/chai-pan/pan-water-s14.webp (chai's pan: the wrong vessel)",
-   "_note": "one canvas, rim-registered (cell_align); handles included"
+   "_note": "one canvas, rim-registered (cell_align); handles included",
+   "body": {
+    "cx": 0.5,
+    "cy": 0.499,
+    "rIn": 0.3,
+    "_note": "the round body (cx, cy: its centre as fractions of the canvas) and the water inside it (rIn, of the width), measured from egg-pot-boil.webp: handles left and right, body centred"
+   }
   },
   "pan": {
    "size": "L",
@@ -259,7 +287,14 @@
     "handle": 170
    },
    "replaces": "assets/cook/proto/egg-pan.webp",
-   "_note": "handle points down; one canvas"
+   "_note": "handle points down; one canvas",
+   "body": {
+    "cx": 0.454,
+    "cy": 0.289,
+    "rIn": 0.36,
+    "_note": "the round body (handle down): its centre (cx, cy, fractions of the canvas), its diameter (d) and the oil inside it (rIn), fractions of the width (fry-pan-oil.webp); drawn.body is the body's drawn diameter",
+    "d": 0.908
+   }
   },
   "egg": {
    "size": "S",
@@ -276,8 +311,7 @@
    ],
    "word": "n.egg",
    "drawn": {
-    "w": 48,
-    "h": 62
+    "w": 62
    },
    "_note": "whole eggs lifted from the bowl; the crack at the rim; the shells after"
   },
@@ -338,7 +372,8 @@
     520
    ],
    "replaces": "assets/cook/proto/egg-bowl.webp",
-   "_note": "tap: an egg lifts out; the picture follows the count left"
+   "_note": "tap: an egg lifts out; the picture follows the count left",
+   "chipY": 660
   },
   "shakerSalt": {
    "size": "S",
@@ -357,7 +392,8 @@
     3,
     4
    ],
-   "_note": "partial alpha (glass)"
+   "_note": "partial alpha (glass)",
+   "at_x": 340
   },
   "shakerPepper": {
    "size": "S",
@@ -375,7 +411,8 @@
    "levels": [
     3,
     4
-   ]
+   ],
+   "at_x": 470
   },
   "eggCupTop": {
    "size": "S",
@@ -419,7 +456,10 @@
    "px": [
     200,
     105
-   ]
+   ],
+   "drawn": {
+    "w": 120
+   }
   },
   "eggCupServed": {
    "size": "S",
