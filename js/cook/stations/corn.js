@@ -17,6 +17,7 @@
  * the farm: Nani's box stands in until her approved sheet exists.
  */
 import { Cook as CookNS } from "../ns.js";
+import { setTimeout } from "../life.js";
 import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (Sprint 18 piece 8)
 
 (function (global) {
@@ -144,6 +145,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     const dressed = [];
     const drops = {}; // id -> its drops drawn on the cobs
     let made = 0;
+    let plating = 0; // (cobs on their way to the plate: they count as made)
     let moving = 0; // (the game's own moves in flight: they hold the stuck hint, Cook.Coach.control's busy)
     let served = false;
     let serveNow = null;
@@ -189,10 +191,11 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       const ready = cobs.find((c) => c.state === "turn" || c.state === "lift");
       if (ready && ready.state === "turn") return { step: "turn", id: ready.n, o: ready.img, key: COB, line: Lang.line("guide-firai"), again: true };
       if (ready) return { step: "lift", id: ready.n, o: ready.img, key: COB, line: Lang.line("lift", Lang.phrase([COB])), again: true };
-      if (cobs.length + onPlate.length < count && cobs.length < slots) return { step: "grill", o: crate, key: COB, line: Lang.line("now", Lang.phrase([COB])) };
+      if (cobs.length + plating + onPlate.length < count && cobs.length < slots) return { step: "grill", o: crate, key: COB, line: Lang.line("now", Lang.phrase([COB])) };
       if (cobs.length) return { step: "wait" };
       const left = asked.find((id) => !dressed.includes(id));
-      if (left && bowls[left]) return { step: "dress", id: left, o: bowls[left], key: left, word: left, line: St.addLine(left) };
+      // (an item's step: said only as her helper card opens to show it, never as the step opens: SH-172, STD-D3-03)
+      if (left && bowls[left]) return { step: "dress", id: left, o: bowls[left], key: left, word: left, line: St.addLine(left), noCall: "helper" };
       return { step: "serve", o: plate, key: COB, line: null };
     }
     function lead(n) {
@@ -209,7 +212,9 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         return;
       }
       const c = S.centre(n.o);
-      z.expect({ kind: "tap", x: c.x, y: c.y, key: n.key });
+      // (the test hooks: an unasked dressing for the mistake player, STD-F5-02)
+      const wrongs = n.word ? ids.filter((x) => !asked.includes(x) && !dressed.includes(x)).map((x) => S.centre(bowls[x])) : null;
+      z.expect(Object.assign({ kind: "tap", x: c.x, y: c.y, key: n.key }, wrongs && wrongs.length ? { wrongs } : {}));
       // STD-D2-05 (non-negotiable 4): an asked-for dressing past support gets no light (the light would be the answer); never lit the
       // first time either (CHAI-32: never the first ordered item)
       const OB = global.Onboard;
@@ -226,19 +231,21 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         onLight: () => glow(n.o),
         onHint: () => {
           hints++;
-          // (an item's stuck hint opens her helper card, its word card naming it: STD-D3-02, -03; a control's says the call again)
+          // (an item's stuck hint opens her helper card, its word card naming it: STD-D3-02, -03; a control's is its light alone: its
+          // call was said as its step opened, and said again it would be a second line within 10 s, contract-22)
           if (n.word && UI.helperOpen) UI.helperOpen(true, { by: "hint" });
-          else if (UI.stepHelp) UI.stepHelp();
         },
       });
-      if (n.line) steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again });
+      if (n.line) steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again, noCall: n.noCall || null });
       else steps.done();
     }
     const refresh = () => lead(nextThing());
+    // (the test hook: what a tap would take back now, the last dressing on, until the serve: the take-back player's)
+    Cook.undoAt = () => (!served && dressed.length && bowls[dressed[dressed.length - 1]] ? S.centre(bowls[dressed[dressed.length - 1]]) : null);
     const acted = () => St.acted && St.acted();
 
     S.tappable(crate, () => {
-      if (served || cobs.length + onPlate.length >= count || cobs.length >= slots) {
+      if (served || cobs.length + plating + onPlate.length >= count || cobs.length >= slots) {
         S.wiggle(crate);
         return;
       }
@@ -284,10 +291,12 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         S.untap(c.img);
         c.ring.destroy();
         cobs.splice(cobs.indexOf(c), 1);
-        const k = onPlate.length;
+        const k = onPlate.length + plating;
         const pg = lay.plate || {};
+        plating++;
         refresh();
         await fly({ targets: c.img, x: plAt[0] + (k - (count - 1) / 2) * (pg.gap || 64), y: plAt[1], scale: c.img.scale * (pg.cobK || 0.85), duration: mo.flyMs || 420, ease: "Cubic.easeOut" });
+        plating--;
         onPlate.push(c);
         c.img.setDepth(D.item + 0.2);
         Cook.sfx.pop();
@@ -374,7 +383,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     });
 
     S.tappable(plate, () => {
-      if (served || onPlate.length < count || cobs.length) {
+      if (served || onPlate.length < count || cobs.length || plating) {
         S.wiggle(plate);
         return;
       }
@@ -405,6 +414,8 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         glow(null);
         steps.done();
         z.expect(null);
+        // (the light's layer fades out over the plate for 300 ms: the face comes after it, so no box crosses it, contract-82)
+        await new Promise((r) => setTimeout(r, mo.lightFadeMs || 320));
       },
       check: (item, round) => {
         const missing = asked.filter((id) => !dressed.includes(id));
@@ -420,6 +431,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         }
         const bad = rowsOf(missing.concat(extra.filter((id) => nos.includes(id))));
         if (!ok && UI.mission.serveWrong) UI.mission.serveWrong(bad.length ? bad.map((r) => r.ids[0]) : missing.concat(extra), dish);
+        // (what they say again: those rows; an unasked one has no row of its own, so their whole order, as the kit's recast does)
         return { ok, rows: bad.length ? bad : null };
       },
       review: async (wrong) => {
@@ -452,6 +464,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         refresh();
       },
     });
+    Cook.undoAt = null;
     UI.mission.closeItem([], dish, { all: true });
     await Cook.wait(mo.endHoldMs || 500);
     if (!guided) {
