@@ -20,3 +20,7 @@ S18-MISHKAKI-GRILL-2 | FAIL: panel 2 (order-card-big), Nani's order bubble ends 
 S18-EGGS-2 | FAIL: panel 5 (kind-tap), the whole screen (sidebar and order card included) is dimmed through panels 3-5 with only the egg tray lit, the hob and pans barely visible, and the round goes straight to service (6): no egg is ever cracked or fried, so the game's mechanic is not shown. Panels 7-10 badges and word review are fine.
 S18-BAKING-2 | FAIL: panel 5 (help-open), the "?" pop-up runs off the bottom of the screen: the "Play as new" button and the grown-ups line are cut. Also: panel 2 shows Nani with no order bubble (the order only on the sidebar card); panels 3-6 show the flour lit and a bowl but never a pour or the oven, then service (7), so the mechanic is not shown; labels under the flour and water are tiny.
 S18-CORN-2 | FAIL: panel 5 (kind-tap), the whole screen (sidebar and order card included) is dimmed through panels 3-5 with only the corn lit, the topping labels along the bottom are unreadable white chips, and the round goes straight to service (6): no grilling or topping is shown. Also panel 2's order bubble ends at a comma ("Muke hakro makai khape,") with the chutney order only on the sidebar card.
+
+## Proof
+
+The sheets judged: the films `build/screenshots/sandbox/s18-w3-films/films/*-sheet.png` (run s18-w3-films, 1280x665) and the contract run `s18-w3-full`'s 740x320 L1 sheets; batches `build/screenshots/s18-w3-judge/batch-01.md`, `batch-02.md` (Fable, the judge agent).
