@@ -613,12 +613,12 @@ export class CookPlayer {
       if (short) this.drv.counted = true;
       for (let i = 0; i < Math.max(0, e.target - (e.count || 0) - (short ? 1 : 0)); i++) { await this.tap(e.sx, e.sy, "count"); await sleep(350); }
       await sleep(300);
-      await p.click("#done-btn").catch(() => {});
+      { if (await p.$("#done-btn")) await p.click("#done-btn").catch(() => {}); } // SH-238: no tick button any more; never wait 30 s for one
       if (short) { await sleep(400); await this.once("wrong-count", { settle: 0 }); this.made.add("wrong-count"); }
     } else if (k === "more") {
       if (this.mode === "wrong-count" && !this.drv.counted && e.target >= 2 && e.count === e.target - 1) {
         this.drv.counted = true;
-        await p.click("#done-btn").catch(() => {});
+        { if (await p.$("#done-btn")) await p.click("#done-btn").catch(() => {}); } // SH-238: no tick button any more; never wait 30 s for one
         await sleep(500);
         await this.once("wrong-count", { settle: 0 });
         this.made.add("wrong-count");
@@ -629,7 +629,7 @@ export class CookPlayer {
         await this.tap(e.sx, e.sy, "one too many");
         await sleep(400);
         await this.once("wrong-extra", { settle: 0 });
-      } else await p.click("#done-btn").catch(() => {});
+      } else { if (await p.$("#done-btn")) await p.click("#done-btn").catch(() => {}); } // SH-238: no tick button any more; never wait 30 s for one
     } else if (k === "knead") {
       for (let i = 0; i < 10; i++) { await this.tap(e.sx, e.sy, "knead"); await sleep(100); if (JSON.stringify(await this.exp()) !== JSON.stringify(e)) break; }
     } else if (k === "roll") {

@@ -404,9 +404,11 @@
       if (up) {
         el.style.top = "";
         el.style.bottom = `${Math.round(Math.max(gap, vh - a.top + gap))}px`;
+        el.style.maxHeight = `${Math.round(Math.max(80, a.top - 2 * gap))}px`; // SH-235: room above the anchor
       } else {
         el.style.bottom = "";
         el.style.top = `${Math.round(a.bottom + gap)}px`;
+        el.style.maxHeight = `${Math.round(Math.max(80, vh - a.bottom - 2 * gap))}px`; // SH-235: room below it
       }
       el.style.setProperty("--njg-gu-tail", `${Math.round(Math.max(12, Math.min(w - 24, a.left + a.width / 2 - left - 8)))}px`);
     };

@@ -61,7 +61,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 
 ## 2. Cook
 
-122 rows: 43 with no Kutchi yet, 79 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
+123 rows: 44 with no Kutchi yet, 79 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
@@ -173,6 +173,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekelo); no family recording. |
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekela); no family recording. |
 | Still a little more. | Cook line: Still a little more. | 1 line | No Kutchi yet (grey English). |
+| Stir it three times, slowly. | Cook line: Stir it three times, slowly. | 1 line | No Kutchi yet (grey English). |
 | Take a dough ball | Cook line: Take a dough ball | 1 line | No Kutchi yet (grey English). |
 | take out | Cook line: Lift out the {x}. | 1 line | Kutchi known (kadh); no family recording. |
 | tasting (muke chakhan lai de: let me taste it) | Cook line: Let me taste it. | 1 line | Kutchi known (chakhan); no family recording. |
@@ -1359,4 +1360,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (178 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 17 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (179 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 17 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

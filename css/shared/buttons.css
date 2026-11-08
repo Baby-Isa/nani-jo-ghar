@@ -119,6 +119,8 @@
   position: fixed; z-index: 960; box-sizing: border-box; width: min(calc(var(--njg-tap) * 7), calc(100vw - 2 * var(--njg-s3)));
   padding: var(--njg-s3) var(--njg-s4); border-radius: var(--njg-radius); background: var(--njg-ink); color: var(--njg-bubble);
   box-shadow: var(--njg-shadow); font: 700 var(--njg-t3) / 1.35 var(--njg-font); text-align: left;
+  /* SH-235: never off a phone's screen, whatever the goal's length: it scrolls inside */
+  max-height: calc(100dvh - 2 * var(--njg-s2)); overflow-y: auto; overscroll-behavior: contain;
 }
 .njg-gu-pop.hidden { display: none; }
 .njg-gu-pop::after {

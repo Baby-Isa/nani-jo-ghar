@@ -97,6 +97,7 @@ async function review(S, { who, ok, x, y, size = 220, line, side = "left", k = 1
       g.fillRoundedRect(-w / 2, -h / 2, w, h, LOOK.radius);
       card.add([g, t]);
       S.tweens.add({ targets: card, alpha: 1, duration: 200 });
+      await E.wait(500); // CHAI-107: the last glass's ring is heard before the praise (the family voice mutes a long effect)
       await Promise.race([Promise.resolve(E.speak(said)).catch(() => {}), E.wait(2200)]);
     } else await E.wait(900);
     await E.wait(400);

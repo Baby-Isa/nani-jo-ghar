@@ -22026,6 +22026,26 @@
    }
   },
   {
+   "id": "phrase.stir-it-three-times-slowly",
+   "pos": "Phrase",
+   "gloss": "Stir it three times, slowly.",
+   "status": "to-record",
+   "src": [
+    "data/cook.json lines.daar-stir-ask: no source given"
+   ],
+   "aliases": [
+    "cook.line.daar-stir-ask"
+   ],
+   "ask": {
+    "word": [
+     "to record"
+    ]
+   },
+   "notes": [
+    "Nani's stir line at the daar station, one whole sentence (its count and speed vary by level); the engine stitched it from fragments, so its English shows in grey italic until Mum records it (Sprint 19, Fable's daar flaw 2; non-negotiable 2)"
+   ]
+  },
+  {
    "id": "phrase.stop-the-car-keep-it-standing",
    "pos": "Phrase",
    "lemma": "gadi ke ubhi rakh",
