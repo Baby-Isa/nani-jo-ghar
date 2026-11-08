@@ -11,7 +11,7 @@ Use this for every build session. The rules it draws on are in `process/rules.md
 A remote session can't be messaged, so the brief must be complete; to redirect a session, interrupt it and relaunch (B4).
 
 ```
-SESSION NAME / MODE, MODEL AND EFFORT (and why), COST ESTIMATE, HARD STOP (UK time), BRANCH
+SESSION NAME / MODE, MODEL AND EFFORT (and why), COST ESTIMATE, STOP (when its tasks are done or its budget is spent; a time only for a deadline Zafar set), BRANCH
 
 READ FIRST (in this order):
   1. CLAUDE.md

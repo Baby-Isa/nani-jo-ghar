@@ -4,10 +4,10 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 ---
 # /sprint: open and close a sprint
 
-**For:** the orchestrator. A sprint is one to three days with one goal Zafar can play at the end; one build session at a time, small fixes in the orchestrator's chat. Files: `docs/sprints/Snn-<name>.md` from `docs/sprints/TEMPLATE.md`.
+**For:** the orchestrator. A sprint is one goal Zafar can play at the end, run back to back with no days or dates (CLAUDE.md, Zafar 8 Nov); one build session at a time, small fixes in the orchestrator's chat. Files: `docs/sprints/Snn-<name>.md` from `docs/sprints/TEMPLATE.md`.
 
 ## Open (propose, then wait for Zafar's go)
-1. If new work arrives outside a sprint, steer it in: "This looks like Sprint nn. Goal: …. Budget: … (ceiling and days). Sessions: …. Yes?" Give a model, effort and cost for every session.
+1. If new work arrives outside a sprint, steer it in: "This looks like Sprint nn. Goal: …. Budget: … (ceiling). Sessions: …. Yes?" Give a model, effort and cost for every session.
 2. On his go: copy the template to `docs/sprints/Snn-<name>.md`; fill goal, budget, planned sessions; status "open". Backlog = the fix list (`docs/process/regressions.md`), `docs/process/checks-to-build.md` and `docs/ideas.md`; nothing else is queued.
 3. Settle the sprint's design decisions with Zafar at the opening, before any builder launches (Sprint 8): a builder never waits on, or guesses, a design call mid-sprint.
 4. Art placeholders are made at the final art's size and position, so wiring the art changes data, not layout (Sprint 8).

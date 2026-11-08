@@ -73,7 +73,7 @@ const report = s.report || s.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").repl
 add(`SESSION NAME / MODE:  ${s.name}`,
   `MODEL AND EFFORT:     ${s.model}${s.effort ? `, ${s.effort} effort` : ""}${s.why ? ` (${s.why})` : ""}`,
   `COST ESTIMATE:        ${s.cost}`,
-  `HARD STOP:            ${s.stop}. Commit every 30-40 minutes${s.publish ? "" : " (builders never push: the orchestrator merges)"}.`,
+  `STOP:                 ${s.stop}. Commit every 30-40 minutes${s.publish ? "" : " (builders never push: the orchestrator merges)"}.`,
   `BRANCH:               ${s.branch}. ${s.publish ? "Push to main only as the last step, per FINISH." : "Never push to main."}`, "");
 
 add(`MODEL TABLE (defaults by kind of work): ${modelTableText()}`, "");

@@ -27,7 +27,7 @@ help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s
 // (PROTOTYPE = false) before the app stores. IDs, paths and the fix list's shape are still checked.
 export const PROTOTYPE = true;
 export const LIMITS = {
-  "CLAUDE.md": 900,
+  "CLAUDE.md": 1000, // raised for the back-to-back rule (Zafar, 8 Nov)
   "docs/status.md": 1500,
   "docs/process/regressions.md": 12000,
   "docs/README.md": 700,

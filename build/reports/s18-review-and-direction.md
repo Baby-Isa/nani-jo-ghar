@@ -26,8 +26,7 @@ principle 12; two decisions (§7); §8 updated; §9 the plan. Disagreements are 
   shadows (yes, half the mock's weight), the marble, top-down boards and pans, each game's layout from mock-ups, samosa's redesign.
 - **The principles (section 6):** shared pieces compulsory, variations live in the shared kit; no ticks or next buttons; one card per
   thing, no "one"; one order per person where it fits; the onboarding rules; a timing floor; the look.
-- **The plan (section 9, Fable's draft):** two tracks: Zafar's (principles, then mock-ups, then an art run, the critical path) and the
-  chat's (the shared fixes now, then the kit's one scene, then the games two at a time, each merged only beside chai). About six days.
+- **The plan (section 9, Fable's draft):** two tracks: Zafar's (principles, then mock-ups, then an art run, the critical path) and the chat's (the shared fixes now, then the kit's one scene, then the games two at a time, each merged only beside chai), back to back.
 - **Checks (section 10):** about 25 automated checks for objective things; the rest to an eye judge with a rubric, full-size frames
   and chai beside. A blind test caught a third to a half of his points and about 25 new ones.
 - **Running now:** ChatGPT mock-up round 1 (free ideas, every gameplay screen; `docs/design-language/art-plans/s18-mocks-chrome-block.txt`).
@@ -213,24 +212,23 @@ light oak, its skewer one pixel on a phone, its heaps at a 3/4 angle that is nei
 3. Settle §6's twelve principles in one message ("yes to all except ...").
 4. Agree §9's plan, or his changes, and launch its day 0.
 
-## 9. Draft plan (Fable, for discussion)
+## 9. Draft plan (Fable, for discussion; days removed, Zafar 8 Nov)
 
-**Shape.** Two tracks from the same hour. Track A, Zafar's: the principles, one ChatGPT **house art run** (the critical path, as he
+**Shape.** Two tracks at once. Track A, Zafar's: the principles, one ChatGPT **house art run** (the critical path, as he
 says), then the mocks. Track B, the chat's: the shared layer, which needs no picture from him (27 of 34 rows are code, most sharing three
-causes), the checks that gate every merge, then the games two at a time as their mocks and art land. A milestone he can play on `main`
-every day or two. **Six days (Mon 9 to Sun 15 Nov), $450-600:** Sprint 19's goal and budget; the pantry's polish slides again.
+causes), the checks that gate every merge, then the games two at a time as their mocks and art land. A milestone he can play on `main` as each lands; no days or dates, every step starts as soon as the builder limit and its order allow (CLAUDE.md, Zafar 8 Nov). **$450-600:** Sprint 19's goal and budget; the pantry's polish slides again.
 
 **Where I disagree with the document.** Its "Next" was one serial chain (kit, lab, mocks, art, games): the house run's list is already
 decided, so it starts first and the shared layer the same morning; "a game's look is set by a mock-up before any builder starts" is right
-for scenes, wrong for the shared pieces chai already defines. My own 8 Nov "one day, $200-270" covered the scene alone: too small. Two
+for scenes, wrong for the shared pieces chai already defines. My own earlier "$200-270" covered the scene alone: too small. Two
 builders at a time, not eight: eight was what no one could look at.
 
-**Day 0 (Zafar, an hour).** Answers to §6; the go to publish chai. The orchestrator writes the house run's block (`/art-run`, about $15):
+**Step 0 (Zafar).** Answers to §6; the go to publish chai. The orchestrator writes the house run's block (`/art-run`, about $15):
 the shelf at five angles, empty and with items, containers on the ledge; low bowls at 29; board, trays and oil pan exactly top-down with
 royalty-free references in the zip; one onion, one tomato and every item a card shows as a crate; three dough-ball options; the thicker
-skewer. He runs it (half a day, in the background) while we talk through §2.
+skewer. He runs it in the background while we talk through §2.
 
-**Days 1-2, track B: the shared layer** (three builders in disjoint files if he allows a third for two days; else the checks go second).
+**Track B: the shared layer** (two builders at a time, the rule: cards and checks first, then lights, then the games' own fixes).
 **Cards** (Opus high, $25-35): principles 1-4 and 11 in the shared card and pop-up; `UI.TYPE_ALL` on; the old strip, box and big-card
 paths and `UI.done` gone; chai's frozen diff after each. **Lights** (Opus high, $25-35): principle 6, the stuck help in every game,
 centred round lights. **Checks** (Sonnet high, $10-15): `sidebyside.mjs`, chai's frame beside a game's at order-in-sidebar, first-time
@@ -238,30 +236,28 @@ light, kind-tap, serve and well-done at 740x320 and 1280x665, one question, "Is 
 structural contract (band, base line, pill line, one light layer); `kitmap` gating `S.glow`, own graphics and backgrounds; contract rows
 for no ✓, the light gone within 300 ms, a centred whole light, the floor once measured. Then **the scene** (Opus high, $30-40):
 `Kit.scene` to Fable's 8 Nov design with shadow tokens and pre-blurred silhouettes; chai switched onto it, frozen diff clean; a lab
-section with chai's, maani's and sekelo's items, the marble middle and the shadows beside today's. **Milestone 1 (Tue evening): every
+section with chai's, maani's and sekelo's items, the marble middle and the shadows beside today's. **Milestone 1: every
 game on the 6 Nov cards, no ticks, ticking cards, the lights right; none worse; published.** The side-by-side runs on every game as a
 baseline.
 
-**Days 1-2, track A: the mocks.** When the house art lands (Day 1 evening) the orchestrator judges and cuts it (about $20) and the scene
-builder wires the shelf views into the lab. Zafar's mocks: chai and sekelo first (two ChatGPT chats over their `shelfshot` plates, an
-hour), his pick of the shelf angle; then the other eight in one sitting (two hours). Each becomes its look sheet that evening; art lines
-go to **art run 2** (Days 3-4, half a day of his: chaat's bowl, samosa's one roll and fold, baking's and the stall's backdrops), code lines
+**Track A: the mocks.** When the house art lands the orchestrator judges and cuts it (about $20) and the scene
+builder wires the shelf views into the lab. Zafar's mocks: chai and sekelo first (two ChatGPT chats over their `shelfshot` plates, his pick of the shelf angle; then the other eight in one sitting. Each becomes its look sheet at once; art lines
+go to **art run 2** (his: chaat's bowl, samosa's one roll and fold, baking's and the stall's backdrops), code lines
 to the game's brief. The samosa lab (one roll, his numbered choices) runs here.
 
-**Days 3-5: the games, two at a time, each merged only when `sidebyside` lists no difference the look sheet did not accept and the
+**Then the games, two at a time, each merged only when `sidebyside` lists no difference the look sheet did not accept and the
 orchestrator and Fable have looked.** Maani and sekelo (Opus high, $25, $30); daar and chaat ($30, $20: one stir in the kit for both
 screens); eggs and corn (Opus $20, Sonnet $12); samosa and baking ($30, $20: samosa after his lab pick); chop (Sonnet high, $12). Each
 onto `Kit.scene` with its §4 rows and its look sheet; mechanics and timings untouched except where a row says; Fable judges each pair
-($10). **Milestone 2 (Thu): maani and sekelo in chai's kitchen with the house art. 3 (Fri): daar, chaat, eggs, corn. 4 (Sun): samosa,
+($10). **Milestone 2: maani and sekelo in chai's kitchen with the house art. 3: daar, chaat, eggs, corn. 4: samosa,
 baking, chop; full checks; publish; his play; the look-back.** Language gaps show as grey English and never block; Mum's round, by game,
 when she is free.
 
 **Cost and time, honestly.** Builders $330-400; art judging, cutting and wiring $40-60; Fable's judging $50-60; the chat's briefs, look
 sheets and merges $50-80: **$450-600**, over if a mock sends a game back to art (then cut chop, baking, the stall's backdrop, samosa's
-redesign to Sprint 20). Zafar: an hour Day 0, half a day Day 1, three hours of mocks, half a day Days 3-4, a play per milestone. Nothing
-in track B waits on him after Day 0; if he can give only the house run this week, Milestones 1 and 2 still happen and 3 and 4 slide a week.
+redesign to Sprint 20). Zafar: the principles, the house run, the mocks, art run 2 and a play per milestone (his agreed review points). Nothing in track B waits on him; if only the house run is done, Milestones 1 and 2 still happen and 3 and 4 wait on the mocks.
 
-**His first three things:** 1. answer §6 ("yes to all except ...") and say "publish chai"; 2. run the house art block Monday morning;
+**His first three things:** 1. answer §6 ("yes to all except ...") and say "publish chai"; 2. run the house art block;
 3. two mocks, chai and sekelo, over the plates we send, and pick the shelf angle.
 
 ## 10. Checks and the eye judge (8 Nov experiment)

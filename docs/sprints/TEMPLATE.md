@@ -7,7 +7,7 @@
 One sentence: what is true when this sprint is done.
 
 ## Budget
-Money (a ceiling) and time. Scope is cut, never the budget overrun. Record what was actually spent when it closes.
+Money (a ceiling); no days or dates, the work runs back to back (CLAUDE.md, Zafar 8 Nov). Scope is cut, never the budget overrun. Record what was actually spent when it closes.
 
 ## Sessions
 One line each: id, what it does, model and effort, report in `build/reports/`.
