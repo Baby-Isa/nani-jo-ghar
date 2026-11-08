@@ -51,6 +51,8 @@
  *   - params.knobs: the game's own numbers for its level, merged over data.mechanics.chop's (data/stations/chop.json's levels);
  *     params.onRounds(rounds): each round's wanted things and decoys, once they are drawn (the game notes its decoys);
  *     params.firstLight: false leaves the strip out (a caller that lights the chop itself).
+ *   - DAAR-40 (wave 2): the chop opens its own step ("chop", PlayLog.step) as its board starts, so its switch lines ("Hane trae
+ *     mirchi!") come inside the work's first step, never as talk after a skipped order (contract-95).
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
@@ -63,6 +65,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
+  // the chop's step, by name (the play log's "step-open", DAAR-40)
+  const KEY_STEP = "chop";
   // DAAR-39: the strip shown in this visit (a New player sees each first-time light once a visit, SH-120)
   const STRIP = { visit: false };
 
@@ -713,12 +717,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const LC = global.Lifecycle;
           const heard = !!(LC && LC.asked && LC.asked());
           const a = UI.mission && UI.mission.askLine ? await UI.mission.askLine(line, { hide }) : { asked: false };
+          // (DAAR-40, contract-95: the chop is the work's step: it opens here, as the board starts, for the play log and the checks; a
+          // game's own step calls open theirs, the chop opens its own: PlayLog.step, js/shared/onboard.js)
+          if (global.PlayLog && global.PlayLog.step) global.PlayLog.step(KEY_STEP);
           // (DAAR-39: the strip comes a breath after her line, so it is never over her voice)
           const first = stripDue();
           // (contract-95, CK-60: an order already read out in its pop-up, or skipped, is not said again before play: her box shows it
           // quietly; only an order not yet heard is said here)
-          if (a.asked || heard) z.say(line, { hide, silent: true, ms: 10, keep: true }).catch(() => {});
-          else await z.say(line, { hide }).catch(() => {});
+          // (contract-36: her line is the chop step's call, tagged so; when it is shown quietly, the step's call is logged as skipped)
+          if (a.asked || heard) {
+            if (LC && LC.note) LC.note("step-call", { step: KEY_STEP, by: "skip heard" });
+            z.say(line, { hide, silent: true, ms: 10, keep: true }).catch(() => {});
+          } else await z.say(Lang.role(line, "call"), { hide }).catch(() => {});
           if (first) await strip();
           running = true;
           spawnT = 0;

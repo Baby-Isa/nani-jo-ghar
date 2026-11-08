@@ -848,6 +848,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         const why = flat.includes(id) ? `tadka ${id} before ${expected}` : `put ${id} in the tadka`;
         wrong = wrong || why;
         tadkaWrong = tadkaWrong || why;
+        // STD-D2-04 (kit (d)): a wrong move brings the step's hint at once
+        if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong("daar:tadka");
         if (!retry && !help) {
           z.listen(false, why);
           // decision 93: what went in instead, for the steps page's "done"
@@ -1130,7 +1132,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     });
     // the pictures on their bands, in cream (the glass's ink)
     const at = (v, r) => ({ x: Math.cos(toA(v)) * r, y: ay + Math.sin(toA(v)) * r });
-    // (R8) the four flat cream icons on their bands, each about a band's width
     // (radii kept inside the face: the band ends lie near the face's left and right edges)
     const spots = [
       [e1 / 2, R + 26],
@@ -1138,27 +1139,14 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       [(e2 + e3) / 2, R + 48],
       [(e3 + max) / 2, R + 30],
     ];
-    if (DIAL_ICONS.every((n) => S.textures.exists(`dv3-dial-${n}`))) {
-      DIAL_ICONS.forEach((n, i) => {
-        const q = at(...spots[i]);
-        const im = S.add.image(0, 0, `dv3-dial-${n}`);
-        put(im, q.x, q.y, 0.01);
-        im.setScale((z.k * 58) / Math.max(im.width, im.height));
-      });
-    }
-    const ic = put(S.add.graphics(), 0, 0, 0.01);
-    if (DIAL_ICONS.every((n) => S.textures.exists(`dv3-dial-${n}`))) ic.setVisible(false);
-    const cream = 0xf4ecdf;
-    let p = at(e1 / 2, R + 50);
-    ic.fillStyle(cream, 0.9);
-    ic.fillRoundedRect(p.x - 9, p.y - 10, 6, 20, 2);
-    ic.fillRoundedRect(p.x + 3, p.y - 10, 6, 20, 2);
-    p = at((e1 + e2) / 2, R + 46);
-    tortoise(ic, p.x - 4, p.y, 0.62, cream);
-    p = at((e2 + e3) / 2, R + 44);
-    hare(ic, p.x, p.y + 10, 0.6, cream);
-    p = at((e3 + max) / 2, R + 40);
-    splash(ic, p.x + 4, p.y + 6, 0.6, cream);
+    // (R8) the four flat cream icons on their bands, each about a band's width (STD-E3-02: pictures only; never drawn in code)
+    DIAL_ICONS.forEach((n, i) => {
+      if (!S.textures.exists(`dv3-dial-${n}`)) return;
+      const q = at(...spots[i]);
+      const im = S.add.image(0, 0, `dv3-dial-${n}`);
+      put(im, q.x, q.y, 0.01);
+      im.setScale((z.k * 58) / Math.max(im.width, im.height));
+    });
     const lit = put(S.add.graphics(), 0, 0, 0.02);
     const needle = put(S.add.graphics(), 0, 0, 0.03);
     // the laps: the Kutchi word on a white chip in the face's lower half
@@ -1223,36 +1211,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     dial.set(0);
     return dial;
   }
-  /** The dial's pictures, in one ink on the dark glass (after the stir mechanic's placeholders). */
-  function tortoise(g, x, y, s, col) {
-    g.fillStyle(col, 0.9);
-    [-1, 1].forEach((dx) => [-1, 1].forEach((dy) => g.fillCircle(x + dx * 17 * s, y + dy * 11 * s, 7 * s)));
-    g.fillCircle(x + 30 * s, y - 2 * s, 9 * s);
-    g.fillEllipse(x, y, 50 * s, 34 * s);
-    g.lineStyle(3 * s, 0x1d1b1a, 1);
-    g.strokeEllipse(x, y, 38 * s, 24 * s);
-  }
-  function hare(g, x, y, s, col) {
-    g.fillStyle(col, 0.9);
-    g.fillEllipse(x - 4 * s, y + 4 * s, 46 * s, 28 * s);
-    g.fillCircle(x + 20 * s, y - 8 * s, 12 * s);
-    g.fillEllipse(x + 14 * s, y - 30 * s, 9 * s, 30 * s);
-    g.fillEllipse(x + 24 * s, y - 30 * s, 9 * s, 30 * s);
-    g.lineStyle(3 * s, col, 0.8);
-    [-2, 8].forEach((dy) => g.lineBetween(x - 52 * s, y + dy * s, x - 36 * s, y + dy * s));
-  }
-  function splash(g, x, y, s, col) {
-    g.fillStyle(0xd0604a, 0.95);
-    g.fillEllipse(x, y + 10 * s, 44 * s, 14 * s);
-    [
-      [-18, -10, 6],
-      [0, -22, 8],
-      [18, -12, 6],
-      [-8, -34, 4],
-      [12, -34, 4],
-    ].forEach(([dx, dy, r]) => g.fillCircle(x + dx * s, y + dy * s, r * s));
-  }
-
   /**
    * Stir `laps` times: a drag round the pot counts a lap per full turn; a tap on the pot is one turn. The
    * pictured contents turn with the ladle (D10: the tadka picture, clipped inside the rim; the swirl picture
