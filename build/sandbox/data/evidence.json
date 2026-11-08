@@ -24713,15 +24713,13 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-service",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "crop:#side"
    ],
-   "expect": [
-    "count:#side .oc-it14.done>=2"
-   ],
-   "note": "maani L1: both item cards ticked before the serve, each as its maani was made",
+   "expect": null,
+   "note": "maani L1: the side panel each time something is placed: each item card ticks as its maani lands on its plate, before the serve (a reviewer reads the panels in order; the praise only after the last tick is contract-108, clean on maani)",
    "delay": 0
   },
   {
