@@ -3,10 +3,6 @@
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
 ### Sprint 18 (8 Nov)
-- **Maani's L4 flip window** (s18-g-maani): the standard says a timed window is at least 2 s (STD-B2-05); maani's L4 flip is shorter.
-  Lengthen it (`flipAddS` 0.75 -> 1.3 in `data/stations/maani-line.json`)? Recommendation: yes.
-- **Samosa's fry window** (s18-g-samosa): the fry's green lasts only 0.5 s at L3 (the standard's floor is 2 s, STD-B2-05), and L4
-  has no fry row of its own. Lengthen L3's green to 2 s and give L4 its own row (shorter than L3, not under 2 s)? Recommendation: yes.
 
 - **Eggs at breakfast** (s18-g-eggs; its gap page `gaps/eggs.md`), five ways it differs from chai's standard. Recommendations:
   1. The "no" item from L2, as in chai (today L4 only): yes.

@@ -107,8 +107,10 @@ heat ring's green; "a dish" is one person's pan, glass or plate. New player is t
 - **Layer:** kitchen kit, stove part · **Lives in:** `chai-tray.js` · **Impact:** stuck · **Source rows:** CHAI-57
 
 #### STD-B2-05 · The window lasts at least 2 s at the top level
-- **Why:** "extend to two seconds" (Zafar, 1 Nov); lesson R1; the 15% a level is STD-C2-06's
-- **Scope:** Family
+- **Why:** "extend to two seconds" (Zafar, 1 Nov); lesson R1; the 15% a level is STD-C2-06's. **Chai's only** (Zafar, 8 Nov: no shared
+  timing rule; each game tunes its own windows to its play, samosa quick turns, chai longer pots to juggle, maani's flip while rolling;
+  the current times stay, play testing decides)
+- **Scope:** Game
 - **Pattern / part:** - / the heat ring
 - **Checked by:** gap: the green's length at speed 1
 - **See it:** lab.html?mode=cook&game=chai-tray&level=4 (1280x665)
