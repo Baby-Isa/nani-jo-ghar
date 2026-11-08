@@ -2,7 +2,7 @@
 
 Opus, high. The gap page came first, committed alone (`docs/design-language/standard/gaps/corn.md`); then the game moved onto
 `data/stations/corn.json` and the kits, keeping its own mechanic (the crate, the grill, turn once, lift, the dressings named as
-they go on, the plate tap). Nani's box stands in for Hannah Mami.
+they go on, the plate tap).
 
 ## What changed
 
@@ -20,7 +20,7 @@ they go on, the plate tap). Nani's box stands in for Hannah Mami.
 
 ## Proof
 
-- Commits: 082ce401 (gap page), 6742a566, b7eaa6a6 (the build), cdc53672 (merge of the kits), this one (rescore, report).
+- Commits: 082ce401 (gap page), 6742a566, b7eaa6a6, d1da2ad2 (build), cdc53672 (merge), 959681f3, 80a0a6d8 (rescore, report).
 - Contract, `cook:corn` L1-L4 at 1280x665 (s18-g-corn-contract): **CONTRACT PASSED: 0 breaks over 4 pages**, every end reached,
   0 page errors. Before (s18-g-corn-base, same flows): 18 breaks (contract-24 12, contract-95 4, contract-98 2).
 - 740x320, L1 and L4: 0 breaks over 2 pages (after `motion.flipK` 0.6, below).
@@ -50,5 +50,4 @@ Cobs 1, 1, 2, 2 and sides slower by level (C2-02, C2-06); the tray always shows 
 
 ## Open
 
-The card light (D1-07) and the next-cob light (D1-10); the recipe's slots and say-lines still in `data/cook.json`; the four sizes
-at merge.
+The card light (D1-07) and the next-cob light (D1-10); the recipe's slots and say-lines still in `data/cook.json`.
