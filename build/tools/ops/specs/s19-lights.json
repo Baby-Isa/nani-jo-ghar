@@ -5,10 +5,10 @@
   "why": "the shared lights reach every game; motion and timing judgement; chai's frozen diff guards",
   "cost": "about $35-50",
   "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
-  "branch": "s19-lights in /home/user/wt/s19-lights (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "branch": "s19-lights in /home/user/wt/s19-lights (made for you from the integration branch with s19-checks merged; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "code",
   "browser": true,
-  "live": false,
+  "live": true,
   "specsByBuilder": true,
   "read": [
     "build/reports/s18-review-and-direction.md (In one page, sections 2-4, principle 6)",
@@ -24,23 +24,11 @@
     "js/shared/guide.js",
     "js/shared/focus.js",
     "js/cook/hands.js",
-    "js/cook/mechanics/roll.js",
-    "js/cook/mechanics/tawa.js",
-    "js/cook/mechanics/assemble.js",
-    "js/cook/mechanics/fry.js",
-    "js/cook/mechanics/fill-fold.js",
-    "js/cook/stations/maani-line.js",
-    "js/cook/stations/roll-tawa.js",
-    "js/cook/stations/samosa.js",
-    "js/cook/stations/chai-tray.js (only where the kit's lights change its calls)",
-    "data/stations/maani-line.json, data/stations/samosa.json, data/stations/chaat.json",
-    "data/cook.json (the coach steps and Nani's lesson lines only)",
-    "build/sandbox/data/evidence.json (your rows' entries only)",
-    "build/frozen/chai-tray/**",
-    "lab/kit.html (the lights' section)",
     "build/reports/s19-lights.md"
   ],
   "readOnly": [
+    "PHASE 2, yours only once the orchestrator messages you that s19-cards is merged (then merge ccr-87413d9b-j48fpk into your branch first): js/cook/mechanics/roll.js; js/cook/mechanics/tawa.js; js/cook/mechanics/assemble.js; js/cook/mechanics/fry.js; js/cook/mechanics/fill-fold.js; js/cook/stations/maani-line.js; js/cook/stations/roll-tawa.js; js/cook/stations/samosa.js; js/cook/stations/chai-tray.js (only where the kit's lights change its calls); data/stations/maani-line.json, data/stations/samosa.json, data/stations/chaat.json; data/cook.json (the coach steps and Nani's lesson lines only); build/sandbox/data/evidence.json (your rows' entries only); build/frozen/chai-tray/**; lab/kit.html (the lights' section)",
+    "js/cook/stations/**, js/cook/mechanics/**, data/**, lab/** until then (s19-cards is changing their order, card and tick paths)",
     "js/cook/stations/mishkaki-grill.js, daar.js, eggs.js, corn.js, chop.js, baking.js (s19-games: they call your light API; keep it stable, or write the change they need in your report)",
     "build/tools/review/**, build/sandbox/lib/**"
   ],
@@ -73,6 +61,10 @@
     "CHT-19"
   ],
   "tasks": [
+    {
+      "do": "Phase 1 (now, the kit files only): build every kit-side part of the tasks below in js/cook/coach.js and the shared light files: the room rule (SH-230), one finger and its rhythm (SH-119), the light leaving on the move's start (SH-236: the kit's API that a mechanic calls when a drag, hold, stir or tap begins), the shelf-only hop (SH-237), one light at a time, the stuck help any game can call (SH-228). Keep the API backwards compatible so games keep working until phase 2 wires them. Test on fixtures and the lab. Phase 2 (when the orchestrator messages you): merge the integration branch, then wire each game and do the maani, chaat and samosa tasks.",
+      "accept": "phase 1 committed with tests before phase 2 starts; s19-checks' contract rows 102, 105, 106, 107 are your gate (build/sandbox/lib/contract-s19.mjs)"
+    },
     {
       "do": "The light's room (SH-230): one rule in the kit for every lit thing: the box hugs the thing, its pill and its face circle (whichever it has) with an even margin, and is centred on and whole round it (a board, a pan's round body, a pile's picture, never its tap box or a handle); no game's own box or glow.",
       "accept": "the s19-checks part 1 'centred and whole' row green on every flow at L1-L4 at the four sizes; script-made crops of maani's board, the eggs bowl and its pill"
