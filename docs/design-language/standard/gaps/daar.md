@@ -2,8 +2,7 @@
 
 **Made:** 8 Nov 2026, Sprint 18 wave 2 (s18-g-daar), before any build. `node build/tools/review/audit.mjs --standard daar` (205 House
 and Family rules; no contract run, no saved checks: 2 pass, 22 fail, 26 judge, 36 gap, 119 not run), then my read of daar's code
-(`js/cook/stations/daar.js`, its settings `data/stations/daar.json`, the chop it runs). Daar is chop, tadka and stir on one marble,
-then the serve; its chop is now chop's own game (`docs/design-language/standard/gaps/chop.md` scores the chop itself), so this page
+(`js/cook/stations/daar.js`, `data/stations/daar.json`). Daar is chop, tadka and stir, then the serve; its chop is now chop's own game (`docs/design-language/standard/gaps/chop.md` scores the chop itself), so this page
 scores the rest and how daar calls it.
 
 **Before the build:** 0 n/a 14 · 1 missing 37 · 2 built, unproven 148 · 3 check green 4 · dbd 2.
@@ -65,7 +64,7 @@ scores the rest and how daar calls it.
 | STD-A2-04 | H | not run | 2 | Kit | (d) |
 | STD-A2-05 | H | not run | 2 | Kit | (d) |
 | STD-A3-01 | H | fail | 0 | none | no amounts; the laps are a count |
-| STD-A3-02 | H | fail | 0 | none |  |
+| STD-A3-02 | H | fail | 0 | none | |
 | STD-A3-03 | H | gap | 0 | none |  |
 | STD-A3-04 | H | judge | 0 | none |  |
 | STD-A4-01 | H | not run | 2 | Words | the stir line is three recorded pieces until Mum records the sentence (DAAR-26) |

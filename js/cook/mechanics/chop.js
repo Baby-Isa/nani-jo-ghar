@@ -788,7 +788,3 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // (the Station lab's Chop tile is the chop game's: js/cook/stations/chop.js, Sprint 18)
 })(window);
 
-// Sprint 18 (s18-chop): the chop game's own file comes with its mechanic, so the Chop tile and daar find Cook.Chop, until
-// js/cook/index.js lists "./stations/chop.js" after this file in PARTS.chop and DAAR (the ask in build/reports/s18-chop.md);
-// once it does, this line does nothing
-if (!((CookNS.Mech.parts || {}).chop || []).some((f) => f.endsWith("stations/chop.js"))) await import("../stations/chop.js");

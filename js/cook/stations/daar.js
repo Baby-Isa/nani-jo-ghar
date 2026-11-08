@@ -3,8 +3,8 @@
  * grid §3, §4, §10; the kitchen kit §13; serve and taste §14a; the 29 Sept play-test §6, D1-D11, S16).
  *
  * TWO PHASES, each on the whole picture, with a phase fold between them:
- *  1. CHOP (v3, D1 / Q4: the swipe chop is back): the Fruit-Ninja chop (js/cook/mechanics/chop.js, its own
- *     levels, decoys and timer ring) on the marble, the kit's knife following the finger (no hand). Nani's
+ *  1. CHOP (v3, D1 / Q4: the swipe chop is back): chop's own game (js/cook/stations/chop.js Cook.Chop.play, its
+ *     settings data/stations/chop.json: its levels, decoys and timer ring) on the marble, the kit's knife following the finger (no hand). Nani's
  *     chop card (a person card with her face, "Chop these", the rows with the Kutchi quantity) says what to
  *     chop; Nana's daar card folds to face + headline meanwhile. Each right slice sends its chopped pieces to
  *     the counter at the top right (D4: they wait at the side), one small pile per piece, one row per
@@ -21,10 +21,10 @@
  *     speed ("slowly", "quickly", the stir mechanic's words), judged by the accuracy badge only.
  *     Tap the tick when it's done.
  * THE REVIEW (§14a as changed 29 Sept, X10 / Q1: Cook.Kit.review): a bowl of daar on its trivet beside the
- *   pot, and their big round face comes up over it (no body, no pretend eating).
- *  - right: a happy face and the family's praise;
- *  - not quite: a gentle face, they say their order again, and the child cooks it again (the chop first).
- *    Only the first try counts (the accuracy badge, the end review). At most three tries.
+ *   pot, and their big round face comes up over it (no body, no pretend eating), happy: each step's mistake
+ *   was redone on the spot (decision 51). Only the first try counts (the accuracy badge, the end review).
+ * Sprint 18 (wave 2, the kits): the chop is chop's own game (Cook.Chop.play); the word pop, the shelf's slots
+ * and size classes, the review, the order card, the steps and the reveal lessons are the kits'.
  *
  * Levels (data/cook.json's daal recipe slots; data/stations/daar.json's levels; data.mechanics.chop's levels
  * for the chop, data.mechanics.stir's for the dial's bands and the speed words): 1 = only what's asked,
@@ -277,22 +277,17 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * counted, and the pile you tap is the one that goes in). "bowl": the v3 veg-bowl (its contents are
    * pictured, so it shows onion, tomato and chilli whatever was chopped). Cook.daarSide overrides (the shots).
    */
-  const SIDE = { counter: { x: 1395, y: 120, row: 112 }, cook: { x: 330, y: 190, row: 128 } };
-  const PILE = 96; // one piece's pile, design px
+  // the game's own places and sizes: its settings file's scene (data/stations/daar.json, STD-F2-03; merged in at load, Cook.data.settings)
+  const SC = () => Cook.data.settings.daar.scene;
+  const PILE_ = () => SC().pile; // one piece's pile, design px
   // (R5's heaps fill their canvas, the old piles didn't: a heap is drawn a little smaller and the heaps further
   // apart, so two heaps stay two, never one big pile)
-  const heapSize = (id) => (HEAP5[id] ? PILE * 0.82 : PILE);
-  const PITCH_OF = (id) => (HEAP5[id] ? PILE * 0.98 : PILE * 0.78);
+  const heapSize = (id) => (HEAP5[id] ? PILE_() * 0.82 : PILE_());
+  const PITCH_OF = (id) => (HEAP5[id] ? PILE_() * 0.98 : PILE_() * 0.78);
 
   const ladderOf = (ctx) => {
     const Ls = UI.mission.ladders() || [];
     return Ls[ctx.dishAt || 0] || Ls[0] || null;
-  };
-  const orderLine = (L) => {
-    if (!L) return null;
-    // what the person asked for (the tadka order is Nani's, said at the pot: not theirs to repeat)
-    // 29 Sept (X1): one sentence, in card order (Cook.Order.speech leaves the `when` sections out)
-    return Cook.Order.speech([L]);
   };
   const shelfUrl = (id) => `${IT}shelf-${id}-bare-f.webp`;
 
@@ -327,12 +322,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const side = Cook.daarSide || "counter";
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the chop's own begin shows it (data.onboard.daar)
     const vegAll = [...new Set(kinds.concat(no, pool))].filter((id) => VEG[id]);
-    // CK-49 (contract-37): the chop's decoys, the vegetables thrown that nobody asked for (its 'no' one too)
-    {
-      const LA = Cook.data.lookalikes || {};
-      const off = vegAll.filter((id) => !kinds.includes(id));
-      St.decoyNote(off.length, { what: "chop", lookalike: off.some((id) => kinds.some((w) => (LA[w] || []).includes(id))) });
-    }
+    // (CK-49, contract-37: the chop's decoys are reported by chop's game, each round's as it throws them: Cook.Chop.play's note)
     const art = [
       ["dv2-knife", IT + "tool-knife-t-v2.webp"], // the fallback is the current knife (Z8: tool-knife-t.png/.webp are retired art; S13 decodes every load)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
@@ -350,7 +340,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
       .concat(St.artLoad(["knife", "daar-bowl", "daar-trivet"])); // S02-B: the art run's knife and split bowl/trivet, once they land
-    await St.loadArt(S, art);
+    // (chop's settings, its rounds and knobs by level, read before Nani's card is drawn)
+    await Promise.all([St.loadArt(S, art), Cook.Chop ? Cook.Chop.settings().catch(() => null) : null]);
 
     /*
      * Decision 51 (CK-23, DAAR-09): a mistake redoes only that step, never the whole game. A wrong chop count chops
@@ -360,6 +351,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
      */
     const redo = St.redo(ctx);
     const steps = St.steps(ctx);
+    // STD-D1-08 (DAAR-41, contract-98): the reveal lessons (the dotted word, then the blurred picture) are kit (d)'s, on its
+    // first-time gate for daar, once the order has landed and before the first thing to do (the first throw, or the hob)
+    const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("daar", { round: new Set() }) : null;
+    const lessons = () => (gate && Cook.Coach.lessons ? Cook.Coach.lessons({ gate, ctx }) : null);
     /* ---------- 1: chop (nothing to chop: an order can ask for no vegetables at all, then it's straight to the pot) ---------- */
     const chopped = { got: {}, wrong: null, rows: [] };
     if (kinds.length) {
@@ -368,6 +363,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         await St.begin(S, ctx, "daar", "marble"); // the first time, the ghost finger (data.onboard.daar): two swipes
         if (ctx.nextStep) ctx.nextStep("Chop");
         if (phases.chop && !tries) UI.gist(phases.chop);
+        if (!tries) await lessons();
         const cz = Mech.zone(S, ctx, { id: "chop", level });
         // (her card is drawn at the order's card level, as the order card beside it: a day's order of daal and maani at L3 dots
         // both, though the daal itself is a lower level: contract-35, s08 gate's day 3)
@@ -402,6 +398,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     /* ---------- 2: tadka and stir, then serve and taste ---------- */
     await St.begin(S, ctx, "daar", "marble");
     if (Cook.Coach) Cook.Coach.stop(false);
+    if (!kinds.length) await lessons();
     // the tadka and the stir get their own first-time coach (X11: data.onboard["daar-cook"])
     St.coach(ctx, "daar-cook");
     // level 4 (§14a): Nana's card starts folded (face + headline, no pips); a peek costs a hint. It folds before the
@@ -427,8 +424,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps });
     if (peek) UI.mission.closeCards(false);
     steps.done();
-    const why = chopped.wrong || cooked.wrong;
-    await serve(kz, { who, pot: cooked.pot, ok: true, last: true, firstOk: !why });
+    await serve(kz, { who, pot: cooked.pot });
     kz.close();
     St.end();
     const result = { chopped: chopped.got, tadka: cooked.order, stirred: cooked.stirred };
@@ -452,7 +448,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
      * revealed as called"): where the chop is called in rounds (its phases) on a dotted card (L3 up), a row she has not called yet is dotted
      * whole, number too, and is written as she calls it (call(ids), the chop's onCall). One round: every row is called at once.
      */
-    const rounds = Math.min(Math.max(1, (Mech.knobs("chop", { level }) || {}).phases || 1), Object.keys(need).length || 1);
+    // (the rounds chop's game plays at this level: its settings' row over the mechanic's base knobs)
+    const ck = Object.assign({}, Mech.knobs("chop", { level }) || {}, Cook.Chop && Cook.Chop.knobs ? Cook.Chop.knobs(level) : {});
+    const rounds = Math.min(Math.max(1, ck.phases || 1), Object.keys(need).length || 1);
     // (from L3, where the level table dots the card: an open card, L1-L2, writes every word, contract-35)
     // DAAR-34 (s08 w6J; the judge, 20 Oct: "at L4 every round the chop card shows only 'Chop these.'"): Nani's chop card has its
     // own row in the level table (data/cook.json levelTable.stations["daar-chop"]): dotted at L4 too, never folded, so the child
@@ -546,48 +544,46 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     g.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
   }
 
-  /** The word pop (§4): a flat white card with the speaker and the Kutchi word, and the family clip. */
+  /**
+   * The word pop (§4): the shared kit's (piece 12, js/shared/juice.js Juice.P.pop: the card, the speaker, the word, rising into
+   * place, holding ms, fading), at (x, y); daar says the word (the family clip) or the count line. Was a copy of chai's old pop.
+   */
   function pop(z, S, text, x, y, { speakId = null, line = null, ms = 1500 } = {}) {
-    const c = S.track(S.add.container(x, y).setDepth(D.fx + 3).setAlpha(0).setScale(z.k * 0.8));
-    const t = S.add.text(0, 0, text, { fontFamily: FONT(), fontSize: "36px", fontStyle: "800", color: INK.kutchi }).setOrigin(0, 0.5);
-    const w = 34 + 10 + t.width + 36;
-    const g = S.add.graphics();
-    g.fillStyle(0x28190a, 0.1);
-    g.fillRoundedRect(-w / 2, -28 + 3, w, 56, 12);
-    g.fillStyle(INK.card, 1);
-    g.fillRoundedRect(-w / 2, -28, w, 56, 12);
-    Cook.Kit.speaker(g, -w / 2 + 30, 0, 26);
-    t.x = -w / 2 + 50;
-    c.add([g, t]);
-    S.tweens.add({ targets: c, alpha: 1, scale: Math.max(z.k, Cook.Kit.textFloor(S, 36)), y: y - z.L(18), duration: 200, ease: "Back.easeOut" });
-    S.tweens.add({ targets: c, alpha: 0, y: y - z.L(46), delay: ms, duration: 320, onComplete: () => c.destroy() });
+    const k = Math.max(z.k, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
+    global.Juice.P.pop(S, { x, y }, text, { k, depth: D.fx + 3, hold: ms, top: (Cook.view || {}).top || 0 });
     if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
     const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
     return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
   }
 
   /**
-   * The shelf: identical slots on one line (the pantry v2 crates and jars, true relative heights: the
-   * crates a little taller than the jars), a chip under each (§4). left/right: the band's free span.
+   * The shelf: the shared kit's slots on one line (piece 9, js/shared/shelf.js Shelf.slots: centred on the band's free span,
+   * left to right), each item by its size class (St.classFit, ART-51), a pill under each (the kit's chip, piece 10). left/right:
+   * the band's free span. (Was daar's own copy of the slot sums and the old fit.)
    */
   function shelf(z, S, ids, level, { left = 40, right = 1410 } = {}) {
-    const n = ids.length;
-    const pitch = Math.min(PITCH, (right - left) / Math.max(1, n));
-    const width = n * pitch;
-    const x0 = left + Math.max(0, (right - left - width) / 2);
+    const L = global.Shelf.slots([ids], { span: [left, right], pitch: PITCH, groupGap: 0 });
+    const pitch = L.slotW;
     const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
     plank.fillStyle(INK.grey, 1);
-    plank.fillRoundedRect(z.X(x0 + 10), z.Y(BASE - 2), z.L(width - 20), z.L(10), z.L(5));
+    plank.fillRoundedRect(z.X(L.x0 + 10), z.Y(BASE - 2), z.L(L.width - 20), z.L(10), z.L(5));
+    // (CSS px per design px, for the classes' 40 CSS px floor)
+    const ppw = (() => {
+      try {
+        return (UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1) * z.L(1);
+      } catch (e) {
+        return 1;
+      }
+    })();
     const items = {};
-    ids.forEach((id, i) => {
-      const x = x0 + pitch * (i + 0.5);
+    ids.forEach((id) => {
+      const x = L.x[id];
       const crate = !!VEG[id];
       const w = Math.min(crate ? SLOT_W + 16 : SLOT_W, pitch - 18);
       const key = `dv2-shelf-${id}`;
       let img;
       if (S.textures.exists(key)) {
-        const src = S.textures.get(key).getSourceImage();
-        const sc = z.L(St.shelfFit(S, key, w / src.width, BASE));
+        const sc = z.L(St.classFit(S, key, id, { base: BASE, ppw, slotW: w }).scale);
         img = S.track(S.add.image(z.X(x), z.Y(BASE), key).setOrigin(0.5, 0.97).setScale(sc).setDepth(D.item + 1));
         img.baseScale = sc;
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.8), height: z.L(16) });
@@ -620,7 +616,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const S = z.S;
     const ctx = z.ctx;
     backdrop(z, S);
-    const C = SIDE.counter;
+    const C = SC().side.counter;
     const rows = []; // the vegetables in the order their first piece arrived (one row each)
     const piles = {}; // id -> the pile images
     let bowl = null;
@@ -633,7 +629,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const spot = (id, n) => {
       if (!rows.includes(id)) rows.push(id);
       const r = rows.indexOf(id);
-      return { x: z.X(C.x + 70 - n * (HEAP5[id] ? PILE * 0.95 : PILE * 0.72)), y: sy(z, C.y + r * C.row) };
+      return { x: z.X(C.x + 70 - n * (HEAP5[id] ? PILE_() * 0.95 : PILE_() * 0.72)), y: sy(z, C.y + r * C.row) };
     };
     const onSlice = ({ id, ok, x, y }) => {
       if (!ok || !S.textures.exists(`dv2-chop-${id}`)) return;
@@ -645,7 +641,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const img = S.track(S.add.image(x, y, piece ? `dv3-piece-${id}` : `dv2-chop-${id}`).setDepth(D.item + 1));
       const heapW = S.textures.get(`dv2-chop-${id}`).getSourceImage().width;
       const sc = z.L(heapSize(id)) / Math.max(img.width, img.height);
-      img.setScale(piece ? z.L(PILE * 0.45) / img.width : sc * 1.5);
+      img.setScale(piece ? z.L(PILE_() * 0.45) / img.width : sc * 1.5);
       list.push(img);
       const to = bowl ? { x: bowl.x + z.L((n % 3) * 30 - 30), y: bowl.y + z.L(Math.floor(n / 3) * 24 - 20) } : spot(id, n);
       S.fly(img, to.x, to.y, { scale: bowl ? sc * 0.5 : piece ? img.scale : sc, duration: 460, arc: z.L(90) }).then(() => {
@@ -670,25 +666,20 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // DAAR-13 (D10): the margin-safe knife (the art run's when it lands), whose blade cuts too
     const knifeKey = St.hasArt(S, "knife") ? St.artKey("knife") : "dv2-knife";
     const blade = (St.hasArt(S, "knife") && (St.art("knife").meta || {}).blade) || KNIFE_BLADE;
-    const cut = (await Mech.run("chop", z, { targets: want, pool, no, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: { x: 130, y: 130 } })) || {};
-    // graded now: each vegetable, how many (a sliced decoy falls away: it never reaches the pot)
-    let wrong = null;
-    kinds.forEach((id) => {
-      const g = cut[id] || 0;
-      if (g !== want[id]) {
-        wrong = wrong || `chopped ${g}, they asked for ${want[id]}: ${id}`;
-        if (!retry) UI.mission.missItem(id, ctx.dishAt || 0, { counted: true });
-      }
-    });
+    // Sprint 18 (wave 2): chop's own game (Cook.Chop.play, js/cook/stations/chop.js) at its settings for the level, graded there; daar
+    // keeps the pieces flying to the side (onSlice, KEEP-02) and Nani's card (onCall, onCount). Was the mechanic run here, graded here
+    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: SC().chopTimer });
+    const cut = r.cut;
+    const wrong = r.wrong;
+    // (a sliced decoy falls away: it never reaches the pot; a count short marks its row on the order card, the first try's)
+    if (!retry) r.short.forEach((id) => UI.mission.missItem(id, ctx.dishAt || 0, { counted: true }));
     nani.tickAll();
     Cook.daarPhase = "chopped";
     if (ctx.closeItem) ctx.closeItem(kinds);
     else UI.mission.closeItem(kinds, ctx.dishAt || 0);
     z.expect({ kind: "wait" });
     await Cook.wait(700);
-    const got = {};
-    kinds.forEach((id) => (cut[id] || 0) > 0 && (got[id] = cut[id]));
-    return { got, cut, wrong, rows: rows.filter((id) => got[id]) };
+    return { got: r.got, cut, wrong, rows: rows.filter((id) => r.got[id]) };
   }
 
   /* ---------- 2: tadka and stir in the v3 pot on the kit hob (one burner, one pot) ---------- */
@@ -749,7 +740,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     };
 
     // the chopped piles wait left of the hob (one row per vegetable: tap a row, it goes in); the daar right of it
-    const Cc = SIDE.cook;
+    const Cc = SC().side.cook;
     const piles = {};
     const hits = {};
     let vbowl = null;
@@ -769,7 +760,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           return im;
         });
         const w = z.L(Math.max(1, n) * PITCH_OF(id) + 30);
-        const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(PILE + 16), 0xffffff, 0.001).setDepth(D.item + 0.4));
+        const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(PILE_() + 16), 0xffffff, 0.001).setDepth(D.item + 0.4));
         hit.wordId = id;
         hits[id] = hit;
       });
@@ -778,8 +769,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const plainKey = S.textures.exists("dv3-trivet-plain") ? "dv3-trivet-plain" : "dv3-trivet";
     const PB = plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET;
     // (the same bowl size as the review's: its round body, trivet and all)
-    const dBowl = S.track(S.add.image(z.X(1250), sy(z, 330), plainKey).setOrigin(PB.cx, PB.cy).setDepth(D.item));
-    dBowl.setScale((z.L(230) * TRIVET.r) / (PB.r * PB.w));
+    const PL = SC().plainBowl;
+    const dBowl = S.track(S.add.image(z.X(PL.x), sy(z, PL.y), plainKey).setOrigin(PB.cx, PB.cy).setDepth(D.item));
+    dBowl.setScale((z.L(PL.w) * TRIVET.r) / (PB.r * PB.w));
     dBowl.shadow = S.contactShadow(dBowl);
     const items = shelf(z, S, spiceIds, level);
     Object.values(items).forEach((o) => o.setAlpha(0.6));
@@ -864,7 +856,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         }
       }
       const drop = spiceDrop(id);
-      pop(z, S, Cook.display(id), cx + bodyR + z.L(190), cy - z.L(150), { speakId: id, ms: 1000 });
+      pop(z, S, Cook.display(id), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: id, ms: 1000 });
       await drop;
       z.progress({ added: id });
       if (!group.length) si++;
@@ -945,7 +937,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       } else {
         await into(r.id, piles[r.id] || []);
         hits[r.id].destroy();
-        pop(z, S, Cook.display(r.id), cx + bodyR + z.L(190), cy - z.L(150), { speakId: r.id, ms: 900 });
+        pop(z, S, Cook.display(r.id), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: r.id, ms: 900 });
         if (ctx.closeItem) ctx.closeItem([r.id]);
         else UI.mission.closeItem([r.id], ctx.dishAt || 0);
       }
@@ -996,7 +988,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         arc: z.L(50),
         away: { x: cx + bodyR * 1.3, y: cy - bodyR * 0.9 },
         fade: true,
-        ms: { lift: 420, tip: 280, pour: 1900, untip: 220, back: 300 },
+        ms: SC().pourMs,
         onPhase: (ph) => {
           if (ph === "pour" && !pour) pour = Cook.sfx.pourLoop ? Cook.sfx.pourLoop() : null;
           if (ph === "untip" && pour && pour.stop) {
@@ -1033,7 +1025,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const gone = [mat, mat.shadow].filter(Boolean);
       S.tweens.add({ targets: gone, alpha: 0, duration: 420, onComplete: () => gone.forEach((o) => o.active && o.destroy()) });
     }
-    pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(190), cy - z.L(150), { speakId: "cook-daal", ms: 1000 });
+    pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: "cook-daal", ms: 1000 });
     await setPot("daar", 300);
     const pieces = [];
     // DAAR-31's flaw (the judge, 20 Oct: "identical toppings in identical places at all four levels"): each round turns the
@@ -1292,7 +1284,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       ladle.setScale((inR * 0.3) / (LADLE.r * LADLE.w));
       const ringG = S.track(S.add.circle(cx, cy - trackR, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
       S.tweens.add({ targets: ringG, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
-      const dial = speedDial(z, S, { x: 1260, y: 400, bands, max: k.dialMax || 3, asked });
+      const dial = speedDial(z, S, { x: SC().dial.x, y: SC().dial.y, bands, max: k.dialMax || 3, asked });
       let count = 0;
       let ang = FLAG_AT; // the ladle's angle: it starts under the flag
       let rot = 0; // the contents' turn
@@ -1668,10 +1660,14 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     return box;
   }
 
-  /* ---------- serve and taste (§14a): the bowl on its trivet (D5), their face over it ---------- */
-  async function serve(z, { who, pot, ok, last }) {
+  /*
+   * ---------- serve and taste (§14a): the bowl on its trivet (D5), their face over it ----------
+   * Each step's mistake is redone on the spot (decision 51), so the served daar is always right: the review is the happy face
+   * (the kit's review, Cook.Kit.review). (Its old "not quite" path, the order said again and the bowl taken back, was never
+   * reached since decision 51 and is gone.)
+   */
+  async function serve(z, { who, pot }) {
     const S = z.S;
-    const ctx = z.ctx;
     z.expect({ kind: "wait" });
     // a bowl of daar, ladled from the pot, on its wooden trivet beside it
     // DAAR-05 (s07 fix round): the bowl shows what went in, stirred: the plain bowl with the pot's own stirred daar in
@@ -1679,8 +1675,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // leaves, which no order puts in. (No plain bowl: the old one, as before.)
     const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists("dv4-disc-stirred");
     const TB = plain ? TRIVET_PLAIN : TRIVET;
-    const bowl = S.track(S.add.image(z.X(1230), sy(z, 450), plain ? "dv3-trivet-plain" : "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));
-    const bs = z.L(250) / TB.w;
+    const SB = SC().serveBowl;
+    const bowl = S.track(S.add.image(z.X(SB.x), sy(z, SB.y), plain ? "dv3-trivet-plain" : "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));
+    const bs = z.L(SB.w) / TB.w;
     bowl.setScale(bs * 0.8);
     bowl.shadow = S.contactShadow(bowl);
     const fill = plain ? bowlFill(S, bowl, pot) : null;
@@ -1688,18 +1685,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     Cook.sfx.pop();
     S.steam(bowl.x, bowl.y - z.L(40), 3);
     // the review (X10 / Q1): their big round face over the bowl, no body, no pretend eating
-    const look = await Cook.Kit.review(S, { who, ok: ok || last, x: bowl.x, y: bowl.y - z.L(250), size: z.L(250), k: z.L(1), side: "right" });
-    if (ok || last) {
-      await Cook.wait(300);
-      await look.close();
-      return true;
-    }
-    // not quite: they say their order again (the card has marked the wrong rows), the bowl goes back
-    const line = orderLine(ladderOf(ctx));
-    if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
-    St.customerDone();
-    await Promise.all([look.close(), Cook.tween(S, { targets: bowl, alpha: 0, duration: 460 })]);
-    return false;
+    const look = await Cook.Kit.review(S, { who, ok: true, x: bowl.x, y: bowl.y - z.L(SB.w), size: z.L(SB.w), k: z.L(1), side: "right" });
+    await Cook.wait(300);
+    await look.close();
+    return true;
   }
 
   Mech.lab("daar", {
