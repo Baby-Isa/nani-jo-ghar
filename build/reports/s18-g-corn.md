@@ -23,10 +23,11 @@ they go on, the plate tap). Nani's box stands in for Hannah Mami.
 - Commits: 082ce401 (gap page), 6742a566, b7eaa6a6 (the build), cdc53672 (merge of the kits), this one (rescore, report).
 - Contract, `cook:corn` L1-L4 at 1280x665 (s18-g-corn-contract): **CONTRACT PASSED: 0 breaks over 4 pages**, every end reached,
   0 page errors. Before (s18-g-corn-base, same flows): 18 breaks (contract-24 12, contract-95 4, contract-98 2).
+- 740x320, L1 and L4: 0 breaks over 2 pages (after `motion.flipK` 0.6, below).
 - Paths at 1280x665 (#mistake, L2#mistake, #takeback, #hint, L3#hint, L4): 1 break, explained: contract-22 at L2#mistake,
   "tamarind chutney" said at the first try's tap and again at the redo's tap 2 s later. It is ph-amli's device-voiced English
-  (no Kutchi alone yet, settings `gaps`); contract-22 lets item words repeat but does not know the English stand-in as one.
-- Checks: static (0 new), words ok; docs fails only on others' pages. Unit: the cook harness, levels, rules, day runner pass.
+  (no Kutchi alone yet); contract-22 lets item words repeat but not this stand-in.
+- Checks: static (0 new), words ok, docs only others' pages. Unit: cook harness, levels, rules, day runner pass.
 - Gap page: before 0: 15, 1: 47, 2: 139, 3: 4; after 0: 15, 1: 21, 2: 147, 3: 22. Audit 2 pass before, 16 after.
 - No BEFORE run or evidence --after; one size (decision 5).
 
@@ -35,12 +36,12 @@ they go on, the plate tap). Nani's box stands in for Hannah Mami.
 1. `js/cook/coach.js`: export the box helper, `C.boxOf = (obj) => () => hugOf(obj);`, then corn's `boxOf` (and chai's
    `pageRect`) can go.
 2. `build/sandbox/lib/contract-hook.mjs` spotNow: first line in the loop, `if (!l.classList.contains("on")) continue;` (a closing
-   light's layer keeps its holes for its 300 ms fade). Then corn's `motion.flipK` can go back to a full squash and the 320 ms wait
+   light's layer keeps its holes for its 300 ms fade). Then corn's `motion.flipK` (0.6) can go back to a full squash and the 320 ms wait
    before the review can go.
 3. `build/sandbox/lib/contract.mjs` contract-22: count an item's grey English (its `english`) as an item word.
 4. `build/tools/review/loadcheck.mjs`: add `"corn"` to `STATIONS`, and in `cookStation(key)` concat
    `(existsSync(join(ROOT, \`data/stations/${key}.json\`)) ? json(\`data/stations/${key}.json\`).assets || [] : [])`.
-5. Grill.js: nothing needed (corn uses `Cook.Kit.heatRing`).
+5. Grill.js: nothing (corn uses `Cook.Kit.heatRing`).
 
 ## For Zafar (decisions, from the gap page)
 

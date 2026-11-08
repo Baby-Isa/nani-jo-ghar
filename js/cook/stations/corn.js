@@ -270,11 +270,11 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
 
     const tapCob = async (c) => {
       if (c.state === "turn") {
-        // turned once: it rolls over (a squash to half and back: its light's box fades out round it, contract-53), its ungrilled side up
+        // turned once: it rolls over (a squash to 0.6 and back: its light's box fades out round it, contract-53), its ungrilled side up
         c.state = "flip";
         refresh();
         const sx = c.img.scaleX;
-        await fly({ targets: c.img, scaleX: sx * (mo.flipK || 0.5), duration: mo.flipMs || 140 });
+        await fly({ targets: c.img, scaleX: sx * (mo.flipK || 0.6), duration: mo.flipMs || 140 });
         c.img.setTexture(S.textures.exists(tex.turned) ? tex.turned : tex.half);
         await fly({ targets: c.img, scaleX: sx, duration: mo.flipMs || 140 });
         Cook.sfx.click();
