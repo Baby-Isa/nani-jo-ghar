@@ -41,10 +41,16 @@ test("contract-44 (SH-130): one kit finger passes; a game's own finger or two at
 test("contract-44 (SH-130): the help's spotlight with no finger for 2 s or more is a break; a moment before the finger comes is not", () => {
   const fg = (list, help, t) => ({ type: "c", k: "fingers", t, list, help });
   const kit = { sel: "div.ob-finger", kit: true };
-  // the eye test's card step at the laptop size: the box and the lit row, no finger, until the step ends
-  const red = run([fg([], true, 1200), fg([], false, 1200 + SPOT_NO_FINGER_MS + 1500)], "contract-44", "cook:maani-line");
+  // a drag's spotlight (the kit's ghost logged a drag) with no finger until the step ends
+  const drag = { type: "c", k: "s19ghost", t: 1100, at: 1100, step: "roll#0", gesture: "path", game: false };
+  const red = run([drag, fg([], true, 1200), fg([], false, 1200 + SPOT_NO_FINGER_MS + 1500)], "contract-44", "cook:maani-line");
   assert.equal(red.length, 1);
   assert.match(red[0].measured, /spotlight showed 3\.5 s with no finger/);
+  // SH-233 (SH-141): a tap's light has no finger: the eye test's card step (a tap) with the box alone passes, and so does a spell
+  // whose gesture is not known
+  const tap = { ...drag, gesture: "tap" };
+  assert.equal(run([tap, fg([], true, 1200), fg([], false, 1200 + SPOT_NO_FINGER_MS + 1500)], "contract-44", "cook:maani-line").length, 0);
+  assert.equal(run([fg([], true, 1200), fg([], false, 1200 + SPOT_NO_FINGER_MS + 1500)], "contract-44", "cook:maani-line").length, 0);
   // the finger comes 300 ms after the box
   assert.equal(run([fg([], true, 1200), fg([kit], true, 1500), fg([], false, 9000)], "contract-44", "cook:maani-line").length, 0);
 });
