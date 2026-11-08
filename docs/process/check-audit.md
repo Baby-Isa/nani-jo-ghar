@@ -9,7 +9,8 @@ the default run and marked, so it can come back). s19-checks; the report is `bui
 session reports in `build/reports/`, the runs of today (part 1 on every kitchen game at L1-L4, the older scripts re-run), and git.
 This clone's git history starts on 7 Nov (it is shallow), so older catches are read from the rows and reports, not commits.
 
-**Totals:** 214 checks: **KEEP 184, FIX 15 (each fixed, with a test), RETIRE 5** (code kept), plus 10 new (part 1). Not checks (tools
+**Totals:** 177 checks: **KEEP 160, FIX 14, RETIRE 3** (code kept), plus 10 new (part 1). Of the 14 FIXes, 10 are fixed here, each
+with a test; 4 are in files this session does not own (`build/check_*`, `build/test_clinic_heal_a.py`): the change is in the report. Not checks (tools
 that make pictures or files: kitmap, faces, shelfshot, statuscounts, skeleton, heal-marks, shoot_photo, bg_align_check, the
 SessionStart hook) are listed at the end and need no verdict.
 
@@ -18,14 +19,12 @@ SessionStart hook) are listed at the end and need no verdict.
    (550 shots) and it never showed what changed; the look is judged beside chai now (`sidebyside.mjs`).
 2. `build/check_clinic_kutchi.mjs`: runs nowhere; today both its hits are false (a picture path, and "arre" as an event name, not a
    word said); the word lint, strict on `js/clinic` in every checks run, guards the same rule (0 literals).
-3. `build/check_speaker_taps.mjs`: last run 26 Oct (s13-a2); the screen lint's `tap-small` (48 px) and `covered` judge every speaker on
-   every recorded state at every size, where this judged two sizes at L3.
-4. `build/check_word_card_taps.mjs`: a 44 px floor on one lab page (EASY-11, Sprint 11); `tap-small` holds 48 px on every page the
-   sandbox plays, the word card's reveal among them.
-5. `build/check_sidebar_fit.mjs`: last run 26 Oct (s13-a2); contract-51 (every word inside its card) and the screen lint
-   (`text-offscreen`, `text-clipped`) judge the sidebar on every page and size.
+3. `build/check_sidebar_fit.mjs`: last run 26 Oct (s13-a2); today it did not finish in 7 minutes (its page closed under it); contract-51
+   (every word inside its card) and the screen lint judge the sidebar on every page and size.
 
-The browser results that decided 3-5 and the older scripts are in section 9.
+Two the plan meant to retire stayed after their run today: `check_speaker_taps.mjs` (its 26 fails are the 6 Nov card's drawn 30 px
+speaker, whose tap is the whole foot: FIX, not retire) and `check_word_card_taps.mjs` (passes in 3 s: KEEP). The screen lint's
+`tap-small` is ratcheted (known findings pass), so it does not replace a direct check.
 
 ## 1. `checks.mjs`, step by step
 
@@ -186,6 +185,7 @@ expression (no `;` between two IIFEs), so a probe added after S17's never ran; f
 |---|---|---|---|---|
 | A flow reaches its end; no new page error | every sandbox run | every station that stalled (the s18 wave merges' "end reached" lines) | none extra | KEEP |
 | The gate cache (`gatecache.mjs`) | `--gate` | skips unchanged pages | none | KEEP |
+| `run.mjs --list` whole | evidence lint-specs, touched, sprintcheck | under load it printed 341-372 of 399 lines (its lines, then `process.exit`), so lint-specs failed on real flows in a concurrent checks run | a red checks run for nothing | FIX: one write, the exit after it; test `build/sandbox/list.test.mjs` (red on the old list) |
 | The gate's chunks under the lock | `--gate` | it took `/tmp/njg-browser.lock`, which no builder's run took | two browsers at once | FIX: the one lock, never waiting on its own caller (`lib/common.mjs` `locked`), test |
 | Evidence: a capture refuses blanks (moment, selector, flat crop, empty text, still strip) | every evidence run | S05's 86 "no evidence" lines became tool failures | none | KEEP |
 | Evidence: `--apply` refuses a PASS with no FAIL before it (red then green) | every apply | decision 86 | none | KEEP |
@@ -237,8 +237,11 @@ expression (no `;` between two IIFEs), so a probe added after S17's never ran; f
 | check_hotspots.py (clinic hit areas) | QA LAY-11 | the clinic's part sizes | passes today | KEEP |
 | test_clinic_heal_a.py (the heal games on the host) | no run | the heal lab A games | times out today on the heal host's mount | FIX (report: a look at the host, which may be a clinic fault) |
 | check_clinic_kutchi.mjs | no run | G13 | both hits today false | RETIRE |
-| check_speaker_taps.mjs, check_word_card_taps.mjs, check_sidebar_fit.mjs | no run since 26 Oct | SH-134, EASY-11, the S13-A2 sidebar | superseded on every page (above) | RETIRE (see the top) |
-| check_stamps.mjs, test_cook.py, test_clinic.py, test_cook_mount.mjs | the publish (stamps), COOK-16 (mount) | B7 stamps; the mount's leaked listeners | see the report's re-run | KEEP |
+| check_speaker_taps.mjs (SH-134) | no run since 26 Oct; run today | 26 of 60 speakers "under 48 px" at 740x320 and 930x430 | every one is the 6 Nov card's drawn 30 px speaker, whose tap is the whole card foot (SH-227): a false alarm since 6 Nov | FIX (report: measure the foot, the tap area) |
+| check_word_card_taps.mjs (EASY-11) | run today | 26 reveal buttons, 0 under 44 px | 3 s | KEEP |
+| check_sidebar_fit.mjs | run today | the S13-A2 sidebar | did not finish in 7 minutes | RETIRE |
+| check_stamps.mjs (B7) | the publish; run today | **today: cook.html asks for `js/shared/shelf.js` without its version stamp** (a phone keeps an old shelf.js after a publish) | ~5 min, a browser | KEEP (the finding is in the report) |
+| test_cook_mount.mjs (COOK-16), test_cook.py, test_clinic.py | the mount test in /review; the two older e2e tests nowhere since October | the mount's leaked listeners | not re-run today: the shared browser lock was needed by the other builder | KEEP; the two e2e tests to be run once at the next review, then judged |
 
 ## 10. The leak bots (`build/tools/review/leak-configs/`)
 
