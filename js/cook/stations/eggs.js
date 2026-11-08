@@ -249,9 +249,18 @@ import { Cook as CookNS } from "../ns.js";
     const pageRect = (o) => () => {
       if (!o || !o.active) return null;
       const pl = plateOf(o);
-      const r = pl ? ((tr.plateW || 168) / 2) * 0.94 : 0; // (the rim, inside the picture's edge: the box clear of the next face)
+      const r = pl ? ((tr.plateW || 168) / 2) * 0.94 : 0; // (the rim, inside the picture's edge)
       const f = pl ? pl.face.getBounds() : null;
       const b = pl ? { x: Math.min(pl.x - r, f.x), y: Math.min(pl.y - r, f.y), right: Math.max(pl.x + r, f.right), bottom: Math.max(pl.y + r, f.bottom) } : o.getBounds();
+      // (contract-82: the box stops short of another plate's face below it or to its right, the light's pad and a gap clear)
+      if (pl)
+        P0.filter((q) => q !== pl).forEach((q) => {
+          const g = q.face.getBounds();
+          const across = g.right > b.x && g.x < b.right;
+          const beside = g.bottom > b.y && g.y < b.bottom;
+          if (across && g.y > pl.y) b.bottom = Math.min(b.bottom, g.y - 16);
+          else if (beside && g.x > pl.x) b.right = Math.min(b.right, g.x - 16);
+        });
       const a = UI.worldToScreen(b.x, b.y);
       const c = UI.worldToScreen(b.right, b.bottom);
       return [a.x, a.y, c.x - a.x, c.y - a.y];
