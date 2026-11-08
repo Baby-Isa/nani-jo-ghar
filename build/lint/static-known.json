@@ -114,6 +114,7 @@
  "jscolour|js/cook/kitchen-kit.js|g.lineStyle(width, 0x4a3b30, 0.85);",
  "jscolour|js/cook/kitchen-kit.js|g.strokeStyle = \"#ffffff\";",
  "jscolour|js/cook/kitchen-kit.js|g.strokeStyle = \"rgba(42,37,34,0.18)\";",
+ "jscolour|js/cook/kitchen-kit.js|shade.fillStyle(0x2a1a0a, 0.08);",
  "jscolour|js/cook/kitchen-kit.js|ui const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, t",
  "jscolour|js/cook/kitchen-kit.js|ui const INK = { gold: 0xc9962e, sage: 0x7e9a76, track: 0xfffaf1, over: 0xb24a3a, t",
  "jscolour|js/cook/mechanics/assemble.js|art-only",

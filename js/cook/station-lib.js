@@ -207,37 +207,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
    * station that has the band (chai now; the stove family at its roll-out). base: the line every object stands on.
    */
   // (the worktop's wash, Zafar 5 Nov: the white marble warmed to the stone's undertone; Fable's study: the colour, alpha 0.18 kept)
-  S$.worktopWash = () => { const T = global.Tokens; return (T && T.int && T.int("worktop-wash")) || (T && T.cookInk ? T.cookInk().page : 0); };
-  S$.STONE = { get mean() { const T = global.Tokens; return (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0); }, tile: "assets/shared/panel/stone-tile-s17.webp", shelf: "assets/shared/panel/stone-shelf-s17.webp", tileK: 0.5, shelfK: 0.35, faceDown: 14 };
-  S$.stoneBand = function (S, { top, base, far = 2000, depth = 0 }) {
-    const ST = S$.STONE;
-    const W = 1600 + 2 * far;
-    const flat = S.track(S.add.graphics().setDepth(depth));
-    flat.fillStyle(ST.mean, 1);
-    flat.fillRect(-far, top, W, 900 - top + far);
-    // (SAM-29: the band's 3 px top shade, over the tile and the shelf, once here for every game with the band; was chai's own line,
-    // and samosa lost its own when it moved onto the band)
-    const shade = S.track(S.add.graphics().setDepth(depth + 0.05));
-    shade.fillStyle(0x2a1a0a, 0.08);
-    shade.fillRect(-far, top, W, 3);
-    const A = Cook.Art;
-    if (!A || !A.loadFile || !S.add.tileSprite) return flat;
-    A.loadFile(S, "panel-stone", ST.tile).then((ok) => {
-      if (!ok || !S.sys || !S.sys.isActive()) return;
-      const t = S.track(S.add.tileSprite(-far, top, W, 900 - top + far, "panel-stone").setOrigin(0).setDepth(depth + 0.01));
-      t.setTileScale(ST.tileK, ST.tileK);
-    });
-    if (base != null) {
-      A.loadFile(S, "panel-shelf", ST.shelf).then((ok) => {
-        if (!ok || !S.sys || !S.sys.isActive()) return;
-        const src = S.textures.get("panel-shelf").getSourceImage();
-        const h = src.height * ST.shelfK;
-        const sh = S.track(S.add.tileSprite(-far, base - ST.faceDown, W, h, "panel-shelf").setOrigin(0).setDepth(depth + 0.02));
-        sh.setTileScale(ST.shelfK, ST.shelfK);
-      });
-    }
-    return flat;
-  };
+  // (S18: the worktop wash, STONE and the stone band live in js/cook/kitchen-kit.js, St.worktopWash / St.STONE / St.stoneBand)
   /** Where a texture's picture starts and ends ([top, bottom] as fractions of its canvas height). */
   S$.opaqueSpan = function (S, key) {
     const cache = (S$._span = S$._span || {});

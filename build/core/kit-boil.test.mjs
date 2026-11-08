@@ -323,7 +323,7 @@ test("the worktop wash and the stone band live in the kitchen kit, moved unchang
     },
   };
   St.stoneBand(S, { top: 630, base: 818, far: 100, depth: 1.2 });
-  assert.deepEqual(fills, [[0x222222, 1], [-100, 630, 1800, 370]]);
+  assert.deepEqual(fills, [[0x222222, 1], [-100, 630, 1800, 370], [0x2a1a0a, 0.08], [-100, 630, 1800, 3]]); // (SAM-29: the band's top shade)
   const w = Cook.Kit.worktop(S, { top: 630, far: 100, depth: 1 });
   assert.deepEqual(w.args, [-100, -100, 1800, 730, 0x111111, 0.18]);
   assert.equal(w.depth, 1);
