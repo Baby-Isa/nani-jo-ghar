@@ -56,6 +56,8 @@ const PARTS = {
   baking: ["./stations/baking.js"],
   corn: ["./stations/corn.js"],
 };
+// S18 wave 3: chop as its own game, called by a recipe ("do": "chop-game": chaat's chop step; js/cook/stations/chop.js)
+PARTS["chop-game"] = PARTS.chop;
 // the Station lab's list, in its old order, before any station's code is there (its file fills in the rest)
 const LABS = [
   ["pour", "Pour", "Tap the jug"],

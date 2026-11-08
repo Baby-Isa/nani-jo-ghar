@@ -53,6 +53,8 @@
  *     params.firstLight: false leaves the strip out (a caller that lights the chop itself).
  *   - DAAR-40 (wave 2): the chop opens its own step ("chop", PlayLog.step) as its board starts, so its switch lines ("Hane trae
  *     mirchi!") come inside the work's first step, never as talk after a skipped order (contract-95).
+ *   - Wave 3 (s18-w3-chop): params.stepOpen: the caller (chop's game, Cook.Chop.play) opened the step already, before anything of the
+ *     chop's could be said (an order heard or skipped); the mechanic does not open it again.
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
@@ -81,7 +83,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       const S = z.S;
@@ -719,7 +721,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const a = UI.mission && UI.mission.askLine ? await UI.mission.askLine(line, { hide }) : { asked: false };
           // (DAAR-40, contract-95: the chop is the work's step: it opens here, as the board starts, for the play log and the checks; a
           // game's own step calls open theirs, the chop opens its own: PlayLog.step, js/shared/onboard.js)
-          if (global.PlayLog && global.PlayLog.step) global.PlayLog.step(KEY_STEP);
+          // (S18 wave 3: chop's game, Cook.Chop.play, opens it as the board starts when the order was already heard: stepOpen)
+          if (!stepOpen && global.PlayLog && global.PlayLog.step) global.PlayLog.step(KEY_STEP);
           // (DAAR-39: the strip comes a breath after her line, so it is never over her voice)
           const first = stripDue();
           // (contract-95, CK-60: an order already read out in its pop-up, or skipped, is not said again before play: her box shows it
