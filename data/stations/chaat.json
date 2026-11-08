@@ -1,0 +1,110 @@
+{
+ "_about": "Sprint 18 wave 2 (s18-g-chaat; the sprint's 'Coded well' rule 1: a game is its settings file plus its own mechanic): chaat's own numbers, read by js/cook/mechanics/assemble.js (the bowl) before it builds; everything else is a kit call. bowl: the side-on glass bowl in the scene (design px of the 1600x900 box: w its drawn width, x its centre; res the layers' canvas over the bowl's design size), its layers (band: a layer's flat texture, w bowl px and pad above and below; thin: a layer's thickness as a share of a full one; drizzle: the chutneys, drizzled over the layer below; bandScale: a layer's pieces as a share of their size in the pot; potFood: the food inside a pot, the layers' texture, as fractions of the pot). The bowl's measured inside and the pots' one canvas stay in the code (BOWL, BOWL_INSIDE, POT: build/check_vessel_meta.py reads them there). shelf: the line the pots stand on (base), the slot each wants (pitch) and a pot's width (potW), the span the row is centred on (left of the tick, bottom right), the word pills' line (chipY); the pills themselves are the shared kit's (js/shared/shelf.js). pots, strips: each topping's pot and its side-on strip (the s08b strips stand in for CHT-13's side-on layers, CHT-04). motion: the spoonful (w design px), its flight back (backMs), its drop (dropMs), a wrong thing's pause before the wobble and its way out (notInPauseMs, outMs), a double tap (doubleTapMs), the right bowl's moment (rightHoldMs), the right way shown (showGlowMs, showHoldMs), the recast's cap (recastCapMs), the end (endMs). levels: what changes by level over data.mechanics.assemble (flyMs: a spoonful's flight to the bowl, about 15% quicker a level, STD-C2-06). The decoys and the counts are the central rules' (data/rules.json), never here (STD-F2-02).",
+ "bowl": {
+  "w": 760,
+  "x": 800,
+  "res": 1.5,
+  "band": {
+   "w": 1300,
+   "pad": 14
+  },
+  "thin": {
+   "ph-amli": 0.5,
+   "ph-lili": 0.5,
+   "ph-dahi": 0.85,
+   "ph-dhana": 0.8,
+   "veg-12": 0.8
+  },
+  "drizzle": [
+   "ph-amli",
+   "ph-lili"
+  ],
+  "bandScale": {
+   "veg-01": 0.62,
+   "ph-chana": 0.62,
+   "ph-dahi": 0.8,
+   "ph-sev": 0.7,
+   "ph-dhana": 0.62,
+   "veg-02": 0.6,
+   "veg-03": 0.6,
+   "veg-12": 0.62
+  },
+  "potFood": {
+   "x0": 0.15,
+   "x1": 0.85,
+   "y0": 0.4,
+   "y1": 0.86
+  }
+ },
+ "shelf": {
+  "base": 818,
+  "pitch": 180,
+  "potW": 166,
+  "span": [
+   30,
+   1380
+  ],
+  "chipY": 860
+ },
+ "pots": {
+  "dir": "assets/cook/items/v3/chaat/",
+  "_tomato": "pot-tomato is a stand-in (build/make_chaat_tomato_pot.py): no tomato on the T2 sheet; pot-potato-v2: ART-11's matte cream flesh",
+  "files": {
+   "veg-01": "pot-potato-v2",
+   "ph-chana": "pot-chana",
+   "veg-02": "pot-onion",
+   "veg-03": "pot-tomato",
+   "veg-12": "pot-chilli",
+   "ph-sev": "pot-sev",
+   "ph-dahi": "pot-dahi",
+   "ph-amli": "pot-imli",
+   "ph-lili": "pot-chutney",
+   "ph-dhana": "pot-dhania"
+  },
+  "bowl": "bowl-side"
+ },
+ "strips": {
+  "dir": "assets/cook/items-s08b/chaat-strips/",
+  "files": {
+   "veg-01": "strip-potato-s08b",
+   "ph-chana": "strip-chickpea-s08b",
+   "veg-02": "strip-onion-s08b",
+   "veg-03": "strip-tomato-s08b",
+   "veg-12": "strip-chilli-s08b",
+   "ph-sev": "strip-sev-s08b",
+   "ph-dahi": "strip-yogurt-s08b",
+   "ph-amli": "strip-tamarind-s08b",
+   "ph-lili": "strip-green-chutney-s08b",
+   "ph-dhana": "strip-coriander-s08b"
+  }
+ },
+ "motion": {
+  "spoonW": 92,
+  "backMs": 380,
+  "dropMs": 170,
+  "notInMs": 380,
+  "notInPauseMs": 260,
+  "outMs": 260,
+  "doubleTapMs": 220,
+  "rightHoldMs": 900,
+  "showGlowMs": 420,
+  "showHoldMs": 700,
+  "recastCapMs": 9000,
+  "popCapMs": 2800,
+  "endMs": 500
+ },
+ "levels": [
+  {
+   "flyMs": 420
+  },
+  {
+   "flyMs": 360
+  },
+  {
+   "flyMs": 305
+  },
+  {
+   "flyMs": 260
+  }
+ ]
+}
