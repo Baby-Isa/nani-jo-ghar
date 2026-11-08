@@ -1,5 +1,5 @@
 {
- "_about": "Data for the daar station v2 (design system §13), the combined station js/cook/stations/daar.js: v3 (29 Sept play-test, D1): the swipe chop again (js/cook/mechanics/chop.js, its own levels, decoys and timer), the pieces waiting at the side, then the tadka in the pot on the kitchen kit's hob (one burner, one pot: the knob, the spices in the order Nani says, the chopped vegetables, the daar) and stir as many times as Nani says. Serve and taste (§14a). mechanic.levels (merged in order): vegDecoys / spiceDecoys (extra crates and jars on the shelf), spiceShelf (where the spice decoys come from), ladder (how Nana's card shows the tadka order in the cook: words, or closed = the card starts folded to face + headline and a peek costs a hint, §14a; no dots or hidden rows: no pips, and a hidden section would let the card fold with its check early), (v3, S16: no oil-heating ring; the oil is hot at once and the sizzle says so. The stir's speed dial reads data.mechanics.stir's bands.) `phases`: one English line per job (placeholders, like every station goal).",
+ "_about": "Data for the daar station v2 (design system §13), the combined station js/cook/stations/daar.js: v3 (29 Sept play-test, D1): the swipe chop again (chop's own game since Sprint 18: js/cook/stations/chop.js Cook.Chop.play on data/stations/chop.json, its own levels, decoys and timer), the pieces waiting at the side, then the tadka in the pot on the kitchen kit's hob (one burner, one pot: the knob, the spices in the order Nani says, the chopped vegetables, the daar) and stir as many times as Nani says. Serve and taste (§14a). mechanic.levels (merged in order): vegDecoys / spiceDecoys (extra crates and jars on the shelf), spiceShelf (where the spice decoys come from), ladder (how Nana's card shows the tadka order in the cook: words, or closed = the card starts folded to face + headline and a peek costs a hint, §14a; no dots or hidden rows: no pips, and a hidden section would let the card fold with its check early), (v3, S16: no oil-heating ring; the oil is hot at once and the sizzle says so. The stir's speed dial reads data.mechanics.stir's bands.) `phases`: one English line per job (placeholders, like every station goal).",
  "station": {
   "name": "Daar",
   "verb": "Chop, tadka, stir",
@@ -8,6 +8,17 @@
    "chop": "Swipe to chop what Nani says, before the timer runs out.",
    "cook": "Turn on the hob, add the spices in the order Nani says, then the chopped vegetables and the daar."
   }
+ },
+ "scene": {
+  "_about": "Sprint 18 (wave 2, STD-F2-03: a game's own numbers in its settings file): where daar's things stand, in design px on the 1600x900 grid (js/cook/stations/daar.js reads them as SC()). side: where the chopped pieces wait, counter while chopping (one row per vegetable, right to left from x), cook beside the hob (centred on x); pile: one piece's heap; chopTimer: chop's ring on the board; plainBowl: the plain daar on its trivet, waiting to pour (w: its round body); dial: the stir's speed dial's centre; serveBowl: the served bowl (w: its picture's width) and the review face over it; pop: the word pop's place from the pot's right rim (dx) and its centre (dy); pourMs: the daar's pour, each phase (the shared pour, SH-117).",
+  "side": {"counter": {"x": 1395, "y": 120, "row": 112}, "cook": {"x": 330, "y": 190, "row": 128}},
+  "pile": 96,
+  "chopTimer": {"x": 130, "y": 130},
+  "plainBowl": {"x": 1250, "y": 330, "w": 230},
+  "dial": {"x": 1260, "y": 400},
+  "serveBowl": {"x": 1230, "y": 450, "w": 250},
+  "pop": {"dx": 190, "dy": -150},
+  "pourMs": {"lift": 420, "tip": 280, "pour": 1900, "untip": 220, "back": 300}
  },
  "mechanic": {
   "levels": [
