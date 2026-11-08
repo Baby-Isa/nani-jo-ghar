@@ -1,5 +1,5 @@
 // Shared helpers for the review tools: repo paths, run folders, argument parsing, short printing.
-import { existsSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, statSync, readFileSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -38,3 +38,21 @@ export function help(text, a = args()) {
 }
 export function die(msg, code = 2) { console.error(msg); process.exit(code); }
 export const more = (list, n, fmt) => { for (const x of list.slice(0, n)) console.log(fmt(x)); if (list.length > n) console.log(`  ... and ${list.length - n} more`); };
+
+// The one browser lock (s19-checks: every browser run takes it; NJG_LOCK names a builder's own) and whether this process already runs
+// under it: an ancestor is "flock ... <lock> ..." (a nested flock on the same lock waits for itself until its -w runs out), or NJG_LOCKED
+export const BROWSER_LOCK = "/tmp/njg-browser-all.lock";
+export function underLock(lock = process.env.NJG_LOCK || BROWSER_LOCK, readProc = (p) => readFileSync(p, "utf8")) {
+  if (process.env.NJG_LOCKED) return true;
+  let pid = process.ppid;
+  for (let i = 0; i < 12 && pid > 1; i++) {
+    try {
+      const cmd = readProc(`/proc/${pid}/cmdline`).split("\0");
+      if (/(^|\/)flock$/.test(cmd[0]) && cmd.includes(lock)) return true;
+      pid = +readProc(`/proc/${pid}/stat`).split(") ")[1].split(" ")[1];
+    } catch (e) { return false; }
+  }
+  return false;
+}
+// argv for a browser command: wrapped in flock on the lock unless the caller already holds it
+export const locked = (argv, { wait = 3600, lock = process.env.NJG_LOCK || BROWSER_LOCK, held = underLock(lock) } = {}) => (held ? argv : ["flock", "-w", String(wait), lock, ...argv]);

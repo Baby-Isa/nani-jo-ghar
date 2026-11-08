@@ -2,12 +2,14 @@
 // The sandbox: plays the live flows through their real pages and lab URLs, records each visually distinct state
 // (a screenshot and a screen lint at the current size), and ratchets the findings against build/lint/baseline.json.
 // See build/sandbox/README.md. Always under the browser lock, on your own port:
-//   COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser.lock timeout 1200 node build/sandbox/run.mjs --touched cook:chai-tray
+//   COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser-all.lock timeout 1200 node build/sandbox/run.mjs --touched cook:chai-tray
 //   COOK_TEST_PORT=8814 node build/sandbox/run.mjs --gate        (everything; takes and releases the lock itself, chunk by chunk)
 import { mkdirSync, writeFileSync, existsSync, readFileSync, readdirSync, appendFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { ROOT, SIZES, ALL_SIZES, STORE_SIZES, QUICK_SIZE, PORT, startServer, launch, newPage } from "./lib/env.mjs";
+import { KeyFrames } from "./lib/keyframes.mjs";
+import { locked } from "../tools/review/lib/common.mjs";
 import { Recorder } from "./lib/recorder.mjs";
 import { makeSheets } from "./lib/sheets.mjs";
 import { mergeSound } from "./lib/sound.mjs";
@@ -52,6 +54,8 @@ if (has("--help") || has("-h") || !argv.length) {
                         --check runs them too, on every page of the run (never ratcheted into the baseline)
   --list                list the flows and the labs.html tiles they play, and exit
   --no-sheets           skip the contact sheets
+  --keyframes           the key moments' whole screens and the frame strips round each first-time light, in <run>/keyframes/
+                        (lib/keyframes.mjs; build/tools/review/sidebyside.mjs pairs them with chai's)
   --run-id id           folder name under build/screenshots/sandbox/ (default: a timestamp)
   --resume id           continue run <id>: skip the pages already done
   --evidence plan.json  the evidence loop (decision 82, build/tools/review/evidence.mjs writes the plan): at each probe's moment on a
@@ -74,7 +78,9 @@ if (has("--gate") && !has("--chunk")) {
   while (code === 75 && chunks < 60) {
     chunks++;
     log(`gate chunk ${chunks} (run ${runId}): waiting for the browser lock`);
-    const r = spawnSync("flock", ["-w", "3600", "/tmp/njg-browser.lock", "timeout", "1200", process.execPath, process.argv[1], "--gate", "--chunk", "--all", "--parallel", val("--parallel") || "3", "--budget-min", val("--budget-min") || "13", "--run-id", runId, "--resume", runId, ...passthru], { stdio: "inherit", env: process.env });
+    // (each chunk under the one browser lock, taken here unless the caller's flock holds it: a nested flock would wait for itself)
+    const cmd = locked(["timeout", "1200", process.execPath, process.argv[1], "--gate", "--chunk", "--all", "--parallel", val("--parallel") || "3", "--budget-min", val("--budget-min") || "13", "--run-id", runId, "--resume", runId, ...passthru]);
+    const r = spawnSync(cmd[0], cmd.slice(1), { stdio: "inherit", env: process.env });
     code = r.status === null ? 124 : r.status; // 124: killed by the 20-minute timeout; its finished pages are saved, so go on
     if (code === 124) code = 75;
   }
@@ -84,14 +90,19 @@ if (has("--gate") && !has("--chunk")) {
 
 const live = allFlows();
 if (has("--list")) {
-  for (const f of live) console.log(`${f.id.padEnd(34)} ${flowSizes(f).join(",").padEnd(42)} ${f.title}`);
+  // (one write, and the exit only once it is out: console.log lines then process.exit cut the list short under load, so
+  // evidence.mjs --lint-specs read flows as missing: s19-checks found 341-372 of 399 lines with four runs at once)
+  const out = [];
+  const say = (l) => out.push(l);
+  for (const f of live) say(`${f.id.padEnd(34)} ${flowSizes(f).join(",").padEnd(42)} ${f.title}`);
   // what Zafar plays: every labs.html tile and the flows that play it (decision 76)
-  console.log("\nlabs.html tiles -> flows");
+  say("\nlabs.html tiles -> flows");
   for (const t of tiles()) {
     const m = tileFlows(t, live);
-    console.log(`  ${t.title.slice(0, 44).padEnd(44)} ${m.gap ? `NO FLOW: ${m.gap}` : `${m.flows.length} flows: ${m.flows.slice(0, 4).join(", ")}${m.flows.length > 4 ? ` +${m.flows.length - 4}` : ""}${m.note ? ` (${m.note})` : ""}`}`);
+    say(`  ${t.title.slice(0, 44).padEnd(44)} ${m.gap ? `NO FLOW: ${m.gap}` : `${m.flows.length} flows: ${m.flows.slice(0, 4).join(", ")}${m.flows.length > 4 ? ` +${m.flows.length - 4}` : ""}${m.note ? ` (${m.note})` : ""}`}`);
   }
-  console.log(`\nviewports ("all sizes"): ${ALL_SIZES.map((k) => `${k} ${SIZES[k].label}`).join("; ")}`);
+  say(`\nviewports ("all sizes"): ${ALL_SIZES.map((k) => `${k} ${SIZES[k].label}`).join("; ")}`);
+  await new Promise((r) => process.stdout.write(out.join("\n") + "\n", r));
   process.exit(0);
 }
 // the route the contract run plays by default (--contract with no --flow): what Zafar played on 8 Oct and the places his rules
@@ -216,7 +227,10 @@ if (fromRun) {
       if (probe) { await ctx.addInitScript(EVIDENCE_HOOK(watchList(ev.probes))); await ctx.addInitScript(REC_HOOK); }
       // (a debug hook of one's own while diagnosing: NJG_INIT=<file.js> adds it to every page)
       if (process.env.NJG_INIT) await ctx.addInitScript({ path: process.env.NJG_INIT });
-      sound.onEvent = (e) => { rec.contractShot(e); lightPix(e, page, sound); if (probe) probe.onEvent(e); };
+      // --keyframes (s19-checks): the key moments' whole screens and the frame strips round each first-time light (lib/keyframes.mjs)
+      const kf = has("--keyframes") ? new KeyFrames(page, { dir: runDir, flow: flow.id, size }) : null;
+      if (kf) { const st0 = rec.state.bind(rec); rec.state = async (name, opts) => { const u = await st0(name, opts); kf.onState(name); return u; }; }
+      sound.onEvent = (e) => { rec.contractShot(e); lightPix(e, page, sound); if (probe) probe.onEvent(e); if (kf) { kf.onEvent(e); kf.onLine(e); } };
       const c = { page, rec, errors, size, browser, touch, timeoutMs: (flow.timeoutMs || 300000) * (ev && ev.profile === "second-play" ? 2 : 1), reachedEnd: false, ...(seed != null ? { seed } : {}), ...(ev && ev.profile ? { profile: ev.profile } : {}) };
       let timer, wantMiss = null;
       try {
@@ -238,6 +252,7 @@ if (fromRun) {
       } finally { clearTimeout(timer); }
       if (wantMiss) { await ctx.close().catch(() => {}); if (!quiet) log(`${flow.id} @ ${size} seed ${seed}: ${wantMiss}`); return { wantMiss }; }
       if (probe) { await probe.chain.catch(() => {}); await probe.collectRec(); }
+      if (kf) await kf.finish();
       const vid = process.env.NJG_VIDEO && page.video ? page.video() : null;
       await ctx.close().catch(() => {});
       if (vid) {

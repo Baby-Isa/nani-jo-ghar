@@ -1,5 +1,5 @@
 // CLN-100 proof: plays the knee heal game's wrap at a level with the game's own debug driver and shoots after each
-// bandage turn.  COOK_TEST_PORT=8849 flock -w 900 /tmp/njg-browser.lock timeout 300 node build/tools/review/shoot_knee_wrap.mjs <outdir> [level] [size]
+// bandage turn.  COOK_TEST_PORT=8849 flock -w 900 /tmp/njg-browser-all.lock timeout 300 node build/tools/review/shoot_knee_wrap.mjs <outdir> [level] [size]
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { BASE, startServer, launch, newPage } from "../../sandbox/lib/env.mjs";

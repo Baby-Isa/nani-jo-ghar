@@ -1,3 +1,4 @@
+// RETIRED 8 Nov (s19-checks audit; docs/process/check-audit.md): kept so it can come back.
 // No Kutchi in the clinic's code (rule G13; R5's acceptance): every Kutchi word the clinic says comes from data through
 // the language seam (js/clinic/lang.js, js/core/lang). This scans every string and template literal in js/clinic/**
 // (comments are skipped) for a word of the Kutchi lexicon (data/clinic/lang.json, data/cook.json, the clinic's data

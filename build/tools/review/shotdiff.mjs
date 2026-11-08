@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// RETIRED from /review (s19-checks audit, 8 Nov; docs/process/check-audit.md): its approved run is still Sprint 8's (approved-shots.json
+// "approvedFrom" s08-gate-lab), so every review since has read "all new" and it has shown nothing changed; the look against chai is
+// sidebyside.mjs now. The code stays: approve a run (--approve) and put it back in the review skill to bring it back.
 // Screenshot diff: compare a sandbox run's shots with the last APPROVED run and print only what changed or is new.
 // The approved run is kept as a manifest of small hashes (build/tools/review/approved-shots.json), never as images (rule B19).
 import { existsSync, readFileSync, writeFileSync, readdirSync, mkdirSync } from "node:fs";

@@ -8,9 +8,9 @@ Always under the browser lock, on your own port. Never hold the lock for more th
 
 | You want | Run |
 |---|---|
-| **What a session changed** | `COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser.lock timeout 1200 node build/sandbox/run.mjs --touched cook:chai-tray,clinic:waiting --parallel 3 --budget-min 13 --check` |
+| **What a session changed** | `COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser-all.lock timeout 1200 node build/sandbox/run.mjs --touched cook:chai-tray,clinic:waiting --parallel 3 --budget-min 13 --check` |
 | **Everything (the gate), before the push to `main`** | `COOK_TEST_PORT=8814 node build/sandbox/run.mjs --gate` |
-| One page while iterating (laptop, one flow) | `COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser.lock timeout 600 node build/sandbox/run.mjs --quick --flow cook:chai-tray --check` |
+| One page while iterating (laptop, one flow) | `COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser-all.lock timeout 600 node build/sandbox/run.mjs --quick --flow cook:chai-tray --check` |
 
 **`--touched <flows>`** runs the named flows with every level and path of them (`cook:chai-tray` also runs `@L2`, `@L3`, `@L4`, `#mistake`, `#hint`; a group or prefix such as `cook:` or `clinic:` works too) at each flow's sizes, then `--check`. Keep it inside `flock ... timeout 1200` with `--budget-min 13`: if it prints `N pages left` (exit 75), run the same line again with `--resume <run-id>`.
 

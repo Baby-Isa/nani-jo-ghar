@@ -2,7 +2,7 @@
 // every line SHE says, whether her bubble (.cv-line[data-who=patient], the one bubble since S13-B2) was on screen while it played, and where its tail
 // pointed against her face (the art's head and mouth anchors). Prints one line per patient line and a summary;
 // exit 1 if a line of hers had no bubble.
-//   COOK_TEST_PORT=8896 flock -w 900 /tmp/njg-browser.lock timeout 300 node build/tools/review/fever_bubbles.mjs [level] [size] [seed]
+//   COOK_TEST_PORT=8896 flock -w 900 /tmp/njg-browser-all.lock timeout 300 node build/tools/review/fever_bubbles.mjs [level] [size] [seed]
 import { BASE, startServer, launch, newPage } from "../../sandbox/lib/env.mjs";
 const level = +(process.argv[2] || 1);
 const size = process.argv[3] || "1280x665";

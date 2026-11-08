@@ -5,6 +5,7 @@
 //   node build/tools/review/pillcheck.mjs [--levels 1,2,3,4] [--sizes 740x320,930x430,1280x665,1920x1080,971x318] [--profile pill-miss]
 //                                          [--shots <dir>] [--json out.json] [--root <repo>]
 //   --profile: a seeded save (build/sandbox/lib/seed.mjs; pill-hidden or pill-miss show speaker-only pills); --shots: the shelf's band
+export const PILL_WAIT_MS = 60000;
 import { writeFileSync } from "node:fs";
 import { args } from "./lib/common.mjs";
 
@@ -37,7 +38,9 @@ for (const size of sizes) {
     }
     let pills = null;
     const t0 = Date.now();
-    while (Date.now() - t0 < 30000) {
+    // (s19-checks audit: the wait was 30 s, against an order intro of about 27 s at 1920x1080 L4: one run in three found no pills,
+    // build/reports/stove-redo-landed-2026-11-06.md item 8; PILL_WAIT_MS gives the slowest intro twice its time)
+    while (Date.now() - t0 < PILL_WAIT_MS) {
       pills = await p.evaluate(() => (window.Cook && window.Cook.chaiPills ? window.Cook.chaiPills() : null)).catch(() => null);
       if (pills && pills.length) break;
       await p.waitForTimeout(200);

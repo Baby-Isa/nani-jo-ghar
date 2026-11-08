@@ -1,0 +1,106 @@
+{
+  "name": "s19-lights: one shared first-time light and finger in every game (room round the thing and its pill, gone as the move starts, one finger, only shelf items hop, one light at a time, the stuck help everywhere); maani's, chaat's and samosa's first-time lessons",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared lights reach every game; motion and timing judgement; chai's frozen diff guards",
+  "cost": "about $35-50",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-lights in /home/user/wt/s19-lights (made for you from the integration branch with s19-checks merged; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/s18-review-and-direction.md (In one page, sections 2-4, principle 6)",
+    "docs/feedback/kitchen-play-2026-11-08.md (the points your rows name)",
+    "build/reports/s18-eye-judge-experiment.md (section 3, maani)",
+    "build/reports/s19-cards.md (what the cards builder changed before you)",
+    "docs/process/check-audit.md and build/reports/s19-checks.md if merged (the gate you must pass)",
+    "docs/architecture/module-map.md"
+  ],
+  "owns": [
+    "js/cook/coach.js",
+    "js/shared/onboard.js",
+    "js/shared/guide.js",
+    "js/shared/focus.js",
+    "js/cook/hands.js",
+    "build/sandbox/data/evidence.json (your rows' entries only, added in phase 2)",
+    "build/reports/s19-lights.md"
+  ],
+  "readOnly": [
+    "PHASE 2, yours only once the orchestrator messages you that s19-cards is merged (then merge ccr-87413d9b-j48fpk into your branch first): js/cook/mechanics/roll.js; js/cook/mechanics/tawa.js; js/cook/mechanics/assemble.js; js/cook/mechanics/fry.js; js/cook/mechanics/fill-fold.js; js/cook/stations/maani-line.js; js/cook/stations/roll-tawa.js; js/cook/stations/samosa.js; js/cook/stations/chai-tray.js (only where the kit's lights change its calls); data/stations/maani-line.json, data/stations/samosa.json, data/stations/chaat.json; data/cook.json (the coach steps and Nani's lesson lines only); build/sandbox/data/evidence.json (your rows' entries only); build/frozen/chai-tray/**; lab/kit.html (the lights' section)",
+    "js/cook/stations/**, js/cook/mechanics/**, data/**, lab/** until then (s19-cards is changing their order, card and tick paths)",
+    "js/cook/stations/mishkaki-grill.js, daar.js, eggs.js, corn.js, chop.js, baking.js (s19-games: they call your light API; keep it stable, or write the change they need in your report)",
+    "build/tools/review/**, build/sandbox/lib/**"
+  ],
+  "stubs": "none",
+  "port": 8894,
+  "report": "s19-lights",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray",
+    "cook:maani-line",
+    "cook:chaat",
+    "cook:samosa",
+    "cook:mishkaki-grill",
+    "cook:daar",
+    "cook:eggs",
+    "cook:corn"
+  ],
+  "rows": [
+    "SH-230",
+    "SH-119",
+    "SH-236",
+    "SH-237",
+    "SH-228",
+    "MAA-22",
+    "MAA-21",
+    "MAA-20",
+    "MAA-19",
+    "SAM-30",
+    "CHT-18",
+    "CHT-19"
+  ],
+  "tasks": [
+    {
+      "do": "Phase 1 (now, the kit files only): build every kit-side part of the tasks below in js/cook/coach.js and the shared light files: the room rule (SH-230), one finger and its rhythm (SH-119), the light leaving on the move's start (SH-236: the kit's API that a mechanic calls when a drag, hold, stir or tap begins), the shelf-only hop (SH-237), one light at a time, the stuck help any game can call (SH-228). Keep the API backwards compatible so games keep working until phase 2 wires them. Test on fixtures and the lab. Phase 2 (when the orchestrator messages you): merge the integration branch, then wire each game and do the maani, chaat and samosa tasks.",
+      "accept": "phase 1 committed with tests before phase 2 starts; s19-checks' contract rows 102, 105, 106, 107 are your gate (build/sandbox/lib/contract-s19.mjs)"
+    },
+    {
+      "do": "The light's room (SH-230): one rule in the kit for every lit thing: the box hugs the thing, its pill and its face circle (whichever it has) with an even margin, and is centred on and whole round it (a board, a pan's round body, a pile's picture, never its tap box or a handle); no game's own box or glow.",
+      "accept": "the s19-checks part 1 'centred and whole' row green on every flow at L1-L4 at the four sizes; script-made crops of maani's board, the eggs bowl and its pill"
+    },
+    {
+      "do": "One finger (SH-119): the kit's finger only; no mechanic or game draws its own ghost (roll.js, maani-line.js, assemble.js and any other); its rhythm per the row (tap, lift, wait half a second, tap).",
+      "accept": "grep: no ghost finger outside the kit; a frame strip of maani's roll shows one finger"
+    },
+    {
+      "do": "The light leaves the moment the child starts the move it shows (SH-236): a drag begun, a hold started, a stir begun, a tap landed.",
+      "accept": "the part 1 'gone within 300 ms' row green on every flow"
+    },
+    {
+      "do": "Only things on the shelf (the bottom bar) hop when lit (SH-237); pans, boards and things in play are lit without the hop. One thing lit at a time (Fable, maani f8 and f11: the tawa's ring and the next pile, the disc and the tawa, never together); the next pile is never lit while a maani is flying (MAA-22).",
+      "accept": "contract rows: one light layer at a time; no hop on a non-shelf thing; maani L1-L4 as a new player"
+    },
+    {
+      "do": "The stuck help in every kitchen game (SH-228), chai's method: past the level's hint wait, Nani's timed hint with the glow, or the helper card with its drop-down.",
+      "accept": "contract-91 green on every kitchen flow at L1 and L4 (a held, idle child)"
+    },
+    {
+      "do": "Maani's first times: the roll's demo is the pin rolling up and down under one finger, and a pulsing circle, both on the lab page for Zafar's pick (finger the default until he picks) (MAA-20); the first roll stops at the size, the size guide pulses with the juice sound, then the light asks for the tap, no finger (MAA-21); the flip's first time in the green (MAA-19). Maani's plates: each carries the asker's face from the first frame and is lit as the next vessel once the first is served (Fable maani 1, 6, 7, 8); if they can move off the shelf band into the play area as chai's tray without crowding, do it, else say so.",
+      "accept": "maani L1-L4 contracts 0 breaks; frame strips of the roll, the stop and the flip"
+    },
+    {
+      "do": "Chaat (CHT-18): its first time on the kit's lights (the dim and the lit box on each next thing, one finger), not its own demo. CHT-19: replay ten seeds and confirm whether a call after a layer ever names a layer out of the order as said; fix if so, else report the replay. Samosa (SAM-30): the fry's first time on the kit's lights: each samosa into the pan, then the lift on the green.",
+      "accept": "chaat and samosa L1-L4 contracts 0 breaks; the ten-seed replay table in the report"
+    },
+    {
+      "do": "Out of scope: one stir (DAAR-45), the scene and shelf, samosa's redesign, the counting rule, the timing floor; sekelo, daar, eggs and corn's own lights are s19-games' (CK-63, CK-61, DAAR-43).",
+      "accept": "the report lists anything met"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; the s19-checks gate (part 1 rows and sidebyside, if merged) on your flows; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-lights.md with a Proof section and script-made before-and-after crops or strips of each row, under 600 words"
+    }
+  ]
+}

@@ -37,7 +37,7 @@ node build/tools/review/sprintcheck.mjs --judge-prompt [--run-id id]
   Port: COOK_TEST_PORT (default 8843). No network.`;
 const a = args(); help(HELP, a);
 const PORT = process.env.COOK_TEST_PORT || "8843";
-const LOCK = "/tmp/njg-browser.lock";
+const LOCK = "/tmp/njg-browser-all.lock";
 const OUT = join(ROOT, "build", "screenshots", "sprintcheck");
 const SANDBOX = join(ROOT, "build", "screenshots", "sandbox");
 const git = (...x) => { try { return execFileSync("git", x, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], maxBuffer: 1 << 26 }).trim(); } catch (e) { return null; } };
