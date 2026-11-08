@@ -46,7 +46,7 @@ body.w6 :is(#side, .sb2) {
   background: var(--sb-panel);
   /* ART-41 (Zafar, 5 Nov: "this colour left and bottom panel"): the side panel in his pale warm-grey stone (pack s17-pc2's tile),
      the colour under it while it loads */
-  background: var(--njg-stone) image-set(url("../assets/shared/panel/stone-tile-s17@1x.webp?v=20261107T120301Z") 1x, url("../assets/shared/panel/stone-tile-s17.webp?v=20261107T120301Z") 2x) 0 0 / 256px repeat;
+  background: var(--njg-stone) image-set(url("../assets/shared/panel/stone-tile-s17@1x.webp?v=20261108T142321Z") 1x, url("../assets/shared/panel/stone-tile-s17.webp?v=20261108T142321Z") 2x) 0 0 / 256px repeat;
   border-left: none;
   border-right: 1px solid var(--sb-divider);
   padding: 10px;

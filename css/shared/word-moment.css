@@ -7,7 +7,7 @@
 /* (in the kitchen, js/cook/ui.js UI.wordMoment: over the play area, then gone as the order comes up) */
 .cook-wm { position: absolute; inset: 0; z-index: 20; pointer-events: none; transition: opacity .3s; animation: cook-wm-in .3s ease-out; }
 /* (a cut-scene, Zafar 2 Nov: "we teach them first with a cutscene before the kitchen ordering": its own worktop, the kitchen behind) */
-.cook-wm::before { content: ""; position: absolute; inset: 0; background: var(--njg-page) center / cover no-repeat url("../../assets/cook/bg/bg-cook-worktop-t-v1.webp?v=20261107T120301Z"); }
+.cook-wm::before { content: ""; position: absolute; inset: 0; background: var(--njg-page) center / cover no-repeat url("../../assets/cook/bg/bg-cook-worktop-t-v1.webp?v=20261108T142321Z"); }
 @keyframes cook-wm-in { from { opacity: 0; } to { opacity: 1; } }
 /* (Zafar, 5 Nov: the moment's scene is up before the kitchen shows, so it never fades in over it) */
 .cook-wm.cook-wm-now { animation: none; }
