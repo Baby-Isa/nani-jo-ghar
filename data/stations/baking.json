@@ -3,7 +3,7 @@
  "station": {
   "name": "Baking",
   "verb": "Nani's turns: a little, a lot; then the oven",
-  "goal": "Nani says one thing at a time. Tap what she names; then tap it to tip it, a bit more each tap, until she says that's enough. Then the oven: open it, put the naan in, take it out when she says it's ready.",
+  "goal": "Tap what Nani names and tip it in until she says enough. Then bake the naan.",
   "phases": {
    "mix": "Tap what Nani names. Each tap tips it a bit more.",
    "oven": "Tap the oven to open it, then the naan. Take it out when it's ready."
