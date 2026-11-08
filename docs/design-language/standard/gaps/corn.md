@@ -20,26 +20,17 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 
 ## Not to touch (non-negotiable 1, the keep list)
 
-- The stall on one screen, top-down: the box of raw cobs, the grill, the plate, the tray of six dressings with their word cards.
-- The cob's round: a tap on the box puts one on the grill (no more than asked, no more than the grill holds); its ring fills; a tap
-  turns it, once; its second side fills; a tap lifts it onto the plate; the order's head ticks when the plate holds the number
-  asked (Zafar, 1 Nov). Several cobs at once, each on its own clock.
-- What goes on: a tap on a dressing puts it on the corn, named as it goes on; its row ticks; a "no" or an unasked one lands quietly
-  and is judged at the end. A tap on the plate gives it to them.
+- The stall on one screen, top-down: the crate, the grill, the plate, the tray of six dressings with their word cards.
+- A tap on the crate grills a cob (no more than asked or the grill holds); turned once, lifted to the plate; the head ticks at
+  the count (Zafar, 1 Nov); several cobs, each on its own clock. A dressing tapped goes on, named; a "no" or an unasked one lands
+  quietly, judged at the serve; the plate tapped is served.
 - KEEP-01 (the underline while a line is spoken; the order card and pop-up). Nani's box stands in for Hannah Mami (no real person
   without her approved sheet).
 
-## What the build does (this sprint, in this order)
+## What the build did
 
-1. **Game code:** the settings file drives it: art from `settings.items`, `scene` and `assets` (the cut block 1 art in
-   `assets/cook/proto/corn/`; the table picture CT instead of the code-drawn planks), sizes and places from the settings, the
-   dressing list from the recipe; the steps open (Grill, Dress, Serve) so Nani's box follows and nothing is said after a skip
-   (contract-95).
-2. **Adopt (d):** the first-time gate (`Cook.Coach.firsts`) for its own copy; each step's call with its light the first time and
-   the stuck light only after the level's wait (`Cook.Coach.control`, contract-24); a wrong dressing rushes the hint
-   (`Cook.Coach.wrong`); no light on a dressing past support; the reveal lessons (`Cook.Coach.lessons`).
-3. **Adopt (e) and the end:** the order flow from the lab's card; the end shows progress, not a frown (settings `end.display`).
-4. **Asks:** what the kits lack (the cob's ring as the kit's heat ring; corn's decoys from the rules) go in the report.
+Settings-driven art, sizes and places; the steps in Nani's box; the kits' lights, heat ring and serve (with the redo); a take-back
+by a second tap. The report: `build/reports/s18-g-corn.md`.
 
 ## 0 Foundations
 
@@ -47,7 +38,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 |---|---|---|---|---|---|
 | STD-01-01 | H | gap | 2 | Check | the grill, the turn once, the dressings named as they go on, the plate kept; no diff tool |
 | STD-01-02 | H | not run | 2 | Words | lines from the engine (order frames, now, lift, guide-firai); makai's gender not asked |
-| STD-01-03 | H | not run | 3 | Check | contract-16 green L1-L4 at 1280x665; audit pass on s18-g-corn-contract |
+| STD-01-03 | H | not run | 3 | Check | contract-16 green L1-L4 at 1280x665; audit pass |
 | STD-01-04 | H | not run | 1 | Check | no leak config for corn; the light past support is gone (D2-05, build) |
 | STD-01-05 | H | judge | 1 | Check | never judged (a lab prototype) |
 | STD-01-06 | H | not run | 2 | Check |  |
@@ -65,11 +56,11 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
 | STD-A1-01 | H | gap | 1 | Decision | L1 meets makai and one dressing |
-| STD-A1-02 | H | not run | 3 | Check | the lab's card (e); audit pass on s18-g-corn-contract |
+| STD-A1-02 | H | not run | 3 | Check | the lab's card (e); audit pass |
 | STD-A1-04 | H | judge | 2 | Check | the order frames vary |
 | STD-A1-05 | H | not run | 0 | none | no speaking moment |
 | STD-A2-01 | H | not run | 2 | Adopt | (d) |
-| STD-A2-02 | H | not run | 3 | Check | (d); audit pass on s18-g-corn-contract |
+| STD-A2-02 | H | not run | 3 | Check | (d); audit pass |
 | STD-A2-03 | H | fail | 1 | Kit | (d), the blur rule |
 | STD-A2-04 | H | not run | 2 | Kit | (d) |
 | STD-A2-05 | H | not run | 2 | Kit | (d) |
@@ -88,23 +79,23 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 |---|---|---|---|---|---|
 | STD-B1-01 | H | not run | 2 | Check | the order, the steps in Nani's box (grill, turn, lift, dress), the serve, the end (build) |
 | STD-B1-02 | H | not run | 2 | Check | one asker, served by the plate tap |
-| STD-B1-03 | H | not run | 3 | Check | (e); audit pass on s18-g-corn-contract |
+| STD-B1-03 | H | not run | 3 | Check | (e); audit pass |
 | STD-B1-04 | H | not run | 2 | Kit | the recipe says the no last; O.ladder (e) |
 | STD-B1-05 | H | not run | 3 | Check | contract-95 green L1-L4: each line its step's call, said once the step opens (build) |
-| STD-B1-06 | H | not run | 3 | Check | the serve is the plate tap (his prototype); the work itself has no end of its own; audit pass on s18-g-corn-contract |
+| STD-B1-06 | H | not run | 3 | Check | the serve is the plate tap (his prototype); the work itself has no end of its own; audit pass |
 | STD-B1-07 | H | fail | 2 | Check | passMeChance 0; corn never calls passMeAfter |
-| STD-B2-01 | F | pass | 3 | Check | grilled on the grill, dressed on the plate; audit pass on s18-g-corn-contract |
+| STD-B2-01 | F | pass | 3 | Check | grilled on the grill, dressed on the plate; audit pass |
 | STD-B2-02 | H | gap | 2 | Check | a tap at every level |
 | STD-B2-03 | F | gap | 2 | Check | the ring over each cob |
 | STD-B2-04 | F | not run | 1 | Decision | a cooking cob refuses (wiggles); none ever burns: no after |
 | STD-B2-05 | F | gap | 2 | Check | no window closes |
 | STD-B2-06 | F | not run | 2 | Check | up to three cobs, each its own clock |
-| STD-B2-07 | H | not run | 3 | Check | audit pass on s18-g-corn-contract |
+| STD-B2-07 | H | not run | 3 | Check | audit pass |
 | STD-B2-08 | H | gap | 2 | Check | NjgServe.round: the recast, the dressings off, played again; the third try shown; #mistake plays it (build) |
 | STD-B2-09 | F | not run | 0 | none | nothing is lost |
-| STD-B2-10 | H | pass | 3 | Check | a second tap on a dressing takes it back until the serve (build); audit pass on s18-g-corn-contract |
+| STD-B2-10 | H | pass | 3 | Check | a second tap on a dressing takes it back until the serve (build); audit pass |
 | STD-B2-11 | F | not run | 0 | none | no pour |
-| STD-B3-02 | H | not run | 3 | Check | the box past the count wiggles; audit pass on s18-g-corn-contract |
+| STD-B3-02 | H | not run | 3 | Check | the box past the count wiggles; audit pass |
 | STD-B3-03 | F | not run | 0 | none |  |
 | STD-B4-01 | H | not run | 2 | Check | pop, sizzle, click; the cob's picture changes |
 | STD-B4-02 | H | not run | 0 | none | no control |
@@ -146,7 +137,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-D1-02 | H | not run | 2 | Check | Cook.Coach.control's light (build) |
 | STD-D1-03 | H | not run | 2 | Check | one light at a time, closed as its step moves on (build) |
 | STD-D1-05 | H | gap | 0 | none | the whole cob is lit |
-| STD-D1-06 | H | not run | 3 | Check | the call held for the light the first time (build); audit pass on s18-g-corn-contract |
+| STD-D1-06 | H | not run | 3 | Check | the call held for the light the first time (build); audit pass |
 | STD-D1-07 | H | fail | 1 | Adopt | no card light (d) |
 | STD-D1-08 | H | fail | 3 | Check | Cook.Coach.lessons before the first step; contract-98 green (build) |
 | STD-D1-09 | H | not run | 0 | none | no window closes |
@@ -156,7 +147,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-D2-03 | H | not run | 2 | Check | St.acted after every right move (build) |
 | STD-D2-04 | H | not run | 2 | Check | an unasked dressing: Cook.Coach.wrong (build) |
 | STD-D2-05 | H | not run | 2 | Check | no light on an asked dressing past support (Onboard.hintHides) (build) |
-| STD-D2-06 | F | not run | 3 | Check | "Firai!" as the ring fills; audit pass on s18-g-corn-contract |
+| STD-D2-06 | F | not run | 3 | Check | "Firai!" as the ring fills; audit pass |
 | STD-D3-01 | H | not run | 2 | Check | each step in her box as it opens (build) |
 | STD-D3-02 | H | fail | 2 | Check | UI.helperOpen on the dressing's stuck hint (build) |
 | STD-D3-03 | H | not run | 3 | Check | the dressing's call said only as her helper card opens (build); audit pass |
@@ -167,7 +158,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-D5-01 | H | not run | 2 | Check |  |
 | STD-D5-02 | H | gap | 2 | Check |  |
 | STD-D5-03 | H | not run | 2 | Check |  |
-| STD-D5-04 | H | not run | 3 | Check | audit pass on s18-g-corn-contract |
+| STD-D5-04 | H | not run | 3 | Check | audit pass |
 
 ## E Presentation
 
@@ -181,7 +172,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-E2-02 | H | not run | 2 | Check |  |
 | STD-E2-03 | H | not run | 2 | Check |  |
 | STD-E2-04 | H | not run | 2 | Check |  |
-| STD-E2-05 | H | not run | 3 | Check | audit pass on s18-g-corn-contract |
+| STD-E2-05 | H | not run | 3 | Check | audit pass |
 | STD-E2-06 | H | not run | 2 | Check |  |
 | STD-E2-07 | H | not run | 2 | Check | the stall's face a kit badge |
 | STD-E2-08 | H | not run | 2 | Check | Onboard.light's box (build) |
@@ -191,7 +182,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-E3-04 | F | not run | 0 | none | no hob |
 | STD-E3-05 | F | gap | 0 | none | no one drawn at a counter |
 | STD-E4-01 | H | fail | 2 | Check | the drops fade in and out (build) |
-| STD-E4-02 | H | not run | 3 | Check | (e); audit pass on s18-g-corn-contract |
+| STD-E4-02 | H | not run | 3 | Check | (e); audit pass |
 | STD-E4-03 | F | gap | 2 | Check | raw, half, done |
 | STD-E4-04 | H | gap | 2 | Check |  |
 | STD-E5-01 | H | not run | 3 | Check | audit pass; contract-22 at L2#mistake: ph-amli's device-voiced English twice (the redo's tap), missing Kutchi |

@@ -26,10 +26,9 @@ they go on, the plate tap). Nani's box stands in for Hannah Mami.
 - Paths at 1280x665 (#mistake, L2#mistake, #takeback, #hint, L3#hint, L4): 1 break, explained: contract-22 at L2#mistake,
   "tamarind chutney" said at the first try's tap and again at the redo's tap 2 s later. It is ph-amli's device-voiced English
   (no Kutchi alone yet, settings `gaps`); contract-22 lets item words repeat but does not know the English stand-in as one.
-- Checks: static (812 known, 0 new), words ok; docs fails only on other pages (status.md branch, chaat, sekelo). Unit:
-  test_cook_harness, test_cook_levels, test_shared_rules, test_day_runner pass.
+- Checks: static (0 new), words ok; docs fails only on others' pages. Unit: the cook harness, levels, rules, day runner pass.
 - Gap page: before 0: 15, 1: 47, 2: 139, 3: 4; after 0: 15, 1: 21, 2: 147, 3: 22. Audit 2 pass before, 16 after.
-- No BEFORE run, no evidence --after, one size (decision 5).
+- No BEFORE run or evidence --after; one size (decision 5).
 
 ## Asks (exact changes, files I don't own)
 
