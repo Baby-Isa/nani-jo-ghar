@@ -28,7 +28,7 @@ speaker, whose tap is the whole foot: FIX, not retire) and `check_word_card_taps
 
 ## 1. `checks.mjs`, step by step
 
-`time node build/tools/review/checks.mjs` today: see the report. It did not finish in 5 minutes on 8 Nov: the `load` step waited on a
+`time node build/tools/review/checks.mjs` today: 1 min 46 s, all 12 steps green (beside another builder's browser run). It did not finish in 5 minutes on 8 Nov: the `load` step waited on a
 lock and then ran about 3 minutes (a browser), the leak bots took 3 minutes 20 (the parked snap bot alone 2 minutes), and the steps ran
 one after another. Now every step runs at once, `load` is behind `--browser` (or `--full`), and the parked modes' bots are behind
 `--full` (or run when their files change).

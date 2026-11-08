@@ -4,8 +4,10 @@
 publish a phone can keep an old shelf (orchestrator: `build/bump_version.py` must stamp it). (2) contract-105 judged two lights against
 a pan's contact shadow in the final run; fixed after it (shadows excluded, test), not yet re-played on all 40 pages; and it did not
 flag maani's first box crossing the pile's pill, which `1280x665/pair-2-light.png` shows: its pill box needs a look. (3) The judge's
-dry run on maani was mine (no Agent tool here): rerun it with the `judge` agent. (4) `test_cook.py` and `test_clinic.py` were not
-re-run: the shared lock was needed by s19-cards.
+dry run on maani was mine (no Agent tool here): rerun it with the `judge` agent. (4) Chai itself breaks contract-101 at 930x430: "Dudh wiji
+chad!" wraps to two lines though it fits one at 14.5 px; the kit's `fit fit2` wraps before it shrinks, against SH-240 (a kit change, or
+Zafar's call on the floor). (5) `test_cook.py`, `test_clinic.py` and `loadcheck` (`checks.mjs --browser`) were not re-run: the shared
+lock was needed by s19-cards.
 
 **What changed.** The audit (`docs/process/check-audit.md`): 177 checks, KEEP 160, FIX 14 (10 fixed here with tests), RETIRE 3
 (shotdiff in /review, `check_clinic_kutchi`, `check_sidebar_fit`; code kept). Part 1: contract-100 to -109. Part 2 and 3:
@@ -33,12 +35,12 @@ judge's side-by-side batch, /review's three-part gate; the merge rule stays **pr
 
 | | |
 |---|---|
-| `time node build/tools/review/checks.mjs` | see below |
+| `time node build/tools/review/checks.mjs` | 12 steps all ok, `real 1m45.8s` (another builder's browser run beside it; the longest: leak 106 s, unit 81 s); 3m07 under heavier load earlier |
 | unit tests touched | `node --test build/sandbox/contract-s19.test.mjs build/sandbox/contract-kit.test.mjs build/sandbox/contract-audit.test.mjs build/sandbox/list.test.mjs build/tools/review/checks.test.mjs build/tools/review/sidebyside.test.mjs`: all pass |
 | part 1 runs | `s19-p1-today`, `s19-p1-today2`, `s19-p1-final` (40 pages each, every page reached its end) |
-| side by side | `build/screenshots/sidebyside/maani-line-L1-20261108-1850/` (strips: the first pile `strip-cook-maani-line-speed1-01-light.png`, the roll `-02-light.png`), daar below |
+| side by side | `build/screenshots/sidebyside/maani-line-L1-20261108-1850/` (strips: the first pile `strip-cook-maani-line-speed1-01-light.png`, the roll `-02-light.png`); `build/screenshots/sidebyside/daar-L1-20261108-1923/` |
 | judge dry run | `build/screenshots/sidebyside/maani-line-L1-20261108-1850/judge-batch.verdicts.md` (SHIP? no) |
 | evidence after | the brief names no fix-list row: no before or after folder |
-| contract run (PROOF line) | below |
+| contract run (PROOF line, `s19-checks-contract`: chai, maani, sekelo, daar, eggs at 740x320, 930x430, 1280x665, 1920x1080) | 20 pages, every one reached its end; `CONTRACT FAILED: 75 breaks`, all part 1 (100: 21, 101: 10, 102: 4, 103: 8, 104: 8, 105: 1, 106: 4, 107: 9, 108: 8, 109: 2), none of contracts 1-99; chai's two are flaws (2) and (4): 105's hop room fixed after it, 101's line is real |
 
 **Open:** SH-239's tick half and SH-238 beyond Cook (`docs/process/checks-to-build.md` 27-28).
