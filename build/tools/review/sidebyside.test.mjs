@@ -50,3 +50,25 @@ test("the key frames: a strip starts as a light comes up, a lesson or a rung; th
   assert.deepEqual(pickMid([{ f: 1 }, { f: 2 }, { f: 3 }]), { f: 2 });
   assert.ok(BEFORE_MS === 500 && AFTER_MS === 2000 && FRAME_MS >= 100 && FRAME_MS <= 150);
 });
+
+test("a strip holds 0.5 s before to 2 s after its moment at even steps: a still screen's slots repeat the last frame, marked", async () => {
+  const { KeyFrames, FRAME_MS } = await import("../../sandbox/lib/keyframes.mjs");
+  const { mkdtempSync, readFileSync, readdirSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const kf = Object.create(KeyFrames.prototype);
+  Object.assign(kf, { dir: mkdtempSync(join(tmpdir(), "kf-")), buf: [], strips: [], st: { lit: false, lastStrip: -Infinity, station: true }, on: true });
+  const T = 100000;
+  for (let t = T - 1000; t <= T - 200; t += 100) kf.frame({ t, jpg: Buffer.from("a" + t) });
+  // the light comes at T (a strip starts), the screen is still until T+600, then moves every 100 ms to T+2100
+  kf.strips.push({ n: 1, why: "light", t: T, frames: kf.buf.filter((f) => f.t >= T - 500), done: false });
+  for (let t = T; t <= T + 600; t += 110) kf.tick(t);
+  for (let t = T + 600; t <= T + 2300; t += 100) kf.frame({ t, jpg: Buffer.from("b" + t) });
+  const d = join(kf.dir, "strip-01-light");
+  const meta = JSON.parse(readFileSync(join(d, "strip.json"), "utf8"));
+  assert.ok(meta.frames[0].ms <= -400 && meta.frames[meta.frames.length - 1].ms >= 1900, JSON.stringify(meta.frames.map((f) => f.ms)));
+  const gaps = meta.frames.slice(1).map((f, i) => f.ms - meta.frames[i].ms);
+  assert.ok(Math.max(...gaps) <= 2 * FRAME_MS, `gaps ${gaps}`);
+  assert.ok(meta.frames.some((f) => f.held), "the still stretch is filled with marked repeats");
+  assert.equal(readdirSync(d).filter((f) => f.endsWith(".jpg")).length, meta.frames.length);
+});

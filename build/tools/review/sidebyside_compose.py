@@ -90,7 +90,7 @@ def strip_image(d, title):
         x = gap + (i % cols) * (fw + gap)
         y = top + (i // cols) * (fh + lab + gap)
         ms = f["ms"]
-        dr.text((x, y), f"{'+' if ms >= 0 else ''}{ms} ms", fill=RED if 0 <= ms < 120 else INK, font=FS)
+        dr.text((x, y), f"{'+' if ms >= 0 else ''}{ms} ms{' (no change)' if f.get('held') else ''}", fill=RED if 0 <= ms < 120 else INK, font=FS)
         out.paste(im, (x, y + lab))
     return out
 

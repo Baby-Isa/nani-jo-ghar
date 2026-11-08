@@ -81,7 +81,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const runId = a.val("run") || `sbs-${game}-L${level}-${stamp}`;
   const flows = flowsFor(game, level);
   if (!a.val("run")) {
-    const cmd = [process.execPath, join(ROOT, "build/sandbox/run.mjs"), "--contract", "--keyframes", "--flow", flows.join(","), "--sizes", sizes.join(","), "--parallel", "2", "--no-sheets", "--run-id", runId];
+    const cmd = [process.execPath, join(ROOT, "build/sandbox/run.mjs"), "--contract", "--keyframes", "--flow", flows.join(","), "--sizes", sizes.join(","), "--parallel", "1", "--no-sheets", "--run-id", runId];
     const full = a.has("no-lock") ? cmd : locked(["timeout", "1800", ...cmd]);
     console.log(`sidebyside: playing ${flows.join(" and ")} at ${sizes.join(", ")} (run ${runId})`);
     const r = spawnSync(full[0], full.slice(1), { cwd: ROOT, stdio: "inherit", env: { ...process.env, COOK_TEST_PORT: process.env.COOK_TEST_PORT || "8893" } });

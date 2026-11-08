@@ -9,7 +9,7 @@
 //     serve   the serve (view-service)
 //     praise  the well done (a line saying shabash), 300 ms in
 //     end     the end screen's word review (results-words)
-//   strip-NN-<why>/fNN_<ms>.jpg + strip.json   frames about every 110 ms from 0.5 s before to 2 s after each first-time light coming up
+//   strip-NN-<why>/fNN_<ms>.jpg + strip.json   frames (the browser's screencast) about every 110 ms from 0.5 s before to 2 s after each first-time light coming up
 //     (light), a lesson (life reveal-lesson) and a rung of the showing (life rung), so motion and timing can be judged: two fingers,
 //     a light that stays, a flash in flight. At most MAX_STRIPS a page; one starts at least 2.5 s after the last.
 // The game is not slowed: frames are JPEGs taken while it plays (a run at a child's pace, #speed1, shows real timing).
@@ -61,20 +61,52 @@ export class KeyFrames {
     this.chain = Promise.resolve();
     this.loop = this.run();
   }
-  // a frame every FRAME_MS while the page plays (only in the kitchen: from its first station on)
+  // the frames: the browser's own screencast (Chrome DevTools Page.startScreencast: JPEGs as the compositor draws, about every 100 ms,
+  // never blocking the game), else a screenshot every FRAME_MS. Kept from the page's start: the 0.5 s before a light needs a buffer
+  // already running when the station opens (the first run's first strips had 2 and 5 frames: the loop started with the station)
   async run() {
+    try {
+      const cdp = await this.page.context().newCDPSession(this.page);
+      this.cdp = cdp;
+      cdp.on("Page.screencastFrame", ({ data, metadata, sessionId }) => {
+        cdp.send("Page.screencastFrameAck", { sessionId }).catch(() => {});
+        const now = Date.now(), ts = metadata && metadata.timestamp ? Math.round(metadata.timestamp * 1000) : now;
+        const t = Math.abs(ts - now) < 5000 ? ts : now; // (the frame's own swap time, on the page's epoch clock)
+        const last = this.buf[this.buf.length - 1];
+        if (last && t - last.t < FRAME_MS - 25) return;
+        this.frame({ t, jpg: Buffer.from(data, "base64") });
+      });
+      await cdp.send("Page.startScreencast", { format: "jpeg", quality: 62, everyNthFrame: 1 });
+      this.cast = true;
+      // (a still page sends no frames: the last one stands, so a strip is filled from the frame before each slot)
+      while (this.on) { await new Promise((r) => setTimeout(r, FRAME_MS)); this.tick(Date.now()); }
+      await cdp.send("Page.stopScreencast").catch(() => {});
+      return;
+    } catch (e) { this.cast = false; /* no CDP: screenshots below */ }
     while (this.on) {
       const t0 = Date.now();
-      if (this.st.station) {
-        try {
-          const jpg = await this.page.screenshot({ type: "jpeg", quality: 62, animations: "allow", timeout: 4000 });
-          const t = Date.now();
-          this.buf.push({ t, jpg });
-          while (this.buf.length && this.buf[0].t < t - BEFORE_MS - FRAME_MS) this.buf.shift();
-          for (const s of this.strips) if (!s.done && t >= s.t - BEFORE_MS) { if (t <= s.t + AFTER_MS) s.frames.push({ t, jpg }); else this.closeStrip(s); }
-        } catch (e) { /* the page is navigating or gone */ }
-      }
+      try { const jpg = await this.page.screenshot({ type: "jpeg", quality: 62, animations: "allow", timeout: 4000 }); this.frame({ t: Date.now(), jpg }); } catch (e) { /* the page is navigating or gone */ }
       await new Promise((r) => setTimeout(r, Math.max(10, FRAME_MS - (Date.now() - t0))));
+    }
+  }
+  frame(f) {
+    this.tick(f.t);
+    this.buf.push(f);
+    while (this.buf.length > 1 && this.buf[1].t < f.t - BEFORE_MS - FRAME_MS) this.buf.shift();
+    for (const s of this.strips) if (!s.done && f.t >= s.t - BEFORE_MS && f.t <= s.t + AFTER_MS) s.frames.push(f);
+  }
+  // a still screen sends no frame: each empty slot up to t repeats the last frame (marked held), so the strip's steps stay even
+  tick(t) {
+    for (const s of this.strips) {
+      if (s.done) continue;
+      let lastT = s.frames.length ? s.frames[s.frames.length - 1].t : s.t - BEFORE_MS - FRAME_MS;
+      while (t - lastT >= 1.5 * FRAME_MS && lastT + FRAME_MS <= s.t + AFTER_MS) {
+        const prev = s.frames[s.frames.length - 1] || this.buf.filter((x) => x.t <= lastT + FRAME_MS).pop();
+        if (!prev) break;
+        lastT += FRAME_MS;
+        s.frames.push({ t: lastT, jpg: prev.jpg, held: true });
+      }
+      if (t > s.t + AFTER_MS + FRAME_MS) this.closeStrip(s);
     }
   }
   closeStrip(s) {
@@ -82,7 +114,7 @@ export class KeyFrames {
     s.done = true;
     const d = join(this.dir, `strip-${String(s.n).padStart(2, "0")}-${s.why}`);
     mkdirSync(d, { recursive: true });
-    const frames = s.frames.map((f, i) => { const ms = f.t - s.t; const file = `f${String(i).padStart(2, "0")}_${ms < 0 ? "m" + -ms : "p" + ms}.jpg`; writeFileSync(join(d, file), f.jpg); return { file, ms }; });
+    const frames = s.frames.sort((x, y) => x.t - y.t).map((f, i) => { const ms = f.t - s.t; const file = `f${String(i).padStart(2, "0")}_${ms < 0 ? "m" + -ms : "p" + ms}.jpg`; writeFileSync(join(d, file), f.jpg); return { file, ms, ...(f.held ? { held: true } : {}) }; });
     writeFileSync(join(d, "strip.json"), JSON.stringify({ why: s.why, at: s.t, frames }, null, 1));
   }
   // a whole-screen frame for a key moment, with the boxes for its close-ups
@@ -106,7 +138,10 @@ export class KeyFrames {
     if (why && this.strips.length < MAX_STRIPS && Date.now() - this.st.lastStrip >= STRIP_GAP_MS) {
       const t = Date.now();
       this.st.lastStrip = t;
-      this.strips.push({ n: this.strips.length + 1, why, t, frames: this.buf.filter((f) => f.t >= t - BEFORE_MS), done: false });
+      // (the frame on screen as the moment comes is the one before it: kept, so the strip starts drawn)
+      const before = this.buf.filter((f) => f.t >= t - BEFORE_MS);
+      const lead = this.buf.filter((f) => f.t < t - BEFORE_MS).pop();
+      this.strips.push({ n: this.strips.length + 1, why, t, frames: (lead ? [{ ...lead, t: t - BEFORE_MS, held: true }] : []).concat(before), done: false });
     }
     if (e.k === "s19lit" && this.st.station && (e.holes || []).length && !this.st.light) { this.st.light = true; this.shoot("light", { delay: 400 }); }
   }
