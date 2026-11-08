@@ -905,10 +905,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const steps = St.steps(ctx);
       let help = false; // decision 51: the second try has help (the next layer glows)
       const dishNo = () => ctx.dishAt || 0;
+      // the kitchen kit's first-time gate (kit d, STD-D1-01; was chaat's own save key): the demo and the reveal lessons spend on it
+      // (made before the coach stops: its stop marks the station's coach seen, which would leave the gate stale on the first bowl)
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("assemble", { round: new Set() }) : null;
       // this station's own first-time demo replaces the generic spotlight (js/cook/coach.js)
       if (Cook.Coach) Cook.Coach.stop(true);
-      // the kitchen kit's first-time gate (kit d, STD-D1-01; was chaat's own save key): the demo and the reveal lessons spend on it
-      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("assemble", { round: new Set() }) : null;
       // CK-49 (the level table): 1, 2, 3, 3 decoys (the knob), a lookalike among them at L4; the 'no' row's topping is on the
       // shelf too and counts as one (it is an ordinary decoy, never the odd one out)
       // (the S14 roll-out, CHT-17: 1, 2, 3, 4 by the central rules, Cook.levelRow on Rules.level; was the mechanic's own 1, 2, 3, 3)
