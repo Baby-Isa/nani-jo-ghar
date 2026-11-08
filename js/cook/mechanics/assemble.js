@@ -1220,7 +1220,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           busy: () => busy > 0,
           endIf: () => busy > 0 || on(),
           step: "assemble:next",
-          note: "chaat:light",
+          note: "assemble:light",
           onLit: () => {
             gate.spend("card");
             cardWait = false;

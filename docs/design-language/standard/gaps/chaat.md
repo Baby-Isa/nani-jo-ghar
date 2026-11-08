@@ -216,7 +216,7 @@ Scope: H House, F Family. Audit: what `--standard chaat` printed.
 | STD-F4-05 | H | not run | 2 | Check |  |
 | STD-F4-06 | H | not run | 2 | Check | St.loadArt's real-time cap |
 | STD-F5-01 | H | gap | 2 | Check | the lab's Chaat bowl tile at L1-L4 |
-| STD-F5-02 | H | not run | 2 | Check | chaat-drop, chaat:light notes; Cook.undoAt, Cook.chaatPills (build) |
+| STD-F5-02 | H | not run | 2 | Check | chaat-drop, assemble:light notes; Cook.undoAt, Cook.chaatPills (build) |
 | STD-F5-03 | H | not run | 0 | none | no kit piece of its own |
 
 ## G Proof
