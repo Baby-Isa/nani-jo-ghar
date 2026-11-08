@@ -78,6 +78,8 @@ a before-run and judge at launch. A progress table every half hour (done in the 
 - `St.stoneBand` draws its 3 px top shade; chai's own lines go (SAM-29; with a frozen diff).
 - `loadcheck.mjs` reads each station's settings assets (baking, eggs, corn).
 - Daar's mistake-path coach onto kit (d)'s lights (DAAR-42).
+- The checks (`build/reports/s18-g-corn.md`): contract-22 counts an item's grey English as an item word (corn's L2#mistake: "tamarind
+  chutney" said twice, its Kutchi not recorded); the hook's spotNow skips a light that is fading out (no class "on").
 
 ## Budget
 About $380-575 for the sprint (the weekend, Sprint 17's rest included, about $470-700). Time: Sat 18:00 to Mon 07:00.
