@@ -117,7 +117,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const data = () => ({
           person: { id: "nani", face: UI.faceUrl ? UI.faceUrl("nani") : "", name: "Nani" },
           headline: { html: Lang.html(head), rec: !head.ok },
-          items: rows.map((r) => ({ label: r.label, count: 2, parts: [], done: r.done, key: r })),
+          // SH-241: each row a 6 Nov item card (the item's card picture, the count in Kutchi, its English by the level)
+          items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: Lang.phrase(Lang.countParts(want[r.id], r.id)).en, done: r.done, key: r, say: () => Lang.speak(Lang.phrase(Lang.countParts(want[r.id], r.id))) }) : { label: r.label, done: r.done, key: r })) }],
         });
         const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
         try {

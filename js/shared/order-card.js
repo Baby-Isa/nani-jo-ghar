@@ -5,9 +5,10 @@
  *   person → items → parts. At most three tiers, and a word is never repeated across tiers.
  *    1. the headline: the request, always shown (what the person says: "Muke mishkaki khape.");
  *    2. item rows: one per distinct item, all on the same level, each with its Kutchi number
- *       ("ba lakri gos", "hakri lakri mixed"). No pips, no digits. Alternate rows are lightly tinted;
- *    3. parts: only for an item with a recipe (a mixed skewer's pieces, chai's ingredients), indented
- *       under its row, joined by the thin sequence line when the order matters.
+ *       ("ba lakri gos", "hakri lakri mixed"). No pips, no digits, no tints;
+ *    3. parts: only for an item with a recipe (a mixed skewer's pieces, chai's ingredients). With opts.s14 (every Cook game)
+ *       a row of word parts is one sideways row of 6 Nov item cards (items14), ordered steps and kinds of several too
+ *       (SH-241: the old skewer strip, group box and count box are gone).
  *
  *  Rules:
  *   - one item, one of it, with a recipe (a single chai): no item row, the parts sit straight under
@@ -26,9 +27,8 @@
  *     strip:    {html, rec?} | null,             R4: the guide's next-step line when the asker is the guide (one
  *                                                face: Nani's pantry list); a thin band across the card's top
  *     items: [{ label: html | null, count: 1, parts: [{label, done, next?, no?, key?}],
- *               ordered: false, done?: bool, key?, group?: bool }],
- *               group: one of several groups of the same kind (each skewer, each samosa kind): a plain box of its
- *               pieces with no label row, alternate groups tinted; ordered: drawn as a little skewer (SEK-03)
+ *               ordered: false, steps?: bool, done?: bool, key? }],
+ *               ordered: the parts' order matters (the host's next part); steps: the clinic's doctor's steps, plain rows
  *     done?: bool }                               default: every item done
  *
  *   `key` is anything the host wants handed back with the element drawn for it (read-along).
@@ -129,15 +129,6 @@
     // one item, one of it, with a recipe: its parts straight under the headline
     const direct = items.length === 1 && items[0].count <= 1 && items[0].parts.length > 0;
     items.forEach((it) => {
-      // SEK-03 (S05-S): a group (one skewer of several, one samosa kind): a plain box of its pieces, no label row (the
-      // headline gives the summary). Decision 95 (SH-53): no alternate tints; the boxes alone keep them apart, and a
-      // leftover "tint" class read as a second highlight (contract-8, sekelo L2)
-      if (it.group) {
-        it.row = false;
-        it.tint = false;
-        it.folded = false;
-        return;
-      }
       it.row = it.label != null && !direct;
       it.tint = false; // decision 95: no alternate row tints
       it.folded = it.row && it.done && !big;
@@ -281,26 +272,6 @@
     if (node.key != null && opts.onEl) opts.onEl(node.key, r);
     if (opts.decorate) opts.decorate(r, node);
     return r;
-  }
-
-  /*
-   * SH-62 (S3, K5): the sequence line ends at the last row's centre, even when that row wraps to two lines: the list
-   * carries the last row's half height (--oc-seq-end), kept up to date as the rows fit and wrap.
-   */
-  let seqRO = null;
-  function seqEnd(list) {
-    const RO = typeof root !== "undefined" && root.ResizeObserver;
-    if (!RO) return;
-    if (!seqRO)
-      seqRO = new RO((entries) =>
-        entries.forEach((e) => {
-          const row = e.target;
-          const l = row.parentNode;
-          if (!row.isConnected || !l || l.lastElementChild !== row) return seqRO.unobserve(row);
-          l.style.setProperty("--oc-seq-end", `${row.offsetHeight / 2}px`);
-        })
-      );
-    if (list.lastElementChild) seqRO.observe(list.lastElementChild);
   }
 
   /*
@@ -555,113 +526,23 @@
   };
 
   function itemEl(it, opts) {
-    if (it.group) return groupEl(it, opts);
+    // SH-241, SAM-31 (Zafar, 8 Nov: "no relic of the old order card"): a game's item rows are 6 Nov item cards (items14), its
+    // ordered steps and its kinds of several too; the little skewer strip, the group box and the count box are gone. An item of
+    // steps (the clinic's doctor's steps) keeps its plain rows in their order
     if (opts.s14 && !opts.big && !it.row && it.parts.length && it.parts.every((p) => p.word) && root.WordCard && root.WordCard.item14) return items14(it, opts);
-    // SEK-03, SEK-17 (S05-C3): a dish's own ordered steps (no row of their own: chaat's layers, the clinic's instruction
-    // list) are shown as the little skewer in a plain group box, as a skewer is, never a bracket line down the side
-    // (S13-B1: an item marked steps, the clinic's doctor's steps, keeps its rows, the sequence line joining them: one card anatomy)
-    if (!it.row && it.ordered && !it.steps && it.parts.filter((p) => !p.no).length > 1) return groupEl(it, opts);
-    // SEK-03 (S05-C3): a kind of several (it.box: samosa's "trae samosa" and its fillings) sits in a plain group box, its
-    // count row kept (SAM-11: the number is heard and read there)
-    const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.box ? "oc-box" : "", it.tint ? "tint" : "", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
+    const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
     if (it.row) box.appendChild(rowEl(it, "oc-irow", opts));
     if (it.parts.length) {
       const fold = el("div", "oc-fold");
       const inner = el("div", "oc-fold-in");
-      // (round 3, the judge: the clinic's step rows had "a stray connector line" and an indent unlike Cook's rows: an item of steps
-      // is the card's plain rows in their order, the step now lit by the next band; its headline says the order in words)
-      const list = el("div", ["oc-parts", it.ordered && !it.steps && it.parts.filter((p) => !p.no).length > 1 ? "oc-seq" : ""].filter(Boolean).join(" "));
+      const list = el("div", "oc-parts");
       list.dataset.fitGroup = "";
       it.parts.forEach((p) => list.appendChild(rowEl(p, "oc-part", opts)));
-      if (list.classList.contains("oc-seq")) seqEnd(list);
       inner.appendChild(list);
       fold.appendChild(inner);
       box.appendChild(fold);
     }
     return box;
-  }
-
-  /**
-   * SEK-03 (S05-S; Zafar, 28 Sept §2, §9): a group box: its pieces as pills in a row, no label; an ordered group (a
-   * skewer) is drawn as a little skewer: the pills threaded on a stick, read left to right, with a pointed tip and no
-   * numbers or arrows. The item's label (if any) is kept for screen readers only.
-   */
-  function groupEl(it, opts) {
-    const seq = it.ordered && it.parts.filter((p) => !p.no).length > 1;
-    const box = el("div", ["oc-item", "oc-group", seq ? "oc-skewer" : "", it.tint ? "tint" : "", it.done ? "done" : ""].filter(Boolean).join(" "));
-    if (it.label != null) box.setAttribute("aria-label", String(it.label).replace(/<[^>]*>/g, ""));
-    if (it.key != null && opts.onEl) opts.onEl(it.key, box);
-    const list = el("div", "oc-parts oc-group-parts");
-    it.parts.forEach((p) => list.appendChild(rowEl(p, "oc-part", opts)));
-    box.appendChild(list);
-    stackWhenTight(box, list);
-    if (opts.decorate) opts.decorate(box, it);
-    return box;
-  }
-
-  /*
-   * SH-73 (Zafar, 13 Oct: "those words are never going to fit nicely side by side I think they need to stack
-   * vertically"): a group whose pills don't fit side by side at their own size stacks them, one per line (a skewer's
-   * stick turns upright, its tip at the bottom), so no word is ever broken across lines. Measured from each word's
-   * one-line width (not the laid-out boxes), so stacking can't flip it back; again whenever the box or the fonts change.
-   */
-  let measureCtx = null;
-  const textWidth = (text, font) => {
-    if (!measureCtx) {
-      const cv = typeof document !== "undefined" && document.createElement("canvas");
-      measureCtx = cv && cv.getContext ? cv.getContext("2d") : null;
-    }
-    if (!measureCtx) return 0;
-    measureCtx.font = font;
-    return measureCtx.measureText(text).width;
-  };
-  const px = (v) => parseFloat(v) || 0;
-  OC.groupFits = function (list) {
-    const pills = [...list.children];
-    if (pills.length < 2 || !list.clientWidth) return true;
-    const ls = getComputedStyle(list);
-    let need = px(ls.paddingLeft) + (list._tipRoom != null ? list._tipRoom : px(ls.paddingRight)) + px(ls.columnGap) * (pills.length - 1);
-    pills.forEach((p) => {
-      const ps = getComputedStyle(p);
-      const t = p.querySelector(".oc-t");
-      // the pill's own size, not one fit.js has shrunk the word to
-      // CK-39: the word's own CSS size (.oc-t has its own, var(--oc-p)), read without fit.js's inline shrink
-      let size = ps.fontSize;
-      if (t) {
-        const inl = t.style.fontSize;
-        if (inl) t.style.fontSize = "";
-        size = getComputedStyle(t).fontSize;
-        if (inl) t.style.fontSize = inl;
-      }
-      const font = `${ps.fontStyle} ${getComputedStyle(t || p).fontWeight} ${size} ${ps.fontFamily}`;
-      need += textWidth((t || p).textContent.trim(), font) + px(ps.paddingLeft) + px(ps.paddingRight) + px(ps.borderLeftWidth) + px(ps.borderRightWidth);
-      // the pill's other parts beside its word (its speaker, a tick), at their laid-out width (offsetWidth: a pop-up's scale
-      // doesn't count). Only the tick was counted, so chaat's big card at the bowl (five pills, each with a speaker) measured
-      // about 200 px short, stayed side by side and cut "ba dungri" at the card's edge (the sandbox, 4 Nov)
-      [...p.children].forEach((k) => {
-        if ((t && (k === t || k.contains(t))) || !k.offsetWidth) return;
-        const kcs = getComputedStyle(k);
-        if (kcs.position === "absolute" || kcs.position === "fixed") return;
-        need += k.offsetWidth + px(kcs.marginLeft) + px(kcs.marginRight) + px(ps.columnGap);
-      });
-    });
-    return need <= list.clientWidth + 0.5;
-  };
-  function stackWhenTight(box, list) {
-    if (typeof root.ResizeObserver !== "function" || typeof getComputedStyle !== "function") return;
-    const check = () => {
-      if (!list.isConnected || !list.clientWidth) return;
-      if (!box.classList.contains("oc-stack") && list._tipRoom == null) list._tipRoom = px(getComputedStyle(list).paddingRight);
-      box.classList.toggle("oc-stack", !OC.groupFits(list));
-    };
-    const ro = new root.ResizeObserver(check);
-    ro.observe(list);
-    // CK-39: and each pill: a card that flies from the request pop-up into the sidebar changes its words' size (the pop-up's
-    // sizes easing to the sidebar's) while the list keeps its width, so the list alone never asked again and the no-wrap row
-    // stayed side by side, cut by the card's edge (chaat's and assemble's sequences at 1366x1024). The measure is from the
-    // words' one-line widths, so a pill resized by the stacking itself can't flip it back
-    [...list.children].forEach((p) => ro.observe(p));
-    if (typeof document !== "undefined" && document.fonts && document.fonts.ready) document.fonts.ready.then(check);
   }
 
   /*

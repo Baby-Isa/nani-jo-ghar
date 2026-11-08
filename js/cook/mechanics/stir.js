@@ -392,18 +392,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           while (prog >= (count + 1) * lapA) lapDone();
         };
-        // Wave 6b (the controls audit): the pot is finished with Done, like every
-        // other station, never by letting go for a moment (children did that by accident)
+        // SH-238 (Zafar, 8 Nov: no ✓): the pot is stirred once the laps she asked for are done; as the child lets go then, it
+        // moves on by itself a beat later (UI.done). Letting go before that is never the end (children did that by accident), and
+        // taking hold again in the beat carries on stirring (UI.hideDone)
         const release = () => {
           if (!grabbing) return;
           grabbing = false;
           prev = null;
           clearTimeout(quiet);
-          if (count >= 1) {
-            UI.done({ glow: z.guided && count >= laps }).then(finish);
-            // open: stirring on still counts, the child says when it's enough (C10; moving on at the right count would
-            // give the answer away, NN6); the player is steered to Done, the step isn't decided (contract-2, s04-fxc)
-            z.expect({ kind: "click", selector: "#done-btn", open: true });
+          if (count >= laps) {
+            UI.done().then(finish);
+            z.expect({ kind: "wait" });
           }
         };
         z.on("pointerdown", grab);

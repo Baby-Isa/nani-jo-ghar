@@ -121,21 +121,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           UI.hideDone();
           resolve();
         };
+        // SH-238 (Zafar, 8 Nov: no ✓): the step is complete once as many spoons as they asked for are in, and moves on by itself a
+        // beat later (UI.done); the player taps one spoon at a time until then
         const post = () => {
           const c = S.centre(bowl);
-          z.expect({ kind: "count", x: c.x, y: c.y, target: n, count: () => count, doneSel: "#done-btn" });
+          z.expect(count < n ? { kind: "tap", x: c.x, y: c.y, key: "count" } : { kind: "wait" });
+        };
+        let ending = false;
+        const complete = () => {
+          if (ending || count < n) return;
+          ending = true;
+          S.glow(bowl, false);
+          UI.done().then(finish);
         };
         S.tappable(bowl, () => {
-          if (count >= k.max) return;
+          if (count >= k.max || ending) return;
           Cook.sfx.pop();
           add(bowl, word);
-          if (z.guided) {
-            S.glow(bowl, count < n);
-            UI.glowDone(count >= n);
-          } else if (count >= n && UI.doneGlows && UI.doneGlows()) {
-            S.glow(bowl, false);
-            UI.glowDone(true);
-          }
+          if (z.guided) S.glow(bowl, count < n);
+          post();
+          complete();
         });
         // the look-alikes are real choices: a spoon of salt goes in too
         others.forEach(([id, obj]) =>
@@ -148,9 +153,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             z.oops();
           })
         );
-        // CK-34 (contract-8): the ✓ waits unlit while the bowl is the thing to tap; it lights once the count is reached
-        UI.done({ glow: false }).then(finish);
         post();
+        complete();
       });
       UI.hideCount();
       z.listen(count === n, `${count} ${word}, they asked for ${n}`);

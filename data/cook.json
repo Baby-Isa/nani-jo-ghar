@@ -1,6 +1,6 @@
 {
  "_about": "Cook with Nani proof of concept (24 Sept 2026). Every Kutchi string here is a DRAFT. Words marked source 'zafar-24sep' were confirmed by Zafar as right for now (khun, not khand). Sentences only recombine frames already in the content master (Muke {x} khape / Ne {x} / Salamun alaykum / Wa alaikum salaam / Aabhar aanjo / Achija / Arre re / Hedo / Ghan). Cooking verbs have NO Kutchi yet: they are shown as gestures, and listed in docs/archive/language/cook-with-nani-words.md for the family. Phase A (24 Sept 2026): words with kutchi null are ENGLISH PLACEHOLDERS shown in grey italic until the family supplies the Kutchi (see docs/archive/mum-questions/Questions for Mum (Round 2 — Cooking).md). 25 Sept 2026: seven more words (ph-no, ph-slowly, ph-quickly, ph-half, ph-full, ph-big, ph-small) came from Zafar written phonetically over chat, temporary and unconfirmed (Mum to confirm). Each has `kutchi` (a readable romanised spelling, shown on screen) and `say` (Zafar's own phonetic spelling, used for the voice only, never shown). 26 Sept 2026: Mum's A8 and Section B answers (docs/language/grammar-notes.md §23-§28) replaced most English placeholders and Zafar's phonetic drafts; every change is listed in docs/archive/language/cook-word-changes-B.md.",
- "_words": "The item catalogue (step 4d): each thing's picture (image), drawn heap, bowl, piece and layer, and joinless, by Cook's id. Its words (Kutchi, English, gender, forms, voice spelling) are the language engine's (data/lang/; their old home is data/lang/seed/cook.json); Cook's ids are the engine's aliases.",
+ "_words": "The item catalogue (step 4d): each thing's picture (image; card: one of the thing for its order card, SH-242), drawn heap, bowl, piece and layer, and joinless, by Cook's id. Its words (Kutchi, English, gender, forms, voice spelling) are the language engine's (data/lang/; their old home is data/lang/seed/cook.json); Cook's ids are the engine's aliases.",
  "words": {
   "cook-paani": {
    "size": "L",
@@ -50,6 +50,7 @@
   },
   "cook-bajrmaani": {},
   "veg-01": {
+   "card": "assets/cook/items/veg-bataato-whole-t.webp",
    "size": "M",
    "heap": {
     "kind": "cubes",
@@ -66,6 +67,7 @@
    "bowl": "steel"
   },
   "veg-02": {
+   "card": "assets/cook/items/veg-dungri-whole-t.webp",
    "size": "M",
    "image": "onion",
    "heap": {
@@ -83,6 +85,7 @@
    "bowl": "ceramic"
   },
   "veg-03": {
+   "card": "assets/cook/items/veg-tameto-whole-t.webp",
    "size": "M",
    "image": "tomato",
    "heap": {
@@ -100,6 +103,7 @@
    "bowl": "ceramic"
   },
   "veg-12": {
+   "card": "assets/cook/items/veg-marcha-whole-t.webp",
    "size": "S",
    "image": "chilli",
    "heap": {
@@ -113,6 +117,7 @@
    "bowl": "ceramic"
   },
   "veg-13": {
+   "card": "assets/cook/items/veg-lasan-whole-t.webp",
    "size": "S",
    "image": "garlic",
    "heap": {
@@ -130,6 +135,7 @@
    "bowl": "steel"
   },
   "veg-14": {
+   "card": "assets/cook/items/veg-aadu-whole-t.webp",
    "size": "S",
    "heap": {
     "kind": "pieces",
@@ -138,6 +144,7 @@
    "bowl": "ceramic"
   },
   "fru-02": {
+   "card": "assets/cook/items/veg-limu-whole-t.webp",
    "size": "S",
    "heap": {
     "kind": "pieces",
@@ -2450,7 +2457,7 @@
   "count": {
    "name": "Count in",
    "verb": "Count",
-   "goal": "Tap once for each spoon they asked for, then the tick."
+   "goal": "Tap once for each spoon they asked for: it moves on by itself."
   },
   "knead": {
    "name": "Knead",
@@ -2485,22 +2492,22 @@
   "assemble": {
    "name": "Chaat bowl",
    "verb": "Assemble",
-   "goal": "Add the toppings in the order they asked, then tap the tick: they taste it!"
+   "goal": "Add the toppings in the order they asked: when the bowl is made, they taste it!"
   },
   "fill": {
    "name": "Fill",
    "verb": "Fill",
-   "goal": "Spoon in the fillings they asked for, as many spoons of each as they said. Then tap the tick."
+   "goal": "Spoon in the fillings they asked for, as many spoons of each as they said: it moves on by itself."
   },
   "fold": {
    "name": "Fold",
    "verb": "Fold",
-   "goal": "Swipe along each dashed line to fold a samosa. Make as many as they asked for, then tap the tick."
+   "goal": "Swipe along each dashed line to fold a samosa. Make as many as they asked for: it moves on by itself."
   },
   "fry": {
    "name": "Fry",
    "verb": "Fry",
-   "goal": "Drop in what they asked for, lift each one out when its ring is green, then tap the tick."
+   "goal": "Drop in what they asked for and lift each one out when its ring is green: it moves on by itself."
   },
   "thread": {
    "name": "Skewer",
@@ -6405,7 +6412,7 @@
    },
    {
     "do": "roll",
-    "what": "roll the ball up and down until it fills the gold ring"
+    "what": "roll the ball up and down until the maani is big and round"
    },
    {
     "do": "tap",
@@ -6490,10 +6497,6 @@
    {
     "do": "stir",
     "what": "drag the ladle round the pot, counting the laps"
-   },
-   {
-    "do": "tap",
-    "what": "the tick when it's done"
    }
   ],
   "assemble": [
@@ -6548,10 +6551,6 @@
     "what": "the next spoon (as many as the card says)"
    },
    {
-    "do": "tap",
-    "what": "the tick when every strip they want is filled"
-   },
-   {
     "do": "swipe",
     "what": "fold the strip over the filling"
    },
@@ -6588,10 +6587,6 @@
    {
     "do": "stir",
     "what": "drag the ladle round the pot, counting the laps (the dial shows how fast)"
-   },
-   {
-    "do": "tap",
-    "what": "the tick when it's done"
    }
   ],
   "_phases": {

@@ -1094,7 +1094,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
 
   /**
    * One free pick: resolves {id, obj} when any item is tapped, or {done}
-   * when Done is pressed (offered if `doneOk`). `next` is what the order
+   * a beat later when the step is complete (`doneOk`: SH-238, no ✓; UI.done moves on by itself). `next` is what the order
    * wants next (for the guided glow and the test only; never shown
    * otherwise). Nothing is refused.
    */
@@ -1124,8 +1124,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
           .filter((k) => k !== next && items[k] && items[k].active)
           .map((k) => S.centre(items[k]));
         z.expect({ kind: "tap", x: c.x, y: c.y, key: next, wrongs });
-      } else if (doneOk) z.expect({ kind: "click", selector: "#done-btn", open: Object.values(items).some((o) => o && o.active) }); // open: a pick still changes it
-      else z.expect({ kind: "wait" });
+      } else z.expect({ kind: "wait" }); // (SH-238: a complete step moves on by itself, UI.done: no ✓ to press)
     });
 
   /** The customer speaks from the sidebar card (their face on it, never over the play area). */

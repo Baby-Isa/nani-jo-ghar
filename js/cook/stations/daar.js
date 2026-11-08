@@ -485,8 +485,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
       strip: { html: stepLine.ok === false ? Lang.plain(stepLine) : Lang.html(stepLine), rec: stepLine.ok === false },
       headline: { html: Lang.html(chopHead), rec: !chopHead.ok },
-      // a "don't" row is the shared card's no-row style (dashed, the no-sign), never ticked here
-      items: rows.map((r) => (r.no ? { label: null, parts: [{ label: r.label, done: false, no: true, key: r }] } : { label: r.label, count: 2, parts: [], done: r.done, key: r })),
+      // SH-241, DAAR-44 (Zafar, 8 Nov: "Nani's order card should be for chopping should be the correct item card"): each row a 6 Nov
+      // item card (the item's card picture, the count in Kutchi, its English by the level), the "don't" card at the row's end
+      items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: r.no ? "" : Lang.phrase(parts(r.id)).en, done: !r.no && r.done, no: !!r.no, key: r, say: () => Lang.speak(r.no ? Lang.line("no", Lang.phrase([r.id])) : Lang.phrase(parts(r.id))) }) : { label: r.label, done: r.done, no: !!r.no, key: r })) }],
     });
     // the sidebar's own calls (order-card follow-ups): Nani's card above the order's, and the phase fold
     // (only cards you can act on stay open: Nana's daar card folds to face + headline while chopping)
@@ -816,13 +817,20 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // T13: "Pela jeeru. Ne poi rai." is the tadka step's line: at level 1 the step says it; from level 2 she says the
     // order once at the start (the counting rule) and the line comes back after a pause
     const tadkaLine = flat.length ? Lang.list(tadka, { seq: true }) : null;
+    // (Fable's daar flaw 3: "Pela loon. Ne poi hardar." was two steps in one line; her box holds the step now: the engine's own
+    // sentence for this spice, "Pela loon." then "Ne poi hardar.", each as its spice is next)
+    const partOf = (id) => (tadkaLine && tadkaLine.parts && tadkaLine.parts[flat.indexOf(id)]) || tadkaLine;
+    const spiceStep = (id, again) => {
+      if (!tadkaLine || id == null) return null;
+      return steps.to("daar:tadka", { id: `tadka-${flat.indexOf(id)}`, line: partOf(id), hide, quiet: Cook.roundLevel(ctx) > 1, force: again });
+    };
     const tadkaStep = (again) => {
       if (!tadkaLine) return null;
-      if (Cook.roundLevel(ctx) <= 1) return steps.to("daar:tadka", { line: tadkaLine, hide, force: again });
-      // (the step opens once she's said it: opening it clears the box)
-      return Promise.race([z.say(tadkaLine, { hide }).catch(() => {}), Cook.wait(7000)]).then(() => steps.to("daar:tadka", { line: tadkaLine, hide, quiet: true, force: again }));
+      const first = series.length ? series[0][0] : flat[0];
+      if (Cook.roundLevel(ctx) <= 1) return spiceStep(first, again);
+      // (from level 2 she says the order once, whole, at the start: the counting rule; the step opens quietly once she has said it)
+      return Promise.race([z.say(tadkaLine, { hide }).catch(() => {}), Cook.wait(7000)]).then(() => spiceStep(first, again));
     };
-    await tadkaStep(false);
     const order = [];
     let wrong = null;
     let series = [];
@@ -830,6 +838,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     let si = 0;
     let tadkaWrong = null;
     let help = false;
+    await tadkaStep(false);
     // a pinch from the jar: the jar tips over the pot, the seeds land in the oil (the picture changes: D3)
     const spiceDrop = async (id) => {
       if (DS1[id]) wentIn.add(id); // (the seeds and the garlic in the tadka stay pictured, stirred into the daar: DAAR-05)
@@ -849,6 +858,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     while (si < series.length) {
       const group = series[si];
       const next = group[0];
+      spiceStep(next, false);
       const r = await St.freePick(z, { items, next, doneOk: false, help });
       steps.poke();
       const id = r.id;
@@ -1310,10 +1320,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           };
           requestAnimationFrame(step);
         });
-      const post = () =>
-        // past the laps the player is steered to Done, but the step stays open: stirring on still counts, the child says
-        // when it's enough (C10, NN6; contract-2, s04-fxc)
-        z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "click", selector: "#done-btn", open: true });
+      // (SH-238: past the laps the step is complete and moves on by itself; nothing more is asked)
+      let stirred = null;
+      let ending = false;
+      const post = () => z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "wait" });
       const place = () => {
         ladle.setPosition(cx + Math.cos(ang) * trackR, cy + Math.sin(ang) * trackR);
         ladle.setRotation(ang - LADLE_HANDLE); // DAAR-11: the handle points out over the rim, wherever the ladle is
@@ -1355,9 +1365,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         const at = deg(((((ang - FLAG_AT) % TAU) + TAU + Math.PI) % TAU) - Math.PI);
         stirNote("stir-lap", count, `deg:${at} da:${deg(Math.abs(da))} ms:${Math.round(period)} ${said}`);
         z.progress({ lap: count });
-        // SH-58: the laps are done: the ✓ is the only thing left, and glows (a station's first plays; level 1 only: later the glow would give the count away)
-        if (count === laps && Cook.roundLevel(ctx) <= 1 && UI.doneGlows && UI.doneGlows()) UI.glowDone(true);
         post();
+        if (count >= laps && stirred) stirred();
       };
       // which turn round the flag an angle is in (the flag's line lies between two)
       const lapOf = (a) => Math.floor((a - FLAG_AT) / TAU);
@@ -1479,13 +1488,26 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
        * It is the engine's nearest whole line, three recorded pieces, until Mum records the one sentence (DAAR-26 waits on
        * her); the step call says it (role call, the level table), and the help ladder says it again only after the pause.
        */
-      const said = asked && k.speedWords ? Lang.join([Lang.numLine(laps), Lang.line(k.speedWords[asked])]) : Lang.numLine(laps);
-      const stepLine = Lang.join([St.guideLine("daar:stir"), said]);
+      // (Fable's daar flaw 2, non-negotiable 2: "Firai! Trae! aste thi" was three recordings stitched into a fragment. Until Mum records the
+      // one sentence, her box shows its English in grey italic, never spoken: the laps are still said as they come and the card's stir row
+      // writes how many and how fast; the gap is in docs/language/recording-sheet.md, daar-stir-ask)
+      const ask = ((Cook.data.settings || {}).daar || {}).askLines || {};
+      const enOf = (l) => String((l && l.en) || "").replace(/[.!?]+$/, "").trim().toLowerCase();
+      const speedEn = asked && k.speedWords ? enOf(Lang.line(k.speedWords[asked])) : "";
+      const tpl = speedEn ? ask.stirAsk : ask.stirAskPlain;
+      const stepLine = tpl ? Lang.toRecord(tpl.replace("{n}", enOf({ en: Cook.english(Cook.numId(laps)) }) || String(laps)).replace("{speed}", speedEn), "daar-stir-ask") : Lang.join([St.guideLine("daar:stir"), Lang.numLine(laps)]);
       if (steps) steps.to("daar:stir", { line: stepLine, hide, force: retry });
       else if (!retry) z.say(stepLine, { hide }).catch(() => {});
       Cook.markSeen(Cook.numId(laps));
       post();
-      UI.done({ glow: false }).then(() => {
+      // SH-238 (Zafar, 8 Nov: no ✓): the pot is stirred once the laps she asked for are done: it moves on by itself a beat later
+      stirred = () => {
+        if (ending) return;
+        ending = true;
+        UI.done().then(finishStir);
+      };
+      if (count >= laps) setTimeout(() => stirred(), 0);
+      const finishStir = () => {
         over = true;
         offs.forEach((o) => o());
         Cook.stirCount = null;
@@ -1502,7 +1524,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         S.tweens.add({ targets: swirl, alpha: count > 0 ? 0.9 : 0, duration: 300 });
         const speedOk = asked && judged * 1000 >= (k.minJudgeMs || 500) ? !corrected && inAsked / judged >= (k.okFrac || 0.6) : asked && corrected ? false : null;
         resolve({ count, asked, speedOk, corrected, spills });
-      });
+      };
     });
   }
 

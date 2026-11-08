@@ -310,7 +310,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       });
       return best;
     };
-    const allDone = () => Object.keys(want).every((k) => count(k, "plate") === want[k]) && plated().length === Object.values(want).reduce((a, b) => a + b, 0);
+    const wantN = Object.values(want).reduce((a, b) => a + b, 0);
     const idle = () => !chakla && !waiting && !onTawa;
     const glowOn = (obj, on) => {
       if (!obj || !obj.active || !!obj._glowing === on) return;
@@ -395,20 +395,20 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (need) {
         const b = plateOf(need);
         zb.expect(Object.assign({ kind: "tap", key: "dough", wrongs: plates.filter((o) => o !== b).map(centre) }, centre(b)));
-      } else if (idle() && plated().length) zb.expect(Object.assign({ kind: "more", target: 1, count: 1, extra: true }, centre(plates[0])));
-      else zb.expect(null);
+      } else zb.expect(null);
       zon.expect(waiting && waiting.landed && !onTawa ? Object.assign({ kind: "tap", key: "tawa-on" }, centre(waiting.sprite)) : null);
       // quiet until they matter (§3): the finished plates, until a maani lands
       Object.values(dones).forEach((d) => d.img.setAlpha(d.n ? 1 : 0.9));
-      // the tick: whenever nothing is on the go (it never says whether you're right)
-      if (idle() && plated().length) {
+      // SH-238 (Zafar, 8 Nov: no tick button): the line ends by itself once as many maanis as they asked for are made and nothing is
+      // on the go (it never says whether each is right: the review does, and a wrong one is redone)
+      if (idle() && plated().length >= wantN) {
         if (!doneShown) {
           doneShown = true;
-          UI.done({ glow: !!((ctx.guided || helping) && allDone()) }).then(() => {
+          UI.done().then(() => {
             doneShown = false;
             finish();
           });
-        } else UI.glowDone(!!((ctx.guided || helping) && allDone()));
+        }
       } else if (doneShown) {
         doneShown = false;
         UI.hideDone();

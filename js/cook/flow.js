@@ -697,7 +697,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       })
     );
     const out = [];
+    // (Fable's daar flaw 11: the review lists the things and numbers learned, never a connective: "ne poi" is how the order was said)
+    const linker = Lang.frames ? Lang.frames().seq_word : null;
     UI.orderWordForms(ctx.ladders).forEach((w) => {
+      if (linker && w.id === linker) return;
       const base = { id: w.id, kutchi: w.kutchi, cell: w.cell, english: Cook.english(w.id), toCheck: !!w.check || undefined };
       const bad = missed.has(w.id);
       if (bad) out.push(Object.assign({}, base, { right: false }));
@@ -1708,17 +1711,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     p.querySelectorAll("[data-st]").forEach((b) => b.addEventListener("click", () => runLab(b.dataset.st, $("#lab-guided").checked)));
     $("#lab-back").addEventListener("click", showTitle);
   }
-  // the s14 look (chai's cards, light and wider side panel) is on for an order that is all chai (ui.js mission.s14 decides it again,
-  // to the same answer, when the order opens); set it early so the stage is laid out once
-  const CHAI14 = new Set(["chai", "chai-tray"]);
+  // the s14 look (chai's cards, light and wider side panel) and the 6 Nov type are on for every order (the roll-outs: UI.S14_ALL,
+  // UI.TYPE_ALL; ui.js mission.s14 decides it again, to the same answer, when the order opens); set early so the stage is laid out once
   // (the play area takes its new size on the next layout: the stage is resized and two frames pass before anything is drawn)
   const preLook = async (ids) => {
     if (!UI.applyS14) return;
     const was = document.body.classList.contains("njg-s14");
-    // (the S14 roll-out: every dish, UI.S14_ALL; chai alone when it is off)
-    UI.applyS14(ids.length > 0 && (UI.S14_ALL || ids.every((id) => CHAI14.has(id))));
-    // (the 6 Nov type, chai first: ui.js applyType; its faces are in before the kitchen is drawn)
-    if (UI.applyType) await UI.applyType(ids.length > 0 && ids.every((id) => CHAI14.has(id)));
+    UI.applyS14(ids.length > 0);
+    // (the 6 Nov type: ui.js applyType; its faces are in before the kitchen is drawn)
+    if (UI.applyType) await UI.applyType(ids.length > 0);
     if (document.body.classList.contains("njg-s14") === was) return;
     global.dispatchEvent(new Event("resize"));
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));

@@ -313,7 +313,8 @@
    "drawn": {
     "w": 62
    },
-   "_note": "whole eggs lifted from the bowl; the crack at the rim; the shells after"
+   "_note": "whole eggs lifted from the bowl; the crack at the rim; the shells after",
+   "card": "assets/cook/proto/eggs/egg-brown.webp"
   },
   "friedEgg": {
    "size": "S",
@@ -459,7 +460,8 @@
    ],
    "drawn": {
     "w": 120
-   }
+   },
+   "card": "assets/cook/proto/eggs/egg-fried-f.webp"
   },
   "eggCupServed": {
    "size": "S",
@@ -478,7 +480,8 @@
    "drawn": {
     "h": 110
    },
-   "_note": "soft and hard are drawn but the game does not ask for them: nothing wired to them (no mechanic added)"
+   "_note": "soft and hard are drawn but the game does not ask for them: nothing wired to them (no mechanic added)",
+   "card": "assets/cook/proto/eggs/eggcup-egg-f.webp"
   },
   "cat": {
    "size": "L",
@@ -577,5 +580,6 @@
   "assets/cook/items/v3/hob/knob-on-v2.webp",
   "assets/cook/items/chai-station/flame-high.webp",
   "assets/cook/items/chai-station/flame-low.webp"
- ]
+ ],
+ "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic): the fried egg on its plate, the boiled egg in its cup, one egg"
 }
