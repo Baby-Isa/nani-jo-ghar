@@ -363,7 +363,8 @@
   "assets/cook/proto/corn/dress-chilli.webp",
   "assets/cook/proto/corn/dress-green.webp",
   "assets/cook/proto/corn/dress-amli.webp",
-  "assets/cook/proto/corn/dress-pepper.webp"
+  "assets/cook/proto/corn/dress-pepper.webp",
+  "assets/cook/items/shelf-ph-amli-bare-f.webp"
  ],
  "motion": {
   "_about": "s18-g-corn: the game's own motion times, ms at speed 1 (the kits' own come from the kits)",

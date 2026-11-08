@@ -571,6 +571,11 @@
   "assets/cook/proto/eggs/eggcup-tapped-f.webp",
   "assets/cook/proto/eggs/eggcup-soft-f.webp",
   "assets/cook/proto/eggs/eggcup-hard-f.webp",
-  "assets/cook/proto/cat-sit.webp"
+  "assets/cook/proto/cat-sit.webp",
+  "assets/cook/items/v3/hob/hob-2.webp",
+  "assets/cook/items/v3/hob/knob-off-v2.webp",
+  "assets/cook/items/v3/hob/knob-on-v2.webp",
+  "assets/cook/items/chai-station/flame-high.webp",
+  "assets/cook/items/chai-station/flame-low.webp"
  ]
 }
