@@ -1,12 +1,10 @@
 # Sekelo: its gap to the standard
 
-**Made:** 8 Nov 2026, Sprint 18 wave 2 (s18-g-sekelo), before any build. `node build/tools/review/audit.mjs --standard sekelo`
-(205 House and Family rules; no contract run, no saved checks: 2 pass, 14 fail, 26 judge, 36 gap, 127 not run), then my read of
-sekelo's code (`js/cook/stations/mishkaki-grill.js`, `js/cook/mechanics/thread.js`, `js/cook/mechanics/grill.js`,
-`data/stations/mishkaki-grill.json`, the mishkaki recipe and the grill and thread knobs in `data/cook.json`).
+**Made:** 8 Nov 2026 (s18-g-sekelo), before any build: `audit.mjs --standard sekelo` (205 House and Family rules) plus a read
+of `mishkaki-grill.js`, `thread.js`, `grill.js` and their settings.
 
 **Counts before the build** (205 rules): 13 at 0, 32 at 1, 155 at 2, 5 at 3, none at 4 or 5.
-**Counts after the build** (commit d86b384a; a note ending "(build)" is what it changed): 13 at 0, 23 at 1, 163 at 2, 6 at 3.
+**Counts after the build** (d86b384a; "(build)" marks a change): 13 at 0, 23 at 1, 163 at 2, 6 at 3.
 
 **The scale:** 0 n/a · 1 missing · 2 built, unproven · 3 check green · 4 judged · 5 his "done" · dbd different by design (dated).
 **Next:** Kit (a kit piece still to build) · Adopt (take a kit piece as it lands: (d) lights and lessons, (e) the order's flow) ·

@@ -71,6 +71,14 @@ row fixed once in the kit.
 per game at merge; chai's frozen-run diff automatic after each switch; script-made before/after strips at fixed moments instead of
 a before-run and judge at launch. A progress table every half hour (done in the last half hour, still to do, percentage).
 
+**Wave 3's kit list (asks from wave 2's builders, the orchestrator or a fix builder lands each in the kit once):**
+- `UI.wordMoment(ids, set)` takes a game's own pair, key and pictures (baking's jug amounts; until then baking's word moment is skipped:
+  CHAI-67 and ART-37 stay open). `build/reports/s18-g-baking.md`.
+- One shared page box in `js/cook/coach.js` (`C.box(o, pad)`), replacing chai's `pageRect`, samosa's and baking's own (SAM-29's note).
+- `St.stoneBand` draws its 3 px top shade; chai's own lines go (SAM-29; with a frozen diff).
+- `loadcheck.mjs` reads each station's settings assets (baking, eggs, corn).
+- Daar's mistake-path coach onto kit (d)'s lights (DAAR-42).
+
 ## Budget
 About $380-575 for the sprint (the weekend, Sprint 17's rest included, about $470-700). Time: Sat 18:00 to Mon 07:00.
 Cut order if it runs over: the heat-map roll-up; the prototypes' polish (eggs, baking, the corn stall) before the live games; a
