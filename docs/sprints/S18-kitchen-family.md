@@ -93,6 +93,9 @@ One line each as they launch: id, what it does, model and effort, report in `bui
   (a) merged; it ran out of context after the pan switch. **s18-chai2**, chai's owner's second session (Opus high, about $20-30
   inside chai's $40-60, stop Sun 10:00): first the pan switch's missing glass sound at #mistake 740x320 (old code vs new), then (b)
   pieces 6-8, (c), (d), (e).
+- Sat 7 Nov ~22:40: chai fully switched (sessions s18-chai3, -chai4; `s18-chai2.md`), wave 1 merged, checks green.
+- **Wave 2, launched Sun 8 Nov 00:15 UK** (Zafar, 00:14: "just keep going"; brought forward from 08:00): s18-g-daar, -chaat, -samosa,
+  -maani, -sekelo, -eggs, -baking, -corn (Opus high, $20-30 each, stop Sun 20:00), worktrees `/home/user/wt/s18-g-<game>`.
 
 ## Zafar's decisions at the opening (7 Nov afternoon, "yes to all"; 11-13 at ~14:00)
 1. The sign-off of chai covers the 88 px phone glasses and the side panel moving unscrolled on phones, as built.
@@ -151,6 +154,8 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - contract-83 is flaky: re-run once before calling it red.
 
 ## Small decisions
+- 8 Nov ~00:30 (Zafar): chop's levels follow the rules' level table (`data/rules.json` count.games.chop: kinds 1-4, chops 2-4-6-8 by
+  level); chop keeps its swipe ("yes to swipe": STD-02-03 different by design).
 - 7 Nov ~15:00 (the orchestrator, from the standard's F1): the module map is `docs/architecture/module-map.md`; the pans and their
   looks go to kit builder (b) with pouring, the worktop wash and the stone band to (a) with the stove's scene.
 - The S18 row in `docs/sprints/plan.md` is the kitchen family only; the pantry's six opening decisions (in Sprint 17's file) wait for

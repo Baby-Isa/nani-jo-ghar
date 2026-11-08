@@ -60,23 +60,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     Object.values(host.zones).forEach((z) => z.close());
     const lv = (id) => ((host.knobs.zones || {})[id] || {}).level || host.level;
     const phases = (Cook.data.stations["mishkaki-grill"] || {}).phases || {};
-    const rack = Mech.knobs("grill", { level: lv("grill") }).rack;
+    const rack = Cook.Skewer.knobs("grill", lv("grill")).rack;
     const who = order.who || (ctx.order && ctx.order.who) || "nana";
     // Sekelo v2's art loads while the order card is up (a slow phone mustn't meet an empty scene)
     const SK = Cook.Skewer;
-    const kThread = Mech.knobs("thread", { level: lv("thread") });
+    const kThread = SK.knobs("thread", lv("thread"));
     await SK.loadArt(S, SK.pieceIds().concat(kThread.decoyPool || []));
     await SK.faceArt(S, who);
     // decision 51 (CK-23, S02-B): a plate that isn't quite right keeps its right skewers; only the wrong or missing
     // ones are threaded and grilled again (with help), and the third time it's taken as it is
     const redo = St.redo(ctx);
     const steps = St.steps(ctx); // T18: [Thread them], then [Grill them]
+    // the kitchen kit's first-time gate (Cook.Coach.firsts, STD-D1-01): sekelo's lessons once each for a new player
+    const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("mishkaki-grill", { round: new Set() }) : null;
     let todo = order;
     let keep = [];
     for (let attempt = 0; ; attempt++) {
       // 1. thread every skewer still to make
       await St.begin(S, ctx, "thread", "marble");
       if (phases.thread && !attempt) Cook.UI.gist(phases.thread);
+      // (the kitchen kit's reveal lessons, Cook.Coach.lessons, STD-D1-08: once the order has landed, the dotted word, then the
+      // blurred picture, each once per player in every game)
+      if (gate && !attempt) await Cook.Coach.lessons({ gate, ctx });
       if (ctx.nextStep) ctx.nextStep("Skewer");
       const tz = Mech.zone(S, ctx, { id: "thread", level: lv("thread") });
       steps.to("mishkaki-grill:thread", { id: `thread-${attempt}` });
