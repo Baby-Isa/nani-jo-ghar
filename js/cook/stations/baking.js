@@ -1,24 +1,26 @@
 /*
- * proto-kitchen (Zafar's rapid prototype, 1 Nov): the baking station, his turn-by-turn design.
- * Spec: build/reports/designs/prototype-notes-2026-11-01.md "Baking"; cook-baking-eggs.md, its end note (his design wins).
+ * Baking (naan), Zafar's turn-by-turn design (1 Nov; build/reports/designs/prototype-notes-2026-11-01.md "Baking", cook-baking-eggs.md
+ * end note: his design wins). Sprint 18 wave 2 (s18-g-baking): the game is its settings file (data/stations/baking.json, read as
+ * Cook.data.settings.baking: the scene, the items' pictures and sizes, the lines, the word moment, its own asset list) and its own
+ * mechanic below; everything else is a kit call: the order card and its flow (UI.mission), the shared step for which one (S.step),
+ * the lights and lessons (Cook.Coach.firsts, .control, .wrong, .lessons), the decoys by the central rules (St.tableDecoys), the word
+ * chip (Cook.Kit.chip), the review (Cook.Kit.review), the word moment (UI.wordMoment). Gap page: docs/design-language/standard/gaps/baking.md.
  *
- * One camera, side-on at the counter (the mock-up's): the mixing bowl in the middle, the containers standing in a row
- * in front (the glass jars with no marks, the bottle, the carton, the tub), each with its word card; from L3 the
- * measuring jug beside the bowl, its lines at a quarter, half, full, one and a half and two and a half (no numbers).
+ * The mechanic (not to touch, non-negotiable 1): one camera, side-on at the counter (his mock-up): the mixing bowl in the middle, the
+ * containers standing in a row in front, each with its word chip; from L3 the measuring jug beside the bowl, its lines at a quarter,
+ * half, full, one and a half and two and a half (no numbers).
  *   - Nani gives ONE instruction at a time; its row appears on the card as she says it (UI.mission.reveal).
  *   - Tap what she names: it lifts over the bowl (or the jug). Each tap tips it a bit more and some goes in:
  *       "a little": one tap, it stops, "that's good";   "a lot": tap until it's a lot, "enough"; more taps don't land;
  *       "a little more": "a little", tap, "still a little more", tap, "enough";
  *       the jug: tap until the jug reaches the amount (a quarter cup a tap), "enough"; then it tips into the bowl.
  *     The row ticks the moment the amount is there (Zafar, 1 Nov: counts and amounts tick at the number).
- *   - Tap the bowl: the dough. Then the oven, the same camera: its door shut and open as two pictures, the naan its own
- *     picture, steam. Tap the oven: it opens; tap the naan: in it goes and the door shuts; its ring fills; when Nani says
- *     it's ready, tap the oven: out it comes with steam, and Nana's happy face.
- *   - The cat (Simba) peeks over the counter's edge.
- * Placeholder art: the Cook shelf's front-on containers, crops of the mock-ups (assets/cook/proto/) and simple shapes.
+ *   - Tap the bowl: the dough. Then the oven: tap it, it opens; tap the naan, in it goes and the door shuts; its ring fills; when
+ *     Nani says it's ready, tap the oven: out it comes with steam, and Nana's happy face.
+ *   - The cat (Simba) peeks over the counter's edge (a named placeholder).
  */
 import { Cook as CookNS } from "../ns.js";
-import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js";
+import { setTimeout } from "../life.js";
 
 (function (global) {
   const Cook = CookNS;
@@ -28,23 +30,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
   const St = Cook.Stations;
   const Mech = Cook.Mech;
   const KEY = "baking";
-  const P = "assets/cook/proto/";
-  const I = "assets/cook/items/";
-  // the art colours are data (data/stations/baking.json station.palette)
-  const col = (k) => parseInt(String((((Cook.data.stations || {})[KEY] || {}).palette || {})[k] || "").slice(1), 16);
-  const SHELF = {
-    "cook-atto": I + "shelf-cook-atto-bare-f.webp",
-    "cook-paani": I + "shelf-cook-paani-bare-f.webp",
-    "cook-dudh": I + "shelf-cook-dudh-bare-f.webp",
-    "cook-khun": I + "shelf-cook-khun-bare-f.webp",
-    "spi-16": I + "shelf-loon-jar-v2-f.webp",
-    "ph-dahi": I + "shelf-ph-dahi-bare-f.webp",
-    "ph-ghee": I + "shelf-ph-ghee-bare-f.webp",
+
+  /** The game's settings (data/stations/baking.json, loaded with Cook's data: js/cook/zone.js M.stationData). */
+  const SET = () => ((Cook.data || {}).settings || {})[KEY] || {};
+  const ITEMS = () => SET().items || {};
+  // the art colours left are the effects' and the drawn drops' (data/stations/baking.json station.palette)
+  const col = (k) => {
+    const pal = ((Cook.data.stations || {})[KEY] || {}).palette || {};
+    return parseInt(String(pal[k] || pal.white || "").slice(1), 16) || 0;
   };
-  const POUR = { "cook-atto": "atto", "cook-paani": "paani", "cook-dudh": "dudh", "cook-khun": "khun", "spi-16": "loon", "ph-dahi": "dahi", "ph-ghee": "ghee" };
-  const LIQUID = ["cook-paani", "cook-dudh"];
-  const JUG_LINES = [1, 2, 4, 6, 10]; // quarter cups: a quarter, half, full, one and a half, two and a half (no numbers)
-  const JUG_MAX = 10;
+  const line = (key, role, phrase) => Lang.role(phrase ? Lang.line(key, phrase) : Lang.line(key), role);
+  /** A canvas thing's page box, as the lights ask for it ([x, y, w, h]; null once it is gone), PAD out from its picture (contract-92). */
+  const PAD = 6;
+  const FADE_MS = 320;
+  const boxOf = (o) => () => {
+    if (!o || !o.active || !o.visible) return null;
+    const b = o.getBounds();
+    const a = UI.worldToScreen(b.x - PAD, b.y - PAD);
+    const z = UI.worldToScreen(b.right + PAD, b.bottom + PAD);
+    return [a.x, a.y, z.x - a.x, z.y - a.y];
+  };
 
   Mech.combined(KEY, {
     station: KEY,
@@ -56,253 +61,288 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
     },
   });
 
+  /** The pictures this round draws, from the settings' items (decision 68: only these, and only what this round shows). */
+  function artFor(onShelf, plan, jug, who) {
+    const I = ITEMS();
+    const sc = SET().scene || {};
+    const list = [["bk-bg", sc.bg], ["bk-cat", (sc.cat || {}).file]];
+    Object.entries((I.mixBowl || {}).states || {}).forEach(([k, f]) => list.push([`bk-bowl-${k}`, f]));
+    Object.entries((sc.oven || {}).states || {}).forEach(([k, f]) => list.push([`bk-oven-${k}`, f]));
+    ["raw", "golden"].forEach((k) => list.push([`bk-naan-${k}`, ((I.naan || {}).states || {})[k]]));
+    onShelf.forEach((id) => list.push([`bk-${id}`, ((I.containers || {}).files || {})[id]]));
+    plan.forEach((s) => list.push([`bk-stream-${s.id}`, ((I.streams || {}).files || {})[s.id]]));
+    if (jug) {
+      const J = I.jug || {};
+      list.push(["bk-jug-empty", (J.states || {}).empty]);
+      plan.filter((s) => s.amt === "jug").forEach((s) => list.push([`bk-jug-${s.id}`, (J.states || {})[(J.fillFor || {})[s.id]]]));
+    }
+    const seen = new Set();
+    return list.filter(([k, f]) => f && !seen.has(k) && seen.add(k)).concat(Cook.Kit.faceArt(who));
+  }
+
   async function baking(host, p) {
     const S = host.S;
     const ctx = host.ctx;
     const K = host.knobs;
     const level = host.level;
+    const I = ITEMS();
+    const sc = SET().scene || {};
+    const CT = I.containers || {};
     const plan = p.plan || [];
     const z = Mech.zone(S, ctx, { id: KEY, level });
     const who = p.who || "nana";
     const ids = [...new Set(plan.map((s) => s.id))];
-    const pool = Object.keys(SHELF).filter((id) => !ids.includes(id));
-    const decoys = Cook.shuffle(pool).slice(0, K.decoys || 1);
+    // the decoys by the central rules (1-4 by level, one a lookalike at L4: STD-C2-03), noted for contract-37
+    const decoys = St.tableDecoys(Object.keys(CT.files || {}), ids, level, { what: KEY });
     const onShelf = Cook.shuffle(ids.concat(decoys));
-    await St.loadArt(
-      S,
-      onShelf
-        .map((id) => [`bk-${id}`, SHELF[id]])
-        .concat([
-          ["px-bake-bowl", P + "bake-bowl.webp"],
-          ["px-bake-naan", P + "bake-naan.webp"],
-          ["px-cat-peek", P + "cat-peek.webp"],
-          ["bk-dough", "assets/cook/props/dough-ball.webp"],
-        ])
-        .concat(Cook.Kit.faceArt(who))
-    ).catch(() => {});
+    const hasJug = !!K.jug;
+    await St.loadArt(S, artFor(onShelf, plan, hasJug, who)).catch(() => {});
+    const has = (k) => S.textures.exists(k);
     const objs = [];
     const T = (o) => (objs.push(o), S.track(o));
-    const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
-    const fresh = (global.Onboard && global.Onboard.newPlayer && global.Onboard.newPlayer()) || !(Cook.save.coached || {})[KEY];
-    const first = (k) => {
-      const key = `${KEY}:first-${k}`;
-      if (!fresh || seen[key]) return false;
-      seen[key] = true;
-      return true;
-    };
-    const speak = (line) => UI.voice(line).catch(() => {}); // never waited for: the child is never held for speech
-
-    /* ---------------- the side-on counter ---------------- */
-    const bg = T(S.add.graphics().setDepth(D.bg + 2));
-    bg.fillStyle(col("wall"), 1).fillRect(-400, -400, 2400, 900);
-    bg.lineStyle(3, col("tile"), 1);
-    for (let y = -400; y < 470; y += 70) bg.lineBetween(-400, y, 2000, y);
-    for (let x = -400; x < 2000; x += 140) for (let y = -400; y < 470; y += 140) bg.lineBetween(x, y, x, y + 70), bg.lineBetween(x + 70, y + 70, x + 70, y + 140);
-    bg.fillStyle(col("counter"), 1).fillRect(-400, 470, 2400, 700);
-    bg.fillStyle(col("counterEdge"), 1).fillRect(-400, 470, 2400, 10);
-    // the cat peeks over the counter's back edge (right), breathing
-    const cat = T(S.add.image(1500, 486, "px-cat-peek").setOrigin(0.5, 1).setDepth(D.bg + 3));
-    cat.setScale(200 / cat.width);
-    S.tweens.add({ targets: cat, y: 480, duration: 1400, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
-
-    // the mixing bowl (centre), its contents a mound that rises
-    const bowlX = 820;
-    const bowlY = 520;
-    const bowl = T(S.add.image(bowlX, bowlY, "px-bake-bowl").setDepth(D.item));
-    bowl.setScale(380 / bowl.width);
-    const mound = T(S.add.graphics().setDepth(D.item + 0.05));
-    let mixAmt = 0;
-    const mixCols = [];
-    const drawMound = () => {
-      mound.clear();
-      const h = Math.min(90, 10 + mixAmt * 7);
-      const c = mixCols.length ? mixCols[mixCols.length - 1] : col("atto");
-      if (mixAmt > 0) mound.fillStyle(c, 1).fillEllipse(bowlX, bowlY - bowl.displayHeight * 0.3 + 6, 290, h);
+    const speak = (l) => UI.voice(l).catch(() => {}); // never waited for: the child is never held for speech
+    // her call: Nani's helper card lets the last item go first, so no call is said while the card names another (contract-89)
+    const say = (l) => {
+      if (UI.helper) UI.helper(null);
+      speak(l);
     };
 
-    // the measuring jug (L3 up): glass, with lines and no numbers
-    let jug = null;
-    if (K.jug) {
-      const jx = 470;
-      const jy = 470;
-      const jw = 150;
-      const jh = 230;
-      const c = T(S.add.container(jx, jy).setDepth(D.item + 0.5));
-      const fill = S.add.graphics();
-      const g = S.add.graphics();
-      g.fillStyle(col("shadow"), 0.12).fillEllipse(6, jh / 2 + 4, jw + 30, 22);
-      g.fillStyle(col("glass"), 0.45).fillRoundedRect(-jw / 2, -jh / 2, jw, jh, 16);
-      g.lineStyle(5, col("glassEdge"), 0.9).strokeRoundedRect(-jw / 2, -jh / 2, jw, jh, 16);
-      g.lineStyle(10, col("glassEdge"), 0.9).beginPath().arc(jw / 2 + 4, -10, 46, -1.2, 1.2).strokePath();
-      g.fillStyle(col("glassEdge"), 0.9).fillTriangle(-jw / 2 - 4, -jh / 2, -jw / 2 - 26, -jh / 2 - 18, -jw / 2 + 14, -jh / 2);
-      const lineY = (u) => jh / 2 - 12 - (u / JUG_MAX) * (jh - 30);
-      g.lineStyle(4, col("line"), 0.85);
-      JUG_LINES.forEach((u) => g.lineBetween(-jw / 2 + 8, lineY(u), -jw / 2 + (u === 4 || u === 10 ? 64 : 42), lineY(u)));
-      c.add([fill, g]);
-      c.setSize(jw + 60, jh + 40);
-      jug = { c, units: 0, fill, lineY, jw, jh, x: jx, y: jy, color: col("paani") };
-      jug.draw = () => {
-        fill.clear();
-        if (jug.units <= 0) return;
-        const top = lineY(jug.units);
-        fill.fillStyle(jug.color, 0.95).fillRoundedRect(-jw / 2 + 5, top, jw - 10, jh / 2 - 6 - top, { tl: 2, tr: 2, bl: 12, br: 12 });
-      };
-    }
-
-    // the containers standing in a row in front, each with its word card
-    const shelf = {};
-    const n = onShelf.length;
-    onShelf.forEach((id, i) => {
-      const x = n === 1 ? 800 : 260 + (i * 1080) / Math.max(1, n - 1);
-      const img = T(S.add.image(x, 820, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
-      img.setScale(Math.min(170 / img.height, 150 / img.width));
-      img.home = { x, y: 820 };
-      img.wordId = id;
-      shelf[id] = img;
-      const chip = Cook.Kit.chip(S, id, x, 860, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true });
-      objs.push(chip);
-    });
-
-    /* ---------------- pouring ---------------- */
-    const stream = T(S.add.graphics().setDepth(D.item + 0.4));
-    const pourOnce = async (img, into, color, liquid) => {
-      // the stream from the container's lip into the target, a short fall
-      const lipX = img.x + Math.cos(((img.angle - 90) * Math.PI) / 180) * img.displayHeight * 0.55;
-      const lipY = img.y - img.displayHeight * 0.55 * Math.max(0.2, Math.cos((img.angle * Math.PI) / 180));
-      const tx = into.x;
-      const ty = into.y;
-      for (let f = 0; f < 6; f++) {
-        stream.clear();
-        stream.fillStyle(color, liquid ? 0.85 : 1);
-        if (liquid) stream.fillRect(Math.min(lipX, tx) + Math.abs(lipX - tx) * 0.5 - 7, Math.min(lipY, ty), 14, Math.abs(ty - lipY));
-        else for (let k = 0; k < 14; k++) stream.fillCircle(lipX + (tx - lipX) * (k / 14) + (Math.random() - 0.5) * 12, lipY + (ty - lipY) * (k / 14), 4 + Math.random() * 3);
-        await Cook.wait(55);
-      }
-      stream.clear();
+    /* ---------------- lights: the kit's first-time gate and each control's call with its light ---------------- */
+    const gate = Cook.Coach.firsts(KEY, { round: new Set() });
+    const hintMs = () => (global.Rules ? global.Rules.hintMs(level) : 0);
+    let busy = false;
+    let ctl = null;
+    let ctlObj = null;
+    const unlight = () => {
+      if (ctl) ctl.close();
+      if (ctlObj) S.glow(ctlObj, false);
+      ctl = ctlObj = null;
     };
-
-    const shelfItems = () => Object.assign({}, shelf);
-    let lit = null;
-    const light = (o, now = false) => {
-      if (lit && lit !== o) S.glow(lit, false);
-      lit = o;
-      if (o) S.glow(o, true, { bounce: true, now });
+    /** The control o (a container to tip, the bowl, the oven, the naan) lit as the kit lights one: the first time with its call,
+     *  after that only as the stuck hint after the level's wait from the last action (STD-D1-06, D2-01). */
+    const control = (o, name, current) => {
+      unlight();
+      ctlObj = o;
+      ctl = Cook.Coach.control({
+        key: KEY,
+        note: `${KEY}:${name}`,
+        target: boxOf(o),
+        first: gate.first(name),
+        hintMs,
+        current,
+        busy: () => busy,
+        onLight: () => S.glow(o, true, { bounce: true, now: true }),
+      });
     };
     const expectTap = (o, key) => {
       const c = S.centre(o);
       z.expect({ kind: "tap", x: c.x, y: c.y, key });
     };
 
-    /** one instruction: Nani says it, its row appears; the child taps the container, then taps to tip it, to the amount */
+    /* ---------------- the side-on counter (the settings' scene picture) ---------------- */
+    const [W, H] = sc.stage || [1600, 900];
+    const bg = T(S.add.image(W / 2, H / 2, "bk-bg").setDepth(D.bg + 2));
+    bg.setDisplaySize(W, H);
+    const edgeY = sc.worktopEdgeY || 470;
+    // the cat peeks over the counter's back edge (right), breathing
+    const cat = has("bk-cat") ? T(S.add.image(1500, edgeY + 16, "bk-cat").setOrigin(0.5, 1).setDepth(D.bg + 3)) : null;
+    if (cat) {
+      cat.setScale(200 / cat.width);
+      S.tweens.add({ targets: cat, y: edgeY + 10, duration: 1400, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+    }
+
+    // the mixing bowl (centre): its picture fills by turn (empty, a scoop, a heap, a well, mixing), then the dough
+    const MB = I.mixBowl || {};
+    const [bowlX, bowlY] = MB.at || [820, 520];
+    const bowl = T(S.add.image(bowlX, bowlY, "bk-bowl-empty").setDepth(D.item));
+    bowl.setScale(((MB.drawn || {}).w || 380) / bowl.width);
+    const FILL = ["empty", "scoop", "heap", "well", "mixing"];
+    const bowlTo = (done) => {
+      const k = done <= 0 ? 0 : Math.max(1, Math.min(FILL.length - 1, Math.round((done / Math.max(1, plan.length)) * (FILL.length - 1))));
+      bowl.setTexture(`bk-bowl-${FILL[k]}`);
+    };
+
+    // the measuring jug (L3 up): the empty picture, and the full one revealed by a rising crop up to its line (never a drawn fill)
+    let jug = null;
+    if (hasJug) {
+      const J = I.jug || {};
+      const [jx, jy] = J.at || [470, 670];
+      const c = T(S.add.container(jx, jy).setDepth(D.item + 0.5));
+      const empty = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1);
+      const k = ((J.drawn || {}).w || 260) / empty.width;
+      empty.setScale(k);
+      const full = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1).setScale(k).setVisible(false);
+      c.add([empty, full]);
+      c.setSize(empty.displayWidth, empty.displayHeight);
+      // a line's height from the picture's top (items.jug.lineAt, by quarter cups); between two lines, evenly between them
+      const at = Object.entries(J.lineAt || {}).map(([u, f]) => [Number(u), f]).sort((a, b) => a[0] - b[0]);
+      const lineAt = (u) => {
+        if (!at.length) return 1 - u / 10;
+        if (u <= at[0][0]) return 1 - (1 - at[0][1]) * (u / at[0][0]);
+        for (let i = 1; i < at.length; i++) if (u <= at[i][0]) return at[i - 1][1] + ((at[i][1] - at[i - 1][1]) * (u - at[i - 1][0])) / (at[i][0] - at[i - 1][0]);
+        return at[at.length - 1][1];
+      };
+      jug = { c, empty, full, units: 0, x: jx, y: jy, w: empty.displayWidth, h: empty.displayHeight };
+      jug.show = (id) => {
+        const key = `bk-jug-${id}`;
+        if (id && has(key)) full.setTexture(key);
+        const u = jug.units;
+        full.setVisible(u > 0);
+        if (u <= 0) return;
+        const top = Math.round(full.height * lineAt(u));
+        full.setCrop(0, top, full.width, full.height - top);
+      };
+      jug.mouth = () => ({ x: c.x, y: c.y - jug.h * 0.85 });
+    }
+
+    // the containers standing in a row in front, each with its word chip
+    const rowY = CT.row_y || 820;
+    const tall = (CT.drawn || {}).h || 170;
+    const shelf = {};
+    const n = onShelf.length;
+    onShelf.forEach((id, i) => {
+      const x = n === 1 ? 800 : 260 + (i * 1080) / Math.max(1, n - 1);
+      const img = T(S.add.image(x, rowY, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
+      img.setScale(Math.min(tall / img.height, 150 / img.width));
+      img.home = { x, y: rowY };
+      img.wordId = id;
+      shelf[id] = img;
+      objs.push(Cook.Kit.chip(S, id, x, rowY + 40, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true }));
+    });
+
+    /* ---------------- pouring: the shared stream pictures, stretched from the lip; drawn drops where none has landed ---------------- */
+    const drops = T(S.add.graphics().setDepth(D.item + 0.4));
+    const LIQUID = new Set(CT.liquid || []);
+    const pourOnce = async (img, into, id, liquid) => {
+      const lipX = img.x + Math.cos(((img.angle - 90) * Math.PI) / 180) * img.displayHeight * 0.55;
+      const lipY = img.y - img.displayHeight * 0.55 * Math.max(0.2, Math.cos((img.angle * Math.PI) / 180));
+      const key = `bk-stream-${id}`;
+      if (has(key)) {
+        const s = T(S.add.image((lipX + into.x) / 2, Math.min(lipY, into.y), key).setOrigin(0.5, 0).setDepth(D.item + 0.4));
+        s.setDisplaySize(liquid ? 26 : 34, Math.max(20, Math.abs(into.y - lipY)));
+        await Cook.wait(330);
+        s.destroy();
+        return;
+      }
+      const color = col((CT.pour || {})[id] || "white");
+      for (let f = 0; f < 6; f++) {
+        drops.clear();
+        drops.fillStyle(color, 1);
+        for (let k = 0; k < 14; k++) drops.fillCircle(lipX + (into.x - lipX) * (k / 14) + (Math.random() - 0.5) * 12, lipY + (into.y - lipY) * (k / 14), 4 + Math.random() * 3);
+        await Cook.wait(55);
+      }
+      drops.clear();
+    };
+
+    /** One instruction: Nani says it, its row appears; the child taps the container, then taps to tip it, to the amount. */
     async function step(s, i) {
       if (UI.mission.reveal) UI.mission.reveal(`bake-${i + 1}`);
+      // the reveal lessons (the dotted word, then the blurred picture) as the first row that shows one appears (contract-98)
+      await Cook.Coach.lessons({ gate, ctx, busy: () => busy });
       const jugStep = s.amt === "jug" && jug;
       const amtLine = s.amt === "lot" ? Lang.line("alot") : s.amt === "jug" ? null : Lang.line("little");
       const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(jugStep ? s.parts : [s.id]) });
-      const line = amtLine ? Lang.join([doIt, amtLine]) : doIt;
-      speak(line);
+      // (her turn is the order, said row by row: its row appears as she says it, as a person's order does; the engine has no
+      // "a little / a lot of X" frame, R6-136, so two engine lines side by side)
+      const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "order");
+      say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
-        items: shelfItems(),
+        items: Object.assign({}, shelf),
         expected: s.id,
-        sayLine: line,
+        sayLine: call,
         io: z.io,
         quiet: z.quiet,
-        onWrong: (key) => z.listen(false, `took ${key} for ${s.id}`),
+        onWrong: (key) => (Cook.Coach.wrong(), z.listen(false, `took ${key} for ${s.id}`)),
         onLand: (key, obj) => S.tweens.add({ targets: obj, y: obj.home.y - 30, duration: 140, yoyo: true }),
       });
       z.listen(true, `took ${s.id}`);
       if (!ctx.guided && Lang.known(s.id)) Cook.markRight(s.id);
       const img = shelf[r.key];
-      const into = jugStep ? { x: jug.x, y: jug.y - jug.jh / 2 - 10 } : { x: bowlX, y: bowlY - 60 };
+      const into = jugStep ? jug.mouth() : { x: bowlX, y: bowlY - 60 };
       // lift it over the target
+      busy = true;
       await Cook.tween(S, { targets: img, x: into.x - 150, y: into.y - 60, duration: 360, ease: "Cubic.easeOut" });
-      const color = col(POUR[s.id] || "atto");
-      const liquid = LIQUID.includes(s.id);
-      if (jugStep) jug.color = color;
+      busy = false;
+      const liquid = LIQUID.has(s.id);
       // how many taps, and Nani's turns
       const need = s.amt === "little" ? 1 : s.amt === "more" ? 2 : s.amt === "lot" ? K.lotTaps || 4 : s.units || 4;
       let taps = 0;
-      let busy = false;
-      if (first("tip")) light(img, true);
+      let open = true;
+      const tipOf = (t) => Math.min(115, 30 + t * (85 / Math.max(1, need)));
       await new Promise((resolve) => {
         const tap = async () => {
           if (busy || taps >= need) return; // more taps don't land
           busy = true;
           taps++;
-          S.glow(img, false);
-          lit = null;
           // each tap tips it a bit more (to 115 degrees), and some goes in
-          const ang = Math.min(115, 30 + taps * (85 / Math.max(1, need)));
-          await Cook.tween(S, { targets: img, angle: ang, duration: 160 });
+          await Cook.tween(S, { targets: img, angle: tipOf(taps), duration: 160 });
           Cook.sfx.pour ? Cook.sfx.pour() : Cook.sfx.pop();
-          await pourOnce(img, jugStep ? { x: jug.x, y: jug.y } : { x: bowlX, y: bowlY - 40 }, color, liquid);
+          await pourOnce(img, jugStep ? { x: jug.x, y: jug.y - jug.h * 0.3 } : { x: bowlX, y: bowlY - 40 }, s.id, liquid);
           if (jugStep) {
             jug.units = taps;
-            jug.draw();
-          } else {
-            mixAmt += 1;
-            mixCols.push(color);
-            drawMound();
-          }
-          if (s.amt === "more" && taps === 1) speak(Lang.line("stillmore"));
+            jug.show(s.id);
+          } else bowlTo(i + taps / need);
+          if (s.amt === "more" && taps === 1) speak(line("stillmore", "react"));
           busy = false;
           if (taps >= need) return resolve();
           expectTap(img, s.id);
-          S.glow(img, true, { bounce: true }); // the help ladder: lit only after the pause
-          lit = img;
         };
         S.tappable(img, tap);
         expectTap(img, s.id);
-        S.glow(img, true, { bounce: true });
-        lit = img;
+        control(img, "tip", () => open);
       });
+      open = false;
+      unlight();
       S.untap(img);
-      S.glow(img, false);
       z.expect({ kind: "wait" });
       // the amount is there: the row ticks at once (Zafar, 1 Nov), then her word
       UI.mission.tickItem(s.id, 0, { close: true });
       Cook.sfx.right();
-      speak(s.amt === "little" ? Lang.line("good") : Lang.line("enough"));
+      speak(line(s.amt === "little" ? "good" : "enough", "react"));
+      busy = true;
+      // (it rests tipped a moment, its pour done, while the light that followed it fades: Onboard.light's 300 ms, real time)
+      await new Promise((r) => setTimeout(r, FADE_MS));
       await Cook.tween(S, { targets: img, angle: 0, x: img.home.x, y: img.home.y, duration: 380, ease: "Cubic.easeInOut" });
       if (jugStep) {
         // the jug tips into the bowl by itself
-        await Cook.tween(S, { targets: jug.c, x: bowlX - 170, y: bowlY - 200, angle: 70, duration: 420 });
-        await pourOnce({ x: jug.c.x, y: jug.c.y, angle: 70, displayHeight: jug.jh }, { x: bowlX, y: bowlY - 40 }, color, true);
+        await Cook.tween(S, { targets: jug.c, x: bowlX - 170, y: bowlY - 60, angle: 70, duration: 420 });
+        await pourOnce({ x: jug.c.x, y: jug.c.y, angle: 70, displayHeight: jug.h }, { x: bowlX, y: bowlY - 40 }, s.id, true);
         jug.units = 0;
-        jug.draw();
-        mixAmt += Math.max(1, Math.round((s.units || 4) / 2));
-        mixCols.push(color);
-        drawMound();
+        jug.show(null);
+        bowlTo(i + 1);
         await Cook.tween(S, { targets: jug.c, x: jug.x, y: jug.y, angle: 0, duration: 380 });
       }
+      busy = false;
       await Cook.wait(250);
     }
 
     for (let i = 0; i < plan.length; i++) await step(plan[i], i);
 
     // the dough: tap the bowl
-    speak(Lang.line("now", Lang.phrase(["ph-naan"])));
+    say(line("now", "call", Lang.phrase(["ph-naan"])));
+    let bowlOpen = true;
     await new Promise((resolve) => {
       S.tappable(bowl, () => {
         S.untap(bowl);
         resolve();
       });
       expectTap(bowl, "ph-naan");
-      light(bowl, first("bowl"));
+      control(bowl, "bowl", () => bowlOpen);
     });
-    S.glow(bowl, false);
-    mound.clear();
-    const dough = T(S.add.image(bowlX, bowlY - bowl.displayHeight * 0.36, "bk-dough").setDepth(D.item + 0.05));
-    dough.setScale(170 / dough.width).setAlpha(0);
-    await Cook.tween(S, { targets: dough, alpha: 1, scaleY: dough.scaleY * 1.1, duration: 300, yoyo: true });
+    bowlOpen = false;
+    unlight();
+    z.expect({ kind: "wait" });
+    bowl.setTexture("bk-bowl-dough");
+    await Cook.tween(S, { targets: bowl, scaleY: bowl.scaleY * 1.04, duration: 220, yoyo: true });
     Cook.sfx.pop();
     await Cook.wait(400);
 
     /* ---------------- the oven (the same camera) ---------------- */
-    await Cook.tween(S, { targets: objs.filter((o) => o && o.active && o !== bg && o !== cat), alpha: 0, duration: 300 });
-    objs.filter((o) => o && o.active && o !== bg && o !== cat).forEach((o) => o.destroy());
-    await oven(S, ctx, z, { who, K, T, light, expectTap, speak, first });
+    const keep = (o) => o && o.active && o !== bg && o !== cat;
+    await Cook.tween(S, { targets: objs.filter(keep), alpha: 0, duration: 300 });
+    objs.filter(keep).forEach((o) => o.destroy());
+    await oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b) });
     if (!ctx.guided) {
       Cook.save.coached = Cook.save.coached || {};
       Cook.save.coached[KEY] = true;
@@ -313,37 +353,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
     return { baked: 1 };
   }
 
-  /** The oven: shut and open as two pictures, the naan its own picture, steam. */
-  async function oven(S, ctx, z, { who, K, T, light, expectTap, speak, first }) {
-    const ox = 900;
-    const oy = 130;
-    const ow = 560;
-    const oh = 460;
-    // the oven's body (built in under the counter line), the two door pictures
-    const body = T(S.add.graphics().setDepth(D.item - 1));
-    body.fillStyle(col("shadow"), 0.15).fillRoundedRect(ox - ow / 2 + 8, oy + 10, ow, oh, 18);
-    body.fillStyle(col("steel"), 1).fillRoundedRect(ox - ow / 2, oy, ow, oh, 18);
-    body.fillStyle(col("steelDark"), 1).fillRect(ox - ow / 2 + 30, oy + 22, ow - 60, 34);
-    const shut = T(S.add.container(ox, oy + 70).setDepth(D.item + 1));
-    const sg = S.add.graphics();
-    sg.fillStyle(col("ovenGlass"), 1).fillRoundedRect(-ow / 2 + 30, 0, ow - 60, oh - 100, 14);
-    sg.fillStyle(col("ovenGlow"), 0.18).fillRoundedRect(-ow / 2 + 60, 30, ow - 120, oh - 160, 10);
-    sg.fillStyle(col("steel"), 1).fillRoundedRect(-ow / 2 + 60, 14, ow - 120, 16, 8);
-    shut.add(sg);
-    shut.setSize(ow - 60, oh - 100);
-    const open = T(S.add.container(ox, oy + 70).setDepth(D.item + 1).setVisible(false));
-    const og = S.add.graphics();
-    og.fillStyle(col("ovenInside"), 1).fillRoundedRect(-ow / 2 + 30, 0, ow - 60, oh - 100, 14);
-    og.fillStyle(col("ovenGlow"), 0.55).fillRoundedRect(-ow / 2 + 50, 16, ow - 100, oh - 150, 10);
-    og.lineStyle(4, col("rack"), 1);
-    for (let x = -ow / 2 + 60; x < ow / 2 - 50; x += 28) og.lineBetween(x, oh - 190, x + 10, oh - 150);
-    og.lineBetween(-ow / 2 + 50, oh - 170, ow / 2 - 50, oh - 170);
-    // the door, folded down
-    og.fillStyle(col("ovenGlass"), 1).fillRect(-ow / 2 + 10, oh - 100, ow - 20, 40);
-    og.fillStyle(col("steel"), 1).fillRect(-ow / 2 + 40, oh - 66, ow - 80, 14);
-    open.add(og);
-    open.setSize(ow - 60, oh - 100);
-    const hit = T(S.add.rectangle(ox, oy + oh / 2 + 20, ow - 40, oh - 60, col("white"), 0.001).setDepth(D.item + 3));
+  /** The oven: its shut, baking and open pictures (one canvas: a swap changes only the door or the glow), the naan on its tray. */
+  async function oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy }) {
+    const O = (SET().scene || {}).oven || {};
+    const N = ITEMS().naan || {};
+    const [ox, oy] = O.centre || [900, 360];
+    const ov = T(S.add.image(ox, oy, "bk-oven-shut").setDepth(D.item + 1));
+    ov.setScale(((O.drawn || {}).w || 560) / ov.width);
     const ring = T(S.add.graphics().setDepth(D.fx + 1));
     const steam = (x, y, k = 3) => {
       for (let i = 0; i < k; i++) {
@@ -351,81 +367,83 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
         S.tweens.add({ targets: s, y: y - 160 - Math.random() * 60, alpha: 0, scale: 2.6, duration: 1400 + i * 120, delay: i * 120, onComplete: () => s.destroy() });
       }
     };
-    // the naan on its tray (the counter, left)
-    const naan = T(S.add.image(330, 560, "px-bake-naan").setDepth(D.item + 2));
-    naan.setScale(260 / naan.width).setAlpha(0.92);
-    naan.setTint(col("dough"));
-    const tapOn = (o) =>
-      new Promise((resolve) => {
+    // the naan on its tray (the counter, left), raw
+    const [hx, hy] = N.at || [330, 640];
+    const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
+    const nk = ((N.drawn || {}).w || 260) / naan.width;
+    naan.setScale(nk);
+    const tapOn = (o, name) => {
+      let open = true;
+      return new Promise((resolve) => {
         S.tappable(o, () => {
           S.untap(o);
           resolve();
         });
+        control(o, name, () => open);
+      }).then(() => {
+        open = false;
+        unlight();
       });
+    };
+    const rackY = oy + ov.displayHeight * 0.18;
     // 1. open the oven
-    expectTap(hit, null);
-    light(shut, first("oven"));
-    await tapOn(hit);
-    S.glow(shut, false);
-    shut.setVisible(false);
-    open.setVisible(true);
+    expectTap(ov, null);
+    await tapOn(ov, "oven");
+    ov.setTexture("bk-oven-open");
     Cook.sfx.click();
     // 2. the naan in
     expectTap(naan, "ph-naan");
-    light(naan, first("naan"));
-    await tapOn(naan);
-    S.glow(naan, false);
-    await Cook.tween(S, { targets: naan, x: ox, y: oy + oh - 150, scale: naan.scale * 0.9, duration: 520, ease: "Cubic.easeInOut" });
-    naan.setDepth(D.item + 0.5);
-    await Cook.wait(200);
-    open.setVisible(false);
-    shut.setVisible(true);
-    naan.setVisible(false);
-    Cook.sfx.click();
-    // 3. it bakes: the ring fills; steam from the vent
+    await tapOn(naan, "naan");
     z.expect({ kind: "wait" });
+    setBusy(true);
+    await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.8, duration: 520, ease: "Cubic.easeInOut" });
+    await Cook.wait(200);
+    naan.setVisible(false);
+    ov.setTexture("bk-oven-baking");
+    Cook.sfx.click();
+    setBusy(false);
+    // 3. it bakes: the ring fills; steam from the vent
     const bakeMs = (K.bakeMs || 3600) / (Cook.speed || 1);
     const t0 = Date.now();
+    const rx = ox + ov.displayWidth / 2 - 70;
+    const ry = oy - ov.displayHeight / 2 + 40;
     await new Promise((resolve) => {
       const off = z.tick(() => {
-        const p = Math.min(1, (Date.now() - t0) / bakeMs);
-        const x = ox + ow / 2 - 70;
-        const y = oy + 40;
+        const q = Math.min(1, (Date.now() - t0) / bakeMs);
         ring.clear();
-        ring.lineStyle(10, col("ring"), 0.95).beginPath().arc(x, y, 34, 0, Math.PI * 2).strokePath();
-        ring.lineStyle(10, col("ringBand"), 1).beginPath().arc(x, y, 34, -Math.PI / 2 + 0.8 * Math.PI * 2, (3 * Math.PI) / 2).strokePath();
-        ring.lineStyle(6, p >= 0.8 ? col("ringDone") : col("ringFill"), 1).beginPath().arc(x, y, 34, -Math.PI / 2, -Math.PI / 2 + p * Math.PI * 2).strokePath();
-        if (Math.random() < 0.04) steam(ox, oy, 1);
-        if (p >= 0.8) {
+        ring.lineStyle(10, col("ring"), 0.95).beginPath().arc(rx, ry, 34, 0, Math.PI * 2).strokePath();
+        ring.lineStyle(10, col("ringBand"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2 + 0.8 * Math.PI * 2, (3 * Math.PI) / 2).strokePath();
+        ring.lineStyle(6, q >= 0.8 ? col("ringDone") : col("ringFill"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2, -Math.PI / 2 + q * Math.PI * 2).strokePath();
+        if (Math.random() < 0.04) steam(ox, oy - ov.displayHeight / 2, 1);
+        if (q >= 0.8) {
           off();
           resolve();
         }
       });
     });
-    speak(Lang.line("ready"));
+    say(line("ready", "call"));
     // 4. take it out
-    expectTap(hit, "ph-naan");
-    light(shut, true);
-    await tapOn(hit);
-    S.glow(shut, false);
+    expectTap(ov, "ph-naan");
+    await tapOn(ov, "oven-out");
+    z.expect({ kind: "wait" });
     ring.clear();
-    shut.setVisible(false);
-    open.setVisible(true);
+    ov.setTexture("bk-oven-open");
     Cook.sfx.click();
-    speak(Lang.line("careful"));
-    naan.clearTint();
-    naan.setVisible(true);
-    steam(ox, oy + 120, 6);
+    speak(line("careful", "react"));
+    naan.setTexture("bk-naan-golden").setVisible(true);
+    steam(ox, rackY, 6);
     await Cook.wait(300);
-    await Cook.tween(S, { targets: naan, x: 330, y: 560, scale: naan.scale / 0.9, duration: 560, ease: "Cubic.easeInOut" });
-    steam(330, 520, 4);
-    open.setVisible(false);
-    shut.setVisible(true);
+    await Cook.tween(S, { targets: naan, x: hx, y: hy, scale: nk, duration: 560, ease: "Cubic.easeInOut" });
+    steam(hx, hy - 40, 4);
+    ov.setTexture("bk-oven-shut");
     UI.mission.closeItem(["ph-naan"], 0, { head: true });
-    const look = await Cook.Kit.review(S, { who, ok: true, x: 330, y: 300, size: 220, side: "right" });
+    const look = await Cook.Kit.review(S, { who, ok: true, x: hx, y: hy - 310, size: 220, side: "right" });
     await Cook.wait(400);
     await look.close();
   }
+
+  /** The words a round asks for (its plan's parts), for the word moment's due check. */
+  const askedIds = (plan) => [...new Set(plan.flatMap((s) => (s.parts || []).filter((x) => typeof x === "string")))];
 
   Mech.lab(KEY, {
     name: "Baking (prototype)",
@@ -435,6 +453,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval } from "../life.js
       const d = R.baking.make("nana", { level: L.level });
       const K = Mech.knobs(KEY, { level: L.level });
       d.plan = Cook.pick(K.plans || [[]]);
+      // the jug's amounts are a word moment (CHAI-67's system) before the order that first asks them: the kit's call with the game's
+      // settings (wordMoment: its pair, its jug pictures; ART-38's art to come)
+      if (UI.wordMoment && SET().wordMoment) await UI.wordMoment(askedIds(d.plan), SET().wordMoment);
       L.ctx.steps = R.baking.steps(d);
       L.card(d, L.ctx.steps);
       await L.station(KEY, { plan: d.plan, who: "nana" });
