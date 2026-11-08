@@ -10,36 +10,34 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, unchanged since 20261107T120301Z).
 
-**Where things stand (Sat 7 Nov 2026, ~22:45 UK):** Sprint 18 open (`docs/sprints/S18-kitchen-family.md`). **Wave 1 is done and
-merged**, nothing running:
-- **The kits:** (a) stove `Mech.boil`, hob, worktop; (b) `Cook.Kit.pan`, `Mech.pour` (.toGlass, .takeBack), `NjgServe`
-  (`js/shared/serve.js`); (c) `js/shared/shelf.js`, `Tally.label/.place`, `Juice.P.pop`; (d) `Onboard.light/.lesson`,
-  `Cook.Coach.*`; (e) `UI.personSay`, `OrderCard.TIMES`, "no" rows last. Reports `build/reports/s18-kit-{a..e}.md`; module map rows 5-8 updated.
-- **Chai on all five kit pieces**, each switch proven by `frozen.mjs --diff` (repeated changes replayed on the old code: CHAI-107's
-  glass-ring race, a boil-over puff, a card light, all variation). `chai-tray.js` 3,453 -> 2,219 lines. Reports `s18-chai.md`,
-  `s18-chai2.md`. CHAI-105/-106 were the checks (fixed), CK-60 built, chai re-frozen at 20:06.
-- **Chop** its own game (`Cook.Chop.play`, `gaps/chop.md`; daar loads it). **Prep:** eggs, baking, the corn stall cut, settings
-  written (`zone.js` carries them), flows added (they play to the end; 9 breaks of their own for wave 2).
-- New rows: DAAR-40, DAAR-41 (older than chop), CHAI-107. `frozen.mjs` takes the shared lock itself: never wrap it.
+**Where things stand (Sun 8 Nov 2026, ~05:15 UK):** Sprint 18 (`docs/sprints/S18-kitchen-family.md`): **waves 1-3 done and merged,
+nothing running; waiting on Zafar's word to publish** (decision 9).
+- **Wave 1:** the kits (stove, pans and pouring, serving, the shelf and pills, lights and lessons, the order's flow); chai on all
+  five, each switch proven by its frozen diff; chop its own game; eggs, baking, the corn stall prepared.
+- **Wave 2 (from 00:15, on Zafar's word):** all eight games on their settings files and the kits, copied code deleted, each with its
+  gap page `docs/design-language/standard/gaps/<game>.md` (missing rules down by about a third to a half per game).
+- **Wave 3:** the kit's asks (one page box, the stone band's shade, the word moment's own pair, daar's mistake-path light, chaat's
+  lesson in view), the checks' fixes, chop's step and decoys. Full run `s18-w3-full`: 176 pages (every game L1-L4, four sizes),
+  every end reached, 0 page errors; breaks: art low-res at 1920 (ART-59, ART-60), DAAR-43 (a phone light), the rest flaky on re-play.
+  Standard audits `build/reports/audit-standard-*-2026-11-08.md`. Fable: `build/reports/s18-w3-fable-verdicts.md` (films 9/10,
+  phones 3/10; the orchestrator's read below). All checks green.
 
-**Next, in order:**
-1. **Wave 2 at Sun 08:00** (decision 4): eight builders, specs and briefs ready (`build/tools/ops/specs/s18-g-*.json`, live-check
-   clean): daar, chaat, samosa, maani, sekelo, eggs, baking, corn; Opus high, $20-30 each, stop Sun 20:00; each in
-   `/home/user/wt/s18-g-<game>` (sparse, no `sources/`), gap page first.
-2. **Wave 3 at Sun 20:00:** merge, four-size audit with `--standard`, one new-player film per game, Fable's batches, publish by
-   Mon 07:00 on Zafar's word (decision 9), handover with his play list.
-3. For his play list: chai's two small changes from the kit (a face tap waits while someone speaks during a recast; the fallback
-   line skipped once the round moved on).
+**Zafar's play list (after the publish):** 1. Each kitchen game once, L1 on a phone and a laptop. 2. Chai's order strip scrolls
+sideways on phones (signed off as built; Fable calls it clipped): still happy? 3. Chai's two small kit changes (a face tap waits
+while someone speaks during a recast; a fallback line skipped once the round moved on). 4. Chaat keeps its wood board (the chop game
+has marble). 5. Eggs and the corn stall at a phone: Fable saw the screen stay dim through the cooking. 6. Orders said in parts
+("Muke ba samosa khape, ..."): Fable read the bubble as cut at the comma. 7. Baking's word moment at L3 (half, a cup).
 
-**Spend (builders' own estimates, not measured):** kit builders and prep about $8-15 each; chai's owner over its $40-60 line (four sessions, likely $70-90); wave 1 under its $190-285 overall.
+**Open rows from tonight:** DAAR-43, CK-61, CK-62 (eggs' order card picture empty), SH-235 (the "?" pop-up on a phone), CHAI-107,
+SAM rows, ART-60. **Questions:** eggs' five (`docs/questions.md`).
 
-**Open questions to Zafar** (`docs/questions.md`): 1. Chop's kinds at L1-L3 (1, 2, 3) and its swipe kept by design: yes?
+**Next:** on Zafar's word, `/publish` (`publish.mjs --force --words "<his words>"`), then his play and `/feedback`; Sprint 18's
+close (Outcome, look back); Sprint 19 (the pantry's polish).
 
 **Starting prompt for a new chat:**
 > First `git fetch origin ccr-31767b7f-rfyrg4` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S18-kitchen-family.md`; open nothing else until a
-> task needs it. Wave 1 is merged. At Sun 08:00 make the eight worktrees and launch wave 2 from the ready briefs, as the sprint
-> file says (Zafar's yes, 7 Nov); tell me before launching anything new beyond it.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only; open nothing else until a task needs it. Sprint 18's three waves are
+> merged; publish only on my word, then take my play notes with /feedback. Tell me before launching anything new.
 
 ## The fix list
 
