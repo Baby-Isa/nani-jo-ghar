@@ -117,9 +117,13 @@ and the orchestrator; Fable's full answer in `s18-fable-look-review.md`.
   the marble, walnut, no text, only the game's own items (the sekelo mocks invented murgi and dropped makai), the space other pieces
   need (the count pills, the side panel, the gear). Each mock becomes a one-page look sheet (numbered changes, each art, code or
   rejected). Exact top-down reference images attached for boards, trays and pans.
-- **The shelf art (Zafar's idea, 8 Nov):** draw the one shelf in a few views in one art run (straight on, about 10 degrees, top-down)
-  so every game gets the same shelf whatever its items. The orchestrator agrees: three views, not more, decided when the first mocks
-  show which are needed.
+- **The shelf art (Zafar, 8 Nov, amended):** one art run draws the one shelf at a set of angles, each **empty and with items** (so each
+  angle's contact shadows are captured too); more angles are cheap in one run and give consistency. **Measured (8 Nov):** a round rim's
+  height over its width is the sine of the camera's angle: ChatGPT's option 4 bowls measure 0.48 (both bowls), **about 29 degrees**;
+  chai's jars today measure about 0.12, **about 7 degrees**. So the set: 0, 7 (chai today), **29 (the key one, option 4)**, 45, and
+  top-down. One shelf has one camera: each game's shelf and everything on it share one angle (low bowls need about 30 to show what is
+  in them; tall jars read best near side-on). Which angle each game uses: decided from its mock. Fable's "10 degrees" was wrong for
+  the mock; the orchestrator's three views too few.
 - **Containers drawn on the shelf, then cut (Zafar's idea):** yes: drawn standing on the ledge, the contact reads real; cut with its
   shadow as a separate layer (the art bible's edit-in-place cut).
 
@@ -145,6 +149,7 @@ and the orchestrator; Fable's full answer in `s18-fable-look-review.md`.
 
 - ~05:30, eggs: the "no" item from L2; counts rise; never slower by level; chai's redo; overcook like chai, then redo.
 - ~06:10: publish what is built for his play; he defines each game's look; Fable's rebuild round not started.
+- ~17:00: the shelf art at several angles (0, 7, 29, 45, top-down), each empty and with items; 29 degrees (option 4) the key one.
 - ~16:00: yes to the six look decisions (publish chai's fixes; option 4 shelf, one rule, dough in a thali; shadows at half weight;
   the marble middle; the chai lab page first; mock-ups chai and sekelo first, then the rest), **amended:** the tray's size as in the
   mock; ChatGPT mocks for every screen, starting from the current layouts; maani's bottom panel tried both ways; the shelf drawn in a
