@@ -206,3 +206,15 @@ test("the queue's turns (Lifecycle say-start / say-end): a line asked for while 
   st.t = st.at = T + 890;
   assert.equal(of(run(page("cook:chai-tray", sorted(over))), "contract-7").length, 1);
 });
+
+test("contract-22: an item's grey English (a word with no Kutchi yet, said by the device) is an item word and may repeat; other repeated English is still a break", () => {
+  // corn's L2#mistake: "tamarind chutney" (ph-amli's gloss) said at the first try's tap and again at the redo's, role "hear"
+  const say = (text, role = "hear") => sorted([stage(T, ST), life(T, "stage-start", "cook:station"),
+    line(1, T + 8000, text, { role }), lineEnd(1, T + 8600), line(2, T + 10500, text, { role }), lineEnd(2, T + 11100)]);
+  assert.equal(of(run(page("cook:corn@L2#mistake", say("tamarind chutney"))), "contract-22").length, 0, "the item's gloss repeats");
+  assert.equal(of(run(page("cook:corn@L2#mistake", say("Tamarind Chutney"))), "contract-22").length, 0, "case aside");
+  // not an item: the same English line said twice is judged as before
+  assert.equal(of(run(page("cook:corn@L2#mistake", say("well done friend"))), "contract-22").length, 1, "other English");
+  // a Kutchi line of the same station is still a repeat
+  assert.equal(of(run(page("cook:corn@L2#mistake", say("Bhar!", "call"))), "contract-22").length, 1, "a step call");
+});
