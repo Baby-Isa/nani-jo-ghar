@@ -19,10 +19,10 @@ Fable's `s18-fable-what-went-wrong.md` and `s18-fable-look-review.md`.
   (`build/reports/frozen-diff-chai-tray-202611081519.md`), **not live**: the session's safety check blocked `publish.mjs`; it needs
   Zafar's explicit go or a permission rule.
 - **Running at handover:** the /feedback builder (worktree `/home/user/wt/s18-feedback-1108`, branch `s18-feedback-1108`) writing
-  `docs/feedback/kitchen-play-2026-11-08.md` and the rows; merge it into the branch when it hands back (keep both sides of the
+  the feedback report (docs/feedback, 8 Nov) and the rows; merge it into the branch when it hands back (keep both sides of the
   overnight log).
 
-**Next, in order:** 1. publish chai's fixes on his word; 2. merge the /feedback rows; 3. with Zafar, settle the review's ten
+**Next, in order:** 1. publish chai's fixes on his word; 2. merge the /feedback report and rows; 3. with Zafar, settle the review's ten
 principles (section 6); 4. plan the next round there (the kit's one scene and compulsory shared pieces with a side-by-side check;
 the chai lab for shadows and marble; ChatGPT mocks per screen; an art run; the games two at a time, each merged only beside chai).
 
