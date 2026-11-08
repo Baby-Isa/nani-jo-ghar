@@ -16,12 +16,15 @@
  },
  "scene": {
   "_about": "Sprint 18 (wave 2, STD-F2-03: a game's own numbers in its settings file): where daar's things stand, in design px on the 1600x900 grid (js/cook/stations/daar.js reads them as SC()). side: where the chopped pieces wait, counter while chopping (one row per vegetable, right to left from x), cook beside the hob (centred on x); pile: one piece's heap; chopTimer: chop's ring on the board; plainBowl: the plain daar on its trivet, waiting to pour (w: its round body); dial: the stir's speed dial's centre; serveBowl: the served bowl (w: its picture's width) and the review face over it; pop: the word pop's place from the pot's right rim (dx) and its centre (dy); pourMs: the daar's pour, each phase (the shared pour, SH-117).",
-  "side": {"counter": {"x": 1395, "y": 120, "row": 112}, "cook": {"x": 330, "y": 190, "row": 128}},
+  "side": {"counter": {"x": 1395, "y": 120, "row": 112}, "cook": {"x": 330, "y": 190, "row": 140}},
   "pile": 96,
   "chopTimer": {"x": 130, "y": 130},
   "plainBowl": {"x": 1250, "y": 330, "w": 230},
-  "dial": {"x": 1260, "y": 400},
-  "serveBowl": {"x": 1230, "y": 450, "w": 250},
+  "dial": {"x": 1260, "y": 300},
+  "serveBowl": {"x": 1250, "y": 548, "w": 186},
+  "katori": {"x": 1250, "y": 548, "w": 150},
+  "glass": {"d": 100, "pitch": 116},
+  "_s19": "S19 (Fable's daar flaws 8, 9 and 10): katori, the empty steel katori (t-steel-serving-bowl) waiting from the cook phase's first frame with the asker's face on its rim, where the daar is served (serveBowl: the same place, its steel bowl the katori's size, 0.78 of the picture); glass: each chopped heap's small glass bowl (d) and their pitch in a row, the rows 140 apart so a row's light never covers the next (DAAR-43); the dial raised to y 300 so the katori sits clear under it.",
   "pop": {"dx": 190, "dy": -150},
   "pourMs": {"lift": 420, "tip": 280, "pour": 1900, "untip": 220, "back": 300}
  },

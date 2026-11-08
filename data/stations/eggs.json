@@ -240,6 +240,12 @@
     "h": 190
    },
    "_note": "the table scene on the meal's kitchen (scene.bg): the people stand behind the island (its back edge at y 705), each plate slides onto the island at their seat (the breakfast and night kitchens' three wooden trays at x 457, 800, 1143, measured from bg-kitchen-morning.webp); the cat on the island's left end (a placeholder until Simba)"
+  },
+  "band": {
+   "top": 630,
+   "base": 818,
+   "chipY": 860,
+   "_note": "S19 (Fable's eggs flaw 3; chai's scene): the stone band across the bottom 30% (Shelf.BAND), the bowl and the shakers standing on its base, their pills on its chip line"
   }
  },
  "items": {
@@ -258,7 +264,8 @@
    "role": "vessel",
    "word": null,
    "drawn": {
-    "w": 375
+    "w": 340,
+    "_s19": "S19 (Fable's eggs flaw 4, layout only): 375 -> 340, so the pot's right handle ends 20 px short of the pan's round body on the next burner (the burners are 340 apart, the pan's body r 150); the pot's 45-degree art is an ART row"
    },
    "replaces": "assets/cook/items-s14/chai-pan/pan-water-s14.webp (chai's pan: the wrong vessel)",
    "_note": "one canvas, rim-registered (cell_align); handles included",
@@ -266,7 +273,9 @@
     "cx": 0.5,
     "cy": 0.499,
     "rIn": 0.3,
-    "_note": "the round body (cx, cy: its centre as fractions of the canvas) and the water inside it (rIn, of the width), measured from egg-pot-boil.webp: handles left and right, body centred"
+    "_note": "the round body (cx, cy: its centre as fractions of the canvas) and the water inside it (rIn, of the width), measured from egg-pot-boil.webp: handles left and right, body centred",
+    "r": 0.383,
+    "_r": "r: the pot's outer round body (its rim, handles left out), of the width: 377 px tall on the 492 px canvas (S19, the light's body, CK-63)"
    }
   },
   "pan": {
@@ -366,15 +375,16 @@
    ],
    "word": "n.egg",
    "drawn": {
-    "w": 230
+    "w": 160
    },
    "at": [
     150,
-    520
+    818
    ],
    "replaces": "assets/cook/proto/egg-bowl.webp",
    "_note": "tap: an egg lifts out; the picture follows the count left",
-   "chipY": 660
+   "chipY": 860,
+   "_s19": "S19 (Fable's eggs flaw 3): the bowl stands on chai's stone band (St.stoneBand, Shelf.BAND: its foot on the base 818, its pill on the chip line 860), drawn 160 wide so it and its hop fit the band's room (Shelf.itemTop 647); was floating at y 520 over the marble"
   },
   "shakerSalt": {
    "size": "S",
@@ -388,13 +398,14 @@
    "drawn": {
     "w": 90
    },
-   "at_y": 560,
+   "at_y": 818,
    "levels": [
     3,
     4
    ],
    "_note": "partial alpha (glass)",
-   "at_x": 340
+   "at_x": 340,
+   "_s19": "S19: on the stone band, its foot on the base 818 (the bowl's line)"
   },
   "shakerPepper": {
    "size": "S",
@@ -408,12 +419,13 @@
    "drawn": {
     "w": 90
    },
-   "at_y": 560,
+   "at_y": 818,
    "levels": [
     3,
     4
    ],
-   "at_x": 470
+   "at_x": 470,
+   "_s19": "S19: on the stone band, its foot on the base 818 (the bowl's line)"
   },
   "eggCupTop": {
    "size": "S",

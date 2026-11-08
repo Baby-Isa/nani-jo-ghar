@@ -329,6 +329,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       ["dv3-ladle", "assets/cook/items-s08c/kadchi/kadchi-daal-s08c.webp"], // DAAR-02: s08c KD1
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
+      // S19 (Fable's daar flaws 8 and 9): the small glass bowl each chopped heap waits in, and the empty steel katori they are served in
+      ["dv5-glass", "assets/cook/items-s17-stove/t-small-glass-bowl.webp"],
+      ["dv5-katori", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp"],
     ]
       .concat(POTS.map((st) => [`dv3-pot-${st}`, `${V3}pot-${st}.webp`]))
       .concat([["dv4-pot-top", `${S08B}daar-pot-top-s08b.webp`]], Object.values(DISCS).map(([key, file]) => [key, `${S08B}daar-discs/${file}.webp`]))
@@ -421,10 +424,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     }
     if (phases.cook) UI.gist(phases.cook);
     const kz = Mech.zone(S, ctx, { id: "cook", level });
-    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps, gate });
+    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps, gate, who });
     if (peek) UI.mission.closeCards(false);
     steps.done();
-    await serve(kz, { who, pot: cooked.pot });
+    await serve(kz, { who, pot: cooked.pot, katori: cooked.katori });
     kz.close();
     St.end();
     const result = { chopped: chopped.got, tadka: cooked.order, stirred: cooked.stirred };
@@ -665,7 +668,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const blade = (St.hasArt(S, "knife") && (St.art("knife").meta || {}).blade) || KNIFE_BLADE;
     // Sprint 18 (wave 2): chop's own game (Cook.Chop.play, js/cook/stations/chop.js) at its settings for the level, graded there; daar
     // keeps the pieces flying to the side (onSlice, KEEP-02) and Nani's card (onCall, onCount). Was the mechanic run here, graded here
-    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: SC().chopTimer });
+    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: SC().chopTimer, band: { base: BASE, chipY: CHIP_Y } });
     const cut = r.cut;
     const wrong = r.wrong;
     // (a sliced decoy falls away: it never reaches the pot; a count short marks its row on the order card, the first try's)
@@ -680,7 +683,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   }
 
   /* ---------- 2: tadka and stir in the v3 pot on the kit hob (one burner, one pot) ---------- */
-  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps, gate }) {
+  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps, gate, who }) {
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
@@ -698,6 +701,39 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       ctl = Cook.Coach.control({ key: "daar", target: Cook.Coach.box(obj), first: true, noHint: true, note: `${gate.scope}:s14-control` });
     };
     backdrop(z, S);
+    /*
+     * SH-228 (Zafar, 6 and 8 Nov: chai's method in every game): the stuck help on each of the cook's steps, after the level's wait from
+     * the last action (the central rules' hintS; a child's time: the kit divides a game's wait by the test speed, contract-24 and -91 read
+     * it in real time), at once after a wrong move: Nani's helper card naming the thing, else her line again, with the light round the
+     * thing (o.thing, its picture or litBounds: the knob, a row's bowls, the daar). A spice past support is never lit (the light would be
+     * the answer: STD-D2-05, non-negotiable 4), her card or line only.
+     */
+    let stk = null;
+    const R0 = global.Rules || (global.Tokens && global.Tokens.rules) || null;
+    const stuckOn = (obj) => {
+      if (stk) stk.close();
+      stk = null;
+      if (!Cook.Coach || !Cook.Coach.stuck) return;
+      const glowing = { on: false };
+      stk = Cook.Coach.stuck({
+        key: "daar",
+        level,
+        target: obj ? Cook.Coach.box(obj) : null,
+        hintMs: () => ((R0 && R0.hintMs ? R0.hintMs(Cook.roundLevel(ctx) || level) : 0) || 7000) * (Cook.speed || 1),
+        glow: obj && obj.type === "Image"
+          ? (on) => {
+              if (glowing.on === on || !obj.active) return;
+              glowing.on = on;
+              S.glow(obj, on);
+            }
+          : null,
+        note: "daar:s14-stuck",
+      });
+    };
+    const stuckOff = () => {
+      if (stk) stk.close();
+      stk = null;
+    };
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
     const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
     const bodyR = z.L(150);
@@ -753,25 +789,49 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const Cc = SC().side.cook;
     const piles = {};
     const hits = {};
+    const glassOf = {};
     let vbowl = null;
+    // S19 (Fable's daar flaw 9; chai's tray carries the asker's face from the first frame): the empty katori they will be served in waits
+    // right of the hob from the start, the asker's face circle (the kit's badge) on its rim
+    const katori = serveKatori(z, S, who);
     if (side === "bowl" && chopped.rows.length) {
       vbowl = S.track(S.add.image(z.X(Cc.x), sy(z, 330), "dv3-vegbowl").setDepth(D.item));
       vbowl.setScale(z.L(230) / 484);
       vbowl.shadow = S.contactShadow(vbowl);
       hits.bowl = vbowl;
     } else {
+      // S19 (Fable's daar flaw 8: "a pink flower-shaped sprinkle hangs in the air left of the hob"): each chopped heap waits in its own
+      // small glass bowl on the worktop (a top-down picture with its contact shadow), so it stands on something; still one heap per piece
+      // and one row per vegetable, the rows counted and tapped as before (KEEP-02: chopped things wait at the side, you add them in)
+      const GL = SC().glass || { d: 100, pitch: 116 };
       chopped.rows.forEach((id, r) => {
         const n = chopped.got[id];
         const y = sy(z, Cc.y + r * Cc.row);
+        const glass = [];
         piles[id] = Array.from({ length: n }, (_, i) => {
-          const x = z.X(Cc.x + (i - (n - 1) / 2) * PITCH_OF(id));
+          const x = z.X(Cc.x + (i - (n - 1) / 2) * GL.pitch);
+          if (S.textures.exists("dv5-glass")) {
+            const gb = S.track(S.add.image(x, y, "dv5-glass").setDepth(D.item));
+            gb.setScale(z.L(GL.d) / gb.width);
+            gb.shadow = S.contactShadow(gb);
+            glass.push(gb);
+          }
           const im = S.track(S.add.image(x, y, `dv2-chop-${id}`).setDepth(D.item + 0.1 + i * 0.001));
-          im.setScale(z.L(heapSize(id)) / Math.max(im.width, im.height));
+          im.setScale(z.L(Math.min(heapSize(id), GL.d * 0.74)) / Math.max(im.width, im.height));
+          im.baseS = im.scale;
           return im;
         });
-        const w = z.L(Math.max(1, n) * PITCH_OF(id) + 30);
-        const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(PILE_() + 16), 0xffffff, 0.001).setDepth(D.item + 0.4));
+        glassOf[id] = glass;
+        const w = z.L(Math.max(1, n) * GL.pitch);
+        const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(GL.d + 10), 0xffffff, 0.001).setDepth(D.item + 0.4));
         hit.wordId = id;
+        // DAAR-43 (the phone, 740x320: the light hugged the tap box and covered the next row): its light is round its bowls' pictures, the
+        // kit's lights read thing.litBounds (Cook.Coach.box, C.parts)
+        hit.litBounds = () => {
+          const bs = (glass.length ? glass : piles[id] || []).filter((o) => o.active).map((o) => o.getBounds());
+          if (!bs.length) return hit.getBounds();
+          return { x: Math.min(...bs.map((b) => b.x)), y: Math.min(...bs.map((b) => b.y)), right: Math.max(...bs.map((b) => b.right)), bottom: Math.max(...bs.map((b) => b.bottom)) };
+        };
         hits[id] = hit;
       });
     }
@@ -785,7 +845,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     dBowl.shadow = S.contactShadow(dBowl);
     const items = shelf(z, S, spiceIds, level);
     Object.values(items).forEach((o) => o.setAlpha(0.6));
-    const waiting = [dBowl].concat(vbowl ? [vbowl] : [], ...Object.values(piles));
+    const waiting = [dBowl].concat(vbowl ? [vbowl] : [], ...Object.values(piles), ...Object.values(glassOf));
     waiting.forEach((o) => o.setAlpha(0.7));
 
     // 1. the knob: the oil is hot at once, and the sizzle says so (S16: no heating ring)
@@ -794,7 +854,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // T13: Chulo bar! (the step line; at level 1 said as it opens, from level 2 after a pause)
     lead("cook-fire", burner.knob);
     steps.to("daar:fire");
+    stuckOn(burner.knob);
     await tapOnce(z, S, burner.knobHit, "knob", { glow: z.guided });
+    stuckOff();
     lead(null);
     steps.done();
     S.tweens.killTweensOf(burner.knob);
@@ -855,7 +917,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const group = series[si];
       const next = group[0];
       spiceStep(next, false);
+      const hidesIt = !!(global.Onboard && global.Onboard.hintHides && global.Onboard.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(next) : null, study: !!ctx.guided }));
+      stuckOn(hidesIt ? null : items[next]);
       const r = await St.freePick(z, { items, next, doneOk: false, help });
+      stuckOff();
       steps.poke();
       const id = r.id;
       order.push(id);
@@ -918,19 +983,54 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
 
     // 3. the chopped vegetables, one pile at a time (D9: each row ticks as it goes in), then the daar
     waiting.forEach((o) => o !== dBowl && S.tweens.add({ targets: o, alpha: 1, duration: 200 }));
+    /*
+     * S19 (Fable's daar flaw 10: "the chopped onion never reaches the pot and the dish appears in one jump"): each heap flies from its
+     * bowl into the pot in turn and lies on the oil as the pot's picture comes up a share at a time (one heap of three: a third of the
+     * way), so the pot fills step by step and the heaps melt into it; the empty glass bowls go once their row is in.
+     */
+    let pend = null; // the pot picture coming up over the last: {st, top}
+    const potTo = (st, frac, ms) =>
+      new Promise((r) => {
+        if (st === state && !pend) return r();
+        if (!pend || pend.st !== st) pend = { st, top: S.track(discAt(S.add.image(cx, cy, discTex(S, st))).setRotation(contents.rotation).setDepth(D.item + 0.06).setAlpha(0)) };
+        const p0 = pend;
+        S.tweens.add({
+          targets: p0.top,
+          alpha: Math.min(1, frac),
+          duration: ms,
+          onComplete: () => {
+            if (frac >= 1 && pend === p0) {
+              state = st;
+              contents.setTexture(discTex(S, st));
+              discAt(contents);
+              p0.top.destroy();
+              pend = null;
+            }
+            r();
+          },
+        });
+      });
     const into = async (id, imgs) => {
       Cook.sfx.whoosh();
-      await Promise.all(
-        imgs.map((b, i) => {
-          const a = i * 2.1 + 0.4;
-          const rr = 0.2 + ((i * 0.37) % 0.4);
-          return S.fly(b, cx + Math.cos(a) * inR * rr, cy + Math.sin(a) * inR * rr, { scale: b.scale * 0.5, duration: 380 + i * 50, arc: z.L(90) });
-        })
-      );
-      imgs.forEach((b) => S.tweens.add({ targets: b, alpha: 0, duration: 260, onComplete: () => b.destroy() }));
-      Cook.sfx.sizzle(1);
+      if (id) wentIn.add(id);
+      mix |= VEG_BIT[id] || 0;
+      const want = MIX_POT[mix];
+      const n = Math.max(1, imgs.length);
+      for (let i = 0; i < imgs.length; i++) {
+        const b = imgs[i];
+        const a = i * 2.1 + 0.4;
+        const rr = 0.2 + ((i * 0.37) % 0.4);
+        await S.fly(b, cx + Math.cos(a) * inR * rr, cy + Math.sin(a) * inR * rr, { scale: b.scale * 0.7, duration: 380, arc: z.L(90) });
+        Cook.sfx.sizzle(0.6);
+        b.setDepth(D.item + 0.1);
+        S.tweens.add({ targets: b, alpha: 0, duration: 700, onComplete: () => b.destroy() });
+        if (want !== state || pend) potTo(want, (i + 1) / n, 360);
+        if (i < imgs.length - 1) await Cook.wait(260);
+      }
+      if (!imgs.length && want !== state) await potTo(want, 1, 420);
+      (glassOf[id] || []).forEach((g) => S.tweens.add({ targets: g, alpha: 0, duration: 300, onComplete: () => g.destroy() }));
       S.puff(cx, cy, 0xfff1c0, z.L(50));
-      addVeg(id);
+      await Cook.wait(380);
     };
     Cook.daarPhase = "piles";
     let left = Object.keys(hits);
@@ -940,10 +1040,12 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const pick = {};
       left.forEach((id) => (pick[id] = hits[id]));
       Object.values(pick).forEach((h) => S.tweens.add({ targets: piles[h.wordId] || h, scale: "*=1.05", duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" }));
+      stuckOn(hits[left[0]] || null);
       const r = await St.freePick(z, { items: pick, next: left[0], doneOk: false });
+      stuckOff();
       lead(null);
       left.forEach((id) => S.tweens.killTweensOf(piles[id] || hits[id]));
-      left.forEach((id) => (piles[id] || []).forEach((im) => im.setScale(z.L(heapSize(id)) / Math.max(im.width, im.height))));
+      left.forEach((id) => (piles[id] || []).forEach((im) => im.setScale(im.baseS || z.L(heapSize(id)) / Math.max(im.width, im.height))));
       if (vbowl) vbowl.setScale(z.L(230) / 484);
       left = left.filter((id) => id !== r.id);
       if (r.id === "bowl") {
@@ -977,7 +1079,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const split = splitTrivet(S, dBowl, plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET);
     S.tweens.add({ targets: dBowl, alpha: 1, duration: 200 });
     S.tweens.add({ targets: dBowl, scale: dBowl.scale * 1.05, duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
+    stuckOn(dBowl);
     await tapOnce(z, S, dBowl, "daar", { glow: z.guided });
+    stuckOff();
     lead(null);
     steps.done();
     S.tweens.killTweensOf(dBowl);
@@ -1102,7 +1206,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     }
     steps.done();
     burner.set("off");
-    return { order, wrong, stirred, pot: { img: pot, cx, cy, bodyR, inR, pieces } };
+    return { order, wrong, stirred, pot: { img: pot, cx, cy, bodyR, inR, pieces }, katori };
   }
 
   /**
@@ -1661,7 +1765,34 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * (the kit's review, Cook.Kit.review). (Its old "not quite" path, the order said again and the bowl taken back, was never
    * reached since decision 51 and is gone.)
    */
-  async function serve(z, { who, pot }) {
+  /**
+   * S19 (Fable's daar flaw 9, STD-E2-07): the serving place carries the asker's face from its first frame, as chai's tray does: the empty
+   * steel katori (scene.katori) with their face circle (the kit's badge: 64 design px, at least 30 CSS px as seen, at most 90) over its
+   * top-left rim, at the badge depth. -> {img, face} (img null without its picture)
+   */
+  function serveKatori(z, S, who) {
+    const KT = SC().katori || { x: 1250, y: 548, w: 150 };
+    const img = S.textures.exists("dv5-katori") ? S.track(S.add.image(z.X(KT.x), sy(z, KT.y), "dv5-katori").setDepth(D.item - 0.2)) : null;
+    if (img) {
+      img.setScale(z.L(KT.w) / img.width);
+      img.shadow = S.contactShadow(img);
+    }
+    let face = null;
+    if (who && Cook.Kit && Cook.Kit.badge) {
+      const perPx = Math.max(0.01, (UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
+      const r = z.L(KT.w) / 2;
+      // (on the rim's upper left, along its diagonal: the face's middle just inside the rim)
+      const x = z.X(KT.x) - r * 0.72;
+      const y = sy(z, KT.y) - r * 0.72;
+      face = S.track(S.add.image(x, y, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
+      face.setName("daar-katori-face");
+      if (img) img.face = face;
+    }
+    return { img, face };
+  }
+
+  async function serve(z, { who, pot, katori }) {
     const S = z.S;
     z.expect({ kind: "wait" });
     // a bowl of daar, ladled from the pot, on its wooden trivet beside it
@@ -1676,6 +1807,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     bowl.setScale(bs * 0.8);
     bowl.shadow = S.contactShadow(bowl);
     const fill = plain ? bowlFill(S, bowl, pot) : null;
+    // (the daar ladled into the katori: the served bowl comes up in its place, the empty one goes under it; its face stays on top)
+    if (katori && katori.img) S.tweens.add({ targets: katori.img, alpha: 0, duration: 300, onComplete: () => katori.img.active && katori.img.destroy() });
     await Cook.tween(S, { targets: fill ? [bowl, fill] : bowl, alpha: 1, scale: bs, duration: 300, ease: "Back.easeOut" });
     Cook.sfx.pop();
     S.steam(bowl.x, bowl.y - z.L(40), 3);
