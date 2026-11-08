@@ -8,9 +8,10 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, unchanged since 20261107T120301Z).
+**Handover branch:** `ccr-31767b7f-rfyrg4` (Sprint 18's integration branch; `main` is the live site, 20261108T142321Z).
 
-**Update ~06:00: publish ON HOLD.** Zafar saw baking's play screen (a floating bowl, no shelf, a round light): baking, eggs and the
+**Update ~14:25: published for Zafar's play** (20261108T142321Z), Fable's round not started (his word): he plays, then describes what each
+game should look like. **Earlier, ~06:00:** Zafar saw baking's play screen (a floating bowl, no shelf, a round light): baking, eggs and the
 corn stall are not in chai's kitchen, and others differ. Fable's review and plan: `build/reports/s18-fable-what-went-wrong.md` (a
 kitchen scene in the kit every game must use, structural and side-by-side checks, one more round); his 7 questions there.
 
@@ -61,6 +62,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 ---
 
 ## What is live (the game on `main`)
+
+8 Nov 2026, published ~14:25 UK (713908a8, 20261108T142321Z): Sprint 18's three waves for Zafar's play: the kits, chai on them (its frozen run unchanged), chop its own game, every kitchen game moved onto its settings file and the kits (eggs, baking and the corn stall still labs prototypes in their own scenes), the checks' and kit's fixes; `--force --words` on his word ("just publish it all to main ... so I can play it").
 
 7 Nov 2026, published 00:21 UK (a8e7c99b, 20261107T001739Z): Zafar's 6 Nov night chai notes (the boil's sound, the light rule, the style tea's card, each person's own words, the word moment's pour, drop, counter and card), the art runs' zip and colour check; `--force` on his word ("push them through quickly").
 
