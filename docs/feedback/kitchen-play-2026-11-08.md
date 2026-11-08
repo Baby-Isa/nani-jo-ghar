@@ -88,7 +88,8 @@ Also said: "the silver dishes ... they're fine" (2:12, maani's plates); "corn is
 
 ## Questions and principles (for the orchestrator to put to Zafar; no rows)
 
-1. **The counting principle, every game (P1, P39; his "do help me establish it").** The spoken order and its headline carry the number
+1. **The counting principle, every game (P1, P39; his "do help me establish it"). It overturns an earlier rule (a single item said
+   without "one"); his maani call at 0:52 ("keep it for now") was provisional, pending this principle.** The spoken order and its headline carry the number
    ("I want two fried eggs"); the order card holds one item card per thing, each naming the thing alone (two "fried egg" cards, four
    "gos" cards on a skewer), so no card says "one"; the he/she forms of one are still heard in the sentences. **Recommend yes, for every
    game; the per-game rows (P18, P38, P13) then follow it.**
@@ -102,11 +103,21 @@ Also said: "the silver dishes ... they're fine" (2:12, maani's plates); "corn is
 5. **A minimum green zone (P40).** He asks for a rule that the green is long enough to hit; this week's decision was no shared timing
    rule (timings per game). **Recommend: a floor in the shared rules (a shortest green per level, every timed control), each game's own
    timings above it; the floor set from chai's green, which he plays happily, and measured in each game.**
-6. **Judgement (P25, P37 "how can that pass").** Every game must look like chai on sight; the orchestrator and the judge compare each
+6. **Judgement (P25, P37 "how can that pass ... please explain it to me").** The answer he asked for (the orchestrator, 8 Nov): the eggs
+   pan's light passed because no check asks whether a light is centred on its thing and whole round it (contract-92 asks only that it
+   does not cover a neighbour), the judge's batches never asked it, and the orchestrator merged on "0 breaks" without looking beside
+   chai (`build/reports/s18-review-and-direction.md` section 2). Every game must look like chai on sight; the orchestrator and the judge compare each
    game beside chai's frame before anything reaches him, and his ideas are improved, not waited for. **Recommend yes: Fable's side-by-side
    check (`sidebyside.mjs`) as the gate for every kitchen game.**
 7. **The hop rule's wording (P8, his "maybe I should tighten that rule").** "Only things on the shelf (the bottom bar) hop when lit; pans,
    boards and things in play never." **Recommend yes (SH-237 is drafted that way).**
+
+## Second reader
+
+Fable read the transcript and the drafted rows only (`build/reports/s18-feedback-1108-second-reader.md`): 4 missing, 2 weakened.
+Two "missing" were artefacts of a cut-off questions file (judgement and the hop rule are questions 6 and 7). Fixed: the answer to
+"how can that pass" (question 6), samosa's X button (SH-238), the "one" rule's history (question 1), the rolling board in SH-230.
+Both readers: 0 unmapped, 0 weakened after the fixes.
 
 ## 3. Rows
 
