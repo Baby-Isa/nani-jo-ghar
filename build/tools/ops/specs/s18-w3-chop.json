@@ -8,7 +8,7 @@
   "branch": "s18-w3-chop in /home/user/wt/s18-w3-chop (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "build/reports/s18-g-chaat.md (the ask's exact code)",
     "build/reports/s18-chop.md, s18-g-daar.md"

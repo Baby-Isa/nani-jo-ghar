@@ -1,0 +1,76 @@
+{
+  "name": "s19-checks: every existing check audited one by one (keep, fix or retire, with its record), then the three-part gate: shared-piece code checks, full-size side-by-side frames beside chai, frame strips round onboarding, and the eye judge's rubric",
+  "model": "Opus",
+  "effort": "high",
+  "why": "judgement on each check's worth (Zafar, 8 Nov: 'written in blood, don't throw them away for no reason'); the eye judge's procedure",
+  "cost": "about $40-55",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-checks in /home/user/wt/s19-checks (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "tools",
+  "browser": true,
+  "live": true,
+  "read": [
+    "build/reports/s18-review-and-direction.md (In one page, sections 2, 6 principle 10, and 10)",
+    "build/reports/s18-eye-judge-experiment.md (whole: the rubric, the result and its three changes)",
+    "docs/process/checks-to-build.md",
+    "docs/architecture/evidence-loop.md",
+    "build/sandbox/README.md"
+  ],
+  "owns": [
+    "build/tools/review/** (except approved-shots.json entries you did not add)",
+    "build/sandbox/lib/**",
+    "build/sandbox/*.test.mjs",
+    "build/sandbox/run.mjs",
+    "build/lint/**",
+    "build/test_cook_mount.mjs",
+    "docs/process/checks-to-build.md",
+    "docs/process/check-audit.md (new: the audit, one entry per check)",
+    "docs/process/eye-judge-rubric.md (new)",
+    "docs/tools.md",
+    "docs/architecture/evidence-loop.md",
+    ".claude/agents/judge.md",
+    ".claude/skills/review/SKILL.md",
+    "build/reports/s19-checks.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/** (s19-cards is changing the cards and buttons beside you: build checks against the agreed end state and test them on fixtures)",
+    "build/sandbox/data/evidence.json (s19-cards owns its rows' entries; a change you need there goes in your report as an exact request)"
+  ],
+  "stubs": "none",
+  "port": 8893,
+  "report": "s19-checks",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray", "cook:maani-line", "cook:mishkaki-grill", "cook:daar", "cook:eggs"
+  ],
+  "tasks": [
+    {
+      "do": "The audit, one check at a time (Zafar, 8 Nov: these were 'written in blood'; nothing goes without a reason). List every check we have: each step of checks.mjs, each rule family of build/lint/static.mjs, every contract row in build/sandbox/lib/contract.mjs (CONTRACT_ROWS), the leak bots, evidence.mjs's lint and probes, frozen.mjs, loadcheck, layout tests, the review tools (kitmap, kitsheet, panelcheck, pillcheck, lightfollow, tapgate, teachgate, spkgap, shotdiff, faces and the rest), the hooks, and the standard's 'Checked by' rows. For each, find out from the code, git log (`git log -S`/`--grep`) and docs/process/regressions.md ('found by', the row it guards): (1) does it run today, (2) has it ever caught a real problem (name the row or commit), (3) what it costs (time, flakiness, false alarms, blocked work), (4) the verdict: KEEP, FIX (then fix it), or RETIRE (only when it costs more than it is worth, and say why in one line with the evidence). Write docs/process/check-audit.md, one entry per check. Do not delete a retired check's code: move it out of the default run and mark it retired with the reason, so it can come back.",
+      "accept": "docs/process/check-audit.md covers every check with run / caught / cost / verdict; each FIX fixed with a test; checks.mjs green"
+    },
+    {
+      "do": "checks.mjs must finish: today the default run did not finish in 5 minutes (8 Nov). Find what is slow or hanging; the fast run stays under about 3 minutes (move the browser load step behind a flag if it is the cause, and say so in docs/tools.md).",
+      "accept": "`time node build/tools/review/checks.mjs` in the report"
+    },
+    {
+      "do": "Part 1, the shared pieces are there (code checks, contract rows on every kitchen flow at L1-L4): chai's 6 Nov item card and type (no old card, strip or count box: no .oc-box); Nani's box with its drop-down; one light layer and the kit's light only (no game's own glow or ghost finger); no tick, next or X button; every item card's picture is the item's card picture, never a shelf crate; a first-time light centred on and whole round its thing (its picture and its pill, with the margin), never half on a handle (contract-92 asks only about neighbours; the eggs pan case); the light gone within 300 ms of the child starting the move; only shelf items hop. Each a fixture test red then green; on today's code they are expected to fail on most games (that is the point: they gate the next merges); list the failures per game.",
+      "accept": "each new row's fixture test; a table of today's results per game in the report"
+    },
+    {
+      "do": "Part 2, `build/tools/review/sidebyside.mjs`: for a game, play chai and the game to the same key moments (order in the sidebar, the first-time light, the first kind-tap, mid-cook, the serve, well done, the end) at 740x320 and 1280x665, and write full-size pairs (chai left, game right) plus close-ups of the order card and Nani's box beside chai's, into one folder with an index page; plus a judge batch file that asks the rubric's questions with the pictures. Use the existing film and evidence players; no new browser plumbing if one exists.",
+      "accept": "sidebyside run on maani and daar today, its folder named in the report; a test"
+    },
+    {
+      "do": "Part 3, frame strips: for each first-time light and lesson moment, a strip of frames about 100-150 ms apart from 0.5 s before to 2 s after, so motion and timing can be judged (two fingers, a light that stays, a flash in flight).",
+      "accept": "strips for maani's roll and first pile today in the sidebyside folder"
+    },
+    {
+      "do": "The eye judge: docs/process/eye-judge-rubric.md from the experiment's 38 questions (build/reports/s18-eye-judge-experiment.md section 1), pruned of what part 1 now checks in code, plus the overall question 'would a premium, Toca Boca-level game ship this?'; .claude/agents/judge.md and .claude/skills/review/SKILL.md updated so a merge's judging is: part 1 green, then the judge on sidebyside's batch with the rubric, flaws first. The merge rule (principle 10, proposed, not yet agreed: say so): nothing merges that sidebyside shows worse than chai at the same moment unless a look sheet accepted it.",
+      "accept": "the rubric file; the judge and review files updated; one dry run of the judge on maani's batch, its verdict file named"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); commit on your branch every 30-40 minutes, never push; never change game code (js/**, css/**, data/**): a needed change goes in your report; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-checks.md with a Proof section, under 700 words, plus docs/process/check-audit.md"
+    }
+  ]
+}

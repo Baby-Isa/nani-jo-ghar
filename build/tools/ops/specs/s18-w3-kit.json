@@ -8,7 +8,7 @@
   "branch": "s18-w3-kit in /home/user/wt/s18-w3-kit (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "docs/sprints/S18-kitchen-family.md (wave 3's kit list)",
     "build/reports/s18-g-samosa.md, s18-g-baking.md, s18-g-eggs.md, s18-g-corn.md, s18-g-daar.md (each ask's exact code)",

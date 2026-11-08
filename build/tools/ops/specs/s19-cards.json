@@ -1,0 +1,91 @@
+{
+  "name": "s19-cards: chai's cards, Nani's box and the ticking order card in every kitchen game; no tick, next or X buttons; the old card's relics gone",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the shared order card and pop-up reach every game; judgement on each game's 'complete' moment; chai's frozen diff guards",
+  "cost": "about $40-55",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-cards in /home/user/wt/s19-cards (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "build/reports/s18-review-and-direction.md (In one page, sections 2-4)",
+    "docs/feedback/kitchen-play-2026-11-08.md (the points your rows name)",
+    "build/reports/s18-eye-judge-experiment.md (sections 3-6: the flaws your tasks name)",
+    "docs/design-language/guide-and-card.md ('The 6 Nov card')",
+    "docs/architecture/module-map.md"
+  ],
+  "owns": [
+    "js/cook/ui.js",
+    "js/cook/flow.js",
+    "js/cook/order.js",
+    "js/cook/station-lib.js",
+    "js/cook/words.js",
+    "js/shared/order-card.js",
+    "js/shared/request-popup.js",
+    "js/shared/word-card.js",
+    "js/shared/results.js",
+    "css/shared/order-card.css",
+    "js/cook/stations/*.js (only the order, card, tick-button, next-button and done paths)",
+    "js/cook/mechanics/*.js (only the tick-button, next-button and done paths)",
+    "data/cook.json, data/stations/*.json (card pictures, card English, Nani's lines)",
+    "build/sandbox/data/evidence.json (your rows' entries only)",
+    "build/frozen/chai-tray/**",
+    "docs/language/recording-sheet.md (gaps you find)",
+    "lab/kit.html (the card's section)",
+    "build/reports/s19-cards.md"
+  ],
+  "readOnly": [
+    "js/cook/coach.js, js/shared/onboard.js, js/shared/guide.js (the lights builder, next)",
+    "build/tools/review/**, build/sandbox/lib/**, build/sandbox/*.test.mjs (s19-checks, running beside you)"
+  ],
+  "stubs": "none",
+  "port": 8892,
+  "report": "s19-cards",
+  "publish": false,
+  "specsByBuilder": true,
+  "flows": [
+    "cook:chai-tray", "cook:maani-line", "cook:mishkaki-grill", "cook:daar", "cook:chaat",
+    "cook:samosa", "cook:eggs", "cook:corn", "cook:baking", "cook:chop"
+  ],
+  "rows": ["SH-227", "SH-240", "SH-149", "SH-241", "DAAR-44", "SH-238", "SH-239", "SH-242", "SEK-24", "CK-62", "SH-235", "CHAI-107", "SAM-31"],
+  "tasks": [
+    {
+      "do": "The roll-out (SH-227, SH-240, SH-149): `UI.TYPE_ALL` on, so every kitchen game draws chai's 6 Nov item card (its line above the speaker, the Kutchi and English alignment), the 6 Nov type and Nani's box with its drop-down and one-line wrap, exactly as chai does. Then delete the old card, type, strip, count box and big-card paths the switch leaves unused, and every game's own copy of a shared card or box.",
+      "accept": "grep shows one card path; every flow's contract at 1280x665 0 breaks; chai's frozen diff clean (or each change shown and explained)"
+    },
+    {
+      "do": "No relic of the old order card (SH-241, DAAR-44, SAM-31's card part): ordered steps, a kind of several (samosa's 'trae samosa'), daar's chop card and the tadka's pop-up (`UI.mission.request`) all on the 6 Nov item cards and the 6 Nov big card; no arrow strip, old count box or old pop-up anywhere. Daar shows one order card, not two (Fable's daar flaw 6), and its order pops one item card at a time as said, never a row of text chips (flaw 7). Samosa's redesign is NOT yours: only its card.",
+      "accept": "no .oc-box, strip or old pop-up in any flow's DOM at L1-L4 (a contract row); daar and samosa contracts 0 breaks"
+    },
+    {
+      "do": "No tick, next or X button in any game (SH-238): `UI.done` and every game's own tick or next button go; each step and each order moves on by itself the moment it is complete (maani when the asked maanis are made, daar's stir when stirred, chaat when its layers are in, samosa when its count is filled, and so on: read each mechanic's own completion). The '?' text that named the tick or 'the gold ring' (maani) says what the child does instead. Never remove the mechanic itself.",
+      "accept": "grep and a contract row: no tick/next/X button in any flow at L1-L4; each flow still reaches its end screen"
+    },
+    {
+      "do": "The order card ticks as you go (SH-239): each item card ticks the moment that item is made or placed; the person's 'well done' waits until their whole card is complete; then the round ends. Chai already does this: share its path.",
+      "accept": "a contract row: every row ticks before the serve, the praise only after the last; maani at L1 shows two ticks before the end"
+    },
+    {
+      "do": "One of the thing on a card (SH-242, SEK-24, CK-62): an item card's picture is the item's own card picture (one onion, one tomato, the egg), never the shelf's crate or heap (`Cook.shelfPic` stops being the card's first picture); eggs' empty picture box filled from its settings art. Where no single picture exists, keep the nearest and add an ART row to docs/process/regressions.md naming the picture needed.",
+      "accept": "a contract row: every item card's img is the item's card picture at L1-L4 of every kitchen game; a script-made crop of daar's onion, sekelo's tomato and eggs' card in the report"
+    },
+    {
+      "do": "Fable's text and panel flaws (build/reports/s18-eye-judge-experiment.md): sekelo's card English one or two plain words, no bracketed gloss (sekelo 4); daar's 'Firai! Trae! aste thi' is a stitched fragment: show the full sentence's English in grey italic and log the gap in docs/language/recording-sheet.md (non-negotiable 2; never invent Kutchi) (daar 2); daar's 'Pela loon. Ne poi hardar.' becomes one step at a time (daar 3); the word review never lists a connective like 'ne poi' (daar 11); maani's pop bubble names the item, not the whole sentence wrapped to two lines, and its pop-out never covers the play area on a phone (maani 5).",
+      "accept": "a script-made crop of each in the report; the flows' contracts 0 breaks"
+    },
+    {
+      "do": "SH-235: the shared '?' pop-up fits any goal at 740x320 (shrink, then wrap, then scroll; never cut). CHAI-107: the tick's praise waits about 0.5 s so the last glass's ring is heard, in the kit so every game gets it; chai's frozen diff shows only that change.",
+      "accept": "baking's help-open at 740x320 whole with a 60-word goal (a fixture); the frozen diff's sfx line for the last glass"
+    },
+    {
+      "do": "Out of scope, write in your report if you meet them, do not do: the counting rule and one card per thing (SEK-25, CK-64: waiting on Zafar and Mum), samosa's redesign, the shelf and scene, the lights and first-time lessons (the next builder), one stir (DAAR-45).",
+      "accept": "the report lists anything met"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-cards.md with a Proof section and before-and-after crops (script-made) of each row, under 600 words"
+    }
+  ]
+}
