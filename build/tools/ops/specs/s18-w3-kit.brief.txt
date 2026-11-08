@@ -1,0 +1,85 @@
+SESSION NAME / MODE:  s18-w3-kit: wave 3's kit fixes (one page box, the stone band's shade, the word moment's own pair, daar's mistake-path light)
+MODEL AND EFFORT:     Opus, high effort (kit changes reaching every game; chai's frozen diff guards)
+COST ESTIMATE:        about $25-35
+HARD STOP:            Sun 8 Nov 2026, 12:00 UK. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               s18-w3-kit in /home/user/wt/s18-w3-kit (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s18-w3-kit.context.md (860 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/sprints/S18-kitchen-family.md (wave 3's kit list)
+     build/reports/s18-g-samosa.md, s18-g-baking.md, s18-g-eggs.md, s18-g-corn.md, s18-g-daar.md (each ask's exact code)
+     docs/architecture/module-map.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/coach.js
+  - js/cook/station-lib.js (stoneBand only)
+  - js/cook/ui.js (wordMoment only)
+  - js/shared/word-moment.js
+  - js/cook/stations/chai-tray.js
+  - js/cook/stations/samosa.js
+  - js/cook/stations/baking.js
+  - js/cook/stations/eggs.js
+  - js/cook/stations/corn.js
+  - js/cook/stations/daar.js
+  - data/stations/baking.json
+  - build/frozen/chai-tray/**
+  - build/reports/s18-w3-kit.md
+READ-ONLY (never edit):
+  - js/cook/mechanics/assemble.js, data/stations/chaat.json (the chaat builder, still running)
+  - build/sandbox/** (s18-w3-checks)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. One shared page box in js/cook/coach.js (`Cook.Coach.box(o, pad)`, the asks in samosa's, baking's, eggs' and corn's reports); replace chai's pageRect and each game's own copy with it (delete the copies).
+     Accept: one box helper; the copies gone (grep); each touched game's contract at 1280x665 0 breaks
+  2. SAM-29: `St.stoneBand` draws its 3 px top shade; chai's own shade lines (chai-tray.js ~402-404) go. Then `node build/tools/review/frozen.mjs --diff` (never wrapped in flock): no change on chai, or each repeated change shown on the old code too.
+     Accept: samosa's worktop has its shade again (a script-made crop in the report); chai's frozen diff clean
+  3. `UI.wordMoment(ids, set)` takes a game's own pair, key and pictures (baking's ask, exact code in its report); wire baking's jug word moment (half and full are recorded words adh, aako; the other amounts grey English). Chai's word moment unchanged.
+     Accept: baking L4 shows its word moment; chai's frozen diff clean; baking contract 0 breaks
+  4. DAAR-42: daar's mistake path at L2 moves its old `St.coach` first-time light onto kit (d)'s lights, so a wrong tap is never eaten.
+     Accept: cook:daar@L2#mistake contract 0 breaks
+  5. Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building; `checks.mjs --only <yours>`; commit on your branch, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; if you need a file you don't own, write the exact change in your report.
+     Accept: build/reports/s18-w3-kit.md with a Proof section, under 500 words
+
+KEEP (what Zafar liked in chai, samosa, baking, eggs, corn, daar: never change it without his word; 12):
+  KEEP-01: Underline while a line is spoken; order card and pop-up are "the bar we want to set"
+  KEEP-02: Daar: chopped things wait at the side and you add them in
+  KEEP-03: Samosa: oil looks better, frying is fun, adding samosas is fun, slotted-spoon lift is good
+  KEEP-04: Samosa fold swipe stays and feels great; no dashed line, no red dot
+  KEEP-11: Nana's voice; Nani and Nana talking; two-person chai; maani speed; the greeting hand gesture
+  KEEP-12: The card that shows then blanks words; chai highlighted at the start; calling out items as they go in · 26 Oct: the blanking keeps only with each row's speaker 
+  KEEP-13: Pantry wrong-item handling; cooker on early is fine; daar dial and rotation; samosa fry and frying handle
+  KEEP-15: Chai: the pan's boiling bubbles and the flames ("the tea animation with the bubbles")
+  KEEP-16: Liked, 17 Oct: daal chop ("so much better ... the knife ... really nice"); the stir speed indicator ("looks very good"); chai's replayed order on a pot tap ("ve
+  KEEP-18: Liked, 22 Oct: chai's water bouncing with its own glow ("I like that the water is bouncing", "has a bit of a glow"); the rectangle; "the onboarding is clear"; "
+  KEEP-19: Liked, 22 Oct: "it's becoming a lot clearer and easier to play and easier to understand ... a very positive strong step" (Sprint 11's direction)
+  KEEP-21: Liked, 1 Nov: "The half mechanism for level 4 kind of works well, actually. In terms of the pouring, it works quite well. It's quite clever"; "I had a quick loo
+
+REGRESSION ROWS TO RECHECK (2; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (2): SAM-29*, DAAR-42*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s18-w3-kit.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8890 NJG_LOCK=/tmp/njg-browser-8890.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s18-w3-kit.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8890.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:samosa,cook:baking,cook:eggs,cook:corn,cook:daar --sizes 740x320,930x430,1280x665,1920x1080 --run-id s18-w3-kit-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s18-w3-kit.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s18-w3-kit.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8890.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8890; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s18-w3-kit.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

@@ -8,7 +8,7 @@
   "branch": "s18-g-daar in your own worktree /home/user/wt/s18-g-daar (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "docs/sprints/S18-kitchen-family.md (the sprint: 'Coded well', wave 2)",
     "docs/architecture/module-map.md (the kit's calls)",

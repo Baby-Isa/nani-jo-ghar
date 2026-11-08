@@ -1,0 +1,74 @@
+{
+  "name": "s18-w3-kit: wave 3's kit fixes (one page box, the stone band's shade, the word moment's own pair, daar's mistake-path light)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "kit changes reaching every game; chai's frozen diff guards",
+  "cost": "about $25-35",
+  "stop": "Sun 8 Nov 2026, 12:00 UK",
+  "branch": "s18-w3-kit in /home/user/wt/s18-w3-kit (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (wave 3's kit list)",
+    "build/reports/s18-g-samosa.md, s18-g-baking.md, s18-g-eggs.md, s18-g-corn.md, s18-g-daar.md (each ask's exact code)",
+    "docs/architecture/module-map.md"
+  ],
+  "owns": [
+    "js/cook/coach.js",
+    "js/cook/station-lib.js (stoneBand only)",
+    "js/cook/ui.js (wordMoment only)",
+    "js/shared/word-moment.js",
+    "js/cook/stations/chai-tray.js",
+    "js/cook/stations/samosa.js",
+    "js/cook/stations/baking.js",
+    "js/cook/stations/eggs.js",
+    "js/cook/stations/corn.js",
+    "js/cook/stations/daar.js",
+    "data/stations/baking.json",
+    "build/frozen/chai-tray/**",
+    "build/reports/s18-w3-kit.md"
+  ],
+  "readOnly": [
+    "js/cook/mechanics/assemble.js, data/stations/chaat.json (the chaat builder, still running)",
+    "build/sandbox/** (s18-w3-checks)"
+  ],
+  "stubs": "none",
+  "port": 8890,
+  "report": "s18-w3-kit",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray",
+    "cook:samosa",
+    "cook:baking",
+    "cook:eggs",
+    "cook:corn",
+    "cook:daar"
+  ],
+  "rows": [
+    "SAM-29",
+    "DAAR-42"
+  ],
+  "tasks": [
+    {
+      "do": "One shared page box in js/cook/coach.js (`Cook.Coach.box(o, pad)`, the asks in samosa's, baking's, eggs' and corn's reports); replace chai's pageRect and each game's own copy with it (delete the copies).",
+      "accept": "one box helper; the copies gone (grep); each touched game's contract at 1280x665 0 breaks"
+    },
+    {
+      "do": "SAM-29: `St.stoneBand` draws its 3 px top shade; chai's own shade lines (chai-tray.js ~402-404) go. Then `node build/tools/review/frozen.mjs --diff` (never wrapped in flock): no change on chai, or each repeated change shown on the old code too.",
+      "accept": "samosa's worktop has its shade again (a script-made crop in the report); chai's frozen diff clean"
+    },
+    {
+      "do": "`UI.wordMoment(ids, set)` takes a game's own pair, key and pictures (baking's ask, exact code in its report); wire baking's jug word moment (half and full are recorded words adh, aako; the other amounts grey English). Chai's word moment unchanged.",
+      "accept": "baking L4 shows its word moment; chai's frozen diff clean; baking contract 0 breaks"
+    },
+    {
+      "do": "DAAR-42: daar's mistake path at L2 moves its old `St.coach` first-time light onto kit (d)'s lights, so a wrong tap is never eaten.",
+      "accept": "cook:daar@L2#mistake contract 0 breaks"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building; `checks.mjs --only <yours>`; commit on your branch, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s18-w3-kit.md with a Proof section, under 500 words"
+    }
+  ]
+}

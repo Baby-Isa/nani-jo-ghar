@@ -1,0 +1,54 @@
+{
+  "name": "s18-w3-checks: wave 3's check fixes (contract-22's grey English, the hook's fading lights, loadcheck's new stations)",
+  "model": "Sonnet",
+  "effort": "high",
+  "why": "check code, mechanical",
+  "cost": "about $8-12",
+  "stop": "Sun 8 Nov 2026, 10:00 UK",
+  "branch": "s18-w3-checks in /home/user/wt/s18-w3-checks (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4",
+  "kind": "tools",
+  "browser": true,
+  "live": true,
+  "read": [
+    "docs/sprints/S18-kitchen-family.md (wave 3's kit list)",
+    "build/reports/s18-g-corn.md, s18-g-baking.md (the asks' exact code)"
+  ],
+  "owns": [
+    "build/sandbox/lib/contract.mjs",
+    "build/sandbox/lib/contract-hook.mjs",
+    "build/sandbox/*.test.mjs",
+    "build/tools/review/loadcheck.mjs",
+    "build/tools/review/*.test.mjs",
+    "build/reports/s18-w3-checks.md"
+  ],
+  "readOnly": [
+    "js/** (the games and kits)"
+  ],
+  "stubs": "none",
+  "port": 8891,
+  "report": "s18-w3-checks",
+  "publish": false,
+  "flows": [
+    "cook:corn",
+    "cook:baking",
+    "cook:eggs"
+  ],
+  "tasks": [
+    {
+      "do": "contract-22 counts an item's grey English (a word with no Kutchi yet, said by the device) as an item word, which may repeat (corn's L2#mistake: 'tamarind chutney' twice). A fixture test red then green.",
+      "accept": "the unit test; cook:corn@L2#mistake contract-22 green"
+    },
+    {
+      "do": "The contract hook's spotNow skips a light layer that is fading out (no class 'on'), corn's ask.",
+      "accept": "a fixture test; corn and chai contracts unchanged otherwise"
+    },
+    {
+      "do": "loadcheck.mjs reads each station's settings `assets` (data/stations/<k>.json) as its manifest and checks baking, eggs and corn.",
+      "accept": "loadcheck green on the three; the checks.mjs load step includes them"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building; `checks.mjs --only <yours>`; commit on your branch, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s18-w3-checks.md with a Proof section, under 400 words"
+    }
+  ]
+}

@@ -24336,5 +24336,47 @@
    "note": "samosa's fill and fold: a placeholder in the first pass (decision 7), the real art later",
    "delay": 0
   }
+ ],
+ "SAM-29": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "note": "the worktop's 3 px top shade, drawn by the kit's stone band",
+   "delay": 0
+  }
+ ],
+ "DAAR-42": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/sandbox/run.mjs --contract --flow cook:daar@L2#mistake --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "contract-21 on daar's mistake path: no wrong tap eaten by a first-time light",
+   "delay": 0
+  }
  ]
 }
