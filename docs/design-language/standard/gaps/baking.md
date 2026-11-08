@@ -5,7 +5,8 @@ s18-g-baking-pre` (205 House and Family rules, read against my contract run of `
 judge, 47 gap, 91 not run; that run: 17 breaks, contract-24 12, contract-98 3, contract-23 2), then my read of the game
 (`js/cook/stations/baking.js`, `data/stations/baking.json`). Where the audit's pass or fail is chai's probe, the score is baking's own.
 
-**Scores before the build:** 0: 14 · 1: 36 · 2: 138 · 3: 15 · 4: 0 · 5: 0 · dbd: 2
+**Scores before the build:** 0: 14 · 1: 36 · 2: 138 · 3: 15 · dbd: 2. **Updated** the same night after the build (a note
+ending "(build)"; the audit re-read against s18-g-baking-contract, the four sizes at L1 and L4, 0 breaks): 0: 14 · 1: 17 · 2: 152 · 3: 20 · 4: 0 · 5: 0 · dbd: 2
 
 **The scale:** 0 n/a · 1 missing · 2 built, unproven · 3 check green · 4 judged · 5 his "done" · dbd different by design (dated).
 **Next:** Kit (a kit piece still to build) · Adopt (take a kit piece: (d) lights and lessons, (e) the order's flow) · Game code ·
@@ -43,12 +44,12 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-01-05 | H | judge | 1 | Check | never judged as a game |
 | STD-01-06 | H | not run | 2 | Check |  |
 | STD-01-07 | H | gap | 2 | Check | no verdict: "that's good", "enough"; a tap past the amount adds nothing |
-| STD-01-08 | H | not run | 1 | Game code | block 1 landed from his runs (BK, BB, BJ, BO, BN) but not wired: the wall, jug, mound and oven are drawn in code |
+| STD-01-08 | H | not run | 2 | Art | the landed block wired (build); the cat and the word moment placeholders |
 | STD-01-09 | H | not run | 2 | Check | naan, flour, milk, yoghurt; the reward is the naan to Nana |
 | STD-02-01 | H | gap | 2 | Check | no child-pace play |
 | STD-02-02 | H | gap | 2 | Check | the containers by picture and chip; the amount by her voice |
 | STD-02-03 | H | gap | 2 | Check | every action a tap |
-| STD-02-04 | H | judge | 2 | Check | never played at the four sizes |
+| STD-02-04 | H | judge | 3 | Check | contract green at the four sizes, L1 and L4 (build) |
 | STD-02-05 | H | not run | 2 | Check |  |
 
 ## A Learning
@@ -64,7 +65,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-A2-03 | H | fail | 2 | Adopt | the card kit's blur (the audit's fail is chai's probe) |
 | STD-A2-04 | H | not run | 2 | Adopt | (d) |
 | STD-A2-05 | H | not run | 2 | Adopt | (d) |
-| STD-A3-01 | H | fail | 1 | Kit | the jug's amounts need a word moment; UI.wordMoment is chai's half and full only |
+| STD-A3-01 | H | fail | 1 | Kit | the jug's moment's settings and call are in (build); the kit's call plays chai's pair only (asked) |
 | STD-A3-02 | H | fail | 1 | Kit | as A3-01 |
 | STD-A3-03 | H | gap | 1 | Kit | as A3-01; its art ART-38 |
 | STD-A3-04 | H | judge | 2 | Art | the jug's five even lines, no numbers; ART-38's measure |
@@ -112,7 +113,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-C1-02 | H | gap | 1 | Kit | naan first met here; the amounts by the word moment (A3) |
 | STD-C2-01 | H | not run | 2 | Check | L1 two turns, L2 three with "more", L3 the jug, L4 four with the jug's other lines |
 | STD-C2-02 | H | not run | 2 | Check | turns 2, 3, 3, 4 |
-| STD-C2-03 | H | not run | 1 | Game code | decoys 1, 2, 3, 3 from its own file, not the rules (4, a lookalike at L4) |
+| STD-C2-03 | H | not run | 2 | Check | the rules' 1-4 and the L4 lookalike, St.tableDecoys (build); contract-37 does not judge baking yet |
 | STD-C2-04 | H | not run | 1 | Decision | no "no" asks at any level |
 | STD-C2-05 | H | not run | 2 | Adopt | (e) |
 | STD-C2-06 | H | not run | 1 | Decision | only the oven is timed, and it is longer at L4 (4.2 s against 3.6) |
@@ -133,19 +134,19 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-D1-01 | H | not run | 1 | Adopt | its own first() on seenStation, not the kit's gate (d) |
-| STD-D1-02 | H | gap | 1 | Adopt | a bounce glow only: no dim, no box (d) |
-| STD-D1-03 | H | judge | 2 | Adopt | (d) |
+| STD-D1-01 | H | not run | 2 | Check | the kit's gate, Cook.Coach.firsts (build) |
+| STD-D1-02 | H | gap | 2 | Check | the kit's light: the dim, the gold box (build) |
+| STD-D1-03 | H | judge | 2 | Check | one light at a time, closed as its thing is done (build) |
 | STD-D1-05 | H | gap | 0 | none | no small part |
-| STD-D1-06 | H | pass | 1 | Adopt | lit at once, no breath, the call apart (d's control) |
+| STD-D1-06 | H | pass | 2 | Check | Cook.Coach.control for the tip, bowl, oven and naan (build) |
 | STD-D1-07 | H | fail | 1 | Adopt | no card light (d) |
-| STD-D1-08 | H | fail | 1 | Adopt | contract-98 3 breaks L2-L4: no reveal lessons (d) |
+| STD-D1-08 | H | fail | 3 | Check | contract-98 green L1-L4: the lessons as each row is revealed (build) |
 | STD-D1-09 | H | not run | 0 | none | no timed control |
 | STD-D1-10 | F | fail | 0 | none | no next vessel |
-| STD-D2-01 | H | fail | 1 | Adopt | contract-24 12 breaks: the tip, the bowl and the oven glow at once (d) |
+| STD-D2-01 | H | not run | 3 | Check | contract-24 green L1-L4 (build) |
 | STD-D2-02 | H | not run | 2 | Check | the shared step names the item asked now |
-| STD-D2-03 | H | fail | 1 | Adopt | as D2-01 |
-| STD-D2-04 | H | not run | 1 | Adopt | the bowl and oven steps have no stuck hint |
+| STD-D2-03 | H | not run | 3 | Check | contract-24 green (build) |
+| STD-D2-04 | H | not run | 2 | Check | each control's stuck hint; a wrong pick rushes it (build) |
 | STD-D2-05 | H | not run | 2 | Adopt | (d) |
 | STD-D2-06 | F | pass | 0 | none | no timed control |
 | STD-D3-01 | H | not run | 2 | Adopt | (e) |
@@ -175,15 +176,15 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-E2-05 | H | pass | 3 | Check | contract-76, -83 green |
 | STD-E2-06 | H | gap | 2 | Check |  |
 | STD-E2-07 | H | not run | 2 | Check | the review's face is the kit's |
-| STD-E2-08 | H | judge | 1 | Adopt | no lit box (d) |
-| STD-E3-01 | H | not run | 1 | Game code | the containers at one height; the bowl, jug and oven drawn at their own sizes, not the items' classes |
-| STD-E3-02 | H | fail | 1 | Game code | the wall, tiles, counter, jug and its fill, the mound, the oven and its door, the stream drawn in code |
+| STD-E2-08 | H | judge | 3 | Check | contract-92, -53 green (build) |
+| STD-E3-01 | H | not run | 2 | Check | sizes and places from the settings' items (build) |
+| STD-E3-02 | H | fail | 2 | Art | pictures now (build); code draws the bake ring, steam and the drops for salt, yoghurt, ghee |
 | STD-E3-03 | F | not run | dbd | Decision | the side-on counter, his mock-up (1 Nov), not the marble |
 | STD-E3-04 | F | judge | 0 | none | no hob |
 | STD-E3-05 | F | gap | 0 | none | no one at the counter |
 | STD-E4-01 | H | fail | 2 | Check | the door swaps two pictures by design |
 | STD-E4-02 | H | pass | 3 | Check | contract-83 green |
-| STD-E4-03 | F | gap | 1 | Game code | the naan unseen while it bakes; its raw, puff and golden pictures landed |
+| STD-E4-03 | F | gap | 2 | Check | the oven's baking picture and ring; the naan raw in, golden out (build) |
 | STD-E4-04 | H | gap | 2 | Check |  |
 | STD-E5-01 | H | pass | 3 | Check | contract-7, -22 green |
 | STD-E5-03 | H | not run | 2 | Check |  |
@@ -195,14 +196,14 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-F1-01 | H | gap | 1 | Adopt | its own lights, first-time gate, pour stream and oven |
-| STD-F1-02 | H | not run | 1 | Game code | its own first-time gate (as chai's old first14) and its own lit-at-once glows |
-| STD-F1-03 | H | gap | 1 | Game code | containers, colours, jug lines and art paths in code; its settings' scene and items unread |
+| STD-F1-01 | H | gap | 2 | Check | the kit's lights, lessons, decoys (build) |
+| STD-F1-02 | H | not run | 2 | Check | its own first() gate and lit-at-once glows deleted (build) |
+| STD-F1-03 | H | gap | 2 | Check | the settings file read for its scene, items, word moment (build) |
 | STD-F1-04 | H | not run | 2 | Check |  |
 | STD-F1-05 | H | gap | 2 | Check | all on its old code |
 | STD-F1-06 | H | judge | 3 | Check | brief.mjs --live-check |
-| STD-F2-02 | H | not run | 1 | Game code | decoys from its file, not the rules |
-| STD-F2-03 | F | gap | 1 | Game code | places, sizes and the jug's lines in code |
+| STD-F2-02 | H | not run | 2 | Check | decoys from the rules (build) |
+| STD-F2-03 | F | gap | 2 | Check | places, sizes, the jug's lines in its settings (build) |
 | STD-F2-04 | H | gap | 2 | Check |  |
 | STD-F3-01 | H | fail | 2 | Check |  |
 | STD-F3-02 | H | not run | 2 | Check |  |
@@ -211,7 +212,7 @@ Art · Words · Decision · Check. Scope: H House, F Family. Audit: what `--stan
 | STD-F3-05 | H | not run | 2 | Check | z.expect |
 | STD-F3-06 | H | judge | 2 | Check | the cat's endless tween, z.tick |
 | STD-F4-02 | H | judge | 2 | Check |  |
-| STD-F4-03 | H | fail | 1 | Game code | loads the 1 Nov crops, not its settings' assets |
+| STD-F4-03 | H | fail | 2 | Check | only what the round draws, from its settings (build); loadcheck lacks baking (asked) |
 | STD-F4-04 | H | not run | 2 | Check |  |
 | STD-F4-05 | H | judge | 2 | Check |  |
 | STD-F4-06 | H | not run | 2 | Check |  |
