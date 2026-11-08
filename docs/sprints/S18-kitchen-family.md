@@ -168,6 +168,9 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - contract-83 is flaky: re-run once before calling it red.
 
 ## Small decisions
+- 8 Nov ~05:30 (Zafar), eggs: 1. the "no" item from L2, as in chai; 2. counts rise level by level; 3. cooking never gets slower at a
+  higher level: the same speed at every level for now ("then see"); 4. chai's redo at the table; 5. eggs **can overcook, like chai**,
+  and an overcooked egg is redone (back in the pan, try again). Every kitchen game: cooking stays the same or gets quicker by level.
 - 8 Nov ~00:30 (Zafar): chop's levels follow the rules' level table (`data/rules.json` count.games.chop: kinds 1-4, chops 2-4-6-8 by
   level); chop keeps its swipe ("yes to swipe": STD-02-03 different by design).
 - 7 Nov ~15:00 (the orchestrator, from the standard's F1): the module map is `docs/architecture/module-map.md`; the pans and their

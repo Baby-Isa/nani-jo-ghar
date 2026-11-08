@@ -2,15 +2,6 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
-### Sprint 18 (8 Nov)
-
-- **Eggs at breakfast** (s18-g-eggs; its gap page `gaps/eggs.md`), five ways it differs from chai's standard. Recommendations:
-  1. The "no" item from L2, as in chai (today L4 only): yes.
-  2. L3 asks fewer eggs than L2: make the counts rise level by level (the rules' level table): yes.
-  3. Cooking gets slower by level: leave it to play testing (your 8 Nov word on timings): no change now.
-  4. No redo at the table: add chai's redo (the tick and recast): yes.
-  5. No overcooking: keep as different by design (nothing makes a child feel bad): yes.
-
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.
