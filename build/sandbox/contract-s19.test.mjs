@@ -93,7 +93,11 @@ test("contract-104: a blank picture or the shelf's crate on an item card is a br
   assert.equal(out.length, 2);
   assert.match(out[0].msg, /shelf's heap/);
   assert.match(out[1].msg, /has no picture/);
-  const green = [...ST, c(1000, "s19card", { cards: 1, lora: true, old: [], pics: [{ word: "dungri", src: "assets/cook/items/v3/daar/onion-one.webp", ok: true }, { word: "hakro cup atto", src: "assets/cook/items/shelf-cook-atto-bare-f.webp", ok: false, hidden: true }] })];
+  const green = [...ST, c(1000, "s19card", { cards: 1, lora: true, old: [], pics: [{ word: "dungri", src: "assets/cook/items/v3/daar/onion-one.webp", ok: true }, { word: "hakro cup atto", src: "assets/cook/items/shelf-cook-atto-bare-f.webp", ok: false, hidden: true }] }), c(3000, "s19card", { cards: 0, pics: [] })];
+  // chai L3, 8 Nov: the second card drawn again, its pictures loading for 300 ms, is not blank; one still not in after 600 ms is
+  const redraw = (ok) => c(30400, "s19card", { cards: 2, lora: true, old: [], pics: [{ word: "paani", src: "assets/cook/items/shelf-cook-paani-bare-f.webp", ok }] });
+  assert.equal(run(check104, R, [...ST, redraw(false), c(30700, "s19card", { cards: 2, lora: true, old: [], pics: [{ word: "paani", src: "assets/cook/items/shelf-cook-paani-bare-f.webp", ok: true }] })]).length, 0);
+  assert.match(run(check104, R, [...ST, redraw(false), c(31200, "s19card", { cards: 2, lora: true, old: [], pics: [{ word: "paani", src: "assets/cook/items/shelf-cook-paani-bare-f.webp", ok: true }] })])[0].msg, /did not load/);
   assert.equal(run(check104, R, green).length, 0);
 });
 
@@ -117,6 +121,9 @@ test("contract-105: CK-63, the light half on the pan's handle and off its middle
   const card = { kind: "card", id: "card:hakri maani", box: [142, 152, 258, 347] };
   const region = [...ST, c(1000, "s19lit", { holes: [[1, 73, 351, 376]], things: [card], near: [], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })];
   assert.match(run(check105, R, region)[0].msg, /frames a region 4\.\d times the size of card:hakri maani/);
+  // samosa L3, 8 Nov: a light on the dotted part of an item card (under half of it) is contract-97's
+  const chunda = { kind: "card", id: "card:trae chunda", box: [19, 208, 134, 388] };
+  assert.equal(run(check105, R, [...ST, c(1000, "s19lit", { holes: [[32, 283, 122, 344]], things: [chunda], near: [], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })]).length, 0);
   const ok = [...ST, c(1000, "s19lit", { holes: [[94, 494, 206, 646]], things: [jar], near: [], vw: 1280, vh: 665 }), c(2000, "s19lit", { holes: [] })];
   assert.equal(run(check105, R, ok).length, 0);
 });
