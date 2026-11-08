@@ -20,7 +20,7 @@ test("the parked modes' bots wait for --full; the live games' always run", () =>
 
 test("the load check takes the one browser lock every run takes", () => {
   const src = readFileSync(new URL("./checks.mjs", import.meta.url), "utf8");
-  assert.match(src, /"flock", \["-w", "1800", "\/tmp\/njg-browser-all\.lock"/);
+  assert.match(src, /locked\(\["timeout", "900", process\.execPath, "build\/tools\/review\/loadcheck\.mjs"\], \{ wait: 1800 \}\)/);
   assert.doesNotMatch(src, /"\/tmp\/njg-browser\.lock"/);
 });
 
@@ -31,4 +31,15 @@ test("one browser lock: no review or sandbox tool takes the old /tmp/njg-browser
   const files = [...readdirSync(join(root, "build/tools/review")).filter((f) => f.endsWith(".mjs")).map((f) => join("build/tools/review", f)), "build/tools/review/leak-games/cook.mjs", "build/sandbox/run.mjs", "build/test_cook_mount.mjs", ...readdirSync(join(root, "build/sandbox/lib")).filter((f) => f.endsWith(".mjs")).map((f) => join("build/sandbox/lib", f))];
   const bad = files.filter((f) => !f.endsWith("checks.test.mjs") && readFileSync(join(root, f), "utf8").replace(/it was \/tmp\/njg-browser\.lock/g, "").includes("/tmp/njg-browser.lock"));
   assert.deepEqual(bad, []);
+});
+
+test("a browser step takes the one lock unless an ancestor flock holds it (a nested flock on one lock waits for itself)", async () => {
+  const { locked, underLock, BROWSER_LOCK } = await import("./lib/common.mjs");
+  assert.equal(BROWSER_LOCK, "/tmp/njg-browser-all.lock");
+  assert.deepEqual(locked(["node", "x.mjs"], { held: false, lock: BROWSER_LOCK, wait: 60 }), ["flock", "-w", "60", BROWSER_LOCK, "node", "x.mjs"]);
+  assert.deepEqual(locked(["node", "x.mjs"], { held: true }), ["node", "x.mjs"]);
+  // the process tree: this test <- flock -w 3600 /tmp/njg-browser-all.lock node ... <- bash
+  const procs = { [`/proc/${process.ppid}/cmdline`]: "node\0x", [`/proc/${process.ppid}/stat`]: "1 (node) S 77 ", "/proc/77/cmdline": ["flock", "-w", "3600", BROWSER_LOCK, "node"].join("\0"), "/proc/77/stat": "77 (flock) S 1 " };
+  assert.equal(underLock(BROWSER_LOCK, (p) => { if (!(p in procs)) throw new Error("gone"); return procs[p]; }), true);
+  assert.equal(underLock("/tmp/other.lock", (p) => { if (!(p in procs)) throw new Error("gone"); return procs[p]; }), false);
 });

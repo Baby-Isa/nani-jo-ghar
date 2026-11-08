@@ -17,7 +17,7 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
-import { args, help, ROOT, RUNS } from "./lib/common.mjs";
+import { args, help, ROOT, RUNS, locked } from "./lib/common.mjs";
 
 export const MOMENTS = [["order", "the order in the side panel"], ["light", "the first first-time light"], ["kind", "the first move"], ["mid", "mid-cook"], ["serve", "the serve"], ["praise", "well done"], ["end", "the end screen's word review"]];
 export const GAMES = ["maani-line", "mishkaki-grill", "daar", "chaat", "samosa", "eggs", "corn", "baking", "chop"];
@@ -82,7 +82,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const flows = flowsFor(game, level);
   if (!a.val("run")) {
     const cmd = [process.execPath, join(ROOT, "build/sandbox/run.mjs"), "--contract", "--keyframes", "--flow", flows.join(","), "--sizes", sizes.join(","), "--parallel", "2", "--no-sheets", "--run-id", runId];
-    const full = a.has("no-lock") ? cmd : ["flock", "-w", "3600", "/tmp/njg-browser-all.lock", "timeout", "1800", ...cmd];
+    const full = a.has("no-lock") ? cmd : locked(["timeout", "1800", ...cmd]);
     console.log(`sidebyside: playing ${flows.join(" and ")} at ${sizes.join(", ")} (run ${runId})`);
     const r = spawnSync(full[0], full.slice(1), { cwd: ROOT, stdio: "inherit", env: { ...process.env, COOK_TEST_PORT: process.env.COOK_TEST_PORT || "8893" } });
     if (r.status !== 0 && r.status !== 1) { console.error(`sidebyside: the run stopped (exit ${r.status})`); process.exit(r.status || 1); }

@@ -29,7 +29,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { args, help, ROOT } from "./lib/common.mjs";
+import { args, help, ROOT, locked } from "./lib/common.mjs";
 
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
@@ -126,7 +126,9 @@ steps.size = async () => {
   return line("size", r.status === 0, r.stdout.trim().split("\n").pop() || `sitesize.mjs exited ${r.status}`);
 };
 steps.load = async () => {
-  const r = await go("flock", ["-w", "1800", "/tmp/njg-browser-all.lock", "timeout", "900", process.execPath, "build/tools/review/loadcheck.mjs"]);
+  // (under the one browser lock, taken here unless the caller holds it already: a nested flock would wait for itself)
+  const cmd = locked(["timeout", "900", process.execPath, "build/tools/review/loadcheck.mjs"], { wait: 1800 });
+  const r = await go(cmd[0], cmd.slice(1));
   const last = (r.stdout.trim().split("\n").pop() || "").trim();
   return line("load", r.status === 0, last || `loadcheck exited ${r.status}`, r.status !== 0 ? (r.stdout.match(/^(FAIL.*|\s{7}assets\/.*)$/gm) || []).slice(0, 10).map((l) => l.trim()) : []);
 };

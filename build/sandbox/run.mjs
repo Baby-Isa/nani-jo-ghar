@@ -9,6 +9,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { ROOT, SIZES, ALL_SIZES, STORE_SIZES, QUICK_SIZE, PORT, startServer, launch, newPage } from "./lib/env.mjs";
 import { KeyFrames } from "./lib/keyframes.mjs";
+import { locked } from "../tools/review/lib/common.mjs";
 import { Recorder } from "./lib/recorder.mjs";
 import { makeSheets } from "./lib/sheets.mjs";
 import { mergeSound } from "./lib/sound.mjs";
@@ -77,7 +78,9 @@ if (has("--gate") && !has("--chunk")) {
   while (code === 75 && chunks < 60) {
     chunks++;
     log(`gate chunk ${chunks} (run ${runId}): waiting for the browser lock`);
-    const r = spawnSync("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", "timeout", "1200", process.execPath, process.argv[1], "--gate", "--chunk", "--all", "--parallel", val("--parallel") || "3", "--budget-min", val("--budget-min") || "13", "--run-id", runId, "--resume", runId, ...passthru], { stdio: "inherit", env: process.env });
+    // (each chunk under the one browser lock, taken here unless the caller's flock holds it: a nested flock would wait for itself)
+    const cmd = locked(["timeout", "1200", process.execPath, process.argv[1], "--gate", "--chunk", "--all", "--parallel", val("--parallel") || "3", "--budget-min", val("--budget-min") || "13", "--run-id", runId, "--resume", runId, ...passthru]);
+    const r = spawnSync(cmd[0], cmd.slice(1), { stdio: "inherit", env: process.env });
     code = r.status === null ? 124 : r.status; // 124: killed by the 20-minute timeout; its finished pages are saved, so go on
     if (code === 124) code = 75;
   }
