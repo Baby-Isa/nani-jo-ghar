@@ -111,6 +111,24 @@ try {
     await sleep(100);
     await page.evaluate(() => Onboard.began("roll"));
     check(!(await page.evaluate(() => C.layer.classList.contains("on"))), "Onboard.began: the light goes");
+    // a function giving a LIST of rects (Cook.Coach.thingBox: a thing's picture and pill) lights their union; so does a list of
+    // functions each giving one part (s19-games' interim form)
+    const u = await page.evaluate(async () => {
+      const box = (h) => JSON.parse(h.layer.dataset.holes || "[]")[0] || null;
+      const L1 = Onboard.light(() => [[300, 100, 60, 60], [290, 170, 80, 30]], { pass: true });
+      await new Promise((r) => setTimeout(r, 120));
+      const a = box(L1);
+      L1.close();
+      const parts = [[300, 100, 60, 60], [290, 170, 80, 30]];
+      const L2 = Onboard.light([0, 1, 2].map((i) => () => parts[i] || null), { pass: true });
+      await new Promise((r) => setTimeout(r, 120));
+      const b = box(L2);
+      L2.close();
+      return { a, b };
+    });
+    const whole = (h) => h && h.x <= 290 && h.y <= 100 && h.x + h.w >= 370 && h.y + h.h >= 200;
+    check(whole(u.a), `a function giving a list of parts: one box round them all (${JSON.stringify(u.a)})`);
+    check(whole(u.b), `a list of functions, one part each: the same (${JSON.stringify(u.b)})`);
     check(errors.length === 0, `no page errors (${errors.join("; ")})`);
     await page.close();
   }
@@ -175,6 +193,27 @@ try {
     await sleep(100);
     check((await page.evaluate(() => document.querySelectorAll(".ob-finger").length)) === 0, "a press: the demo stops");
     check(errors.length === 0, `no page errors (${errors.join("; ")})`);
+    await page.close();
+  }
+
+  /* the lab's pair for Zafar's pick (MAA-20): the roll with the finger, and with the circle; the pin rides it */
+  for (const [state, circle] of [["roll-finger", false], ["roll-circle", true]]) {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 665 } });
+    const errors = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await page.goto(`http://localhost:${PORT}/lab/sections/kit-lights.html?state=${state}`);
+    await page.waitForFunction(() => window.KitLights && window.KitLights.ready);
+    const seen = { fingers: 0, circle: false, moved: new Set() };
+    for (let i = 0; i < 14; i++) {
+      await sleep(150);
+      const f = await page.evaluate(() => ({ n: [...document.querySelectorAll(".ob-finger")].filter((x) => x.style.display !== "none").length, circle: !!document.querySelector(".ob-finger.ob-circle"), pin: document.querySelector("#kl-pin").style.translate || "" }));
+      seen.fingers = Math.max(seen.fingers, f.n);
+      seen.circle = seen.circle || f.circle;
+      seen.moved.add(f.pin);
+    }
+    check(seen.fingers === 1 && seen.circle === circle, `lab ${state}: one ${circle ? "circle" : "finger"}`);
+    check(seen.moved.size >= 3, `lab ${state}: the pin rides up and down (${seen.moved.size} places)`);
+    check(errors.length === 0, `lab ${state}: no page errors (${errors.join("; ")})`);
     await page.close();
   }
 } finally {

@@ -233,8 +233,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         last = { x: p.worldX, y: p.worldY };
         clearTimeout(quiet);
       };
+      // MAA-21 (Zafar, 8 Nov: "the first time you do the maani it stops you rolling at the right size ... the size guide ... in
+      // pulsating yellow ... the juice sound is for rolling into the right size ... then the highlight comes on and prompts you to
+      // click it but there shouldn't be the finger"): opts.firstStop() (the game's first-time gate) says whether this roll stops at
+      // the size: the dough stops growing in the middle of the green, the ring pulses with the green sound, then the roll ends by
+      // itself (the next step's light asks for the tap, a tap's light has no finger)
+      let stopped = false;
+      const stopAtSize = () => {
+        stopped = true;
+        last = null;
+        clearTimeout(quiet);
+        if (Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("roll");
+        if (Cook.sfx.green) Cook.sfx.green();
+        S.tweens.add({ targets: guide, alpha: 0.35, duration: 220, yoyo: true, repeat: 2, ease: "Sine.easeInOut", onComplete: () => guide.active && guide.setAlpha(1) });
+        S.time.delayedCall(1100 / Cook.speed, done);
+      };
       const move = (p) => {
-        if (!p.isDown || !last) return;
+        if (!p.isDown || !last || stopped) return;
         const dy = p.worldY - last.y;
         const dx = p.worldX - last.x;
         const d = Math.hypot(dx, dy);
@@ -242,10 +257,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         last = { x: p.worldX, y: p.worldY };
         if (!started) {
           started = true;
+          // SH-236: the roll has begun: its first-time light goes now, and its demo stops
+          if (ghost) ghost.stop();
+          if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("roll");
           if (opts.onStart) opts.onStart();
         }
         pin.y = Cook.clamp(p.worldY, cy - z.L(150), cy + z.L(150));
         r = Math.min(Rmax * k.maxSize, r + d * k.grow);
+        // (MAA-21: the first time, the dough stops at the middle of the aimed size's green)
+        const stopR = aimT.R * (lo + hi) / 2;
+        if (r >= stopR && !torn && opts.firstStop && opts.firstStop()) {
+          r = stopR;
+          setR();
+          drawGuide();
+          z.gauge({ level: r / aimT.R, lo, hi });
+          return stopAtSize();
+        }
         if (r > Rmax * k.tearAt && !torn) {
           torn = true;
           S.burst(cx, cy, [0xf3e1b8, 0xffffff], 10, z.L(80));
@@ -257,15 +284,32 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (Math.random() < 0.12) Cook.sfx.flip();
       };
       const up = () => {
+        if (stopped) return;
         last = null;
         clearTimeout(quiet);
+        if (started && Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("roll");
         const onCircle = targets.some((t) => r >= t.R * lo && r <= t.R * hi) || r >= Rmax * lo;
         if (opts.patient ? onCircle : r >= Rmin * k.doneAt) quiet = setTimeout(done, quietMs / Cook.speed);
       };
       offs.push(z.on("pointerdown", down), z.on("pointermove", move), z.on("pointerup", up));
-      ghost = S.ghost([[cx, cy + z.L(110)], [cx, cy - z.L(110)], [cx, cy + z.L(110)]], { duration: 900, delay: z.guided ? 200 : 5000 });
+      // MAA-20 (Zafar, 8 Nov: "the rolling pin to go up and down and the finger dragging it up and down and just one finger"): the
+      // pin rides under the kit's one finger (the coach's roll step, or the kit's demo): the pin's offset from the middle of the dough
+      const pinHome = pin.y;
+      const carry = (dx, dy, t, press) => {
+        if (started || over || !pin.active) return;
+        pin.y = press ? Cook.clamp(cy + dy, cy - z.L(150), cy + z.L(150)) : pinHome;
+      };
+      // SH-119: no ghost of the roll's own. The first time the coach's script shows the roll (Cook.Coach's light, one finger, the pin
+      // moving); after that, stuck past the level's wait, the kit's demo shows it again (Cook.Coach.demo, the same finger)
+      const C = Cook.Coach;
+      if (C && C.demo && !(C.active && C.active())) {
+        const R = global.Rules;
+        const wait = z.guided ? 1500 : R && R.hintMs ? R.hintMs(Cook.roundLevel ? Cook.roundLevel(z.ctx) || 1 : 1) : 7000;
+        ghost = C.demo(() => (started || over ? null : { from: { x: cx, y: cy - z.L(110) }, to: { x: cx, y: cy + z.L(110) } }), { gesture: "roll", delay: wait / Cook.speed, step: "roll", carry });
+      }
       z.gauge({ level: r / aimT.R, lo, hi });
-      z.expect({ kind: "roll", x: cx, y: cy, r: aimT.R });
+      // (the light's thing: the board the dough is rolled on, whole, SH-230; the pin rides the coach's finger, carry)
+      z.expect({ kind: "roll", x: cx, y: cy, r: aimT.R, thing: opts.boardThing || chakla || dough, carry });
     });
   }
   Mech.rollOne = rollOne;

@@ -1060,6 +1060,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           const v = (mx * dx + my * dy) / (len * len);
           if (v > 0.02 || t > 0) {
+            // (SH-236: the fold has begun: its first-time light goes now, once per drag)
+            if (!start.began && Cook.Coach && Cook.Coach.began) (start.began = true), Cook.Coach.began("fold");
             if (onDrag) onDrag();
             show(v);
           }
@@ -1073,6 +1075,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             finish("fold");
           } else if (t > 0) {
             Cook.sfx.soft();
+            if (Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("fold"); // (not folded: the light may come back)
             await settle(0);
             show(0);
             if (onCancel) onCancel();
@@ -1248,8 +1251,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (cur && cur.level >= lo && level >= 3 && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine });
         else steps.to("samosa:fry", { id: "fry" });
         // the next thing pulses: a raw one while there's room, else the samosa furthest on
-        if (cur && (cur.level >= lo || !waiting.length)) z.expect({ kind: "timing", x: cur.a.x, y: cur.a.y, key: "lift" });
-        else if (waiting.length) z.expect({ kind: "tap", x: waiting[0].x, y: waiting[0].y, key: "samosa" });
+        // (SAM-30: the lift's moment, on the green, for the coach's staged step; each samosa and the knob lit whole: thing)
+        if (cur && (cur.level >= lo || !waiting.length)) z.expect({ kind: "timing", x: cur.a.x, y: cur.a.y, key: "lift", thing: cur.a, coach: cur.level >= lo ? "lift" : null });
+        else if (waiting.length) z.expect({ kind: "tap", x: waiting[0].x, y: waiting[0].y, key: "samosa", thing: waiting[0] });
         else z.expect({ kind: "wait" });
       };
       const addRaw = (im) => {

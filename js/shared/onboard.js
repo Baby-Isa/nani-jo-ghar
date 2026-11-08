@@ -606,7 +606,23 @@
     }
     return { x: r.left - dx, y: r.top - dy, w: r.width, h: r.height };
   }
-  const listOf = (t) => (Array.isArray(t) && !(t.length === 4 && t.every((n) => typeof n === "number")) ? t : [t]);
+  // (S19: a target is one thing, a list, or a function giving either, read each frame: a function giving a list of rects, a thing's
+  // parts, Cook.Coach.thingBox, is the list; lists inside lists are flattened)
+  const isBox = (t) => Array.isArray(t) && t.length === 4 && t.every((n) => typeof n === "number");
+  const listOf = (t) => {
+    const out = [];
+    const add = (x, depth) => {
+      if (depth > 4) return;
+      if (typeof x === "function") {
+        const v = x();
+        if (Array.isArray(v) && !isBox(v)) v.forEach((y) => add(y, depth + 1));
+        else out.push(v);
+      } else if (Array.isArray(x) && !isBox(x)) x.forEach((y) => add(y, depth + 1));
+      else out.push(x);
+    };
+    add(t, 0);
+    return out;
+  };
   const rectsOf = (t) => listOf(t).map(rectOf).filter(Boolean);
   const centre = (r) => (r ? { x: r.x + r.w / 2, y: r.y + r.h / 2 } : null);
   const inside = (p, r) => p.x >= r.x - PAD && p.x <= r.x + r.w + PAD && p.y >= r.y - PAD && p.y <= r.y + r.h + PAD;

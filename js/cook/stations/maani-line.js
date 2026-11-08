@@ -276,7 +276,14 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const dones = {};
     order.forEach((type, i) => {
       const x = rowXs(RX, order.length)[i];
-      dones[type] = { x, y: PLATE_Y, img: plate(x, PLATE_Y, true), n: 0 };
+      const img = plate(x, PLATE_Y, true);
+      // (Fable's maani flaw 1, STD-E1-05: whose plate it is, from the first frame: the asker's face on its rim, as chai's pans carry
+      // theirs; the plate's light, if any, takes it in: Cook.Coach.parts reads img.face)
+      if (who && Kit.badge) {
+        const F = Math.round(PLATE_D * 0.3);
+        img.face = S.track(S.add.image(x + PLATE_D * 0.36, PLATE_Y - PLATE_D * 0.36, Kit.badge(S, who)).setDisplaySize(F, F).setDepth(D.item + 0.5));
+      }
+      dones[type] = { x, y: PLATE_Y, img, n: 0 };
     });
 
     /* ---------- state ---------- */
@@ -354,49 +361,42 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       steps.done();
     }
     /*
-     * MAA-13 (M3, as SH-46): after a pause the ghost finger shows the tap on the rolled maani, again and again, until
-     * it goes on the tawa (not once per profile). The pause is the guide's (about 5 s at level 1, longer later).
+     * SH-228 (the stuck help, chai's method; was MAA-13's ghost finger on the rolled maani, gone with SH-119: one finger, and a tap's
+     * light has none, MAA-21): the next thing to do, the pile they need or the rolled maani for the tawa, gets the kitchen kit's stuck
+     * help after the level's wait (Cook.Coach.stuck: Nani's helper card or her line, the light whole round the thing, its glow); a
+     * glow of the game's own outside the light no more (contract-102, Fable's maani flaw 3)
      */
-    let ghostT = null;
-    let ghostOn = null;
-    const stopGhost = () => {
-      if (ghostT) ghostT.remove();
-      ghostT = null;
-      if (ghostOn) ghostOn.g.stop();
-      ghostOn = null;
+    let stuck = null;
+    const stopStuck = () => {
+      if (stuck) stuck.h.close();
+      stuck = null;
     };
-    function ghostSync() {
-      const w = !finished && waiting && waiting.landed && !onTawa ? waiting : null;
-      if (ghostOn && ghostOn.it !== w) stopGhost();
-      if (!w || ghostOn || ghostT) return;
-      // (the help ladder's idle time by level: the ONE table, data/shared.json helpMs through NaniGuide.PAUSE; S13-B1: no copy here)
-      const ladder = (global.NaniGuide && global.NaniGuide.PAUSE) || [];
-      const pause = ladder[Math.min(ladder.length, Math.max(1, level)) - 1];
-      if (!(pause > 0) || !isFinite(pause)) return; // (no help ghost without the table's time)
-      ghostT = S.time.delayedCall(pause, () => {
-        ghostT = null;
-        if (waiting !== w || onTawa || finished) return;
-        const c = S.centre(w.sprite);
-        ghostOn = { it: w, g: S.ghost([[c.x, c.y], [c.x, c.y + 2]], { duration: 900, step: "maani-tap" }) };
-      });
+    function stuckSync(thing, key) {
+      if (stuck && stuck.key === key && stuck.thing === thing) return;
+      stopStuck();
+      if (!thing || !Cook.Coach || !Cook.Coach.stuck || (Cook.Coach.active && Cook.Coach.active())) return;
+      const me = { key, thing };
+      me.h = Cook.Coach.stuck({ key: "maani-line", thing, current: () => stuck === me && !finished, busy: () => !!(chakla && chakla.busy) || !!(onTawa && onTawa.busy), glow: (on) => thing.active && S.glow(thing, on, { bounce: true, now: true }) });
+      stuck = me;
     }
 
     /* ---------- what's next (the test plays from it; the focal rule; guided glows the answer) ---------- */
     function update() {
       if (finished) return;
       stepNow();
-      ghostSync();
-      const need = !chakla && !waiting ? nextType() : null;
-      // decision 51: a redo has help. SH-60 (s08 w6J: at L2 her help line came with nothing lit): the pile to take from is lit
-      // as help too, held by the ladder (station-lib's glow) until the pause, so it comes with her line
-      plates.forEach((b) => glowOn(b, need === b.type));
-      // a rolled maani and a free tawa: that's the next thing (it pulses, whatever the level)
-      if (waiting) glowOn(waiting.sprite, !onTawa && waiting.landed);
+      // MAA-22 (Zafar, 8 Nov: "as it flew onto the pan the dough balls briefly flashed up as highlighted"): the next pile is the next
+      // thing only once the maani has landed on the tawa (and the board is free)
+      const flying = !!(onTawa && onTawa.flying);
+      const need = !chakla && !waiting && !flying ? nextType() : null;
+      // (decision 51 and SH-60's help glow on the pile and the rolled maani: the kit's stuck help now, with its light: stuckSync)
+      const toTawa = waiting && waiting.landed && !onTawa ? waiting : null;
       if (need) {
         const b = plateOf(need);
-        zb.expect(Object.assign({ kind: "tap", key: "dough", wrongs: plates.filter((o) => o !== b).map(centre) }, centre(b)));
+        // (the light's thing: the pile whole with its pill, SH-230)
+        zb.expect(Object.assign({ kind: "tap", key: "dough", thing: b, wrongs: plates.filter((o) => o !== b).map(centre) }, centre(b)));
       } else zb.expect(null);
-      zon.expect(waiting && waiting.landed && !onTawa ? Object.assign({ kind: "tap", key: "tawa-on" }, centre(waiting.sprite)) : null);
+      zon.expect(toTawa ? Object.assign({ kind: "tap", key: "tawa-on", thing: toTawa.sprite }, centre(toTawa.sprite)) : null);
+      stuckSync(need ? plateOf(need) : toTawa ? toTawa.sprite : null, need ? `pile-${need}` : toTawa ? `tawa-on-${items.indexOf(toTawa)}` : null);
       // quiet until they matter (§3): the finished plates, until a maani lands
       Object.values(dones).forEach((d) => d.img.setAlpha(d.n ? 1 : 0.9));
       // SH-238 (Zafar, 8 Nov: no tick button): the line ends by itself once as many maanis as they asked for are made and nothing is
@@ -458,6 +458,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         keep: true,
         patient: true,
         handle: c.handle,
+        // (S19: the light's thing is the board, whole; MAA-21: the first roll stops at the size, once a player)
+        boardThing: board,
+        firstStop: () => !!(gate && gate.first("roll-stop")),
         pinTex: "mv-velan",
         pinW: PIN_W,
         body: bodyOf,
@@ -498,7 +501,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       glowOn(it.sprite, false);
       S.untap(it.sprite);
       it.where = "tawa";
-      const t = { it, side: 1, v: 0, busy: true };
+      const t = { it, side: 1, v: 0, busy: true, flying: true };
       onTawa = t;
       if (firstOn) {
         firstOn = false;
@@ -508,11 +511,13 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const sz = discScale(it.sprite.texture.key, TAWA_R * 0.72 * it.sizeF);
       it.sprite.setDepth(D.item + 1);
       await S.fly(it.sprite, TW.x, TW.y, { scale: sz, duration: 380, arc: 90 });
+      t.flying = false;
       it.sprite.baseScale = sz;
       if (heat !== "off") Cook.sfx.sizzle(0.4);
       t.busy = false;
       sizzleSync();
       S.tappable(it.sprite, () => tawaTap());
+      update(); // (landed: the next pile may be the next thing now, MAA-22)
     }
     let sizzle = null;
     // MAA-11 (M6): the sizzle plays only while something is on a lit tawa
@@ -626,7 +631,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const nowIn = t.v >= lo && t.v <= hi;
       if (nowIn !== inBand) {
         inBand = nowIn;
-        glowOn(t.it.sprite, nowIn);
+        // (no glow of its own in the green, Fable's maani flaw 3: the kit's heat ring shows the green, Nani says "Firai!", and the
+        // first time the coach's light is on it, MAA-19)
         if (nowIn) Cook.sfx.click();
         stepNow();
       }
@@ -634,7 +640,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       t.it.sprite.setTint(brown(Math.min(1, t.v) * (t.side === 1 ? 1 : 0.5)));
       ring.draw(TW.x, TW.y, RING_R, t.v, lo, hi);
       zt.gauge({ level: t.v, lo, hi });
-      zt.expect({ kind: "timing", x: TW.x, y: TW.y, key: `tawa-${t.side}` });
+      // (MAA-19: the flip's moment, in the green on its first side: the coach's staged step lights it, the dim and the box round it)
+      zt.expect({ kind: "timing", x: TW.x, y: TW.y, key: `tawa-${t.side}`, thing: t.it.sprite, coach: nowIn ? (t.side === 1 ? "flip" : "off") : null });
       if (t.v >= 1) {
         glowOn(t.it.sprite, false);
         inBand = false;
@@ -733,7 +740,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         ring.clear();
         sizzleSync();
         steps.done();
-        stopGhost();
+        stopStuck();
         [zb, zon, zt].forEach((z) => z.expect(null));
         plates.forEach((b) => glowOn(b, false));
         tally();

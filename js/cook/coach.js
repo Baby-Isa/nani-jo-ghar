@@ -84,7 +84,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const GESTURE = { tap: "tap", swipe: "swipe", roll: "roll", stir: "circle-stir", hold: "hold" };
   const rectAround = (t, r) => [t.x - r, t.y - r, 2 * r, 2 * r];
   /** A step's signature: it changes when the child has done the thing (never on movement alone). */
-  const sig = (e) => (e ? [e.kind, e.key || "", e.selector || "", Cook.acted || 0, e.kind === "stir" && typeof e.count === "function" ? e.count() : ""].join("|") : "");
+  // (S19: and its coach tag, a step's moment: maani's flip in the green, samosa's lift)
+  const sig = (e) => (e ? [e.kind, e.key || "", e.selector || "", Cook.acted || 0, e.kind === "stir" && typeof e.count === "function" ? e.count() : "", e.coach || ""].join("|") : "");
   /**
    * S19 (MAA-19, SAM-30, CHT-18: a script's steps were spent on whatever came first, so the flip's and the fry's never came): a script
    * step may say when it comes, `when`: the expectation's coach tag or kind ("roll", "timing"), or {kind, key, coach} (key: a regex

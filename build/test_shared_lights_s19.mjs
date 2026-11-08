@@ -192,3 +192,21 @@ test("coach: the stuck help, chai's method, any game: after the level's wait, th
   w.close();
   delete globalThis.NaniGuide;
 });
+
+test("coach: the stuck help given a thing lights the thing's parts, a list from one function (SH-228, SH-230)", async () => {
+  globalThis.document = canvasDoc();
+  const lit = [];
+  globalThis.Onboard = Object.assign({}, Onboard, { light: (t, o) => (lit.push({ t, o }), { close() {} }), onRush: () => () => {} });
+  globalThis.NaniGuide = { lastAction: () => Date.now() - 10000 };
+  const Cook = await coach({ UI: { s14: () => true, worldToScreen: (x, y) => ({ x, y }), helperOpen: () => true } });
+  const jar = pic(100, 700, 80, 118, { chip: { active: true, x: 140, y: 860, cardW: 90, cardH: 46 } });
+  const h = Cook.Coach.stuck({ hintMs: () => 0, thing: jar });
+  await sleep(300);
+  h.close();
+  assert.equal(lit.length, 1);
+  const parts = lit[0].t();
+  assert.ok(Array.isArray(parts) && parts.length === 3, "its picture, its hop's room, its pill");
+  assert.deepEqual(parts[2], [95, 837, 90, 46]);
+  delete globalThis.NaniGuide;
+  delete globalThis.document;
+});
