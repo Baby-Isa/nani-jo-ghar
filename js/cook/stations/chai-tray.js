@@ -1266,7 +1266,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         },
       });
       // (CHAI-92: its last drop, its ring and, full, its twinkles: glassDone above; was soft("right", 0.35), nothing waits on it)
-      glassDone(pan, look);
+      // (Zafar, 8 Nov: "the ding and sparkle when a half glass is poured, even if the order requests a full cup ... should only happen
+      // when the correct amount is placed into the glass": the drop, the ring and the twinkles only when the glass holds what its person
+      // asked for; the pour's own sound stays)
+      const asked = people.find((p) => p.who === pan.who);
+      if (pan.poured === needOf({ p: asked || {} })) glassDone(pan, look);
       pan.away = false;
       if (pan.poured < 2) flames.forEach((fl, j) => S.tweens.add({ targets: fl, alpha: pan.burner.state === (j ? "low" : "high") ? 0.95 : 0, duration: 200 }));
       drawSel();
