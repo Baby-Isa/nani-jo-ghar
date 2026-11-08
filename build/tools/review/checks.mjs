@@ -150,7 +150,7 @@ function changedFiles() {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const t0 = Date.now();
   const names = STEPS.filter((s) => only.includes(s));
-  const done = await Promise.all(names.map((s) => steps[s]().catch((e) => line(s, false, `${s} threw: ${e.message}`))));
+  const done = await Promise.all(names.map(async (s) => { const t = Date.now(); const r = await steps[s]().catch((e) => line(s, false, `${s} threw: ${e.message}`)); r.s = Math.round((Date.now() - t) / 1000); return r; }));
   for (const r of done) {
     results.push(r.ok);
     console.log(`${r.ok ? "ok  " : "FAIL"} ${r.name.padEnd(6)} ${r.text}`);
@@ -158,6 +158,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     for (const m of r.note || []) console.log("     " + m);
   }
   if (!only.includes("load") && !a.val("only")) console.log(`     not run: load (a browser; --browser or --full runs it, /review and the publish gate do)`);
-  console.log(`checks: ${names.length} steps in ${Math.round((Date.now() - t0) / 1000)} s`);
+  const slow = done.slice().sort((x, y) => y.s - x.s).slice(0, 3).map((r) => `${r.name} ${r.s} s`).join(", ");
+  console.log(`checks: ${names.length} steps in ${Math.round((Date.now() - t0) / 1000)} s (all at once; the longest: ${slow})`);
   process.exit(results.every(Boolean) ? 0 : 1);
 }

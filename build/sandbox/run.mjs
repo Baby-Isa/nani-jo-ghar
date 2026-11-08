@@ -90,14 +90,19 @@ if (has("--gate") && !has("--chunk")) {
 
 const live = allFlows();
 if (has("--list")) {
-  for (const f of live) console.log(`${f.id.padEnd(34)} ${flowSizes(f).join(",").padEnd(42)} ${f.title}`);
+  // (one write, and the exit only once it is out: console.log lines then process.exit cut the list short under load, so
+  // evidence.mjs --lint-specs read flows as missing: s19-checks found 341-372 of 399 lines with four runs at once)
+  const out = [];
+  const say = (l) => out.push(l);
+  for (const f of live) say(`${f.id.padEnd(34)} ${flowSizes(f).join(",").padEnd(42)} ${f.title}`);
   // what Zafar plays: every labs.html tile and the flows that play it (decision 76)
-  console.log("\nlabs.html tiles -> flows");
+  say("\nlabs.html tiles -> flows");
   for (const t of tiles()) {
     const m = tileFlows(t, live);
-    console.log(`  ${t.title.slice(0, 44).padEnd(44)} ${m.gap ? `NO FLOW: ${m.gap}` : `${m.flows.length} flows: ${m.flows.slice(0, 4).join(", ")}${m.flows.length > 4 ? ` +${m.flows.length - 4}` : ""}${m.note ? ` (${m.note})` : ""}`}`);
+    say(`  ${t.title.slice(0, 44).padEnd(44)} ${m.gap ? `NO FLOW: ${m.gap}` : `${m.flows.length} flows: ${m.flows.slice(0, 4).join(", ")}${m.flows.length > 4 ? ` +${m.flows.length - 4}` : ""}${m.note ? ` (${m.note})` : ""}`}`);
   }
-  console.log(`\nviewports ("all sizes"): ${ALL_SIZES.map((k) => `${k} ${SIZES[k].label}`).join("; ")}`);
+  say(`\nviewports ("all sizes"): ${ALL_SIZES.map((k) => `${k} ${SIZES[k].label}`).join("; ")}`);
+  await new Promise((r) => process.stdout.write(out.join("\n") + "\n", r));
   process.exit(0);
 }
 // the route the contract run plays by default (--contract with no --flow): what Zafar played on 8 Oct and the places his rules
