@@ -1,0 +1,49 @@
+{
+  "name": "s18-w3-chop: chop opens its step before it speaks (contract-95 in chaat), chaat calls chop as its own game",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a fix in a shared game daar and chaat both call",
+  "cost": "about $10-15",
+  "stop": "Sun 8 Nov 2026, 08:00 UK",
+  "branch": "s18-w3-chop in /home/user/wt/s18-w3-chop (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-31767b7f-rfyrg4",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "read": [
+    "build/reports/s18-g-chaat.md (the ask's exact code)",
+    "build/reports/s18-chop.md, s18-g-daar.md"
+  ],
+  "owns": [
+    "js/cook/mechanics/chop.js",
+    "js/cook/stations/chop.js",
+    "data/stations/chop.json",
+    "js/cook/mechanics/assemble.js",
+    "data/stations/chaat.json",
+    "data/cook.json (chaat's recipe step and mechanics.assemble only)",
+    "js/cook/index.js",
+    "build/reports/s18-w3-chop.md"
+  ],
+  "readOnly": [
+    "js/cook/coach.js, js/cook/stations/daar.js (s18-w3-kit)",
+    "build/sandbox/** (s18-w3-checks)"
+  ],
+  "stubs": "none",
+  "port": 8892,
+  "report": "s18-w3-chop",
+  "publish": false,
+  "flows": [
+    "cook:chaat",
+    "cook:chop",
+    "cook:daar"
+  ],
+  "tasks": [
+    {
+      "do": "Chaat's chop step breaks contract-95 at L2-L4: a line is said before any step opens. Make chop open its step before its first line (in chop's own code, so daar and chaat both get it), and register chop as a game the recipe can call (`Mech.define(\"chop-game\", ...)` per chaat's report), chaat's recipe step `\"do\": \"chop-game\"` in data/cook.json, `PARTS[\"chop-game\"] = PARTS.chop` in index.js. Delete the unused `mechanics.assemble.levels[0].flyMs`.",
+      "accept": "cook:chaat L1-L4, cook:chop L1-L4 and cook:daar L1, L4 at 1280x665: contract-95 green, 0 page errors"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` (never wrap frozen.mjs); `checks.mjs --only <yours>`; commit on your branch, never push; never invent Kutchi; never remove a mechanic; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s18-w3-chop.md with a Proof section, under 300 words"
+    }
+  ]
+}
