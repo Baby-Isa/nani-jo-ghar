@@ -397,12 +397,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (Zafar, 5 Nov: the worktop and the stone "should just sing off each other": the wash in the stone's undertone, St.worktopWash)
     Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR }); // (the kitchen kit's wash: 0.18 over the worktop at D.bg + 1)
     // ART-41 (Zafar, 5 Nov): the band in his stone, with the stone shelf the jars stand on (St.stoneBand; was the parchment fill
-    // and a grey plank line under each group)
+    // and a grey plank line under each group; its 3 px top shade is the band's own now, SAM-29)
     St.stoneBand(S, { top: SHELF_TOP, base: BASE, far: FAR, depth: D.bg + 1.2 });
-    const band = S.track(S.add.graphics().setDepth(D.bg + 1.25));
-    band.fillStyle(0x2a1a0a, 0.08);
-    band.fillRect(-FAR, SHELF_TOP, 1600 + 2 * FAR, 3);
-    band.fillStyle(INK.grey, 1);
 
     /* ---------- the hob: one burner per person ---------- */
     const hobW = Cook.Kit.HOB.w[n - 1];
@@ -1415,14 +1411,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // the level's wait before Nani's hint (SH-155: the central rules, data/rules.json levels.hintS, through js/shared/rules.js)
     const hintMs14 = () => rulesAt(level).hintMs || LADDER.glowAt;
     const ITEM_STEPS = new Set(["water", "tea", "cups"]);
-    // the box keeps the thing's neighbours on the shelf dark (EASY-08: never half the jar above)
-    const pageRect = (o, pad = 0) => () => {
-      if (!o || !o.active) return null;
-      const b = o.getBounds();
-      const a = UI.worldToScreen(b.x - pad, b.y - pad);
-      const z = UI.worldToScreen(b.right + pad, b.bottom + pad);
-      return [a.x, a.y, z.x - a.x, z.y - a.y];
-    };
+    // the box keeps the thing's neighbours on the shelf dark (EASY-08: never half the jar above): the kit's one page box, Cook.Coach.box
     // two page rects' union (either may be missing)
     const unionRect = (f, g) => () => {
       const a = f && f(), c = g && g();
@@ -1455,7 +1444,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         now: !o.from,
         get target() {
           const q = nextEmpty();
-          return q ? pageRect(q.glowRing) : null;
+          return q ? Cook.Coach.box(q.glowRing) : null;
         },
         ok: () => {
           if ((o.from && sel !== o.from) || finished || !sel || !(sel.poured > 0) || !(sel.closed || sel.poured >= needOf(sel))) return false;
@@ -1541,20 +1530,20 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // (s14: the glass is lit for the pour, its pan still takes the tap: both live under the light)
         // (Zafar, 29 Oct: "the highlight box on the chai tray should go under the face circle so the face circle sits on top and
         // doesn't get a line over the face": the glass's box takes in its face badge, so no edge crosses the face)
-        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: unionRect(pageRect(pan.well.hit), pan.well.face ? pageRect(pan.well.face) : null), also: pageRect(pan.glowRing) };
-        return pan && { obj: pan.img, target: pageRect(pan.glowRing) };
+        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: unionRect(Cook.Coach.box(pan.well.hit), pan.well.face ? Cook.Coach.box(pan.well.face) : null), also: Cook.Coach.box(pan.glowRing) };
+        return pan && { obj: pan.img, target: Cook.Coach.box(pan.glowRing) };
       }
       // (SH-230: a control's box is its own picture; the margin round it is the one rule's, Onboard.litBox: was 4 px here and 4 more there)
-      if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: pageRect(nx.slowAt.knob) };
+      if (nx.phase === "slow" && nx.slowAt) return { obj: nx.slowAt.knob, target: Cook.Coach.box(nx.slowAt.knob) };
       if (/^knob-on-/.test(key)) {
         const pan = pans.find((q) => `knob-on-${q.who}` === key);
-        return pan && { obj: pan.knob, target: pageRect(pan.knob) };
+        return pan && { obj: pan.knob, target: Cook.Coach.box(pan.knob) };
       }
       // (the orchestrator's film, 30 Oct: at L3-L4 a cold pan that is not the one in hand opens its knob step as a tap on the pan, so
       // "Chulo bar!" was said with nothing lit (contract-78): its knob is lit, as a tap on the knob takes the pan in hand too)
       if (nx.phase === "knob" && /^pan-/.test(key)) {
         const pan = pans.find((q) => `pan-${q.who}` === key);
-        return pan && { obj: pan.knob, target: pageRect(pan.knob) };
+        return pan && { obj: pan.knob, target: Cook.Coach.box(pan.knob) };
       }
       // (Zafar, 3 Nov: "I filled the first tea tray, poured the first tea, and then I did nothing for like 30 seconds, and there was no
       // hint to click the second tea tray ... a stuck hint ... using the onboarding methodology of highlighting": the next pan to pick
@@ -1565,7 +1554,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // onboard you to select the second tea pot after you've successfully poured the first pot of chai and it's been served": while
         // another pan is on the heat or waiting to pour, the next pan's stuck hint never comes; the plan still lets the child pick it)
         if (pan && pans.some((q) => q !== pan && q.state !== "cold" && q.poured < needOf(q))) return null;
-        return pan && { obj: pan.img, target: pageRect(pan.glowRing), round: true, panPick: true };
+        return pan && { obj: pan.img, target: Cook.Coach.box(pan.glowRing), round: true, panPick: true };
       }
       const obj = shelf[key];
       if (!obj || !sel) return null;

@@ -246,8 +246,7 @@ import { Cook as CookNS } from "../ns.js";
     /* ---------------- the lights (the kitchen kit's: Cook.Coach) ---------------- */
     // a thing's box on the page, for the kit's light; a plate's is its round body with its own face (never a neighbour's face)
     const plateOf = (o) => P0.find((pl) => pl.hit === o);
-    const pageRect = (o) => () => {
-      if (!o || !o.active) return null;
+    const plateBox = (o) => {
       const pl = plateOf(o);
       const r = pl ? ((tr.plateW || 168) / 2) * 0.94 : 0; // (the rim, inside the picture's edge)
       const f = pl ? pl.face.getBounds() : null;
@@ -261,9 +260,7 @@ import { Cook as CookNS } from "../ns.js";
           if (across && g.y > pl.y) b.bottom = Math.min(b.bottom, g.y - 16);
           else if (beside && g.x > pl.x) b.right = Math.min(b.right, g.x - 16);
         });
-      const a = UI.worldToScreen(b.x, b.y);
-      const c = UI.worldToScreen(b.right, b.bottom);
-      return [a.x, a.y, c.x - a.x, c.y - a.y];
+      return b;
     };
     // the level's wait before the stuck hint (the central rules' hintS)
     const hintMs = () => (RULES() && RULES().hintMs ? RULES().hintMs(level) : 0) || 7000;
@@ -295,11 +292,11 @@ import { Cook as CookNS } from "../ns.js";
       let first = false;
       if (n.what === "vessel") {
         if (gate.first("next-pan"))
-          nextV = Cook.Coach.nextLight({ now: true, target: pageRect(n.obj), quitIf: () => finished || ctlKey !== key, who: n.obj === pot ? "pot" : "pan", note: NOTE });
+          nextV = Cook.Coach.nextLight({ now: true, target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }), quitIf: () => finished || ctlKey !== key, who: n.obj === pot ? "pot" : "pan", note: NOTE });
       } else first = gate.first(`ctl-${n.what}`);
       ctl = Cook.Coach.control({
         key: KEY,
-        target: pageRect(n.obj),
+        target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }),
         first,
         hintMs,
         current: () => ctlKey === key && !finished,

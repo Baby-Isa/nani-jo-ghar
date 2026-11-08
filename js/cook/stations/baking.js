@@ -40,16 +40,9 @@ import { setTimeout } from "../life.js";
     return parseInt(String(pal[k] || pal.white || "").slice(1), 16) || 0;
   };
   const line = (key, role, phrase) => Lang.role(phrase ? Lang.line(key, phrase) : Lang.line(key), role);
-  /** A canvas thing's page box, as the lights ask for it ([x, y, w, h]; null once it is gone), PAD out from its picture (contract-92). */
+  /** A canvas thing's page box (the kit's, Cook.Coach.box), PAD out from its picture (contract-92). */
   const PAD = 6;
   const FADE_MS = 320;
-  const boxOf = (o) => () => {
-    if (!o || !o.active || !o.visible) return null;
-    const b = o.getBounds();
-    const a = UI.worldToScreen(b.x - PAD, b.y - PAD);
-    const z = UI.worldToScreen(b.right + PAD, b.bottom + PAD);
-    return [a.x, a.y, z.x - a.x, z.y - a.y];
-  };
 
   Mech.combined(KEY, {
     station: KEY,
@@ -126,7 +119,7 @@ import { setTimeout } from "../life.js";
       ctl = Cook.Coach.control({
         key: KEY,
         note: `${KEY}:${name}`,
-        target: boxOf(o),
+        target: Cook.Coach.box(o, PAD, { visible: true }),
         first: gate.first(name),
         hintMs,
         current,

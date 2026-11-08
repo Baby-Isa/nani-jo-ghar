@@ -71,16 +71,21 @@
    * the words are new (stage 1-2) and the moment not yet seen: a tilted kettle pours into two side-on glasses, half then full; a
    * camera snap round each turns it into its word card, said in the family's voice (the engine: Lang.speakWord). Once per player
    * (Cook.save.seenStation, cleared by "Play as new"). The cards stay a beat, then go as the order comes up.
-   *   await UI.wordMoment(ids)   ids: the order's word ids; resolves at once when it isn't the time
+   *   await UI.wordMoment(ids, set)   ids: the order's word ids; resolves at once when it isn't the time
+   *     set (a game's own moment, its settings file's wordMoment; STD-A3-01..03, baking's jug): {pair: [id, id] (the two the round
+   *     must ask), key (its once-per-player key), vessel: {src, tilt}, stream, measures: [{id, empty, full, fill, card}]}; without
+   *     it, chai's half and full in the glasses
    */
   const WM_KEY = "*:word-moment-half-full";
-  UI.wordMomentDue = function (ids) {
+  UI.wordMomentDue = function (ids, set) {
+    const pair = (set && set.pair) || ["ph-half", "ph-full"];
+    const key = (set && set.key) || WM_KEY;
     // (Zafar, 3 Nov: "immediately before the time when you first see these in the actual game ... where there's going to guaranteed
     // be a half order and a whole order": a round that asks both, chai L4's first, CHAI-55's teach seats them)
-    if (!ids || !(ids.includes("ph-half") && ids.includes("ph-full"))) return false;
+    if (!ids || !pair.every((id) => ids.includes(id))) return false;
     const seen = (Cook.save && Cook.save.seenStation) || {};
-    if (seen[WM_KEY]) return false;
-    return ["ph-half", "ph-full"].some((id) => Cook.wordStage(id) <= 2);
+    if (seen[key]) return false;
+    return pair.some((id) => Cook.wordStage(id) <= 2);
   };
   // (the order's half and full, wherever the ladders hold them: a person's section rows come in only as they are said)
   // (only what is asked: the ladder's head and rows, never its card's fixed slots, which name half and full at every level, so the moment
@@ -89,8 +94,8 @@
     const asked = JSON.stringify((ladders || []).map((L) => L && { head: L.head, sections: L.sections, no: L.no, rows: L.rows }));
     return ["ph-half", "ph-full"].filter((id) => asked.includes(`"${id}"`));
   };
-  UI.wordMoment = async function (ids) {
-    if (!UI.wordMomentDue(ids)) return false;
+  UI.wordMoment = async function (ids, set) {
+    if (!UI.wordMomentDue(ids, set)) return false;
     const host = $("#stage");
     if (!host) return false;
     // (Zafar, 5 Nov: "the kitchen background still loads and is visible first before the word focus begins": the moment's own scene
@@ -99,11 +104,13 @@
     box.className = "cook-wm cook-wm-now";
     host.appendChild(box);
     const A0 = "assets/shared/word-moment/";
-    ["counter-wm-s17", "glass-e2-s17", "glass-wr-s17", "kettle-tilted-s17", "stream-chai-real-s17"].forEach((n) => (new Image().src = Cook.v(`${A0}${n}.webp`)));
+    const own = set ? [set.vessel.src, set.stream, ...set.measures.flatMap((m) => [m.empty, m.full, m.card])] : [];
+    (set ? ["counter-wm-s17"] : ["counter-wm-s17", "glass-e2-s17", "glass-wr-s17", "kettle-tilted-s17", "stream-chai-real-s17"]).forEach((n) => (new Image().src = Cook.v(`${A0}${n}.webp`)));
+    [...new Set(own)].forEach((u) => (new Image().src = Cook.v(u)));
     const [WM] = await Promise.all([UI.needShared("word-moment"), UI.needShared("word-card")]);
     if (!WM || !global.WordCard) return box.remove(), false;
     Cook.save.seenStation = Cook.save.seenStation || {};
-    Cook.save.seenStation[WM_KEY] = true;
+    Cook.save.seenStation[(set && set.key) || WM_KEY] = true;
     if (Cook.writeSave) Cook.writeSave();
     const A = "assets/shared/word-moment/";
     // CHAI-79 (Zafar, 4 Nov): one steady glass, the tea drawn in it (half and nearly full); the cards keep the pack's own pictures
@@ -120,6 +127,17 @@
       word: { id, kutchi: Cook.display(id), english: Cook.english(id), picture: Cook.v(`${A}card-${id === "ph-half" ? "half" : "full"}-chai-s17.webp`) },
       say: () => (Cook.Lang || Lang).speakWord(id),
     });
+    // a game's own measure (its settings' pictures); a word still to record is its grey English (decision 84: rec)
+    const measure = (m) => {
+      const rec = !!(Cook.isPlaceholder && Cook.isPlaceholder(m.id));
+      return {
+        empty: Cook.v(m.empty),
+        full: Cook.v(m.full),
+        fill: m.fill,
+        word: { id: m.id, kutchi: rec ? Cook.english(m.id) : Cook.display(m.id), english: Cook.english(m.id), picture: Cook.v(m.card), rec },
+        say: () => (Cook.Lang || Lang).speakWord(m.id),
+      };
+    };
     const prev = Cook.expect;
     Cook.expect = { kind: "wait", wordMoment: true }; // (a test driver waits while it plays)
     try {
@@ -127,16 +145,16 @@
         // (Zafar, 5 Nov, his image 5: "the pour looks different from the spout to the straight like stream ... make consistent looking":
         // the kettle pours as itself, with no chai drawn at its spout, and the real stream starts inside the spout's opening, drawn under
         // the kettle, so the chai you see is one picture from the spout to the glass)
-        vessel: { src: Cook.v(`${A}kettle-tilted-s17.webp`), spout: [0.096, 0.74], aspect: 560 / 515, tilt: 0 },
+        vessel: set ? { src: Cook.v(set.vessel.src), spout: set.vessel.spout || [0.5, 0.05], aspect: set.vessel.aspect, tilt: set.vessel.tilt } : { src: Cook.v(`${A}kettle-tilted-s17.webp`), spout: [0.096, 0.74], aspect: 560 / 515, tilt: 0 },
         side: true,
         // (CHAI-80, pack s17-ps, Zafar's run, 5 Nov: the real stream, one still picture shown through a mask that runs down it)
-        stream: Cook.v(`${A}stream-chai-real-s17.webp`),
+        stream: Cook.v(set ? set.stream : `${A}stream-chai-real-s17.webp`),
         streamWipe: true,
         // (CHAI-80: the stream drawn, flowing, and its last drop; CHAI-82: the thin drawn corners, the corners' picture retired)
         scene: { src: Cook.v(`${A}counter-wm-s17.webp`), baseAt: 0.707, aspect: 1.5, span: [0.2019, 0.8006], lineMax: 0.65 }, // (CHAI-101: the three middle doors, seam to seam; the judge, 6 Nov night: at 70% the laptops kept a quarter of cabinet, 65% shows a third)
         // (Zafar, 5 Nov: "more obviously show half and full (half should be a little lower than current end height, and full should be
         // right to the rim)": half 0.42 of the inside, full to the rim (pack s17-art4's glass))
-        glasses: [glass("ph-half", 0.42), glass("ph-full", 1)],
+        glasses: set ? set.measures.map(measure) : [glass("ph-half", 0.42), glass("ph-full", 1)],
         // CHAI-81 (Zafar, 4 Nov): both poured, a look at the two, then each snapped in turn, half a second in its frame before the shutter
         snap: "after",
         look: 900,

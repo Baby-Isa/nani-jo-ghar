@@ -386,11 +386,12 @@
   "_note": "Lang.line keys the station says today; the amounts of the jug are the word moment's job (CHAI-67)"
  },
  "wordMoment": {
-  "call": "UI.wordMoment(ids, settings.wordMoment): the kit's call with this game's pieces (the generalised call is asked of the kit's owner in build/reports/s18-g-baking.md; until it lands the call plays chai's moment only and this one is skipped)",
+  "call": "UI.wordMoment(ids, settings.wordMoment): the kit's call with this game's pair, key and pictures (s18-w3-kit; a word still to record shows its grey English)",
   "key": "baking:word-moment-jug",
   "pair": ["ph-half", "ph-cup"],
   "_pair": "L3's first jug round asks a cup of flour and half a cup of water or milk (mechanic.levels[2].plans): the two the moment shows, side by side, before it names either (STD-A3-03)",
-  "vessel": {"src": "assets/cook/items/shelf-cook-paani-bare-f.webp", "tilt": 70, "placeholder": true},
+  "vessel": {"src": "assets/cook/items/shelf-cook-paani-bare-f.webp", "spout": [0.5, 0.08], "aspect": 0.667, "tilt": -110, "placeholder": true},
+  "_vessel": "the water bottle upright in its picture: its mouth (spout, as fractions of the picture) and w/h; tilt -110 lays its mouth down to the left, over the jug, the bottle's body up and right as chai's kettle (ART-38's vessel to come)",
   "stream": "assets/shared/word-moment/stream-water-s17.webp",
   "measures": [
    {"id": "ph-half", "empty": "assets/cook/proto/baking/jug-empty.webp", "full": "assets/cook/proto/baking/jug-water.webp", "lineAt": 0.672, "fill": 0.29, "card": "assets/cook/proto/baking/jug-water.webp"},
