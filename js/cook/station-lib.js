@@ -476,10 +476,10 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
       if (!id || id === helperKey) return;
       // SH-149 (Zafar, 8 Nov, sekelo and daar: "there's no drop down on the Nani hint"): a thing the step asks for that is not an order
       // row of its own (a skewer's piece, daar's chop on Nani's own card) is her helper card too: its own item card
-      const own = !r && id && UI.itemPart ? UI.itemPart(id, { html: Lang.html(Lang.phrase([id])), en: Cook.english(id), size: 240, say: () => Lang.speak(Lang.phrase([id])) }) : null;
-      if (id && !r && !own) return; // (nothing to show: the helper stays on the last asked item)
+      const part = !r && id && UI.itemPart ? UI.itemPart(id, { html: Lang.html(Lang.phrase([id])), en: Cook.english(id), size: 240, say: () => Lang.speak(Lang.phrase([id])) }) : null;
+      if (id && !r && !part) return; // (nothing to show: the helper stays on the last asked item)
       helperKey = id;
-      const w = r ? UI.wordOf(r, { size: 240, written: true }) : own;
+      const w = r ? UI.wordOf(r, { size: 240, written: true }) : part;
       if (w) w.onOpen = () => !helped.has(id) && (helped.add(id), Cook.onHelp && Cook.onHelp("hint", { ids: [id] }));
       UI.helper(w || null);
     }, 250);
