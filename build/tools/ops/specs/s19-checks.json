@@ -8,7 +8,7 @@
   "branch": "s19-checks in /home/user/wt/s19-checks (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "tools",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "build/reports/s18-review-and-direction.md (In one page, sections 2, 6 principle 10, and 10)",
     "build/reports/s18-eye-judge-experiment.md (whole: the rubric, the result and its three changes)",

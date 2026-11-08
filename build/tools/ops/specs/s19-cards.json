@@ -8,7 +8,7 @@
   "branch": "s19-cards in /home/user/wt/s19-cards (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "read": [
     "build/reports/s18-review-and-direction.md (In one page, sections 2-4)",
     "docs/feedback/kitchen-play-2026-11-08.md (the points your rows name)",

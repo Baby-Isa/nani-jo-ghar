@@ -32,9 +32,12 @@ FILES THIS SESSION OWNS (edit only these):
   - js/cook/mechanics/pan.js
   - js/cook/mechanics/tadka.js
   - data/stations/mishkaki-grill.json, daar.json, eggs.json, corn.json, chop.json
-  - build/sandbox/data/evidence.json (your rows' entries only)
+  - js/cook/mechanics/knead.js
+  - js/cook/stations/baking.js
+  - data/stations/baking.json
   - build/reports/s19-games.md
 READ-ONLY (never edit):
+  - build/sandbox/data/evidence.json (s19-lights owns the file: write your rows' evidence entries as exact JSON in your report, or message the orchestrator to add them before your after-run)
   - js/cook/coach.js, js/shared/** (s19-lights may be running: call the light API as it stands; a change you need goes in your report)
   - js/cook/stations/maani-line.js, samosa.js, chai-tray.js, chaat (s19-lights)
   - build/tools/review/**, build/sandbox/lib/**
@@ -58,9 +61,11 @@ TASKS (each with its acceptance criterion):
      Accept: eggs L1-L4 0 breaks at the four sizes; the s19-checks 'centred and whole' row green on eggs
   5. DAAR-43: daar's first-time light round a pile's picture, not its tap box (`Cook.Coach.box(obj, pad, {bounds})`), so it never covers the next pile at 740x320. CK-61: corn's lights leave the kit's room (contract-92). CK-65: corn's green zone at least as long as chai's green at the same level (measure chai's, set corn's in its settings, give both numbers).
      Accept: contract-92 green on daar@L2 at 740x320 and corn; corn's and chai's green lengths per level in the report
-  6. Out of scope (needs Zafar or art): the timed windows' look (sekelo's dial, daar's gauge, eggs' knob and ring), one stir (DAAR-45), the grill and coals art, the scene and shelf angle, the counting rule, eggs' L1 length. Write any you meet in the report.
+  6. The kit's lights (s19-lights phase 1, merged before you start: js/shared/onboard.js, js/cook/coach.js; its report build/reports/s19-lights.md): stir.js:316 and knead.js:53 still call their own S.ghost: replace with Cook.Coach.demo(...) (contract-102). Eggs: the pan gets litBounds (its round body without the handle) and the bowl's light uses C.thingBox(obj) so its pill is inside (SH-230, CK-63). Sekelo, daar, eggs, corn and baking call Cook.Coach.stuck({...}) for the stuck help (SH-228). Call C.began/C.ended where a mechanic's move starts and ends (SH-236).
+     Accept: contract-91, 102, 105, 106 and 107 green on your flows at L1-L4
+  7. Out of scope (needs Zafar or art): the timed windows' look (sekelo's dial, daar's gauge, eggs' knob and ring), one stir (DAAR-45), the grill and coals art, the scene and shelf angle, the counting rule, eggs' L1 length. Write any you meet in the report.
      Accept: the report lists them
-  7. Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; the s19-checks gate (part 1 rows and sidebyside, if merged) on your flows; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.
+  8. Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; the s19-checks gate (part 1 rows and sidebyside, if merged) on your flows; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.
      Accept: build/reports/s19-games.md with a Proof section and script-made before-and-after crops of each, under 600 words
 
 KEEP (what Zafar liked in mishkaki-grill, daar, eggs, corn, chop, chai: never change it without his word; 10):
@@ -75,8 +80,8 @@ KEEP (what Zafar liked in mishkaki-grill, daar, eggs, corn, chop, chai: never ch
   KEEP-19: Liked, 22 Oct: "it's becoming a lot clearer and easier to play and easier to understand ... a very positive strong step" (Sprint 11's direction)
   KEEP-21: Liked, 1 Nov: "The half mechanism for level 4 kind of works well, actually. In terms of the pouring, it works quite well. It's quite clever"; "I had a quick loo
 
-REGRESSION ROWS TO RECHECK (5; * = open or reopened; the contract replay of your flows covers the rest):
-  the rows the tasks name (5): CK-63*, CK-61*, DAAR-43*, CK-65*, DAAR-45*
+REGRESSION ROWS TO RECHECK (8; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (8): CK-63*, CK-61*, DAAR-43*, CK-65*, SH-228*, SH-230*, SH-236*, DAAR-45*
 
 PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
   - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.

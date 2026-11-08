@@ -8,7 +8,7 @@
   "branch": "s19-games in /home/user/wt/s19-games (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "code",
   "browser": true,
-  "live": false,
+  "live": true,
   "specsByBuilder": true,
   "read": [
     "build/reports/s18-eye-judge-experiment.md (sections 2 and 4-7)",
@@ -30,13 +30,13 @@
     "js/cook/mechanics/pan.js",
     "js/cook/mechanics/tadka.js",
     "data/stations/mishkaki-grill.json, daar.json, eggs.json, corn.json, chop.json",
-    "build/sandbox/data/evidence.json (your rows' entries only)",
     "js/cook/mechanics/knead.js",
     "js/cook/stations/baking.js",
     "data/stations/baking.json",
     "build/reports/s19-games.md"
   ],
   "readOnly": [
+    "build/sandbox/data/evidence.json (s19-lights owns the file: write your rows' evidence entries as exact JSON in your report, or message the orchestrator to add them before your after-run)",
     "js/cook/coach.js, js/shared/** (s19-lights may be running: call the light API as it stands; a change you need goes in your report)",
     "js/cook/stations/maani-line.js, samosa.js, chai-tray.js, chaat (s19-lights)",
     "build/tools/review/**, build/sandbox/lib/**"
