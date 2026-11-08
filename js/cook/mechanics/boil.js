@@ -505,7 +505,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const now = Date.now();
             if (o.notNow && !(now - noAt < o.notNowGapMs) && !(Cook.UI && Cook.UI.naniMuted && Cook.UI.naniMuted())) {
               noAt = now;
-              const line = Cook.data && Cook.data.lines && Cook.data.lines[o.notNow] && Cook.Lang ? Cook.Lang.line(o.notNow) : null;
+              const line = Cook.Lang && Cook.Lang.line ? Cook.Lang.line(o.notNow) : null; // (G26: the engine's line, never the data's)
               if (line && Cook.UI && Cook.UI.voice) Cook.UI.voice(line, { ms: 900 }).catch(() => {});
             }
             call("early");

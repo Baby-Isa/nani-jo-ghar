@@ -2,6 +2,10 @@
 
 Only what is still open. An answer goes straight into the doc, row or check it changes (the commit says "Zafar, <date>"), and the question leaves this file.
 
+### Sprint 18 (8 Nov)
+- **Maani's L4 flip window** (s18-g-maani): the standard says a timed window is at least 2 s (STD-B2-05); maani's L4 flip is shorter.
+  Lengthen it (`flipAddS` 0.75 -> 1.3 in `data/stations/maani-line.json`)? Recommendation: yes.
+
 ### Deferred (Zafar, 14 Oct)
 16. Who did it?: family culprits, Kasuku a silent suspect, "Prove it" for 8+.
 17. Monsoon rush: a goat in the kitchen; Big Ma's song during the leak.
