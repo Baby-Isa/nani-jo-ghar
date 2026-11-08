@@ -106,8 +106,8 @@ One line each as they launch: id, what it does, model and effort, report in `bui
 - Sat 7 Nov ~22:40: chai fully switched (sessions s18-chai3, -chai4; `s18-chai2.md`), wave 1 merged, checks green.
 - **Wave 2, launched Sun 8 Nov 00:15 UK** (Zafar, 00:14: "just keep going"; brought forward from 08:00): s18-g-daar, -chaat, -samosa,
   -maani, -sekelo, -eggs, -baking, -corn (Opus high, $20-30 each, stop Sun 20:00), worktrees `/home/user/wt/s18-g-<game>`.
-- Sun 8 Nov 00:45-02:30: sekelo, maani, samosa, daar, baking, eggs, the corn stall merged (each 0 contract breaks at 1280x665,
-  most at the four sizes; reports `build/reports/s18-g-<game>.md`); chaat still building. **Wave 3's fixes launched ~02:30:**
+- Sun 8 Nov 00:45-01:45: sekelo, maani, samosa, daar, baking, eggs, the corn stall merged (each 0 contract breaks at 1280x665,
+  most at the four sizes; reports `build/reports/s18-g-<game>.md`); chaat still building. **Wave 3's fixes launched ~01:45:**
   s18-w3-kit (Opus high, $25-35: the page box, SAM-29, the word moment's own pair, DAAR-42) and s18-w3-checks (Sonnet high, $8-12:
   contract-22's grey English, the hook's fading lights, loadcheck's new stations).
 
