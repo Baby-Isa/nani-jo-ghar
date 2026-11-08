@@ -45,7 +45,7 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-01-09 | H | not run | 2 | Check |  |
 | STD-02-01 | H | gap | 2 | Check | no child-pace play of chop |
 | STD-02-02 | H | not run | 2 | Check |  |
-| STD-02-03 | H | not run | dbd | Decision | a swipe, not a tap: the swipe chop is his (29 Sept, D1/Q4); confirm against principle 5 (21 Oct) |
+| STD-02-03 | H | not run | dbd | - | a swipe, not a tap: different by design, Zafar 8 Nov ("yes to swipe"; the swipe chop is his, 29 Sept, D1/Q4) |
 | STD-02-04 | H | not run | 2 | Check | DAAR-39 strip measured from the board every frame (build) |
 | STD-02-05 | H | not run | 2 | Check |  |
 

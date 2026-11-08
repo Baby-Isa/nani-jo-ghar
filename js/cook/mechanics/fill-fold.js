@@ -122,6 +122,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
   Cook.Pastry = {
     TS,
+    /** {id: n} from a tally, a list (one spoon each) or any-order groups (the fill's and the samosa station's one copy). */
+    tally: asTally,
     /** folds: how many swipes (3 or 4); tile: the pastry texture (seamless across); ppu: canvas px per unit. */
     create({ folds = 3, tile = null, ppu = 300 } = {}) {
       const N = Math.max(2, Math.min(5, folds | 0));

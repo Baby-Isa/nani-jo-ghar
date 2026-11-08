@@ -11,9 +11,10 @@
  * from the central rules (data/rules.json levels, STD-C2-03).
  *
  * The call daar and chaat use (wave 2 switches them onto it):
- *   Cook.Chop.play(z, params) -> {cut, got, wrong}: one chop in zone z at its level; params are the mechanic's own (targets,
- *     pool, only, no, tick, knifeKey, blade, onSlice, onCount, onCall, tally, timer, firstLight, onRounds) plus level; the
- *     settings' numbers for that level and the rules' decoys come with it (params.knobs on top, a caller's own).
+ *   Cook.Chop.play(z, params) -> {cut, got, wrong, short}: one chop in zone z at its level; params are the mechanic's own (targets,
+ *     pool, only, no, tick, knifeKey, blade, onSlice, onCount, onCall, tally, timer, firstLight, onRounds) plus level, and note
+ *     (true: each round's decoys are reported for contract-37, the first try's); the settings' numbers for that level and the
+ *     rules' decoys come with it (params.knobs on top, a caller's own). short: the kinds whose count was not reached.
  *   Cook.Chop.settings() -> Promise of data/stations/chop.json (once); Cook.Chop.knobs(level) its knobs at a level, once loaded.
  */
 import { Cook as CookNS } from "../ns.js";
@@ -60,25 +61,6 @@ import { Cook as CookNS } from "../ns.js";
     return row;
   }
 
-  /** One chop in zone z (the call daar and chaat use): the mechanic at the game's numbers for the level; graded by kind. */
-  async function play(z, params = {}) {
-    await settings();
-    const level = params.level || Cook.roundLevel(z.ctx);
-    const k = Object.assign(knobs(level), params.knobs || {});
-    const cut = (await Mech.run(KEY, z, Object.assign({}, params, { level, knobs: k }))) || {};
-    const want = params.targets || {};
-    let wrong = null;
-    const got = {};
-    Object.keys(want).forEach((id) => {
-      const n = Number(want[id]) || 0;
-      if (!n || (params.only && !params.only.includes(id))) return;
-      const c = cut[id] || 0;
-      if (c > 0) got[id] = c;
-      if (c !== n) wrong = wrong || `chopped ${c}, they asked for ${n}: ${id}`;
-    });
-    return { cut, got, wrong };
-  }
-
   /**
    * CK-49 (contract-37): how many decoys fly with each round's things (a thing asked in another round is a decoy in this one; the
    * "no" one too), the fewest of any round, and whether one is a lookalike; "room" when the six whole vegetables run out first.
@@ -87,6 +69,32 @@ import { Cook as CookNS } from "../ns.js";
     const n = Math.min(...rounds.map((r) => r.decoys.length));
     St.decoyNote(n, { what: n < want ? `${KEY} room:${n}` : KEY, lookalike: rounds.some((r) => r.lookalikes.length) });
   };
+
+  /** One chop in zone z (the call daar and chaat use): the mechanic at the game's numbers for the level; graded by kind. */
+  async function play(z, params = {}) {
+    await settings();
+    const level = params.level || Cook.roundLevel(z.ctx);
+    const k = Object.assign(knobs(level), params.knobs || {});
+    const want = params.targets || {};
+    // (the decoys each round threw, reported once for the round: the game's own, daar's and chaat's alike)
+    const own = params.onRounds;
+    const onRounds = params.note ? (rs) => (noteDecoys(rs, knobs(level).decoys || 0), own && own(rs)) : own;
+    const cut = (await Mech.run(KEY, z, Object.assign({}, params, { level, knobs: k, onRounds }))) || {};
+    let wrong = null;
+    const got = {};
+    const short = [];
+    Object.keys(want).forEach((id) => {
+      const n = Number(want[id]) || 0;
+      if (!n || (params.only && !params.only.includes(id))) return;
+      const c = cut[id] || 0;
+      if (c > 0) got[id] = c;
+      if (c !== n) {
+        wrong = wrong || `chopped ${c}, they asked for ${n}: ${id}`;
+        short.push(id);
+      }
+    });
+    return { cut, got, wrong, short };
+  }
 
   /** The game's round: Nani's order, the board, the chop (again for a short count), the end. */
   async function game(L) {
@@ -118,7 +126,7 @@ import { Cook as CookNS } from "../ns.js";
       // before the first throw (kit (d)'s Cook.Coach.lessons; the knife waits)
       if (!tries && gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx });
       const z = Mech.zone(S, ctx, { id: KEY, level });
-      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, retry: tries > 0, onRounds: tries ? null : (rs) => noteDecoys(rs, knobs(level).decoys || 0) });
+      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, retry: tries > 0, note: !tries });
       z.close();
       St.end();
       Object.keys(need).forEach((id) => {
