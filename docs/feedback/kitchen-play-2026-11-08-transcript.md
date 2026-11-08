@@ -1,0 +1,243 @@
+# Transcript: de2a979e-Kutchi_feedback_261108.m4a
+
+Rough draft by Whisper, transcribed in short pieces. Kutchi spellings are guesses for Zafar to correct.
+
+- **0:00** Okay, this is feedback. I'm first playing level one of the Marnie game. Initial thoughts, I think when we, I think we said that if we're only ordering one of an item that we wouldn't say the letter one, we'd only say if we were then ordering two.
+- **0:26** of an item. So it would just be Marnie or Burr Marnie. We'll just say Marnie or two
+- **0:33** Marnies, three Marnies. However, which does make it look more nicer in the text
+- **0:44** box but yeah I'm not sure
+- **0:52** I'm not sure maybe it's better to say one then you learn the male and female
+- **0:57** tense of one and it helps you to learn other ones so maybe let's keep it for now
+- **1:02** but I look at the item card I'm not sure but it doesn't use the rules the
+- **1:11** correct rules I don't see a line above the speaker button divide a line
+- **1:18** and the alignment as well I think is off I think we we made a rule for like the
+- **1:23** alignment of the Kutchi in English text I think we said the English text would
+- **1:27** always be paired with the Kutchi text directly below it and I think otherwise
+- **1:31** we said they should be centered I can't remember but look up the exact rules
+- **1:33** that we we defined but it's not it's not it's not this I'm pretty sure
+- **1:45** let me briefly just check and see whether tea has the correct order cards
+- **1:56** I thought it did check now yeah the tea game does so I don't know why it's not
+- **2:10** transferred over
+- **2:12** also the silver dishes actually no they're fine
+- **2:15** no comment oh but the high the highlights are wrong for the outline the
+- **2:26** onboarding outline sorry the onboarding highlight box was incorrect for money it
+- **2:33** clips the edge of the images and the pill they just it wasn't correct it also
+- **2:39** clips the edges of the
+- **2:41** round rolling tray rolling what you call it board board for rolling the money
+- **2:49** it clips all edges and I think instead of the finger what I think it looks
+- **2:58** terrible and there seems to be two of them overlapping at the same time like
+- **3:02** there's two different finger animations both firing I think we need
+- **3:07** we need the rolling pin to go up and down and the finger dragging it up and
+- **3:13** down and just one finger I will think to decide on what the finger looks like or
+- **3:19** if we just do the the kind of pulsating circle we could try both and see what
+- **3:28** look comes out better oh and it's not going away the highlight box
+- **3:34** oh it's because after I've rolled it it now wants me to click on it I think when
+- **3:47** I start rolling the box should go away the highlight onboarding box right
+- **3:54** probably yeah if I successfully started rolling as with onboarding in general if
+- **4:00** I successfully started doing the task it wants me to do
+- **4:03** then it should go away so there's no highlight while I'm rolling and then
+- **4:09** once it's reached the right size maybe the first time you do the money it stops
+- **4:13** you rolling at the right size you hit the size guide it will have a highlights
+- **4:19** in in pulsating yellow gives you a little the juice sound is for rolling
+- **4:25** into the right size but it needs to be something then the highlight comes on
+- **4:30** and prompts you to click it but there shouldn't be the finger to click it then
+- **4:35** um also i think it should bounce up and down i think it should just be like the teapot one
+- **4:41** or not the teapot the the chai pan um where it doesn't bounce up and down because it's not an
+- **4:48** item like that i think the bouncing up and down is is for items i think there is a rule that items
+- **4:52** bounce up and down but maybe i should tighten that rule to say it's like items in the bottom
+- **4:57** bar bounce up and down
+- **5:00** oh and then some weird thing happened when i yeah there's definitely something weird on
+- **5:07** onboarding i i clicked the money to go onto the the pan and um
+- **5:17** as i flew onto the pan the barge of money
+- **5:23** dough balls briefly flashed up as highlighted so that something went very wrong there
+- **5:28** and then i'm not getting onboarding for flip i don't think i got good onboarding for flipping
+- **5:38** oh there's a tick box there's a tick as well why is the tick there we should have got there's
+- **5:43** no ticks in any of the games anymore no ticks hard and fast wall it's not a good game mechanic
+- **5:50** no ticks and
+- **5:54** even i'm going to try cut out cut out or go to the next scene buttons as well i think we
+- **5:59** should just cut them all out i'm not sure if the dobles look realistic enough
+- **6:07** i'm not sure they look like dobles
+- **6:10** maybe i'll ask chat gbt to give me some options of what realistic dobles look like
+- **6:16** i didn't get a tick either for doing the
+- **6:19** money i don't know why i did it correctly the item card hasn't ticked off
+- **6:33** yeah i've now done both of them and um neither of them have ticked off
+- **6:41** until i press the tick button and then they both ticked off and i said well done
+- **6:45** no i think it needs to be like t where it takes off as you go and
+- **7:01** yeah it takes off as you go and i'm trying to wonder i think it's to say well done when
+- **7:08** all of them the whole menu card is complete yeah that makes sense for that person
+- **7:13** not just if one not just if an individual tray is done of a certain type no they should
+- **7:20** the whole thing should be complete and the guy comes up says or the order person that orders
+- **7:24** says well done and then the game ends
+- **7:29** uh but yeah i'm going to be telling you how the game should look i think
+- **7:34** um i think the game
+- **7:40** i think it overall looks and works how it's meant to i mean there's some bugs and stuff um but
+- **7:53** broadly speaking
+- **8:04** i think it's yeah it's on the right framework if that makes sense
+- **8:07** the chopping board isn't top down either perfectly now i've noticed it is bothering me
+- **8:11** it's not exactly top down i think we need to attach a reference image or something exactly top
+- **8:15** down in chat gpt to help it and all the metal trays either it's just annoying me now that i
+- **8:22** look at it let's include those in the art one but i think you have to for these top down things you
+- **8:27** need to attach a royalty free image that's exactly top down to help guide it
+- **8:32** okay so i'm gonna leave comments on artwork and visuals and stuff because
+- **8:37** we're having a separate chat about that and the overall artwork i think there is
+- **8:43** something we still haven't resolved in this ordering system and i think i have
+- **8:51** the answer now with some time in perspective also before i forget i think
+- **8:59** when you place an item onto the skewer
+- **9:04** oh never mind i don't know okay so i think the answer is oh yeah here we go
+- **9:14** here we go it just popped up nani's hint says thread them in English i know he
+- **9:19** needs replacing after 15 seconds or something the auto helper hint came up
+- **9:26** and it said i think one skewer of mushkaki or something something came up in Kutchi but it
+- **9:33** could have easily fit on um fit on one line but for some reason it didn't it wrapped onto two
+- **9:43** so i don't know if that's a bug that needs fixing but i guess again it should be correct in t so
+- **9:47** no i didn't carry across also now i think about it there's no drop down button in nani's helper hint
+- **9:53** i really don't understand how these elements supposedly came across because
+- **9:56** i don't really see it but yes back to how we fix this i think we have to
+- **10:03** um list
+- **10:09** in the menu sorry in the order card we have to have four items
+- **10:14** in four items and those are the items that go on each skewer
+- **10:18** even if it's four of the same thing and they get ticked off as you put them on i think we
+- **10:23** just have to do it that way um firstly it makes you know that you've done something correct
+- **10:28** when you've put something on because um otherwise you have to put four on before you even know if
+- **10:33** you're doing the right thing which is confusing secondly it's it's just kind of consistent
+- **10:38** then across the whole game that you always have um
+- **10:43** four for a skewer and what it lets us do is separate the names of the items that
+- **10:53** go on the skewer from the overall order because the items should be I'm looking
+- **11:03** at this this this order for Hakri, Lakri, Mishkaki like one skewer of
+- **11:09** or grilled meat the item you put on isn't Mishkaki the item you put on is
+- **11:15** Gorse like meat um or it would be chicken for a different one you know and so the I the item
+- **11:22** card just say Gorse Gorse Gorse Gorse Gorse or chicken chicken chicken chicken chicken
+- **11:28** um but the order can then be can then say Mishkaki which obviously isn't
+- **11:35** is is a an abstraction in the language where it's a different word then what
+- **11:42** the word what the you know I'm saying the skewer is a bunch of meat the skewer
+- **11:47** has a bunch of lamb meat on it or beef meat on it but then you don't call it
+- **11:51** you call it a different word which doesn't well obviously tell you that
+- **11:55** that's what it's made of but anyway that's how languages work but we can
+- **11:59** explain that we can explain that without explicitly explaining it by
+- **12:04** and the order saying I'll take the language of mum but I think the order
+- **12:08** should say I want I want beef mishkaki I want chicken mishkaki or I want
+- **12:30** or maybe we'll just say I want and then maybe the mixed one would just be like I
+- **12:34** want mishkaki
+- **12:36** and then the order can be mixed then you know I don't need to say mixed but it can
+- **12:43** just have a mixture of different items or yeah
+- **12:58** and then maybe a raised to one could say the Kutchi version of
+- **13:02** I want grilled vegetables I mean we could take out the word mishkaki I know
+- **13:13** it is it is East African and we could just say I want grilled meat
+- **13:18** muka sekele goos kope, muka sekele kukro kope, muka sekele
+- **13:27** I don't know I don't know how you do it for mixed but I think I think that needs
+- **13:36** clarifying we can add it into the like the questions we should be ordering we
+- **13:42** should be organizing the questions for mum devote I'm sorry I want to say
+- **13:45** questions for mum I mean like the big language grammar sheets we should be
+- **13:49** organizing them by game so here the issue we should pop some of these
+- **13:53** questions into that game
+- **13:54** on the sheet but for now what we can do I think is ensure that each order of a skewer just has the four individual items
+- **14:05** that's four individual cards item cards within one order
+- **14:10** um
+- **14:16** yeah
+- **14:20** question being then is what would happen if one person orders two maybe we just
+- **14:28** avoid that problem maybe we just have different each person only ever orders
+- **14:32** one of the skewer you know we have other game modes where they order multiple
+- **14:38** things
+- **14:47** and also when they order say they want one chicken on the skewer they want one
+- **14:54** chicken and three meat they can say the ordering can say the Kutchi version of
+- **15:02** first chicken and then three pieces of lamb you know
+- **15:13** and the order card can just pop up first the chicken one will go in and then the lamb one
+- **15:17** will go in but it will just go it will go in the pop-up card will will be active and then
+- **15:24** three times you'll see a version of the pop-up card shrink and go into the order card but the
+- **15:34** pop-up card will still remain until it's the final one of the three does that make sense
+- **15:39** so when they say you know first chicken the chicken card will pop up and then it
+- **15:49** will go small into the order card and then they'll say and then three you know
+- **15:55** lamb pieces of lamb and then a lamb pop-up card will pop up and it will stay
+- **16:01** there and we'll see an animation where
+- **16:07** almost like an overlaid pop-up card will shrink down and go into the order card
+- **16:15** and then the next one and on the third one the actual pop-up card it will
+- **16:21** disappear and go in either that or the pop-up card then splits into three
+- **16:29** smaller pop-up cards and they each go in at the same time
+- **16:34** but I think the former might be easier to understand and simpler to implement
+- **16:39** I don't know I think that makes sense tell me what you think
+- **16:45** but yeah visually I don't know I don't know that it carries a lot of the try elements like
+- **16:48** I've mentioned some already item cards are wrong drop downs are not there for the hints
+- **16:55** hints don't wrap I can't even open the hints
+- **16:59** all sorts of issues okay now I'm testing Dara what is going on with Dara like
+- **17:10** it's so bad what it's got the relic of the old order card in there the one that
+- **17:21** goes the one that's like a long
+- **17:24** small vertical wide horizontal rectangle with an arrow running through it from
+- **17:31** left to right with the old yeah old everything I don't know why that's in
+- **17:39** there it cuts across randomly halfway through the order card the item cards
+- **17:46** don't have the line break they're not the correct ones
+- **17:49** there's no drop down on the nani hint um I think it's the wrong use of the onion as well
+- **17:55** it's a crate of onions but it should be one onion
+- **18:02** I don't know it's just a million miles it's just a million miles off
+- **18:06** in surface training we did so much we made like gap analysis and we did like
+- **18:11** best practice documents and everything maybe I'm over prescribing
+- **18:16** maybe you need just to use your wisdom to understand and to tell me how best to
+- **18:23** make this work because clearly me coming up with all these ideas is not working
+- **18:30** and nani's order card should be for chopping should be the correct item card
+- **18:36** and then after chopping there's a pop-up and the pop-up is just wrong it's
+- **18:41** the old style
+- **18:44** oh it's just terrible it's all terrible at what point can you just use your judgment
+- **18:50** like any human being would look at the tea game and be like this dar game is not the same style
+- **18:55** it's just not there's certain elements which don't look the same the oil pan isn't is not top
+- **19:00** down it needs to be top down we need a new art one for that just but wait and see we might be
+- **19:05** doing a new art one oh even the even the bottom thing that the bottom items they're not on a shelf
+- **19:11** like tears you've just not copied anything over bit of shit isn't it
+- **19:26** so I'm assuming stir is just the dark thing let's just have a look at that
+- **19:32** quickly oh god the this
+- **19:38** the way you've split out well stir looks it's not the same as the stir in Dara
+- **19:45** like it is a different speedo it's a different style different art different
+- **19:49** zoom different everything's different it's different completely you might just
+- **19:53** drop that game in half basically which is two completely different screens so
+- **19:57** I don't know why it was that hard to drop it like what's the on what the fuck
+- **20:03** is the onboarding
+- **20:04** for chart so now and all of a sudden only has a drop down but the onboarding
+- **20:09** is is there's no dark shadows or anything like that highlight box the
+- **20:14** order cards completely wrong I think everything I think it's well there's all
+- **20:17** sequences where you've got sequences you've just not managed to do this order
+- **20:20** card well these items are on a shelf you never really know what you're gonna get
+- **20:24** do you okay it's been a while no voice noting to you and the hint is not
+- **20:31** kicked in
+- **20:32** even though I'm a new player to select the next item even if I shouldn't be a new player
+- **20:36** eventually there's meant to be a hint that kicks in to tell me to press the next item
+- **20:40** that's not happened then immediately after I put in the potatoes I was told to put in the chilies
+- **20:48** which is incorrect I don't believe
+- **20:52** so that's good I don't know I don't know about the look and feel of this one I do wonder if it
+- **20:56** should be
+- **20:57** like tea like it should be a bowl on a shelf or not on a shelf it should be a
+- **21:04** bowl on like a counter it might make more sense might look better I don't
+- **21:14** know I think maybe we'll get chat TV tea to have a go how all of these could look
+- **21:18** also the tick buttons there when it shouldn't be there no tick buttons
+- **21:23** there was no onboarding for the samosas especially when it came to placing them
+- **21:28** into the the frying pan nothing told me or showed me how to place them into the
+- **21:34** frying pan the samosa game just needs a lot of work logically I mean the item card
+- **21:42** was a mess it just doesn't play well
+- **21:48** I don't know it just doesn't it doesn't work well the fact that there's six item
+- **21:55** blocks there or six pastries rectangles doesn't work well the folding animation
+- **22:04** doesn't work well the next button is just horrible we can't you have an X
+- **22:08** button I just doesn't work well
+- **22:13** I need a bigger think on it I can't think on it now I wonder if we just go
+- **22:19** back to one roll you know we've taken it we've taken away we have added in a lot
+- **22:24** of guidance and taken away some of the areas for people to get things wrong and
+- **22:27** I think maybe that's fine it makes the game a little bit easier but it brings
+- **22:30** the focus onto the language more and maybe we just do it like that you put
+- **22:34** the items in it rolls up it doesn't let you put the item in if it's the wrong
+- **22:38** one
+- **22:39** you can only do the number of items that it tells you to do once you've done it
+- **22:44** it moves on you know stuff like that in the folding animation we need to figure
+- **22:53** out a way around it like basic checks like that I'm playing the egg game now
+- **23:00** the highlight square of the
+- **23:05** around the eggs cuts off the word pill then the highlight onboarding circle
+- **23:11** the circle that goes around the pan it doesn't go around the pan it's half on
+- **23:15** the handle I'm way too small and it's off-centered like how how can that pass
+- **23:21** how like please explain it to me makes absolutely no sense
+- **23:32** I think also the ordering logic needs checking he says he the orders kind of
+- **23:38** says I want egg and then the item says one fried egg I think the order should
+- **23:46** say I want for example I want two fried eggs and then the item card should have
+- **23:55** there should be two item cards and they should both say fried egg
+- **23:59** that way you can get rid of the need for it to say one as well in the item card
+- **24:04** there's a bit of a logic principle thing here we probably should establish rather
+- **24:07** than doing this one by one for each of the games maybe you can help me
+- **24:10** establish it actually no do help me establish it I'm not gonna bother
+- **24:14** breaking it's miles off just it's absolute disaster class and corn isn't
+- **24:21** completely terrible but the timer on it is
+- **24:25** the green zone is way too short I don't know there must be a rule around how long the green
+- **24:28** zone is to hit if there's not make a rule around the green zone needs to be longer
+- **24:33** but yeah it'll come when we fix everything else
