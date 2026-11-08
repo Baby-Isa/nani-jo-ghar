@@ -6,6 +6,7 @@ sekelo's code (`js/cook/stations/mishkaki-grill.js`, `js/cook/mechanics/thread.j
 `data/stations/mishkaki-grill.json`, the mishkaki recipe and the grill and thread knobs in `data/cook.json`).
 
 **Counts before the build** (205 rules): 13 at 0, 32 at 1, 155 at 2, 5 at 3, none at 4 or 5.
+**Counts after the build** (commit d86b384a; a note ending "(build)" is what it changed): 13 at 0, 23 at 1, 163 at 2, 6 at 3.
 
 **The scale:** 0 n/a · 1 missing · 2 built, unproven · 3 check green · 4 judged · 5 his "done" · dbd different by design (dated).
 **Next:** Kit (a kit piece still to build) · Adopt (take a kit piece as it lands: (d) lights and lessons, (e) the order's flow) ·
@@ -134,20 +135,20 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-D1-01 | H | not run | 1 | Adopt | no first-time gate (Cook.Coach.firsts) for the thread or the rack |
+| STD-D1-01 | H | not run | 2 | Adopt | the kit's first-time gate for the lessons (build); the thread and the rack have no first-time light of their own |
 | STD-D1-02 | H | not run | 2 | Adopt | S.glow on the bowl and the rack skewer, not the kit's light |
 | STD-D1-03 | H | not run | 2 | Adopt | (d) |
 | STD-D1-05 | H | gap | 1 | Adopt | (d) Onboard.zoomBox |
 | STD-D1-06 | H | not run | 1 | Adopt | (d) Cook.Coach.control |
 | STD-D1-07 | H | fail | 1 | Adopt | (d) Cook.Coach.cardLight |
-| STD-D1-08 | H | fail | 1 | Adopt | (d) Cook.Coach.lessons not called |
+| STD-D1-08 | H | fail | 3 | Check | Cook.Coach.lessons before the threading, on the kit's first-time gate (Cook.Coach.firsts); contract-98 green L1-L4 at 1280x665 (build) |
 | STD-D1-09 | H | not run | 2 | Check | the turn's first-time hold (St.firstHold 'grill:turn'); the lift never holds |
 | STD-D1-10 | F | fail | 1 | Adopt | (d) Cook.Coach.nextLight: the next skewer on the rack |
 | STD-D2-01 | H | not run | 2 | Adopt | (d) |
 | STD-D2-02 | H | not run | 2 | Check | the thread hint names the next piece or the kind's count |
 | STD-D2-03 | H | not run | 2 | Check | NaniGuide.idleMs restarts it (SH-60) |
-| STD-D2-04 | H | not run | 1 | Adopt | the rack has no stuck hint; a wrong piece doesn't rush it (Cook.Coach.wrong) |
-| STD-D2-05 | H | not run | 1 | Adopt | the thread hint says the word whatever its stage (Cook.Coach.rungs) |
+| STD-D2-04 | H | not run | 1 | Adopt | a wrong piece rushes the kit's hints (Cook.Coach.wrong, build); the rack still has no stuck hint |
+| STD-D2-05 | H | not run | 2 | Check | the thread's hint and glow hide past support (Onboard.hintHides on the word's stage, build) |
 | STD-D2-06 | F | not run | 2 | Check | 'Firai!' at each green (the flip step) |
 | STD-D3-01 | H | not run | 2 | Adopt | (e) |
 | STD-D3-02 | H | fail | 1 | Adopt | the stuck hint is Nani's line and a glow, not the helper card |
@@ -176,10 +177,10 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-E2-05 | H | not run | 2 | Check |  |
 | STD-E2-06 | H | not run | 2 | Check |  |
 | STD-E2-07 | H | not run | 2 | Check |  |
-| STD-E2-08 | H | not run | 1 | Game code | SEK-22: the skewer's lit box hugs the skewer, handle to tip, at most 12 px beyond |
+| STD-E2-08 | H | not run | 2 | Check | SEK-22: each skewer named by its step (wordId rack, turn, lift, undo), so the kit's light hugs the whole skewer, handle to tip, with its pieces (build); for the judge |
 | STD-E3-01 | H | not run | 2 | Check |  |
 | STD-E3-02 | H | fail | 1 | Art | drawn fallbacks (stick, pieces, grill, rack, plate, board) in grill.js; the v3 and s08c pictures stand in front |
-| STD-E3-03 | F | not run | 1 | Adopt | SK.band is sekelo's own copy of the band (parchment panel), not the kit's worktop and stone band |
+| STD-E3-03 | F | not run | 2 | Check | the kit's worktop wash and stone band (Cook.Kit.worktop, St.stoneBand) in place of SK.band's own (build) |
 | STD-E3-04 | F | not run | 0 | none | no hob: the barbecue |
 | STD-E3-05 | F | gap | 0 | none | no counter |
 | STD-E4-01 | H | fail | 2 | Check |  |
@@ -189,21 +190,21 @@ Game code · Art · Words · Decision · Check. Scope: H House, F Family. Audit:
 | STD-E5-01 | H | not run | 2 | Check |  |
 | STD-E5-03 | H | not run | 2 | Check |  |
 | STD-E5-04 | H | not run | 2 | Check | 'Firai!' is said at the green, while the child waits for it |
-| STD-E6-01 | H | not run | 1 | Game code | the embers', ring's and burst colours and V2.INK's sage and wrong are literals |
+| STD-E6-01 | H | not run | 1 | Game code | the V2.INK literals gone (build); the embers' and bursts' colours still literals |
 | STD-E6-02 | H | not run | 2 | Check |  |
 
 ## F Build
 
 | Rule | Scope | Audit | Score | Next | Note |
 |---|---|---|---|---|---|
-| STD-F1-01 | H | gap | 1 | Game code | own copies: SK.speaker, SK.bowl's chip, SK.pop, SK.band, SK.shelf's slots |
-| STD-F1-02 | H | not run | 1 | Game code | as F1-01; the hint ladder and its glow are thread's own |
-| STD-F1-03 | H | gap | 1 | Game code | its numbers in data/cook.json mechanics.grill and .thread, not its settings file |
+| STD-F1-01 | H | gap | 2 | Check | SK.speaker, SK.bowl's chip, SK.pop, SK.band and SK.shelf's slots are kit calls now (build); the grill's clock is the game's own |
+| STD-F1-02 | H | not run | 2 | Check | the copies deleted (build); the thread's idle hint is still its own (Cook.Coach.control: next) |
+| STD-F1-03 | H | gap | 2 | Check | the thread's and grill's levels in data/stations/mishkaki-grill.json (Cook.Skewer.knobs, build); data/cook.json's copy to delete (asked) |
 | STD-F1-04 | H | not run | 2 | Check |  |
-| STD-F1-05 | H | gap | 2 | Check | the chip uses the kit's at z.k 1, its own copy otherwise (both) |
+| STD-F1-05 | H | gap | 2 | Check | one path: the kit's chip at every scale (build) |
 | STD-F1-06 | H | judge | 3 | Check | brief.mjs --live-check |
 | STD-F2-02 | H | not run | 2 | Check | decoys by the rules; the skewer count on the recipe's slots, not a rules row |
-| STD-F2-03 | F | gap | 1 | Game code | as F1-03 |
+| STD-F2-03 | F | gap | 2 | Check | as F1-03 (build) |
 | STD-F2-04 | H | gap | 2 | Check |  |
 | STD-F3-01 | H | fail | 1 | Check |  |
 | STD-F3-02 | H | not run | 2 | Check |  |
