@@ -34,9 +34,18 @@
  *
  * St.freePick (js/cook/station-lib.js) is the shared "tap anything, or Done" step that the fill mechanic uses too:
  * nothing is refused, so nothing gives the answer away; you're graded afterwards.
+ *
+ * SPRINT 18 (s18-g-chaat; docs/design-language/standard/gaps/chaat.md): chaat is its settings file (data/stations/chaat.json:
+ * the bowl's place and layers, the shelf, the pots and strips, the motions' times, flyMs by level) plus its own mechanic, the bowl
+ * (the checker, the layers, the spoon in and out, the wobble, the take-back, the first-time demo). Everything else is a kit call:
+ * the worktop and stone band (Cook.Kit.worktop, St.stoneBand), the word pills and the row (Shelf.P.chip, Shelf.slots,
+ * Shelf.pillWant, Shelf.pillScale), the word pop (Juice.P.pop), the first-time gate, the reveal lessons and a wrong move's hint
+ * (Cook.Coach.firsts, .lessons, .wrong), the review face (Cook.Kit.review), the tick and the recast (NjgServe.round), the person
+ * saying their rows again (UI.personSay). The test hooks: Cook.undoAt, Cook.chaatPills, the "chaat-drop" note.
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
+import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (Sprint 18 piece 8): the tick and the recast
 
 (function (global) {
   const Cook = CookNS;
@@ -143,7 +152,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /* ---- /CHAAT_RULES ---- */
 
   /* ---------- the chaat v3 station (30 Sept, T2/T3, Q2b: fully side-on) ---------- */
-  const V3 = "assets/cook/items/v3/chaat/";
   // the side-on glass bowl, as build/check_vessel_meta.py measured it (v3/chaat/meta.json "bowl-side"): the
   // rim's and the inside floor's front lines, how flat a level's ellipse is there, and the inside wall's
   // [left, right] at 41 heights of the sprite (all fractions of the sprite's width / height)
@@ -154,91 +162,82 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   let GLASS = { w: BOWL.w, h: BOWL.h, cx: BOWL.cx, rim: BOWL.rim, floor: BOWL.floor, eryRim: BOWL.eryRim, eryFloor: BOWL.eryFloor, floorTop: BOWL.floorTop, floorHw: BOWL.floorHw, inside: BOWL_INSIDE };
   // the side-on pots (the pantry jars' look): one canvas, standing on its measured bottom-centre (meta.json)
   const POT = { w: 356, h: 370, anchor: [0.5, 0.9514] };
-  // the food inside a pot, below the jar's own highlights and above its thick base (the layers' texture)
-  const POT_FOOD = { x0: 0.15, x1: 0.85, y0: 0.4, y1: 0.86 };
-  const POTS = {
-    "veg-01": "pot-potato-v2", // ART-11 (s07 PT1): the cubes recoloured to PT1's matte cream flesh (they read as butter)
-    "ph-chana": "pot-chana",
-    "veg-02": "pot-onion",
-    "veg-03": "pot-tomato", // a stand-in (build/make_chaat_tomato_pot.py): no tomato on the T2 sheet
-    "veg-12": "pot-chilli",
-    "ph-sev": "pot-sev",
-    "ph-dahi": "pot-dahi",
-    "ph-amli": "pot-imli",
-    "ph-lili": "pot-chutney",
-    "ph-dhana": "pot-dhania",
-  };
-  /* the grid (design px, 1600x900), the same as chai v2's */
+  /*
+   * Sprint 18 (s18-g-chaat; the sprint's "Coded well" rule 1): the game's own numbers are its settings file, data/stations/chaat.json
+   * (read once, before the first bowl; set() below), never constants here: the bowl's place and size and its layers' looks, the
+   * shelf's line and slots, each topping's pot and strip, the motions' times and what changes by level. The shelf's word pills, the
+   * worktop, the stone band and the word pop are the kits' (js/shared/shelf.js, js/cook/kitchen-kit.js, js/shared/juice.js).
+   */
+  const FILE = "data/stations/chaat.json";
+  let SET = null;
+  let loading = null;
+  let V3, POTS, STRIP_DIR, STRIPS, POT_FOOD, THIN, DRIZZLE, BAND_SCALE, BAND_W, BAND_PAD, RES, GLASS_W, GLASS_X, BASE, PITCH, PREP_W, CHIP_Y, SPAN, MOTION;
   const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
-  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
-  const BASE = 818; // the shelf line: every pot stands on it
-  const CHIP = { w: 128, h: 46, y: 860, hitW: 142, hitH: 80 };
-  // SH-112 (Zafar 20 Oct): the taller band's pots a quarter bigger (St.shelfFit keeps the band's top gap)
-  const PITCH = 180;
-  const PREP_W = 166; // one slot's pot (identical for every topping)
-  const GLASS_W = 760; // the side-on bowl: wide, so a layer of a long order is still a clear strip
-  const GLASS_X = 800;
+  let GLASS_BOTTOM = 0;
   // the bowl is centred in the scene above the shelf band (0..SHELF_TOP): its middle at SHELF_TOP / 2
-  let GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
+  const placeBowl = () => (GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2));
+  function set(s) {
+    SET = s;
+    const B = s.bowl;
+    V3 = s.pots.dir;
+    POTS = s.pots.files;
+    STRIP_DIR = s.strips.dir;
+    STRIPS = s.strips.files;
+    POT_FOOD = B.potFood;
+    THIN = B.thin;
+    DRIZZLE = Object.fromEntries(B.drizzle.map((id) => [id, true]));
+    BAND_SCALE = B.bandScale;
+    BAND_W = B.band.w;
+    BAND_PAD = B.band.pad;
+    RES = B.res;
+    GLASS_W = B.w;
+    GLASS_X = B.x;
+    BASE = s.shelf.base;
+    PITCH = s.shelf.pitch;
+    PREP_W = s.shelf.potW;
+    CHIP_Y = s.shelf.chipY;
+    SPAN = s.shelf.span;
+    MOTION = s.motion;
+    bowlUrl = `${V3}${s.pots.bowl}.webp`;
+    placeBowl();
+    return s;
+  }
+  /** The settings, once (a Promise of data/stations/chaat.json, applied). */
+  const settings = () =>
+    (loading =
+      loading ||
+      fetch(Cook.v(FILE))
+        .then((r) => r.json())
+        .then(set)
+        .catch((e) => {
+          loading = null; // (asked again at the next bowl)
+          throw e;
+        }));
+  /** The level's row of the settings (levels[n - 1], the last for a level past them). */
+  const levelSet = (level) => {
+    const rows = (SET && SET.levels) || [];
+    return rows[Math.min(Math.max(1, level), rows.length) - 1] || {};
+  };
   /*
    * CHT-03 / T1 (S02-E): the art run's plain thin side-on bowl (art.s02 "chaat-glass", C8) once it has landed, with its
    * own measured inside (meta.bowl, the same measures as BOWL above); else the v3 bowl.
    */
-  let bowlUrl = V3 + "bowl-side.webp";
+  let bowlUrl = null;
   function useBowlArt() {
     const a = St.art("chaat-glass");
     const m = a && a.meta && a.meta.bowl;
     if (!m) return;
     GLASS = { w: m.w, h: m.h, cx: m.cx, rim: m.rim, floor: m.floor, eryRim: m.eryRim, eryFloor: m.eryFloor, floorTop: m.floorTop, floorHw: m.floorHw, inside: m.inside };
-    GLASS_BOTTOM = Math.round(SHELF_TOP / 2 + (GLASS_W * GLASS.h) / GLASS.w / 2);
+    placeBowl();
     bowlUrl = a.file;
   }
-  const INK = {
-    text: "#2A2522",
-    get kutchi() { return global.Tokens.hex("ink-kutchi"); },
-    card: 0xffffff,
-    grey: 0xd9d2c7,
-    gold: 0xc9962e,
-    panel: 0xefe5d6,
-    page: 0xf4ecdf,
-  };
-  const FONT = () => (global.Tokens && global.Tokens.font ? global.Tokens.font("word", "Nunito, sans-serif") : "Nunito, sans-serif"); // the central type's drawn-word font (SH-151)
-  // a layer's thickness, as a share of a full one: a chutney is drizzled (thin, over the layer below)
-  const THIN = {
-    "ph-amli": 0.5,
-    "ph-lili": 0.5,
-    "ph-dahi": 0.85,
-    "ph-dhana": 0.8,
-    "veg-12": 0.8,
-  };
-  const DRIZZLE = { "ph-amli": true, "ph-lili": true };
-  const RES = 1.5; // the layers' canvas, over the bowl's design size (crisp on a big screen)
-  // a layer's pieces, as a share of their size in the pot (the bowl is drawn bigger than a pot: a chickpea
-  // in the bowl is the size of one in the pot, measured on screen)
-  const BAND_SCALE = { "veg-01": 0.62, "ph-chana": 0.62, "ph-dahi": 0.8, "ph-sev": 0.7, "ph-dhana": 0.62, "veg-02": 0.6, "veg-03": 0.6, "veg-12": 0.62 };
-  const BAND_W = 1300; // a layer's flat texture: as wide as the bowl (bowl px)
-  const BAND_PAD = 14; // and this much above and below the layer (for the uneven lines)
-  const SPOON_W = 92; // a spoonful in flight (design px): big enough to see what is going in
   const potFood = {}; // id -> a canvas of the food in its pot (the layer's texture)
   /*
    * CHT-13 (P61; Zafar, 17 Oct: "redraw the bowl so it's exactly side-on ... the artwork is just like a horizontal strip"):
    * the s08b art run's side-on strip per item (CH2, CH3: assets/s08b-cut-data.json), drawn as the layer itself, one strip
    * across the bowl at its own size (no tiling, no seams), its ragged or glossy top the layer's top. The pot photos tiled in
-   * code (bandCanvas) stay only for an item with no strip.
+   * code (bandCanvas) stay only for an item with no strip. (The strips: the settings' strips.)
    */
-  const STRIP_DIR = "assets/cook/items-s08b/chaat-strips/";
-  const STRIPS = {
-    "veg-01": "strip-potato-s08b",
-    "ph-chana": "strip-chickpea-s08b",
-    "veg-02": "strip-onion-s08b",
-    "veg-03": "strip-tomato-s08b",
-    "veg-12": "strip-chilli-s08b",
-    "ph-sev": "strip-sev-s08b",
-    "ph-dahi": "strip-yogurt-s08b",
-    "ph-amli": "strip-tamarind-s08b",
-    "ph-lili": "strip-green-chutney-s08b",
-    "ph-dhana": "strip-coriander-s08b",
-  };
   const stripKey = (id) => `cv3-strip-${id}`;
   // how far a strip's top (leaves, sev, a glossy edge) stands above its layer's line, as a share of the strip's height: where
   // its rows first turn solid (measured once per strip: the first row 85% as opaque as its most opaque row), so the line
@@ -275,22 +274,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const key = stripKey(id);
     return S && STRIPS[id] && S.textures.exists(key) ? S.textures.get(key).getSourceImage() : null;
   };
-
-  /** The speaker icon, drawn at (x, y) about `s` px tall (chai v2's). */
-  function speaker(g, x, y, s, color = 0x2a2522) {
-    const k = s / 24;
-    g.fillStyle(color, 1);
-    g.fillRect(x - 8 * k, y - 3.5 * k, 5 * k, 7 * k);
-    g.fillTriangle(x - 4 * k, y - 3.5 * k, x + 2 * k, y - 9 * k, x + 2 * k, y + 9 * k);
-    g.fillTriangle(x - 4 * k, y + 3.5 * k, x + 2 * k, y - 9 * k, x - 4 * k, y - 3.5 * k);
-    g.lineStyle(2.2 * k, color, 1);
-    g.beginPath();
-    g.arc(x + 3 * k, y, 5 * k, -0.9, 0.9);
-    g.strokePath();
-    g.beginPath();
-    g.arc(x + 3 * k, y, 9.5 * k, -0.9, 0.9);
-    g.strokePath();
-  }
 
   /** The glass's inside half-width and centre at a height f (a fraction of the sprite's height). */
   function insideAt(f) {
@@ -832,27 +815,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* the ghost finger (first time only): SH-119 (Zafar, 22 Oct: one finger in every game): the shared kit's hand (Onboard.HAND,
-     its fingertip at Onboard.HOTSPOT in the 64x80 box), on the page, over everything; this file's own drawing only without the kit */
-  const FINGER_SVG_OWN =
-    '<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M26 6c3 0 5 2 5 5v17l2-1c3-1 6 1 6 4v1l2-1c3-1 6 1 6 4l2-.5c3-.6 5 1.5 5 4.5v9c0 9-7 16-16 16h-4c-6 0-10-3-13-8l-8-13c-1.6-2.6.8-5.8 3.8-5l5.2 3V11c0-3 2-5 5-5z" fill="#fff" stroke="#2A2522" stroke-width="2.5" stroke-linejoin="round"/></svg>';
+     its fingertip at Onboard.HOTSPOT in the 64x80 box), on the page, over everything; its ring and shadow the tokens' gold and shade */
   function ghost() {
     const el = document.createElement("div");
     el.className = "cv2-ghost";
-    const kit = global.Onboard && global.Onboard.HAND;
-    el.innerHTML = kit || FINGER_SVG_OWN;
-    const hot = kit ? global.Onboard.HOTSPOT : [22, 4];
+    el.innerHTML = global.Onboard.HAND;
+    const hot = global.Onboard.HOTSPOT;
     const at0 = `translate(${-hot[0]}px, ${-hot[1]}px)`;
     Object.assign(el.style, {
       position: "fixed",
       left: "0px",
       top: "0px",
       width: "64px",
-      height: kit ? "80px" : "64px",
+      height: "80px",
       zIndex: 60,
       pointerEvents: "none",
       opacity: "0",
       transition: "left .7s ease-in-out, top .7s ease-in-out, opacity .3s, transform .15s",
-      filter: "drop-shadow(0 3px 6px rgba(40,25,10,.35))",
+      filter: "drop-shadow(0 3px 6px rgba(var(--njg-shade-rgb), .35))",
       transform: at0,
     });
     const ring = document.createElement("div");
@@ -863,7 +843,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       marginLeft: "-28px",
       marginTop: "-28px",
       borderRadius: "50%",
-      border: "4px solid #C9962E",
+      border: "4px solid var(--njg-gold)",
       zIndex: 59,
       pointerEvents: "none",
       opacity: "0",
@@ -907,11 +887,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     view: "marble",
     // level 4 (§14a): his card starts folded, before the begin's pop-up (the closed big card there)
     closedFrom: 4,
-    async run(z, { sequence: seq0, exclude = [], pool, decoyPool, qty = null }, k) {
+    async run(z, { sequence: seq0, exclude = [], pool, decoyPool, qty = null }, k0) {
       const S = z.S;
       const ctx = z.ctx;
       const guided = !!ctx.guided;
       const level = Math.max(z.level || 1, Cook.roundLevel(ctx));
+      // the game's settings (data/stations/chaat.json), once; its level's row over the mechanic's knobs (data.mechanics.assemble)
+      await settings();
+      const k = Object.assign({}, k0, levelSet(level));
+      const M = MOTION;
       // CHT-06 (T3, T7): the checker counts quantities: "ba bataato" is two spoons of potato, one after the other
       // (qty: {id: n}, the same slots as the chop's), so one potato for two is wrong
       const sequence = (seq0 || []).map((e) => (!Array.isArray(e) && qty && Number(qty[e]) > 1 ? Array(Number(qty[e])).fill(e) : e));
@@ -921,6 +905,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const steps = St.steps(ctx);
       let help = false; // decision 51: the second try has help (the next layer glows)
       const dishNo = () => ctx.dishAt || 0;
+      // the kitchen kit's first-time gate (kit d, STD-D1-01; was chaat's own save key): the demo and the reveal lessons spend on it
+      // (made before the coach stops: its stop marks the station's coach seen, which would leave the gate stale on the first bowl)
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("assemble", { round: new Set() }) : null;
       // this station's own first-time demo replaces the generic spotlight (js/cook/coach.js)
       if (Cook.Coach) Cook.Coach.stop(true);
       // CK-49 (the level table): 1, 2, 3, 3 decoys (the knob), a lookalike among them at L4; the 'no' row's topping is on the
@@ -948,74 +935,82 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (S.textures.exists(`cv3-bit-${id}`)) S.textures.remove(`cv3-bit-${id}`);
       });
 
-      /* ---------- the scene: the softened marble, the shelf band (chai v2's) ---------- */
-      S.track(
-        S.add
-          // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
-          .rectangle(z.X(-FAR), z.Y(-FAR), z.L(1600 + 2 * FAR), z.L(SHELF_TOP + FAR), INK.page, 0.5)
-          .setOrigin(0)
-          .setDepth(D.bg + 1),
-      );
-      const bandG = S.track(S.add.graphics().setDepth(D.bg + 1.2));
-      bandG.fillStyle(INK.panel, 1);
-      bandG.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(900 - SHELF_TOP + FAR));
-      bandG.fillStyle(0x2a1a0a, 0.08);
-      bandG.fillRect(z.X(-FAR), z.Y(SHELF_TOP), z.L(1600 + 2 * FAR), z.L(3));
+      /* ---------- the scene: the kitchen kit's worktop wash and stone band (kit a, as chai's; was chaat's own fill and band) ---------- */
+      Cook.Kit.worktop(S, { top: z.Y(SHELF_TOP) });
+      St.stoneBand(S, { top: z.Y(SHELF_TOP), base: z.Y(BASE), depth: D.bg + 1.2 });
 
       /* ---------- the glass ---------- */
       // raised into the middle of a taller stage's worktop (the stage fill)
       const bowl = glassBowl(Cook.liftZone(z), S, flat.length);
 
-      /* ---------- the shelf: identical side-on pots (the pantry jars' look), a chip under each ---------- */
-      const n = ids.length;
+      /* ---------- the shelf: identical side-on pots (the pantry jars' look), the shared kit's word pill under each ---------- */
       // Zafar, 20 Oct (replacing s08 w6M's speaker alone at every level): a pot's word is written until the child has used
       // it right, then the speaker alone from the next round (Cook.chipWord); the glass pot shows its food (the picture label)
-      const showWord = (id) => Cook.chipWord(id, ctx);
-      // the chips' words first: each is never under the 14px floor as rendered (TXT-05), so on a small screen a word can be
-      // wider than the usual slot; the pots then spread out over the shelf (their size stays) so every chip fits its slot
-      const labels = {};
-      ids.forEach((id) => showWord(id) && (labels[id] = chipLabel(id)));
-      const needW = Math.max(0, ...Object.values(labels).map((t) => t.displayWidth + 44 + 8));
-      const pitch = Math.min(Math.max(PITCH, needW), (1600 - 190 - 60) / Math.max(1, n));
-      const width = n * pitch;
-      const x0 = Math.max(30, (1600 - 190 - width) / 2); // clear of the tick, bottom right
-      const plank = S.track(S.add.graphics().setDepth(D.bg + 1.3));
-      plank.fillStyle(INK.grey, 1);
-      plank.fillRoundedRect(z.X(x0 + 10), z.Y(BASE - 2), z.L(width - 20), z.L(10), z.L(5));
+      // (the shared kit's shelf, pieces 9-10, js/shared/shelf.js: Shelf.P.chip the pill, Shelf.slots the row, Shelf.pillWant and
+      // .pillScale the pills' size: at least the floor on screen, never touching; was chaat's own chip, speaker and 14 px wrap)
+      const Shelf = global.Shelf;
+      const PL = Shelf.PILL;
+      const wts = (() => {
+        try {
+          return UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+        } catch (e) {
+          return 1;
+        }
+      })();
+      const ppw = wts * z.k; // CSS px per design px of the shelf
+      const gap = Shelf.pillGap(ppw);
+      const want = Shelf.pillWant(ppw);
+      const chips = {};
+      ids.forEach((id) => {
+        chips[id] = Shelf.P.chip(S, 0, 0, Cook.display(id), {
+          word: !!Cook.chipWord(id, ctx),
+          depth: D.item + 2,
+          onTap: () => {
+            Cook.unlockAudio();
+            if (Cook.onLabel) Cook.onLabel(id);
+            Lang.speakWord(id);
+          },
+        });
+        chips[id].pillId = id;
+      });
+      const pillRoom = Shelf.pillRoom(ids.map((id) => chips[id].faceW(chips[id].showsWord)), want, gap);
+      const lay = Shelf.slots([ids], { span: SPAN, view: SPAN, pitch: PITCH, groupGap: 0, pillRoom });
       const items = {};
-      ids.forEach((id, i) => (items[id] = slot(id, x0 + pitch * (i + 0.5), Math.min(PREP_W, pitch - 22))));
-      /**
-       * A chip's word (chip units = design px): one line at 25px, shrunk to fit the chip but never under the 14px floor as
-       * rendered (the chip's own scale counts: z.k < 1 on a small canvas); a long name that won't fit on one line wraps
-       * between its words at 19px (fudino ji chutney, amli ji chutney), the same floor. The chaat chip's 'amli ji chutney'
-       * drew 13.1px at 1366x768 and 7px on a phone before S05-G.
+      ids.forEach((id) => (items[id] = slot(id, lay.x[id], Math.min(PREP_W, lay.slotW - 22))));
+      fitPills();
+      /*
+       * The pills' one scale for the row (SH-219: as large as the floor asks, as far as each neighbouring pair allows without touching).
+       * CHT-17 (Zafar, 30 Oct: "for chaat L4, only show 'speaker buttons only' if space is an issue, otherwise follow usual rules"): a
+       * word that would have to narrow to fit its room shows its speaker alone, and the row is measured again.
        */
-      function chipLabel(id) {
-        const style = (px) => ({ fontFamily: FONT(), fontSize: `${px}px`, fontStyle: "800", color: INK.kutchi, align: "left", lineSpacing: -4 });
-        const maxT = CHIP.w - 44;
-        const word = Cook.display(id);
-        const make = (text, px) => {
-          const t = S.add.text(0, 0, text, style(px)).setOrigin(0, 0.5);
-          return t.setScale(Math.max(Math.min(1, maxT / t.width), floorK(px) / z.k));
-        };
-        const one = make(word, 25);
-        if (one.displayWidth <= maxT + 0.5 && one.scaleX >= 0.8) return one;
-        if (!word.includes(" ")) return one;
-        const words = word.split(" ");
-        let best = null;
-        for (let b = 1; b < words.length; b++) {
-          const two = [words.slice(0, b).join(" "), words.slice(b).join(" ")];
-          const w = Math.max(...two.map((x) => x.length));
-          if (!best || w < best.w) best = { w, two };
+      function fitPills() {
+        const row = () => ids.map((id) => ({ x: lay.x[id], w: chips[id].faceW(chips[id].showsWord) }));
+        let fit = Shelf.pillScale(row(), { want, gap, slotW: lay.slotW });
+        const narrow = ids.filter((id) => chips[id].showsWord && chips[id].faceW(true) > fit.cap);
+        if (narrow.length) {
+          narrow.forEach((id) => chips[id].face(false, Infinity));
+          fit = Shelf.pillScale(row(), { want, gap, slotW: lay.slotW });
         }
-        const two = make(best.two.join("\n"), 19);
-        if (two.displayWidth < one.displayWidth || one.scaleX < 0.8) {
-          one.destroy();
-          return two;
-        }
-        two.destroy();
-        return one;
+        const y = Math.min(CHIP_Y, 896 - (PL.h / 2) * fit.k);
+        ids.forEach((id) => {
+          const c = chips[id];
+          c.k = fit.k;
+          c.setPosition(z.X(lay.x[id]), z.Y(y)).setScale(z.k * fit.k);
+          c.hit(lay.slotW);
+        });
       }
+      // (the pills' measure, read only: each shelf pill on screen in CSS px, as chai's: its card, whether it shows the word)
+      Cook.chaatPills = () =>
+        ids
+          .map((id) => chips[id])
+          .filter((c) => c && c.active)
+          .map((c) => {
+            const sc = Math.abs(c.scaleX || 1);
+            const a = UI.worldToScreen(c.x - (c.cardW * sc) / 2, c.y - (PL.h * sc) / 2);
+            const b = UI.worldToScreen(c.x + (c.cardW * sc) / 2, c.y + (PL.h * sc) / 2);
+            return { id: c.pillId, word: !!c.showsWord, left: a.x, right: b.x, top: a.y, bottom: b.y };
+          })
+          .sort((p, q) => p.left - q.left);
       function slot(id, x, w) {
         const key = `cv3-pot-${id}`;
         let img;
@@ -1044,102 +1039,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           });
         img.wordId = id;
         img.home = { x: img.x, y: img.y };
-        // the chip: `🔊 word`, or the speaker alone once the word hides (same size, same place)
-        const t = labels[id] || null;
-        // a word at the floor may be wider or taller than the usual chip: the chip grows to hold it (up to its slot), and a
-        // taller one stays on the screen (its bottom above the stage's edge)
-        const cw = t ? Math.min(pitch - 4, Math.max(Math.min(CHIP.w, pitch - 12), t.displayWidth + 44)) : Math.min(CHIP.w, pitch - 12);
-        const ch = t ? Math.max(CHIP.h, t.displayHeight + 8) : CHIP.h;
-        const chip = S.track(
-          S.add
-            .container(z.X(x), z.Y(Math.min(CHIP.y, 897 - ch / 2)))
-            .setDepth(D.item + 2)
-            .setScale(z.k),
-        );
-        const bg = S.add.graphics();
-        const icon = S.add.graphics();
-        bg.fillStyle(0x28190a, 0.1);
-        bg.fillRoundedRect(-cw / 2, -ch / 2 + 2, cw, ch, 12);
-        bg.fillStyle(INK.card, 1);
-        bg.fillRoundedRect(-cw / 2, -ch / 2, cw, ch, 12);
-        chip.add(bg);
-        if (t) {
-          const tw = 22 + 8 + t.displayWidth;
-          speaker(icon, -tw / 2 + 10, 0, 24);
-          t.x = -tw / 2 + 30;
-          chip.add([icon, t]);
-        } else {
-          speaker(icon, 1, 0, 26);
-          chip.add(icon);
-        }
-        const hitW = Math.min(CHIP.hitW, pitch - 4);
-        chip.setSize(hitW, CHIP.hitH);
-        chip.setInteractive(new Phaser.Geom.Rectangle(-hitW / 2, -CHIP.hitH / 2 + 8, hitW, CHIP.hitH), Phaser.Geom.Rectangle.Contains);
-        chip.on("pointerdown", (ptr, lx, ly, ev) => {
-          if (ev && ev.stopPropagation) ev.stopPropagation();
-          Cook.unlockAudio();
-          if (Cook.onLabel) Cook.onLabel(id);
-          Lang.speakWord(id);
-          S.tweens.add({
-            targets: chip,
-            scale: z.k * 1.08,
-            duration: 90,
-            yoyo: true,
-          });
-        });
-        img.chip = chip;
+        img.chip = chips[id];
         return img;
       }
 
-      /* ---------- the word pop (§4): by the glass, with the family clip ---------- */
-      // the scale at which `px` text renders at 14 CSS px: the canvas is shown smaller than its game size on a phone
-      function floorK(px) {
-        return 14.2 / (px * (S.scale.displaySize.height / S.scale.gameSize.height) * S.cameras.main.zoom);
-      }
-      const pop = (text, x, y, { speakId = null, line = null, ms = 1900 } = {}) => {
-        const c = S.track(
-          S.add
-            .container(x, y)
-            .setDepth(D.fx + 3)
-            .setAlpha(0)
-            .setScale(Math.max(z.k, floorK(36))), // never under 14px as rendered
-        );
-        const t = S.add
-          .text(0, 0, text, {
-            fontFamily: FONT(),
-            fontSize: "36px",
-            fontStyle: "800",
-            color: INK.kutchi,
-          })
-          .setOrigin(0, 0.5);
-        const w = 34 + 10 + t.width + 36;
-        const g = S.add.graphics();
-        g.fillStyle(0x28190a, 0.1);
-        g.fillRoundedRect(-w / 2, -28 + 3, w, 56, 12);
-        g.fillStyle(INK.card, 1);
-        g.fillRoundedRect(-w / 2, -28, w, 56, 12);
-        speaker(g, -w / 2 + 30, 0, 26);
-        t.x = -w / 2 + 50;
-        c.add([g, t]);
-        S.tweens.add({
-          targets: c,
-          alpha: 1,
-          y: y - z.L(18),
-          duration: 180,
-          ease: "Back.easeOut",
-        });
-        S.tweens.add({
-          targets: c,
-          alpha: 0,
-          y: y - z.L(46),
-          delay: ms,
-          duration: 320,
-          onComplete: () => c.destroy(),
-        });
+      /* ---------- the word pop (§4): by the glass, with the family clip (the shared kit's, Juice.P.pop: piece 12) ---------- */
+      const pop = (id, x, y) => {
+        // never under 14px as rendered (the kitchen kit's floor: the canvas is shown smaller than its game size on a phone)
+        global.Juice.P.pop(S, { x, y }, Cook.display(id), { k: Math.max(z.k, Cook.Kit.textFloor(S, 36)), depth: D.fx + 3, top: (Cook.view || {}).top || 0 });
         if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
         // a clip that never ends (no audio on this device) never holds the station up
-        const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
-        return talk ? Promise.race([talk.catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
+        const talk = Lang.popWord(id);
+        return talk ? Promise.race([talk.catch(() => {}), Cook.wait(M.popCapMs)]) : Promise.resolve();
       };
 
       /* ---------- a topping goes in: it lifts off the shelf, drops into the glass and settles ---------- */
@@ -1172,6 +1083,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Cook.undoAt = () => (building && !busy && got.length && bowl.hit && bowl.hit.active ? S.centre(bowl.hit) : null);
       async function takeBack() {
         if (!building || busy || !got.length) return;
+        moves++;
         busy++;
         const at = got.length - 1;
         const id = got[at];
@@ -1192,8 +1104,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         UI.mission.refresh();
         const obj = items[id];
         if (obj && S.textures.exists(`cv3-bit-${id}`)) {
-          const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(SPOON_W), z.L(SPOON_W * 0.62)));
-          await S.fly(spoon, obj.x, obj.y - obj.displayHeight * 0.5, { duration: 380, arc: z.L(70) });
+          const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(M.spoonW), z.L(M.spoonW * 0.62)));
+          await S.fly(spoon, obj.x, obj.y - obj.displayHeight * 0.5, { duration: M.backMs, arc: z.L(70) });
           spoon.destroy();
         }
         // what the order wants next has changed (the guided glow, and the test's expectation)
@@ -1247,7 +1159,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               S.add
                 .image(obj.x, obj.y - obj.displayHeight * 0.7, bitKey)
                 .setDepth(D.fx)
-                .setDisplaySize(z.L(SPOON_W), z.L(SPOON_W * 0.62)),
+                .setDisplaySize(z.L(M.spoonW), z.L(M.spoonW * 0.62)),
             )
           : S.track(
               S.add
@@ -1257,14 +1169,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             );
         const rim = bowl.rimAt();
         // up and over the rim, then down into the glass
-        await S.fly(spoon, rim.x + (Math.random() - 0.5) * z.L(24), rim.y - z.L(70), { duration: k.flyMs || 420, arc: z.L(90) });
+        await S.fly(spoon, rim.x + (Math.random() - 0.5) * z.L(24), rim.y - z.L(70), { duration: k.flyMs, arc: z.L(90) });
         const p = bowl.surfaceAt();
         await new Promise((r) =>
           S.tweens.add({
             targets: spoon,
             y: p.y,
             scaleY: spoon.scaleY * 0.7,
-            duration: 170,
+            duration: M.dropMs,
             ease: "Quad.easeIn",
             onComplete: r,
           }),
@@ -1282,19 +1194,45 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.puff(p.x, p.y, St.color(((Cook.item(id) || {}).layer || {}).color || "#ffffff"), z.L(34), { flat: 0.3 }); // (side-on: a flat ring)
         const settle = bowl.add(id);
         const r = bowl.rimAt();
-        pop(Cook.display(id), r.x + z.L(GLASS_W * 0.36), r.y - z.L(40), {
-          speakId: id,
-        });
+        pop(id, r.x + z.L(GLASS_W * 0.36), r.y - z.L(58));
         await settle;
         z.progress({ layer: id, n: got.length });
         busy--;
+        if (!demo) cardLight(); // (the first layer the child puts in: the demo has already shown the card)
+      }
+      /*
+       * STD-D1-07 (the kitchen kit's card light, Cook.Coach.cardLight, kit d): after the first layer, the next layer's card on his order
+       * card is glided whole into view and lit for a moment once the kitchen is still, once for a new player (the gate's "card"),
+       * spent only when it is up; it gives up once the child has moved on (a tap in or a take-back). Not at L4 (his card is folded).
+       */
+      let demo = false; // the first-time demo is putting the first layer in
+      let moves = 0; // every topping tapped in or taken back
+      let cardWait = false;
+      function cardLight() {
+        const nx = C.next(got);
+        if (!gate || !gate.fresh || gate.spent("card") || cardWait || !nx || !building || level >= 4 || !Cook.Coach.cardLight) return;
+        cardWait = true;
+        const m0 = moves;
+        const on = () => moves !== m0;
+        Cook.Coach.cardLight({
+          item: () => Cook.Coach.itemCard(nx, who),
+          quitIf: () => on() || !building,
+          busy: () => busy > 0,
+          endIf: () => busy > 0 || on(),
+          step: "assemble:next",
+          note: "assemble:light",
+          onLit: () => {
+            gate.spend("card");
+            cardWait = false;
+          },
+        }).then((lit) => !lit && (cardWait = false));
       }
       /** A spoonful flies from the glass (world point p) back to its pot on the shelf. */
       async function spoonBack(id, p) {
         const obj = items[id];
         if (!obj || !S.textures.exists(`cv3-bit-${id}`)) return;
-        const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(SPOON_W), z.L(SPOON_W * 0.62)));
-        await S.fly(spoon, obj.x, obj.y - obj.displayHeight * 0.5, { duration: 380, arc: z.L(70) });
+        const spoon = S.track(S.add.image(p.x, p.y, `cv3-bit-${id}`).setDepth(D.fx).setDisplaySize(z.L(M.spoonW), z.L(M.spoonW * 0.62)));
+        await S.fly(spoon, obj.x, obj.y - obj.displayHeight * 0.5, { duration: M.backMs, arc: z.L(70) });
         spoon.destroy();
       }
       /*
@@ -1310,6 +1248,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const why = exclude.includes(id) ? `added ${id} (they said no)` : j.expected ? `${id} instead of ${j.expected}` : `added ${id} at the end`;
         if (!firstWrong) firstWrong = why;
         z.listen(false, why);
+        // (the kitchen kit's wrong move, kit d: every hint waiting on its clock comes at once, STD-D2-04)
+        if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong("chaat-drop");
         rowsMissed(j, id, exclude).forEach((x) => {
           if (!x.no) missedIds.add(x.id);
           UI.mission.missItem(x.id, dishNo(), { no: x.no, did: x.no ? null : id });
@@ -1320,13 +1260,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chaat-drop", { step: j.verdict, by: id }); // (a test log)
         const p = await spoonIn(id);
-        await bowl.add(id, 380);
-        await Cook.wait(260); // the little pause ("maybe there's a tiny little pause, and then the bowl shakes")
+        await bowl.add(id, M.notInMs);
+        await Cook.wait(M.notInPauseMs); // the little pause ("maybe there's a tiny little pause, and then the bowl shakes")
         if (Cook.sfx.soft) Cook.sfx.soft();
         await bowl.notIn();
         // CHT-14 (Zafar, 21 Oct): only the wrong one comes back out, whatever it was (not wanted, or wanted later); the
         // right ones stay in the bowl and stay ticked
-        await bowl.removeTop(260);
+        await bowl.removeTop(M.outMs);
         await spoonBack(id, p);
         z.progress({ wrong: id, verdict: j.verdict, n: got.length });
         busy--;
@@ -1342,17 +1282,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        */
       z.expect({ kind: "wait" });
       await UI.mission.request("assemble");
+      // STD-D1-08 (SH-196): the reveal lessons, the dotted word then the blurred picture, once the order has landed and before the
+      // first layer (the kitchen kit's Cook.Coach.lessons, kit d, as chai, chop and daar have them); before L4's card folds, so its
+      // dotted word is still in view
+      if (gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
       const unfold = foldCard(level >= 4);
 
       let tries = 0;
       try {
         /* ---------- first time: the ghost finger shows row 1 -> its bowl -> the drop -> the tick ---------- */
-        Cook.save.coached = Cook.save.coached || {};
-        if (!Cook.save.coached["assemble-v2"] && flat.length > 1 && items[C.next(got)] && !ctx.noDemo) {
-          Cook.save.coached["assemble-v2"] = true;
+        // (once a player, on the kitchen kit's first-time gate: Cook.Coach.firsts, STD-D1-01; the grown-ups' New player sees it again)
+        if (gate && flat.length > 1 && items[C.next(got)] && !ctx.noDemo && gate.first("demo")) {
           z.expect({ kind: "wait" });
           const first = C.next(got);
           const f = ghost();
+          demo = true;
           try {
             const row = level >= 4 ? null : document.querySelector("#mission .oc-card .oc-part:not(.no)") || document.querySelector("#mission .oc-card .oc-row:not(.no)");
             if (row && row.offsetParent) {
@@ -1382,19 +1326,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             }
           } finally {
             f.gone();
+            demo = false;
           }
           Cook.writeSave();
         }
 
-        /* ---------- the review (X10 / Q1): their big round face over the glass, no body ---------- */
-        let look = null;
-        const review = async (ok) => {
+        /* ---------- the review (X10 / Q1): their big round face over the glass, no body (the kitchen kit's, Cook.Kit.review) ---------- */
+        const review = (ok) => {
           const r = bowl.rimAt();
-          look = await Cook.Kit.review(S, { who, ok, x: r.x, y: r.y - z.L(120), size: z.L(250), k: z.L(1), side: "right" });
+          return Cook.Kit.review(S, { who, ok, x: r.x, y: r.y - z.L(120), size: z.L(250), k: z.L(1), side: "right" });
         };
 
-        /* ---------- build, serve, taste (and build again if it's not right) ---------- */
-        for (;;) {
+        /* ---------- build: each topping tapped in, until the bowl is complete and right (it goes by itself) or Done ---------- */
+        const build = async () => {
           let last = 0;
           building = true;
           for (;;) {
@@ -1411,10 +1355,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               help,
             });
             if (r.done) break;
-            if (performance.now() - last < 220) continue; // a double tap
+            moves++;
+            if (performance.now() - last < M.doubleTapMs) continue; // a double tap
             last = performance.now();
             z.expect({ kind: "wait" });
-            // CHT-14 (decision 9): judged as it goes in: right stays, wrong comes back out (or empties the bowl)
+            // CHT-14 (decision 9): judged as it goes in: right stays, wrong comes back out
             const j = judgeDrop(C, got, r.id);
             if (j.verdict === "in") await drop(r.id);
             else await notIn(r.id, j);
@@ -1429,78 +1374,89 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           tries++;
           // serve: their face comes up over the glass (no pretend eating)
           await Cook.wait(250);
-          const m = C.mistake(got);
-          if (!m) {
-            // right: a happy face and the family's praise
+        };
+
+        /*
+         * ---------- serve, taste, and build again if it's not right: the shared kit's tick and recast (NjgServe.round, piece 8) ----------
+         * decision 51, CHT-08: right, a happy face and the family's praise; not quite, a gentle face, only the wrong layer comes back out
+         * (with any above it: a layer can't come out from under another), the right ones below stay, and the customer says just those
+         * rows again ON HIS OWN CARD (L4 from memory: said, not written); the second try has help (the next layer glows); the third
+         * wrong try shows the right way (each layer glows and goes in). Only the first mistake counts. (Was chaat's own loop.)
+         */
+        let miss = null;
+        await NjgServe.round({
+          items: ["bowl"],
+          done: build,
+          check: () => {
+            miss = C.mistake(got);
+            if (miss) firstMiss(miss);
+            return { ok: !miss };
+          },
+          onRight: () => {
             if (exclude.length) UI.mission.closeItem(exclude, dishNo());
             // CHT-15 (P63): each thing put in right on its first go is a right (its tick); a wrong try marked its miss already
             if (!guided && tries === 1) [...new Set(flat)].forEach((id) => !missedIds.has(id) && Cook.markRight(id));
-            await review(true);
+          },
+          review: async (wrong) => {
+            const look = await review(!wrong.length);
             // a moment to enjoy it before the end of the station
-            await Cook.wait(900);
-            await look.close();
-            break;
-          }
-          // not quite (decision 51, CHT-08): a gentle face; only the wrong layer comes back out (with any above it: a
-          // layer can't come out from under another), the right ones below stay; the customer says just those rows
-          // again ON HIS OWN CARD, lit as he says them; the second try has help (the next layer glows); the third
-          // wrong try shows the right way (each layer glows and goes in). Only the first mistake counts.
-          firstMiss(m);
-          const rd = redo.wrong(`chaat:${m.at}`);
-          await review(false);
-          const keep = m.got === undefined ? got.length : m.at;
-          const back = [];
-          while (got.length > keep) {
-            await bowl.removeTop();
-            got.pop();
-            const r = ticked.pop();
-            if (r) {
-              r.got = Math.max(0, (r.got || 1) - 1);
-              r.done = false;
-              if (!back.includes(r)) back.push(r);
+            if (!wrong.length) await Cook.wait(M.rightHoldMs);
+            return [look];
+          },
+          recast: async () => {
+            const keep = miss.got === undefined ? got.length : miss.at;
+            const back = [];
+            while (got.length > keep) {
+              await bowl.removeTop();
+              got.pop();
+              const r = ticked.pop();
+              if (r) {
+                r.got = Math.max(0, (r.got || 1) - 1);
+                r.done = false;
+                if (!back.includes(r)) back.push(r);
+              }
             }
-          }
-          const L = ladderOf(ctx);
-          const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
-          if (sq && sq.at) sq.at = Math.max(0, sq.at - back.length);
-          UI.mission.refresh();
-          // the rows still to do (the redone ones and anything after them), said again from his card
-          const todo = L ? Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && !r.done) : [];
-          const said = level < 4 && UI.mission.sayPerson ? await Promise.race([UI.mission.sayPerson(who, todo.length ? todo : null), Cook.wait(9000)]) : false;
-          if (!said) {
-            const line = orderLine(ladderOf(ctx));
-            // level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
-            if (line && level >= 4) await Promise.race([Lang.speak(line).catch(() => {}), Cook.wait(9000)]);
-            else if (line) await Promise.race([St.customerSay(ctx, line, { hide: St.hideKnown(ctx) }), Cook.wait(9000)]);
-            St.customerDone();
-          }
-          await look.close();
-          if (rd.action === "show") {
+            const L = ladderOf(ctx);
+            const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
+            if (sq && sq.at) sq.at = Math.max(0, sq.at - back.length);
+            UI.mission.refresh();
+            // the rows still to do (the redone ones and anything after them), said again from his card (the kitchen kit's people say
+            // their orders, UI.personSay: kit e); level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
+            const todo = L ? Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && !r.done) : [];
+            const line = () => orderLine(ladderOf(ctx));
+            if (level < 4) await Promise.race([UI.personSay(who, { rows: todo.length ? todo : null, line, hide: St.hideKnown(ctx) }).catch(() => {}), Cook.wait(M.recastCapMs)]);
+            else if (line()) await Promise.race([Lang.speak(line()).catch(() => {}), Cook.wait(M.recastCapMs)]);
+          },
+          redo,
+          key: () => `chaat:${miss.at}`,
+          showRight: async () => {
             // the right way, shown: each layer still to go glows on the shelf and goes in, in order
             for (let nx = C.next(got); nx && items[nx]; nx = C.next(got)) {
               S.glow(items[nx], true, { bounce: true });
-              await Cook.wait(420);
+              await Cook.wait(M.showGlowMs);
               S.glow(items[nx], false);
               await drop(nx);
             }
             while (busy) await Cook.wait(60);
             if (exclude.length) UI.mission.closeItem(exclude, dishNo());
-            await review(true);
-            await Cook.wait(700);
+            const look = await review(true);
+            await Cook.wait(M.showHoldMs);
             await look.close();
-            break;
-          }
-          help = true;
-        }
+          },
+          reset: () => (help = true),
+        });
       } finally {
         unfold();
       }
       ctx.result.layers = got.slice();
       z.skill(tries === 1 && !firstWrong ? 100 : Math.max(55, 100 - 20 * Math.max(1, tries - 1)), "assemble");
-      await Cook.wait(500);
+      await Cook.wait(M.endMs);
       return got;
     },
   });
+
+  // the settings come with the code (it loads at the greeting with the dish's other stations, Mech.needRecipe), never on a bare bowl
+  if (global.document) settings().catch(() => {});
 
   Mech.lab("assemble", {
     name: "Chaat bowl",
