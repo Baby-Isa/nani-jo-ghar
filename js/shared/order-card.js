@@ -98,6 +98,7 @@
     headCap: 1500, // a headline whose voice never starts: its rows pop after this all the same (CHAI-96)
     popHold: 700, // a row's big card where the word's state gives no hold (the central rules' Rules.hold gives it on the s14 look)
     partGap: 120, // one part of a person's order to the next
+    passAfter: 450, // a person's last item has landed: this beat before their card folds and the order passes on (Zafar, 8 Nov: the jerk as the half card went in)
     personGap: 160, // one person's card to the next (a whole-card read)
     lineMin: 700, // the least a line with a voice holds when nobody at the counter says it (the card's own read-along)
     readPerson: 700, // the least a person's card is read for

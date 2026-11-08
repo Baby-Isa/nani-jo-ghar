@@ -2192,6 +2192,10 @@
      * one (clipped while it moves, about 300 ms), and the panel's scroll follows the speaker's card, from where it was to where it
      * ends, frame by frame on the same ease; a reduced-motion setting, or nothing to move, keeps the old jump (the end state is the same)
      */
+    // (a part's rows the headline says for itself, popping as their item cards: CHAI-96, CHAI-104)
+    const foldedOf = (p) => ((p.line && p.line.rows) || []).filter((x) => x && x !== p.row && !x.head && !x.no && (!x.unsaid || x.saidBy === "head") && m.away.has(x));
+    // (a part that opens a person's card: an item of its own, or rows its headline says)
+    const opensCard = (p) => !!((p.row && m.away.has(p.row)) || foldedOf(p).length);
     const FOLD_MS = ORDER_T.fold;
     const foldGlide = (list, h0, top0, aim) => {
       const sp = Cook.speed || 1;
@@ -2252,6 +2256,10 @@
           m.headOnly.add(who);
         }
         if (prev) {
+          // (Zafar, 8 Nov: "jerkiness in the order card when the whole or half card goes in": the last item landed and the card folded
+          // 120 ms later; it now rests a beat in its slot before the order passes on)
+          await Cook.wait(ORDER_T.passAfter || 0);
+          if (!live()) return;
           m.said = m.said || new Set();
           m.said.add(prev);
           // (CHAI-104: no card is left as a gap as the order passes on: a said row of theirs still away lands now, with no flight;
@@ -2271,6 +2279,17 @@
           // (the next speaker in focus first: on a short side panel focusing draws the cards again, which would cut the motion short)
           if (M.focus) M.focus(who);
           renderOrder();
+          // (Zafar, 8 Nov, the jerk before the third order: a headline that names an item, "Muke aadu waari chai khape", opened the card in
+          // a second motion 69 ms after this fold, which restarted both cards' glides; it now opens in this same redraw, one motion)
+          if (revealNow && m.headOnly && m.headOnly.has(who)) {
+            const c0 = [...document.querySelectorAll("#mission .oc-card")].find((x) => x.dataset.who === who);
+            const p0 = c0 && c0._parts ? c0._parts()[0] : null;
+            if (p0 && opensCard(p0)) {
+              m.headOnly.delete(who);
+              (m.openedEarly = m.openedEarly || new Set()).add(who);
+              renderOrder();
+            }
+          }
           // (the judge, 30 Oct, 740x320: the folded card stayed half under the panel's top, where the panel had scrolled for its
           // rows: the panel goes back to its top, then the speaker's card is brought into view, so the folded one is whole)
           // (#mission is the scroller: with both cards in, nothing moves; else the speaker's card at the top, the folded one wholly
@@ -2297,17 +2316,20 @@
           // only (unsaid), never in a part's rows. The sentence is the engine's, unchanged: the word is said once, in the headline
           // CHAI-104 (Zafar, 7 Nov: "There was a gap"): an unsaid row the headline says (saidBy "head": the amount, "Muke adh chai
           // khape") is one of them: it pops and lands with the headline, never a gap left when the order passes on
-          const folded = ((p.line && p.line.rows) || []).filter((x) => x && x !== r && !x.head && !x.no && (!x.unsaid || x.saidBy === "head") && m.away.has(x));
+          const folded = foldedOf(p);
           if (!box) return;
           box.innerHTML = "";
-          if ((item || folded.length) && m.headOnly && m.headOnly.delete(who)) {
+          const early = !!(m.openedEarly && m.openedEarly.has(who));
+          if ((item || folded.length) && ((m.headOnly && m.headOnly.delete(who)) || (early && m.openedEarly.delete(who)))) {
             // SH-180 (the judge, 3 Nov: the card went from its headline to three open slots in one step): its height eases open, as the
             // said card's fold does (foldGlide)
             const listO = $("#mission");
             const hO = new Map([...document.querySelectorAll("#mission .oc-card")].map((x) => [x.dataset.who, x.getBoundingClientRect().height]));
             const topO = listO ? listO.scrollTop : 0;
-            renderOrder(); // (SH-171: the card opens, its slots empty, as the first item is said)
-            if (listO) foldGlide(listO, hO, topO, () => listO.scrollTop);
+            if (!early) {
+              renderOrder(); // (SH-171: the card opens, its slots empty, as the first item is said)
+              if (listO) foldGlide(listO, hO, topO, () => listO.scrollTop);
+            }
             // (Zafar, 2 Nov: the row opens already scrolled so the first item's slot is whole, the one before it at the left)
             const first = rowElOf(who, item ? r : folded[0]);
             if (first && OCard() && OCard().glideTo) OCard().glideTo(first, { lead: true, instant: true });
