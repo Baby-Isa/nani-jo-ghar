@@ -167,7 +167,7 @@ import { Cook as CookNS } from "../ns.js";
    */
   Mech.define("chop-game", {
     station: KEY,
-    view: "marble",
+    view: "wood", // (chaat keeps its wood board: Zafar never asked for a change; the Chop tile keeps its marble)
     knobs: KEY,
     async run(z, p) {
       return (await play(z, Object.assign({ note: !p.retry }, p, { level: p.level || z.level }))).cut;
