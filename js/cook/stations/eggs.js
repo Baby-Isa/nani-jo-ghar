@@ -173,7 +173,7 @@ import { Cook as CookNS } from "../ns.js";
       }
     })();
     const pills = [];
-    const PILL_SLOT = 130; // (the shakers stand 130 apart: a pill's tap area at most its slot)
+    const PILL_SLOT = 180; // (the bowl and the shakers stand 200 apart: a pill's tap area at most its slot)
     const chip = (id, x) => {
       const c = SH.P.chip(S, x, chipY, Cook.display(id), {
         word: Cook.chipWord ? Cook.chipWord(id, ctx) : true,
@@ -320,14 +320,23 @@ import { Cook as CookNS } from "../ns.js";
       const f = pl ? pl.face.getBounds() : null;
       // (a pan or the pot: its round body alone, thing.litBounds, CK-63)
       const b = pl ? { x: Math.min(pl.x - r, f.x), y: Math.min(pl.y - r, f.y), right: Math.max(pl.x + r, f.right), bottom: Math.max(pl.y + r, f.bottom) } : typeof o.litBounds === "function" ? o.litBounds() : o.getBounds();
-      // (contract-82: the box stops short of another plate's face below it or to its right, the light's pad and a gap clear)
+      // (contract-82: the box stops short of another plate's face below it or to its right, the light's pad and a gap clear: the pad is
+      // page px, Onboard.BOX_PAD, so on a phone it is more world px; S19, eggs L4 at 740x320 crossed the cousin's face)
+      const perPx = (() => {
+        try {
+          return Math.max(0.05, UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x);
+        } catch (e) {
+          return 1;
+        }
+      })();
+      const clear = Math.max(16, (((global.Onboard && global.Onboard.BOX_PAD) || 10) + 6) / perPx);
       if (pl)
         P0.filter((q) => q !== pl).forEach((q) => {
           const g = q.face.getBounds();
           const across = g.right > b.x && g.x < b.right;
           const beside = g.bottom > b.y && g.y < b.bottom;
-          if (across && g.y > pl.y) b.bottom = Math.min(b.bottom, g.y - 16);
-          else if (beside && g.x > pl.x) b.right = Math.min(b.right, g.x - 16);
+          if (across && g.y > pl.y) b.bottom = Math.min(b.bottom, g.y - clear);
+          else if (beside && g.x > pl.x) b.right = Math.min(b.right, g.x - clear);
         });
       return b;
     };
