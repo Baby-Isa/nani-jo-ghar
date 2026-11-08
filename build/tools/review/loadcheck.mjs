@@ -22,7 +22,7 @@
  *   Clinic data/clinic/assets.json shared (every clinic page) + data/clinic/heal/<id>.json "assets" (that game's);
  *          a morning may load its first two patients' games (the next one is prefetched); a game page only its own
  *          game's code (js/clinic/heal/games/<id>.js) and art
- * Run it under the browser lock (rule B16): checks.mjs does (flock -w 1800 /tmp/njg-browser.lock). Port: COOK_TEST_PORT
+ * Run it under the browser lock (rule B16): checks.mjs --browser does (flock -w 1800 /tmp/njg-browser-all.lock). Port: COOK_TEST_PORT
  * + 40 (default 8852), so it never meets the sandbox's server.
  */
 import { createServer } from "node:http";

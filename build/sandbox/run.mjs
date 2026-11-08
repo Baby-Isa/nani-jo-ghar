@@ -2,7 +2,7 @@
 // The sandbox: plays the live flows through their real pages and lab URLs, records each visually distinct state
 // (a screenshot and a screen lint at the current size), and ratchets the findings against build/lint/baseline.json.
 // See build/sandbox/README.md. Always under the browser lock, on your own port:
-//   COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser.lock timeout 1200 node build/sandbox/run.mjs --touched cook:chai-tray
+//   COOK_TEST_PORT=8814 flock -w 1800 /tmp/njg-browser-all.lock timeout 1200 node build/sandbox/run.mjs --touched cook:chai-tray
 //   COOK_TEST_PORT=8814 node build/sandbox/run.mjs --gate        (everything; takes and releases the lock itself, chunk by chunk)
 import { mkdirSync, writeFileSync, existsSync, readFileSync, readdirSync, appendFileSync } from "node:fs";
 import { join } from "node:path";
@@ -77,7 +77,7 @@ if (has("--gate") && !has("--chunk")) {
   while (code === 75 && chunks < 60) {
     chunks++;
     log(`gate chunk ${chunks} (run ${runId}): waiting for the browser lock`);
-    const r = spawnSync("flock", ["-w", "3600", "/tmp/njg-browser.lock", "timeout", "1200", process.execPath, process.argv[1], "--gate", "--chunk", "--all", "--parallel", val("--parallel") || "3", "--budget-min", val("--budget-min") || "13", "--run-id", runId, "--resume", runId, ...passthru], { stdio: "inherit", env: process.env });
+    const r = spawnSync("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", "timeout", "1200", process.execPath, process.argv[1], "--gate", "--chunk", "--all", "--parallel", val("--parallel") || "3", "--budget-min", val("--budget-min") || "13", "--run-id", runId, "--resume", runId, ...passthru], { stdio: "inherit", env: process.env });
     code = r.status === null ? 124 : r.status; // 124: killed by the 20-minute timeout; its finished pages are saved, so go on
     if (code === 124) code = 75;
   }

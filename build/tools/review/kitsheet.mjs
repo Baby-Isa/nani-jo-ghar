@@ -22,11 +22,11 @@ node build/tools/review/kitsheet.mjs --list
   --from     make the sheets again from an earlier kit run's stored captures (build/screenshots/sandbox/ev-<run>: no replay; the run
              id is on the sheet's .md). The places are the run's own (its cells.json); a place changed since needs a new play
   --redraw   draw the sheet again from its own folder (kitsheet.json and its crops): no replay and no sandbox run needed
-  Port COOK_TEST_PORT; lock NJG_LOCK (default /tmp/njg-browser.lock). Output: kitsheet-<elem>.png and .md (every page and size:
+  Port COOK_TEST_PORT; lock NJG_LOCK (default /tmp/njg-browser-all.lock). Output: kitsheet-<elem>.png and .md (every page and size:
   reached, or why not) in that folder, the crops beside them.`;
 const a = args(); help(HELP, a);
 const PORT = process.env.COOK_TEST_PORT || "8843";
-const LOCK = process.env.NJG_LOCK || "/tmp/njg-browser.lock";
+const LOCK = process.env.NJG_LOCK || "/tmp/njg-browser-all.lock";
 const KIT = JSON.parse(readFileSync(join(ROOT, "data", "kit-elements.json"), "utf8"));
 const slugOf = (s) => String(s).toLowerCase().replace(/\?/g, "q").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
