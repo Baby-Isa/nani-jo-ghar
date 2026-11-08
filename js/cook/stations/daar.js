@@ -437,6 +437,19 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     return result;
   }
 
+  /*
+   * SH-228 (contract-22): where the kit's stuck help (Cook.Coach.stuck) runs a step's hesitation help, the step's own ladder in Nani's
+   * stepper stays quiet, so her line is never said twice (the helper card's call, then the stepper's again: "Hane makai!" twice 1.4 s
+   * apart at 1920x1080). St.steps.to passes no helpAfter to UI.step (a kit change in the report), so the opened step is marked as
+   * helped with no clock: never due.
+   */
+  const kitHelps = (st) => {
+    if (st && typeof st === "object" && "helped" in st) {
+      st.helped = true;
+      st.helpedAt = Infinity;
+    }
+    return st;
+  };
   /* ---------- Nani's chop card (§13): the shared order card, her face, "Chop these", the quantities ---------- */
   function naniCard(want, no, level = 1, doneIds = [], need = want, cardLv = level) {
     const M = UI.mission;
@@ -705,8 +718,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
      * SH-228 (Zafar, 6 and 8 Nov: chai's method in every game): the stuck help on each of the cook's steps, after the level's wait from
      * the last action (the central rules' hintS; a child's time: the kit divides a game's wait by the test speed, contract-24 and -91 read
      * it in real time), at once after a wrong move: Nani's helper card naming the thing, else her line again, with the light round the
-     * thing (o.thing, its picture or litBounds: the knob, a row's bowls, the daar). A spice past support is never lit (the light would be
-     * the answer: STD-D2-05, non-negotiable 4), her card or line only.
+     * thing (its picture or litBounds: the knob, a row's bowls, the daar). The spices keep the stepper's own ladder (her line again, the
+     * tadka's order): a lit jar would be the answer (STD-D2-05, non-negotiable 4).
      */
     let stk = null;
     const R0 = global.Rules || (global.Tokens && global.Tokens.rules) || null;
@@ -854,7 +867,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     S.tweens.add({ targets: burner.knob, scale: 1.1, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     // T13: Chulo bar! (the step line; at level 1 said as it opens, from level 2 after a pause)
     lead("cook-fire", burner.knob);
-    steps.to("daar:fire");
+    kitHelps(steps.to("daar:fire"));
     stuckOn(burner.knob);
     await tapOnce(z, S, burner.knobHit, "knob", { glow: z.guided });
     stuckOff();
@@ -918,10 +931,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const group = series[si];
       const next = group[0];
       spiceStep(next, false);
-      const hidesIt = !!(global.Onboard && global.Onboard.hintHides && global.Onboard.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(next) : null, study: !!ctx.guided }));
-      stuckOn(hidesIt ? null : items[next]);
       const r = await St.freePick(z, { items, next, doneOk: false, help });
-      stuckOff();
       steps.poke();
       const id = r.id;
       order.push(id);
@@ -1036,7 +1046,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     Cook.daarPhase = "piles";
     let left = Object.keys(hits);
     lead("cook-veg", left.length ? hits[left[0]] : null); // (its whole row of heaps: the tap's own box, contract-92)
-    if (left.length) steps.to("daar:veg"); // T13: [Put the vegetables in]
+    if (left.length) kitHelps(steps.to("daar:veg")); // T13: [Put the vegetables in]
     while (left.length) {
       const pick = {};
       left.forEach((id) => (pick[id] = hits[id]));
@@ -1076,7 +1086,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // the daar: its bowl on the trivet tips into the pot, over the tadka. DAAR-10 (D4): only the bowl lifts (the art run's
     // split pictures, else the one picture split here); the mat left behind fades once it's poured (DAAR-33, decision 13)
     lead("cook-daar", dBowl);
-    steps.to("daar:daar"); // T13: [Put the daar in]
+    kitHelps(steps.to("daar:daar")); // T13: [Put the daar in]
     const split = splitTrivet(S, dBowl, plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET);
     S.tweens.add({ targets: dBowl, alpha: 1, duration: 200 });
     S.tweens.add({ targets: dBowl, scale: dBowl.scale * 1.05, duration: 480, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });

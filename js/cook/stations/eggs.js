@@ -271,11 +271,15 @@ import { Cook as CookNS } from "../ns.js";
         rawHeld.destroy();
         rawHeld = null;
       }
-      if (held && held.kind === "shaker") S.tweens.add({ targets: shakers[held.id].c, angle: 0, duration: 160 });
+      if (held && held.kind === "shaker") S.tweens.add({ targets: shakers[held.id].c, scale: shakers[held.id].c.baseScale || shakers[held.id].c.scale, duration: 160 });
       if (held && held.kind === "cooked" && held.egg.lifted && !held.egg.out) S.tweens.add({ targets: held.egg.obj, scale: held.egg.base || 1, duration: 160 });
       held = h;
-      // (picked up: it tips where it stands, its foot on the band's line: contract-109; was lifted 26 px off it)
-      if (h && h.kind === "shaker") S.tweens.add({ targets: shakers[h.id].c, angle: -12, duration: 160 });
+      // (picked up: it grows a little where it stands, its foot on the band's line, its origin: contract-109; was lifted 26 px off it)
+      if (h && h.kind === "shaker") {
+        const c = shakers[h.id].c;
+        c.baseScale = c.baseScale || c.scale;
+        S.tweens.add({ targets: c, scale: c.baseScale * 1.12, duration: 160 });
+      }
       refresh();
     };
 
@@ -493,7 +497,8 @@ import { Cook as CookNS } from "../ns.js";
         const sh0 = shakers[id].c;
         busy++;
         // (S19, contract-109: the shaker on the band stays on its line; a copy of it goes to the plate and back)
-        sh0.setAngle(0);
+        S.tweens.killTweensOf(sh0);
+        sh0.setScale(sh0.baseScale || sh0.scale);
         const sh = T(S.add.image(sh0.x, sh0.y, sh0.texture.key).setOrigin(0.5, 1).setScale(sh0.scaleX, sh0.scaleY).setDepth(D.fx));
         sh0.setAlpha(0.35);
         await Cook.tween(S, { targets: sh, x: pl.x + 40, y: pl.y - 70, duration: 280 });
@@ -587,7 +592,7 @@ import { Cook as CookNS } from "../ns.js";
       finishUp();
     });
 
-    steps.to("eggs:eggs", { line: Lang.line("now", Lang.phrase(["n.egg"])) });
+    kitHelps(steps.to("eggs:eggs", { line: Lang.line("now", Lang.phrase(["n.egg"])) }));
     // the kitchen kit's reveal lessons (STD-D1-08): once the order has landed, the dotted word then the blurred picture
     if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
     refresh();
@@ -614,6 +619,19 @@ import { Cook as CookNS } from "../ns.js";
     return { served: P0.length };
   }
 
+  /*
+   * SH-228 (contract-22): where the kit's stuck help (Cook.Coach.stuck) runs a step's hesitation help, the step's own ladder in Nani's
+   * stepper stays quiet, so her line is never said twice (the helper card's call, then the stepper's again: "Hane makai!" twice 1.4 s
+   * apart at 1920x1080). St.steps.to passes no helpAfter to UI.step (a kit change in the report), so the opened step is marked as
+   * helped with no clock: never due.
+   */
+  const kitHelps = (st) => {
+    if (st && typeof st === "object" && "helped" in st) {
+      st.helped = true;
+      st.helpedAt = Infinity;
+    }
+    return st;
+  };
   /** The table: the meal's kitchen (its window's sky by the meal); each plate slides to its person, who swaps to happy and bounces. */
   async function serve(S, ctx, z, { plates, meal, objs }) {
     await Cook.tween(S, { targets: objs.filter((o) => o && o.active), alpha: 0, duration: 300 });

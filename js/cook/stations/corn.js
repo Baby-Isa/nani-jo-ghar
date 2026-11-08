@@ -249,7 +249,10 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
           glow: (on) => Cook.Coach.onShelf(n.o) && glow(on ? n.o : null),
           onHint: () => hints++,
         });
-      if (n.line) steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again, noCall: n.noCall || null });
+      if (n.line) {
+        const st = steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again, noCall: n.noCall || null });
+        if (stuck) kitHelps(st);
+      }
       else steps.done();
     }
     const refresh = () => lead(nextThing());
@@ -497,6 +500,19 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     return { served: onPlate.length };
   }
 
+  /*
+   * SH-228 (contract-22): where the kit's stuck help (Cook.Coach.stuck) runs a step's hesitation help, the step's own ladder in Nani's
+   * stepper stays quiet, so her line is never said twice (the helper card's call, then the stepper's again: "Hane makai!" twice 1.4 s
+   * apart at 1920x1080). St.steps.to passes no helpAfter to UI.step (a kit change in the report), so the opened step is marked as
+   * helped with no clock: never due.
+   */
+  const kitHelps = (st) => {
+    if (st && typeof st === "object" && "helped" in st) {
+      st.helped = true;
+      st.helpedAt = Infinity;
+    }
+    return st;
+  };
   Mech.lab(KEY, {
     name: "Corn stall (prototype)",
     verb: "Grill, turn once, then what goes on",
