@@ -245,6 +245,17 @@ in track B waits on him after Day 0; if he can give only the house run this week
 **His first three things:** 1. answer §6 ("yes to all except ...") and say "publish chai"; 2. run the house art block Monday morning;
 3. two mocks, chai and sekelo, over the plates we send, and pick the shelf angle.
 
+## 10. Checks and the eye judge (8 Nov experiment)
+
+Zafar (8 Nov): codifying everything is a losing battle; automate what is quick and objective, and give an eye judge guiding principles
+and a "would a premium, Toca Boca-level game ship this?" question. Tested: a blind Fable with a 38-question rubric and chai beside each
+game (`build/reports/s18-eye-judge-experiment.md`) caught about a third to a half of his still-visible points on four games and about
+25 he did not raise; it missed motion and timing, and fine shared-piece detail. **Recommendation:** about 25 automated checks for
+objective things (text cut or overflowing, two lights, sound after a skip, English for the child, tap size, page errors, the end
+reached, loading, a timing floor, and the shared pieces present: chai's card, Nani's box with its drop-down, the shared light, no tick
+button); everything about look, clarity and feel to the eye judge with the rubric, full-size key frames, close-ups beside chai's, and
+frame strips round onboarding; flaky checks fixed or deleted.
+
 ## Proof
 
 Read (the orchestrator): Fable's two reports; the transcript (239 lines); the art bible's light and shadow rules

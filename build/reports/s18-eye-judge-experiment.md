@@ -286,7 +286,19 @@ tray); 21 pass. D: 22 **fail** (the pot's camera); 23 pass; 24 pass; 25 part; 26
   (rubric 30).
 - **The round at other levels and sizes:** one round at L1 at two sizes; the blur rule, dotted English and the word moment are L2+.
 
-## 9. Proof
+## Result (scored by the orchestrator against Zafar's 8 Nov points)
+
+Of the 19 points Zafar made on these four games that a still could show (maani 5, sekelo 4, daar 7, eggs 3): **3 caught, 6 partly,
+10 missed** (about a third to a half). Fable also found about 25 real flaws he did not mention (timed windows off the thing, no face
+on the serving place, Nani's stitched fragments, two lights at once, half-built screens, a 45-degree pot beside a top-down pan).
+The misses: **motion and timing** (overlapping fingers, a light that stays, a flash in flight: stills cannot show them) and **fine
+shared-piece detail** (the missing drop-down, the card's divider, a light clipping a pill: too small at sheet size, no close-up of
+chai's card beside the game's). **Conclusion:** the hybrid works with three changes: (1) automate "is the shared piece there" (chai's
+card, Nani's box with its drop-down, the shared light, no tick button) as code checks; (2) the judge gets full-size frames at key
+moments with close-ups of the card and side panel beside chai's, not contact sheets; (3) short frame strips round each onboarding
+moment for motion and timing.
+
+## Proof
 
 **Read, before writing the rubric:** `CLAUDE.md`; `docs/design-language/standard/README.md`, `0-foundations.md`, `a-learning.md`,
 `b-play.md`, `c-progression.md`, `d-guidance.md`, `e-presentation.md`, `f-build.md`, `g-proof.md`, `h-supply.md`, `glossary.md`,
