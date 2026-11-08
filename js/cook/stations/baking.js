@@ -106,7 +106,10 @@ import { setTimeout } from "../life.js";
     let busy = false;
     let ctl = null;
     let ctlObj = null;
+    let stuck = null;
     const unlight = () => {
+      if (stuck) stuck.close();
+      stuck = null;
       if (ctl) ctl.close();
       if (ctlObj) S.glow(ctlObj, false);
       ctl = ctlObj = null;
@@ -121,11 +124,36 @@ import { setTimeout } from "../life.js";
         note: `${KEY}:${name}`,
         target: Cook.Coach.box(o, PAD, { visible: true }),
         first: gate.first(name),
-        hintMs,
+        noHint: true,
         current,
         busy: () => busy,
-        onLight: () => S.glow(o, true, { bounce: true, now: true }),
+        // (contract-102, SH-236: its glow lasts as long as its light, which goes as the child starts the move; contract-107: it hops only
+        // on the shelf, the kit's own rule, Cook.Coach.onShelf: never the oven or the bowl)
+        onLight: () => {
+          S.glow(o, true, { bounce: !!(Cook.Coach.onShelf && Cook.Coach.onShelf(o)), now: true });
+          setTimeout(() => {
+            const h = ctl && ctl.lit ? ctl.lit() : null;
+            const off = () => ctlObj === o && o.active && S.glow(o, false);
+            if (h && h.done) h.done.then(off);
+            else off();
+          }, 0);
+        },
       });
+      if (stuck) stuck.close();
+      // SH-228 (chai's method): the stuck help after the level's wait from the last action (a child's time: the kit divides a game's
+      // wait by the test speed), her helper card or her line again, with the kit's light and the thing's glow
+      stuck = Cook.Coach.stuck
+        ? Cook.Coach.stuck({
+            key: KEY,
+            level,
+            target: Cook.Coach.box(o, PAD, { visible: true }),
+            hintMs: () => (hintMs() || 7000) * (Cook.speed || 1),
+            current,
+            busy: () => busy,
+            glow: (on) => o.active && S.glow(o, on, { bounce: on && !!(Cook.Coach.onShelf && Cook.Coach.onShelf(o)) }),
+            note: `${KEY}:${name}:stuck`,
+          })
+        : null;
     };
     const expectTap = (o, key) => {
       const c = S.centre(o);

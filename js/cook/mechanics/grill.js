@@ -1117,6 +1117,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const k = z.L(bw) / src.width;
       img = S.track(S.add.image(z.X(x), z.Y(V2.BOWL_Y), key).setScale(k).setDepth(D.item + 1));
       img.baseScale = k;
+      // (SH-243, contract-109: every bowl's foot on the one base line, a square bowl's: a shorter picture, the mirchi's, sits lower so
+      // its foot is on the line too; its middle moves, the line does not)
+      img.y = z.Y(V2.BOWL_Y) + z.L(bw) / 2 - img.displayHeight / 2;
       img.shadow = S.contactShadow(img);
     } else img = S.ingredient(id, z.X(x), z.Y(V2.BOWL_Y), { w: z.L(V2.BOWL_W), h: z.L(V2.BOWL_W), label: false, state: "pieces" });
     img.wordId = id;

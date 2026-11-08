@@ -159,10 +159,47 @@ import { Cook as CookNS } from "../ns.js";
     bowl.shadow = S.contactShadow ? S.contactShadow(bowl) : null;
     const bowlMid = () => bowl.y - bowl.displayHeight / 2;
     const chipY = ITEM("bowl").chipY || band.chipY;
+    /*
+     * S19 (Fable's eggs flaw 7: the pill under the bowl below the text and tap floors on the phone; SH-230: the pill inside the thing's
+     * light): chai's own pill, the shared kit's (Shelf.P.chip, whose card size the lights and their checks read), the row's pills at one
+     * scale as large as the floor asks and their neighbours allow (Shelf.pillScale on Shelf.pillWant: chai's fitPills), on the chip line
+     */
+    const SH = global.Shelf;
+    const ppw = (() => {
+      try {
+        return UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        return 1;
+      }
+    })();
+    const pills = [];
+    const PILL_SLOT = 130; // (the shakers stand 130 apart: a pill's tap area at most its slot)
     const chip = (id, x) => {
-      const c = Cook.Kit.chip(S, id, x, chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true });
+      const c = SH.P.chip(S, x, chipY, Cook.display(id), {
+        word: Cook.chipWord ? Cook.chipWord(id, ctx) : true,
+        depth: D.item + 2,
+        onTap: () => {
+          if (Cook.unlockAudio) Cook.unlockAudio();
+          if (Cook.onLabel) Cook.onLabel(id);
+          Lang.speakWord(id);
+        },
+      });
+      c.pillId = id;
       objs.push(c);
+      pills.push(c);
       return c;
+    };
+    const fitPills = () => {
+      const row = pills.filter((c) => c.active).sort((a, b) => a.x - b.x);
+      if (!row.length) return;
+      const { k, cap } = SH.pillScale(row.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW: PILL_SLOT });
+      const y = Math.min(chipY, 896 - ((SH.PILL.h || 46) / 2) * k);
+      row.forEach((c) => {
+        if (c.capW !== cap) c.face(c.showsWord, cap);
+        c.k = k;
+        c.hit(PILL_SLOT);
+        c.setScale(k).setY(y);
+      });
     };
     bowl.chip = chip("n.egg", at[0]); // (its pill is part of its light: C.parts)
     bowl.wordId = "n.egg";
@@ -206,6 +243,7 @@ import { Cook as CookNS } from "../ns.js";
       shaker("spi-16", "shakerSalt");
       shaker("spi-11", "shakerPepper");
     }
+    fitPills();
 
     /* ---------------- an egg ---------------- */
     const rawEgg = (x, y) => sized(T(S.add.image(x, y, tex("egg", "white")).setDepth(D.fx)), "egg");
@@ -233,10 +271,11 @@ import { Cook as CookNS } from "../ns.js";
         rawHeld.destroy();
         rawHeld = null;
       }
-      if (held && held.kind === "shaker") S.tweens.add({ targets: shakers[held.id].c, y: shakers[held.id].y, angle: 0, duration: 160 });
+      if (held && held.kind === "shaker") S.tweens.add({ targets: shakers[held.id].c, angle: 0, duration: 160 });
       if (held && held.kind === "cooked" && held.egg.lifted && !held.egg.out) S.tweens.add({ targets: held.egg.obj, scale: held.egg.base || 1, duration: 160 });
       held = h;
-      if (h && h.kind === "shaker") S.tweens.add({ targets: shakers[h.id].c, y: shakers[h.id].y - 26, angle: -12, duration: 160 });
+      // (picked up: it tips where it stands, its foot on the band's line: contract-109; was lifted 26 px off it)
+      if (h && h.kind === "shaker") S.tweens.add({ targets: shakers[h.id].c, angle: -12, duration: 160 });
       refresh();
     };
 
@@ -300,7 +339,7 @@ import { Cook as CookNS } from "../ns.js";
       if (glowObj === o) return;
       if (glowObj && glowObj.active) S.glow(glowObj, false);
       glowObj = o;
-      if (o) S.glow(o, true);
+      if (o) S.glow(o, true, { bounce: true }); // (SH-237: a thing on the band hops in its light; the kit drops the hop off the shelf)
     };
     let ctl = null;
     let stuck = null;

@@ -724,7 +724,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           ? (on) => {
               if (glowing.on === on || !obj.active) return;
               glowing.on = on;
-              S.glow(obj, on);
+              S.glow(obj, on, { bounce: true }); // (SH-237: a jar on the shelf hops in its light; the kit drops the hop off it)
             }
           : null,
         note: "daar:s14-stuck",
@@ -1503,6 +1503,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           prev = Math.atan2(p.worldY - cy, p.worldX - cx);
           ringG.setVisible(false);
           dragging = true;
+          if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("daar:stir"); // (SH-236: the light goes as the stir starts)
           if (!graceUntil) graceUntil = performance.now() + 700;
           start = { t: performance.now(), moved: 0 };
         }),
@@ -1535,6 +1536,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
               },
             });
           }
+          if (prev != null && !over && Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("daar:stir"); // (let go, the stir not done)
           prev = null;
           start = null;
           dragging = false;
