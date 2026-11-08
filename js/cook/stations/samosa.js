@@ -932,6 +932,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await swipe(z, S, {
           from,
           to,
+          thing: fimg, // (the light's thing: the strip being folded, whole, SH-230)
           minLen: k.minLen || 0.45,
           onDrag: () => {
             live.lit = false;
@@ -1017,7 +1018,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * over, else it settles back flat. SAM-16: a fold starts only on a drag within 25 degrees of its arrow (the folds run 30
    * degrees off the strip, so a flat swipe along it never folds); any other way does nothing and costs nothing (rule 12).
    */
-  function swipe(z, S, { onDrag, onCancel, from, to, draw, minLen }) {
+  function swipe(z, S, { onDrag, onCancel, from, to, draw, minLen, thing }) {
     return new Promise((resolve) => {
       const dx = to.x - from.x;
       const dy = to.y - from.y;
@@ -1082,7 +1083,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
         }),
       );
-      z.expect({ kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+      const e = { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y };
+      z.expect(thing && Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit(e, { thing }) : e);
     });
   }
 
@@ -1252,8 +1254,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         else steps.to("samosa:fry", { id: "fry" });
         // the next thing pulses: a raw one while there's room, else the samosa furthest on
         // (SAM-30: the lift's moment, on the green, for the coach's staged step; each samosa and the knob lit whole: thing)
-        if (cur && (cur.level >= lo || !waiting.length)) z.expect({ kind: "timing", x: cur.a.x, y: cur.a.y, key: "lift", thing: cur.a, coach: cur.level >= lo ? "lift" : null });
-        else if (waiting.length) z.expect({ kind: "tap", x: waiting[0].x, y: waiting[0].y, key: "samosa", thing: waiting[0] });
+        const lit = (e, o) => (Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit(e, o) : e);
+        if (cur && (cur.level >= lo || !waiting.length)) z.expect(lit({ kind: "timing", x: cur.a.x, y: cur.a.y, key: "lift", coach: cur.level >= lo ? "lift" : null }, { thing: cur.a }));
+        else if (waiting.length) z.expect(lit({ kind: "tap", x: waiting[0].x, y: waiting[0].y, key: "samosa" }, { thing: waiting[0] }));
         else z.expect({ kind: "wait" });
       };
       const addRaw = (im) => {

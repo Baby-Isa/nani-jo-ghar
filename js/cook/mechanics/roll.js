@@ -309,7 +309,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       z.gauge({ level: r / aimT.R, lo, hi });
       // (the light's thing: the board the dough is rolled on, whole, SH-230; the pin rides the coach's finger, carry)
-      z.expect({ kind: "roll", x: cx, y: cy, r: aimT.R, thing: opts.boardThing || chakla || dough, carry });
+      z.expect(Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit({ kind: "roll", x: cx, y: cy, r: aimT.R }, { thing: opts.boardThing || chakla || dough, carry }) : { kind: "roll", x: cx, y: cy, r: aimT.R });
     });
   }
   Mech.rollOne = rollOne;

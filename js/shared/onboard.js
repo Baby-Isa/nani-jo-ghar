@@ -296,10 +296,17 @@
     const c = Onboard.LIGHT.clear;
     const s = { l: m, t: m, r: m, b: m };
     // each neighbour's room from the thing on each side (>= 0 where it lies wholly that way)
-    const near = (avoid || [])
-      .filter(Boolean)
-      .map((q) => ({ l: u.x - (q.x + q.w), r: q.x - (u.x + u.w), t: u.y - (q.y + q.h), b: q.y - (u.y + u.h) }))
-      // (one that overlaps the thing itself can't be kept out by the margin: it is not a side's neighbour)
+    const gaps = (avoid || []).filter(Boolean).map((q) => ({ l: u.x - (q.x + q.w), r: q.x - (u.x + u.w), t: u.y - (q.y + q.h), b: q.y - (u.y + u.h) }));
+    // (S19, chaat 8 Nov run: a neighbour's pill reaching a few px into the thing's own pill: that side takes no margin, so the box
+    // covers it by no more than it already overlaps; one that overlaps the thing more can't be kept out by the margin)
+    const edge = Math.max(4, 0.25 * Math.min(u.w, u.h));
+    gaps.forEach((g) => {
+      const best = Math.max(g.l, g.r, g.t, g.b);
+      if (best >= 0 || best < -edge) return;
+      const side = ["l", "r", "t", "b"].find((k) => g[k] === best);
+      s[side] = 0;
+    });
+    const near = gaps
       .filter((g) => Math.max(g.l, g.r, g.t, g.b) >= 0)
       .sort((g, k) => Math.max(g.l, g.r, g.t, g.b) - Math.max(k.l, k.r, k.t, k.b));
     near.forEach((g) => {

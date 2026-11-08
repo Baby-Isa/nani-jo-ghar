@@ -210,3 +210,13 @@ test("coach: the stuck help given a thing lights the thing's parts, a list from 
   delete globalThis.NaniGuide;
   delete globalThis.document;
 });
+
+test("the light's room: a neighbour reaching a few px into the thing takes that side's margin away (SH-230, chaat's pills)", () => {
+  const thing = [{ x: 888, y: 521, w: 97, h: 134 }];
+  const b = Onboard.litBox(thing, [{ x: 744, y: 521, w: 146, h: 134 }]);
+  assert.equal(b.sides.l, 0, "no margin on the neighbour's side");
+  assert.ok(b.sides.r > 8, "the rule's margin elsewhere");
+  // one clear of it: trimmed to stay 2 px short, as before
+  const c = Onboard.litBox(thing, [{ x: 744, y: 521, w: 136, h: 134 }]);
+  assert.equal(c.sides.l, 6);
+});

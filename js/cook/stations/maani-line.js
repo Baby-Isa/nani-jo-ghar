@@ -324,6 +324,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       obj._glowing = on;
       S.glow(obj, on);
     };
+    // (S19: the light's thing on an expectation, kept off its JSON: Cook.Coach.lit)
+    const lit = (e, o) => (Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit(e, o) : e);
     const centre = (obj) => {
       const c = S.centre(obj);
       return { x: c.x, y: c.y };
@@ -393,9 +395,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (need) {
         const b = plateOf(need);
         // (the light's thing: the pile whole with its pill, SH-230)
-        zb.expect(Object.assign({ kind: "tap", key: "dough", thing: b, wrongs: plates.filter((o) => o !== b).map(centre) }, centre(b)));
+        zb.expect(lit(Object.assign({ kind: "tap", key: "dough", wrongs: plates.filter((o) => o !== b).map(centre) }, centre(b)), { thing: b }));
       } else zb.expect(null);
-      zon.expect(toTawa ? Object.assign({ kind: "tap", key: "tawa-on", thing: toTawa.sprite }, centre(toTawa.sprite)) : null);
+      zon.expect(toTawa ? lit(Object.assign({ kind: "tap", key: "tawa-on" }, centre(toTawa.sprite)), { thing: toTawa.sprite }) : null);
       stuckSync(need ? plateOf(need) : toTawa ? toTawa.sprite : null, need ? `pile-${need}` : toTawa ? `tawa-on-${items.indexOf(toTawa)}` : null);
       // quiet until they matter (§3): the finished plates, until a maani lands
       Object.values(dones).forEach((d) => d.img.setAlpha(d.n ? 1 : 0.9));
@@ -641,7 +643,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       ring.draw(TW.x, TW.y, RING_R, t.v, lo, hi);
       zt.gauge({ level: t.v, lo, hi });
       // (MAA-19: the flip's moment, in the green on its first side: the coach's staged step lights it, the dim and the box round it)
-      zt.expect({ kind: "timing", x: TW.x, y: TW.y, key: `tawa-${t.side}`, thing: t.it.sprite, coach: nowIn ? (t.side === 1 ? "flip" : "off") : null });
+      zt.expect(lit({ kind: "timing", x: TW.x, y: TW.y, key: `tawa-${t.side}`, coach: nowIn ? (t.side === 1 ? "flip" : "off") : null }, { thing: t.it.sprite }));
       if (t.v >= 1) {
         glowOn(t.it.sprite, false);
         inBand = false;

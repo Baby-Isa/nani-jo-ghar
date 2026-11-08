@@ -102,6 +102,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (when.key != null && !new RegExp(when.key).test(String(e.key == null ? "" : e.key))) return false;
     return true;
   };
+  /**
+   * S19: what a game adds to its expectation for the lights, kept off its JSON (the test harness reads Cook.expect as data; a canvas
+   * thing is a circular object): C.lit(e, {thing, carry}) sets them as hidden fields on e and gives e back.
+   *   thing   the canvas thing the step's light is round (the board, the pile, the maani on the tawa), whole with its pill
+   *   carry   (dx, dy, t, press) in world px: the game's thing riding the coach's finger (the rolling pin)
+   */
+  C.lit = function (e, o = {}) {
+    if (!e || typeof e !== "object") return e;
+    ["thing", "carry"].forEach((k) => {
+      if (o[k] != null) Object.defineProperty(e, k, { value: o[k], enumerable: false, configurable: true, writable: true });
+    });
+    return e;
+  };
   /** The thing a step names: the expectation's own (e.thing), else the picture its key names nearest its point (thingOf). */
   const thingFor = (e) => (e && e.thing && e.thing.active ? e.thing : thingOf(e));
   /** The other things with a word on the stage (their parts' boxes): the lit box keeps clear of them (SH-230's neighbours). */
@@ -142,7 +155,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // pill and its face circle, where it rests (C.parts), the one rule's margin round their union (Onboard.litBox); the circle only
       // where the step names no picture
       const e = Cook.expect;
-      const thing = e && e.x != null && Cook.UI.s14 && Cook.UI.s14() ? thingFor(e) : null;
+      const thing = e && (e.x != null || (e.thing && e.thing.active)) && Cook.UI.s14 && Cook.UI.s14() ? thingFor(e) : null;
       const parts = thing ? C.parts(thing) : [];
       if (!parts.length || !(parts[0][2] > 8 && parts[0][3] > 8)) return rectAround(t, t.r);
       // (the box takes in the point the step is tapped at only when it lies outside the thing: the pantry's carton, its tap point at
