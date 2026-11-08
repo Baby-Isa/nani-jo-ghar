@@ -406,7 +406,13 @@ import { Cook as CookNS } from "../ns.js";
           current,
           busy: () => busy > 0,
           // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: one highlight at a time, contract-8)
-          glow: (on) => Cook.Coach.onShelf(n.obj) && glowOn(on ? n.obj : null),
+          // (its glow goes with its light too, however the light goes: contract-102)
+          glow: (on) => {
+            if (!Cook.Coach.onShelf(n.obj)) return;
+            glowOn(on ? n.obj : null);
+            const h = on && stuck && stuck.lit ? stuck.lit() : null;
+            if (h && h.done) h.done.then(() => glowObj === n.obj && glowOn(null));
+          },
           onHint: () => hints++, // (SH-160: the guide's hint came)
           note: NOTE,
         });

@@ -249,7 +249,13 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
           current,
           busy: () => moving > 0,
           // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: contract-8)
-          glow: (on) => Cook.Coach.onShelf(n.o) && glow(on ? n.o : null),
+          // (its glow goes with its light too, however the light goes: contract-102)
+          glow: (on) => {
+            if (!Cook.Coach.onShelf(n.o)) return;
+            glow(on ? n.o : null);
+            const h = on && stuck && stuck.lit ? stuck.lit() : null;
+            if (h && h.done) h.done.then(() => lit === n.o && glow(null));
+          },
           onHint: () => hints++,
         });
       if (n.line) {

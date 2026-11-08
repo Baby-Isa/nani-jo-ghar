@@ -150,7 +150,13 @@ import { setTimeout } from "../life.js";
             hintMs: () => (hintMs() || 7000) * (Cook.speed || 1),
             current,
             busy: () => busy,
-            glow: (on) => o.active && S.glow(o, on, { now: true }),
+            // (its glow goes with its light too, however the light goes: contract-102)
+            glow: (on) => {
+              if (!o.active) return;
+              S.glow(o, on, { now: true });
+              const h = on && stuck && stuck.lit ? stuck.lit() : null;
+              if (h && h.done) h.done.then(() => o.active && ctlObj === o && S.glow(o, false));
+            },
             note: `${KEY}:${name}:stuck`,
           })
         : null;

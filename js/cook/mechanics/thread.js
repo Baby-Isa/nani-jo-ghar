@@ -193,6 +193,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             if (lit === on || !target.active) return;
             lit = on;
             S.glow(target, on, { bounce: true, now: true });
+            // (its glow goes with its light too, however the light goes: contract-102)
+            const h = on && stk && stk.lit ? stk.lit() : null;
+            if (h && h.done) h.done.then(() => lit && stkKey === key && ((lit = false), target.active && S.glow(target, false)));
           },
           onHint: () => Cook.onHelp && Cook.onHelp("hint"),
         });
