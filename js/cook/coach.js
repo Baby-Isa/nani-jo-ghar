@@ -304,6 +304,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (!Onboard || !Onboard.firsts) return { scope: key, fresh: false, key: () => "", spent: () => false, due: () => false, spend() {}, first: () => false };
     return Onboard.firsts(key, { seen, fresh, round: o.round || null, newPlayer: newPlayer() });
   };
+  /**
+   * The one page box (Sprint 18 wave 3: samosa's, baking's, eggs', corn's and chai's own copies went): a canvas thing's box on the
+   * page as the lights ask for it, a function read each frame -> [x, y, w, h] in page px, or null once the thing is gone.
+   *   pad: world px out from its picture; o.bounds(thing): its own world box {x, y, right, bottom} in place of the picture's (a
+   *   plate's body with its face, a strip's pastry without its canvas); o.visible: null while the thing is hidden too (chai's
+   *   glow ring is lit hidden, so the default looks only at whether it is still there).
+   */
+  C.box = (thing, pad = 0, o = {}) => () => {
+    const UI = Cook.UI;
+    if (!thing || !thing.active || (o.visible && !thing.visible) || !UI || !UI.worldToScreen) return null;
+    const b = o.bounds ? o.bounds(thing) : thing.getBounds();
+    if (!b) return null;
+    const a = UI.worldToScreen(b.x - pad, b.y - pad);
+    const z = UI.worldToScreen(b.right + pad, b.bottom + pad);
+    return [a.x, a.y, z.x - a.x, z.y - a.y];
+  };
   /** STD-D2-04: a wrong move (any game): every hint waiting on its clock comes at once (Onboard.rush). */
   C.wrong = (by) => {
     const Onboard = OB();
@@ -625,14 +641,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * own: the light adds the one rule's (Onboard.litBox; was 8% here, 4-10 px, and the light's 10 px more on top).
    */
   function hugOf(obj) {
-    if (!obj || !obj.getBounds || !Cook.UI.worldToScreen) return null;
-    const b = obj.getBounds();
-    const a = Cook.UI.worldToScreen(b.x, b.y);
-    const z = Cook.UI.worldToScreen(b.x + b.width, b.y + b.height);
-    const w = z.x - a.x;
-    const h = z.y - a.y;
-    if (!(w > 8 && h > 8)) return null;
-    return [a.x, a.y, w, h];
+    const r = obj && obj.getBounds ? C.box(obj)() : null;
+    return r && r[2] > 8 && r[3] > 8 ? r : null;
   }
   function lightThing(state, obj) {
     if (state.lit === obj) return;

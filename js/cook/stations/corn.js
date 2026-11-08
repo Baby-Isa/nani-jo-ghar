@@ -168,14 +168,6 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     const gate = Cook.Coach.firsts(KEY, { round: new Set() });
     const steps = St.steps(ctx);
     const hintMs = () => (global.Rules && global.Rules.hintMs ? global.Rules.hintMs(Cook.roundLevel(ctx)) : 7000);
-    // (a picture's box on the page, for its light; asked of the kit as Cook.Coach.boxOf: see the report)
-    const boxOf = (o) => () => {
-      if (!o || !o.active || !o.visible) return null;
-      const b = o.getBounds();
-      const a = UI.worldToScreen(b.x, b.y);
-      const c = UI.worldToScreen(b.right, b.bottom);
-      return [a.x, a.y, c.x - a.x, c.y - a.y];
-    };
     let ctl = null;
     let ctlId = null;
     let lit = null;
@@ -222,7 +214,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       const first = n.word ? false : gate.first(n.step);
       ctl = Cook.Coach.control({
         key: KEY,
-        target: boxOf(n.o),
+        target: Cook.Coach.box(n.o, 0, { visible: true }),
         first,
         hintMs,
         current: () => ctlId === id && !served,
