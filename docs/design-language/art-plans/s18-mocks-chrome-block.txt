@@ -1,0 +1,50 @@
+NANI JO GHAR: GAME SCREEN MOCK-UPS, ROUND 1 (free, unrestricted ideas). Paste this whole block into Claude in Chrome.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-31767b7f-rfyrg4/sources/art/s18-mocks/refs.zip ,
+unzip it, and drag all 19 pictures into this chat with this block.
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+You run a ChatGPT image session for Zafar while he is away. Use chatgpt.com in a new tab (he is signed in). The 19 pictures attached
+to this chat are today's game screens, named by game. Do one ChatGPT chat per game, in this order: 01 maani, 02 sekelo, 03 daar,
+04 chaat, 05 samosa, 06 eggs, 07 baking, 08 corn, 09 chop. In each chat:
+1. Attach both chai pictures (00-chai-REFERENCE-a.jpg and -b.jpg) and that game's own picture(s) (same number prefix).
+2. Paste the COMMON BRIEF below, then that game's GAME LINE.
+3. Let it generate. If it gives fewer than 3 options, ask: "Please give the next option." until it has given up to 3 per screen.
+   For games with more than one screen picture, do each screen in turn in the same chat.
+4. Keep every image (they stay in the chat and in ChatGPT's Library). Do not judge or redo; this round is for ideas.
+5. Move on to the next game. Two chats may run at once if ChatGPT allows; never more.
+When all nine are done, write one line per game in this chat: the chat's link and how many images it made. Stop if ChatGPT refuses
+or a limit is hit; say where you stopped.
+
+=== COMMON BRIEF (paste into every chat) ===
+These are screens from a premium children's cooking game (ages 5-14) set in a grandmother's kitchen, teaching a family language through
+play. The look: semi-realistic 3D, "stylised shapes, realistic materials", warm and calm, like a polished animated film; a top-down
+view of a white marble worktop, everything seen from straight above. The chai screens (the two "REFERENCE" pictures) are the one we love:
+clean, modern, beautiful. The other picture(s) are another game's screen today. I want your ideas for how this game's screen could look
+much better: up to 3 different options per screen, each a full redesigned screen in the same shape as the picture I gave.
+
+Think about: layout and spacing (balance, breathing room, nothing cramped or floating), the size and proportion of each object, a clear
+focus on the main action, room for a child's finger on everything tappable, how it reads on a small phone, materials (walnut wood,
+brushed steel, stone, glass), one soft light from the upper left with subtle soft shadows falling to the lower right (no window light
+streaks across the worktop), objects exactly top-down, and the family feel shared with chai.
+Please ignore and leave out: any grey dimmed overlay or gold highlight (that is a tutorial), the side panel (cut off), any text or
+labels (leave none in your image), and the bottom row's shelf design (keep the items to pick from along the bottom roughly as they are;
+we are designing that shelf separately). Keep the same items and the same game; only improve how it looks.
+
+=== GAME LINES (paste the one for this chat after the brief) ===
+01 MAANI: Rolling flatbreads: the child takes a dough ball, rolls it out on the round wooden board with the rolling pin, cooks it on the
+   flat tawa pan on the stove, flips it, and puts it on a plate. Two pictures: the rolling and the cooking.
+02 SEKELO: Skewers: the child threads pieces (meat, corn, tomato, onion) onto a skewer on the board, then puts it in the steel tray;
+   on the second screen the skewers grill over hot coals, are turned and lifted off. Two pictures: threading and grilling.
+03 DAAR: Lentil curry: vegetables fly up and the child slices them with the knife; then spices go into hot oil in the pot on the stove
+   (tadka); then the child stirs the daar with a ladle at the speed asked (a speed dial). Three pictures: chop, tadka, stir.
+04 CHAAT: A street snack bowl: first the child chops (as in daar), then builds the bowl in order: potatoes, chickpeas, chutneys,
+   toppings. Two pictures: chop and the bowl.
+05 SAMOSA: The child fills pastry with filling, folds it into triangles, then fries them in the karahi (deep pan) on the stove and lifts
+   them onto a plate. Three pictures: fill, fold, fry. (The six pastry pieces may be too many; one piece at a time is an option.)
+06 EGGS: Breakfast eggs: boil eggs in the pot or fry them in the pan on the stove, add salt or pepper, serve on the tray.
+07 BAKING: Naan: the child tips flour, water and milk into the bowl in the amounts asked, then bakes the naan in the oven.
+   Two pictures: the bowl and the oven. (Today it is side-on; a top-down version like chai is welcome as one option.)
+08 CORN: A corn stall outside on the farm: the child grills corn cobs over coals, then dresses them with chilli, lemon or chutneys and
+   serves them. One picture (a rough prototype: feel free to rethink it).
+09 CHOP: Chopping on its own: vegetables fly up from the board and the child slices them with the knife. One picture.
