@@ -181,7 +181,7 @@
    "file": "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
    "d": 470,
    "x": 1090,
-   "y": 90,
+   "y": 165,
    "reuse": true,
    "plate": "assets/cook/items/plate-enamel-empty-t.webp",
    "wells": [
@@ -207,7 +207,8 @@
     "dx": -74,
     "dy": -70,
     "d": 64
-   }
+   },
+   "_s19": "S19: y 90 -> 165, so on a phone (740x320) the tray's top-right plate is clear of the cog's corner (it sat under it: eggs L3 timed out tapping the plate there); its foot stays above the band (165 + 455 < 630)"
   },
   "people": {
    "call": "Cook.Kit.faceArt(who)",
