@@ -19,12 +19,12 @@ About $150-210 for the four builders below; the rest of the plan (the scene, the
 principles and the art.
 
 ## Sessions (two builders at a time; each starts as a slot frees and its files allow)
-1. **s19-cards** (Opus, high, $40-55): cards, Nani's box, ticking order card, no tick/next/X, relics gone, one-thing card pictures, Fable's text flaws. Running.
+1. **s19-cards** (Opus, high, $40-55): cards, Nani's box, ticking order card, no tick/next/X, relics gone, one-thing card pictures, Fable's text flaws. **Merged** (rows 100, 103, 104, 108 clean on 40 pages; 101 fails on samosa L1 740x320; maani's pop bubble, sekelo's two-word English and chop's 'chop again' card not done: in its report).
 2. **s19-checks** (Opus, high, $40-55): the audit of every check, the shared-piece code checks, `sidebyside.mjs`, frame strips, the rubric. **Merged** (177 checks: 160 kept, 14 fixed, 3 retired with reasons, code kept; contract-100 to -109; checks.mjs about 2.5 min). Its dry-run judge was done by the builder itself: the real judge runs on the first merge.
-3. **s19-lights** (Opus, high, $35-50): one light and finger, room, gone on the move, shelf-only hop, stuck help everywhere; maani's, chaat's and samosa's first times. Running in two phases: the kit's light files now, the games' files once s19-cards is merged.
-4. **s19-games** (Opus, high, $35-50): Fable's flaws in sekelo, daar, eggs and corn; CK-63, CK-61, DAAR-43, CK-65. After s19-cards and with a free slot.
+3. **s19-lights** (Opus, high, $35-50): one light and finger, room, gone on the move, shelf-only hop, stuck help everywhere; maani's, chaat's and samosa's first times. Phase 1 merged; phase 2 (the games' files) running.
+4. **s19-games** (Opus, high, $35-50): Fable's flaws in sekelo, daar, eggs and corn; CK-63, CK-61, DAAR-43, CK-65; stir and knead onto the kit's demo. Running.
 
-Each merges only after the orchestrator's look beside chai and the judge on the changed screens; nothing is published without Zafar.
+Every game is touched by s19-lights or s19-games after s19-cards, so the judge (sidebyside beside chai, the rubric) runs once per game after both merge; nothing is published without Zafar.
 
 ## Waiting on Zafar (his review point: the principles with the art)
 The counting rule (SEK-25, CK-64), sekelo's one skewer per person, the timing floor, samosa's redesign, the scene for every game, the
