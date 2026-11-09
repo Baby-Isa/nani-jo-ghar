@@ -135,7 +135,8 @@ export function check102(r, tl, add) {
     const e = glows[i];
     if (!inStation(st, e.t) || held(glows, i, tEnd) < HOLD_MS) continue;
     // (a light that comes or goes within the hold is the same help: judged at the hold's end too)
-    const hs = holesAt(e.t), hs2 = holesAt(e.t + HOLD_MS);
+    // (s19-games, 8 Nov: the s19lit sample can lag the light by about half a second: a light up within 600 ms counts)
+    const hs = holesAt(e.t).concat(holesAt(e.t + 600)), hs2 = holesAt(e.t + HOLD_MS);
     // (a kit piece's own glow, its texture named kit-: the pan's heat ring at its window, is the kit's, not the game's)
     const out = (e.list || []).find((g) => { if (/^kit-/.test(g.key || "")) return false; const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)); });
     if (!out || seen.has("glow:" + out.key)) continue;
@@ -508,7 +509,8 @@ function s19hook() {
     const s = scan();
     const cvA = s.cv ? (s.cv[2] - s.cv[0]) * (s.cv[3] - s.cv[1]) : 1;
     const band = s.cv ? s.cv[1] + (630 / 900) * (s.cv[3] - s.cv[1]) - 2 : Infinity;
-    const things = holes.map((h) => {
+    // (a whole-canvas light, chop's swipe, is a region, not a thing: skipped, s19-games 8 Nov)
+    const things = holes.filter((h) => (h[2] - h[0]) * (h[3] - h[1]) <= cvA / 2).map((h) => {
       const cx = (h[0] + h[2]) / 2, cy = (h[1] + h[3]) / 2;
       const inside = (b) => cx >= b[0] && cx <= b[2] && cy >= b[1] && cy <= b[3];
       const w = s.words.find((x) => inside(u(x.pic, x.chip)));
