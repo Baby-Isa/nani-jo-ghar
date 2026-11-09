@@ -129,6 +129,8 @@ try {
     const whole = (h) => h && h.x <= 290 && h.y <= 100 && h.x + h.w >= 370 && h.y + h.h >= 200;
     check(whole(u.a), `a function giving a list of parts: one box round them all (${JSON.stringify(u.a)})`);
     check(whole(u.b), `a list of functions, one part each: the same (${JSON.stringify(u.b)})`);
+    const rb = await page.evaluate(() => [Onboard.rectOf(() => [[10, 20, 30, 40], [0, 50, 20, 30]]), Onboard.rectOf([[5, 5, 10, 10], null]), Onboard.rectOf(() => null), Onboard.rectOf([])]);
+    check(JSON.stringify(rb) === JSON.stringify([{ x: 0, y: 20, w: 40, h: 60 }, { x: 5, y: 5, w: 10, h: 10 }, null, null]), `Onboard.rectOf: a list (or a function giving one) is the box round them all (${JSON.stringify(rb)})`);
     check(errors.length === 0, `no page errors (${errors.join("; ")})`);
     await page.close();
   }

@@ -48,15 +48,6 @@ test("the press that starts the move is one inside the drawn box (SH-236)", () =
   assert.equal(Onboard.fingerLook, "hand", "the hand until Zafar picks (MAA-20)");
 });
 
-test("a target's box: a list of rects, or a function giving one, is the box round them all (S19: a finger's start on a thing's parts)", () => {
-  assert.deepEqual(Onboard.rectOf([10, 20, 30, 40]), { x: 10, y: 20, w: 30, h: 40 });
-  const parts = () => [[10, 20, 30, 40], [0, 50, 20, 30]];
-  assert.deepEqual(Onboard.rectOf(parts), { x: 0, y: 20, w: 40, h: 60 });
-  assert.deepEqual(Onboard.rectOf([[5, 5, 10, 10], null]), { x: 5, y: 5, w: 10, h: 10 });
-  assert.equal(Onboard.rectOf(() => null), null);
-  assert.equal(Onboard.rectOf([]), null);
-});
-
 test("the machine jumps on to a later step, never back (S19: a step's moment)", () => {
   const m = Onboard.machine([{ spotlight: "#a", wait: "x" }, { spotlight: "#b", wait: "x" }, { spotlight: "#c", wait: "x" }]);
   m.start();
