@@ -1,5 +1,8 @@
 # Session brief template
 
+> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins.
+
+
 Use this for every build session. The rules it draws on are in `process/rules.md` §2 (sessions, agents and git); this file links to them by ID instead of restating them: **B3** (no helper sessions), **B4** (every brief is complete), **B17** (a mode session edits only its own files), **B6** (one report, one push), **C8** (fast checks only), **A24** (what a brief names).
 
 ## Generate it, don't type it

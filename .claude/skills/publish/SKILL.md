@@ -4,6 +4,9 @@ description: Publish the branch to main (the live GitHub Pages site) and confirm
 ---
 # /publish: bump, push, confirm live
 
+> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins.
+
+
 **For:** the orchestrator, or a session whose brief says it publishes. `publish.mjs` enforces the order (bump, one push to `main`, wait for Pages, shoot the live page).
 
 ## Before

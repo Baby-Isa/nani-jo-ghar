@@ -8,11 +8,52 @@ Nothing reaches Zafar until every line that applies passes. The design docs say 
 
 A reviewer who is not the builder fills in the results, flaws first.
 
-## How to run a review
+## When we check, and how deep (Zafar, 9 Nov: the tiers; the newest word on checks: older lines elsewhere point here)
 
-1. **While iterating (builders, decision 48):** fast checks only: `node build/tools/review/checks.mjs` (tests, the word lint, the version stamps), the leak scripts, `check_onboard`, and `node build/tools/review/touched.mjs` for the flows you changed, run at laptop size (1366×768) with `build/sandbox/run.mjs --touched … --quick`, one shot each, looked at and fixed. The full matrix below runs once, in the orchestrator's `/review`, before a publish.
-2. Run every **auto** line that applies to the touched modes (`touched.mjs` names the flows; `build/sandbox/run.mjs --gate` is the whole matrix; `shotdiff.mjs` compares the shots with the approved ones).
-3. Screenshot every visually distinct state, uncropped, at **844×390** (phone landscape, iPhone 12–14), **800×360** (small Android landscape, the tightest height), **1366×768** (laptop) **1440×900** / **1280×800** (16:10 laptops) and the tablets **1024×768**, **1180×820** and **1366×1024** (landscape, decision 24), across levels 1–4. One upright phone shot (390×844) checks the "please rotate" card.
+| Tier | When | Machines | Eyes | Time |
+|---|---|---|---|---|
+| 0. Every push | any commit | `checks.mjs` (code tests, words, leak test, docs, fix list), no browser | none | 3-5 min |
+| 1. Prototype ("show me") | a new screen or mechanic, before building it properly | the lab page loads with 0 page errors at the four sizes | Zafar, from pictures or a gif in chat, the same hour | minutes |
+| 2. Targeted | a tweak or a builder's rows | the touched game only, at the levels touched (L1-L4 if levels change), 740x320 and 930x430 (four sizes wait for tier 3); each row's probe red then green; that game's contract checks | the orchestrator's before/after picture, made by script from the base commit and the candidate (never the builder's own shots), to Zafar before merging | 15-30 min |
+| 3. Sprint check | once the sprint's main work is in, BEFORE the fix-up (not at publish) | every game the sprint changed: L1-L4, four sizes, all contract checks, 0 page errors, end reached; every other game: loads and reaches its end at one size (shared code can break it); one fix list from the result | Fable beside chai on the changed screens; a script-made first-minute film of every changed game (first time and returning) | one scripted run (overnight if long); a person reads only the failures; one first-minute film per changed game |
+| 3b. Fix-up and publish | after tier 3's fix list is fixed | the failed pages again, plus every changed game at one size to its end (fixes break neighbours), then `checks.mjs --browser`; the publish note lists the known fails left open | none new | 30 min |
+| 4. Live smoke | right after the publish, before "it's live" | each changed game's first minute on the live site at 740x320; if it fails, put `main` back to the last good publish first, then look | the orchestrator looks at the strip first | 5 min |
+| 5. App store | before the stores | everything at every size, every button, devices, the Kutchi gate, no device voice | to design | days |
+
+**Every check we have, by tier:**
+
+| Check | What it is | T0 push | T1 prototype | T2 targeted | T3 sprint check | T3b/publish | T4 live | T5 stores |
+|---|---|---|---|---|---|---|---|---|
+| Code checks (`checks.mjs`) | code tests, no English for the child, the leak bots, docs, fix-list labels, decisions recorded | all | all | all | all | all + browser load | - | all |
+| Robot play-through (`run.mjs`) | a robot plays a game's levels and paths, shoots every state; fails on stuck, page errors | - | the lab page, 4 sizes | the touched game, its levels, 2 sizes | changed games L1-L4, 4 sizes; others one size | changed games, one size | first minute, phone | everything |
+| Rules (contract checks, about 110) | watched during every play-through: one voice at a time, the light centred, no own glow, card rows tick ... | - | - | the touched game's | all, changed games | the failures | - | all |
+| Layout findings | buttons too small, text too small or clipped (5,530 tonight, mostly "tap too small") | - | - | - | read for changed games | - | - | all |
+| Probes (evidence, per fix-list row) | one row's moment captured, red before the fix, green after | - | - | each row the change names | rows the sprint touched | - | - | all |
+| First-play look (NEW) | Fable (or I) watches L1 of the changed game played as a new player, a minute, with a list: lights, arrows, lessons, nothing obviously wrong | - | yes | yes | yes, every changed game | yes | - | yes |
+| The judge (Fable) on probe sheets | looks at each row's before/after sheet | - | - | big visual rows | all touched rows | - | - | all |
+| Beside chai (`sidebyside.mjs`) | a game next to chai at a child's pace, looked at by Fable | - | - | - | a game moved to its new scene and art | - | - | all |
+| Chai frozen | chai replayed against its frozen run | - | - | when shared files change | yes | yes | - | yes |
+| Art judge (`artjudge.py`, then Fable) | each landed picture checked, then cut | when art lands | | | | | | |
+| Before/after pictures to Zafar | made by me from the code before and after | - | - | yes, before the merge | - | - | - | - |
+
+**The first-play look** (Zafar, 9 Nov: "these are things that you find out playing literally level one in the first few seconds"):
+before anything reaches him, the orchestrator or Fable watches a minute of level 1 of each changed game played as a new player
+(lights, arrows, lessons, anything obviously wrong). Rules catch only what someone wrote a rule for; this catches the rest.
+
+**Rules the checks keep** (a rule that keeps failing is fixed or retired, never ignored):
+- A stuck game (end not reached) or a page error is always fixed before a publish, unless the live site has the same fault and he
+  says publish anyway.
+- Every contract check that breaks at tier 3 gets one of three outcomes in the sprint: the game fixed, the probe fixed, or the rule
+  retired with his yes. A count that only grows is the sign it is being ignored.
+- A flaky check (fails, then passes with no code change) is logged and fixed or retired in the sprint; never rerun until green.
+- Tier 0 refuses the push when it fails (a pre-push hook), so it never depends on remembering.
+
+
+## How to run a review (the eye lines, within the tiers above)
+
+1. The machines and sizes for each moment are the tiers above (they replace the old size matrix and the whole-matrix gate at every publish).
+2. Run every **auto** line that applies to the touched modes (`touched.mjs` names the flows).
+3. Screenshot every visually distinct state, uncropped, at the tier's sizes (the four: 740x320, 930x430, 1280x665, 1920x1080; Zafar, 27 Oct).
    - "Every state" means every state that draws something different, not just start, middle and end: a hob heating, turned down, pan lifted, boiled over; 1–4 burners where the count changes the layout; end screens with all right / mixed / none, 0 / 1 / 2 / 3+ hints, new best / good / plain.
    - Each shoot script names its states in its header.
 4. Zoom ×2 on the focal object of each shot and go through the **eye** lines. List every flaw first, then write one line per state. "The screenshot exists" doesn't count.

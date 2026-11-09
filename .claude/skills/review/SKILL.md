@@ -4,6 +4,9 @@ description: Review a finished build session or any change before it goes to Zaf
 ---
 # /review: done means looked at
 
+> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins.
+
+
 **For:** whoever did not build it. The checks are the rules (`docs/tools.md`); checklist `docs/process/qa-checklist.md`.
 
 ## Steps

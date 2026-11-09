@@ -47,4 +47,4 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
 Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
 
 - **Only make art for items the game will use;** reuse approved art where it fits, but say so.
-- **Decision 29 (5 Oct):** Zafar approves art only for characters based on real people; everything else is judged pass/fail by the runner and Claude; art runs need no manual steps.
+- **Decision 29 (5 Oct), superseded by CLAUDE.md (non-negotiable 8):** Zafar approves what lands; Claude judges first (artjudge.py, then one Fable pass), then he sees it.

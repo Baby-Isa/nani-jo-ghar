@@ -4,6 +4,9 @@ description: Write a complete brief for a new build session (mode, engine, art o
 ---
 # /brief: a session brief from a spec
 
+> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins.
+
+
 **For:** the orchestrator, before any `create_session`. Enforced by `brief.mjs` (required fields, owned files, no helpers, the overlap check) and CLAUDE.md the working agreement's Builders line; template `docs/process/session-brief-template.md`.
 
 ## Steps

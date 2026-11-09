@@ -1,5 +1,8 @@
 # The evidence loop: every row proven by the game, judged without Zafar
 
+> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins.
+
+
 ## A game beside chai: the three-part gate (Sprint 19, s19-checks)
 
 The 8 Nov eye-judge experiment (`build/reports/s18-eye-judge-experiment.md`) caught a third to a half of Zafar's still-visible points

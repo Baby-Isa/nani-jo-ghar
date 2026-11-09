@@ -1,5 +1,8 @@
 # The eye judge's rubric
 
+> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins.
+
+
 What the eye judge asks of a game beside chai (Sprint 19, s19-checks). From the 8 Nov experiment's 38 questions
 (`build/reports/s18-eye-judge-experiment.md` §1), keeping their numbers; the ones part 1 now checks in code are listed at the end and not
 asked. Each question is answered from `sidebyside.mjs`'s pictures: chai's frame of the same moment on the left, the game's on the right.
