@@ -983,8 +983,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return best || hit;
   }
   function lightThing(state, obj) {
-    if (state.lit === obj) return;
     const S = Cook.scene;
+    if (state.lit === obj) {
+      // (S19, SH-237, chaat 9 Nov: a shelf thing lit while it was still moving got its glow without its hop; its hop once it is still)
+      if (obj && obj.active && obj.glowFx && obj.glowFx.y == null && S && S.tweens && !S.tweens.isTweening(obj) && C.onShelf(obj)) S.glow(obj, true, { bounce: true, now: true });
+      return;
+    }
     if (state.lit && S && S.glow) S.glow(state.lit, false);
     state.lit = obj;
     if (!obj || !S || !S.glow) return;
