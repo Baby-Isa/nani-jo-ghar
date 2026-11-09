@@ -313,7 +313,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       const result = await new Promise((resolve) => {
         let quiet = null;
-        const ghost = S.ghost({ circle: { x: cx, y: cy, rx: RT, ry: RT } }, { duration: k.ghostMs, delay: z.guided ? 200 : 5000 });
+        // (S19, SH-119, contract-102: the kit's one finger round the pot, Cook.Coach.demo, not the stir's own S.ghost; it goes on any press)
+        const demo = Cook.Coach && Cook.Coach.demo ? Cook.Coach.demo(() => ({ x: cx, y: cy, r: RT }), { gesture: "circle-stir", ms: k.ghostMs, delay: z.guided ? 200 : 5000, step: "stir" }) : null;
+        const ghost = { stop: () => demo && demo.stop() };
         const finish = () => {
           if (finished) return;
           finished = true;
@@ -351,6 +353,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const d = Math.hypot(p.worldX - cx, p.worldY - cy);
           if (d < z.L(k.deadZone) || d > z.L(k.reach)) return;
           grabbing = true;
+          if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("stir"); // (SH-236: the light goes as the stir starts)
           if (!started) graceUntil = performance.now() + k.startGraceMs;
           started = true;
           prev = Math.atan2(p.worldY - cy, p.worldX - cx);
@@ -400,6 +403,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           grabbing = false;
           prev = null;
           clearTimeout(quiet);
+          if (count < laps && Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("stir"); // (let go before the laps: SH-236)
           if (count >= laps) {
             UI.done().then(finish);
             z.expect({ kind: "wait" });

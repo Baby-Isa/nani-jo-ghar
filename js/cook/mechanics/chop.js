@@ -85,7 +85,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       const S = z.S;
@@ -267,6 +267,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
       let phase = null; // the round being thrown: {targets, kinds, bag, every, secs}
 
+      /*
+       * S19 (Fable's daar flaw 5: "an empty cream strip where the shelf band should be"; chai's scene): params.band ({base, chipY}, design
+       * px; the caller draws chai's stone band, St.stoneBand) puts every kind this chop throws, wanted and decoy alike (so the shelf never
+       * tells which to cut), standing on the band's shelf with its pill (the kit's slots and chip), and each throw rises from its own
+       * kind's place on the band, to the same height as before. Off without it (chaat's wood board, the Chop tile's marble).
+       */
+      const shelfAt = {};
+      if (band) {
+        const kinds = Cook.shuffle([...new Set(rounds.flatMap((r) => r.kinds))]);
+        const SL = global.Shelf && global.Shelf.slots ? global.Shelf.slots([kinds], { span: [150, 1450], pitch: 180, groupGap: 0 }) : null;
+        kinds.forEach((id, i) => {
+          const x = SL ? SL.x[id] : 150 + ((i + 0.5) * 1300) / kinds.length;
+          const key = texFor(id);
+          const img = S.track(S.add.image(z.X(x), z.Y(band.base), key).setOrigin(0.5, 1).setDepth(D.item));
+          img.setScale(S.fitScale(key, z.L(Math.min(130, (SL ? SL.slotW : 160) - 30)), z.L(band.h || 130)));
+          if (S.contactShadow) img.shadow = S.contactShadow(img, { centerX: img.x, centerY: z.Y(band.base - 4), width: img.displayWidth * 0.8, height: z.L(16) });
+          const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(x), z.Y(band.chipY), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: 128 }) : null;
+          if (chip && chip.setScale) chip.setScale(z.k);
+          shelfAt[id] = { x, y: band.base - (img.displayHeight / z.k) / 2, img };
+        });
+      }
+
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
       const T = Object.assign({ x: 118, y: 124, r: 70, warn: 3 }, k.timer || {}, timer || {});
       const ring = S.track(S.add.graphics().setDepth(D.item + 1));
@@ -316,15 +338,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             x0 = c;
           }
         }
+        // (S19: on the band, it rises from its own kind's place, to the same height as a throw from below the board would reach)
+        const from = shelfAt[pick] || null;
+        if (from) x0 = from.x;
         lastX = x0;
-        const img = S.track(S.add.image(z.X(x0), z.Y(990), key).setDepth(D.item + 2));
+        const y0 = from ? from.y : 990;
+        const img = S.track(S.add.image(z.X(x0), z.Y(y0), key).setDepth(D.item + 2));
         img.setScale(S.fitScale(key, z.L(size), z.L(size)));
         img.setAlpha(shown(img));
         img.wordId = pick;
         img.phase = phase;
         img.vx = (z.X(760) - img.x) * (0.15 + Math.random() * 0.2) * slow;
         // peak around the upper third of the play area
-        img.vy = -z.L(v0 + Math.random() * (v1 - v0));
+        const vFull = v0 + Math.random() * (v1 - v0);
+        img.vy = -z.L(from ? Math.sqrt(Math.max(vFull * vFull * 0.25, vFull * vFull - 2 * gravity * (990 - y0))) : vFull);
+        if (from && from.img.active) S.tweens.add({ targets: from.img, scaleY: from.img.scaleY * 0.92, duration: 90, yoyo: true });
         img.spin = (Math.random() - 0.5) * 5;
         flying.push(img);
       };

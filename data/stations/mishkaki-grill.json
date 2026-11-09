@@ -188,5 +188,18 @@
     }
    ]
   }
- }
+ },
+ "items": {
+  "_about": "S19 (contract-104, SH-242): the item card of a mixed skewer ('ba lakri mixed') had no picture: its card is the grilled mixed skewer (the kit's item card reads a station's items.*.card by its words, js/cook/ui.js cardOfIds). Existing art (assets/cook/items/skewer-mixed-grilled-t.png, a v1 cut on artcheck's known list); an ART row asks for the s08c skewer.",
+  "mixedSkewer": {
+   "word": [
+    "ph-mixed"
+   ],
+   "card": "assets/cook/items/skewer-mixed-grilled-t.png"
+  }
+ },
+ "assets": [
+  "assets/cook/items/skewer-mixed-grilled-t.png"
+ ],
+ "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations"
 }

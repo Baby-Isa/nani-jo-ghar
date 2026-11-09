@@ -64,6 +64,10 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     const nos = p.no || [];
     const slots = K.slots || 3;
     const sideMs = K.sideMs || 2600;
+    // S19 (CK-65; Zafar, 8 Nov: "the green zone is way too short"): the green lasts greenMs (the settings, by level: at least chai's
+    // green at the same level), the cob ready to turn or lift from its start; its heat ring runs over the side and the green together
+    const greenMs = K.greenMs || 4500;
+    const greenLo = sideMs / (sideMs + greenMs);
     const guided = !!ctx.guided;
     const dish = ctx.dishAt || 0;
     const states = (it.cob || {}).states || {};
@@ -126,7 +130,8 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       img.setScale(dw / Math.max(img.width, img.height));
       img.wordId = id;
       bowls[id] = img;
-      Cook.Kit.chip(S, id, x, chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: (lay.chips || {}).w || 200 });
+      // (its pill is part of its light: the kit's parts, C.parts; S19, CK-61)
+      img.chip = Cook.Kit.chip(S, id, x, chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: (lay.chips || {}).w || 200 });
     });
 
     /* ---------------- the cobs ---------------- */
@@ -169,13 +174,14 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     const steps = St.steps(ctx);
     const hintMs = () => (global.Rules && global.Rules.hintMs ? global.Rules.hintMs(Cook.roundLevel(ctx)) : 7000);
     let ctl = null;
+    let stuck = null;
     let ctlId = null;
     let lit = null;
     let hints = 0;
     const glow = (o) => {
       if (lit && lit !== o && lit.active) S.glow(lit, false);
       lit = o;
-      if (o) S.glow(o, true, { bounce: true });
+      if (o) S.glow(o, true, { bounce: true, now: true }); // (now: with its light, never the ladder's deferred glow)
     };
     /** The next thing to do, published once: the light, the step, the helper card and the test hooks read it (STD-F3-05). */
     function nextThing() {
@@ -196,6 +202,8 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       ctlId = id;
       if (ctl) ctl.close();
       ctl = null;
+      if (stuck) stuck.close();
+      stuck = null;
       glow(null);
       if (!n.o) {
         // (nothing to tap while the cobs grill: the step closes, no light, no hint)
@@ -212,23 +220,48 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       const OB = global.Onboard;
       const hides = !!(n.word && OB && OB.hintHides && OB.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(n.word) : null, study: guided }));
       const first = n.word ? false : gate.first(n.step);
-      ctl = Cook.Coach.control({
-        key: KEY,
-        target: Cook.Coach.box(n.o, 0, { visible: true }),
-        first,
-        hintMs,
-        current: () => ctlId === id && !served,
-        busy: () => moving > 0,
-        noHint: hides,
-        onLight: () => glow(n.o),
-        onHint: () => {
-          hints++;
-          // (an item's stuck hint opens her helper card, its word card naming it: STD-D3-02, -03; a control's is its light alone: its
-          // call was said as its step opened, and said again it would be a second line within 10 s, contract-22)
-          if (n.word && UI.helperOpen) UI.helperOpen(true, { by: "hint" });
-        },
-      });
-      if (n.line) steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again, noCall: n.noCall || null });
+      // S19 (CK-61, SH-230): the light round the thing whole, with its pill and its hop's room (the kit's parts, part by part, so the
+      // light's one rule leaves its room round their union: contract-92); was the picture's box with no room
+      const target = [0, 1, 2, 3, 4, 5].map((i) => () => (n.o.active && n.o.visible ? Cook.Coach.parts(n.o)[i] || null : null));
+      const current = () => ctlId === id && !served;
+      // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236)
+      const lightGlow = () => {
+        // (only a thing on the band glows and hops with its light; anything else is lit alone, so Nani's call reading its row is the
+        // one other highlight: contract-8)
+        if (!Cook.Coach.onShelf(n.o)) return;
+        glow(n.o);
+        setTimeout(() => {
+          const h = ctl && ctl.lit ? ctl.lit() : null;
+          const off = () => lit === n.o && glow(null);
+          if (h && h.done) h.done.then(off);
+          else off();
+        }, 0);
+      };
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, onLight: lightGlow });
+      // SH-228 (chai's method): the stuck help after the level's wait from the last action (a child's time: the kit divides a game's wait
+      // by the test speed), at once after a wrong move: her helper card naming the thing (an item's step), else her line again, with the
+      // light. Never where the light would be the answer (hides: a dressing past support, STD-D2-05)
+      if (!hides && Cook.Coach.stuck)
+        stuck = Cook.Coach.stuck({
+          key: KEY,
+          target,
+          hintMs: () => hintMs() * (Cook.speed || 1),
+          current,
+          busy: () => moving > 0,
+          // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: contract-8)
+          // (its glow goes with its light too, however the light goes: contract-102)
+          glow: (on) => {
+            if (!Cook.Coach.onShelf(n.o)) return;
+            glow(on ? n.o : null);
+            const h = on && stuck && stuck.lit ? stuck.lit() : null;
+            if (h && h.done) h.done.then(() => lit === n.o && glow(null));
+          },
+          onHint: () => hints++,
+        });
+      if (n.line) {
+        const st = steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again, noCall: n.noCall || null });
+        if (stuck) kitHelps(st);
+      }
       else steps.done();
     }
     const refresh = () => lead(nextThing());
@@ -304,14 +337,16 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     z.tick(() => {
       let changed = false;
       cobs.forEach((c) => {
+        // (S19, CK-65: the ring keeps filling through the green while the cob waits to be turned or lifted)
+        if (c.state !== "cook" && c.state !== "turn" && c.state !== "lift") return;
+        c.p = Math.min(1, (Date.now() - c.t0) / ((sideMs + greenMs) / sp()));
+        // the kit's heat ring over the cob (one heat language): gold up to the sage band; ready from the green's start
+        c.ring.draw(c.img.x, c.img.y - c.img.displayHeight / 2 - (ringL.dy || 46), ringL.r || 34, c.p, greenLo, 1);
         if (c.state !== "cook") return;
-        c.p = Math.min(1, (Date.now() - c.t0) / (sideMs / sp()));
-        // the kit's heat ring over the cob (one heat language): gold up to the sage band; ready at its end
-        c.ring.draw(c.img.x, c.img.y - c.img.displayHeight / 2 - (ringL.dy || 46), ringL.r || 34, c.p, ringL.lo != null ? ringL.lo : 0.9, 1);
         if (Math.random() < (sm.chance || 0.03)) smoke(c.img.x, c.img.y - 40);
-        if (c.side === 0 && c.p >= 0.5 && c.img.texture.key === tex.raw) c.img.setTexture(tex.half);
-        if (c.side === 1 && c.p >= 0.5 && c.img.texture.key !== tex.done) c.img.setTexture(tex.done);
-        if (c.p >= 1) {
+        if (c.side === 0 && c.p >= greenLo * 0.5 && c.img.texture.key === tex.raw) c.img.setTexture(tex.half);
+        if (c.side === 1 && c.p >= greenLo * 0.5 && c.img.texture.key !== tex.done) c.img.setTexture(tex.done);
+        if (c.p >= greenLo) {
           c.state = c.side === 0 ? "turn" : "lift";
           changed = true;
         }
@@ -402,6 +437,8 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         await serveP;
         if (ctl) ctl.close();
         ctl = null;
+        if (stuck) stuck.close();
+        stuck = null;
         ctlId = null;
         glow(null);
         steps.done();
@@ -472,6 +509,19 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     return { served: onPlate.length };
   }
 
+  /*
+   * SH-228 (contract-22): where the kit's stuck help (Cook.Coach.stuck) runs a step's hesitation help, the step's own ladder in Nani's
+   * stepper stays quiet, so her line is never said twice (the helper card's call, then the stepper's again: "Hane makai!" twice 1.4 s
+   * apart at 1920x1080). St.steps.to passes no helpAfter to UI.step (a kit change in the report), so the opened step is marked as
+   * helped with no clock: never due.
+   */
+  const kitHelps = (st) => {
+    if (st && typeof st === "object" && "helped" in st) {
+      st.helped = true;
+      st.helpedAt = Infinity;
+    }
+    return st;
+  };
   Mech.lab(KEY, {
     name: "Corn stall (prototype)",
     verb: "Grill, turn once, then what goes on",

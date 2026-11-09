@@ -25165,7 +25165,7 @@
    "at": "stage-start",
    "after": null,
    "capture": [
-    "cmd:node -e \"const c=require('./data/stations/corn.json').mechanic.levels;const t=require('./data/stations/chai-tray.json').mechanic.levels;const b=require('./data/cook.json').mechanics.boil.levels;let C={},T={},B={},ok=1;for(let i=0;i<4;i++){Object.assign(C,c[i]||{});Object.assign(T,t[i]||{});Object.assign(B,b[i]||{},(b[i]&&b[i].profiles&&b[i].profiles.tray)||{});const h=T.heat||{band:B.band,rate:B.rate};const g=(h.band[1]-h.band[0])/(h.rate*0.5)*1000;console.log('L'+(i+1),'chai',Math.round(g),'corn',C.greenMs);if(!(C.greenMs>=g))ok=0}process.exit(ok?0:1)\"",
+    "cmd:node build/tools/review/green-check.mjs",
     "crop:#game"
    ],
    "expect": [
@@ -25235,7 +25235,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "hint-glow",
+   "at": "hint-nani-says",
    "after": null,
    "capture": [
     "contract:91",

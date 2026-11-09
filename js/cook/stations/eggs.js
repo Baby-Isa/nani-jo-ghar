@@ -70,6 +70,9 @@ import { Cook as CookNS } from "../ns.js";
     station: KEY,
     view: "marble",
     dataFile: "data/stations/eggs.json",
+    // S19 (Fable's eggs flaw 1, CK-48): its view comes up only once its pictures are in (St.begin in eggs(), after St.loadArt), so the
+    // play area is never empty marble while the panel already shows the order
+    selfBegin: true,
     zones: [],
     async run(host, p) {
       return eggs(host, p);
@@ -92,9 +95,15 @@ import { Cook as CookNS } from "../ns.js";
     const cookMs = K.cookMs || 3200;
     const sc = SCENE();
     await St.loadArt(S, ART(K).concat(...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
+    await St.begin(S, ctx, KEY, "marble");
     const objs = [];
     const T = (o) => (objs.push(o), S.track(o));
     const steps = St.steps(ctx);
+    // S19 (Fable's eggs flaw 3; chai's scene): the kitchen kit's worktop wash and chai's stone band with its shelf (St.stoneBand): the
+    // bowl and the shakers stand on it, their pills on its chip line (settings scene.band, Shelf.BAND)
+    const band = Object.assign({ top: 630, base: 818, chipY: 860 }, sc.band || {});
+    objs.push(Cook.Kit.worktop(S, { top: band.top, far: 2000 }));
+    objs.push(St.stoneBand(S, { top: band.top, base: band.base, far: 2000, depth: D.bg + 1.2 }));
     // SH-149 (contract-101): Nani's helper card and its drop-down, as in every kitchen game (eggs runs its own stage, never St.begin)
     if (St.helperWatch) St.helperWatch(ctx, KEY, { own: true });
     // the kitchen kit's first-time gate (STD-D1-01): each light once for a new player, or the first round ever here
@@ -121,6 +130,10 @@ import { Cook as CookNS } from "../ns.js";
       const body = ITEM(k).body || { cx: 0.5, cy: 0.5, rIn: 0.3 };
       const img = sized(T(S.add.image(b.x, b.y, tex(k, state)).setDepth(D.item)), k);
       img.setOrigin(body.cx, body.cy);
+      // S19 (CK-63, SH-230; Zafar, 8 Nov: "it's half on the handle ... off-centered"): its light is on its round body alone, centred on
+      // the burner, the handle left out (the kit's lights read thing.litBounds: Cook.Coach.box, C.parts)
+      const rB = (body.r || (body.d ? body.d / 2 : body.rIn)) * img.displayWidth;
+      img.litBounds = () => ({ x: img.x - rB, y: img.y - rB, right: img.x + rB, bottom: img.y + rB });
       return { key: k, k, img, c: { x: b.x, y: b.y }, r: body.rIn * img.displayWidth, eggs: [], flame: flame(b), fried };
     };
     const vessels = { pot: vessel("pot", bPot, "water", false), pan: vessel("pan", bPan, "dry", true) };
@@ -140,11 +153,56 @@ import { Cook as CookNS } from "../ns.js";
     };
 
     // the bowl of eggs (on the shelf band) with its word chip; its picture follows the eggs still to take
-    const at = ITEM("bowl").at || [150, 520];
-    const bowl = sized(T(S.add.image(at[0], at[1], tex("bowl", "six")).setDepth(D.item)), "bowl");
-    const chipY = ITEM("bowl").chipY || 660;
-    const chip = (id, x) => objs.push(Cook.Kit.chip(S, id, x, chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true }));
-    chip("n.egg", at[0]);
+    // (S19: standing on the band, its foot on the base: origin at its foot)
+    const at = ITEM("bowl").at || [150, band.base];
+    const bowl = sized(T(S.add.image(at[0], at[1], tex("bowl", "six")).setOrigin(0.5, 1).setDepth(D.item)), "bowl");
+    bowl.shadow = S.contactShadow ? S.contactShadow(bowl) : null;
+    const bowlMid = () => bowl.y - bowl.displayHeight / 2;
+    const chipY = ITEM("bowl").chipY || band.chipY;
+    /*
+     * S19 (Fable's eggs flaw 7: the pill under the bowl below the text and tap floors on the phone; SH-230: the pill inside the thing's
+     * light): chai's own pill, the shared kit's (Shelf.P.chip, whose card size the lights and their checks read), the row's pills at one
+     * scale as large as the floor asks and their neighbours allow (Shelf.pillScale on Shelf.pillWant: chai's fitPills), on the chip line
+     */
+    const SH = global.Shelf;
+    const ppw = (() => {
+      try {
+        return UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        return 1;
+      }
+    })();
+    const pills = [];
+    const PILL_SLOT = 180; // (the bowl and the shakers stand 200 apart: a pill's tap area at most its slot)
+    const chip = (id, x) => {
+      const c = SH.P.chip(S, x, chipY, Cook.display(id), {
+        word: Cook.chipWord ? Cook.chipWord(id, ctx) : true,
+        depth: D.item + 2,
+        onTap: () => {
+          if (Cook.unlockAudio) Cook.unlockAudio();
+          if (Cook.onLabel) Cook.onLabel(id);
+          Lang.speakWord(id);
+        },
+      });
+      c.pillId = id;
+      objs.push(c);
+      pills.push(c);
+      return c;
+    };
+    const fitPills = () => {
+      const row = pills.filter((c) => c.active).sort((a, b) => a.x - b.x);
+      if (!row.length) return;
+      const { k, cap } = SH.pillScale(row.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW: PILL_SLOT });
+      const y = Math.min(chipY, 896 - ((SH.PILL.h || 46) / 2) * k);
+      row.forEach((c) => {
+        if (c.capW !== cap) c.face(c.showsWord, cap);
+        c.k = k;
+        c.hit(PILL_SLOT);
+        c.setScale(k).setY(y);
+      });
+    };
+    bowl.chip = chip("n.egg", at[0]); // (its pill is part of its light: C.parts)
+    bowl.wordId = "n.egg";
     const wanted = plates.reduce((a, q) => a + (q.n || 1), 0);
     let taken = 0;
     const bowlLook = () => bowl.setTexture(tex("bowl", wanted - taken > 3 ? "six" : "three"));
@@ -174,15 +232,18 @@ import { Cook as CookNS } from "../ns.js";
     const shakers = {};
     const shaker = (id, k) => {
       const it = ITEM(k);
-      const y = it.at_y || 560;
-      const c = sized(T(S.add.image(it.at_x, y, tex(k)).setDepth(D.item)), k);
+      const y = it.at_y || band.base;
+      const c = sized(T(S.add.image(it.at_x, y, tex(k)).setOrigin(0.5, 1).setDepth(D.item)), k);
+      if (S.contactShadow) c.shadow = S.contactShadow(c);
       shakers[id] = { id, c, x: it.at_x, y };
-      chip(id, it.at_x);
+      c.chip = chip(id, it.at_x);
+      c.wordId = id;
     };
     if (K.shakers) {
       shaker("spi-16", "shakerSalt");
       shaker("spi-11", "shakerPepper");
     }
+    fitPills();
 
     /* ---------------- an egg ---------------- */
     const rawEgg = (x, y) => sized(T(S.add.image(x, y, tex("egg", "white")).setDepth(D.fx)), "egg");
@@ -210,10 +271,15 @@ import { Cook as CookNS } from "../ns.js";
         rawHeld.destroy();
         rawHeld = null;
       }
-      if (held && held.kind === "shaker") S.tweens.add({ targets: shakers[held.id].c, y: shakers[held.id].y, angle: 0, duration: 160 });
+      if (held && held.kind === "shaker") S.tweens.add({ targets: shakers[held.id].c, scale: shakers[held.id].c.baseScale || shakers[held.id].c.scale, duration: 160 });
       if (held && held.kind === "cooked" && held.egg.lifted && !held.egg.out) S.tweens.add({ targets: held.egg.obj, scale: held.egg.base || 1, duration: 160 });
       held = h;
-      if (h && h.kind === "shaker") S.tweens.add({ targets: shakers[h.id].c, y: shakers[h.id].y - 26, angle: -12, duration: 160 });
+      // (picked up: it grows a little where it stands, its foot on the band's line, its origin: contract-109; was lifted 26 px off it)
+      if (h && h.kind === "shaker") {
+        const c = shakers[h.id].c;
+        c.baseScale = c.baseScale || c.scale;
+        S.tweens.add({ targets: c, scale: c.baseScale * 1.12, duration: 160 });
+      }
       refresh();
     };
 
@@ -252,64 +318,104 @@ import { Cook as CookNS } from "../ns.js";
       const pl = plateOf(o);
       const r = pl ? ((tr.plateW || 168) / 2) * 0.94 : 0; // (the rim, inside the picture's edge)
       const f = pl ? pl.face.getBounds() : null;
-      const b = pl ? { x: Math.min(pl.x - r, f.x), y: Math.min(pl.y - r, f.y), right: Math.max(pl.x + r, f.right), bottom: Math.max(pl.y + r, f.bottom) } : o.getBounds();
-      // (contract-82: the box stops short of another plate's face below it or to its right, the light's pad and a gap clear)
+      // (a pan or the pot: its round body alone, thing.litBounds, CK-63)
+      const b = pl ? { x: Math.min(pl.x - r, f.x), y: Math.min(pl.y - r, f.y), right: Math.max(pl.x + r, f.right), bottom: Math.max(pl.y + r, f.bottom) } : typeof o.litBounds === "function" ? o.litBounds() : o.getBounds();
+      // (contract-82: the box stops short of another plate's face below it or to its right, the light's pad and a gap clear: the pad is
+      // page px, Onboard.BOX_PAD, so on a phone it is more world px; S19, eggs L4 at 740x320 crossed the cousin's face)
+      const perPx = (() => {
+        try {
+          return Math.max(0.05, UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x);
+        } catch (e) {
+          return 1;
+        }
+      })();
+      const clear = Math.max(16, (((global.Onboard && global.Onboard.BOX_PAD) || 10) + 6) / perPx);
       if (pl)
         P0.filter((q) => q !== pl).forEach((q) => {
           const g = q.face.getBounds();
           const across = g.right > b.x && g.x < b.right;
           const beside = g.bottom > b.y && g.y < b.bottom;
-          if (across && g.y > pl.y) b.bottom = Math.min(b.bottom, g.y - 16);
-          else if (beside && g.x > pl.x) b.right = Math.min(b.right, g.x - 16);
+          if (across && g.y > pl.y) b.bottom = Math.min(b.bottom, g.y - clear);
+          else if (beside && g.x > pl.x) b.right = Math.min(b.right, g.x - clear);
         });
       return b;
     };
-    // the level's wait before the stuck hint (the central rules' hintS)
-    const hintMs = () => (RULES() && RULES().hintMs ? RULES().hintMs(level) : 0) || 7000;
+    // S19 (SH-230): a thing on the band (the bowl, a shaker) is lit whole with its pill and its hop's room (the kit's parts, C.parts),
+    // part by part so the light's one rule hugs their union (Onboard.litBox); anything else by its box above
+    const PARTS = [0, 1, 2, 3, 4, 5];
+    const lightOf = (o) => (o && o.chip ? PARTS.map((i) => () => (Cook.Coach.parts(o)[i] || null)) : Cook.Coach.box(o, 0, { bounds: plateBox }));
+    // the level's wait before the stuck hint (the central rules' hintS), a child's time: the kit divides a game's wait by the test speed
+    // (Cook.speed), and contract-24 and -91 read it in real time
+    const hintMs = () => ((RULES() && RULES().hintMs ? RULES().hintMs(level) : 0) || 7000) * (Cook.speed || 1);
     let glowObj = null;
     const glowOn = (o) => {
       if (glowObj === o) return;
       if (glowObj && glowObj.active) S.glow(glowObj, false);
       glowObj = o;
-      if (o) S.glow(o, true);
+      if (o) S.glow(o, true, { bounce: true, now: true }); // (SH-237: a thing on the band hops in its light; the kit drops the hop off the shelf)
     };
     let ctl = null;
+    let stuck = null;
     let ctlKey = null;
     let nextV = null;
     let ids = 0;
     const idOf = (o) => (o.eggId = o.eggId || ++ids);
-    // one step at a time: the first time it comes up, its light with the call (the kit's first-time gate); after that the call
-    // alone and the same light as the stuck hint after the level's wait, at once after a wrong move (Cook.Coach.wrong). The
-    // pick between the pot and the pan is the next vessel: the first time, a light round the one this plate needs.
+    // one step at a time: the first time it comes up, its light with the call (the kit's first-time gate, Cook.Coach.control); after
+    // that the call alone, and the stuck help (SH-228, chai's method: Cook.Coach.stuck, her helper card or her line again with the
+    // light) after the level's wait, at once after a wrong move (Cook.Coach.wrong). The pick between the pot and the pan is the next
+    // vessel: the first time, a light round the one this plate needs.
     const coach = (n) => {
       const key = !n.obj ? "wait" : `${n.what}:${idOf(n.obj)}`;
       if (key === ctlKey) return;
       ctlKey = key;
       if (ctl) ctl.close();
       ctl = null;
+      if (stuck) stuck.close();
+      stuck = null;
       if (nextV) nextV.stop();
       nextV = null;
       glowOn(null);
       if (!n.obj || finished) return;
       let first = false;
+      const target = lightOf(n.obj);
       if (n.what === "vessel") {
         if (gate.first("next-pan"))
           nextV = Cook.Coach.nextLight({ now: true, target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }), quitIf: () => finished || ctlKey !== key, who: n.obj === pot ? "pot" : "pan", note: NOTE });
       } else first = gate.first(`ctl-${n.what}`);
-      ctl = Cook.Coach.control({
-        key: KEY,
-        target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }),
-        first,
-        hintMs,
-        current: () => ctlKey === key && !finished,
-        busy: () => busy > 0,
-        onLight: () => glowOn(n.obj),
-        onHint: () => {
-          hints++; // (SH-160: the guide's hint came)
-          if (UI.stepHelp) UI.stepHelp();
-        },
-        note: NOTE,
-      });
+      const current = () => ctlKey === key && !finished;
+      // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236)
+      const lightGlow = () => {
+        // (only a thing on the band glows and hops with its light; anything else is lit alone, so Nani's call reading its row is the
+        // one other highlight: contract-8)
+        if (!Cook.Coach.onShelf(n.obj)) return;
+        glowOn(n.obj);
+        setTimeout(() => {
+          const h = ctl && ctl.lit ? ctl.lit() : null;
+          const off = () => glowObj === n.obj && glowOn(null);
+          if (h && h.done) h.done.then(off);
+          else off();
+        }, 0);
+      };
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => busy > 0, onLight: lightGlow, note: NOTE });
+      if (Cook.Coach.stuck)
+        stuck = Cook.Coach.stuck({
+          key: KEY,
+          level,
+          target,
+          hintMs,
+          current,
+          busy: () => busy > 0,
+          // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: one highlight at a time, contract-8)
+          // (its glow goes with its light too, however the light goes: contract-102)
+          glow: (on) => {
+            if (!Cook.Coach.onShelf(n.obj)) return;
+            glowOn(on ? n.obj : null);
+            const h = on && stuck && stuck.lit ? stuck.lit() : null;
+            if (h && h.done) h.done.then(() => glowObj === n.obj && glowOn(null));
+          },
+          onHint: () => hints++, // (SH-160: the guide's hint came)
+          note: NOTE,
+        });
     };
     const wrong = () => Cook.Coach.wrong();
 
@@ -329,8 +435,8 @@ import { Cook as CookNS } from "../ns.js";
       hold({ kind: "raw" });
       taken++;
       bowlLook();
-      rawHeld = rawEgg(bowl.x, bowl.y - 40);
-      S.tweens.add({ targets: rawHeld, y: bowl.y - 150, duration: 260, ease: "Back.easeOut" });
+      rawHeld = rawEgg(bowl.x, bowlMid() - 40);
+      S.tweens.add({ targets: rawHeld, y: bowlMid() - 150, duration: 260, ease: "Back.easeOut" });
       Cook.sfx.pop();
       z.progress({ took: "n.egg" });
     });
@@ -406,8 +512,13 @@ import { Cook as CookNS } from "../ns.js";
         if (pl[flag]) return hold(null);
         pl[flag] = true;
         const asked = (id === "spi-16" ? pl.q.salt : pl.q.pepper) === "yes";
-        const sh = shakers[id].c;
+        const sh0 = shakers[id].c;
         busy++;
+        // (S19, contract-109: the shaker on the band stays on its line; a copy of it goes to the plate and back)
+        S.tweens.killTweensOf(sh0);
+        sh0.setScale(sh0.baseScale || sh0.scale);
+        const sh = T(S.add.image(sh0.x, sh0.y, sh0.texture.key).setOrigin(0.5, 1).setScale(sh0.scaleX, sh0.scaleY).setDepth(D.fx));
+        sh0.setAlpha(0.35);
         await Cook.tween(S, { targets: sh, x: pl.x + 40, y: pl.y - 70, duration: 280 });
         await Cook.tween(S, { targets: sh, angle: 150, duration: 160 });
         const dots = S.add.graphics();
@@ -422,6 +533,8 @@ import { Cook as CookNS } from "../ns.js";
           if (!guided && Lang.known(id)) Cook.markRight(id);
         } else wrong();
         await Cook.tween(S, { targets: sh, x: shakers[id].x, y: shakers[id].y, angle: 0, duration: 260 });
+        sh.destroy();
+        sh0.setAlpha(1);
         busy--;
         held = null;
         return refresh();
@@ -497,13 +610,14 @@ import { Cook as CookNS } from "../ns.js";
       finishUp();
     });
 
-    steps.to("eggs:eggs", { line: Lang.line("now", Lang.phrase(["n.egg"])) });
+    kitHelps(steps.to("eggs:eggs", { line: Lang.line("now", Lang.phrase(["n.egg"])) }));
     // the kitchen kit's reveal lessons (STD-D1-08): once the order has landed, the dotted word then the blurred picture
     if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
     refresh();
     await doneP;
     steps.done();
     if (ctl) ctl.close();
+    if (stuck) stuck.close();
     if (nextV) nextV.stop();
     glowOn(null);
     z.expect(null);
@@ -523,6 +637,19 @@ import { Cook as CookNS } from "../ns.js";
     return { served: P0.length };
   }
 
+  /*
+   * SH-228 (contract-22): where the kit's stuck help (Cook.Coach.stuck) runs a step's hesitation help, the step's own ladder in Nani's
+   * stepper stays quiet, so her line is never said twice (the helper card's call, then the stepper's again: "Hane makai!" twice 1.4 s
+   * apart at 1920x1080). St.steps.to passes no helpAfter to UI.step (a kit change in the report), so the opened step is marked as
+   * helped with no clock: never due.
+   */
+  const kitHelps = (st) => {
+    if (st && typeof st === "object" && "helped" in st) {
+      st.helped = true;
+      st.helpedAt = Infinity;
+    }
+    return st;
+  };
   /** The table: the meal's kitchen (its window's sky by the meal); each plate slides to its person, who swaps to happy and bounces. */
   async function serve(S, ctx, z, { plates, meal, objs }) {
     await Cook.tween(S, { targets: objs.filter((o) => o && o.active), alpha: 0, duration: 300 });
