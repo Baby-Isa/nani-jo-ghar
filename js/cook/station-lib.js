@@ -458,6 +458,14 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
     helperT = setInterval(() => {
       // (own: a prototype that runs its own stage, never St.begin's, eggs: its own start and end hold it)
       if (!s14On() || (!Cook.inStation && !own)) return;
+      // (contract-101, samosa's fill: her card is cleared while a control's call is said, js/cook/ui.js SH-172, or before a game's own
+      // call, baking's; once she has said it the watch shows it again, on the step's thing or the first thing still to make, so her
+      // drop-down is there in every station; it thought the card still showed helperKey and never came back)
+      if (helperKey) {
+        const g = global.document && document.querySelector("#guide");
+        const a = g && g.querySelector(".ng-arrow");
+        if (a && a.hidden && !g.classList.contains("talk")) helperKey = null;
+      }
       const e = Cook.expect;
       let id = e && typeof e.key === "string" && Cook.isItemWord(e.key) ? e.key : null;
       // SH-149 (contract-101: maani, sekelo, samosa never showed it): a step that names no thing (a roll, the tawa, a strip) keeps her
