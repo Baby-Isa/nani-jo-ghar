@@ -20,75 +20,91 @@ In each conversation:
       shadows). Do not draw yet."
    b. ChatGPT often promises an image and then gives none. So: copy its whole analysis, and send a NEW message that starts "Generate
       the image now, implementing exactly this analysis:" followed by the pasted analysis, with the same pictures attached again.
-   c. When the image arrives, send: "Analyse in text what still does not look premium, or breaks the screen line; then generate one
-      improved version." If it again only answers in text, repeat step b with that answer.
+   c. When the image arrives, send: "Analyse in text what still does not look premium, or breaks the screen line or the house rules;
+      then generate one improved version." If it again only answers in text, repeat step b with that answer.
    d. Keep every image. Do not judge; move on.
 3. If ChatGPT refuses, hits a limit, or the conversation becomes slow, start a fresh conversation for the rest of that group, beginning
    again with step 1.
 When all three are done, write one line per screen in this chat: the conversation link and how many images it made.
 
 === HOUSE BRIEF (paste as the first message of each conversation) ===
-These are screens from a premium children's cooking game (young children) in a grandmother's kitchen that teaches the family's language.
+These are screens from a premium children's cooking game (ages 3-6) in a grandmother's kitchen that teaches the family's language.
 The 00-HOUSE pictures are the style we love: Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials",
 premium and polished, warm and calm. In every image I ask for, keep to these house rules:
-- One consistent large soft light from the upper left, a little behind the viewer's mid-ground; soft contact shadows under everything,
-  falling to the lower right; nothing floats. No window-light streaks across the worktop.
+- One consistent large soft light from the upper left; soft contact shadows under everything, falling to the lower right; nothing
+  floats. No window-light streaks across the worktop (ignore the streaks in the sekelo picture).
 - Materials: a white marble worktop with soft cool veins (never yellow or cream-tinted); mid-walnut wood with subtle grain, softly
-  bevelled edges and a satin finish; brushed stainless steel; cream ceramic bowls (never walnut bowls, never glass bowls).
-- Camera: things lying on the worktop are seen exactly from straight above. Things that stand up (bottles, jars, shakers, egg boxes)
-  stand side-on on a pale stone shelf along the bottom, like the chai picture. Never mix the two on one surface.
-- Things the child picks from lie along the bottom of the screen: side-on things on chai's pale stone shelf, top-down things in cream
-  bowls on a long walnut tray (a thin raised rim like A2-corn-tray-06, with the quieter grain of A2-corn-tray-05). Under each item leave
-  a small blank cream pill shape (we write the word in it later). Items in one even row, spaced for a child's finger.
-- The main thing (the stove and its pan, the board, the grill) is as big and as tall as the screen allows; the screen is landscape 3:2
-  and must also read on a wide, short phone, so keep everything important inside the middle 80% of the height.
+  bevelled edges and a satin finish; brushed stainless steel; cream ceramic bowls (never walnut bowls, never glass bowls; the one
+  glass thing allowed is a measuring jug where I ask for it).
+- Camera: the worktop scene is seen exactly from straight above, in every game except baking (side-on throughout). Along the bottom
+  of the screen runs ONE band, the bottom 30% of the height, of one of two kinds: chai's pale stone shelf, side-on, for things that
+  stand up (bottles, cartons, jars, shakers, egg boxes); or a long walnut tray, straight-down, for things that lie or heap (cubes,
+  cobs, dough, pastry, spices and sauces in cream bowls). Never both on one screen, never a tilted three-quarter view.
+- The things the child picks from sit in that band: the tray has a thin raised rim like A2-corn-tray-06 with the quieter grain of
+  A2-corn-tray-05; the sekelo picture's cream bowls are the right bowls (there they sit on a shelf; on ours they go on the tray).
+  Under each item leave a small blank cream pill (we write the word in it later: the word pills in the 00-HOUSE pictures are ours,
+  draw them blank). Items in one even row, spaced for a child's finger.
+- The main thing (the stove and its pan, the board, the grill) is as big and as tall as the space above the band allows. Frame:
+  wide 16:9 if you can, else 3:2. The sides get cropped on some screens, so keep everything important inside the middle 80% of the
+  width; nothing important in the top-right corner (a settings button lives there). The picture is the play area only: a panel of
+  ours sits to its left, outside the picture.
 - Serving trays and plates sit on the right. Where a person is being served, a small round face circle sits on the corner of their
   plate or tray, as in the chai picture.
-- Leave out: any text or words (except digits where I ask for a counter), hands, tick or next buttons, back arrows, tutorial dimming or
-  gold highlights, plants, napkins, spoons or pots that do nothing, and anything in the top-right corner (a settings button lives there).
+- Leave out: any text or words (except digits where I ask for a counter), hands, tick or next buttons, back arrows, tutorial dimming,
+  gold highlights or glows, dotted guide circles, plants, napkins or cloths unless I ask, spoons or tools that do nothing, and anything
+  falling through the air.
 
 === SCREEN LINES (paste one at step 2a, with its pictures) ===
-A1 SEKELO GRILL (pictures: A1-sekelo-grill-TODAY, A1-sekelo-grill-pick-47, 00-HOUSE-sekelo-zafar-pick): The skewers grill over hot
-   coals, are turned, and lifted off into steel trays. Base it on pick 47 with fewer, finer grill bars. Two DEEP brushed-steel trays
-   (like the tray in the sekelo-zafar-pick) stacked on the left: the top of the top tray level with the top of the grill, the bottom
-   of the bottom tray level with the bottom of the grill. The grill tall at centre-right. Thick steel skewers with walnut handles,
-   pieces of meat, chicken, tomato and onion. If the trays cannot line up with the grill and still look good, show pick 47's
-   layout instead and say why.
+A1 SEKELO GRILL (pictures: A1-sekelo-grill-TODAY, A1-sekelo-grill-pick-47, 00-HOUSE-sekelo-zafar-pick): The skewers (threaded on an
+   earlier screen) grill over hot coals, are turned, and lifted off into steel trays. Base it on pick 47: two thin grill bars, no more,
+   no corn on the skewer, no plant or napkin. Two DEEP brushed-steel trays (like the tray in the sekelo-zafar-pick) stacked on the
+   left: the top of the top tray level with the top of the grill, the bottom of the bottom tray level with the bottom of the grill.
+   The grill tall at centre-right. Thick steel skewers with walnut handles, pieces of meat, chicken, tomato and onion. If the trays
+   cannot line up with the grill and still look good, show pick 47's layout instead and say why.
 A2 CORN (pictures: A2-corn-TODAY, A2-corn-tray-05, A2-corn-tray-06, A1's result if you have it): The corn stall uses exactly the
-   sekelo grill screen: a crate of raw cobs top-left, the person's plate below it with a face circle, the grill with four cobs tall at
-   centre-right. Along the bottom on the walnut tray: salt, red chilli powder, lemon wedges, green chutney, tamarind chutney, each in a
-   cream bowl. The corn must look realistic and appetising (the TODAY picture's corn and crate do not). Then one more image: a close-up
-   of the tray strip alone, our final tray design.
+   sekelo grill screen: a wooden crate of raw cobs top-left, the person's oval steel plate below it with a face circle, the grill with
+   four cobs tall at centre-right. Along the bottom on the walnut tray, each in a cream bowl: lemon wedges, salt, red chilli powder,
+   green chutney, tamarind chutney, black pepper (six). The corn must look realistic and appetising (the TODAY picture's corn and crate
+   do not). Then one more image: a close-up of the tray strip alone, our final tray design.
 A3 MAANI (pictures: A3-maani-TODAY, A3-maani-pick-38): Rolling flatbreads. Pick 38 is right: keep it, with the round walnut rolling
-   board about 7% bigger (as big as the tawa's burner plate), the rolling pin tucked at its foot, the tawa on its small hob with the
-   gold-ringed knob and the face circle. Dough balls along the bottom on the walnut tray (millet dough darker, wheat lighter) and the
-   two steel plates on the right, each with a face circle. Then one more image: the same board with a rolled maani on it and two
-   faint dashed rings drawn on the board, a small one and a big one (the size guide).
+   board about 7% bigger than TODAY's, the rolling pin tucked at its foot, both clear of the band; the tawa on its small hob with the
+   gold-ringed knob and the face circle; the wooden turner beside the hob stays (it flips the maani). Along the bottom on the walnut
+   tray: two heaps of dough balls (millet darker, wheat lighter) and, at the tray's right end as in 38, two steel plates, each with a
+   face circle. Then one more image: the same board with a rolled maani on it and two faint dashed rings drawn on the board, a small
+   one and a big one (the size guide; it appears only after the big/small lesson, so the first image has a bare board).
 B1 DAAR (pictures: B1-daar-stir-TODAY, B1-daar-tadka-TODAY, B1-daar-pot-08, B1-daar-tadka-20): Lentil curry. One big central pot on
-   chai's hob (pick 08's pot, as large as fits). Two images: (1) the tadka: hot oil in the pot; along the bottom on the walnut tray,
-   cream bowls of chopped onion, chopped tomato, sliced green chilli, turmeric, salt and cumin seeds; a bowl of cooked daar beside the
-   pot to pour in. (2) the stir: the pot full of daar, a wooden ladle in it, no dial. Then THREE images of a big, clear lap counter for
-   the stir (digits allowed), each a different idea placed beside the pot: a mechanical flip-card number, a small sports-scoreboard
-   panel, and a big number card that pops up. It need not look like a kitchen object; it must be readable at a glance by a 4-year-old.
+   chai's hob (pick 08's pot, as large as fits); no dial, no napkin. Two images: (1) the tadka: hot oil in the pot, nothing falling
+   into it from the air (unlike pick 20); a cream bowl of cooked daar on the right, beside the pot, waiting to be poured in; along the
+   bottom on the walnut tray, cream bowls of chopped onion, chopped tomato, garlic cloves, sliced green chilli, turmeric, salt, cumin
+   seeds and mustard seeds (eight; drop the last two if the row crowds). (2) the stir: the pot full of daar, a ladle with a wooden
+   handle in it. Then THREE images of a big, clear lap counter for the stir (digits allowed), each a different idea, placed on the
+   right beside the pot: a mechanical flip-card number, a small sports-scoreboard panel, and a big number card that pops up. It need
+   not look like a kitchen object; it must be readable at a glance by a 4-year-old.
 B2 CHAAT (pictures: B2-chaat-TODAY, B2-chaat-bowl-23): A street-snack bowl built in layers. Top-down. A big opaque cream bowl in the
    centre of the worktop (as big as fits), seen from above, part-filled: potato cubes and chickpeas with a drizzle of green chutney
    and some sev on top. Along the bottom on the walnut tray, cream bowls of: potato cubes, chickpeas, chopped onion, chopped tomato,
-   sev, green chutney, tamarind chutney, yogurt. Nothing around the big bowl.
+   sliced green chilli, coriander leaves, sev, green chutney, tamarind chutney, yogurt (ten; the game shows fewer at early levels).
+   Nothing around the big bowl: no side bowls, no spoons, no napkin.
 B3 SAMOSA (pictures: B3-samosa-fry-TODAY, B3-samosa-board-18, B3-samosa-board-17, B3-samosa-fry-31, B3-samosa-fry-02): Three images.
-   (1) Filling: ONE big pastry sheet on pick 18's rounded-rectangle walnut board in the centre, a spoonful of filling in its middle;
-   a neat stack of pastry sheets on the left (larger); a steel tray on the right collecting finished samosas; along the bottom on the
-   walnut tray, cream bowls of potato, peas, onion, green chilli, coriander and masala. (2) The fold, as a three-step strip of the same
-   sheet: top-right corner folded down to cover the filling, then top-left corner folded across, giving a neat triangle samosa.
-   (3) Frying: pick 31's karahi on chai's hob, golden samosas in oil, the slotted spoon with a folded tissue on its handle, a bigger
-   plate on the right with a paper towel, a face circle on the plate; raw samosas waiting in the walnut tray along the bottom.
+   (1) Filling: ONE big square pastry sheet, flat and unfolded, on pick 18's rounded-rectangle walnut board in the centre, a spoonful of
+   filling in its middle; a neat stack of square pastry sheets on the left, large (no bowl of mixed filling, no spoon there); a steel
+   plate on the right collecting finished samosas; along the bottom on the walnut tray, cream bowls of potato, peas, onion, green
+   chilli, coriander and cooked minced meat. (2) The fold, as a three-step strip of the same square sheet: flat with the filling; the
+   top-right corner folded down to land a third of the way in from the bottom-left corner, covering the filling; then the top-left
+   corner folded down to land a third in from the bottom-right corner, giving a neat triangle samosa. (3) Frying: pick 31's karahi on
+   chai's hob, golden samosas in oil, the slotted spoon with its folded cloth under the handle, a bigger plate on the right with a paper
+   towel and a face circle, no tray under the plate; raw folded samosas waiting on the walnut tray along the bottom.
 C1 EGGS (pictures: C1-eggs-TODAY, C1-eggs-hob-34, C1-eggs-tray-27): Breakfast eggs. A two-burner hob seen from above (pick 34's),
-   a pot of boiling eggs and a frying pan with eggs, chai's gold-ringed knobs; pick 27's walnut tray on the right for the plates, a
-   face circle on its corner. Along the bottom, chai's pale stone shelf with side-on items: an egg box, a salt shaker, a pepper shaker,
-   a chilli shaker. No milk, no water.
-C2 BAKING (pictures: C2-baking-TODAY, C2-baking-camera-zafar-side-on): Naan dough, measured. This screen is SIDE-ON, like the chai shelf
-   and the side-on picture: a big glass mixing bowl standing on a stone counter, a clear measuring jug beside it with two simple dashed
-   lines (half and full, no numbers); along the bottom, chai's stone shelf with side-on items: a bag of flour, a bottle of water, a milk
-   carton, small jars (salt, nigella seeds, sugar). Then one more image: the oven screen, side-on, the naan baking inside.
+   a pot of boiling eggs and a frying pan with eggs, chai's gold-ringed knobs, the pan's handle pointing down, never over the tray;
+   pick 27's walnut tray standing upright on the right with three plain plates on it, a face circle on each plate's corner; nothing
+   under the hob. Along the bottom, chai's pale stone shelf with side-on items: an egg box, a salt shaker, a pepper shaker, a small jar
+   of green chillies. No milk, no water.
+C2 BAKING (pictures: C2-baking-TODAY, C2-baking-camera-zafar-side-on): Naan dough, measured. This screen is SIDE-ON, like the chai
+   shelf and the side-on picture: a big cream ceramic mixing bowl standing on a white marble counter, a clear glass measuring jug
+   beside it with two simple dashed lines (half and full, no numbers); along the bottom, chai's plain pale stone shelf (not the recessed
+   lit shelf of the side-on picture) with side-on items: a jar of flour, a bottle of water, a milk carton, a yogurt tub, small jars
+   (salt, sugar). Then one more image: the oven screen, side-on, the naan baking inside.
 C3 CHOP (pictures: C3-chop-TODAY, C3-chop-43): Chopping. One huge walnut board filling the play area, with only a thin border of white
-   marble showing (thin at top and bottom, a little wider left and right); a big chef's knife; one onion, one tomato and one potato,
-   each shown whole and then as two halves. Keep a round countdown-timer ring in the top-left corner (a timer, not a clock).
+   marble showing (thin at top and bottom, a little wider left and right); a big chef's knife; one onion, one tomato, one potato and
+   one garlic bulb, each shown whole and then as two clean halves (no peel, no small pieces). A round countdown ring on the board's
+   top-left corner (a plain ring filling with colour: a timer, not a clock or stopwatch).
