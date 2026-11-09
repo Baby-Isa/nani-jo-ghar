@@ -186,7 +186,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           key: "mishkaki-grill",
           level: lv,
           target: [0, 1, 2, 3, 4, 5].map((i) => () => (target.active && target.visible !== false ? Cook.Coach.parts(target)[i] || null : null)),
-          hintMs: () => ((R && R.hintMs ? R.hintMs(lv) : 0) || helpPause()) * (Cook.speed || 1),
+          hintMs: () => ((R && R.hintMs ? R.hintMs(lv) : 0) || helpPause()),
           current: () => !stopped && stkKey === key,
           busy: () => busy,
           glow: (on) => {

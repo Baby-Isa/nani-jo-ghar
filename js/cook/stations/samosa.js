@@ -932,6 +932,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await swipe(z, S, {
           from,
           to,
+          thing: fimg, // (the light's thing: the strip being folded, whole, SH-230)
           minLen: k.minLen || 0.45,
           onDrag: () => {
             live.lit = false;
@@ -1017,7 +1018,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * over, else it settles back flat. SAM-16: a fold starts only on a drag within 25 degrees of its arrow (the folds run 30
    * degrees off the strip, so a flat swipe along it never folds); any other way does nothing and costs nothing (rule 12).
    */
-  function swipe(z, S, { onDrag, onCancel, from, to, draw, minLen }) {
+  function swipe(z, S, { onDrag, onCancel, from, to, draw, minLen, thing }) {
     return new Promise((resolve) => {
       const dx = to.x - from.x;
       const dy = to.y - from.y;
@@ -1060,6 +1061,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           const v = (mx * dx + my * dy) / (len * len);
           if (v > 0.02 || t > 0) {
+            // (SH-236: the fold has begun: its first-time light goes now, once per drag)
+            if (!start.began && Cook.Coach && Cook.Coach.began) (start.began = true), Cook.Coach.began("fold");
             if (onDrag) onDrag();
             show(v);
           }
@@ -1073,13 +1076,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             finish("fold");
           } else if (t > 0) {
             Cook.sfx.soft();
+            if (Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("fold"); // (not folded: the light may come back)
             await settle(0);
             show(0);
             if (onCancel) onCancel();
           }
         }),
       );
-      z.expect({ kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y });
+      const e = { kind: "swipe", x1: from.x, y1: from.y, x2: to.x, y2: to.y };
+      z.expect(thing && Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit(e, { thing }) : e);
     });
   }
 
@@ -1248,8 +1253,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (cur && cur.level >= lo && level >= 3 && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine });
         else steps.to("samosa:fry", { id: "fry" });
         // the next thing pulses: a raw one while there's room, else the samosa furthest on
-        if (cur && (cur.level >= lo || !waiting.length)) z.expect({ kind: "timing", x: cur.a.x, y: cur.a.y, key: "lift" });
-        else if (waiting.length) z.expect({ kind: "tap", x: waiting[0].x, y: waiting[0].y, key: "samosa" });
+        // (SAM-30: the lift's moment, on the green, for the coach's staged step; each samosa and the knob lit whole: thing)
+        const lit = (e, o) => (Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit(e, o) : e);
+        if (cur && (cur.level >= lo || !waiting.length)) z.expect(lit({ kind: "timing", x: cur.a.x, y: cur.a.y, key: "lift", coach: cur.level >= lo ? "lift" : null }, { thing: cur.a }));
+        else if (waiting.length) z.expect(lit({ kind: "tap", x: waiting[0].x, y: waiting[0].y, key: "samosa" }, { thing: waiting[0] }));
         else z.expect({ kind: "wait" });
       };
       const addRaw = (im) => {

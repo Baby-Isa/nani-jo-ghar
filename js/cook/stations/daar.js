@@ -732,7 +732,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         key: "daar",
         level,
         target: obj ? Cook.Coach.box(obj) : null,
-        hintMs: () => ((R0 && R0.hintMs ? R0.hintMs(Cook.roundLevel(ctx) || level) : 0) || 7000) * (Cook.speed || 1),
+        hintMs: () => ((R0 && R0.hintMs ? R0.hintMs(Cook.roundLevel(ctx) || level) : 0) || 7000),
         // (only a thing on the shelf glows and hops in its light, SH-237; the knob or the daar is lit alone: contract-8)
         glow: obj && obj.type === "Image" && Cook.Coach.onShelf(obj)
           ? (on) => {

@@ -645,7 +645,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           g.fillStyle(0xb24a3a, 1);
           g.fillCircle(x1, y1, z.L(12));
-          const gh = S.ghost([[x1, y1], [x2, y2]], { duration: 700, delay: z.guided || (f === 0 && made === 0) ? 200 : 4000 });
+          // (SH-119: the kit's one finger shows the fold, Cook.Coach.demo; no ghost of the mechanic's own)
+          const C = Cook.Coach;
+          const gh = C && C.demo && !(C.active && C.active()) ? C.demo({ from: { x: x1, y: y1 }, to: { x: x2, y: y2 } }, { gesture: "swipe", ms: 900, delay: (z.guided || (f === 0 && made === 0) ? 200 : 4000) / (Cook.speed || 1), step: "fold" }) || { stop() {} } : { stop() {} };
           const r = await swipe(z, [[x1, y1], [x2, y2]], { minLen: k.minLen, minDot: k.minDot });
           gh.stop();
           if (r === "done") {

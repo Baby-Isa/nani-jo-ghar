@@ -245,7 +245,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         stuck = Cook.Coach.stuck({
           key: KEY,
           target,
-          hintMs: () => hintMs() * (Cook.speed || 1),
+          hintMs,
           current,
           busy: () => moving > 0,
           // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: contract-8)

@@ -21,6 +21,8 @@
     },
     "ballsPerBowl": 5,
     "sizes": null,
+    "rimStop": 0.92,
+    "_rimStop": "MAA-21 (Zafar, 9 Nov: 'a hard stop around the perimeter of, or maybe just inside the perimeter of the rolling board'): while there are no sizes (before MAA-23's big/small lesson), every roll stops hard at this fraction of the chakla's radius (0.92: just inside its rim), no ring drawn, never a tear; 1 is the rim itself (lab/sections/kit-lights.html rim-stop shows both; ?maaniRim=1 tries it in the game)",
     "quietMs": 700,
     "flipAddS": 0.75,
     "_flipAddS": "MAA-17 (decision 12; Zafar, 17 Oct): seconds added to each side's green flip window at every level (was 1.42/1.20/0.93/0.79 s on side 1); js/cook/stations/maani-line.js slows the ring to fit",

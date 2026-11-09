@@ -6413,19 +6413,23 @@
   "maani-line": [
    {
     "do": "tap",
+    "when": {"kind": "tap", "key": "^dough$"},
     "what": "the dough pile they asked for (a ball flies out)"
    },
    {
     "do": "roll",
-    "what": "roll the ball up and down until the maani is big and round"
+    "when": "roll",
+    "what": "roll the ball up and down until the maani is big and round (the pin rides the finger: MAA-20; before big and small, the roll stops hard just inside the board's rim: MAA-21)"
    },
    {
     "do": "tap",
+    "when": {"kind": "tap", "key": "^tawa-on$"},
     "what": "the maani onto the tawa"
    },
    {
     "do": "tap",
-    "what": "flip it on the green (the turner flips it)"
+    "when": {"coach": "flip"},
+    "what": "flip it on the green (the turner flips it): its first time, in the green (MAA-19, S19 staged steps)"
    }
   ],
   "thread": [
@@ -6507,15 +6511,9 @@
   "assemble": [
    {
     "do": "tap",
-    "what": "the first topping they said: the bottom layer"
-   },
-   {
-    "do": "tap",
-    "what": "the next layer"
-   },
-   {
-    "do": "tap",
-    "what": "the next layer"
+    "when": {"kind": "tap"},
+    "each": true,
+    "what": "each topping they said in its turn, the bottom layer first: the dim and the lit box on each next thing, the first bowl (CHT-18, S19 staged steps)"
    }
   ],
   "fill": [
@@ -6535,10 +6533,18 @@
   "fry": [
    {
     "do": "tap",
-    "what": "a samosa into the oil"
+    "when": {"kind": "tap", "key": "^knob$"},
+    "what": "the knob: the oil heats"
    },
    {
     "do": "tap",
+    "when": {"kind": "tap", "key": "^samosa$"},
+    "each": true,
+    "what": "each samosa into the oil (SAM-30, S19 staged steps)"
+   },
+   {
+    "do": "tap",
+    "when": {"coach": "lift"},
     "what": "lift it out on the green"
    }
   ],

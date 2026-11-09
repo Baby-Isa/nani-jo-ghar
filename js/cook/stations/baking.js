@@ -147,7 +147,7 @@ import { setTimeout } from "../life.js";
             key: KEY,
             level,
             target: Cook.Coach.box(o, PAD, { visible: true }),
-            hintMs: () => (hintMs() || 7000) * (Cook.speed || 1),
+            hintMs: () => hintMs() || 7000,
             current,
             busy: () => busy,
             // (its glow goes with its light too, however the light goes: contract-102)

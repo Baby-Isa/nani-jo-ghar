@@ -84,7 +84,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const GESTURE = { tap: "tap", swipe: "swipe", roll: "roll", stir: "circle-stir", hold: "hold" };
   const rectAround = (t, r) => [t.x - r, t.y - r, 2 * r, 2 * r];
   /** A step's signature: it changes when the child has done the thing (never on movement alone). */
-  const sig = (e) => (e ? [e.kind, e.key || "", e.selector || "", Cook.acted || 0, e.kind === "stir" && typeof e.count === "function" ? e.count() : ""].join("|") : "");
+  // (S19: and its coach tag, a step's moment: maani's flip in the green, samosa's lift)
+  const sig = (e) => (e ? [e.kind, e.key || "", e.selector || "", Cook.acted || 0, e.kind === "stir" && typeof e.count === "function" ? e.count() : "", e.coach || ""].join("|") : "");
   /**
    * S19 (MAA-19, SAM-30, CHT-18: a script's steps were spent on whatever came first, so the flip's and the fry's never came): a script
    * step may say when it comes, `when`: the expectation's coach tag or kind ("roll", "timing"), or {kind, key, coach} (key: a regex
@@ -100,6 +101,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (when.kind != null && e.kind !== when.kind) return false;
     if (when.key != null && !new RegExp(when.key).test(String(e.key == null ? "" : e.key))) return false;
     return true;
+  };
+  /**
+   * S19: what a game adds to its expectation for the lights, kept off its JSON (the test harness reads Cook.expect as data; a canvas
+   * thing is a circular object): C.lit(e, {thing, carry}) sets them as hidden fields on e and gives e back.
+   *   thing   the canvas thing the step's light is round (the board, the pile, the maani on the tawa), whole with its pill
+   *   carry   (dx, dy, t, press) in world px: the game's thing riding the coach's finger (the rolling pin)
+   */
+  C.lit = function (e, o = {}) {
+    if (!e || typeof e !== "object") return e;
+    ["thing", "carry"].forEach((k) => {
+      if (o[k] != null) Object.defineProperty(e, k, { value: o[k], enumerable: false, configurable: true, writable: true });
+    });
+    return e;
   };
   /** The thing a step names: the expectation's own (e.thing), else the picture its key names nearest its point (thingOf). */
   const thingFor = (e) => (e && e.thing && e.thing.active ? e.thing : thingOf(e));
@@ -141,7 +155,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // pill and its face circle, where it rests (C.parts), the one rule's margin round their union (Onboard.litBox); the circle only
       // where the step names no picture
       const e = Cook.expect;
-      const thing = e && e.x != null && Cook.UI.s14 && Cook.UI.s14() ? thingFor(e) : null;
+      const thing = e && (e.x != null || (e.thing && e.thing.active)) && Cook.UI.s14 && Cook.UI.s14() ? thingFor(e) : null;
       const parts = thing ? C.parts(thing) : [];
       if (!parts.length || !(parts[0][2] > 8 && parts[0][3] > 8)) return rectAround(t, t.r);
       // (the box takes in the point the step is tapped at only when it lies outside the thing: the pantry's carton, its tap point at
@@ -488,10 +502,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (up) out.push(up);
     }
     const ch = thing.chip;
-    if (ch && ch.active && ch.visible !== false && ch.cardW) {
+    // (Kit.chip's keepBox moves its width to pillW: s19-games, 9 Nov)
+    const cw = ch && (ch.cardW || ch.pillW);
+    if (ch && ch.active && ch.visible !== false && cw) {
       const sx = Math.abs(ch.scaleX || 1);
       const sy = Math.abs(ch.scaleY || 1);
-      const hw = (ch.cardW / 2) * sx;
+      const hw = (cw / 2) * sx;
       const hh = ((ch.cardH || 46) / 2) * sy;
       const c = pageOf({ x: ch.x - hw, y: ch.y - hh, right: ch.x + hw, bottom: ch.y + hh });
       if (c) out.push(c);
@@ -575,7 +591,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const opened = Date.now();
     const cur = () => !h.over && (!o.current || o.current());
     const lastAct = () => (global.NaniGuide && global.NaniGuide.lastAction ? global.NaniGuide.lastAction() : opened);
-    const wait = () => (o.hintMs ? o.hintMs() : R && R.hintMs ? R.hintMs(o.level || (Cook.roundLevel ? Cook.roundLevel(Cook.ctx) : 1) || 1) : 7000) / speed();
+    const wait = () => o.hintMs ? o.hintMs() : R && R.hintMs ? R.hintMs(o.level || (Cook.roundLevel ? Cook.roundLevel(Cook.ctx) : 1) || 1) : 7000; // (a child's time, never the test speed's: contracts 24 and 91 read real time; s19-games 9 Nov)
     const target = o.target || (o.thing ? C.thingBox(o.thing) : null);
     const off = Onboard && Onboard.onRush ? Onboard.onRush(() => (rushed = true)) : null;
     let glowOn = false;
@@ -723,7 +739,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (o.noHint) return;
         const opened = Date.now();
         const NG = global.NaniGuide;
-        const due = () => Onboard.hintDue(opened, NG && NG.lastAction ? NG.lastAction() : opened, (o.hintMs ? o.hintMs() : 0) / speed(), rushed);
+        const due = () => Onboard.hintDue(opened, NG && NG.lastAction ? NG.lastAction() : opened, o.hintMs ? o.hintMs() : 0, rushed); // (a child's time, never the test speed's: contracts 24 and 91)
         const wait = () => {
           if (!cur()) return;
           if ((o.busy && o.busy()) || Date.now() < due()) return void (timer = setTimeout(wait, 200));
@@ -969,8 +985,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return best || hit;
   }
   function lightThing(state, obj) {
-    if (state.lit === obj) return;
     const S = Cook.scene;
+    if (state.lit === obj) {
+      // (S19, SH-237, chaat 9 Nov: a shelf thing lit while it was still moving got its glow without its hop; its hop once it is still)
+      if (obj && obj.active && obj.glowFx && obj.glowFx.y == null && S && S.tweens && !S.tweens.isTweening(obj) && C.onShelf(obj)) S.glow(obj, true, { bounce: true, now: true });
+      return;
+    }
     if (state.lit && S && S.glow) S.glow(state.lit, false);
     state.lit = obj;
     if (!obj || !S || !S.glow) return;

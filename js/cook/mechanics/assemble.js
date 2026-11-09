@@ -29,8 +29,8 @@
  * LEVELS (§14, §14a; the recipe's slots by level in data/cook.json, the decoys in
  * data.mechanics.assemble): 1 = three layers, no decoys; 2 = decoys; 3 = a "don't" row; 4 = the person's card starts FOLDED (face + headline): remember what you heard;
  * tapping the card to peek costs a hint (the light-bulb badge).
- * ONBOARDING (first time, §14): a ghost finger shows card row 1 -> the matching pot -> the drop into
- * the bowl -> the tick; then the child does row 2.
+ * ONBOARDING (first time; S19, CHT-18): the kitchen kit's coach, each next topping in the dim and the lit box through the first
+ * bowl (data/cook.json onboard.assemble, a staged step for each); no ghost finger of its own.
  *
  * St.freePick (js/cook/station-lib.js) is the shared "tap anything, or Done" step that the fill mechanic uses too:
  * nothing is refused, so nothing gives the answer away; you're graded afterwards.
@@ -814,73 +814,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     return () => UI.mission.closeCards(false);
   }
 
-  /* the ghost finger (first time only): SH-119 (Zafar, 22 Oct: one finger in every game): the shared kit's hand (Onboard.HAND,
-     its fingertip at Onboard.HOTSPOT in the 64x80 box), on the page, over everything; its ring and shadow the tokens' gold and shade */
-  function ghost() {
-    const el = document.createElement("div");
-    el.className = "cv2-ghost";
-    el.innerHTML = global.Onboard.HAND;
-    const hot = global.Onboard.HOTSPOT;
-    const at0 = `translate(${-hot[0]}px, ${-hot[1]}px)`;
-    Object.assign(el.style, {
-      position: "fixed",
-      left: "0px",
-      top: "0px",
-      width: "64px",
-      height: "80px",
-      zIndex: 60,
-      pointerEvents: "none",
-      opacity: "0",
-      transition: "left .7s ease-in-out, top .7s ease-in-out, opacity .3s, transform .15s",
-      filter: "drop-shadow(0 3px 6px rgba(var(--njg-shade-rgb), .35))",
-      transform: at0,
-    });
-    const ring = document.createElement("div");
-    Object.assign(ring.style, {
-      position: "fixed",
-      width: "56px",
-      height: "56px",
-      marginLeft: "-28px",
-      marginTop: "-28px",
-      borderRadius: "50%",
-      border: "4px solid var(--njg-gold)",
-      zIndex: 59,
-      pointerEvents: "none",
-      opacity: "0",
-      transition: "opacity .25s, transform .4s",
-      transform: "scale(.6)",
-    });
-    document.body.append(ring, el);
-    const g = {
-      at(x, y, instant) {
-        if (instant) el.style.transition = "opacity .3s, transform .15s";
-        el.style.left = `${x}px`;
-        el.style.top = `${y}px`;
-        el.style.opacity = "0.92";
-        if (instant) setTimeout(() => (el.style.transition = "left .7s ease-in-out, top .7s ease-in-out, opacity .3s, transform .15s"), 30);
-      },
-      async tap(x, y) {
-        ring.style.left = `${x}px`;
-        ring.style.top = `${y}px`;
-        el.style.transform = `${at0} scale(.86)`;
-        ring.style.opacity = "1";
-        ring.style.transform = "scale(1.25)";
-        await Cook.wait(260);
-        el.style.transform = at0;
-        ring.style.opacity = "0";
-        ring.style.transform = "scale(.6)";
-      },
-      gone() {
-        el.style.opacity = "0";
-        ring.style.opacity = "0";
-        setTimeout(() => {
-          el.remove();
-          ring.remove();
-        }, 400);
-      },
-    };
-    return g;
-  }
+  /* (chaat's own ghost finger went: CHT-18, SH-119, Zafar 8 Nov: its first time is the kitchen kit's coach, the dim and the lit box on
+     each next thing, data/cook.json onboard.assemble; one finger in every game, the kit's) */
 
   Mech.define("assemble", {
     station: "assemble",
@@ -908,8 +843,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // the kitchen kit's first-time gate (kit d, STD-D1-01; was chaat's own save key): the demo and the reveal lessons spend on it
       // (made before the coach stops: its stop marks the station's coach seen, which would leave the gate stale on the first bowl)
       const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("assemble", { round: new Set() }) : null;
-      // this station's own first-time demo replaces the generic spotlight (js/cook/coach.js)
-      if (Cook.Coach) Cook.Coach.stop(true);
+      // CHT-18 (Zafar, 8 Nov: "there's no dark shadows or anything like that highlight box"): the kitchen kit's coach shows the first
+      // bowl (St.begin started it: data/cook.json onboard.assemble, each next topping in the dim and the lit box); its own demo went
       // CK-49 (the level table): 1, 2, 3, 3 decoys (the knob), a lookalike among them at L4; the 'no' row's topping is on the
       // shelf too and counts as one (it is an ordinary decoy, never the odd one out)
       // (the S14 roll-out, CHT-17: 1, 2, 3, 4 by the central rules, Cook.levelRow on Rules.level; was the mechanic's own 1, 2, 3, 3)
@@ -1290,47 +1225,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
 
       let tries = 0;
       try {
-        /* ---------- first time: the ghost finger shows row 1 -> its bowl -> the drop -> the tick ---------- */
-        // (once a player, on the kitchen kit's first-time gate: Cook.Coach.firsts, STD-D1-01; the grown-ups' New player sees it again)
-        if (gate && flat.length > 1 && items[C.next(got)] && !ctx.noDemo && gate.first("demo")) {
-          z.expect({ kind: "wait" });
-          const first = C.next(got);
-          const f = ghost();
-          demo = true;
-          try {
-            const row = level >= 4 ? null : document.querySelector("#mission .oc-card .oc-part:not(.no)") || document.querySelector("#mission .oc-card .oc-row:not(.no)");
-            if (row && row.offsetParent) {
-              const b = row.getBoundingClientRect();
-              f.at(b.left + b.width * 0.35, b.top + b.height * 0.55, true);
-              await Cook.wait(250);
-              await f.tap(b.left + b.width * 0.35, b.top + b.height * 0.55);
-              Lang.speakWord(first).catch(() => {});
-              await Cook.wait(700);
-            }
-            const c = S.centre(items[first]);
-            const sp = UI.worldToScreen(c.x, c.y);
-            f.at(sp.x, sp.y, !(row && row.offsetParent));
-            await Cook.wait(800);
-            await f.tap(sp.x, sp.y);
-            const into = drop(first);
-            const r = bowl.rimAt();
-            const rp = UI.worldToScreen(r.x, r.y + z.L(40));
-            f.at(rp.x, rp.y);
-            await into;
-            await Cook.wait(250);
-            const done = document.querySelector("#mission .oc-card .oc-part.done") || document.querySelector("#mission .oc-card .oc-row.done");
-            if (done && done.offsetParent && level < 4) {
-              const b = done.getBoundingClientRect();
-              f.at(b.right - 26, b.top + b.height / 2);
-              await Cook.wait(900);
-            }
-          } finally {
-            f.gone();
-            demo = false;
-          }
-          Cook.writeSave();
-        }
-
         /* ---------- the review (X10 / Q1): their big round face over the glass, no body (the kitchen kit's, Cook.Kit.review) ---------- */
         const review = (ok) => {
           const r = bowl.rimAt();

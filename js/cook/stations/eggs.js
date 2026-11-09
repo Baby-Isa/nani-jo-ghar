@@ -344,9 +344,9 @@ import { Cook as CookNS } from "../ns.js";
     // part by part so the light's one rule hugs their union (Onboard.litBox); anything else by its box above
     const PARTS = [0, 1, 2, 3, 4, 5];
     const lightOf = (o) => (o && o.chip ? PARTS.map((i) => () => (Cook.Coach.parts(o)[i] || null)) : Cook.Coach.box(o, 0, { bounds: plateBox }));
-    // the level's wait before the stuck hint (the central rules' hintS), a child's time: the kit divides a game's wait by the test speed
-    // (Cook.speed), and contract-24 and -91 read it in real time
-    const hintMs = () => ((RULES() && RULES().hintMs ? RULES().hintMs(level) : 0) || 7000) * (Cook.speed || 1);
+    // the level's wait before the stuck hint (the central rules' hintS), a child's time: the kit takes it as it is (never divided by the
+    // test speed, s19-lights 9 Nov), as contract-24 and -91 read it in real time
+    const hintMs = () => ((RULES() && RULES().hintMs ? RULES().hintMs(level) : 0) || 7000);
     let glowObj = null;
     const glowOn = (o) => {
       if (glowObj === o) return;
