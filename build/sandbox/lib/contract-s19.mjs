@@ -640,6 +640,8 @@ function s19hook() {
           if (!o || o.visible === false) continue;
           const key = o.texture && o.texture.key;
           if (o.list) { if (o.list.some((c) => c && c.texture && c.texture.key === "kit-knob-off")) { const kb = bx(o.list.find((c) => c.texture && c.texture.key === "kit-knob-off")); if (kb && !inv && o.alpha > 0) knobs.push(kb); } walk(o.list, inv || o.alpha === 0); continue; }
+          // (a drawing that names its box, daar's dial: what shares the pan's width)
+          if (typeof o.njgBox === "function" && !inv && o.alpha > 0) { const nb = safe(() => o.njgBox()); if (nb) { const [l, t] = P(nb.x, nb.y), [r, bt] = P(nb.right, nb.bottom); pics.push({ key: o.name || "drawing", b: [l, t, r, bt] }); } continue; }
           if (!key || !o.getBounds) continue;
           if (key === "kit-flame-high") { const b = bx(o); if (b) flames.push({ x: (b[0] + b[2]) / 2, y: (b[1] + b[3]) / 2, r: ((b[2] - b[0]) / 2) * (245 / 256) }); continue; }
           if (inv || o.alpha === 0) continue;

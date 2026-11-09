@@ -1357,6 +1357,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       return o;
     };
     const g = put(S.add.graphics());
+    // (its face's box, for the checks that ask what shares the pot's width: a drawing has no bounds of its own; contract-110)
+    g.njgBox = () => ({ x: ox - (W / 2) * z.k, y: oy - (H / 2) * z.k, right: ox + (W / 2) * z.k, bottom: oy + (H / 2) * z.k });
+    g.setName("daar-dial");
     // the glass face and its gold rim (the hob's glass, the kit's gold)
     g.fillStyle(0x28190a, 0.22);
     g.fillRoundedRect(-W / 2 + 4, -H / 2 + 8, W, H, 28);
