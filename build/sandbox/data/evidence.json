@@ -25237,7 +25237,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "hint-glow",
+   "at": "life:helper-open",
    "after": null,
    "capture": [
     "contract:91",
@@ -25247,7 +25247,7 @@
    "expect": [
     "pass"
    ],
-   "note": "eggs: the stuck help with the light (s19-stoves: at hint-glow, as every other game; hint-nani-says never came in eggs)"
+   "note": "eggs: the stuck help with the light (s19-stoves: at its helper card's opening, life:helper-open: eggs' hint player never records hint-glow or hint-nani-says, its help is the helper card and her call)"
   },
   {
    "flow": "cook:corn",
@@ -25387,12 +25387,12 @@
    "after": null,
    "capture": [
     "contract:106",
-    "strip:#game:8x150"
+    "strip:#game:12x250"
    ],
    "expect": [
     "pass"
    ],
-   "note": "maani's roll: the first-time light goes the moment the pin starts rolling (within 300 ms of the first press), L1-L4"
+   "note": "maani's roll: the first-time light goes the moment the pin starts rolling (within 300 ms of the first press), L1-L4 (s19-stoves: 3 s of film, the 1.2 s strip stood still at L3 before the first press)"
   },
   {
    "flow": "cook:samosa",
@@ -25536,11 +25536,11 @@
    "at": "exp:tawa-on",
    "after": null,
    "capture": [
-    "strip:#game:10x100",
+    "strip:#game:16x200",
     "contract:102"
    ],
    "expect": null,
-   "note": "maani: the rolled maani tapped onto the tawa: no light on a dough pile while it flies (the next pile only once it has landed)",
+   "note": "maani: the rolled maani tapped onto the tawa: no light on a dough pile while it flies (the next pile only once it has landed) (s19-stoves: 3.2 s of film from the tawa's turn, the 1 s strip stood still before the tap)",
    "delay": 0
   }
  ],

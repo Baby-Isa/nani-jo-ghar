@@ -694,7 +694,8 @@ function s19hook() {
         for (const o of list) {
           if (!o || o.visible === false || o.alpha === 0) continue;
           if (o.list) walk(o.list);
-          if (!o.wordId || !o.input || !o.input.enabled || !o.getBounds || o.glowFx) continue;
+          // (a shelf thing is anything taking taps with a word pill under it: maani's dough piles carry no word id, only their pill)
+          if ((!o.wordId && !o.chip) || !o.input || !o.input.enabled || !o.getBounds || o.glowFx) continue;
           const ch = o.chip;
           const cw = ch && (ch.cardW || ch.pillW);
           if (!ch || !ch.active || ch.visible === false || !cw || ch.parentContainer) continue;
@@ -711,7 +712,7 @@ function s19hook() {
             return { x: Math.round(px), y: Math.round(py), who, id: h ? String(h.wordId != null ? h.wordId : (h.texture && h.texture.key) || h.type || "") : null };
           };
           const fy = Math.min(bt - FOOT, pt - 3);
-          items.push({ id: String(o.wordId), foot: fy > t ? what(cx, fy) : null, gap: pt - 2 > bt ? what(pcx, pt - 2) : null, pill: what(pcx, pcy) });
+          items.push({ id: String(o.wordId || o.type || (o.texture && o.texture.key) || "?"), foot: fy > t ? what(cx, fy) : null, gap: pt - 2 > bt ? what(pcx, pt - 2) : null, pill: what(pcx, pcy) });
         }
       };
       safe(() => walk(sc.children.list));
@@ -736,7 +737,7 @@ function s19hook() {
         for (const o of list) {
           if (!o || o.visible === false || o.alpha === 0) continue;
           if (o.list) walk(o.list);
-          if (!o.wordId || !o.input || !o.input.enabled || !o.getBounds || !o.chip) continue;
+          if (!o.input || !o.input.enabled || !o.getBounds || !o.chip) continue;
           const b = safe(() => o.getBounds());
           if (!b) continue;
           const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
