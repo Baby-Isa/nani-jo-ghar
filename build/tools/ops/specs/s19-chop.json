@@ -8,7 +8,7 @@
   "branch": "s19-chop in /home/user/wt/s19-chop (made for you from the integration branch; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": false,
   "read": [
     "docs/feedback/kitchen-mocks2-2026-11-09.md (P20 and section 1a: chop's hop)",

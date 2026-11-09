@@ -1,0 +1,56 @@
+{
+  "name": "s19-stuck: every game the publish gate left stuck before its end, fixed (or its driver fixed), proved on the integration branch and the live site",
+  "model": "Opus",
+  "effort": "high",
+  "why": "stuck games are the faults a child hits; telling a real fault from a flaky driver needs judgement",
+  "cost": "about $15-25",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-stuck in /home/user/wt/s19-stuck (made for you from the integration branch; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "build/screenshots/sandbox/s19-publish-gate/summary.md (the main checkout's copy: the rows marked NO:)",
+    "/home/user/wt/main-check/build/screenshots/sandbox/main-stuck/summary.md (the same games replayed on the live site's code)",
+    "build/reports/s19-check-tiers-proposal.md (the rule: a stuck game is always fixed; a flaky check is fixed, never rerun until green)"
+  ],
+  "owns": [
+    "js/cook/mechanics/fetch.js",
+    "the cook title screen's own file in js/cook/ (find it; name it in the report)",
+    "js/snap/**",
+    "js/cook/mechanics/assemble.js",
+    "build/sandbox/lib/** and build/sandbox/data/** (only where the driver, not the game, is wrong)",
+    "build/reports/s19-stuck.md"
+  ],
+  "readOnly": [
+    "js/shared/** and js/cook/kitchen-kit.js (write any change you need in your report)",
+    "every other game's files"
+  ],
+  "stubs": "none",
+  "port": 8900,
+  "report": "s19-stuck",
+  "publish": false,
+  "flows": [
+    "cook:title",
+    "cook:fetch",
+    "mode:snap",
+    "lab:cook/assemble",
+    "lab:cook/samosa"
+  ],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "The gate's stuck pages (summary.md, NO: rows): cook:title 740x320 (a click times out; stuck on the live site too), cook:fetch@L2 740x320 and 930x430 (repeats a tap on the milk; stuck on live too), cook:fetch@L2#mistake 1280x665 (stuck on live too), and six that reached their end on live but stuck on this branch: cook:fetch#mistake 1280x665, cook:fetch@L2#mistake 740x320 and 930x430, cook:fetch#returning 740x320, mode:snap 1280x665, lab:cook/assemble@L4 740x320 (repeats a tap on ph-chana); and lab:cook/samosa@L2 1280x665 (crashed when the disk filled: replay it). For each: replay it three times on this branch at its size; decide real fault (the game stops a child) or driver fault (the robot taps wrong or too soon); fix the game or the driver at its cause; never loosen a check to pass.",
+      "accept": "each page reaches its end three times in a row at its size; a table in the report: page, cause (file:line), game or driver, fix"
+    },
+    {
+      "do": "For the six that worked on the live site: find the change on this branch since the last publish (git log origin/main..HEAD on the files the flow touches) that broke it, and say so.",
+      "accept": "the commit named in the report for each"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>`; `checks.mjs --only unit,static,words,specs`; commit on your branch, never push; never invent Kutchi; never remove a mechanic; fix what you break; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-stuck.md with a Proof section, under 500 words"
+    }
+  ]
+}
