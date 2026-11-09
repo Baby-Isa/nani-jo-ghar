@@ -351,9 +351,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (a slot's hop: t its game seconds; up while its middle is above the band's top, on the board)
       const hopping = () => slots.filter((s) => s.hop);
       const isUp = (s) => !!(s.hop && s.img && s.img.active && !s.hop.cut && !s.hop.no && s.img.getBounds().centerY < z.Y(BAND_TOP));
+      // (a test log, chop-hop: the kind, its round r, how many are up with it n, whether it is wanted t, the hops' spacing ms)
       const hopNote = (s, n) => {
         try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-hop", { step: s.id, by: `round:${phase ? phase.i : 0} up:${n} want:${phase && phase.targets.includes(s.id) ? 1 : 0} every:${phase ? Math.round(phase.every * 1000) : 0}` });
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-hop", { step: s.id, by: `r:${phase ? phase.i : 0} n:${n} t:${phase && phase.targets.includes(s.id) ? 1 : 0} ms:${phase ? Math.round(phase.every * 1000) : 0}` });
         } catch (e) {
           /* only a log */
         }
