@@ -472,7 +472,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const base = text ? Math.max(1, 14.2 / (34 * shown * this.cameras.main.zoom)) : 1;
       cont.setScale(base);
       cont.setSize(w, 42);
-      cont.setInteractive(new Phaser.Geom.Rectangle(-w / 2, -21, w, 42), Phaser.Geom.Rectangle.Contains);
+      // (SH-244: a container's hit area is read from its top-left corner, Phaser adding half its size first: the label itself)
+      cont.setInteractive(new Phaser.Geom.Rectangle(0, 0, w, 42), Phaser.Geom.Rectangle.Contains);
       cont.on("pointerdown", (p, lx, ly, ev) => {
         if (ev && ev.stopPropagation) ev.stopPropagation();
         Cook.unlockAudio();

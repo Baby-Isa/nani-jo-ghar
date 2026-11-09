@@ -1270,7 +1270,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const s = edge.s || 1;
       const card = wrap.firstChild;
       // the card about the pot's height (its own proportions), never under the item card's own floor
-      const w0 = Math.round(Math.max(88, Math.min(150, 2 * bodyR * s * 0.6)));
+      const w0 = Math.round(Math.max(88, Math.min(210, 2 * bodyR * s * 0.62)));
       wrap.style.transform = "";
       card.style.width = `${w0}px`;
       W.fit14(card);
@@ -1507,7 +1507,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const hobL = hob ? (hob.x - z.X(0)) / z.k : 800 - (SC().dial.x - 800);
       const dialX = Math.max(dialW / 2 + 20, Math.min(800 - (SC().dial.x - 800), hobL - 16 - dialW / 2));
       const dial = speedDial(z, S, { x: dialX, y: SC().dial.y, bands, max: k.dialMax || 3, asked });
-      const card = lapCard(z, S, { cx, cy, right: (bodyR * POT2.cx) / POT2.r, bodyR, avoid });
+      // (clear of the pot's handles and of the hob's own right edge)
+      const card = lapCard(z, S, { cx, cy, right: Math.max((bodyR * POT2.cx) / POT2.r, hob ? hob.x + hob.w - cx : 0), bodyR, avoid });
       let count = 0;
       let ang = FLAG_AT; // the ladle's angle: it starts under the flag
       let rot = 0; // the contents' turn

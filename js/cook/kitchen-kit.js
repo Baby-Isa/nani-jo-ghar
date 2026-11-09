@@ -13,10 +13,10 @@
  *   Cook.Kit.hob(S, {n, x, y, k, knobs})  the hob: {img, x, y, w, h, k, n, burners: [{x, y}], frontY, pitch, knobs}
  *   Cook.Kit.burner(S, hob, i, opts)      badge + knob + flames for burner i: {x, y, face, knob, knobHit, set(state)}
  *     THE KNOB RULE (SH-247; Zafar, 9 Nov: "where you only have one item, you want the vertical space, and therefore you put the
- *     button off to the left in games where there's only ever one"): a game with only ever one pan asks for knobs: "left" (daar,
- *     samosa's fry, maani's tawa): the knob and the face stand in a column to the pan's left, centred on its height, on the hob's
- *     own glass (the one-burner hob turned a quarter, its front strip on the left; the wide hob's glass beside the pan), so the
- *     pan can be as big as the height allows. With several pans (chai) each burner's face and knob stay on the front edge below it.
+ *     button off to the left in games where there's only ever one"): a game with only ever one pan asks for knobs: "left": the
+ *     knob and the face stand in a column to the pan's left, centred on its height, on the hob's own glass (the one-burner hob
+ *     turned a quarter, its front strip on the left; the wide hob's glass beside the pan), so the pan can be as big as the height
+ *     allows. With several pans each burner's face and knob stay on the front edge below it, as before.
  *   Cook.Kit.heatRing(S, {depth})         {draw(x, y, r, level, lo, hi), clear(), destroy()}
  *     (hob, burner and heatRing are the stove part, for the games that cook with heat (Sprint 18, module map piece 2); the
  *     heat and boil on them, the knob's taps, the green, the boil-over and the simmer loop, is Mech.boil(S, pan, {burner,

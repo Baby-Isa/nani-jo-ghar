@@ -557,7 +557,10 @@ function s19hook() {
           if (o.wordId && o.input && o.input.enabled) {
             const ch = o.chip;
             let chipBox = null;
-            if (ch && ch.active && ch.cardW) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = (ch.cardW / 2) * sx, hh = ((ch.cardH || 46) / 2) * sy; const [cl, ct] = P(ch.x - hw, ch.y - hh), [cr2, cb] = P(ch.x + hw, ch.y + hh); chipBox = [cl, ct, cr2, cb]; }
+            // (the kitchen's chip keeps its card's size as pillW / pillH, Kit.chip's keepBox: its pill is part of the thing all the same;
+            // s19-stoves, the lights' leftover: mishkaki's veg-03 at 1920x1080 was judged without its pill, 20 px low)
+            const cw = ch && (ch.cardW || ch.pillW), chh = ch && (ch.cardH || ch.pillH);
+            if (ch && ch.active && cw) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = (cw / 2) * sx, hh = ((chh || 46) / 2) * sy; const [cl, ct] = P(ch.x - hw, ch.y - hh), [cr2, cb] = P(ch.x + hw, ch.y + hh); chipBox = [cl, ct, cr2, cb]; }
             // (a glowing thing hops: its foot is read from where it stands, glowFx.y, not mid-hop)
             const foot = o.glowFx && o.glowFx.y != null ? bt + (o.glowFx.y - o.y) * ky * cam.zoom : bt;
             words.push({ id: String(o.wordId), pic: [l, t, r, bt], chip: chipBox, foot, glow: !!o.glowFx });
@@ -581,7 +584,15 @@ function s19hook() {
     const things = holes.filter((h) => (h[2] - h[0]) * (h[3] - h[1]) <= cvA / 2).map((h) => {
       const cx = (h[0] + h[2]) / 2, cy = (h[1] + h[3]) / 2;
       const inside = (b) => cx >= b[0] && cx <= b[2] && cy >= b[1] && cy <= b[3];
-      const w = s.words.find((x) => inside(u(x.pic, x.chip)));
+      const ar0 = (b) => Math.max(1, (b[2] - b[0]) * (b[3] - b[1]));
+      const fit0 = (b) => { const i = Math.max(0, Math.min(h[2], b[2]) - Math.max(h[0], b[0])) * Math.max(0, Math.min(h[3], b[3]) - Math.max(h[1], b[1])); return i / ((h[2] - h[0]) * (h[3] - h[1]) + ar0(b) - i); };
+      const ws = s.words.filter((x) => inside(u(x.pic, x.chip))).sort((a, b) => fit0(u(b.pic, b.chip)) - fit0(u(a.pic, a.chip)));
+      const w = ws[0];
+      // (a light round a plate with a word thing lying on it, corn's served cob, CK-61: the plate the light fits is its thing, not the
+      // cob in its middle; s19-stoves, the lights' leftover. A word thing wins unless a picture under the light's middle fits it clearly
+      // better: twice as well and at least half the light)
+      const pic0 = w ? s.pics.filter((x) => inside(x.box) && ar0(x.box) < 0.3 * cvA && ar0(x.box) > ar0(u(w.pic, w.chip))).sort((a, b) => fit0(b.box) - fit0(a.box))[0] : null;
+      if (w && pic0 && fit0(pic0.box) >= 0.5 && fit0(pic0.box) > 2 * fit0(u(w.pic, w.chip))) return { kind: "pic", id: pic0.id, box: rnd(pic0.box) };
       if (w) return { kind: "word", id: w.id, box: rnd(u(w.pic, w.chip)), shelf: w.foot >= band };
       // a light in the page: the item card or order card under its middle that the box fits best (an item card, else its person's card)
       for (const el of document.elementsFromPoint(cx, cy)) {
@@ -738,7 +749,9 @@ function s19hook() {
           const ch = o.chip, ha = ch.input && ch.input.hitArea;
           if (ha && ch.getWorldTransformMatrix) {
             const M = safe(() => ch.getWorldTransformMatrix());
-            if (M) { const p0 = M.transformPoint(ha.x, ha.y), p1 = M.transformPoint(ha.x + ha.width, ha.y + ha.height); const [a, c] = P(p0.x, p0.y), [d, e] = P(p1.x, p1.y); out.push({ kind: "pill", b: [Math.min(a, d), Math.min(c, e), Math.max(a, d), Math.max(c, e)] }); }
+            // (Phaser reads a container's area from its top-left: its display origin, half its size, comes off first)
+            const dx = ch.displayOriginX || 0, dy = ch.displayOriginY || 0;
+            if (M) { const p0 = M.transformPoint(ha.x - dx, ha.y - dy), p1 = M.transformPoint(ha.x + ha.width - dx, ha.y + ha.height - dy); const [a, c] = P(p0.x, p0.y), [d, e] = P(p1.x, p1.y); out.push({ kind: "pill", b: [Math.min(a, d), Math.min(c, e), Math.max(a, d), Math.max(c, e)] }); }
           }
         }
       };

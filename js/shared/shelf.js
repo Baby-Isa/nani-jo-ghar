@@ -424,10 +424,12 @@
       const m = PL.margin;
       const hitW = Math.max(chip.cardW, Math.min(chip.cardW + 2 * m, (slotW - 2) / k));
       const hitH = PL.h + m;
-      chip.setSize(hitW, hitH);
+      // (a container's hit area is read from its top-left corner: Phaser adds its display origin, half its size, to the point first;
+      // the old area, drawn about the middle, was the box up and left of the pill: its left half, and 72 px above it into the item)
+      chip.setSize(hitW, PL.h);
       const G = root.Phaser && root.Phaser.Geom;
-      if (chip.input) chip.input.hitArea.setTo(-hitW / 2, -PL.h / 2, hitW, hitH);
-      else if (G) chip.setInteractive(new G.Rectangle(-hitW / 2, -PL.h / 2, hitW, hitH), G.Rectangle.Contains);
+      if (chip.input) chip.input.hitArea.setTo(0, 0, hitW, hitH);
+      else if (G) chip.setInteractive(new G.Rectangle(0, 0, hitW, hitH), G.Rectangle.Contains);
       return chip;
     };
     chip.on("pointerdown", (ptr, lx, ly, ev) => {
