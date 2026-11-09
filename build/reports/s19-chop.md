@@ -27,6 +27,14 @@ Knobs: `data/stations/chop.json` levels[].knobs.hop (up, rise, hang, fall, every
 - `checks.mjs --only unit,static,words,specs`: all ok. `loadcheck --only cook:chop`: 1/1.
 - No after folder: `evidence.mjs --after` refused the brief (spec errors). No before folder either.
 
+## Follow-up: random-ish starts (Zafar, 9 Nov)
+
+Each gap between hop starts is the beat x (1 +/- `jitter`: L1 0.15, L2-L4 0.4), never under `minGap` (L1 1.5, L2 0.5, L3 0.4, L4
+0.3 s), still at most `up` in the air; the round's gaps drawn from one seeded draw. Run `s19-chop-jitter` (L1-L4, 930x430 and 740x320):
+8/8 to the end, 0 page errors, `CONTRACT FAILED: 8 breaks (contract-37 2, contract-105 6)` (as above). Round 1 starts, game s (up):
+- L2: 0.00(1) 0.98(2) 2.54(2) 3.40(2) 4.80(2) 6.11(2) 7.38(2) 8.75(2) 10.34(2); least gap 0.85
+- L4: 0.00(1) 0.61(2) 1.37(3) 1.87(3) 2.33(3) 3.12(3) 3.84(3) 4.71(3) 5.17(3) 5.72(3) 6.32(3) ...; least gap 0.40
+
 ## Asks (files I don't own)
 
 1. evidence.json CK-71 probe 1: `"profile": "new"` -> `"fresh"`; ART-37 probe 1's `"at": "now"` on cook:daar has no driver.

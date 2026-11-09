@@ -87,6 +87,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // DAAR-39: the strip shown in this visit (a New player sees each first-time light once a visit, SH-120)
   const STRIP = { visit: false };
 
+  /** A small seeded random (mulberry32): the hop's gaps for a round, from one seed. */
+  const mulberry = (a) => () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+
   /** Split the wanted vegetables into n rounds, in the order given (n <= ids). */
   const splitRounds = (ids, n) => {
     const out = [];
@@ -274,6 +282,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // DAAR-35 (P55, Zafar 17 Oct: "the items should just come continuously"): a round lasts its throws; the next one's
         // throws follow straight on, at the same spacing, while the last round's are still in the air. Only the last round
         // waits for the air to clear (its flight)
+        // S19 (Zafar, 9 Nov: "They should all be coming up at random intervals or semi-random intervals ... although we might make
+        // sure that they're kind of nicely spaced out"): on the hop each gap is the beat times a factor in 1 +/- knobs.hop.jitter,
+        // never under knobs.hop.minGap (two never set off together); drawn once for the round from one draw of the page's random
+        // (the round's seed: a seeded replay is the same, whatever else draws during play)
+        if (HOP) {
+          const rnd = mulberry((Math.random() * 4294967296) >>> 0);
+          const J = Math.max(0, Math.min(0.9, Number(HK.jitter) || 0));
+          const gaps = bag.map(() => Math.max(HK.minGap || 0, every * (1 + J * (2 * rnd() - 1))));
+          return { i, targets: tg, kinds, bag, size: bag.length, every, gaps, secs: gaps.reduce((a, g) => a + g, 0) };
+        }
         return { i, targets: tg, kinds, bag, size: bag.length, every, secs: bag.length * every };
       });
       const total = rounds.reduce((a, r) => a + r.secs, 0) + flight;
@@ -354,7 +372,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (a test log, chop-hop: the kind, its round r, how many are up with it n, whether it is wanted t, the hops' spacing ms)
       const hopNote = (s, n) => {
         try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-hop", { step: s.id, by: `r:${phase ? phase.i : 0} n:${n} t:${phase && phase.targets.includes(s.id) ? 1 : 0} ms:${phase ? Math.round(phase.every * 1000) : 0}` });
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-hop", { step: s.id, by: `r:${phase ? phase.i : 0} n:${n} t:${phase && phase.targets.includes(s.id) ? 1 : 0} ms:${phase ? Math.round(phase.every * 1000) : 0} g:${phase && phase.gaps ? Math.round(phase.gaps[phase.size - phase.bag.length - 1] * 1000) : 0}` });
         } catch (e) {
           /* only a log */
         }
@@ -831,7 +849,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           if (spawnT <= 0 && phase.bag.length && (!HOP || hopOne())) {
             if (!HOP) throwOne();
-            spawnT = Math.max(0, spawnT) + phase.every;
+            // (the hop: this hop's own gap to the next, the round's jittered list)
+            spawnT = Math.max(0, spawnT) + (HOP ? phase.gaps[phase.size - phase.bag.length - 1] : phase.every);
             const nx = rounds[phase.i + 1];
             if (!phase.bag.length && nx) spawnT = Math.min(spawnT, nx.every);
           }

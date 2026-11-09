@@ -183,7 +183,7 @@
    "knobs": {
     "phases": 1,
     "hop": {
-     "_about": "S19 (CK-71; Zafar, 9 Nov: 'level 1 is just like only one item's flying in the air at a time ... you just have to catch it mid-flight. So you learn the mechanism'): the hop, the chop game's own (the mechanic's params.hop; daar's and chaat's chops never read it). up: the most items up on the board at once; rise, hang, fall: an item's hop in seconds (hang: how long it stays up to be swiped, at least 1.5 s at L1 for a 3-6 year old); every: the least time between two hops' starts (never less than (rise + hang + fall) / up); peak: the middle of an item at the top of its hop, design px (the board above the band); catchPad: the swipe's catch area, the item's whole picture plus this margin, design px; tapCuts: a tap on an item that is up chops it too (L1); decoys: the decoy kinds on the shelf (L1: none, his 9 Nov words; from L2 left out, so the central rules' count, data/rules.json); size, phoneSize: an item at the top of its hop, design px (phoneSize under 800 px wide); refill: seconds before a cut item's slot has a whole one again.",
+     "_about": "S19 (CK-71; Zafar, 9 Nov: 'level 1 is just like only one item's flying in the air at a time ... you just have to catch it mid-flight. So you learn the mechanism'): the hop, the chop game's own (the mechanic's params.hop; daar's and chaat's chops never read it). up: the most items up on the board at once; rise, hang, fall: an item's hop in seconds (hang: how long it stays up to be swiped, at least 1.5 s at L1 for a 3-6 year old); every: the least time between two hops' starts (never less than (rise + hang + fall) / up); peak: the middle of an item at the top of its hop, design px (the board above the band); catchPad: the swipe's catch area, the item's whole picture plus this margin, design px; tapCuts: a tap on an item that is up chops it too (L1); decoys: the decoy kinds on the shelf (L1: none, his 9 Nov words; from L2 left out, so the central rules' count, data/rules.json); size, phoneSize: an item at the top of its hop, design px (phoneSize under 800 px wide); refill: seconds before a cut item's slot has a whole one again. jitter (Zafar, 9 Nov: 'random intervals or semi-random intervals ... nicely spaced out'): each gap between hop starts is every x (1 +/- jitter), drawn from the round's seed; minGap: never less than this many seconds between two starts, so two never set off together (and still never more than up at once). L1 stays one at a time, nearly steady.",
      "up": 1,
      "rise": 0.45,
      "hang": 1.8,
@@ -195,7 +195,9 @@
      "decoys": 0,
      "size": 190,
      "phoneSize": 240,
-     "refill": 0.45
+     "refill": 0.45,
+     "jitter": 0.15,
+     "minGap": 1.5
     }
    }
   },
@@ -214,7 +216,9 @@
      "tapCuts": false,
      "size": 190,
      "phoneSize": 240,
-     "refill": 0.45
+     "refill": 0.45,
+     "jitter": 0.4,
+     "minGap": 0.5
     }
    }
   },
@@ -233,7 +237,9 @@
      "tapCuts": false,
      "size": 180,
      "phoneSize": 230,
-     "refill": 0.4
+     "refill": 0.4,
+     "jitter": 0.4,
+     "minGap": 0.4
     }
    }
   },
@@ -261,7 +267,9 @@
      "tapCuts": false,
      "size": 180,
      "phoneSize": 230,
-     "refill": 0.35
+     "refill": 0.35,
+     "jitter": 0.4,
+     "minGap": 0.3
     }
    }
   }
