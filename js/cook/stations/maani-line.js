@@ -159,6 +159,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const discScale = (key, r) => r / (bodyOf(key) * S.texSize(key).w);
     const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] })) : null;
     const rMax = sizes ? Math.max(...sizes.map((s) => s.r)) : kRoll.radius;
+    // MAA-21 (Zafar, 9 Nov: "at the beginning, there's a hard stop around the perimeter of, or maybe just inside the perimeter of the
+    // rolling board"): before big and small arrive (no sizes yet: MAA-23's lesson brings them and their rings), every roll stops hard at
+    // K.rimStop of the chakla's radius, no ring drawn, never a tear (js/cook/mechanics/roll.js rimStop); ?maaniRim=<fraction> tries
+    // another place (the lab page's pair: lab/sections/kit-lights.html rim-stop)
+    const rimAsked = Number(new URLSearchParams((global.location && global.location.search) || "").get("maaniRim"));
+    const rimStop = !sizes && (rimAsked > 0 || K.rimStop) ? (CHAKLA_D / 2) * Math.min(1, rimAsked > 0 ? rimAsked : Number(K.rimStop)) : 0;
     const keyOf = (type, size) => (size ? `${size}+${type}` : type);
     const split = (key) => {
       const parts = key.split("+");
@@ -460,9 +466,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         keep: true,
         patient: true,
         handle: c.handle,
-        // (S19: the light's thing is the board, whole; MAA-21: the first roll stops at the size, once a player)
+        // (S19: the light's thing is the board, whole; MAA-21: before big and small, the hard stop just inside the board's rim)
         boardThing: board,
-        firstStop: () => !!(gate && gate.first("roll-stop")),
+        rimStop,
         pinTex: "mv-velan",
         pinW: PIN_W,
         body: bodyOf,

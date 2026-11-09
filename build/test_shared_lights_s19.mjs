@@ -133,6 +133,8 @@ test("coach: the lit thing's parts: its picture where it rests (with its hop's r
   const face = { active: true, visible: true, getBounds: () => ({ x: 900, y: 280, right: 960, bottom: 340 }) };
   assert.deepEqual(C.parts(pic(800, 300, 200, 120, { face }))[1], [900, 280, 60, 60]);
   assert.deepEqual(C.parts(null), []);
+  // Kit.chip's keepBox gives its width as pillW (s19-games, 9 Nov): the pill is read the same
+  assert.deepEqual(C.parts(pic(100, 690, 80, 118, { onShelf: false, chip: { active: true, x: 140, y: 860, pillW: 90, cardH: 46 } }))[1], [95, 837, 90, 46], "a pill's pillW");
   const f = C.thingBox(pic(600, 300, 300, 200));
   assert.deepEqual(f(), [[600, 300, 300, 200]]);
   assert.equal(C.thingBox({ active: false, getBounds: () => null })(), null);
@@ -190,6 +192,24 @@ test("coach: the stuck help, chai's method, any game: after the level's wait, th
   await sleep(300);
   assert.equal(hints.length, 3);
   w.close();
+  delete globalThis.NaniGuide;
+});
+
+test("coach: the stuck help's wait is a child's time, never the test speed's (contracts 24 and 91)", async () => {
+  globalThis.Onboard = Object.assign({}, Onboard, { light: () => ({ close() {} }), onRush: () => () => {} });
+  globalThis.NaniGuide = { lastAction: () => 0 };
+  const Cook = await coach({ speed: 10, UI: { s14: () => true, helperOpen: () => true } });
+  Cook.speed = 10;
+  const hints = [];
+  const t0 = Date.now();
+  const h = Cook.Coach.stuck({ hintMs: () => 400, onHint: () => hints.push(Date.now() - t0) });
+  await sleep(200);
+  assert.equal(hints.length, 0, "not at a tenth of the wait at speed 10");
+  await sleep(500);
+  assert.equal(hints.length, 1);
+  assert.ok(hints[0] >= 380, `after the whole wait (${hints[0]} ms)`);
+  h.close();
+  Cook.speed = 1;
   delete globalThis.NaniGuide;
 });
 
