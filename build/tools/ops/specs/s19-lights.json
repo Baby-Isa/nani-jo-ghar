@@ -8,7 +8,7 @@
   "branch": "s19-lights in /home/user/wt/s19-lights (made for you from the integration branch with s19-checks merged; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": true,
   "read": [
     "build/reports/s18-review-and-direction.md (In one page, sections 2-4, principle 6)",

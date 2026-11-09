@@ -25691,5 +25691,83 @@
    "expect": null,
    "note": "chaat at L1-L4: each call after a layer is the next layer as he said it (the card's order); the ten-seed replay is in build/reports/s19-lights.md"
   }
+ ],
+ "CK-71": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "profile": "new",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chop's hop: the whole items sit in the bottom band with their pills, hop straight up onto the board and drop back at different times (no arcs); L1 one up at a time, L2 two with decoys (1.5 s after the view opens, the first hop up)",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chop's hop: the whole items sit in the bottom band with their pills, hop straight up onto the board and drop back at different times (no arcs); L1 one up at a time, L2 two with decoys (1.5 s after the view opens, the first hop up)",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chop's hop: the whole items sit in the bottom band with their pills, hop straight up onto the board and drop back at different times (no arcs); L1 one up at a time, L2 two with decoys (1.5 s after the view opens, the first hop up)",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1366x768",
+    "915x412"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chop's hop: the whole items sit in the bottom band with their pills, hop straight up onto the board and drop back at different times (no arcs); L1 one up at a time, L2 two with decoys (1.5 s after the view opens, the first hop up)",
+   "delay": 1500
+  }
  ]
 }

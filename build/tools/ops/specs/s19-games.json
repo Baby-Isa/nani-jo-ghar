@@ -8,7 +8,7 @@
   "branch": "s19-games in /home/user/wt/s19-games (made for you; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": true,
   "read": [
     "build/reports/s18-eye-judge-experiment.md (sections 2 and 4-7)",

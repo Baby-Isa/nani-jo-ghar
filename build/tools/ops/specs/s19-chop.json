@@ -1,0 +1,64 @@
+{
+  "name": "s19-chop: chop's hop (CK-71): whole items sit on the stone tray with their pills, hop straight up onto the board and drop back at different times; a swipe while up cuts it",
+  "model": "Opus",
+  "effort": "high",
+  "why": "a new mechanic with timing and feel; the shared tray and pills must look like every other game",
+  "cost": "about $15-25",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-chop in /home/user/wt/s19-chop (made for you from the integration branch; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "docs/feedback/kitchen-mocks2-2026-11-09.md (P20 and section 1a: chop's hop)",
+    "docs/feedback/kitchen-mocks2-2026-11-09-transcript.md (paragraph on chop, his words)",
+    "docs/process/check-audit.md (the gate you must pass)",
+    "docs/architecture/module-map.md"
+  ],
+  "owns": [
+    "js/cook/mechanics/chop.js",
+    "js/cook/stations/chop.js",
+    "data/stations/chop.json",
+    "lab/kit.html (a chop hop section only, if useful)",
+    "build/reports/s19-chop.md"
+  ],
+  "readOnly": [
+    "js/shared/shelf.js and js/cook/kitchen-kit.js (s19-stoves owns them: call the shelf's tray and pills as they are; write any change you need in your report)",
+    "js/cook/stations/daar.js, js/cook/stations/chaat*.js (they call Cook.Chop.play: keep that call working unchanged; their move onto the hop is a later sprint, his call)",
+    "build/tools/review/**, build/sandbox/lib/**",
+    "build/sandbox/data/evidence.json (s19-stoves owns the file; CK-71's entry is written for you: if it needs a change, write it exactly in your report)"
+  ],
+  "stubs": "none",
+  "port": 8895,
+  "report": "s19-chop",
+  "publish": false,
+  "flows": [
+    "cook:chop"
+  ],
+  "rows": [
+    "CK-71"
+  ],
+  "tasks": [
+    {
+      "do": "The hop (CK-71, Zafar 9 Nov, his words in the row): the round's items sit whole in the bottom band (the shared shelf's tray and word pills, as in every other game; the board above the band, ART-37), each in its slot. They hop straight up out of the band onto the board, hang a moment, and drop back into their slot, at different times (no arcs, nothing from off-screen). A swipe across an item while it is up cuts it in two (the existing slice, halves and sound); a cut item's halves land on the board and stay. A swipe on a decoy is a gentle no (the existing feedback), never a verdict. Decoys hop as often as targets so the hop never gives the answer away (the leak test).",
+      "accept": "a script-made frame strip of one hop (up, hang, cut, halves) at 930x430 and 740x320; grep: no arc path left in the chop mechanic"
+    },
+    {
+      "do": "Levels: L1 one item up at a time, one kind, no decoys; L2 two up at a time, one sometimes a decoy; L3 and L4 more at once and faster, from the settings' knobs (data/stations/chop.json) and the central decoy rules. The ring, the order card, the redo of a short count and the round's end stay as they are.",
+      "accept": "cook:chop L1-L4 contract run 0 breaks at the four sizes; the report's table of what each level sends up"
+    },
+    {
+      "do": "Fairness for a 3-6 year old: an item stays up long enough to swipe at L1 (at least 1.5 s, the knob in the settings), the swipe's catch area is the item's whole picture plus a margin, and a child who taps instead of swiping still cuts at L1 (a tap counts as a chop there). Nothing waits on speech.",
+      "accept": "the knobs in data/stations/chop.json named in the report; a frame strip of a tap cut at L1"
+    },
+    {
+      "do": "Out of scope: daar's and chaat's chop (they keep Cook.Chop.play as it is), the art (the board and pieces come from the art run), the shelf and pills' own code (s19-stoves).",
+      "accept": "the report lists anything met"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-chop.md with a Proof section and script-made frame strips, under 600 words"
+    }
+  ]
+}

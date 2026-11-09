@@ -1,0 +1,88 @@
+SESSION NAME / MODE:  s19-stoves: the knob rule (SH-247), an item's tap area reaching its pill (SH-244), daar's lap count as our item card (DAAR-50), and the lights builder's leftover probe and evidence fixes
+MODEL AND EFFORT:     Opus, high effort (shared kit changes reach every game; layout judgement at four sizes; chai's frozen diff guards)
+COST ESTIMATE:        about $15-25
+STOP:                 when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back). Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               s19-stoves in /home/user/wt/s19-stoves (made for you from the integration branch; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s19-stoves.context.md (870 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     docs/feedback/kitchen-mocks2-2026-11-09.md (P9, P10, P12: the knob rule and the count card)
+     docs/feedback/kitchen-mocks-2026-11-09.md (the tap areas, SH-244)
+     build/reports/s19-lights.md (its leftovers: contract-105's probes, Shelf.pillScale, the evidence specs, CK-63's card light)
+     docs/process/check-audit.md (the gate you must pass)
+     docs/architecture/module-map.md
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/kitchen-kit.js
+  - js/shared/shelf.js
+  - js/cook/stations.js (the tap area only)
+  - js/cook/stations/daar.js
+  - js/cook/stations/samosa.js (the fry's knob only)
+  - js/cook/stations/maani-line.js and js/cook/stations/roll-tawa.js (the tawa's knob and the piles' tap area only)
+  - js/cook/stations/eggs.js (the knob rule, if a level has one pan)
+  - build/sandbox/lib/** (the contract-105 probe fixes and new contract checks for SH-247 and SH-244)
+  - build/tools/review/regress.mjs (CONTRACT_ROWS for SH-247 and SH-244)
+  - build/sandbox/data/evidence.json (your rows' entries and SH-119, SH-236, MAA-22, SH-228, CK-63)
+  - build/frozen/chai-tray/**
+  - build/reports/s19-stoves.md
+READ-ONLY (never edit):
+  - js/cook/mechanics/chop.js, js/cook/stations/chop.js, data/stations/chop.json (s19-chop)
+  - js/cook/stations/chai-tray.js (chai keeps its knobs below each burner: the rule's several-pans case)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The knob rule (SH-247, his words in the row): an option on Kit.burner for a screen with one pan: the gold-ringed knob and the face circle sit to the pan's left, centred on its height, so the pan can be as big as the height allows; with several pans they stay below each (chai, unchanged). Used by daar, samosa's fry, maani's tawa and any eggs level with one pan. Add the contract check (knob and face left of a single pan, clear of it and of the panel, at the four sizes) to build/sandbox/lib and CONTRACT_ROWS.
+     Accept: daar, samosa, maani and eggs L1-L4 contracts 0 breaks at the four sizes; chai's frozen diff clean; before-and-after crops of each single-pan screen at 740x320 and 1920x1080
+  2. Tap areas (SH-244): one rule in the shared shelf: an item's tap area reaches down its slot to its pill's top and across the slot's width; the pill's is its card plus a small margin; where they meet, the item wins. Every game's shelf and maani's piles use it. Add the contract check (a tap at an item's foot picks the item, not the word) at 930x430 with the browser bar's height taken off.
+     Accept: the new contract check green on every flow listed; a picture of the tap areas drawn over chai's and maani's shelves at 930x430
+  3. Daar's lap count (DAAR-50, his words in the row): the shared item card pops beside the pot, right of it, as each lap closes: the numeral as its picture, the Kutchi word, the English, the pill, the speaker lit while Nani counts. Numbers with no recorded Kutchi show their English in grey italic (the missing-Kutchi rule) and are listed in docs/language/recording-sheet.md; never invent Kutchi. Remove the count chip in the dial only once the card shows the same number.
+     Accept: daar's stir L1-L4 at the four sizes: the card whole, unclipped, clear of the pot and the settings corner; crops at 740x320 and 1920x1080
+  4. The lights builder's leftovers (build/reports/s19-lights.md): contract-105's probes (mishkaki veg-03's pill box at 1920x1080; corn's serve light judged against the plate, not the cob); chaat's pill under ph-chana's pot via Shelf.pillScale at 1280x665; CK-63's card light 5-7 px short at the small sizes; the evidence specs of SH-119, SH-236, MAA-22 and SH-228 so each row's probe runs. Fix a probe only where the probe is wrong; where the game is wrong, fix the game.
+     Accept: contract-105 green on every flow listed; each named row's evidence probe runs red-then-green (evidence.mjs --after --brief)
+  5. Out of scope: the stoves' art (the art run), sekelo and corn's new layout, chop (s19-chop), the main thing's size (SH-245, later).
+     Accept: the report lists anything met
+  6. Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.
+     Accept: build/reports/s19-stoves.md with a Proof section and script-made before-and-after crops of each row, under 600 words
+
+KEEP (what Zafar liked in chai, daar, samosa, maani-line, eggs, chaat, mishkaki-grill, corn: never change it without his word; 12):
+  KEEP-01: Underline while a line is spoken; order card and pop-up are "the bar we want to set"
+  KEEP-02: Daar: chopped things wait at the side and you add them in
+  KEEP-03: Samosa: oil looks better, frying is fun, adding samosas is fun, slotted-spoon lift is good
+  KEEP-04: Samosa fold swipe stays and feels great; no dashed line, no red dot
+  KEEP-11: Nana's voice; Nani and Nana talking; two-person chai; maani speed; the greeting hand gesture
+  KEEP-12: The card that shows then blanks words; chai highlighted at the start; calling out items as they go in · 26 Oct: the blanking keeps only with each row's speaker 
+  KEEP-13: Pantry wrong-item handling; cooker on early is fine; daar dial and rotation; samosa fry and frying handle
+  KEEP-15: Chai: the pan's boiling bubbles and the flames ("the tea animation with the bubbles")
+  KEEP-16: Liked, 17 Oct: daal chop ("so much better ... the knife ... really nice"); the stir speed indicator ("looks very good"); chai's replayed order on a pot tap ("ve
+  KEEP-18: Liked, 22 Oct: chai's water bouncing with its own glow ("I like that the water is bouncing", "has a bit of a glow"); the rectangle; "the onboarding is clear"; "
+  KEEP-19: Liked, 22 Oct: "it's becoming a lot clearer and easier to play and easier to understand ... a very positive strong step" (Sprint 11's direction)
+  KEEP-21: Liked, 1 Nov: "The half mechanism for level 4 kind of works well, actually. In terms of the pouring, it works quite well. It's quite clever"; "I had a quick loo
+
+REGRESSION ROWS TO RECHECK (9; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (9): SH-247*, SH-244*, DAAR-50*, CK-63*, SH-119*, SH-236*, MAA-22*, SH-228*, SH-245*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s19-stoves.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8896 NJG_LOCK=/tmp/njg-browser-8896.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s19-stoves.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8896.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:daar,cook:samosa,cook:maani-line,cook:eggs,cook:chaat,cook:mishkaki-grill,cook:corn --sizes 740x320,930x430,1280x665,1920x1080 --run-id s19-stoves-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s19-stoves.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s19-stoves.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8896.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8896; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+FINISH: build/reports/s19-stoves.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

@@ -1,0 +1,70 @@
+{
+  "name": "s19-stoves: the knob rule (SH-247), an item's tap area reaching its pill (SH-244), daar's lap count as our item card (DAAR-50), and the lights builder's leftover probe and evidence fixes",
+  "model": "Opus",
+  "effort": "high",
+  "why": "shared kit changes reach every game; layout judgement at four sizes; chai's frozen diff guards",
+  "cost": "about $15-25",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-stoves in /home/user/wt/s19-stoves (made for you from the integration branch; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "read": [
+    "docs/feedback/kitchen-mocks2-2026-11-09.md (P9, P10, P12: the knob rule and the count card)",
+    "docs/feedback/kitchen-mocks-2026-11-09.md (the tap areas, SH-244)",
+    "build/reports/s19-lights.md (its leftovers: contract-105's probes, Shelf.pillScale, the evidence specs, CK-63's card light)",
+    "docs/process/check-audit.md (the gate you must pass)",
+    "docs/architecture/module-map.md"
+  ],
+  "owns": [
+    "js/cook/kitchen-kit.js",
+    "js/shared/shelf.js",
+    "js/cook/stations.js (the tap area only)",
+    "js/cook/stations/daar.js",
+    "js/cook/stations/samosa.js (the fry's knob only)",
+    "js/cook/stations/maani-line.js and js/cook/stations/roll-tawa.js (the tawa's knob and the piles' tap area only)",
+    "js/cook/stations/eggs.js (the knob rule, if a level has one pan)",
+    "build/sandbox/lib/** (the contract-105 probe fixes and new contract checks for SH-247 and SH-244)",
+    "build/tools/review/regress.mjs (CONTRACT_ROWS for SH-247 and SH-244)",
+    "build/sandbox/data/evidence.json (your rows' entries and SH-119, SH-236, MAA-22, SH-228, CK-63)",
+    "build/frozen/chai-tray/**",
+    "build/reports/s19-stoves.md"
+  ],
+  "readOnly": [
+    "js/cook/mechanics/chop.js, js/cook/stations/chop.js, data/stations/chop.json (s19-chop)",
+    "js/cook/stations/chai-tray.js (chai keeps its knobs below each burner: the rule's several-pans case)"
+  ],
+  "stubs": "none",
+  "port": 8896,
+  "report": "s19-stoves",
+  "publish": false,
+  "flows": ["cook:chai-tray", "cook:daar", "cook:samosa", "cook:maani-line", "cook:eggs", "cook:chaat", "cook:mishkaki-grill", "cook:corn"],
+  "rows": ["SH-247", "SH-244", "DAAR-50", "CK-63", "SH-119", "SH-236", "MAA-22", "SH-228"],
+  "tasks": [
+    {
+      "do": "The knob rule (SH-247, his words in the row): an option on Kit.burner for a screen with one pan: the gold-ringed knob and the face circle sit to the pan's left, centred on its height, so the pan can be as big as the height allows; with several pans they stay below each (chai, unchanged). Used by daar, samosa's fry, maani's tawa and any eggs level with one pan. Add the contract check (knob and face left of a single pan, clear of it and of the panel, at the four sizes) to build/sandbox/lib and CONTRACT_ROWS.",
+      "accept": "daar, samosa, maani and eggs L1-L4 contracts 0 breaks at the four sizes; chai's frozen diff clean; before-and-after crops of each single-pan screen at 740x320 and 1920x1080"
+    },
+    {
+      "do": "Tap areas (SH-244): one rule in the shared shelf: an item's tap area reaches down its slot to its pill's top and across the slot's width; the pill's is its card plus a small margin; where they meet, the item wins. Every game's shelf and maani's piles use it. Add the contract check (a tap at an item's foot picks the item, not the word) at 930x430 with the browser bar's height taken off.",
+      "accept": "the new contract check green on every flow listed; a picture of the tap areas drawn over chai's and maani's shelves at 930x430"
+    },
+    {
+      "do": "Daar's lap count (DAAR-50, his words in the row): the shared item card pops beside the pot, right of it, as each lap closes: the numeral as its picture, the Kutchi word, the English, the pill, the speaker lit while Nani counts. Numbers with no recorded Kutchi show their English in grey italic (the missing-Kutchi rule) and are listed in docs/language/recording-sheet.md; never invent Kutchi. Remove the count chip in the dial only once the card shows the same number.",
+      "accept": "daar's stir L1-L4 at the four sizes: the card whole, unclipped, clear of the pot and the settings corner; crops at 740x320 and 1920x1080"
+    },
+    {
+      "do": "The lights builder's leftovers (build/reports/s19-lights.md): contract-105's probes (mishkaki veg-03's pill box at 1920x1080; corn's serve light judged against the plate, not the cob); chaat's pill under ph-chana's pot via Shelf.pillScale at 1280x665; CK-63's card light 5-7 px short at the small sizes; the evidence specs of SH-119, SH-236, MAA-22 and SH-228 so each row's probe runs. Fix a probe only where the probe is wrong; where the game is wrong, fix the game.",
+      "accept": "contract-105 green on every flow listed; each named row's evidence probe runs red-then-green (evidence.mjs --after --brief)"
+    },
+    {
+      "do": "Out of scope: the stoves' art (the art run), sekelo and corn's new layout, chop (s19-chop), the main thing's size (SH-245, later).",
+      "accept": "the report lists anything met"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except `frozen.mjs` (it locks itself; never wrap it); one size while building, the four sizes at the end; `checks.mjs --only unit,static,words,specs`; commit on your branch every 30-40 minutes, never push; labs.html is generated; never invent Kutchi; never remove a mechanic; fix what you break before handing back; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-stoves.md with a Proof section and script-made before-and-after crops of each row, under 600 words"
+    }
+  ]
+}
