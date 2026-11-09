@@ -1341,15 +1341,16 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * x, y: its centre (design px). Returns {set(spd), laps(n), close()}.
    */
   function speedDial(z, S, { x, y, bands, max, asked = null, k: kd = 1 }) {
-    z = Object.assign(Object.create(z), { k: z.k * kd }); // (DAAR-50: the dial a little smaller beside the lap card; z.X and sy keep the zone's own)
+    const z0 = z; // (its place in the zone's own measure; DAAR-50: the dial itself a little smaller beside the lap card)
+    z = Object.assign(Object.create(z), { k: z.k * kd });
     const W = 340;
     const H = 330;
     const R = 104;
     const BW = 28;
     const ay = 34; // the arc's centre, in the face
     // (no container: each piece is placed and scaled itself, so the needle's redraws always show)
-    const ox = z.X(x);
-    const oy = sy(z, y);
+    const ox = z0.X(x);
+    const oy = sy(z0, y);
     const parts = [];
     const put = (o, dx = 0, dy = 0, dd = 0) => {
       S.track(o.setPosition(ox + dx * z.k, oy + dy * z.k).setScale(z.k).setDepth(D.item + 1 + dd).setAlpha(0));

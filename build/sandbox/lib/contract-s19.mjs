@@ -323,7 +323,12 @@ export function check109(r, tl, add) {
 export function check110(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
   const seen = new Set();
-  for (const e of ev(tl, "s19knob")) {
+  const ks = ev(tl, "s19knob");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  for (let ki = 0; ki < ks.length; ki++) {
+    const e = ks[ki];
+    // (a moment between two things, the bowl gone and the dial not yet up, is not a layout: held 300 ms)
+    if (held(ks, ki, tEnd) < HOLD_MS) continue;
     const W = e.vw || 1e9, H = e.vh || 1e9;
     const single = (e.n || 1) === 1;
     for (const q of e.list || []) {
@@ -820,7 +825,7 @@ function s19hook() {
       if (Date.now() - knobAt > 500) {
         knobAt = Date.now();
         const kn = safe(knobsNow, null);
-        if (kn && !same("s19knob", kn.list.map((q) => [q.knob.map((v) => Math.round(v / 4)), q.face && q.face.map((v) => Math.round(v / 4)), q.pan && q.pan.map((v) => Math.round(v / 4))]))) emit({ k: "s19knob", ...kn });
+        if (kn && !same("s19knob", kn.list.map((q) => [q.knob.map((v) => Math.round(v / 4)), q.face && q.face.map((v) => Math.round(v / 4)), q.pan && q.pan.map((v) => Math.round(v / 4)), (q.beside || []).length > 0]))) emit({ k: "s19knob", ...kn });
       }
       if (Date.now() - tapAt > 1000) {
         tapAt = Date.now();
