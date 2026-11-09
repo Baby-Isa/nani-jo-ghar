@@ -748,17 +748,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       stk = null;
     };
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
-    // SH-247 (the knob rule, Zafar 9 Nov: "the button for the burner and the face on the left hand side, so that the main saucepan can
-    // be nice and big"): one pot, so the knob stands to its left (the hob turned a quarter, Kit.hob knobs "left"); the pot keeps its
-    // place across, the shorter hob centred where the tall one stood
-    const hk = z.L(0.9);
-    const tall = Kit.size(1, hk);
-    const low = Kit.size(1, hk, false, "left");
-    const hobBottom = sy(z, SHELF_TOP - 14) - (tall.h - low.h) / 2;
-    const hob = Kit.hob(S, { n: 1, k: hk, knobs: "left", burnerAt: { x: z.X(800), y: hobBottom - low.h + low.burnerY } });
+    // (SH-247 refined, Zafar 9 Nov: "if there's multiple things taking up width, then we put the button underneath": the dial and the
+    // lap card share daar's width, so its knob stays on the front edge below the pot, as it was)
+    const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
     const bodyR = z.L(150);
-    // X6: the flames just peek out past the pot; the knob clear of the pot's handles (its picture reaches POT2.cx / POT2.r of its body)
-    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.95, reach: (bodyR * POT2.cx) / POT2.r });
+    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.95 }); // X6: the flames just peek out past the pot
     const cx = hob.burners[0].x;
     const cy = hob.burners[0].y;
     // the pot, placed by its measured body (never the handles' box); hot oil in it from the start (D2)
@@ -1346,7 +1340,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * gold needle; and under it the laps, as the Kutchi number word on a white chip (no digits, no pips).
    * x, y: its centre (design px). Returns {set(spd), laps(n), close()}.
    */
-  function speedDial(z, S, { x, y, bands, max, asked = null }) {
+  function speedDial(z, S, { x, y, bands, max, asked = null, k: kd = 1 }) {
+    z = Object.assign(Object.create(z), { k: z.k * kd }); // (DAAR-50: the dial a little smaller beside the lap card; z.X and sy keep the zone's own)
     const W = 340;
     const H = 330;
     const R = 104;
@@ -1501,14 +1496,19 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       ladle.setScale((inR * 0.3) / (LADLE.r * LADLE.w));
       const ringG = S.track(S.add.circle(cx, cy - trackR, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
       S.tweens.add({ targets: ringG, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
-      // DAAR-50: the lap count's card stands right of the pot, where the dial stood: the dial stands on the pot's left now, clear of the
-      // hob and its knob (the chopped things have all gone in by the stir); the settings' dial.x is mirrored about the pot
+      // DAAR-50 (Zafar 9 Nov: the card next to the dial, the pot as it was): the dial and the lap card side by side in the room right
+      // of the hob, the dial nearer the pot (a little smaller where the room asks), the card beyond it, both centred on the pot's height
       const dialW = 340;
-      const hobL = hob ? (hob.x - z.X(0)) / z.k : 800 - (SC().dial.x - 800);
-      const dialX = Math.max(dialW / 2 + 20, Math.min(800 - (SC().dial.x - 800), hobL - 16 - dialW / 2));
-      const dial = speedDial(z, S, { x: dialX, y: SC().dial.y, bands, max: k.dialMax || 3, asked });
-      // (clear of the pot's handles and of the hob's own right edge)
-      const card = lapCard(z, S, { cx, cy, right: Math.max((bodyR * POT2.cx) / POT2.r, hob ? hob.x + hob.w - cx : 0), bodyR, avoid });
+      const hobR = hob ? (hob.x + hob.w - z.X(0)) / z.k : 1010;
+      const viewR = (Cook.view && Cook.view.right != null ? (Cook.view.right - z.X(0)) / z.k : 1600) - 16;
+      // (the card's width as lapCard draws it, CSS px, in design px: never under the item card's floor)
+      const ws = Math.max(0.01, UI.worldScale ? UI.worldScale() : 1);
+      const cardW = Math.max(88, Math.min(210, 2 * bodyR * ws * 0.62)) / ws / z.k;
+      const kd = Math.max(0.5, Math.min(1, (viewR - hobR - 24 - 24 - cardW) / dialW));
+      const dialX = hobR + 24 + (dialW * kd) / 2;
+      const dial = speedDial(z, S, { x: dialX, y: SC().dial.y, bands, max: k.dialMax || 3, asked, k: kd });
+      const dialRight = z.X(dialX + (dialW * kd) / 2);
+      const card = lapCard(z, S, { cx, cy, right: dialRight - cx + z.L(10), bodyR, avoid });
       let count = 0;
       let ang = FLAG_AT; // the ladle's angle: it starts under the flag
       let rot = 0; // the contents' turn

@@ -37,9 +37,6 @@ export const CARD_PART = 0.5;      // contract-105: a light round less than this
 // two lights against a pan's contact shadow); kept in the probe's scan below, the same words
 export const KNOB_CLEAR = 2;       // contract-110: the knob and the face this clear of the pan's picture and of the side panel
 export const KNOB_MID = 0.08;      // ... and their middle within this share of the pan's height (at least 8 px) of the burner's middle
-// contract-110: the games with only ever one pan (Zafar, 9 Nov, SH-247: "where you only have one item ... you put the button off to the
-// left in games where there's only ever one"); every other game's knobs stay below each burner (chai, the several-pans case)
-export const ONE_PAN = /(^|[:/])(daar|stir|samosa|maani-line|roll-tawa)(\b|$)/;
 export const FOOT_IN = 4;          // contract-111: the foot's tap this many CSS px inside the item's picture, above its lowest edge
 export const NOT_A_THING = /shadow|halo|glow|dim|light/i;
 export const CRATE = /(crate|heap|pile|sack|basket)/i;
@@ -81,7 +78,7 @@ export const S19_CHECKS = {
   "contract-106": { item: "light-goes", title: "the light goes as the child starts the move", how: "Cook flows: a real press (the input sample, a trusted pointerdown) inside a light box on screen starts the move it shows; within 300 ms (plus the probe's 100 ms sampling) that box must be gone (no box, or none round the press). A box still round the press after that is a break, once per page (SH-236, Zafar 8 Nov, maani's roll: 'I start rolling the box should go away')." },
   "contract-107": { item: "hop-shelf", title: "only shelf items hop", how: "Cook flows: every glowing picture that hops (njgTest.cook.glowing() bounce) must stand in the shelf band (its foot in the bottom 30% of the canvas, js/shared/shelf.js Shelf.BAND); a hop off the shelf (a pan, a board, the dough on the board) is a break. A shelf item lit by a light box of its own (its middle inside one) for 300 ms without its hop is a break too. Once per thing per page (SH-237, Zafar 8 Nov: 'items in the bottom bar bounce up and down')." },
   "contract-108": { item: "praise-last", title: "well done only once the whole card is ticked", how: "Cook flows, in a station: a well done (a line saying shabash) that starts while an order card row on screen is still open (the rows sample just before it: not done and not a no row) is a break, once per page (SH-239, Zafar 8 Nov: 'say well done when ... the whole menu card is complete')." },
-  "contract-110": { item: "knob-side", title: "the knob rule: one pan, the knob and face on its left; several, below each", how: "Cook flows, each s19knob sample (the S19 probe: every kitchen knob, kit-knob-off, with its burner's flame ring, the face badge beside it, the pan's picture on that burner and the side panel's box, in CSS px). In a game with only ever one pan (daar, its stir, samosa's fry, maani: ONE_PAN), the knob and the face must each lie wholly left of the pan's picture (its handles too) and of its flame ring, by 2 px, their middle within 8% of the pan's height (8 px at least) of the burner's middle, clear of the side panel and inside the screen. In any other game each knob sits below its burner (its middle under the burner's). One off is a break, once per page (SH-247, Zafar 9 Nov: 'the button for the burner and the face on the left hand side, so that the main saucepan can be nice and big'; 'when we need horizontal space, like with tea ... you put the button on the bottom')." },
+  "contract-110": { item: "knob-side", title: "the knob rule: left of a pan alone in the width; else below it", how: "Cook flows, each s19knob sample (the S19 probe: every kitchen knob, kit-knob-off, with its burner's flame ring, the face badge beside it, the pan's picture on that burner, the other pictures and item cards sharing the pan's height (beside it, at least 15% of its height: a board, the dial's pictures, a plate, the lap card) and the side panel's box, in CSS px). A single pan alone across the width (nothing else beside it): the knob and the face wholly left of the pan's picture and its flame ring by 2 px, their middle within 8% of the pan's height (8 px at least) of the burner's middle, clear of the side panel and inside the screen. Several pans, or a single pan sharing the width: each knob below its burner (its middle under the burner's), clear of the pan's body (the flame ring's 85%). One off is a break, once per page (SH-247, Zafar 9 Nov: 'where you only have one item ... you put the button off to the left'; refined the same day: 'if there's multiple things taking up width, then we put the button underneath to maximize our width')." },
   "contract-111": { item: "item-reach", title: "a tap at an item's foot picks the item, never its word", how: "Cook flows, each s19tap sample (the S19 probe, once a second while the shelf changes: for every shelf item with a word and its pill, Phaser's own hit test, topmost first, at the item's foot (4 CSS px inside its picture's lowest edge, its middle across), just above its pill's card (2 CSS px) and at the pill's middle). The foot and the spot above the pill must pick the item (or a hit area carrying its word); the pill's middle must pick the pill. A tap there that says the word, or picks nothing, is a break, once per item per page (SH-244, Zafar 9 Nov, his tester on his phone: 'She thought she was pressing the items, but she was pressing the speaker buttons below the items'; measured with the browser's bar showing: 930x374)." },
   "contract-109": { item: "shelf-line", title: "the shelf's items on one base line, their pills on one chip line", how: "Cook flows: each s19shelf sample (the tappable pictures with a word whose foot is in the bottom band, with no glow on them: a hop lifts one) with three or more items: every item's foot within 4 px of the band's base line (the lowest feet's median) and every pill's middle within 2 px of the chip line (the pills' median). One off the line is a break, once per page (SH-243, Zafar 8 Nov: 'the bottom items they're not on a shelf like tea's'; Shelf.BAND: things stand on one base, pills centred on one chip line)." },
 };
@@ -325,20 +322,21 @@ export function check109(r, tl, add) {
 // 110
 export function check110(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
-  const one = ONE_PAN.test(String(r.flow || "").replace(/[@#].*$/, ""));
   const seen = new Set();
   for (const e of ev(tl, "s19knob")) {
     const W = e.vw || 1e9, H = e.vh || 1e9;
+    const single = (e.n || 1) === 1;
     for (const q of e.list || []) {
       if (!q.knob || !q.burner) continue;
       const kb = box(q.knob), fb = q.face ? box(q.face) : null, bn = q.burner, pan = q.pan ? box(q.pan) : null;
-      const key = (one ? "one:" : "many:") + (q.i || 0);
+      const alone = single && !(q.beside || []).length;
+      const key = (alone ? "alone:" : "below:") + (q.i || 0);
       if (seen.has(key)) continue;
       const bad = [];
-      if (one) {
+      const parts = [["knob", kb]].concat(fb ? [["face", fb]] : []);
+      if (alone) {
         const left = Math.min(bn.x - bn.r, pan ? pan.l : Infinity) - KNOB_CLEAR;
-        const parts = [["knob", kb]].concat(fb ? [["face", fb]] : []);
-        for (const [n, b] of parts) if (b.r > left) bad.push(`the ${n} ${fmt(b)} is not left of the pan${pan ? ` ${fmt(pan)}` : ""} (its flames reach ${Math.round(bn.x - bn.r)})`);
+        for (const [n, b] of parts) if (b.r > left) bad.push(`the ${n} ${fmt(b)} is not left of the pan${pan ? ` ${fmt(pan)}` : ""} (its flames reach ${Math.round(bn.x - bn.r)}): it stands alone in the width`);
         const u = parts.reduce((a, [, b]) => ({ t: Math.min(a.t, b.t), b: Math.max(a.b, b.b) }), { t: Infinity, b: -Infinity });
         const ph = pan ? pan.b - pan.t : 2 * bn.r;
         const dy = (u.t + u.b) / 2 - bn.y;
@@ -347,10 +345,15 @@ export function check110(r, tl, add) {
           if ((e.panels || []).some((p0) => inter(b, box(p0)) > 0)) bad.push(`the ${n} ${fmt(b)} is under the side panel`);
           if (b.l < 0 || b.t < 0 || b.r > W || b.b > H) bad.push(`the ${n} ${fmt(b)} leaves the screen`);
         }
-      } else if (mid(kb).y <= bn.y) bad.push(`the knob ${fmt(kb)} is not below its burner (its middle at ${Math.round(bn.y)}): with several pans each knob sits below its own`);
+      } else {
+        if (mid(kb).y <= bn.y) bad.push(`the knob ${fmt(kb)} is not below its burner (its middle at ${Math.round(bn.y)}): ${single ? `${(q.beside || []).slice(0, 2).join(", ")} share${(q.beside || []).length > 1 ? "" : "s"} the width` : "several pans"}, so it sits below`);
+        // clear of the pan's body: the knob's nearest point outside 85% of the flame ring
+        const nx = Math.max(kb.l, Math.min(bn.x, kb.r)), ny = Math.max(kb.t, Math.min(bn.y, kb.b));
+        if (Math.hypot(nx - bn.x, ny - bn.y) < 0.85 * bn.r) bad.push(`the knob ${fmt(kb)} is on the pan's body (within ${Math.round(0.85 * bn.r)} px of its middle)`);
+      }
       if (!bad.length) continue;
       seen.add(key);
-      add("contract-110", e.t, `${one ? "one pan" : "several pans"}: ${bad.join("; ")}`);
+      add("contract-110", e.t, `${alone ? "one pan alone in the width" : single ? "one pan sharing the width" : "several pans"}: ${bad.join("; ")}`);
     }
   }
 }
@@ -662,6 +665,21 @@ function s19hook() {
       return { i: bi, knob: rnd(kb), face: face ? rnd(face) : null, burner: { x: Math.round(bn.x), y: Math.round(bn.y), r: Math.round(bn.r) }, pan: pan ? rnd(pan.b) : null, panKey: pan ? pan.key : null };
     });
     const panels = [...document.querySelectorAll("#side, .njg-side, #mission")].filter(shown).map((el) => R(el.getBoundingClientRect()));
+    // what shares the pan's width: a picture or an item card beside the pan (not over it, not the hob's own, not on the shelf band),
+    // overlapping its height, at least 15% of its height
+    const bandTop = cr.top + (630 / 900) * cr.height;
+    const cards = [...document.querySelectorAll(".wc14-laps, .daar-laps")].filter(shown).map((el) => ({ key: "lap-card", b: R(el.getBoundingClientRect()) }));
+    list.forEach((q) => {
+      const p = q.pan || [q.burner.x - q.burner.r, q.burner.y - q.burner.r, q.burner.x + q.burner.r, q.burner.y + q.burner.r];
+      const ph = p[3] - p[1];
+      q.beside = [...new Set(pics.concat(cards).filter((x) => {
+        const b = x.b;
+        if (b[3] > bandTop + 2 || (b[3] - b[1]) < 0.15 * ph || ar(b) >= 0.3 * cvA) return false;
+        if (b[3] <= p[1] || b[1] >= p[3]) return false; // (not at the pan's height)
+        if (b[2] > p[0] && b[0] < p[2]) return false; // (over or under the pan: its contents, its ladle, the flag)
+        return true;
+      }).map((x) => x.key))].slice(0, 6);
+    });
     return { n: flames.length, list, panels, vw: innerWidth, vh: innerHeight };
   };
 

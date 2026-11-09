@@ -1103,15 +1103,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     backdrop(S);
     // S19 / Q9: the wide hob (one big landscape burner) and the karahi 1.5x its old size, the plate to its
     // right on the burner's line; the folded samosas wait on thalis on the band
-    // SH-247 (the knob rule, Zafar 9 Nov: "the button's off to the left-hand side, so that the frying pan can remain bigger"): one
-    // karahi, so the knob stands on the wide hob's glass to its left, centred on its height (Kit.hob knobs "left")
-    const hob = Kit.hob(S, { wide: true, k: z.L(FRY.hobK), cx: z.X(FRY.bx), bottom: z.Y(SHELF_TOP - 16), knobs: "left" });
+    const hob = Kit.hob(S, { wide: true, k: z.L(FRY.hobK), cx: z.X(FRY.bx), bottom: z.Y(SHELF_TOP - 16) });
     const at = hob.burners[0];
     const bodyR = z.L(FRY.r);
-    const KM = META.karahi;
-    // the flames peek out past the karahi's body (flame-high's ring: 1.2 x flameR); the knob clear of its handles (KM.cx / KM.r of its body)
-    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.9, reach: (bodyR * KM.cx) / KM.r });
+    // the flames peek out past the karahi's body (flame-high's ring: 1.2 x flameR)
+    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.9 });
     // the karahi, placed by its measured round body (never the handle-inclusive box)
+    const KM = META.karahi;
     const karahi = S.track(S.add.image(at.x, at.y, "sv3-karahi").setOrigin(KM.cx, KM.cy).setDepth(D.item));
     karahi.setScale(bodyR / (KM.r * KM.w));
     karahi.shadow = S.contactShadow(karahi, { centerX: at.x, centerY: at.y + bodyR * 0.08, width: bodyR * 2.15, height: bodyR * 2.15 });

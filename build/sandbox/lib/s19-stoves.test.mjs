@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
-import { S19_CHECKS, S19_HOOK, check110, check111, ONE_PAN } from "./contract-s19.mjs";
+import { S19_CHECKS, S19_HOOK, check110, check111 } from "./contract-s19.mjs";
 import { CHECKS } from "./contract.mjs";
 
 const require = createRequire(import.meta.url);
@@ -22,32 +22,37 @@ test("contract-110 and -111 are registered with the S19 checks and the probe sam
   assert.match(S19_HOOK, /s19knob/);
   assert.match(S19_HOOK, /s19tap/);
   assert.doesNotThrow(() => new Function(S19_HOOK));
-  assert.ok(ONE_PAN.test("cook:daar") && ONE_PAN.test("cook:samosa") && ONE_PAN.test("cook:maani-line") && ONE_PAN.test("lab:cook/daar"));
-  assert.ok(!ONE_PAN.test("cook:chai-tray") && !ONE_PAN.test("cook:eggs"));
 });
 
 // a single pan at x 400..700 (middle 550, 300), its flames' ring r 160
 const pan = { burner: { x: 550, y: 300, r: 160 }, pan: [380, 150, 720, 450] };
-test("contract-110: one pan, the knob below it (the old front edge) is a break; to its left, centred on its height, passes", () => {
-  const red = run(check110, { flow: "cook:daar" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [[0, 0, 340, 665]], list: [{ i: 0, ...pan, knob: [530, 480, 570, 520], face: null }] })]);
+test("contract-110: a pan alone in the width: the knob below it is a break; to its left, centred on its height, passes", () => {
+  const red = run(check110, { flow: "cook:daar" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [[0, 0, 340, 665]], list: [{ i: 0, ...pan, beside: [], knob: [530, 480, 570, 520], face: null }] })]);
   assert.equal(red.length, 1);
   assert.match(red[0].msg, /not left of the pan/);
-  const green = run(check110, { flow: "cook:daar" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [[0, 0, 340, 665]], list: [{ i: 0, ...pan, knob: [350, 280, 376, 320], face: null }] })]);
+  const green = run(check110, { flow: "cook:daar" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [[0, 0, 340, 665]], list: [{ i: 0, ...pan, beside: [], knob: [350, 280, 376, 320], face: null }] })]);
   assert.deepEqual(green, []);
-  // the face above the knob: the pair centred on the pan's height
-  const pair = run(check110, { flow: "cook:maani-line" }, [c(1000, "s19knob", { vw: 1280, vh: 665, panels: [], list: [{ i: 0, ...pan, face: [345, 255, 375, 285], knob: [345, 295, 375, 345] }] })]);
+  const pair = run(check110, { flow: "cook:maani-line" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [], list: [{ i: 0, ...pan, beside: [], face: [345, 255, 375, 285], knob: [345, 295, 375, 345] }] })]);
   assert.deepEqual(pair, []);
-  // off its height, or under the side panel, or off the screen
-  const low = run(check110, { flow: "cook:maani-line" }, [c(1000, "s19knob", { vw: 1280, vh: 665, panels: [], list: [{ i: 0, ...pan, face: [345, 355, 375, 385], knob: [345, 395, 375, 445] }] })]);
+  const low = run(check110, { flow: "cook:maani-line" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [], list: [{ i: 0, ...pan, beside: [], face: [345, 355, 375, 385], knob: [345, 395, 375, 445] }] })]);
   assert.match(low[0].msg, /below the pan's middle/);
-  const under = run(check110, { flow: "cook:samosa" }, [c(1000, "s19knob", { vw: 1280, vh: 665, panels: [[0, 0, 360, 665]], list: [{ i: 0, ...pan, knob: [345, 280, 375, 320], face: null }] })]);
+  const under = run(check110, { flow: "cook:samosa" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [[0, 0, 360, 665]], list: [{ i: 0, ...pan, beside: [], knob: [345, 280, 375, 320], face: null }] })]);
   assert.match(under[0].msg, /under the side panel/);
 });
 
-test("contract-110: several pans (chai), each knob below its burner passes; one above it is a break", () => {
-  const ok = run(check110, { flow: "cook:chai-tray" }, [c(1000, "s19knob", { vw: 1280, vh: 665, panels: [], list: [{ i: 0, burner: { x: 500, y: 200, r: 80 }, pan: null, knob: [520, 330, 560, 370] }, { i: 1, burner: { x: 800, y: 200, r: 80 }, pan: null, knob: [820, 330, 860, 370] }] })]);
+test("contract-110 (Zafar, 9 Nov, refined): a pan sharing the width keeps its knob below it, clear of its body; to its left is a break", () => {
+  const ok = run(check110, { flow: "cook:maani-line" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [], list: [{ i: 0, ...pan, beside: ["mv-chakla"], face: [470, 480, 500, 510], knob: [530, 480, 570, 520] }] })]);
   assert.deepEqual(ok, []);
-  const red = run(check110, { flow: "cook:chai-tray" }, [c(1000, "s19knob", { vw: 1280, vh: 665, panels: [], list: [{ i: 0, burner: { x: 500, y: 200, r: 80 }, pan: null, knob: [380, 180, 420, 220] }] })]);
+  const left = run(check110, { flow: "cook:maani-line" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [], list: [{ i: 0, ...pan, beside: ["mv-chakla"], knob: [350, 280, 376, 320], face: null }] })]);
+  assert.match(left[0].msg, /share.* the width, so it sits below/);
+  const onBody = run(check110, { flow: "cook:daar" }, [c(1000, "s19knob", { n: 1, vw: 1280, vh: 665, panels: [], list: [{ i: 0, ...pan, beside: ["lap-card"], knob: [530, 330, 570, 370] }] })]);
+  assert.match(onBody[0].msg, /on the pan's body/);
+});
+
+test("contract-110: several pans (chai), each knob below its burner passes; one above it is a break", () => {
+  const ok = run(check110, { flow: "cook:chai-tray" }, [c(1000, "s19knob", { n: 2, vw: 1280, vh: 665, panels: [], list: [{ i: 0, burner: { x: 500, y: 200, r: 80 }, pan: null, knob: [520, 330, 560, 370] }, { i: 1, burner: { x: 800, y: 200, r: 80 }, pan: null, knob: [820, 330, 860, 370] }] })]);
+  assert.deepEqual(ok, []);
+  const red = run(check110, { flow: "cook:chai-tray" }, [c(1000, "s19knob", { n: 2, vw: 1280, vh: 665, panels: [], list: [{ i: 0, burner: { x: 500, y: 200, r: 80 }, pan: null, knob: [380, 180, 420, 220] }] })]);
   assert.equal(red.length, 1);
   assert.match(red[0].msg, /not below its burner/);
 });
