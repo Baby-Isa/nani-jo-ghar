@@ -39,5 +39,30 @@ Fable (9 Nov, quick review): agrees, with the changes above folded in (3b reruns
 never the builder's own; the flake rule; the rollback line; tier 0 refuses the push; the known-fails list; two sizes at tier 2; one
 film per game).
 
+## Every check we have, and where each runs (Zafar asked, 9 Nov late)
+
+| Check | What it is | T0 push | T1 prototype | T2 targeted | T3 sprint check | T3b/publish | T4 live | T5 stores |
+|---|---|---|---|---|---|---|---|---|
+| Code checks (`checks.mjs`) | code tests, no English for the child, the leak bots, docs, fix-list labels, decisions recorded | all | all | all | all | all + browser load | - | all |
+| Robot play-through (`run.mjs`) | a robot plays a game's levels and paths, shoots every state; fails on stuck, page errors | - | the lab page, 4 sizes | the touched game, its levels, 2 sizes | changed games L1-L4, 4 sizes; others one size | changed games, one size | first minute, phone | everything |
+| Rules (contract checks, about 110) | watched during every play-through: one voice at a time, the light centred, no own glow, card rows tick ... | - | - | the touched game's | all, changed games | the failures | - | all |
+| Layout findings | buttons too small, text too small or clipped (5,530 tonight, mostly "tap too small") | - | - | - | read for changed games | - | - | all |
+| Probes (evidence, per fix-list row) | one row's moment captured, red before the fix, green after | - | - | each row the change names | rows the sprint touched | - | - | all |
+| First-play look (NEW) | Fable (or I) watches L1 of the changed game played as a new player, a minute, with a list: lights, arrows, lessons, nothing obviously wrong | - | yes | yes | yes, every changed game | yes | - | yes |
+| The judge (Fable) on probe sheets | looks at each row's before/after sheet | - | - | big visual rows | all touched rows | - | - | all |
+| Beside chai (`sidebyside.mjs`) | a game next to chai at a child's pace, looked at by Fable | - | - | - | a game moved to its new scene and art | - | - | all |
+| Chai frozen | chai replayed against its frozen run | - | - | when shared files change | yes | yes | - | yes |
+| Art judge (`artjudge.py`, then Fable) | each landed picture checked, then cut | when art lands | | | | | | |
+| Before/after pictures to Zafar | made by me from the code before and after | - | - | yes, before the merge | - | - | - | - |
+
+**The first ten seconds (his point):** no machine rule catches a fault nobody wrote a rule for (a missing arrow, a lesson that makes no sense).
+Only eyes on a real first play do. So the first-play look runs at every tier from 1 to 3b, on what changed, before anything reaches
+him: a minute of L1 as a new player, filmed, watched with a short list. It is cheap (one page per game) and is the gap.
+**Gaps and inconsistencies found:** the 5,530 layout findings are read by nobody (fix the real ones in each game's chai work, retire
+"tap too small" where the item's own tap area now reaches its pill); the publish gate still refuses any open fixable row (decision 89,
+superseded 9 Nov: publish with a known-fails list); `/review` and `evidence-loop.md` still say the side-by-side runs at every merge
+(superseded 9 Nov); card pictures "missing" (contract-104, 69) all exist: they had not loaded yet, which the loading fix (SH-220)
+also solves.
+
 ## Proof
 Rests on: build/reports/s19-check-rules-review.md (the rules already decided), the gate run s19-publish-gate (build/screenshots/sandbox/s19-publish-gate/contract.md, summary.md), the live-site replay main-stuck, and Fable's review (9 Nov).
