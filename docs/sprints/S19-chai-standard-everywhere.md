@@ -37,6 +37,11 @@ chat, about ten images: the stone tray with bowls, the grill top-down with livel
 topping layers, the samosa fold, two egg pans, the baking bowl glass and opaque, the oven between green cabinets); (3) test screens
 composed in code with chai's hob at the four sizes for his picks; (4) the full art run; (5) builders, two at a time.
 
+**His answer (9 Nov): yes to all 13 and the plan, except:** no question to Mum about the fold ("the more important thing is what
+we can execute"); baking keeps concrete amounts only, a little / a lot / a bit more / a bit less go to another game (a review of the
+prototype and clinic games, CK-72); the oven's shelves are dotted tray outlines, top, middle and bottom (CK-70); chop's hop is built
+in the standalone chop game first (CK-71).
+
 ## Waiting on Zafar (his review point: the principles with the art)
 The counting rule (SEK-25, CK-64), sekelo's one skewer per person, the timing floor, samosa's redesign, the scene for every game, the
 shelf angle, the timed windows' look (sekelo, daar, eggs), one stir (DAAR-45), the merge rule, chai's publish.

@@ -1,0 +1,92 @@
+NANI JO GHAR: MINI ART TEST (Sprint 19, before the full run). Paste this whole block into Claude in Chrome.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-mini/refs.zip ,
+unzip it, and drag all 13 pictures into this chat with this block. (If Claude in Chrome cannot upload them to ChatGPT, it will ask you
+to attach each chat's pictures in that chat's first message yourself; then it does all the typing.)
+
+=== IF YOU CANNOT UPLOAD FILES TO CHATGPT (runner, read first) ===
+Ask Zafar, once, to start each ChatGPT conversation himself by attaching that chat's pictures in its first message (Chat 1: the two
+00-HOUSE pictures and every T*, G* and C* picture; Chat 2: the two 00-HOUSE pictures and every S*, E* and B* picture). Then you do all
+the typing; never re-attach; refer to each picture by its file name ("the picture named G2-skewer-layout-guide"). Wait for him to say
+"attached" before your first message.
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+You run a ChatGPT image session for Zafar. Use chatgpt.com in a new tab (he is signed in). This is a TEST run: 13 images that settle
+open questions before the full art run. Two ChatGPT conversations, one after the other, never at once: Chat 1 = T, G1, G2, C1-C5.
+Chat 2 = S1, E1, B1, B2, B3.
+
+In each conversation:
+1. First message: the two 00-HOUSE pictures, the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes these work.
+   Do not draw yet."
+2. For each image line, in order:
+   a. Attach the pictures the line names, paste the line, and add: "First, in text only, list exactly what you will draw: layout,
+      sizes, camera, materials, light, shadows, background. Do not draw yet."
+   b. ChatGPT often promises an image and gives none. So copy its whole answer, and send a NEW message: "Generate the image now,
+      implementing exactly this:" followed by the pasted answer, with the same pictures attached again.
+   c. When the image arrives, send: "Check it against the line and the house brief, in text: what is wrong? Then generate one
+      corrected version." If it answers only in text, repeat step b with that answer.
+   d. Keep both images. Do not judge; move on.
+3. If ChatGPT refuses, hits a limit, or slows down, start a fresh conversation for the rest of that chat, beginning again at step 1.
+When both chats are done, write one line per image line in this chat: the conversation link and how many images it made.
+
+=== HOUSE BRIEF (paste as the first message of each conversation) ===
+These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Rules for
+every image:
+- One large soft light from the upper left; soft contact shadows falling to the lower right; nothing floats. No window-light streaks.
+- Materials: white marble worktop with soft cool veins; brushed stainless steel; cream ceramic bowls; wood only where a line asks.
+- Camera: exactly straight down from above (a flat plan view, no perspective tilt, no side walls of containers visible beyond their
+  rims) unless a line says side-on.
+- These are separate PIECES that we cut out and place in our own game layout; we place the stove, the plates and the word labels
+  ourselves. So draw only what the line asks, nothing else: no stove, no hob, no knobs, no hands, no text or letters, no tools that
+  do nothing, no napkins, no plants, no glow or highlight effects, nothing falling through the air.
+- "On a plain magenta background" means one flat solid #FF00FF colour edge to edge, no gradient, no texture, no shadow on it other
+  than a very faint contact shadow directly under the object; the object must not touch the edges. We cut along the magenta.
+- No oval plates or trays: round, square or rectangular only.
+
+=== IMAGE LINES ===
+CHAT 1
+T  THE STONE TRAY (pictures: T1-stone-tray-rim, T2-stone-tray-tone). Straight down, on the white marble worktop: ONE long tray along
+   the bottom 30% of a 16:9 frame, inset from the left and right edges by about 3% of the width. Honed warm-grey limestone: field
+   #C4B8AD shading to #B5A99E at the edges; a matte finish with a very fine even speckle only a few percent darker, no veins, no bands,
+   no sheen. A shallow raised lip all round, only 3-4% of the tray's depth wide, the same stone as the field (not lighter, not
+   plastic-looking), softly radiused; a thin lighter edge on its upper-left faces and a thin shadow line inside the lip on the
+   lower-right. Corner radius about one eighth of the tray's depth. The tray casts a soft contact shadow lower right. On it, one even
+   row of six cream ceramic bowls (lemon wedges, salt, red chilli powder, green chutney, tamarind chutney, black pepper), each with a
+   clear soft contact shadow, and under each bowl a small blank cream pill. Tone from T2, the raised lip from T1 but quieter.
+G1 THE GRILL, EMPTY (pictures: G1-grill-coals-zafar-likes). The same brushed-steel charcoal grill as G1 with its side handles, seen
+   EXACTLY from straight above (G1 is tilted: here no inner side walls show, the rim is a thin even frame on all four sides), on the
+   white marble. The coals as lively as G1's: bright orange glowing gaps between dark coals, clearly lit and inviting, a little calmer
+   than G1 only if it looks harsh. Two thin steel bars across it, nothing on it: no skewer, no food.
+G2 THE GRILL SCREEN WITH SKEWERS (pictures: G2-skewer-layout-guide, G1-grill-coals-zafar-likes, 00-HOUSE-sekelo-zafar-pick). Copy
+   G2's layout and sizes exactly: two deep rectangular brushed-steel trays stacked on the left (the top tray's top level with the
+   grill's top, the bottom tray's bottom level with the grill's bottom), the grill (as G1, straight down) tall at centre-right. Thick
+   steel skewers with walnut handles: four RAW skewers lying across the top tray, four GRILLED ones lying across the bottom tray,
+   handles to the right, each as long as the tray allows; four raw skewers upright on the grill side by side. Each skewer: meat,
+   tomato, onion, meat, at the size G2 shows. This is a test of whether they fit: if they cannot fit without crowding, draw the
+   nearest layout that does and say in text what you changed.
+C1 THE CHAAT BOWL, EMPTY (pictures: C1-chaat-bowl). The same big cream ceramic bowl, straight down, empty and clean, on a plain
+   magenta background. Same size in the frame as C1's bowl.
+C2-C5 ONE TOPPING EACH (pictures: C1-chaat-bowl and your C1 image). Four images, one per topping: C2 boiled potato cubes; C3
+   chickpeas; C4 sev (thin crispy yellow noodles); C5 green chutney drizzled in a few loose lines. Each ONLY that topping, scattered
+   loosely and evenly inside a circle exactly the size of the empty bowl's inner floor in your C1 image, as if lying in the bowl, NO
+   bowl drawn, on a plain magenta background, the same camera, scale and light as C1, a faint contact shadow under each piece. We will
+   stack these in the bowl in any order, so pieces must not be cut off at the circle's edge.
+CHAT 2
+S1 THE SAMOSA FOLD (pictures: S1-samosa-fold-geometry, S2-samosa-fold-look). One wide image, five panels side by side, the same
+   camera and scale in each, on white marble: draw EXACTLY the five stages of S1's geometry (the sheet 1.22 times as wide as it is
+   tall; creases from the top edge's middle to each bottom corner; the filling low in the middle; 2 the right corner lifting over its
+   crease; 3 the right flap lying flat, its corner just inside the far crease; 4 the left corner lifting over; 5 the closed triangle)
+   with S2's look: soft golden pastry, the potato-pea-mince filling, soft rounded edges, gentle shadows where the flap curls.
+E1 TWO FRYING PANS (pictures: E1-maani-tawa-wooden-handle). Straight down, side by side on a plain magenta background, each empty,
+   its handle pointing straight down: (a) a dark seasoned pan with a walnut handle and a steel collar, the family of E1's tawa; (b) an
+   all-brushed-stainless-steel pan with a steel handle. Same size, same light.
+B1 BAKING BOWL, GLASS (pictures: B1-baking-mixing). Side-on with the camera a touch above (as B1), on the white marble against a plain
+   warm-cream wall: three panels, the same clear glass mixing bowl in each: 1 a heap of flour in it; 2 flour with water poured in, a wet
+   patch; 3 a smooth ball of naan dough. The contents must read clearly through the glass.
+B2 BAKING BOWL, OPAQUE (pictures: B1-baking-mixing). The same three panels with a cream ceramic bowl instead, the camera a little
+   higher so the contents show over the rim.
+B3 THE OVEN (pictures: B2-baking-oven, B3-kitchen-green-cabinets). Side-on, straight on: a built-in oven in cream enamel with brushed-
+   steel trim and ONE gold-ringed knob, set between sage-green cabinet doors with brass bar handles (B3's cabinets, right of that
+   picture), a white marble worktop above. The glass door closed, the inside softly lit and EMPTY, its three shelf runners (top, middle,
+   bottom) clearly visible through the glass. No text, no numbers, no display.
