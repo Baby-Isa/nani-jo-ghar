@@ -131,3 +131,8 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 - **The book mode grows a lesson path for older learners and adults** (Zafar, 7 Nov: "the book mode can be extended to have more
   traditional duo lingo language learning so it has something for all ages"): short lessons built by the language engine from the
   family's recordings, beside the games, for 10-14s and adult heritage learners; the games stay picture-led for the 5-year-olds.
+
+## Zafar, 9 Nov (mock-up round 2)
+- **An omelette recipe** (later): "you do kind of add chilies and cheese and stuff to an omelette ... That probably requires the
+  mixing element from DAR ... instead of a stove top, it's a bowl. And then when you've done that, it goes onto the egg scene, and
+  you've got your bowl on the shelf and you pour it in and it cooks. Maybe an idea for later." (Ours: it could reuse daar's stir and eggs' pan.) (`docs/feedback/kitchen-mocks2-2026-11-09.md` P15)

@@ -29,6 +29,14 @@ principles and the art.
 ## Publish (Zafar, 9 Nov)
 Once s19-lights is done: publish everything since the last publish together: the behaviour work (cards, no ticks, lights, games' fixes, checks), **chai's three fixes** (his go) and the lights. After /review and checks.mjs; the mock-ups' folders stay out of `assets/`.
 
+## Art, round 2 answered (Zafar, 9 Nov)
+
+His note: `docs/feedback/kitchen-mocks2-2026-11-09.md` (19 rows). The proposed plan, waiting on his yes: (1) the orchestrator, no ChatGPT:
+sekelo's skewer spacing check in code, the samosa fold's geometry guide, the stone tray spec; (2) a mini art run (his one ChatGPT
+chat, about ten images: the stone tray with bowls, the grill top-down with lively coals and skewers on the trays and grill, four chaat
+topping layers, the samosa fold, two egg pans, the baking bowl glass and opaque, the oven between green cabinets); (3) test screens
+composed in code with chai's hob at the four sizes for his picks; (4) the full art run; (5) builders, two at a time.
+
 ## Waiting on Zafar (his review point: the principles with the art)
 The counting rule (SEK-25, CK-64), sekelo's one skewer per person, the timing floor, samosa's redesign, the scene for every game, the
 shelf angle, the timed windows' look (sekelo, daar, eggs), one stir (DAAR-45), the merge rule, chai's publish.
