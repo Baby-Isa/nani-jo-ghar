@@ -43,3 +43,12 @@ Opus, high. Flaws first.
   - `s19-stoves.test.mjs`: 6/6.
   - `evidence.mjs --lint-specs`: 0 flagged.
 - **After folder:** `build/screenshots/brief/s19-stoves/` once resumed. QA: the auto lines above; the eye lines are the judge's.
+
+## Fix round (Zafar, 9 Nov: "if there's multiple things taking up width, then we put the button underneath")
+- Maani and samosa's fry are as they were. Daar's hob, pot and knob are as they were. `knobs: "left"` stays in the kit, unused.
+- Daar's stir: the dial is back on the pot's right (smaller where the room asks), with the lap card beside it, below the settings corner.
+- Contract-110 is refined: left only for a pan alone in the width; otherwise below, clear of its body. It is judged over the page, held 300 ms, and sees daar's dial (`njgBox`).
+- **Proof:**
+  - `s19-stoves-fix-contract`, daar, samosa and maani at the four sizes: `CONTRACT PASSED: 0 breaks over 12 pages`, 0 page errors.
+  - Pairs at 930x430 and 740x320: `build/screenshots/brief/s19-stoves/fix-round/`. The before is the knob-left run at L2; the after is L1.
+  - `s19-stoves.test.mjs` 7/7.
