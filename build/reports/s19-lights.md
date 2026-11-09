@@ -1,6 +1,6 @@
 # s19-lights: one shared first-time light in every game; maani's, chaat's and samosa's first times (8-9 Nov)
 
-Opus, high. Branch `s19-lights`. Phase 2 was finished by a second builder. Flaws first.
+Opus, high. Branch `s19-lights`. Flaws first.
 
 ## Flaws and open
 - **Breaks left, none from this branch's code:**
@@ -42,11 +42,9 @@ Opus, high. Branch `s19-lights`. Phase 2 was finished by a second builder. Flaws
 - **Samosa:** the fry is staged: the knob, each samosa, then the lift in the green (SAM-30).
 - **Nani's drop-down** comes back once a call that cleared it has been said (`station-lib.js`; contract-101, samosa).
 - **Lab** (`kit-lights.html`): `roll-pair` (finger and circle side by side) and `rim-stop`.
-- **Evidence:** MAA-21's spec note is updated (lint clean).
 
 ## CHT-19 (first builder's replay)
-Seeds 9001-9010 were played at L1-L4. Every call after a layer named the next layer in the card's order, and the "no" row was never
-called. No fix.
+Seeds 9001-9010 at L1-L4: every call named the card's next layer; the "no" row was never called. No fix.
 
 ## Proof
 - **Four sizes, 8 flows, `--check`** (`s19-lights-contract3`): 32/32 reached their end, **0 page errors**.
@@ -63,4 +61,4 @@ called. No fix.
   - Machine PASS: SH-237, CK-61, DAAR-43. Machine FAIL: CK-63 (the card light).
   - 8 rows for the judge.
   - Tool failures are spec problems: SH-119 (`.njg-spot`), SH-236 and MAA-22 at L3 (a still strip), SH-228 (eggs).
-  - The disk filled mid-run. I deleted about 5 GB of superseded runs and replayed the crashed pages.
+  - The disk filled mid-run; superseded runs (5 GB) deleted, crashed pages replayed.
