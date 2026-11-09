@@ -486,6 +486,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     tappable(obj, fn) {
       obj.setInteractive({ useHandCursor: true });
+      // SH-244: one rule for every shelf: a thing with a word pill under it (obj.chip) takes taps down its slot to the pill's top
+      // (js/shared/shelf.js Shelf.P.reach); the pill keeps its card and a small margin
+      if (global.Shelf && global.Shelf.P && global.Shelf.P.reach) global.Shelf.P.reach(obj);
       obj.removeAllListeners("pointerdown");
       obj.on("pointerdown", (p) => {
         Cook.unlockAudio();

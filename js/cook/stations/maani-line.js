@@ -8,7 +8,7 @@
  *  - RIGHT (cook): the shared kitchen kit's compact hob with ONE burner and ONE tawa centred on it
  *    (maani keeps one tawa: the game is rolling the next maani while flipping the one on the tawa),
  *    the flames peeking out all round it, the heat ring on the tawa's rim, the person's face and the
- *    knob on the hob's front edge, the flat wooden turner resting on the counter beside the hob.
+ *    knob in a column on the hob to its left (SH-247, the knob rule), the flat wooden turner resting on the counter beside the hob.
  *  - THE SHELF BAND (the bottom 30%): under the chakla, the dough piles (wheat, bajri: always both,
  *    straight on the band, no tray), a `🔊 word` chip under each (tap the pile = one ball flies out,
  *    tap the chip = hear it; the word written until it is used right, then the speaker alone: Cook.chipWord,
@@ -52,7 +52,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const HOB_K = 0.85; // the one-burner hob, a little bigger than chai's (it holds a tawa)
   const HOB_BOTTOM = SHELF_TOP - 40; // breathing space above the shelf (§10)
   const CHAKLA_D = 470;
-  const COL_GAP = 150; // between the chakla and the hob
+  const COL_GAP = 150; // between the chakla and the hob (the upright hob's place: the tawa's middle)
+  const HOB_GAP = 60; // SH-247: the chakla's right edge to the turned hob's left edge (its face and knob stand on the hob's own glass)
   const TAWA_R = 150; // the tawa's round body
   const PLATE_D = 182; // a plate on the shelf band (SH-112: a fifth bigger in the taller band)
   // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
@@ -187,11 +188,15 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // two columns, centred as one block: the chakla | the hob
     const hs = Kit.size(1, HOB_K);
     const left = (1600 - (CHAKLA_D + COL_GAP + hs.w)) / 2;
-    const LX = left + CHAKLA_D / 2;
     const RX = left + CHAKLA_D + COL_GAP + hs.w / 2;
     // raised into the middle of a taller stage's worktop (the stage fill)
-    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM - Cook.lift() });
-    const midY = hob.y + hob.h / 2; // the chakla sits on the hob's middle line
+    const hobTop = HOB_BOTTOM - Cook.lift() - hs.h; // (the upright hob's top: the tawa and the chakla keep their heights)
+    // SH-247 (the knob rule, Zafar 9 Nov: "where you only have one item ... you put the button off to the left"): one tawa, so its
+    // face and knob stand to its left (the hob turned a quarter, Kit.hob knobs "left"); the tawa keeps its place, the hob laid round it
+    const hob = Kit.hob(S, { n: 1, k: HOB_K, knobs: "left", burnerAt: { x: RX, y: hobTop + hs.burnerY } });
+    const midY = hobTop + hs.h / 2; // the chakla sits on the (upright) hob's middle line, as it did
+    // the chakla's right edge keeps the gap to the hob's left edge (the hob is wider turned: the chakla moves over by as much)
+    const LX = Math.min(left + CHAKLA_D / 2, hob.x - HOB_GAP - CHAKLA_D / 2);
     const CH = { x: LX, y: midY };
 
     /* ---------- the chakla and its gold ring ---------- */
@@ -208,7 +213,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     /* ---------- the hob: one burner, one tawa, the face and the knob on the front edge ---------- */
     // M7: the flame ring sized to the tawa (as chai's and daar's): its tips peek out past the rim all the
     // way round (flame-high reaches 1.2 x flameR; the v2 0.74 hid it under the tawa but for the gaps)
-    const burner = Kit.burner(S, hob, 0, { who, flameR: TAWA_R * 0.95, spread: 62, state: "high" });
+    const burner = Kit.burner(S, hob, 0, { who, flameR: TAWA_R * 0.95, spread: 62, state: "high", reach: (TAWA_R * TAWA.cx) / TAWA.r });
     const TW = { x: hob.burners[0].x, y: hob.burners[0].y };
     // M8: the hi-res tawa, placed by its measured body (the handle leaves the box off-centre), as Kit.place does
     const tawa = S.track(S.add.image(TW.x, TW.y, "mv-tawa").setOrigin(TAWA.cx, TAWA.cy).setDepth(D.item - 0.5));
@@ -241,7 +246,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // M6 / Q15: the flat wooden turner (the family's tool: a word like "moikyo", to confirm with Mum) rests on
     // the counter right of the hob, blade down by the hob's corner, handle up and away: placed, not floating.
     // It slides under the maani to flip it, and again to lift it off. Its origin is the blade's middle.
-    const turnerHome = { x: hob.x + hob.w + 62, y: hob.y + hob.h - 120, angle: 0 };
+    // (the upright hob's right edge and foot: the turner keeps its place beside the tawa)
+    const turnerHome = { x: RX + hs.w / 2 + 62, y: hobTop + hs.h - 120, angle: 0 };
     const turner = S.track(S.add.image(turnerHome.x, turnerHome.y, "mv-turner").setOrigin(TURNER.ox, TURNER.oy).setDepth(D.item + 3));
     turner.setScale(TURNER.len / turner.width);
     if (turner.preFX && S.renderer && S.renderer.type === Phaser.WEBGL) {

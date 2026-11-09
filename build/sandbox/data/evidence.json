@@ -19097,10 +19097,12 @@
    "at": "exp:cook-paani",
    "after": null,
    "capture": [
-    "strip:.njg-spot:6x500"
+    "strip:.njg-onboard:6x500",
+    "contract:44",
+    "contract:102"
    ],
    "expect": null,
-   "note": "chai: the one finger, from above (never over the word chip): tap, lift off, half a second, tap again (6 frames over 3 s)",
+   "note": "chai: the one finger, from above (never over the word chip): tap, lift off, half a second, tap again (6 frames over 3 s) (s19-stoves: the kit's light layer .njg-onboard, as the pantry's; .njg-spot is only the stuck help's spotlight)",
    "delay": 300
   },
   {
@@ -25235,7 +25237,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "hint-nani-says",
+   "at": "hint-glow",
    "after": null,
    "capture": [
     "contract:91",
@@ -25245,7 +25247,7 @@
    "expect": [
     "pass"
    ],
-   "note": "eggs: the stuck help with the light"
+   "note": "eggs: the stuck help with the light (s19-stoves: at hint-glow, as every other game; hint-nani-says never came in eggs)"
   },
   {
    "flow": "cook:corn",
@@ -25768,6 +25770,229 @@
    "expect": null,
    "note": "chop's hop: the whole items sit in the bottom band with their pills, hop straight up onto the board and drop back at different times (no arcs); L1 one up at a time, L2 two with decoys (1.5 s after the view opens, the first hop up)",
    "delay": 1500
+  }
+ ],
+ "SH-247": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:knob",
+   "after": null,
+   "capture": [
+    "contract:110",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "daar: one pot, so the knob stands to its left, centred on its height, clear of the pot (its handles too) and of the side panel (contract-110), L1-L4"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:knob",
+   "after": null,
+   "capture": [
+    "contract:110",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa's fry: one karahi, the knob on the wide hob's glass to its left, centred on its height (contract-110)"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "contract:110",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani: one tawa, Nani's face above the knob in a column to its left, centred on its height (contract-110); chai keeps its knobs below each burner (the contract run)"
+  }
+ ],
+ "SH-244": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "contract:111",
+    "crop:hook:cook.taps"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai's shelf: a tap at a jar's foot or just above its pill picks the jar, never the word (contract-111); the picture: each item's tap area outlined green, each pill's maroon dashed (njgTest.cook.taps, the S19 probe)"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "contract:111",
+    "crop:hook:cook.taps"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani's piles: the same, the piles' tap areas reaching their pills (contract-111); the tap areas drawn over the shelf"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:knob",
+   "after": null,
+   "capture": [
+    "contract:111"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "daar's shelf jars: the same rule (contract-111)"
+  }
+ ],
+ "DAAR-50": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "dom:.wc14-laps"
+   ],
+   "expect": null,
+   "note": "daar's stir: the lap count is our item card right of the pot (the numeral its picture, the Kutchi number, its English, the speaker lit while Nani counts; a number with no recording its English in grey italic), whole, unclipped, clear of the pot and the settings corner; the dial's own count chip gone"
+  }
+ ],
+ "SH-245": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "the main thing's size (SH-245, a later sprint): daar's pot and the room above the shelf, recorded beside the knob rule's change (s19-stoves leaves the pot's size as it was)"
   }
  ]
 }
