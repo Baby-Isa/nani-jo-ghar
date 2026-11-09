@@ -208,7 +208,9 @@
       const b = row[i];
       k = Math.min(k, (c.x - b.x - gap) / ((b.w + c.w) / 2));
     });
-    const cap = k < 1 ? slotW - gap : Infinity;
+    // (a pill at its own size, k 1, keeps inside its slot as well: a long word there reached under the next thing's picture on a big
+    // screen, so the light round that thing could not be whole; s19-stoves, SH-243's leftover)
+    const cap = k <= 1 ? slotW - gap : Infinity;
     return { k: Math.max(1, k), cap };
   };
 
