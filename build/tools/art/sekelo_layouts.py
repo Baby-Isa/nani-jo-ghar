@@ -22,8 +22,10 @@ def grill_img():
     g.paste(patch, (x0, int(95 * K)))
     g = g.crop((int(470 * K), int(75 * K), int(1360 * K), int(668 * K))).convert("RGB")  # rim at about 7%..93% of its height
     m = g.copy()
-    for c in ((0, 0), (m.width - 1, 0), (0, m.height - 1), (m.width - 1, m.height - 1), (m.width // 2, 2), (2, m.height // 2), (m.width - 3, m.height // 2)):
-        ImageDraw.floodfill(m, c, (255, 0, 255), thresh=38)   # the mock's own marble round the grill, made see-through
+    seeds = [(0, 0), (m.width - 1, 0), (0, m.height - 1), (m.width - 1, m.height - 1), (m.width // 2, 2), (2, m.height // 2), (m.width - 3, m.height // 2)]
+    seeds += [(x, m.height - 3) for x in range(4, m.width, 40)] + [(3, y) for y in range(4, m.height, 40)] + [(m.width - 4, y) for y in range(4, m.height, 40)]
+    for c in seeds:
+        if m.getpixel(c) != (255, 0, 255) and sum(m.getpixel(c)) > 520: ImageDraw.floodfill(m, c, (255, 0, 255), thresh=48)   # the mock's own marble round the grill, made see-through
     a = Image.new("L", g.size, 255); px, pa = m.load(), a.load()
     for y in range(g.height):
         for x in range(g.width):
@@ -32,6 +34,7 @@ def grill_img():
 GRILL = grill_img()
 G_RIM = (0.075, 0.935)       # the grill picture's far and near rim, as shares of its height
 G_IN = (0.115, 0.885)        # its coal bed's left and right, as shares of its width
+G_REST = (-0.035, 0.955)     # Zafar 9 Nov: the tip rests on the far rim and pokes a little past it; the handle's collar on the near rim
 def tray(w, h):
     im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im); r = int(min(w, h) * 0.12)
     d.rounded_rectangle((6, 6, w - 1, h - 1), r, fill=(0, 0, 0, 60))
@@ -64,9 +67,9 @@ def row(base, n, ls, state, x0, x1, y_tip):
     sk = skewer(ls, state, min(int(ls * 0.2), int((x1 - x0) / n * 0.78)))
     for i in range(n): put(base, sk, x0 + (x1 - x0) * (i + 0.5) / n - sk.width / 2, y_tip)
 def place_grill(base, gh, cx):
-    g = GRILL.resize((int(GRILL.width * gh / GRILL.height), gh), Image.LANCZOS); gx = int(cx - g.width / 2); gy = M
+    g = GRILL.resize((int(GRILL.width * gh / GRILL.height), gh), Image.LANCZOS); gx = int(cx - g.width / 2); gy = M + int(-G_REST[0] * gh)
     put(base, g, gx, gy)
-    ls = int(gh * (G_RIM[1] - G_RIM[0])); y_tip = gy + int(gh * G_RIM[0])
+    ls = int(gh * (G_REST[1] - G_REST[0])); y_tip = gy + int(gh * G_REST[0])
     row(base, 4, ls, "raw", gx + g.width * G_IN[0], gx + g.width * G_IN[1], y_tip)
     return g.width, ls
 def place_tray(base, x, y, w, h, state, n=4):
@@ -83,7 +86,8 @@ def band(base, top):
     lip = max(4, int((y1 - y0) * 0.035)); d.rounded_rectangle((x0 + lip, y0 + lip, x1 - lip, y1 - lip), r - lip, fill=(196, 184, 173, 255))
     return x0 + lip, y0 + lip, x1 - lip, y1 - lip
 def fit_grill_h(maxh, maxw):
-    return int(min(maxh / (1 + 0.32 * (G_RIM[1] - G_RIM[0])), maxw * GRILL.height / GRILL.width))
+    span = G_REST[1] - G_REST[0]; extra = -G_REST[0] + G_REST[1] - 1 + 0.32 * span   # the tip's poke above, the handle below
+    return int(min(maxh / (1 + max(0, extra)), maxw * GRILL.height / GRILL.width))
 def opt1():
     im = marble().convert("RGBA")
     gh = fit_grill_h(H - 2 * M, W * 0.62); gw, ls_g = place_grill(im, gh, W - M - int(GRILL.width * gh / GRILL.height) / 2)
@@ -142,9 +146,10 @@ def opt3s():
         for i in range(2):
             cx = bx0 + (bx1 - bx0) * 0.04 + slot * (i + 0.5); cy = by0 + bh * 0.07 + rowh * (r + 0.5)
             put(im, sk, cx - sk.width / 2, cy - sk.height / 2)
-    gh = fit_grill_h(top - M - 6, W * 0.6); gx_c = M + int(GRILL.width * gh / GRILL.height) / 2 + W * 0.04
-    gw, ls_g = place_grill(im, gh, gx_c)
-    tx = int(gx_c + gw / 2 + M); tw = W - tx - M - int(W * 0.03)
+    gh = fit_grill_h(top - M - 6, W * 0.6); gw0 = int(GRILL.width * gh / GRILL.height)
+    tw = min(int(gw0 * 0.75), int(W - gw0 - 3 * M - W * 0.07)); x0 = (W - gw0 - M - tw) / 2
+    gw, ls_g = place_grill(im, gh, x0 + gw0 / 2)
+    tx = int(x0 + gw0 + M)
     pt = min(int(tw * .88 / 4 * .78), int(ls_g * .2)); lt = min(int(pt / 0.2), int((top - 2 * M) / 1.32)); rim = int(tw * 0.035); th = lt + 2 * rim + 7
     im.alpha_composite(tray(tw, th), (tx, M)); row(im, 4, lt, "grilled", tx + tw * 0.06, tx + tw * 0.94, M + rim)
     return im, pw, int(ls_g * .2), min(int(lt * .2), pt)
@@ -164,6 +169,10 @@ def sheet(fn, name, out):
     x = 12
     for t in tiles: S.paste(t, (x, 48)); x += t.width + 12
     S.save(out, quality=88)
+def guide(fn, out, ar=16 / 9):
+    """One clean layout at a 16:9 frame, no captions: the reference ChatGPT copies (G2)."""
+    global W
+    W = int(H * ar); fn()[0].convert("RGB").save(out, quality=90)
 if __name__ == "__main__":
     o = sys.argv[1] if len(sys.argv) > 1 else "sources/art/s19-mocks2/fit"
     sheet(opt1, "Option 1: two trays left (pieces: trays / grill)", f"{o}/layout-opt1-sizes.jpg")

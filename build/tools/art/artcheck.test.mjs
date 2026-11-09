@@ -496,3 +496,19 @@ test("must pass on the repo: the 55 house-look pictures and Fable's steel and gl
   for (const p of [...anchors, ...fable]) assert.deepEqual([...of(p).fail, ...of(p).exception], [], `${p}: ${JSON.stringify(of(p).palette)}`);
   for (const p of honest) assert.ok(of(p).fail.some((f) => f.startsWith("palette")), `${p} is a true two-combination fail`);
 });
+
+// Zafar, 9 Nov: every art block, generated or written by hand, carries the bulk download from ChatGPT's Library (the check box
+// in each image's bottom-right corner), the run's report as one copy-ready code block (tries, what worked, what did not, ChatGPT's
+// file name -> our name) and up to three ChatGPT windows at once. Blocks before this rule are listed and left as they were.
+const BLOCKS_BEFORE_9_NOV = new Set(["s07-chrome-block.txt", "s08c-chrome-block.txt", "s09a-chrome-block.txt", "s09b-chrome-block.txt", "s09r-chrome-block.txt", "s11-chrome-block.txt", "s12-chrome-block.txt", "s14-chrome-block.txt", "s17-art1-chrome-block.txt", "s17-art2-chrome-block.txt", "s17-art3-chrome-block.txt", "s17-art4-chrome-block.txt", "s17-clinic-redo-chrome-block.txt", "s17-cook-redo-chrome-block.txt", "s17-juice-chrome-block.txt", "s17-pc-chrome-block.txt", "s17-pc2-chrome-block.txt", "s17-ps-chrome-block.txt", "s17-simba-chrome-block.txt", "s17-sky-chrome-block.txt", "s17-stove400-chrome-block.txt", "s17-wm-chrome-block.txt", "s17-wm2-chrome-block.txt", "s18-mocks-chrome-block.txt", "s19-mocks2-chrome-block.txt"]);
+test("art blocks (Zafar, 9 Nov): the Library's bulk download, the report as a code block, up to three windows", () => {
+  const dir = join(ROOT, "docs", "design-language", "art-plans");
+  const blocks = readdirSync(dir).filter((f) => /chrome-block.*\.txt$/.test(f) && !BLOCKS_BEFORE_9_NOV.has(f));
+  for (const f of blocks) {
+    const t = readFileSync(join(dir, f), "utf8");
+    assert.match(t, /chatgpt\.com\/library/, `${f}: download every kept image at the end from https://chatgpt.com/library`);
+    assert.match(t, /check box[^.]*bottom-right corner/i, `${f}: tick each image's check box in its bottom-right corner (one download)`);
+    assert.match(t, /code block/i, `${f}: the run's report as one copy-ready code block`);
+    assert.match(t, /(three|3) (ChatGPT )?(windows|tabs|conversations)|windows/i, `${f}: say how many ChatGPT windows run at once (up to three)`);
+  }
+});

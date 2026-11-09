@@ -6,14 +6,15 @@ to attach each chat's pictures in that chat's first message yourself; then it do
 
 === IF YOU CANNOT UPLOAD FILES TO CHATGPT (runner, read first) ===
 Ask Zafar, once, to start each ChatGPT conversation himself by attaching that chat's pictures in its first message (Chat 1: the two
-00-HOUSE pictures and every T*, G* and C* picture; Chat 2: the two 00-HOUSE pictures and every S*, E* and B* picture). Then you do all
-the typing; never re-attach; refer to each picture by its file name ("the picture named G2-skewer-layout-guide"). Wait for him to say
-"attached" before your first message.
+00-HOUSE pictures and every T* and G* picture; Chat 2: the two 00-HOUSE pictures, C1 and E1; Chat 3: the two 00-HOUSE pictures and
+every S* and B* picture). Then you do all the typing; never re-attach; refer to each picture by its file name ("the picture named
+G2-skewer-layout-guide"). Wait for him to say "attached" before your first message.
 
 === FOR CLAUDE IN CHROME (the runner) ===
-You run a ChatGPT image session for Zafar. Use chatgpt.com in a new tab (he is signed in). This is a TEST run: 13 images that settle
-open questions before the full art run. Two ChatGPT conversations, one after the other, never at once: Chat 1 = T, G1, G2, C1-C5.
-Chat 2 = S1, E1, B1, B2, B3.
+You run a ChatGPT image session for Zafar. Use chatgpt.com (he is signed in). This is a TEST run: 13 image lines that settle open
+questions before the full art run. Run THREE ChatGPT conversations AT ONCE, each in its own new tab (Zafar: up to three windows in
+parallel): Chat 1 = T, G1, G2. Chat 2 = C1, C2, C3, C4, C5, E1. Chat 3 = S1, B1, B2, B3. Send in one tab, then move to the next tab
+while it generates; go back round the tabs in turn. Never more than three tabs generating.
 
 In each conversation:
 1. First message: the two 00-HOUSE pictures, the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes these work.
@@ -25,9 +26,26 @@ In each conversation:
       implementing exactly this:" followed by the pasted answer, with the same pictures attached again.
    c. When the image arrives, send: "Check it against the line and the house brief, in text: what is wrong? Then generate one
       corrected version." If it answers only in text, repeat step b with that answer.
-   d. Keep both images. Do not judge; move on.
-3. If ChatGPT refuses, hits a limit, or slows down, start a fresh conversation for the rest of that chat, beginning again at step 1.
-When both chats are done, write one line per image line in this chat: the conversation link and how many images it made.
+   d. Keep both images. Do not judge; move on. Give each kept image its save-as name: s19-mini-<line>-<try>.png (for example
+      s19-mini-G2-1.png for the first, s19-mini-G2-2.png for the corrected one; C2-C5 each their own line). Log it at once (REPORT).
+3. If ChatGPT refuses, hits a limit, or slows down, start a fresh conversation for the rest of that chat, beginning again at step 1,
+   and log why (REPORT: retries).
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Images stay in their chats until every chat is done. Then open https://chatgpt.com/library. Hover over the first kept image: a small
+check box appears in its bottom-right corner; tick it. Then hover over each other kept image: its own check box appears in its
+bottom-right corner; tick it. Tick every kept image of this run (find them by their chats' titles and thumbnails) and nothing else.
+Press the download button on the selection bar: one download for all of them (Chrome's normal download, one file each or one zip).
+ChatGPT names the files; you cannot rename them, so log each as "DOWNLOADED <n>: <ChatGPT's file name> -> <save-as name>", in the
+order they landed. If the selection is refused, use each image's own download button, and log the same way. Never page JavaScript,
+never a file picker, never a GitHub upload: Zafar pushes the folder himself to sources/art/s19-mini/results/.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start the code block with "S19 MINI RUN REPORT" and give, per image line (T, G1, G2, C1, C2, C3, C4, C5, E1, S1, B1, B2, B3):
+  <line> | chat <1/2/3> link and title | tries (and why each retry) | kept: <save-as> = <ChatGPT's downloaded file name>, ... |
+  what worked | what did not (as ChatGPT's own check said, and what you saw) | anything ChatGPT changed or refused
+Then: the DOWNLOADED list, anything missing, and how long it took. Post the code block in this chat; Zafar pastes it back to Claude
+Code (or saves it as sources/art/s19-mini/results/run-report.md with the images).
 
 === HOUSE BRIEF (paste as the first message of each conversation) ===
 These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
@@ -54,7 +72,7 @@ style, not their contents: ignore the faces, labels, pills and the gear icon in 
 - No oval plates or trays: round, square or rectangular only.
 
 === IMAGE LINES ===
-CHAT 1
+CHAT 1 (T, G1, G2)
 T  THE STONE TRAY (pictures: T1-stone-tray-rim, T2-stone-tray-tone). Landscape 16:9, straight down, the white marble worktop filling
    the picture: ONE long rectangular tray along the bottom 30% of the picture, inset from the left and right edges by about 3% of the
    width, nothing above it (leave the top 70% as empty marble). Honed warm-grey limestone: warm greige, one step darker than the marble,
@@ -73,18 +91,24 @@ G1 THE GRILL, EMPTY (pictures: G1-grill-coals-zafar-likes). Landscape 16:9. The 
    as G1's: dark charcoal lumps with bright orange glowing gaps between them, clearly lit and inviting; make them a little calmer than
    G1 only if it looks harsh. The glow stays inside the grill: none on the rim or the marble. Two thin steel bars across the grill
    from left to right, at one third and two thirds of its height, as in G1. Nothing on it: no skewer, no food.
-G2 THE GRILL SCREEN WITH SKEWERS (pictures: G2-skewer-layout-guide, G1-grill-coals-zafar-likes, 00-HOUSE-sekelo-zafar-pick). Landscape
-   16:9, straight down, on the white marble. G2 is a rough layout guide made by pasting pieces together: copy its layout, positions
-   and sizes exactly, but IGNORE the one large skewer in the middle of its grill and the text along its bottom edge, which are
-   leftovers. Draw: two rectangular brushed-steel trays stacked on the left (the top tray's top edge level with the grill's top edge,
-   the bottom tray's bottom edge level with the grill's bottom edge); the grill (as G1, straight down, rim a thin even frame, lively
-   coals, two bars) large at centre-right. Skewers: thin round steel rods, pointed at one end, with a dark walnut handle at the other.
-   Four RAW skewers lying across the top tray, four GRILLED ones (browned and lightly charred) lying across the bottom tray, each
-   horizontal, evenly spaced, points to the left and handles to the right, each as long as the tray's inside allows; and four RAW
-   skewers upright on the grill side by side, evenly spaced, resting across the two bars, points up, handles hanging down past the
-   lower bar. Every skewer carries, in order from the point: meat cube, tomato chunk, red onion wedge, meat cube, at the size G2 shows
-   (each piece about a quarter of the tray's inside width). This is a test of whether twelve skewers fit: if they cannot fit without
-   crowding or shrinking, draw the nearest layout that does and say in text what you changed.
+G2 THE GRILL SCREEN WITH SKEWERS (pictures: G2-skewer-layout-guide, G1-grill-coals-zafar-likes, 00-HOUSE-sekelo-zafar-pick).
+   Landscape 16:9, EXACTLY straight down, on the white marble. G2 is a rough layout guide made by pasting pieces together: copy its
+   layout, positions, sizes and the way every skewer lies, EXACTLY; redraw everything in the house style. Ignore its pasting marks
+   (the ragged pale patches round the grill, a small brown stub under the grill's bottom rim between the handles). Draw:
+   - The grill (as G1, straight down, its rim a thin even steel frame, lively coals) large on the left, as tall as the space above
+     the shelf allows. Its two thin steel bars run LEFT TO RIGHT across the grill, at one third and two thirds of its height.
+   - Four RAW skewers on the grill, UPRIGHT (running top to bottom), side by side, evenly spaced. A skewer is held up by the grill's
+     rims, not by the bars: its metal point rests ON the far (top) rim and pokes a little past it onto the marble; its walnut
+     handle's steel collar rests ON the near (bottom) rim, the handle lying on the marble below the grill. So each skewer spans the
+     whole grill from rim to rim, raised above the coals, with a soft shadow on the coals under it.
+   - Right of the grill, a plain rectangular brushed-steel tray holding four GRILLED skewers (browned and lightly charred), upright
+     the same way, evenly spaced, the same size as on the grill.
+   - Along the bottom 30%: the stone shelf as in T (the warm-grey limestone tray), with four RAW skewers lying flat on it, two by two
+     (two rows of two), points to the right and handles to the left, as G2 shows. No word pills on this screen.
+   Every skewer: a thin round steel rod with a point, then from the point: meat cube, tomato chunk, red onion wedge, meat cube, then
+   a steel collar and a dark walnut handle. All twelve the same size. If something cannot fit as G2 shows, draw the nearest layout
+   that does and say in text what you changed.
+CHAT 2 (C1, C2, C3, C4, C5, E1)
 C1 THE CHAAT BOWL, EMPTY (pictures: C1-chaat-bowl). Square image. The same big cream ceramic bowl as C1, straight down, a perfect
    circle, empty and clean, on a plain magenta background. The bowl's outer rim is 80% of the picture's width, centred; the inner
    floor (the flat bottom you can see inside) is a circle about 60% of the picture's width. A faint contact shadow under the bowl.
@@ -96,7 +120,13 @@ C2-C5 ONE TOPPING EACH (pictures: C1-chaat-bowl). Four separate square images, o
    the circle's edge; every piece is whole. Sizes, as in C1: potato cubes about one tenth of the circle's width, about 12 of them;
    chickpeas about one twentieth, about 25 of them; sev as a loose tangle of short strands covering about half the circle; the
    chutney as four or five loose wavy ribbons, not a pool. We will stack these in the bowl in any order, so each must look right alone.
-CHAT 2
+E1 TWO EGG FRYING PANS (pictures: E1-maani-tawa-wooden-handle). Landscape image, straight down, on a plain magenta background, two
+   pans side by side, each empty and clean, each a perfect circle with its handle pointing to the bottom edge of the picture (6
+   o'clock). Frying pans with a low flared side and a flat floor, NOT the flat tawa in E1: use E1 only for the dark seasoned iron,
+   the walnut handle and the steel collar. (a) left: dark seasoned iron pan, walnut handle with a steel collar; (b) right: all
+   brushed stainless steel pan with a brushed-steel handle, reflecting a neutral pale-grey room, no pink. Same size, each pan about
+   40% of the picture's width, the same light, a faint contact shadow under each. No stove under them.
+CHAT 3 (S1, B1, B2, B3)
 S1 THE SAMOSA FOLD (pictures: S1-samosa-fold-geometry, S2-samosa-fold-look). Landscape 16:9, straight down, on the white marble: five
    equal panels side by side, the same camera and scale in each, no numbers, labels, lines or frames (S1's are notes, not to be drawn).
    S1 is the geometry: follow it EXACTLY, stage for stage. S2 gives only the look (soft golden pastry, the potato-pea-mince filling,
@@ -107,12 +137,6 @@ S1 THE SAMOSA FOLD (pictures: S1-samosa-fold-geometry, S2-samosa-fold-look). Lan
    lying flat across the middle, its corner landing just inside the left crease, the filling half covered. Stage 4: the left half
    lifting over its crease. Stage 5: the closed triangle, point up, flat base, no filling visible. The filling stays visible wherever
    a flap has not yet covered it.
-E1 TWO EGG FRYING PANS (pictures: E1-maani-tawa-wooden-handle). Landscape image, straight down, on a plain magenta background, two
-   pans side by side, each empty and clean, each a perfect circle with its handle pointing to the bottom edge of the picture (6
-   o'clock). Frying pans with a low flared side and a flat floor, NOT the flat tawa in E1: use E1 only for the dark seasoned iron,
-   the walnut handle and the steel collar. (a) left: dark seasoned iron pan, walnut handle with a steel collar; (b) right: all
-   brushed stainless steel pan with a brushed-steel handle, reflecting a neutral pale-grey room, no pink. Same size, each pan about
-   40% of the picture's width, the same light, a faint contact shadow under each. No stove under them.
 B1 BAKING BOWL, GLASS (pictures: B1-baking-mixing). Landscape 16:9, side-on with the camera a touch above (the same height as B1), on
    the white marble worktop against a plain, flat warm-cream wall (not B1's marble wall; ignore B1's jug, jars and pills). Three
    equal panels side by side, the same clear glass mixing bowl in each, the same shape and size as B1's cream bowl but in clear glass
