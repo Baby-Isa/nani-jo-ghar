@@ -13,7 +13,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 **Where things stand (8 Nov, evening):** Sprint 19 is open (`docs/sprints/S19-chai-standard-everywhere.md`). Zafar said go on every
 fix that needs no decision plus the checks audit; he has **not** agreed the principles (he reviews them with the art he is running) and
 said **don't publish chai's three fixes**. New rule in CLAUDE.md: plans run back to back, no days or dates.
-- **Running:** s19-lights phase 2 (`/home/user/wt/s19-lights`; also owns station-lib.js's idle glow and the kit asks from s19-games). Merged: s19-checks, s19-cards, s19-lights phase 1, s19-games. **With Zafar now:** principles 1-10 and mock-up round 1 (49 images in `sources/art/s18-mocks/results/`, a review page published), game by game, into each game's change list; then the house art block.
+- **s19-lights phase 2 paused by Zafar (9 Nov, his token budget):** its committed work sits unmerged on branch `s19-lights` (`/home/user/wt/s19-lights`, report drafted); finish and merge it when he says. **Running:** Fable's answers to his mock-up questions (`build/reports/s19-fable-mock-answers.md`) and the /feedback report for his 9 Nov note (`docs/feedback/kitchen-mocks-2026-11-09.md`; its second reader still to run). Merged: s19-checks, s19-cards, s19-lights phase 1, s19-games. Principles answered (review document §7, 9 Nov).
 - Each builder's work merges only after a look beside chai and the judge on its changed screens; nothing is published without Zafar.
 
 **Next, in order:** 1. merge each builder as it reports (look beside chai, the judge); 2. launch the queued ones as slots free;
@@ -30,13 +30,13 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 119 | 98 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 121 | 98 |
 | Cook: pantry | 9 | 10 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 26 / 6 / 12 / 4 / 3 / 5 / 17 | 29 / 14 / 28 / 12 / 23 / 17 / 35 |
-| Clinic | 39 | 168 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 27 / 8 / 17 / 4 / 7 / 5 / 21 | 29 / 14 / 27 / 12 / 22 / 17 / 35 |
+| Clinic | 40 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
-| Art | 17 | 10 |
+| Art | 23 | 10 |
 | Language and audio | 13 | 7 |
 
 ---
