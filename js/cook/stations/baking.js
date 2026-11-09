@@ -151,14 +151,11 @@ import { setTimeout } from "../life.js";
             current,
             busy: () => busy,
             // (its glow goes with its light too, however the light goes: contract-102)
-            // (and it comes once the light has faded in, Onboard's 300 ms and a beat, so the glow is never seen without its light)
             glow: (on) => {
               if (!o.active) return;
-              if (!on) return void S.glow(o, false);
-              const h = stuck && stuck.lit ? stuck.lit() : null;
-              let gone = false;
-              if (h && h.done) h.done.then(() => ((gone = true), o.active && ctlObj === o && S.glow(o, false)));
-              setTimeout(() => !gone && o.active && ctlObj === o && S.glow(o, true, { now: true }), 450);
+              S.glow(o, on, { now: true });
+              const h = on && stuck && stuck.lit ? stuck.lit() : null;
+              if (h && h.done) h.done.then(() => o.active && ctlObj === o && S.glow(o, false));
             },
             note: `${KEY}:${name}:stuck`,
           })

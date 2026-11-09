@@ -189,14 +189,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           hintMs: () => ((R && R.hintMs ? R.hintMs(lv) : 0) || helpPause()) * (Cook.speed || 1),
           current: () => !stopped && stkKey === key,
           busy: () => busy,
-          // (its glow goes with its light, however the light goes, and comes once the light has faded in: contract-102)
           glow: (on) => {
             if (lit === on || !target.active) return;
             lit = on;
-            if (!on) return void S.glow(target, false);
-            const h = stk && stk.lit ? stk.lit() : null;
+            S.glow(target, on, { bounce: true, now: true });
+            // (its glow goes with its light too, however the light goes: contract-102)
+            const h = on && stk && stk.lit ? stk.lit() : null;
             if (h && h.done) h.done.then(() => lit && stkKey === key && ((lit = false), target.active && S.glow(target, false)));
-            setTimeout(() => lit && stkKey === key && target.active && S.glow(target, true, { bounce: true, now: true }), 450);
           },
           onHint: () => Cook.onHelp && Cook.onHelp("hint"),
         });

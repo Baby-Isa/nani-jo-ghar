@@ -250,14 +250,11 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
           busy: () => moving > 0,
           // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: contract-8)
           // (its glow goes with its light too, however the light goes: contract-102)
-          // (and it comes once the light has faded in, Onboard's 300 ms and a beat, so the glow is never seen without its light)
           glow: (on) => {
             if (!Cook.Coach.onShelf(n.o)) return;
-            if (!on) return void (lit === n.o && glow(null));
-            const h = stuck && stuck.lit ? stuck.lit() : null;
-            let gone = false;
-            if (h && h.done) h.done.then(() => ((gone = true), lit === n.o && glow(null)));
-            setTimeout(() => !gone && !served && ctlId === id && glow(n.o), 450);
+            glow(on ? n.o : null);
+            const h = on && stuck && stuck.lit ? stuck.lit() : null;
+            if (h && h.done) h.done.then(() => lit === n.o && glow(null));
           },
           onHint: () => hints++,
         });

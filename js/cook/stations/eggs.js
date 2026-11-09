@@ -407,14 +407,11 @@ import { Cook as CookNS } from "../ns.js";
           busy: () => busy > 0,
           // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: one highlight at a time, contract-8)
           // (its glow goes with its light too, however the light goes: contract-102)
-          // (and it comes once the light has faded in, Onboard's 300 ms and a beat, so the glow is never seen without its light)
           glow: (on) => {
             if (!Cook.Coach.onShelf(n.obj)) return;
-            if (!on) return void (glowObj === n.obj && glowOn(null));
-            const h = stuck && stuck.lit ? stuck.lit() : null;
-            let gone = false;
-            if (h && h.done) h.done.then(() => ((gone = true), glowObj === n.obj && glowOn(null)));
-            setTimeout(() => !gone && !finished && ctlKey === key && glowOn(n.obj), 450);
+            glowOn(on ? n.obj : null);
+            const h = on && stuck && stuck.lit ? stuck.lit() : null;
+            if (h && h.done) h.done.then(() => glowObj === n.obj && glowOn(null));
           },
           onHint: () => hints++, // (SH-160: the guide's hint came)
           note: NOTE,
