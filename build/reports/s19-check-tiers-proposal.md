@@ -38,3 +38,6 @@ the first 3 things are broken in 10 seconds"). Level and speed, not technique.
 Fable (9 Nov, quick review): agrees, with the changes above folded in (3b reruns changed games, not only failures; the before/after
 never the builder's own; the flake rule; the rollback line; tier 0 refuses the push; the known-fails list; two sizes at tier 2; one
 film per game).
+
+## Proof
+Rests on: build/reports/s19-check-rules-review.md (the rules already decided), the gate run s19-publish-gate (build/screenshots/sandbox/s19-publish-gate/contract.md, summary.md), the live-site replay main-stuck, and Fable's review (9 Nov).
