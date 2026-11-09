@@ -78,3 +78,7 @@ The sheet (§0, B1): baking is "the only game about how much", the pour stopping
 ### 10. Chop
 
 Today: bare marble, the countdown ring top left, things rising from the band (my `chop-740x320.png`). It needs a walnut board filling the scene (`chop-43.png`'s, cut with its shadow: ART-37), our knife (`tool-knife-t-v2.webp`), and per kind a whole and two halves that fly apart on the swipe (whole exists for all six, `assets/cook/items/veg-*-whole-t.webp`; halves only for onion and potato as `.png`: about twelve new), all in T. The countdown stays as a ring on the board's corner; "a clock to remove" was a misread. No hand, no painted arcs (`chop-40.png`). About eighteen pictures, one run.
+
+## Proof
+
+Read and looked at: as the report names in its own text (the transcript, the mock-ups and today's lab screens; the rows). Written by Fable, 9 Nov; committed by the orchestrator. No game file changed.

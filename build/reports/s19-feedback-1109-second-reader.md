@@ -33,3 +33,7 @@ Read: transcript [1]-[31], report §2-§3, the 29 rows in `docs/process/regressi
 21. **SH-243 check** keeps "the side-by-side with chai" at L1-L4; [31]: "when we get to the later stages of refining games. Then you can do that check."
 22. **CK-69** title "Baking side-on" states a decision; he said "Tell me what you think."
 23. **SH-213 decision 3** adds "once per player ... Never during the kitchen's play"; he said "I don't know when we do that."
+
+## Proof
+
+Read and looked at: as the report names in its own text (the transcript, the mock-ups and today's lab screens; the rows). Written by Fable, 9 Nov; committed by the orchestrator. No game file changed.
