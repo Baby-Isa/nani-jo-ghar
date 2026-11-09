@@ -94,6 +94,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
       board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(BOARD.w), height: z.L(BOARD.h) });
       const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s });
+      // S19 (Fable's sekelo flaw 2): the tray the skewers go to carries the asker's face from its first frame, as chai's tray does
+      if (rack.v3 && handoff) SK.trayFace(S, z, rack.img, params.who || (ctx.order && ctx.order.who) || "nana");
 
       /* the skewer on the board */
       let sk = null;
@@ -160,6 +162,43 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const O = global.Onboard;
         const w = SK.kindOfWord(p.w) === "mixed" ? p.id : p.w;
         return !!(O && O.hintHides && O.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(w) : null, study: !!z.guided }));
+      };
+      /*
+       * SH-228 (Zafar, 6 and 8 Nov: chai's method in every game; contract-102: no glow of the game's own): the stuck help is the kit's
+       * (Cook.Coach.stuck): after the level's wait from the last action (the central rules' hintS; a child's time: the kit divides a game's
+       * wait by the test speed, contract-24 and -91 read it in real time), Nani's helper card naming the piece, else her line again, with
+       * the kit's light round the piece's bowl and its pill and the bowl's hop. Never once the deciding word is past support (hides: the
+       * light would be the answer). Was her count line and the bowl's own glow, with no light.
+       */
+      let stk = null;
+      let stkKey = null;
+      const stuckFor = (p, target) => {
+        const key = p && target && !hides(p) && !(line.cooking && line.cooking()) ? p.id : null;
+        if (key === stkKey) return;
+        stkKey = key;
+        if (stk) stk.close();
+        stk = null;
+        if (!key || !Cook.Coach || !Cook.Coach.stuck) return;
+        const R = global.Rules || (global.Tokens && global.Tokens.rules) || null;
+        const lv = Math.max(1, Cook.roundLevel(ctx) || 1);
+        let lit = false;
+        stk = Cook.Coach.stuck({
+          key: "mishkaki-grill",
+          level: lv,
+          target: [0, 1, 2, 3, 4, 5].map((i) => () => (target.active && target.visible !== false ? Cook.Coach.parts(target)[i] || null : null)),
+          hintMs: () => ((R && R.hintMs ? R.hintMs(lv) : 0) || helpPause()) * (Cook.speed || 1),
+          current: () => !stopped && stkKey === key,
+          busy: () => busy,
+          glow: (on) => {
+            if (lit === on || !target.active) return;
+            lit = on;
+            S.glow(target, on, { bounce: true, now: true });
+            // (its glow goes with its light too, however the light goes: contract-102)
+            const h = on && stk && stk.lit ? stk.lit() : null;
+            if (h && h.done) h.done.then(() => lit && stkKey === key && ((lit = false), target.active && S.glow(target, false)));
+          },
+          onHint: () => Cook.onHelp && Cook.onHelp("hint"),
+        });
       };
       const hintLine = (p) => (SK.kindOfWord(p.w) === "mixed" ? Lang.wordLine(p.id) : Lang.bare(Lang.phrase(Lang.countParts(want[p.w], p.w).flatMap((x) => (typeof x === "string" ? unitOf(x) : [x])))));
 
@@ -311,13 +350,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
 
       /* every frame: help timers, glows, what to do next (for the test) */
-      let lastT = performance.now();
       let glowing = null;
-      let shownAt = 0;
       const off = z.tick(() => {
-        const now = performance.now();
-        const dtReal = now - lastT;
-        lastT = now;
         if (stopped) return;
         const p = busy || waiting ? null : plan();
         const target = p && p.id ? bowls[p.id] : null;
@@ -328,34 +362,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             glowing = target;
           }
           if (!z.out && doneShown) (handoff ? UI.glowGo : UI.glowDone)(!busy && !odd && !sk.ids.length && Object.keys(made).every((w) => made[w] === (want[w] || 0)) && ordered.every((w) => made[w] === want[w]));
-        } else if (target && !(line.cooking && line.cooking())) {
-          idle += dtReal;
-          // SH-60 (s08 w6J; Zafar, 17 Oct: "the highlight should only happen at the same time as the voice instruction"): her
-          // hint and the piece's glow come together, after the pause (the glow came showAfterMs later), and the step's own help
-          // (the stepper's line after the ladder's pause) lights the piece too
-          const G = window.NaniGuide;
-          const stepHelped = G && G.lastHelpAt && Date.now() - G.lastHelpAt < 1000 && G.lastHelpAt > shownAt;
-          // contract-24 (s08 w8A: at L3 her hint and glow came after 6.8 s, the word's stage, not the round's level): the help
-          // ladder's pause is the round's level (data/shared.json helpMs: 7, 8, 11, 15 s), as in every other station
-          // contract-24 (Zafar's ladder, SH-60: "the timer restarts on every action"): the pause counts from the LAST action on the
-          // page (NaniGuide.idleMs, the clock the shared stepper uses), not only from the last piece tapped: a tap on the card's
-          // face (a replay) or anywhere else restarts it too (it came 9.2 s after the replay at L3, which waits 11 s)
-          const quiet = G && G.idleMs ? Math.min(idle, G.idleMs()) : idle;
-          const hidden = hides(p);
-          if (!hinted && quiet > helpPause()) {
-            hinted = true;
-            if (!hidden) {
-              if (Cook.onHelp) Cook.onHelp("hint");
-              St.nani(hintLine(p)).catch(() => {});
-            }
-          }
-          if (!shown && !hidden && (hinted || stepHelped)) {
-            shown = target;
-            shownAt = Date.now();
-            S.glow(target, true, { now: true });
-            if (Cook.onHelp) Cook.onHelp("shown", { ids: [p.w] });
-          }
-        }
+        } else stuckFor(p, target);
         if (busy) return z.expect({ kind: "wait" });
         if (!p) {
           if (!z.out && doneShown && !sk.ids.length) return z.expect({ kind: "wait" });
@@ -371,6 +378,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
 
       await stop;
+      stuckFor(null, null); // (the stuck help ends with the board)
       stopped = true;
       off();
       z.expect(null);
