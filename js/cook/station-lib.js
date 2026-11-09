@@ -1000,8 +1000,29 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
       let misses = 0;
       const target = items[expected];
       let poll = null;
+      // (S19, contract-102: the help's glow comes with the kit's light round its thing, Cook.Coach.parts, and both go on the next action)
+      let lit = null;
+      const lightUp = () => {
+        if (lit) lit.close();
+        lit = null;
+        const OBk = global.Onboard;
+        const G = NG();
+        const C = Cook.Coach;
+        if (OBk && OBk.light && C && C.thingBox && target && target.active) {
+          const at = Date.now();
+          const h = OBk.light(C.thingBox(target), { look: "glow", pass: true, quitIf: () => !target.active || !!(G && G.lastAction && G.lastAction() > at + 50) });
+          lit = h;
+          h.done.then(() => {
+            if (lit === h) lit = null;
+            if (target.active) S.glow(target, false);
+          });
+        }
+        S.glow(target, true, { bounce: true, now: true });
+      };
       const cleanup = () => {
         clearInterval(poll);
+        if (lit) lit.close();
+        lit = null;
         Object.values(items).forEach((o) => {
           S.untap(o);
           S.glow(o, false);
@@ -1046,7 +1067,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
             g.idleHelp = false;
           }
         }
-        S.glow(target, true, { bounce: true, now: true });
+        lightUp();
         if (!guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
       }, 200);
       Object.entries(items).forEach(([key, obj]) => {
@@ -1072,7 +1093,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
             Cook.sfx.soft();
             if (onWrong) onWrong(key, misses);
             if (misses >= 2) {
-              S.glow(target, true, { bounce: true, now: true });
+              lightUp();
               if (misses === 2 && !guided && Cook.onHelp) Cook.onHelp("shown", { ids: [expected] }); // being shown costs the accuracy badge
             }
           }

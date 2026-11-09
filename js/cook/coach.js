@@ -502,10 +502,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (up) out.push(up);
     }
     const ch = thing.chip;
-    if (ch && ch.active && ch.visible !== false && ch.cardW) {
+    // (Kit.chip's keepBox moves its width to pillW: s19-games, 9 Nov)
+    const cw = ch && (ch.cardW || ch.pillW);
+    if (ch && ch.active && ch.visible !== false && cw) {
       const sx = Math.abs(ch.scaleX || 1);
       const sy = Math.abs(ch.scaleY || 1);
-      const hw = (ch.cardW / 2) * sx;
+      const hw = (cw / 2) * sx;
       const hh = ((ch.cardH || 46) / 2) * sy;
       const c = pageOf({ x: ch.x - hw, y: ch.y - hh, right: ch.x + hw, bottom: ch.y + hh });
       if (c) out.push(c);
@@ -589,7 +591,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const opened = Date.now();
     const cur = () => !h.over && (!o.current || o.current());
     const lastAct = () => (global.NaniGuide && global.NaniGuide.lastAction ? global.NaniGuide.lastAction() : opened);
-    const wait = () => (o.hintMs ? o.hintMs() : R && R.hintMs ? R.hintMs(o.level || (Cook.roundLevel ? Cook.roundLevel(Cook.ctx) : 1) || 1) : 7000) / speed();
+    const wait = () => o.hintMs ? o.hintMs() : R && R.hintMs ? R.hintMs(o.level || (Cook.roundLevel ? Cook.roundLevel(Cook.ctx) : 1) || 1) : 7000; // (a child's time, never the test speed's: contracts 24 and 91 read real time; s19-games 9 Nov)
     const target = o.target || (o.thing ? C.thingBox(o.thing) : null);
     const off = Onboard && Onboard.onRush ? Onboard.onRush(() => (rushed = true)) : null;
     let glowOn = false;
@@ -737,7 +739,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (o.noHint) return;
         const opened = Date.now();
         const NG = global.NaniGuide;
-        const due = () => Onboard.hintDue(opened, NG && NG.lastAction ? NG.lastAction() : opened, (o.hintMs ? o.hintMs() : 0) / speed(), rushed);
+        const due = () => Onboard.hintDue(opened, NG && NG.lastAction ? NG.lastAction() : opened, o.hintMs ? o.hintMs() : 0, rushed); // (a child's time, never the test speed's: contracts 24 and 91)
         const wait = () => {
           if (!cur()) return;
           if ((o.busy && o.busy()) || Date.now() < due()) return void (timer = setTimeout(wait, 200));
