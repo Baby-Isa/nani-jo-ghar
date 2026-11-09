@@ -57,6 +57,19 @@
  *     chop's could be said (an order heard or skipped); the mechanic does not open it again.
  *   - params.exactDecoys: the round throws exactly knobs.decoys decoy kinds (the central rules' table), never one per wanted thing
  *     when there are more of those (chaat's chop step at L1: two things, one decoy; contract-37). Daar's chop keeps "at least".
+ *
+ * Sprint 19 (s19-chop, CK-71; Zafar, 9 Nov: "Have the items uncut in their hole along the bottom, and then they move up from the
+ * bottom ... onto the chopping board and then fall back down again ... maybe they don't go in arcs, maybe they just go up and then
+ * down, but at different times"): params.hop (with params.band; the chop game's own round, js/cook/stations/chop.js) is THE HOP.
+ * Every kind of the round, wanted and decoy alike, sits whole in its slot on the stone band with its pill (the shared shelf's slots
+ * and chip); one at a time (knobs.hop.up at once) an item hops straight up out of its slot onto the board (rise), hangs there
+ * (hang: at least 1.5 s at L1), and drops back into its slot (fall). Nothing flies, nothing comes from off the board. Each kind hops
+ * once per cycle of the round's bag, so a decoy hops as often as a wanted thing (the leak test). A swipe through an item while it is
+ * up (its whole picture plus catchPad, design px) cuts it: the slice, its sound, and its two halves land on the board and stay; its
+ * slot fills again. A swipe through a decoy is a gentle no (the wrong feedback, the item shakes and drops back; never cut, never a
+ * verdict on screen). tapCuts (L1): a tap on an item that is up chops it too. knobs.hop.decoys: the decoy kinds (L1: none, Zafar 9
+ * Nov), else the central rules' count exactly. Daar's and chaat's chops never pass hop: their throws are as before (their move onto
+ * the hop is a later sprint, his call).
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
@@ -85,9 +98,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null, hop = false }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
+      // S19 (CK-71): the hop, the chop game's own (its numbers: data/stations/chop.json levels[].knobs.hop)
+      const HOP = !!(hop && band);
+      const HK = HOP ? Object.assign({ up: 1, rise: 0.45, hang: 1.8, fall: 0.4, every: 2.9, peak: 400, catchPad: 40, tapCuts: false, size: 190, phoneSize: 240, decoys: null, refill: 0.45 }, k.hop || {}) : null;
       const S = z.S;
       const ctx = z.ctx;
       const want = {};
@@ -153,9 +169,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (knifeKey && S.textures.exists(knifeKey)) {
         // the kit's knife on its own (no hand): blade up, it follows the finger
         // DAAR-13 (D10): a smaller knife (was 260 px), the margin-safe cut so its tip is never clipped
-        knife = S.track(S.add.image(z.X(1300), z.Y(640), knifeKey).setDepth(D.hand).setAngle(35));
+        // (S19, the hop: it rests on the board's right, clear of the band and its pills)
+        knife = S.track(S.add.image(z.X(HOP ? 1490 : 1300), z.Y(HOP ? 520 : 640), knifeKey).setDepth(D.hand).setAngle(35));
         knife.setScale(z.L(k.knifePx || 190) / Math.max(knife.width, knife.height));
-      } else knife = S.hand("knife", { x: z.X(1300), y: z.Y(640), angle: -25, k: z.k });
+      } else knife = S.hand("knife", { x: z.X(HOP ? 1490 : 1300), y: z.Y(HOP ? 520 : 640), angle: -25, k: z.k });
       if (k.special) S.special(knife);
       // DAAR-22 (S06): between swipes the knife goes back to rest beside the board, so it never lies across a flying
       // vegetable without cutting it (a blade over a whole tomato read as "the knife doesn't cut")
@@ -171,7 +188,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       };
       // bigger vegetables on a small (phone) screen, so a finger can hit them
       const small = S.scale && S.scale.displaySize && S.scale.displaySize.width < 800;
-      const size = small ? k.phoneSize || k.size : k.size;
+      const size = HOP ? (small ? HK.phoneSize || HK.size : HK.size) : small ? k.phoneSize || k.size : k.size;
       const flying = [];
       let lastX = null;
       const cut = {};
@@ -227,8 +244,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const shown = (img) => Phaser.Math.Clamp(clearOf(img) / FADE, 0, 1);
       const [v0, v1] = k.throwSpeed.map((v) => v * slow);
       const gravity = k.gravity * slow * slow;
-      // how long a throw is in the air (up and back below the board), in game seconds
-      const flight = (2 * v1) / gravity + 0.3;
+      // how long a throw is in the air (up and back below the board), in game seconds; a hop: its rise, hang and fall
+      const HOP_S = HOP ? HK.rise + HK.hang + HK.fall : 0;
+      const flight = HOP ? HOP_S : (2 * v1) / gravity + 0.3;
 
       /* ---------- the rounds: what flies, how often, how long ---------- */
       // (STD-C2-03: a lookalike only where the level has one: knobs.lookalike false leaves the lookalikes and the red onion out)
@@ -241,7 +259,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const rest = Cook.shuffle(pool.filter((x) => !L.includes(x) && !others.includes(x)).concat(no));
         // (at least as many decoy kinds as things to chop in the round, unless the caller keeps the rules' count exactly: exactDecoys,
         // chaat's chop step, contract-37)
-        const nDecoys = exactDecoys ? k.decoys : Math.max(k.decoys, tg.length);
+        // (the hop: knobs.hop.decoys where the level sets it, L1's none, Zafar 9 Nov; else the rules' count exactly)
+        const nDecoys = HOP ? (HK.decoys != null ? HK.decoys : k.decoys) : exactDecoys ? k.decoys : Math.max(k.decoys, tg.length);
         const decoys = [...new Set(L.concat(Cook.shuffle(others), rest))].filter((x) => !tg.includes(x) && Cook.item(x)).slice(0, nDecoys);
         const kinds = tg.concat(decoys);
         // every kind once per cycle, so a wanted one never flies more often than a decoy
@@ -249,7 +268,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const bag = [];
         for (let c = 0; c < cycles; c++) bag.push(...Cook.shuffle(kinds.slice()));
         const stage = Math.min(...tg.map((t) => Cook.wordStage(t)));
-        const every = (k.every / slow) * (1 - Math.min(k.fasterMax, (stage - 1) * k.fasterPerStage));
+        const faster = 1 - Math.min(k.fasterMax, (stage - 1) * k.fasterPerStage);
+        // (a hop starts every HK.every s, a little sooner for known words, never so often that more than HK.up are up at once)
+        const every = HOP ? Math.max(HK.every * faster, HOP_S / Math.max(1, HK.up)) : (k.every / slow) * faster;
         // DAAR-35 (P55, Zafar 17 Oct: "the items should just come continuously"): a round lasts its throws; the next one's
         // throws follow straight on, at the same spacing, while the last round's are still in the air. Only the last round
         // waits for the air to clear (its flight)
@@ -274,7 +295,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        * kind's place on the band, to the same height as before. Off without it (chaat's wood board, the Chop tile's marble).
        */
       const shelfAt = {};
-      if (band) {
+      if (band && !HOP) {
         const kinds = Cook.shuffle([...new Set(rounds.flatMap((r) => r.kinds))]);
         const SL = global.Shelf && global.Shelf.slots ? global.Shelf.slots([kinds], { span: [150, 1450], pitch: 180, groupGap: 0 }) : null;
         kinds.forEach((id, i) => {
@@ -288,6 +309,178 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           shelfAt[id] = { x, y: band.base - (img.displayHeight / z.k) / 2, img };
         });
       }
+
+      /*
+       * S19 (CK-71): the hop's shelf. Every kind the round can send up, wanted and decoy alike (a decoy never looks different on the
+       * shelf), whole in its own slot on the band: the shared shelf's slots (Shelf.slots), each by its size class (St.classFit) on the
+       * band's base line, its pill under it (the kit's chip), as daar's and chai's shelves. The slot's item is the one that hops.
+       */
+      const slots = [];
+      let hopPx = size; // an item's size at the top of its hop (design px), never wider than its slot
+      const BAND_TOP = (band && band.top) || (St.SHELF ? St.SHELF.top : 630);
+      const sit = (s) => {
+        const img = S.track(S.add.image(z.X(s.x), z.Y(band.base), s.key).setOrigin(0.5, 0.97).setScale(s.scale).setDepth(D.item + 1));
+        img.wordId = s.id;
+        if (S.contactShadow) img.shadow = S.contactShadow(img, { centerX: z.X(s.x), centerY: z.Y(band.base - 3), width: z.L(s.slotW * 0.8), height: z.L(16) });
+        return img;
+      };
+      if (HOP) {
+        const kinds = Cook.shuffle([...new Set(rounds.flatMap((r) => r.kinds))]);
+        // (the slots far enough apart that two items up side by side never touch: an item at the top of its hop is HK.size)
+        const SL = global.Shelf.slots([kinds], { span: [150, 1450], pitch: Math.max(180, Math.min(size + 40, 1300 / kinds.length)), groupGap: 0 });
+        hopPx = Math.min(size, SL.slotW - 24);
+        // (CSS px per design px, for the classes' 40 CSS px floor)
+        let ppw = 1;
+        try {
+          ppw = (UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1) * z.L(1);
+        } catch (e) {
+          ppw = 1;
+        }
+        kinds.forEach((id) => {
+          const key = texFor(id);
+          const s = { id, key, x: SL.x[id], slotW: Math.min(150, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
+          s.scale = St.classFit ? z.L(St.classFit(S, key, id, { base: band.base, ppw, slotW: s.slotW }).scale) : S.fitScale(key, z.L(130), z.L(130));
+          s.img = sit(s);
+          const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(s.x), z.Y(band.chipY), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: Math.min(128, SL.slotW - 12) }) : null;
+          if (chip && chip.setScale) chip.setScale(z.k);
+          s.img.chip = chip;
+          s.chip = chip;
+          slots.push(s);
+        });
+      }
+      // (a slot's hop: t its game seconds; up while its middle is above the band's top, on the board)
+      const hopping = () => slots.filter((s) => s.hop);
+      const isUp = (s) => !!(s.hop && s.img && s.img.active && !s.hop.cut && !s.hop.no && s.img.getBounds().centerY < z.Y(BAND_TOP));
+      const hopNote = (s, n) => {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-hop", { step: s.id, by: `round:${phase ? phase.i : 0} up:${n} want:${phase && phase.targets.includes(s.id) ? 1 : 0} every:${phase ? Math.round(phase.every * 1000) : 0}` });
+        } catch (e) {
+          /* only a log */
+        }
+      };
+      /** The next in the round's bag whose slot is free hops (false: none free, or HK.up are up already). */
+      const hopOne = () => {
+        if (hopping().length >= HK.up) return false;
+        const i = phase.bag.findIndex((id) => {
+          const s = slots.find((x) => x.id === id);
+          return s && !s.hop && !s.refill && s.img && s.img.active;
+        });
+        if (i < 0) return false;
+        const id = phase.bag.splice(i, 1)[0];
+        const s = slots.find((x) => x.id === id);
+        throwNote(phase);
+        const img = s.img;
+        const big = S.fitScale(s.key, z.L(hopPx), z.L(hopPx));
+        s.hop = { t: 0, phase, s0: s.scale, s1: Math.max(s.scale, big), h1: 0 };
+        img.phase = phase;
+        img.setDepth(D.item + 2.5);
+        // (its foot at the top, below its middle by this much: its middle is at the peak)
+        s.hop.h1 = img.height * s.hop.s1 * (img.originY - 0.5);
+        hopNote(s, hopping().length);
+        return true;
+      };
+      /** One frame of every hop: up (ease out), hang (a slight bob), down (ease in) into its slot, a small squash as it lands. */
+      const hopTick = (dt) => {
+        const R = HK.rise;
+        const HG = HK.hang;
+        const F = HK.fall;
+        slots.forEach((s) => {
+          if (s.refill > 0) {
+            s.refill -= dt;
+            if (s.refill <= 0) {
+              s.refill = 0;
+              s.img = sit(s);
+              const sc = s.scale;
+              s.img.setScale(sc * 0.6).setAlpha(0);
+              S.tweens.add({ targets: s.img, scaleX: sc, scaleY: sc, alpha: 1, duration: 220, ease: "Back.easeOut" });
+            }
+          }
+          const h = s.hop;
+          if (!h || h.cut) return;
+          const img = s.img;
+          if (!img || !img.active) {
+            s.hop = null;
+            return;
+          }
+          h.t += dt;
+          const foot0 = z.Y(band.base);
+          const foot1 = z.Y(HK.peak) + h.h1;
+          let foot;
+          let sc;
+          if (h.t < R) {
+            const u = h.t / R;
+            const e = 1 - Math.pow(1 - u, 3);
+            foot = foot0 + (foot1 - foot0) * e;
+            sc = h.s0 + (h.s1 - h.s0) * e;
+          } else if (h.t < R + HG) {
+            foot = foot1 + Math.sin(((h.t - R) / HG) * Math.PI) * z.L(-6);
+            sc = h.s1;
+          } else if (h.t < R + HG + F) {
+            const e = Math.pow((h.t - R - HG) / F, 2);
+            foot = foot1 + (foot0 - foot1) * e;
+            sc = h.s1 + (h.s0 - h.s1) * e;
+          } else {
+            // back in its slot
+            img.setPosition(z.X(s.x), foot0).setScale(h.s0).setAngle(0).setDepth(D.item + 1);
+            s.hop = null;
+            S.tweens.add({ targets: img, scaleY: h.s0 * 0.92, duration: 80, yoyo: true });
+            return;
+          }
+          img.setPosition(z.X(s.x), foot).setScale(sc);
+        });
+      };
+      const cutsAt = {};
+      /** Cut: the item's two halves part along the cut, drop a little onto the board and stay there (they never cover the band). */
+      const landHalves = (img, ang) => {
+        const key = img.texture.key;
+        const { w, h } = S.texSize(key);
+        const b = img.getBounds();
+        const rot = ang - Math.PI / 2;
+        const nx = Math.cos(rot);
+        const ny = Math.sin(rot);
+        const deg = Phaser.Math.RadToDeg(rot);
+        const floor = z.Y(BAND_TOP) - b.height * 0.3;
+        const drop = Math.max(0, Math.min(z.L(46), floor - b.centerY));
+        // (each cut in a column lands a little apart from the last, so the halves read as so many cut, never one heap)
+        const n = (cutsAt[img.wordId] = (cutsAt[img.wordId] || 0) + 1) - 1;
+        const jx = z.L([0, -26, 26, -13, 13][n % 5]);
+        const jy = -z.L(34 * Math.floor(n / 5) + (n % 5 ? 16 : 0));
+        [0, 1].forEach((side) => {
+          const d = side ? 1 : -1;
+          const half = S.track(S.add.image(b.centerX, b.centerY, key).setScale(img.scaleX, img.scaleY).setAngle(deg).setDepth(D.item + 0.5).setCrop(side ? w / 2 : 0, 0, w / 2, h));
+          S.tweens.add({ targets: half, x: b.centerX + nx * z.L(22 * d), y: b.centerY + ny * z.L(22 * d), angle: deg + 5 * d, duration: 140, ease: "Quad.easeOut" });
+          S.tweens.add({ targets: half, x: b.centerX + nx * z.L(34 * d) + jx, y: b.centerY + ny * z.L(34 * d) + drop + jy, scaleX: img.scaleX * 0.82, scaleY: img.scaleY * 0.82, angle: deg + 9 * d, delay: 160, duration: 300, ease: "Bounce.easeOut" });
+        });
+        const len = Math.max(b.width, b.height) * 0.62;
+        const cx = Math.cos(ang) * len;
+        const cy = Math.sin(ang) * len;
+        const flash = S.track(S.add.graphics().setDepth(D.item + 3.5));
+        flash.lineStyle(z.L(7), 0xffffff, 0.95).lineBetween(b.centerX - cx, b.centerY - cy, b.centerX + cx, b.centerY + cy);
+        flash.lineStyle(z.L(2), 0xfff1c0, 1).lineBetween(b.centerX - cx, b.centerY - cy, b.centerX + cx, b.centerY + cy);
+        S.tweens.add({ targets: flash, alpha: 0, delay: 180, duration: 260, onComplete: () => flash.destroy() });
+      };
+      /** A cut slot: its item is gone (halves on the board), and a whole one comes back into the slot. */
+      const slotCut = (s) => {
+        if (s.img && s.img.active) s.img.destroy();
+        s.img = null;
+        s.hop = null;
+        s.refill = HK.refill;
+      };
+      /** A decoy swiped (a gentle no): the wrong's own feedback, the item gives a small shake and drops back to its slot, uncut. */
+      const hopNo = (s) => {
+        const h = s.hop;
+        const img = s.img;
+        h.no = true;
+        // straight to its fall, from where it is
+        if (h.t < HK.rise + HK.hang) h.t = HK.rise + HK.hang;
+        S.tweens.add({ targets: img, angle: { from: -9, to: 9 }, duration: 70, yoyo: true, repeat: 2, onComplete: () => img.active && img.setAngle(0) });
+      };
+      /** The catch area: the item's whole picture plus HK.catchPad (design px). */
+      const catchBox = (img) => {
+        const b = img.getBounds();
+        const pad = z.L(HK.catchPad);
+        return new Phaser.Geom.Rectangle(b.x - pad, b.y - pad, b.width + 2 * pad, b.height + 2 * pad);
+      };
 
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
       const T = Object.assign({ x: 118, y: 124, r: 70, warn: 3 }, k.timer || {}, timer || {});
@@ -385,7 +578,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.tweens.add({ targets: flash, alpha: 0, delay: 180, duration: 260, onComplete: () => flash.destroy() });
       };
       const sliceIt = (img, ang) => {
-        img.sliced = true;
         const id = img.wordId;
         // what counts is what Nani asked for in the wave it was thrown in (DAAR-35, P55: "if you miss something the first time
         // you've got a bit more opportunity to cut item A"): one of the last wave's still in the air counts for it; a thing
@@ -395,10 +587,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // STD-B3-02 (s18-chop): one more of a kind already at its count adds nothing: its halves fall grey, no verdict, not counted
         const extra = asked && (cut[id] || 0) >= want[id];
         const ok = asked && !extra;
+        // S19 (CK-71): on the hop a decoy swiped is a gentle no: it is never cut (its slot's item shakes and drops back)
+        const hs = HOP ? slots.find((x) => x.img === img) : null;
+        const nope = !!hs && !asked;
+        if (!nope) img.sliced = true;
         // the picture tally (top right): every slice you made, by kind; what you did, never the target
-        if (!extra) sliced[id] = (sliced[id] || 0) + 1;
-        if (tally && !extra) UI.count(sliced[id], { id, state: "whole", speak: ok });
-        if (onSlice && !extra) onSlice({ id, ok, x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
+        if (!extra && !nope) sliced[id] = (sliced[id] || 0) + 1;
+        if (tally && !extra && !nope) UI.count(sliced[id], { id, state: "whole", speak: ok });
+        if (onSlice && !extra && !nope) onSlice({ id, ok, x: img.x, y: img.y, key: img.texture.key, scale: img.scale });
         if (extra) {
           S.burst(img.x, img.y, GREY, 8, z.L(50));
           if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-extra", { step: id, by: `${cut[id]} of ${want[id]}` });
@@ -428,6 +624,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             z.oops();
             S.burst(img.x, img.y, [0xb24a3a, 0xffd6c9], 10, z.L(60));
           }
+        }
+        if (nope) {
+          hopNo(hs);
+          return false;
+        }
+        if (hs) {
+          // (the hop: its halves land on the board and stay; a whole one comes back into its slot)
+          landHalves(img, ang);
+          slotCut(hs);
+          return ok;
         }
         halves(img, ang);
         img.destroy();
@@ -482,6 +688,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
               if (near) sliceIt(near, Math.atan2(cur.y - prev.y, cur.x - prev.x));
             }
           });
+          // S19 (CK-71): the hop: an item that is up, its whole picture plus the catch pad, crossed by the swipe or the blade
+          if (HOP)
+            slots.forEach((s) => {
+              if (!isUp(s)) return;
+              const box = catchBox(s.img);
+              if (!lines.some((line) => Phaser.Geom.Intersects.LineToRectangle(line, box))) return;
+              Cook.sfx.whoosh();
+              if (s.hop.phase.targets.includes(s.id)) Cook.sfx.chop();
+              sliceIt(s.img, Math.atan2(cur.y - prev.y, cur.x - prev.x));
+            });
         }
         prev = cur;
         prevBlade = bl;
@@ -490,7 +706,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let demoing = false;
       const stopDemo = () => {};
       // a swipe starts where the finger goes down
-      const offs = [z.on("pointerdown", (p) => !demoing && ((prev = { x: p.worldX, y: p.worldY }), (prevBlade = null), knifeBack && (knifeBack.remove(), (knifeBack = null)), S.tweens.killTweensOf(knife), stopDemo())), z.on("pointermove", move), z.on("pointerup", () => !demoing && ((prev = null), (prevBlade = null), restKnife()))];
+      /*
+       * S19 (CK-71, fairness for a 3-6 year old): where the level says so (knobs.hop.tapCuts, L1), a tap on an item that is up chops
+       * it, as a swipe would: the knife comes down on it.
+       */
+      const tapCut = (p) => {
+        if (!HOP || !HK.tapCuts) return;
+        const s = slots.find((x) => isUp(x) && catchBox(x.img).contains(p.worldX, p.worldY));
+        if (!s) return;
+        knife.setPosition(p.worldX + z.L(40), p.worldY + z.L(20));
+        const a0 = knife.angle;
+        S.tweens.add({ targets: knife, angle: a0 - 18, duration: 90, yoyo: true, onComplete: () => knife.active && knife.setAngle(a0) });
+        Cook.sfx.whoosh();
+        if (s.hop.phase.targets.includes(s.id)) Cook.sfx.chop();
+        sliceIt(s.img, Math.PI / 2);
+      };
+      const down = (p) => {
+        if (demoing) return;
+        prev = { x: p.worldX, y: p.worldY };
+        prevBlade = null;
+        if (knifeBack) {
+          knifeBack.remove();
+          knifeBack = null;
+        }
+        S.tweens.killTweensOf(knife);
+        stopDemo();
+        tapCut(p);
+      };
+      const offs = [z.on("pointerdown", down), z.on("pointermove", move), z.on("pointerup", () => !demoing && ((prev = null), (prevBlade = null), restKnife()))];
       let running = false; // the ring runs and vegetables fly (not while Nani gives the first order)
       let spawnT = 0;
       let roundT = 0;
@@ -531,6 +774,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         idle = Math.max(idle, HINT_S);
         if (Cook.Coach && Cook.Coach.wrong) Cook.Coach.wrong("chop");
       };
+      /*
+       * The test's aim on the hop (the sandbox plays the expectation): an item hanging up there that is still wanted, with time left
+       * in its hang for the swipe to land, cut straight down through its middle; a decoy hanging up, for one deliberate mistake. Where
+       * a tap chops (L1), every other chop is a tap on it (a zero-length slice).
+       */
+      const hopAim = (lead, needs, ownOf) => {
+        // (still up when the swipe lands: the rest of its hang and the first half of its fall, which the cut's line still crosses)
+        const ready = (s) => isUp(s) && s.hop.t >= HK.rise * 0.6 && HK.rise + HK.hang + HK.fall * 0.4 - s.hop.t > lead;
+        const ups = slots.filter(ready);
+        const tgt = ups.find((s) => needs(s.img));
+        const dec = ups.find((s) => s !== tgt && ownOf(s.img) && !ownOf(s.img).targets.includes(s.id));
+        if (!tgt) {
+          z.expect({ kind: "wait" });
+          return;
+        }
+        const b = tgt.img.getBounds();
+        const db = dec ? dec.img.getBounds() : null;
+        const tap = !!HK.tapCuts && Object.keys(cut).reduce((a, id) => a + cut[id], 0) % 2 === 0;
+        const half = tap ? 0 : b.height * 0.7;
+        z.expect({ kind: "slice", key: shortNow(), x: b.centerX, y: b.centerY, x1: b.centerX, y1: b.centerY - half, x2: b.centerX, y2: b.centerY + half, wrongs: db ? [{ x: db.centerX, y: db.centerY }] : [] });
+      };
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000) * Cook.speed;
@@ -552,8 +816,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             onSwitch = null;
             cb(next);
           }
-          if (spawnT <= 0 && phase.bag.length) {
-            throwOne();
+          if (spawnT <= 0 && phase.bag.length && (!HOP || hopOne())) {
+            if (!HOP) throwOne();
             spawnT = Math.max(0, spawnT) + phase.every;
             const nx = rounds[phase.i + 1];
             if (!phase.bag.length && nx) spawnT = Math.min(spawnT, nx.every);
@@ -578,6 +842,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!img.sliced) img.setAlpha(shown(img)); // (DAAR-38: what fades at the end fades on its own)
           if (img.y > z.Y(1060) && img.vy > 0) img.destroy();
         });
+        if (HOP) hopTick(dt);
         trail.clear();
         const t0 = performance.now() - 160;
         const pts = trailPts.filter((q) => q.t > t0);
@@ -612,6 +877,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             return Math.abs(q.x - p.x) < z.L(size * 0.9) && Math.abs(q.y - p.y) < z.L(size * 1.3);
           });
         };
+        if (HOP) {
+          hopAim(lead, needs, ownOf);
+          return;
+        }
         const tgt = flying.find((o) => inView(o) && needs(o) && alone(o));
         const dec = flying.find((o) => o.active && !o.sliced && at(o).y < z.Y(700) && at(o).y > z.Y(150) && ownOf(o) && !ownOf(o).targets.includes(o.wordId) && Math.abs(o.x - (tgt ? tgt.x : -9999)) > z.L(260));
         const aim = tgt && at(tgt);
@@ -656,7 +925,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         z.expect({ kind: "wait" });
         stripNote("start");
         const home = { x: knife.x, y: knife.y };
-        const SY = (k.strip && k.strip.y) || 430; // the strip's middle, design px (the throws' peak band)
+        const SY = HOP ? HK.peak : (k.strip && k.strip.y) || 430; // the strip's middle, design px (the throws' peak band; the hop's peak)
         const kb = () => knife.getBounds();
         // twice the knife's height, never more than 45% of the board
         const half = () => Math.min(z.L(900) * 0.225, Math.max(z.L(90), kb().height));
@@ -679,11 +948,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // the knife to the strip's right end, the finger takes it
         await tween({ targets: knife, x: x0, y: z.Y(SY), duration: 320, ease: "Sine.easeInOut", onUpdate: hold });
         // the planted vegetable (one she asked for) jumps up into the strip; it is cut, never counted
-        const at = z.X(760);
-        const veg = S.track(S.add.image(at, z.Y(990), texFor(ids[0])).setDepth(D.item + 2));
-        veg.setScale(S.fitScale(veg.texture.key, z.L(size), z.L(size)));
-        veg.setAlpha(0);
-        S.tweens.add({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 760, ease: "Sine.easeOut" });
+        // (S19, CK-71: on the hop it is the thing's own slot item, hopping straight up from the band, never from off the board)
+        const own = HOP ? slots.find((s) => s.id === ids[0] && s.img && s.img.active) : null;
+        const ob = own ? own.img.getBounds() : null;
+        const at = own ? ob.centerX : z.X(760);
+        const veg = S.track(S.add.image(at, own ? ob.centerY : z.Y(990), texFor(ids[0])).setDepth(D.item + 2.5));
+        const vs = S.fitScale(veg.texture.key, z.L(size), z.L(size));
+        if (own) {
+          own.img.setVisible(false);
+          veg.setScale(own.scale);
+          S.tweens.add({ targets: veg, y: z.Y(SY), scaleX: Math.max(own.scale, vs), scaleY: Math.max(own.scale, vs), duration: 520, ease: "Cubic.easeOut" });
+        } else {
+          veg.setScale(vs);
+          veg.setAlpha(0);
+          S.tweens.add({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 760, ease: "Sine.easeOut" });
+        }
         await wait(420);
         let cutYet = false;
         const D_MS = 1500 / slow;
@@ -709,6 +988,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           })
         );
         if (veg.active) veg.destroy();
+        // (its slot has a whole one again)
+        if (own && own.img && own.img.active) {
+          own.img.setVisible(true).setScale(own.scale * 0.6).setAlpha(0);
+          S.tweens.add({ targets: own.img, scaleX: own.scale, scaleY: own.scale, alpha: 1, duration: 220, ease: "Back.easeOut" });
+        }
         await wait(350);
         light.close();
         if (finger) finger.stop();
@@ -778,7 +1062,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             new Promise((resolve) => {
               off = z.tick(() => {
                 if (roundT < r.secs || r.bag.length) return;
-                if (flying.some((o) => o.active && !o.sliced)) return;
+                if (flying.some((o) => o.active && !o.sliced) || hopping().length) return;
                 resolve();
               });
             }),
@@ -796,6 +1080,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!o.active || o.sliced) return;
           o.sliced = true;
           S.tweens.add({ targets: o, alpha: 0, duration: 260, onComplete: () => o.destroy() });
+        });
+      // (the hop: what is still up drops back into its slot; an emptied slot fills)
+      if (HOP)
+        slots.forEach((s) => {
+          if (s.refill > 0) {
+            s.refill = 0;
+            s.img = sit(s);
+          }
+          const h = s.hop;
+          s.hop = null;
+          if (!h || !s.img || !s.img.active) return;
+          s.img.setDepth(D.item + 1).setAngle(0);
+          S.tweens.add({ targets: s.img, y: z.Y(band.base), scaleX: h.s0, scaleY: h.s0, duration: 260, ease: "Quad.easeIn" });
         });
       left = 0;
       drawRing();
