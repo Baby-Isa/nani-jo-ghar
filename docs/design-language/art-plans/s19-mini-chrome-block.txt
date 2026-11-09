@@ -20,7 +20,7 @@ In each conversation:
    Do not draw yet."
 2. For each image line, in order:
    a. Attach the pictures the line names, paste the line, and add: "First, in text only, list exactly what you will draw: layout,
-      sizes, camera, materials, light, shadows, background. Do not draw yet."
+      sizes, camera, materials, light, shadows, background, image shape (landscape or square). Do not draw yet."
    b. ChatGPT often promises an image and gives none. So copy its whole answer, and send a NEW message: "Generate the image now,
       implementing exactly this:" followed by the pasted answer, with the same pictures attached again.
    c. When the image arrives, send: "Check it against the line and the house brief, in text: what is wrong? Then generate one
@@ -31,62 +31,100 @@ When both chats are done, write one line per image line in this chat: the conver
 
 === HOUSE BRIEF (paste as the first message of each conversation) ===
 These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
-Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Rules for
-every image:
-- One large soft light from the upper left; soft contact shadows falling to the lower right; nothing floats. No window-light streaks.
-- Materials: white marble worktop with soft cool veins; brushed stainless steel; cream ceramic bowls; wood only where a line asks.
-- Camera: exactly straight down from above (a flat plan view, no perspective tilt, no side walls of containers visible beyond their
-  rims) unless a line says side-on.
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy their
+style, not their contents: ignore the faces, labels, pills and the gear icon in them. Rules for every image:
+- One large soft light from the upper left; soft contact shadows falling to the lower right; nothing floats. The 00-HOUSE pictures
+  have faint window-light streaks across the worktop; do NOT copy those: the worktop is evenly lit.
+- Materials: white marble worktop with soft cool grey veins (the marble in the 00-HOUSE pictures, not a golden or cream marble);
+  brushed stainless steel; cream ceramic bowls; wood only where a line asks.
+- Camera: "straight down" means a flat plan view with no perspective at all: a bowl is a perfect circle, a tray a perfect
+  rectangle, and no inner or outer side wall of any container shows, only its rim and its floor. Depth shows only as a soft shadow
+  inside the rim. The 00-HOUSE pictures and G1 are tilted slightly; here they must not be. A line that says "side-on" is the
+  exception.
 - These are separate PIECES that we cut out and place in our own game layout; we place the stove, the plates and the word labels
-  ourselves. So draw only what the line asks, nothing else: no stove, no hob, no knobs, no hands, no text or letters, no tools that
-  do nothing, no napkins, no plants, no glow or highlight effects, nothing falling through the air.
+  ourselves. So draw only what the line asks, nothing else: no stove, no hob, no knobs, no hands, no text, letters, numbers or
+  labels, no tools that do nothing, no napkins, no plants, no steam, no glow or highlight effects, nothing falling through the air.
+- Fill the frame: the objects asked for take up most of the picture, with a margin of about one tenth of the picture all round.
+  Never small objects in a large empty field.
 - "On a plain magenta background" means one flat solid #FF00FF colour edge to edge, no gradient, no texture, no shadow on it other
-  than a very faint contact shadow directly under the object; the object must not touch the edges. We cut along the magenta.
+  than a very faint contact shadow directly under the object; the object must not touch the edges. We cut along the magenta, so the
+  magenta must not tint, reflect in or bleed onto the object: steel reflects a neutral pale-grey room, never pink.
+- Where a line asks for several panels: equal panels side by side, each the same camera, scale and light, separated only by a thin
+  strip of the same background; no frames, borders, dividing lines or numbers.
 - No oval plates or trays: round, square or rectangular only.
 
 === IMAGE LINES ===
 CHAT 1
-T  THE STONE TRAY (pictures: T1-stone-tray-rim, T2-stone-tray-tone). Straight down, on the white marble worktop: ONE long tray along
-   the bottom 30% of a 16:9 frame, inset from the left and right edges by about 3% of the width. Honed warm-grey limestone: field
-   #C4B8AD shading to #B5A99E at the edges; a matte finish with a very fine even speckle only a few percent darker, no veins, no bands,
-   no sheen. A shallow raised lip all round, only 3-4% of the tray's depth wide, the same stone as the field (not lighter, not
-   plastic-looking), softly radiused; a thin lighter edge on its upper-left faces and a thin shadow line inside the lip on the
-   lower-right. Corner radius about one eighth of the tray's depth. The tray casts a soft contact shadow lower right. On it, one even
-   row of six cream ceramic bowls (lemon wedges, salt, red chilli powder, green chutney, tamarind chutney, black pepper), each with a
-   clear soft contact shadow, and under each bowl a small blank cream pill. Tone from T2, the raised lip from T1 but quieter.
-G1 THE GRILL, EMPTY (pictures: G1-grill-coals-zafar-likes). The same brushed-steel charcoal grill as G1 with its side handles, seen
-   EXACTLY from straight above (G1 is tilted: here no inner side walls show, the rim is a thin even frame on all four sides), on the
-   white marble. The coals as lively as G1's: bright orange glowing gaps between dark coals, clearly lit and inviting, a little calmer
-   than G1 only if it looks harsh. Two thin steel bars across it, nothing on it: no skewer, no food.
-G2 THE GRILL SCREEN WITH SKEWERS (pictures: G2-skewer-layout-guide, G1-grill-coals-zafar-likes, 00-HOUSE-sekelo-zafar-pick). Copy
-   G2's layout and sizes exactly: two deep rectangular brushed-steel trays stacked on the left (the top tray's top level with the
-   grill's top, the bottom tray's bottom level with the grill's bottom), the grill (as G1, straight down) tall at centre-right. Thick
-   steel skewers with walnut handles: four RAW skewers lying across the top tray, four GRILLED ones lying across the bottom tray,
-   handles to the right, each as long as the tray allows; four raw skewers upright on the grill side by side. Each skewer: meat,
-   tomato, onion, meat, at the size G2 shows. This is a test of whether they fit: if they cannot fit without crowding, draw the
-   nearest layout that does and say in text what you changed.
-C1 THE CHAAT BOWL, EMPTY (pictures: C1-chaat-bowl). The same big cream ceramic bowl, straight down, empty and clean, on a plain
-   magenta background. Same size in the frame as C1's bowl.
-C2-C5 ONE TOPPING EACH (pictures: C1-chaat-bowl and your C1 image). Four images, one per topping: C2 boiled potato cubes; C3
-   chickpeas; C4 sev (thin crispy yellow noodles); C5 green chutney drizzled in a few loose lines. Each ONLY that topping, scattered
-   loosely and evenly inside a circle exactly the size of the empty bowl's inner floor in your C1 image, as if lying in the bowl, NO
-   bowl drawn, on a plain magenta background, the same camera, scale and light as C1, a faint contact shadow under each piece. We will
-   stack these in the bowl in any order, so pieces must not be cut off at the circle's edge.
+T  THE STONE TRAY (pictures: T1-stone-tray-rim, T2-stone-tray-tone). Landscape 16:9, straight down, the white marble worktop filling
+   the picture: ONE long rectangular tray along the bottom 30% of the picture, inset from the left and right edges by about 3% of the
+   width, nothing above it (leave the top 70% as empty marble). Honed warm-grey limestone: warm greige, one step darker than the marble,
+   cooler than cream, never pinkish, never blue-grey (field about #C4B8AD, shading to about #B5A99E at the edges); a matte finish with
+   a very fine even speckle only a few percent darker, no veins, no bands, no sheen. A shallow raised lip all round, only 3-4% of the
+   tray's depth wide, the same stone and colour as the field (not lighter, not plastic-looking), softly radiused; a thin lighter edge
+   on its upper-left faces and a thin shadow line inside the lip on the lower-right. Corner radius about one eighth of the tray's
+   depth. The tray casts a soft contact shadow lower right. On it, EXACTLY SIX cream ceramic bowls (not T2's ten), the same bowl size
+   as T2's, in one even row with equal gaps, centred along the tray: lemon wedges, white salt, red chilli powder, green chutney,
+   brown tamarind chutney, black pepper. Each bowl casts a clear soft contact shadow lower right, and under each bowl sits one small
+   blank cream pill like T2's. Tone from T2; the raised lip from T1 but lower and quieter.
+G1 THE GRILL, EMPTY (pictures: G1-grill-coals-zafar-likes). Landscape 16:9. The same brushed-steel rectangular charcoal grill as G1
+   with its two side handles, on the white marble, seen EXACTLY from straight above: G1 is tilted and shows its inner walls; here no
+   inner wall shows, the rim is a thin even steel frame of the same width on all four sides, and the coals fill the whole inside right
+   up to the rim. The grill is as large as the picture allows, centred, marble showing only as a margin all round. The coals as lively
+   as G1's: dark charcoal lumps with bright orange glowing gaps between them, clearly lit and inviting; make them a little calmer than
+   G1 only if it looks harsh. The glow stays inside the grill: none on the rim or the marble. Two thin steel bars across the grill
+   from left to right, at one third and two thirds of its height, as in G1. Nothing on it: no skewer, no food.
+G2 THE GRILL SCREEN WITH SKEWERS (pictures: G2-skewer-layout-guide, G1-grill-coals-zafar-likes, 00-HOUSE-sekelo-zafar-pick). Landscape
+   16:9, straight down, on the white marble. G2 is a rough layout guide made by pasting pieces together: copy its layout, positions
+   and sizes exactly, but IGNORE the one large skewer in the middle of its grill and the text along its bottom edge, which are
+   leftovers. Draw: two rectangular brushed-steel trays stacked on the left (the top tray's top edge level with the grill's top edge,
+   the bottom tray's bottom edge level with the grill's bottom edge); the grill (as G1, straight down, rim a thin even frame, lively
+   coals, two bars) large at centre-right. Skewers: thin round steel rods, pointed at one end, with a dark walnut handle at the other.
+   Four RAW skewers lying across the top tray, four GRILLED ones (browned and lightly charred) lying across the bottom tray, each
+   horizontal, evenly spaced, points to the left and handles to the right, each as long as the tray's inside allows; and four RAW
+   skewers upright on the grill side by side, evenly spaced, resting across the two bars, points up, handles hanging down past the
+   lower bar. Every skewer carries, in order from the point: meat cube, tomato chunk, red onion wedge, meat cube, at the size G2 shows
+   (each piece about a quarter of the tray's inside width). This is a test of whether twelve skewers fit: if they cannot fit without
+   crowding or shrinking, draw the nearest layout that does and say in text what you changed.
+C1 THE CHAAT BOWL, EMPTY (pictures: C1-chaat-bowl). Square image. The same big cream ceramic bowl as C1, straight down, a perfect
+   circle, empty and clean, on a plain magenta background. The bowl's outer rim is 80% of the picture's width, centred; the inner
+   floor (the flat bottom you can see inside) is a circle about 60% of the picture's width. A faint contact shadow under the bowl.
+C2-C5 ONE TOPPING EACH (pictures: C1-chaat-bowl). Four separate square images, one per topping: C2 boiled potato cubes; C3 chickpeas;
+   C4 sev (thin crisp yellow gram-flour noodles); C5 green chutney. Each image shows ONLY that topping on a plain magenta background,
+   straight down, the same scale and light as C1: the pieces lie in one loose, even, flat layer inside an invisible circle 60% of
+   the picture's width, centred (the floor of the bowl from C1), with magenta showing between and around them, a faint contact shadow
+   under each piece. NO bowl, plate, ring or outline is drawn: the circle is only where the pieces stop. Nothing may be cut off at
+   the circle's edge; every piece is whole. Sizes, as in C1: potato cubes about one tenth of the circle's width, about 12 of them;
+   chickpeas about one twentieth, about 25 of them; sev as a loose tangle of short strands covering about half the circle; the
+   chutney as four or five loose wavy ribbons, not a pool. We will stack these in the bowl in any order, so each must look right alone.
 CHAT 2
-S1 THE SAMOSA FOLD (pictures: S1-samosa-fold-geometry, S2-samosa-fold-look). One wide image, five panels side by side, the same
-   camera and scale in each, on white marble: draw EXACTLY the five stages of S1's geometry (the sheet 1.22 times as wide as it is
-   tall; creases from the top edge's middle to each bottom corner; the filling low in the middle; 2 the right corner lifting over its
-   crease; 3 the right flap lying flat, its corner just inside the far crease; 4 the left corner lifting over; 5 the closed triangle)
-   with S2's look: soft golden pastry, the potato-pea-mince filling, soft rounded edges, gentle shadows where the flap curls.
-E1 TWO FRYING PANS (pictures: E1-maani-tawa-wooden-handle). Straight down, side by side on a plain magenta background, each empty,
-   its handle pointing straight down: (a) a dark seasoned pan with a walnut handle and a steel collar, the family of E1's tawa; (b) an
-   all-brushed-stainless-steel pan with a steel handle. Same size, same light.
-B1 BAKING BOWL, GLASS (pictures: B1-baking-mixing). Side-on with the camera a touch above (as B1), on the white marble against a plain
-   warm-cream wall: three panels, the same clear glass mixing bowl in each: 1 a heap of flour in it; 2 flour with water poured in, a wet
-   patch; 3 a smooth ball of naan dough. The contents must read clearly through the glass.
-B2 BAKING BOWL, OPAQUE (pictures: B1-baking-mixing). The same three panels with a cream ceramic bowl instead, the camera a little
-   higher so the contents show over the rim.
-B3 THE OVEN (pictures: B2-baking-oven, B3-kitchen-green-cabinets). Side-on, straight on: a built-in oven in cream enamel with brushed-
-   steel trim and ONE gold-ringed knob, set between sage-green cabinet doors with brass bar handles (B3's cabinets, right of that
-   picture), a white marble worktop above. The glass door closed, the inside softly lit and EMPTY, its three shelf runners (top, middle,
-   bottom) clearly visible through the glass. No text, no numbers, no display.
+S1 THE SAMOSA FOLD (pictures: S1-samosa-fold-geometry, S2-samosa-fold-look). Landscape 16:9, straight down, on the white marble: five
+   equal panels side by side, the same camera and scale in each, no numbers, labels, lines or frames (S1's are notes, not to be drawn).
+   S1 is the geometry: follow it EXACTLY, stage for stage. S2 gives only the look (soft golden pastry, the potato-pea-mince filling,
+   soft rounded edges, gentle shadows where a flap curls); IGNORE S2's square sheet and its corner-to-corner fold, which are wrong.
+   The sheet is a rectangle 1.22 times as wide as it is tall, filling about 80% of its panel's width. Stage 1: the flat sheet, two
+   faint crease lines from the middle of the top edge down to each bottom corner, the filling as a low mound in the middle, a little
+   below centre. Stage 2: the right half lifting and turning over along its crease, the corner in the air. Stage 3: the right flap
+   lying flat across the middle, its corner landing just inside the left crease, the filling half covered. Stage 4: the left half
+   lifting over its crease. Stage 5: the closed triangle, point up, flat base, no filling visible. The filling stays visible wherever
+   a flap has not yet covered it.
+E1 TWO EGG FRYING PANS (pictures: E1-maani-tawa-wooden-handle). Landscape image, straight down, on a plain magenta background, two
+   pans side by side, each empty and clean, each a perfect circle with its handle pointing to the bottom edge of the picture (6
+   o'clock). Frying pans with a low flared side and a flat floor, NOT the flat tawa in E1: use E1 only for the dark seasoned iron,
+   the walnut handle and the steel collar. (a) left: dark seasoned iron pan, walnut handle with a steel collar; (b) right: all
+   brushed stainless steel pan with a brushed-steel handle, reflecting a neutral pale-grey room, no pink. Same size, each pan about
+   40% of the picture's width, the same light, a faint contact shadow under each. No stove under them.
+B1 BAKING BOWL, GLASS (pictures: B1-baking-mixing). Landscape 16:9, side-on with the camera a touch above (the same height as B1), on
+   the white marble worktop against a plain, flat warm-cream wall (not B1's marble wall; ignore B1's jug, jars and pills). Three
+   equal panels side by side, the same clear glass mixing bowl in each, the same shape and size as B1's cream bowl but in clear glass
+   like B1's jug: 1 a heap of white flour in it; 2 the flour with a wet patch where water has been poured in; 3 a smooth round ball of
+   naan dough. The contents must read clearly through the glass; the glass shows soft highlights only, no reflections of a room.
+B2 BAKING BOWL, OPAQUE (pictures: B1-baking-mixing). The same three panels as B1 with B1's cream ceramic bowl instead of glass, the
+   camera a little higher so the contents show clearly over the rim.
+B3 THE OVEN (pictures: B2-baking-oven, B3-kitchen-green-cabinets). Landscape 16:9, side-on, straight on at counter height: one
+   built-in oven under a white marble worktop (the worktop a thin band along the top of the picture), set between sage-green cabinet
+   doors with brass bar handles, one door on each side, matching the green cabinets at the right of B3. The oven itself is cream
+   enamel with brushed-steel trim, a brushed-steel bar handle across the top of its door and EXACTLY ONE gold-ringed knob (B2 is only
+   the model for the door, the glass, the lit inside and the shelf runners; NOT its green colour and NOT its three knobs). The oven
+   takes about half the picture's width. The glass door is closed; the inside is softly lit and EMPTY: no tray, no food, no fan
+   grille, only the three shelf runners (top, middle, bottom) on each inner wall, clearly visible through the glass. No text, numbers,
+   display or lights.
