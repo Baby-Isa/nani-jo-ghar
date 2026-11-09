@@ -47,9 +47,10 @@ in the standalone chop game first (CK-71).
   the stores (yes). Knob rule refined (SH-247). Chop's hops semi-random, never together (CK-71). Builders' checks: no new rules; the
   orchestrator reviews the decisions already made and lays them out (build/reports/s19-check-rules-review.md).
 
-## Waiting on Zafar (his review point: the principles with the art)
-The counting rule (SEK-25, CK-64), sekelo's one skewer per person, the timing floor, samosa's redesign, the scene for every game, the
-shelf angle, the timed windows' look (sekelo, daar, eggs), one stir (DAAR-45), the merge rule, chai's publish.
+## Waiting on Zafar
+Audit (build/reports/s19-waiting-on-zafar-audit.md, 9 Nov late): the principles were answered on 9 Nov (counting four, sekelo five,
+the timing floor, samosa, the scene and shelf, the timed windows, one stir; the merge rule: no, later); chai's publish has his go. Of
+34 rows, 32 were answered and relabelled; open: SH-220 (screens flashing on load) and CHAI-76 (Nani's hint and the leak rule).
 
 ## Outcome
 

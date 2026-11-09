@@ -30,10 +30,10 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 123 | 98 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 122 | 98 |
 | Cook: pantry | 9 | 10 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 27 / 8 / 18 / 4 / 7 / 5 / 24 | 29 / 14 / 27 / 12 / 22 / 17 / 35 |
-| Clinic | 40 | 168 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 27 / 8 / 18 / 4 / 7 / 5 / 23 | 29 / 14 / 27 / 12 / 22 / 17 / 35 |
+| Clinic | 38 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
 | Art | 24 | 10 |
