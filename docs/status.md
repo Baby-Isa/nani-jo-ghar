@@ -13,7 +13,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 **Where things stand (8 Nov, evening):** Sprint 19 is open (`docs/sprints/S19-chai-standard-everywhere.md`). Zafar said go on every
 fix that needs no decision plus the checks audit; he has **not** agreed the principles (he reviews them with the art he is running) and
 said **don't publish chai's three fixes**. New rule in CLAUDE.md: plans run back to back, no days or dates.
-- **Running (two builders, the limit):** s19-lights phase 2 (`/home/user/wt/s19-lights`) and s19-games (`/home/user/wt/s19-games`). Merged: s19-checks, s19-cards, s19-lights phase 1. Then: sidebyside and the judge per game, the fixes it finds, then Zafar.
+- **Running:** s19-lights phase 2 (`/home/user/wt/s19-lights`; also owns station-lib.js's idle glow and the kit asks from s19-games). Merged: s19-checks, s19-cards, s19-lights phase 1, s19-games. **With Zafar now:** principles 1-10 and mock-up round 1 (49 images in `sources/art/s18-mocks/results/`, a review page published), game by game, into each game's change list; then the house art block.
 - Each builder's work merges only after a look beside chai and the judge on its changed screens; nothing is published without Zafar.
 
 **Next, in order:** 1. merge each builder as it reports (look beside chai, the judge); 2. launch the queued ones as slots free;
