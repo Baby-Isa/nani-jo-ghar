@@ -64,6 +64,7 @@ import { NjgServe } from "../shared/serve.js";
   const turned = (n, wide, knobs) => knobs === "left" && !wide && Math.max(1, Math.min(4, n)) === 1;
   // the column's gap between the face and the knob, and the hob's rim kept clear on its left (of its width)
   const COL_GAP = 14;
+  const KNOB_GAP = 24; // the least gap between the knob and the pan's picture
   const RIM = 0.045;
   const HOB = { sets: HOBS, w: [1, 2, 3, 4].map((n) => HOBS[n].w), h: [1, 2, 3, 4].map((n) => HOBS[n].h) };
   // each vessel's round body as fractions of its canvas: centre (cx, cy) and radius r (of the width)
@@ -257,7 +258,9 @@ import { NjgServe } from "../shared/serve.js";
         // SH-247: the column in the glass between the hob's rim and the pan (its handles, or its flames), centred on the burner's height
         const panL = x - Math.max(reach || 0, outer);
         const rimL = hob.x + hob.w * RIM;
-        const col = hob.frontX != null && hob.frontX + KNOB / 2 < panL ? Math.min(hob.frontX, (rimL + panL) / 2) : (rimL + panL) / 2;
+        let col = hob.frontX != null && hob.frontX + KNOB / 2 < panL ? Math.min(hob.frontX, (rimL + panL) / 2) : (rimL + panL) / 2;
+        // (never nearer the pan than a clear gap: a karahi's handle at 740x320 came within 1 px of the knob; contract-110)
+        col = Math.max(rimL + KNOB / 2, Math.min(col, panL - KNOB_GAP - KNOB / 2));
         bx = who ? col : null;
         kx = col;
         const kh = BADGE; // (the knob's round body is the badge's size, X5)
