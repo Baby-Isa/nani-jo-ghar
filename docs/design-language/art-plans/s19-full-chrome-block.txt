@@ -1,0 +1,194 @@
+NANI JO GHAR: FULL ART RUN (Sprint 19: the pieces every kitchen game still needs). Paste this whole block into Claude in Chrome.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-full/refs.zip ,
+unzip it, and drag all 22 pictures into this chat with this block. (If Claude in Chrome cannot upload them to ChatGPT, it will ask you
+to attach each chat's pictures in that chat's first message yourself; then it does all the typing.)
+
+=== IF YOU CANNOT UPLOAD FILES TO CHATGPT (runner, read first) ===
+Ask Zafar, once, to start each ChatGPT conversation himself by attaching that chat's pictures in its first message (Chat 1: the two
+00-HOUSE pictures, every K* picture and F1; Chat 2: the two 00-HOUSE pictures and every F* picture; Chat 3: the two 00-HOUSE pictures,
+F1, F6, every S*, P* and B* picture). Then you do all the typing; never re-attach; refer to each picture by its file name ("the
+picture named K1-skewers-mini-look"). Wait for him to say "attached" before your first message.
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+You run a ChatGPT image session for Zafar. Use chatgpt.com (he is signed in). This is the FULL run: 28 image lines, separate pieces
+we cut out and place in our own game. Run THREE ChatGPT conversations AT ONCE, each in its own new tab (Zafar: up to three windows in
+parallel): Chat 1 = K1, K2, K3, K4, K5, K6, K7. Chat 2 = C5, C6, C7, C8, C9, C10, C11, F3, F4, F5. Chat 3 = S1, S2, S3, S4, P1,
+P2, F6, F7, B1, B2, B3. Send in one tab, then move to the next tab while it generates; go back round the tabs in turn. Never more
+than three tabs generating. Chat 1 finishes first: when it does, do not open a fourth; just keep the other two going.
+
+In each conversation:
+1. First message: the two 00-HOUSE pictures, the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes these work.
+   Do not draw yet."
+2. For each image line, in order:
+   a. Attach the pictures the line names, paste the line, and add: "First, in text only, list exactly what you will draw: layout,
+      exact counts, sizes as shares of the picture, camera, materials, light, background, image shape (landscape or square). Do not
+      draw yet."
+   b. ChatGPT often promises an image and gives none. So copy its whole answer, and send a NEW message: "Generate the image now,
+      implementing exactly this:" followed by the pasted answer, with the same pictures attached again.
+   c. When the image arrives, send: "Check it against the line and the house brief, in text: count every object; what is wrong? Then
+      generate one corrected version." If it answers only in text, repeat step b with that answer.
+   d. Keep both images. Do not judge; move on. Give each kept image its save-as name: s19-full-<line>-<try>.png (for example
+      s19-full-K2-1.png for the first, s19-full-K2-2.png for the corrected one). Log it at once (REPORT).
+3. If ChatGPT refuses, hits a limit, or slows down, start a fresh conversation for the rest of that chat, beginning again at step 1,
+   and log why (REPORT: retries).
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Images stay in their chats until every chat is done. Then open https://chatgpt.com/library. Hover over the first kept image: a small
+check box appears in its bottom-right corner; tick it. Then hover over each other kept image: its own check box appears in its
+bottom-right corner; tick it. Tick every kept image of this run (find them by their chats' titles and thumbnails) and nothing else:
+not the uploaded references, not images from other chats. Press the download button on the selection bar: one download for all of
+them (Chrome's normal download, one file each or one zip). ChatGPT names the files; you cannot rename them, so log each as
+"DOWNLOADED <n>: <ChatGPT's file name> -> <save-as name>", in the order they landed. If the selection is refused, use each image's
+own download button, and log the same way. Never page JavaScript, never a file picker, never a GitHub upload: Zafar pushes the folder
+himself to sources/art/s19-full/results/.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start the code block with "S19 FULL RUN REPORT" and give, per image line (K1-K7, C5-C11, F3-F7, S1-S4, P1-P2, B1-B3):
+  <line> | chat <1/2/3> link and title | tries (and why each retry) | kept: <save-as> = <ChatGPT's downloaded file name>, ... |
+  what worked | what did not (as ChatGPT's own check said, and what you saw) | anything ChatGPT changed or refused
+Then: the DOWNLOADED list, anything missing, and how long it took. Post the code block in this chat; Zafar pastes it back to Claude
+Code (or saves it as sources/art/s19-full/results/run-report.md with the images).
+
+=== HOUSE BRIEF (paste as the first message of each conversation) ===
+These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy their
+style, not their contents: ignore the faces, labels, pills and the gear icon in them, and ignore the thin coloured guide lines and
+small face stickers in any reference picture. Rules for every image:
+- One large soft light from the upper left; nothing floats. The 00-HOUSE pictures have faint window-light streaks across the
+  worktop; do NOT copy those: everything is evenly lit, no window streak.
+- Materials: brushed stainless steel reflecting a neutral pale-grey room; cream ceramic (the bowls in F1 are THE bowl: the same
+  shape, cream and rim in every bowl you draw); dark walnut only where a line asks; white marble worktop with soft cool grey veins
+  only where a line asks for marble (never golden or cream marble).
+- Camera: "straight down" means a flat plan view with no perspective at all: a bowl, a plate or a cob's end is a perfect circle, a
+  tray a perfect rectangle, and no inner or outer side wall of any container shows, only its rim and its floor. Depth shows only
+  as a soft shadow inside the rim along its upper-left inner edge. Any steel rim is ONE flat band of even width, no inner line,
+  ledge or bevel. The reference pictures are sometimes tilted; yours must not be. "Side-on" lines are the exception.
+- These are separate PIECES that we cut out and place in our own layout; we place the stove, the trays, the plates, the shadows and
+  the word labels ourselves. Draw only what the line asks, nothing else: no stove, hob, knobs or flames, no hands, no text, letters,
+  numbers or labels, no tools that do nothing, no napkins or plants unless asked, no steam, no glow, nothing in the air.
+- Counts are exact: if a line says six, draw six, and count them in your check.
+- Fill the frame: the objects asked for take up most of the picture, with a margin of about one tenth of the picture all round.
+  Never small objects in a large empty field. Sizes are given as shares of the picture's width: keep to them.
+- "On magenta" means one flat solid #FF00FF background edge to edge, no gradient, no texture, and NO shadow at all: no contact shadow,
+  no soft shadow, nothing darker than the flat magenta anywhere (we add every shadow in code). The object must not touch the edges.
+  We cut along the magenta, so it must not tint, reflect in or bleed onto the object: steel reflects a neutral pale-grey room, never
+  pink; between thin pieces (strands, rings) the magenta stays pure.
+- Where a line asks for several panels or rows: equal panels, the same camera, scale and light in each, separated only by a strip of
+  the same background; no frames, borders, dividing lines or numbers.
+- No oval plates or trays: round, square or rectangular only. No sweets or biscuits anywhere.
+
+=== IMAGE LINES ===
+CHAT 1 (K1-K7: steel, tools and the grill kit, all straight down on magenta)
+K1 THE SKEWER, EMPTY (pictures: K1-skewers-mini-look, 00-HOUSE-sekelo-zafar-pick). Landscape 16:9, straight down, on magenta: ONE
+   skewer lying horizontal, 85% of the picture's width, its steel point to the RIGHT and its handle to the left: a thin round
+   brushed-steel rod ending in a point; at the left end a short steel collar then a dark walnut handle about one fifth of the
+   skewer's length, as in the handles in K1. Nothing threaded on it, no second skewer.
+K2 THE SKEWER PIECES (pictures: K1-skewers-mini-look). Landscape 16:9, straight down, on magenta: a grid of FIFTEEN food pieces,
+   five rows by three columns, equal gaps, each piece about one tenth of the picture's width, each seen from straight above as it
+   would sit threaded on a skewer (draw NO skewer). Rows, top to bottom: a lamb cube; a tomato chunk; a red onion wedge; a green
+   pepper chunk; a potato cube. Columns, left to right: raw; grilled (browned, light grill marks); charred (dark char at the edges,
+   still food, not black). The cooked meat is deep brown with char, never golden or orange; raw meat matte red, not glossy. All
+   fifteen the same size, every piece whole.
+K3 THE STEEL TRAY, EMPTY (pictures: K2-steel-trays-deeper, K1-skewers-mini-look). Landscape 16:9, straight down, on magenta: ONE
+   plain rectangular brushed-steel tray, 85% of the picture's width and about 55% of its height, corners softly rounded, empty and
+   clean. Its rim is one flat even steel band about 4% of the tray's width; the floor inside is a touch darker than the rim, with a
+   soft shadow along its upper-left inner edges only, so it reads a little deeper than K1's tray (K2's depth, K1's camera). No inner
+   wall drawn (straight down), no handles, no food.
+K4 CORN COBS, THREE STATES (pictures: K3-corn-cobs-look). Landscape 16:9, straight down, on magenta: EXACTLY THREE corn cobs, one
+   above the other, equal gaps, each lying horizontal with its tip to the RIGHT and a short pale stem stub at the left, husks
+   removed, each 80% of the picture's width, all the same size. Top: raw, bright yellow kernels, matte. Middle: turned once on the
+   grill, golden with a few light-brown toasted patches. Bottom: done, deep golden with small dark char spots along the kernels.
+   Kernels in neat rows; nothing on the cobs: no butter, no salt, no lemon.
+K5 TWO ROUND PLATES (pictures: K5-plates-mock, F1-bowls-mini-T2).
+   Landscape 16:9, straight down, on magenta: TWO plates side by side, each a PERFECT circle 42% of the picture's width, empty and
+   clean. Left: plain brushed stainless steel with a shallow flat rim band and a slightly darker floor. Right: cream ceramic, the
+   same cream and finish as the house bowls, a low plain rim. The same light on both; no pattern, no faces, no food.
+K6 THREE UTENSILS (pictures: K6-utensils-mock). Landscape 16:9, straight down, on magenta: THREE tools in a row, equal gaps, every
+   handle pointing to the bottom edge of the picture, each tool about 80% of the picture's height, all wood and metal: (a) left, a
+   ladle: a round brushed-steel bowl, a steel collar, a dark walnut handle; (b) middle, a slotted frying spoon: a round flat
+   brushed-steel head with small round holes, a steel collar, a dark walnut handle, its handle resting across a small folded white
+   cotton cloth (the cloth lies flat under the handle only, about a fifth of the tool's length); (c) right, a chef's knife, blade
+   up, point at the top: a plain steel blade, a dark walnut handle with three steel rivets. No other object, no board.
+K7 EGGS, FOUR STATES (pictures: K7-fried-eggs-mock, K4-steel-pan-mini). Landscape 16:9, straight down, on magenta: FOUR objects in a
+   row, equal gaps, each about 20% of the picture's width, no pan: (1) a fried egg just cracked in: the white still translucent and
+   runny with a soft uneven edge, the yolk bright orange-yellow and domed; (2) the same egg cooked: the white set, opaque and
+   smooth, the yolk glossy; (3) the same egg overdone: the white browned and crisp at the edges, the yolk dull and flatter; (4) a
+   peeled hard-boiled egg cut in two lengthways, its two halves side by side with the cut faces up, the yolk pale yellow. The eggs
+   at the scale they would be in the K4 pan (the pan's floor is about three eggs wide).
+CHAT 2 (C5-C11, F3-F5: food straight down on magenta, the chaat layers and the bands' bowls)
+C5-C11 ONE TOPPING EACH (pictures: F2-toppings-mini-look). Seven separate SQUARE images, one per line: C5 green chutney; C6 chopped
+   red onion; C7 chopped tomato; C8 green chilli rings; C9 chopped coriander leaves; C10 tamarind chutney; C11 yogurt. Each image
+   shows ONLY that topping on magenta, straight down, at the scale of F2 (its cubes and chickpeas are on the same bowl floor): the
+   pieces lie in one loose, even, flat layer inside an invisible circle 55% of the picture's width, centred, with magenta showing
+   between and around them, NO shadows. NO bowl, plate, ring or outline is drawn: the circle is only where the pieces stop, and
+   every piece is whole, none cut by it. Sizes and counts: C6 onion as about 30 small pink-and-white chopped pieces; C7 tomato as
+   about 25 red diced pieces with a few seeds, not watery; C8 chilli as about 20 thin round slices showing the pale inside and seeds;
+   C9 coriander as a loose scatter of about 40 small torn leaf pieces; C5 green chutney as five or six flat ribbons of uneven width,
+   matte dark herb green #4E7A2E, no gloss, no raised tube look; C10 tamarind chutney as five or six flat ribbons of uneven width,
+   deep brown #5A2E12 with a faint sheen only; C11 yogurt as four thick white dollops and short ribbons, matte, soft edges. We stack
+   these in the bowl in any order, so each must look right alone.
+F3 THE CHAAT BOWLS (pictures: F1-bowls-mini-T2, F3-chaat-band-mock). Landscape 16:9, straight down, on magenta: EXACTLY TEN cream
+   ceramic bowls, F1's bowl exactly, in two rows of five, equal gaps, each bowl 16% of the picture's width, each holding one topping
+   level with its rim (no bowl overfull, no bowl empty). Top row, left to right: boiled potato cubes; chickpeas; chopped red onion;
+   chopped tomato; green chilli rings. Bottom row: chopped coriander; sev (thin crisp yellow gram-flour noodles); green chutney
+   (matte dark herb green); tamarind chutney (deep brown); yogurt (white). No tray under them, no pills, no labels.
+F4 THE DAAR BOWLS (pictures: F1-bowls-mini-T2, F4-daar-band-mock). Landscape 16:9, straight down, on magenta: EXACTLY EIGHT cream
+   ceramic bowls, F1's bowl exactly, in two rows of four, equal gaps, each bowl 18% of the picture's width, each holding one thing
+   level with its rim. Top row, left to right: cumin seeds (small brown); black mustard seeds; turmeric powder (deep yellow);
+   white salt (fine, no big crystals). Bottom row: red chilli powder; peeled garlic cloves (about eight); whole green chillies
+   (about five, with stems); green cardamom pods (about ten). No tray, no pills, no labels.
+F5 THE SAMOSA FILLING BOWLS (pictures: F1-bowls-mini-T2, F5-samosa-band-mock). Landscape 16:9, straight down, on magenta: EXACTLY
+   EIGHT cream ceramic bowls, F1's bowl exactly, in two rows of four, equal gaps, each bowl 18% of the picture's width, each holding
+   one filling level with its rim. Top row, left to right: boiled potato cubes; green peas; chopped red onion; green chilli rings.
+   Bottom row: chopped coriander; cooked minced lamb (brown, crumbly, no sauce); grated carrot; finely shredded cabbage. No tray,
+   no pills, no labels.
+CHAT 3 (S1-S4, P1, P2, F6, F7 straight down on magenta; then B1-B3 side-on)
+S1 THE ROUND PASTRY SHEET, TOP (pictures: S1-samosa-circle-strip-zafar, S2-samosa-pastry-look). SQUARE image, straight down, on
+   magenta: ONE flat round sheet of raw samosa pastry, a PERFECT circle 82% of the picture's width, centred, lying flat and empty:
+   pale cream, the soft matte pastry texture of S2's left panel with a faint dusting of flour, its edge softly rounded and a touch
+   thicker (a thin lighter rim-line, nothing more). No filling, no creases, no fold, no shadow, no board.
+S2 THE SHEET, UNDERSIDE (pictures: S1-samosa-circle-strip-zafar, S2-samosa-pastry-look). The same circle at the same size and place
+   as S1, but its underside: one shade darker and warmer cream, matte, more flour dust, no sheen: the face that shows when a flap
+   turns over. Nothing else.
+S3 THE FILLING, ALONE (pictures: S1-samosa-circle-strip-zafar, S2-samosa-pastry-look). SQUARE image, straight down, on magenta: ONE
+   low rounded mound of samosa filling with nothing under it, a roughly round heap 36% of the picture's width, centred: small boiled
+   potato cubes, green peas, cooked minced lamb, chopped onion and coriander, lightly spiced golden, matte, every piece readable.
+   No sheet, no bowl, no spoon.
+S4 THE CLOSED SAMOSA, THREE STATES (pictures: S1-samosa-circle-strip-zafar, S2-samosa-pastry-look). Landscape 16:9, straight down,
+   on magenta: EXACTLY THREE closed samosas in a row, equal gaps, each an equal-sided triangle with its point UP and a flat base,
+   each 26% of the picture's width, all the same size: (1) raw, pale cream pastry, the folded flaps' edges visible as soft lines
+   meeting just past the centre, as in the last panel of S1; (2) fried golden, crisp, small bubbles on the pastry, as in S2's right
+   panel; (3) fried too long, deep brown all over, darker at the edges, not black. No filling showing, no oil, no plate.
+P1 CHOP: POTATO, ONION, TOMATO (pictures: P1-chop-pieces-mock). SQUARE image, straight down, on magenta: THREE rows, equal gaps,
+   each row the same vegetable whole on the LEFT and, to its right, its two halves lying cut faces UP: a brown-skinned potato; a
+   golden-skinned onion (not red); a red tomato with its green stem on the whole one. The whole item about 24% of the picture's
+   width; the two halves of the same scale as the whole, cut straight across the middle into two equal halves, the cut faces
+   clean and bright (the onion's rings, the tomato's seeds, the potato's pale flesh). Nine objects in all, no board, no knife.
+P2 CHOP: CHILLI, GARLIC, GINGER (pictures: P1-chop-pieces-mock). SQUARE image, straight down, on magenta: THREE rows as P1, the same
+   scale as P1: a long green chilli with its stem, cut once across the middle into two halves showing the pale inside and seeds; a
+   whole white garlic bulb, cut across the middle into two halves showing the cloves; a knobbly ginger root, cut across into two
+   halves showing the pale yellow inside. Nine objects in all, no board, no knife.
+F6 THE DOUGH HEAPS (pictures: F6-dough-heaps-mock). Landscape 16:9, straight down, on magenta: TWO heaps of dough balls, left and
+   right, each heap EXACTLY THREE smooth round balls touching in a tight triangle (two below, one above), each ball about 13% of
+   the picture's width: left heap pale cream wheat dough; right heap grey-brown millet dough with a fine speckle. No tray, no
+   flour dust on the magenta.
+F7 A BOWL OF EGGS (pictures: F1-bowls-mini-T2). SQUARE image, straight down, on magenta: ONE cream ceramic bowl, F1's bowl exactly,
+   its outer rim 70% of the picture's width, centred, holding EXACTLY SIX brown hens' eggs lying in one layer, whole, touching
+   lightly. No shadow on the magenta.
+B1 THE GLASS BOWL, THREE MORE STATES (pictures: B1-glass-bowl-mini). Landscape 16:9, side-on with the camera a touch above (the same
+   height as B1), on the white marble worktop against the same plain flat warm-cream wall as B1: THREE equal panels, the same clear
+   glass bowl as B1, the same shape and size, a full bowl's width of empty marble between neighbouring bowls (B1's nearly touch;
+   yours must not): (1) empty and clean; (2) one small scoop of white flour lying flat, covering only the bowl's floor; (3) a
+   shaggy half-mixed dough: lumps of wet flour and dry flour together, uneven, not yet a ball. The contents must read clearly
+   through the glass; the glass shows soft highlights only, no room reflections, no window streak on the marble.
+B2 THE JUG, FIVE LEVELS (pictures: B2-jug-mock, B1-glass-bowl-mini). Landscape 16:9, side-on, the camera, marble and cream wall of
+   B1: EXACTLY FIVE identical clear glass measuring jugs in a row, equal gaps, each 15% of the picture's width, spout to the left and
+   handle to the right, straight-sided and plain: NO marks, dashes, lines or numbers on the glass. Water in them, left to right:
+   none; a quarter full; half full; three quarters full; full to just under the spout. The water clear with a faint cool blue tint
+   so it reads, a flat level top, a thin bright line at the surface. The jug's shape from B2.
+B3 THE NAAN TRAY, RAW AND BAKED (pictures: B4-naan-tray-mock, B3-oven-mini). Landscape 16:9, on magenta, seen from the FRONT with
+   the camera a little above the tray (the view through B3's oven door, standing in front of it): TWO equal panels, the same dark
+   steel rectangular baking tray in each, 80% of the panel's width, its front edge nearest, a little of its top surface showing:
+   left, THREE raw naan discs on it, pale soft dough, slightly uneven; right, the same three baked: golden with brown blisters and
+   a few darker spots. The tray plain, no handles, no paper. Lit softly from above as inside an oven, warm but not orange.
