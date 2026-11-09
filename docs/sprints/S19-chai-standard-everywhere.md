@@ -26,6 +26,9 @@ principles and the art.
 
 **Judging, split (Zafar, 9 Nov):** the automatic checks (behaviour: cards, lights, help, no ticks, page errors, the end reached) gate every merge now; the eye judge beside chai (look and layout) waits until each game is on its new scene and art, and each game's gap list comes from the mock-up review (`sources/art/s18-mocks/results/`, the review page); nothing is published without Zafar.
 
+## Publish (Zafar, 9 Nov)
+Once s19-lights is done: publish everything since the last publish together: the behaviour work (cards, no ticks, lights, games' fixes, checks), **chai's three fixes** (his go) and the lights. After /review and checks.mjs; the mock-ups' folders stay out of `assets/`.
+
 ## Waiting on Zafar (his review point: the principles with the art)
 The counting rule (SEK-25, CK-64), sekelo's one skewer per person, the timing floor, samosa's redesign, the scene for every game, the
 shelf angle, the timed windows' look (sekelo, daar, eggs), one stir (DAAR-45), the merge rule, chai's publish.
