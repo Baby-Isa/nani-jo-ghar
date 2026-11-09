@@ -8,6 +8,7 @@ import sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 D = "assets/cook/items/v3/sekelo/"
 W, H, M = 1560, 1080, 36
+SIZES = [("1920x1080 big screen", 1.44), ("1280x665 laptop", 1.56), ("740x320 your phone", 1.63), ("930x430 big phone", 1.82)]
 MOCK = Image.open("sources/art/s19-mocks2/results/A1-sekelo-1.png").convert("RGBA"); K = MOCK.width / 1400
 FONT = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 26)
 def marble():
@@ -73,31 +74,61 @@ def place_tray(base, x, y, w, h, state, n=4):
     rim = int(min(w, h) * 0.035); ls = h - 7 - 2 * rim
     row(base, n, ls, state, x + w * 0.06, x + w * 0.94, y + rim)
     return ls
-def frames(base, label):
+def band(base, top):
+    """Fable's stone tray (build/reports/s19-stone-tray-fable.md) along the bottom 30%."""
+    x0, x1 = int(W * 0.03), int(W * 0.97); y0, y1 = top, H - int(H * 0.02); r = int((y1 - y0) / 8)
     d = ImageDraw.Draw(base)
-    d.rectangle((0, 0, W - 1, H - 1), outline=(40, 160, 70, 255), width=4)
-    d.rectangle((0, H - 44, W, H), fill=(0, 0, 0, 170)); d.text((14, H - 38), label, fill="white", font=FONT)
-def v1(out):
+    d.rounded_rectangle((x0 + 8, y0 + 10, x1 + 8, y1 + 6), r, fill=(0, 0, 0, 40))
+    d.rounded_rectangle((x0, y0, x1, y1), r, fill=(181, 169, 158, 255))
+    lip = max(4, int((y1 - y0) * 0.035)); d.rounded_rectangle((x0 + lip, y0 + lip, x1 - lip, y1 - lip), r - lip, fill=(196, 184, 173, 255))
+    return x0 + lip, y0 + lip, x1 - lip, y1 - lip
+def fit_grill_h(maxh, maxw):
+    return int(min(maxh / (1 + 0.32 * (G_RIM[1] - G_RIM[0])), maxw * GRILL.height / GRILL.width))
+def opt1():
     im = marble().convert("RGBA")
-    gh = int((H - 2 * M) / (1 + 0.32 * (G_RIM[1] - G_RIM[0])))
-    gh = int(gh * 0.9)
-    gw, ls_g = place_grill(im, gh, W - M - int(GRILL.width * gh / GRILL.height) / 2)
-    tw = W - gw - 2 * M; avail = H - 2 * M - 30
-    th = int(avail / 2 / (1 + 0.32 * 0.93)); ls_t = 0
-    for i, st in enumerate(("raw", "grilled")):
-        ls_t = place_tray(im, M, M + i * (avail / 2 + 30), tw, th, st); pw_t = min(int(ls_t * .2), int(tw * .88 / 4 * .78))
-    frames(im, f"v1: two trays left. Tray skewers {ls_t / ls_g:.0%} of the grill's; pieces {pw_t} px vs {int(ls_g * .2)} px. Green: the 1920 play area; phones show more marble each side")
-    im.convert("RGB").save(out, quality=88)
-def v2(out):
-    """A tray each side: the width is shared by three things, so the grill shrinks until the trays' skewers are about half its own."""
+    gh = fit_grill_h(H - 2 * M, W * 0.62); gw, ls_g = place_grill(im, gh, W - M - int(GRILL.width * gh / GRILL.height) / 2)
+    tw = W - gw - 3 * M; avail = H - 2 * M - 30; th = int(avail / 2 / (1 + 0.32 * 0.93))
+    for i, st in enumerate(("raw", "grilled")): place_tray(im, M, M + i * (avail / 2 + 30), tw, th, st)
+    ls_t = th - 7 - 2 * int(min(tw, th) * 0.035)
+    return im, min(int(ls_t * .2), int(tw * .88 / 4 * .78)), int(ls_g * .2)
+def opt2():
     im = marble().convert("RGBA"); ar = GRILL.width / GRILL.height
-    gh = int((W - 4 * M) / (ar + 2 * 0.62))                       # tw = 0.62 gh: tray pieces about half the grill's
-    gw, ls_g = place_grill(im, gh, W / 2); tw = int((W - gw) / 2 - 2 * M)
-    pw = int(tw * .88 / 4 * .78); ls = int(pw / 0.2); rim = int(tw * 0.035); th = ls + 2 * rim + 7
+    gh = fit_grill_h(H - 2 * M, (W - 4 * M) * ar / (ar + 2 * 0.62)); gw, ls_g = place_grill(im, gh, W / 2)
+    tw = int((W - gw) / 2 - 2 * M); pw = min(int(tw * .88 / 4 * .78), int(ls_g * .2)); ls = int(pw / 0.2); rim = int(tw * 0.035)
+    th = min(ls + 2 * rim + 7, int((H - 2 * M) / 1.3)); ls = th - 2 * rim - 7
     for x, st in ((M, "raw"), (W - M - tw, "grilled")):
         im.alpha_composite(tray(tw, th), (int(x), M)); row(im, 4, ls, st, x + tw * 0.06, x + tw * 0.94, M + rim)
-    frames(im, f"v2: a tray each side. The grill shrinks to {gh} px tall; pieces {pw} px in the trays vs {int(ls_g * .2)} px on the grill")
-    im.convert("RGB").save(out, quality=88)
+    return im, min(int(ls * .2), int(tw * .88 / 4 * .78)), int(ls_g * .2)
+def opt3():
+    """The raw skewers on the stone band along the bottom (as every game's items); the grill above; the cooked tray right of it."""
+    im = marble().convert("RGBA"); top = int(H * 0.70)
+    bx0, by0, bx1, by1 = band(im, top + 6)
+    lb = int((by1 - by0) * 0.92 / 1.32)                                 # upright in the band, the handle inside it too
+    row(im, 4, lb, "raw", W * 0.3, W * 0.7, by0 + int((by1 - by0) * 0.04))
+    gh = fit_grill_h(top - M - 6, W * 0.6); gx_c = M + int(GRILL.width * gh / GRILL.height) / 2 + W * 0.04
+    gw, ls_g = place_grill(im, gh, gx_c)
+    tx = int(gx_c + gw / 2 + M); tw = W - tx - M - int(W * 0.03)
+    pw = min(int(tw * .88 / 4 * .78), int(ls_g * .2)); ls = min(int(pw / 0.2), int((top - 2 * M) / 1.32)); rim = int(tw * 0.035); th = ls + 2 * rim + 7
+    im.alpha_composite(tray(tw, th), (tx, M)); row(im, 4, ls, "grilled", tx + tw * 0.06, tx + tw * 0.94, M + rim)
+    return im, min(int(lb * .2), int((W * .4) / 4 * .78)), int(ls_g * .2), min(int(ls * .2), pw)
+def sheet(fn, name, out):
+    global W
+    tiles = []; f = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
+    for lab, ar in SIZES:
+        W = int(H * ar); r = fn(); im = r[0]; px = 320 / H                       # pieces in the phone's own pixels
+        sm = im.convert("RGB").resize((int(W * 360 / H), 360), Image.LANCZOS)
+        cap = Image.new("RGB", (sm.width, 64), (250, 248, 245)); d = ImageDraw.Draw(cap)
+        d.text((8, 6), lab, fill=(30, 30, 30), font=f)
+        d.text((8, 28), "pieces: " + " / ".join(f"{v} ({v * 320 / 1080:.0f} on the phone)" for v in r[1:]), fill=(90, 70, 50), font=f)
+        t = Image.new("RGB", (sm.width, 424), (250, 248, 245)); t.paste(sm, (0, 0)); t.paste(cap, (0, 360)); tiles.append(t)
+    Wt = sum(t.width for t in tiles) + 12 * (len(tiles) + 1)
+    S = Image.new("RGB", (Wt, 424 + 60), (234, 230, 225)); d = ImageDraw.Draw(S)
+    d.text((12, 12), name, fill=(20, 20, 20), font=ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 22))
+    x = 12
+    for t in tiles: S.paste(t, (x, 48)); x += t.width + 12
+    S.save(out, quality=88)
 if __name__ == "__main__":
     o = sys.argv[1] if len(sys.argv) > 1 else "sources/art/s19-mocks2/fit"
-    v1(f"{o}/layout-v1-two-trays-left.jpg"); v2(f"{o}/layout-v2-tray-each-side.jpg")
+    sheet(opt1, "Option 1: two trays left (pieces: trays / grill)", f"{o}/layout-opt1-sizes.jpg")
+    sheet(opt2, "Option 2: a tray each side (pieces: trays / grill)", f"{o}/layout-opt2-sizes.jpg")
+    sheet(opt3, "Option 3: raw skewers on the bottom band, cooked tray right (pieces: band / grill / cooked tray)", f"{o}/layout-opt3-sizes.jpg")
