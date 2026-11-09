@@ -1230,7 +1230,9 @@
       const tick = (now) => {
         const t = Math.min(1, (now - t0) / dur);
         const k = Onboard.pathAt(keys, t);
-        pt = { x: k.x, y: k.y };
+        // (a move's finger shows only while it presses: it comes down where the move starts and goes as it lifts; never a resting hand,
+        // which reads as a tap's finger, SH-141/SH-233, contract-44)
+        pt = k.press ? { x: k.x, y: k.y } : null;
         if (inner) inner.classList.toggle("pressed", !!k.press);
         if (pathCarry) {
           try {
@@ -1738,7 +1740,8 @@
         const t = Math.min(1, (now - t0) / dur);
         // (reduced motion: the finger pressed where the move starts, still)
         const k = reduced() ? Object.assign({}, a, { press: 1 }) : Onboard.pathAt(keys, t);
-        pt = { x: k.x, y: k.y };
+        // (shown only while it presses, as a script's move: playPath)
+        pt = k.press ? { x: k.x, y: k.y } : null;
         if (inner) inner.classList.toggle("pressed", !!k.press);
         if (carry && !reduced()) {
           try {
