@@ -42,6 +42,11 @@ we can execute"); baking keeps concrete amounts only, a little / a lot / a bit m
 prototype and clinic games, CK-72); the oven's shelves are dotted tray outlines, top, middle and bottom (CK-70); chop's hop is built
 in the standalone chop game first (CK-71).
 
+## Answered 9 Nov, late
+- The samosa folds from a round sheet (his video; SAM-21). The publish gate runs only the modes a sprint changed; the full gate before
+  the stores (yes). Knob rule refined (SH-247). Chop's hops semi-random, never together (CK-71). Builders' checks: no new rules; the
+  orchestrator reviews the decisions already made and lays them out (build/reports/s19-check-rules-review.md).
+
 ## Waiting on Zafar (his review point: the principles with the art)
 The counting rule (SEK-25, CK-64), sekelo's one skewer per person, the timing floor, samosa's redesign, the scene for every game, the
 shelf angle, the timed windows' look (sekelo, daar, eggs), one stir (DAAR-45), the merge rule, chai's publish.
