@@ -325,6 +325,10 @@ export function check110(r, tl, add) {
   const seen = new Set();
   const ks = ev(tl, "s19knob");
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  // (the knob never moves in a round: a pan that shares the width at any held moment of the page shares it; the serve's last moments,
+  // the dial gone, are not a layout of their own)
+  const shared = new Set();
+  ks.forEach((e, ki) => { if (held(ks, ki, tEnd) >= HOLD_MS && (e.n || 1) === 1) for (const q of e.list || []) if ((q.beside || []).length) shared.add(q.i || 0); });
   for (let ki = 0; ki < ks.length; ki++) {
     const e = ks[ki];
     // (a moment between two things, the bowl gone and the dial not yet up, is not a layout: held 300 ms)
@@ -334,7 +338,7 @@ export function check110(r, tl, add) {
     for (const q of e.list || []) {
       if (!q.knob || !q.burner) continue;
       const kb = box(q.knob), fb = q.face ? box(q.face) : null, bn = q.burner, pan = q.pan ? box(q.pan) : null;
-      const alone = single && !(q.beside || []).length;
+      const alone = single && !(q.beside || []).length && !shared.has(q.i || 0);
       const key = (alone ? "alone:" : "below:") + (q.i || 0);
       if (seen.has(key)) continue;
       const bad = [];
