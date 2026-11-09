@@ -205,6 +205,16 @@ light oak, its skewer one pixel on a phone, its heaps at a 3/4 angle that is nei
 - Evening (a note, weighed in §9): lock the visual and layout principles, then mock-ups by an art run he can start "sooner rather than
   later, because I think that might be the critical path"; what went wrong discussed while it runs.
 
+- **9 Nov ~00:30 (Zafar, the principles; transcript `docs/feedback/kitchen-mocks-2026-11-09-transcript.md` [29]-[31]):**
+  1 yes (shared cards, Nani's box, the onboarding light); 2 yes; 3 yes; 4 yes as "the order names the dish and the count where
+  possible" ("two fried eggs"), but a card may still carry a count where it is natural ("two sugars"): no ban on numbers on cards;
+  5 yes; 6 yes with two changes: not every lesson has a finger (a tap has none; his tester onboarded with no fingers), and the light's
+  room follows the existing tier rule (thing, pill and the asker's face where there is one, with the ideal padding, down to a minimum
+  where it meets a neighbour; no face: thing and pill), found or written; 7 yes, chai sets the floor for now; 8 his samosa notes of
+  9 Nov ([21]-[23]) are the direction; **9 no** as a merge rule: the side-by-side check is kept for the later refining stages, and
+  "done" means chai's standard (his own rule); 10 yes, for now. 11-12 (the look and the scene) are being answered through the mock-ups
+  ([1]-[28]).
+
 ## 8. Next (for the planning chat)
 
 1. Zafar's go to publish chai's three fixes (or a permission rule for `publish.mjs`).
