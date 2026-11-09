@@ -215,6 +215,16 @@ light oak, its skewer one pixel on a phone, its heaps at a 3/4 angle that is nei
   "done" means chai's standard (his own rule); 10 yes, for now. 11-12 (the look and the scene) are being answered through the mock-ups
   ([1]-[28]).
 
+- **9 Nov (Zafar, on the combined list of Fable's answers and the feedback decisions; `docs/feedback/kitchen-mocks-2026-11-09.md`):**
+  yes to all except: **5** the dashed rings on maani's board appear only after the word moment teaches big and small; from then every
+  order is big or small and the rings show how far to roll for each (MAA-23). **6** the blurred-card lesson runs the first time a big
+  pop-up card is blurred: it freezes, the shared onboarding light draws attention, the tap unblurs it, then it moves on; a player who
+  skips it misses it (SH-213). **9** the stir count must be a big, easy number; how it looks (a flip card, a scoreboard, a card that pops
+  up) goes into mock-up round 2 as options; it need not fit the kitchen (DAAR-03, DAAR-46). **11** the two-corner fold on our
+  recommendation (SAM-21). **16** chop: the walnut board fills the play area with a thin marble border (thin top and bottom, a little
+  more left and right), or no corners at all (ART-37). **18** the lights builder waits. Round 2's prompts build on his own ChatGPT run
+  (PRC-14).
+
 ## 8. Next (for the planning chat)
 
 1. Zafar's go to publish chai's three fixes (or a permission rule for `publish.mjs`).
