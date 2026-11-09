@@ -362,13 +362,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /** The next in the round's bag whose slot is free hops (false: none free, or HK.up are up already). */
       const hopOne = () => {
         if (hopping().length >= HK.up) return false;
-        const i = phase.bag.findIndex((id) => {
+        let i = phase.bag.findIndex((id) => {
           const s = slots.find((x) => x.id === id);
           return s && !s.hop && !s.refill && s.img && s.img.active;
         });
+        // (DAAR-35, P55: "the items should just come continuously": a slot still filling after a cut fills now and hops, rather
+        // than hold the next hop back)
+        if (i < 0) i = phase.bag.findIndex((id) => slots.some((x) => x.id === id && !x.hop && x.refill > 0));
         if (i < 0) return false;
         const id = phase.bag.splice(i, 1)[0];
         const s = slots.find((x) => x.id === id);
+        if (s.refill > 0) {
+          s.refill = 0;
+          s.img = sit(s);
+        }
         throwNote(phase);
         const img = s.img;
         const big = S.fitScale(s.key, z.L(hopPx), z.L(hopPx));
@@ -782,7 +789,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        */
       const hopAim = (lead, needs, ownOf) => {
         // (still up when the swipe lands: the rest of its hang and the first half of its fall, which the cut's line still crosses)
-        const ready = (s) => isUp(s) && s.hop.t >= HK.rise * 0.6 && HK.rise + HK.hang + HK.fall * 0.4 - s.hop.t > lead;
+        // (the lead never more than half that window: a slow first swipe must not leave every hop too short to aim at)
+        const win = HK.hang + HK.fall * 0.4;
+        const ready = (s) => isUp(s) && s.hop.t >= HK.rise * 0.6 && HK.rise + win - s.hop.t > Math.min(lead, win * 0.5);
         const ups = slots.filter(ready);
         const tgt = ups.find((s) => needs(s.img));
         const dec = ups.find((s) => s !== tgt && ownOf(s.img) && !ownOf(s.img).targets.includes(s.id));
@@ -803,6 +812,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // game seconds per real second (slow frames are capped), for the test's aim below
         if (now > last) gameRate += ((dt * 1000) / (now - last) - gameRate) * 0.2;
         last = now;
+        // (the hops move first, so one landing this frame frees its place for the next; on the beat's clock, the one the hops are
+        // started on, so a slow frame never keeps an item up past its place in the schedule)
+        if (HOP) hopTick(beat);
         if (running && phase) {
           roundT += beat;
           idle += beat;
@@ -843,7 +855,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!img.sliced) img.setAlpha(shown(img)); // (DAAR-38: what fades at the end fades on its own)
           if (img.y > z.Y(1060) && img.vy > 0) img.destroy();
         });
-        if (HOP) hopTick(dt);
         trail.clear();
         const t0 = performance.now() - 160;
         const pts = trailPts.filter((q) => q.t > t0);
