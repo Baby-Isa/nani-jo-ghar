@@ -516,6 +516,10 @@ export class CookPlayer {
       await this.page.click("#btn-help", { force: true }).catch(() => {});
       await sleep(200);
     }
+    // s19-stuck: the cog's menu it opened is closed again (a child closes it with the cog or a tap elsewhere): left open, its home
+    // and book sat over the fridge's milk at 740x320 and 930x430, and every tap on the milk landed on the menu (cook:fetch@L2)
+    await this.page.evaluate(() => { const m = document.getElementById("side-menu"); const c = document.getElementById("side-cog"); if (m && !m.hidden && c) c.click(); }).catch(() => {});
+    await sleep(150);
   }
 
   async act(e) {
@@ -524,11 +528,16 @@ export class CookPlayer {
     if (e.intro) { await this.intro(); return; }
     if (k === "click") {
       const sel = e.selector;
+      // s19-stuck: a click's moment can pass while the player is busy (Nani's pass-me takes a wrong pick from L2 and moves on,
+      // UX 11; her 3 s ring runs out and she goes, MAA-14, when screenshots under the gate's load make the player slow). The game
+      // has moved on, not stuck: the loop reads the next expectation instead of waiting 10-30 s on a card that has left
+      const movedOn = async () => JSON.stringify(await this.exp().catch(() => null)) !== JSON.stringify(e);
       if (this.mistakes && e.wrong && !this.made.has("click-wrong") && (await p.$(e.wrong))) {
         this.made.add("click-wrong");
-        await p.click(e.wrong);
+        await p.click(e.wrong, { timeout: 5000 }).catch(() => {});
         await sleep(500);
         await this.once("wrong-choice");
+        if (await movedOn()) { this.rec.note(`wrong ${e.wrong} taken (or her time ran out): the game moved on`); return; }
       }
       // force-passme (MAA-14): her first ask is left to run out (the 3 s ring, her impatient face, she goes); later ones answered
       if (this.mode === "force-passme" && String(sel).startsWith("#passme") && !this.made.has("passme-waited")) {
@@ -538,7 +547,7 @@ export class CookPlayer {
       }
       // no Next (Zafar, 22 Oct): the go button presses itself a beat after it shows, so one that is already gone is done
       if (String(sel).includes("#go-btn") && !(await p.isVisible(sel).catch(() => false))) { await sleep(1200); if (!(await p.isVisible(sel).catch(() => false))) return; }
-      await p.waitForSelector(sel, { state: "visible", timeout: 10000 });
+      try { await p.waitForSelector(sel, { state: "visible", timeout: 10000 }); } catch (err) { if (await movedOn()) return; throw err; }
       if (sel.includes(".njg-results")) {
         if (sel.includes("rs-next")) {
           await waitBadges(p); this.badges = await readBadges(p);
@@ -550,7 +559,8 @@ export class CookPlayer {
         if (step && sel.includes("rs-next") && step !== "1") await sleep(600);
         await this.once("results-" + ({ 1: "badges", 2: "words", 3: "steps" }[step] || (sel.includes("rs-next") ? "badges" : "words")));
       }
-      await p.click(sel);
+      // (a pass-me card that leaves under the click: her ring ran out; anything else that stops a click still stops the run)
+      try { await p.click(sel, { timeout: 10000 }); } catch (err) { if (await movedOn()) { this.rec.note(`${sel} went before the click: the game moved on`); return; } throw err; }
     } else if (k === "tap") {
       // mistake: a wrong item first (the first three different things asked for), then the right one
       if (this.mistakes && e.swrongs && e.swrongs.length && !this.made.has("tap:" + e.key) && this.made.size < 6) {
