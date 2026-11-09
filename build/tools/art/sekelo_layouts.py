@@ -111,6 +111,43 @@ def opt3():
     pw = min(int(tw * .88 / 4 * .78), int(ls_g * .2)); ls = min(int(pw / 0.2), int((top - 2 * M) / 1.32)); rim = int(tw * 0.035); th = ls + 2 * rim + 7
     im.alpha_composite(tray(tw, th), (tx, M)); row(im, 4, ls, "grilled", tx + tw * 0.06, tx + tw * 0.94, M + rim)
     return im, min(int(lb * .2), int((W * .4) / 4 * .78)), int(ls_g * .2), min(int(ls * .2), pw)
+def opt3h():
+    """Zafar 9 Nov: option 3 with the raw skewers lying flat in the band, four in a row (tips right, handles left, a blank pill under
+    each); they turn upright and grow as they go up onto the grill; the cooked tray right of the grill as option 3."""
+    im = marble().convert("RGBA"); top = int(H * 0.70)
+    bx0, by0, bx1, by1 = band(im, top + 6); bh = by1 - by0
+    slot = (bx1 - bx0) * 0.94 / 4; pill_h = int(bh * 0.16)
+    ls = int(min(slot * 0.86 / 1.32, (bh - pill_h - bh * 0.16) / 0.2 / 1.15)); pw = int(ls * 0.2)
+    sk = skewer(ls, "raw", pw).rotate(-90, expand=True)                 # tip right, handle left
+    d = ImageDraw.Draw(im); cy = by0 + (bh - pill_h - bh * 0.06) / 2
+    for i in range(4):
+        cx = bx0 + (bx1 - bx0) * 0.03 + slot * (i + 0.5)
+        put(im, sk, cx - sk.width / 2, cy - sk.height / 2)
+        pw2 = slot * 0.42; py = by1 - pill_h - bh * 0.06
+        d.rounded_rectangle((cx - pw2 / 2, py, cx + pw2 / 2, py + pill_h), pill_h // 2, fill=(246, 238, 222, 255), outline=(214, 200, 178, 255), width=2)
+    gh = fit_grill_h(top - M - 6, W * 0.6); gx_c = M + int(GRILL.width * gh / GRILL.height) / 2 + W * 0.04
+    gw, ls_g = place_grill(im, gh, gx_c)
+    tx = int(gx_c + gw / 2 + M); tw = W - tx - M - int(W * 0.03)
+    pt = min(int(tw * .88 / 4 * .78), int(ls_g * .2)); lt = min(int(pt / 0.2), int((top - 2 * M) / 1.32)); rim = int(tw * 0.035); th = lt + 2 * rim + 7
+    im.alpha_composite(tray(tw, th), (tx, M)); row(im, 4, lt, "grilled", tx + tw * 0.06, tx + tw * 0.94, M + rim)
+    return im, pw, int(ls_g * .2), min(int(lt * .2), pt)
+def opt3s():
+    """Option 3 with the raw skewers lying flat in the band two by two (no pills: a skewer is the dish, not a word)."""
+    im = marble().convert("RGBA"); top = int(H * 0.70)
+    bx0, by0, bx1, by1 = band(im, top + 6); bh = by1 - by0
+    slot = (bx1 - bx0) * 0.92 / 2; rowh = bh * 0.86 / 2
+    ls = int(min(slot * 0.86 / 1.32, rowh * 0.8 / 0.2)); pw = int(ls * 0.2)
+    sk = skewer(ls, "raw", pw).rotate(-90, expand=True)
+    for r in range(2):
+        for i in range(2):
+            cx = bx0 + (bx1 - bx0) * 0.04 + slot * (i + 0.5); cy = by0 + bh * 0.07 + rowh * (r + 0.5)
+            put(im, sk, cx - sk.width / 2, cy - sk.height / 2)
+    gh = fit_grill_h(top - M - 6, W * 0.6); gx_c = M + int(GRILL.width * gh / GRILL.height) / 2 + W * 0.04
+    gw, ls_g = place_grill(im, gh, gx_c)
+    tx = int(gx_c + gw / 2 + M); tw = W - tx - M - int(W * 0.03)
+    pt = min(int(tw * .88 / 4 * .78), int(ls_g * .2)); lt = min(int(pt / 0.2), int((top - 2 * M) / 1.32)); rim = int(tw * 0.035); th = lt + 2 * rim + 7
+    im.alpha_composite(tray(tw, th), (tx, M)); row(im, 4, lt, "grilled", tx + tw * 0.06, tx + tw * 0.94, M + rim)
+    return im, pw, int(ls_g * .2), min(int(lt * .2), pt)
 def sheet(fn, name, out):
     global W
     tiles = []; f = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
@@ -131,4 +168,6 @@ if __name__ == "__main__":
     o = sys.argv[1] if len(sys.argv) > 1 else "sources/art/s19-mocks2/fit"
     sheet(opt1, "Option 1: two trays left (pieces: trays / grill)", f"{o}/layout-opt1-sizes.jpg")
     sheet(opt2, "Option 2: a tray each side (pieces: trays / grill)", f"{o}/layout-opt2-sizes.jpg")
+    sheet(opt3h, "Option 3, flat: raw skewers lying four in a row on the band (pieces: band / grill / cooked tray)", f"{o}/layout-opt3h-sizes.jpg")
+    sheet(opt3s, "Option 3, flat two by two: raw skewers stacked in two rows on the band (pieces: band / grill / cooked tray)", f"{o}/layout-opt3s-sizes.jpg")
     sheet(opt3, "Option 3: raw skewers on the bottom band, cooked tray right (pieces: band / grill / cooked tray)", f"{o}/layout-opt3-sizes.jpg")
