@@ -216,6 +216,32 @@ try {
     check(errors.length === 0, `lab ${state}: no page errors (${errors.join("; ")})`);
     await page.close();
   }
+  /* the pair side by side (MAA-20, Zafar's pick): the finger on one board, the circle on the other, both pins riding */
+  {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 665 } });
+    const errors = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await page.goto(`http://localhost:${PORT}/lab/sections/kit-lights.html?state=roll-pair`);
+    await page.waitForFunction(() => window.KitLights && window.KitLights.ready);
+    const seen = { hands: 0, circles: 0, a: new Set(), b: new Set() };
+    for (let i = 0; i < 14; i++) {
+      await sleep(150);
+      const f = await page.evaluate(() => {
+        const on = [...document.querySelectorAll(".ob-finger")].filter((x) => x.style.display !== "none");
+        return { circles: on.filter((x) => x.classList.contains("ob-circle")).length, hands: on.filter((x) => !x.classList.contains("ob-circle")).length, a: document.querySelector("#kl-pin").style.translate || "", b: document.querySelector("#kl-pin-b").style.translate || "" };
+      });
+      seen.hands = Math.max(seen.hands, f.hands);
+      seen.circles = Math.max(seen.circles, f.circles);
+      seen.a.add(f.a);
+      seen.b.add(f.b);
+    }
+    const boards = await page.evaluate(() => [...document.querySelectorAll(".kl-roll")].map((r) => r.getBoundingClientRect()).map((r) => [r.left, r.right]));
+    check(seen.hands === 1 && seen.circles === 1, `lab roll-pair: one finger and one circle together (${seen.hands}, ${seen.circles})`);
+    check(seen.a.size >= 3 && seen.b.size >= 3, `lab roll-pair: both pins ride (${seen.a.size}, ${seen.b.size} places)`);
+    check(boards.length === 2 && boards[0][1] <= boards[1][0], `lab roll-pair: side by side, not overlapping (${JSON.stringify(boards)})`);
+    check(errors.length === 0, `lab roll-pair: no page errors (${errors.join("; ")})`);
+    await page.close();
+  }
 } finally {
   await browser.close();
   server.close();

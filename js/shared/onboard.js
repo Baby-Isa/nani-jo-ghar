@@ -595,6 +595,10 @@
     if (t == null) return null;
     if (typeof t === "function") return rectOf(t());
     if (Array.isArray(t) && t.length === 4 && t.every((n) => typeof n === "number")) return { x: t[0], y: t[1], w: t[2], h: t[3] };
+    // (S19: a list of rects or things, e.g. a function giving a thing's parts, Cook.Coach.thingBox: one box round them all, so a
+    // finger's start or a light's size reads the whole thing)
+    if (Array.isArray(t)) return Onboard.unionOf(t.map(rectOf));
+    if (t && typeof t === "object" && typeof t.x === "number" && typeof t.w === "number" && !t.getBoundingClientRect) return { x: t.x, y: t.y, w: t.w, h: t.h };
     const el = typeof t === "string" ? document.querySelector(t) : t;
     if (!el || !el.getBoundingClientRect) return null;
     const r = el.getBoundingClientRect();
@@ -613,6 +617,7 @@
     }
     return { x: r.left - dx, y: r.top - dy, w: r.width, h: r.height };
   }
+  Onboard.rectOf = rectOf;
   // (S19: a target is one thing, a list, or a function giving either, read each frame: a function giving a list of rects, a thing's
   // parts, Cook.Coach.thingBox, is the list; lists inside lists are flattened)
   const isBox = (t) => Array.isArray(t) && t.length === 4 && t.every((n) => typeof n === "number");
@@ -827,14 +832,17 @@
     };
     let raf = 0;
     let stopped = false;
-    liveFingers.push(el);
-    liveFingers.forEach((f) => f !== el && (f.style.display = "none"));
+    // (o.beside: the lab's MAA-20 pair only, two looks shown together for Zafar's pick: outside the one-finger rule)
+    if (!o.beside) {
+      liveFingers.push(el);
+      liveFingers.forEach((f) => f !== el && (f.style.display = "none"));
+    }
     const place = () => {
       if (stopped) return;
       // (only the newest finger up is drawn: S13-F, contract-44; one whose layer went without its stop() no longer counts)
       for (let i = liveFingers.length - 1; i >= 0; i--) if (!liveFingers[i].isConnected) liveFingers.splice(i, 1);
       // (o.hidden(): its light is buried under a newer one, or the child is doing the move: S19)
-      const p = liveFingers[liveFingers.length - 1] === el && !(o.hidden && o.hidden()) ? pointOf() : null;
+      const p = (o.beside || liveFingers[liveFingers.length - 1] === el) && !(o.hidden && o.hidden()) ? pointOf() : null;
       el.style.display = p ? "" : "none";
       if (p && circle) {
         // (the circle's middle on the point)
@@ -1721,7 +1729,7 @@
       const box = v.r ? { w: v.r / 0.28, h: v.r / 0.28 } : v.box || null;
       const keys = Onboard.path(gesture, { x: from.x, y: from.y }, v.to || null, box);
       LCghost(o.step != null ? String(o.step) : "kit-gesture", { gesture, kit: true });
-      if (!finger) finger = Onboard.finger(() => pt, { hold: true, look: o.look });
+      if (!finger) finger = Onboard.finger(() => pt, { hold: true, look: o.look, beside: !!o.beside });
       const inner = finger.el.firstChild;
       const a = keys.find((k) => k.press) || keys[0];
       const t0 = performance.now();

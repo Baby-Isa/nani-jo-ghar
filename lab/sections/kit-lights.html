@@ -46,9 +46,14 @@
   .kl-roll { position: absolute; left: 50%; top: 50%; width: min(46%, 300px); aspect-ratio: 1; translate: -50% -50%; }
   .kl-roll[hidden] { display: none; }
   .kl-roll img { position: absolute; display: block; user-select: none; -webkit-user-drag: none; }
-  #kl-board { inset: 0; width: 100%; height: 100%; object-fit: contain; }
-  #kl-dough { left: 25%; top: 25%; width: 50%; height: 50%; object-fit: contain; }
-  #kl-pin { left: -12%; top: 62%; width: 124%; }
+  .kl-roll .kl-board { inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .kl-roll .kl-dough { left: 25%; top: 25%; width: 50%; height: 50%; object-fit: contain; }
+  .kl-roll .kl-pin { left: -12%; top: 62%; width: 124%; }
+  /* (MAA-20's pair side by side: the finger on the left board, the circle on the right) */
+  body[data-state="roll-pair"] .kl-roll { width: min(38%, 280px); }
+  body[data-state="roll-pair"] #kl-roll { left: 27%; }
+  body[data-state="roll-pair"] #kl-roll-b { left: 73%; }
+  .kl-roll .kl-tag { position: absolute; left: 50%; bottom: -1.6em; translate: -50% 0; font: 600 13px/1.2 var(--njg-font); color: var(--njg-ink); white-space: nowrap; }
   .kl-status { font: 600 12px/1.3 ui-monospace, monospace; color: var(--njg-ink-soft); margin: 6px 0 0; white-space: pre-wrap; max-height: 3.9em; overflow: hidden; }
   .kl-what { font-size: 13px; margin: 0 0 6px; color: var(--njg-ink); min-height: 1.3em; }
   @media (max-height: 460px) {
@@ -76,7 +81,8 @@
     <div class="kl-pan" id="kl-pan-a"><img alt="" src="../../assets/cook/props/saucepan-chai.webp"><i class="kl-rim"></i></div>
     <div class="kl-pan" id="kl-pan-b"><img alt="" src="../../assets/cook/props/saucepan-chai.webp"><i class="kl-rim" id="kl-rim-b"></i></div>
     <!-- (S19, MAA-20: the roll's demo, the finger or the pulsing circle: the board, the dough and the pin) -->
-    <div class="kl-roll" id="kl-roll" hidden><img alt="" id="kl-board" src="../../assets/cook/items/v3/maani/chakla.webp"><img alt="" id="kl-dough" src="../../assets/cook/items/v3/maani/maani-wheat-raw.webp"><img alt="" id="kl-pin" src="../../assets/cook/items/v3/maani/velan.webp"></div>
+    <div class="kl-roll" id="kl-roll" hidden><img alt="" class="kl-board" id="kl-board" src="../../assets/cook/items/v3/maani/chakla.webp"><img alt="" class="kl-dough" id="kl-dough" src="../../assets/cook/items/v3/maani/maani-wheat-raw.webp"><img alt="" class="kl-pin" id="kl-pin" src="../../assets/cook/items/v3/maani/velan.webp"><span class="kl-tag" hidden>1: the finger</span></div>
+    <div class="kl-roll" id="kl-roll-b" hidden><img alt="" class="kl-board" src="../../assets/cook/items/v3/maani/chakla.webp"><img alt="" class="kl-dough" src="../../assets/cook/items/v3/maani/maani-wheat-raw.webp"><img alt="" class="kl-pin" id="kl-pin-b" src="../../assets/cook/items/v3/maani/velan.webp"><span class="kl-tag" hidden>2: the circle</span></div>
   </div>
 </div>
 <p class="kl-status" id="kl-status"></p>
@@ -146,8 +152,9 @@
     live = [];
     Onboard.stopAll();
     document.querySelectorAll(".kl-glow").forEach((e) => e.classList.remove("kl-glow"));
-    $("#kl-roll").hidden = true;
-    $("#kl-pin").style.translate = "";
+    document.querySelectorAll(".kl-roll").forEach((r) => (r.hidden = true));
+    document.querySelectorAll(".kl-roll .kl-tag").forEach((t) => (t.hidden = true));
+    document.querySelectorAll(".kl-pin").forEach((p) => (p.style.translate = ""));
     Onboard.fingerLook = "hand";
     guide.classList.remove("said");
     UIStore.clear && UIStore.clear("onboarded");
@@ -202,6 +209,10 @@
     // S19 (s19-lights): MAA-20, Zafar's pick: the roll's demo with the kit's one finger, or a pulsing circle; the pin rides it
     "roll-finger": ["MAA-20, look 1 (the default): the roll's demo, one finger dragging the pin up and down (Onboard.gesture 'roll', carry)", () => roll("hand")],
     "roll-circle": ["MAA-20, look 2: the same demo with a pulsing circle in place of the finger (Onboard.fingerLook 'circle')", () => roll("circle")],
+    "roll-pair": ["MAA-20, Zafar's pick: the two looks side by side, 1 the finger, 2 the pulsing circle, playing together", () => {
+      roll("hand", $("#kl-roll"), { light: false, tag: true });
+      roll("circle", $("#kl-roll-b"), { light: false, tag: true });
+    }],
     "one-light": ["One light at a time: a second light comes, the first is buried; the second goes, the first comes back (S19)", () => {
       const a = Onboard.light("#kl-tin", { look: "glow", pass: true, stay: true });
       live.push(a);
@@ -228,12 +239,15 @@
     }],
   };
   // (the roll's demo: the light on the board, whole; the kit's finger in the look asked for; the pin rides it, carry)
-  function roll(look) {
-    Onboard.fingerLook = look;
-    $("#kl-roll").hidden = false;
-    const pin = $("#kl-pin");
-    const board = $("#kl-board");
-    live.push(Onboard.light(board, { look: "", pass: true, stay: true }));
+  // (o.light false: no light, the pair's two boards side by side; o.tag: the look's number under its board)
+  function roll(look, box, o = {}) {
+    box = box || $("#kl-roll");
+    if (!o.tag) Onboard.fingerLook = look;
+    box.hidden = false;
+    if (o.tag) box.querySelector(".kl-tag").hidden = false;
+    const pin = box.querySelector(".kl-pin");
+    const board = box.querySelector(".kl-board");
+    if (o.light !== false) live.push(Onboard.light(board, { look: "", pass: true, stay: true }));
     const at = () => {
       const r = board.getBoundingClientRect();
       return { from: { x: r.left + r.width / 2, y: r.top + r.height * 0.28 }, to: { x: r.left + r.width / 2, y: r.top + r.height * 0.72 } };
@@ -243,7 +257,7 @@
       const r = board.getBoundingClientRect();
       return r.top + r.height / 2 - (p.top + p.height / 2 - (parseFloat((pin.style.translate || "0 0").split(" ")[1]) || 0));
     };
-    live.push(Onboard.gesture(at, { gesture: "roll", ms: 2200 / SPEED, step: "lab-roll", keepOnPress: true, carry: (dx, dy, t, press) => (pin.style.translate = press ? `0 ${(pinRest() + dy).toFixed(1)}px` : "") }));
+    live.push(Onboard.gesture(at, { gesture: "roll", ms: 2200 / SPEED, step: "lab-roll", keepOnPress: true, look: o.tag ? look : undefined, beside: !!o.tag, carry: (dx, dy, t, press) => (pin.style.translate = press ? `0 ${(pinRest() + dy).toFixed(1)}px` : "") }));
     say(`roll demo: ${look}`);
   }
   const nav = document.getElementById("kl-nav");
