@@ -3,6 +3,13 @@ NANI JO GHAR: GAME SCREEN MOCK-UPS, ROUND 2 (targeted: each game's decided layou
 Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-mocks2/refs.zip ,
 unzip it, and drag all 29 pictures into this chat with this block.
 
+=== IF YOU CANNOT UPLOAD FILES TO CHATGPT (runner, read first) ===
+If the pictures are not available to you as files, do not stop: ask Zafar, once, to start each ChatGPT conversation himself by
+attaching that group's pictures in its first message (Chat A: the four 00-HOUSE pictures and every A* picture; Chat B: the four
+00-HOUSE and every B*; Chat C: the four 00-HOUSE and every C*; if ChatGPT takes fewer files per message, he sends the rest in a second
+message with "more references"). Then you do all the typing: never re-attach; refer to each picture by its file name ("the picture named
+A1-sekelo-grill-pick-47"), as ChatGPT keeps them in the conversation. Wait for him to say "attached" before your first message.
+
 === FOR CLAUDE IN CHROME (the runner) ===
 You run a ChatGPT image session for Zafar. Use chatgpt.com in a new tab (he is signed in). The 29 pictures attached to this chat are
 named by group: 00-HOUSE-* (the style we love), then A*, B*, C* (one game each: its picture TODAY and the mock-ups he picked).
