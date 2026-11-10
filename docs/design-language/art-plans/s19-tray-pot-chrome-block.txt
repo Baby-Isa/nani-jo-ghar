@@ -4,7 +4,7 @@ Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-
 and drag all four pictures into this chat with this block.
 
 === FOR CLAUDE IN CHROME (the runner) ===
-You draw four pieces for a premium children's cooking game. Use chatgpt.com (Zafar is signed in). Run TWO ChatGPT conversations at
+You draw four pieces for a premium children's cooking game. Use chatgpt.com (Zafar is signed in). Run TWO ChatGPT windows (conversations) at
 once, each in its own tab: Chat 1 = T1, T2. Chat 2 = P1, P2. Send in one tab, move to the next while it generates; go round in turn.
 
 In each conversation:
