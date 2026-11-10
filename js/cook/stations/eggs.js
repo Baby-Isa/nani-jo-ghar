@@ -321,11 +321,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       const onShelf = St.bandOf && St.bandOf(KEY) === "shelf";
       things.forEach((img) => {
         if (onShelf) {
-          const want = (ITEM(img.k).drawn || {}).h || 118;
+          // CK-77 (the eye judge, 10 Nov: the carton a third of a pan's width, a speck on the band): its size by chai's rule for a
+          // shelf thing, its size class (St.classFit: the band's room with the hop kept, the class's share, the floor on screen), as
+          // chai's jars; its picture's clear foot on the shelf's line
           const foot = 16 / Math.max(1, img.height);
-          const room = band.base - (band.top + 22);
-          const h = Math.min(want, room / 1.12);
-          img.setScale(h / Math.max(1, img.height * (1 - 2 * foot)));
+          const f = St.classFit ? St.classFit(S, tex(img.k), img.wordId, { base: band.base, ppw, slotW: STEP - 8 }) : null;
+          if (f && f.scale) img.setScale(f.scale);
+          else {
+            const want = (ITEM(img.k).drawn || {}).h || 118;
+            const room = band.base - (band.top + 22);
+            img.setScale(Math.min(want, room / 1.12) / Math.max(1, img.height * (1 - 2 * foot)));
+          }
           img.setOrigin(0.5, 1 - foot);
           img.y = band.base;
           if (!img.shadow) shade(S, img, { dx: 4, dy: 3, alpha: 0.22, blur: 4 });
@@ -619,12 +625,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       if (finished) return o.active && o.destroy();
       if (v.fried) {
         // cracked into the pan (egg-cracked), it sets as its ring fills (egg-cooked), browns if it is left (egg-overdone)
-        o.destroy();
+        // SH-256 (the eye judge, 10 Nov: "a whole egg in its shell sits in the pan, then is a fried egg in one step"): the egg cracks
+        // into it gradually: the shell sinks and fades as the egg spreads out from where it fell
         Cook.sfx.pop();
         egg.obj = friedEgg(at.x, at.y, friedW());
         const s = egg.obj.scale;
-        egg.obj.setScale(s * 0.4);
-        S.tweens.add({ targets: egg.obj, scale: s, duration: 260, ease: "Back.easeOut" });
+        egg.obj.setScale(s * 0.35).setAlpha(0);
+        S.tweens.add({ targets: egg.obj, scale: s, alpha: 1, duration: 520, ease: "Cubic.easeOut" });
+        o.setDepth(D.item + 0.5);
+        S.tweens.add({ targets: o, scaleX: o.scaleX * 0.6, scaleY: o.scaleY * 0.6, y: o.y + 6, alpha: 0, duration: 360, ease: "Sine.easeIn", onComplete: () => o.destroy() });
         if (Cook.sfx.sizzle) Cook.sfx.sizzle(0.6);
       } else {
         egg.obj = o;

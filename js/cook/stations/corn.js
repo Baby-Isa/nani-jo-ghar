@@ -596,12 +596,22 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         img.chip.setAlpha(0);
         bowls[id] = img;
       });
-      const pw = (id) => bowls[id].chip.faceW(bowls[id].chip.showsWord) * want;
+      // SH-255 (the eye judge, 10 Nov: at 740x320 the six bowls stood in two rows on a tray filling half the play area; chai's things
+      // stand in one row along the band): one row always, as chai's shelf: the bowls down to their least size, then a long word
+      // narrows to its slot (the shelf's rule, Shelf.pillScale's cap: chai's "khun" and "lasan" do the same where they would touch)
+      let capW = Infinity; // (a pill's widest face, pill units: Infinity, its own width)
+      const pw = (id) => Math.min(capW, bowls[id].chip.faceW(bowls[id].chip.showsWord)) * want;
       const slotOf = (id, sz) => Math.max(pw(id), sz + 14);
       const rowW = (row, sz) => row.reduce((a, id) => a + slotOf(id, sz), 0) + room(sz) * (row.length - 1);
       let size = bw.size || 150;
-      while (size > 120 && rowW(ids, size) > avail) size -= 10;
-      const two = rowW(ids, size) > avail;
+      while (size > 96 && rowW(ids, size) > avail) size -= 6;
+      if (rowW(ids, size) > avail) {
+        // (the slot each bowl gets in one row; every pill narrowed to it, never wider than its own face)
+        const slot = (avail - room(size) * (ids.length - 1)) / ids.length;
+        capW = Math.max(1, (slot - 4) / want);
+        ids.forEach((id) => bowls[id].chip.face && bowls[id].chip.face(bowls[id].chip.showsWord, capW));
+      }
+      const two = false;
       const rows = two ? [ids.slice(0, Math.ceil(ids.length / 2)), ids.slice(Math.ceil(ids.length / 2))] : [ids];
       if (two) size = Math.max(size, Math.min(bw.size || 150, 48 / ppw));
       const pillH = PH * want;

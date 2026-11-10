@@ -165,7 +165,8 @@ import { Cook as CookNS } from "../ns.js";
     // CK-48: the knife (and S19, the board and the pieces) load while her order is read, never on a bare board
     const lv1 = knobs(level);
     const art = pictures(s, Object.keys(d.chops || {}), !(lv1.hop && lv1.hop.decoys === 0));
-    const knife = St.loadArt(S, art.load).catch(() => {});
+    // (CK-78: her face for the well done on the board, the kit's review, loaded with the rest)
+    const knife = St.loadArt(S, art.load.concat(Cook.Kit && Cook.Kit.faceArt ? Cook.Kit.faceArt(d.who || "nani") : [])).catch(() => {});
     L.card(d, (s.recipe && s.recipe.steps) || ["Chop"]);
     await knife;
     const lay = s.layout || {};
@@ -222,8 +223,8 @@ import { Cook as CookNS } from "../ns.js";
       if (all && cuts.length && Cook.Kit && Cook.Kit.review) {
         const u = cuts.reduce((a, c) => ({ x: Math.min(a.x, c.x), y: Math.min(a.y, c.y), right: Math.max(a.right, c.right), bottom: Math.max(a.bottom, c.bottom) }));
         const V = Cook.view || {};
-        const size = z.L(170);
-        const at = Cook.Kit.praiseSpot({ x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y }, size, { view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, z.Y(BAND.top)] });
+        const size = z.L(150);
+        const at = Cook.Kit.praiseSpot({ x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y }, size, { avoid: cuts, view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, z.Y(BAND.top)] });
         const look = await Cook.Kit.review(S, { who: d.who || "nani", ok: true, x: at.x, y: at.y, size, k: z.L(1), side: at.side });
         await Cook.wait(400);
         if (look && look.close) await look.close();
@@ -314,6 +315,6 @@ import { Cook as CookNS } from "../ns.js";
     return sh;
   }
 
-  Cook.Chop = { settings, knobs, play, shadow };
+  Cook.Chop = { settings, knobs, play, shadow, pictures };
   Mech.lab(KEY, { name: "Chop", verb: "Ninja slicing", run: (L) => game(L) });
 })(window);

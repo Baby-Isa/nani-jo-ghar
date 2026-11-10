@@ -245,15 +245,15 @@ const serveEnv = () => {
     review: (S, o) => NjgServe.review(S, o, serveEnv()), // (Sprint 18, piece 8: the shared serve part, js/shared/serve.js)
 
     /**
-     * SH-255 (the eye judge, 10 Nov: chop's, daar's and maani's pills about half chai's at 740x320; Zafar: what stands on the bar follows
-     * the kit's rules): a band's pills at chai's size, by chai's rule (its fitPills, SH-219): one scale for the row, as large as the
+     * SH-255 (the eye judge, 10 Nov: three games' band pills about half the reference game's at 740x320; Zafar: what stands on the bar
+     * follows the kit's rules): a band's pills at the reference size, by the shelf's rule (SH-219): one scale for the row, as large as the
      * floor asks on screen (Shelf.pillWant on the page's own scale, and the kit's canvas text floor), as far as neighbours allow
-     * without touching, never below 1 (chai's own); a long word narrows to its slot where even 1 would touch. Everything in world px
-     * (a zone's scale is the zone's, never the pill's: a pill is chai's size on screen in every game).
+     * without touching, never below 1 (the shelf's own); a long word narrows to its slot where even 1 would touch. Everything in world
+     * px (a zone's scale is the zone's, never the pill's: a pill is the same size on screen in every game).
      * chips: the band's pills (Kit.chip, Shelf.P.chip); o: slotW (world px), y (the pills' line, world px), bottom (the band's foot,
-     * world px: a grown pill never runs past it). -> k
+     * world px: a grown pill never runs past it), hit (false: the pill keeps its own tap area). -> k
      */
-    fitPills(S, chips, { slotW = Infinity, y = null, bottom = null } = {}) {
+    fitPills(S, chips, { slotW = Infinity, y = null, bottom = null, hit = true } = {}) {
       const Sh = global.Shelf;
       chips = (chips || []).filter((c) => c && c.active && c.faceW);
       if (!Sh || !Sh.pillScale || !chips.length) return 1;
@@ -270,7 +270,7 @@ const serveEnv = () => {
       row.forEach((c) => {
         if (c.capW !== cap && c.face) c.face(c.showsWord, cap);
         c.k = k;
-        if (c.hit && isFinite(slotW)) c.hit(slotW);
+        if (hit && c.hit && isFinite(slotW)) c.hit(slotW);
         c.setScale(k);
         const yy = y != null ? y : c.y;
         c.setY(bottom != null ? Math.min(yy, bottom - (P.h / 2) * k) : yy);
@@ -279,10 +279,10 @@ const serveEnv = () => {
     },
 
     /**
-     * SH-254 (the eye judge, 10 Nov: maani's and corn's well done face sat over the dish and its neighbours' chips; chai's sits at its
-     * glass's corner, the chai in full view): where a review face goes beside one dish. dish {x, y, w, h} (its centre and drawn size),
+     * SH-254 (the eye judge, 10 Nov: two games' well done face sat over the dish and its neighbours' chips; the reference game's sits
+     * at its glass's corner, the drink in full view): where a review face goes beside one dish. dish {x, y, w, h} (its centre and drawn size),
      * size (the face's diameter), o: avoid ([{x, y, right, bottom}]: chips, pills, other things it must not cover), view ([left, top,
-     * right, bottom]: world px it stays inside). The face's circle touches the dish's rim at its upper left, as chai's (NjgServe.layout),
+     * right, bottom]: world px it stays inside). The face's circle touches the dish's rim at its upper left, as the reference's (NjgServe.layout),
      * else its upper right, left, right or above, the first that covers nothing to avoid; its praise card on the side away from the dish.
      * -> {x, y, side}
      */
@@ -291,7 +291,7 @@ const serveEnv = () => {
       const w2 = (dish.w || 0) / 2;
       const h2 = (dish.h != null ? dish.h : dish.w || 0) / 2;
       const V = o.view || [-Infinity, -Infinity, Infinity, Infinity];
-      const d = 0.74; // (chai's: the face over the rim's edge only, NjgServe.layout offK)
+      const d = 0.74; // (the reference game's: the face over the rim's edge only, NjgServe.layout offK)
       const spots = [
         { x: dish.x - (w2 + r) * d, y: dish.y - (h2 + r) * d, side: "left" },
         { x: dish.x + (w2 + r) * d, y: dish.y - (h2 + r) * d, side: "right" },

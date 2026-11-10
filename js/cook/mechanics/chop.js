@@ -1357,6 +1357,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       z.say(Lang.line("enough"), { ms: 900, caption: true }).catch(() => {});
       stop();
       offs.forEach((f) => f());
+      // (SH-255: the hops are over: every pill whose item is back in its slot shows again; one under nothing stays hidden)
+      slots.forEach((s) => {
+        const back = s.img && s.img.active && s.img.visible !== false;
+        if (s.chip && s.chip.active) S.tweens.add({ targets: s.chip, alpha: back || s.refill > 0 ? 1 : 0, duration: 220 });
+      });
       // (S19 wave B fix round: the knife goes back to its rest beside the board, never left lying on the cut pieces)
       if (knifeBack) knifeBack.remove();
       prev = null;

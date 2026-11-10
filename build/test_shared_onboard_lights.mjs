@@ -176,8 +176,10 @@ test("coach: after the first time, the call alone, the light after the wait, at 
   await sleep(450);
   assert.equal(lit.length, 1, "a wrong move: the light at once");
   assert.equal(hints, 1);
-  assert.equal(lit[0].o.round, true);
-  assert.equal(lit[0].o.pad, 2);
+  // (Zafar, 10 Nov, SH-249/SH-257: every light one rounded rectangle; a game's round is refused, the kit's own light drawn)
+  assert.equal(lit[0].o.round, undefined);
+  assert.equal(lit[0].o.pad, 4);
+  assert.equal(lit[0].o.kit, true);
   h.close();
   assert.equal(rushers.size, 0, "stops listening when the step goes");
   // a timed control: the call alone, never a stuck light

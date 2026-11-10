@@ -47,7 +47,7 @@
   "chop-marcha": {"word": "veg-12", "card": "assets/cook/items/v4/chop/marcha-whole.webp", "view": "T", "role": "chop"},
   "chop-adu": {"word": "veg-14", "card": "assets/cook/items/v4/chop/adu-whole.webp", "view": "T", "role": "chop"}
  },
- "assets": ["assets/cook/items-s17-stove/t-small-glass-bowl.webp", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp", "assets/cook/items/v4/daar/*", "assets/cook/items/v4/kit/ladle.webp", "assets/cook/items/v4/chop/*-whole.webp"],
+ "assets": ["assets/cook/items-s17-stove/t-small-glass-bowl.webp", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp", "assets/cook/items/v4/daar/*", "assets/cook/items/v4/kit/ladle.webp", "assets/cook/items/v4/chop/*"],
  "_assets": "S19 (decision 68, loadcheck): the pictures daar loads beyond data/cook.json art.assets.stations.daar: the chopped heaps' glass bowls and the serving katori; S19 wave A: the eight cream bowls on the stone tray (v4/daar) and the kit's ladle (v4/kit/ladle)",
  "mechanic": {
   "levels": [
