@@ -778,7 +778,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // with its own texture store, but the cached promises below stayed, so a picture was never added to the new store and the
   // worktop fell back to the code-drawn one: each loaded image is kept and added to any scene that lacks it)
   const imgs = {};
-  const reuse = (scene, key, img) => (img && !scene.textures.exists(key) && scene.textures.addImage(key, img), true);
+  // (a picture that finishes decoding after the game is gone is not added: the texture manager has lost its game by then, and adding
+  // threw a page error in the mount test, 10 Nov)
+  const alive = (scene) => !!(scene && scene.sys && scene.sys.game && scene.textures && scene.textures.game);
+  const reuse = (scene, key, img) => (img && alive(scene) && !scene.textures.exists(key) && scene.textures.addImage(key, img), true);
   function load(scene, ref) {
     const key = sprKey(ref);
     if (scene.textures.exists(key)) return Promise.resolve(true);
@@ -790,7 +793,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const img = new Image();
       img.onload = () => {
         const add = () => {
-          if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          if (alive(scene) && !scene.textures.exists(key)) scene.textures.addImage(key, img);
           imgs[key] = img;
           Art.predecode(img);
           resolve(true);
@@ -818,7 +821,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const img = new Image();
       img.onload = () => {
         const add = () => {
-          if (!scene.textures.exists(key)) scene.textures.addImage(key, img);
+          if (alive(scene) && !scene.textures.exists(key)) scene.textures.addImage(key, img);
           imgs[key] = img;
           Art.predecode(img);
           resolve(true);

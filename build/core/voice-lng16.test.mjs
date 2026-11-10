@@ -42,9 +42,11 @@ test("LNG-16: a device with no voice at all is waited on once at most, then let 
   await withSynth(S, async () => {
     const t0 = Date.now();
     await deviceSpeak("muke");
-    assert.ok(Date.now() - t0 <= VOICES_WAIT_MS + 600, "the first word waits at most the voices' wait (and the let-go)");
+    // (the margins hold under a loaded machine: the push check runs every test file at once beside the builders' browsers; it failed
+    // once at 600 ms, 10 Nov. A second wait would take the whole VOICES_WAIT_MS, so "under it" still proves it never waits again)
+    assert.ok(Date.now() - t0 <= VOICES_WAIT_MS + 1500, "the first word waits at most the voices' wait (and the let-go)");
     const t1 = Date.now();
     await deviceSpeak("khape");
-    assert.ok(Date.now() - t1 < 600, "never waited on again");
+    assert.ok(Date.now() - t1 < VOICES_WAIT_MS, "never waited on again");
   });
 });
