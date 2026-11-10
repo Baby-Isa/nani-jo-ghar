@@ -312,6 +312,8 @@ Reskins change **only the skin tone, sleeve and accessories**, and they are made
 
 ### States (examples, provisional per station)
 
+**Four stages for anything cooked** (Zafar, 10 Nov): raw, part-cooked, cooked, overcooked, so the cook changes smoothly (sekelo's three turns go raw, part, cooked; eggs; chai already has its part-boiled stage). Fill levels the same way where a thing fills (B1f: a bowl of flour at a quarter, half, three quarters). Keep every variation drawn, used now or later.
+
 | Item | F | T states |
 |---|---|---|
 | Onion | whole | whole, halved, chopped, frying golden, burnt |
