@@ -1,15 +1,14 @@
 // s19-stoves: contract-110 (the knob rule, SH-247) and contract-111 (an item's tap area reaching its pill, SH-244), each red then green
 // on a synthetic timeline, and the shared shelf's tap areas (Shelf.P.reach, the pill's chip.hit) on stand-in Phaser objects.
 // No browser. Run: node --test build/sandbox/lib/s19-stoves.test.mjs
-// (here, in lib/, because the builder owns lib/ only: checks.mjs's unit step reads build/sandbox/*.test.mjs; the orchestrator moves it)
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
-import { S19_CHECKS, S19_HOOK, check110, check111 } from "./contract-s19.mjs";
-import { CHECKS } from "./contract.mjs";
+import { S19_CHECKS, S19_HOOK, check110, check111 } from "./lib/contract-s19.mjs";
+import { CHECKS } from "./lib/contract.mjs";
 
 const require = createRequire(import.meta.url);
-const Shelf = require("../../../js/shared/shelf.js");
+const Shelf = require("../../js/shared/shelf.js");
 const run = (fn, ...a) => { const out = []; fn(...a, (id, t, msg) => out.push({ id, t, msg })); return out; };
 const c = (t, k, o = {}) => ({ type: "c", k, t, ...o });
 const ST = [c(0, "stage", { key: "cook:station1:daar" }), c(60000, "stage", { key: "cook:between1:-" })];
