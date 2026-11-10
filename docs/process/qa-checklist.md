@@ -98,7 +98,7 @@ before anything reaches him, the orchestrator or Fable watches a minute of level
 | LAY-09 | Positions come from scene data, not CSS nudges | J4 | eye (code review) |
 | LAY-10 | Vessels sit centred on their burners | C7, H11 | auto: `build/check_vessel_meta.py` |
 | LAY-11 | Hit areas are big enough on every test screen size | F2 | auto: `build/check_hotspots.py` (clinic) |
-| LAY-12 | Nothing overlaps: the ⌂ home button, badges, ticks and pills never sit on a title card, task card, hob or tool | E23 | eye |
+| LAY-12 | Nothing overlaps: the ⌂ home button, badges, ticks and pills never sit on a title card, task card, hob or tool | E23 | auto: contract-113 (a face, a pill or a card's words covered, or a face over a dish, from drawn pixels) · eye for the rest |
 | LAY-13 | Collected things are visible where they go; nothing is counted invisibly | E24 | eye |
 
 ## CMP: shared components and look
@@ -148,7 +148,7 @@ before anything reaches him, the orchestrator or Fable watches a minute of level
 | INT-01 | Input is live while speech plays; a tap goes ahead; the line can be replayed from the face | E5 | eye → auto |
 | INT-02 | Every placement can be taken back until Done | E14 | eye → auto |
 | INT-03 | Each stage clears its own UI and stops its effects when done; pills never overlap | E17–E19 | eye |
-| INT-04 | First-time help in every phase: dim all but one thing, ghost finger once, child does it | E2, E9 | auto: `build/check_onboard.mjs` (Cook) · eye elsewhere |
+| INT-04 | First-time help in every phase: dim all but one thing, ghost finger once, child does it | E2, E9 | auto: `build/check_onboard.mjs` (Cook); contract-112 judges each light on the screen (one rounded box round its thing with its pad, chai's dim, never over the panel or a face, nothing moving into it) · eye elsewhere |
 | INT-05 | No red crosses or buzzes mid-round; mistakes show in the end review | E10 | eye |
 | INT-06 | A glow hint only after a wrong tap or ~5 s hesitation, never at the top level | E16, E28 | eye |
 | INT-07 | Retired with the bulbs (Zafar, 6 Nov): the guide's timed hint comes when the child is stuck, on the level's wait | E25 | auto: contract-91 help-comes |

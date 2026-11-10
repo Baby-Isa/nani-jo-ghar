@@ -6,6 +6,12 @@ Rules become code (decision 99): each item below is a check that will make a rul
 SH-119, SH-238, SH-242, SEK-24, CK-63, SH-236, SH-237, SH-239's praise half, SH-243), the side-by-side with chai and the frame strips
 (`sidebyside.mjs`), the eye judge's rubric; every check audited (`docs/process/check-audit.md`).
 
+**Built in Sprint 19 (s19-checks-1, 10 Nov):** contract-112 judges every light on the screen's own pixels (`lib/lightshot.mjs`,
+`lib/lightjudge.py`), contract-113 covers from drawn pixels, "judged N of M" per game in `contract.md`, the shared-pieces lint
+(`build/lint/static.mjs` shared), the real bad runs (`build/sandbox/fixtures/bad-runs/`).
+**A check is built only when it goes red on a real bad run, and may be loosened only if it still does (Zafar, 10 Nov):** the
+fixtures' test (`build/sandbox/badruns.test.mjs`) fails the moment a light, dim or overlap check stops going red on its bad run.
+
 ## The list, ranked by mistakes prevented
 
 | # | Check | What it checks | Where | Size | Retires | Guards (open rows) |
