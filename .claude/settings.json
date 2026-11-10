@@ -22,6 +22,18 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR:-.}/build/tools/tiers/push-hook.mjs\"",
+            "timeout": 900
+          }
+        ]
+      }
     ]
   }
 }
