@@ -10,14 +10,16 @@ A reviewer who is not the builder fills in the results, flaws first.
 
 ## When we check, and how deep (Zafar, 9 Nov: the tiers; the newest word on checks: older lines elsewhere point here)
 
+Each tier is one tool in `build/tools/tiers/`, run at its moment by the hook or the skill named, never on request (Zafar, 10 Nov: "I dont want to be requesting the checks they should happen automatically"); what each runs (sizes, levels, which checks) is `build/tools/tiers/tiers.json`; each writes `build/reports/tiers/<tier>-<commit>.json` and `.md`, and `--dry-run` says what it will run and how long.
+
 | Tier | When | Machines | Eyes | Time |
 |---|---|---|---|---|
-| 0. Every push | any commit | `checks.mjs` (code tests, words, leak test, docs, fix list), no browser | none | 3-5 min |
-| 1. Prototype ("show me") | a new screen or mechanic, before building it properly | the lab page loads with 0 page errors at the four sizes | Zafar, from pictures or a gif in chat, the same hour | minutes |
-| 2. Targeted | a tweak or a builder's rows | the touched game only, at the levels touched (L1-L4 if levels change), 740x320 and 930x430 (four sizes wait for tier 3); each row's probe red then green; that game's contract checks | the orchestrator's before/after picture, made by script from the base commit and the candidate (never the builder's own shots), to Zafar before merging | 15-30 min |
-| 3. Sprint check | once the sprint's main work is in, BEFORE the fix-up (not at publish) | every game the sprint changed: L1-L4, four sizes, all contract checks, 0 page errors, end reached; every other game: loads and reaches its end at one size (shared code can break it); one fix list from the result | Fable beside chai on the changed screens; a script-made first-minute film of every changed game (first time and returning) | one scripted run (overnight if long); a person reads only the failures; one first-minute film per changed game |
-| 3b. Fix-up and publish | after tier 3's fix list is fixed | the failed pages again, plus every changed game at one size to its end (fixes break neighbours), then `checks.mjs --browser`; the publish note lists the known fails left open | none new | 30 min |
-| 4. Live smoke | right after the publish, before "it's live" | each changed game's first minute on the live site at 740x320; if it fails, put `main` back to the last good publish first, then look | the orchestrator looks at the strip first | 5 min |
+| 0. Every push: `check-push` (the push hook) | any commit | `checks.mjs` (code tests, words, leak test, docs, fix list), no browser | none | 3-5 min |
+| 1. Prototype ("show me"): `check-prototype --lab <page>` | a new screen or mechanic, before building it properly | the lab page loads with 0 page errors at the four sizes | Zafar, from pictures or a gif in chat, the same hour | minutes |
+| 2. Targeted: `check-change` (a builder's finish, `/review` at every merge) | a tweak or a builder's rows | the touched game only, at the levels touched (L1-L4 if levels change), 740x320 and 930x430 (four sizes wait for tier 3); each row's probe red then green; that game's contract checks | the orchestrator's before/after picture, made by script from the base commit and the candidate (never the builder's own shots), to Zafar before merging | 15-30 min |
+| 3. Sprint check: `check-sprint` (`/sprint`) | once the sprint's main work is in, BEFORE the fix-up (not at publish) | every game the sprint changed: L1-L4, four sizes, all contract checks, 0 page errors, end reached; every other game: loads and reaches its end at one size (shared code can break it); one fix list from the result | Fable beside chai on the changed screens; a script-made first-minute film of every changed game (first time and returning) | one scripted run (overnight if long); a person reads only the failures; one first-minute film per changed game |
+| 3b. Fix-up and publish: `check-publish` (`/publish`; `publish.mjs` refuses without its pass on the commit) | after tier 3's fix list is fixed | the failed pages again, plus every changed game at one size to its end (fixes break neighbours), then `checks.mjs --browser`; the publish note lists the known fails left open | none new | 30 min |
+| 4. Live smoke: `check-live` (`publish.mjs` runs it) | right after the publish, before "it's live" | each changed game's first minute on the live site at 740x320; if it fails, put `main` back to the last good publish first, then look | the orchestrator looks at the strip first | 5 min |
 | 5. App store | before the stores | everything at every size, every button, devices, the Kutchi gate, no device voice | to design | days |
 
 **Every check we have, by tier:**
@@ -46,7 +48,8 @@ before anything reaches him, the orchestrator or Fable watches a minute of level
 - Every contract check that breaks at tier 3 gets one of three outcomes in the sprint: the game fixed, the probe fixed, or the rule
   retired with his yes. A count that only grows is the sign it is being ignored.
 - A flaky check (fails, then passes with no code change) is logged and fixed or retired in the sprint; never rerun until green.
-- Tier 0 refuses the push when it fails (a pre-push hook), so it never depends on remembering.
+- Tier 0 refuses the push when it fails (the PreToolUse hook in `.claude/settings.json` runs `check-push` before any `git push`), so it never depends on remembering.
+- Every check of `docs/process/check-audit.md` runs in a tier's tool (the table in `build/reports/s19-tiers.md`); one marked FIX there and still failing reports, not blocks, until its fix lands (`tiers.json` says which).
 
 
 ## How to run a review (the eye lines, within the tiers above)

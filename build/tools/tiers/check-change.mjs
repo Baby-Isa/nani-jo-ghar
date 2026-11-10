@@ -7,6 +7,8 @@ import { readFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { args, help } from "../review/lib/common.mjs";
+import { briefRows as briefRowsOf } from "../review/lib/brief.mjs";
+import { parseRegressions, readAllRegressions } from "../review/lib/regressions.mjs";
 import * as T from "./lib.mjs";
 
 const HELP = `
@@ -73,7 +75,10 @@ if (before) {
   steps.push({ id: "before", what: `the same flows on the base commit ${bid} (its own tree and sandbox)`, cmd: "node", argv: ["build/sandbox/run.mjs", "--flow", "{base flows}", "--sizes", sizes.join(","), "--check", "--no-sheets", "--run-id", beforeRun], browser: true, minutes: Math.ceil(pagesN * T.CONFIG.secondsPerPage / 60), blocks: false, timeoutMin: 120, tree: true });
   steps.push({ id: "pairs", what: "before | after pictures, made by script from the two runs", cmd: "python3", argv: ["build/tools/tiers/pairs.py", "{before run}", T.rel(T.runPath(afterRun)), T.rel(join(work, "before-after"))], minutes: 1, blocks: false });
 }
-if (spec) {
+// (a brief's rows: read the way evidence.mjs --brief reads them, its own helper; none: no rows step)
+const briefRows = spec ? briefRowsOf(spec, parseRegressions(readAllRegressions()).map((r) => r.id)).rows : [];
+if (spec && !briefRows.length) notes.push("the brief names no fix-list row: no probes to play");
+if (spec && briefRows.length) {
   steps.push({ id: "rows", what: "the brief's rows, after (evidence.mjs --after --brief; the before was played at launch)", cmd: "node", argv: ["build/tools/review/evidence.mjs", "--after", "--brief", a.val("brief")], browser: true, selfLock: true, minutes: 10, blocks: true });
   steps.push({ id: "rows-judge", what: "the judge's before|after batch for Fable (evidence.mjs --judge --brief)", cmd: "node", argv: ["build/tools/review/evidence.mjs", "--judge", "--brief", a.val("brief")], minutes: 1, blocks: false });
 } else if (rows.length) {
@@ -95,7 +100,7 @@ steps.push(...T.extraSteps("change", { files, games, elems, base }).map((s) => (
 if (gamesWhy === "a shared change" && !steps.some((s) => s.check === "frozen")) steps.push({ id: "frozen", what: "chai against its frozen run (a shared change)", cmd: "node", argv: ["build/tools/review/frozen.mjs", "--diff"], browser: true, selfLock: true, minutes: 10, blocks: true });
 
 const extra = [`base ${bid} (${a.val("base") ? "--base" : "merge base with origin/main"}), ${files.length} changed file(s); games: ${games.join(", ") || "none"} (${gamesWhy})`,
-  `levels: ${games.map((g) => `${g} L${levelsBy[g].join(",L")}`).join("; ") || "-"}; sizes ${sizes.join(", ")}; rows: ${rows.join(", ") || (spec ? "the brief's" : "none")}`, ...notes];
+  `levels: ${games.map((g) => `${g} L${levelsBy[g].join(",L")}`).join("; ") || "-"}; sizes ${sizes.join(", ")}; rows: ${(spec ? briefRows : rows).join(", ") || "none"}`, ...notes];
 if (dry) { T.printPlan("check-change (tier 2)", steps.filter((s) => !s.skip), extra); process.exit(0); }
 if (!games.length && !rows.length && !spec) { console.log("check-change: no game or row reached by this change; tier 0 is enough"); }
 

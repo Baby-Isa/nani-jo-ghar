@@ -17,9 +17,14 @@ description: Open or close a sprint (one goal, a budget, one full check and publ
 - Small decisions go in the sprint file's "Small decisions". A lasting decision (one that will still hold next sprint) goes into the doc, row or check it changes, the commit saying "Zafar, <date>"; one answer, one place. Never paste check-ins into the sprint file (`checkin.mjs --log` keeps them in `docs/process/overnight-log.md`).
 - At close: any mode called finished gets a pass through `docs/ideas.md` with Zafar first (Zafar, 14 Oct).
 - Feedback becomes fix-list rows the same day (`/feedback`). Cut scope before the budget.
+- Every builder's hand-back and every merge runs `check-change` (tier 2; `/review`).
 
-## Before the publish
-The sprint check (`/review` step 9) has played every row the sprint touched and Fable has judged each sheet; every FAIL is fixed or reopened and listed for Zafar. A sprint whose rows are unproven doesn't publish.
+## When the main work is in (before the fix-up, not at the publish)
+Run tier 3, by itself, the moment the last planned builder is merged (Zafar, 9-10 Nov):
+```
+node build/tools/tiers/check-sprint.mjs
+```
+Since the last publish: every changed game at L1-L4 at the four sizes with every rule, every other game to its end at one size, chai's frozen run, the sprint's row probes, beside chai for a game on new pictures, first-minute films (first time and returning), and the extra checks `tiers.json` places at tier 3. Its result (`build/reports/tiers/sprint-<commit>.md`) is ONE fix list by game: that is the fix-up. Send its batches to the `judge` (Fable): the probe sheets (`evidence.mjs --collect` then `--apply`) and any beside-chai batch; watch the films yourself. Every contract break it lists gets an outcome in the sprint: the game fixed, the probe fixed, or the rule retired with his yes. Then `/publish` (tier 3b).
 
 ## Close (after `/review`, `/publish` and Zafar's play)
 1. Fill **Outcome**: the commit on `main`, what was cut or moved on, open rows by mode (`statuscounts.mjs`), money spent against the budget.

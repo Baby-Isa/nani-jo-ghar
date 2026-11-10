@@ -4,34 +4,20 @@ description: Review a finished build session or any change before it goes to Zaf
 ---
 # /review: done means looked at
 
-> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins.
+> **Which checks run when, and how deep:** `docs/process/qa-checklist.md` "When we check, and how deep" (Zafar, 9 Nov). Where this file says otherwise, that section wins. Each tier is one tool in `build/tools/tiers/` (settings: `tiers.json`), run at its moment by the step below, never on request (Zafar, 10 Nov).
 
 
 **For:** whoever did not build it. The checks are the rules (`docs/tools.md`); checklist `docs/process/qa-checklist.md`.
 
 ## Steps
-**A game's merge (Sprint 19; the three-part gate):** (1) part 1 green: its flows' contract run at L1-L4 has no break of contract-100 to
--109 (the shared pieces present: the 6 Nov card and type, Nani's box with its drop-down, the kit's light only, no tick/next/X, the
-card's picture, the light whole and centred and gone on the move, only shelf items hop, praise last, the shelf's line) nor any other; and **0 page errors** on every page (run with `--check`; 8 Nov: s19-cards merged with a page error on every Cook page that its contract run reported but nothing gated);
-(2) `node build/tools/review/sidebyside.mjs <game>` (it takes the browser lock itself: never wrap it), then one `judge` call on its
-`judge-batch.md` with `docs/process/eye-judge-rubric.md`, flaws first; (3) the judge's strips (motion and timing) are in the same batch.
-**The merge rule (principle 10, proposed 8 Nov, not yet agreed by Zafar):** nothing merges that the side-by-side shows worse than chai
-at the same moment unless a look sheet he accepted says it may differ; until he agrees it, a WORSE THAN CHAI line goes to him with the
-batch, it does not block alone.
-**A builder's rows: the one loop first** (`docs/architecture/evidence-loop.md` "The one loop (S13)"). Its before was played at launch (`evidence.mjs --before --check --brief <spec>`); the builder played `--after`. Run `node build/tools/review/evidence.mjs --judge --brief <spec>`, one `judge` call per `judge/brief-NN.md`, then `--collect` and `--apply --run-id <after run>`. A shared element the brief names: `kitsheet.mjs --elem <name> --after` to the judge (the same look in every game). Machine checks before any of it; the steps below are the one broad sweep.
-0. The checks, docs limits and the browser's load check included: `node build/tools/review/checks.mjs --browser` (exit 1 stops the review; `--full` before a publish adds the parked modes' leak bots).
-0b. A build session's scope: `node build/tools/ops/brief.mjs --audit <its spec.json> <base>..<head>` (exit 1: a file outside its owns; the review fails until it is undone or agreed).
-1. What the change reaches:
-   ```
-   node build/tools/review/touched.mjs --base <last reviewed commit>
-   ```
-   It lists the sandbox flows and prints the sandbox command.
-2. The rows to recheck:
-   ```
-   node build/tools/review/touched.mjs --base <ref> --json | node build/tools/review/regress.mjs --stdin
-   ```
-3. Run the sandbox command it printed (one browser at a time: `flock -w 1800 ... timeout`). Between fix rounds: only the changed flows, at every size with `--contract`. The full gate (`run.mjs --gate`) runs once, just before a publish (Zafar, 20 Oct).
-3b. **Cook's mount test** whenever the change touches `js/cook/**` or `js/shared/buttons.js` (COOK-16): `COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser-all.lock timeout 600 node build/test_cook_mount.mjs`. Its result goes in the review report. Until the shared sweep handles the shared kits' own leftovers (one sfx AudioContext, the conversations / voice safety timers, the kits' one-time page listeners), those lines are known: watch only that the counts stop growing from mount to mount.
+**A builder's hand-back and every merge: tier 2, one command** (Zafar, 9-10 Nov: run by the process, never requested):
+```
+node build/tools/tiers/check-change.mjs --brief <its spec.json>      # a builder's branch, before the merge
+node build/tools/tiers/check-change.mjs --base <last reviewed commit> # a fast-lane tweak or any other merge
+```
+It runs check-push, the scope audit (`brief.mjs --audit`), the touched game at the levels touched at 740x320 and 930x430 with its contract rules (0 page errors, end reached, no break the base lacks: contract-100 to -109 among them), the rows' probes red on the base and green here (`--brief`: `evidence.mjs --after` and `--judge`), before|after pictures made by script from the base commit and the candidate, a first-play film of L1 as a new player, and what `tiers.json` places at tier 2 (the mount test when `js/cook/**` or `js/shared/buttons.js` changed, chai's frozen run on a shared change, Cook's leak bot, panelcheck, load time ...). Exit 1 blocks the merge; its result is `build/reports/tiers/change-<commit>.md`.
+Then: look at its before|after index and the film yourself (lights, arrows, lessons, nothing obviously wrong); one `judge` call per batch it names, then `evidence.mjs --collect` and `--apply`; before|after to Zafar before merging. Beside chai (`sidebyside.mjs`) waits for a game's new scene and art (check-sprint runs it; the 8 Nov merge rule was not agreed, 9 Nov).
+1-3. (In check-change: the checks, the scope, touched.mjs and regress.mjs's rows, the sandbox run, the mount test.)
 4. (Retired 8 Nov, s19-checks audit: `shotdiff.mjs` had no approved run since Sprint 8, so it showed every shot as new; the look is judged beside chai by `sidebyside.mjs` instead. Its code stays.)
 5. Write flaws first: clipping, spacing, padding, alignment, overlap, English for the child, Kutchi leaks. Then each regression row: still fixed / broken. Then side by side with the mock-up and Zafar's last feedback.
 5b. **Every station touched, at L1-L4.** For each station, recipe or clinic game the change reaches, judge its played frames at **L1-L4 for each station touched** (L1, L2, L3, L4, not one level), in the real run's frames, never the code. In every one, look at: the samosa fold (the flap goes over the filling, in the order the card says: SAM-05) and the go-on button (shown, whole, on the bottom of the screen, doing the same in every station). A station with a level not played has not been reviewed (SH-109, SH-111).
@@ -39,7 +25,7 @@ batch, it does not block alone.
 6. Leak and word checks if game logic or words changed: `node build/tools/review/leak.mjs <config>`, `node build/lint/words.mjs`.
 7. Start the report: `node build/tools/review/skeleton.mjs <name> --run <run id>`.
 
-9. **The evidence loop, before every publish:** every row the sprint touched is proven by the game and judged on small sheets, not just the changed screens.
+9. **The evidence loop, at the sprint check:** `check-sprint.mjs` (`/sprint`, when the main work is in) runs `--run --sprint` and `--judge`; the rest below is the judging. Every row the sprint touched is proven by the game and judged on small sheets, not just the changed screens.
    ```
    node build/tools/review/evidence.mjs --plan --sprint      # specs validated; a row with no spec, a spec error or an unreachable moment fails here (fix the spec or the driver first)
    COOK_TEST_PORT=88xx flock -w 3600 /tmp/njg-browser-all.lock timeout 1200 node build/tools/review/evidence.mjs --run --sprint   # plays, captures, decides the expects; exit 75: --resume <id>

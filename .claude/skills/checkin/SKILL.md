@@ -22,7 +22,7 @@ description: The 30-40 minute check-in while build sessions run. Use when a send
 6. Push the branch if 20-30 minutes have passed since the last push.
 
 ## When a session has ended
-Read its report, recheck its screens (`/review`), then launch the next queued step only if Zafar already said go for it.
+Read its report and its own `check-change` result (`build/reports/tiers/change-<commit>.md`; none: it did not finish). Then, before the merge, run tier 2 yourself on its branch: `node build/tools/tiers/check-change.mjs --brief <its spec.json>` (`/review`), and when the last planned builder is in, `check-sprint` (`/sprint`). Launch the next queued step only if Zafar already said go for it.
 
 ## Standing lines
 

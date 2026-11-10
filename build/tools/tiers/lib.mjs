@@ -251,7 +251,9 @@ export function stepArgv(s) {
   const timed = ["timeout", String(Math.max(5, Math.ceil((s.timeoutMin || s.minutes * 3 + 5))) * 60), ...base];
   return s.browser && !s.selfLock ? locked(timed, { wait: 3600 }) : timed;
 }
-export const show = (s) => (s.shell ? s.shell : [s.cmd || "node", ...s.argv].join(" "));
+// (printed so it pastes into a shell: an argument with a shell character is quoted)
+const q = (x) => (/[^\w@%+=:,./-]/.test(String(x)) ? `'${String(x).replace(/'/g, "'\\''")}'` : String(x));
+export const show = (s) => (s.shell ? s.shell : [s.cmd || "node", ...s.argv].map(q).join(" "));
 export function planMinutes(steps) { return Math.round(steps.reduce((t, s) => t + (s.minutes || 0), 0)); }
 export function printPlan(name, steps, extra = []) {
   console.log(`${name}: ${steps.length} step(s), about ${planMinutes(steps)} min${steps.some((s) => s.browser) ? " (browser steps under the one lock, one at a time)" : ""}`);
