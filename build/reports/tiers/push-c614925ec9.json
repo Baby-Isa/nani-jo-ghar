@@ -1,0 +1,34 @@
+{
+ "tier": "push",
+ "tierNo": "0",
+ "name": "check-push",
+ "commit": "c614925ec975274589646234fa58b6fd83297831",
+ "dirty": true,
+ "date": "2026-11-10T01:53:53.610Z",
+ "steps": [
+  {
+   "id": "checks",
+   "what": "checks.mjs: every fast check, no browser",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/checks.mjs",
+   "status": "fail",
+   "code": 1,
+   "line": "FAIL art    79 picture(s): 66 pass, 12 flag, 0 exception, 1 fail; 8 batch(es), 2 with an odd one out (python3 build/tools/art/artcolour.py --changed lists them); FAIL  /home/user/nani-jo-ghar/assets/cook/items/v4/samosa/slotted-spoon.webp  (not referenced); FAIL  light from the lower right (299°, strength 18; brightest quadrant UR): the bible's light is from the upper left",
+   "tail": [
+    "FAIL art    79 picture(s): 66 pass, 12 flag, 0 exception, 1 fail; 8 batch(es), 2 with an odd one out (python3 build/tools/art/artcolour.py --changed lists them)",
+    "FAIL  /home/user/nani-jo-ghar/assets/cook/items/v4/samosa/slotted-spoon.webp  (not referenced)",
+    "FAIL  light from the lower right (299°, strength 18; brightest quadrant UR): the bible's light is from the upper left",
+    "ok   size   ok: live site 424 MB in 5808 files (limit 800 MB; excluded: sources, build)",
+    "not run: load (a browser; --browser or --full runs it, /review and the publish gate do)",
+    "checks: 13 steps in 118 s (all at once; the longest: unit 118 s, leak 76 s, art 51 s)"
+   ],
+   "log": "build/screenshots/tiers/push-c614925ec9/checks.log",
+   "minutes": 2
+  }
+ ],
+ "minutes": 2,
+ "ok": false
+}

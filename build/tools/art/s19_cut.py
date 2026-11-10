@@ -28,7 +28,7 @@ LINES = {
     "K7": ("eggs", ["egg-cracked", "egg-cooked", "egg-overdone", "egg-boiled-half-a", "egg-boiled-half-b"], 360),
     "F7": ("eggs", ["bowl-of-eggs"], 600),
     "K1": ("sekelo", ["skewer-empty"], 1000),
-    "K6b": ("samosa", ["slotted-spoon"], 700),
+    # K6b (the slotted spoon alone) is left out: its light reads from the lower right (artcolour); samosa keeps K6's spoon on its cloth
     "C7": ("chaat", ["layer-tameto"], 800), "C9": ("chaat", ["layer-fudino"], 800), "C10": ("chaat", ["layer-amli"], 800),
     "C11": ("chaat", ["layer-dai"], 800), "C8": ("chaat", ["layer-marcha"], 800),
     "F3": ("chaat", ["bataato", "chana", "dungri", "tameto", "marcha", "kothmir", "sev", "lili-chutney", "amli-chutney", "dai"], 360),
