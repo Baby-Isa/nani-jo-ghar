@@ -566,8 +566,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       if (Sh.pillScale && chips.length) {
         // (two pills keep at least the kit's widest light margin apart, so a bowl's light, round its pill too, stops short of its
         // neighbour's pill: contract-92; the long chutney words narrow a little more for it)
-        const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
-        const gap = Math.max(Sh.pillGap(ppw), (OL.max + OL.clear + 2) / ppw);
+        // (the margin the kit gives a light round a bowl and its pill: Onboard.marginOf's rule on the bowl's size on screen)
+        const OL = (global.Onboard && global.Onboard.LIGHT) || { share: 0.12, min: 8, max: 16, clear: 2 };
+        const m = Math.max(OL.min, Math.min(OL.max, OL.share * size * ppw));
+        const gap = Math.max(Sh.pillGap(ppw), (m + OL.clear + 2) / ppw);
         const { k, cap } = Sh.pillScale(
           chips.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })),
           { want: Sh.pillWant(ppw), gap, slotW: SL.slotW }
