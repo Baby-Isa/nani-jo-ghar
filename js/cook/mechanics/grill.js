@@ -1053,7 +1053,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (full) return Cook.Kit.worktop(S, { top: 900, far: FAR });
     Cook.Kit.worktop(S, { top: V2.SHELF_TOP, far: FAR });
     // (SH-248: the bottom element is the game's settings' band, data/stations/mishkaki-grill.json "tray")
-    return Cook.Stations.stoneBand(S, { top: V2.SHELF_TOP, far: FAR, depth: D.bg + 1.2, band: (((Cook.data && Cook.data.settings) || {})["mishkaki-grill"] || {}).band });
+    return Cook.Stations.stoneBand(S, { top: V2.SHELF_TOP, far: FAR, depth: D.bg + 1.2, game: "mishkaki-grill" });
   };
   /**
    * The shelf: identical slots (one bowl size), grouped by kind with a small gap (meat | vegetables),

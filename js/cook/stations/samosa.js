@@ -250,7 +250,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   function backdrop(S) {
     Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR });
     // (SH-248: the bottom element is the game's settings' band, "tray": the heaps lie top-down on the stone tray)
-    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, band: (((Cook.data && Cook.data.settings) || {}).samosa || {}).band });
+    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, game: "samosa" });
   }
 
   /**

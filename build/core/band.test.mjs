@@ -16,16 +16,15 @@ const GAMES = {
   chop: ["data/stations/chop.json", "js/cook/stations/chop.js"],
   daar: ["data/stations/daar.json", "js/cook/stations/daar.js"],
   "maani-line": ["data/stations/maani-line.json", "js/cook/stations/maani-line.js"],
-  // (s19-wave-d is adding these four; todo until it merges)
-  "mishkaki-grill": ["data/stations/mishkaki-grill.json", "js/cook/mechanics/grill.js", true],
-  samosa: ["data/stations/samosa.json", "js/cook/stations/samosa.js", true],
-  chaat: ["data/stations/chaat.json", "js/cook/mechanics/assemble.js", true],
-  baking: ["data/stations/baking.json", "js/cook/stations/baking.js", true],
+  "mishkaki-grill": ["data/stations/mishkaki-grill.json", "js/cook/mechanics/grill.js"],
+  samosa: ["data/stations/samosa.json", "js/cook/stations/samosa.js"],
+  chaat: ["data/stations/chaat.json", "js/cook/mechanics/assemble.js"],
+  baking: ["data/stations/baking.json", "js/cook/stations/baking.js", true], // todo: baking draws its own counter until its redraws land (wave D, 10 Nov)
 };
 const table = read("docs/game-design/modes/cook-bottom-row.md");
 
 for (const [game, [data, code, todo]] of Object.entries(GAMES)) {
-  test(`${game}: its settings name its band, its design table agrees, its code passes its key`, { todo: todo ? "s19-wave-d adds it" : false }, () => {
+  test(`${game}: its settings name its band, its design table agrees, its code passes its key`, { todo: todo ? "its own counter until its redraws land" : false }, () => {
     const band = JSON.parse(read(data)).band;
     assert.ok(band === "tray" || band === "shelf", `${data} has band "tray" or "shelf" (has ${JSON.stringify(band)})`);
     const row = table.split("\n").find((l) => l.startsWith(`| ${game} |`));

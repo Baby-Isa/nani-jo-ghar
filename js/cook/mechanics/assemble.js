@@ -873,7 +873,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       /* ---------- the scene: the kitchen kit's worktop wash and stone band (kit a, as chai's; was chaat's own fill and band) ---------- */
       Cook.Kit.worktop(S, { top: z.Y(SHELF_TOP) });
       // (SH-248: the bottom element is the game's settings' band, data/stations/chaat.json "shelf": the pots stand side-on on it)
-      St.stoneBand(S, { top: z.Y(SHELF_TOP), base: z.Y(BASE), depth: D.bg + 1.2, band: SET.band });
+      St.stoneBand(S, { top: z.Y(SHELF_TOP), base: z.Y(BASE), depth: D.bg + 1.2, game: "chaat" });
 
       /* ---------- the glass ---------- */
       // raised into the middle of a taller stage's worktop (the stage fill)
