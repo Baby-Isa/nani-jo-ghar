@@ -160,9 +160,15 @@ test("contract-108: SH-239, well done with a row still open, is a break; well do
 
 test("contract-109: SH-243, an item off the shelf's base line or a pill off the chip line, is a break; one line passes", () => {
   const items = (d, p) => [{ id: "a", foot: 600, chip: 640 }, { id: "b", foot: 600 + d, chip: 640 + p }, { id: "c", foot: 601, chip: 640 }];
-  assert.match(run(check109, R, [...ST, c(1000, "s19shelf", { items: items(12, 0) })])[0].msg, /stands 11 px off the base line/);
-  assert.match(run(check109, R, [...ST, c(1000, "s19shelf", { items: items(0, 6) })])[0].msg, /6 px off the chip line/);
-  assert.equal(run(check109, R, [...ST, c(1000, "s19shelf", { items: items(2, 1) })]).length, 0);
+  // (a shelf sample stands until the next one: here to the station's end)
+  const at = (e) => [ST[0], e, ST[1]];
+  assert.match(run(check109, R, at(c(1000, "s19shelf", { items: items(12, 0) })))[0].msg, /stands 11 px off the base line/);
+  assert.match(run(check109, R, at(c(1000, "s19shelf", { items: items(0, 6) })))[0].msg, /6 px off the chip line/);
+  assert.equal(run(check109, R, at(c(1000, "s19shelf", { items: items(2, 1) }))).length, 0);
+  // s19-checks-1, the probe fault (s19-wave-d, baking#mistake): a thing turned by the wrong-pick wiggle, or a shelf seen for a moment, is not the line
+  const turned = [{ id: "a", foot: 600, chip: 640 }, { id: "b", foot: 614, chip: 640, rot: 1 }, { id: "c", foot: 601, chip: 640 }, { id: "d", foot: 600, chip: 640 }];
+  assert.equal(run(check109, R, at(c(1000, "s19shelf", { items: turned }))).length, 0);
+  assert.equal(run(check109, R, [ST[0], c(1000, "s19shelf", { items: items(12, 0) }), c(1100, "s19shelf", { items: items(0, 0) }), ST[1]]).length, 0);
 });
 
 test("checkS19 runs every check on one timeline", () => {

@@ -44,7 +44,7 @@ PANEL_TOL = 4           # px into the side panel
 FACE_IN = 0.2           # a face this far inside the light, not its own, is lit by it
 MOVE_PX = 14            # a thing whose middle moved this far (or 30% of its size) while the light was up was moving into it
 SWIPE_GAMES = ["chop", "daar"]   # STD-E2-08a, until Onboard.VARIANTS names them (read from the page when it does)
-SURFACE = ("bg", "wall", "marble", "worktop", "counter", "stage", "panel", "band", "shelf", "slab", "kitchen", "floor", "backdrop", "room", "flame", "steam", "smoke")
+SURFACE = ("bg", "wall", "marble", "worktop", "counter", "stage", "panel", "band", "shelf", "slab", "kitchen", "floor", "backdrop", "room", "flame", "steam", "smoke", "hob")
 
 
 def lum(im):

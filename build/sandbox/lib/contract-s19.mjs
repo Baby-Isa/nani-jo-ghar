@@ -694,7 +694,7 @@ function s19hook() {
           }
           if (!o.getBounds) continue;
           const key = o.texture && o.texture.key;
-          if (!key || /^__/.test(key) || !(o.type === "Image" || o.type === "Sprite")) continue;
+          if (!key || /^__/.test(key) || !o.frame || typeof o.setTexture !== "function") continue; // (a picture: maani's heaps set their own .type)
           const b = safe(() => o.getBounds());
           if (!b) continue;
           const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
@@ -759,7 +759,9 @@ function s19hook() {
         const cam = sc.cameras.main;
         const P = (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
         const W = (px, py) => [(px - cr.left) / (kx * cam.zoom) + cam.worldView.x, (py - cr.top) / (ky * cam.zoom) + cam.worldView.y];
-        const walk = (list, a0) => {
+        // (in the order Phaser draws: each list by depth, ties as listed)
+        const walk = (list0, a0) => {
+          const list = list0.map((o, i) => [o, i]).sort((x, y) => ((x[0] && x[0].depth) || 0) - ((y[0] && y[0].depth) || 0) || x[1] - y[1]).map((x) => x[0]);
           for (const o of list) {
             if (!o || o.visible === false) continue;
             const a = a0 * (o.alpha == null ? 1 : o.alpha);
@@ -773,7 +775,7 @@ function s19hook() {
               continue;
             }
             const key = o.texture && o.texture.key;
-            if (!key || /^__/.test(key) || !(o.type === "Image" || o.type === "Sprite") || !o.getBounds) continue;
+            if (!key || /^__/.test(key) || !o.frame || typeof o.setTexture !== "function" || !o.getBounds) continue;
             if (/shadow|shade|halo|glow|dim|light|ring|frame/i.test(key)) continue;
             const b = safe(() => o.getBounds());
             if (!b) continue;
@@ -829,7 +831,14 @@ function s19hook() {
       const iou = (a, b) => { const i = inter4(a, b); return i / (area4(a) + area4(b) - i); };
       for (const x of items.filter((q) => q.kind === "face" || q.kind === "pill")) {
         for (const y of items) {
-          if (y === x || y.kind === "face" || (x.kind === "face" && y.kind === "pill")) continue;
+          if (y === x || (x.kind === "face" && y.kind === "pill") || (x.kind === "pill" && y.kind === "face")) continue;
+          // a face over another face (the well done's big face over the plates' badges): a quarter of the lower face covered
+          if (x.kind === "face" && y.kind === "face") {
+            if (y.order < x.order || iou(x.box, y.box) > 0.6) continue;
+            const s = share(x, y);
+            if (s >= 0.25) out.push({ what: "face", id: x.id, box: x.box.map(Math.round), by: "face", byId: y.id + "'s face", byBox: y.box.map(Math.round), share: Math.round(s * 100) / 100, on: "under" });
+            continue;
+          }
           if (x.kind === "pill" && (y.kind === "pill" || (y.chip && y.chip === x.o))) continue; // (its own item stands on its pill)
           if (iou(x.box, y.box) > 0.6) continue; // (the face's own ring or frame)
           const above = y.order > x.order;
@@ -878,8 +887,9 @@ function s19hook() {
     // a card's words (the item cards, the order cards, Nani's line) under something of the page that is not in their own panel
     for (const tx of document.querySelectorAll(".wc14-k, .wc14-en, .wc-k, .oc-card .oc-name, .ng-line")) {
       if (!shown(tx) || modal(tx) || getComputedStyle(tx).pointerEvents === "none") continue;
-      const card = tx.closest(".wc14, .oc-card, #guide") || tx.parentElement;
-      const root = tx.closest("#side, #mission, #guide, .njg-rq-card") || card;
+      // (only words that sit in their place: in the side panel, Nani's box or the order card; a card flying in is passing)
+      const root = tx.closest("#side, #mission, #guide, .njg-rq-card");
+      if (!root || tx.closest("[class*=flyer], .oc-flyer, .wc14-pop")) continue;
       const range = document.createRange();
       range.selectNodeContents(tx);
       for (const q of [...range.getClientRects()].slice(0, 3)) {
