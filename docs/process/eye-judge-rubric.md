@@ -15,7 +15,7 @@ or can't tell. Last: Q38, and the merge rule's question (below).
 ## A. Onboarding and lights
 
 - **Q1** Is the first-time light one look: everything dims, a gold-edged box round the one lit thing, no ripples, arrows or pulses
-  elsewhere; a finger only for a drag, hold or rub? (STD-D1-02) (moments: light, strip)
+  elsewhere; a finger only for a drag, hold or rub? Chop's knife cut is the one exception: its box takes in the knife's whole path, right to left (STD-E2-08a, Zafar 10 Nov). (STD-D1-02) (moments: light, strip)
 - **Q2** Does the lit box frame one whole target and never a whole region, the corners at most a quarter of its height, never across a
   face or the side panel? (code checks whole, centred and the neighbours: contract-92, -105; judge the look) (STD-E2-08) (moments: light, strip)
 - **Q4** Is the light on the thing the child must touch next, and does Nani's call come with it? (STD-D1-06, STD-F3-05) (moments: light, strip)

@@ -19,3 +19,9 @@
 3. **Pans:** 4b, handles down to the front corners; the pan handle about the pot handle's length (CK-74).
 4. **Boiling pot:** one top-down redraw, tried in eggs; if it looks better it replaces chai's too, if not neither changes. Chai's current pan sits right because its thicker wall is on the far side, matching the scene's slight perspective.
 5. **ChatGPT run:** the empty slab and the pot, after 7 PM (after his leftover run).
+
+## Zafar, 10 Nov evening (after the five games beside chai)
+- Nani's last line at well done is a stand-in for "Shabash!": every kitchen game's box says it there (SH-252; the engine has it, recorded B25).
+- Chop's wide first light is right: a swipe's light takes in the knife's whole path, right to left; chop only (STD-E2-08a).
+- Shared pieces enforced: lights and bottom bars come only from the shared kit; exceptions become named variants in it (SH-257, SH-255).
+- He wants one clear plan for all the checks, not only the light.
