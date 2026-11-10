@@ -577,13 +577,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       S.glow(o, on, opts);
       const OBk = global.Onboard;
       if (!on || !OBk || !OBk.light || !Cook.Coach || !Cook.Coach.thingBox) return;
-      const lit = OBk.light(Cook.Coach.thingBox(o), { look: "glow", pass: true, quitIf: () => !o.active, note: "samosa:s14-stuck" });
-      helpLit.set(o, lit);
-      lit.done.then(() => {
-        if (helpLit.get(o) !== lit) return;
-        helpLit.delete(o);
-        if (o.active) S.glow(o, false);
-      });
+      // (a glow asked for without now waits for the help's pause, js/cook/station-lib.js S.glow: its light comes the moment it shows)
+      const rec = { close: () => clearInterval(rec.t) };
+      helpLit.set(o, rec);
+      const open = () => {
+        if (helpLit.get(o) !== rec) return;
+        if (!o.active) return void (helpLit.delete(o), rec.close());
+        if (!o.glowFx) return;
+        rec.close();
+        const lit = OBk.light(Cook.Coach.thingBox(o), { look: "glow", pass: true, quitIf: () => !o.active, note: "samosa:s14-stuck" });
+        helpLit.set(o, lit);
+        lit.done.then(() => {
+          if (helpLit.get(o) !== lit) return;
+          helpLit.delete(o);
+          if (o.active) S.glow(o, false);
+        });
+      };
+      rec.t = setInterval(open, 60);
+      open();
     };
     let graded = false;
     let first = null; // the first tick's counts (only the first try is scored)
@@ -640,7 +651,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const ord = filledOf().filter((x) => x !== active).length;
         // SH-60 (s08 w6J: at L2 her help line "Bhar! Chundo." came with nothing lit): the step's help lights the thing to tap
         // (the heap, or the strip to fill) in the same moment as her line, as the pantry does
-        const helpGlow = (o) => (o ? (on) => litGlow(o, on, { bounce: true }) : null);
+        const helpGlow = (o) => (o ? (on) => litGlow(o, on, { bounce: true, now: true }) : null);
         const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
         if (mv.heap) {
           const o = items[mv.heap];
