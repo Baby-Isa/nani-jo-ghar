@@ -203,7 +203,7 @@ import { Cook as CookNS } from "../ns.js";
         retry: tries > 0,
         note: !tries,
         hop: true,
-        band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY, board: lay.hopOn || null },
+        band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY, board: lay.hopOn || null, boardY: lay.board ? [lay.board.y - lay.board.h / 2, lay.board.y + lay.board.h / 2] : null },
         // (S19: the game's own pictures and places; the mechanic falls back to the shared ones where these are missing)
         pieces: art.pieces,
         knifeKey: S.textures.exists(art.knife) ? art.knife : null,

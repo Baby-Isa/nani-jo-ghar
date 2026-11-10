@@ -584,30 +584,68 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.tweens.add({ targets: flash, alpha: 0, delay: 180, duration: 260, onComplete: () => flash.destroy() });
       };
       /** S19 (wave B): the game's own two halves land on the board, apart along the cut, and stay; the cut's flash along the swipe. */
+      /*
+       * S19 (wave B fix round: "at L4 the halves heap on the board over each other, and the knife sits on them"): the cut pieces are
+       * laid out tidily. The board (band.board across, band.boardY down) keeps its middle for the hops; its top and its bottom strips
+       * hold the cut pieces, each cut in a cell of its own (cols across), the bottom strip first, the free cell nearest the cut; each
+       * cell's pair of halves sized to fit it, half-a left, half-b right, a little apart. More cuts than cells start the cells again,
+       * a little offset. The knife rests beside the board, never on it.
+       */
+      const cells = (() => {
+        const BD = band && band.board;
+        const BY = band && band.boardY;
+        if (!BD || !BY) return null;
+        const cols = (halfK && halfK.cols) || 5;
+        const pad = (halfK && halfK.pad) || 26;
+        const share = (halfK && halfK.strip) || 0.3;
+        const sh = (BY[1] - BY[0] - 2 * pad) * share;
+        const cw = (BD[1] - BD[0]) / cols;
+        const ys = [BY[1] - pad - sh / 2, BY[0] + pad + sh / 2];
+        const out = [];
+        ys.forEach((y) => {
+          for (let c = 0; c < cols; c++) out.push({ x: BD[0] + cw * (c + 0.5), y, w: cw, h: sh, used: 0 });
+        });
+        return out;
+      })();
+      const cellFor = (x) => {
+        const least = Math.min(...cells.map((c) => c.used));
+        // (the bottom strip first, then the top: the nearest free cell in the first strip with one)
+        const half = cells.length / 2;
+        const strips = [cells.slice(0, half), cells.slice(half)];
+        for (const st of strips) {
+          const free = st.filter((c) => c.used === least);
+          if (free.length) return free.sort((p, q) => Math.abs(p.x - x) - Math.abs(q.x - x))[0];
+        }
+        return cells[0];
+      };
       const landPieces = (img, ang, P) => {
         const b = img.getBounds();
         const HV = Object.assign({ part: 30, k: 0.92, tilt: 7 }, halfK || {});
-        const floor = z.Y(BAND_TOP) - b.height * 0.3;
-        const drop = Math.max(0, Math.min(z.L(40), floor - b.centerY));
-        // (each cut of a kind lands apart from the last, above or below it, so the cuts read as so many, never one heap; at most
-        // three of a kind, DAAR-37)
-        const n = (cutsAt[img.wordId] = (cutsAt[img.wordId] || 0) + 1) - 1;
-        const step = Math.min(b.height * 0.55, z.L(100));
-        const jx = z.L([0, -18, 18, -9, 9][n % 5]);
-        const jy = [0, -1, 1, -2, 2][n % 5] * step;
         const wk = Math.abs(img.scaleX);
+        const A = S.texSize(P.a);
+        const Bs = S.texSize(P.b);
+        let to = null;
+        if (cells) {
+          const c = cellFor((b.centerX - z.X(0)) / z.k);
+          const again = c.used++;
+          const gap = Math.min(HV.part, c.w * 0.08);
+          // (the pair fits its cell: across, the two halves and their gap; down, the taller half; never bigger than the cut)
+          const k = Math.min(wk * HV.k, z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h));
+          const ox = again ? z.L(12 * again) : 0;
+          const cx = z.X(c.x) + ox;
+          const cy = z.Y(c.y) - ox * 0.6;
+          // (half-a's middle left of the gap by its own half width, half-b's right by its own)
+          to = { k, xs: [cx - z.L(gap) / 2 - (A.w * k) / 2, cx + z.L(gap) / 2 + (Bs.w * k) / 2], y: cy };
+        }
         [P.a, P.b].forEach((key, side) => {
           const d = side ? 1 : -1;
           const { w } = S.texSize(key);
-          const half = S.track(S.add.image(b.centerX, b.centerY, key).setScale(wk).setDepth(D.item + 0.5));
-          // (each half's own width: the two together about the whole's)
+          const half = S.track(S.add.image(b.centerX, b.centerY, key).setScale(wk).setDepth(D.item + 0.5 + 0.001 * side));
           const off = (w * wk * HV.k) / 2 + z.L(HV.part) / 2;
+          // (it parts along the cut first, then goes to its place)
           S.tweens.add({ targets: half, x: b.centerX + d * off * 0.45, angle: d * HV.tilt * 0.5, duration: 140, ease: "Quad.easeOut" });
-          // (it stays on the board: never past its edge)
-          let tx = b.centerX + d * off + jx;
-          const BD = band && band.board;
-          if (BD) tx = Math.max(z.X(BD[0]) + (w * wk * HV.k) / 2, Math.min(z.X(BD[1]) - (w * wk * HV.k) / 2, tx));
-          S.tweens.add({ targets: half, x: tx, y: b.centerY + drop + jy, scaleX: wk * HV.k, scaleY: wk * HV.k, angle: d * HV.tilt, delay: 160, duration: 300, ease: "Bounce.easeOut" });
+          if (to) S.tweens.add({ targets: half, x: to.xs[side], y: to.y, scaleX: to.k, scaleY: to.k, angle: d * HV.tilt * 0.4, delay: 170, duration: 360, ease: "Cubic.easeOut" });
+          else S.tweens.add({ targets: half, x: b.centerX + d * off, y: b.centerY, scaleX: wk * HV.k, scaleY: wk * HV.k, angle: d * HV.tilt, delay: 160, duration: 300, ease: "Bounce.easeOut" });
           shadeOf(half, "half");
         });
         const len = Math.max(b.width, b.height) * 0.62;
@@ -1282,6 +1320,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       z.say(Lang.line("enough"), { ms: 900, caption: true }).catch(() => {});
       stop();
       offs.forEach((f) => f());
+      // (S19 wave B fix round: the knife goes back to its rest beside the board, never left lying on the cut pieces)
+      if (knifeBack) knifeBack.remove();
+      prev = null;
+      if (knife.active) S.tweens.add({ targets: knife, x: knifeHome.x, y: knifeHome.y, angle: knifeAt ? knifeAt.angle || 0 : knife.angle, duration: 260, ease: "Sine.easeOut" });
       z.expect(null);
       if (tally) UI.hideCount();
       // graded now, not while you chop (so nothing tells you when to stop)

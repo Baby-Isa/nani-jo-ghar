@@ -141,7 +141,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const T = (o) => S.track(o);
     // the kitchen family's scene: the marble's wash above the band, the stone band along the bottom
     if (Cook.Kit.worktop) Cook.Kit.worktop(S, { top: B.top, far: FAR });
-    band(S, { top: B.top, base: B.base, far: FAR, depth: D.bg + 1.2 });
+    const tray = band(S, { top: B.top, base: B.base, far: FAR, depth: D.bg + 1.2 });
 
     /* ---------------- screen 1: the grill (the grill kit's option 3) ---------------- */
     const gl = lay.grill || {};
@@ -496,12 +496,17 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         const away = [kit.grill, kit.tray].concat(onBand()).filter((o) => o && o.active);
         await Cook.tween(S, { targets: away, alpha: 0, duration: mo.screenMs || 380 });
         away.forEach((o) => o.destroy());
+        // the six bowls on the band, each with its word pill (the shared shelf's pill, chai's floor): one row, or on a phone where the
+        // pills at their floor can't share one row, two rows of three on a taller tray
+        const lb = layBowls();
         // the plates, one a person, across the room above the band; each one's face circle at its upper left
         const n = count;
         const view = [150, 1450];
         const gap = pl.gap || 70;
-        const d = Math.min(pl.d || 400, (view[1] - view[0] - (n - 1) * gap) / n);
-        const y = pl.y || 322;
+        // (the plates above the bowls, their light's margin clear of the first row: contract-92)
+        const room = lb.clear - lb.room - 16;
+        const d = Math.min(pl.d || 400, (view[1] - view[0] - (n - 1) * gap) / n, room);
+        const y = 16 + d / 2 + (room - d) / 2;
         const x0 = (view[0] + view[1]) / 2 - ((n - 1) * (d + gap)) / 2;
         people.forEach((q, i) => {
           const x = x0 + i * (d + gap);
@@ -519,8 +524,6 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           plates.push(plate);
           S.tweens.add({ targets: [plate, face], alpha: 1, duration: mo.screenMs || 380 });
         });
-        // the six bowls on the band, each with its word pill (the shared shelf's slots, chai's pill rule)
-        layBowls();
         // each person's cob from the tray to their plate, growing as it goes
         await Promise.all(
           people.map((q, i) => {
@@ -539,49 +542,86 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       acted();
       refresh();
     }
+    /*
+     * The six dressing bowls and their word pills (S19 wave B fix round; SH-219, chai's pill rule): every pill at least the floor
+     * (Shelf.pillWant: the word at the platforms' smallest readable size on screen), never narrowed, never touching, and a light's
+     * margin apart (the kit's Onboard.marginOf on the bowl's size), so a bowl's light, round its pill too, stops short of the next
+     * (contract-92). Each slot is as wide as its own pill or its bowl, whichever is wider, laid side by side about the view's middle.
+     * Where the six can't share one row at the floor (a phone: 740x320), they go in two rows of three on a taller stone tray, which
+     * takes the band's place for this screen. Returns {top (the band's), clear (the first row's top), room (a light's margin)}, design px.
+     */
     function layBowls() {
       const Sh = global.Shelf;
-      const SL = Sh.slots([ids], { span: [150, 1450], pitch: 216, groupGap: 0 });
       let ppw = 1;
       try {
         ppw = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
       } catch (e) {
         ppw = 1;
       }
-      const size = Math.min(bw.size || 150, SL.slotW - 30);
+      const want = Sh.pillWant(ppw);
+      const PH = (Sh.PILL || {}).h || 46;
+      const OL = (global.Onboard && global.Onboard.LIGHT) || { share: 0.12, min: 8, max: 16, clear: 2 };
+      const room = (sz) => Math.max(Sh.pillGap(ppw), (Math.max(OL.min, Math.min(OL.max, OL.share * sz * ppw)) + OL.clear + 4) / ppw);
+      const V = Cook.view || {};
+      const vl = Math.max(V.left != null ? V.left : 0, -400);
+      const vr = Math.min(V.right != null ? V.right : 1600, 2000);
+      const avail = vr - vl - 2 * 30;
+      const mid = (vl + vr) / 2;
+      // the bowls and pills first (their pills' own widths are measured), placed below
       ids.forEach((id) => {
-        const x = SL.x[id];
-        const img = T(S.add.image(x, B.base - (bw.lift || 6) - size / 2, `cn4-${id}`).setDepth(D.item).setAlpha(0));
-        img.setScale(size / Math.max(img.width, img.height));
+        const img = T(S.add.image(mid, B.base, `cn4-${id}`).setDepth(D.item).setAlpha(0));
         img.wordId = id;
-        GK.shadow(S, img, { dx: 5, dy: 7, alpha: 0.24, blur: 5 });
-        // (its pill is part of its light: the kit's parts, C.parts; S19, CK-61)
-        img.chip = pill(S, id, x, B.chipY, ctx);
+        img.chip = pill(S, id, mid, B.chipY, ctx); // (its pill is part of its light: the kit's parts, C.parts; S19, CK-61)
+        img.chip.setAlpha(0);
         bowls[id] = img;
-        S.tweens.add({ targets: img, alpha: 1, duration: mo.screenMs || 380 });
-        S.tappable(img, () => tapBowl(img));
       });
-      // SH-219 (chai's rule): the row's one pill scale, the floor, never touching
-      const chips = ids.map((id) => bowls[id].chip).filter((c) => c && c.active && c.faceW);
-      if (Sh.pillScale && chips.length) {
-        // (two pills keep at least the kit's widest light margin apart, so a bowl's light, round its pill too, stops short of its
-        // neighbour's pill: contract-92; the long chutney words narrow a little more for it)
-        // (the margin the kit gives a light round a bowl and its pill: Onboard.marginOf's rule on the bowl's size on screen)
-        const OL = (global.Onboard && global.Onboard.LIGHT) || { share: 0.12, min: 8, max: 16, clear: 2 };
-        const m = Math.max(OL.min, Math.min(OL.max, OL.share * size * ppw));
-        const gap = Math.max(Sh.pillGap(ppw), (m + OL.clear + 2) / ppw);
-        const { k, cap } = Sh.pillScale(
-          chips.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })),
-          { want: Sh.pillWant(ppw), gap, slotW: SL.slotW }
-        );
-        const y = Math.min(B.chipY, 896 - ((B.chipH || 46) / 2) * k);
-        chips.forEach((c) => {
-          if (c.capW !== cap) c.face(c.showsWord, cap);
-          c.k = k;
-          if (c.hit) c.hit(SL.slotW);
-          c.setScale(k).setY(y);
+      const pw = (id) => bowls[id].chip.faceW(bowls[id].chip.showsWord) * want;
+      const slotOf = (id, sz) => Math.max(pw(id), sz + 14);
+      const rowW = (row, sz) => row.reduce((a, id) => a + slotOf(id, sz), 0) + room(sz) * (row.length - 1);
+      let size = bw.size || 150;
+      while (size > 120 && rowW(ids, size) > avail) size -= 10;
+      const two = rowW(ids, size) > avail;
+      const rows = two ? [ids.slice(0, Math.ceil(ids.length / 2)), ids.slice(Math.ceil(ids.length / 2))] : [ids];
+      if (two) size = Math.max(size, Math.min(bw.size || 150, 48 / ppw));
+      const pillH = PH * want;
+      const gapRows = room(size);
+      // (each row: the bowl, a small gap, its pill; the rows a light's margin apart; the last row's pill on the band's own pill line)
+      const rowH = size + 6 + pillH;
+      const lastPill = Math.min(B.chipY, 896 - pillH / 2 - 4);
+      const pillYs = rows.map((r, i) => lastPill - (rows.length - 1 - i) * (rowH + gapRows));
+      const top = two ? pillYs[0] - pillH / 2 - 6 - size - 18 : B.top;
+      rows.forEach((row, ri) => {
+        let x = mid - rowW(row, size) / 2;
+        row.forEach((id) => {
+          const w = slotOf(id, size);
+          const cx = x + w / 2;
+          x += w + room(size);
+          const img = bowls[id];
+          img.setPosition(cx, pillYs[ri] - pillH / 2 - 6 - size / 2);
+          img.setScale(size / Math.max(img.width, img.height));
+          GK.shadow(S, img, { dx: 5, dy: 7, alpha: 0.24, blur: 5 });
+          const c = img.chip;
+          c.k = want;
+          c.setScale(want).setPosition(cx, pillYs[ri]);
+          if (c.hit) c.hit(w + room(size) - 2);
+          S.tweens.add({ targets: [img, c], alpha: 1, duration: mo.screenMs || 380 });
+          S.tappable(img, () => tapBowl(img));
         });
+      });
+      if (two && Sh.P && Sh.P.tray) {
+        // the taller tray for the two rows: the shared stone tray (as the kitchen kit draws it), in place of the band's
+        const view = () => {
+          const v = Cook.view || {};
+          return { left: v.left != null ? v.left : 0, right: v.right != null ? v.right : 1600, bottom: v.bottom != null ? v.bottom : 900 };
+        };
+        const t2 = Sh.P.tray(S, { top, view, depth: D.bg + 1.2 });
+        if (t2) {
+          t2.setAlpha(0);
+          S.tweens.add({ targets: t2, alpha: 1, duration: mo.screenMs || 380, onComplete: () => tray && tray.active && tray.destroy() });
+        }
       }
+      // (the first row's top, and the widest light margin's room above it, for the plates)
+      return { top, clear: pillYs[0] - pillH / 2 - 6 - size, room: (OL.max + OL.clear + 4) / ppw };
     }
 
     // what goes on: named as it goes on, their row ticks; a second tap takes it back until they have it (non-negotiable 7)
