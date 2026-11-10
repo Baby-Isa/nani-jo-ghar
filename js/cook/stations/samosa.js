@@ -249,7 +249,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** The worktop and the band: the kitchen kit's wash and stone band (module map piece 4, ART-41; was samosa's own copy). */
   function backdrop(S) {
     Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR });
-    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2 }); // (no ledge: the heaps lie top-down on the band)
+    // (SH-248: the bottom element is the game's settings' band, "tray": the heaps lie top-down on the stone tray)
+    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, band: (((Cook.data && Cook.data.settings) || {}).samosa || {}).band });
   }
 
   /**
@@ -585,7 +586,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!o.active) return void (helpLit.delete(o), rec.close());
         if (!o.glowFx) return;
         rec.close();
-        const lit = OBk.light(Cook.Coach.thingBox(o), { look: "glow", pass: true, quitIf: () => !o.active, note: "samosa:s14-stuck" });
+        const lit = OBk.light(Cook.Coach.thingBox(o), { look: "glow", pass: true, quitIf: () => !o.active, note: `${(gate && gate.scope) || z.id || "fill"}:s14-stuck` });
         helpLit.set(o, lit);
         lit.done.then(() => {
           if (helpLit.get(o) !== lit) return;
