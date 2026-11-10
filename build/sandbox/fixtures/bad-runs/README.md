@@ -27,9 +27,9 @@ Commit 3c4882609 (10 Nov 16:02, before the September overlay was deleted in e9f8
 |---|---|---|
 | `pages/cook-eggs-speed1@*` | SH-249, SH-250: a circle and a box at once (the old overlay over the shared light), its darker dim (0.74 against chai's 0.45), the pan's round ring | contract-112 |
 | `pages/cook-corn-speed1@*` | SH-249, SH-250: the same circle and box, the darker dim, the cob cut at both ends; SH-254: Nana's face over the cob at well done | contract-112, contract-113 |
-| `pages/cook-chop-speed1@*` | STD-E2-08a, SH-253: the swipe light over the side panel and out to the frame's edge, lit while the garlic and the knife fly into it | contract-112 |
-| `pages/cook-daar-speed1@*` | SH-249, SH-253: the onion's swipe light over the side panel, lit while the onion arrives; the onion drawn over its own pill | contract-112, contract-113 |
-| `pages/cook-maani-line-speed1@*` | SH-249: the pan's round ring on the tawa (a circle); SH-254: Nana's face over the plates at well done | contract-112, contract-113 |
+| `pages/cook-chop-speed1@*` | STD-E2-08a, SH-253: the swipe light over the side panel and out to the frame's edge, lit while the garlic and the knife fly into it; CK-78: its tally chip under the settings cog at the first move | contract-112, contract-113 |
+| `pages/cook-daar-speed1@*` | SH-249, SH-253: the onion's swipe light over the side panel, lit while the onion and the knife arrive; Nana's badge over the katori and the daar bowl at 740x320 | contract-112, contract-113 |
+| `pages/cook-maani-line-speed1@*` | SH-249: the pan's round ring on the tawa (a circle); SH-254: Nana's well-done face over the plates' faces | contract-112, contract-113 |
 | `pages/cook-chai-tray-speed1@*` | good: chai at HEAD, every light passes, nothing covered | (green) |
 
 `expect.json` lists every check each page is red on today, with its words. The shots named there (`c*-s19over.png`) are the run's

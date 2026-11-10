@@ -5,26 +5,36 @@
    "size": "1280x665",
    "commit": "3c4882609",
    "kind": "bad",
-   "name": "STD-E2-08a SH-253 chop: the swipe light over the side panel and out to the frame, lit while the garlic and the knife fly in",
+   "name": "STD-E2-08a SH-253 CK-78 chop: the swipe light over the side panel and out to the frame, lit while the garlic and the knife fly in; its tally chip under the settings cog at the first move",
    "red": {
     "contract-112": [
-     "light 1 [332,196,1278,470]: cut by the frame at the right: its thing is 314 px from that edge; over the side panel by 14 px (the light [332,196,1278,470], the panel [0,0,346,665]); lit while veg-13 moved 248 px into it after the light came: nothing moves into a light (picture: lights/01/mark.jpg)"
+     "light 1 [332,196,1278,470]: cut by the frame at the right: its thing is 121 px from that edge; over the side panel by 14 px (the light [332,196,1278,470], the panel [0,0,346,665]); lit while veg-13 moved 248 px into it after the light came: nothing moves into a light (picture: lights/01/mark.jpg)"
+    ],
+    "contract-113": [
+     "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (47% of it, at [1182,8,1272,40]): nothing covers a face, a pill or a card's words"
     ]
    },
-   "shots": []
+   "shots": [
+    "c07-s19over.png"
+   ]
   },
   "cook-chop-speed1@740x320": {
    "flow": "cook:chop#speed1",
    "size": "740x320",
    "commit": "3c4882609",
    "kind": "bad",
-   "name": "STD-E2-08a SH-253 chop: the swipe light over the side panel and out to the frame, lit while the garlic and the knife fly in",
+   "name": "STD-E2-08a SH-253 CK-78 chop: the swipe light over the side panel and out to the frame, lit while the garlic and the knife fly in; its tally chip under the settings cog at the first move",
    "red": {
     "contract-112": [
-     "light 1 [210,52,736,220]: over the side panel by 14 px (the light [210,52,736,220], the panel [0,0,224,320]); lit while veg-13 moved 137 px into it after the light came: nothing moves into a light (picture: lights/01/mark.jpg)"
+     "light 1 [210,52,736,220]: over the side panel by 14 px (the light [210,52,736,220], the panel [0,0,224,320]); lit while veg-13 moved 134 px into it after the light came: nothing moves into a light (picture: lights/01/mark.jpg)"
+    ],
+    "contract-113": [
+     "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (53% of it, at [642,8,732,40]): nothing covers a face, a pill or a card's words"
     ]
    },
-   "shots": []
+   "shots": [
+    "c07-s19over.png"
+   ]
   },
   "cook-corn-speed1@1280x665": {
    "flow": "cook:corn#speed1",

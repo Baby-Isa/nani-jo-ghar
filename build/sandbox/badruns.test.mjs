@@ -23,7 +23,7 @@ export const MUST = {
     daar: [/over the side panel/, /moving|moved|came into it/],
     maani: [/a circle|not a rounded rectangle|lights nothing|not inside the light/],
   },
-  "contract-113": { corn: [/nana's face sits over/], maani: [/nana's face/] },
+  "contract-113": { corn: [/nana's face sits over/], maani: [/nana's face/], chop: [/under the page's button#side-cog/] },
 };
 const gameOf = (flow) => (/cook:([\w-]+)/.exec(flow) || [])[1].replace("-line", "");
 
