@@ -171,7 +171,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const FILE = "data/stations/chaat.json";
   let SET = null;
   let loading = null;
-  let V3, POTS, STRIP_DIR, STRIPS, POT_FOOD, THIN, DRIZZLE, BAND_SCALE, BAND_W, BAND_PAD, RES, GLASS_W, GLASS_X, BASE, PITCH, PREP_W, CHIP_Y, SPAN, MOTION;
+  let V3, POTS, STRIP_DIR, STRIPS, TOP_DIR, TOPS, POT_FOOD, THIN, DRIZZLE, BAND_SCALE, BAND_W, BAND_PAD, RES, GLASS_W, GLASS_X, BASE, PITCH, PREP_W, CHIP_Y, SPAN, MOTION;
   const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   let GLASS_BOTTOM = 0;
   // the bowl is centred in the scene above the shelf band (0..SHELF_TOP): its middle at SHELF_TOP / 2
@@ -183,6 +183,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     POTS = s.pots.files;
     STRIP_DIR = s.strips.dir;
     STRIPS = s.strips.files;
+    TOP_DIR = (s.tops || {}).dir || "";
+    TOPS = (s.tops || {}).files || {};
     POT_FOOD = B.potFood;
     THIN = B.thin;
     DRIZZLE = Object.fromEntries(B.drizzle.map((id) => [id, true]));
@@ -273,6 +275,17 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const S = stripScene;
     const key = stripKey(id);
     return S && STRIPS[id] && S.textures.exists(key) ? S.textures.get(key).getSourceImage() : null;
+  };
+
+  /*
+   * S19 (s19-wave-e2; the full run's C5-C11, Zafar 10 Nov: the chutneys are the drizzles): each topping's own top, drawn straight down
+   * (the settings' tops: a loose layer of its pieces, or a chutney's drizzle, cut by build/tools/art/s19_cut.py), seen as the top
+   * layer's surface through the bowl's mouth: squashed into the surface's ellipse, a chutney's drizzle over the layer under it.
+   */
+  const topKey = (id) => `cv4-top-${id}`;
+  const topOf = (id) => {
+    const S = stripScene;
+    return S && TOPS[id] && S.textures.exists(topKey(id)) ? S.textures.get(topKey(id)).getSourceImage() : null;
   };
 
   /** The glass's inside half-width and centre at a height f (a fraction of the sprite's height). */
@@ -575,6 +588,34 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       c.fillRect(L.cx - L.hw, y - 2 * L.ry, 2 * L.hw, 2 * L.ry);
       c.restore();
     }
+    /** S19: a topping's top picture laid in the surface's ellipse at y (its colour under it, unless a drizzle), fading in with a. */
+    function topSurface(y, id, a) {
+      const pic = topOf(id);
+      const L = level(y);
+      c.save();
+      c.beginPath();
+      c.ellipse(L.cx, y - L.ry, L.hw, L.ry, 0, 0, Math.PI * 2);
+      c.clip();
+      if (!DRIZZLE[id]) {
+        c.globalAlpha = a;
+        c.fillStyle = colourOf(id);
+        c.fillRect(L.cx - L.hw, y - 2 * L.ry, 2 * L.hw, 2 * L.ry);
+      }
+      if (pic) {
+        c.globalAlpha = a;
+        // (the picture's pieces fill a circle: it lies in the ellipse a little inside the glass's wall)
+        c.drawImage(pic, 0, 0, pic.width, pic.height, L.cx - L.hw * 0.96, y - 2 * L.ry + L.ry * 0.04, L.hw * 1.92, L.ry * 1.92);
+      }
+      // light from the upper left, a darker back edge (as surface's)
+      c.globalAlpha = 1;
+      const gr = c.createLinearGradient(0, y - 2 * L.ry, 0, y);
+      gr.addColorStop(0, "rgba(40,25,10,0.22)");
+      gr.addColorStop(0.45, "rgba(255,255,255,0.06)");
+      gr.addColorStop(1, "rgba(255,255,255,0)");
+      c.fillStyle = gr;
+      c.fillRect(L.cx - L.hw, y - 2 * L.ry, 2 * L.hw, 2 * L.ry);
+      c.restore();
+    }
     /** One layer seen through the glass: between its lower line (y0, wob0) and its upper line (y1, wob1). */
     function band(L, y0, wob0, y1, wob1, fullH) {
       // CHT-13: an item with its strip is that strip, one across the bowl at its own size, its top (poke) over its line
@@ -641,6 +682,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       };
       let y = GLASS.floor * GLASS.h;
       const tops = [];
+      const bands = [];
       layers.forEach((L, i) => {
         const th = L.th * fit * L.grow;
         const below = i ? wobAt(i) : null;
@@ -648,18 +690,26 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (drizzle(L.id)) {
           // a chutney: drizzled over the layer below (its ribbons lie on it) and a thin layer of its own
           const own = th * 0.45;
-          band(L, y + (th - own), below, y - own, above, L.th * fit);
+          bands.push([L, y + (th - own), below, y - own, above, L.th * fit]);
           y -= own;
         } else {
-          band(L, y, below, y - th, above, L.th * fit);
+          bands.push([L, y, below, y - th, above, L.th * fit]);
           y -= th;
         }
         tops.push({ y, id: L.id, L });
       });
       // the top: its surface (a drizzle shows the layer under it too)
       const t = tops[tops.length - 1];
+      // (S19: a topping with its own top picture shows it through the bowl's mouth, under the layers' front edges)
+      const topPic = t && (topOf(t.id) || (DRIZZLE[t.id] && tops.length > 1 && topOf(tops[tops.length - 2].id)));
+      if (topPic) {
+        const under = tops.length > 1 && DRIZZLE[t.id] ? tops[tops.length - 2] : null;
+        if (under) topSurface(t.y, under.id, 1);
+        topSurface(t.y, t.id, Cook.clamp(t.L.grow, 0, 1));
+      }
+      bands.forEach((b) => band(...b));
       // (a strip's own top is the surface: the bowl is side-on, CHT-13)
-      if (t && !stripOf(t.id)) {
+      if (t && !stripOf(t.id) && !topPic) {
         const under = tops.length > 1 && drizzle(t.id) ? tops[tops.length - 2] : null;
         if (under) surface(t.y, under.id, under.L);
         surface(t.y, t.id, t.L);
@@ -685,17 +735,18 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         return { x: food.x, y: food.y - food.displayHeight / 2 };
       },
       /** A topping settles in: a drop and a little bounce. */
-      add(id, ms = 460) {
+      add(id, ms = (MOTION && MOTION.fillMs) || 460) {
         const seed = Math.floor(Math.random() * 1e9);
         const L = { id, th: full() * (THIN[id] || 1), grow: 0, seed, wob: wobbleOf(seed), tex: null };
         layers.push(L);
+        // CK-83 (the eye judge beside chai, 10 Nov: "the bowl fills in one step"): the layer rises over the settings' fillMs as the
+        // spoonful goes in, as chai's pan fills while its bottle pours (was 460 ms with a bounce)
         return new Promise((resolve) =>
           S.tweens.addCounter({
             from: 0,
             to: 1,
             duration: ms,
-            ease: "Back.easeOut",
-            easeParams: [2.2],
+            ease: "Sine.easeOut",
             onUpdate: (tw) => {
               L.grow = Math.max(0, tw.getValue());
               draw();
@@ -861,6 +912,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           ids.filter((id) => POTS[id]).map((id) => [`cv3-pot-${id}`, `${V3}${POTS[id]}.webp`]),
           // CHT-13: each thing on the shelf's strip (any of them may go in), only these
           ids.filter((id) => STRIPS[id]).map((id) => [stripKey(id), `${STRIP_DIR}${STRIPS[id]}.webp`]),
+          // S19: each thing's top picture, straight down (the settings' tops), only these
+          ids.filter((id) => TOPS[id]).map((id) => [topKey(id), `${TOP_DIR}${TOPS[id]}.webp`]),
         ),
       );
       stripScene = S;
@@ -878,6 +931,21 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       /* ---------- the glass ---------- */
       // raised into the middle of a taller stage's worktop (the stage fill)
       const bowl = glassBowl(Cook.liftZone(z), S, flat.length);
+      /*
+       * SH-258 (the eye judge beside chai, 10 Nov: no face circle by the bowl until well done): the asker's face circle (the kit's badge,
+       * Cook.Kit.badge) on the bowl's upper-left rim from the first frame, as chai's Nana is on the glass: the badge size (64 design px,
+       * at least 30 CSS px as seen); it stands down while their big face is up (the review)
+       */
+      const bowlFace = (() => {
+        if (!Cook.Kit || !Cook.Kit.badge) return null;
+        const food = bowl.parts[1];
+        const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+        const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
+        const f = S.track(S.add.image(food.x - food.displayWidth * 0.4, food.y - food.displayHeight / 2 + fd * 0.45, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge));
+        f.setName("chaat-bowl-face");
+        food.face = f;
+        return f;
+      })();
 
       /* ---------- the shelf: identical side-on pots (the pantry jars' look), the shared kit's word pill under each ---------- */
       // Zafar, 20 Oct (replacing s08 w6M's speaker alone at every level): a pot's word is written until the child has used
@@ -1227,9 +1295,19 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       let tries = 0;
       try {
         /* ---------- the review (X10 / Q1): their big round face over the glass, no body (the kitchen kit's, Cook.Kit.review) ---------- */
-        const review = (ok) => {
+        // CK-83, SH-254 (the eye judge beside chai, 10 Nov: Shabash over the bowl's word pill): one face, at the bowl's upper left where
+        // its small circle was, its praise to the left; the word pops at the bowl's upper right (pop), so the two never meet
+        const review = async (ok) => {
           const r = bowl.rimAt();
-          return Cook.Kit.review(S, { who, ok, x: r.x, y: r.y - z.L(120), size: z.L(250), k: z.L(1), side: "right" });
+          const food = bowl.parts[1];
+          if (bowlFace) bowlFace.setVisible(false);
+          const look = await Cook.Kit.review(S, { who, ok, x: food.x - food.displayWidth * 0.4, y: r.y - z.L(30), size: z.L(200), k: z.L(1), side: "left" });
+          const close = look.close;
+          look.close = async () => {
+            await close();
+            if (bowlFace && bowlFace.active) bowlFace.setVisible(true);
+          };
+          return look;
         };
 
         /* ---------- build: each topping tapped in, until the bowl is complete and right (it goes by itself) or Done ---------- */
