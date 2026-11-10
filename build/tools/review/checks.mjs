@@ -92,8 +92,16 @@ steps.leak = async () => {
   const bad = [], known = [];
   const one = async (cfg) => {
     const extra = cfg.adapter === "script" ? (cfg.id === "clinic" ? ["--rounds", "100"] : []) : ["--rounds", "500", "--l1", "1000"];
-    const r = await go("timeout", ["300", process.execPath, "build/tools/review/leak.mjs", cfg.id, ...extra]);
-    if (r.status !== 0) (cfg.knownFail ? known : bad).push(`${cfg.id}${cfg.knownFail ? ` (${cfg.knownFail})` : `: ${(r.stdout.match(/^\s+\S.*(wins|blind|FAIL).*$/m) || [`exit ${r.status}`])[0].trim().slice(0, 120)}`}`);
+    // (s19-checks-1: the clinic's bot takes about 50 s alone and over 300 s on a machine running everything at once; killed by the
+    // timeout it was reported with its first "blind" line, an ACCEPTED one, as if it had leaked. Its numbers are seeded and never
+    // change: the limit is a busy machine's, and a timeout says so; a real leak is named by its FAIL lines, never an ACCEPTED one)
+    const LIMIT = 900;
+    const r = await go("timeout", [String(LIMIT), process.execPath, "build/tools/review/leak.mjs", cfg.id, ...extra]);
+    if (r.status !== 0) {
+      const tail = String(r.stdout || "").split(/\nFAIL\n/)[1] || "";
+      const why = r.status === 124 ? `timed out after ${LIMIT} s (the machine was busy; not a leak: run it alone)` : (tail.match(/^\s+\S.*$/m) || r.stdout.match(/^\s+!!\s.*$/m) || r.stdout.match(/^\s+(?!ACCEPTED|\?\?)\S.*(wins|blind|FAIL|leak).*$/m) || [`exit ${r.status}`])[0].trim().slice(0, 120);
+      (cfg.knownFail ? known : bad).push(`${cfg.id}${cfg.knownFail ? ` (${cfg.knownFail})` : `: ${why}`}`);
+    }
   };
   const queue = [...todo].sort((x, y) => (y.id === "clinic") - (x.id === "clinic"));
   await Promise.all([0, 1, 2].map(async () => { while (queue.length) await one(queue.shift()); }));
