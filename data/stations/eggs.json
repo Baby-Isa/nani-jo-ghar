@@ -274,27 +274,31 @@
     "_note": "chai's own top-down pan (pan-water-s14, data/stations/chai-tray.json kit.pan looks.water: its rim 158 px round (184.8, 241) on 514 x 405; its floor 140): fractions of the canvas; flipped so its handle points left, as chai's"
    },
    "reach": 2.08,
+   "angle": -45,
+   "_ck74": "CK-74 (Zafar, 10 Nov: option 4b): flipped, its handle down to the front left corner, at half past seven (Phaser angle: the clock's angle less 270)",
    "_s19c": "S19 wave C (ART-67: no 45-degree pot): the boiled eggs' pot is chai's own top-down pan art, reused; reach: its handle's end from its middle over its rim radius (514 - 184.8 over 158)"
   },
   "pan": {
    "size": "L",
    "view": "T",
-   "file": "assets/cook/items/v4/eggs/pan-steel.webp",
+   "file": "assets/cook/items/v4/eggs/pan-steel-short.webp",
    "px": [
     430,
-    700
+    640
    ],
    "role": "vessel",
    "word": null,
    "body": {
     "cx": 0.499,
-    "cy": 0.321,
+    "cy": 0.3516,
     "r": 0.4872,
     "rIn": 0.36,
-    "_note": "measured from pan-steel.webp's alpha: the round body x 5-424 (centre 214.5, r 209.5) with its widest row at y 225; its floor rIn; the handle points down to y 699 in the picture"
+    "_note": "measured from pan-steel.webp's alpha: the round body x 5-424 (centre 214.5, r 209.5) with its widest row at y 225; its floor rIn; the handle points down to y 639 in the picture (pan-steel-short: the handle's middle, rows 460-580, drawn in 60, so it is about the pot handle's length; Zafar, 10 Nov)"
    },
-   "reach": 2.26,
+   "reach": 1.98,
+   "angle": -45,
    "handleW": 0.14,
+   "_ck74": "CK-74 (Zafar, 10 Nov: option 4b): its handle down to the front right corner, at half past four (Phaser angle: the clock's angle less 180); reach: 414 over 209.5",
    "_s19c": "S19 wave C (CK-66; Zafar 9 Nov: 'all stainless steel', 'place the pan in whichever orientation you like, so you can fix the handle issue'): the v4 steel pan, turned so its handle points up and to the left, between the pot and the pan, clear of the pot's rim and away from the band (layout(): handleMin); reach: its handle's end from its middle over its rim radius (474 over 209.5); handleW: the handle's width over its rim radius"
   },
   "egg": {
@@ -514,7 +518,7 @@
   "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
   "assets/cook/items/v4/kit/plate-cream.webp",
   "assets/cook/items-s14/chai-pan/pan-water-s14.webp",
-  "assets/cook/items/v4/eggs/pan-steel.webp",
+  "assets/cook/items/v4/eggs/pan-steel-short.webp",
   "assets/cook/items/v4/eggs/egg-cracked.webp",
   "assets/cook/items/v4/eggs/egg-cooked.webp",
   "assets/cook/items/v4/eggs/egg-overdone.webp",

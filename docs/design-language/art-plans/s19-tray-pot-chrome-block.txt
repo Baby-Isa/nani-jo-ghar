@@ -1,0 +1,80 @@
+NANI JO GHAR: THE STONE TRAY AND THE TOP-DOWN POT (Sprint 19). Paste this whole block into Claude in Chrome, after the redo run.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-tray-pot/refs.zip , unzip it,
+and drag all four pictures into this chat with this block.
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+You draw four pieces for a premium children's cooking game. Use chatgpt.com (Zafar is signed in). Run TWO ChatGPT conversations at
+once, each in its own tab: Chat 1 = T1, T2. Chat 2 = P1, P2. Send in one tab, move to the next while it generates; go round in turn.
+
+In each conversation:
+1. First message: the reference pictures, the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes these work."
+2. For each line: attach the pictures it names, paste the line, and add:
+   "First, in text only, list exactly what you will draw and how it differs from the attached picture. Do not draw yet."
+   Then: "Generate the image now, implementing exactly this:" with its answer pasted. When the image arrives: "Check it against the
+   line, in text, point by point. Then generate one corrected version." Keep both.
+3. Up to two tries per line (four images at most). Keep the best; if none meets the line's MUST points, say so in the report.
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Open https://chatgpt.com/library. Hover over the first kept image: a small check box appears in its bottom-right corner; tick it.
+Hover over each other kept image; tick its check box in its bottom-right corner. Tick every kept image of this run and nothing else,
+then press the download button on the selection bar: one download. Log each as "DOWNLOADED <n>: <ChatGPT's file name> -> <save-as
+name>" (save-as: s19-tp-<line>-<try>.png). If the selection is refused, use each image's own download button. Never page
+JavaScript, never a file picker, never a GitHub upload: Zafar pushes the folder himself to main under assets.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start with "S19 TRAY AND POT RUN REPORT"; per line: tries (and why), kept: <save-as> = <ChatGPT's file name>, your pick and why,
+anything ChatGPT refused. Then the DOWNLOADED list and anything missing.
+
+=== HOUSE BRIEF (paste as the first message of each conversation) ===
+These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy their
+style, not their contents: ignore the faces, labels, pills and the gear icon in them, and ignore the thin coloured guide lines and
+small face stickers in any reference picture. Rules for every image:
+- One large soft light from the upper left; nothing floats. The 00-HOUSE pictures have faint window-light streaks across the
+  worktop; do NOT copy those: everything is evenly lit, no window streak.
+- Materials: brushed stainless steel reflecting a neutral pale-grey room; cream ceramic (the bowls in F1 are THE bowl: the same
+  shape, cream and rim in every bowl you draw); dark walnut only where a line asks; white marble worktop with soft cool grey veins
+  only where a line asks for marble (never golden or cream marble).
+- Camera: "straight down" means a flat plan view with no perspective at all: a bowl, a plate or a cob's end is a perfect circle, a
+  tray a perfect rectangle, and no inner or outer side wall of any container shows, only its rim and its floor. Depth shows only
+  as a soft shadow inside the rim along its upper-left inner edge. Any steel rim is ONE flat band of even width, no inner line,
+  ledge or bevel. The reference pictures are sometimes tilted; yours must not be. "Side-on" lines are the exception.
+- These are separate PIECES that we cut out and place in our own layout; we place the stove, the trays, the plates, the shadows and
+  the word labels ourselves. Draw only what the line asks, nothing else: no stove, hob, knobs or flames, no hands, no text, letters,
+  numbers or labels, no tools that do nothing, no napkins or plants unless asked, no steam, no glow, nothing in the air.
+- Counts are exact: if a line says six, draw six, and count them in your check.
+- Fill the frame: the objects asked for take up most of the picture, with a margin of about one tenth of the picture all round.
+  Never small objects in a large empty field. Sizes are given as shares of the picture's width: keep to them.
+- "On magenta" means one flat solid #FF00FF background edge to edge, no gradient, no texture, and NO shadow at all: no contact shadow,
+  no soft shadow, nothing darker than the flat magenta anywhere (we add every shadow in code). The object must not touch the edges.
+  We cut along the magenta, so it must not tint, reflect in or bleed onto the object: steel reflects a neutral pale-grey room, never
+  pink; between thin pieces (strands, rings) the magenta stays pure.
+- Where a line asks for several panels or rows: equal panels, the same camera, scale and light in each, separated only by a strip of
+  the same background; no frames, borders, dividing lines or numbers.
+- No oval plates or trays: round, square or rectangular only. No sweets or biscuits anywhere.
+
+=== IMAGE LINES ===
+CHAT 1
+T1 THE STONE TRAY, EMPTY (pictures: T1-stone-tray-chaat-zafar). Landscape 16:9, on magenta: the long flat stone slab under the ten
+   bowls in T1-stone-tray-chaat-zafar, EMPTY: no bowls, no pills, no marble around it. Seen from above as in that picture.
+   MUST: the same pale, warm grey-beige honed stone, matte, the same lightness (a hair less pink, toward a neutral greige); fine
+   natural grain and tiny speckles that read as real, expensive modern-restaurant stoneware, even along its whole length, no veins,
+   blotches or marks, no light streak, no darker ends. FLAT: no raised rim, lip or inner ledge. Its edges crisp and defined: a thin
+   lighter bevel along the top and left edges catching the light from the upper left, its front edge a thin, slightly darker band
+   of the same stone showing its thickness (the one exception to "no side wall shows"). Corners rounded, the radius about 4% of the
+   slab's length. The slab 90% of the picture's width and 22% of its height, centred. No shadow on the magenta.
+T2 THE SAME STONE, A SEAMLESS TILE (pictures: T1-stone-tray-chaat-zafar, and your T1). SQUARE image, filled edge to edge with the top
+   surface of T1's stone only: no edge, no corner, no bevel, no magenta. MUST: the same colour, lightness and grain as T1, the grain
+   the same size it has on T1's slab; it tiles seamlessly left to right and top to bottom; no light falloff, no darker or lighter
+   corner, no single mark that would show when repeated.
+CHAT 2
+P1 THE POT, EXACTLY STRAIGHT DOWN, WITH WATER (pictures: P1-chai-pan-water, P1-chai-pan-empty, 00-HOUSE-chai-live). SQUARE image, on
+   magenta: the same saucepan as P1-chai-pan-water (the same brushed steel, the same black handle, the same small pouring lip on
+   the left, the same clear water with a few small bubbles), redrawn from EXACTLY straight down.
+   MUST: the rim a perfect circle; the steel wall's band the SAME width all the way round (the reference shows more wall at the top
+   and less at the bottom: yours must not); the floor a centred circle; the pouring lip on the left, the handle straight out to the
+   RIGHT and level, as long as in the reference. The round body 55% of the picture's width, the whole pan inside the picture with a
+   margin. No shadow on the magenta, no steam.
+P2 THE SAME POT, EMPTY (pictures: your P1). Edit P1, do not draw anew: the identical pan (shape, size, place, handle, lip, steel),
+   with no water, its clean brushed-steel floor showing with fine circular brushing as in P1-chai-pan-empty.

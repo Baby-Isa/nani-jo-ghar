@@ -88,8 +88,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
 
   /**
    * The places (design px): chai's hob on the left, as big as the row allows with the tray keeping its least width; the pot on the
-   * left burner (its handle out to the left, past the hob's rim, as chai's), the pan on the right (its handle turned up and to the
-   * left, between the two, clear of the pot's rim); the tray on the right. The group is centred in the view's width (x 150-1450, the
+   * left burner, the pan on the right, each handle turned by its settings' angle (CK-74: both down to the front corners), the room
+   * its end needs past the hob kept clear; the tray on the right. The group is centred in the view's width (x 150-1450, the
    * narrowest play area) and in the worktop's height above the band.
    */
   function layout(band, ppw = 1) {
@@ -113,35 +113,50 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const panHW = (pan.handleW || 0.14) / 2; // the pan's handle's half width over its rim radius
     const trayMin = tr.min || 380;
     const W = view[1] - view[0];
+    // a vessel's handle as a unit line from its burner: the pot's picture is flipped (its handle left at angle 0), the pan's handle
+    // points down at angle 0; each turned by its settings' angle (CK-74, Zafar 10 Nov: 4b, both down to the front corners)
+    const dirOf = (deg, flip) => {
+      const a = (deg * Math.PI) / 180;
+      const [bx, by] = flip ? [-1, 0] : [0, 1];
+      return [bx * Math.cos(a) - by * Math.sin(a), bx * Math.sin(a) + by * Math.cos(a)];
+    };
     const fit = (k) => {
       const w = H2.w * k;
       const h = H2.h * k;
       const pitch = (H2.burners[1][0] - H2.burners[0][0]) * w;
       const r = rk * pitch;
-      const overL = Math.max(0, potReach * r + 8 - H2.burners[0][0] * w);
-      // (the pan's handle: up and to the left at phi above the level, its line clear of the pot's rim by its half width and 12 px)
+      // (with no angle in the settings, the pan's handle: up and to the left at phi above the level, its line clear of the pot's rim
+      // by its half width and 12 px)
       const phi = Math.max(((hs.handleMin || 26) * Math.PI) / 180, Math.asin(Math.min(0.95, (r + panHW * r + 12) / pitch)));
-      const by = H2.burners[1][1] * h;
-      const above = Math.max(0, panReach * r * Math.sin(phi) + panHW * r - by + 4);
-      const trayW = W - overL - w - gap;
-      return { k, w, h, pitch, r, overL, phi, above, trayW };
+      const panDeg = pan.angle != null ? pan.angle : 90 + (phi * 180) / Math.PI;
+      const ends = [
+        [H2.burners[0], dirOf(pot.angle || 0, !!pot.flip), potReach],
+        [H2.burners[1], dirOf(panDeg, !!pan.flip), panReach],
+      ].map(([bn, d, reach]) => [bn[0] * w + d[0] * reach * r, bn[1] * h + d[1] * reach * r]);
+      const hw = panHW * r;
+      const overL = Math.max(0, 8 + hw - Math.min(...ends.map((e) => e[0])));
+      const overR = Math.max(0, Math.max(...ends.map((e) => e[0])) + hw + 8 - w);
+      const above = Math.max(0, 4 + hw - Math.min(...ends.map((e) => e[1])));
+      const below = Math.max(0, Math.max(...ends.map((e) => e[1])) + hw + 4 - h);
+      const trayW = W - overL - w - overR - gap;
+      return { k, w, h, pitch, r, overL, overR, phi, panDeg, above, below, trayW };
     };
     let L = null;
     for (let k = hs.kMax || 1; k >= 0.5; k -= 0.01) {
       L = fit(k);
-      if (L.trayW >= trayMin && L.h + L.above <= bot - top) break;
+      if (L.trayW >= trayMin && L.h + L.above + L.below <= bot - top) break;
     }
     const trayW = Math.min(L.trayW, tr.max || 520, ((bot - top) * 768) / 754);
     const trayH = (trayW * (tr.h || 754)) / (tr.w || 768);
-    const total = L.overL + L.w + gap + trayW;
+    const total = L.overL + L.w + L.overR + gap + trayW;
     const x0 = view[0] + (W - total) / 2;
     const hobX = x0 + L.overL;
-    const hobY = top + (bot - top - (L.h + L.above)) / 2 + L.above;
+    const hobY = top + (bot - top - (L.h + L.above + L.below)) / 2 + L.above;
     // (the tray centred on the hob's height, but never up under the grown-ups' cog in the view's top right corner: its column's height
     // in page px, hs.cog; at 740x320 the tray's top face circle met it)
     const cogY = (V.top != null ? V.top : 0) + (hs.cog || 72) / Math.max(0.05, ppw);
     const trayY = Math.min(bot - trayH, Math.max(hobY + (L.h - trayH) / 2, cogY));
-    return Object.assign(L, { hobX, hobY, trayX: hobX + L.w + gap, trayY, trayW, trayH, angle: 90 + (L.phi * 180) / Math.PI });
+    return Object.assign(L, { hobX, hobY, trayX: hobX + L.w + L.overR + gap, trayY, trayW, trayH, angle: L.panDeg });
   }
 
   async function eggs(host, p) {
@@ -205,7 +220,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     /*
      * Each vessel's round body centred on its burner (items.pot.body, items.pan.body: cx, cy its centre as fractions of the canvas, r
      * its rim radius and rIn its floor's, of the width). The pot is chai's own top-down pan (flipped, its handle to the left); the pan
-     * is turned so its handle points up and to the left (LY.angle).
+     * turned by its settings' angle (CK-74), the pan by LY.angle where its settings give none.
      */
     const vessel = (k, i, fried) => {
       const b = burner(i);
