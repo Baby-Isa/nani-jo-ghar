@@ -26174,13 +26174,13 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:cover",
+   "at": "page:start",
    "after": null,
    "capture": [
-    "strip:body:30x100"
+    "strip:body:50x100"
    ],
    "expect": null,
-   "note": "chai's start filmed from Cook's screen (every 100 ms, 3 s): the stone cover, then the kitchen with Nani in ONE fade; no flash of another ground (the canvas's light brown, an empty kitchen) between"
+   "note": "chai's start filmed from the page's first frame (every 100 ms, 5 s): the stone from the page, the stone cover with Cook's screen, then the kitchen with Nani in ONE fade; no flash of another ground (the canvas's light brown, an empty kitchen) between"
   },
   {
    "flow": "cook:chai-tray",
@@ -26221,9 +26221,7 @@
    "at": "kind-roll",
    "after": null,
    "capture": [
-    "crop:#game",
-    "canvas:chakla",
-    "canvas:tawa"
+    "crop:#game"
    ],
    "expect": null,
    "note": "maani's look from mock 38 on the new art: the chakla the tawa's own size across (within 3%), chai's hob, the tawa's handle and the smaller turner to the bottom right, the three-ball dough heaps on the stone tray with their pills, two round brushed-steel plates each with the asker's face circle"
