@@ -8,8 +8,8 @@
 //             with the screen to itself (lib/framebuf.mjs withScreen: never while a pixel check hides the light, which left the
 //             10 Nov judge a picture with no box); key-light-before.jpg beside it, the frame just before the light
 //     kind    the first move (the first kind-* state, shot as the state comes)
-//     mid     mid-cook: of the station's frames (one a second from the first move to the serve), the one halfway between them
-//     serve   the serve: the last frame of the service view before the end card came (the view-service state is recorded once the
+//     mid     mid-cook: of the station's frames (one a second from the first move to the station's end), the one halfway between
+//     serve   the serve: the middle of the service view, before the end card came (the view-service state is recorded once the
 //             end card's stopwatch is up: chop, corn and eggs showed it, not the serve)
 //     praise  the well done (a line saying shabash), 300 ms in
 //     end     the end screen's word review (results-words)
@@ -72,6 +72,7 @@ export class KeyFrames {
     this.keys = {};       // moment -> {file, t, boxes}
     this.kinds = [];      // every kind-* state's frame
     this.cook = [];       // the station's frames, one a second (mid-cook is picked from them)
+    this.serving = [];    // the service view's frames (the serve is picked from them)
     this.st = { lit: false, lastStrip: -Infinity, light: false, lightT: null, praise: false, station: false, service: false, kindT: null, serveT: null };
     this.chain = Promise.resolve();
     if (fb) { fb.subscribe((f) => this.frame(f)); fb.onTick((t) => this.tick(t)); }
@@ -81,7 +82,9 @@ export class KeyFrames {
     this.tick(f.t);
     for (const s of this.strips) if (!s.done && f.t >= s.t - BEFORE_MS && f.t <= s.t + AFTER_MS) s.frames.push(f);
     // (mid-cook's frames: from the first move until the serve, one a second)
-    if (this.st.kindT && !this.st.serveT && this.st.station) { const last = this.cook[this.cook.length - 1]; if (!last || f.t - last.t >= MID_EVERY_MS) this.cook.push(f); if (this.cook.length > 240) this.cook.splice(1, 1); }
+    if (this.st.kindT && !this.st.cookEnd && this.st.station) { const last = this.cook[this.cook.length - 1]; if (!last || f.t - last.t >= MID_EVERY_MS) this.cook.push(f); if (this.cook.length > 240) this.cook.splice(1, 1); }
+    // (the serve's frames: the service view, from its start to the end card, four a second; the serve is picked from their middle)
+    if (this.st.serviceT && !this.st.serveT) { const last = this.serving[this.serving.length - 1]; if (!last || f.t - last.t >= 250) this.serving.push(f); if (this.serving.length > 80) this.serving.shift(); }
   }
   // a still screen sends no frame: each empty slot up to t repeats the last frame (marked held), so the strip's steps stay even
   tick(t) {
@@ -132,12 +135,15 @@ export class KeyFrames {
   onEvent(e) {
     if (!e || e.type !== "c") return;
     if (e.k === "stage") {
-      this.st.station = this.st.station || /(^|\|)cook:station/.test(e.key || "");
-      if (/:service$/.test(e.key || "")) this.st.service = true;
-      // the serve: the last frame of the service view before the end card (stage "end")
+      const inSt = /(^|\|)cook:station/.test(e.key || "");
+      if (this.st.station && !inSt && this.st.kindT && !this.st.cookEnd) this.st.cookEnd = e.t; // (the cooking is over: mid-cook is before)
+      this.st.station = this.st.station || inSt;
+      if (/:service$/.test(e.key || "")) { this.st.service = true; if (!this.st.serviceT) this.st.serviceT = e.t; }
+      // the serve: the middle of the service view, before the end card (stage "end"); else its last frame
       if (/(^|\|)end$/.test(e.key || "") && this.st.service && !this.keys.serve) {
         this.st.serveT = e.t;
-        const f = this.fb && this.fb.before(e.t - 120);
+        const m = this.st.serviceT ? (this.st.serviceT + e.t) / 2 : e.t;
+        const f = this.serving.filter((x) => x.t < e.t - 120).sort((a, b) => Math.abs(a.t - m) - Math.abs(b.t - m))[0] || (this.fb && this.fb.before(e.t - 120));
         this.chain = this.chain.then(async () => { const boxes = await this.page.evaluate(BOXES_JS).catch(() => null); this.keep("serve", f, boxes); });
       }
     }
@@ -190,7 +196,7 @@ export class KeyFrames {
     await this.chain.catch(() => {});
     for (const s of this.strips) this.closeStrip(s);
     if (this.st.kindT) {
-      const end = this.st.serveT || (this.cook.length ? this.cook[this.cook.length - 1].t + 1 : 0);
+      const end = this.st.cookEnd || this.st.serveT || (this.cook.length ? this.cook[this.cook.length - 1].t + 1 : 0);
       const f = pickMidFrame(this.cook, this.st.kindT, end);
       if (f) this.keep("mid", f, this.keys.kind ? this.keys.kind.boxes : null);
     }

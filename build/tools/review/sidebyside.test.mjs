@@ -57,7 +57,7 @@ test("a strip holds 0.5 s before to 2 s after its moment at even steps: a still 
   const { tmpdir } = await import("node:os");
   const { join } = await import("node:path");
   const kf = Object.create(KeyFrames.prototype);
-  Object.assign(kf, { dir: mkdtempSync(join(tmpdir(), "kf-")), fb: { buf: [] }, strips: [], cook: [], st: { lit: false, lastStrip: -Infinity, station: true }, on: true });
+  Object.assign(kf, { dir: mkdtempSync(join(tmpdir(), "kf-")), fb: { buf: [] }, strips: [], cook: [], serving: [], st: { lit: false, lastStrip: -Infinity, station: true }, on: true });
   const T = 100000;
   const push = (f) => { kf.fb.buf.push(f); kf.frame(f); };
   for (let t = T - 1000; t <= T - 200; t += 100) push({ t, jpg: Buffer.from("a" + t) });
