@@ -1464,7 +1464,9 @@ function check37(r, tl, segs, add) {
   const st = stationOf(r.flow);
   if (!st || !DECOY_STATIONS.test(st)) return;
   const level = levelOf(r.flow || "");
-  const want = CHAI_DECOYS[Math.min(4, level)];
+  // CK-71 (Zafar, 9 Nov: "level 1 is just like only one item's flying in the air at a time ... level 2, there are 2 items. Sometimes
+  // one of them a decoy"): the chop game's hop has no decoy at L1, the table's count from L2
+  const want = st === "chop" && level === 1 ? 0 : CHAI_DECOYS[Math.min(4, level)];
   const notes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys");
   if (!notes.length) {
     const s = segs.find((x) => /(^|\|)cook:station/.test(x.key));
