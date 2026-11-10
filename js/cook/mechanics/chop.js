@@ -405,7 +405,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const s = { id, key, x: SL.x[id], px: topX(SL.x[id]), slotW: Math.min(150, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
           s.scale = St.classFit ? z.L(St.classFit(S, key, id, { base: band.base, ppw, slotW: s.slotW }).scale) : S.fitScale(key, z.L(130), z.L(130));
           s.img = sit(s);
-          const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(s.x), z.Y(band.chipY), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: null }) : null; // (its own face's width: fitPills, SH-219)
+          // (S19, wave B: the shared kit's pill as chai's shelf has it, Shelf.P.chip: its own face's width, fitted by the row's rule,
+          // fitPills, SH-219; its card's size kept, so a light and its checks take the pill as part of the thing)
+          const chip = global.Shelf && global.Shelf.P && global.Shelf.P.chip
+            ? global.Shelf.P.chip(S, z.X(s.x), z.Y(band.chipY), Cook.display(id), {
+                word: Cook.chipWord ? Cook.chipWord(id, ctx) : true,
+                depth: D.item + 2,
+                shade: (Cook.Kit && Cook.Kit.INK && Cook.Kit.INK.shade) || undefined,
+                onTap: () => {
+                  Cook.unlockAudio();
+                  if (Cook.onLabel) Cook.onLabel(id);
+                  Lang.speakWord(id);
+                },
+              })
+            : null;
+          if (chip) chip.pillId = id;
           if (chip && chip.setScale) chip.setScale(z.k);
           s.img.chip = chip;
           s.chip = chip;

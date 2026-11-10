@@ -121,7 +121,7 @@
   "_levels": "cobs = people by level (1, 1, 2, 2: one cob each); dressings per person [min, max]; 'no' the chance of a 'not X' ask (L4). sideMs and greenMs by level are mechanic.levels."
  },
  "order": {
-  "_about": "S19 wave B (CK-67, his yes: 'first grill them all and then flavour them on the next screen ... then you can flavour different corns differently'): the order the engine says and the card shows. One cob per person (the count by level, as before: 1, 1, 2, 2); each person (the family, the asker first) asks for their own mix: one or two things at L1-L3, two or three at L4, sometimes a 'no' at L4; the frames are the old recipe's (order, and, no): no new Kutchi. Each person's card heads 'Muke makai khape.' (their one cob: no 'one' on a card, principle 4; the order frame as eggs' 'n.egg').",
+  "_about": "S19 wave B (CK-67, his yes: 'first grill them all and then flavour them on the next screen ... then you can flavour different corns differently'): the order the engine says and the card shows. One cob per person (the count by level, as before: 1, 1, 2, 2); each person (the family, the asker first) asks for their own mix: one or two things at L1-L3, two or three at L4, sometimes a 'no' at L4; the frames are the old recipe's (order, and, no): no new Kutchi. The order is said as before ('Muke ba makai khape.', the number in the headline, principle 4); each person's card heads their own 'Muke hakro makai khape.' (personHead, on the card only: silent), their rows under it.",
   "name": "n.corn-on-the-cob",
   "english": "Corn on the cob",
   "free": false,
@@ -207,13 +207,27 @@
    {
     "frame": "order",
     "x": [
-     "n.corn-on-the-cob"
+     {
+      "n": "$count",
+      "of": "n.corn-on-the-cob"
+     }
     ]
    },
    {
     "forEach": "$plates",
     "for": "$it.who",
     "say": [
+     {
+      "frame": "order",
+      "x": [
+       {
+        "n": 1,
+        "of": "n.corn-on-the-cob"
+       }
+      ],
+      "personHead": true,
+      "silent": true
+     },
      {
       "forEach": "$it.dress",
       "frame": "and",
@@ -264,7 +278,7 @@
    "note": "Nani's guide box stands in for Hannah Mami until her approved sheet exists (Zafar, 1 Nov)"
   },
   "layout": {
-   "_about": "Every place in the 1600 x 900 design box, inside x 150-1450 (the narrowest play area shows that much). grill: the kit's layout's own numbers (trayW the cooked tray's width, bandLen a raw cob's length lying on the band, ringRoom the heat rings' room above the grill); plates: screen 2, each person's plate (d its most diameter, gap between two, y its middle, face: the face circle's size as a share of the plate, at its upper left; cob: the cob's length as a share of the plate and its turn, degrees); bowls: the six dressing bowls on the band (size: most diameter, its foot this far above the band's base line), their pills on the band's pill line (the shared shelf's slots and pill rule, as chai's); ring: the kit's heat ring above each cob's top end (r); smoke; dress: how each dressing is drawn on a cob in code (kind: squeeze, crystals, powder, drizzle, specks; n: how many marks).",
+   "_about": "Every place in the 1600 x 900 design box, inside x 150-1450 (the narrowest play area shows that much). grill: the kit's layout's own numbers (trayW the cooked tray's width, bandLen a raw cob's length lying on the band, ringRoom the heat rings' room above the grill); plates: screen 2, each person's plate (d its most diameter, gap between two, y its middle, face: the face circle's size as a share of the plate, at its upper left; cob: the cob's length as a share of the plate and its turn, degrees; dim: the plates of the people still waiting, a little faded, CMP-10); bowls: the six dressing bowls on the band (size: most diameter, its foot this far above the band's base line), their pills on the band's pill line (the shared shelf's slots and pill rule, as chai's); ring: the kit's heat ring above each cob's top end (r); smoke; dress: how each dressing is drawn on a cob in code (kind: squeeze, crystals, powder, drizzle, specks; n: how many marks).",
    "grill": {
     "trayW": 360,
     "bandLen": 300,
@@ -276,7 +290,8 @@
     "y": 322,
     "face": 0.3,
     "cob": 0.84,
-    "angle": -10
+    "angle": -10,
+    "dim": 0.75
    },
    "bowls": {
     "size": 150,
@@ -453,7 +468,8 @@
   "assets/cook/items/v4/corn/bowl-chilli-powder.webp",
   "assets/cook/items/v4/corn/bowl-green-chutney.webp",
   "assets/cook/items/v4/corn/bowl-tamarind-chutney.webp",
-  "assets/cook/items/v4/corn/bowl-black-pepper.webp"
+  "assets/cook/items/v4/corn/bowl-black-pepper.webp",
+  "assets/cook/items/veg-limu-whole-t.webp"
  ],
  "motion": {
   "_about": "s18-g-corn: the game's own motion times, ms at speed 1 (the kits' own come from the kits)",

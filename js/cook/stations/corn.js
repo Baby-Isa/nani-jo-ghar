@@ -17,7 +17,7 @@
  *     the spot, decision 51); then the next person.
  * Its own mechanic as he made it (non-negotiable 1): grill, turn once, take off, what goes on, give it to them.
  * The kits: the order and its card (Cook.Recipes, the lab's card), the steps in Nani's box (St.steps), the lights (Cook.Coach.firsts,
- * .control, .stuck, .wrong, .lessons, .began), the heat ring (Cook.Kit.heatRing), the word pills (Cook.Kit.chip, the shared shelf's
+ * .control, .stuck, .wrong, .lessons, .began), the heat ring (Cook.Kit.heatRing), the word pills (Shelf.P.chip, chai's; the shared shelf's
  * slots and pill rule), the band (the kitchen kit's stone band), the serve (NjgServe.round, .review). Hannah Mami hosts the farm: Nani's
  * box stands in until her approved sheet exists.
  */
@@ -57,6 +57,25 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     if (!o || !R || !R.add || register.done) return;
     register.done = true;
     R.add(KEY, JSON.parse(JSON.stringify(o)));
+  }
+
+  /**
+   * A thing's word pill on the band: the shared kit's pill as chai's shelf has it (Shelf.P.chip: its own face's width, the row's rule
+   * fits it, SH-219; its card's size kept, so the light and its checks take the pill as part of the thing).
+   */
+  function pill(S, id, x, y, ctx) {
+    const chip = global.Shelf.P.chip(S, x, y, Cook.display(id), {
+      word: Cook.chipWord ? Cook.chipWord(id, ctx) : true,
+      depth: D.item + 2,
+      shade: (Cook.Kit && Cook.Kit.INK && Cook.Kit.INK.shade) || undefined,
+      onTap: () => {
+        Cook.unlockAudio();
+        if (Cook.onLabel) Cook.onLabel(id);
+        Lang.speakWord(id);
+      },
+    });
+    chip.pillId = id;
+    return chip;
   }
 
   /** The stone band the cobs and the bowls sit on (the kitchen kit's: one call, so its stone tray comes in here alone). */
@@ -127,6 +146,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const gl = lay.grill || {};
     const L = GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom });
     const kit = GK.build(S, L);
+    // (a test log: which screen is up, for the evidence probes' moments, "life:corn-screen")
+    const screenNote = (step) => {
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("corn-screen", { step, by: `people:${count}` });
+      } catch (e) {
+        /* only a log */
+      }
+    };
+    screenNote("grill");
     const places = Math.min(4, K.slots || 3);
     const raw = [0, 1, 2, 3].map((i) => {
       const at = L.band.at(i);
@@ -494,6 +522,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       });
       screen = 2;
       active = 0;
+      screenNote("flavour");
       if (ctx.nextStep) ctx.nextStep("Dress");
       showActive();
       acted();
@@ -516,7 +545,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         img.wordId = id;
         GK.shadow(S, img, { dx: 5, dy: 7, alpha: 0.24, blur: 5 });
         // (its pill is part of its light: the kit's parts, C.parts; S19, CK-61)
-        img.chip = Cook.Kit.chip(S, id, x, B.chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: null }); // (its own face's width: the row's rule fits it, SH-219)
+        img.chip = pill(S, id, x, B.chipY, ctx);
         bowls[id] = img;
         S.tweens.add({ targets: img, alpha: 1, duration: mo.screenMs || 380 });
         S.tappable(img, () => tapBowl(img));
@@ -524,9 +553,13 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       // SH-219 (chai's rule): the row's one pill scale, the floor, never touching
       const chips = ids.map((id) => bowls[id].chip).filter((c) => c && c.active && c.faceW);
       if (Sh.pillScale && chips.length) {
+        // (two pills keep at least the kit's widest light margin apart, so a bowl's light, round its pill too, stops short of its
+        // neighbour's pill: contract-92; the long chutney words narrow a little more for it)
+        const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
+        const gap = Math.max(Sh.pillGap(ppw), (OL.max + OL.clear + 2) / ppw);
         const { k, cap } = Sh.pillScale(
           chips.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })),
-          { want: Sh.pillWant(ppw), gap: Sh.pillGap(ppw), slotW: SL.slotW }
+          { want: Sh.pillWant(ppw), gap, slotW: SL.slotW }
         );
         const y = Math.min(B.chipY, 896 - ((B.chipH || 46) / 2) * k);
         chips.forEach((c) => {
