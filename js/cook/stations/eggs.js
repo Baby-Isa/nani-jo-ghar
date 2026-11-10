@@ -92,13 +92,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
    * left, between the two, clear of the pot's rim); the tray on the right. The group is centred in the view's width (x 150-1450, the
    * narrowest play area) and in the worktop's height above the band.
    */
-  function layout(band) {
+  function layout(band, ppw = 1) {
     const sc = SCENE();
     const hs = sc.hob || {};
     const tr = sc.tray || {};
     const H2 = Cook.Kit.HOB.sets[2];
-    const view = hs.view || [150, 1450];
-    const top = hs.top != null ? hs.top : 16;
+    // (the worktop that shows: the design box's width less its margins, or the view's where the stage shows less of it; a taller
+    // stage's extra worktop above the box goes into size, as chai's)
+    const V = Cook.view || {};
+    const m = hs.margin || [56, 24];
+    const view = [Math.max(m[0], (V.left != null ? V.left : 0) + m[1]), Math.min(1600 - m[0], (V.right != null ? V.right : 1600) - m[1])];
+    const top = Math.max(V.top != null ? V.top : 0, -(hs.extraMax || 320)) + (hs.top != null ? hs.top : 16);
     const bot = band.top - (hs.above != null ? hs.above : 26);
     const gap = hs.gap || 44;
     const rk = hs.rk || 0.36; // a vessel's rim radius over the burners' pitch
@@ -133,7 +137,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const x0 = view[0] + (W - total) / 2;
     const hobX = x0 + L.overL;
     const hobY = top + (bot - top - (L.h + L.above)) / 2 + L.above;
-    return Object.assign(L, { hobX, hobY, trayX: hobX + L.w + gap, trayY: hobY + (L.h - trayH) / 2, trayW, trayH, angle: 90 + (L.phi * 180) / Math.PI });
+    // (the tray centred on the hob's height, but never up under the grown-ups' cog in the view's top right corner: its column's height
+    // in page px, hs.cog; at 740x320 the tray's top face circle met it)
+    const cogY = (V.top != null ? V.top : 0) + (hs.cog || 72) / Math.max(0.05, ppw);
+    const trayY = Math.min(bot - trayH, Math.max(hobY + (L.h - trayH) / 2, cogY));
+    return Object.assign(L, { hobX, hobY, trayX: hobX + L.w + gap, trayY, trayW, trayH, angle: 90 + (L.phi * 180) / Math.PI });
   }
 
   async function eggs(host, p) {
@@ -183,7 +191,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     })();
 
     /* ---------------- the hob (chai's, the kitchen kit's) ---------------- */
-    const LY = layout(band);
+    const LY = layout(band, ppw);
     const hob = Cook.Kit.hob(S, { n: 2, x: LY.hobX, y: LY.hobY, k: LY.k });
     objs.push(hob.img);
     if (hob.img.shadow) objs.push(hob.img.shadow);
@@ -342,6 +350,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       while (fd > 24 && !clear(Math.max(0, k), fd)) fd -= 2;
       k = Math.max(0, k);
       const face = T(S.add.image(left ? cx0 + k : cx0 - k, top ? cy0 + k : cy0 - k, Cook.Kit.badge(S, q.who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
+      // (SH-230: the plate's lit body is the plate with its own face circle, the light's one rule: plateBox below)
+      hit.litBounds = () => plateBox(hit);
       const top0 = T(S.add.container(x, y).setDepth(D.item + 0.6));
       return { q, x, y, hit, face, top: top0, eggs: [], salt: false, pepper: false, ticked: false };
     });

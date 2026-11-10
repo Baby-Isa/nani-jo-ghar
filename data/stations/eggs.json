@@ -176,14 +176,17 @@
    "kMax": 1,
    "rk": 0.36,
    "gap": 44,
-   "view": [
-    150,
-    1450
-   ],
    "top": 16,
    "above": 26,
    "handleMin": 26,
-   "_s19c": "S19 wave C (CK-66, SH-246, SH-247; Zafar 9 Nov): chai's hob (the kit's two-burner hob), placed by js/cook/stations/eggs.js layout(): as big as the row allows (kMax its largest scale) with the tray keeping its least width (tray.min), the group centred in x 150-1450 (view: the narrowest play area) and in the worktop above the band (top, above: its margins); rk: each vessel's rim radius over the burners' pitch; gap: hob to tray; handleMin: the least angle (degrees above the level) of the pan's handle, turned up and to the left between the two vessels, clear of the pot's rim. The knob below each pan (the knob rule: two pans at every level)."
+   "_s19c": "S19 wave C (CK-66, SH-246, SH-247; Zafar 9 Nov): chai's hob (the kit's two-burner hob), placed by js/cook/stations/eggs.js layout(): as big as the row allows (kMax its largest scale) with the tray keeping its least width (tray.min), the group centred in the worktop that shows (Cook.view: the design box less margin[0] at each side, or the view less margin[1] where the stage shows less; above the band, with a taller stage's extra worktop up to extraMax, as chai's; top, above: its margins); rk: each vessel's rim radius over the burners' pitch; gap: hob to tray; handleMin: the least angle (degrees above the level) of the pan's handle, turned up and to the left between the two vessels, clear of the pot's rim. The knob below each pan (the knob rule: two pans at every level).",
+   "margin": [
+    56,
+    24
+   ],
+   "extraMax": 320,
+   "cog": 72,
+   "_cog": "the tray never goes up under the grown-ups' cog in the view's top right corner: its column's height in page px"
   },
   "reuse": true,
   "tray": {
@@ -193,7 +196,7 @@
    "reuse": true,
    "plate": "assets/cook/items/v4/kit/plate-cream.webp",
    "plate_d": 0.38,
-   "min": 380,
+   "min": 420,
    "max": 520,
    "wells": [
     [
@@ -324,7 +327,7 @@
     "a.fried",
     "n.egg"
    ],
-   "inPan": 0.95,
+   "inPan": 1.1,
    "_note": "S19 wave C: cracked into the pan (egg-cracked), cooked once its ring reaches the green (egg-cooked), overdone if it is left past its full ring for mechanic overMs (egg-overdone: a look, never a verdict); inPan its width over the pan's floor radius; on a plate it keeps its look",
    "card": "assets/cook/items/v4/eggs/egg-cooked.webp"
   },
@@ -368,7 +371,7 @@
     140
    ],
    "drawn": {
-    "w": 96
+    "w": 112
    },
    "levels": [
     3,
@@ -387,7 +390,7 @@
     140
    ],
    "drawn": {
-    "w": 96
+    "w": 112
    },
    "levels": [
     3,
