@@ -8,7 +8,7 @@
   "branch": "s19-tiers in /home/user/wt/s19-tiers (made for you from the integration branch; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
   "kind": "tools",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": false,
   "read": [
     "docs/process/qa-checklist.md section 'When we check, and how deep' (the tiers and the check map: the spec you build)",
