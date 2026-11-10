@@ -1821,7 +1821,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
                   mark();
                   showCallout(cur.id);
                   helpGlow(lightObj());
-                  if (OB14 && OB14.light) hintLit14 = OB14.light(target, { look: "glow", pass: true, live, quitIf: () => finished || !helpObj, note: `${STATION14}:s14-stuck` });
+                  if (OB14 && OB14.light) hintLit14 = OB14.light(target, { look: "glow", pass: true, live, avoid: cur.avoid ? cur.avoid() : null, quitIf: () => finished || !helpObj, note: `${STATION14}:s14-stuck` });
                 } else {
                   hideCallout();
                   helpGlow(null);
