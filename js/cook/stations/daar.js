@@ -298,9 +298,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * tadka's things are the eight cream bowls seen from above (assets/cook/items/v4/daar/, F4), lying on the stone tray with their pills;
    * a thing with no bowl keeps its old picture. Each bowl's round body fills its canvas (about 0.96 of it).
    */
-  const V4D = "assets/cook/items/v4/daar/";
   const V4K = "assets/cook/items/v4/kit/";
-  const BOWL = { "spi-02": "jeeru", "spi-05": "rai", "spi-01": "hardar", "spi-16": "loon", "spi-04": "lal-marcha", "veg-13": "lasan", "veg-12": "lila-marcha", "spi-10": "elchi" };
+  // (the bowls are daar's own items, data/stations/daar.json items: word -> card, the same picture its item card shows)
+  const bowlUrl = (id) => {
+    const its = (((Cook.data && Cook.data.settings) || {}).daar || {}).items || {};
+    const it = Object.values(its).find((x) => x && x.role === "tray" && x.word === id && typeof (x.card || x.file) === "string");
+    return it ? it.card || it.file : null;
+  };
   const BOWL_D = 150; // a bowl's diameter on the tray, design px (narrower where the slots ask)
   const BOWL_GAP = 14; // between a bowl's foot and its pill's top
   const Shelf0 = () => global.Shelf;
@@ -349,7 +353,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     ]
       .concat(POTS.map((st) => [`dv3-pot-${st}`, `${V3}pot-${st}.webp`]))
       .concat([["dv4-pot-top", `${S08B}daar-pot-top-s08b.webp`]], Object.values(DISCS).map(([key, file]) => [key, `${S08B}daar-discs/${file}.webp`]))
-      .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, BOWL[id] ? `${V4D}${BOWL[id]}.webp` : shelfUrl(id)]))
+      .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, bowlUrl(id) || shelfUrl(id)]))
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
       .concat(DIAL_ICONS.map((n) => [`dv3-dial-${n}`, `${V3}dial-${n}.webp`]))
@@ -610,7 +614,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const w = Math.min(crate ? SLOT_W + 16 : SLOT_W, pitch - 18);
       const key = `dv2-shelf-${id}`;
       let img;
-      if (BOWL[id] && S.textures.exists(key)) {
+      if (bowlUrl(id) && S.textures.exists(key)) {
         // (a cream bowl from above, lying on the tray: all the same size, centred over its pill, its foot BOWL_GAP above the pill's top;
         // the kit's soft contact shadow lower-right)
         const src = S.textures.get(key).getSourceImage();
