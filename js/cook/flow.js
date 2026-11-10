@@ -2275,6 +2275,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
         if (f.closest(".wc14-pop, .wc14-flyer")) return;
+        // a face button (Face.button: the circle inside a 48 px tap area) counts as its circle, never its tap area: the circle inside is
+        // read on its own (contract-83 on corn, 10 Nov: the order card's face button reached 3 px into the first item card, no circle did)
+        if (f.querySelector(".njg-face")) return;
         const b = f.getBoundingClientRect();
         if (b.width > 0 && b.height > 0) put(f.dataset.who || f.dataset.face || null, "circle", { x: b.left, y: b.top }, { x: b.right, y: b.bottom }, { sel: String(f.className || "").slice(0, 40) });
       });

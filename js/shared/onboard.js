@@ -2347,7 +2347,9 @@
       return lastBox;
     };
     const zoomMs = Onboard.ZOOM.total();
-    const lit = Onboard.light(live, { look: "glow", pad: isEye ? 2 : 0, pass: true, ms: (Onboard.WAIT.lessonLit + zoomMs) / sp, onTap: () => {}, quitIf: () => over, note: o.note, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll(`${o.list || LIST} .oc-face`)] });
+    // (avoid the face circle, never its 48 px tap area: the tap area reached into the first card at 740x320 and pushed the light off the
+    // card's top, contract-105 on every kitchen game, 10 Nov)
+    const lit = Onboard.light(live, { look: "glow", pad: isEye ? 2 : 0, pass: true, ms: (Onboard.WAIT.lessonLit + zoomMs) / sp, onTap: () => {}, quitIf: () => over, note: o.note, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll(`${o.list || LIST} .oc-face`)].map((f) => f.querySelector(".njg-face") || f) });
     const end = () => {
       live().classList.remove("ob-dots-now");
       if (o.hold) o.hold(false);
