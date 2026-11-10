@@ -748,6 +748,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       stk = null;
     };
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
+    // (SH-247 refined, Zafar 9 Nov: "if there's multiple things taking up width, then we put the button underneath": the dial and the
+    // lap card share daar's width, so its knob stays on the front edge below the pot, as it was)
     const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
     const bodyR = z.L(150);
     const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.95 }); // X6: the flames just peek out past the pot
@@ -1203,7 +1205,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // wrong try is counted right for you and moves on.
     let stirred = 0;
     for (let t = 0; ; t++) {
-      const st = await stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry: retry || t > 0, steps, pieces, contents });
+      const st = await stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry: retry || t > 0, steps, pieces, contents, hob, avoid: () => [katori && katori.img, katori && katori.face] });
       stirred = st.count;
       if (!t && !retry) {
         z.listen(stirred === laps, `stirred ${stirred} times, they asked for ${laps}`);
@@ -1220,6 +1222,117 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     return { order, wrong, stirred, pot: { img: pot, cx, cy, bodyR, inR, pieces }, katori };
   }
 
+  /*
+   * DAAR-50 (Zafar, 9 Nov: "it should be just an item card that has as its image the number 1, then the ... word for the number 1, and
+   * English word, and ... the speaker, which is like activated because the sound's coming out because the person's counting the numbers
+   * for you ... We may as well just use our own item card"): the lap count is the shared item card (WordCard.big14, chai's 6 Nov card),
+   * popping in beside the pot, right of it, as each lap closes: the numeral is its picture, the number's Kutchi, its English, and the
+   * speaker lit while Nani counts. A number with no recorded Kutchi shows its English in grey italic (the missing-Kutchi rule: the card's
+   * rec placeholder), never a made-up word. The card is the page's (DOM) over the canvas, never taking a tap (the stir's drag goes under
+   * it); it sits in the room right of the pot: below the settings corner where it would meet it, above the shelf and the katori's face.
+   *   lapCard(z, S, {cx, cy, right, bodyR, avoid}) -> {show(n, saying) -> bool, close()} | null (no shared card on the page)
+   *   right: how far the pot's picture reaches right of its middle (world px); avoid(): world objects to keep clear of
+   */
+  const NUM_EN = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+  function lapCard(z, S, { cx, cy, right, bodyR, avoid = () => [] }) {
+    const W = global.WordCard;
+    if (!W || !W.big14 || typeof document === "undefined" || !UI.worldToScreen) return null;
+    let wrap = null;
+    let shown = -1;
+    const ink = () => (global.Tokens && global.Tokens.hex ? global.Tokens.hex("ink-kutchi") : "#7a2331") || "#7a2331";
+    // the numeral as the card's picture: one big serif digit (a picture, never a word: the same in every language)
+    const numeral = (n) =>
+      "data:image/svg+xml;charset=utf-8," +
+      encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240"><text x="120" y="128" text-anchor="middle" dominant-baseline="middle" font-family="Fraunces, Lora, Georgia, 'Times New Roman', serif" font-weight="800" font-size="${String(n).length > 1 ? 150 : 200}" fill="${ink()}">${n}</text></svg>`);
+    const wordOf = (n) => {
+      const id = Cook.numId(n);
+      const known = !!(Lang.known && Lang.known(id));
+      const en = (Cook.english && Cook.english(id)) || NUM_EN[n] || String(n);
+      return { id, kutchi: known ? Lang.plain({ segs: Lang.num(n) }) : en, english: String(en).replace(/\s*\([^)]*\)/g, "").trim(), rec: !known, picture: { src: numeral(n), fit: "contain" } };
+    };
+    const rectOf = (o) => {
+      if (!o || !o.active || o.visible === false || !o.getBounds) return null;
+      const b = o.getBounds();
+      const a = UI.worldToScreen(b.x, b.y);
+      const c = UI.worldToScreen(b.right, b.bottom);
+      return { left: a.x, top: a.y, right: c.x, bottom: c.y };
+    };
+    const place = () => {
+      const st = document.querySelector("#stage");
+      const play = st ? st.getBoundingClientRect() : { left: 0, top: 0, right: innerWidth, bottom: innerHeight };
+      const edge = UI.worldToScreen(cx + right, cy);
+      const s = edge.s || 1;
+      const card = wrap.firstChild;
+      // the card about the pot's height (its own proportions), never under the item card's own floor
+      const w0 = Math.round(Math.max(88, Math.min(210, 2 * bodyR * s * 0.62)));
+      wrap.style.transform = "";
+      card.style.width = `${w0}px`;
+      W.fit14(card);
+      const h0 = card.offsetHeight;
+      const x = edge.x + Math.max(10, 14 * s);
+      // its room: from the stage's top (below the settings corner where it would meet it) down to the shelf's top, above anything
+      // standing in its column (the katori and the asker's face on it)
+      let top = play.top + 8;
+      const cog = document.querySelector("#side-cog");
+      const cr = cog && cog.getBoundingClientRect();
+      if (cr && cr.width > 0 && cr.left < x + w0 + 6 && cr.right > x - 6) top = Math.max(top, cr.bottom + 8);
+      let bottom = Math.min(play.bottom - 8, UI.worldToScreen(0, sy(z, SHELF_TOP)).y - 8);
+      for (const o of avoid()) {
+        const r = rectOf(o);
+        if (r && r.left < x + w0 + 6 && r.right > x - 6 && r.top > edge.y - 2 * bodyR * s) bottom = Math.min(bottom, r.top - 8);
+      }
+      const k = Math.min(1, Math.max(0.45, (bottom - top) / Math.max(1, h0)), Math.max(0.45, (play.right - 8 - x) / Math.max(1, w0)));
+      const y = Math.max(top, Math.min(bottom - h0 * k, edge.y - (h0 * k) / 2));
+      Object.assign(wrap.style, { left: `${Math.round(x)}px`, top: `${Math.round(y)}px`, transform: k < 1 ? `scale(${k.toFixed(3)})` : "" });
+    };
+    const api = {
+      /** The card for lap n (said by Nani: saying, the line's promise, lights its speaker until she is done). true once it shows n. */
+      show(n, saying) {
+        try {
+          if (!wrap) {
+            wrap = document.createElement("div");
+            wrap.className = "daar-laps";
+            Object.assign(wrap.style, { position: "fixed", zIndex: "40", pointerEvents: "none", transformOrigin: "0 0", margin: "0" });
+            document.body.appendChild(wrap);
+          }
+          if (n !== shown) {
+            const card = W.big14(null, wordOf(n), { all: true, cls: "wc14-laps" });
+            card.style.margin = "0";
+            card.dataset.lap = String(n);
+            wrap.replaceChildren(card);
+            shown = n;
+            place();
+            if (card.animate) card.animate([{ opacity: 0, transform: "scale(0.7)" }, { opacity: 1, transform: "scale(1.06)" }, { transform: "scale(1)" }], { duration: 300 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
+          }
+          const spk = wrap.querySelector(".wc14-spk");
+          if (spk && saying && saying.then) {
+            spk.classList.add("on");
+            saying.then(() => wrap && wrap.firstChild && wrap.firstChild.dataset.lap === String(n) && spk.classList.remove("on"));
+          }
+          return true;
+        } catch (e) {
+          console.warn("lap card:", e);
+          return false;
+        }
+      },
+      close() {
+        const w = wrap;
+        wrap = null;
+        if (!w) return;
+        if (w.animate) w.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300 / (Cook.speed || 1) }).onfinish = () => w.remove();
+        else w.remove();
+      },
+    };
+    // (the page's card goes with the scene: a round left mid-stir never leaves it standing)
+    const gone = () => {
+      if (wrap) wrap.remove();
+      wrap = null;
+    };
+    S.events.once("shutdown", gone);
+    S.events.once("destroy", gone);
+    return api;
+  }
+
   /**
    * The speed dial (D7 / Q10), drawn in the kitchen kit's style (no new art): a dark glass face like the
    * hob's, a thin gold rim, four fixed bands (stopped, tortoise, hare, spilling: data.mechanics.stir's bands,
@@ -1227,15 +1340,17 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * gold needle; and under it the laps, as the Kutchi number word on a white chip (no digits, no pips).
    * x, y: its centre (design px). Returns {set(spd), laps(n), close()}.
    */
-  function speedDial(z, S, { x, y, bands, max, asked = null }) {
+  function speedDial(z, S, { x, y, bands, max, asked = null, k: kd = 1 }) {
+    const z0 = z; // (its place in the zone's own measure; DAAR-50: the dial itself a little smaller beside the lap card)
+    z = Object.assign(Object.create(z), { k: z.k * kd });
     const W = 340;
     const H = 330;
     const R = 104;
     const BW = 28;
     const ay = 34; // the arc's centre, in the face
     // (no container: each piece is placed and scaled itself, so the needle's redraws always show)
-    const ox = z.X(x);
-    const oy = sy(z, y);
+    const ox = z0.X(x);
+    const oy = sy(z0, y);
     const parts = [];
     const put = (o, dx = 0, dy = 0, dd = 0) => {
       S.track(o.setPosition(ox + dx * z.k, oy + dy * z.k).setScale(z.k).setDepth(D.item + 1 + dd).setAlpha(0));
@@ -1243,6 +1358,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       return o;
     };
     const g = put(S.add.graphics());
+    // (its face's box, for the checks that ask what shares the pot's width: a drawing has no bounds of its own; contract-110)
+    g.njgBox = () => ({ x: ox - (W / 2) * z.k, y: oy - (H / 2) * z.k, right: ox + (W / 2) * z.k, bottom: oy + (H / 2) * z.k });
+    g.setName("daar-dial");
     // the glass face and its gold rim (the hob's glass, the kit's gold)
     g.fillStyle(0x28190a, 0.22);
     g.fillRoundedRect(-W / 2 + 4, -H / 2 + 8, W, H, 28);
@@ -1356,7 +1474,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * pictured contents turn with the ladle (D10: the tadka picture, clipped inside the rim; the swirl picture
    * comes up as you go faster). speed: null | "slow" | "quick" (said from level 2, judged by the ear only).
    */
-  function stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry, steps, pieces = [], contents }) {
+  function stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry, steps, pieces = [], contents, hob = null, avoid = () => [] }) {
     return new Promise((resolve) => {
       const ctx = z.ctx;
       const hide = St.hideKnown(ctx);
@@ -1382,7 +1500,19 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       ladle.setScale((inR * 0.3) / (LADLE.r * LADLE.w));
       const ringG = S.track(S.add.circle(cx, cy - trackR, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
       S.tweens.add({ targets: ringG, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
-      const dial = speedDial(z, S, { x: SC().dial.x, y: SC().dial.y, bands, max: k.dialMax || 3, asked });
+      // DAAR-50 (Zafar 9 Nov: the card next to the dial, the pot as it was): the dial and the lap card side by side in the room right
+      // of the hob, the dial nearer the pot (a little smaller where the room asks), the card beyond it, both centred on the pot's height
+      const dialW = 340;
+      const hobR = hob ? (hob.x + hob.w - z.X(0)) / z.k : 1010;
+      const viewR = (Cook.view && Cook.view.right != null ? (Cook.view.right - z.X(0)) / z.k : 1600) - 16;
+      // (the card's width as lapCard draws it, CSS px, in design px: never under the item card's floor)
+      const ws = Math.max(0.01, UI.worldScale ? UI.worldScale() : 1);
+      const cardW = Math.max(88, Math.min(210, 2 * bodyR * ws * 0.62)) / ws / z.k;
+      const kd = Math.max(0.5, Math.min(1, (viewR - hobR - 24 - 24 - cardW) / dialW));
+      const dialX = hobR + 24 + (dialW * kd) / 2;
+      const dial = speedDial(z, S, { x: dialX, y: SC().dial.y, bands, max: k.dialMax || 3, asked, k: kd });
+      const dialRight = z.X(dialX + (dialW * kd) / 2);
+      const card = lapCard(z, S, { cx, cy, right: dialRight - cx + z.L(10), bodyR, avoid });
       let count = 0;
       let ang = FLAG_AT; // the ladle's angle: it starts under the flag
       let rot = 0; // the contents' turn
@@ -1452,7 +1582,12 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         // the flag's sound as the ladle passes it, the flag flutters, and the number on the dial changes at once
         (Cook.sfx.lap || Cook.sfx.click)();
         flag.wave();
-        dial.laps(count);
+        // (DAAR-50: the number on the card; the dial's own chip only where the card cannot show)
+        let shownOnCard = false;
+        const showLap = (said) => {
+          shownOnCard = !!(card && card.show(count, said));
+          if (!shownOnCard) dial.laps(count);
+        };
         // DAAR-24 retired (Zafar, 14 Oct, D12): the laps are said aloud at every level, the stir's own exception to the
         // counting rule; the line carries role "laps" so the counting check (contract-19) knows it is not counting along.
         // DAAR-27 (P10: "the counting doesn't keep up with the turns ... say it within like three quarters of one revolution"):
@@ -1469,8 +1604,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
             const mine = Lang.speak(Lang.role(Lang.numLine(count), "laps"), { kind: "count" }).catch(() => {});
             saying = mine;
             mine.then(() => saying === mine && (saying = null));
+            showLap(mine);
           }
         }
+        if (said !== "ok") showLap(null);
         // (the log: the ladle's angle from the flag after the move that passed it, that move's size, the lap's time; lib/contract-daal.mjs)
         const deg = (a) => Math.round(a * (180 / Math.PI));
         const at = deg(((((ang - FLAG_AT) % TAU) + TAU + Math.PI) % TAU) - Math.PI);
@@ -1631,6 +1768,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         ringG.destroy();
         setTimeout(() => stopTick && stopTick(), 400);
         dial.close();
+        if (card) card.close();
         S.tweens.add({ targets: ladle, alpha: 0, duration: 300 });
         flag.close();
         // (stirred, the swirl stays: the daar looks stirred; not stirred at all, it goes)

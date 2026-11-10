@@ -48,6 +48,27 @@
  * Drawn on a canvas (Phaser; Cook's stations): the same pill and speaker.
  *   Shelf.P.speaker(g, x, y, s, color)        the speaker into a Graphics, about s px tall
  *   Shelf.P.chip(S, x, y, text, {word, w, cap, depth, onTap}) -> container   chip.face(word, cap), chip.hit(slotW)
+ *   Shelf.P.reach(obj)                        an item's tap area reaching its pill (below): obj.chip read at each tap
+ *
+ * The stone tray (ART-69, SH-243; Zafar, 9 Nov: "if the game is top down, and we're showing the items top down as well ... we have the
+ * items on a tray at the bottom ... the tray is in the game space, kind of sitting on the countertop"; then "a modern stone version";
+ * Fable's spec, build/reports/s19-stone-tray-fable.md): top-down things lie on ONE honed warm-grey limestone slab along the whole band
+ * (field #C4B8AD shading to #B5A99E at its edges, a fine even speckle, no veins; a low soft lip 3-4% of its depth in the same stone,
+ * lit on its upper-left; corner radius an eighth of its depth; a soft contact shadow lower-right), inset from the view's sides by 3%.
+ * Side-on things keep the stone shelf (the stone band's base). One painter for the page and the canvas:
+ *   Shelf.TRAY                                its colours and proportions
+ *   Shelf.trayBox({left, right, top, bottom}) the slab's box in the band: {x, y, w, h, r, lip, sh, pad} (sh: the shadow's offset;
+ *                                             pad: the room round it the shadow needs)
+ *   Shelf.trayPaint(ctx, box, {scale, seed})  paints the slab and its shadow on a 2D canvas whose (0, 0) is the box's corner less pad;
+ *                                             returns {w, h}, the canvas size it needs (ctx null: only the size)
+ *   Shelf.P.tray(S, {top, bottom, view, depth}) the slab on a Phaser scene (a canvas texture at the screen's own resolution), redrawn
+ *                                             when the view changes shape; view() -> {left, right, bottom} (the visible world)
+ *
+ * Tap areas (SH-244; Zafar, 9 Nov, his tester on his phone: "She thought she was pressing the items, but she was pressing the speaker
+ * buttons below the items"): ONE rule for every shelf. An item's tap area is its picture and, below it, its slot down to its pill's
+ * top, across the slot's width (Shelf.P.reach; Cook's S.tappable gives it to everything it makes tappable). The pill's is its card
+ * and a small margin (PILL.margin) at its sides and foot; where the two meet, at the pill's top edge, the item wins: the pill's area
+ * starts at its card's top. So a tap at an item's foot, or in the gap above its pill, picks the item; only the card says the word.
  */
 (function (root, factory) {
   const Shelf = factory(root);
@@ -187,7 +208,7 @@
   };
 
   /* ---------------- word pills ---------------- */
-  Shelf.PILL = { min: 13, max: 1.5, text: 25, pad: 48, spkW: 62, w: 128, h: 46, hitW: 142, hitH: 80 };
+  Shelf.PILL = { min: 13, max: 1.5, text: 25, pad: 48, spkW: 62, w: 128, h: 46, hitW: 142, hitH: 80, margin: 8 };
   Shelf.faceW = (word, textW) => (word ? textW + Shelf.PILL.pad : Shelf.PILL.spkW);
   Shelf.pillWant = (ppw) => Math.max(1, Math.min(Shelf.PILL.max, Shelf.PILL.min / (Shelf.PILL.text * ppw)));
   Shelf.pillGap = (ppw) => Math.max(12, 5 / ppw);
@@ -201,8 +222,155 @@
       const b = row[i];
       k = Math.min(k, (c.x - b.x - gap) / ((b.w + c.w) / 2));
     });
-    const cap = k < 1 ? slotW - gap : Infinity;
+    // (a pill at its own size, k 1, keeps inside its slot as well: a long word there reached under the next thing's picture on a big
+    // screen, so the light round that thing could not be whole; s19-stoves, SH-243's leftover)
+    const cap = k <= 1 ? slotW - gap : Infinity;
     return { k: Math.max(1, k), cap };
+  };
+
+  /* ---------------- the stone tray (ART-69, SH-243) ---------------- */
+  /*
+   * The tray's stone is the house stone token's own (--njg-stone, the panel and the shelf: Fable, "one family ... the tray a thicker,
+   * darker cut of the same honed stone; same hue and finish, only the value differs"): each colour is the token's channels times a
+   * cut, so Fable's values come out of it (field #C4B8AD, its edges #B5A99E, the lit lip #DAD0C7) and the tray follows the stone.
+   */
+  Shelf.TRAY = {
+    cuts: {
+      field: [0.879, 0.864, 0.844], // the field's middle
+      edge: [0.812, 0.794, 0.772], // the field towards its edges
+      lit: [0.978, 0.977, 0.971], // the lip's lit upper-left face
+      rim: [1.05, 1.066, 1.073], // the lip's thin lighter outer edge
+      speck: [0.637, 0.61, 0.58], // the speckle, a few percent darker in sum (it is fine and faint)
+      ao: [0.498, 0.46, 0.429], // the crease inside the lip
+    },
+    inset: 0.03, // of the view's width, at each side
+    gapTop: 4, // design px between the band's top and the slab
+    gapBottom: 6, // design px between the slab and the view's foot
+    lipK: 0.035, // the lip's width, of the slab's depth (3-4%)
+    radiusK: 1 / 8, // the corner radius, of the depth
+    shadowK: 0.02, // the shadow's offset (lower-right) and its blur, of the depth
+  };
+  // the stone token's channels (null with no page: nothing is painted then), each colour a cut of it as "r, g, b"
+  Shelf.trayInk = function () {
+    const t = T();
+    const rgb = t && t.rgb ? t.rgbOf(t.rgb("stone")) : null;
+    if (!rgb) return null;
+    const out = {};
+    Object.entries(Shelf.TRAY.cuts).forEach(([k, c]) => (out[k] = rgb.map((v, i) => Math.max(0, Math.min(255, Math.round(v * c[i])))).join(", ")));
+    const sh = t.rgb("shade-rgb");
+    out.shadow = sh || out.ao;
+    return out;
+  };
+  Shelf.trayBox = function ({ left, right, top, bottom }) {
+    const T = Shelf.TRAY;
+    const ins = (right - left) * T.inset;
+    const x = left + ins;
+    const y = top + T.gapTop;
+    const w = Math.max(10, right - left - 2 * ins);
+    const h = Math.max(10, bottom - T.gapBottom - y);
+    const sh = h * T.shadowK;
+    return { x, y, w, h, r: h * T.radiusK, lip: Math.max(3, h * T.lipK), sh, pad: Math.ceil(sh * 3 + 2) };
+  };
+  // (a small seeded random: the speckle is the same on every draw, so a redraw on resize, or a replay, never differs)
+  const rnd = (seed) => () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+  const rrect = (ctx, x, y, w, h, r, ccw = false) => {
+    r = Math.max(0, Math.min(r, w / 2, h / 2));
+    if (!ccw) {
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+    } else {
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x, y, x, y + h, r);
+      ctx.arcTo(x, y + h, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x + w, y, r);
+      ctx.arcTo(x + w, y, x, y, r);
+    }
+    ctx.closePath();
+  };
+  const path = (ctx, ...a) => {
+    ctx.beginPath();
+    rrect(ctx, ...a);
+  };
+  Shelf.trayPaint = function (ctx, box, { scale = 1, seed = 7, ink = Shelf.trayInk() } = {}) {
+    const s = scale;
+    const pad = box.pad * s;
+    const W = Math.ceil(box.w * s + 2 * pad);
+    const H = Math.ceil(box.h * s + 2 * pad);
+    if (!ctx || !ink) return { w: W, h: H };
+    const c = (k, a = 1) => `rgba(${ink[k]}, ${a})`;
+    const x = pad, y = pad, w = box.w * s, h = box.h * s, r = box.r * s, lip = box.lip * s, sh = box.sh * s;
+    ctx.clearRect(0, 0, W, H);
+    // the contact shadow: lower-right, soft, fading over about its own offset again
+    ctx.save();
+    ctx.shadowColor = c("shadow", 0.3);
+    ctx.shadowBlur = Math.max(2, sh * 2);
+    ctx.shadowOffsetX = sh * 0.6;
+    ctx.shadowOffsetY = sh;
+    path(ctx, x, y, w, h, r);
+    ctx.fillStyle = c("edge");
+    ctx.fill();
+    ctx.restore();
+    ctx.save();
+    path(ctx, x, y, w, h, r);
+    ctx.clip();
+    // the field: the lighter middle shading to the edges (an ellipse of the slab's own shape)
+    ctx.save();
+    ctx.translate(x + w / 2, y + h / 2);
+    ctx.scale(1, h / w);
+    const gr = ctx.createRadialGradient(0, 0, 0, 0, 0, w / 2);
+    gr.addColorStop(0, c("field"));
+    gr.addColorStop(0.62, c("field"));
+    gr.addColorStop(1, c("edge"));
+    ctx.fillStyle = gr;
+    ctx.fillRect(-w / 2 - 2, -w / 2 - 2, w + 4, w + 4);
+    ctx.restore();
+    // the speckle: very fine and even, a few percent darker (a few lighter), no veins; at phone size it is below a pixel and goes
+    const R = rnd(seed);
+    const n = Math.round((w * h) / (90 * s * s));
+    const d = Math.max(0.6, 0.9 * s);
+    for (let i = 0; i < n; i++) {
+      const light = R() < 0.25;
+      ctx.globalAlpha = light ? 0.1 + R() * 0.08 : 0.07 + R() * 0.1;
+      ctx.fillStyle = light ? c("lit") : c("speck");
+      const k = d * (0.6 + R() * 0.8);
+      ctx.fillRect(x + R() * w, y + R() * h, k, k);
+    }
+    ctx.globalAlpha = 1;
+    // the lip: the same stone, its ring lit on the upper-left (a light wash fading towards the lower-right)
+    const xi = x + lip, yi = y + lip, wi = w - 2 * lip, hi = h - 2 * lip, ir = Math.max(0, r - lip);
+    const reach = Math.min(w, h * 3);
+    const lg = ctx.createLinearGradient(x, y, x + reach, y + h);
+    lg.addColorStop(0, c("lit", 0.6));
+    lg.addColorStop(0.5, c("lit", 0.25));
+    lg.addColorStop(1, c("lit", 0.04));
+    ctx.beginPath();
+    rrect(ctx, x, y, w, h, r);
+    rrect(ctx, xi, yi, wi, hi, ir, true);
+    ctx.fillStyle = lg;
+    ctx.fill();
+    // its thin lighter outer edge on the upper-left (softly radiused, not a sharp step)
+    let lw = Math.max(1, lip * 0.28);
+    const eg = ctx.createLinearGradient(x, y, x + reach * 0.6, y + h);
+    eg.addColorStop(0, c("rim", 0.95));
+    eg.addColorStop(1, c("rim", 0));
+    ctx.lineWidth = lw;
+    ctx.strokeStyle = eg;
+    path(ctx, x + lw / 2, y + lw / 2, w - lw, h - lw, r - lw / 2);
+    ctx.stroke();
+    // the crease inside the lip: a thin ambient-occlusion line, darkest on the lower-right
+    lw = Math.max(0.8, lip * 0.18);
+    const ag = ctx.createLinearGradient(xi, yi, xi + reach, yi + hi);
+    ag.addColorStop(0, c("ao", 0.12));
+    ag.addColorStop(1, c("ao", 0.34));
+    ctx.lineWidth = lw;
+    ctx.strokeStyle = ag;
+    path(ctx, xi, yi, wi, hi, ir);
+    ctx.stroke();
+    ctx.restore();
+    return { w: W, h: H };
   };
 
   /* ---------------- drawn on the page ---------------- */
@@ -357,7 +525,8 @@
   /*
    * One word pill on a canvas: a white card, the speaker and the word (or the speaker alone), its width its own face's (w: a fixed
    * width instead), never wider than cap (a long word narrows its text). chip.face(word, cap) redraws it; chip.hit(slotW) sets the
-   * tap area: the card and 7 px round it, as wide as the slot allows (up to PILL.hitW), never past the slot.
+   * tap area (SH-244): the card and PILL.margin at its sides and foot, never past the slot; none above the card, where the item's
+   * own tap area (Shelf.P.reach) comes down to meet it.
    * o: {word, w, cap, depth, onTap, font, weight, color (the word's, "#rrggbb"), shade, card (the card's colours, ints: the tokens'
    * by default), pad (the room beside the word, PILL.pad)}; the scene's S.track keeps it, when the scene has one
    */
@@ -412,13 +581,16 @@
     chip.hit = function (slotW = Infinity) {
       chip.slotW = slotW;
       const k = chip.k || 1;
-      const hitW = Math.max(chip.cardW + 14, Math.min(PL.hitW, (slotW - 2) / k));
-      chip.setSize(hitW, PL.hitH);
+      // SH-244: the card and a small margin at its sides and foot (never past its slot); its top edge is the card's, the item's above
+      const m = PL.margin;
+      const hitW = Math.max(chip.cardW, Math.min(chip.cardW + 2 * m, (slotW - 2) / k));
+      const hitH = PL.h + m;
+      // (a container's hit area is read from its top-left corner: Phaser adds its display origin, half its size, to the point first;
+      // the old area, drawn about the middle, was the box up and left of the pill: its left half, and 72 px above it into the item)
+      chip.setSize(hitW, PL.h);
       const G = root.Phaser && root.Phaser.Geom;
-      // (a Container's hit area is read from its top-left: Phaser adds displayOrigin, half its size, to the point; centred at -w/2, -h/2
-      // the zone sat half a zone up and left, over the pot above it and its left neighbour: s19-stuck, lab:cook/assemble@L4 at 740x320)
-      if (chip.input) chip.input.hitArea.setTo(0, 8, hitW, PL.hitH);
-      else if (G) chip.setInteractive(new G.Rectangle(0, 8, hitW, PL.hitH), G.Rectangle.Contains);
+      if (chip.input) chip.input.hitArea.setTo(0, 0, hitW, hitH);
+      else if (G) chip.setInteractive(new G.Rectangle(0, 0, hitW, hitH), G.Rectangle.Contains);
       return chip;
     };
     chip.on("pointerdown", (ptr, lx, ly, ev) => {
@@ -428,6 +600,107 @@
     });
     chip.face(o.word !== false, o.cap == null ? Infinity : o.cap);
     return chip;
+  };
+
+  /*
+   * SH-244: an item's tap area reaching its pill. The item (any interactive Phaser object) keeps its own area and, while it has a
+   * pill under it (obj.chip, read at each tap, so a game may give it the pill after this), also takes taps in its slot below its
+   * picture: from its picture's top down to the pill card's top, across the slot's width (the pill's slotW, else the wider of the
+   * picture and the pill's tap area). Installed once per object; returns obj.
+   */
+  P.reachBox = function (obj) {
+    const ch = obj && obj.chip;
+    if (!ch || !ch.active || ch.visible === false || ch.parentContainer || obj.parentContainer || !obj.getBounds) return null;
+    const cw = ch.cardW || ch.pillW;
+    if (!cw) return null;
+    const kx = Math.abs(ch.scaleX || 1);
+    const ky = Math.abs(ch.scaleY || 1);
+    const top = ch.y - ((ch.cardH || ch.pillH || Shelf.PILL.h) / 2) * ky;
+    const b = obj.getBounds();
+    // (only a pill below the thing: its card's top under the picture's middle)
+    if (!(top > b.y + b.height / 2)) return null;
+    const slot = isFinite(ch.slotW) && ch.slotW > 0 ? ch.slotW - 2 : Math.max(b.width, (cw + 2 * Shelf.PILL.margin) * kx);
+    return { left: ch.x - slot / 2, right: ch.x + slot / 2, top: b.y, bottom: top };
+  };
+  P.reach = function (obj) {
+    if (!obj || !obj.input || obj.input.njgReach) return obj;
+    const own = obj.input.hitAreaCallback;
+    if (typeof own !== "function") return obj;
+    obj.input.njgReach = true;
+    obj.input.hitAreaCallback = function (area, x, y, o) {
+      if (own(area, x, y, o)) return true;
+      const r = P.reachBox(o);
+      if (!r) return false;
+      // (the hit test's local point, back to the world: the inverse of what Phaser did, its display origin added back first)
+      let wx = x;
+      let wy = y;
+      try {
+        const M = o.getWorldTransformMatrix();
+        const p = M.transformPoint(x - (o.displayOriginX || 0), y - (o.displayOriginY || 0));
+        wx = p.x;
+        wy = p.y;
+      } catch (e) {
+        return false;
+      }
+      return wx >= r.left && wx <= r.right && wy >= r.top && wy <= r.bottom;
+    };
+    return obj;
+  };
+
+  /*
+   * ART-69, SH-243: the stone tray on a Phaser scene, under the band's things. top: the band's top (design px); bottom: the slab's
+   * foot line (default: the view's foot); view: the visible world, {left, right, bottom} or a function returning it (read again
+   * when the scene's scale changes shape, and the slab redrawn); depth. Painted once into a canvas texture at the screen's own
+   * resolution (never zoomed), the image placed at the slab's box; the scene's S.track keeps it, when it has one. Returns the image,
+   * with img.trayBox (the slab's box, design px).
+   */
+  P.tray = function (S, { top, bottom = null, view = null, depth = 0, seed = 7 } = {}) {
+    if (!Shelf.trayInk()) return null;
+    const viewOf = () => (typeof view === "function" ? view() : view) || { left: 0, right: 1600, bottom: 900 };
+    let img = null;
+    let key = null;
+    const draw = () => {
+      if (!S.sys || !S.textures || !doc) return;
+      const v = viewOf();
+      const box = Shelf.trayBox({ left: v.left, right: v.right, top, bottom: bottom != null ? bottom : v.bottom });
+      const cv = S.game && S.game.canvas;
+      const rect = cv && cv.getBoundingClientRect ? cv.getBoundingClientRect() : null;
+      const gw = (S.scale && S.scale.gameSize && S.scale.gameSize.width) || 1600;
+      let sc = rect && rect.width ? (rect.width / gw) * (root.devicePixelRatio || 1) : 1;
+      sc = Math.max(0.5, Math.min(2, Math.ceil(sc * 4) / 4));
+      let size = Shelf.trayPaint(null, box, { scale: sc });
+      if (size.w > 4096) {
+        sc *= 4096 / size.w;
+        size = Shelf.trayPaint(null, box, { scale: sc });
+      }
+      const k = `njg-tray@${Math.round(box.w)}x${Math.round(box.h)}@${Math.round(sc * 100)}`;
+      if (!S.textures.exists(k)) {
+        const c = doc.createElement("canvas");
+        c.width = size.w;
+        c.height = size.h;
+        Shelf.trayPaint(c.getContext("2d"), box, { scale: sc, seed });
+        S.textures.addCanvas(k, c);
+      }
+      if (!img) {
+        const i0 = S.add.image(0, 0, k);
+        img = S.track ? S.track(i0) : i0;
+      } else if (key !== k) {
+        const old = key;
+        img.setTexture(k);
+        if (old && S.textures.exists(old)) S.textures.remove(old);
+      }
+      key = k;
+      img.setOrigin(0).setPosition(box.x - box.pad, box.y - box.pad).setScale(1 / sc).setDepth(depth);
+      img.trayBox = box;
+    };
+    draw();
+    if (!img) return null;
+    const onResize = () => img && img.active && draw();
+    if (S.scale && S.scale.on) {
+      S.scale.on("resize", onResize);
+      img.once("destroy", () => S.scale && S.scale.off && S.scale.off("resize", onResize));
+    }
+    return img;
   };
 
   return Shelf;

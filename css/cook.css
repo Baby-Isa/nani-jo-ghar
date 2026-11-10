@@ -1006,3 +1006,15 @@ body.w6 #guide { flex: none; }
 @media (max-height: 500px) {
   body:has(#stage > .side-rail.ck-cog-rail) #overlay { padding-right: calc(var(--njg-tap) + 2 * var(--njg-s2)); }
 }
+
+/* ---------- SH-220: the loading cover (Zafar, 9 Nov: "before you can just put a stone colored um, thing on the screen") ----------
+   Drawn by the page itself with Cook's screen (nothing to load): the house stone over the whole screen until the first view is on
+   the canvas, then one fade (js/cook/flow.js cover() and Cook.reveal; js/cook/stations.js Cook.cover is the same stone on the
+   canvas and between views). It takes no taps. */
+.ck-cover {
+  position: fixed; inset: 0; z-index: 2147483000; pointer-events: none;
+  background: var(--njg-stone);
+  opacity: 1; transition: opacity 0.35s ease-out;
+}
+.ck-cover.off { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .ck-cover { transition-duration: 0.12s; } }

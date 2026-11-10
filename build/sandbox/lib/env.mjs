@@ -24,6 +24,7 @@ export const SIZES = {
   "740x320": { width: 740, height: 320, label: "smallest phone: a phone browser with its bars, landscape (the phone layout's lower edge; Zafar, 27 Oct)", touch: true },
   "930x430": { width: 930, height: 430, label: "largest phone: an app in full screen, landscape (the phone layout's upper edge; Zafar, 27 Oct)", touch: true },
   "1920x1080": { width: 1920, height: 1080, label: "big screen (the big layout's upper edge; Zafar, 27 Oct)" },
+  "930x374": { width: 930, height: 374, label: "largest phone in the browser with its address bar showing (930x430 less the bar; SH-244, Zafar 9 Nov: 'my phone has the Chrome URL at the top, which takes up space')", touch: true },
   "915x412": { width: 915, height: 412, label: "phone landscape, 20:9 (Galaxy Z Flip 5, Zafar's phone; CK-44)", touch: true },
   "1480x924": { width: 1480, height: 924, label: "tablet landscape (Galaxy Tab S8 Ultra)", touch: true },
   "1280x665": { width: 1280, height: 665, label: "laptop (Zafar's Yoga Pro 7: Chrome maximised, 2560x1600 at 200%, DPR 2)" },

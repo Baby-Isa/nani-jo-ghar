@@ -2326,6 +2326,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * the sound, the Phaser game destroyed; js/cook/mount.js then ends Cook's lifetime and removes its screen.
    */
   Cook.boot = async function (parent, o = {}) {
+    // SH-220: the stone cover first, in the same moment as Cook's screen (before anything loads)
+    cover(true);
     Cook.hosted = !!o.hosted;
     Cook.run++;
     Object.assign(state, { day: null, cards: [], dayCoins: 0, patience: null, free: false, kitchenOpen: false });
@@ -2374,6 +2376,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (run !== Cook.run) return;
       showTitle();
       ready();
+      // SH-220: the first view lifts the cover (stations.js setView); a screen with no view to set (the title) after a moment
+      setTimeout(() => Cook.reveal(), 1500);
     };
     // Phaser's visibility handler adds a listener on the document and never removes it (Phaser 3.90: anonymous, no
     // destroy), and sets window.onblur/onfocus: while the game starts, a visibilitychange listener goes through
@@ -2392,7 +2396,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       parent,
       width: 1600,
       height: 900,
-      backgroundColor: "#e9dcc4",
+      backgroundColor: Cook.cover().hex, // (SH-220: the cover's stone, never a colour of its own)
       // the stage fill (queue item 8): the world grows to the stage's shape, so no letterbox strip (CookScene.fitView)
       scale: { mode: Phaser.Scale.EXPAND, autoCenter: Phaser.Scale.CENTER_BOTH },
       input: { activePointers: 1 },
@@ -2429,6 +2433,57 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       );
     }
     return shown;
+  };
+  /*
+   * SH-220 (Zafar, 9 Nov: "we should be able to get into the order card scene quite quickly ... before you can just put a stone
+   * colored um, thing on the screen"; his row: "the screen flashes randomly with all these different backgrounds"): Cook's screen
+   * opens under the page's own stone cover (css/cook.css .ck-cover, put on the page with the screen itself, nothing to load), the canvas's
+   * ground the same stone (stations.js Cook.cover). The scene loads only the order scene's pictures (its preload: the kitchen and
+   * the family, data/cook.json art.assets.shared); the first view drawn lifts the cover in one fade (Cook.reveal, after that frame
+   * is on the canvas); the cooking game's pictures load while the order scene plays (runOrder: Cook.prefetchDishes). A Lifecycle
+   * note "cover" (shown, lifted) marks both for the checks.
+   */
+  let coverUp = false;
+  let coverEl = null;
+  function cover(on) {
+    coverUp = !!on;
+    // (one element on the page's body, over everything the page has: a host page's own fixed frame makes its own stacking layer, so
+    // a cover inside Cook's screen sat under the speech bubbles' layer, which is the body's)
+    if (on) {
+      if (coverEl) coverEl.remove();
+      coverEl = document.createElement("div");
+      coverEl.className = "ck-cover";
+      coverEl.setAttribute("aria-hidden", "true");
+      document.body.appendChild(coverEl);
+      const el = coverEl;
+      Cook.life.onEnd(() => el.remove());
+    } else if (coverEl) {
+      const el = coverEl;
+      coverEl = null;
+      el.classList.add("off");
+      global.setTimeout(() => el.remove(), 600);
+    }
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("cover", { step: on ? "shown" : "lifted" });
+    } catch (e) {
+      /* only a log */
+    }
+  }
+  /** SH-220: the cover is still up (the first view then needs no fade of its own: the cover's is the one fade). */
+  Cook.covered = () => coverUp;
+  Cook.reveal = function () {
+    if (!coverUp) return;
+    coverUp = false;
+    let done = false;
+    const lift = () => {
+      if (done) return;
+      done = true;
+      cover(false);
+    };
+    // (after the frame with the view's picture is on the canvas, then the next paint: one fade over a finished picture)
+    const g = Cook.game;
+    if (g && g.events && g.events.once) g.events.once("postrender", () => requestAnimationFrame(lift));
+    setTimeout(lift, 400);
   };
   let winFocus = null;
   Cook.halt = function () {
