@@ -61,3 +61,11 @@ Nothing new since 00:33. Chop, corn, daar, maani and eggs go live together, once
 - **Wave B:** contract run s19-wave-b-fix, 40 pages to the end, 0 page errors (build/screenshots/sandbox/s19-wave-b-fix/contract.md). Its report is build/reports/s19-wave-b.md.
 - **Corn's fixes:** orch-corn83 and orch-corn105 (build/screenshots/sandbox/).
 - **Mount test:** three clean runs.
+
+## 9 AM update
+- **Art:** nothing new on main.
+- **Builder A (daar and maani):** wrote its log line at 08:21 and is finishing its report. It hasn't handed back yet.
+- **Builder C (eggs):** the hob group is now sized to the worktop that shows, and the tray is clear of the cog. The plate is lit with its face, and the fried eggs are bigger. Still building.
+- **Publishes:** none.
+- **New problems:** none.
+- **Open decisions:** none.
