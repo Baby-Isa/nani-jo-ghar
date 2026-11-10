@@ -877,9 +877,10 @@ function s19hook() {
         for (const [el, c] of hits) if (n && c / n >= 0.12) out.push({ what: x.kind, id: x.id, box: x.box.map(Math.round), by: "page", byId: desc(el), share: Math.round((c / n) * 100) / 100, on: "under" });
       }
     }
-    // the page's word pills (the word pop, the kit's pills) under a button (the settings cog, the help): buttons are drawn on top
+    // the page's word pills (the word pop, the kit's pills, the tally) under a button (the settings cog, the help): buttons are drawn on top
     const btns = [...document.querySelectorAll("button, [role=button]")].filter((b) => shown(b) && !modal(b) && !b.closest("#side, #mission, #guide, .oc-card, .wc14"));
-    for (const p of document.querySelectorAll(".njg-wpill, .njg-pill")) {
+    // (and the picture tally's chips, top right: CK-78, chop's tally chip under the settings cog)
+    for (const p of document.querySelectorAll(".njg-wpill, .njg-pill, #count-badge, .njg-tally")) {
       if (!shown(p) || modal(p)) continue;
       const pb = R(p.getBoundingClientRect());
       for (const b of btns) {
