@@ -98,7 +98,7 @@ import { Cook as CookNS } from "../ns.js";
    * St.stoneBand's tray, the shared Shelf.P.tray, where the kit has it; the stone band before that).
    */
   function band(S, o) {
-    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { tray: true })) : null;
+    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { game: KEY })) : null;
   }
   /** The walnut board above the band (ART-37): centred at layout.board, its height h, its width from the picture; its soft shadow. */
   function board(S, z, art, lay) {

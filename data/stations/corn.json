@@ -1,5 +1,7 @@
 {
  "_about": "The corn stall's own data (js/cook/stations/corn.js; its order is this file's order, registered as Cook.Recipes.corn when it loads). S19 wave B (CK-67, Zafar 9 Nov, his yes to two screens): screen 1 is sekelo's option 3 on the one grill kit (js/cook/grill-kit.js): the raw cobs two by two on the stone band, the grill big on the left, the cooked tray on its right; screen 2, the flavour: each cob on its person's cream plate with their face circle, the six dressing bowls on the band with their word pills, each person asking for their own mix. `mechanic.levels`: sideMs how long one side takes on the grill, greenMs how long its green lasts; `palette` the dressings' colours (data, not code).",
+ "band": "tray",
+ "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook.md)",
  "station": {
   "name": "Corn stall",
   "verb": "Grill, turn once, then what goes on",

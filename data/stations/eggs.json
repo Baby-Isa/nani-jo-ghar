@@ -1,5 +1,7 @@
 {
  "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes). Sprint 18 wave 2 (s18-g-eggs, 8 Nov): the station reads its art and places from items and scene (Cook.data.settings.eggs); mechanic.levels stays its per-level knobs. S19 wave C: overMs how long a fried egg sits past its full ring before it browns (a look only).",
+ "band": "shelf",
+ "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook.md)",
  "station": {
   "name": "Eggs",
   "verb": "Boil or fry, then the plates",
@@ -250,8 +252,7 @@
    "_note": "the table scene on the meal's kitchen (scene.bg): the people stand behind the island (its back edge at y 705), each plate slides onto the island at their seat (the breakfast and night kitchens' three wooden trays at x 457, 800, 1143, measured from bg-kitchen-morning.webp); the cat on the island's left end (a placeholder until Simba)"
   },
   "band": {
-   "tray": true,
-   "_note": "S19 wave C (SH-243, ART-69; as wave B's corn): the bowl of eggs and the shakers are top-down pictures, so they lie on the stone tray band (St.stoneBand tray: true, Shelf.BAND), each above its pill on the chip line, the row centred under the hob, 200 apart (bandStep)"
+   "_note": "CK-73 (Zafar, 10 Nov): the egg box and the salt and pepper jars stand side-on on chai's shelf (band \"shelf\" above, St.stoneBand game: eggs), each above its pill on the chip line, the row centred under the hob"
   },
   "bandStep": 200
  },
@@ -349,54 +350,55 @@
   },
   "bowl": {
    "size": "M",
-   "view": "T",
-   "file": "assets/cook/items/v4/eggs/bowl-of-eggs.webp",
+   "view": "F",
+   "file": "assets/cook/items-s17-stove/f-eggs-in-a-box.webp",
    "px": [
-    592,
-    600
+    380,
+    374
    ],
    "word": "n.egg",
    "drawn": {
-    "w": 150
+    "h": 118
    },
-   "_note": "S19 wave C: the v4 bowl of eggs (top-down) on the stone tray band, its pill under it; tap: an egg lifts out. One picture (the v4 cut has no fewer-eggs looks)"
+   "_note": "CK-73 (Zafar, 10 Nov: the shelf, side-on, as chai): the eggs in their box (chai's side-on family, items-s17-stove) on chai's shelf, its pill under it; tap: an egg lifts out"
   },
   "shakerSalt": {
    "size": "S",
-   "view": "T",
+   "view": "F",
    "word": "spi-16",
-   "file": "assets/cook/proto/eggs/shaker-salt-t.webp",
+   "file": "assets/cook/items-s17-stove/f-salt-jar.webp",
    "px": [
-    137,
-    140
+    282,
+    352
    ],
    "drawn": {
-    "w": 112
+    "h": 118
    },
    "levels": [
     3,
     4
    ],
-   "_note": "partial alpha (glass)",
-   "_s19c": "S19 wave C: a top-down shaker, on the stone tray band beside the bowl (the band's row), its pill under it"
+   "_s19c": "CK-73: chai's side-on salt jar on the shelf",
+   "card": "assets/cook/items-s17-stove/f-salt-jar.webp"
   },
   "shakerPepper": {
    "size": "S",
-   "view": "T",
+   "view": "F",
    "word": "spi-11",
-   "file": "assets/cook/proto/eggs/shaker-pepper-t.webp",
+   "file": "assets/cook/items-s17-stove/f-black-pepper-jar.webp",
    "px": [
-    137,
-    140
+    312,
+    403
    ],
    "drawn": {
-    "w": 112
+    "h": 118
    },
    "levels": [
     3,
     4
    ],
-   "_s19c": "S19 wave C: a top-down shaker, on the stone tray band beside the bowl (the band's row), its pill under it"
+   "_s19c": "CK-73: chai's side-on pepper jar on the shelf",
+   "card": "assets/cook/items-s17-stove/f-black-pepper-jar.webp"
   },
   "plate": {
    "size": "M",
@@ -513,15 +515,12 @@
   "assets/cook/items/v4/kit/plate-cream.webp",
   "assets/cook/items-s14/chai-pan/pan-water-s14.webp",
   "assets/cook/items/v4/eggs/pan-steel.webp",
-  "assets/cook/items/v4/eggs/bowl-of-eggs.webp",
   "assets/cook/items/v4/eggs/egg-cracked.webp",
   "assets/cook/items/v4/eggs/egg-cooked.webp",
   "assets/cook/items/v4/eggs/egg-overdone.webp",
   "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
   "assets/cook/items/v4/eggs/egg-boiled-half-b.webp",
   "assets/cook/proto/eggs/egg-brown.webp",
-  "assets/cook/proto/eggs/shaker-salt-t.webp",
-  "assets/cook/proto/eggs/shaker-pepper-t.webp",
   "assets/cook/proto/eggs/plate-f.webp",
   "assets/cook/proto/eggs/egg-fried-f.webp",
   "assets/cook/proto/eggs/eggcup-egg-f.webp",
@@ -530,7 +529,10 @@
   "assets/cook/items/v3/hob/knob-off-v2.webp",
   "assets/cook/items/v3/hob/knob-on-v2.webp",
   "assets/cook/items/chai-station/flame-high.webp",
-  "assets/cook/items/chai-station/flame-low.webp"
+  "assets/cook/items/chai-station/flame-low.webp",
+  "assets/cook/items-s17-stove/f-eggs-in-a-box.webp",
+  "assets/cook/items-s17-stove/f-salt-jar.webp",
+  "assets/cook/items-s17-stove/f-black-pepper-jar.webp"
  ],
  "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic, cardOfIds): one card per egg (CK-64), the fried egg (v4 egg-cooked) for 'tarelo indo', a boiled egg's half (v4 egg-boiled-half-a) for 'boiled egg', one brown egg for 'indo'"
 }

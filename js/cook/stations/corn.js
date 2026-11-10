@@ -83,7 +83,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
    * St.stoneBand's tray, the shared Shelf.P.tray, where the kit has it; the stone band before that).
    */
   function band(S, o) {
-    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { tray: true })) : null;
+    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { game: KEY })) : null;
   }
 
   async function corn(host, p) {

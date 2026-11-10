@@ -398,7 +398,19 @@ import { NjgServe } from "../shared/serve.js";
   const St = Cook.Stations;
   St.worktopWash = () => { const T = global.Tokens; return (T && T.int && T.int("worktop-wash")) || (T && T.cookInk ? T.cookInk().page : 0); };
   St.STONE = { get mean() { const T = global.Tokens; return (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0); }, tile: "assets/shared/panel/stone-tile-s17.webp", shelf: "assets/shared/panel/stone-shelf-s17.webp", tileK: 0.5, shelfK: 0.35, faceDown: 14 };
-  St.stoneBand = function (S, { top, base, far = 2000, depth = 0, tray = base == null, alpha = 0.18 }) {
+  /*
+   * SH-248 (Zafar, 10 Nov: "the decision about which bottom element each game uses, the stone tray or the vertical shelf, should be in
+   * their game file design, but also in their actual code, so it pulls the shared element"): each game's settings file names its
+   * bottom row, band "tray" (top-down things lie on the stone tray) or "shelf" (side-on things stand on chai's shelf); the game passes
+   * game: <its key> and the band is read from there (docs/game-design/modes/cook.md "Each game's bottom row"; build/core/band.test.mjs).
+   */
+  St.bandOf = (game) => ((((Cook.data && Cook.data.settings) || {})[game] || {}).band) || null;
+  St.stoneBand = function (S, { top, base, far = 2000, depth = 0, tray = base == null, alpha = 0.18, game = null }) {
+    if (game) {
+      const b = St.bandOf(game);
+      if (b === "tray" || b === "shelf") tray = b === "tray";
+      else if (global.console) console.warn(`St.stoneBand: ${game}'s settings name no band ("tray" or "shelf")`);
+    }
     const ST = St.STONE;
     const W = 1600 + 2 * far;
     const SH = global.Shelf;

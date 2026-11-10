@@ -165,7 +165,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // the kitchen kit's worktop wash and the stone tray band (ART-69, SH-243: top-down things on the stone tray, as wave B's corn)
     const band = Object.assign({ top: 630, base: 818, chipY: 860 }, (global.Shelf && global.Shelf.BAND) || {}, sc.band || {});
     objs.push(Cook.Kit.worktop(S, { top: band.top, far: 2000 }));
-    objs.push(St.stoneBand(S, { top: band.top, base: band.base, far: 2000, depth: D.bg + 1.2, tray: true }));
+    objs.push(St.stoneBand(S, { top: band.top, base: band.base, far: 2000, depth: D.bg + 1.2, game: KEY }));
     // SH-149 (contract-101): Nani's helper card and its drop-down, as in every kitchen game (eggs runs its own stage, never St.begin)
     if (St.helperWatch) St.helperWatch(ctx, KEY, { own: true });
     // the kitchen kit's first-time gate (STD-D1-01): each light once for a new player, or the first round ever here
@@ -269,6 +269,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     };
     const onBand = (k, id) => {
       const img = T(S.add.image(0, 0, tex(k)).setDepth(D.item));
+      img.k = k;
       img.size = (ITEM(k).drawn || {}).w || 120;
       img.setScale(img.size / Math.max(1, img.width, img.height));
       img.chip = chip(id, 0); // (its pill is part of its light: C.parts)
@@ -300,7 +301,21 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         c.setScale(k).setY(y);
       });
       // (each thing above its pill, a small gap between, and never into the band's top: its hop's room above it)
+      // CK-73 (Zafar, 10 Nov): on chai's shelf (band "shelf") each side-on thing stands on the shelf's line, as chai's jars do: its
+      // height the settings' drawn.h, never above the band's top with its hop's room; its picture's clear foot (the cut's 16 px) below
+      const onShelf = St.bandOf && St.bandOf(KEY) === "shelf";
       things.forEach((img) => {
+        if (onShelf) {
+          const want = (ITEM(img.k).drawn || {}).h || 118;
+          const foot = 16 / Math.max(1, img.height);
+          const room = band.base - (band.top + 22);
+          const h = Math.min(want, room / 1.12);
+          img.setScale(h / Math.max(1, img.height * (1 - 2 * foot)));
+          img.setOrigin(0.5, 1 - foot);
+          img.y = band.base;
+          if (!img.shadow) shade(S, img, { dx: 4, dy: 3, alpha: 0.22, blur: 4 });
+          return;
+        }
         const room0 = y - ph / 2 - 8 - (band.top + 22);
         const s = Math.min(img.size, room0 / 1.12);
         img.setScale(s / Math.max(1, img.width, img.height));

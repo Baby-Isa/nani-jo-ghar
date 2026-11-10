@@ -201,7 +201,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view). No shelf ledge: the piles
     // and the plates sit on the band itself
     Kit.worktop(S, { top: SHELF_TOP, far: FAR });
-    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, tray: true }); // (ART-69: the stone tray: the heaps and plates lie on it)
+    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, game: "maani-line" }); // (ART-69: the stone tray: the heaps and plates lie on it)
 
     // two columns, centred as one block: the chakla | the hob
     const hs = Kit.size(1, HOB_K);

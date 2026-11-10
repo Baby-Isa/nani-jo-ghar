@@ -575,7 +575,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // its band is the shared stone tray on the worktop (St.stoneBand tray), not the side-on shelf
     const top = z.Y(SHELF_TOP);
     if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
-    St.stoneBand(S, { top, far: FAR, depth: D.bg + 1.2, tray: true });
+    St.stoneBand(S, { top, far: FAR, depth: D.bg + 1.2, game: "daar" });
   }
 
   /**
