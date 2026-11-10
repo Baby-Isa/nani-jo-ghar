@@ -857,7 +857,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
         const onItem = first && first.classList && (first.classList.contains("oc-row") || first.classList.contains("wc14"));
         const lit = Array.isArray(first) || !first ? first : () => (onItem ? cardIn(itemOf()) || first : document.querySelector("#mission .oc-card") || first);
-        const h = Onboard.light(lit, { look: "", pad: 4, pass: true, ms: (R ? R.pointMs() : 0) / speed(), quitIf: endIf, note: o.note });
+        // (CK-63, contract-105: round an item card the box is the card's own frame, drawn whole with the pad: the kit's one rule for a
+        // thing with a picture and a pill took the card's picture and speaker, so the box began 5 px below the card's top on a phone)
+        const cardBox = () => {
+          const el = onItem ? lit() : null;
+          const r = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+          return r && r.width ? { x: r.left, y: r.top, w: r.width, h: r.height } : null;
+        };
+        const h = Onboard.light(lit, { look: "", pad: 4, pass: true, ms: (R ? R.pointMs() : 0) / speed(), quitIf: endIf, note: o.note, box: onItem ? cardBox : undefined });
         h.done.then(() => res(true));
       };
       go();

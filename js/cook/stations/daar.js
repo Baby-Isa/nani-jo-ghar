@@ -153,7 +153,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   // DAAR-02 (s08c KD1, s08 w7A): the real kadchi from above, its bowl full of daal as it stirs (kadchi-daal-s08c: a deep
   // round bowl, the handle rising towards us, foreshortened, with its hanging hole); its bowl: the biggest circle inside it,
   // measured on the cut (assets/cook/items-s08c/meta.json bowls)
-  const LADLE = { w: 436, h: 560, cx: 0.3647, cy: 0.7143, r: 0.3488 };
+  // S19 (the brief's daar task: the ladle, kit/ladle; Zafar 9 Nov: "I do like the handle for the stirrer"): the kit's steel ladle with its
+  // wooden handle, top-down (assets/cook/items/v4/kit/ladle.webp, 259 x 700): its round bowl's centre and radius measured on the cut,
+  // the handle straight down from it (handle: its angle, screen y down)
+  const LADLE_V4 = { w: 259, h: 700, cx: 0.498, cy: 0.189, r: 0.478, handle: Math.PI / 2, bowlK: 0.27 };
+  const LADLE = LADLE_V4;
   // (R4 cell 6) the same bowl of plain daar, no tadka: it waits beside the pot and pours in (the tadka one is the review's)
   // S03-D (C10): the s03 bowl (matte daar) on trivet-t, one canvas with daar-bowl-plain-t (build/gen_s03.py --fit)
   const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4899 };
@@ -161,9 +165,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const DIAL_ICONS = ["stopped", "slow", "fast", "spill"];
   // DAAR-13: the margin-safe knife's edge, tip to heel, as fractions of tool-knife-t.png (345 x 296)
   const KNIFE_BLADE = [0.07, 0.08, 0.5, 0.64];
-  // DAAR-11 (D6): the kadchi's handle leaves its bowl about 61 degrees above the right (kadchi-daal-s08c); turned so it
-  // always points out to the rim, resting on it, as the ladle goes round
-  const LADLE_HANDLE = (-60.8 * Math.PI) / 180;
+  // DAAR-11 (D6): the ladle's handle, turned so it always points out over the rim, resting on it, as the ladle goes round
+  const ladleHandle = () => LADLE.handle;
   // DAAR-30: the stir's flag, at 12 o'clock (screen angles: y down, so straight up is -90 degrees)
   const FLAG_AT = -Math.PI / 2;
   /** A test log (the contract checks read it: contract-65, contract-66), never shown. */
@@ -290,6 +293,17 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     return Ls[ctx.dishAt || 0] || Ls[0] || null;
   };
   const shelfUrl = (id) => `${IT}shelf-${id}-bare-f.webp`;
+  /*
+   * S19 (the brief's daar task; Zafar 9 Nov, SH-243: "if the game is top down ... we have the items on a tray at the bottom"): the
+   * tadka's things are the eight cream bowls seen from above (assets/cook/items/v4/daar/, F4), lying on the stone tray with their pills;
+   * a thing with no bowl keeps its old picture. Each bowl's round body fills its canvas (about 0.96 of it).
+   */
+  const V4D = "assets/cook/items/v4/daar/";
+  const V4K = "assets/cook/items/v4/kit/";
+  const BOWL = { "spi-02": "jeeru", "spi-05": "rai", "spi-01": "hardar", "spi-16": "loon", "spi-04": "lal-marcha", "veg-13": "lasan", "veg-12": "lila-marcha", "spi-10": "elchi" };
+  const BOWL_D = 150; // a bowl's diameter on the tray, design px (narrower where the slots ask)
+  const BOWL_GAP = 14; // between a bowl's foot and its pill's top
+  const Shelf0 = () => global.Shelf;
 
   Mech.combined("daar", {
     station: "daar",
@@ -326,7 +340,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const art = [
       ["dv2-knife", IT + "tool-knife-t-v2.webp"], // the fallback is the current knife (Z8: tool-knife-t.png/.webp are retired art; S13 decodes every load)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
-      ["dv3-ladle", "assets/cook/items-s08c/kadchi/kadchi-daal-s08c.webp"], // DAAR-02: s08c KD1
+      ["dv3-ladle", V4K + "ladle.webp"], // DAAR-02: the kit's ladle (S19; was s08c KD1's kadchi)
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
       // S19 (Fable's daar flaws 8 and 9): the small glass bowl each chopped heap waits in, and the empty steel katori they are served in
@@ -335,7 +349,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     ]
       .concat(POTS.map((st) => [`dv3-pot-${st}`, `${V3}pot-${st}.webp`]))
       .concat([["dv4-pot-top", `${S08B}daar-pot-top-s08b.webp`]], Object.values(DISCS).map(([key, file]) => [key, `${S08B}daar-discs/${file}.webp`]))
-      .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, shelfUrl(id)]))
+      .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, BOWL[id] ? `${V4D}${BOWL[id]}.webp` : shelfUrl(id)]))
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
       .concat(DIAL_ICONS.map((n) => [`dv3-dial-${n}`, `${V3}dial-${n}.webp`]))
@@ -552,11 +566,12 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
 
   /* ---------- the flat pieces both phases share ---------- */
   function backdrop(z, S) {
-    // S19 (Fable's daar flaw 5; chai's scene, ART-41): the kitchen kit's worktop wash over the marble and chai's stone band with its
-    // stone shelf at the base line (St.stoneBand), in both phases: was a flat cream strip where the band should be
+    // S19 (Fable's daar flaw 5; ART-41): the kitchen kit's worktop wash over the marble, in both phases. ART-69, SH-243 (Zafar, 9 Nov:
+    // "top down items in a tray and side on items on the shelf"): daar's things are top-down (the whole vegetables, the cream bowls), so
+    // its band is the shared stone tray on the worktop (St.stoneBand tray), not the side-on shelf
     const top = z.Y(SHELF_TOP);
     if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
-    St.stoneBand(S, { top, base: z.Y(BASE), far: FAR, depth: D.bg + 1.2 });
+    St.stoneBand(S, { top, far: FAR, depth: D.bg + 1.2, tray: true });
   }
 
   /**
@@ -595,7 +610,17 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const w = Math.min(crate ? SLOT_W + 16 : SLOT_W, pitch - 18);
       const key = `dv2-shelf-${id}`;
       let img;
-      if (S.textures.exists(key)) {
+      if (BOWL[id] && S.textures.exists(key)) {
+        // (a cream bowl from above, lying on the tray: all the same size, centred over its pill, its foot BOWL_GAP above the pill's top;
+        // the kit's soft contact shadow lower-right)
+        const src = S.textures.get(key).getSourceImage();
+        const d = Math.min(BOWL_D, pitch - 22);
+        const sc = z.L(d / Math.max(src.width, src.height));
+        const foot = CHIP_Y - Shelf0().PILL.h / 2 - BOWL_GAP;
+        img = S.track(S.add.image(z.X(x), z.Y(foot - (src.height * d) / Math.max(src.width, src.height) / 2), key).setScale(sc).setDepth(D.item + 1));
+        img.baseScale = sc;
+        img.shadow = S.contactShadow(img);
+      } else if (S.textures.exists(key)) {
         const sc = z.L(St.classFit(S, key, id, { base: BASE, ppw, slotW: w }).scale);
         img = S.track(S.add.image(z.X(x), z.Y(BASE), key).setOrigin(0.5, 0.97).setScale(sc).setDepth(D.item + 1));
         img.baseScale = sc;
@@ -751,7 +776,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // (SH-247 refined, Zafar 9 Nov: "if there's multiple things taking up width, then we put the button underneath": the dial and the
     // lap card share daar's width, so its knob stays on the front edge below the pot, as it was)
     const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
-    const bodyR = z.L(150);
+    // (S19, DAAR-48: "big pot, big central, big stove": the pot as big as chai's hob holds it)
+    const bodyR = z.L(165);
     const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.95 }); // X6: the flames just peek out past the pot
     const cx = hob.burners[0].x;
     const cy = hob.burners[0].y;
@@ -1234,7 +1260,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    *   right: how far the pot's picture reaches right of its middle (world px); avoid(): world objects to keep clear of
    */
   const NUM_EN = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
-  function lapCard(z, S, { cx, cy, right, bodyR, avoid = () => [] }) {
+  function lapCard(z, S, { cx, cy, right, bodyR, avoid = () => [], w = null }) {
     const W = global.WordCard;
     if (!W || !W.big14 || typeof document === "undefined" || !UI.worldToScreen) return null;
     let wrap = null;
@@ -1264,7 +1290,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const s = edge.s || 1;
       const card = wrap.firstChild;
       // the card about the pot's height (its own proportions), never under the item card's own floor
-      const w0 = Math.round(Math.max(88, Math.min(210, 2 * bodyR * s * 0.62)));
+      // (DAAR-50: w, the dial's balance, when the stir gives it; never under the item card's own floor)
+      const w0 = Math.round(Math.max(88, w != null ? Math.min(260, w) : Math.min(210, 2 * bodyR * s * 0.62)));
       wrap.style.transform = "";
       card.style.width = `${w0}px`;
       W.fit14(card);
@@ -1497,22 +1524,28 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const flag = stirFlag(z, S, cx, cy - bodyR + z.L(4));
       // the ladle (D6): top-down, its bowl in the daar and the handle rising toward us
       const ladle = S.track(S.add.image(cx, cy - trackR, "dv3-ladle").setDepth(D.item + 0.6).setOrigin(LADLE.cx, LADLE.cy));
-      ladle.setScale((inR * 0.3) / (LADLE.r * LADLE.w));
+      ladle.setScale((inR * LADLE.bowlK) / (LADLE.r * LADLE.w));
       const ringG = S.track(S.add.circle(cx, cy - trackR, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
       S.tweens.add({ targets: ringG, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
-      // DAAR-50 (Zafar 9 Nov: the card next to the dial, the pot as it was): the dial and the lap card side by side in the room right
-      // of the hob, the dial nearer the pot (a little smaller where the room asks), the card beyond it, both centred on the pot's height
+      // DAAR-50 (Zafar, 9 Nov late: "the speedometer needs to be on the left, and the counting thing needs to be on the right. Otherwise,
+      // it's completely like awkward ... you can keep the vertical stove ... a card that is balanced proportionally, maybe the same size as
+      // the speedo ... similar visual weight, a little bit taller but less narrow"): the dial in the room LEFT of the hob, centred in it
+      // and on the pot's height (smaller where the room asks); the lap card RIGHT of the hob, about the dial's height and a little
+      // narrower (lapCard's w), so the two balance either side of the upright stove
       const dialW = 340;
+      const hobL = hob ? (hob.x - z.X(0)) / z.k : 590;
       const hobR = hob ? (hob.x + hob.w - z.X(0)) / z.k : 1010;
+      const viewL = (Cook.view && Cook.view.left != null ? (Cook.view.left - z.X(0)) / z.k : 0) + 16;
       const viewR = (Cook.view && Cook.view.right != null ? (Cook.view.right - z.X(0)) / z.k : 1600) - 16;
-      // (the card's width as lapCard draws it, CSS px, in design px: never under the item card's floor)
+      const roomL = hobL - 24 - viewL;
+      const kd = Math.max(0.45, Math.min(1, roomL / dialW));
+      const dialX = viewL + roomL / 2;
+      const dialY = (cy - z.Y(0)) / z.k + LIFT;
+      const dial = speedDial(z, S, { x: dialX, y: dialY, bands, max: k.dialMax || 3, asked, k: kd });
+      // (the card: the dial's visual weight, a little taller and narrower: about 0.72 of its width, never past the view's right edge)
       const ws = Math.max(0.01, UI.worldScale ? UI.worldScale() : 1);
-      const cardW = Math.max(88, Math.min(210, 2 * bodyR * ws * 0.62)) / ws / z.k;
-      const kd = Math.max(0.5, Math.min(1, (viewR - hobR - 24 - 24 - cardW) / dialW));
-      const dialX = hobR + 24 + (dialW * kd) / 2;
-      const dial = speedDial(z, S, { x: dialX, y: SC().dial.y, bands, max: k.dialMax || 3, asked, k: kd });
-      const dialRight = z.X(dialX + (dialW * kd) / 2);
-      const card = lapCard(z, S, { cx, cy, right: dialRight - cx + z.L(10), bodyR, avoid });
+      const cardW = Math.min(dialW * kd * 0.72, viewR - hobR - 24) * z.k * ws;
+      const card = lapCard(z, S, { cx, cy, right: z.X(hobR) - cx, bodyR, avoid, w: cardW });
       let count = 0;
       let ang = FLAG_AT; // the ladle's angle: it starts under the flag
       let rot = 0; // the contents' turn
@@ -1567,7 +1600,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const post = () => z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "wait" });
       const place = () => {
         ladle.setPosition(cx + Math.cos(ang) * trackR, cy + Math.sin(ang) * trackR);
-        ladle.setRotation(ang - LADLE_HANDLE); // DAAR-11: the handle points out over the rim, wherever the ladle is
+        ladle.setRotation(ang - ladleHandle()); // DAAR-11: the handle points out over the rim, wherever the ladle is
         ringG.setPosition(ladle.x, ladle.y);
         still.setRotation(rot);
         swirl.setRotation(rot * 1.7);

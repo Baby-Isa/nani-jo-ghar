@@ -28,8 +28,8 @@
   "pop": {"dx": 190, "dy": -150},
   "pourMs": {"lift": 420, "tip": 280, "pour": 1900, "untip": 220, "back": 300}
  },
- "assets": ["assets/cook/items-s17-stove/t-small-glass-bowl.webp", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp"],
- "_assets": "S19 (decision 68, loadcheck): the pictures daar loads beyond data/cook.json art.assets.stations.daar: the chopped heaps' glass bowls and the serving katori",
+ "assets": ["assets/cook/items-s17-stove/t-small-glass-bowl.webp", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp", "assets/cook/items/v4/daar/*", "assets/cook/items/v4/kit/ladle.webp"],
+ "_assets": "S19 (decision 68, loadcheck): the pictures daar loads beyond data/cook.json art.assets.stations.daar: the chopped heaps' glass bowls and the serving katori; S19 wave A: the eight cream bowls on the stone tray (v4/daar) and the kit's ladle (v4/kit/ladle)",
  "mechanic": {
   "levels": [
    {"vegDecoys": 0, "spiceDecoys": 0, "spiceShelf": ["spi-02", "spi-05", "spi-01", "spi-16", "spi-04", "veg-13", "veg-12", "spi-10"], "_spiceShelf": "S14 roll-out (DAAR-36): an eighth jar, elchi, so L4 has room for its four spices and four decoys (the central rules)", "ladder": "words", "stirLine": "Stir round the pot as many times as Nani says, then tap the tick."},
