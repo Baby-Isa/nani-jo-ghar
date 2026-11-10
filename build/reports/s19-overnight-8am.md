@@ -56,3 +56,8 @@ Nothing new since 00:33. Chop, corn, daar, maani and eggs go live together, once
 ## Next
 - When A hands back: review it, merge it, then start the next builder.
 - I'll judge and cut the redraws when they land, then build sekelo, chaat, samosa and baking.
+
+## Proof
+- **Wave B:** contract run s19-wave-b-fix, 40 pages to the end, 0 page errors (build/screenshots/sandbox/s19-wave-b-fix/contract.md). Its report is build/reports/s19-wave-b.md.
+- **Corn's fixes:** orch-corn83 and orch-corn105 (build/screenshots/sandbox/).
+- **Mount test:** three clean runs.
