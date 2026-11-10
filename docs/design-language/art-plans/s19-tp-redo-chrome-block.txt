@@ -1,0 +1,81 @@
+NANI JO GHAR: THE TOP-DOWN POT, A REDO (Sprint 19). Paste this whole block into Claude in Chrome.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-tray-pot/refs-redo.zip , unzip it,
+and drag both pictures into this chat with this block (00-HOUSE-chai-live: the style; R0-why-redo-wall-uneven: for YOU only, never
+attach it to ChatGPT; it shows what went wrong).
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+Last run's pot (P1, P2) came out with the steel wall wider at the top-left than at the bottom-right: ChatGPT kept a slight tilt, and
+its corrections barely changed it because it was anchored on the picture it was given. This redo uses Zafar's method for a stubborn
+picture. Use chatgpt.com (Zafar is signed in). Run TWO ChatGPT windows (conversations), each in its own tab, one after the other:
+Chat A is the plain photo, Chat B the game version.
+
+CHAT A (a brand new chat; never mention a game, a style or our pictures; attach nothing):
+  Send exactly: "A realistic product photo of a small stainless steel saucepan with a black handle and a small pouring lip, taken
+  from exactly straight above, the camera centred over the pan so the rim is a perfect circle and the steel wall shows as a band of
+  the same width all the way round. Clear water inside with a few small bubbles. The handle points straight to the right, the
+  pouring lip on the left. Plain light grey background, soft even light from the upper left."
+  If the wall band is still uneven, send once more: "The wall band is wider at the top than at the bottom. Move the camera so it is
+  exactly centred over the pan: the band must be the same width everywhere." Keep the best photo: it is a reference, not a pick.
+
+CHAT B (a new chat):
+  1. First message: the 00-HOUSE-chai-live picture and the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes
+     this style work."
+  2. Attach Chat A's photo (download it from Chat A's image, or add it from the Library) and send P1 below. Never attach
+     R0-why-redo-wall-uneven or any earlier pot.
+  3. REVIEW, in two messages (Zafar, 10 Nov): first "Review your image against the line and the house brief, in text only, point by
+     point. Do not draw." When the text arrives, paste it back: "Make a new image that applies this feedback." Never ask for the
+     review and the image in one message.
+  4. When P1 is kept, send P2 in the same chat with the kept P1 attached.
+  Up to three tries for P1, two for P2. If the wall is still uneven after Chat A's photo, say so in the report; don't keep going.
+
+=== IMAGE LINES ===
+P1 THE POT, EXACTLY STRAIGHT DOWN, WITH WATER (pictures: Chat A's photo, 00-HOUSE-chai-live). SQUARE image, on magenta: the
+   saucepan of the photo, with exactly its geometry, drawn in the house style: brushed stainless steel reflecting a neutral pale-grey
+   room, a black handle, a small pouring lip on the left, clear water with a FEW small bubbles (no more than eight).
+   MUST: the rim a perfect circle; the steel wall's band the SAME width all the way round; the floor a centred circle; the handle
+   straight out to the RIGHT and level, its tip a clear margin from the edge. The round body 55% of the picture's width, the whole
+   pan inside the picture with a margin. No shadow on the magenta, no steam.
+P2 THE SAME POT, EMPTY (pictures: your P1). Edit P1, do not draw anew: the identical pan (shape, size, place, handle, lip, steel),
+   with no water, its clean brushed-steel floor showing quiet, fine circular brushing and a soft highlight.
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Open https://chatgpt.com/library. Hover over the first kept image: a small check box appears in its bottom-right corner; tick it.
+Hover over each other kept image; tick its check box in its bottom-right corner. Tick every image of this run (Chat A's photos too)
+and nothing else, then press the download button on the selection bar: one download. Log each as "DOWNLOADED <n>: <ChatGPT's file
+name> -> <save-as name>" (save-as: s19-tpr-<line>-<try>.png; Chat A's: s19-tpr-photo-<try>.png). If the selection is refused, use
+each image's own download button. Never page JavaScript, never a file picker, never a GitHub upload: Zafar pushes the folder
+himself to main under assets.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start with "S19 POT REDO REPORT"; per line: tries (and why), kept: <save-as> = <ChatGPT's file name>, your pick and why, whether
+the wall band is even, anything ChatGPT refused. Then the DOWNLOADED list and anything missing.
+
+=== HOUSE BRIEF (paste as the first message of each conversation) ===
+These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy their
+style, not their contents: ignore the faces, labels, pills and the gear icon in them, and ignore the thin coloured guide lines and
+small face stickers in any reference picture. Rules for every image:
+- One large soft light from the upper left; nothing floats. The 00-HOUSE pictures have faint window-light streaks across the
+  worktop; do NOT copy those: everything is evenly lit, no window streak.
+- Materials: brushed stainless steel reflecting a neutral pale-grey room; cream ceramic (the bowls in F1 are THE bowl: the same
+  shape, cream and rim in every bowl you draw); dark walnut only where a line asks; white marble worktop with soft cool grey veins
+  only where a line asks for marble (never golden or cream marble).
+- Camera: "straight down" means a flat plan view with no perspective at all: a bowl, a plate or a cob's end is a perfect circle, a
+  tray a perfect rectangle, and no inner or outer side wall of any container shows, only its rim and its floor. Depth shows only
+  as a soft shadow inside the rim along its upper-left inner edge. Any steel rim is ONE flat band of even width, no inner line,
+  ledge or bevel. The reference pictures are sometimes tilted; yours must not be. "Side-on" lines are the exception.
+- These are separate PIECES that we cut out and place in our own layout; we place the stove, the trays, the plates, the shadows and
+  the word labels ourselves. Draw only what the line asks, nothing else: no stove, hob, knobs or flames, no hands, no text, letters,
+  numbers or labels, no tools that do nothing, no napkins or plants unless asked, no steam, no glow, nothing in the air.
+- Counts are exact: if a line says six, draw six, and count them in your check.
+- Fill the frame: the objects asked for take up most of the picture, with a margin of about one tenth of the picture all round.
+  Never small objects in a large empty field. Sizes are given as shares of the picture's width: keep to them.
+- "On magenta" means one flat solid #FF00FF background edge to edge, no gradient, no texture, and NO shadow at all: no contact shadow,
+  no soft shadow, nothing darker than the flat magenta anywhere (we add every shadow in code). The object must not touch the edges.
+  We cut along the magenta, so it must not tint, reflect in or bleed onto the object: steel reflects a neutral pale-grey room, never
+  pink; between thin pieces (strands, rings) the magenta stays pure.
+- Where a line asks for several panels or rows: equal panels, the same camera, scale and light in each, separated only by a strip of
+  the same background; no frames, borders, dividing lines or numbers.
+- No oval plates or trays: round, square or rectangular only. No sweets or biscuits anywhere.
+
