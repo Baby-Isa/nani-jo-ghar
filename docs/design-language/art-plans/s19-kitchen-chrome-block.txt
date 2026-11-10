@@ -1,0 +1,87 @@
+NANI JO GHAR: THE KITCHEN WHERE THE DISHES ARE SERVED, THREE WAYS (Sprint 19). Paste this whole block into Claude in Chrome.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-kitchen/refs.zip , unzip it,
+and drag all five pictures into this chat with this block.
+
+=== WHAT THIS RUN IS FOR ===
+At the end of each cooking game the child serves the dishes to the family in the kitchen (K0: Nani and Nana behind a marble island
+with three walnut trays; K1: the same kitchen with no people). We are exploring whether this kitchen can be better, and whether the
+dishes can be served on the trays at all: the camera looks at the counter from low down, so flat food (chapatis on a plate, a fried
+egg) may hardly show. These are MOCK-UPS for Zafar to choose from, not game pieces: nothing gets cut out. Three ways:
+  A. improve the current kitchen (Chat 1), B. design it from scratch without seeing ours (Chat 2), C. bring B's best ideas into ours
+  (Chat 3). Every chat ends with the same test: three dishes served, so Zafar can see if they read.
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+Use chatgpt.com (Zafar is signed in). Run THREE ChatGPT windows (conversations), each in its own tab: Chat 1 and Chat 2 at once;
+Chat 3 only once Chat 2's images are kept. Send in one tab, move to the next while it generates.
+Rules for every chat (Zafar, 10 Nov):
+- ADVICE FIRST, in its own message, text only: ask for the advice or the review and say "Do not draw." When it answers, paste its
+  answer back with the pictures and ask: "Make a new image that applies this advice." Never ask for the words and the image in one
+  message; never wait for an image you did not ask for in that message.
+- Up to two images per line. Keep every image.
+- STUBBORN (a new image comes back nearly the same as the one attached): don't attach that image again; describe the change in
+  plain words in a fresh message, or start a fresh chat with only the house picture and the words.
+- The people are real family: in a mock they may be drawn as in K0, but never change their faces, clothes or ages on purpose;
+  Zafar's own character art replaces them in the game.
+- Chat 2 must NEVER see K0, K1 or anything of ours except 00-HOUSE-chai-cooking (the style) and the two D pictures (the dish angle).
+
+=== IMAGE LINES ===
+CHAT 1: IMPROVE THE CURRENT KITCHEN (attach K0-the-kitchen-now, K1-the-kitchen-background-now, 00-HOUSE-chai-cooking)
+First message: the HOUSE BRIEF below, the three pictures, and "Reply in text only: say in 5 lines what makes 00-HOUSE work."
+A1 ADVICE (text only, no image): "K0 and K1 are where a child serves the dishes they cooked to their grandparents in a premium
+   children's game. As an art director and a game designer: what would make this kitchen warmer, clearer and more premium, and
+   would three dishes on those trays be readable from this camera (a glass of milky tea, a plate with two chapatis, a bowl of
+   lentil soup)? Give 8-12 concrete changes, best first. Do not draw."
+A2 THE CURRENT KITCHEN, IMPROVED (pictures: K1, with A1's advice pasted): "Make a new image of this same kitchen that applies this
+   advice. Keep its layout: the island across the front with the three walnut trays on it, the window on the left, the arched door
+   on the right, the green cupboards and the range behind. No people. Landscape 16:9."
+A3 THE SAME, WITH THE DISHES SERVED (pictures: your A2, D1, D2): your A2 kitchen with, on its three trays from left to right, a
+   clear glass of milky tea, a cream plate with two chapatis, a cream bowl of yellow lentil soup; each dish drawn at the counter's
+   angle as D1 and D2 are, the same light. The dishes must be easy to tell apart at a glance. No people.
+
+CHAT 2: FROM SCRATCH, WITHOUT SEEING OURS (attach only 00-HOUSE-chai-cooking, then D1 and D2 where named)
+First message: the HOUSE BRIEF below, the picture, and "Reply in text only: say in 5 lines what makes this style work."
+B1 ADVICE (text only, no image): "Design the scene where, at the end of each cooking game, a child aged 3-6 serves the dishes they
+   cooked to the family in grandmother's sunny kitchen. Up to three family members each receive one dish, and the child must see
+   at a glance which dish went to whom. Suggest three different layouts (where the family stands or sits, where the dishes land,
+   the camera height), each with why it would work, and say for each how flat food (two chapatis on a plate, a fried egg) stays
+   readable. Do not draw."
+B2, B3, B4 ITS THREE LAYOUTS (pictures: D1, D2; B1's answer pasted): "Make an image of layout <1/2/3> exactly as you described it:
+   a sunny, warm Indian-family kitchen, premium and calm, a grandmother and a grandfather (simple, friendly), and three dishes
+   served: a clear glass of milky tea, a cream plate with two chapatis, a cream bowl of yellow lentil soup. Landscape 16:9."
+   One of the three must have NO trays (the dishes straight on the counter or a table); if B1 gave none, make B4 that one.
+
+CHAT 3: THE BEST OF BOTH (once Chat 2's images are kept: attach K1, A2 and the two B images you judge best)
+First message: the HOUSE BRIEF below and "Reply in text only: say in 5 lines what makes the first picture's style work." with
+00-HOUSE-chai-cooking.
+C1 ADVICE (text only, no image; pictures: K1, A2, the two B picks): "The first is our kitchen now, the second our improved version,
+   the last two are fresh designs. Which elements of the fresh designs would make ours better, and which would not suit it? List
+   them, best first, and say how each would look in ours. Do not draw."
+C2 OURS WITH THE BEST ELEMENTS (pictures: A2; C1's answer pasted): "Make a new image of this kitchen that applies these elements.
+   No people. Landscape 16:9."
+C3 THE SAME, WITH THE DISHES SERVED (pictures: your C2, D1, D2): as A3, in your C2 kitchen; if C1 chose no trays, the dishes on
+   the counter where the trays were.
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Open https://chatgpt.com/library. Hover over the first image of this run: a small check box appears in its bottom-right corner;
+tick it. Hover over each other image of this run; tick its check box in its bottom-right corner. Tick every image of this run and
+nothing else, then press the download button on the selection bar: one download. Log each as "DOWNLOADED <n>: <ChatGPT's file
+name> -> <save-as name>" (save-as: s19-kitchen-<line>-<try>.png). If the selection is refused, use each image's own download
+button. Never page JavaScript, never a file picker, never a GitHub upload: Zafar pushes the folder himself to main under assets.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start with "S19 KITCHEN RUN REPORT"; paste A1's, B1's and C1's advice in full (it is half the value of this run); per line: tries,
+kept: <save-as> = <ChatGPT's file name>, and in one line whether the three dishes read at a glance. Then your top three images for
+Zafar, with why. Then the DOWNLOADED list and anything missing.
+
+=== HOUSE BRIEF (paste as the first message of each conversation) ===
+These are pictures for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE picture is the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy its
+style, not its contents: ignore the faces, labels, pills, cards and the gear icon in it, and ignore the thin coloured guide lines and
+small face stickers in any reference picture. Rules for every image:
+- A sunny, calm room: soft daylight, gentle shadows, nothing harsh; warm creams, sage green, walnut and white marble with soft cool
+  grey veins (never golden or cream marble); brushed steel reflects a neutral pale-grey room.
+- A halal Indian-Muslim family home, modest and warm: no religious images or symbols of any kind, no alcohol, no sweets or biscuits.
+- Leave clear, calm space where the family and the dishes are: no clutter, no text, letters, numbers or labels anywhere.
+- Plates, bowls and trays are round, square or rectangular (they only look oval because of the camera's angle).
+- Landscape 16:9 unless a line says otherwise.
