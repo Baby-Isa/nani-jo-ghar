@@ -796,12 +796,14 @@
     return global.NaniGuide.stepper({
       show: (html, o) => {
         if (!guide) return;
+        if (praiseLine) return showPraise();
         guideLine = stepper && stepper.current && stepper.current.line && stepper.current.line.ok !== false ? stepper.current.line : null;
         guide.set(html, o);
       },
       clear: () => {
         guideLine = null;
-        if (guide) guide.set("");
+        // (SH-252: the well done's Shabash stays until the end screen, a new step or a new order)
+        if (guide) praiseLine ? showPraise() : guide.set("");
       },
       speak: (s) => (s.line && Lang.hasVoice(s.line) && guide ? queued(() => speakAlong(s.line, guide.el)) : null),
       glow: (s, on) => {
