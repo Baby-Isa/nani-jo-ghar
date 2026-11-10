@@ -1,0 +1,60 @@
+{
+  "name": "s19-wave-d: the rule breaks in sekelo, chaat, samosa and baking (code only, before their new art)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "four games' contract breaks fixed in code while their redrawn art is still coming; judgement on each break (fix the game, or fix a wrong probe)",
+  "cost": "about $30-50 (Zafar: do all the work, no budget stop)",
+  "stop": "when the tasks are done; no budget or time stop (Zafar, 10 Nov overnight)",
+  "branch": "s19-wave-d in /home/user/wt/s19-wave-d (made for you from the integration branch); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "build/reports/s18-review-and-direction.md (chai's standard: sections 2-4)",
+    "build/reports/s19-rule-breaks-by-game.md sections sekelo, chaat, samosa, baking (the 9 Nov gate's counts: stale, many fixed since by shared work; measure afresh first)",
+    "build/reports/s19-wave-a.md and build/reports/s19-wave-b.md (the stone tray, the order cards' pictures and light, the hop: what changed under these games tonight)",
+    "docs/process/qa-checklist.md 'When we check, and how deep'",
+    "docs/decisions/*.md (his answers, 9-10 Nov)"
+  ],
+  "owns": [
+    "js/cook/stations/mishkaki-grill.js and data/stations/mishkaki-grill.json (sekelo)",
+    "js/cook/stations/samosa.js and data/stations/samosa.json",
+    "js/cook/stations/baking.js and data/stations/baking.json",
+    "data/stations/chaat.json and js/cook/mechanics/assemble.js (chaat)",
+    "js/cook/mechanics/fill-fold.js, fry.js, thread.js, knead.js (only as these four games use them)",
+    "build/reports/s19-wave-d.md"
+  ],
+  "readOnly": [
+    "js/cook/kitchen-kit.js, js/cook/grill-kit.js, js/shared/** (write any change you need in your report, exactly)",
+    "js/cook/ui.js, js/cook/coach.js, js/cook/flow.js",
+    "build/sandbox/** (a probe you judge wrong: write the exact change and why in your report; the orchestrator decides)",
+    "assets/** (the art: new art for these games comes later, from Zafar's redraws; do not rewire art now)",
+    "js/cook/stations/chai-tray.js, eggs.js, corn.js, chop.js, daar.js, maani-line.js and their data (other builders' or done)"
+  ],
+  "stubs": "none",
+  "port": 8906,
+  "report": "s19-wave-d",
+  "publish": false,
+  "flows": [
+    "cook:mishkaki-grill",
+    "cook:chaat",
+    "cook:samosa",
+    "cook:baking"
+  ],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Measure first: the contract run for the four games at L1-L4 and their #mistake and #hint paths at the four sizes (`flock -w 3600 /tmp/njg-browser-8906.lock timeout 3600 node build/sandbox/run.mjs --contract --touched cook:mishkaki-grill,cook:chaat,cook:samosa,cook:baking --run-id s19-wave-d-before --no-sheets`, with COOK_TEST_PORT=8906). Its contract.md is the list you work from; the 9 Nov counts are stale.",
+      "accept": "the before run's contract.md named in the report, with its counts per game and per check"
+    },
+    {
+      "do": "Fix every break in the four games' own code: the light whole round its thing and centred (105), lit shelf items hop (107), no game's own glow outside the kit's light (102: bring the kit's light, as chai's hint now does, never remove the help), every shelf item on one base line (109), card pictures that load (104), lights stopping short of neighbours (92), the item never said before Nani's card shows it (89), and any other. Where a break is the probe's fault, or a shared file's, write the exact change and the evidence in the report instead. Never remove a mechanic or a help.",
+      "accept": "the same run again (run id s19-wave-d-after): every flow reaches its end, 0 page errors, every remaining break explained in the report with its owner"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (/tmp/njg-browser-8906.lock) except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; never remove a mechanic (Zafar's OK needed); no game's own glow or light, only the kit's; shared screens and buttons from js/shared only; fix what you break; delete only your own superseded runs (the disk is tight: keep under 3 GB); if you need a file you don't own, write the exact change in your report. Zafar said: don't stop for budget or time; do all the work.",
+      "accept": "build/reports/s19-wave-d.md with a Proof section, under 800 words"
+    }
+  ]
+}
