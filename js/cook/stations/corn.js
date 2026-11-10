@@ -776,6 +776,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     }
     screen = 3;
     active = people.length;
+    // (the round is over: nothing here takes a tap any more, as the kitchen comes back: contract-109 read a plate mid-transition)
+    plates.forEach((o) => o && o.active && S.untap(o));
+    Object.values(bowls).forEach((o) => o && o.active && S.untap(o));
     refresh();
     Cook.undoAt = null;
     UI.mission.closeItem([], dish, { all: true });
