@@ -666,7 +666,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       began();
       const q = people[i];
       if (screen !== 2 || i !== active || !q || q.served || !serveNow) {
-        S.wiggle(plates[i] || plates[0]);
+        // (a round plate shakes side to side, never turned: a turned square picture grows its box into the band, contract-109)
+        const pt = plates[i] || plates[0];
+        if (pt && !S.tweens.isTweening(pt)) S.tweens.add({ targets: pt, x: pt.x + 8, duration: 60, yoyo: true, repeat: 2 });
         return;
       }
       const go = serveNow;
