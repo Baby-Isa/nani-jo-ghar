@@ -38,7 +38,7 @@ export const CARD_PART = 0.5;      // contract-105: a light round less than this
 export const KNOB_CLEAR = 2;       // contract-110: the knob and the face this clear of the pan's picture and of the side panel
 export const KNOB_MID = 0.08;      // ... and their middle within this share of the pan's height (at least 8 px) of the burner's middle
 export const FOOT_IN = 4;          // contract-111: the foot's tap this many CSS px inside the item's picture, above its lowest edge
-export const NOT_A_THING = /shadow|halo|glow|dim|light/i;
+export const NOT_A_THING = /shadow|shade|halo|glow|dim|light/i;
 export const CRATE = /(crate|heap|pile|sack|basket)/i;
 export const OLD_CARD = ".oc-box, .oc-strip, .oc-skewer, .oc-group, .oc-item:not(.oc-items14)";
 
@@ -584,7 +584,7 @@ function s19hook() {
             // (a glowing thing hops: its foot is read from where it stands, glowFx.y, not mid-hop)
             const foot = o.glowFx && o.glowFx.y != null ? bt + (o.glowFx.y - o.y) * ky * cam.zoom : bt;
             words.push({ id: String(o.wordId), pic: [l, t, r, bt], chip: chipBox, foot, glow: !!o.glowFx });
-          } else if (o.texture && o.texture.key && !/^__/.test(o.texture.key) && !/shadow|halo|glow|dim|light/i.test(o.texture.key) && (o.type === "Image" || o.type === "Sprite")) {
+          } else if (o.texture && o.texture.key && !/^__/.test(o.texture.key) && !/shadow|shade|halo|glow|dim|light/i.test(o.texture.key) && (o.type === "Image" || o.type === "Sprite")) {
             pics.push({ id: o.texture.key, box: [l, t, r, bt] });
           }
         }
@@ -666,7 +666,7 @@ function s19hook() {
           if (key === "kit-flame-high") { const b = bx(o); if (b) flames.push({ x: (b[0] + b[2]) / 2, y: (b[1] + b[3]) / 2, r: ((b[2] - b[0]) / 2) * (245 / 256) }); continue; }
           if (inv || o.alpha === 0) continue;
           if (/-badge.*v2round/.test(key)) { const b = bx(o); if (b) faces.push(b); continue; }
-          if (/^(kit-|__)|shadow|halo|glow|dim|light|stage|bg|wall|worktop|marble|panel|band/i.test(key) || !/Image|Sprite/.test(o.type || "")) continue;
+          if (/^(kit-|__)|shadow|shade|halo|glow|dim|light|stage|bg|wall|worktop|marble|panel|band/i.test(key) || !/Image|Sprite/.test(o.type || "")) continue;
           const b = bx(o);
           if (b) pics.push({ key, b });
         }

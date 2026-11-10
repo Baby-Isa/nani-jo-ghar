@@ -24910,7 +24910,12 @@
   {
    "flow": "cook:eggs",
    "path": "fair",
-   "level": 1,
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
    "sizes": [
     "1280x665"
    ],
@@ -25040,8 +25045,14 @@
   {
    "flow": "cook:eggs",
    "path": "fair",
-   "level": 1,
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
    "sizes": [
+    "740x320",
     "1280x665"
    ],
    "profile": "seen",
@@ -25052,7 +25063,7 @@
     "crop:#side"
    ],
    "expect": null,
-   "note": "eggs' card today: one card per person's ask, its picture the egg (CK-62) | waits: Eggs' order: 'I want two fried eggs' and one card per egg with no number (Q1's principle, waiting on Zafar and Mum; s19-cards: out of scope)",
+   "note": "each person's headline says their count ('Muke ba tarela inda khape'); one card per egg ('tarelo indo', 'boiled egg'), no number on a card",
    "delay": 0
   }
  ],
@@ -25865,6 +25876,35 @@
     "pass"
    ],
    "note": "maani: the tawa shares the width with the chakla, so Nani's face and the knob stay below it as before (contract-110); chai keeps its knobs below each burner"
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "contract:110",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "eggs: two pans side by side at every level, each knob below its pan on the hob's front edge (contract-110)",
+   "delay": 1500
   }
  ],
  "SH-244": [

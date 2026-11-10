@@ -172,7 +172,7 @@ test("checkS19 runs every check on one timeline", () => {
 });
 
 test("contract-105's scan never takes a shadow, halo, glow, dim or light picture for the lit thing (the final run judged two lights against a pan's shadow)", () => {
-  for (const k of ["shadow", "eg-pan-shadow", "kit-halo", "__glow:x"]) assert.ok(NOT_A_THING.test(k) || /^__/.test(k), k);
+  for (const k of ["shadow", "eg-pan-shadow", "kit-halo", "__glow:x", "plate-cream:shade:8"]) assert.ok(NOT_A_THING.test(k) || /^__/.test(k), k);
   for (const k of ["eg-pan-dry", "mv-velan", "kit-pan-ring-158", "sv3-fold-strip"]) assert.ok(!NOT_A_THING.test(k), k);
-  assert.match(S19_HOOK, /!\/shadow\|halo\|glow\|dim\|light\/i\.test\(o\.texture\.key\)/);
+  assert.match(S19_HOOK, /!\/shadow\|shade\|halo\|glow\|dim\|light\/i\.test\(o\.texture\.key\)/);
 });
