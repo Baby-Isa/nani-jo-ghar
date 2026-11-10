@@ -344,8 +344,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (S.contactShadow) img.shadow = S.contactShadow(img, { centerX: img.x, centerY: z.Y(band.base - 4), width: img.displayWidth * 0.8, height: z.L(16) });
           const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(x), z.Y(band.chipY), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: 128 }) : null;
           if (chip && chip.setScale) chip.setScale(z.k);
-          shelfAt[id] = { x, y: band.base - (img.displayHeight / z.k) / 2, img };
+          shelfAt[id] = { x, y: band.base - (img.displayHeight / z.k) / 2, img, chip };
         });
+        // SH-255 (the eye judge, 10 Nov: daar's band pills about half chai's at 740x320): the pills at chai's size on screen (the kit's
+        // fitPills, chai's rule, in world px: never the zone's scale)
+        if (Cook.Kit && Cook.Kit.fitPills) Cook.Kit.fitPills(S, Object.values(shelfAt).map((o) => o.chip), { slotW: z.L(SL ? SL.slotW - 12 : 148), y: z.Y(band.chipY), bottom: z.Y(896), hit: false });
       }
 
       /*
