@@ -29,3 +29,6 @@
 ## Zafar, 10 Nov night (after the redraws landed)
 - Chaat's chutneys: the drizzles (C5-6, C10-4); the ribbons stay cut.
 - The knife's path light: yes in principle, and it is chop's own: chop is one standalone game chained into recipes, so a change to chop applies everywhere chop is seen; there must be one chop (SH-259, STD-E2-08a).
+- Naan in four stages at the next art run, two per image (ART-73).
+- Chaat's chop light: yes, and it is chop's own (SH-259).
+- The two ChatGPT folders on main come off at the next publish (ART-74).
