@@ -1427,7 +1427,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const r = ring ? ring() : null;
           return r ? { x: Math.min(b.x, r.x), y: Math.min(b.y, r.y), right: Math.max(b.right, r.right), bottom: Math.max(b.bottom, r.bottom) } : b;
         };
-        lights[name].h = Cook.Coach.control({ key: "mishkaki-grill", note: `mishkaki-grill:${name}`, target: Cook.Coach.box(sk, 6, { bounds }), first: true, noHint: true, current });
+        lights[name].h = Cook.Coach.control({ key: "mishkaki-grill", note: `${gate.scope}:${name}`, target: Cook.Coach.box(sk, 6, { bounds }), first: true, noHint: true, current });
       };
       const lightsOff = () => Object.values(lights).forEach((l) => l.h && (l.h.close(), (l.h = null)));
       const nPieces = SK.knobs("thread", z.level).pieces;
