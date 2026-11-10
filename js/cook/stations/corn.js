@@ -427,13 +427,23 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           false
         );
       } else if (st.kind === "squeeze") {
-        // lemon: its juice, a few glossy pale streaks and a shine
+        // lemon: its juice, glossy streaks along the kernels, and the squeezed wedge resting on the cob's tip end
         for (let i = 0; i < n; i++) {
           const x = along();
-          g.fillStyle(c, 0.45);
-          g.fillEllipse(x, across(x) * 0.8, th * (0.35 + rnd() * 0.3), th * (0.12 + rnd() * 0.08));
-          g.fillStyle(col("lemonShine"), 0.7);
-          g.fillCircle(x - th * 0.05, across(x) * 0.6, Math.max(1.5, th * 0.035));
+          g.fillStyle(col("lemonShine"), 0.8);
+          g.fillEllipse(x, across(x) * 0.7, th * (0.4 + rnd() * 0.3), th * (0.08 + rnd() * 0.05));
+        }
+        const r = th * 0.62;
+        const wx = x1 - len * 0.1;
+        const wy = -th * 0.15;
+        g.fillStyle(col("lemonRind"), 1);
+        g.slice(wx, wy, r, 0, Math.PI, false).fillPath();
+        g.fillStyle(c, 1);
+        g.slice(wx, wy, r * 0.84, 0, Math.PI, false).fillPath();
+        g.lineStyle(Math.max(1, th * 0.03), col("lemonShine"), 0.9);
+        for (let k = 1; k < 5; k++) {
+          const a = (Math.PI * k) / 5;
+          g.lineBetween(wx, wy, wx + Math.cos(a) * r * 0.8, wy + Math.sin(a) * r * 0.8);
         }
       } else if (st.kind === "crystals") {
         // salt: small white crystals with a grey edge
