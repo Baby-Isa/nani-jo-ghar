@@ -1,11 +1,11 @@
-NANI JO GHAR: THE STONE TRAY AND THE TOP-DOWN POT (Sprint 19). Paste this whole block into Claude in Chrome, after the redo run.
+NANI JO GHAR: THE STONE TRAY, THE TOP-DOWN POT AND THE EGGS AT THE TABLE (Sprint 19). Paste this whole block into Claude in Chrome, after the redo run.
 
 Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-tray-pot/refs.zip , unzip it,
-and drag all four pictures into this chat with this block.
+and drag all eight pictures into this chat with this block.
 
 === FOR CLAUDE IN CHROME (the runner) ===
-You draw four pieces for a premium children's cooking game. Use chatgpt.com (Zafar is signed in). Run TWO ChatGPT windows (conversations) at
-once, each in its own tab: Chat 1 = T1, T2. Chat 2 = P1, P2. Send in one tab, move to the next while it generates; go round in turn.
+You draw seven pieces for a premium children's cooking game. Use chatgpt.com (Zafar is signed in). Run THREE ChatGPT windows (conversations)
+at once, each in its own tab: Chat 1 = T1, T2. Chat 2 = P1, P2. Chat 3 = E1, E2, E3. Send in one tab, move to the next while it generates; go round in turn.
 
 In each conversation:
 1. First message: the reference pictures, the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes these work."
@@ -13,7 +13,7 @@ In each conversation:
    "First, in text only, list exactly what you will draw and how it differs from the attached picture. Do not draw yet."
    Then: "Generate the image now, implementing exactly this:" with its answer pasted. When the image arrives: "Check it against the
    line, in text, point by point. Then generate one corrected version." Keep both.
-3. Up to two tries per line (four images at most). Keep the best; if none meets the line's MUST points, say so in the report.
+3. Up to two tries per line (two images per line at most). Keep the best; if none meets the line's MUST points, say so in the report.
 
 === DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
 Open https://chatgpt.com/library. Hover over the first kept image: a small check box appears in its bottom-right corner; tick it.
@@ -78,3 +78,16 @@ P1 THE POT, EXACTLY STRAIGHT DOWN, WITH WATER (pictures: P1-chai-pan-water, P1-c
    margin. No shadow on the magenta, no steam.
 P2 THE SAME POT, EMPTY (pictures: your P1). Edit P1, do not draw anew: the identical pan (shape, size, place, handle, lip, steel),
    with no water, its clean brushed-steel floor showing with fine circular brushing as in P1-chai-pan-empty.
+CHAT 3
+E1 THE CREAM PLATE AT THE TABLE (pictures: E1-plate-cream, E0-the-table-now). Landscape 16:9, on magenta: the same cream ceramic
+   plate as E1-plate-cream (the same colour, rim and finish), seen as it sits on the table's counter in E0-the-table-now: from the
+   front with the camera a little above, so the plate is a wide flat ellipse with its front rim edge showing as a thin band. EMPTY.
+   The plate 60% of the picture's width, centred. No shadow on the magenta, no table.
+E2 ONE FRIED EGG, AT THE TABLE'S ANGLE (pictures: E2-fried-egg, your E1). On magenta, NO plate: the same fried egg as E2-fried-egg
+   (white with soft edges, one round golden yolk), seen from the SAME camera as your E1, so it lies flat as it would on that plate:
+   a flattened shape, the yolk a low dome. Its width 45% of the picture's width, i.e. about three quarters of your E1 plate's
+   width at the same scale. No shadow on the magenta.
+E3 A BOILED EGG CUT IN HALF, AT THE TABLE'S ANGLE (pictures: E3-boiled-egg-half, your E1). On magenta, NO plate: the two halves of
+   one peeled boiled egg, lying side by side, cut faces up, each as E3-boiled-egg-half (smooth white, a firm round yellow yolk),
+   seen from the SAME camera as your E1. Together they are 45% of the picture's width, about three quarters of your E1 plate's
+   width at the same scale. No egg cup, no shell, no shadow on the magenta.
