@@ -415,8 +415,10 @@
       const hitW = Math.max(chip.cardW + 14, Math.min(PL.hitW, (slotW - 2) / k));
       chip.setSize(hitW, PL.hitH);
       const G = root.Phaser && root.Phaser.Geom;
-      if (chip.input) chip.input.hitArea.setTo(-hitW / 2, -PL.hitH / 2 + 8, hitW, PL.hitH);
-      else if (G) chip.setInteractive(new G.Rectangle(-hitW / 2, -PL.hitH / 2 + 8, hitW, PL.hitH), G.Rectangle.Contains);
+      // (a Container's hit area is read from its top-left: Phaser adds displayOrigin, half its size, to the point; centred at -w/2, -h/2
+      // the zone sat half a zone up and left, over the pot above it and its left neighbour: s19-stuck, lab:cook/assemble@L4 at 740x320)
+      if (chip.input) chip.input.hitArea.setTo(0, 8, hitW, PL.hitH);
+      else if (G) chip.setInteractive(new G.Rectangle(0, 8, hitW, PL.hitH), G.Rectangle.Contains);
       return chip;
     };
     chip.on("pointerdown", (ptr, lx, ly, ev) => {

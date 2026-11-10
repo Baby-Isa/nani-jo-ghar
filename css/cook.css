@@ -1000,3 +1000,9 @@ body.w6 #guide { flex: none; }
 .ck-mic.shrug { animation: ckShrug .5s ease-in-out; }
 @keyframes ckShrug { 25% { transform: translate(-50%, -50%) rotate(-12deg); } 75% { transform: translate(-50%, -50%) rotate(12deg); } }
 @media (prefers-reduced-motion: reduce) { .ck-mic.shrug { animation: none; } }
+
+/* s19-stuck (cook:title's shop at 740x320: its "?" sat under the play area's cog, so a tap there opened the cog's menu): on a phone
+   an overlay panel (the title, the shop, the day's end, the book) keeps clear of the cog's column, so nothing of the panel is under it */
+@media (max-height: 500px) {
+  body:has(#stage > .side-rail.ck-cog-rail) #overlay { padding-right: calc(var(--njg-tap) + 2 * var(--njg-s2)); }
+}
