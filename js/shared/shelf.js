@@ -660,7 +660,8 @@
     let img = null;
     let key = null;
     const draw = () => {
-      if (!S.sys || !S.textures || !doc) return;
+      // (never after the game is gone: a resize during the unmount found the texture manager without its game, a page error)
+      if (!S.sys || !S.sys.game || !S.textures || S.textures.game === null || !doc) return;
       const v = viewOf();
       const box = Shelf.trayBox({ left: v.left, right: v.right, top, bottom: bottom != null ? bottom : v.bottom });
       const cv = S.game && S.game.canvas;
