@@ -402,7 +402,7 @@ import { NjgServe } from "../shared/serve.js";
     const ST = St.STONE;
     const W = 1600 + 2 * far;
     const SH = global.Shelf;
-    if (tray && SH && SH.P && SH.P.tray) {
+    if (tray && SH && SH.P && SH.P.tray && SH.trayInk && SH.trayInk()) {
       // (the worktop's wash carried on under the tray, as Kit.worktop draws it above: the slab sits on the same marble)
       S.track(S.add.rectangle(-far, top, W, 900 - top + far, St.worktopWash(), alpha).setOrigin(0).setDepth(D.bg + 1));
       const view = () => {
