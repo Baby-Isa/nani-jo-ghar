@@ -42,6 +42,9 @@ import { Cook as CookNS } from "../ns.js";
         .then((r) => r.json())
         .then((s) => {
           set = s;
+          // (S19, wave B: the game's settings where the kit reads a game's own items, so each piece's card is its band picture:
+          // js/cook/ui.js cardOfIds reads Cook.data.settings[game].items[].card)
+          if (Cook.data) (Cook.data.settings = Cook.data.settings || {})[KEY] = s;
           if (s.station) Cook.data.stations[KEY] = Object.assign({}, Cook.data.stations[KEY] || {}, s.station);
           const R = Cook.Recipes;
           if (s.recipe && R && R.add && !Cook.data.recipes[KEY]) {
@@ -64,6 +67,45 @@ import { Cook as CookNS } from "../ns.js";
       row.lookalike = !!Rl.lookalike;
     }
     return row;
+  }
+
+  /**
+   * S19 (wave B; ART-37, CK-71): the chop's own pictures from its settings (art: the pieces whole and in two halves, the knife, the
+   * board) -> {load: [[key, url]], pieces: {id: {whole, a, b}}, knife, blade, board}. Keys are the game's own (chop4-*).
+   */
+  function pictures(s) {
+    const A = s.art || {};
+    const load = [];
+    const pieces = {};
+    Object.keys(A.pieces || {}).forEach((id) => {
+      const n = A.pieces[id];
+      const k = (st) => `chop4-${n}-${st}`;
+      ["whole", "half-a", "half-b"].forEach((st) => load.push([k(st), `${A.dir}${n}-${st}.webp`]));
+      pieces[id] = { whole: k("whole"), a: k("half-a"), b: k("half-b") };
+    });
+    const knife = (A.knife || {}).file ? "chop4-knife" : null;
+    if (knife) load.push([knife, A.knife.file]);
+    const brd = (A.board || {}).file ? "chop4-board" : null;
+    if (brd) load.push([brd, A.board.file]);
+    return { load, pieces, knife, blade: (A.knife || {}).blade || null, board: brd };
+  }
+  /**
+   * The stone band the pieces sit on (the kitchen kit's: one call, so the stone tray, when the kit has it, comes in here alone).
+   */
+  function band(S, o) {
+    const K = Cook.Kit || {};
+    if (K.stoneTray) return K.stoneTray(S, o);
+    return St.stoneBand ? St.stoneBand(S, o) : null;
+  }
+  /** The walnut board above the band (ART-37): centred at layout.board, its height h, its width from the picture; its soft shadow. */
+  function board(S, z, art, lay) {
+    if (!art.board || !S.textures.exists(art.board)) return null;
+    const B = lay.board || { x: 800, y: 318, h: 584 };
+    const img = S.track(S.add.image(z.X(B.x), z.Y(B.y), art.board).setDepth(Cook.D.bg + 1.6));
+    img.setScale(z.L(B.h) / img.height);
+    const sh = (lay.shadow || {}).board;
+    if (sh && Cook.Chop.shadow) Cook.Chop.shadow(S, img, { dx: z.L(sh[0]), dy: z.L(sh[1]), alpha: sh[2], blur: sh[3] });
+    return img;
   }
 
   /**
@@ -117,11 +159,12 @@ import { Cook as CookNS } from "../ns.js";
     const s = await settings();
     const d = Cook.Recipes[KEY].make("nani", { level });
     d.who = "nani"; // (her order on her own card: the lab's openCard reads who)
-    // CK-48: the knife loads while her order is read, never on a bare board
-    const kit = St.art("knife");
-    const knife = kit ? St.loadArt(S, [[St.artKey("knife"), kit.file]]).catch(() => {}) : null;
+    // CK-48: the knife (and S19, the board and the pieces) load while her order is read, never on a bare board
+    const art = pictures(s);
+    const knife = St.loadArt(S, art.load).catch(() => {});
     L.card(d, (s.recipe && s.recipe.steps) || ["Chop"]);
     await knife;
+    const lay = s.layout || {};
     const pool = ((s.recipe || {}).lists || {}).thrown || [];
     const redo = St.redo(ctx);
     // the shared kit's first-time gate for this round (kit (d), STD-D1-01): the reveal lessons spend on it
@@ -140,11 +183,33 @@ import { Cook as CookNS } from "../ns.js";
       if (!tries && gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx });
       const z = Mech.zone(S, ctx, { id: KEY, level });
       // S19 (CK-71, ART-37: the board above the band): the kitchen kit's worktop wash and chai's stone band with its shelf, where the
-      // whole things sit with their pills and hop from (the hop: the mechanic's params.hop)
+      // whole things sit with their pills and hop from (the hop: the mechanic's params.hop); the walnut board above it, as big as
+      // the room allows, never full-bleed (its place: the settings' layout)
       const top = z.Y(BAND.top);
       if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
-      if (St.stoneBand) St.stoneBand(S, { top, base: z.Y(BAND.base), far: FAR, depth: Cook.D.bg + 1.2 });
-      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, retry: tries > 0, note: !tries, hop: true, band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY } });
+      band(S, { top, base: z.Y(BAND.base), far: FAR, depth: Cook.D.bg + 1.2 });
+      board(S, z, art, lay);
+      const kn = lay.knife || {};
+      const r = await play(z, {
+        targets: need,
+        no: tries ? [] : [].concat(d.no || []),
+        pool,
+        tick: true,
+        level,
+        retry: tries > 0,
+        note: !tries,
+        hop: true,
+        band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY, board: lay.hopOn || null },
+        // (S19: the game's own pictures and places; the mechanic falls back to the shared ones where these are missing)
+        pieces: art.pieces,
+        knifeKey: S.textures.exists(art.knife) ? art.knife : null,
+        blade: art.blade,
+        knifeAt: S.textures.exists(art.knife) ? { x: kn.x, y: kn.y, px: kn.px, angle: kn.angle } : null,
+        timer: lay.ring || null,
+        peak: lay.peak || null,
+        halves: lay.halves || null,
+        shadows: lay.shadow || null,
+      });
       z.close();
       St.end();
       Object.keys(need).forEach((id) => {
@@ -185,6 +250,50 @@ import { Cook as CookNS } from "../ns.js";
     },
   });
 
-  Cook.Chop = { settings, knobs, play };
+  /**
+   * S19 (wave B): a soft shadow under a picture (one light, upper left, so down and to the right; the bible's rule, at about half the
+   * mock's weight): the picture's own outline, blurred and a little see-through, made on a canvas (so it draws without tints, in
+   * either renderer), following the picture (moved, scaled, turned, faded, hidden) until it goes. o: dx, dy (screen px), alpha,
+   * blur (screen px). Returns the shadow image.
+   */
+  function shadow(S, img, { dx = 8, dy = 10, alpha = 0.26, blur = 6 } = {}) {
+    const key = img.texture.key;
+    const k = Math.max(0.01, Math.abs(img.scaleX) || 1);
+    const b = Math.max(1, Math.round(blur / k));
+    const sk = `${key}:shade:${b}`;
+    if (!S.textures.exists(sk)) {
+      const src = S.textures.get(key).getSourceImage();
+      const pad = b * 3;
+      const c = document.createElement("canvas");
+      c.width = src.width + 2 * pad;
+      c.height = src.height + 2 * pad;
+      const g = c.getContext("2d");
+      g.filter = `blur(${b}px)`;
+      g.drawImage(src, pad, pad);
+      g.filter = "none";
+      g.globalCompositeOperation = "source-in";
+      g.fillStyle = "rgb(40,25,10)";
+      g.fillRect(0, 0, c.width, c.height);
+      S.textures.addCanvas(sk, c);
+    }
+    const src = S.textures.get(key).getSourceImage();
+    const pad = b * 3;
+    const sh = S.track(S.add.image(img.x + dx, img.y + dy, sk));
+    sh.setOrigin((pad + img.originX * src.width) / (src.width + 2 * pad), (pad + img.originY * src.height) / (src.height + 2 * pad));
+    const follow = () => {
+      if (!img.active || !sh.active) return;
+      sh.setPosition(img.x + dx, img.y + dy).setScale(img.scaleX, img.scaleY).setRotation(img.rotation).setDepth(img.depth - 0.05);
+      sh.setVisible(img.visible).setAlpha(alpha * img.alpha);
+    };
+    follow();
+    S.events.on("update", follow);
+    img.once("destroy", () => {
+      S.events.off("update", follow);
+      if (sh.active) sh.destroy();
+    });
+    return sh;
+  }
+
+  Cook.Chop = { settings, knobs, play, shadow };
   Mech.lab(KEY, { name: "Chop", verb: "Ninja slicing", run: (L) => game(L) });
 })(window);

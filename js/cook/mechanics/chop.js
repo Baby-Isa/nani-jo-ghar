@@ -106,12 +106,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null, hop = false }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null, hop = false, pieces = null, knifeAt = null, peak = null, halves: halfK = null, shadows = null }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       // S19 (CK-71): the hop, the chop game's own (its numbers: data/stations/chop.json levels[].knobs.hop)
       const HOP = !!(hop && band);
       const HK = HOP ? Object.assign({ up: 1, rise: 0.45, hang: 1.8, fall: 0.4, every: 2.9, peak: 400, catchPad: 40, tapCuts: false, size: 190, phoneSize: 240, decoys: null, refill: 0.45 }, k.hop || {}) : null;
+      // S19 (wave B, ART-37): the caller's board sets where an item's middle is at the top of its hop (the board's middle)
+      if (HOP && peak != null) HK.peak = peak;
+      // (S19, wave B: the game's own pictures: each piece whole and its two halves, {id: {whole, a, b}} texture keys; and the soft
+      // shadow under the knife, the pieces and the halves: shadows {item, half: [dx, dy, alpha, blur]}, design px)
+      const PC = pieces || {};
+      const pieceOf = (id) => (PC[id] && S.textures.exists(PC[id].whole) ? PC[id] : null);
+      const shadeOf = (img, which) => {
+        const v = shadows && shadows[which];
+        const f = Cook.Chop && Cook.Chop.shadow;
+        return v && f && img && img.active ? f(S, img, { dx: z.L(v[0]), dy: z.L(v[1]), alpha: v[2], blur: z.L(v[3]) }) : null;
+      };
       const S = z.S;
       const ctx = z.ctx;
       const want = {};
@@ -180,6 +191,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (S19, the hop: it rests on the board's right, clear of the band and its pills)
         knife = S.track(S.add.image(z.X(HOP ? 1490 : 1300), z.Y(HOP ? 520 : 640), knifeKey).setDepth(D.hand).setAngle(35));
         knife.setScale(z.L(k.knifePx || 190) / Math.max(knife.width, knife.height));
+        // (S19, wave B, ART-37: the game's knife rests upright beside its board, with its soft shadow)
+        if (knifeAt) {
+          knife.setPosition(z.X(knifeAt.x != null ? knifeAt.x : 1372), z.Y(knifeAt.y != null ? knifeAt.y : 330)).setAngle(knifeAt.angle || 0);
+          knife.setScale(z.L(knifeAt.px || 300) / Math.max(knife.width, knife.height));
+          shadeOf(knife, "item");
+        }
       } else knife = S.hand("knife", { x: z.X(HOP ? 1490 : 1300), y: z.Y(HOP ? 520 : 640), angle: -25, k: z.k });
       if (k.special) S.special(knife);
       // DAAR-22 (S06): between swipes the knife goes back to rest beside the board, so it never lies across a flying
@@ -215,6 +232,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         finished();
       };
       const texFor = (id) => {
+        if (pieceOf(id)) return pieceOf(id).whole;
         const w = Cook.item(id) || {};
         const painted = Cook.Art.sprite(S, `${id}.whole`); // data.art.sprites (loaded by the station)
         if (painted) return painted;
@@ -297,9 +315,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const total = rounds.reduce((a, r) => a + r.secs, 0) + flight;
       if (onRounds) onRounds(rounds.map((r) => ({ targets: r.targets.slice(), decoys: r.kinds.filter((x) => !r.targets.includes(x)), lookalikes: r.kinds.filter((x) => !r.targets.includes(x) && r.targets.some((t) => (LOOK[t] || []).includes(x))) })));
       // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
-      const throwNote = (r) => {
+      // (S19, wave B: on the hop the spacing a hop is started at is its own: the gap scheduled before it plus any wait for a free
+      // place, HK.up being up already; sec, game seconds)
+      const throwNote = (r, sec) => {
         try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round((r.every * 1000) / (Cook.speed || 1))} x:${Cook.speed || 1}` });
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round(((sec != null ? sec : r.every) * 1000) / (Cook.speed || 1))} x:${Cook.speed || 1}` });
         } catch (e) {
           /* only a log */
         }
@@ -334,12 +354,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        * band's base line, its pill under it (the kit's chip), as daar's and chai's shelves. The slot's item is the one that hops.
        */
       const slots = [];
+      let spread = false; // (S19, wave B: true where two neighbours must never be up together, their tops being close)
       let hopPx = size; // an item's size at the top of its hop (design px), never wider than its slot
       const BAND_TOP = (band && band.top) || (St.SHELF ? St.SHELF.top : 630);
       const sit = (s) => {
         const img = S.track(S.add.image(z.X(s.x), z.Y(band.base), s.key).setOrigin(0.5, 0.97).setScale(s.scale).setDepth(D.item + 1));
         img.wordId = s.id;
-        if (S.contactShadow) img.shadow = S.contactShadow(img, { centerX: z.X(s.x), centerY: z.Y(band.base - 3), width: z.L(s.slotW * 0.8), height: z.L(16) });
+        // (S19, wave B: the game's own pieces cast their own soft shadow, which goes up with them; else the kit's contact shadow)
+        const own = pieceOf(s.id) && shadeOf(img, "item");
+        if (own) img.shadow = own;
+        else if (S.contactShadow) img.shadow = S.contactShadow(img, { centerX: z.X(s.x), centerY: z.Y(band.base - 3), width: z.L(s.slotW * 0.8), height: z.L(16) });
         return img;
       };
       if (HOP) {
@@ -347,6 +371,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (the slots far enough apart that two items up side by side never touch: an item at the top of its hop is HK.size)
         const SL = global.Shelf.slots([kinds], { span: [150, 1450], pitch: Math.max(180, Math.min(size + 40, 1300 / kinds.length)), groupGap: 0 });
         hopPx = Math.min(size, SL.slotW - 24);
+        /*
+         * S19 (wave B, ART-37: the board above the band): band.board ([left, right], design px) is the caller's board; every hop's top
+         * keeps on it. Where the slots reach past it (five or six kinds on the band, each with a pill a child can read), the hops go
+         * up and a little in towards the board's middle, the tops spaced so two side by side never touch (the item that size).
+         */
+        let inK = 1;
+        spread = false;
+        const BD = band.board || null;
+        if (BD) {
+          const mid = (BD[0] + BD[1]) / 2;
+          const off = Math.max(1, ...kinds.map((id) => Math.abs(SL.x[id] - mid)));
+          const fit = (px) => Math.min(1, (BD[1] - BD[0] - px) / 2 / off);
+          inK = fit(hopPx);
+          if (inK < 1) {
+            // (two neighbours are never up together, spread, so an item at the top may be nearly two tops wide)
+            spread = true;
+            hopPx = Math.min(size, 2 * SL.slotW * inK - 12);
+            inK = fit(hopPx);
+            hopPx = Math.min(hopPx, 2 * SL.slotW * inK - 12);
+          }
+        }
+        const topX = (x) => (BD ? (BD[0] + BD[1]) / 2 + (x - (BD[0] + BD[1]) / 2) * inK : x);
         // (CSS px per design px, for the classes' 40 CSS px floor)
         let ppw = 1;
         try {
@@ -356,7 +402,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         kinds.forEach((id) => {
           const key = texFor(id);
-          const s = { id, key, x: SL.x[id], slotW: Math.min(150, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
+          const s = { id, key, x: SL.x[id], px: topX(SL.x[id]), slotW: Math.min(150, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
           s.scale = St.classFit ? z.L(St.classFit(S, key, id, { base: band.base, ppw, slotW: s.slotW }).scale) : S.fitScale(key, z.L(130), z.L(130));
           s.img = sit(s);
           const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(s.x), z.Y(band.chipY), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: Math.min(128, SL.slotW - 12) }) : null;
@@ -365,9 +411,32 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           s.chip = chip;
           slots.push(s);
         });
+        fitPills(SL.slotW, ppw);
+      }
+      /*
+       * S19 (wave B; SH-219, chai's rule for the band's pills): the row's one scale, as large as the floor asks (the word at least the
+       * platforms' smallest readable label on screen), as far as neighbours allow without touching, never below 1; long words narrow
+       * to their slot where even 1 would touch (the shared shelf's Shelf.pillWant, .pillGap, .pillScale).
+       */
+      function fitPills(slotW, ppw) {
+        const Sh = global.Shelf;
+        const chips = slots.map((x) => x.chip).filter((c) => c && c.active && c.faceW);
+        if (!Sh || !Sh.pillScale || !chips.length) return;
+        const want = Sh.pillWant(ppw);
+        const { k: pk, cap } = Sh.pillScale(chips.map((c) => ({ x: c.x / (z.k || 1), w: c.faceW(c.showsWord) })), { want, gap: Sh.pillGap(ppw), slotW });
+        const y = Math.min(band.chipY, 896 - (((Sh.PILL || {}).h || 46) / 2) * pk);
+        chips.forEach((c) => {
+          if (c.capW !== cap) c.face(c.showsWord, cap);
+          c.k = pk;
+          if (c.hit) c.hit(slotW);
+          c.setScale(pk * z.k).setY(z.Y(y));
+        });
       }
       // (a slot's hop: t its game seconds; up while its middle is above the band's top, on the board)
       const hopping = () => slots.filter((s) => s.hop);
+      // (the hop's own spacing, for the test log: the gap scheduled before the next hop, and how long it then waited for a place)
+      let hopDue = 0;
+      let hopWaited = 0;
       const isUp = (s) => !!(s.hop && s.img && s.img.active && !s.hop.cut && !s.hop.no && s.img.getBounds().centerY < z.Y(BAND_TOP));
       // (a test log, chop-hop: the kind, its round r, how many are up with it n, whether it is wanted t, the hops' spacing ms)
       const hopNote = (s, n) => {
@@ -380,13 +449,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /** The next in the round's bag whose slot is free hops (false: none free, or HK.up are up already). */
       const hopOne = () => {
         if (hopping().length >= HK.up) return false;
+        // (spread: a slot whose neighbour on the band is up waits its turn, so two tops never touch; the bag's order otherwise)
+        const byX = spread ? slots.slice().sort((a, b) => a.x - b.x) : null;
+        const clear = (s) => !spread || [-1, 1].every((d) => {
+          const nb = byX[byX.indexOf(s) + d];
+          return !nb || !nb.hop;
+        });
         let i = phase.bag.findIndex((id) => {
           const s = slots.find((x) => x.id === id);
-          return s && !s.hop && !s.refill && s.img && s.img.active;
+          return s && !s.hop && !s.refill && s.img && s.img.active && clear(s);
         });
         // (DAAR-35, P55: "the items should just come continuously": a slot still filling after a cut fills now and hops, rather
         // than hold the next hop back)
-        if (i < 0) i = phase.bag.findIndex((id) => slots.some((x) => x.id === id && !x.hop && x.refill > 0));
+        if (i < 0) i = phase.bag.findIndex((id) => slots.some((x) => x.id === id && !x.hop && x.refill > 0 && clear(x)));
         if (i < 0) return false;
         const id = phase.bag.splice(i, 1)[0];
         const s = slots.find((x) => x.id === id);
@@ -394,7 +469,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           s.refill = 0;
           s.img = sit(s);
         }
-        throwNote(phase);
+        throwNote(phase, hopDue + hopWaited);
+        hopWaited = 0;
         const img = s.img;
         const big = S.fitScale(s.key, z.L(hopPx), z.L(hopPx));
         s.hop = { t: 0, phase, s0: s.scale, s1: Math.max(s.scale, big), h1: 0 };
@@ -433,11 +509,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const foot1 = z.Y(HK.peak) + h.h1;
           let foot;
           let sc;
+          // (u: how far up it is, 0 in its slot, 1 at the top; its x goes with it towards its top's place on the board)
+          let up = 1;
           if (h.t < R) {
             const u = h.t / R;
             const e = 1 - Math.pow(1 - u, 3);
             foot = foot0 + (foot1 - foot0) * e;
             sc = h.s0 + (h.s1 - h.s0) * e;
+            up = e;
           } else if (h.t < R + HG) {
             foot = foot1 + Math.sin(((h.t - R) / HG) * Math.PI) * z.L(-6);
             sc = h.s1;
@@ -445,6 +524,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const e = Math.pow((h.t - R - HG) / F, 2);
             foot = foot1 + (foot0 - foot1) * e;
             sc = h.s1 + (h.s0 - h.s1) * e;
+            up = 1 - e;
           } else {
             // back in its slot
             img.setPosition(z.X(s.x), foot0).setScale(h.s0).setAngle(0).setDepth(D.item + 1);
@@ -452,12 +532,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             S.tweens.add({ targets: img, scaleY: h.s0 * 0.92, duration: 80, yoyo: true });
             return;
           }
-          img.setPosition(z.X(s.x), foot).setScale(sc);
+          img.setPosition(z.X(s.x + ((s.px != null ? s.px : s.x) - s.x) * up), foot).setScale(sc);
         });
       };
       const cutsAt = {};
       /** Cut: the item's two halves part along the cut, drop a little onto the board and stay there (they never cover the band). */
       const landHalves = (img, ang) => {
+        // (S19, wave B: the game's own halves: half-a to the left, half-b to the right, each its own picture at the whole's scale,
+        // a slight turn apart; they stay where they land, with their shadows)
+        const P = pieceOf(img.wordId);
+        if (P && S.textures.exists(P.a) && S.textures.exists(P.b)) return landPieces(img, ang, P);
         const key = img.texture.key;
         const { w, h } = S.texSize(key);
         const b = img.getBounds();
@@ -476,6 +560,41 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const half = S.track(S.add.image(b.centerX, b.centerY, key).setScale(img.scaleX, img.scaleY).setAngle(deg).setDepth(D.item + 0.5).setCrop(side ? w / 2 : 0, 0, w / 2, h));
           S.tweens.add({ targets: half, x: b.centerX + nx * z.L(22 * d), y: b.centerY + ny * z.L(22 * d), angle: deg + 5 * d, duration: 140, ease: "Quad.easeOut" });
           S.tweens.add({ targets: half, x: b.centerX + nx * z.L(34 * d) + jx, y: b.centerY + ny * z.L(34 * d) + drop + jy, scaleX: img.scaleX * 0.82, scaleY: img.scaleY * 0.82, angle: deg + 9 * d, delay: 160, duration: 300, ease: "Bounce.easeOut" });
+        });
+        const len = Math.max(b.width, b.height) * 0.62;
+        const cx = Math.cos(ang) * len;
+        const cy = Math.sin(ang) * len;
+        const flash = S.track(S.add.graphics().setDepth(D.item + 3.5));
+        flash.lineStyle(z.L(7), 0xffffff, 0.95).lineBetween(b.centerX - cx, b.centerY - cy, b.centerX + cx, b.centerY + cy);
+        flash.lineStyle(z.L(2), 0xfff1c0, 1).lineBetween(b.centerX - cx, b.centerY - cy, b.centerX + cx, b.centerY + cy);
+        S.tweens.add({ targets: flash, alpha: 0, delay: 180, duration: 260, onComplete: () => flash.destroy() });
+      };
+      /** S19 (wave B): the game's own two halves land on the board, apart along the cut, and stay; the cut's flash along the swipe. */
+      const landPieces = (img, ang, P) => {
+        const b = img.getBounds();
+        const HV = Object.assign({ part: 30, k: 0.92, tilt: 7 }, halfK || {});
+        const floor = z.Y(BAND_TOP) - b.height * 0.3;
+        const drop = Math.max(0, Math.min(z.L(40), floor - b.centerY));
+        // (each cut of a kind lands apart from the last, above or below it, so the cuts read as so many, never one heap; at most
+        // three of a kind, DAAR-37)
+        const n = (cutsAt[img.wordId] = (cutsAt[img.wordId] || 0) + 1) - 1;
+        const step = Math.min(b.height * 0.55, z.L(100));
+        const jx = z.L([0, -18, 18, -9, 9][n % 5]);
+        const jy = [0, -1, 1, -2, 2][n % 5] * step;
+        const wk = Math.abs(img.scaleX);
+        [P.a, P.b].forEach((key, side) => {
+          const d = side ? 1 : -1;
+          const { w } = S.texSize(key);
+          const half = S.track(S.add.image(b.centerX, b.centerY, key).setScale(wk).setDepth(D.item + 0.5));
+          // (each half's own width: the two together about the whole's)
+          const off = (w * wk * HV.k) / 2 + z.L(HV.part) / 2;
+          S.tweens.add({ targets: half, x: b.centerX + d * off * 0.45, angle: d * HV.tilt * 0.5, duration: 140, ease: "Quad.easeOut" });
+          // (it stays on the board: never past its edge)
+          let tx = b.centerX + d * off + jx;
+          const BD = band && band.board;
+          if (BD) tx = Math.max(z.X(BD[0]) + (w * wk * HV.k) / 2, Math.min(z.X(BD[1]) - (w * wk * HV.k) / 2, tx));
+          S.tweens.add({ targets: half, x: tx, y: b.centerY + drop + jy, scaleX: wk * HV.k, scaleY: wk * HV.k, angle: d * HV.tilt, delay: 160, duration: 300, ease: "Bounce.easeOut" });
+          shadeOf(half, "half");
         });
         const len = Math.max(b.width, b.height) * 0.62;
         const cx = Math.cos(ang) * len;
@@ -583,6 +702,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const halves = (img, ang = Math.PI / 2) => {
         const key = img.texture.key;
         const { w, h } = S.texSize(key);
+        // (S19, wave B: the game's own halves part left and right, then fall away and fade, as the cropped ones do)
+        const P = pieceOf(img.wordId);
+        if (P && S.textures.exists(P.a) && S.textures.exists(P.b)) {
+          [P.a, P.b].forEach((hk, side) => {
+            const d = side ? 1 : -1;
+            const half = S.track(S.add.image(img.x, img.y, hk).setScale(img.scaleX, img.scaleY).setDepth(D.item + 3));
+            const fall = Math.max(0, Math.min(z.L(240), clearOf(img) - z.L(120)));
+            S.tweens.add({ targets: half, x: img.x + d * z.L(40), angle: 6 * d, duration: 140, ease: "Quad.easeOut" });
+            S.tweens.add({ targets: half, x: img.x + d * z.L(140), y: img.y + fall, angle: 40 * d, alpha: 0, delay: 460, duration: 600, ease: "Quad.easeIn", onComplete: () => half.destroy() });
+          });
+          const len0 = Math.max(img.displayWidth, img.displayHeight) * 0.62;
+          const fl = S.track(S.add.graphics().setDepth(D.item + 3.5));
+          fl.lineStyle(z.L(7), 0xffffff, 0.95).lineBetween(img.x - Math.cos(ang) * len0, img.y - Math.sin(ang) * len0, img.x + Math.cos(ang) * len0, img.y + Math.sin(ang) * len0);
+          S.tweens.add({ targets: fl, alpha: 0, delay: 180, duration: 260, onComplete: () => fl.destroy() });
+          return;
+        }
         const rot = ang - Math.PI / 2; // the texture's vertical middle along the swipe
         const nx = Math.cos(rot);
         const ny = Math.sin(rot);
@@ -853,7 +988,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             spawnT = Math.max(0, spawnT) + (HOP ? phase.gaps[phase.size - phase.bag.length - 1] : phase.every);
             const nx = rounds[phase.i + 1];
             if (!phase.bag.length && nx) spawnT = Math.min(spawnT, nx.every);
-          }
+            hopDue = spawnT;
+          } else if (HOP && spawnT <= 0 && phase.bag.length) hopWaited += beat;
           drawRing();
           const sec = Math.ceil(left);
           if (sec < lastTick) {
@@ -984,11 +1120,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const ob = own ? own.img.getBounds() : null;
         const at = own ? ob.centerX : z.X(760);
         const veg = S.track(S.add.image(at, own ? ob.centerY : z.Y(990), texFor(ids[0])).setDepth(D.item + 2.5));
+        veg.wordId = ids[0];
         const vs = S.fitScale(veg.texture.key, z.L(size), z.L(size));
         if (own) {
           own.img.setVisible(false);
           veg.setScale(own.scale);
-          S.tweens.add({ targets: veg, y: z.Y(SY), scaleX: Math.max(own.scale, vs), scaleY: Math.max(own.scale, vs), duration: 520, ease: "Cubic.easeOut" });
+          S.tweens.add({ targets: veg, x: z.X(own.px != null ? own.px : own.x), y: z.Y(SY), scaleX: Math.max(own.scale, vs), scaleY: Math.max(own.scale, vs), duration: 520, ease: "Cubic.easeOut" });
         } else {
           veg.setScale(vs);
           veg.setAlpha(0);
