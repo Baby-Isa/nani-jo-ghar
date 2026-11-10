@@ -659,6 +659,10 @@
   let guide = null;
   let guideKey = null;
   let guideLine = null; // what the box shows now: a line (Kutchi) or null (the instruction)
+  // SH-252 (Zafar, 10 Nov: Nani's last line at well done "is a placeholder for the Kutchi Shabash ... replace with Shabash"): the well
+  // done's line (the engine's Shabash, js/cook/flow.js Cook.praiseBox) holds her box from the moment it is said until the end screen
+  // clears it (UI.guideClear), a new order opens or a new step opens; nothing in between puts an old step or instruction back
+  let praiseLine = null;
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
   // which data.guide key the box shows now (the station:phase, else the station, else the default)
   const guideEntryKey = () => {
@@ -668,6 +672,7 @@
   };
   function showGuide() {
     if (!guide) return;
+    if (praiseLine) return showPraise();
     // a step is open (UI.step): the box is that step's, never the station's standing instruction
     if (stepper && stepper.current) return restoreGuide();
     guideLine = null;
@@ -680,8 +685,21 @@
       guide.set(raHtml(guideLine));
     } else guide.set(esc(Lang.plain(line)), { rec: true });
   }
+  function showPraise() {
+    guideLine = praiseLine;
+    guide.set(raHtml(praiseLine));
+  }
+  /** SH-252: the well done's line in her box (the engine's Shabash), shown as it is said and kept until the end screen. */
+  UI.guidePraise = function (line) {
+    if (!line) return;
+    praiseLine = line;
+    guideKey = null;
+    if (stepper && stepper.current) stepper.close();
+    if (guide) showPraise();
+  };
   function restoreGuide() {
     if (!guide) return;
+    if (praiseLine) return showPraise();
     const st = stepper && stepper.current;
     if (!st) {
       guideLine = null;
@@ -802,6 +820,7 @@
     });
   }
   UI.step = function (line, o = {}) {
+    praiseLine = null; // (a new step: the well done is over)
     if (!stepper) stepper = makeStepper();
     if (!stepper || !line) return null;
     const rec = line.ok === false;
@@ -870,6 +889,7 @@
   };
   /** Nothing to do (the day's coin jar, between screens): her box is empty, not a station's old instruction (R2). */
   UI.guideClear = function () {
+    praiseLine = null;
     guideKey = null;
     guideLine = null;
     if (stepper) stepper.close();
@@ -1569,7 +1589,8 @@
     applyStrip();
     if ($("#side")) $("#side").classList.remove("peek-fold");
     if (UI.stepDone) UI.stepDone();
-    // Nani's box: a new order, so no station's instruction yet
+    // Nani's box: a new order, so no station's instruction yet (and no well done left from the last one, SH-252)
+    praiseLine = null;
     if (UI.guideFor) UI.guideFor(null);
     const el = $("#mission");
     el.classList.remove("hidden", "stamped", "arriving");
@@ -4419,7 +4440,7 @@
     }
     if (stepper) stepper.close();
     stepper = null;
-    guide = guideKey = guideLine = null;
+    guide = guideKey = guideLine = praiseLine = null;
     if (kitTally && kitTally.destroy) kitTally.destroy();
     kitTally = null;
     mission = null;

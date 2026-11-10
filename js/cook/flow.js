@@ -297,6 +297,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     guests.forEach((w, i) => S().addChar(w, { x: xAt(i) }));
     if (guests.length) S().occluder();
     cardsDone();
+    praiseBox();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
     else S().setMood("nani", "happy");
     for (const g of guests) await S().talk(g, Lang.line("thanks"), { after: "happy" });
@@ -616,6 +617,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const shabash = () => Lang.role(Lang.say({ fn: "Exclaim", x: "intj.well-done" }), "exclaim"); // (contract-23: never read as an item word)
   // wave 1A's flaw 4: "Shabash!" once at the serve. A station that already praised (the review faces say it when every dish is right) said it a
   // moment ago (the guide remembers every line said, js/shared/guide.js recentlySaid): it is not said again at the serve or after the station
+  // SH-252 (Zafar, 10 Nov): at well done Nani's box reads the engine's Shabash, in every kitchen game, shown as it is said (a station's
+  // review face says it through the kit's serve, Cook.Kit.serve; the counter's well done here) and cleared at the end screen
+  const praiseBox = () => {
+    if (UI.guidePraise) UI.guidePraise(shabash());
+  };
+  Cook.praiseBox = praiseBox;
   const praised = () => !!(global.NaniGuide && global.NaniGuide.recentlySaid && global.NaniGuide.recentlySaid(Lang.plain(shabash())));
   // SH-66 (S05-C, S's S1 request): the chef's call-back and Shabash (decision 54) come after the station's
   // Lifecycle.stageEnd stopped every voice; they open a stage of their own so they are never read as voice carrying over
@@ -757,6 +764,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (Cook.core && Cook.core.progress && Cook.core.progress.thaw) Cook.core.progress.thaw();
     // inside the game host (js/cook/main.js) the host catches the end screen: it shows the one for the whole plan
     const R = Cook.hostResults || global.Results;
+    // SH-252: the end screen clears Nani's box (the well done's Shabash goes with the round), as chai's did
+    if (UI.guideClear) UI.guideClear();
     if (!R || Cook.noResults) return null;
     UI.hideCount();
     const { round, prevBest } = scored;
@@ -1208,6 +1217,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const recap = callBack(ctx);
     if (recap) await S().talk("nani", recap, { after: "neutral" });
     cardsDone();
+    praiseBox();
     if (who === "nani") {
       // Nani's own list (the pantry, T4): Shabash and her happy face; she stays in her kitchen
       if (!praised()) await S().talk("nani", shabash(), { after: "happy" });

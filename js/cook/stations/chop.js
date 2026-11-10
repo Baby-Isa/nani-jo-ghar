@@ -137,7 +137,7 @@ import { Cook as CookNS } from "../ns.js";
     const LC = global.Lifecycle;
     const stepOpen = !!(LC && LC.asked && LC.asked() && global.PlayLog && global.PlayLog.step);
     if (stepOpen) global.PlayLog.step(KEY);
-    const cut = (await Mech.run(KEY, z, Object.assign({}, params, { level, knobs: k, onRounds, stepOpen }))) || {};
+    const cut = (await Mech.run(KEY, z, Object.assign({ game: KEY }, params, { level, knobs: k, onRounds, stepOpen }))) || {};
     let wrong = null;
     const got = {};
     const short = [];
@@ -214,6 +214,20 @@ import { Cook as CookNS } from "../ns.js";
         halves: lay.halves || null,
         shadows: lay.shadow || null,
       });
+      // CK-78 (the eye judge, 10 Nov: "well done shows nothing the child made ... three empty trays"): every piece she asked for is
+      // cut, so her well done is here, on the board, as chai's at its glass: her face beside the cut pieces, its praise beside it (the
+      // kit's review; the counter's well done after it is then not said again, flow.js praised)
+      const all = Object.keys(need).every((id) => (r.cut[id] || 0) === need[id]);
+      const cuts = z.cuts || [];
+      if (all && cuts.length && Cook.Kit && Cook.Kit.review) {
+        const u = cuts.reduce((a, c) => ({ x: Math.min(a.x, c.x), y: Math.min(a.y, c.y), right: Math.max(a.right, c.right), bottom: Math.max(a.bottom, c.bottom) }));
+        const V = Cook.view || {};
+        const size = z.L(170);
+        const at = Cook.Kit.praiseSpot({ x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y }, size, { view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, z.Y(BAND.top)] });
+        const look = await Cook.Kit.review(S, { who: d.who || "nani", ok: true, x: at.x, y: at.y, size, k: z.L(1), side: at.side });
+        await Cook.wait(400);
+        if (look && look.close) await look.close();
+      }
       z.close();
       St.end();
       Object.keys(need).forEach((id) => {

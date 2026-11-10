@@ -636,6 +636,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       img.chip = chip;
       items[id] = img;
     });
+    // SH-255: the pills at chai's size on screen (the kit's fitPills, chai's rule), not the zone's scale
+    if (Cook.Kit.fitPills) Cook.Kit.fitPills(S, Object.values(items).map((o) => o.chip), { slotW: z.L(pitch - 12), y: z.Y(CHIP_Y), bottom: z.Y(896) });
     return items;
   }
 
@@ -710,7 +712,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const blade = (St.hasArt(S, "knife") && (St.art("knife").meta || {}).blade) || KNIFE_BLADE;
     // Sprint 18 (wave 2): chop's own game (Cook.Chop.play, js/cook/stations/chop.js) at its settings for the level, graded there; daar
     // keeps the pieces flying to the side (onSlice, KEEP-02) and Nani's card (onCall, onCount). Was the mechanic run here, graded here
-    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: SC().chopTimer, band: { base: BASE, chipY: CHIP_Y } });
+    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: SC().chopTimer, band: { base: BASE, chipY: CHIP_Y }, game: "daar" });
     const cut = r.cut;
     const wrong = r.wrong;
     // (a sliced decoy falls away: it never reaches the pot; a count short marks its row on the order card, the first try's)

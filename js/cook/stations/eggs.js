@@ -556,10 +556,34 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     };
     const wrong = () => Cook.Coach.wrong();
 
+    // CK-76 (the eye judge, 10 Nov: "Hane indo!" through the carton, the pan and the plating; chai names each step): Nani's box names
+    // each step as it opens, from the engine only (R2): an egg from the bowl "Hane indo!", into the pot or pan "Indo wiji chad!", out
+    // of it when it is ready "(Tarelo) indo hane kadh.", the salt or the pepper "Loon / Mari wiji chad!"; a plate and the tray have no
+    // Kutchi yet (v.serve, to record: its English in grey italic, on the recording sheet), never a line written here
+    let stepWhat = null;
+    let stepN = 0;
+    const stepLineOf = (n) => {
+      if (n.what === "bowl") return Lang.line("now", Lang.phrase(["n.egg"]));
+      if (n.what === "vessel") return St.addLine("n.egg");
+      if (n.what === "egg") return Lang.line("lift", Lang.phrase(n.key === "n.egg" ? ["a.fried", "n.egg"] : ["n.egg"]));
+      if (n.what === "shaker" || (n.what === "plate" && /^spi-/.test(String(n.key)))) return St.addLine(n.key);
+      if (n.what === "plate" || n.what === "tray") return Lang.say({ fn: "Command", verb: "v.serve" });
+      return null;
+    };
+    const stepFor = (n) => {
+      if (!n.obj) return; // (waiting for an egg to cook: the step stays as it was)
+      const what = n.what === "shaker" || (n.what === "plate" && /^spi-/.test(String(n.key))) ? `season:${n.key}` : n.what === "egg" ? `egg:${idOf(n.obj)}` : `${n.what}:${n.key}`;
+      if (what === stepWhat) return;
+      stepWhat = what;
+      const line = stepLineOf(n);
+      if (line) kitHelps(steps.to("eggs:eggs", { id: `eggs-${++stepN}`, line }));
+    };
+
     function refresh() {
       if (finished) return;
       const n = nextThing();
       coach(n);
+      stepFor(n);
       if (n.obj) {
         const c = S.centre(n.obj);
         z.expect({ kind: "tap", x: c.x, y: c.y, key: n.key || undefined });
@@ -768,7 +792,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     } catch (e) {
       /* only a log */
     }
-    kitHelps(steps.to("eggs:eggs", { line: Lang.line("now", Lang.phrase(["n.egg"])) }));
+    stepFor(nextThing()); // (her box names the first step from the start, as before: R2)
     // the kitchen kit's reveal lessons (STD-D1-08): once the order has landed, the dotted word then the blurred picture
     if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
     refresh();
@@ -824,11 +848,22 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     };
     // the meal's kitchen, covering the stage in proportion, its island's back edge where the people stand (scene.bgIsland)
     if (S.textures.exists(`eg-bg-${meal}`)) {
-      const bg = T(S.add.image(800, 0, `eg-bg-${meal}`).setOrigin(0.5, 0).setDepth(D.bg + 2));
-      const k = Math.max(1600 / Math.max(1, bg.width), 900 / Math.max(1, bg.height));
+      // CK-75 (the eye judge, 10 Nov: a strip of marble above the kitchen at 740x320 and 1280x665; chai's praise fills the play area):
+      // the picture covers the whole view the stage shows (Cook.view, wider or taller than the design box), its island's line kept
+      // where the people stand: as large as the view's width asks, and as the room above and below the island line asks
+      const V = Cook.view || {};
+      const vl = V.left != null ? V.left : 0;
+      const vr = V.right != null ? V.right : 1600;
+      const vt = V.top != null ? V.top : 0;
+      const vb = V.bottom != null ? V.bottom : 900;
+      const bg = T(S.add.image((vl + vr) / 2, 0, `eg-bg-${meal}`).setOrigin(0.5, 0).setDepth(D.bg + 2));
       const isl = (SCENE().bgIsland || {}).wanted || 705;
+      const f = isl / 900; // (the island line's share of the picture's height)
+      const W0 = Math.max(1, bg.width);
+      const H0 = Math.max(1, bg.height);
+      const k = Math.max(1600 / W0, 900 / H0, (vr - vl + 4) / W0, (isl - vt + 2) / (f * H0), (vb - isl + 2) / ((1 - f) * H0));
       bg.setScale(k);
-      bg.y = isl - (isl / 900) * bg.height * k;
+      bg.y = isl - f * H0 * k;
     }
     const cat = tb.cat || { x: 120, y: 706, h: 190 };
     const catImg = T(S.add.image(cat.x, cat.y, tex("cat")).setOrigin(0.5, 1).setDepth(D.bg + 3));
@@ -888,6 +923,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     UI.mission.closeItem([], 0, { all: true });
     if (St.helperWatch) St.helperWatch(ctx, null);
     if (UI.helper) UI.helper(null);
+    // (SH-252: her box reads the engine's Shabash as it is said, until the end screen)
+    if (allRight && Cook.praiseBox) Cook.praiseBox();
     if (allRight) await Promise.race([UI.voice(Lang.line("welldone")).catch(() => {}), Cook.wait(2400)]);
     await Cook.wait(900);
   }

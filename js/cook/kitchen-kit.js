@@ -37,6 +37,17 @@ import { Cook as CookNS } from "./ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
 import { NjgServe } from "../shared/serve.js";
 
+// (the serve's needs, Cook's: the praise line said is shown in Nani's box as it is said, SH-252)
+const serveEnv = () => {
+  const E = NjgServe.env(CookNS);
+  const speak = E.speak;
+  E.speak = (l) => {
+    if (CookNS.praiseBox) CookNS.praiseBox();
+    return speak(l);
+  };
+  return E;
+};
+
 (function (global) {
   const Cook = CookNS;
   const D = Cook.D;
@@ -231,7 +242,76 @@ import { NjgServe } from "../shared/serve.js";
      *   line (what they say when it's right; default the "welldone" line; false for none),
      *   side ("left" | "right": where the praise card goes), k (the card's scale: the zone's), depth.
      */
-    review: (S, o) => NjgServe.review(S, o, NjgServe.env(Cook)), // (Sprint 18, piece 8: the shared serve part, js/shared/serve.js)
+    review: (S, o) => NjgServe.review(S, o, serveEnv()), // (Sprint 18, piece 8: the shared serve part, js/shared/serve.js)
+
+    /**
+     * SH-255 (the eye judge, 10 Nov: chop's, daar's and maani's pills about half chai's at 740x320; Zafar: what stands on the bar follows
+     * the kit's rules): a band's pills at chai's size, by chai's rule (its fitPills, SH-219): one scale for the row, as large as the
+     * floor asks on screen (Shelf.pillWant on the page's own scale, and the kit's canvas text floor), as far as neighbours allow
+     * without touching, never below 1 (chai's own); a long word narrows to its slot where even 1 would touch. Everything in world px
+     * (a zone's scale is the zone's, never the pill's: a pill is chai's size on screen in every game).
+     * chips: the band's pills (Kit.chip, Shelf.P.chip); o: slotW (world px), y (the pills' line, world px), bottom (the band's foot,
+     * world px: a grown pill never runs past it). -> k
+     */
+    fitPills(S, chips, { slotW = Infinity, y = null, bottom = null } = {}) {
+      const Sh = global.Shelf;
+      chips = (chips || []).filter((c) => c && c.active && c.faceW);
+      if (!Sh || !Sh.pillScale || !chips.length) return 1;
+      let ppw = 1;
+      try {
+        ppw = Cook.UI.worldToScreen(1, 0).x - Cook.UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        ppw = 1;
+      }
+      const P = Sh.PILL || { text: 25, h: 46 };
+      const want = Math.max(Sh.pillWant(ppw), Kit.textFloor ? Kit.textFloor(S, P.text) : 1);
+      const row = chips.slice().sort((a, b) => a.x - b.x);
+      const { k, cap } = Sh.pillScale(row.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })), { want, gap: Sh.pillGap(ppw), slotW });
+      row.forEach((c) => {
+        if (c.capW !== cap && c.face) c.face(c.showsWord, cap);
+        c.k = k;
+        if (c.hit && isFinite(slotW)) c.hit(slotW);
+        c.setScale(k);
+        const yy = y != null ? y : c.y;
+        c.setY(bottom != null ? Math.min(yy, bottom - (P.h / 2) * k) : yy);
+      });
+      return k;
+    },
+
+    /**
+     * SH-254 (the eye judge, 10 Nov: maani's and corn's well done face sat over the dish and its neighbours' chips; chai's sits at its
+     * glass's corner, the chai in full view): where a review face goes beside one dish. dish {x, y, w, h} (its centre and drawn size),
+     * size (the face's diameter), o: avoid ([{x, y, right, bottom}]: chips, pills, other things it must not cover), view ([left, top,
+     * right, bottom]: world px it stays inside). The face's circle touches the dish's rim at its upper left, as chai's (NjgServe.layout),
+     * else its upper right, left, right or above, the first that covers nothing to avoid; its praise card on the side away from the dish.
+     * -> {x, y, side}
+     */
+    praiseSpot(dish, size, o = {}) {
+      const r = size / 2;
+      const w2 = (dish.w || 0) / 2;
+      const h2 = (dish.h != null ? dish.h : dish.w || 0) / 2;
+      const V = o.view || [-Infinity, -Infinity, Infinity, Infinity];
+      const d = 0.74; // (chai's: the face over the rim's edge only, NjgServe.layout offK)
+      const spots = [
+        { x: dish.x - (w2 + r) * d, y: dish.y - (h2 + r) * d, side: "left" },
+        { x: dish.x + (w2 + r) * d, y: dish.y - (h2 + r) * d, side: "right" },
+        { x: dish.x - w2 - r * 0.9, y: dish.y - h2 * 0.25, side: "left" },
+        { x: dish.x + w2 + r * 0.9, y: dish.y - h2 * 0.25, side: "right" },
+        { x: dish.x, y: dish.y - h2 - r * 0.9, side: "right" },
+      ];
+      const hits = (q) => (o.avoid || []).filter(Boolean).some((a) => q.x + r > a.x && q.x - r < a.right && q.y + r > a.y && q.y - r < a.bottom);
+      const inside = (q) => q.x - r >= V[0] && q.y - r >= V[1] && q.x + r <= V[2] && q.y + r <= V[3];
+      return spots.find((q) => inside(q) && !hits(q)) || spots.find(inside) || spots[0];
+    },
+
+    /**
+     * The shared serve bound to the kitchen (NjgServe.for(Cook) with one addition, SH-252: as a review face says the well done, Nani's
+     * box reads the engine's Shabash, Cook.praiseBox, until the end screen). Every kitchen game's review faces come through here.
+     */
+    serve() {
+      const E = serveEnv();
+      return { review: (S, o) => NjgServe.review(S, o, E), faces: (S, d, w, o) => NjgServe.faces(S, d, w, o, E), round: NjgServe.round, layout: NjgServe.layout, env: E };
+    },
 
     /**
      * Burner i's front-edge controls and flames. opts: who (a face badge left of the knob; omit for

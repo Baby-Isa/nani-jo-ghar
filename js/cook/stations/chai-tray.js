@@ -1769,7 +1769,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           key: STATION14,
           target,
           also,
-          round: !!rungCur.round,
+          // (the pan's rim light is the kit's one rounded rectangle now, Zafar 10 Nov: no round option to ask for, SH-257)
           first: firstTime,
           pauseMs: nx && nx.phase === "knob" ? CONTROL_PAUSE_MS : 0,
           hintMs: hintMs14,
@@ -2005,7 +2005,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     let nudge = setInterval(() => !finished && refresh(), 250);
 
     /** The review faces, one over each glass (sized to the tray's spacing); the praise is said once, when all are right. */
-    const serve = NjgServe.for(Cook);
+    const serve = Cook.Kit.serve(); // (the kitchen's serve: NjgServe.for(Cook), its well done shown in Nani's box, SH-252)
     function review(wrongPans) {
       // CK-07: one face per person at the review: the big face over their glass stands in for its small rim badge
       pans.forEach((q) => q.well.face && q.well.face.setVisible(false));
