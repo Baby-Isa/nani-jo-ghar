@@ -28,6 +28,9 @@ import { Cook as CookNS } from "../ns.js";
   const Mech = Cook.Mech;
   const KEY = "chop";
   const FILE = "data/stations/chop.json";
+  // the shelf band (Shelf.BAND: its top, the base line things stand on, the pills' line; design px) and how far backgrounds reach
+  const BAND = (global.Shelf && global.Shelf.BAND) || { top: 630, base: 818, chipY: 860 };
+  const FAR = 2000;
 
   let loaded = null;
   let set = null;
@@ -80,7 +83,9 @@ import { Cook as CookNS } from "../ns.js";
     const want = params.targets || {};
     // (the decoys each round threw, reported once for the round: the game's own, daar's and chaat's alike)
     const own = params.onRounds;
-    const onRounds = params.note ? (rs) => (noteDecoys(rs, knobs(level).decoys || 0), own && own(rs)) : own;
+    // (the hop's decoys are its own row's where it sets them, L1's none; else the rules': what the round is measured against)
+    const hd = params.hop && k.hop && k.hop.decoys != null ? k.hop.decoys : null;
+    const onRounds = params.note ? (rs) => (noteDecoys(rs, hd != null ? hd : knobs(level).decoys || 0), own && own(rs)) : own;
     // contract-95 (CK-60; wave 3, chaat L2-L4): the chop is the work's step and opens it before anything of its own is said. An order
     // already heard (read out in its pop-up, or skipped) opens it now, as the board starts, before the knife and the throws are
     // made ready; an order not yet heard comes up in its pop-up first, and the mechanic opens the step as that folds (DAAR-40)
@@ -134,7 +139,12 @@ import { Cook as CookNS } from "../ns.js";
       // before the first throw (kit (d)'s Cook.Coach.lessons; the knife waits)
       if (!tries && gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx });
       const z = Mech.zone(S, ctx, { id: KEY, level });
-      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, retry: tries > 0, note: !tries });
+      // S19 (CK-71, ART-37: the board above the band): the kitchen kit's worktop wash and chai's stone band with its shelf, where the
+      // whole things sit with their pills and hop from (the hop: the mechanic's params.hop)
+      const top = z.Y(BAND.top);
+      if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
+      if (St.stoneBand) St.stoneBand(S, { top, base: z.Y(BAND.base), far: FAR, depth: Cook.D.bg + 1.2 });
+      const r = await play(z, { targets: need, no: tries ? [] : [].concat(d.no || []), pool, tick: true, level, retry: tries > 0, note: !tries, hop: true, band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY } });
       z.close();
       St.end();
       Object.keys(need).forEach((id) => {
