@@ -759,8 +759,12 @@
      "forEach": "$plates",
      "for": "$it.who",
      "say": [
-      {"if": "it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "a.fried"}, "n.egg"]},
-      {"if": "!it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "ph-boiledegg"}]},
+      {"_ck64": "CK-64 (Zafar, 8 Nov: 'I want two fried eggs ... two item cards ... both say fried egg ... get rid of the need for it to say one'): each person's own headline says their count (the engine's need frame: 'Muke ba tarela inda khape'); then one card per egg, no number on it, never said on its own (unsaid, saidBy head: it lands with the headline, as chai's amount); the station ticks a card as each egg lands (UI.mission.tickItem)", "if": "it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "a.fried"}, "n.egg"], "personHead": true},
+      {"if": "!it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "ph-boiledegg"}], "personHead": true},
+      {"if": "it.fried", "frame": "and", "x": ["a.fried", "n.egg"], "unsaid": true, "saidBy": "head"},
+      {"if": ["it.fried", "it.n>=2"], "frame": "and", "x": ["a.fried", "n.egg"], "unsaid": true, "saidBy": "head"},
+      {"if": "!it.fried", "frame": "and", "x": ["ph-boiledegg"], "unsaid": true, "saidBy": "head"},
+      {"if": ["!it.fried", "it.n>=2"], "frame": "and", "x": ["ph-boiledegg"], "unsaid": true, "saidBy": "head"},
       {"if": "it.salt=yes", "frame": "and", "x": ["spi-16"]},
       {"if": "it.pepper=yes", "frame": "and", "x": ["spi-11"]},
       {"if": "it.salt=no", "frame": "no", "x": ["spi-16"]}

@@ -1,0 +1,493 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "e9467921c5035abb6d0b42934b6878e64f8624e8",
+ "dirty": false,
+ "date": "2026-11-10T09:46:31.373Z",
+ "base": "1e85a893d6319ea4f81cdc03162623ad54fe7ed9",
+ "games": [
+  "cook:eggs"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:eggs": [
+   1,
+   2,
+   3,
+   4
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-e9467921c5",
+  "before | after": "build/screenshots/tiers/change-e9467921c5/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-e9467921c5-eggs/films/cook-eggs@740x320.webm"
+  ],
+  "the judge's batch": "build/screenshots/brief/s19-wave-c/",
+  "logs": "build/screenshots/tiers/change-e9467921c5/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:eggs",
+   "check": "contract-83",
+   "where": "cook:eggs@740x320 (after start)",
+   "what": "a card (10,109,87,256) sits over circle: 141 px squared",
+   "blocks": true
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L2@740x320 (order-card-in-sidebar)",
+   "what": "the light [6,113,90,262] is not whole round card:boiled egg [10,109,87,258] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L2@930x430 (order-card-in-sidebar)",
+   "what": "the light [8,116,91,267] is not whole round card:boiled egg [12,114,87,263] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L3@740x320 (order-card-in-sidebar)",
+   "what": "the light [6,113,90,259] is not whole round card:tarelo indo [10,109,87,255] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L3@930x430 (order-card-in-sidebar)",
+   "what": "the light [8,116,91,262] is not whole round card:tarelo indo [12,114,87,258] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L4@740x320 (order-card-in-sidebar)",
+   "what": "the light [6,113,90,259] is not whole round card:mari [10,109,87,255] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L4@930x430 (order-card-in-sidebar)",
+   "what": "the light [8,116,91,262] is not whole round card:mari [12,114,87,258] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-83",
+   "where": "cook:eggs#mistake@740x320 (after start)",
+   "what": "a card (11,109,87,256) sits over circle: 131 px squared",
+   "blocks": true
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L2#mistake@740x320 (order-card-in-sidebar)",
+   "what": "the light [6,113,90,260] is not whole round card:tarelo indo [10,109,87,256] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-83",
+   "where": "cook:eggs@L2#mistake@930x430 (order-card-big)",
+   "what": "a card (12,114,87,261) sits over circle: 21 px squared",
+   "blocks": true
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L2#mistake@930x430 (order-card-in-sidebar)",
+   "what": "the light [8,116,91,265] is not whole round card:tarelo indo [12,114,87,261] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-83",
+   "where": "cook:eggs#hint@930x430 (after start)",
+   "what": "a card (12,114,87,263) sits over circle: 21 px squared (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L3#hint@740x320 (order-card-in-sidebar)",
+   "what": "the light [6,113,90,262] is not whole round card:boiled egg [10,109,87,258] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-105",
+   "where": "cook:eggs@L3#hint@930x430 (order-card-in-sidebar)",
+   "what": "the light [8,116,91,267] is not whole round card:boiled egg [12,114,87,263] (its picture and pill): it pokes out at the top (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-83",
+   "where": "cook:eggs#takeback@930x430 (after start)",
+   "what": "a card (12,114,88,263) sits over circle: 17 px squared",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "scope",
+   "where": "build/screenshots/tiers/change-e9467921c5/logs/scope.log",
+   "what": "sources/art/s19-redo/refs/S4.jpg",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-e9467921c5/logs/play.log",
+   "what": "CONTRACT FAILED: 15 breaks (contract-83 5, contract-105 10); CHECK FAILED: 57 new findings, 0 flows do not reach their end, 0 new page errors, 15 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-e9467921c5/logs/before.log",
+   "what": "BREAK contract-105 cook:eggs@L2#mistake L2 @ 930x430 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.8s: the light [8,112,91,248] is not whole round card:hakro tarelo indo [12,107,87,244] (its picture and pill): it pokes out at the top",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "frozen",
+   "where": "build/screenshots/tiers/change-e9467921c5/logs/frozen.log",
+   "what": "re-playing 30 page(s) that changed, to confirm ...",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "mount",
+   "where": "build/screenshots/tiers/change-e9467921c5/logs/mount.log",
+   "what": "Node.js v22.23.4",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "leak-cook",
+   "where": "build/screenshots/tiers/change-e9467921c5/logs/leak-cook.log",
+   "what": "Node.js v22.23.4",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "loadtime",
+   "where": "build/screenshots/tiers/change-e9467921c5/logs/loadtime.log",
+   "what": "Node.js v22.23.4",
+   "blocks": true
+  }
+ ],
+ "pages": {
+  "after": 18,
+  "before": 18,
+  "breaksAfter": 15,
+  "breaksBefore": 15
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: passed on e9467921c5 already (2026-11-10T08:28:10.449Z); nothing to run",
+   "tail": [
+    "check-push: passed on e9467921c5 already (2026-11-10T08:28:10.449Z); nothing to run"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/push.log",
+   "minutes": 0
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s19-wave-c.json 1e85a893d6319ea4f81cdc03162623ad54fe7ed9..HEAD",
+   "status": "fail",
+   "code": 1,
+   "line": "sources/art/s19-redo/refs/S4.jpg",
+   "tail": [
+    "sources/art/s19-redo/refs/K7-fried-eggs-mock.jpg",
+    "sources/art/s19-redo/refs/P1-chop-pieces-mock.jpg",
+    "sources/art/s19-redo/refs/S1-samosa-circle-strip-zafar.jpg",
+    "sources/art/s19-redo/refs/S2-samosa-pastry-look.jpg",
+    "sources/art/s19-redo/refs/S2.jpg",
+    "sources/art/s19-redo/refs/S4.jpg"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:eggs (9 flows: L1,L2,L3,L4, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:eggs,cook:eggs@L2,cook:eggs@L3,cook:eggs@L4,cook:eggs#mistake,cook:eggs@L2#mistake,cook:eggs#hint,cook:eggs@L3#hint,cook:eggs#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-e9467921c5",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 15 breaks (contract-83 5, contract-105 10); CHECK FAILED: 57 new findings, 0 flows do not reach their end, 0 new page errors, 15 contract breaks",
+   "tail": [
+    "BREAK contract-105 cook:eggs@L3#hint L3 @ 740x320 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.8s: the light [6,113,90,262] is not whole round card:boiled egg [10,109,87,258] (its picture and pill): it pokes out at the top",
+    "BREAK contract-105 cook:eggs@L3#hint L3 @ 930x430 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.4s: the light [8,116,91,267] is not whole round card:boiled egg [12,114,87,263] (its picture and pill): it pokes out at the top",
+    "BREAK contract-83 cook:eggs#takeback L1 @ 930x430 [after start c05-stage.png] 8.3s: a card (12,114,88,263) sits over circle: 17 px squared",
+    "CONTRACT FAILED: 15 breaks (contract-83 5, contract-105 10)",
+    "CHECK FAILED: 57 new findings, 0 flows do not reach their end, 0 new page errors, 15 contract breaks",
+    "09:57:51 summary: /home/user/wt/s19-wave-c/build/screenshots/sandbox/tiers-change-e9467921c5/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/play.log",
+   "minutes": 11.3
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 1e85a893d6 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:eggs,cook:eggs@L2,cook:eggs@L3,cook:eggs@L4,cook:eggs#mistake,cook:eggs@L2#mistake,cook:eggs#hint,cook:eggs@L3#hint,cook:eggs#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-1e85a893d6-e9467921c5",
+   "status": "report",
+   "code": 1,
+   "line": "BREAK contract-105 cook:eggs@L2#mistake L2 @ 930x430 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.8s: the light [8,112,91,248] is not whole round card:hakro tarelo indo [12,107,87,244] (its picture and pill): it pokes out at the top",
+   "tail": [
+    "BREAK contract-105 cook:eggs@L3 L3 @ 740x320 [order-card-in-sidebar 03-order-card-in-sidebar.png] 12.5s: the light [6,111,90,246] is not whole round card:hakro tarelo indo [10,104,87,242] (its picture and pill): it pokes out at the top",
+    "BREAK contract-105 cook:eggs@L3 L3 @ 930x430 [order-card-in-sidebar 03-order-card-in-sidebar.png] 11.4s: the light [8,112,91,248] is not whole round card:hakro tarelo indo [12,107,87,244] (its picture and pill): it pokes out at the top",
+    "BREAK contract-105 cook:eggs@L4 L4 @ 740x320 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.8s: the light [6,111,90,253] is not whole round card:mari [10,104,87,249] (its picture and pill): it pokes out at the top",
+    "BREAK contract-105 cook:eggs@L4 L4 @ 930x430 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.8s: the light [8,112,91,254] is not whole round card:mari [12,107,87,251] (its picture and pill): it pokes out at the top",
+    "BREAK contract-105 cook:eggs@L2#mistake L2 @ 740x320 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.8s: the light [6,111,90,246] is not whole round card:hakro tarelo indo [10,104,87,242] (its picture and pill): it pokes out at the top",
+    "BREAK contract-105 cook:eggs@L2#mistake L2 @ 930x430 [order-card-in-sidebar 03-order-card-in-sidebar.png] 10.8s: the light [8,112,91,248] is not whole round card:hakro tarelo indo [12,107,87,244] (its picture and pill): it pokes out at the top"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/before.log",
+   "minutes": 11.7
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/wt/s19-wave-c/build/screenshots/tiers/trees/1e85a893d6/build/screenshots/sandbox/tiers-before-1e85a893d6-e9467921c5 build/screenshots/sandbox/tiers-change-e9467921c5 build/screenshots/tiers/change-e9467921c5/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 440 before|after pictures, 74 not paired; build/screenshots/tiers/change-e9467921c5/before-after/index.html",
+   "tail": [
+    "pairs: 440 before|after pictures, 74 not paired; build/screenshots/tiers/change-e9467921c5/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/pairs.log",
+   "minutes": 0.2
+  },
+  {
+   "id": "rows",
+   "what": "the brief's rows, after (evidence.mjs --after --brief; the before was played at launch)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s19-wave-c.json",
+   "status": "pass",
+   "code": 0,
+   "line": "Next (the orchestrator): node build/tools/review/evidence.mjs --judge --brief build/tools/ops/specs/s19-wave-c.json",
+   "tail": [
+    "SH-247: 96 panels, 48 text captures -> build/screenshots/brief/s19-wave-c/SH-247/after",
+    "ART-67: 16 panels -> build/screenshots/brief/s19-wave-c/ART-67/after",
+    "CK-62: 4 panels -> build/screenshots/brief/s19-wave-c/CK-62/after",
+    "CK-63: 16 panels, 16 text captures -> build/screenshots/brief/s19-wave-c/CK-63/after",
+    "CK-64: 8 panels -> build/screenshots/brief/s19-wave-c/CK-64/after",
+    "Next (the orchestrator): node build/tools/review/evidence.mjs --judge --brief build/tools/ops/specs/s19-wave-c.json"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/rows.log",
+   "minutes": 31.7
+  },
+  {
+   "id": "rows-judge",
+   "what": "the judge's before|after batch for Fable (evidence.mjs --judge --brief)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --judge --brief build/tools/ops/specs/s19-wave-c.json",
+   "status": "pass",
+   "code": 0,
+   "line": "One judge call per batch file (never the builder). Then: node build/tools/review/evidence.mjs --collect --run-id br-s19-wave-c-after-20261110-100940-br7 and --apply --run-id br-s19-wave-c-after-20261110-100940-br7",
+   "tail": [
+    "before|after for brief s19-wave-c: 7 rows in 1 batch file(s)",
+    "build/screenshots/evidence/br-s19-wave-c-after-20261110-100940-br7/judge/brief-01.md",
+    "One judge call per batch file (never the builder). Then: node build/tools/review/evidence.mjs --collect --run-id br-s19-wave-c-after-20261110-100940-br7 and --apply --run-id br-s19-wave-c-after-20261110-100940-br7"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/rows-judge.log",
+   "minutes": 0.5
+  },
+  {
+   "id": "film:eggs",
+   "what": "a first-play film: cook:eggs as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:eggs",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:eggs --sizes 740x320 --no-sheets --run-id tiers-film-e9467921c5-eggs",
+   "status": "pass",
+   "code": 0,
+   "line": "10:42:16 summary: /home/user/wt/s19-wave-c/build/screenshots/sandbox/tiers-film-e9467921c5-eggs/summary.md",
+   "tail": [
+    "10:42:16 findings: 6 (tap-small 3, covers-play-area 1, text-small 1, canvas-text-small 1)",
+    "10:42:16 sound: 5 lines heard, 3 with no family clip (the recording gap list), 7 played files that are not an approved family clip",
+    "gap     1x  Muke hakro tarelo indo khape.  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "10:42:16 summary: /home/user/wt/s19-wave-c/build/screenshots/sandbox/tiers-film-e9467921c5-eggs/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/film_eggs.log",
+   "minutes": 0.4
+  },
+  {
+   "id": "frozen",
+   "what": "chai against its frozen run (frozen.mjs --diff)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/frozen.mjs --diff",
+   "status": "fail",
+   "code": 124,
+   "line": "re-playing 30 page(s) that changed, to confirm ...",
+   "tail": [
+    "playing 15 flows at 1280x665, 740x320 (run frozen-diff-chai-tray-202611101042) ...",
+    "re-playing 30 page(s) that changed, to confirm ..."
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/frozen.log",
+   "minutes": 35
+  },
+  {
+   "id": "mount",
+   "what": "Cook's mount test (COOK-16: leaked listeners)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/test_cook_mount.mjs",
+   "status": "fail",
+   "code": 1,
+   "line": "Node.js v22.23.4",
+   "tail": [
+    "errno: -98,",
+    "syscall: 'listen',",
+    "address: '127.0.0.1',",
+    "port: 8904",
+    "}",
+    "Node.js v22.23.4"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/mount.log",
+   "minutes": 0
+  },
+  {
+   "id": "leak-cook",
+   "what": "Cook's Kutchi leak bot (a browser; non-negotiable 4)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/leak.mjs cook",
+   "status": "fail",
+   "code": 1,
+   "line": "Node.js v22.23.4",
+   "tail": [
+    "errno: -98,",
+    "syscall: 'listen',",
+    "address: '127.0.0.1',",
+    "port: 8904",
+    "}",
+    "Node.js v22.23.4"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/leak-cook.log",
+   "minutes": 0
+  },
+  {
+   "id": "loadtime",
+   "what": "time and bytes to the first tap (loadtime.mjs; 20% growth fails)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/loadtime.mjs --games eggs",
+   "status": "fail",
+   "code": 1,
+   "line": "Node.js v22.23.4",
+   "tail": [
+    "errno: -98,",
+    "syscall: 'listen',",
+    "address: '127.0.0.1',",
+    "port: 8904",
+    "}",
+    "Node.js v22.23.4"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/loadtime.log",
+   "minutes": 0
+  },
+  {
+   "id": "vessel-meta",
+   "what": "vessels centred on their burners (build/check_vessel_meta.py)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/check_vessel_meta.py",
+   "status": "pass",
+   "code": 0,
+   "line": "ok   chai-v2/meta.json panTop: recorded (0.3434, 0.6408), rim (0.3434, 0.6408), off 0.0000 (fit 0.9px)",
+   "tail": [
+    "ok   chai-tray META.panTop on v3 pan-empty: recorded (0.3754, 0.6146), rim (0.3744, 0.6140), off 0.0010 (fit 1.7px)",
+    "ok   chai-tray META.panTop on v3 pan-water: recorded (0.3754, 0.6146), rim (0.3762, 0.6144), off 0.0008 (fit 1.7px)",
+    "ok   chai-tray META.panTop on v3 pan-milky: recorded (0.3754, 0.6146), rim (0.3758, 0.6147), off 0.0004 (fit 2.1px)",
+    "ok   chai-tray META.panTop on v3 pan-boil-milky: recorded (0.3754, 0.6146), rim (0.3750, 0.6117), off 0.0029 (fit 2.4px)",
+    "ok   chai-tray META.panTop on v3 pan-foam: recorded (0.3754, 0.6146), rim (0.3765, 0.6145), off 0.0011 (fit 2.1px)",
+    "ok   chai-v2/meta.json panTop: recorded (0.3434, 0.6408), rim (0.3434, 0.6408), off 0.0000 (fit 0.9px)"
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/vessel-meta.log",
+   "minutes": 0.4
+  },
+  {
+   "id": "rows-to-recheck",
+   "what": "the fix-list rows of the flows the change reaches (touched.mjs | regress.mjs)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/touched.mjs --base 1e85a893d6319ea4f81cdc03162623ad54fe7ed9 --json | node build/tools/review/regress.mjs --stdin",
+   "status": "pass",
+   "code": 0,
+   "line": "736 distinct rows to recheck.",
+   "tail": [
+    "ART-43  open     eye: chai at 1280x665 and 971x318 besi The worktop and the stone sing together, every stove game (Zafar, 5 Nov evening: \"is it the perf",
+    "ART-44  open     auto: python3 build/tools/art/artcolou Seven shipped pictures keep a baked shadow (non-negotiable look rule: no baked shadows): the cli",
+    "ART-42  reopened auto: artcheck.test.mjs; eye: the next Every art run gets its references from GitHub itself and downloads in one go, never asking Zafar",
+    "... and 192 more",
+    "checked by the contract run on every flow (--check fails on a break): contract-100 kit-card: SH-227, SH-241; contract-101 nani-box: SH-240; contract-102 kit-light: SH-119; contract-103 no-buttons: SH-238; contract-104 card-pic: SH-242, SEK-24; contract-105 light-whole: CK-63; contract-106 light-goes: SH-236; contract-107 hop-shelf: SH-237; contract-108 praise-last: SH-239; contract-109 shelf-line: SH-243; contract-110 knob-side: SH-247; contract-111 item-reach: SH-244; contract-96 boil-reopen: CHAI-105; contract-98 lesson-shown: DAAR-41; contract-44 one-finger: SH-233; contract-92 light-room: SH-230, CK-61, DAAR-43; contract-93 own-words: CK-59; contract-94 wm-card: SH-231; contract-95 skip-silent: CK-60, DAAR-40; contract-72 row-glide: SH-152, CHAI-39; contract-75 skip-zone: SH-157; contract-76 pop-face: SH-154; contract-77 timed-hold: SH-158; contract-78 call-light: CHAI-40, CHAI-49, CHAI-52; contract-79 card-light: CHAI-42, SH-178; contract-80 no-jump: CHAI-45; contract-81 over-gauge: CHAI-46; contract-82 edge-on-face: CHAI-47; contract-83 card-on-face: SH-154, CHAI-43, SH-203; contract-90 card-light: CHAI-37, CHAI-77, CHAI-106; contract-84 light-clear: SH-164; contract-85 replay: SH-161; contract-86 bubble-clear: SH-166; contract-87 one-light: CHAI-50; contract-88 item-said: SH-171; contract-89 helper-call: SH-172, CHAI-40; contract-91 help-comes: SH-228, CLN-221, RIDE-11; contract-1 popup: SH-64, CHT-10, CHAI-15, CK-29; contract-2 moves-on: SH-40, CLN-92, CLN-110; contract-3 voice: SH-66; contract-4 bubble: SH-68, CLN-86, CLN-146, SH-177; contract-5 badges: SH-67; contract-6 old-art: DAAR-13, ART-17, ART-13, CK-52; contract-7 one-voice: PAN-04; contract-8 highlight: SH-53, SH-79, CK-34, CLN-143, CLN-144, CLN-145, CK-41; contract-9 closed-card: CLN-114; contract-10 your-turn: SH-71; contract-11 background: PAN-14, ART-05, ART-59, ART-60; contract-12 greyed: SH-23; contract-13 stale-ui: CLN-06; contract-14 talk: ART-18; contract-15 words-whole: SH-73, CLN-153, SH-170; contract-16 english: LNG-01, PAN-10, SH-85, MOD-09, MOD-10, CK-42, LNG-15, SH-92; contract-17 voice-src: LNG-06, LNG-14; contract-18 card-rows: SH-10, SEK-13, DAAR-19, DAAR-23, CLN-131, CLN-141; contract-19 counting: DAAR-18, DAAR-24, SH-92; contract-20 one-face: CLN-85, CLN-139, CLN-149, DAAR-25, CK-40; contract-21 input-live: CLN-152, CK-43, CK-45, DAAR-42; contract-22 once-whole: PAN-04, PAN-16, CHAI-21; contract-23 item-word: SH-94; contract-24 help-ladder: SH-60, SH-95; contract-26 opening: LNG-16; contract-30 written: SH-99; contract-31 free-replay: SH-102; contract-32 divider: SH-103; contract-33 headline-size: SH-107; contract-34 go-arrow: SH-106; contract-35 card-ladder: SH-110, SAM-26, MAA-18; contract-36 step-call: SH-110, SEK-18, SH-133; contract-37 decoys: CK-49, SH-132; contract-50 one-tick: SAM-24, SAM-27; contract-51 inside-card: SH-142, SH-138, SH-170, CHAI-69; contract-52 bubble-clear: CK-18, SH-145, SH-138, CHAI-48, SH-177; contract-53 one-in-light: CHAI-33, SH-138; contract-54 rail-in-side: CK-53, SH-138",
+    "736 distinct rows to recheck."
+   ],
+   "log": "build/screenshots/tiers/change-e9467921c5/logs/rows-to-recheck.log",
+   "minutes": 0
+  }
+ ],
+ "minutes": 91.2,
+ "ok": false
+}

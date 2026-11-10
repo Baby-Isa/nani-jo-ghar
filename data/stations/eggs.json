@@ -1,5 +1,5 @@
 {
- "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes). Sprint 18 wave 2 (s18-g-eggs, 8 Nov): the station reads its art and places from items and scene (Cook.data.settings.eggs); mechanic.levels stays its per-level knobs.",
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes). Sprint 18 wave 2 (s18-g-eggs, 8 Nov): the station reads its art and places from items and scene (Cook.data.settings.eggs); mechanic.levels stays its per-level knobs. S19 wave C: overMs how long a fried egg sits past its full ring before it browns (a look only).",
  "station": {
   "name": "Eggs",
   "verb": "Boil or fry, then the plates",
@@ -52,7 +52,8 @@
     "room": 6,
     "shakers": false,
     "meal": "breakfast",
-    "ready": 0.72
+    "ready": 0.72,
+    "overMs": 3200
    },
    {
     "cookMs": 3600
@@ -157,7 +158,7 @@
    1600,
    900
   ],
-  "view": "T the hob (two burners, the pot left, the pan right), then E the table",
+  "view": "T the hob (chai's two burners: the boiled eggs' pot left, the fried eggs' pan right) and the tray of plates on its right, the stone tray band below; then E the table",
   "bg": {
    "breakfast": "assets/cook/proto/eggs/bg-kitchen-morning.webp",
    "lunch": "assets/cook/bg/service-master-v2.webp",
@@ -172,19 +173,31 @@
   "hob": {
    "call": "Cook.Kit.hob",
    "n": 2,
-   "x": 160,
-   "y": 70,
-   "k": 0.74,
-   "_s19": "S19: x 300 -> 160 (the tray moved left with it, clear of the cog's column on a phone)"
+   "kMax": 1,
+   "rk": 0.36,
+   "gap": 44,
+   "top": 16,
+   "above": 26,
+   "handleMin": 26,
+   "_s19c": "S19 wave C (CK-66, SH-246, SH-247; Zafar 9 Nov): chai's hob (the kit's two-burner hob), placed by js/cook/stations/eggs.js layout(): as big as the row allows (kMax its largest scale) with the tray keeping its least width (tray.min), the group centred in the worktop that shows (Cook.view: the design box less margin[0] at each side, or the view less margin[1] where the stage shows less; above the band, with a taller stage's extra worktop up to extraMax, as chai's; top, above: its margins); rk: each vessel's rim radius over the burners' pitch; gap: hob to tray; handleMin: the least angle (degrees above the level) of the pan's handle, turned up and to the left between the two vessels, clear of the pot's rim. The knob below each pan (the knob rule: two pans at every level).",
+   "margin": [
+    56,
+    24
+   ],
+   "extraMax": 320,
+   "cog": 72,
+   "_cog": "the tray never goes up under the grown-ups' cog in the view's top right corner: its column's height in page px"
   },
   "reuse": true,
   "tray": {
    "file": "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
-   "d": 440,
-   "x": 870,
-   "y": 90,
+   "w": 768,
+   "h": 754,
    "reuse": true,
-   "plate": "assets/cook/items/plate-enamel-empty-t.webp",
+   "plate": "assets/cook/items/v4/kit/plate-cream.webp",
+   "plate_d": 0.38,
+   "min": 420,
+   "max": 520,
    "wells": [
     [
      0.283,
@@ -203,20 +216,13 @@
      0.708
     ]
    ],
-   "plateW": 168,
-   "face": {
-    "dx": -74,
-    "dy": -70,
-    "d": 64
-   },
-   "_s19": "S19: x 1090 -> 870 and d 470 -> 440 (and the hob x 300 -> 160), so on a phone (740x320) the tray's right-hand plates are clear of the grown-ups' menu column under the cog (eggs L3 and L4 at 740x320 stopped tapping a plate under it); the wells 191 apart still clear the 168 plates"
+   "_s19c": "S19 wave C (CK-66; Zafar 9-10 Nov: 'four plates onto the serving area ... We do it for tea'; cream plates for eggs, his yes 10 Nov): chai's walnut tray on the right of the hob, a cream plate (plate_d of the tray's width) in each well a person uses, their face circle in their plate's corner of the tray as chai's (CHAI-65); its width what the row leaves (at least min, at most max)"
   },
   "people": {
    "call": "Cook.Kit.faceArt(who)",
    "reuse": true,
    "note": "Nana, Ma, Ali (cousin), Nani: the counter characters, 470 px, standing behind the table"
   },
-  "vesselR": 150,
   "table": {
    "seats": {
     "1": [
@@ -244,110 +250,86 @@
    "_note": "the table scene on the meal's kitchen (scene.bg): the people stand behind the island (its back edge at y 705), each plate slides onto the island at their seat (the breakfast and night kitchens' three wooden trays at x 457, 800, 1143, measured from bg-kitchen-morning.webp); the cat on the island's left end (a placeholder until Simba)"
   },
   "band": {
-   "top": 630,
-   "base": 818,
-   "chipY": 860,
-   "_note": "S19 (Fable's eggs flaw 3; chai's scene): the stone band across the bottom 30% (Shelf.BAND), the bowl and the shakers standing on its base, their pills on its chip line"
-  }
+   "tray": true,
+   "_note": "S19 wave C (SH-243, ART-69; as wave B's corn): the bowl of eggs and the shakers are top-down pictures, so they lie on the stone tray band (St.stoneBand tray: true, Shelf.BAND), each above its pill on the chip line, the row centred under the hob, 200 apart (bandStep)"
+  },
+  "bandStep": 200
  },
  "items": {
   "pot": {
    "size": "L",
    "view": "T",
    "states": {
-    "empty": "assets/cook/proto/eggs/egg-pot-empty.webp",
-    "water": "assets/cook/proto/eggs/egg-pot-water.webp",
-    "boil": "assets/cook/proto/eggs/egg-pot-boil.webp"
+    "water": "assets/cook/items-s14/chai-pan/pan-water-s14.webp"
    },
-   "px": [
-    492,
-    389
-   ],
    "role": "vessel",
    "word": null,
-   "drawn": {
-    "w": 340,
-    "_s19": "S19 (Fable's eggs flaw 4, layout only): 375 -> 340, so the pot's right handle ends 20 px short of the pan's round body on the next burner (the burners are 340 apart, the pan's body r 150); the pot's 45-degree art is an ART row"
-   },
-   "replaces": "assets/cook/items-s14/chai-pan/pan-water-s14.webp (chai's pan: the wrong vessel)",
-   "_note": "one canvas, rim-registered (cell_align); handles included",
+   "flip": true,
    "body": {
-    "cx": 0.5,
-    "cy": 0.499,
-    "rIn": 0.3,
-    "_note": "the round body (cx, cy: its centre as fractions of the canvas) and the water inside it (rIn, of the width), measured from egg-pot-boil.webp: handles left and right, body centred",
-    "r": 0.383,
-    "_r": "r: the pot's outer round body (its rim, handles left out), of the width: 377 px tall on the 492 px canvas (S19, the light's body, CK-63)"
-   }
+    "cx": 0.3595,
+    "cy": 0.595,
+    "r": 0.3074,
+    "rIn": 0.272,
+    "_note": "chai's own top-down pan (pan-water-s14, data/stations/chai-tray.json kit.pan looks.water: its rim 158 px round (184.8, 241) on 514 x 405; its floor 140): fractions of the canvas; flipped so its handle points left, as chai's"
+   },
+   "reach": 2.08,
+   "_s19c": "S19 wave C (ART-67: no 45-degree pot): the boiled eggs' pot is chai's own top-down pan art, reused; reach: its handle's end from its middle over its rim radius (514 - 184.8 over 158)"
   },
   "pan": {
    "size": "L",
    "view": "T",
-   "states": {
-    "dry": "assets/cook/proto/eggs/fry-pan.webp",
-    "oil": "assets/cook/proto/eggs/fry-pan-oil.webp"
-   },
+   "file": "assets/cook/items/v4/eggs/pan-steel.webp",
    "px": [
-    445,
+    430,
     700
    ],
    "role": "vessel",
    "word": null,
-   "drawn": {
-    "body": 300,
-    "handle": 170
-   },
-   "replaces": "assets/cook/proto/egg-pan.webp",
-   "_note": "handle points down; one canvas",
    "body": {
-    "cx": 0.454,
-    "cy": 0.289,
+    "cx": 0.499,
+    "cy": 0.321,
+    "r": 0.4872,
     "rIn": 0.36,
-    "_note": "the round body (handle down): its centre (cx, cy, fractions of the canvas), its diameter (d) and the oil inside it (rIn), fractions of the width (fry-pan-oil.webp); drawn.body is the body's drawn diameter",
-    "d": 0.908
-   }
+    "_note": "measured from pan-steel.webp's alpha: the round body x 5-424 (centre 214.5, r 209.5) with its widest row at y 225; its floor rIn; the handle points down to y 699 in the picture"
+   },
+   "reach": 2.26,
+   "handleW": 0.14,
+   "_s19c": "S19 wave C (CK-66; Zafar 9 Nov: 'all stainless steel', 'place the pan in whichever orientation you like, so you can fix the handle issue'): the v4 steel pan, turned so its handle points up and to the left, between the pot and the pan, clear of the pot's rim and away from the band (layout(): handleMin); reach: its handle's end from its middle over its rim radius (474 over 209.5); handleW: the handle's width over its rim radius"
   },
   "egg": {
    "size": "S",
    "view": "T",
    "states": {
-    "white": "assets/cook/proto/eggs/egg-white.webp",
-    "brown": "assets/cook/proto/eggs/egg-brown.webp",
-    "cracked": "assets/cook/proto/eggs/egg-cracked.webp",
-    "shells": "assets/cook/proto/eggs/egg-shells.webp"
+    "brown": "assets/cook/proto/eggs/egg-brown.webp"
    },
    "px": [
     100,
-    81
+    79
    ],
    "word": "n.egg",
-   "drawn": {
-    "w": 62
-   },
-   "_note": "whole eggs lifted from the bowl; the crack at the rim; the shells after",
+   "inPot": 0.62,
+   "_note": "a whole egg lifted from the bowl (brown, as the bowl's), whole in the pot: inPot its width over the pot's floor radius",
    "card": "assets/cook/proto/eggs/egg-brown.webp"
   },
   "friedEgg": {
    "size": "S",
    "view": "T",
    "states": {
-    "raw": "assets/cook/proto/eggs/egg-fried-raw.webp",
-    "setting": "assets/cook/proto/eggs/egg-fried-setting.webp",
-    "done": "assets/cook/proto/eggs/egg-fried-done.webp",
-    "crispy": "assets/cook/proto/eggs/egg-fried-crispy.webp"
+    "cracked": "assets/cook/items/v4/eggs/egg-cracked.webp",
+    "cooked": "assets/cook/items/v4/eggs/egg-cooked.webp",
+    "overdone": "assets/cook/items/v4/eggs/egg-overdone.webp"
    },
    "px": [
-    190,
-    185
+    360,
+    342
    ],
    "word": [
     "a.fried",
     "n.egg"
    ],
-   "drawn": {
-    "w": 120
-   },
-   "_note": "in the pan, by the ring's progress; raw is partial alpha"
+   "inPan": 1.1,
+   "_note": "S19 wave C: cracked into the pan (egg-cracked), cooked once its ring reaches the green (egg-cooked), overdone if it is left past its full ring for mechanic overMs (egg-overdone: a look, never a verdict); inPan its width over the pan's floor radius; on a plate it keeps its look",
+   "card": "assets/cook/items/v4/eggs/egg-cooked.webp"
   },
   "boiledEgg": {
    "size": "S",
@@ -355,38 +337,29 @@
    "word": "ph-boiledegg",
    "english": "boiled egg",
    "states": {
-    "inPot": "assets/cook/proto/eggs/egg-white.webp"
+    "a": "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
+    "b": "assets/cook/items/v4/eggs/egg-boiled-half-b.webp"
    },
    "px": [
-    100,
-    81
+    195,
+    300
    ],
-   "_note": "no Kutchi yet: grey English. In the pot it is the whole egg; on a plate it stands in its cup (eggCup)."
+   "_note": "no Kutchi yet: grey English. In the pot it is the whole egg (items.egg); on a plate its two halves side by side (S19 wave C)",
+   "card": "assets/cook/items/v4/eggs/egg-boiled-half-a.webp"
   },
   "bowl": {
    "size": "M",
    "view": "T",
-   "states": {
-    "six": "assets/cook/proto/eggs/egg-bowl-6.webp",
-    "three": "assets/cook/proto/eggs/egg-bowl-3.webp",
-    "empty": "assets/cook/proto/eggs/egg-bowl-0.webp"
-   },
+   "file": "assets/cook/items/v4/eggs/bowl-of-eggs.webp",
    "px": [
-    350,
-    331
+    592,
+    600
    ],
    "word": "n.egg",
    "drawn": {
-    "w": 160
+    "w": 150
    },
-   "at": [
-    150,
-    818
-   ],
-   "replaces": "assets/cook/proto/egg-bowl.webp",
-   "_note": "tap: an egg lifts out; the picture follows the count left",
-   "chipY": 860,
-   "_s19": "S19 (Fable's eggs flaw 3): the bowl stands on chai's stone band (St.stoneBand, Shelf.BAND: its foot on the base 818, its pill on the chip line 860), drawn 160 wide so it and its hop fit the band's room (Shelf.itemTop 647); was floating at y 520 over the marble"
+   "_note": "S19 wave C: the v4 bowl of eggs (top-down) on the stone tray band, its pill under it; tap: an egg lifts out. One picture (the v4 cut has no fewer-eggs looks)"
   },
   "shakerSalt": {
    "size": "S",
@@ -398,16 +371,14 @@
     140
    ],
    "drawn": {
-    "w": 90
+    "w": 112
    },
-   "at_y": 818,
    "levels": [
     3,
     4
    ],
    "_note": "partial alpha (glass)",
-   "at_x": 360,
-   "_s19": "S19: on the stone band, its foot on the base 818 (the bowl's line); the shakers and the bowl 200 apart so each one's light (with its pill at the phone's floor scale) stops short of the next (contract-92)"
+   "_s19c": "S19 wave C: a top-down shaker, on the stone tray band beside the bowl (the band's row), its pill under it"
   },
   "shakerPepper": {
    "size": "S",
@@ -419,32 +390,13 @@
     140
    ],
    "drawn": {
-    "w": 90
+    "w": 112
    },
-   "at_y": 818,
    "levels": [
     3,
     4
    ],
-   "at_x": 560,
-   "_s19": "S19: on the stone band, its foot on the base 818 (the bowl's line); the shakers and the bowl 200 apart so each one's light (with its pill at the phone's floor scale) stops short of the next (contract-92)"
-  },
-  "eggCupTop": {
-   "size": "S",
-   "view": "T",
-   "states": {
-    "empty": "assets/cook/proto/eggs/eggcup-t.webp",
-    "egg": "assets/cook/proto/eggs/eggcup-egg-t.webp",
-    "open": "assets/cook/proto/eggs/eggcup-open-t.webp"
-   },
-   "px": [
-    110,
-    95
-   ],
-   "drawn": {
-    "w": 72
-   },
-   "_note": "a boiled egg lands in its cup on the tray's plate; one canvas"
+   "_s19c": "S19 wave C: a top-down shaker, on the stone tray band beside the bowl (the band's row), its pill under it"
   },
   "plate": {
    "size": "M",
@@ -474,8 +426,7 @@
    ],
    "drawn": {
     "w": 120
-   },
-   "card": "assets/cook/proto/eggs/egg-fried-f.webp"
+   }
   },
   "eggCupServed": {
    "size": "S",
@@ -494,8 +445,7 @@
    "drawn": {
     "h": 110
    },
-   "_note": "soft and hard are drawn but the game does not ask for them: nothing wired to them (no mechanic added)",
-   "card": "assets/cook/proto/eggs/eggcup-egg-f.webp"
+   "_note": "soft and hard are drawn but the game does not ask for them: nothing wired to them (no mechanic added)"
   },
   "cat": {
    "size": "L",
@@ -508,16 +458,16 @@
  "vocab": {
   "n.egg": {
    "item": "egg",
-   "card": "assets/cook/proto/eggs/egg-white.webp"
+   "card": "assets/cook/proto/eggs/egg-brown.webp"
   },
   "ph-boiledegg": {
    "item": "boiledEgg",
-   "card": "assets/cook/proto/eggs/egg-white.webp",
+   "card": "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
    "english": "boiled egg"
   },
   "a.fried": {
    "item": "friedEgg",
-   "card": "assets/cook/proto/eggs/egg-fried-done.webp"
+   "card": "assets/cook/items/v4/eggs/egg-cooked.webp"
   },
   "spi-16": {
    "item": "shakerSalt",
@@ -560,34 +510,21 @@
   "assets/cook/bg/service-master-v2.webp",
   "assets/cook/proto/eggs/bg-kitchen-night.webp",
   "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
-  "assets/cook/items/plate-enamel-empty-t.webp",
-  "assets/cook/proto/eggs/egg-pot-empty.webp",
-  "assets/cook/proto/eggs/egg-pot-water.webp",
-  "assets/cook/proto/eggs/egg-pot-boil.webp",
-  "assets/cook/proto/eggs/fry-pan.webp",
-  "assets/cook/proto/eggs/fry-pan-oil.webp",
-  "assets/cook/proto/eggs/egg-white.webp",
+  "assets/cook/items/v4/kit/plate-cream.webp",
+  "assets/cook/items-s14/chai-pan/pan-water-s14.webp",
+  "assets/cook/items/v4/eggs/pan-steel.webp",
+  "assets/cook/items/v4/eggs/bowl-of-eggs.webp",
+  "assets/cook/items/v4/eggs/egg-cracked.webp",
+  "assets/cook/items/v4/eggs/egg-cooked.webp",
+  "assets/cook/items/v4/eggs/egg-overdone.webp",
+  "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
+  "assets/cook/items/v4/eggs/egg-boiled-half-b.webp",
   "assets/cook/proto/eggs/egg-brown.webp",
-  "assets/cook/proto/eggs/egg-cracked.webp",
-  "assets/cook/proto/eggs/egg-shells.webp",
-  "assets/cook/proto/eggs/egg-fried-raw.webp",
-  "assets/cook/proto/eggs/egg-fried-setting.webp",
-  "assets/cook/proto/eggs/egg-fried-done.webp",
-  "assets/cook/proto/eggs/egg-fried-crispy.webp",
-  "assets/cook/proto/eggs/egg-bowl-6.webp",
-  "assets/cook/proto/eggs/egg-bowl-3.webp",
-  "assets/cook/proto/eggs/egg-bowl-0.webp",
   "assets/cook/proto/eggs/shaker-salt-t.webp",
   "assets/cook/proto/eggs/shaker-pepper-t.webp",
-  "assets/cook/proto/eggs/eggcup-t.webp",
-  "assets/cook/proto/eggs/eggcup-egg-t.webp",
-  "assets/cook/proto/eggs/eggcup-open-t.webp",
   "assets/cook/proto/eggs/plate-f.webp",
   "assets/cook/proto/eggs/egg-fried-f.webp",
   "assets/cook/proto/eggs/eggcup-egg-f.webp",
-  "assets/cook/proto/eggs/eggcup-tapped-f.webp",
-  "assets/cook/proto/eggs/eggcup-soft-f.webp",
-  "assets/cook/proto/eggs/eggcup-hard-f.webp",
   "assets/cook/proto/cat-sit.webp",
   "assets/cook/items/v3/hob/hob-2.webp",
   "assets/cook/items/v3/hob/knob-off-v2.webp",
@@ -595,5 +532,5 @@
   "assets/cook/items/chai-station/flame-high.webp",
   "assets/cook/items/chai-station/flame-low.webp"
  ],
- "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic): the fried egg on its plate, the boiled egg in its cup, one egg"
+ "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic, cardOfIds): one card per egg (CK-64), the fried egg (v4 egg-cooked) for 'tarelo indo', a boiled egg's half (v4 egg-boiled-half-a) for 'boiled egg', one brown egg for 'indo'"
 }
