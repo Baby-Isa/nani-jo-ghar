@@ -1,0 +1,63 @@
+{
+  "name": "s19-wave-b: chop on its new art with the hop, then corn on the new grill kit (two screens), to chai's standard",
+  "model": "Opus",
+  "effort": "high",
+  "why": "two games rebuilt on new art and a new shared grill kit",
+  "cost": "about $40-70 (Zafar: do all the work, no budget stop)",
+  "stop": "when the tasks are done; no budget or time stop (Zafar, 10 Nov overnight)",
+  "branch": "s19-wave-b in /home/user/wt/s19-wave-b (made for you from the integration branch with s19-chop merged: the hop, semi-random); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "build/reports/s18-review-and-direction.md (chai's standard: sections 2-4)",
+    "docs/feedback/kitchen-mocks2-2026-11-09.md and docs/feedback/kitchen-mocks-2026-11-09.md (his look for each game)",
+    "build/reports/s19-art-cuts.md (the new art: assets/cook/items/v4/)",
+    "build/reports/s19-rule-breaks-by-game.md (your games' rule breaks: fix each, or fix the probe where the probe is wrong)",
+    "docs/decisions/*.md (his answers, 9-10 Nov)",
+    "docs/process/qa-checklist.md 'When we check, and how deep'",
+    "build/reports/s19-chop.md (the hop)",
+    "build/tools/art/sekelo_layouts.py opt3s and sources/art/s19-mini/refs/G2-skewer-layout-guide.jpg (the grill layout he chose: option 3, two by two on the band)",
+    "docs/process/regressions.md rows SEK-20, CK-67, CK-71, ART-37"
+  ],
+  "owns": [
+    "js/cook/stations/chop.js",
+    "js/cook/mechanics/chop.js",
+    "data/stations/chop.json",
+    "js/cook/stations/corn.js",
+    "js/cook/mechanics/grill.js",
+    "js/cook/grill-kit.js (new: the one grill kit for corn now, sekelo next, fish and steak later)",
+    "data/stations/corn.json",
+    "build/reports/s19-wave-b.md"
+  ],
+  "readOnly": [
+    "js/shared/shelf.js and js/cook/kitchen-kit.js (s19-wave-a: its phase 1 brings the stone tray; until the orchestrator tells you it is merged, use the shelf as it is and keep your band calls ready to switch)",
+    "js/cook/stations/mishkaki-grill.js (sekelo moves onto your grill kit later, when its art lands)",
+    "build/sandbox/data/evidence.json (s19-wave-a owns it: write your rows' probe entries exactly in your report)",
+    "assets/cook/items/v4/**"
+  ],
+  "stubs": "none",
+  "port": 8903,
+  "report": "s19-wave-b",
+  "publish": false,
+  "flows": [
+    "cook:chop",
+    "cook:corn"
+  ],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Chop to chai's standard on its new art: the board big above the stone band (ART-37); the pieces from assets/cook/items/v4/chop/ (whole in the band with their pills; a cut gives the two halves on the board); the knife (kit/knife); the hop as merged (semi-random, never two together, the level's number up at once); every open CK row for chop; chop's rule breaks.",
+      "accept": "chop L1-L4 at the four sizes: 0 page errors, end reached; a frame strip of a hop and a cut"
+    },
+    {
+      "do": "Corn on the new grill kit, two screens (CK-67, his yes): screen 1 is sekelo's option 3 exactly: the raw cobs (corn/cob-raw) lying in the stone band two by two, the grill (kit/grill) big on the left, the cooked tray (kit/tray-steel) on its right; the cobs grow as they go up onto the grill, turn upright, rest on its rims, are turned (cob-turned, cob-done) and lifted off into the tray; screen 2, the flavour: each cob on its person's cream plate (kit/plate-cream, his yes) with a face circle, the six dressing bowls (corn/bowl-*) on the stone band, each person asking for their own mix; the dressing drawn on the cob in code. The grill kit (js/cook/grill-kit.js) is one kit sekelo will use next: keep corn's own parts out of it. Corn's rule breaks.",
+      "accept": "corn L1-L4 at the four sizes: 0 page errors, end reached; the two screens at 740x320 and 1920x1080"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; never remove a mechanic (Zafar's OK needed); no game's own glow or light, only the kit's; shared screens and buttons from js/shared only; fix what you break; keep your screenshots (the disk has room; delete only your own superseded runs); if you need a file you don't own, write the exact change in your report. Zafar said: don't stop for budget or time; do all the work.",
+      "accept": "build/reports/s19-wave-b.md with a Proof section, under 800 words"
+    }
+  ]
+}

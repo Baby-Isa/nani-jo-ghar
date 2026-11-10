@@ -1,0 +1,81 @@
+{
+  "name": "s19-wave-a: the stone tray and the loading for every game (phase 1), then daar and maani on their new art to chai's standard (phase 2)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "shared kit work every game builds on, then two games' look and feel to chai's standard",
+  "cost": "about $40-70 (Zafar: do all the work, no budget stop)",
+  "stop": "when the tasks are done; no budget or time stop (Zafar, 10 Nov overnight)",
+  "branch": "s19-wave-a in /home/user/wt/s19-wave-a (made for you from the integration branch with s19-stoves merged: the knob rule, tap areas, daar's count card); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/s18-review-and-direction.md (chai's standard: sections 2-4)",
+    "docs/feedback/kitchen-mocks2-2026-11-09.md and docs/feedback/kitchen-mocks-2026-11-09.md (his look for each game)",
+    "build/reports/s19-art-cuts.md (the new art: assets/cook/items/v4/)",
+    "build/reports/s19-rule-breaks-by-game.md (your games' rule breaks: fix each, or fix the probe where the probe is wrong)",
+    "docs/decisions/*.md (his answers, 9-10 Nov)",
+    "docs/process/qa-checklist.md 'When we check, and how deep'",
+    "build/reports/s19-stone-tray-fable.md (the stone tray's exact spec)",
+    "build/reports/s19-stoves.md and build/reports/s19-before-after/stoves-fix.jpg (where the stoves round left daar and maani)"
+  ],
+  "owns": [
+    "js/shared/shelf.js",
+    "js/cook/kitchen-kit.js",
+    "js/cook/flow.js (the loading order only)",
+    "js/cook/stations.js (loading and the band only)",
+    "css/cook.css (the loading cover only)",
+    "js/cook/stations/daar.js",
+    "js/cook/mechanics/tadka.js",
+    "js/cook/mechanics/stir.js",
+    "js/cook/stations/maani-line.js",
+    "js/cook/stations/roll-tawa.js",
+    "js/cook/mechanics/roll.js",
+    "js/cook/mechanics/tawa.js",
+    "data/stations/daar.json",
+    "data/stations/maani-line.json",
+    "build/sandbox/data/evidence.json",
+    "build/frozen/chai-tray/**",
+    "build/reports/s19-wave-a.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/chop.js, js/cook/mechanics/chop.js, js/cook/stations/corn.js and any grill kit file (s19-wave-b)",
+    "assets/cook/items/v4/** (the cut art: use it as is; a cut you need redone goes in your report)"
+  ],
+  "stubs": "none",
+  "port": 8902,
+  "report": "s19-wave-a",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray",
+    "cook:daar",
+    "cook:maani-line",
+    "cook:chop",
+    "cook:corn"
+  ],
+  "rows": [
+    "ART-69",
+    "SH-243",
+    "SH-220",
+    "DAAR-50"
+  ],
+  "tasks": [
+    {
+      "do": "PHASE 1 (others wait on it; do it first, commit, then STOP and reply 'phase 1 done' with the commit hash; the orchestrator merges it and messages you to go on): (a) The stone tray in code (ART-69, SH-243, Fable's spec in build/reports/s19-stone-tray-fable.md): the bottom band of every top-down kitchen game is one honed warm-grey limestone slab (#C4B8AD shading to #B5A99E, a fine speckle, a low soft lip 3-4% of its depth in the same stone, rounded corners, a soft shadow below), drawn by the shared shelf kit, with the items in an even row and their word pills; side-on items keep chai's shelf (his rule: top-down on the tray, side-on on the shelf); chai unchanged. (b) Loading (SH-220, his words in docs/decisions/2026-11-09-tiers-flash-merge.md #2): a stone-coloured cover drawn by the page itself at once; the order scene loads only its own pictures so it opens fast; the cooking game's pictures load while the order scene plays; one fade in; no flash of other backgrounds. This also stops item cards showing before their picture (contract-104).",
+      "accept": "chai's frozen run unchanged; a film of chai's start and the kitchen at 740x320 showing one fade, no flash; the tray at the four sizes on one game"
+    },
+    {
+      "do": "PHASE 2, daar (tadka and stir) to chai's standard on its new art: the eight cream bowls (assets/cook/items/v4/daar/) on the stone tray with their pills; the ladle (kit/ladle); the pot big and central on chai's hob, the knob below (his rule: something else shares the width); the stir: speed dial on the pot's LEFT, the count card on its RIGHT, the stove upright, the card a similar visual weight to the dial (DAAR-50, his 10 Nov words); every open DAAR row the art and this layout unblock; daar's rule breaks (build/reports/s19-rule-breaks-by-game.md).",
+      "accept": "daar L1-L4 at the four sizes: 0 page errors, end reached, its rules clean or each break explained; before/after crops"
+    },
+    {
+      "do": "PHASE 2, maani to chai's standard on its new art: the dough heaps (maani/dough-wheat, dough-millet) on the stone tray with their pills, two brushed-steel plates (kit/plate-steel; his yes: steel for maani) each with its face circle; round plates; the turner smaller with its handle to the bottom right; the board and tawa big (MAA-24 and the open MAA rows); maani's rule breaks.",
+      "accept": "maani L1-L4 at the four sizes: 0 page errors, end reached; before/after crops"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; never remove a mechanic (Zafar's OK needed); no game's own glow or light, only the kit's; shared screens and buttons from js/shared only; fix what you break; keep your screenshots (the disk has room; delete only your own superseded runs); if you need a file you don't own, write the exact change in your report. Zafar said: don't stop for budget or time; do all the work.",
+      "accept": "build/reports/s19-wave-a.md with a Proof section, under 800 words"
+    }
+  ]
+}
