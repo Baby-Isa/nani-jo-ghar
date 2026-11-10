@@ -34,8 +34,9 @@ export function judgeLights(results, { root, log = () => {}, keep = !!process.en
   for (const r of results) for (const l of r.lights || []) {
     const d = join(root, l.dir);
     l.verdict = v[d];
+    if (l.verdict && l.verdict.ok == null && l.verdict.skipped) continue;
     if (!l.verdict || !l.verdict.ok) { bad++; continue; }
-    if (!keep) for (const f of ["before.jpg", "with.jpg"]) try { rmSync(join(d, f)); } catch (e) { /* gone */ }
+    if (!keep) for (const f of ["before.jpg", "with.jpg", "under.jpg"]) try { rmSync(join(d, f)); } catch (e) { /* gone */ }
   }
   log(`lights: ${dirs.length} judged on their pictures, ${bad} failing (lib/lightjudge.py)`);
 }

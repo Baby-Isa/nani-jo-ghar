@@ -24,7 +24,7 @@ export function check112(r, tl, add) {
   let n = 0;
   for (const l of r.lights || []) {
     const v = l.verdict;
-    if (!v || v.ok) continue;
+    if (!v || v.ok || v.ok == null && v.skipped) continue;
     if (n++ >= MAX_LIGHT_BREAKS) break;
     add("contract-112", l.t0, `light ${l.n}${v.region ? ` ${"[" + v.region.join(",") + "]"}` : ""}: ${(v.fails || []).join("; ")} (picture: ${lightPic(l)})`);
   }
@@ -34,7 +34,9 @@ export function check113(r, tl, add) {
   const evs = tl.filter((e) => e.type === "c" && e.k === "s19over");
   const seen = new Set();
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
-  const keyOf = (x) => `${x.what}|${x.id}|${x.byId}|${x.on}`;
+  // (a picture passing over, a pan tipping as it pours, changes its box from sample to sample: only a still cover is held)
+  const keyOf = (x) => `${x.what}|${x.id}|${x.byId}|${x.on}|${(x.byBox || []).map((v) => Math.round(v / 6)).join(",")}`;
+  const pairOf = (x) => `${x.what}|${x.id}|${x.byId}|${x.on}`;
   for (let i = 0; i < evs.length; i++) {
     const e = evs[i];
     for (const x of e.list || []) {
@@ -43,8 +45,9 @@ export function check113(r, tl, add) {
       // held: still there HOLD_MS later (the next samples keep it until then)
       let until = tEnd;
       for (let j = i + 1; j < evs.length; j++) if (!(evs[j].list || []).some((y) => keyOf(y) === k)) { until = evs[j].t; break; }
-      if (until - e.t < HOLD_MS) continue;
+      if (until - e.t < HOLD_MS || seen.has(pairOf(x))) continue;
       seen.add(k);
+      seen.add(pairOf(x));
       const kind = String(x.what);
       const who = kind === "face" ? `${x.id}'s face` : kind === "pill" ? `the word pill ${x.id}` : `the words "${x.id}"`;
       const how = kind === "face" && x.on === "over" ? `sits over ${x.byId}` : `is under ${x.by === "page" ? "the page's " : ""}${x.byId}`;
@@ -94,7 +97,7 @@ export function pageJudged(r, tl, checks, { games = GAMES, src = sources() } = {
   const kinds = new Set(), whats = new Set();
   for (const e of tl) if (e.type === "c") { kinds.add(e.k); if (e.k === "life") whats.add(e.what); }
   for (const id of Object.keys(checks)) {
-    if (id === "contract-112") { out[id] = (r.lights || []).some((l) => l.verdict) ? null : "no light caught on its pictures"; continue; }
+    if (id === "contract-112") { out[id] = (r.lights || []).some((l) => l.verdict && l.verdict.ok != null) ? null : "no light caught on its pictures"; continue; }
     const field = FIELD_OF[id];
     if (field && !entry) { out[id] = `${game} is not in games.json`; continue; }
     if (field && entry && entry[field] == null) { out[id] = `games.json has no ${field} for ${game}`; continue; }

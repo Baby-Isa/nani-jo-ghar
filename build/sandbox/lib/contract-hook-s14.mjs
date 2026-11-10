@@ -246,6 +246,17 @@ function s14hook() {
     const st = { named: !!(a && !a.hidden), open: !!(g && g.classList.contains("ng-open")) };
     if (!same("helper", [st.named, st.open])) emit(Object.assign({ k: "helper" }, st));
   };
-  setInterval(() => { try { sample(); rows14(); helperNow(); } catch (e) { /* a probe only */ } }, 100);
+  // (s19-checks-1, contract-89's probe fault, s19-wave-d: at the test speed samosa's "Tar!" clip is under 100 ms and Nani's card is
+  // cleared and named again inside one 100 ms sample; her card is watched as it changes, not only sampled)
+  let helperObs = null;
+  const watchHelper = () => {
+    const g = document.querySelector("#guide");
+    if (!g || (helperObs && helperObs.el === g)) return;
+    if (helperObs) helperObs.disconnect();
+    helperObs = new MutationObserver(() => { try { helperNow(); } catch (e) { /* a probe only */ } });
+    helperObs.el = g;
+    helperObs.observe(g, { subtree: true, attributes: true, childList: true, attributeFilter: ["class", "hidden", "style"] });
+  };
+  setInterval(() => { try { sample(); rows14(); helperNow(); watchHelper(); } catch (e) { /* a probe only */ } }, 100);
 }
 export const S14_HOOK = `(${s14hook.toString()})()`;

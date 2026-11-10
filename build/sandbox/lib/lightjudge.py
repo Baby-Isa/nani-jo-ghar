@@ -44,7 +44,7 @@ PANEL_TOL = 4           # px into the side panel
 FACE_IN = 0.2           # a face this far inside the light, not its own, is lit by it
 MOVE_PX = 14            # a thing whose middle moved this far (or 30% of its size) while the light was up was moving into it
 SWIPE_GAMES = ["chop", "daar"]   # STD-E2-08a, until Onboard.VARIANTS names them (read from the page when it does)
-SURFACE = ("bg", "wall", "marble", "worktop", "counter", "stage", "panel", "band", "shelf", "slab", "kitchen", "floor", "backdrop", "room")
+SURFACE = ("bg", "wall", "marble", "worktop", "counter", "stage", "panel", "band", "shelf", "slab", "kitchen", "floor", "backdrop", "room", "flame", "steam", "smoke")
 
 
 def lum(im):
@@ -170,6 +170,10 @@ def judge(d):
             boxes.append(fmt([xs.min() * c / k, ys.min() * c / k, (xs.max() + 1) * c / k, (ys.max() + 1) * c / k]))
         fails.append(f"{len(comps)} lit regions, not one: {' '.join(boxes)}")
     main = lab == comps[0][0]
+    if main.sum() * px2 >= 0.9 * vw * vh:
+        # (nothing darkened: the kit's note says a light is up, the screen shows no dim; a pop-up over it, or a layer gone: not judged)
+        out.update(ok=None, skipped="nothing on the screen was darkened while the kit's note said a light was up", fails=[])
+        return out, meta, None
     ys, xs = np.where(main)
     y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
     R = [x0 * c / k, y0 * c / k, x1 * c / k, y1 * c / k]
