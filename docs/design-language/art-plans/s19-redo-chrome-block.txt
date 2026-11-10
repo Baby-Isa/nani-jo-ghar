@@ -1,0 +1,106 @@
+NANI JO GHAR: FULL RUN, THE REDRAWS (Sprint 19). Paste this whole block into Claude in Chrome, after 19:22 on Tue 10 Nov.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-redo/refs.zip , unzip it,
+and drag all its pictures into this chat with this block (the references, plus K2, K6, C5, C6, S2, S4, B1 and B3: the pictures to
+improve, each named after its line).
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+You redraw the seven pictures the group review asked to fix, plus two new pieces, for a premium children's cooking game. Use
+chatgpt.com (Zafar is signed in). Run up to THREE ChatGPT conversations at once, each in its own tab: Chat 1 = K2, K6c, K8.
+Chat 2 = C5, C6, B1, B3. Chat 3 = S2, S4. Send in one tab, move to the next while it generates; go round the tabs in turn.
+
+In each conversation:
+1. First message: the reference pictures, the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes these work."
+2. For each line: attach the pictures it names AND the picture it improves (named after its line, e.g. K2.jpg), paste the line, and add:
+   "First, in text only, list exactly what you will change from the attached picture and what you will keep. Do not draw yet."
+   Then: "Generate the image now, implementing exactly this:" with its answer pasted. When the image arrives: "Check it against the
+   line, in text: is it better than the original on every point the line names? Then generate one corrected version." Keep both.
+3. Up to two tries per line. Then choose: the best new one if it is better than the original on the line's points, else the
+   original. Never trade the house look for a fix.
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Open https://chatgpt.com/library. Hover over the first kept image: a small check box appears in its bottom-right corner; tick it.
+Hover over each other kept image; tick its check box in its bottom-right corner. Tick every kept image of this run and nothing else,
+then press the download button on the selection bar: one download. Log each as "DOWNLOADED <n>: <ChatGPT's file name> -> <save-as
+name>" (save-as: s19-redo-<line>-<try>.png). If the selection is refused, use each image's own download button. Never page
+JavaScript, never a file picker, never a GitHub upload: Zafar pushes the folder himself to main under assets.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start with "S19 REDO RUN REPORT"; per line: tries (and why), kept: <save-as> = <ChatGPT's file name>, your pick (new or original)
+and why, anything ChatGPT refused. Then the DOWNLOADED list and anything missing.
+
+=== HOUSE BRIEF (paste as the first message of each conversation) ===
+These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy their
+style, not their contents: ignore the faces, labels, pills and the gear icon in them, and ignore the thin coloured guide lines and
+small face stickers in any reference picture. Rules for every image:
+- One large soft light from the upper left; nothing floats. The 00-HOUSE pictures have faint window-light streaks across the
+  worktop; do NOT copy those: everything is evenly lit, no window streak.
+- Materials: brushed stainless steel reflecting a neutral pale-grey room; cream ceramic (the bowls in F1 are THE bowl: the same
+  shape, cream and rim in every bowl you draw); dark walnut only where a line asks; white marble worktop with soft cool grey veins
+  only where a line asks for marble (never golden or cream marble).
+- Camera: "straight down" means a flat plan view with no perspective at all: a bowl, a plate or a cob's end is a perfect circle, a
+  tray a perfect rectangle, and no inner or outer side wall of any container shows, only its rim and its floor. Depth shows only
+  as a soft shadow inside the rim along its upper-left inner edge. Any steel rim is ONE flat band of even width, no inner line,
+  ledge or bevel. The reference pictures are sometimes tilted; yours must not be. "Side-on" lines are the exception.
+- These are separate PIECES that we cut out and place in our own layout; we place the stove, the trays, the plates, the shadows and
+  the word labels ourselves. Draw only what the line asks, nothing else: no stove, hob, knobs or flames, no hands, no text, letters,
+  numbers or labels, no tools that do nothing, no napkins or plants unless asked, no steam, no glow, nothing in the air.
+- Counts are exact: if a line says six, draw six, and count them in your check.
+- Fill the frame: the objects asked for take up most of the picture, with a margin of about one tenth of the picture all round.
+  Never small objects in a large empty field. Sizes are given as shares of the picture's width: keep to them.
+- "On magenta" means one flat solid #FF00FF background edge to edge, no gradient, no texture, and NO shadow at all: no contact shadow,
+  no soft shadow, nothing darker than the flat magenta anywhere (we add every shadow in code). The object must not touch the edges.
+  We cut along the magenta, so it must not tint, reflect in or bleed onto the object: steel reflects a neutral pale-grey room, never
+  pink; between thin pieces (strands, rings) the magenta stays pure.
+- Where a line asks for several panels or rows: equal panels, the same camera, scale and light in each, separated only by a strip of
+  the same background; no frames, borders, dividing lines or numbers.
+- No oval plates or trays: round, square or rectangular only. No sweets or biscuits anywhere.
+
+=== IMAGE LINES ===
+CHAT 1
+K2 THE SKEWER PIECES (pictures: K1-skewers-mini-look). Landscape 16:9, straight down, on magenta: a grid of FIFTEEN food pieces,
+   five rows by three columns, equal gaps, each piece about one tenth of the picture's width, each seen from straight above as it
+   would sit threaded on a skewer (draw NO skewer). Rows, top to bottom: a lamb cube; a tomato chunk; a red onion wedge; a green
+   pepper chunk; a potato cube. Columns, left to right: raw; grilled (browned, light grill marks); charred (dark char at the edges,
+   still food, not black). The cooked meat is deep brown with char, never golden or orange; raw meat matte red, not glossy. All
+   fifteen the same size, every piece whole.
+   FIX (the group review): less glossy and less saturated overall; the lamb a deep brown, not orange-brown; the potato pale, not
+   golden; the char marks irregular at the edges, never neat stripes.
+K6c THE CLOTH ALONE (pictures: K6-utensils-mock, and K6.jpg). Landscape 16:9, straight down, on magenta: ONE small folded white cotton
+   cloth, the one under the slotted spoon's handle in K6.jpg, alone, 40% of the picture's width, a soft fold, with a NARROW,
+   handle-shaped dent where the handle rested (about a sixth of the cloth's width), no spoon. No shadow on the magenta.
+K8 THE KARAHI (pictures: K6-utensils-mock, and K6.jpg). SQUARE image, straight down, on magenta: ONE round brushed-steel karahi (a deep
+   Indian frying pan) with two small rounded steel handles at left and right, full of plain golden frying oil, nothing in it, a
+   perfect circle, 75% of the picture's width, the steel the brushed finish of the ladle in K6.jpg, premium and polished: a calm
+   highlight from the upper left, a soft inner shadow under the rim, the oil clear and golden with one soft reflection. No stove, no
+   food, no shadow on the magenta.
+CHAT 2
+C5 GREEN CHUTNEY (improves C5.jpg). SQUARE image, straight down, on magenta, at the scale of F2 (pictures: F2-toppings-mini-look): the pieces lie in one loose, even, flat layer inside an invisible circle 55% of the picture's width, centred, magenta between and around them, NO shadows, NO bowl or outline, every piece whole. Five or six flat ribbons of uneven width, matte dark herb green #4E7A2E.
+   FIX: flatter and matte, as thin as the chutney in its bowl (F3), never raised tubes, never glossy.
+C6 CHOPPED RED ONION (improves C6.jpg). SQUARE image, straight down, on magenta, at the scale of F2 (pictures: F2-toppings-mini-look): the pieces lie in one loose, even, flat layer inside an invisible circle 55% of the picture's width, centred, magenta between and around them, NO shadows, NO bowl or outline, every piece whole. About 30 small chopped red-onion pieces.
+   FIX: no pink cast: each piece's centre white, its skin a deeper purple at the edges only.
+B1 THE GLASS BOWL, THREE MORE STATES (pictures: B1-glass-bowl-mini). Landscape 16:9, side-on with the camera a touch above (the same
+   height as B1), on the white marble worktop against the same plain flat warm-cream wall as B1: THREE equal panels, the same clear
+   glass bowl as B1, the same shape and size, a full bowl's width of empty marble between neighbouring bowls (B1's nearly touch;
+   yours must not): (1) empty and clean; (2) one small scoop of white flour lying flat, covering only the bowl's floor; (3) a
+   shaggy half-mixed dough: lumps of wet flour and dry flour together, uneven, not yet a ball. The contents must read clearly
+   through the glass; the glass shows soft highlights only, no room reflections, no window streak on the marble.
+   FIX: the third bowl is shaggy, half-mixed dough in clumps that hold together, never loose crumbs.
+B3 THE NAAN TRAY, RAW AND BAKED (pictures: B4-naan-tray-mock, B3-oven-mini). Landscape 16:9, on magenta, seen from the FRONT with
+   the camera a little above the tray (the view through B3's oven door, standing in front of it): TWO equal panels, the same dark
+   steel rectangular baking tray in each, 80% of the panel's width, its front edge nearest, a little of its top surface showing:
+   left, THREE raw naan discs on it, pale soft dough, slightly uneven; right, the same three baked: golden with brown blisters and
+   a few darker spots. The tray plain, no handles, no paper. Lit softly from above as inside an oven, warm but not orange.
+   FIX: the baked naan the same shapes and sizes as the raw ones (only browner and puffed), the blistering uneven.
+CHAT 3
+S2 THE SHEET, UNDERSIDE (pictures: S1-samosa-circle-strip-zafar, S2-samosa-pastry-look). The same circle at the same size and place
+   as S1, but its underside: one shade darker and warmer cream, matte, more flour dust, no sheen: the face that shows when a flap
+   turns over. Nothing else.
+   FIX: the underside a fraction darker and warmer than the top sheet (S1), with a faint, even dusting of flour.
+S4 THE CLOSED SAMOSA, THREE STATES (pictures: S1-samosa-circle-strip-zafar, S2-samosa-pastry-look). Landscape 16:9, straight down,
+   on magenta: EXACTLY THREE closed samosas in a row, equal gaps, each an equal-sided triangle with its point UP and a flat base,
+   each 26% of the picture's width, all the same size: (1) raw, pale cream pastry, the folded flaps' edges visible as soft lines
+   meeting just past the centre, as in the last panel of S1; (2) fried golden, crisp, small bubbles on the pastry, as in S2's right
+   panel; (3) fried too long, deep brown all over, darker at the edges, not black. No filling showing, no oil, no plate.
+   FIX: fewer, smaller, less even bubbles on the fried ones; the raw one a touch whiter, the same pastry as the sheet.
