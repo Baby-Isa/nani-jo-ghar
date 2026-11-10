@@ -26174,13 +26174,13 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "page:start",
+   "at": "visible:.ck-cover",
    "after": null,
    "capture": [
     "strip:body:50x100"
    ],
    "expect": null,
-   "note": "chai's start filmed from the page's first frame (every 100 ms, 5 s): the stone from the page, the stone cover with Cook's screen, then the kitchen with Nani in ONE fade; no flash of another ground (the canvas's light brown, an empty kitchen) between"
+   "note": "chai's start filmed from the moment the stone cover is up with Cook's screen (every 100 ms, 5 s): then the kitchen with Nani in ONE fade; no flash of another ground (the canvas's light brown, an empty kitchen) between"
   },
   {
    "flow": "cook:chai-tray",
