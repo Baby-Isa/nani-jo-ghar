@@ -20,9 +20,11 @@ test("contract-112 reads each light's verdict: a failing light is a break with i
   assert.match(out[0].msg, /light 1 \[1,2,3,4\]: the dim is darker than chai's \(picture: x\/01\/mark\.jpg\)/);
 });
 
-test("contract-113: a cover held 300 ms is a break, once per pair; a picture passing over (its box moving) is not", () => {
+test("contract-113: a cover held a second is a break, once per pair; a picture passing over (its box moving) is not", () => {
   const cov = (t, byBox) => c(t, "s19over", { list: [{ what: "face", id: "nana", box: [0, 0, 10, 10], by: "picture", byId: "plate", byBox, share: 0.3, on: "over" }] });
-  const held = [cov(100, [0, 0, 50, 50]), cov(500, [0, 0, 50, 50]), c(900, "s19over", { list: [] })];
+  const held = [cov(100, [0, 0, 50, 50]), cov(500, [0, 0, 50, 50]), c(1300, "s19over", { list: [] })];
+  // (a pour: the pan over the face for 600 ms, the child's own move, is not a layout's cover)
+  assert.equal(run(check113, { flow: "cook:chai" }, [cov(100, [0, 0, 50, 50]), c(700, "s19over", { list: [] })]).length, 0);
   const out = run(check113, { flow: "cook:corn" }, held);
   assert.equal(out.length, 1);
   assert.match(out[0].msg, /nana's face sits over plate/);
