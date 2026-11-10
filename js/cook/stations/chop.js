@@ -71,16 +71,20 @@ import { Cook as CookNS } from "../ns.js";
 
   /**
    * S19 (wave B; ART-37, CK-71): the chop's own pictures from its settings (art: the pieces whole and in two halves, the knife, the
-   * board) -> {load: [[key, url]], pieces: {id: {whole, a, b}}, knife, blade, board}. Keys are the game's own (chop4-*).
+   * board) -> {load: [[key, url]], pieces: {id: {whole, a, b}}, knife, blade, board}. Keys are the game's own (chop4-*). Only what
+   * the round can show is loaded (decision 68): the halves of what Nani asks for (a decoy is never cut), the wholes of those and,
+   * where the level has decoys, of the rest of the pool. want: the ids asked for; decoys: whether others sit on the band.
    */
-  function pictures(s) {
+  function pictures(s, want = null, decoys = true) {
     const A = s.art || {};
     const load = [];
     const pieces = {};
     Object.keys(A.pieces || {}).forEach((id) => {
       const n = A.pieces[id];
       const k = (st) => `chop4-${n}-${st}`;
-      ["whole", "half-a", "half-b"].forEach((st) => load.push([k(st), `${A.dir}${n}-${st}.webp`]));
+      const asked = !want || want.includes(id);
+      if (!asked && !decoys) return;
+      (asked ? ["whole", "half-a", "half-b"] : ["whole"]).forEach((st) => load.push([k(st), `${A.dir}${n}-${st}.webp`]));
       pieces[id] = { whole: k("whole"), a: k("half-a"), b: k("half-b") };
     });
     const knife = (A.knife || {}).file ? "chop4-knife" : null;
@@ -90,12 +94,11 @@ import { Cook as CookNS } from "../ns.js";
     return { load, pieces, knife, blade: (A.knife || {}).blade || null, board: brd };
   }
   /**
-   * The stone band the pieces sit on (the kitchen kit's: one call, so the stone tray, when the kit has it, comes in here alone).
+   * The band along the bottom (the kitchen kit's, one call): every thing on it is top-down, so it is the stone tray (ART-69, SH-243:
+   * St.stoneBand's tray, the shared Shelf.P.tray, where the kit has it; the stone band before that).
    */
   function band(S, o) {
-    const K = Cook.Kit || {};
-    if (K.stoneTray) return K.stoneTray(S, o);
-    return St.stoneBand ? St.stoneBand(S, o) : null;
+    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { tray: true })) : null;
   }
   /** The walnut board above the band (ART-37): centred at layout.board, its height h, its width from the picture; its soft shadow. */
   function board(S, z, art, lay) {
@@ -160,7 +163,8 @@ import { Cook as CookNS } from "../ns.js";
     const d = Cook.Recipes[KEY].make("nani", { level });
     d.who = "nani"; // (her order on her own card: the lab's openCard reads who)
     // CK-48: the knife (and S19, the board and the pieces) load while her order is read, never on a bare board
-    const art = pictures(s);
+    const lv1 = knobs(level);
+    const art = pictures(s, Object.keys(d.chops || {}), !(lv1.hop && lv1.hop.decoys === 0));
     const knife = St.loadArt(S, art.load).catch(() => {});
     L.card(d, (s.recipe && s.recipe.steps) || ["Chop"]);
     await knife;

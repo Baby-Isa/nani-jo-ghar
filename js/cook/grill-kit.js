@@ -22,8 +22,9 @@
  *     L.band {len, at(i) -> {x, y}}           the raw things lying two by two on the band
  *     L.ring(p) -> {x, y, r}                  a thing's heat ring above its top end, on the grill
  *   GK.build(S, L, {depth}) -> {grill, tray} the grill and the tray, with their soft shadows
- *   GK.lay(img, {x, y, len, up})             put a long thing at a place, len long, lying (up false) or upright (up true)
- *   GK.move(S, img, {x, y, len, up, ms, ease}) -> Promise   the same as a move: it grows or shrinks and turns on the way
+ *   GK.lay(img, {x, y, len, up, natural})    put a long thing at a place, len long, lying (up false) or upright (up true); natural:
+ *                                            its length at scale 1 where that is not its picture's width (a skewer built in code)
+ *   GK.move(S, img, {x, y, len, up, ms, ease, natural}) -> Promise   the same as a move: it grows or shrinks and turns on the way
  *   GK.roll(S, img, key, {ms, k}) -> Promise turned over where it lies: squashed across, the new picture, back
  *   GK.shadow(S, img, {dx, dy, alpha, blur}) -> image   a soft shadow following img (moved, scaled, turned, faded, hidden)
  *
@@ -127,14 +128,14 @@ import { Cook as CookNS } from "./ns.js";
   };
 
   /** A long thing put at a place: len long (its picture's width), lying (up false) or upright (up true, its right end up). */
-  GK.lay = function (img, { x, y, len, up = false }) {
-    const k = len / Math.max(1, img.width);
+  GK.lay = function (img, { x, y, len, up = false, natural }) {
+    const k = len / Math.max(1, natural || img.width);
     img.setPosition(x, y).setScale(k).setAngle(up ? -90 : 0);
     return img;
   };
   /** The same as a move: it grows or shrinks, and turns, on the way (a game's own tween; resolves when it lands). */
-  GK.move = function (S, img, { x, y, len, up = false, ms = 460, ease = "Cubic.easeInOut" }) {
-    const k = len / Math.max(1, img.width);
+  GK.move = function (S, img, { x, y, len, up = false, ms = 460, ease = "Cubic.easeInOut", natural }) {
+    const k = len / Math.max(1, natural || img.width);
     const tween = Cook.tween ? (cfg) => Cook.tween(S, cfg) : (cfg) => new Promise((r) => S.tweens.add(Object.assign({}, cfg, { onComplete: r })));
     return tween({ targets: img, x, y, scaleX: k, scaleY: k, angle: up ? -90 : 0, duration: ms, ease });
   };

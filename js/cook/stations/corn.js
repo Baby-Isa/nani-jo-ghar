@@ -78,11 +78,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     return chip;
   }
 
-  /** The stone band the cobs and the bowls sit on (the kitchen kit's: one call, so its stone tray comes in here alone). */
+  /**
+   * The band along the bottom (the kitchen kit's, one call): every thing on it is top-down, so it is the stone tray (ART-69, SH-243:
+   * St.stoneBand's tray, the shared Shelf.P.tray, where the kit has it; the stone band before that).
+   */
   function band(S, o) {
-    const K = Cook.Kit || {};
-    if (K.stoneTray) return K.stoneTray(S, o);
-    return St.stoneBand ? St.stoneBand(S, o) : null;
+    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { tray: true })) : null;
   }
 
   async function corn(host, p) {
