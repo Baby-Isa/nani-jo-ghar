@@ -12,3 +12,10 @@
 1: no: no publish or finish time; keep going until every game is complete with its fixes, new art and checks, and there is a reasonable chance they are at chai's standard with no feedback from him (the guide for when to stop)
 2: yes
 3: yes
+
+## His answers, 10 Nov afternoon (the tray, the pans, the pot)
+1. **Tray:** his flat chaat-mock stone tray (no lip) is the one shared tray, with Fable's tweaks; ChatGPT's rim advice ignored (ART-72).
+2. **Eggs:** on chai's shelf, side-on (CK-73, built). **Bottom row:** each game's settings and `cook-bottom-row.md`, read by the code (SH-248).
+3. **Pans:** 4b, handles down to the front corners; the pan handle about the pot handle's length (CK-74).
+4. **Boiling pot:** one top-down redraw, tried in eggs; if it looks better it replaces chai's too, if not neither changes. Chai's current pan sits right because its thicker wall is on the far side, matching the scene's slight perspective.
+5. **ChatGPT run:** the empty slab and the pot, after 7 PM (after his leftover run).
