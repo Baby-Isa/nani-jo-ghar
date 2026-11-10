@@ -1,0 +1,158 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "e214ee47e9ddef8f9100c95d8a26ffa6b6126990",
+ "dirty": false,
+ "date": "2026-11-10T01:13:42.796Z",
+ "base": "8b4beca7b32f243b4def9ff0a05c53a21f5f7c2a",
+ "games": [
+  "cook:chop"
+ ],
+ "gamesWhy": "--games",
+ "rows": [],
+ "levels": {
+  "cook:chop": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320"
+ ],
+ "notes": [],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-e214ee47e9",
+  "before | after": "build/screenshots/tiers/change-e214ee47e9/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-e214ee47e9-chop/films/cook-chop-speed1@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-e214ee47e9/logs"
+ },
+ "failures": [
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-e214ee47e9/logs/play.log",
+   "what": "01:15:30 summary: /home/user/wt/s19-tiers/build/screenshots/sandbox/tiers-change-e214ee47e9/summary.md",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-e214ee47e9/logs/before.log",
+   "what": "01:16:29 summary: /home/user/wt/s19-tiers/build/screenshots/tiers/trees/8b4beca7b3/build/screenshots/sandbox/tiers-before-8b4beca7b3-e214ee47e9/summary.md",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 5,
+  "before": 5,
+  "breaksAfter": 0,
+  "breaksBefore": 0
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 0.8 min; build/reports/tiers/push-e214ee47e9.md",
+   "tail": [
+    "checks ... pass (0.8 min)",
+    "check-push: PASSED in 0.8 min; build/reports/tiers/push-e214ee47e9.md"
+   ],
+   "log": "build/screenshots/tiers/change-e214ee47e9/logs/push.log",
+   "minutes": 0.8
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:chop (5 flows: L1, paths) at 740x320 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop --sizes 740x320 --check --no-sheets --run-id tiers-change-e214ee47e9",
+   "status": "report",
+   "code": 1,
+   "line": "01:15:30 summary: /home/user/wt/s19-tiers/build/screenshots/sandbox/tiers-change-e214ee47e9/summary.md",
+   "tail": [
+    "not in the baseline yet: cook:chop#takeback@740x320",
+    "not in the baseline yet: lab:cook/chop@740x320",
+    "5 fixed (run --update-baseline to shrink the baseline)",
+    "CONTRACT PASSED: 0 breaks over 5 pages",
+    "CHECK FAILED: 15 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+    "01:15:30 summary: /home/user/wt/s19-tiers/build/screenshots/sandbox/tiers-change-e214ee47e9/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-e214ee47e9/logs/play.log",
+   "minutes": 1
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 8b4beca7b3 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop --sizes 740x320 --check --no-sheets --run-id tiers-before-8b4beca7b3-e214ee47e9",
+   "status": "report",
+   "code": 1,
+   "line": "01:16:29 summary: /home/user/wt/s19-tiers/build/screenshots/tiers/trees/8b4beca7b3/build/screenshots/sandbox/tiers-before-8b4beca7b3-e214ee47e9/summary.md",
+   "tail": [
+    "not in the baseline yet: cook:chop#takeback@740x320",
+    "not in the baseline yet: lab:cook/chop@740x320",
+    "5 fixed (run --update-baseline to shrink the baseline)",
+    "CONTRACT PASSED: 0 breaks over 5 pages",
+    "CHECK FAILED: 15 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+    "01:16:29 summary: /home/user/wt/s19-tiers/build/screenshots/tiers/trees/8b4beca7b3/build/screenshots/sandbox/tiers-before-8b4beca7b3-e214ee47e9/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-e214ee47e9/logs/before.log",
+   "minutes": 1
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/wt/s19-tiers/build/screenshots/tiers/trees/8b4beca7b3/build/screenshots/sandbox/tiers-before-8b4beca7b3-e214ee47e9 build/screenshots/sandbox/tiers-change-e214ee47e9 build/screenshots/tiers/change-e214ee47e9/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 109 before|after pictures, 0 not paired; build/screenshots/tiers/change-e214ee47e9/before-after/index.html",
+   "tail": [
+    "pairs: 109 before|after pictures, 0 not paired; build/screenshots/tiers/change-e214ee47e9/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-e214ee47e9/logs/pairs.log",
+   "minutes": 0
+  },
+  {
+   "id": "film:chop",
+   "what": "a first-play film: cook:chop#speed1 as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:chop",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:chop#speed1 --sizes 740x320 --no-sheets --run-id tiers-film-e214ee47e9-chop",
+   "status": "pass",
+   "code": 0,
+   "line": "01:16:49 summary: /home/user/wt/s19-tiers/build/screenshots/sandbox/tiers-film-e214ee47e9-chop/summary.md",
+   "tail": [
+    "01:16:49 sound: 5 lines heard, 4 with no family clip (the recording gap list), 5 played files that are not an approved family clip",
+    "gap     1x  Muke ba lasan khape.  [device-voice]",
+    "gap     1x  hakro lasan  [device-voice]",
+    "gap     1x  ba lasan  [silent]",
+    "gap     1x  Bas!  [device-voice]",
+    "01:16:49 summary: /home/user/wt/s19-tiers/build/screenshots/sandbox/tiers-film-e214ee47e9-chop/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-e214ee47e9/logs/film_chop.log",
+   "minutes": 0.3
+  }
+ ],
+ "minutes": 3.1,
+ "ok": true
+}

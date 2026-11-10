@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /*
  * The standard check command (R7): every fast, no-browser check in one run, one line each, exit 1 if any fails.
+ * Tier 0 of the check tiers (docs/process/qa-checklist.md): build/tools/tiers/check-push.mjs runs it, and the push hook
+ * (.claude/settings.json) runs check-push before every `git push`, refusing the push when it fails; every other tier's tool runs it first.
  *   node build/tools/review/checks.mjs [--only unit,words,bump] [--list]
  * unit   node --test over the shared kit, core, host, css lint, sandbox (the contract checks on fixtures) and review-tool tests
  * leak   the Kutchi leak bots (build/tools/review/leak.mjs) for every config that needs no browser, at every level; the parked modes'
@@ -56,7 +58,7 @@ const steps = {};
 const line = (name, ok, text, more = [], note = []) => ({ name, ok, text, more, note });
 
 // the unit test files (the art block's tests read sources/art/, which a builder's worktree does not have: left out there, and said so)
-export const unitFiles = (noSources = !existsSync(join(ROOT, "sources", "art"))) => [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/test_day_book.mjs", "build/lint/css.test.mjs", "build/lint/static.test.mjs", ...(noSources ? [] : ["build/tools/art/artcheck.test.mjs"]), ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs", "js/clinic/heal/colour-clips.test.mjs", "build/tools/review/evidence.test.mjs", "build/tools/review/lintspecs.test.mjs", "build/tools/review/docs.test.mjs", "build/tools/review/standard.test.mjs", "build/tools/review/checks.test.mjs", "build/tools/review/sidebyside.test.mjs", "build/tools/audio/picker.test.mjs", ...ls("build/tools/ops", (f) => /\.test\.mjs$/.test(f))];
+export const unitFiles = (noSources = !existsSync(join(ROOT, "sources", "art"))) => [...ls("build", (f) => /^test_shared_.*\.mjs$/.test(f)), ...ls("build/core", (f) => /\.test\.mjs$/.test(f)), ...ls("build/host", (f) => /\.test\.mjs$/.test(f)), "build/test_day_book.mjs", "build/lint/css.test.mjs", "build/lint/static.test.mjs", ...(noSources ? [] : ["build/tools/art/artcheck.test.mjs"]), ...ls("build/sandbox", (f) => /\.test\.mjs$/.test(f)), "build/tools/review/review.test.mjs", "js/clinic/heal/colour-clips.test.mjs", "build/tools/review/evidence.test.mjs", "build/tools/review/lintspecs.test.mjs", "build/tools/review/docs.test.mjs", "build/tools/review/standard.test.mjs", "build/tools/review/checks.test.mjs", "build/tools/review/sidebyside.test.mjs", "build/tools/audio/picker.test.mjs", ...ls("build/tools/ops", (f) => /\.test\.mjs$/.test(f)), ...ls("build/tools/tiers", (f) => /\.test\.mjs$/.test(f))];
 steps.unit = async () => {
   const noSources = !existsSync(join(ROOT, "sources", "art"));
   const files = unitFiles(noSources);

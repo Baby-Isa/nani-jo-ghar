@@ -3,6 +3,7 @@
 a builder's own shots (Zafar, 9 Nov).
 
 python3 build/tools/tiers/pairs.py BEFORE_RUN AFTER_RUN OUT_DIR [--scale 0.5]
+python3 build/tools/tiers/pairs.py --strip FRAMES_DIR OUT.jpg    (film.mjs: its frame-NN.png in reading order, four a row, half size)
 """
 import json
 import os
@@ -25,8 +26,29 @@ def pages(run):
     return out
 
 
+def strip(src, out, per_row=4, scale=0.5):
+    frames = sorted(f for f in os.listdir(src) if f.startswith("frame-") and f.endswith(".png"))
+    ims = [Image.open(os.path.join(src, f)).convert("RGB") for f in frames]
+    if not ims:
+        return 0
+    w, h = int(ims[0].width * scale), int(ims[0].height * scale)
+    rows = (len(ims) + per_row - 1) // per_row
+    sheet = Image.new("RGB", (per_row * (w + 6), rows * (h + 22)), BG)
+    d = ImageDraw.Draw(sheet)
+    for i, im in enumerate(ims):
+        x, y = (i % per_row) * (w + 6), (i // per_row) * (h + 22)
+        sheet.paste(im.resize((w, h)), (x, y + 18))
+        d.text((x + 2, y + 3), frames[i][:-4], fill=INK)
+    sheet.save(out, quality=82)
+    return len(ims)
+
+
 def main():
     a = sys.argv[1:]
+    if a and a[0] == "--strip":
+        n = strip(a[1], a[2])
+        print(f"strip: {n} frames; {a[2]}")
+        return
     scale = float(a[a.index("--scale") + 1]) if "--scale" in a else 0.5
     before, after, out = a[0], a[1], a[2]
     os.makedirs(out, exist_ok=True)

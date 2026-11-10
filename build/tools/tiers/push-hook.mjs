@@ -8,6 +8,7 @@ import { spawnSync } from "node:child_process";
 
 // is this a push? (git push, git -C <dir> push; not a --dry-run, not --help)
 export function pushOf(cmd) {
+  if (/\bNJG_ROLLBACK=1\b/.test(cmd || "")) return null; // check-live's roll-back of main to the last good publish: never held up
   const m = /(?:^|[;&|(]\s*|\s)git((?:\s+-C\s+\S+|\s+-c\s+\S+)*)\s+push\b([^;&|\n]*)/.exec(cmd || "");
   if (!m || /--dry-run|(^|\s)-n(\s|$)|--help/.test(m[2])) return null;
   const c = /-C\s+(\S+)/.exec(m[1] || "");

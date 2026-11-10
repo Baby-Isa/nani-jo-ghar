@@ -30,6 +30,7 @@
     "publish": { "tier": "3b", "name": "check-publish", "size": "1280x665", "checksArgs": ["--full"], "blocking": ["checks", "stuck", "page errors", "a blocking check"] },
     "live": {
       "tier": "4", "name": "check-live", "size": "740x320", "seconds": 60, "every": 5,
+      "maxGames": 6, "sharedGames": ["house", "cook:chai-tray", "cook:daar", "clinic:heal-eye", "day:door"],
       "urls": {
         "cook:": "lab.html?mode=cook&game={key}&level=1&nonav=1",
         "lab:cook/": "lab.html?mode=cook&game={key}&level=1&nonav=1",
@@ -88,9 +89,9 @@
     { "id": "e2e-clinic", "what": "the older clinic end-to-end test (build/test_clinic.py)", "cmd": "python3", "argv": ["build/test_clinic.py"], "browser": true, "minutes": 10, "blocks": false,
       "fix": "the audit (section 9): run once at the next review, then judged keep or retire; reports until then",
       "tiers": { "sprint": { "when": "games:clinic" } } },
-    { "id": "unmapped-rows", "what": "the sprint's rows with no probe or flow (sprintcheck.mjs --plan; no browser)", "argv": ["build/tools/review/sprintcheck.mjs", "--plan", "--since", "{base}"], "minutes": 1, "blocks": false,
+    { "id": "unmapped-rows", "what": "the sprint's rows with no probe or flow (sprintcheck.mjs --plan; no browser)", "argv": ["build/tools/review/sprintcheck.mjs", "--plan", "--since", "{base}"], "minutes": 1, "blocks": false, "note": "a list for the orchestrator (each unmapped row needs a probe), not a pass or fail",
       "tiers": { "sprint": { "when": "always" } } },
-    { "id": "rows-to-recheck", "what": "the fix-list rows of the flows the change reaches (touched.mjs | regress.mjs)", "shell": "node build/tools/review/touched.mjs --base {base} --json | node build/tools/review/regress.mjs --stdin", "minutes": 1, "blocks": false,
+    { "id": "rows-to-recheck", "what": "the fix-list rows of the flows the change reaches (touched.mjs | regress.mjs)", "shell": "node build/tools/review/touched.mjs --base {base} --json | node build/tools/review/regress.mjs --stdin", "minutes": 1, "blocks": false, "note": "a list for the orchestrator, not a pass or fail",
       "tiers": { "change": { "when": "^(js|css|data|assets|lab)/|^[^/]+\\.html$" } } }
   ]
 }

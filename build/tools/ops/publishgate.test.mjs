@@ -12,18 +12,16 @@ const md = ["| ID | Issue | Status | Check | Source |", "|---|---|---|---|---|",
   "| A-07 | x | built (evidence PASS r3: A) | c | s |",
   "| A-08 | x | *keep* | c | s |"].join("\n");
 
-test("publish gate: an open row must say what it waits on", () => {
+test("the known-fails list: an open row to fix, and one that waits on Mum, art or Zafar", () => {
   assert.deepEqual(rowBlockers(md), ["A-01", "A-03"]);
   assert.deepEqual(waiting(md), ["A-02", "A-04", "A-05", "A-06"]); // A-04: a labelled row is open (Zafar, 21 Oct)
 });
 
-test("publish gate: every problem is named; a clean state has none", () => {
-  const clean = { rows: [], checks: { ok: true, failed: [] }, contract: { scope: "gate", breaks: 0, commit: "abc", changed: [] }, evidence: { run: "ev-1", changed: [], unjudged: [], uncollected: [] } };
-  assert.deepEqual(gateProblems(clean), []);
-  const p = gateProblems({ rows: ["A-01"], checks: { ok: false, failed: ["docs: 1 over a limit"] }, contract: { scope: "route", breaks: 3, commit: "abcdef12", changed: ["js/clinic/x.js"] }, evidence: { run: "ev-1", changed: ["css/a.css"], unjudged: ["B-1"], uncollected: ["B-2"] } });
-  assert.equal(p.length, 7);
-  assert.match(p.join("\n"), /A-01[\s\S]*docs: 1 over[\s\S]*3 breaks[\s\S]*js\/clinic\/x\.js[\s\S]*css\/a\.css[\s\S]*B-1[\s\S]*B-2/);
-  assert.match(gateProblems({ ...clean, contract: null, evidence: null }).join("\n"), /no full contract run[\s\S]*no evidence run/);
+test("publish gate (Zafar, 9 Nov): check-publish passed on this code with its known-fails list; open rows no longer block", () => {
+  assert.deepEqual(gateProblems({ head: "abc", pass: { commit: "abc", knownFails: [{ check: "fix list", what: "2 open rows" }] } }), []);
+  assert.match(gateProblems({ head: "abcdef123456", pass: null }).join("\n"), /check-publish has not passed on this commit \(abcdef1234\)/);
+  assert.match(gateProblems({ head: "abc", pass: { commit: "abc" } }).join("\n"), /no known-fails list/);
+  assert.equal(gateProblems.length, 0); // one argument object: no rows, checks or runs any more (decision 89 retired)
 });
 
 test("publish gate: game files are code, data, art and pages; docs and tools are not", () => {

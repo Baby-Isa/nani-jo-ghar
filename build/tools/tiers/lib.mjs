@@ -141,7 +141,8 @@ export function resultMd(r) {
   if (r.notes && r.notes.length) for (const n of r.notes) L.push(`- ${n}`);
   L.push("", "| | step | what | blocks | result |", "|---|---|---|---|---|");
   for (const s of r.steps) L.push(`| ${icon(s)} | ${s.id} | ${s.what} | ${s.blocks ? "yes" : "reports"} | ${String(s.line || s.note || "").replace(/\|/g, "/").slice(0, 160)} |`);
-  if (r.failures) L.push("", fixListMd(r.failures.filter((f) => f.blocks !== false), "Blocking"));
+  if (r.failures) L.push("", fixListMd(r.failures.filter((f) => f.blocks !== false), r.fixTitle || "Blocking"));
+  if (r.failures && r.failures.some((f) => f.blocks === false)) L.push("", fixListMd(r.failures.filter((f) => f.blocks === false), "Reported, not blocking"));
   if (r.knownFails) L.push("", fixListMd(r.knownFails, "Known fails (open, published with the list)"));
   if (r.artefacts && Object.keys(r.artefacts).length) { L.push("", "## For the eyes"); for (const [k, v] of Object.entries(r.artefacts)) L.push(`- ${k}: ${Array.isArray(v) ? v.join(", ") : v}`); }
   return L.join("\n") + "\n";
@@ -163,7 +164,8 @@ export function passedOn(tier, head, { results = readResults(tier), changedSince
 // ---------------------------------------------------------------- git and the disk
 export function git(...a) { const r = spawnSync("git", a, { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 28 }); return r.status === 0 ? r.stdout.trim() : null; }
 export const head = () => git("rev-parse", "HEAD");
-export const dirtyFiles = () => (git("status", "--porcelain") || "").split("\n").filter(Boolean).map((l) => l.slice(3)).filter((f) => !f.startsWith(`${CONFIG.results}/`));
+// (status lines start with a space: never trimmed)
+export const dirtyFiles = () => (spawnSync("git", ["status", "--porcelain", "--untracked-files=all"], { cwd: ROOT, encoding: "utf8" }).stdout || "").split("\n").filter(Boolean).map((l) => l.slice(3)).filter((f) => !f.startsWith(`${CONFIG.results}/`));
 // the files changed from a commit to the working tree (committed or not, untracked too); null when the commit is not here
 export function gitChanged(commit) {
   if (!commit || git("cat-file", "-e", `${commit}^{commit}`) === null) return null;
@@ -271,7 +273,9 @@ export function runStep(s, logDir) {
     p.on("close", (code) => {
       out.end();
       const lines = tail.split("\n").map((l) => l.trim()).filter(Boolean);
-      const r = { code, ok: code === 0, line: lines.at(-1) || "", tail: lines.slice(-6), log: rel(logFile), minutes: +((Date.now() - t0) / 60000).toFixed(1) };
+      // (a sandbox run's own verdict lines say more than its last line)
+      const verdict = lines.filter((l) => /^(CONTRACT|CHECK) /.test(l)).join("; ");
+      const r = { code, ok: code === 0, line: verdict || lines.at(-1) || "", tail: lines.slice(-6), log: rel(logFile), minutes: +((Date.now() - t0) / 60000).toFixed(1) };
       if (s.judge) Object.assign(r, s.judge(r) || {});
       res(r);
     });
