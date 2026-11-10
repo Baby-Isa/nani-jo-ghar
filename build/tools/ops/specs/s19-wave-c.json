@@ -1,0 +1,57 @@
+{
+  "name": "s19-wave-c: eggs on its new art, chai's hob, the steel pan and four cream plates, to chai's standard",
+  "model": "Opus",
+  "effort": "high",
+  "why": "one game rebuilt on new art and chai's hob; judgement and visual work",
+  "cost": "about $30-50 (Zafar: do all the work, no budget stop)",
+  "stop": "when the tasks are done; no budget or time stop (Zafar, 10 Nov overnight)",
+  "branch": "s19-wave-c in /home/user/wt/s19-wave-c (made for you from the integration branch); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "build/reports/s18-review-and-direction.md (chai's standard: sections 2-4)",
+    "docs/feedback/kitchen-mocks2-2026-11-09.md P16 and docs/feedback/kitchen-mocks-2026-11-09.md P25, P39 (his look for eggs; mock 27's tray)",
+    "build/reports/s19-art-cuts.md (the new art: assets/cook/items/v4/eggs and kit)",
+    "build/reports/s19-rule-breaks-by-game.md section eggs (30 breaks: fix each, or fix the probe where the probe is wrong)",
+    "docs/decisions/*.md (his answers, 9-10 Nov: cream plates for eggs; the knob rule)",
+    "docs/process/qa-checklist.md 'When we check, and how deep'",
+    "build/reports/s19-wave-b.md (corn's cream plates with faces, the stone tray band calls: the same way here)",
+    "docs/process/regressions.md rows CK-62, CK-63, CK-64, CK-66, ART-67, SH-246, SH-247, SH-243"
+  ],
+  "owns": [
+    "js/cook/stations/eggs.js",
+    "data/stations/eggs.json",
+    "data/cook.json (the eggs recipe block only, \"eggs\": its order and plates)",
+    "build/reports/s19-wave-c.md"
+  ],
+  "readOnly": [
+    "js/cook/kitchen-kit.js and js/shared/shelf.js (s19-wave-a: chai's hob, the knob rule, the stone tray; use them, write any change you need in your report)",
+    "js/cook/ui.js and js/cook/coach.js (s19-wave-a: the order card's pictures and light)",
+    "build/sandbox/data/evidence.json (the orchestrator's: write your rows' probe entries exactly in your report)",
+    "assets/cook/items/v4/** (the cut art: use it as is; a cut you need redone goes in your report)"
+  ],
+  "stubs": "none",
+  "port": 8904,
+  "report": "s19-wave-c",
+  "publish": false,
+  "flows": [
+    "cook:eggs"
+  ],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Eggs to chai's standard on its new art (CK-66, SH-246, SH-247, ART-67): chai's hob from the kit (never a stove of its own), the knob and face below each pan when there are several, on the left when one pan is alone across the width; the steel pan (eggs/pan-steel, his steel choice) for the fried eggs, its handle placed by us away from the band; a top-down pot for the boiled eggs (chai's own top-down pan art reused; no 45-degree pot); the bowl of eggs (eggs/bowl-of-eggs) on the stone tray band (tray: true, as wave B's band calls); a cracked egg (egg-cracked) into the pan, cooked (egg-cooked), overdone if left (egg-overdone), boiled eggs halved (egg-boiled-half-a/-b) on the plate; up to four cream plates (kit/plate-cream, his yes 10 Nov) on the right as chai's tray, each with its person's face circle; side-on items (the salt and pepper) stay on chai's shelf; soft shadows in code. The main thing as big as the height allows.",
+      "accept": "eggs L1-L4 at the four sizes: 0 page errors, end reached; frames of the hob with one and with several pans, and of four plates"
+    },
+    {
+      "do": "Eggs' open rows: CK-62 (the order card's picture: the card's art from eggs' settings; s19-wave-a is preloading every card's picture, so check after merging the integration branch and fix what is still eggs'), CK-63 (the pan's light on its round body, centred, wholly round it), CK-64 (the headline says the count, one card per egg, no number on a card, every line from the language engine; if the engine can't say it, report the gap, never hand-write Kutchi), and eggs' 30 rule breaks.",
+      "accept": "each row's moment at L1-L4 in your Proof; contract run for eggs at the four sizes with every break fixed or explained"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; never remove a mechanic (Zafar's OK needed); no game's own glow or light, only the kit's; shared screens and buttons from js/shared only; fix what you break; keep your screenshots (delete only your own superseded runs); if you need a file you don't own, write the exact change in your report. Zafar said: don't stop for budget or time; do all the work.",
+      "accept": "build/reports/s19-wave-c.md with a Proof section, under 800 words"
+    }
+  ]
+}

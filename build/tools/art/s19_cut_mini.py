@@ -43,6 +43,17 @@ def grill():
     o = o.copy(); o[cut:, :, 3] = 0
     for k in range(2): o[max(0, cut - 1 - k), :, 3] = (o[max(0, cut - 1 - k), :, 3] * (0.5 + 0.25 * k)).astype(int)
     out = Image.fromarray(o.astype(np.uint8), "RGBA").crop((0, 0, o.shape[1], cut))
+    # the marble left inside the left handle's hole and a ring beside it (the flood fill's threshold stopped at their soft edges): any
+    # pixel within 22 of the marble's own colour (the source's edge median) goes, then the soft rim one more pixel, so no pale halo
+    # shows on a darker ground (wave B's report, 10 Nov)
+    o = np.asarray(out).astype(int).copy()
+    bgc = np.median(np.concatenate([np.asarray(im)[2, :], np.asarray(im)[-3, :]]), 0)
+    near = (np.abs(o[..., :3] - bgc).max(-1) < 22) & (o[..., 3] > 0)
+    near = cv2.dilate(near.astype(np.uint8), np.ones((3, 3), np.uint8)) > 0
+    # (only beside the body, where the handles are: the frame's own highlights are as pale as the marble)
+    side = np.zeros(near.shape, bool); fx = int(o.shape[1] * 0.093); side[:, :fx] = True; side[:, -fx:] = True
+    o[near & side & (np.abs(o[..., :3] - bgc).max(-1) < 40), 3] = 0
+    out = Image.fromarray(o.astype(np.uint8), "RGBA")
     os.makedirs(OUT + "kit", exist_ok=True); out.save(f"{OUT}kit/grill.webp", "WEBP", quality=90)
 
 def magenta(src, game, names, maxside, keep=None):
