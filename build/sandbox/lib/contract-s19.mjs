@@ -200,7 +200,7 @@ export function check105(r, tl, add) {
     (e.holes || []).forEach((hb, j) => {
       const h = box(hb), th = (e.things || [])[j];
       if (!th || !th.box) return;
-      const t = box(th.box);
+      const t = { ...box(th.box) };
       const id = th.id || th.kind;
       if (seen.has(id)) return;
       const hm = mid(h), tm = mid(t);
@@ -220,6 +220,14 @@ export function check105(r, tl, add) {
         return;
       }
       // a canvas picture with no word (a pan, a board, a pot)
+      // (Zafar, 29 Oct: "the highlight box on the chai tray should go under the face circle so the face circle sits on top": a face
+      // badge mostly inside the light, touching the thing, is part of what it lights; the thing and its face are measured together)
+      (e.faces || []).forEach((f0) => {
+        const f = box(f0);
+        if (inter(h, f) >= 0.5 * area(f) && f.l <= t.r + 4 && f.r >= t.l - 4 && f.t <= t.b + 4 && f.b >= t.t - 4) t.l = Math.min(t.l, f.l), t.t = Math.min(t.t, f.t), t.r = Math.max(t.r, f.r), t.b = Math.max(t.b, f.b);
+      });
+      const tm2 = mid(t);
+      tm.x = tm2.x, tm.y = tm2.y;
       const cover = inter(h, t) / Math.max(1, area(t));
       if (area(h) < 0.25 * area(t)) return; // (a part of it: contract-97's)
       const offX = Math.abs(hm.x - tm.x) / Math.max(1, t.r - t.l), offY = Math.abs(hm.y - tm.y) / Math.max(1, t.b - t.t);
@@ -624,7 +632,10 @@ function s19hook() {
       return p ? { kind: "pic", id: p.id, box: rnd(p.box) } : null;
     });
     const near = s.words.map((x) => rnd(u(x.pic, x.chip)));
-    return { holes, things, near, vw: innerWidth, vh: innerHeight };
+    // (the faces on the canvas, a person's badge on the tray: a light round a glass and its face is whole round both, contract-105)
+    let faces = [];
+    try { const T = window.njgTest; const h = T && T.cook && T.cook.faces ? T.cook : null; faces = h ? h.faces().filter((f) => f.kind === "badge").map((f) => [f.left, f.top, f.right, f.bottom]) : []; } catch (e) { faces = []; }
+    return { holes, things, near, faces, vw: innerWidth, vh: innerHeight };
   };
   const shelfNow = () => {
     const s = scan();

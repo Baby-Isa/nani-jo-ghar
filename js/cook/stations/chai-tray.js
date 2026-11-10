@@ -1515,6 +1515,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     };
     const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
     let hints14 = 0; // SH-160: how many times the guide's hint came this round (a peek or the arrow's card never counts)
+    let hintLit14 = null; // the kit's light with the hint's glow (contract-102)
     let helpObj = null; // the thing the help lights now (it glows at once, not after Nani's pause)
     const helpGlow = (obj) => {
       if (helpObj === obj) return;
@@ -1811,11 +1812,16 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
               at: s14 ? [0, null, null] : [0, LADDER.boxAt, null],
               glowAt: s14 ? hintMs14() : LADDER.glowAt,
               glow: (on) => {
+                // (the kit's light round the thing with its glow, as every game's hint (Cook.Coach.control's hint): a glow with no light up
+                // was the game's own, contract-102 at L3's hint, 10 Nov)
+                if (hintLit14) hintLit14.close();
+                hintLit14 = null;
                 if (on) {
                   hints14++; // (SH-160: the guide's hint came)
                   mark();
                   showCallout(cur.id);
                   helpGlow(lightObj());
+                  if (OB14 && OB14.light) hintLit14 = OB14.light(target, { look: "glow", pass: true, live, quitIf: () => finished || !helpObj, note: `${STATION14}:s14-stuck` });
                 } else {
                   hideCallout();
                   helpGlow(null);
@@ -1826,6 +1832,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       )));
     };
     const coachEnd = () => {
+      if (hintLit14) hintLit14.close();
+      hintLit14 = null;
       if (ctl14) ctl14.close();
       ctl14 = null;
       // (every rung this station started: one replaced while its first-time spotlight was still to open kept it, over the pour)
