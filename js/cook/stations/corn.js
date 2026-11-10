@@ -702,6 +702,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const q = people[i];
       active = i;
       ctlId = null;
+      // (the order panel keeps this person's card open and in view: the station is on them, as chai's pan in hand; contract-99)
+      if (UI.mission.focus) UI.mission.focus(q.who);
       showActive();
       refresh();
       await serve.round({
@@ -772,12 +774,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         },
       });
       q.served = true;
+      // (the next person is the one in progress before this card folds, so the panel moves once, straight to their card: contract-99)
+      if (UI.mission.focus && people[i + 1]) UI.mission.focus(people[i + 1].who);
       UI.mission.closeItem([], dish, { all: true, for: q.who });
       Cook.sfx.pop();
       await Cook.wait(mo.endHoldMs || 500);
     }
     screen = 3;
     active = people.length;
+    if (UI.mission.focus) UI.mission.focus(null);
     // (the round is over: nothing here takes a tap any more, as the kitchen comes back: contract-109 read a plate mid-transition)
     plates.forEach((o) => o && o.active && S.untap(o));
     Object.values(bowls).forEach((o) => o && o.active && S.untap(o));
