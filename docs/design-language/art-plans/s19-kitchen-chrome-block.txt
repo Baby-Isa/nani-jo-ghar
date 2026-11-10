@@ -1,7 +1,7 @@
 NANI JO GHAR: THE KITCHEN WHERE THE DISHES ARE SERVED, THREE WAYS (Sprint 19). Paste this whole block into Claude in Chrome.
 
 Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-kitchen/refs.zip , unzip it,
-and drag all five pictures into this chat with this block.
+and drag all six pictures into this chat with this block.
 
 === WHAT THIS RUN IS FOR ===
 At the end of each cooking game the child serves the dishes to the family in the kitchen (K0: Nani and Nana behind a marble island
@@ -23,7 +23,7 @@ Rules for every chat (Zafar, 10 Nov):
   plain words in a fresh message, or start a fresh chat with only the house picture and the words.
 - The people are real family: in a mock they may be drawn as in K0, but never change their faces, clothes or ages on purpose;
   Zafar's own character art replaces them in the game.
-- Chat 2 must NEVER see K0, K1 or anything of ours except 00-HOUSE-chai-cooking (the style) and the two D pictures (the dish angle).
+- Chat 2 must NEVER see K0, K1, S1 or anything of ours except 00-HOUSE-chai-cooking (the style) and the two D pictures (the dish angle).
 
 === IMAGE LINES ===
 CHAT 1: IMPROVE THE CURRENT KITCHEN (attach K0-the-kitchen-now, K1-the-kitchen-background-now, 00-HOUSE-chai-cooking)
@@ -38,6 +38,10 @@ A2 THE CURRENT KITCHEN, IMPROVED (pictures: K1, with A1's advice pasted): "Make 
 A3 THE SAME, WITH THE DISHES SERVED (pictures: your A2, D1, D2): your A2 kitchen with, on its three trays from left to right, a
    clear glass of milky tea, a cream plate with two chapatis, a cream bowl of yellow lentil soup; each dish drawn at the counter's
    angle as D1 and D2 are, the same light. The dishes must be easy to tell apart at a glance. No people.
+A4 FLAT STONE PLACE MATS INSTEAD OF TRAYS (pictures: your A3, S1-flat-serving-stone): the same image, but each walnut tray (whose
+   front lip hides the food) becomes a FLAT serving stone with no rim or lip at all, in the stone of S1: honed pale greige stone,
+   softly rounded corners, a thin edge, the shape of a serving tray, one in front of each person's place, like three place mats.
+   The same three dishes on them; nothing in front of the food.
 
 CHAT 2: FROM SCRATCH, WITHOUT SEEING OURS (attach only 00-HOUSE-chai-cooking, then D1 and D2 where named)
 First message: the HOUSE BRIEF below, the picture, and "Reply in text only: say in 5 lines what makes this style work."
@@ -59,8 +63,8 @@ C1 ADVICE (text only, no image; pictures: K1, A2, the two B picks): "The first i
    them, best first, and say how each would look in ours. Do not draw."
 C2 OURS WITH THE BEST ELEMENTS (pictures: A2; C1's answer pasted): "Make a new image of this kitchen that applies these elements.
    No people. Landscape 16:9."
-C3 THE SAME, WITH THE DISHES SERVED (pictures: your C2, D1, D2): as A3, in your C2 kitchen; if C1 chose no trays, the dishes on
-   the counter where the trays were.
+C3 THE SAME, WITH THE DISHES SERVED (pictures: your C2, D1, D2, S1-flat-serving-stone): as A4, in your C2 kitchen: the three
+   dishes on three flat stone place mats with no lip (unless C1 argued for something clearly better; then draw that and say why).
 
 === DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
 Open https://chatgpt.com/library. Hover over the first image of this run: a small check box appears in its bottom-right corner;
