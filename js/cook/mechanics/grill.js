@@ -1116,6 +1116,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const { slotW, x } = global.Shelf.slots(groups, { span: [40, right - 40], pitch: V2.PITCH, groupGap: V2.GROUP_GAP });
     const out = {};
     groups.forEach((group) => group.forEach((id) => (out[id] = SK.bowl(S, z, id, x[id], level, Math.min(V2.BOWL_W, slotW - 20)))));
+    // SH-255 (the eye judge beside chai, 10 Nov: the pills at 740x320 a third of chai's): the row's pills at one scale, as large as
+    // the floor asks and their neighbours allow (the shared kit's Shelf.pillScale on Shelf.pillWant, chai's fitPills)
+    const SH = global.Shelf;
+    const ids = [].concat(...groups).filter((id) => out[id] && out[id].chip && out[id].chip.faceW);
+    if (SH && SH.pillScale && SH.pillWant && SH.pillGap && ids.length) {
+      let wts = 1;
+      try {
+        wts = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        /* no view yet: as drawn */
+      }
+      const ppw = wts * z.k;
+      const fit = SH.pillScale(ids.map((id) => ({ x: x[id], w: out[id].chip.faceW(out[id].chip.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW });
+      const y = Math.min(V2.CHIP.y, 896 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
+      ids.forEach((id) => {
+        const c = out[id].chip;
+        if (c.face && c.capW !== fit.cap) c.face(c.showsWord, fit.cap);
+        c.k = fit.k;
+        c.setPosition(z.X(x[id]), z.Y(y)).setScale(z.k * fit.k);
+        if (c.hit) c.hit(slotW);
+      });
+    }
     return out;
   };
   SK.bowl = function (S, z, id, x, level, bw = V2.BOWL_W) {

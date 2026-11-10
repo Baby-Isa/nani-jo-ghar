@@ -299,6 +299,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.chip = chip;
       items[id] = img;
     });
+    // SH-255 (the eye judge beside chai, 10 Nov: the pills at 740x320 far smaller than chai's): the row's pills at one scale, as large
+    // as the floor asks and their neighbours allow (the shared kit's Shelf.pillScale on Shelf.pillWant, chai's fitPills)
+    const SH = global.Shelf;
+    const row = ids.filter((id) => items[id] && items[id].chip && items[id].chip.faceW);
+    if (SH && SH.pillScale && SH.pillWant && SH.pillGap && row.length) {
+      let wts = 1;
+      try {
+        wts = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        /* no view yet: as drawn */
+      }
+      const ppw = wts * z.k;
+      const fit = SH.pillScale(row.map((id) => ({ x: at[id], w: items[id].chip.faceW(items[id].chip.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW: pitch });
+      const y = Math.min(CHIP_Y, 896 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
+      row.forEach((id) => {
+        const c = items[id].chip;
+        if (c.face && c.capW !== fit.cap) c.face(c.showsWord, fit.cap);
+        c.k = fit.k;
+        c.setPosition(z.X(at[id]), z.Y(y)).setScale(z.k * fit.k);
+        if (c.hit) c.hit(pitch);
+      });
+    }
     return items;
   }
 
