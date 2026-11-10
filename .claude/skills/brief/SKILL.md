@@ -18,7 +18,7 @@ description: Write a complete brief for a new build session (mode, engine, art o
    ```
    node build/tools/ops/brief.mjs <spec.json> --out <spec>.brief.txt
    ```
-   Every spec carries, in its `extra`, the builder's own tier 2 at its finish (Zafar, 10 Nov: built into the process): `"FINISH, before the report: COOK_TEST_PORT=<port> NJG_LOCK=/tmp/njg-browser-<port>.lock node build/tools/tiers/check-change.mjs --brief build/tools/ops/specs/<name>.json; it must pass; its result file goes in the report"` (until `brief.mjs` writes it itself: the line is in `build/reports/s19-tiers.md`).
+   `brief.mjs` writes the builder's own tier 2 into every brief's finish (check-change --brief; Zafar, 10 Nov: built into the process): nothing to add by hand.
    It adds the read-first list, no helpers, don't remove mechanics, the one loop's PROOF (`docs/architecture/evidence-loop.md` "The one loop (S13)": checks, `evidence.mjs --after --brief`, the flows' contract run at 1366x768 and 915x412, no frames of its own), the rows its tasks name plus the open rows of its `elements`, PLACES for those elements (`kitmap.mjs`) and the finish rules.
 3. Read the brief once, top to bottom: is every task's acceptance something you can check by looking?
 3b. At launch, play the rows BEFORE: `COOK_TEST_PORT=<port> NJG_LOCK=/tmp/njg-browser-<port>.lock node build/tools/review/evidence.mjs --before --check --brief <spec.json>`, then one `judge` call on its `judge/check-NN.md` and `--collect --run-id <before run>`. A probe fault (EVIDENCE) is fixed before the builder starts; a row with no probe refuses the brief.

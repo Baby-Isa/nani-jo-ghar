@@ -155,6 +155,7 @@ add(
   `TESTS: ${s.browser === false ? "no browser needed" : `your own browser lock (\`flock -w 1800 /tmp/njg-browser-${s.port || "PORT"}.lock timeout ...\`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = ${s.port || "<pick the next free one; record it in docs/architecture/testing.md>"}; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay`}.`, "");
 
 add("GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.",
+  `Before the report (tier 2, check-change; Zafar, 10 Nov: the checks run by themselves): COOK_TEST_PORT=${s.port} NJG_LOCK=/tmp/njg-browser-${s.port}.lock node build/tools/tiers/check-change.mjs --brief ${a.pos[0]}; it must pass; its result file goes in the report. ` +
   `FINISH: build/reports/${report}.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch${s.publish ? " and push it" : " (never push)"}.` +
   (s.publish ? " Then `python3 build/bump_version.py` and ONE push of HEAD:main (or `node build/tools/ops/publish.mjs --go`)." : " No bump_version, no push to main."));
 (s.extra || []).forEach((x) => add(x));
