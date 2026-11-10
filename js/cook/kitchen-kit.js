@@ -388,14 +388,29 @@ import { NjgServe } from "../shared/serve.js";
    *                                             undertone, "they should just sing off each other"; Fable's study: alpha 0.18)
    *   Cook.Kit.worktop(S, {top, far, depth, alpha})   the wash drawn over the worktop, from far above to the band's top
    *   St.STONE                                  the stone's colour (a token), its tile and shelf pictures and their scales
-   *   St.stoneBand(S, {top, base, far, depth})  the band from top to the screen's foot, and the shelf at base
+   *   St.stoneBand(S, {top, base, far, depth, tray})  the band from top to the screen's foot, and the shelf at base
+   * ART-69, SH-243 (Zafar, 9 Nov: "top down items in a tray and side on items on the shelf, and the tray is in the game space, kind of
+   * sitting on the countertop"; Fable's stone, build/reports/s19-stone-tray-fable.md): a band of top-down things (tray: true; by
+   * default a band with no base, no ledge, since nothing stands side-on on it) is the worktop carried down to the view's foot with the
+   * shared stone tray on it (Shelf.P.tray: one honed limestone slab along the whole band, inset 3% from the view's sides, its lip, its
+   * shadow), drawn at once with nothing to load; a band with a base keeps the stone band and its shelf exactly as before.
    */
   const St = Cook.Stations;
   St.worktopWash = () => { const T = global.Tokens; return (T && T.int && T.int("worktop-wash")) || (T && T.cookInk ? T.cookInk().page : 0); };
   St.STONE = { get mean() { const T = global.Tokens; return (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0); }, tile: "assets/shared/panel/stone-tile-s17.webp", shelf: "assets/shared/panel/stone-shelf-s17.webp", tileK: 0.5, shelfK: 0.35, faceDown: 14 };
-  St.stoneBand = function (S, { top, base, far = 2000, depth = 0 }) {
+  St.stoneBand = function (S, { top, base, far = 2000, depth = 0, tray = base == null, alpha = 0.18 }) {
     const ST = St.STONE;
     const W = 1600 + 2 * far;
+    const SH = global.Shelf;
+    if (tray && SH && SH.P && SH.P.tray) {
+      // (the worktop's wash carried on under the tray, as Kit.worktop draws it above: the slab sits on the same marble)
+      S.track(S.add.rectangle(-far, top, W, 900 - top + far, St.worktopWash(), alpha).setOrigin(0).setDepth(D.bg + 1));
+      const view = () => {
+        const v = Cook.view || {};
+        return { left: v.left != null ? v.left : 0, right: v.right != null ? v.right : 1600, bottom: v.bottom != null ? v.bottom : 900 };
+      };
+      return SH.P.tray(S, { top, view, depth });
+    }
     const flat = S.track(S.add.graphics().setDepth(depth));
     flat.fillStyle(ST.mean, 1);
     flat.fillRect(-far, top, W, 900 - top + far);
