@@ -635,6 +635,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const filled = filledOf().length;
         const mv = nextMove();
         const glow = ctx.guided || helping;
+        // (the guided first play's glow is on the thing the kit's first-time light is already round, Cook.Coach.start: no second
+        // light; the second try's help, decision 51, brings its own: contract-102. A second light on the same thing had its glow taken
+        // off by the coach's while it stood: contract-107, s19-wave-d)
+        const heldGlow = (o, opts) => (helping && !ctx.guided ? litGlow(o, true, Object.assign({ bounce: true }, opts)) : S.glow(o, true, opts));
         // SH-56 (decision 79): every strip filled, nothing left to choose: on by itself after a beat, no ✓
         if (filled >= STRIPS && !(active && mv.heap)) {
           z.expect({ kind: "wait" });
@@ -658,7 +662,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const o = items[mv.heap];
           if (o && o.active) {
             if (glow) {
-              litGlow(o, true, { bounce: true });
+              heldGlow(o);
               lit.push(o);
             }
             const c = S.centre(o);
@@ -675,7 +679,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         else steps.done();
         if (mv.strip) {
           if (glow) {
-            litGlow(mv.strip, true, { bounce: true });
+            heldGlow(mv.strip, { bounce: true });
             lit.push(mv.strip);
           }
           const c = S.centre(mv.strip);
