@@ -42,3 +42,30 @@ marble and tray replace the stall's table.
 ## Open
 
 The longest dressing names narrow below the pill floor at 740x320; sekelo onto the grill kit next.
+
+## Fix round (10 Nov, morning)
+
+- Merged the integration branch (3e64025ef: the probes, contract-37 at chop L1, the tray guard).
+- **Corn's pills:** each pill sits at the floor (the larger of the shelf's pill rule and the kit's 14 px canvas text floor) at all four
+  sizes. Nothing is narrowed or clipped, and pills stay a light's margin apart. Each slot is as wide as its pill or its bowl. Where
+  the six can't share one row (740x320), they sit in two rows of three on a taller stone tray. The plates sit above them, a light's
+  margin clear. canvas-text-small: 0 on corn and chop (chop's band slots now use the visible width on a phone).
+- **Chop's halves:** each cut goes into a cell of its own along the board's bottom strip, then its top strip (four a strip), sized to
+  fit. The middle stays the hops' lane. The knife goes back beside the board at the round's end.
+- **contract-83 (cause):** the order card's face button has a 48 px tap area (`.face-say`, [5,64,53,112] at 740x320). It reaches 3 px
+  into the first item card ([10,109,…]). It is the same on base. faces() counts the tap area as the face. Corn's per-person cards now
+  let the kit's order pop land on its card, so the check sees the overlap. Corn draws neither, so it can't be fixed in corn. The fix
+  is in js/shared/order-card.js (rows below the face button's tap area) or js/cook/flow.js faces() (the circle `.njg-face`, not its
+  button).
+- Also fixed: contract-99 (the panel's focus on the person being dressed, set before the last card folds); contract-109 (a not-ready
+  plate shakes sideways, never turned; nothing takes a tap after the round).
+- **Proof:** contract, chop and corn L1-L4 plus corn's two mistake paths at four sizes (`s19-wave-b-fix`): 40/40 to the end, 0 page
+  errors, 0 contract-37. contract-109 and contract-99 were fixed after this run. Re-runs: `s19-wave-b-mistake2` (corn's mistake paths,
+  four sizes: only contract-105) and `wb-focus2` (corn L3, L3#hint and L4 at 740x320: one contract-83). What remains is contract-105
+  (the kit's lesson light, on base too) and contract-83 now and then (above).
+- **check-change** (`build/reports/tiers/change-d5590e2ddd.md`):
+  - It also blocked on contract-99 (fixed after it ran) and contract-83 (above).
+  - scope: the merged files.
+  - rows: CK-67's `life:corn-screen` needs the word in `build/sandbox/lib/moments.mjs` LIFE.
+  - frozen: an orphan re-play held port 8903, so mount, leak and loadtime failed to start. Re-run by hand: mount 22 fails (the
+    lab.html page error is still there; base has 21), leak ok, loadtime no baseline.
