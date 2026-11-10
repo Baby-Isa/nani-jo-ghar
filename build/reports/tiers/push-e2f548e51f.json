@@ -1,0 +1,34 @@
+{
+ "tier": "push",
+ "tierNo": "0",
+ "name": "check-push",
+ "commit": "e2f548e51f924a97b28c8be28f98b4bb179efe07",
+ "dirty": false,
+ "date": "2026-11-10T01:43:24.869Z",
+ "steps": [
+  {
+   "id": "checks",
+   "what": "checks.mjs: every fast check, no browser",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/checks.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "checks: 13 steps in 82 s (all at once; the longest: unit 82 s, leak 44 s, specs 6 s)",
+   "tail": [
+    "ok   fixlist every open row is labelled",
+    "ok   decisions decisions: 5 files, every answer on its rows",
+    "ok   art    no picture changed since 1e85a893d631",
+    "ok   size   ok: live site 422 MB in 5756 files (limit 800 MB; excluded: sources, build)",
+    "not run: load (a browser; --browser or --full runs it, /review and the publish gate do)",
+    "checks: 13 steps in 82 s (all at once; the longest: unit 82 s, leak 44 s, specs 6 s)"
+   ],
+   "log": "build/screenshots/tiers/push-e2f548e51f/checks.log",
+   "minutes": 1.4
+  }
+ ],
+ "minutes": 1.4,
+ "ok": true
+}

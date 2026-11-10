@@ -16,6 +16,10 @@
 //   contract-107 hop-shelf    only shelf items hop when lit; a lit shelf item hops (SH-237)
 //   contract-108 praise-last  no "well done" while a card row is still open (SH-239)
 //   contract-109 shelf-line   the shelf's items stand on one base line and their pills on one chip line, in the bottom band (SH-243)
+//   contract-110 knob-side    the knob rule (SH-247): in a game with only ever one pan the knob and the face sit to the pan's left,
+//                             centred on its height, clear of it and of the side panel; with several pans (chai) below each
+//   contract-111 item-reach   an item's tap area reaches its pill (SH-244): a tap at a shelf item's foot, or just above its pill,
+//                             picks the item, never the word; a tap on the pill still says the word
 export const CENTRE_PX = 4;        // CK-63: the light's middle within this of its thing's middle
 export const WHOLE_PX = 1;         // the thing may poke out of its light by at most this (rounding)
 export const PIC_COVER = 0.6;      // a canvas picture with no word: its light covers at least this share of it (a pan's handle may poke out)
@@ -31,6 +35,9 @@ export const LOAD_MS = 600;        // contract-104: a picture not in after this 
 export const CARD_PART = 0.5;      // contract-105: a light round less than this share of an item card is on a part of it (contract-97's)
 // contract-105: a picture whose key says it is a shadow, halo, glow, dim or light is never the lit thing (the final 8 Nov run judged
 // two lights against a pan's contact shadow); kept in the probe's scan below, the same words
+export const KNOB_CLEAR = 2;       // contract-110: the knob and the face this clear of the pan's picture and of the side panel
+export const KNOB_MID = 0.08;      // ... and their middle within this share of the pan's height (at least 8 px) of the burner's middle
+export const FOOT_IN = 4;          // contract-111: the foot's tap this many CSS px inside the item's picture, above its lowest edge
 export const NOT_A_THING = /shadow|halo|glow|dim|light/i;
 export const CRATE = /(crate|heap|pile|sack|basket)/i;
 export const OLD_CARD = ".oc-box, .oc-strip, .oc-skewer, .oc-group, .oc-item:not(.oc-items14)";
@@ -71,6 +78,8 @@ export const S19_CHECKS = {
   "contract-106": { item: "light-goes", title: "the light goes as the child starts the move", how: "Cook flows: a real press (the input sample, a trusted pointerdown) inside a light box on screen starts the move it shows; within 300 ms (plus the probe's 100 ms sampling) that box must be gone (no box, or none round the press). A box still round the press after that is a break, once per page (SH-236, Zafar 8 Nov, maani's roll: 'I start rolling the box should go away')." },
   "contract-107": { item: "hop-shelf", title: "only shelf items hop", how: "Cook flows: every glowing picture that hops (njgTest.cook.glowing() bounce) must stand in the shelf band (its foot in the bottom 30% of the canvas, js/shared/shelf.js Shelf.BAND); a hop off the shelf (a pan, a board, the dough on the board) is a break. A shelf item lit by a light box of its own (its middle inside one) for 300 ms without its hop is a break too. Once per thing per page (SH-237, Zafar 8 Nov: 'items in the bottom bar bounce up and down')." },
   "contract-108": { item: "praise-last", title: "well done only once the whole card is ticked", how: "Cook flows, in a station: a well done (a line saying shabash) that starts while an order card row on screen is still open (the rows sample just before it: not done and not a no row) is a break, once per page (SH-239, Zafar 8 Nov: 'say well done when ... the whole menu card is complete')." },
+  "contract-110": { item: "knob-side", title: "the knob rule: left of a pan alone in the width; else below it", how: "Cook flows, each s19knob sample (the S19 probe: every kitchen knob, kit-knob-off, with its burner's flame ring, the face badge beside it, the pan's picture on that burner, the other pictures and item cards sharing the pan's height (beside it, at least 15% of its height: a board, the dial's pictures, a plate, the lap card) and the side panel's box, in CSS px). A single pan alone across the width (nothing else beside it): the knob and the face wholly left of the pan's picture and its flame ring by 2 px, their middle within 8% of the pan's height (8 px at least) of the burner's middle, clear of the side panel and inside the screen. Several pans, or a single pan sharing the width: each knob below its burner (its middle under the burner's), clear of the pan's body (the flame ring's 85%). One off is a break, once per page (SH-247, Zafar 9 Nov: 'where you only have one item ... you put the button off to the left'; refined the same day: 'if there's multiple things taking up width, then we put the button underneath to maximize our width')." },
+  "contract-111": { item: "item-reach", title: "a tap at an item's foot picks the item, never its word", how: "Cook flows, each s19tap sample (the S19 probe, once a second while the shelf changes: for every shelf item with a word and its pill, Phaser's own hit test, topmost first, at the item's foot (4 CSS px inside its picture's lowest edge, its middle across), just above its pill's card (2 CSS px) and at the pill's middle). The foot and the spot above the pill must pick the item (or a hit area carrying its word); the pill's middle must pick the pill. A tap there that says the word, or picks nothing, is a break, once per item per page (SH-244, Zafar 9 Nov, his tester on his phone: 'She thought she was pressing the items, but she was pressing the speaker buttons below the items'; measured with the browser's bar showing: 930x374)." },
   "contract-109": { item: "shelf-line", title: "the shelf's items on one base line, their pills on one chip line", how: "Cook flows: each s19shelf sample (the tappable pictures with a word whose foot is in the bottom band, with no glow on them: a hop lifts one) with three or more items: every item's foot within 4 px of the band's base line (the lowest feet's median) and every pill's middle within 2 px of the chip line (the pills' median). One off the line is a break, once per page (SH-243, Zafar 8 Nov: 'the bottom items they're not on a shelf like tea's'; Shelf.BAND: things stand on one base, pills centred on one chip line)." },
 };
 
@@ -310,6 +319,75 @@ export function check109(r, tl, add) {
   }
 }
 
+// 110
+export function check110(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const seen = new Set();
+  const ks = ev(tl, "s19knob");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  // (the knob never moves in a round: a pan that shares the width at any held moment of the page shares it; the serve's last moments,
+  // the dial gone, are not a layout of their own)
+  const shared = new Set();
+  ks.forEach((e, ki) => { if (held(ks, ki, tEnd) >= HOLD_MS && (e.n || 1) === 1) for (const q of e.list || []) if ((q.beside || []).length) shared.add(q.i || 0); });
+  for (let ki = 0; ki < ks.length; ki++) {
+    const e = ks[ki];
+    // (a moment between two things, the bowl gone and the dial not yet up, is not a layout: held 300 ms)
+    if (held(ks, ki, tEnd) < HOLD_MS) continue;
+    const W = e.vw || 1e9, H = e.vh || 1e9;
+    const single = (e.n || 1) === 1;
+    for (const q of e.list || []) {
+      if (!q.knob || !q.burner) continue;
+      const kb = box(q.knob), fb = q.face ? box(q.face) : null, bn = q.burner, pan = q.pan ? box(q.pan) : null;
+      const alone = single && !(q.beside || []).length && !shared.has(q.i || 0);
+      const key = (alone ? "alone:" : "below:") + (q.i || 0);
+      if (seen.has(key)) continue;
+      const bad = [];
+      const parts = [["knob", kb]].concat(fb ? [["face", fb]] : []);
+      if (alone) {
+        const left = Math.min(bn.x - bn.r, pan ? pan.l : Infinity) - KNOB_CLEAR;
+        for (const [n, b] of parts) if (b.r > left) bad.push(`the ${n} ${fmt(b)} is not left of the pan${pan ? ` ${fmt(pan)}` : ""} (its flames reach ${Math.round(bn.x - bn.r)}): it stands alone in the width`);
+        const u = parts.reduce((a, [, b]) => ({ t: Math.min(a.t, b.t), b: Math.max(a.b, b.b) }), { t: Infinity, b: -Infinity });
+        const ph = pan ? pan.b - pan.t : 2 * bn.r;
+        const dy = (u.t + u.b) / 2 - bn.y;
+        if (Math.abs(dy) > Math.max(8, KNOB_MID * ph)) bad.push(`the knob${fb ? " and face" : ""} sit ${Math.round(dy)} px ${dy > 0 ? "below" : "above"} the pan's middle (centred on its height, within ${Math.round(Math.max(8, KNOB_MID * ph))} px)`);
+        for (const [n, b] of parts) {
+          if ((e.panels || []).some((p0) => inter(b, box(p0)) > 0)) bad.push(`the ${n} ${fmt(b)} is under the side panel`);
+          if (b.l < 0 || b.t < 0 || b.r > W || b.b > H) bad.push(`the ${n} ${fmt(b)} leaves the screen`);
+        }
+      } else {
+        if (mid(kb).y <= bn.y) bad.push(`the knob ${fmt(kb)} is not below its burner (its middle at ${Math.round(bn.y)}): ${single ? `${(q.beside || []).slice(0, 2).join(", ")} share${(q.beside || []).length > 1 ? "" : "s"} the width` : "several pans"}, so it sits below`);
+        // clear of the pan's body: the knob's nearest point outside 85% of the flame ring
+        const nx = Math.max(kb.l, Math.min(bn.x, kb.r)), ny = Math.max(kb.t, Math.min(bn.y, kb.b));
+        if (Math.hypot(nx - bn.x, ny - bn.y) < 0.85 * bn.r) bad.push(`the knob ${fmt(kb)} is on the pan's body (within ${Math.round(0.85 * bn.r)} px of its middle)`);
+      }
+      if (!bad.length) continue;
+      seen.add(key);
+      add("contract-110", e.t, `${alone ? "one pan alone in the width" : single ? "one pan sharing the width" : "several pans"}: ${bad.join("; ")}`);
+    }
+  }
+}
+
+// 111
+export function check111(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const st = stations(tl);
+  const seen = new Set();
+  const own = (x, it) => x && (x.who === "item" || (x.who === "word" && String(x.id) === String(it.id)));
+  for (const e of ev(tl, "s19tap")) {
+    if (st.length && !inStation(st, e.t)) continue;
+    for (const it of e.items || []) {
+      if (seen.has(it.id)) continue;
+      const bad = [];
+      if (it.foot && !own(it.foot, it)) bad.push(`a tap at its foot (${it.foot.x}, ${it.foot.y}) picks ${it.foot.who === "pill" ? "its pill: it says the word" : it.foot.who === "none" ? "nothing" : it.foot.who + " " + (it.foot.id || "")}`);
+      if (it.gap && !own(it.gap, it)) bad.push(`a tap just above its pill (${it.gap.x}, ${it.gap.y}) picks ${it.gap.who === "pill" ? "the pill: it says the word" : it.gap.who === "none" ? "nothing" : it.gap.who + " " + (it.gap.id || "")}`);
+      if (it.pill && it.pill.who !== "pill") bad.push(`a tap on its pill (${it.pill.x}, ${it.pill.y}) picks ${it.pill.who === "none" ? "nothing" : it.pill.who}: the pill says the word`);
+      if (!bad.length) continue;
+      seen.add(it.id);
+      add("contract-111", e.t, `the shelf item ${it.id}: ${bad.join("; ")} (the item's tap area reaches down its slot to its pill's top)`);
+    }
+  }
+}
+
 export function checkS19(r, tl, v, add) {
   check100(r, tl, add);
   check101(r, tl, add);
@@ -321,6 +399,8 @@ export function checkS19(r, tl, v, add) {
   check107(r, tl, add);
   check108(r, tl, v, add);
   check109(r, tl, add);
+  check110(r, tl, add);
+  check111(r, tl, add);
 }
 
 // ---- the S19 probe: what the checks above read. A function, not a string: the page gets its source ----
@@ -489,7 +569,10 @@ function s19hook() {
           if (o.wordId && o.input && o.input.enabled) {
             const ch = o.chip;
             let chipBox = null;
-            if (ch && ch.active && ch.cardW) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = (ch.cardW / 2) * sx, hh = ((ch.cardH || 46) / 2) * sy; const [cl, ct] = P(ch.x - hw, ch.y - hh), [cr2, cb] = P(ch.x + hw, ch.y + hh); chipBox = [cl, ct, cr2, cb]; }
+            // (the kitchen's chip keeps its card's size as pillW / pillH, Kit.chip's keepBox: its pill is part of the thing all the same;
+            // s19-stoves, the lights' leftover: mishkaki's veg-03 at 1920x1080 was judged without its pill, 20 px low)
+            const cw = ch && (ch.cardW || ch.pillW), chh = ch && (ch.cardH || ch.pillH);
+            if (ch && ch.active && cw) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = (cw / 2) * sx, hh = ((chh || 46) / 2) * sy; const [cl, ct] = P(ch.x - hw, ch.y - hh), [cr2, cb] = P(ch.x + hw, ch.y + hh); chipBox = [cl, ct, cr2, cb]; }
             // (a glowing thing hops: its foot is read from where it stands, glowFx.y, not mid-hop)
             const foot = o.glowFx && o.glowFx.y != null ? bt + (o.glowFx.y - o.y) * ky * cam.zoom : bt;
             words.push({ id: String(o.wordId), pic: [l, t, r, bt], chip: chipBox, foot, glow: !!o.glowFx });
@@ -513,7 +596,15 @@ function s19hook() {
     const things = holes.filter((h) => (h[2] - h[0]) * (h[3] - h[1]) <= cvA / 2).map((h) => {
       const cx = (h[0] + h[2]) / 2, cy = (h[1] + h[3]) / 2;
       const inside = (b) => cx >= b[0] && cx <= b[2] && cy >= b[1] && cy <= b[3];
-      const w = s.words.find((x) => inside(u(x.pic, x.chip)));
+      const ar0 = (b) => Math.max(1, (b[2] - b[0]) * (b[3] - b[1]));
+      const fit0 = (b) => { const i = Math.max(0, Math.min(h[2], b[2]) - Math.max(h[0], b[0])) * Math.max(0, Math.min(h[3], b[3]) - Math.max(h[1], b[1])); return i / ((h[2] - h[0]) * (h[3] - h[1]) + ar0(b) - i); };
+      const ws = s.words.filter((x) => inside(u(x.pic, x.chip))).sort((a, b) => fit0(u(b.pic, b.chip)) - fit0(u(a.pic, a.chip)));
+      const w = ws[0];
+      // (a light round a plate with a word thing lying on it, corn's served cob, CK-61: the plate the light fits is its thing, not the
+      // cob in its middle; s19-stoves, the lights' leftover. A word thing wins unless a picture under the light's middle fits it clearly
+      // better: twice as well and at least half the light)
+      const pic0 = w ? s.pics.filter((x) => inside(x.box) && ar0(x.box) < 0.3 * cvA && ar0(x.box) > ar0(u(w.pic, w.chip))).sort((a, b) => fit0(b.box) - fit0(a.box))[0] : null;
+      if (w && pic0 && fit0(pic0.box) >= 0.5 && fit0(pic0.box) > 2 * fit0(u(w.pic, w.chip))) return { kind: "pic", id: pic0.id, box: rnd(pic0.box) };
       if (w) return { kind: "word", id: w.id, box: rnd(u(w.pic, w.chip)), shelf: w.foot >= band };
       // a light in the page: the item card or order card under its middle that the box fits best (an item card, else its person's card)
       for (const el of document.elementsFromPoint(cx, cy)) {
@@ -543,10 +634,182 @@ function s19hook() {
     return items.length ? { items } : null;
   };
 
-  let shelfAt = 0;
+  // ---- the knob rule (110): every kitchen knob, its burner (the flame ring under it), the face beside it, the pan on it ----
+  const knobsNow = () => {
+    const g = games()[0];
+    if (!g) return null;
+    const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+    const knobs = [], flames = [], faces = [], pics = [];
+    for (const sc of g.scene.getScenes(true)) {
+      const cam = sc.cameras.main;
+      const P = (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+      const bx = (o) => { const b = safe(() => o.getBounds()); if (!b) return null; const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom); return [l, t, r, bt]; };
+      const walk = (list, inv) => {
+        for (const o of list) {
+          if (!o || o.visible === false) continue;
+          const key = o.texture && o.texture.key;
+          if (o.list) { if (o.list.some((c) => c && c.texture && c.texture.key === "kit-knob-off")) { const kb = bx(o.list.find((c) => c.texture && c.texture.key === "kit-knob-off")); if (kb && !inv && o.alpha > 0) knobs.push(kb); } walk(o.list, inv || o.alpha === 0); continue; }
+          // (a drawing that names its box, daar's dial: what shares the pan's width)
+          if (typeof o.njgBox === "function" && !inv && o.alpha > 0) { const nb = safe(() => o.njgBox()); if (nb) { const [l, t] = P(nb.x, nb.y), [r, bt] = P(nb.right, nb.bottom); pics.push({ key: o.name || "drawing", b: [l, t, r, bt] }); } continue; }
+          if (!key || !o.getBounds) continue;
+          if (key === "kit-flame-high") { const b = bx(o); if (b) flames.push({ x: (b[0] + b[2]) / 2, y: (b[1] + b[3]) / 2, r: ((b[2] - b[0]) / 2) * (245 / 256) }); continue; }
+          if (inv || o.alpha === 0) continue;
+          if (/-badge.*v2round/.test(key)) { const b = bx(o); if (b) faces.push(b); continue; }
+          if (/^(kit-|__)|shadow|halo|glow|dim|light|stage|bg|wall|worktop|marble|panel|band/i.test(key) || !/Image|Sprite/.test(o.type || "")) continue;
+          const b = bx(o);
+          if (b) pics.push({ key, b });
+        }
+      };
+      safe(() => walk(sc.children.list, false));
+    }
+    if (!knobs.length || !flames.length) return null;
+    const cvA = cr.width * cr.height;
+    const ar = (b) => (b[2] - b[0]) * (b[3] - b[1]);
+    const list = knobs.map((kb) => {
+      const km = [(kb[0] + kb[2]) / 2, (kb[1] + kb[3]) / 2];
+      const d = (f) => Math.hypot(f.x - km[0], f.y - km[1]);
+      const bi = flames.reduce((a, f, i) => (d(f) < d(flames[a]) ? i : a), 0);
+      const bn = flames[bi];
+      const face = faces.filter((f) => Math.hypot((f[0] + f[2]) / 2 - km[0], (f[1] + f[3]) / 2 - km[1]) < 2.6 * (kb[2] - kb[0])).sort((a, b) => Math.hypot((a[0] + a[2]) / 2 - km[0], (a[1] + a[3]) / 2 - km[1]) - Math.hypot((b[0] + b[2]) / 2 - km[0], (b[1] + b[3]) / 2 - km[1]))[0] || null;
+      // the pan: the biggest picture (not the hob's own) whose box holds the burner's middle and that is about the flame ring's size or more
+      const pan = pics.filter((p) => p.b[0] <= bn.x && p.b[2] >= bn.x && p.b[1] <= bn.y && p.b[3] >= bn.y && ar(p.b) < 0.3 * cvA && (p.b[2] - p.b[0]) >= bn.r * 1.3).sort((a, b) => ar(b.b) - ar(a.b))[0];
+      return { i: bi, knob: rnd(kb), face: face ? rnd(face) : null, burner: { x: Math.round(bn.x), y: Math.round(bn.y), r: Math.round(bn.r) }, pan: pan ? rnd(pan.b) : null, panKey: pan ? pan.key : null };
+    });
+    const panels = [...document.querySelectorAll("#side, .njg-side, #mission")].filter(shown).map((el) => R(el.getBoundingClientRect()));
+    // what shares the pan's width: a picture or an item card beside the pan (not over it, not the hob's own, not on the shelf band),
+    // overlapping its height, at least 15% of its height
+    const bandTop = cr.top + (630 / 900) * cr.height;
+    const cards = [...document.querySelectorAll(".wc14-laps, .daar-laps")].filter(shown).map((el) => ({ key: "lap-card", b: R(el.getBoundingClientRect()) }));
+    list.forEach((q) => {
+      const p = q.pan || [q.burner.x - q.burner.r, q.burner.y - q.burner.r, q.burner.x + q.burner.r, q.burner.y + q.burner.r];
+      const ph = p[3] - p[1];
+      q.beside = [...new Set(pics.concat(cards).filter((x) => {
+        const b = x.b;
+        if (b[3] > bandTop + 2 || (b[3] - b[1]) < 0.15 * ph || ar(b) >= 0.3 * cvA) return false;
+        if (b[3] <= p[1] || b[1] >= p[3]) return false; // (not at the pan's height)
+        if (b[2] > p[0] && b[0] < p[2]) return false; // (over or under the pan: its contents, its ladle, the flag)
+        return true;
+      }).map((x) => x.key))].slice(0, 6);
+    });
+    return { n: flames.length, list, panels, vw: innerWidth, vh: innerHeight };
+  };
+
+  // ---- an item's tap area (111): Phaser's own hit test at the item's foot, just above its pill and on the pill ----
+  const tapsNow = () => {
+    const g = games()[0];
+    if (!g) return null;
+    const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+    const scenes = g.scene.getScenes(true).slice().reverse(); // (the top scene takes a tap first)
+    const top = (px, py) => {
+      // page px -> the game's px
+      const x = (px - cr.left) / kx, y = (py - cr.top) / ky;
+      for (const sc of scenes) {
+        const ip = sc.input;
+        if (!ip || !ip.enabled || !ip.manager || typeof ip.hitTestPointer !== "function") continue;
+        const ptr = { x, y, worldX: 0, worldY: 0, camera: null };
+        const hits = safe(() => ip.hitTestPointer(ptr).slice(), []).filter((o) => o && o.input && o.input.enabled);
+        if (!hits.length) continue;
+        if (ip.topOnly !== false) safe(() => ip.sortGameObjects(hits, ptr));
+        return hits[0];
+      }
+      return null;
+    };
+    const items = [];
+    for (const sc of g.scene.getScenes(true)) {
+      const cam = sc.cameras.main;
+      const P = (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+      const band = cr.top + (630 / 900) * cr.height;
+      const walk = (list) => {
+        for (const o of list) {
+          if (!o || o.visible === false || o.alpha === 0) continue;
+          if (o.list) walk(o.list);
+          // (a shelf thing is anything taking taps with a word pill under it: maani's dough piles carry no word id, only their pill)
+          if ((!o.wordId && !o.chip) || !o.input || !o.input.enabled || !o.getBounds || o.glowFx) continue;
+          const ch = o.chip;
+          const cw = ch && (ch.cardW || ch.pillW);
+          if (!ch || !ch.active || ch.visible === false || !cw || ch.parentContainer) continue;
+          const b = safe(() => o.getBounds());
+          if (!b) continue;
+          const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
+          if (bt < band) continue; // (the shelf's things alone: their foot in the band)
+          const sy = Math.abs(ch.scaleY || 1), hh = ((ch.cardH || ch.pillH || 46) / 2) * sy;
+          const [, pt] = P(ch.x, ch.y - hh), [pcx, pcy] = P(ch.x, ch.y);
+          const cx = (l + r) / 2;
+          const what = (px, py) => {
+            const h = top(px, py);
+            const who = !h ? "none" : h === o ? "item" : h === ch || (h.parentContainer && h.parentContainer === ch) ? "pill" : h.wordId != null ? "word" : (h.chip || h.pillId != null || (h.list && h.cardW)) ? "pill" : "other";
+            return { x: Math.round(px), y: Math.round(py), who, id: h ? String(h.wordId != null ? h.wordId : (h.texture && h.texture.key) || h.type || "") : null };
+          };
+          const fy = Math.min(bt - FOOT, pt - 3);
+          items.push({ id: String(o.wordId || o.type || (o.texture && o.texture.key) || "?"), foot: fy > t ? what(cx, fy) : null, gap: pt - 2 > bt ? what(pcx, pt - 2) : null, pill: what(pcx, pcy) });
+        }
+      };
+      safe(() => walk(sc.children.list));
+    }
+    return items.length ? { items } : null;
+  };
+  const FOOT = 4; // (FOOT_IN: the hook is sent as source, so the number is written here too)
+
+  // ---- SH-244's picture: njgTest.cook.taps() (the evidence tool's hook:cook.taps): every shelf item's tap area (its picture and,
+  // where the shared shelf gives it, its reach down to its pill: Shelf.P.reachBox) outlined in green, each pill's in maroon, for 2 s;
+  // returns the boxes in client px (the crop frames them). Only an evidence probe calls it: no contract run draws it ----
+  const tapMap = () => {
+    const g = games()[0];
+    if (!g) return [];
+    const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+    const out = [];
+    for (const sc of g.scene.getScenes(true)) {
+      const cam = sc.cameras.main;
+      const P = (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+      const band = cr.top + (630 / 900) * cr.height;
+      const walk = (list) => {
+        for (const o of list) {
+          if (!o || o.visible === false || o.alpha === 0) continue;
+          if (o.list) walk(o.list);
+          if (!o.input || !o.input.enabled || !o.getBounds || !o.chip) continue;
+          const b = safe(() => o.getBounds());
+          if (!b) continue;
+          const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
+          if (bt < band) continue;
+          const SH = window.Shelf && window.Shelf.P;
+          const rb = SH && SH.reachBox ? safe(() => SH.reachBox(o)) : null;
+          let item = [l, t, r, bt];
+          if (rb) { const [a, c] = P(rb.left, rb.top), [d, e] = P(rb.right, rb.bottom); item = [Math.min(l, a), Math.min(t, c), Math.max(r, d), Math.max(bt, e)]; }
+          out.push({ kind: "item", b: item });
+          const ch = o.chip, ha = ch.input && ch.input.hitArea;
+          if (ha && ch.getWorldTransformMatrix) {
+            const M = safe(() => ch.getWorldTransformMatrix());
+            // (Phaser reads a container's area from its top-left: its display origin, half its size, comes off first)
+            const dx = ch.displayOriginX || 0, dy = ch.displayOriginY || 0;
+            if (M) { const p0 = M.transformPoint(ha.x - dx, ha.y - dy), p1 = M.transformPoint(ha.x + ha.width - dx, ha.y + ha.height - dy); const [a, c] = P(p0.x, p0.y), [d, e] = P(p1.x, p1.y); out.push({ kind: "pill", b: [Math.min(a, d), Math.min(c, e), Math.max(a, d), Math.max(c, e)] }); }
+          }
+        }
+      };
+      safe(() => walk(sc.children.list));
+    }
+    const old = document.getElementById("njg-tapmap");
+    if (old) old.remove();
+    if (!out.length) return [];
+    const host = document.createElement("div");
+    host.id = "njg-tapmap";
+    host.style.cssText = "position:fixed;left:0;top:0;width:0;height:0;z-index:2147483000;pointer-events:none";
+    for (const x of out) {
+      const d = document.createElement("div");
+      const col = x.kind === "item" ? "#1f9d55" : "#a3123a";
+      d.style.cssText = `position:fixed;left:${x.b[0]}px;top:${x.b[1]}px;width:${x.b[2] - x.b[0]}px;height:${x.b[3] - x.b[1]}px;border:2px ${x.kind === "item" ? "solid" : "dashed"} ${col};background:${col}22;box-sizing:border-box`;
+      host.appendChild(d);
+    }
+    document.body.appendChild(host);
+    setTimeout(() => host.remove(), 2000);
+    const u = out.reduce((a, x) => [Math.min(a[0], x.b[0]), Math.min(a[1], x.b[1]), Math.max(a[2], x.b[2]), Math.max(a[3], x.b[3])], [Infinity, Infinity, -Infinity, -Infinity]);
+    return [{ left: u[0], top: u[1], width: u[2] - u[0], height: u[3] - u[1] }];
+  };
+
+  let shelfAt = 0, knobAt = 0, tapAt = 0;
   setInterval(() => {
     try {
       if (window.__njgFilm) return;
+      if (window.njgTest && window.njgTest.cook && !window.njgTest.cook.taps) window.njgTest.cook.taps = tapMap;
       ghosts();
       const c = safe(cardsNow, null);
       if (c && !same("s19card", [c.cards > 0, c.lora, c.old, c.pics.map((p) => p.word + p.src + p.ok + p.hidden)])) emit({ k: "s19card", ...c });
@@ -562,6 +825,16 @@ function s19hook() {
         shelfAt = Date.now();
         const sh = safe(shelfNow, null);
         if (sh && !same("s19shelf", sh.items.map((x) => [x.id, Math.round(x.foot / 2), x.chip == null ? null : Math.round(x.chip / 2)]))) emit({ k: "s19shelf", ...sh });
+      }
+      if (Date.now() - knobAt > 500) {
+        knobAt = Date.now();
+        const kn = safe(knobsNow, null);
+        if (kn && !same("s19knob", kn.list.map((q) => [q.knob.map((v) => Math.round(v / 4)), q.face && q.face.map((v) => Math.round(v / 4)), q.pan && q.pan.map((v) => Math.round(v / 4)), (q.beside || []).length > 0]))) emit({ k: "s19knob", ...kn });
+      }
+      if (Date.now() - tapAt > 1000) {
+        tapAt = Date.now();
+        const tp = safe(tapsNow, null);
+        if (tp && !same("s19tap", tp.items.map((x) => [x.id, x.foot && x.foot.who, x.gap && x.gap.who, x.pill && x.pill.who, x.foot && Math.round(x.foot.y / 4)]))) emit({ k: "s19tap", ...tp });
       }
     } catch (e) { /* a probe only */ }
   }, 100);

@@ -58,6 +58,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
   Object.values(CHARS).forEach((c) => c.armTop != null && (c.top = Math.round(615 - c.armTop * c.scale)));
 
+  /**
+   * SH-220 (Zafar, 9 Nov: "before you can just put a stone colored um, thing on the screen"): the one colour every load and view
+   * change shows, the house stone (the token --njg-stone, ART-41's panel): the page's loading cover (css/cook.css #app::after), the
+   * canvas's own ground and the camera's fade between two views (was a light brown, #e9dcc4, of the canvas's own).
+   */
+  Cook.cover = () => {
+    const T = global.Tokens;
+    const v = (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0) || 0;
+    return { int: v, hex: `#${v.toString(16).padStart(6, "0")}`, rgb: [(v >> 16) & 255, (v >> 8) & 255, v & 255] };
+  };
   /** How far a station may raise its scene pieces into the extra worktop above the design box (k of it; see fitView). */
   Cook.lift = (k = 0.5) => Math.round(((Cook.view && Cook.view.ey) || 0) * k);
   /**
@@ -107,7 +117,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const kt = (((Cook.data && Cook.data.art) || {}).s02 || {})["kitchen-trays"];
       const trays = kt && kt.ready && kt.meta && Array.isArray(kt.meta.trays) ? kt.meta.trays : null;
       if (trays && trays[1]) ["nana", "ma", "cousin"].forEach((c) => (CHARS[c].x = trays[1][0]));
-      this.cameras.main.setBackgroundColor("#e9dcc4");
+      // SH-220: the canvas's own ground is the loading cover's stone (was a light brown of its own, one of the flashes)
+      this.cameras.main.setBackgroundColor(Cook.cover().hex);
       this.bg = this.add.image(0, 0, "bg-service").setOrigin(0).setDepth(D.bg);
       this.bgExt = [];
       // the stage fill (queue item 8): the world grows with the stage (Phaser.Scale.EXPAND), see fitView
@@ -331,7 +342,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const plateLoad = tileSpec && tileSpec.plate ? Cook.Art.loadFile(this, `bgplate-${tileSpec.plate}`, tileSpec.plate.startsWith("assets/") ? `${tileSpec.plate}.webp` : `assets/cook/bg/${tileSpec.plate}.webp`) : Promise.resolve(true);
       const bgLoad = Cook.Art.refUrl(bgRef) ? Promise.race([Promise.all([Cook.Art.load(this, bgRef), plateLoad]), new Promise((r) => setTimeout(r, topDown ? 20000 : 2500))]) : null;
       if (this.viewName && !underCard) {
-        cam.fadeOut(dur, 233, 220, 196);
+        cam.fadeOut(dur, ...Cook.cover().rgb);
         await Cook.wait(dur + 20);
       }
       if (bgLoad) await bgLoad;
@@ -346,9 +357,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       else this.setBg(Cook.Art.tex(this, `bg:${name}`));
       UI.hideBubble();
       // (under the card: never covered, so no fade back from the cover either)
-      if (underCard) {
+      // (SH-220: under the page's loading cover the view is drawn at once; the cover's fade is the one fade in)
+      if (underCard || (Cook.covered && Cook.covered())) {
         if (cam.resetFX) cam.resetFX();
-      } else cam.fadeIn(dur, 233, 220, 196);
+      } else cam.fadeIn(dur, ...Cook.cover().rgb);
+      // SH-220: the first view drawn lifts the page's loading cover (one fade in, js/cook/flow.js Cook.reveal)
+      if (Cook.reveal) Cook.reveal();
     }
     tex(key) {
       return Cook.Art.tex(this, key);
@@ -472,7 +486,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const base = text ? Math.max(1, 14.2 / (34 * shown * this.cameras.main.zoom)) : 1;
       cont.setScale(base);
       cont.setSize(w, 42);
-      cont.setInteractive(new Phaser.Geom.Rectangle(-w / 2, -21, w, 42), Phaser.Geom.Rectangle.Contains);
+      // (SH-244: a container's hit area is read from its top-left corner, Phaser adding half its size first: the label itself)
+      cont.setInteractive(new Phaser.Geom.Rectangle(0, 0, w, 42), Phaser.Geom.Rectangle.Contains);
       cont.on("pointerdown", (p, lx, ly, ev) => {
         if (ev && ev.stopPropagation) ev.stopPropagation();
         Cook.unlockAudio();
@@ -486,6 +501,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     tappable(obj, fn) {
       obj.setInteractive({ useHandCursor: true });
+      // SH-244: one rule for every shelf: a thing with a word pill under it (obj.chip) takes taps down its slot to the pill's top
+      // (js/shared/shelf.js Shelf.P.reach); the pill keeps its card and a small margin
+      if (global.Shelf && global.Shelf.P && global.Shelf.P.reach) global.Shelf.P.reach(obj);
       obj.removeAllListeners("pointerdown");
       obj.on("pointerdown", (p) => {
         Cook.unlockAudio();

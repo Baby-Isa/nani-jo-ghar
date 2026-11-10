@@ -19097,10 +19097,12 @@
    "at": "exp:cook-paani",
    "after": null,
    "capture": [
-    "strip:.njg-spot:6x500"
+    "strip:.njg-onboard:6x500",
+    "contract:44",
+    "contract:102"
    ],
    "expect": null,
-   "note": "chai: the one finger, from above (never over the word chip): tap, lift off, half a second, tap again (6 frames over 3 s)",
+   "note": "chai: the one finger, from above (never over the word chip): tap, lift off, half a second, tap again (6 frames over 3 s) (s19-stoves: the kit's light layer .njg-onboard, as the pantry's; .njg-spot is only the stuck help's spotlight)",
    "delay": 300
   },
   {
@@ -25235,7 +25237,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "hint-nani-says",
+   "at": "life:helper-open",
    "after": null,
    "capture": [
     "contract:91",
@@ -25245,7 +25247,7 @@
    "expect": [
     "pass"
    ],
-   "note": "eggs: the stuck help with the light"
+   "note": "eggs: the stuck help with the light (s19-stoves: at its helper card's opening, life:helper-open: eggs' hint player never records hint-glow or hint-nani-says, its help is the helper card and her call)"
   },
   {
    "flow": "cook:corn",
@@ -25385,12 +25387,12 @@
    "after": null,
    "capture": [
     "contract:106",
-    "strip:#game:8x150"
+    "strip:#game:12x250"
    ],
    "expect": [
     "pass"
    ],
-   "note": "maani's roll: the first-time light goes the moment the pin starts rolling (within 300 ms of the first press), L1-L4"
+   "note": "maani's roll: the first-time light goes the moment the pin starts rolling (within 300 ms of the first press), L1-L4 (s19-stoves: 3 s of film, the 1.2 s strip stood still at L3 before the first press)"
   },
   {
    "flow": "cook:samosa",
@@ -25534,11 +25536,11 @@
    "at": "exp:tawa-on",
    "after": null,
    "capture": [
-    "strip:#game:10x100",
+    "strip:#game:16x200",
     "contract:102"
    ],
    "expect": null,
-   "note": "maani: the rolled maani tapped onto the tawa: no light on a dough pile while it flies (the next pile only once it has landed)",
+   "note": "maani: the rolled maani tapped onto the tawa: no light on a dough pile while it flies (the next pile only once it has landed) (s19-stoves: 3.2 s of film from the tawa's turn, the 1 s strip stood still before the tap)",
    "delay": 0
   }
  ],
@@ -25770,6 +25772,229 @@
    "delay": 1500
   }
  ],
+ "SH-247": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:knob",
+   "after": null,
+   "capture": [
+    "contract:110",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "daar: the pot shares the width (the plain bowl, the dial and the lap card), so its knob stays below it on the front edge, clear of it (contract-110, Zafar's refined rule 9 Nov), L1-L4"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:knob",
+   "after": null,
+   "capture": [
+    "contract:110",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa's fry: the karahi shares the width with the plate, so its knob stays below it (contract-110)"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "contract:110",
+    "crop:#game"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani: the tawa shares the width with the chakla, so Nani's face and the knob stay below it as before (contract-110); chai keeps its knobs below each burner"
+  }
+ ],
+ "SH-244": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:cook-paani",
+   "after": null,
+   "capture": [
+    "contract:111",
+    "crop:hook:cook.taps"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai's shelf: a tap at a jar's foot or just above its pill picks the jar, never the word (contract-111); the picture: each item's tap area outlined green, each pill's maroon dashed (njgTest.cook.taps, the S19 probe)"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "contract:111",
+    "crop:hook:cook.taps"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani's piles: the same, the piles' tap areas reaching their pills (contract-111); the tap areas drawn over the shelf"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "exp:knob",
+   "after": null,
+   "capture": [
+    "contract:111"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "daar's shelf jars: the same rule (contract-111)"
+  }
+ ],
+ "DAAR-50": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "dom:.wc14-laps"
+   ],
+   "expect": null,
+   "note": "daar's stir: the lap count is our item card right of the pot (the numeral its picture, the Kutchi number, its English, the speaker lit while Nani counts; a number with no recording its English in grey italic), whole, unclipped, clear of the pot and the settings corner; the dial's own count chip gone"
+  }
+ ],
+ "SH-245": [
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "the main thing's size (SH-245, a later sprint): daar's pot and the room above the shelf, recorded beside the knob rule's change (s19-stoves leaves the pot's size as it was)"
+  }
+ ],
  "CK-67": [
   {
    "flow": "cook:corn",
@@ -25846,6 +26071,124 @@
    "expect": null,
    "note": "corn on sekelo's grill kit, two screens: the raw cobs two by two on the stone band, the grill, the cooked tray right; then the flavour screen with each person's plate and six dressing bowls",
    "delay": 1500
+  }
+ ],
+ "ART-69": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "the stone tray (Fable's spec): one honed warm-grey limestone slab along the band, #C4B8AD shading to #B5A99E, a fine speckle, a low soft lip lit upper-left, rounded corners, a soft shadow lower-right, inset 3% from the view's sides; the heaps and their pills on it, the marble round it"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "maani's dough heaps and plates on the same stone tray, at L1-L4"
+  }
+ ],
+ "SH-243": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "top-down things on the stone tray (maani's heaps): the band is the tray on the worktop, not chai's shelf"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-tap",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "side-on things keep chai's stone band and shelf exactly as before (chai unchanged)"
+  }
+ ],
+ "SH-220": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:cover",
+   "after": null,
+   "capture": [
+    "strip:body:30x100"
+   ],
+   "expect": null,
+   "note": "chai's start filmed from Cook's screen (every 100 ms, 3 s): the stone cover, then the kitchen with Nani in ONE fade; no flash of another ground (the canvas's light brown, an empty kitchen) between"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:stage-start",
+   "after": null,
+   "capture": [
+    "strip:body:20x100"
+   ],
+   "expect": null,
+   "note": "the kitchen to the cooking game: the view changes through the house stone (the camera's fade), never a light brown or a half-drawn station"
   }
  ]
 }

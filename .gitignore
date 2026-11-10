@@ -25,3 +25,6 @@ build/reports/**/*.jpeg
 build/reports/**/*.webp
 build/reports/**/*.gif
 build/tools/audio/pages/
+
+# check-push writes one result per push (the hook); local only, or every push would leave a new file to commit
+build/reports/tiers/push-*

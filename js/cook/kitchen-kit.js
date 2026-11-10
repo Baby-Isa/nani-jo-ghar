@@ -9,9 +9,14 @@
  * body centred on the burner, whatever its handle does.
  *
  *   Cook.Kit.art(n)                       [key, url] pairs to St.load before building (hob n, knobs, flames, pans)
- *   Cook.Kit.size(n, k)                   {w, h, burnerY, frontY} of an n-burner hob at scale k (for layout)
- *   Cook.Kit.hob(S, {n, x, y, k})         the hob: {img, x, y, w, h, k, n, burners: [{x, y}], frontY, pitch}
+ *   Cook.Kit.size(n, k, wide, knobs)      {w, h, burnerY, burnerX, frontY} of an n-burner hob at scale k (for layout)
+ *   Cook.Kit.hob(S, {n, x, y, k, knobs})  the hob: {img, x, y, w, h, k, n, burners: [{x, y}], frontY, pitch, knobs}
  *   Cook.Kit.burner(S, hob, i, opts)      badge + knob + flames for burner i: {x, y, face, knob, knobHit, set(state)}
+ *     THE KNOB RULE (SH-247; Zafar, 9 Nov: "where you only have one item, you want the vertical space, and therefore you put the
+ *     button off to the left in games where there's only ever one"): a game with only ever one pan asks for knobs: "left": the
+ *     knob and the face stand in a column to the pan's left, centred on its height, on the hob's own glass (the one-burner hob
+ *     turned a quarter, its front strip on the left; the wide hob's glass beside the pan), so the pan can be as big as the height
+ *     allows. With several pans each burner's face and knob stay on the front edge below it, as before.
  *   Cook.Kit.heatRing(S, {depth})         {draw(x, y, r, level, lo, hi), clear(), destroy()}
  *     (hob, burner and heatRing are the stove part, for the games that cook with heat (Sprint 18, module map piece 2); the
  *     heat and boil on them, the knob's taps, the green, the boil-over and the simmer loop, is Mech.boil(S, pan, {burner,
@@ -54,6 +59,13 @@ import { NjgServe } from "../shared/serve.js";
     wide: { w: 937, h: 568, burners: [[0.4954, 0.3929]], frontY: 0.862 },
   };
   const hobOf = (n, wide) => (wide ? "wide" : String(Math.max(1, Math.min(4, n))));
+  // SH-247: knobs on the left of a one-pan hob: the one-burner hob is turned a quarter (its front strip down its left side); the
+  // wide hob keeps its way round (its glass already reaches past the pan on the left)
+  const turned = (n, wide, knobs) => knobs === "left" && !wide && Math.max(1, Math.min(4, n)) === 1;
+  // the column's gap between the face and the knob, and the hob's rim kept clear on its left (of its width)
+  const COL_GAP = 14;
+  const KNOB_GAP = 24; // the least gap between the knob and the pan's picture
+  const RIM = 0.045;
   const HOB = { sets: HOBS, w: [1, 2, 3, 4].map((n) => HOBS[n].w), h: [1, 2, 3, 4].map((n) => HOBS[n].h) };
   // each vessel's round body as fractions of its canvas: centre (cx, cy) and radius r (of the width)
   const VESSELS = {
@@ -127,27 +139,42 @@ import { NjgServe } from "../shared/serve.js";
     },
 
     /** The size of an n-burner hob (or the wide one) at scale k, and where its burners and front edge sit (px). */
-    size(n, k, wide = false) {
+    size(n, k, wide = false, knobs = null) {
       const H = HOBS[hobOf(n, wide)];
+      // SH-247: the one-burner hob turned a quarter clockwise for knobs on the left (its front strip then runs down its left side)
+      if (turned(n, wide, knobs)) {
+        const w = H.h * k;
+        const h = H.w * k;
+        return { w, h, burnerX: (1 - H.burners[0][1]) * w, burnerY: H.burners[0][0] * h, frontX: (1 - H.frontY) * w, frontY: null };
+      }
       const w = H.w * k;
       const h = H.h * k;
-      return { w, h, burnerY: H.burners[0][1] * h, frontY: H.frontY * h };
+      return { w, h, burnerX: H.burners[0][0] * w, burnerY: H.burners[0][1] * h, frontY: H.frontY * h };
     },
 
     /**
      * The hob, top-left at (x, y), scaled k (or centred on cx with its bottom at `bottom`).
      * Returns {img, x, y, w, h, k, n, burners: [{x, y}], frontY, pitch}.
      */
-    hob(S, { n = 1, x, y, k = 0.79, cx, bottom, wide = false, depth = D.item - 4 } = {}) {
+    hob(S, { n = 1, x, y, k = 0.79, cx, bottom, burnerAt, wide = false, knobs = null, depth = D.item - 4 } = {}) {
       n = wide ? 1 : Math.max(1, Math.min(4, n));
       const id = hobOf(n, wide);
-      const sz = Kit.size(n, k, wide);
+      const turn = turned(n, wide, knobs);
+      const sz = Kit.size(n, k, wide, knobs);
       if (cx != null) x = cx - sz.w / 2;
       if (bottom != null) y = bottom - sz.h;
-      const img = S.track(S.add.image(x, y, `kit-hob-${id}`).setOrigin(0).setScale(k).setDepth(depth));
+      // (burnerAt {x, y}: the hob placed so its burner, the pan's middle, is there: a game that keeps its pan where it was)
+      if (burnerAt) {
+        x = burnerAt.x - sz.burnerX;
+        y = burnerAt.y - sz.burnerY;
+      }
+      const img = turn
+        ? S.track(S.add.image(x + sz.w / 2, y + sz.h / 2, `kit-hob-${id}`).setOrigin(0.5).setScale(k).setAngle(90).setDepth(depth))
+        : S.track(S.add.image(x, y, `kit-hob-${id}`).setOrigin(0).setScale(k).setDepth(depth));
       img.shadow = S.contactShadow(img);
-      const burners = HOBS[id].burners.map(([fx, fy]) => ({ x: x + fx * sz.w, y: y + fy * sz.h }));
-      return { img, x, y, w: sz.w, h: sz.h, k, n, wide, burners, frontY: y + sz.frontY, pitch: n > 1 ? burners[1].x - burners[0].x : Infinity };
+      const burners = turn ? [{ x: x + sz.burnerX, y: y + sz.burnerY }] : HOBS[id].burners.map(([fx, fy]) => ({ x: x + fx * sz.w, y: y + fy * sz.h }));
+      const left = knobs === "left" && n === 1;
+      return { img, x, y, w: sz.w, h: sz.h, k, n, wide, burners, frontY: turn ? null : y + sz.frontY, frontX: turn ? x + sz.frontX : null, knobs: left ? "left" : "front", pitch: n > 1 ? burners[1].x - burners[0].x : Infinity };
     },
 
     /** A person's round face art: mood neutral (a small smile), happy (it's right) or frown (it's wrong). */
@@ -210,19 +237,37 @@ import { NjgServe } from "../shared/serve.js";
      * Burner i's front-edge controls and flames. opts: who (a face badge left of the knob; omit for
      * the knob alone, centred), flameR (the pan's radius: the flame ring peeks out under it),
      * spread (badge-to-knob offset, default from the pitch), state ("off" | "high" | "low").
+     * On a hob made with knobs: "left" (SH-247, one pan) the face and the knob stand in a column to the pan's left, the face above
+     * the knob, the pair centred on the burner's height, the column centred in the glass between the hob's rim and the pan:
+     * reach (how far the pan's picture, its handles too, reaches left of its middle; default the flames' ring).
      * Returns {x, y, face, knob, knobHit, flameHi, flameLo, state, set(state, quiet)}; tap
      * handling is the station's (S.tappable(b.knobHit, …)).
      */
-    burner(S, hob, i, { who, flameR = 112, spread, state = "off" } = {}) {
+    burner(S, hob, i, { who, flameR = 112, spread, state = "off", reach } = {}) {
       if (Cook.sfx.preload) Cook.sfx.preload(["knob", "flame"]); // (CHAI-92: the knob's recorded sounds, in before the first turn)
       const { x, y } = hob.burners[i];
-      const fy = hob.frontY;
       const off = spread != null ? spread : Math.min(58, hob.pitch * 0.2);
       // 29 Sept (X6): the flames just peek out past the pan, and never reach halfway to the next burner
       // (flame-high's ring reaches 245/512 of its sprite, its inside 144/512: hidden under the pan)
       const outer = Math.min(flameR * 1.2, hob.pitch * 0.46);
-      const bx = who ? x - off : null;
-      const kx = who ? x + off : x;
+      let bx = who ? x - off : null;
+      let kx = who ? x + off : x;
+      let fy = hob.frontY;
+      let by = fy;
+      if (hob.knobs === "left") {
+        // SH-247: the column in the glass between the hob's rim and the pan (its handles, or its flames), centred on the burner's height
+        const panL = x - Math.max(reach || 0, outer);
+        const rimL = hob.x + hob.w * RIM;
+        let col = hob.frontX != null && hob.frontX + KNOB / 2 < panL ? Math.min(hob.frontX, (rimL + panL) / 2) : (rimL + panL) / 2;
+        // (never nearer the pan than a clear gap: a karahi's handle at 740x320 came within 1 px of the knob; contract-110)
+        col = Math.max(rimL + KNOB / 2, Math.min(col, panL - KNOB_GAP - KNOB / 2));
+        bx = who ? col : null;
+        kx = col;
+        const kh = BADGE; // (the knob's round body is the badge's size, X5)
+        const stack = who ? BADGE + COL_GAP + kh : kh;
+        by = y - stack / 2 + BADGE / 2;
+        fy = who ? y + stack / 2 - kh / 2 : y;
+      }
       const flameHi = S.track(S.add.image(x, y, "kit-flame-high").setDepth(D.item - 1).setAlpha(0));
       const flameLo = S.track(S.add.image(x, y, "kit-flame-low").setDepth(D.item - 1).setAlpha(0));
       const fs = outer / 245;
@@ -230,7 +275,7 @@ import { NjgServe } from "../shared/serve.js";
       flameLo.setScale(fs * 0.92);
       let face = null;
       if (who) {
-        face = S.track(S.add.image(bx, fy, Kit.badge(S, who)).setDisplaySize(BADGE, BADGE).setDepth(D.item + 1));
+        face = S.track(S.add.image(bx, by, Kit.badge(S, who)).setDisplaySize(BADGE, BADGE).setDepth(D.item + 1));
         face.baseScale = face.scaleX;
       }
       const knob = S.track(S.add.container(kx, fy).setDepth(D.item + 1));
@@ -239,7 +284,9 @@ import { NjgServe } from "../shared/serve.js";
       knob.add([kOff, kOn]);
       const knobHit = S.track(S.add.circle(kx, fy, KNOB_HIT, 0xffffff, 0.001).setDepth(D.item + 2));
       knobHit.baseScale = 1;
-      const b = { i, x, y, face, knob, kOff, kOn, knobHit, flameHi, flameLo, state: "off" };
+      knob.setName("kit-knob");
+      if (face) face.setName("kit-burner-face");
+      const b = { i, x, y, face, knob, kOff, kOn, knobHit, flameHi, flameLo, state: "off", side: hob.knobs || "front" };
       /** Turn the knob: off, high (the big flame ring) or low (the small one). quiet: at once and silent (a station's start);
        *  silent: turned as usual but with no knob or flame sound (CHAI-100: the fire going off by itself after a pan's last pour) */
       b.set = (st, quiet = false, silent = quiet) => {
@@ -341,14 +388,29 @@ import { NjgServe } from "../shared/serve.js";
    *                                             undertone, "they should just sing off each other"; Fable's study: alpha 0.18)
    *   Cook.Kit.worktop(S, {top, far, depth, alpha})   the wash drawn over the worktop, from far above to the band's top
    *   St.STONE                                  the stone's colour (a token), its tile and shelf pictures and their scales
-   *   St.stoneBand(S, {top, base, far, depth})  the band from top to the screen's foot, and the shelf at base
+   *   St.stoneBand(S, {top, base, far, depth, tray})  the band from top to the screen's foot, and the shelf at base
+   * ART-69, SH-243 (Zafar, 9 Nov: "top down items in a tray and side on items on the shelf, and the tray is in the game space, kind of
+   * sitting on the countertop"; Fable's stone, build/reports/s19-stone-tray-fable.md): a band of top-down things (tray: true; by
+   * default a band with no base, no ledge, since nothing stands side-on on it) is the worktop carried down to the view's foot with the
+   * shared stone tray on it (Shelf.P.tray: one honed limestone slab along the whole band, inset 3% from the view's sides, its lip, its
+   * shadow), drawn at once with nothing to load; a band with a base keeps the stone band and its shelf exactly as before.
    */
   const St = Cook.Stations;
   St.worktopWash = () => { const T = global.Tokens; return (T && T.int && T.int("worktop-wash")) || (T && T.cookInk ? T.cookInk().page : 0); };
   St.STONE = { get mean() { const T = global.Tokens; return (T && T.int && T.int("stone")) || (T && T.cookInk ? T.cookInk().panel : 0); }, tile: "assets/shared/panel/stone-tile-s17.webp", shelf: "assets/shared/panel/stone-shelf-s17.webp", tileK: 0.5, shelfK: 0.35, faceDown: 14 };
-  St.stoneBand = function (S, { top, base, far = 2000, depth = 0 }) {
+  St.stoneBand = function (S, { top, base, far = 2000, depth = 0, tray = base == null, alpha = 0.18 }) {
     const ST = St.STONE;
     const W = 1600 + 2 * far;
+    const SH = global.Shelf;
+    if (tray && SH && SH.P && SH.P.tray && SH.trayInk && SH.trayInk()) {
+      // (the worktop's wash carried on under the tray, as Kit.worktop draws it above: the slab sits on the same marble)
+      S.track(S.add.rectangle(-far, top, W, 900 - top + far, St.worktopWash(), alpha).setOrigin(0).setDepth(D.bg + 1));
+      const view = () => {
+        const v = Cook.view || {};
+        return { left: v.left != null ? v.left : 0, right: v.right != null ? v.right : 1600, bottom: v.bottom != null ? v.bottom : 900 };
+      };
+      return SH.P.tray(S, { top, view, depth });
+    }
     const flat = S.track(S.add.graphics().setDepth(depth));
     flat.fillStyle(ST.mean, 1);
     flat.fillRect(-far, top, W, 900 - top + far);

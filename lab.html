@@ -36,7 +36,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap">
 <style>
   /* the lab page's own chrome only: the host's frame ({root, play, own}, R3a) fills the screen; the play area is where a stage draws */
-  html, body { margin: 0; height: 100%; background: #f3e7d3; }
+  html, body { margin: 0; height: 100%; background: var(--njg-stone, #dfd5cd); /* the loading cover's stone from the first frame (SH-220) */ }
   #lab-app { position: fixed; inset: 0; overflow: hidden; }
   #lab-stage { position: absolute; inset: 0; overflow: hidden; }
   .lab-note { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; font: 700 18px/1.4 "Nunito", system-ui, sans-serif; color: #3a2e28; }

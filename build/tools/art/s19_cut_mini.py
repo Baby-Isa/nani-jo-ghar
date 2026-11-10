@@ -32,7 +32,18 @@ def grill():
     a = np.where(lab == k, 255, 0).astype(np.uint8)
     ys, xs = np.where(a > 0); box = (xs.min(), ys.min(), xs.max() + 1, ys.max() + 1)
     out = im.convert("RGBA"); out.putalpha(Image.fromarray(a).filter(ImageFilter.GaussianBlur(1)))
-    os.makedirs(OUT + "kit", exist_ok=True); out.crop(box).save(f"{OUT}kit/grill.webp", "WEBP", quality=90)
+    out = out.crop(box)
+    # the shadow ChatGPT painted under the grill (a grey ramp below the near rim; code draws shadows): rows from the bottom up whose
+    # opaque pixels are colourless grey are cut, with a 2 px fade
+    o = np.asarray(out).astype(int); al = o[..., 3] > 128; cut = o.shape[0]
+    for y in range(o.shape[0] - 1, int(o.shape[0] * 0.8), -1):
+        px = o[y][al[y]][:, :3]
+        if len(px) and (px.max(1) - px.min(1)).mean() < 12: cut = y
+        else: break
+    o = o.copy(); o[cut:, :, 3] = 0
+    for k in range(2): o[max(0, cut - 1 - k), :, 3] = (o[max(0, cut - 1 - k), :, 3] * (0.5 + 0.25 * k)).astype(int)
+    out = Image.fromarray(o.astype(np.uint8), "RGBA").crop((0, 0, o.shape[1], cut))
+    os.makedirs(OUT + "kit", exist_ok=True); out.save(f"{OUT}kit/grill.webp", "WEBP", quality=90)
 
 def magenta(src, game, names, maxside, keep=None):
     a = np.asarray(Image.open(src).convert("RGB")).astype(float); al = C.alpha_of(a); rgb = C.despill(a, al)
