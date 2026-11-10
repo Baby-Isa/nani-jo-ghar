@@ -206,7 +206,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const tapPiece = async (id) => {
         poke();
         if (busy || stopped || waiting || sk.ids.length >= n || full()) {
-          S.wiggle(bowls[id]);
+          // (not now: the bowl shakes side to side, never turned: a turned bowl's box grows past the shelf's base line, contract-109;
+          // as corn's plate, s19-wave-b)
+          const b = bowls[id];
+          if (b && !S.tweens.isTweening(b)) S.tweens.add({ targets: b, x: b.x + z.L(8), duration: 60, yoyo: true, repeat: 2 });
           return;
         }
         const exp = plan();

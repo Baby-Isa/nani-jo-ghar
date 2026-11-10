@@ -249,7 +249,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** The worktop and the band: the kitchen kit's wash and stone band (module map piece 4, ART-41; was samosa's own copy). */
   function backdrop(S) {
     Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR });
-    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2 }); // (no ledge: the heaps lie top-down on the band)
+    // (SH-248: the bottom element is the game's settings' band, "tray": the heaps lie top-down on the stone tray)
+    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, band: (((Cook.data && Cook.data.settings) || {}).samosa || {}).band });
   }
 
   /**
@@ -278,9 +279,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (scaled by its own canvas: R5's chilli heap isn't on S5's 419 px one; it fills its canvas, so a little smaller)
         const own = S.textures.get(key).getSourceImage().width;
         const sc = (z.L(w) / own) * (own === META.heap.w ? 1 : 0.85);
+        // SH-243 (contract-109: "the shelf item veg-01 stands -9 px off the base line"): every heap stands on the one base line, the
+        // foot of a standard heap's canvas (the potato pile and the chilli rings are other shapes: centred, their feet were 5-11 px off)
+        const foot = HEAP_Y + (w * (META.heap.h / META.heap.w)) / 2;
         img = S.track(S.add.image(z.X(x), z.Y(HEAP_Y), key).setScale(sc).setDepth(D.item + 1));
+        img.y = z.Y(foot) - img.displayHeight / 2;
         img.baseScale = sc;
-        img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(HEAP_Y + w * 0.06), width: z.L(w * 0.92), height: z.L(w * 0.86) });
+        img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: img.y + z.L(w * 0.06), width: z.L(w * 0.92), height: z.L(w * 0.86) });
       } else img = S.ingredient(id, z.X(x), z.Y(HEAP_Y), { w: z.L(118), h: z.L(100), label: false, depth: D.item + 1 });
       img.wordId = id;
       img.handAction = false; // no hands anywhere (§15)
@@ -364,10 +369,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const U = (o) => o.scaleX * PPU; // world px per unit (the strip's height)
     const u2w = (o, p) => ({ x: o.x + (p[0] - LU / 2) * U(o), y: o.y + (p[1] - 0.5) * U(o) });
     const w2u = (o, x, y) => [(x - o.x) / U(o) + LU / 2, (y - o.y) / U(o) + 0.5];
+    // (the strip's own pastry, never its canvas: the canvas has the folds' room and reaches over the next strip's filling, contract-53)
+    const pastryOf = (o) => {
+      const p0 = u2w(o, [0, 0]);
+      const p1 = u2w(o, [LU, 1]);
+      return { x: p0.x, y: p0.y, right: p1.x, bottom: p1.y };
+    };
+    /**
+     * A strip's lit body (Cook.Coach.parts, the kit's light and the checks read thing.litBounds): its pastry, never the canvas round it
+     * (the canvas keeps a margin for the folds, the shadow and the arrow, so a light round the pastry was "round 58% of" the picture,
+     * contract-105). Once it is a folded samosa (its own picture), the picture itself.
+     */
+    function pastryBody() {
+      const k = this.texture && this.texture.key;
+      return k === "sv3-fold-strip" || k === "sv3-foldcv" ? pastryOf(this) : this.getBounds();
+    }
     /** A flat strip (design px), q of full size. */
     function pastry(x, y, q = 1) {
       const img = S.track(S.add.image(z.X(x), z.Y(y), "sv3-fold-strip").setDepth(D.item));
       img.setScale(FULL * q);
+      img.litBounds = pastryBody;
       img.blobs = [];
       img.got = {};
       img.order = [];
@@ -540,6 +561,42 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       return { done: true };
     };
     let helping = false;
+    /*
+     * contract-102 (s19-wave-d; Zafar, 8 Nov: chai's method, one light): every glow this board gives (the step's help after the pause,
+     * the second try's help, the guided first play) comes with the kit's light round the same thing (Onboard.light round its parts,
+     * Cook.Coach.thingBox: a heap with its pill, a strip's pastry), as chai's hint does (chai-tray.js hintLit14); the light goes on the
+     * child's press (SH-236) and the glow goes with it. Was the glow alone: "sv3-fold-strip glows outside the kit's light".
+     */
+    const helpLit = new Map();
+    const litGlow = (o, on, opts = {}) => {
+      const h = helpLit.get(o);
+      if (h) {
+        helpLit.delete(o);
+        h.close();
+      }
+      if (!o || !o.active) return;
+      S.glow(o, on, opts);
+      const OBk = global.Onboard;
+      if (!on || !OBk || !OBk.light || !Cook.Coach || !Cook.Coach.thingBox) return;
+      // (a glow asked for without now waits for the help's pause, js/cook/station-lib.js S.glow: its light comes the moment it shows)
+      const rec = { close: () => clearInterval(rec.t) };
+      helpLit.set(o, rec);
+      const open = () => {
+        if (helpLit.get(o) !== rec) return;
+        if (!o.active) return void (helpLit.delete(o), rec.close());
+        if (!o.glowFx) return;
+        rec.close();
+        const lit = OBk.light(Cook.Coach.thingBox(o), { look: "glow", pass: true, quitIf: () => !o.active, note: `${(gate && gate.scope) || z.id || "fill"}:s14-stuck` });
+        helpLit.set(o, lit);
+        lit.done.then(() => {
+          if (helpLit.get(o) !== lit) return;
+          helpLit.delete(o);
+          if (o.active) S.glow(o, false);
+        });
+      };
+      rec.t = setInterval(open, 60);
+      open();
+    };
     let graded = false;
     let first = null; // the first tick's counts (only the first try is scored)
     let fillWrong = null;
@@ -565,7 +622,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             x.blobs.forEach((b) => b.active && S.untap(b));
           });
           Object.values(items).forEach((o) => o && o.active && S.untap(o));
-          lit.forEach((o) => o.active && S.glow(o, false));
+          lit.forEach((o) => litGlow(o, false));
           UI.hideDone();
           z.expect(null);
           resolve(r);
@@ -578,6 +635,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const filled = filledOf().length;
         const mv = nextMove();
         const glow = ctx.guided || helping;
+        // (the guided first play's glow is on the thing the kit's first-time light is already round, Cook.Coach.start: no second
+        // light; the second try's help, decision 51, brings its own: contract-102. A second light on the same thing had its glow taken
+        // off by the coach's while it stood: contract-107, s19-wave-d)
+        const heldGlow = (o, opts) => (helping && !ctx.guided ? litGlow(o, true, Object.assign({ bounce: true }, opts)) : S.glow(o, true, opts));
         // SH-56 (decision 79): every strip filled, nothing left to choose: on by itself after a beat, no ✓
         if (filled >= STRIPS && !(active && mv.heap)) {
           z.expect({ kind: "wait" });
@@ -595,13 +656,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const ord = filledOf().filter((x) => x !== active).length;
         // SH-60 (s08 w6J: at L2 her help line "Bhar! Chundo." came with nothing lit): the step's help lights the thing to tap
         // (the heap, or the strip to fill) in the same moment as her line, as the pantry does
-        const helpGlow = (o) => (o ? (on) => o.active && S.glow(o, on, { bounce: true }) : null);
+        const helpGlow = (o) => (o ? (on) => litGlow(o, on, { bounce: true, now: true }) : null);
         const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
         if (mv.heap) {
           const o = items[mv.heap];
           if (o && o.active) {
             if (glow) {
-              S.glow(o, true);
+              heldGlow(o);
               lit.push(o);
             }
             const c = S.centre(o);
@@ -618,7 +679,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         else steps.done();
         if (mv.strip) {
           if (glow) {
-            S.glow(mv.strip, true, { bounce: true });
+            heldGlow(mv.strip, { bounce: true });
             lit.push(mv.strip);
           }
           const c = S.centre(mv.strip);
@@ -649,11 +710,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const w = wantOf(b);
       for (const id of Object.keys(w)) {
         for (let i = 0; i < w[id]; i++) {
-          if (items[id]) S.glow(items[id], true, { bounce: true });
+          if (items[id]) litGlow(items[id], true, { bounce: true });
           await spoon(x, id);
           x.got[id] = (x.got[id] || 0) + 1;
           x.order.push(id);
-          if (items[id]) S.glow(items[id], false);
+          if (items[id]) litGlow(items[id], false);
         }
       }
       x.blobs.forEach((bl) => (bl.tapReady = true));
@@ -681,12 +742,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const stripRight = (x) => {
       const w = wantOf(blockOf(x) || 1);
       return Object.keys(w).every((id) => (x.got[id] || 0) === w[id]) && Object.keys(x.got).every((id) => !(x.got[id] > 0) || w[id]);
-    };
-    // (the strip's own pastry, never its canvas: the canvas has the folds' room and reaches over the next strip's filling, contract-53)
-    const pastryOf = (o) => {
-      const p0 = u2w(o, [0, 0]);
-      const p1 = u2w(o, [LU, 1]);
-      return { x: p0.x, y: p0.y, right: p1.x, bottom: p1.y };
     };
     const nextStripSoon = (done) => {
       if (nextStrip || !gate || !Cook.Coach.nextLight || graded || filledOf().length !== 1 || !needBlock() || !stripRight(done)) return;
@@ -851,6 +906,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (S.textures.exists(foldKey)) S.textures.remove(foldKey);
     const cv = S.textures.createCanvas(foldKey, proto.canvas.width, proto.canvas.height);
     const fimg = S.track(S.add.image(z.X(P0.x), z.Y(P0.y), foldKey).setDepth(D.item + 0.5).setScale(FULL).setVisible(false));
+    fimg.litBounds = pastryBody; // (the strip being folded: its light hugs the pastry, SH-230, contract-105)
     const doneKey = `sv3-fold-done-${folds}`;
     let doneInfo = null;
     // the live fold: redrawn every frame while a strip is being folded (the lit flap breathes)

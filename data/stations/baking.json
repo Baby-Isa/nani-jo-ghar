@@ -1,5 +1,6 @@
 {
  "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the baking station's own data (js/cook/stations/baking.js; the card is recipes.baking in data/cook.json, its rows filled from the plan picked here). Zafar's turn-by-turn design (prototype-notes-2026-11-01.md 'Baking'; cook-baking-eggs.md end note): Nani gives one instruction at a time, each tap tips the jar or bag a bit more. A step: id (the container), amt (little: one tap, it stops, 'that's good'; lot: tap until lotTaps, 'enough'; more: a little, tap, 'still a little more', tap, 'enough'; jug: tap until `units` quarter cups in the measuring jug, its lines at a quarter, half, full, one and a half and two and a half, no numbers), parts (the card row's words, through the language engine). `plans` by level (one picked at random); the decoys (how many other containers stand in the row) are the central rules' (data/rules.json levels.decoys: 1-4, a lookalike at L4; S18); bakeMs the oven's time; `palette` the art colours.",
+ "band": "shelf",
  "station": {
   "name": "Baking",
   "verb": "Nani's turns: a little, a lot; then the oven",

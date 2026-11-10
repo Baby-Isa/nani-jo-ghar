@@ -1,0 +1,526 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "d15e1a35d1d13617b149e88fc1502c76a0cd9713",
+ "dirty": false,
+ "date": "2026-11-10T16:23:13.898Z",
+ "base": "1e85a893d6319ea4f81cdc03162623ad54fe7ed9",
+ "games": [
+  "cook:mishkaki-grill",
+  "cook:chaat",
+  "cook:samosa",
+  "cook:baking"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:mishkaki-grill": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "cook:chaat": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "cook:samosa": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "cook:baking": [
+   1,
+   2,
+   3,
+   4
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [
+  "the brief names no fix-list row: no probes to play"
+ ],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-d15e1a35d1",
+  "before | after": "build/screenshots/tiers/change-d15e1a35d1/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-d15e1a35d1-mishkaki-grill/films/cook-mishkaki-grill@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-d15e1a35d1-chaat/films/cook-chaat@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-d15e1a35d1-samosa/films/cook-samosa@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-d15e1a35d1-baking/films/cook-baking@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-d15e1a35d1/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#takeback@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item ph-meat: a tap at its foot (408, 392) picks nothing; a tap just above its pill (408, 400) picks nothing; a tap on its pill (408, 412) picks nothing: the pill says the word (the item's t",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#takeback@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item n.corn-on-the-cob: a tap at its foot (493, 392) picks nothing; a tap just above its pill (493, 400) picks nothing; a tap on its pill (493, 412) picks nothing: the pill says the word (th",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#takeback@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item veg-03: a tap at its foot (578, 392) picks nothing; a tap just above its pill (578, 400) picks nothing; a tap on its pill (578, 412) picks nothing: the pill says the word (the item's ta",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#takeback@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item veg-02: a tap at its foot (662, 392) picks nothing; a tap just above its pill (662, 400) picks nothing; a tap on its pill (662, 412) picks nothing: the pill says the word (the item's ta",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-89",
+   "where": "cook:samosa@L4@740x320 (kind-timing)",
+   "what": "\"Tar!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-89",
+   "where": "lab:cook/samosa@L2@740x320 (samosa-kind-timing)",
+   "what": "\"Tar!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "scope",
+   "where": "build/screenshots/tiers/change-d15e1a35d1/logs/scope.log",
+   "what": "sources/art/s19-redo/refs/S4.jpg",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-d15e1a35d1/logs/play.log",
+   "what": "moved canvas-text-small cook:mishkaki-grill@L3 @ 740x320 canvas > Text[25px 800] (known in another flow; not a failure)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-d15e1a35d1/logs/before.log",
+   "what": "CONTRACT FAILED: 78 breaks (contract-105 56, contract-109 14, contract-102 6, contract-89 2); CHECK FAILED: 238 new findings, 0 flows do not reach their end, 0 new page errors, 78 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "frozen",
+   "where": "build/screenshots/tiers/change-d15e1a35d1/logs/frozen.log",
+   "what": "cook:chai-tray@L4@1280x665: a new contract break: - -> contract-99",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "mount",
+   "where": "build/screenshots/tiers/change-d15e1a35d1/logs/mount.log",
+   "what": "FAIL no timers left: [{\"n\":1509,\"ms\":3000,\"at\":\"go (js/core/voice.js:404:9) < js/core/voice.js:411:10 < new Promise (<anonymous>)\"},{\"n\":1516,\"ms\":2700,\"at\":\"go (js/core/voice.js:404:9) < js/core/voice.js:411:10 < new Promise (<anonymous>)\"}]; FAIL no audio context left open (1); FAIL no Cook global, no iframe (Cook)",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "loadtime",
+   "where": "build/screenshots/tiers/change-d15e1a35d1/logs/loadtime.log",
+   "what": "baking@L3@930x430@4000/60: 35598 ms, 8211 KB, 303 requests: no baseline yet (--record writes one)",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "onboard",
+   "where": "build/screenshots/tiers/change-d15e1a35d1/logs/onboard.log",
+   "what": "- farm/photo: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none (reports, not blocks: FIX in the audit (section 9): 39 prototype phases (beach, town, farm) have no onboarding and no onboardWhy; reports until that fix lands)",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 92,
+  "before": 92,
+  "breaksAfter": 6,
+  "breaksBefore": 78
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: passed on d15e1a35d1 already (2026-11-10T14:24:10.702Z); nothing to run",
+   "tail": [
+    "check-push: passed on d15e1a35d1 already (2026-11-10T14:24:10.702Z); nothing to run"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/push.log",
+   "minutes": 0
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s19-wave-d.json 1e85a893d6319ea4f81cdc03162623ad54fe7ed9..HEAD",
+   "status": "fail",
+   "code": 1,
+   "line": "sources/art/s19-redo/refs/S4.jpg",
+   "tail": [
+    "sources/art/s19-redo/refs/K7-fried-eggs-mock.jpg",
+    "sources/art/s19-redo/refs/P1-chop-pieces-mock.jpg",
+    "sources/art/s19-redo/refs/S1-samosa-circle-strip-zafar.jpg",
+    "sources/art/s19-redo/refs/S2-samosa-pastry-look.jpg",
+    "sources/art/s19-redo/refs/S2.jpg",
+    "sources/art/s19-redo/refs/S4.jpg"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:mishkaki-grill, cook:chaat, cook:samosa, cook:baking (46 flows: L1,L2,L3,L4, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:mishkaki-grill,cook:mishkaki-grill@L2,cook:mishkaki-grill@L3,cook:mishkaki-grill@L4,cook:mishkaki-grill#mistake,cook:mishkaki-grill@L2#mistake,cook:mishkaki-grill#hint,cook:mishkaki-grill@L3#hint,cook:mishkaki-grill#returning,cook:mishkaki-grill#takeback,lab:cook/mishkaki-grill,lab:cook/mishkaki-grill@L2,lab:cook/mishkaki-grill@L3,lab:cook/mishkaki-grill@L4,cook:chaat,cook:chaat@L2,cook:chaat@L3,cook:chaat@L4,cook:chaat#mistake,cook:chaat@L2#mistake,cook:chaat#hint,cook:chaat@L3#hint,cook:chaat#takeback,cook:samosa,cook:samosa@L2,cook:samosa@L3,cook:samosa@L4,cook:samosa#mistake,cook:samosa@L2#mistake,cook:samosa#hint,cook:samosa@L3#hint,cook:samosa#returning,cook:samosa#takeback,lab:cook/samosa,lab:cook/samosa@L2,lab:cook/samosa@L3,lab:cook/samosa@L4,cook:baking,cook:baking@L2,cook:baking@L3,cook:baking@L4,cook:baking#mistake,cook:baking@L2#mistake,cook:baking#hint,cook:baking@L3#hint,cook:baking#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-d15e1a35d1",
+   "status": "report",
+   "code": 1,
+   "line": "moved canvas-text-small cook:mishkaki-grill@L3 @ 740x320 canvas > Text[25px 800] (known in another flow; not a failure)",
+   "tail": [
+    "moved tap-small        cook:mishkaki-grill@L2 @ 930x430 div#guide > span.ng-tools > button.ng-arrow (known in another flow; not a failure)",
+    "moved canvas-text-small cook:mishkaki-grill@L2 @ 930x430 canvas > Text[25px 800] (known in another flow; not a failure)",
+    "moved covers-play-area cook:mishkaki-grill@L3 @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)",
+    "moved text-small       cook:mishkaki-grill@L3 @ 740x320 div > p.oc-t.wc-k > span.wc-kt > span.word (known in another flow; not a failure)",
+    "moved tap-small        cook:mishkaki-grill@L3 @ 740x320 div#guide > span.ng-tools > button.ng-arrow (known in another flow; not a failure)",
+    "moved canvas-text-small cook:mishkaki-grill@L3 @ 740x320 canvas > Text[25px 800] (known in another flow; not a failure)"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/play.log",
+   "minutes": 62.9
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 1e85a893d6 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:mishkaki-grill,cook:mishkaki-grill@L2,cook:mishkaki-grill@L3,cook:mishkaki-grill@L4,cook:mishkaki-grill#mistake,cook:mishkaki-grill@L2#mistake,cook:mishkaki-grill#hint,cook:mishkaki-grill@L3#hint,cook:mishkaki-grill#returning,cook:mishkaki-grill#takeback,lab:cook/mishkaki-grill,lab:cook/mishkaki-grill@L2,lab:cook/mishkaki-grill@L3,lab:cook/mishkaki-grill@L4,cook:chaat,cook:chaat@L2,cook:chaat@L3,cook:chaat@L4,cook:chaat#mistake,cook:chaat@L2#mistake,cook:chaat#hint,cook:chaat@L3#hint,cook:chaat#takeback,cook:samosa,cook:samosa@L2,cook:samosa@L3,cook:samosa@L4,cook:samosa#mistake,cook:samosa@L2#mistake,cook:samosa#hint,cook:samosa@L3#hint,cook:samosa#returning,cook:samosa#takeback,lab:cook/samosa,lab:cook/samosa@L2,lab:cook/samosa@L3,lab:cook/samosa@L4,cook:baking,cook:baking@L2,cook:baking@L3,cook:baking@L4,cook:baking#mistake,cook:baking@L2#mistake,cook:baking#hint,cook:baking@L3#hint,cook:baking#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-1e85a893d6-d15e1a35d1",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 78 breaks (contract-105 56, contract-109 14, contract-102 6, contract-89 2); CHECK FAILED: 238 new findings, 0 flows do not reach their end, 0 new page errors, 78 contract breaks",
+   "tail": [
+    "BREAK contract-89 lab:cook/samosa@L3 L3 @ 740x320 [samosa-kind-timing 07-samosa-kind-timing.png] 39.8s: \"Tar!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+    "BREAK contract-105 lab:cook/samosa@L3 L3 @ 740x320 [samosa-order-card-in-sidebar 03-samosa-order-card-in-sidebar.png] 10.5s: the light [6,111,90,251] is not whole round card:Ba samosa [10,104,87,247] (its picture and pill): it pokes out at the top",
+    "... and 18 more in contract.md",
+    "CONTRACT FAILED: 78 breaks (contract-105 56, contract-109 14, contract-102 6, contract-89 2)",
+    "CHECK FAILED: 238 new findings, 0 flows do not reach their end, 0 new page errors, 78 contract breaks",
+    "18:29:04 summary: /home/user/wt/s19-wave-d/build/screenshots/tiers/trees/1e85a893d6/build/screenshots/sandbox/tiers-before-1e85a893d6-d15e1a35d1/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/before.log",
+   "minutes": 62.9
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/wt/s19-wave-d/build/screenshots/tiers/trees/1e85a893d6/build/screenshots/sandbox/tiers-before-1e85a893d6-d15e1a35d1 build/screenshots/sandbox/tiers-change-d15e1a35d1 build/screenshots/tiers/change-d15e1a35d1/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 2557 before|after pictures, 245 not paired; build/screenshots/tiers/change-d15e1a35d1/before-after/index.html",
+   "tail": [
+    "pairs: 2557 before|after pictures, 245 not paired; build/screenshots/tiers/change-d15e1a35d1/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/pairs.log",
+   "minutes": 0.8
+  },
+  {
+   "id": "film:mishkaki-grill",
+   "what": "a first-play film: cook:mishkaki-grill as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:mishkaki-grill",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:mishkaki-grill --sizes 740x320 --no-sheets --run-id tiers-film-d15e1a35d1-mishkaki-grill",
+   "status": "pass",
+   "code": 0,
+   "line": "18:30:16 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-mishkaki-grill/summary.md",
+   "tail": [
+    "18:30:16 sound: 7 lines heard, 4 with no family clip (the recording gap list), 7 played files that are not an approved family clip",
+    "gap     1x  Muke sekelo khape,  [device-voice]",
+    "gap     1x  hakri lakri tameto.  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:30:16 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-mishkaki-grill/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/film_mishkaki-grill.log",
+   "minutes": 0.5
+  },
+  {
+   "id": "film:chaat",
+   "what": "a first-play film: cook:chaat as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:chaat",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:chaat --sizes 740x320 --no-sheets --run-id tiers-film-d15e1a35d1-chaat",
+   "status": "pass",
+   "code": 0,
+   "line": "18:30:41 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-chaat/summary.md",
+   "tail": [
+    "gap     1x  Ne poi fudino ji chutney.  [device-voice]",
+    "gap     1x  bataato  [device-voice]",
+    "gap     1x  mint chutney  [silent]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:30:41 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-chaat/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/film_chaat.log",
+   "minutes": 0.4
+  },
+  {
+   "id": "film:samosa",
+   "what": "a first-play film: cook:samosa as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:samosa",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:samosa --sizes 740x320 --no-sheets --run-id tiers-film-d15e1a35d1-samosa",
+   "status": "pass",
+   "code": 0,
+   "line": "18:31:17 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-samosa/summary.md",
+   "tail": [
+    "gap     1x  Bhar! Bataato.  [device-voice]",
+    "gap     1x  Samosa waar!  [device-voice]",
+    "gap     1x  Tar!  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:31:17 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-samosa/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/film_samosa.log",
+   "minutes": 0.6
+  },
+  {
+   "id": "film:baking",
+   "what": "a first-play film: cook:baking as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:baking",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:baking --sizes 740x320 --no-sheets --run-id tiers-film-d15e1a35d1-baking",
+   "status": "pass",
+   "code": 0,
+   "line": "18:31:45 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-baking/summary.md",
+   "tail": [
+    "gap     1x  Paani wiji chad!  [device-voice]",
+    "gap     1x  Tayar ai.  [device-voice]",
+    "gap     1x  Dhyan rakh!  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:31:45 summary: /home/user/wt/s19-wave-d/build/screenshots/sandbox/tiers-film-d15e1a35d1-baking/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/film_baking.log",
+   "minutes": 0.5
+  },
+  {
+   "id": "frozen",
+   "what": "chai against its frozen run (frozen.mjs --diff)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/frozen.mjs --diff",
+   "status": "fail",
+   "code": 1,
+   "line": "cook:chai-tray@L4@1280x665: a new contract break: - -> contract-99",
+   "tail": [
+    "re-playing 6 page(s) that changed, to confirm ...",
+    "7 of 10 change(s) did not come again (variation, a flake or a crash)",
+    "build/reports/frozen-diff-chai-tray-202611101831.md: 3 change(s) on 3 page(s)",
+    "cook:chai-tray#returning@740x320: a new contract break: - -> contract-92",
+    "cook:chai-tray@L3#returning@740x320: a new contract break: - -> contract-92",
+    "cook:chai-tray@L4@1280x665: a new contract break: - -> contract-99"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/frozen.log",
+   "minutes": 19.9
+  },
+  {
+   "id": "mount",
+   "what": "Cook's mount test (COOK-16: leaked listeners)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/test_cook_mount.mjs",
+   "status": "fail",
+   "code": 1,
+   "line": "FAIL no timers left: [{\"n\":1509,\"ms\":3000,\"at\":\"go (js/core/voice.js:404:9) < js/core/voice.js:411:10 < new Promise (<anonymous>)\"},{\"n\":1516,\"ms\":2700,\"at\":\"go (js/core/voice.js:404:9) < js/core/voice.js:411:10 < new Promise (<anonymous>)\"}]; FAIL no audio context left open (1); FAIL no Cook global, no iframe (Cook)",
+   "tail": [
+    "ok   <body> as before",
+    "ok   <body> classes as before (\"\")",
+    "FAIL no audio context left open (1)",
+    "FAIL no Cook global, no iframe (Cook)",
+    "ok   no page errors",
+    "cook mount: 21 failed"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/mount.log",
+   "minutes": 0.5
+  },
+  {
+   "id": "leak-cook",
+   "what": "Cook's Kutchi leak bot (a browser; non-negotiable 4)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/leak.mjs cook",
+   "status": "pass",
+   "code": 0,
+   "line": "leak_cook: ok",
+   "tail": [
+    "leak 'pantry labelled L3': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 5 (stages 3,3,3,3,3))",
+    "leak 'pantry letters L3': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 5 (stages 3,3,3,3,3))",
+    "leak 'pantry unlabelled L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))",
+    "leak 'pantry labelled L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))",
+    "leak 'pantry letters L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))",
+    "leak_cook: ok"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/leak-cook.log",
+   "minutes": 3.9
+  },
+  {
+   "id": "loadtime",
+   "what": "time and bytes to the first tap (loadtime.mjs; 20% growth fails)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/loadtime.mjs --games mishkaki-grill,chaat,samosa,baking",
+   "status": "fail",
+   "code": 1,
+   "line": "baking@L3@930x430@4000/60: 35598 ms, 8211 KB, 303 requests: no baseline yet (--record writes one)",
+   "tail": [
+    "chaat: never reached a play tap in 120 s",
+    "mishkaki-grill@L3@930x430@4000/60: 29862 ms, 8946 KB, 331 requests: ok, within 20% of the baseline",
+    "samosa@L3@930x430@4000/60: 29929 ms, 8921 KB, 287 requests: ok, within 20% of the baseline",
+    "baking@L3@930x430@4000/60: 35598 ms, 8211 KB, 303 requests: no baseline yet (--record writes one)"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/loadtime.log",
+   "minutes": 7.2
+  },
+  {
+   "id": "teachgate",
+   "what": "the prototypes' first-time light (teachgate.mjs, SH-197)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/teachgate.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "PASS: every first-time light went with its tap",
+   "tail": [
+    "town-proto/picky: the light went on with its tap (moved)",
+    "town-proto/picky: an early tap leaves no light on the done thing",
+    "town-proto/pay: the light went on with its tap (moved)",
+    "town-proto/pay: an early tap leaves no light on the done thing",
+    "30 prototype pages; 2 with no light (beach-proto/ride, party-proto/how)",
+    "PASS: every first-time light went with its tap"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/teachgate.log",
+   "minutes": 3.6
+  },
+  {
+   "id": "onboard",
+   "what": "every phase has a first-time help (build/check_onboard.mjs)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": "FIX in the audit (section 9): 39 prototype phases (beach, town, farm) have no onboarding and no onboardWhy; reports until that fix lands",
+   "command": "node build/check_onboard.mjs",
+   "status": "report",
+   "code": 1,
+   "line": "- farm/photo: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none",
+   "tail": [
+    "- clinic/drinks: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none",
+    "- farm/feed: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none",
+    "- farm/eggs: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none",
+    "- farm/home-dusk: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none",
+    "- farm/grow-pick: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none",
+    "- farm/photo: no first-time help (onboard: a ghost-finger script), and no onboardWhy saying why it needs none"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/onboard.log",
+   "minutes": 0
+  },
+  {
+   "id": "vessel-meta",
+   "what": "vessels centred on their burners (build/check_vessel_meta.py)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/check_vessel_meta.py",
+   "status": "pass",
+   "code": 0,
+   "line": "ok   chai-v2/meta.json panTop: recorded (0.3434, 0.6408), rim (0.3434, 0.6408), off 0.0000 (fit 0.9px)",
+   "tail": [
+    "ok   chai-tray META.panTop on v3 pan-empty: recorded (0.3754, 0.6146), rim (0.3744, 0.6140), off 0.0010 (fit 1.7px)",
+    "ok   chai-tray META.panTop on v3 pan-water: recorded (0.3754, 0.6146), rim (0.3762, 0.6144), off 0.0008 (fit 1.7px)",
+    "ok   chai-tray META.panTop on v3 pan-milky: recorded (0.3754, 0.6146), rim (0.3758, 0.6147), off 0.0004 (fit 2.1px)",
+    "ok   chai-tray META.panTop on v3 pan-boil-milky: recorded (0.3754, 0.6146), rim (0.3750, 0.6117), off 0.0029 (fit 2.4px)",
+    "ok   chai-tray META.panTop on v3 pan-foam: recorded (0.3754, 0.6146), rim (0.3765, 0.6145), off 0.0011 (fit 2.1px)",
+    "ok   chai-v2/meta.json panTop: recorded (0.3434, 0.6408), rim (0.3434, 0.6408), off 0.0000 (fit 0.9px)"
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/vessel-meta.log",
+   "minutes": 0.3
+  },
+  {
+   "id": "rows-to-recheck",
+   "what": "the fix-list rows of the flows the change reaches (touched.mjs | regress.mjs)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/touched.mjs --base 1e85a893d6319ea4f81cdc03162623ad54fe7ed9 --json | node build/tools/review/regress.mjs --stdin",
+   "status": "pass",
+   "code": 0,
+   "line": "736 distinct rows to recheck.",
+   "tail": [
+    "ART-43  open     eye: chai at 1280x665 and 971x318 besi The worktop and the stone sing together, every stove game (Zafar, 5 Nov evening: \"is it the perf",
+    "ART-44  open     auto: python3 build/tools/art/artcolou Seven shipped pictures keep a baked shadow (non-negotiable look rule: no baked shadows): the cli",
+    "ART-42  reopened auto: artcheck.test.mjs; eye: the next Every art run gets its references from GitHub itself and downloads in one go, never asking Zafar",
+    "... and 192 more",
+    "checked by the contract run on every flow (--check fails on a break): contract-100 kit-card: SH-227, SH-241; contract-101 nani-box: SH-240; contract-102 kit-light: SH-119; contract-103 no-buttons: SH-238; contract-104 card-pic: SH-242, SEK-24; contract-105 light-whole: CK-63; contract-106 light-goes: SH-236; contract-107 hop-shelf: SH-237; contract-108 praise-last: SH-239; contract-109 shelf-line: SH-243; contract-110 knob-side: SH-247; contract-111 item-reach: SH-244; contract-96 boil-reopen: CHAI-105; contract-98 lesson-shown: DAAR-41; contract-44 one-finger: SH-233; contract-92 light-room: SH-230, CK-61, DAAR-43; contract-93 own-words: CK-59; contract-94 wm-card: SH-231; contract-95 skip-silent: CK-60, DAAR-40; contract-72 row-glide: SH-152, CHAI-39; contract-75 skip-zone: SH-157; contract-76 pop-face: SH-154; contract-77 timed-hold: SH-158; contract-78 call-light: CHAI-40, CHAI-49, CHAI-52; contract-79 card-light: CHAI-42, SH-178; contract-80 no-jump: CHAI-45; contract-81 over-gauge: CHAI-46; contract-82 edge-on-face: CHAI-47; contract-83 card-on-face: SH-154, CHAI-43, SH-203; contract-90 card-light: CHAI-37, CHAI-77, CHAI-106; contract-84 light-clear: SH-164; contract-85 replay: SH-161; contract-86 bubble-clear: SH-166; contract-87 one-light: CHAI-50; contract-88 item-said: SH-171; contract-89 helper-call: SH-172, CHAI-40; contract-91 help-comes: SH-228, CLN-221, RIDE-11; contract-1 popup: SH-64, CHT-10, CHAI-15, CK-29; contract-2 moves-on: SH-40, CLN-92, CLN-110; contract-3 voice: SH-66; contract-4 bubble: SH-68, CLN-86, CLN-146, SH-177; contract-5 badges: SH-67; contract-6 old-art: DAAR-13, ART-17, ART-13, CK-52; contract-7 one-voice: PAN-04; contract-8 highlight: SH-53, SH-79, CK-34, CLN-143, CLN-144, CLN-145, CK-41; contract-9 closed-card: CLN-114; contract-10 your-turn: SH-71; contract-11 background: PAN-14, ART-05, ART-59, ART-60; contract-12 greyed: SH-23; contract-13 stale-ui: CLN-06; contract-14 talk: ART-18; contract-15 words-whole: SH-73, CLN-153, SH-170; contract-16 english: LNG-01, PAN-10, SH-85, MOD-09, MOD-10, CK-42, LNG-15, SH-92; contract-17 voice-src: LNG-06, LNG-14; contract-18 card-rows: SH-10, SEK-13, DAAR-19, DAAR-23, CLN-131, CLN-141; contract-19 counting: DAAR-18, DAAR-24, SH-92; contract-20 one-face: CLN-85, CLN-139, CLN-149, DAAR-25, CK-40; contract-21 input-live: CLN-152, CK-43, CK-45, DAAR-42; contract-22 once-whole: PAN-04, PAN-16, CHAI-21; contract-23 item-word: SH-94; contract-24 help-ladder: SH-60, SH-95; contract-26 opening: LNG-16; contract-30 written: SH-99; contract-31 free-replay: SH-102; contract-32 divider: SH-103; contract-33 headline-size: SH-107; contract-34 go-arrow: SH-106; contract-35 card-ladder: SH-110, SAM-26, MAA-18; contract-36 step-call: SH-110, SEK-18, SH-133; contract-37 decoys: CK-49, SH-132; contract-50 one-tick: SAM-24, SAM-27; contract-51 inside-card: SH-142, SH-138, SH-170, CHAI-69; contract-52 bubble-clear: CK-18, SH-145, SH-138, CHAI-48, SH-177; contract-53 one-in-light: CHAI-33, SH-138; contract-54 rail-in-side: CK-53, SH-138",
+    "736 distinct rows to recheck."
+   ],
+   "log": "build/screenshots/tiers/change-d15e1a35d1/logs/rows-to-recheck.log",
+   "minutes": 0
+  }
+ ],
+ "minutes": 163.9,
+ "ok": false
+}
