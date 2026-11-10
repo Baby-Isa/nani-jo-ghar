@@ -1,0 +1,56 @@
+{
+  "name": "s19-tiers: one tool per check tier (check-push, check-prototype, check-change, check-sprint, check-publish, check-live), run by the process itself, never requested",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the gates decide what reaches Zafar and main; wiring them into hooks and skills needs care",
+  "cost": "about $25-35",
+  "stop": "when the tasks are done or the budget is spent; no time (CLAUDE.md, plans run back to back)",
+  "branch": "s19-tiers in /home/user/wt/s19-tiers (made for you from the integration branch; no sources/); commit there, never push; the orchestrator merges into ccr-87413d9b-j48fpk",
+  "kind": "tools",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "docs/process/qa-checklist.md section 'When we check, and how deep' (the tiers and the check map: the spec you build)",
+    "docs/decisions/2026-11-10-tier-tools.md (his yes, his words: 'I dont want to be requesting the checks they should happen automatically because of the way they're built into the process')",
+    "docs/process/check-audit.md (every check we have, and which run nowhere today)",
+    "build/reports/s19-check-tiers-proposal.md and build/reports/s19-check-rules-review.md",
+    "docs/tools.md, build/tools/ops/publish.mjs, build/tools/ops/publishgate.mjs, build/tools/review/checks.mjs, build/sandbox/run.mjs (its options), build/tools/review/touched.mjs, evidence.mjs, frozen.mjs, sidebyside.mjs, labcheck.mjs",
+    ".claude/skills/{sprint,review,publish,brief,checkin,art-run}/SKILL.md, .claude/settings.json"
+  ],
+  "owns": [
+    "build/tools/tiers/** (new: the six tools, their shared settings file tiers.json, their tests)",
+    "build/tools/ops/publish.mjs and build/tools/ops/publishgate.mjs (the gate becomes: check-publish passed on this exact commit, with its known-fails list)",
+    "build/tools/review/checks.mjs (only to call or be called by check-push)",
+    ".claude/settings.json (a PreToolUse hook on Bash commands that push: runs check-push and blocks the push when it fails; keep the existing hooks)",
+    ".claude/skills/sprint/SKILL.md, .claude/skills/review/SKILL.md, .claude/skills/publish/SKILL.md, .claude/skills/brief/SKILL.md, .claude/skills/checkin/SKILL.md (each calls its tier's tool at its moment)",
+    "docs/process/qa-checklist.md (the tier section: each tier names its tool)",
+    "docs/tools.md (a Tiers section at the top)",
+    "build/reports/s19-tiers.md"
+  ],
+  "readOnly": ["js/**, css/**, data/** (no game code)", "build/sandbox/lib/** (call it; never loosen a check)"],
+  "stubs": "none",
+  "port": 8901,
+  "report": "s19-tiers",
+  "publish": false,
+  "flows": ["cook:chop"],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Six tools in build/tools/tiers/, each a thin wrapper over the tools we have (no check rewritten), each with --dry-run (what will run, roughly how long), each writing its result to build/reports/tiers/<tier>-<commit>.json and a short .md: check-push (tier 0: checks.mjs), check-prototype (tier 1: --lab <page>: labcheck at the four sizes, page errors, a first-play film), check-change (tier 2: games and rows from the git diff against the merge base by default, or --games/--rows/--base; the robot play-through at the levels touched at 740x320 and 930x430 with that game's contract rules; each named row's probe red then green; before/after pictures made by script from the base commit and the candidate; a first-play film of L1 as a new player for the orchestrator to look at), check-sprint (tier 3: since the last publish; changed games L1-L4 at the four sizes, all rules, end reached, 0 page errors; every other game end reached at one size; chai's frozen run; the judge batches for Fable (probe sheets, beside chai for games on their new art); first-minute films; ONE fix list grouped by game), check-publish (tier 3b: the failures plus every changed game at one size to its end, checks.mjs --browser, the known-fails list written, then publish.mjs --go), check-live (tier 4: each changed game opened on the live site at 740x320, page errors and a strip; on a failure it prints the exact command to put main back to the last good publish). What each tier runs (sizes, levels, which checks) lives in one file, build/tools/tiers/tiers.json.",
+      "accept": "each tool's --dry-run on this branch; check-change --games chop run for real at one size; unit tests for the diff-to-games logic and the result files"
+    },
+    {
+      "do": "The checks that today run only when someone remembers (docs/process/check-audit.md): place each in a tier's tool by its kind: the row probes (evidence.mjs), chai's frozen run, loadtime, panelcheck, teachgate, kitsheet, sidebyside, the Cook leak bot and the parked modes' leak bots when their files change, check_onboard, check_vessel_meta, check_hotspots, check_speaker_taps, check_word_card_taps, check_stamps, the mount test. A check that fails today and is marked FIX in the audit runs but reports, not blocks, until its fix lands (say which).",
+      "accept": "a table in the report: every check in the audit and the tier tool that runs it; none left running nowhere unless retired"
+    },
+    {
+      "do": "Automatic, never requested (his words): the push hook (check-push blocks a failing push); the skills call their tool at their moment (a builder's hand-back and every merge: check-change; /sprint when the main work is in: check-sprint; /publish: check-publish then check-live; /brief: the builder's own check-change at the end); publish.mjs refuses unless check-publish passed on HEAD; the old gate rule (no open fixable rows, decision 89) is gone, replaced by the known-fails list (Zafar, 9 Nov).",
+      "accept": "a dry walk-through in the report: a builder's hand-back to a publish, which tool each step runs, with no step that relies on anyone remembering"
+    },
+    {
+      "do": "Standing: browser runs under `flock -w 3600 /tmp/njg-browser-all.lock <cmd>` at one size while building; `checks.mjs --only unit,static,words,specs`; commit on your branch, never push; never loosen a check; keep screenshots small (delete only your own superseded runs); if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-tiers.md with a Proof section, under 700 words"
+    }
+  ]
+}
