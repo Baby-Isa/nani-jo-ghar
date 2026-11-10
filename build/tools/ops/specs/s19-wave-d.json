@@ -8,7 +8,7 @@
   "branch": "s19-wave-d in /home/user/wt/s19-wave-d (made for you from the integration branch); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": false,
   "read": [
     "build/reports/s18-review-and-direction.md (chai's standard: sections 2-4)",

@@ -8,7 +8,7 @@
   "branch": "s19-wave-a in /home/user/wt/s19-wave-a (made for you from the integration branch with s19-stoves merged: the knob rule, tap areas, daar's count card); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": true,
   "read": [
     "build/reports/s18-review-and-direction.md (chai's standard: sections 2-4)",

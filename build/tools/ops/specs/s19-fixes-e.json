@@ -1,0 +1,94 @@
+{
+  "name": "s19-fixes-e: what the eye judge found in eggs, chop, corn, daar and maani beside chai, and Shabash at well done",
+  "model": "Opus",
+  "effort": "high",
+  "why": "five games judged not ready beside chai (build/reports/s19-eggs-beside-chai.md, s19-four-beside-chai.md); shared fixes in the kit once, then each game's own",
+  "cost": "about $40-50",
+  "stop": "when the tasks are done",
+  "branch": "s19-fixes-e in /home/user/wt/s19-fixes-e (made for you from the integration branch); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/s19-eggs-beside-chai.md and build/reports/s19-four-beside-chai.md, and the five verdict files they name (build/screenshots/sidebyside/*-L1-20261110-*/judge-batch.verdicts.md): look at the pictures they cite",
+    "build/reports/s19-checks-review.md section 1 (the true causes; the September overlay is already deleted, commit e9f8afa4c)",
+    "docs/design-language/standard/e-presentation.md STD-E2-08 and STD-E2-08a (the knife's swipe light: chop and daar's onion)",
+    "docs/design-language/guide-and-card.md R2 (Nani's box names each step)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers today)"
+  ],
+  "owns": [
+    "js/cook/stations/eggs.js, corn.js, chop.js, daar.js, maani-line.js, chai-tray.js and their data/stations/*.json",
+    "js/cook/coach.js, flow.js, ui.js, station-lib.js, kitchen-kit.js, js/cook/mechanics/chop.js and the mechanics only these games use",
+    "js/shared/onboard.js and js/shared/guide.js (the light's named variants, Nani's box)",
+    "data/cook.json (only these games' entries and the onboard scripts)",
+    "build/sandbox/data/evidence.json (the evidence specs of your rows)",
+    "build/reports/s19-fixes-e.md"
+  ],
+  "readOnly": [
+    "build/sandbox/** except data/evidence.json, build/lint/** and build/tools/review/** (s19-checks-1 owns the checks; a probe you judge wrong goes in your report, exactly)",
+    "js/cook/stations/mishkaki-grill.js, samosa.js, baking.js, js/cook/mechanics/assemble.js, grill.js, thread.js and their data (judged separately next)",
+    "assets/** (tonight's art lands separately)"
+  ],
+  "stubs": "none",
+  "port": 8909,
+  "report": "s19-fixes-e",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray",
+    "cook:eggs",
+    "cook:chop",
+    "cook:corn",
+    "cook:daar",
+    "cook:maani-line"
+  ],
+  "rows": [
+    "SH-249",
+    "SH-250",
+    "SH-252",
+    "SH-253",
+    "SH-254",
+    "SH-255",
+    "SH-256",
+    "CK-75",
+    "CK-76",
+    "CK-77",
+    "CK-78",
+    "CK-79",
+    "CK-80"
+  ],
+  "tasks": [
+    {
+      "do": "SH-252: at well done Nani's box shows \"Shabash!\" in every kitchen game, chai included: the language engine's Exclaim intj.well-done (js/cook/flow.js:616, recorded by Mum and Zafar, B25). Never a hand-written string. Shown in the box as the line is said; cleared at the end screen as chai clears it now.",
+      "accept": "every one of the six games at L1 1280x665: the praise frame's box reads Shabash!"
+    },
+    {
+      "do": "The shared light's named variants (SH-257): add Onboard.VARIANTS = {swipe: [\"chop\", \"daar\"]} in js/shared/onboard.js; the light refuses any shape, pad or region option a game passes unless it is a named variant and that game is on its list (console warning plus no light change). The swipe variant: one rounded rectangle holding the knife, the item and the path between them, never over the side panel. Chop and daar's onion use it by name; daar's band must stop crossing onto the side panel and must light the onion, not bare worktop (the onion is in place before the light, never fading up through it).",
+      "accept": "chop and daar L1 at 740x320 and 1280x665: the knife's box holds knife, item and path, clear of the side panel"
+    },
+    {
+      "do": "One light at a time, one box, on one thing (SH-249, SH-253): corn's three looks become one box at a time (no disc over the cob, no ring on the bowl); eggs' pan and knob never lit together; no light on a plate or bowl while an item is in flight to it (eggs, chop, corn); now the overlay is gone, confirm the dim matches chai's (SH-250) and fix any game that still darkens more.",
+      "accept": "strips of eggs, corn and chop at L1 1280x665: one box at a time, none on a target while something flies to it"
+    },
+    {
+      "do": "Well done and sizes (SH-254, SH-256, CK-75): the face beside the dish, never over it or its neighbours' chips (maani, corn); an item keeps its size from step to step (maani's bread onto the plate, corn's cob from tray to plate, eggs' whole egg to fried shown gradually, not a snap); eggs' praise scene fills the play area with no marble strip.",
+      "accept": "the praise frames of maani, corn and eggs at 740x320 and 1280x665"
+    },
+    {
+      "do": "The bottom bar (SH-255): chop, corn, daar and maani keep the kit's tray, but what stands on it follows the kit's rules as chai's shelf does: pills at chai's size at 740x320, items spread along the band, no pill under nothing (chop's tray once the garlic leaves), corn's cobs with pills; eggs' carton at chai's size and place, its light and pill whole (CK-77).",
+      "accept": "the four games and eggs at 740x320: pill heights against chai's, every pill under its item"
+    },
+    {
+      "do": "Each game's own: eggs' Nani's box names each step from the engine (CK-76; a step the engine can't say goes on docs/language/recording-sheet.md as a gap, never written by hand); chop's well done shows the chopped garlic with its asker, the whole garlic top-down, no chip under the settings gear, Nani's box with its face (CK-78); daar's onion one colour on card and board, its order card never cutting a row, knife, bowl and pills not sitting on each other, the chopped onion not a speck (CK-79); corn's makai and hakro get their card and pill, the lit bowl's ring not over its pill, the grill scene's face circle (CK-80).",
+      "accept": "each row's picture named in the report, before and after"
+    },
+    {
+      "do": "Chai is frozen: the pan's ring is now a rounded rectangle (Zafar, 10 Nov) and Shabash shows at well done. Re-freeze chai with build/tools/review/frozen.mjs once those are its only changes, and say so.",
+      "accept": "the frozen diff names only those two changes"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8909, flock /tmp/njg-browser-8909.lock) except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; never remove a mechanic or a help (Zafar's OK needed); shared pieces only, never a game's own light, dim or bar; fix what you break; keep under 3 GB of runs; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-fixes-e.md with a Proof section, under 900 words"
+    }
+  ]
+}

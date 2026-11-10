@@ -1,0 +1,85 @@
+SESSION NAME / MODE:  s19-fixes-e: what the eye judge found in eggs, chop, corn, daar and maani beside chai, and Shabash at well done
+MODEL AND EFFORT:     Opus, high effort (five games judged not ready beside chai (build/reports/s19-eggs-beside-chai.md, s19-four-beside-chai.md); shared fixes in the kit once, then each game's own)
+COST ESTIMATE:        about $40-50
+STOP:                 when the tasks are done. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               s19-fixes-e in /home/user/wt/s19-fixes-e (made for you from the integration branch); commit there, never push; the orchestrator merges. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s19-fixes-e.context.md (860 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s19-eggs-beside-chai.md and build/reports/s19-four-beside-chai.md, and the five verdict files they name (build/screenshots/sidebyside/*-L1-20261110-*/judge-batch.verdicts.md): look at the pictures they cite
+     build/reports/s19-checks-review.md section 1 (the true causes; the September overlay is already deleted, commit e9f8afa4c)
+     docs/design-language/standard/e-presentation.md STD-E2-08 and STD-E2-08a (the knife's swipe light: chop and daar's onion)
+     docs/design-language/guide-and-card.md R2 (Nani's box names each step)
+     docs/decisions/2026-11-10-overnight.md (Zafar's answers today)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/eggs.js, corn.js, chop.js, daar.js, maani-line.js, chai-tray.js and their data/stations/*.json
+  - js/cook/coach.js, flow.js, ui.js, station-lib.js, kitchen-kit.js, js/cook/mechanics/chop.js and the mechanics only these games use
+  - js/shared/onboard.js and js/shared/guide.js (the light's named variants, Nani's box)
+  - data/cook.json (only these games' entries and the onboard scripts)
+  - build/sandbox/data/evidence.json (the evidence specs of your rows)
+  - build/reports/s19-fixes-e.md
+READ-ONLY (never edit):
+  - build/sandbox/** except data/evidence.json, build/lint/** and build/tools/review/** (s19-checks-1 owns the checks; a probe you judge wrong goes in your report, exactly)
+  - js/cook/stations/mishkaki-grill.js, samosa.js, baking.js, js/cook/mechanics/assemble.js, grill.js, thread.js and their data (judged separately next)
+  - assets/** (tonight's art lands separately)
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. SH-252: at well done Nani's box shows "Shabash!" in every kitchen game, chai included: the language engine's Exclaim intj.well-done (js/cook/flow.js:616, recorded by Mum and Zafar, B25). Never a hand-written string. Shown in the box as the line is said; cleared at the end screen as chai clears it now.
+     Accept: every one of the six games at L1 1280x665: the praise frame's box reads Shabash!
+  2. The shared light's named variants (SH-257): add Onboard.VARIANTS = {swipe: ["chop", "daar"]} in js/shared/onboard.js; the light refuses any shape, pad or region option a game passes unless it is a named variant and that game is on its list (console warning plus no light change). The swipe variant: one rounded rectangle holding the knife, the item and the path between them, never over the side panel. Chop and daar's onion use it by name; daar's band must stop crossing onto the side panel and must light the onion, not bare worktop (the onion is in place before the light, never fading up through it).
+     Accept: chop and daar L1 at 740x320 and 1280x665: the knife's box holds knife, item and path, clear of the side panel
+  3. One light at a time, one box, on one thing (SH-249, SH-253): corn's three looks become one box at a time (no disc over the cob, no ring on the bowl); eggs' pan and knob never lit together; no light on a plate or bowl while an item is in flight to it (eggs, chop, corn); now the overlay is gone, confirm the dim matches chai's (SH-250) and fix any game that still darkens more.
+     Accept: strips of eggs, corn and chop at L1 1280x665: one box at a time, none on a target while something flies to it
+  4. Well done and sizes (SH-254, SH-256, CK-75): the face beside the dish, never over it or its neighbours' chips (maani, corn); an item keeps its size from step to step (maani's bread onto the plate, corn's cob from tray to plate, eggs' whole egg to fried shown gradually, not a snap); eggs' praise scene fills the play area with no marble strip.
+     Accept: the praise frames of maani, corn and eggs at 740x320 and 1280x665
+  5. The bottom bar (SH-255): chop, corn, daar and maani keep the kit's tray, but what stands on it follows the kit's rules as chai's shelf does: pills at chai's size at 740x320, items spread along the band, no pill under nothing (chop's tray once the garlic leaves), corn's cobs with pills; eggs' carton at chai's size and place, its light and pill whole (CK-77).
+     Accept: the four games and eggs at 740x320: pill heights against chai's, every pill under its item
+  6. Each game's own: eggs' Nani's box names each step from the engine (CK-76; a step the engine can't say goes on docs/language/recording-sheet.md as a gap, never written by hand); chop's well done shows the chopped garlic with its asker, the whole garlic top-down, no chip under the settings gear, Nani's box with its face (CK-78); daar's onion one colour on card and board, its order card never cutting a row, knife, bowl and pills not sitting on each other, the chopped onion not a speck (CK-79); corn's makai and hakro get their card and pill, the lit bowl's ring not over its pill, the grill scene's face circle (CK-80).
+     Accept: each row's picture named in the report, before and after
+  7. Chai is frozen: the pan's ring is now a rounded rectangle (Zafar, 10 Nov) and Shabash shows at well done. Re-freeze chai with build/tools/review/frozen.mjs once those are its only changes, and say so.
+     Accept: the frozen diff names only those two changes
+  8. Standing: browser runs under your own lock (COOK_TEST_PORT=8909, flock /tmp/njg-browser-8909.lock) except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; never remove a mechanic or a help (Zafar's OK needed); shared pieces only, never a game's own light, dim or bar; fix what you break; keep under 3 GB of runs; if you need a file you don't own, write the exact change in your report.
+     Accept: build/reports/s19-fixes-e.md with a Proof section, under 900 words
+
+KEEP (what Zafar liked in chai, eggs, chop, corn, daar, maani-line: never change it without his word; 10):
+  KEEP-01: Underline while a line is spoken; order card and pop-up are "the bar we want to set"
+  KEEP-02: Daar: chopped things wait at the side and you add them in
+  KEEP-11: Nana's voice; Nani and Nana talking; two-person chai; maani speed; the greeting hand gesture
+  KEEP-12: The card that shows then blanks words; chai highlighted at the start; calling out items as they go in · 26 Oct: the blanking keeps only with each row's speaker 
+  KEEP-13: Pantry wrong-item handling; cooker on early is fine; daar dial and rotation; samosa fry and frying handle
+  KEEP-15: Chai: the pan's boiling bubbles and the flames ("the tea animation with the bubbles")
+  KEEP-16: Liked, 17 Oct: daal chop ("so much better ... the knife ... really nice"); the stir speed indicator ("looks very good"); chai's replayed order on a pot tap ("ve
+  KEEP-18: Liked, 22 Oct: chai's water bouncing with its own glow ("I like that the water is bouncing", "has a bit of a glow"); the rectangle; "the onboarding is clear"; "
+  KEEP-19: Liked, 22 Oct: "it's becoming a lot clearer and easier to play and easier to understand ... a very positive strong step" (Sprint 11's direction)
+  KEEP-21: Liked, 1 Nov: "The half mechanism for level 4 kind of works well, actually. In terms of the pouring, it works quite well. It's quite clever"; "I had a quick loo
+
+REGRESSION ROWS TO RECHECK (14; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (14): SH-249*, SH-250*, SH-252*, SH-253*, SH-254*, SH-255*, SH-256*, CK-75*, CK-76*, CK-77*, CK-78*, CK-79*, CK-80*, SH-257*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s19-fixes-e.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8909 NJG_LOCK=/tmp/njg-browser-8909.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s19-fixes-e.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8909.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:eggs,cook:chop,cook:corn,cook:daar,cook:maani-line --sizes 740x320,930x430,1280x665,1920x1080 --run-id s19-fixes-e-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s19-fixes-e.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s19-fixes-e.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8909.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8909; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+Before the report (tier 2, check-change; Zafar, 10 Nov: the checks run by themselves): COOK_TEST_PORT=8909 NJG_LOCK=/tmp/njg-browser-8909.lock node build/tools/tiers/check-change.mjs --brief build/tools/ops/specs/s19-fixes-e.json; it must pass; its result file goes in the report. FINISH: build/reports/s19-fixes-e.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

@@ -125,7 +125,7 @@
 
 #### STD-E2-08a · A swipe's light: for chop's knife cut, the lit box takes in the whole path the knife travels, right to left across the item, one rounded rectangle
 - **Why:** "The wide highlight box for chop is correct and the onboarding shows the knife move across from right to left to chop an item so the whole horizontal path needs lighting ... Only should be like that for chop though" (Zafar, 10 Nov)
-- **Scope:** chop's knife cut only, a named variant of STD-E2-08 in the shared light; any other game asking for it is a rule break until Zafar adds it here
+- **Scope:** the knife cut only: chop, and daar's onion, which uses chop's knife (Zafar, 10 Nov, yes to decision 3), the box never crossing the side panel; a named variant of STD-E2-08 in the shared light; any other game asking for it is a rule break until Zafar adds it here
 - **Pattern / part:** - / the light
 - **Checked by:** the light-picture check (planned, SH-249): one rounded rectangle, the knife, the item and the path between them inside it, never over the side panel or a face
 - **See it:** lab.html?mode=cook&game=chop&level=1 (740x320), New player
