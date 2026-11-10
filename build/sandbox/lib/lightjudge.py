@@ -15,7 +15,7 @@ was not darkened (a near 0) is the lit region. It passes only if:
   5. never over the side panel (unless it lights a card there) or over a face it is not lighting;
   6. the dim's darkness within DIM_MARGIN of chai's (DIM_REF);
   7. nothing moving into it while it is up (a thing still arriving after the light came).
-The knife's swipe (STD-E2-08a: Onboard.VARIANTS.swipe, chop and daar's onion) passes 4 when the box holds the knife, the item and the
+The knife's swipe (STD-E2-08a: Onboard.VARIANTS.swipe, chop's, wherever chop's game runs: daar's onion, chaat) passes 4 when the box holds the knife, the item and the
 path between them. Writes verdict.json beside each light, and mark.jpg (the screen with what was measured drawn on it) when it fails.
 """
 import json
@@ -43,7 +43,9 @@ EDGE = 3                # px from the frame's edge counts as touching it
 PANEL_TOL = 4           # px into the side panel
 FACE_IN = 0.2           # a face this far inside the light, not its own, is lit by it
 MOVE_PX = 14            # a thing whose middle moved this far (or 30% of its size) while the light was up was moving into it
-SWIPE_GAMES = ["chop", "daar"]   # STD-E2-08a, until Onboard.VARIANTS names them (read from the page when it does)
+SWIPE_GAMES = ["chop"]   # STD-E2-08a, until Onboard.VARIANTS names them (read from the page when it does); a variant is a game's and
+# goes wherever that game runs (Zafar, 10 Nov: one chop, chained into recipes: daar's onion and chaat's chops are chop's game)
+CHAINED = {"chop": ["daar", "chaat", "assemble"]}
 SURFACE = ("bg", "wall", "marble", "worktop", "counter", "stage", "panel", "band", "shelf", "slab", "kitchen", "floor", "backdrop", "room", "flame", "steam", "smoke", "hob")
 
 
@@ -238,7 +240,8 @@ def judge(d):
     out["variantsFrom"] = "Onboard.VARIANTS" if variants else "the check's own list (Onboard.VARIANTS not in this build)"
     knife = next((p for p in (o1.get("pics") or []) if "knife" in p["id"].lower() and inter(p["box"], R) > 0.3 * area(p["box"])), None)
     layer_v = any((l or {}).get("variant") == "swipe" for l in (o1.get("layers") or []))
-    swipe = (layer_v or game in swipe_games) and knife is not None
+    runs = {game} | {g for g, hosts in CHAINED.items() if game in hosts}
+    swipe = (layer_v or bool(runs & set(swipe_games))) and knife is not None
     out["variant"] = "swipe" if swipe else None
 
     def U(w):

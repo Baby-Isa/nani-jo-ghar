@@ -379,9 +379,21 @@ export const SHARED_SKIP = /(^js\/(monsoon|tidy|who|dress|find|snap)\/|^css\/(mo
 export const SHARED_KNOWN = {
   "shared|js/cook/stations/baking.js|band": "baking's own counter and shelf row (bk-bg): a known break until its redraws (SH-255)",
   "shared|js/cook/stations/chai-tray.js|round": "chai's pan light still passes round: true, dead since the round option went (e9f8afa4c); s19-fixes-e drops it",
+  "shared|js/cook/stations/daar.js|recipe-zone": "daar gives chop's game a zone of its own (SH-259): the known break until s19-fixes-e lands",
+  "shared|js/cook/stations/daar.js|recipe-call": "daar passes chop's game its own knife, band and timer (SH-259): the known break until s19-fixes-e lands",
 };
+// SH-259 (Zafar, 10 Nov): a recipe that calls a standalone game (Cook.Chop.play and the like) passes no layout, zone or light options of
+// its own: the game brings its own (its settings), so it looks the same alone and in the recipe
+// (a key given its value, or in shorthand: daar's "knifeKey, blade,")
+export const RECIPE_LAYOUT = /[{,]\s*(band|knifeKey|knifeAt|knife|blade|region|footprint|layout|lay|zone|zones|light|lights|variant|round|pad|peak|halves|shadows|timer|board|hopOn)\s*(?=[:,}])/g;
+export function standaloneGames(files) {
+  const out = new Set();
+  for (const [, text] of files) for (const m of String(text).matchAll(/Cook\.([A-Z]\w+)\s*=\s*\{[^}]*\bplay\b/g)) out.add(m[1]);
+  return [...out];
+}
 // the shared light's named variants: Onboard.VARIANTS in js/shared/onboard.js ({name: [games]}), or, until it is there, STD-E2-08a's
-export const VARIANTS_DEFAULT = { swipe: ["chop", "daar"] };
+// (Zafar, 10 Nov: one chop, chained into recipes: a variant is a game's, and goes wherever that game runs, alone or in daar or chaat)
+export const VARIANTS_DEFAULT = { swipe: ["chop"] };
 export function readVariants(onboardJs) {
   const m = /VARIANTS\s*=\s*(?:Object\.freeze\()?(\{[\s\S]*?\})\)?\s*;/.exec(onboardJs || "");
   if (!m) return { variants: VARIANTS_DEFAULT, from: "STD-E2-08a (Onboard.VARIANTS is not in js/shared/onboard.js yet)" };
@@ -390,7 +402,7 @@ export function readVariants(onboardJs) {
   return { variants: v, from: "Onboard.VARIANTS" };
 }
 const gameOfFile = (f) => (/\/stations\/([\w-]+)\.js$/.exec(f) || /\/mechanics\/([\w-]+)\.js$/.exec(f) || [])[1] || f;
-export function sharedFindings(file, text, { variants = VARIANTS_DEFAULT } = {}) {
+export function sharedFindings(file, text, { variants = VARIANTS_DEFAULT, standalone = ["Chop"] } = {}) {
   if (SHARED_HOME.test(file) || SHARED_SKIP.test(file)) return [];
   const out = [];
   const add = (line, what, msg) => out.push({ check: "shared", at: `${file}:${line}`, key: `shared|${file}|${what}`, text: msg, ...(SHARED_KNOWN[`shared|${file}|${what}`] ? { known: SHARED_KNOWN[`shared|${file}|${what}`] } : {}) });
@@ -432,6 +444,21 @@ export function sharedFindings(file, text, { variants = VARIANTS_DEFAULT } = {})
       else if (!variants[m[1]].includes(g)) add(i + 1, `variant-${m[1]}`, `the light variant "${m[1]}" asked by ${g}, which the shared light names only for ${variants[m[1]].join(", ")}`);
     }
   });
+  // SH-259: a recipe calling a standalone game passes it no layout, zone or light of its own, and gives it no zone of its own
+  if (/^js\/cook\/stations\//.test(file)) {
+    for (const g of standalone) {
+      if (gameOfFile(file) === g.toLowerCase()) continue;
+      const re = new RegExp(`Cook\\.${g}\\.play\\(`, "g");
+      for (const m of text.matchAll(re)) {
+        let depth = 1, i = m.index + m[0].length;
+        while (i < text.length && depth) { if (text[i] === "(") depth++; else if (text[i] === ")") depth--; i++; }
+        const keys = [...new Set([...text.slice(m.index + m[0].length, i - 1).matchAll(RECIPE_LAYOUT)].map((x) => x[1]))];
+        if (keys.length) add(text.slice(0, m.index).split("\n").length, "recipe-call", `${gameOfFile(file)} calls ${g.toLowerCase()}'s game with layout or light options of its own (${keys.join(", ")}): the game brings its own (SH-259)`);
+      }
+      const zm = new RegExp(`mech\\s*:\\s*["'\`]${g.toLowerCase()}["'\`]`).exec(text);
+      if (zm) add(text.slice(0, zm.index).split("\n").length, "recipe-zone", `${gameOfFile(file)} gives ${g.toLowerCase()}'s game a zone of its own (a region and footprint): the game brings its own layout (SH-259)`);
+    }
+  }
   // the bottom bar: a Cook file that draws shelf pills draws its band through the kit
   // (a station draws its scene's band; a mechanic takes the band its station drew: chop's mechanic stands things on the caller's band)
   if (/^js\/cook\/stations\//.test(file) && /\.chip\(/.test(text) && !/stoneBand\(|Shelf\.P\.tray|\bband\(S\b/.test(text)) {
@@ -498,7 +525,10 @@ export function run(root = ROOT, only = null) {
     const v = readVariants(existsSync(join(root, "js/shared/onboard.js")) ? rd("js/shared/onboard.js") : "");
     SHARED_INFO.from = v.from;
     SHARED_INFO.skipped = [...css, ...walk(root, "js", (p) => p.endsWith(".js"))].filter((f) => SHARED_SKIP.test(f)).length;
-    for (const f of [...css, ...walk(root, "js", (p) => p.endsWith(".js"))]) for (const x of sharedFindings(f, rd(f), { variants: v.variants })) (x.known ? SHARED_INFO.known : out).push(x);
+    const stations = walk(root, "js/cook/stations", (p) => p.endsWith(".js"));
+    const standalone = standaloneGames(stations.map((f) => [f, rd(f)]));
+    SHARED_INFO.standalone = standalone;
+    for (const f of [...css, ...walk(root, "js", (p) => p.endsWith(".js"))]) for (const x of sharedFindings(f, rd(f), { variants: v.variants, standalone })) (x.known ? SHARED_INFO.known : out).push(x);
   }
   return out;
 }
@@ -563,7 +593,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   for (const u of cmp.up) console.log(`UP ${u.check}: ${u.now} findings, the known list holds ${u.known} (it only shrinks)`);
   if (!only || only.includes("shared")) {
     for (const k of SHARED_INFO.known) console.log(`known break shared ${k.at}: ${k.text} (${k.known})`);
-    console.log(`shared: variants from ${SHARED_INFO.from}; not judged: ${SHARED_INFO.skipped} files of the prototypes and the parked modes`);
+    console.log(`shared: variants from ${SHARED_INFO.from}; the standalone games a recipe may call: ${(SHARED_INFO.standalone || []).join(", ") || "none"}; not judged: ${SHARED_INFO.skipped} files of the prototypes and the parked modes`);
   }
   if (FONT_WARN.length && argv.includes("--fonts")) for (const f of FONT_WARN) console.log(`warn fonts ${f.at}: ${f.text}`);
   const fontWarn = FONT_WARN.length ? `; fonts: ${FONT_WARN.length} face names outside the tokens in ${new Set(FONT_WARN.map((f) => f.at.split(":")[0])).size} files of the other games (warn until the roll-out; --fonts lists them)` : "";

@@ -189,7 +189,8 @@ test("red on commit 3c4882609's coach overlay: its round light, its hole placed 
 test("red on a test file that passes round: true, and on a variant the shared light does not name for that game", () => {
   const f = sharedFindings("js/cook/stations/eggs.js", rd("round-true.js"));
   assert.ok(f.some((x) => /\|round$/.test(x.key)), "round: true");
-  assert.ok(f.some((x) => /variant-swipe/.test(x.key) && /only for chop, daar/.test(x.text)), "swipe asked by eggs");
+  assert.ok(f.some((x) => /variant-swipe/.test(x.key) && /only for chop/.test(x.text)), "swipe asked by eggs");
+  assert.ok(sharedFindings("js/cook/stations/daar.js", rd("round-true.js")).some((x) => /variant-swipe/.test(x.key)), "daar asks chop's swipe itself: chop's game brings it");
   assert.equal(sharedFindings("js/cook/stations/chop.js", rd("round-true.js")).filter((x) => /variant/.test(x.key)).length, 0, "chop may ask for its swipe");
 });
 
@@ -197,6 +198,15 @@ test("the kit's own files and the shared folders are never judged; a word card's
   assert.deepEqual(sharedFindings("js/shared/onboard.js", rd("round-true.js")), []);
   assert.deepEqual(sharedFindings("js/cook/kitchen-kit.js", rd("3c48-coach.js")), []);
   assert.deepEqual(sharedFindings("js/clinic/screen.js", 'WordCard.big14(slot, w, { all: true, variant: "side" });'), []);
+});
+
+test("SH-259: a recipe calling a standalone game passes no layout, zone or light of its own; the game's own file may", () => {
+  const recipe = 'zones: [{ id: "daar", mech: "chop", region: [0, 0, 1600, 900] }],\nconst r = await Cook.Chop.play(z, { targets: want, level, onSlice, knifeKey, blade, band: { base: 1 } });';
+  const f = sharedFindings("js/cook/stations/daar.js", recipe);
+  assert.ok(f.some((x) => /recipe-call/.test(x.key) && /knifeKey, blade, band/.test(x.text)), "the call");
+  assert.ok(f.some((x) => /recipe-zone/.test(x.key)), "the zone");
+  assert.equal(sharedFindings("js/cook/stations/chaat.js", "await Cook.Chop.play(z, { targets: want, level, onSlice });").length, 0, "behaviour only: fine");
+  assert.equal(sharedFindings("js/cook/stations/chop.js", recipe).filter((x) => /recipe/.test(x.key)).length, 0, "chop's own file");
 });
 
 test("the variants come from Onboard.VARIANTS when it is there, else STD-E2-08a's list, and the run says which", () => {
@@ -210,6 +220,7 @@ test("HEAD: no new finding; the known breaks are named on every run (baking's co
   const found = run(undefined, ["shared"]);
   assert.deepEqual(found.map((f) => `${f.at}: ${f.text}`), []);
   assert.ok(SHARED_INFO.known.some((k) => /baking\.js/.test(k.at)), "baking named");
+  assert.ok(SHARED_INFO.standalone.includes("Chop"), "chop's game found as a standalone game");
   for (const k of SHARED_INFO.known) assert.ok(SHARED_KNOWN[k.key], `${k.key} is on the named list`);
   assert.ok(SHARED_INFO.skipped > 0, "the files not judged are counted");
 });
