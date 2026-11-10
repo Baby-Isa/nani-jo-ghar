@@ -52,7 +52,8 @@ export class Recorder {
   // the contract probe's moments (a bubble, the badges, a ✓ or Next, a pop-up, a stage boundary): a plain screenshot at once, so a
   // contract break has the shot of its own moment (not linted, not a state). At most one per kind every 300 ms, 80 a page
   contractShot(e) {
-    if (!e || e.type !== "c" || !/^(bubble|badges|buttons|popup|stage|input)$/.test(e.k)) return;
+    if (!e || e.type !== "c" || !/^(bubble|badges|buttons|popup|stage|input|s19over)$/.test(e.k)) return;
+    if (e.k === "s19over" && !(e.list && e.list.length)) return; // (s19-checks-1: contract-113's moment, shot as it comes)
     if (e.k === "buttons" && !(e.list && e.list.length)) return;
     if (e.k === "input" && !e.next) return;
     this.cshots = this.cshots || [];

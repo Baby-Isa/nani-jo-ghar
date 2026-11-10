@@ -9,6 +9,9 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { ROOT, SIZES, ALL_SIZES, STORE_SIZES, QUICK_SIZE, PORT, startServer, launch, newPage } from "./lib/env.mjs";
 import { KeyFrames } from "./lib/keyframes.mjs";
+import { FrameBuffer } from "./lib/framebuf.mjs";
+import { LightShot } from "./lib/lightshot.mjs";
+import { judgeLights } from "./lib/lightjudge.mjs";
 import { locked } from "../tools/review/lib/common.mjs";
 import { Recorder } from "./lib/recorder.mjs";
 import { makeSheets } from "./lib/sheets.mjs";
@@ -25,6 +28,7 @@ import { lightPix } from "./lib/lightpix.mjs";
 import { lexiconWords, pageKey, watchList } from "./lib/evidence.mjs";
 import { tiles, tileFlows } from "./flows/labs.mjs";
 import * as Contract from "./lib/contract.mjs";
+import { judgedLine } from "./lib/contract-screen.mjs";
 
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
@@ -228,9 +232,15 @@ if (fromRun) {
       // (a debug hook of one's own while diagnosing: NJG_INIT=<file.js> adds it to every page)
       if (process.env.NJG_INIT) await ctx.addInitScript({ path: process.env.NJG_INIT });
       // --keyframes (s19-checks): the key moments' whole screens and the frame strips round each first-time light (lib/keyframes.mjs)
-      const kf = has("--keyframes") ? new KeyFrames(page, { dir: runDir, flow: flow.id, size }) : null;
-      if (kf) { const st0 = rec.state.bind(rec); rec.state = async (name, opts) => { const u = await st0(name, opts); kf.onState(name); return u; }; }
-      sound.onEvent = (e) => { rec.contractShot(e); lightPix(e, page, sound); if (probe) probe.onEvent(e); if (kf) { kf.onEvent(e); kf.onLine(e); } };
+      // s19-checks-1: the page's frames as drawn (lib/framebuf.mjs), for the key frames and the light-picture check (lib/lightshot.mjs:
+      // every light's frame just before and the screen with it; judged after the run by lib/lightjudge.py, read by contract-112)
+      const shots = !process.env.NJG_NO_LIGHTSHOT;
+      const fb = has("--keyframes") || shots ? new FrameBuffer(page) : null;
+      const ls = shots ? new LightShot(page, fb, { dir: runDir, root: ROOT, flow: flow.id, size }) : null;
+      const kf = has("--keyframes") ? new KeyFrames(page, { dir: runDir, flow: flow.id, size, fb }) : null;
+      // (the key frame is taken as the state comes: the recorder's own shot comes after its lint, by then the light was up)
+      if (kf) { const st0 = rec.state.bind(rec); rec.state = async (name, opts) => { kf.onState(name); return st0(name, opts); }; }
+      sound.onEvent = (e) => { rec.contractShot(e); lightPix(e, page, sound); if (ls) ls.onEvent(e); if (probe) probe.onEvent(e); if (kf) { kf.onEvent(e); kf.onLine(e); } };
       const c = { page, rec, errors, size, browser, touch, timeoutMs: (flow.timeoutMs || 300000) * (ev && ev.profile === "second-play" ? 2 : 1), reachedEnd: false, ...(seed != null ? { seed } : {}), ...(ev && ev.profile ? { profile: ev.profile } : {}) };
       let timer, wantMiss = null;
       try {
@@ -252,7 +262,9 @@ if (fromRun) {
       } finally { clearTimeout(timer); }
       if (wantMiss) { await ctx.close().catch(() => {}); if (!quiet) log(`${flow.id} @ ${size} seed ${seed}: ${wantMiss}`); return { wantMiss }; }
       if (probe) { await probe.chain.catch(() => {}); await probe.collectRec(); }
+      const lights = ls ? await ls.finish() : null;
       if (kf) await kf.finish();
+      if (fb) await fb.stop();
       const vid = process.env.NJG_VIDEO && page.video ? page.video() : null;
       await ctx.close().catch(() => {});
       if (vid) {
@@ -260,7 +272,7 @@ if (fromRun) {
         try { mkdirSync(join(runDir, "films"), { recursive: true }); await vid.saveAs(join(runDir, "films", `${flow.id.replace(/[^\w@-]+/g, "-")}@${size}.webm`)); await vid.delete(); } catch (e) { log(`film of ${flow.id}: ${e.message}`); }
       }
       const findingCount = new Set(rec.states.flatMap((s) => s.findings.map((f) => f.check + "|" + f.selector))).size; // distinct per check and selector
-      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), store: process.env.NJG_STORE === "1", timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(c.extra ? { extra: c.extra } : {}), ...(ev ? { variant: ev.variant || "", evKey: ev.key, ...(seed != null ? { seed } : {}) } : {}) };
+      const r = { flow: flow.id, title: flow.title, group: flow.group, size, complete: c.reachedEnd && !rec.stops.length, stops: rec.stops, notes: rec.notes, errors: [...new Set(errors)], states: rec.states, findingCount, ms: Date.now() - started, sound: sound.summary(), store: process.env.NJG_STORE === "1", timeline: sound.timeline(), t0: rec.t0, cshots: (rec.cshots || []).filter((x) => x.shot), ...(lights ? { lights } : {}), ...(c.extra ? { extra: c.extra } : {}), ...(ev ? { variant: ev.variant || "", evKey: ev.key, ...(seed != null ? { seed } : {}) } : {}) };
       if (probe) { r.evidence = await probe.finish(r, { root: ROOT }); r.moments = probe.seen; }
       writeFileSync(file, JSON.stringify(r));
       fresh.push(r);
@@ -345,6 +357,8 @@ for (const r of everything) {
 }
 if (!fromRun) writeFileSync(join(runDir, "summary.md"), md);
 
+// ---- the light pictures (s19-checks-1, contract-112): every caught light judged on its two pictures (lib/lightjudge.py) ----
+judgeLights(everything, { root: ROOT, log });
 // ---- the contract checks (decision 75): every page of this run; a break is never ratcheted ----
 const contract = Contract.report(everything, { root: ROOT });
 if (!fromRun || has("--contract")) {
@@ -359,6 +373,7 @@ const contractLine = () => {
   for (const b of contract.breaks) by[b.check] = (by[b.check] || 0) + 1;
   for (const b of contract.breaks.slice(0, 60)) console.log(`BREAK ${b.check} ${b.flow} L${b.level} @ ${b.size} [${b.state}${b.shot ? " " + b.shot : ""}] ${b.at}s: ${b.measured}`);
   if (contract.breaks.length > 60) console.log(`... and ${contract.breaks.length - 60} more in contract.md`);
+  if (contract.judged) console.log(`judged per game (contract.md lists each check not judged and why): ${judgedLine(contract.judged)}`);
   console.log(contract.breaks.length ? `CONTRACT FAILED: ${contract.breaks.length} breaks (${Object.entries(by).map(([k, v]) => `${k} ${v}`).join(", ")})` : `CONTRACT PASSED: 0 breaks over ${everything.filter((r) => r.size !== "static").length} pages`);
 };
 if (has("--contract") && !has("--check")) {

@@ -77,6 +77,7 @@ import { CHAI_CHECKS, check70, check71, check90, S14_TAPS, CHAI_ROW, DECOY_STATI
 import { S17_CHECKS, checkS17 } from "./contract-s17.mjs";
 // contracts 100 and up: the shared pieces present (s19-checks, Sprint 19 part 1), in a file of their own
 import { S19_CHECKS, checkS19 } from "./contract-s19.mjs";
+import { SCREEN_CHECKS, check112, check113, judgedByGame, judgedMd, judgedLine } from "./contract-screen.mjs";
 // contracts 78 and up: what Zafar found on 29 Oct and the checks missed (s14-tools), in a file of their own
 import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, check92, check93, check94, check95, POINT_AFTER_MOVE_MS } from "./contract-s14.mjs";
 
@@ -1632,6 +1633,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check95(r, tl, v, add);
   checkS17(r, tl, v, add);
   checkS19(r, tl, v, add);
+  check112(r, tl, add);
+  check113(r, tl, add);
   return out;
 }
 
@@ -1737,11 +1740,14 @@ export function voiceLog(r, { root = "." } = {}) {
 export function report(results, opts = {}) {
   const all = [];
   for (const r of results) if (r.size !== "static") all.push(...analyse(r, opts));
-  let md = `## Contract checks (decision 75): ${all.length} breaks over ${results.filter((r) => r.size !== "static").length} pages\n\n| check | breaks | how it measures |\n|---|---|---|\n`;
+  // no silent passes (s19-checks-1): per game, how many checks judged its pages, and each one that did not, by name, with why
+  const judged = judgedByGame(results.filter((r) => r.size !== "static").map((r) => ({ r, tl: timeline(r) })), CHECKS);
+  let md = `## Contract checks (decision 75): ${all.length} breaks over ${results.filter((r) => r.size !== "static").length} pages; judged per game: ${judgedLine(judged) || "none"}\n\n`;
+  md += `### What each game's pages were judged on (a check not judged is listed, never passed)\n\n${judgedMd(judged)}\n| check | breaks | how it measures |\n|---|---|---|\n`;
   for (const [k, c] of Object.entries(CHECKS)) md += `| ${k} ${c.title} | ${all.filter((f) => f.check === k).length} | ${c.how} |\n`;
   md += `\n| check | flow | level | size | state (shot) | at s | what |\n|---|---|---|---|---|---|---|\n`;
   for (const f of all) md += `| ${f.check} | ${f.flow} | L${f.level} | ${f.size} | ${f.state}${f.shot ? ` (${f.shot})` : ""} | ${f.at} | ${String(f.measured).replace(/\|/g, "/")} |\n`;
-  return { breaks: all, md };
+  return { breaks: all, md, judged };
 }
 
 // ---- Sprint 14 (s14-chai; lab/cards.html, Zafar 27-29 Oct): the new order row, the bubble's speaker and the skip, checked ----
@@ -1752,6 +1758,7 @@ Object.assign(CHECKS, {
   "contract-73": { item: "bubble-speaker", title: "the bubble's speaker is big", how: "Every bubble-spk note (js/cook/ui.js, a bubble shown on the s14 look: the speaker's drawn size, 1.8 em of its words, its icon's width): a speaker under the 48 px tap, more than 2 px under 1.8 em, or an icon under 60% of the speaker is a break, once per page (SH-153, Zafar 28 Oct: 'increase the icon size in the speech bubble')." },
   "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Every order-skip note (js/cook/ui.js, a tap on the kitchen while the order is given, s14): every card in its row, no big card or copy of one left (left:0), within 1 s of the tap (the note's ms), and the station's stage starting within 1 s of it (scaled by the test speed). Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game')." },
 });
+Object.assign(CHECKS, SCREEN_CHECKS);
 const lifeNotes = (tl, what) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === what);
 // ---- Sprint 14 (s14-rules; the central rules, Zafar 29 Oct round 4): the skip zones, the pop-out off faces, the first-time hold ----
 Object.assign(CHECKS, {
