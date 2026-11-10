@@ -2944,7 +2944,10 @@
     const list = [].concat(ids || []).filter(Boolean);
     const sets = (Cook.data && Cook.data.settings) || {};
     let best = null;
-    Object.keys(sets).forEach((g) =>
+    // (the order's own games first, so a word two games draw differently shows this order's game's picture)
+    const own = new Set(((mission && mission.ladders) || []).flatMap((L) => (L && L.recipe ? [L.recipe] : [])).flatMap((r) => [r].concat((((Cook.data.recipes || {})[r] || {}).run || []).map((x) => x && x.do).filter(Boolean))));
+    const games = Object.keys(sets).sort((a, b) => (own.has(b) ? 1 : 0) - (own.has(a) ? 1 : 0));
+    games.forEach((g) =>
       Object.values((sets[g] && sets[g].items) || {}).forEach((it) => {
         if (!it || typeof it.card !== "string" || it.word == null) return;
         const w = [].concat(it.word);
@@ -2953,9 +2956,11 @@
     );
     return best ? best.src : null;
   };
+  // (the coordinator, 10 Nov: a game's own items[].card wins over the word's own card: corn's lemon card showed the catalogue's old
+  // fruit while corn draws its own lemon bowl; the card shows what the child taps)
   const cardPic = (id) => {
     const it = Cook.item ? Cook.item(id) : null;
-    return (it && typeof it.card === "string" && it.card) || cardOfIds([id]);
+    return cardOfIds([id]) || (it && typeof it.card === "string" && it.card) || null;
   };
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
   const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
