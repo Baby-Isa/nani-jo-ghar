@@ -83,6 +83,23 @@
      "name": "chicken-s08c",
      "file": "assets/cook/items-s08c/sekelo/chicken-{state}-s08c"
     }
+   },
+   "v4pieces": {
+    "_about": "S19 (s19-wave-e2; K2 #98, Zafar 10 Nov: four stages for anything cooked): the five pieces redrawn straight down in four stages, cut by build/tools/art/s19_cut.py into assets/cook/items/v4/sekelo/<piece>-<stage>.webp. pieces: a v3 name -> its v4 name; states: the grill's state -> the stage drawn (raw on the first side, part after the first turn, cooked once every turn is done, over if left: SK.v3File, SK.cook). A piece not listed (the s08c decoys) keeps its v3 or own files.",
+    "dir": "assets/cook/items/v4/sekelo/",
+    "pieces": {
+     "meat": "meat",
+     "onion": "onion",
+     "tomato": "tomato",
+     "pepper": "pepper",
+     "potato": "potato"
+    },
+    "states": {
+     "raw": "raw",
+     "part": "part",
+     "grilled": "cooked",
+     "charred": "over"
+    }
    }
   },
   "levels": [
@@ -200,7 +217,8 @@
   }
  },
  "assets": [
-  "assets/cook/items/skewer-mixed-grilled-t.png"
+  "assets/cook/items/skewer-mixed-grilled-t.png",
+  "assets/cook/items/v4/sekelo/*"
  ],
- "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations"
+ "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces)"
 }
