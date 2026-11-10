@@ -26190,5 +26190,34 @@
    "expect": null,
    "note": "the kitchen to the cooking game: the view changes through the house stone (the camera's fade), never a light brown or a half-drawn station"
   }
+ ],
+ "MAA-24": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-roll",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "canvas:chakla",
+    "canvas:tawa"
+   ],
+   "expect": null,
+   "note": "maani's look from mock 38 on the new art: the chakla the tawa's own size across (within 3%), chai's hob, the tawa's handle and the smaller turner to the bottom right, the three-ball dough heaps on the stone tray with their pills, two round brushed-steel plates each with the asker's face circle"
+  }
  ]
 }
