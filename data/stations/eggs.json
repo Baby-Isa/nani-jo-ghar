@@ -242,6 +242,7 @@
    },
    "standY": 708,
    "plateY": 752,
+   "squash": 0.6,
    "personH": 470,
    "plateFrom": 1050,
    "cat": {
@@ -254,7 +255,9 @@
   "band": {
    "_note": "CK-73 (Zafar, 10 Nov): the egg box and the salt and pepper jars stand side-on on chai's shelf (band \"shelf\" above, St.stoneBand game: eggs), each above its pill on the chip line, the row centred under the hob"
   },
-  "bandStep": 200
+  "bandStep": 200,
+  "potTrial": false,
+  "_potTrial": "Zafar, 10 Nov: the top-down pot trial (items.potTop): true draws it in place of chai's pan for the boiled eggs; off until he picks"
  },
  "items": {
   "pot": {
@@ -277,6 +280,27 @@
    "angle": -45,
    "_ck74": "CK-74 (Zafar, 10 Nov: option 4b): flipped, its handle down to the front left corner, at half past seven (Phaser angle: the clock's angle less 270)",
    "_s19c": "S19 wave C (ART-67: no 45-degree pot): the boiled eggs' pot is chai's own top-down pan art, reused; reach: its handle's end from its middle over its rim radius (514 - 184.8 over 158)"
+  },
+  "potTop": {
+   "size": "L",
+   "view": "T",
+   "states": {
+    "water": "assets/cook/items/v4/kit/pot-water.webp",
+    "empty": "assets/cook/items/v4/kit/pot-empty.webp"
+   },
+   "role": "vessel",
+   "word": null,
+   "flip": true,
+   "body": {
+    "cx": 0.3528,
+    "cy": 0.4992,
+    "r": 0.3211,
+    "rIn": 0.285,
+    "_note": "the top-down pot (10 Nov's run; ART-75 redoes its uneven wall, same names and box): its round body 289 px round (317.5, 294) on 900 x 589, measured from its alpha; flipped so its handle points left, as chai's pan"
+   },
+   "reach": 2.0,
+   "angle": -45,
+   "_trial": "Zafar, 10 Nov: tried in eggs behind scene.potTrial; if it looks better it replaces chai's too, else neither"
   },
   "pan": {
    "size": "L",
@@ -418,6 +442,48 @@
    },
    "_note": "the served plate, side-on, slides to each person"
   },
+  "plateTable": {
+   "size": "M",
+   "view": "E",
+   "file": "assets/cook/items/v4/eggs/plate-table.webp",
+   "px": [
+    700,
+    283
+   ],
+   "drawn": {
+    "w": 250
+   },
+   "_note": "the table's cream plate (10 Nov's run, ART-72's): slides to each person; its camera a little higher than the table's, so squashed to it in code (scene.table.squash)"
+  },
+  "friedTable": {
+   "size": "S",
+   "view": "E",
+   "word": [
+    "a.fried",
+    "n.egg"
+   ],
+   "file": "assets/cook/items/v4/eggs/fried-table.webp",
+   "px": [
+    520,
+    224
+   ],
+   "drawn": {
+    "w": 150
+   }
+  },
+  "boiledTable": {
+   "size": "S",
+   "view": "E",
+   "word": "ph-boiledegg",
+   "file": "assets/cook/items/v4/eggs/boiled-halves-table.webp",
+   "px": [
+    520,
+    195
+   ],
+   "drawn": {
+    "w": 140
+   }
+  },
   "friedOnPlate": {
    "size": "S",
    "view": "E",
@@ -525,9 +591,9 @@
   "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
   "assets/cook/items/v4/eggs/egg-boiled-half-b.webp",
   "assets/cook/proto/eggs/egg-brown.webp",
-  "assets/cook/proto/eggs/plate-f.webp",
-  "assets/cook/proto/eggs/egg-fried-f.webp",
-  "assets/cook/proto/eggs/eggcup-egg-f.webp",
+  "assets/cook/items/v4/eggs/plate-table.webp",
+  "assets/cook/items/v4/eggs/fried-table.webp",
+  "assets/cook/items/v4/eggs/boiled-halves-table.webp",
   "assets/cook/proto/cat-sit.webp",
   "assets/cook/items/v3/hob/hob-2.webp",
   "assets/cook/items/v3/hob/knob-off-v2.webp",
@@ -536,7 +602,8 @@
   "assets/cook/items/chai-station/flame-low.webp",
   "assets/cook/items-s17-stove/f-eggs-in-a-box.webp",
   "assets/cook/items-s17-stove/f-salt-jar.webp",
-  "assets/cook/items-s17-stove/f-black-pepper-jar.webp"
+  "assets/cook/items-s17-stove/f-black-pepper-jar.webp",
+  "assets/cook/items/v4/kit/pot-water.webp"
  ],
  "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic, cardOfIds): one card per egg (CK-64), the fried egg (v4 egg-cooked) for 'tarelo indo', a boiled egg's half (v4 egg-boiled-half-a) for 'boiled egg', one brown egg for 'indo'"
 }

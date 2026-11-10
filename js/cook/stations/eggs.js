@@ -42,6 +42,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
   const SET = () => ((Cook.data && Cook.data.settings) || {})[KEY] || {};
   const ITEM = (k) => (SET().items || {})[k] || {};
   const SCENE = () => SET().scene || {};
+  // the pot trial (Zafar, 10 Nov: try the top-down pot in eggs; if it looks better it replaces chai's too, else neither; ART-75 redoes
+  // its uneven wall under the same names and box): scene.potTrial true draws items.potTop (kit/pot-water) in place of chai's pan
+  const POT = () => (SCENE().potTrial && ITEM("potTop").states ? "potTop" : "pot");
   const url = (k, state) => (state ? (ITEM(k).states || {})[state] : ITEM(k).file);
   const tex = (k, state) => `eg-${k}${state ? `-${state}` : ""}`;
   // the station's own colours (station.palette: the steam, the shakers' grains); UI colours stay the tokens'
@@ -53,15 +56,16 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
   function ART(K) {
     const out = [];
     const add = (k, state) => url(k, state) && out.push([tex(k, state), url(k, state)]);
-    add("pot", "water");
+    add(POT(), "water");
     add("pan");
     add("egg", "brown");
     ["cracked", "cooked", "overdone"].forEach((s) => add("friedEgg", s));
     ["a", "b"].forEach((s) => add("boiledEgg", s));
     add("bowl");
     if (K.shakers) ["shakerSalt", "shakerPepper"].forEach((k) => add(k));
-    ["plate", "friedOnPlate", "cat"].forEach((k) => add(k));
-    add("eggCupServed", "egg");
+    // (the table, 10 Nov's art: the plate, the fried egg and the boiled halves seen at the table's own camera; the old side-on plate,
+    // fried egg and egg cup they replace are no longer loaded)
+    ["plateTable", "friedTable", "boiledTable", "cat"].forEach((k) => add(k));
     const sc = SCENE();
     const bg = (sc.bg || {})[K.meal || "breakfast"];
     if (bg) out.push([`eg-bg-${K.meal || "breakfast"}`, bg]);
@@ -106,7 +110,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const bot = band.top - (hs.above != null ? hs.above : 26);
     const gap = hs.gap || 44;
     const rk = hs.rk || 0.36; // a vessel's rim radius over the burners' pitch
-    const pot = ITEM("pot");
+    const pot = ITEM(POT());
     const pan = ITEM("pan");
     const potReach = pot.reach || 2.08; // the pot's handle end from its middle, over its rim radius
     const panReach = pan.reach || 2.26;
@@ -222,12 +226,12 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
      * its rim radius and rIn its floor's, of the width). The pot is chai's own top-down pan (flipped, its handle to the left); the pan
      * turned by its settings' angle (CK-74), the pan by LY.angle where its settings give none.
      */
-    const vessel = (k, i, fried) => {
+    const vessel = (k, i, fried, art = k) => {
       const b = burner(i);
-      const it = ITEM(k);
+      const it = ITEM(art);
       const body = it.body || { cx: 0.5, cy: 0.5, r: 0.45, rIn: 0.36 };
       const flip = !!it.flip;
-      const img = T(S.add.image(b.x, b.y, fried ? tex(k) : tex(k, "water")).setDepth(D.item));
+      const img = T(S.add.image(b.x, b.y, fried ? tex(art) : tex(art, "water")).setDepth(D.item));
       img.setFlipX(flip).setOrigin(flip ? 1 - body.cx : body.cx, body.cy);
       img.setScale(R / (body.r * Math.max(1, img.width)));
       if (it.angle != null || fried) img.setAngle(it.angle != null ? it.angle : LY.angle);
@@ -238,7 +242,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       img.litBounds = () => ({ x: img.x - R, y: img.y - R, right: img.x + R, bottom: img.y + R });
       return { key: k, k, img, b, c: { x: b.x, y: b.y }, r: body.rIn * img.displayWidth, eggs: [], fried, on: false };
     };
-    const vessels = { pot: vessel("pot", 0, false), pan: vessel("pan", 1, true) };
+    const vessels = { pot: vessel("pot", 0, false, POT()), pan: vessel("pan", 1, true) };
     const pot = vessels.pot.img;
     const pan = vessels.pan.img;
     // the burner lit while an egg is in (its knob turned, the flames under it): the kit's burner
@@ -894,12 +898,18 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     for (const { pl, img, who } of people) {
       const x = img.x;
       const plate = T(S.add.container(x, tb.plateFrom || 1050).setDepth(D.item + 1));
-      plate.add(sized(S.add.image(0, 0, tex("plate")), "plate"));
-      const ew = (ITEM("friedOnPlate").drawn || {}).w || 120;
+      // the table's plate (10 Nov's art, ART-72's run): its camera a little higher than the table's (its ellipse about 0.40 of its width
+      // against the trays' 0.2), so it is squashed to the table here (scene.table.squash), and each egg on it at the same squash
+      const sq = tb.squash || 0.6;
+      const squash = (o) => o.setScale(o.scaleX, o.scaleY * sq);
+      const pImg = squash(sized(S.add.image(0, 0, tex("plateTable")), "plateTable"));
+      plate.add(pImg);
+      const ew = (ITEM("friedTable").drawn || {}).w || 150;
       pl.eggs.forEach((e, j) => {
         const dx = (j - (pl.eggs.length - 1) / 2) * ew * 0.62;
         const k = pl.eggs.length > 1 ? 0.75 : 1;
-        plate.add(e.fried ? sized(S.add.image(dx, -6, tex("friedOnPlate")), "friedOnPlate", k) : sized(S.add.image(dx, 0, tex("eggCupServed", "egg")).setOrigin(0.5, 0.92), "eggCupServed", k));
+        const key = e.fried ? "friedTable" : "boiledTable";
+        plate.add(squash(sized(S.add.image(dx, -pImg.displayHeight * 0.06, tex(key)), key, k)));
       });
       if (pl.salt || pl.pepper) {
         const dg = S.add.graphics();

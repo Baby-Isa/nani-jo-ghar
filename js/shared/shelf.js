@@ -294,6 +294,104 @@
     ctx.beginPath();
     rrect(ctx, ...a);
   };
+  /*
+   * ART-72 (Zafar, 10 Nov: his flat stone tray, no lip, the one shared tray, with Fable's tweaks): the tray painted from its pictures,
+   * the slab (rounded ends, the bevel lit top-left, the darker front band) and its seamless tile of the same stone. Three slices so any
+   * width keeps the ends' shape: the left and right ends cut from the slab, the middle the slab's own top bevel and front band along
+   * its length over the tile's stone; the height is the band's (box.h), never the picture's. The contact shadow is the kit's code
+   * shadow, as the painted tray has it. Shelf.trayArt() -> {slab, tile} once both are in (loading them the first time it is asked;
+   * onReady runs when they land), else null.
+   */
+  Shelf.TRAY_ART = {
+    slab: "assets/cook/items/v4/kit/tray-stone.webp",
+    tile: "assets/cook/items/v4/kit/tray-stone-tile.webp",
+    body: [7, 286], // (the slab picture's opaque rows: its top and its foot)
+    face: [16, 274], // (the plain stone between the top bevel and the front band)
+    end: 120, // (each end slice's width, slab px: the rounded corner and a little of the stone)
+    radius: 34, // (the ends' corner radius, slab px: the shadow's shape)
+  };
+  const trayImgs = { slab: null, tile: null, wait: [] };
+  Shelf.trayArt = function (onReady) {
+    const A = Shelf.TRAY_ART;
+    const ok = (im) => im && im.complete && im.naturalWidth > 0;
+    if (ok(trayImgs.slab) && ok(trayImgs.tile)) return { slab: trayImgs.slab, tile: trayImgs.tile };
+    if (!root || typeof root.Image !== "function") return null;
+    if (onReady) trayImgs.wait.push(onReady);
+    const ver = (u) => (root.Cook && typeof root.Cook.v === "function" ? root.Cook.v(u) : u);
+    ["slab", "tile"].forEach((k) => {
+      if (trayImgs[k]) return;
+      const im = new root.Image();
+      im.onload = () => {
+        if (!(ok(trayImgs.slab) && ok(trayImgs.tile))) return;
+        const w = trayImgs.wait.splice(0);
+        w.forEach((f) => {
+          try {
+            f();
+          } catch (e) {
+            /* its own */
+          }
+        });
+      };
+      im.src = ver(A[k]);
+      trayImgs[k] = im;
+    });
+    return null;
+  };
+  Shelf.trayPaintArt = function (ctx, box, { scale = 1, art, ink = Shelf.trayInk() } = {}) {
+    const s = scale;
+    const A = Shelf.TRAY_ART;
+    const pad = box.pad * s;
+    const W = Math.ceil(box.w * s + 2 * pad);
+    const H = Math.ceil(box.h * s + 2 * pad);
+    if (!ctx || !art) return { w: W, h: H };
+    const { slab, tile } = art;
+    const x = pad, y = pad, w = box.w * s, h = box.h * s, sh = box.sh * s;
+    const SW = slab.naturalWidth, SH = slab.naturalHeight;
+    const k = h / (A.body[1] - A.body[0]); // (slab px to canvas px: its opaque height is the band's)
+    const y0 = y - A.body[0] * k; // (where the slab picture's top row lands)
+    const e = Math.min(A.end * k, w / 2);
+    const es = e / k; // (the end slice in slab px)
+    ctx.clearRect(0, 0, W, H);
+    // the kit's contact shadow, lower-right, soft (as the painted tray's)
+    ctx.save();
+    ctx.shadowColor = ink ? `rgba(${ink.shadow}, 0.3)` : "rgba(60, 35, 20, 0.3)";
+    ctx.shadowBlur = Math.max(2, sh * 2);
+    ctx.shadowOffsetX = sh * 0.6;
+    ctx.shadowOffsetY = sh;
+    path(ctx, x + 1, y + 1, w - 2, h - 2, Math.min(A.radius * k, h / 2));
+    ctx.fillStyle = ink ? `rgba(${ink.edge}, 1)` : "rgb(181, 169, 158)";
+    ctx.fill();
+    ctx.restore();
+    // the middle: the slab's stone along the length (its bevel and front band), then the tile's stone over the plain face, so no
+    // stretch and no repeat shows
+    const mx = x + e, mw = w - 2 * e;
+    if (mw > 0) {
+      const cw = Math.max(1, Math.min(SW - 2 * A.end, 600)); // (a run of the slab's middle, slab px)
+      const cx = (SW - cw) / 2;
+      for (let at = 0; at < mw; at += cw * k) {
+        const dw = Math.min(cw * k, mw - at);
+        ctx.drawImage(slab, cx, 0, dw / k, SH, mx + at, y0, dw, SH * k);
+      }
+      const fy = y0 + A.face[0] * k, fh = (A.face[1] - A.face[0]) * k;
+      const tc = doc.createElement("canvas");
+      const ts = Math.max(8, Math.round(tile.naturalWidth * k));
+      tc.width = tc.height = ts;
+      tc.getContext("2d").drawImage(tile, 0, 0, ts, ts);
+      const pat = ctx.createPattern(tc, "repeat");
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(mx, fy, mw, fh);
+      ctx.clip();
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = pat;
+      ctx.fillRect(mx, fy, mw, fh);
+      ctx.restore();
+    }
+    // the two ends, cut from the slab
+    ctx.drawImage(slab, 0, 0, es, SH, x, y0, e, SH * k);
+    ctx.drawImage(slab, SW - es, 0, es, SH, x + w - e, y0, e, SH * k);
+    return { w: W, h: H };
+  };
   Shelf.trayPaint = function (ctx, box, { scale = 1, seed = 7, ink = Shelf.trayInk() } = {}) {
     const s = scale;
     const pad = box.pad * s;
@@ -674,12 +772,15 @@
         sc *= 4096 / size.w;
         size = Shelf.trayPaint(null, box, { scale: sc });
       }
-      const k = `njg-tray@${Math.round(box.w)}x${Math.round(box.h)}@${Math.round(sc * 100)}`;
+      // ART-72: the slab and tile pictures once they are in (the painted stone until then; redrawn as they land)
+      const art = Shelf.trayArt(() => img && img.active && draw());
+      const k = `njg-tray@${Math.round(box.w)}x${Math.round(box.h)}@${Math.round(sc * 100)}${art ? "@art" : ""}`;
       if (!S.textures.exists(k)) {
         const c = doc.createElement("canvas");
         c.width = size.w;
         c.height = size.h;
-        Shelf.trayPaint(c.getContext("2d"), box, { scale: sc, seed });
+        if (art) Shelf.trayPaintArt(c.getContext("2d"), box, { scale: sc, art });
+        else Shelf.trayPaint(c.getContext("2d"), box, { scale: sc, seed });
         S.textures.addCanvas(k, c);
       }
       if (!img) {

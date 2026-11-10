@@ -5001,7 +5001,7 @@
      "assets/cook/worktop-s08c/*",
      "assets/cook/worktop-s17/*",
      "assets/shared/panel/*",
-     "assets/shared/juice/bu-*.webp"
+     "assets/shared/juice/bu-*.webp", "assets/cook/items/v4/kit/tray-stone*.webp"
     ],
     "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
    },
