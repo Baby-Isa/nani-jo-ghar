@@ -2978,6 +2978,44 @@
     const id = wcWordId(r);
     return TEA_PIC[id] && noMilk(r) ? TEA_PIC[id] : rowCard(r) || wcPicSrc(id);
   };
+  /*
+   * contract-104, SH-220 (Zafar, 9 Nov: "get into the order card scene quite quickly ... and then from there the full game can load"):
+   * the order's card pictures, asked for before anything of the cooking game's (js/cook/flow.js runOrder waits for these, a few seconds
+   * at most, before it prefetches the station's art), so an item card is never drawn before its picture.
+   *   UI.cardPics(ladders) -> [url]               every row's card picture (its own, a no-milk tea's too, a step's tool)
+   *   UI.cardPicsReady(ladders, ms) -> Promise    those loaded and their row copies made (96 and 240 px), or ms passed
+   */
+  UI.cardPics = function (ladders) {
+    const Ls = [].concat(ladders || []).filter(Boolean);
+    // (the same chai-shelf rule M.open sets as the order opens: a chai order's cards are its shelf's jars)
+    Cook.shelfJars = Ls.some((L) => L && L.recipe === "chai");
+    const out = new Set();
+    Ls.forEach((L) => {
+      let rows = [];
+      try {
+        rows = Order().rows(L);
+      } catch (e) {
+        rows = [];
+      }
+      rows.forEach((r) => {
+        if (!r || r.head) return;
+        const id = wcWordId(r);
+        [rowCard(r), wcPicSrc(id), TEA_PIC[id], r.pic].forEach((u) => u && out.add(u));
+      });
+    });
+    return [...out];
+  };
+  UI.cardPicsReady = function (ladders, ms = 3000) {
+    const urls = UI.cardPics(ladders);
+    const one = (u) =>
+      new Promise((res) => {
+        const im = new Image();
+        im.onload = im.onerror = () => res();
+        im.src = Cook.v(u);
+        [96, 240].forEach((n) => thumbOf(Cook.v(u), n));
+      });
+    return Promise.race([Promise.all(urls.map(one)), new Promise((r) => setTimeout(r, ms))]).then(() => urls.length);
+  };
   const wcStage = (id) => {
     try {
       const P = Cook.core && Cook.core.progress;

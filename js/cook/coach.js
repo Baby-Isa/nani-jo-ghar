@@ -819,10 +819,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
     const it0 = itemOf();
     if (it0 && !whole(it0) && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(it0);
+    // (CK-63: the light goes round the item's own card in the row, .wc14, never the row round it: the row stood 7 px past the card's
+    // top on a phone, so the light was not whole round the card and its pill: contract-105)
+    const cardIn = (item) => (item && item.querySelector ? item.querySelector(".wc14") || item : item);
     const lightOf = () => {
       const item = itemOf();
       const seen = whole(item);
-      const card = seen ? item : document.querySelector("#mission .oc-card");
+      const card = seen ? cardIn(item) : document.querySelector("#mission .oc-card");
       if (!card) return null;
       if (UI.cardIntoView) UI.cardIntoView(seen ? card.closest(".oc-card") : card); // (its headline first: never cut at its top)
       const cb = card.getBoundingClientRect();
@@ -852,8 +855,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         note("card-light", { step: o.step != null ? String(o.step) : "" });
         const first = lightOf();
         // (once lit it stays on what it lit: the item's card as the order card is drawn again, never jumping to the whole card)
-        const onItem = first && first.classList && first.classList.contains("oc-row");
-        const lit = Array.isArray(first) || !first ? first : () => (onItem ? itemOf() || first : document.querySelector("#mission .oc-card") || first);
+        const onItem = first && first.classList && (first.classList.contains("oc-row") || first.classList.contains("wc14"));
+        const lit = Array.isArray(first) || !first ? first : () => (onItem ? cardIn(itemOf()) || first : document.querySelector("#mission .oc-card") || first);
         const h = Onboard.light(lit, { look: "", pad: 4, pass: true, ms: (R ? R.pointMs() : 0) / speed(), quitIf: endIf, note: o.note });
         h.done.then(() => res(true));
       };
