@@ -332,8 +332,12 @@
     }
     if (r.phase === "shoot" && r.vf && r.vf.enabled) {
       const vf = r.vf;
-      const todo = (r.asking ? [r.asking] : r.rows.filter((x) => !x.ali)).find((x) => !r.prints.some((p) => !p.used && p.by !== "ali" && Snap.Photo.matches(p.print, x.row, r.K.photo).ok));
-      if (!todo || vf.film <= 0) return { kind: "click", selector: "#vf-show" };
+      let todo = (r.asking ? [r.asking] : r.rows.filter((x) => !x.ali)).find((x) => !r.prints.some((p) => !p.used && p.by !== "ali" && Snap.Photo.matches(p.print, x.row, r.K.photo).ok));
+      // back from the hand-in for one more frame (round.goBack: Show waits for a new shot), though a print that fits is already in
+      // the tray: one more of the row she asked for, then Show (was "Show" while it was hidden: mode:snap stuck in the gate)
+      const showUp = !$("#vf-show").classList.contains("hidden");
+      if (!todo && !showUp && vf.film > 0) todo = r.asking || r.rows.find((x) => !x.ali);
+      if (!todo || vf.film <= 0) return showUp ? { kind: "click", selector: "#vf-show" } : { kind: "wait" };
       const f = Req.frameFor(todo.row, r.lay, r.K);
       const tz = r.K.vf.zooms.indexOf(f.zoom);
       // centred yet? compare where the frame's centre lands at the target zoom (both kept inside the orchard)
@@ -361,6 +365,9 @@
       return { kind: "tap", sx: fb.left + fb.width / 2 + dx, sy: fb.top + fb.height / 2 + dy, key: "pan" };
     }
     if (r.phase === "handin" && r.asking) {
+      // her answer to a print she kept ("Ghan.") is still being said: the next row is not asked yet, so nothing to press (a "#hi-back"
+      // here landed on the next row as it opened and sent the player back to the orchard: mode:snap stuck in the gate, s19-stuck)
+      if (r.asking.done) return { kind: "wait" };
       const want = r.prints.find((p) => !p.used && Snap.Photo.matches(p.print, r.asking.row, r.K.photo).ok);
       if (!want) return { kind: "click", selector: "#hi-back" };
       return { kind: "click", selector: `#handin .hi-print[data-i="${want.i}"]` };
