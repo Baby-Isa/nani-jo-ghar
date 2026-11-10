@@ -25994,5 +25994,83 @@
    "expect": null,
    "note": "the main thing's size (SH-245, a later sprint): daar's pot and the room above the shelf, recorded beside the knob rule's change (s19-stoves leaves the pot's size as it was)"
   }
+ ],
+ "CK-67": [
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "corn on sekelo's grill kit, two screens: the raw cobs two by two on the stone band, the grill, the cooked tray right; then the flavour screen with each person's plate and six dressing bowls",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": 2,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "corn on sekelo's grill kit, two screens: the raw cobs two by two on the stone band, the grill, the cooked tray right; then the flavour screen with each person's plate and six dressing bowls",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": 3,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "corn on sekelo's grill kit, two screens: the raw cobs two by two on the stone band, the grill, the cooked tray right; then the flavour screen with each person's plate and six dressing bowls",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:view",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "corn on sekelo's grill kit, two screens: the raw cobs two by two on the stone band, the grill, the cooked tray right; then the flavour screen with each person's plate and six dressing bowls",
+   "delay": 1500
+  }
  ]
 }
