@@ -472,7 +472,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const base = text ? Math.max(1, 14.2 / (34 * shown * this.cameras.main.zoom)) : 1;
       cont.setScale(base);
       cont.setSize(w, 42);
-      cont.setInteractive(new Phaser.Geom.Rectangle(-w / 2, -21, w, 42), Phaser.Geom.Rectangle.Contains);
+      // (SH-244: a container's hit area is read from its top-left corner, Phaser adding half its size first: the label itself)
+      cont.setInteractive(new Phaser.Geom.Rectangle(0, 0, w, 42), Phaser.Geom.Rectangle.Contains);
       cont.on("pointerdown", (p, lx, ly, ev) => {
         if (ev && ev.stopPropagation) ev.stopPropagation();
         Cook.unlockAudio();
@@ -486,6 +487,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
     tappable(obj, fn) {
       obj.setInteractive({ useHandCursor: true });
+      // SH-244: one rule for every shelf: a thing with a word pill under it (obj.chip) takes taps down its slot to the pill's top
+      // (js/shared/shelf.js Shelf.P.reach); the pill keeps its card and a small margin
+      if (global.Shelf && global.Shelf.P && global.Shelf.P.reach) global.Shelf.P.reach(obj);
       obj.removeAllListeners("pointerdown");
       obj.on("pointerdown", (p) => {
         Cook.unlockAudio();

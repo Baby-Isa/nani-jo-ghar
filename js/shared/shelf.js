@@ -48,6 +48,13 @@
  * Drawn on a canvas (Phaser; Cook's stations): the same pill and speaker.
  *   Shelf.P.speaker(g, x, y, s, color)        the speaker into a Graphics, about s px tall
  *   Shelf.P.chip(S, x, y, text, {word, w, cap, depth, onTap}) -> container   chip.face(word, cap), chip.hit(slotW)
+ *   Shelf.P.reach(obj)                        an item's tap area reaching its pill (below): obj.chip read at each tap
+ *
+ * Tap areas (SH-244; Zafar, 9 Nov, his tester on his phone: "She thought she was pressing the items, but she was pressing the speaker
+ * buttons below the items"): ONE rule for every shelf. An item's tap area is its picture and, below it, its slot down to its pill's
+ * top, across the slot's width (Shelf.P.reach; Cook's S.tappable gives it to everything it makes tappable). The pill's is its card
+ * and a small margin (PILL.margin) at its sides and foot; where the two meet, at the pill's top edge, the item wins: the pill's area
+ * starts at its card's top. So a tap at an item's foot, or in the gap above its pill, picks the item; only the card says the word.
  */
 (function (root, factory) {
   const Shelf = factory(root);
@@ -187,7 +194,7 @@
   };
 
   /* ---------------- word pills ---------------- */
-  Shelf.PILL = { min: 13, max: 1.5, text: 25, pad: 48, spkW: 62, w: 128, h: 46, hitW: 142, hitH: 80 };
+  Shelf.PILL = { min: 13, max: 1.5, text: 25, pad: 48, spkW: 62, w: 128, h: 46, hitW: 142, hitH: 80, margin: 8 };
   Shelf.faceW = (word, textW) => (word ? textW + Shelf.PILL.pad : Shelf.PILL.spkW);
   Shelf.pillWant = (ppw) => Math.max(1, Math.min(Shelf.PILL.max, Shelf.PILL.min / (Shelf.PILL.text * ppw)));
   Shelf.pillGap = (ppw) => Math.max(12, 5 / ppw);
@@ -201,7 +208,9 @@
       const b = row[i];
       k = Math.min(k, (c.x - b.x - gap) / ((b.w + c.w) / 2));
     });
-    const cap = k < 1 ? slotW - gap : Infinity;
+    // (a pill at its own size, k 1, keeps inside its slot as well: a long word there reached under the next thing's picture on a big
+    // screen, so the light round that thing could not be whole; s19-stoves, SH-243's leftover)
+    const cap = k <= 1 ? slotW - gap : Infinity;
     return { k: Math.max(1, k), cap };
   };
 
@@ -357,7 +366,8 @@
   /*
    * One word pill on a canvas: a white card, the speaker and the word (or the speaker alone), its width its own face's (w: a fixed
    * width instead), never wider than cap (a long word narrows its text). chip.face(word, cap) redraws it; chip.hit(slotW) sets the
-   * tap area: the card and 7 px round it, as wide as the slot allows (up to PILL.hitW), never past the slot.
+   * tap area (SH-244): the card and PILL.margin at its sides and foot, never past the slot; none above the card, where the item's
+   * own tap area (Shelf.P.reach) comes down to meet it.
    * o: {word, w, cap, depth, onTap, font, weight, color (the word's, "#rrggbb"), shade, card (the card's colours, ints: the tokens'
    * by default), pad (the room beside the word, PILL.pad)}; the scene's S.track keeps it, when the scene has one
    */
@@ -412,13 +422,16 @@
     chip.hit = function (slotW = Infinity) {
       chip.slotW = slotW;
       const k = chip.k || 1;
-      const hitW = Math.max(chip.cardW + 14, Math.min(PL.hitW, (slotW - 2) / k));
-      chip.setSize(hitW, PL.hitH);
+      // SH-244: the card and a small margin at its sides and foot (never past its slot); its top edge is the card's, the item's above
+      const m = PL.margin;
+      const hitW = Math.max(chip.cardW, Math.min(chip.cardW + 2 * m, (slotW - 2) / k));
+      const hitH = PL.h + m;
+      // (a container's hit area is read from its top-left corner: Phaser adds its display origin, half its size, to the point first;
+      // the old area, drawn about the middle, was the box up and left of the pill: its left half, and 72 px above it into the item)
+      chip.setSize(hitW, PL.h);
       const G = root.Phaser && root.Phaser.Geom;
-      // (a Container's hit area is read from its top-left: Phaser adds displayOrigin, half its size, to the point; centred at -w/2, -h/2
-      // the zone sat half a zone up and left, over the pot above it and its left neighbour: s19-stuck, lab:cook/assemble@L4 at 740x320)
-      if (chip.input) chip.input.hitArea.setTo(0, 8, hitW, PL.hitH);
-      else if (G) chip.setInteractive(new G.Rectangle(0, 8, hitW, PL.hitH), G.Rectangle.Contains);
+      if (chip.input) chip.input.hitArea.setTo(0, 0, hitW, hitH);
+      else if (G) chip.setInteractive(new G.Rectangle(0, 0, hitW, hitH), G.Rectangle.Contains);
       return chip;
     };
     chip.on("pointerdown", (ptr, lx, ly, ev) => {
@@ -428,6 +441,51 @@
     });
     chip.face(o.word !== false, o.cap == null ? Infinity : o.cap);
     return chip;
+  };
+
+  /*
+   * SH-244: an item's tap area reaching its pill. The item (any interactive Phaser object) keeps its own area and, while it has a
+   * pill under it (obj.chip, read at each tap, so a game may give it the pill after this), also takes taps in its slot below its
+   * picture: from its picture's top down to the pill card's top, across the slot's width (the pill's slotW, else the wider of the
+   * picture and the pill's tap area). Installed once per object; returns obj.
+   */
+  P.reachBox = function (obj) {
+    const ch = obj && obj.chip;
+    if (!ch || !ch.active || ch.visible === false || ch.parentContainer || obj.parentContainer || !obj.getBounds) return null;
+    const cw = ch.cardW || ch.pillW;
+    if (!cw) return null;
+    const kx = Math.abs(ch.scaleX || 1);
+    const ky = Math.abs(ch.scaleY || 1);
+    const top = ch.y - ((ch.cardH || ch.pillH || Shelf.PILL.h) / 2) * ky;
+    const b = obj.getBounds();
+    // (only a pill below the thing: its card's top under the picture's middle)
+    if (!(top > b.y + b.height / 2)) return null;
+    const slot = isFinite(ch.slotW) && ch.slotW > 0 ? ch.slotW - 2 : Math.max(b.width, (cw + 2 * Shelf.PILL.margin) * kx);
+    return { left: ch.x - slot / 2, right: ch.x + slot / 2, top: b.y, bottom: top };
+  };
+  P.reach = function (obj) {
+    if (!obj || !obj.input || obj.input.njgReach) return obj;
+    const own = obj.input.hitAreaCallback;
+    if (typeof own !== "function") return obj;
+    obj.input.njgReach = true;
+    obj.input.hitAreaCallback = function (area, x, y, o) {
+      if (own(area, x, y, o)) return true;
+      const r = P.reachBox(o);
+      if (!r) return false;
+      // (the hit test's local point, back to the world: the inverse of what Phaser did, its display origin added back first)
+      let wx = x;
+      let wy = y;
+      try {
+        const M = o.getWorldTransformMatrix();
+        const p = M.transformPoint(x - (o.displayOriginX || 0), y - (o.displayOriginY || 0));
+        wx = p.x;
+        wy = p.y;
+      } catch (e) {
+        return false;
+      }
+      return wx >= r.left && wx <= r.right && wy >= r.top && wy <= r.bottom;
+    };
+    return obj;
   };
 
   return Shelf;
