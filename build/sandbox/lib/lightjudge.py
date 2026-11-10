@@ -134,6 +134,20 @@ def judge(d):
     c = max(1, int(round(CELL * k)))
     Lb, Lw = blocks(lum(B), c), blocks(lum(W), c)
     known = (Lb - DIM_LUM) > INFO
+    known_any = np.ones_like(known)
+    # what moved while the pictures were taken (the screen once more after the reference): not judged
+    if os.path.exists(os.path.join(d, "with2.jpg")):
+        W2 = Image.open(os.path.join(d, "with2.jpg"))
+        if W2.size == W.size:
+            moved = np.abs(blocks(lum(W2), c) - Lw) > 10
+            moved = ndimage.binary_dilation(moved, iterations=2)
+            known = known & ~moved
+            known_any = ~moved
+            out_moved = float(moved.mean())
+        else:
+            out_moved = None
+    else:
+        out_moved = None
     a = (Lb - Lw) / np.maximum(Lb - DIM_LUM, 1.0)
     # the kit's finger sits over the dim: not a lit place
     for f in o1.get("fingers") or []:
@@ -141,7 +155,7 @@ def judge(d):
         known[max(0, y0 - 1):y1 + 2, max(0, x0 - 1):x1 + 2] = False
     # not darkened: a near 0 where the screen is light enough to tell; and anything the light made brighter (its gold line, its warm
     # glow), which outlines a light even on a black hob, whose inside is then filled
-    lit = (known & (a < LIT_A)) | ((Lw - Lb) > 24)
+    lit = (known & (a < LIT_A)) | (((Lw - Lb) > 24) & known_any)
     for f in (o1.get("fingers") or []) + (o1.get("above") or []):
         x0, y0, x1, y1 = [int(v * k / c) for v in f]
         lit[max(0, y0 - 1):y1 + 2, max(0, x0 - 1):x1 + 2] = False
@@ -151,7 +165,7 @@ def judge(d):
     dim = known & (a > DIM_A)
     gh, gw = lit.shape
     fails = []
-    out = {"dir": d, "flow": meta.get("flow"), "size": meta.get("size"), "n": meta.get("n"), "ref": ref}
+    out = {"dir": d, "flow": meta.get("flow"), "size": meta.get("size"), "n": meta.get("n"), "ref": ref, "moved": None if out_moved is None else round(out_moved, 3)}
     # 1. the lit regions (blocks joined side to side and corner to corner; specks of a moving thing dropped)
     lab, n = ndimage.label(lit, structure=np.ones((3, 3)))
     sizes = ndimage.sum(lit, lab, range(1, n + 1)) if n else []

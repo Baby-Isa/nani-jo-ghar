@@ -85,7 +85,7 @@ export class LightShot {
     const prev = this.fb ? this.fb.before(L.t0 - 8, L.chained ? Infinity : L.offAt + FADE_MS) : null;
     await sleep(Math.max(0, L.t0 + LIT_MS - Date.now()));
     if (this.cur !== L) return; // (it went, or moved on, before it was whole: a light nobody saw)
-    let objs1 = null, withJpg = null, under = null, up = null;
+    let objs1 = null, withJpg = null, withJpg2 = null, under = null, up = null;
     await withScreen(page, async () => {
       // (the kit's own note says a light is up; is a layer showing? a closed layer keeps its note while it fades and after)
       up = await page.evaluate(UP).catch(() => null);
@@ -102,6 +102,9 @@ export class LightShot {
         hidWindow(page, from, Date.now());
       }
       L.hidden = n;
+      // (the screen again: what moved while the two were taken, a card row gliding, a carton pouring, is not judged; the 10 Nov chai
+      // run at 740x320 read a gliding order row as a second lit region)
+      withJpg2 = await page.screenshot({ type: "jpeg", quality: 90, animations: "allow", timeout: 5000 }).catch(() => null);
     });
     if (!withJpg || !under) return;
     await sleep(Math.max(0, L.t0 + MOVE_MS - Date.now()));
@@ -111,6 +114,7 @@ export class LightShot {
     mkdirSync(d, { recursive: true });
     writeFileSync(join(d, "with.jpg"), withJpg);
     writeFileSync(join(d, "under.jpg"), under);
+    if (withJpg2) writeFileSync(join(d, "with2.jpg"), withJpg2);
     if (prev) writeFileSync(join(d, "before.jpg"), prev.jpg);
     const meta = { flow: this.flow, size: this.size, n: L.n, t0: L.t0, holes: L.holes, chained: L.chained, hidden: L.hidden, beforeMs: prev ? L.t0 - prev.t : null, still, objs0, objs1, objs2 };
     writeFileSync(join(d, "light.json"), JSON.stringify(meta));

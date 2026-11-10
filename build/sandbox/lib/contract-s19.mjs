@@ -783,8 +783,11 @@ function s19hook() {
             if (r - l < 6 || bt - t < 6) continue;
             const ar = (r - l) * (bt - t);
             // (a person's round face: the kit's <who>-badge and <who>-v2round pictures, the well done's big face among them)
-            if (/-badge|-v2round/.test(key)) items.push({ o, kind: "face", id: key.split(/-badge|-v2round|-face/)[0], box: [l, t, r, bt], order, W });
-            else if (!SURF.test(key) && ar < 0.25 * cvA) items.push({ o, kind: "pic", id: String(o.wordId != null ? o.wordId : key), key, box: [l, t, r, bt], order, W, chip: o.chip || null });
+            // (a thing in a tween is moving: a bottle pouring, a pan tipping and coming back; what passes over is not a cover)
+            const tw = sc.tweens;
+            const moving = !!(tw && tw.isTweening && (safe(() => tw.isTweening(o)) || (o.parentContainer && safe(() => tw.isTweening(o.parentContainer)))));
+            if (/-badge|-v2round/.test(key)) items.push({ o, kind: "face", id: key.split(/-badge|-v2round|-face/)[0], box: [l, t, r, bt], order, W, moving });
+            else if (!SURF.test(key) && ar < 0.25 * cvA) items.push({ o, kind: "pic", id: String(o.wordId != null ? o.wordId : key), key, box: [l, t, r, bt], order, W, chip: o.chip || null, moving });
           }
         };
         safe(() => walk(sc.children.list, 1));
@@ -831,7 +834,7 @@ function s19hook() {
       const iou = (a, b) => { const i = inter4(a, b); return i / (area4(a) + area4(b) - i); };
       for (const x of items.filter((q) => q.kind === "face" || q.kind === "pill")) {
         for (const y of items) {
-          if (y === x || (x.kind === "face" && y.kind === "pill") || (x.kind === "pill" && y.kind === "face")) continue;
+          if (y === x || y.moving || (x.kind === "face" && y.kind === "pill") || (x.kind === "pill" && y.kind === "face")) continue;
           // a face over another face (the well done's big face over the plates' badges): a quarter of the lower face covered
           if (x.kind === "face" && y.kind === "face") {
             if (y.order < x.order || iou(x.box, y.box) > 0.6) continue;
@@ -896,7 +899,8 @@ function s19hook() {
         if (q.width < 4) continue;
         const top = document.elementFromPoint(q.left + q.width / 2, q.top + q.height / 2);
         // (a word cut off by its row's edge is clipping, not covering: the canvas or its own panel under it)
-        if (!top || top.tagName === "CANVAS" || root.contains(top) || top.contains(root) || modal(top)) continue;
+        // (a card behind another card of its own panel is the panel's stacking, judged by the eye: covers come from outside it)
+        if (!top || top.tagName === "CANVAS" || root.contains(top) || top.contains(root) || modal(top) || top.closest("#side, #mission, #guide, .njg-rq-card")) continue;
         out.push({ what: "text", id: (tx.textContent || "").trim().slice(0, 24), box: R(q), by: "page", byId: desc(top), share: 1, on: "under" });
         break;
       }
