@@ -2944,7 +2944,10 @@
     const list = [].concat(ids || []).filter(Boolean);
     const sets = (Cook.data && Cook.data.settings) || {};
     let best = null;
-    Object.keys(sets).forEach((g) =>
+    // (the order's own games first, so a word two games draw differently shows this order's game's picture)
+    const own = new Set(((mission && mission.ladders) || []).flatMap((L) => (L && L.recipe ? [L.recipe] : [])).flatMap((r) => [r].concat((((Cook.data.recipes || {})[r] || {}).run || []).map((x) => x && x.do).filter(Boolean))));
+    const games = Object.keys(sets).sort((a, b) => (own.has(b) ? 1 : 0) - (own.has(a) ? 1 : 0));
+    games.forEach((g) =>
       Object.values((sets[g] && sets[g].items) || {}).forEach((it) => {
         if (!it || typeof it.card !== "string" || it.word == null) return;
         const w = [].concat(it.word);
@@ -2953,9 +2956,11 @@
     );
     return best ? best.src : null;
   };
+  // (the coordinator, 10 Nov: a game's own items[].card wins over the word's own card: corn's lemon card showed the catalogue's old
+  // fruit while corn draws its own lemon bowl; the card shows what the child taps)
   const cardPic = (id) => {
     const it = Cook.item ? Cook.item(id) : null;
-    return (it && typeof it.card === "string" && it.card) || cardOfIds([id]);
+    return cardOfIds([id]) || (it && typeof it.card === "string" && it.card) || null;
   };
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
   const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
@@ -2977,6 +2982,44 @@
   const rowPicSrc = (r) => {
     const id = wcWordId(r);
     return TEA_PIC[id] && noMilk(r) ? TEA_PIC[id] : rowCard(r) || wcPicSrc(id);
+  };
+  /*
+   * contract-104, SH-220 (Zafar, 9 Nov: "get into the order card scene quite quickly ... and then from there the full game can load"):
+   * the order's card pictures, asked for before anything of the cooking game's (js/cook/flow.js runOrder waits for these, a few seconds
+   * at most, before it prefetches the station's art), so an item card is never drawn before its picture.
+   *   UI.cardPics(ladders) -> [url]               every row's card picture (its own, a no-milk tea's too, a step's tool)
+   *   UI.cardPicsReady(ladders, ms) -> Promise    those loaded and their row copies made (96 and 240 px), or ms passed
+   */
+  UI.cardPics = function (ladders) {
+    const Ls = [].concat(ladders || []).filter(Boolean);
+    // (the same chai-shelf rule M.open sets as the order opens: a chai order's cards are its shelf's jars)
+    Cook.shelfJars = Ls.some((L) => L && L.recipe === "chai");
+    const out = new Set();
+    Ls.forEach((L) => {
+      let rows = [];
+      try {
+        rows = Order().rows(L);
+      } catch (e) {
+        rows = [];
+      }
+      rows.forEach((r) => {
+        if (!r || r.head) return;
+        const id = wcWordId(r);
+        [rowCard(r), wcPicSrc(id), TEA_PIC[id], r.pic].forEach((u) => u && out.add(u));
+      });
+    });
+    return [...out];
+  };
+  UI.cardPicsReady = function (ladders, ms = 3000) {
+    const urls = UI.cardPics(ladders);
+    const one = (u) =>
+      new Promise((res) => {
+        const im = new Image();
+        im.onload = im.onerror = () => res();
+        im.src = Cook.v(u);
+        [96, 240].forEach((n) => thumbOf(Cook.v(u), n));
+      });
+    return Promise.race([Promise.all(urls.map(one)), new Promise((r) => setTimeout(r, ms))]).then(() => urls.length);
   };
   const wcStage = (id) => {
     try {

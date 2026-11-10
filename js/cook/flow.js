@@ -452,7 +452,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     uiStage();
     // decision 68 (J11): this order's stations and its served dish start loading now, while the customer greets
     // and the order is read (nothing of another station's)
-    Cook.prefetchDishes(order.dishes.map((d) => d.recipe));
+    // (contract-104, SH-220: the order scene's own pictures first: its cards' pictures, then the cooking game's, a few seconds at most
+    // apart, never waited on by the order itself)
+    const recipes = order.dishes.map((d) => d.recipe);
+    const run0 = Cook.run;
+    const cardsIn = UI.cardPicsReady ? UI.cardPicsReady(ladders, 3000).catch(() => 0) : Promise.resolve(0);
+    cardsIn.then(() => run0 === Cook.run && Cook.prefetchDishes(recipes));
     UI.hideGist(); // SH-59: no "?" pulse carried into the greeting (a conversation) or the new order
     // CHAI-67, CHAI-78 (Zafar, 4 Nov): the word moment first, before the customer comes in and the order begins
     if (UI.wordMoment) await UI.wordMoment(UI.wordMomentIds(ctx.ladders));

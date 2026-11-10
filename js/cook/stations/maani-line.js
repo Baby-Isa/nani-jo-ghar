@@ -44,24 +44,32 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const Kit = Cook.Kit;
 
   const IT = "assets/cook/items/";
-  const MV = IT + "maani-v2/";
   const V3 = IT + "v3/maani/";
+  const V4 = IT + "v4/";
   /* ---------- the grid (design px, 1600x900; the canvas is the play area), as chai v2 ---------- */
   const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
   const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
-  const HOB_K = 0.85; // the one-burner hob, a little bigger than chai's (it holds a tawa)
-  const HOB_BOTTOM = SHELF_TOP - 40; // breathing space above the shelf (§10)
-  const CHAKLA_D = 470;
+  /*
+   * MAA-24 (Zafar, 9 Nov, mock 38: "slightly increase the size so that the round board is the same size as whatever the cooking thing";
+   * the brief: "the board and tawa big"): chai's one-burner hob as tall as the worktop above the tray holds it (was 0.85), the tawa as
+   * big as its glass holds it (was 150), and the chakla the tawa's own size across (its drawn diameter within 3% of the tawa's; it was
+   * 470 beside a 300 tawa). The roll's sizes, start and the velan follow the board (ROLL_K), so a maani fills the board as before.
+   */
+  const HOB_K = 0.89;
+  const HOB_BOTTOM = SHELF_TOP - 36; // breathing space above the tray (§10)
+  const TAWA_R = 180; // the tawa's round body
+  const CHAKLA_D = 2 * TAWA_R;
+  const ROLL_K = CHAKLA_D / 470; // the roll's design sizes were for a 470 board
   const COL_GAP = 150; // between the chakla and the hob
-  const TAWA_R = 150; // the tawa's round body
-  const PLATE_D = 182; // a plate on the shelf band (SH-112: a fifth bigger in the taller band)
+  // MAA-24 (round 2: "the plates can be a bit bigger"; his yes: brushed steel for maani): the kit's round steel plate (v4/kit/plate-steel)
+  const PLATE_D = 196;
   // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
   const PLATE_Y = SHELF_TOP + (900 - 883) + 8 + PLATE_D / 2;
   const PLATE_PITCH = 232;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
   // maani-v2/thali.webp: the flat floor is a circle 0.42 of the picture's width across from its centre.
-  const THALI_FLAT = 0.42;
+  const THALI_FLAT = 0.4; // (the steel plate's flat floor, measured on v4/kit/plate-steel: its rim about a tenth of its width)
   // S04 audit (MAA-10 at L4): the largest maani, stacked and fanned, still reached the curled rim. A maani on a plate is
   // a little smaller (0.25 of the plate, was 0.3) and keeps a 9% margin from the rim (the art's edge is not a perfect circle,
   // and each one sits a little askew), so the whole fanned stack stays on the flat floor
@@ -73,12 +81,16 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     return { pr, room: Math.max(0, PLATE_D * (THALI_FLAT - RIM_MARGIN) - pr) };
   };
   const CHIP_Y = 860;
-  const PIN_W = 484; // MAA-12 (M12): a real velan is a little wider than the board: the v3 pin about 10% longer (was 440)
+  const PIN_W = 484 * ROLL_K; // MAA-12 (M12): a real velan is a little wider than the board: the v3 pin about 10% longer (was 440)
   // 30 Sept (M3, M9 / Q14): the dough piles stand straight on the band (no tray), on this line just above
   // their chips; St.shelfFit sizes them so the gap above equals the gap under the chips (no hop: a pile
   // doesn't bounce, it squashes a little as a ball comes off)
   const PILE_BASE = 828;
   const PILE_K = 0.42; // at most (a pile is 590 px): shelfFit brings it down to the band's rule
+  // MAA-24 (round 2: "the three dough balls are now looking better ... the dough balls need to be maybe smaller"; ART-69: top-down things
+  // lie on the stone tray): the F6 three-ball heaps from above (v4/maani), one size, centred over their pills, the foot PILE_GAP above
+  const PILE_W = 156; // a heap's width on the tray, design px
+  const PILE_GAP = 12;
   /* ---------- the v3 art (29 Sept play-test M3-M8; assets/cook/items/v3/maani/, build/cut_cook_v3.py) ----------
    * Measured from the art (meta.json; build/check_vessel_meta.py checks these against it): each round body's
    * centre (cx, cy: fractions of the canvas) and radius (r: of the width). Placed by the body, never the box. */
@@ -86,15 +98,20 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const CHAKLA = { w: 726, cx: 0.4988, cy: 0.4988, r: 0.4746 }; // M4: dark walnut
   const DISC_R = 0.44; // every maani state (raw, half, cooked, burnt) shares one canvas: the disc's radius
   const BALL_R = 0.437; // a dough ball's radius (wheat 0.437, millet 0.4347)
-  const TURNER = { ox: 0.19, oy: 0.73, len: 220 }; // M6 / Q15: the blade's middle (the origin), its length on screen
+  // M6 / Q15: the blade's middle (the origin), its length on screen. MAA-24 (round 2: "the ... spatula, can kind of move further right, or
+  // ... be smaller sized"; the brief: "the turner smaller with its handle to the bottom right"): 170 long (was 220), resting right of the
+  // hob with its handle down to the right (rest: its angle there; the art's handle leaves the blade 29 degrees above the right)
+  const TURNER = { ox: 0.19, oy: 0.73, len: 170, rest: 62 };
+  // MAA-24 (round 2: "the handle of the pan ... position it to the bottom right"): the tawa turned so its handle points down to the right
+  const TAWA_TURN = 40;
   const ART = [
     ["mv-chakla", V3 + "chakla.webp"],
     ["mv-velan", V3 + "velan.webp"],
     ["mv-tawa", V3 + "tawa.webp"],
     ["mv-turner", V3 + "turner.webp"],
-    ["mv-thali", MV + "thali.webp"],
-    ["mv-pile-maani", V3 + "dough-pile-wheat.webp"],
-    ["mv-pile-bajr", V3 + "dough-pile-millet.webp"],
+    ["mv-thali", V4 + "kit/plate-steel.webp"],
+    ["mv-pile-maani", V4 + "maani/dough-wheat.webp"],
+    ["mv-pile-bajr", V4 + "maani/dough-millet.webp"],
     ["mv-ball-maani", V3 + "dough-ball-wheat.webp"],
     ["mv-ball-bajr", V3 + "dough-ball-millet.webp"],
   ]
@@ -129,7 +146,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const zt = host.zones.tawa;
     const zon = zr.child({ id: "rest" }); // "put it on the tawa" (the test plays from its expectation)
     const level = zb.level || 1;
-    const kRoll = Mech.knobs("roll", { level: zr.level });
+    // (MAA-24: the roll's sizes in the board's own measure, ROLL_K)
+    const kRoll0 = Mech.knobs("roll", { level: zr.level });
+    const kRoll = Object.assign({}, kRoll0, { radius: kRoll0.radius * ROLL_K, startRadius: kRoll0.startRadius * ROLL_K });
     // the tawa: one, always (the burner rule); its speed from level 1's knobs, quicker per level
     const kTawa = Mech.knobs("tawa", { level: 1 });
     const kLevel = Mech.knobs("tawa", { level: zt.level });
@@ -157,7 +176,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // how much of its canvas a picture's round body fills (the v3 art has margins): a maani r px across is its disc, not its box
     const bodyOf = (key) => (/^mv-(raw|half|cooked|burnt)-/.test(key) ? DISC_R : /^mv-ball-/.test(key) ? BALL_R : 0.5);
     const discScale = (key, r) => r / (bodyOf(key) * S.texSize(key).w);
-    const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] })) : null;
+    const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] * ROLL_K })) : null;
     const rMax = sizes ? Math.max(...sizes.map((s) => s.r)) : kRoll.radius;
     // MAA-21 (Zafar, 9 Nov: "at the beginning, there's a hard stop around the perimeter of, or maybe just inside the perimeter of the
     // rolling board"): before big and small arrive (no sizes yet: MAA-23's lesson brings them and their rings), every roll stops hard at
@@ -182,7 +201,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view). No shelf ledge: the piles
     // and the plates sit on the band itself
     Kit.worktop(S, { top: SHELF_TOP, far: FAR });
-    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2 });
+    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, tray: true }); // (ART-69: the stone tray: the heaps and plates lie on it)
 
     // two columns, centred as one block: the chakla | the hob
     const hs = Kit.size(1, HOB_K);
@@ -211,7 +230,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const burner = Kit.burner(S, hob, 0, { who, flameR: TAWA_R * 0.95, spread: 62, state: "high" });
     const TW = { x: hob.burners[0].x, y: hob.burners[0].y };
     // M8: the hi-res tawa, placed by its measured body (the handle leaves the box off-centre), as Kit.place does
-    const tawa = S.track(S.add.image(TW.x, TW.y, "mv-tawa").setOrigin(TAWA.cx, TAWA.cy).setDepth(D.item - 0.5));
+    const tawa = S.track(S.add.image(TW.x, TW.y, "mv-tawa").setOrigin(TAWA.cx, TAWA.cy).setDepth(D.item - 0.5).setAngle(TAWA_TURN));
     tawa.setScale(TAWA_R / (TAWA.r * tawa.width));
     tawa.shadow = S.contactShadow(tawa, { centerX: TW.x, centerY: TW.y + TAWA_R * 0.08, width: TAWA_R * 2.15, height: TAWA_R * 2.15 });
     const ring = Kit.heatRing(S, { width: 11 });
@@ -241,8 +260,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // M6 / Q15: the flat wooden turner (the family's tool: a word like "moikyo", to confirm with Mum) rests on
     // the counter right of the hob, blade down by the hob's corner, handle up and away: placed, not floating.
     // It slides under the maani to flip it, and again to lift it off. Its origin is the blade's middle.
-    const turnerHome = { x: hob.x + hob.w + 62, y: hob.y + hob.h - 120, angle: 0 };
-    const turner = S.track(S.add.image(turnerHome.x, turnerHome.y, "mv-turner").setOrigin(TURNER.ox, TURNER.oy).setDepth(D.item + 3));
+    const turnerHome = { x: hob.x + hob.w + 40, y: hob.y + hob.h * 0.3, angle: TURNER.rest };
+    const turner = S.track(S.add.image(turnerHome.x, turnerHome.y, "mv-turner").setOrigin(TURNER.ox, TURNER.oy).setDepth(D.item + 3).setAngle(turnerHome.angle));
     turner.setScale(TURNER.len / turner.width);
     if (turner.preFX && S.renderer && S.renderer.type === Phaser.WEBGL) {
       turner.preFX.padding = 12;
@@ -262,14 +281,14 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // M3 / Q14: one realistic pile of dough balls per kind, straight on the band (no tray); tap it and one
     // ball flies out. Both piles at one scale (the smaller fit), standing on PILE_BASE by their own bottom.
     const pileKey = (t) => `mv-pile-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
-    const pileK = Math.min(...order.map((t) => (S.textures.exists(pileKey(t)) ? St.shelfFit(S, pileKey(t), PILE_K, PILE_BASE, { hop: false }) : PILE_K)));
+    const pileK = Math.min(...order.map((t) => (S.textures.exists(pileKey(t)) ? PILE_W / S.texSize(pileKey(t)).w : PILE_K)));
+    const PILE_FOOT = CHIP_Y - 46 / 2 - PILE_GAP;
     const plates = order.map((type, i) => {
       const x = rowXs(LX, order.length)[i];
       const key = pileKey(type);
-      const bottom = S.textures.exists(key) ? St.opaqueSpan(S, key)[1] : 1;
-      const img = S.track(S.add.image(x, PILE_BASE, key).setOrigin(0.5, bottom).setScale(pileK).setDepth(D.item - 1));
+      const img = S.track(S.add.image(x, PILE_FOOT, key).setOrigin(0.5, 1).setScale(pileK).setDepth(D.item - 1));
+      // MAA-09 (M2): no drop shadow: the heaps are seen from above, like the balls
       img.baseScale = pileK;
-      // MAA-09 (M2): no drop shadow: the piles are seen from above, like the balls
       img.type = type;
       // always more than anyone orders, the same in both, never shown (the pile is one picture): out of
       // balls, the pile goes (a ball put back brings it back)
@@ -440,7 +459,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (chakla) putBack(chakla);
       // one ball comes off the top of the pile (the art's balls are drawn at the pile's scale) and flies out
       const pc = S.centre(pl);
-      const ball = { x: pc.x + (Math.random() - 0.5) * pc.w * 0.2, y: pc.y - pc.h * 0.2, scale: pileK };
+      // (a heap's ball is about 0.46 of its width across: the flying ball starts at that size)
+      const ball = { x: pc.x + (Math.random() - 0.5) * pc.w * 0.2, y: pc.y - pc.h * 0.2, scale: discScale(texOf(pl.type, "ball"), pc.w * 0.23) };
       pl.left--;
       pileShow(pl);
       const sprite = S.track(S.add.image(ball.x, ball.y, texOf(pl.type, "ball")).setScale(ball.scale).setDepth(D.item + 3));

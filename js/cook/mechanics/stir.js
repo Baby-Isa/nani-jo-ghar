@@ -124,11 +124,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ].forEach(([dx, dy, r]) => g.fillCircle(x + dx * s, y + dy * s, r * s));
   }
 
-  // the daar's kadchi (DAAR-02, s08c KD1; js/cook/stations/daar.js, measured on kadchi-daal-s08c): its bowl's centre and
-  // radius, and the handle leaving the bowl about 61 degrees above the right
+  // the daar's ladle (DAAR-02; S19: the kit's steel ladle with its wooden handle, v4/kit/ladle, the same as daar's own stir,
+  // js/cook/stations/daar.js LADLE_V4, DAAR-45 "one stir, one look"): its bowl's centre and radius, the handle straight down from it
   const LADLE_KEY = "dv3-ladle";
-  const LADLE = { w: 436, h: 560, cx: 0.3647, cy: 0.7143, r: 0.3488 };
-  const LADLE_HANDLE = (-60.8 * Math.PI) / 180;
+  const LADLE = { w: 259, h: 700, cx: 0.498, cy: 0.189, r: 0.478, bowlK: 0.27 };
+  const LADLE_HANDLE = Math.PI / 2;
 
   Mech.define("stir", {
     station: "stir",
@@ -164,10 +164,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       S.tweens.add({ targets: ring, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
       // DAAR-11 (decision 94, Zafar 13 Oct): no hand: the daar's own kadchi (DAAR-02), its bowl on the track and the
       // whole ladle turning with its path, so the handle always points out from the pot's centre and rests on the rim
-      await St.loadArt(S, [[LADLE_KEY, "assets/cook/items-s08c/kadchi/kadchi-daal-s08c.webp"]]);
+      await St.loadArt(S, [[LADLE_KEY, "assets/cook/items/v4/kit/ladle.webp"]]);
       const radial = S.textures.exists(LADLE_KEY);
       const ladle = radial ? S.track(S.add.image(cx + RT, cy, LADLE_KEY).setOrigin(LADLE.cx, LADLE.cy).setDepth(D.hand)) : S.hand("ladle", { x: cx + RT, y: cy, k: z.k });
-      if (radial) ladle.setScale((RL * 0.3) / (LADLE.r * LADLE.w));
+      if (radial) ladle.setScale((RL * LADLE.bowlK) / (LADLE.r * LADLE.w));
       const shoulder = { x: cx + z.L(60), y: z.Y(1250) };
 
       /* ---------- the speed dial: fixed bands, no target ---------- */

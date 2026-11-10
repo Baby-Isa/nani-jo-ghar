@@ -158,11 +158,27 @@ def check_daar():
     pairs = [("POT", "pot-empty", ("w", "h", "cx", "cy", "r")), ("TRIVET", "daar-bowl-trivet-v2", ("w", "h", "cx", "cy", "r")),
              ("TRIVET_PLAIN", "daar-bowl-trivet-plain-v2", ("w", "h", "cx", "cy", "r"))]
     # DAAR-02 (s08c KD1, s08 w7A; s08 w8A): the ladle is the s08c kadchi daar.js loads (its "dv3-ladle" file), measured in
-    # assets/cook/items-s08c/meta.json bowls (the biggest circle inside its bowl and its handle's direction), never v3's ladle
+    # assets/cook/items-s08c/meta.json bowls (the biggest circle inside its bowl and its handle's direction), never v3's ladle.
+    # S19 wave A: or the kit's steel ladle (v4/kit/ladle.webp, its handle straight down): its LADLE_V4 measured here from the art's
+    # alpha (the bowl: the widest row in the picture's top half, its middle and half its width; the handle below it)
+    lv4 = re.search(r'\["dv3-ladle", V4K \+ "ladle\.webp"\]', src)
     lm = re.search(r'\["dv3-ladle", "assets/cook/items-s08c/kadchi/([\w-]+)\.webp"\]', src)
     bowls = json.load(open(os.path.join(ROOT, "assets/cook/items-s08c/meta.json")))["bowls"]
     lkey = lm.group(1) if lm else None
-    if not lkey or lkey not in bowls:
+    if lv4:
+        a = np.array(Image.open(os.path.join(ROOT, "assets/cook/items/v4/kit/ladle.webp")).convert("RGBA"))[:, :, 3] > 128
+        H, W = a.shape
+        widths = [(int(a[y].sum()), y) for y in range(H // 2)]
+        wmax, ymax = max(widths)
+        rows = [y for w, y in widths if w >= wmax - 2]
+        xs = np.where(a[ymax])[0]
+        got = {"w": W, "h": H, "cx": (xs[0] + xs[-1] + 1) / 2 / W, "cy": (rows[0] + rows[-1]) / 2 / H, "r": wmax / 2 / W}
+        c = const("LADLE_V4")
+        ok = abs(c["w"] - W) <= 1 and abs(c["h"] - H) <= 1 and all(abs(c[k] - got[k]) <= 0.01 for k in ("cx", "cy", "r"))
+        below = a[int(got["cy"] * H) + int(got["r"] * W) + 20 :, :].any(axis=1).mean() > 0.9
+        bad += not (ok and below)
+        print(f"{'ok  ' if ok and below else 'FAIL'} daar.js LADLE_V4: {[c[k] for k in ('w', 'h', 'cx', 'cy', 'r')]} vs the art {[round(got[k], 3) for k in ('w', 'h', 'cx', 'cy', 'r')]}; handle straight down: {below}")
+    elif not lkey or lkey not in bowls:
         bad += 1
         print(f"FAIL daar.js LADLE: the loaded kadchi {lkey!r} has no entry in items-s08c/meta.json bowls")
     else:

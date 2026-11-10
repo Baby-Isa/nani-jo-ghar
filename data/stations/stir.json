@@ -1,3 +1,5 @@
 {
- "_about": "The stir station's own lines and tips, merged into data/cook.json's lines and tips when the game loads (js/cook/mechanics/stir.js). Its levels are in data/cook.json (mechanics.stir.levels). Hane {x}! is the family's word for now (26 Sept)."
+ "_about": "The stir station's own lines and tips, merged into data/cook.json's lines and tips when the game loads (js/cook/mechanics/stir.js). Its levels are in data/cook.json (mechanics.stir.levels). Hane {x}! is the family's word for now (26 Sept).",
+ "assets": ["assets/cook/items/v4/kit/ladle.webp"],
+ "_assets": "S19 wave A (decision 68, loadcheck): the kit's ladle the stir draws (DAAR-45: the same ladle as daar's own stir)"
 }

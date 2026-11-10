@@ -5,6 +5,8 @@
   "verb": "Roll and cook",
   "goal": "Tap a dough pile and roll the ball up and down until the maani is big and round, then tap it onto the tawa. Flip it on the green, lift it on the green. The order ends by itself once you've made what they asked for."
  },
+ "assets": ["assets/cook/items/v4/maani/*", "assets/cook/items/v4/kit/plate-steel.webp"],
+ "_assets": "S19 wave A (decision 68, loadcheck): the pictures maani loads beyond data/cook.json art.assets.stations: the F6 dough heaps on the stone tray and the kit's brushed-steel plate (MAA-24)",
  "words": {
   "ph-turner": {}
  },
