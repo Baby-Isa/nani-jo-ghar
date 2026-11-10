@@ -2,9 +2,9 @@
  "tier": "push",
  "tierNo": "0",
  "name": "check-push",
- "commit": "e214ee47e9ddef8f9100c95d8a26ffa6b6126990",
+ "commit": "7d812f2d2391fa84f73bd4821caefaaa34e9fce4",
  "dirty": false,
- "date": "2026-11-10T01:14:30.992Z",
+ "date": "2026-11-10T01:31:53.570Z",
  "steps": [
   {
    "id": "checks",
@@ -16,16 +16,16 @@
    "command": "node build/tools/review/checks.mjs",
    "status": "pass",
    "code": 0,
-   "line": "checks: 13 steps in 47 s (all at once; the longest: leak 47 s, unit 39 s, specs 6 s)",
+   "line": "checks: 13 steps in 46 s (all at once; the longest: leak 46 s, unit 37 s, specs 6 s)",
    "tail": [
     "ok   fixlist every open row is labelled",
     "ok   decisions decisions: 4 files, every answer on its rows",
     "ok   art    no picture changed since 8b4beca7b32f",
     "ok   size   ok: live site 422 MB in 5755 files (limit 800 MB; excluded: sources, build)",
     "not run: load (a browser; --browser or --full runs it, /review and the publish gate do)",
-    "checks: 13 steps in 47 s (all at once; the longest: leak 47 s, unit 39 s, specs 6 s)"
+    "checks: 13 steps in 46 s (all at once; the longest: leak 46 s, unit 37 s, specs 6 s)"
    ],
-   "log": "build/screenshots/tiers/push-e214ee47e9/checks.log",
+   "log": "build/screenshots/tiers/push-7d812f2d23/checks.log",
    "minutes": 0.8
   }
  ],
