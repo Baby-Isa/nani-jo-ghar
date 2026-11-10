@@ -43,6 +43,8 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 ## What is live (the game on `main`)
 
+10 Nov 2026, published ~00:33 UK (8b4beca7, 20261110T002839Z): Sprint 19's behaviour work for Zafar's play: chai's cards, Nani's box and the ticking order card in every kitchen game, no tick/next/X, one shared first-time light and finger with the stuck help, Fable's flaws in sekelo, daar, eggs and corn, chai's three fixes, the stuck games fixed, the checks audit; chop's hop and the stoves round wait on their branches for the new art. Known fails: `build/reports/s19-publish-known-fails.md`. Live check: every kitchen game opens at 740x320 with no page errors. `--force` on his word (9 Nov).
+
 8 Nov 2026, published ~14:25 UK (713908a8, 20261108T142321Z): Sprint 18's three waves for Zafar's play: the kits, chai on them (its frozen run unchanged), chop its own game, every kitchen game moved onto its settings file and the kits (eggs, baking and the corn stall still labs prototypes in their own scenes), the checks' and kit's fixes; `--force --words` on his word ("just publish it all to main ... so I can play it").
 
 7 Nov 2026, published 00:21 UK (a8e7c99b, 20261107T001739Z): Zafar's 6 Nov night chai notes (the boil's sound, the light rule, the style tea's card, each person's own words, the word moment's pour, drop, counter and card), the art runs' zip and colour check; `--force` on his word ("push them through quickly").
