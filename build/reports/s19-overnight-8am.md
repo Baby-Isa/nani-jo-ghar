@@ -69,3 +69,21 @@ Nothing new since 00:33. Chop, corn, daar, maani and eggs go live together, once
 - **Publishes:** none.
 - **New problems:** none.
 - **Open decisions:** none.
+
+## 10 AM update
+- **Daar and maani (builder A): merged.**
+  - Every top-down game now has the stone tray band and the stone loading cover.
+  - Daar's eight spice bowls are on the tray.
+  - Daar's dial is left of the pot and its count card right.
+  - Maani's dough heaps are on the tray, with steel plates and faces. Its board and tawa are now in proportion.
+  - Chai is re-frozen.
+- **Chai:** both leftover breaks are fixed.
+  - The hint's jar glow now comes with the kit's light.
+  - The glass light's check allows the face it goes under (his 29 Oct word).
+  - Phone size: 0 breaks.
+- **Disk:** it filled and cut builder A's last check short. I removed five finished builders' copies, which freed 9 GB.
+- **Running:**
+  - Eggs.
+  - Wave D: the rule breaks in sekelo, chaat, samosa and baking, fixed in code before their art.
+- **Art:** nothing new on main.
+- **Open decisions:** none.
