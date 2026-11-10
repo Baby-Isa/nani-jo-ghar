@@ -198,17 +198,18 @@ import { setTimeout } from "../life.js";
     const bowl = T(S.add.image(bowlX, bowlFoot, "bk-bowl-empty").setOrigin(0.5, 1).setDepth(D.item));
     bowl.setScale(((MB.drawn || {}).w || 380) / bowl.width);
     const bowlY = bowlFoot - bowl.displayHeight / 2; // (its middle: where things pour)
-    // SH-258 (the eye judge, 10 Nov: no asker's face until well done): their face circle on the bowl's upper-left rim from the first frame
-    const faceAt = (o) => {
+    // SH-258 (the eye judge, 10 Nov: no asker's face until well done): their face circle on the bowl's rim from the first frame
+    // (on the bowl its upper-right rim: the jar tips in from the left, and its light never takes the face in: contract-82)
+    const faceAt = (o, side = -1) => {
       if (!Cook.Kit.badge) return null;
       const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
       const fd = Math.min(90, Math.max(64, 30 / perPx));
-      const f = T(S.add.image(o.x - o.displayWidth * 0.42, o.y - o.displayHeight * (o.originY || 0.5) + fd * 0.4, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge));
+      const f = T(S.add.image(o.x + side * o.displayWidth * 0.42, o.y - o.displayHeight * (o.originY || 0.5) + fd * 0.4, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge));
       f.setName("baking-face");
       o.face = f;
       return f;
     };
-    faceAt(bowl);
+    faceAt(bowl, 1);
     let wet = false;
     const bowlState = (k) => {
       const key = `bk-bowl-${k}`;
