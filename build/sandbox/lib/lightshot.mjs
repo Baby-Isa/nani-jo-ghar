@@ -108,6 +108,9 @@ export class LightShot {
         hidWindow(page, from, Date.now());
       }
       L.hidden = n;
+      // (the light went, or the view changed, while the screen below was taken: the two pictures are not one moment)
+      const up3 = await page.evaluate(UP).catch(() => null);
+      if (!up3 || !sameLight(up3, L.holes)) under = null;
 
     });
     if (!withJpg || !under) return;

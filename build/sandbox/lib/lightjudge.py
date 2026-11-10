@@ -225,8 +225,11 @@ def judge(d):
         if rr > max(CORNER * Hpx, 6) + CORNER_TOL:
             shape = "a circle" if abs(Wpx - Hpx) < 0.15 * max(Wpx, Hpx) and rr > 0.4 * Hpx else "an oval" if rr > 0.4 * Hpx else "corners too round"
             fails.append(f"not a rounded rectangle: {shape} (corners {round(rr)} px on a box {round(Hpx)} px high, at most a quarter: {round(CORNER * Hpx)} px)")
-    kb = known[y0:y1, x0:x1]
-    fill = float((main[y0:y1, x0:x1] & kb).sum()) / max(1.0, float(kb.sum()))
+    # (measured inside its edge: the gold line and the feathered rim, about 4 px, are neither lit nor dim)
+    e = max(1, int(round(4 * k / c)))
+    yy0, yy1, xx0, xx1 = y0 + e, max(y0 + e + 1, y1 - e), x0 + e, max(x0 + e + 1, x1 - e)
+    kb = known[yy0:yy1, xx0:xx1]
+    fill = float((main[yy0:yy1, xx0:xx1] & kb).sum()) / max(1.0, float(kb.sum()))
     out["fill"] = round(fill, 3)
     if fill < FILL:
         fails.append(f"not one box: only {round(100 * fill)}% of its own box is lit (two shapes, or a ring)")
@@ -276,9 +279,14 @@ def judge(d):
             thing, T = {"kind": "pic", "id": p["id"]}, list(p["box"])
         else:
             cc = [x for x in cards if share_in(x["box"], R) >= 0.5]
+            part = [x for x in cards if share_in(R, x["box"]) >= 0.9]
             if cc:
                 x = max(cc, key=lambda x: inter(x["box"], R) / (area(x["box"]) + area(R) - inter(x["box"], R)))
                 thing, T = {"kind": "card", "id": x["id"]}, list(x["box"])
+            elif part:
+                # (a light on a part of a card, its dotted word or its picture: the reveal lesson, SH-213; the part is what it lights)
+                x = min(part, key=lambda x: area(x["box"]))
+                thing, T = {"kind": "card", "id": x["id"] + " (a part)"}, list(R)
     own_faces = []
     if T is not None:
         for f in faces:
@@ -350,6 +358,7 @@ def judge(d):
         if p[2] - p[0] > 0.5 * vw:
             continue
         lit_card = thing is not None and thing["kind"] == "card" and T is not None and inter(T, p) > 0.5 * area(T)
+        lit_card = lit_card or (thing is not None and thing["kind"] == "card" and inter(R, p) > 0.9 * area(R))
         over = min(R[2], p[2]) - max(R[0], p[0])
         if not lit_card and over > PANEL_TOL and min(R[3], p[3]) > max(R[1], p[1]):
             fails.append(f"over the side panel by {round(over)} px (the light {fmt(R)}, the panel {fmt(p)})")
