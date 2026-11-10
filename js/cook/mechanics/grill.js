@@ -170,6 +170,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
   /** A chunk's file: v3/sekelo/<name>-<state>.webp, or the piece's own file pattern. */
   SK.v3File = (name, st) => {
+    // S19 (s19-wave-e2, K2 #98; Zafar 10 Nov, four stages for cooked things): a piece redrawn in four stages (raw, part, cooked, over) is
+    // its v4 file; the grill's states map onto them (grilled = cooked, charred = over; part is the new one, after the first turn)
+    const v4 = SK.cfg().v4pieces;
+    if (v4 && (v4.pieces || {})[name] && (v4.states || {})[st]) return `${v4.dir}${v4.pieces[name]}-${v4.states[st]}.webp`;
     const all = SK.cfg().v3pieces || {};
     const own = Object.keys(all).map((k) => all[k]).find((v) => v && typeof v === "object" && v.name === name && v.file);
     return own ? `${own.file.replace("{state}", st)}.webp` : `${V3.DIR}${name}-${st}.webp`;
@@ -632,7 +636,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // v3 (K5): the big chunky pieces, the same chunks as the heaps; a vegetable has no charred picture (its
     // grilled one, darkened by SK.cook)
     const v3 = SK.v3Name(id);
-    const v3key = v3 && [`sk3-${v3}-${state}`, `sk3-${v3}-grilled`, `sk3-${v3}-raw`].find((t) => S.textures.exists(t));
+    const v3key = v3 && [`sk3-${v3}-${state}`, state === "part" ? `sk3-${v3}-raw` : null, `sk3-${v3}-grilled`, `sk3-${v3}-raw`].filter(Boolean).find((t) => S.textures.exists(t));
     const src = v3key || Cook.Art.sprite(S, `${id}.${state}`);
     if (!src) return null;
     const img = S.textures.get(src).getSourceImage();
@@ -750,13 +754,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.destroy();
     }
   };
-  /** How cooked it looks: 0 raw .. 1 done; burnt darkens it. */
-  SK.cook = function (c, f, { burnt = false, marks = 0 } = {}) {
+  /** How cooked it looks: 0 raw .. 1 done; burnt darkens it. stage (raw, part, grilled, charred) names the picture; else from marks. */
+  SK.cook = function (c, f, { burnt = false, marks = 0, stage = null } = {}) {
     const k = Cook.clamp(f, 0, 1);
     const col = burnt ? Phaser.Display.Color.GetColor(110, 80, 70) : Phaser.Display.Color.GetColor(255, 255 - k * 55, 255 - k * 105);
-    // painted pieces show their own states (raw, grilled once turned, charred), so they take a lighter tint
-    const state = burnt ? "charred" : marks > 0 ? "grilled" : "raw";
-    const light = Phaser.Display.Color.GetColor(255, 255 - k * 25, 255 - k * 45);
+    // painted pieces show their own states (raw, part once turned, grilled when every turn is done, charred), so they take a lighter
+    // tint; a v4 piece's four pictures carry the whole cook, so it takes none
+    const state = burnt ? "charred" : stage || (marks > 0 ? "grilled" : "raw");
+    const v4 = !!(SK.cfg().v4pieces || {}).pieces;
+    const light = v4 ? 0xffffff : Phaser.Display.Color.GetColor(255, 255 - k * 25, 255 - k * 45);
     c.imgs.forEach((img) => {
       const painted = img.pieceId && SK.pieceTex(img.scene, img.pieceId, state);
       if (painted) {
@@ -990,7 +996,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     if (plain) v3.push(["sk3-plate-plain", plain.file]);
     const names = [...new Set(ids.concat(SK.pieceIds()).map(SK.v3Name).filter(Boolean))];
-    names.forEach((n) => ["raw", "grilled", "charred"].forEach((st) => v3.push([`sk3-${n}-${st}`, SK.v3File(n, st)])));
+    // (part: the v4 pieces' stage after the first turn; a piece with no v4 file has none, and shows its grilled one)
+    const v4 = (SK.cfg().v4pieces || {}).pieces || {};
+    names.forEach((n) => ["raw", "part", "grilled", "charred"].forEach((st) => (st !== "part" || v4[n]) && v3.push([`sk3-${n}-${st}`, SK.v3File(n, st)])));
     list.push(...v3);
     return Cook.Stations.capLoad(Cook.Stations.load(S, list).then(() => plain && SK.platePlain(S)), 15000); // real time (loadcap)
   };
@@ -1108,6 +1116,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const { slotW, x } = global.Shelf.slots(groups, { span: [40, right - 40], pitch: V2.PITCH, groupGap: V2.GROUP_GAP });
     const out = {};
     groups.forEach((group) => group.forEach((id) => (out[id] = SK.bowl(S, z, id, x[id], level, Math.min(V2.BOWL_W, slotW - 20)))));
+    // SH-255 (the eye judge beside chai, 10 Nov: the pills at 740x320 a third of chai's): the row's pills at one scale, as large as
+    // the floor asks and their neighbours allow (the shared kit's Shelf.pillScale on Shelf.pillWant, chai's fitPills)
+    const SH = global.Shelf;
+    const ids = [].concat(...groups).filter((id) => out[id] && out[id].chip && out[id].chip.faceW);
+    if (SH && SH.pillScale && SH.pillWant && SH.pillGap && ids.length) {
+      let wts = 1;
+      try {
+        wts = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        /* no view yet: as drawn */
+      }
+      const ppw = wts * z.k;
+      const fit = SH.pillScale(ids.map((id) => ({ x: x[id], w: out[id].chip.faceW(out[id].chip.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW });
+      const y = Math.min(V2.CHIP.y, 896 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
+      ids.forEach((id) => {
+        const c = out[id].chip;
+        if (c.face && c.capW !== fit.cap) c.face(c.showsWord, fit.cap);
+        c.k = fit.k;
+        c.setPosition(z.X(x[id]), z.Y(y)).setScale(z.k * fit.k);
+        if (c.hit) c.hit(slotW);
+      });
+    }
     return out;
   };
   SK.bowl = function (S, z, id, x, level, bw = V2.BOWL_W) {
@@ -1261,7 +1291,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   };
   /**
    * S19 (Fable's sekelo flaw 2, STD-E2-07; chai's tray): the asker's face circle (the kit's badge, Cook.Kit.badge) on the serving tray
-   * from its first frame, over its top-left corner as chai's tray carries it: the kit's badge size (64 design px), at least 30 CSS px as
+   * from its first frame, beside its top right corner (CK-81; was its top-left, as chai's tray carries it): the kit's badge size (64 design px), at least 30 CSS px as
    * seen, at most 90; the badge depth, over the tray and the skewers (SH-183). img: the tray's picture (SK.rack3's, the tray's rows
    * R.tray). -> the face's picture (null without the face art)
    */
@@ -1274,10 +1304,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
     const w = R.w * Math.abs(img.scaleX);
     const h = R.h * Math.abs(img.scaleY);
-    // (the tray's own top-left corner: its picture's left edge and the tray's top row; the face's centre a third of it in)
-    const x0 = img.x - w / 2 + w * 0.035;
+    // CK-81 (the eye judge, 10 Nov: the face circle sat on the first skewer's tip): beside the tray, at its top right, just past its
+    // right edge (the skewers fill the tray from the left; the gap to the grill holds it), never over a skewer (was its top-left corner)
+    const x1 = img.x + w / 2 - w * 0.035;
     const y0 = img.y + (tr[0] - 0.5) * h;
-    const face = S.track(S.add.image(x0 + fd * 0.3, y0 + fd * 0.3, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
+    const face = S.track(S.add.image(x1 + fd * 0.2, y0 + fd * 0.5, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
     face.setName("sekelo-tray-face");
     img.face = face; // (the kit's light takes the face into the tray's light: Cook.Coach.parts)
     return face;
@@ -1367,6 +1398,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * so its centre (0.66 of the bamboo below the tip) is at 511; the handle ends 18 px past the grill's front edge.
    * The plate is gone from the stage (P37: "I never really liked the plate anyway"); the served picture is unchanged.
    */
+  const FACE_SIZE = 210; // (CK-81: the review's face beside the cooked tray, design px)
   const G3H = 434; // the grill's height (design px): bar 1 at the tip, the front edge just past the handle's start
   const G3 = { top: 450 - G3H / 2 };
   const LAYOUT3 = {
@@ -1400,6 +1432,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // SH-158, the S14 roll-out (SEK-22; the central rules' timed.firstTimeHold): a new player's first turn holds in the green
       // until a skewer is tapped (js/cook/station-lib.js St.firstHold); the lift (the last side) never holds
       const hold14 = Cook.Stations.firstHold(ctx, "grill:turn");
+      /*
+       * CK-81 (the eye judge beside chai, 10 Nov: "no first-time light is seen for the grill or the turn"): the kitchen kit's first-time
+       * light (Cook.Coach.control, the one dim and gold box, as chai's dial) on the thing of each grill step the first time it comes up:
+       * the rack skewer to put on the grill, the skewer whose ring first reaches its green (the turn), the skewer to lift. Each light hugs
+       * the skewer with its ring (the ring is the thing's timer); it goes as the child acts, or as the step passes.
+       */
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("mishkaki-grill", { round: new Set() }) : null;
+      const lights = {};
+      const lightUp = (name, sk, ring, current) => {
+        if (lights[name] || !gate || !Cook.Coach.control) return;
+        lights[name] = { h: null };
+        if (!gate.first(name)) return;
+        const bounds = (o) => {
+          const b = o.getBounds();
+          const r = ring ? ring() : null;
+          return r ? { x: Math.min(b.x, r.x), y: Math.min(b.y, r.y), right: Math.max(b.right, r.right), bottom: Math.max(b.bottom, r.bottom) } : b;
+        };
+        lights[name].h = Cook.Coach.control({ key: "mishkaki-grill", note: `${gate.scope}:${name}`, target: Cook.Coach.box(sk, 6, { bounds }), first: true, noHint: true, current });
+      };
+      const lightsOff = () => Object.values(lights).forEach((l) => l.h && (l.h.close(), (l.h = null)));
       const nPieces = SK.knobs("thread", z.level).pieces;
       const offerChips = params.chips != null;
 
@@ -1555,6 +1607,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let sizzle = null;
       const toGrill = (r) => {
         if (line.poke) line.poke();
+        lightsOff();
         const i = spots.indexOf(null);
         if (i < 0) {
           S.wiggle(r.sk);
@@ -1630,6 +1683,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* turn it (or lift it) */
       const tapGrill = (g, forced) => {
         if (g.busy || g.out) return;
+        if (!forced) lightsOff();
         if (!forced && g.phase < k.turns && g.v >= lo) hold14.end("skewer");
         if (line.poke) line.poke();
         if (!forced && g.v < k.ignoreBelow) {
@@ -1817,7 +1871,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!g.busy) g.v += g.rate * dt;
           if (!g.busy && g.phase < k.turns) g.v = hold14.cap(g.v, lo, hi, "skewer");
           const inBand = g.v >= lo && g.v <= hi;
-          SK.cook(g.sk, (g.phase + Math.min(1, g.v)) / (k.turns + 1), { burnt: g.burnt || g.v >= 1, marks: g.phase * 0.45 + (g.phase >= k.turns ? 0.1 : 0) });
+          // (four stages, K2: raw on the first side, part after a turn, cooked once every turn is done, over if left: SK.cook's charred)
+          const stage = g.phase >= k.turns ? "grilled" : g.phase > 0 ? "part" : "raw";
+          SK.cook(g.sk, (g.phase + Math.min(1, g.v)) / (k.turns + 1), { burnt: g.burnt || g.v >= 1, marks: g.phase * 0.45 + (g.phase >= k.turns ? 0.1 : 0), stage });
           if (inBand !== !!g.inBand) {
             g.inBand = inBand;
             if (inBand) Cook.sfx.click();
@@ -1828,6 +1884,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!g.busy && g.v >= 1) tapGrill(g, true);
         });
         const hot = grilling.filter((g) => !g.busy && !g.out && g.v >= lo && g.v <= hi && g.phase < k.turns).sort((a, b) => b.v - a.v)[0];
+        // (CK-81: the first-time lights; a skewer's ring in world px, as SK.ring draws it)
+        const ringOf = (g) => () => {
+          const w = L(RING.w);
+          const h = L(RING.h);
+          const cx = spotX(g.spot);
+          const cy = Y(GRILL.skewerY + RING.dy);
+          return { x: cx - w / 2, y: cy - h / 2, right: cx + w / 2, bottom: cy + h / 2 };
+        };
+        if (hot) {
+          const ph = hot.phase;
+          lightUp("grill-turn", hot.sk, ringOf(hot), () => !hot.out && hot.phase === ph && hot.v <= hi);
+        }
+        const ready = grilling.find((g) => !g.busy && !g.out && g.v >= lo && g.v <= hi && g.phase >= k.turns);
+        if (ready) lightUp("grill-lift", ready.sk, ringOf(ready), () => !ready.out && ready.v <= hi);
+        const waiting = !grilling.length && spots.includes(null) && rack.find((r) => r && r.settled && r.sk && r.sk.hit);
+        if (waiting) lightUp("grill-place", waiting.sk, null, () => rack.includes(waiting) && !grilling.length);
         if (hot) fstep.to("mishkaki-grill:flip", { id: `flip-${hot.spot}-${hot.phase}-${hot.sk && hot.sk.id != null ? hot.sk.id : ""}` });
         else if (fstep.key) fstep.done();
         if (now > smokeAt && grilling.length) {
@@ -1950,8 +2022,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         const missing = {};
         Object.keys(want).forEach((w) => want[w] > (keepN[w] || 0) && (missing[w] = want[w] - (keepN[w] || 0)));
-        // (layout D: their face over the raw rack, empty by now, so the cooked skewers stay in sight)
-        const faceAt = plateArt && plateArt.rack ? { x: X(RACK.x), y: Y(RACK.y) } : null;
+        // CK-81 (the eye judge beside chai, 10 Nov: two Nana faces, the big one over the empty raw tray): one face, beside the tray the
+        // skewers are served on, as chai's grows beside its glass: the tray's small face circle stands down while the big one is up, the
+        // big one just right of the cooked tray, level with it, its praise to the right over the grill (empty by now); the skewers stay
+        // in sight (was: over the raw rack)
+        const trayFace = plateArt && plateArt.img && plateArt.img.face;
+        const faceAt = plateArt && plateArt.rack ? { x: plateArt.img.x + plateArt.img.displayWidth / 2 + L(FACE_SIZE * 0.42), y: plateArt.img.y, side: "right", size: FACE_SIZE, hide: trayFace } : null;
         await taste(S, z, { who: params.taste.who, ok, plateImg, plateArt, plateD, skewers: (ok ? plate : off).map((p) => p.sprite || null), X, Y, L, PLATE, keepAll: !ok && keep.length > 0, faceAt });
         if (!ok && !params.lastTry && Object.keys(missing).length) return { redo: true, keep: keep.map((p) => p.pieces), missing, plate: plate.map((p) => p.pieces), count: plate.length };
         closeRows();
@@ -1971,10 +2047,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await SK.faceArt(S, who);
     // K10: the face sits over the plate, its lower edge on the plate's upper rim (the skewers stay in sight);
     // Cook.Kit.review keeps it inside the view on any screen
-    const size = 240;
+    const size = (faceAt && faceAt.size) || 240;
     const at = faceAt || { x: X(PLATE.x), y: Y(PLATE.y) - L(plateD / 2) - L(size / 2) + L(70) };
-    const look = await Cook.Kit.review(S, { who, ok, x: at.x, y: at.y, size: L(size), k: L(1) });
+    const small = faceAt && faceAt.hide;
+    if (small) small.setVisible(false);
+    const look = await Cook.Kit.review(S, { who, ok, x: at.x, y: at.y, size: L(size), k: L(1), side: (faceAt && faceAt.side) || "left" });
     await look.close();
+    if (small && small.active) small.setVisible(true);
     if (!ok) {
       // the plate slides back, empty: make it again
       skewers.filter(Boolean).forEach((sk) => S.tweens.add({ targets: sk, alpha: 0, duration: 300 }));

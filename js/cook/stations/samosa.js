@@ -106,7 +106,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ["sv2-thali", ART.thali],
       // SAM-21: the pastry texture the coded fold is drawn in (the s08 art run's tile, seamless across)
       ["sv3-pastry", ART.pastry],
-    ].concat(ART.fry.map((url, i) => [`sv2-fry-${i}`, url]));
+      // S19 (s19-wave-e2, S2 #92): the round sheet's underside, what a flap shows as it turns over in the coded fold
+      ART.under ? ["sv4-under", ART.under] : null,
+    ]
+      .filter(Boolean)
+      .concat(ART.fry.map((url, i) => [`sv2-fry-${i}`, url]));
   /*
    * s08 w6B (CK-48, P28: "the time it takes for you to listen to the instruction ... should be enough time to load"): this
    * file loads when samosa is chosen (CK-25: with the order, or the lab tile), before its view opens, so its own pictures
@@ -194,7 +198,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (ctx.nextStep) ctx.nextStep("Fry");
     });
     const yz = Mech.zone(S, ctx, { id: "fry", level });
-    const fried = await fry(yz, { n: made.n, level, redo, steps, ready: fryReady });
+    const fried = await fry(yz, { n: made.n, level, redo, steps, ready: fryReady, who });
     // the first try's verdict (graded where it happened): the count and the frying
     const countWrong = made.countWrong || null;
     if (countWrong || fried.bad) yz.listen(false, countWrong || fried.bad);
@@ -295,6 +299,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       img.chip = chip;
       items[id] = img;
     });
+    // SH-255 (the eye judge beside chai, 10 Nov: the pills at 740x320 far smaller than chai's): the row's pills at one scale, as large
+    // as the floor asks and their neighbours allow (the shared kit's Shelf.pillScale on Shelf.pillWant, chai's fitPills)
+    const SH = global.Shelf;
+    const row = ids.filter((id) => items[id] && items[id].chip && items[id].chip.faceW);
+    if (SH && SH.pillScale && SH.pillWant && SH.pillGap && row.length) {
+      let wts = 1;
+      try {
+        wts = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        /* no view yet: as drawn */
+      }
+      const ppw = wts * z.k;
+      const fit = SH.pillScale(row.map((id) => ({ x: at[id], w: items[id].chip.faceW(items[id].chip.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW: pitch });
+      const y = Math.min(CHIP_Y, 896 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
+      row.forEach((id) => {
+        const c = items[id].chip;
+        if (c.face && c.capW !== fit.cap) c.face(c.showsWord, fit.cap);
+        c.k = fit.k;
+        c.setPosition(z.X(at[id]), z.Y(y)).setScale(z.k * fit.k);
+        if (c.hit) c.hit(pitch);
+      });
+    }
     return items;
   }
 
@@ -328,6 +354,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     img.home = { x, y };
     return img;
   }
+  /**
+   * SH-258 (the eye judge beside chai, 10 Nov: no face circle beside what they own until well done): the asker's face circle (the
+   * kit's badge, Cook.Kit.badge) on the plate their samosas go onto, from its first frame, as chai's Nana is on the glass: over the
+   * plate's upper-left rim, the kit's badge size (64 design px, at least 30 CSS px as seen); the plate's light takes it in (thing.face).
+   */
+  function plateFace(z, S, img, who) {
+    if (!img || !who || !Cook.Kit || !Cook.Kit.badge) return null;
+    const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+    const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
+    const r = img.displayWidth / 2;
+    const face = S.track(S.add.image(img.x - r * 0.72, img.y - r * 0.72, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
+    face.setName("samosa-plate-face");
+    img.face = face;
+    return face;
+  }
 
   /* ---------- 1 + 2: fill the strips, one tick, then fold every filled one ---------- */
   /*
@@ -355,12 +396,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     board.shadow = S.contactShadow(board);
     // the plate the folded samosas wait on (right of the board; S10: on its flat middle)
     const plate = plateAt(z, S, PLATE.x, PLATE.y, PLATE.d);
+    plateFace(z, S, plate, who);
     const items = shelf(z0, S, ids, level);
     const P0 = { x: BOARD.x, y: BOARD.y + 6 };
     const folds = Math.max(3, Math.min(4, St.knobInt(k.folds != null ? k.folds : 3)));
     const tile = S.textures.exists("sv3-pastry") ? S.textures.get("sv3-pastry").getSourceImage() : null;
+    const under = S.textures.exists("sv4-under") ? S.textures.get("sv4-under").getSourceImage() : null;
     // the flat strip, drawn once in code from the pastry texture (its geometry is every fold's)
-    const proto = Cook.Pastry.create({ folds, tile, ppu: PPU });
+    const proto = Cook.Pastry.create({ folds, tile, under, ppu: PPU });
     const LU = proto.L;
     proto.draw({});
     if (S.textures.exists("sv3-fold-strip")) S.textures.remove("sv3-fold-strip");
@@ -911,14 +954,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let doneInfo = null;
     // the live fold: redrawn every frame while a strip is being folded (the lit flap breathes)
     let live = null;
-    let glowT = 0;
     const gdt = clock();
     const stopFoldTick = S.addTick(() => {
       const dt = gdt();
       if (!live) return;
-      glowT += dt / 1000;
       if (live.arrowTo != null) live.arrow += Cook.clamp(live.arrowTo - live.arrow, -dt / 220, dt / 220);
-      live.P.draw({ t: live.t, glow: live.lit ? 0.5 + 0.5 * Math.sin(glowT * 4) : null, arrow: live.arrow, blobs: live.blobs }, cv.getContext());
+      // CK-82, SH-257 (the eye judge, 10 Nov: "an orange glow instead" of the kit's light): the fold's light is the kit's one box (the
+      // swipe's Cook.Coach.lit); the pastry draws no glow of its own (its arrow, the way to swipe, stays: SAM-21's help)
+      live.P.draw({ t: live.t, glow: null, arrow: live.arrow, blobs: live.blobs }, cv.getContext());
       cv.refresh();
     });
     let n = 0;
@@ -964,7 +1007,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.tweens.add({ targets: bl, x: sp.x, y: sp.y, displayWidth: size, displayHeight: size * 0.96, duration: 340, ease: "Cubic.easeInOut" });
       });
       await new Promise((res) => S.tweens.add({ targets: x, x: tx, y: ty, scale: FULL, duration: 340, ease: "Cubic.easeInOut", onComplete: res }));
-      const P = Cook.Pastry.create({ folds, tile, ppu: PPU });
+      const P = Cook.Pastry.create({ folds, tile, under, ppu: PPU });
       const blobsU = x.blobs.map((b) => {
         const [ux, uy] = w2u(x, b.x, b.y);
         return { img: b.texture.getSourceImage(), x: ux, y: uy, w: b.displayWidth / U(x), h: b.displayHeight / U(x), angle: b.angle };
@@ -985,12 +1028,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         live.lit = true;
         live.arrowTo = 1;
         live.arrow = 1;
+        // CK-82 (the eye judge, 10 Nov: the fold's dim and box showed for about 100 ms, then went while the arrow stayed): the first fold's
+        // light is the kit's one box (Cook.Coach.control, as chai's dial and sekelo's grill), held round the pastry until the finger
+        // starts the fold
+        let foldLight = n === 0 && f === 0 && gate && Cook.Coach.control && gate.first("fold") ? Cook.Coach.control({ key: "samosa", note: "samosa:fold", target: Cook.Coach.box(fimg, 6, { visible: true }), first: true, noHint: true }) : null;
+        const foldLightOff = () => foldLight && (foldLight.close(), (foldLight = null));
         await swipe(z, S, {
           from,
           to,
           thing: fimg, // (the light's thing: the strip being folded, whole, SH-230)
           minLen: k.minLen || 0.45,
           onDrag: () => {
+            foldLightOff();
             live.lit = false;
             live.arrowTo = 0;
             live.arrow = 0;
@@ -1002,6 +1051,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           },
           draw: (t) => (live.t = t),
         });
+        foldLightOff();
         P.commit();
         live.t = 0;
         if (f === 0) {
@@ -1145,7 +1195,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
 
   /* ---------- 3: fry in the karahi on the wide hob, lift onto the paper-lined plate ---------- */
-  async function fry(z, { n, level, redo, steps, ready = null }) {
+  async function fry(z, { n, level, redo, steps, ready = null, who = null }) {
     const z0 = z;
     z = Cook.liftZone(z0);
     const S = z.S;
@@ -1163,7 +1213,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const at = hob.burners[0];
     const bodyR = z.L(FRY.r);
     // the flames peek out past the karahi's body (flame-high's ring: 1.2 x flameR)
-    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.9 });
+    // (SH-258: the asker's face beside the knob from the first frame, as chai's hob carries it: the kit's burner badge)
+    const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.9, who: who || undefined });
     // the karahi, placed by its measured round body (never the handle-inclusive box)
     const KM = META.karahi;
     const karahi = S.track(S.add.image(at.x, at.y, "sv3-karahi").setOrigin(KM.cx, KM.cy).setDepth(D.item));
@@ -1172,6 +1223,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const oilR = bodyR * KM.oil;
     const PY = (at.y - z.Y(0)) / z.k; // the plate sits on the burner's line (design px)
     const plate = plateAt(z, S, FRY.px, PY, FRY.pd);
+    plateFace(z, S, plate, who);
     const OL = OIL(n);
     const FS = z.L(OL.size) / META.fry.w; // a samosa's scale in the oil (fry canvases)
     const raw = [];
@@ -1198,6 +1250,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     steps.to("samosa:fire");
     await new Promise((resolve) => {
       burner.knobHit.handAction = false;
+      // CK-82 (the eye judge, 10 Nov: the knob's box ran over the pan's rim and past the hob's foot): its light hugs the knob's own
+      // picture (its tap area is bigger, for small fingers), so the box stays inside the hob (Cook.Coach.box reads litBounds)
+      if (burner.knob && burner.knob.getBounds) burner.knobHit.litBounds = () => (burner.knob.active ? burner.knob.getBounds() : null);
       if (z.guided) S.glow(burner.knobHit, true);
       S.tappable(burner.knobHit, () => {
         S.untap(burner.knobHit);
@@ -1447,9 +1502,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const S = z.S;
     z.expect({ kind: "wait" });
     const pr = (plate.img.displayWidth || z.L(FRY.pd)) / 2;
-    const look = await Cook.Kit.review(S, { who, ok: true, x: plate.img.x, y: plate.img.y - pr * 0.18, size: z.L(250), k: z.L(1) });
+    // CK-82, SH-254 (the eye judge beside chai, 10 Nov: Nana's face filled the plate, no samosa to see at well done): one face, at the
+    // plate's upper left past its rim, as chai's grows beside its glass (NjgServe.layout's place for one dish: (w/2 + size/2) x 0.74
+    // up and left of its middle); the plate's small face circle stands down while it is up
+    const size = z.L(170);
+    const off = (pr + size / 2) * 0.74;
+    const small = plate.img.face;
+    if (small) small.setVisible(false);
+    const look = await Cook.Kit.review(S, { who, ok: true, x: plate.img.x - off, y: plate.img.y - off, size, k: z.L(1), side: "left" });
     await Cook.wait(300);
     await look.close();
+    if (small && small.active) small.setVisible(true);
   }
 
   Mech.lab("samosa", {

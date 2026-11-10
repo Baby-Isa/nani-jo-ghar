@@ -23,11 +23,41 @@
   }
  },
  "words": {
-  "ph-naan": {"heap": {"kind": "pieces", "color": "#e7c58b"}, "bowl": "ceramic"},
-  "ph-cup": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"},
-  "ph-quartercup": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"},
-  "ph-cups-1h": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"},
-  "ph-cups-2h": {"heap": {"kind": "pieces", "color": "#e8f3f6"}, "bowl": "ceramic"}
+  "ph-naan": {
+   "heap": {
+    "kind": "pieces",
+    "color": "#e7c58b"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-cup": {
+   "heap": {
+    "kind": "pieces",
+    "color": "#e8f3f6"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-quartercup": {
+   "heap": {
+    "kind": "pieces",
+    "color": "#e8f3f6"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-cups-1h": {
+   "heap": {
+    "kind": "pieces",
+    "color": "#e8f3f6"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-cups-2h": {
+   "heap": {
+    "kind": "pieces",
+    "color": "#e8f3f6"
+   },
+   "bowl": "ceramic"
+  }
  },
  "mechanic": {
   "levels": [
@@ -35,29 +65,247 @@
     "lotTaps": 4,
     "bakeMs": 3600,
     "plans": [
-     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-paani", "amt": "little", "parts": ["cook-paani"]}],
-     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-dudh", "amt": "little", "parts": ["cook-dudh"]}]
+     [
+      {
+       "id": "cook-atto",
+       "amt": "lot",
+       "parts": [
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-paani",
+       "amt": "little",
+       "parts": [
+        "cook-paani"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "lot",
+       "parts": [
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-dudh",
+       "amt": "little",
+       "parts": [
+        "cook-dudh"
+       ]
+      }
+     ]
     ]
    },
    {
     "plans": [
-     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}, {"id": "cook-paani", "amt": "more", "parts": ["cook-paani"]}],
-     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "cook-khun", "amt": "little", "parts": ["cook-khun"]}, {"id": "cook-dudh", "amt": "more", "parts": ["cook-dudh"]}],
-     [{"id": "cook-atto", "amt": "lot", "parts": ["cook-atto"]}, {"id": "ph-dahi", "amt": "more", "parts": ["ph-dahi"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}]
+     [
+      {
+       "id": "cook-atto",
+       "amt": "lot",
+       "parts": [
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "little",
+       "parts": [
+        "spi-16"
+       ]
+      },
+      {
+       "id": "cook-paani",
+       "amt": "more",
+       "parts": [
+        "cook-paani"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "lot",
+       "parts": [
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-khun",
+       "amt": "little",
+       "parts": [
+        "cook-khun"
+       ]
+      },
+      {
+       "id": "cook-dudh",
+       "amt": "more",
+       "parts": [
+        "cook-dudh"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "lot",
+       "parts": [
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "ph-dahi",
+       "amt": "more",
+       "parts": [
+        "ph-dahi"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "little",
+       "parts": [
+        "spi-16"
+       ]
+      }
+     ]
     ]
    },
    {
     "jug": true,
     "plans": [
-     [{"id": "cook-atto", "amt": "jug", "units": 4, "parts": [1, "ph-cup", "cook-atto"]}, {"id": "cook-paani", "amt": "jug", "units": 2, "parts": ["ph-half", "cook-paani"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}],
-     [{"id": "cook-atto", "amt": "jug", "units": 4, "parts": [1, "ph-cup", "cook-atto"]}, {"id": "cook-dudh", "amt": "jug", "units": 2, "parts": ["ph-half", "cook-dudh"]}, {"id": "cook-khun", "amt": "little", "parts": ["cook-khun"]}]
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 4,
+       "parts": [
+        1,
+        "ph-cup",
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-paani",
+       "amt": "jug",
+       "units": 2,
+       "parts": [
+        "ph-half",
+        "cook-paani"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "little",
+       "parts": [
+        "spi-16"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 4,
+       "parts": [
+        1,
+        "ph-cup",
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-dudh",
+       "amt": "jug",
+       "units": 2,
+       "parts": [
+        "ph-half",
+        "cook-dudh"
+       ]
+      },
+      {
+       "id": "cook-khun",
+       "amt": "little",
+       "parts": [
+        "cook-khun"
+       ]
+      }
+     ]
     ]
    },
    {
     "bakeMs": 4200,
     "plans": [
-     [{"id": "cook-atto", "amt": "jug", "units": 10, "parts": ["ph-cups-2h", "cook-atto"]}, {"id": "cook-paani", "amt": "jug", "units": 6, "parts": ["ph-cups-1h", "cook-paani"]}, {"id": "ph-dahi", "amt": "jug", "units": 1, "parts": ["ph-quartercup", "ph-dahi"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}],
-     [{"id": "cook-atto", "amt": "jug", "units": 6, "parts": ["ph-cups-1h", "cook-atto"]}, {"id": "cook-dudh", "amt": "jug", "units": 1, "parts": ["ph-quartercup", "cook-dudh"]}, {"id": "cook-khun", "amt": "more", "parts": ["cook-khun"]}, {"id": "spi-16", "amt": "little", "parts": ["spi-16"]}]
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 10,
+       "parts": [
+        "ph-cups-2h",
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-paani",
+       "amt": "jug",
+       "units": 6,
+       "parts": [
+        "ph-cups-1h",
+        "cook-paani"
+       ]
+      },
+      {
+       "id": "ph-dahi",
+       "amt": "jug",
+       "units": 1,
+       "parts": [
+        "ph-quartercup",
+        "ph-dahi"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "little",
+       "parts": [
+        "spi-16"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 6,
+       "parts": [
+        "ph-cups-1h",
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-dudh",
+       "amt": "jug",
+       "units": 1,
+       "parts": [
+        "ph-quartercup",
+        "cook-dudh"
+       ]
+      },
+      {
+       "id": "cook-khun",
+       "amt": "more",
+       "parts": [
+        "cook-khun"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "little",
+       "parts": [
+        "spi-16"
+       ]
+      }
+     ]
     ]
    }
   ]
@@ -134,9 +382,8 @@
    900
   ],
   "view": "E side-on counter; the oven is its own close-up",
-  "bg": "assets/cook/proto/baking/bg-counter.webp",
   "worktopEdgeY": 470,
-  "_bg": "BK cut at crop_y 146 so the worktop's front edge lands at y 469.8 (wanted 470). BK is a kept best try: its tiles and marble lean peach (run log).",
+  "_bg": "S19 (s19-wave-e2; CK-84, SH-255): the scene is the kitchen kit's marble worktop and its stone shelf band (St.stoneBand, band 'shelf'), as chai's; the old counter picture (bg, kept here as _bgWas) is no longer drawn. BK cut at crop_y 146 so the worktop's front edge lands at y 469.8 (wanted 470). BK is a kept best try: its tiles and marble lean peach (run log).",
   "cat": {
    "file": "assets/cook/proto/cat-peek.webp",
    "placeholder": true,
@@ -161,40 +408,48 @@
     "h": 460
    },
    "_note": "one 840x643 canvas, top-left aligned on the cabinet frame: a swap changes only the glow or the door"
-  }
+  },
+  "_bgWas": "assets/cook/proto/baking/bg-counter.webp"
  },
  "items": {
   "mixBowl": {
    "size": "M",
    "view": "E",
    "states": {
-    "empty": "assets/cook/proto/baking/bowl-f-0.webp",
-    "scoop": "assets/cook/proto/baking/bowl-f-1.webp",
-    "heap": "assets/cook/proto/baking/bowl-f-2.webp",
-    "well": "assets/cook/proto/baking/bowl-f-3.webp",
-    "mixing": "assets/cook/proto/baking/bowl-f-4.webp",
-    "dough": "assets/cook/proto/baking/bowl-f-dough.webp"
+    "empty": "assets/cook/items/v4/baking/bowl-empty.webp",
+    "flour1": "assets/cook/items/v4/baking/bowl-flour-1.webp",
+    "flour2": "assets/cook/items/v4/baking/bowl-flour-2.webp",
+    "flour3": "assets/cook/items/v4/baking/bowl-flour-3.webp",
+    "mixing": "assets/cook/items/v4/baking/bowl-shaggy.webp",
+    "dough": "assets/cook/items/v4/baking/bowl-shaggy.webp"
    },
    "px": [
     484,
     401
    ],
    "drawn": {
-    "w": 380
+    "w": 400
    },
    "at": [
-    820,
+    800,
     520
    ],
    "replaces": "assets/cook/proto/bake-bowl.webp and the drawn mound",
-   "_note": "contents rise by turn: the first picture is empty, the last is the dough after the final instruction; one canvas"
+   "_note": "S19 (s19-wave-e2): the side-on glass bowl (B1 #108, B1f #109, cut by build/tools/art/s19_cut.py) standing on the worktop, its foot just above the shelf band (foot: the band's top less 24 by default): empty, then the flour at a quarter, a half, three quarters as the flour goes in (flour: its id), the shaggy dough once anything wet is in (wet); the dough is the shaggy bowl too until a dough ball is drawn in this bowl (the mini run's B1-2 ball is a different bowl). Was proto/baking/bowl-f-*.",
+   "flour": "cook-atto",
+   "wet": [
+    "cook-paani",
+    "cook-dudh",
+    "ph-dahi",
+    "ph-ghee"
+   ]
   },
   "jug": {
    "size": "L",
    "view": "F",
    "states": {
     "empty": "assets/cook/proto/baking/jug-empty.webp",
-    "water": "assets/cook/proto/baking/jug-water.webp",
+    "water": "assets/cook/items/v4/baking/jug-4.webp",
     "milk": "assets/cook/proto/baking/jug-milk.webp",
     "flour": "assets/cook/proto/baking/jug-flour.webp",
     "yoghurt": "assets/cook/proto/baking/jug-yoghurt.webp",
@@ -213,7 +468,7 @@
    },
    "at": [
     470,
-    670
+    600
    ],
    "_at": "the jug's base (origin bottom centre), level with the bowl's foot",
    "partialAlpha": true,
@@ -232,7 +487,20 @@
     "10": 0.249
    },
    "_lineAt": "key = quarter cups (1 = a quarter ... 10 = two and a half), value = the line's height as a fraction of the jug picture from its TOP; five evenly drawn lines, no numbers. The game reveals a full jug through a rising mask up to the line, never a proportional fill.",
-   "replaces": "the drawn jug and its drawn fill"
+   "replaces": "the drawn jug and its drawn fill",
+   "emptyFor": {
+    "water": "assets/cook/items/v4/baking/jug-0.webp"
+   },
+   "lineAtFor": {
+    "water": {
+     "1": 0.77,
+     "2": 0.7,
+     "4": 0.55,
+     "6": 0.41,
+     "10": 0.125
+    }
+   },
+   "_jugV4": "S19 (s19-wave-e2): water is drawn in the new glass jug (B2 #83: its empty jug-0 and its full jug-4; emptyFor swaps the empty picture for that fill; lineAtFor: its lines, from the four water levels drawn on B2, read off the cut); milk, flour, yoghurt and sugar keep the old jug's pictures until the new jug has them. The jug stands on the worktop now (at: its base), never on the band."
   },
   "tray": {
    "size": "M",
@@ -248,9 +516,9 @@
    "size": "M",
    "view": "F",
    "states": {
-    "raw": "assets/cook/proto/baking/naan-raw.webp",
+    "raw": "assets/cook/items/v4/baking/tray-raw.webp",
     "puff": "assets/cook/proto/baking/naan-puff.webp",
-    "golden": "assets/cook/proto/baking/naan-golden.webp",
+    "golden": "assets/cook/items/v4/baking/tray-baked.webp",
     "deep": "assets/cook/proto/baking/naan-deep.webp"
    },
    "px": [
@@ -260,14 +528,15 @@
    "word": "ph-naan",
    "english": "naan",
    "drawn": {
-    "w": 260
+    "w": 280
    },
    "at": [
     330,
-    640
+    520
    ],
    "_note": "on its tray, registered with the tray: in the oven by the ring's progress; the tray alone is items.tray",
-   "replaces": "assets/cook/proto/bake-naan.webp"
+   "replaces": "assets/cook/proto/bake-naan.webp",
+   "_v4": "S19 (s19-wave-e2): the naan on its tray raw and baked (B3 #87: two stages; four not solved), on the worktop left of the oven, above the band"
   },
   "naanOut": {
    "size": "M",
@@ -294,11 +563,22 @@
    "view": "F",
    "reuse": true,
    "drawn": {
-    "h": 170
+    "h": 150
    },
    "row_y": 820,
-   "liquid": ["cook-paani", "cook-dudh"],
-   "pour": {"cook-atto": "white", "cook-paani": "white", "cook-dudh": "white", "cook-khun": "white", "spi-16": "loon", "ph-dahi": "dahi", "ph-ghee": "ghee"},
+   "liquid": [
+    "cook-paani",
+    "cook-dudh"
+   ],
+   "pour": {
+    "cook-atto": "white",
+    "cook-paani": "white",
+    "cook-dudh": "white",
+    "cook-khun": "white",
+    "spi-16": "loon",
+    "ph-dahi": "dahi",
+    "ph-ghee": "ghee"
+   },
    "_pour": "liquid: poured as a column, the rest as drops; pour: the palette key of the drawn drops where items.streams has no picture",
    "files": {
     "cook-atto": "assets/cook/items/shelf-cook-atto-bare-f.webp",
@@ -308,7 +588,8 @@
     "spi-16": "assets/cook/items/shelf-loon-jar-v2-f.webp",
     "ph-dahi": "assets/cook/items/shelf-ph-dahi-bare-f.webp",
     "ph-ghee": "assets/cook/items/shelf-ph-ghee-bare-f.webp"
-   }
+   },
+   "pitch": 300
   },
   "streams": {
    "reuse": true,
@@ -389,14 +670,40 @@
  "wordMoment": {
   "call": "UI.wordMoment(ids, settings.wordMoment): the kit's call with this game's pair, key and pictures (s18-w3-kit; a word still to record shows its grey English)",
   "key": "baking:word-moment-jug",
-  "pair": ["ph-half", "ph-cup"],
+  "pair": [
+   "ph-half",
+   "ph-cup"
+  ],
   "_pair": "L3's first jug round asks a cup of flour and half a cup of water or milk (mechanic.levels[2].plans): the two the moment shows, side by side, before it names either (STD-A3-03)",
-  "vessel": {"src": "assets/cook/items/shelf-cook-paani-bare-f.webp", "spout": [0.5, 0.08], "aspect": 0.667, "tilt": -110, "placeholder": true},
+  "vessel": {
+   "src": "assets/cook/items/shelf-cook-paani-bare-f.webp",
+   "spout": [
+    0.5,
+    0.08
+   ],
+   "aspect": 0.667,
+   "tilt": -110,
+   "placeholder": true
+  },
   "_vessel": "the water bottle upright in its picture: its mouth (spout, as fractions of the picture) and w/h; tilt -110 lays its mouth down to the left, over the jug, the bottle's body up and right as chai's kettle (ART-38's vessel to come)",
   "stream": "assets/shared/word-moment/stream-water-s17.webp",
   "measures": [
-   {"id": "ph-half", "empty": "assets/cook/proto/baking/jug-empty.webp", "full": "assets/cook/proto/baking/jug-water.webp", "lineAt": 0.672, "fill": 0.29, "card": "assets/cook/proto/baking/jug-water.webp"},
-   {"id": "ph-cup", "empty": "assets/cook/proto/baking/jug-empty.webp", "full": "assets/cook/proto/baking/jug-water.webp", "lineAt": 0.532, "fill": 0.47, "card": "assets/cook/proto/baking/jug-flour.webp"}
+   {
+    "id": "ph-half",
+    "empty": "assets/cook/proto/baking/jug-empty.webp",
+    "full": "assets/cook/proto/baking/jug-water.webp",
+    "lineAt": 0.672,
+    "fill": 0.29,
+    "card": "assets/cook/proto/baking/jug-water.webp"
+   },
+   {
+    "id": "ph-cup",
+    "empty": "assets/cook/proto/baking/jug-empty.webp",
+    "full": "assets/cook/proto/baking/jug-water.webp",
+    "lineAt": 0.532,
+    "fill": 0.47,
+    "card": "assets/cook/proto/baking/jug-flour.webp"
+   }
   ],
   "_measures": "each measure the jug, empty, then its full picture revealed from the bottom up to its line (items.jug.lineAt: 2 quarter cups 0.672, 4 quarter cups 0.532, from the picture's top); fill, the word moment's share of the inside (the jug's inside about 0.12 to 0.90 of the picture: (0.90 - lineAt) / 0.78); placeholders until ART-38 (a vessel tilted into a side-on measure, empty, half and full)",
   "ids": [
@@ -464,17 +771,10 @@
   }
  ],
  "assets": [
-  "assets/cook/proto/baking/bg-counter.webp",
   "assets/cook/proto/cat-peek.webp",
   "assets/cook/proto/baking/oven-shut.webp",
   "assets/cook/proto/baking/oven-baking.webp",
   "assets/cook/proto/baking/oven-open.webp",
-  "assets/cook/proto/baking/bowl-f-0.webp",
-  "assets/cook/proto/baking/bowl-f-1.webp",
-  "assets/cook/proto/baking/bowl-f-2.webp",
-  "assets/cook/proto/baking/bowl-f-3.webp",
-  "assets/cook/proto/baking/bowl-f-4.webp",
-  "assets/cook/proto/baking/bowl-f-dough.webp",
   "assets/cook/proto/baking/jug-empty.webp",
   "assets/cook/proto/baking/jug-water.webp",
   "assets/cook/proto/baking/jug-milk.webp",
@@ -482,9 +782,7 @@
   "assets/cook/proto/baking/jug-yoghurt.webp",
   "assets/cook/proto/baking/jug-sugar.webp",
   "assets/cook/proto/baking/tray.webp",
-  "assets/cook/proto/baking/naan-raw.webp",
   "assets/cook/proto/baking/naan-puff.webp",
-  "assets/cook/proto/baking/naan-golden.webp",
   "assets/cook/proto/baking/naan-deep.webp",
   "assets/cook/proto/baking/naan-alone.webp",
   "assets/cook/props/dough-ball.webp",
@@ -498,6 +796,10 @@
   "assets/shared/word-moment/stream-flour-s17.webp",
   "assets/shared/word-moment/stream-water-s17.webp",
   "assets/shared/word-moment/stream-milk-s17.webp",
-  "assets/shared/word-moment/stream-sugar-s17.webp"
+  "assets/shared/word-moment/stream-sugar-s17.webp",
+  "assets/cook/items/v4/baking/bowl-*.webp",
+  "assets/cook/items/v4/baking/jug-0.webp",
+  "assets/cook/items/v4/baking/jug-4.webp",
+  "assets/cook/items/v4/baking/tray-*.webp"
  ]
 }
