@@ -125,7 +125,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     /** {id: n} from a tally, a list (one spoon each) or any-order groups (the fill's and the samosa station's one copy). */
     tally: asTally,
     /** folds: how many swipes (3 or 4); tile: the pastry texture (seamless across); ppu: canvas px per unit. */
-    create({ folds = 3, tile = null, ppu = 300 } = {}) {
+    create({ folds = 3, tile = null, under = null, ppu = 300 } = {}) {
       const N = Math.max(2, Math.min(5, folds | 0));
       const L = ((N + 1) / 2) * TS;
       const M = 0.38; // the margin round the strip (shadows, the glow, the arrow)
@@ -282,7 +282,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             g.save();
             path(g, P);
             g.clip();
-            if (tile) {
+            // S19 (s19-wave-e2, S2): a layer seen from below (its map mirrored: a flap turning, or one folded over) shows the sheet's
+            // underside (under: the round sheet's picture, its middle band laid once over the strip, no tile seams); else the tile
+            const flipped = MM[0] * MM[3] - MM[1] * MM[2] < 0;
+            if (under && flipped && under.width) {
+              g.save();
+              g.transform(...MM);
+              const bw = L + 0.38;
+              const sh = (under.width * 0.82 * 1.18) / bw; // (the middle 82% of the disc's width, its band as tall as the strip asks)
+              g.drawImage(under, under.width * 0.09, (under.height - sh) / 2, under.width * 0.82, sh, -0.18, -0.09, bw, 1.18);
+              g.restore();
+            } else if (tile) {
               g.save();
               g.transform(...MM);
               const th = 1.18;

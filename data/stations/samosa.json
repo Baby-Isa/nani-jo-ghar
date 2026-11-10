@@ -13,18 +13,19 @@
   }
  },
  "art": {
-  "_about": "Samosa's own pictures (decision 68: loaded when samosa is chosen, each at its one drawn size) and what build/cut_cook_v3.py measured on them (assets/cook/items/v3/samosa/meta.json; fractions of each sprite, checked by build/check_vessel_meta.py). heaps: each filling's top-down heap (S2 / Q2, no bowls; 30 Sept: the chilli is daar's sliced rings; ART-11: the potato is the landed PT1 pile). pastry: the tile the coded fold is drawn in (SAM-21). fry: raw, light, golden, too dark. meta: karahi (its round body, handles left out; oil = the oil's radius / the body's), plate (its rim; flat = the paper-lined centre's half-width / the rim r), jharo (its bowl's middle and radius: x, r of the width, y of the height), heap and fry (their canvases).",
+  "_about": "Samosa's own pictures (decision 68: loaded when samosa is chosen, each at its one drawn size) and what build/cut_cook_v3.py measured on them (assets/cook/items/v3/samosa/meta.json; fractions of each sprite, checked by build/check_vessel_meta.py). heaps: each filling's top-down heap (S2 / Q2, no bowls; 30 Sept: the chilli is daar's sliced rings; ART-11: the potato is the landed PT1 pile). pastry: the tile the coded fold is drawn in (SAM-21). fry: raw, light, golden, too dark (S19, s19-wave-e2: S4 #97, the closed samosa in four stages, cut by build/tools/art/s19_cut.py; was samosa-v2's). under: the round sheet's underside (S2 #92), shown by a flap of the coded fold seen from below (Cook.Pastry's under). meta: karahi (its round body, handles left out; oil = the oil's radius / the body's), plate (its rim; flat = the paper-lined centre's half-width / the rim r), jharo (its bowl's middle and radius: x, r of the width, y of the height), heap and fry (their canvases).",
   "board": "assets/cook/items/v3/samosa/board.webp",
   "plate": "assets/cook/items/v3/samosa/plate.webp",
   "karahi": "assets/cook/items/v3/samosa/karahi.webp",
   "jharo": "assets/cook/items/v3/samosa/jharo.webp",
   "thali": "assets/cook/items/vessel-thali-t.webp",
   "pastry": "assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp",
+  "under": "assets/cook/items/v4/samosa/sheet-under.webp",
   "fry": [
-   "assets/cook/items/samosa-v2/fry-0.webp",
-   "assets/cook/items/samosa-v2/fry-1.webp",
-   "assets/cook/items/samosa-v2/fry-2.webp",
-   "assets/cook/items/samosa-v2/fry-3.webp"
+   "assets/cook/items/v4/samosa/samosa-raw.webp",
+   "assets/cook/items/v4/samosa/samosa-part.webp",
+   "assets/cook/items/v4/samosa/samosa-cooked.webp",
+   "assets/cook/items/v4/samosa/samosa-over.webp"
   ],
   "heaps": {
    "ph-keema": "assets/cook/items/v3/samosa/fill-chundo.webp",
@@ -64,7 +65,7 @@
    },
    "fry": {
     "w": 400,
-    "h": 340
+    "h": 368
    }
   },
   "colours": {
@@ -144,5 +145,10 @@
     ]
    }
   ]
- }
+ },
+ "assets": [
+  "assets/cook/items/v4/samosa/samosa-*.webp",
+  "assets/cook/items/v4/samosa/sheet-under.webp"
+ ],
+ "_assets": "S19 (s19-wave-e2; decision 68, loadcheck): the v4 fry stages and the sheet's underside (art.fry, art.under), beyond data/cook.json art.assets.stations"
 }
