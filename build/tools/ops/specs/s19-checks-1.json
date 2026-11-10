@@ -1,0 +1,82 @@
+{
+  "name": "s19-checks-1: checks that measure the screen (the light, the dim, overlaps), real bad runs, no silent passes, shared pieces enforced, the side-by-side tool's frames",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the checks review (build/reports/s19-checks-review.md) found the visual checks read the game's own account of what it drew, so 0 breaks while the eye judge failed five games; this is the method change, proved on the light first; its rows are SH-249, SH-250, SH-251, SH-253 and SH-257's check halves, whose proof is the bad-run fixtures going red (not evidence specs: s19-fixes-e owns build/sandbox/data/evidence.json for the game rows)",
+  "cost": "about $40-60",
+  "stop": "when the tasks are done",
+  "branch": "s19-checks-1 in /home/user/wt/s19-checks-1 (made for you from the integration branch); commit there, never push; the orchestrator merges",
+  "kind": "tools",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/s19-checks-review.md (all of it: the causes, the table of Zafar's things, section 5's changes 2-6)",
+    "build/reports/s19-eggs-beside-chai.md and build/reports/s19-four-beside-chai.md (what the eye judge found that the checks passed)",
+    "docs/design-language/standard/e-presentation.md STD-E2-08 and STD-E2-08a (the light's rule and the knife's swipe variant); d-guidance.md STD-D1-02",
+    "docs/process/eye-judge-rubric.md (what stays with the eye)",
+    "build/reports/s19-wave-d.md 'Remaining breaks' (six probe faults with their exact changes)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers today)"
+  ],
+  "owns": [
+    "build/sandbox/** except build/sandbox/data/evidence.json (the probes, contract checks, keyframes.mjs, lightpix.mjs, data/games.json)",
+    "build/tools/review/sidebyside.mjs, sidebyside_compose.py and their tests",
+    "build/lint/** (the shared-pieces lint)",
+    "build/sandbox/fixtures/bad-runs/** (new: the real bad runs)",
+    "docs/process/checks-to-build.md, docs/process/qa-checklist.md (the lines about these checks)",
+    "build/reports/s19-checks-1.md"
+  ],
+  "readOnly": [
+    "js/** and css/** and data/** (the fixes builder s19-fixes-e owns the game code now; a game change you need goes in your report, exactly)",
+    "assets/**",
+    "build/reports/s19-check-sort.md (a separate read-only pass sorting every check; use it if it lands while you work)",
+    "build/sandbox/data/evidence.json (s19-fixes-e writes the game rows' evidence specs)"
+  ],
+  "stubs": "none",
+  "port": 8908,
+  "report": "s19-checks-1",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray",
+    "cook:eggs",
+    "cook:chop",
+    "cook:corn",
+    "cook:daar",
+    "cook:maani-line"
+  ],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Real bad runs first. Build a fixtures library of runs that are known to be wrong, from the real code before its fix: a git worktree at commit 3c4882609 (before the September overlay was deleted: eggs and corn show a circle plus a box and a darker dim; chop's and daar's lights; the pan's round ring) played with run.mjs --keyframes at 740x320 and 1280x665, kept small (the frames the checks need, not whole films). Chai at HEAD is the good run. Name each bad run with the row and the flaw it shows.",
+      "accept": "build/sandbox/fixtures/bad-runs/ with a README listing each run, its flaw and the commit; under 300 MB"
+    },
+    {
+      "do": "The light-picture check (change 2 of the review): from the screen, not the game's account. For every light: the frame just before it and the frame with it; find what was not darkened. Pass only if: exactly one lit region; a rounded rectangle (corners at most a quarter of its height; a circle or an oval fails); whole inside the frame unless its thing touches the edge; its thing's picture, its word pill and its face (when it has them; which objects they are may come from the canvas's object list, but the box itself is measured in pixels) inside it with the set pad (Onboard.BOX_PAD), less only where a neighbour is closer; never over the side panel or a face it isn't lighting; the dim's darkness within a set margin of chai's; nothing lit while an item is moving to it. The knife's swipe variant (STD-E2-08a: chop and daar's onion) passes when the box holds the knife, the item and the path between them. It replaces contract-53/82/92/105's light parts only where it does their job better; say which.",
+      "accept": "the check red on every bad run for the right reason, green on chai at both sizes; a unit test that runs it on the fixtures; the run's report names each failing light with its picture"
+    },
+    {
+      "do": "No silent passes (change 3): every check reports per game 'judged N of M' and names what it did not judge and why; a game missing a field in build/sandbox/data/games.json is listed, not passed. The contract.md summary line shows it.",
+      "accept": "an eggs run whose report shows its judged count and lists the unjudged checks by name"
+    },
+    {
+      "do": "A check may be loosened only if it still goes red on its bad runs (change 4): make the check tests run each light, dim and overlap check against the fixtures, and say so in docs/process/checks-to-build.md in two lines.",
+      "accept": "the unit tests fail if a check stops going red on its fixture"
+    },
+    {
+      "do": "The overlap check from the screen: a face, a word pill or a card's text covered by another drawn thing (a face over a dish or a chip at well done: maani and corn; a chip under the settings gear: chop). Pixels and the canvas's object boxes, not the game's list of pairs.",
+      "accept": "red on the maani and corn praise frames and chop's first move in the 17:46-17:56 side-by-side runs (build/screenshots/sandbox/sbs-*-L1-20261110-17*), green on chai"
+    },
+    {
+      "do": "The shared-pieces lint: fails any dim, gold edge, light hole or bottom bar (shelf or tray band) drawn outside js/shared and js/cook/kitchen-kit.js, and any light option a game passes that is not on the shared light's named variant list (Onboard.VARIANTS, which s19-fixes-e adds: {swipe: [\"chop\", \"daar\"]}; until it lands, read it if present and say so). Baking's own counter is a known break until its redraws (named, not hidden).",
+      "accept": "the lint goes red on commit 3c4882609's coach.js overlay and on a test file that passes round: true; green on HEAD apart from baking"
+    },
+    {
+      "do": "Fix the tools: the side-by-side's 'light' keyframe is shot while lightpix hides the shared light (keyframes.mjs:146 against lightpix.mjs:67), so the judge never sees the box; mid-cook and the serve are missed in chop, corn and eggs (the stopwatch page, the opening counter); the order and light frames repeat or swap. And the six probe faults in s19-wave-d's report (contract-89, -111, -109, -107, -102 and -106's one-off at eggs 740x320 view-service in orch-overlay-gone), each fixed as written there or better.",
+      "accept": "sidebyside.mjs on eggs and chop shows all seven moments, the light pair with its box; the six probe faults no longer appear on a rerun of their pages"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8908, flock /tmp/njg-browser-8908.lock); the side-by-side tool takes /tmp/njg-browser-all.lock itself; commit on your branch often, never push; game code is s19-fixes-e's (write any change you need in your report); delete only your own superseded runs (disk is tight: keep under 3 GB); plain short English in the report.",
+      "accept": "build/reports/s19-checks-1.md with a Proof section, under 900 words: what each check now measures, its bad runs, what it caught on HEAD"
+    }
+  ]
+}

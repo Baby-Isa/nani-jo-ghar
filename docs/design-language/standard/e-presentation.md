@@ -123,11 +123,11 @@
 - **Status:** agreed 6 Nov (the corners 3 Nov)
 - **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` · **Value:** light pad, light corner (values.md D1) · **Impact:** wrong · **Source rows:** CHAI-33, SH-196, led:1.6-11, CHAI-25, CHAI-47, SEK-22, DAAR-39
 
-#### STD-E2-08a · A swipe's light: for chop's knife cut, the lit box takes in the whole path the knife travels, right to left across the item, one rounded rectangle
+#### STD-E2-08a · Chop's light takes in the knife's whole path across the item, one rounded rectangle
 - **Why:** "The wide highlight box for chop is correct and the onboarding shows the knife move across from right to left to chop an item so the whole horizontal path needs lighting ... Only should be like that for chop though" (Zafar, 10 Nov)
-- **Scope:** chop's knife cut only, a named variant of STD-E2-08 in the shared light; any other game asking for it is a rule break until Zafar adds it here
+- **Scope:** chop's game wherever it runs, alone or in a recipe; one chop (Zafar, 10 Nov), never over the side panel; no other game without his OK
 - **Pattern / part:** - / the light
-- **Checked by:** the light-picture check (planned, SH-249): one rounded rectangle, the knife, the item and the path between them inside it, never over the side panel or a face
+- **Checked by:** the light-picture check (SH-249)
 - **See it:** lab.html?mode=cook&game=chop&level=1 (740x320), New player
 - **Status:** agreed 10 Nov
 - **Layer:** shared kit · **Lives in:** `js/shared/onboard.js` (as a named variant; today chop sets it from its own code) · **Impact:** wrong · **Source rows:** CK-78, SH-249

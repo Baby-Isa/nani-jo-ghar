@@ -25,3 +25,10 @@
 - Chop's wide first light is right: a swipe's light takes in the knife's whole path, right to left; chop only (STD-E2-08a).
 - Shared pieces enforced: lights and bottom bars come only from the shared kit; exceptions become named variants in it (SH-257, SH-255).
 - He wants one clear plan for all the checks, not only the light.
+
+## Zafar, 10 Nov night (after the redraws landed)
+- Chaat's chutneys: the drizzles (C5-6, C10-4); the ribbons stay cut.
+- The knife's path light: yes in principle, and it is chop's own: chop is one standalone game chained into recipes, so a change to chop applies everywhere chop is seen; there must be one chop (SH-259, STD-E2-08a).
+- Naan in four stages at the next art run, two per image (ART-73).
+- Chaat's chop light: yes, and it is chop's own (SH-259).
+- The two ChatGPT folders on main come off at the next publish (ART-74).

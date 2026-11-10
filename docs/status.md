@@ -16,7 +16,7 @@ said **don't publish chai's three fixes**. New rule in CLAUDE.md: plans run back
 - **s19-lights phase 2 paused by Zafar (9 Nov, his token budget):** its committed work sits unmerged on branch `s19-lights` (`/home/user/wt/s19-lights`, report drafted); finish and merge it when he says. **Running:** Fable's answers to his mock-up questions (`build/reports/s19-fable-mock-answers.md`) and the /feedback report for his 9 Nov note (`docs/feedback/kitchen-mocks-2026-11-09.md`; its second reader still to run). Merged: s19-checks, s19-cards, s19-lights phase 1, s19-games. Principles answered (review document §7, 9 Nov).
 - Each builder's work merges only after a look beside chai and the judge on its changed screens; nothing is published without Zafar.
 
-**Next, in order:** 1. merge each builder as it reports (look beside chai, the judge); 2. launch the queued ones as slots free;
+**Next, in order:** 1. merge each builder as it reports (look beside chai, the judge); 2. launch the queued ones as slots free; At the next publish, remove `assets/ChatGPT 261110 1` and `2` from main (ART-74).
 3. hand Zafar the result and the principles list to review with his art.
 
 **Starting prompt for a new chat:**

@@ -15,6 +15,7 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 - Green pepper on the skewers has no Kutchi word: it stays, said and shown in English (Zafar, 3 Nov: "where we don't have Kutchi just use English and make an internal log note"; the log is `docs/language/recording-sheet.md`). Never call it *mirchi*.
 - Chai's orders now say the "no" items last (Zafar, 29 Oct: so the order card's row only moves forward): *Muke aadu waari chai khape, ba khun, dudh na.* / *..., hakro khun, aako, dudh na.* / *..., dudh, adh, khun na.* Does that order sound natural? (`build/reports/s14-rules.md`)
 - Pantry jars stay bare (no labels) for now.
+- Samosa writes the filling two ways: *chunda* on the order and end cards (*ba chunda*), *chundo* on the shelf pill, Nani's box and the chip (eye judge, 10 Nov). If *chunda* is the plural it is right; else one spelling everywhere. Mum settles.
 - *gaykal* for "yesterday"; "tomorrow" (*saware* or *kale*) undecided.
 - *Muke sekelo khape.* is kept while Zafar checks it with Mum; "with" join word stays a placeholder until Mum answers.
 - Placeholders to record: "Chop these" (daar card), "bring me these for {dish}" (pantry), "[Bring me]" (clinic pharmacy ask); first-launch story lines are not family-confirmed.

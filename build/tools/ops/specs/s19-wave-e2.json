@@ -1,0 +1,55 @@
+{
+  "name": "s19-wave-e2: sekelo, samosa, chaat and baking on their redrawn art (cut and wired), and what the eye judge found beside chai",
+  "model": "Opus",
+  "effort": "high",
+  "why": "Zafar's redraws landed (sources/art/s19-full/results/run-report-2.md); these four games were waiting on them. Their eye-judge rows are the five named in build/reports/s19-four-more-beside-chai.md; write their evidence specs in your report for the orchestrator to add (s19-fixes-e owns build/sandbox/data/evidence.json)",
+  "cost": "about $50-70",
+  "stop": "when the tasks are done",
+  "branch": "s19-wave-e2 in /home/user/wt/s19-wave-e2 (made for you from the integration branch); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "sources/art/s19-full/results/run-report-2.md (every pick, the alternates, Zafar's notes: four stages for cooked things, keep every variation)",
+    "build/tools/art/s19_cut.py (the cutter that made the first batch; extend it)",
+    "build/reports/s19-four-more-beside-chai.md and the four verdict files it names (build/screenshots/sidebyside/{mishkaki-grill,samosa,chaat,baking}-L1-20261110-*/judge-batch.verdicts.md: read from /home/user/nani-jo-ghar/), and look at the pictures they cite",
+    "build/reports/s19-wave-d.md (what changed in these four games today)",
+    "docs/design-language/art-bible.md 'States' (four stages) and docs/game-design/modes/cook-bottom-row.md (each game's band)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers today)"
+  ],
+  "owns": [
+    "build/tools/art/s19_cut.py and the new pieces under assets/cook/items/v4/** (add; never rename or delete a file another game uses)",
+    "js/cook/stations/mishkaki-grill.js, samosa.js, baking.js and data/stations/mishkaki-grill.json, samosa.json, chaat.json, baking.json",
+    "js/cook/mechanics/assemble.js, grill.js, thread.js, fill-fold.js, fry.js, knead.js (as these four games use them)",
+    "build/reports/s19-wave-e2.md"
+  ],
+  "readOnly": [
+    "js/shared/**, js/cook/kitchen-kit.js, station-lib.js, coach.js, flow.js, ui.js, data/cook.json and the eggs, corn, chop, daar, maani and chai code and data (s19-fixes-e owns them now: write any change you need in your report, exactly)",
+    "build/sandbox/**, build/lint/**, build/tools/review/** (s19-checks-1 owns the checks)"
+  ],
+  "stubs": "none",
+  "port": 8910,
+  "report": "s19-wave-e2",
+  "publish": false,
+  "flows": ["cook:mishkaki-grill", "cook:samosa", "cook:chaat", "cook:baking"],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Cut first, every new pick in sources/art/s19-full/results/best/ with s19_cut.py: K2 (5 pieces x 4 stages: raw, part, cooked, over), K6c (the cloth), C5 both ways (ribbons C5.png and drizzles C5-drizzle.png), C6 (onion layer), C10 both ways, S2 (the pastry's underside), S4 (four samosa stages), B1 (three bowls), B1f (flour at 1/4, 1/2, 3/4), B2 (five jugs), B3 (raw and baked naan trays); and K4 (corn, now four stages) and K7 (eggs: four fried stages and the boiled halves) keeping the names the game already uses for the stages it has (cob-raw, cob-turned, cob-done, egg-cracked, egg-cooked, egg-overdone, egg-boiled-half-a/b) and adding the new stage under a new name (corn and eggs are s19-fixes-e's to wire). Look at every source before naming its pieces; a contact sheet of the new pieces on a checkerboard; judge each cut whole, clean-edged, no magenta.",
+      "accept": "sources/art/s19-full/cuts/contact-sheet-3.jpg, every new piece listed in the report with its source number"
+    },
+    {
+      "do": "Wire the new art into sekelo, samosa, chaat and baking: sekelo's pieces in four stages across its three turns (raw on the first, part after one turn, cooked by the last, over if left) and its cloth; samosa's underside and four fry stages; chaat's onion layer and the chutneys (wire the drizzles, keep the ribbons cut: Zafar picks); baking's bowls with the shaggy dough, the flour levels as the flour goes in, the jugs, the naan trays. Each game's settings list its new files (data/stations/<game>.json assets) so loadcheck passes.",
+      "accept": "each game at L1 at 740x320 and 1280x665 on its new art, the before and after named in the report; loadcheck passes for the four"
+    },
+    {
+      "do": "What the eye judge found (build/reports/s19-four-more-beside-chai.md): sekelo one Nana face at well done, beside the tray the skewer is on, the skewer whole on its tray and readable at 740x320, the grill and turn lit by the kit's light; samosa's samosa seen at well done (no face over the plate), the fold's light the kit's one box (no arrow and orange glow), the knob's box inside the hob; chaat's Nani box with her face and one step, the bowl filling gradually, the chop light ready when the tomato is and off the side panel, no chip under the settings gear, hakro in the end review; baking's bowl never on the khun jar and its light only on the bowl, the order card whole at 740x320, one gold thing at a time; in all four the asker's face circle beside their dish from the first frame, as chai's Nana is on the glass. Their shelf and tray: the kit's band, pills at chai's size at 740x320, items spread along it, baking onto St.stoneBand (its band is 'shelf').",
+      "accept": "the praise and first-light frames of the four games at 740x320 and 1280x665, named in the report before and after"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8910, flock /tmp/njg-browser-8910.lock) except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi (a line the engine can't say is reported, never written by hand); never remove a mechanic or a help (Zafar's OK needed); shared pieces only, never a game's own light, dim or bar; fix what you break; keep under 3 GB of runs (the disk is tight); if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-wave-e2.md with a Proof section, under 900 words, and the evidence specs for those five rows written out for the orchestrator"
+    }
+  ]
+}
