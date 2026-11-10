@@ -720,7 +720,8 @@ function s19hook() {
   // ---- s19-checks-1, contract-113: a face, a word pill or a card's words covered by another drawn thing (or covering a dish) ----
   // From the pixels of what is drawn: each canvas picture's own opaque pixels (its texture's alpha, read once per texture frame), and
   // for the page's things, what the browser draws on top at each point (elementFromPoint). Not a list of named pairs.
-  const SURF = /bg|wall|marble|worktop|counter|stage|panel|band|shelf|slab|tray|board|hob|stove|kitchen|floor|table|backdrop|room|^kit-flame|steam|smoke|spark|bubble/i;
+  // (surfaces things stand on, and effects: a pour's stream, steam, sparks, bubbles)
+  const SURF = /bg|wall|marble|worktop|counter|stage|panel|band|shelf|slab|tray|board|hob|stove|kitchen|floor|table|backdrop|room|^kit-flame|steam|smoke|spark|bubble|-pe-|pour|stream|splash|drip/i;
   const masks = new Map();
   const maskOf = (o) => {
     const fr = o.frame;

@@ -1,0 +1,1 @@
+{"dir": "/home/user/wt/s19-checks-1/build/sandbox/fixtures/bad-runs/pages/cook-daar-speed1@740x320/lights/01", "flow": "cook:daar#speed1", "size": "740x320", "n": 1, "ref": "under.jpg", "moved": 0.823, "ok": null, "skipped": "the screen changed while its pictures were taken (82% of it moved)", "fails": []}

@@ -42,6 +42,7 @@ OVER_PAD = 30           # px of room past the kit's largest margin on a side: a 
 EDGE = 3                # px from the frame's edge counts as touching it
 PANEL_TOL = 4           # px into the side panel
 FACE_IN = 0.2           # a face this far inside the light, not its own, is lit by it
+MOVED_MAX = 0.3        # more of the screen than this moving between the pictures: not judged (a view changing, a pop-up coming)
 MOVE_PX = 14            # a thing whose middle moved this far (or 30% of its size) while the light was up was moving into it
 SWIPE_GAMES = ["chop"]   # STD-E2-08a, until Onboard.VARIANTS names them (read from the page when it does); a variant is a game's and
 # goes wherever that game runs (Zafar, 10 Nov: one chop, chained into recipes: daar's onion and chaat's chops are chop's game)
@@ -143,9 +144,16 @@ def judge(d):
         if W2.size == W.size:
             moved = np.abs(blocks(lum(W2), c) - Lw) > 10
             moved = ndimage.binary_dilation(moved, iterations=2)
-            known = known & ~moved
-            known_any = ~moved
-            out_moved = float(moved.mean())
+            # (the light itself moved on before the second picture, the kit's note's box mostly changed: no motion mask then)
+            hs = meta.get("holes") or []
+            k0 = W.width / float(((meta.get("objs1") or {}).get("vw")) or W.width)
+            inhole = [moved[int(h[1] * k0 / c):int(h[3] * k0 / c) + 1, int(h[0] * k0 / c):int(h[2] * k0 / c) + 1] for h in hs]
+            if inhole and all(x.size and x.mean() >= 0.4 for x in inhole):
+                out_moved = None
+            else:
+                known = known & ~moved
+                known_any = ~moved
+                out_moved = float(moved.mean())
         else:
             out_moved = None
     else:
@@ -168,6 +176,9 @@ def judge(d):
     gh, gw = lit.shape
     fails = []
     out = {"dir": d, "flow": meta.get("flow"), "size": meta.get("size"), "n": meta.get("n"), "ref": ref, "moved": None if out_moved is None else round(out_moved, 3)}
+    if out_moved is not None and out_moved >= MOVED_MAX:
+        out.update(ok=None, skipped=f"the screen changed while its pictures were taken ({round(100 * out_moved)}% of it moved)", fails=[])
+        return out, meta, None
     # 1. the lit regions (blocks joined side to side and corner to corner; specks of a moving thing dropped)
     lab, n = ndimage.label(lit, structure=np.ones((3, 3)))
     sizes = ndimage.sum(lit, lab, range(1, n + 1)) if n else []
@@ -175,6 +186,9 @@ def judge(d):
     sig = max(500.0, 0.0015 * vw * vh) / px2
     comps = [(i + 1, s) for i, s in enumerate(sizes) if s >= sig]
     comps.sort(key=lambda x: -x[1])
+    # (a second region counts only where the screen is truly left as it was: a glow that pulses or a thing that brightens is not a hole)
+    strict = known & (a > -0.15) & (a < LIT_A)
+    comps = comps[:1] + [(i, sz) for i, sz in comps[1:] if strict[lab == i].sum() >= 0.5 * sz]
     out["regions"] = len(comps)
     if not comps:
         out.update(ok=False, fails=["nothing lit: no part of the screen was left undarkened by the dim"])

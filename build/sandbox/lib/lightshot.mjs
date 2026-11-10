@@ -93,6 +93,12 @@ export class LightShot {
       objs1 = await page.evaluate(SCAN).catch(() => null);
       withJpg = await page.screenshot({ type: "jpeg", quality: 90, animations: "allow", timeout: 5000 }).catch(() => null);
       if (!withJpg) return;
+      // (the screen again, at once: what moved while the pictures were taken, a card row gliding, a carton pouring, is not judged; the 10 Nov chai
+      // run at 740x320 read a gliding order row as a second lit region)
+      withJpg2 = await page.screenshot({ type: "jpeg", quality: 90, animations: "allow", timeout: 5000 }).catch(() => null);
+      // (the light moved on meanwhile: the second picture shows another light, not motion)
+      const up2 = await page.evaluate(UP).catch(() => null);
+      if (!up2 || !sameLight(up2, L.holes)) withJpg2 = null;
       // the same moment with every painted layer over the play area hidden (the kit's light, or any other dim: an element painting
       // over 30% of the game's canvas, or a hole drawn with a wide shadow), so what darkened the screen is measured, whoever drew it
       const from = Date.now();
@@ -102,9 +108,7 @@ export class LightShot {
         hidWindow(page, from, Date.now());
       }
       L.hidden = n;
-      // (the screen again: what moved while the two were taken, a card row gliding, a carton pouring, is not judged; the 10 Nov chai
-      // run at 740x320 read a gliding order row as a second lit region)
-      withJpg2 = await page.screenshot({ type: "jpeg", quality: 90, animations: "allow", timeout: 5000 }).catch(() => null);
+
     });
     if (!withJpg || !under) return;
     await sleep(Math.max(0, L.t0 + MOVE_MS - Date.now()));

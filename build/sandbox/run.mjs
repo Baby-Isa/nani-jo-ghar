@@ -358,7 +358,7 @@ for (const r of everything) {
 if (!fromRun) writeFileSync(join(runDir, "summary.md"), md);
 
 // ---- the light pictures (s19-checks-1, contract-112): every caught light judged on its two pictures (lib/lightjudge.py) ----
-judgeLights(everything, { root: ROOT, log });
+judgeLights(everything, { root: ROOT, log, keep: !!fromRun || !!process.env.NJG_KEEP_LIGHTS }); // (a run judged again keeps its pictures)
 // ---- the contract checks (decision 75): every page of this run; a break is never ratcheted ----
 const contract = Contract.report(everything, { root: ROOT });
 if (!fromRun || has("--contract")) {

@@ -1,0 +1,1 @@
+{"dir": "/home/user/wt/s19-checks-1/build/sandbox/fixtures/bad-runs/pages/cook-chai-tray-speed1@740x320/lights/03", "flow": "cook:chai-tray#speed1", "size": "740x320", "n": 3, "ref": "under.jpg", "moved": null, "regions": 1, "ok": null, "skipped": "nothing on the screen was darkened while the kit's note said a light was up", "fails": []}

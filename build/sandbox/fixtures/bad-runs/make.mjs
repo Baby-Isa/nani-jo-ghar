@@ -46,10 +46,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     rmSync(pd, { recursive: true, force: true });
     mkdirSync(pd, { recursive: true });
     // each light's pictures and record (not its verdict or mark: the test judges them afresh)
+    // (a light whose pictures a run deleted after it passed is left out: only lights with their pictures are fixtures)
+    r.lights = (r.lights || []).filter((l) => existsSync(join(ROOT, l.dir, "with.jpg")) && existsSync(join(ROOT, l.dir, "under.jpg")));
     for (const l of r.lights || []) {
       const src = join(ROOT, l.dir), dst = join(pd, "lights", String(l.n).padStart(2, "0"));
       mkdirSync(dst, { recursive: true });
-      for (const x of ["before.jpg", "with.jpg", "under.jpg", "light.json"]) if (existsSync(join(src, x))) cpSync(join(src, x), join(dst, x));
+      for (const x of ["before.jpg", "with.jpg", "with2.jpg", "under.jpg", "light.json"]) if (existsSync(join(src, x))) cpSync(join(src, x), join(dst, x));
       l.dir = relative(pd, dst);
       delete l.verdict;
     }
