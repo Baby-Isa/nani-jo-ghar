@@ -369,7 +369,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (HOP) {
         const kinds = Cook.shuffle([...new Set(rounds.flatMap((r) => r.kinds))]);
         // (the slots far enough apart that two items up side by side never touch: an item at the top of its hop is HK.size)
-        const SL = global.Shelf.slots([kinds], { span: [150, 1450], pitch: Math.max(180, Math.min(size + 40, 1300 / kinds.length)), groupGap: 0 });
+        // (S19 wave B fix round: the band's slots across the whole view where it shows more than the narrowest play area, a phone,
+        // so the pills reach their floor without touching; never narrower than x 150-1450)
+        const V = Cook.view || {};
+        const SPAN = [Math.min(150, Math.max(-200, (V.left != null ? V.left : 150) + 40)), Math.max(1450, Math.min(1800, (V.right != null ? V.right : 1450) - 40))];
+        const SL = global.Shelf.slots([kinds], { span: SPAN, pitch: Math.max(180, Math.min(size + 40, (SPAN[1] - SPAN[0]) / kinds.length)), groupGap: 0 });
         hopPx = Math.min(size, SL.slotW - 24);
         /*
          * S19 (wave B, ART-37: the board above the band): band.board ([left, right], design px) is the caller's board; every hop's top
@@ -436,7 +440,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const Sh = global.Shelf;
         const chips = slots.map((x) => x.chip).filter((c) => c && c.active && c.faceW);
         if (!Sh || !Sh.pillScale || !chips.length) return;
-        const want = Sh.pillWant(ppw);
+        // (the floor: the shelf's pill rule and the kitchen kit's canvas text floor, 14 CSS px on the canvas's own scale, TXT-05)
+        const want = Math.max(Sh.pillWant(ppw), Cook.Kit && Cook.Kit.textFloor ? Cook.Kit.textFloor(S, (Sh.PILL || {}).text || 25) : 1);
         const { k: pk, cap } = Sh.pillScale(chips.map((c) => ({ x: c.x / (z.k || 1), w: c.faceW(c.showsWord) })), { want, gap: Sh.pillGap(ppw), slotW });
         const y = Math.min(band.chipY, 896 - (((Sh.PILL || {}).h || 46) / 2) * pk);
         chips.forEach((c) => {

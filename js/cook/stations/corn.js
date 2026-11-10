@@ -558,7 +558,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       } catch (e) {
         ppw = 1;
       }
-      const want = Sh.pillWant(ppw);
+      // (the floor: the shared shelf's pill rule, and the kitchen kit's canvas text floor, 14 CSS px on the canvas's own scale, TXT-05)
+      const want = Math.max(1, Sh.pillWant(ppw), Cook.Kit && Cook.Kit.textFloor ? Cook.Kit.textFloor(S, (Sh.PILL || {}).text || 25) : 1);
       const PH = (Sh.PILL || {}).h || 46;
       const OL = (global.Onboard && global.Onboard.LIGHT) || { share: 0.12, min: 8, max: 16, clear: 2 };
       const room = (sz) => Math.max(Sh.pillGap(ppw), (Math.max(OL.min, Math.min(OL.max, OL.share * sz * ppw)) + OL.clear + 4) / ppw);
