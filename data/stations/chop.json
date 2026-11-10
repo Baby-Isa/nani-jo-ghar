@@ -1,7 +1,7 @@
 {
  "_about": "Sprint 18 (s18-chop; Zafar, 7 Nov: chop as its own game, 'as other games and recipes will use chop'): the chop game's settings (js/cook/stations/chop.js reads this file; its own mechanic is js/cook/mechanics/chop.js, whose base knobs stay data/cook.json mechanics.chop until they move here). station: its name, verb, goal and phase line (the grown-ups' '?' box). view: its worktop (the white marble, the kitchen family's, STD-E3-03: the placeholder for the chop's board until ART-37 lands, decision 7). recipe: Nani's order (registered as Cook.Recipes.chop, the engine says it: STD-A4-01): DAAR-37's kinds and chops by level, a 'no' from L2 said last (DAAR-36). levels: what changes by level over the mechanic's knobs (phases: rounds with a switch; L4's speed about 15% over L3's, STD-C2-06). The decoys and the lookalike are the central rules' (data/rules.json levels), read in code, never here (STD-F2-02).",
  "band": "tray",
- "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook.md)",
+ "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook-bottom-row.md)",
  "station": {
   "name": "Chop",
   "verb": "Ninja slicing",

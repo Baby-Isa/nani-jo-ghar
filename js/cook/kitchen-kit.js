@@ -401,8 +401,8 @@ import { NjgServe } from "../shared/serve.js";
   /*
    * SH-248 (Zafar, 10 Nov: "the decision about which bottom element each game uses, the stone tray or the vertical shelf, should be in
    * their game file design, but also in their actual code, so it pulls the shared element"): each game's settings file names its
-   * bottom row, band "tray" (top-down things lie on the stone tray) or "shelf" (side-on things stand on chai's shelf); the game passes
-   * game: <its key> and the band is read from there (docs/game-design/modes/cook.md "Each game's bottom row"; build/core/band.test.mjs).
+   * bottom row, band "tray" (top-down things lie on the stone tray) or "shelf" (side-on things stand on the stone shelf); the game passes
+   * game: <its key> and the band is read from there (docs/game-design/modes/cook-bottom-row.md; build/core/band.test.mjs).
    */
   St.bandOf = (game) => ((((Cook.data && Cook.data.settings) || {})[game] || {}).band) || null;
   St.stoneBand = function (S, { top, base, far = 2000, depth = 0, tray = base == null, alpha = 0.18, game = null }) {

@@ -9,6 +9,7 @@ The single home for Cook's design: where Cook is now, the standing rules, the st
 - **Words from the engine:** every word, row, headline, bubble, guide line and count comes from the language engine through `js/cook/words.js`; Cook's code holds no word text (the word lint is strict on `js/cook`). The frames are data (`data/cook.json` `meanings`); `data/cook.json` otherwise keeps the item catalogue. Five frames and some words are still gaps (grey-italic placeholders, `data/lang/reports/gap-list.md`): "with", "and", "times", the sugar sentence and the pantry headline.
 - **The level table (SH-110, Zafar, 19 Oct; `data/cook.json` `levelTable`, replacing `closedFrom` and decision 41's "heard only"):** open at L1-L2; at L3-L4 item words dotted, each dotted row led by a free speaker; the pop-up writes the order at every level; nothing hides for memory (SH-110, Zafar, 26 Oct; every game). Nani calls each step once as it opens, at every level; help is the glow and re-say after the idle time. Decoys 1, 2, 3, 3, a lookalike at L4. One new thing per level: chai 1, 2, 2, 3 cups (the old half/full line stays at L4); maani big and small from L2; samosa one filling, a second, two kinds, then the "no" filling; the pantry asks one thing at a time. L1 counts along; every number of two or more said is written; one is the bare item. Where nothing is left to choose the station moves on; samosa's count keeps its button. Every order ends in the kitchen: one well done, the thanks and goodbye. Take-back is in the pantry, the samosa fill and the maani.
 - **Open rows** (`docs/process/regressions.md`; numbers in `docs/status.md`): the pantry's clipped headline (PAN-01 reopened), chai, daar and sekelo rows, and tablets (CK-TAB-01: no tablet layouts for the stations yet). Zafar plays Cook in Sprint 2 (`docs/archive/sprints/S02-play-and-fix-cook-clinic.md`).
+- **Bottom rows:** `cook-bottom-row.md`.
 - **Parked, not removed:** hands (none in Cook, H13), knead (cut from the stations), the old Busy and Relaxed idea (an open question).
 
 ## Standing rules (from the rulebook; the IDs are anchors other docs cite)
@@ -226,29 +227,6 @@ What the reviews got right and we adopt: a strong grid and inventory slots; fewe
 Word for word from the retired rulebook and decisions log (`docs/archive/process/rules-2026-10-13.md`, `docs/archive/decisions/decisions-1-to-99.md`); the newest word from Zafar wins.
 
 - **Decision 64 (6 Oct):** The kitchen is redrawn at full size with three small trays on the counter (one per customer) and Nani leaning on the counter (her existing leaning picture), with a smaller bob.
-
-## Each game's bottom row (SH-248, Zafar 10 Nov)
-
-"The decision about which bottom element each game uses, the stone tray or the vertical shelf, should be in their game file design, but also in their actual code, so it pulls the shared element."
-
-The rule (Zafar, 9 Nov):
-- **Tray:** top-down things lie on the stone tray, in the game space, on the worktop.
-- **Shelf:** side-on things stand on chai's shelf.
-
-Each game's settings file (`data/stations/<game>.json`) has the same `band`. Its code passes `game: <key>` to `St.stoneBand`, which draws the shared tray (`Shelf.P.tray`) or the shelf. `build/core/band.test.mjs` holds the three together.
-
-| Game | Band | Its things |
-|---|---|---|
-| chai-tray | shelf | side-on jars, the milk and water |
-| eggs | shelf | the egg box, the salt and pepper jars, side-on (CK-73, Zafar 10 Nov) |
-| corn | tray | raw cobs, top-down |
-| chop | tray | whole vegetables, top-down |
-| daar | tray | eight spice bowls, top-down |
-| maani-line | tray | dough heaps and plates, top-down |
-| mishkaki-grill | tray | sekelo's bowls, top-down |
-| samosa | tray | the filling heaps, top-down |
-| chaat | shelf | side-on glass jars |
-| baking | shelf | side-on glass bowls and jugs |
 
 ## Zafar's answers, 14 Oct
 

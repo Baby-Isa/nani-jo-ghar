@@ -47,6 +47,7 @@ export const DOC_LIMITS = {
   "docs/game-design/modes/conversations-wiring.md": 2500,
   "docs/game-design/modes/conversations.md": 14000,
   "docs/game-design/modes/cook.md": 5000,
+  "docs/game-design/modes/cook-bottom-row.md": 500,
   "docs/game-design/modes/dress-up.md": 500,
   "docs/game-design/modes/find-it.md": 9500,
   "docs/game-design/modes/first-launch.md": 2500,

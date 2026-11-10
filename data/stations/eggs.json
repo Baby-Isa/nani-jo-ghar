@@ -1,7 +1,7 @@
 {
  "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the eggs station's own data (js/cook/stations/eggs.js; the order is recipes.eggs in data/cook.json). `station`: its name, goal and one line per phase (the grown-ups' '?' box). `words`: the station's own item catalogue (pictures for the helper card); their words are the engine's. `mechanic.levels`: cookMs how long an egg takes to be ready (the ring reaches its green), room how many eggs the pot and the pan each hold (Zafar: room for several), shakers whether the salt and pepper are on the shelf, meal the window's sky at the table (breakfast, lunch or dinner: one setting, the sky changes; Zafar's notes). Sprint 18 wave 2 (s18-g-eggs, 8 Nov): the station reads its art and places from items and scene (Cook.data.settings.eggs); mechanic.levels stays its per-level knobs. S19 wave C: overMs how long a fried egg sits past its full ring before it browns (a look only).",
  "band": "shelf",
- "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook.md)",
+ "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook-bottom-row.md)",
  "station": {
   "name": "Eggs",
   "verb": "Boil or fry, then the plates",
