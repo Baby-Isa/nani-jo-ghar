@@ -58,7 +58,7 @@ import { setTimeout } from "../life.js";
   function artFor(onShelf, plan, jug, who) {
     const I = ITEMS();
     const sc = SET().scene || {};
-    const list = [["bk-bg", sc.bg], ["bk-cat", (sc.cat || {}).file]];
+    const list = [sc.bg ? ["bk-bg", sc.bg] : null, ["bk-cat", (sc.cat || {}).file]].filter(Boolean);
     Object.entries((I.mixBowl || {}).states || {}).forEach(([k, f]) => list.push([`bk-bowl-${k}`, f]));
     Object.entries((sc.oven || {}).states || {}).forEach(([k, f]) => list.push([`bk-oven-${k}`, f]));
     ["raw", "golden"].forEach((k) => list.push([`bk-naan-${k}`, ((I.naan || {}).states || {})[k]]));
@@ -67,6 +67,8 @@ import { setTimeout } from "../life.js";
     if (jug) {
       const J = I.jug || {};
       list.push(["bk-jug-empty", (J.states || {}).empty]);
+      // (S19: a fill drawn in the new glass jug has its own empty jug, items.jug.emptyFor; the others keep the old jug's)
+      Object.entries(J.emptyFor || {}).forEach(([fill, f]) => plan.some((s) => s.amt === "jug" && (J.fillFor || {})[s.id] === fill) && list.push([`bk-jug-empty-${fill}`, f]));
       plan.filter((s) => s.amt === "jug").forEach((s) => list.push([`bk-jug-${s.id}`, (J.states || {})[(J.fillFor || {})[s.id]]]));
     }
     const seen = new Set();
@@ -166,34 +168,65 @@ import { setTimeout } from "../life.js";
       z.expect({ kind: "tap", x: c.x, y: c.y, key });
     };
 
-    /* ---------------- the side-on counter (the settings' scene picture) ---------------- */
+    /*
+     * ---------------- the scene: the kitchen kit's worktop and its stone shelf band (chai's) ----------------
+     * CK-84, SH-255 (the eye judge beside chai, 10 Nov: the bowl sat on the khun jar, the jars floated on the cupboard doors, no shelf band;
+     * Zafar, 10 Nov: every bottom bar from the shared kit): the side-on things stand on the kit's stone shelf (St.stoneBand, baking's band
+     * "shelf", data/stations/baking.json), the mixing bowl stands on the marble worktop above it, never on a jar (was the settings' own
+     * counter picture, scene.bg, with the jars on its cupboard doors)
+     */
     const [W, H] = sc.stage || [1600, 900];
-    const bg = T(S.add.image(W / 2, H / 2, "bk-bg").setDepth(D.bg + 2));
-    bg.setDisplaySize(W, H);
-    const edgeY = sc.worktopEdgeY || 470;
-    // the cat peeks over the counter's back edge (right), breathing
-    const cat = has("bk-cat") ? T(S.add.image(1500, edgeY + 16, "bk-cat").setOrigin(0.5, 1).setDepth(D.bg + 3)) : null;
+    const band = Object.assign({ top: 630, base: 818, chipY: 860 }, (global.Shelf && global.Shelf.BAND) || {});
+    // (the worktop and the band stay through the oven, as chai's: marked so the move to the oven keeps them)
+    [T(Cook.Kit.worktop(S, { top: band.top, far: 2000 })), T(St.stoneBand(S, { top: band.top, base: band.base, far: 2000, depth: D.bg + 1.2, game: KEY }))].forEach((o) => o && (o.band = true));
+    const bg = sc.bg && has("bk-bg") ? T(S.add.image(W / 2, H / 2, "bk-bg").setDepth(D.bg + 2).setDisplaySize(W, H)) : null;
+    // the cat (Simba) peeks over the shelf band's top edge (right), breathing; behind the band, so only his head shows
+    const edgeY = band.top;
+    const cat = has("bk-cat") ? T(S.add.image(1480, edgeY + 16, "bk-cat").setOrigin(0.5, 1).setDepth(D.bg + 1.1)) : null;
     if (cat) {
-      cat.setScale(200 / cat.width);
+      cat.setScale(170 / cat.width);
       S.tweens.add({ targets: cat, y: edgeY + 10, duration: 1400, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
     }
 
-    // the mixing bowl (centre): its picture fills by turn (empty, a scoop, a heap, a well, mixing), then the dough
+    // the mixing bowl (the worktop's middle, its foot above the band): its picture follows what is in it (MB.states): empty, the flour
+    // rising a quarter, a half, three quarters as it goes in (B1f), the shaggy dough once something wet is in (B1), then the dough
     const MB = I.mixBowl || {};
-    const [bowlX, bowlY] = MB.at || [820, 520];
-    const bowl = T(S.add.image(bowlX, bowlY, "bk-bowl-empty").setDepth(D.item));
+    const FLOUR = MB.flour || "cook-atto";
+    const LIQUID_IDS = new Set(MB.wet || CT.liquid || []);
+    const bowlFoot = MB.foot || band.top - 24;
+    const bowlX = (MB.at || [800])[0];
+    const bowl = T(S.add.image(bowlX, bowlFoot, "bk-bowl-empty").setOrigin(0.5, 1).setDepth(D.item));
     bowl.setScale(((MB.drawn || {}).w || 380) / bowl.width);
-    const FILL = ["empty", "scoop", "heap", "well", "mixing"];
-    const bowlTo = (done) => {
-      const k = done <= 0 ? 0 : Math.max(1, Math.min(FILL.length - 1, Math.round((done / Math.max(1, plan.length)) * (FILL.length - 1))));
-      bowl.setTexture(`bk-bowl-${FILL[k]}`);
+    const bowlY = bowlFoot - bowl.displayHeight / 2; // (its middle: where things pour)
+    // SH-258 (the eye judge, 10 Nov: no asker's face until well done): their face circle on the bowl's upper-left rim from the first frame
+    const faceAt = (o) => {
+      if (!Cook.Kit.badge) return null;
+      const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const fd = Math.min(90, Math.max(64, 30 / perPx));
+      const f = T(S.add.image(o.x - o.displayWidth * 0.42, o.y - o.displayHeight * (o.originY || 0.5) + fd * 0.4, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge));
+      f.setName("baking-face");
+      o.face = f;
+      return f;
+    };
+    faceAt(bowl);
+    let wet = false;
+    const bowlState = (k) => {
+      const key = `bk-bowl-${k}`;
+      if (has(key) && bowl.texture.key !== key) bowl.setTexture(key);
+    };
+    /** The bowl after `done` of step s's taps (0-1): flour rises with the flour; anything wet makes the shaggy dough. */
+    const bowlTo = (s, done) => {
+      if (s && LIQUID_IDS.has(s.id) && done > 0) wet = true;
+      if (wet) return bowlState("mixing");
+      if (s && s.id === FLOUR && done > 0) return bowlState(done < 0.4 ? "flour1" : done < 0.75 ? "flour2" : "flour3");
     };
 
-    // the measuring jug (L3 up): the empty picture, and the full one revealed by a rising crop up to its line (never a drawn fill)
+    // the measuring jug (L3 up), on the worktop left of the bowl: the empty picture, and the full one revealed by a rising crop up to
+    // its line (never a drawn fill)
     let jug = null;
     if (hasJug) {
       const J = I.jug || {};
-      const [jx, jy] = J.at || [470, 670];
+      const [jx, jy] = J.at || [470, 600];
       const c = T(S.add.container(jx, jy).setDepth(D.item + 0.5));
       const empty = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1);
       const k = ((J.drawn || {}).w || 260) / empty.width;
@@ -201,9 +234,10 @@ import { setTimeout } from "../life.js";
       const full = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1).setScale(k).setVisible(false);
       c.add([empty, full]);
       c.setSize(empty.displayWidth, empty.displayHeight);
-      // a line's height from the picture's top (items.jug.lineAt, by quarter cups); between two lines, evenly between them
-      const at = Object.entries(J.lineAt || {}).map(([u, f]) => [Number(u), f]).sort((a, b) => a[0] - b[0]);
-      const lineAt = (u) => {
+      const lines = (fill) => Object.entries(((J.lineAtFor || {})[fill]) || J.lineAt || {}).map(([u, f]) => [Number(u), f]).sort((a, b) => a[0] - b[0]);
+      // a line's height from the picture's top (items.jug.lineAt, by quarter cups; a new jug's own, lineAtFor); between two, evenly
+      const lineAt = (u, fill) => {
+        const at = lines(fill);
         if (!at.length) return 1 - u / 10;
         if (u <= at[0][0]) return 1 - (1 - at[0][1]) * (u / at[0][0]);
         for (let i = 1; i < at.length; i++) if (u <= at[i][0]) return at[i - 1][1] + ((at[i][1] - at[i - 1][1]) * (u - at[i - 1][0])) / (at[i][0] - at[i - 1][0]);
@@ -211,31 +245,60 @@ import { setTimeout } from "../life.js";
       };
       jug = { c, empty, full, units: 0, x: jx, y: jy, w: empty.displayWidth, h: empty.displayHeight };
       jug.show = (id) => {
+        const fill = id ? (J.fillFor || {})[id] : null;
+        const ek = fill && has(`bk-jug-empty-${fill}`) ? `bk-jug-empty-${fill}` : "bk-jug-empty";
+        if (empty.texture.key !== ek) empty.setTexture(ek);
         const key = `bk-jug-${id}`;
         if (id && has(key)) full.setTexture(key);
         const u = jug.units;
         full.setVisible(u > 0);
         if (u <= 0) return;
-        const top = Math.round(full.height * lineAt(u));
+        const top = Math.round(full.height * lineAt(u, fill));
         full.setCrop(0, top, full.width, full.height - top);
       };
       jug.mouth = () => ({ x: c.x, y: c.y - jug.h * 0.85 });
     }
 
-    // the containers standing in a row in front, each with its word chip
-    const rowY = CT.row_y || 820;
-    const tall = (CT.drawn || {}).h || 170;
+    /*
+     * the containers standing on the shelf band, each with its word pill (SH-255, CK-84: chai's shelf): spread along the band under the
+     * bowl, each on the shelf's line; the pills chai's size (the shared kit's pill at the scale the floor asks and its neighbours allow:
+     * Shelf.pillScale on Shelf.pillWant, chai's fitPills; was a fixed small chip on the cupboard doors)
+     */
+    const SH = global.Shelf;
+    const tall = (CT.drawn || {}).h || 150;
     const shelf = {};
     const n = onShelf.length;
+    const PILL_SLOT = 200;
+    const pitch = Math.min(CT.pitch || 300, 1100 / Math.max(1, n));
+    const pills = [];
     onShelf.forEach((id, i) => {
-      const x = n === 1 ? 800 : 260 + (i * 1080) / Math.max(1, n - 1);
-      const img = T(S.add.image(x, rowY, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
-      img.setScale(Math.min(tall / img.height, 150 / img.width));
-      img.home = { x, y: rowY };
+      const x = bowlX + (i - (n - 1) / 2) * pitch;
+      const img = T(S.add.image(x, band.base, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
+      img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;
-      objs.push(Cook.Kit.chip(S, id, x, rowY + 40, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true }));
+      const chip = Cook.Kit.chip(S, id, x, band.chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true });
+      chip.pillId = id;
+      img.chip = chip; // (its pill is part of its light: Cook.Coach.parts)
+      objs.push(chip);
+      pills.push(chip);
     });
+    const fitPills = () => {
+      if (!SH || !SH.pillScale || !pills.length || !pills[0].faceW) return;
+      const ppw = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const row = pills.filter((c) => c.active).sort((a, b) => a.x - b.x);
+      const { k, cap } = SH.pillScale(row.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW: PILL_SLOT });
+      const ph = ((SH.PILL || {}).h || 46) * k;
+      const y = Math.min(band.chipY, 896 - ph / 2);
+      row.forEach((c) => {
+        if (c.capW !== cap && c.face) c.face(c.showsWord, cap);
+        c.k = k;
+        if (c.hit) c.hit(PILL_SLOT);
+        c.setScale(k).setY(y);
+      });
+    };
+    fitPills();
 
     /* ---------------- pouring: the shared stream pictures, stretched from the lip; drawn drops where none has landed ---------------- */
     const drops = T(S.add.graphics().setDepth(D.item + 0.4));
@@ -309,7 +372,7 @@ import { setTimeout } from "../life.js";
           if (jugStep) {
             jug.units = taps;
             jug.show(s.id);
-          } else bowlTo(i + taps / need);
+          } else bowlTo(s, taps / need);
           if (s.amt === "more" && taps === 1) speak(line("stillmore", "react"));
           busy = false;
           if (taps >= need) return resolve();
@@ -337,7 +400,7 @@ import { setTimeout } from "../life.js";
         await pourOnce({ x: jug.c.x, y: jug.c.y, angle: 70, displayHeight: jug.h }, { x: bowlX, y: bowlY - 40 }, s.id, true);
         jug.units = 0;
         jug.show(null);
-        bowlTo(i + 1);
+        bowlTo(s, 1);
         await Cook.tween(S, { targets: jug.c, x: jug.x, y: jug.y, angle: 0, duration: 380 });
       }
       busy = false;
@@ -354,22 +417,24 @@ import { setTimeout } from "../life.js";
         S.untap(bowl);
         resolve();
       });
-      expectTap(bowl, "ph-naan");
+      // CK-84 (the eye judge, 10 Nov: the order's headline lit gold with the bowl): the bowl's tap names no word (the naan's word lit
+      // the card's headline as a second gold thing); its light is the bowl's alone
+      expectTap(bowl, null);
       control(bowl, "bowl", () => bowlOpen);
     });
     bowlOpen = false;
     unlight();
     z.expect({ kind: "wait" });
-    bowl.setTexture("bk-bowl-dough");
+    bowlState("dough");
     await Cook.tween(S, { targets: bowl, scaleY: bowl.scaleY * 1.04, duration: 220, yoyo: true });
     Cook.sfx.pop();
     await Cook.wait(400);
 
     /* ---------------- the oven (the same camera) ---------------- */
-    const keep = (o) => o && o.active && o !== bg && o !== cat;
+    const keep = (o) => o && o.active && o !== bg && o !== cat && !o.band;
     await Cook.tween(S, { targets: objs.filter(keep), alpha: 0, duration: 300 });
     objs.filter(keep).forEach((o) => o.destroy());
-    await oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b) });
+    await oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b), faceAt });
     if (!ctx.guided) {
       Cook.save.coached = Cook.save.coached || {};
       Cook.save.coached[KEY] = true;
@@ -381,7 +446,7 @@ import { setTimeout } from "../life.js";
   }
 
   /** The oven: its shut, baking and open pictures (one canvas: a swap changes only the door or the glow), the naan on its tray. */
-  async function oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy }) {
+  async function oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt }) {
     const O = (SET().scene || {}).oven || {};
     const N = ITEMS().naan || {};
     const [ox, oy] = O.centre || [900, 360];
@@ -394,11 +459,13 @@ import { setTimeout } from "../life.js";
         S.tweens.add({ targets: s, y: y - 160 - Math.random() * 60, alpha: 0, scale: 2.6, duration: 1400 + i * 120, delay: i * 120, onComplete: () => s.destroy() });
       }
     };
-    // the naan on its tray (the counter, left), raw
+    // the naan on its tray (the worktop, left of the oven, above the band), raw (B3: the tray of raw naan, then baked)
     const [hx, hy] = N.at || [330, 640];
     const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
+    // (SH-258: their face circle moves to the tray their naan bakes on, from its first frame)
+    const face = faceAt ? faceAt(naan) : null;
     const tapOn = (o, name) => {
       let open = true;
       return new Promise((resolve) => {
@@ -426,6 +493,7 @@ import { setTimeout } from "../life.js";
     await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.8, duration: 520, ease: "Cubic.easeInOut" });
     await Cook.wait(200);
     naan.setVisible(false);
+    if (face) face.setVisible(false);
     ov.setTexture("bk-oven-baking");
     Cook.sfx.click();
     setBusy(false);
@@ -464,9 +532,12 @@ import { setTimeout } from "../life.js";
     steam(hx, hy - 40, 4);
     ov.setTexture("bk-oven-shut");
     UI.mission.closeItem(["ph-naan"], 0, { head: true });
-    const look = await Cook.Kit.review(S, { who, ok: true, x: hx, y: hy - 310, size: 220, side: "right" });
+    // SH-254: one face, beside the tray at its upper left (where the small circle was), the naan in plain view
+    const size = 190;
+    const look = await Cook.Kit.review(S, { who, ok: true, x: hx - naan.displayWidth * 0.42, y: hy - naan.displayHeight / 2 - size * 0.5, size, side: "right" });
     await Cook.wait(400);
     await look.close();
+    if (face && face.active) face.setVisible(true);
   }
 
   /** The words a round asks for (its plan's parts), for the word moment's due check. */
