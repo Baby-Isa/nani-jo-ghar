@@ -268,10 +268,14 @@ export function runStep(s, logDir) {
   const env = { ...process.env, ...(s.env || {}) };
   return new Promise((res) => {
     const out = createWriteStream(logFile);
-    const p = spawn(argv[0], argv.slice(1), { cwd: s.cwd || ROOT, env });
+    // (its own process group: a step cut off by its timeout leaves no replay or server holding the port for the next step; the group
+    // is stopped when the step ends. check-change, 10 Nov: frozen's timeout left its replay on 8903, so mount, leak and loadtime never ran)
+    const p = spawn(argv[0], argv.slice(1), { cwd: s.cwd || ROOT, env, detached: true });
     let tail = "";
     const keep = (d) => { out.write(d); tail = (tail + d).slice(-4000); if (process.env.NJG_TIERS_VERBOSE) process.stdout.write(d); };
     p.stdout.on("data", keep); p.stderr.on("data", keep);
+    // (at the step's exit, not its close: a leftover holding its output open would keep close from ever coming)
+    p.on("exit", () => { try { process.kill(-p.pid, "SIGTERM"); } catch (e) { /* the group is gone already */ } });
     p.on("close", (code) => {
       out.end();
       const lines = tail.split("\n").map((l) => l.trim()).filter(Boolean);
