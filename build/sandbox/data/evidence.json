@@ -24327,21 +24327,30 @@
  ],
  "ART-37": [
   {
-   "flow": "cook:daar",
+   "flow": "cook:chop",
    "path": "fair",
-   "level": 1,
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
    "sizes": [
-    "1280x665"
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
    ],
    "profile": "seen",
    "want": null,
-   "at": "now",
+   "at": "kind-slice",
    "after": null,
    "capture": [
-    "shot"
+    "shot",
+    "strip:#game:12x150"
    ],
    "expect": null,
-   "note": "the chop's background: a placeholder in the first pass (decision 7), the real art later",
+   "note": "the board above the tray; a hop and a cut, the halves stay",
    "delay": 0
   }
  ],
@@ -25703,7 +25712,7 @@
     "1366x768",
     "915x412"
    ],
-   "profile": "new",
+   "profile": "fresh",
    "want": null,
    "at": "every:view",
    "after": null,
@@ -26006,7 +26015,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:view",
+   "at": "every:life:corn-screen",
    "after": null,
    "capture": [
     "shot"
@@ -26025,7 +26034,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:view",
+   "at": "every:life:corn-screen",
    "after": null,
    "capture": [
     "shot"
@@ -26044,7 +26053,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:view",
+   "at": "every:life:corn-screen",
    "after": null,
    "capture": [
     "shot"
@@ -26063,7 +26072,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:view",
+   "at": "every:life:corn-screen",
    "after": null,
    "capture": [
     "shot"
