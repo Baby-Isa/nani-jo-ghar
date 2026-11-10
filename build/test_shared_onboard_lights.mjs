@@ -202,7 +202,7 @@ test("coach: the next vessel's light after its delay, only if still right (STD-D
   assert.equal(lit.length, 0, "not before its delay");
   await sleep(150);
   assert.equal(lit.length, 1);
-  assert.equal(lit[0].o.round, true);
+  assert.ok(!lit[0].o.round, "a rounded rectangle, never a circle (Zafar, 10 Nov)");
   assert.equal(lit[0].o.ms, 500, "nextLit at the game's speed");
   n.stop();
   assert.equal(lit[0].closed, true);

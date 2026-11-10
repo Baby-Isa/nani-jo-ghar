@@ -935,11 +935,7 @@
         layer.__buried = buried;
         if (buried) rects = [];
         let b = rects.length ? Onboard.litBox(rects, o.avoid, { pad: o.tight }) : null;
-        // (o.round, CHAI-68: a round thing's light is a circle hugging it, e.g. a pan's rim: the box's longer side, centred)
-        if (b && o.round) {
-          const d = Math.max(b.w, b.h);
-          b = Object.assign({}, b, { x: b.x + (b.w - d) / 2, y: b.y + (b.h - d) / 2, w: d, h: d, r: d / 2 });
-        }
+        // (o.round, CHAI-68's circle, removed: every light is one rounded rectangle, a pan's included, Zafar 10 Nov)
         // the box is always whole on the screen (S12 W2-A, the judge: the pantry jar's box touched the top edge at 915x412). SH-230
         // (Zafar, 6 Nov night): at the screen's edge it stops at the edge: 1 px in (was 3), so 3 of its ring's 4 px still show; a
         // shelf pill on the play area's foot at 740x320 had its box's foot 1 px over the pill, short of the edge

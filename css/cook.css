@@ -685,14 +685,6 @@ body.w6.ui-stars #mission .m-stars { animation: fadeIn .9s ease-out; }
   #side .icard.person .lrows { flex-direction: row; flex-wrap: wrap; gap: 0 10px; }
 }
 
-/* 8. first-time onboarding (js/cook/coach.js): its fallback dim with one hole (no kit on the page); the finger is the kit's, never its own (S13-A2) */
-#coach { position: fixed; inset: 0; z-index: 40; pointer-events: none; overflow: hidden; }
-#coach .co-hole {
-  position: absolute; border-radius: 50%; pointer-events: none;
-  box-shadow: 0 0 0 200vmax rgba(35, 24, 16, 0.55), inset 0 0 0 4px rgba(var(--njg-gold-pale-rgb), .9);
-  transition: left .35s ease, top .35s ease, width .35s ease, height .35s ease;
-  animation: fadeIn .4s ease-out;
-}
 
 
 /* ---------- Wave 6b: the picture tally (top right), Nani's voice, the throbbing hint ---------- */

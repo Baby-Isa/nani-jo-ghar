@@ -81,8 +81,7 @@ export const screenHTML = () => `
 
 <div id="overlay" class="hidden" data-njg-results-hide><div id="panel"></div></div>
 
-<!-- Wave 6: the first time at each station, everything dims but one thing and a ghost finger shows the move (js/cook/coach.js); it never takes a tap -->
-<div id="coach" class="hidden" aria-hidden="true"><div class="co-hole"></div></div>
+
 `;
 
 /** Make Cook's screen inside el; returns the nodes made (unmount removes them). */

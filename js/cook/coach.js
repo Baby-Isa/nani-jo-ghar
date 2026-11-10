@@ -23,8 +23,8 @@
  * "pass me", a panel), the overlay steps back and the script ends, so it
  * can never trap a child.
  *
- * Without the shared kit (a page that doesn't load it) it falls back to the
- * Wave 6 overlay (#coach), which never takes a tap.
+ * Without the shared kit or a script there is no coach spotlight (the Wave 6
+ * overlay, a round hole with its own dim, was deleted: Zafar, 10 Nov).
  */
 import { Cook as CookNS } from "./ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
@@ -775,7 +775,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const fire = () => {
       if (!Onboard || !Onboard.light || !o.target) return;
       if (o.ok && !o.ok()) return;
-      lit = Onboard.light(o.target, { look: "glow", pad: o.pad != null ? o.pad : 2, round: o.round !== false, pass: true, ms: (o.litMs != null ? o.litMs : W.nextLit) / speed(), quitIf: o.quitIf, note: o.note });
+      lit = Onboard.light(o.target, { look: "glow", pad: o.pad != null ? o.pad : 2, pass: true, ms: (o.litMs != null ? o.litMs : W.nextLit) / speed(), quitIf: o.quitIf, note: o.note });
       note("next-pan", { step: o.who != null ? String(o.who) : "", by: "light" });
     };
     if (o.now) fire();
@@ -1024,10 +1024,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (C.itemDemo(key)) return; // (the station runs its own: the real item shows each step, C.rungs)
     if (!force && C.seen(key)) return;
     const script = C.script(key);
+    // (Zafar, 10 Nov: the September overlay, a round hole with its own dim, is gone; a station with no script gets no coach
+    // spotlight: its lights are the shared kit's, St.steps and the stepper's)
     const useKit = !!(OB() && script);
-    const box = $("#coach");
-    if (!useKit && !box) return;
-    const steps = useKit ? script.length : calm().coachSteps || 4;
+    if (!useKit) return;
+    const steps = script.length;
     const state = { key, shown: 0, last: null, timer: null, started: false, lost: 0, script, calm: false, newAt: Date.now() };
     live = state;
     C.hopRule();
@@ -1078,13 +1079,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         lightThing(state, mine && !(a.hidden && a.hidden()) ? thingFor(e) : null);
         return;
       }
-      if (t && s !== state.last) {
-        // a new thing to do: the next spotlight (the child did the last one)
-        if (state.last) state.shown++;
-        state.last = s;
-        if (state.shown >= steps) return C.stop(true);
-      }
-      draw(t);
     };
     state.timer = setInterval(tick, 120);
     tick();
@@ -1102,7 +1096,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) a.skip();
     lightThing(state, null);
-    draw(null);
   };
 
   /** C4: Cook is unmounted mid-coach: the overlay goes and its listeners with it, and the station is not marked seen. */
@@ -1116,22 +1109,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) (a.leave || a.skip)();
     lightThing(state, null);
-    draw(null);
   };
 
-  /* ---------------- the Wave 6 fallback overlay (no shared kit) ---------------- */
-  function draw(t) {
-    const box = $("#coach");
-    if (!box) return;
-    if (!t) {
-      box.classList.add("hidden");
-      return;
-    }
-    box.classList.remove("hidden");
-    const hole = box.querySelector(".co-hole");
-    hole.style.left = `${t.x - t.r}px`;
-    hole.style.top = `${t.y - t.r}px`;
-    hole.style.width = hole.style.height = `${t.r * 2}px`;
-    // (S13-A2: its own finger went: one finger in every game, the kit's .ob-finger, SH-119)
-  }
 })(window);
