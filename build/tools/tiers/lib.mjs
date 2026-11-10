@@ -276,8 +276,10 @@ export function runStep(s, logDir) {
       out.end();
       const lines = tail.split("\n").map((l) => l.trim()).filter(Boolean);
       // (a sandbox run's own verdict lines say more than its last line)
+      // (and a failed check's own FAIL lines say more than a closing note)
       const verdict = lines.filter((l) => /^(CONTRACT|CHECK) /.test(l)).join("; ");
-      const r = { code, ok: code === 0, line: verdict || lines.at(-1) || "", tail: lines.slice(-6), log: rel(logFile), minutes: +((Date.now() - t0) / 60000).toFixed(1) };
+      const failed = code !== 0 ? lines.filter((l) => /^FAIL\b/.test(l)).slice(0, 3).join("; ") : "";
+      const r = { code, ok: code === 0, line: verdict || failed || lines.at(-1) || "", tail: lines.slice(-6), log: rel(logFile), minutes: +((Date.now() - t0) / 60000).toFixed(1) };
       if (s.judge) Object.assign(r, s.judge(r) || {});
       res(r);
     });
