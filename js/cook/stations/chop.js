@@ -272,7 +272,9 @@ import { Cook as CookNS } from "../ns.js";
       g.drawImage(src, pad, pad);
       g.filter = "none";
       g.globalCompositeOperation = "source-in";
-      g.fillStyle = "rgb(40,25,10)";
+      // (the shade colour, a token: one shade for every shadow)
+      const TK = global.Tokens;
+      g.fillStyle = TK && TK.rgb ? `rgb(${TK.rgb("shade-rgb") || "60, 35, 20"})` : "black";
       g.fillRect(0, 0, c.width, c.height);
       S.textures.addCanvas(sk, c);
     }

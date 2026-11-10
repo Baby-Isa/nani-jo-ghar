@@ -1,24 +1,30 @@
 /*
- * The corn stall (Zafar's rapid prototype, 1 Nov; on the farm, day 2): a sekelo redress on one screen. Sprint 18 (s18-g-corn): the
- * game is its settings file (data/stations/corn.json, read as Cook.data.settings.corn) and its own mechanic, below; everything else
- * is a kit call. Spec: build/reports/designs/prototype-notes-2026-11-01.md "The corn stall"; its gap page:
- * docs/design-language/standard/gaps/corn.md.
+ * The corn stall (Zafar's rapid prototype, 1 Nov; on the farm, day 2). Sprint 18 (s18-g-corn): the game is its settings file
+ * (data/stations/corn.json, read as Cook.data.settings.corn) and its own mechanic, below; everything else is a kit call.
  *
- * Its own mechanic (non-negotiable 1, kept as he made it):
- *   1. Tap the crate: a cob goes on the grill (as many as asked, as many as the grill holds; an extra doesn't land).
- *   2. Its ring fills; tap it to turn it, once. Its second side fills; tap it: onto the plate. The order's head ticks when the
- *      plate has the number asked (Zafar, 1 Nov).
- *   3. Tap what they asked for: it goes onto the corn, named as it goes on; its row ticks. A "no" or an unasked one lands quietly
- *      and is judged at the serve. A second tap on it takes it back (non-negotiable 7) until the plate is served.
- *   4. Tap the plate: it's theirs.
- * The kits: the order and its card (Cook.Recipes, the lab's card), the steps in Nani's box (St.steps: a step's call is said once its
- * step opens), the lights (Cook.Coach.firsts, .control, .wrong, .lessons), the heat ring (Cook.Kit.heatRing), the word cards
- * (Cook.Kit.chip), the serve (NjgServe.round: the faces, the recast, a wrong plate redone on the spot, St.redo). Hannah Mami hosts
- * the farm: Nani's box stands in until her approved sheet exists.
+ * Sprint 19, wave B (CK-67; Zafar, 9 Nov: "make it the same as Sekelo ... the same two tray setup ... Cooked and uncooked, same barbecue,
+ * same grill"; his yes to two screens: "first grill them all and then flavour them on the next screen ... then you can flavour different
+ * corns differently"): two screens on the one grill kit (js/cook/grill-kit.js, which sekelo, fish and steak use next; corn's own parts
+ * stay here).
+ *   Screen 1, the grill (sekelo's option 3 exactly): the raw cobs lie two by two on the stone band; the grill big on the left, the cooked
+ *     tray on its right. Tap a cob: it grows as it goes up onto the grill, turns upright and rests on its rims. Its heat ring fills;
+ *     on the green tap it to turn it (cob-turned); on the green again tap it: it shrinks into the tray (cob-done). As many as asked (one
+ *     a person); an extra stays on the band (a wiggle).
+ *   Screen 2, the flavour: each cob on its person's cream plate with their face circle; the six dressing bowls on the band with their
+ *     word pills. One person at a time, left to right: tap what they asked for and it goes on their cob (drawn on it in code), named as
+ *     it goes on, their row ticks; a "no" or an unasked one goes on quietly and is judged when they get it; a second tap takes it back
+ *     (non-negotiable 7) until they have it. Tap their plate: it's theirs (their face, right or a gentle no; a wrong one is redone on
+ *     the spot, decision 51); then the next person.
+ * Its own mechanic as he made it (non-negotiable 1): grill, turn once, take off, what goes on, give it to them.
+ * The kits: the order and its card (Cook.Recipes, the lab's card), the steps in Nani's box (St.steps), the lights (Cook.Coach.firsts,
+ * .control, .stuck, .wrong, .lessons, .began), the heat ring (Cook.Kit.heatRing), the word pills (Cook.Kit.chip, the shared shelf's
+ * slots and pill rule), the band (the kitchen kit's stone band), the serve (NjgServe.round, .review). Hannah Mami hosts the farm: Nani's
+ * box stands in until her approved sheet exists.
  */
 import { Cook as CookNS } from "../ns.js";
 import { setTimeout } from "../life.js";
 import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (Sprint 18 piece 8)
+import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
 
 (function (global) {
   const Cook = CookNS;
@@ -28,8 +34,10 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
   const St = Cook.Stations;
   const Mech = Cook.Mech;
   const KEY = "corn";
+  const FAR = 2000;
   /** The game's settings (data/stations/corn.json, loaded with the data: Mech.stationData). */
   const SET = () => ((Cook.data && Cook.data.settings) || {})[KEY] || {};
+  const BAND = () => (global.Shelf && global.Shelf.BAND) || { top: 630, bottom: 900, base: 818, chipY: 860, chipH: 46 };
 
   Mech.combined(KEY, {
     station: KEY,
@@ -42,6 +50,22 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     },
   });
 
+  /** S19 wave B: the settings' order is the recipe (one plate per person, each their own mix), registered once its data is in. */
+  function register() {
+    const o = SET().order;
+    const R = Cook.Recipes;
+    if (!o || !R || !R.add || register.done) return;
+    register.done = true;
+    R.add(KEY, JSON.parse(JSON.stringify(o)));
+  }
+
+  /** The stone band the cobs and the bowls sit on (the kitchen kit's: one call, so its stone tray comes in here alone). */
+  function band(S, o) {
+    const K = Cook.Kit || {};
+    if (K.stoneTray) return K.stoneTray(S, o);
+    return St.stoneBand ? St.stoneBand(S, o) : null;
+  }
+
   async function corn(host, p) {
     const S = host.S;
     const ctx = host.ctx;
@@ -53,16 +77,24 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     const lay = sc.layout || {};
     const mo = set.motion || {};
     const pal = (set.station || {}).palette || {};
-    const col = (k) => parseInt(String(pal[k] || "").slice(1), 16);
+    const col = (k) => (pal[k] ? parseInt(String(pal[k]).slice(1), 16) : global.Tokens && global.Tokens.int ? global.Tokens.int("grey") : 0);
     const sp = () => Cook.speed || 1;
+    const GK = Cook.GrillKit;
+    const B = BAND();
     const COB = (set.recipe || {}).dish || "n.corn-on-the-cob";
     const DRESS = (it.dressings || {}).files || {};
     const ids = ((set.recipe || {}).dress || Object.keys(DRESS)).filter((id) => DRESS[id]);
-    const who = p.who || (set.recipe || {}).who || "cousin";
-    const count = Math.max(1, p.count || 1);
-    const asked = p.dress || [];
-    const nos = p.no || [];
-    const slots = K.slots || 3;
+    // the people and what each asked for (the order's plates); an old caller's one person (count, dress, no) still works
+    const people = (p.plates && p.plates.length ? p.plates : [{ who: p.who || (set.recipe || {}).who || "cousin", dress: p.dress || [], no: p.no || [] }]).map((q) => ({
+      who: q.who,
+      asked: [].concat(q.dress || []).filter((id) => DRESS[id]),
+      nos: [].concat(q.no || []),
+      dressed: [],
+      drops: {},
+      served: false,
+      cob: null,
+    }));
+    const count = people.length;
     const sideMs = K.sideMs || 2600;
     // S19 (CK-65; Zafar, 8 Nov: "the green zone is way too short"): the green lasts greenMs (the settings, by level: at least chai's
     // green at the same level), the cob ready to turn or lift from its start; its heat ring runs over the side and the green together
@@ -71,100 +103,63 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     const guided = !!ctx.guided;
     const dish = ctx.dishAt || 0;
     const states = (it.cob || {}).states || {};
-    const tex = { raw: "cn-raw", half: "cn-half", turned: "cn-turned", done: "cn-done" };
+    const tex = { raw: "cn4-raw", turned: "cn4-turned", done: "cn4-done" };
+    const thick = (it.cob || {}).thick || 0.18;
     // (the art the settings name, loaded behind the order; settings.assets lists the same files)
     await St.loadArt(
       S,
       ids
-        .map((id) => [`cn-${id}`, DRESS[id]])
+        .map((id) => [`cn4-${id}`, DRESS[id]])
         .concat(Object.keys(tex).filter((k) => states[k]).map((k) => [tex[k], states[k]]))
-        .concat([
-          ["cn-table", sc.bg],
-          ["cn-crate", (it.crate || {}).file],
-          ["cn-grill", (sc.grill || {}).file],
-          ["cn-plate", (sc.plate || {}).file],
-        ])
+        .concat([["cn4-plate", (sc.plate || {}).file]])
+        .concat(GK.art())
         .filter((a) => a[1])
-        .concat(Cook.Kit.faceArt(who))
+        .concat(...[...new Set(people.map((q) => q.who))].map((w) => Cook.Kit.faceArt(w)))
     ).catch(() => {});
     await St.begin(S, ctx, KEY, "marble");
-    // the stall's table (CT), never a code-drawn one
-    if (S.textures.exists("cn-table")) S.setBg("cn-table");
     const z = Mech.zone(S, ctx, { id: KEY, level });
     const T = (o) => S.track(o);
-    const at = (o, d) => (o && o.at) || d;
+    // the kitchen family's scene: the marble's wash above the band, the stone band along the bottom
+    if (Cook.Kit.worktop) Cook.Kit.worktop(S, { top: B.top, far: FAR });
+    band(S, { top: B.top, base: B.base, far: FAR, depth: D.bg + 1.2 });
 
-    /* ---------------- the stall: the person's face, the crate, the grill, the plate, the tray ---------------- */
-    const fa = lay.face || {};
-    const faceAt = at(fa, [1310, -40]);
-    const face = T(S.add.image(faceAt[0], faceAt[1], Cook.Kit.badge(S, who)).setDisplaySize(fa.size || 150, fa.size || 150).setDepth(D.item + 2));
-    const crAt = at(it.crate, [230, 40]);
-    const crate = T(S.add.image(crAt[0], crAt[1], "cn-crate").setDepth(D.item));
-    crate.setScale((((it.crate || {}).drawn || {}).w || 380) / crate.width);
-    crate.wordId = COB;
-    const grAt = at(sc.grill, [760, 250]);
-    const grill = T(S.add.image(grAt[0], grAt[1], "cn-grill").setDepth(D.item - 1));
-    grill.setScale((((sc.grill || {}).drawn || {}).w || 640) / grill.width);
-    const plAt = at(sc.plate, [1310, 250]);
-    const plate = T(S.add.image(plAt[0], plAt[1], "cn-plate").setDepth(D.item - 1));
-    plate.setScale((((sc.plate || {}).drawn || {}).w || 360) / plate.width);
-    plate.setAngle((sc.plate || {}).angle || 0);
-    // the tray of dressings (art plan Q7: a plain drawn board), each with its word card
-    const tr = lay.tray || {};
-    const tx0 = tr.x0 || 200;
-    const tx1 = tr.x1 || 1400;
-    const pad = tr.pad || 50;
-    const ty = tr.y || 590;
-    const th = tr.h || 200;
-    const shOff = tr.shadow || [8, 10];
-    const tray = T(S.add.graphics().setDepth(D.item - 2));
-    tray.fillStyle(col("shadow"), 0.18).fillRoundedRect(tx0 - pad + shOff[0], ty + shOff[1], tx1 - tx0 + 2 * pad, th, tr.r || 26);
-    tray.fillStyle(col("tray"), 1).fillRoundedRect(tx0 - pad, ty, tx1 - tx0 + 2 * pad, th, tr.r || 26);
-    tray.lineStyle(tr.edge || 10, col("trayEdge"), 1).strokeRoundedRect(tx0 - pad, ty, tx1 - tx0 + 2 * pad, th, tr.r || 26);
-    const bowls = {};
-    const dw = ((it.dressings || {}).drawn || {}).w || 150;
-    const chipY = (lay.chips || {}).y || 852;
-    ids.forEach((id, i) => {
-      const x = tx0 + (i * (tx1 - tx0)) / Math.max(1, ids.length - 1);
-      const img = T(S.add.image(x, (it.dressings || {}).row_y || 690, `cn-${id}`).setDepth(D.item));
-      img.setScale(dw / Math.max(img.width, img.height));
-      img.wordId = id;
-      bowls[id] = img;
-      // (its pill is part of its light: the kit's parts, C.parts; S19, CK-61)
-      img.chip = Cook.Kit.chip(S, id, x, chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: (lay.chips || {}).w || 200 });
+    /* ---------------- screen 1: the grill (the grill kit's option 3) ---------------- */
+    const gl = lay.grill || {};
+    const L = GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom });
+    const kit = GK.build(S, L);
+    const places = Math.min(4, K.slots || 3);
+    const raw = [0, 1, 2, 3].map((i) => {
+      const at = L.band.at(i);
+      const img = T(S.add.image(at.x, at.y, tex.raw).setDepth(D.item));
+      GK.lay(img, { x: at.x, y: at.y, len: L.band.len });
+      // (no word of its own on the band: a cob is the dish, not a word, so it has no pill, opt3s; the shelf line's rule, contract-109,
+      // is for the band's words standing in a row with their pills, which the six bowls of screen 2 are)
+      GK.shadow(S, img, { dx: 6, dy: 8, alpha: 0.26, blur: 5 });
+      return img;
     });
-
-    /* ---------------- the cobs ---------------- */
-    const ringL = lay.ring || {};
     const sm = lay.smoke || {};
     const smoke = (x, y) => {
       const r = sm.r || [10, 8];
-      const s = T(S.add.circle(x + (Math.random() - 0.5) * 40, y, r[0] + Math.random() * r[1], col("smoke"), 0.45).setDepth(D.fx + 2));
+      const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, r[0] + Math.random() * r[1], col("smoke"), 0.45).setDepth(D.fx + 2));
       S.tweens.add({ targets: s, y: y - (sm.rise || 120), alpha: 0, scale: sm.grow || 2.2, duration: mo.smokeMs || 1300, onComplete: () => s.destroy() });
     };
-    const gy = (lay.grill || {}).y || grAt[1];
-    const slotX = (i) => grAt[0] + (i - (slots - 1) / 2) * ((lay.grill || {}).slotGap || 170);
-    const cobLong = ((it.cob || {}).drawn || {}).long || 250;
-    const cobs = [];
-    const onPlate = [];
-    const dressed = [];
-    const drops = {}; // id -> its drops drawn on the cobs
+    const cobs = []; // on the grill
+    const inTray = []; // done, lying in the tray
     let made = 0;
-    let plating = 0; // (cobs on their way to the plate: they count as made)
+    let lifting = 0; // (cobs on their way to the tray: they count as made)
     let moving = 0; // (the game's own moves in flight: they hold the stuck hint, Cook.Coach.control's busy)
-    let served = false;
+    let screen = 1;
+    let active = 0; // (screen 2: whose cob the dressings go on, left to right)
     let serveNow = null;
-    let serveP = null;
-    const newServe = () => (serveP = new Promise((r) => (serveNow = r)));
-    newServe();
-    const fly = async (o) => {
+    const fly = async (fn) => {
       moving++;
       try {
-        return await Cook.tween(S, o);
+        return await fn();
       } finally {
         moving--;
       }
     };
+    const onBand = () => raw.filter((o) => o.active && o.onBand !== false);
 
     /* ---------------- the steps, their calls and their lights (the kits) ---------------- */
     // the first-time gate for this round (kit (d), STD-D1-01); Nani's steps (St.steps: a step's call is said once it opens, so nothing
@@ -183,18 +178,25 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       lit = o;
       if (o) S.glow(o, true, { bounce: true, now: true }); // (now: with its light, never the ladder's deferred glow)
     };
+    const bowls = {};
+    const plates = [];
     /** The next thing to do, published once: the light, the step, the helper card and the test hooks read it (STD-F3-05). */
     function nextThing() {
-      if (served) return { step: null };
-      const ready = cobs.find((c) => c.state === "turn" || c.state === "lift");
-      if (ready && ready.state === "turn") return { step: "turn", id: ready.n, o: ready.img, key: COB, line: Lang.line("guide-firai"), again: true };
-      if (ready) return { step: "lift", id: ready.n, o: ready.img, key: COB, line: Lang.line("lift", Lang.phrase([COB])), again: true };
-      if (cobs.length + plating + onPlate.length < count && cobs.length < slots) return { step: "grill", o: crate, key: COB, line: Lang.line("now", Lang.phrase([COB])) };
-      if (cobs.length) return { step: "wait" };
-      const left = asked.find((id) => !dressed.includes(id));
+      if (screen === 1) {
+        const ready = cobs.find((c) => c.state === "turn" || c.state === "lift");
+        if (ready && ready.state === "turn") return { step: "turn", id: ready.n, o: ready.img, key: COB, line: Lang.line("guide-firai"), again: true };
+        if (ready) return { step: "lift", id: ready.n, o: ready.img, key: COB, line: Lang.line("lift", Lang.phrase([COB])), again: true };
+        const next = onBand()[0];
+        if (next && cobs.length + lifting + inTray.length < count && cobs.length < places) return { step: "grill", o: next, key: COB, line: Lang.line("now", Lang.phrase([COB])) };
+        return { step: "wait" };
+      }
+      if (screen !== 2) return { step: screen === 3 ? null : "wait" };
+      const q = people[active];
+      if (!q || q.served) return { step: null };
+      const left = q.asked.find((id) => !q.dressed.includes(id));
       // (an item's step: said only as her helper card opens to show it, never as the step opens: SH-172, STD-D3-03)
-      if (left && bowls[left]) return { step: "dress", id: left, o: bowls[left], key: left, word: left, line: St.addLine(left), noCall: "helper" };
-      return { step: "serve", o: plate, key: COB, line: null };
+      if (left && bowls[left]) return { step: "dress", id: `${active}:${left}`, o: bowls[left], key: left, word: left, line: St.addLine(left), noCall: "helper" };
+      return { step: "serve", id: active, o: plates[active], key: COB, line: null };
     }
     function lead(n) {
       const id = n.o ? `${n.step}:${n.id != null ? n.id : ""}` : n.step;
@@ -213,17 +215,18 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       }
       const c = S.centre(n.o);
       // (the test hooks: an unasked dressing for the mistake player, STD-F5-02)
-      const wrongs = n.word ? ids.filter((x) => !asked.includes(x) && !dressed.includes(x)).map((x) => S.centre(bowls[x])) : null;
+      const q = people[active];
+      const wrongs = n.word && q ? ids.filter((x) => !q.asked.includes(x) && !q.dressed.includes(x) && bowls[x]).map((x) => S.centre(bowls[x])) : null;
       z.expect(Object.assign({ kind: "tap", x: c.x, y: c.y, key: n.key }, wrongs && wrongs.length ? { wrongs } : {}));
       // STD-D2-05 (non-negotiable 4): an asked-for dressing past support gets no light (the light would be the answer); never lit the
       // first time either (CHAI-32: never the first ordered item)
       const OB = global.Onboard;
       const hides = !!(n.word && OB && OB.hintHides && OB.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(n.word) : null, study: guided }));
       const first = n.word ? false : gate.first(n.step);
-      // S19 (CK-61, SH-230): the light round the thing whole, with its pill and its hop's room (the kit's parts, part by part, so the
-      // light's one rule leaves its room round their union: contract-92); was the picture's box with no room
+      // S19 (CK-61, SH-230): the light round the thing whole, with its pill, its face circle and its hop's room (the kit's parts, part
+      // by part, so the light's one rule leaves its room round their union: contract-92)
       const target = [0, 1, 2, 3, 4, 5].map((i) => () => (n.o.active && n.o.visible ? Cook.Coach.parts(n.o)[i] || null : null));
-      const current = () => ctlId === id && !served;
+      const current = () => ctlId === id && screen < 3;
       // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236)
       const lightGlow = () => {
         // (only a thing on the band glows and hops with its light; anything else is lit alone, so Nani's call reading its row is the
@@ -238,9 +241,8 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         }, 0);
       };
       ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, onLight: lightGlow });
-      // SH-228 (chai's method): the stuck help after the level's wait from the last action (a child's time: the kit divides a game's wait
-      // by the test speed), at once after a wrong move: her helper card naming the thing (an item's step), else her line again, with the
-      // light. Never where the light would be the answer (hides: a dressing past support, STD-D2-05)
+      // SH-228 (chai's method): the stuck help after the level's wait from the last action, at once after a wrong move: her helper card
+      // naming the thing (an item's step), else her line again, with the light. Never where the light would be the answer
       if (!hides && Cook.Coach.stuck)
         stuck = Cook.Coach.stuck({
           key: KEY,
@@ -248,8 +250,8 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
           hintMs,
           current,
           busy: () => moving > 0,
-          // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: contract-8)
-          // (its glow goes with its light too, however the light goes: contract-102)
+          // (only a thing on the band glows and hops in its light, SH-237; anything else is lit alone: contract-8; its glow goes with
+          // its light, however the light goes: contract-102)
           glow: (on) => {
             if (!Cook.Coach.onShelf(n.o)) return;
             glow(on ? n.o : null);
@@ -261,47 +263,51 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       if (n.line) {
         const st = steps.to(`${KEY}:${n.step}`, { id, line: n.line, again: !!n.again, noCall: n.noCall || null });
         if (stuck) kitHelps(st);
-      }
-      else steps.done();
+      } else steps.done();
     }
     const refresh = () => lead(nextThing());
-    // (the test hook: what a tap would take back now, the last dressing on, until the serve: the take-back player's)
-    Cook.undoAt = () => (!served && dressed.length && bowls[dressed[dressed.length - 1]] ? S.centre(bowls[dressed[dressed.length - 1]]) : null);
     const acted = () => St.acted && St.acted();
+    // (SH-236: the light goes the moment the child starts a move)
+    const began = () => Cook.Coach.began && Cook.Coach.began(KEY);
 
-    S.tappable(crate, () => {
-      if (served || cobs.length + plating + onPlate.length >= count || cobs.length >= slots) {
-        S.wiggle(crate);
-        return;
-      }
-      const i = [...Array(slots).keys()].find((k) => !cobs.some((c) => c.slot === k));
-      const img = T(S.add.image(crate.x, crate.y, tex.raw).setDepth(D.item + 0.5));
-      img.setScale(cobLong / Math.max(img.width, img.height));
-      img.wordId = COB;
-      const c = { img, n: made++, slot: i, side: 0, p: 0, t0: 0, state: "fly", ring: Cook.Kit.heatRing(S, { depth: D.fx + 1 }) };
-      cobs.push(c);
-      Cook.sfx.pop();
-      z.progress({ cob: i });
-      refresh();
-      fly({ targets: img, x: slotX(i), y: gy, duration: mo.flyMs || 420, ease: "Cubic.easeOut" }).then(() => {
-        c.state = "cook";
-        c.t0 = Date.now();
-        if (Cook.sfx.sizzle) Cook.sfx.sizzle(0.5);
-        S.tappable(img, () => tapCob(c));
-        acted();
+    // a raw cob on the band, tapped: it goes up onto the grill (as many as asked, as many places as the grill has)
+    raw.forEach((img) =>
+      S.tappable(img, () => {
+        began();
+        if (screen !== 1 || img.onBand === false || cobs.length + lifting + inTray.length >= count || cobs.length >= places) {
+          S.wiggle(img);
+          return;
+        }
+        img.onBand = false;
+        S.untap(img);
+        const used = cobs.map((c) => c.slot);
+        // (the places fill from the grill's middle out)
+        const slot = [1, 2, 0, 3].find((k) => !used.includes(k));
+        const at = L.grill.at(slot, 4);
+        const c = { img, n: made++, slot, at, side: 0, p: 0, t0: 0, state: "fly", ring: Cook.Kit.heatRing(S, { depth: D.fx + 1 }) };
+        cobs.push(c);
+        img.setDepth(D.item + 0.5);
+        Cook.sfx.pop();
+        z.progress({ cob: slot });
         refresh();
-      });
-    });
+        fly(() => GK.move(S, img, { x: at.x, y: at.y, len: L.grill.len, up: true, ms: mo.bandMs || 520 })).then(() => {
+          c.state = "cook";
+          c.t0 = Date.now();
+          if (Cook.sfx.sizzle) Cook.sfx.sizzle(0.5);
+          S.tappable(img, () => tapCob(c));
+          acted();
+          refresh();
+        });
+      })
+    );
 
     const tapCob = async (c) => {
+      began();
       if (c.state === "turn") {
-        // turned once: it rolls over (a squash to 0.6 and back: its light's box fades out round it, contract-53), its ungrilled side up
+        // turned once: it rolls over where it lies (its light's box fades out round it, contract-53), the grilled side under
         c.state = "flip";
         refresh();
-        const sx = c.img.scaleX;
-        await fly({ targets: c.img, scaleX: sx * (mo.flipK || 0.6), duration: mo.flipMs || 140 });
-        c.img.setTexture(S.textures.exists(tex.turned) ? tex.turned : tex.half);
-        await fly({ targets: c.img, scaleX: sx, duration: mo.flipMs || 140 });
+        await fly(() => GK.roll(S, c.img, tex.turned, { ms: mo.flipMs || 140, k: mo.flipK || 0.6 }));
         Cook.sfx.click();
         c.side = 1;
         c.p = 0;
@@ -316,19 +322,23 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         S.untap(c.img);
         c.ring.destroy();
         cobs.splice(cobs.indexOf(c), 1);
-        const k = onPlate.length + plating;
-        const pg = lay.plate || {};
-        plating++;
+        const k = inTray.length + lifting;
+        lifting++;
         refresh();
-        await fly({ targets: c.img, x: plAt[0] + (k - (count - 1) / 2) * (pg.gap || 64), y: plAt[1], scale: c.img.scale * (pg.cobK || 0.85), duration: mo.flyMs || 420, ease: "Cubic.easeOut" });
-        plating--;
-        onPlate.push(c);
+        const at = L.tray.at(k);
+        if (S.textures.exists(tex.done)) c.img.setTexture(tex.done);
+        await fly(() => GK.move(S, c.img, { x: at.x, y: at.y, len: L.tray.len, up: false, ms: mo.trayMs || 460 }));
+        lifting--;
+        inTray.push(c);
         c.img.setDepth(D.item + 0.2);
         Cook.sfx.pop();
         if (!guided && Lang.known(COB)) Cook.markRight(COB);
-        // the plate has the number asked: the order's head ticks at once (Zafar, 1 Nov)
-        if (onPlate.length === count) UI.mission.closeItem([COB], dish, { head: true });
         acted();
+        // all made: the order's head ticks at once (Zafar, 1 Nov), then the flavour
+        if (inTray.length === count) {
+          UI.mission.closeItem([COB], dish, { head: true });
+          return toPlates();
+        }
         return refresh();
       }
       S.wiggle(c.img);
@@ -340,12 +350,12 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
         // (S19, CK-65: the ring keeps filling through the green while the cob waits to be turned or lifted)
         if (c.state !== "cook" && c.state !== "turn" && c.state !== "lift") return;
         c.p = Math.min(1, (Date.now() - c.t0) / ((sideMs + greenMs) / sp()));
-        // the kit's heat ring over the cob (one heat language): gold up to the sage band; ready from the green's start
-        c.ring.draw(c.img.x, c.img.y - c.img.displayHeight / 2 - (ringL.dy || 46), ringL.r || 34, c.p, greenLo, 1);
+        // the kit's heat ring over the cob's top end (one heat language): gold up to the sage band; ready from the green's start
+        const r = L.ring(c.at);
+        c.ring.draw(r.x, r.y, (lay.ring || {}).r || r.r, c.p, greenLo, 1);
         if (c.state !== "cook") return;
-        if (Math.random() < (sm.chance || 0.03)) smoke(c.img.x, c.img.y - 40);
-        if (c.side === 0 && c.p >= greenLo * 0.5 && c.img.texture.key === tex.raw) c.img.setTexture(tex.half);
-        if (c.side === 1 && c.p >= greenLo * 0.5 && c.img.texture.key !== tex.done) c.img.setTexture(tex.done);
+        if (Math.random() < (sm.chance || 0.03)) smoke(c.img.x, c.at.y - L.grill.len * 0.2);
+        if (c.side === 1 && c.p >= greenLo * 0.5 && c.img.texture.key !== tex.done && S.textures.exists(tex.done)) c.img.setTexture(tex.done);
         if (c.p >= greenLo) {
           c.state = c.side === 0 ? "turn" : "lift";
           changed = true;
@@ -354,145 +364,332 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       if (changed) refresh();
     });
 
-    // what goes on: named as it goes on, its row ticks; a second tap takes it back until the plate is served (non-negotiable 7)
-    const dropsOn = (id) => {
-      const dr = lay.drops || {};
-      const liquid = (dr.liquid || []).includes(id);
-      const g = T(S.add.graphics().setDepth(D.item + 0.4).setAlpha(0));
-      g.fillStyle(col(id), liquid ? 0.85 : 1);
-      onPlate.forEach((c) => {
-        for (let k = 0; k < (dr.n || 16); k++) g.fillCircle(c.img.x + (Math.random() - 0.5) * (dr.w || 50), c.img.y + (Math.random() - 0.5) * c.img.displayHeight * (dr.h || 0.8), liquid ? dr.liquidR || 6 : dr.dryR || 3);
-      });
+    /* ---------------- screen 2: the flavour (each cob on its person's plate, the dressings on the band) ---------------- */
+    const pl = lay.plates || {};
+    const bw = lay.bowls || {};
+    const dressStyle = lay.dress || {};
+    /** Each dressing drawn on a cob in code (the art plan's question 3), in the cob's own frame, so it lies along it on the plate. */
+    const dropsOn = (q, id) => {
+      const cob = q.cob;
+      const g = T(S.add.graphics().setDepth(cob.depth + 0.1 + Object.keys(q.drops).length * 0.01).setAlpha(0));
+      g.setPosition(cob.x, cob.y).setRotation(cob.rotation);
+      const len = cob.displayWidth;
+      const th = cob.displayHeight;
+      const st = dressStyle[id] || { kind: "specks", n: 30 };
+      // (the kernels: the cob's length less its stem end, about two thirds of its thickness across)
+      const x0 = -len * 0.4;
+      const x1 = len * 0.46;
+      const hy = th * 0.3;
+      let seed = (id.length * 131 + people.indexOf(q) * 977 + id.charCodeAt(id.length - 1)) >>> 0;
+      const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
+      const along = () => x0 + (x1 - x0) * rnd();
+      const across = (x) => (rnd() * 2 - 1) * hy * (1 - Math.pow((x - (x0 + x1) / 2) / ((x1 - x0) / 2), 6) * 0.5);
+      const c = col(id);
+      const n = st.n || 30;
+      if (st.kind === "drizzle") {
+        // a chutney: a ribbon zig-zagging along the cob, its sheen a thinner lighter line
+        const pts = [];
+        for (let i = 0; i <= n * 2; i++) pts.push({ x: x0 + ((x1 - x0) * i) / (n * 2), y: (i % 2 ? 1 : -1) * hy * 0.75 });
+        g.lineStyle(Math.max(3, th * 0.13), c, 0.95);
+        g.strokePoints(pts, false);
+        g.lineStyle(Math.max(1, th * 0.04), global.Tokens && global.Tokens.int ? global.Tokens.int("white") : col("spi-16"), 0.25);
+        g.strokePoints(
+          pts.map((pt) => ({ x: pt.x - th * 0.02, y: pt.y - th * 0.03 })),
+          false
+        );
+      } else if (st.kind === "squeeze") {
+        // lemon: its juice, a few glossy pale streaks and a shine
+        for (let i = 0; i < n; i++) {
+          const x = along();
+          g.fillStyle(c, 0.45);
+          g.fillEllipse(x, across(x) * 0.8, th * (0.35 + rnd() * 0.3), th * (0.12 + rnd() * 0.08));
+          g.fillStyle(col("lemonShine"), 0.7);
+          g.fillCircle(x - th * 0.05, across(x) * 0.6, Math.max(1.5, th * 0.035));
+        }
+      } else if (st.kind === "crystals") {
+        // salt: small white crystals with a grey edge
+        for (let i = 0; i < n; i++) {
+          const x = along();
+          const y = across(x);
+          const s = Math.max(2, th * (0.04 + rnd() * 0.03));
+          g.fillStyle(col("saltEdge"), 0.9);
+          g.fillRect(x - s / 2 + 0.6, y - s / 2 + 0.6, s, s);
+          g.fillStyle(c, 1);
+          g.fillRect(x - s / 2, y - s / 2, s, s);
+        }
+      } else {
+        // a powder (chilli) or specks (pepper): fine dots all along, a powder denser and finer
+        const r0 = st.kind === "powder" ? 0.018 : 0.026;
+        for (let i = 0; i < n; i++) {
+          const x = along();
+          g.fillStyle(c, st.kind === "powder" ? 0.85 : 0.95);
+          g.fillCircle(x, across(x), Math.max(1.2, th * (r0 + rnd() * 0.014)));
+        }
+      }
       S.tweens.add({ targets: g, alpha: 1, duration: mo.dropInMs || 260 });
       return g;
     };
-    const takeOff = (id) => {
-      dressed.splice(dressed.indexOf(id), 1);
-      const g = drops[id];
-      delete drops[id];
+    const takeOff = (q, id) => {
+      q.dressed.splice(q.dressed.indexOf(id), 1);
+      const g = q.drops[id];
+      delete q.drops[id];
       if (g) S.tweens.add({ targets: g, alpha: 0, duration: mo.dropInMs || 260, onComplete: () => g.destroy() });
-      if (asked.includes(id)) UI.mission.reopen([id], dish);
+      if (q.asked.includes(id)) UI.mission.reopen([id], dish, { for: q.who });
     };
-    Object.values(bowls).forEach((img) => {
-      S.tappable(img, async () => {
-        const id = img.wordId;
-        if (served || !onPlate.length) {
-          S.wiggle(img);
-          return;
-        }
-        if (dressed.includes(id)) {
-          // taken back: its drops go, its row opens again
-          takeOff(id);
-          Cook.sfx.click();
-          z.progress({ off: id });
-          acted();
-          return refresh();
-        }
-        dressed.push(id);
-        Lang.speakWord(id);
-        const ok = asked.includes(id);
-        z.listen(ok, ok ? `put ${id}` : `put ${id}, not asked`);
-        if (!ok) Cook.Coach.wrong(KEY); // (a wrong move brings the stuck hint at once: STD-D2-04)
-        const dot = T(S.add.circle(img.x, img.y, 22, col(id), 1).setDepth(D.fx));
-        refresh();
-        await fly({ targets: dot, x: plAt[0], y: plAt[1], duration: mo.dropMs || 420, ease: "Cubic.easeInOut" });
-        dot.destroy();
-        if (!dressed.includes(id) || drops[id]) return; // (taken back while it flew)
-        drops[id] = dropsOn(id);
-        Cook.sfx.pop();
-        if (ok) {
-          UI.mission.tickItem(id, dish, { close: true });
-          if (!guided && Lang.known(id)) Cook.markRight(id);
-        }
-        acted();
-        refresh();
+    // (the test hook: what a tap would take back now, the active person's last dressing on, until they have it: the take-back player's)
+    Cook.undoAt = () => {
+      const q = people[active];
+      return screen === 2 && q && !q.served && q.dressed.length && bowls[q.dressed[q.dressed.length - 1]] ? S.centre(bowls[q.dressed[q.dressed.length - 1]]) : null;
+    };
+    /** Who is dressed now: their plate and face full, the rest waiting a little dimmer (CMP-10: inactive things dim). */
+    const showActive = () =>
+      people.forEach((q, i) => {
+        const a = q.served || i === active ? 1 : pl.dim || 0.62;
+        [plates[i], q.face, q.cob].concat(Object.values(q.drops)).forEach((o) => o && o.active && S.tweens.add({ targets: o, alpha: a, duration: 220 }));
       });
-    });
 
-    S.tappable(plate, () => {
-      if (served || onPlate.length < count || cobs.length || plating) {
-        S.wiggle(plate);
+    async function toPlates() {
+      screen = 1.5;
+      refresh();
+      await fly(async () => {
+        await Cook.wait(mo.endHoldMs || 400);
+        // the grill, the tray and the cobs left on the band go; the cooked cobs stay, to go to their plates
+        const away = [kit.grill, kit.tray].concat(onBand()).filter((o) => o && o.active);
+        await Cook.tween(S, { targets: away, alpha: 0, duration: mo.screenMs || 380 });
+        away.forEach((o) => o.destroy());
+        // the plates, one a person, across the room above the band; each one's face circle at its upper left
+        const n = count;
+        const view = [150, 1450];
+        const gap = pl.gap || 70;
+        const d = Math.min(pl.d || 400, (view[1] - view[0] - (n - 1) * gap) / n);
+        const y = pl.y || 322;
+        const x0 = (view[0] + view[1]) / 2 - ((n - 1) * (d + gap)) / 2;
+        people.forEach((q, i) => {
+          const x = x0 + i * (d + gap);
+          const plate = T(S.add.image(x, y, "cn4-plate").setDepth(D.item - 1).setAlpha(0));
+          plate.setScale(d / Math.max(plate.width, plate.height));
+          plate.wordId = COB;
+          GK.shadow(S, plate, { dx: 8, dy: 11, alpha: 0.24, blur: 8 });
+          const fs = d * (pl.face || 0.3);
+          // (inside the plate's own square, so the light round the plate and its face is centred on the plate: contract-105)
+          const fo = d / 2 - fs / 2;
+          const face = T(S.add.image(x - fo, y - fo, Cook.Kit.badge(S, q.who)).setDisplaySize(fs, fs).setDepth(D.item + 2).setAlpha(0));
+          plate.face = face; // (the light hugs the plate and its face circle: Cook.Coach.parts)
+          q.face = face;
+          q.at = { x, y, d };
+          plates.push(plate);
+          S.tweens.add({ targets: [plate, face], alpha: 1, duration: mo.screenMs || 380 });
+        });
+        // the six bowls on the band, each with its word pill (the shared shelf's slots, chai's pill rule)
+        layBowls();
+        // each person's cob from the tray to their plate, growing as it goes
+        await Promise.all(
+          people.map((q, i) => {
+            const c = inTray[i];
+            q.cob = c.img;
+            c.img.setDepth(D.item + 0.3);
+            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: d * (pl.cob || 0.84), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
+          })
+        );
+      });
+      screen = 2;
+      active = 0;
+      if (ctx.nextStep) ctx.nextStep("Dress");
+      showActive();
+      acted();
+      refresh();
+    }
+    function layBowls() {
+      const Sh = global.Shelf;
+      const SL = Sh.slots([ids], { span: [150, 1450], pitch: 216, groupGap: 0 });
+      let ppw = 1;
+      try {
+        ppw = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+      } catch (e) {
+        ppw = 1;
+      }
+      const size = Math.min(bw.size || 150, SL.slotW - 30);
+      ids.forEach((id) => {
+        const x = SL.x[id];
+        const img = T(S.add.image(x, B.base - (bw.lift || 6) - size / 2, `cn4-${id}`).setDepth(D.item).setAlpha(0));
+        img.setScale(size / Math.max(img.width, img.height));
+        img.wordId = id;
+        GK.shadow(S, img, { dx: 5, dy: 7, alpha: 0.24, blur: 5 });
+        // (its pill is part of its light: the kit's parts, C.parts; S19, CK-61)
+        img.chip = Cook.Kit.chip(S, id, x, B.chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: null }); // (its own face's width: the row's rule fits it, SH-219)
+        bowls[id] = img;
+        S.tweens.add({ targets: img, alpha: 1, duration: mo.screenMs || 380 });
+        S.tappable(img, () => tapBowl(img));
+      });
+      // SH-219 (chai's rule): the row's one pill scale, the floor, never touching
+      const chips = ids.map((id) => bowls[id].chip).filter((c) => c && c.active && c.faceW);
+      if (Sh.pillScale && chips.length) {
+        const { k, cap } = Sh.pillScale(
+          chips.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })),
+          { want: Sh.pillWant(ppw), gap: Sh.pillGap(ppw), slotW: SL.slotW }
+        );
+        const y = Math.min(B.chipY, 896 - ((B.chipH || 46) / 2) * k);
+        chips.forEach((c) => {
+          if (c.capW !== cap) c.face(c.showsWord, cap);
+          c.k = k;
+          if (c.hit) c.hit(SL.slotW);
+          c.setScale(k).setY(y);
+        });
+      }
+    }
+
+    // what goes on: named as it goes on, their row ticks; a second tap takes it back until they have it (non-negotiable 7)
+    const tapBowl = async (img) => {
+      began();
+      const id = img.wordId;
+      const q = people[active];
+      if (screen !== 2 || !q || q.served) {
+        S.wiggle(img);
         return;
       }
-      served = true;
-      serveNow();
-    });
+      if (q.dressed.includes(id)) {
+        // taken back: its dressing goes, its row opens again
+        takeOff(q, id);
+        Cook.sfx.click();
+        z.progress({ off: id });
+        acted();
+        return refresh();
+      }
+      q.dressed.push(id);
+      Lang.speakWord(id);
+      const ok = q.asked.includes(id);
+      z.listen(ok, ok ? `put ${id}` : `put ${id}, not asked`);
+      if (!ok) Cook.Coach.wrong(KEY); // (a wrong move brings the stuck hint at once: STD-D2-04)
+      const dot = T(S.add.circle(img.x, img.y, 20, col(id), 1).setDepth(D.fx));
+      refresh();
+      await fly(() => Cook.tween(S, { targets: dot, x: q.cob.x, y: q.cob.y, scale: 0.6, duration: mo.dropMs || 420, ease: "Cubic.easeInOut" }));
+      dot.destroy();
+      if (!q.dressed.includes(id) || q.drops[id] || q.served) return; // (taken back while it flew)
+      q.drops[id] = dropsOn(q, id);
+      Cook.sfx.pop();
+      if (ok) {
+        UI.mission.tickItem(id, dish, { close: true, for: q.who });
+        if (!guided && Lang.known(id)) Cook.markRight(id);
+      }
+      acted();
+      refresh();
+    };
+
+    const servePlate = (i) => {
+      began();
+      const q = people[i];
+      if (screen !== 2 || i !== active || !q || q.served || !serveNow) {
+        S.wiggle(plates[i] || plates[0]);
+        return;
+      }
+      const go = serveNow;
+      serveNow = null;
+      go();
+    };
 
     // STD-D1-08 (contract-98): the reveal lessons, the dotted word then the blurred picture, once the order has landed and before the
     // first step (kit (d)); then the first step opens and its call is said
     if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => moving > 0 });
     refresh();
+    // (screen 2 begins when the last cob is in the tray: toPlates)
+    await new Promise((resolve) => {
+      let off = null;
+      off = z.tick(() => {
+        if (screen !== 2) return;
+        if (off) off();
+        resolve();
+      });
+    });
+    plates.forEach((plate, i) => S.tappable(plate, () => servePlate(i)));
 
-    /* ---------------- the serve: the kit's tick, faces, recast and redo (decision 51) ---------------- */
+    /* ---------------- the serve, one person at a time: the kit's tick, faces, recast and redo (decision 51) ---------------- */
     const serve = NjgServe.for(Cook);
     const rev = lay.review || {};
-    const revAt = at(rev, [1310, 60]);
-    const rowsOf = (want) => {
-      const L = UI.mission.ladders ? UI.mission.ladders()[dish] : null;
-      return L && Cook.Order ? Cook.Order.rows(L, { all: true }).filter((r) => !r.head && r.ids.some((x) => want.includes(x))) : [];
+    const rowsOf = (q, want) => {
+      const Ld = UI.mission.ladders ? UI.mission.ladders()[dish] : null;
+      return Ld && Cook.Order ? Cook.Order.rows(Ld, { all: true }).filter((r) => !r.head && (!r.for || r.for === q.who) && r.ids.some((x) => want.includes(x))) : [];
     };
-    await serve.round({
-      items: [KEY],
-      done: async () => {
-        await serveP;
-        if (ctl) ctl.close();
-        ctl = null;
-        if (stuck) stuck.close();
-        stuck = null;
-        ctlId = null;
-        glow(null);
-        steps.done();
-        z.expect(null);
-        // (the light's layer fades out over the plate for 300 ms: the face comes after it, so no box crosses it, contract-82)
-        await new Promise((r) => setTimeout(r, mo.lightFadeMs || 320));
-      },
-      check: (item, round) => {
-        const missing = asked.filter((id) => !dressed.includes(id));
-        const extra = dressed.filter((id) => !asked.includes(id));
-        const ok = !missing.length && !extra.length;
-        if (!round) {
-          missing.forEach((id) => {
-            UI.mission.missItem(id, dish);
-            z.listen(false, `left out ${id}`);
-            if (!guided) Cook.markMiss(id);
-          });
-          extra.forEach((id) => z.listen(false, nos.includes(id) ? `put ${id} (they said no)` : `put ${id}, not asked`));
-        }
-        const bad = rowsOf(missing.concat(extra.filter((id) => nos.includes(id))));
-        if (!ok && UI.mission.serveWrong) UI.mission.serveWrong(bad.length ? bad.map((r) => r.ids[0]) : missing.concat(extra), dish);
-        // (what they say again: those rows; an unasked one has no row of its own, so their whole order, as the kit's recast does)
-        return { ok, rows: bad.length ? bad : null };
-      },
-      review: async (wrong) => {
-        face.setVisible(false);
-        return [await serve.review(S, { who, ok: !wrong.length, x: revAt[0], y: revAt[1], size: rev.size || 230, side: "left" })];
-      },
-      oops: () => z.oops(),
-      recast: async (item, rows) => {
-        await UI.personSay(who, rows ? { rows } : {});
-      },
-      afterReview: () => face.setVisible(true),
-      redo: St.redo(ctx),
-      key: () => `${KEY}:${who}`,
-      showRight: async () => {
-        // the third wrong try: the right way shown (what was asked goes on, nothing else)
-        dressed.filter((id) => !asked.includes(id)).forEach(takeOff);
-        asked
-          .filter((id) => !dressed.includes(id))
-          .forEach((id) => {
-            dressed.push(id);
-            drops[id] = dropsOn(id);
-            UI.mission.tickItem(id, dish, { close: true });
-          });
-        await Cook.wait(mo.endHoldMs || 500);
-      },
-      reset: () => dressed.slice().forEach(takeOff),
-      again: () => {
-        served = false;
-        newServe();
-        refresh();
-      },
-    });
+    for (let i = 0; i < people.length; i++) {
+      const q = people[i];
+      active = i;
+      ctlId = null;
+      showActive();
+      refresh();
+      await serve.round({
+        items: [q.who],
+        done: async () => {
+          await new Promise((r) => (serveNow = r));
+          if (ctl) ctl.close();
+          ctl = null;
+          if (stuck) stuck.close();
+          stuck = null;
+          ctlId = null;
+          glow(null);
+          steps.done();
+          z.expect(null);
+          // (the light's layer fades out over the plate for 300 ms: the face comes after it, so no box crosses it, contract-82)
+          await new Promise((r) => setTimeout(r, mo.lightFadeMs || 320));
+        },
+        check: (item, round) => {
+          const missing = q.asked.filter((id) => !q.dressed.includes(id));
+          const extra = q.dressed.filter((id) => !q.asked.includes(id));
+          const ok = !missing.length && !extra.length;
+          if (!round) {
+            missing.forEach((id) => {
+              UI.mission.missItem(id, dish, { for: q.who });
+              z.listen(false, `left out ${id}`);
+              if (!guided) Cook.markMiss(id);
+            });
+            extra.forEach((id) => z.listen(false, q.nos.includes(id) ? `put ${id} (they said no)` : `put ${id}, not asked`));
+          }
+          const bad = rowsOf(q, missing.concat(extra.filter((id) => q.nos.includes(id))));
+          if (!ok && UI.mission.serveWrong) UI.mission.serveWrong(bad.length ? bad.map((r) => r.ids[0]) : missing.concat(extra), dish, { for: q.who });
+          // (what they say again: those rows; an unasked one has no row of its own, so their whole order, as the kit's recast does)
+          return { ok, rows: bad.length ? bad : null };
+        },
+        review: async (wrong) => {
+          q.face.setVisible(false);
+          const size = q.at.d * (rev.size || 0.55);
+          // (contract-108: well done once the whole card is ticked: only the last person's right plate says the praise, when every
+          // plate before it was right too; the rest are their faces alone)
+          const last = i === people.length - 1;
+          const praise = last && !wrong.length && people.every((x, j) => j >= i || x.right);
+          q.right = !wrong.length;
+          return [await serve.review(S, { who: q.who, ok: !wrong.length, x: q.at.x - q.at.d * 0.18, y: q.at.y - q.at.d * 0.2, size, side: last && people.length > 1 ? "left" : "right", line: praise ? undefined : false })];
+        },
+        oops: () => z.oops(),
+        recast: async (item, rows) => {
+          await UI.personSay(q.who, rows ? { rows } : {});
+        },
+        afterReview: () => q.face.setVisible(true),
+        redo: St.redo(ctx),
+        key: () => `${KEY}:${q.who}`,
+        showRight: async () => {
+          // the third wrong try: the right way shown (what was asked goes on, nothing else)
+          q.dressed.filter((id) => !q.asked.includes(id)).forEach((id) => takeOff(q, id));
+          q.asked
+            .filter((id) => !q.dressed.includes(id))
+            .forEach((id) => {
+              q.dressed.push(id);
+              q.drops[id] = dropsOn(q, id);
+              UI.mission.tickItem(id, dish, { close: true, for: q.who });
+            });
+          await Cook.wait(mo.endHoldMs || 500);
+        },
+        reset: () => q.dressed.slice().forEach((id) => takeOff(q, id)),
+        again: () => {
+          ctlId = null;
+          refresh();
+        },
+      });
+      q.served = true;
+      UI.mission.closeItem([], dish, { all: true, for: q.who });
+      Cook.sfx.pop();
+      await Cook.wait(mo.endHoldMs || 500);
+    }
+    screen = 3;
+    active = people.length;
+    refresh();
     Cook.undoAt = null;
     UI.mission.closeItem([], dish, { all: true });
     await Cook.wait(mo.endHoldMs || 500);
@@ -506,7 +703,7 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
       Cook.roundDone(KEY, { level: Cook.roundLevel(ctx), hints, grownUp: !!ctx.lab || !(dsh && dsh.autoLevel) });
     }
     z.close();
-    return { served: onPlate.length };
+    return { served: people.length };
   }
 
   /*
@@ -526,11 +723,12 @@ import { NjgServe } from "../../shared/serve.js"; // the shared kit's serving (S
     name: "Corn stall (prototype)",
     verb: "Grill, turn once, then what goes on",
     async run(L) {
+      register();
       const R = Cook.Recipes;
       const d = R.corn.make("nana", { level: L.level });
       L.ctx.steps = R.corn.steps(d);
       L.card(d, L.ctx.steps);
-      await L.station(KEY, { count: d.count, dress: d.dress, no: d.no, who: "nana" });
+      await L.station(KEY, { plates: d.plates, count: d.count, dress: d.dress, no: d.no, who: "nana" });
     },
   });
 })(window);

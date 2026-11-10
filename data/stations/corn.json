@@ -1,26 +1,24 @@
 {
- "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the corn stall's own data (js/cook/stations/corn.js; the order is recipes.corn in data/cook.json). A sekelo redress on one screen, top-down: the raw cobs (left) and the cooked plate (right) either side of the grill, the chutneys and dressings on a tray below, each with its word card. `mechanic.levels`: sideMs how long one side takes on the grill; slots how many cobs the grill holds; `palette` the art colours (data, not code).",
+ "_about": "The corn stall's own data (js/cook/stations/corn.js; its order is this file's order, registered as Cook.Recipes.corn when it loads). S19 wave B (CK-67, Zafar 9 Nov, his yes to two screens): screen 1 is sekelo's option 3 on the one grill kit (js/cook/grill-kit.js): the raw cobs two by two on the stone band, the grill big on the left, the cooked tray on its right; screen 2, the flavour: each cob on its person's cream plate with their face circle, the six dressing bowls on the band with their word pills, each person asking for their own mix. `mechanic.levels`: sideMs how long one side takes on the grill, greenMs how long its green lasts; `palette` the dressings' colours (data, not code).",
  "station": {
   "name": "Corn stall",
   "verb": "Grill, turn once, then what goes on",
-  "goal": "Tap the box: a cob goes on the grill. When it glows, tap it to turn it; when it glows again, tap it: onto the plate. Then tap what they asked for: it goes on. Tap the plate to give it to them.",
+  "goal": "Tap a cob on the band: it goes on the grill. When it glows, tap it to turn it; when it glows again, tap it: into the tray. Then each person's cob is on their plate: tap what they asked for and it goes on; tap their plate to give it to them.",
   "phases": {
-   "grill": "Tap the box for a cob. Turn it once when it glows; take it off when it glows again.",
-   "dress": "Tap what they asked for: it goes on the corn."
+   "grill": "Tap a cob for the grill. Turn it once when it glows; take it off when it glows again.",
+   "dress": "Tap what this person asked for: it goes on their corn. Tap their plate to give it to them."
   },
   "palette": {
-   "table": "#c98f55",
-   "tableGrain": "#a8713f",
-   "tray": "#6b3f22",
-   "trayEdge": "#4e2c17",
    "shadow": "#28190a",
    "smoke": "#ffffff",
-   "fru-02": "#f6d74a",
+   "fru-02": "#f7e27a",
    "spi-16": "#ffffff",
    "spi-04": "#d2401e",
    "ph-lili": "#5aa23a",
    "ph-amli": "#6b2a14",
-   "spi-11": "#2f2a26"
+   "spi-11": "#2f2a26",
+   "lemonShine": "#fffbe6",
+   "saltEdge": "#c9c4ba"
   }
  },
  "words": {
@@ -67,7 +65,7 @@
  "recipe": {
   "key": "corn",
   "dish": "n.corn-on-the-cob",
-  "ref": "data/cook.json recipes.corn (its slots and say-lines live there until wave 2 moves them here)",
+  "ref": "this file's order (below), registered as Cook.Recipes.corn by js/cook/stations/corn.js as its data loads (S19 wave B: one plate per person, each with their own mix); data/cook.json recipes.corn stays the old one-person shape until it is retired there",
   "steps": [
    "Grill",
    "Dress",
@@ -120,104 +118,175 @@
     "no": 0.6
    }
   ],
-  "_levels": "As recipes.corn.slots today. sideMs (a side on the grill) and slots (cobs the grill holds) by level are mechanic.levels (the station reads them now). 'no' is the chance of a 'not X' ask."
+  "_levels": "cobs = people by level (1, 1, 2, 2: one cob each); dressings per person [min, max]; 'no' the chance of a 'not X' ask (L4). sideMs and greenMs by level are mechanic.levels."
+ },
+ "order": {
+  "_about": "S19 wave B (CK-67, his yes: 'first grill them all and then flavour them on the next screen ... then you can flavour different corns differently'): the order the engine says and the card shows. One cob per person (the count by level, as before: 1, 1, 2, 2); each person (the family, the asker first) asks for their own mix: one or two things at L1-L3, two or three at L4, sometimes a 'no' at L4; the frames are the old recipe's (order, and, no): no new Kutchi. Each person's card heads 'Muke makai khape.' (their one cob: no 'one' on a card, principle 4; the order frame as eggs' 'n.egg').",
+  "name": "n.corn-on-the-cob",
+  "english": "Corn on the cob",
+  "free": false,
+  "proto": true,
+  "countRule": true,
+  "price": 2,
+  "stations": [
+   "corn"
+  ],
+  "lists": {
+   "dress": [
+    "fru-02",
+    "spi-16",
+    "spi-04",
+    "ph-lili",
+    "ph-amli",
+    "spi-11"
+   ],
+   "family": [
+    "nana",
+    "ma",
+    "cousin"
+   ]
+  },
+  "slots": {
+   "count": {
+    "byLevel": [
+     1,
+     1,
+     2,
+     2
+    ]
+   },
+   "plates": {
+    "type": "people",
+    "who": "$family",
+    "count": "$count",
+    "each": {
+     "no": {
+      "type": "no",
+      "else": {
+       "chance": {
+        "byLevel": [
+         0,
+         0,
+         0,
+         0.6
+        ]
+       },
+       "from": "$dress"
+      }
+     },
+     "dress": {
+      "type": "items",
+      "from": "$dress",
+      "exclude": "no",
+      "take": {
+       "byLevel": [
+        [
+         1,
+         1
+        ],
+        [
+         2,
+         2
+        ],
+        [
+         2,
+         2
+        ],
+        [
+         2,
+         3
+        ]
+       ]
+      },
+      "order": "any"
+     }
+    }
+   }
+  },
+  "say": [
+   {
+    "frame": "order",
+    "x": [
+     "n.corn-on-the-cob"
+    ]
+   },
+   {
+    "forEach": "$plates",
+    "for": "$it.who",
+    "say": [
+     {
+      "forEach": "$it.dress",
+      "frame": "and",
+      "x": [
+       "$it"
+      ]
+     },
+     {
+      "forEach": "$it.no",
+      "frame": "no",
+      "x": [
+       "$it"
+      ]
+     }
+    ]
+   }
+  ],
+  "need": [],
+  "steps": [
+   "Grill",
+   "Dress",
+   "Serve"
+  ],
+  "run": [
+   {
+    "do": "corn",
+    "plates": "$plates",
+    "count": "$count"
+   }
+  ],
+  "how": "Put the cobs on the grill, turn each once, take them off when they're cooked; then put on each person's cob what they asked for and give it to them."
  },
  "scene": {
   "stage": [
    1600,
    900
   ],
-  "view": "T at the stall's table (a sekelo redress on one screen)",
-  "bg": "assets/cook/proto/corn/bg-table.webp",
-  "_bg": "CT centre-cropped to 16:9; honey oak planks (the art plan's table), a leaf shadow top-left.",
+  "view": "S19 wave B (CK-67): the kitchen's marble worktop with the stone band (the kitchen family's scene; the stall's table backdrop went with the one-screen draft: 'make it the same as Sekelo')",
   "grill": {
-   "file": "assets/cook/items/v3/sekelo/grill.webp",
-   "reuse": true,
-   "drawn": {
-    "w": 640
-   },
-   "at": [
-    760,
-    250
-   ]
+   "kit": "js/cook/grill-kit.js (kit/grill, kit/tray-steel)",
+   "places": 4
   },
   "plate": {
-   "file": "assets/cook/items/v3/sekelo/plate-plain-t.webp",
-   "reuse": true,
-   "drawn": {
-    "w": 360
-   },
-   "at": [
-    1310,
-    250
-   ],
-   "angle": 90
-  },
-  "tray": {
-   "drawn": true,
-   "note": "the dressing board stays a plain drawn board (art plan Q7); 1300 x 200 at y 590",
-   "palette": "station.palette.tray, trayEdge"
+   "file": "assets/cook/items/v4/kit/plate-cream.webp",
+   "_note": "his yes (10 Nov): cream plates for corn"
   },
   "host": {
    "note": "Nani's guide box stands in for Hannah Mami until her approved sheet exists (Zafar, 1 Nov)"
   },
   "layout": {
-   "_about": "s18-g-corn (8 Nov): every place and size in the 1600 x 900 design box (the stage, fitted to the window by its height, STD-E1-01; STD-F2-04): the crate left (items.crate.at), the grill at the centre-left (scene.grill.at) and the plate right (scene.plate.at), all on the row y 250, the stage's upper third; the tray across the lower third (590 to 790, 200 deep: the dressings' 150 px and a margin of 25); their word cards under it at 852, inside the stage's foot; the person's face top right over the plate (150, the kit's row face at the stage's scale); the review's face over the plate (230: two thirds of the plate's 360). slotGap: a cob's drawn width (about 84) twice, so two cobs never touch; plateGap: a cob's width less a fifth, so the plate holds three. ring: the kit's heat ring (Cook.Kit.heatRing) above each cob, r 34 so its 15 px stroke clears the cob; the sage 'now' band is mechanic.levels greenMs (S19, CK-65).",
+   "_about": "Every place in the 1600 x 900 design box, inside x 150-1450 (the narrowest play area shows that much). grill: the kit's layout's own numbers (trayW the cooked tray's width, bandLen a raw cob's length lying on the band, ringRoom the heat rings' room above the grill); plates: screen 2, each person's plate (d its most diameter, gap between two, y its middle, face: the face circle's size as a share of the plate, at its upper left; cob: the cob's length as a share of the plate and its turn, degrees); bowls: the six dressing bowls on the band (size: most diameter, its foot this far above the band's base line), their pills on the band's pill line (the shared shelf's slots and pill rule, as chai's); ring: the kit's heat ring above each cob's top end (r); smoke; dress: how each dressing is drawn on a cob in code (kind: squeeze, crystals, powder, drizzle, specks; n: how many marks).",
    "grill": {
-    "slotGap": 170,
-    "y": 250
+    "trayW": 360,
+    "bandLen": 300,
+    "ringRoom": 92
    },
-   "plate": {
-    "gap": 64,
-    "cobK": 0.85
+   "plates": {
+    "d": 400,
+    "gap": 70,
+    "y": 322,
+    "face": 0.3,
+    "cob": 0.84,
+    "angle": -10
    },
-   "tray": {
-    "x0": 200,
-    "x1": 1400,
-    "y": 590,
-    "h": 200,
-    "pad": 50,
-    "r": 26,
-    "edge": 10,
-    "shadow": [
-     8,
-     10
-    ]
-   },
-   "chips": {
-    "y": 852,
-    "w": 200
+   "bowls": {
+    "size": 150,
+    "lift": 6
    },
    "ring": {
-    "r": 34,
-    "dy": 46
-   },
-   "face": {
-    "at": [
-     1310,
-     -40
-    ],
-    "size": 150
+    "r": 34
    },
    "review": {
-    "at": [
-     1310,
-     60
-    ],
-    "size": 230
-   },
-   "drops": {
-    "n": 16,
-    "w": 50,
-    "h": 0.8,
-    "liquidR": 6,
-    "dryR": 3,
-    "liquid": [
-     "ph-lili",
-     "ph-amli",
-     "fru-02"
-    ],
-    "_why": "CO (a dressing drawn on a cob) failed and is on the redo list: the drops stand in (items.onCob), a tint on the cob's picture"
+    "size": 0.55
    },
    "smoke": {
     "r": [
@@ -228,103 +297,122 @@
     "grow": 2.2,
     "chance": 0.03,
     "stagger": 140
+   },
+   "dress": {
+    "fru-02": {
+     "kind": "squeeze",
+     "n": 7
+    },
+    "spi-16": {
+     "kind": "crystals",
+     "n": 34
+    },
+    "spi-04": {
+     "kind": "powder",
+     "n": 90
+    },
+    "ph-lili": {
+     "kind": "drizzle",
+     "n": 9
+    },
+    "ph-amli": {
+     "kind": "drizzle",
+     "n": 8
+    },
+    "spi-11": {
+     "kind": "specks",
+     "n": 48
+    }
    }
   }
  },
  "items": {
-  "crate": {
-   "size": "L",
-   "view": "T",
-   "word": "n.corn-on-the-cob",
-   "file": "assets/cook/proto/corn/corn-crate.webp",
-   "px": [
-    570,
-    463
-   ],
-   "drawn": {
-    "w": 380
-   },
-   "at": [
-    230,
-    40
-   ],
-   "replaces": "assets/cook/proto/corn-box.webp",
-   "_note": "CX is a kept best try: six cobs in a wooden crate, tips right, but green husk leaves on them (the alternative chat has six clean cobs, tips left). Tap: a cob goes on the grill."
-  },
   "cob": {
    "size": "L",
    "view": "T",
    "states": {
-    "raw": "assets/cook/proto/corn/cob-raw.webp",
-    "half": "assets/cook/proto/corn/cob-half.webp",
-    "turned": "assets/cook/proto/corn/cob-turned.webp",
-    "done": "assets/cook/proto/corn/cob-done.webp"
+    "raw": "assets/cook/items/v4/corn/cob-raw.webp",
+    "turned": "assets/cook/items/v4/corn/cob-turned.webp",
+    "done": "assets/cook/items/v4/corn/cob-done.webp"
    },
-   "px": [
-    128,
-    380
-   ],
    "word": "n.corn-on-the-cob",
-   "drawn": {
-    "long": 250
-   },
-   "replaces": "assets/cook/proto/corn-cob-{raw,half,done}.webp",
-   "_note": "raw, one side grilled (half), the turn (the ungrilled side up, so it reads raw: the second glow), done; one canvas. The station has three looks today: raw, half, done."
+   "card": "assets/cook/items/v4/corn/cob-done.webp",
+   "thick": 0.18,
+   "_note": "the full run's K4: raw, turned (one side grilled: the picture after the turn), done; one canvas each, lying (its length the picture's width)"
   },
   "dressings": {
    "size": "S",
    "view": "T",
-   "drawn": {
-    "w": 150
-   },
-   "row_y": 690,
    "files": {
-    "fru-02": "assets/cook/proto/corn/dress-lemon.webp",
-    "spi-16": "assets/cook/proto/corn/dress-salt.webp",
-    "spi-04": "assets/cook/proto/corn/dress-chilli.webp",
-    "ph-lili": "assets/cook/proto/corn/dress-green.webp",
-    "ph-amli": "assets/cook/proto/corn/dress-amli.webp",
-    "spi-11": "assets/cook/proto/corn/dress-pepper.webp"
+    "fru-02": "assets/cook/items/v4/corn/bowl-lemon.webp",
+    "spi-16": "assets/cook/items/v4/corn/bowl-salt.webp",
+    "spi-04": "assets/cook/items/v4/corn/bowl-chilli-powder.webp",
+    "ph-lili": "assets/cook/items/v4/corn/bowl-green-chutney.webp",
+    "ph-amli": "assets/cook/items/v4/corn/bowl-tamarind-chutney.webp",
+    "spi-11": "assets/cook/items/v4/corn/bowl-black-pepper.webp"
    },
-   "replaces": "assets/cook/proto/corn-{lemon,salt,chilli,chutney-*,pepper}.webp",
-   "_note": "steel katoris, one canvas each; the six ids are the station's DRESS"
+   "_note": "the mini run's T-2: six cream bowls; the six ids are the station's DRESS"
+  },
+  "fru-02": {
+   "word": "fru-02",
+   "card": "assets/cook/items/v4/corn/bowl-lemon.webp"
+  },
+  "spi-16": {
+   "word": "spi-16",
+   "card": "assets/cook/items/v4/corn/bowl-salt.webp"
+  },
+  "spi-04": {
+   "word": "spi-04",
+   "card": "assets/cook/items/v4/corn/bowl-chilli-powder.webp"
+  },
+  "ph-lili": {
+   "word": "ph-lili",
+   "card": "assets/cook/items/v4/corn/bowl-green-chutney.webp"
+  },
+  "ph-amli": {
+   "word": "ph-amli",
+   "card": "assets/cook/items/v4/corn/bowl-tamarind-chutney.webp"
+  },
+  "spi-11": {
+   "word": "spi-11",
+   "card": "assets/cook/items/v4/corn/bowl-black-pepper.webp"
   },
   "onCob": {
    "file": null,
-   "_note": "CO (the dressings drawn on a cob) failed and stays in the redo list: the game keeps its drawn drops for each dressing until it is redone"
+   "_note": "the dressing on a cob is drawn in code (the art plan's question 3): scene.layout.dress"
   }
  },
  "vocab": {
   "n.corn-on-the-cob": {
    "item": "cob",
-   "card": "assets/cook/proto/corn/cob-done.webp"
+   "card": "assets/cook/items/v4/corn/cob-done.webp"
   },
   "fru-02": {
    "item": "dressings",
-   "card": "assets/cook/proto/corn/dress-lemon.webp"
+   "card": "assets/cook/items/v4/corn/bowl-lemon.webp"
   },
   "spi-16": {
    "item": "dressings",
-   "card": "assets/cook/proto/corn/dress-salt.webp"
+   "card": "assets/cook/items/v4/corn/bowl-salt.webp"
   },
   "spi-04": {
    "item": "dressings",
-   "card": "assets/cook/proto/corn/dress-chilli.webp",
+   "card": "assets/cook/items/v4/corn/bowl-chilli-powder.webp",
    "english": "red chilli powder"
   },
   "ph-lili": {
    "item": "dressings",
-   "card": "assets/cook/proto/corn/dress-green.webp",
+   "card": "assets/cook/items/v4/corn/bowl-green-chutney.webp",
    "english": "mint chutney"
   },
   "ph-amli": {
    "item": "dressings",
-   "card": "assets/cook/proto/corn/dress-amli.webp",
+   "card": "assets/cook/items/v4/corn/bowl-tamarind-chutney.webp",
    "english": "tamarind chutney"
   },
   "spi-11": {
    "item": "dressings",
-   "card": "assets/cook/proto/corn/dress-pepper.webp"
+   "card": "assets/cook/items/v4/corn/bowl-black-pepper.webp"
   }
  },
  "lines": {
@@ -354,31 +442,32 @@
   }
  ],
  "assets": [
-  "assets/cook/proto/corn/bg-table.webp",
-  "assets/cook/items/v3/sekelo/grill.webp",
-  "assets/cook/items/v3/sekelo/plate-plain-t.webp",
-  "assets/cook/proto/corn/corn-crate.webp",
-  "assets/cook/proto/corn/cob-raw.webp",
-  "assets/cook/proto/corn/cob-half.webp",
-  "assets/cook/proto/corn/cob-turned.webp",
-  "assets/cook/proto/corn/cob-done.webp",
-  "assets/cook/proto/corn/dress-lemon.webp",
-  "assets/cook/proto/corn/dress-salt.webp",
-  "assets/cook/proto/corn/dress-chilli.webp",
-  "assets/cook/proto/corn/dress-green.webp",
-  "assets/cook/proto/corn/dress-amli.webp",
-  "assets/cook/proto/corn/dress-pepper.webp",
-  "assets/cook/items/shelf-ph-amli-bare-f.webp"
+  "assets/cook/items/v4/kit/grill.webp",
+  "assets/cook/items/v4/kit/tray-steel.webp",
+  "assets/cook/items/v4/kit/plate-cream.webp",
+  "assets/cook/items/v4/corn/cob-raw.webp",
+  "assets/cook/items/v4/corn/cob-turned.webp",
+  "assets/cook/items/v4/corn/cob-done.webp",
+  "assets/cook/items/v4/corn/bowl-lemon.webp",
+  "assets/cook/items/v4/corn/bowl-salt.webp",
+  "assets/cook/items/v4/corn/bowl-chilli-powder.webp",
+  "assets/cook/items/v4/corn/bowl-green-chutney.webp",
+  "assets/cook/items/v4/corn/bowl-tamarind-chutney.webp",
+  "assets/cook/items/v4/corn/bowl-black-pepper.webp"
  ],
  "motion": {
   "_about": "s18-g-corn: the game's own motion times, ms at speed 1 (the kits' own come from the kits)",
   "flyMs": 420,
   "flipMs": 140,
   "flipK": 0.6,
-  "_flipK": "the turn squashes the cob to 0.6 of its width and back (was to nothing: the light's box, fading out for 300 ms round it, was then over 3.5 times the cob, contract-53; at 740x320 the box's fixed margin needs 0.55 at least)",
+  "_flipK": "the turn squashes the cob across to 0.6 of its thickness and back (the grill kit's roll)",
   "dropMs": 420,
   "dropInMs": 260,
   "smokeMs": 1300,
-  "endHoldMs": 500
+  "endHoldMs": 500,
+  "bandMs": 520,
+  "trayMs": 460,
+  "screenMs": 380,
+  "plateMs": 520
  }
 }
