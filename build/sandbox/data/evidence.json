@@ -27109,5 +27109,73 @@
    "max": 8,
    "note": "corn: makai and hakro with their card and pill; the lit bowl's box not over its pill; the grill scene's face circle"
   }
+ ],
+ "SH-259": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "js:Cook.Chop.refused"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "chop alone: its board, band, knife and the swipe light (one rounded box round knife, item and path, the item in place first)"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "js:Cook.Chop.refused"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "daar's chop: the same board, band, knife and light as chop alone, clear of the side panel; nothing refused (Cook.Chop.refused empty)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "js:Cook.Chop.refused"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "chaat's chop: the same as chop alone, the tomato in place before the light"
+  }
  ]
 }

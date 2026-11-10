@@ -17,8 +17,8 @@
   }
  },
  "scene": {
-  "_about": "Sprint 18 (wave 2, STD-F2-03: a game's own numbers in its settings file): where daar's things stand, in design px on the 1600x900 grid (js/cook/stations/daar.js reads them as SC()). side: where the chopped pieces wait, counter while chopping (one row per vegetable, right to left from x), cook beside the hob (centred on x); pile: one piece's heap; chopTimer: chop's ring on the board; plainBowl: the plain daar on its trivet, waiting to pour (w: its round body); dial: the stir's speed dial's centre; serveBowl: the served bowl (w: its picture's width) and the review face over it; pop: the word pop's place from the pot's right rim (dx) and its centre (dy); pourMs: the daar's pour, each phase (the shared pour, SH-117).",
-  "side": {"counter": {"x": 1395, "y": 120, "row": 112}, "cook": {"x": 330, "y": 190, "row": 140}},
+  "_about": "Sprint 18 (wave 2, STD-F2-03: a game's own numbers in its settings file): where daar's things stand, in design px on the 1600x900 grid (js/cook/stations/daar.js reads them as SC()). side: where the chopped pieces wait, counter while chopping (one row per vegetable, right to left from x; SH-259, 10 Nov: left of chop's own board, under its ring, clear of the board and the knife), cook beside the hob (centred on x); pile: one piece's heap; chopTimer: chop's ring on the board; plainBowl: the plain daar on its trivet, waiting to pour (w: its round body); dial: the stir's speed dial's centre; serveBowl: the served bowl (w: its picture's width) and the review face over it; pop: the word pop's place from the pot's right rim (dx) and its centre (dy); pourMs: the daar's pour, each phase (the shared pour, SH-117).",
+  "side": {"counter": {"x": 250, "y": 262, "row": 104}, "cook": {"x": 330, "y": 190, "row": 140}},
   "pile": 96,
   "chopTimer": {"x": 130, "y": 130},
   "plainBowl": {"x": 1250, "y": 330, "w": 230},

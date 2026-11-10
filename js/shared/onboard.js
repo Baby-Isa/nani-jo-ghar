@@ -1912,11 +1912,12 @@
    * region by a variant's name ({variant, game}) when that game is on its list. Anything else it passes (shape, round, pad, region,
    * within, or a variant it is not on the list for) is refused: a console warning, a line in Onboard.refused, and the light drawn as
    * the kit's own, unchanged. The kitchen kit's own coach (js/cook/coach.js, a shared piece) marks its calls {kit: true}.
-   *   swipe (STD-E2-08a; chop's knife cut, and daar's onion on the same chop): one rounded rectangle round the knife, the item and the
+   *   swipe (STD-E2-08a; chop's knife cut, the variant chop's own game owns, so it is the same wherever chop runs: alone, in daar, in
+   *     chaat, in any recipe; Zafar 10 Nov, SH-259): one rounded rectangle round the knife, the item and the
    *     path between them (the target: their page boxes), its own margin (pad), stopping at the play area (within: never over the
    *     side panel)
    */
-  Onboard.VARIANTS = { swipe: ["chop", "daar"] };
+  Onboard.VARIANTS = { swipe: ["chop"] };
   Onboard.ASKS = ["shape", "round", "pad", "region", "within"];
   Onboard.refused = [];
   /** A light's options with what the game may not ask for taken out (and said): -> the options the light uses. */

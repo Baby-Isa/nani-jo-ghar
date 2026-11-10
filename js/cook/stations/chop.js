@@ -120,11 +120,62 @@ import { Cook as CookNS } from "../ns.js";
     St.decoyNote(n, { what: n < want ? `${KEY} room:${n}` : KEY, lookalike: rounds.some((r) => r.lookalikes.length) });
   };
 
-  /** One chop in zone z (the call daar and chaat use): the mechanic at the game's numbers for the level; graded by kind. */
-  async function play(z, params = {}) {
-    await settings();
+  /*
+   * SH-259 (Zafar, 10 Nov: "chop is a separate standalone game which is chained together with other standalone games to make a recipe
+   * game ... if you're making the change to Chop it should apply everywhere chop is seen - there are not or should not be multiple
+   * versions of chop"): one chop. Whoever calls it (its own tile, daar, chaat's "chop-game", any recipe chain) tells it only what to
+   * chop and what it wants to hear back (ASK); its zone's scene, its board, band, knife, ring, pieces, light and numbers are chop's
+   * own (its settings file), drawn here. Anything else a caller passes is refused with a warning (Cook.Chop.refused).
+   */
+  const ASK = ["targets", "pool", "no", "only", "level", "retry", "note", "tick", "tally", "onSlice", "onCount", "onCall", "onRounds", "exactDecoys"];
+  const refused = [];
+  /** Chop's own scene in zone z: the worktop wash, the stone band, the walnut board; its pictures loaded. -> the mechanic's look params. */
+  async function stage(z, s, ids, level) {
+    const S = z.S;
+    const lv1 = knobs(level);
+    const art = pictures(s, ids, !(lv1.hop && lv1.hop.decoys === 0));
+    await St.loadArt(S, art.load).catch(() => {});
+    const lay = s.layout || {};
+    // S19 (CK-71, ART-37: the board above the band): the kitchen kit's worktop wash and chai's stone band with its shelf, where the
+    // whole things sit with their pills and hop from (the hop: the mechanic's params.hop); the walnut board above it, as big as
+    // the room allows, never full-bleed (its place: the settings' layout)
+    const top = z.Y(BAND.top);
+    if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
+    band(S, { top, base: z.Y(BAND.base), far: FAR, depth: Cook.D.bg + 1.2 });
+    board(S, z, art, lay);
+    const kn = lay.knife || {};
+    return {
+      hop: true,
+      band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY, board: lay.hopOn || null, boardY: lay.board ? [lay.board.y - lay.board.h / 2, lay.board.y + lay.board.h / 2] : null },
+      // (S19: the game's own pictures and places; the mechanic falls back to the shared ones where these are missing)
+      pieces: art.pieces,
+      knifeKey: S.textures.exists(art.knife) ? art.knife : null,
+      blade: art.blade,
+      knifeAt: S.textures.exists(art.knife) ? { x: kn.x, y: kn.y, px: kn.px, angle: kn.angle } : null,
+      timer: lay.ring || null,
+      peak: lay.peak || null,
+      halves: lay.halves || null,
+      shadows: lay.shadow || null,
+    };
+  }
+
+  /** One chop in zone z (its own tile, daar, chaat, any recipe): chop's own scene and numbers for the level; graded by kind. */
+  async function play(z, given = {}) {
+    const s = await settings();
+    const params = {};
+    ASK.forEach((k) => given[k] !== undefined && (params[k] = given[k]));
+    const extra = Object.keys(given).filter((k) => !ASK.includes(k) && given[k] != null);
+    if (extra.length) {
+      const why = `a caller passed chop ${extra.join(", ")}: chop's own (SH-259)`;
+      if (refused.length < 50) refused.push(why);
+      try {
+        console.warn(`Cook.Chop.play: ${why}; refused`);
+      } catch (e) {
+        /* no console */
+      }
+    }
     const level = params.level || Cook.roundLevel(z.ctx);
-    const k = Object.assign(knobs(level), params.knobs || {});
+    const k = knobs(level);
     const want = params.targets || {};
     // (the decoys each round threw, reported once for the round: the game's own, daar's and chaat's alike)
     const own = params.onRounds;
@@ -137,7 +188,8 @@ import { Cook as CookNS } from "../ns.js";
     const LC = global.Lifecycle;
     const stepOpen = !!(LC && LC.asked && LC.asked() && global.PlayLog && global.PlayLog.step);
     if (stepOpen) global.PlayLog.step(KEY);
-    const cut = (await Mech.run(KEY, z, Object.assign({ game: KEY }, params, { level, knobs: k, onRounds, stepOpen }))) || {};
+    const look = await stage(z, s, Object.keys(want), level);
+    const cut = (await Mech.run(KEY, z, Object.assign({}, params, look, { level, knobs: k, onRounds, stepOpen }))) || {};
     let wrong = null;
     const got = {};
     const short = [];
@@ -169,7 +221,6 @@ import { Cook as CookNS } from "../ns.js";
     const knife = St.loadArt(S, art.load.concat(Cook.Kit && Cook.Kit.faceArt ? Cook.Kit.faceArt(d.who || "nani") : [])).catch(() => {});
     L.card(d, (s.recipe && s.recipe.steps) || ["Chop"]);
     await knife;
-    const lay = s.layout || {};
     const pool = ((s.recipe || {}).lists || {}).thrown || [];
     const redo = St.redo(ctx);
     // the shared kit's first-time gate for this round (kit (d), STD-D1-01): the reveal lessons spend on it
@@ -187,14 +238,7 @@ import { Cook as CookNS } from "../ns.js";
       // before the first throw (kit (d)'s Cook.Coach.lessons; the knife waits)
       if (!tries && gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx });
       const z = Mech.zone(S, ctx, { id: KEY, level });
-      // S19 (CK-71, ART-37: the board above the band): the kitchen kit's worktop wash and chai's stone band with its shelf, where the
-      // whole things sit with their pills and hop from (the hop: the mechanic's params.hop); the walnut board above it, as big as
-      // the room allows, never full-bleed (its place: the settings' layout)
-      const top = z.Y(BAND.top);
-      if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
-      band(S, { top, base: z.Y(BAND.base), far: FAR, depth: Cook.D.bg + 1.2 });
-      board(S, z, art, lay);
-      const kn = lay.knife || {};
+      // (SH-259: the scene, the board and every look of the chop are play()'s, the same wherever chop runs)
       const r = await play(z, {
         targets: need,
         no: tries ? [] : [].concat(d.no || []),
@@ -203,17 +247,6 @@ import { Cook as CookNS } from "../ns.js";
         level,
         retry: tries > 0,
         note: !tries,
-        hop: true,
-        band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY, board: lay.hopOn || null, boardY: lay.board ? [lay.board.y - lay.board.h / 2, lay.board.y + lay.board.h / 2] : null },
-        // (S19: the game's own pictures and places; the mechanic falls back to the shared ones where these are missing)
-        pieces: art.pieces,
-        knifeKey: S.textures.exists(art.knife) ? art.knife : null,
-        blade: art.blade,
-        knifeAt: S.textures.exists(art.knife) ? { x: kn.x, y: kn.y, px: kn.px, angle: kn.angle } : null,
-        timer: lay.ring || null,
-        peak: lay.peak || null,
-        halves: lay.halves || null,
-        shadows: lay.shadow || null,
       });
       // CK-78 (the eye judge, 10 Nov: "well done shows nothing the child made ... three empty trays"): every piece she asked for is
       // cut, so her well done is here, on the board, as chai's at its glass: her face beside the cut pieces, its praise beside it (the
@@ -262,7 +295,7 @@ import { Cook as CookNS } from "../ns.js";
    */
   Mech.define("chop-game", {
     station: KEY,
-    view: "wood", // (chaat keeps its wood board: Zafar never asked for a change; the Chop tile keeps its marble)
+    view: "marble", // (SH-259, Zafar 10 Nov: one chop: chaat's chop is chop's own game, its marble, band and board, as the Chop tile)
     knobs: KEY,
     async run(z, p) {
       return (await play(z, Object.assign({ note: !p.retry, exactDecoys: true }, p, { level: p.level || z.level }))).cut;
@@ -315,6 +348,6 @@ import { Cook as CookNS } from "../ns.js";
     return sh;
   }
 
-  Cook.Chop = { settings, knobs, play, shadow, pictures };
+  Cook.Chop = { settings, knobs, play, shadow, pictures, ASK, refused };
   Mech.lab(KEY, { name: "Chop", verb: "Ninja slicing", run: (L) => game(L) });
 })(window);

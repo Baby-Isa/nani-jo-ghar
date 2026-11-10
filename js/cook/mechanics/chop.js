@@ -106,7 +106,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null, hop = false, pieces = null, knifeAt = null, peak = null, halves: halfK = null, shadows = null, game = null }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null, hop = false, pieces = null, knifeAt = null, peak = null, halves: halfK = null, shadows = null }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       // S19 (CK-71): the hop, the chop game's own (its numbers: data/stations/chop.json levels[].knobs.hop)
@@ -703,6 +703,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
       const T = Object.assign({ x: 118, y: 124, r: 70, warn: 3 }, k.timer || {}, timer || {});
+      // CK-78 (the eye judge, 10 Nov: a count chip hidden under the settings gear at the first move): the count sits on the tool in use
+      // (SH-39, UI.tallyAt), here just under the ring, never in the corner the gear holds
+      if (tally && UI.tallyAt) UI.tallyAt([z.X(T.x), z.Y(T.y) + z.L(T.r) + z.L(34)]);
       const ring = S.track(S.add.graphics().setDepth(D.item + 1));
       let left = total; // seconds left on the ring
       let lastTick = Math.ceil(left);
@@ -1201,8 +1204,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // the knife's path ends just past the vegetable (it cuts it as it crosses, then stops), so the box holds the whole move
         const x1 = Math.max(z.X(160), veg.x - veg.displayWidth * 0.5 - z.L(40));
         const kHalf = kb().width / 2;
-        // STD-E2-08a (Zafar, 10 Nov: "the whole horizontal path needs lighting"), the shared light's swipe variant (Onboard.VARIANTS,
-        // chop and daar): one rounded rectangle round the knife where it starts, the vegetable and the path to where the knife stops;
+        // STD-E2-08a (Zafar, 10 Nov: "the whole horizontal path needs lighting"), the shared light's swipe variant (Onboard.VARIANTS:
+        // chop's own, the same wherever chop runs, SH-259): one rounded rectangle round the knife where it starts, the vegetable and the path to where the knife stops;
         // never over the side panel (within: the play area, Cook.view.left to the screen's right)
         const vb = veg.getBounds(); // (where it waits to be cut: the box keeps its place as it is cut and goes)
         const swipeBox = () => {
@@ -1220,7 +1223,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const W = global.innerWidth || 1e4;
           return { x: lx, y: 0, w: W - lx, h: global.innerHeight || 1e4 };
         };
-        const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: game || "chop", within, note: "chop:s14-strip" });
+        const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: "chop", within, note: "chop:s14-strip" });
         const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
         hold();
         await wait(420);
@@ -1371,6 +1374,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (knife.active) S.tweens.add({ targets: knife, x: knifeHome.x, y: knifeHome.y, angle: knifeAt ? knifeAt.angle || 0 : knife.angle, duration: 260, ease: "Sine.easeOut" });
       z.expect(null);
       if (tally) UI.hideCount();
+      if (tally && UI.tallyAt) UI.tallyAt(null);
       // graded now, not while you chop (so nothing tells you when to stop)
       ids.forEach((id) => {
         const c = cut[id] || 0;
