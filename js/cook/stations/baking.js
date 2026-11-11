@@ -310,12 +310,8 @@ import { setTimeout } from "../life.js";
     onShelf.forEach((id, i) => {
       const x = bowlX + (i - (n - 1) / 2) * pitch;
       const img = T(S.add.image(x, band.base, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
-      // (s19-games-2, contract-115: each by its size class as chai's jars, St.classFit: the band's room with the hop kept, the class's
-      // share, the floor on screen. Was the settings' drawn.h, 84% of chai's L)
-      const ppw = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
-      const f = St.classFit ? St.classFit(S, `bk-${id}`, id, { base: band.base, ppw, slotW: Math.min(PILL_SLOT, pitch) - 8 }) : null;
-      if (f && f.scale) img.setScale(f.scale);
-      else img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      // (s19-games-2: by size class (St.classFit, contract-115) their tap reach to the pill failed (contract-111): the old size, next round)
+      img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;

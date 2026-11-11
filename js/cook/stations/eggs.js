@@ -185,8 +185,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // salt), from the settings' pool of chai's side-on jars with a recorded word; each a gentle no when tapped)
     const shelfWants = ["n.egg"].concat(K.shakers ? ["spi-16", "spi-11"] : []);
     const pool = ((SET().decoys || {}).pool || []).filter((id) => Cook.Art && Cook.Art.refUrl(`${id}.shelf`));
-    // (a shaker no plate's order names, yes or no, stands as one of them: it counts)
-    const unasked = K.shakers ? ["salt", "pepper"].filter((f) => !plates.some((q) => q[f] === "yes" || q[f] === "no")).length : 0;
+    // (a shaker no plate asks for stands as one of them: it counts)
+    const unasked = K.shakers ? ["salt", "pepper"].filter((f) => !plates.some((q) => q[f] === "yes")).length : 0;
     const row = Cook.levelRow ? Cook.levelRow(level) : { decoys: level };
     const decoyIds = St.tableDecoys && pool.length ? St.tableDecoys(pool, shelfWants, level, { n: Math.max(0, (row.decoys || 0) - unasked), also: unasked, what: KEY }) : [];
     const decoyArt = decoyIds.map((id) => [`eg-dec-${id}`, Cook.Art.refUrl(`${id}.shelf`)]);
@@ -635,7 +635,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           current,
           busy: () => busy > 0,
           glow: (on) => (on ? setTimeout(() => current() && glowWith(n.obj, stuck && stuck.lit ? stuck.lit() : null), 0) : glowObj === n.obj && glowOn(null)),
-          onHint: () => hints++, // (SH-160: the guide's hint came)
+          // (SH-160: the guide's hint came; s19-games-2, contract-36: her call again with its light, as chai's)
+          onHint: () => {
+            hints++;
+            if (UI.stepHelp) UI.stepHelp();
+          },
           note: NOTE,
         });
     };
