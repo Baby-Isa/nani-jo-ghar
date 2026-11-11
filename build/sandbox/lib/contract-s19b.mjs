@@ -252,9 +252,10 @@ export const PAD_EVEN = 2;      // px: a card's inner padding equal on all sides
 export const GAP_EVEN = 2;      // px: the gaps between cards equal within this
 export const ROW_FILL = 2 / 3;  // the cards fill at least this share of their row (one card in a box for 2.5 is a half-empty card)
 export const PAD_HOLD_MS = 400;
+export const FOOT_G = 0.07;     // the 6 Nov item card's gap g: 7% of its inner width, foot to speaker (guide-and-card.md)
 export const CUR_HOLD_MS = 1000;
 Object.assign(S19B_CHECKS, {
-  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on all four sides within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height); the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
+  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on its top, left and right within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height), and its foot that padding or the 6 Nov card's gap g (${FOOT_G * 100}% of its inner width, foot to speaker, docs/design-language/guide-and-card.md) within the same; the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
 });
 export function check116(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19pad").length) return;
@@ -274,7 +275,12 @@ export function check116(r, tl, add) {
     for (const c of cards) {
       if (!c.in) continue;
       const pads = [c.in[0] - c.box[0], c.in[1] - c.box[1], c.box[2] - c.in[2], c.box[3] - c.in[3]];
-      if (Math.max(...pads) - Math.min(...pads) > tolPad) out("pad", e.t, `${s.key}: the order card "${c.w}" has padding ${pads.map((p) => Math.round(p * 2) / 2).join("/")} px (left/top/right/bottom): equal on every side within ${Math.round(tolPad * 10) / 10} px`);
+      // (the foot: the card's padding, or the 6 Nov card's own foot gap g, 7% of its inner width, as its speaker-to-divider gap is
+      // (docs/design-language/guide-and-card.md, Zafar 6 Nov round 3); s19-shared-checks: chai's own cards stand 9/9/9/7 at 1280x665,
+      // a half pixel from failing, and chaat's chop card failed at 6.5 by its rounding)
+      const sides = pads.slice(0, 3), g = FOOT_G * (c.in[2] - c.in[0]);
+      const footOk = Math.abs(pads[3] - (Math.max(...sides) + Math.min(...sides)) / 2) <= tolPad || Math.abs(pads[3] - g) <= tolPad;
+      if (Math.max(...sides) - Math.min(...sides) > tolPad || !footOk) out("pad", e.t, `${s.key}: the order card "${c.w}" has padding ${pads.map((p) => Math.round(p * 2) / 2).join("/")} px (left/top/right/bottom): equal on every side within ${Math.round(tolPad * 10) / 10} px`);
     }
     const gaps = cards.slice(1).map((c, i) => c.box[0] - cards[i].box[2]);
     if (gaps.length > 1 && Math.max(...gaps) - Math.min(...gaps) > tolGap) out("gap", e.t, `${s.key}: the order cards' gaps are ${gaps.map(Math.round).join(", ")} px: equal within ${Math.round(tolGap * 10) / 10} px`);

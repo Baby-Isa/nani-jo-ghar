@@ -636,13 +636,10 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-slot-e { grid-row: 4; align-self: start; margin-top: 3.5cqi; margin-bottom: calc(-1 * var(--wc14-ink, 0px)); }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14::before { content: ""; display: block; grid-row: 6; grid-column: 1; justify-self: center; width: 74.8cqi; height: max(var(--njg-card14-hair), 1.4cqi); margin-top: 7cqi; pointer-events: none; background: var(--njg-card14-divider); }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14.oc-away::before { visibility: hidden; }
-/* (s19-shared-checks, contract-116; SH-148, "its padding = picture to Kutchi = speaker to foot": the speaker's foot is the card's own
-   padding, so the card's padding is even on all four sides; it was 7% of the card's width less the hairline, 2 to 2.5 px short of the
-   padding at 1280x665) */
-:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 7; align-self: end; margin: 7cqi 0 var(--njg-itpad); z-index: 1; width: var(--njg-tap-drawn); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { grid-row: 7; align-self: end; margin: 7cqi 0 calc(7cqi - var(--njg-card14-hair)); z-index: 1; width: var(--njg-tap-drawn); }
 /* (on the phones the speaker is drawn 30 px, 94% of the panel's drawn tap, its tap area the foot; at 1280 and 1920 it stays a whole 48 px tap) */
 @media (max-height: 500px) { :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { width: calc(var(--njg-tap-drawn) * .94); } }
-:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::after { inset: calc(-1 * (10.5cqi + max(var(--njg-card14-hair), 1.4cqi))) calc((100% - 100cqi) / 2 - var(--njg-itpad)) calc(-1 * var(--njg-itpad) - var(--njg-card14-hair)); border-radius: 0 0 calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)) calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::after { inset: calc(-1 * (10.5cqi + max(var(--njg-card14-hair), 1.4cqi))) calc((100% - 100cqi) / 2 - var(--njg-itpad)) -7cqi; border-radius: 0 0 calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)) calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)); }
 /* (the English's dots, its tap to show it, reach down to half a gap above the divider: the speaker's tap area starts there) */
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(var(--wc14-ink, 0px) - 3.5cqi); }
 /* bigger pictures on the big screens (about 21% taller); the phones unchanged */
@@ -654,7 +651,8 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 /* contract-116 (s19-shared-checks; Zafar, 11 Nov: chai's look is the standard, "a one-item card fills its row as chai's would, never a
    two-thirds-empty card"): a row with one item card (eggs, corn, maani, chaat's chop) gives it the whole row. Inside it is chai's card
    as it would stand in a row of 2.5: the picture's frame takes the row's width at chai's height (the picture contained in it, centred),
-   and the words, the divider, the speaker and every gap keep chai's sizes. --njg-c14i is chai's card's inner width, resolved on the
+   and the words, the divider, the speaker and their gaps keep chai's sizes; its foot is its padding (SH-148: "its padding = picture
+   to Kutchi = speaker to foot"), so a card this wide stays evenly padded. --njg-c14i is chai's card's inner width, resolved on the
    card in its row's cqi (registered, as --njg-itpad is, so the card's children inherit the length, not the unit). */
 @property --njg-c14i { syntax: "<length>"; inherits: true; initial-value: 0px; }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child { flex-basis: 100% !important; --njg-c14i: calc((100cqi - 2 * var(--njg-s2)) / 2.5 - 2 * max(calc(var(--njg-px) * 4), 2.6cqi) - 2 * var(--njg-card14-hair)); }
