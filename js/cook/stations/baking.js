@@ -213,7 +213,17 @@ import { setTimeout } from "../life.js";
     const MB = I.mixBowl || {};
     const FLOUR = MB.flour || "cook-atto";
     const LIQUID_IDS = new Set(MB.wet || CT.liquid || []);
-    const bowlFoot = MB.foot || band.top - 24;
+    // (s19-games-2, CHAI-89, Zafar 11 Nov: the play group centred between the view's top and the shelf, as chai's: the bowl with the room
+    // a jar tips in above it, MB.pourRoom; never lower than its old place on the worktop's front)
+    const V = Cook.view || {};
+    const vt = V.top != null ? V.top : -(V.ey || 0);
+    const spanTop = vt + 16;
+    const spanBot = band.top - 28;
+    const bowlH = (() => {
+      const t = has("bk-bowl-empty") ? S.textures.get("bk-bowl-empty").getSourceImage() : null;
+      return t ? (t.height * ((MB.drawn || {}).w || 380)) / Math.max(1, t.width) : 200;
+    })();
+    const bowlFoot = MB.foot || Math.min(band.top - 24, spanBot - Math.max(0, (spanBot - spanTop - (bowlH + (MB.pourRoom || 220))) / 2));
     const bowlX = (MB.at || [800])[0];
     const bowl = T(S.add.image(bowlX, bowlFoot, "bk-bowl-empty").setOrigin(0.5, 1).setDepth(D.item));
     bowl.setScale(((MB.drawn || {}).w || 380) / bowl.width);
@@ -247,7 +257,9 @@ import { setTimeout } from "../life.js";
     let jug = null;
     if (hasJug) {
       const J = I.jug || {};
-      const [jx, jy] = J.at || [470, 600];
+      // (its base level with the bowl's foot, wherever the bowl stands: CHAI-89)
+      const jx = (J.at || [470])[0];
+      const jy = bowlFoot;
       const c = T(S.add.container(jx, jy).setDepth(D.item + 0.5));
       const empty = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1);
       const k = ((J.drawn || {}).w || 260) / empty.width;
@@ -481,9 +493,16 @@ import { setTimeout } from "../life.js";
   async function oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt }) {
     const O = (SET().scene || {}).oven || {};
     const N = ITEMS().naan || {};
-    const [ox, oy] = O.centre || [900, 360];
-    const ov = T(S.add.image(ox, oy, "bk-oven-shut").setDepth(D.item + 1));
+    const [ox, oy0] = O.centre || [900, 360];
+    const ov = T(S.add.image(ox, oy0, "bk-oven-shut").setDepth(D.item + 1));
     ov.setScale(((O.drawn || {}).w || 560) / ov.width);
+    // (s19-games-2, CHAI-89: the oven and its tray centred between the view's top and the shelf, as chai's group; never lower)
+    const V = Cook.view || {};
+    const vt = V.top != null ? V.top : -(V.ey || 0);
+    const SB = (global.Shelf && global.Shelf.BAND) || { top: 630 };
+    const dy = Math.min(0, (vt + 16 + SB.top - 28) / 2 - oy0);
+    const oy = oy0 + dy;
+    ov.setY(oy);
     const ring = T(S.add.graphics().setDepth(D.fx + 1));
     const steam = (x, y, k = 3) => {
       for (let i = 0; i < k; i++) {
@@ -493,7 +512,8 @@ import { setTimeout } from "../life.js";
       }
     };
     // the naan on its tray (the worktop, left of the oven, above the band), raw (B3: the tray of raw naan, then baked)
-    const [hx, hy] = N.at || [330, 640];
+    const hx = (N.at || [330])[0];
+    const hy = (N.at || [330, 640])[1] + dy;
     const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
