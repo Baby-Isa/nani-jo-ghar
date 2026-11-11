@@ -15,6 +15,7 @@
  */
 import { Cook as CookNS } from "./ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
+import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per person; Cook.Serve)
 
 (function (global) {
   const Cook = CookNS;
@@ -279,7 +280,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * CK-47 (decision 7): the lab's one ending, in the kitchen, as a story order's: the counter again, Nani's one Shabash (not
    * when the station's own praise just said it), the customer's thanks and goodbye, and they go.
    */
-  async function kitchenEnd(who, people) {
+  async function kitchenEnd(who, people, dish) {
     // SH-214 (Zafar, 5 Nov, L3: "even though at level 3, 2 people gave me an order, only one of those people was present at the end to
     // say thank you"): everyone who ordered is back at the counter, each at the spot they ordered from, and each says thank you; the
     // asker alone only when no one came in (was: the card's asker only, Nana, even when he had not ordered)
@@ -296,6 +297,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const xAt = (i) => (guests.length >= 3 ? x0 + ((x1 - x0) * i) / (guests.length - 1) : spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined);
     guests.forEach((w, i) => S().addChar(w, { x: xAt(i) }));
     if (guests.length) S().occluder();
+    // s19-serve (Zafar, 11 Nov): the glide down to the island, a tray under each person who ordered, their dish landing on it
+    if (serving()) await Cook.Serve.serve(S(), Cook.Serve.plan(dish, who || "nana"));
     cardsDone();
     praiseBox();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
@@ -459,6 +462,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const run0 = Cook.run;
     const cardsIn = UI.cardPicsReady ? UI.cardPicsReady(ladders, 3000).catch(() => 0) : Promise.resolve(0);
     cardsIn.then(() => run0 === Cook.run && Cook.prefetchDishes(recipes));
+    // s19-serve: the serve's tray, dishes and faces load with them
+    if (serving()) cardsIn.then(() => run0 === Cook.run && Cook.Serve.prefetch(S(), order.dishes.flatMap((d) => Cook.Serve.plan(d, who))));
     UI.hideGist(); // SH-59: no "?" pulse carried into the greeting (a conversation) or the new order
     // CHAI-67, CHAI-78 (Zafar, 4 Nov): the word moment first, before the customer comes in and the order begins
     if (UI.wordMoment) await UI.wordMoment(UI.wordMomentIds(ctx.ladders));
@@ -931,7 +936,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   }
   // s08-nani-ground: Nani's pointing finger reaches into the tray in front of her; its front wall goes over the fingertip
   // (stations.js pointFront)
-  Cook.trayFrontFor = (s, x) => trayFront(s, trayFor(x));
+  Cook.trayFrontFor = (s, x) => (serving() ? Cook.Serve.frontFor(s, x) : trayFront(s, trayFor(x)));
   /** A world box as client px (the test hooks' boxes). */
   function clientBox(x0, y0, x1, y1) {
     const p = UI.worldToScreen(x0, y0);
@@ -945,6 +950,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const b = e.img.getBounds();
     const t = e.t;
     return clientBox(Math.min(b.x, t.x - t.w / 2), Math.min(b.y, t.y - t.h / 2), Math.max(b.right, t.x + t.w / 2), Math.max(b.bottom, t.y + t.h / 2));
+  }
+  // s19-serve: the serving kitchen (js/cook/serve.js) in use: no trays painted, one tray per person, put down by the serve
+  const serving = () => !!(Cook.Serve && Cook.Serve.on());
+  /** An order's served dishes as one entry per person's dish (the chai tray's cups each to their person's tray). */
+  function servePlan(ctx, who) {
+    const out = [];
+    (ctx.served || []).forEach((d) => {
+      if (d.recipe === "chai" && Array.isArray(d.cups) && d.cups.length > 1) d.cups.forEach((c) => out.push({ who: c.who || who, dish: c.dudh === false ? "chai-black" : "chai", n: 1 }));
+      else out.push({ who, dish: servedRecipe(d), n: d.recipe === "chai" ? Math.max(1, d.count || 1) : 1 });
+    });
+    return out;
   }
   // a chai cup with no milk (CHAI-07) is served as black tea
   const servedRecipe = (d, c = 0) => Cook.Art.servedName(d.recipe, { noMilk: Array.isArray(d.cups) && !!d.cups[c] && d.cups[c].dudh === false });
@@ -1175,14 +1191,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await serviceView(who === "nani" ? null : who);
     const busy = Cook.save.mode === "busy";
     if (busy && state.patience != null && state.patience < 0.35) S().setMood(who, "impatient");
-    // the served pictures were prefetched with the order; a slow one gets a moment, then the drawing stands in
-    await Cook.Stations.capLoad(Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), 1200); // real time (loadcap)
-    // the drawn stand-ins when a served picture is missing OR still loading (a slow one: the stand-in was drawn unloaded,
-    // Phaser's green missing-texture box on the tray, S05-C2)
-    const unserved = (d) => !Cook.Art.servedArt(d.recipe) || !S().textures.exists(Cook.Art.servedKey(Cook.Art.servedName(d.recipe)));
-    if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Cook.Stations.capLoad(Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), 800);
-    drawServed(ctx, Cook.CHARS[who].x);
-    Cook.sfx.pop();
+    if (serving()) {
+      // s19-serve (Zafar, 11 Nov): the glide down to the island, a tray under each person, each dish landing on it
+      await Cook.Serve.serve(S(), servePlan(ctx, who));
+    } else {
+      // the served pictures were prefetched with the order; a slow one gets a moment, then the drawing stands in
+      await Cook.Stations.capLoad(Promise.all(order.dishes.map((d) => Cook.Art.loadServed(S(), d.recipe))), 1200); // real time (loadcap)
+      // the drawn stand-ins when a served picture is missing OR still loading (a slow one: the stand-in was drawn unloaded,
+      // Phaser's green missing-texture box on the tray, S05-C2)
+      const unserved = (d) => !Cook.Art.servedArt(d.recipe) || !S().textures.exists(Cook.Art.servedKey(Cook.Art.servedName(d.recipe)));
+      if (order.dishes.some((d) => d.recipe !== "mishkaki" && unserved(d))) await Cook.Stations.capLoad(Promise.all(SERVED_PROPS.map((k) => Cook.Art.loadFile(S(), k, `assets/cook/props/${k}.webp`))), 800);
+      drawServed(ctx, Cook.CHARS[who].x);
+      Cook.sfx.pop();
+    }
     // TEST HOOK (only the evidence player sets it, as Cook.tasteHold): the served dishes stay on the counter this long in
     // real time before the call-back and the end card, so a 2x crop of a tray lands before the end card covers it (CK-21)
     if (Cook.serveHold) await new Promise((r) => setTimeout(r, Cook.serveHold));
@@ -1354,8 +1375,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     await serviceView(null);
     // her chai on her tray, as every served dish is (CK-21): the served picture, never the old "glass-chai" prop, which
     // nothing loads now (Phaser drew its green missing-texture box there, S05-C2)
-    await Cook.Stations.capLoad(Cook.Art.loadServed(S(), "chai"), 1200); // real time (loadcap)
-    drawServed({ served: [{ recipe: "chai", count: 1 }] }, Cook.CHARS.nani.x);
+    if (serving()) await Cook.Serve.serve(S(), [{ who: "nani", dish: "chai", n: 1 }]);
+    else {
+      await Cook.Stations.capLoad(Cook.Art.loadServed(S(), "chai"), 1200); // real time (loadcap)
+      drawServed({ served: [{ recipe: "chai", count: 1 }] }, Cook.CHARS.nani.x);
+    }
     S().setMood("nani", "happy");
     Cook.sfx.fanfare();
     // for grown-ups only, behind the "?" (E1): the pause stays
@@ -1804,6 +1828,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // R4: Nani's own list (the pantry) is her card, with her face; every other station's is Nana's order
       const asker = !Array.isArray(what) && what && (what.who === "nani" || what.recipe === "pantry") ? "nani" : "nana";
       order.who = asker;
+      // s19-serve: the order's dish, for the serve at the end (each person's tray and dish), its pictures loading now
+      ctx.labDish = Array.isArray(what) ? null : what;
+      if (serving()) Cook.Serve.prefetch(s, Cook.Serve.plan(ctx.labDish, asker));
       UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana" /* CK-22: no "(lab)" written for the child */, ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
       closedCards(level);
       // CHAI-15 (decision 53, S05-C): everyone who orders comes in first, in the lab too: each person on the card walks
@@ -1850,7 +1877,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // SH-66: the closing lines are their own beat, a breath after the station's stage end
       await Cook.wait(600);
       await closingBeat();
-      await kitchenEnd(order.who, ctx.came);
+      await kitchenEnd(order.who, ctx.came, ctx.labDish);
     }
     // Design system 10: one end-of-station pop-up for every station: the badges, then the words in the same
     // card, then Again / All stations at its foot (it replaces the old "{Station}: done" card)
@@ -2331,6 +2358,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const others = [...new Set(served.flatMap((d) => (d.cups || []).map((c) => c.who)))].filter((w) => w && w !== who && w !== "nani" && Cook.CHARS[w] && !S().chars[w]);
       const along = traySpots().map((t) => t[0]).filter((x) => x > Cook.CHARS[who].x + 100);
       others.forEach((w, i) => S().addChar(w, { x: along[i] != null ? along[i] : 1460 }));
+      if (serving()) return Cook.Serve.serve(S(), servePlan({ served }, who));
       await Promise.all(served.map((d) => Cook.Art.loadServed(S(), d.recipe)));
       drawServed({ served }, Cook.CHARS[who].x);
     },
