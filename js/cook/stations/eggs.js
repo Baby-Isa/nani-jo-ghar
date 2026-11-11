@@ -436,7 +436,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     };
     // (s19-games-2, contract-114: a fried egg keeps its size from the pan to the plate within 15%, one egg on a plate or two: its size in
     // the pan is the plate's (FRIED.pan of the plate's width, one on a plate FRIED.one, two FRIED.two), never the pan's own)
-    const FRIED = { pan: 0.64, one: 0.7, two: 0.58 };
+    const FRIED = { pan: 0.62, one: 0.68, two: 0.58 };
     const friedW = () => Math.min(vessels.pan.r * (ITEM("friedEgg").inPan || 0.95), plateD * FRIED.pan);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
     // a boiled egg on a plate: its two halves side by side (E5's boiled-<look>-a, -b), h tall
