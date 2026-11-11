@@ -256,8 +256,8 @@
    "_note": "CK-73 (Zafar, 10 Nov): the egg box and the salt and pepper jars stand side-on on chai's shelf (band \"shelf\" above, St.stoneBand game: eggs), each above its pill on the chip line, the row centred under the hob"
   },
   "bandStep": 200,
-  "potTrial": false,
-  "_potTrial": "Zafar, 10 Nov: the top-down pot trial (items.potTop): true draws it in place of chai's pan for the boiled eggs; off until he picks"
+  "potTrial": true,
+  "_potTrial": "Zafar, 10 Nov: the top-down pot trial (items.potTop): true draws it in place of chai's pan for the boiled eggs. Zafar, 11 Nov: the pot is good, its handle shortened to the pan's length; on"
  },
  "items": {
   "pot": {
@@ -292,16 +292,16 @@
    "word": null,
    "flip": true,
    "body": {
-    "cx": 0.2915,
+    "cx": 0.3499,
     "cy": 0.4988,
-    "r": 0.2728,
-    "rIn": 0.2222,
-    "_note": "the top-down pot redone with an even wall (the k2 run's P1, 11 Nov): its round body 245.5 px round (262.4, 250.9) on 900 x 503, fitted to its alpha's rim (the spout and handle left out); its floor's edge at 200 px (the wall's shadow line); flipped so its handle points left, as chai's pan"
+    "r": 0.3273,
+    "rIn": 0.2667,
+    "_note": "the top-down pot redone with an even wall (the k2 run's P1, 11 Nov): its round body 245.5 px round (262.4, 250.9) on 750 x 503 (its grip shortened by 150 px to the pan's handle length, Zafar 11 Nov), fitted to its alpha's rim (the spout and handle left out); its floor's edge at 200 px (the wall's shadow line); flipped so its handle points left, as chai's pan"
    },
-   "reach": 2.59,
+   "reach": 1.98,
    "angle": -45,
    "_trial": "Zafar, 10 Nov: tried in eggs behind scene.potTrial; if it looks better it replaces chai's too, else neither",
-   "_reach": "its handle's end from its middle over its rim radius ((898 - 262.4) / 245.5)"
+   "_reach": "its handle's end from its middle over its rim radius ((748 - 262.4) / 245.5): the pan's 1.98 (Zafar, 11 Nov: the pot's handle the length of the pan's)"
   },
   "pan": {
    "size": "L",
