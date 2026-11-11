@@ -1,0 +1,62 @@
+{
+  "name": "s19-serve2: the serving kitchen on its real art (the kitchen KG, the walnut tray, the nine served dishes)",
+  "why": "the kitchen-and-items run landed (11 Nov); s19-serve built the mechanic on stand-ins named for this art",
+  "cost": "about $30-40",
+  "port": 8913,
+  "read": [
+    "build/reports/s19-fixes-g.md (the breaks left, by game and check) and build/reports/s19-checks-2.md, s19-checks-1.md (what each check measures)",
+    "sources/art/s19-k2/results/run-report.txt (the art run) and sources/art/s19-k2/contact-sheet.jpg (the 60 cut pieces, in assets/cook/)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers 10-11 Nov)",
+    "build/reports/s19-serve.md (the file names and sizes serve.js expects) and js/cook/serve.js",
+    "sources/art/s19-k2/results/best/KG.png (the passed tall kitchen, 1448x1086, 4:3), KO.png and KS.png (its two views), sources/art/s19-k2/results/kitchen-contenders.jpg",
+    "docs/design-language/art-bible.md 'Scenes: light first'"
+  ],
+  "owns": [
+    "js/cook/serve.js and the serve's lines in js/cook/flow.js and css/cook.css",
+    "assets/cook/serve/** (the kitchen pictures and the tray cut to size from tray-src.webp; the dishes as cut)",
+    "data/cook.json (all of it: you apply the other builders' manifest requests too, from their reports, when the orchestrator forwards them)",
+    "build/reports/s19-serve2.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/**, js/cook/mechanics/**, js/shared/**, js/cook/stations.js, coach.js, station-lib.js, kitchen-kit.js, ui.js (other builders)",
+    "build/sandbox/**, build/lint/**, build/tools/**"
+  ],
+  "flows": [
+    "cook:chai-tray",
+    "cook:maani-line",
+    "cook:eggs",
+    "cook:daar",
+    "cook:mishkaki-grill",
+    "cook:samosa",
+    "cook:chaat",
+    "cook:corn",
+    "cook:baking",
+    "cook:chop"
+  ],
+  "tasks": [
+    {
+      "do": "The kitchen: KG (1448x1086) as the tall painting (mode tall), brought to serve.js's design size (2100 wide) with the best upscale available here (Real-ESRGAN if installed, else LANCZOS plus a light sharpen; say which), the ordering frame placed so it matches today's kitchen framing (Zafar, 11 Nov: the current amount of counter) and the serving frame the island's top; KO and KS cut and aligned as the two-picture mode's pair. Measure the island's back edge and the trays' line on the real picture, not the stand-in's numbers.",
+      "accept": "the ordering view, mid-glide and the serving view at 740x320, 1280x665 and 1920x1080 in chai, before (stand-in) and after"
+    },
+    {
+      "do": "The tray (tray-src.webp, one long walnut tray) cut and scaled for one per person, and the nine dishes (dish-chai, -maani, -daar, -sekelo, -samosa, -chaat, -corn, -naan, -chop; eggs keeps its plate-table and fried-table/boiled pictures) each at its true size class on its tray (the art came ~10-25% large: set the size in code), the asker's face on the rim. Each game's serve shows its own dish.",
+      "accept": "each of the ten games' serve at 1280x665, one to three people, before and after"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8913, flock /tmp/njg-browser-8913.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line goes on docs/language/recording-sheet.md as a gap, via the orchestrator); never remove a mechanic or a help; shared pieces only; fix what you break; keep under 1.5 GB of runs (four builders share the disk); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+      "accept": "build/reports/s19-serve2.md with a Proof section, under 800 words"
+    }
+  ],
+  "model": "Opus",
+  "effort": "high",
+  "stop": "when the tasks are done",
+  "branch": "s19-serve2 in /home/user/wt/s19-serve2 (made for you from the integration branch, without most of sources/: the disk is tight); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "stubs": "none",
+  "report": "s19-serve2",
+  "publish": false,
+  "rows": []
+}

@@ -40,3 +40,7 @@
 - Samosa's fold arrow stays until he plays it.
 - The kitchen: the open doorway (no door, square, pushed right, the garden hazed), and the marble warmed just a little for cohesion, never yellow or golden (11 Nov; this changes the "cool grey veins, never cream" line for the kitchen scene).
 - The kitchen polish went cold: the original is better; scenes are governed by light and white balance, the colour book names local colour only (art bible "Scenes: light first"; build/reports/s19-kitchen-colour-lesson.md).
+
+## Zafar, 11 Nov morning (the 10:00 report)
+1. The kitchen art: processed (cut, the contenders compared). 2. Yes, but first every check break that isn't language to zero, then the judging, chai's references and the publish. 3. Yes, widened: all the check fixes. 4. Yes: this run's faults go into the next block, combined. 5. Corn's cobs on the tray keep no pill.
+- Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change). The grills' size: he chooses from a quick mock (now and about 30% bigger).

@@ -1,0 +1,56 @@
+{
+  "name": "s19-shared-checks: the shared code's check breaks (the order card's padding, flies that tween a container) and the checks' own faults, to zero",
+  "why": "Zafar (11 Nov): fix every check break that isn't language; 29 of the 142 left are the shared order card, the snaps' shared half is S.fly, and three checks misread right things",
+  "cost": "about $35-45",
+  "port": 8914,
+  "read": [
+    "build/reports/s19-fixes-g.md (the breaks left, by game and check) and build/reports/s19-checks-2.md, s19-checks-1.md (what each check measures)",
+    "sources/art/s19-k2/results/run-report.txt (the art run) and sources/art/s19-k2/contact-sheet.jpg (the 60 cut pieces, in assets/cook/)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers 10-11 Nov)"
+  ],
+  "owns": [
+    "js/shared/** (word-card.js, onboard.js, shelf.js, guide.js ...) and css/shared/** (order-card.css)",
+    "js/cook/stations.js, coach.js, station-lib.js, kitchen-kit.js, ui.js",
+    "build/sandbox/** except build/sandbox/data/evidence.json (the probes and checks)", "build/lint/** and build/tools/review/**",
+    "build/reports/s19-shared-checks.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/**, js/cook/mechanics/** (s19-games-1 and -2)",
+    "js/cook/serve.js, flow.js and data/cook.json (s19-serve2)",
+    "assets/**"
+  ],
+  "flows": [
+    "cook:chai-tray",
+    "cook:eggs",
+    "cook:maani-line",
+    "cook:mishkaki-grill",
+    "cook:samosa",
+    "cook:chaat"
+  ],
+  "tasks": [
+    {
+      "do": "The shared code's breaks: the order card's padding and one-card rows (contract-116: 29 breaks in every game, js/shared/word-card.js and css/shared/order-card.css; chai's look is the standard: a one-item card fills its row as chai's would, never a two-thirds-empty card); S.fly and the tray moves in js/cook/stations.js tween the picture itself so the snap check reads them as glides (114); screens that rebuild in one frame (sekelo's tray, samosa's plate) fade or glide.",
+      "accept": "contract-116 at 0 and 114's shared part at 0 on a run of the six flows at 740x320 and 1280x665, before and after"
+    },
+    {
+      "do": "The checks' own faults, each proven with a real bad run that still goes red: contract-105 on sekelo's rack light (it reads the tray picture as the thing; 112 passes the same light); contract-112 reading chop's swipe light as 'still moving' when the swipe is the move it lights (STD-E2-08a), and an item changing its own picture in place (the egg browning) as a new thing coming in; contract-37 judged by the levels table in data/rules.json (decoys at the levels it says, none where it says none); contract-115 and -114 naming Zafar's accepted designs with his words (11 Nov: maani's board, tawa and plate sizes, samosa's close-up fold: a smooth tweened change there passes; an untweened jump still fails).",
+      "accept": "each fault's before (the false break) and after (passing) on its page; every check still red on its bad runs (badruns.test.mjs)"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line goes on docs/language/recording-sheet.md as a gap, via the orchestrator); never remove a mechanic or a help; shared pieces only; fix what you break; keep under 1.5 GB of runs (four builders share the disk); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+      "accept": "build/reports/s19-shared-checks.md with a Proof section, under 800 words"
+    }
+  ],
+  "model": "Opus",
+  "effort": "high",
+  "stop": "when the tasks are done",
+  "branch": "s19-shared-checks in /home/user/wt/s19-shared-checks (made for you from the integration branch, without most of sources/: the disk is tight); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "stubs": "none",
+  "report": "s19-shared-checks",
+  "publish": false,
+  "rows": []
+}
