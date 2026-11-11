@@ -456,6 +456,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const steamPuff = (x, y, n = 3) => {
       for (let i = 0; i < n; i++) {
         const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, 10 + Math.random() * 8, col("white"), 0.55).setDepth(D.fx + 2));
+        s.fx = true; // (an effect: the lights never wait for it to end, stillStage)
         S.tweens.add({ targets: s, y: y - 90 - Math.random() * 40, alpha: 0, scale: 2.2, duration: 1300 + i * 200, delay: i * 180, onComplete: () => s.destroy() });
       }
     };
@@ -553,10 +554,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       if (o) S.glow(o, true, { bounce: true, now: true }); // (SH-237: a thing on the band hops in its light; the kit drops the hop off the shelf)
     };
     // (a thing's glow lasts exactly as long as the kit's light round it, and never without one: contract-102)
+    // (s19-games-2, contract-107: a shelf thing hops as its light comes, even before the light's handle is there; it goes with the light)
     const glowWith = (o, h) => {
-      if (!h || !h.done || !Cook.Coach.onShelf(o)) return glowObj === o && glowOn(null);
+      if (!Cook.Coach.onShelf(o)) return glowObj === o && glowOn(null);
       glowOn(o);
-      h.done.then(() => glowObj === o && glowOn(null));
+      if (h && h.done) h.done.then(() => glowObj === o && glowOn(null));
     };
     let ctl = null;
     let stuck = null;
@@ -590,7 +592,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236; only a thing on the band
       // glows and hops with its light, so Nani's call reading its row is the one other highlight: contract-8)
       const lightGlow = () => setTimeout(() => current() && glowWith(n.obj, ctl && ctl.lit ? ctl.lit() : null), 0);
-      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => busy > 0, onLight: lightGlow, note: NOTE });
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => busy > 0, still: stillStage, onLight: lightGlow, note: NOTE });
       if (Cook.Coach.stuck)
         stuck = Cook.Coach.stuck({
           key: KEY,
@@ -605,6 +607,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         });
     };
     const wrong = () => Cook.Coach.wrong();
+    // (s19-games-2, contract-78: the stage is still when nothing of the game's is in flight; the boiling pot's steam is an effect that never
+    // ends while it boils, so a light never waits on it, and the call held for the light comes with it)
+    function stillStage() {
+      try {
+        return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && t.fx));
+      } catch (e) {
+        return true;
+      }
+    }
 
     // CK-76 (the eye judge, 10 Nov: "Hane indo!" through the carton, the pan and the plating; chai names each step): Nani's box names
     // each step as it opens, from the engine only (R2): an egg from the bowl "Hane indo!", into the pot or pan "Indo wiji chad!", out

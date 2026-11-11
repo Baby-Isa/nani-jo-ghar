@@ -134,6 +134,14 @@ import { setTimeout } from "../life.js";
       else setTimeout(sayNow, 3000 / (Cook.speed || 1)); // (never silent: a light that cannot come)
       ctl = Cook.Coach.control({
         key: KEY,
+        // (s19-games-2, contract-78/-36: the oven's steam is an effect, never a move the light waits for)
+        still: () => {
+          try {
+            return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && t.fx));
+          } catch (e) {
+            return true;
+          }
+        },
         note: `${KEY}:${name}`,
         target: Cook.Coach.box(o, PAD, { visible: true }),
         first,
@@ -480,6 +488,7 @@ import { setTimeout } from "../life.js";
     const steam = (x, y, k = 3) => {
       for (let i = 0; i < k; i++) {
         const s = T(S.add.circle(x + (Math.random() - 0.5) * 120, y, 14 + Math.random() * 10, col("steam"), 0.55).setDepth(D.fx + 2));
+        s.fx = true; // (an effect: the lights never wait for it, stillStage)
         S.tweens.add({ targets: s, y: y - 160 - Math.random() * 60, alpha: 0, scale: 2.6, duration: 1400 + i * 120, delay: i * 120, onComplete: () => s.destroy() });
       }
     };
