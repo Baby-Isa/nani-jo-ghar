@@ -1,5 +1,5 @@
 diff --git a/data/cook.json b/data/cook.json
-index e41bc4c50..e7f53c828 100644
+index e41bc4c50..da04ff63b 100644
 --- a/data/cook.json
 +++ b/data/cook.json
 @@ -1627,10 +1627,8 @@
@@ -36,6 +36,19 @@ index e41bc4c50..e7f53c828 100644
      },
      {
       "if": "skewers.ph-mixed",
+@@ -5399,10 +5400,10 @@
+       "assets/cook/items/shelf-veg-12-bare-f.webp",
+       "assets/cook/items/tool-knife-t-v2.webp",
+       "assets/cook/items/v3/daar/chop-heap-chilli.webp",
+-      "assets/cook/items/v3/daar/chop-heap-onion.webp",
++      "assets/cook/items/v4/daar/chop-heap-onion.webp",
+       "assets/cook/items/v3/daar/chop-heap-tomato.webp",
+       "assets/cook/items/v3/daar/chop-piece-chilli.webp",
+-      "assets/cook/items/v3/daar/chop-piece-onion.webp",
++      "assets/cook/items/v4/daar/chop-piece-onion-1.webp",
+       "assets/cook/items/v3/daar/chop-piece-tomato.webp",
+       "assets/cook/items/v3/daar/daar-bowl-trivet-plain-v2.webp",
+       "assets/cook/items/v3/daar/daar-bowl-trivet-v2.webp",
 @@ -5440,7 +5441,14 @@
        "assets/cook/items/v4/daar/loon.webp",
        "assets/cook/items/v4/daar/pot-empty.webp",
@@ -65,13 +78,33 @@ index e41bc4c50..e7f53c828 100644
        "assets/cook/items/shelf-veg-*-bare-f.webp"
       ],
       "prefetch": [
-@@ -5690,7 +5704,8 @@
+@@ -5561,7 +5575,7 @@
+       "assets/cook/items-s08b/go-on/go-karahi-s08b*",
+       "assets/cook/tiles-s08b/pastry-tile-s08b*",
+       "assets/cook/items-s08b/potato/potato-pile-v3.webp",
+-      "assets/cook/items/v4/samosa/karahi-oil.webp",
++      "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
+       "assets/cook/items/v4/samosa/plate-napkin.webp",
+       "assets/cook/items-s17-stove/f-mince.webp",
+       "assets/cook/items/served/samosa.webp"
+@@ -5587,7 +5601,7 @@
+       "assets/cook/items/v3/samosa/fold-v2-6.webp",
+       "assets/cook/items/v3/samosa/jharo.webp",
+       "assets/cook/items/vessel-thali-t.webp",
+-      "assets/cook/items/v4/samosa/karahi-oil.webp",
++      "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
+       "assets/cook/items/v4/samosa/plate-napkin.webp",
+       "assets/cook/items/v4/samosa/samosa-cooked.webp",
+       "assets/cook/items/v4/samosa/samosa-over.webp",
+@@ -5690,7 +5704,10 @@
        "assets/cook/items/v4/sekelo/tomato-cooked.webp",
        "assets/cook/items/v4/sekelo/tomato-over.webp",
        "assets/cook/items/v4/sekelo/tomato-part.webp",
 -      "assets/cook/items/v4/sekelo/tomato-raw.webp"
 +      "assets/cook/items/v4/sekelo/tomato-raw.webp",
-+      "assets/cook/items/mishkaki-meat-grilled-t.webp"
++      "assets/cook/items/mishkaki-meat-grilled-t.webp",
++      "assets/cook/items/skewer-mixed-grilled-t.png",
++      "assets/cook/items/v4/kit/tray-steel-long.webp"
       ],
       "_potato": "s08 w6F (ART-11): the potato's skewer piece is PT1's cube (veg-01.raw, a whole path: js/cook/art.js refUrl); its worktop bowl is PT1's pile (veg-bataato-cubed-v2-t), no longer the butter-yellow boiled cubes"
      },

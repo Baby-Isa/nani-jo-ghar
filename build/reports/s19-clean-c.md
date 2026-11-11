@@ -5,7 +5,11 @@ Opus, high. Branch `s19-clean-c`, never pushed. Flaws first.
 ## Flaws and open
 - **Not zero.** L1-L4 at 740x320 and 1280x665: **150 → 124 breaks**. 78 and 91 are gone; 36 and 114 are mostly the chop's, the checks' or the kit's (below).
 - **Sekelo at 740x320 is slower:** L2 and L3 now hit the 300 s cap (L2 at its results screen), as L4 did before. The four piece cards per skewer redraw the order on every piece.
-- **CK-86 (sekelo's trays) not built.** Half the grill's width each and together its height needs a tray about 1.9 wide to 1 tall; ours is 0.89 and has the skewers painted in. Wants the plain tray art (or corn's kit tray, skewers lying): yours or the art run's.
+- **CK-86 (sekelo's trays), built on the k3 tray, with a cost.**
+  - The wide tray (3:1) is drawn over the old tray's box, so each is half the grill's width and the two stack to its height. It stands about 1.45 times taller than its own shape (a plain tray: only its rim's ends thicken).
+  - The skewers stay upright, as on the grill.
+  - The grill is smaller now (the rectangle is width-bound): contract-115 says the grill stands at 65% of the room, under the 70% asked. The check or Zafar decides (it should measure the trays and grill together).
+  - Sekelo never used `grill-kit.js`, so its trays sit in `grill.js` (`SK.rackLong`), not as a per-station override in the kit.
 - **MAA-23 has no frame:** no sandbox state lands on the moment (its `word-moment` note is in each L2 page's data). An evidence row at `life:word-moment` would give the judge one.
 - **Rows have no before/after folder:** the brief's spec lists no rows, so `evidence.mjs --after` plays nothing.
 - I overwrote a stale Nov-10 `scratchpad/base` copy by mistake (no repo file touched).
@@ -21,6 +25,7 @@ Opus, high. Branch `s19-clean-c`, never pushed. Flaws first.
 | SAM-30 | Knob, each samosa of the first batch and the lift on the kit's controls. 78: 15 → 0 | `cook-samosa-l3/08-kind-timing` |
 | SEK-25 | Four piece cards per skewer ("gos gos gos gos"), ticked as each goes on (`thread.js`, plus the shared lines below) | `cook-mishkaki-grill-l2/05-kind-tap`, `07-kind-timing` |
 | MAA-23 | Big and small word moment: a maani rolled to each ring turns into its big word card, said by the engine (`Lang.phrase`), once per player | none (above) |
+| CK-86 + k3 art | Sekelo's two wide plain trays (`v4/kit/tray-steel-long`). Daar's v4 onion heap and pieces 1-6 (the flying piece varies). Samosa's `karahi-oil-v2` and its measures. The kit's `grill-v2` for corn (`grill-kit.js`) | after: `s19-clean-c-contract/` (L1, four sizes): `cook-mishkaki-grill/06-kind-timing`, `cook-daar/05-kind-tap`, `cook-samosa/07-kind-timing`, `cook-corn/05-kind-tap`. Before: `s19-clean-c-before/` (the same frames). Corn was not in my before run, so it has no before frame here |
 
 ## Breaks by check (before → after)
 | check | daar | samosa | maani | sekelo | all |
@@ -54,6 +59,8 @@ Opus, high. Branch `s19-clean-c`, never pushed. Flaws first.
 - `data/cook.json`: daal's `speed` slot by level (none before L4); the stir row's `pic` set to the kit ladle; sekelo's tally gets `pieces`; daar's prefetch gets `v4/chop/*-whole` and `v4/kit/ladle`; sekelo's gets `mishkaki-meat-grilled-t`.
 - `js/cook/recipes.js:370`, `js/cook/order.js:83`: pass `pieces`.
 - `js/cook/ui.js` (plain rows): a row of piece cards per unit, each with its own key; a mixed skewer has no kind card.
+- In the patch's `data/cook.json`, the k3 prefetch: `:5402` → `v4/daar/chop-heap-onion.webp`; `:5405` → `v4/daar/chop-piece-onion-1.webp`; `:5564` and `:5590` → `v4/samosa/karahi-oil-v2.webp`. Sekelo's prefetch gets `skewer-mixed-grilled-t.png` and `v4/kit/tray-steel-long.webp`. The stir lab's `files` get daar's pot, discs, ladle, dial and hob.
+- **`data/stations/corn.json:476` (s19-clean-b):** `"assets/cook/items/v4/kit/grill-v2.webp",` (was `grill.webp`). Corn keeps `tray-steel` (`:477`).
 
 ## FIXED-IN-CODE rows, by their check in the after run
 | row | check | result |
