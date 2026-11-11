@@ -596,6 +596,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   C.began = (by) => {
     const Onboard = OB();
     if (Onboard && Onboard.began) Onboard.began(by);
+    // (s19-taps: the script's thing glows only while its light is drawn: its glow goes with the light now, not at the coach's next
+    // tick, contract-102)
+    const a = live && Onboard && Onboard.active ? Onboard.active() : null;
+    if (a && a.id === obId(live.key) && a.hidden && a.hidden()) lightThing(live, null);
   };
   /** The move ended with its step still open (the child let go before the thing was done). */
   C.ended = (by) => {
