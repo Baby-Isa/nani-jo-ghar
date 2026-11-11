@@ -359,18 +359,21 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     else await UI.mission.request("tadka");
     // 29 Sept (D9, Zafar): the chopped things still have to go in, so their rows go back to "to do"
     // here and tick again as each pile goes into the pot (cook())
+    // (contract-36: they go back to "to do" as their step comes, after the tadka: reopened before it, the order card's current card was
+    // a vegetable while Nani called the spices)
     const Lc = ladderOf(ctx);
-    if (Lc) {
+    const reopenVeg = () => {
+      if (!Lc) return;
       Cook.Order.rows(Lc, { all: true }).forEach((r) => {
         if (r.head || r.no || !r.ids.some((id) => id in want)) return;
         r.done = false;
         r.got = 0;
       });
       UI.mission.refresh();
-    }
+    };
     if (phases.cook) UI.gist(phases.cook);
     const kz = Mech.zone(S, ctx, { id: "cook", level });
-    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps, gate, who });
+    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps, gate, who, reopenVeg });
     if (peek) UI.mission.closeCards(false);
     steps.done();
     await serve(kz, { who, pot: cooked.pot, katori: cooked.katori });
@@ -658,7 +661,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   }
 
   /* ---------- 2: tadka and stir in the v3 pot on the kit hob (one burner, one pot) ---------- */
-  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps, gate, who }) {
+  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps, gate, who, reopenVeg = () => {} }) {
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
@@ -1044,6 +1047,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       await Cook.wait(380);
     };
     Cook.daarPhase = "piles";
+    reopenVeg();
     let left = Object.keys(hits);
     lead("cook-veg", left.length ? hits[left[0]] : null); // (its whole row of heaps: the tap's own box, contract-92)
     if (left.length) kitHelps(steps.to("daar:veg")); // T13: [Put the vegetables in]
