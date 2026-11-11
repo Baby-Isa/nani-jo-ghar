@@ -1282,7 +1282,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       t.setScale(z.L(FRY.trayD) / t.width);
       t.shadow = S.contactShadow(t);
       trays.push(t);
-      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(z.L(152) / META.fry.w * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
+      // (S19, contract-114: a samosa keeps its size from the thali to the oil to the plate: the oil's size, PLATE_SC below)
+      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(FS * 0.92).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
       im.baseScale = im.scale;
       im.handAction = false;
       raw.push(im);
@@ -1403,10 +1404,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Promise.all(
         plateSpots(lifted.length, FRY.px, PY, plate.flatHalf, 0.84).map((sp, i) => {
           const l = lifted[i];
-          const sc = z.L(sp.w) / 370;
+          const sc = PLATE_SC; // (S19: every samosa on the plate at the size the whole order fits, from the first one: it never shrinks as more come)
           return new Promise((r) => S.tweens.add({ targets: [l.im, l.b], x: z.X(sp.x), y: z.Y(sp.y), scale: sc, angle: sp.a, duration: fast ? 1 : 280, onComplete: r }));
         }),
       );
+    const PLATE_SC = z.L(plateSpots(n, FRY.px, PY, plate.flatHalf, 0.84)[0].w) / 370;
     const liftLine = Lang.hasLine("lift") ? Lang.line("lift", Lang.phrase(["ph-samosa"])) : null;
     await new Promise((resolveAll) => {
       post = () => {
@@ -1475,7 +1477,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
                 S.tweens.add({ targets: [im, b], alpha: 0, duration: 360, onComplete: () => (im.destroy(), b.destroy()) });
                 const tr = trays.find((t) => t.alpha < 0.5) || trays[0];
                 S.tweens.add({ targets: [tr, tr.shadow].filter(Boolean), alpha: 1, duration: 300 });
-                const fresh = S.track(S.add.image(tr.x, tr.y - z.L(4), "sv2-fry-0").setScale(z.L(128) / META.fry.w * 0.85).setDepth(D.item + 0.1));
+                const fresh = S.track(S.add.image(tr.x, tr.y - z.L(4), "sv2-fry-0").setScale(FS * 0.92).setDepth(D.item + 0.1));
                 fresh.baseScale = fresh.scale;
                 fresh.handAction = false;
                 raw.push(fresh);
@@ -1507,7 +1509,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             // onto the plate: the samosa rides on the jharo's bowl
             lifted.push({ im, b, verdict });
             const sp = plateSpots(lifted.length, FRY.px, PY, plate.flatHalf, 0.84)[lifted.length - 1];
-            const sc = z.L(sp.w) / 370;
+            const sc = PLATE_SC; // (S19: every samosa on the plate at the size the whole order fits, from the first one: it never shrinks as more come)
             const dur = 440;
             const arc = z.L(110);
             await Promise.all([S.fly(im, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(b, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(jharo, z.X(sp.x), z.Y(sp.y) + z.L(6), { duration: dur, arc })]);
