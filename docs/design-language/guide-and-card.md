@@ -7,7 +7,7 @@
 ---
 
 ## The 6 Nov card (Zafar, 6 Nov; SH-222, SH-227), chai first
-The item card: the Kutchi with its own English under it, centred between the picture and the divider (85%, fading ends); one gap g = 7% of the card's inner width three times: foot to speaker, speaker to divider, divider to the lowest ink over its span of the row's lowest English (a tail where one sits over the line, else the baseline: `WordCard.fit14`'s row pass); English 12 px on phones, one size per row; speaker 30 px, its tap the whole foot; pictures 21% taller at 1280 and 1920. On while chai plays (`<html class="njg-lora">`, `ui.js applyType`). Roll-out: `UI.TYPE_ALL`, then `:root.njg-lora`'s lines into `:root` and the prefix dropped in the "6 Nov type" blocks; each game's files into the `fonts` check.
+The item card: the Kutchi with its own English under it, centred between the picture and the divider (85%, fading ends); one gap g = 7% of the card's inner width three times: foot to speaker, speaker to divider, divider to the lowest ink over its span of the row's lowest English (a tail where one sits over the line, else the baseline: `WordCard.fit14`'s row pass); English 12 px on phones, one size per row; speaker 30 px, its tap the whole foot; pictures 21% taller at 1280 and 1920. A row with one card gives it the whole row: chai's card inside, the picture's frame the row's width at chai's height, its foot its padding (s19-shared-checks, contract-116). On while chai plays (`<html class="njg-lora">`, `ui.js applyType`). Roll-out: `UI.TYPE_ALL`, then `:root.njg-lora`'s lines into `:root` and the prefix dropped in the "6 Nov type" blocks; each game's files into the `fonts` check.
 
 ## The rules (decide these first)
 

@@ -8,7 +8,7 @@
   "branch": "s19-serve in /home/user/wt/s19-serve (made for you from the integration branch; sources/art/s19-kitchen/ is in it); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": false,
   "read": [
     "docs/decisions/2026-11-10-overnight.md, the section 'Zafar, 11 Nov (the kitchen run)' and the lines after it",

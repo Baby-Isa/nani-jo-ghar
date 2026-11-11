@@ -706,20 +706,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const sx = obj.x;
       const sy = obj.y;
       const s0 = obj.scale;
+      // (s19-shared-checks, contract-114: the thing itself is tweened, never a counter beside it, so a flight that changes its size
+      // reads as a glide on the thing; its own progress, njgFly, carries the arc. A flight whose tween is killed with the thing's
+      // others still lands and resolves at its end, as the counter did)
+      const ease = Phaser.Math.Easing.Sine.InOut;
+      const at = (k) => {
+        obj.x = sx + (x - sx) * k;
+        obj.y = sy + (y - sy) * k - Math.sin(k * Math.PI) * arc;
+        if (scale != null) obj.setScale(s0 + (scale - s0) * k);
+      };
       return new Promise((resolve) => {
-        this.tweens.addCounter({
-          from: 0,
-          to: 1,
+        let done = false;
+        const end = () => {
+          if (done) return;
+          done = true;
+          if (obj.scene) at(1);
+          resolve();
+        };
+        obj.njgFly = 0;
+        this.tweens.add({
+          targets: obj,
+          njgFly: 1,
           duration,
-          ease: "Sine.easeInOut",
-          onUpdate: (t) => {
-            const k = t.getValue();
-            obj.x = sx + (x - sx) * k;
-            obj.y = sy + (y - sy) * k - Math.sin(k * Math.PI) * arc;
-            if (scale != null) obj.setScale(s0 + (scale - s0) * k);
-          },
-          onComplete: () => resolve(),
+          ease: "Linear",
+          onUpdate: () => !done && obj.scene && at(ease(Math.min(1, Math.max(0, obj.njgFly)))),
+          onComplete: end,
+          onStop: end,
         });
+        this.time.delayedCall(duration + 200, end);
       });
     }
     floatText(x, y, text, color = "#ffffff", size = 54) {
