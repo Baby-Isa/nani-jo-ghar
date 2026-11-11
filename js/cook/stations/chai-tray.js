@@ -1369,7 +1369,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       }
       // 2. a ready pan pours into its glass
       for (const q of pans) {
-        if (q.state === "ready" && !q.closed && q.poured < needOf(q)) return { e: tapOn(q.img, `pour-${q.who}`), obj: q.img, focal: true, phase: "pour", again: q.poured > 0 };
+        if (q.state === "ready" && !q.closed && q.poured < needOf(q)) return { e: tapOn(q.img, `pour-${q.who}`), obj: q.img, focal: !s14, phase: "pour", again: q.poured > 0 };
       }
       // 3. a pan still to fill: choose it, fill it, light it
       for (const q of pans) {
@@ -1535,7 +1535,13 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // (s14: the glass is lit for the pour, its pan still takes the tap: both live under the light)
         // (Zafar, 29 Oct: "the highlight box on the chai tray should go under the face circle so the face circle sits on top and
         // doesn't get a line over the face": the glass's box takes in its face badge, so no edge crosses the face)
-        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: unionRect(Cook.Coach.box(pan.well.hit), pan.well.face ? Cook.Coach.box(pan.well.face) : null), also: Cook.Coach.box(pan.glowRing) };
+        // CHAI-112 (Zafar, 11 Nov evening, his second play: "there was still an onboarding circle highlight around the teapot ... it
+        // shouldn't have kicked in straight away because ... the user had already played the game before ... it should be the
+        // rectangular light, not the circular one. And it should be over the glass, not the teapot"): the pour's light is the kit's
+        // rectangle on the glass alone (the glass takes the tap; its pan still does, live under it), with no ring round the pan (obj
+        // null: no glow of the pan's own; the plan's focal pulse, the ring at once, is off for the pour on the s14 look); a new player's
+        // the first time, at once; a returning player's only as the stuck hint after the level's wait (Cook.Coach.control)
+        if (pan && s14 && pan.well && pan.well.hit) return { obj: null, target: unionRect(Cook.Coach.box(pan.well.hit), pan.well.face ? Cook.Coach.box(pan.well.face) : null), also: Cook.Coach.box(pan.glowRing) };
         return pan && { obj: pan.img, target: Cook.Coach.box(pan.glowRing) };
       }
       // (SH-230: a control's box is its own picture; the margin round it is the one rule's, Onboard.litBox: was 4 px here and 4 more there)
