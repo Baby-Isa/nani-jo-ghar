@@ -189,7 +189,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const unasked = K.shakers ? ["salt", "pepper"].filter((f) => !plates.some((q) => q[f] === "yes")).length : 0;
     const row = Cook.levelRow ? Cook.levelRow(level) : { decoys: level };
     const decoyIds = St.tableDecoys && pool.length ? St.tableDecoys(pool, shelfWants, level, { n: Math.max(0, (row.decoys || 0) - unasked), also: unasked, what: KEY }) : [];
-    const decoyArt = decoyIds.map((id) => [`eg-dec-${id}`, Cook.Art.refUrl(`${id}.shelf`)]);
+    // (a stem that climbs out of items/ with "../" is a path the loader may not take as it is: resolved here)
+    const decoyArt = decoyIds.map((id) => [`eg-dec-${id}`, String(Cook.Art.refUrl(`${id}.shelf`)).replace(/[^/]+\/\.\.\//, "")]);
     await St.loadArt(S, ART(K).concat(decoyArt, ...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
     await St.begin(S, ctx, KEY, "marble");
     const objs = [];
@@ -635,11 +636,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           current,
           busy: () => busy > 0,
           glow: (on) => (on ? setTimeout(() => current() && glowWith(n.obj, stuck && stuck.lit ? stuck.lit() : null), 0) : glowObj === n.obj && glowOn(null)),
-          // (SH-160: the guide's hint came; s19-games-2, contract-36: her call again with its light, as chai's)
-          onHint: () => {
-            hints++;
-            if (UI.stepHelp) UI.stepHelp();
-          },
+          onHint: () => hints++, // (SH-160: the guide's hint came; s19-games-2: saying the call again here said it twice, contract-22)
           note: NOTE,
         });
     };
