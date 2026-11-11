@@ -5501,6 +5501,13 @@
       "assets/cook/items/v3/daar/ladle-v3.webp"
      ]
     },
+    "baking": {
+     "_about": "s19-serve2 (loadcheck): the order card's flour picture (cook-atto's shelf picture, art.sprites.shelf); the rest of baking's pictures are its own settings' (data/stations/baking.json assets)",
+     "props": [],
+     "files": [
+      "assets/cook/items-s17-stove/f-chapati-flour-atta.webp"
+     ]
+    },
     "assemble": {
      "props": [],
      "files": [
@@ -5510,7 +5517,8 @@
       "assets/cook/items/v3/chaat/*",
       "assets/cook/items-s08b/chaat-bowl-side-s08b*",
       "assets/cook/items-s08b/chaat-strips/*",
-      "assets/cook/items/v4/chaat/*"
+      "assets/cook/items/v4/chaat/*",
+      "assets/cook/items-s17-stove/f-dried-chickpeas.webp"
      ],
      "prefetch": [
       "assets/cook/items/v4/chaat/bowl-empty.webp",
