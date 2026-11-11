@@ -136,3 +136,5 @@ One line per idea: the idea, then [source, date] and the status. The full rows (
 - **An omelette recipe** (later): "you do kind of add chilies and cheese and stuff to an omelette ... That probably requires the
   mixing element from DAR ... instead of a stove top, it's a bowl. And then when you've done that, it goes onto the egg scene, and
   you've got your bowl on the shelf and you pour it in and it cooks. Maybe an idea for later." (Ours: it could reuse daar's stir and eggs' pan.) (`docs/feedback/kitchen-mocks2-2026-11-09.md` P15)
+
+- **Target age (Zafar, 11 Nov, after a 3.5-year-old's first ever touch-screen play):** 5 is the realistic player; designing so a 3-year-old can play keeps us on the right track. She enjoyed it and asked to play "the tea game" again; she needed some adult help.
