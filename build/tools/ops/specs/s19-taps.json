@@ -8,7 +8,7 @@
   "branch": "s19-taps in /home/user/wt/s19-taps (made for you from the integration branch, without sources/); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": false,
   "read": [
     "docs/process/regressions.md rows SH-261 and SH-244 (his words)",
