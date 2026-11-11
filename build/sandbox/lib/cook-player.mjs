@@ -3,7 +3,7 @@
 // It records each new view and each new kind of expectation as a state, once.
 import { sleep, ROOT } from "./env.mjs";
 import { waitBadges, readBadges } from "./results.mjs";
-import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWords, isCountLine, stuckWait } from "../drivers/index.mjs";
+import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWords, isCountLine, stuckWait, missLight } from "../drivers/index.mjs";
 
 // the evidence loop's named drivers this player plays (drivers/catalog.mjs, build/sandbox/data/evidence.json _drivers): each plays
 // fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
@@ -181,6 +181,13 @@ export class CookPlayer {
       d.paused = true;
       await this.once("pause-after-tea", { settle: 0 });
       await sleep(4500);
+      return false;
+    }
+    // miss-light (SH-261, s19-taps): at the first move with a first-time light up, a tap in its box off the thing and a tap elsewhere
+    // (drivers/index.mjs missLight), then the right move; contract-117 judges the light through them
+    if (m === "miss-light" && !d.missLit && CALM.includes(e.kind)) {
+      d.missLit = true;
+      this.rec.note(`miss-light (${e.kind} ${e.key || ""}): ${await missLight(p, (n, o) => this.once(n, o))}`);
       return false;
     }
     // stuck (S13-T): at the first move, nothing tapped through every help rung (drivers/index.mjs stuckWait), then fair

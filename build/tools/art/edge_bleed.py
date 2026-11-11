@@ -33,8 +33,8 @@ def bleed(a):
     return np.clip(a, 0, 255).astype(np.uint8)
 
 # see-through glass and thin steel keep their soft pixels as cut (their soft edge is the glass, not a rim): baking's bowls and jugs,
-# the empty skewer
-SKIP = ("/baking/jug-", "/baking/bowl-", "/sekelo/skewer-empty")
+# the empty skewer; s19-k3: the walnut-lid glass jars
+SKIP = ("/baking/jug-", "/baking/bowl-", "/baking/jar-", "/sekelo/skewer-empty")
 
 def files(paths):
     for p in paths:

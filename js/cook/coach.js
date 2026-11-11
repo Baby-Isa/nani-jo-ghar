@@ -137,11 +137,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return out;
   }
 
+  /** Nani's "pass me", a panel, the request card or the end-of-round screen is up: the coach steps back (its light too). */
+  const coachBusy = (e) => {
+    const pm = $("#passme");
+    return !!(Cook.interrupting || (pm && !pm.classList.contains("hidden")) || (Cook.UI.panelOpen && Cook.UI.panelOpen()) || (e && e.intro) || document.querySelector(".njg-results"));
+  };
   function runKit(key, script, state) {
     const Onboard = OB();
     const staged = (state.staged = script.some((st) => st.when != null));
     state.done = new Set();
-    const cur = () => (live === state ? target(Cook.expect) : null);
+    // (s19-taps: the step's light reads the same "step back" as the coach's tick, every frame: Nani's "pass me" item was lit as the
+    // pantry's next thing, its panel sliding in under the light, contract-82, -105, -112; the light used to be hidden then, SH-236)
+    const cur = () => (live === state && !coachBusy(Cook.expect) ? target(Cook.expect) : null);
     // the spotlight: the thing to do next (the whole picture for a chop swipe: the vegetables fly)
     const spot = () => {
       const t = cur();
@@ -438,8 +445,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * grown-ups' New player or the game's coach not yet seen (save.coached), as the game starts (made once per round). o.round: a Set
    * the game makes each round (a lesson every game shares is once a round for the New player). -> Onboard.firsts's gate
    */
+  /**
+   * SH-261: a light the child's move hid comes back (MOVE.back after the release, the step still open) only once the kitchen is still:
+   * the shared light asks Onboard.busy, which the kitchen answers with its stillness look (C.mover: a kitchen tween that ends, the
+   * order row's glide), while a station plays. Set as every game starts (C.firsts, C.rungs, C.start).
+   */
+  let busyLook = null;
+  C.wireBusy = function () {
+    const Onboard = OB();
+    if (!Onboard || Onboard.busy === busyLook) return;
+    const moving = C.mover({ pend: false });
+    busyLook = () => !!Cook.inStation && moving();
+    Onboard.busy = busyLook;
+  };
   C.firsts = function (key, o = {}) {
     const Onboard = OB();
+    C.wireBusy();
     C.hopRule(); // (S19, SH-237: every kitchen game asks for its gate as it starts: its scene's glow hops only shelf things from now)
     const s14 = !!(Cook.UI && Cook.UI.s14 && Cook.UI.s14());
     const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
@@ -473,7 +494,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   C.thingBox(thing) -> fn          the same as one light target (a function giving the page rects)
    *   C.onShelf(thing) -> bool         is it a shelf thing (its foot in the bottom band, Shelf.BAND; thing.onShelf says so itself)?
    *   C.hopRule(S)                     the scene's glow hops only shelf things (SH-237): a pan, a board, a thing in play is lit still
-   *   C.began(by) / C.ended(by)        the child started (ended) the move a light shows: the light goes now (SH-236, Onboard.began)
+   *   C.began(by) / C.ended(by)        the child started (ended) the move a light shows: the light it began in hides (SH-236, SH-261)
    *   C.demo(at, o) -> {stop()}        the kit's one finger showing a move in world points, the game's thing riding under it (SH-119,
    *                                    MAA-20; Onboard.gesture): what replaces a game's own S.ghost
    *   C.stuck(o) -> handle             the stuck help, chai's method, in any game (SH-228)
@@ -570,10 +591,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const p = C.parts(thing);
     return p.length ? p : null;
   };
-  /** SH-236: the move a light shows has begun (a mechanic's drag, hold or stir started, or its tap landed): the lights go now. */
+  /** SH-236: the move a light shows has begun (a mechanic's drag, hold or stir started, or its tap landed): the light the press was in
+   * hides now, until the move's result closes it, or comes back MOVE.back after the release with its step still open (SH-261). */
   C.began = (by) => {
     const Onboard = OB();
     if (Onboard && Onboard.began) Onboard.began(by);
+    // (s19-taps: the script's thing glows only while its light is drawn: its glow goes with the light now, not at the coach's next
+    // tick, contract-102)
+    const a = live && Onboard && Onboard.active ? Onboard.active() : null;
+    if (a && a.id === obId(live.key) && a.hidden && a.hidden()) lightThing(live, null);
   };
   /** The move ended with its step still open (the child let go before the thing was done). */
   C.ended = (by) => {
@@ -1022,6 +1048,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   C.rungs = function (key, step, o = {}) {
     const Onboard = OB();
     if (!Onboard || !Onboard.stuck || !C.stepOf(key, step)) return null;
+    C.wireBusy();
     // STD-D2-05 (the leak test, non-negotiable 4): a step whose thing is the answer (o.answer: what a person asked for, o.word its
     // id) gets no hint once the word is past support, unless it is study (o.study: Nani helps, a redo)
     if (o.word != null && Onboard.hintHides && Onboard.hintHides({ answer: !!o.answer, stage: Cook.wordStage ? Cook.wordStage(o.word) : null, study: !!o.study })) return null;
@@ -1098,6 +1125,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // spotlight: its lights are the shared kit's, St.steps and the stepper's)
     const useKit = !!(OB() && script);
     if (!useKit) return;
+    C.wireBusy();
     const steps = script.length;
     const state = { key, shown: 0, last: null, timer: null, started: false, lost: 0, script, calm: false, newAt: Date.now(), done: new Set() };
     live = state;
@@ -1106,7 +1134,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (live !== state) return;
       const e = Cook.expect;
       // Nani's "pass me", a panel, the request card or the end-of-round screen: step back
-      const busy = Cook.interrupting || !$("#passme").classList.contains("hidden") || (Cook.UI.panelOpen && Cook.UI.panelOpen()) || (e && e.intro) || !!document.querySelector(".njg-results");
+      const busy = coachBusy(e);
       const t = busy ? null : target(e);
       const s = t ? sig(e) : "";
       if (useKit) {
