@@ -10,10 +10,11 @@
  * containers standing in a row in front, each with its word chip; from L3 the measuring jug beside the bowl, its lines at a quarter,
  * half, full, one and a half and two and a half (no numbers).
  *   - Nani gives ONE instruction at a time; its row appears on the card as she says it (UI.mission.reveal).
- *   - Tap what she names: it lifts over the bowl (or the jug). Each tap tips it a bit more and some goes in:
- *       "a little": one tap, it stops, "that's good";   "a lot": tap until it's a lot, "enough"; more taps don't land;
- *       "a little more": "a little", tap, "still a little more", tap, "enough";
- *       the jug: tap until the jug reaches the amount (a quarter cup a tap), "enough"; then it tips into the bowl.
+ *   - Tap what she names: it lifts over the jug. Each tap tips it a bit more and a quarter cup goes in, until the jug reaches
+ *     her amount, "enough" (more taps don't land); then the jug tips into the bowl. CK-72 (Zafar, 11 Nov evening: "just remove a
+ *     little and a lot - those non specific measurements ... go with fixed measurements (quarter, half, 3/4, full, 1 1/2 and 2 and
+ *     2 1/2)"): every amount is the jug's, at every level (a cup and a half at L1, up to two and a half at L4; the plans in
+ *     data/stations/baking.json); "a little", "a lot" and "a little more" left baking for another game.
  *     The row ticks the moment the amount is there (Zafar, 1 Nov: counts and amounts tick at the number).
  *   - Tap the bowl: the dough. Then the oven: tap it, it opens; tap the naan, in it goes and the door shuts; its ring fills; when
  *     Nani says it's ready, tap the oven: out it comes with steam, and Nana's happy face.
@@ -54,6 +55,21 @@ import { setTimeout } from "../life.js";
     },
   });
 
+  /** The step's amounts in English for a sentence still to record (the jug's units: quarter cups). */
+  const AMOUNT_EN = { 1: "a quarter cup", 2: "half a cup", 3: "three quarters of a cup", 4: "a cup", 6: "one and a half cups", 8: "two cups", 10: "two and a half cups" };
+  /**
+   * CK-72: Nani's instruction for step s, "put in <amount> <thing>", from the engine (DoIt v.put-in over the step's parts: Lang.itemOf);
+   * where the engine can't say it whole (an amount still to record), the whole sentence's English as the grey to-record line.
+   */
+  function amountLine(s) {
+    const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(s.parts && s.parts.length ? s.parts : [s.id]) });
+    if (doIt.ok !== false) return doIt;
+    const en = `Put in ${AMOUNT_EN[s.units] || `${s.units / 4} cups`} of ${Cook.english(s.id)}.`;
+    return Lang.toRecord(en, `baking: put in ${AMOUNT_EN[s.units] || s.units} of <thing>`);
+  }
+  /** Every word id a step names is the engine's (a new amount waits for its lexicon entry: its plans are skipped till then). */
+  const sayable = (plan) => plan.every((s) => (s.parts || []).every((x) => typeof x !== "string" || Lang.known(x)));
+
   /** The pictures this round draws, from the settings' items (decision 68: only these, and only what this round shows). */
   function artFor(onShelf, plan, jug, who) {
     const I = ITEMS();
@@ -91,7 +107,8 @@ import { setTimeout } from "../life.js";
     // the decoys by the central rules (1-4 by level, one a lookalike at L4: STD-C2-03), noted for contract-37
     const decoys = St.tableDecoys(Object.keys(CT.files || {}), ids, level, { what: KEY });
     const onShelf = Cook.shuffle(ids.concat(decoys));
-    const hasJug = !!K.jug;
+    // (CK-72: every amount is measured in the jug, at every level)
+    const hasJug = K.jug !== false;
     await St.loadArt(S, artFor(onShelf, plan, hasJug, who)).catch(() => {});
     const has = (k) => S.textures.exists(k);
     const objs = [];
@@ -366,14 +383,13 @@ import { setTimeout } from "../life.js";
       if (UI.mission.reveal) UI.mission.reveal(`bake-${i + 1}`);
       // the reveal lessons (the dotted word, then the blurred picture) as the first row that shows one appears (contract-98)
       await Cook.Coach.lessons({ gate, ctx, busy: () => busy });
-      const jugStep = s.amt === "jug" && jug;
-      const amtLine = s.amt === "lot" ? Lang.line("alot") : s.amt === "jug" ? null : Lang.line("little");
-      const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(jugStep ? s.parts : [s.id]) });
-      // (her turn is the order, said row by row: its row appears as she says it, as a person's order does; the engine has no
-      // "a little / a lot of X" frame, R6-136, so two engine lines side by side. s19-games-2: kept the order's role, not a call: an
-      // item said as a call while her helper card is closed breaks SH-172, contract-89; contract-36 wants it called: the checks' conflict
-      // is in the report)
-      const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "order");
+      const jugStep = !!jug;
+      // (her turn is the order, said row by row: its row appears as she says it, as a person's order does. s19-games-2: kept the
+      // order's role, not a call: an item said as a call while her helper card is closed breaks SH-172, contract-89)
+      // CK-72: the amount and the thing in one sentence from the engine ("Hakro cup atto wiji chad!", "Ba cup atto wiji chad!", "Adh
+      // paani wiji chad!"); an amount still to record (a quarter, three quarters, one and a half, two and a half) makes a sentence the
+      // engine can't say whole: its English in grey, never stitched from fragments (non-negotiable 2), a line for the recording sheet
+      const call = Lang.role(amountLine(s), "order");
       say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
@@ -394,8 +410,8 @@ import { setTimeout } from "../life.js";
       await Cook.tween(S, { targets: img, x: into.x - 150, y: into.y - 60, duration: 360, ease: "Cubic.easeOut" });
       busy = false;
       const liquid = LIQUID.has(s.id);
-      // how many taps, and Nani's turns
-      const need = s.amt === "little" ? 1 : s.amt === "more" ? 2 : s.amt === "lot" ? K.lotTaps || 4 : s.units || 4;
+      // how many taps: a quarter cup a tap, to her amount (CK-72)
+      const need = Math.max(1, s.units || 4);
       let taps = 0;
       let open = true;
       const tipOf = (t) => Math.min(115, 30 + t * (85 / Math.max(1, need)));
@@ -412,7 +428,6 @@ import { setTimeout } from "../life.js";
             jug.units = taps;
             jug.show(s.id);
           } else bowlTo(s, taps / need);
-          if (s.amt === "more" && taps === 1) speak(line("stillmore", "react"));
           busy = false;
           if (taps >= need) return resolve();
           expectTap(img, s.id);
@@ -428,7 +443,7 @@ import { setTimeout } from "../life.js";
       // the amount is there: the row ticks at once (Zafar, 1 Nov), then her word
       UI.mission.tickItem(s.id, 0, { close: true });
       Cook.sfx.right();
-      speak(line(s.amt === "little" ? "good" : "enough", "react"));
+      speak(line("enough", "react"));
       busy = true;
       // (it rests tipped a moment, its pour done, while the light that followed it fades: Onboard.light's 300 ms, real time)
       await new Promise((r) => setTimeout(r, FADE_MS));
@@ -439,7 +454,8 @@ import { setTimeout } from "../life.js";
         await pourOnce({ x: jug.c.x, y: jug.c.y, angle: 70, displayHeight: jug.h }, { x: bowlX, y: bowlY - 40 }, s.id, true);
         jug.units = 0;
         jug.show(null);
-        bowlTo(s, 1);
+        // (the flour in the bowl by how much went in: two cups and more fill it to three quarters)
+        bowlTo(s, Math.min(1, need / 8));
         await Cook.tween(S, { targets: jug.c, x: jug.x, y: jug.y, angle: 0, duration: 380 });
       }
       busy = false;
@@ -654,12 +670,14 @@ import { setTimeout } from "../life.js";
 
   Mech.lab(KEY, {
     name: "Baking (prototype)",
-    verb: "Nani's turns: a little, a lot; then the oven",
+    verb: "Nani's amounts by the jug; then the oven",
     async run(L) {
       const R = Cook.Recipes;
       const d = R.baking.make("nana", { level: L.level });
       const K = Mech.knobs(KEY, { level: L.level });
-      d.plan = Cook.pick(K.plans || [[]]);
+      // (CK-72: a plan naming an amount the engine doesn't know yet, three quarters, waits for its lexicon entry)
+      const plans = (K.plans || [[]]).filter(sayable);
+      d.plan = Cook.pick(plans.length ? plans : K.plans || [[]]);
       // the jug's amounts are a word moment (CHAI-67's system) before the order that first asks them: the kit's call with the game's
       // settings (wordMoment: its pair, its jug pictures; ART-38's art to come)
       if (UI.wordMoment && SET().wordMoment) await UI.wordMoment(askedIds(d.plan), SET().wordMoment);

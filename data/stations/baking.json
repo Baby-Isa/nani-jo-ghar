@@ -1,12 +1,12 @@
 {
- "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the baking station's own data (js/cook/stations/baking.js; the card is recipes.baking in data/cook.json, its rows filled from the plan picked here). Zafar's turn-by-turn design (prototype-notes-2026-11-01.md 'Baking'; cook-baking-eggs.md end note): Nani gives one instruction at a time, each tap tips the jar or bag a bit more. A step: id (the container), amt (little: one tap, it stops, 'that's good'; lot: tap until lotTaps, 'enough'; more: a little, tap, 'still a little more', tap, 'enough'; jug: tap until `units` quarter cups in the measuring jug, its lines at a quarter, half, full, one and a half and two and a half, no numbers), parts (the card row's words, through the language engine). `plans` by level (one picked at random); the decoys (how many other containers stand in the row) are the central rules' (data/rules.json levels.decoys: 1-4, a lookalike at L4; S18); bakeMs the oven's time; `palette` the art colours.",
+ "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov): the baking station's own data (js/cook/stations/baking.js; the card is recipes.baking in data/cook.json, its rows filled from the plan picked here). Zafar's turn-by-turn design (prototype-notes-2026-11-01.md 'Baking'; cook-baking-eggs.md end note): Nani gives one instruction at a time, each tap tips the jar or bag a bit more. A step: id (the container), amt 'jug' (CK-72, Zafar 11 Nov: fixed measures only, no 'a little' or 'a lot': tap until `units` quarter cups are in the measuring jug, 'enough', then the jug tips into the bowl: a quarter 1, a half 2, three quarters 3, a full cup 4, one and a half 6, two 8, two and a half 10), parts (the card row's words, through the language engine: [1, 'ph-cup', x] 'hakro cup x', [2, 'ph-cup', x] 'ba cup x', ['ph-half', x] 'adh x'; a quarter, three quarters, one and a half and two and a half are the engine's to-record words, grey English). Levelled whole and half first (L1 a cup and a half, L2 two cups and a quarter), then three quarters and one and a half (L3), two and a half (L4). `plans` by level (one picked at random); the decoys (how many other containers stand in the row) are the central rules' (data/rules.json levels.decoys: 1-4, a lookalike at L4; S18); bakeMs the oven's time; `palette` the art colours.",
  "band": "shelf",
  "station": {
   "name": "Baking",
-  "verb": "Nani's turns: a little, a lot; then the oven",
-  "goal": "Tap what Nani names and tip it in until she says enough. Then bake the naan.",
+  "verb": "Nani's amounts by the jug: a quarter to two and a half cups; then the oven",
+  "goal": "Tap what Nani names and tip it into the jug to her amount. Then bake the naan.",
   "phases": {
-   "mix": "Tap what Nani names. Each tap tips it a bit more.",
+   "mix": "Tap what Nani names. Each tap tips a quarter cup into the jug.",
    "oven": "Tap the oven to open it, then the naan. Take it out when it's ready."
   },
   "palette": {
@@ -57,26 +57,38 @@
     "color": "#e8f3f6"
    },
    "bowl": "ceramic"
+  },
+  "ph-cups-34": {
+   "heap": {
+    "kind": "pieces",
+    "color": "#e8f3f6"
+   },
+   "bowl": "ceramic"
   }
  },
  "mechanic": {
   "levels": [
    {
-    "lotTaps": 4,
+    "jug": true,
     "bakeMs": 3600,
     "plans": [
      [
       {
        "id": "cook-atto",
-       "amt": "lot",
+       "amt": "jug",
+       "units": 4,
        "parts": [
+        1,
+        "ph-cup",
         "cook-atto"
        ]
       },
       {
        "id": "cook-paani",
-       "amt": "little",
+       "amt": "jug",
+       "units": 2,
        "parts": [
+        "ph-half",
         "cook-paani"
        ]
       }
@@ -84,15 +96,20 @@
      [
       {
        "id": "cook-atto",
-       "amt": "lot",
+       "amt": "jug",
+       "units": 4,
        "parts": [
+        1,
+        "ph-cup",
         "cook-atto"
        ]
       },
       {
        "id": "cook-dudh",
-       "amt": "little",
+       "amt": "jug",
+       "units": 2,
        "parts": [
+        "ph-half",
         "cook-dudh"
        ]
       }
@@ -104,77 +121,64 @@
      [
       {
        "id": "cook-atto",
-       "amt": "lot",
+       "amt": "jug",
+       "units": 8,
        "parts": [
+        2,
+        "ph-cup",
         "cook-atto"
-       ]
-      },
-      {
-       "id": "spi-16",
-       "amt": "little",
-       "parts": [
-        "spi-16"
        ]
       },
       {
        "id": "cook-paani",
-       "amt": "more",
+       "amt": "jug",
+       "units": 4,
        "parts": [
+        1,
+        "ph-cup",
         "cook-paani"
-       ]
-      }
-     ],
-     [
-      {
-       "id": "cook-atto",
-       "amt": "lot",
-       "parts": [
-        "cook-atto"
-       ]
-      },
-      {
-       "id": "cook-khun",
-       "amt": "little",
-       "parts": [
-        "cook-khun"
-       ]
-      },
-      {
-       "id": "cook-dudh",
-       "amt": "more",
-       "parts": [
-        "cook-dudh"
-       ]
-      }
-     ],
-     [
-      {
-       "id": "cook-atto",
-       "amt": "lot",
-       "parts": [
-        "cook-atto"
        ]
       },
       {
        "id": "ph-dahi",
-       "amt": "more",
+       "amt": "jug",
+       "units": 2,
        "parts": [
+        "ph-half",
         "ph-dahi"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 8,
+       "parts": [
+        2,
+        "ph-cup",
+        "cook-atto"
        ]
       },
       {
-       "id": "spi-16",
-       "amt": "little",
+       "id": "cook-dudh",
+       "amt": "jug",
+       "units": 2,
        "parts": [
-        "spi-16"
+        "ph-half",
+        "cook-dudh"
+       ]
+      },
+      {
+       "id": "cook-khun",
+       "amt": "jug",
+       "units": 1,
+       "parts": [
+        "ph-quartercup",
+        "cook-khun"
        ]
       }
-     ]
-    ]
-   },
-   {
-    "jug": true,
-    "plans": [
+     ],
      [
       {
        "id": "cook-atto",
@@ -196,10 +200,45 @@
        ]
       },
       {
-       "id": "spi-16",
-       "amt": "little",
+       "id": "ph-dahi",
+       "amt": "jug",
+       "units": 1,
        "parts": [
-        "spi-16"
+        "ph-quartercup",
+        "ph-dahi"
+       ]
+      }
+     ]
+    ]
+   },
+   {
+    "plans": [
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 6,
+       "parts": [
+        "ph-cups-1h",
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-dudh",
+       "amt": "jug",
+       "units": 3,
+       "parts": [
+        "ph-cups-34",
+        "cook-dudh"
+       ]
+      },
+      {
+       "id": "cook-khun",
+       "amt": "jug",
+       "units": 1,
+       "parts": [
+        "ph-quartercup",
+        "cook-khun"
        ]
       }
      ],
@@ -207,27 +246,59 @@
       {
        "id": "cook-atto",
        "amt": "jug",
-       "units": 4,
+       "units": 8,
        "parts": [
-        1,
+        2,
         "ph-cup",
         "cook-atto"
        ]
       },
       {
-       "id": "cook-dudh",
+       "id": "cook-paani",
+       "amt": "jug",
+       "units": 6,
+       "parts": [
+        "ph-cups-1h",
+        "cook-paani"
+       ]
+      },
+      {
+       "id": "ph-dahi",
+       "amt": "jug",
+       "units": 1,
+       "parts": [
+        "ph-quartercup",
+        "ph-dahi"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 6,
+       "parts": [
+        "ph-cups-1h",
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-paani",
+       "amt": "jug",
+       "units": 4,
+       "parts": [
+        1,
+        "ph-cup",
+        "cook-paani"
+       ]
+      },
+      {
+       "id": "ph-dahi",
        "amt": "jug",
        "units": 2,
        "parts": [
         "ph-half",
-        "cook-dudh"
-       ]
-      },
-      {
-       "id": "cook-khun",
-       "amt": "little",
-       "parts": [
-        "cook-khun"
+        "ph-dahi"
        ]
       }
      ]
@@ -258,17 +329,19 @@
       {
        "id": "ph-dahi",
        "amt": "jug",
-       "units": 1,
+       "units": 3,
        "parts": [
-        "ph-quartercup",
+        "ph-cups-34",
         "ph-dahi"
        ]
       },
       {
-       "id": "spi-16",
-       "amt": "little",
+       "id": "cook-khun",
+       "amt": "jug",
+       "units": 1,
        "parts": [
-        "spi-16"
+        "ph-quartercup",
+        "cook-khun"
        ]
       }
      ],
@@ -276,33 +349,77 @@
       {
        "id": "cook-atto",
        "amt": "jug",
-       "units": 6,
+       "units": 10,
        "parts": [
-        "ph-cups-1h",
+        "ph-cups-2h",
         "cook-atto"
        ]
       },
       {
        "id": "cook-dudh",
        "amt": "jug",
+       "units": 4,
+       "parts": [
+        1,
+        "ph-cup",
+        "cook-dudh"
+       ]
+      },
+      {
+       "id": "ph-dahi",
+       "amt": "jug",
+       "units": 2,
+       "parts": [
+        "ph-half",
+        "ph-dahi"
+       ]
+      },
+      {
+       "id": "cook-khun",
+       "amt": "jug",
        "units": 1,
        "parts": [
         "ph-quartercup",
+        "cook-khun"
+       ]
+      }
+     ],
+     [
+      {
+       "id": "cook-atto",
+       "amt": "jug",
+       "units": 8,
+       "parts": [
+        2,
+        "ph-cup",
+        "cook-atto"
+       ]
+      },
+      {
+       "id": "cook-paani",
+       "amt": "jug",
+       "units": 6,
+       "parts": [
+        "ph-cups-1h",
+        "cook-paani"
+       ]
+      },
+      {
+       "id": "cook-dudh",
+       "amt": "jug",
+       "units": 2,
+       "parts": [
+        "ph-half",
         "cook-dudh"
        ]
       },
       {
        "id": "cook-khun",
-       "amt": "more",
+       "amt": "jug",
+       "units": 1,
        "parts": [
+        "ph-quartercup",
         "cook-khun"
-       ]
-      },
-      {
-       "id": "spi-16",
-       "amt": "little",
-       "parts": [
-        "spi-16"
        ]
       }
      ]
@@ -323,29 +440,28 @@
   ],
   "who": "nana",
   "amounts": {
-   "little": "one tap; it stops; 'that's good'",
-   "lot": "tap until lotTaps; 'enough'",
-   "more": "a little, tap, 'still a little more', tap, 'enough'",
-   "jug": "tap until `units` quarter cups are in the measuring jug (its five lines, no numbers)"
+   "jug": "tap until `units` quarter cups are in the measuring jug (a quarter 1 ... two and a half 10), 'enough', then it tips into the bowl",
+   "_was": "CK-72 (Zafar, 11 Nov evening): 'a little', 'a lot' and 'a little more' removed from baking; they go to another game"
   },
   "levels": [
    {
     "level": 1,
     "instructions": 2,
     "amounts": [
-     "lot",
-     "little"
+     "a cup",
+     "a half"
     ],
     "decoys": 1,
-    "bakeMs": 3600
+    "bakeMs": 3600,
+    "jug": true
    },
    {
     "level": 2,
     "instructions": 3,
     "amounts": [
-     "lot",
-     "little",
-     "more"
+     "two cups or a cup",
+     "a cup, a half or a quarter",
+     "a half or a quarter"
     ],
     "decoys": 2
    },
@@ -353,25 +469,23 @@
     "level": 3,
     "instructions": 3,
     "amounts": [
-     "jug",
-     "jug",
-     "little"
+     "one and a half or two cups",
+     "a cup, three quarters or one and a half",
+     "a quarter or a half"
     ],
-    "decoys": 3,
-    "jug": true
+    "decoys": 3
    },
    {
     "level": 4,
     "instructions": 4,
     "amounts": [
-     "jug",
-     "jug",
-     "jug or more",
-     "little"
+     "two or two and a half cups",
+     "one and a half or a cup",
+     "three quarters or a half",
+     "a quarter"
     ],
     "decoys": 4,
-    "bakeMs": 4200,
-    "jug": true
+    "bakeMs": 4200
    }
   ],
   "_levels": "The plans themselves (which container, how much, its engine parts) stay in mechanic.levels[].plans, as the station reads them."
@@ -655,19 +769,23 @@
    "item": "jug",
    "english": "two and a half cups",
    "units": 10
+  },
+  "ph-cups-34": {
+   "item": "jug",
+   "english": "three quarters of a cup",
+   "units": 3
+  },
+  "ph-cups-2": {
+   "_note": "two cups is the engine's [2, 'ph-cup', x] (ba cup x), no word of its own"
   }
  },
  "lines": {
   "now": "now",
-  "alot": "alot",
-  "little": "little",
-  "stillmore": "stillmore",
-  "good": "good",
   "enough": "enough",
   "ready": "ready",
   "careful": "careful",
-  "instruction": "DoIt v.put-in with the item (and the amount's line)",
-  "_note": "Lang.line keys the station says today; the amounts of the jug are the word moment's job (CHAI-67)"
+  "instruction": "DoIt v.put-in with the amount and the item (Lang.itemOf of the step's parts); where the engine cannot say it whole (a to-record amount), the sentence's English in grey (Lang.toRecord), never stitched",
+  "_note": "Lang.line keys the station says today (CK-72: 'A lot.', 'A little.', 'Still a little more.' and 'That's good.' are no longer said in baking)"
  },
  "wordMoment": {
   "call": "UI.wordMoment(ids, settings.wordMoment): the kit's call with this game's pair, key and pictures (s18-w3-kit; a word still to record shows its grey English)",
@@ -730,24 +848,6 @@
    "sheet": "naan (R6-18)"
   },
   {
-   "id": "cook.line.alot",
-   "english": "A lot.",
-   "kind": "no Kutchi",
-   "sheet": "A lot."
-  },
-  {
-   "id": "cook.line.stillmore",
-   "english": "Still a little more.",
-   "kind": "no Kutchi",
-   "sheet": "Still a little more."
-  },
-  {
-   "id": "cook.line.good",
-   "english": "That's good.",
-   "kind": "no Kutchi",
-   "sheet": "That's good."
-  },
-  {
    "id": "ph-quartercup",
    "english": "a quarter cup",
    "kind": "no Kutchi",
@@ -766,9 +866,15 @@
    "sheet": "added by this prep (R6-135)"
   },
   {
+   "id": "ph-cups-34",
+   "english": "three quarters of a cup",
+   "kind": "not in the lexicon yet (CK-72): its round is skipped until data/lang/lexicon.json has it (the s19-clean-b report gives the entry)",
+   "sheet": "three quarters of a cup (new, CK-72)"
+  },
+  {
    "id": "frame: put in <amount> of <item>",
-   "english": "Put in a cup of flour / half a cup of water",
-   "kind": "no frame (the engine has no 'N cups of X' rule: its Join)",
+   "english": "Put in a quarter cup / three quarters of a cup / one and a half cups / two and a half cups of flour (water, milk, yoghurt, sugar)",
+   "kind": "the amount is a to-record word, so the sentence shows its English in grey (Lang.toRecord); 'Hakro cup atto wiji chad!', 'Ba cup atto wiji chad!' and 'Adh paani wiji chad!' are the engine's",
    "sheet": "R6-136"
   }
  ],
