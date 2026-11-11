@@ -932,7 +932,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | sea | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | sea things | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Send each one where they want to go. | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
-| serve (put it on the plate) | asked in Mum's rounds (grammar-notes); eggs' step line in Nani's box as a plate or the tray is next (CK-76, its English in grey italic until recorded) | — | No Kutchi yet |
+| serve (put it on the plate) | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | shell | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Shh! Who's hiding? | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | ship | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
