@@ -772,10 +772,18 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // SH-256: a fried egg grows or shrinks to its plate size as it flies, so it lands at the size it keeps (no snap on the plate)
       const flyTo = egg.fried ? { duration: 380, arc: 110, scale: at.w / Math.max(1, egg.obj.width) } : { duration: 380, arc: 110 };
       await flying(S.fly(egg.obj, at.x, at.y, flyTo));
-      const was = egg.obj.texture.key;
-      egg.obj.destroy();
-      // a fried egg lands as it was cooked (cooked, or overdone); a boiled one is halved on the plate
-      const shown = egg.fried ? [sized(T(S.add.image(at.x, at.y, was).setDepth(D.item + 0.4)), at.w)] : halves(at.x, at.y, at.h);
+      // a fried egg lands as it was cooked (cooked, or overdone), the same picture staying on the plate (SH-256, contract-114: no swap);
+      // a boiled one is halved on the plate
+      let shown;
+      if (egg.fried) {
+        S.untap(egg.obj);
+        shown = [egg.obj.setDepth(D.item + 0.4)];
+        if (Math.hypot(egg.obj.x - at.x, egg.obj.y - at.y) > 2) await flying(Cook.tween(S, { targets: egg.obj, x: at.x, y: at.y, duration: 150 }));
+        sized(egg.obj, at.w);
+      } else {
+        egg.obj.destroy();
+        shown = halves(at.x, at.y, at.h);
+      }
       if (egg.fried) shade(S, shown[0], { dx: 3, dy: 4, alpha: 0.2, blur: 3 });
       pl.eggs.push({ fried: egg.fried, look: shown });
       egg.v.eggs.splice(egg.v.eggs.indexOf(egg), 1);

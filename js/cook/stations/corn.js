@@ -190,7 +190,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // SH-256 (the eye judge, 10 Nov: the cob landed on the tray at a third of its grill size, lost in the tray, then grew on the plate):
     // with one or two cobs the tray holds them lengthwise across its whole width, one above the other, as near their grill length as
     // the tray allows; three or four keep the kit's two by two. The plate then keeps that length (cobLen below)
-    const trayLen = count <= 2 ? Math.max(L.tray.len, Math.min(L.grill.len, L.tray.w * 0.84)) : L.tray.len;
+    const trayLen = count <= 2 ? Math.max(L.tray.len, Math.min(L.grill.len, L.tray.w * 0.9)) : L.tray.len; // (0.9: within 15% of its grill length, contract-114)
     const trayAt = (k) => (count <= 2 ? { x: L.tray.x, y: count === 1 ? L.tray.y : L.tray.at(k ? 2 : 0).y } : L.tray.at(k));
     const cobs = []; // on the grill
     const inTray = []; // done, lying in the tray

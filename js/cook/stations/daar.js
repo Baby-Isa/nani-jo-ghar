@@ -697,8 +697,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       S.fly(img, to.x, to.y, { scale: bowl ? sc * 0.5 : piece ? img.scale : sc, duration: 460, arc: z.L(90) }).then(() => {
         if (!img.active) return;
         if (piece) {
+          // (SH-256, contract-114: the piece becomes its heap without a snap: the heap's picture comes in at the piece's size and
+          // grows to its own over 0.25 s)
+          const w0 = img.displayWidth;
           img.setTexture(`dv2-chop-${id}`);
-          img.setScale(z.L(heapSize(id)) / heapW);
+          const s1 = z.L(heapSize(id)) / heapW;
+          img.setScale(w0 / Math.max(1, img.width));
+          S.tweens.add({ targets: img, scaleX: s1, scaleY: s1, duration: 250, ease: "Sine.easeOut" });
         }
         img.setDepth(D.item - 0.5 + n * 0.001);
         S.puff(to.x, to.y, 0xfff6e0, z.L(22));
