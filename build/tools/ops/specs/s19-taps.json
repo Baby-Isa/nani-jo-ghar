@@ -1,0 +1,55 @@
+{
+  "name": "s19-taps: a first-time light stays until the right action is done, and an item wins the taps meant for it (Zafar's 3.5-year-old test)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "Zafar, 11 Nov, after a 3.5-year-old's first play: a missed tap inside the light closed it and left her stuck; she still tapped word pills when she meant the item (rows SH-261, SH-244)",
+  "cost": "about $30-40",
+  "stop": "when the tasks are done",
+  "branch": "s19-taps in /home/user/wt/s19-taps (made for you from the integration branch, without sources/); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "docs/process/regressions.md rows SH-261 and SH-244 (his words)",
+    "js/shared/onboard.js (the light), js/cook/coach.js (the coach), js/shared/shelf.js and the pill code (the item's and the pill's tap areas)",
+    "build/reports/s19-shared-checks.md (what changed in the shared code today)"
+  ],
+  "owns": [
+    "js/shared/** and css/shared/**",
+    "js/cook/coach.js, station-lib.js, kitchen-kit.js, ui.js, js/cook/stations.js",
+    "build/sandbox/** except build/sandbox/data/evidence.json (a check for each rule)",
+    "build/reports/s19-taps.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/**, js/cook/mechanics/** (s19-games-1 and -2: a game-side change goes in your report, exactly)",
+    "js/cook/serve.js, flow.js, data/cook.json (s19-serve2)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "port": 8915,
+  "report": "s19-taps",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray",
+    "cook:eggs",
+    "cook:maani-line",
+    "cook:corn",
+    "cook:fetch"
+  ],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "A first-time light closes only when the child has done the thing it asks, the action's own result (the water pours, the pan goes on, the item lands): a tap inside the light that misses the thing, a wrong tap, or a tap anywhere else leaves the light up and its help ladder running. In the shared light and the coach, for every game at once; then a check that plays a miss inside the box and a tap elsewhere and fails if the light goes.",
+      "accept": "chai's water, eggs' first move, maani's first ball and the pantry's first item at 740x320: a miss inside the light leaves it up, the right tap closes it; the check red on the code before, green after"
+    },
+    {
+      "do": "The item wins the taps meant for it (SH-244 told again): a tap on the item's picture, and on its pill's upper part, picks the item; only the speaker icon itself says the word; tap areas never overlap a neighbour's; in the shared pill and shelf code for every game. A check that taps each item's picture edge and its pill's word and fails if the item isn't picked.",
+      "accept": "the check red before and green after in chai, eggs, corn and the pantry at 740x320; the leak bots still pass (picking by the pill's word must not let a child win by reading)"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8915, flock /tmp/njg-browser-8915.lock); commit on your branch often, never push; never remove a mechanic or a help; keep under 1.5 GB of runs; never run `git sparse-checkout disable`.",
+      "accept": "build/reports/s19-taps.md with a Proof section, under 600 words"
+    }
+  ]
+}
