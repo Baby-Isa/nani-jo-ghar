@@ -237,7 +237,7 @@ more (its check fields are gone: 35, 37, 44, 70, 71, 78, 90, 91 judge every game
 
 | Script | Runs | Caught | Cost | Verdict |
 |---|---|---|---|---|
-| check_onboard.mjs (every phase has a first-time help) | named by the QA checklist; no run | INT-04/INT-15 | fails today on 39 prototype phases (beach and town prototypes have no onboarding and no `onboardWhy`) | FIX (not this session's file: the report has the change) |
+| check_onboard.mjs (every phase has a first-time help) | named by the QA checklist; no run | INT-04/INT-15 | fails today on 39 prototype phases (beach and town prototypes have no onboarding and no `onboardWhy`) | RETIRE (s19-checks-2, the check sort's G0: runs nowhere, fails 39 prototype phases; contract-112 judges every light on the screen; code kept) |
 | check_vessel_meta.py (vessels centred on burners) | QA LAY-10; no run | C7/H11 | fails today: samosa's `META.karahi` and `META.plate` read as None | FIX (the report has it: the meta moved with samosa's kit switch or is missing) |
 | check_hotspots.py (clinic hit areas) | QA LAY-11 | the clinic's part sizes | passes today | KEEP |
 | test_clinic_heal_a.py (the heal games on the host) | no run | the heal lab A games | times out today on the heal host's mount | FIX (report: a look at the host, which may be a clinic fault) |
@@ -246,7 +246,7 @@ more (its check fields are gone: 35, 37, 44, 70, 71, 78, 90, 91 judge every game
 | check_word_card_taps.mjs (EASY-11) | run today | 26 reveal buttons, 0 under 44 px | 3 s | KEEP |
 | check_sidebar_fit.mjs | run today | the S13-A2 sidebar | did not finish in 7 minutes | RETIRE |
 | check_stamps.mjs (B7) | the publish; run today | **today: cook.html asks for `js/shared/shelf.js` without its version stamp** (a phone keeps an old shelf.js after a publish) | ~5 min, a browser | KEEP (the finding is in the report) |
-| test_cook_mount.mjs (COOK-16), test_cook.py, test_clinic.py | the mount test in /review; the two older e2e tests nowhere since October | the mount's leaked listeners | not re-run today: the shared browser lock was needed by the other builder | KEEP; the two e2e tests to be run once at the next review, then judged |
+| test_cook_mount.mjs (COOK-16), test_cook.py, test_clinic.py | the mount test in /review; the two older e2e tests nowhere since October | the mount's leaked listeners | not re-run today: the shared browser lock was needed by the other builder | KEEP test_cook_mount; test_cook.py and test_clinic.py RETIRED (s19-checks-2, run once: test_cook.py --lab fails at its first click, the "?" no longer where it looks; test_clinic.py times out at waiting-W1-L1 with no expectation; the sandbox's cook-player and flows/clinic.mjs are their ports; code kept) |
 
 ## 10. The leak bots (`build/tools/review/leak-configs/`)
 

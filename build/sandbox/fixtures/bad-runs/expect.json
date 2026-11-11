@@ -419,9 +419,6 @@
     "contract-37": [
      "cook:station1:marble (corn at L1): 5 decoys on the shelf (fru-02*, spi-16*, spi-04*, ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1"
     ],
-    "contract-70": [
-     "the heat ring entered its green (0.366-1) and no call was said by 0.43 (the turn-off call as the bar enters the green)"
-    ],
     "contract-112": [
      "light 1 [598,524,736,582]: not a rounded rectangle: corners too round (corners 20 px on a box 58 px high, at most a quarter: 14 px); the dim is darker than chai's: 0.75 of the way to the dim's colour against chai's 0.45 (within 0.08); cn4-raw [562,538,772,573] (its picture, pill and face) is not inside the light with its pad: left -36 px (wants 8), right -36 px (wants 8) (picture: lights/01/mark.jpg)"
     ],

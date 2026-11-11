@@ -464,17 +464,23 @@ export function check70(r, tl, v, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19ring").length) return;
   const cs = calls(v);
   const covered = [];
+  const speed = +((/#speed(\d+)/.exec(r.flow || "") || [])[1] || 3);
   for (const run of ringRuns(tl)) {
     if (run.tIn == null) continue;
     if (covered.some((t) => Math.abs(t - run.tIn) < 1500)) continue;
-    const late = run.samples.find((s) => s.lv >= run.lo + SLOW_LATE);
-    const tLate = (late ? late.t : run.tIn + 1000) + 400;
+    // (Cook's test speed fills the ring that many times faster while a voice keeps its own length: the window in level is scaled by it,
+    // as contract-79 scales its beat; at speed 1 it is chai's 0.06)
+    const late = run.samples.find((s) => s.lv >= run.lo + SLOW_LATE * speed);
+    // (a ring the child ends before it is late owes its call only if it stood in the green 1.5 s: the call had its time)
+    const end = run.cleared || run.reset || (run.samples.length ? run.samples[run.samples.length - 1].t : run.tIn);
+    if (!late && end - run.tIn < 1500) continue;
+    const tLate = (late ? late.t : run.tIn + 1500) + 400;
     const said = cs.find((l) => l.t0 >= run.tIn - 300 && l.t0 <= tLate);
     if (said) { covered.push(run.tIn); continue; }
     const early = cs.filter((l) => l.t0 < run.tIn - 300 && l.t0 >= run.t0).pop();
     const lvAt = (t) => (run.samples.filter((s) => s.t <= t).pop() || { lv: 0 }).lv;
     if (early && lvAt(early.t0) >= run.lo - 0.15) add("contract-70", early.t0, `"${early.text.trim()}" at ${lvAt(early.t0).toFixed(3)}, before the green (it starts at ${run.lo}): called early`);
-    else add("contract-70", run.tIn, `the heat ring entered its green (${run.lo}-${run.hi}) and no call was said by ${(run.lo + SLOW_LATE).toFixed(2)} (the turn-off call as the bar enters the green)`);
+    else add("contract-70", run.tIn, `the heat ring entered its green (${run.lo}-${run.hi}) and no call was said by ${(run.lo + SLOW_LATE * speed).toFixed(2)} (the turn-off call as the bar enters the green${speed > 1 ? `; 0.06 a speed, at speed ${speed}` : ""})`);
     return;
   }
 }
