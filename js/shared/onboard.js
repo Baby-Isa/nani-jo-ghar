@@ -1500,7 +1500,10 @@
         if (over() || !shownBox || layer.__buried || moving || skipBtn.contains(e.target) || pass(e)) return;
         if (!Onboard.pressIn(p, shownBox)) return;
         const st = m.state().step;
-        startAt = moveStart(p, !!st && rectsOf(st.spotlight).some((r) => Onboard.pressIn(p, r)));
+        const onIt = !!st && rectsOf(st.spotlight).some((r) => Onboard.pressIn(p, r));
+        // (a step whose move is a drag, a roll, a stir, a swipe or a hold: a press on its thing is that move begun, SH-236's 300 ms)
+        if (onIt && st.ghost && st.ghost.gesture && st.ghost.gesture !== "tap") return move(true, true);
+        startAt = moveStart(p, onIt);
       },
       move(p) {
         if (startAt && moved(startAt, p)) {
@@ -1960,7 +1963,10 @@
         if (closed || o.stay || !shown || layer.__buried || away || !Onboard.pressIn(p, shown)) return;
         if (e && e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
         if (typeof o.onPress === "function" && o.onPress(e) === false) return;
-        start = moveStart(p, thingRects().some((r) => Onboard.pressIn(p, r)));
+        const onIt = thingRects().some((r) => Onboard.pressIn(p, r));
+        // (a light whose move is a drag, o.drag (Onboard.stuck's drag step): a press on its thing is that move begun, SH-236)
+        if (onIt && o.drag) return goAway(true);
+        start = moveStart(p, onIt);
       },
       move(p) {
         if (start && moved(start, p)) goAway(true);
@@ -2203,7 +2209,7 @@
     };
     const openSpot = () => {
       glow(false);
-      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: drag ? null : o.move, finger: drag ? "hold" : undefined, fingerDown: o.fingerDown, fingerFrom: o.fingerFrom, step: name }); // (SH-130, S13-A2: a drag's box has its finger too, pressed on the thing to move)
+      if (!spot && o.target) spot = Onboard.spot(o.target, { live: o.live, avoid: o.avoid, pad: o.pad, item: o.item, light: o.light, move: drag ? null : o.move, finger: drag ? "hold" : undefined, fingerDown: o.fingerDown, fingerFrom: o.fingerFrom, step: name, drag }); // (SH-130, S13-A2: a drag's box has its finger too, pressed on the thing to move)
     };
     const closeSpot = () => {
       if (spot) spot.close();

@@ -137,11 +137,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return out;
   }
 
+  /** Nani's "pass me", a panel, the request card or the end-of-round screen is up: the coach steps back (its light too). */
+  const coachBusy = (e) => {
+    const pm = $("#passme");
+    return !!(Cook.interrupting || (pm && !pm.classList.contains("hidden")) || (Cook.UI.panelOpen && Cook.UI.panelOpen()) || (e && e.intro) || document.querySelector(".njg-results"));
+  };
   function runKit(key, script, state) {
     const Onboard = OB();
     const staged = (state.staged = script.some((st) => st.when != null));
     state.done = new Set();
-    const cur = () => (live === state ? target(Cook.expect) : null);
+    // (s19-taps: the step's light reads the same "step back" as the coach's tick, every frame: Nani's "pass me" item was lit as the
+    // pantry's next thing, its panel sliding in under the light, contract-82, -105, -112; the light used to be hidden then, SH-236)
+    const cur = () => (live === state && !coachBusy(Cook.expect) ? target(Cook.expect) : null);
     // the spotlight: the thing to do next (the whole picture for a chop swipe: the vegetables fly)
     const spot = () => {
       const t = cur();
@@ -1123,7 +1130,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (live !== state) return;
       const e = Cook.expect;
       // Nani's "pass me", a panel, the request card or the end-of-round screen: step back
-      const busy = Cook.interrupting || !$("#passme").classList.contains("hidden") || (Cook.UI.panelOpen && Cook.UI.panelOpen()) || (e && e.intro) || !!document.querySelector(".njg-results");
+      const busy = coachBusy(e);
       const t = busy ? null : target(e);
       const s = t ? sig(e) : "";
       if (useKit) {
