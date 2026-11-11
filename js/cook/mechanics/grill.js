@@ -1907,10 +1907,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const g = Cook.pick(grilling);
           S.wisps(spotX(g.spot) + L(Math.random() * 30 - 15), Y(GRILL.skewerY - 120), 1, L(50));
         }
-        // guided: the next rack skewer to grill glows
+        // guided: the next rack skewer to grill glows, inside the kit's light only (contract-102: no game's own glow with no light up;
+        // the kit's first-time light, grill-place, is the help that shows it)
         const next = pickRack();
+        const placeLit = !!(lights["grill-place"] && lights["grill-place"].h);
         rack.forEach((r) => {
-          const on = !!(r && r.settled && z.guided && r === next && spots.includes(null));
+          const on = !!(r && r.settled && z.guided && placeLit && r === next && spots.includes(null));
           if (r && on !== !!r.glowing) {
             r.glowing = on;
             S.glow(r.sk, on);
