@@ -319,6 +319,7 @@ import { setTimeout } from "../life.js";
      */
     const SH = global.Shelf;
     const tall = (CT.drawn || {}).h || 150;
+    const FLOUR_ID = (I.mixBowl || {}).flour || "cook-atto";
     const shelf = {};
     const n = onShelf.length;
     const PILL_SLOT = 200;
@@ -338,8 +339,11 @@ import { setTimeout } from "../life.js";
       const key = `bk-${id}`;
       const foot = St.opaqueSpan && has(key) ? St.opaqueSpan(S, key)[1] : 1;
       const img = T(S.add.image(x, band.base, key).setOrigin(0.5, foot).setDepth(D.item + 1));
-      const f = St.classFit && has(key) ? St.classFit(S, key, id, { base: band.base, ppw: ppwShelf, slotW: pitch - 12 }) : null;
-      img.setScale(f && f.scale ? f.scale : Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      // (s19-k3, CK-84: the three walnut-lid jars, flour, sugar and salt, told apart by their height as well as their pills: each at the
+      // flour jar's class height times its share as cut, CT.heights: 1, 0.825, 0.664; a thing with no share by its own class)
+      const share = (CT.heights || {})[id];
+      const f = St.classFit && has(key) ? St.classFit(S, key, share != null ? FLOUR_ID : id, { base: band.base, ppw: ppwShelf, slotW: (pitch - 12) / Math.max(0.1, share || 1) }) : null;
+      img.setScale(f && f.scale ? f.scale * (share != null ? share : 1) : Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;

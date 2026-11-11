@@ -564,10 +564,10 @@
    "states": {
     "empty": "assets/cook/proto/baking/jug-empty.webp",
     "water": "assets/cook/items/v4/baking/jug-4.webp",
-    "milk": "assets/cook/proto/baking/jug-milk.webp",
-    "flour": "assets/cook/proto/baking/jug-flour.webp",
-    "yoghurt": "assets/cook/proto/baking/jug-yoghurt.webp",
-    "sugar": "assets/cook/proto/baking/jug-sugar.webp"
+    "milk": "assets/cook/items/v4/baking/jug-milk.webp",
+    "flour": "assets/cook/items/v4/baking/jug-flour.webp",
+    "yoghurt": "assets/cook/items/v4/baking/jug-yoghurt.webp",
+    "sugar": "assets/cook/items/v4/baking/jug-sugar.webp"
    },
    "px": [
     400,
@@ -603,7 +603,11 @@
    "_lineAt": "key = quarter cups (1 = a quarter ... 10 = two and a half), value = the line's height as a fraction of the jug picture from its TOP; five evenly drawn lines, no numbers. The game reveals a full jug through a rising mask up to the line, never a proportional fill.",
    "replaces": "the drawn jug and its drawn fill",
    "emptyFor": {
-    "water": "assets/cook/items/v4/baking/jug-0.webp"
+    "water": "assets/cook/items/v4/baking/jug-0.webp",
+    "milk": "assets/cook/items/v4/baking/jug-0.webp",
+    "flour": "assets/cook/items/v4/baking/jug-0.webp",
+    "yoghurt": "assets/cook/items/v4/baking/jug-0.webp",
+    "sugar": "assets/cook/items/v4/baking/jug-0.webp"
    },
    "lineAtFor": {
     "water": {
@@ -612,9 +616,46 @@
      "4": 0.55,
      "6": 0.41,
      "10": 0.125
+    },
+    "milk": {
+     "1": 0.824,
+     "2": 0.754,
+     "3": 0.683,
+     "4": 0.613,
+     "6": 0.471,
+     "8": 0.33,
+     "10": 0.189
+    },
+    "flour": {
+     "1": 0.824,
+     "2": 0.754,
+     "3": 0.683,
+     "4": 0.613,
+     "6": 0.471,
+     "8": 0.33,
+     "10": 0.189
+    },
+    "yoghurt": {
+     "1": 0.824,
+     "2": 0.754,
+     "3": 0.683,
+     "4": 0.613,
+     "6": 0.471,
+     "8": 0.33,
+     "10": 0.189
+    },
+    "sugar": {
+     "1": 0.824,
+     "2": 0.754,
+     "3": 0.683,
+     "4": 0.613,
+     "6": 0.471,
+     "8": 0.33,
+     "10": 0.189
     }
    },
-   "_jugV4": "S19 (s19-wave-e2): water is drawn in the new glass jug (B2 #83: its empty jug-0 and its full jug-4; emptyFor swaps the empty picture for that fill; lineAtFor: its lines, from the four water levels drawn on B2, read off the cut); milk, flour, yoghurt and sugar keep the old jug's pictures until the new jug has them. The jug stands on the worktop now (at: its base), never on the band."
+   "_jugV4": "S19 (s19-wave-e2): water is drawn in the new glass jug (B2 #83: its empty jug-0 and its full jug-4; emptyFor swaps the empty picture for that fill; lineAtFor: its lines, from the four water levels drawn on B2, read off the cut); milk, flour, yoghurt and sugar keep the old jug's pictures until the new jug has them. The jug stands on the worktop now (at: its base), never on the band.",
+   "_jugK3": "s19-k3 (B5r-3, the k3 cut, build/reports/s19-k3-cut.md): milk, flour, yoghurt and sugar in the new glass jugs too (one box, bottom-aligned; their empty jug is B2's jug-0, about 1.5% wider a canvas). The new jugs have no drawn lines, so CK-72's seven fixed amounts rise in proportion to the amount, the inside's floor (0.895 of the picture from its top) to its brim at two and a half cups (0.189): lineAtFor; water keeps the four levels drawn on B2."
   },
   "tray": {
    "size": "M",
@@ -697,15 +738,21 @@
    },
    "_pour": "liquid: poured as a column, the rest as drops; pour: the palette key of the drawn drops where items.streams has no picture",
    "files": {
-    "cook-atto": "assets/cook/items/shelf-cook-atto-bare-f.webp",
+    "cook-atto": "assets/cook/items/v4/baking/jar-flour.webp",
     "cook-paani": "assets/cook/items/shelf-cook-paani-bare-f.webp",
     "cook-dudh": "assets/cook/items/shelf-cook-dudh-bare-f.webp",
-    "cook-khun": "assets/cook/items/shelf-cook-khun-bare-f.webp",
-    "spi-16": "assets/cook/items/shelf-loon-jar-v2-f.webp",
+    "cook-khun": "assets/cook/items/v4/baking/jar-sugar.webp",
+    "spi-16": "assets/cook/items/v4/baking/jar-salt.webp",
     "ph-dahi": "assets/cook/items/shelf-ph-dahi-bare-f.webp",
     "ph-ghee": "assets/cook/items/shelf-ph-ghee-bare-f.webp"
    },
-   "pitch": 300
+   "pitch": 300,
+   "heights": {
+    "cook-atto": 1,
+    "cook-khun": 0.825,
+    "spi-16": 0.664
+   },
+   "_heights": "s19-k3 (B6-2; Zafar: flour and sugar told apart by more than their pills, CK-84): the three walnut-lid jars at one scale, as cut (heights as a share of the flour jar's); the flour jar at its size class's height (St.classFit, L), the others its scale times their share (js/cook/stations/baking.js)"
   },
   "streams": {
    "reuse": true,
@@ -885,18 +932,18 @@
   "assets/cook/proto/baking/oven-open.webp",
   "assets/cook/proto/baking/jug-empty.webp",
   "assets/cook/proto/baking/jug-water.webp",
-  "assets/cook/proto/baking/jug-milk.webp",
-  "assets/cook/proto/baking/jug-flour.webp",
-  "assets/cook/proto/baking/jug-yoghurt.webp",
-  "assets/cook/proto/baking/jug-sugar.webp",
+  "assets/cook/items/v4/baking/jug-milk.webp",
+  "assets/cook/items/v4/baking/jug-flour.webp",
+  "assets/cook/items/v4/baking/jug-yoghurt.webp",
+  "assets/cook/items/v4/baking/jug-sugar.webp",
   "assets/cook/proto/baking/tray.webp",
   "assets/cook/proto/baking/naan-alone.webp",
   "assets/cook/props/dough-ball.webp",
-  "assets/cook/items/shelf-cook-atto-bare-f.webp",
+  "assets/cook/items/v4/baking/jar-flour.webp",
   "assets/cook/items/shelf-cook-paani-bare-f.webp",
   "assets/cook/items/shelf-cook-dudh-bare-f.webp",
-  "assets/cook/items/shelf-cook-khun-bare-f.webp",
-  "assets/cook/items/shelf-loon-jar-v2-f.webp",
+  "assets/cook/items/v4/baking/jar-sugar.webp",
+  "assets/cook/items/v4/baking/jar-salt.webp",
   "assets/cook/items/shelf-ph-dahi-bare-f.webp",
   "assets/cook/items/shelf-ph-ghee-bare-f.webp",
   "assets/shared/word-moment/stream-flour-s17.webp",
@@ -915,6 +962,7 @@
   "assets/cook/items-s17-stove/f-salt-jar.webp",
   "assets/cook/items-s17-stove/f-yoghurt.webp",
   "assets/cook/items-s17-stove/f-ghee.webp",
-  "assets/cook/items/v4/daar/loon.webp"
+  "assets/cook/items/v4/daar/loon.webp",
+  "assets/cook/proto/baking/jug-flour.webp"
  ]
 }
