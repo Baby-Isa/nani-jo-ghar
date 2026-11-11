@@ -419,9 +419,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (flipCtl) flipCtl.close();
       flipCtl = null;
       flipOf = null;
-      if (!t || t.side !== 1 || !Cook.Coach || !Cook.Coach.control || !Cook.Coach.firsts || (Cook.Coach.active && Cook.Coach.active())) return;
+      if (!t || t.side !== 1 || !Cook.Coach || !Cook.Coach.control || !Cook.Coach.firsts) return;
       flipGate = flipGate || Cook.Coach.firsts("maani-line", { round: new Set() });
       if (!flipGate.first("ctl-flip")) return;
+      // (the coach's staged script, if it is still running, stands down here: its "flip" light waited for the stage to be still and came
+      // 2 s after the call, contract-78; the take, roll and tawa steps before it are done by now)
+      if (Cook.Coach.active && Cook.Coach.active() && Cook.Coach.stop) Cook.Coach.stop(false);
       flipOf = t;
       flipCtl = Cook.Coach.control({ key: "maani-line", target: Cook.Coach.box(t.it.sprite), first: true, noHint: true, current: () => flipOf === t && onTawa === t && t.side === 1 && !t.busy, note: `${flipGate.scope}:s14-control` });
     }
@@ -791,6 +794,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       seen[KEY] = true;
       if (Cook.writeSave) Cook.writeSave();
       if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("word-moment", { step: "maani-line", by: pair.join(",") });
+      // (the moment is the round's first step: it opens as one, so its words are never "said after a skip, before the first step")
+      if (global.PlayLog && global.PlayLog.step) global.PlayLog.step("maani-line:big-small");
       zb.expect({ kind: "wait", wordMoment: true });
       zon.expect(null);
       stopStuck();
@@ -829,16 +834,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       S.events.once("shutdown", () => card && card.remove());
       for (const sz of order) {
         // a ball on the board, rolled out to this ring (the pin's move is the roll's own; here it grows as a roll does)
-        const dough = S.track(S.add.image(CH.x, CH.y, texOf(type, "ball")).setDepth(D.item + 1));
-        const st = { r: kRoll.startRadius };
-        const fit = () => {
-          const key = st.r < kRoll.startRadius * 1.5 ? texOf(type, "ball") : texOf(type, "raw");
-          if (dough.texture.key !== key) dough.setTexture(key);
-          dough.setScale(discScale(key, st.r));
-        };
-        fit();
+        // (contract-114: one picture, the raw maani, its own scale tweened from the ball's size out to the ring: never a picture swapped mid-way)
+        const rawKey = texOf(type, "raw");
+        const dough = S.track(S.add.image(CH.x, CH.y, rawKey).setDepth(D.item + 1));
+        dough.setScale(discScale(rawKey, kRoll.startRadius * 1.5));
         pinRest(false);
-        await Cook.tween(S, { targets: st, r: sz.r, duration: ms(1100), ease: "Sine.easeInOut", onUpdate: fit });
+        await Cook.tween(S, { targets: dough, scale: discScale(rawKey, sz.r), duration: ms(1100), ease: "Sine.easeInOut" });
         pinRest(true);
         drawRings(sz.id);
         Cook.sfx.click();

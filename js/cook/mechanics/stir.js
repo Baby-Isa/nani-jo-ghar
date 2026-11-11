@@ -822,14 +822,20 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
        * daar's is its English in grey italic until Mum records the one sentence (daar-stir-ask on the recording sheet).
        */
       const stepLine = o.stepLine || Lang.join([Lang.numLine(laps)].concat(asked && k.speedWords ? [Lang.line(k.speedWords[asked])] : []));
+      // (without Nani's stepper, the stir game: her line is the step's call, role call, and the finger waits for it: contract-36)
+      let called = Promise.resolve();
       if (steps) steps.to(step, { line: stepLine, hide, force: retry });
-      else if (!retry) z.say(stepLine, { hide }).catch(() => {});
+      else if (!retry) called = z.say(Lang.role ? Lang.role(stepLine, "call") : stepLine, { hide }).catch(() => {});
       Cook.markSeen(Cook.numId(laps));
       // the first time, the kit's one finger goes round the pot (SH-119, contract-102: Cook.Coach.demo, not a game's own ghost; it
       // goes on any press)
       // (o.first: the game's first-time gate says this is the first stir; o.demo: the stir game, whose finger comes after a wait)
       const soon = !!(o.first || z.guided);
-      const demo = Cook.Coach && Cook.Coach.demo && (soon || o.demo) ? Cook.Coach.demo(() => ({ x: cx, y: cy, r: trackR }), { gesture: "circle-stir", ms: k.ghostMs || 1400, delay: soon ? 200 : 5000, step }) : null;
+      let demo = null;
+      if (Cook.Coach && Cook.Coach.demo && (soon || o.demo))
+        Promise.race([called, Cook.wait(4000)]).then(() => {
+          if (!over && count < 1) demo = Cook.Coach.demo(() => ({ x: cx, y: cy, r: trackR }), { gesture: "circle-stir", ms: k.ghostMs || 1400, delay: soon ? 200 : 5000, step });
+        });
       post();
       const finishStir = () => {
         if (over) return;
