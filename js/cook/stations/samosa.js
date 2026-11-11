@@ -1446,6 +1446,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const waiting = raw.filter((r) => !r.gone);
         const cur = frying.filter((f) => !f.out).sort((a, b) => b.level - a.level)[0];
         if (!waiting.length && !cur) return lead(null), resolveAll();
+        if (!waiting.length && eachOn) eachOn = false; // (the first batch is in: a fresh one for a burnt one later is the call alone)
         // T17: the fire off -> Chulo bar!; a golden one at level 3 -> "Samosa hane kadh."; else Tar!
         if (!fireOn) {
           lead("ctl-fire", burner.knobHit, () => !fireOn);
