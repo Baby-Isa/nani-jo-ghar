@@ -1,0 +1,207 @@
+NANI JO GHAR: THE S19 FIXES RUN (the jugs on magenta, daar's onion, chaat's loose layers, sekelo's tray, samosa's karahi, baking's jars, the grill on magenta, and the kitchen's last touch). Paste this whole block into Claude in Chrome.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-k3/refs.zip , unzip it,
+and drag all 19 pictures into this chat with this block (19 is under the side panel's 20-attachment limit: one drag).
+Before you send: say whether line KF (the kitchen's last touch, OPTIONAL) runs. If you say nothing, skip CHAT K.
+
+=== WHAT THIS RUN IS FOR ===
+The pieces the last run (s19-k2) left unsolved that a game uses, each redrawn so it can be cut and placed:
+  B5r the four full jugs ON MAGENTA (baking)            D4  daar's chopped onion, golden and raw (daar)
+  C12 chaat's three loose top-down layers (chaat)        K10 sekelo's plain steel serving tray (sekelo)
+  K8r samosa's karahi, a real karahi this time (samosa)  B6  baking's flour, sugar and salt jars (baking)
+  G1r the grill redrawn on magenta (sekelo, corn)        KF  the kitchen's last touch (OPTIONAL; every kitchen game's serve)
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+Use chatgpt.com (Zafar is signed in). Run THREE ChatGPT windows at a time, each conversation in its own tab. Send in one tab, move
+to the next while it generates; go round the tabs in turn. Never more than three windows generating.
+
+STEP 0, THE REFERENCES, ONCE (the attachment quota; the last run ran out at 02:13 and waited until 03:55):
+  Open one new ChatGPT chat titled by its first message "Reference Pictures Archive (s19-k3)". Upload all 19 pictures from this
+  chat there, in messages of at most 4 pictures each, each message saying only: "Reference pictures for later. Reply OK. Do not
+  draw." From then on every chat attaches a picture by + > "Add from library" (pick today's copy by its file name), never by a new
+  upload. Within one chat, a picture attached once stays there: refer to it ("the B5r-B2-the-jug picture above") instead of
+  attaching it again. At most 4 pictures in any one message. Each message that attaches pictures starts with a one-line key:
+  "Attached, in order: 1 = <file name>, 2 = <file name>, ..." (ChatGPT does not read file names reliably).
+
+THE CHATS, IN PRIORITY ORDER. After step 0, start the first three. Whenever a window frees, open the first chat in this list that
+has not started and whose needs are met:
+  1. CHAT 1   side-on, on magenta: B5r, B6                         (needs nothing)
+  2. CHAT 2   food, straight down, on magenta: D4, C12              (needs nothing)
+  3. PHOTO    one brand-new chat: PH-K8r                            (needs nothing; attach nothing)
+  4. CHAT 3   steel, straight down, on magenta: K10, K8r, G1r       (K8r needs the PH-K8r photo; do K10 first)
+  5. CHAT K   the kitchen's last touch: KF, then KF-O, KF-S        (ONLY if Zafar said yes before the run)
+
+HOW A LINE RUNS (the last run's lessons; every line of every chat):
+  (a) PLAN, TEXT ONLY: attach the pictures the line names (at most 4), paste the line, and add: "First, in text only, list exactly
+      what you will draw: layout, exact counts, sizes as shares of the picture, camera, materials, colours, light, background,
+      image shape. Keep it under 200 words. Do not draw."
+  (b) IMAGE: paste the plan back: "Make a new image that applies this plan." Never ask for words and an image in one message, and
+      never wait for an image you did not ask for in that message.
+  (c) REVIEW, TEXT ONLY: "Review your image against the line, its MUST list and the house brief, in text only: count every object;
+      your verdict, then every fix needed as a short numbered list, under 200 words in all. Do not draw."
+  (d) THE EDIT GOES ON THE IMAGE ITSELF: open the image in ChatGPT's image viewer, choose "Describe edits", paste the review in
+      full and add "Make a new image that applies this feedback." NEVER paste a long review back as a new chat message: in the
+      last run that made ChatGPT answer "Please reattach the previous image ... Image generation failed" (SD2, D3, KO-2, K8-2).
+  (e) SPOT FIXES WITH THE COMMENT TOOL: when one part is wrong and the rest is right (a corner, a handle, one colour), use ChatGPT's
+      Comment tool on the image: pin one short note ON the object it is about ("this handle: a small round loop, no rivet plate"),
+      one note per object, then send. If notes vanish when the viewer rescales, clear them and pin them one at a time.
+  Up to three images per line (b, d, and one Comment fix); keep every image; mark the best as the pick.
+  STUBBORN PICTURE (Zafar's method): if a redo comes back barely changed, never attach the image it is stuck on again. Open a FRESH
+  chat and ask, in plain words that never mention a game, a style or our pictures, for a realistic photo of just the thing (attach
+  nothing). Then make the game version in the line's chat from that photo, plus a DIFFERENT house picture (00-HOUSE-chai-live) for
+  the style. Log it in the report. K8r does this from the start.
+  If ChatGPT refuses, hits a limit or slows down, or a tab freezes on a long paste, start a fresh conversation for the rest of that
+  chat, beginning again at its first message, and log why.
+  A picture whose name ends in "-now" (B6-jars-now, D4-onion-now, K8r-karahi-now) is what we replace: it is for you, to see what
+  is wrong; NEVER attach it. K8r-D1-NOT-this-shape is attached only where K8r names it, as what the karahi must not look like.
+
+=== MAGENTA (every line on magenta; say it in each review, and check it yourself before you keep an image) ===
+  One flat solid #FF00FF background edge to edge: no wall, no marble, no table, no floor, no gradient, no texture, and NO shadow
+  at all (no contact shadow, nothing darker than the flat magenta anywhere: we add every shadow in code). The object never touches
+  an edge. The magenta never tints, reflects in or bleeds onto the object: steel and glass reflect a neutral pale-grey room, never
+  pink; between loose pieces and thin strands the magenta stays pure. If an image comes back on a wall or a worktop, it fails:
+  that is why B5 and the grill could not be cut.
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Images stay in their chats until every chat is done. Then open https://chatgpt.com/library. Hover over the first image of this run:
+a small check box appears in its bottom-right corner; tick it. Hover over each other image of this run; tick its check box in its
+bottom-right corner. Tick every image of this run (the PH-K8r photo too) and nothing else: not the uploaded references, not images
+from other chats or days. Press the download button on the selection bar: one download. ChatGPT names the files; log each as
+"DOWNLOADED <n>: <ChatGPT's file name> -> <save-as name>" (save-as: s19-k3-<line>-<try>.png, e.g. s19-k3-B5r-1.png, s19-k3-KF-O-1.png;
+the photo s19-k3-PH-K8r-<try>.png). If the selection is refused, use each image's own download button. Never page JavaScript, never
+a file picker, never a GitHub upload: Zafar pushes the folder himself.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start with "S19 FIXES RUN REPORT". Then:
+- Per line: chat link and title | tries (and why) | kept: <save-as> = <ChatGPT's file name>, ... | your pick and why | what worked |
+  what did not | anything ChatGPT refused | whether it is on flat magenta with no shadow (B5r, B6, G1r: say so explicitly).
+- Every plan and every review ChatGPT wrote, in full.
+- Any line where the stubborn-picture method or the Comment tool was used, and what changed.
+- Any time the attachment quota, a frozen tab or "Image generation failed" stopped you, and what you did.
+- RULE (2) / WHAT WORKED / WHAT DID NOT, as in the last report.
+- The DOWNLOADED list, anything missing, and how long the run took.
+
+=== HOUSE BRIEF (PIECES) (paste as the first message of CHAT 1, CHAT 2 and CHAT 3, with 00-HOUSE-chai-live, and: "Reply in text
+only: say in 5 lines what makes these work. Do not draw.") ===
+These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE picture is the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy its
+style, not its contents: ignore the faces, labels, pills and the gear icon in it, and ignore any thin coloured guide lines. Rules for
+every image:
+- One large soft light from the upper left; evenly lit, no window streak; nothing floats.
+- Materials: brushed stainless steel reflecting a neutral pale-grey room; clear colourless glass; cream ceramic; natural dark walnut
+  only where a line asks.
+- Camera: "straight down" means a flat plan view with no perspective at all: a round thing is a perfect circle, a tray a perfect
+  rectangle, and no inner or outer side wall of a container shows, only its rim and floor; any steel rim is ONE flat band of even
+  width. "Side-on" means the camera level with the object's middle, as in the reference the line names.
+- These are separate PIECES that we cut out and place in our own layout; we add the shadows, the labels and everything around them.
+  Draw only what the line asks: no stove, no hands, no text, letters, numbers or labels, no steam, no glow, nothing in the air.
+- Counts are exact; sizes are shares of the picture's width: keep to them (last run, everything came out 10-25% too big).
+- "On magenta" means one flat solid #FF00FF background edge to edge, no gradient, no texture, NO shadow at all; it must not tint,
+  reflect in or bleed onto the object.
+- Where a line asks for panels: equal panels, the same camera, scale and light in each, separated only by the same magenta; no
+  frames, borders, dividing lines or numbers.
+- A warm, modest family home: no religious marker of any kind; nothing not halal (no pork, no alcohol); no sweets or biscuits.
+
+=== HOUSE BRIEF (SCENE) (CHAT K only; paste as its first message with KF-KG-the-passed-kitchen, and: "Reply in text only: say in
+5 lines what makes this kitchen work. Do not draw.") ===
+This is the background of a premium children's cooking game (ages 3-6): a grandmother's kitchen where the child serves the family.
+It is governed by its light: one warm sunlit key light from the upper left, one warm white balance, the marble the lightest thing,
+the cabinets mid, nothing more saturated than the faces and food the game adds. A warm, modest family home: no religious marker of
+any kind; nothing not halal (no pork, no alcohol); no sweets or biscuits; no people; no text, letters, numbers or labels; nothing on
+the island.
+
+=== IMAGE LINES ===
+
+CHAT 1: SIDE-ON, ON MAGENTA (HOUSE BRIEF (PIECES); first message with 00-HOUSE-chai-live).
+B5r THE FOUR JUGS, FULL, ON MAGENTA (pictures: B5r-B5-the-look-to-keep, B5r-B2-the-jug). Say in the plan message: "B5 is the look
+   to keep (the jugs, the contents, the light); it was drawn on a wall and marble, so we could not cut it. Draw it again on magenta."
+   Landscape 16:9, side-on, the camera level with the jugs' middle, ON MAGENTA: EXACTLY FOUR identical clear glass measuring jugs in
+   a row, equal gaps, the jug of B5r-B2 exactly (spout to the left, handle to the right, plain glass, NO marks, dashes or numbers),
+   each full to just under the spout with a flat level top; left to right: white flour (soft matte powder, a flat top); milk
+   (smooth opaque white, a thin bright line at its surface); sugar (white sparkling granules); yoghurt (thick creamy white, a soft,
+   slightly uneven flat top, never swirled or peaked like cream).
+   MUST: each jug 18% of the picture's width (handle and spout included), all four the same height, bases on one line; NO wall, NO
+   marble, NO worktop, NO surface line, NO shadow and NO reflection under the jugs: they stand on nothing, the magenta runs under
+   them; the glass clear and colourless, reflecting a neutral pale grey, never pink; magenta seen through the empty glass above the
+   contents is pure #FF00FF; each content reads at a glance as what it is.
+B6 BAKING'S THREE JARS, FLOUR, SUGAR AND SALT (pictures: B6-walnut-jar-salt, B6-walnut-jar-sugar; never B6-jars-now). Landscape
+   16:9, side-on, ON MAGENTA: THREE jars in a row, equal gaps, the house's clear glass jar with a dark walnut lid exactly as in the two
+   pictures (a straight-sided clear glass jar, a short glass neck, a flat round walnut lid with a fine grain, no label). Left to
+   right: FLOUR (atto), the TALLEST jar, 22% of the picture's width and the tallest, full of fine white flour, soft and matte like
+   powder, a gently domed top, no sparkle; SUGAR (khun), a MEDIUM jar, 20% wide and two thirds of the flour jar's height, full of fine
+   white granules that sparkle; SALT (loon), the SHORTEST jar, 20% wide and half the flour jar's height, full of COARSE salt crystals,
+   large irregular glassy chunks that catch the light, as in B6-walnut-jar-salt.
+   MUST: a child tells the three apart at a glance without any label: by jar height (tall, medium, short) and by what is inside
+   (matte powder, fine sparkle, big crystals); no label, sticker, tag or writing on any jar; the same walnut lid and glass on all
+   three; bases on one line; no shadow, no surface, magenta under them.
+
+CHAT 2: FOOD, STRAIGHT DOWN, ON MAGENTA (HOUSE BRIEF (PIECES); first message with 00-HOUSE-chai-live).
+D4 DAAR'S CHOPPED ONION, GOLDEN AND RAW (pictures: D4-the-onion-on-the-card, D4-D3-the-pot-discs; never D4-onion-now). Say in the
+   plan message: "The game's onion is the golden-skinned onion in D4-the-onion-on-the-card (not a red onion). The second disc of
+   D4-D3 shows the frying colour we want." Landscape 16:9, straight down, ON MAGENTA: TWO equal panels, the same camera, scale and
+   light. LEFT, COOKED: chopped onion fried golden-brown: soft, translucent, glistening a little, the pieces' edges deeper
+   golden-brown, a few lighter, as when frying in a pan; RIGHT, RAW: the same onion freshly chopped, white with a faint pink-cream
+   tint, crisp and opaque, a few pieces showing their curved layers. Each panel: ONE loose heap of small chopped pieces (each piece
+   about 3% of the picture's width) in the middle, plus FIVE to SEVEN loose pieces lying apart around it, magenta between them.
+   MUST: the heap 30% of the picture's width in each panel, the same heap shape in both; no red or purple onion anywhere; no oil
+   pool, no pan, no board, no bowl; no shadow on the magenta; pure magenta between the loose pieces.
+C12 CHAAT'S THREE LOOSE LAYERS, FROM ABOVE (pictures: C12-C7-a-layer-done-right, C12-F3-the-bowls-food). Say in the plan message:
+   "C7 is a layer done right: loose pieces scattered in a round area with magenta between them. F3's bowls show the food: draw the
+   same potato, chickpeas and sev, but loose, with no bowl." Landscape 16:9, straight down, ON MAGENTA: THREE equal panels, the same
+   camera, scale and light; in each, the pieces scattered loosely over a round area 26% of the picture's width, with magenta clearly
+   showing between the pieces, so a layer laid over another lets what is beneath show. LEFT: boiled potato cubes, pale gold-cream,
+   soft edges, about 20 cubes, each about 2.5% of the picture's width. MIDDLE: boiled chickpeas, warm beige, round with their small
+   beak, about 30, each about 1.5% wide. RIGHT: sev, fine crisp golden-yellow strands, short pieces of thin noodle, about 60, in a
+   light airy scatter, never a solid mound.
+   MUST: crisp, sharp pieces, never blurred or smudged; no bowl, plate, chutney or garnish; the pieces at the same scale as F3's
+   bowls' food; pure #FF00FF between every piece and strand; no shadow on the magenta.
+
+PHOTO: ONE BRAND-NEW CHAT (the stubborn method from the start; attach nothing; never mention a game, a style or our pictures).
+PH-K8r Send exactly: "A realistic product photo of an Indian karahi: a round, deep, wok-shaped stainless steel frying pan with a
+   rounded bottom and sloping sides, wider than it is deep, with two small round loop handles fixed on opposite sides of its rim.
+   Filled with plain golden frying oil and nothing else. Taken from exactly straight above, the camera centred over the pan, the rim
+   a perfect circle, the handles pointing straight left and straight right, level. Plain light grey background, soft even light
+   from the upper left." If it comes back as a straight-sided pot or a pan with long handles, send once: "That is a pot. A karahi is
+   a wok-shaped bowl with sloping sides and a rounded bottom, and two small round loops on its rim. Again, the same camera." Keep the
+   best photo: it is a reference, not a pick.
+
+CHAT 3: STEEL, STRAIGHT DOWN, ON MAGENTA (HOUSE BRIEF (PIECES); first message with 00-HOUSE-chai-live).
+K10 SEKELO'S SERVING TRAY (pictures: K10-K3-the-steel-tray, K10-SD2-the-served-skewers). Say in the plan message: "K3 is the steel
+   we want; SD2's left plate shows the two skewers this tray must hold side by side (draw NO skewers)." Landscape 16:9, straight
+   down, ON MAGENTA: ONE plain rectangular brushed-steel serving tray, a perfect rectangle with softly rounded corners, 80% of the
+   picture's width, its length three times its width (long enough for two skewers lying side by side along it), centred.
+   MUST: a plain flat floor with a fine straight brushing; ONE thin flat rim band of even width all round; NO slots, ridges, grooves,
+   inner ledge, step, bevel, holes, handles or divisions; nothing on it; neutral pale-grey steel, never pink; no shadow on the magenta.
+K8r SAMOSA'S KARAHI (photo first; pictures: the PH-K8r photo, K8r-D1-NOT-this-shape, 00-HOUSE-chai-live already in the chat; never
+   K8r-karahi-now). Say in the plan message: "K8r-D1 is daar's pot: the karahi must NOT look like it (straight walls, a flat floor,
+   handles on rivet plates). Draw the karahi of the photo." SQUARE image, straight down, ON MAGENTA: ONE karahi with exactly the
+   photo's geometry, drawn in the house style: a round, deeper, wok-shaped brushed-steel pan, its sloping inside wall curving down
+   to a rounded bottom (so the wall shows as a soft gradient band, light at the upper left, getting darker into the oil), two small
+   round steel loop handles on its rim, straight out left and right, level; filled with clear golden frying oil, one soft reflection.
+   MUST: the rim a perfect circle 75% of the picture's width; the handles small loops, each tip a clear margin from the edge; it reads
+   at a glance as a karahi, not a pot; cool silver steel; no food, no stove, no shadow on the magenta.
+G1r THE GRILL, ON MAGENTA (pictures: G1r-G1-the-grill-to-keep). Say in the plan message: "G1 is the grill to keep, exactly: the
+   steel box, the glowing coals, the three bars. It was drawn on marble with a shadow, so we could not cut it cleanly. Draw it again
+   on magenta." Landscape 16:9, straight down, ON MAGENTA: the grill of G1 exactly (the same rectangular brushed-steel firebox with
+   its two side handles, dark coals glowing orange between them, the three straight steel bars across), 90% of the picture's width.
+   MUST: no marble, no surface, no shadow under it or around the handles; the magenta pure right up to the handles and inside their
+   loops; no skewers, no food, no smoke, no flame above the coals.
+
+CHAT K: THE KITCHEN'S LAST TOUCH (OPTIONAL: run it ONLY if Zafar said yes before the run). HOUSE BRIEF (SCENE).
+KF THE GENTLE EDIT (picture: KF-KG-the-passed-kitchen). No plan message: this is a spot edit with ChatGPT's Comment tool on KG itself.
+   Open KG in the image viewer and pin THREE comments, one at a time, each on its object:
+   1. on the island's front panel: "Make this panel a deeper natural walnut, a calm mid-to-dark brown with a fine straight grain, not
+      orange or red. Change nothing else."
+   2. on the island's marble top: "Warm white marble with no pink cast, soft grey veins. Same on the back counters. Change nothing else."
+   3. on the wall high above the range: "A touch less peach: a warm cream. Keep the warm sunlight from the upper left and the glow on the
+      window. Change nothing else."
+   Send. Then the review (text only): "Compare your new image with the one before: is anything changed besides the island's front, the
+   marble and the wall's tone? Is the sunlight as warm? Your verdict, under 100 words. Do not draw." If the light went cold or anything
+   else moved, keep it as a try and redo from KG with the comments worded more gently. Keep the sunlight above all: if in doubt, keep it
+   as it was.
+KF-O, KF-S THE SAME TOUCH ON THE TWO VIEWS (pictures: KF-KO-ordering-view, then KF-KS-serving-view). Only when Zafar likes KF (ask him
+   in the chat). The same three comments, the same way, on KO and then on KS, so the three kitchen pictures stay one room.
+
+=== THE LINES' SAVE-AS NAMES ===
+s19-k3-B5r-<try>, s19-k3-B6-<try>, s19-k3-D4-<try>, s19-k3-C12-<try>, s19-k3-PH-K8r-<try>, s19-k3-K10-<try>, s19-k3-K8r-<try>,
+s19-k3-G1r-<try>, s19-k3-KF-<try>, s19-k3-KF-O-<try>, s19-k3-KF-S-<try> (all .png).
