@@ -603,6 +603,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       await S.fly(it.sprite, TW.x, TW.y, { scale: sz, duration: 380, arc: 90 });
       t.flying = false;
       it.sprite.baseScale = sz;
+      // (MAA-19: the staged script's last step, the flip, is the kit's control now (flipLead): the script stands down as the first maani
+      // lands, well before its green, so the flip's light and call come together)
+      if (Cook.Coach && Cook.Coach.active && Cook.Coach.active() && Cook.Coach.key && Cook.Coach.key() === "maani-line") Cook.Coach.stop(false);
       if (heat !== "off") Cook.sfx.sizzle(0.4);
       t.busy = false;
       sizzleSync();
