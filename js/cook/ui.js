@@ -3286,7 +3286,21 @@
         if (its.length < 2 || its.some((it) => it.count != null) || its.filter((it) => it.ordered).length > 1) return;
         c.data.items = [{ label: null, parts: [].concat(...its.map((it) => it.parts)), ordered: its.some((it) => it.ordered), done: its.every((it) => it.done) || undefined, src: [].concat(...its.map((it) => it.src || [])), at: 0, keep: its.some((it) => it.keep) }];
       });
-    return cards;
+    return redoCards(cards);
+  }
+  /**
+   * SH-265, SH-266 (Zafar's child play-test, 11 Nov evening: "they don't put the one you're working on at the top"; "The correct ones
+   * disappear ... the correct order cards disappear ... and you're just left with the person that got it wrong"): while a wrong order
+   * is made again (M.redoStart, from the shared serve's round), only the wrong orders' cards are drawn, the one being worked on (the
+   * station's M.focus) first. M.redoEnd draws every card again (the served moment and the thank-you scene have them all).
+   */
+  function redoCards(cards) {
+    const keep = mission && mission.redo;
+    if (!keep || !keep.size) return cards;
+    const kept = cards.filter((c) => !c.who || keep.has(c.who));
+    if (!kept.length) return cards;
+    const first = mission.focusWho && keep.has(mission.focusWho) ? mission.focusWho : null;
+    return first ? kept.filter((c) => c.who === first).concat(kept.filter((c) => c.who !== first)) : kept;
   }
   /** The order's cards into box (the sidebar's, or the pop-up's at full size); map: row -> its elements (read-along). */
   function drawCards(box, map, { big = false } = {}) {
@@ -3916,6 +3930,95 @@
     if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
     renderOrder();
     return rows;
+  };
+  /*
+   * ---- SH-264 to SH-266: the wrong-order pop-up (js/shared/wrong-order.js) and the redo's side panel ----
+   * The shared serve's round (js/shared/serve.js NjgServe.round, through the kitchen's hook in js/cook/kitchen-kit.js) calls these:
+   *   M.showWrong({rows, round}) -> Promise<bool>   every order card still in play, in the panel's order, to the middle in turn: a right
+   *        one ticks again and floats away, a wrong one (a row the serve marked: M.serveWrong, or rows, the check's own) opens to all
+   *        its items, each said as it is ticked or crossed (the row's own line, the language engine's), then folds back. false: no
+   *        card marked wrong (the game's recast plays instead)
+   *   M.redoStart()   the panel keeps the wrong orders' cards (the people with a row marked wrong), the one being worked on first,
+   *        gliding to their places;  M.redoEnd()   every card back (the round is over)
+   */
+  const cardRows = (data) => [].concat(...(data.items || []).map((it) => it.parts || []));
+  M.showWrong = async function ({ rows = [], round = 0 } = {}) {
+    const W = global.NjgWrongOrder;
+    const OC = OCard();
+    if (!mission || !W || !OC) return false;
+    // a game whose check gives its wrong rows (the card's own rows) but never marked them: marked now, as M.serveWrong would
+    let marked = false;
+    rows.forEach((r) => r && typeof r === "object" && Array.isArray(r.ids) && !r.head && ((r.wrong = true), (marked = true)));
+    writtenCard = true; // (the pop-up writes every row: SH-110)
+    let cards;
+    try {
+      cards = orderCards();
+    } finally {
+      writtenCard = false;
+    }
+    const people = cards.filter((c) => c.who);
+    const isWrong = (c) => c.rows.some((r) => r.wrong);
+    // one card and nothing marked on it: its first try's misses are what was wrong
+    if (!people.some(isWrong) && people.length === 1) people[0].rows.forEach((r) => r.miss && !r.head && ((r.wrong = true), (marked = true)));
+    if (!people.some(isWrong)) return false;
+    if (marked) renderOrder();
+    const panel = (c) => $(`#mission .oc-card[data-ck="${c.key}"]`) || null;
+    // (the checks read a note's step and by: lib/contract-wo.mjs, contract-118)
+    const note = (what, info) => global.Lifecycle && global.Lifecycle.note && global.Lifecycle.note(what, { step: String((info && (info.phase || (info.ok != null ? (info.ok ? "ok" : "bad") : ""))) || ""), by: JSON.stringify(Object.assign({ round }, info || {})) });
+    const list = people.map((c) => ({
+      who: c.who,
+      ok: !isWrong(c),
+      face: (c.data.person && c.data.person.face) || faceUrl(c.who),
+      headline: (c.data.headline && c.data.headline.html) || "",
+      from: panel(c),
+      big() {
+        // the card open, every row to do (the pop-up ticks and crosses them itself), drawn as the order pop-up draws it
+        const data = Object.assign({}, c.data, { done: false, items: (c.data.items || []).map((it) => Object.assign({}, it, { done: false, parts: (it.parts || []).map((p) => Object.assign({}, p, { done: false, wrong: false, next: false, miss: false })) })) });
+        const els = new Map();
+        const el = OC.card(data, { big: true, onEl: (key, e) => e.classList && e.classList.contains("oc-row") && !els.has(key) && els.set(key, e) });
+        const out = cardRows(data)
+          .filter((p) => p.key && els.has(p.key))
+          .map((p) => ({ el: els.get(p.key), ok: !p.key.wrong, say: p.key.line ? () => Lang.speak(p.key.line) : null }));
+        return { el, rows: out };
+      },
+    }));
+    const done = await W.play({
+      host: $("#stage") || document.body,
+      cards: list,
+      speed: Cook.speed || 1,
+      wait: (ms) => new Promise((r) => setTimeout(r, ms)), // (real time: the pop-up divides by the speed itself)
+      sound: (n) => (n === "ding" ? Cook.sfx.right() : n === "oops" ? Cook.sfx.oops() : n === "tick" && Cook.sfx.drop ? Cook.sfx.drop() : null),
+      note,
+      faceHtml: (who, src, size) => (global.Face && global.Face.html ? global.Face.html(who, size, { src }) : `<img class="njg-face-img" src="${esc(src)}" alt="">`),
+    });
+    return !!(done && done.shown);
+  };
+  M.redoStart = function () {
+    if (!mission) return [];
+    const who = new Set();
+    mission.ladders.forEach((L) => Order().rows(L, { all: true }).forEach((r) => r.wrong && r.for && who.add(r.for)));
+    // (one person's own card: nothing to take away)
+    if (!who.size) return [];
+    const before = new Map([...document.querySelectorAll("#mission .oc-card[data-ck]")].map((e) => [e.dataset.ck, e.getBoundingClientRect()]));
+    mission.redo = who;
+    if (!mission.focusWho || !who.has(mission.focusWho)) mission.focusWho = [...who][0];
+    renderOrder();
+    // the cards left glide to their new places (the one being worked on first)
+    document.querySelectorAll("#mission .oc-card[data-ck]").forEach((e) => {
+      e.classList.remove("njg-wo-out");
+      const a = before.get(e.dataset.ck);
+      const b = e.getBoundingClientRect();
+      if (a && e.animate && Math.abs(a.top - b.top) > 1) e.animate([{ transform: `translateY(${a.top - b.top}px)` }, { transform: "none" }], { duration: 320 / (Cook.speed || 1), easing: "cubic-bezier(.3,.9,.4,1)" });
+    });
+    if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("wo-redo", { by: JSON.stringify({ keep: [...who], first: mission.focusWho || null }) });
+    return [...who];
+  };
+  M.redoEnd = function () {
+    document.querySelectorAll(".njg-wo-out").forEach((e) => e.classList.remove("njg-wo-out"));
+    if (!mission || !mission.redo) return;
+    mission.redo = null;
+    renderOrder();
+    if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("wo-redo-end", {});
   };
   /** The next open step went wrong (an out-of-order pick). */
   M.missNext = function (dish = 0) {

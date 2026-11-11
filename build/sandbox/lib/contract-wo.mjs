@@ -1,0 +1,156 @@
+// s19-clean-a (SH-264, SH-265, SH-266; Zafar's child play-test, 11 Nov evening): the wrong-order pop-up and the redo, from the screen.
+// Registered in lib/contract.mjs (WO_CHECKS, checkWO) and probed by WO_HOOK (appended to CONTRACT_HOOK in lib/contract-hook.mjs).
+//   contract-118 wrong-order  a wrong order served brings its card to the middle (the pop-up, js/shared/wrong-order.js): the card in the
+//                             middle, every item in view, the asker's face big, the wrong item marked red with a cross; after the
+//                             redo starts only the wrong orders' cards in the side panel, the one being worked on first, and no face of
+//                             an order made right left on the play area; the orders made right leave (the game's own leave)
+// What it reads: the s19wo samples (below) and the shared lifecycle's notes: probe-wrong (the serve-wrong driver: the look-alike put
+// in and kept, lib/cook-player.mjs), wo-open, wo-card, wo-row, wo-close (js/shared/wrong-order.js through js/cook/ui.js), wo-redo
+// {keep, first} (ui.js M.redoStart), wo-leave {step: game | none} (js/shared/serve.js NjgServe.round, before a redo).
+export const WO_MIDDLE = 0.15;   // the open card's middle within this share of the pop-up's width and height of the pop-up's middle
+export const WO_HOLD_MS = 300;   // a sample held this long is on screen
+export const WO_EDGE_PX = 1;     // a card or an item may poke past the screen by this much (rounding)
+export const WO_FACE_K = 1.5;    // the asker's face in the pop-up at least this many times the side panel's face circle
+export const WO_POP_MS = 15000;  // a wrong order served: the pop-up comes within this long of the serve's review (test speed 3)
+export const WO_GLIDE_MS = 900;  // after the redo starts, the panel has glided by then (the pop-up's 320 ms glide at speed 1)
+
+const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
+const ev = (tl, k) => tl.filter((e) => e.type === "c" && e.k === k);
+const life = (tl, w) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === w);
+const json = (s) => { try { return JSON.parse(s || "{}"); } catch (e) { return {}; } };
+const box = (b) => (Array.isArray(b) ? { l: b[0], t: b[1], r: b[2], b: b[3] } : b);
+const mid = (b) => ({ x: (b.l + b.r) / 2, y: (b.t + b.b) / 2 });
+const fmt = (b) => `[${[b.l, b.t, b.r, b.b].map(Math.round).join(",")}]`;
+function held(list, i, tEnd) { const n = list[i + 1]; return (n ? n.t : tEnd) - list[i].t; }
+
+export const WO_CHECKS = {
+  "contract-118": { item: "wrong-order", title: "a wrong order: its card in the middle, only the wrong order redone", how: `Cook flows. A wrong order served (the serve-wrong driver's look-alike put in and kept: a Lifecycle probe-wrong note) must bring the wrong-order pop-up (js/shared/wrong-order.js) within ${WO_POP_MS / 1000} s: its card in the middle; none is a break. Every s19wo sample (lib/contract-wo.mjs WO_HOOK: the pop-up's card, its items, the asker's face, the side panel's people cards in order, the people's faces on the play area) held ${WO_HOLD_MS} ms with the wrong card open: its middle within ${WO_MIDDLE * 100}% of the pop-up's middle, the card and every item inside the screen (${WO_EDGE_PX} px), the asker's face at least ${WO_FACE_K} times the side panel's face circle; before it closes an item marked wrong with its cross (.njg-wo-bad and .njg-wo-mark.bad). After the redo starts (the wo-redo note: the people kept and the one being worked on), the first sample ${WO_GLIDE_MS} ms on: the side panel's people cards only the kept ones, the one being worked on first, and no face of a person served right on the play area; a redo with orders made right whose game gives the shared round no leave (wo-leave none: their glasses or dishes stay) is a break too. Once per kind per page (SH-264, SH-265, SH-266, Zafar 11 Nov evening, his child play-test: "the order card for the incorrect one probably needs to come up in the middle of the screen ... All the items should be visible in one view ... it should be red, and there should be a little cross instead of a tick"; "they don't put the one you're working on at the top"; "The correct ones disappear ... and you're just left with the person that got it wrong").` },
+};
+
+export function check118(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const said = new Set();
+  const out = (k, t, m) => { if (said.has(k)) return; said.add(k); add("contract-118", t, m); };
+  const wo = ev(tl, "s19wo");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  // 1. a wrong order served, and no pop-up
+  const probe = life(tl, "probe-wrong")[0];
+  if (probe) {
+    const t0 = probe.at || probe.t;
+    const shown = wo.some((e) => e.t > t0 && e.card) || life(tl, "wo-open").some((e) => (e.at || e.t) > t0);
+    // (the serve comes when the round is played on: judged once the flow got WO_POP_MS past the wrong, or to its end)
+    if (!shown && tEnd > t0) out("none", t0, `a wrong order was served (the serve-wrong driver's look-alike, kept) and no wrong-order pop-up came: no card brought to the middle, its items not shown, the wrong one not marked (the shared round's pop-up, js/shared/wrong-order.js)`);
+  }
+  // 2. the open wrong card: in the middle, every item in view, the face big; 3. the wrong item marked before it closes
+  for (let i = 0; i < wo.length; i++) {
+    const e = wo[i];
+    if (!e.card || e.card.phase !== "open") continue;
+    const next = wo[i + 1];
+    const last = !next || !next.card || next.card.who !== e.card.who || next.card.phase !== "open";
+    if (last && !e.card.crossed && (e.card.rows || 0) > 0) out("cross", e.t, `${e.card.who}'s wrong order card closed with no item marked red with a cross (${e.card.marked || 0} of its ${e.card.rows} items marked)`);
+    if (held(wo, i, tEnd) < WO_HOLD_MS) continue;
+    const c = box(e.card.box), v = box(e.veil), m = mid(c), vm = mid(v);
+    if (Math.abs(m.x - vm.x) > (v.r - v.l) * WO_MIDDLE || Math.abs(m.y - vm.y) > (v.b - v.t) * WO_MIDDLE) out("middle", e.t, `${e.card.who}'s wrong order card ${fmt(c)} is not in the middle of the pop-up ${fmt(v)}`);
+    const inView = (b) => b.l >= -WO_EDGE_PX && b.t >= -WO_EDGE_PX && b.r <= e.vw + WO_EDGE_PX && b.b <= e.vh + WO_EDGE_PX;
+    const outItems = (e.card.items || []).map(box).filter((b) => !inView(b));
+    if (!inView(c) || outItems.length) out("view", e.t, `${e.card.who}'s wrong order card ${fmt(c)}: ${outItems.length ? `${outItems.length} item(s) out of view (${outItems.map(fmt).join(" ")})` : "past the screen's edge"} at ${e.vw}x${e.vh}: every item in one view`);
+    if (e.card.faceW != null && e.sideFaceW && e.card.faceW < e.sideFaceW * WO_FACE_K) out("face", e.t, `${e.card.who}'s face in the pop-up is ${Math.round(e.card.faceW)} px, under ${WO_FACE_K} times the side panel's ${Math.round(e.sideFaceW)} px: the asker's face big`);
+    if (e.card.faceW == null) out("face", e.t, `${e.card.who}'s wrong order card shows no face: the asker's face big, so the child knows who it is`);
+  }
+  // 4. the redo: only the wrong orders' cards, the current first, no face of an order made right
+  for (const n of life(tl, "wo-redo")) {
+    const info = json(n.by);
+    const keep = new Set(info.keep || []);
+    if (!keep.size) continue;
+    const t1 = (n.at || n.t) + WO_GLIDE_MS;
+    const s = wo.find((x) => x.t >= t1) || [...wo].reverse().find((x) => x.t <= t1 && x.t >= (n.at || n.t));
+    if (!s) continue;
+    const extra = (s.panel || []).filter((w) => !keep.has(w));
+    if (extra.length) out("panel", s.t, `during the redo the side panel still shows the card of ${extra.join(", ")} (served right): only ${[...keep].join(", ")}'s card stays`);
+    if (info.first && s.panel && s.panel.length && s.panel[0] !== info.first) out("first", s.t, `during the redo the side panel's first card is ${s.panel[0]}'s, not ${info.first}'s, the order being worked on`);
+    const faces = (s.faces || []).filter((w) => !keep.has(w));
+    if (faces.length) out("faces", s.t, `during the redo the face of ${[...new Set(faces)].join(", ")} (served right) is still on the play area: only the person whose order was wrong stays`);
+  }
+  for (const n of life(tl, "wo-leave")) if (n.step === "none") out("leave", n.at || n.t, `a redo with ${n.by || "some"} order(s) made right whose game gives the shared round no leave (NjgServe.round o.leave): their glasses or dishes stay on the screen`);
+}
+
+export function checkWO(r, tl, v, add) {
+  check118(r, tl, add);
+}
+
+// ---- the probe: what contract-118 reads. A function, not a string: the page gets its source ----
+//   k: "s19wo" {vw, vh, veil, card: {who, phase, box, items: [box], rows, marked, crossed, faceW} | null, sideFaceW, panel: [who], faces: [who]}
+function wohook() {
+  if (window.__njgWoHook) return;
+  window.__njgWoHook = true;
+  const emit = (e) => {
+    try {
+      e.type = "c"; e.t = Date.now(); e.page = location.pathname.replace(/^\//, "");
+      if (window.__njgLog) window.__njgLog(e); else (window.__njgPending = window.__njgPending || []).push(e);
+    } catch (x) { /* a probe only */ }
+  };
+  const safe = (f, d = null) => { try { return f(); } catch (e) { return d; } };
+  const R = (r) => [Math.round(r.left), Math.round(r.top), Math.round(r.right), Math.round(r.bottom)];
+  const shown = (el) => {
+    if (!el || !el.isConnected) return false;
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return false;
+    for (let x = el; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) < 0.05) return false; }
+    return true;
+  };
+  let redoUntil = 0;
+  const panel = () => [...document.querySelectorAll("#mission .oc-card[data-who]")].filter((c) => shown(c) && !c.classList.contains("oc-cont")).map((c) => c.dataset.who);
+  const sideFace = () => { const f = [...document.querySelectorAll("#mission .oc-card .njg-face, #mission .oc-card .oc-face")].find(shown); return f ? f.getBoundingClientRect().width : null; };
+  const canvasFaces = () => {
+    const g = (window.__njgGames || []).concat(window.Cook && window.Cook.game ? [window.Cook.game] : []).find((x) => x && x.canvas && x.canvas.isConnected && x.scene);
+    if (!g) return [];
+    const out = [];
+    const cr = g.canvas.getBoundingClientRect();
+    for (const sc of g.scene.getScenes(true)) {
+      const walk = (list, a) => {
+        for (const o of list) {
+          if (!o || o.visible === false) continue;
+          const al = a * (o.alpha == null ? 1 : o.alpha);
+          if (al < 0.05) continue;
+          if (o.list) walk(o.list, al);
+          const k = o.texture && o.texture.key;
+          const m = /^([a-z]+)-badge/.exec(k || "");
+          if (m && m[1] !== "nani") out.push(m[1]);
+        }
+      };
+      safe(() => walk(sc.children.list, 1));
+    }
+    return cr.width > 2 ? out : [];
+  };
+  let last = "";
+  setInterval(() => {
+    try {
+      const L = window.Lifecycle && window.Lifecycle.log;
+      const lastRedo = L ? [...L].reverse().find((x) => x && x.what === "wo-redo") : null;
+      if (lastRedo && +lastRedo.t > redoUntil - 4000) redoUntil = Math.max(redoUntil, +lastRedo.t + 4000);
+      const veil = [...document.querySelectorAll(".njg-wo")].find(shown);
+      if (!veil && Date.now() > redoUntil) { if (last !== "none") { last = "none"; emit({ k: "s19wo", vw: innerWidth, vh: innerHeight, card: null, panel: [], faces: [] }); } return; }
+      let card = null;
+      if (veil) {
+        const el = veil.querySelector(".njg-wo-open") || veil.querySelector(".njg-wo-line");
+        if (el && shown(el)) {
+          const rows = [...el.querySelectorAll(".oc-row")].filter(shown);
+          const face = el.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+          card = {
+            who: el.dataset.who || "?", phase: el.classList.contains("njg-wo-open") ? "open" : "line", box: R(el.getBoundingClientRect()),
+            items: rows.map((x) => R(x.getBoundingClientRect())), rows: rows.length,
+            marked: rows.filter((x) => x.querySelector(".njg-wo-mark")).length,
+            crossed: rows.some((x) => x.classList.contains("njg-wo-bad") && x.querySelector(".njg-wo-mark.bad") && shown(x.querySelector(".njg-wo-mark.bad"))),
+            faceW: face && shown(face) ? face.getBoundingClientRect().width : null,
+          };
+        }
+      }
+      const s = { k: "s19wo", vw: innerWidth, vh: innerHeight, veil: veil ? R(veil.getBoundingClientRect()) : null, card, sideFaceW: safe(sideFace), panel: safe(panel, []), faces: safe(canvasFaces, []) };
+      const j = JSON.stringify([s.card && [s.card.who, s.card.phase, s.card.box.map((v) => Math.round(v / 4)), s.card.marked, s.card.crossed], s.panel, s.faces, s.veil && s.veil.map((v) => Math.round(v / 4))]);
+      if (j === last) return;
+      last = j;
+      emit(s);
+    } catch (e) { /* a probe only */ }
+  }, 100);
+}
+export const WO_HOOK = `(${wohook.toString()})()`;

@@ -206,6 +206,8 @@ export class CookPlayer {
       const w = e.swrongs[0];
       // which jar that is, for the log (the jars on the canvas are keyed jar-<id>; the salt is spi-16)
       const jar = (await canvasObjects(p, /^jar-/).catch(() => [])).map((j) => ({ ...j, id: j.key.slice(4) })).sort((a, b) => Math.hypot(a.x - w.x, a.y - w.y) - Math.hypot(b.x - w.x, b.y - w.y))[0];
+      // (contract-118: a wrong order is on its way to the serve; the shared lifecycle's note marks when)
+      await p.evaluate(`window.Lifecycle && Lifecycle.note && Lifecycle.note("probe-wrong", { step: "serve-wrong" })`).catch(() => {});
       await this.tap(w.x, w.y, "look-alike, kept");
       // the review faces at the serve hold 2.5 s (Cook.tasteHold, the screenshot scripts' hook) for drv:review-face's crop
       await p.evaluate("Cook.tasted = null; Cook.tasteHold = 2500").catch(() => {});

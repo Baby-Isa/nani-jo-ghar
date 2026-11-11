@@ -22,12 +22,27 @@
  *        close (o.afterReview()); with no tracker (o.redo) or nothing wrong it ends. Else each wrong dish asks the tracker
  *        (o.redo.wrong(o.key(item)): its third wrong try is shown the right way, o.showRight(item)); the rest are o.reset(item)
  *        and played again (o.again(items, round)). The first try is the one scored (the game's check knows the round).
+ *        SH-264 to SH-266 (Zafar, 11 Nov evening): with a host's wrong-order hook (NjgServe.use({show, redo, end}): the kitchen's,
+ *        js/cook/kitchen-kit.js; js/shared/wrong-order.js draws it) a serve with a wrong dish closes the faces and opens the wrong-order
+ *        pop-up in place of the recast (o.recast stays the way without a hook, or with o.popup false); before a redo the dishes done
+ *        right leave (o.leave(item): the game takes their glasses or dishes and their people away; the stoves may stay) and the host
+ *        keeps only the wrong orders' cards (hook.redo); hook.end() when the round is over (every card back for the thank-you scene).
+ *   NjgServe.use(hook)             the host's wrong-order hook (null: none); NjgServe.hook() the one set
  *   NjgServe.env(Cook, win)        the review's needs from a mode's namespace (its badge maker, sounds, voice, lines, clock; the
  *                                  tokens and timers of win, the page it plays on: default this one)
  *   NjgServe.for(Cook, win)        {review(S, o), faces(S, dishes, wrong, o), round, layout}: the kit with that env given
  *
  * An ES module (Cook's files import it); it also hangs on globalThis.NjgServe.
  */
+import { NjgWrongOrder } from "./wrong-order.js"; // (SH-264: the pop-up a host's hook draws; loaded with the serve so every game has it)
+
+// the host's wrong-order hook, one per page (a global, so a game that imports this module by another URL shares it)
+const HOOK = Symbol.for("njg.serve.wrongOrder");
+const hook = () => (typeof globalThis !== "undefined" ? globalThis[HOOK] || null : null);
+function use(h) {
+  if (typeof globalThis !== "undefined") globalThis[HOOK] = h || null;
+}
+
 const LOOK = { shadow: 0x28190a, shadowA: 0.16, card: 0xffffff, cardShadowA: 0.12, font: 34, cardH: 58, cardPad: 44, radius: 14, gap: 18 };
 
 /** The review's needs from a mode's namespace (Cook's today: Cook.Kit.badge, Cook.sfx, Cook.Lang, Cook.wait, Cook.tween). */
@@ -152,38 +167,60 @@ function faces(S, dishes, wrong, o = {}, E) {
   );
 }
 
-/** Decision 51 (CK-23): the tick, the faces, the recast, and each wrong dish redone (or, at its third wrong try, shown). */
+/** Decision 51 (CK-23): the tick, the faces, the recast (or the wrong-order pop-up), and each wrong dish redone (or, at its third wrong try, shown). */
 async function round(o) {
   let n = 0;
   let open = o.items.slice();
-  for (;;) {
-    await o.done(n);
-    const recasts = [];
-    for (const item of o.items) {
-      if (!open.includes(item)) continue; // a right dish stays done
-      const r = o.check(item, n) || {};
-      if (!r.ok) recasts.push({ item, rows: r.rows });
-      else if (o.onRight) o.onRight(item, n);
+  const H = o.popup === false ? null : hook();
+  try {
+    for (;;) {
+      await o.done(n);
+      const recasts = [];
+      for (const item of o.items) {
+        if (!open.includes(item)) continue; // a right dish stays done
+        const r = o.check(item, n) || {};
+        if (!r.ok) recasts.push({ item, rows: r.rows });
+        else if (o.onRight) o.onRight(item, n);
+      }
+      const looks = await o.review(recasts.map((r) => r.item), n);
+      const close = () => Promise.all((looks || []).map((l) => l && l.close && l.close()));
+      let closed = false;
+      if (recasts.length) {
+        if (!n && o.oops) await o.oops();
+        // SH-264: the faces go, then the pop-up over the game says each wrong order's items (it is the recast, shown)
+        let shown = false;
+        if (H && H.show) {
+          await close();
+          closed = true;
+          shown = !!(await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n })).catch(() => false));
+        }
+        if (!shown) for (const { item, rows } of recasts) await o.recast(item, rows);
+      }
+      if (!closed) await close();
+      if (o.afterReview) o.afterReview(n);
+      if (!recasts.length || !o.redo) break;
+      const again = [];
+      for (const { item } of recasts) {
+        const r = o.redo.wrong(o.key(item));
+        if (r && r.action === "show") await o.showRight(item);
+        else again.push(item);
+      }
+      if (!again.length) break;
+      n++;
+      // SH-266: the dishes done right (and any shown) leave the screen with their people; only the wrong ones are made again
+      const done = open.filter((item) => !again.includes(item));
+      if (o.leave) for (const item of done) await Promise.resolve(o.leave(item)).catch(() => {});
+      // (a test hook: contract-118 reads whether the game took them away)
+      const LC = typeof globalThis !== "undefined" ? globalThis.Lifecycle : null;
+      if (done.length && H && LC && LC.note) LC.note("wo-leave", { step: o.leave ? "game" : "none", by: String(done.length) });
+      // SH-265: the side panel keeps the wrong orders' cards, the one being worked on first (the host's own panel)
+      if (H && H.redo) H.redo({ round: n });
+      again.forEach((item) => o.reset(item));
+      open = again;
+      if (o.again) o.again(again, n);
     }
-    const looks = await o.review(recasts.map((r) => r.item), n);
-    if (recasts.length) {
-      if (!n && o.oops) await o.oops();
-      for (const { item, rows } of recasts) await o.recast(item, rows);
-    }
-    await Promise.all((looks || []).map((l) => l && l.close && l.close()));
-    if (o.afterReview) o.afterReview(n);
-    if (!recasts.length || !o.redo) break;
-    const again = [];
-    for (const { item } of recasts) {
-      const r = o.redo.wrong(o.key(item));
-      if (r && r.action === "show") await o.showRight(item);
-      else again.push(item);
-    }
-    if (!again.length) break;
-    n++;
-    again.forEach((item) => o.reset(item));
-    open = again;
-    if (o.again) o.again(again, n);
+  } finally {
+    if (H && H.end) H.end({ rounds: n + 1 });
   }
   return { rounds: n + 1 };
 }
@@ -191,9 +228,9 @@ async function round(o) {
 /** The kit bound to a mode's namespace: NjgServe.for(Cook).review(S, o), .faces(S, dishes, wrong, o), .round(o). */
 function bound(C, win) {
   const E = env(C, win);
-  return { review: (S, o) => review(S, o, E), faces: (S, d, w, o) => faces(S, d, w, o, E), round, layout, env: E };
+  return { review: (S, o) => review(S, o, E), faces: (S, d, w, o) => faces(S, d, w, o, E), round, layout, env: E, use, hook };
 }
 
-export const NjgServe = { review, layout, faces, round, env, for: bound, LOOK };
+export const NjgServe = { review, layout, faces, round, env, for: bound, LOOK, use, hook, WrongOrder: NjgWrongOrder };
 if (typeof globalThis !== "undefined") globalThis.NjgServe = NjgServe;
 export default NjgServe;

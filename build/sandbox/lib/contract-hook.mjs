@@ -1059,4 +1059,6 @@ import { S19_HOOK } from "./contract-s19.mjs";
 // ---- s19-checks-2: the screen checks' probe (lib/contract-s19b-hook.mjs: contract-114 to -116 and the rewrites of 36, 37, 70-74, 77, 96) ----
 import { S19B_HOOK } from "./contract-s19b-hook.mjs";
 // (each probe its own statement: two IIFEs on adjacent lines with no ";" between would call the first one's result with the second)
-export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";\n" + S19B_HOOK + ";";
+// ---- s19-clean-a: the wrong-order pop-up's probe (lib/contract-wo.mjs: contract-118) ----
+import { WO_HOOK } from "./contract-wo.mjs";
+export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";\n" + S19B_HOOK + ";\n" + WO_HOOK + ";";
