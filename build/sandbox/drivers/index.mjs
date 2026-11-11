@@ -167,3 +167,86 @@ export async function numberWords(root) {
   return NUMS;
 }
 export const isCountLine = (text, nums) => { const w = String(text || "").toLowerCase().match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []; return w.length > 0 && w.length <= 2 && nums.has(w[0]); };
+
+// ---- miss-light (SH-261, s19-taps; Zafar, 11 Nov, his 3.5-year-old: "they tapped in the box but not on the water ... the onboarding light
+// went away, but the water didn't pour. And then they were stuck"): at the first move with a first-time light up, a tap inside the light's
+// drawn box that misses the thing (a point of the box with nothing under it that takes a tap), then a tap elsewhere (outside every box, on
+// the play area, on nothing that takes a tap), each logged as a Lifecycle note "probe-tap" (step miss-in | miss-out, by: the tap's point and
+// the box, "x,y|l,t,r,b") just before it, each held MISS_HOLD ms and recorded (rec:miss-in-light, rec:miss-out-light); then the player
+// plays the right move. contract-117 judges what the screen showed (the s19lit samples): the light up through each miss, gone after the
+// right move. Returns what it did, for the run's notes.
+export const MISS_HOLD = 900;
+const LIT_NOW = `(() => {
+  const out = [];
+  for (const l of document.querySelectorAll(".njg-onboard.on")) {
+    if (l.classList.contains("ob-empty") || l.classList.contains("ob-buried") || l.classList.contains("ob-moving")) continue;
+    let hs = [];
+    try { hs = JSON.parse(l.dataset.holes || "[]"); } catch (e) { /* none */ }
+    for (const h of hs) if (h.w > 4 && h.h > 4) out.push([h.x, h.y, h.x + h.w, h.y + h.h]);
+  }
+  return out;
+})()`;
+// a point that takes no tap: nothing in Cook's scenes (Phaser's own hit test, top scene first) and no page control over the canvas
+const FREE_AT = `((pts) => {
+  const g = window.Cook && window.Cook.game;
+  if (!g || !g.canvas) return null;
+  const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+  const scenes = g.scene.getScenes(true).slice().reverse();
+  const hit = (px, py) => {
+    const x = (px - cr.left) / kx, y = (py - cr.top) / ky;
+    for (const sc of scenes) {
+      const ip = sc.input;
+      if (!ip || !ip.enabled || typeof ip.hitTestPointer !== "function") continue;
+      let hs = [];
+      try { hs = ip.hitTestPointer({ x, y, worldX: 0, worldY: 0, camera: null }).filter((o) => o && o.input && o.input.enabled); } catch (e) { hs = []; }
+      if (hs.length) return true;
+    }
+    return false;
+  };
+  const control = (px, py) => {
+    const els = document.elementsFromPoint(px, py).filter((e) => !e.closest(".njg-onboard"));
+    const top = els[0];
+    return !top || top !== g.canvas;
+  };
+  const vw = innerWidth, vh = innerHeight;
+  for (const [x, y] of pts) {
+    if (x < cr.left + 2 || y < cr.top + 2 || x > cr.right - 2 || y > cr.bottom - 2 || x < 2 || y < 2 || x > vw - 2 || y > vh - 2) continue;
+    if (!hit(x, y) && !control(x, y)) return [Math.round(x), Math.round(y)];
+  }
+  return null;
+})`;
+export async function missLight(page, once, { wait = 4000 } = {}) {
+  const lit = () => page.evaluate(LIT_NOW).catch(() => []);
+  let boxes = [];
+  await until(async () => (boxes = await lit()).length > 0, wait, 60);
+  if (!boxes.length) return "no first-time light came up at this move";
+  const [l, t, r, b] = boxes[0];
+  const cx = (l + r) / 2, cy = (t + b) / 2;
+  // inside the box, off the thing: its rim first (corners, edge middles), then a grid
+  const ins = [];
+  for (const k of [3, 6, 10]) ins.push([l + k, t + k], [r - k, t + k], [l + k, b - k], [r - k, b - k], [cx, t + k], [cx, b - k], [l + k, cy], [r - k, cy]);
+  for (let i = 1; i < 8; i++) for (let j = 1; j < 8; j++) ins.push([l + ((r - l) * i) / 8, t + ((b - t) * j) / 8]);
+  const inPt = await page.evaluate(`${FREE_AT}(${JSON.stringify(ins)})`).catch(() => null);
+  // elsewhere: outside every box (by 24 px), as far from it as the screen allows
+  const W = await page.evaluate("[innerWidth, innerHeight]").catch(() => [800, 400]);
+  const outs = [];
+  for (let i = 1; i < 12; i++) for (let j = 1; j < 8; j++) {
+    const x = (W[0] * i) / 12, y = (W[1] * j) / 8;
+    if (boxes.some(([a, c, d, e]) => x > a - 24 && x < d + 24 && y > c - 24 && y < e + 24)) continue;
+    outs.push([x, y, Math.hypot(x - cx, y - cy)]);
+  }
+  outs.sort((p, q) => q[2] - p[2]);
+  const outPt = await page.evaluate(`${FREE_AT}(${JSON.stringify(outs.map((p) => [p[0], p[1]]))})`).catch(() => null);
+  const box = [l, t, r, b].map(Math.round).join(",");
+  const did = [];
+  for (const [step, pt] of [["miss-in", inPt], ["miss-out", outPt]]) {
+    if (!pt) { did.push(`${step}: no free point`); continue; }
+    await page.evaluate(`window.Lifecycle && Lifecycle.note && Lifecycle.note("probe-tap", { step: "${step}", by: "${pt[0]},${pt[1]}|${box}" })`).catch(() => {});
+    await page.mouse.click(pt[0], pt[1]);
+    await sleep(MISS_HOLD);
+    await once(`${step}-light`, { settle: 0 });
+    const still = (await lit()).some(([a, c, d, e]) => cx >= a && cx <= d && cy >= c && cy <= e);
+    did.push(`${step} at (${pt[0]}, ${pt[1]}): the light ${still ? "stayed" : "went"}`);
+  }
+  return `the light [${box}]: ${did.join("; ")}`;
+}

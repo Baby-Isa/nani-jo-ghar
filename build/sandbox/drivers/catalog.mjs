@@ -59,6 +59,9 @@ export const DRIVERS = {
   "lab-log-on": { kinds: ["clinic-stage"], moments: ["rec:lab-log-on"] },
   // S17 (s17-chk2): the paths of the S17 contract checks. boil-over (checks-to-build row 26, contract-96): chai's knob left alone until the pot
   // boils over and starts again; tap-mid-order and slow-cards (SH-196, contract-98): the order tapped half-way, and its cards landing late
+  // s19-taps (SH-261, contract-117): at the first move with a first-time light up, a tap inside its box that misses the thing, then a tap
+  // elsewhere, each held 0.9 s (the light must stay), then the right move (the light must go)
+  "miss-light": { kinds: ["cook"], moments: ["rec:miss-in-light", "rec:miss-out-light"] },
   "boil-over": { kinds: ["cook"], moments: ["rec:boil-over", "rec:boil-reopened"] },
   "tap-mid-order": { kinds: ["cook"], moments: ["rec:tapped-mid-order"] },
   "slow-cards": { kinds: ["cook"], moments: ["rec:cards-slowed"] },
