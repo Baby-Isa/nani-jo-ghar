@@ -105,6 +105,7 @@
   "veg-12": {
    "card": "assets/cook/items/veg-marcha-whole-t.webp",
    "size": "S",
+   "sizeFlag": "LONG",
    "image": "chilli",
    "heap": {
     "kind": "pieces",
@@ -3981,7 +3982,7 @@
      0.9
     ],
     "fru-04": [
-     "shelf-fru-04-bare-f",
+     "v4/pantry/orange",
      0.9
     ],
     "fru-05": [
@@ -5015,6 +5016,8 @@
      "files": [
       "assets/cook/bg/bg-pantry-v3-1600.webp",
       "assets/cook/items/shelf-*",
+      "assets/cook/items/v4/pantry/orange.webp",
+      "assets/cook/items/served/pantry-basket-v2.webp",
       "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
       "assets/cook/items/vessel-milk-jug-f.webp",
       "assets/cook/items/vessel-water-jug-f.webp",
