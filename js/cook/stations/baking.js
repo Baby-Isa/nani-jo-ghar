@@ -324,7 +324,8 @@ import { setTimeout } from "../life.js";
     const shelf = {};
     const n = onShelf.length;
     const PILL_SLOT = 200;
-    const pitch = Math.min(CT.pitch || 300, 1100 / Math.max(1, n));
+    // (the row across the narrowest play area, x 150-1450: eight things at L4 each keep a slot their picture and pill fit in, contract-111)
+    const pitch = Math.min(CT.pitch || 300, 1300 / Math.max(1, n));
     const pills = [];
     // CK-84, ART-52 (Zafar, 6 Nov: size classes for every item): each thing by its size class, as chai's jars (St.classFit: the band's
     // room with the hop kept, the class's share, the floor on screen; never wider than its slot), its picture's clear foot on the shelf's
@@ -344,10 +345,10 @@ import { setTimeout } from "../life.js";
       // flour jar's class height times its share as cut, CT.heights: 1, 0.825, 0.664; a thing with no share by its own class)
       const share = (CT.heights || {})[id];
       const f = St.classFit && has(key) ? St.classFit(S, key, share != null ? FLOUR_ID : id, { base: band.base, ppw: ppwShelf, slotW: (pitch - 12) / Math.max(0.1, share || 1) }) : null;
-      // (never under its own class's height less a margin, 0.91: one height per size class, contract-115; flour, sugar and salt still
-      // stand at three heights)
+      // (never under its own class's height: one height per size class, contract-115; flour, sugar and salt still stand at three
+      // heights, L, M and S)
       const own = share != null && St.classFit && has(key) ? St.classFit(S, key, id, { base: band.base, ppw: ppwShelf, slotW: pitch - 12 }) : null;
-      const sc = f && f.scale ? Math.max(f.scale * (share != null ? share : 1), own && own.scale ? own.scale * 0.91 : 0) : 0;
+      const sc = f && f.scale ? Math.max(f.scale * (share != null ? share : 1), own && own.scale ? own.scale : 0) : 0;
       img.setScale(sc || Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
@@ -368,7 +369,7 @@ import { setTimeout } from "../life.js";
       row.forEach((c) => {
         if (c.capW !== cap && c.face) c.face(c.showsWord, cap);
         c.k = k;
-        if (c.hit) c.hit(PILL_SLOT);
+        if (c.hit) c.hit(Math.min(PILL_SLOT, pitch - 4)); // (a pill's tap area never reaches past its own slot into the next thing's)
         c.setScale(k).setY(y);
       });
     };
