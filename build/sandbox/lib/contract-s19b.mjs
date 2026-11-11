@@ -61,8 +61,31 @@ export function rests(samples, tEnd) {
 }
 
 export const S19B_CHECKS = {
-  "contract-114": { item: "no-snap", title: "an item keeps its size and never snaps", how: `Cook flows: every picture in the kitchen (lib/contract-s19b-hook.mjs s19it: its drawn box on screen every 30 ms, its alpha, the tweens on it; not the people, the effects or the backdrop). A snap is a break: between two frames an item's longer side changes by more than ${SNAP * 100}% with no tween of ${TWEEN_OK_MS} ms or more on it, and the new size holds (${HOLD_NEW_MS} ms: a flip or a squash comes back); or an item vanishes and the same thing (its key's name) appears in the same frame elsewhere or at another size, with no fade (a jump from the hand to the plate). And from step to step: the same item resting (still ${REST_MS} ms) at one place and next at another (its middle ${PLACE} of its size away) must keep its longer side within ${SNAP * 100}% (SH-256: maani's bread halves on the plate, corn's cob a speck on the tray then large on the plate, eggs' egg). Once per item per page, at most 4.` },
+  "contract-114": { item: "no-snap", title: "an item keeps its size and never snaps", how: `Cook flows: every picture in the kitchen (lib/contract-s19b-hook.mjs s19it: its drawn box on screen every 30 ms, its alpha, the tweens on it; not the people, the effects or the backdrop). A snap is a break: between two frames an item's longer side changes by more than ${SNAP * 100}% with no tween of ${TWEEN_OK_MS} ms or more on it, and the new size holds (${HOLD_NEW_MS} ms: a flip or a squash comes back); or an item vanishes and the same thing (its key's name) appears in the same frame elsewhere or at another size, with no fade (a jump from the hand to the plate). And from step to step: the same item resting (still ${REST_MS} ms) at one place and next at another (its middle ${PLACE} of its size away) must keep its longer side within ${SNAP * 100}% (SH-256: maani's bread halves on the plate, corn's cob a speck on the tray then large on the plate, eggs' egg). Zafar's accepted designs pass there in a smooth tweened change (a tween of ${TWEEN_OK_MS} ms or more on the picture itself, no untweened jump): maani's board, tawa and plate sizes and samosa's close-up fold (Zafar, 11 Nov morning: "fine as they are (a smooth tweened change)"); an untweened change or a jump there still fails. Once per item per page, at most 4.` },
 };
+
+// Zafar's accepted designs (s19-shared-checks): an item that changes size from step to step there, in a smooth tweened change (a tween of
+// at least TWEEN_OK_MS on the picture itself while it changes, no frame-to-frame jump without one), is right; an untweened change or a
+// jump still fails. Each with his words.
+export const ACCEPTED_SIZES = [
+  { flow: /maani/, key: /^mv-(raw|cooked)-/, words: "Zafar, 11 Nov morning: \"Maani's board, tawa and plate sizes ... fine as they are (a smooth tweened change)\"; 9 Nov (MAA-24, P8): \"you roll the mani the size of the rolling board ... it just shrinks down into the small tray ... probably one we just have to accept\"" },
+  { flow: /samosa/, key: /^sv3-fold/, words: "Zafar, 11 Nov morning: \"samosa's close-up fold: fine as they are (a smooth tweened change)\"" },
+];
+export function acceptedSize(flow, ...keys) {
+  return ACCEPTED_SIZES.some((x) => x.flow.test(flow || "") && keys.some((k) => x.key.test(String(k || ""))));
+}
+// a smooth tweened change between two rests: a tween of TWEEN_OK_MS or more on the picture while it changed, and no frame-to-frame size
+// change over SNAP without one (samples from the end of the first rest to the start of the next)
+export function glided(samples, t0, t1) {
+  const w = samples.filter((x) => x.t >= t0 - GAP_MS && x.t <= t1);
+  if (!w.some(tween)) return false;
+  for (let i = 1; i < w.length; i++) {
+    const p = w[i - 1], q = w[i];
+    if (p.a < 50 || q.a < 50 || size(p) < MIN_ITEM_PX) continue;
+    if (Math.abs(size(q) / size(p) - 1) > SNAP && !tween(p) && !tween(q)) return false;
+  }
+  return true;
+}
 
 export function check114(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19it").length) return;
@@ -120,12 +143,15 @@ export function check114(r, tl, add) {
   }
   for (const chain of chains) {
     const rs = chain.flatMap((k) => rests(k.samples, k.gone != null ? k.gone : tEnd).map((x) => ({ ...x, id: k.id })));
+    const all = chain.flatMap((k) => k.samples).sort((p, q) => p.t - q.t);
     for (let i = 1; i < rs.length; i++) {
       const a = rs[i - 1], b = rs[i];
       if (a.size < MIN_ITEM_PX || b.size < MIN_ITEM_PX) continue;
       if (dist(midOf(a.box), midOf(b.box)) < PLACE * Math.max(a.size, b.size)) continue;
       const ratio = b.size / a.size;
       if (Math.abs(ratio - 1) <= SNAP) continue;
+      // (Zafar's accepted designs, his words below: there a smooth tweened change passes; an untweened one, or a jump, still fails)
+      if (acceptedSize(r.flow, a.key, b.key) && glided(all, a.t1, b.t0)) continue;
       out(b.t0, `${chain[0].id}|step${i}`, `${b.key} rests at ${Math.round(b.size)} px at ${fmtB(b.box)}, ${ratio > 1 ? "+" : ""}${Math.round((ratio - 1) * 100)}% of its ${Math.round(a.size)} px at its last place ${fmtB(a.box)} (${a.key}): an item keeps its size from step to step`);
     }
   }
@@ -376,19 +402,38 @@ export function check36(r, tl, segs, v, add) {
 
 // 37 (rewritten): decoys counted on the shelf: the shelf's things with a word that the order does not ask for
 const LEX = new Map();
+const GLOSS = new Map();
+const PARTS = new Map();
 export function itemWords(root) {
   if (LEX.has(root)) return LEX.get(root);
   const map = new Map();
   try {
     const lex = JSON.parse(readFileSync(join(root, "data/lang/lexicon.json"), "utf8"));
+    let par = {};
+    try { par = JSON.parse(readFileSync(join(root, "data/lang/paradigms.json"), "utf8")).paradigms || {}; } catch (e) { /* the lemma and its listed forms only */ }
     const split = (x) => String(x || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
+    const own = new Map();
     for (const e of lex.entries || []) {
       const forms = new Set();
       const add = (x) => split(x).forEach((w) => forms.add(w));
       add(e.lemma);
       const walk = (x) => { if (typeof x === "string") add(x); else if (x && typeof x === "object") { if (typeof x.t === "string") add(x.t); else Object.values(x).forEach(walk); } };
       walk(e.forms || {});
+      // (and the forms its paradigm makes, as the language engine does: samosa's card says ba bataata, n.potato's plural; s19-shared-checks)
+      const pd = par[e.paradigm];
+      if (pd && e.lemma) {
+        let stem = e.lemma; const dr = pd.stem && pd.stem.drop; if (dr && stem.endsWith(dr)) stem = stem.slice(0, -dr.length);
+        Object.values(pd.cells || {}).map((c) => (c && typeof c === "object" ? c.make : c)).filter((m) => typeof m === "string").forEach((m) => add(m.replace(/\{stem\}/g, stem).replace(/\{lemma\}/g, e.lemma)));
+      }
+      own.set(e.id, { forms, pos: e.pos });
       for (const a of e.aliases || []) map.set(String(a), new Set([...(map.get(String(a)) || []), ...forms]));
+      // (a word with no Kutchi yet stands on its card as its English, grey: its gloss, whole)
+      if (e.gloss) for (const a of e.aliases || []) GLOSS.set(`${root}|${a}`, String(e.gloss).toLowerCase().trim());
+    }
+    // (a word built of parts, chaat's mint chutney, fudino ji chutney: its nouns, each in any of its forms, on one card)
+    for (const e of lex.entries || []) {
+      const nouns = (e.parts || []).map((p) => own.get(p.lex)).filter((x) => x && x.pos === "N" && x.forms.size).map((x) => x.forms);
+      if (nouns.length) for (const a of e.aliases || []) PARTS.set(`${root}|${a}`, nouns);
     }
   } catch (e) { /* no lexicon: every shelf thing reads as a decoy unless its id is a word on the card */ }
   LEX.set(root, map);
@@ -396,11 +441,37 @@ export function itemWords(root) {
 }
 // (stations whose rows are full by design: the pantry's shelf and the daar's chop hold at least the table's count)
 export const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
+// s19-shared-checks (Zafar, 11 Nov: contract-37 judged by the levels table): the count a station wants at a level is the levels table's
+// (data/rules.json levels.decoys, read from the game being judged), a station's own row first where it has one (data/cook.json
+// levelTable.stations[game].decoys, as js/cook/station-lib.js Cook.levelRow reads it), and none for chop's hop at L1 (CK-71). The game
+// is each station's own, not the flow's: chaat's first station is chop's game (its chop-* notes), its second the toppings.
+const TABLES = new Map();
+export function decoyTable(root, fallback = {}) {
+  if (TABLES.has(root)) return TABLES.get(root);
+  let lv = null, own = {};
+  try { lv = (JSON.parse(readFileSync(join(root, "data/rules.json"), "utf8")).levels || {}).decoys || null; } catch (e) { /* the fallback */ }
+  try { own = (JSON.parse(readFileSync(join(root, "data/cook.json"), "utf8")).levelTable || {}).stations || {}; } catch (e) { /* none */ }
+  const t = { levels: Array.isArray(lv) && lv.length ? lv : [1, 2, 3, 4].map((l) => fallback[l]).filter((x) => x != null), own };
+  TABLES.set(root, t);
+  return t;
+}
+export function decoysWanted(t, game, level) {
+  if (game === "chop" && level === 1) return 0; // (CK-71: chop's hop has no decoys at L1)
+  const at = (list) => (Array.isArray(list) && list.length ? list[Math.min(list.length, level) - 1] : list);
+  const own = (t.own || {})[game];
+  if (own && own.decoys != null) return at(own.decoys);
+  return at(t.levels);
+}
+// the game a station stage plays: chop's where chop's own notes run in it (chop-strip, chop-hop, chop-throw), else the flow's
+// (daar's chop keeps daar's row: its rows are full by design, DECOY_AT_LEAST)
+export function gameOfStation(tl, s, flowGame) {
+  if (DECOY_AT_LEAST.test(flowGame || "")) return flowGame;
+  return tl.some((e) => e.type === "c" && e.k === "life" && /^chop-/.test(e.what || "") && e.t >= s.t0 && e.t < s.t1) ? "chop" : flowGame;
+}
 export function check37(r, tl, add, { root = ".", table = {} } = {}) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length) return;
   const st0 = stationOf(r.flow), level = levelOf(r.flow);
-  const want = st0 === "chop" && level === 1 ? 0 : table[Math.min(4, level)];
-  if (want == null) return;
+  const T = decoyTable(root, table);
   const words = itemWords(root);
   const tEnd = r.t0 && r.ms ? r.t0 + r.ms : tl.length ? tl[tl.length - 1].t : 0;
   const st = stationsOf(tl);
@@ -411,12 +482,22 @@ export function check37(r, tl, add, { root = ".", table = {} } = {}) {
     if (!s || said.has(s.key) || !(e.items || []).length) continue;
     const pad = pads.filter((p) => p.t <= e.t).pop();
     if (!pad) continue;
+    const game = gameOfStation(tl, s, st0);
+    const want = decoysWanted(T, game, Math.min(4, level));
+    if (want == null) continue;
     const card = new Set(pad.cards.flatMap((c) => String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
-    const asked = (id) => [...(words.get(id) || [])].some((w) => card.has(w)) || card.has(String(id).replace(/^(cook|n|v|a)[-.]/, "").toLowerCase());
+    // (a card names its thing by its word id where the probe has it, data-word, s19-shared-checks: a word with no Kutchi yet shows its English, grey,
+    // which no lexicon form matches, chaat's mint chutney, ph-lili; its words where the probe is older)
+    const keys = new Set(pad.cards.map((c) => c.id).filter(Boolean).map(String));
+    const texts = new Set(pad.cards.map((c) => String(c.w).toLowerCase().replace(/\s+/g, " ").trim()));
+    const cardWords = pad.cards.map((c) => new Set(String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
+    const byParts = (id) => { const ns = PARTS.get(`${root}|${id}`); return !!ns && cardWords.some((cw) => ns.every((f) => [...f].some((w) => cw.has(w)))); };
+    const asked = (id) => keys.has(String(id)) || texts.has(GLOSS.get(`${root}|${id}`)) || byParts(id) || [...(words.get(id) || [])].some((w) => card.has(w)) || card.has(String(id).replace(/^(cook|n|v|a)[-.]/, "").toLowerCase());
     const decoys = e.items.filter((x) => !asked(x.id));
-    const ok = DECOY_AT_LEAST.test(st0 || "") ? decoys.length >= want : decoys.length === want;
+    const atLeast = DECOY_AT_LEAST.test(game || "");
+    const ok = atLeast ? decoys.length >= want : decoys.length === want;
     said.add(s.key);
-    if (!ok) add("contract-37", e.t, `${s.key} (${st0} at L${level}): ${decoys.length} decoy${decoys.length === 1 ? "" : "s"} on the shelf (${e.items.map((x) => x.id + (decoys.includes(x) ? "*" : "")).join(", ")}; * not in the order), the table wants ${DECOY_AT_LEAST.test(st0 || "") ? "at least " : ""}${want}`);
+    if (!ok) add("contract-37", e.t, `${s.key} (${game} at L${level}): ${decoys.length} decoy${decoys.length === 1 ? "" : "s"} on the shelf (${e.items.map((x) => x.id + (decoys.includes(x) ? "*" : "")).join(", ")}; * not in the order), the table wants ${atLeast ? "at least " : ""}${want}`);
   }
 }
 

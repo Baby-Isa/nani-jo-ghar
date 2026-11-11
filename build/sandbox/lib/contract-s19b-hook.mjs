@@ -4,14 +4,14 @@
 // read-only (the call goes through unchanged). Events (type "c"):
 //   k: "s19it"   {ch: [[id, key, l, t, r, b, a, tw, word, depth, w, h, rot, px, py]], gone: [id], cv}   every picture in the kitchen (not a
 //                                 character, not an effect), at most every 30 ms, only what changed: its drawn box on screen, its alpha
-//                                 (x100), the longest tween on it (ms, one leg; 0 none), its word (a shelf thing), its depth, its drawn
+//                                 (x100, with its camera's fade), the longest tween on it (ms, one leg; 0 none), its word (a shelf thing), its depth, its drawn
 //                                 size unturned (w, h in screen px), its angle (degrees) and its pill's middle (a shelf thing's chip;
 //                                 0, 0 none) (contract-114, -115, -109)
 //   k: "s19row"  {x, w, n, vis, px, pt}   the order row's scroll (px), a card's width, how many cards, whether it shows, every
 //                                 animation frame it changes, with the frame before it (px its scroll, pt its time) (72)
 //   k: "s19ord"  {pop, fly, away, rows}   the big card and the cards in flight on screen, the rows waiting away, every frame it changes (74)
-//   k: "s19pad"  {box, row, cards: [{w, done, box, in}], room}   the side panel's order card, its row and each item card with its
-//                                 content's box (picture, words, speaker), every 300 ms it changes (116)
+//   k: "s19pad"  {box, row, cards: [{w, id, done, box, in}], room}   the side panel's order card, its row and each item card with its
+//                                 content's box (picture, words, speaker) and its word id (data-word: 37), every 300 ms it changes (116)
 //   k: "s19spk"  {list: [{who, box, em, icon, text}]}   each speech bubble's speaker as drawn: its box, its words' size, its icon (73)
 //   k: "s19ring" {id, lv, lo, hi} / {id, clear: 1}   the kit's heat ring as drawn (Cook.Kit.heatRing draw): its level and green, on
 //                                 each 0.01 or crossing (70, 77, 96)
@@ -73,6 +73,10 @@ function s19bhook() {
       // (the kitchen's own mapping where it has one, Cook.UI.worldToScreen: its camera may be scrolled or zoomed past what worldView says)
       const C = window.Cook, W2S = C && C.UI && typeof C.UI.worldToScreen === "function" && sc === C.scene ? C.UI.worldToScreen : null;
       const P = W2S ? (x, y) => { const p = W2S(x, y); return [p.x, p.y]; } : (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+      // (the camera's own fade is a fade on screen: a view swapped while the camera is faded to the cover is not a jump; s19-shared-checks,
+      // samosa's plate between its stations, js/cook/stations.js setView)
+      const fe = cam.fadeEffect;
+      const camA = fe && (fe.isRunning || fe.isComplete) ? Math.max(0, Math.min(1, 1 - (fe.alpha || 0))) : 1;
       const SX = W2S ? (P(1000, 0)[0] - P(0, 0)[0]) / 1000 : kx * cam.zoom, SY = W2S ? (P(0, 1000)[1] - P(0, 0)[1]) / 1000 : ky * cam.zoom;
       const walk = (list, pa) => {
         for (const o of list || []) {
@@ -98,7 +102,7 @@ function s19bhook() {
           // (a shelf thing's pill: its middle on screen, the kit's chip)
           const ch = o.wordId && o.chip && o.chip.active ? o.chip : null;
           const cm = ch ? P(ch.x, ch.y) : [0, 0];
-          now.set(id, [id, key + (o.frame && o.frame.name && o.frame.name !== "__BASE" ? "#" + o.frame.name : ""), R1(l), R1(t), R1(r), R1(bt), Math.round(a * 20) * 5, tweenMs(sc, o), o.wordId ? String(o.wordId) : 0, Math.round((o.depth || 0) * 10) / 10, R1(sx * SX), R1(sy * SY), Math.round((rot * 180) / Math.PI), R1(cm[0]), R1(cm[1])]);
+          now.set(id, [id, key + (o.frame && o.frame.name && o.frame.name !== "__BASE" ? "#" + o.frame.name : ""), R1(l), R1(t), R1(r), R1(bt), Math.round(a * camA * 20) * 5, tweenMs(sc, o), o.wordId ? String(o.wordId) : 0, Math.round((o.depth || 0) * 10) / 10, R1(sx * SX), R1(sy * SY), Math.round((rot * 180) / Math.PI), R1(cm[0]), R1(cm[1])]);
           } catch (e) { scanErr = String((e && e.message) || e).slice(0, 80); /* one picture that cannot be read never hides the rest */ }
         }
       };
@@ -159,7 +163,7 @@ function s19bhook() {
     const its = [...row.querySelectorAll(":scope > .oc-it14")].filter((c) => !c.classList.contains("oc-away") && shown(c));
     const v = {
       box: R(card.getBoundingClientRect()), row: R(row.getBoundingClientRect()),
-      cards: its.map((c) => ({ w: ((c.querySelector(".wc14-k, .oc-t") || c).textContent || "").replace(/\s+/g, " ").trim().slice(0, 24), done: c.classList.contains("done") ? 1 : 0, box: R(c.getBoundingClientRect()), in: contentBox(c) })),
+      cards: its.map((c) => ({ w: ((c.querySelector(".wc14-k, .oc-t") || c).textContent || "").replace(/\s+/g, " ").trim().slice(0, 24), id: c.dataset.word || (c.querySelector("[data-word]") || {dataset: {}}).dataset.word || null, done: c.classList.contains("done") ? 1 : 0, box: R(c.getBoundingClientRect()), in: contentBox(c) })),
     };
     if (!same("pad", v)) emit({ k: "s19pad", ...v });
   };
