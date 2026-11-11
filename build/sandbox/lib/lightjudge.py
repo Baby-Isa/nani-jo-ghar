@@ -14,9 +14,10 @@ was not darkened (a near 0) is the lit region. It passes only if:
      and not a region much bigger than its thing;
   5. never over the side panel (unless it lights a card there) or over a face it is not lighting;
   6. the dim's darkness within DIM_MARGIN of chai's (DIM_REF);
-  7. nothing moving into it while it is up (a thing still arriving after the light came).
+  7. nothing moving into it while it is up (a thing still arriving after the light came); a thing that changes its own picture where it
+     stands (the egg browning) has not come in.
 The knife's swipe (STD-E2-08a: Onboard.VARIANTS.swipe, chop's, wherever chop's game runs: daar's onion, chaat) passes 4 when the box holds the knife, the item and the
-path between them. Writes verdict.json beside each light, and mark.jpg (the screen with what was measured drawn on it) when it fails.
+path between them, and the knife moving along that path inside it is the move it shows, not a thing moving in. Writes verdict.json beside each light, and mark.jpg (the screen with what was measured drawn on it) when it fails.
 """
 import json
 import os
@@ -44,6 +45,8 @@ PANEL_TOL = 4           # px into the side panel
 FACE_IN = 0.2           # a face this far inside the light, not its own, is lit by it
 MOVED_MAX = 0.3        # more of the screen than this moving between the pictures: not judged (a view changing, a pop-up coming)
 MOVE_PX = 14            # a thing whose middle moved this far (or 30% of its size) while the light was up was moving into it
+IN_PLACE = 0.15         # a new picture whose middle is within this share of its size (or MOVE_PX) of an old one ...
+IN_PLACE_SIZE = 0.25    # ... of about its size (within this share) changed its picture in place (the egg browning): it did not come in
 SWIPE_GAMES = ["chop"]   # STD-E2-08a, until Onboard.VARIANTS names them (read from the page when it does); a variant is a game's and
 # goes wherever that game runs (Zafar, 10 Nov: one chop, chained into recipes: daar's onion and chaat's chops are chop's game)
 CHAINED = {"chop": ["daar", "chaat", "assemble"]}
@@ -379,12 +382,25 @@ def judge(d):
         lst += [{"key": p["id"], "id": p["id"], "box": p["box"]} for p in (o.get("pics") or []) if not any(x in p["id"].lower() for x in SURFACE) and "tray" not in p["id"].lower() and "board" not in p["id"].lower()]
         return lst
 
+    def size_of(b):
+        return max(b[2] - b[0], b[3] - b[1])
+
+    def in_place(x, src):
+        # (a thing that changed its own picture where it stands, the egg browning in its pan: a picture of about its size stood at its
+        # place when the light came, so it was there, not coming in; s19-shared-checks)
+        m, sz = mid(x["box"]), size_of(x["box"])
+        for y in src:
+            my, sy = mid(y["box"]), size_of(y["box"])
+            if sz > 0 and abs(sy / sz - 1) <= IN_PLACE_SIZE and ((my[0] - m[0]) ** 2 + (my[1] - m[1]) ** 2) ** 0.5 <= max(MOVE_PX, IN_PLACE * sz):
+                return True
+        return False
+
     def moved(x, src):
         same = [y for y in src if y["key"] == x["key"] or y["id"] == x["id"]]
         m = mid(x["box"])
         size = max(x["box"][2] - x["box"][0], x["box"][3] - x["box"][1])
         if not same:
-            return "came into it after the light came"
+            return None if in_place(x, src) else "came into it after the light came"
         near = min(((mid(y["box"])[0] - m[0]) ** 2 + (mid(y["box"])[1] - m[1]) ** 2) ** 0.5 for y in same)
         return f"moved {round(near)} px into it after the light came" if near > max(MOVE_PX, 0.3 * size) else None
     big = 0.12 * area(R)
@@ -395,6 +411,10 @@ def judge(d):
         why = moved(x, things_of(o0))
         if not why and meta.get("still") and o2:
             later = [y for y in things_of(o2) if y["key"] == x["key"] or y["id"] == x["id"]]
+            # (the knife's swipe: the knife moving along its path inside the light is the move the light shows, STD-E2-08a; it still may
+            # not come into it, and it may not leave it; s19-shared-checks)
+            if swipe and knife is not None and x["key"] == knife["id"]:
+                later = [y for y in later if share_in(y["box"], R) < 0.6]
             if later:
                 m = mid(x["box"])
                 dd = min(((mid(y["box"])[0] - m[0]) ** 2 + (mid(y["box"])[1] - m[1]) ** 2) ** 0.5 for y in later)

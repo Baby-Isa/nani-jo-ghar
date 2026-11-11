@@ -1,0 +1,56 @@
+{
+  "name": "s19-games-1: daar, samosa, maani and sekelo on the new art, and their check breaks to zero",
+  "why": "the art landed (11 Nov); Zafar: fix every check break that isn't language, then judge and publish",
+  "cost": "about $45-55",
+  "port": 8909,
+  "read": [
+    "build/reports/s19-fixes-g.md (the breaks left, by game and check) and build/reports/s19-checks-2.md, s19-checks-1.md (what each check measures)",
+    "sources/art/s19-k2/results/run-report.txt (the art run) and sources/art/s19-k2/contact-sheet.jpg (the 60 cut pieces, in assets/cook/)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers 10-11 Nov)"
+  ],
+  "owns": [
+    "js/cook/stations/daar.js, samosa.js, maani-line.js, mishkaki-grill.js and their data/stations/*.json",
+    "js/cook/mechanics/grill.js, thread.js, fry.js, fill-fold.js, knead.js, roll.js, tawa.js and the mechanics only these four use",
+    "build/sandbox/data/evidence.json (your rows' specs)",
+    "build/reports/s19-games-1.md"
+  ],
+  "readOnly": [
+    "js/cook/stations.js, coach.js, station-lib.js, kitchen-kit.js, ui.js, js/shared/** (s19-shared-checks owns the shared code)",
+    "data/cook.json (s19-serve2 owns it: write your manifest lines in your report)",
+    "js/cook/serve.js and flow.js",
+    "build/sandbox/** except data/evidence.json, build/lint/**, build/tools/**",
+    "assets/** (use the cut pieces as they are)"
+  ],
+  "flows": [
+    "cook:daar",
+    "cook:samosa",
+    "cook:maani-line",
+    "cook:mishkaki-grill"
+  ],
+  "tasks": [
+    {
+      "do": "Wire the new art: daar's pot (items/v4/daar/pot-empty, pot-oil) and its six contents as discs laid in the pot by code (disc-seeds, -onion, -onion-chilli, -masala, -daar, -tadka: Zafar's default, three lines and the discs); samosa's karahi with oil (items/v4/samosa/karahi-oil: a redo is coming, ART-75's rule: same name, same box) and its plate with the napkin (plate-napkin); maani's round board and pin (items/v4/maani/board, pin; ART-62); sekelo's chicken, chilli and corn in four stages (items/v4/sekelo/<kind>-<stage>) and its eight bowls (bowl-meat ... bowl-corn) as the threading band (K9, Zafar's default). Each game's settings list the new files so loadcheck passes.",
+      "accept": "each game at L1 at 740x320 and 1280x665, before and after; loadcheck passes"
+    },
+    {
+      "do": "Then every check break in the four games to zero, except language gaps: measure first (contract run, the four games, L1-L4 at 740x320 and 1280x665, run-id s19-games-1-before), then fix: snaps (114: tween the picture itself, never a container), item sizes (115: maani's board-tawa-plate shrink and samosa's close-up fold are Zafar's accepted design, 11 Nov: a smooth glide there is right; sekelo's grill size waits on his choice), card padding in the game's own cards (116), a call at each step (36), decoys (37, by the levels table in data/rules.json), call with its light (78). A break that is the shared code's goes to s19-shared-checks via your report; a break you judge the check's fault: why, with its picture.",
+      "accept": "the same run again (s19-games-1-after): every end reached, 0 page errors, the breaks by check before and after, each one left named with its owner"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8909, flock /tmp/njg-browser-8909.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line goes on docs/language/recording-sheet.md as a gap, via the orchestrator); never remove a mechanic or a help; shared pieces only; fix what you break; keep under 1.5 GB of runs (four builders share the disk); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+      "accept": "build/reports/s19-games-1.md with a Proof section, under 800 words"
+    }
+  ],
+  "model": "Opus",
+  "effort": "high",
+  "stop": "when the tasks are done",
+  "branch": "s19-games-1 in /home/user/wt/s19-games-1 (made for you from the integration branch, without most of sources/: the disk is tight); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "stubs": "none",
+  "report": "s19-games-1",
+  "publish": false,
+  "rows": []
+}
