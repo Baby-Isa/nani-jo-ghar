@@ -13,10 +13,10 @@ Opus, high. Branch `s19-games-2` (s19-shared-checks merged in), never pushed. Fl
 - **Checks in conflict (s19-shared-checks):** 36 wants an item step called as it opens; 89 (SH-172) forbids it (baking tried: 36 -13,
   89 +8; reverted). 37 reads baking's card before its rows reveal. 109 wants one line on the pantry's painted shelves. 70: a timed call
   queued behind the helper's line is dropped (`skip-closed`) when the child taps first. 113: the side menu over a tray face.
-- **Timeouts:** chai L4 at 740x320 hits the sandbox's 300 s cap, before and after (chai unchanged).
+- **Timeouts:** chai L4 at 740x320 hits the 300 s cap, before and after.
 - **Recording gaps** (on the sheet): baking's v.open, naan put-in, "Tayar ai."; v.serve.
 - **check-change** not run to its end: started on the pre-merge code, stopped at its push step to merge s19-shared-checks; its full play
-  (7 games, L1-L4, two sizes, and the base) is 2-3 hours on this machine. Its pieces ran on their own below.
+  (7 games, L1-L4, two sizes, and the base) is 2-3 hours here.
 
 ## What changed
 - **Art:** eggs' whole egg (E5); the boiled halves read from the ring as lifted (soft, firm, over). Naan in four stages through the
