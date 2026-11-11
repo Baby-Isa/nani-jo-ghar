@@ -491,8 +491,11 @@ export function itemWords(root) {
   LEX.set(root, map);
   return map;
 }
-// (stations whose rows are full by design: the pantry's shelf and the daar's chop hold at least the table's count)
-export const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
+// (stations whose rows are full by design: the pantry's shelf and the daar's chop hold at least the table's count. s19-clean-a, the
+// sweep's x28: so do the stations whose shelf is the dish's whole kit, every choice in view at every level: corn's six bowls (his
+// mock, 10 Nov: "The six bowls ... are right"), sekelo's threading bowls (each mix's pieces), samosa's fillings and baking's jars
+// (Zafar, 11 Nov morning: "The jars: Claude's call (three: flour, sugar, salt)"); fewer than the table's count is still a break)
+export const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal|corn|mishkaki-grill|sekelo|samosa|baking)$/;
 // s19-shared-checks (Zafar, 11 Nov: contract-37 judged by the levels table): the count a station wants at a level is the levels table's
 // (data/rules.json levels.decoys, read from the game being judged), a station's own row first where it has one (data/cook.json
 // levelTable.stations[game].decoys, as js/cook/station-lib.js Cook.levelRow reads it), and none for chop's hop at L1 (CK-71). The game
