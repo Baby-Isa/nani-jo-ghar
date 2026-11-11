@@ -3947,8 +3947,10 @@
     const OC = OCard();
     if (!mission || !W || !OC) return false;
     // a game whose check gives its wrong rows (the card's own rows) but never marked them: marked now, as M.serveWrong would
-    let marked = false;
-    rows.forEach((r) => r && typeof r === "object" && Array.isArray(r.ids) && !r.head && ((r.wrong = true), (marked = true)));
+    // (marked here only for the pop-up: taken off again once it is over, so a game that never marks its card leaves no red behind)
+    const mine = [];
+    const mark = (r) => !r.wrong && ((r.wrong = true), mine.push(r));
+    rows.forEach((r) => r && typeof r === "object" && Array.isArray(r.ids) && !r.head && mark(r));
     writtenCard = true; // (the pop-up writes every row: SH-110)
     let cards;
     try {
@@ -3959,9 +3961,10 @@
     const people = cards.filter((c) => c.who);
     const isWrong = (c) => c.rows.some((r) => r.wrong);
     // one card and nothing marked on it: its first try's misses are what was wrong
-    if (!people.some(isWrong) && people.length === 1) people[0].rows.forEach((r) => r.miss && !r.head && ((r.wrong = true), (marked = true)));
-    if (!people.some(isWrong)) return false;
-    if (marked) renderOrder();
+    if (!people.some(isWrong) && people.length === 1) people[0].rows.forEach((r) => r.miss && !r.head && mark(r));
+    const unmark = () => mine.length && (mine.forEach((r) => (r.wrong = false)), renderOrder());
+    if (!people.some(isWrong)) return void unmark() || false;
+    if (mine.length) renderOrder();
     const panel = (c) => $(`#mission .oc-card[data-ck="${c.key}"]`) || null;
     // (the checks read a note's step and by: lib/contract-wo.mjs, contract-118)
     const note = (what, info) => global.Lifecycle && global.Lifecycle.note && global.Lifecycle.note(what, { step: String((info && (info.phase || (info.ok != null ? (info.ok ? "ok" : "bad") : ""))) || ""), by: JSON.stringify(Object.assign({ round }, info || {})) });
@@ -3984,6 +3987,7 @@
         return { el, rows: out, head: H && H.line ? () => Lang.speak(H.line) : null };
       },
     }));
+    mission.lastWrong = new Set(list.filter((c) => !c.ok).map((c) => c.who)); // (M.redoStart keeps these, whoever marked them)
     const done = await W.play({
       host: $("#stage") || document.body,
       cards: list,
@@ -3994,13 +3998,14 @@
       talk: (el) => (global.Lifecycle && global.Lifecycle.talk && global.Lifecycle.talk.dom ? global.Lifecycle.talk.dom(el) : null),
       note,
       faceHtml: (who, src, size) => (global.Face && global.Face.html ? global.Face.html(who, size, { src }) : `<img class="njg-face-img" src="${esc(src)}" alt="">`),
-    });
+    }).finally(unmark);
     return !!(done && done.shown);
   };
   M.redoStart = function () {
     if (!mission) return [];
     const who = new Set();
     mission.ladders.forEach((L) => Order().rows(L, { all: true }).forEach((r) => r.wrong && r.for && who.add(r.for)));
+    (mission.lastWrong || []).forEach((w) => w && orderCards().some((c) => c.who === w && c.rows.some((r) => r.for === w)) && who.add(w));
     // (one person's own card: nothing to take away)
     if (!who.size) return [];
     const before = new Map([...document.querySelectorAll("#mission .oc-card[data-ck]")].map((e) => [e.dataset.ck, e.getBoundingClientRect()]));
