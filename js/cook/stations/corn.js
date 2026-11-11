@@ -175,10 +175,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       return img;
     });
     const places = Math.min(4, K.slots || 3);
+    // (s19-games-2, contract-114: a raw cob on the band is within 15% of its length on the grill, where it goes next)
+    const bandLen = Math.max(L.band.len, L.grill.len / 1.14);
     const raw = [0, 1, 2, 3].map((i) => {
       const at = L.band.at(i);
       const img = T(S.add.image(at.x, at.y, tex.raw).setDepth(D.item));
-      GK.lay(img, { x: at.x, y: at.y, len: L.band.len });
+      GK.lay(img, { x: at.x, y: at.y, len: bandLen });
       // (no word of its own on the band: a cob is the dish, not a word, so it has no pill, opt3s; the shelf line's rule, contract-109,
       // is for the band's words standing in a row with their pills, which the six bowls of screen 2 are)
       GK.shadow(S, img, { dx: 6, dy: 8, alpha: 0.26, blur: 5 });
@@ -188,6 +190,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const smoke = (x, y) => {
       const r = sm.r || [10, 8];
       const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, r[0] + Math.random() * r[1], col("smoke"), 0.45).setDepth(D.fx + 2));
+      s.fx = true; // (an effect: the lights never wait for it, stillStage)
       S.tweens.add({ targets: s, y: y - (sm.rise || 120), alpha: 0, scale: sm.grow || 2.2, duration: mo.smokeMs || 1300, onComplete: () => s.destroy() });
     };
     // SH-256 (the eye judge, 10 Nov: the cob landed on the tray at a third of its grill size, lost in the tray, then grew on the plate):
@@ -296,7 +299,16 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           else off();
         }, 0);
       };
-      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, onLight: lightGlow });
+      // (s19-games-2, contract-78: the grill's smoke is an effect that never ends while a cob grills; the light waits only for the game's
+      // own moves, so the call held for it comes with it)
+      const stillStage = () => {
+        try {
+          return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && t.fx));
+        } catch (e) {
+          return true;
+        }
+      };
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, still: stillStage, onLight: lightGlow });
       // SH-228 (chai's method): the stuck help after the level's wait from the last action, at once after a wrong move: her helper card
       // naming the thing (an item's step), else her line again, with the light. Never where the light would be the answer
       if (!hides && Cook.Coach.stuck)
@@ -564,8 +576,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             const c = inTray[i];
             q.cob = c.img;
             c.img.setDepth(D.item + 0.3);
-            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it)
-            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: Math.min(d * (pl.cob || 0.84), Math.max(trayLen, d * 0.6)), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
+            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it; s19-games-2, contract-114: never under 15% less)
+            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: Math.max(Math.min(d * (pl.cob || 0.84), Math.max(trayLen, d * 0.6)), trayLen / 1.14), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
           })
         );
         if (kit.tray && kit.tray.active) {
