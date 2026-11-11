@@ -10,7 +10,7 @@ Opus, high. Branch `s19-clean-c`, never pushed. Flaws first.
   - The 3:1 tray is drawn about 1.45 times taller than its shape.
   - The grill shrank (width-bound): contract-115 reads 65% of the room, under 70%.
   - It is `SK.rackLong` in `grill.js`: sekelo never used `grill-kit.js`.
-- **No frames:** MAA-23 (no sandbox state lands on the moment), and corn's before.
+- **No frames:** MAA-23 (no state lands on it); corn's before.
 - `evidence.mjs --after`: the spec lists no rows.
 - I overwrote a stale Nov-10 `scratchpad/base` copy by mistake.
 
@@ -46,7 +46,7 @@ Before `s19-clean-c-before/`, after `s19-clean-c-after/`; the same flow, frame a
 - **s19-clean-a (the checks):**
   - 112 samosa: lightjudge picks the filling on the strip (`lightjudge.py:274`); `contract-s19.mjs:712` reads `getBounds`, not `litBounds`.
   - 96 maani: the tawa's ring resets as the maani flips; no pot empties (`cook-maani-line-l2/740x320/09-view-service`).
-  - 30 sekelo: with SEK-25 the count is no longer written; each skewer is a row.
+  - 30 sekelo: SEK-25 writes no count; a row per skewer.
   - 37: gos is mishkaki's piece; samosa's plurals.
   - 114: samosa's heaps (`ACCEPTED_SIZES`).
   - 36: the tadka pop-up's lines; the "no" card. Also 105, 116, 72, 70, 73.
@@ -80,6 +80,6 @@ Before `s19-clean-c-before/`, after `s19-clean-c-after/`; the same flow, frame a
   - Before the merge: 20/20 ends, 0 page errors, `CONTRACT FAILED: 29 breaks`.
   - After the merge: 20/20 ends, 0 page errors, `CONTRACT FAILED: 82 breaks`.
 - `checks.mjs`: every step ok (699 s). The load check: 6/6 of my pages, the stir lab included, with the patch.
-- check-change (`--brief`, base 3c80c8aa4): push passed (7.1 min; `build/reports/tiers/push-e2f548e51f.md`); scope failed on the merged integration branch's `sources/art/s19-k3/` files; play was stopped at my 25-minute limit. No change result file was written.
+- check-change (base 3c80c8aa4): push passed (`build/reports/tiers/push-9a4e238824.md`); scope failed on the merged `sources/art/s19-k3/` files; play stopped at my 25-minute limit; no result file.
 
 QA: builder only · checks ✅ · contract ❌ · LNG ✅ (engine only) · CMP ✅ (shared kit pieces only).
