@@ -1,0 +1,51 @@
+{
+  "name": "s19-pantry: the pantry on the stored walnut shelf set (no new art), and the kitchen pages stop loading the retired old sets",
+  "model": "Opus",
+  "effort": "high",
+  "why": "the art audit (build/reports/s19-art-audit.md): the pantry's whole shelf is the old mixed set (256 px, six lid families, plastic tubs, pine crates); 35 of its 36 items exist in the stored walnut set (items-s17-stove/f-*), which passes; Zafar's 10 Nov rule: every piece used again is at the house standard",
+  "cost": "about $35-45",
+  "stop": "when the tasks are done",
+  "branch": "s19-pantry in /home/user/wt/s19-pantry (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "build/reports/s19-art-audit.md (sections a and b, the pantry and the stored library rows, and its 'no art needed' list) and its contact sheets in sources/art/audit-2026-11-10/ (read from /home/user/nani-jo-ghar/)",
+    "js/cook/mechanics/fetch.js (the pantry) and data/cook.json (its slots, its items' pictures, art.assets)",
+    "docs/process/regressions.md PAN-06 (Zafar's pantry rows)"
+  ],
+  "owns": [
+    "js/cook/mechanics/fetch.js and the pantry's entries in data/cook.json (its items' pictures, slots, art.assets for the pantry page), and data/cook.json's art.assets lines that load retired sets",
+    "build/reports/s19-pantry.md"
+  ],
+  "readOnly": [
+    "js/cook/stations/**, js/cook/mechanics/* except fetch.js, coach.js, station-lib.js, kitchen-kit.js, ui.js, js/shared/** (s19-fixes-g owns them)",
+    "js/cook/flow.js and css/cook.css (s19-serve owns them)",
+    "assets/** (use the stored walnut set as it is; the orange has no walnut picture yet: keep its old one and say so)",
+    "build/sandbox/**, build/lint/**, build/tools/**"
+  ],
+  "stubs": "none",
+  "port": 8914,
+  "report": "s19-pantry",
+  "publish": false,
+  "flows": [
+    "cook:fetch",
+    "cook:chai-tray"
+  ],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "The pantry's shelf from the walnut set: every item it shows (36; the audit's table maps them) from assets/cook/items-s17-stove/f-*, side-on, one jar and lid family; single vegetables in place of the pine crates; sizes by the art bible's size classes, not true size; its pills, lights and the leak bot unchanged. The cupboard picture's pale oak shelves stay until a background run (say so).",
+      "accept": "the pantry at L1-L4 at 740x320 and 1280x665, before and after pictures; every flow to its end, 0 page errors; the pantry leak bot passes"
+    },
+    {
+      "do": "Kitchen pages stop loading what nothing draws: art.assets entries for cook/props/ and fx-s11 and the old root shelf-* sets that no kitchen page draws any more (check each with the page's real draws: build/tools/review/loadcheck.mjs), so the old sets are retired from the pages but kept on disk.",
+      "accept": "loadcheck passes for every kitchen page; the list of what was dropped in the report"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); commit on your branch often, never push; never invent Kutchi; never remove a mechanic or a help; keep under 2 GB of runs; never run `git sparse-checkout disable`.",
+      "accept": "build/reports/s19-pantry.md with a Proof section, under 700 words"
+    }
+  ]
+}

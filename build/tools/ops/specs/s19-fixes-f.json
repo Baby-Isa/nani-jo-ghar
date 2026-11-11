@@ -8,7 +8,7 @@
   "branch": "s19-fixes-f in /home/user/wt/s19-fixes-f (made for you from the integration branch, without sources/ except the S19 picks: the disk is tight); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": true,
   "read": [
     "build/reports/s19-eggs-beside-chai.md, s19-four-beside-chai.md, s19-four-more-beside-chai.md (the eye judge's findings) and the verdict files they name (build/screenshots/sidebyside/*-L1-20261110-*/judge-batch.verdicts.md, in the main checkout /home/user/nani-jo-ghar/)",
