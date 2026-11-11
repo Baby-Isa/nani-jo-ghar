@@ -511,11 +511,14 @@ import { setTimeout } from "../life.js";
     Cook.sfx.click();
     // 2. the naan in
     expectTap(naan, "ph-naan");
-    call(Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(["ph-naan"]) }), "naan");
+    // ("Hane naan!", the engine's line the bowl's step says: the naan's "put in" has no voice yet)
+    const naanIn = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(["ph-naan"]) });
+    call(naanIn && naanIn.ok !== false && (!Lang.hasVoice || Lang.hasVoice(naanIn)) ? naanIn : line("now", "call", Lang.phrase(["ph-naan"])), "naan");
     await tapOn(naan, "naan");
     z.expect({ kind: "wait" });
     setBusy(true);
-    await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.8, duration: 520, ease: "Cubic.easeInOut" });
+    // (SH-256, contract-114: in the oven within 15% of its size on the tray, where it rests again when it comes out)
+    await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" });
     await Cook.wait(200);
     naan.setVisible(false);
     if (face) face.setVisible(false);

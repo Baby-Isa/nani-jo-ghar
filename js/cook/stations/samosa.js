@@ -1113,7 +1113,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         onPlate.map((o, i) => {
           const sp = spots[i];
           const sc = z.L(sp.w) / (Cook.Pastry.TS * PPU);
-          if (o === x) return S.fly(o, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: 400, arc: z.L(90) }).then(() => o.setAngle(sp.a));
+          // (SH-256, contract-114: it shrinks to its plate size in a glide on the samosa itself, never a jump between frames)
+          if (o === x) return new Promise((res) => S.tweens.add({ targets: o, x: z.X(sp.x), y: z.Y(sp.y), scale: sc, duration: 400, ease: "Sine.easeInOut", onComplete: res })).then(() => o.setAngle(sp.a));
           return new Promise((res) => S.tweens.add({ targets: o, x: z.X(sp.x), y: z.Y(sp.y), scale: sc, angle: sp.a, duration: 280, onComplete: res }));
         }),
       );
@@ -1322,8 +1323,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (L < lo * 0.5) [i, u] = [0, L / (lo * 0.5)];
       else if (L < lo) [i, u] = [1, (L - lo * 0.5) / (lo * 0.5)];
       else [i, u] = [2, Cook.clamp((L - hi) / (burn - hi), 0, 1)];
-      if (f.a.texture.key !== `sv2-fry-${i}`) f.a.setTexture(`sv2-fry-${i}`);
-      if (f.b.texture.key !== `sv2-fry-${i + 1}`) f.b.setTexture(`sv2-fry-${i + 1}`);
+      // (SH-256, contract-114: the next picture at the samosa's own width, whatever its canvas: it browns, it never jumps in size)
+      const swap = (im, key) => {
+        if (im.texture.key === key) return;
+        const w = im.displayWidth;
+        im.setTexture(key);
+        if (w > 0 && im.width > 0) im.setScale(w / im.width);
+      };
+      swap(f.a, `sv2-fry-${i}`);
+      swap(f.b, `sv2-fry-${i + 1}`);
       f.b.setAlpha(u);
     };
     const fdt = clock();
