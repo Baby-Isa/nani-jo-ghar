@@ -27273,5 +27273,286 @@
    "max": 20,
    "note": "top-down chaat's well done: the praise zoom keeps the bowl clear of the stone tray's edge at 740x320 (every line said: the panel whose line is Shabash is the praise frame)"
   }
+ ],
+ "PAN-19": [
+  {
+   "flow": "cook:fetch",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 12,
+   "note": "the pantry: Nani gives the order as a customer does, each card appearing as she says it"
+  }
+ ],
+ "PAN-20": [
+  {
+   "flow": "cook:fetch",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "the pantry: every jar on the shelves carries its word pill"
+  }
+ ],
+ "CK-83": [
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "chaat: the chop light only once the vegetable is still; the light on the potato itself"
+  }
+ ],
+ "CK-84": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "baking: the light round the atto jar no bigger than the jar and its pill; the oven's dim"
+  }
+ ],
+ "ART-52": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "baking: the jars at chai's height for their size class, each still tappable to its pill"
+  }
+ ],
+ "CHAI-108": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 12,
+   "note": "chai with two pans: the green windows of the two pans (a log in the builder's report, the frames for the judge)"
+  }
+ ],
+ "CK-72": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 16,
+   "note": "baking: fixed amounts only (a quarter, a half, three quarters, full, one and a half, two, two and a half); no 'a little' or 'a lot' anywhere"
+  }
+ ],
+ "DAAR-46": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "daar's stir: the shared stir, ending when the child stops, a mark per lap"
+  }
+ ],
+ "DAAR-51": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "daar: the katori beside the hob bowl-sized, the asker's face on its rim"
+  }
+ ],
+ "MAA-23": [
+  {
+   "flow": "cook:maani-line",
+   "path": "speed1",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 16,
+   "note": "maani: big and small taught by a word moment before they are asked"
+  }
+ ],
+ "CK-86": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "sekelo's grill screen as the mock: two trays stacked left, each about half the grill's width, together its height; one centred rectangle"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "corn's grill and the steel tray beside it, the same height, one centred rectangle"
+  }
  ]
 }

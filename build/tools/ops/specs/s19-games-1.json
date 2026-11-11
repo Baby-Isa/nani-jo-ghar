@@ -47,7 +47,7 @@
   "branch": "s19-games-1 in /home/user/wt/s19-games-1 (made for you from the integration branch, without most of sources/: the disk is tight); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": true,
   "stubs": "none",
   "report": "s19-games-1",

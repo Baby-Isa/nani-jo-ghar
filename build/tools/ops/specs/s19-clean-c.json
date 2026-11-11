@@ -1,0 +1,56 @@
+{
+ "name": "s19-clean-c: daar, samosa, maani and sekelo: their open rows and check breaks to zero",
+ "why": "Zafar, 11 Nov evening: the fix list to zero before he plays (every kitchen row to fix, every check fault but missing recordings), so his play finds what we missed",
+ "cost": "about $35-45",
+ "port": 8912,
+ "read": [
+  "build/reports/s19-fixlist-sweep.md: section 2 (every row's verdict, with file:line) and section 3 (your batch); this is your work list",
+  "docs/decisions/2026-11-10-overnight.md (Zafar's answers 10-11 Nov, the last section first)",
+  "build/reports/s19-games-1.md, s19-games-2.md, s19-serve2.md (what the last builders did and left)"
+ ],
+ "owns": [
+  "js/cook/stations/daar.js, samosa.js, maani-line.js, mishkaki-grill.js and their data/stations/*.json",
+  "js/cook/mechanics/stir.js, grill.js, thread.js, roll.js, fry.js, fill-fold.js and js/cook/grill-kit.js",
+  "build/reports/s19-clean-c.md"
+ ],
+ "readOnly": [
+  "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js (s19-clean-a)",
+  "data/cook.json (s19-clean-a: your exact lines in your report)",
+  "js/cook/stations/chai-tray.js, eggs.js, baking.js, corn.js, chop.js and their mechanics (s19-clean-b; corn uses grill-kit.js: replay cook:corn after any change to it)",
+  "build/sandbox/**, build/lint/**, build/tools/** (s19-clean-a)",
+  "assets/** (new art reaches you from the orchestrator, cut)"
+ ],
+ "flows": [
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill",
+  "cook:corn"
+ ],
+ "tasks": [
+  {
+   "do": "Measure first: a contract run of daar, samosa, maani-line and mishkaki-grill, L1-L4 at 740x320 and 1280x665 (run-id s19-clean-c-before). Then build every STILL-OPEN row of batch C in the sweep: DAAR-45, DAAR-46 and DAAR-03 as one piece (daar's stir calls the shared stir mechanic, ends when the child stops, a mark per lap); DAAR-12 (Zafar 11 Nov: ask no speed before L4; its lesson waits on Mum's lines); DAAR-51 (the katori bowl-sized, at the serving kitchen's bowl scale); daar's and maani's part of SH-228 (the stuck help); MAA-19 (Firai! with its light from L2, no card left ticked after a burn, the raw dough's own glow); SAM-30 (the knob, fry and lift calls with their light from L2: use Cook.Coach.control as eggs does; the strip's light inside its picture); SEK-25 (a card per piece on the skewer: ui.js and cook.json lines to the orchestrator); MAA-23 (Zafar 11 Nov: big and small as a word moment, its lines only from the language engine, a gap listed for Mum); CK-86's sekelo part: the two trays as wide as in the mock (sources/art/s19-mocks2/results/A1-sekelo-2-improved.png: each tray about half the grill's width, stacked, together the grill's height), the rectangle centred.",
+   "accept": "each row: before and after frames at 740x320 and 1280x665 named in the report; DAAR-12 and MAA-23 at L1-L4"
+  },
+  {
+   "do": "Then every check break in your four games to zero except missing recordings: contract-78, 36, 37, 112, 114, 115, 116 and the rest. A break that is shared code (the coach's own lights, samosa's accepted sizes in the check) goes to s19-clean-a in your report with its file:line; a check you judge wrong: why, with its picture. Confirm the sweep's FIXED-IN-CODE rows of your games (DAAR-, SAM-, MAA-, SEK- rows) by their named check in your final run: list each as passes or fails.",
+   "accept": "the same run again (s19-clean-c-after): every end reached, 0 page errors, the breaks by check before and after, each one left named with its owner; the FIXED-IN-CODE list with passes or fails"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8912, flock /tmp/njg-browser-8912.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs (the disk is tight: about 9 GB free for three builders); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report (data/cook.json, js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js belong to the shared batch, s19-clean-a, which starts after s19-taps merges).",
+   "accept": "build/reports/s19-clean-c.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-c in /home/user/wt/s19-clean-c (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "code",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "report": "s19-clean-c",
+ "publish": false,
+ "rows": []
+}
