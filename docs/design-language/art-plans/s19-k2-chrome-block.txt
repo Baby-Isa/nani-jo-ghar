@@ -1,0 +1,338 @@
+NANI JO GHAR: THE SERVING KITCHEN, THE SERVED DISHES, THE KITCHEN GAMES' MISSING PIECES AND THE POT REDO (Sprint 19). Paste this whole block into Claude in Chrome.
+
+Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-k2/refs.zip , unzip it,
+and drag all 40 pictures into this chat with this block.
+
+=== WHAT THIS RUN IS FOR ===
+Three things Zafar approved (11 Nov), in this order of importance:
+  1. THE KITCHEN where the child serves the dishes to the family: one tall painting with no people, no trays and no dishes, plus
+     the same room in its two game views (ordering and serving); then the walnut serving tray alone and nine served dishes, all
+     as separate pieces we place ourselves (one tray for one person, three for three).
+  2. The kitchen games' missing pieces (the art audit's run 1): daar's pot, samosa's karahi, maani's board, sekelo's other kinds
+     and their bowls, the eggs, samosa's plate, baking's naan and jugs, the pantry's orange.
+  3. The top-down pot again, with Zafar's stubborn-picture method (Chat A, Chat B).
+
+=== FOR CLAUDE IN CHROME (the runner) ===
+Use chatgpt.com (Zafar is signed in). Run THREE ChatGPT windows at a time, each conversation in its own tab. Send in one tab, move
+to the next while it generates; go round the tabs in turn. Never more than three windows generating.
+
+THE CHATS, IN PRIORITY ORDER. Start with the first three. Whenever a window frees, open the first chat in this list that has not
+started and whose needs are met (if its needs are not met yet, take the next one and come back to it):
+  1. CHAT K   the kitchen: KA, KB, KC, KO, KS                      (needs nothing)
+  2. CHAT T   the tray and the served dishes: KT, SD1, SD2, SD3      (needs nothing)
+  3. PHOTOS   five brand-new chats, one after another in this one window: PH-D1, PH-K8, PH-M1, PH-B3, then the pot's CHAT A
+  4. CHAT 1   steel and wood, straight down: D1, D2, K8, M1          (needs the photos PH-D1, PH-K8, PH-M1)
+  5. CHAT 2   food, straight down: D3, K2b, K9, E5, S5               (needs nothing)
+  6. CHAT 3   side-on: B3a, B3b, B5, PS1                             (needs the photos PH-B3)
+  7. CHAT B   the pot, the game version: P1, P2                      (needs CHAT A's photo)
+
+ZAFAR'S TWO RULES (they apply to every line of every chat):
+  (1) A REVIEW OR ADVICE IS ITS OWN MESSAGE, TEXT ONLY. Ask for it and end the message with "Do not draw." When the text arrives,
+      paste it back with the pictures and ask: "Make a new image that applies this feedback." (or "... this advice."). Never ask
+      for words and an image in one message; never wait for an image you did not ask for in that message.
+  (2) STUBBORN: if a redo comes back barely changed, never attach the image it is stuck on again. Open a FRESH chat and ask, in
+      plain words that never mention a game, a style or our pictures, for a realistic photo of just the thing. Then make the game
+      version in the line's chat from that photo, plus a DIFFERENT kept image (one of the 00-HOUSE pictures) for the house style.
+      Log it in the report. (The lines marked "photo first" do this from the start.)
+
+IN EVERY CHAT (except the photo chats):
+1. First message: the HOUSE BRIEF the chat names (below), the pictures it names, and: "Reply in text only: say in 5 lines what
+   makes these work. Do not draw."
+2. For each line, in order:
+   a. PLAN: attach the pictures the line names, paste the line, and add: "First, in text only, list exactly what you will draw:
+      layout, exact counts, sizes as shares of the picture, camera, materials, colours, light, background, image shape. Do not draw."
+   b. IMAGE: paste its answer back with the same pictures: "Make a new image that applies this plan."
+   c. REVIEW: "Review your image against the line and the house brief, in text only, point by point: count every object; what
+      is wrong? Do not draw."
+   d. CORRECTED IMAGE: paste the review back with the pictures and the image: "Make a new image that applies this feedback."
+   Up to two images per line (b and d); keep both; mark the better one as the pick. If the second barely changed: rule (2).
+3. Attach only the pictures a line names, by their file names from the zip. A picture whose name ends in "-now" is what we
+   replace: attach it ONLY where a line names it; the others are for you, to see what each line replaces. Never attach
+   R0-why-redo-wall-uneven (it is for you: it shows how the last pot went wrong).
+4. If ChatGPT refuses, hits a limit or slows down, start a fresh conversation for the rest of that chat, beginning again at step 1,
+   and log why.
+
+THE KITCHEN CHECK (CHAT K, every image; say it in each review, and check it yourself before you keep an image):
+  NO TRAYS, NO BOARDS AND NO DISHES ON THE ISLAND IN ANY KITCHEN IMAGE: its top is empty, clean white marble. No people. No ceiling
+  (the top edge is plain wall). No wall shelf. No tiled splashback (the wall's plaster runs down to the back counter). ONE sage
+  green only, the same on every cabinet. Marble veins soft cool grey, never golden. No hard window-frame shadows. The only board
+  in the room is the small walnut chopping board standing on the back counter on the right.
+  KO and KB's upper part are framed exactly as KA-K1 (the same wall above the family, back-counter height and strip of island);
+  only KS and KB's lower part show more of the island's top.
+
+=== DOWNLOADING (at the end, all at once, from ChatGPT's Library; never one by one mid-run) ===
+Images stay in their chats until every chat is done. Then open https://chatgpt.com/library. Hover over the first image of this run:
+a small check box appears in its bottom-right corner; tick it. Hover over each other image of this run; tick its check box in its
+bottom-right corner. Tick every image of this run (the photos too) and nothing else: not the uploaded references, not images from
+other chats. Press the download button on the selection bar: one download. ChatGPT names the files; log each as
+"DOWNLOADED <n>: <ChatGPT's file name> -> <save-as name>" (save-as: s19-k2-<line>-<try>.png, e.g. s19-k2-KB-1.png; the photos
+s19-k2-PH-<line>-<try>.png, and CHAT A's s19-k2-PH-P-<try>.png). If the selection is refused, use each image's own download button.
+Never page JavaScript, never a file picker, never a GitHub upload: Zafar pushes the folder himself to main under assets.
+
+=== REPORT (keep it as you go; post it at the end inside ONE code block so Zafar can copy it with one click) ===
+Start with "S19 KITCHEN AND ITEMS RUN REPORT". Then:
+- KA's advice, in full, and KC's review, in full, and every other review ChatGPT wrote (each line's step c), in full: they are half
+  the value of this run.
+- THE KITCHEN'S COLOURS: the colours ChatGPT says it used (from KC's review): wall, cabinets (one sage or not), knobs and tap,
+  marble and its veins, walnut, floor, door and window frames, each with its hex as ChatGPT gave it.
+- Per line: chat link and title | tries (and why) | kept: <save-as> = <ChatGPT's file name>, ... | your pick and why | what worked |
+  what did not | anything ChatGPT refused | for the photo-first lines and P1, P2: whether the wall band or the rim is even.
+- Any line where rule (2) was used, and what changed.
+- The DOWNLOADED list, anything missing, and how long it took.
+
+=== HOUSE BRIEF (SCENE) (paste as the first message of CHAT K) ===
+These are pictures for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE picture is the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy its
+style, not its contents: ignore the faces, labels, pills, cards and the gear icon in it, and ignore the thin coloured guide lines and
+small face stickers in any reference picture. Rules for every image:
+- A sunny, calm room: soft, even daylight from the upper left, gentle shadows, nothing harsh, no hard window-frame shadows on the
+  wall or the counters; warm creams, ONE sage green, natural walnut and white marble with soft cool grey veins (never golden or
+  cream marble); brushed steel reflects a neutral pale-grey room; brass is muted, never shiny gold.
+- A warm, modest Indian family home: no religious marker of any kind; nothing not halal (no pork, no alcohol); no sweets or biscuits.
+- Leave clear, calm space where the family stands and where the dishes go: no clutter, no text, letters, numbers or labels anywhere.
+- No people in any picture: the family is added by the game.
+- Plates, bowls and trays are round, square or rectangular (they only look oval because of the camera's angle).
+
+=== HOUSE BRIEF (PIECES) (paste as the first message of CHAT T, CHAT 1, CHAT 2, CHAT 3 and CHAT B; in CHAT B, "the HOUSE BRIEF below" is this) ===
+These are pieces for a premium children's cooking game (ages 3-6) in a grandmother's kitchen. The 00-HOUSE pictures are the style:
+Pixar-inspired, semi-photorealistic 3D, "stylised shapes with realistic materials", premium and polished, warm and calm. Copy their
+style, not their contents: ignore the faces, labels, pills and the gear icon in them, and ignore the thin coloured guide lines and
+small face stickers in any reference picture. Rules for every image:
+- One large soft light from the upper left; nothing floats. The 00-HOUSE pictures have faint window-light streaks across the
+  worktop; do NOT copy those: everything is evenly lit, no window streak.
+- Materials: brushed stainless steel reflecting a neutral pale-grey room; cream ceramic (the bowls in F1 are THE bowl: the same
+  shape, cream and rim in every bowl you draw); dark walnut only where a line asks; white marble worktop with soft cool grey veins
+  only where a line asks for marble (never golden or cream marble).
+- Camera: "straight down" means a flat plan view with no perspective at all: a bowl, a plate or a cob's end is a perfect circle, a
+  tray a perfect rectangle, and no inner or outer side wall of any container shows, only its rim and its floor. Depth shows only
+  as a soft shadow inside the rim along its upper-left inner edge. Any steel rim is ONE flat band of even width, no inner line,
+  ledge or bevel. The reference pictures are sometimes tilted; yours must not be. "Side-on" lines are the exception.
+- These are separate PIECES that we cut out and place in our own layout; we place the stove, the trays, the plates, the shadows and
+  the word labels ourselves. Draw only what the line asks, nothing else: no stove, hob, knobs or flames, no hands, no text, letters,
+  numbers or labels, no tools that do nothing, no napkins or plants unless asked, no steam, no glow, nothing in the air.
+- Counts are exact: if a line says six, draw six, and count them in your check.
+- Fill the frame: the objects asked for take up most of the picture, with a margin of about one tenth of the picture all round.
+  Never small objects in a large empty field. Sizes are given as shares of the picture's width: keep to them.
+- "On magenta" means one flat solid #FF00FF background edge to edge, no gradient, no texture, and NO shadow at all: no contact shadow,
+  no soft shadow, nothing darker than the flat magenta anywhere (we add every shadow in code). The object must not touch the edges.
+  We cut along the magenta, so it must not tint, reflect in or bleed onto the object: steel reflects a neutral pale-grey room, never
+  pink; between thin pieces (strands, rings) the magenta stays pure.
+- Where a line asks for several panels or rows: equal panels, the same camera, scale and light in each, separated only by a strip of
+  the same background; no frames, borders, dividing lines or numbers.
+- No oval plates or trays: round, square or rectangular only. No sweets or biscuits anywhere.
+- A warm, modest family home: no religious marker of any kind; nothing not halal (no pork, no alcohol).
+
+=== IMAGE LINES ===
+
+CHAT K: THE KITCHEN (HOUSE BRIEF (SCENE); first message with 00-HOUSE-chai-cooking). Advice first, as Zafar's rule (1).
+KA ADVICE (text only; pictures: KA-C2-our-candidate, KA-A3-the-tray-angle, KA-K1-the-kitchen-now). Send:
+   "KA-K1 is the kitchen in our game now; KA-C2 is our best new candidate; KA-A3 is the same room with walnut trays, and its camera
+   angle on the island is the one we want. This is where a child aged 3-6 serves the dishes they cooked to their family. We need
+   ONE tall painting of this room, about 4:3 landscape, with NO people, NO trays and NO dishes (trays and dishes are separate
+   pieces we place ourselves). The game shows it in two views: the ORDERING view frames the upper part (a plain wall above where
+   the family stands, then the back counter at the family's waist height, then a strip of the island), and the SERVING view glides
+   down to the island's top, where the trays go. These are decided:
+   - The ordering view is framed exactly as KA-K1 is: the same share of wall above the family, the same back-counter height and
+     the same strip of island across the bottom (that amount is right: it leaves space for the family, their words and cards).
+     Only the serving view, the lower part of the painting, shows more of the island's top.
+   - No ceiling at all: the top edge is plain wall. A tall plain wall above the family's heads: space for speech bubbles and cards.
+   - The back counter at the family's waist height; the white marble island across the bottom, its top seen at the angle of
+     KA-A3, with no empty marble in front doing nothing.
+   - The window with a brass tap and sink on the left, the arched door to the garden on the right, the range in the middle of
+     the back counter. A small plant in a cream pot on the left; a walnut chopping board, a cream jar and a folded cream cloth on
+     the right (as in KA-C2). NO wall shelf. NO tiled splashback: the wall's own plaster runs down to the back counter.
+   - Soft even daylight from the upper left, no hard window-frame shadows.
+   - Colours: the wall a pale warm tint of Ecru (#c2ae93); ALL cabinets one sage green only, Chromium Green (#719470), the same
+     on every cabinet; brass knobs and tap a muted Olive Ocher (#d6b43e); white marble with soft cool grey veins, never golden;
+     natural walnut.
+   As an art director: what would you change in KA-C2 to meet these decisions, and to make it a premium, calm, 10/10 scene that
+   feels like a real grandmother's home, not a generic AI kitchen? A few personal touches only, and only at counter height, never
+   on the wall above the family. Give 8-12 concrete changes, best first. Do not draw."
+KB THE TALL KITCHEN (pictures: KA-C2-our-candidate, KA-A3-the-tray-angle, KA-K1-the-kitchen-now as the framing reference; KA's
+   answer pasted). Send: "Make a new image that applies this advice: one tall painting of this kitchen, about 4:3 landscape, every
+   decision above kept. Its upper part: frame it exactly as KA-K1: the same amount of wall above the family, the same back-counter
+   height, the same strip of island showing, only with no ceiling showing (the top edge plain wall) and the new room's look. Its
+   lower part continues down over more of the island's top, at the angle of KA-A3. Say it to yourself before you
+   draw: NO PEOPLE, NO TRAYS, NO BOARDS AND NO DISHES ON THE ISLAND (its top is empty, clean white marble); no ceiling; no wall
+   shelf; no tiled splashback; one sage green only, the same on every cabinet."
+KC THE REVIEW AND ONE CORRECTED KB (two messages, Zafar's rule (1)).
+   Message 1 (no picture but KB): "Review your image against every decision in my first message, your own advice and the house
+   brief, in text only, point by point. Are there any trays, boards or dishes on the island? Is the top edge plain wall with no
+   ceiling? Is the wall tall enough above the family's heads for speech bubbles? Is the island's top at KA-A3's angle? Then list
+   every colour you used: the wall, the cabinets (is every cabinet the same one sage green?), the knobs and tap, the marble and
+   its veins, the walnut, the floor, the door and window frames, each with its hex. Is the upper part framed exactly as KA-K1
+   (the same wall above the family, the same back-counter height, the same strip of island)? Do not draw."
+   Message 2 (pictures: your KB, KA-C2-our-candidate, KA-A3-the-tray-angle, KA-K1-the-kitchen-now; the review pasted): "Make a new image that applies this
+   feedback." Keep both (KB = s19-k2-KB-1.png, the corrected one = s19-k2-KC-1.png); the better one is THE TALL PAINTING for KO and KS.
+KO THE ORDERING VIEW (pictures: the tall painting you kept, KA-K1-the-kitchen-now as the framing reference). Plan, image, review
+   as step 2. "Edit the attached tall painting; do not design a new room: the same room exactly (walls, colours, window, door,
+   range, cabinets, plant, board, jar, cloth, light). Landscape 16:9. Frame it exactly as KA-K1-the-kitchen-now: the same amount
+   of island showing, the same wall space above, the same back-counter height, the camera as level as KA-K1's; only with no
+   ceiling showing (the top edge plain wall) and the new room's look.
+   NO TRAYS, NO BOARDS AND NO DISHES ON THE ISLAND: ITS TOP IS EMPTY, CLEAN WHITE MARBLE. No people. No ceiling."
+KS THE SERVING VIEW (pictures: the tall painting you kept, KA-A3-the-tray-angle for the camera only: draw none of its trays or
+   dishes). Plan, image, review as step 2. "Edit the attached tall painting; do not design a new room: the same room exactly.
+   Landscape 16:9. The camera tilted down to the island's top at the angle of KA-A3, the island filling the lower half of the
+   picture, the back counter and a little wall above it. NO TRAYS, NO BOARDS AND NO DISHES ON THE ISLAND: ITS TOP IS EMPTY, CLEAN
+   WHITE MARBLE, ready for us to place one, two or three trays. No people."
+
+CHAT T: THE TRAY AND THE SERVED DISHES (HOUSE BRIEF (PIECES); first message with 00-HOUSE-chai-live and 00-F1-the-house-bowl).
+KT THE WALNUT SERVING TRAY (pictures: KA-A3-the-tray-angle, KA-C2-our-candidate). Landscape 16:9, on magenta: ONE empty rectangular
+   serving tray in natural walnut, seen from the camera of KA-A3 (from the front, the camera above, so the tray is a wide, flat,
+   foreshortened rectangle with its near rim showing as a thin band). MUST: a LOW rim, about a third as high as the rims in
+   KA-A3, so food on it is never hidden; corners softly rounded; natural walnut, a calm mid-to-dark brown with a fine straight
+   grain, matte oiled, never orange or red; the tray 80% of the picture's width, centred. No marble, no food, no shadow on the
+   magenta. This is the only tray in the run: the game shows one, two or three of it.
+SD1 CHAI, MAANI AND DAAR, SERVED (pictures: SD-D1-plate-at-the-counter-angle, SD-D2-fried-egg-at-the-counter-angle,
+   KA-A3-the-tray-angle, SD-K5-cream-plate, SD1-chai-glass-game, SD1-chapati-game, SD1-daar-tadka-game). Landscape 16:9, on magenta: THREE equal
+   panels, each holding ONE dish alone, every dish seen from the same camera as the plate in SD-D1 and the dishes in KA-A3 (the
+   island's angle). Left: a clear glass of milky chai (the chai's colour as in SD1-chai-glass-game). Middle: two chapatis lying
+   offset on a cream plate, the top one overlapping the lower by about half, both clearly visible (as SD1-chapati-game, golden
+   with light brown spots). Right: a cream bowl of yellow daar with a little chopped coriander on top (the daar's colour as in
+   SD1-daar-tadka-game). The plate is the cream plate of SD-K5 (the right one); the bowl is THE bowl of 00-F1. True relative size,
+   the same scale in all three panels: the plate 30% of the picture's width, the bowl 20%, the glass 9%. No tray, no table, no
+   steam, no shadow on the magenta.
+SD2 SEKELO, SAMOSA AND CHAAT, SERVED (pictures: SD-D1-plate-at-the-counter-angle, KA-A3-the-tray-angle, SD-K5-cream-plate,
+   K2b-K2-skewer-pieces, SD2-S4-samosas, SD2-F3-chaat-bowls). As SD1, the same camera, panels and scale. Left: two grilled skewers
+   lying side by side on a cream plate, each threaded with meat, tomato, onion and green pepper pieces, grilled as the cooked
+   column of K2b-K2 (a steel skewer with a dark walnut handle). Middle: three golden fried samosas on a cream plate (as the fried
+   one in SD2-S4). Right: a cream bowl of chaat: potato cubes, chickpeas, a scatter of sev, thin drizzles of green chutney and of
+   tamarind chutney on top (as in SD2-F3). No tray, no shadow on the magenta.
+SD3 CORN, NAAN AND CHOP, SERVED (pictures: SD-D1-plate-at-the-counter-angle, KA-A3-the-tray-angle, SD-K5-cream-plate,
+   SD3-K4-corn-cobs, B3-B3-naan-trays, SD3-P1-chop-vegetables). As SD1, the same camera, panels and scale. Left: one grilled corn cob lying on
+   a cream plate (deep golden with small char spots, as the done cob in SD3-K4). Middle: two baked naan on a cream plate, offset
+   so both show (golden with brown blisters, as the baked naan in B3-B3). Right: a cream bowl of mixed chopped vegetables, small
+   fresh pieces of potato, onion, tomato and green chilli (the vegetables of SD3-P1). No tray, no shadow on the magenta.
+
+PHOTOS: FIVE BRAND-NEW CHATS (rule (2) from the start). Each a new chat; attach nothing; never mention a game, a style or our
+pictures; send exactly the words below. If the rim or wall band is uneven, send once more: "The wall band is wider at the top than
+at the bottom. Move the camera so it is exactly centred: the band must be the same width everywhere." Keep the best photo: it is a
+reference, not a pick.
+PH-D1 "A realistic product photo of a medium stainless steel cooking pot with two small loop handles on its sides and no lid, empty
+   and clean, taken from exactly straight above, the camera centred over the pot so the rim is a perfect circle and the steel
+   wall shows as a band of the same width all the way round. The two handles point straight left and straight right, level.
+   Plain light grey background, soft even light from the upper left."
+PH-K8 "A realistic product photo of a round stainless steel karahi, a deep round Indian frying pan with two small rounded handles at
+   left and right, filled with plain golden frying oil and nothing else, taken from exactly straight above, the camera centred so
+   the rim is a perfect circle and the steel wall shows as a band of the same width all the way round. Plain light grey
+   background, soft even light from the upper left."
+PH-M1 "A realistic product photo of a round walnut wood board for rolling out flatbreads,
+   and beside it, not touching, a slim walnut rolling pin, thicker in the middle and tapering to rounded ends, taken from exactly
+   straight above, the camera centred so the board is a perfect circle and none of its side edge shows. Plain light grey
+   background, soft even light from the upper left."
+PH-B3 "A realistic photo of a dark steel rectangular baking tray with three raw naan breads on it, seen from the front with the
+   camera a little above the tray, as when you look into an open oven: the tray's front edge nearest, a little of its top surface
+   showing. Plain light grey background, soft warm light from above." When it lands, send once: "The same tray, the same camera and
+   the same three naan, now baked: golden with brown blisters."
+CHAT A (the pot redo's plain photo; its text word for word, below under THE POT REDO).
+
+CHAT 1: STEEL AND WOOD, STRAIGHT DOWN (HOUSE BRIEF (PIECES); first message with 00-HOUSE-chai-live and D1-house-steel-pan).
+D1 DAAR'S POT, EMPTY, EXACTLY STRAIGHT DOWN (photo first; pictures: PH-D1's photo, D1-house-steel-pan, 00-HOUSE-chai-live; never
+   D1-daar-pot-now). SQUARE image, on magenta: the steel pot of the photo, with exactly its geometry, drawn in the house style:
+   brushed stainless steel reflecting a neutral pale-grey room, the cool steel of D1-house-steel-pan (never a warm or rose tint),
+   two small steel loop handles straight out to the LEFT and the RIGHT, level, empty with a clean brushed floor.
+   MUST: the rim a perfect circle; the steel wall's band the SAME width all the way round; the floor a centred circle; the round
+   body 60% of the picture's width, each handle's tip a clear margin from the edge. No lid, no shadow on the magenta, no steam.
+D2 THE SAME POT WITH OIL (pictures: your D1). Edit D1, do not draw anew: the identical pot (shape, size, place, handles, steel),
+   with a thin layer of clear golden cooking oil covering its floor and one soft reflection on it. Nothing else in it.
+K8 THE KARAHI (photo first; pictures: PH-K8's photo, M1-K6-walnut-handles for its ladle's steel, 00-HOUSE-chai-live; never
+   K8-karahi-now). SQUARE image, straight down, on magenta: ONE round brushed-steel karahi (a deep Indian frying pan) with two
+   small rounded steel handles at left and right, full of plain golden frying oil, nothing in it, a perfect circle, 75% of the
+   picture's width, the steel the brushed finish of the ladle in M1-K6-walnut-handles, premium and polished: a calm highlight from
+   the upper left, a soft inner shadow under the rim, the oil clear and golden with one soft reflection. MUST: the steel rim the
+   same width all the way round. No stove, no food, no shadow on the magenta.
+M1 MAANI'S ROUND BOARD AND ROLLING PIN, EXACTLY FROM ABOVE (photo first; ART-62; pictures: PH-M1's photo, M1-K6-walnut-handles for
+   the walnut, 00-HOUSE-chai-live; never M1-board-now or M1-rolling-pin-now). Landscape 16:9, on magenta: in the left half, the
+   round walnut board, a PERFECT circle 46% of the picture's width, seen from exactly straight above so NONE of its side edge
+   shows (today's board shows its side along the lower edge: that is the fault), its top smooth and matte with a fine, calm grain;
+   in the right half, not touching it, the slim rolling pin lying horizontal, 40% of the picture's width long, thicker in the
+   middle, tapering to rounded ends, no handles. Both the natural dark walnut of the handles in M1-K6. No flour, no dough, no
+   shadow on the magenta.
+
+CHAT 2: FOOD, STRAIGHT DOWN (HOUSE BRIEF (PIECES); first message with 00-HOUSE-chai-live and 00-F1-the-house-bowl).
+D3 DAAR'S POT CONTENTS AS SIX DISCS (pictures: D3-pot-states-now for the food only: ignore its pots, D1-house-steel-pan). Landscape
+   16:9, straight down, on magenta: SIX flat round discs in two rows of three, equal gaps, each a PERFECT circle 22% of the
+   picture's width, all the same size: each disc is what fills the pot's floor at one step, seen from straight above, edge to
+   edge, with a crisp round edge and NO pot, rim or wall (the game lays each disc inside the pot). Top row, left to right: cumin
+   and mustard seeds sizzling in a thin layer of golden oil; chopped onion frying in oil, soft and turning golden; the onion
+   golden with green chilli rings; bottom row: tomato masala, chopped tomato cooked down with the onion, red-orange; yellow daar,
+   thick and smooth with soft whole lentils showing; the same daar with its tadka on top, as in the last panel of D3-pot-states-now.
+   No shadow on the magenta.
+K2b SEKELO'S OTHER THREE KINDS, FOUR STAGES (pictures: K2b-K2-skewer-pieces). Landscape 16:9, straight down, on magenta: a grid of
+   TWELVE food pieces, three rows by four columns, equal gaps, at the size, light and finish of K2b-K2's pieces, each seen from
+   straight above as it would sit threaded on a skewer (draw NO skewer). Rows, top to bottom: a chicken breast cube; a short chunk
+   of a fat green chilli; a thick round slice of corn cob, lying so its kernels show. Columns, left to right: raw; part-grilled
+   (first light browning); grilled (browned, light grill marks); overdone (dark char at the edges, still food, not black). Raw
+   chicken pale and matte, never glossy; cooked chicken golden-brown, never orange. All twelve the same size, every piece whole.
+K9 SEKELO'S RAW PIECES IN THE CREAM BOWLS (pictures: K9-F5-samosa-bowls, K2b-K2-skewer-pieces, 00-F1-the-house-bowl). Landscape
+   16:9, straight down, on magenta: EXACTLY EIGHT cream ceramic bowls, the bowl of 00-F1 exactly, in two rows of four, equal gaps,
+   each bowl 18% of the picture's width, as K9-F5 is laid out, each holding one raw piece kind heaped level with its rim, the
+   pieces cut as the raw column of K2b-K2. Top row, left to right: lamb cubes; tomato chunks; red onion pieces; green pepper
+   chunks. Bottom row: potato cubes; chicken cubes; green chilli chunks; corn cob slices. No tray, no skewers, no labels, no
+   shadow on the magenta.
+E5 THE WHOLE EGG AND THE BOILED EGG IN FOUR STAGES (pictures: E5-K7-eggs, E5-F7-bowl-of-eggs). Landscape 16:9, straight down, on
+   magenta: FIVE objects in a row, equal gaps, each about 15% of the picture's width: (1) one whole brown hen's egg lying on its
+   side, as the eggs in E5-F7 (an egg is egg-shaped: that is the one oval allowed); (2)-(5) one peeled boiled egg cut in two
+   lengthways, its two halves side by side, cut faces up, as the fourth object in E5-K7, at four stages: (2) runny: the yolk liquid,
+   glossy deep orange; (3) soft: a jammy deep-orange centre, set at its edge; (4) firm: pale yellow all through; (5) overdone: pale,
+   crumbly yolk with a thin grey-green ring round it. The whites the same in all four. No egg cup, no shell, no shadow on the magenta.
+S5 SAMOSA'S PLATE WITH A PAPER NAPKIN (pictures: SD-K5-cream-plate). SQUARE image, straight down, on magenta: the cream plate of
+   SD-K5 (the right one), a PERFECT circle 75% of the picture's width, centred, the same cream, rim and finish, lined with one
+   square plain white paper napkin lying flat, turned so its corners point up, down, left and right and just pass the rim, soft
+   creases only, no pattern. Nothing on it (the samosas are placed by the game). No shadow on the magenta.
+
+CHAT 3: SIDE-ON (HOUSE BRIEF (PIECES); first message with 00-HOUSE-chai-live and B5-B1-glass-bowl-mini).
+B3a THE NAAN TRAY: RAW AND PART-BAKED (photo first; ART-73; pictures: PH-B3's two photos, B3-oven-mini, 00-HOUSE-chai-live;
+   B3-B3-naan-trays is for you only, to compare: do not attach it). Landscape 16:9, on magenta, seen from the FRONT with the camera
+   a little above the tray (the view through B3-oven-mini's door, standing in front of it), with exactly the photo's geometry:
+   TWO equal panels, the same dark steel rectangular baking tray in each, 80% of the panel's width, its front edge nearest, a
+   little of its top surface showing, THREE naan on it: left, raw: pale soft dough, slightly uneven; right, part-baked: puffed,
+   still pale with the first light-golden spots. The tray plain, no handles, no paper. Lit softly from above as inside an oven,
+   warm but not orange. MUST: the trays large (80% of each panel), never top-down.
+B3b THE NAAN TRAY: BAKED AND OVERDONE (pictures: your B3a, PH-B3's baked photo). The same tray, camera, scale and the same three
+   naan in the same shapes and places as B3a: left, baked: golden with brown blisters and a few darker spots; right, overdone:
+   deep brown, the blisters dark at the edges, still bread, not black.
+B5 THE FOUR JUGS, FULL (pictures: B5-B2-jugs, B5-B1-glass-bowl-mini). Landscape 16:9, side-on, the camera, white marble and plain
+   warm-cream wall of B5-B1: EXACTLY FOUR identical clear glass measuring jugs in a row, equal gaps, each 18% of the picture's width,
+   the jug of B5-B2 exactly (spout to the left, handle to the right, plain, NO marks, dashes or numbers), each full to just under
+   the spout, with a flat level top, left to right: white flour (soft matte powder); milk (smooth, opaque white, a thin bright line
+   at the surface); sugar (white, sparkling granules); yoghurt (thick, creamy white, a soft uneven top). Each must read at a glance
+   as what it is. No window streak on the marble.
+PS1 THE ORANGE, WITH AN APPLE AND A PEAR, IN THE WALNUT SHELF FAMILY (pictures: PS1-walnut-shelf-family). Landscape 16:9, on magenta,
+   side-on, the camera at the fruit's mid-height, as the lemon, mango and tomato in PS1-walnut-shelf-family: THREE whole fruits in
+   a row, equal gaps, each about 22% of the picture's width: an orange (fine dimpled peel, a tiny green stem nub); a red apple; a
+   green pear. The same light, finish and scale as that family (the orange a little bigger than its lemon). No leaves, no crate,
+   no shadow on the magenta.
+
+=== THE POT REDO (ART-75): CHAT A and CHAT B, word for word from s19-tp-redo-chrome-block.txt ===
+Last run's pot (P1, P2) came out with the steel wall wider at the top-left than at the bottom-right: ChatGPT kept a slight tilt, and
+its corrections barely changed it because it was anchored on the picture it was given. This redo uses Zafar's method for a stubborn
+picture.
+
+CHAT A (a brand new chat; never mention a game, a style or our pictures; attach nothing):
+  Send exactly: "A realistic product photo of a small stainless steel saucepan with a black handle and a small pouring lip, taken
+  from exactly straight above, the camera centred over the pan so the rim is a perfect circle and the steel wall shows as a band of
+  the same width all the way round. Clear water inside with a few small bubbles. The handle points straight to the right, the
+  pouring lip on the left. Plain light grey background, soft even light from the upper left."
+  If the wall band is still uneven, send once more: "The wall band is wider at the top than at the bottom. Move the camera so it is
+  exactly centred over the pan: the band must be the same width everywhere." Keep the best photo: it is a reference, not a pick.
+
+CHAT B (a new chat):
+  1. First message: the 00-HOUSE-chai-live picture and the HOUSE BRIEF below, and: "Reply in text only: say in 5 lines what makes
+     this style work."
+  2. Attach Chat A's photo (download it from Chat A's image, or add it from the Library) and send P1 below. Never attach
+     R0-why-redo-wall-uneven or any earlier pot.
+  3. REVIEW, in two messages (Zafar, 10 Nov): first "Review your image against the line and the house brief, in text only, point by
+     point. Do not draw." When the text arrives, paste it back: "Make a new image that applies this feedback." Never ask for the
+     review and the image in one message.
+  4. When P1 is kept, send P2 in the same chat with the kept P1 attached.
+  Up to three tries for P1, two for P2. If the wall is still uneven after Chat A's photo, say so in the report; don't keep going.
+
+P1 THE POT, EXACTLY STRAIGHT DOWN, WITH WATER (pictures: Chat A's photo, 00-HOUSE-chai-live). SQUARE image, on magenta: the
+   saucepan of the photo, with exactly its geometry, drawn in the house style: brushed stainless steel reflecting a neutral pale-grey
+   room, a black handle, a small pouring lip on the left, clear water with a FEW small bubbles (no more than eight).
+   MUST: the rim a perfect circle; the steel wall's band the SAME width all the way round; the floor a centred circle; the handle
+   straight out to the RIGHT and level, its tip a clear margin from the edge. The round body 55% of the picture's width, the whole
+   pan inside the picture with a margin. No shadow on the magenta, no steam.
+P2 THE SAME POT, EMPTY (pictures: your P1). Edit P1, do not draw anew: the identical pan (shape, size, place, handle, lip, steel),
+   with no water, its clean brushed-steel floor showing quiet, fine circular brushing and a soft highlight.
