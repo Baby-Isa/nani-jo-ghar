@@ -50,7 +50,7 @@
     "cx": 0.4978,
     "cy": 0.4978,
     "r": 0.47,
-    "flat": 0.55
+    "flat": 0.66
    },
    "jharo": {
     "w": 657,
@@ -106,7 +106,7 @@
    "bx": 600,
    "r": 237,
    "px": 1310,
-   "pd": 330,
+   "pd": 360,
    "trayY": 744,
    "trayD": 180,
    "trayPitch": 210
@@ -114,7 +114,7 @@
   "oil": [
    {
     "upTo": 3,
-    "size": 146,
+    "size": 128,
     "r": 0.4,
     "at": [
      -90,
@@ -124,7 +124,7 @@
    },
    {
     "upTo": 4,
-    "size": 130,
+    "size": 114,
     "r": 0.44,
     "at": [
      -135,
@@ -134,7 +134,7 @@
     ]
    },
    {
-    "size": 110,
+    "size": 96,
     "r": 0.49,
     "at": [
      -90,
@@ -146,7 +146,7 @@
     ]
    }
   ],
-  "_oil_s19k2": "S19 (s19-games-1): the v4 karahi's oil is 0.774 of its body (the v3 one's 0.90), so the samosas in it are about 0.86 of their old size and float a little nearer the middle (SAM-14: a spot plus half its size within 0.8 of the oil)"
+  "_oil_s19k2": "S19 (s19-games-1): the v4 karahi's oil is 0.774 of its body (the v3 one's 0.90): the samosas in it are a little smaller and float nearer the middle (SAM-14: a spot plus half its size within 0.8 of the oil); with the plate (pd 360, its napkin's middle 0.66 of the rim) a samosa keeps its size from the thali to the oil to the plate within 15% (contract-114)"
  },
  "assets": [
   "assets/cook/items/v4/samosa/samosa-*.webp",

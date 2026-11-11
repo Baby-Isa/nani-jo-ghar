@@ -303,12 +303,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const src = S.textures.get(key).getSourceImage();
         const own = src.width;
         // S19 (s19-games-1, contract-115: the potato pile stood at 66% of chai's M): a heap on another canvas stands as tall as a
-        // standard one (its drawn part 0.854 of the slot's width, S5's heaps), no wider than 1.2 of it (into its slot's own margin)
+        // standard one: S5's heaps' canvases (the box the size check reads) are 0.98 of the slot's width tall with 7% padding, so a heap
+        // with none stands 0.92 of it, no wider than 1.24 of it (into its slot's own margin, clear of its neighbours)
         const oh = (() => {
           const [t, b] = St.opaqueSpan(S, key);
           return Math.max(1, (b - t) * src.height);
         })();
-        const sc = own === META.heap.w ? z.L(w) / own : Math.min((z.L(w) * 0.854) / oh, (z.L(w) * 1.2) / own);
+        const sc = own === META.heap.w ? z.L(w) / own : Math.min((z.L(w) * 0.92) / oh, (z.L(w) * 1.24) / own);
         // SH-243 (contract-109: "the shelf item veg-01 stands -9 px off the base line"): every heap stands on the one base line, the
         // foot of a standard heap's canvas (the potato pile and the chilli rings are other shapes: centred, their feet were 5-11 px off)
         const foot = HEAP_Y + (w * (META.heap.h / META.heap.w)) / 2;
@@ -1127,8 +1128,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       S.tweens.killTweensOf(fimg);
       const c = u2w({ x: fimg.x, y: fimg.y, scaleX: FULL }, [d.x, d.y]);
-      x.setTexture(doneKey).setOrigin(0.5).setScale(FULL).setPosition(c.x, c.y).setAlpha(1).setVisible(true);
-      fimg.setVisible(false);
+      // (S19, contract-114: leaving the close-up the folded samosa fades in over the strip as the strip fades out, never one picture
+      // swapped for another in a frame; then it glides to the plate on itself, Zafar's accepted close-up)
+      x.setTexture(doneKey).setOrigin(0.5).setScale(FULL).setPosition(c.x, c.y).setAlpha(0).setVisible(true);
+      S.tweens.add({ targets: x, alpha: 1, duration: 160 });
+      S.tweens.add({ targets: fimg, alpha: 0, duration: 160, onComplete: () => fimg.setVisible(false) });
       S.sparkle(x.x, x.y);
       Cook.sfx.right();
       pop(z, S, Cook.display("ph-samosa"), x.x, x.y - z.L(170), { speakId: "ph-samosa", ms: 1100 });
