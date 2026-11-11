@@ -1244,6 +1244,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         contents,
         hob,
         floorY: sy(z, SHELF_TOP),
+        bandY: z.Y(SHELF_TOP),
         lift: LIFT,
         avoid: () => [katori && katori.img, katori && katori.face],
       });

@@ -533,9 +533,10 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
       const cardW = Math.min(dialW * kd * 0.72, viewR - hobR - 24) * z.k * ws;
       const card = lapCard(z, S, { cx, cy, right: z.X(hobR) - cx, bodyR, avoid, w: cardW, floorY });
       // DAAR-03: the marks, under the hob (or on its lower edge where the room under it is small)
-      const markR = Math.max(z.L(13), 5 / Math.max(0.01, ws));
+      const markR = Math.max(z.L(17), 7 / Math.max(0.01, ws));
       const hobBot = hob ? hob.y + hob.h : cy + bodyR * 1.2;
-      const room = floorY != null ? floorY - hobBot : z.L(80);
+      // (the band's own top, never raised with the scene: o.bandY; the room between it and the hob's foot)
+      const room = o.bandY != null ? o.bandY - hobBot : floorY != null ? floorY - hobBot : z.L(80);
       const markY = room >= markR * 2 + z.L(10) ? hobBot + room / 2 : hobBot - markR - z.L(10);
       const tally = marks(z, S, { cx, y: markY, r: markR, maxW: hob ? hob.w : bodyR * 2.4 });
       let count = 0;
@@ -886,16 +887,18 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
 
   Mech.define("stir", {
     station: "stir",
-    view: "hob",
+    view: "marble",
     async run(z, { laps, speed }, k) {
       const S = z.S;
       const ctx = z.ctx;
       const level = z.level || 1;
       await St.loadArt(S, art().concat(Cook.Kit ? Cook.Kit.art(1, []) : []));
+      // (daar's worktop, the hob a little up from where daar's band would be, its marks in the room under it)
       const floorY = z.Y(St.SHELF.top);
-      const P = potOnHob(z, S, { st: "daar", bottom: z.Y(St.SHELF.top - 14) });
+      if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top: floorY, far: 2000 });
+      const P = potOnHob(z, S, { st: "daar", bottom: z.Y(St.SHELF.top - 90) });
       P.burner.set("low");
-      const r = await stir(z, S, { cx: P.cx, cy: P.cy, inR: P.inR, bodyR: P.bodyR, laps, speed, level, retry: false, contents: P.contents, hob: P.hob, floorY, step: "stir", key: "stir", turnSwitch: true, demo: true });
+      const r = await stir(z, S, { cx: P.cx, cy: P.cy, inR: P.inR, bodyR: P.bodyR, laps, speed, level, retry: false, contents: P.contents, hob: P.hob, floorY, bandY: floorY, step: "stir", key: "stir", turnSwitch: true, demo: true });
       /* ---------- the marks (accuracy; the speed) ---------- */
       const got = r.count;
       z.listen(got === laps, `stirred ${got} times, they asked for ${laps}`);

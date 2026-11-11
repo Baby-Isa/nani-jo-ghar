@@ -1308,14 +1308,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("fry", { round: new Set() }) : null;
     let ctl = null;
     let ctlStep = null;
-    const lead = (step, thing, current) => {
-      if (step === ctlStep && ctl && !ctl.over) return;
+    let eachOn = null; // (the first fry: each samosa lit in turn, as the old staged step's "each", until they are all in)
+    const lead = (step, thing, current, again = false) => {
+      if (step === ctlStep && ctl && !ctl.over && ctl.thing === thing) return;
       if (ctl) ctl.close();
       ctl = null;
       ctlStep = null;
-      if (!step || !thing || !gate || !Cook.Coach || !Cook.Coach.control || !gate.first(step)) return;
+      if (!step || !thing || !gate || !Cook.Coach || !Cook.Coach.control || !(again || gate.first(step))) return;
       ctlStep = step;
       ctl = Cook.Coach.control({ key: "fry", target: Cook.Coach.box(thing), first: true, noHint: true, current: () => ctlStep === step && (!current || current()), note: `${gate.scope}:s14-control` });
+      if (ctl) ctl.thing = thing;
     };
     if (burner.knob && burner.knob.getBounds) burner.knobHit.litBounds = () => (burner.knob.active ? burner.knob.getBounds() : null);
     lead("ctl-fire", burner.knobHit, () => !burner.knobHit.firstOn);
@@ -1452,7 +1454,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           lead("ctl-lift", cur.a, () => !cur.out && cur.level >= lo);
           steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine, again: true });
         } else {
-          if (waiting.length && !frying.length) lead("ctl-fry", waiting[0], () => !waiting[0].gone);
+          if (waiting.length && eachOn !== false) {
+            const next = waiting[0];
+            if (eachOn == null) eachOn = !!(gate && gate.first("ctl-fry"));
+            if (eachOn) lead("ctl-fry", next, () => !next.gone, true);
+          } else if (ctlStep === "ctl-fry") lead(null);
           else if (ctlStep === "ctl-lift" || ctlStep === "ctl-fire") lead(null);
           steps.to("samosa:fry", { id: "fry" });
         }
