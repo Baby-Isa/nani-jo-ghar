@@ -1,0 +1,3940 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "54b13d155aa9cae65628c819fdf45e7374ff6ca2",
+ "dirty": true,
+ "date": "2026-11-11T15:12:33.177Z",
+ "base": "5646e13caf4da0e35ceb51e6ec364fecdc0d7226",
+ "games": [
+  "cook:chai-tray",
+  "cook:maani-line",
+  "cook:eggs",
+  "cook:daar",
+  "cook:mishkaki-grill",
+  "cook:samosa",
+  "cook:chaat",
+  "cook:corn",
+  "cook:baking",
+  "cook:chop"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:chai-tray": [
+   1
+  ],
+  "cook:maani-line": [
+   1
+  ],
+  "cook:eggs": [
+   1
+  ],
+  "cook:daar": [
+   1
+  ],
+  "cook:mishkaki-grill": [
+   1
+  ],
+  "cook:samosa": [
+   1
+  ],
+  "cook:chaat": [
+   1
+  ],
+  "cook:corn": [
+   1
+  ],
+  "cook:baking": [
+   1
+  ],
+  "cook:chop": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [
+  "the brief names no fix-list row: no probes to play"
+ ],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-54b13d155a",
+  "before | after": "build/screenshots/tiers/change-54b13d155a/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-54b13d155a-chai-tray/films/cook-chai-tray@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-maani-line/films/cook-maani-line@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-eggs/films/cook-eggs@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-daar/films/cook-daar@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-mishkaki-grill/films/cook-mishkaki-grill@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-samosa/films/cook-samosa@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-chaat/films/cook-chaat@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-corn/films/cook-corn@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-baking/films/cook-baking@740x320.webm",
+   "build/screenshots/sandbox/tiers-film-54b13d155a-chop/films/cook-chop-speed1@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-54b13d155a/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-102",
+   "where": "cook:chai-tray@740x320 (view-service)",
+   "what": "Container glows [410,179,434,204] outside the kit's light (no light up): the game's own glow",
+   "blocks": true
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-70",
+   "where": "cook:chai-tray#mistake@930x430 (view-service)",
+   "what": "the heat ring entered its green (0.66-0.86) and no call was said by 0.84 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-102",
+   "where": "cook:chai-tray#returning@740x320 (hint-nani-says)",
+   "what": "jar-cook-paani glows [338,241,363,296] outside the kit's light (no light up): the game's own glow",
+   "blocks": true
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-77",
+   "where": "cook:chai-tray#takeback@740x320 (view-service)",
+   "what": "a new player's first timed window: the ring went on past the middle of its green (0.76, at 0.783) before the tap (the first-time hold waits in the green until the child acts)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-77",
+   "where": "cook:chai-tray#takeback@930x430 (view-service)",
+   "what": "a new player's first timed window: the ring went on past the middle of its green (0.76, at 0.784) before the tap (the first-time hold waits in the green until the child acts) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-36",
+   "where": "lab:cook/chai-tray#child@740x320 (chai-tray-view-service)",
+   "what": "a step opened on screen (the light on v2-glass-empty) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-70",
+   "where": "lab:cook/chai-tray#child@740x320 (chai-tray-view-service)",
+   "what": "the heat ring entered its green (0.66-0.86) and no call was said by 0.84 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-36",
+   "where": "lab:cook/chai-tray#child@930x430 (chai-tray-view-service)",
+   "what": "a step opened on screen (the light on v2-glass-empty) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-70",
+   "where": "lab:cook/chai-tray#child@930x430 (chai-tray-view-service)",
+   "what": "the heat ring entered its green (0.66-0.86) and no call was said by 0.84 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-107",
+   "where": "lab:cook/chai-tray#child@930x430 (chai-tray-order-card-in-sidebar)",
+   "what": "the shelf item cook-paani is lit [369,307,444,429] without its hop",
+   "blocks": true
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@740x320 (kind-timing)",
+   "what": "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@740x320 (help-open)",
+   "what": "mv-cooked-maani rests at 55 px at [495,242,559,304], -43% of its 95 px at its last place [516,43,611,136] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@740x320 (view-service)",
+   "what": "mv-raw-bajr rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@740x320 (view-service)",
+   "what": "mv-cooked-bajr rests at 55 px at [574,245,630,300], -43% of its 95 px at its last place [516,43,611,136] (mv-cooked-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line@930x430 (kind-roll)",
+   "what": "a step opened on screen (the light on mv-chakla) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@930x430 (kind-timing)",
+   "what": "mv-raw-maani rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@930x430 (help-open)",
+   "what": "mv-cooked-maani rests at 75 px at [598,326,679,405], -43% of its 130 px at its last place [624,55,754,182] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@930x430 (view-service)",
+   "what": "mv-raw-bajr rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line@930x430 (view-service)",
+   "what": "mv-cooked-bajr rests at 75 px at [698,323,784,408], -43% of its 130 px at its last place [624,55,754,182] (mv-cooked-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#mistake@740x320 (kind-timing)",
+   "what": "mv-raw-maani snaps from 116 to 96 px (-17%) between two frames, no tween (at [513,42,609,135]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#mistake@740x320 (help-open)",
+   "what": "mv-ball-maani snaps from 29 to 34 px (+17%) between two frames, no tween (at [375,95,409,129]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#mistake@740x320 (kind-timing)",
+   "what": "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#mistake@740x320 (help-open)",
+   "what": "mv-cooked-maani rests at 36 px at [581,257,617,292], -62% of its 95 px at its last place [516,43,611,136] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-116",
+   "where": "cook:maani-line#mistake@740x320 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line#mistake@930x430 (order-card-in-sidebar)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@50@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-79",
+   "where": "cook:maani-line#mistake@930x430 (help-open)",
+   "what": "the order card's light starts while something moves (obj:mv-turner:180)",
+   "blocks": true
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#mistake@930x430 (kind-timing)",
+   "what": "mv-raw-maani rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#mistake@930x430 (help-open)",
+   "what": "mv-cooked-maani rests at 49 px at [708,340,765,396], -62% of its 130 px at its last place [624,55,754,182] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#mistake@930x430 (view-service)",
+   "what": "mv-cooked-maani rests at 49 px at [720,341,772,392], -62% of its 130 px at its last place [624,55,754,182] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-116",
+   "where": "cook:maani-line#mistake@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line#hint@740x320 (hint-nani-says)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@50@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-78",
+   "where": "cook:maani-line#hint@740x320 (view-service)",
+   "what": "the call \"Firai!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@740x320 (kind-roll)",
+   "what": "mv-ball-maani snaps from 29 to 34 px (+16%) between two frames, no tween (at [374,95,407,128]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@740x320 (kind-timing)",
+   "what": "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@740x320 (view-service)",
+   "what": "mv-cooked-maani rests at 55 px at [496,243,558,303], -43% of its 95 px at its last place [516,43,611,136] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@740x320 (view-service)",
+   "what": "mv-raw-bajr rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line#hint@930x430 (hint-nani-says)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@50@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-78",
+   "where": "cook:maani-line#hint@930x430 (kind-timing)",
+   "what": "the call \"Firai!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@930x430 (view-service)",
+   "what": "mv-ball-bajr snaps from 39 to 46 px (+17%) between two frames, no tween (at [433,125,479,170]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@930x430 (kind-timing)",
+   "what": "mv-raw-maani rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@930x430 (view-service)",
+   "what": "mv-cooked-maani rests at 75 px at [600,327,677,403], -43% of its 130 px at its last place [624,55,754,182] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#hint@930x430 (view-service)",
+   "what": "mv-raw-bajr rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#returning@740x320 (kind-timing)",
+   "what": "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#returning@740x320 (view-service)",
+   "what": "mv-cooked-maani rests at 36 px at [578,254,619,295], -62% of its 95 px at its last place [516,43,611,136] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#returning@740x320 (view-service)",
+   "what": "mv-cooked-maani rests at 36 px at [585,254,626,293], -62% of its 95 px at its last place [516,43,611,136] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-116",
+   "where": "cook:maani-line#returning@740x320 (hint-nani-says)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#returning@930x430 (kind-roll)",
+   "what": "mv-ball-maani snaps from 39 to 46 px (+17%) between two frames, no tween (at [426,124,471,169]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#returning@930x430 (view-service)",
+   "what": "mv-ball-maani snaps from 39 to 47 px (+19%) between two frames, no tween (at [430,126,476,172]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#returning@930x430 (kind-timing)",
+   "what": "mv-raw-maani rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#returning@930x430 (view-service)",
+   "what": "mv-burnt-maani rests at 49 px at [607,341,662,395], -62% of its 130 px at its last place [624,55,754,182] (mv-burnt-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-116",
+   "where": "cook:maani-line#returning@930x430 (hint-nani-says)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-77",
+   "where": "cook:maani-line#takeback@740x320 (view-service)",
+   "what": "a new player's first timed window: the ring went on past the middle of its green (0.69, at 0.708) before the tap (the first-time hold waits in the green until the child acts) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#takeback@740x320 (view-service)",
+   "what": "mv-ball-bajr snaps from 28 to 33 px (+16%) between two frames, no tween (at [382,94,415,126]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#takeback@740x320 (kind-timing)",
+   "what": "mv-raw-bajr rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#takeback@740x320 (view-service)",
+   "what": "mv-cooked-bajr rests at 36 px at [577,254,620,296], -62% of its 95 px at its last place [516,43,611,136] (mv-cooked-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-116",
+   "where": "cook:maani-line#takeback@740x320 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-77",
+   "where": "cook:maani-line#takeback@930x430 (kind-timing)",
+   "what": "a new player's first timed window: the ring went on past the middle of its green (0.69, at 0.725) before the tap (the first-time hold waits in the green until the child acts) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#takeback@930x430 (kind-timing)",
+   "what": "mv-raw-bajr rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#takeback@930x430 (view-service)",
+   "what": "mv-cooked-bajr rests at 49 px at [608,342,660,393], -62% of its 130 px at its last place [624,55,754,182] (mv-cooked-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "cook:maani-line#takeback@930x430 (view-service)",
+   "what": "mv-cooked-bajr rests at 49 px at [617,340,671,393], -63% of its 132 px at its last place [623,54,755,183] (mv-cooked-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-116",
+   "where": "cook:maani-line#takeback@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-78",
+   "where": "lab:cook/maani-line@740x320 (maani-line-kind-timing)",
+   "what": "the call \"Firai!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@740x320 (maani-line-kind-roll)",
+   "what": "mv-ball-bajr rests at 37 px at [373,94,410,130], +38% of its 27 px at its last place [337,251,363,277] (mv-ball-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@740x320 (maani-line-kind-timing)",
+   "what": "mv-raw-bajr rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@740x320 (maani-line-view-service)",
+   "what": "mv-cooked-bajr rests at 55 px at [500,246,555,300], -43% of its 95 px at its last place [516,43,611,136] (mv-cooked-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@740x320 (maani-line-view-service)",
+   "what": "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-78",
+   "where": "lab:cook/maani-line@930x430 (maani-line-kind-timing)",
+   "what": "the call \"Firai!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@930x430 (maani-line-kind-timing)",
+   "what": "mv-raw-maani rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@930x430 (maani-line-view-service)",
+   "what": "mv-cooked-maani rests at 75 px at [598,326,679,405], -44% of its 132 px at its last place [623,54,755,183] (mv-cooked-maani): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@930x430 (maani-line-view-service)",
+   "what": "mv-raw-bajr rests at 130 px at [624,55,754,182], -18% of its 159 px at its last place [374,72,532,227] (mv-raw-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-114",
+   "where": "lab:cook/maani-line@930x430 (maani-line-view-service)",
+   "what": "mv-cooked-bajr rests at 75 px at [699,324,783,407], -43% of its 130 px at its last place [624,55,754,182] (mv-cooked-bajr): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-78",
+   "where": "cook:eggs@740x320 (after start)",
+   "what": "the call \"Hane indo!\" starts and the light comes 901 ms later (more than 200 ms)",
+   "blocks": true
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs@740x320 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs@930x430 (kind-tap)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card \"tarelo indo\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#mistake@740x320 (kind-tap)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#mistake@930x430 (view-marble)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#mistake@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card \"tarelo indo\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs#hint@740x320 (after start)",
+   "what": "cook:station1:marble (eggs at L1): 0 decoys on the shelf (n.egg; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#hint@740x320 (view-marble)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs#hint@930x430 (after start)",
+   "what": "cook:station1:marble (eggs at L1): 0 decoys on the shelf (n.egg; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#hint@930x430 (view-marble)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#hint@930x430 (hint-nani-says)",
+   "what": "cook:station1:marble: the order card \"boiled egg\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs#takeback@740x320 (after start)",
+   "what": "cook:station1:marble (eggs at L1): 0 decoys on the shelf (n.egg; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#takeback@740x320 (view-marble)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs#takeback@930x430 (after start)",
+   "what": "cook:station1:marble (eggs at L1): 0 decoys on the shelf (n.egg; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#takeback@930x430 (view-marble)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-116",
+   "where": "cook:eggs#takeback@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card \"boiled egg\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-112",
+   "where": "cook:daar@740x320 (order-card-in-sidebar)",
+   "what": "light 1 [422,76,708,198]: 2 lit regions, not one: [422,76,708,198] [684,142,732,206]; lit while chop4-knife was still moving inside it 242 px while it stood: nothing moves into a light (picture: build",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-114",
+   "where": "cook:daar@740x320 (kind-stir)",
+   "what": "dv2-chop-veg-02 snaps from 34 to 28 px (-18%) between two frames, no tween (at [463,76,491,104])",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar@740x320 (after kind-slice)",
+   "what": "cook:station2:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled)",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-112",
+   "where": "cook:daar#mistake@740x320 (order-card-in-sidebar)",
+   "what": "light 1 [422,76,708,200]: 2 lit regions, not one: [422,76,708,200] [694,174,722,202]; lit while chop4-knife was still moving inside it 224 px while it stood: nothing moves into a light (picture: build",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-114",
+   "where": "cook:daar#mistake@740x320 (kind-stir)",
+   "what": "dv2-chop-veg-02 snaps from 32 to 27 px (-16%) between two frames, no tween (at [472,83,500,109])",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar#mistake@930x430 (help-open)",
+   "what": "the shelf item veg-13: a tap at its foot (465, 392) picks nothing; a tap just above its pill (465, 397) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar#mistake@930x430 (help-open)",
+   "what": "the shelf item spi-02: a tap at its foot (544, 392) picks nothing; a tap just above its pill (544, 397) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar#mistake@930x430 (help-open)",
+   "what": "the shelf item spi-16: a tap at its foot (624, 392) picks nothing; a tap just above its pill (624, 397) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#mistake@930x430 (kind-stir)",
+   "what": "cook:station2:marble: the current order card \"trae aste thi\" at [216,107,291,250] is cut by its row [12,106,212,252]: the current card whole in view",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-104",
+   "where": "cook:daar#hint@740x320 (kind-stir)",
+   "what": "the item card \"ba jaldi\" has no picture (assets/cook/items-s08c/kadchi/kadchi-s08c.webp did not load)",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#hint@740x320 (kind-slice)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-114",
+   "where": "cook:daar#hint@930x430 (kind-stir)",
+   "what": "dv2-chop-veg-02 rests at 37 px at [570,114,607,150], -30% of its 52 px at its last place [344,79,396,130] (dv2-chop-veg-02): an item keeps its size from step to step",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#hint@930x430 (kind-slice)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-91",
+   "where": "cook:daar#returning@740x320 (view-service)",
+   "what": "cook:station3:marble: 11.0 s stuck on the child's turn (stir) since the last action with nothing said and no hint (L1 waits 7000 ms, judged at 11000 ms)",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-36",
+   "where": "cook:daar#returning@740x320 (hint-nani-says)",
+   "what": "a step opened on screen (the order card's next card \"hakro dungri\") and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#returning@740x320 (after view-marble)",
+   "what": "cook:station2:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#returning@740x320 (kind-stir)",
+   "what": "cook:station3:marble: the current order card \"char aste thi\" at [218,152,294,296] is cut by its row [10,150,213,299]: the current card whole in view (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-36",
+   "where": "cook:daar#returning@930x430 (hint-nani-says)",
+   "what": "a step opened on screen (the order card's next card \"hakro dungri\") and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-114",
+   "where": "cook:daar#returning@930x430 (kind-stir)",
+   "what": "dv2-chop-veg-02 snaps from 48 to 37 px (-23%) between two frames, no tween (at [569,113,606,149])",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#returning@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#returning@930x430 (kind-stir)",
+   "what": "cook:station4:marble: the current order card \"char aste thi\" at [216,154,291,298] is cut by its row [12,153,212,300]: the current card whole in view (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-36",
+   "where": "cook:daar#takeback@740x320 (after kind-slice)",
+   "what": "a step opened on screen (the order card's next card \"hakro dungri\") and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-114",
+   "where": "cook:daar#takeback@740x320 (kind-stir)",
+   "what": "dv2-chop-veg-02 rests at 27 px at [477,86,504,112], -30% of its 38 px at its last place [312,61,350,98] (dv2-chop-veg-02): an item keeps its size from step to step",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#takeback@740x320 (after view-marble)",
+   "what": "cook:station2:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-36",
+   "where": "cook:daar#takeback@930x430 (help-open)",
+   "what": "a step opened on screen (the order card's next card \"hakro dungri\") and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-66",
+   "where": "cook:daar#takeback@930x430 (stir-mid)",
+   "what": "lap 1: no number asked for within 250 ms of the lap",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "cook:daar#takeback@930x430 (kind-slice)",
+   "what": "cook:station2:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-112",
+   "where": "lab:cook/daar@740x320 (daar-order-card-in-sidebar)",
+   "what": "light 1 [422,76,708,202]: 2 lit regions, not one: [422,76,708,202] [684,142,732,206]; lit while chop4-knife was still moving inside it 225 px while it stood: nothing moves into a light (picture: build",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "lab:cook/daar@740x320 (daar-kind-tap)",
+   "what": "host:cook/daar|cook:station2:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-91",
+   "where": "lab:cook/daar@930x430 (daar-view-service)",
+   "what": "host:cook/daar|cook:station2:marble: 11.0 s stuck on the child's turn (stir) since the last action with nothing said and no hint (L1 waits 7000 ms, judged at 11000 ms) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-116",
+   "where": "lab:cook/daar@930x430 (after daar-kind-slice)",
+   "what": "host:cook/daar|cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-36",
+   "where": "cook:mishkaki-grill@740x320 (order-card-in-sidebar)",
+   "what": "a step opened on screen (the light on veg-03) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-03, veg-01*, veg-02*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill@740x320 (kind-timing)",
+   "what": "the light [285,30,326,162] is round 41% of sk3-rack-1 [284,35,385,148] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@740x320 (after kind-tap)",
+   "what": "sk3-rack-1 at [526,72,626,185] is swapped in one frame for sk3-rack-0 at [284,172,385,285] (261 px away, 114 to 114 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@740x320 (kind-timing)",
+   "what": "mk:spr:veg-03.raw at [406,249,435,278] is swapped in one frame for mk:spr:veg-03.raw at [390,46,420,76] (203 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@740x320 (kind-timing)",
+   "what": "mk:spr:veg-03.raw at [396,88,425,117] is swapped in one frame for mk:spr:veg-03.raw at [389,45,421,77] (42 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@740x320 (after kind-tap)",
+   "what": "mk:stick:v3 rests at 119 px at [524,73,537,192], -31% of its 173 px at its last place [396,42,415,215] (mk:stick:v3): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill@740x320 (kind-timing)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 140 px, 63% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-02*, veg-03, veg-12*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@930x430 (after kind-tap)",
+   "what": "mk:spr:veg-03.raw snaps from 34 to 27 px (-22%) between two frames, no tween (at [643,191,671,218]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@930x430 (after kind-tap)",
+   "what": "mk:spr:veg-03.raw snaps from 34 to 27 px (-22%) between two frames, no tween (at [642,165,672,195]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@930x430 (after kind-tap)",
+   "what": "mk:spr:veg-03.raw snaps from 34 to 27 px (-22%) between two frames, no tween (at [643,142,671,170]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill@930x430 (after kind-tap)",
+   "what": "mk:spr:veg-03.raw snaps from 34 to 27 px (-22%) between two frames, no tween (at [642,116,672,146]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill@930x430 (view-service)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 192 px, 64% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill@930x430 (after start)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card \"hakri lakri tameto\" has padding 6/6.5/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#mistake@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-02, n.corn-on-the-cob*, veg-03*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#mistake@740x320 (kind-timing)",
+   "what": "the light [285,30,325,162] is round 40% of sk3-rack-1 [284,35,385,148] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@740x320 (after wrong-tap)",
+   "what": "sk3-rack-1 at [526,72,626,185] is swapped in one frame for sk3-rack-0 at [284,172,385,285] (261 px away, 114 to 114 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [394,73,423,103] is swapped in one frame for mk:spr:veg-02.raw at [389,45,421,77] (27 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [406,255,435,284] is swapped in one frame for mk:spr:veg-02.raw at [390,46,420,76] (209 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@740x320 (after wrong-tap)",
+   "what": "mk:spr:veg-02.raw rests at 19 px at [536,142,556,162], -34% of its 29 px at its last place [390,143,421,174] (mk:spr:veg-02.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#mistake@740x320 (view-service)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 140 px, 63% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#mistake@740x320 (after order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#mistake@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-01*, veg-02, veg-03*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-102",
+   "where": "cook:mishkaki-grill#mistake@930x430 (view-service)",
+   "what": "Container glows [639,165,666,318] outside the kit's light (no light up): the game's own glow",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#mistake@930x430 (kind-timing)",
+   "what": "the light [311,39,359,214] is round 35% of sk3-rack-1 [306,43,444,198] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@930x430 (kind-timing)",
+   "what": "sk3-rack-1 at [636,94,774,249] is swapped in one frame for sk3-rack-0 at [307,231,444,387] (357 px away, 155 to 155 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@930x430 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [493,132,533,172] is swapped in one frame for mk:spr:veg-02.raw at [449,57,494,101] (84 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@930x430 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [493,132,533,172] is swapped in one frame for mk:spr:veg-02.raw at [450,58,493,101] (84 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#mistake@930x430 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [463,76,503,116] is swapped in one frame for mk:spr:veg-02.raw at [451,59,492,99] (20 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#mistake@930x430 (kind-timing)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 192 px, 64% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#mistake@930x430 (after order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#mistake@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card \"hakri lakri dungri\" has padding 6/6.5/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#hint@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-12*, veg-03*, veg-02; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#hint@740x320 (kind-timing)",
+   "what": "the light [285,30,326,162] is round 41% of sk3-rack-1 [284,35,385,148] (middle off by 29%, 4% of its size): it should sit whole round it",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@740x320 (after kind-tap)",
+   "what": "sk3-rack-1 at [526,72,626,185] is swapped in one frame for sk3-rack-0 at [284,172,385,285] (261 px away, 114 to 114 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [488,168,517,197] is swapped in one frame for mk:spr:veg-02.raw at [390,45,421,76] (156 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw rests at 19 px at [536,142,556,162], -34% of its 29 px at its last place [390,143,421,174] (mk:spr:veg-02.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw rests at 19 px at [537,125,556,144], -34% of its 29 px at its last place [391,117,420,146] (mk:spr:veg-02.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#hint@740x320 (kind-timing)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 140 px, 63% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#hint@740x320 (after start)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#hint@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-12*, veg-03*, veg-02; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#hint@930x430 (kind-timing)",
+   "what": "the light [310,39,360,214] is round 36% of sk3-rack-1 [306,43,444,198] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@930x430 (after kind-tap)",
+   "what": "sk3-rack-1 at [636,94,774,249] is swapped in one frame for sk3-rack-0 at [307,231,444,387] (357 px away, 155 to 155 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@930x430 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [526,132,566,172] is swapped in one frame for mk:spr:veg-02.raw at [452,59,492,99] (104 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@930x430 (after kind-tap)",
+   "what": "mk:spr:veg-02.raw rests at 26 px at [652,191,678,217], -35% of its 40 px at its last place [451,192,492,233] (mk:spr:veg-02.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#hint@930x430 (after kind-tap)",
+   "what": "mk:spr:veg-02.raw rests at 26 px at [651,166,679,194], -35% of its 40 px at its last place [450,154,493,197] (mk:spr:veg-02.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#hint@930x430 (kind-timing)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 192 px, 64% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#hint@930x430 (after order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#hint@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card \"hakri lakri dungri\" has padding 6/6.5/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#returning@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-12*, veg-03*, veg-02; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#returning@740x320 (kind-timing)",
+   "what": "the light [285,30,325,162] is round 40% of sk3-rack-1 [284,35,385,148] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@740x320 (after kind-tap)",
+   "what": "sk3-rack-1 at [526,72,626,185] is swapped in one frame for sk3-rack-0 at [284,172,385,285] (261 px away, 114 to 114 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [433,86,462,115] is swapped in one frame for mk:spr:veg-02.raw at [389,45,421,77] (58 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [421,73,450,103] is swapped in one frame for mk:spr:veg-02.raw at [390,45,421,76] (41 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@740x320 (kind-timing)",
+   "what": "mk:spr:veg-02.raw at [452,109,481,138] is swapped in one frame for mk:spr:veg-02.raw at [389,45,421,76] (88 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#returning@740x320 (view-service)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 140 px, 63% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#returning@740x320 (after order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#returning@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-02*, n.chicken*, veg-03; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#returning@930x430 (kind-timing)",
+   "what": "the light [310,39,359,214] is round 36% of sk3-rack-1 [306,43,444,198] (middle off by 29%, 4% of its size): it should sit whole round it",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#returning@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item ph-meat: a tap at its foot (408, 392) picks nothing; a tap just above its pill (408, 398) picks nothing; a tap on its pill (408, 412) picks nothing: the pill says the word (the item's t",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#returning@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item veg-02: a tap at its foot (493, 392) picks nothing; a tap just above its pill (493, 398) picks nothing; a tap on its pill (493, 412) picks nothing: the pill says the word (the item's ta",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#returning@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item n.chicken: a tap at its foot (578, 392) picks nothing; a tap just above its pill (578, 398) picks nothing; a tap on its pill (578, 412) picks nothing: the pill says the word (the item's",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "cook:mishkaki-grill#returning@930x430 (order-card-in-sidebar)",
+   "what": "the shelf item veg-03: a tap at its foot (662, 392) picks nothing; a tap just above its pill (662, 398) picks nothing; a tap on its pill (662, 412) picks nothing: the pill says the word (the item's ta",
+   "blocks": true
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@930x430 (after kind-tap)",
+   "what": "sk3-rack-1 at [636,94,774,249] is swapped in one frame for sk3-rack-0 at [307,231,444,387] (357 px away, 155 to 155 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@930x430 (kind-timing)",
+   "what": "mk:spr:veg-03.raw at [489,91,529,131] is swapped in one frame for mk:spr:veg-03.raw at [450,57,494,101] (49 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@930x430 (kind-timing)",
+   "what": "mk:spr:veg-03.raw at [643,340,683,380] is swapped in one frame for mk:spr:veg-03.raw at [450,57,493,101] (340 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#returning@930x430 (after kind-tap)",
+   "what": "mk:spr:veg-03.raw rests at 26 px at [651,190,679,218], -35% of its 40 px at its last place [450,191,493,234] (mk:spr:veg-03.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#returning@930x430 (kind-timing)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 192 px, 64% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#returning@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card \"hakri lakri tameto\" has padding 6/6.5/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#returning@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#takeback@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 4 decoys on the shelf (ph-meat*, veg-01*, veg-03*, veg-02*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#takeback@740x320 (kind-timing)",
+   "what": "the light [285,30,325,162] is round 40% of sk3-rack-1 [284,35,385,148] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@740x320 (after after-takeback)",
+   "what": "sk3-rack-1 at [526,72,626,185] is swapped in one frame for sk3-rack-0 at [284,172,385,285] (261 px away, 114 to 114 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@740x320 (kind-timing)",
+   "what": "mk:spr:ph-meat.raw at [367,125,396,154] is swapped in one frame for mk:spr:ph-meat.raw at [389,45,421,77] (82 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@740x320 (kind-timing)",
+   "what": "mk:spr:ph-meat.raw at [383,67,412,96] is swapped in one frame for mk:spr:ph-meat.raw at [389,45,421,77] (22 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@740x320 (after after-takeback)",
+   "what": "mk:spr:ph-meat.raw rests at 19 px at [536,142,556,162], -34% of its 29 px at its last place [390,143,420,173] (mk:spr:ph-meat.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#takeback@740x320 (view-service)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 140 px, 63% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#takeback@740x320 (after order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "cook:mishkaki-grill#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (mishkaki-grill at L1): 4 decoys on the shelf (ph-meat*, veg-01*, veg-03*, veg-02*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "cook:mishkaki-grill#takeback@930x430 (kind-timing)",
+   "what": "the light [310,39,359,214] is round 36% of sk3-rack-1 [306,43,444,198] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@930x430 (after after-takeback)",
+   "what": "sk3-rack-1 at [636,94,774,249] is swapped in one frame for sk3-rack-0 at [307,231,444,387] (357 px away, 155 to 155 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@930x430 (before-takeback)",
+   "what": "mk:spr:ph-meat.raw at [437,98,477,138] is swapped in one frame for mk:spr:ph-meat.raw at [451,59,492,99] (42 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@930x430 (kind-timing)",
+   "what": "mk:spr:ph-meat.raw at [442,83,482,123] is swapped in one frame for mk:spr:ph-meat.raw at [450,57,493,101] (25 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "cook:mishkaki-grill#takeback@930x430 (kind-timing)",
+   "what": "mk:spr:ph-meat.raw at [389,340,428,380] is swapped in one frame for mk:spr:ph-meat.raw at [451,59,492,100] (288 px away, 40 to 40 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "cook:mishkaki-grill#takeback@930x430 (kind-timing)",
+   "what": "cook:station2:marble: the main thing sk3-grill stands 192 px, 64% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#takeback@930x430 (after order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "cook:mishkaki-grill#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card \"hakri lakri mishkaki\" has padding 6/6.5/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "lab:cook/mishkaki-grill@740x320 (mishkaki-grill-order-card-in-sidebar)",
+   "what": "host:cook/mishkaki-grill|cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-03*, veg-02, veg-12*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "lab:cook/mishkaki-grill@740x320 (mishkaki-grill-kind-timing)",
+   "what": "the light [285,30,325,162] is round 40% of sk3-rack-1 [284,35,385,148] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@740x320 (after mishkaki-grill-kind-tap)",
+   "what": "sk3-rack-1 at [526,72,626,185] is swapped in one frame for sk3-rack-0 at [284,172,385,285] (261 px away, 114 to 114 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@740x320 (mishkaki-grill-kind-timing)",
+   "what": "mk:spr:veg-02.raw at [468,255,497,284] is swapped in one frame for mk:spr:veg-02.raw at [390,46,420,76] (222 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@740x320 (mishkaki-grill-kind-timing)",
+   "what": "mk:spr:veg-02.raw at [432,128,461,157] is swapped in one frame for mk:spr:veg-02.raw at [391,46,420,75] (92 px away, 29 to 29 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@740x320 (after mishkaki-grill-kind-tap)",
+   "what": "mk:spr:veg-02.raw rests at 19 px at [537,142,556,162], -34% of its 29 px at its last place [390,143,420,173] (mk:spr:veg-02.raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "lab:cook/mishkaki-grill@740x320 (mishkaki-grill-view-service)",
+   "what": "host:cook/mishkaki-grill|cook:station2:marble: the main thing sk3-grill stands 140 px, 63% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "lab:cook/mishkaki-grill@740x320 (after mishkaki-grill-order-card-big)",
+   "what": "host:cook/mishkaki-grill|cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-37",
+   "where": "lab:cook/mishkaki-grill@930x430 (mishkaki-grill-order-card-in-sidebar)",
+   "what": "host:cook/mishkaki-grill|cook:station1:marble (mishkaki-grill at L1): 3 decoys on the shelf (ph-meat*, veg-03*, veg-02, veg-12*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-105",
+   "where": "lab:cook/mishkaki-grill@930x430 (after mishkaki-grill-kind-tap)",
+   "what": "the light [310,39,359,214] is round 36% of sk3-rack-1 [306,43,444,198] (middle off by 29%, 4% of its size): it should sit whole round it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@930x430 (after mishkaki-grill-kind-tap)",
+   "what": "mk:spr:veg-02.raw snaps from 32 to 26 px (-17%) between two frames, no tween (at [651,190,679,218]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@930x430 (after mishkaki-grill-kind-tap)",
+   "what": "mk:spr:veg-02.raw snaps from 32 to 26 px (-17%) between two frames, no tween (at [651,166,679,194]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@930x430 (after mishkaki-grill-kind-tap)",
+   "what": "mk:spr:veg-02.raw snaps from 32 to 26 px (-17%) between two frames, no tween (at [651,142,679,170]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-114",
+   "where": "lab:cook/mishkaki-grill@930x430 (after mishkaki-grill-kind-tap)",
+   "what": "mk:spr:veg-02.raw snaps from 32 to 26 px (-17%) between two frames, no tween (at [651,119,678,146]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-115",
+   "where": "lab:cook/mishkaki-grill@930x430 (mishkaki-grill-kind-timing)",
+   "what": "host:cook/mishkaki-grill|cook:station2:marble: the main thing sk3-grill stands 192 px, 64% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 51% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "lab:cook/mishkaki-grill@930x430 (mishkaki-grill-order-card-in-sidebar)",
+   "what": "host:cook/mishkaki-grill|cook:station1:marble: the order card \"hakri lakri dungri\" has padding 6/6.5/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-116",
+   "where": "lab:cook/mishkaki-grill@930x430 (mishkaki-grill-order-card-in-sidebar)",
+   "what": "host:cook/mishkaki-grill|cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (veg-02*, veg-01*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-70",
+   "where": "cook:samosa@740x320 (view-service)",
+   "what": "the heat ring entered its green (0.62-0.84) and no call was said by 0.80 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa@740x320 (kind-timing)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@740x320 (view-service)",
+   "what": "sv2-fry-2 snaps from 39 to 30 px (-23%) between two frames, no tween (at [647,79,677,106]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@740x320 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 37 px at [653,126,692,162], -73% of its 135 px at its last place [418,61,552,181] (sv3-fold-done-3): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@740x320 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 83 px at [390,171,472,210], -32% of its 122 px at its last place [443,37,565,94] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@740x320 (kind-swipe)",
+   "what": "sv3-heap-veg-01 rests at 21 px at [393,184,419,208], -33% of its 32 px at its last place [448,55,486,92] (sv3-heap-veg-01): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-115",
+   "where": "cook:samosa@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item veg-01 (sv3-heap-veg-01, class M) stands 33 px, 65% of chai's M height at 740x320 (50 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (veg-01*, veg-12*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-70",
+   "where": "cook:samosa@930x430 (kind-timing)",
+   "what": "\"Samosa hane kadh.\" at 0.495, before the green (it starts at 0.62): called early",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-112",
+   "where": "cook:samosa@930x430 (order-card-in-sidebar)",
+   "what": "light 1 [332,56,480,116]: sv3-fold-strip [327,48,486,122] (its picture, pill and face) is not inside the light with its pad: left -5 px (wants 9), top -8 px (wants 9), right -6 px (wants 9), bottom -6 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@930x430 (help-open)",
+   "what": "sv2-fry-2 snaps from 66 to 45 px (-33%) between two frames, no tween (at [778,100,826,146]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@930x430 (view-service)",
+   "what": "sv2-fry-0 snaps from 58 to 69 px (+19%) between two frames, no tween (at [420,112,488,175]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@930x430 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 50 px at [811,168,865,218], -80% of its 253 px at its last place [341,73,594,190] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa@930x430 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 113 px at [450,230,563,283], -32% of its 167 px at its last place [523,47,690,125] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-115",
+   "where": "cook:samosa@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item veg-01 (sv3-heap-veg-01, class M) stands 45 px, 66% of chai's M height at 930x430 (68 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-116",
+   "where": "cook:samosa@930x430 (view-service)",
+   "what": "cook:station2:marble: the order card \"Ba samosa\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#mistake@740x320 (wrong-tap)",
+   "what": "a step opened on screen (the light on ph-keema) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#mistake@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (ph-keema*, veg-12*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-73",
+   "where": "cook:samosa#mistake@740x320 (start)",
+   "what": "the speech bubble \"Salamun alaykum!\" has its speaker (cv-spk) 46x46 px, under the 48 px tap",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-92",
+   "where": "cook:samosa#mistake@740x320 (wrong-tap)",
+   "what": "the light round ph-keema leaves 5 px on its right with nothing beside it: at least 6 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@740x320 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 37 px at [653,126,692,162], -79% of its 174 px at its last place [308,53,482,134] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@740x320 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 83 px at [390,171,472,210], -32% of its 122 px at its last place [443,37,565,94] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@740x320 (kind-swipe)",
+   "what": "sv3-heap-ph-keema rests at 22 px at [391,181,421,211], -33% of its 33 px at its last place [444,51,490,96] (sv3-heap-ph-keema): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@740x320 (kind-timing)",
+   "what": "sv2-fry-2 rests at 51 px at [389,39,444,90], +22% of its 42 px at its last place [426,247,471,290] (sv2-fry-0): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#mistake@930x430 (wrong-tap)",
+   "what": "a step opened on screen (the light on ph-keema) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#mistake@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (ph-keema*, veg-12*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa#mistake@930x430 (view-service)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-112",
+   "where": "cook:samosa#mistake@930x430 (order-card-in-sidebar)",
+   "what": "light 1 [332,56,480,116]: sv3-fold-strip [327,48,486,122] (its picture, pill and face) is not inside the light with its pad: left -5 px (wants 9), top -8 px (wants 9), right -6 px (wants 9), bottom -6 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@930x430 (view-service)",
+   "what": "sv2-fry-2 snaps from 53 to 45 px (-15%) between two frames, no tween (at [772,97,821,142]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@930x430 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 50 px at [811,168,865,218], -84% of its 313 px at its last place [350,88,663,234] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@930x430 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 113 px at [450,230,563,283], -32% of its 167 px at its last place [523,47,690,125] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#mistake@930x430 (kind-swipe)",
+   "what": "sv3-heap-ph-keema rests at 31 px at [457,249,488,279], -32% of its 45 px at its last place [533,75,579,119] (sv3-heap-ph-keema): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-116",
+   "where": "cook:samosa#mistake@930x430 (view-service)",
+   "what": "cook:station2:marble: the order card \"Ba samosa\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#hint@740x320 (hint-nani-says)",
+   "what": "a step opened on screen (the light on sv3-fold-strip) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#hint@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (veg-12*, veg-01*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-70",
+   "where": "cook:samosa#hint@740x320 (kind-timing)",
+   "what": "the heat ring entered its green (0.62-0.84) and no call was said by 0.80 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa#hint@740x320 (after kind-swipe)",
+   "what": "the call \"Chulo bar!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa#hint@740x320 (kind-timing)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@740x320 (view-service)",
+   "what": "sv2-fry-0 snaps from 40 to 49 px (+23%) between two frames, no tween (at [372,88,421,133]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@740x320 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 37 px at [653,126,692,162], -74% of its 139 px at its last place [303,44,442,109] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@740x320 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 83 px at [390,171,472,210], -32% of its 122 px at its last place [443,37,565,94] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@740x320 (kind-swipe)",
+   "what": "sv3-heap-veg-01 rests at 21 px at [394,184,418,207], -33% of its 32 px at its last place [450,57,485,91] (sv3-heap-veg-01): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-115",
+   "where": "cook:samosa#hint@740x320 (view-marble)",
+   "what": "cook:station1:marble: the shelf item veg-01 (sv3-heap-veg-01, class M) stands 33 px, 65% of chai's M height at 740x320 (50 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#hint@930x430 (hint-nani-says)",
+   "what": "a step opened on screen (the light on sv3-fold-strip) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#hint@930x430 (after order-card-big)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (veg-02*, veg-01*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-70",
+   "where": "cook:samosa#hint@930x430 (view-service)",
+   "what": "the heat ring entered its green (0.62-0.84) and no call was said by 0.80 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa#hint@930x430 (after kind-swipe)",
+   "what": "the call \"Chulo bar!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa#hint@930x430 (kind-timing)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa#hint@930x430 (after order-card-big)",
+   "what": "the shelf item veg-02: a tap at its foot (495, 390) picks nothing; a tap just above its pill (495, 398) picks nothing (the item's tap area reaches down its slot to its pill's top) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa#hint@930x430 (after order-card-big)",
+   "what": "the shelf item veg-01: a tap at its foot (575, 390) picks nothing; a tap just above its pill (575, 398) picks nothing (the item's tap area reaches down its slot to its pill's top) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@930x430 (view-service)",
+   "what": "sv2-fry-2 snaps from 52 to 41 px (-21%) between two frames, no tween (at [803,104,844,142]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@930x430 (after kind-swipe)",
+   "what": "sv3-plate at [767,122,908,264] is swapped in one frame for sv3-plate at [730,50,875,197] (78 px away, 143 to 147 px): no glide, no fade (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@930x430 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 50 px at [811,168,865,218], -84% of its 313 px at its last place [350,88,663,234] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#hint@930x430 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 113 px at [450,230,563,283], -32% of its 167 px at its last place [523,47,690,125] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-115",
+   "where": "cook:samosa#hint@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item veg-01 (sv3-heap-veg-01, class M) stands 45 px, 66% of chai's M height at 930x430 (68 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-116",
+   "where": "cook:samosa#hint@930x430 (view-service)",
+   "what": "cook:station2:marble: the order card \"Ba samosa\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#returning@740x320 (hint-nani-says)",
+   "what": "a step opened on screen (the light on sv3-fold-strip) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#returning@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (ph-dhana*, ph-keema*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@740x320 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 37 px at [653,126,692,162], -84% of its 229 px at its last place [316,68,545,174] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@740x320 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 83 px at [390,171,472,210], -32% of its 122 px at its last place [443,37,565,94] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@740x320 (kind-swipe)",
+   "what": "sv3-heap-ph-keema rests at 21 px at [393,182,419,209], -33% of its 32 px at its last place [447,53,487,94] (sv3-heap-ph-keema): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@740x320 (kind-timing)",
+   "what": "sv2-fry-2 rests at 51 px at [389,39,444,90], +19% of its 43 px at its last place [426,247,472,290] (sv2-fry-0): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#returning@930x430 (hint-nani-says)",
+   "what": "a step opened on screen (the light on sv3-fold-strip) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#returning@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (veg-12*, ph-keema*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@930x430 (view-service)",
+   "what": "sv2-fry-2 snaps from 60 to 43 px (-29%) between two frames, no tween (at [786,95,832,138]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@930x430 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 50 px at [811,168,865,218], -84% of its 312 px at its last place [350,88,662,233] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@930x430 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 113 px at [450,230,563,283], -32% of its 167 px at its last place [523,47,690,125] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#returning@930x430 (kind-swipe)",
+   "what": "sv3-heap-ph-keema rests at 29 px at [454,245,492,283], -33% of its 43 px at its last place [528,69,584,124] (sv3-heap-ph-keema): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-116",
+   "where": "cook:samosa#returning@930x430 (view-service)",
+   "what": "cook:station2:marble: the order card \"Ba samosa\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#takeback@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (ph-keema*, ph-dhana*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-70",
+   "where": "cook:samosa#takeback@740x320 (view-service)",
+   "what": "the heat ring entered its green (0.62-0.84) and no call was said by 0.80 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-77",
+   "where": "cook:samosa#takeback@740x320 (kind-timing)",
+   "what": "a new player's first timed window: the ring went on past the middle of its green (0.73, at 0.75) before the tap (the first-time hold waits in the green until the child acts) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@740x320 (view-service)",
+   "what": "sv2-fry-2 snaps from 40 to 33 px (-18%) between two frames, no tween (at [623,73,659,106]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@740x320 (kind-timing)",
+   "what": "sv2-fry-0 snaps from 42 to 50 px (+18%) between two frames, no tween (at [424,87,477,138]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@740x320 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 37 px at [653,126,692,162], -84% of its 229 px at its last place [316,67,545,174] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@740x320 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 84 px at [389,171,473,209], -32% of its 122 px at its last place [443,37,565,94] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble (samosa at L1): 2 decoys on the shelf (ph-keema*, veg-10*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-77",
+   "where": "cook:samosa#takeback@930x430 (kind-timing)",
+   "what": "a new player's first timed window: the ring went on past the middle of its green (0.73, at 0.751) before the tap (the first-time hold waits in the green until the child acts) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@930x430 (view-service)",
+   "what": "sv2-fry-2 snaps from 62 to 45 px (-27%) between two frames, no tween (at [773,97,822,143]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@930x430 (kind-timing)",
+   "what": "sv3-fold-done-3 rests at 50 px at [811,168,865,218], -84% of its 312 px at its last place [350,88,661,233] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@930x430 (kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 113 px at [450,230,563,283], -32% of its 167 px at its last place [523,47,690,125] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@930x430 (kind-swipe)",
+   "what": "sv3-heap-ph-keema rests at 31 px at [454,245,491,283], -32% of its 45 px at its last place [529,69,584,125] (sv3-heap-ph-keema): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-116",
+   "where": "cook:samosa#takeback@930x430 (view-service)",
+   "what": "cook:station2:marble: the order card \"Ba samosa\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "lab:cook/samosa@740x320 (samosa-order-card-in-sidebar)",
+   "what": "host:cook/samosa|cook:station1:marble (samosa at L1): 2 decoys on the shelf (ph-keema*, ph-dhana*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-70",
+   "where": "lab:cook/samosa@740x320 (samosa-view-service)",
+   "what": "the heat ring entered its green (0.62-0.84) and no call was said by 0.80 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@740x320 (samosa-kind-timing)",
+   "what": "the call \"Chulo bar!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@740x320 (samosa-kind-timing)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@740x320 (samosa-view-service)",
+   "what": "sv2-fry-2 snaps from 41 to 31 px (-23%) between two frames, no tween (at [634,72,667,104]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@740x320 (samosa-kind-timing)",
+   "what": "sv3-fold-done-3 rests at 37 px at [653,126,692,162], -83% of its 212 px at its last place [314,63,525,161] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@740x320 (samosa-kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 83 px at [390,171,472,210], -32% of its 122 px at its last place [443,37,565,94] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@740x320 (samosa-kind-swipe)",
+   "what": "sv3-heap-ph-keema rests at 22 px at [393,183,419,209], -33% of its 33 px at its last place [448,54,486,93] (sv3-heap-ph-keema): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "lab:cook/samosa@930x430 (samosa-order-card-in-sidebar)",
+   "what": "host:cook/samosa|cook:station1:marble (samosa at L1): 2 decoys on the shelf (veg-02*, ph-keema*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@930x430 (samosa-kind-timing)",
+   "what": "the call \"Chulo bar!\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@930x430 (samosa-kind-timing)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@930x430 (samosa-view-service)",
+   "what": "sv2-fry-2 snaps from 50 to 41 px (-17%) between two frames, no tween (at [800,102,845,144]) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@930x430 (samosa-kind-timing)",
+   "what": "sv3-fold-done-3 rests at 50 px at [811,168,865,218], -84% of its 309 px at its last place [350,87,658,231] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@930x430 (samosa-kind-swipe)",
+   "what": "sv3-fold-strip#flat rests at 113 px at [450,230,563,283], -32% of its 167 px at its last place [523,47,690,125] (sv3-fold-strip#flat): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "lab:cook/samosa@930x430 (samosa-kind-swipe)",
+   "what": "sv3-heap-ph-keema rests at 31 px at [456,247,489,281], -32% of its 45 px at its last place [532,72,581,122] (sv3-heap-ph-keema): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-116",
+   "where": "lab:cook/samosa@930x430 (samosa-view-service)",
+   "what": "host:cook/samosa|cook:station2:marble: the order card \"Ba samosa\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@740x320 (kind-tap)",
+   "what": "cook:station2:marble (chaat at L1): 2 decoys on the shelf (veg-01, ph-amli*, ph-lili*, ph-chana; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-111",
+   "where": "cook:chaat@740x320 (kind-tap)",
+   "what": "the shelf item veg-01: a tap at its foot (296, 287) picks nothing; a tap just above its pill (296, 294) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-111",
+   "where": "cook:chaat@740x320 (kind-tap)",
+   "what": "the shelf item ph-amli: a tap at its foot (420, 287) picks nothing; a tap just above its pill (420, 294) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-111",
+   "where": "cook:chaat@740x320 (kind-tap)",
+   "what": "the shelf item ph-lili: a tap at its foot (544, 287) picks nothing; a tap just above its pill (544, 294) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-111",
+   "where": "cook:chaat@740x320 (kind-tap)",
+   "what": "the shelf item ph-chana: a tap at its foot (668, 287) picks nothing; a tap just above its pill (668, 294) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat@740x320 (after start)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-36",
+   "where": "cook:chaat@930x430 (kind-tap)",
+   "what": "a step opened on screen (the light on ph-chana) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@930x430 (kind-tap)",
+   "what": "cook:station2:marble (chaat at L1): 2 decoys on the shelf (ph-chana, veg-01, ph-dahi*, ph-lili*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-92",
+   "where": "cook:chaat@930x430 (view-service)",
+   "what": "the light round ph-lili covers its neighbour ph-dahi: it should stop short of it",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-112",
+   "where": "cook:chaat@930x430 (order-card-big)",
+   "what": "light 1 [492,96,886,262]: 2 lit regions, not one: [492,96,886,262] [860,188,908,252]; lit while chop4-knife was still moving inside it 337 px while it stood: nothing moves into a light (picture: build",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-36",
+   "where": "cook:chaat#mistake@740x320 (kind-tap)",
+   "what": "a step opened on screen (the light on ph-chana) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-36",
+   "where": "cook:chaat#mistake@740x320 (view-service)",
+   "what": "a step opened on screen (the light on veg-12) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-92",
+   "where": "cook:chaat#mistake@740x320 (view-service)",
+   "what": "the light round veg-01 leaves -5 px on its left with nothing beside it: at least 6 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-105",
+   "where": "cook:chaat#mistake@740x320 (view-service)",
+   "what": "the light [617,230,685,298] is not whole round veg-01 [612,240,689,319] (its picture and pill): it pokes out at the left and right and bottom (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-105",
+   "where": "cook:chaat#mistake@740x320 (view-service)",
+   "what": "the light [392,230,460,298] is not whole round veg-12 [390,240,462,319] (its picture and pill): it pokes out at the left and right and bottom (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-107",
+   "where": "cook:chaat#mistake@740x320 (view-service)",
+   "what": "the shelf item veg-01 is lit [617,230,685,298] without its hop (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-107",
+   "where": "cook:chaat#mistake@740x320 (view-service)",
+   "what": "the shelf item veg-12 is lit [392,230,460,298] without its hop (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-112",
+   "where": "cook:chaat#mistake@740x320 (view-service)",
+   "what": "light 5 [394,232,458,296]: veg-12 [390,240,462,319] (its picture, pill and face) is not inside the light with its pad: left -4 px (wants 3), right -4 px (wants 9), bottom -23 px (wants 0) (picture: bu (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat#mistake@740x320 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-36",
+   "where": "cook:chaat#mistake@930x430 (view-service)",
+   "what": "a step opened on screen (the light on veg-01) and Nani did not call it (no call line from 2 s before to 3.6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-92",
+   "where": "cook:chaat#mistake@930x430 (view-service)",
+   "what": "the light round veg-12 leaves -21 px on its bottom with nothing beside it: at least 6 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-105",
+   "where": "cook:chaat#mistake@930x430 (view-service)",
+   "what": "the light [414,316,502,404] is not whole round veg-12 [422,327,494,425] (its picture and pill): it pokes out at the bottom (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-107",
+   "where": "cook:chaat#mistake@930x430 (view-service)",
+   "what": "the shelf item veg-12 is lit [414,316,502,404] without its hop (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat#mistake@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-104",
+   "where": "cook:chaat#hint@740x320 (order-card-big)",
+   "what": "the item card \"hakro bataato\" has no picture (assets/cook/items/v4/chop/bataato-whole.webp did not load)",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat#hint@740x320 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-92",
+   "where": "cook:chaat#hint@930x430 (view-service)",
+   "what": "the light round veg-12 leaves -21 px on its bottom with nothing beside it: at least 6 px",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat#hint@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-36",
+   "where": "cook:chaat#takeback@740x320 (after-takeback)",
+   "what": "a step opened on screen (the order card's next card \"bataato\") and Nani did not call it (no call line from 2 s before to 4.6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-115",
+   "where": "cook:chaat#takeback@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item veg-01 (chop4-bataato-whole, class M) stands 43 px, 87% of chai's M height at 740x320 (50 px): one height per size class, within 10%",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat#takeback@740x320 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-36",
+   "where": "cook:chaat#takeback@930x430 (order-card-in-sidebar)",
+   "what": "a step opened on screen (the order card's next card \"bataato\") and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-36",
+   "where": "cook:chaat#takeback@930x430 (after-takeback)",
+   "what": "a step opened on screen (the order card's next card \"bataato\") and Nani did not call it (no call line from 2 s before to 3.5 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-115",
+   "where": "cook:chaat#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item veg-01 (chop4-bataato-whole, class M) stands 58 px, 85% of chai's M height at 930x430 (68 px): one height per size class, within 10%",
+   "blocks": true
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-116",
+   "where": "cook:chaat#takeback@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn@740x320 (help-open)",
+   "what": "cook:station1:marble (corn at L1): 3 decoys on the shelf (ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-70",
+   "where": "cook:corn@740x320 (help-open)",
+   "what": "the heat ring entered its green (0.366-1) and no call was said by 0.55 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": true
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn@740x320 (help-open)",
+   "what": "cn4-raw rests at 138 px at [377,77,400,214], +19% of its 116 px at its last place [344,249,460,269] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn@740x320 (help-open)",
+   "what": "cn4-over rests at 105 px at [582,138,686,154], -24% of its 138 px at its last place [378,77,400,214] (cn4-over): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn@740x320 (help-open)",
+   "what": "cn4-over rests at 79 px at [444,71,524,97], -24% of its 105 px at its last place [582,138,686,154] (cn4-over): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn@740x320 (view-marble)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 145 px, 65% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn@930x430 (help-open)",
+   "what": "cook:station1:marble (corn at L1): 6 decoys on the shelf (fru-02*, spi-16*, spi-04*, ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-106",
+   "where": "cook:corn@930x430 (help-open)",
+   "what": "the light [380,323,555,369] stayed round the child's press at (467, 348) for 708 ms: it goes within 300 ms of the move's start",
+   "blocks": true
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn@930x430 (help-open)",
+   "what": "cn4-raw rests at 189 px at [434,97,465,285], +19% of its 159 px at its last place [388,335,547,361] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn@930x430 (help-open)",
+   "what": "cn4-over rests at 143 px at [713,180,856,203], -24% of its 189 px at its last place [434,97,464,285] (cn4-over): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 198 px, 66% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-116",
+   "where": "cook:corn@930x430 (help-open)",
+   "what": "cook:station1:marble: the order card \"amli ji chutney\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn#mistake@740x320 (help-open)",
+   "what": "cook:station1:marble (corn at L1): 3 decoys on the shelf (ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-106",
+   "where": "cook:corn#mistake@740x320 (view-service)",
+   "what": "the light [424,24,540,141] stayed round the child's press at (482, 82) for 545 ms: it goes within 300 ms of the move's start",
+   "blocks": true
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#mistake@740x320 (help-open)",
+   "what": "cn4-raw rests at 138 px at [377,77,400,214], +19% of its 116 px at its last place [344,251,460,270] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#mistake@740x320 (help-open)",
+   "what": "cn4-done rests at 105 px at [582,138,686,154], -24% of its 138 px at its last place [378,77,400,214] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#mistake@740x320 (help-open)",
+   "what": "cn4-done rests at 79 px at [444,71,524,97], -24% of its 105 px at its last place [582,138,686,154] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn#mistake@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 145 px, 65% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-116",
+   "where": "cook:corn#mistake@740x320 (help-open)",
+   "what": "cook:station1:marble: the order card \"hakro makai\" has padding 6.5/6/6/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn#mistake@930x430 (help-open)",
+   "what": "cook:station1:marble (corn at L1): 5 decoys on the shelf (fru-02*, spi-16, spi-04*, ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#mistake@930x430 (help-open)",
+   "what": "cn4-raw rests at 189 px at [434,97,465,285], +19% of its 159 px at its last place [388,334,547,361] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#mistake@930x430 (help-open)",
+   "what": "cn4-done rests at 143 px at [713,180,856,203], -24% of its 189 px at its last place [434,97,464,285] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn#mistake@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 198 px, 66% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-116",
+   "where": "cook:corn#mistake@930x430 (help-open)",
+   "what": "cook:station1:marble: the order card \"hakro makai\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn#hint@740x320 (hint-nani-says)",
+   "what": "cook:station1:marble (corn at L1): 3 decoys on the shelf (ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-109",
+   "where": "cook:corn#hint@740x320 (hint-nani-says)",
+   "what": "the shelf item ph-amli stands -7 px off chai's base line (296 px at 740x320): one line for every shelf",
+   "blocks": true
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-112",
+   "where": "cook:corn#hint@740x320 (hint-nani-says)",
+   "what": "light 4 [366,62,410,222]: the dim is lighter than chai's: 0.3 of the way to the dim's colour against chai's 0.45 (within 0.08) (picture: build/screenshots/sandbox/tiers-change-54b13d155a/lights/cook-c",
+   "blocks": true
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#hint@740x320 (hint-nani-says)",
+   "what": "cn4-raw rests at 138 px at [377,77,400,214], +19% of its 116 px at its last place [344,251,460,270] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#hint@740x320 (hint-nani-says)",
+   "what": "cn4-done rests at 105 px at [582,138,686,154], -24% of its 138 px at its last place [378,77,400,214] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#hint@740x320 (hint-nani-says)",
+   "what": "cn4-done rests at 79 px at [444,71,524,97], -24% of its 105 px at its last place [582,138,686,154] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn#hint@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 145 px, 65% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-116",
+   "where": "cook:corn#hint@740x320 (kind-tap)",
+   "what": "cook:station1:marble: the order card \"hakro makai\" has padding 6.5/6/6/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn#hint@930x430 (hint-nani-says)",
+   "what": "cook:station1:marble (corn at L1): 6 decoys on the shelf (fru-02*, spi-16*, spi-04*, ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#hint@930x430 (hint-nani-says)",
+   "what": "cn4-raw rests at 189 px at [434,97,465,285], +19% of its 159 px at its last place [388,335,547,361] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#hint@930x430 (hint-nani-says)",
+   "what": "cn4-done rests at 143 px at [713,180,856,203], -24% of its 189 px at its last place [434,97,464,285] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn#hint@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 198 px, 66% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-116",
+   "where": "cook:corn#hint@930x430 (hint-nani-says)",
+   "what": "cook:station1:marble: the order card \"hakro makai\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn#takeback@740x320 (help-open)",
+   "what": "cook:station1:marble (corn at L1): 3 decoys on the shelf (ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#takeback@740x320 (help-open)",
+   "what": "cn4-raw rests at 138 px at [377,77,400,214], +19% of its 116 px at its last place [344,251,460,270] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#takeback@740x320 (help-open)",
+   "what": "cn4-done rests at 105 px at [582,138,686,154], -24% of its 138 px at its last place [378,77,400,214] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#takeback@740x320 (help-open)",
+   "what": "cn4-done rests at 79 px at [444,71,524,97], -24% of its 105 px at its last place [582,138,686,154] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn#takeback@740x320 (view-marble)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 145 px, 65% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-116",
+   "where": "cook:corn#takeback@740x320 (kind-tap)",
+   "what": "cook:station1:marble: the order card \"hakro makai\" has padding 6.5/6/6/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-37",
+   "where": "cook:corn#takeback@930x430 (help-open)",
+   "what": "cook:station1:marble (corn at L1): 5 decoys on the shelf (fru-02, spi-16*, spi-04*, ph-lili*, ph-amli*, spi-11*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#takeback@930x430 (help-open)",
+   "what": "cn4-raw rests at 189 px at [434,97,465,285], +19% of its 159 px at its last place [388,335,547,361] (cn4-raw): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-114",
+   "where": "cook:corn#takeback@930x430 (help-open)",
+   "what": "cn4-done rests at 143 px at [713,180,856,203], -24% of its 189 px at its last place [434,97,464,285] (cn4-done): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-115",
+   "where": "cook:corn#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing gk-grill stands 198 px, 66% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-116",
+   "where": "cook:corn#takeback@930x430 (help-open)",
+   "what": "cook:station1:marble: the order card \"hakro makai\" has padding 6/6/6.5/4 px (left/top/right/bottom): equal on every side within 2 px (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@740x320 (view-marble)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@740x320 (view-service)",
+   "what": "a step opened on screen (the light on bk-oven-baking) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking@740x320 (order-card-big)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (cook-atto, cook-dudh*, cook-paani*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking@740x320 (view-marble)",
+   "what": "the help's light is 4.5 times the size of cook-atto: it should hug it",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 93 px, 42% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item cook-atto (bk-cook-atto, class L) stands 46 px, 83% of chai's L height at 740x320 (55 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking@740x320 (after start)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@930x430 (kind-tap)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@930x430 (view-service)",
+   "what": "a step opened on screen (the light on bk-oven-baking) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking@930x430 (order-card-big)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (cook-dudh*, cook-paani*, cook-atto; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking@930x430 (kind-tap)",
+   "what": "the help's light is 3.7 times the size of cook-atto: it should hug it",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-106",
+   "where": "cook:baking@930x430 (help-open)",
+   "what": "the light [668,317,751,429] stayed round the child's press at (709, 363) for 640 ms: it goes within 300 ms of the move's start",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 127 px, 42% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item cook-dudh (bk-cook-dudh, class L) stands 62 px, 83% of chai's L height at 930x430 (75 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#mistake@740x320 (view-service)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 3.2 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#mistake@740x320 (view-service)",
+   "what": "a step opened on screen (the light on bk-oven-baking) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking#mistake@740x320 (order-card-big)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (cook-paani*, cook-khun*, cook-atto; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#mistake@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 93 px, 42% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#mistake@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item cook-paani (bk-cook-paani, class L) stands 46 px, 83% of chai's L height at 740x320 (55 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking#mistake@740x320 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#mistake@930x430 (view-marble)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking#mistake@930x430 (order-card-big)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (cook-paani*, cook-khun*, cook-atto; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking#mistake@930x430 (view-marble)",
+   "what": "the help's light is 3.7 times the size of cook-atto: it should hug it",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#mistake@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 127 px, 42% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#mistake@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the shelf item cook-paani (bk-cook-paani, class L) stands 62 px, 83% of chai's L height at 930x430 (75 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking#mistake@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#hint@740x320 (hint-nani-says)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#hint@740x320 (view-service)",
+   "what": "a step opened on screen (the light on bk-oven-baking) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking#hint@740x320 (order-card-big)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (cook-atto, cook-paani*, cook-dudh*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking#hint@740x320 (hint-nani-says)",
+   "what": "the help's light is 4.5 times the size of cook-atto: it should hug it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-106",
+   "where": "cook:baking#hint@740x320 (view-service)",
+   "what": "the light [406,59,622,233] stayed round the child's press at (514, 146) for 485 ms: it goes within 300 ms of the move's start",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#hint@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 93 px, 42% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#hint@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item cook-atto (bk-cook-atto, class L) stands 46 px, 83% of chai's L height at 740x320 (55 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking#hint@740x320 (after start)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#hint@930x430 (hint-nani-says)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#hint@930x430 (view-service)",
+   "what": "a step opened on screen (the light on bk-oven-baking) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking#hint@930x430 (order-card-big)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (cook-atto, spi-16*, cook-dudh*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking#hint@930x430 (hint-nani-says)",
+   "what": "the help's light is 3.6 times the size of cook-atto: it should hug it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-106",
+   "where": "cook:baking#hint@930x430 (view-service)",
+   "what": "the light [479,79,763,305] stayed round the child's press at (621, 192) for 553 ms: it goes within 300 ms of the move's start",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#hint@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 127 px, 42% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#hint@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item cook-atto (bk-cook-atto, class L) stands 62 px, 83% of chai's L height at 930x430 (75 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking#hint@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#takeback@740x320 (kind-tap)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#takeback@740x320 (view-service)",
+   "what": "a step opened on screen (the light on bk-oven-baking) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking#takeback@740x320 (kind-tap)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (spi-16*, cook-dudh*; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking#takeback@740x320 (kind-tap)",
+   "what": "the help's light is 4.7 times the size of cook-atto: it should hug it",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-111",
+   "where": "cook:baking#takeback@740x320 (order-card-big)",
+   "what": "the shelf item spi-16: a tap at its foot (386, 290) picks nothing; a tap just above its pill (386, 294) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-111",
+   "where": "cook:baking#takeback@740x320 (order-card-big)",
+   "what": "the shelf item cook-dudh: a tap at its foot (482, 290) picks nothing; a tap just above its pill (482, 294) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-111",
+   "where": "cook:baking#takeback@740x320 (order-card-big)",
+   "what": "the shelf item cook-atto: a tap at its foot (579, 290) picks nothing; a tap just above its pill (579, 294) picks nothing (the item's tap area reaches down its slot to its pill's top)",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#takeback@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 93 px, 42% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#takeback@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item cook-dudh (bk-cook-dudh, class L) stands 46 px, 83% of chai's L height at 740x320 (55 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking#takeback@740x320 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking#takeback@930x430 (view-service)",
+   "what": "a step opened on screen (the light on bk-oven-baking) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-37",
+   "where": "cook:baking#takeback@930x430 (order-card-big)",
+   "what": "cook:station1:marble (baking at L1): 2 decoys on the shelf (spi-16*, cook-dudh*, cook-atto; * not in the order), the table wants 1 (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the main thing bk-bowl-empty stands 127 px, 42% of the 301 px above the shelf band (at least 70%: as big as the height allows; it is 25% of the width) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-115",
+   "where": "cook:baking#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the shelf item cook-dudh (bk-cook-dudh, class L) stands 62 px, 83% of chai's L height at 930x430 (75 px): one height per size class, within 10% (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-116",
+   "where": "cook:baking#takeback@930x430 (order-card-big)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-112",
+   "where": "cook:chop@740x320 (order-card-big)",
+   "what": "light 1 [422,76,708,198]: 2 lit regions, not one: [422,76,708,198] [684,142,732,206]; lit while veg-02 was still moving inside it 135 px while it stood: nothing moves into a light (picture: build/scre",
+   "blocks": true
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop@740x320 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop#mistake@740x320 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop#mistake@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-112",
+   "where": "cook:chop#hint@740x320 (view-marble)",
+   "what": "light 1 [422,76,708,200]: lit while veg-02 was still moving inside it 135 px while it stood: nothing moves into a light (picture: build/screenshots/sandbox/tiers-change-54b13d155a/lights/cook-chop-hin",
+   "blocks": true
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop#hint@740x320 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop#hint@930x430 (view-service)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-114",
+   "where": "cook:chop#takeback@740x320 (kind-slice)",
+   "what": "chop4-dungri-whole snaps from 44 to 51 px (+16%) between two frames, no tween (at [460,175,504,226])",
+   "blocks": true
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop#takeback@740x320 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "cook:chop#takeback@930x430 (order-card-in-sidebar)",
+   "what": "cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "lab:cook/chop@740x320 (chop-view-service)",
+   "what": "host:cook/chop|cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-112",
+   "where": "lab:cook/chop@930x430 (chop-view-marble)",
+   "what": "light 1 [496,96,886,262]: lit while veg-13 was still moving inside it 188 px while it stood: nothing moves into a light (picture: build/screenshots/sandbox/tiers-change-54b13d155a/lights/lab-cook-chop",
+   "blocks": true
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-116",
+   "where": "lab:cook/chop@930x430 (results-badges)",
+   "what": "host:cook/chop|cook:station1:marble: the order card's 1 card fills 38% of its 201 px row: 62% of the card is blank (at least 67% filled) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "push",
+   "where": "build/screenshots/tiers/change-54b13d155a/logs/push.log",
+   "what": "FAIL unit   114 files, 861 pass, 3 fail",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-54b13d155a/logs/play.log",
+   "what": "CONTRACT FAILED: 487 breaks (contract-102 3, contract-70 10, contract-77 6, contract-36 39, contract-107 4, contract-114 170, contract-116 87, contract-79 1, contract-78 15, contract-37 46, contract-112 11, contract-111 16, contract-104 2, contract-91 2, contract-66 1, contract-105 14, contract-115 42, contract-73 1, contract-92 5, contract-106 5, contract-109 1, contract-53 6); CHECK FAILED: 284 new findings, 0 flows do not reach their end, 0 new page errors, 487 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-54b13d155a/logs/before.log",
+   "what": "CONTRACT FAILED: 458 breaks (contract-77 5, contract-102 3, contract-106 3, contract-36 34, contract-70 7, contract-114 168, contract-116 84, contract-111 10, contract-78 16, contract-96 1, contract-73 1, contract-80 1, contract-37 46, contract-112 10, contract-104 1, contract-91 1, contract-105 13, contract-115 42, contract-92 3, contract-53 3, contract-107 5, contract-8 1); CHECK FAILED: 285 new findings, 0 flows do not reach their end, 0 new page errors, 458 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "frozen",
+   "where": "build/screenshots/tiers/change-54b13d155a/logs/frozen.log",
+   "what": "re-playing 30 page(s) that changed, to confirm ...",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "mount",
+   "where": "build/screenshots/tiers/change-54b13d155a/logs/mount.log",
+   "what": "Node.js v22.23.4",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "leak-cook",
+   "where": "build/screenshots/tiers/change-54b13d155a/logs/leak-cook.log",
+   "what": "Node.js v22.23.4",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "loadtime",
+   "where": "build/screenshots/tiers/change-54b13d155a/logs/loadtime.log",
+   "what": "Node.js v22.23.4",
+   "blocks": true
+  }
+ ],
+ "pages": {
+  "after": 104,
+  "before": 104,
+  "breaksAfter": 487,
+  "breaksBefore": 458
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "fail",
+   "code": 1,
+   "line": "FAIL unit   114 files, 861 pass, 3 fail",
+   "tail": [
+    "check-push: FAILED in 11.1 min; build/reports/tiers/push-83d56e91a8.md",
+    "FAIL unit   114 files, 861 pass, 3 fail",
+    "not ok 718 - art block (download mode, ART-42): references from one zip Zafar drags in with the block; no screenshot route, no workaround words",
+    "not ok 719 - art block (ART-58): an off-house colour and a mixed sheet fail --check; one combination passes; a named exception passes and reaches the block",
+    "not ok 720 - art block (ART-58): the prompts' section number comes from the plan's own heading; a plan without one fails --check",
+    "not run: load (a browser; --browser or --full runs it, /review and the publish gate do)"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/push.log",
+   "minutes": 11.1
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit /home/user/nani-jo-ghar/build/tools/ops/specs/s19-serve2.json 5646e13caf4da0e35ceb51e6ec364fecdc0d7226..HEAD",
+   "status": "pass",
+   "code": 0,
+   "line": "scope: all 7 files are \"s19-serve2: the serving kitchen on its real art (the kitchen KG, the walnut tray, the nine served dishes)\"'s own",
+   "tail": [
+    "scope: all 7 files are \"s19-serve2: the serving kitchen on its real art (the kitchen KG, the walnut tray, the nine served dishes)\"'s own"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:chai-tray, cook:maani-line, cook:eggs, cook:daar, cook:mishkaki-grill, cook:samosa, cook:chaat, cook:corn, cook:baking, cook:chop (52 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chai-tray,cook:chai-tray#mistake,cook:chai-tray#hint,cook:chai-tray#returning,cook:chai-tray#takeback,lab:cook/chai-tray,lab:cook/chai-tray#child,cook:maani-line,cook:maani-line#mistake,cook:maani-line#hint,cook:maani-line#returning,cook:maani-line#takeback,lab:cook/maani-line,cook:eggs,cook:eggs#mistake,cook:eggs#hint,cook:eggs#takeback,cook:daar,cook:daar#mistake,cook:daar#hint,cook:daar#returning,cook:daar#takeback,lab:cook/daar,cook:mishkaki-grill,cook:mishkaki-grill#mistake,cook:mishkaki-grill#hint,cook:mishkaki-grill#returning,cook:mishkaki-grill#takeback,lab:cook/mishkaki-grill,cook:samosa,cook:samosa#mistake,cook:samosa#hint,cook:samosa#returning,cook:samosa#takeback,lab:cook/samosa,cook:chaat,cook:chaat#mistake,cook:chaat#hint,cook:chaat#takeback,cook:corn,cook:corn#mistake,cook:corn#hint,cook:corn#takeback,cook:baking,cook:baking#mistake,cook:baking#hint,cook:baking#takeback,cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-54b13d155a",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 487 breaks (contract-102 3, contract-70 10, contract-77 6, contract-36 39, contract-107 4, contract-114 170, contract-116 87, contract-79 1, contract-78 15, contract-37 46, contract-112 11, contract-111 16, contract-104 2, contract-91 2, contract-66 1, contract-105 14, contract-115 42, contract-73 1, contract-92 5, contract-106 5, contract-109 1, contract-53 6); CHECK FAILED: 284 new findings, 0 flows do not reach their end, 0 new page errors, 487 contract breaks",
+   "tail": [
+    "BREAK contract-77 cook:maani-line#takeback L1 @ 930x430 [kind-timing 08-kind-timing.png] 39.7s: a new player's first timed window: the ring went on past the middle of its green (0.69, at 0.725) before the tap (the first-time hold waits in the green until the child acts)",
+    "... and 427 more in contract.md",
+    "judged per game (contract.md lists each check not judged and why): chai 95/98, maani 93/98, eggs 93/98, daar 92/98, sekelo 92/98, samosa 94/98, chaat 91/98, corn 93/98, baking 88/98, chop 85/98",
+    "CONTRACT FAILED: 487 breaks (contract-102 3, contract-70 10, contract-77 6, contract-36 39, contract-107 4, contract-114 170, contract-116 87, contract-79 1, contract-78 15, contract-37 46, contract-112 11, contract-111 16, contract-104 2, contract-91 2, contract-66 1, contract-105 14, contract-115 42, contract-73 1, contract-92 5, contract-106 5, contract-109 1, contract-53 6)",
+    "CHECK FAILED: 284 new findings, 0 flows do not reach their end, 0 new page errors, 487 contract breaks",
+    "17:08:41 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-change-54b13d155a/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/play.log",
+   "minutes": 105.1
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 5646e13caf (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chai-tray,cook:chai-tray#mistake,cook:chai-tray#hint,cook:chai-tray#returning,cook:chai-tray#takeback,lab:cook/chai-tray,lab:cook/chai-tray#child,cook:maani-line,cook:maani-line#mistake,cook:maani-line#hint,cook:maani-line#returning,cook:maani-line#takeback,lab:cook/maani-line,cook:eggs,cook:eggs#mistake,cook:eggs#hint,cook:eggs#takeback,cook:daar,cook:daar#mistake,cook:daar#hint,cook:daar#returning,cook:daar#takeback,lab:cook/daar,cook:mishkaki-grill,cook:mishkaki-grill#mistake,cook:mishkaki-grill#hint,cook:mishkaki-grill#returning,cook:mishkaki-grill#takeback,lab:cook/mishkaki-grill,cook:samosa,cook:samosa#mistake,cook:samosa#hint,cook:samosa#returning,cook:samosa#takeback,lab:cook/samosa,cook:chaat,cook:chaat#mistake,cook:chaat#hint,cook:chaat#takeback,cook:corn,cook:corn#mistake,cook:corn#hint,cook:corn#takeback,cook:baking,cook:baking#mistake,cook:baking#hint,cook:baking#takeback,cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-5646e13caf-54b13d155a",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 458 breaks (contract-77 5, contract-102 3, contract-106 3, contract-36 34, contract-70 7, contract-114 168, contract-116 84, contract-111 10, contract-78 16, contract-96 1, contract-73 1, contract-80 1, contract-37 46, contract-112 10, contract-104 1, contract-91 1, contract-105 13, contract-115 42, contract-92 3, contract-53 3, contract-107 5, contract-8 1); CHECK FAILED: 285 new findings, 0 flows do not reach their end, 0 new page errors, 458 contract breaks",
+   "tail": [
+    "BREAK contract-116 cook:maani-line#takeback L1 @ 740x320 [view-service 09-view-service.png] 29.7s: cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled)",
+    "... and 398 more in contract.md",
+    "judged per game (contract.md lists each check not judged and why): chai 95/98, maani 93/98, eggs 93/98, daar 92/98, sekelo 92/98, samosa 94/98, chaat 91/98, corn 93/98, baking 88/98, chop 85/98",
+    "CONTRACT FAILED: 458 breaks (contract-77 5, contract-102 3, contract-106 3, contract-36 34, contract-70 7, contract-114 168, contract-116 84, contract-111 10, contract-78 16, contract-96 1, contract-73 1, contract-80 1, contract-37 46, contract-112 10, contract-104 1, contract-91 1, contract-105 13, contract-115 42, contract-92 3, contract-53 3, contract-107 5, contract-8 1)",
+    "CHECK FAILED: 285 new findings, 0 flows do not reach their end, 0 new page errors, 458 contract breaks",
+    "18:36:03 summary: /home/user/wt/s19-serve2/build/screenshots/tiers/trees/5646e13caf/build/screenshots/sandbox/tiers-before-5646e13caf-54b13d155a/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/before.log",
+   "minutes": 87.4
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/wt/s19-serve2/build/screenshots/tiers/trees/5646e13caf/build/screenshots/sandbox/tiers-before-5646e13caf-54b13d155a build/screenshots/sandbox/tiers-change-54b13d155a build/screenshots/tiers/change-54b13d155a/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 2458 before|after pictures, 517 not paired; build/screenshots/tiers/change-54b13d155a/before-after/index.html",
+   "tail": [
+    "pairs: 2458 before|after pictures, 517 not paired; build/screenshots/tiers/change-54b13d155a/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/pairs.log",
+   "minutes": 1
+  },
+  {
+   "id": "film:chai-tray",
+   "what": "a first-play film: cook:chai-tray as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:chai-tray",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:chai-tray --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-chai-tray",
+   "status": "pass",
+   "code": 0,
+   "line": "18:37:48 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-chai-tray/summary.md",
+   "tail": [
+    "gap     1x  Muke chai khape,  [device-voice]",
+    "gap     1x  paani  [device-voice]",
+    "gap     1x  chai  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:37:48 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-chai-tray/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_chai-tray.log",
+   "minutes": 0.7
+  },
+  {
+   "id": "film:maani-line",
+   "what": "a first-play film: cook:maani-line as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:maani-line",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:maani-line --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-maani-line",
+   "status": "pass",
+   "code": 0,
+   "line": "18:38:42 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-maani-line/summary.md",
+   "tail": [
+    "gap     1x  Muke hakri bajr ji maani khape,  [device-voice]",
+    "gap     1x  hakri maani.  [device-voice]",
+    "gap     1x  millet chapati  [silent]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:38:42 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-maani-line/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_maani-line.log",
+   "minutes": 0.9
+  },
+  {
+   "id": "film:eggs",
+   "what": "a first-play film: cook:eggs as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:eggs",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:eggs --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-eggs",
+   "status": "pass",
+   "code": 0,
+   "line": "18:39:17 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-eggs/summary.md",
+   "tail": [
+    "18:39:17 sound: 6 lines heard, 4 with no family clip (the recording gap list), 8 played files that are not an approved family clip",
+    "gap     1x  Muke hakro tarelo indo khape.  [device-voice]",
+    "gap     1x  Tarelo indo hane kadh.  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:39:17 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-eggs/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_eggs.log",
+   "minutes": 0.6
+  },
+  {
+   "id": "film:daar",
+   "what": "a first-play film: cook:daar as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:daar",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:daar --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-daar",
+   "status": "pass",
+   "code": 0,
+   "line": "18:40:07 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-daar/summary.md",
+   "tail": [
+    "gap     1x  Hakro!  [device-voice]",
+    "gap     1x  Ba!  [device-voice]",
+    "gap     1x  Trae!  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:40:07 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-daar/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_daar.log",
+   "minutes": 0.8
+  },
+  {
+   "id": "film:mishkaki-grill",
+   "what": "a first-play film: cook:mishkaki-grill as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:mishkaki-grill",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:mishkaki-grill --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-mishkaki-grill",
+   "status": "pass",
+   "code": 0,
+   "line": "18:40:50 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-mishkaki-grill/summary.md",
+   "tail": [
+    "18:40:50 sound: 7 lines heard, 4 with no family clip (the recording gap list), 7 played files that are not an approved family clip",
+    "gap     1x  Muke sekelo khape,  [device-voice]",
+    "gap     1x  hakri lakri tameto.  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:40:50 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-mishkaki-grill/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_mishkaki-grill.log",
+   "minutes": 0.7
+  },
+  {
+   "id": "film:samosa",
+   "what": "a first-play film: cook:samosa as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:samosa",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:samosa --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-samosa",
+   "status": "pass",
+   "code": 0,
+   "line": "18:42:18 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-samosa/summary.md",
+   "tail": [
+    "gap     1x  Bhar! Bataato.  [device-voice]",
+    "gap     1x  Tar!  [device-voice]",
+    "gap     1x  Samosa hane kadh.  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:42:18 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-samosa/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_samosa.log",
+   "minutes": 1.5
+  },
+  {
+   "id": "film:chaat",
+   "what": "a first-play film: cook:chaat as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:chaat",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:chaat --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-chaat",
+   "status": "pass",
+   "code": 0,
+   "line": "18:43:06 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-chaat/summary.md",
+   "tail": [
+    "gap     1x  Ne poi bataato.  [device-voice]",
+    "gap     1x  bataato  [device-voice]",
+    "gap     1x  mint chutney  [silent]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:43:06 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-chaat/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_chaat.log",
+   "minutes": 0.8
+  },
+  {
+   "id": "film:corn",
+   "what": "a first-play film: cook:corn as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:corn",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:corn --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-corn",
+   "status": "pass",
+   "code": 0,
+   "line": "18:43:46 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-corn/summary.md",
+   "tail": [
+    "gap     1x  amli ji chutney.  [device-voice]",
+    "gap     1x  Makai hane kadh.  [device-voice]",
+    "gap     1x  tamarind chutney  [silent]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:43:46 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-corn/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_corn.log",
+   "minutes": 0.7
+  },
+  {
+   "id": "film:baking",
+   "what": "a first-play film: cook:baking as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:baking",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:baking --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-baking",
+   "status": "pass",
+   "code": 0,
+   "line": "18:44:24 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-baking/summary.md",
+   "tail": [
+    "gap     1x  Paani wiji chad!  [device-voice]",
+    "gap     1x  Tayar ai.  [device-voice]",
+    "gap     1x  Dhyan rakh!  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "18:44:24 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-baking/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_baking.log",
+   "minutes": 0.6
+  },
+  {
+   "id": "film:chop",
+   "what": "a first-play film: cook:chop#speed1 as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:chop",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chop#speed1' --sizes 740x320 --no-sheets --run-id tiers-film-54b13d155a-chop",
+   "status": "pass",
+   "code": 0,
+   "line": "18:44:54 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-chop/summary.md",
+   "tail": [
+    "18:44:54 sound: 5 lines heard, 4 with no family clip (the recording gap list), 5 played files that are not an approved family clip",
+    "gap     1x  Muke ba lasan khape.  [device-voice]",
+    "gap     1x  hakro lasan  [device-voice]",
+    "gap     1x  ba lasan  [silent]",
+    "gap     1x  Bas!  [device-voice]",
+    "18:44:54 summary: /home/user/wt/s19-serve2/build/screenshots/sandbox/tiers-film-54b13d155a-chop/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/film_chop.log",
+   "minutes": 0.5
+  },
+  {
+   "id": "frozen",
+   "what": "chai against its frozen run (frozen.mjs --diff)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/frozen.mjs --diff",
+   "status": "fail",
+   "code": 124,
+   "line": "re-playing 30 page(s) that changed, to confirm ...",
+   "tail": [
+    "playing 15 flows at 1280x665, 740x320 (run frozen-diff-chai-tray-202611111844) ...",
+    "re-playing 30 page(s) that changed, to confirm ..."
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/frozen.log",
+   "minutes": 35
+  },
+  {
+   "id": "mount",
+   "what": "Cook's mount test (COOK-16: leaked listeners)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/test_cook_mount.mjs",
+   "status": "fail",
+   "code": 1,
+   "line": "Node.js v22.23.4",
+   "tail": [
+    "errno: -98,",
+    "syscall: 'listen',",
+    "address: '127.0.0.1',",
+    "port: 8913",
+    "}",
+    "Node.js v22.23.4"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/mount.log",
+   "minutes": 0
+  },
+  {
+   "id": "leak-cook",
+   "what": "Cook's Kutchi leak bot (a browser; non-negotiable 4)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/leak.mjs cook",
+   "status": "fail",
+   "code": 1,
+   "line": "Node.js v22.23.4",
+   "tail": [
+    "errno: -98,",
+    "syscall: 'listen',",
+    "address: '127.0.0.1',",
+    "port: 8913",
+    "}",
+    "Node.js v22.23.4"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/leak-cook.log",
+   "minutes": 0
+  },
+  {
+   "id": "loadtime",
+   "what": "time and bytes to the first tap (loadtime.mjs; 20% growth fails)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/loadtime.mjs --games chai-tray,maani-line,eggs,daar,mishkaki-grill,samosa,chaat,corn,baking,chop",
+   "status": "fail",
+   "code": 1,
+   "line": "Node.js v22.23.4",
+   "tail": [
+    "errno: -98,",
+    "syscall: 'listen',",
+    "address: '127.0.0.1',",
+    "port: 8913",
+    "}",
+    "Node.js v22.23.4"
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/loadtime.log",
+   "minutes": 0
+  },
+  {
+   "id": "rows-to-recheck",
+   "what": "the fix-list rows of the flows the change reaches (touched.mjs | regress.mjs)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/touched.mjs --base 5646e13caf4da0e35ceb51e6ec364fecdc0d7226 --json | node build/tools/review/regress.mjs --stdin",
+   "status": "pass",
+   "code": 0,
+   "line": "288 distinct rows to recheck; add --shared for the Shared components rows.",
+   "tail": [
+    "CK-14   fixed    eye: hob · H11                         Nothing stands on a lit burner (a glass once did)",
+    "CK-15   fixed    eye · LAY-12                           Count badges never overlap a speech bubble, card or tool",
+    "CK-16   fixed    eye: after each pick                   A hidden item's shadow hides with it",
+    "... and 30 more",
+    "checked by the contract run on every flow (--check fails on a break): contract-100 kit-card: SH-227, SH-241; contract-101 nani-box: SH-240; contract-102 kit-light: SH-119; contract-103 no-buttons: SH-238; contract-104 card-pic: SH-242, SEK-24; contract-105 light-whole: CK-63; contract-106 light-goes: SH-236; contract-107 hop-shelf: SH-237; contract-108 praise-last: SH-239; contract-109 shelf-line: SH-243; contract-110 knob-side: SH-247; contract-111 item-reach: SH-244; contract-96 boil-reopen: CHAI-105; contract-98 lesson-shown: DAAR-41; contract-44 one-finger: SH-233; contract-92 light-room: SH-230, CK-61, DAAR-43; contract-93 own-words: CK-59; contract-94 wm-card: SH-231; contract-95 skip-silent: CK-60, DAAR-40; contract-72 row-glide: SH-152, CHAI-39; contract-75 skip-zone: SH-157; contract-76 pop-face: SH-154; contract-77 timed-hold: SH-158; contract-78 call-light: CHAI-40, CHAI-49, CHAI-52; contract-79 card-light: CHAI-42, SH-178; contract-80 no-jump: CHAI-45; contract-81 over-gauge: CHAI-46; contract-82 edge-on-face: CHAI-47; contract-83 card-on-face: SH-154, CHAI-43, SH-203; contract-90 card-light: CHAI-37, CHAI-77, CHAI-106; contract-84 light-clear: SH-164; contract-85 replay: SH-161; contract-86 bubble-clear: SH-166; contract-87 one-light: CHAI-50; contract-88 item-said: SH-171; contract-89 helper-call: SH-172, CHAI-40; contract-91 help-comes: SH-228, CLN-221, RIDE-11; contract-1 popup: SH-64, CHT-10, CHAI-15, CK-29; contract-2 moves-on: SH-40, CLN-92, CLN-110; contract-3 voice: SH-66; contract-4 bubble: SH-68, CLN-86, CLN-146, SH-177; contract-5 badges: SH-67; contract-6 old-art: DAAR-13, ART-17, ART-13, CK-52; contract-7 one-voice: PAN-04; contract-8 highlight: SH-53, SH-79, CK-34, CLN-143, CLN-144, CLN-145, CK-41; contract-9 closed-card: CLN-114; contract-10 your-turn: SH-71; contract-11 background: PAN-14, ART-05, ART-59, ART-60; contract-12 greyed: SH-23; contract-13 stale-ui: CLN-06; contract-14 talk: ART-18; contract-15 words-whole: SH-73, CLN-153, SH-170; contract-16 english: LNG-01, PAN-10, SH-85, MOD-09, MOD-10, CK-42, LNG-15, SH-92; contract-17 voice-src: LNG-06, LNG-14; contract-18 card-rows: SH-10, SEK-13, DAAR-19, DAAR-23, CLN-131, CLN-141; contract-19 counting: DAAR-18, DAAR-24, SH-92; contract-20 one-face: CLN-85, CLN-139, CLN-149, DAAR-25, CK-40; contract-21 input-live: CLN-152, CK-43, CK-45, DAAR-42; contract-22 once-whole: PAN-04, PAN-16, CHAI-21; contract-23 item-word: SH-94; contract-24 help-ladder: SH-60, SH-95; contract-26 opening: LNG-16; contract-30 written: SH-99; contract-31 free-replay: SH-102; contract-32 divider: SH-103; contract-33 headline-size: SH-107; contract-34 go-arrow: SH-106; contract-35 card-ladder: SH-110, SAM-26, MAA-18; contract-36 step-call: SH-110, SEK-18, SH-133; contract-37 decoys: CK-49, SH-132; contract-50 one-tick: SAM-24, SAM-27; contract-51 inside-card: SH-142, SH-138, SH-170, CHAI-69; contract-52 bubble-clear: CK-18, SH-145, SH-138, CHAI-48, SH-177; contract-53 one-in-light: CHAI-33, SH-138; contract-54 rail-in-side: CK-53, SH-138",
+    "288 distinct rows to recheck; add --shared for the Shared components rows."
+   ],
+   "log": "build/screenshots/tiers/change-54b13d155a/logs/rows-to-recheck.log",
+   "minutes": 0
+  }
+ ],
+ "minutes": 247.5,
+ "ok": false
+}
