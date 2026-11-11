@@ -616,16 +616,16 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       img.setScale(piece ? z.L(PILE_() * 0.45) / img.width : sc * 1.5);
       list.push(img);
       const to = bowl ? { x: bowl.x + z.L((n % 3) * 30 - 30), y: bowl.y + z.L(Math.floor(n / 3) * 24 - 20) } : spot(id, n);
-      S.fly(img, to.x, to.y, { scale: bowl ? sc * 0.5 : piece ? img.scale : sc, duration: 460, arc: z.L(90) }).then(() => {
+      // (contract-114: the piece grows to its heap's size on the way, so it lands at the size it rests at: its longer side the heap's)
+      const heapSrc = S.textures.get(`dv2-chop-${id}`).getSourceImage();
+      const s1 = z.L(heapSize(id)) / heapW;
+      const pieceTo = piece ? (s1 * Math.max(heapSrc.width, heapSrc.height)) / Math.max(1, img.width, img.height) : sc;
+      S.fly(img, to.x, to.y, { scale: bowl ? sc * 0.5 : pieceTo, duration: 460, arc: z.L(90) }).then(() => {
         if (!img.active) return;
         if (piece) {
-          // (SH-256, contract-114: the piece becomes its heap without a snap: the heap's picture comes in at the piece's size and
-          // grows to its own over 0.25 s)
-          const w0 = img.displayWidth;
+          // (SH-256: the piece becomes its heap without a snap: the heap's picture at the same longer side)
           img.setTexture(`dv2-chop-${id}`);
-          const s1 = z.L(heapSize(id)) / heapW;
-          img.setScale(w0 / Math.max(1, img.width));
-          S.tweens.add({ targets: img, scaleX: s1, scaleY: s1, duration: 250, ease: "Sine.easeOut" });
+          img.setScale(s1);
         }
         img.setDepth(D.item - 0.5 + n * 0.001);
         S.puff(to.x, to.y, 0xfff6e0, z.L(22));
