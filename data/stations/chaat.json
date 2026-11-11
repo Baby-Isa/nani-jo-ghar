@@ -1,86 +1,51 @@
 {
- "_about": "Sprint 18 wave 2 (s18-g-chaat; the sprint's 'Coded well' rule 1: a game is its settings file plus its own mechanic): chaat's own numbers, read by js/cook/mechanics/assemble.js (the bowl) before it builds; everything else is a kit call. bowl: the side-on glass bowl in the scene (design px of the 1600x900 box: w its drawn width, x its centre; res the layers' canvas over the bowl's design size), its layers (band: a layer's flat texture, w bowl px and pad above and below; thin: a layer's thickness as a share of a full one; drizzle: the chutneys, drizzled over the layer below; bandScale: a layer's pieces as a share of their size in the pot; potFood: the food inside a pot, the layers' texture, as fractions of the pot). The bowl's measured inside and the pots' one canvas stay in the code (BOWL, BOWL_INSIDE, POT: build/check_vessel_meta.py reads them there). shelf: the line the pots stand on (base), the slot each wants (pitch) and a pot's width (potW), the span the row is centred on (the whole band, centred under the bowl: the tick is gone, SH-238; s19-wave-d: at 930x430 the old span left of the tick made the chutney's pill touch its neighbour's, contract-92), the word pills' line (chipY); the pills themselves are the shared kit's (js/shared/shelf.js). pots, strips: each topping's pot and its side-on strip (the s08b strips stand in for CHT-13's side-on layers, CHT-04). motion: the spoonful (w design px), its flight back (backMs), its drop (dropMs), the layer rising as it goes in (fillMs, CK-83: chai's pan fills over about a second), a wrong thing's pause before the wobble and its way out (notInPauseMs, outMs), a double tap (doubleTapMs), the right bowl's moment (rightHoldMs), the right way shown (showGlowMs, showHoldMs), the recast's cap (recastCapMs), the end (endMs). levels: what changes by level over data.mechanics.assemble (flyMs: a spoonful's flight to the bowl, about 15% quicker a level, STD-C2-06). The decoys and the counts are the central rules' (data/rules.json), never here (STD-F2-02).",
- "band": "shelf",
+ "_about": "Sprint 18 wave 2 (s18-g-chaat; the sprint's 'Coded well' rule 1: a game is its settings file plus its own mechanic): chaat's own numbers, read by js/cook/mechanics/assemble.js before it builds; everything else is a kit call. CHT-13 (Zafar, 9 Nov: 'I think maybe we go top down for chaat ... Opaque bowl looks better than the glass bowl'; built by s19-chaat-td, 11 Nov): everything seen from above. bowl: the opaque cream serving bowl (file), its drawn width (d) and centre (x, y) in design px of the 1600x900 box (y in the scene above the tray; a taller stage lifts it, Cook.liftZone), the middle of its opening as fractions of the picture (cx, cy), the food's circle as a share of the bowl's half-width (food), the layers' canvas px per world px (res), where a layer's soft edge starts (edge, a share of the food's radius), the inside wall's shade over the food's edge (wallShade), the warm glow's size as a share of d (warm). tray: the row on the kit's stone tray (band 'tray'): the slot each bowl wants (pitch), a bowl's width (bowlD, narrower where the slots ask), between a bowl's foot and its pill's top (gap), the least room above a bowl under the tray's top (top), the word pills' line (chipY), the span the row is centred on (span); the pills are the shared kit's (js/shared/shelf.js) at chai's size. bowls: each topping's cream bowl from above (the full run's F3, cut to assets/cook/items/v4/chaat/), and in it the food's middle (cx, cy) and radius (food, a share of the picture's width) and a spoonful's (spoon). layers: each topping's own picture laid in the bowl (the full run's C5-C11; the chutneys are their drizzles, Zafar 10 Nov): its width as a share of the food's (k, varied by kJitter), how far off the middle (spread), the shadow under its pieces (shade: offset x, y and blur in world px, alpha a), where a spoonful lands (land, a share of the food's radius) and how small a layer starts as it grows in from there (from). heap: a topping with no layer picture (the base, potato and chickpeas, and sev: Fable's 'two scatter pictures overlap, whichever was added second on top') is its tray bowl's food stamped in discs: a stamp's radius as a share of the food's (r: a whole bowl's food, so its pieces are the layers' size), the stamps' spacing when it covers the floor as the first thing in (grid, of r) and their opaque middle (solid); a later one lies in heaps: each a share of its bowl's food (heap) at the same scale, softer edged (heapSolid), how many (heaps), how far out (reach) and their size (min, up to 2 - min, of a heap). motion: the spoonful (spoonW design px, its drop from dropPx above where it lands over dropMs), its flight back (backMs), the layer growing in (fillMs, CK-83: about 0.9 s, never a snap), a wrong thing's pause before the shake and its way out (notInMs, notInPauseMs, outMs, shakePx), a double tap (doubleTapMs), the right bowl's moment (rightHoldMs), the right way shown (showGlowMs, showHoldMs), the recast's cap (recastCapMs), the word pop's place from the bowl's right edge and middle (popDx, popDy), the review face's size (reviewD), the end (endMs). levels: what changes by level over data.mechanics.assemble (flyMs: a spoonful's flight to the bowl, about 15% quicker a level, STD-C2-06). The decoys and the counts are the central rules' (data/rules.json), never here (STD-F2-02).",
+ "band": "tray",
+ "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook-bottom-row.md). CHT-13 (Zafar, 9 Nov): chaat is top-down on the tray (was 'shelf', the side-on glass jars).",
  "bowl": {
-  "w": 760,
+  "file": "assets/cook/items/v4/chaat/bowl-empty.webp",
+  "d": 560,
   "x": 800,
+  "y": 318,
+  "cx": 0.5,
+  "cy": 0.505,
+  "food": 0.8,
   "res": 1.5,
-  "band": {
-   "w": 1300,
-   "pad": 14
-  },
-  "thin": {
-   "ph-amli": 0.5,
-   "ph-lili": 0.5,
-   "ph-dahi": 0.85,
-   "ph-dhana": 0.8,
-   "veg-12": 0.8
-  },
-  "drizzle": [
-   "ph-amli",
-   "ph-lili"
-  ],
-  "bandScale": {
-   "veg-01": 0.62,
-   "ph-chana": 0.62,
-   "ph-dahi": 0.8,
-   "ph-sev": 0.7,
-   "ph-dhana": 0.62,
-   "veg-02": 0.6,
-   "veg-03": 0.6,
-   "veg-12": 0.62
-  },
-  "potFood": {
-   "x0": 0.15,
-   "x1": 0.85,
-   "y0": 0.4,
-   "y1": 0.86
-  }
+  "edge": 0.94,
+  "wallShade": 0.3,
+  "warm": 1.22
  },
- "shelf": {
-  "base": 818,
+ "tray": {
   "pitch": 180,
-  "potW": 166,
+  "bowlD": 150,
+  "gap": 14,
+  "top": 14,
+  "chipY": 860,
   "span": [
    30,
    1570
-  ],
-  "chipY": 860
+  ]
  },
- "pots": {
-  "dir": "assets/cook/items/v3/chaat/",
-  "_tomato": "pot-tomato is a stand-in (build/make_chaat_tomato_pot.py): no tomato on the T2 sheet; pot-potato-v2: ART-11's matte cream flesh",
+ "bowls": {
+  "dir": "assets/cook/items/v4/chaat/",
   "files": {
-   "veg-01": "pot-potato-v2",
-   "ph-chana": "pot-chana",
-   "veg-02": "pot-onion",
-   "veg-03": "pot-tomato",
-   "veg-12": "pot-chilli",
-   "ph-sev": "pot-sev",
-   "ph-dahi": "pot-dahi",
-   "ph-amli": "pot-imli",
-   "ph-lili": "pot-chutney",
-   "ph-dhana": "pot-dhania"
+   "veg-01": "bataato",
+   "ph-chana": "chana",
+   "veg-02": "dungri",
+   "veg-03": "tameto",
+   "veg-12": "marcha",
+   "ph-dhana": "kothmir",
+   "ph-sev": "sev",
+   "ph-lili": "lili-chutney",
+   "ph-amli": "amli-chutney",
+   "ph-dahi": "dai"
   },
-  "bowl": "bowl-side"
+  "cx": 0.5,
+  "cy": 0.495,
+  "food": 0.4,
+  "spoon": 0.2
  },
- "strips": {
-  "dir": "assets/cook/items-s08b/chaat-strips/",
-  "files": {
-   "veg-01": "strip-potato-s08b",
-   "ph-chana": "strip-chickpea-s08b",
-   "veg-02": "strip-onion-s08b",
-   "veg-03": "strip-tomato-s08b",
-   "veg-12": "strip-chilli-s08b",
-   "ph-sev": "strip-sev-s08b",
-   "ph-dahi": "strip-yogurt-s08b",
-   "ph-amli": "strip-tamarind-s08b",
-   "ph-lili": "strip-green-chutney-s08b",
-   "ph-dhana": "strip-coriander-s08b"
-  }
- },
- "tops": {
-  "_about": "S19 (s19-wave-e2): each topping's own top, drawn straight down (the full run's C5-C11, cut by build/tools/art/s19_cut.py), seen as the top layer's surface through the bowl's mouth (assemble.js topSurface). The chutneys are the drizzles (Zafar, 10 Nov: C5-drizzle #111, C10-drizzle #110); the ribbons and smears stay cut beside them (layer-lili, layer-amli). Potato, chickpeas and sev have none yet (the mini run's C2-C4 are not cut): their strip's own top stays their surface.",
+ "layers": {
   "dir": "assets/cook/items/v4/chaat/",
   "files": {
    "veg-02": "layer-dungri",
@@ -90,21 +55,48 @@
    "ph-dahi": "layer-dai",
    "ph-lili": "layer-lili-drizzle",
    "ph-amli": "layer-amli-drizzle"
-  }
+  },
+  "_files": "Zafar, 10 Nov: the chutneys are the drizzles (C5-drizzle #111, C10-drizzle #110); the ribbons (layer-lili, layer-amli) stay cut, unused. Potato, chickpeas and sev have no layer picture: they are stamped from their bowl's food (heap).",
+  "k": 0.9,
+  "kJitter": 0.06,
+  "spread": 0.05,
+  "shade": {
+   "x": 2,
+   "y": 3,
+   "blur": 4,
+   "a": 0.35
+  },
+  "land": 0.4,
+  "from": 0.35
+ },
+ "heap": {
+  "r": 0.5,
+  "grid": 1.15,
+  "solid": 0.85,
+  "heap": 0.42,
+  "heapSolid": 0.45,
+  "heaps": 9,
+  "reach": 0.66,
+  "min": 0.85
  },
  "motion": {
-  "spoonW": 92,
+  "spoonW": 84,
+  "dropPx": 40,
   "backMs": 380,
   "dropMs": 170,
   "notInMs": 380,
   "notInPauseMs": 260,
   "outMs": 260,
+  "shakePx": 9,
   "doubleTapMs": 220,
   "rightHoldMs": 900,
   "showGlowMs": 420,
   "showHoldMs": 700,
   "recastCapMs": 9000,
   "popCapMs": 2800,
+  "popDx": 150,
+  "popDy": -40,
+  "reviewD": 200,
   "endMs": 500,
   "fillMs": 900
  },
@@ -123,7 +115,7 @@
   }
  ],
  "assets": [
-  "assets/cook/items/v4/chaat/layer-*.webp"
+  "assets/cook/items/v4/chaat/*"
  ],
- "_assets": "S19 (s19-wave-e2; decision 68, loadcheck): the toppings' top pictures (tops), beyond data/cook.json art.assets.stations"
+ "_assets": "S19 (decision 68, loadcheck): every picture chaat loads beyond data/cook.json art.assets.stations: the serving bowl, the F3 bowls on the tray and the layer pictures (CHT-13, s19-chaat-td)"
 }

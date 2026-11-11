@@ -1,0 +1,56 @@
+{
+  "name": "s19-checks-2: the next screen checks from the check sort (G0 housekeeping, G2 snaps and glides, G3 sizes and padding, G5 no opt-ins) and the art check's magenta edge",
+  "model": "Opus",
+  "effort": "high",
+  "why": "Zafar approved fixing all the checks (10 Nov); the check sort (build/reports/s19-check-sort.md) orders the groups after s19-checks-1, which proved the method (merged 11 Nov)",
+  "cost": "about $40-50",
+  "stop": "when the tasks are done",
+  "branch": "s19-checks-2 in /home/user/wt/s19-checks-2 (made for you from the integration branch, without sources/ except the S19 picks: the disk is tight); commit there, never push; the orchestrator merges",
+  "kind": "tools",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "build/reports/s19-check-sort.md (all of it: the groups and the table) and build/reports/s19-checks-review.md section 5",
+    "build/reports/s19-checks-1.md (the method: real bad runs, judged N of M, contract-112's screen pictures, build/sandbox/fixtures/bad-runs/)",
+    "docs/process/checks-to-build.md (the rule: a check counts only when it goes red on a real bad run and green on chai)"
+  ],
+  "owns": [
+    "build/sandbox/** except build/sandbox/data/evidence.json",
+    "build/lint/**, build/tools/review/** and build/tools/art/artcheck*.mjs, artcolour.py and their data",
+    "docs/process/checks-to-build.md, docs/process/check-audit.md, docs/process/eye-judge-rubric.md (only the lines for these checks)",
+    "build/reports/s19-checks-2.md"
+  ],
+  "readOnly": [
+    "js/**, css/**, data/** (the game: s19-fixes-f and s19-chaat-td own it now; a check that finds a game fault reports it, never edits the game)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "port": 8912,
+  "report": "s19-checks-2",
+  "publish": false,
+  "flows": ["cook:chai-tray", "cook:eggs", "cook:maani-line", "cook:corn"],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "G0, housekeeping, as the check sort lists it (contract-95's fallback already fixed by s19-checks-1: add its test only if missing): retire the dead halves and tools it names, run test_cook.py and test_clinic.py once and keep or retire them, correct check-audit.md's contract-11 line.",
+      "accept": "the list of what was retired and why in the report; checks.mjs passes"
+    },
+    {
+      "do": "G2, snaps and glides from the frames (the film buffer): a new check that an item keeps its size from step to step (its drawn box between consecutive frames: no jump in scale without a tween, the whole egg to fried, the bread onto the plate, the cob tray to plate), and contract-72, -74 and -80 rewritten as the sort says. Real bad runs first: today's HEAD has known snaps (maani's bread, corn's cob, eggs' egg, per the eye judge, build/reports/s19-four-beside-chai.md); add their frames to the fixtures.",
+      "accept": "each new or rewritten check red on its bad run and green on chai, with unit tests on the fixtures"
+    },
+    {
+      "do": "G3, sizes and padding on the screen: the main thing as big as the height allows and items at one height per size class; card padding and gaps measured in the game (labcheck's measure in the contract run); contract-73 from the speaker's own box.",
+      "accept": "red on a real bad frame (the eye judge's small carton, CK-77; the half-empty one-item order card), green on chai"
+    },
+    {
+      "do": "G5's no opt-ins: contract-36 takes its steps from the screen (the card's rows and each new lit target), -37 counts decoys on the shelf, -109 judges one or two items, and -70, -71, -77, -96 move from games.json fields to notes every game writes; empty the games.json check fields. Plus the art check's magenta-edge measure (the pink rim row of 10 Nov): a cut whose soft edge is more than 15% pinkish (min(r,b) - g over 35, red near blue) fails, with build/tools/art/edge_bleed.py as the fix it names; see-through glass is listed by name.",
+      "accept": "an eggs run whose report judges every check (no 'not judged' for want of a field); the art check red on a cut from before edge_bleed (git show 02b28a678:assets/cook/items/v4/...) and green on HEAD"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8912, flock /tmp/njg-browser-8912.lock); commit on your branch often, never push; never loosen a check to pass (only if it still goes red on its bad runs); a check that finds a real game fault lists it in the report for the game's owner; keep under 2 GB of runs and fixtures under 50 MB (the disk is tight); never run `git sparse-checkout disable`.",
+      "accept": "build/reports/s19-checks-2.md with a Proof section, under 900 words: what each check now measures, its bad runs, what it catches on HEAD by game"
+    }
+  ]
+}

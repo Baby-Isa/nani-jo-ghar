@@ -1,0 +1,55 @@
+{
+  "name": "s19-fixes-f: the kitchen games' open rows from the eye judge, measured with the new screen checks (all but chaat)",
+  "model": "Opus",
+  "effort": "high",
+  "why": "s19-fixes-e stopped part-way (merged as it stood); the new screen checks (contract-112, -113) now see what the eye judge saw; finish the rows and clear their breaks",
+  "cost": "about $25-35",
+  "stop": "when the tasks are done",
+  "branch": "s19-fixes-f in /home/user/wt/s19-fixes-f (made for you from the integration branch, without sources/ except the S19 picks: the disk is tight); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/s19-eggs-beside-chai.md, s19-four-beside-chai.md, s19-four-more-beside-chai.md (the eye judge's findings) and the verdict files they name (build/screenshots/sidebyside/*-L1-20261110-*/judge-batch.verdicts.md, in the main checkout /home/user/nani-jo-ghar/)",
+    "build/reports/s19-checks-1.md (the new checks and what they caught on HEAD) and build/reports/s19-wave-e2.md (sekelo, samosa, baking yesterday)",
+    "docs/design-language/standard/e-presentation.md STD-E2-08 and STD-E2-08a (one chop, its swipe light)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers 10-11 Nov)"
+  ],
+  "owns": [
+    "js/cook/stations/eggs.js, corn.js, chop.js, daar.js, maani-line.js, chai-tray.js, mishkaki-grill.js, samosa.js, baking.js and their data/stations/*.json",
+    "js/cook/coach.js, flow.js, ui.js, station-lib.js, kitchen-kit.js and the mechanics these games use (not assemble.js)",
+    "js/shared/onboard.js, shelf.js and guide.js",
+    "data/cook.json and build/sandbox/data/evidence.json (your rows' evidence specs)",
+    "build/reports/s19-fixes-f.md"
+  ],
+  "readOnly": [
+    "js/cook/mechanics/assemble.js and data/stations/chaat.json (s19-chaat-td owns chaat now; chaat's chop stage is chop's own game, yours)",
+    "build/sandbox/** except data/evidence.json, build/lint/**, build/tools/** (the checks: a check you judge wrong goes in your report with its picture and why; never loosen one)",
+    "assets/** (the art as it is; a missing picture goes in your report)"
+  ],
+  "stubs": "none",
+  "port": 8909,
+  "report": "s19-fixes-f",
+  "publish": false,
+  "flows": ["cook:chai-tray", "cook:eggs", "cook:chop", "cook:corn", "cook:daar", "cook:maani-line", "cook:mishkaki-grill", "cook:samosa", "cook:baking"],
+  "rows": ["SH-249", "SH-253", "SH-254", "SH-256", "SH-259", "CK-75", "CK-76", "CK-77", "CK-78", "CK-79", "CK-80", "CK-81"],
+  "tasks": [
+    {
+      "do": "Measure first, with the new checks: the contract run of the nine games at L1 at 740x320 and 1280x665 (COOK_TEST_PORT=8909 flock /tmp/njg-browser-8909.lock timeout 3000 node build/sandbox/run.mjs --contract --flow <the nine> --sizes 740x320,1280x665 --run-id s19-fixes-f-before --no-sheets). Its contract.md, with contract-112 (the light from the screen) and contract-113 (covers), is your list.",
+      "accept": "the before run's breaks per game and per check in the report"
+    },
+    {
+      "do": "Finish the rows: one light at a time on one thing, nothing lit while an item flies to it (SH-249, SH-253); a face at well done beside the dish, never over it or its neighbours' chips (SH-254: corn, maani, samosa, sekelo); an item keeps its size from step to step (SH-256: maani's bread onto the plate, corn's cob tray to plate, eggs' whole egg to fried through the new egg-part stage); daar runs chop exactly as chaat does, no zone or knife of its own (SH-259, the lint's last known break); eggs' praise fills the play area (CK-75), Nani names each step from the engine (CK-76: a gap goes on docs/language/recording-sheet.md, never written by hand), the carton at chai's size and place, its light and pill whole (CK-77); chop's tally chip clear of the gear and well done shows the chopped garlic with its asker (CK-78); daar's onion one colour on card and board, the order card's rows never cut, no overlaps, the chopped onion not a speck, its face badge off the katori at 740x320 (CK-79); corn's makai and hakro cards and pills, the ring off its pill, the grill's face circle, the cob's fourth stage (cob-over) wired (CK-80); sekelo's skewer readable at 740x320 and whole on its tray (CK-81). Never remove a mechanic or a help.",
+      "accept": "each row's picture named in the report, before and after"
+    },
+    {
+      "do": "Then every break the new checks still find in the nine games: fix the game; where you judge the check wrong, say why with its picture in the report (never loosen it). Chai is frozen: its pan light is now a rounded rectangle and Shabash shows at well done; re-freeze it (build/tools/review/frozen.mjs) once those are its only changes, and say so.",
+      "accept": "the same run again (s19-fixes-f-after): every end reached, 0 page errors, every remaining break explained with its owner"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8909) except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; shared pieces only, never a game's own light, dim or bar; fix what you break; keep under 2 GB of runs (the disk is tight: delete your superseded runs); never run `git sparse-checkout disable`.",
+      "accept": "build/reports/s19-fixes-f.md with a Proof section, under 900 words"
+    }
+  ]
+}
