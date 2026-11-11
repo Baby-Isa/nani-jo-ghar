@@ -46,6 +46,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
+
   Mech.define("thread", {
     station: "thread",
     view: "marble",
@@ -71,7 +90,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const BOARD = { x: 560, y: 346, w: 250, h: 586 };
       // the scene is raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
       const z0 = z;
-      z = Cook.liftZone(z0);
+      // (CHAI-89, the orchestrator 11 Nov: the board with its skewer and the tray, centred in the view above the band: chai's measure)
+      z = Cook.liftZone(z0, centreLift(z0, BOARD.y - BOARD.h / 2, BOARD.y + BOARD.h / 2));
       const SKY = 352; // the skewer's centre on the board
       const SKS = 0.84; // the skewer on the board
       const RACK = { x: 1090, y: SKY, s: 0.6 }; // the rack sized to its skewers (followup, 29 Sept); v3: the picture's centre
@@ -80,9 +100,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* the bowls: every skewer piece (and decoys), on the shelf, meat | vegetables, in a new order each time */
       const pieceIds = SK.pieceIds();
-      // CK-49 (the level table): 1, 2, 3, 3 decoy bowls by the round's level (the knob); only the potato has sekelo piece art
-      // yet, so past one the rest wait on the art run (reported as they are: contract-37)
-      const ids = pieceIds.concat(St.tableDecoys(k.decoyPool || [], pieceIds, Cook.roundLevel(ctx), { what: "bowls" }));
+      // S19 (s19-games-1, contract-37: the level table's decoys, data/rules.json, "from L1, one more a level"): the bowls are the pieces
+      // the order threads, and the table's decoys drawn from every other piece (the pieces no skewer asks for first, then the decoy
+      // pool: the potato, chilli, corn, chicken); was every piece bowl at every level, so L1's meat skewer had three bowls it never used
+      const needed = [];
+      ordered.forEach((w) => {
+        const what = SK.kindOfWord(w);
+        const add = (id) => id && !needed.includes(id) && needed.push(id);
+        if (SK.only(what)) add(SK.only(what));
+        else if (what === "mixed") SK.pats(pattern).forEach((pt) => pt.forEach(add));
+        else pieceIds.filter((id) => SK.cls(id) === what).forEach(add);
+      });
+      if (!needed.length) pieceIds.forEach((id) => needed.push(id));
+      const spare = Cook.shuffle(pieceIds.filter((id) => !needed.includes(id))).concat(k.decoyPool || []);
+      const ids = needed.concat(St.tableDecoys(spare, needed, Cook.roundLevel(ctx), { what: "bowls" }));
       await SK.loadArt(S, ids);
       SK.band(S, z0);
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
@@ -93,7 +124,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
       board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(BOARD.w), height: z.L(BOARD.h) });
-      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s });
+      // (S19, contract-114: a skewer keeps its size from the board to the tray: the tray is drawn at the board's skewer's size)
+      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s, bamboo: (SK.V3.HANDLE - SK.V3.TIP) * SKS });
       // S19 (Fable's sekelo flaw 2): the tray the skewers go to carries the asker's face from its first frame, as chai's tray does
       if (rack.v3 && handoff) SK.trayFace(S, z, rack.img, params.who || (ctx.order && ctx.order.who) || "nana");
 
@@ -238,7 +270,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           // level 2 up (UX 11): it goes on like any other piece; the plate and the review judge the skewer
         }
-        fly.destroy();
+        // (S19, contract-114: the flying piece fades as the skewer's own takes over at the tip, never swapped for it in one frame)
+        S.tweens.add({ targets: fly, alpha: 0, duration: 160, onComplete: () => fly.destroy() });
         const img = SK.addPiece(S, sk, id, { at: -250 });
         const slot = SK.slotY(sk.ids.length - 1, n);
         await Cook.tween(S, { targets: [img, img.marks], y: slot, duration: 180 + (slot + 250) * 0.6, ease: "Quad.easeIn" });
@@ -326,10 +359,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (rack.v3) {
             // v3 (K9): it lies along its drawn place in the rack's picture, then the picture holds it
             const t = SK.lineAt(...rack.line(Math.min(j, slots - 1), j + 1));
-            await Cook.tween(S, { targets: sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut" });
+            await SK.glide(S, sk, { x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut" });
             rack.set(j + 1);
             SK.stickShown(sk, false);
-          } else await Cook.tween(S, { targets: sk, x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
+          } else await SK.glide(S, sk, { x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
           // (the orchestrator, 30 Oct: the go is the kit's move-on, which presses itself a beat after it shows (Sprint 11, "no Next and no
           // Done anywhere"): shown after the first skewer, it took an L2-L4 order to the grill with one skewer made and the grill then
           // waited for ever. It shows once every skewer the order wants is made, or the rack is full)

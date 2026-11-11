@@ -70,6 +70,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ({ stripH: STRIP_H, ppu: PPU, strips: STRIPS } = s.grid);
   }
   const heapUrl = (id) => (ART && ART.heaps[id]) || null;
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
+
   // a samosa in the oil (design px wide) and where they float, by how many fry (grid.oil)
   const OIL = (n) => GRID.oil.find((o) => o.upTo == null || n <= o.upTo);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
@@ -281,8 +300,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let img;
       if (S.textures.exists(key)) {
         // (scaled by its own canvas: R5's chilli heap isn't on S5's 419 px one; it fills its canvas, so a little smaller)
-        const own = S.textures.get(key).getSourceImage().width;
-        const sc = (z.L(w) / own) * (own === META.heap.w ? 1 : 0.85);
+        const src = S.textures.get(key).getSourceImage();
+        const own = src.width;
+        // S19 (s19-games-1, contract-115: the potato pile stood at 66% of chai's M): a heap on another canvas stands as tall as a
+        // standard one: S5's heaps' canvases (the box the size check reads) are 0.98 of the slot's width tall with 7% padding, so a heap
+        // with none stands 0.92 of it, no wider than 1.24 of it (into its slot's own margin, clear of its neighbours)
+        const oh = (() => {
+          const [t, b] = St.opaqueSpan(S, key);
+          return Math.max(1, (b - t) * src.height);
+        })();
+        const sc = own === META.heap.w ? z.L(w) / own : Math.min((z.L(w) * 0.92) / oh, (z.L(w) * 1.24) / own);
         // SH-243 (contract-109: "the shelf item veg-01 stands -9 px off the base line"): every heap stands on the one base line, the
         // foot of a standard heap's canvas (the potato pile and the chilli rings are other shapes: centred, their feet were 5-11 px off)
         const foot = HEAP_Y + (w * (META.heap.h / META.heap.w)) / 2;
@@ -383,8 +410,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   async function fillFold(z, { who, ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps, ready = null }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
+    // (CHAI-89, the orchestrator 11 Nov: the board, centred in the view above the band: chai's measure)
     const z0 = z;
-    z = Cook.liftZone(z0);
+    z = Cook.liftZone(z0, centreLift(z0, BOARD.y - BOARD.h / 2, BOARD.y + BOARD.h / 2));
     const S = z.S;
     const ctx = z.ctx;
     const dish = ctx.dishAt || 0;
@@ -1100,8 +1128,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       S.tweens.killTweensOf(fimg);
       const c = u2w({ x: fimg.x, y: fimg.y, scaleX: FULL }, [d.x, d.y]);
-      x.setTexture(doneKey).setOrigin(0.5).setScale(FULL).setPosition(c.x, c.y).setAlpha(1).setVisible(true);
-      fimg.setVisible(false);
+      // (S19, contract-114: leaving the close-up the folded samosa fades in over the strip as the strip fades out, never one picture
+      // swapped for another in a frame; then it glides to the plate on itself, Zafar's accepted close-up)
+      x.setTexture(doneKey).setOrigin(0.5).setScale(FULL).setPosition(c.x, c.y).setAlpha(0).setVisible(true);
+      S.tweens.add({ targets: x, alpha: 1, duration: 160 });
+      S.tweens.add({ targets: fimg, alpha: 0, duration: 160, onComplete: () => fimg.setVisible(false) });
       S.sparkle(x.x, x.y);
       Cook.sfx.right();
       pop(z, S, Cook.display("ph-samosa"), x.x, x.y - z.L(170), { speakId: "ph-samosa", ms: 1100 });
@@ -1208,7 +1239,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /* ---------- 3: fry in the karahi on the wide hob, lift onto the paper-lined plate ---------- */
   async function fry(z, { n, level, redo, steps, ready = null, who = null }) {
     const z0 = z;
-    z = Cook.liftZone(z0);
+    // (CHAI-89, the orchestrator 11 Nov: the wide hob with its karahi and the plate on its line, centred in the view above the band)
+    const hobH0 = Cook.Kit && Cook.Kit.size ? Cook.Kit.size(1, FRY.hobK, true).h : 568 * FRY.hobK;
+    z = Cook.liftZone(z0, centreLift(z0, SHELF_TOP - 16 - hobH0, SHELF_TOP - 16));
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
@@ -1234,6 +1267,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const oilR = bodyR * KM.oil;
     const PY = (at.y - z.Y(0)) / z.k; // the plate sits on the burner's line (design px)
     const plate = plateAt(z, S, FRY.px, PY, FRY.pd);
+    // (S19, contract-114: the fold's plate went and this one stood elsewhere in the same frame: it fades in by the hob instead)
+    plate.setAlpha(0);
+    if (plate.shadow) plate.shadow.setAlpha(0);
+    S.tweens.add({ targets: [plate, plate.shadow].filter(Boolean), alpha: 1, duration: 320 });
     plateFace(z, S, plate, who);
     const OL = OIL(n);
     const FS = z.L(OL.size) / META.fry.w; // a samosa's scale in the oil (fry canvases)
@@ -1245,7 +1282,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       t.setScale(z.L(FRY.trayD) / t.width);
       t.shadow = S.contactShadow(t);
       trays.push(t);
-      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(z.L(152) / META.fry.w * 0.85).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
+      // (S19, contract-114: a samosa keeps its size from the thali to the oil to the plate: the oil's size, PLATE_SC below)
+      const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(FS * 0.92).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
       im.baseScale = im.scale;
       im.handAction = false;
       raw.push(im);
@@ -1366,10 +1404,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       Promise.all(
         plateSpots(lifted.length, FRY.px, PY, plate.flatHalf, 0.84).map((sp, i) => {
           const l = lifted[i];
-          const sc = z.L(sp.w) / 370;
+          const sc = PLATE_SC; // (S19: every samosa on the plate at the size the whole order fits, from the first one: it never shrinks as more come)
           return new Promise((r) => S.tweens.add({ targets: [l.im, l.b], x: z.X(sp.x), y: z.Y(sp.y), scale: sc, angle: sp.a, duration: fast ? 1 : 280, onComplete: r }));
         }),
       );
+    const PLATE_SC = z.L(plateSpots(n, FRY.px, PY, plate.flatHalf, 0.84)[0].w) / 370;
     const liftLine = Lang.hasLine("lift") ? Lang.line("lift", Lang.phrase(["ph-samosa"])) : null;
     await new Promise((resolveAll) => {
       post = () => {
@@ -1438,7 +1477,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
                 S.tweens.add({ targets: [im, b], alpha: 0, duration: 360, onComplete: () => (im.destroy(), b.destroy()) });
                 const tr = trays.find((t) => t.alpha < 0.5) || trays[0];
                 S.tweens.add({ targets: [tr, tr.shadow].filter(Boolean), alpha: 1, duration: 300 });
-                const fresh = S.track(S.add.image(tr.x, tr.y - z.L(4), "sv2-fry-0").setScale(z.L(128) / META.fry.w * 0.85).setDepth(D.item + 0.1));
+                const fresh = S.track(S.add.image(tr.x, tr.y - z.L(4), "sv2-fry-0").setScale(FS * 0.92).setDepth(D.item + 0.1));
                 fresh.baseScale = fresh.scale;
                 fresh.handAction = false;
                 raw.push(fresh);
@@ -1470,7 +1509,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             // onto the plate: the samosa rides on the jharo's bowl
             lifted.push({ im, b, verdict });
             const sp = plateSpots(lifted.length, FRY.px, PY, plate.flatHalf, 0.84)[lifted.length - 1];
-            const sc = z.L(sp.w) / 370;
+            const sc = PLATE_SC; // (S19: every samosa on the plate at the size the whole order fits, from the first one: it never shrinks as more come)
             const dur = 440;
             const arc = z.L(110);
             await Promise.all([S.fly(im, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(b, z.X(sp.x), z.Y(sp.y), { scale: sc, duration: dur, arc }), S.fly(jharo, z.X(sp.x), z.Y(sp.y) + z.L(6), { duration: dur, arc })]);

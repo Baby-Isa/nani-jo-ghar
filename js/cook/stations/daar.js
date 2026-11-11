@@ -31,7 +31,8 @@
  * one chop round; 2 = decoys, the chop's switch, a speed to stir at; 3 = the item words dotted on the card;
  * 4 = more decoys, and Nana's card starts folded in the cook (a peek costs a hint).
  * The chips (every level, Zafar, 20 Oct): a word is written until the child has used it right, then the speaker alone (Cook.chipWord).
- * Art: assets/cook/items/v3/daar/ (the nine pots on one registered canvas, the trivet bowl, the ladle;
+ * Art: the pot is the kitchen-and-items run's v4 pot (assets/cook/items/v4/daar/pot-empty, pot-oil) with its six contents as
+ * discs laid in by code (v4/daar/disc-*: S19, Zafar's default 11 Nov); assets/cook/items/v3/daar/ (the trivet bowl, the dial;
  * meta.json), the pantry v2 jars, the top-down vegetables (veg-*-whole-t / -chopped-t), tool-knife-t, and
  * the kitchen kit's hob and knob (js/cook/kitchen-kit.js). The dial's face is drawn in code.
  * 30 Sept (v3.1, build/cut_cook_v3_1.py): the pot shows only the vegetables that went in (R4's pots), the
@@ -93,7 +94,14 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * tomato and coriander that an order may not have (DAAR-16: the pot shows what went in), so they are not used: what went in
    * shows as DS1's stirred-in scatters on the daal, and the tadka lies under the daal poured over it.
    */
-  const POT2 = { w: 900, h: 705, cx: 0.5, cy: 0.4993, r: 0.3844, inner: 0.3467, cut: [327 / 900, 333 / 900], disc: 337 / 900 };
+  /*
+   * S19 (s19-games-1; the kitchen-and-items run's D1-D3, ART-63, Zafar's default 11 Nov: three lines and the discs): the pot is the run's
+   * v4 pot, straight down with an even wall (assets/cook/items/v4/daar/pot-empty, and pot-oil: the same canvas, 962 x 760, the oil in
+   * it), measured on the cut: the body's centre (cx, cy) and outer radius r, the inside wall's radius inner (the oil's edge, 24 rays:
+   * 280-292 px), all of w. The still rim is pot-empty with its middle cut away on a circle just inside the wall (cut), the disc reaching
+   * a little under it (disc). What is in it is one of the run's six discs (v4/daar/disc-*, laid in by code), or the oil cut from pot-oil.
+   */
+  const POT2 = { w: 962, h: 760, cx: 0.4995, cy: 0.4993, r: 0.3883, inner: 0.2994, cut: [287 / 962, 287 / 962], disc: 296 / 962 };
   /*
    * s08 w6B (DAAR-31, P50: "the bottom and left walls of the pot are more visible than the top wall"): DP2's lip is not even
    * (measured on the @2x cut along 12 rays: its bright lip begins 12 px inside the outer edge at the top, 18-25 px elsewhere,
@@ -103,15 +111,21 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    */
   const OLD_IN = { cx: 213.5 / 430, cy: 175 / 348, r: 135 / 430 };
   // DP3's discs (assets/s08b-cut-data.json: [cx, cy, r] of the circle on its 419 x 420 canvas)
-  const DISCS = { daar: ["dv4-disc-plain", "disc-daal-plain-s08b", [208.7, 223.4, 194.0]], stirred: ["dv4-disc-stirred", "disc-daal-stirred-s08b", [208.7, 197.0, 194.2]] };
-  const S08B = "assets/cook/items-s08b/";
+  // S19 (D3): the run's six discs, each the round contents filling its canvas inside a 6 px soft margin: what the pot shows (the
+  // stirred one, the tadka over the daar, comes up as you stir and is what the bowl is served from)
+  const V4D = IT + "v4/daar/";
+  const DISCS = { seeds: "disc-seeds", onion: "disc-onion", "onion-chilli": "disc-onion-chilli", masala: "disc-masala", daar: "disc-daar", stirred: "disc-tadka" };
+  const discKey = (st) => `dv6-disc-${st}`;
   // 30 Sept (R4): the -only / pairs pots (the same canvas, registered to D1's rim) so an order without onion
   // never shows onion. s08 w4A: only their contents are drawn (cut to discs), so only the states before the daar load
-  const POTS = ["oil", "seeds", "onion", "tomato", "chilli", "tomato-only", "chilli-only", "onion-chilli", "tomato-chilli"];
+  // (S19: the v3 pots are no longer loaded: the six discs replace their contents)
   // what the pot shows for the pictured vegetables in it so far (onion, tomato, chilli: every mix has its picture;
   // D1's "tomato" is onion + tomato and its "chilli" all three). Another vegetable (garlic, potato) changes nothing.
   const VEG_BIT = { "veg-02": 1, "veg-03": 2, "veg-12": 4 };
-  const MIX_POT = ["seeds", "onion", "tomato-only", "tomato", "chilli-only", "onion-chilli", "tomato-chilli", "chilli"];
+  // S19 (D3's six discs): the disc for each mix (onion 1, tomato 2, chilli 4): tomato in it is the masala; a chilli the disc does not
+  // show (chilli alone, or with tomato) lies in the oil as its own chopped pieces (MIX_SHOWS: the vegetables a disc pictures)
+  const MIX_POT = ["seeds", "onion", "masala", "masala", "seeds", "onion-chilli", "masala", "masala"];
+  const MIX_SHOWS = { seeds: 0, onion: 1, "onion-chilli": 5, masala: 3 };
   /*
    * DAAR-05 (the s08c redo, DS1 v2; s08 w7A): what went in stays pictured once the daar is poured over it, and turns with the
    * stir: each thing that went in lies on the daar as its own stirred-in scatter (sources/art/s08c/ds1-daal-stirred-in-v2.png,
@@ -184,16 +198,16 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   function discTex(S, st) {
     const key = `dv4-c-${st}`;
     if (S.textures.exists(key)) return key;
-    const d = DISCS[st];
-    const srcKey = d ? d[0] : `dv3-pot-${st}`;
-    if (!S.textures.exists(srcKey)) return d ? "dv4-pot-top" : discTex(S, "daar");
+    // S19: the oil is pot-oil's own, cut on the disc's circle; every other state is its v4 disc, cut just inside its soft margin
+    const srcKey = st === "oil" ? "dv6-pot-oil" : discKey(st);
+    if (!S.textures.exists(srcKey)) return st === "daar" || !S.textures.exists(discKey("daar")) ? "dv6-pot-oil" : discTex(S, "daar");
     const img = S.textures.get(srcKey).getSourceImage();
-    const [x0, y0, r] = d ? d[2] : [OLD_IN.cx * img.width, OLD_IN.cy * img.height, OLD_IN.r * img.width];
+    const [x0, y0, r] = st === "oil" ? [POT2.cx * img.width, POT2.cy * img.height, POT2.disc * img.width] : [img.width / 2, img.height / 2, 0.48 * Math.min(img.width, img.height)];
     const R = Math.round(r);
     const ct = S.textures.createCanvas(key, 2 * R, 2 * R);
     const g = ct.getContext();
     g.drawImage(img, x0 - R, y0 - R, 2 * R, 2 * R, 0, 0, 2 * R, 2 * R);
-    const feather = d ? 2 : 6;
+    const feather = 3;
     const fade = g.createRadialGradient(R, R, R - feather, R, R, R);
     fade.addColorStop(0, "rgba(0,0,0,1)");
     fade.addColorStop(1, "rgba(0,0,0,0)");
@@ -210,7 +224,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   function rimTex(S) {
     const key = "dv4-pot-rim";
     if (S.textures.exists(key)) return key;
-    const img = S.textures.get("dv4-pot-top").getSourceImage();
+    const img = S.textures.get("dv6-pot-empty").getSourceImage();
     const w = img.width;
     const h = img.height;
     const ct = S.textures.createCanvas(key, w, h);
@@ -305,6 +319,24 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const it = Object.values(its).find((x) => x && x.role === "tray" && x.word === id && typeof (x.card || x.file) === "string");
     return it ? it.card || it.file : null;
   };
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
   const BOWL_D = 150; // a bowl's diameter on the tray, design px (narrower where the slots ask)
   const BOWL_GAP = 14; // between a bowl's foot and its pill's top
   const Shelf0 = () => global.Shelf;
@@ -352,8 +384,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       ["dv5-glass", "assets/cook/items-s17-stove/t-small-glass-bowl.webp"],
       ["dv5-katori", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp"],
     ]
-      .concat(POTS.map((st) => [`dv3-pot-${st}`, `${V3}pot-${st}.webp`]))
-      .concat([["dv4-pot-top", `${S08B}daar-pot-top-s08b.webp`]], Object.values(DISCS).map(([key, file]) => [key, `${S08B}daar-discs/${file}.webp`]))
+      // S19 (D1-D3): the v4 pot, empty and with oil, and its six discs
+      .concat([["dv6-pot-empty", `${V4D}pot-empty.webp`], ["dv6-pot-oil", `${V4D}pot-oil.webp`]], Object.keys(DISCS).map((st) => [discKey(st), `${V4D}${DISCS[st]}.webp`]))
       .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, bowlUrl(id) || shelfUrl(id)]))
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
@@ -740,6 +772,12 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
+    // (CHAI-89, the orchestrator 11 Nov: the hob with its pot, the stir's flag 17 px over the hob's top, centred in the view above the
+    // band: the hob is the kit's one-burner at 0.9, its foot 14 above the band)
+    {
+      const hobH = Kit.size ? Kit.size(1, 0.9).h : 658 * 0.9;
+      LIFT = centreLift(z, SHELF_TOP - 14 - hobH - 17, SHELF_TOP - 14) / (z.k || 1);
+    }
     /*
      * DAAR-42 (STD-D1-01, D1-06; kit (d)): the first time, the knob, the first pile and the daar's bowl are lit with their call
      * (Cook.Coach.control on the first-time gate), a light that lets every tap through. The spices are never lit (the light would be
@@ -799,7 +837,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // the pot, placed by its measured body (never the handles' box); hot oil in it from the start (D2)
     // s08 w4A (DAAR-31): DP2's top-down pot, its contents a disc inside it under the still rim (POT2)
     const scale = bodyR / (POT2.r * POT2.w);
-    const pot = S.track(S.add.image(cx, cy, "dv4-pot-top").setOrigin(POT2.cx, POT2.cy).setScale(scale).setDepth(D.item));
+    const pot = S.track(S.add.image(cx, cy, "dv6-pot-empty").setOrigin(POT2.cx, POT2.cy).setScale(scale).setDepth(D.item));
     pot.setName("daar-pot");
     pot.shadow = S.contactShadow(pot, { centerX: cx, centerY: cy + bodyR * 0.08, width: bodyR * 2.15, height: bodyR * 2.15 });
     const inR = (bodyR * POT2.inner) / POT2.r;
@@ -1061,16 +1099,39 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
               discAt(contents);
               p0.top.destroy();
               pend = null;
+              shownNow();
             }
             r();
           },
         });
+      });
+    // S19 (D3's six discs): a vegetable its disc does not picture (a chilli alone, or with tomato) lies in the oil as its own rings (the
+    // chop's pieces, under the rim and over the disc), so the pot still shows exactly what went in (DAAR-16); they go once a disc shows
+    // it, and under the daar as it is poured
+    const lying = [];
+    const lieDown = (id, a, rr) => {
+      const key = `dv3-piece-${id}`;
+      if (!S.textures.exists(key)) return;
+      [-0.5, 0.5].forEach((da, j) => {
+        const r2 = Math.min(0.78, rr + 0.12 + j * 0.1);
+        const p = S.track(S.add.image(cx + Math.cos(a + da) * inR * r2, cy + Math.sin(a + da) * inR * r2, key).setDepth(D.item + 0.065).setAlpha(0));
+        p.setScale((inR * 0.26) / Math.max(p.width, p.height)).setRotation(Math.random() * TAU);
+        p.setName("daar-pot-piece");
+        S.tweens.add({ targets: p, alpha: 1, duration: 500 });
+        lying.push({ p, bit: VEG_BIT[id] || 0 });
+      });
+    };
+    const shownNow = () =>
+      lying.splice(0).forEach((l) => {
+        if (!(MIX_SHOWS[state] & l.bit)) return lying.push(l);
+        S.tweens.add({ targets: l.p, alpha: 0, duration: 400, onComplete: () => l.p.active && l.p.destroy() });
       });
     const into = async (id, imgs) => {
       Cook.sfx.whoosh();
       if (id) wentIn.add(id);
       mix |= VEG_BIT[id] || 0;
       const want = MIX_POT[mix];
+      const lies = !!VEG_BIT[id] && !(MIX_SHOWS[want] & VEG_BIT[id]);
       const n = Math.max(1, imgs.length);
       for (let i = 0; i < imgs.length; i++) {
         const b = imgs[i];
@@ -1079,11 +1140,14 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         await S.fly(b, cx + Math.cos(a) * inR * rr, cy + Math.sin(a) * inR * rr, { scale: b.scale * 0.7, duration: 380, arc: z.L(90) });
         Cook.sfx.sizzle(0.6);
         b.setDepth(D.item + 0.1);
-        S.tweens.add({ targets: b, alpha: 0, duration: 700, onComplete: () => b.destroy() });
+        // (S19, contract-114: the heap melts into the pot as it lands, never resting there at another size than in its bowl)
+        S.tweens.add({ targets: b, alpha: 0, duration: 260, onComplete: () => b.destroy() });
+        if (lies) lieDown(id, a, rr);
         if (want !== state || pend) potTo(want, (i + 1) / n, 360);
         if (i < imgs.length - 1) await Cook.wait(260);
       }
       if (!imgs.length && want !== state) await potTo(want, 1, 420);
+      if (!pend) shownNow();
       (glassOf[id] || []).forEach((g) => S.tweens.add({ targets: g, alpha: 0, duration: 300, onComplete: () => g.destroy() }));
       S.puff(cx, cy, 0xfff1c0, z.L(50));
       await Cook.wait(380);
@@ -1101,7 +1165,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       stuckOff();
       lead(null);
       left.forEach((id) => S.tweens.killTweensOf(piles[id] || hits[id]));
-      left.forEach((id) => (piles[id] || []).forEach((im) => im.setScale(im.baseS || z.L(heapSize(id)) / Math.max(im.width, im.height))));
+      // (S19, contract-114: back to its size in a glide on the heap itself, never a jump between frames: its pulse or its light's hop)
+      left.forEach((id) => (piles[id] || []).forEach((im) => S.tweens.add({ targets: im, scale: im.baseS || z.L(heapSize(id)) / Math.max(im.width, im.height), duration: 180, ease: "Sine.easeOut" })));
       if (vbowl) vbowl.setScale(z.L(230) / 484);
       left = left.filter((id) => id !== r.id);
       if (r.id === "bowl") {
@@ -1205,6 +1270,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       pool.clearMask();
       pool.destroy();
       poolMask.destroy();
+      // (S19: the rings that lay in the oil are under the daar now)
+      lying.splice(0).forEach((l) => l.p.active && l.p.destroy());
     }
     // DAAR-33 (P52, decision 13; reverses DAAR-10): the mat the daar stood on fades away once it has been poured, so it
     // never peeks out under the speed dial or lies beside the served bowl's own
@@ -2003,7 +2070,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // DAAR-05 (s07 fix round): the bowl shows what went in, stirred: the plain bowl with the pot's own stirred daar in
     // it (its tadka seeds) and DS1's scatters where the stir left them; never the old tadka bowl's dry chilli and curry
     // leaves, which no order puts in. (No plain bowl: the old one, as before.)
-    const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists("dv4-disc-stirred");
+    const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists(discKey("stirred"));
     const TB = plain ? TRIVET_PLAIN : TRIVET;
     const SB = SC().serveBowl;
     const bowl = S.track(S.add.image(z.X(SB.x), sy(z, SB.y), plain ? "dv3-trivet-plain" : "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));

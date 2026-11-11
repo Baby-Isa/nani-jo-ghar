@@ -97,7 +97,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
    * Measured from the art (meta.json; build/check_vessel_meta.py checks these against it): each round body's
    * centre (cx, cy: fractions of the canvas) and radius (r: of the width). Placed by the body, never the box. */
   const TAWA = { w: 1221, cx: 0.3533, cy: 0.4978, r: 0.3386 }; // M8: the hi-res tawa, handle at right
-  const CHAKLA = { w: 726, cx: 0.4988, cy: 0.4988, r: 0.4746 }; // M4: dark walnut
+  const CHAKLA = { w: 726, cx: 0.4988, cy: 0.4988, r: 0.4746 }; // M4: dark walnut (the v3 chakla, kept for build/check_vessel_meta.py)
+  // S19 (s19-games-1; the kitchen-and-items run's M1, ART-62): the round walnut board exactly from above (v4/maani/board, 725 x 742:
+  // a touch taller than wide), measured on the cut: its middle and its mean radius (356 across, 364.5 down), of w
+  const BOARD = { w: 725, cx: 0.4993, cy: 0.4993, r: 0.4965 };
   const DISC_R = 0.44; // every maani state (raw, half, cooked, burnt) shares one canvas: the disc's radius
   const BALL_R = 0.437; // a dough ball's radius (wheat 0.437, millet 0.4347)
   // M6 / Q15: the blade's middle (the origin), its length on screen. MAA-24 (round 2: "the ... spatula, can kind of move further right, or
@@ -106,9 +109,28 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const TURNER = { ox: 0.19, oy: 0.73, len: 170, rest: 62 };
   // MAA-24 (round 2: "the handle of the pan ... position it to the bottom right"): the tawa turned so its handle points down to the right
   const TAWA_TURN = 40;
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
   const ART = [
-    ["mv-chakla", V3 + "chakla.webp"],
-    ["mv-velan", V3 + "velan.webp"],
+    // S19 (M1, ART-62): the run's round walnut board and its pin, both exactly from above
+    ["mv-chakla", V4 + "maani/board.webp"],
+    ["mv-velan", V4 + "maani/pin.webp"],
     ["mv-tawa", V3 + "tawa.webp"],
     ["mv-turner", V3 + "turner.webp"],
     ["mv-thali", V4 + "kit/plate-steel.webp"],
@@ -211,14 +233,15 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const LX = left + CHAKLA_D / 2;
     const RX = left + CHAKLA_D + COL_GAP + hs.w / 2;
     // raised into the middle of a taller stage's worktop (the stage fill)
-    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM - Cook.lift() });
+    // (CHAI-89, the orchestrator 11 Nov: the board and the hob, one block, centred in the view above the band: chai's measure)
+    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM - centreLift(zt, HOB_BOTTOM - hs.h, HOB_BOTTOM) });
     const midY = hob.y + hob.h / 2; // the chakla sits on the hob's middle line
     const CH = { x: LX, y: midY };
 
     /* ---------- the chakla and its gold ring ---------- */
     // M4: the dark walnut chakla, centred by its measured round body
-    const board = S.track(S.add.image(CH.x, CH.y, "mv-chakla").setOrigin(CHAKLA.cx, CHAKLA.cy).setDepth(D.item - 2));
-    board.setScale(CHAKLA_D / 2 / (CHAKLA.r * board.width));
+    const board = S.track(S.add.image(CH.x, CH.y, "mv-chakla").setOrigin(BOARD.cx, BOARD.cy).setDepth(D.item - 2));
+    board.setScale(CHAKLA_D / 2 / (BOARD.r * board.width));
     board.shadow = S.contactShadow(board);
     // the velan waits along the board's front edge; it lifts off to roll (rollOne draws the rolling one)
     const restPin = S.track(S.add.image(CH.x, CH.y + CHAKLA_D / 2 - 4, "mv-velan").setDepth(D.item - 1));
@@ -468,7 +491,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // one ball comes off the top of the pile (the art's balls are drawn at the pile's scale) and flies out
       const pc = S.centre(pl);
       // (a heap's ball is about 0.46 of its width across: the flying ball starts at that size)
-      const ball = { x: pc.x + (Math.random() - 0.5) * pc.w * 0.2, y: pc.y - pc.h * 0.2, scale: discScale(texOf(pl.type, "ball"), pc.w * 0.23) };
+      // (S19, contract-114: an item keeps its size from step to step: it comes off the heap at the size it is rolled from, so it never
+      // grows a third on the way to the board; a ball put back shrinks into its heap as it lands, and goes)
+      const ball = { x: pc.x + (Math.random() - 0.5) * pc.w * 0.2, y: pc.y - pc.h * 0.2, scale: discScale(texOf(pl.type, "ball"), kRoll.startRadius), small: discScale(texOf(pl.type, "ball"), pc.w * 0.23) };
       pl.left--;
       pileShow(pl);
       const sprite = S.track(S.add.image(ball.x, ball.y, texOf(pl.type, "ball")).setScale(ball.scale).setDepth(D.item + 3));
@@ -521,7 +546,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     function putBack(c) {
       c.handle.cancel && c.handle.cancel();
       chakla = null;
-      S.fly(c.sprite, c.ball.x, c.ball.y, { scale: c.ball.scale, duration: 300 }).then(() => {
+      S.fly(c.sprite, c.ball.x, c.ball.y, { scale: c.ball.small || c.ball.scale, duration: 300 }).then(() => {
         c.sprite.destroy();
         c.plate.left++;
         pileShow(c.plate);

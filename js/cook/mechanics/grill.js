@@ -201,6 +201,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   SK.stickShown = function (sk, on) {
     if (sk && sk.list && sk.list[0]) sk.list[0].setVisible(on);
   };
+  /**
+   * S19 (s19-games-1, contract-114: "tween the picture itself, never a container"): a skewer (a container) moved or resized in a
+   * glide, each of its pictures (the stick, the pieces and their marks) carrying a tween of its own for the same time, so a piece's
+   * size only ever changes inside a tween on that piece. props: the container's tween (targets left out). -> a Promise
+   */
+  SK.glide = function (S, sk, props) {
+    const ms = props.duration || 300;
+    (sk.list || []).forEach((o) => o && o.type === "Image" && S.tweens.add({ targets: o, scaleX: o.scaleX, scaleY: o.scaleY, duration: ms }));
+    return new Promise((r) => S.tweens.add(Object.assign({}, props, { targets: sk, onComplete: () => (props.onComplete && props.onComplete(), r()) })));
+  };
 
   /* ---------------- art (placeholder, drawn in code) ---------------- */
   const cv = (w, h) => {
@@ -1252,8 +1262,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     S.textures.addCanvas(key, c);
     return key;
   };
-  SK.rack = function (S, z, { x, y, slots, s }) {
-    if (SK.v3(S)) return SK.rack3(S, z, { x, y });
+  SK.rack = function (S, z, { x, y, slots, s, bamboo }) {
+    if (SK.v3(S)) return SK.rack3(S, z, { x, y, bamboo });
     const w = (slots * RK.pitch + 2 * RK.end) * s;
     const cy = y + ((RK.top + RK.bot) / 2) * s;
     let img;
@@ -1273,10 +1283,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * along its drawn stick (SK.onLine). (x, y): the picture's centre (design px). Returns {img, w, x(i), y,
    * line(i, n) -> [tip, handle] (screen px: slot i in the picture of n), set(n) (the picture of n)}.
    */
-  SK.rack3 = function (S, z, { x, y }) {
+  SK.rack3 = function (S, z, { x, y, bamboo = V3.BAMBOO }) {
     const R = V3.rack;
     const m = R.sticks[1][0];
-    const k = V3.BAMBOO / ((m[2] - m[1]) * R.h);
+    const k = bamboo / ((m[2] - m[1]) * R.h);
     const img = S.track(S.add.image(z.X(x), z.Y(y), "sk3-rack-0").setDepth(D.item - 2).setScale(z.L(k)));
     // (the shadow under the tray: its own rows, R.tray, the full width; the handles below it cast none)
     const tr = R.tray || [0.375, 0.635];
@@ -1344,8 +1354,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * (rack-0..4), the j-th grilled skewer in slot j, upright, its chunks at their rack size. (x, y): the picture's centre
    * (design px). The same API as SK.plate3 ({img, d, line(j, n), rank, set(n)}), so the grill plates onto it unchanged.
    */
-  SK.cooked3 = function (S, z, { x, y }) {
-    const r = SK.rack3(S, z, { x, y });
+  SK.cooked3 = function (S, z, { x, y, bamboo }) {
+    const r = SK.rack3(S, z, { x, y, bamboo });
     return { img: r.img, d: r.img.displayHeight, line: (j, n) => r.line(j, Math.max(n, j + 1)), rank: (j) => j, set: r.set, rack: true };
   };
   /** For each plate picture n: which of its drawn skewers is the j-th plated (the same place as in picture n-1). */
@@ -1410,6 +1420,52 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     RING: { dy: -22, w: 80, h: 238 },
   };
   const CHIPS = { x: 1410, y: 560, onX: 1450, onY: 380 };
+  /*
+   * S19 (s19-games-1; Zafar, 11 Nov, the orchestrator's word: the grills "look really bad", the mock is
+   * sources/art/s19-mocks2/results/A1-sekelo-2-improved.png): the two trays stacked beside the grill to the grill's own height, the
+   * trays and the grill one tidy rectangle as big as the view allows with even padding, centred across and up and down in the
+   * view (CHAI-89's rule: this screen has no band, so between the view's top and its foot); a skewer keeps its size and stays
+   * upright from the grill to the trays (its BAMBOO length is the tray picture's own stick, so it lies on bar 1 to bar 2 on the
+   * grill). Measured on the art: the tray picture's body is rows 0.0067-0.792 of its canvas and its skewers' handles end at 0.993
+   * (V3.rack), so two trays a small gap apart stand 1.808 canvases from the top tray's rim to the lower tray's foot, the lower
+   * tray's handles hanging 0.2 of a canvas below; the grill picture is V3.grill.w x h. -> LAYOUT3's shape, design px, no lift.
+   */
+  const TRAY_STACK = 0.993 - 6 / 900 + 0.03 + 0.792; // canvases from the top tray's rim to the lower tray's foot
+  const layout3 = (z) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const d = (wy) => (wy - z.Y(0)) / k;
+    const dX = (wx) => (wx - z.X(0)) / k;
+    const top = v.top != null ? d(v.top) : 0;
+    const bot = v.bottom != null ? d(v.bottom) : 900;
+    const left = v.left != null ? Math.max(-200, dX(v.left)) : 0;
+    const right = v.right != null ? Math.min(1800, dX(v.right)) : 1600;
+    const PAD = 56;
+    const R = V3.rack;
+    const gAsp = V3.grill.w / V3.grill.h;
+    const trayW = (R.w / R.h) / TRAY_STACK; // per unit of the grill's height
+    const gapX = 0.05;
+    const below = 0.2 / TRAY_STACK; // the lower tray's handles under the rectangle
+    const G = Math.min((right - left - 2 * PAD) / (trayW + gapX + gAsp), (bot - top - 2 * PAD) / (1 + below));
+    const Hc = G / TRAY_STACK; // a tray canvas's height
+    const W = G * (trayW + gapX + gAsp);
+    const x0 = (left + right) / 2 - W / 2;
+    const y0 = (top + bot) / 2 - (G * (1 + below)) / 2;
+    const bamboo = (R.sticks[1][0][2] - R.sticks[1][0][1]) * Hc;
+    const trayX = x0 + (G * trayW) / 2;
+    const rawY = y0 - (6 / 900) * Hc + Hc / 2;
+    const cookedY = rawY + (0.993 + 0.03) * Hc;
+    const gx = x0 + G * (trayW + gapX) + (G * gAsp) / 2;
+    const gy = y0 + G / 2;
+    const bk = bamboo / 262; // (the ring's sizes were for a 262 skewer)
+    return {
+      RACK: { x: trayX, y: rawY },
+      PLATE: { x: trayX, y: cookedY, rack: true },
+      GRILL: { x: gx, y: gy, w: G * gAsp, skewerY: Math.round(y0 + V3.grill.bars[0] * G + (-V3.TIP / (V3.HANDLE - V3.TIP)) * bamboo), s: bamboo / (V3.HANDLE - V3.TIP), bed: [V3.grill.bed[0], V3.grill.bed[2]] },
+      RING: { dy: -22 * bk, w: 80 * bk, h: 238 * bk },
+      bamboo,
+    };
+  };
 
   Mech.define("grill", {
     station: "grill",
@@ -1425,7 +1481,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const dx = params.dx != null ? params.dx : 0;
       const X = (x) => z.X(x + dx);
       // the scene is raised into the middle of a taller stage's worktop (the stage fill); the band keeps z
-      const LIFT = Cook.lift();
+      // (S19: the v3 screen is laid out in the view itself, layout3, so it takes no lift)
+      let LIFT = Cook.lift();
       const Y = (y) => z.Y(y) - LIFT;
       const L = (v) => z.L(v);
       const [lo, hi] = k.band;
@@ -1460,7 +1517,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const shelfIds = params.shelf || [meatIds, SK.pieceIds().filter((id) => !meatIds.includes(id))];
       await SK.loadArt(S, [].concat(...shelfIds));
       const v3 = SK.v3(S);
-      const { RACK, GRILL, PLATE, RING } = v3 ? LAYOUT3 : LAYOUT2;
+      const LAY = v3 ? layout3(z) : LAYOUT2;
+      if (v3) LIFT = 0;
+      const { RACK, GRILL, PLATE, RING } = LAY;
       SK.band(S, z, { full: v3 && !!PLATE.rack });
       const quiet = SK.shelf(S, z, shelfIds, { level: z.level });
       Object.values(quiet).forEach((b) => {
@@ -1492,7 +1551,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* the rack, with fixed slots (never one per skewer ordered) */
       // (v3: raised with the rest of the scene, so it lines up with the grill and the plate)
-      const rackArt = SK.rack(S, z, { x: RACK.x + dx, y: v3 ? RACK.y - LIFT / z.k : RACK.y, slots: k.rack, s: RACK.scale });
+      const rackArt = SK.rack(S, z, { x: RACK.x + dx, y: v3 ? RACK.y - LIFT / z.k : RACK.y, slots: k.rack, s: RACK.scale, bamboo: LAY.bamboo });
+      if (rackArt && rackArt.img && rackArt.img.setAlpha) rackArt.img.setAlpha(0); // (S19: it fades in below, with its skewers)
       const rackX = (i) => rackArt.x(i);
       const rack = Array(k.rack).fill(null);
       let incoming = 0;
@@ -1501,7 +1561,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* the plate and the chips basket */
       // v3 (K8, K9): the plate's picture holds the skewers plated so far, handles off the plate
       // s08 w3B (SEK-20): layout D's cooked rack under the raw one (the same picture), raised with the scene as the raw rack is
-      const plateArt = v3 ? (PLATE.rack ? SK.cooked3(S, z, { x: PLATE.x + dx, y: PLATE.y - LIFT / z.k }) : SK.plate3(S, { x: X(PLATE.x), y: Y(PLATE.y), L })) : null;
+      const plateArt = v3 ? (PLATE.rack ? SK.cooked3(S, z, { x: PLATE.x + dx, y: PLATE.y - LIFT / z.k, bamboo: LAY.bamboo }) : SK.plate3(S, { x: X(PLATE.x), y: Y(PLATE.y), L })) : null;
       // a chunk's size and place along a cooked skewer: the rack's own (1, 0, 0), or the plate's closer skewers' (V3.PLATE_*)
       const PK = plateArt && plateArt.rack ? { piece: 1, shift: 0, stagger: 0 } : { piece: V3.PLATE_PIECE, shift: V3.PLATE_SHIFT, stagger: V3.PLATE_STAGGER };
       const plateImg = plateArt ? plateArt.img : S.track(S.add.image(X(PLATE.x), Y(PLATE.y), S.textures.exists("sk2-plate") ? "sk2-plate" : SK.tex(S, "plate")).setDepth(D.item - 1));
@@ -1580,7 +1640,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             r.settled = true;
             rackSync();
           };
-          if (item.sprite) S.tweens.add({ targets: sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut", onComplete: land });
+          if (item.sprite) SK.glide(S, sk, { x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut", onComplete: land });
           else {
             SK.onLine(sk, tip, hd);
             land();
@@ -1594,7 +1654,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         sk.setDepth(D.item + 1);
         const r = { sk, pieces: item.pieces, cls: SK.classify(item.pieces, pattern), slot: i, settled: !item.sprite };
         rack[i] = r;
-        if (item.sprite) S.tweens.add({ targets: sk, x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut", onComplete: () => (r.settled = true) });
+        if (item.sprite) SK.glide(S, sk, { x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut", onComplete: () => (r.settled = true) });
         const hit = hitFor(sk, L(RK.pitch * RACK.scale * 0.9), L(380), "rack");
         hit.setPosition(rackX(i), Y(RACK.y));
         S.tappable(hit, () => toGrill(r));
@@ -1819,6 +1879,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* Wave 6: the skewers threaded before "Go to the barbecue" wait on the rack */
       if (params.rackItems) params.rackItems.slice(0, k.rack).forEach((it) => placeOnRack({ pieces: it.pieces }));
+      // S19 (s19-games-1, contract-114: the threading's tray went and this one stood elsewhere in the same frame): the grill's tray
+      // and the skewers waiting on it fade in, as a new place does
+      {
+        const ins = [rackArt && rackArt.img, plateArt && plateArt.img].concat(rack.filter(Boolean).map((r) => r.sk)).filter((o) => o && o.setAlpha);
+        ins.forEach((o) => o.setAlpha(0));
+        if (ins.length) S.tweens.add({ targets: ins, alpha: 1, duration: 180 });
+      }
       /* decision 51 (S02-B): the right skewers of a plate that wasn't quite right stay on it, grilled */
       (params.prePlated || []).forEach((pieces) => {
         const j = plate.length;

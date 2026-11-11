@@ -54,15 +54,15 @@
    "_pieces": "SEK-19 (decision 11; Zafar, 17-18 Oct: 'she should be saying Gos, because the raw ingredient is Gos ... When it's cooked it becomes Mishkaki'; the card 'Hakri Lakri Mishkaki'): the raw meat PIECE is ph-meat (gos: the bowl's chip, the word pop, a mixed skewer's parts); the KIND word of an all-meat skewer in the order is ph-mishkaki (hakri lakri mishkaki). Was the other way round (29 Sept, design system §15).",
    "meatPiece": "ph-meat",
    "bowls": {
-    "_about": "30 Sept (K5, Q11): the shelf holds top-down heaps of the same big chunks that go on the skewer (assets/cook/items/v3/sekelo/heap-*; 30 Sept, v3.1 R7: the decoy potato has its own heap and chunks now). Was one cream bowl family (Zafar, 29 Sept).",
-    "ph-meat": "v3/sekelo/heap-meat",
-    "veg-02": "v3/sekelo/heap-onion",
-    "veg-03": "v3/sekelo/heap-tomato",
-    "ph-pepper": "v3/sekelo/heap-pepper",
-    "veg-01": "v3/sekelo/heap-potato",
-    "veg-12": "assets/cook/items-s08c/sekelo/chilli-heap-s08c",
-    "n.corn-on-the-cob": "assets/cook/items-s08c/sekelo/corn-heap-s08c",
-    "n.chicken": "assets/cook/items-s08c/sekelo/chicken-heap-s08c"
+    "_about": "S19 (s19-games-1; the kitchen-and-items run's K9, Zafar's default 11 Nov: like every other band): each piece's raw chunks in the cream bowl seen from above (assets/cook/items/v4/sekelo/bowl-*), one bowl per piece on the stone tray. Was (30 Sept, K5, Q11) the bowl-less top-down heaps (v3/sekelo/heap-*, items-s08c/sekelo/*-heap-s08c).",
+    "ph-meat": "v4/sekelo/bowl-meat",
+    "veg-02": "v4/sekelo/bowl-onion",
+    "veg-03": "v4/sekelo/bowl-tomato",
+    "ph-pepper": "v4/sekelo/bowl-pepper",
+    "veg-01": "v4/sekelo/bowl-potato",
+    "veg-12": "v4/sekelo/bowl-chilli",
+    "n.corn-on-the-cob": "v4/sekelo/bowl-corn",
+    "n.chicken": "v4/sekelo/bowl-chicken"
    },
    "v3pieces": {
     "_about": "30 Sept (K5): each piece's v3 chunk (assets/cook/items/v3/sekelo/<name>-raw|grilled|charred.webp); a piece not listed keeps its old sprite. 30 Sept (v3.1, R7): every piece has a charred chunk that keeps its own colour, and the decoy potato has its chunks s08 w7A (contract-37): s08c SK5's chilli, corn and chicken: heap, raw, grilled and charred each ({name, file}: their own folder); the chicken joins the decoy pool (Zafar, 21 Oct; data/cook.json mechanics.thread decoyPool) before Mum's murgi clip: until she records it the device says it while we test.",
@@ -71,18 +71,10 @@
     "veg-03": "tomato",
     "ph-pepper": "pepper",
     "veg-01": "potato",
-    "veg-12": {
-     "name": "chilli-s08c",
-     "file": "assets/cook/items-s08c/sekelo/chilli-{state}-s08c"
-    },
-    "n.corn-on-the-cob": {
-     "name": "corn-s08c",
-     "file": "assets/cook/items-s08c/sekelo/corn-{state}-s08c"
-    },
-    "n.chicken": {
-     "name": "chicken-s08c",
-     "file": "assets/cook/items-s08c/sekelo/chicken-{state}-s08c"
-    }
+    "veg-12": "chilli",
+    "n.corn-on-the-cob": "corn",
+    "n.chicken": "chicken",
+    "_s19k2": "S19 (s19-games-1; the run's K2b): the chilli, the corn and the chicken are redrawn straight down in four stages too (v4pieces), so they are plain names now (were their s08c files)"
    },
    "v4pieces": {
     "_about": "S19 (s19-wave-e2; K2 #98, Zafar 10 Nov: four stages for anything cooked): the five pieces redrawn straight down in four stages, cut by build/tools/art/s19_cut.py into assets/cook/items/v4/sekelo/<piece>-<stage>.webp. pieces: a v3 name -> its v4 name; states: the grill's state -> the stage drawn (raw on the first side, part after the first turn, cooked once every turn is done, over if left: SK.v3File, SK.cook). A piece not listed (the s08c decoys) keeps its v3 or own files.",
@@ -92,7 +84,10 @@
      "onion": "onion",
      "tomato": "tomato",
      "pepper": "pepper",
-     "potato": "potato"
+     "potato": "potato",
+     "chilli": "chilli",
+     "corn": "corn",
+     "chicken": "chicken"
     },
     "states": {
      "raw": "raw",
@@ -218,7 +213,8 @@
  },
  "assets": [
   "assets/cook/items/skewer-mixed-grilled-t.png",
-  "assets/cook/items/v4/sekelo/*"
+  "assets/cook/items/v4/sekelo/*",
+  "assets/cook/items/served/sekelo.webp"
  ],
- "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces)"
+ "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces) S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served sekelo), until s19-serve2's kitchen dishes take its place."
 }
