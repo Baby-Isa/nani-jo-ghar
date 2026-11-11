@@ -47,6 +47,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
   const POT = () => (SCENE().potTrial && ITEM("potTop").states ? "potTop" : "pot");
   const url = (k, state) => (state ? (ITEM(k).states || {})[state] : ITEM(k).file);
   const tex = (k, state) => `eg-${k}${state ? `-${state}` : ""}`;
+  const BOILED_LOOKS = ["soft", "firm", "over"];
   // the station's own colours (station.palette: the steam, the shakers' grains); UI colours stay the tokens'
   const col = (k) => parseInt(String((((Cook.data.stations || {})[KEY] || {}).palette || {})[k] || "").slice(1), 16);
   const RULES = () => global.Rules || (global.Tokens && global.Tokens.rules) || null;
@@ -60,7 +61,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     add("pan");
     add("egg", "brown");
     ["cracked", "part", "cooked", "overdone"].forEach((s) => add("friedEgg", s));
-    ["a", "b"].forEach((s) => add("boiledEgg", s));
+    // (the boiled halves in the three looks a lift can show, E5: soft, firm, over; runny is before the green, never let out)
+    BOILED_LOOKS.forEach((s) => ["a", "b"].forEach((h) => add("boiledEgg", `${s}-${h}`)));
     add("bowl");
     if (K.shakers) ["shakerSalt", "shakerPepper"].forEach((k) => add(k));
     // (the table, 10 Nov's art: the plate, the fried egg and the boiled halves seen at the table's own camera; the old side-on plate,
@@ -179,7 +181,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // first egg holds in the middle of its green until it is lifted (js/cook/station-lib.js St.firstHold)
     const hold14 = St.firstHold(ctx, "eggs:lift");
     const sc = SCENE();
-    await St.loadArt(S, ART(K).concat(...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
+    // (s19-games-2, contract-37: the shelf's decoys by the levels table, data/rules.json: 1-4, one a lookalike at L4 (the sugar by the
+    // salt), from the settings' pool of chai's side-on jars with a recorded word; each a gentle no when tapped)
+    const shelfWants = ["n.egg"].concat(K.shakers ? ["spi-16", "spi-11"] : []);
+    const pool = ((SET().decoys || {}).pool || []).filter((id) => Cook.Art && Cook.Art.refUrl(`${id}.shelf`));
+    // (a shaker no plate asks for stands as one of them: it counts)
+    const unasked = K.shakers ? ["salt", "pepper"].filter((f) => !plates.some((q) => q[f] === "yes")).length : 0;
+    const row = Cook.levelRow ? Cook.levelRow(level) : { decoys: level };
+    const decoyIds = St.tableDecoys && pool.length ? St.tableDecoys(pool, shelfWants, level, { n: Math.max(0, (row.decoys || 0) - unasked), also: unasked, what: KEY }) : [];
+    // (a stem that climbs out of items/ with "../" is a path the loader may not take as it is: resolved here)
+    const decoyArt = decoyIds.map((id) => [`eg-dec-${id}`, String(Cook.Art.refUrl(`${id}.shelf`)).replace(/[^/]+\/\.\.\//, "")]);
+    await St.loadArt(S, ART(K).concat(decoyArt, ...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
     await St.begin(S, ctx, KEY, "marble");
     const objs = [];
     const T = (o) => (objs.push(o), S.track(o));
@@ -274,6 +286,12 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const things = [];
     const PILL_SLOT = 180; // (the things stand 200 apart: a pill's tap area at most its slot)
     const STEP = sc.bandStep || 200;
+    // (the things' pitch: STEP, closer where the decoys make the row longer than the band's width)
+    const bandView = () => {
+      const V = Cook.view || {};
+      return [Math.max(40, (V.left != null ? V.left : 0) + 24), Math.min(1560, (V.right != null ? V.right : 1600) - 24)];
+    };
+    const step = () => Math.min(STEP, (bandView()[1] - bandView()[0]) / Math.max(1, things.length));
     const chip = (id, x) => {
       const c = SH.P.chip(S, x, chipY, Cook.display(id), {
         word: Cook.chipWord ? Cook.chipWord(id, ctx) : true,
@@ -305,10 +323,28 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       shakers["spi-16"] = { id: "spi-16", c: onBand("shakerSalt", "spi-16") };
       shakers["spi-11"] = { id: "spi-11", c: onBand("shakerPepper", "spi-11") };
     }
+    // the decoys, each in a random place among the shelf's things (a decoy never stands apart)
+    decoyIds.forEach((id) => {
+      if (!S.textures.exists(`eg-dec-${id}`)) return;
+      const d = onBand(`dec-${id}`, id);
+      things.splice(things.indexOf(d), 1);
+      things.splice(Math.floor(Math.random() * (things.length + 1)), 0, d);
+      S.tappable(d, () => {
+        began();
+        if (finished) return;
+        S.wiggle(d);
+        Cook.sfx.soft();
+        z.listen(false, `took ${id}, not asked`);
+        Cook.Coach.wrong();
+      });
+    });
     const fitBand = () => {
-      const mid = hob.x + hob.w / 2;
+      // (under the hob, as before; a row too long for that is held inside the view that shows)
+      const half = ((things.length - 1) / 2) * step() + step() / 2;
+      const [vl, vr] = bandView();
+      const mid = Math.max(vl + half, Math.min(vr - half, hob.x + hob.w / 2));
       things.forEach((img, i) => {
-        const x = mid + (i - (things.length - 1) / 2) * STEP;
+        const x = mid + (i - (things.length - 1) / 2) * step();
         img.x = x;
         img.chip.x = x;
       });
@@ -332,7 +368,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           // shelf thing, its size class (St.classFit: the band's room with the hop kept, the class's share, the floor on screen), as
           // chai's jars; its picture's clear foot on the shelf's line
           const foot = 16 / Math.max(1, img.height);
-          const f = St.classFit ? St.classFit(S, tex(img.k), img.wordId, { base: band.base, ppw, slotW: STEP - 8 }) : null;
+          const f = St.classFit ? St.classFit(S, tex(img.k), img.wordId, { base: band.base, ppw, slotW: step() - 8 }) : null;
           if (f && f.scale) img.setScale(f.scale);
           else {
             const want = (ITEM(img.k).drawn || {}).h || 118;
@@ -432,12 +468,18 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       e.fade = null;
       if (e.look && e.obj.active && e.obj.texture.key !== e.look) e.obj.setTexture(e.look);
     };
-    const friedW = () => vessels.pan.r * (ITEM("friedEgg").inPan || 0.95);
+    // (s19-games-2, contract-114: a fried egg keeps its size from the pan to the plate within 15%, one egg on a plate or two: its size in
+    // the pan is the plate's (FRIED.pan of the plate's width, one on a plate FRIED.one, two FRIED.two), never the pan's own)
+    const FRIED = { pan: 0.62, one: 0.68, two: 0.58 };
+    const friedW = () => Math.min(vessels.pan.r * (ITEM("friedEgg").inPan || 0.95), plateD * FRIED.pan);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
-    // a boiled egg on a plate: its two halves side by side (egg-boiled-half-a, -b), h tall
-    const halves = (x, y, h) => {
-      const a = T(S.add.image(0, 0, tex("boiledEgg", "a")).setDepth(D.item + 0.4));
-      const b = T(S.add.image(0, 0, tex("boiledEgg", "b")).setDepth(D.item + 0.4));
+    // a boiled egg on a plate: its two halves side by side (E5's boiled-<look>-a, -b), h tall
+    // (s19-games-2, E5: the halves show how long it boiled, read from its ring as it was lifted: soft in the green's first half, firm
+    // after it, over once it is left past its full ring as long as the fried egg takes to brown: a look, never a verdict)
+    const boiledLook = (e) => (e.p >= 1 && e.full && Date.now() - e.full >= overMs / (Cook.speed || 1) ? "over" : e.p >= (ready + 1) / 2 ? "firm" : "soft");
+    const halves = (x, y, h, look = "soft") => {
+      const a = T(S.add.image(0, 0, tex("boiledEgg", `${look}-a`)).setDepth(D.item + 0.4));
+      const b = T(S.add.image(0, 0, tex("boiledEgg", `${look}-b`)).setDepth(D.item + 0.4));
       [a, b].forEach((o) => o.setScale(h / Math.max(1, o.height)));
       const dx = (a.displayWidth + b.displayWidth) / 4 + 2;
       a.setPosition(x - dx, y);
@@ -448,6 +490,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const steamPuff = (x, y, n = 3) => {
       for (let i = 0; i < n; i++) {
         const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, 10 + Math.random() * 8, col("white"), 0.55).setDepth(D.fx + 2));
+        s.fx = true; // (an effect: the lights never wait for it to end, stillStage)
         S.tweens.add({ targets: s, y: y - 90 - Math.random() * 40, alpha: 0, scale: 2.2, duration: 1300 + i * 200, delay: i * 180, onComplete: () => s.destroy() });
       }
     };
@@ -545,10 +588,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       if (o) S.glow(o, true, { bounce: true, now: true }); // (SH-237: a thing on the band hops in its light; the kit drops the hop off the shelf)
     };
     // (a thing's glow lasts exactly as long as the kit's light round it, and never without one: contract-102)
+    // (s19-games-2, contract-107: a shelf thing hops as its light comes, even before the light's handle is there; it goes with the light)
     const glowWith = (o, h) => {
-      if (!h || !h.done || !Cook.Coach.onShelf(o)) return glowObj === o && glowOn(null);
+      if (!things.includes(o)) return glowObj === o && glowOn(null);
       glowOn(o);
-      h.done.then(() => glowObj === o && glowOn(null));
+      if (h && h.done) h.done.then(() => glowObj === o && glowOn(null));
     };
     let ctl = null;
     let stuck = null;
@@ -582,7 +626,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236; only a thing on the band
       // glows and hops with its light, so Nani's call reading its row is the one other highlight: contract-8)
       const lightGlow = () => setTimeout(() => current() && glowWith(n.obj, ctl && ctl.lit ? ctl.lit() : null), 0);
-      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => busy > 0, onLight: lightGlow, note: NOTE });
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => busy > 0, still: stillStage, onLight: lightGlow, note: NOTE });
       if (Cook.Coach.stuck)
         stuck = Cook.Coach.stuck({
           key: KEY,
@@ -592,11 +636,20 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           current,
           busy: () => busy > 0,
           glow: (on) => (on ? setTimeout(() => current() && glowWith(n.obj, stuck && stuck.lit ? stuck.lit() : null), 0) : glowObj === n.obj && glowOn(null)),
-          onHint: () => hints++, // (SH-160: the guide's hint came)
+          onHint: () => hints++, // (SH-160: the guide's hint came; s19-games-2: saying the call again here said it twice, contract-22)
           note: NOTE,
         });
     };
     const wrong = () => Cook.Coach.wrong();
+    // (s19-games-2, contract-78: the stage is still when nothing of the game's is in flight; the boiling pot's steam is an effect that never
+    // ends while it boils, so a light never waits on it, and the call held for the light comes with it)
+    function stillStage() {
+      try {
+        return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && t.fx));
+      } catch (e) {
+        return true;
+      }
+    }
 
     // CK-76 (the eye judge, 10 Nov: "Hane indo!" through the carton, the pan and the plating; chai names each step): Nani's box names
     // each step as it opens, from the engine only (R2): an egg from the bowl "Hane indo!", into the pot or pan "Indo wiji chad!", out
@@ -704,6 +757,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       endFade(egg);
       hold({ kind: "cooked", egg });
       egg.lifted = true;
+      if (!egg.fried) egg.boiled = boiledLook(egg);
       egg.base = egg.obj.scale;
       // (picked up it grows a little, within SH-256's 15%, contract-114: it rests in the hand at the size it then keeps on the plate)
       S.tweens.add({ targets: egg.obj, scale: egg.base * 1.1, duration: 160 });
@@ -721,7 +775,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // where the i-th of n eggs sits on a plate, and its size
     const eggOnPlate = (pl, i, n, fried) => {
       const d = plateD;
-      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * 0.7 } : { x: pl.x + (i ? 1 : -1) * d * 0.19, y: pl.y + (i ? 1 : -1) * d * 0.08, w: d * 0.5 };
+      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * FRIED.one } : { x: pl.x + (i ? 1 : -1) * d * 0.2, y: pl.y + (i ? 1 : -1) * d * 0.08, w: d * FRIED.two };
       return n === 1 ? { x: pl.x, y: pl.y, h: d * 0.52 } : { x: pl.x, y: pl.y + (i ? 1 : -1) * d * 0.19, h: d * 0.36 };
     };
     const onPlate = async (pl) => {
@@ -788,8 +842,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         if (Math.hypot(egg.obj.x - at.x, egg.obj.y - at.y) > 2) await flying(Cook.tween(S, { targets: egg.obj, x: at.x, y: at.y, duration: 150 }));
         sized(egg.obj, at.w);
       } else {
-        egg.obj.destroy();
-        shown = halves(at.x, at.y, at.h);
+        // (the whole egg fades as its halves fade in where it landed: no swap in one frame, contract-114)
+        const whole = egg.obj;
+        S.untap(whole);
+        shown = halves(at.x, at.y, at.h, egg.boiled || "soft");
+        shown.forEach((o) => {
+          o.setAlpha(0);
+          S.tweens.add({ targets: o, alpha: 1, duration: 220 });
+        });
+        S.tweens.add({ targets: whole, alpha: 0, duration: 220, onComplete: () => whole.destroy() });
       }
       if (egg.fried) shade(S, shown[0], { dx: 3, dy: 4, alpha: 0.2, blur: 3 });
       pl.eggs.push({ fried: egg.fried, look: shown });

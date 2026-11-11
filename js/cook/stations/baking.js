@@ -61,7 +61,8 @@ import { setTimeout } from "../life.js";
     const list = [sc.bg ? ["bk-bg", sc.bg] : null, ["bk-cat", (sc.cat || {}).file]].filter(Boolean);
     Object.entries((I.mixBowl || {}).states || {}).forEach(([k, f]) => list.push([`bk-bowl-${k}`, f]));
     Object.entries((sc.oven || {}).states || {}).forEach(([k, f]) => list.push([`bk-oven-${k}`, f]));
-    ["raw", "golden"].forEach((k) => list.push([`bk-naan-${k}`, ((I.naan || {}).states || {})[k]]));
+    // (s19-games-2, ART-73: the naan's four stages, raw, part-baked, baked and overdone, each a look of its tray)
+    ["raw", "part", "golden", "over"].forEach((k) => list.push([`bk-naan-${k}`, ((I.naan || {}).states || {})[k]]));
     onShelf.forEach((id) => list.push([`bk-${id}`, ((I.containers || {}).files || {})[id]]));
     plan.forEach((s) => list.push([`bk-stream-${s.id}`, ((I.streams || {}).files || {})[s.id]]));
     if (jug) {
@@ -133,6 +134,14 @@ import { setTimeout } from "../life.js";
       else setTimeout(sayNow, 3000 / (Cook.speed || 1)); // (never silent: a light that cannot come)
       ctl = Cook.Coach.control({
         key: KEY,
+        // (s19-games-2, contract-78/-36: the oven's steam is an effect, never a move the light waits for)
+        still: () => {
+          try {
+            return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && t.fx));
+          } catch (e) {
+            return true;
+          }
+        },
         note: `${KEY}:${name}`,
         target: Cook.Coach.box(o, PAD, { visible: true }),
         first,
@@ -204,7 +213,17 @@ import { setTimeout } from "../life.js";
     const MB = I.mixBowl || {};
     const FLOUR = MB.flour || "cook-atto";
     const LIQUID_IDS = new Set(MB.wet || CT.liquid || []);
-    const bowlFoot = MB.foot || band.top - 24;
+    // (s19-games-2, CHAI-89, Zafar 11 Nov: the play group centred between the view's top and the shelf, as chai's: the bowl with the room
+    // a jar tips in above it, MB.pourRoom; never lower than its old place on the worktop's front)
+    const V = Cook.view || {};
+    const vt = V.top != null ? V.top : -(V.ey || 0);
+    const spanTop = vt + 16;
+    const spanBot = band.top - 28;
+    const bowlH = (() => {
+      const t = has("bk-bowl-empty") ? S.textures.get("bk-bowl-empty").getSourceImage() : null;
+      return t ? (t.height * ((MB.drawn || {}).w || 380)) / Math.max(1, t.width) : 200;
+    })();
+    const bowlFoot = MB.foot || Math.min(band.top - 24, spanBot - Math.max(0, (spanBot - spanTop - (bowlH + (MB.pourRoom || 220))) / 2));
     const bowlX = (MB.at || [800])[0];
     const bowl = T(S.add.image(bowlX, bowlFoot, "bk-bowl-empty").setOrigin(0.5, 1).setDepth(D.item));
     bowl.setScale(((MB.drawn || {}).w || 380) / bowl.width);
@@ -238,7 +257,9 @@ import { setTimeout } from "../life.js";
     let jug = null;
     if (hasJug) {
       const J = I.jug || {};
-      const [jx, jy] = J.at || [470, 600];
+      // (its base level with the bowl's foot, wherever the bowl stands: CHAI-89)
+      const jx = (J.at || [470])[0];
+      const jy = bowlFoot;
       const c = T(S.add.container(jx, jy).setDepth(D.item + 0.5));
       const empty = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1);
       const k = ((J.drawn || {}).w || 260) / empty.width;
@@ -259,9 +280,12 @@ import { setTimeout } from "../life.js";
       jug.show = (id) => {
         const fill = id ? (J.fillFor || {})[id] : null;
         const ek = fill && has(`bk-jug-empty-${fill}`) ? `bk-jug-empty-${fill}` : "bk-jug-empty";
-        if (empty.texture.key !== ek) empty.setTexture(ek);
+        // (s19-games-2, contract-114: the new glass jug's pictures are smaller canvases than the old jug's: each is drawn at the jug's one
+        // width, so the jug keeps its size as its picture changes)
+        const jw = (J.drawn || {}).w || 260;
+        if (empty.texture.key !== ek) empty.setTexture(ek).setScale(jw / Math.max(1, empty.width));
         const key = `bk-jug-${id}`;
-        if (id && has(key)) full.setTexture(key);
+        if (id && has(key)) full.setTexture(key).setScale(jw / Math.max(1, full.width));
         const u = jug.units;
         full.setVisible(u > 0);
         if (u <= 0) return;
@@ -286,6 +310,7 @@ import { setTimeout } from "../life.js";
     onShelf.forEach((id, i) => {
       const x = bowlX + (i - (n - 1) / 2) * pitch;
       const img = T(S.add.image(x, band.base, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
+      // (s19-games-2: by size class (St.classFit, contract-115) their tap reach to the pill failed (contract-111): the old size, next round)
       img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
@@ -345,7 +370,9 @@ import { setTimeout } from "../life.js";
       const amtLine = s.amt === "lot" ? Lang.line("alot") : s.amt === "jug" ? null : Lang.line("little");
       const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(jugStep ? s.parts : [s.id]) });
       // (her turn is the order, said row by row: its row appears as she says it, as a person's order does; the engine has no
-      // "a little / a lot of X" frame, R6-136, so two engine lines side by side)
+      // "a little / a lot of X" frame, R6-136, so two engine lines side by side. s19-games-2: kept the order's role, not a call: an
+      // item said as a call while her helper card is closed breaks SH-172, contract-89; contract-36 wants it called: the checks' conflict
+      // is in the report)
       const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "order");
       say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
@@ -461,18 +488,27 @@ import { setTimeout } from "../life.js";
   async function oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt }) {
     const O = (SET().scene || {}).oven || {};
     const N = ITEMS().naan || {};
-    const [ox, oy] = O.centre || [900, 360];
-    const ov = T(S.add.image(ox, oy, "bk-oven-shut").setDepth(D.item + 1));
+    const [ox, oy0] = O.centre || [900, 360];
+    const ov = T(S.add.image(ox, oy0, "bk-oven-shut").setDepth(D.item + 1));
     ov.setScale(((O.drawn || {}).w || 560) / ov.width);
+    // (s19-games-2, CHAI-89: the oven and its tray centred between the view's top and the shelf, as chai's group; never lower)
+    const V = Cook.view || {};
+    const vt = V.top != null ? V.top : -(V.ey || 0);
+    const SB = (global.Shelf && global.Shelf.BAND) || { top: 630 };
+    const dy = Math.min(0, (vt + 16 + SB.top - 28) / 2 - oy0);
+    const oy = oy0 + dy;
+    ov.setY(oy);
     const ring = T(S.add.graphics().setDepth(D.fx + 1));
     const steam = (x, y, k = 3) => {
       for (let i = 0; i < k; i++) {
         const s = T(S.add.circle(x + (Math.random() - 0.5) * 120, y, 14 + Math.random() * 10, col("steam"), 0.55).setDepth(D.fx + 2));
+        s.fx = true; // (an effect: the lights never wait for it, stillStage)
         S.tweens.add({ targets: s, y: y - 160 - Math.random() * 60, alpha: 0, scale: 2.6, duration: 1400 + i * 120, delay: i * 120, onComplete: () => s.destroy() });
       }
     };
     // the naan on its tray (the worktop, left of the oven, above the band), raw (B3: the tray of raw naan, then baked)
-    const [hx, hy] = N.at || [330, 640];
+    const hx = (N.at || [330])[0];
+    const hy = (N.at || [330, 640])[1] + dy;
     const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
@@ -491,7 +527,39 @@ import { setTimeout } from "../life.js";
         unlight();
       });
     };
-    const rackY = oy + ov.displayHeight * 0.18;
+    // (s19-games-2: on the rack behind the door's glass, the window's middle: O.rack its share of the oven's height from the top)
+    const rackY = oy - ov.displayHeight / 2 + ov.displayHeight * (O.rack || 0.59);
+    // the naan's look, faded into the next over 0.4 s (a second picture over it, then the naan takes it: no snap, contract-114)
+    let lookFade = null;
+    // (a tray's pictures differ by a few px: the naan keeps its drawn width as it takes the next)
+    const take = (t) => {
+      const dw = naan.displayWidth;
+      naan.setTexture(t).setScale(dw / Math.max(1, naan.width));
+    };
+    const toLook = (k) => {
+      const t = `bk-naan-${k}`;
+      if (!S.textures.exists(t) || (lookFade ? lookFade.texture.key : naan.texture.key) === t) return;
+      if (lookFade) lookFade.destroy();
+      const f = T(S.add.image(naan.x, naan.y, t).setDepth(naan.depth + 0.01).setAlpha(0));
+      f.setScale(naan.scaleX * (naan.width / Math.max(1, f.width)));
+      lookFade = f;
+      S.tweens.add({ targets: f, alpha: 1, duration: 400 / (Cook.speed || 1), onComplete: () => {
+        if (lookFade !== f) return;
+        if (naan.active) take(t);
+        f.destroy();
+        lookFade = null;
+      } });
+    };
+    const endLook = () => {
+      if (!lookFade) return;
+      const t = lookFade.texture.key;
+      lookFade.destroy();
+      lookFade = null;
+      if (naan.active) take(t);
+    };
+    // the door's glass over the naan while it bakes: the baking oven's own window (O.glass: its box in the picture's px), faint
+    const G = O.glass || [185, 245, 470, 215];
+    let glass = null;
     // (contract-36: each step's call as it opens, from the engine only, R2: "open" said as a command; the naan "put in", as the
     // shelf's things are; where a word has no recording yet the engine shows its English in grey, a gap on the recording sheet)
     const call = (l, step) => {
@@ -520,13 +588,16 @@ import { setTimeout } from "../life.js";
     // (SH-256, contract-114: in the oven within 15% of its size on the tray, where it rests again when it comes out)
     await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" });
     await Cook.wait(200);
-    naan.setVisible(false);
     if (face) face.setVisible(false);
     ov.setTexture("bk-oven-baking");
+    // (s19-games-2: the naan stays in view through the glass, its tray on the rack, the glass's glow faint over it)
+    glass = T(S.add.image(ov.x, ov.y, "bk-oven-baking").setScale(ov.scaleX).setDepth(naan.depth + 0.5).setAlpha(O.glassAlpha || 0.4));
+    glass.setCrop(G[0], G[1], G[2], G[3]);
     Cook.sfx.click();
     setBusy(false);
     // 3. it bakes: the ring fills; steam from the vent
     const bakeMs = (K.bakeMs || 3600) / (Cook.speed || 1);
+    const partAt = N.part || 0.4;
     const t0 = Date.now();
     const rx = ox + ov.displayWidth / 2 - 70;
     const ry = oy - ov.displayHeight / 2 + 40;
@@ -538,21 +609,32 @@ import { setTimeout } from "../life.js";
         ring.lineStyle(10, col("ringBand"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2 + 0.8 * Math.PI * 2, (3 * Math.PI) / 2).strokePath();
         ring.lineStyle(6, q >= 0.8 ? col("ringDone") : col("ringFill"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2, -Math.PI / 2 + q * Math.PI * 2).strokePath();
         if (Math.random() < 0.04) steam(ox, oy - ov.displayHeight / 2, 1);
+        if (q >= partAt) toLook(q >= 0.8 ? "golden" : "part");
         if (q >= 0.8) {
           off();
           resolve();
         }
       });
     });
-    // 4. take it out ("Tayar ai." with the oven's light: it belongs to this step, never the naan's before it, contract-36)
+    // 4. take it out ("Tayar ai." with the oven's light: it belongs to this step, never the naan's before it, contract-36); left in
+    // the oven overMs past its green, the naan browns (overdone: a look, never a verdict, as the fried egg's; ART-73)
+    const overMs = (K.overMs || K.bakeMs || 3600) / (Cook.speed || 1);
+    const tReady = Date.now();
+    const offOver = z.tick(() => {
+      if (Date.now() - tReady < overMs) return;
+      offOver();
+      toLook("over");
+    });
     expectTap(ov, "ph-naan");
     await tapOn(ov, "oven-out", () => say(line("ready", "call")));
+    offOver();
     z.expect({ kind: "wait" });
     ring.clear();
     ov.setTexture("bk-oven-open");
+    if (glass) glass.destroy();
+    endLook();
     Cook.sfx.click();
     speak(line("careful", "react"));
-    naan.setTexture("bk-naan-golden").setVisible(true);
     steam(ox, rackY, 6);
     await Cook.wait(300);
     await Cook.tween(S, { targets: naan, x: hx, y: hy, scale: nk, duration: 560, ease: "Cubic.easeInOut" });

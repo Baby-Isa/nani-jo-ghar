@@ -135,7 +135,23 @@ import { Cook as CookNS } from "../ns.js";
     const lv1 = knobs(level);
     const art = pictures(s, ids, !(lv1.hop && lv1.hop.decoys === 0));
     await St.loadArt(S, art.load).catch(() => {});
-    const lay = s.layout || {};
+    const lay0 = s.layout || {};
+    // (s19-games-2, CHAI-89, Zafar 11 Nov: the play group centred between the view's top and the shelf, as chai's: where the stage shows
+    // worktop above the design box, the board and everything placed by it (its knife, the countdown ring, the hop's peak) move up by
+    // the same amount, never down)
+    const lay = Object.assign({}, lay0);
+    if (lay0.board) {
+      const V = Cook.view || {};
+      const vt = V.top != null ? V.top : -(V.ey || 0);
+      const dy = Math.min(0, (vt + 16 + BAND.top - 28) / 2 - lay0.board.y);
+      if (dy) {
+        lay.board = Object.assign({}, lay0.board, { y: lay0.board.y + dy });
+        lay.knife = Object.assign({}, lay0.knife || {}, { y: ((lay0.knife || {}).y != null ? lay0.knife.y : 330) + dy });
+        lay.ring = Object.assign({ x: 118, y: 124 }, lay0.ring || {});
+        lay.ring.y += dy;
+        if (lay0.peak != null) lay.peak = lay0.peak + dy;
+      }
+    }
     // S19 (CK-71, ART-37: the board above the band): the kitchen kit's worktop wash and chai's stone band with its shelf, where the
     // whole things sit with their pills and hop from (the hop: the mechanic's params.hop); the walnut board above it, as big as
     // the room allows, never full-bleed (its place: the settings' layout)

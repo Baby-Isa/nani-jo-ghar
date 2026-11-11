@@ -86,6 +86,103 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { game: KEY })) : null;
   }
 
+  /**
+   * Zafar, 11 Nov (corn's grill screen "looks really bad"; the A2 mock's two-tray set-up): the grill and the cooked tray beside it are
+   * ONE tidy rectangle, the tray (the kit's brushed-steel tray, turned upright, never an oval) exactly the grill's height; a cob lifted
+   * off the grill rests on the tray as it lay on the grill, upright and the same size (its tray length within the tray's well, a few
+   * per cent under its grill length). The rectangle is as big as the worktop that shows allows, with padding, and centred in it as
+   * chai's play group is (CHAI-89: between the view's top and the shelf, the heat rings' room above it kept; across, on the view's
+   * middle). The raw cobs stay on the stone band, two by two, within 15% of their grill length (contract-114). k: the kit's layout,
+   * for its band rows. -> L in the kit's shape (grill, tray, band, ring).
+   */
+  function rectLayout(k, { thick, count, B, ringRoom = 92, gap = 36 }) {
+    const G = Cook.GrillKit.ART.grill;
+    const TI = Cook.GrillKit.ART.tray.inner; // (its well's inset, of its own width and height: turned upright they swap)
+    const V = Cook.view || {};
+    const pad = 32;
+    const vl = Math.max(56, (V.left != null ? V.left : 0) + pad);
+    const vr = Math.min(1544, (V.right != null ? V.right : 1600) - pad);
+    const viewTop = V.top != null ? V.top : -(V.ey || 0);
+    const spanTop = viewTop + 16;
+    const spanBot = B.top - 28;
+    const n2 = Math.max(2, count); // (the tray holds at least two cobs' room, so one cob never sits on a sliver)
+    const across = (len) => thick * len; // a cob's width
+    // (for a grill gh tall: the cob's length on the grill, on the tray, the tray's width)
+    const sizes = (gh) => {
+      const glen = (G.near - G.far) * gh;
+      const tlen = Math.min(glen, gh * (1 - 2 * TI[0]) * 0.97);
+      const cw = across(tlen);
+      const inner = n2 * cw + (n2 + 1) * cw * 0.25;
+      const tw = inner / (1 - 2 * TI[1]);
+      return { glen, tlen, cw, tw, gw: (gh * G.w) / G.h };
+    };
+    // as big as the height and the width allow
+    let gh = spanBot - spanTop - ringRoom;
+    for (let i = 0; i < 40; i++) {
+      const z = sizes(gh);
+      if (z.gw + gap + z.tw <= vr - vl) break;
+      gh *= 0.98;
+    }
+    const z = sizes(gh);
+    const total = z.gw + gap + z.tw;
+    const left = (vl + vr) / 2 - total / 2;
+    const gy = spanTop + (spanBot - spanTop - (gh + ringRoom)) / 2 + ringRoom + gh / 2;
+    const gx = left + z.gw / 2;
+    const far = gy - gh / 2 + G.far * gh;
+    const near = gy - gh / 2 + G.near * gh;
+    const bed0 = gx - z.gw / 2 + G.bed[0] * z.gw;
+    const bed1 = gx - z.gw / 2 + G.bed[1] * z.gw;
+    const grill = {
+      x: gx,
+      y: gy,
+      w: z.gw,
+      h: gh,
+      far,
+      near,
+      len: near - far,
+      at: (i, m = 4) => ({ x: bed0 + ((bed1 - bed0) / Math.max(1, m)) * (i + 0.5), y: (far + near) / 2 }),
+    };
+    const tx = left + z.gw + gap + z.tw / 2;
+    const step = z.cw * 1.25;
+    const tray = {
+      x: tx,
+      y: gy,
+      w: z.tw,
+      h: gh,
+      len: z.tlen,
+      up: true,
+      // (count cobs side by side, upright, centred in the well)
+      at: (i) => ({ x: tx + (i - (count - 1) / 2) * step, y: gy }),
+    };
+    // the band: the kit's two rows, each cob within 15% of its grill length (contract-114)
+    const blen = Math.max(k.band.len, grill.len / 1.14);
+    const mid = (vl + vr) / 2;
+    const bcol = Math.min((vr - vl) * 0.25, blen / 2 + 70);
+    const row0 = k.band.at(0).y;
+    const row1 = k.band.at(2).y;
+    return { grill, tray, band: { len: blen, at: (i) => ({ x: mid + (i % 2 ? 1 : -1) * bcol, y: i < 2 ? row0 : row1 }) }, ring: (p) => ({ x: p.x, y: far - 46, r: 34 }) };
+  }
+  /** The grill and its tray, the tray turned upright to the grill's height, each with the kit's soft shadow. */
+  function buildRect(S, L) {
+    const GK = Cook.GrillKit;
+    const out = {};
+    const depth = D.item - 1;
+    if (S.textures.exists(GK.ART.grill.key)) {
+      const g = S.track(S.add.image(L.grill.x, L.grill.y, GK.ART.grill.key).setDepth(depth));
+      g.setScale(L.grill.h / g.height);
+      GK.shadow(S, g, { dx: 12, dy: 16, alpha: 0.3, blur: 12 });
+      out.grill = g;
+    }
+    if (S.textures.exists(GK.ART.tray.key)) {
+      // (turned a quarter: its long side up the grill's height; its own width across)
+      const t = S.track(S.add.image(L.tray.x, L.tray.y, GK.ART.tray.key).setDepth(depth).setAngle(90));
+      t.setDisplaySize(L.tray.h, L.tray.w);
+      GK.shadow(S, t, { dx: 8, dy: 11, alpha: 0.26, blur: 8 });
+      out.tray = t;
+    }
+    return out;
+  }
+
   async function corn(host, p) {
     const S = host.S;
     const ctx = host.ctx;
@@ -150,8 +247,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
 
     /* ---------------- screen 1: the grill (the grill kit's option 3) ---------------- */
     const gl = lay.grill || {};
-    const L = GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom });
-    const kit = GK.build(S, L);
+    const L = rectLayout(GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom }), { thick, count, B, ringRoom: gl.ringRoom, gap: gl.gap });
+    const kit = buildRect(S, L);
     // (a test log: which screen is up, for the evidence probes' moments, "life:corn-screen")
     const screenNote = (step) => {
       try {
@@ -175,10 +272,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       return img;
     });
     const places = Math.min(4, K.slots || 3);
+    // (s19-games-2, contract-114: a raw cob on the band is within 15% of its length on the grill, where it goes next: rectLayout)
+    const bandLen = L.band.len;
     const raw = [0, 1, 2, 3].map((i) => {
       const at = L.band.at(i);
       const img = T(S.add.image(at.x, at.y, tex.raw).setDepth(D.item));
-      GK.lay(img, { x: at.x, y: at.y, len: L.band.len });
+      GK.lay(img, { x: at.x, y: at.y, len: bandLen });
       // (no word of its own on the band: a cob is the dish, not a word, so it has no pill, opt3s; the shelf line's rule, contract-109,
       // is for the band's words standing in a row with their pills, which the six bowls of screen 2 are)
       GK.shadow(S, img, { dx: 6, dy: 8, alpha: 0.26, blur: 5 });
@@ -188,13 +287,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const smoke = (x, y) => {
       const r = sm.r || [10, 8];
       const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, r[0] + Math.random() * r[1], col("smoke"), 0.45).setDepth(D.fx + 2));
+      s.fx = true; // (an effect: the lights never wait for it, stillStage)
       S.tweens.add({ targets: s, y: y - (sm.rise || 120), alpha: 0, scale: sm.grow || 2.2, duration: mo.smokeMs || 1300, onComplete: () => s.destroy() });
     };
     // SH-256 (the eye judge, 10 Nov: the cob landed on the tray at a third of its grill size, lost in the tray, then grew on the plate):
     // with one or two cobs the tray holds them lengthwise across its whole width, one above the other, as near their grill length as
     // the tray allows; three or four keep the kit's two by two. The plate then keeps that length (cobLen below)
-    const trayLen = count <= 2 ? Math.max(L.tray.len, Math.min(L.grill.len, L.tray.w * 0.9)) : L.tray.len; // (0.9: within 15% of its grill length, contract-114)
-    const trayAt = (k) => (count <= 2 ? { x: L.tray.x, y: count === 1 ? L.tray.y : L.tray.at(k ? 2 : 0).y } : L.tray.at(k));
+    // (Zafar, 11 Nov: on the tray beside the grill a cob rests upright as it lay on the grill, the same size: L.tray.len, L.tray.at)
+    const trayLen = L.tray.len;
+    const trayAt = (k) => L.tray.at(k);
     const cobs = []; // on the grill
     const inTray = []; // done, lying in the tray
     let made = 0;
@@ -296,7 +397,16 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           else off();
         }, 0);
       };
-      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, onLight: lightGlow });
+      // (s19-games-2, contract-78: the grill's smoke is an effect that never ends while a cob grills; the light waits only for the game's
+      // own moves, so the call held for it comes with it)
+      const stillStage = () => {
+        try {
+          return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && t.fx));
+        } catch (e) {
+          return true;
+        }
+      };
+      ctl = Cook.Coach.control({ key: KEY, target, first, noHint: true, current, busy: () => moving > 0, still: stillStage, onLight: lightGlow });
       // SH-228 (chai's method): the stuck help after the level's wait from the last action, at once after a wrong move: her helper card
       // naming the thing (an item's step), else her line again, with the light. Never where the light would be the answer
       if (!hides && Cook.Coach.stuck)
@@ -384,7 +494,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         refresh();
         const at = trayAt(k);
         if (c.img.texture.key !== tex.over && S.textures.exists(tex.done)) c.img.setTexture(tex.done);
-        await fly(() => GK.move(S, c.img, { x: at.x, y: at.y, len: trayLen, up: false, ms: mo.trayMs || 460 }));
+        await fly(() => GK.move(S, c.img, { x: at.x, y: at.y, len: trayLen, up: true, ms: mo.trayMs || 460 }));
         lifting--;
         inTray.push(c);
         c.img.setDepth(D.item + 0.2);
@@ -564,8 +674,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             const c = inTray[i];
             q.cob = c.img;
             c.img.setDepth(D.item + 0.3);
-            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it)
-            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: Math.min(d * (pl.cob || 0.84), Math.max(trayLen, d * 0.6)), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
+            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it; s19-games-2, contract-114: never under 15% less)
+            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: Math.min(d * 0.95, Math.max(d * (pl.cob || 0.84), trayLen / 1.14)), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
           })
         );
         if (kit.tray && kit.tray.active) {

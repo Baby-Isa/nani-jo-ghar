@@ -937,7 +937,25 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           const o = nx && items[nx];
           if (!o || !o.active || !got.length || !gate || !gate.fresh || cardWait || !Cook.Coach.control || !gate.first(`layer-${nx}`)) return;
           const n0 = got.length;
-          itemCtl = Cook.Coach.control({ key: "assemble", note: "assemble:layer", target: Cook.Coach.box(o, 6, { visible: true }), first: true, noHint: true, current: () => building && got.length === n0 && C.next(got) === nx, busy: () => busy > 0 });
+          // (s19-games-2, contracts 92, 105, 107: the light round the thing whole with its pill and its hop's room, the kit's parts, as the
+          // other shelves light theirs; the thing hops in it while it is up)
+          const target = Cook.Coach.parts ? [0, 1, 2, 3, 4, 5].map((i) => () => (o.active && o.visible ? Cook.Coach.parts(o)[i] || null : null)) : Cook.Coach.box(o, 6, { visible: true });
+          const ctl = (itemCtl = Cook.Coach.control({
+            key: "assemble",
+            note: "assemble:layer",
+            target,
+            first: true,
+            noHint: true,
+            current: () => building && got.length === n0 && C.next(got) === nx,
+            busy: () => busy > 0,
+            onLight: () =>
+              setTimeout(() => {
+                const h = ctl && ctl.lit ? ctl.lit() : null;
+                if (!h || !h.done || !o.active) return;
+                S.glow(o, true, { bounce: true, now: true });
+                h.done.then(() => o.active && S.glow(o, false));
+              }, 0),
+          }));
         };
         const build = async () => {
           let last = 0;
