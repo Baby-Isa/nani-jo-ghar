@@ -1,0 +1,251 @@
+{
+ "jug-flour": {
+  "size": [
+   323,
+   301
+  ],
+  "fillTop": 0.189,
+  "floor": 0.894,
+  "lineAt": {
+   "1": 0.753,
+   "2": 0.612,
+   "4": 0.471,
+   "6": 0.33,
+   "10": 0.189
+  }
+ },
+ "jug-milk": {
+  "size": [
+   323,
+   301
+  ],
+  "fillTop": 0.189,
+  "floor": 0.897,
+  "lineAt": {
+   "1": 0.755,
+   "2": 0.614,
+   "4": 0.472,
+   "6": 0.331,
+   "10": 0.189
+  }
+ },
+ "jug-sugar": {
+  "size": [
+   323,
+   301
+  ],
+  "fillTop": 0.193,
+  "floor": 0.897,
+  "lineAt": {
+   "1": 0.756,
+   "2": 0.615,
+   "4": 0.474,
+   "6": 0.334,
+   "10": 0.193
+  }
+ },
+ "jug-yoghurt": {
+  "size": [
+   323,
+   301
+  ],
+  "fillTop": 0.199,
+  "floor": 0.894,
+  "lineAt": {
+   "1": 0.755,
+   "2": 0.616,
+   "4": 0.477,
+   "6": 0.338,
+   "10": 0.199
+  }
+ },
+ "jar-flour": {
+  "size": [
+   353,
+   600
+  ],
+  "srcHeight": 691,
+  "heightShare": 1.0
+ },
+ "jar-sugar": {
+  "size": [
+   333,
+   495
+  ],
+  "srcHeight": 570,
+  "heightShare": 0.825
+ },
+ "jar-salt": {
+  "size": [
+   327,
+   399
+  ],
+  "srcHeight": 459,
+  "heightShare": 0.664
+ },
+ "chop-heap-onion-golden": {
+  "size": [
+   430,
+   425
+  ]
+ },
+ "chop-piece-onion-golden": {
+  "pieces": 6
+ },
+ "chop-heap-onion": {
+  "size": [
+   435,
+   427
+  ]
+ },
+ "chop-piece-onion": {
+  "pieces": 6
+ },
+ "layer-bataato": {
+  "size": [
+   399,
+   394
+  ]
+ },
+ "layer-chana": {
+  "size": [
+   406,
+   410
+  ]
+ },
+ "layer-sev": {
+  "size": [
+   403,
+   395
+  ]
+ },
+ "tray-steel-long": {
+  "srcSize": [
+   1442,
+   435
+  ],
+  "srcRatio": 3.315,
+  "middleResampled": [
+   920,
+   783
+  ],
+  "size": [
+   1200,
+   400
+  ],
+  "ratio": 3.0,
+  "inner": [
+   0.021,
+   0.062
+  ]
+ },
+ "karahi-oil-v2": {
+  "w": 1000,
+  "h": 821,
+  "cx": 0.4959,
+  "cy": 0.4982,
+  "r": 0.4031,
+  "oil": 0.748,
+  "rimPx": 403.1,
+  "oilPx": 301.6,
+  "oilCentre": [
+   0.4926,
+   0.5104
+  ]
+ },
+ "grill-v2": {
+  "tight": [
+   1515,
+   757
+  ],
+  "w": 1621,
+  "h": 813,
+  "far": 0.019,
+  "near": 0.974,
+  "bed": [
+   0.083,
+   0.916
+  ],
+  "rims": [
+   [
+    3,
+    29
+   ],
+   [
+    261,
+    276
+   ],
+   [
+    555,
+    571
+   ],
+   [
+    780,
+    804
+   ]
+  ],
+  "bars": 2
+ },
+ "pinkRim": {
+  "baking/jug-flour.webp": 0.0,
+  "baking/jug-milk.webp": 0.0,
+  "baking/jug-sugar.webp": 0.0,
+  "baking/jug-yoghurt.webp": 0.0,
+  "baking/jar-flour.webp": 0.0,
+  "baking/jar-sugar.webp": 0.0,
+  "baking/jar-salt.webp": 0.0,
+  "daar/chop-heap-onion-golden.webp": 0.0,
+  "daar/chop-piece-onion-golden-1.webp": 0.0,
+  "daar/chop-piece-onion-golden-2.webp": 0.0,
+  "daar/chop-piece-onion-golden-3.webp": 0.0,
+  "daar/chop-piece-onion-golden-4.webp": 0.0,
+  "daar/chop-piece-onion-golden-5.webp": 0.0,
+  "daar/chop-piece-onion-golden-6.webp": 0.0,
+  "daar/chop-scatter-onion-golden.webp": 0.0,
+  "daar/chop-heap-onion.webp": 0.0,
+  "daar/chop-piece-onion-1.webp": 0.0,
+  "daar/chop-piece-onion-2.webp": 0.0,
+  "daar/chop-piece-onion-3.webp": 0.0,
+  "daar/chop-piece-onion-4.webp": 0.0,
+  "daar/chop-piece-onion-5.webp": 0.0,
+  "daar/chop-piece-onion-6.webp": 0.0,
+  "daar/chop-scatter-onion.webp": 0.0,
+  "chaat/layer-bataato.webp": 0.0,
+  "chaat/layer-chana.webp": 0.0,
+  "chaat/layer-sev.webp": 0.0,
+  "kit/tray-steel-long.webp": 0.0,
+  "samosa/karahi-oil-v2.webp": 0.0,
+  "kit/grill-v2.webp": 0.0
+ },
+ "kitchen-tall": {
+  "src": [
+   1446,
+   1087
+  ],
+  "size": [
+   2100,
+   1575
+  ],
+  "backEdgeOld": 1058.5,
+  "backEdgeNew": 1058.5,
+  "backEdgeNewDesign": 608.5,
+  "marbleOld": {
+   "mean": [
+    243.2,
+    232.2,
+    228.9
+   ],
+   "r-b": 14.4,
+   "r-g": 11.0
+  },
+  "marbleNew": {
+   "mean": [
+    246.5,
+    230.0,
+    219.2
+   ],
+   "r-b": 27.3,
+   "r-g": 16.5
+  }
+ }
+}

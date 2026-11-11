@@ -62,6 +62,9 @@ def analyse(path):
         return {"covered": n_nz, "fails": ["empty: fewer than 30 pixels have any alpha"], "glass": False}
     semi_mask = nz & ~op
     glass = semi_mask.sum() / n_nz > RULES["glass_semi"]
+    # (s19-k3: a glass jar or jug full of solid contents has little soft alpha but its walls are see-through all the same: named as
+    # glass, as edge_bleed.SKIP names them; the glass rule still applies to it)
+    glass = glass or bool(re.search(r"assets/cook/items/v4/baking/(jar|jug)-[^/]*$", str(path).replace(os.sep, "/")))
     solid = op if not glass else (a >= 0.5)
     lum = rgb.mean(2)
     spread = rgb.max(2) - rgb.min(2)
