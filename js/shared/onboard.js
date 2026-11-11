@@ -2300,10 +2300,9 @@
         // the child did something: the rungs start again from now, and the light help goes (not the wrong move that rushed it: its own
         // press and lift land just around the rush). SH-261: the box stays until the step is done (h.done(), the action's own result):
         // a tap that missed, or one elsewhere, never takes it away; it hides only while the child does its move (Onboard.spot)
-        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) {
-          fired = {};
-          glow(false);
-        }
+        // SH-261 at full strength (Zafar, 11 Nov night: "You have to do what it says, otherwise it doesn't let you move on"): Nani's help
+        // light (the glow rung) stays too, through any tap, until the step is done; only the rungs' clock starts again
+        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) fired = glowing ? { g: true } : {};
         lastAct = la;
       }
       // (the rungs count from the child's last action or the step opening, whichever is later: a step that opens after a long

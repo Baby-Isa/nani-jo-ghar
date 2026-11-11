@@ -87,7 +87,7 @@ export const S19_CHECKS = {
   "contract-108": { item: "praise-last", title: "well done only once the whole card is ticked", how: "Cook flows, in a station: a well done (a line saying shabash) that starts while an order card row on screen is still open (the rows sample just before it: not done and not a no row) is a break, once per page (SH-239, Zafar 8 Nov: 'say well done when ... the whole menu card is complete')." },
   "contract-110": { item: "knob-side", title: "the knob rule: left of a pan alone in the width; else below it", how: "Cook flows, each s19knob sample (the S19 probe: every kitchen knob, kit-knob-off, with its burner's flame ring, the face badge beside it, the pan's picture on that burner, the other pictures and item cards sharing the pan's height (beside it, at least 15% of its height: a board, the dial's pictures, a plate, the lap card) and the side panel's box, in CSS px). A single pan alone across the width (nothing else beside it): the knob and the face wholly left of the pan's picture and its flame ring by 2 px, their middle within 8% of the pan's height (8 px at least) of the burner's middle, clear of the side panel and inside the screen. Several pans, or a single pan sharing the width: each knob below its burner (its middle under the burner's), clear of the pan's body (the flame ring's 85%). One off is a break, once per page (SH-247, Zafar 9 Nov: 'where you only have one item ... you put the button off to the left'; refined the same day: 'if there's multiple things taking up width, then we put the button underneath to maximize our width')." },
   "contract-111": { item: "item-reach", title: "the item wins the taps meant for it; only the speaker says the word", how: "Cook flows, each s19tap sample (the S19 probe, once a second while the shelf changes: for every shelf item with a word and its pill, and every thing with a word that lives on a shelf without pills (the pantry's), Phaser's own hit test, topmost first, at its picture's left, right and top edges (4 CSS px in, at the side's middle), and where it has a pill: at the item's foot (4 CSS px inside its picture's lowest edge, its middle across), just above its pill's card (2 CSS px), on the pill's upper part (3 CSS px under the card's top), on the pill's word (its text's middle) and on its speaker icon (the icon's middle)). The edges, the foot, the spot above the pill, the pill's upper part and its word must pick the item (or a hit area carrying its word, never a neighbour's); the speaker must pick the pill. A tap there that says the word, picks a neighbour or picks nothing is a break, once per item per page (SH-244, Zafar 9 Nov, his tester on his phone: 'She thought she was pressing the items, but she was pressing the speaker buttons below the items'; told again 11 Nov, his 3.5-year-old: 'they still sometimes tap the word pills rather than tapping the item when they wanted to tap the item'; measured with the browser's bar showing: 930x374)." },
-  "contract-117": { item: "light-stays", title: "the first-time light stays until the right move", how: "Cook flows with the miss-light driver: at the first move with a first-time light up, the driver taps a point inside the light's drawn box with nothing under it that takes a tap, then a point outside every box on nothing that takes a tap (each a Lifecycle note probe-tap, miss-in or miss-out, with the point and the box). Through 800 ms after each, every s19lit sample must still show a box round the light's middle: a light that goes (or hides) after a tap that did not do its thing is a break. Then the first real press inside that box (the player's right move) must take it away within 2 s (no box round its middle): a light that stays on after the move is a break too. Once per page each (SH-261, Zafar 11 Nov, his 3.5-year-old: 'they tapped in the box but not on the water ... the onboarding light went away, but the water didn't pour. And then they were stuck ... the onboarding light needs to stay there until they've done the correct action')." },
+  "contract-117": { item: "light-stays", title: "every light stays until the right move", how: "Every Cook flow (SH-261 at full strength, Zafar 11 Nov night: first-time and Nani's help lights alike, none fading on a timer): a light round a thing in the kitchen (not an order card's pointer) that goes while the game still waits on the same step (the want sample's kind and key the same from before it went to 1.5 s after) and does not come back round that place within 1.5 s (a light hides while the move is done and comes back after the release) is a break, after a tap that did not do its thing or with no tap at all (a fade on a timer), once each per page. And with the miss-light driver: at the first move with a first-time light up, the driver taps a point inside the light's drawn box with nothing under it that takes a tap, then a point outside every box on nothing that takes a tap (each a Lifecycle note probe-tap, miss-in or miss-out, with the point and the box). Through 800 ms after each, every s19lit sample must still show a box round the light's middle: a light that goes (or hides) after a tap that did not do its thing is a break. Then the first real press inside that box (the player's right move) must take it away within 2 s (no box round its middle): a light that stays on after the move is a break too. Once per page each (SH-261, Zafar 11 Nov, his 3.5-year-old: 'they tapped in the box but not on the water ... the onboarding light went away, but the water didn't pour. And then they were stuck ... the onboarding light needs to stay there until they've done the correct action')." },
   "contract-109": { item: "shelf-line", title: "the shelf's items on one base line, their pills on one chip line", how: "Cook flows: each s19shelf sample (the tappable pictures with a word whose foot is in the bottom band, with no glow on them: a hop lifts one) with three or more items: every item's foot within 4 px of the band's base line (the lowest feet's median) and every pill's middle within 2 px of the chip line (the pills' median). One off the line is a break, once per page (SH-243, Zafar 8 Nov: 'the bottom items they're not on a shelf like tea's'; Shelf.BAND: things stand on one base, pills centred on one chip line)." },
 };
 
@@ -476,8 +476,49 @@ export function check117(r, tl, add) {
   add("contract-117", right.t, `the first-time light ${fmt(box0)} still stood ${RIGHT_MS} ms after the right move at (${right.x}, ${right.y}): it goes as the move's result comes`);
 }
 
+// 117, at full strength (SH-261, Zafar 11 Nov night: "every light, first-time and Nani's help lights alike, stays until the right move ...
+// No light fades on a timer"; he saw chai's pan-switch light fade): any light round a thing in the kitchen (not a card's: the order
+// card's pointer goes as the child looks on) that goes while the game still waits on the same step, the want sample's kind and key
+// unchanged from just before it went to STAY_BACK_MS after, and does not come back round the same place in that time (a light hides
+// while the child does its move and comes back after the release, Onboard.spot), is a break: after a tap that did not do its thing
+// (a press in the 2.5 s before) or with no press at all (a timer's fade). Once per page each.
+export const STAY_BACK_MS = 1500;
+export function check117stay(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const lits = ev(tl, "s19lit");
+  const wants = ev(tl, "want");
+  if (!lits.length || !wants.some((w) => w.key != null)) return;
+  const st = stations(tl);
+  const wantAt = (t) => { let cur = null; for (const w of wants) { if (w.t > t) break; cur = w; } return cur; };
+  const presses = ev(tl, "input");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  const said = new Set();
+  for (let i = 1; i < lits.length; i++) {
+    const before = lits[i - 1], now = lits[i];
+    if (!inStation(st, before.t) || !inStation(st, now.t)) continue;
+    const gone = (before.holes || []).map(box).filter((h) => !(now.holes || []).map(box).some((n) => inBox(mid(h), n)));
+    for (const h of gone) {
+      const c = mid(h);
+      const th = (before.things || []).find((x) => x && x.box && inBox(mid(box(x.box)), h));
+      if (!th || th.kind === "card") continue;
+      const td = now.t;
+      if (td + STAY_BACK_MS > tEnd) continue;
+      const back = lits.some((e) => e.t > td && e.t <= td + STAY_BACK_MS && (e.holes || []).map(box).some((n) => inBox(c, n)));
+      if (back) continue;
+      const w0 = wantAt(before.t), w1 = wantAt(td + STAY_BACK_MS);
+      if (!w0 || !w1 || w0.key == null || w0.kind !== w1.kind || w0.key !== w1.key || !w0.kind || /^(wait|click|end)$/.test(w0.kind) || !inStation(st, td + STAY_BACK_MS)) continue;
+      const pressed = presses.some((p) => p.t <= td && p.t >= td - 2500);
+      const kind = pressed ? "tap" : "fade";
+      if (said.has(kind)) continue;
+      said.add(kind);
+      add("contract-117", td, `the light round ${th.id} ${fmt(h)} went ${pressed ? "after a tap that did not do its thing" : "with no move at all (a fade on a timer)"}, the game still waiting on its step (${w0.kind} ${w0.key}) ${STAY_BACK_MS} ms on: every light stays until the right move`);
+    }
+  }
+}
+
 export function checkS19(r, tl, v, add) {
   check117(r, tl, add);
+  check117stay(r, tl, add);
   check100(r, tl, add);
   check101(r, tl, add);
   check102(r, tl, add);

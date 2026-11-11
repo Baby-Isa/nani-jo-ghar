@@ -25,3 +25,19 @@ test("SH-256: samosa's close-up fold takes its filling's heaps too (they shrink 
   assert.ok(acceptedSize("cook:samosa", "sv3-fold-strip"));
   assert.ok(!acceptedSize("cook:chop", "sv3-heap-ph-keema"));
 });
+
+import { check117stay } from "./lib/contract-s19.mjs";
+test("SH-261 at full strength: contract-117 breaks on a light that goes with its step still wanted (a tap or a timer), not on the move", () => {
+  const run = (tl) => { const out = []; check117stay({ flow: "cook:chai-tray@L2" }, tl, (id, t, msg) => out.push({ id, t, msg })); return out; };
+  const ST2 = [c(0, "stage", { key: "cook:station1:chai" }), c(60000, "stage", { key: "cook:between1:-" })];
+  const lit = (t, on) => c(t, "s19lit", { holes: on ? [[100, 100, 200, 200]] : [], things: on ? [{ kind: "pic", id: "s14-pan", box: [110, 110, 190, 190] }] : [] });
+  const want = (t, key) => c(t, "want", { by: "cook", kind: "tap", key });
+  const fade = [...ST2, want(900, "pan-ma"), lit(1000, true), lit(6000, false), want(20000, "x")];
+  assert.match(run(fade).map((b) => b.msg).join("|"), /a fade on a timer/);
+  const tap = [...ST2, want(900, "pan-ma"), lit(1000, true), c(5800, "input", { x: 400, y: 400 }), lit(6000, false), want(20000, "x")];
+  assert.match(run(tap).map((b) => b.msg).join("|"), /after a tap that did not do its thing/);
+  const moved = [...ST2, want(900, "pan-ma"), lit(1000, true), c(5800, "input", { x: 150, y: 150 }), want(5900, "cook-paani"), lit(6000, false)];
+  assert.deepEqual(run(moved), [], "the right move: the step moved on");
+  const back = [...ST2, want(900, "pan-ma"), lit(1000, true), c(5800, "input", { x: 150, y: 150 }), lit(6000, false), lit(6800, true), want(20000, "x")];
+  assert.deepEqual(run(back), [], "hidden while the move is done, back after the release");
+});

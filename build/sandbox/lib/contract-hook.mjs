@@ -662,7 +662,8 @@ const BASE_HOOK = `(() => {
   // game's next move): the child's turn is a kind that asks for a move; "wait", "end", a button or a timing window is not being stuck
   const want = () => {
     const ce = safe(() => window.njgTest?.cook && window.njgTest?.cook.expectation && window.njgTest?.cook.expectation());
-    if (ce) return { by: "cook", kind: String(ce.kind || ""), intro: !!ce.intro };
+    // (key: the step it waits on, so contract-117 knows a light went with no move made: the same step still wanted)
+    if (ce) return { by: "cook", kind: String(ce.kind || ""), intro: !!ce.intro, key: String(ce.key || "") };
     const k = safe(() => window.njgTest?.clinic && window.njgTest?.clinic.expect && window.njgTest?.clinic.expect());
     if (k) return { by: "clinic", kind: String(k.kind || "") };
     const hx = safe(() => window.njgTest && window.njgTest.expect && window.njgTest.expect());
