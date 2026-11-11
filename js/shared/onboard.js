@@ -353,14 +353,33 @@
   /*
    * Sprint 19 (s19-lights; Zafar's play, 8 Nov: docs/feedback/kitchen-play-2026-11-08.md P4-P9):
    *   SH-236  the light goes the moment the child starts the move it shows (a drag begun, a hold started, a stir begun, a tap landed):
-   *           a press inside a light's box, or a game's Onboard.began(by). MOVE.back: a script's step whose move ended with the step
-   *           still open (the child let go half-way) is lit again this long after the release.
+   *           as SH-261 has it (below), a drag or a hold begun in its box, or a game's Onboard.began(by) for a press in its box; a tap's
+   *           light goes with its result. MOVE.back: a light whose move ended with its step still open (the child let go half-way) is
+   *           lit again this long after the release.
    *   SH-119  one finger: the kit's Onboard.finger is the only one drawn, a script's drag and a game's demo (Onboard.gesture) included.
    *   MAA-20  the finger's look, Zafar's pick on the lab page: "hand" (the kit's drawn hand, the default until he picks) or "circle"
    *           (a pulsing circle). Onboard.fingerLook sets it for every finger; a finger's own o.look for one (the lab's pair).
    *   one light at a time (Fable, maani f8, f11): of the lights up, only the newest that has a thing to light shows (Onboard.raise).
    */
-  Onboard.MOVE = { back: 2000 };
+  Onboard.MOVE = { back: 2000, slop: 12, hold: 400, recent: 1000 };
+  /*
+   * SH-261 (Zafar, 11 Nov, his 3.5-year-old: "they tapped in the box but not on the water ... the onboarding light went away, but the
+   * water didn't pour. And then they were stuck ... the onboarding light needs to stay there until they've done the correct action ... a
+   * tap that results in the water pouring"): every light, in every game, stays until its owner closes it on the action's own result
+   * (the step moves on: the water pours, the pan goes on, the item lands). A press inside its box is not the move: a tap there that
+   * misses, a wrong tap, a tap anywhere else leave it up and its ladder running. It hides only while the child is doing the move it
+   * shows (SH-236): a drag begun in its box (past MOVE.slop px), a press held on its thing (MOVE.hold ms), or the game's own
+   * Onboard.began(by) for a press in its box; let go with the step still open, it comes back MOVE.back ms later, once the game's own
+   * moves are still (Onboard.busy, a function a game's kit may set: Cook's coach).
+   */
+  Onboard.busy = null;
+  const busyNow = () => {
+    try {
+      return typeof Onboard.busy === "function" && !!Onboard.busy();
+    } catch (e) {
+      return false;
+    }
+  };
   Onboard.fingerLook = "hand";
   Onboard.FINGER_LOOKS = ["hand", "circle"];
   /** A gesture's point at t (0..1) on its keyframes (Onboard.path's {o, x, y, press}), eased between two: -> {x, y, press}. */
@@ -711,17 +730,22 @@
   /** TEST HOOK (read-only): how many light boxes are drawn now (one at most). */
   Onboard.lightsShown = () => [...document.querySelectorAll(".njg-onboard.on")].filter((l) => !l.classList.contains("ob-empty") && !l.classList.contains("ob-buried")).length;
   /*
-   * S19, SH-236: the press that starts the move. One listener for the page (capture, before the game's own): a press inside a light's
-   * drawn box tells that light (a spot closes, a script's step goes dark until the step moves on); its release lets a script's step
-   * count down to MOVE.back.
+   * S19, SH-236 (SH-261): the press that may start the move. One listener for the page (capture, before the game's own): a press
+   * inside a light's drawn box tells that light, which hides once the move is under way (a drag, a hold: MOVE) and never on a tap; its
+   * release lets it count down to MOVE.back.
    */
   const pressHooks = new Set();
   let pressOn = false;
+  // (SH-261: the page's press now: down, where and when it went down; read by Onboard.began and each light's own press)
+  const pressNow = { down: false, x: 0, y: 0, t: 0 };
   const pressWatch = () => {
     if (pressOn) return;
     pressOn = true;
     const each = (k) => (e) => {
       const p = { x: e.clientX, y: e.clientY };
+      if (k === "down") Object.assign(pressNow, { down: true, x: p.x, y: p.y, t: Date.now() });
+      else if (k === "up") pressNow.down = false;
+      else if (!pressNow.down) return;
       [...pressHooks].forEach((h) => {
         try {
           if (h[k]) h[k](p, e);
@@ -731,9 +755,20 @@
       });
     };
     root.addEventListener("pointerdown", each("down"), true);
+    root.addEventListener("pointermove", each("move"), true);
     root.addEventListener("pointerup", each("up"), true);
     root.addEventListener("pointercancel", each("up"), true);
   };
+  /** SH-261: was the page's last press inside box b ({x, y, w, h}) and recent (or still down)? No press lately: true (a game's own
+   * Onboard.began with no press, its move started by itself). */
+  const pressedIn = (b) => {
+    if (!pressNow.t || (!pressNow.down && Date.now() - pressNow.t > Onboard.MOVE.recent)) return true;
+    return !!b && Onboard.pressIn(pressNow, b);
+  };
+  /** SH-261: a press that may start a light's move: a drag past MOVE.slop from where it went down, or held MOVE.hold ms on the thing. */
+  const moveStart = (p, on) => ({ x: p.x, y: p.y, t: Date.now(), on: !!on });
+  const moved = (st, p) => !!st && Math.hypot(p.x - st.x, p.y - st.y) > Onboard.MOVE.slop;
+  const held = (st) => !!st && st.on && pressNow.down && Date.now() - st.t >= Onboard.MOVE.hold;
   // (the styles the S19 pieces add to css/shared/onboard.css's: the buried light, the circle finger; injected once, so every page that
   // loads this file has them)
   let styled = false;
@@ -757,15 +792,21 @@
     document.head.appendChild(s);
   };
   /** SH-236 (any game): the child has started the move a light shows (a mechanic calls this as its drag, hold or stir begins, or a
-   * tap lands): every light that goes on the move goes now (not one made with o.stay), the script's step goes dark until it moves on,
-   * and a game's demo (Onboard.gesture) stops. */
+   * tap lands): every light the press was in hides now (not one made with o.stay) until the move ends, its owner closing it on the
+   * move's result (SH-261), and a game's demo (Onboard.gesture) stops. */
   const liveGestures = new Set();
   Onboard.began = function (by) {
+    // (SH-261: only a light whose box the press was in hides, until the move ends; its owner closes it on the move's result. A wrong
+    // tap somewhere else that a game reports as a move leaves it up)
     [...liveSpots].forEach((sp) => {
-      if (!sp.stay) sp.close();
+      if (!sp.stay && sp.away) sp.away(by);
     });
     [...liveGestures].forEach((g) => g.stop());
-    if (active && active.move) active.move(true, false);
+    if (active && active.move && active.pressedIn && active.pressedIn()) {
+      active.move(true, pressNow.down);
+      // (the press already lifted, a quick tap the game took on its next frame: the release's clock starts now)
+      if (!pressNow.down) active.move(false);
+    }
     return true;
   };
   /** The move ended (the child let go) with its step still open: the script's light may come back after MOVE.back. */
@@ -1143,8 +1184,8 @@
     let finger = null;
     let resolveRun;
     const result = new Promise((r) => (resolveRun = r));
-    // S19, SH-236: the child started the step's move (a press inside its box, or the game's Onboard.began): no light, no finger, no
-    // dim, nothing blocked, until the step moves on, or MOVE.back after the release with the step still open
+    // S19, SH-236: the child started the step's move (a drag or hold begun in its box, or the game's Onboard.began; SH-261: never a tap):
+    // no light, no finger, no dim, nothing blocked, until the step moves on, or MOVE.back after the release with the step still open
     let moving = false;
     let pressing = false;
     let backAt = 0;
@@ -1154,7 +1195,12 @@
 
     // keep the light on its targets (things move, the page resizes)
     const draw = () => {
-      if (moving && !pressing && backAt && Date.now() >= backAt) back();
+      if (moving && !pressing && backAt && Date.now() >= backAt && !busyNow()) back();
+      // (SH-261: a press held on the step's thing is its hold begun)
+      if (!moving && held(startAt)) {
+        startAt = null;
+        move(true, true);
+      }
       const st = m.state().step;
       layer.__hold = moving;
       const sp = st && !moving ? split(st.spotlight) : { els: [], rects: [], canvas: [] };
@@ -1409,7 +1455,17 @@
       return st ? rectsOf(st.spotlight) : lit;
     };
     const onLight = (e) => litNow().some((r) => inside(pt(e), r));
-    const allowed = (e) => skipBtn.contains(e.target) || (!layer.classList.contains("between") && onLight(e));
+    // (SH-261: the "tap" signal is a tap on the step's thing itself, an HTML control's own element or a canvas thing's own box, never
+    // one in the light's margin that missed it: that leaves the step lit)
+    const onThing = (e) => {
+      const st = m.state().step;
+      if (!st) return false;
+      const sp = split(st.spotlight);
+      if (sp.els.some((el) => el.contains(e.target))) return true;
+      const q = pt(e);
+      return sp.canvas.some((r) => Onboard.pressIn(q, r));
+    };
+    const allowed = (e) => skipBtn.contains(e.target) || (!layer.classList.contains("between") && onThing(e));
     // (C4: a script whose steps are all done blocks nothing while its layer fades: the breath after the last step
     // swallowed the next press, daar's stir)
     const over = () => ["done", "skipped"].includes(m.state().phase);
@@ -1434,13 +1490,26 @@
     const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu"];
     EV.forEach((t) => root.addEventListener(t, block, { capture: true, passive: false }));
     root.addEventListener("pointerup", up, true);
-    // (S19, SH-236: a press inside the drawn box starts the step's move: the light goes at once; the release starts MOVE.back)
+    // (S19, SH-236, as SH-261 has it: a press inside the drawn box may start the step's move; the light goes once it does (a drag past
+    // MOVE.slop, a press held MOVE.hold on its thing, or the game's Onboard.began), never on a tap: a tap that does the thing moves the
+    // step on, one that misses leaves it lit. The release starts MOVE.back)
+    let startAt = null;
     const press = {
       down(p, e) {
-        if (over() || !shownBox || layer.__buried || skipBtn.contains(e.target) || pass(e)) return;
-        if (Onboard.pressIn(p, shownBox)) move(true, true);
+        startAt = null;
+        if (over() || !shownBox || layer.__buried || moving || skipBtn.contains(e.target) || pass(e)) return;
+        if (!Onboard.pressIn(p, shownBox)) return;
+        const st = m.state().step;
+        startAt = moveStart(p, !!st && rectsOf(st.spotlight).some((r) => Onboard.pressIn(p, r)));
+      },
+      move(p) {
+        if (startAt && moved(startAt, p)) {
+          startAt = null;
+          move(true, true);
+        }
       },
       up() {
+        startAt = null;
         if (pressing) move(false);
       },
     };
@@ -1505,6 +1574,8 @@
       leave: () => end("left"),
       // S19: the step's move started (on) or ended (off): Onboard.began / Onboard.ended
       move,
+      /** SH-261: was the page's last press in this step's drawn box (Onboard.began hides only the light the move began in)? */
+      pressedIn: () => !!shownBox && !layer.__buried && pressedIn(shownBox),
       /** S19: is the step's light off now (the child doing the move, or a newer light over it)? */
       hidden: () => hiddenNow() || !shownBox,
       /** S19: on to step i, later in the script (a step whose moment came without the ones before it: Cook's coach, `when`). */
@@ -1797,9 +1868,19 @@
     gameLight(true);
     let raf = 0;
     let shown = null;
+    // (SH-261: away while the child does the move it shows; back MOVE.back after the release, the game's moves still, unless closed)
+    let away = false;
+    let awayPress = false;
+    let awayBack = 0;
+    let start = null;
     const zoom = o.zoomFrom ? { t0: Date.now() } : null;
     const draw = () => {
-      const sp = split(target);
+      if (away && !awayPress && awayBack && Date.now() >= awayBack && !busyNow()) away = false;
+      // (a press held on the thing is a hold begun: SH-236)
+      if (!away && held(start)) goAway(true);
+      layer.__hold = away;
+      layer.classList.toggle("ob-moving", away);
+      const sp = away ? { els: [], rects: [], canvas: [] } : split(target);
       // (o.box: the box drawn round what shows of the thing, the thing itself still lit and tapped whole: the reveal lesson's dots,
       // four 4 px dots in a 24 px tap area whose box ran over the word above; the judge, 4 Nov)
       let ob = typeof o.box === "function" ? o.box() : null;
@@ -1819,9 +1900,9 @@
       // (SH-257: a named variant's own margin, the swipe's, Onboard.VARIANTS; and its bounds, o.within: never over the side panel)
       const tight = o.variant || ob ? o.pad : null;
       const within = typeof o.within === "function" ? o.within() : o.within || null;
-      shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, tight, rings: [], els: sp.els, within });
-      gameLight(!layer.__buried);
-      if (!sp.els.length && !layer.__buried) bounce.tick();
+      shown = light.draw(ob && !away ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, tight, rings: [], els: sp.els, within });
+      gameLight(!layer.__buried && !away);
+      if (!sp.els.length && !layer.__buried && !away) bounce.tick();
       raf = requestAnimationFrame(draw);
     };
     draw();
@@ -1829,7 +1910,7 @@
     // (a game that names the finger's point, o.item, keeps its hand as it was: from above with fingerDown, else below)
     const from = o.item ? (o.fingerDown ? "above" : "below") : Onboard.fingerFrom(target, o.fingerFrom || (o.fingerDown ? "above" : "auto"));
     // (the s14 look: no finger, no target; the lit thing itself shows what to tap)
-    const finger = o.finger === false || Onboard.look === "s14" ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from, hold: o.finger === "hold", hidden: () => !!layer.__buried });
+    const finger = o.finger === false || Onboard.look === "s14" ? null : Onboard.finger(() => (isPoint(o.item) ? o.item : (typeof o.item === "function" && o.item()) || tipOf(firstRect(), from)), { container: layer, step: o.step, from, hold: o.finger === "hold", hidden: () => !!layer.__buried || away });
     // a tap counts on each live control's own box (its pad included): never on the gap between two of a group
     const liveRects = () => Onboard.hugShapes(rectsOf(o.live || target), o.avoid ? rectsOf(o.avoid) : null, o.pad == null ? Onboard.BOX_PAD : o.pad);
     const pt = (e) => {
@@ -1851,7 +1932,7 @@
       }
       if (e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
       if (o.pass) return; // (Onboard.light's pass: the light shows the way, every tap still goes through: never a wait)
-      if (!shown) return; // (no lit thing yet: no dim, so nothing is in the dark; CHAI-36)
+      if (!shown || away) return; // (no lit thing yet: no dim, so nothing is in the dark; CHAI-36; nor while the child does the move)
       if (liveRects().some((r) => on(pt(e), r))) return;
       if (e.type === "pointerdown") dark.add(e.pointerId != null ? e.pointerId : "t");
       if (e.type === "touchstart") dark.add("t");
@@ -1861,14 +1942,35 @@
     const EV = ["pointerdown", "mousedown", "touchstart", "click", "dblclick", "contextmenu", "pointerup", "pointercancel", "touchend"];
     EV.forEach((t) => root.addEventListener(t, block, { capture: true, passive: false }));
     let closed = false;
-    // (S19, SH-236: a press inside the drawn box starts the move it shows: the light goes, unless o.stay; o.onPress(e) returning false
-    // keeps it: Onboard.light's tapped control, whose click does it)
+    // SH-261 (was SH-236's "a press inside the drawn box closes it"): a press inside the drawn box may start the move it shows; the light
+    // only hides once it does (a drag past MOVE.slop, a press held MOVE.hold on the thing), never on a tap: a tap that does the thing
+    // closes it by its result (its owner's close()), one that misses leaves it up. o.stay: it never hides; o.onPress(e) returning false:
+    // that press is not this light's move (Onboard.light's tapped control, whose click does it)
+    function goAway(pressing) {
+      if (closed || o.stay) return;
+      away = true;
+      awayPress = !!pressing;
+      awayBack = pressing ? 0 : Date.now() + Onboard.MOVE.back;
+      start = null;
+    }
+    const thingRects = () => rectsOf(o.live || target);
     const press = {
       down(p, e) {
-        if (closed || o.stay || !shown || layer.__buried || !Onboard.pressIn(p, shown)) return;
+        start = null;
+        if (closed || o.stay || !shown || layer.__buried || away || !Onboard.pressIn(p, shown)) return;
         if (e && e.target && e.target.closest && e.target.closest("[data-ob-pass]")) return;
         if (typeof o.onPress === "function" && o.onPress(e) === false) return;
-        handle.close();
+        start = moveStart(p, thingRects().some((r) => Onboard.pressIn(p, r)));
+      },
+      move(p) {
+        if (start && moved(start, p)) goAway(true);
+      },
+      up() {
+        start = null;
+        if (away && awayPress) {
+          awayPress = false;
+          awayBack = Date.now() + Onboard.MOVE.back;
+        }
       },
     };
     pressHooks.add(press);
@@ -1876,6 +1978,13 @@
       layer,
       stay: !!o.stay,
       box: () => shown,
+      /** SH-236, SH-261 (Onboard.began): the game says the child started a move; this light hides if the press was in its box. */
+      away() {
+        if (closed || o.stay || away || !shown || !pressedIn(shown)) return;
+        goAway(pressNow.down);
+      },
+      /** Is it hidden now, the child doing its move? */
+      isAway: () => away,
       close() {
         if (closed) return;
         closed = true;
@@ -1959,8 +2068,8 @@
   Onboard.light = function (target, o) {
     o = Onboard.lightAsk(o || {});
     if (target == null) return { layer: null, box: () => null, close() {}, stop() {}, done: Promise.resolve() };
-    // (S19, SH-236: it goes on a press inside its box, unless o.stay; a lit control with o.onTap goes on its click instead, so the tap
-    // still reaches onTap; o.onPress(e) is told first, and false keeps it)
+    // (S19, SH-236, SH-261: it hides while the child does its move, as every light, unless o.stay; a lit control with o.onTap goes on
+    // its click, so the tap still reaches onTap; o.onPress(e) is told first, and false keeps it)
     const tapEl = o.onTap ? htmlOf(target) : null;
     const onPress = (e) => {
       if (typeof o.onPress === "function" && o.onPress(e) === false) return false;
@@ -2129,11 +2238,11 @@
       const G = root.NaniGuide;
       const la = G && G.lastAction ? G.lastAction() : ownClock.t;
       if (la !== lastAct) {
-        // the child did something: the rungs start again from now, and the help goes (not the wrong move that rushed it: its own
-        // press and lift land just around the rush)
+        // the child did something: the rungs start again from now, and the light help goes (not the wrong move that rushed it: its own
+        // press and lift land just around the rush). SH-261: the box stays until the step is done (h.done(), the action's own result):
+        // a tap that missed, or one elsewhere, never takes it away; it hides only while the child does its move (Onboard.spot)
         if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) {
           fired = {};
-          closeSpot();
           glow(false);
         }
         lastAct = la;

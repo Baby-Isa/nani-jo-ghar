@@ -95,7 +95,10 @@ test("Shelf.P.reach (SH-244): an item takes taps down its slot to its pill's top
   assert.equal(hits(jar, 400, 700), true, "its own picture");
   assert.equal(hits(jar, 400, 826), true, "between its foot and the pill");
   assert.equal(hits(jar, 400, pillTop - 0.5), true, "down to the pill's top");
-  assert.equal(hits(jar, 400, pillTop + 2), false, "the pill's card is the pill's");
+  // (s19-taps, SH-244 told again, 11 Nov: the pill's upper part and its word are the item's; only its speaker says the word)
+  assert.equal(hits(jar, 400, pillTop + 2), true, "the pill's upper part is the item's");
+  const spk = Shelf.P.spkBox(jar.chip);
+  assert.equal(hits(jar, (spk.left + spk.right) / 2, (spk.top + spk.bottom) / 2), false, "its speaker is the pill's alone");
   assert.equal(hits(jar, 400 + 88, 826), true, "across its slot");
   assert.equal(hits(jar, 400 + 92, 826), false, "never past its slot");
   // read at each tap: a pill given after, or gone, follows
@@ -113,7 +116,7 @@ test("Shelf.P.reach (SH-244): an item takes taps down its slot to its pill's top
   assert.equal(hits(plate, 1000, 830), false);
 });
 
-test("the pill's tap area (SH-244): its card and a small margin at its sides and foot, nothing above its card, never past its slot", () => {
+test("the pill's tap area (SH-244, told again 11 Nov): its speaker icon alone, a small margin at its sides and foot, never past its slot", () => {
   let area = null;
   const S = {
     add: {
@@ -123,7 +126,7 @@ test("the pill's tap area (SH-244): its card and a small margin at its sides and
         return c;
       },
       graphics: () => ({ fillStyle() {}, fillRoundedRect() {}, fillRect() {}, fillTriangle() {}, lineStyle() {}, beginPath() {}, arc() {}, strokePath() {} }),
-      text: () => ({ width: 80, displayWidth: 80, setOrigin() { return this; }, setScale() { return this; }, destroy() {} }),
+      text: () => ({ width: 80, displayWidth: 80, x: 0, setOrigin() { return this; }, setScale() { return this; }, destroy() {} }),
     },
   };
   globalThis.Phaser = { Geom: { Rectangle: Object.assign(function (x, y, w, h) { Object.assign(this, { x, y, width: w, height: h }); this.setTo = (a, b, c2, d) => Object.assign(this, { x: a, y: b, width: c2, height: d }); }, { Contains: () => true }) } };
@@ -132,11 +135,13 @@ test("the pill's tap area (SH-244): its card and a small margin at its sides and
   // (Phaser reads a container's area from its top-left: the point plus half its size, chip.w x chip.h)
   const at = (px, py) => { const lx = px + chip.w / 2, ly = py + chip.h / 2; return lx >= area.x && lx <= area.x + area.width && ly >= area.y && ly <= area.y + area.height; };
   const hw = chip.cardW / 2, hh = Shelf.PILL.h / 2;
-  assert.ok(at(0, 0) && at(hw - 1, 0) && at(-hw + 1, 0), "its card, both halves");
-  assert.ok(at(hw + m - 1, 0) && at(-hw - m + 1, 0) && at(0, hh + m - 1), "a margin at its sides and foot");
-  assert.ok(!at(0, -hh - 1) && !at(0, -hh - 30), "nothing above its card: the item's");
-  assert.ok(!at(hw + m + 2, 0) && !at(0, hh + m + 2));
+  const sp = chip.spk, sx = sp.x + sp.w / 2;
+  assert.ok(at(sx, 0) && at(sp.x, sp.y) && at(sp.x + sp.w, sp.y + sp.h), "its speaker icon, whole");
+  assert.ok(at(sp.x - m + 1, 0) && at(sp.x + sp.w + m - 1, 0) && at(sx, hh + m - 1), "a margin at its sides and foot");
+  assert.ok(!at(sx, -hh + 2) && !at(sx, -hh - 30), "its upper part and above: the item's");
+  assert.ok(!at(hw - 10, 0) && !at(30, 0), "its word: the item's");
+  assert.ok(!at(-hw - m - 2, 0) && !at(sx, hh + m + 2));
   chip.hit(chip.cardW + 4);
-  assert.ok(area.width <= chip.cardW + 4 && area.width >= chip.cardW, "never past a narrow slot, never under its card");
+  assert.ok(area.x - chip.w / 2 >= -hw - 2 - 0.01, "never past a narrow slot");
   delete globalThis.Phaser;
 });

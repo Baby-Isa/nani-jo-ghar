@@ -438,8 +438,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * grown-ups' New player or the game's coach not yet seen (save.coached), as the game starts (made once per round). o.round: a Set
    * the game makes each round (a lesson every game shares is once a round for the New player). -> Onboard.firsts's gate
    */
+  /**
+   * SH-261: a light the child's move hid comes back (MOVE.back after the release, the step still open) only once the kitchen is still:
+   * the shared light asks Onboard.busy, which the kitchen answers with its stillness look (C.mover: a kitchen tween that ends, the
+   * order row's glide), while a station plays. Set as every game starts (C.firsts, C.rungs, C.start).
+   */
+  let busyLook = null;
+  C.wireBusy = function () {
+    const Onboard = OB();
+    if (!Onboard || Onboard.busy === busyLook) return;
+    const moving = C.mover({ pend: false });
+    busyLook = () => !!Cook.inStation && moving();
+    Onboard.busy = busyLook;
+  };
   C.firsts = function (key, o = {}) {
     const Onboard = OB();
+    C.wireBusy();
     C.hopRule(); // (S19, SH-237: every kitchen game asks for its gate as it starts: its scene's glow hops only shelf things from now)
     const s14 = !!(Cook.UI && Cook.UI.s14 && Cook.UI.s14());
     const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
@@ -473,7 +487,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   C.thingBox(thing) -> fn          the same as one light target (a function giving the page rects)
    *   C.onShelf(thing) -> bool         is it a shelf thing (its foot in the bottom band, Shelf.BAND; thing.onShelf says so itself)?
    *   C.hopRule(S)                     the scene's glow hops only shelf things (SH-237): a pan, a board, a thing in play is lit still
-   *   C.began(by) / C.ended(by)        the child started (ended) the move a light shows: the light goes now (SH-236, Onboard.began)
+   *   C.began(by) / C.ended(by)        the child started (ended) the move a light shows: the light it began in hides (SH-236, SH-261)
    *   C.demo(at, o) -> {stop()}        the kit's one finger showing a move in world points, the game's thing riding under it (SH-119,
    *                                    MAA-20; Onboard.gesture): what replaces a game's own S.ghost
    *   C.stuck(o) -> handle             the stuck help, chai's method, in any game (SH-228)
@@ -570,7 +584,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const p = C.parts(thing);
     return p.length ? p : null;
   };
-  /** SH-236: the move a light shows has begun (a mechanic's drag, hold or stir started, or its tap landed): the lights go now. */
+  /** SH-236: the move a light shows has begun (a mechanic's drag, hold or stir started, or its tap landed): the light the press was in
+   * hides now, until the move's result closes it, or comes back MOVE.back after the release with its step still open (SH-261). */
   C.began = (by) => {
     const Onboard = OB();
     if (Onboard && Onboard.began) Onboard.began(by);
@@ -1022,6 +1037,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   C.rungs = function (key, step, o = {}) {
     const Onboard = OB();
     if (!Onboard || !Onboard.stuck || !C.stepOf(key, step)) return null;
+    C.wireBusy();
     // STD-D2-05 (the leak test, non-negotiable 4): a step whose thing is the answer (o.answer: what a person asked for, o.word its
     // id) gets no hint once the word is past support, unless it is study (o.study: Nani helps, a redo)
     if (o.word != null && Onboard.hintHides && Onboard.hintHides({ answer: !!o.answer, stage: Cook.wordStage ? Cook.wordStage(o.word) : null, study: !!o.study })) return null;
@@ -1098,6 +1114,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // spotlight: its lights are the shared kit's, St.steps and the stepper's)
     const useKit = !!(OB() && script);
     if (!useKit) return;
+    C.wireBusy();
     const steps = script.length;
     const state = { key, shown: 0, last: null, timer: null, started: false, lost: 0, script, calm: false, newAt: Date.now(), done: new Set() };
     live = state;
