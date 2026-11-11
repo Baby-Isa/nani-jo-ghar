@@ -1,0 +1,63 @@
+{
+ "name": "s19-clean-a: the shared pieces and the checks: their open rows, the wrong-order pop-up, check faults to zero",
+ "why": "Zafar, 11 Nov evening: the fix list to zero before he plays; his child play-test's wrong-order pop-up (SH-264 to SH-266)",
+ "cost": "about $40-50",
+ "port": 8914,
+ "read": [
+  "build/reports/s19-fixlist-sweep.md: section 2 (every row's verdict, with file:line) and section 3, batch A: this is your work list",
+  "docs/decisions/2026-11-10-overnight.md (Zafar's answers 10-11 Nov, the last two sections first)",
+  "docs/process/regressions.md rows SH-264, SH-265, SH-266 (his words: the wrong-order pop-up, the panel realigned, only the wrong order redone) and docs/design-language/ux-principles.md (his red-cross exception)",
+  "build/reports/s19-taps.md, s19-serve2.md, s19-games-1.md, s19-games-2.md (what the last builders did and left)"
+ ],
+ "owns": [
+  "js/shared/**, css/shared/**",
+  "js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js and css/cook.css",
+  "data/cook.json (the only owner tonight: s19-clean-b and s19-clean-c send you their lines through the orchestrator)",
+  "build/sandbox/** (the checks, drivers and build/sandbox/data/evidence.json), build/lint/**, build/tools/review/**, build/tools/tiers/**",
+  "find.html, first.html, monsoon.html (SH-224 only)",
+  "build/reports/s19-clean-a.md"
+ ],
+ "readOnly": [
+  "js/cook/stations/** and js/cook/mechanics/**, js/cook/grill-kit.js and data/stations/*.json (s19-clean-b and s19-clean-c: an edit there goes in your report as an exact line)",
+  "assets/**, build/tools/art/**"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "SH-264, SH-265, SH-266 first (Zafar's child play-test): a wrong order. After the serve a pop-up over the game (its edges still seen) brings each order card to the middle in turn; a right one: its compact single line ticks again with a ding, glows gold or green, floats up off the screen; a wrong one: marked in the palette's red (the end screen's red; amber allowed) with a small cross and the opposite of a ding, opens to all its items, ticks the right ones while quickly saying them (the language engine's own lines, never invented), crosses the wrong one; the asker's face big. Then it shrinks back into the side panel, the panel's cards realign (the one being worked on first), and only the wrong order is redone: the right orders' glasses or dishes, cards and people leave the screen (the stoves may stay). The kitchen's thank-you scene still follows at the end. One shared piece in js/shared/ (or js/cook/ui.js for the kitchen parts) every kitchen game uses; a lab page for it first (lab/ beside the others), then the games. Build a contract check for it (the card in the middle, every item in view, the wrong one marked; after the redo only the wrong order's card, place and face; the current card first) and put SH-264 to SH-266 on CONTRACT_ROWS, changing their Check lines to name it.",
+   "accept": "chai L3 and eggs L3 with a wrong order at 740x320 and 1280x665: before and after frames of the pop-up, the redo and the panel; the new check red before, green after"
+  },
+  {
+   "do": "Then every STILL-OPEN row of batch A in the sweep: SH-261 and SH-244 re-run after the s19-taps merge (contract-106, -111, -117) and SH-261 told again (chai's pan-switch light stays until the new pan is tapped: Zafar, 'that's a rule for all the onboarding'); SH-242 (the card pictures that don't load, contract-104); SH-232; SH-152; SH-227 and CK-79 with the cut card at the sideways row's edge at 740x320 (daar, chaat, the pantry); SH-230; SH-237; SH-249; SH-172 (make contract-36 accept the call as Nani's card opens, against contract-89); SH-256 and SH-245's check lists (samosa's accepted close-up sizes; baking's bowl is done); SH-60 and SH-178; CHAI-67; SH-175 (re-measure; fix only if it fails); SH-251; CK-56; SH-224. And the faults with no row: contract-113 (the cog's open menu over a tray face), -80, -37 (the levels table against corn's, sekelo's, samosa's and baking's decoys), -109 (the pantry's painted shelves). Hold SH-213 (Zafar: after his play). Apply the data/cook.json lines s19-clean-b and s19-clean-c send through the orchestrator, and the prefetch lines in build/reports/s19-k3-cut.md that are cook.json's.",
+   "accept": "each row: before and after frames at 740x320 and 1280x665 named in the report; a contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 (s19-clean-a-after): every end reached, 0 page errors, the breaks by check before and after, each left named with its owner; the sweep's FIXED-IN-CODE SH- rows confirmed by their named check, each passes or fails"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); --parallel 2 at most (two other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+   "accept": "build/reports/s19-clean-a.md with a Proof section, under 1000 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-a in /home/user/wt/s19-clean-a (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": true,
+ "stubs": "none",
+ "report": "s19-clean-a",
+ "publish": false,
+ "rows": []
+}
