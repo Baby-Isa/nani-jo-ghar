@@ -343,7 +343,11 @@ import { setTimeout } from "../life.js";
       // flour jar's class height times its share as cut, CT.heights: 1, 0.825, 0.664; a thing with no share by its own class)
       const share = (CT.heights || {})[id];
       const f = St.classFit && has(key) ? St.classFit(S, key, share != null ? FLOUR_ID : id, { base: band.base, ppw: ppwShelf, slotW: (pitch - 12) / Math.max(0.1, share || 1) }) : null;
-      img.setScale(f && f.scale ? f.scale * (share != null ? share : 1) : Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      // (never under its own class's height less a margin, 0.91: one height per size class, contract-115; flour, sugar and salt still
+      // stand at three heights)
+      const own = share != null && St.classFit && has(key) ? St.classFit(S, key, id, { base: band.base, ppw: ppwShelf, slotW: pitch - 12 }) : null;
+      const sc = f && f.scale ? Math.max(f.scale * (share != null ? share : 1), own && own.scale ? own.scale * 0.91 : 0) : 0;
+      img.setScale(sc || Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;
@@ -421,8 +425,16 @@ import { setTimeout } from "../life.js";
       const img = shelf[r.key];
       const into = jugStep ? jug.mouth() : { x: bowlX, y: bowlY - 60 };
       // lift it over the target (its pill stays on the shelf: while it is up, the thing's light is the thing alone, contract-105)
+      // (and the pill itself fades while its thing is up, as chop's band does, SH-255: the word stays with the thing at rest in its slot;
+      // contract-111 read a lifted jar's slot as a shelf item that took no tap)
       const pill = img.chip;
       img.chip = null;
+      const pillShow = (on) => {
+        if (!pill || !pill.active) return;
+        S.tweens.add({ targets: pill, alpha: on ? 1 : 0, duration: 160 });
+        if (pill.input) pill.input.enabled = on;
+      };
+      pillShow(false);
       busy = true;
       await Cook.tween(S, { targets: img, x: into.x - 150, y: into.y - 60, duration: 360, ease: "Cubic.easeOut" });
       busy = false;
@@ -435,6 +447,8 @@ import { setTimeout } from "../life.js";
       await new Promise((resolve) => {
         const tap = async () => {
           if (busy || taps >= need) return; // more taps don't land
+          // (SH-236, contract-102: the light goes as the child starts the move, and the thing's glow with it)
+          if (ctlObj === img) S.glow(img, false);
           busy = true;
           taps++;
           // each tap tips it a bit more (to 115 degrees), and some goes in
@@ -466,6 +480,7 @@ import { setTimeout } from "../life.js";
       await new Promise((r) => setTimeout(r, FADE_MS));
       await Cook.tween(S, { targets: img, angle: 0, x: img.home.x, y: img.home.y, duration: 380, ease: "Cubic.easeInOut" });
       img.chip = pill;
+      pillShow(true);
       if (jugStep) {
         // the jug tips into the bowl by itself
         await Cook.tween(S, { targets: jug.c, x: bowlX - 170, y: bowlY - 60, angle: 70, duration: 420 });
