@@ -233,6 +233,18 @@
       "silent": true
      },
      {
+      "_ck80": "CK-80 (the eye judge, 10 Nov: makai and hakro never shown with picture, Kutchi and English before the end review counts them learned): each person's cob as its own card with its count ('hakro makai'), first on their card; never said on its own (the headline says it: unsaid, saidBy head, as eggs' and chai's); it ticks as the cobs reach the cooked tray",
+      "frame": "and",
+      "x": [
+       {
+        "n": 1,
+        "of": "n.corn-on-the-cob"
+       }
+      ],
+      "unsaid": true,
+      "saidBy": "head"
+     },
+     {
       "forEach": "$it.dress",
       "frame": "and",
       "x": [
@@ -351,7 +363,8 @@
    "states": {
     "raw": "assets/cook/items/v4/corn/cob-raw.webp",
     "turned": "assets/cook/items/v4/corn/cob-turned.webp",
-    "done": "assets/cook/items/v4/corn/cob-done.webp"
+    "done": "assets/cook/items/v4/corn/cob-done.webp",
+    "over": "assets/cook/items/v4/corn/cob-over.webp"
    },
    "word": "n.corn-on-the-cob",
    "card": "assets/cook/items/v4/corn/cob-done.webp",
@@ -466,6 +479,7 @@
   "assets/cook/items/v4/corn/cob-raw.webp",
   "assets/cook/items/v4/corn/cob-turned.webp",
   "assets/cook/items/v4/corn/cob-done.webp",
+  "assets/cook/items/v4/corn/cob-over.webp",
   "assets/cook/items/v4/corn/bowl-lemon.webp",
   "assets/cook/items/v4/corn/bowl-salt.webp",
   "assets/cook/items/v4/corn/bowl-chilli-powder.webp",

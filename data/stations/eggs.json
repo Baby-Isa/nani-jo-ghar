@@ -345,6 +345,7 @@
    "view": "T",
    "states": {
     "cracked": "assets/cook/items/v4/eggs/egg-cracked.webp",
+    "part": "assets/cook/items/v4/eggs/egg-part.webp",
     "cooked": "assets/cook/items/v4/eggs/egg-cooked.webp",
     "overdone": "assets/cook/items/v4/eggs/egg-overdone.webp"
    },
@@ -357,7 +358,7 @@
     "n.egg"
    ],
    "inPan": 1.1,
-   "_note": "S19 wave C: cracked into the pan (egg-cracked), cooked once its ring reaches the green (egg-cooked), overdone if it is left past its full ring for mechanic overMs (egg-overdone: a look, never a verdict); inPan its width over the pan's floor radius; on a plate it keeps its look",
+   "_note": "S19 wave C: cracked into the pan (egg-cracked), half set (egg-part, SH-256), set just before its ring reaches the green (egg-cooked), overdone if it is left past its full ring for mechanic overMs (egg-overdone: a look, never a verdict); inPan its width over the pan's floor radius; on a plate it keeps its look",
    "card": "assets/cook/items/v4/eggs/egg-cooked.webp"
   },
   "boiledEgg": {
@@ -586,6 +587,7 @@
   "assets/cook/items-s14/chai-pan/pan-water-s14.webp",
   "assets/cook/items/v4/eggs/pan-steel-short.webp",
   "assets/cook/items/v4/eggs/egg-cracked.webp",
+  "assets/cook/items/v4/eggs/egg-part.webp",
   "assets/cook/items/v4/eggs/egg-cooked.webp",
   "assets/cook/items/v4/eggs/egg-overdone.webp",
   "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",

@@ -314,7 +314,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     view: "marble",
     dataFile: "data/stations/daar.json",
     selfBegin: true, // CK-48: its view comes up (St.begin below) only once its pictures are in (St.loadArt)
-    zones: [{ id: "daar", mech: "chop", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } }],
+    // SH-259 (Zafar, 10 Nov: one chop): no zone of its own for chop; the chop is chop's own game (Cook.Chop.play, its own scene)
+    zones: [],
     run: (host, params) => station(host, params),
   });
 
@@ -867,7 +868,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
             glass.push(gb);
           }
           const im = S.track(S.add.image(x, y, `dv2-chop-${id}`).setDepth(D.item + 0.1 + i * 0.001));
-          im.setScale(z.L(Math.min(heapSize(id), GL.d * 0.74)) / Math.max(im.width, im.height));
+          // (CK-79, the eye judge 10 Nov: "the chopped onion is a speck beside the pot": the heap fills its glass bowl, which is sized
+          // in the settings as chai's jars are, readable at 740x320)
+          im.setScale(z.L(GL.d * 0.74) / Math.max(im.width, im.height));
           im.baseS = im.scale;
           return im;
         });
@@ -1974,10 +1977,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     if (who && Cook.Kit && Cook.Kit.badge) {
       const perPx = Math.max(0.01, (UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
       const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
-      const r = z.L(KT.w) / 2;
-      // (on the rim's upper left, along its diagonal: the face's middle just inside the rim)
-      const x = z.X(KT.x) - r * 0.72;
-      const y = sy(z, KT.y) - r * 0.72;
+      // CK-79, SH-254 (the eye judge, 10 Nov; contract-113: the face sat on the katori, then on the served bowl, at 740x320): beside
+      // the dish at its upper left, its circle touching the rim of the larger of the empty katori and the served bowl that takes its
+      // place, never over either (the kit's praise spot's reach, chai's corner)
+      const SB = SC().serveBowl || KT;
+      const r = z.L(Math.max(KT.w, SB.w || KT.w)) / 2;
+      const x = z.X(KT.x) - (r + fd / 2) * 0.74;
+      const y = sy(z, KT.y) - (r + fd / 2) * 0.74;
       face = S.track(S.add.image(x, y, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
       face.setName("daar-katori-face");
       if (img) img.face = face;

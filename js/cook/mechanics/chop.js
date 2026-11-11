@@ -1226,7 +1226,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: "chop", within, note: "chop:s14-strip" });
         const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
         hold();
+        // SH-253 (contract-112: "lit while the knife moved into it after the light came"): the light comes on a still scene, the knife
+        // and the vegetable already in place, and stays still a beat (about a second of real time, whatever the test speed) before the
+        // finger draws the knife along its path
+        const lit0 = Date.now();
         await wait(420);
+        while (Date.now() - lit0 < 1100 && knife.active) await wait(50);
         let cutYet = false;
         const D_MS = 1500 / slow;
         await new Promise((resolve) =>

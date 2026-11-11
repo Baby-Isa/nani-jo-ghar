@@ -407,7 +407,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const LU = proto.L;
     proto.draw({});
     if (S.textures.exists("sv3-fold-strip")) S.textures.remove("sv3-fold-strip");
-    S.textures.addCanvas("sv3-fold-strip", proto.canvas);
+    const stripTex = S.textures.addCanvas("sv3-fold-strip", proto.canvas);
+    // SH-249 (contract-112: the strip's light was "not round its picture": the picture was the whole canvas, its fold room empty): a flat
+    // strip is drawn from its pastry and its soft shadow alone (frame "flat"), the same middle as the canvas, so its picture, its light
+    // and the checks all read the one sheet; the fold, which needs the room, keeps the whole canvas (sv3-foldcv)
+    const FLAT_E = 0.07; // (the shadow's reach round the pastry, units)
+    const fp0 = proto.px([-FLAT_E, -FLAT_E]);
+    const fp1 = proto.px([proto.L + FLAT_E, 1 + FLAT_E]);
+    if (stripTex && stripTex.add) stripTex.add("flat", 0, Math.round(fp0[0]), Math.round(fp0[1]), Math.round(fp1[0] - fp0[0]), Math.round(fp1[1] - fp0[1]));
     const FULL = z.L(STRIP_H / PPU); // a strip's scale at full size
     const U = (o) => o.scaleX * PPU; // world px per unit (the strip's height)
     const u2w = (o, p) => ({ x: o.x + (p[0] - LU / 2) * U(o), y: o.y + (p[1] - 0.5) * U(o) });
@@ -425,11 +432,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      */
     function pastryBody() {
       const k = this.texture && this.texture.key;
+      if (k === "sv3-fold-strip" && this.frame && this.frame.name === "flat") return this.getBounds();
       return k === "sv3-fold-strip" || k === "sv3-foldcv" ? pastryOf(this) : this.getBounds();
     }
     /** A flat strip (design px), q of full size. */
     function pastry(x, y, q = 1) {
-      const img = S.track(S.add.image(z.X(x), z.Y(y), "sv3-fold-strip").setDepth(D.item));
+      const flat = S.textures.get("sv3-fold-strip").has("flat") ? "flat" : undefined;
+      const img = S.track(S.add.image(z.X(x), z.Y(y), "sv3-fold-strip", flat).setDepth(D.item));
       img.setScale(FULL * q);
       img.litBounds = pastryBody;
       img.blobs = [];

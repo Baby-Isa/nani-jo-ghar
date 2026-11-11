@@ -59,7 +59,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     add(POT(), "water");
     add("pan");
     add("egg", "brown");
-    ["cracked", "cooked", "overdone"].forEach((s) => add("friedEgg", s));
+    ["cracked", "part", "cooked", "overdone"].forEach((s) => add("friedEgg", s));
     ["a", "b"].forEach((s) => add("boiledEgg", s));
     add("bowl");
     if (K.shakers) ["shakerSalt", "shakerPepper"].forEach((k) => add(k));
@@ -399,7 +399,36 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     /* ---------------- an egg ---------------- */
     const sized = (o, w) => o.setScale(w / Math.max(1, o.width));
     const rawEgg = (x, y) => sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * (ITEM("egg").inPot || 0.62));
-    const friedLook = (e) => (e.p >= 1 && Date.now() - e.full >= overMs / (Cook.speed || 1) ? "overdone" : e.p >= ready ? "cooked" : "cracked");
+    // SH-256 (the eye judge, 10 Nov: "the egg snaps from whole to fried"; the art's new egg-part, K7): cracked, then half set (egg-part),
+    // then set, each look fading into the next; set a little before its ring's green, so its first-time light comes on the egg as it
+    // will stay (nothing changes inside a light as it comes: contract-112); overdone if it is left past its full ring
+    const hasPart = () => S.textures.exists(tex("friedEgg", "part"));
+    const friedLook = (e) => (e.p >= 1 && Date.now() - e.full >= overMs / (Cook.speed || 1) ? "overdone" : e.p >= ready * 0.8 ? "cooked" : e.p >= ready * 0.35 && hasPart() ? "part" : "cracked");
+    /** The egg's look fades to texture t over 0.4 s (a second picture over it, then the egg takes it); at once if it is moving or gone. */
+    const toLook = (e, t) => {
+      if (!S.textures.exists(t) || e.look === t) return;
+      const first = !e.look;
+      e.look = t;
+      if (first && e.obj.texture.key === t) return;
+      if (e.fade) e.fade.destroy();
+      e.fade = null;
+      if (e.lifted || e.out) return e.obj.setTexture(t);
+      const f = T(S.add.image(e.obj.x, e.obj.y, t).setDepth(e.obj.depth + 0.01).setAlpha(0));
+      f.setScale(e.obj.scaleX * (e.obj.width / Math.max(1, f.width)));
+      e.fade = f;
+      S.tweens.add({ targets: f, alpha: 1, duration: 400 / (Cook.speed || 1), onComplete: () => {
+        if (e.fade !== f) return;
+        if (e.obj.active) e.obj.setTexture(t);
+        f.destroy();
+        e.fade = null;
+      } });
+    };
+    const endFade = (e) => {
+      if (!e.fade) return;
+      e.fade.destroy();
+      e.fade = null;
+      if (e.look && e.obj.active && e.obj.texture.key !== e.look) e.obj.setTexture(e.look);
+    };
     const friedW = () => vessels.pan.r * (ITEM("friedEgg").inPan || 0.95);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
     // a boiled egg on a plate: its two halves side by side (egg-boiled-half-a, -b), h tall
@@ -666,6 +695,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         return wrong();
       }
       if (held && held.kind === "cooked" && held.egg === egg) return hold(null);
+      endFade(egg);
       hold({ kind: "cooked", egg });
       egg.lifted = true;
       egg.base = egg.obj.scale;
@@ -738,7 +768,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       const n = plateWants(pl);
       const at = eggOnPlate(pl, i, n, egg.fried);
       S.tweens.killTweensOf(egg.obj);
-      await flying(S.fly(egg.obj, at.x, at.y, { duration: 380, arc: 110 }));
+      endFade(egg);
+      // SH-256: a fried egg grows or shrinks to its plate size as it flies, so it lands at the size it keeps (no snap on the plate)
+      const flyTo = egg.fried ? { duration: 380, arc: 110, scale: at.w / Math.max(1, egg.obj.width) } : { duration: 380, arc: 110 };
+      await flying(S.fly(egg.obj, at.x, at.y, flyTo));
       const was = egg.obj.texture.key;
       egg.obj.destroy();
       // a fried egg lands as it was cooked (cooked, or overdone); a boiled one is halved on the plate
@@ -778,8 +811,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           steamPuff(e.at.x, e.at.y - 20, 2);
         }
         if (e.fried && !e.out) {
-          const t = tex("friedEgg", friedLook(e));
-          if (e.obj.texture.key !== t) e.obj.setTexture(t);
+          toLook(e, tex("friedEgg", friedLook(e)));
+          if (e.fade && e.fade.active) e.fade.setPosition(e.obj.x, e.obj.y);
         }
         if (!e.lifted) e.ring.draw(e.obj.x, e.obj.y, 40, e.p, ready, 1);
       });
