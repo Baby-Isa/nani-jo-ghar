@@ -99,7 +99,7 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 
 ### Scenes: light first, the colour book for local colour only (Zafar, 11 Nov)
 
-A background scene (a room, a yard) is governed by its light, not by named colours: one warm key light from the upper left and one warm white balance across everything; a value plan (wall mid-light, marble the lightest, cabinets mid, one dark such as the oven); nothing more saturated than the faces and the food. The colour book (Wada) names local colours only (the sage, the walnut, the brass); never "evenly lit, no window light" in a scene: that rule is for cut-out pieces. The kitchen polish of 11 Nov went cold and flat because a scene got the pieces' rules (build/reports/s19-kitchen-colour-lesson.md).
+A background scene (a room, a yard) is governed by its light: one warm key light from the upper left, one warm white balance, a value plan (marble lightest, cabinets mid, one dark), nothing more saturated than the faces and food. The colour book names local colours only; "evenly lit, no window light" is a rule for cut-out pieces, never a scene (build/reports/s19-kitchen-colour-lesson.md).
 
 ### Skies (Zafar, 6 Nov)
 
