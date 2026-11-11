@@ -213,9 +213,16 @@ import { Cook as CookNS } from "./ns.js";
       return ch ? ch.x : w === "nani" && Cook.CHARS && Cook.CHARS.nani ? Cook.CHARS.nani.x : null;
     });
     const pts = people.map((w, i) => ({ who: w, x: xs[i] })).filter((p) => p.x != null).sort((a, b) => a.x - b.x);
-    let gap = Infinity;
-    for (let i = 1; i < pts.length; i++) gap = Math.min(gap, pts[i].x - pts[i - 1].x);
-    const w = Math.min(c.tray.w, gap * 0.92);
+    // every tray whole on screen: the one at an edge moves in, and the trays narrow to the room left between them
+    const v = Cook.view || { left: 0, right: 1600 };
+    const pad = 16;
+    let w = c.tray.w;
+    for (let pass = 0; pass < 3; pass++) {
+      pts.forEach((p) => (p.x = Math.max(v.left + w / 2 + pad, Math.min(v.right - w / 2 - pad, p.x0 != null ? p.x0 : (p.x0 = p.x)))));
+      let gap = Infinity;
+      for (let i = 1; i < pts.length; i++) gap = Math.min(gap, pts[i].x - pts[i - 1].x);
+      w = Math.min(c.tray.w, gap * 0.92, (v.right - v.left - 2 * pad) / Math.max(1, pts.length));
+    }
     const src = S.textures.exists(key("tray")) ? S.textures.get(key("tray")).getSourceImage() : { width: 480, height: 181 };
     const h = (w * src.height) / src.width;
     return pts.map((p) => ({ who: p.who, x: p.x, y: c.tray.y, w, h }));
