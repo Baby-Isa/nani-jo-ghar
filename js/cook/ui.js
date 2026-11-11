@@ -2994,7 +2994,9 @@
     return cardOfIds([id]) || (it && typeof it.card === "string" && it.card) || null;
   };
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
-  const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
+  // (the orchestrator, 11 Nov: a word with no card picture shows the pantry's walnut-shelf picture, data art.sprites.shelf, before the old jars)
+  const shelfArt = (id) => (Cook.Art && Cook.Art.refUrl ? Cook.Art.refUrl(`${id}.shelf`) : null);
+  const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || shelfArt(id) || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
   // (a row whose words name a station's own thing together, "hakro tarelo indo": that thing's card first, CK-62)
   const rowCard = (r) => (r && !Cook.shelfJars ? cardOfIds(r.ids) : null);
