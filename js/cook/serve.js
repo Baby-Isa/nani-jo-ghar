@@ -200,7 +200,7 @@ import { Cook as CookNS } from "./ns.js";
       jobs.push(Cook.tween(S, { targets: fade, alpha: down ? 0 : 1, duration: ms * 0.6, ease: "Sine.easeInOut" }));
       jobs.push(Cook.tween(S, { targets: st.ks.occ, alpha: down ? 1 : 0, duration: ms * 0.6, ease: "Sine.easeInOut" }));
     }
-    if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("serve-view", { step: down ? "serving" : "ordering", by: `drop:${d} mode:${c.mode}` });
+    if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("serve-view", { step: down ? "serving" : "ordering", by: [d, c.mode].join(" ") });
     await Promise.all(jobs);
   }
 
@@ -224,18 +224,12 @@ import { Cook as CookNS } from "./ns.js";
   function drawTray(S, t) {
     const c = cfg();
     const dep = D().occ;
-    const ok = S.textures.exists(key("tray"));
-    if (ok) {
+    // (a tray whose picture never came is left out: never Phaser's missing square on the island)
+    if (S.textures.exists(key("tray"))) {
       const src = S.textures.get(key("tray")).getSourceImage();
       t.img = S.track(S.add.image(t.x, t.y, key("tray")).setDisplaySize(t.w, t.h).setDepth(dep + 1.5));
       const ry = Math.round(src.height * c.tray.rim);
       t.rim = S.track(S.add.image(t.x, t.y, key("tray")).setDisplaySize(t.w, t.h).setCrop(0, ry, src.width, src.height - ry).setDepth(dep + 2.6));
-    } else {
-      // (the tray's picture missing: a plain walnut tray drawn)
-      const g = S.track(S.add.graphics().setDepth(dep + 1.5));
-      g.fillStyle(0x6b3f22, 1).fillRoundedRect(t.x - t.w / 2, t.y - t.h / 2, t.w, t.h, 16);
-      g.fillStyle(0x9a5f35, 1).fillRoundedRect(t.x - t.w / 2 + 10, t.y - t.h / 2 + 8, t.w - 20, t.h - 22, 10);
-      t.img = g;
     }
     // the asker's mark: their face circle on the rim's front left
     if (Cook.Kit && Cook.Kit.badge && S.textures.exists(`${t.who}-badge`)) {
