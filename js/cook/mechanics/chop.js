@@ -111,6 +111,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       // S19 (CK-71): the hop, the chop game's own (its numbers: data/stations/chop.json levels[].knobs.hop)
       const HOP = !!(hop && band);
+      const HOP_GROW = 1.12; // (SH-256: a thing up on the board, at most this much bigger than in its slot)
       const HK = HOP ? Object.assign({ up: 1, rise: 0.45, hang: 1.8, fall: 0.4, every: 2.9, peak: 400, catchPad: 40, tapCuts: false, size: 190, phoneSize: 240, decoys: null, refill: 0.45 }, k.hop || {}) : null;
       // S19 (wave B, ART-37): the caller's board sets where an item's middle is at the top of its hop (the board's middle)
       if (HOP && peak != null) HK.peak = peak;
@@ -505,7 +506,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         hopWaited = 0;
         const img = s.img;
         const big = S.fitScale(s.key, z.L(hopPx), z.L(hopPx));
-        s.hop = { t: 0, phase, s0: s.scale, s1: Math.max(s.scale, big), h1: 0 };
+        // (SH-256, contract-114: an item keeps its size from step to step: up on the board it is at most HOP_GROW of its size in its
+        // slot, never a third bigger; the swipe's catch pad, not the picture, makes it easy to catch)
+        s.hop = { t: 0, phase, s0: s.scale, s1: Math.min(Math.max(s.scale, big), s.scale * HOP_GROW), h1: 0 };
         img.phase = phase;
         img.setDepth(D.item + 2.5);
         // (its foot at the top, below its middle by this much: its middle is at the peak)
@@ -1199,7 +1202,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (own) {
           own.img.setVisible(false);
           veg.setScale(own.scale);
-          S.tweens.add({ targets: veg, x: z.X(own.px != null ? own.px : own.x), y: z.Y(SY), scaleX: Math.max(own.scale, vs), scaleY: Math.max(own.scale, vs), duration: 520, ease: "Cubic.easeOut" });
+          // (SH-256, contract-114: the same size up in the strip as in its slot, within HOP_GROW)
+          const up = Math.min(Math.max(own.scale, vs), own.scale * HOP_GROW);
+          S.tweens.add({ targets: veg, x: z.X(own.px != null ? own.px : own.x), y: z.Y(SY), scaleX: up, scaleY: up, duration: 520, ease: "Cubic.easeOut" });
         } else {
           veg.setScale(vs);
           veg.setAlpha(0);
@@ -1361,6 +1366,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (s.refill > 0) {
             s.refill = 0;
             s.img = sit(s);
+            // (SH-256, contract-114: it fades into its slot, as a refill does, never appearing in the frame the cut one went)
+            const sc = s.scale;
+            s.img.setScale(sc * 0.6).setAlpha(0);
+            S.tweens.add({ targets: s.img, scaleX: sc, scaleY: sc, alpha: 1, duration: 220, ease: "Back.easeOut" });
           }
           const h = s.hop;
           s.hop = null;

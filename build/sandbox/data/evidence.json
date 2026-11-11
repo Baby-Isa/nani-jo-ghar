@@ -27225,5 +27225,53 @@
    "max": 20,
    "note": "sekelo's well done: one Nana face beside the tray the skewer is on; the served skewer whole on its tray, the face clear of it (every line said: the panel whose line is Shabash is the praise frame)"
   }
+ ],
+ "CK-85": [
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 10,
+   "note": "top-down chaat: a light (the kit's dim and gold box) for every item and its card, the tameto light the kit's (no orange ring with no dim)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "top-down chaat's well done: the praise zoom keeps the bowl clear of the stone tray's edge at 740x320 (every line said: the panel whose line is Shabash is the praise frame)"
+  }
  ]
 }

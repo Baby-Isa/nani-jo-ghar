@@ -175,6 +175,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const room = K.room || 6;
     const cookMs = K.cookMs || 3200;
     const overMs = K.overMs || cookMs; // (left that long after its ring is full, a fried egg browns: a look, never a verdict)
+    // SH-158, the S14 roll-out (contract-77; the central rules' timed.firstTimeHold, as maani's flip and samosa's lift): a new player's
+    // first egg holds in the middle of its green until it is lifted (js/cook/station-lib.js St.firstHold)
+    const hold14 = St.firstHold(ctx, "eggs:lift");
     const sc = SCENE();
     await St.loadArt(S, ART(K).concat(...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
     await St.begin(S, ctx, KEY, "marble");
@@ -625,7 +628,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       stepFor(n);
       if (n.obj) {
         const c = S.centre(n.obj);
-        z.expect({ kind: "tap", x: c.x, y: c.y, key: n.key || undefined });
+        // (contract-70: lifting a cooked egg is the timed window's control, as samosa's "lift": its call is said as the green opens, never
+        // held for Nani's helper card as an item's is, SH-172)
+        z.expect({ kind: "tap", x: c.x, y: c.y, key: n.what === "egg" ? "lift" : n.key || undefined });
       } else z.expect({ kind: "wait" });
     }
 
@@ -694,12 +699,14 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         S.wiggle(egg.obj);
         return wrong();
       }
+      hold14.end("eggs");
       if (held && held.kind === "cooked" && held.egg === egg) return hold(null);
       endFade(egg);
       hold({ kind: "cooked", egg });
       egg.lifted = true;
       egg.base = egg.obj.scale;
-      S.tweens.add({ targets: egg.obj, scale: egg.base * 1.18, duration: 160 });
+      // (picked up it grows a little, within SH-256's 15%, contract-114: it rests in the hand at the size it then keeps on the plate)
+      S.tweens.add({ targets: egg.obj, scale: egg.base * 1.1, duration: 160 });
       Cook.sfx.pop();
     };
 
@@ -812,7 +819,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       cooking().forEach((e) => {
         if (!e.obj || !e.ring) return;
         const was = e.p >= ready;
-        e.p = Math.min(1, (Date.now() - e.t0) / (cookMs / (Cook.speed || 1)));
+        const span = cookMs / (Cook.speed || 1);
+        const raw = Math.min(1, (Date.now() - e.t0) / span);
+        e.p = hold14.cap(raw, ready, 1, "eggs");
+        if (e.p < raw) e.t0 = Date.now() - e.p * span; // (held: its clock waits with it, so it goes on from the middle once lifted)
         if (e.p >= 1 && !e.full) e.full = Date.now();
         if (!was && e.p >= ready) {
           changed = true;

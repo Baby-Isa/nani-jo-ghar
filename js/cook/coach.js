@@ -229,6 +229,50 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     if ([...Array(sc.length - i).keys()].every((d) => state.done.has(i + d))) a.jump(sc.length);
   }
+  /*
+   * CHAI-40, contract-78 (maani's first "Firai!" 0.4 s before its light, samosa's first "Chulo bar!" 0.9 s before): a staged step's light
+   * waits for the stage to be still (calmTick), so its call, opened with the step, came first. As C.control does for a control's first
+   * time, the call waits for the light: C.lightWait() (asked by Nani's step call, UI's stepCall, as it is about to speak) is a promise
+   * while a staged step of this script is about to light this expectation, let go two frames and a beat after its light is up (never
+   * longer than breathMax: a light that cannot come never silences her); null when no light is due.
+   */
+  const dueStep = (state, e) => {
+    const a = OB() && OB().active();
+    if (!e) return -1;
+    // (not started yet: the script's first light is still to come, at its first step whose moment this is)
+    const mine = a && a.id === obId(state.key) && a.machine;
+    if (!mine && state.started) return -1;
+    const i = mine ? a.machine.state().index : 0;
+    for (let k = Math.max(0, i); k < state.script.length; k++) if (!state.done.has(k) && C.matches(state.script[k].when, e)) return k;
+    return -1;
+  };
+  function holdCall(state, e) {
+    if (state.release) return state.releaseP;
+    if (dueStep(state, e) < 0) return null;
+    let r = null;
+    state.releaseP = new Promise((res) => (r = res));
+    const W = (OB() && OB().WAIT) || { breathMax: 3000 };
+    const t = setTimeout(() => letCallGo(state), W.breathMax / speed());
+    // (while it waits the coach looks every 30 ms, not 120: the call follows its light within a frame or two, before a quick tap
+    // closes the step and the call with it, skip-closed)
+    const fast = state.tick ? setInterval(state.tick, 30) : 0;
+    state.release = () => {
+      clearTimeout(t);
+      clearInterval(fast);
+      r();
+    };
+    return state.releaseP;
+  }
+  function letCallGo(state) {
+    const r = state.release;
+    state.release = null;
+    state.releaseP = null;
+    if (!r) return;
+    const raf = global.requestAnimationFrame ? requestAnimationFrame : (f) => setTimeout(f, 16);
+    raf(() => r());
+  }
+  C.lightWait = () => (live && (live.staged || script0Staged(live)) ? holdCall(live, Cook.expect) : null);
+  const script0Staged = (state) => (state.script || []).some((st) => st.when != null);
   /** MAA-22 (Zafar, 8 Nov: "as it flew onto the pan the dough balls briefly flashed up as highlighted"): a new step's light waits for
    * the stage to be still (nothing moving that will end, C.mover) for a beat, never more than 1.5 s. */
   function calmTick(state) {
@@ -1055,7 +1099,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const useKit = !!(OB() && script);
     if (!useKit) return;
     const steps = script.length;
-    const state = { key, shown: 0, last: null, timer: null, started: false, lost: 0, script, calm: false, newAt: Date.now() };
+    const state = { key, shown: 0, last: null, timer: null, started: false, lost: 0, script, calm: false, newAt: Date.now(), done: new Set() };
     live = state;
     C.hopRule();
     const tick = () => {
@@ -1101,11 +1145,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const i = a.machine.state().index;
           if (i >= 0 && i < script.length && !state.done.has(i) && C.matches(script[i].when, e)) state.matched = i;
         }
+        // (contract-78: the held call goes once this step's light is on the screen)
+        if (state.release) {
+          const k = dueStep(state, e);
+          if (!mine || k < 0 || (state.calm && !(a.hidden && a.hidden()) && a.machine.state().index === k)) letCallGo(state);
+        }
         // (the thing glows only while its light is drawn: not while the child does the move, SH-236, nor under a newer light)
         lightThing(state, mine && !(a.hidden && a.hidden()) ? thingFor(e) : null);
         return;
       }
     };
+    state.tick = tick;
     state.timer = setInterval(tick, 120);
     tick();
   };
@@ -1115,6 +1165,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const state = live;
     clearInterval(state.timer);
     live = null;
+    letCallGo(state);
     if (done) {
       Cook.save.coached = Cook.save.coached || {};
       Cook.save.coached[state.key] = true;
@@ -1132,6 +1183,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const state = live;
     clearInterval(state.timer);
     live = null;
+    letCallGo(state);
     const a = OB() && OB().active();
     if (state.kit && a && a.id === obId(state.key)) (a.leave || a.skip)();
     lightThing(state, null);

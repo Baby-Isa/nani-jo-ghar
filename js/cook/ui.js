@@ -774,7 +774,15 @@
       const lag = UI.s14() && global.Rules && global.Rules.callAfterLightMs ? Math.max(0, global.Rules.callAfterLightMs() / (Cook.speed || 1) - (Date.now() - queuedAt)) : 0;
       // (a plain timer: Cook.wait belongs to the station's life and may never resolve once a step ends, which held the queue)
       const hold = callHold;
-      return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => hold).then(() => {
+      // (contract-78, CHAI-40: a staged first-time light about to come for this step, maani's flip, samosa's knob: the call waits for
+      // it, Cook.Coach.lightWait, as a control's first call does)
+      // (an item's step whose call waits for Nani's helper card, SH-172 below, never waits for a light: only a control's call does)
+      const helperItem = () => {
+        const e = Cook.expect;
+        return UI.s14() && !!(e && typeof e.key === "string" && Cook.isItemWord && Cook.isItemWord(e.key)) && !!helperW && !helperOn;
+      };
+      const lightWait = () => (stepper && stepper.current === s && !helperItem() && Cook.Coach && Cook.Coach.lightWait ? Cook.Coach.lightWait() : null);
+      return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => hold).then(lightWait).then(() => {
         if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
         // SH-172 (Zafar, 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ... when
         // she expands her card to help you ... that's a rule for all the games always"): a step whose item Nani's helper card names
@@ -2986,7 +2994,9 @@
     return cardOfIds([id]) || (it && typeof it.card === "string" && it.card) || null;
   };
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
-  const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
+  // (the orchestrator, 11 Nov: a word with no card picture shows the pantry's walnut-shelf picture, data art.sprites.shelf, before the old jars)
+  const shelfArt = (id) => (Cook.Art && Cook.Art.refUrl ? Cook.Art.refUrl(`${id}.shelf`) : null);
+  const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || shelfArt(id) || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
   // (a row whose words name a station's own thing together, "hakro tarelo indo": that thing's card first, CK-62)
   const rowCard = (r) => (r && !Cook.shelfJars ? cardOfIds(r.ids) : null);

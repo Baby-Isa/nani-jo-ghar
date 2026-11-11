@@ -118,20 +118,31 @@ import { setTimeout } from "../life.js";
     };
     /** The control o (a container to tip, the bowl, the oven, the naan) lit as the kit lights one: the first time with its call,
      *  after that only as the stuck hint after the level's wait from the last action (STD-D1-06, D2-01). */
-    const control = (o, name, current) => {
+    const control = (o, name, current, withLight = null) => {
       unlight();
       ctlObj = o;
+      // (withLight: the step's call, said as its light comes up the first time, else at once: CHAI-40, contract-36 and -78)
+      const first = gate.first(name);
+      let said = false;
+      const sayNow = () => {
+        if (said || !withLight) return;
+        said = true;
+        if (!current || current()) withLight();
+      };
+      if (!first) sayNow();
+      else setTimeout(sayNow, 3000 / (Cook.speed || 1)); // (never silent: a light that cannot come)
       ctl = Cook.Coach.control({
         key: KEY,
         note: `${KEY}:${name}`,
         target: Cook.Coach.box(o, PAD, { visible: true }),
-        first: gate.first(name),
+        first,
         noHint: true,
         current,
         busy: () => busy,
         // (contract-102, SH-236: its glow lasts as long as its light, which goes as the child starts the move; contract-107: no hop, none
         // of these is on the shelf)
         onLight: () => {
+          sayNow();
           S.glow(o, true, { now: true }); // (no hop: a thing tipped over the bowl, the bowl, the oven, the naan are never on the shelf)
           setTimeout(() => {
             const h = ctl && ctl.lit ? ctl.lit() : null;
@@ -467,31 +478,47 @@ import { setTimeout } from "../life.js";
     naan.setScale(nk);
     // (SH-258: their face circle moves to the tray their naan bakes on, from its first frame)
     const face = faceAt ? faceAt(naan) : null;
-    const tapOn = (o, name) => {
+    const tapOn = (o, name, withLight = null) => {
       let open = true;
       return new Promise((resolve) => {
         S.tappable(o, () => {
           S.untap(o);
           resolve();
         });
-        control(o, name, () => open);
+        control(o, name, () => open, withLight);
       }).then(() => {
         open = false;
         unlight();
       });
     };
     const rackY = oy + ov.displayHeight * 0.18;
+    // (contract-36: each step's call as it opens, from the engine only, R2: "open" said as a command; the naan "put in", as the
+    // shelf's things are; where a word has no recording yet the engine shows its English in grey, a gap on the recording sheet)
+    const call = (l, step) => {
+      if (l && l.ok !== false && (!Lang.hasVoice || Lang.hasVoice(l))) return say(Lang.role(l, "call"));
+      // (the engine cannot say it yet, a recording to make: logged as the kit's step call logs a line with no voice, skip-novoice)
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${step}`, by: "skip-novoice" });
+      } catch (e) {
+        /* only a log */
+      }
+    };
     // 1. open the oven
     expectTap(ov, null);
+    call(Lang.say({ fn: "Command", verb: "v.open" }), "oven");
     await tapOn(ov, "oven");
     ov.setTexture("bk-oven-open");
     Cook.sfx.click();
     // 2. the naan in
     expectTap(naan, "ph-naan");
+    // ("Hane naan!", the engine's line the bowl's step says: the naan's "put in" has no voice yet)
+    const naanIn = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(["ph-naan"]) });
+    call(naanIn && naanIn.ok !== false && (!Lang.hasVoice || Lang.hasVoice(naanIn)) ? naanIn : line("now", "call", Lang.phrase(["ph-naan"])), "naan");
     await tapOn(naan, "naan");
     z.expect({ kind: "wait" });
     setBusy(true);
-    await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.8, duration: 520, ease: "Cubic.easeInOut" });
+    // (SH-256, contract-114: in the oven within 15% of its size on the tray, where it rests again when it comes out)
+    await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" });
     await Cook.wait(200);
     naan.setVisible(false);
     if (face) face.setVisible(false);
@@ -517,10 +544,9 @@ import { setTimeout } from "../life.js";
         }
       });
     });
-    say(line("ready", "call"));
-    // 4. take it out
+    // 4. take it out ("Tayar ai." with the oven's light: it belongs to this step, never the naan's before it, contract-36)
     expectTap(ov, "ph-naan");
-    await tapOn(ov, "oven-out");
+    await tapOn(ov, "oven-out", () => say(line("ready", "call")));
     z.expect({ kind: "wait" });
     ring.clear();
     ov.setTexture("bk-oven-open");
