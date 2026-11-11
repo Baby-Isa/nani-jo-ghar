@@ -217,7 +217,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const from = bowls[id];
         const fly = S.track(S.add.image(from.x, from.y, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.pop();
-        await S.fly(fly, z.X(BOARD.x), z.Y(SKY - 250 * SKS), { duration: 300, arc: z.L(90) });
+        // (SH-256, contract-114: it flies to exactly where the skewer's own piece takes over, the skewer's tip: no jump as one picture
+        // gives way to the other)
+        const tip = { x: sk.x + Math.sin(sk.rotation || 0) * 250 * sk.scaleY, y: sk.y - Math.cos(sk.rotation || 0) * 250 * sk.scaleY };
+        await S.fly(fly, tip.x, tip.y, { duration: 300, arc: z.L(90) });
         if (!ordered.some((w) => SK.fits(w, sk.ids.concat(id), pattern))) {
           // it fits no skewer they asked for: it bounces back to its bowl
           const e = exp && exp.id ? exp.id : null;

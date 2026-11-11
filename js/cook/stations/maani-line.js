@@ -388,7 +388,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const hot = t && !t.busy && heat !== "off" && t.v >= lo && t.v <= hi;
       // MAA-15 (P7, Zafar 17 Oct: "I didn't hear it the second time ... she should say it the second time"): side 2's step says
       // Firai too (data/cook.json guide maani-line:off; "take it off" waits on Mum), even right after side 1's
-      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}`, again: t.side !== 1 });
+      // (contract-70: every timed window's green is called, a second maani's first side too: it was skipped as "just said")
+      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}`, again: true });
       if (waiting && waiting.landed && !onTawa) return steps.to("maani-line:tawa", { id: `tawa-on-${items.indexOf(waiting)}` });
       if (chakla && !chakla.busy) return steps.to("maani-line:roll", { id: `roll-${items.length}` });
       if (!chakla && !waiting && nextType()) return steps.to("maani-line:take", { id: `take-${items.length}` });

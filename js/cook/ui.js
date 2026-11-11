@@ -774,7 +774,10 @@
       const lag = UI.s14() && global.Rules && global.Rules.callAfterLightMs ? Math.max(0, global.Rules.callAfterLightMs() / (Cook.speed || 1) - (Date.now() - queuedAt)) : 0;
       // (a plain timer: Cook.wait belongs to the station's life and may never resolve once a step ends, which held the queue)
       const hold = callHold;
-      return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => hold).then(() => {
+      // (contract-78, CHAI-40: a staged first-time light about to come for this step, maani's flip, samosa's knob: the call waits for
+      // it, Cook.Coach.lightWait, as a control's first call does)
+      const lightWait = () => (stepper && stepper.current === s && Cook.Coach && Cook.Coach.lightWait ? Cook.Coach.lightWait() : null);
+      return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => hold).then(lightWait).then(() => {
         if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
         // SH-172 (Zafar, 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ... when
         // she expands her card to help you ... that's a rule for all the games always"): a step whose item Nani's helper card names

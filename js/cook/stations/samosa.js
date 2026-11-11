@@ -496,12 +496,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       b.setDisplaySize(at.size * 0.6, at.size * 0.6);
       if (!quiet) Cook.sfx.pop();
       await S.fly(b, at.x, at.y - z.L(40), { duration: fast ? 260 : 380, arc: z.L(110) });
-      await new Promise((r) => S.tweens.add({ targets: b, y: at.y, displayWidth: at.size * 0.9, displayHeight: at.size * 0.86, duration: 140, ease: "Quad.easeIn", onComplete: r }));
+      // (SH-256, contract-114: its size changes only in a glide of at least 150 ms, never in a blink)
+      await new Promise((r) => S.tweens.add({ targets: b, y: at.y, displayWidth: at.size * 0.9, displayHeight: at.size * 0.86, duration: 170, ease: "Quad.easeIn", onComplete: r }));
       if (!quiet) S.puff(at.x, at.y, St.color(((Cook.item(id) || {}).layer || {}).color || ART.colours.fillPuff), z.L(26));
       if (own) {
         b.destroy();
         own.spoons = (own.spoons || 1) + 1;
-        place(own, at, 140);
+        place(own, at, 170);
         return own;
       }
       b.setDepth(D.item + 0.2 + sheet.blobs.length * 0.001);
@@ -1372,7 +1373,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           steps.to("samosa:fire", { id: "fire-again" });
           return z.expect(Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit({ kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" }, { thing: burner.knobHit }) : { kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" });
         }
-        if (cur && cur.level >= lo && level >= 3 && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine });
+        // (contract-70, -36, decision 5e: every timed window's green is called as it opens, at every level, each samosa's own: was L3 up)
+        if (cur && cur.level >= lo && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine, again: true });
         else steps.to("samosa:fry", { id: "fry" });
         // the next thing pulses: a raw one while there's room, else the samosa furthest on
         // (SAM-30: the lift's moment, on the green, for the coach's staged step; each samosa and the knob lit whole: thing)
