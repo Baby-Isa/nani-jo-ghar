@@ -613,6 +613,8 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
         (Cook.sfx.lap || Cook.sfx.click)();
         flag.wave();
         tally.add(count);
+        // (SH-228, contract-91: a lap is the child's action; the idle clock starts again, so a long stir is never "stuck")
+        if (global.NaniGuide && global.NaniGuide.poke) global.NaniGuide.poke();
         // (DAAR-50: the number on the card; the dial's own chip only where the card cannot show)
         const showLap = (said) => {
           const shownOnCard = !!(card && card.show(count, said));

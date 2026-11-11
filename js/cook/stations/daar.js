@@ -1027,7 +1027,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         const b = imgs[i];
         const a = i * 2.1 + 0.4;
         const rr = 0.2 + ((i * 0.37) % 0.4);
-        await S.fly(b, cx + Math.cos(a) * inR * rr, cy + Math.sin(a) * inR * rr, { scale: b.scale * 0.7, duration: 380, arc: z.L(90) });
+        // (contract-114: it keeps its bowl's size into the pot, then melts there; it shrank to 0.7 and was seen resting at that size)
+        await S.fly(b, cx + Math.cos(a) * inR * rr, cy + Math.sin(a) * inR * rr, { duration: 380, arc: z.L(90) });
         Cook.sfx.sizzle(0.6);
         b.setDepth(D.item + 0.1);
         // (S19, contract-114: the heap melts into the pot as it lands, never resting there at another size than in its bowl)
