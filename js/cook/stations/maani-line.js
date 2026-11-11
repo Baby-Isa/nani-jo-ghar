@@ -76,8 +76,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const PLATE_MAANI = 0.25;
   const RIM_MARGIN = 0.09; // of the plate's width
   /** On its kind's plate: the maani's radius and how far its centre may sit off the plate's centre (MAA-10). */
-  const onPlate = (sizeF) => {
-    const pr = PLATE_D * PLATE_MAANI * sizeF;
+  // SH-256 (the eye judge, 10 Nov: "the maani on the plate is under half its size on the tawa"): a plate that holds one maani has it
+  // across its whole flat floor, as near its tawa size as the plate allows; several keep the fanned, countable stack
+  const onPlate = (sizeF, alone = false) => {
+    const pr = alone ? PLATE_D * (THALI_FLAT - 0.02) * Math.min(1, sizeF) : PLATE_D * PLATE_MAANI * sizeF;
     return { pr, room: Math.max(0, PLATE_D * (THALI_FLAT - RIM_MARGIN) - pr) };
   };
   const CHIP_Y = 860;
@@ -308,7 +310,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // theirs; the plate's light, if any, takes it in: Cook.Coach.parts reads img.face)
       if (who && Kit.badge) {
         const F = Math.round(PLATE_D * 0.3);
-        img.face = S.track(S.add.image(x + PLATE_D * 0.36, PLATE_Y - PLATE_D * 0.36, Kit.badge(S, who)).setDisplaySize(F, F).setDepth(D.item + 0.5));
+        // (on the rim's corner, clear of a lone maani filling the floor: SH-256, contract-113)
+        img.face = S.track(S.add.image(x + PLATE_D * 0.4, PLATE_Y - PLATE_D * 0.4, Kit.badge(S, who)).setDisplaySize(F, F).setDepth(D.item + 0.5));
       }
       dones[type] = { x, y: PLATE_Y, img, n: 0 };
     });
@@ -323,6 +326,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     let doneShown = false;
     let helping = false; // decision 51: a redo round (the right pile glows)
     let lessoning = false; // the reveal lessons are on (the piles wait)
+    // (how many maani its plate holds: one alone fills its floor, SH-256)
+    const plateHolds = (type) => Object.keys(want).filter((k) => k === type || k.endsWith(`+${type}`)).reduce((a, k) => a + want[k], 0);
     const count = (key, where) => items.filter((it) => it.key === key && (!where || it.where === where)).length;
     const plated = () => items.filter((it) => it.where === "plate");
     /** How many more of this dough the order needs (the plan for the test and for guided glows; never shown). */
@@ -631,7 +636,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       sp.setDepth(D.item + 2 + j * 0.01);
       S.tweens.add({ targets: sp, angle: Math.random() * 24 - 12, duration: 450 });
       turnerHomeTween();
-      const { pr, room } = onPlate(it.sizeF); // how far its centre may sit off the thali's centre
+      const { pr, room } = onPlate(it.sizeF, plateHolds(it.type) <= 1); // how far its centre may sit off the thali's centre
       const [f0x, f0y] = FAN[j % FAN.length];
       const fk = Math.min(1, room / Math.max(1, Math.hypot(f0x, f0y)));
       const [fx, fy] = [f0x * fk, f0y * fk];
@@ -753,7 +758,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const from = pl ? S.centre(pl) : { x: CH.x, y: CH.y };
       it.sprite = S.track(S.add.image(from.x, from.y, tex).setDepth(D.item + 2 + j * 0.01).setScale(0.05));
       items.push(it);
-      const { pr, room } = onPlate(it.sizeF);
+      const { pr, room } = onPlate(it.sizeF, plateHolds(it.type) <= 1);
       const [f0x, f0y] = FAN[j % FAN.length];
       const fk = Math.min(1, room / Math.max(1, Math.hypot(f0x, f0y)));
       await S.fly(it.sprite, d.x + f0x * fk, d.y + f0y * fk, { scale: discScale(tex, pr), duration: 520, arc: 120 });

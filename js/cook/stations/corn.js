@@ -123,7 +123,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const guided = !!ctx.guided;
     const dish = ctx.dishAt || 0;
     const states = (it.cob || {}).states || {};
-    const tex = { raw: "cn4-raw", turned: "cn4-turned", done: "cn4-done" };
+    // (CK-80: the cob's four stages, K4's art: raw, turned once, done, and over if it is left on the grill past its green: a look,
+    // never a verdict, as eggs' overdone)
+    const tex = { raw: "cn4-raw", turned: "cn4-turned", done: "cn4-done", over: "cn4-over" };
     const thick = (it.cob || {}).thick || 0.18;
     // (the art the settings name, loaded behind the order; settings.assets lists the same files)
     await St.loadArt(
@@ -160,8 +162,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // glass from the first frame): whose cobs these are, from the first frame, as chai's glasses: each person's face circle at the
     // cooked tray's upper left, over its rim's edge only, in a row along its top; they go as the cobs go to their own plates
     const trayFaces = [...new Set(people.map((q) => q.who))].map((w, i) => {
-      const fs = Math.min(84, L.tray.h * 0.3);
-      const img = T(S.add.image(L.tray.x - L.tray.w / 2 + fs * 0.35 + i * (fs + 8), L.tray.y - L.tray.h / 2 + fs * 0.35, Cook.Kit.badge(S, w)).setDisplaySize(fs, fs).setDepth(D.item + 2));
+      // (CK-80: the kit's badge size, as daar's katori and chai's hob: at least 30 CSS px as seen, at most 90 design px; it was a
+      // speck at 740x320 and 1280x665)
+      const perPx = Math.max(0.01, (UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const fs = Math.min(90, Math.max(64, 30 / perPx));
+      // (on the tray's top-left rim, its middle just above the rim, so a cob lying across the tray stays clear of it: contract-113)
+      const img = T(S.add.image(L.tray.x - L.tray.w / 2 + fs * 0.3 + i * (fs + 8), L.tray.y - L.tray.h / 2 - fs * 0.2, Cook.Kit.badge(S, w)).setDisplaySize(fs, fs).setDepth(D.item + 2));
       img.setName("corn-tray-face");
       return img;
     });
@@ -184,7 +190,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // SH-256 (the eye judge, 10 Nov: the cob landed on the tray at a third of its grill size, lost in the tray, then grew on the plate):
     // with one or two cobs the tray holds them lengthwise across its whole width, one above the other, as near their grill length as
     // the tray allows; three or four keep the kit's two by two. The plate then keeps that length (cobLen below)
-    const trayLen = count <= 2 ? Math.max(L.tray.len, Math.min(L.grill.len, L.tray.w * 0.84)) : L.tray.len;
+    const trayLen = count <= 2 ? Math.max(L.tray.len, Math.min(L.grill.len, L.tray.w * 0.9)) : L.tray.len; // (0.9: within 15% of its grill length, contract-114)
     const trayAt = (k) => (count <= 2 ? { x: L.tray.x, y: count === 1 ? L.tray.y : L.tray.at(k ? 2 : 0).y } : L.tray.at(k));
     const cobs = []; // on the grill
     const inTray = []; // done, lying in the tray
@@ -369,7 +375,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         lifting++;
         refresh();
         const at = trayAt(k);
-        if (S.textures.exists(tex.done)) c.img.setTexture(tex.done);
+        if (c.img.texture.key !== tex.over && S.textures.exists(tex.done)) c.img.setTexture(tex.done);
         await fly(() => GK.move(S, c.img, { x: at.x, y: at.y, len: trayLen, up: false, ms: mo.trayMs || 460 }));
         lifting--;
         inTray.push(c);
@@ -396,6 +402,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         // the kit's heat ring over the cob's top end (one heat language): gold up to the sage band; ready from the green's start
         const r = L.ring(c.at);
         c.ring.draw(r.x, r.y, (lay.ring || {}).r || r.r, c.p, greenLo, 1);
+        // (CK-80: left past its green on its second side, the cob is over: the fourth stage)
+        if (c.state === "lift" && c.side === 1 && c.p >= 1 && c.img.texture.key !== tex.over && S.textures.exists(tex.over)) c.img.setTexture(tex.over);
         if (c.state !== "cook") return;
         if (Math.random() < (sm.chance || 0.03)) smoke(c.img.x, c.at.y - L.grill.len * 0.2);
         if (c.side === 1 && c.p >= greenLo * 0.5 && c.img.texture.key !== tex.done && S.textures.exists(tex.done)) c.img.setTexture(tex.done);

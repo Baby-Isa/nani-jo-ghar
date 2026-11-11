@@ -728,6 +728,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (bad) out.push(Object.assign({}, base, { right: false }));
       if (!bad || rightSomewhere.has(w.id)) out.push(Object.assign({}, base, { right: true }));
     });
+    // the words a station's own card taught (chop's Nani card in a recipe: "hakro bataato"), gone from the panel by the end: each one
+    // not listed yet, in the form she said it (chaat top-down's builder, 11 Nov: "hakro" was missing from chaat's review)
+    const listed = new Set(out.map((w) => w.id));
+    (ctx.taught || []).forEach((sg) => {
+      if (!sg || !sg.w || sg.lang !== "k" || sg.part || listed.has(sg.w) || (linker && sg.w === linker)) return;
+      listed.add(sg.w);
+      const base = Cook.display(sg.w);
+      let k = String(sg.t || "").replace(/[.,!?;:]+/g, " ").replace(/\s+/g, " ").trim();
+      if (k && base && base.charAt(0) === base.charAt(0).toLowerCase()) k = k.charAt(0).toLowerCase() + k.slice(1);
+      out.push({ id: sg.w, kutchi: k || base, cell: sg.cell, english: Cook.english(sg.w), toCheck: !!sg.check || undefined, right: true });
+    });
     return out;
   }
   /**

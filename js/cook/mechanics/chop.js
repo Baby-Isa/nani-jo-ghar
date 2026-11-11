@@ -156,6 +156,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: Lang.phrase(Lang.countParts(want[r.id], r.id)).en, done: r.done, key: r, say: () => Lang.speak(Lang.phrase(Lang.countParts(want[r.id], r.id))) }) : { label: r.label, done: r.done, key: r })) }],
         });
         const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
+        // (chaat top-down's builder, 11 Nov: "hakro" missing from the end review: her card is gone by the end, and the review read only
+        // the order card's words): the words her card taught, in the forms she said them, for the end review (flow.js reviewWords)
+        if (ctx) {
+          ctx.taught = ctx.taught || [];
+          Object.keys(want).forEach((id) => ctx.taught.push(...((Lang.phrase(Lang.countParts(want[id], id)) || {}).segs || [])));
+        }
         try {
           M.addCard("chop-nani", data(), cardOpts);
           // R4 (contract-20: one face per person): while she asks on her own card, her box keeps only its tools, as in daar's
@@ -1226,7 +1232,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: "chop", within, note: "chop:s14-strip" });
         const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
         hold();
+        // SH-253 (contract-112: "lit while the knife moved into it after the light came"): the light comes on a still scene, the knife
+        // and the vegetable already in place, and stays still a beat (a second and a half of real time, whatever the test speed: the checks' second look comes at 0.95 s, later on a busy machine) before the
+        // finger draws the knife along its path
+        const lit0 = Date.now();
         await wait(420);
+        while (Date.now() - lit0 < 1500 && knife.active) await wait(50);
         let cutYet = false;
         const D_MS = 1500 / slow;
         await new Promise((resolve) =>

@@ -407,7 +407,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const LU = proto.L;
     proto.draw({});
     if (S.textures.exists("sv3-fold-strip")) S.textures.remove("sv3-fold-strip");
-    S.textures.addCanvas("sv3-fold-strip", proto.canvas);
+    const stripTex = S.textures.addCanvas("sv3-fold-strip", proto.canvas);
+    // SH-249 (contract-112: the strip's light was "not round its picture": the picture was the whole canvas, its fold room empty): a flat
+    // strip is drawn from its pastry and its soft shadow alone (frame "flat"), the same middle as the canvas, so its picture, its light
+    // and the checks all read the one sheet; the fold, which needs the room, keeps the whole canvas (sv3-foldcv)
+    const FLAT_E = 0.07; // (the shadow's reach round the pastry, units)
+    const fp0 = proto.px([-FLAT_E, -FLAT_E]);
+    const fp1 = proto.px([proto.L + FLAT_E, 1 + FLAT_E]);
+    if (stripTex && stripTex.add) stripTex.add("flat", 0, Math.round(fp0[0]), Math.round(fp0[1]), Math.round(fp1[0] - fp0[0]), Math.round(fp1[1] - fp0[1]));
     const FULL = z.L(STRIP_H / PPU); // a strip's scale at full size
     const U = (o) => o.scaleX * PPU; // world px per unit (the strip's height)
     const u2w = (o, p) => ({ x: o.x + (p[0] - LU / 2) * U(o), y: o.y + (p[1] - 0.5) * U(o) });
@@ -425,11 +432,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      */
     function pastryBody() {
       const k = this.texture && this.texture.key;
+      if (k === "sv3-fold-strip" && this.frame && this.frame.name === "flat") return this.getBounds();
       return k === "sv3-fold-strip" || k === "sv3-foldcv" ? pastryOf(this) : this.getBounds();
     }
     /** A flat strip (design px), q of full size. */
     function pastry(x, y, q = 1) {
-      const img = S.track(S.add.image(z.X(x), z.Y(y), "sv3-fold-strip").setDepth(D.item));
+      const flat = S.textures.get("sv3-fold-strip").has("flat") ? "flat" : undefined;
+      const img = S.track(S.add.image(z.X(x), z.Y(y), "sv3-fold-strip", flat).setDepth(D.item));
       img.setScale(FULL * q);
       img.litBounds = pastryBody;
       img.blobs = [];
@@ -1265,7 +1274,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         resolve();
       });
       const c = { x: burner.knobHit.x, y: burner.knobHit.y };
-      z.expect({ kind: "tap", x: c.x, y: c.y, key: "knob" });
+      // (the step names its thing, the knob, so a light for it hugs the knob's picture, never a point's circle: contract-82 at
+      // 1920x1080, a 250 px box from the point cut the face beside the knob)
+      z.expect(Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit({ kind: "tap", x: c.x, y: c.y, key: "knob" }, { thing: burner.knobHit }) : { kind: "tap", x: c.x, y: c.y, key: "knob" });
       // the knob pulses (the focal rule): it is the next thing
       burner.knob.baseScale = 1;
       S.tweens.add({ targets: burner.knob, scale: 1.1, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
@@ -1359,7 +1370,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // T17: the fire off -> Chulo bar!; a golden one at level 3 -> "Samosa hane kadh."; else Tar!
         if (!fireOn) {
           steps.to("samosa:fire", { id: "fire-again" });
-          return z.expect({ kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" });
+          return z.expect(Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit({ kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" }, { thing: burner.knobHit }) : { kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" });
         }
         if (cur && cur.level >= lo && level >= 3 && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine });
         else steps.to("samosa:fry", { id: "fry" });

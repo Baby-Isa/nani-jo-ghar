@@ -3266,6 +3266,16 @@
         marked = it.parts.some((p) => p.next);
       })
     );
+    // CK-79 (the eye judge, 10 Nov: daar's card at 740x320, "one whole card and a cut row of pictures without words"): on a short
+    // sidebar (a phone held sideways) a card's rows are one sideways row of item cards, as chai's three are, so no row is cut at the
+    // panel's foot; each part keeps its own next, tick and key (the pop-up, writtenCard, keeps its rows)
+    if (!writtenCard && (global.innerHeight || 1e4) < 480)
+      cards.forEach((c) => {
+        const its = c.data.items;
+        // (not a samosa kind's block, nor several ordered rows: a mixed skewer's pieces stay a row per skewer)
+        if (its.length < 2 || its.some((it) => it.count != null) || its.filter((it) => it.ordered).length > 1) return;
+        c.data.items = [{ label: null, parts: [].concat(...its.map((it) => it.parts)), ordered: its.some((it) => it.ordered), done: its.every((it) => it.done) || undefined, src: [].concat(...its.map((it) => it.src || [])), at: 0, keep: its.some((it) => it.keep) }];
+      });
     return cards;
   }
   /** The order's cards into box (the sidebar's, or the pop-up's at full size); map: row -> its elements (read-along). */

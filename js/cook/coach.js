@@ -1021,7 +1021,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const S = Cook.scene;
     if (state.lit === obj) {
       // (S19, SH-237, chaat 9 Nov: a shelf thing lit while it was still moving got its glow without its hop; its hop once it is still)
-      if (obj && obj.active && obj.glowFx && obj.glowFx.y == null && S && S.tweens && !S.tweens.isTweening(obj) && C.onShelf(obj)) S.glow(obj, true, { bounce: true, now: true });
+      // (and a glow the station took off meanwhile, a wrong tap's shake: chaat#mistake at 930x430, contract-107, the box stood 0.9 s
+      // with no glow or hop: it comes back, with its hop, as soon as the thing is still)
+      const still = obj && obj.active && S && S.tweens && !S.tweens.isTweening(obj);
+      if (still && obj.visible !== false && C.onShelf(obj) && (!obj.glowFx || obj.glowFx.y == null)) S.glow(obj, true, { bounce: true, now: true });
       return;
     }
     if (state.lit && S && S.glow) S.glow(state.lit, false);

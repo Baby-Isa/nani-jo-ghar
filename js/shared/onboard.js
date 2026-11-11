@@ -930,7 +930,10 @@
         // (S19, one light at a time: this layer wants the light while it has a thing to light, or holds it dark while the child does
         // the move; it draws only as the newest that wants one, Onboard.raise)
         layer.__want = rects.length > 0 || !!layer.__hold;
-        const buried = layer.__want && !onTop(layer);
+        // (and while the grown-ups' "?" pop-up is open over the play area, the light steps back as the coach does for a panel: its
+        // white action button read as a second lit box, contract-112 at help-open in eggs and corn; it comes back as the pop-up shuts)
+        const grownUps = !!document.querySelector(".njg-gu-pop:not(.hidden)");
+        const buried = layer.__want && (!onTop(layer) || grownUps);
         layer.classList.toggle("ob-buried", buried);
         layer.__buried = buried;
         if (buried) rects = [];

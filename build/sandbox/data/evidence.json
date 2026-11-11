@@ -27177,5 +27177,53 @@
    "max": 4,
    "note": "chaat's chop: the same as chop alone, the tomato in place before the light"
   }
+ ],
+ "CK-81": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "sekelo: the skewer and its ring readable at 740x320; the grill and the turn get the kit's light"
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "sekelo's well done: one Nana face beside the tray the skewer is on; the served skewer whole on its tray, the face clear of it (every line said: the panel whose line is Shabash is the praise frame)"
+  }
  ]
 }
