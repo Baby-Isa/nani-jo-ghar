@@ -74,7 +74,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   // 30 Sept (R5): onion, tomato and chilli as real chopped heaps (one heap per chopped vegetable) and one piece
   // each (the piece flies off the knife and lands as its heap), in place of the flower-like v2 piles
   const HEAP5 = { "veg-02": "onion", "veg-03": "tomato", "veg-12": "chilli" };
-  const pileUrl = (id) => (HEAP5[id] ? `${V3}chop-heap-${HEAP5[id]}.webp` : IT + CHOPPED[id]);
+  // (the k3 run's D4-2, 11 Nov: the onion's raw heap and its six pieces are v4's; tomato and chilli stay v3. Its golden heap and the
+  // scatters have no place in the game yet)
+  const V4ON = { heap: `${IT}v4/daar/chop-heap-onion.webp`, piece: (i) => `${IT}v4/daar/chop-piece-onion-${i}.webp` };
+  const pileUrl = (id) => (id === "veg-02" ? V4ON.heap : HEAP5[id] ? `${V3}chop-heap-${HEAP5[id]}.webp` : IT + CHOPPED[id]);
+  const pieceUrl = (id) => (id === "veg-02" ? V4ON.piece(1) : `${V3}chop-piece-${HEAP5[id]}.webp`);
+  // (the onion's flying piece varies, one of its six; the others have one)
+  const pieceKey = (id, n = 0) => (id === "veg-02" && n % 6 ? `dv3-piece-${id}-${(n % 6) + 1}` : `dv3-piece-${id}`);
   /*
    * The v3 pot (D1 art, build/cut_cook_v3.py): nine states on one registered canvas, 430 x 348. Measured from
    * the art (assets/cook/items/v3/daar/meta.json; build/check_vessel_meta.py re-fits them): the round body's
@@ -279,7 +285,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       .concat(Cook.StirKit.art())
       .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, bowlUrl(id) || shelfUrl(id)]))
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
-      .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
+      .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, pieceUrl(id)]))
+      .concat(vegAll.includes("veg-02") ? [2, 3, 4, 5, 6].map((i) => [`dv3-piece-veg-02-${i}`, V4ON.piece(i)]) : [])
       .concat([...new Set(vegAll.concat(spiceIds))].filter((id) => DS1[id]).map((id) => [ds1Key(id), `${S8C}daar-in/in-${DS1[id]}-s08c.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
@@ -612,8 +619,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const list = (piles[id] = piles[id] || []);
       const n = list.length;
       // (R5) one chopped piece flies off the knife and lands as its heap
-      const piece = S.textures.exists(`dv3-piece-${id}`) && !bowl;
-      const img = S.track(S.add.image(x, y, piece ? `dv3-piece-${id}` : `dv2-chop-${id}`).setDepth(D.item + 1));
+      const pk = S.textures.exists(pieceKey(id, n)) ? pieceKey(id, n) : `dv3-piece-${id}`;
+      const piece = S.textures.exists(pk) && !bowl;
+      const img = S.track(S.add.image(x, y, piece ? pk : `dv2-chop-${id}`).setDepth(D.item + 1));
       const heapW = S.textures.get(`dv2-chop-${id}`).getSourceImage().width;
       const sc = z.L(heapSize(id)) / Math.max(img.width, img.height);
       img.setScale(piece ? z.L(PILE_() * 0.45) / img.width : sc * 1.5);
