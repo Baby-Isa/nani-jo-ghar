@@ -3228,10 +3228,32 @@
         // count written ("ba wadhi maani"), as chai's
         const mixOf = (r) => L.sections.some((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1]);
         const plain = rows.filter((x) => x.r.cards && !mixOf(x.r));
-        if (plain.length) {
-          items.push({ label: null, parts: plain.map((x) => cardOf(x.r, x.gi)), ordered: false, src: plain });
-          rowsShown.push(...plain.map((x) => x.r));
+        // SEK-25 (Zafar, 8 Nov: "four items ... the items that go on each skewer even if it's four of the same thing and they get ticked
+        // off as you put them on ... the item card just say gos gos gos gos"): a kind made of one piece (the say entry's `pieces`: a
+        // skewer of mishkaki is four gos) is a row of its piece's cards per unit, ticking as each piece goes on (M.tickPiece), whole once
+        // the unit is made (M.tickCard)
+        const pieceOf = (r) => (r.pieces && r.pieces[r.ids[r.ids.length - 1]]) || null;
+        const whole = plain.filter((x) => !pieceOf(x.r));
+        if (whole.length) {
+          items.push({ label: null, parts: whole.map((x) => cardOf(x.r, x.gi)), ordered: false, src: whole });
+          rowsShown.push(...whole.map((x) => x.r));
         }
+        plain
+          .filter((x) => pieceOf(x.r))
+          .forEach(({ r }) => {
+            rowsShown.push(r);
+            const id = pieceOf(r);
+            const pr = (r._pieceRow = r._pieceRow || { kind: "item", ids: [id], qty: 1, parts: [id], line: Lang.phrase([id]), phrase: Lang.phrase([id]), for: r.for, piece: true });
+            for (let u = 0; u < (r.qty || 1); u++) {
+              const unit = !!(r.units && r.units[u]) || !!r.done;
+              const got = (r.unitGot && r.unitGot[u]) || 0;
+              // (each piece card its own key, so each logs its own step-close as it ticks: contract-18)
+              const keys = (r._pieceKeys = r._pieceKeys || []);
+              keys[u] = keys[u] || Array.from({ length: r.cards || 4 }, (_, pi) => ({ piece: id, unit: u, at: pi }));
+              const parts = Array.from({ length: r.cards || 4 }, (_, pi) => Object.assign(cardOf(pr, 0), { key: keys[u][pi], done: unit || pi < got, next: false }));
+              items.push({ label: null, parts, ordered: true, done: unit, src: [] });
+            }
+          });
         rows
           .filter((x) => x.r.cards && !plain.includes(x))
           .forEach(({ r }) => {
@@ -3240,7 +3262,9 @@
             rowsShown.push(r);
             // the skewer's kind ("ba lakri mixed": every number said is written, contract-30), or the skewer itself before its pieces
             // are shown, as its own card
-            if (!mixes.length || (r.qty || 1) > 1) items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
+            // (SEK-25: once its pieces show, a mixed skewer is its pieces' cards alone: "separate the names of the items that go on the
+            // skewer from the overall order")
+            if (!mixes.length || ((r.qty || 1) > 1 && !r.pieces)) items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
             // SEK-03, SEK-13: each skewer's pieces, a row of cards per skewer, ticking as they go on (M.tickUnit for the first skewer
             // of a mix, M.tickPiece for a later one of the same mix); several different mixes, a row each
             const each = mixes.length > 1 && (r.qty || 1) === mixes.length ? mixes.map((ps) => [ps, 0]) : mixes.length === 1 ? Array.from({ length: r.qty || 1 }, (_, u) => [mixes[0], u]) : [];

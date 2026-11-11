@@ -367,7 +367,7 @@
         dot++;
         // cards: one card per unit, each with that many slots (Wave 6: a skewer card always has four dots)
         // block: a second block of the same dish (30 Sept: samosa's second kind), its own section on the card
-        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null, block: e.block || null }));
+        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null, pieces: e.pieces || null, block: e.block || null }));
         return;
       }
       const frame = e.frame === "order" ? Lang.orderFrame(i, d.level) : e.frame;
