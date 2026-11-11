@@ -38,3 +38,4 @@
 - Mock it in the game with our characters before the art; then one merged art block: the kitchen first, then the art audit's run 1 and the pot redo.
 - Chaat goes top-down, built after the current fixes builder (CHT-13).
 - Samosa's fold arrow stays until he plays it.
+- The kitchen: the open doorway (no door, square, pushed right, the garden hazed), and the marble warmed just a little for cohesion, never yellow or golden (11 Nov; this changes the "cool grey veins, never cream" line for the kitchen scene).
