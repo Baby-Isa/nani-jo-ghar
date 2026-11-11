@@ -810,7 +810,9 @@ function s19hook() {
     const out = [];
     const vA = innerWidth * innerHeight;
     // a modal layer drawn over everything on purpose (the order pop-up, the end screen, the grown-ups' pop-up, the title): not a cover
-    const MODAL = ".njg-results, .njg-rq-veil, .njg-grownup, #overlay, .gb-pop, #help-pop, .njg-gb, [role=dialog], .njg-onboard";
+    // (s19-clean-a, contract-113 x18 in chai and eggs: the cog's open menu, #side-menu, is a grown-up's menu opened over the game on
+    // purpose, as the ? pop-up it holds is; it closes at the next tap anywhere: never a cover of the game's own)
+    const MODAL = ".njg-results, .njg-rq-veil, .njg-grownup, #overlay, .gb-pop, #help-pop, .njg-gb, [role=dialog], .njg-onboard, #side-menu, .njg-wo";
     const modal = (el) => { if (!el || el.closest(MODAL)) return true; for (let x = el, i = 0; x && x !== document.body && i < 6; x = x.parentElement, i++) { const b = x.getBoundingClientRect(); if (b.width * b.height >= 0.4 * vA && !(g && x.contains(g.canvas))) return true; } return false; };
     const PANEL = "#side, #mission, #guide, .oc-card, .wc14, .njg-results, .njg-rq-veil, .njg-grownup";
     const items = []; // canvas things: {o, kind: face|pill|pic, id, box, order, W}
