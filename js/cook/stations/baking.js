@@ -55,8 +55,8 @@ import { setTimeout } from "../life.js";
     },
   });
 
-  /** The step's amounts in English for a sentence still to record (the jug's units: quarter cups). */
-  const AMOUNT_EN = { 1: "a quarter cup", 2: "half a cup", 3: "three quarters of a cup", 4: "a cup", 6: "one and a half cups", 8: "two cups", 10: "two and a half cups" };
+  /** The step's amounts in English for a sentence still to record (the jug's units: quarter cups; the settings' amountEn). */
+  const amountEn = (u) => (SET().amountEn || {})[String(u)] || null;
   /**
    * CK-72: Nani's instruction for step s, "put in <amount> <thing>", from the engine (DoIt v.put-in over the step's parts: Lang.itemOf);
    * where the engine can't say it whole (an amount still to record), the whole sentence's English as the grey to-record line.
@@ -64,8 +64,9 @@ import { setTimeout } from "../life.js";
   function amountLine(s) {
     const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(s.parts && s.parts.length ? s.parts : [s.id]) });
     if (doIt.ok !== false) return doIt;
-    const en = `Put in ${AMOUNT_EN[s.units] || `${s.units / 4} cups`} of ${Cook.english(s.id)}.`;
-    return Lang.toRecord(en, `baking: put in ${AMOUNT_EN[s.units] || s.units} of <thing>`);
+    const amt = amountEn(s.units) || `${s.units / 4}`;
+    const frame = SET().amountFrame || "{amount} {thing}";
+    return Lang.toRecord(frame.replace("{amount}", amt).replace("{thing}", Cook.english(s.id)), `baking: ${frame.replace("{amount}", amt)}`);
   }
   /** Every word id a step names is the engine's (a new amount waits for its lexicon entry: its plans are skipped till then). */
   const sayable = (plan) => plan.every((s) => (s.parts || []).every((x) => typeof x !== "string" || Lang.known(x)));

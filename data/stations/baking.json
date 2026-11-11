@@ -964,5 +964,16 @@
   "assets/cook/items-s17-stove/f-ghee.webp",
   "assets/cook/items/v4/daar/loon.webp",
   "assets/cook/proto/baking/jug-flour.webp"
- ]
+ ],
+ "amountEn": {
+  "1": "a quarter cup",
+  "2": "half a cup",
+  "3": "three quarters of a cup",
+  "4": "a cup",
+  "6": "one and a half cups",
+  "8": "two cups",
+  "10": "two and a half cups",
+  "_about": "CK-72: each amount's English by the jug's quarter cups, for a sentence still to record (Lang.toRecord of amountFrame), grey English until Mum records it"
+ },
+ "amountFrame": "Put in {amount} of {thing}."
 }
