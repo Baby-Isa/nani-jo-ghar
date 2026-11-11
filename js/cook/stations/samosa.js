@@ -1304,7 +1304,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      * and the stuck help. The coach's old staged script for the fry (data.onboard.fry) stands down: its light waited for the stage to be
      * still and came after the call (contract-78), and from L3 not at all.
      */
-    if (Cook.Coach && Cook.Coach.stop) Cook.Coach.stop(false);
+    // (its skip settles over a frame or two: the first control comes after it, never closed by it)
+    if (Cook.Coach && Cook.Coach.active && Cook.Coach.active()) {
+      Cook.Coach.stop(false);
+      await Cook.wait(80);
+    }
     const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("fry", { round: new Set() }) : null;
     let ctl = null;
     let ctlStep = null;
