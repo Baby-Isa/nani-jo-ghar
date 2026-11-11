@@ -759,6 +759,17 @@
     root.addEventListener("pointerup", each("up"), true);
     root.addEventListener("pointercancel", each("up"), true);
   };
+  /** SH-261: a tap the light keeps from the page (in the dark round it) is still the child doing something: the shared idle clock
+   * hears it (SH-60: the help's wait restarts on every action), as it would any tap; the light stays and its ladder runs on. */
+  const seenTap = () => {
+    try {
+      const G = root.NaniGuide;
+      if (G && G.poke) G.poke();
+      else ownClock.t = Date.now();
+    } catch (e) {
+      /* only a clock */
+    }
+  };
   /** SH-261: was the page's last press inside box b ({x, y, w, h}) and recent (or still down)? No press lately: true (a game's own
    * Onboard.began with no press, its move started by itself). */
   const pressedIn = (b) => {
@@ -1476,6 +1487,7 @@
       // (C4: the breath between steps never swallows a press on the lit thing: the game gets it (E5, input is live);
       // only the coach's own step count waits for the breath to end, in up())
       if (!onLight(e)) {
+        if (e.type === "pointerdown") seenTap();
         e.stopPropagation();
         e.preventDefault();
       }
@@ -1940,7 +1952,10 @@
       // (SH-261: the lit hole is not the dark: a tap in it that misses the thing still reaches the page, the child's tap seen as an
       // action, and the light stays)
       if (Onboard.pressIn(pt(e), shown)) return;
-      if (e.type === "pointerdown") dark.add(e.pointerId != null ? e.pointerId : "t");
+      if (e.type === "pointerdown") {
+        dark.add(e.pointerId != null ? e.pointerId : "t");
+        seenTap();
+      }
       if (e.type === "touchstart") dark.add("t");
       e.stopPropagation();
       e.preventDefault();
