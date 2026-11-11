@@ -23327,7 +23327,7 @@
    "sizes": [
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "second-play",
    "want": null,
    "at": "rec:order-card-big",
    "after": null,
@@ -23336,7 +23336,7 @@
     "voice"
    ],
    "expect": null,
-   "note": "a returning player at L4: no word moment (no shutter in the voice timeline), the order straight away",
+   "note": "a returning player at L4 (CHAI-67, s19-clean-a: the second play on the first play's save, which met adh and aako in its word moment; the seen profile never had): no word moment (no shutter in the voice timeline), the order straight away",
    "delay": 0
   }
  ],
