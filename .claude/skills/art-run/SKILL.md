@@ -40,7 +40,8 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
    python3 build/tools/art/artcut.py build/tools/art/specs/<pack>.cut.json [--only ID]
    python3 build/tools/art/artdiff.py --help
    ```
-4. Wiring is a separate build session (`/brief`), then `/review`.
+4. In the same commit as the cut, move on every "waiting on art" row the art serves (`grep -n "waiting on art" docs/process/regressions.md`), and check each one's design doc says what the row decided (chaat top-down slipped this way, 10 Nov).
+5. Wiring is a separate build session (`/brief`), then `/review`.
 
 ## Standing lines
 

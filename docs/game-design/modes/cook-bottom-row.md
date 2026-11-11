@@ -18,5 +18,5 @@ Each game's settings file (`data/stations/<game>.json`) has the same `band`. Its
 | maani-line | tray | dough heaps and plates, top-down |
 | mishkaki-grill | tray | sekelo's bowls, top-down |
 | samosa | tray | the filling heaps, top-down |
-| chaat | shelf | side-on glass jars |
+| chaat | tray | the topping bowls, top-down, beside an opaque cream serving bowl seen from above (Zafar, 9 Nov, CHT-13: "I think maybe we go top down for chaat ... Opaque bowl looks better than the glass bowl"; the art landed 10 Nov: F3, C5-C11) |
 | baking | shelf | side-on glass bowls and jugs |

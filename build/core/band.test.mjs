@@ -18,13 +18,13 @@ const GAMES = {
   "maani-line": ["data/stations/maani-line.json", "js/cook/stations/maani-line.js"],
   "mishkaki-grill": ["data/stations/mishkaki-grill.json", "js/cook/mechanics/grill.js"],
   samosa: ["data/stations/samosa.json", "js/cook/stations/samosa.js"],
-  chaat: ["data/stations/chaat.json", "js/cook/mechanics/assemble.js"],
+  chaat: ["data/stations/chaat.json", "js/cook/mechanics/assemble.js", "chaat goes top-down on the tray (CHT-13, Zafar 9 Nov) in its next build"],
   baking: ["data/stations/baking.json", "js/cook/stations/baking.js", true], // todo: baking draws its own counter until its redraws land (wave D, 10 Nov)
 };
 const table = read("docs/game-design/modes/cook-bottom-row.md");
 
 for (const [game, [data, code, todo]] of Object.entries(GAMES)) {
-  test(`${game}: its settings name its band, its design table agrees, its code passes its key`, { todo: todo ? "its own counter until its redraws land" : false }, () => {
+  test(`${game}: its settings name its band, its design table agrees, its code passes its key`, { todo: todo ? (typeof todo === "string" ? todo : "its own counter until its redraws land") : false }, () => {
     const band = JSON.parse(read(data)).band;
     assert.ok(band === "tray" || band === "shelf", `${data} has band "tray" or "shelf" (has ${JSON.stringify(band)})`);
     const row = table.split("\n").find((l) => l.startsWith(`| ${game} |`));
