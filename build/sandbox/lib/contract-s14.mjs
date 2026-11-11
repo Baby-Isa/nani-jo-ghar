@@ -114,6 +114,7 @@ export function check79(tl, add, { pointAfterMove = POINT_AFTER_MOVE_MS } = {}) 
 }
 
 // 80
+const GLIDE_MS = 1000; // the serve's 0.8 s glide and a frame or two of slack
 export function check80(r, tl, add) {
   // (s19-checks-2, the check sort's G2: every page and every view, cook.html as lab.html; only cook.html's title backdrop, its one view
   // with no name, lays itself out for about half a second after its first frame and is not a view of the game. lab.html's unnamed
@@ -122,9 +123,14 @@ export function check80(r, tl, add) {
   const fits = ev(tl, "fit").filter((f) => f.view != null || /^lab:/.test(r.flow || ""));
   const base = new Map();   // view -> the first drawn frame's fit
   const said = new Set();
+  // (s19-serve, Zafar 11 Nov: the serving kitchen's announced glide down to the island, a "serve-view" note, lasts 0.8 s: a move inside
+  // it is the glide, not a jump, and the framing it ends on is the view's new first frame)
+  const glides = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "serve-view").map((e) => e.t);
+  const inGlide = (t) => glides.some((g) => t >= g && t <= g + GLIDE_MS);
   for (const f of fits) {
     if (!f.drawn || f.fade > 0.02 || !f.box) continue;
     const key = `${f.view}|${f.bg}`;
+    if (inGlide(f.t)) { base.delete(key); continue; }
     if (!base.has(key)) { base.set(key, f); continue; }
     const b = base.get(key);
     if (f.t - b.t > JUMP_WINDOW_MS) continue;
