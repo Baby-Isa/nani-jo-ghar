@@ -374,9 +374,10 @@ import { setTimeout } from "../life.js";
       const amtLine = s.amt === "lot" ? Lang.line("alot") : s.amt === "jug" ? null : Lang.line("little");
       const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(jugStep ? s.parts : [s.id]) });
       // (her turn is the order, said row by row: its row appears as she says it, as a person's order does; the engine has no
-      // "a little / a lot of X" frame, R6-136, so two engine lines side by side. s19-games-2, contract-36: it is her call of the step
-      // as it opens, its row and its light with it, so it is said as a call)
-      const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "call");
+      // "a little / a lot of X" frame, R6-136, so two engine lines side by side. s19-games-2: kept the order's role, not a call: an
+      // item said as a call while her helper card is closed breaks SH-172, contract-89; contract-36 wants it called: the checks' conflict
+      // is in the report)
+      const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "order");
       say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
