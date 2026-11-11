@@ -7,15 +7,20 @@
  *                       top fills the lower half, the faces still in view at the top.
  *
  * Either art drops in, chosen in the settings (data/cook.json art.serve.mode, or ?kitchen=tall|two for a look):
- *   "tall"  one tall painting (KB), scrolled: it is the kitchen's picture (bg-service), its ordering view at `core`;
+ *   "tall"  one tall painting (KG), scrolled: it is the kitchen's picture (bg-service), its ordering view at `core`;
  *   "two"   two pictures, the ordering view (KO, bg-service) and the serving view (KS), crossfaded as the camera glides.
  * Every picture is cut to the kitchen master's geometry: 1 px = 1 design px, the ordering view's 1600x900 at `core` (250, 450),
  * the island's back edge at design y 608 (where the family sit: the occluder's 611). KS is the same, drawn `drop` px lower.
+ * s19-serve2 (the s19-k2 run, 11 Nov): KG 1448x1086 brought to 2100x1575 (LANCZOS and a light sharpen: no Real-ESRGAN here), its
+ * island's back edge measured at picture y 1058.5 (design 608.5, no shift needed), its front lip at about design 1015-1030: so the
+ * ordering view keeps today's 292 px of marble and the serving view (158 down) is the island's top. KO and KS: 2100 wide, each set
+ * so its back edge lands on the same world line (KO 130 px down, KS 216), the wall's top row carried on above.
  *
- * No trays in any picture: one walnut tray (KT) per person who ordered, on the island under them, put down as the camera
- * glides; each person's dish lands on their tray at the counter's angle (SD), the tray's front rim drawn again over it (decision
- * 87), the person's face circle on the rim as the asker's mark. The rest of the serve (who asked, Shabash, the thanks, the review)
- * is the caller's, unchanged (js/cook/flow.js serve, kitchenEnd).
+ * No trays in any picture: one walnut tray (KT, cut from the long tray-src: its two ends joined, about 45 x 30 cm) per person who
+ * ordered, on the island's top under them (its middle, design y 812), put down as the camera glides; each person's dish lands on
+ * their tray at its true size (a size class: a plate, a bowl, a glass; the run drew them 10-25% large), the tray's front rim drawn
+ * again over it (decision 87), the person's face circle on the rim as the asker's mark. The rest of the serve (who asked, Shabash,
+ * the thanks, the review) is the caller's, unchanged (js/cook/flow.js serve, kitchenEnd).
  *
  *   Cook.Serve.on()                      the serving kitchen is in use
  *   Cook.Serve.plan(dish, who)           a lab order's dish -> [{who, dish, n}] (one entry per person's dish)
@@ -37,22 +42,35 @@ import { Cook as CookNS } from "./ns.js";
   const DEFAULTS = {
     on: true,
     mode: "tall",
-    tall: `${DIR}kitchen-tall.webp`, // KB: 2100 wide, the ordering view's 1600x900 at core, the island carrying on below
+    tall: `${DIR}kitchen-tall.webp`, // KG: 2100x1575, the ordering view's 1600x900 at core, the island's top carrying on below
     order: `${DIR}kitchen-order.webp`, // KO: 2100x1350, the ordering view's 1600x900 at core (today's master's frame)
     serve: `${DIR}kitchen-serve.webp`, // KS: 2100x1350, the serving view's 1600x900 at core
     core: [250, 450],
     drop: 158, // design px the camera glides down (the island's back edge from y 608 to the view's middle)
     glideMs: 800,
     faceRoom: 14, // design px kept above the highest head in the serving view
-    tray: { file: `${DIR}tray.webp`, w: 400, y: 800, rim: 0.8, floor: 0.68, face: 58 },
-    // h: drawn height on the tray (design px); a dish wider than its share of the tray shrinks to it
+    // the tray (480x208, measured on it): its floor from 0.116 to its front rim's inner edge at 0.875 of its height; y: the
+    // island top's middle on KG (back edge 608, front lip about 1015)
+    tray: { file: `${DIR}tray.webp`, w: 400, y: 812, rim: 0.875, floor: 0.495, face: 58 },
+    // the size classes, as a share of the tray's width (a 45 cm tray: a 26 cm plate, a 17 cm bowl, a 7.5 cm glass; the art
+    // plan's 30 : 20 : 9); a dish wider than its share of a tray holding several shrinks to it
+    sizes: { plate: 0.58, bowl: 0.39, glass: 0.17 },
+    // per recipe (Cook.Art.servedName's): its picture, its size class and `at`, the row of its picture (a share of its height)
+    // that stands on the floor's middle: a plate's centre, a bowl's or a glass's foot
     dishes: {
-      chai: { file: `${DIR}dish-chai.webp`, h: 165 },
-      "chai-black": { file: `${DIR}dish-chai-black.webp`, h: 165 },
-      maani: { file: `${DIR}dish-maani.webp`, h: 150 },
-      daal: { file: `${DIR}dish-daar.webp`, h: 145 },
-      "eggs-fried": { file: `${DIR}dish-eggs-fried.webp`, h: 122 },
-      "eggs-boiled": { file: `${DIR}dish-eggs-boiled.webp`, h: 122 },
+      chai: { file: `${DIR}dish-chai.webp`, size: "glass", at: 0.95 },
+      "chai-black": { file: `${DIR}dish-chai-black.webp`, size: "glass", at: 0.93 },
+      maani: { file: `${DIR}dish-maani.webp`, size: "plate", at: 0.48 },
+      daal: { file: `${DIR}dish-daar.webp`, size: "bowl", at: 0.93 },
+      mishkaki: { file: `${DIR}dish-sekelo.webp`, size: "plate", at: 0.48 },
+      samosa: { file: `${DIR}dish-samosa.webp`, size: "plate", at: 0.47 },
+      chaat: { file: `${DIR}dish-chaat.webp`, size: "bowl", at: 0.93 },
+      corn: { file: `${DIR}dish-corn.webp`, size: "plate", at: 0.48 },
+      baking: { file: `${DIR}dish-naan.webp`, size: "plate", at: 0.47 },
+      chop: { file: `${DIR}dish-chop.webp`, size: "bowl", at: 0.93 },
+      // eggs keep their plate-table pictures (fried-table, boiled), on a plate
+      "eggs-fried": { file: `${DIR}dish-eggs-fried.webp`, size: "plate", at: 0.46 },
+      "eggs-boiled": { file: `${DIR}dish-eggs-boiled.webp`, size: "plate", at: 0.46 },
     },
   };
   const ISLAND = 611; // the family's line (stations.js occluder: the counter's front from design y 611 down)
@@ -69,6 +87,7 @@ import { Cook as CookNS } from "./ns.js";
     const c = Object.assign({}, DEFAULTS, own);
     c.tray = Object.assign({}, DEFAULTS.tray, own.tray || {});
     c.dishes = Object.assign({}, DEFAULTS.dishes, own.dishes || {});
+    c.sizes = Object.assign({}, DEFAULTS.sizes, own.sizes || {});
     if (urlMode) c.mode = urlMode;
     return c;
   }
@@ -90,15 +109,16 @@ import { Cook as CookNS } from "./ns.js";
       art.s02["kitchen-trays"] = Object.assign({}, kt, { file: c.mode === "two" ? c.order : c.tall, core: c.core, ready: true, meta: kt.meta || { trays: [[350, 662, 324, 64], [803, 662, 327, 64], [1258, 662, 329, 64]] } });
     });
 
-  const st = { serving: false, drop: 0, trays: [], ks: null };
+  const st = { serving: false, drop: 0, trays: [], ks: null, stop: null };
   const D = () => Cook.D || { bg: 0, occ: 20 };
   const key = (name) => `serve-${name}`;
   const dishOf = (name) => {
-    const d = cfg().dishes[name];
-    if (d) return { key: key(`dish-${name}`), file: d.file, h: d.h };
-    // a dish the serve has no picture of yet: today's served picture (art.s02 served-dishes)
+    const c = cfg();
+    const d = c.dishes[name];
+    if (d) return { key: key(`dish-${name}`), file: d.file, share: c.sizes[d.size] || null, h: d.h || 140, at: d.at != null ? d.at : 0.96 };
+    // a dish the serve has no picture of yet (the pantry's basket): today's served picture (art.s02 served-dishes), its base on the floor
     const a = Cook.Art && Cook.Art.servedArt ? Cook.Art.servedArt(name) : null;
-    return a ? { key: a.key, file: a.file, h: a.drawH || 128 } : null;
+    return a ? { key: a.key, file: a.file, share: null, h: a.drawH || 128, at: 0.96 } : null;
   };
 
   /** A lab order's dish (the card's dish: R.<recipe>.make) as one entry per person's dish. */
@@ -165,6 +185,7 @@ import { Cook as CookNS } from "./ns.js";
     st.drop = 0;
     st.trays = [];
     st.ks = null;
+    if (st.stop) st.stop();
     if (!S || !S.cameras || !S.cameras.main) return;
     S.cameras.main.scrollY = Cook.view ? Cook.view.top : 0;
     if (S.bg) S.bg.setAlpha(1);
@@ -182,6 +203,39 @@ import { Cook as CookNS } from "./ns.js";
     const occ = S.track(S.add.image(ox, oy, key("ks")).setOrigin(0).setCrop(0, cy, src.width, src.height - cy).setDepth(D().occ + 0.05).setAlpha(0));
     return { back, occ };
   }
+  /**
+   * The camera's slide, on the clock (s19-serve2): every frame puts it where the eased 0.8 s says, so a frame the device drops
+   * (a busy phone, a picture decoding) never stretches the glide past its 0.8 s nor leaves it moving after (contract-80 allows
+   * the announced glide 1 s; a tween's clock stalls with the frames). The scene's tween clock (Cook.speed in the tests) sets its
+   * pace, as a tween's. A view change (reset) stops it where it is.
+   */
+  function slide(S, cam, to, ms) {
+    if (st.stop) st.stop();
+    const from = cam.scrollY;
+    const real = ms / ((S.tweens && S.tweens.timeScale) || 1);
+    const now = () => (global.performance ? global.performance.now() : Date.now());
+    const t0 = now();
+    return new Promise((resolve) => {
+      if (!(real > 0) || from === to || !S.events) {
+        cam.scrollY = to;
+        return resolve();
+      }
+      const stop = () => {
+        S.events.off("preupdate", step);
+        S.events.off("shutdown", stop);
+        if (st.stop === stop) st.stop = null;
+        resolve();
+      };
+      const step = () => {
+        const k = Math.min(1, (now() - t0) / real);
+        cam.scrollY = from + (to - from) * (0.5 - Math.cos(Math.PI * k) / 2); // Sine in-out
+        if (k >= 1) stop();
+      };
+      st.stop = stop;
+      S.events.on("preupdate", step);
+      S.events.once("shutdown", stop);
+    });
+  }
   /** The camera glides to the serving view (down) or back to the ordering view; the two pictures crossfade as it goes. */
   async function glide(S, down = true) {
     if (!S || !S.cameras || !S.cameras.main) return;
@@ -194,7 +248,7 @@ import { Cook as CookNS } from "./ns.js";
     st.serving = down;
     st.drop = d;
     const ms = c.glideMs;
-    const jobs = [Cook.tween(S, { targets: cam, scrollY: top + d, duration: ms, ease: "Sine.easeInOut" })];
+    const jobs = [slide(S, cam, top + d, ms)];
     if (st.ks) {
       const fade = [S.bg].concat(S.bgExt || []).filter(Boolean);
       jobs.push(Cook.tween(S, { targets: fade, alpha: down ? 0 : 1, duration: ms * 0.6, ease: "Sine.easeInOut" }));
@@ -223,7 +277,7 @@ import { Cook as CookNS } from "./ns.js";
       for (let i = 1; i < pts.length; i++) gap = Math.min(gap, pts[i].x - pts[i - 1].x);
       w = Math.min(c.tray.w, gap * 0.92, (v.right - v.left - 2 * pad) / Math.max(1, pts.length));
     }
-    const src = S.textures.exists(key("tray")) ? S.textures.get(key("tray")).getSourceImage() : { width: 480, height: 181 };
+    const src = S.textures.exists(key("tray")) ? S.textures.get(key("tray")).getSourceImage() : { width: 480, height: 208 };
     const h = (w * src.height) / src.width;
     return pts.map((p) => ({ who: p.who, x: p.x, y: c.tray.y, w, h }));
   }
@@ -246,12 +300,13 @@ import { Cook as CookNS } from "./ns.js";
     t.parts = [t.img, t.rim, t.face].filter(Boolean);
     return t;
   }
-  /** The dishes of one tray, side by side on its floor (not yet shown: they land). */
+  /** The dishes of one tray, side by side on its floor, each at its true size (not yet shown: they land). */
   function placeDishes(S, t, list) {
     const c = cfg();
     const n = list.reduce((a, e) => a + (e.n || 1), 0);
     const share = (t.w * 0.84) / Math.max(1, n);
-    const base = t.y - t.h / 2 + t.h * c.tray.floor;
+    // the floor's middle (a dish's `at` row stands on it); a dish with no size class: its base a little in front of it
+    const mid = t.y - t.h / 2 + t.h * c.tray.floor;
     let i = 0;
     const out = [];
     list.forEach((e) => {
@@ -259,14 +314,12 @@ import { Cook as CookNS } from "./ns.js";
       for (let k = 0; k < (e.n || 1); k++, i++) {
         if (!d || !S.textures.exists(d.key)) continue;
         const src = S.textures.get(d.key).getSourceImage();
-        let h = d.h;
-        let w = (h * src.width) / src.height;
-        if (w > share) {
-          h *= share / w;
-          w = share;
-        }
+        let w = d.share ? t.w * d.share : (d.h * src.width) / src.height;
+        if (w > share) w = share;
+        const h = (w * src.height) / src.width;
+        const base = d.share ? mid : mid + t.h * 0.2;
         const x = t.x + (i - (n - 1) / 2) * share;
-        const img = S.track(S.add.image(x, base, d.key).setOrigin(0.5, 0.96).setDisplaySize(w, h).setDepth(D().occ + 2 + i * 0.01).setAlpha(0));
+        const img = S.track(S.add.image(x, base, d.key).setOrigin(0.5, d.at).setDisplaySize(w, h).setDepth(D().occ + 2 + i * 0.01).setAlpha(0));
         img.restY = base;
         out.push(img);
         (Cook.servedLog = Cook.servedLog || []).push({ img, t });
