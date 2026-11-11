@@ -484,5 +484,13 @@
  "pixel|assets/ui/results/stopwatch-pb.webp|rim",
  "pixel|assets/ui/results/tick-gold-glow.webp|rim",
  "ref|data/clinic/heal/boing.json -> assets/clinic/heal-v3/drop-machine.webp",
- "ref|data/clinic/heal/foot.json -> assets/clinic/closeups/adult/sole.webp"
+ "ref|data/clinic/heal/foot.json -> assets/clinic/closeups/adult/sole.webp",
+ "rim|assets/cook/items-s08b/chaat-strips/strip-onion-s08b.webp",
+ "rim|assets/cook/items/v4/chaat/layer-dungri.webp",
+ "rim|assets/cook/items/v4/chop/bataato-whole.webp",
+ "rim|assets/cook/items/v4/chop/dungri-whole.webp",
+ "rim|assets/cook/items/v4/chop/lasan-half-a.webp",
+ "rim|assets/cook/items/v4/chop/lasan-half-b.webp",
+ "rim|assets/cook/items/v4/chop/tameto-whole.webp",
+ "rim|assets/cook/items/v4/kit/tray-stone.webp"
 ]

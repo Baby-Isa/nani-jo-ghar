@@ -2,8 +2,19 @@
  "_about": "Thresholds for artcolour.py (the colour and look tool) and the look lines artjudge.py and artblock.py take from it. Tune here, not in code; say why in the commit. Calibration notes: build/reports/art-retrospective-2026-11-06.md.",
  "house": {
   "_about": "The house family (build/reports/s17-palette-review.md): Wada combinations 283 (the sage and maroon), 249 and 311 (maroon, ecru stone, ochre gold, honey), 200 (Chromium Green with Carmine Red again), and the single colours that review matched our fixed set to.",
-  "combinations": [283, 249, 311, 200],
-  "names": ["Khaki", "Yellow Ocher", "Cinnamon Rufous", "Ivory Buff", "Sulpher Yellow"],
+  "combinations": [
+   283,
+   249,
+   311,
+   200
+  ],
+  "names": [
+   "Khaki",
+   "Yellow Ocher",
+   "Cinnamon Rufous",
+   "Ivory Buff",
+   "Sulpher Yellow"
+  ],
   "house_de": 8.0
  },
  "colour": {
@@ -29,27 +40,142 @@
   "hue_merge": 25.0,
   "accent_share": 0.2,
   "exception_de": 10.0,
-  "allow": {"_about": "glob: \"Zafar, <date>: why\". Empty until he decides the exceptions list."},
-  "people": ["assets/characters/*", "assets/cook/characters/*", "assets/clinic/patients/*", "assets/clinic/rough/patients/*", "assets/clinic/closeups/*", "assets/shared/faces/*", "assets/cook/hands/*", "assets/*/hands/*", "assets/town-proto/face-*", "assets/sewing-proto/*-face.webp", "assets/farm/proto/*-face.webp"],
-  "natural": ["assets/items/fruit/*", "assets/items/vegetable/*", "assets/items/spice/*", "assets/cook/items/icon-ph-*", "assets/cook/items/icon-veg-*", "assets/cook/items/icon-fru-*", "assets/cook/items/icon-spi-*", "assets/cook/items/veg-*", "assets/cook/items/mishkaki-*", "assets/cook/items/topping-*", "assets/cook/items/shelf-fru-*", "assets/cook/items/shelf-veg-*",
-   "assets/cook/items-s08b/chaat-strips/*", "assets/cook/items-s08b/potato/*", "assets/cook/items-s08b/daar-discs/*", "assets/cook/items-s08c/sekelo/*", "assets/cook/items/chai-v2/ginger-*", "assets/cook/items/chai-v2/liquid-*", "assets/cook/items/v3/daar/chop-*", "assets/cook/items/v3/daar/dp1-*",
-   "assets/cook/items/v3/sekelo/heap-*", "assets/cook/items/v3/sekelo/*-raw.webp", "assets/cook/items/v3/sekelo/*-grilled.webp", "assets/cook/items/v3/sekelo/*-charred.webp", "assets/cook/items/v4/sekelo/*-raw.webp", "assets/cook/items/v4/sekelo/*-part.webp", "assets/cook/items/v4/sekelo/*-cooked.webp", "assets/cook/items/v4/sekelo/*-over.webp", "assets/cook/items/v3/samosa/fill-*", "assets/cook/items/v3/maani/dough-*", "assets/cook/items/v3/maani/maani-*", "assets/cook/items/served/*", "assets/cook/items-s17-stove/t-dish-*", "assets/cook/items-s17-stove/*-whole*",
-   "assets/characters/chick/*", "assets/characters/goat/*", "assets/characters/hen/*", "assets/day/s09b/buffalo.webp", "assets/day/s09b/camel.webp", "assets/day/s09b/cow.webp", "assets/day/s09b/donkey.webp", "assets/day/s09b/duck.webp", "assets/day/s09b/hen-chicks.webp", "assets/day/s09b/horse.webp", "assets/day/s09b/sheep.webp", "assets/day/s09b/butterfly.webp",
-   "assets/day/ride/s09r/bird.webp", "assets/day/ride/s09r/dog.webp", "assets/day/ride/s09r/goat.webp", "assets/day/ride/s09r/hen.webp", "assets/day/ride/s09r/bush.webp", "assets/day/ride/s09r/tree.webp", "assets/day/ride/s09r/haystack.webp",
-   "assets/safari/proto/elephant-*", "assets/safari/proto/clump.webp", "assets/cook/proto/cat-*", "assets/farm/proto/chick.webp", "assets/farm/proto/grass.webp", "assets/farm/proto/mango.webp", "assets/clinic/items-v2/apple.webp", "assets/clinic/sheets/decoys/apple-*", "assets/clinic/sheets/taste/lemon-*", "assets/clinic/s12/lemon-whole-s12.webp"],
+  "allow": {
+   "_about": "glob: \"Zafar, <date>: why\". Empty until he decides the exceptions list."
+  },
+  "people": [
+   "assets/characters/*",
+   "assets/cook/characters/*",
+   "assets/clinic/patients/*",
+   "assets/clinic/rough/patients/*",
+   "assets/clinic/closeups/*",
+   "assets/shared/faces/*",
+   "assets/cook/hands/*",
+   "assets/*/hands/*",
+   "assets/town-proto/face-*",
+   "assets/sewing-proto/*-face.webp",
+   "assets/farm/proto/*-face.webp"
+  ],
+  "natural": [
+   "assets/items/fruit/*",
+   "assets/items/vegetable/*",
+   "assets/items/spice/*",
+   "assets/cook/items/icon-ph-*",
+   "assets/cook/items/icon-veg-*",
+   "assets/cook/items/icon-fru-*",
+   "assets/cook/items/icon-spi-*",
+   "assets/cook/items/veg-*",
+   "assets/cook/items/mishkaki-*",
+   "assets/cook/items/topping-*",
+   "assets/cook/items/shelf-fru-*",
+   "assets/cook/items/shelf-veg-*",
+   "assets/cook/items-s08b/chaat-strips/*",
+   "assets/cook/items-s08b/potato/*",
+   "assets/cook/items-s08b/daar-discs/*",
+   "assets/cook/items-s08c/sekelo/*",
+   "assets/cook/items/chai-v2/ginger-*",
+   "assets/cook/items/chai-v2/liquid-*",
+   "assets/cook/items/v3/daar/chop-*",
+   "assets/cook/items/v3/daar/dp1-*",
+   "assets/cook/items/v3/sekelo/heap-*",
+   "assets/cook/items/v3/sekelo/*-raw.webp",
+   "assets/cook/items/v3/sekelo/*-grilled.webp",
+   "assets/cook/items/v3/sekelo/*-charred.webp",
+   "assets/cook/items/v4/sekelo/*-raw.webp",
+   "assets/cook/items/v4/sekelo/*-part.webp",
+   "assets/cook/items/v4/sekelo/*-cooked.webp",
+   "assets/cook/items/v4/sekelo/*-over.webp",
+   "assets/cook/items/v3/samosa/fill-*",
+   "assets/cook/items/v3/maani/dough-*",
+   "assets/cook/items/v3/maani/maani-*",
+   "assets/cook/items/served/*",
+   "assets/cook/items-s17-stove/t-dish-*",
+   "assets/cook/items-s17-stove/*-whole*",
+   "assets/characters/chick/*",
+   "assets/characters/goat/*",
+   "assets/characters/hen/*",
+   "assets/day/s09b/buffalo.webp",
+   "assets/day/s09b/camel.webp",
+   "assets/day/s09b/cow.webp",
+   "assets/day/s09b/donkey.webp",
+   "assets/day/s09b/duck.webp",
+   "assets/day/s09b/hen-chicks.webp",
+   "assets/day/s09b/horse.webp",
+   "assets/day/s09b/sheep.webp",
+   "assets/day/s09b/butterfly.webp",
+   "assets/day/ride/s09r/bird.webp",
+   "assets/day/ride/s09r/dog.webp",
+   "assets/day/ride/s09r/goat.webp",
+   "assets/day/ride/s09r/hen.webp",
+   "assets/day/ride/s09r/bush.webp",
+   "assets/day/ride/s09r/tree.webp",
+   "assets/day/ride/s09r/haystack.webp",
+   "assets/safari/proto/elephant-*",
+   "assets/safari/proto/clump.webp",
+   "assets/cook/proto/cat-*",
+   "assets/farm/proto/chick.webp",
+   "assets/farm/proto/grass.webp",
+   "assets/farm/proto/mango.webp",
+   "assets/clinic/items-v2/apple.webp",
+   "assets/clinic/sheets/decoys/apple-*",
+   "assets/clinic/sheets/taste/lemon-*",
+   "assets/clinic/s12/lemon-whole-s12.webp"
+  ],
   "natural_bands": {
    "_about": "Natural colour bands (Fable, 6 Nov: natural things are judged by their natural colour, not a design book): CIE Lab hue degrees [from, to) and the chroma a real food, plant or animal reaches there in our soft look. A main colour (tones merged) over its band's max_c is louder than nature: a FAIL, tone it towards the real thing. Calibrated 6 Nov on the shipped produce, heaps, dishes and animals (the report's 'After Fable's view: re-tuned').",
    "bands": [
-    {"name": "reds (tomato, chilli, red onion skin)", "hue": [0, 45], "max_c": 85},
-    {"name": "oranges and yellows (carrot, turmeric, mango, lemon)", "hue": [45, 100], "max_c": 85},
-    {"name": "greens (leaves, chilli, herbs, peas)", "hue": [100, 180], "max_c": 70},
-    {"name": "blues (nothing natural is a loud blue)", "hue": [180, 300], "max_c": 30},
-    {"name": "purples (aubergine, grapes, onion)", "hue": [300, 360], "max_c": 55}
+    {
+     "name": "reds (tomato, chilli, red onion skin)",
+     "hue": [
+      0,
+      45
+     ],
+     "max_c": 85
+    },
+    {
+     "name": "oranges and yellows (carrot, turmeric, mango, lemon)",
+     "hue": [
+      45,
+      100
+     ],
+     "max_c": 85
+    },
+    {
+     "name": "greens (leaves, chilli, herbs, peas)",
+     "hue": [
+      100,
+      180
+     ],
+     "max_c": 70
+    },
+    {
+     "name": "blues (nothing natural is a loud blue)",
+     "hue": [
+      180,
+      300
+     ],
+     "max_c": 30
+    },
+    {
+     "name": "purples (aubergine, grapes, onion)",
+     "hue": [
+      300,
+      360
+     ],
+     "max_c": 55
+    }
    ]
   },
-  "sky": {"_about": "Sky pictures (glob: time of day, first match wins): judged by the sky rule (sky below), not the item rule. Cloudy and rain are the day's combination (their greys are free).",
-   "assets/day/s09b/sky-night.webp": "night", "assets/day/s09b/sky-*.webp": "day", "assets/day/s12/door-sun.webp": "day",
-   "assets/day/sky/*-golden-*": "golden", "assets/day/sky/*-dusk-*": "dusk", "assets/day/sky/*-night-*": "night", "assets/day/sky/*": "day"}
+  "sky": {
+   "_about": "Sky pictures (glob: time of day, first match wins): judged by the sky rule (sky below), not the item rule. Cloudy and rain are the day's combination (their greys are free).",
+   "assets/day/s09b/sky-night.webp": "night",
+   "assets/day/s09b/sky-*.webp": "day",
+   "assets/day/s12/door-sun.webp": "day",
+   "assets/day/sky/*-golden-*": "golden",
+   "assets/day/sky/*-dusk-*": "dusk",
+   "assets/day/sky/*-night-*": "night",
+   "assets/day/sky/*": "day"
+  }
  },
  "sky": {
   "_about": "The sky rule (Zafar, 6 Nov: \"less jarringly vibrant and more in theme, but still distinct and attractive ... ever so slightly muting down the vibrancy of the colours and having the tones merge and match well\"; art bible, Skies). times: each time of day's ONE Wada combination (picked from the 348 for colours that read as that sky; strips build/tools/art/data/swatches/wada-N.png) and its saturation ceiling. A sky's main colours (chroma at least neutral_chroma, tones merged as palette.hue_merge) each within de of a colour of its time's combination, lightness weighted down by kL (a sky is a gradient of tones of few colours); the whole picture's mean chroma at most max_mean_c and its 95th percentile at most max_p95_c (the brightest 5%: a sun's glow may be warm, never loud). A FAIL either way. Calibrated 6 Nov on today's skies: sky-sunny mean 33 / p95 52, sky-night 50 / 60, door-sun 39 / 64 (all too vibrant, Zafar's word), sky-raining 21 / 27, the s17 kitchen backgrounds 12-14 / 19-21.",
@@ -57,20 +183,74 @@
   "kL": 3.0,
   "de": 10.0,
   "times": {
-   "day": {"combination": 194, "words": "bright day: Olympic Blue sky, Seashell Pink warmth on the clouds (Jasper Red only as a faint warm glow, if at all)", "max_mean_c": 24, "max_p95_c": 40},
-   "golden": {"combination": 209, "words": "golden hour and sunset: Ivory Buff and a muted Yellow Orange low, Salvia Blue above", "max_mean_c": 30, "max_p95_c": 50},
-   "dusk": {"combination": 339, "words": "dusk and nightfall: Violet Blue above, Light Glaucous Blue haze, Ochraceous Salmon glow and a little English Red at the horizon", "max_mean_c": 28, "max_p95_c": 46},
-   "night": {"combination": 75, "words": "night: deep tones of Violet Blue, a Pale King's Blue moonlit haze, white stars", "max_mean_c": 42, "max_p95_c": 48, "_was": "24 and 40 until Zafar, 7 Nov: keep the three new nights and re-tune the ceiling (build/reports/s17-sky-landed-2026-11-07.md decision 1)"}
+   "day": {
+    "combination": 194,
+    "words": "bright day: Olympic Blue sky, Seashell Pink warmth on the clouds (Jasper Red only as a faint warm glow, if at all)",
+    "max_mean_c": 24,
+    "max_p95_c": 40
+   },
+   "golden": {
+    "combination": 209,
+    "words": "golden hour and sunset: Ivory Buff and a muted Yellow Orange low, Salvia Blue above",
+    "max_mean_c": 30,
+    "max_p95_c": 50
+   },
+   "dusk": {
+    "combination": 339,
+    "words": "dusk and nightfall: Violet Blue above, Light Glaucous Blue haze, Ochraceous Salmon glow and a little English Red at the horizon",
+    "max_mean_c": 28,
+    "max_p95_c": 46
+   },
+   "night": {
+    "combination": 75,
+    "words": "night: deep tones of Violet Blue, a Pale King's Blue moonlit haze, white stars",
+    "max_mean_c": 42,
+    "max_p95_c": 48,
+    "_was": "24 and 40 until Zafar, 7 Nov: keep the three new nights and re-tune the ceiling (build/reports/s17-sky-landed-2026-11-07.md decision 1)"
+   }
   }
  },
  "wood": {
   "_about": "Walnut wherever there is wood (Zafar, 6 Nov; art bible section 2): lids, boards, handles, trays. FLAG (never a FAIL; meant for new art) a light oak or pine: the top band (a lid) of a lidded item by name (lid_names), or, on a picture whose name says wood (names; a last word in state_suffixes, where the clinic item sits, does not count; people and hands, light.skip, are skin), a main colour of at least share, in the light-wood band (CIE Lab hue degrees, L* l, chroma c). Walnut is Wada's Vandyke Brown (#4b3317, L* 23) to Brown (#7c4226, L* 35).",
-  "names": ["board", "chakla", "velan", "rolling-pin", "tray", "spoon", "crate", "handle", "lid", "stool", "spatula", "mortar", "pestle", "wood"],
-  "lid_names": ["jar", "tin-", "dabba", "canister", "shelf-cook-"],
-  "state_suffixes": ["tray", "belt"],
-  "hue": [55, 90],
-  "l": [52, 84],
-  "c": [16, 48],
+  "names": [
+   "board",
+   "chakla",
+   "velan",
+   "rolling-pin",
+   "tray",
+   "spoon",
+   "crate",
+   "handle",
+   "lid",
+   "stool",
+   "spatula",
+   "mortar",
+   "pestle",
+   "wood"
+  ],
+  "lid_names": [
+   "jar",
+   "tin-",
+   "dabba",
+   "canister",
+   "shelf-cook-"
+  ],
+  "state_suffixes": [
+   "tray",
+   "belt"
+  ],
+  "hue": [
+   55,
+   90
+  ],
+  "l": [
+   52,
+   84
+  ],
+  "c": [
+   16,
+   48
+  ],
   "share": 0.15
  },
  "light": {
@@ -79,13 +259,27 @@
   "allowed_max": 215,
   "min_strength": 8.0,
   "concave_round": 0.84,
-  "skip": ["assets/characters/*", "assets/cook/characters/*", "assets/clinic/patients/*", "assets/clinic/rough/patients/*", "assets/clinic/closeups/*", "assets/shared/faces/*", "assets/cook/hands/*", "assets/*/hands/*"],
-  "concave_arc": [250, 350],
+  "skip": [
+   "assets/characters/*",
+   "assets/cook/characters/*",
+   "assets/clinic/patients/*",
+   "assets/clinic/rough/patients/*",
+   "assets/clinic/closeups/*",
+   "assets/shared/faces/*",
+   "assets/cook/hands/*",
+   "assets/*/hands/*"
+  ],
+  "concave_arc": [
+   250,
+   350
+  ],
   "eye_passed": {
    "_about": "Pictures whose light reading an eye passed (a multi-material piece's albedo, not its light): no light FAIL. Path: who and when.",
    "assets/cook/items/v3/samosa/jharo.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/items-s08c/steel-cup-s08c.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
-   "assets/clinic/s17-clinic-redo/tweezers-splinter-belt.webp": "Claude (orchestrator), 7 Nov: lit from the upper left by eye; the tool reads the steel's reflections", "assets/clinic/s17-clinic-redo/honey-jar-belt.webp": "Claude (orchestrator), 7 Nov: lit from the upper left by eye; the tool reads the lit honey as light from below", "assets/clinic/items-v2/reflex-hammer.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/clinic/s17-clinic-redo/tweezers-splinter-belt.webp": "Claude (orchestrator), 7 Nov: lit from the upper left by eye; the tool reads the steel's reflections",
+   "assets/clinic/s17-clinic-redo/honey-jar-belt.webp": "Claude (orchestrator), 7 Nov: lit from the upper left by eye; the tool reads the lit honey as light from below",
+   "assets/clinic/items-v2/reflex-hammer.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/items-v2/toothbrush.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/items-v2/toothbrush-v2.webp": "the same drawing as items-v2/toothbrush.webp, only its blue pulled (recolour.py, 6 Nov)",
    "assets/day/s09b/kite.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
@@ -112,7 +306,10 @@
   "band": 0.22,
   "dark_l": 42,
   "dark_c": 14,
-  "soft_alpha": [0.06, 0.88],
+  "soft_alpha": [
+   0.06,
+   0.88
+  ],
   "soft_share": 0.25,
   "shows": 0.15,
   "skirt_share": 0.35,
@@ -151,7 +348,32 @@
  },
  "camera": {
   "_about": "Camera height proxy for round items (Fable, 6 Nov: the shelf's two batches differ in camera as much as in gloss): half-ellipses fitted across the width of the piece's body (after an opening of open x its size, which takes handles and spouts away) to its top and its bottom edge; rim = the top arc's height over the body's width (about 0 from the side, 1 straight down), read on files whose name holds one of names when both arcs fit (rms off by under max_err of the width, ratio under max_ratio) and agree within agree (a dome lid, a carton's gable or a bottle's foot do not). On a named surface the rims may span at most batch.camera_range. Measured on a copy at most side px. Calibrated 6 Nov: the chai shelf's bare jars 0.19, its v2 jars 0.26-0.45 (a range of 0.26: flagged); top-down pans, bowls and glasses 0.9-1.2; a pan with a long handle or a pour gives no reading (one arc).",
-  "names": ["pan", "pot", "bowl", "jar", "glass", "cup", "tin", "karahi", "kadai", "tawa", "thali", "plate", "bottle", "jug", "tumbler", "handi", "lota", "bucket", "vessel", "shelf-", "well", "saucer", "katori", "beaker"],
+  "names": [
+   "pan",
+   "pot",
+   "bowl",
+   "jar",
+   "glass",
+   "cup",
+   "tin",
+   "karahi",
+   "kadai",
+   "tawa",
+   "thali",
+   "plate",
+   "bottle",
+   "jug",
+   "tumbler",
+   "handi",
+   "lota",
+   "bucket",
+   "vessel",
+   "shelf-",
+   "well",
+   "saucer",
+   "katori",
+   "beaker"
+  ],
   "open": 0.06,
   "max_err": 0.05,
   "max_ratio": 1.25,
@@ -175,22 +397,57 @@
   "max_odd": 0.4,
   "camera_range": 0.2,
   "features": {
-   "gloss": {"min_gap": 0.012, "label": "gloss (share of hard white specular pixels)"},
-   "chroma": {"min_gap": 18.0, "max_odd": 0.2, "label": "saturation (mean chroma of the solid pixels)"},
-   "light": {"min_gap": 60.0, "label": "light direction (degrees)", "circular": true},
-   "spec_x": {"min_gap": 0.5, "label": "specular position (across the piece, -1 left to +1 right)"},
-   "halo": {"min_gap": 0.2, "label": "edge whiteness (share of near-white pixels on the outer edge)"},
-   "soft": {"min_gap": 0.08, "label": "soft alpha (share of see-through pixels: glass and edge treatment)"}
+   "gloss": {
+    "min_gap": 0.012,
+    "label": "gloss (share of hard white specular pixels)"
+   },
+   "chroma": {
+    "min_gap": 18.0,
+    "max_odd": 0.2,
+    "label": "saturation (mean chroma of the solid pixels)"
+   },
+   "light": {
+    "min_gap": 60.0,
+    "label": "light direction (degrees)",
+    "circular": true
+   },
+   "spec_x": {
+    "min_gap": 0.5,
+    "label": "specular position (across the piece, -1 left to +1 right)"
+   },
+   "halo": {
+    "min_gap": 0.2,
+    "label": "edge whiteness (share of near-white pixels on the outer edge)"
+   },
+   "soft": {
+    "min_gap": 0.08,
+    "label": "soft alpha (share of see-through pixels: glass and edge treatment)"
+   }
   }
  },
  "batches": {
   "_about": "Named batches: the pictures that stand on one surface together (one shelf, one worktop), judged as one batch in a --scan as well as their folder. Globs from the repo root.",
-  "chai-shelf": ["assets/cook/items-s17-stove/f-water-bottle.webp", "assets/cook/items-s17-stove/f-milk-carton.webp", "assets/cook/items-s17-stove/f-tea-jar.webp", "assets/cook/items-s17-stove/f-sugar-jar.webp", "assets/cook/items-s17-stove/f-cardamom-jar.webp", "assets/cook/items-s17-stove/f-ginger-jar.webp", "assets/cook/items-s17-stove/f-garlic-jar.webp", "assets/cook/items-s17-stove/f-salt-jar.webp", "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp", "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp"],
+  "chai-shelf": [
+   "assets/cook/items-s17-stove/f-water-bottle.webp",
+   "assets/cook/items-s17-stove/f-milk-carton.webp",
+   "assets/cook/items-s17-stove/f-tea-jar.webp",
+   "assets/cook/items-s17-stove/f-sugar-jar.webp",
+   "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+   "assets/cook/items-s17-stove/f-ginger-jar.webp",
+   "assets/cook/items-s17-stove/f-garlic-jar.webp",
+   "assets/cook/items-s17-stove/f-salt-jar.webp",
+   "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+   "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp"
+  ],
   "_chai-shelf": "ART-50 (6 Nov): chai's shelf is the stove-400 walnut set (data/cook.json art.chaiShelf); was the pantry-v2 bare jars and the s02 C5 spice jars (two batches)"
  },
  "sizes": {
   "_about": "Proportion (Zafar, 6 Nov: token size steps, never true relative sizes; his steps at 15:00: L 100%, M 91%, S 84% of the slot height, \"9% and 8%\"). classes: the factor the game applies to an item's slot (Fable's size-class method, build/reports/size-classes-method-2026-11-06.md: the class is data in each mode's catalogue; the art draws every item the same height). min_fill: what artcolour.py checks on a slot item (a size class given, or matched in items): the piece fills at least this share of its cell on its longer side. min_css_px: the smallest piece is at least that many CSS px on the smallest phone (at), so a slot there is at least min_css_px / S high (48 CSS px; artcolour.py --slot-css H checks a slot height). items: glob to class (first match wins).",
-  "classes": {"L": 1.0, "M": 0.91, "S": 0.84},
+  "classes": {
+   "L": 1.0,
+   "M": 0.91,
+   "S": 0.84
+  },
   "min_fill": 0.85,
   "min_css_px": 40,
   "at": "740x320",
@@ -204,13 +461,48 @@
  },
  "shipped": {
   "_about": "Shipped by reference, not by folder (Fable, 6 Nov): a picture ships when a page, script, style or data file the game loads names it (pages), written out or built in code (a template literal's pattern, or its bare name quoted where its folder is named). lab: the lab pages, reported apart. exclude: data/asset-list.json is build/gen_assets.py's generation record (what was made, not what is shown: it names items/cook/onion-whole.png, which no page uses).",
-  "pages": ["*.html", "js/**/*.js", "js/**/*.mjs", "css/**/*.css", "data/**/*.json"],
-  "lab": ["lab/**/*.html", "lab/**/*.css", "lab/**/*.js", "lab.html", "labs.html"],
-  "exclude": ["data/asset-list.json", "lab.html", "labs.html", "js/vendor/*"]
+  "pages": [
+   "*.html",
+   "js/**/*.js",
+   "js/**/*.mjs",
+   "css/**/*.css",
+   "data/**/*.json"
+  ],
+  "lab": [
+   "lab/**/*.html",
+   "lab/**/*.css",
+   "lab/**/*.js",
+   "lab.html",
+   "labs.html"
+  ],
+  "exclude": [
+   "data/asset-list.json",
+   "lab.html",
+   "labs.html",
+   "js/vendor/*"
+  ]
  },
  "scan": {
   "_about": "What --scan skips: retina copies, any folder named in skip_dirs, and the second format of one picture (the webp is kept when a png or jpg of the same name sits beside it).",
   "skip_dirs": [],
-  "skip_name": ["@2x", "-thumb", ".thumb"]
+  "skip_name": [
+   "@2x",
+   "-thumb",
+   ".thumb"
+  ]
+ },
+ "rim": {
+  "_about": "ART-76 (the pink rim, 10 Nov): a cut-out's soft edge (alpha soft_lo..soft_hi) carrying the magenta it was cut from. A soft pixel is pinkish when min(r,b) - g is over pink_g with red near blue (|r - b| under red_near_blue), and its piece's own nearest solid pixel is not (a red onion's purple is its colour, not a rim). FAIL when over max_share of the soft edge is pinkish (and at least min_px pixels); the fix is build/tools/art/edge_bleed.py. See-through glass and thin steel keep their soft pixels as cut (their soft edge is the material: skip, by name; edge_bleed.py's own skip). s19-checks-2, measured on the 131 v4 cuts: 59 over before edge_bleed (02b28a678), 8 after.",
+  "soft_lo": 20,
+  "soft_hi": 235,
+  "pink_g": 35,
+  "red_near_blue": 90,
+  "max_share": 0.15,
+  "min_px": 50,
+  "skip": [
+   "assets/cook/items/v4/baking/jug-*",
+   "assets/cook/items/v4/baking/bowl-*",
+   "assets/cook/items/v4/sekelo/skewer-empty*"
+  ]
  }
 }

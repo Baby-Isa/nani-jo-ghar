@@ -41,7 +41,7 @@
 //   contract-24 help-ladder  no help line or glow before the idle time by level, counted from the last action (SH-60, SH-95)
 //   contract-91 help-comes   stuck on the child's turn past the level's hint wait + 4 s, nothing said: the hint came (chai's method; Zafar, 6 Nov)
 //   contract-26 opening      every word of a line said under the request pop-up has a sound: the opening is heard whole (LNG-16)
-//   contract-34 go-arrow     every go-on (→ Next) button on screen shows the arrow (SH-106); S13-A2: every go-on, done and
+//   contract-34 go-arrow     (its arrow half, SH-106, retired: s19-checks-2) S13-A2: every go-on, done and
 //                            answer-pill button on screen is the kit's .njg-btn
 //   contract-42 face-circle  every face circle of a person on screen is the kit's .njg-face, of one of three sizes, drawn at its
 //                            token's width within 1 px (ART-08, S13-A2)
@@ -73,11 +73,14 @@ import { DAY_CHECKS, check45, check46, check47, check48 } from "./contract-day.m
 // contracts 65 and up: the daal station (s08 w4A), in a file of their own
 import { DAAL_CHECKS, check65, check66 } from "./contract-daal.mjs";
 // contracts 70 and up: the chai tray (s08 wave 4B), in a file of their own
-import { CHAI_CHECKS, check70, check71, check90, S14_TAPS, CHAI_ROW, DECOY_STATIONS, DECOY_AT_LEAST, helpStageRe } from "./contract-chai.mjs";
+import { CHAI_CHECKS, CHAI_ROW, helpStageRe } from "./contract-chai.mjs";
 import { S17_CHECKS, checkS17 } from "./contract-s17.mjs";
 // contracts 100 and up: the shared pieces present (s19-checks, Sprint 19 part 1), in a file of their own
 import { S19_CHECKS, checkS19 } from "./contract-s19.mjs";
 import { SCREEN_CHECKS, check112, check113, judgedByGame, judgedMd, judgedLine } from "./contract-screen.mjs";
+// s19-checks-2: the screen checks of the check sort's G2, G3 and G5 (contract-114 to -116; 72, 73 and 74 rewritten from the screen)
+import { S19B_CHECKS, check114, check115, check116, check72, check73, check74, check36, check37, check70, check71, check77, check90, check96, check109few } from "./contract-s19b.mjs";
+export { check72, check73, check74, check77 };
 // contracts 78 and up: what Zafar found on 29 Oct and the checks missed (s14-tools), in a file of their own
 import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, check92, check93, check94, check95, POINT_AFTER_MOVE_MS } from "./contract-s14.mjs";
 
@@ -112,15 +115,15 @@ export const CHECKS = {
   "contract-13": { item: "stale-ui", title: "each stage clears its own UI", how: "Each reply pill (.cl-pill, .njg-pill, .cv-pill, .st-reply, .st-choice; not the sidebar's) remembers the stage it was first seen in; still on screen 600 ms into a later play stage is a break (CLN-06)." },
   "contract-15": { item: "words-whole", title: "no word broken across lines in a card", how: "Sampled on every change: every word of four letters or more (no hyphen) in an order card, a request card or a word tile whose letters sit on two lines (its text range has client rects on two rows). Held 300 ms or more is a break; non-negotiable 9, SH-73." },
   "contract-14": { item: "talk", title: "one talk animation", how: "Every 400 ms: Cook's characters' repeating tweens (yoyo) and the play area's endless CSS talk or bob animations (cards, the guide box and the pop-up are not the play area). A tween lifting or tilting more than the shared Lifecycle.talk.SPEC (2 px, 0.4°) or faster than its 380 ms, or a CSS talk animation other than njg-talk, is a break (ART-18)." },
-  "contract-34": { item: "go-arrow", title: "every go-on button has the arrow; every button the kit's", how: "Every buttons sample (lib/contract-hook.mjs): a go-on button on screen (the shared → Next .njg-next, Cook's #go-btn, samosa's #samosa-next, [data-go]; not the ✓) must show the arrow: the shared kit's arrow (js/shared/buttons.js ICON.arrow, its head path) drawn at least 2 px, or an arrow character. One without it is a break (SH-106: \"there's no arrow\"). S13-A2 (the kit review, decision 6): every go-on or done button on screen and every answer pill (.njg-pill, a game's .cl-pill; not the Say or conversation replies, their own components) must be the kit's .njg-btn (js/shared/buttons.js NjgButtons.done/next/pills); one that is not is a break." },
+  "contract-34": { item: "go-arrow", title: "every go-on button has the arrow; every button the kit's", how: "Every buttons sample (lib/contract-hook.mjs). (Its go-on arrow half, SH-106, is retired, s19-checks-2: quiet since SH-238 took the next buttons out of Cook, where contract-103 judges them.) S13-A2 (the kit review, decision 6): every go-on or done button on screen and every answer pill (.njg-pill, a game's .cl-pill; not the Say or conversation replies, their own components) must be the kit's .njg-btn (js/shared/buttons.js NjgButtons.done/next/pills); one that is not is a break." },
   "contract-42": { item: "face-circle", title: "one face circle, three sizes", how: "Every facekit sample (lib/contract-hook.mjs): each face circle of a person on screen (a card's .oc-face, the guide's .ng-face, the heal corner .hs-face, a bubble's .cv-face, Cook's Nani card and pass-me, the book's .day-face, any .njg-face) must be the kit's circle (js/shared/face.js: .njg-face) with one of the three size classes (njg-face-row, -guide, -big) and laid out at that size's token (--njg-face, --njg-guide-face, --njg-big-face, as the element reads it) within 1 px (its laid-out width: the talk's tilt or a pop-up's entrance scale aside). A face that is not the kit's, has no size, or is drawn at another width is a break (ART-08, S13-A2: Nana and the doctor the same size in every place)." },
   "contract-44": { item: "one-finger", title: "one finger, the kit's", how: "Every fingers sample (lib/contract-hook.mjs): a finger on screen must be the kit's .ob-finger (js/shared/onboard.js Onboard.finger; a game's own, Cook's old .co-finger, is a break) and there is never more than one at a time; while the stuck help's spotlight (.njg-spot.on) shows for a move that is a drag, hold, swipe or circle (the kit's ghost logged that gesture), its finger must come: such a spotlight on screen 2 s or more with no finger is a break (SH-19; SH-130's tap case retired by SH-141 and SH-233: a tap's light has no finger, STD-D1-02)." },
   "contract-35": { item: "card-ladder", title: "the card by level", how: "Cook flows only, at each station stage's first play tap (the side and rows samples just before it): L1 and L2 every sidebar card open (none closed) and no dotted word (•••) in a row; L3 and L4 every card open and no item word (the lexicon's forms of an item: data/cook.json words with a bowl, heap, image, layer or piece) written in a row not yet ticked, the items dotted (each dotted row with its speaker: contract-40). SH-110 (Zafar, 26 Oct: never a memory test, no fully blanked card) replaces L4's folded card (face + headline); was closedFrom 3 (the level table, Zafar 19 Oct)." },
   "contract-40": { item: "one-card", title: "one card markup; a blanked row has its speaker", how: "Every kitcard sample (lib/contract-hook.mjs): each order card on screen (.oc-card, sidebar or pop-up) and its head, face, items and rows may carry only the kit's classes (oc-, wc, njg-, fit and the card's state words: done, next, reading ...); a game's own class (cl-row, cl-card-face, r6, icard ...) is a break (S13: the clinic's and Cook's copies go, one card everywhere). SH-110 (Zafar, 26 Oct: a card is never a memory test): a row not done whose words are blanked (a dotted word showing, or OrderCard's oc-blank) must start with its speaker (.oc-spk, the row's first element); one without it is a break." },
   "contract-41": { item: "one-popup", title: "one order pop-up", how: "Every kitcard sample: a request pop-up on screen (.njg-rq-open, .njg-rq-veil, Cook's #intro) must be the kit's (js/shared/request-popup.js: a .njg-rq-card inside the veil). Cook's own #intro shown, or a pop-up with no .njg-rq-card, is a break (S13-B1: Cook on the kit's pop-up, like the clinic and the day)." },
-  "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows only: every step the game opens in a play stage (Lifecycle step-open, js/shared/guide.js stepper) must be called: a Cook line tagged role call must start after it and before the next step opens (or within 6 s), unless the game logged a step-call skip for that step (Lifecycle step-call, by 'skip ...': Nani muted, the station said it a moment ago, a step with no voiced line, the step closed before its turn). A step-open with neither is a break; a call said where the step-call log says skip is a break too (SH-110, the level table: the order in pieces, at every level, never help)." },
+  "contract-36": { item: "step-call", title: "Nani calls each step as it opens", how: "Cook flows: the steps are taken from the screen (lib/contract-s19b.mjs screenSteps): each new thing the kit's light falls on in a station (s19lit: a thing it did not light just before) and each new current card on the order card (s19pad: the first card not ticked). Each must be called: a voiced line tagged role call starting from 2 s before it (the call opens the step; its light follows) to 6 s after or the next step, unless the game logged a step-call skip then (no voiced line for it yet: a recording to make; Nani muted). A step with neither is a break (SH-110, the level table: the order in pieces, at every level). Rewritten from the screen, s19-checks-2: it read the game's own step-open list, so eggs, which declared one step, passed on one call." },
   "contract-50": { item: "one-tick", title: "samosa: the card ticks at the one tick", how: "Cook flows of the samosa station only, in the stage where the game reported its fillings' decoys (Lifecycle decoys by 'fillings'): the rows sample (each sidebar card row and its tick). Once any row ticks, every row still open (not a \"don't\" row, which ticks with the finished dish) must tick within 1.5 s: the fill closes once for every strip at the one tick, so no kind's box or filling row ticks while samosas of it are still to be made (SAM-24, P42: 'he's ticked the samosa like it's done but he wanted three'). A row unticked again (a redo after a mistake, decision 51) starts the wait over." },
-  "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows of the stations with things to pick (the pantry, chai tray, samosa, sekelo, daar, chaat): each station stage must report its decoys (Lifecycle decoys: the count, and lookalike 0 or 1, js/cook/station-lib.js St.decoyNote) and the count must be the rules file's (data/rules.json levels.decoys: 1, 2, 3, 4 by level, one of the four a lookalike at L4; Zafar, 29 Oct, settled 7 Nov over CK-49's old 1, 2, 3, 3; at least that for the pantry's shelf and the daar's chop, whose rows are full by design). No report, a wrong count or no lookalike at L4 is a break (CK-49, P32)." },
+  "contract-37": { item: "decoys", title: "decoys by level", how: "Cook flows, each station once its shelf has stood a second (the s19shelf sample: the shelf's things with a word): the decoys are the shelf's things the order does not ask for (none of the lexicon's forms of the thing's id, data/lang/lexicon.json aliases, is a word on the order card's cards, s19pad); their count must be the rules file's (data/rules.json levels.decoys: 1, 2, 3, 4 by level; chop's hop none at L1), at least that for the pantry's shelf and the daar's chop, whose rows are full by design. A wrong count is a break, once per station (CK-49, P32). Rewritten from the screen, s19-checks-2: it read the game's own decoy note, and eggs, baking, corn and maani were not listed." },
   "contract-38": { item: "two-pages", title: "the end screen: two pages", how: "Every endpages sample (lib/contract-hook.mjs: the end screen's pages, data-page, the one shown, data-step, and its step rows): a third page (the steps of the round, .rs-p3), a card on step 3 or any step row (.rs-step, .rs-steps-list) in any game is a break (SH-104, Zafar, 22 Oct: the third page goes from every game; js/shared/results.js Results.STEPS_PAGE is the only way in, and it is off)." },
   "contract-39": { item: "card-english", title: "the word card's English: supported, then tapped", how: "Every card-en sample (lib/contract-hook.mjs: each shared word card's English slot on screen with words in it, its card's data-stage and whether the child opened it, the slot's revealed class): English showing on a card at stage 3 or more that the child did not open is a break (SH-123; Zafar, 21 Oct: English on a word card only while the word is supported, then only when tapped; data/progress.json support[stage].english). An order card's row (the slot inside an .oc-card, oc) never shows its English untapped, at any stage: a break (S13-B1 round 3; CLAUDE.md non-negotiable 3); since the S13-A2 fix round the big word card neither (English on a word card only while supported AND only when tapped). The word moment's cards (.wm, CHAI-71; Zafar, 3 Nov: the first time the child meets the words) show their English: never a break." },
   ...DAY_CHECKS,
@@ -635,8 +638,9 @@ function check12(tl, segs, add, tEnd = tl[tl.length - 1].t) {
     }
   });
 }
-// 27 (SH-106): every go-on button on screen shows the arrow
-function check34(tl, segs, add) {
+// 27 (SH-106): every go-on button on screen shows the arrow. RETIRED (s19-checks-2, the check sort's G0): quiet since SH-238 took every
+// next button out of Cook, and contract-103 judges Cook's buttons; the code stays out of the run, so it can come back
+export function check34(tl, segs, add) {
   const seen = new Set();
   for (const e of tl) {
     if (e.type !== "c" || e.k !== "buttons") continue;
@@ -1418,78 +1422,19 @@ export function check41(tl, add) {
 }
 // 36 (SH-110): Nani calls each step as it opens (the order in pieces), at every level
 const CALL_WITHIN = 6000;
-function check36(r, tl, segs, v, add) {
-  if (!isCookFlow(r.flow)) return;
-  const life = tl.filter((e) => e.type === "c" && e.k === "life");
-  const opens = life.filter((e) => e.what === "step-open");
-  const notes = life.filter((e) => e.what === "step-call");
-  const calls = v.lines.filter((l) => l.role === "call" && (l.text || "").trim());
-  const seen = new Set();
-  opens.forEach((o, i) => {
-    const s = segAt(segs, o.t);
-    if (!s || !isPlayStage(s.key)) return;
-    // SH-133 (S13-B1): the same step logged open again with no other step opened in between (the help's hint rungs armed again
-    // for it, js/shared/onboard.js Onboard.stuck, after a card row ticked) is that step still open, not a new opening: it was
-    // judged at its first (its call, or the skip logged then)
-    const prev = opens[i - 1];
-    if (prev && prev.reason === o.reason && segAt(segs, prev.t) === s) return;
-    const next = opens[i + 1];
-    const until = Math.min(o.t + CALL_WITHIN, next ? next.t + 300 : Infinity, s.t1 == null ? Infinity : s.t1 + 300);
-    // (step ids count again from 1 on each station's stepper: this opening's notes are the ones before that id opens again)
-    const again = opens.slice(i + 1).find((x) => x.reason === o.reason);
-    // (a step logged open twice in the same moment, the guide's and the help's: a skip noted a millisecond after the second still
-    // belongs to this opening; Sprint 15, SH-172's "skip-helper" note, which comes after the call's "queued")
-    const mine = notes.filter((n) => n.reason === o.reason && n.t >= o.t - 50 && n.t <= Math.min(o.t + CALL_WITHIN, again ? (again.t - o.t < 50 ? Infinity : again.t + 50) : Infinity));
-    const skip = mine.find((n) => /^skip/.test(n.by || ""));
-    // a call queued behind another line may start after the next step opened: any call from this opening on counts
-    const said = calls.find((l) => l.t0 >= o.t - 50 && l.t0 <= Math.max(until, o.t + CALL_WITHIN));
-    const k = `${s.key}|${o.reason}|${o.t}`;
-    if (seen.has(k)) return;
-    if (!said && !skip) { seen.add(k); add("contract-36", o.t, `${s.key}: step ${o.reason} (${o.by || ""}) opened and Nani did not call it (no line tagged call within ${CALL_WITHIN / 1000} s, no skip logged)`); }
-  });
-}
 // 37 (CK-49): decoys by level from the game's own report per station stage, counted by the rules file (Zafar, 7 Nov: the old
 // 1 / 2 / 3 / 3 table is gone; data/rules.json levels.decoys 1, 2, 3, 4, one a lookalike at L4)
 // Zafar, 29 Oct (chai level rules 5, 7; SH-155: the central rules, data/rules.json levels.decoys): chai's decoys 1, 2, 3, 4; its order
 // card's Kutchi always written, its English shown at L1 (dotted from L2); its light has no finger (28 Oct: "no finger, no target").
 // CHAI_ROW (the card's item words written at L3-L4), S14_TAPS (no finger in the light), DECOY_STATIONS and DECOY_AT_LEAST are the
 // stations of the per-game data list's games (data/games.json cardWritten, s14Taps, decoys; lib/contract-chai.mjs), read live
-export { CHAI_ROW, S14_TAPS };
+export { CHAI_ROW };
 // the S14 roll-out (s14-cook, 30 Oct; Zafar 29-30 Oct: "change all the cook ... games to the new chai style"): every Cook station is on
 // the s14 kit and the central rules now, so chai's rows above hold for every Cook flow: the decoys the rules' (1, 2, 3, 4 with the
 // lookalike at L4), the order card's Kutchi always written (never dotted at L3-L4), its English shown at L1, no finger in the light
 export const S14_COOK = (flow) => isCookFlow(flow);
+export const tapsOnly = (tl) => !tl.some((e) => e.type === "c" && e.k === "s19ghost" && !e.game && e.gesture && e.gesture !== "tap");
 export const CHAI_DECOYS = Object.fromEntries(((((RULES_FILE || {}).levels || {}).decoys) || [1, 2, 3, 4]).map((n, i) => [i + 1, n]));
-function check37(r, tl, segs, add) {
-  if (!isCookFlow(r.flow)) return;
-  const st = stationOf(r.flow);
-  if (!st || !DECOY_STATIONS.test(st)) return;
-  const level = levelOf(r.flow || "");
-  // CK-71 (Zafar, 9 Nov: "level 1 is just like only one item's flying in the air at a time ... level 2, there are 2 items. Sometimes
-  // one of them a decoy"): the chop game's hop has no decoy at L1, the table's count from L2
-  const want = st === "chop" && level === 1 ? 0 : CHAI_DECOYS[Math.min(4, level)];
-  const notes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "decoys");
-  if (!notes.length) {
-    const s = segs.find((x) => /(^|\|)cook:station/.test(x.key));
-    if (s) add("contract-37", s.t0, `${s.key} (${st} at L${level}): no decoy count reported in the round (the table wants ${want}${level >= 4 ? " with a lookalike" : ""})`);
-    return;
-  }
-  {
-    const s = { key: "round" };
-    const mine = notes;
-    for (const n of mine) {
-      const got = Number(n.reason);
-      const look = /lookalike:1/.test(n.by || "");
-      const what = (n.by || "").replace(/\s*lookalike:\d/, "");
-      // (the S14 roll-out; the central rules' decoys: "one more a level where the space allows": a station whose pool had no more to
-      // offer says so, room:n, and that many is its most)
-      const room = /room:(\d+)/.exec(n.by || "");
-      const ok = (DECOY_AT_LEAST.test(st) ? got >= want : got === want) || (room && got === Number(room[1]) && got < want);
-      if (!ok) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L${level}): ${got} decoy${got === 1 ? "" : "s"}, the table wants ${DECOY_AT_LEAST.test(st) ? "at least " : ""}${want}`);
-      if (level >= 4 && !look) add("contract-37", n.t, `${s.key} (${st}${what ? `, ${what}` : ""} at L4): no lookalike among the decoys (L4: the table's count with a lookalike variant)`);
-    }
-  }
-}
 // 50 (SAM-24): samosa's card ticks once, at the one tick, for every strip; never a kind early
 export const ONE_TICK_MS = 1500;
 function check50(r, tl, segs, add) {
@@ -1562,12 +1507,13 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check11(tl, add);
   check12(tl, segs, add, tEnd);
   check13(tl, add);
-  check34(tl, segs, add);
-  check34kit(tl, segs, add);
+  check34kit(tl, segs, add); // (the go-on arrow half, check34, retired: s19-checks-2)
   check42(tl, segs, add);
   // (a gesture still has the kit's moving finger on the s14 look, js/shared/onboard.js: maani's roll, daar's chop swipe and stir;
   // only the stations whose showing is all taps have no finger at all)
-  check44(tl, segs, add, tEnd, S14_COOK(r.flow) && S14_TAPS.test(stationOf(r.flow) || ""));
+  // (s19-checks-2, no opt-in: a station whose showing is all taps has no finger at all, read from the kit's own ghosts on the page: none
+  // with a drag, hold, swipe or circle gesture; it was games.json s14Taps)
+  check44(tl, segs, add, tEnd, S14_COOK(r.flow) && tapsOnly(tl));
   check14(tl, segs, add);
   check15(tl, segs, add, tEnd);
   check17(r, tl, add);
@@ -1591,7 +1537,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check41(tl, add);
   check35(r, tl, segs, add, root);
   check36(r, tl, segs, v, add);
-  check37(r, tl, segs, add);
+  check37(r, tl, add, { root, table: CHAI_DECOYS });
   check45(tl, add);
   check46(tl, add);
   check47(r, tl, add);
@@ -1599,7 +1545,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check50(r, tl, segs, add);
   check65(r, tl, add);
   check66(r, tl, v, add);
-  check70(r, tl, add);
+  check70(r, tl, v, add);
   check71(r, tl, add);
   check90(r, tl, add);
   check49(tl, add);
@@ -1607,8 +1553,8 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check52(tl, add);
   check53(tl, add);
   check54(tl, add);
-  check72(tl, add);
-  check73(tl, add);
+  check72(r, tl, add);
+  check73(r, tl, add);
   if (!/#replay/.test(r.flow || "")) check74(r, tl, segs, add); // (a replayed round: the second round starts the station long after the first order's tap)
   check75(tl, add);
   check76(tl, add);
@@ -1633,8 +1579,13 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check95(r, tl, v, add);
   checkS17(r, tl, v, add);
   checkS19(r, tl, v, add);
+  check109few(r, tl, add); // (s19-checks-2: one or two shelf items, judged too)
+  check96(r, tl, add);
   check112(r, tl, add);
   check113(r, tl, add);
+  check114(r, tl, add);
+  check115(r, tl, add);
+  check116(r, tl, add);
   return out;
 }
 
@@ -1659,7 +1610,7 @@ export function check49(tl, add) {
 // ---- SH-138 (Zafar, 27 Oct: "how it won't pass quality control again"): what the old checks never measured ----
 Object.assign(CHECKS, {
   "contract-51": { item: "inside-card", title: "every word inside its card", how: "Every layout sample (lib/contract-hook.mjs spills: each text's own glyph box, a Range over its letters, against its card's box: a word card, an order row or card, a bubble, the guide box, the request card, a pill, a review word): a word more than 2 px outside its card is a break, once per card and word per page (the hakro khun and tameto spills of 27 Oct; the old text check caught only clipped or ellipsised text)." },
-  "contract-52": { item: "bubble-clear", title: "a bubble keeps faces and the side panel clear", how: "Every bubble sample: a bubble covering a quarter or more of any head's box (Cook's figures, the clinic's figures and speakers) or reaching more than 4 px into the side panel's box is a break, once per bubble text per page (CK-18 reopened: Nana's greeting over his face and Ali's at 971x318; the eye test's bubble over the girl)." },
+  "contract-52": { item: "bubble-clear", title: "a bubble keeps faces and the side panel clear", how: "Every bubble sample: a bubble covering a quarter or more of any head's box (Cook's figures, the clinic's figures and speakers) is a break, once per bubble text per page (its side-panel half retired, s19-checks-2: contract-86 judges a bubble against the panels with its room rule) (CK-18 reopened: Nana's greeting over his face and Ali's at 971x318; the eye test's bubble over the girl)." },
   "contract-53": { item: "one-in-light", title: "the help's light holds one thing", how: "Every spot sample (the first-time help's drawn box, js/shared/onboard.js data-holes, and Cook's tappable pictures with a word): two or more pictures with their middles inside one box, or a box more than 3.5 times the area of the biggest picture in it, or a dim with no lit box at all (CHAI-36) (its word pill, often wider than a bottle, allowed: a box round a tall bottle and its pill is about 2.8 times the bottle; the bug was 5.4), is a break, once per page (CHAI-33: the box over three items, two and a half times too big)." },
   "contract-54": { item: "rail-in-side", title: "the side panel's buttons stay in it", how: "Every layout sample (rail: each button inside #side, .cl-side or .ng-side and whether its box sits inside the panel's): a button outside its side panel is a break, once per button per page (CK-53: the ?, home and book over the water bottle)." },
 });
@@ -1688,11 +1639,12 @@ export function check52(tl, add) {
     if (e.type !== "c" || e.k !== "bubble") continue;
     for (const b of e.list || []) {
       if (seen.has(b.text)) continue;
+      // (its side-panel half retired, s19-checks-2, the check sort's G0: contract-86 judges bubbles against the panels with its room rule,
+      // and this half overrode its leniency)
       const face = (e.heads || []).find((h) => h.box && area(h.box) > 0 && overlap(b.box, h.box) >= 0.25 * area(h.box));
-      const side = e.side && overlap(b.box, e.side) > 0 && Math.min(b.box.r, e.side.r) - Math.max(b.box.l, e.side.l) > 4 ? e.side : null;
-      if (!face && !side) continue;
+      if (!face) continue;
       seen.add(b.text);
-      add("contract-52", e.t, `the bubble "${b.text}" ${face ? `covers ${face.who}'s face (${Math.round((100 * overlap(b.box, face.box)) / area(face.box))}% of the head)` : ""}${face && side ? " and " : ""}${side ? "reaches into the side panel" : ""}`);
+      add("contract-52", e.t, `the bubble "${b.text}" covers ${face.who}'s face (${Math.round((100 * overlap(b.box, face.box)) / area(face.box))}% of the head)`);
     }
   }
 }
@@ -1754,17 +1706,17 @@ export function report(results, opts = {}) {
 // judged from the game's own test notes (Lifecycle.note, only logged: js/shared/order-card.js row-glide, js/cook/ui.js bubble-spk
 // and order-skip), so they hold on chai's s14 look and say nothing where a game does not log them
 Object.assign(CHECKS, {
-  "contract-72": { item: "row-glide", title: "the order row glides, never jumps", how: "Every row-glide note (js/shared/order-card.js OrderCard.glideTo, the s14 order row while the order is given: how far it moved, how, and the card's width): a move that is not a smooth scroll (a jump) of more than 2 px is a break, and so is a smooth glide of more than 2.5 card widths (a glide that far reads as a jump: the row should follow the cards as they are said), once per page (SH-152, Zafar 28 Oct: 'instead of the recipe card items jumping over, have them smoothly move to the side'; a smooth scroll never moves a card's width in one frame)." },
-  "contract-73": { item: "bubble-speaker", title: "the bubble's speaker is big", how: "Every bubble-spk note (js/cook/ui.js, a bubble shown on the s14 look: the speaker's drawn size, 1.8 em of its words, its icon's width): a speaker under the 48 px tap, more than 2 px under 1.8 em, or an icon under 60% of the speaker is a break, once per page (SH-153, Zafar 28 Oct: 'increase the icon size in the speech bubble')." },
-  "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Every order-skip note (js/cook/ui.js, a tap on the kitchen while the order is given, s14): every card in its row, no big card or copy of one left (left:0), within 1 s of the tap (the note's ms), and the station's stage starting within 1 s of it (scaled by the test speed). Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game')." },
+  "contract-72": { item: "row-glide", title: "the order row glides, never jumps", how: "Every s19row sample (lib/contract-s19b-hook.mjs: the order row's scroll as drawn, every animation frame it changes, with the frame before it): a glide is a run of changes frame after frame; a change of more than a card's width done in one ordinary frame (60 ms or less after the frame before: a jump; SH-152's measure, 'the row's scroll never moves more than a card width in one frame'), or a glide of more than 2.5 card widths that does not end at the first card, is a break, once per page (SH-152, Zafar 28 Oct: 'instead of the recipe card items jumping over, have them smoothly move to the side'). Rewritten from the screen, s19-checks-2: it read the game's own row-glide note." },
+  "contract-73": { item: "bubble-speaker", title: "no speaker button in a speech bubble; a conversation's speaker a full tap", how: "Every s19spk sample held 300 ms (lib/contract-s19b-hook.mjs: each speech bubble's speaker as drawn): a Cook line's speaker (.wp-say) in a speech bubble is a break (SH-153 as Zafar replaced it, 1 Nov: 'remove the speaker buttons' from speech bubbles, every game); a conversation bubble's own speaker (.cv-spk: the conversations' one speaker, docs/game-design/modes/conversations.md) under the 48 px tap is a break. Once each per page. Rewritten from the speaker's own box, s19-checks-2: it read the game's bubble-spk note, which judged SH-153's 28 Oct rule (a bigger icon) after 1 Nov had replaced it." },
+  "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Cook flows: the first real tap in the play area while the order is given (the s19ord sample: a big card, a card in flight or a card not yet in its row): 1 s later no big card, no card in flight and every card in its row, and the station's stage starting within 1 s of the tap. Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game'). Rewritten from the page itself, s19-checks-2: it read the game's own order-skip note." },
 });
-Object.assign(CHECKS, SCREEN_CHECKS);
+Object.assign(CHECKS, SCREEN_CHECKS, S19B_CHECKS);
 const lifeNotes = (tl, what) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === what);
 // ---- Sprint 14 (s14-rules; the central rules, Zafar 29 Oct round 4): the skip zones, the pop-out off faces, the first-time hold ----
 Object.assign(CHECKS, {
   "contract-75": { item: "skip-zone", title: "a tap on a bubble, the side panel or the cog never skips the order", how: "Every skip-zone note (js/shared/request-popup.js, a tap on the order's see-through pop-up on the central rules' zones: data/rules.json skip): a tap on a zone that never skips (bubble, side, cog, menu) followed by an order-skip within 300 ms is a break; a tap in the play area (zone play) with no order-skip within 1.5 s is a break (SH-157, Zafar 29 Oct: 'if you tap on the speech bubbles or the side bar' it should not skip)." },
   "contract-76": { item: "pop-face", title: "the big pop-out card is never over a face", how: "Every pop-face note (js/cook/ui.js, the big card placed as a word of the order is said, s14: how much of it, in px squared, sits over a face on screen, a head in the kitchen or a face circle in the play area, with a small margin): more than 0 is a break, once per page (SH-154, non-negotiable: nothing over a face)." },
-  "contract-77": { item: "timed-hold", title: "the first-time hold is a new player's only, and ends at the tap", how: "Every timed-hold note (js/cook/stations/chai-tray.js, the central rules' timed.firstTimeHold): a hold on a returning player's page (a #returning flow) is a break; a hold that starts and never ends (no 'end' note: the knob tap) is a break (SH-158, Zafar 29 Oct: the timer holds in the green the first time, until the child taps)." },
+  "contract-77": { item: "timed-hold", title: "the first-time hold is a new player's only, and ends at the tap", how: "Cook flows: from the kitchen kit's heat rings as drawn (s19ring; every timed window: chai's pans, eggs, corn, maani, samosa): a new player's first ring to enter its green must wait in the middle of the green until the child's tap (a ring that goes on past the middle before any tap is a break); on a returning player's page (#returning) a ring held 1.5 s or more in the middle of its green is a break (SH-158, Zafar 29 Oct: the timer holds in the green the first time, until the child taps). No opt-in (s19-checks-2): it read the timed-hold note, so a game that never called the hold was never judged (eggs, corn)." },
 });
 export function check75(tl, add) {
   const skips = lifeNotes(tl, "order-skip").map((n) => n.t - Number(n.reason || 0));
@@ -1779,51 +1731,5 @@ export function check76(tl, add) {
   for (const n of lifeNotes(tl, "pop-face")) {
     const over = Number(n.reason || 0);
     if (over > 0) { add("contract-76", n.t, `the big pop-out card sits over a face (${over} px\u00b2 of it; ${n.by || ""})`); return; }
-  }
-}
-export function check77(r, tl, add) {
-  const holds = lifeNotes(tl, "timed-hold");
-  if (!holds.length) return;
-  if (/#returning/.test((r && r.flow) || "")) { add("contract-77", holds[0].t, "a returning player's heat held in the green (the first-time hold is a new player's only)"); return; }
-  const starts = holds.filter((n) => n.reason === "start").length;
-  const ends = holds.filter((n) => n.reason === "end").length;
-  if (starts > ends) add("contract-77", holds[holds.length - 1].t, "the first-time hold started and never ended at a tap");
-}
-export function check72(tl, add) {
-  // (s14-rules: the row's glide back to its first card once the order has been given is a row-home note: never a jump, any length)
-  for (const n of lifeNotes(tl, "row-home")) if (!/smooth/.test(n.by || "") && Number(n.reason) > 2) { add("contract-72", n.t, `the order row went back to its first card in one jump (${n.reason} px, never smooth)`); return; }
-  for (const n of lifeNotes(tl, "row-glide")) {
-    const d = Number(n.reason);
-    const m = /card:(\d+)/.exec(n.by || "");
-    const w = m ? +m[1] : 0;
-    if (!/smooth/.test(n.by || "") && d > 2) { add("contract-72", n.t, `the order row moved ${d} px in one jump (never smooth)`); return; }
-    if (w > 0 && d > w * 2.5) { add("contract-72", n.t, `the order row glided ${d} px at once, more than 2.5 cards (${w} px each)`); return; }
-  }
-}
-export function check73(tl, add) {
-  for (const n of lifeNotes(tl, "bubble-spk")) {
-    const size = Number(n.reason);
-    const em = Number((/em:([\d.]+)/.exec(n.by || "") || [])[1]);
-    const icon = Number((/icon:(\d+)/.exec(n.by || "") || [])[1]);
-    if (size < 48) { add("contract-73", n.t, `the bubble's speaker is ${size} px, under the 48 px tap`); return; }
-    if (Number.isFinite(em) && size < em - 2) { add("contract-73", n.t, `the bubble's speaker is ${size} px, under 1.8 em of its words (${em.toFixed(1)} px)`); return; }
-    if (Number.isFinite(icon) && icon < size * 0.6) { add("contract-73", n.t, `the bubble's speaker icon is ${icon} px of ${size} px (under 60%)`); return; }
-  }
-}
-export function check74(r, tl, segs, add) {
-  for (const n of lifeNotes(tl, "order-skip")) {
-    const ms = Number(n.reason);
-    const left = Number((/left:(\d+)/.exec(n.by || "") || [])[1] || 0);
-    if (left > 0) add("contract-74", n.t, `a tap during the order left ${left} card${left > 1 ? "s" : ""} away or a big card on screen`);
-    if (ms > 1000) add("contract-74", n.t, `a tap during the order took ${ms} ms to land every card (within 1 s)`);
-    const tap = n.t - ms;
-    // (the station's own stage-start note too: on lab.html the host's stage opens first and the station's segment is dated from it,
-    // so a segment alone never starts after the tap; Sprint 15, a false "never started" on every lab:cook flow)
-    const seg = segs.find((x) => /(^|\|)cook:station/.test(x.key) && x.t0 >= tap - 50);
-    const note = lifeNotes(tl, "stage-start").find((x) => /^cook:station/.test(x.reason || "") && x.t >= tap - 50);
-    const st = [seg, note && { t0: note.t }].filter(Boolean).sort((a, b) => a.t0 - b.t0)[0];
-    if (!st) add("contract-74", n.t, "a tap during the order and the station never started");
-    else if (st.t0 - tap > 1000) add("contract-74", st.t0, `the station started ${Math.round(st.t0 - tap)} ms after the tap during the order (within 1 s)`);
-    return;
   }
 }

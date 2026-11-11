@@ -38,12 +38,16 @@ test("contract-41: the kit's pop-up is no break; Cook's #intro or a pop-up with 
 // is the step still open (judged at its first opening: its call, or its skip), not a new one; a new step with no call still is
 const C = (t, k, o = {}) => ({ type: "c", k, t, ...o });
 const life = (t, what, step = "", o = {}) => C(t, "life", { what, reason: step, at: t, ...o });
-test("contract-36 (SH-133): a step logged open again with nothing between is the same opening; a new uncalled step is a break", () => {
+test("contract-36 (SH-133; s19-checks-2, steps from the screen): the light back on the same thing is the same step; a new thing lit, uncalled, is a break", () => {
+  // (the kit's light on a thing, as the probe reads it: s19lit with the thing under the box)
+  const lit = (t, id, box) => C(t, "s19lit", { holes: [box], things: [{ kind: "word", id, box }] });
   const base = [C(T, "stage", { key: "cook:station1:marble" }), life(T, "stage-start", "cook:station"),
-    life(T + 1000, "step-open", "21", { by: "L4" }), life(T + 1000, "step-call", "21", { by: "skip-novoice" }), life(T + 1001, "step-open", "21"), life(T + 2100, "step-open", "21")];
+    lit(T + 1000, "cook-dudh", [100, 400, 160, 500]), life(T + 1000, "step-call", "21", { by: "skip-novoice" }), lit(T + 2100, "cook-dudh", [101, 400, 161, 500])];
   const tl = (x) => ({ flow: "cook:chai-tray@L4", size: "1280x665", t0: T, states: [{ name: "01-start", at: 0, shot: "01-start.png" }], timeline: x.sort((a, b) => a.t - b.t) });
-  assert.equal(of(run(tl(base.slice())), "contract-36").length, 0, "green: step 21's skip was logged at its opening; the rungs' re-log is the same step");
-  assert.equal(of(run(tl([...base, life(T + 3000, "step-open", "22")])), "contract-36").length, 1, "red: step 22 opened, never called, no skip");
+  assert.equal(of(run(tl(base.slice())), "contract-36").length, 0, "green: the milk's skip was logged as it was lit; the light back on the milk is the same step");
+  assert.equal(of(run(tl([...base, lit(T + 3000, "cook-paani", [300, 400, 360, 500])])), "contract-36").length, 1, "red: the water lit, never called, no skip");
+  // a light on an order card is the help's pointer (contract-90's), not a step
+  assert.equal(of(run(tl([...base, C(T + 3000, "s19lit", { holes: [[10, 100, 120, 300]], things: [{ kind: "card", id: "card:paani", box: [10, 100, 120, 300] }] })])), "contract-36").length, 0, "green: a card lit");
 });
 
 // S13-B1 round 3 (CLAUDE.md non-negotiable 3: a word's English "only when tapped"): an order card's row never shows its English untapped

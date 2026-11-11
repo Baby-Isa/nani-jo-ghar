@@ -99,7 +99,7 @@ break in the smoke run before it). "Built from" rows are the failures each was w
 | 8 | one highlight at a time (every page) | SH-53(o) SH-79(d) CK-34(d) CLN-143(d) CLN-144(d) CLN-145(d) | once on sekelo L2 (s05 report) | none extra (rides the page run) | KEEP |
 | 9 | no folded card from L3 (clinic L3+) | CLN-114(d) SH-110(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 10 | faces the player on the child's turn (clinic) | SH-71(d) CLN-157(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 11 | backgrounds in proportion and sharp (every page) | PAN-14(d) ART-05(d) ART-59(o) ART-60(o) | ART-59, ART-60 (open) | Cook is on its known list (contract-known.json, ART-05): it judges no Cook page | KEEP |
+| 11 | backgrounds in proportion and sharp (every page) | PAN-14(d) ART-05(d) ART-59(o) ART-60(o) | ART-59, ART-60 (open) | judges every page, Cook too (corrected, s19-checks-2): contract breaks never ratchet; `contract-known.json` (its ART-05 lines) is read by the publish gate alone, only while ART-05 waits, and ART-05 is off the fix list | KEEP |
 | 12 | buttons hidden until usable (every page) | SH-23(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 13 | each stage clears its own UI (clinic) | CLN-06(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 14 | one talk animation (every page) | ART-18(o) | ART-18 (open) | none extra (rides the page run) | KEEP |
@@ -210,14 +210,14 @@ expression (no `;` between two IIFEs), so a probe added after S17's never ran; f
 | pillcheck (chai's pills) | a shelf change | SH-219 | one run in three found no pills at 1920x1080 L4 (a 30 s wait against a 27 s intro) | FIX: waits 60 s; test |
 | teachgate (prototypes' first-time light) | a prototype kit's change | SH-197 | a browser run | KEEP |
 | tapgate (the lab page's play button) | the audit | SH-198 | a browser run | KEEP |
-| lightfollow (a new player tapping what is lit) | the audit | the light layers counted before contract-87 | a browser run | KEEP |
+| lightfollow (a new player tapping what is lit) | the audit | the light layers counted before contract-87 | a browser run | RETIRE (s19-checks-2: out of the audit; contract-87 and -112 judge the light; code kept) |
 | spkgap (the helper card's speaker padding) | the audit | SH-165 | a browser run | KEEP |
 | kitsheet (one element from every game, both sizes) | an element's build | S13's look differences by game | a browser run | KEEP |
 | labcheck (a lab page at the four sizes) | the lab-first loop | words leaving their cards (28 Oct) | a browser run | KEEP |
 | voicegate (no effect over a family line) | a sound change | CHAI-92's picks | reads a sound log | KEEP |
 | sprintcheck, touched, regress | each review | the rows and flows a change reaches | none | KEEP |
 | fever_bubbles, shoot_knee_wrap | evidence `cmd:` captures | CLN rows' bubbles and wraps | used only by specs | KEEP |
-| shotdiff | /review step 4 | nothing since Sprint 8 | reviewers opened "all new" sheets | RETIRE (from /review; code kept) |
+| shotdiff | /review step 4 | nothing since Sprint 8 | reviewers opened "all new" sheets | RETIRE (from /review; from the skeleton, s19-checks-2; code kept) |
 
 ## 8. Ops checks and hooks
 

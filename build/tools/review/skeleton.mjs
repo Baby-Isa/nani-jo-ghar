@@ -44,10 +44,10 @@ if (base) {
 const byCheck = {}; for (const f of cur.findings) byCheck[f.check] = (byCheck[f.check] || 0) + 1;
 const topChecks = Object.entries(byCheck).sort((x, y) => y[1] - x[1]).slice(0, 6).map(([k, v]) => `${k} ${v}`).join(", ") || "none";
 
-// sound gaps, shot diff, word checks, regression rows (the other review tools, run on this run)
+// sound gaps, word checks, regression rows (the other review tools, run on this run; shotdiff retired, s19-checks-2: no approved run
+// since Sprint 8, so it read every shot as new)
 let gaps = "n/a";
 try { const s = JSON.parse(readFileSync(join(run, "sound.json"), "utf8")); gaps = `${(s.gaps || []).length} lines with no family clip, ${(s.informational || []).length} played files that are not an approved family clip`; } catch (e) { /* no sound.json */ }
-const diffLine = sh(process.execPath, [join(TOOLS, "shotdiff.mjs"), "--run", run]).split("\n")[0] || "shotdiff: no output";
 const wordLines = sh(process.execPath, [join(ROOT, "build", "lint", "words.mjs"), "--top", "0"]).split("\n").filter((l) => /^[A-D]  /.test(l));
 const baseIds = [...new Set(flows.map((f) => f.replace(/[@#].*$/, "")))];
 const reg = sh(process.execPath, [join(TOOLS, "regress.mjs"), baseIds.join(","), "--max", "500", "--status", "open,reopened,built"]).split("\n").filter((l) => /^ {2}[A-Z]+-[A-Z0-9-]*\d+ /.test(l));
@@ -72,7 +72,7 @@ Branch \`${branch}\`, commit \`${sha}\`. Sandbox run \`${rel(run).replace(/^buil
 - **Screenshots:** ${shots} of ${states} states, in \`${rel(run)}\` (not committed, B19). Contact sheets: \`${rel(join(run, "sheets"))}/<flow>__<size>.png\`.
 - **Layout lint vs baseline:** ${verdict}. Findings in the run: ${cur.findings.length} (${topChecks}).${cmp && cmp.added.length ? "\n" + cmp.added.slice(0, 8).map((f) => `  - NEW ${f.check} ${f.flow} @ ${f.size} ${f.selector}: ${f.measured}`).join("\n") + (cmp.added.length > 8 ? `\n  - ... and ${cmp.added.length - 8} more` : "") : ""}
 - **Sound:** ${gaps}.
-- **Screenshots against the approved manifest:** ${diffLine}
+- **The look:** beside chai (\`build/tools/review/sidebyside.mjs\`); shotdiff is retired (no approved run since Sprint 8)
 - **Word checks (report-only):**
 ${wordLines.length ? wordLines.map((l) => "  - " + l.trim()).join("\n") : "  - (not run)"}
 

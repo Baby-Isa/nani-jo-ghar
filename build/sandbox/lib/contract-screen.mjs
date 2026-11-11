@@ -59,10 +59,10 @@ export function check113(r, tl, add) {
 }
 
 // ---- no silent passes: what each check judged, per game ----
-// A check judged a page when the page holds what it reads: the samples or notes its code asks for (read from its own source), and,
-// for a check a game opts into in build/sandbox/data/games.json, the game's field. A check whose game has no field, or whose page has
-// no sample, is named with the reason, never counted as passed.
-export const FIELD_OF = { "contract-91": "help", "contract-78": "controlCalls", "contract-70": "slowAtGreen", "contract-71": "onceEach", "contract-90": "cardLight", "contract-44": "s14Taps", "contract-37": "decoys", "contract-35": "cardWritten" };
+// A check judged a page when the page holds what it reads: the samples or notes its code asks for (read from its own source). A check
+// whose page has no sample is named with the reason, never counted as passed. (No game opts into a check: s19-checks-2.)
+// (s19-checks-2, the check sort's G5: no opt-ins; data/games.json holds no check field, so no check waits on one)
+export const FIELD_OF = {};
 const LIB = dirname(fileURLToPath(import.meta.url));
 let SRC = null;
 function sources() {

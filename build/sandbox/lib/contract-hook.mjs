@@ -1056,5 +1056,7 @@ function s17hook() {
 const S17_HOOK = `(${s17hook.toString()})()`;
 // ---- S19 (s19-checks): the shared pieces present (lib/contract-s19.mjs: contract-100 to -109, the probe with them) ----
 import { S19_HOOK } from "./contract-s19.mjs";
+// ---- s19-checks-2: the screen checks' probe (lib/contract-s19b-hook.mjs: contract-114 to -116 and the rewrites of 36, 37, 70-74, 77, 96) ----
+import { S19B_HOOK } from "./contract-s19b-hook.mjs";
 // (each probe its own statement: two IIFEs on adjacent lines with no ";" between would call the first one's result with the second)
-export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";";
+export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";\n" + S19B_HOOK + ";";

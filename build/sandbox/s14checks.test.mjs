@@ -3,7 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, faceShare, CONTROL_CALLS, POINT_AFTER_MOVE_MS } from "./lib/contract-s14.mjs";
+import { S14_CHECKS, check78, check79, check80, check81, check82, check83, check84, check85, check86, check87, check88, check89, faceShare, POINT_AFTER_MOVE_MS } from "./lib/contract-s14.mjs";
 import { CHECKS } from "./lib/contract.mjs";
 import { measureLight, lum, DARK_BELOW, LIGHT_LIFT } from "./lib/lightpix.mjs";
 import { SEED_PROFILES, isSeedProfile, CHAI_WORDS } from "./lib/seed.mjs";
@@ -14,7 +14,12 @@ import { CONTRACT_ROWS } from "../tools/review/lib/regressions.mjs";
 
 const run = (fn, ...a) => { const out = []; fn(...a, (id, t, msg) => out.push({ id, t, msg })); return out; };
 const c = (k, t, o = {}) => ({ type: "c", k, t, ...o });
-const lines = (...l) => ({ lines: l.map(([text, t0]) => ({ text, t0, role: "call" })) });
+const lines = (...l) => ({ lines: l.map(([text, t0]) => ({ text, t0, role: "call", plays: [{}] })) });
+// (s19-checks-2: a control's call is read from the page, not data/games.json: "Chulo bar!" is said just before the stove's knob turns on,
+// "Slow kar!" while the heat ring is in its green; the page's samples of both, for the calls at these times)
+const knobOn = (t) => [c("s19it", t - 1, { ch: [[900, "kit-knob-off", 0, 0, 10, 10, 100, 0, 0, 0, 10, 10, 0, 0, 0]], gone: [] }), c("s19it", t, { ch: [[900, "kit-knob-on", 0, 0, 10, 10, 100, 0, 0, 0, 10, 10, 0, 0, 0]], gone: [] })];
+const green = (t) => [c("s19ring", t - 200, { id: 7, lv: 0.5, lo: 0.6, hi: 0.9 }), c("s19ring", t - 100, { id: 7, lv: 0.61, lo: 0.6, hi: 0.9 }), c("s19ring", t + 900, { id: 7, clear: 1 })];
+const ctl = (...l) => l.flatMap(([text, t]) => (/chulo/i.test(text) ? knobOn(t + 800) : green(t)));
 
 test("the new checks are in the contract table with their rows", () => {
   for (const k of Object.keys(S14_CHECKS)) { assert.ok(CHECKS[k], k); assert.ok(S14_CHECKS[k].how.length > 60); }
@@ -24,33 +29,35 @@ test("the new checks are in the contract table with their rows", () => {
 });
 
 test("contract-78 (B3, CHAI-40): a control's call and its light together; 'voice, pause, dim' is red", () => {
-  assert.deepEqual(CONTROL_CALLS["chai-tray"], ["chulo bar", "slow kar"]);
   const r = { flow: "cook:chai-tray" };
+  const at = (tl, ...l) => [...tl, ...ctl(...l)].sort((a, b) => a.t - b.t);
   // (CHAI-56, decision 5e: a returning player hears the call alone, so a page that starts with the first-time help seen is not judged)
-  assert.equal(run(check78, { flow: "cook:chai-tray#returning" }, [], lines(["Slow kar!", 1000], ["Chulo bar!", 2000])).length, 0, "a returning player: the call alone");
-  assert.equal(run(check78, { flow: "cook:chai-tray@L3#takeback" }, [], lines(["Chulo bar!", 2000])).length, 0, "takeback starts with the help seen");
+  assert.equal(run(check78, { flow: "cook:chai-tray#returning" }, at([], ["Slow kar!", 1000], ["Chulo bar!", 2000]), lines(["Slow kar!", 1000], ["Chulo bar!", 2000])).length, 0, "a returning player: the call alone");
+  assert.equal(run(check78, { flow: "cook:chai-tray@L3#takeback" }, at([], ["Chulo bar!", 2000]), lines(["Chulo bar!", 2000])).length, 0, "takeback starts with the help seen");
   // main: the call at 31.3 s, the light only as the hint, 6 s later
-  const mainTl = [c("lit", 37300, { holes: [[531, 240, 571, 280]] })];
-  const bad = run(check78, r, mainTl, lines(["Chulo bar!", 31270]));
+  const bad = run(check78, r, at([c("lit", 37300, { holes: [[531, 240, 571, 280]] })], ["Chulo bar!", 31270]), lines(["Chulo bar!", 31270]));
   assert.equal(bad.length, 1);
   assert.match(bad[0].msg, /6030 ms later/);
   // main at a returning player's speed 3: no light at all
-  assert.match(run(check78, r, [], lines(["Slow kar!", 1000]))[0].msg, /no light comes with it/);
+  assert.match(run(check78, r, at([], ["Slow kar!", 1000]), lines(["Slow kar!", 1000]))[0].msg, /no light comes with it/);
   // the branch: the light 22 ms after the call, and one up before it
-  assert.equal(run(check78, r, [c("lit", 31292, { holes: [[531, 240, 571, 280]] })], lines(["Chulo bar!", 31270])).length, 0);
-  assert.equal(run(check78, r, [c("lit", 31200, { holes: [[1, 1, 2, 2]] })], lines(["Chulo bar!", 31270])).length, 0, "within 200 ms before");
-  assert.equal(run(check78, r, [c("lit", 31000, { holes: [[1, 1, 2, 2]] })], lines(["Chulo bar!", 31270])).length, 0, "a light already up at the call");
-  assert.equal(run(check78, r, [c("lit", 31000, { holes: [[1, 1, 2, 2]] }), c("lit", 31100, { holes: [] })], lines(["Chulo bar!", 31270])).length, 1, "a light that went out before the call is no light");
-  assert.equal(run(check78, { flow: "cook:fetch" }, [], lines(["Chulo bar!", 1])).length, 0, "only the games that list control calls");
+  assert.equal(run(check78, r, at([c("lit", 31292, { holes: [[531, 240, 571, 280]] })], ["Chulo bar!", 31270]), lines(["Chulo bar!", 31270])).length, 0);
+  assert.equal(run(check78, r, at([c("lit", 31200, { holes: [[1, 1, 2, 2]] })], ["Chulo bar!", 31270]), lines(["Chulo bar!", 31270])).length, 0, "within 200 ms before");
+  assert.equal(run(check78, r, at([c("lit", 31000, { holes: [[1, 1, 2, 2]] })], ["Chulo bar!", 31270]), lines(["Chulo bar!", 31270])).length, 0, "a light already up at the call");
+  assert.equal(run(check78, r, at([c("lit", 31000, { holes: [[1, 1, 2, 2]] }), c("lit", 31100, { holes: [] })], ["Chulo bar!", 31270]), lines(["Chulo bar!", 31270])).length, 1, "a light that went out before the call is no light");
+  // a call with no knob turning on after it and no heat ring in its green is not a control's call (s19-checks-2: read from the page)
+  assert.equal(run(check78, { flow: "cook:fetch" }, [c("s19it", 0, { ch: [], gone: [] })], lines(["Chulo bar!", 1])).length, 0, "not a control's call on this page");
+  // ... and any game's control call is judged (no opt-in): eggs' "Indo wiji chad!" just before its burner's knob turns on
+  assert.match(run(check78, { flow: "cook:eggs" }, at([], ["Chulo bar!", 5000]).map((e) => e), lines(["Indo wiji chad!", 5000]))[0].msg, /no light comes with it/);
   // CHAI-60 (SH-181): only each control's first call is lit; a second pot's "Chulo bar!" with no light is right
   const lit = [c("lit", 31292, { holes: [[531, 240, 571, 280]] }), c("lit", 33000, { holes: [] })];
-  assert.equal(run(check78, r, lit, lines(["Chulo bar!", 31270], ["Chulo bar!", 52000], ["Slow kar!", 60000])).length, 1, "the first Slow kar is still judged");
-  assert.equal(run(check78, r, lit, lines(["Chulo bar!", 31270], ["Chulo bar!", 52000])).length, 0, "a second Chulo bar is the call alone");
+  assert.equal(run(check78, r, at(lit, ["Chulo bar!", 31270], ["Chulo bar!", 52000], ["Slow kar!", 60000]), lines(["Chulo bar!", 31270], ["Chulo bar!", 52000], ["Slow kar!", 60000])).length, 1, "the first Slow kar is still judged");
+  assert.equal(run(check78, r, at(lit, ["Chulo bar!", 31270], ["Chulo bar!", 52000]), lines(["Chulo bar!", 31270], ["Chulo bar!", 52000])).length, 0, "a second Chulo bar is the call alone");
   // (s15-chai-12's run, L4 740x320: the first pot's knob was tapped before its "Chulo bar!" was said, so the first SAID one is the
   // second pot's, the call alone; its words had shown in Nani's box at the first pot's step)
   const box = (t, on) => c("texts", t, { list: on ? [{ t: "Chulo" }, { t: "bar" }] : [{ t: "Muke" }] });
-  assert.equal(run(check78, r, [box(37670, true), box(41000, false), box(51540, true)], lines(["Chulo bar!", 51990])).length, 0, "the control came up before, unsaid");
-  assert.equal(run(check78, r, [box(37670, true)], lines(["Chulo bar!", 37900])).length, 1, "its first opening is still judged");
+  assert.equal(run(check78, r, at([box(37670, true), box(41000, false), box(51540, true)], ["Chulo bar!", 51990]), lines(["Chulo bar!", 51990])).length, 0, "the control came up before, unsaid");
+  assert.equal(run(check78, r, at([box(37670, true)], ["Chulo bar!", 37900]), lines(["Chulo bar!", 37900])).length, 1, "its first opening is still judged");
 });
 
 test("contract-79 (B3, CHAI-42): the order card's light waits until nothing moves, then 500 ms", () => {
@@ -252,10 +259,11 @@ test("contract-89: a call while the helper names an item and is closed is a brea
 test("contract-74 on lab.html: the station's own start note counts (the host's segment is dated from the page's stage)", async () => {
   const { check74 } = await import("./lib/contract.mjs");
   const life = (t, what, reason, by = "") => c("life", t, { what, reason, by });
-  const tl = [life(1000, "stage-start", "cook/chai-tray"), life(9310, "stage-start", "cook:station"), life(9820, "order-skip", "589", "left:0")];
-  const segs = [{ key: "host:cook/chai-tray|cook:station1:marble", t0: 1000, t1: 20000 }];
+  const ord = (t, away) => c("s19ord", t, { pop: 0, fly: 0, away, rows: 4 });
+  const tl = [life(1000, "stage-start", "cook/chai-tray"), ord(1100, 4), c("input", 9230, { x: 1, y: 1, on: "canvas", play: true }), life(9310, "stage-start", "cook:station"), ord(9800, 0)];
+  const segs = [{ key: "host:cook/chai-tray", t0: 1000, t1: 9310 }];
   assert.equal(run(check74, { flow: "lab:cook/chai-tray" }, tl, segs).length, 0);
-  assert.equal(run(check74, { flow: "lab:cook/chai-tray" }, tl.slice(0, 1).concat(tl.slice(2)), segs).length, 1, "no station start at all");
+  assert.equal(run(check74, { flow: "lab:cook/chai-tray" }, tl.filter((e) => e.reason !== "cook:station"), segs).length, 1, "no station start at all");
 });
 
 test("contract-92 (SH-230): the light leaves room, or stops short of a neighbour, or at the edge", async () => {

@@ -1,5 +1,6 @@
-// Sprint 14 (s14-chai): the new contract checks for the s14 order row, the bubble's speaker and the skip (contract-72, 73, 74),
-// red then green on synthetic notes, and chai's level rules in the data (Zafar, 29 Oct). No browser. Run: node --test build/sandbox/contract-s14.test.mjs
+// Sprint 14 (s14-chai): the contract checks for the s14 order row, the bubble's speaker and the skip (contract-72, 73, 74), red then
+// green, and chai's level rules in the data (Zafar, 29 Oct). s19-checks-2: 72, 73 and 74 read the screen (lib/contract-s19b-hook.mjs:
+// s19row, s19spk, s19ord), so their tests are the probe's samples, not the game's notes. No browser. Run: node --test build/sandbox/contract-s14.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -12,26 +13,38 @@ const run = (fn, ...a) => {
   return out;
 };
 
-test("contract-72: a smooth glide within a card's width passes; a jump or a glide past it is a break", () => {
-  assert.equal(run(check72, [life(10, "row-glide", 120, "card:130 smooth")]).length, 0);
-  assert.equal(run(check72, [life(10, "row-glide", 120, "card:130")]).length, 1);
-  assert.equal(run(check72, [life(10, "row-glide", 220, "card:130 smooth")]).length, 0);
-  assert.equal(run(check72, [life(10, "row-glide", 400, "card:130 smooth")]).length, 1);
+const c = (t, k, o = {}) => ({ type: "c", k, t, ...o });
+// the order row's scroll as the probe sees it, frame by frame (each sample with the frame before: px its scroll, pt its time)
+const glide = (t, xs, w = 130) => xs.map((x, i) => c(t + i * 16, "s19row", { x, w, n: 4, vis: 1, px: i ? xs[i - 1] : 0, pt: t + i * 16 - 16 }));
+test("contract-72: a glide frame by frame passes; a move of more than a card in one frame, or a glide past 2.5 cards, is a break", () => {
+  const before = [c(0, "s19row", { x: 0, w: 130, n: 4, vis: 1, px: 0, pt: 0 })];
+  assert.equal(run(check72, {}, [...before, ...glide(100, [20, 60, 100, 120])]).length, 0);
+  assert.equal(run(check72, {}, [...before, ...glide(100, [140])]).length, 1, "140 px in one frame, a card is 130");
+  assert.equal(run(check72, {}, [...before, ...glide(100, [100, 200, 300, 400])]).length, 1, "past 2.5 cards");
+  // (a row that shows already scrolled was hidden as it moved: no jump; a late frame of 180 ms may hold a short glide)
+  assert.equal(run(check72, {}, [c(0, "s19row", { x: 0, w: 130, n: 4, vis: 0, px: 0, pt: 0 }), c(100, "s19row", { x: 140, w: 130, n: 4, vis: 1, px: 0, pt: 84 })]).length, 0);
+  assert.equal(run(check72, {}, [...before, c(300, "s19row", { x: 140, w: 130, n: 4, vis: 1, px: 0, pt: 120 })]).length, 0);
 });
 
-test("contract-73: the bubble's speaker at least the tap, 1.8 em and its icon 60%", () => {
-  assert.equal(run(check73, [life(5, "bubble-spk", 58, "em:57.6 icon:38 text:32")]).length, 0);
-  assert.equal(run(check73, [life(5, "bubble-spk", 40, "em:32.4 icon:26 text:18")]).length, 1);
-  assert.equal(run(check73, [life(5, "bubble-spk", 48, "em:57.6 icon:30 text:32")]).length, 1);
-  assert.equal(run(check73, [life(5, "bubble-spk", 58, "em:57.6 icon:24 text:32")]).length, 1);
+test("contract-73: a Cook line's speaker in a speech bubble is a break (SH-153, 1 Nov); a conversation's speaker under the tap is a break", () => {
+  const spk = (list, t = 100) => [c(t, "s19spk", { list }), c(t + 500, "s19spk", { list: [] })];
+  assert.equal(run(check73, {}, spk([{ cls: "cv-spk", box: [0, 0, 48, 48], text: "Salamun alaykum!" }])).length, 0);
+  assert.match(run(check73, {}, spk([{ cls: "wp-say", box: [0, 0, 58, 58], text: "Dudh wiji chad!" }]))[0].msg, /no speaker button in any speech bubble/);
+  assert.match(run(check73, {}, spk([{ cls: "cv-spk", box: [0, 0, 40, 40], text: "Salamun alaykum!" }]))[0].msg, /under the 48 px tap/);
+  // a bubble popping in (held under 300 ms) is not judged
+  assert.equal(run(check73, {}, [c(100, "s19spk", { list: [{ cls: "cv-spk", box: [0, 0, 30, 30], text: "x" }] }), c(200, "s19spk", { list: [] })]).length, 0);
 });
 
-test("contract-74: a tap lands every card within 1 s and the station follows within 1 s", () => {
+test("contract-74: a tap during the order lands every card within 1 s and the station follows within 1 s", () => {
+  const ord = (t, pop, away) => c(t, "s19ord", { pop, fly: 0, away, rows: 4 });
+  const tap = (t) => c(t, "input", { x: 1, y: 1, on: "canvas", play: true });
   const segs = [{ key: "cook:order", t0: 0 }, { key: "cook:station1:marble", t0: 1500 }];
-  assert.equal(run(check74, { flow: "cook:chai-tray" }, [life(1200, "order-skip", 200, "left:0")], segs).length, 0);
-  assert.equal(run(check74, { flow: "cook:chai-tray" }, [life(1200, "order-skip", 200, "left:2")], segs).length, 1);
-  assert.equal(run(check74, { flow: "cook:chai-tray" }, [life(2200, "order-skip", 1200, "left:0")], [{ key: "cook:station1:marble", t0: 2300 }]).length >= 1, true);
-  assert.equal(run(check74, { flow: "cook:chai-tray" }, [life(1200, "order-skip", 200, "left:0")], [{ key: "cook:station1:marble", t0: 3000 }]).length, 1);
+  const R = { flow: "cook:chai-tray" };
+  assert.equal(run(check74, R, [ord(0, 0, 4), ord(500, 1, 3), tap(1000), ord(1200, 0, 0)], segs).length, 0);
+  assert.match(run(check74, R, [ord(0, 0, 4), ord(500, 1, 3), tap(1000), ord(1200, 0, 2)], segs)[0].msg, /2 cards not yet in its row/);
+  assert.match(run(check74, R, [ord(0, 0, 4), tap(1000), ord(1200, 0, 0)], [{ key: "cook:station1:marble", t0: 3000 }])[0].msg, /started 2000 ms after/);
+  // no tap during the order: not judged
+  assert.equal(run(check74, R, [ord(0, 0, 4), ord(1200, 0, 0), tap(3000)], segs).length, 0);
 });
 
 test("chai's level rules (Zafar, 29 Oct): L1 no no-asks, names from L3, decoys 1-4 with the lookalike at L4, the card always open", () => {
@@ -52,11 +65,6 @@ test("chai's level rules (Zafar, 29 Oct): L1 no no-asks, names from L3, decoys 1
 });
 
 // s14-rules (Zafar, 29 Oct, round 4): the central rules' skip zones, the pop-out off faces, the first-time hold, the row's way home
-test("contract-72 (s14-rules): the row's way back to its first card after the order is a row-home note: any length, never a jump", () => {
-  assert.equal(run(check72, [life(10, "row-home", 400, "card:130 smooth")]).length, 0);
-  assert.equal(run(check72, [life(10, "row-home", 400, "card:130")]).length, 1);
-});
-
 test("contract-75: a tap on a bubble, the side or the cog never skips; a tap in the play area does", () => {
   assert.equal(run(check75, [life(1000, "skip-zone", "bubble", "skipped:0")]).length, 0);
   assert.equal(run(check75, [life(1000, "skip-zone", "bubble", "skipped:0"), life(1300, "order-skip", 200, "left:0")]).length, 1, "the bubble skipped");
@@ -69,39 +77,21 @@ test("contract-76: the big pop-out card over a face is a break", () => {
   assert.equal(run(check76, [life(10, "pop-face", 340, "faces:2 w:180")]).length, 1);
 });
 
-test("contract-77: the first-time hold: never a returning player's, always ended by the tap", () => {
-  const hold = [life(10, "timed-hold", "start", "nana 0.76"), life(900, "timed-hold", "end", "nana 0.76 890ms")];
-  assert.equal(run(check77, { flow: "cook:chai-tray" }, hold).length, 0);
-  assert.equal(run(check77, { flow: "cook:chai-tray#returning" }, hold).length, 1);
-  assert.equal(run(check77, { flow: "cook:chai-tray" }, hold.slice(0, 1)).length, 1);
-  assert.equal(run(check77, { flow: "cook:chai-tray" }, []).length, 0);
-});
+// (contract-77 reads the kit's heat ring since s19-checks-2: its tests are in build/sandbox/contract-chai.test.mjs)
 
-// Sprint 17 (s17-chk1): CONTROL_CALLS, S14_TAPS and the decoys read the per-game data list (data/games.json): a fake game added to
-// the list is checked by contract-78 (its control's call with no light) and contract-37 (its decoys), and not before it is listed
+// s19-checks-2 (no opt-ins): contract-78's control calls and contract-37's decoys come from the page, not data/games.json: a game is
+// judged the day it plays, never the day it is listed
 import { analyse } from "./lib/contract.mjs";
-import { CONTROL_CALLS, check78 } from "./lib/contract-s14.mjs";
-import { GAMES, setGames, S14_TAPS, DECOY_STATIONS } from "./lib/contract-chai.mjs";
+import { check78 } from "./lib/contract-s14.mjs";
 
-test("a fake game added to the list: its control calls, its finger-free light and its decoys are checked", () => {
-  const tan = { stations: ["tandoor"], controlCalls: { words: ["dhimo kar"] }, s14Taps: true, decoys: "exact" };
-  const call = { lines: [{ role: "call", text: "Dhimo kar!", t0: 1000, t1: 1800 }] };
-  const page = (tl) => analyse({ flow: "cook:tandoor@L2", size: "1366x768", t0: 0, states: [], timeline: [{ type: "c", k: "stage", key: "cook:station1:marble", t: 0 }, ...tl] }, { lexicon: new Set(), numbers: new Set() });
-  const decoys = [life(500, "decoys", 1, "shelf")];
-  const of37 = (out) => out.filter((b) => b.check === "contract-37");
-  assert.equal(CONTROL_CALLS.tandoor, undefined);
-  assert.equal(run(check78, { flow: "cook:tandoor" }, [], call).length, 0, "not listed: not judged");
-  assert.equal(of37(page(decoys)).length, 0, "not listed: its decoys not judged");
-  const was = setGames({ ...GAMES, games: { ...GAMES.games, tandoor: tan } });
-  try {
-    assert.deepEqual(CONTROL_CALLS.tandoor, ["dhimo kar"]);
-    assert.deepEqual(CONTROL_CALLS["chai-tray"], ["chulo bar", "slow kar"], "chai's calls stay");
-    assert.match(run(check78, { flow: "cook:tandoor" }, [], call)[0].msg, /no light comes with it/);
-    assert.ok(S14_TAPS.test("tandoor") && DECOY_STATIONS.test("tandoor"));
-    assert.match(of37(page(decoys))[0].measured, /tandoor, shelf at L2\): 1 decoy, the table wants 2/);
-    assert.equal(of37(page([life(500, "decoys", 2, "shelf")])).length, 0);
-  } finally {
-    setGames(was);
-  }
-  assert.equal(CONTROL_CALLS.tandoor, undefined, "taken off the list");
+test("contract-78 and -37 judge any game from the page: a call said in a heat ring's green is a control's; the shelf's decoys are counted", () => {
+  const ring = [0.3, 0.5, 0.62, 0.7].map((lv, i) => c(800 + i * 100, "s19ring", { id: 1, lv, lo: 0.6, hi: 0.9 }));
+  const call = { lines: [{ role: "call", text: "Dhimo kar!", t0: 1000, t1: 1800, plays: [{}] }] };
+  assert.match(run(check78, { flow: "cook:tandoor" }, ring, call)[0].msg, /no light comes with it/);
+  assert.equal(run(check78, { flow: "cook:tandoor" }, [...ring, c(1050, "lit", { holes: [[1, 1, 2, 2]] })], call).length, 0, "its light with it");
+  assert.equal(run(check78, { flow: "cook:tandoor" }, [], call).length, 0, "no ring, no knob: not a control's call");
+  // contract-37: the shelf's things the order card does not ask for, by level (L2: 2)
+  const page = (shelf) => analyse({ flow: "cook:tandoor@L2", size: "1366x768", t0: 0, states: [], timeline: [c(0, "stage", { key: "cook:station1:marble" }), c(100, "s19pad", { box: [0, 0, 300, 300], row: [10, 50, 290, 250], cards: [{ w: "atto", done: 0, box: [10, 50, 120, 250], in: [17, 57, 113, 243] }] }), c(500, "s19shelf", { items: shelf.map((id) => ({ id, foot: 600, chip: 640 })) }), c(2000, "s19shelf", { items: [] })] }, { lexicon: new Set(), numbers: new Set() }).filter((b) => b.check === "contract-37");
+  assert.match(page(["cook-atto", "veg-01"])[0].measured, /1 decoy on the shelf .* the table wants 2/);
+  assert.equal(page(["cook-atto", "veg-01", "veg-02"]).length, 0);
 });

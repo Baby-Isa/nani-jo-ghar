@@ -29,13 +29,17 @@ test("contract-42 (ART-08): a kit circle at its token passes; a game's own face,
   assert.equal(run([fk([{ ...ok, w: 48, h: 48 }]), fk([{ ...ok, w: 48, h: 48 }], 1500)], "contract-42").length, 1);
 });
 
-// (the S14 roll-out: a station whose showing is all taps has no finger at all, as chai; the finger rules below are a gesture station's, maani's roll)
+// (the S14 roll-out: a station whose showing is all taps has no finger at all, as chai; the finger rules below are a gesture station's, maani's
+// roll. s19-checks-2, no opt-in: a gesture station is known from the page, the kit's ghost logging its gesture, not from games.json)
+const ROLL = { type: "c", k: "s19ghost", t: 1050, at: 1050, step: "roll#0", gesture: "path", game: false };
 test("contract-44 (SH-130): one kit finger passes; a game's own finger or two at once is a break", () => {
   const fg = (list, help, t) => ({ type: "c", k: "fingers", t, list, help });
   const kit = { sel: "div.ob-finger", kit: true };
-  assert.equal(run([fg([kit], true, 1200), fg([], false, 5000)], "contract-44", "cook:maani-line").length, 0);
-  assert.match(run([fg([{ sel: "div.co-finger", kit: false }], false, 1200)], "contract-44", "cook:maani-line")[0].measured, /finger of its own/);
-  assert.match(run([fg([kit, kit], true, 1200)], "contract-44", "cook:maani-line")[0].measured, /2 fingers on screen at once/);
+  assert.equal(run([ROLL, fg([kit], true, 1200), fg([], false, 5000)], "contract-44", "cook:maani-line").length, 0);
+  assert.match(run([ROLL, fg([{ sel: "div.co-finger", kit: false }], false, 1200)], "contract-44", "cook:maani-line")[0].measured, /finger of its own/);
+  assert.match(run([ROLL, fg([kit, kit], true, 1200)], "contract-44", "cook:maani-line")[0].measured, /2 fingers on screen at once/);
+  // a station whose kit ghosts are all taps (none logged a gesture): a finger on screen is a break, as chai's (no games.json field)
+  assert.match(run([fg([kit], true, 1200)], "contract-44", "cook:eggs")[0].measured, /a finger on screen/);
 });
 
 test("contract-44 (SH-130): the help's spotlight with no finger for 2 s or more is a break; a moment before the finger comes is not", () => {
@@ -52,7 +56,7 @@ test("contract-44 (SH-130): the help's spotlight with no finger for 2 s or more 
   assert.equal(run([tap, fg([], true, 1200), fg([], false, 1200 + SPOT_NO_FINGER_MS + 1500)], "contract-44", "cook:maani-line").length, 0);
   assert.equal(run([fg([], true, 1200), fg([], false, 1200 + SPOT_NO_FINGER_MS + 1500)], "contract-44", "cook:maani-line").length, 0);
   // the finger comes 300 ms after the box
-  assert.equal(run([fg([], true, 1200), fg([kit], true, 1500), fg([], false, 9000)], "contract-44", "cook:maani-line").length, 0);
+  assert.equal(run([ROLL, fg([], true, 1200), fg([kit], true, 1500), fg([], false, 9000)], "contract-44", "cook:maani-line").length, 0);
 });
 
 test("contract-44 in chai (Zafar, 28 Oct: no finger, no target): the lit box alone passes; any finger is a break", () => {

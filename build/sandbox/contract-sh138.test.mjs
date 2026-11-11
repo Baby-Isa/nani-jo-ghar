@@ -30,10 +30,10 @@ test("contract-54: the side panel's buttons inside it are no break; one outside 
 
 const head = { who: "nana", src: "cook", box: { l: 400, t: 100, r: 480, b: 180 } };
 const bub = (t, box) => ({ type: "c", k: "bubble", t, list: [{ who: "nana", text: "Salamun alaykum!", box, tail: { x: 440, y: 95 }, kit: true }], heads: [head], play: { l: 250, t: 0, r: 740, b: 320 }, side: { l: 0, t: 0, r: 250, b: 320 }, vw: 740, vh: 320 });
-test("contract-52: a bubble above the head is no break; over the face, or into the side panel, is", () => {
+test("contract-52: a bubble above the head is no break; over the face is (its side-panel half retired: contract-86's)", () => {
   assert.equal(of(run(page([bub(T, { l: 380, t: 20, r: 560, b: 90 })])), "contract-52").length, 0, "green: above his head");
   assert.match(of(run(page([bub(T, { l: 300, t: 110, r: 560, b: 190 })])), "contract-52")[0].measured, /covers nana's face/);
-  assert.match(of(run(page([bub(T, { l: 200, t: 20, r: 420, b: 90 })])), "contract-52")[0].measured, /side panel/);
+  assert.equal(of(run(page([bub(T, { l: 200, t: 20, r: 420, b: 90 })])), "contract-52").length, 0, "into the side panel: contract-86's, not 52's");
 });
 
 const spot = (t, hole, things) => ({ type: "c", k: "spot", t, holes: [hole], things });

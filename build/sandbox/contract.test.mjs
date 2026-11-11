@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { analyse, bubbleOk, inCorner, decided } from "./lib/contract.mjs";
+import { check34, analyse, bubbleOk, inCorner, decided } from "./lib/contract.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const fx = (n) => JSON.parse(readFileSync(join(ROOT, "build", "sandbox", "fixtures", "contract", `${n}.json`), "utf8"));
@@ -275,15 +275,17 @@ test("contract-18: a hidden count written in as it is heard is not a change of w
   assert.equal(run("ba khun", "trae khun").length, 1);
 });
 
-test("contract-34 (SH-106): a go-on button with no arrow (sekelo's grill picture in its place) is a break; with it, or the ✓, passes", () => {
+test("contract-34 (SH-106): its go-on arrow half is retired (s19-checks-2, contract-103's in Cook): the page run no longer reports it; its code still judges", () => {
   const btn = (b) => ({ type: "c", k: "buttons", t: 1200, list: [b], exp: null });
-  const page = (b) => analyse({ flow: "cook:mishkaki-grill", size: "1366x768", t0: 1000, states: [], timeline: [{ type: "c", k: "stage", key: "cook:station2:marble", t: 1000 }, btn(b)] }, { lexicon: new Set(), numbers: new Set() }).filter((x) => x.check === "contract-34");
-  const go = { sel: "button#go-btn.njg-btn.njg-next", text: "", box: [0, 0, 200, 110], go: true };
-  const b = page({ ...go, arrow: false });
-  assert.equal(b.length, 1);
-  assert.match(b[0].measured, /#go-btn.* has no arrow/);
-  assert.equal(page({ ...go, arrow: true }).length, 0);
-  assert.equal(page({ sel: "button#done-btn.njg-btn.njg-done", go: false, arrow: null }).length, 0);
+  const tl = (b) => [{ type: "c", k: "stage", key: "cook:station2:marble", t: 1000 }, btn(b)];
+  const page = (b) => analyse({ flow: "cook:mishkaki-grill", size: "1366x768", t0: 1000, states: [], timeline: tl(b) }, { lexicon: new Set(), numbers: new Set() }).filter((x) => x.check === "contract-34");
+  const go = { sel: "button#go-btn.njg-btn.njg-next", text: "", box: [0, 0, 200, 110], go: true, kit: true };
+  assert.equal(page({ ...go, arrow: false }).length, 0, "retired from the run");
+  // (the code kept, out of the run, so it can come back: called alone it still goes red)
+  const out = [];
+  check34(tl({ ...go, arrow: false }), [{ key: "cook:station2:marble", t0: 1000, t1: null }], (c, t, m) => out.push(m));
+  assert.equal(out.length, 1);
+  assert.match(out[0], /#go-btn.* has no arrow/);
 });
 
 test("contract-50 (SAM-24): samosa's card rows tick together at the one tick; one kind ticked early is a break; a redo starts over", () => {

@@ -215,12 +215,18 @@ export const TOOL_STEP = { panelcheck: "panel", labcheck: "labcheck", leak: "lea
 export const EXTRA_STEPS = {
   voicegate: { file: "build/tools/juice/voicegate.mjs", games: null, what: "no effect over a voice, read from the sandbox run's sound log (no browser)" },
   spkgap: { file: "build/tools/review/spkgap.mjs", games: null, what: "the gap between speakers' lines at the four sizes" },
-  lightfollow: { file: "build/tools/review/lightfollow.mjs", games: null, what: "a new player who taps what is lit gets through the first order" },
   faces: { file: "build/tools/review/faces.mjs", games: null, what: "every face box reads from the test hook at L4" },
   tapgate: { file: "build/tools/review/tapgate.mjs", games: ["chai-tray"], what: "a phone's rule: the play button shows and one tap starts the game" },
   pillcheck: { file: "build/tools/review/pillcheck.mjs", games: ["chai-tray"], what: "the shelf pills fit their word and never touch" },
 };
 export const ALL_STEPS = [...DEFAULT_STEPS, ...Object.keys(EXTRA_STEPS)];
+// review tools retired from the audit (their code kept, out of the run, so they can come back): a rule citing one reads judge, with why
+// (s19-checks-2, the check sort's G0: lightfollow counted the light's layers from data-holes; contract-87, then contract-112, judge the
+// light on every page from the screen)
+export const RETIRED_TOOLS = {
+  lightfollow: { file: "build/tools/review/lightfollow.mjs", why: "retired from the audit (s19-checks-2): contract-87 and contract-112 judge every light on the page run" },
+  shotdiff: { file: "build/tools/review/shotdiff.mjs", why: "retired (8 Nov, s19-checks; out of the skeleton, s19-checks-2): no approved run since Sprint 8; sidebyside.mjs shows the look beside chai" },
+};
 // review tools that make a picture, a map or a list for the eye, or judge no Cook game: judge, with the reason
 export const JUDGE_TOOLS = {
   kitsheet: { file: "build/tools/review/kitsheet.mjs", why: "makes one sheet per shared element for the judge, no pass or fail per game" },
@@ -301,6 +307,7 @@ export function resolveTerm(term, ctx) {
       return st.ok ? { result: "pass", note: `audit ${step}` } : { result: "fail", note: `audit ${step}: ${st.text.slice(0, 80)}` };
     }
     if (JUDGE_TOOLS[ref]) return { result: "judge", note: JUDGE_TOOLS[ref].why };
+    if (RETIRED_TOOLS[ref]) return { result: "judge", note: RETIRED_TOOLS[ref].why };
     if (PROCESS_TOOLS[ref]) return { result: "judge", note: "process tool: judges a session, not a game" };
     return { result: "not run", note: "the audit has no step for it" };
   }

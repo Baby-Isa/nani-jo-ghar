@@ -13,11 +13,11 @@
 //
 //   Optional steps (Sprint 17, the review tools the standard's rules cite; each takes the game and exits 1 on a fault), run only when asked:
 //   6 voicegate no effect over a voice, read from the game's sandbox run (the audit's own run when step 1 ran, else the newest run of the game)
-//   7 spkgap    the gap between speakers' lines   8 lightfollow  a new player who taps what is lit
+//   7 spkgap    the gap between speakers' lines   (8 lightfollow retired, s19-checks-2: contract-87 and -112 judge the light)
 //   9 faces     every face box reads              10 tapgate  a phone's first tap (chai-tray only)   11 pillcheck  the shelf pills (chai-tray only)
 //   --only <key,key> runs just those (the other rows of today's report stay); --steps all runs the five above and these six.
 //
-//   node build/tools/review/audit.mjs <game> [--only sandbox,panel,labcheck,leak,load,voicegate,spkgap,lightfollow,faces,tapgate,pillcheck | --steps all] [--leak <config>]
+//   node build/tools/review/audit.mjs <game> [--only sandbox,panel,labcheck,leak,load,voicegate,spkgap,faces,tapgate,pillcheck | --steps all] [--leak <config>]
 //   e.g. node build/tools/review/audit.mjs chai-tray        (Cook games for now: the lab page is lab.html?mode=cook&game=<game>)
 //
 //   node build/tools/review/audit.mjs --standard <game> [--run <sandbox run id or folder>] [--play | --no-play] [--run-checks | --checks <file>]
@@ -153,7 +153,6 @@ const soundRun = want("sandbox") ? join(RUNS, `audit-${game}-${stamp}`) : latest
 if (!soundRun || !existsSync(soundRun)) skip("voicegate", `no sandbox run of this game to read (run: audit.mjs ${game} --only sandbox)`);
 else run("voicegate", EXTRA_STEPS.voicegate.what, EXTRA_STEPS.voicegate.file, [soundRun], 5);
 run("spkgap", EXTRA_STEPS.spkgap.what, EXTRA_STEPS.spkgap.file, ["--game", game], 20);
-run("lightfollow", EXTRA_STEPS.lightfollow.what, EXTRA_STEPS.lightfollow.file, ["--game", game], 10);
 run("faces", EXTRA_STEPS.faces.what, EXTRA_STEPS.faces.file, ["--game", game], 5);
 for (const key of ["tapgate", "pillcheck"]) {
   if (chaiOnly(key)) { skip(key, `${key} reads ${EXTRA_STEPS[key].games.join(", ")} only so far`); continue; }
