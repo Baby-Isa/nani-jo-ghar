@@ -516,14 +516,14 @@
    "size": "M",
    "view": "F",
    "states": {
-    "raw": "assets/cook/items/v4/baking/tray-raw.webp",
-    "puff": "assets/cook/proto/baking/naan-puff.webp",
-    "golden": "assets/cook/items/v4/baking/tray-baked.webp",
-    "deep": "assets/cook/proto/baking/naan-deep.webp"
+    "raw": "assets/cook/items/v4/baking/naan-tray-raw.webp",
+    "part": "assets/cook/items/v4/baking/naan-tray-part.webp",
+    "golden": "assets/cook/items/v4/baking/naan-tray-baked.webp",
+    "over": "assets/cook/items/v4/baking/naan-tray-over.webp"
    },
    "px": [
-    400,
-    210
+    819,
+    350
    ],
    "word": "ph-naan",
    "english": "naan",
@@ -536,7 +536,9 @@
    ],
    "_note": "on its tray, registered with the tray: in the oven by the ring's progress; the tray alone is items.tray",
    "replaces": "assets/cook/proto/bake-naan.webp",
-   "_v4": "S19 (s19-wave-e2): the naan on its tray raw and baked (B3 #87: two stages; four not solved), on the worktop left of the oven, above the band"
+   "_v4": "S19 (s19-wave-e2): the naan on its tray raw and baked, on the worktop left of the oven, above the band. s19-games-2 (11 Nov; ART-73, the k2 run's B3a and B3b): four stages, raw, part-baked, baked and overdone (naan-tray-*; the trays came about 90% of their panel, so drawn.w sets the size in code). In the oven it shows through the door's glass on the rack, raw, part-baked as its ring passes part, baked at the ring's green; left in the oven overMs (mechanic.overMs, else bakeMs) past it, overdone: a look, never a verdict (as the fried egg's)",
+   "part": 0.4,
+   "_part": "the ring's share at which the naan in the oven turns part-baked (it is baked at the ring's green, 0.8)"
   },
   "naanOut": {
    "size": "M",
@@ -782,8 +784,6 @@
   "assets/cook/proto/baking/jug-yoghurt.webp",
   "assets/cook/proto/baking/jug-sugar.webp",
   "assets/cook/proto/baking/tray.webp",
-  "assets/cook/proto/baking/naan-puff.webp",
-  "assets/cook/proto/baking/naan-deep.webp",
   "assets/cook/proto/baking/naan-alone.webp",
   "assets/cook/props/dough-ball.webp",
   "assets/cook/items/shelf-cook-atto-bare-f.webp",
@@ -800,6 +800,7 @@
   "assets/cook/items/v4/baking/bowl-*.webp",
   "assets/cook/items/v4/baking/jug-0.webp",
   "assets/cook/items/v4/baking/jug-4.webp",
-  "assets/cook/items/v4/baking/tray-*.webp"
+  "assets/cook/items/v4/baking/tray-*.webp",
+  "assets/cook/items/v4/baking/naan-tray-*.webp"
  ]
 }

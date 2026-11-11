@@ -292,15 +292,16 @@
    "word": null,
    "flip": true,
    "body": {
-    "cx": 0.3528,
-    "cy": 0.4992,
-    "r": 0.3211,
-    "rIn": 0.285,
-    "_note": "the top-down pot (10 Nov's run; ART-75 redoes its uneven wall, same names and box): its round body 289 px round (317.5, 294) on 900 x 589, measured from its alpha; flipped so its handle points left, as chai's pan"
+    "cx": 0.2915,
+    "cy": 0.4988,
+    "r": 0.2728,
+    "rIn": 0.2222,
+    "_note": "the top-down pot redone with an even wall (the k2 run's P1, 11 Nov): its round body 245.5 px round (262.4, 250.9) on 900 x 503, fitted to its alpha's rim (the spout and handle left out); its floor's edge at 200 px (the wall's shadow line); flipped so its handle points left, as chai's pan"
    },
-   "reach": 2.0,
+   "reach": 2.59,
    "angle": -45,
-   "_trial": "Zafar, 10 Nov: tried in eggs behind scene.potTrial; if it looks better it replaces chai's too, else neither"
+   "_trial": "Zafar, 10 Nov: tried in eggs behind scene.potTrial; if it looks better it replaces chai's too, else neither",
+   "_reach": "its handle's end from its middle over its rim radius ((898 - 262.4) / 245.5)"
   },
   "pan": {
    "size": "L",
@@ -329,16 +330,16 @@
    "size": "S",
    "view": "T",
    "states": {
-    "brown": "assets/cook/proto/eggs/egg-brown.webp"
+    "brown": "assets/cook/items/v4/eggs/egg-whole.webp"
    },
    "px": [
-    100,
-    79
+    265,
+    205
    ],
    "word": "n.egg",
    "inPot": 0.62,
-   "_note": "a whole egg lifted from the bowl (brown, as the bowl's), whole in the pot: inPot its width over the pot's floor radius",
-   "card": "assets/cook/proto/eggs/egg-brown.webp"
+   "_note": "a whole egg lifted from the bowl (brown, as the bowl's), whole in the pot: inPot its width over the pot's floor radius. s19-games-2 (11 Nov): the k2 run's E5 whole egg (v4 egg-whole, 265 x 205) replaces the 100 px prototype, here and on its card",
+   "card": "assets/cook/items/v4/eggs/egg-whole.webp"
   },
   "friedEgg": {
    "size": "S",
@@ -367,15 +368,21 @@
    "word": "ph-boiledegg",
    "english": "boiled egg",
    "states": {
-    "a": "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
-    "b": "assets/cook/items/v4/eggs/egg-boiled-half-b.webp"
+    "runny-a": "assets/cook/items/v4/eggs/boiled-runny-a.webp",
+    "runny-b": "assets/cook/items/v4/eggs/boiled-runny-b.webp",
+    "soft-a": "assets/cook/items/v4/eggs/boiled-soft-a.webp",
+    "soft-b": "assets/cook/items/v4/eggs/boiled-soft-b.webp",
+    "firm-a": "assets/cook/items/v4/eggs/boiled-firm-a.webp",
+    "firm-b": "assets/cook/items/v4/eggs/boiled-firm-b.webp",
+    "over-a": "assets/cook/items/v4/eggs/boiled-over-a.webp",
+    "over-b": "assets/cook/items/v4/eggs/boiled-over-b.webp"
    },
    "px": [
-    195,
-    300
+    150,
+    220
    ],
-   "_note": "no Kutchi yet: grey English. In the pot it is the whole egg (items.egg); on a plate its two halves side by side (S19 wave C)",
-   "card": "assets/cook/items/v4/eggs/egg-boiled-half-a.webp"
+   "_note": "no Kutchi yet: grey English. In the pot it is the whole egg (items.egg); on a plate its two halves side by side. s19-games-2 (11 Nov; E5, audit decision 5): the halves in four stages, the one shown read from the egg's ring as it is lifted (js/cook/stations/eggs.js boiledLook: runny before the green, which the game never lets out; soft in the green's first half; firm after; over once it is left past its full ring for mechanic overMs, as the fried egg's overdone): a look, never a verdict. Only the three a lift can show are loaded",
+   "card": "assets/cook/items/v4/eggs/boiled-soft-a.webp"
   },
   "bowl": {
    "size": "M",
@@ -531,11 +538,11 @@
  "vocab": {
   "n.egg": {
    "item": "egg",
-   "card": "assets/cook/proto/eggs/egg-brown.webp"
+   "card": "assets/cook/items/v4/eggs/egg-whole.webp"
   },
   "ph-boiledegg": {
    "item": "boiledEgg",
-   "card": "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
+   "card": "assets/cook/items/v4/eggs/boiled-soft-a.webp",
    "english": "boiled egg"
   },
   "a.fried": {
@@ -590,9 +597,6 @@
   "assets/cook/items/v4/eggs/egg-part.webp",
   "assets/cook/items/v4/eggs/egg-cooked.webp",
   "assets/cook/items/v4/eggs/egg-overdone.webp",
-  "assets/cook/items/v4/eggs/egg-boiled-half-a.webp",
-  "assets/cook/items/v4/eggs/egg-boiled-half-b.webp",
-  "assets/cook/proto/eggs/egg-brown.webp",
   "assets/cook/items/v4/eggs/plate-table.webp",
   "assets/cook/items/v4/eggs/fried-table.webp",
   "assets/cook/items/v4/eggs/boiled-halves-table.webp",
@@ -605,7 +609,14 @@
   "assets/cook/items-s17-stove/f-eggs-in-a-box.webp",
   "assets/cook/items-s17-stove/f-salt-jar.webp",
   "assets/cook/items-s17-stove/f-black-pepper-jar.webp",
-  "assets/cook/items/v4/kit/pot-water.webp"
+  "assets/cook/items/v4/kit/pot-water.webp",
+  "assets/cook/items/v4/eggs/egg-whole.webp",
+  "assets/cook/items/v4/eggs/boiled-soft-a.webp",
+  "assets/cook/items/v4/eggs/boiled-soft-b.webp",
+  "assets/cook/items/v4/eggs/boiled-firm-a.webp",
+  "assets/cook/items/v4/eggs/boiled-firm-b.webp",
+  "assets/cook/items/v4/eggs/boiled-over-a.webp",
+  "assets/cook/items/v4/eggs/boiled-over-b.webp"
  ],
- "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic, cardOfIds): one card per egg (CK-64), the fried egg (v4 egg-cooked) for 'tarelo indo', a boiled egg's half (v4 egg-boiled-half-a) for 'boiled egg', one brown egg for 'indo'"
+ "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic, cardOfIds): one card per egg (CK-64), the fried egg (v4 egg-cooked) for 'tarelo indo', a boiled egg's soft half (v4 boiled-soft-a, s19-games-2) for 'boiled egg', the whole egg (v4 egg-whole) for 'indo'"
 }

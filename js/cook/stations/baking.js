@@ -61,7 +61,8 @@ import { setTimeout } from "../life.js";
     const list = [sc.bg ? ["bk-bg", sc.bg] : null, ["bk-cat", (sc.cat || {}).file]].filter(Boolean);
     Object.entries((I.mixBowl || {}).states || {}).forEach(([k, f]) => list.push([`bk-bowl-${k}`, f]));
     Object.entries((sc.oven || {}).states || {}).forEach(([k, f]) => list.push([`bk-oven-${k}`, f]));
-    ["raw", "golden"].forEach((k) => list.push([`bk-naan-${k}`, ((I.naan || {}).states || {})[k]]));
+    // (s19-games-2, ART-73: the naan's four stages, raw, part-baked, baked and overdone, each a look of its tray)
+    ["raw", "part", "golden", "over"].forEach((k) => list.push([`bk-naan-${k}`, ((I.naan || {}).states || {})[k]]));
     onShelf.forEach((id) => list.push([`bk-${id}`, ((I.containers || {}).files || {})[id]]));
     plan.forEach((s) => list.push([`bk-stream-${s.id}`, ((I.streams || {}).files || {})[s.id]]));
     if (jug) {
@@ -491,7 +492,39 @@ import { setTimeout } from "../life.js";
         unlight();
       });
     };
-    const rackY = oy + ov.displayHeight * 0.18;
+    // (s19-games-2: on the rack behind the door's glass, the window's middle: O.rack its share of the oven's height from the top)
+    const rackY = oy - ov.displayHeight / 2 + ov.displayHeight * (O.rack || 0.59);
+    // the naan's look, faded into the next over 0.4 s (a second picture over it, then the naan takes it: no snap, contract-114)
+    let lookFade = null;
+    // (a tray's pictures differ by a few px: the naan keeps its drawn width as it takes the next)
+    const take = (t) => {
+      const dw = naan.displayWidth;
+      naan.setTexture(t).setScale(dw / Math.max(1, naan.width));
+    };
+    const toLook = (k) => {
+      const t = `bk-naan-${k}`;
+      if (!S.textures.exists(t) || (lookFade ? lookFade.texture.key : naan.texture.key) === t) return;
+      if (lookFade) lookFade.destroy();
+      const f = T(S.add.image(naan.x, naan.y, t).setDepth(naan.depth + 0.01).setAlpha(0));
+      f.setScale(naan.scaleX * (naan.width / Math.max(1, f.width)));
+      lookFade = f;
+      S.tweens.add({ targets: f, alpha: 1, duration: 400 / (Cook.speed || 1), onComplete: () => {
+        if (lookFade !== f) return;
+        if (naan.active) take(t);
+        f.destroy();
+        lookFade = null;
+      } });
+    };
+    const endLook = () => {
+      if (!lookFade) return;
+      const t = lookFade.texture.key;
+      lookFade.destroy();
+      lookFade = null;
+      if (naan.active) take(t);
+    };
+    // the door's glass over the naan while it bakes: the baking oven's own window (O.glass: its box in the picture's px), faint
+    const G = O.glass || [185, 245, 470, 215];
+    let glass = null;
     // (contract-36: each step's call as it opens, from the engine only, R2: "open" said as a command; the naan "put in", as the
     // shelf's things are; where a word has no recording yet the engine shows its English in grey, a gap on the recording sheet)
     const call = (l, step) => {
@@ -520,13 +553,16 @@ import { setTimeout } from "../life.js";
     // (SH-256, contract-114: in the oven within 15% of its size on the tray, where it rests again when it comes out)
     await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" });
     await Cook.wait(200);
-    naan.setVisible(false);
     if (face) face.setVisible(false);
     ov.setTexture("bk-oven-baking");
+    // (s19-games-2: the naan stays in view through the glass, its tray on the rack, the glass's glow faint over it)
+    glass = T(S.add.image(ov.x, ov.y, "bk-oven-baking").setScale(ov.scaleX).setDepth(naan.depth + 0.5).setAlpha(O.glassAlpha || 0.4));
+    glass.setCrop(G[0], G[1], G[2], G[3]);
     Cook.sfx.click();
     setBusy(false);
     // 3. it bakes: the ring fills; steam from the vent
     const bakeMs = (K.bakeMs || 3600) / (Cook.speed || 1);
+    const partAt = N.part || 0.4;
     const t0 = Date.now();
     const rx = ox + ov.displayWidth / 2 - 70;
     const ry = oy - ov.displayHeight / 2 + 40;
@@ -538,21 +574,32 @@ import { setTimeout } from "../life.js";
         ring.lineStyle(10, col("ringBand"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2 + 0.8 * Math.PI * 2, (3 * Math.PI) / 2).strokePath();
         ring.lineStyle(6, q >= 0.8 ? col("ringDone") : col("ringFill"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2, -Math.PI / 2 + q * Math.PI * 2).strokePath();
         if (Math.random() < 0.04) steam(ox, oy - ov.displayHeight / 2, 1);
+        if (q >= partAt) toLook(q >= 0.8 ? "golden" : "part");
         if (q >= 0.8) {
           off();
           resolve();
         }
       });
     });
-    // 4. take it out ("Tayar ai." with the oven's light: it belongs to this step, never the naan's before it, contract-36)
+    // 4. take it out ("Tayar ai." with the oven's light: it belongs to this step, never the naan's before it, contract-36); left in
+    // the oven overMs past its green, the naan browns (overdone: a look, never a verdict, as the fried egg's; ART-73)
+    const overMs = (K.overMs || K.bakeMs || 3600) / (Cook.speed || 1);
+    const tReady = Date.now();
+    const offOver = z.tick(() => {
+      if (Date.now() - tReady < overMs) return;
+      offOver();
+      toLook("over");
+    });
     expectTap(ov, "ph-naan");
     await tapOn(ov, "oven-out", () => say(line("ready", "call")));
+    offOver();
     z.expect({ kind: "wait" });
     ring.clear();
     ov.setTexture("bk-oven-open");
+    if (glass) glass.destroy();
+    endLook();
     Cook.sfx.click();
     speak(line("careful", "react"));
-    naan.setTexture("bk-naan-golden").setVisible(true);
     steam(ox, rackY, 6);
     await Cook.wait(300);
     await Cook.tween(S, { targets: naan, x: hx, y: hy, scale: nk, duration: 560, ease: "Cubic.easeInOut" });

@@ -47,6 +47,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
   const POT = () => (SCENE().potTrial && ITEM("potTop").states ? "potTop" : "pot");
   const url = (k, state) => (state ? (ITEM(k).states || {})[state] : ITEM(k).file);
   const tex = (k, state) => `eg-${k}${state ? `-${state}` : ""}`;
+  const BOILED_LOOKS = ["soft", "firm", "over"];
   // the station's own colours (station.palette: the steam, the shakers' grains); UI colours stay the tokens'
   const col = (k) => parseInt(String((((Cook.data.stations || {})[KEY] || {}).palette || {})[k] || "").slice(1), 16);
   const RULES = () => global.Rules || (global.Tokens && global.Tokens.rules) || null;
@@ -60,7 +61,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     add("pan");
     add("egg", "brown");
     ["cracked", "part", "cooked", "overdone"].forEach((s) => add("friedEgg", s));
-    ["a", "b"].forEach((s) => add("boiledEgg", s));
+    // (the boiled halves in the three looks a lift can show, E5: soft, firm, over; runny is before the green, never let out)
+    BOILED_LOOKS.forEach((s) => ["a", "b"].forEach((h) => add("boiledEgg", `${s}-${h}`)));
     add("bowl");
     if (K.shakers) ["shakerSalt", "shakerPepper"].forEach((k) => add(k));
     // (the table, 10 Nov's art: the plate, the fried egg and the boiled halves seen at the table's own camera; the old side-on plate,
@@ -434,10 +436,13 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     };
     const friedW = () => vessels.pan.r * (ITEM("friedEgg").inPan || 0.95);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
-    // a boiled egg on a plate: its two halves side by side (egg-boiled-half-a, -b), h tall
-    const halves = (x, y, h) => {
-      const a = T(S.add.image(0, 0, tex("boiledEgg", "a")).setDepth(D.item + 0.4));
-      const b = T(S.add.image(0, 0, tex("boiledEgg", "b")).setDepth(D.item + 0.4));
+    // a boiled egg on a plate: its two halves side by side (E5's boiled-<look>-a, -b), h tall
+    // (s19-games-2, E5: the halves show how long it boiled, read from its ring as it was lifted: soft in the green's first half, firm
+    // after it, over once it is left past its full ring as long as the fried egg takes to brown: a look, never a verdict)
+    const boiledLook = (e) => (e.p >= 1 && e.full && Date.now() - e.full >= overMs / (Cook.speed || 1) ? "over" : e.p >= (ready + 1) / 2 ? "firm" : "soft");
+    const halves = (x, y, h, look = "soft") => {
+      const a = T(S.add.image(0, 0, tex("boiledEgg", `${look}-a`)).setDepth(D.item + 0.4));
+      const b = T(S.add.image(0, 0, tex("boiledEgg", `${look}-b`)).setDepth(D.item + 0.4));
       [a, b].forEach((o) => o.setScale(h / Math.max(1, o.height)));
       const dx = (a.displayWidth + b.displayWidth) / 4 + 2;
       a.setPosition(x - dx, y);
@@ -704,6 +709,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       endFade(egg);
       hold({ kind: "cooked", egg });
       egg.lifted = true;
+      if (!egg.fried) egg.boiled = boiledLook(egg);
       egg.base = egg.obj.scale;
       // (picked up it grows a little, within SH-256's 15%, contract-114: it rests in the hand at the size it then keeps on the plate)
       S.tweens.add({ targets: egg.obj, scale: egg.base * 1.1, duration: 160 });
@@ -789,7 +795,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         sized(egg.obj, at.w);
       } else {
         egg.obj.destroy();
-        shown = halves(at.x, at.y, at.h);
+        shown = halves(at.x, at.y, at.h, egg.boiled || "soft");
       }
       if (egg.fried) shade(S, shown[0], { dx: 3, dy: 4, alpha: 0.2, blur: 3 });
       pl.eggs.push({ fried: egg.fried, look: shown });
