@@ -478,8 +478,7 @@ import { setTimeout } from "../life.js";
 
     for (let i = 0; i < plan.length; i++) await step(plan[i], i);
 
-    // the dough: tap the bowl
-    say(line("now", "call", Lang.phrase(["ph-naan"])));
+    // the dough: tap the bowl (its call comes with its light the first time, contract-36 and -78; at once after that)
     let bowlOpen = true;
     await new Promise((resolve) => {
       S.tappable(bowl, () => {
@@ -489,7 +488,7 @@ import { setTimeout } from "../life.js";
       // CK-84 (the eye judge, 10 Nov: the order's headline lit gold with the bowl): the bowl's tap names no word (the naan's word lit
       // the card's headline as a second gold thing); its light is the bowl's alone
       expectTap(bowl, null);
-      control(bowl, "bowl", () => bowlOpen);
+      control(bowl, "bowl", () => bowlOpen, () => say(line("now", "call", Lang.phrase(["ph-naan"]))));
     });
     bowlOpen = false;
     unlight();
