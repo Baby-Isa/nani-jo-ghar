@@ -481,13 +481,26 @@ import { setTimeout } from "../life.js";
       });
     };
     const rackY = oy + ov.displayHeight * 0.18;
+    // (contract-36: each step's call as it opens, from the engine only, R2: "open" said as a command; the naan "put in", as the
+    // shelf's things are; where a word has no recording yet the engine shows its English in grey, a gap on the recording sheet)
+    const call = (l, step) => {
+      if (l && l.ok !== false && (!Lang.hasVoice || Lang.hasVoice(l))) return say(Lang.role(l, "call"));
+      // (the engine cannot say it yet, a recording to make: logged as the kit's step call logs a line with no voice, skip-novoice)
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${step}`, by: "skip-novoice" });
+      } catch (e) {
+        /* only a log */
+      }
+    };
     // 1. open the oven
     expectTap(ov, null);
+    call(Lang.say({ fn: "Command", verb: "v.open" }), "oven");
     await tapOn(ov, "oven");
     ov.setTexture("bk-oven-open");
     Cook.sfx.click();
     // 2. the naan in
     expectTap(naan, "ph-naan");
+    call(Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(["ph-naan"]) }), "naan");
     await tapOn(naan, "naan");
     z.expect({ kind: "wait" });
     setBusy(true);

@@ -120,6 +120,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // green at the same level), the cob ready to turn or lift from its start; its heat ring runs over the side and the green together
     const greenMs = K.greenMs || 4500;
     const greenLo = sideMs / (sideMs + greenMs);
+    // SH-158, the S14 roll-out (contract-77; the central rules' timed.firstTimeHold, as maani's flip): a new player's first cob holds in
+    // the middle of its green until it is turned (js/cook/station-lib.js St.firstHold)
+    const hold14 = St.firstHold(ctx, "corn:turn");
     const guided = !!ctx.guided;
     const dish = ctx.dishAt || 0;
     const states = (it.cob || {}).states || {};
@@ -233,8 +236,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     function nextThing() {
       if (screen === 1) {
         const ready = cobs.find((c) => c.state === "turn" || c.state === "lift");
-        if (ready && ready.state === "turn") return { step: "turn", id: ready.n, o: ready.img, key: COB, line: Lang.line("guide-firai"), again: true };
-        if (ready) return { step: "lift", id: ready.n, o: ready.img, key: COB, line: Lang.line("lift", Lang.phrase([COB])), again: true };
+        // (the turn and the lift are the timed window's controls, as maani's flip and samosa's lift: their calls are said as the green opens,
+        // never held for Nani's helper card as an item's are, SH-172; contract-70)
+        if (ready && ready.state === "turn") return { step: "turn", id: ready.n, o: ready.img, key: "turn", line: Lang.line("guide-firai"), again: true };
+        if (ready) return { step: "lift", id: ready.n, o: ready.img, key: "lift", line: Lang.line("lift", Lang.phrase([COB])), again: true };
         const next = onBand()[0];
         if (next && cobs.length + lifting + inTray.length < count && cobs.length < places) return { step: "grill", o: next, key: COB, line: Lang.line("now", Lang.phrase([COB])) };
         return { step: "wait" };
@@ -245,7 +250,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const left = q.asked.find((id) => !q.dressed.includes(id));
       // (an item's step: said only as her helper card opens to show it, never as the step opens: SH-172, STD-D3-03)
       if (left && bowls[left]) return { step: "dress", id: `${active}:${left}`, o: bowls[left], key: left, word: left, line: St.addLine(left), noCall: "helper" };
-      return { step: "serve", id: active, o: plates[active], key: COB, line: null };
+      // (contract-36: the serve is a step with its call, as eggs' plate: the engine's "serve" command; no Kutchi recorded yet, so the kit logs
+      // it skip-novoice and shows its English in grey, a gap on the recording sheet)
+      return { step: "serve", id: active, o: plates[active], key: COB, line: Lang.say({ fn: "Command", verb: "v.serve" }) };
     }
     function lead(n) {
       const id = n.o ? `${n.step}:${n.id != null ? n.id : ""}` : n.step;
@@ -352,6 +359,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
 
     const tapCob = async (c) => {
       began();
+      if (c.state === "turn" || c.state === "lift") hold14.end("corn");
       if (c.state === "turn") {
         // turned once: it rolls over where it lies (its light's box fades out round it, contract-53), the grilled side under
         c.state = "flip";
@@ -398,7 +406,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       cobs.forEach((c) => {
         // (S19, CK-65: the ring keeps filling through the green while the cob waits to be turned or lifted)
         if (c.state !== "cook" && c.state !== "turn" && c.state !== "lift") return;
-        c.p = Math.min(1, (Date.now() - c.t0) / ((sideMs + greenMs) / sp()));
+        const span = (sideMs + greenMs) / sp();
+        const raw = Math.min(1, (Date.now() - c.t0) / span);
+        c.p = hold14.cap(raw, greenLo, 1, "corn");
+        if (c.p < raw) c.t0 = Date.now() - c.p * span; // (held: its clock waits with it)
         // the kit's heat ring over the cob's top end (one heat language): gold up to the sage band; ready from the green's start
         const r = L.ring(c.at);
         c.ring.draw(r.x, r.y, (lay.ring || {}).r || r.r, c.p, greenLo, 1);

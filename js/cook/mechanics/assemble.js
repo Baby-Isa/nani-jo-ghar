@@ -924,6 +924,21 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         };
 
         /* ---------- build: each topping tapped in, until the bowl is complete and right (it goes by itself) or Done ---------- */
+        /*
+         * CK-85 (the eye judge beside chai, 11 Nov: "no light for the second and third items"): a new player's every layer gets the kit's
+         * first-time light, its call with it (Cook.Coach.control, first: the call held until the light is up, contract-78), as chai's
+         * every first thing has one; the first layer's is the coach's script (data onboard assemble), and the card's light after it
+         * (cardLight) is the second layer's while it is waiting to come, so one thing is lit at a time
+         */
+        let itemCtl = null;
+        const itemLight = (nx) => {
+          if (itemCtl) itemCtl.close();
+          itemCtl = null;
+          const o = nx && items[nx];
+          if (!o || !o.active || !got.length || !gate || !gate.fresh || cardWait || !Cook.Coach.control || !gate.first(`layer-${nx}`)) return;
+          const n0 = got.length;
+          itemCtl = Cook.Coach.control({ key: "assemble", note: "assemble:layer", target: Cook.Coach.box(o, 6, { visible: true }), first: true, noHint: true, current: () => building && got.length === n0 && C.next(got) === nx, busy: () => busy > 0 });
+        };
         const build = async () => {
           let last = 0;
           building = true;
@@ -931,6 +946,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             // T15, s08 w2A (SH-110): Nani calls the next layer as its step opens ("Bataato wiji chad!"), at every level (the
             // order in pieces); her box shows it only after the pause (help), its item dotted where the card dots it
             const nx = C.next(got);
+            itemLight(nx);
             if (nx) steps.to("assemble:next", { id: `layer-${got.length}-${nx}`, line: St.addLine(nx) });
             else steps.done();
             const r = await St.freePick(z, {
@@ -940,6 +956,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
               doneOk: got.length >= C.total,
               help,
             });
+            // (the light goes the moment the child moves, SH-236, contract-106)
+            if (itemCtl) itemCtl.close();
+            itemCtl = null;
             if (r.done) break;
             moves++;
             if (performance.now() - last < M.doubleTapMs) continue; // a double tap
@@ -954,6 +973,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             if (got.length >= C.total) break;
           }
           building = false;
+          itemLight(null);
           steps.done();
           while (busy) await Cook.wait(60);
           z.expect({ kind: "wait" });
