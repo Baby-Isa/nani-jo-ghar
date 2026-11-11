@@ -8,7 +8,7 @@
   "branch": "s19-checks-1 in /home/user/wt/s19-checks-1 (made for you from the integration branch); commit there, never push; the orchestrator merges",
   "kind": "tools",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": true,
   "read": [
     "build/reports/s19-checks-review.md (all of it: the causes, the table of Zafar's things, section 5's changes 2-6)",

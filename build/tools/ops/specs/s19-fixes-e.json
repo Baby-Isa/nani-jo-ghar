@@ -8,7 +8,7 @@
   "branch": "s19-fixes-e in /home/user/wt/s19-fixes-e (made for you from the integration branch); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": true,
   "read": [
     "build/reports/s19-eggs-beside-chai.md and build/reports/s19-four-beside-chai.md, and the five verdict files they name (build/screenshots/sidebyside/*-L1-20261110-*/judge-batch.verdicts.md): look at the pictures they cite",

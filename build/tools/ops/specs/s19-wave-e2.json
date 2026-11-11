@@ -8,7 +8,7 @@
   "branch": "s19-wave-e2 in /home/user/wt/s19-wave-e2 (made for you from the integration branch); commit there, never push; the orchestrator merges",
   "kind": "code",
   "browser": true,
-  "live": true,
+  "live": false,
   "specsByBuilder": false,
   "read": [
     "sources/art/s19-full/results/run-report-2.md (every pick, the alternates, Zafar's notes: four stages for cooked things, keep every variation)",

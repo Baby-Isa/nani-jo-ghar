@@ -1,0 +1,55 @@
+{
+  "name": "s19-chaat-td: chaat top-down, as Zafar decided on 9 Nov (CHT-13): an opaque cream bowl from above, the toppings layered in it, the topping bowls on the stone tray",
+  "model": "Opus",
+  "effort": "high",
+  "why": "Zafar decided chaat top-down on 9 Nov; it slipped (build/reports/s19-chaat-top-down-slip.md) and the top-down art is in (F3 bowls, C5-C11 tops, the drizzles); the game is a sequence game that teaches the sauces and sev",
+  "cost": "about $40-50",
+  "stop": "when the tasks are done",
+  "branch": "s19-chaat-td in /home/user/wt/s19-chaat-td (made for you from the integration branch, without sources/ except the S19 picks: the disk is tight); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": false,
+  "read": [
+    "docs/feedback/kitchen-mocks-2026-11-09.md P18 (his words) and docs/process/regressions.md CHT-13",
+    "build/reports/s19-fable-mock-answers.md section 4 (how to layer: each topping one transparent picture on the bowl's canvas, drawn in the order added)",
+    "build/reports/s19-chaat-top-down-slip.md and docs/game-design/modes/cook-bottom-row.md (chaat: tray, top-down)",
+    "build/reports/s19-wave-e2.md (what changed in chaat yesterday) and build/reports/s19-checks-1.md (the new screen checks: contract-112 the light, contract-113 covers)",
+    "the top-down games for the look: eggs, daar, maani on the stone tray (js/cook/stations/*.js, Shelf.P.tray)"
+  ],
+  "owns": [
+    "js/cook/mechanics/assemble.js and data/stations/chaat.json (chaat)",
+    "the chaat entry of build/core/band.test.mjs (turn its todo off when it passes)",
+    "build/reports/s19-chaat-td.md"
+  ],
+  "readOnly": [
+    "js/shared/**, js/cook/kitchen-kit.js, station-lib.js, coach.js, flow.js, ui.js, js/cook/stations/chop.js and js/cook/mechanics/chop.js (s19-fixes-f owns them: chaat's chop stage is chop's own game, never changed from chaat; write any change you need in your report, exactly)",
+    "data/cook.json (write the exact change in your report: the orchestrator applies it)",
+    "assets/** (use the v4 art as it is: assets/cook/items/v4/chaat/; a missing picture goes in your report)",
+    "build/sandbox/**, build/lint/**, build/tools/** (the checks)"
+  ],
+  "stubs": "none",
+  "port": 8911,
+  "report": "s19-chaat-td",
+  "publish": false,
+  "flows": ["cook:chaat"],
+  "rows": [],
+  "tasks": [
+    {
+      "do": "Chaat seen from above, the same camera as eggs, daar and maani: the opaque cream serving bowl (assets/cook/items/v4/chaat/bowl-empty.webp) straight down in the play area; its band 'tray' (data/stations/chaat.json band, cook-bottom-row.md) with the topping bowls along the kit's stone tray (the F3 bowls: bataato, chana, dungri, tameto, marcha, kothmir, sev, lili-chutney, amli-chutney, dai), their pills at chai's size; the chop stage stays chop's own game.",
+      "accept": "chaat at L1-L4 at 740x320 and 1280x665: the bowl round and whole, the tray with its bowls and pills, every flow to its end, 0 page errors; band.test's chaat todo off and passing"
+    },
+    {
+      "do": "The layering: each topping one transparent picture on the bowl's canvas, in the order added (the layer-* pieces: tameto, dungri, marcha, fudino, dai, and the drizzles layer-lili-drizzle and layer-amli-drizzle, Zafar's pick); the base (potato and chickpeas) from the F3 scatter pictures, the second added on top; each new layer grows in over about 0.9 s, never a snap; what is beneath shows at the edges. Never remove a mechanic or a help (the sequence, the mistakes, the order card).",
+      "accept": "strips at 1280x665 of a full L4 bowl being made: every layer visible as it goes in, the finished bowl reads as chaat"
+    },
+    {
+      "do": "The rest to chai's standard: the order-giver's face beside the bowl from the first frame; one light at a time on one thing, the kit's box (no light on the bowl while a topping flies to it); Shabash in Nani's box at well done with the bowl in sight and the face beside it, not over it; no chip under the settings gear; the end review includes every word the round taught (hakro too; a change in the shared end screen goes in your report).",
+      "accept": "the order, first light, mid and well-done frames at 740x320 and 1280x665 in the report, before and after; the contract run of chaat at L1-L4 at the two sizes with its breaks listed and each explained"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8911, flock /tmp/njg-browser-8911.lock); one size while building; commit on your branch often, never push; never invent Kutchi; never remove a mechanic or a help (Zafar's OK needed); shared pieces only (the kit's light, dim, tray); fix what you break; keep under 2 GB of runs (the disk is tight: delete your superseded runs); if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-chaat-td.md with a Proof section, under 800 words"
+    }
+  ]
+}
