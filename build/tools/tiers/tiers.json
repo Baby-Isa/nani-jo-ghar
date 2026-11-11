@@ -7,7 +7,7 @@
   "work": "build/screenshots/tiers",
   "shared": "^(js/shared/|css/shared/|js/core/|data/lang/|data/shared/)",
   "tiers": {
-    "push": { "tier": "0", "name": "check-push", "minutes": 3, "argv": ["build/tools/review/checks.mjs"] },
+    "push": { "tier": "0", "name": "check-push", "minutes": 3, "timeoutMin": 30, "_timeout": "30 min: with three builders running, checks.mjs takes over 14 (11 Nov: two false fails at the 14-minute cut)", "argv": ["build/tools/review/checks.mjs"] },
     "prototype": { "tier": "1", "name": "check-prototype", "sizes": "four", "film": { "size": "740x320", "seconds": 40, "play": true } },
     "change": {
       "tier": "2", "name": "check-change",
