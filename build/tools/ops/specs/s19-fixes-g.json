@@ -1,0 +1,67 @@
+{
+  "name": "s19-fixes-g: what the new screen checks find in the kitchen games (snaps, sizes, card padding, calls at a step, decoys, the timed windows), and sekelo's served skewer",
+  "model": "Opus",
+  "effort": "high",
+  "why": "s19-checks-2's checks found 182 breaks in nine games; s19-fixes-f fixed eggs', corn's and daar's snaps and listed the rest by game",
+  "cost": "about $40-50",
+  "stop": "when the tasks are done",
+  "branch": "s19-fixes-g in /home/user/wt/s19-fixes-g (made for you from the integration branch, without most of sources/: the disk is tight); commit there, never push; the orchestrator merges",
+  "kind": "code",
+  "browser": true,
+  "live": true,
+  "specsByBuilder": true,
+  "read": [
+    "build/reports/s19-fixes-f.md ('Flaws and open': the new checks' finds by game and check)",
+    "build/reports/s19-checks-2.md and s19-checks-1.md (what each check measures)",
+    "docs/decisions/2026-11-10-overnight.md (Zafar's answers 10-11 Nov)",
+    "build/reports/s19-chaat-td.md (chaat's 1920x1080 shelf breaks are now yours)"
+  ],
+  "owns": [
+    "js/cook/stations/*.js and data/stations/*.json (all ten kitchen games, chaat's js/cook/mechanics/assemble.js too)",
+    "js/cook/coach.js, station-lib.js, kitchen-kit.js, ui.js and js/cook/mechanics/* except fetch.js",
+    "js/shared/onboard.js, shelf.js and guide.js",
+    "build/sandbox/data/evidence.json",
+    "build/reports/s19-fixes-g.md"
+  ],
+  "readOnly": [
+    "js/cook/flow.js and css/cook.css (s19-serve owns the serving kitchen: write a change you need in your report)",
+    "data/cook.json and js/cook/mechanics/fetch.js (s19-pantry owns them)",
+    "build/sandbox/** except data/evidence.json, build/lint/**, build/tools/** (a check you judge wrong: why, with its picture, in your report; never loosen it)",
+    "assets/**"
+  ],
+  "stubs": "none",
+  "port": 8909,
+  "report": "s19-fixes-g",
+  "publish": false,
+  "flows": [
+    "cook:chai-tray",
+    "cook:eggs",
+    "cook:chop",
+    "cook:corn",
+    "cook:daar",
+    "cook:maani-line",
+    "cook:mishkaki-grill",
+    "cook:samosa",
+    "cook:chaat",
+    "cook:baking"
+  ],
+  "rows": [
+    "SH-256",
+    "CK-81",
+    "CK-85"
+  ],
+  "tasks": [
+    {
+      "do": "Measure first: the four-size contract run of the ten games (COOK_TEST_PORT=8909 flock /tmp/njg-browser-8909.lock timeout 3000 node build/sandbox/run.mjs --contract --flow <the ten> --sizes 740x320,930x430,1280x665,1920x1080 --run-id s19-fixes-g-before --no-sheets): its contract.md is your list, by game and check.",
+      "accept": "the before run's breaks by game and check in the report"
+    },
+    {
+      "do": "Fix them in the games, biggest first: contract-114 snaps (daar, maani, sekelo, samosa, chop's strip vegetable, baking: a size or picture change always tweened, the same picture carried through a move); contract-116 card padding and one-card rows; contract-115 the main thing as big as its room (corn's and sekelo's grills at 54-56%); contract-36 a call at each step and -37 decoys at L1; contract-70/77/78 the timed window's call at the green and the first-time hold (eggs, maani, corn, samosa), the call with its light; chaat's 1920x1080 shelf (111, 107); sekelo's served skewer whole on its tray and readable at 740x320 (CK-81); top-down chaat's eye-judge rows that are code (CK-85: a light for every item and its card, the tameto light the kit's, the praise zoom clear of the tray at 740x320). Never remove a mechanic or a help.",
+      "accept": "the same run again (s19-fixes-g-after): every end reached, 0 page errors, the breaks by game before and after, each one left explained with its owner"
+    },
+    {
+      "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8909) except frozen.mjs; one size while building; commit on your branch often, never push; never invent Kutchi; shared pieces only; fix what you break; keep under 2 GB of runs; never run `git sparse-checkout disable`; if you need a file you don't own, write the exact change in your report.",
+      "accept": "build/reports/s19-fixes-g.md with a Proof section, under 900 words"
+    }
+  ]
+}

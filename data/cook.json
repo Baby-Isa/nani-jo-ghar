@@ -2637,42 +2637,42 @@
      "zone": "shelf"
     },
     {
-     "x": 1335,
+     "x": 1334,
      "y": 202,
      "w": 140,
      "h": 140,
      "zone": "fridge"
     },
     {
-     "x": 1482,
+     "x": 1486,
      "y": 202,
      "w": 140,
      "h": 140,
      "zone": "fridge"
     },
     {
-     "x": 1335,
+     "x": 1334,
      "y": 416,
      "w": 140,
      "h": 175,
      "zone": "fridge"
     },
     {
-     "x": 1482,
+     "x": 1486,
      "y": 416,
      "w": 140,
      "h": 175,
      "zone": "fridge"
     },
     {
-     "x": 1335,
+     "x": 1334,
      "y": 620,
      "w": 140,
      "h": 175,
      "zone": "fridge"
     },
     {
-     "x": 1482,
+     "x": 1486,
      "y": 620,
      "w": 140,
      "h": 175,
@@ -3791,73 +3791,73 @@
     }
    },
    "shelf": {
-    "_about": "Pantry v2 (28 Sept, docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md): each item as a side-on container for the pantry's shelves and fridge, `<id>.shelf` -> [file stem, size]. size is the container's real height against a tall jar (1), so a spice jar never shows as big as the flour; the fetch mechanic multiplies its slot's box by it. Cut by build/cut_pantry_v2.py; bare (no label) until Zafar decides on labels.",
+    "_about": "Pantry v2 (28 Sept, docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md): each item as a side-on container for the pantry's shelves and fridge, `<id>.shelf` -> [file stem, size], the stem under art.sprites.dir. s19-pantry (11 Nov; the art audit, build/reports/s19-art-audit.md; Zafar's 10 Nov rule: a piece used again is at the house standard): every item with a picture in the stored walnut shelf set is that picture (../items-s17-stove/f-*: one jar, one lid, one light; single vegetables, not the pine crates); the rest keep the old pantry-v2 cut (the orange, fru-04, until the art run's PS1; pear, apple, juice, cheese and the sweets and party things the pantry never shows). size is no longer read by the pantry: it stands each thing by its size class (words[id].size, else art.sizes; js/cook/mechanics/fetch.js), never its true size.",
     "cook-atto": [
-     "shelf-cook-atto-bare-f",
+     "../items-s17-stove/f-chapati-flour-atta",
      1
     ],
     "ph-bajri-atto": [
-     "shelf-ph-bajri-atto-bare-f",
+     "../items-s17-stove/f-millet-flour-bajri",
      1
     ],
     "cook-khun": [
-     "shelf-cook-khun-bare-f",
+     "../items-s17-stove/f-sugar-jar",
      1
     ],
     "cook-chai": [
-     "shelf-cook-chai-bare-f",
+     "../items-s17-stove/f-tea-jar",
      1
     ],
     "cook-daal": [
-     "shelf-cook-daal-bare-f",
+     "../items-s17-stove/f-red-lentils-masoor",
      1
     ],
     "ph-chana": [
-     "shelf-ph-chana-bare-f",
+     "../items-s17-stove/f-dried-chickpeas",
      1
     ],
     "ph-sev": [
-     "shelf-ph-sev-bare-f",
+     "../items-s17-stove/f-sev-crispy-noodles",
      1
     ],
     "ph-rice": [
-     "shelf-ph-rice-bare-f",
+     "../items-s17-stove/f-basmati-rice",
      1
     ],
     "ph-cocoa": [
-     "shelf-ph-cocoa-bare-f",
+     "../items-s17-stove/f-cocoa-powder",
      1
     ],
     "spi-01": [
-     "shelf-spi-01-bare-f",
+     "../items-s17-stove/f-turmeric-jar",
      0.8
     ],
     "spi-02": [
-     "shelf-spi-02-bare-f",
+     "../items-s17-stove/f-cumin-seeds-jar",
      0.8
     ],
     "spi-05": [
-     "shelf-spi-05-bare-f",
+     "../items-s17-stove/f-mustard-seeds-jar",
      0.8
     ],
     "spi-10": [
-     "shelf-elchi-jar-v2-f",
+     "../items-s17-stove/f-cardamom-jar",
      1
     ],
     "spi-16": [
-     "shelf-loon-jar-v2-f",
+     "../items-s17-stove/f-salt-jar",
      1
     ],
     "spi-04": [
-     "shelf-spi-04-bare-f",
+     "../items-s17-stove/f-red-chilli-powder-jar",
      0.8
     ],
     "spi-11": [
-     "shelf-spi-11-bare-f",
+     "../items-s17-stove/f-black-pepper-jar",
      0.8
     ],
     "spi-09": [
-     "shelf-spi-09-bare-f",
+     "../items-s17-stove/f-cinnamon-sticks-jar",
      0.8
     ],
     "ph-sprinkles": [
@@ -3865,23 +3865,23 @@
      0.8
     ],
     "cook-dudh": [
-     "shelf-cook-dudh-bare-f",
+     "../items-s17-stove/f-milk-carton",
      1
     ],
     "cook-paani": [
-     "shelf-cook-paani-bare-f",
+     "../items-s17-stove/f-water-bottle",
      1
     ],
     "ph-oil": [
-     "shelf-ph-oil-bare-f",
+     "../items-s17-stove/f-cooking-oil",
      1
     ],
     "ph-amli": [
-     "shelf-ph-amli-bare-f",
+     "../items-s17-stove/f-tamarind-chutney",
      1
     ],
     "ph-lili": [
-     "shelf-ph-lili-bare-f",
+     "../items-s17-stove/f-green-mint-chutney",
      1
     ],
     "ph-juice": [
@@ -3889,43 +3889,43 @@
      1
     ],
     "ph-ketchup": [
-     "shelf-ph-ketchup-bare-f",
+     "../items-s17-stove/f-tomato-ketchup",
      1
     ],
     "ph-honey": [
-     "shelf-ph-honey-bare-f",
+     "../items-s17-stove/f-honey",
      1
     ],
     "ph-rose": [
-     "shelf-ph-rose-bare-f",
+     "../items-s17-stove/f-rose-water",
      1
     ],
     "ph-dahi": [
-     "shelf-ph-dahi-bare-f",
+     "../items-s17-stove/f-yoghurt",
      0.7
     ],
     "ph-keema": [
-     "shelf-ph-keema-bare-f",
+     "../items-s17-stove/f-mince",
      0.7
     ],
     "ph-meat": [
-     "shelf-ph-meat-bare-f",
+     "../items-s17-stove/f-lamb",
      0.7
     ],
     "ph-ghee": [
-     "shelf-ph-ghee-bare-f",
+     "../items-s17-stove/f-ghee",
      0.7
     ],
     "ph-chicken": [
-     "shelf-ph-chicken-bare-f",
+     "../items-s17-stove/f-chicken",
      0.7
     ],
     "ph-fish": [
-     "shelf-ph-fish-bare-f",
+     "../items-s17-stove/f-fish",
      0.7
     ],
     "ph-butter": [
-     "shelf-ph-butter-bare-f",
+     "../items-s17-stove/f-butter",
      0.7
     ],
     "ph-cheese": [
@@ -3933,51 +3933,51 @@
      0.7
     ],
     "ph-cream": [
-     "shelf-ph-cream-bare-f",
+     "../items-s17-stove/f-cream",
      0.7
     ],
     "veg-01": [
-     "shelf-veg-01-bare-f",
+     "../items-s17-stove/f-potato",
      0.9
     ],
     "veg-02": [
-     "shelf-veg-02-bare-f",
+     "../items-s17-stove/f-onion",
      0.9
     ],
     "veg-03": [
-     "shelf-veg-03-bare-f",
+     "../items-s17-stove/f-tomato",
      0.9
     ],
     "veg-12": [
-     "shelf-veg-12-bare-f",
+     "../items-s17-stove/f-green-chilli",
      0.9
     ],
     "veg-13": [
-     "shelf-lasan-jar-v2-f",
+     "../items-s17-stove/f-garlic-jar",
      1
     ],
     "veg-14": [
-     "shelf-aadu-jar-v2-f",
+     "../items-s17-stove/f-ginger-jar",
      1
     ],
     "veg-10": [
-     "shelf-veg-10-bare-f",
+     "../items-s17-stove/f-peas-in-the-pod",
      0.9
     ],
     "ph-pepper": [
-     "shelf-ph-pepper-bare-f",
+     "../items-s17-stove/f-green-pepper",
      0.9
     ],
     "ph-dhana": [
-     "shelf-ph-dhana-bare-f",
+     "../items-s17-stove/f-coriander-bunch",
      0.9
     ],
     "fru-02": [
-     "shelf-fru-02-bare-f",
+     "../items-s17-stove/f-lemon",
      0.9
     ],
     "fru-01": [
-     "shelf-fru-01-bare-f",
+     "../items-s17-stove/f-banana",
      0.9
     ],
     "fru-04": [
@@ -3985,7 +3985,7 @@
      0.9
     ],
     "fru-05": [
-     "shelf-fru-05-bare-f",
+     "../items-s17-stove/f-ripe-mango",
      0.9
     ],
     "fru-06": [
@@ -3997,23 +3997,23 @@
      0.9
     ],
     "fru-09": [
-     "shelf-fru-09-bare-f",
+     "../items-s17-stove/f-coconut",
      0.9
     ],
     "veg-04": [
-     "shelf-veg-04-bare-f",
+     "../items-s17-stove/f-carrot",
      0.9
     ],
     "ph-corn": [
-     "shelf-ph-corn-bare-f",
+     "../items-s17-stove/f-corn-cob-in-husk",
      0.9
     ],
     "ph-eggs": [
-     "shelf-ph-eggs-bare-f",
+     "../items-s17-stove/f-eggs-in-a-box",
      0.85
     ],
     "ph-bread": [
-     "shelf-ph-bread-bare-f",
+     "../items-s17-stove/f-bread-loaf",
      0.85
     ],
     "ph-biscuits": [
@@ -4025,7 +4025,7 @@
      0.85
     ],
     "ph-pastry": [
-     "shelf-ph-pastry-bare-f",
+     "../items-s17-stove/f-samosa-pastry-sheets",
      0.85
     ],
     "ph-crisps": [
@@ -4221,7 +4221,8 @@
    "_about": "S02-B: the art run s02's Cook pictures (build/tools/art/specs/s02.run.yaml), by the id the game asks for. Until a line lands, `ready` is false and the game keeps the current art (or a drawn stand-in). When /art-run cuts one: set `file` (the game's webp), `ready: true` and the measured `meta` (sizes, registration points, the flat inner area). Nothing else changes in code.",
    "kitchen-trays": {
     "line": "KT (s14, ART-28: the kitchen decluttered; was K1's service-master-v1.webp)",
-    "file": "assets/cook/bg/service-master-v2.webp",
+    "file": "assets/cook/serve/kitchen-tall.webp",
+    "_s19serve": "s19-serve (11 Nov): the tall kitchen with no trays; trays and dishes are pieces placed per person (js/cook/serve.js); today a stand-in from v2 until ART-77",
     "_v2": "ART-28 (Zafar's s14 run, 29 Oct): KT on K1's placement (x1.367, 126 px down, the top row carried on; Real-ESRGAN x2, 29 Oct); its island's back edge at y 1054 (K1's 1058) and the trays where K1's were, so core, occluder and trays are unchanged.",
     "ready": true,
     "core": [
@@ -4964,6 +4965,7 @@
     ]
    }
   },
+  "serve": {"mode": "tall", "_about": "the serving kitchen (js/cook/serve.js, s19-serve, Zafar 11 Nov): tall = one painting scrolled down for the serve, two = the ordering and serving pictures crossfaded"},
   "assets": {
    "_about": "Decision 68 (J11, S02-E): what Cook loads, by screen. shared: the textures the scene preloads (the kitchen, Nani, the customers, the cousin's badge): nothing else loads at open. stations[key].props: the prop textures (assets/cook/props/<name>.webp, or the painted sprite data.art.sprites.props names) a station loads when it is chosen (Cook.Art.need, with its painted sprites data.art.sprites.need[key]); stations[key].files: the folders and files the station's own code may load (its art lists); stations[key].prefetch: the files it shows first, warmed into the browser's cache while its order is read, which build/tools/review/loadcheck.mjs holds every page to. A station that loads anything outside shared + its own entry fails the load check.",
    "shared": {
@@ -4993,6 +4995,7 @@
      "cousin-blink": "assets/characters/ali/cousin-blink.webp"
     },
     "files": [
+      "assets/cook/serve/*",
      "assets/cook/bg/service*",
      "assets/cook/characters/*",
      "assets/shared/faces/*",
@@ -5001,99 +5004,123 @@
      "assets/cook/worktop-s08c/*",
      "assets/cook/worktop-s17/*",
      "assets/shared/panel/*",
-     "assets/shared/juice/bu-*.webp", "assets/cook/items/v4/kit/tray-stone*.webp"
+     "assets/shared/juice/bu-*.webp", "assets/cook/items/v4/kit/tray-stone*.webp", "assets/cook/items/v4/chop/*-whole.webp"
     ],
     "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
    },
    "stations": {
     "fetch": {
-     "props": [
-      "water-jug",
-      "tea-tin",
-      "milk-jug",
-      "atto",
-      "daal-dry",
-      "chapati-puffed",
-      "onion",
-      "tomato",
-      "chilli",
-      "garlic",
-      "elchi"
-     ],
+     "props": [],
      "files": [
       "assets/cook/bg/bg-pantry-v3-1600.webp",
       "assets/cook/items/shelf-*",
       "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
       "assets/cook/items/vessel-milk-jug-f.webp",
-      "assets/cook/items/vessel-water-jug-f.webp"
+      "assets/cook/items/vessel-water-jug-f.webp",
+      "assets/cook/items-s17-stove/f-banana.webp",
+      "assets/cook/items-s17-stove/f-basmati-rice.webp",
+      "assets/cook/items-s17-stove/f-black-pepper-jar.webp",
+      "assets/cook/items-s17-stove/f-bread-loaf.webp",
+      "assets/cook/items-s17-stove/f-butter.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-carrot.webp",
+      "assets/cook/items-s17-stove/f-chapati-flour-atta.webp",
+      "assets/cook/items-s17-stove/f-chicken.webp",
+      "assets/cook/items-s17-stove/f-cinnamon-sticks-jar.webp",
+      "assets/cook/items-s17-stove/f-cocoa-powder.webp",
+      "assets/cook/items-s17-stove/f-coconut.webp",
+      "assets/cook/items-s17-stove/f-cooking-oil.webp",
+      "assets/cook/items-s17-stove/f-coriander-bunch.webp",
+      "assets/cook/items-s17-stove/f-corn-cob-in-husk.webp",
+      "assets/cook/items-s17-stove/f-cream.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-dried-chickpeas.webp",
+      "assets/cook/items-s17-stove/f-eggs-in-a-box.webp",
+      "assets/cook/items-s17-stove/f-fish.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-ghee.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-green-chilli.webp",
+      "assets/cook/items-s17-stove/f-green-mint-chutney.webp",
+      "assets/cook/items-s17-stove/f-green-pepper.webp",
+      "assets/cook/items-s17-stove/f-honey.webp",
+      "assets/cook/items-s17-stove/f-lamb.webp",
+      "assets/cook/items-s17-stove/f-lemon.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-millet-flour-bajri.webp",
+      "assets/cook/items-s17-stove/f-mince.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-onion.webp",
+      "assets/cook/items-s17-stove/f-peas-in-the-pod.webp",
+      "assets/cook/items-s17-stove/f-potato.webp",
+      "assets/cook/items-s17-stove/f-red-chilli-powder-jar.webp",
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
+      "assets/cook/items-s17-stove/f-ripe-mango.webp",
+      "assets/cook/items-s17-stove/f-rose-water.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-samosa-pastry-sheets.webp",
+      "assets/cook/items-s17-stove/f-sev-crispy-noodles.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-tamarind-chutney.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-tomato-ketchup.webp",
+      "assets/cook/items-s17-stove/f-tomato.webp",
+      "assets/cook/items-s17-stove/f-turmeric-jar.webp",
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-yoghurt.webp"
      ],
      "prefetch": [
       "assets/cook/bg/bg-pantry-v3-1600.webp",
-      "assets/cook/items/shelf-aadu-jar-v2-f.webp",
-      "assets/cook/items/shelf-cook-atto-bare-f.webp",
-      "assets/cook/items/shelf-cook-chai-bare-f.webp",
-      "assets/cook/items/shelf-cook-daal-bare-f.webp",
-      "assets/cook/items/shelf-cook-dudh-bare-f.webp",
-      "assets/cook/items/shelf-cook-khun-bare-f.webp",
-      "assets/cook/items/shelf-cook-paani-bare-f.webp",
-      "assets/cook/items/shelf-elchi-jar-v2-f.webp",
-      "assets/cook/items/shelf-fru-02-bare-f.webp",
-      "assets/cook/items/shelf-lasan-jar-v2-f.webp",
-      "assets/cook/items/shelf-loon-jar-v2-f.webp",
-      "assets/cook/items/shelf-ph-amli-bare-f.webp",
-      "assets/cook/items/shelf-ph-chana-bare-f.webp",
-      "assets/cook/items/shelf-ph-dahi-bare-f.webp",
-      "assets/cook/items/shelf-ph-dhana-bare-f.webp",
-      "assets/cook/items/shelf-ph-ghee-bare-f.webp",
-      "assets/cook/items/shelf-ph-keema-bare-f.webp",
-      "assets/cook/items/shelf-ph-lili-bare-f.webp",
-      "assets/cook/items/shelf-ph-meat-bare-f.webp",
-      "assets/cook/items/shelf-ph-pepper-bare-f.webp",
-      "assets/cook/items/shelf-ph-sev-bare-f.webp",
-      "assets/cook/items/shelf-spi-01-bare-f.webp",
-      "assets/cook/items/shelf-spi-02-bare-f.webp",
-      "assets/cook/items/shelf-spi-04-bare-f.webp",
-      "assets/cook/items/shelf-spi-05-bare-f.webp",
-      "assets/cook/items/shelf-veg-01-bare-f.webp",
-      "assets/cook/items/shelf-veg-02-bare-f.webp",
-      "assets/cook/items/shelf-veg-03-bare-f.webp",
-      "assets/cook/items/shelf-veg-10-bare-f.webp",
-      "assets/cook/items/shelf-veg-12-bare-f.webp",
-      "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
-      "assets/cook/items/vessel-milk-jug-f.webp",
-      "assets/cook/items/vessel-water-jug-f.webp",
-      "assets/cook/props/atto.webp",
-      "assets/cook/props/chilli.webp",
-      "assets/cook/props/daal-dry.webp",
-      "assets/cook/props/elchi.webp",
-      "assets/cook/props/garlic.webp",
-      "assets/cook/props/onion.webp",
-      "assets/cook/props/tea-tin.webp",
-      "assets/cook/props/tomato.webp"
+      "assets/cook/items-s17-stove/f-chapati-flour-atta.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
+      "assets/cook/items-s17-stove/f-dried-chickpeas.webp",
+      "assets/cook/items-s17-stove/f-sev-crispy-noodles.webp",
+      "assets/cook/items-s17-stove/f-turmeric-jar.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-red-chilli-powder-jar.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-tamarind-chutney.webp",
+      "assets/cook/items-s17-stove/f-green-mint-chutney.webp",
+      "assets/cook/items-s17-stove/f-yoghurt.webp",
+      "assets/cook/items-s17-stove/f-mince.webp",
+      "assets/cook/items-s17-stove/f-lamb.webp",
+      "assets/cook/items-s17-stove/f-ghee.webp",
+      "assets/cook/items-s17-stove/f-potato.webp",
+      "assets/cook/items-s17-stove/f-onion.webp",
+      "assets/cook/items-s17-stove/f-tomato.webp",
+      "assets/cook/items-s17-stove/f-green-chilli.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-peas-in-the-pod.webp",
+      "assets/cook/items-s17-stove/f-green-pepper.webp",
+      "assets/cook/items-s17-stove/f-coriander-bunch.webp",
+      "assets/cook/items-s17-stove/f-lemon.webp",
+      "assets/cook/items-s17-stove/f-black-pepper-jar.webp",
+      "assets/cook/items-s17-stove/f-cinnamon-sticks-jar.webp",
+      "assets/cook/items-s17-stove/f-banana.webp",
+      "assets/cook/items/shelf-fru-04-bare-f.webp",
+      "assets/cook/items-s17-stove/f-ripe-mango.webp",
+      "assets/cook/items-s17-stove/f-carrot.webp"
      ]
     },
     "passme": {
      "props": [
       "water-jug",
-      "tea-tin",
       "milk-jug",
-      "atto",
-      "daal-dry",
-      "chapati-puffed",
-      "onion",
-      "tomato",
-      "chilli",
-      "garlic",
-      "elchi"
+      "chapati-puffed"
      ],
      "files": []
     },
     "chai-tray": {
      "props": [
       "water-jug",
-      "tea-tin",
-      "milk-jug",
-      "elchi"
+      "milk-jug"
      ],
      "files": [
       "assets/cook/items/chai-station/*",
@@ -5102,8 +5129,8 @@
       "assets/cook/items/v3/chai/*",
       "assets/cook/items/v3/hob/*",
       "assets/cook/items/*-bowl-t.webp",
-       "assets/shared/word-moment/*-s17.webp",
-       "assets/cook/bg/bg-cook-worktop-t-v1.webp",
+      "assets/shared/word-moment/*-s17.webp",
+      "assets/cook/bg/bg-cook-worktop-t-v1.webp",
       "assets/cook/items/shelf-*",
       "assets/cook/items-s17-stove/f-water-bottle.webp",
       "assets/cook/items-s17-stove/f-milk-carton.webp",
@@ -5123,8 +5150,6 @@
       "assets/cook/items-s14/glass/glass-fill-milky-*-s14.webp",
       "assets/cook/items-s14/glass/glass-fill-black-*-s14.webp",
       "assets/cook/items-s08c/teaspoon/*",
-      "assets/shared/fx-s11/steam-s11.webp",
-      "assets/shared/fx-s11/sparkle-s11.webp",
       "assets/shared/juice/sk-*.webp",
       "assets/shared/juice/st-*.webp",
       "assets/shared/juice/td-*.webp"
@@ -5148,14 +5173,6 @@
       "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
       "assets/cook/items/dry-chai-leaves-bowl-t.webp",
       "assets/cook/items/dry-khun-bowl-t.webp",
-      "assets/cook/items/shelf-aadu-jar-v2-f.webp",
-      "assets/cook/items/shelf-cook-chai-bare-f.webp",
-      "assets/cook/items/shelf-cook-dudh-bare-f.webp",
-      "assets/cook/items/shelf-cook-khun-bare-f.webp",
-      "assets/cook/items/shelf-cook-paani-bare-f.webp",
-      "assets/cook/items/shelf-elchi-jar-v2-f.webp",
-      "assets/cook/items/shelf-lasan-jar-v2-f.webp",
-      "assets/cook/items/shelf-loon-jar-v2-f.webp",
       "assets/cook/items/spice-elchi-bowl-t.webp",
       "assets/cook/items/spice-jeeru-bowl-t.webp",
       "assets/cook/items/spice-loon-bowl-t.webp",
@@ -5177,43 +5194,43 @@
       "assets/cook/items/vessel-milk-jug-f.webp",
       "assets/cook/items/vessel-saucepan-t.webp",
       "assets/cook/items/vessel-water-jug-f.webp",
-      "assets/cook/props/elchi.webp",
-      "assets/cook/props/tea-tin.webp"
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp"
      ]
     },
     "pour": {
      "props": [
       "water-jug",
-      "tea-tin",
-      "milk-jug",
-      "elchi"
+      "milk-jug"
      ],
      "files": []
     },
     "boil": {
      "props": [
       "water-jug",
-      "tea-tin",
-      "milk-jug",
-      "elchi"
+      "milk-jug"
      ],
      "files": []
     },
     "watch": {
      "props": [
       "water-jug",
-      "tea-tin",
-      "milk-jug",
-      "elchi"
+      "milk-jug"
      ],
      "files": []
     },
     "count": {
      "props": [
       "water-jug",
-      "tea-tin",
-      "milk-jug",
-      "elchi"
+      "milk-jug"
      ],
      "files": [
       "assets/cook/items-s08c/teaspoon/*"
@@ -5222,15 +5239,12 @@
     "add": {
      "props": [
       "water-jug",
-      "tea-tin",
-      "milk-jug",
-      "elchi"
+      "milk-jug"
      ],
      "files": []
     },
     "maani-line": {
      "props": [
-      "atto",
       "dough-ball",
       "chapati-raw",
       "chapati-half",
@@ -5274,13 +5288,11 @@
       "assets/cook/items/v3/maani/tawa.webp",
       "assets/cook/items/v3/maani/turner.webp",
       "assets/cook/items/v3/maani/velan.webp",
-      "assets/cook/items/vessel-tawa-t.webp",
-      "assets/cook/props/atto.webp"
+      "assets/cook/items/vessel-tawa-t.webp"
      ]
     },
     "knead": {
      "props": [
-      "atto",
       "dough-ball",
       "chapati-raw",
       "chapati-half",
@@ -5296,7 +5308,6 @@
     },
     "roll": {
      "props": [
-      "atto",
       "dough-ball",
       "chapati-raw",
       "chapati-half",
@@ -5312,7 +5323,6 @@
     },
     "flip": {
      "props": [
-      "atto",
       "dough-ball",
       "chapati-raw",
       "chapati-half",
@@ -5328,7 +5338,6 @@
     },
     "tawa": {
      "props": [
-      "atto",
       "dough-ball",
       "chapati-raw",
       "chapati-half",
@@ -5344,7 +5353,6 @@
     },
     "roll-tawa": {
      "props": [
-      "atto",
       "dough-ball",
       "chapati-raw",
       "chapati-half",
@@ -5359,15 +5367,8 @@
      "files": []
     },
     "daar": {
-     "props": [
-      "knife",
-      "pot",
-      "onion",
-      "tomato",
-      "chilli",
-      "garlic",
-      "daal-dry"
-     ],
+     "uses": ["chop", "tadka", "stir"],
+     "props": [],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
@@ -5429,26 +5430,11 @@
       "assets/cook/items/veg-lasan-chopped-t.webp",
       "assets/cook/items/veg-lasan-whole-t.webp",
       "assets/cook/items/veg-marcha-whole-t.webp",
-      "assets/cook/items/veg-tameto-whole-t.webp",
-      "assets/cook/props/chilli.webp",
-      "assets/cook/props/daal-dry.webp",
-      "assets/cook/props/garlic.webp",
-      "assets/cook/props/knife.webp",
-      "assets/cook/props/onion.webp",
-      "assets/cook/props/pot.webp",
-      "assets/cook/props/tomato.webp"
+      "assets/cook/items/veg-tameto-whole-t.webp"
      ]
     },
     "chop": {
-     "props": [
-      "knife",
-      "pot",
-      "onion",
-      "tomato",
-      "chilli",
-      "garlic",
-      "daal-dry"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
@@ -5463,26 +5449,11 @@
       "assets/cook/items/veg-dungri-whole-t.webp",
       "assets/cook/items/veg-lasan-whole-t.webp",
       "assets/cook/items/veg-marcha-whole-t.webp",
-      "assets/cook/items/veg-tameto-whole-t.webp",
-      "assets/cook/props/chilli.webp",
-      "assets/cook/props/daal-dry.webp",
-      "assets/cook/props/garlic.webp",
-      "assets/cook/props/knife.webp",
-      "assets/cook/props/onion.webp",
-      "assets/cook/props/pot.webp",
-      "assets/cook/props/tomato.webp"
+      "assets/cook/items/veg-tameto-whole-t.webp"
      ]
     },
     "tadka": {
-     "props": [
-      "knife",
-      "pot",
-      "onion",
-      "tomato",
-      "chilli",
-      "garlic",
-      "daal-dry"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
@@ -5501,26 +5472,11 @@
       "assets/cook/items/topping-marcha-chopped-bowl-t.webp",
       "assets/cook/items/veg-lasan-chopped-t.webp",
       "assets/cook/items/vessel-pot-t.webp",
-      "assets/cook/items/vessel-tadka-pan-t.webp",
-      "assets/cook/props/chilli.webp",
-      "assets/cook/props/daal-dry.webp",
-      "assets/cook/props/garlic.webp",
-      "assets/cook/props/knife.webp",
-      "assets/cook/props/onion.webp",
-      "assets/cook/props/pot.webp",
-      "assets/cook/props/tomato.webp"
+      "assets/cook/items/vessel-tadka-pan-t.webp"
      ]
     },
     "stir": {
-     "props": [
-      "knife",
-      "pot",
-      "onion",
-      "tomato",
-      "chilli",
-      "garlic",
-      "daal-dry"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/veg-*-whole-t.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
@@ -5532,21 +5488,11 @@
      ],
      "prefetch": [
       "assets/cook/items/tool-ladle-t.webp",
-      "assets/cook/items/v3/daar/ladle-v3.webp",
-      "assets/cook/props/chilli.webp",
-      "assets/cook/props/daal-dry.webp",
-      "assets/cook/props/garlic.webp",
-      "assets/cook/props/knife.webp",
-      "assets/cook/props/onion.webp",
-      "assets/cook/props/pot.webp",
-      "assets/cook/props/tomato.webp"
+      "assets/cook/items/v3/daar/ladle-v3.webp"
      ]
     },
     "assemble": {
-     "props": [
-      "onion",
-      "chilli"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/veg-*-whole-t.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
@@ -5561,43 +5507,29 @@
       "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
       "assets/cook/items/v3/chaat/pot-chana.webp",
       "assets/cook/items/v3/chaat/pot-imli.webp",
-      "assets/cook/items/v3/chaat/pot-potato.webp",
-      "assets/cook/props/chilli.webp",
-      "assets/cook/props/onion.webp"
+      "assets/cook/items/v3/chaat/pot-potato.webp"
      ]
     },
     "fill": {
-     "props": [
-      "onion",
-      "chilli"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/v3/samosa/board.webp",
       "assets/cook/items/v3/samosa/fold-*"
      ]
     },
     "fold": {
-     "props": [
-      "onion",
-      "chilli"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/v3/samosa/board.webp",
       "assets/cook/items/v3/samosa/fold-*"
      ]
     },
     "fry": {
-     "props": [
-      "onion",
-      "chilli"
-     ],
+     "props": [],
      "files": []
     },
     "samosa": {
-     "props": [
-      "onion",
-      "chilli"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/samosa-fried-golden-t.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
@@ -5634,17 +5566,12 @@
       "assets/cook/items/v3/samosa/jharo.webp",
       "assets/cook/items/v3/samosa/karahi.webp",
       "assets/cook/items/v3/samosa/plate.webp",
-      "assets/cook/items/vessel-thali-t.webp",
-      "assets/cook/props/chilli.webp",
-      "assets/cook/props/onion.webp"
+      "assets/cook/items/vessel-thali-t.webp"
      ],
      "_files": "the fillings reuse daar's chopped heaps (onion, chilli: whichever the order asks for)"
     },
     "mishkaki-grill": {
-     "props": [
-      "onion",
-      "tomato"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
@@ -5698,17 +5625,12 @@
       "assets/cook/items/v3/sekelo/tomato-grilled.webp",
       "assets/cook/items/v3/sekelo/tomato-raw.webp",
       "assets/cook/items/veg-bataato-cubed-t.webp",
-      "assets/cook/items/vessel-katori-t.webp",
-      "assets/cook/props/onion.webp",
-      "assets/cook/props/tomato.webp"
+      "assets/cook/items/vessel-katori-t.webp"
      ],
      "_potato": "s08 w6F (ART-11): the potato's skewer piece is PT1's cube (veg-01.raw, a whole path: js/cook/art.js refUrl); its worktop bowl is PT1's pile (veg-bataato-cubed-v2-t), no longer the butter-yellow boiled cubes"
     },
     "thread": {
-     "props": [
-      "onion",
-      "tomato"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items-s08b/potato/potato-cube-v3.webp",
       "assets/cook/items-s08c/sekelo-tray/*",
@@ -5716,10 +5638,7 @@
      ]
     },
     "grill": {
-     "props": [
-      "onion",
-      "tomato"
-     ],
+     "props": [],
      "files": [
       "assets/cook/items-s08b/potato/potato-cube-v3.webp",
       "assets/cook/items-s08c/sekelo-tray/*",

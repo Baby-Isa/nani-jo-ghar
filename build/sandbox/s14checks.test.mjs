@@ -305,3 +305,16 @@ test("contract-95 (CK-60): a line said after a skip, before the first step, is r
   assert.equal(run(check95, r, tl, { lines: [{ text: "Paani", t0: 2600, plays: [{}] }] }).length, 0, "the first step's call");
   assert.match(run(check95, r, tl, { lines: [{ text: "dudh,", t0: 1153, plays: [{}] }] })[0].msg, /153 ms after/);
 });
+
+test("contract-80: the serve's announced glide is not a jump, a jump after it still is (s19-serve, 11 Nov)", async () => {
+  const { check80 } = await import("./lib/contract-s14.mjs");
+  const fit = (t, top, view = "counter") => ({ type: "c", k: "fit", t, view, bg: "kitchen", drawn: true, fade: 0, box: [0, top, 1600, top + 900], zoom: 1, world: [1600, 900], canvas: [1280, 665] });
+  const glide = { type: "c", k: "life", what: "serve-view", t: 500 };
+  const hits = [];
+  check80({ flow: "cook:chai-tray" }, [fit(0, 0), glide, fit(600, -80), fit(1290, -158), fit(1550, -158)], (c, t, m) => hits.push(m));
+  assert.equal(hits.length, 0, "the glide and the framing it ends on");
+  check80({ flow: "cook:chai-tray" }, [fit(0, 0), glide, fit(1290, -158), fit(1550, -158), fit(1800, -100)], (c, t, m) => hits.push(m));
+  assert.equal(hits.length, 1, "a jump after the glide is still caught");
+  check80({ flow: "cook:chai-tray" }, [fit(0, 0), fit(600, -80)], (c, t, m) => hits.push(m));
+  assert.equal(hits.length, 2, "a move with no glide announced is a jump");
+});
