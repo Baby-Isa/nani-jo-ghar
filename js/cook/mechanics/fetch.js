@@ -185,13 +185,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const want = SH && SH.pillWant ? SH.pillWant(ppw) : 1;
       const gap = SH && SH.pillGap ? SH.pillGap(ppw) : 12;
       const rowFit = (r, w) => SH.pillScale(r.list.filter((p) => chips[p.id]).map((p) => ({ x: z.X(p.slot.x), w: chips[p.id].faceW(chips[p.id].showsWord) })), { want: w, gap, slotW: z.L(Math.min(...r.list.map((p) => p.slot.w))) });
-      const pk = SH && SH.pillScale && Object.keys(chips).length ? Math.min(...rowsAt.map((r) => rowFit(r, want).k)) : 1;
+      // (each row its one scale, as chai's one row: the shelves' wide slots reach the floor's size; the fridge's narrow ones as far as
+      // their neighbours allow, a long word narrowing to its slot there, the kit's rule)
+      rowsAt.forEach((r) => (r.fit = SH && SH.pillScale && Object.keys(chips).length ? rowFit(r, want) : { k: 1, cap: Infinity }));
+      const pk = Math.max(1, ...rowsAt.map((r) => r.fit.k));
       const pillH = z.L(PH) * pk;
-      const PILL_TOP = 3; // (design px under the shelf's line: the pill on its front edge)
-      // the room between two shelves, less the pill and a gap, is the most a thing may stand (the shelf's own box, slot.h, else)
+      // (the pill's middle on the painted shelf's front edge, its plank about 44 design px deep under the line the things stand on)
+      const PILL_MID = (P.pillMid != null ? P.pillMid : 22);
+      // the room between two shelves, less the pill's part below the plank and a small gap, is the most a thing may stand (the shelf's
+      // own box, slot.h, else): a pill never covers the thing on the shelf below
       const ys = rowsAt.map((r) => r.y);
       const pitchY = ys.length > 1 ? Math.min(...ys.slice(1).map((y, i) => y - ys[i])) : Infinity;
-      const tallest = Object.keys(chips).length ? pitchY - PILL_TOP - pillH / z.L(1) - 10 : Infinity;
+      const tallest = Object.keys(chips).length ? pitchY - PILL_MID - pillH / z.L(1) / 2 - 4 : Infinity;
       placed.forEach(({ id, slot }) => {
         const key = Cook.Art.wordTex(S, id);
         // in the fridge the small things (a yoghurt tub) come up nearer a milk carton's size, to be seen
@@ -204,14 +209,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         items[id].home = { x: items[id].x, y: items[id].y, scale: items[id].scale, depth: items[id].depth };
       });
       rowsAt.forEach((r) => {
-        const { cap } = rowFit(r, pk);
+        const { k: rk, cap } = r.fit;
         r.list.forEach(({ id, slot }) => {
           const c = chips[id];
           if (!c) return;
           if (c.capW !== cap) c.face(c.showsWord, cap);
-          c.k = pk;
+          c.k = rk;
           c.hit(z.L(slot.w));
-          c.setScale(pk).setY(z.Y(slot.y) + z.L(PILL_TOP) + pillH / 2);
+          c.setScale(rk).setY(z.Y(slot.y) + z.L(PILL_MID));
           if (items[id]) items[id].chip = c;
           else c.destroy();
         });
@@ -270,6 +275,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // R2, her box never reads the whole card, and the pantry header at L3/L4 crammed five sentences into a tiny font)
       const LC = global.Lifecycle;
       if (ctx.guided && askLines && !(LC && LC.asked && LC.asked())) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
+      // SH-60, PAN-22 (contract-98): the kitchen kit's reveal lessons (the dotted word, then the blurred picture) once the order has
+      // landed, as every game's (Cook.Coach.lessons on the kit's first-time gate; the gate also makes the scene's glow hop only a thing
+      // on the bottom band, SH-237)
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("fetch", { round: new Set() }) : null;
+      if (gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => false });
       const remaining = need.slice();
       const fetched = new Set();
       let n = 0;

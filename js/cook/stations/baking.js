@@ -416,7 +416,9 @@ import { setTimeout } from "../life.js";
       if (!ctx.guided && Lang.known(s.id)) Cook.markRight(s.id);
       const img = shelf[r.key];
       const into = jugStep ? jug.mouth() : { x: bowlX, y: bowlY - 60 };
-      // lift it over the target
+      // lift it over the target (its pill stays on the shelf: while it is up, the thing's light is the thing alone, contract-105)
+      const pill = img.chip;
+      img.chip = null;
       busy = true;
       await Cook.tween(S, { targets: img, x: into.x - 150, y: into.y - 60, duration: 360, ease: "Cubic.easeOut" });
       busy = false;
@@ -459,6 +461,7 @@ import { setTimeout } from "../life.js";
       // (it rests tipped a moment, its pour done, while the light that followed it fades: Onboard.light's 300 ms, real time)
       await new Promise((r) => setTimeout(r, FADE_MS));
       await Cook.tween(S, { targets: img, angle: 0, x: img.home.x, y: img.home.y, duration: 380, ease: "Cubic.easeInOut" });
+      img.chip = pill;
       if (jugStep) {
         // the jug tips into the bowl by itself
         await Cook.tween(S, { targets: jug.c, x: bowlX - 170, y: bowlY - 60, angle: 70, duration: 420 });
@@ -590,13 +593,17 @@ import { setTimeout } from "../life.js";
     // (contract-36: each step's call as it opens, from the engine only, R2: "open" said as a command; the naan "put in", as the
     // shelf's things are; where a word has no recording yet the engine shows its English in grey, a gap on the recording sheet)
     const call = (l, step) => {
-      if (l && l.ok !== false && (!Lang.hasVoice || Lang.hasVoice(l))) return say(Lang.role(l, "call"));
-      // (the engine cannot say it yet, a recording to make: logged as the kit's step call logs a line with no voice, skip-novoice)
-      try {
-        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${step}`, by: "skip-novoice" });
-      } catch (e) {
-        /* only a log */
+      // (a line the engine says with no family clip yet, "Tayar ai.": shown and said as the test build says it, and logged as the kit's
+      // step call logs a line with no voice, skip-novoice: a recording to make)
+      const clip = !!(l && l.ok !== false && (!Lang.planOf || Lang.planOf(l).some((c) => c.file)));
+      if (!clip) {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${step}`, by: "skip-novoice" });
+        } catch (e) {
+          /* only a log */
+        }
       }
+      if (l && l.ok !== false && (!Lang.hasVoice || Lang.hasVoice(l))) say(Lang.role(l, "call"));
     };
     // 1. open the oven
     expectTap(ov, null);
