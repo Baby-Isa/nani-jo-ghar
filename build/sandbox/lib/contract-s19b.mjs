@@ -83,12 +83,13 @@ export function glided(samples, t0, t1) {
     const p = w[i - 1], q = w[i];
     if (p.a < 50 || q.a < 50 || size(p) < MIN_ITEM_PX) continue;
     const dr = Math.abs(size(q) / size(p) - 1);
-    // (a big step must land inside a tween: the frame at the new size still in it; a tween on the frame before, long gone by a sample
-    // that came seconds later, is not this change's)
-    if (dr > SNAP && !tween(q)) return false;
+    // (a big step is inside a tween: on the frame at the new size, or on the frame just before it (the tween's last frames, a busy page
+    // drops some); a tween on a frame seconds before, long gone, is not this change's)
+    const near = q.t - p.t <= 2 * GAP_MS;
+    if (dr > SNAP && !tween(q) && !(near && tween(p))) return false;
     // (the size changes in a tween on the picture itself: most of the frames it changes in carry one, not a tween of something else
     // in the window, a fold's, while a counter moves it)
-    if (dr > 0.02) { changing++; if (tween(p) || tween(q)) tweened++; }
+    if (dr > 0.02) { changing++; if (tween(q) || (near && tween(p))) tweened++; }
   }
   return changing > 0 && tweened >= changing / 2;
 }
@@ -272,7 +273,7 @@ export const FOOT_G = 0.07;     // the 6 Nov item card's gap g: 7% of its inner 
 export const CUR_HOLD_MS = 1000;
 export const TICK_MOVE_MS = 2000;  // the row moves on after a tick's moment (a word moment, a pour's end) within this
 Object.assign(S19B_CHECKS, {
-  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on its top, left and right within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height), and its foot that padding or the 6 Nov card's gap g (${FOOT_G * 100}% of its inner width, foot to speaker, docs/design-language/guide-and-card.md) within the same; the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
+  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on its top, left and right within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height), and its foot that padding or the 6 Nov card's gap g (${FOOT_G * 100}% of its inner width, foot to speaker, docs/design-language/guide-and-card.md) within the same; the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and, once the order is in, the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
 });
 export function check116(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19pad").length) return;
@@ -311,7 +312,9 @@ export function check116(r, tl, add) {
     const gliding = rowsS.some((x) => x.t >= e.t - 300 && x.t <= e.t + (ticked ? TICK_MOVE_MS : CUR_HOLD_MS)) || until - e.t < CUR_HOLD_MS;
     if (cur && !ordering(e.t) && !gliding && (cur.box[0] < e.row[0] - 1 || cur.box[2] > e.row[2] + 1)) out("cur", e.t, `${s.key}: the current order card "${cur.w}" at [${cur.box.map(Math.round)}] is cut by its row [${e.row.map(Math.round)}]: the current card whole in view`);
     const span = cards[cards.length - 1].box[2] - cards[0].box[0], rowW = e.row[2] - e.row[0];
-    if (rowW > 0 && span < ROW_FILL * rowW) out("fill", e.t, `${s.key}: the order card's ${cards.length} card${cards.length > 1 ? "s" : ""} fill${cards.length > 1 ? "" : "s"} ${Math.round((100 * span) / rowW)}% of its ${Math.round(rowW)} px row: ${Math.round(100 - (100 * span) / rowW)}% of the card is blank (at least ${Math.round(ROW_FILL * 100)}% filled)`);
+    // (while the order is said its cards come one by one into slots waiting for them, s19-shared-checks: chaat's three toppings; the row
+    // is judged full once the order is in, as the current card is)
+    if (rowW > 0 && span < ROW_FILL * rowW && !ordering(e.t)) out("fill", e.t, `${s.key}: the order card's ${cards.length} card${cards.length > 1 ? "s" : ""} fill${cards.length > 1 ? "" : "s"} ${Math.round((100 * span) / rowW)}% of its ${Math.round(rowW)} px row: ${Math.round(100 - (100 * span) / rowW)}% of the card is blank (at least ${Math.round(ROW_FILL * 100)}% filled)`);
   }
 }
 
