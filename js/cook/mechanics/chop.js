@@ -418,7 +418,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         kinds.forEach((id) => {
           const key = texFor(id);
-          const s = { id, key, x: SL.x[id], px: topX(SL.x[id]), slotW: Math.min(150, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
+          // (SH-245, contract-115: a wide thing lying on the band, the ginger or the potato, stands at its class's height where its slot is
+          // wide enough; it was held to 150 design px wide whatever its slot, so it stood at 86% of chai's height)
+          const s = { id, key, x: SL.x[id], px: topX(SL.x[id]), slotW: Math.min(200, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
           s.scale = St.classFit ? z.L(St.classFit(S, key, id, { base: band.base, ppw, slotW: s.slotW }).scale) : S.fitScale(key, z.L(130), z.L(130));
           s.img = sit(s);
           // (s19-games-2, contract-114: a band built for the next round fades in, so a kind that sat elsewhere on the last band never
@@ -1060,7 +1062,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         last = now;
         // (the hops move first, so one landing this frame frees its place for the next; on the beat's clock, the one the hops are
         // started on, so a slow frame never keeps an item up past its place in the schedule)
-        if (HOP) hopTick(beat);
+        // (SH-256, contract-114: a slow frame moves a hop at most a third of its rise, so an item never jumps from its slot to the top of its
+        // hop, or back, in one frame: on a busy machine at the test's speed a whole rise fitted in one frame and the item snapped)
+        if (HOP) hopTick(Math.min(beat, HK.rise / 3));
         if (running && phase) {
           roundT += beat;
           idle += beat;
