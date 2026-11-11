@@ -434,7 +434,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       e.fade = null;
       if (e.look && e.obj.active && e.obj.texture.key !== e.look) e.obj.setTexture(e.look);
     };
-    const friedW = () => vessels.pan.r * (ITEM("friedEgg").inPan || 0.95);
+    // (s19-games-2, contract-114: a fried egg keeps its size from the pan to the plate within 15%, one egg on a plate or two: its size in
+    // the pan is the plate's (FRIED.pan of the plate's width, one on a plate FRIED.one, two FRIED.two), never the pan's own)
+    const FRIED = { pan: 0.64, one: 0.7, two: 0.58 };
+    const friedW = () => Math.min(vessels.pan.r * (ITEM("friedEgg").inPan || 0.95), plateD * FRIED.pan);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
     // a boiled egg on a plate: its two halves side by side (E5's boiled-<look>-a, -b), h tall
     // (s19-games-2, E5: the halves show how long it boiled, read from its ring as it was lifted: soft in the green's first half, firm
@@ -727,7 +730,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // where the i-th of n eggs sits on a plate, and its size
     const eggOnPlate = (pl, i, n, fried) => {
       const d = plateD;
-      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * 0.7 } : { x: pl.x + (i ? 1 : -1) * d * 0.19, y: pl.y + (i ? 1 : -1) * d * 0.08, w: d * 0.5 };
+      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * FRIED.one } : { x: pl.x + (i ? 1 : -1) * d * 0.2, y: pl.y + (i ? 1 : -1) * d * 0.08, w: d * FRIED.two };
       return n === 1 ? { x: pl.x, y: pl.y, h: d * 0.52 } : { x: pl.x, y: pl.y + (i ? 1 : -1) * d * 0.19, h: d * 0.36 };
     };
     const onPlate = async (pl) => {
@@ -794,8 +797,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         if (Math.hypot(egg.obj.x - at.x, egg.obj.y - at.y) > 2) await flying(Cook.tween(S, { targets: egg.obj, x: at.x, y: at.y, duration: 150 }));
         sized(egg.obj, at.w);
       } else {
-        egg.obj.destroy();
+        // (the whole egg fades as its halves fade in where it landed: no swap in one frame, contract-114)
+        const whole = egg.obj;
+        S.untap(whole);
         shown = halves(at.x, at.y, at.h, egg.boiled || "soft");
+        shown.forEach((o) => {
+          o.setAlpha(0);
+          S.tweens.add({ targets: o, alpha: 1, duration: 220 });
+        });
+        S.tweens.add({ targets: whole, alpha: 0, duration: 220, onComplete: () => whole.destroy() });
       }
       if (egg.fried) shade(S, shown[0], { dx: 3, dy: 4, alpha: 0.2, blur: 3 });
       pl.eggs.push({ fried: egg.fried, look: shown });

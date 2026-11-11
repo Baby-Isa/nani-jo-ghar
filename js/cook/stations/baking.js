@@ -260,9 +260,12 @@ import { setTimeout } from "../life.js";
       jug.show = (id) => {
         const fill = id ? (J.fillFor || {})[id] : null;
         const ek = fill && has(`bk-jug-empty-${fill}`) ? `bk-jug-empty-${fill}` : "bk-jug-empty";
-        if (empty.texture.key !== ek) empty.setTexture(ek);
+        // (s19-games-2, contract-114: the new glass jug's pictures are smaller canvases than the old jug's: each is drawn at the jug's one
+        // width, so the jug keeps its size as its picture changes)
+        const jw = (J.drawn || {}).w || 260;
+        if (empty.texture.key !== ek) empty.setTexture(ek).setScale(jw / Math.max(1, empty.width));
         const key = `bk-jug-${id}`;
-        if (id && has(key)) full.setTexture(key);
+        if (id && has(key)) full.setTexture(key).setScale(jw / Math.max(1, full.width));
         const u = jug.units;
         full.setVisible(u > 0);
         if (u <= 0) return;
@@ -287,7 +290,14 @@ import { setTimeout } from "../life.js";
     onShelf.forEach((id, i) => {
       const x = bowlX + (i - (n - 1) / 2) * pitch;
       const img = T(S.add.image(x, band.base, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
-      img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      // (s19-games-2, contract-115: each by its size class as chai's jars, St.classFit: the band's room with the hop kept, the class's
+      // share, the floor on screen; its picture's clear foot on the shelf's line. Was the settings' drawn.h, 84% of chai's L)
+      const ppw = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const f = St.classFit ? St.classFit(S, `bk-${id}`, id, { base: band.base, ppw, slotW: Math.min(PILL_SLOT, pitch) - 8 }) : null;
+      if (f && f.scale) {
+        img.setScale(f.scale);
+        if (St.opaqueSpan) img.setOrigin(0.5, St.opaqueSpan(S, `bk-${id}`)[1]);
+      } else img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;
@@ -346,8 +356,9 @@ import { setTimeout } from "../life.js";
       const amtLine = s.amt === "lot" ? Lang.line("alot") : s.amt === "jug" ? null : Lang.line("little");
       const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(jugStep ? s.parts : [s.id]) });
       // (her turn is the order, said row by row: its row appears as she says it, as a person's order does; the engine has no
-      // "a little / a lot of X" frame, R6-136, so two engine lines side by side)
-      const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "order");
+      // "a little / a lot of X" frame, R6-136, so two engine lines side by side. s19-games-2, contract-36: it is her call of the step
+      // as it opens, its row and its light with it, so it is said as a call)
+      const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "call");
       say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
