@@ -60,6 +60,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return out;
   }
 
+  const fetchSpanW = {}; // texture key -> {f: its opaque width's share of the canvas}
+
   Mech.define("fetch", {
     station: "fetch",
     view: "pantry",
@@ -96,14 +98,47 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // sink(key, s): how far the picture's empty foot (the cut's margin) reaches below the thing, at scale s, so it stands on the
       // shelf rather than above it (PAN-06: nothing floating)
       const sink = (key, s) => (1 - (St.opaqueSpan ? St.opaqueSpan(S, key)[1] : 1)) * S.texSize(key).h * s;
-      const fitAt = (key, id, w, h, k = null) => {
+      // the picture's opaque width (a fraction of its canvas), for the cap: a wide thing (the yoghurt tub, the mince's bowl in
+      // the fridge) is held to its slot by what shows, not by the cut's empty margin
+      const spanW = (key) => {
+        const c = (fetchSpanW[key] = fetchSpanW[key] || { f: 1 });
+        if (c.done) return c.f;
+        c.done = true;
+        try {
+          const src = S.textures.get(key).getSourceImage();
+          const cv = document.createElement("canvas");
+          cv.width = src.width;
+          cv.height = src.height;
+          const g = cv.getContext("2d", { willReadFrequently: true });
+          g.drawImage(src, 0, 0);
+          const d = g.getImageData(0, 0, cv.width, cv.height).data;
+          const col = (x) => {
+            for (let y = 0; y < cv.height; y += 2) if (d[(y * cv.width + x) * 4 + 3] > 60) return true;
+            return false;
+          };
+          let l = 0;
+          while (l < cv.width - 1 && !col(l)) l++;
+          let r = cv.width - 1;
+          while (r > l && !col(r)) r--;
+          c.f = (r + 1 - l) / cv.width;
+        } catch (e) {
+          /* a tainted texture: its whole canvas */
+        }
+        return c.f;
+      };
+      // (a slot's box is narrower than its pitch: 200 of 235 on the shelves, 140 of 147 in the fridge, so what shows may reach 5% past
+      // it; and a thing on a shelf is never so wide that the tray's space, its pitch, must shrink it by 15% or more when it lands there:
+      // an item keeps its size from step to step, contract-114)
+      const shelfCap = (slot) => Math.min(slot.w * 1.05, P.tray.gap / 0.88);
+      const fitAt = (key, id, w, h, k = null, cap = w * 1.05) => {
         const cls = St.sizeClass ? St.sizeClass(id) : { size: "M", flag: null };
         const K = (St.CLASS_K || {})[cls.size] || 0.91;
         const { w: tw, h: th } = S.texSize(key);
         const [t, b] = St.opaqueSpan ? St.opaqueSpan(S, key) : [0, 1];
         const ph = Math.max(1, (b - t) * th);
-        const s = (h * Math.max(K, k || 0)) / (cls.flag === "LONG" ? Math.max(ph, tw) : ph);
-        return Math.min(s, w / tw);
+        const pw = Math.max(1, spanW(key) * tw);
+        const s = (h * Math.max(K, k || 0)) / (cls.flag === "LONG" ? Math.max(ph, pw) : ph);
+        return Math.min(s, cap / pw);
       };
       const free = { shelf: Cook.shuffle(P.slots.filter((s) => s.zone === "shelf" && !underCog(s))), fridge: Cook.shuffle(P.slots.filter((s) => s.zone === "fridge" && !underCog(s))) };
       // a plain decoy needs its side-on container (data.art.sprites.shelf): no top-down plate of chips on a
@@ -115,7 +150,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!slot) return;
         const key = Cook.Art.wordTex(S, id);
         // in the fridge the small things (a yoghurt tub) come up nearer a milk carton's size, to be seen
-        const sc = fitAt(key, id, z.L(slot.w), z.L(slot.h), slot.zone === "fridge" ? P.fridgeMin : null);
+        const sc = fitAt(key, id, z.L(slot.w), z.L(slot.h), slot.zone === "fridge" ? P.fridgeMin : null, z.L(shelfCap(slot)));
         const { w: tw, h: th } = S.texSize(key);
         items[id] = S.prop(key, z.X(slot.x), z.Y(slot.y) + sink(key, sc), tw * sc, th * sc);
         items[id].wordId = id; // what it is (as S.ingredient marks it): the pantry leak bot reads the shelf by it
