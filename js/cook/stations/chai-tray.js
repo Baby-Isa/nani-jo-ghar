@@ -1774,7 +1774,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // onboarding should kick in after you've tapped it for the first time. Then the light should go on the glass, and it should
         // force you to tap the glass a second time"): a full glass at half is its own first-time control, lit on the glass until the
         // second tap fills it
-        const firstTime = rungCur.panPick ? false : gate14.first(nx.again ? "ctl-pour-again" : `ctl-${nx.phase}`);
+        // (corrected, 11 Nov night: the first L4 round's full glass has no light before its first tap; the light comes on the glass after
+        // it, for the second pour; a half glass's first pour keeps the pour's first-time light)
+        const pourPan = nx.phase === "pour" ? pans.find((q) => `pour-${q.who}` === (nx.e && nx.e.key)) : null;
+        const fullFirst = !!(pourPan && !nx.again && needOf(pourPan) > 1);
+        const firstTime = rungCur.panPick || fullFirst ? false : gate14.first(nx.again ? "ctl-pour-again" : `ctl-${nx.phase}`);
         // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
         // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
         // the green, "Slow kar!", is timed and comes at once); after that the call alone and the same light as the stuck hint after
