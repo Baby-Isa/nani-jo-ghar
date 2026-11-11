@@ -870,7 +870,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const partOf = (id) => (tadkaLine && tadkaLine.parts && tadkaLine.parts[flat.indexOf(id)]) || tadkaLine;
     const spiceStep = (id, again) => {
       if (!tadkaLine || id == null) return null;
-      return steps.to("daar:tadka", { id: `tadka-${flat.indexOf(id)}`, line: partOf(id), hide, quiet: Cook.roundLevel(ctx) > 1, force: again });
+      // (from level 2 the order was said once, whole, at the start: the counting rule; each spice's step opens quietly and logs why it is
+      // not called, contract-36)
+      const quiet = Cook.roundLevel(ctx) > 1;
+      return steps.to("daar:tadka", { id: `tadka-${flat.indexOf(id)}`, line: partOf(id), hide, quiet, noCall: quiet ? "order-said" : null, force: again });
     };
     const tadkaStep = (again) => {
       if (!tadkaLine) return null;
