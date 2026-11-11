@@ -80,9 +80,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* the bowls: every skewer piece (and decoys), on the shelf, meat | vegetables, in a new order each time */
       const pieceIds = SK.pieceIds();
-      // CK-49 (the level table): 1, 2, 3, 3 decoy bowls by the round's level (the knob); only the potato has sekelo piece art
-      // yet, so past one the rest wait on the art run (reported as they are: contract-37)
-      const ids = pieceIds.concat(St.tableDecoys(k.decoyPool || [], pieceIds, Cook.roundLevel(ctx), { what: "bowls" }));
+      // S19 (s19-games-1, contract-37: the level table's decoys, data/rules.json, "from L1, one more a level"): the bowls are the pieces
+      // the order threads, and the table's decoys drawn from every other piece (the pieces no skewer asks for first, then the decoy
+      // pool: the potato, chilli, corn, chicken); was every piece bowl at every level, so L1's meat skewer had three bowls it never used
+      const needed = [];
+      ordered.forEach((w) => {
+        const what = SK.kindOfWord(w);
+        const add = (id) => id && !needed.includes(id) && needed.push(id);
+        if (SK.only(what)) add(SK.only(what));
+        else if (what === "mixed") SK.pats(pattern).forEach((pt) => pt.forEach(add));
+        else pieceIds.filter((id) => SK.cls(id) === what).forEach(add);
+      });
+      if (!needed.length) pieceIds.forEach((id) => needed.push(id));
+      const spare = Cook.shuffle(pieceIds.filter((id) => !needed.includes(id))).concat(k.decoyPool || []);
+      const ids = needed.concat(St.tableDecoys(spare, needed, Cook.roundLevel(ctx), { what: "bowls" }));
       await SK.loadArt(S, ids);
       SK.band(S, z0);
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
@@ -238,7 +249,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
           // level 2 up (UX 11): it goes on like any other piece; the plate and the review judge the skewer
         }
-        fly.destroy();
+        // (S19, contract-114: the flying piece fades as the skewer's own takes over at the tip, never swapped for it in one frame)
+        S.tweens.add({ targets: fly, alpha: 0, duration: 160, onComplete: () => fly.destroy() });
         const img = SK.addPiece(S, sk, id, { at: -250 });
         const slot = SK.slotY(sk.ids.length - 1, n);
         await Cook.tween(S, { targets: [img, img.marks], y: slot, duration: 180 + (slot + 250) * 0.6, ease: "Quad.easeIn" });
@@ -326,10 +338,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (rack.v3) {
             // v3 (K9): it lies along its drawn place in the rack's picture, then the picture holds it
             const t = SK.lineAt(...rack.line(Math.min(j, slots - 1), j + 1));
-            await Cook.tween(S, { targets: sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut" });
+            await SK.glide(S, sk, { x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut" });
             rack.set(j + 1);
             SK.stickShown(sk, false);
-          } else await Cook.tween(S, { targets: sk, x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
+          } else await SK.glide(S, sk, { x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
           // (the orchestrator, 30 Oct: the go is the kit's move-on, which presses itself a beat after it shows (Sprint 11, "no Next and no
           // Done anywhere"): shown after the first skewer, it took an L2-L4 order to the grill with one skewer made and the grill then
           // waited for ever. It shows once every skewer the order wants is made, or the rack is full)

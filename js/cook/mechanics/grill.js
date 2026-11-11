@@ -201,6 +201,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   SK.stickShown = function (sk, on) {
     if (sk && sk.list && sk.list[0]) sk.list[0].setVisible(on);
   };
+  /**
+   * S19 (s19-games-1, contract-114: "tween the picture itself, never a container"): a skewer (a container) moved or resized in a
+   * glide, each of its pictures (the stick, the pieces and their marks) carrying a tween of its own for the same time, so a piece's
+   * size only ever changes inside a tween on that piece. props: the container's tween (targets left out). -> a Promise
+   */
+  SK.glide = function (S, sk, props) {
+    const ms = props.duration || 300;
+    (sk.list || []).forEach((o) => o && o.type === "Image" && S.tweens.add({ targets: o, scaleX: o.scaleX, scaleY: o.scaleY, duration: ms }));
+    return new Promise((r) => S.tweens.add(Object.assign({}, props, { targets: sk, onComplete: () => (props.onComplete && props.onComplete(), r()) })));
+  };
 
   /* ---------------- art (placeholder, drawn in code) ---------------- */
   const cv = (w, h) => {
@@ -1493,6 +1503,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* the rack, with fixed slots (never one per skewer ordered) */
       // (v3: raised with the rest of the scene, so it lines up with the grill and the plate)
       const rackArt = SK.rack(S, z, { x: RACK.x + dx, y: v3 ? RACK.y - LIFT / z.k : RACK.y, slots: k.rack, s: RACK.scale });
+      if (rackArt && rackArt.img && rackArt.img.setAlpha) rackArt.img.setAlpha(0); // (S19: it fades in below, with its skewers)
       const rackX = (i) => rackArt.x(i);
       const rack = Array(k.rack).fill(null);
       let incoming = 0;
@@ -1580,7 +1591,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             r.settled = true;
             rackSync();
           };
-          if (item.sprite) S.tweens.add({ targets: sk, x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut", onComplete: land });
+          if (item.sprite) SK.glide(S, sk, { x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut", onComplete: land });
           else {
             SK.onLine(sk, tip, hd);
             land();
@@ -1594,7 +1605,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         sk.setDepth(D.item + 1);
         const r = { sk, pieces: item.pieces, cls: SK.classify(item.pieces, pattern), slot: i, settled: !item.sprite };
         rack[i] = r;
-        if (item.sprite) S.tweens.add({ targets: sk, x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut", onComplete: () => (r.settled = true) });
+        if (item.sprite) SK.glide(S, sk, { x: rackX(i), y: Y(RACK.y), scale: RACK.scale * z.k, duration: 420, ease: "Sine.easeInOut", onComplete: () => (r.settled = true) });
         const hit = hitFor(sk, L(RK.pitch * RACK.scale * 0.9), L(380), "rack");
         hit.setPosition(rackX(i), Y(RACK.y));
         S.tappable(hit, () => toGrill(r));
@@ -1819,6 +1830,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* Wave 6: the skewers threaded before "Go to the barbecue" wait on the rack */
       if (params.rackItems) params.rackItems.slice(0, k.rack).forEach((it) => placeOnRack({ pieces: it.pieces }));
+      // S19 (s19-games-1, contract-114: the threading's tray went and this one stood elsewhere in the same frame): the grill's tray
+      // and the skewers waiting on it fade in, as a new place does
+      {
+        const ins = [rackArt && rackArt.img].concat(rack.filter(Boolean).map((r) => r.sk)).filter((o) => o && o.setAlpha);
+        ins.forEach((o) => o.setAlpha(0));
+        if (ins.length) S.tweens.add({ targets: ins, alpha: 1, duration: 320 });
+      }
       /* decision 51 (S02-B): the right skewers of a plate that wasn't quite right stay on it, grilled */
       (params.prePlated || []).forEach((pieces) => {
         const j = plate.length;

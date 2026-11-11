@@ -281,8 +281,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let img;
       if (S.textures.exists(key)) {
         // (scaled by its own canvas: R5's chilli heap isn't on S5's 419 px one; it fills its canvas, so a little smaller)
-        const own = S.textures.get(key).getSourceImage().width;
-        const sc = (z.L(w) / own) * (own === META.heap.w ? 1 : 0.85);
+        const src = S.textures.get(key).getSourceImage();
+        const own = src.width;
+        // S19 (s19-games-1, contract-115: the potato pile stood at 66% of chai's M): a heap on another canvas stands as tall as a
+        // standard one (its drawn part 0.854 of the slot's width, S5's heaps), no wider than 1.12 of it
+        const oh = (() => {
+          const [t, b] = St.opaqueSpan(S, key);
+          return Math.max(1, (b - t) * src.height);
+        })();
+        const sc = own === META.heap.w ? z.L(w) / own : Math.min((z.L(w) * 0.854) / oh, (z.L(w) * 1.12) / own);
         // SH-243 (contract-109: "the shelf item veg-01 stands -9 px off the base line"): every heap stands on the one base line, the
         // foot of a standard heap's canvas (the potato pile and the chilli rings are other shapes: centred, their feet were 5-11 px off)
         const foot = HEAP_Y + (w * (META.heap.h / META.heap.w)) / 2;
@@ -1234,6 +1241,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const oilR = bodyR * KM.oil;
     const PY = (at.y - z.Y(0)) / z.k; // the plate sits on the burner's line (design px)
     const plate = plateAt(z, S, FRY.px, PY, FRY.pd);
+    // (S19, contract-114: the fold's plate went and this one stood elsewhere in the same frame: it fades in by the hob instead)
+    plate.setAlpha(0);
+    if (plate.shadow) plate.shadow.setAlpha(0);
+    S.tweens.add({ targets: [plate, plate.shadow].filter(Boolean), alpha: 1, duration: 320 });
     plateFace(z, S, plate, who);
     const OL = OIL(n);
     const FS = z.L(OL.size) / META.fry.w; // a samosa's scale in the oil (fry canvases)
