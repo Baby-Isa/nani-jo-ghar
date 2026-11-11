@@ -48,7 +48,8 @@
  * Drawn on a canvas (Phaser; Cook's stations): the same pill and speaker.
  *   Shelf.P.speaker(g, x, y, s, color)        the speaker into a Graphics, about s px tall
  *   Shelf.P.chip(S, x, y, text, {word, w, cap, depth, onTap}) -> container   chip.face(word, cap), chip.hit(slotW)
- *   Shelf.P.reach(obj)                        an item's tap area reaching its pill (below): obj.chip read at each tap
+ *   Shelf.P.reach(obj)                        an item's tap area reaching down through its pill (below): obj.chip read at each tap
+ *   Shelf.P.spkArea(chip)                     the pill's own tap area, its speaker icon's, in the pill's local px {x, y, w, h}
  *
  * The stone tray (ART-69, SH-243; Zafar, 9 Nov: "if the game is top down, and we're showing the items top down as well ... we have the
  * items on a tray at the bottom ... the tray is in the game space, kind of sitting on the countertop"; then "a modern stone version";
@@ -65,10 +66,12 @@
  *                                             when the view changes shape; view() -> {left, right, bottom} (the visible world)
  *
  * Tap areas (SH-244; Zafar, 9 Nov, his tester on his phone: "She thought she was pressing the items, but she was pressing the speaker
- * buttons below the items"): ONE rule for every shelf. An item's tap area is its picture and, below it, its slot down to its pill's
- * top, across the slot's width (Shelf.P.reach; Cook's S.tappable gives it to everything it makes tappable). The pill's is its card
- * and a small margin (PILL.margin) at its sides and foot; where the two meet, at the pill's top edge, the item wins: the pill's area
- * starts at its card's top. So a tap at an item's foot, or in the gap above its pill, picks the item; only the card says the word.
+ * buttons below the items"; told again 11 Nov, his 3.5-year-old: "they still sometimes tap the word pills rather than tapping the item
+ * when they wanted to tap the item"): ONE rule for every shelf. The item wins every tap meant for it: its picture and, below it, its
+ * slot down through its pill to the pill's foot (and PILL.margin under it), across the slot's width (Shelf.P.reach; Cook's S.tappable
+ * gives it to everything it makes tappable), the pill's upper part and its word included. Only the speaker icon itself says the word:
+ * the pill's tap area is the icon, PILL.margin at its sides and foot, from 2 px over the icon's top (P.spkArea); the item's area leaves
+ * that out, so the two never overlap, and neither reaches past its slot into a neighbour's.
  */
 (function (root, factory) {
   const Shelf = factory(root);
@@ -653,8 +656,8 @@
   /*
    * One word pill on a canvas: a white card, the speaker and the word (or the speaker alone), its width its own face's (w: a fixed
    * width instead), never wider than cap (a long word narrows its text). chip.face(word, cap) redraws it; chip.hit(slotW) sets the
-   * tap area (SH-244): the card and PILL.margin at its sides and foot, never past the slot; none above the card, where the item's
-   * own tap area (Shelf.P.reach) comes down to meet it.
+   * tap area (SH-244, told again 11 Nov): the speaker icon alone (P.spkArea), never past the slot; the rest of the card, its upper part
+   * and its word, is the item's (Shelf.P.reach). chip.spk: the icon's own box in the pill's local px.
    * o: {word, w, cap, depth, onTap, font, weight, color (the word's, "#rrggbb"), shade, card (the card's colours, ints: the tokens'
    * by default), pad (the room beside the word, PILL.pad)}; the scene's S.track keeps it, when the scene has one
    */
@@ -692,10 +695,13 @@
         if (t.width > maxT) t.setScale(maxT / t.width);
         const cw = 22 + 8 + t.displayWidth;
         P.speaker(icon, -cw / 2 + 10, 0, 24);
+        // (the icon's own box: P.speaker at (x, 0), size 24, reaches 8 left, 12.5 right, 9 up and down: SH-244's speaker area)
+        chip.spk = { x: -cw / 2 + 2, y: -9.5, w: 20.5, h: 19 };
         t.x = -cw / 2 + 30;
         chip.parts = [bg, icon, t];
       } else {
         P.speaker(icon, 1, 0, 26);
+        chip.spk = { x: -7.7, y: -10.3, w: 21.3, h: 20.6 };
         chip.parts = [bg, icon];
       }
       chip.add(chip.parts);
@@ -709,16 +715,24 @@
     chip.hit = function (slotW = Infinity) {
       chip.slotW = slotW;
       const k = chip.k || 1;
-      // SH-244: the card and a small margin at its sides and foot (never past its slot); its top edge is the card's, the item's above
+      // SH-244 (told again 11 Nov): the speaker icon alone and a small margin at its sides and foot, never past the slot; the rest of
+      // the card is the item's (P.reach)
       const m = PL.margin;
       const hitW = Math.max(chip.cardW, Math.min(chip.cardW + 2 * m, (slotW - 2) / k));
-      const hitH = PL.h + m;
+      const a = P.spkArea(chip);
+      // (never past its slot: a neighbour's area starts there)
+      const lim = isFinite(slotW) ? (slotW - 2) / k / 2 : Infinity;
+      const ax1 = Math.min(a.x + a.w, lim);
+      a.x = Math.max(a.x, -lim);
+      a.w = Math.max(1, ax1 - a.x);
       // (a container's hit area is read from its top-left corner: Phaser adds its display origin, half its size, to the point first;
       // the old area, drawn about the middle, was the box up and left of the pill: its left half, and 72 px above it into the item)
       chip.setSize(hitW, PL.h);
+      const x = a.x + hitW / 2;
+      const y = a.y + PL.h / 2;
       const G = root.Phaser && root.Phaser.Geom;
-      if (chip.input) chip.input.hitArea.setTo(0, 0, hitW, hitH);
-      else if (G) chip.setInteractive(new G.Rectangle(0, 0, hitW, hitH), G.Rectangle.Contains);
+      if (chip.input) chip.input.hitArea.setTo(x, y, a.w, a.h);
+      else if (G) chip.setInteractive(new G.Rectangle(x, y, a.w, a.h), G.Rectangle.Contains);
       return chip;
     };
     chip.on("pointerdown", (ptr, lx, ly, ev) => {
@@ -730,11 +744,35 @@
     return chip;
   };
 
+  /**
+   * SH-244 (told again 11 Nov: "only the speaker icon itself says the word"): the pill's own tap area, in its local px (its middle at
+   * 0, 0): the speaker icon (chip.spk) and PILL.margin at its sides and foot, from 2 px over the icon's top down to the card's foot and
+   * the margin under it, kept within the card and the margin beside it. The card's upper part and its word are the item's.
+   */
+  P.spkArea = function (chip) {
+    const m = Shelf.PILL.margin;
+    const cw = (chip && (chip.cardW || chip.pillW)) || Shelf.PILL.spkW;
+    const ch = (chip && (chip.cardH || chip.pillH)) || Shelf.PILL.h;
+    const s = (chip && chip.spk) || { x: -10, y: -10, w: 21, h: 20 };
+    const x0 = Math.max(-cw / 2 - m, s.x - m);
+    const x1 = Math.min(cw / 2 + m, s.x + s.w + m);
+    const y0 = s.y - 2;
+    return { x: x0, y: y0, w: x1 - x0, h: ch / 2 + m - y0 };
+  };
+  /** The pill's speaker area in world px {left, top, right, bottom} (a pill not in a container, unturned), or null. */
+  P.spkBox = function (chip) {
+    if (!chip || !chip.active || chip.visible === false || chip.parentContainer || !(chip.cardW || chip.pillW)) return null;
+    const a = P.spkArea(chip);
+    const kx = Math.abs(chip.scaleX || 1);
+    const ky = Math.abs(chip.scaleY || 1);
+    return { left: chip.x + a.x * kx, top: chip.y + a.y * ky, right: chip.x + (a.x + a.w) * kx, bottom: chip.y + (a.y + a.h) * ky };
+  };
   /*
-   * SH-244: an item's tap area reaching its pill. The item (any interactive Phaser object) keeps its own area and, while it has a
-   * pill under it (obj.chip, read at each tap, so a game may give it the pill after this), also takes taps in its slot below its
-   * picture: from its picture's top down to the pill card's top, across the slot's width (the pill's slotW, else the wider of the
-   * picture and the pill's tap area). Installed once per object; returns obj.
+   * SH-244: an item's tap area reaching down through its pill. The item (any interactive Phaser object) keeps its own area and, while
+   * it has a pill under it (obj.chip, read at each tap, so a game may give it the pill after this), also takes taps in its slot below
+   * its picture: from its picture's top down to the pill card's foot and PILL.margin under it, across the slot's width (the pill's
+   * slotW, else the wider of the picture and the pill's card with its margin). The pill's speaker area (P.spkBox) is never the item's.
+   * Installed once per object; returns obj.
    */
   P.reachBox = function (obj) {
     const ch = obj && obj.chip;
@@ -743,12 +781,13 @@
     if (!cw) return null;
     const kx = Math.abs(ch.scaleX || 1);
     const ky = Math.abs(ch.scaleY || 1);
-    const top = ch.y - ((ch.cardH || ch.pillH || Shelf.PILL.h) / 2) * ky;
+    const half = ((ch.cardH || ch.pillH || Shelf.PILL.h) / 2) * ky;
+    const top = ch.y - half;
     const b = obj.getBounds();
     // (only a pill below the thing: its card's top under the picture's middle)
     if (!(top > b.y + b.height / 2)) return null;
     const slot = isFinite(ch.slotW) && ch.slotW > 0 ? ch.slotW - 2 : Math.max(b.width, (cw + 2 * Shelf.PILL.margin) * kx);
-    return { left: ch.x - slot / 2, right: ch.x + slot / 2, top: b.y, bottom: top };
+    return { left: ch.x - slot / 2, right: ch.x + slot / 2, top: b.y, bottom: ch.y + half + Shelf.PILL.margin * ky };
   };
   P.reach = function (obj) {
     if (!obj || !obj.input || obj.input.njgReach) return obj;
@@ -756,20 +795,24 @@
     if (typeof own !== "function") return obj;
     obj.input.njgReach = true;
     obj.input.hitAreaCallback = function (area, x, y, o) {
-      if (own(area, x, y, o)) return true;
-      const r = P.reachBox(o);
-      if (!r) return false;
       // (the hit test's local point, back to the world: the inverse of what Phaser did, its display origin added back first)
       let wx = x;
       let wy = y;
+      let world = true;
       try {
         const M = o.getWorldTransformMatrix();
         const p = M.transformPoint(x - (o.displayOriginX || 0), y - (o.displayOriginY || 0));
         wx = p.x;
         wy = p.y;
       } catch (e) {
-        return false;
+        world = false;
       }
+      // (the speaker is the pill's alone: never the item's, whatever its picture's frame covers)
+      const sb = world ? P.spkBox(o.chip) : null;
+      if (sb && wx >= sb.left && wx <= sb.right && wy >= sb.top && wy <= sb.bottom) return false;
+      if (own(area, x, y, o)) return true;
+      const r = world ? P.reachBox(o) : null;
+      if (!r) return false;
       return wx >= r.left && wx <= r.right && wy >= r.top && wy <= r.bottom;
     };
     return obj;

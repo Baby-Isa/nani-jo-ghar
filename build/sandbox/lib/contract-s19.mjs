@@ -19,8 +19,10 @@ import { sceneAt } from "./contract-s19b.mjs";
 //   contract-109 shelf-line   the shelf's items stand on one base line and their pills on one chip line, in the bottom band (SH-243)
 //   contract-110 knob-side    the knob rule (SH-247): in a game with only ever one pan the knob and the face sit to the pan's left,
 //                             centred on its height, clear of it and of the side panel; with several pans (chai) below each
-//   contract-111 item-reach   an item's tap area reaches its pill (SH-244): a tap at a shelf item's foot, or just above its pill,
-//                             picks the item, never the word; a tap on the pill still says the word
+//   contract-111 item-reach   the item wins the taps meant for it (SH-244): a tap on its picture's edges, at its foot, just above its
+//                             pill, on the pill's upper part or its word picks the item; only the speaker icon says the word
+//   contract-117 light-stays  a first-time light stays through a tap in its box that misses the thing and a tap elsewhere, and goes
+//                             once the right move is made (SH-261; the miss-light driver plays the misses)
 export const CENTRE_PX = 4;        // CK-63: the light's middle within this of its thing's middle
 export const WHOLE_PX = 1;         // the thing may poke out of its light by at most this (rounding)
 export const PIC_COVER = 0.6;      // a canvas picture with no word: its light covers at least this share of it (a pan's handle may poke out)
@@ -41,6 +43,8 @@ export const KNOB_CLEAR = 2;       // contract-110: the knob and the face this c
 export const KNOB_MID = 0.08;      // ... and their middle within this share of the pan's height (at least 8 px) of the burner's middle
 export const FOOT_IN = 4;
 export const TAP_HOLD_MS = 900;    // contract-111: a shelf's tap areas judged once they have stood this long (the probe samples once a second)          // contract-111: the foot's tap this many CSS px inside the item's picture, above its lowest edge
+export const MISS_STAY_MS = 800;   // contract-117: the light must stand this long after a missed tap (the driver holds 900 ms)
+export const RIGHT_MS = 2000;      // contract-117: and be gone this soon after the right move (its result: the water pours, the ball flies)
 export const NOT_A_THING = /shadow|shade|halo|glow|dim|light/i;
 export const CRATE = /(crate|heap|pile|sack|basket)/i;
 export const OLD_CARD = ".oc-box, .oc-strip, .oc-skewer, .oc-group, .oc-item:not(.oc-items14)";
@@ -82,7 +86,8 @@ export const S19_CHECKS = {
   "contract-107": { item: "hop-shelf", title: "only shelf items hop", how: "Cook flows: every glowing picture that hops (njgTest.cook.glowing() bounce) must stand in the shelf band (its foot in the bottom 30% of the canvas, js/shared/shelf.js Shelf.BAND); a hop off the shelf (a pan, a board, the dough on the board) is a break. A shelf item lit by a light box of its own (its middle inside one) for 300 ms without its hop is a break too. Once per thing per page (SH-237, Zafar 8 Nov: 'items in the bottom bar bounce up and down')." },
   "contract-108": { item: "praise-last", title: "well done only once the whole card is ticked", how: "Cook flows, in a station: a well done (a line saying shabash) that starts while an order card row on screen is still open (the rows sample just before it: not done and not a no row) is a break, once per page (SH-239, Zafar 8 Nov: 'say well done when ... the whole menu card is complete')." },
   "contract-110": { item: "knob-side", title: "the knob rule: left of a pan alone in the width; else below it", how: "Cook flows, each s19knob sample (the S19 probe: every kitchen knob, kit-knob-off, with its burner's flame ring, the face badge beside it, the pan's picture on that burner, the other pictures and item cards sharing the pan's height (beside it, at least 15% of its height: a board, the dial's pictures, a plate, the lap card) and the side panel's box, in CSS px). A single pan alone across the width (nothing else beside it): the knob and the face wholly left of the pan's picture and its flame ring by 2 px, their middle within 8% of the pan's height (8 px at least) of the burner's middle, clear of the side panel and inside the screen. Several pans, or a single pan sharing the width: each knob below its burner (its middle under the burner's), clear of the pan's body (the flame ring's 85%). One off is a break, once per page (SH-247, Zafar 9 Nov: 'where you only have one item ... you put the button off to the left'; refined the same day: 'if there's multiple things taking up width, then we put the button underneath to maximize our width')." },
-  "contract-111": { item: "item-reach", title: "a tap at an item's foot picks the item, never its word", how: "Cook flows, each s19tap sample (the S19 probe, once a second while the shelf changes: for every shelf item with a word and its pill, Phaser's own hit test, topmost first, at the item's foot (4 CSS px inside its picture's lowest edge, its middle across), just above its pill's card (2 CSS px) and at the pill's middle). The foot and the spot above the pill must pick the item (or a hit area carrying its word); the pill's middle must pick the pill. A tap there that says the word, or picks nothing, is a break, once per item per page (SH-244, Zafar 9 Nov, his tester on his phone: 'She thought she was pressing the items, but she was pressing the speaker buttons below the items'; measured with the browser's bar showing: 930x374)." },
+  "contract-111": { item: "item-reach", title: "the item wins the taps meant for it; only the speaker says the word", how: "Cook flows, each s19tap sample (the S19 probe, once a second while the shelf changes: for every shelf item with a word and its pill, and every thing with a word that lives on a shelf without pills (the pantry's), Phaser's own hit test, topmost first, at its picture's left, right and top edges (4 CSS px in, at the side's middle), and where it has a pill: at the item's foot (4 CSS px inside its picture's lowest edge, its middle across), just above its pill's card (2 CSS px), on the pill's upper part (3 CSS px under the card's top), on the pill's word (its text's middle) and on its speaker icon (the icon's middle)). The edges, the foot, the spot above the pill, the pill's upper part and its word must pick the item (or a hit area carrying its word, never a neighbour's); the speaker must pick the pill. A tap there that says the word, picks a neighbour or picks nothing is a break, once per item per page (SH-244, Zafar 9 Nov, his tester on his phone: 'She thought she was pressing the items, but she was pressing the speaker buttons below the items'; told again 11 Nov, his 3.5-year-old: 'they still sometimes tap the word pills rather than tapping the item when they wanted to tap the item'; measured with the browser's bar showing: 930x374)." },
+  "contract-117": { item: "light-stays", title: "the first-time light stays until the right move", how: "Cook flows with the miss-light driver: at the first move with a first-time light up, the driver taps a point inside the light's drawn box with nothing under it that takes a tap, then a point outside every box on nothing that takes a tap (each a Lifecycle note probe-tap, miss-in or miss-out, with the point and the box). Through 800 ms after each, every s19lit sample must still show a box round the light's middle: a light that goes (or hides) after a tap that did not do its thing is a break. Then the first real press inside that box (the player's right move) must take it away within 2 s (no box round its middle): a light that stays on after the move is a break too. Once per page each (SH-261, Zafar 11 Nov, his 3.5-year-old: 'they tapped in the box but not on the water ... the onboarding light went away, but the water didn't pour. And then they were stuck ... the onboarding light needs to stay there until they've done the correct action')." },
   "contract-109": { item: "shelf-line", title: "the shelf's items on one base line, their pills on one chip line", how: "Cook flows: each s19shelf sample (the tappable pictures with a word whose foot is in the bottom band, with no glow on them: a hop lifts one) with three or more items: every item's foot within 4 px of the band's base line (the lowest feet's median) and every pill's middle within 2 px of the chip line (the pills' median). One off the line is a break, once per page (SH-243, Zafar 8 Nov: 'the bottom items they're not on a shelf like tea's'; Shelf.BAND: things stand on one base, pills centred on one chip line)." },
 };
 
@@ -261,8 +266,11 @@ export function check106(r, tl, add) {
   const lits = ev(tl, "s19lit");
   if (!lits.length) return;
   const holesAt = (t) => { let cur = null; for (const e of lits) { if (e.t > t) break; cur = e; } return cur ? (cur.holes || []).map(box) : []; };
+  // (s19-taps, SH-261: a tap the miss-light driver made off the thing is not the move a light shows: contract-117 judges it stays)
+  const misses = life(tl, "probe-tap").map((q) => { const m = /^(-?\d+),(-?\d+)\|/.exec(q.by || ""); return m ? { x: +m[1], y: +m[2], t: q.at || q.t } : null; }).filter(Boolean);
   for (const p of ev(tl, "input")) {
     const pt = { x: p.x, y: p.y };
+    if (misses.some((q) => Math.abs(q.x - p.x) <= 2 && Math.abs(q.y - p.y) <= 2 && Math.abs(q.t - p.t) < 1500)) continue;
     const h0 = holesAt(p.t).find((h) => inBox(pt, h));
     if (!h0) continue;
     // (s19-checks-1, the probe fault in orch-overlay-gone, eggs 740x320: a tap's move starts when the game takes it, its act note,
@@ -419,15 +427,57 @@ export function check111(r, tl, add) {
       const bad = [];
       if (it.foot && !own(it.foot, it)) bad.push(`a tap at its foot (${it.foot.x}, ${it.foot.y}) picks ${it.foot.who === "pill" ? "its pill: it says the word" : it.foot.who === "none" ? "nothing" : it.foot.who + " " + (it.foot.id || "")}`);
       if (it.gap && !own(it.gap, it)) bad.push(`a tap just above its pill (${it.gap.x}, ${it.gap.y}) picks ${it.gap.who === "pill" ? "the pill: it says the word" : it.gap.who === "none" ? "nothing" : it.gap.who + " " + (it.gap.id || "")}`);
-      if (it.pill && it.pill.who !== "pill") bad.push(`a tap on its pill (${it.pill.x}, ${it.pill.y}) picks ${it.pill.who === "none" ? "nothing" : it.pill.who}: the pill says the word`);
+      // (s19-taps, SH-244 told again, 11 Nov: the item wins its picture's edges, its pill's upper part and its word; only the speaker
+      // icon itself says the word. A run sampled before this (it.pill: the pill's middle) is judged as it was)
+      const say = (q) => (q.who === "pill" ? "its pill: it says the word" : q.who === "none" ? "nothing" : `${q.who} ${q.id || ""}`.trim());
+      const side = ["left", "right", "top"];
+      (it.edges || []).forEach((q, k) => { if (q && !own(q, it)) bad.push(`a tap at its picture's ${side[k]} edge (${q.x}, ${q.y}) picks ${say(q)}`); });
+      if (it.upper && !own(it.upper, it)) bad.push(`a tap on its pill's upper part (${it.upper.x}, ${it.upper.y}) picks ${say(it.upper)}`);
+      if (it.word && !own(it.word, it)) bad.push(`a tap on its pill's word (${it.word.x}, ${it.word.y}) picks ${say(it.word)}`);
+      if (it.spk && it.spk.who !== "pill") bad.push(`a tap on its pill's speaker (${it.spk.x}, ${it.spk.y}) picks ${it.spk.who === "none" ? "nothing" : it.spk.who}: the speaker says the word`);
+      if (it.pill && !it.spk && it.pill.who !== "pill") bad.push(`a tap on its pill (${it.pill.x}, ${it.pill.y}) picks ${it.pill.who === "none" ? "nothing" : it.pill.who}: the pill says the word`);
       if (!bad.length) continue;
       seen.add(it.id);
-      add("contract-111", e.t, `the shelf item ${it.id}: ${bad.join("; ")} (the item's tap area reaches down its slot to its pill's top)`);
+      add("contract-111", e.t, `the shelf item ${it.id}: ${bad.join("; ")} (the item takes its picture, its slot down to its pill and the pill but its speaker)`);
     }
   }
 }
 
+// 117
+export function check117(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const probes = life(tl, "probe-tap").filter((p) => /^miss-/.test(p.step || ""));
+  if (!probes.length) return;
+  const lits = ev(tl, "s19lit");
+  const holesAt = (t) => { let cur = null; for (const e of lits) { if (e.t > t) break; cur = e; } return cur ? (cur.holes || []).map(box) : []; };
+  const round = (hs, c) => hs.some((h) => inBox(c, h));
+  let box0 = null, last = 0, missed = false;
+  for (const p of probes) {
+    const m = /^(-?\d+),(-?\d+)\|(-?\d+),(-?\d+),(-?\d+),(-?\d+)$/.exec(p.by || "");
+    if (!m) continue;
+    const at = p.at || p.t;
+    const b = { l: +m[3], t: +m[4], r: +m[5], b: +m[6] }, c = mid(b);
+    box0 = box0 || b;
+    last = Math.max(last, at);
+    if (missed) continue;
+    const span = [holesAt(at)].concat(lits.filter((e) => e.t > at && e.t <= at + MISS_STAY_MS).map((e) => (e.holes || []).map(box)));
+    const gone = span.findIndex((hs) => !round(hs, c));
+    if (gone < 0) continue;
+    missed = true;
+    add("contract-117", at, `the first-time light ${fmt(b)} went after a tap ${p.step === "miss-in" ? "inside its box that missed the thing" : "elsewhere, outside it"} at (${m[1]}, ${m[2]}): it stays until the right move is made`);
+  }
+  if (!box0) return;
+  // the right move: the first real press inside the box after the misses (not one of the driver's own taps)
+  const c = mid(box0);
+  const right = ev(tl, "input").find((e) => e.t > last + 300 && inBox({ x: e.x, y: e.y }, box0));
+  if (!right) return;
+  const after = lits.filter((e) => e.t > right.t && e.t <= right.t + RIGHT_MS);
+  if (!round(holesAt(right.t + RIGHT_MS), c) || after.some((e) => !round((e.holes || []).map(box), c))) return;
+  add("contract-117", right.t, `the first-time light ${fmt(box0)} still stood ${RIGHT_MS} ms after the right move at (${right.x}, ${right.y}): it goes as the move's result comes`);
+}
+
 export function checkS19(r, tl, v, add) {
+  check117(r, tl, add);
   check100(r, tl, add);
   check101(r, tl, add);
   check102(r, tl, add);
@@ -1020,25 +1070,43 @@ function s19hook() {
         for (const o of list) {
           if (!o || o.visible === false || o.alpha === 0) continue;
           if (o.list) walk(o.list);
-          // (a shelf thing is anything taking taps with a word pill under it: maani's dough piles carry no word id, only their pill)
+          // (a shelf thing is anything taking taps with a word pill under it: maani's dough piles carry no word id, only their pill; and,
+          // s19-taps, a thing with a word that lives on a shelf with no pills, the pantry's: it has a home to go back to)
           if ((!o.wordId && !o.chip) || !o.input || !o.input.enabled || !o.getBounds || o.glowFx) continue;
           const ch = o.chip;
           const cw = ch && (ch.cardW || ch.pillW);
-          if (!ch || !ch.active || ch.visible === false || !cw || ch.parentContainer) continue;
+          const pill = !!(ch && ch.active && ch.visible !== false && cw && !ch.parentContainer);
+          if (!pill && !(o.wordId && o.home)) continue;
           const b = safe(() => o.getBounds());
           if (!b) continue;
           const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
-          if (bt < band) continue; // (the shelf's things alone: their foot in the band)
-          const sy = Math.abs(ch.scaleY || 1), hh = ((ch.cardH || ch.pillH || 46) / 2) * sy;
-          const [, pt] = P(ch.x, ch.y - hh), [pcx, pcy] = P(ch.x, ch.y);
-          const cx = (l + r) / 2;
+          if (pill && bt < band) continue; // (the band's things alone: their foot in the band)
+          if (r - l < 12 || bt - t < 12) continue;
+          const cx = (l + r) / 2, cy = (t + bt) / 2;
           const what = (px, py) => {
             const h = top(px, py);
-            const who = !h ? "none" : h === o ? "item" : h === ch || (h.parentContainer && h.parentContainer === ch) ? "pill" : h.wordId != null ? "word" : (h.chip || h.pillId != null || (h.list && h.cardW)) ? "pill" : "other";
+            const who = !h ? "none" : h === o ? "item" : ch && (h === ch || (h.parentContainer && h.parentContainer === ch)) ? "pill" : h.wordId != null ? "word" : (h.chip || h.pillId != null || (h.list && h.cardW)) ? "pill" : "other";
             return { x: Math.round(px), y: Math.round(py), who, id: h ? String(h.wordId != null ? h.wordId : (h.texture && h.texture.key) || h.type || "") : null };
           };
-          const fy = Math.min(bt - FOOT, pt - 3);
-          items.push({ id: String(o.wordId || o.type || (o.texture && o.texture.key) || "?"), foot: fy > t ? what(cx, fy) : null, gap: pt - 2 > bt ? what(pcx, pt - 2) : null, pill: what(pcx, pcy) });
+          // (s19-taps, SH-244 told again: the picture's edges, 4 px in, at the middle of its left, right and top sides)
+          const edges = [what(l + FOOT, cy), what(r - FOOT, cy), what(cx, t + FOOT)];
+          const it = { id: String(o.wordId || o.type || (o.texture && o.texture.key) || "?"), edges };
+          if (pill) {
+            const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hh = ((ch.cardH || ch.pillH || 46) / 2) * sy;
+            const [, pt] = P(ch.x, ch.y - hh), [pcx, pcy] = P(ch.x, ch.y);
+            // the pill's word (its text's middle) and its speaker (the icon's middle: 18 px left of the text, or the card's middle alone)
+            const tx = (ch.list || []).find((q) => q && q.type === "Text" && q.visible !== false);
+            const [wx] = tx ? P(ch.x + (tx.x + tx.displayWidth / 2) * sx, ch.y) : [null];
+            const [spx] = P(ch.x + (tx ? tx.x - 18 : 3) * sx, ch.y);
+            const fy = Math.min(bt - FOOT, pt - 3);
+            it.foot = fy > t ? what(cx, fy) : null;
+            it.gap = pt - 2 > bt ? what(pcx, pt - 2) : null;
+            // the pill's upper part: 3 px under its card's top, over the word (or the card's middle, a speaker alone)
+            it.upper = what(wx != null ? wx : pcx, pt + 3);
+            it.word = wx != null ? what(wx, pcy) : null;
+            it.spk = what(spx, pcy);
+          }
+          items.push(it);
         }
       };
       safe(() => walk(sc.children.list));
@@ -1136,7 +1204,7 @@ function s19hook() {
       if (Date.now() - tapAt > 1000) {
         tapAt = Date.now();
         const tp = safe(tapsNow, null);
-        if (tp && !same("s19tap", tp.items.map((x) => [x.id, x.foot && x.foot.who, x.gap && x.gap.who, x.pill && x.pill.who, x.foot && Math.round(x.foot.y / 4)]))) emit({ k: "s19tap", ...tp });
+        if (tp && !same("s19tap", tp.items.map((x) => [x.id, x.foot && x.foot.who, x.gap && x.gap.who, x.upper && x.upper.who, x.word && x.word.who, x.spk && x.spk.who, (x.edges || []).map((q) => q.who + q.id), x.foot && Math.round(x.foot.y / 4)]))) emit({ k: "s19tap", ...tp });
       }
     } catch (e) { /* a probe only */ }
   }, 100);
