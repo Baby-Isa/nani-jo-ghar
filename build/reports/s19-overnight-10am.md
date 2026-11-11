@@ -35,3 +35,11 @@ judges and reviews about $10: about $260 overnight, over the $150-200 planned (a
 - Merge commits on ccr-87413d9b-j48fpk: s19-chaat-td, s19-checks-2, s19-fixes-f, s19-pantry (git log --merges).
 - Chaat's verdict: build/screenshots/sidebyside/chaat-L1-20261111-0355/judge-batch.verdicts.md.
 - check-push passed on efd878fd8 (build/reports/tiers/push-efd878fd82.md); the builders' reports: build/reports/s19-*.md.
+
+## After 10:00
+- **s19-serve merged:** the serving kitchen's two views, the glide, one tray per person, dishes on their trays, on stand-ins
+  (assets/cook/serve/: kitchen-tall, kitchen-order, kitchen-serve, tray, dish-*); contract-80 now passes the announced glide (tested).
+- **s19-fixes-g merged:** ten games at four sizes, 228 to 142 breaks (chai 0): the timed windows, first-time holds and step calls
+  cleared, snaps 89 to 56. Left: the shared order card's padding (29), shared flies tweening a container, three design choices for
+  Zafar (maani's sizes board to tawa to plate, the grills' size against their trays, samosa's fold close-up), the next round's own.
+- No builder is running.
