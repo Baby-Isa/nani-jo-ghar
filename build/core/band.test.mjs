@@ -18,7 +18,7 @@ const GAMES = {
   "maani-line": ["data/stations/maani-line.json", "js/cook/stations/maani-line.js"],
   "mishkaki-grill": ["data/stations/mishkaki-grill.json", "js/cook/mechanics/grill.js"],
   samosa: ["data/stations/samosa.json", "js/cook/stations/samosa.js"],
-  chaat: ["data/stations/chaat.json", "js/cook/mechanics/assemble.js", "chaat goes top-down on the tray (CHT-13, Zafar 9 Nov) in its next build"],
+  chaat: ["data/stations/chaat.json", "js/cook/mechanics/assemble.js"], // top-down on the tray (CHT-13, Zafar 9 Nov; s19-chaat-td)
   baking: ["data/stations/baking.json", "js/cook/stations/baking.js", true], // todo: baking draws its own counter until its redraws land (wave D, 10 Nov)
 };
 const table = read("docs/game-design/modes/cook-bottom-row.md");
