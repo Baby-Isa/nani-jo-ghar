@@ -172,15 +172,28 @@ const BAND = 0.3;       // js/shared/shelf.js Shelf.BAND: the bottom 270 of the 
 // ---- 115: the main thing as big as the height allows; the shelf's items at one height (SH-245, CK-77) ----
 export const MAIN_ROOM = 0.7;      // the main thing's height at least this share of the room above the band (chai's hob: 0.75, 0.86)
 export const MAIN_WIDE = 0.85;     // ... unless its width already takes this share of the play area (a wide thing is width-bound)
-export const SHELF_MIN = 0.36;     // a shelf item's longer side at least this share of the band (chai's smallest class, 0.42, less 15%)
-export const SHELF_CLASS = 0.71;   // ... and at least this share of the shelf's tallest (the S class, 0.84 of L, less 15%)
+// a shelf item stands at chai's height for its size class (data/cook.json words[id].size: L, M, S; M when none; Shelf.CLASS_K L 1, M .91,
+// S .84), measured on chai at HEAD (11 Nov) as its L jars' height over the band's at each size; within SHELF_TOL under it. Chai's own
+// jars sit within 2% of these; the eye judge's eggs bowl (CK-77, 3c4882609) stood at 86% of chai's M
+export const CHAI_L = { "740x320": 0.568, "930x430": 0.578, "1280x665": 0.494, "1920x1080": 0.492 };
+export const CLASS_K = { L: 1, M: 0.91, S: 0.84 };
+export const SHELF_TOL = 0.1;
+const CLASSES = new Map();
+export function sizeClasses(root) {
+  if (CLASSES.has(root)) return CLASSES.get(root);
+  let w = {};
+  try { w = JSON.parse(readFileSync(join(root, "data/cook.json"), "utf8")).words || {}; } catch (e) { /* none: every item M */ }
+  const m = new Map(Object.entries(w).map(([id, x]) => [id, (x && x.size) || "M"]));
+  CLASSES.set(root, m);
+  return m;
+}
 export const SIZE_AT_MS = 3000;    // judged this long into each station (laid out; the order in)
 // not the main thing: the shelf band's own tray, the knobs, faces and badges, the tools in the hand, the cat
 export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat/i;
 Object.assign(S19B_CHECKS, {
-  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word: its longer side at least ${SHELF_MIN} of the band's height (chai's smallest jar 0.42, less 15%), and at least ${SHELF_CLASS} of the shelf's tallest item (one height per size class: S is 0.84 of L, less 15%) (CK-77: eggs' carton a speck on an empty band). Once per station.` },
+  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Once per station.` },
 });
-export function check115(r, tl, add) {
+export function check115(r, tl, add, { root = "." } = {}) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19it").length) return;
   for (const s of stationsOf(tl)) {
     const t = s.t0 + SIZE_AT_MS;
@@ -197,12 +210,12 @@ export function check115(r, tl, add) {
       if (h < MAIN_ROOM * room && w < MAIN_WIDE * W) add("contract-115", t, `${s.key}: the main thing ${main.key} stands ${Math.round(h)} px, ${Math.round((100 * h) / room)}% of the ${Math.round(room)} px above the shelf band (at least ${MAIN_ROOM * 100}%: as big as the height allows; it is ${Math.round((100 * w) / W)}% of the width)`);
     }
     const shelf = list.filter((x) => x.word && (x.box[1] + x.box[3]) / 2 > bandTop - 0.05 * H);
-    if (shelf.length) {
-      const bandH = BAND * H, tall = Math.max(...shelf.map((x) => Math.max(x.w, x.h)));
+    const ref = CHAI_L[r.size];
+    if (shelf.length && ref) {
+      const bandH = BAND * H, cls = sizeClasses(root);
       for (const x of shelf) {
-        const sz = Math.max(x.w, x.h);
-        if (sz < SHELF_MIN * bandH) { add("contract-115", t, `${s.key}: the shelf item ${x.word} (${x.key}) is ${Math.round(sz)} px, ${Math.round((100 * sz) / bandH)}% of the ${Math.round(bandH)} px band (at least ${SHELF_MIN * 100}%: chai's jars are 42-50%)`); break; }
-        if (sz < SHELF_CLASS * tall) { add("contract-115", t, `${s.key}: the shelf item ${x.word} (${x.key}) is ${Math.round(sz)} px beside the shelf's tallest ${Math.round(tall)} px (${Math.round((100 * sz) / tall)}%; one height per size class: at least ${SHELF_CLASS * 100}%)`); break; }
+        const c = cls.get(x.word) || "M", want = ref * CLASS_K[c] * bandH, h = x.h;
+        if (h < (1 - SHELF_TOL) * want) { add("contract-115", t, `${s.key}: the shelf item ${x.word} (${x.key}, class ${c}) stands ${Math.round(h)} px, ${Math.round((100 * h) / want)}% of chai's ${c} height at ${r.size} (${Math.round(want)} px): one height per size class, within ${SHELF_TOL * 100}%`); break; }
       }
     }
   }
@@ -213,8 +226,9 @@ export const PAD_EVEN = 2;      // px: a card's inner padding equal on all sides
 export const GAP_EVEN = 2;      // px: the gaps between cards equal within this
 export const ROW_FILL = 2 / 3;  // the cards fill at least this share of their row (one card in a box for 2.5 is a half-empty card)
 export const PAD_HOLD_MS = 400;
+export const CUR_HOLD_MS = 1000;
 Object.assign(S19B_CHECKS, {
-  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on all four sides within ${PAD_EVEN} px; the gaps between cards equal within ${GAP_EVEN} px; the current card (the first not ticked) whole inside the row; and the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
+  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on all four sides within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height); the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
 });
 export function check116(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19pad").length) return;
@@ -222,19 +236,28 @@ export function check116(r, tl, add) {
   const tEnd = r.t0 && r.ms ? r.t0 + r.ms : tl.length ? tl[tl.length - 1].t : 0;
   const said = new Set();
   const out = (k, t, m) => { if (said.has(k)) return; said.add(k); add("contract-116", t, m); };
-  for (const { e } of heldSamples(tl, "s19pad", PAD_HOLD_MS, tEnd)) {
+  // (the 2 px are chai's at 1280x665: at another size the card is drawn at its own scale, so the tolerance is too)
+  const H = (+(String(r.size || "").split("x")[1]) || 665);
+  const tolPad = Math.max(PAD_EVEN, (PAD_EVEN * H) / 665), tolGap = Math.max(GAP_EVEN, (GAP_EVEN * H) / 665);
+  const ord = ev(tl, "s19ord"), rowsS = ev(tl, "s19row");
+  const ordering = (t) => { const o = ord.filter((x) => x.t <= t).pop(); return !!o && (o.away > 0 || o.pop > 0 || o.fly > 0); };
+  for (const { e, until } of heldSamples(tl, "s19pad", PAD_HOLD_MS, tEnd)) {
     const s = inSt(st, e.t);
     if (!s || !e.box || !(e.cards || []).length || !e.row) continue;
     const cards = e.cards.slice().sort((a, b) => a.box[0] - b.box[0]);
     for (const c of cards) {
       if (!c.in) continue;
       const pads = [c.in[0] - c.box[0], c.in[1] - c.box[1], c.box[2] - c.in[2], c.box[3] - c.in[3]];
-      if (Math.max(...pads) - Math.min(...pads) > PAD_EVEN) out("pad", e.t, `${s.key}: the order card "${c.w}" has padding ${pads.map((p) => Math.round(p * 2) / 2).join("/")} px (left/top/right/bottom): equal on every side within ${PAD_EVEN} px`);
+      if (Math.max(...pads) - Math.min(...pads) > tolPad) out("pad", e.t, `${s.key}: the order card "${c.w}" has padding ${pads.map((p) => Math.round(p * 2) / 2).join("/")} px (left/top/right/bottom): equal on every side within ${Math.round(tolPad * 10) / 10} px`);
     }
     const gaps = cards.slice(1).map((c, i) => c.box[0] - cards[i].box[2]);
-    if (gaps.length > 1 && Math.max(...gaps) - Math.min(...gaps) > GAP_EVEN) out("gap", e.t, `${s.key}: the order cards' gaps are ${gaps.map(Math.round).join(", ")} px: equal within ${GAP_EVEN} px`);
+    if (gaps.length > 1 && Math.max(...gaps) - Math.min(...gaps) > tolGap) out("gap", e.t, `${s.key}: the order cards' gaps are ${gaps.map(Math.round).join(", ")} px: equal within ${Math.round(tolGap * 10) / 10} px`);
+    // (while the order is given the row follows the cards as they are said: the current card is judged once the order is in)
     const cur = cards.find((c) => !c.done);
-    if (cur && (cur.box[0] < e.row[0] - 1 || cur.box[2] > e.row[2] + 1)) out("cur", e.t, `${s.key}: the current order card "${cur.w}" at [${cur.box.map(Math.round)}] is cut by its row [${e.row.map(Math.round)}]: the current card whole in view`);
+    // (and the row still: a glide caught between two samples of a busy page is not where the card stands)
+    // (a card ticked moves the row on after its tick, about 600 ms: the current card is judged where it stands a second)
+    const gliding = rowsS.some((x) => x.t >= e.t - 300 && x.t <= e.t + CUR_HOLD_MS) || until - e.t < CUR_HOLD_MS;
+    if (cur && !ordering(e.t) && !gliding && (cur.box[0] < e.row[0] - 1 || cur.box[2] > e.row[2] + 1)) out("cur", e.t, `${s.key}: the current order card "${cur.w}" at [${cur.box.map(Math.round)}] is cut by its row [${e.row.map(Math.round)}]: the current card whole in view`);
     const span = cards[cards.length - 1].box[2] - cards[0].box[0], rowW = e.row[2] - e.row[0];
     if (rowW > 0 && span < ROW_FILL * rowW) out("fill", e.t, `${s.key}: the order card's ${cards.length} card${cards.length > 1 ? "s" : ""} fill${cards.length > 1 ? "" : "s"} ${Math.round((100 * span) / rowW)}% of its ${Math.round(rowW)} px row: ${Math.round(100 - (100 * span) / rowW)}% of the card is blank (at least ${Math.round(ROW_FILL * 100)}% filled)`);
   }
@@ -399,7 +422,7 @@ export function check37(r, tl, add, { root = ".", table = {} } = {}) {
 
 // 109 (one or two items): each on chai's base and chip lines at that size; a lone item over its pill
 // (chai at HEAD, measured by this check's probe, 11 Nov: its shelf's feet and pills' middles, px from the canvas top)
-export const CHAI_LINE = { "740x320": { foot: 296, chip: 307 }, "930x430": null, "1280x665": { foot: 621, chip: 642 }, "1920x1080": null };
+export const CHAI_LINE = { "740x320": { foot: 296, chip: 307 }, "930x430": { foot: 397, chip: 412 }, "1280x665": { foot: 621, chip: 642 }, "1920x1080": { foot: 1008, chip: 1042 } };
 export function check109few(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length) return;
   const line = CHAI_LINE[r.size];
@@ -517,16 +540,20 @@ export function check71(r, tl, add) {
     if (Number(count) > 1) { add("contract-71", n.t, `${n.reason} went into ${who}'s pan a ${Number(count) === 2 ? "second" : `${count}th`} time (a second tap adds nothing)`); return; }
   }
 }
-// 90 (no opt-in): a new player, once the first card is ticked and the child pauses 2.5 s, sees the order card's next item lit
+// 90: chai's first-time pointer (its design: after the tea, the card's next item lit for a new player who pauses); the card light of
+// every game is the check sort's G6 (the light over time, from the frames), so 90 keeps chai's own notes, with no games.json field
+export const CARD_LIGHT = { note: "chai-add", first: "cook-chai", stations: /^chai-tray$/ };
 export function check90(r, tl, add) {
-  if (!isCookFlow(r.flow) || /#(returning|mistake|takeback)/.test(r.flow || "") || !ev(tl, "s19tick").length) return;
-  const ticks = ev(tl, "s19tick").filter((e) => !e.un && e.row);
-  if (ticks.length < 2) return;
-  const first = ticks[0];
+  const f = r.flow || "";
+  if (!isCookFlow(f) || /#(returning|mistake|takeback)/.test(f) || !/^cook:/.test(f) || !CARD_LIGHT.stations.test(stationOf(f) || "")) return;
+  const adds = life(tl, CARD_LIGHT.note).filter((n) => !/:(again|capped)$/.test(String(n.by || "")));
+  const first = adds.find((n) => n.reason === CARD_LIGHT.first);
+  if (!first) return;
+  const after = adds.find((n) => n.t > first.t && n.reason !== CARD_LIGHT.first);
+  if (!after) return;
   const next = ev(tl, "input").find((e) => e.t > first.t);
   if (next && next.t - first.t < 2500) return;
-  const lit = ev(tl, "lit").some((e) => e.card && e.t > first.t) || ev(tl, "s19lit").some((e) => e.t > first.t && (e.things || []).some((x) => x.kind === "card"));
-  if (!lit) add("contract-90", ticks[1].t, `a new player at L${levelOf(r.flow)}: the first card was ticked, the child paused, and the order card's next item was never lit (the first time's pointer to the next item)`);
+  if (!life(tl, "card-light").length) add("contract-90", after.t, `a new player at L${levelOf(f)}: the first item (${CARD_LIGHT.first}) went in and the next item followed, but the order card's next item was never lit (no card-light note): the first time's pointer to the third item is missing`);
 }
 
 // 78's control calls, from the page (no opt-in, s19-checks-2; it was games.json controlCalls, chai's "chulo bar" and "slow kar"): a call

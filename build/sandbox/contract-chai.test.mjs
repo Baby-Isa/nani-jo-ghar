@@ -66,12 +66,12 @@ test("contract-71: an add with no row wanting it, or a row counted past its need
   assert.match(of(run("cook:chai-tray#mistake", [life(2000, "chai-add", "cook-dudh", "nana:1"), life(3000, "chai-add", "cook-dudh", "nana:2"), tick(T + 100, "x", { row: 1, got: 1, need: 1 })]), "contract-71")[0].measured, /second time/);
 });
 
-test("contract-90: a new player who pauses after the first card is ticked sees the next item lit; never lit is a break", () => {
-  const tick = (t, id) => c(t, "s19tick", { id, dish: 0, un: 0, row: 1, got: 1, need: 1, done: 1 });
-  const tl = [tap(T + 1000), tick(T + 1100, "cook-chai"), tap(T + 6000), tick(T + 6100, "cook-dudh")];
-  assert.match(of(run("cook:eggs", tl), "contract-90")[0].measured, /never lit/);
-  assert.equal(of(run("cook:eggs", [...tl, c(T + 4000, "lit", { holes: [[10, 10, 50, 50]], card: true })]), "contract-90").length, 0);
-  assert.equal(of(run("cook:eggs#returning", tl), "contract-90").length, 0);
+test("contract-90: chai's pointer: after the tea and a pause, the order card's next item lit; never lit is a break (no games.json field)", () => {
+  const life = (t, what, step, by) => c(t, "life", { what, reason: step, step, by, at: t });
+  const tl = [life(2000, "chai-add", "cook-chai", "nana:1"), tap(2000), tap(6000), life(6100, "chai-add", "cook-dudh", "nana:1")];
+  assert.match(of(run("cook:chai-tray", tl), "contract-90")[0].measured, /never lit/);
+  assert.equal(of(run("cook:chai-tray", [...tl, life(4000, "card-light", "cook-dudh", "")]), "contract-90").length, 0);
+  assert.equal(of(run("cook:chai-tray#returning", tl), "contract-90").length, 0);
 });
 
 test("contract-96: after a boil-over (a ring past its green, emptied with no tap) the ticked cards open again and the row comes home", () => {

@@ -1584,7 +1584,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   check112(r, tl, add);
   check113(r, tl, add);
   check114(r, tl, add);
-  check115(r, tl, add);
+  check115(r, tl, add, { root });
   check116(r, tl, add);
   return out;
 }

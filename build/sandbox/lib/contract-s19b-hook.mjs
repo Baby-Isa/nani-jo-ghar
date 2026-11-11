@@ -141,12 +141,13 @@ function s19bhook() {
   // ---- the order card's padding and gaps, in the game (116) ----
   const contentBox = (el) => {
     let b = null;
-    for (const c of el.querySelectorAll("img, svg, .wc14-k, .wc14-e, .wc14-pic, .wc14-spk, .oc-t, .oc-spk, .wc-k, .wc-e, .wc-pic")) {
+    // (its picture, words and speaker: not the tick a done card wears in its corner)
+    for (const c of el.querySelectorAll(".wc14-pic, .wc14-k, .wc14-e, .wc14-en, .wc14-spk, .oc-t, .oc-spk, .wc-pic, .wc-k, .wc-e")) {
       if (!shown(c) || c.closest(".oc-away")) continue;
       const r = c.getBoundingClientRect();
       // (a word's own letters, not its block's width)
       let q = r;
-      if (c.matches(".wc14-k, .wc14-e, .oc-t, .wc-k, .wc-e")) { const rg = document.createRange(); rg.selectNodeContents(c); const rs = [...rg.getClientRects()].filter((x) => x.width > 1); if (rs.length) q = { left: Math.min(...rs.map((x) => x.left)), top: Math.min(...rs.map((x) => x.top)), right: Math.max(...rs.map((x) => x.right)), bottom: Math.max(...rs.map((x) => x.bottom)) }; }
+      if (c.matches(".wc14-k, .wc14-e, .wc14-en, .oc-t, .wc-k, .wc-e")) { const rg = document.createRange(); rg.selectNodeContents(c); const rs = [...rg.getClientRects()].filter((x) => x.width > 1); if (rs.length) q = { left: Math.min(...rs.map((x) => x.left)), top: Math.min(...rs.map((x) => x.top)), right: Math.max(...rs.map((x) => x.right)), bottom: Math.max(...rs.map((x) => x.bottom)) }; }
       b = b ? { left: Math.min(b.left, q.left), top: Math.min(b.top, q.top), right: Math.max(b.right, q.right), bottom: Math.max(b.bottom, q.bottom) } : { left: q.left, top: q.top, right: q.right, bottom: q.bottom };
     }
     return b ? R(b) : null;

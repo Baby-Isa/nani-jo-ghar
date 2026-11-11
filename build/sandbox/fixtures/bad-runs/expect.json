@@ -194,6 +194,419 @@
     ]
    },
    "shots": []
+  },
+  "s19c2-cook-chai-tray-speed1@1280x665": {
+   "flow": "cook:chai-tray#speed1",
+   "size": "1280x665",
+   "commit": "665540bf9",
+   "kind": "good",
+   "name": "",
+   "red": {
+    "contract-70": [
+     "the heat ring entered its green (0.66-0.86) and no call was said by 0.72 (the turn-off call as the bar enters the green)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-chai-tray-speed1@1920x1080": {
+   "flow": "cook:chai-tray#speed1",
+   "size": "1920x1080",
+   "commit": "665540bf9",
+   "kind": "good",
+   "name": "",
+   "red": {
+    "contract-70": [
+     "the heat ring entered its green (0.66-0.86) and no call was said by 0.72 (the turn-off call as the bar enters the green)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-chai-tray-speed1@740x320": {
+   "flow": "cook:chai-tray#speed1",
+   "size": "740x320",
+   "commit": "665540bf9",
+   "kind": "good",
+   "name": "",
+   "red": {
+    "contract-70": [
+     "the heat ring entered its green (0.66-0.86) and no call was said by 0.72 (the turn-off call as the bar enters the green)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-chai-tray-speed1@930x430": {
+   "flow": "cook:chai-tray#speed1",
+   "size": "930x430",
+   "commit": "665540bf9",
+   "kind": "good",
+   "name": "",
+   "red": {
+    "contract-70": [
+     "the heat ring entered its green (0.66-0.86) and no call was said by 0.72 (the turn-off call as the bar enters the green)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-corn-speed1@1280x665": {
+   "flow": "cook:corn#speed1",
+   "size": "1280x665",
+   "commit": "665540bf9",
+   "kind": "bad",
+   "name": "SH-256 the cob larger on the grill than the shelf, smaller on the tray; SH-245 the grill 56% of the room; SH-165 one card in a box for 2.5",
+   "red": {
+    "contract-36": [
+     "a step opened on screen (the light on n.corn-on-the-cob) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-37": [
+     "cook:station1:marble (corn at L1): 5 decoys on the shelf (fru-02*, spi-16*, spi-04*, ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.366-1) and no call was said by 0.43 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-114": [
+     "cn4-raw rests at 250 px at [623,224,664,473], +19% of its 211 px at its last place [562,538,772,574] (cn4-raw): an item keeps its size from step to step",
+     "cn4-done rests at 177 px at [999,335,1176,364], -16% of its 210 px at its last place [627,244,660,454] (cn4-done): an item keeps its size from step to step"
+    ],
+    "contract-115": [
+     "cook:station1:marble: the main thing gk-grill stands 263 px, 56% of the 465 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width)"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 307 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-corn-speed1@740x320": {
+   "flow": "cook:corn#speed1",
+   "size": "740x320",
+   "commit": "665540bf9",
+   "kind": "bad",
+   "name": "SH-256 the cob larger on the grill than the shelf, smaller on the tray; SH-245 the grill 56% of the room; SH-165 one card in a box for 2.5",
+   "red": {
+    "contract-36": [
+     "a step opened on screen (the light on n.corn-on-the-cob) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-37": [
+     "cook:station1:marble (corn at L1): 2 decoys on the shelf (ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.366-1) and no call was said by 0.43 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-114": [
+     "cn4-raw rests at 138 px at [377,77,400,214], +19% of its 116 px at its last place [344,250,460,270] (cn4-raw): an item keeps its size from step to step",
+     "cn4-done rests at 98 px at [584,138,682,153], -29% of its 138 px at its last place [378,77,400,214] (cn4-done): an item keeps its size from step to step",
+     "cn4-done rests at 79 px at [444,71,524,97], -19% of its 98 px at its last place [584,138,682,153] (cn4-done): an item keeps its size from step to step"
+    ],
+    "contract-115": [
+     "cook:station1:marble: the main thing gk-grill stands 145 px, 65% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width)"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-eggs-speed1@1280x665": {
+   "flow": "cook:eggs#speed1",
+   "size": "1280x665",
+   "commit": "665540bf9",
+   "kind": "bad",
+   "name": "SH-256 the fried egg lifted to the plate swapped in one frame for a smaller one; SH-165 one card in a box for 2.5",
+   "red": {
+    "contract-22": [
+     "cook:station1:marble: \"Hane indo!\" said twice, 7856 ms apart (a line is said once; again only after 10 s idle)"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.72-1) and no call was said by 0.78 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-77": [
+     "a new player's first timed window: the ring went on past the middle of its green (0.86, at 0.878) before the tap (the first-time hold waits in the green until the child acts)"
+    ],
+    "contract-78": [
+     "the call \"Hane indo!\" starts and the light comes 480 ms later (more than 200 ms)"
+    ],
+    "contract-114": [
+     "eg-friedEgg-overdone at [1003,148,1093,237] is swapped in one frame for eg-friedEgg-overdone at [1014,158,1087,231] (3 px away, 90 to 73 px): no glide, no fade"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 307 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-eggs-speed1@740x320": {
+   "flow": "cook:eggs#speed1",
+   "size": "740x320",
+   "commit": "665540bf9",
+   "kind": "bad",
+   "name": "SH-256 the fried egg lifted to the plate swapped in one frame for a smaller one; SH-165 one card in a box for 2.5",
+   "red": {
+    "contract-22": [
+     "cook:station1:marble: \"Hane indo!\" said twice, 7527 ms apart (a line is said once; again only after 10 s idle)"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.72-1) and no call was said by 0.78 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-77": [
+     "a new player's first timed window: the ring went on past the middle of its green (0.86, at 0.878) before the tap (the first-time hold waits in the green until the child acts)"
+    ],
+    "contract-114": [
+     "eg-friedEgg-overdone at [488,51,538,100] is swapped in one frame for eg-friedEgg-overdone at [593,95,634,136] (108 px away, 50 to 41 px): no glide, no fade"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-maani-line-speed1@1280x665": {
+   "flow": "cook:maani-line#speed1",
+   "size": "1280x665",
+   "commit": "665540bf9",
+   "kind": "bad",
+   "name": "SH-256 the maani 18% smaller on the tawa and 63% smaller on the plate; SH-165 one card in a box for 2.5",
+   "red": {
+    "contract-36": [
+     "a step opened on screen (the light on mv-chakla) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-78": [
+     "the call \"Firai!\" starts and the light comes 585 ms later (more than 200 ms)"
+    ],
+    "contract-114": [
+     "mv-raw-maani snaps from 208 to 174 px (-16%) between two frames, no tween (at [860,114,1034,284])",
+     "mv-raw-maani rests at 172 px at [875,120,1047,289], -18% of its 210 px at its last place [544,143,753,348] (mv-raw-maani): an item keeps its size from step to step",
+     "mv-cooked-maani rests at 65 px at [991,551,1056,615], -63% of its 174 px at its last place [874,120,1048,290] (mv-cooked-maani): an item keeps its size from step to step",
+     "mv-raw-maani rests at 172 px at [875,120,1047,289], -18% of its 210 px at its last place [544,143,753,348] (mv-raw-maani): an item keeps its size from step to step"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 307 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-cook-maani-line-speed1@740x320": {
+   "flow": "cook:maani-line#speed1",
+   "size": "740x320",
+   "commit": "665540bf9",
+   "kind": "bad",
+   "name": "SH-256 the maani 18% smaller on the tawa and 63% smaller on the plate; SH-165 one card in a box for 2.5",
+   "red": {
+    "contract-36": [
+     "a step opened on screen (the light on mv-chakla) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-78": [
+     "the call \"Firai!\" starts and the light comes 445 ms later (more than 200 ms)"
+    ],
+    "contract-114": [
+     "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step",
+     "mv-cooked-maani rests at 36 px at [506,257,542,293], -62% of its 95 px at its last place [516,43,611,136] (mv-cooked-maani): an item keeps its size from step to step",
+     "mv-raw-bajr rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-bajr): an item keeps its size from step to step",
+     "mv-cooked-bajr rests at 36 px at [579,255,618,294], -62% of its 95 px at its last place [516,43,611,136] (mv-cooked-bajr): an item keeps its size from step to step"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-3c48-cook-corn-speed1@1280x665": {
+   "flow": "cook:corn#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-256 the cob a speck on the tray (-60%) then large on the plate (+131%), the eye judge's frame, 10 Nov",
+   "red": {
+    "contract-36": [
+     "a step opened on screen (the light on n.corn-on-the-cob) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-37": [
+     "cook:station1:marble (corn at L1): 5 decoys on the shelf (fru-02*, spi-16*, spi-04*, ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.366-1) and no call was said by 0.43 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-112": [
+     "light 1 [598,524,736,582]: not a rounded rectangle: corners too round (corners 20 px on a box 58 px high, at most a quarter: 14 px); the dim is darker than chai's: 0.75 of the way to the dim's colour against chai's 0.45 (within 0.08); cn4-raw [562,538,772,573] (its picture, pill and face) is not inside the light with its pad: left -36 px (wants 8), right -36 px (wants 8) (picture: lights/01/mark.jpg)"
+    ],
+    "contract-113": [
+     "nana's face sits over n.corn-on-the-cob (28% of it, at [707,219,835,347]): nothing covers a face, a pill or a card's words",
+     "nana's face sits over cn4-done (20% of it, at [707,221,835,350]): nothing covers a face, a pill or a card's words"
+    ],
+    "contract-114": [
+     "cn4-raw rests at 250 px at [623,224,664,473], +19% of its 210 px at its last place [562,536,772,571] (cn4-raw): an item keeps its size from step to step",
+     "cn4-done rests at 85 px at [998,325,1083,339], -60% of its 210 px at its last place [627,244,660,454] (cn4-done): an item keeps its size from step to step",
+     "cn4-done rests at 196 px at [718,305,917,369], +131% of its 85 px at its last place [998,325,1083,339] (cn4-done): an item keeps its size from step to step"
+    ],
+    "contract-115": [
+     "cook:station1:marble: the main thing gk-grill stands 263 px, 56% of the 465 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width)"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 307 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": [
+    "c08-s19over.png",
+    "c10-s19over.png"
+   ]
+  },
+  "s19c2-3c48-cook-corn-speed1@740x320": {
+   "flow": "cook:corn#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-256 the cob a speck on the tray (-60%) then large on the plate (+131%), the eye judge's frame, 10 Nov",
+   "red": {
+    "contract-36": [
+     "a step opened on screen (the light on n.corn-on-the-cob) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-37": [
+     "cook:station1:marble (corn at L1): 2 decoys on the shelf (ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.366-1) and no call was said by 0.43 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-112": [
+     "light 1 [356,238,448,278]: the dim is darker than chai's: 0.75 of the way to the dim's colour against chai's 0.45 (within 0.08); cn4-raw [344,250,460,269] (its picture, pill and face) is not inside the light with its pad: left -12 px (wants 8), right -12 px (wants 8) (picture: lights/01/mark.jpg)"
+    ],
+    "contract-113": [
+     "nana's face sits over n.corn-on-the-cob (31% of it, at [439,37,491,90]): nothing covers a face, a pill or a card's words",
+     "nana's face sits over cn4-done (20% of it, at [439,36,491,88]): nothing covers a face, a pill or a card's words"
+    ],
+    "contract-114": [
+     "cn4-raw rests at 138 px at [378,77,400,214], +18% of its 117 px at its last place [343,248,460,270] (cn4-raw): an item keeps its size from step to step",
+     "cn4-done rests at 47 px at [584,133,631,140], -66% of its 138 px at its last place [378,77,400,214] (cn4-done): an item keeps its size from step to step",
+     "cn4-done rests at 79 px at [444,71,524,97], +68% of its 47 px at its last place [584,133,631,140] (cn4-done): an item keeps its size from step to step"
+    ],
+    "contract-115": [
+     "cook:station1:marble: the main thing gk-grill stands 145 px, 65% of the 224 px above the shelf band (at least 70%: as big as the height allows; it is 56% of the width)"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": [
+    "c08-s19over.png",
+    "c10-s19over.png"
+   ]
+  },
+  "s19c2-3c48-cook-eggs-speed1@1280x665": {
+   "flow": "cook:eggs#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "CK-77 the eggs bowl at 84% of chai's M height (the eye judge's speck), 10 Nov",
+   "red": {
+    "contract-22": [
+     "cook:station1:marble: \"Hane indo!\" said twice, 7502 ms apart (a line is said once; again only after 10 s idle)"
+    ],
+    "contract-36": [
+     "a step opened on screen (the light on eg-trayplate) and Nani did not call it (no call line from 2 s before to 1.5 s after, no skip logged)",
+     "a step opened on screen (the light on eg-tray) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.72-1) and no call was said by 0.78 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-78": [
+     "the call \"Hane indo!\" starts and the light comes 264 ms later (more than 200 ms)"
+    ],
+    "contract-112": [
+     "light 1 [618,530,716,650]: the dim is darker than chai's: 0.74 of the way to the dim's colour against chai's 0.45 (within 0.08); n.egg [629,545,705,655] (its picture, pill and face) is not inside the light with its pad: bottom -5 px (wants 9) (picture: lights/01/mark.jpg)"
+    ],
+    "contract-114": [
+     "eg-friedEgg-cooked at [995,142,1082,230] is swapped in one frame for eg-friedEgg-cooked at [1014,158,1087,231] (15 px away, 88 to 74 px): no glide, no fade"
+    ],
+    "contract-115": [
+     "cook:station1:marble: the shelf item n.egg (eg-bowl, class M) stands 76 px, 84% of chai's M height at 1280x665 (90 px): one height per size class, within 10%"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 307 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-3c48-cook-eggs-speed1@740x320": {
+   "flow": "cook:eggs#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "CK-77 the eggs bowl at 84% of chai's M height (the eye judge's speck), 10 Nov",
+   "red": {
+    "contract-36": [
+     "a step opened on screen (the light on eg-pan) and Nani did not call it (no call line from 2 s before to 4.5 s after, no skip logged)",
+     "a step opened on screen (the light on eg-trayplate) and Nani did not call it (no call line from 2 s before to 1.5 s after, no skip logged)",
+     "a step opened on screen (the light on eg-tray) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)"
+    ],
+    "contract-70": [
+     "the heat ring entered its green (0.72-1) and no call was said by 0.78 (the turn-off call as the bar enters the green)"
+    ],
+    "contract-77": [
+     "a new player's first timed window: the ring went on past the middle of its green (0.86, at 0.888) before the tap (the first-time hold waits in the green until the child acts)"
+    ],
+    "contract-112": [
+     "light 1 [368,244,436,316]: the dim is darker than chai's: 0.74 of the way to the dim's colour against chai's 0.45 (within 0.08) (picture: lights/01/mark.jpg)"
+    ],
+    "contract-114": [
+     "eg-friedEgg-cooked at [571,74,619,123] is swapped in one frame for eg-friedEgg-cooked at [593,95,634,136] (25 px away, 49 to 41 px): no glide, no fade"
+    ],
+    "contract-115": [
+     "cook:station1:marble: the shelf item n.egg (eg-bowl, class M) stands 42 px, 84% of chai's M height at 740x320 (50 px): one height per size class, within 10%"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": []
+  },
+  "s19c2-3c48-cook-maani-line-speed1@1280x665": {
+   "flow": "cook:maani-line#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-256 the maani shrinks onto its plate (-63%), the eye judge's frame, 10 Nov",
+   "red": {
+    "contract-78": [
+     "the call \"Firai!\" starts and the light comes 474 ms later (more than 200 ms)"
+    ],
+    "contract-113": [
+     "nana's face is under nana's face (62% of it, at [918,521,952,555]): nothing covers a face, a pill or a card's words"
+    ],
+    "contract-114": [
+     "mv-raw-maani rests at 172 px at [875,120,1047,289], -18% of its 210 px at its last place [544,143,753,348] (mv-raw-maani): an item keeps its size from step to step",
+     "mv-cooked-maani rests at 65 px at [991,550,1057,615], -63% of its 175 px at its last place [873,119,1048,290] (mv-cooked-maani): an item keeps its size from step to step",
+     "mv-raw-maani rests at 172 px at [875,120,1047,289], -18% of its 210 px at its last place [544,143,753,348] (mv-raw-maani): an item keeps its size from step to step",
+     "mv-cooked-maani rests at 65 px at [1001,546,1072,616], -63% of its 175 px at its last place [873,119,1048,290] (mv-cooked-maani): an item keeps its size from step to step"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 307 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": [
+    "c07-s19over.png"
+   ]
+  },
+  "s19c2-3c48-cook-maani-line-speed1@740x320": {
+   "flow": "cook:maani-line#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-256 the maani shrinks onto its plate (-63%), the eye judge's frame, 10 Nov",
+   "red": {
+    "contract-78": [
+     "the call \"Firai!\" starts and the light comes 507 ms later (more than 200 ms)"
+    ],
+    "contract-113": [
+     "nana's face is under nana's face (62% of it, at [540,240,559,259]): nothing covers a face, a pill or a card's words"
+    ],
+    "contract-114": [
+     "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step",
+     "mv-cooked-maani rests at 36 px at [578,254,619,295], -61% of its 93 px at its last place [518,44,612,137] (mv-cooked-maani): an item keeps its size from step to step",
+     "mv-raw-maani rests at 95 px at [516,43,611,136], -18% of its 116 px at its last place [334,55,449,169] (mv-raw-maani): an item keeps its size from step to step",
+     "mv-cooked-maani rests at 36 px at [586,254,625,293], -62% of its 96 px at its last place [516,43,612,136] (mv-cooked-maani): an item keeps its size from step to step"
+    ],
+    "contract-116": [
+     "cook:station1:marble: the order card's 1 card fills 38% of its 203 px row: 62% of the card is blank (at least 67% filled)"
+    ]
+   },
+   "shots": [
+    "c07-s19over.png"
+   ]
   }
  }
 }
