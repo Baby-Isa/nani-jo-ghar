@@ -18,4 +18,4 @@ Opus, high. Branch `s19-chaat-td`, never pushed. Flaws first.
 - After: `build/screenshots/sandbox/s19-chaat-td-mid/` (same, plus #mistake, #takeback): 0 page errors, every end reached, 8 lights 0 failing; 2 breaks, both contract-105 in chop's stage (s19-fixes-f).
 - Contract, four sizes: `CONTRACT PASSED: 0 breaks over 4 pages`.
 - checks.mjs: all ok but 3 art-block tests (no sources/ here).
-- check-change: CHECKCHANGE
+- check-change (`build/screenshots/tiers/change-6031d8ebe9/logs/`, pairs in `before-after/`): did not pass. push: the 3 art tests above. scope: measured from main's merge-base (other branches' files); against my branch start only `band.test.mjs` (its chaat entry is mine). play, L1-L4 and paths at 740x320 and 930x430, every end reached, 0 page errors, 14 breaks: contract-105 x4 in chop's stage; contract-111 x9 one sample at L4 930x430 taken as the tray's taps went live (all pass 1.1 s later); contract-107 x1 (#mistake 930x430) the coach's box came 0.9 s before its glow and hop (coach.js timing). 66 new findings are the side panel's and end screen's (tap-small, text-small). It stopped in "rows" at my 30-minute cap (no rows).
