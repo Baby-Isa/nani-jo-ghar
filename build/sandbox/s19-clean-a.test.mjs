@@ -41,3 +41,10 @@ test("SH-261 at full strength: contract-117 breaks on a light that goes with its
   const back = [...ST2, want(900, "pan-ma"), lit(1000, true), c(5800, "input", { x: 150, y: 150 }), lit(6000, false), lit(6800, true), want(20000, "x")];
   assert.deepEqual(run(back), [], "hidden while the move is done, back after the release");
 });
+
+import { check109 } from "./lib/contract-s19.mjs";
+test("contract-109: the pantry's painted shelves (rows of things) are not one shelf band", () => {
+  const run = (flow) => { const out = []; check109({ flow }, [c(1000, "s19shelf", { items: [{ id: "a", foot: 500, chip: 520 }, { id: "b", foot: 380, chip: 400 }, { id: "c", foot: 500, chip: 520 }] }), c(9000, "x", {})], (id) => out.push(id)); return out; };
+  assert.deepEqual(run("cook:fetch@L2"), []);
+  assert.ok(run("cook:corn@L2").length >= 1, "a game's shelf band is still one line");
+});

@@ -560,7 +560,8 @@ export function check37(r, tl, add, { root = ".", table = {} } = {}) {
 // (chai at HEAD, measured by this check's probe, 11 Nov: its shelf's feet and pills' middles, px from the canvas top)
 export const CHAI_LINE = { "740x320": { foot: 296, chip: 307 }, "930x430": { foot: 397, chip: 412 }, "1280x665": { foot: 621, chip: 642 }, "1920x1080": { foot: 1008, chip: 1042 } };
 export function check109few(r, tl, add) {
-  if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length) return;
+  // (the pantry's painted shelves: lib/contract-s19.mjs PAINTED_SHELVES)
+  if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length || /^cook:fetch\b|^lab:cook\/fetch\b/.test(r.flow || "")) return;
   const line = CHAI_LINE[r.size];
   const tEnd = r.t0 && r.ms ? r.t0 + r.ms : tl.length ? tl[tl.length - 1].t : 0;
   for (const { e } of heldSamples(tl, "s19shelf", 300, tEnd)) {
