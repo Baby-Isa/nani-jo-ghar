@@ -61,8 +61,41 @@ export function rests(samples, tEnd) {
 }
 
 export const S19B_CHECKS = {
-  "contract-114": { item: "no-snap", title: "an item keeps its size and never snaps", how: `Cook flows: every picture in the kitchen (lib/contract-s19b-hook.mjs s19it: its drawn box on screen every 30 ms, its alpha, the tweens on it; not the people, the effects or the backdrop). A snap is a break: between two frames an item's longer side changes by more than ${SNAP * 100}% with no tween of ${TWEEN_OK_MS} ms or more on it, and the new size holds (${HOLD_NEW_MS} ms: a flip or a squash comes back); or an item vanishes and the same thing (its key's name) appears in the same frame elsewhere or at another size, with no fade (a jump from the hand to the plate). And from step to step: the same item resting (still ${REST_MS} ms) at one place and next at another (its middle ${PLACE} of its size away) must keep its longer side within ${SNAP * 100}% (SH-256: maani's bread halves on the plate, corn's cob a speck on the tray then large on the plate, eggs' egg). Once per item per page, at most 4.` },
+  "contract-114": { item: "no-snap", title: "an item keeps its size and never snaps", how: `Cook flows: every picture in the kitchen (lib/contract-s19b-hook.mjs s19it: its drawn box on screen every 30 ms, its alpha, the tweens on it; not the people, the effects or the backdrop). A snap is a break: between two frames an item's longer side changes by more than ${SNAP * 100}% with no tween of ${TWEEN_OK_MS} ms or more on it, and the new size holds (${HOLD_NEW_MS} ms: a flip or a squash comes back); or an item vanishes and the same thing (its key's name) appears in the same frame elsewhere or at another size, with no fade (a jump from the hand to the plate). And from step to step: the same item resting (still ${REST_MS} ms) at one place and next at another (its middle ${PLACE} of its size away) must keep its longer side within ${SNAP * 100}% (SH-256: maani's bread halves on the plate, corn's cob a speck on the tray then large on the plate, eggs' egg). Zafar's accepted designs pass there in a smooth tweened change (a tween of ${TWEEN_OK_MS} ms or more on the picture itself, no untweened jump): maani's board, tawa and plate sizes and samosa's close-up fold (Zafar, 11 Nov morning: "fine as they are (a smooth tweened change)"); an untweened change or a jump there still fails. Once per item per page, at most 4.` },
 };
+
+// Zafar's accepted designs (s19-shared-checks): an item that changes size from step to step there, in a smooth tweened change (a tween of
+// at least TWEEN_OK_MS on the picture itself while it changes, no frame-to-frame jump without one), is right; an untweened change or a
+// jump still fails. Each with his words.
+export const ACCEPTED_SIZES = [
+  { flow: /maani/, key: /^mv-(?!ball)/, words: "Zafar, 11 Nov morning: \"Maani's board, tawa and plate sizes ... fine as they are (a smooth tweened change)\"; 9 Nov (MAA-24, P8): \"you roll the mani the size of the rolling board ... it just shrinks down into the small tray ... probably one we just have to accept\"" },
+  { flow: /samosa/, key: /^sv3-fold/, words: "Zafar, 11 Nov morning: \"samosa's close-up fold: fine as they are (a smooth tweened change)\"" },
+];
+export function acceptedSize(flow, ...keys) {
+  return ACCEPTED_SIZES.some((x) => x.flow.test(flow || "") && keys.some((k) => x.key.test(String(k || ""))));
+}
+// a smooth tweened change between two rests: a tween of TWEEN_OK_MS or more on the picture while it changed, and no frame-to-frame size
+// change over SNAP without one (samples from the first rest's last to the next rest's first)
+export function glided(samples, t0, t1) {
+  // (from the first rest's last sample, where the change starts, to the next rest's first)
+  const i0 = Math.max(0, samples.findIndex((x) => x.t >= t0) - 1);
+  const w = samples.slice(i0).filter((x) => x.t <= t1);
+  let changing = 0, tweened = 0;
+  for (let i = 1; i < w.length; i++) {
+    const p = w[i - 1], q = w[i];
+    if (p.a < 50 || q.a < 50 || size(p) < MIN_ITEM_PX) continue;
+    const dr = Math.abs(size(q) / size(p) - 1);
+    // (a big step is inside a tween: on the frame at the new size, or on the frame just before it (the tween's last frames, a busy page
+    // drops some); a tween on a frame seconds before, long gone, is not this change's)
+    // (a frame within the tween on the frame before: the tween's own length, the probe's dropped scans on a busy page aside)
+    const near = q.t - p.t <= 2 * GAP_MS + (tween(p) ? p.tw : 0);
+    if (dr > SNAP && !tween(q) && !(near && tween(p))) return false;
+    // (the size changes in a tween on the picture itself: most of the frames it changes in carry one, not a tween of something else
+    // in the window, a fold's, while a counter moves it)
+    if (dr > 0.02) { changing++; if (tween(q) || (near && tween(p))) tweened++; }
+  }
+  return changing > 0 && tweened >= changing / 2;
+}
 
 export function check114(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19it").length) return;
@@ -85,6 +118,7 @@ export function check114(r, tl, add) {
       out(b.t, `${k.id}|size`, `${b.key} snaps from ${Math.round(size(a))} to ${Math.round(size(b))} px (${ratio > 1 ? "+" : ""}${Math.round((ratio - 1) * 100)}%) between two frames, no tween (${a.key !== b.key ? `the picture ${a.key} swapped for it; ` : ""}at ${fmtB(b.box)})`);
     }
   }
+  const scans = ev(tl, "s19it").map((e) => e.t);
   // 2. a jump: a picture vanishes and the same thing appears in the same frame elsewhere or at another size, neither fading
   const byStart = new Map();
   for (const k of ts) { const t = k.samples[0].t; (byStart.get(t) || byStart.set(t, []).get(t)).push(k); }
@@ -92,11 +126,20 @@ export function check114(r, tl, add) {
     if (k.gone == null) continue;
     const last = k.samples[k.samples.length - 1];
     if (last.a < 50 || size(last) < MIN_ITEM_PX) continue;
+    // (s19-shared-checks: the probe scans every 30 ms but a busy page drops scans; a picture in flight at its last sample went on flying
+    // in the frames it missed. A copy that appears where that flight, at its last speed, would have taken it by the time it went is the
+    // flight landing, not a jump: sekelo's pieces flying to the skewer's tip, last seen 69 to 134 ms short of it. A picture seen only
+    // once, with no scan at all between its sample and its going, was not seen to move or stand: not judged)
+    const prev = k.samples[k.samples.length - 2];
+    const dtGone = k.gone - last.t;
+    const speed = prev && last.t > prev.t ? dist(midOf(last.box), midOf(prev.box)) / (last.t - prev.t) : 0;
+    const scanned = scans.some((t) => t > last.t && t < k.gone);
     const born = (byStart.get(k.gone) || []).filter((x) => x !== k && sameThing(x.key, k.key) && x.samples[0].a >= 50);
     for (const y of born) {
       const f = y.samples[0];
       const d = dist(midOf(f.box), midOf(last.box)), ratio = size(f) / size(last);
       if (d <= 0.5 * size(last) && Math.abs(ratio - 1) <= SNAP) continue;
+      if (Math.abs(ratio - 1) <= SNAP && dtGone > GAP_MS / 2 && (speed > 0 ? d <= 1.5 * speed * dtGone + 0.5 * size(last) : !scanned)) continue;
       if (tween(f) && d <= 0.5 * size(last)) continue;
       out(k.gone, `${k.id}|jump`, `${last.key} at ${fmtB(last.box)} is swapped in one frame for ${f.key} at ${fmtB(f.box)} (${Math.round(d)} px away, ${Math.round(size(last))} to ${Math.round(size(f))} px): no glide, no fade`);
     }
@@ -120,12 +163,15 @@ export function check114(r, tl, add) {
   }
   for (const chain of chains) {
     const rs = chain.flatMap((k) => rests(k.samples, k.gone != null ? k.gone : tEnd).map((x) => ({ ...x, id: k.id })));
+    const all = chain.flatMap((k) => k.samples).sort((p, q) => p.t - q.t);
     for (let i = 1; i < rs.length; i++) {
       const a = rs[i - 1], b = rs[i];
       if (a.size < MIN_ITEM_PX || b.size < MIN_ITEM_PX) continue;
       if (dist(midOf(a.box), midOf(b.box)) < PLACE * Math.max(a.size, b.size)) continue;
       const ratio = b.size / a.size;
       if (Math.abs(ratio - 1) <= SNAP) continue;
+      // (Zafar's accepted designs, his words below: there a smooth tweened change passes; an untweened one, or a jump, still fails)
+      if (acceptedSize(r.flow, a.key, b.key) && glided(all, a.t1, b.t0)) continue;
       out(b.t0, `${chain[0].id}|step${i}`, `${b.key} rests at ${Math.round(b.size)} px at ${fmtB(b.box)}, ${ratio > 1 ? "+" : ""}${Math.round((ratio - 1) * 100)}% of its ${Math.round(a.size)} px at its last place ${fmtB(a.box)} (${a.key}): an item keeps its size from step to step`);
     }
   }
@@ -191,7 +237,7 @@ export const SIZE_AT_MS = 3000;    // judged this long into each station (laid o
 // not the main thing: the shelf band's own tray, the knobs, faces and badges, the tools in the hand, the cat
 export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat/i;
 Object.assign(S19B_CHECKS, {
-  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Once per station.` },
+  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Zafar's accepted sizes (11 Nov morning: "Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change)") are a thing's size from step to step, judged by contract-114 (ACCEPTED_SIZES); no station's main thing or shelf is let off here for them. Once per station.` },
 });
 export function check115(r, tl, add, { root = "." } = {}) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19it").length) return;
@@ -226,9 +272,11 @@ export const PAD_EVEN = 2;      // px: a card's inner padding equal on all sides
 export const GAP_EVEN = 2;      // px: the gaps between cards equal within this
 export const ROW_FILL = 2 / 3;  // the cards fill at least this share of their row (one card in a box for 2.5 is a half-empty card)
 export const PAD_HOLD_MS = 400;
+export const FOOT_G = 0.07;     // the 6 Nov item card's gap g: 7% of its inner width, foot to speaker (guide-and-card.md)
 export const CUR_HOLD_MS = 1000;
+export const TICK_MOVE_MS = 2000;  // the row moves on after a tick's moment (a word moment, a pour's end) within this
 Object.assign(S19B_CHECKS, {
-  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on all four sides within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height); the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
+  "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on its top, left and right within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height), and its foot that padding or the 6 Nov card's gap g (${FOOT_G * 100}% of its inner width, foot to speaker, docs/design-language/guide-and-card.md) within the same; the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and, once the order is in, the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
 });
 export function check116(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19pad").length) return;
@@ -239,7 +287,7 @@ export function check116(r, tl, add) {
   // (the 2 px are chai's at 1280x665: at another size the card is drawn at its own scale, so the tolerance is too)
   const H = (+(String(r.size || "").split("x")[1]) || 665);
   const tolPad = Math.max(PAD_EVEN, (PAD_EVEN * H) / 665), tolGap = Math.max(GAP_EVEN, (GAP_EVEN * H) / 665);
-  const ord = ev(tl, "s19ord"), rowsS = ev(tl, "s19row");
+  const ord = ev(tl, "s19ord"), rowsS = ev(tl, "s19row"), ticks = ev(tl, "s19tick");
   const ordering = (t) => { const o = ord.filter((x) => x.t <= t).pop(); return !!o && (o.away > 0 || o.pop > 0 || o.fly > 0); };
   for (const { e, until } of heldSamples(tl, "s19pad", PAD_HOLD_MS, tEnd)) {
     const s = inSt(st, e.t);
@@ -248,7 +296,12 @@ export function check116(r, tl, add) {
     for (const c of cards) {
       if (!c.in) continue;
       const pads = [c.in[0] - c.box[0], c.in[1] - c.box[1], c.box[2] - c.in[2], c.box[3] - c.in[3]];
-      if (Math.max(...pads) - Math.min(...pads) > tolPad) out("pad", e.t, `${s.key}: the order card "${c.w}" has padding ${pads.map((p) => Math.round(p * 2) / 2).join("/")} px (left/top/right/bottom): equal on every side within ${Math.round(tolPad * 10) / 10} px`);
+      // (the foot: the card's padding, or the 6 Nov card's own foot gap g, 7% of its inner width, as its speaker-to-divider gap is
+      // (docs/design-language/guide-and-card.md, Zafar 6 Nov round 3); s19-shared-checks: chai's own cards stand 9/9/9/7 at 1280x665,
+      // a half pixel from failing, and chaat's chop card failed at 6.5 by its rounding)
+      const sides = pads.slice(0, 3), g = FOOT_G * (c.in[2] - c.in[0]);
+      const footOk = Math.abs(pads[3] - (Math.max(...sides) + Math.min(...sides)) / 2) <= tolPad || Math.abs(pads[3] - g) <= tolPad;
+      if (Math.max(...sides) - Math.min(...sides) > tolPad || !footOk) out("pad", e.t, `${s.key}: the order card "${c.w}" has padding ${pads.map((p) => Math.round(p * 2) / 2).join("/")} px (left/top/right/bottom): equal on every side within ${Math.round(tolPad * 10) / 10} px`);
     }
     const gaps = cards.slice(1).map((c, i) => c.box[0] - cards[i].box[2]);
     if (gaps.length > 1 && Math.max(...gaps) - Math.min(...gaps) > tolGap) out("gap", e.t, `${s.key}: the order cards' gaps are ${gaps.map(Math.round).join(", ")} px: equal within ${Math.round(tolGap * 10) / 10} px`);
@@ -256,10 +309,17 @@ export function check116(r, tl, add) {
     const cur = cards.find((c) => !c.done);
     // (and the row still: a glide caught between two samples of a busy page is not where the card stands)
     // (a card ticked moves the row on after its tick, about 600 ms: the current card is judged where it stands a second)
-    const gliding = rowsS.some((x) => x.t >= e.t - 300 && x.t <= e.t + CUR_HOLD_MS) || until - e.t < CUR_HOLD_MS;
+    // (s19-shared-checks: after a tick the row moves on once the tick's moment is over: chai's own row at 1280x665 on a busy page moved
+    // 1.3 s after its tick, so a card cut just after a tick is judged only if the row has not moved on within TICK_MOVE_MS of it)
+    // (and as the order lands: the row glides home once the last card is in, chaat at 1920x1080 1.6 s after it)
+    const landed = ord.some((o, i) => i > 0 && o.t <= e.t + 50 && o.t >= e.t - 800 && !(o.away > 0 || o.pop > 0 || o.fly > 0) && (ord[i - 1].away > 0 || ord[i - 1].pop > 0 || ord[i - 1].fly > 0));
+    const ticked = landed || ticks.some((x) => x.t <= e.t + 50 && x.t >= e.t - 800);
+    const gliding = rowsS.some((x) => x.t >= e.t - 300 && x.t <= e.t + (ticked ? TICK_MOVE_MS : CUR_HOLD_MS)) || until - e.t < CUR_HOLD_MS;
     if (cur && !ordering(e.t) && !gliding && (cur.box[0] < e.row[0] - 1 || cur.box[2] > e.row[2] + 1)) out("cur", e.t, `${s.key}: the current order card "${cur.w}" at [${cur.box.map(Math.round)}] is cut by its row [${e.row.map(Math.round)}]: the current card whole in view`);
     const span = cards[cards.length - 1].box[2] - cards[0].box[0], rowW = e.row[2] - e.row[0];
-    if (rowW > 0 && span < ROW_FILL * rowW) out("fill", e.t, `${s.key}: the order card's ${cards.length} card${cards.length > 1 ? "s" : ""} fill${cards.length > 1 ? "" : "s"} ${Math.round((100 * span) / rowW)}% of its ${Math.round(rowW)} px row: ${Math.round(100 - (100 * span) / rowW)}% of the card is blank (at least ${Math.round(ROW_FILL * 100)}% filled)`);
+    // (while the order is said its cards come one by one into slots waiting for them, s19-shared-checks: chaat's three toppings; the row
+    // is judged full once the order is in, as the current card is)
+    if (rowW > 0 && span < ROW_FILL * rowW && !ordering(e.t)) out("fill", e.t, `${s.key}: the order card's ${cards.length} card${cards.length > 1 ? "s" : ""} fill${cards.length > 1 ? "" : "s"} ${Math.round((100 * span) / rowW)}% of its ${Math.round(rowW)} px row: ${Math.round(100 - (100 * span) / rowW)}% of the card is blank (at least ${Math.round(ROW_FILL * 100)}% filled)`);
   }
 }
 
@@ -376,19 +436,38 @@ export function check36(r, tl, segs, v, add) {
 
 // 37 (rewritten): decoys counted on the shelf: the shelf's things with a word that the order does not ask for
 const LEX = new Map();
+const GLOSS = new Map();
+const PARTS = new Map();
 export function itemWords(root) {
   if (LEX.has(root)) return LEX.get(root);
   const map = new Map();
   try {
     const lex = JSON.parse(readFileSync(join(root, "data/lang/lexicon.json"), "utf8"));
+    let par = {};
+    try { par = JSON.parse(readFileSync(join(root, "data/lang/paradigms.json"), "utf8")).paradigms || {}; } catch (e) { /* the lemma and its listed forms only */ }
     const split = (x) => String(x || "").toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || [];
+    const own = new Map();
     for (const e of lex.entries || []) {
       const forms = new Set();
       const add = (x) => split(x).forEach((w) => forms.add(w));
       add(e.lemma);
       const walk = (x) => { if (typeof x === "string") add(x); else if (x && typeof x === "object") { if (typeof x.t === "string") add(x.t); else Object.values(x).forEach(walk); } };
       walk(e.forms || {});
+      // (and the forms its paradigm makes, as the language engine does: samosa's card says ba bataata, n.potato's plural; s19-shared-checks)
+      const pd = par[e.paradigm];
+      if (pd && e.lemma) {
+        let stem = e.lemma; const dr = pd.stem && pd.stem.drop; if (dr && stem.endsWith(dr)) stem = stem.slice(0, -dr.length);
+        Object.values(pd.cells || {}).map((c) => (c && typeof c === "object" ? c.make : c)).filter((m) => typeof m === "string").forEach((m) => add(m.replace(/\{stem\}/g, stem).replace(/\{lemma\}/g, e.lemma)));
+      }
+      own.set(e.id, { forms, pos: e.pos });
       for (const a of e.aliases || []) map.set(String(a), new Set([...(map.get(String(a)) || []), ...forms]));
+      // (a word with no Kutchi yet stands on its card as its English, grey: its gloss, whole)
+      if (e.gloss) for (const a of e.aliases || []) GLOSS.set(`${root}|${a}`, String(e.gloss).toLowerCase().trim());
+    }
+    // (a word built of parts, chaat's mint chutney, fudino ji chutney: its nouns, each in any of its forms, on one card)
+    for (const e of lex.entries || []) {
+      const nouns = (e.parts || []).map((p) => own.get(p.lex)).filter((x) => x && x.pos === "N" && x.forms.size).map((x) => x.forms);
+      if (nouns.length) for (const a of e.aliases || []) PARTS.set(`${root}|${a}`, nouns);
     }
   } catch (e) { /* no lexicon: every shelf thing reads as a decoy unless its id is a word on the card */ }
   LEX.set(root, map);
@@ -396,11 +475,37 @@ export function itemWords(root) {
 }
 // (stations whose rows are full by design: the pantry's shelf and the daar's chop hold at least the table's count)
 export const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
+// s19-shared-checks (Zafar, 11 Nov: contract-37 judged by the levels table): the count a station wants at a level is the levels table's
+// (data/rules.json levels.decoys, read from the game being judged), a station's own row first where it has one (data/cook.json
+// levelTable.stations[game].decoys, as js/cook/station-lib.js Cook.levelRow reads it), and none for chop's hop at L1 (CK-71). The game
+// is each station's own, not the flow's: chaat's first station is chop's game (its chop-* notes), its second the toppings.
+const TABLES = new Map();
+export function decoyTable(root, fallback = {}) {
+  if (TABLES.has(root)) return TABLES.get(root);
+  let lv = null, own = {};
+  try { lv = (JSON.parse(readFileSync(join(root, "data/rules.json"), "utf8")).levels || {}).decoys || null; } catch (e) { /* the fallback */ }
+  try { own = (JSON.parse(readFileSync(join(root, "data/cook.json"), "utf8")).levelTable || {}).stations || {}; } catch (e) { /* none */ }
+  const t = { levels: Array.isArray(lv) && lv.length ? lv : [1, 2, 3, 4].map((l) => fallback[l]).filter((x) => x != null), own };
+  TABLES.set(root, t);
+  return t;
+}
+export function decoysWanted(t, game, level) {
+  if (game === "chop" && level === 1) return 0; // (CK-71: chop's hop has no decoys at L1)
+  const at = (list) => (Array.isArray(list) && list.length ? list[Math.min(list.length, level) - 1] : list);
+  const own = (t.own || {})[game];
+  if (own && own.decoys != null) return at(own.decoys);
+  return at(t.levels);
+}
+// the game a station stage plays: chop's where chop's own notes run in it (chop-strip, chop-hop, chop-throw), else the flow's
+// (daar's chop keeps daar's row: its rows are full by design, DECOY_AT_LEAST)
+export function gameOfStation(tl, s, flowGame) {
+  if (DECOY_AT_LEAST.test(flowGame || "")) return flowGame;
+  return tl.some((e) => e.type === "c" && e.k === "life" && /^chop-/.test(e.what || "") && e.t >= s.t0 && e.t < s.t1) ? "chop" : flowGame;
+}
 export function check37(r, tl, add, { root = ".", table = {} } = {}) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length) return;
   const st0 = stationOf(r.flow), level = levelOf(r.flow);
-  const want = st0 === "chop" && level === 1 ? 0 : table[Math.min(4, level)];
-  if (want == null) return;
+  const T = decoyTable(root, table);
   const words = itemWords(root);
   const tEnd = r.t0 && r.ms ? r.t0 + r.ms : tl.length ? tl[tl.length - 1].t : 0;
   const st = stationsOf(tl);
@@ -411,12 +516,22 @@ export function check37(r, tl, add, { root = ".", table = {} } = {}) {
     if (!s || said.has(s.key) || !(e.items || []).length) continue;
     const pad = pads.filter((p) => p.t <= e.t).pop();
     if (!pad) continue;
+    const game = gameOfStation(tl, s, st0);
+    const want = decoysWanted(T, game, Math.min(4, level));
+    if (want == null) continue;
     const card = new Set(pad.cards.flatMap((c) => String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
-    const asked = (id) => [...(words.get(id) || [])].some((w) => card.has(w)) || card.has(String(id).replace(/^(cook|n|v|a)[-.]/, "").toLowerCase());
+    // (a card names its thing by its word id where the probe has it, data-word, s19-shared-checks: a word with no Kutchi yet shows its English, grey,
+    // which no lexicon form matches, chaat's mint chutney, ph-lili; its words where the probe is older)
+    const keys = new Set(pad.cards.map((c) => c.id).filter(Boolean).map(String));
+    const texts = new Set(pad.cards.map((c) => String(c.w).toLowerCase().replace(/\s+/g, " ").trim()));
+    const cardWords = pad.cards.map((c) => new Set(String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
+    const byParts = (id) => { const ns = PARTS.get(`${root}|${id}`); return !!ns && cardWords.some((cw) => ns.every((f) => [...f].some((w) => cw.has(w)))); };
+    const asked = (id) => keys.has(String(id)) || texts.has(GLOSS.get(`${root}|${id}`)) || byParts(id) || [...(words.get(id) || [])].some((w) => card.has(w)) || card.has(String(id).replace(/^(cook|n|v|a)[-.]/, "").toLowerCase());
     const decoys = e.items.filter((x) => !asked(x.id));
-    const ok = DECOY_AT_LEAST.test(st0 || "") ? decoys.length >= want : decoys.length === want;
+    const atLeast = DECOY_AT_LEAST.test(game || "");
+    const ok = atLeast ? decoys.length >= want : decoys.length === want;
     said.add(s.key);
-    if (!ok) add("contract-37", e.t, `${s.key} (${st0} at L${level}): ${decoys.length} decoy${decoys.length === 1 ? "" : "s"} on the shelf (${e.items.map((x) => x.id + (decoys.includes(x) ? "*" : "")).join(", ")}; * not in the order), the table wants ${DECOY_AT_LEAST.test(st0 || "") ? "at least " : ""}${want}`);
+    if (!ok) add("contract-37", e.t, `${s.key} (${game} at L${level}): ${decoys.length} decoy${decoys.length === 1 ? "" : "s"} on the shelf (${e.items.map((x) => x.id + (decoys.includes(x) ? "*" : "")).join(", ")}; * not in the order), the table wants ${atLeast ? "at least " : ""}${want}`);
   }
 }
 
