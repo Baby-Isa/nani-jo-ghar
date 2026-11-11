@@ -1,22 +1,22 @@
 NANI JO GHAR: THE S19 FIXES RUN (the jugs on magenta, daar's onion, chaat's loose layers, sekelo's tray, samosa's karahi, baking's jars, the grill on magenta, and the kitchen's last touch). Paste this whole block into Claude in Chrome.
 
 Zafar: first download https://github.com/Baby-Isa/nani-jo-ghar/raw/ccr-87413d9b-j48fpk/sources/art/s19-k3/refs.zip , unzip it,
-and drag all 19 pictures into this chat with this block (19 is under the side panel's 20-attachment limit: one drag).
-Before you send: say whether line KF (the kitchen's last touch, OPTIONAL) runs. If you say nothing, skip CHAT K.
+and drag all 18 pictures into this chat with this block (under the side panel's 20-attachment limit: one drag).
+CHAT K (the kitchen's last fixes, Zafar 11 Nov) runs FIRST.
 
 === WHAT THIS RUN IS FOR ===
 The pieces the last run (s19-k2) left unsolved that a game uses, each redrawn so it can be cut and placed:
   B5r the four full jugs ON MAGENTA (baking)            D4  daar's chopped onion, golden and raw (daar)
   C12 chaat's three loose top-down layers (chaat)        K10 sekelo's plain steel serving tray (sekelo)
   K8r samosa's karahi, a real karahi this time (samosa)  B6  baking's flour, sugar and salt jars (baking)
-  G1r the grill redrawn on magenta (sekelo, corn)        KF  the kitchen's last touch (OPTIONAL; every kitchen game's serve)
+  G1r the grill redrawn on magenta (sekelo, corn)        KF  the kitchen's last fixes (FIRST; every kitchen game's serve)
 
 === FOR CLAUDE IN CHROME (the runner) ===
 Use chatgpt.com (Zafar is signed in). Run THREE ChatGPT windows at a time, each conversation in its own tab. Send in one tab, move
 to the next while it generates; go round the tabs in turn. Never more than three windows generating.
 
 STEP 0, THE REFERENCES, ONCE (the attachment quota; the last run ran out at 02:13 and waited until 03:55):
-  Open one new ChatGPT chat titled by its first message "Reference Pictures Archive (s19-k3)". Upload all 19 pictures from this
+  Open one new ChatGPT chat titled by its first message "Reference Pictures Archive (s19-k3)". Upload all 18 pictures from this
   chat there, in messages of at most 4 pictures each, each message saying only: "Reference pictures for later. Reply OK. Do not
   draw." From then on every chat attaches a picture by + > "Add from library" (pick today's copy by its file name), never by a new
   upload. Within one chat, a picture attached once stays there: refer to it ("the B5r-B2-the-jug picture above") instead of
@@ -187,21 +187,28 @@ G1r THE GRILL, ON MAGENTA (pictures: G1r-G1-the-grill-to-keep). Say in the plan 
    MUST: no marble, no surface, no shadow under it or around the handles; the magenta pure right up to the handles and inside their
    loops; no skewers, no food, no smoke, no flame above the coals.
 
-CHAT K: THE KITCHEN'S LAST TOUCH (OPTIONAL: run it ONLY if Zafar said yes before the run). HOUSE BRIEF (SCENE).
-KF THE GENTLE EDIT (picture: KF-KG-the-passed-kitchen). No plan message: this is a spot edit with ChatGPT's Comment tool on KG itself.
-   Open KG in the image viewer and pin THREE comments, one at a time, each on its object:
-   1. on the island's front panel: "Make this panel a deeper natural walnut, a calm mid-to-dark brown with a fine straight grain, not
-      orange or red. Change nothing else."
-   2. on the island's marble top: "Warm white marble with no pink cast, soft grey veins. Same on the back counters. Change nothing else."
-   3. on the wall high above the range: "A touch less peach: a warm cream. Keep the warm sunlight from the upper left and the glow on the
-      window. Change nothing else."
-   Send. Then the review (text only): "Compare your new image with the one before: is anything changed besides the island's front, the
-   marble and the wall's tone? Is the sunlight as warm? Your verdict, under 100 words. Do not draw." If the light went cold or anything
-   else moved, keep it as a try and redo from KG with the comments worded more gently. Keep the sunlight above all: if in doubt, keep it
-   as it was.
-KF-O, KF-S THE SAME TOUCH ON THE TWO VIEWS (pictures: KF-KO-ordering-view, then KF-KS-serving-view). Only when Zafar likes KF (ask him
-   in the chat). The same three comments, the same way, on KO and then on KS, so the three kitchen pictures stay one room.
+CHAT K: THE KITCHEN'S LAST FIXES (Zafar, 11 Nov: run this chat FIRST). HOUSE BRIEF (SCENE).
+KF SPOT FIXES ON THE PASSED KITCHEN (pictures: KF-KG-the-passed-kitchen; KF-ref-balcony-wall-from-KG2 for point 3). No plan message:
+   spot edits with ChatGPT's Comment tool on KG itself, pinned on each object, ONE comment per edit, keeping the warm sunlight every
+   time. Open KG in the image viewer and pin, one at a time (send, check, then the next on the new image):
+   1. on the knobs behind the overhanging towel, right of the range: "Only ONE round brass knob on this cabinet door, centred near its
+      top, like every other door. Change nothing else."
+   2. on the doorway's frame (the jambs and head): "Make this door frame the same wood and colour as the window's frame on the left,
+      the same width of moulding, so the window and the doorway match. Change nothing else."
+   3. outside the doorway, at its bottom: "Put back the low cream balcony wall outside the doorway, as in the attached reference: a
+      low wall in front of the garden, the garden above it. Change nothing else."
+   4. on the island's marble top: "Warm this marble a little: a soft warm white, never pink, yellow or grey, with more of its fine
+      soft-grey veining visible again (gentle, natural veins across the whole top). Same on the back counters. Change nothing else."
+   5. on the island's front panel: "A deeper natural walnut, a calm mid-to-dark brown with a fine straight grain, not orange or red.
+      Change nothing else."
+   6. on the wall high above the range: "A touch less peach: a warm cream. Keep the warm sunlight from the upper left and the glow on
+      the window. Change nothing else."
+   After all six, the review (text only): "Compare your image with the first one: is anything changed besides the six points? Is the
+   sunlight as warm? Is there exactly one knob on every door? Your verdict, under 120 words. Do not draw." If a point would not take
+   after two tries, or the light went cold, stop that point and say so in the report: Claude will cut that part in from an earlier
+   version by hand (Zafar: try ChatGPT first; if it can't, Claude does it). Save each kept step as s19-k3-KF-<n>.png.
+   The game uses this one painting for both the ordering and the serving views, so no separate view edits are needed.
 
 === THE LINES' SAVE-AS NAMES ===
 s19-k3-B5r-<try>, s19-k3-B6-<try>, s19-k3-D4-<try>, s19-k3-C12-<try>, s19-k3-PH-K8r-<try>, s19-k3-K10-<try>, s19-k3-K8r-<try>,
-s19-k3-G1r-<try>, s19-k3-KF-<try>, s19-k3-KF-O-<try>, s19-k3-KF-S-<try> (all .png).
+s19-k3-G1r-<try>, s19-k3-KF-<n> (all .png).
