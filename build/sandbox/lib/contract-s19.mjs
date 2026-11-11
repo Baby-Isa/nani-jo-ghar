@@ -226,11 +226,11 @@ export function check105(r, tl, add) {
       // a canvas picture with no word (a pan, a board, a pot)
       // (s19-shared-checks: a light round a group of pictures lying on a bigger one, sekelo's skewer of meat on the rack, lights the group,
       // not the rack under its middle: when less than half of that picture is inside the light, and two or more pictures stand inside it
-      // (GROUP_IN of each), they together are its thing, judged as any picture is; contract-112 judges the same light so. A light half on a
+      // (GROUP_IN of each, as drawn once the light has stood HOLD_MS: the rack fades in under its light), they together are its thing, judged as any picture is; contract-112 judges the same light so. A light half on a
       // pan's handle has no group in it: the pan is still its thing, and still fails)
       let group = null;
       if (th.kind === "pic" && inter(h, t) < 0.5 * area(t)) {
-        const grp = sceneAt(tl, e.t).list.filter((x) => !NOT_A_THING.test(x.key)).map((x) => box(x.box)).filter((b) => area(b) > 0 && area(b) < area(h) && inter(h, b) >= GROUP_IN * area(b));
+        const grp = sceneAt(tl, e.t + HOLD_MS).list.filter((x) => !NOT_A_THING.test(x.key)).map((x) => box(x.box)).filter((b) => area(b) > 0 && area(b) < area(h) && inter(h, b) >= GROUP_IN * area(b));
         if (grp.length >= 2) {
           group = grp.reduce((a, b) => ({ l: Math.min(a.l, b.l), t: Math.min(a.t, b.t), r: Math.max(a.r, b.r), b: Math.max(a.b, b.b) }));
           Object.assign(t, group);

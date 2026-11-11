@@ -66,7 +66,7 @@ test("contract-114: Zafar's accepted sizes pass in a smooth tweened change; an u
   assert.match(move("cook:maani-line", "mv-cooked-maani", [960, 200, 172], [890, 580, 99], { tw: 0 })[0], /rests at 99 px/, "untweened: fails");
   assert.ok(move("cook:maani-line", "mv-cooked-maani", [960, 200, 172], [890, 580, 99], { tw: 0, frames: 1, ms: 30 }).length >= 1, "a jump: fails");
   // samosa's close-up fold to the plate
-  assert.equal(move("cook:samosa", "sv3-fold-done-3", [715, 258, 408], [1157, 303, 66], { tw: 380 }).length, 0);
+  assert.equal(move("cook:samosa", "sv3-fold-done-3", [715, 258, 408], [1157, 303, 66], { tw: 380, frames: 40 }).length, 0);
   // not an accepted design: the same tweened change still fails (corn's cob, SH-256)
   assert.match(move("cook:corn", "cn4-cob", [960, 200, 172], [890, 580, 99], { tw: 380 })[0], /keeps its size from step to step/);
   assert.equal(glided([{ t: 0, a: 100, tw: 0, w: 100, h: 100, box: [0, 0, 100, 100] }, { t: 30, a: 100, tw: 0, w: 50, h: 50, box: [0, 0, 50, 50] }], 0, 30), false);
@@ -94,4 +94,32 @@ test("contract-116: the foot is the padding or the card's gap g; a lone card fil
   // the lone card across its row, its foot its padding (s19-shared-checks' order-card.css): passes; chai's width alone: 38% filled, fails
   assert.deepEqual(page116([card(21, 323.5, 9)]), []);
   assert.match(page116([card(19, 134.5, 6.5)])[0], /fills 38% of its 307 px row/);
+});
+
+// ---- 105, 114's landing flights, 116's row after a tick (the before run's own numbers, s19-shared-checks-before) ----
+const it = (id, key, b, a = 100, tw = 0) => [id, key, ...b, a, tw, 0, 1, b[2] - b[0], b[3] - b[1], 0, 0, 0];
+test("contract-105: sekelo's skewer on the rack is judged as its group of pieces; a light half on a pan's handle still fails", () => {
+  const run105 = (pics, hole, thing) => analyse({ flow: "cook:mishkaki-grill", size: "740x320", t0: 0, ms: 3000, states: [], timeline: [c(0, "stage", { key: "cook:station1:marble" }), c(10, "s19it", { ch: pics.map((p, i) => it(i + 1, p[0], p[1])), cv: [224, 0, 740, 320] }), c(100, "s19lit", { holes: [hole], things: [thing], near: [], faces: [], vw: 740, vh: 320 }), c(1500, "s19lit", { holes: [], things: [], near: [] })] }, { root: ROOT, lexicon: new Set(), numbers: new Set() }).filter((b) => b.check === "contract-105").map((b) => b.measured);
+  const rack = ["sk3-rack-1", [284, 35, 385, 148]], meat = [[294.5, 104.5, 315, 125], [294.5, 87, 315.5, 107.5], [295.5, 70, 314.5, 89.5], [295, 52.5, 315, 72.5]].map((b) => ["mk:spr:ph-meat.raw", b]);
+  const thing = { kind: "pic", id: "sk3-rack-1", box: [284, 35, 385, 148] };
+  assert.deepEqual(run105([rack, ...meat], [285, 30, 326, 162], thing), [], "the skewer's light (before: round 41% of the rack)");
+  assert.match(run105([rack], [285, 30, 326, 162], thing)[0], /round 41% of sk3-rack-1/, "no pieces on the rack: the rack is its thing, and it fails");
+  // CK-63: a light half on a pan's handle, nothing inside it but the handle's end
+  assert.match(run105([["kit-pan", [100, 100, 300, 200]]], [220, 110, 330, 210], { kind: "pic", id: "kit-pan", box: [100, 100, 300, 200] })[0], /kit-pan/);
+});
+test("contract-114: a flight landing where its last speed takes it is a glide; a piece that stood still and reappears elsewhere is a jump", () => {
+  const run = (tl) => { const out = []; check114({ flow: "cook:mishkaki-grill", size: "740x320", t0: 0, ms: 3000 }, tl, (ch, t, m) => out.push(m)); return out; };
+  const k = "mk:spr:ph-meat.raw";
+  // sekelo 740x320: seen at the bowl, then 134 ms later 59 px short of the tip; its copy at the tip 134 ms after that (scans dropped)
+  const fly = [c(0, "s19it", { ch: [it(1, k, [344, 252, 374, 281])] }), c(136, "s19it", { ch: [it(1, k, [372, 102, 401, 131])] }), c(270, "s19it", { ch: [it(2, k, [390, 45, 421, 76], 100, 396)], gone: [1] }), c(700, "s19it", { ch: [it(2, k, [390, 143, 421, 174])] })];
+  assert.deepEqual(run(fly), []);
+  // the same piece standing at the bowl, scanned all along, then at the tip in one frame: a jump
+  const jump = [c(0, "s19it", { ch: [it(1, k, [344, 252, 374, 281]), it(9, "x-other", [10, 10, 60, 60])] }), c(100, "s19it", { ch: [it(9, "x-other", [12, 10, 62, 60])] }), c(200, "s19it", { ch: [it(2, k, [390, 45, 421, 76])], gone: [1] }), c(900, "s19it", { ch: [it(2, k, [390, 46, 421, 77])] })];
+  assert.match(run(jump)[0], /swapped in one frame/);
+});
+test("contract-116: the current card cut just after a tick, before the row moves on (chai, 1.3 s), passes; cut and left so fails", () => {
+  const cards = (done) => [["paani", 1, -104, 11.5], ["chai", 1, 19.5, 135], ["dudh", done, 143, 258.5], ["hakro khun", 0, 266.5, 382]].map(([w, d, l, r]) => ({ w, done: d, box: [l, 152, r, 349], in: [l + 9, 161, r - 9, 342] }));
+  const run = (moveAt) => analyse({ flow: "cook:chai-tray", size: "1280x665", t0: 0, ms: 9000, states: [], timeline: [c(0, "stage", { key: "cook:station1:marble" }), c(100, "s19pad", { box: [10, 88, 334, 362], row: [19, 149.5, 325.5, 353], cards: cards(0) }), c(2000, "s19tick", { id: "cook-dudh", row: 1, done: 1 }), c(2187, "s19pad", { box: [10, 88, 334, 362], row: [19, 149.5, 325.5, 353], cards: cards(1) }), c(moveAt, "s19row", { x: 180, w: 115, n: 4, vis: 1 }), c(moveAt + 74, "s19pad", { box: [10, 88, 334, 362], row: [19, 149.5, 325.5, 353], cards: cards(1).map((x) => ({ ...x, box: [x.box[0] - 57, x.box[1], x.box[2] - 57, x.box[3]], in: [x.in[0] - 57, x.in[1], x.in[2] - 57, x.in[3]] })) })] }, { root: ROOT, lexicon: new Set(), numbers: new Set() }).filter((b) => b.check === "contract-116" && /current/.test(b.measured));
+  assert.equal(run(3488).length, 0, "the row moved on 1.3 s after the tick");
+  assert.equal(run(6000).length, 1, "the row left it cut for 4 s");
 });

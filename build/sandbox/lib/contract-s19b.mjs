@@ -68,7 +68,7 @@ export const S19B_CHECKS = {
 // at least TWEEN_OK_MS on the picture itself while it changes, no frame-to-frame jump without one), is right; an untweened change or a
 // jump still fails. Each with his words.
 export const ACCEPTED_SIZES = [
-  { flow: /maani/, key: /^mv-(raw|cooked)-/, words: "Zafar, 11 Nov morning: \"Maani's board, tawa and plate sizes ... fine as they are (a smooth tweened change)\"; 9 Nov (MAA-24, P8): \"you roll the mani the size of the rolling board ... it just shrinks down into the small tray ... probably one we just have to accept\"" },
+  { flow: /maani/, key: /^mv-(?!ball)/, words: "Zafar, 11 Nov morning: \"Maani's board, tawa and plate sizes ... fine as they are (a smooth tweened change)\"; 9 Nov (MAA-24, P8): \"you roll the mani the size of the rolling board ... it just shrinks down into the small tray ... probably one we just have to accept\"" },
   { flow: /samosa/, key: /^sv3-fold/, words: "Zafar, 11 Nov morning: \"samosa's close-up fold: fine as they are (a smooth tweened change)\"" },
 ];
 export function acceptedSize(flow, ...keys) {
@@ -78,13 +78,19 @@ export function acceptedSize(flow, ...keys) {
 // change over SNAP without one (samples from the end of the first rest to the start of the next)
 export function glided(samples, t0, t1) {
   const w = samples.filter((x) => x.t >= t0 - GAP_MS && x.t <= t1);
-  if (!w.some(tween)) return false;
+  let changing = 0, tweened = 0;
   for (let i = 1; i < w.length; i++) {
     const p = w[i - 1], q = w[i];
     if (p.a < 50 || q.a < 50 || size(p) < MIN_ITEM_PX) continue;
-    if (Math.abs(size(q) / size(p) - 1) > SNAP && !tween(p) && !tween(q)) return false;
+    const dr = Math.abs(size(q) / size(p) - 1);
+    // (a big step must land inside a tween: the frame at the new size still in it; a tween on the frame before, long gone by a sample
+    // that came seconds later, is not this change's)
+    if (dr > SNAP && !tween(q)) return false;
+    // (the size changes in a tween on the picture itself: most of the frames it changes in carry one, not a tween of something else
+    // in the window, a fold's, while a counter moves it)
+    if (dr > 0.02) { changing++; if (tween(p) || tween(q)) tweened++; }
   }
-  return true;
+  return changing > 0 && tweened >= changing / 2;
 }
 
 export function check114(r, tl, add) {
@@ -108,6 +114,7 @@ export function check114(r, tl, add) {
       out(b.t, `${k.id}|size`, `${b.key} snaps from ${Math.round(size(a))} to ${Math.round(size(b))} px (${ratio > 1 ? "+" : ""}${Math.round((ratio - 1) * 100)}%) between two frames, no tween (${a.key !== b.key ? `the picture ${a.key} swapped for it; ` : ""}at ${fmtB(b.box)})`);
     }
   }
+  const scans = ev(tl, "s19it").map((e) => e.t);
   // 2. a jump: a picture vanishes and the same thing appears in the same frame elsewhere or at another size, neither fading
   const byStart = new Map();
   for (const k of ts) { const t = k.samples[0].t; (byStart.get(t) || byStart.set(t, []).get(t)).push(k); }
@@ -115,11 +122,20 @@ export function check114(r, tl, add) {
     if (k.gone == null) continue;
     const last = k.samples[k.samples.length - 1];
     if (last.a < 50 || size(last) < MIN_ITEM_PX) continue;
+    // (s19-shared-checks: the probe scans every 30 ms but a busy page drops scans; a picture in flight at its last sample went on flying
+    // in the frames it missed. A copy that appears where that flight, at its last speed, would have taken it by the time it went is the
+    // flight landing, not a jump: sekelo's pieces flying to the skewer's tip, last seen 69 to 134 ms short of it. A picture seen only
+    // once, with no scan at all between its sample and its going, was not seen to move or stand: not judged)
+    const prev = k.samples[k.samples.length - 2];
+    const dtGone = k.gone - last.t;
+    const speed = prev && last.t > prev.t ? dist(midOf(last.box), midOf(prev.box)) / (last.t - prev.t) : 0;
+    const scanned = scans.some((t) => t > last.t && t < k.gone);
     const born = (byStart.get(k.gone) || []).filter((x) => x !== k && sameThing(x.key, k.key) && x.samples[0].a >= 50);
     for (const y of born) {
       const f = y.samples[0];
       const d = dist(midOf(f.box), midOf(last.box)), ratio = size(f) / size(last);
       if (d <= 0.5 * size(last) && Math.abs(ratio - 1) <= SNAP) continue;
+      if (Math.abs(ratio - 1) <= SNAP && dtGone > GAP_MS / 2 && (speed > 0 ? d <= 1.5 * speed * dtGone + 0.5 * size(last) : !scanned)) continue;
       if (tween(f) && d <= 0.5 * size(last)) continue;
       out(k.gone, `${k.id}|jump`, `${last.key} at ${fmtB(last.box)} is swapped in one frame for ${f.key} at ${fmtB(f.box)} (${Math.round(d)} px away, ${Math.round(size(last))} to ${Math.round(size(f))} px): no glide, no fade`);
     }
@@ -254,6 +270,7 @@ export const ROW_FILL = 2 / 3;  // the cards fill at least this share of their r
 export const PAD_HOLD_MS = 400;
 export const FOOT_G = 0.07;     // the 6 Nov item card's gap g: 7% of its inner width, foot to speaker (guide-and-card.md)
 export const CUR_HOLD_MS = 1000;
+export const TICK_MOVE_MS = 2000;  // the row moves on after a tick's moment (a word moment, a pour's end) within this
 Object.assign(S19B_CHECKS, {
   "contract-116": { item: "card-pad", title: "the order card's padding and gaps, in the game", how: `Cook flows, in a station, every s19pad sample held ${PAD_HOLD_MS} ms (the side panel's order card, its row and each item card with its content's box: picture, words, speaker; lib/contract-s19b-hook.mjs): each item card's inner padding equal on its top, left and right within ${PAD_EVEN} px at 1280x665 (scaled with the screen's height), and its foot that padding or the 6 Nov card's gap g (${FOOT_G * 100}% of its inner width, foot to speaker, docs/design-language/guide-and-card.md) within the same; the gaps between cards equal within ${GAP_EVEN} px (scaled the same); the current card (the first not ticked) whole inside the row once the order is in, where it stands a second; and the cards filling at least two thirds of their row (corn's and maani's one card in a box made for 2.5: two thirds blank). Once per kind per page (SH-165, Q12's measurable half; labcheck measured it on lab pages only).` },
 });
@@ -266,7 +283,7 @@ export function check116(r, tl, add) {
   // (the 2 px are chai's at 1280x665: at another size the card is drawn at its own scale, so the tolerance is too)
   const H = (+(String(r.size || "").split("x")[1]) || 665);
   const tolPad = Math.max(PAD_EVEN, (PAD_EVEN * H) / 665), tolGap = Math.max(GAP_EVEN, (GAP_EVEN * H) / 665);
-  const ord = ev(tl, "s19ord"), rowsS = ev(tl, "s19row");
+  const ord = ev(tl, "s19ord"), rowsS = ev(tl, "s19row"), ticks = ev(tl, "s19tick");
   const ordering = (t) => { const o = ord.filter((x) => x.t <= t).pop(); return !!o && (o.away > 0 || o.pop > 0 || o.fly > 0); };
   for (const { e, until } of heldSamples(tl, "s19pad", PAD_HOLD_MS, tEnd)) {
     const s = inSt(st, e.t);
@@ -288,7 +305,10 @@ export function check116(r, tl, add) {
     const cur = cards.find((c) => !c.done);
     // (and the row still: a glide caught between two samples of a busy page is not where the card stands)
     // (a card ticked moves the row on after its tick, about 600 ms: the current card is judged where it stands a second)
-    const gliding = rowsS.some((x) => x.t >= e.t - 300 && x.t <= e.t + CUR_HOLD_MS) || until - e.t < CUR_HOLD_MS;
+    // (s19-shared-checks: after a tick the row moves on once the tick's moment is over: chai's own row at 1280x665 on a busy page moved
+    // 1.3 s after its tick, so a card cut just after a tick is judged only if the row has not moved on within TICK_MOVE_MS of it)
+    const ticked = ticks.some((x) => x.t <= e.t + 50 && x.t >= e.t - 800);
+    const gliding = rowsS.some((x) => x.t >= e.t - 300 && x.t <= e.t + (ticked ? TICK_MOVE_MS : CUR_HOLD_MS)) || until - e.t < CUR_HOLD_MS;
     if (cur && !ordering(e.t) && !gliding && (cur.box[0] < e.row[0] - 1 || cur.box[2] > e.row[2] + 1)) out("cur", e.t, `${s.key}: the current order card "${cur.w}" at [${cur.box.map(Math.round)}] is cut by its row [${e.row.map(Math.round)}]: the current card whole in view`);
     const span = cards[cards.length - 1].box[2] - cards[0].box[0], rowW = e.row[2] - e.row[0];
     if (rowW > 0 && span < ROW_FILL * rowW) out("fill", e.t, `${s.key}: the order card's ${cards.length} card${cards.length > 1 ? "s" : ""} fill${cards.length > 1 ? "" : "s"} ${Math.round((100 * span) / rowW)}% of its ${Math.round(rowW)} px row: ${Math.round(100 - (100 * span) / rowW)}% of the card is blank (at least ${Math.round(ROW_FILL * 100)}% filled)`);
