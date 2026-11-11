@@ -1937,6 +1937,9 @@
       if (o.pass) return; // (Onboard.light's pass: the light shows the way, every tap still goes through: never a wait)
       if (!shown || away) return; // (no lit thing yet: no dim, so nothing is in the dark; CHAI-36; nor while the child does the move)
       if (liveRects().some((r) => on(pt(e), r))) return;
+      // (SH-261: the lit hole is not the dark: a tap in it that misses the thing still reaches the page, the child's tap seen as an
+      // action, and the light stays)
+      if (Onboard.pressIn(pt(e), shown)) return;
       if (e.type === "pointerdown") dark.add(e.pointerId != null ? e.pointerId : "t");
       if (e.type === "touchstart") dark.add("t");
       e.stopPropagation();
