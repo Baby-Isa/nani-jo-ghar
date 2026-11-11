@@ -75,9 +75,11 @@ export function acceptedSize(flow, ...keys) {
   return ACCEPTED_SIZES.some((x) => x.flow.test(flow || "") && keys.some((k) => x.key.test(String(k || ""))));
 }
 // a smooth tweened change between two rests: a tween of TWEEN_OK_MS or more on the picture while it changed, and no frame-to-frame size
-// change over SNAP without one (samples from the end of the first rest to the start of the next)
+// change over SNAP without one (samples from the first rest's last to the next rest's first)
 export function glided(samples, t0, t1) {
-  const w = samples.filter((x) => x.t >= t0 - GAP_MS && x.t <= t1);
+  // (from the first rest's last sample, where the change starts, to the next rest's first)
+  const i0 = Math.max(0, samples.findIndex((x) => x.t >= t0) - 1);
+  const w = samples.slice(i0).filter((x) => x.t <= t1);
   let changing = 0, tweened = 0;
   for (let i = 1; i < w.length; i++) {
     const p = w[i - 1], q = w[i];
@@ -85,7 +87,8 @@ export function glided(samples, t0, t1) {
     const dr = Math.abs(size(q) / size(p) - 1);
     // (a big step is inside a tween: on the frame at the new size, or on the frame just before it (the tween's last frames, a busy page
     // drops some); a tween on a frame seconds before, long gone, is not this change's)
-    const near = q.t - p.t <= 2 * GAP_MS;
+    // (a frame within the tween on the frame before: the tween's own length, the probe's dropped scans on a busy page aside)
+    const near = q.t - p.t <= 2 * GAP_MS + (tween(p) ? p.tw : 0);
     if (dr > SNAP && !tween(q) && !(near && tween(p))) return false;
     // (the size changes in a tween on the picture itself: most of the frames it changes in carry one, not a tween of something else
     // in the window, a fold's, while a counter moves it)
