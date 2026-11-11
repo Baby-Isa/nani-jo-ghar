@@ -1274,7 +1274,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         resolve();
       });
       const c = { x: burner.knobHit.x, y: burner.knobHit.y };
-      z.expect({ kind: "tap", x: c.x, y: c.y, key: "knob" });
+      // (the step names its thing, the knob, so a light for it hugs the knob's picture, never a point's circle: contract-82 at
+      // 1920x1080, a 250 px box from the point cut the face beside the knob)
+      z.expect(Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit({ kind: "tap", x: c.x, y: c.y, key: "knob" }, { thing: burner.knobHit }) : { kind: "tap", x: c.x, y: c.y, key: "knob" });
       // the knob pulses (the focal rule): it is the next thing
       burner.knob.baseScale = 1;
       S.tweens.add({ targets: burner.knob, scale: 1.1, duration: 500, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
@@ -1368,7 +1370,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // T17: the fire off -> Chulo bar!; a golden one at level 3 -> "Samosa hane kadh."; else Tar!
         if (!fireOn) {
           steps.to("samosa:fire", { id: "fire-again" });
-          return z.expect({ kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" });
+          return z.expect(Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit({ kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" }, { thing: burner.knobHit }) : { kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" });
         }
         if (cur && cur.level >= lo && level >= 3 && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine });
         else steps.to("samosa:fry", { id: "fry" });
