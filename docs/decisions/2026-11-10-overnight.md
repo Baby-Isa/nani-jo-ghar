@@ -32,3 +32,9 @@
 - Naan in four stages at the next art run, two per image (ART-73).
 - Chaat's chop light: yes, and it is chop's own (SH-259).
 - The two ChatGPT folders on main come off at the next publish (ART-74).
+
+## Zafar, 11 Nov (the kitchen run)
+- The serving kitchen: one tall painting, two views (ordering frames the family and a plain wall, serving glides down to the trays); no ceiling; the plant left, the board, jar and cloth right; no shelf; no tiled splashback; one sage green; walnut trays with a low rim, as separate pieces with the dishes; the counter at the walnut-tray image's angle (A3).
+- Mock it in the game with our characters before the art; then one merged art block: the kitchen first, then the art audit's run 1 and the pot redo.
+- Chaat goes top-down, built after the current fixes builder (CHT-13).
+- Samosa's fold arrow stays until he plays it.
