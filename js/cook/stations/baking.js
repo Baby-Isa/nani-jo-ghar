@@ -324,11 +324,22 @@ import { setTimeout } from "../life.js";
     const PILL_SLOT = 200;
     const pitch = Math.min(CT.pitch || 300, 1100 / Math.max(1, n));
     const pills = [];
+    // CK-84, ART-52 (Zafar, 6 Nov: size classes for every item): each thing by its size class, as chai's jars (St.classFit: the band's
+    // room with the hop kept, the class's share, the floor on screen; never wider than its slot), its picture's clear foot on the shelf's
+    // line (the opaque bottom, St.opaqueSpan, as chai's); its tap area reaches down its slot to its pill (S.tappable, Shelf.P.reach)
+    let ppwShelf = 1;
+    try {
+      ppwShelf = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+    } catch (e) {
+      ppwShelf = 1;
+    }
     onShelf.forEach((id, i) => {
       const x = bowlX + (i - (n - 1) / 2) * pitch;
-      const img = T(S.add.image(x, band.base, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
-      // (s19-games-2: by size class (St.classFit, contract-115) their tap reach to the pill failed (contract-111): the old size, next round)
-      img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      const key = `bk-${id}`;
+      const foot = St.opaqueSpan && has(key) ? St.opaqueSpan(S, key)[1] : 1;
+      const img = T(S.add.image(x, band.base, key).setOrigin(0.5, foot).setDepth(D.item + 1));
+      const f = St.classFit && has(key) ? St.classFit(S, key, id, { base: band.base, ppw: ppwShelf, slotW: pitch - 12 }) : null;
+      img.setScale(f && f.scale ? f.scale : Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;
@@ -642,7 +653,8 @@ import { setTimeout } from "../life.js";
       toLook("over");
     });
     expectTap(ov, "ph-naan");
-    await tapOn(ov, "oven-out", () => say(line("ready", "call")));
+    // (contract-36: said through the step's call, so a line still to record logs its skip, as the oven's open does)
+    await tapOn(ov, "oven-out", () => call(Lang.line("ready"), "oven-out"));
     offOver();
     z.expect({ kind: "wait" });
     ring.clear();
