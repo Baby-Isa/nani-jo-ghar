@@ -46,4 +46,8 @@ Before: the base game and checks (`s19-shared-checks-before`; its last eight pag
   light in `build/sandbox/fixtures/false-breaks/`); `badruns.test.mjs` 30 pass: every check still red on its bad runs.
 - Evidence: the brief names no row, so no before or after folder.
 - `checks.mjs`: ok but unit (3 art-block tests needing `sources/art`, failing at the base too) and leak (clinic timed out, busy machine).
-- check-change: CHECK_CHANGE
+- check-change (`build/screenshots/tiers/change-afd38f08e6/logs/`): stopped by me after 50 min of a 158-page play (shared files reach
+  every game): push fail (the 3 art-block tests), scope fail (an integration-branch `sources/art` file), play 16 pages to their end,
+  0 page errors.
+- loadcheck: 27/32; the 5 fails are served dishes and pantry pictures outside the manifests (`data/cook.json`, s19-serve2's), no file
+  of mine.
