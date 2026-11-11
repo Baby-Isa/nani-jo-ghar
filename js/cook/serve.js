@@ -115,7 +115,7 @@ import { Cook as CookNS } from "./ns.js";
   /** Only the dishes the serve can show (a picture known). */
   const showable = (p) => (p || []).filter((e) => e && e.who && dishOf(e.dish));
 
-  function prefetch(S, p) {
+  function prefetch(S, p, { faces = false } = {}) {
     if (!S || !Cook.Art || !Cook.Art.loadFile) return Promise.resolve();
     const c = cfg();
     const list = [[key("tray"), c.tray.file]];
@@ -124,8 +124,9 @@ import { Cook as CookNS } from "./ns.js";
       const d = dishOf(e.dish);
       list.push([d.key, d.file]);
     });
-    const faces = [...new Set(showable(p).map((e) => e.who))].flatMap((w) => (Cook.Kit && Cook.Kit.faceArt ? Cook.Kit.faceArt(w).slice(0, 1) : []));
-    return Promise.all(list.concat(faces).map(([k, u]) => Cook.Art.loadFile(S, k, u)));
+    // (the faces only at the serve: a station loads its own while it plays, through its loader, never raced here)
+    const own = faces ? [...new Set(showable(p).map((e) => e.who))].flatMap((w) => (Cook.Kit && Cook.Kit.faceArt ? Cook.Kit.faceArt(w).slice(0, 1) : [])) : [];
+    return Promise.all(list.concat(own).map(([k, u]) => Cook.Art.loadFile(S, k, u)));
   }
 
   /* ---------------- the two views ---------------- */
@@ -282,7 +283,7 @@ import { Cook as CookNS } from "./ns.js";
     if (!S || !list.length) return false;
     hook(S);
     const loadCap = Cook.Stations && Cook.Stations.capLoad ? Cook.Stations.capLoad : (x) => x;
-    await loadCap(prefetch(S, list), 1500);
+    await loadCap(prefetch(S, list, { faces: true }), 1500);
     Cook.servedLog = [];
     Cook.servedN = (Cook.servedN || 0) + 1;
     const people = [...new Set(list.map((e) => e.who))];
