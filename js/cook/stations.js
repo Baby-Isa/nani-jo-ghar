@@ -510,6 +510,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (Cook.paused) return;
         // something was done (the first-time overlay moves on: js/cook/coach.js)
         Cook.acted = (Cook.acted || 0) + 1;
+        // SH-236, SH-261: a tap that reached a thing is a move begun: the light it landed in steps aside now, until its result closes it
+        // (or it comes back, the step still open); a tap in a light that reached nothing leaves it up (Onboard.began)
+        if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("tap");
         // the player's own hand does it (js/cook/hands.js): decoration only, it never changes the tap
         try {
           if (Cook.Hands) Cook.Hands.tapped(this, obj, p);
