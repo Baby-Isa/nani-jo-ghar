@@ -216,10 +216,10 @@ test("the variants come from Onboard.VARIANTS when it is there, else STD-E2-08a'
   assert.match(none.from, /not in js\/shared\/onboard\.js yet/);
 });
 
-test("HEAD: no new finding; the known breaks are named on every run (daar's zone for chop until it calls chop as chaat does)", () => {
+test("HEAD: no new finding; no known break left (the last, daar's zone for chop, fixed by s19-fixes-f, 11 Nov)", () => {
   const found = run(undefined, ["shared"]);
   assert.deepEqual(found.map((f) => `${f.at}: ${f.text}`), []);
-  assert.ok(SHARED_INFO.known.some((k) => /daar\.js/.test(k.at)), "daar named");
+  assert.equal(SHARED_INFO.known.length, 0, "no known break left");
   assert.ok(SHARED_INFO.standalone.includes("Chop"), "chop's game found as a standalone game");
   for (const k of SHARED_INFO.known) assert.ok(SHARED_KNOWN[k.key], `${k.key} is on the named list`);
   assert.ok(SHARED_INFO.skipped > 0, "the files not judged are counted");

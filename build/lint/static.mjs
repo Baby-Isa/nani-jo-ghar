@@ -377,7 +377,6 @@ export const SHARED_HOME = /^(js\/shared\/|css\/shared\/|js\/cook\/kitchen-kit\.
 export const SHARED_SKIP = /(^js\/(monsoon|tidy|who|dress|find|snap)\/|^css\/(monsoon|tidy|who|dress|find|snap)\.css$|-proto(\/|\.css$)|^js\/farm\/)/;
 // the known breaks, each named with its owner and its way out (Zafar, 10 Nov: "named, not hidden")
 export const SHARED_KNOWN = {
-  "shared|js/cook/stations/daar.js|recipe-zone": "daar gives chop's game a zone of its own (SH-259): the known break until s19-fixes-e lands",
 };
 // SH-259 (Zafar, 10 Nov): a recipe that calls a standalone game (Cook.Chop.play and the like) passes no layout, zone or light options of
 // its own: the game brings its own (its settings), so it looks the same alone and in the recipe
