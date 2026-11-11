@@ -354,12 +354,12 @@
     ctx.clearRect(0, 0, W, H);
     // the kit's contact shadow, lower-right, soft (as the painted tray's)
     ctx.save();
-    ctx.shadowColor = ink ? `rgba(${ink.shadow}, 0.3)` : "rgba(60, 35, 20, 0.3)";
+    ctx.shadowColor = ink ? `rgba(${ink.shadow}, 0.3)` : "transparent"; // (no tokens on the page: no shadow, never a colour of its own)
     ctx.shadowBlur = Math.max(2, sh * 2);
     ctx.shadowOffsetX = sh * 0.6;
     ctx.shadowOffsetY = sh;
     path(ctx, x + 1, y + 1, w - 2, h - 2, Math.min(A.radius * k, h / 2));
-    ctx.fillStyle = ink ? `rgba(${ink.edge}, 1)` : "rgb(181, 169, 158)";
+    ctx.fillStyle = ink ? `rgba(${ink.edge}, 1)` : "transparent";
     ctx.fill();
     ctx.restore();
     // the middle: the slab's stone along the length (its bevel and front band), then the tile's stone over the plain face, so no
@@ -375,6 +375,9 @@
     }
     // the two ends, cut from the slab, each fading into the middle over as much again (the slab is lit from the upper left, so its
     // right end is a little darker than its middle: a hard cut would show as a seam)
+    // a mask has no colour, only how much shows (destination-in keeps the slab where the veil is opaque)
+    const VEIL = "0, 0, 0";
+    const veil = (a) => `rgba(${VEIL}, ${a})`;
     const end = (sx, dx, fadeLeft) => {
       const ew = Math.min(e * 2, w / 2);
       const sw = ew / k;
@@ -387,13 +390,13 @@
       const gr = g.createLinearGradient(0, 0, ew, 0);
       const solid = Math.min(1, e / ew);
       if (fadeLeft) {
-        gr.addColorStop(0, "rgba(0,0,0,0)");
-        gr.addColorStop(1 - solid, "rgba(0,0,0,1)");
-        gr.addColorStop(1, "rgba(0,0,0,1)");
+        gr.addColorStop(0, veil(0));
+        gr.addColorStop(1 - solid, veil(1));
+        gr.addColorStop(1, veil(1));
       } else {
-        gr.addColorStop(0, "rgba(0,0,0,1)");
-        gr.addColorStop(solid, "rgba(0,0,0,1)");
-        gr.addColorStop(1, "rgba(0,0,0,0)");
+        gr.addColorStop(0, veil(1));
+        gr.addColorStop(solid, veil(1));
+        gr.addColorStop(1, veil(0));
       }
       g.fillStyle = gr;
       g.fillRect(0, 0, ew, tcv.height);

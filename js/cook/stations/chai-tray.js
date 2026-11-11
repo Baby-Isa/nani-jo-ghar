@@ -1559,7 +1559,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // onboard you to select the second tea pot after you've successfully poured the first pot of chai and it's been served": while
         // another pan is on the heat or waiting to pour, the next pan's stuck hint never comes; the plan still lets the child pick it)
         if (pan && pans.some((q) => q !== pan && q.state !== "cold" && q.poured < needOf(q))) return null;
-        return pan && { obj: pan.img, target: Cook.Coach.box(pan.glowRing), round: true, panPick: true };
+        return pan && { obj: pan.img, target: Cook.Coach.box(pan.glowRing), panPick: true };
       }
       const obj = shelf[key];
       if (!obj || !sel) return null;
