@@ -2004,7 +2004,12 @@
       box: () => shown,
       /** SH-236, SH-261 (Onboard.began): the game says the child started a move; this light hides if the press was in its box. */
       away() {
-        if (closed || o.stay || away || !shown || !pressedIn(shown)) return;
+        // (a light buried under a newer one on the same thing hides too, by its thing's box: else it came back as the newer one went,
+        // chai's water under its hint, contract-106)
+        const u = layer.__buried ? Onboard.unionOf(rectsOf(target)) : null;
+        const P = Onboard.BOX_PAD;
+        const b = shown || (u ? { x: u.x - P, y: u.y - P, w: u.w + 2 * P, h: u.h + 2 * P } : null);
+        if (closed || o.stay || away || !b || !pressedIn(b)) return;
         goAway(pressNow.down);
       },
       /** Is it hidden now, the child doing its move? */
