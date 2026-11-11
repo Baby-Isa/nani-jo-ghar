@@ -213,7 +213,8 @@
  },
  "assets": [
   "assets/cook/items/skewer-mixed-grilled-t.png",
-  "assets/cook/items/v4/sekelo/*"
+  "assets/cook/items/v4/sekelo/*",
+  "assets/cook/items/served/sekelo.webp"
  ],
- "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces)"
+ "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces) S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served sekelo), until s19-serve2's kitchen dishes take its place."
 }

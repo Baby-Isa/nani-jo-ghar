@@ -152,7 +152,9 @@
   "assets/cook/items/v4/samosa/samosa-*.webp",
   "assets/cook/items/v4/samosa/sheet-under.webp",
   "assets/cook/items/v4/samosa/karahi-oil.webp",
-  "assets/cook/items/v4/samosa/plate-napkin.webp"
+  "assets/cook/items/v4/samosa/plate-napkin.webp",
+  "assets/cook/items-s17-stove/f-mince.webp",
+  "assets/cook/items/served/samosa.webp"
  ],
- "_assets": "S19 (s19-wave-e2; decision 68, loadcheck): the v4 fry stages and the sheet's underside (art.fry, art.under), beyond data/cook.json art.assets.stations"
+ "_assets": "S19 (s19-wave-e2; decision 68, loadcheck): the v4 fry stages and the sheet's underside (art.fry, art.under), beyond data/cook.json art.assets.stations S19 (s19-games-1, loadcheck): the mince's item card picture (ph-keema's card, data/cook.json's f-mince). S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served samosa), until s19-serve2's kitchen dishes take its place."
 }
