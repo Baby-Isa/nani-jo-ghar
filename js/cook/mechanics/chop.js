@@ -1233,11 +1233,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
         hold();
         // SH-253 (contract-112: "lit while the knife moved into it after the light came"): the light comes on a still scene, the knife
-        // and the vegetable already in place, and stays still a beat (about a second of real time, whatever the test speed) before the
+        // and the vegetable already in place, and stays still a beat (a second and a half of real time, whatever the test speed: the checks' second look comes at 0.95 s, later on a busy machine) before the
         // finger draws the knife along its path
         const lit0 = Date.now();
         await wait(420);
-        while (Date.now() - lit0 < 1100 && knife.active) await wait(50);
+        while (Date.now() - lit0 < 1500 && knife.active) await wait(50);
         let cutYet = false;
         const D_MS = 1500 / slow;
         await new Promise((resolve) =>

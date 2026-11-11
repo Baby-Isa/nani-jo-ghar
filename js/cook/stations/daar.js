@@ -1978,12 +1978,12 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const perPx = Math.max(0.01, (UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
       const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
       // CK-79, SH-254 (the eye judge, 10 Nov; contract-113: the face sat on the katori, then on the served bowl, at 740x320): beside
-      // the dish at its upper left, its circle touching the rim of the larger of the empty katori and the served bowl that takes its
-      // place, never over either (the kit's praise spot's reach, chai's corner)
+      // the dish on its left, its circle touching the rim of the larger of the empty katori and the served bowl that takes its place,
+      // never over either; level with it, so the plain bowl's light above (the pour) never cuts it (contract-82 at 740x320)
       const SB = SC().serveBowl || KT;
       const r = z.L(Math.max(KT.w, SB.w || KT.w)) / 2;
-      const x = z.X(KT.x) - (r + fd / 2) * 0.74;
-      const y = sy(z, KT.y) - (r + fd / 2) * 0.74;
+      const x = z.X(KT.x) - r - fd / 2 - z.L(4);
+      const y = sy(z, KT.y);
       face = S.track(S.add.image(x, y, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
       face.setName("daar-katori-face");
       if (img) img.face = face;
