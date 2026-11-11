@@ -100,8 +100,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * it), measured on the cut: the body's centre (cx, cy) and outer radius r, the inside wall's radius inner (the oil's edge, 24 rays:
    * 280-292 px), all of w. The still rim is pot-empty with its middle cut away on a circle just inside the wall (cut), the disc reaching
    * a little under it (disc). What is in it is one of the run's six discs (v4/daar/disc-*, laid in by code), or the oil cut from pot-oil.
+   * DAAR-45: its measure (POT2) and the six discs (DISCS, discKey) are the stir kit's (Cook.StirKit.POT, js/cook/mechanics/stir.js).
    */
-  const POT2 = { w: 962, h: 760, cx: 0.4995, cy: 0.4993, r: 0.3883, inner: 0.2994, cut: [287 / 962, 287 / 962], disc: 296 / 962 };
+  const POT2 = new Proxy({}, { get: (t, k) => Cook.StirKit.POT[k] });
   /*
    * s08 w6B (DAAR-31, P50: "the bottom and left walls of the pot are more visible than the top wall"): DP2's lip is not even
    * (measured on the @2x cut along 12 rays: its bright lip begins 12 px inside the outer edge at the top, 18-25 px elsewhere,
@@ -113,9 +114,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   // DP3's discs (assets/s08b-cut-data.json: [cx, cy, r] of the circle on its 419 x 420 canvas)
   // S19 (D3): the run's six discs, each the round contents filling its canvas inside a 6 px soft margin: what the pot shows (the
   // stirred one, the tadka over the daar, comes up as you stir and is what the bowl is served from)
-  const V4D = IT + "v4/daar/";
-  const DISCS = { seeds: "disc-seeds", onion: "disc-onion", "onion-chilli": "disc-onion-chilli", masala: "disc-masala", daar: "disc-daar", stirred: "disc-tadka" };
-  const discKey = (st) => `dv6-disc-${st}`;
+  const discKey = (st) => Cook.StirKit.discKey(st);
   // 30 Sept (R4): the -only / pairs pots (the same canvas, registered to D1's rim) so an order without onion
   // never shows onion. s08 w4A: only their contents are drawn (cut to discs), so only the states before the daar load
   // (S19: the v3 pots are no longer loaded: the six discs replace their contents)
@@ -164,25 +163,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   // (290 x 455, top-down, the handle rising: its bowl's centre and radius)
   // S03-D (S8): the tadka bowl redrawn with matte daar (no beads), its own trivet circle measured on the cut
   const TRIVET = { w: 528, h: 527, cx: 0.5, cy: 0.5, r: 0.4697 };
-  // DAAR-02 (s08c KD1, s08 w7A): the real kadchi from above, its bowl full of daal as it stirs (kadchi-daal-s08c: a deep
-  // round bowl, the handle rising towards us, foreshortened, with its hanging hole); its bowl: the biggest circle inside it,
-  // measured on the cut (assets/cook/items-s08c/meta.json bowls)
-  // S19 (the brief's daar task: the ladle, kit/ladle; Zafar 9 Nov: "I do like the handle for the stirrer"): the kit's steel ladle with its
-  // wooden handle, top-down (assets/cook/items/v4/kit/ladle.webp, 259 x 700): its round bowl's centre and radius measured on the cut,
-  // the handle straight down from it (handle: its angle, screen y down)
-  const LADLE_V4 = { w: 259, h: 700, cx: 0.498, cy: 0.189, r: 0.478, handle: Math.PI / 2, bowlK: 0.27 };
-  const LADLE = LADLE_V4;
   // (R4 cell 6) the same bowl of plain daar, no tadka: it waits beside the pot and pours in (the tadka one is the review's)
   // S03-D (C10): the s03 bowl (matte daar) on trivet-t, one canvas with daar-bowl-plain-t (build/gen_s03.py --fit)
   const TRIVET_PLAIN = { w: 489, h: 490, cx: 0.4991, cy: 0.4971, r: 0.4899 };
-  // (R8) the speed dial's four flat cream icons: stopped, slow (tortoise), fast (hare), too fast (a splash)
-  const DIAL_ICONS = ["stopped", "slow", "fast", "spill"];
   // DAAR-13: the margin-safe knife's edge, tip to heel, as fractions of tool-knife-t.png (345 x 296)
   const KNIFE_BLADE = [0.07, 0.08, 0.5, 0.64];
-  // DAAR-11 (D6): the ladle's handle, turned so it always points out over the rim, resting on it, as the ladle goes round
-  const ladleHandle = () => LADLE.handle;
-  // DAAR-30: the stir's flag, at 12 o'clock (screen angles: y down, so straight up is -90 degrees)
-  const FLAG_AT = -Math.PI / 2;
   /** A test log (the contract checks read it: contract-65, contract-66), never shown. */
   const stirNote = (what, step, by) => {
     try {
@@ -191,103 +176,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       /* only a log */
     }
   };
-  /*
-   * The pot's contents as a disc texture (s08 w4A): a square canvas with the round contents centred in it, its edge a little
-   * soft. st: "daar" / "stirred" (DP3's discs, cut to their circle) or a v3 pot state (its contents circle, OLD_IN). Made once.
-   */
-  function discTex(S, st) {
-    const key = `dv4-c-${st}`;
-    if (S.textures.exists(key)) return key;
-    // S19: the oil is pot-oil's own, cut on the disc's circle; every other state is its v4 disc, cut just inside its soft margin
-    const srcKey = st === "oil" ? "dv6-pot-oil" : discKey(st);
-    if (!S.textures.exists(srcKey)) return st === "daar" || !S.textures.exists(discKey("daar")) ? "dv6-pot-oil" : discTex(S, "daar");
-    const img = S.textures.get(srcKey).getSourceImage();
-    const [x0, y0, r] = st === "oil" ? [POT2.cx * img.width, POT2.cy * img.height, POT2.disc * img.width] : [img.width / 2, img.height / 2, 0.48 * Math.min(img.width, img.height)];
-    const R = Math.round(r);
-    const ct = S.textures.createCanvas(key, 2 * R, 2 * R);
-    const g = ct.getContext();
-    g.drawImage(img, x0 - R, y0 - R, 2 * R, 2 * R, 0, 0, 2 * R, 2 * R);
-    const feather = 3;
-    const fade = g.createRadialGradient(R, R, R - feather, R, R, R);
-    fade.addColorStop(0, "rgba(0,0,0,1)");
-    fade.addColorStop(1, "rgba(0,0,0,0)");
-    g.globalCompositeOperation = "destination-in";
-    g.fillStyle = fade;
-    g.beginPath();
-    g.arc(R, R, R, 0, TAU);
-    g.fill();
-    g.globalCompositeOperation = "source-over";
-    ct.refresh();
-    return key;
-  }
-  /** The still rim: DP2's pot with its middle cut away (a soft edge just inside the wall), drawn over the turning disc. */
-  function rimTex(S) {
-    const key = "dv4-pot-rim";
-    if (S.textures.exists(key)) return key;
-    const img = S.textures.get("dv6-pot-empty").getSourceImage();
-    const w = img.width;
-    const h = img.height;
-    const ct = S.textures.createCanvas(key, w, h);
-    const g = ct.getContext();
-    g.drawImage(img, 0, 0, w, h);
-    const cx = POT2.cx * w;
-    const cy = POT2.cy * h;
-    // DAAR-31: an even band of rim all round (POT2.cut, an ellipse a constant width inside DP2's outer edge)
-    const rx = POT2.cut[0] * w;
-    const ky = POT2.cut[1] / POT2.cut[0];
-    g.save();
-    g.translate(cx, cy);
-    g.scale(1, ky);
-    const cut = g.createRadialGradient(0, 0, rx - 5, 0, 0, rx + 1);
-    cut.addColorStop(0, "rgba(0,0,0,1)");
-    cut.addColorStop(1, "rgba(0,0,0,0)");
-    g.globalCompositeOperation = "destination-out";
-    g.fillStyle = cut;
-    g.beginPath();
-    g.arc(0, 0, rx + 1, 0, TAU);
-    g.fill();
-    g.restore();
-    g.globalCompositeOperation = "source-over";
-    ct.refresh();
-    return key;
-  }
-  /**
-   * DAAR-30: the stir's small racing flag, standing on the rim at 12 o'clock (x, y: the pole's foot), drawn flat in the kit's
-   * inks: a dark pole and a black and white chequered flag with a soft shadow. wave(): it flutters as the ladle passes it.
-   */
-  function stirFlag(z, S, x, y) {
-    const c = S.track(S.add.container(x, y).setDepth(D.item + 0.7).setAlpha(0));
-    c.setName("daar-stir-flag");
-    const g = S.add.graphics();
-    const L = (v) => z.L(v);
-    const pole = 76;
-    const fw = 56;
-    const fh = 38;
-    g.fillStyle(0x28190a, 0.16).fillEllipse(L(3), L(2), L(16), L(7));
-    g.fillStyle(0x3a2410, 1).fillRoundedRect(-L(3.5), -L(pole), L(7), L(pole), L(3.5));
-    g.fillStyle(0x3a2410, 1).fillCircle(0, -L(pole), L(4.5));
-    const flagG = S.add.graphics();
-    const n = 4;
-    const m = 3;
-    flagG.fillStyle(0x28190a, 0.14).fillRoundedRect(L(3), -L(pole) + L(5), L(fw), L(fh), L(3));
-    for (let i = 0; i < n; i++) for (let j = 0; j < m; j++) flagG.fillStyle((i + j) % 2 ? 0x2a2522 : 0xfffaf1, 1).fillRect(L(2) + (i * L(fw)) / n, -L(pole) + L(2) + (j * L(fh)) / m, L(fw) / n + 0.5, L(fh) / m + 0.5);
-    flagG.lineStyle(L(2), 0x2a2522, 0.85).strokeRect(L(2), -L(pole) + L(2), L(fw), L(fh));
-    // (an empty box named for the evidence probes' canvas:pot crop, so the flag is in the pot's frame; never drawn)
-    const box = S.add.rectangle(L(fw / 2), -L(pole / 2), L(fw + 8), L(pole + 8), 0xffffff, 0).setName("daar-pot-flag");
-    c.add([g, flagG, box]);
-    S.tweens.add({ targets: c, alpha: 1, duration: 300 });
-    return {
-      wave() {
-        if (!flagG.active) return;
-        S.tweens.killTweensOf(flagG);
-        flagG.setScale(1, 1);
-        S.tweens.add({ targets: flagG, scaleX: 0.72, duration: 90, yoyo: true, repeat: 1, ease: "Sine.easeInOut" });
-      },
-      close() {
-        S.tweens.add({ targets: c, alpha: 0, duration: 300, onComplete: () => c.active && c.destroy() });
-      },
-    };
-  }
+  // DAAR-45 (one stir): the pot's discs, its still rim and the whole stir screen are the kitchen kit's (js/cook/mechanics/stir.js
+  // Cook.StirKit), the same screen as the stir game's; daar draws its pot with them and its stir step calls the kit's stir
+  const SK = () => Cook.StirKit;
+  const discTex = (S, st) => SK().discTex(S, st);
+  const rimTex = (S) => SK().rimTex(S);
   /*
    * Where the chopped pieces wait (D4, Q4: "in bowls, or on the counter at the top right: try it and judge").
    * "counter": one small pile per piece, a row per vegetable, straight on the counter (chosen: it can be
@@ -312,7 +205,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * tadka's things are the eight cream bowls seen from above (assets/cook/items/v4/daar/, F4), lying on the stone tray with their pills;
    * a thing with no bowl keeps its old picture. Each bowl's round body fills its canvas (about 0.96 of it).
    */
-  const V4K = "assets/cook/items/v4/kit/";
   // (the bowls are daar's own items, data/stations/daar.json items: word -> card, the same picture its item card shows)
   const bowlUrl = (id) => {
     const its = (((Cook.data && Cook.data.settings) || {}).daar || {}).items || {};
@@ -377,19 +269,17 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const art = [
       ["dv2-knife", IT + "tool-knife-t-v2.webp"], // the fallback is the current knife (Z8: tool-knife-t.png/.webp are retired art; S13 decodes every load)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
-      ["dv3-ladle", V4K + "ladle.webp"], // DAAR-02: the kit's ladle (S19; was s08c KD1's kadchi)
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
       // S19 (Fable's daar flaws 8 and 9): the small glass bowl each chopped heap waits in, and the empty steel katori they are served in
       ["dv5-glass", "assets/cook/items-s17-stove/t-small-glass-bowl.webp"],
       ["dv5-katori", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp"],
     ]
-      // S19 (D1-D3): the v4 pot, empty and with oil, and its six discs
-      .concat([["dv6-pot-empty", `${V4D}pot-empty.webp`], ["dv6-pot-oil", `${V4D}pot-oil.webp`]], Object.keys(DISCS).map((st) => [discKey(st), `${V4D}${DISCS[st]}.webp`]))
+      // S19 (D1-D3): the v4 pot, empty and with oil, its six discs, the kit's ladle and the dial's icons: the stir kit's (DAAR-45)
+      .concat(Cook.StirKit.art())
       .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, bowlUrl(id) || shelfUrl(id)]))
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, `${V3}chop-piece-${HEAP5[id]}.webp`]))
-      .concat(DIAL_ICONS.map((n) => [`dv3-dial-${n}`, `${V3}dial-${n}.webp`]))
       .concat([...new Set(vegAll.concat(spiceIds))].filter((id) => DS1[id]).map((id) => [ds1Key(id), `${S8C}daar-in/in-${DS1[id]}-s08c.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
@@ -1314,8 +1204,45 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // Decision 51: the wrong number of stirs is stirred again (the laps start at nothing), with help; the third
     // wrong try is counted right for you and moves on.
     let stirred = 0;
+    // DAAR-12 (Zafar, 11 Nov): no speed asked before its level (data/stations/daar.json stirSpeedFrom: L4; the word moment that teaches
+    // fast and slow waits on Mum's lines)
+    const asked = level >= Cook.StirKit.speedFrom() ? speed || null : null;
+    /*
+     * DAAR-26, DAAR-32 (P9, P51; decision 13): Nani says the stir line ONCE and WHOLE as the stir opens: the verb, how many (and from its
+     * level how fast). (Fable's daar flaw 2, non-negotiable 2: "Firai! Trae! aste thi" was three recordings stitched into a fragment.
+     * Until Mum records the one sentence, her box shows its English in grey italic, never spoken: the laps are still said as they come;
+     * the gap is in docs/language/recording-sheet.md, daar-stir-ask)
+     */
+    const stepLine = (() => {
+      const ask = ((Cook.data.settings || {}).daar || {}).askLines || {};
+      const sk = Mech.knobs("stir", { level });
+      const enOf = (l) => String((l && l.en) || "").replace(/[.!?]+$/, "").trim().toLowerCase();
+      const speedEn = asked && sk.speedWords ? enOf(Lang.line(sk.speedWords[asked])) : "";
+      const tpl = speedEn ? ask.stirAsk : ask.stirAskPlain;
+      return tpl ? Lang.toRecord(tpl.replace("{n}", enOf({ en: Cook.english(Cook.numId(laps)) }) || String(laps)).replace("{speed}", speedEn), "daar-stir-ask") : Lang.join([St.guideLine("daar:stir"), Lang.numLine(laps)]);
+    })();
     for (let t = 0; ; t++) {
-      const st = await stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry: retry || t > 0, steps, pieces, contents, hob, avoid: () => [katori && katori.img, katori && katori.face] });
+      const st = await Cook.StirKit.stir(z, S, {
+        cx,
+        cy,
+        inR,
+        bodyR,
+        laps,
+        speed: asked,
+        level,
+        retry: retry || t > 0,
+        steps,
+        stepLine,
+        step: "daar:stir",
+        key: "daar",
+        first: !!(gate && gate.first("daar-stir")),
+        pieces,
+        contents,
+        hob,
+        floorY: sy(z, SHELF_TOP),
+        lift: LIFT,
+        avoid: () => [katori && katori.img, katori && katori.face],
+      });
       stirred = st.count;
       if (!t && !retry) {
         z.listen(stirred === laps, `stirred ${stirred} times, they asked for ${laps}`);
@@ -1332,569 +1259,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     return { order, wrong, stirred, pot: { img: pot, cx, cy, bodyR, inR, pieces }, katori };
   }
 
-  /*
-   * DAAR-50 (Zafar, 9 Nov: "it should be just an item card that has as its image the number 1, then the ... word for the number 1, and
-   * English word, and ... the speaker, which is like activated because the sound's coming out because the person's counting the numbers
-   * for you ... We may as well just use our own item card"): the lap count is the shared item card (WordCard.big14, chai's 6 Nov card),
-   * popping in beside the pot, right of it, as each lap closes: the numeral is its picture, the number's Kutchi, its English, and the
-   * speaker lit while Nani counts. A number with no recorded Kutchi shows its English in grey italic (the missing-Kutchi rule: the card's
-   * rec placeholder), never a made-up word. The card is the page's (DOM) over the canvas, never taking a tap (the stir's drag goes under
-   * it); it sits in the room right of the pot: below the settings corner where it would meet it, above the shelf and the katori's face.
-   *   lapCard(z, S, {cx, cy, right, bodyR, avoid}) -> {show(n, saying) -> bool, close()} | null (no shared card on the page)
-   *   right: how far the pot's picture reaches right of its middle (world px); avoid(): world objects to keep clear of
-   */
-  const NUM_EN = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
-  function lapCard(z, S, { cx, cy, right, bodyR, avoid = () => [], w = null }) {
-    const W = global.WordCard;
-    if (!W || !W.big14 || typeof document === "undefined" || !UI.worldToScreen) return null;
-    let wrap = null;
-    let shown = -1;
-    const ink = () => (global.Tokens && global.Tokens.hex ? global.Tokens.hex("ink-kutchi") : "#7a2331") || "#7a2331";
-    // the numeral as the card's picture: one big serif digit (a picture, never a word: the same in every language)
-    const numeral = (n) =>
-      "data:image/svg+xml;charset=utf-8," +
-      encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240"><text x="120" y="128" text-anchor="middle" dominant-baseline="middle" font-family="Fraunces, Lora, Georgia, 'Times New Roman', serif" font-weight="800" font-size="${String(n).length > 1 ? 150 : 200}" fill="${ink()}">${n}</text></svg>`);
-    const wordOf = (n) => {
-      const id = Cook.numId(n);
-      const known = !!(Lang.known && Lang.known(id));
-      const en = (Cook.english && Cook.english(id)) || NUM_EN[n] || String(n);
-      return { id, kutchi: known ? Lang.plain({ segs: Lang.num(n) }) : en, english: String(en).replace(/\s*\([^)]*\)/g, "").trim(), rec: !known, picture: { src: numeral(n), fit: "contain" } };
-    };
-    const rectOf = (o) => {
-      if (!o || !o.active || o.visible === false || !o.getBounds) return null;
-      const b = o.getBounds();
-      const a = UI.worldToScreen(b.x, b.y);
-      const c = UI.worldToScreen(b.right, b.bottom);
-      return { left: a.x, top: a.y, right: c.x, bottom: c.y };
-    };
-    const place = () => {
-      const st = document.querySelector("#stage");
-      const play = st ? st.getBoundingClientRect() : { left: 0, top: 0, right: innerWidth, bottom: innerHeight };
-      const edge = UI.worldToScreen(cx + right, cy);
-      const s = edge.s || 1;
-      const card = wrap.firstChild;
-      // the card about the pot's height (its own proportions), never under the item card's own floor
-      // (DAAR-50: w, the dial's balance, when the stir gives it; never under the item card's own floor)
-      const w0 = Math.round(Math.max(88, w != null ? Math.min(260, w) : Math.min(210, 2 * bodyR * s * 0.62)));
-      wrap.style.transform = "";
-      card.style.width = `${w0}px`;
-      W.fit14(card);
-      const h0 = card.offsetHeight;
-      const x = edge.x + Math.max(10, 14 * s);
-      // its room: from the stage's top (below the settings corner where it would meet it) down to the shelf's top, above anything
-      // standing in its column (the katori and the asker's face on it)
-      let top = play.top + 8;
-      const cog = document.querySelector("#side-cog");
-      const cr = cog && cog.getBoundingClientRect();
-      if (cr && cr.width > 0 && cr.left < x + w0 + 6 && cr.right > x - 6) top = Math.max(top, cr.bottom + 8);
-      let bottom = Math.min(play.bottom - 8, UI.worldToScreen(0, sy(z, SHELF_TOP)).y - 8);
-      for (const o of avoid()) {
-        const r = rectOf(o);
-        if (r && r.left < x + w0 + 6 && r.right > x - 6 && r.top > edge.y - 2 * bodyR * s) bottom = Math.min(bottom, r.top - 8);
-      }
-      const k = Math.min(1, Math.max(0.45, (bottom - top) / Math.max(1, h0)), Math.max(0.45, (play.right - 8 - x) / Math.max(1, w0)));
-      const y = Math.max(top, Math.min(bottom - h0 * k, edge.y - (h0 * k) / 2));
-      Object.assign(wrap.style, { left: `${Math.round(x)}px`, top: `${Math.round(y)}px`, transform: k < 1 ? `scale(${k.toFixed(3)})` : "" });
-    };
-    const api = {
-      /** The card for lap n (said by Nani: saying, the line's promise, lights its speaker until she is done). true once it shows n. */
-      show(n, saying) {
-        try {
-          if (!wrap) {
-            wrap = document.createElement("div");
-            wrap.className = "daar-laps";
-            Object.assign(wrap.style, { position: "fixed", zIndex: "40", pointerEvents: "none", transformOrigin: "0 0", margin: "0" });
-            document.body.appendChild(wrap);
-          }
-          if (n !== shown) {
-            const card = W.big14(null, wordOf(n), { all: true, cls: "wc14-laps" });
-            card.style.margin = "0";
-            card.dataset.lap = String(n);
-            wrap.replaceChildren(card);
-            shown = n;
-            place();
-            if (card.animate) card.animate([{ opacity: 0, transform: "scale(0.7)" }, { opacity: 1, transform: "scale(1.06)" }, { transform: "scale(1)" }], { duration: 300 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
-          }
-          const spk = wrap.querySelector(".wc14-spk");
-          if (spk && saying && saying.then) {
-            spk.classList.add("on");
-            saying.then(() => wrap && wrap.firstChild && wrap.firstChild.dataset.lap === String(n) && spk.classList.remove("on"));
-          }
-          return true;
-        } catch (e) {
-          console.warn("lap card:", e);
-          return false;
-        }
-      },
-      close() {
-        const w = wrap;
-        wrap = null;
-        if (!w) return;
-        if (w.animate) w.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300 / (Cook.speed || 1) }).onfinish = () => w.remove();
-        else w.remove();
-      },
-    };
-    // (the page's card goes with the scene: a round left mid-stir never leaves it standing)
-    const gone = () => {
-      if (wrap) wrap.remove();
-      wrap = null;
-    };
-    S.events.once("shutdown", gone);
-    S.events.once("destroy", gone);
-    return api;
-  }
-
-  /**
-   * The speed dial (D7 / Q10), drawn in the kitchen kit's style (no new art): a dark glass face like the
-   * hob's, a thin gold rim, four fixed bands (stopped, tortoise, hare, spilling: data.mechanics.stir's bands,
-   * the same for every order, never a target), the band you're in lit with the "on" knob's warm glow, a
-   * gold needle; and under it the laps, as the Kutchi number word on a white chip (no digits, no pips).
-   * x, y: its centre (design px). Returns {set(spd), laps(n), close()}.
-   */
-  function speedDial(z, S, { x, y, bands, max, asked = null, k: kd = 1 }) {
-    const z0 = z; // (its place in the zone's own measure; DAAR-50: the dial itself a little smaller beside the lap card)
-    z = Object.assign(Object.create(z), { k: z.k * kd });
-    const W = 340;
-    const H = 330;
-    const R = 104;
-    const BW = 28;
-    const ay = 34; // the arc's centre, in the face
-    // (no container: each piece is placed and scaled itself, so the needle's redraws always show)
-    const ox = z0.X(x);
-    const oy = sy(z0, y);
-    const parts = [];
-    const put = (o, dx = 0, dy = 0, dd = 0) => {
-      S.track(o.setPosition(ox + dx * z.k, oy + dy * z.k).setScale(z.k).setDepth(D.item + 1 + dd).setAlpha(0));
-      parts.push(o);
-      return o;
-    };
-    const g = put(S.add.graphics());
-    // (its face's box, for the checks that ask what shares the pot's width: a drawing has no bounds of its own; contract-110)
-    g.njgBox = () => ({ x: ox - (W / 2) * z.k, y: oy - (H / 2) * z.k, right: ox + (W / 2) * z.k, bottom: oy + (H / 2) * z.k });
-    g.setName("daar-dial");
-    // the glass face and its gold rim (the hob's glass, the kit's gold)
-    g.fillStyle(0x28190a, 0.22);
-    g.fillRoundedRect(-W / 2 + 4, -H / 2 + 8, W, H, 28);
-    g.fillStyle(0x1d1b1a, 0.96);
-    g.fillRoundedRect(-W / 2, -H / 2, W, H, 28);
-    g.lineStyle(2, 0xffffff, 0.08);
-    g.strokeRoundedRect(-W / 2 + 8, -H / 2 + 8, W - 16, H - 16, 22);
-    g.lineStyle(4, INK.gold, 1);
-    g.strokeRoundedRect(-W / 2, -H / 2, W, H, 28);
-    const [e1, e2, e3] = bands;
-    const toA = (v) => Math.PI + Cook.clamp(v / max, 0, 1) * Math.PI;
-    // DAAR-12 (D13): the asked speed is green, the other yellow, spilling red (nothing asked: slow green, quick yellow)
-    const GREEN = 0x8fb087;
-    const YELLOW = 0xe0b04a;
-    const BANDS = [
-      [0, e1, 0x8a8078],
-      [e1, e2, asked === "quick" ? YELLOW : GREEN],
-      [e2, e3, asked === "quick" ? GREEN : YELLOW],
-      [e3, max, 0xd0604a],
-    ];
-    // (the bands clearly in their colours on the dark glass: the asked one green, the spill red, DAAR-12)
-    BANDS.forEach(([a, b, col]) => {
-      g.lineStyle(BW, col, 0.72);
-      g.beginPath();
-      g.arc(0, ay, R, toA(a) + 0.02, toA(b) - 0.02);
-      g.strokePath();
-    });
-    // the pictures on their bands, in cream (the glass's ink)
-    const at = (v, r) => ({ x: Math.cos(toA(v)) * r, y: ay + Math.sin(toA(v)) * r });
-    // (radii kept inside the face: the band ends lie near the face's left and right edges)
-    const spots = [
-      [e1 / 2, R + 26],
-      [(e1 + e2) / 2, R + 44],
-      [(e2 + e3) / 2, R + 48],
-      [(e3 + max) / 2, R + 30],
-    ];
-    // (R8) the four flat cream icons on their bands, each about a band's width (STD-E3-02: pictures only; never drawn in code)
-    DIAL_ICONS.forEach((n, i) => {
-      if (!S.textures.exists(`dv3-dial-${n}`)) return;
-      const q = at(...spots[i]);
-      const im = S.add.image(0, 0, `dv3-dial-${n}`);
-      put(im, q.x, q.y, 0.01);
-      im.setScale((z.k * 58) / Math.max(im.width, im.height));
-    });
-    const lit = put(S.add.graphics(), 0, 0, 0.02);
-    const needle = put(S.add.graphics(), 0, 0, 0.03);
-    // the laps: the Kutchi word on a white chip in the face's lower half
-    const cg = put(S.add.graphics(), 0, 104, 0.04);
-    const ct = put(S.add.text(0, 0, "", { fontFamily: FONT(), fontSize: "40px", fontStyle: "800", color: INK.kutchi }).setOrigin(0.5), 0, 104, 0.05);
-    const chip = [cg, ct];
-    S.tweens.add({ targets: parts.filter((o) => !chip.includes(o)), alpha: 1, duration: 300 });
-    let shown = -1;
-    const dial = {
-      set(spd) {
-        const band = BANDS.find(([, b]) => spd < b) || BANDS[BANDS.length - 1];
-        lit.clear();
-        if (spd > 0.02) {
-          // the band you're in, lit, with the warm glow of the "on" knob
-          [
-            [BW + 26, 0.1],
-            [BW + 14, 0.2],
-          ].forEach(([w, a]) => {
-            // the glow in the band's own colour (an orange glow made the green band read gold)
-            lit.lineStyle(w, band[2], a);
-            lit.beginPath();
-            lit.arc(0, ay, R, toA(band[0]) + 0.02, toA(Math.min(band[1], max)) - 0.02);
-            lit.strokePath();
-          });
-          lit.lineStyle(BW, band[2], 1);
-          lit.beginPath();
-          lit.arc(0, ay, R, toA(band[0]) + 0.02, toA(Math.min(band[1], max)) - 0.02);
-          lit.strokePath();
-        }
-        const a = toA(spd);
-        needle.clear();
-        needle.lineStyle(8, 0x0e0d0c, 0.5);
-        needle.lineBetween(0, ay + 2, Math.cos(a) * (R - 4), ay + 2 + Math.sin(a) * (R - 4));
-        needle.lineStyle(6, 0xf0cf7a, 1);
-        needle.lineBetween(0, ay, Math.cos(a) * (R - 4), ay + Math.sin(a) * (R - 4));
-        const on = spd > 0.02 ? 1 : 0.4;
-        needle.fillStyle(0xffa94d, 0.18 * on);
-        needle.fillCircle(0, ay, 30);
-        needle.fillStyle(0xffa94d, 0.32 * on);
-        needle.fillCircle(0, ay, 21);
-        needle.fillStyle(INK.gold, 1);
-        needle.fillCircle(0, ay, 14);
-        needle.fillStyle(0x3a2410, 1);
-        needle.fillCircle(0, ay, 5);
-      },
-      laps(n) {
-        // (past the numbers the words have, the last word stays: never an id on screen)
-        if (n === shown || !Lang.known(Cook.numId(n))) return;
-        shown = n;
-        ct.setText(Lang.plain({ segs: Lang.num(n) }));
-        const w = Math.max(110, ct.width + 52);
-        cg.clear();
-        cg.fillStyle(0xffffff, 1);
-        cg.fillRoundedRect(-w / 2, -32, w, 64, 14);
-        chip.forEach((o) => o.setAlpha(1));
-        S.tweens.add({ targets: chip, scale: z.k * 1.14, duration: 110, yoyo: true });
-      },
-      close() {
-        S.tweens.add({ targets: parts, alpha: 0, duration: 300 });
-      },
-    };
-    dial.set(0);
-    return dial;
-  }
-  /**
-   * Stir `laps` times: a drag round the pot counts a lap per full turn; a tap on the pot is one turn. The
-   * pictured contents turn with the ladle (D10: the tadka picture, clipped inside the rim; the swirl picture
-   * comes up as you go faster). speed: null | "slow" | "quick" (said from level 2, judged by the ear only).
-   */
-  function stir(z, S, { cx, cy, inR, bodyR, laps, speed, level, retry, steps, pieces = [], contents, hob = null, avoid = () => [] }) {
-    return new Promise((resolve) => {
-      const ctx = z.ctx;
-      const hide = St.hideKnown(ctx);
-      const k = Mech.knobs("stir", { level });
-      const bands = k.bands || [0.12, 0.9, 2.2];
-      const [e1, e2, e3] = bands;
-      const asked = k.speeds ? speed || null : null;
-      const trackR = inR * 0.62;
-      // the turning contents (DAAR-29, s08 w4A): the pot's daar disc itself turns about its centre under the still rim (drawn
-      // over it: rimTex), and DP3's stirred swirl comes up over it as you go faster, turning a little faster
-      const still = contents;
-      const swirl = S.track(S.add.image(cx, cy, discTex(S, "stirred")).setDepth(D.item + 0.1).setAlpha(0));
-      swirl.setScale((bodyR * POT2.disc) / POT2.r / (swirl.width / 2));
-      swirl.setName("daar-pot-swirl");
-      /*
-       * DAAR-30 (P49, Zafar 17 Oct: "a little racing flag to mark the start and end of one revolution ... at the 12 o'clock
-       * position, and every time you go past it it makes a bit of a sound, she says the number and the number changes"): a
-       * small chequered flag on the rim at 12 o'clock. The ladle starts under it, and a turn counts as the ladle passes it.
-       */
-      const flag = stirFlag(z, S, cx, cy - bodyR + z.L(4));
-      // the ladle (D6): top-down, its bowl in the daar and the handle rising toward us
-      const ladle = S.track(S.add.image(cx, cy - trackR, "dv3-ladle").setDepth(D.item + 0.6).setOrigin(LADLE.cx, LADLE.cy));
-      ladle.setScale((inR * LADLE.bowlK) / (LADLE.r * LADLE.w));
-      const ringG = S.track(S.add.circle(cx, cy - trackR, z.L(44), 0xffffff, 0).setStrokeStyle(z.L(6), 0xfff3c4, 0.9).setDepth(D.fx - 1));
-      S.tweens.add({ targets: ringG, scale: 1.25, alpha: 0.35, duration: 520, yoyo: true, repeat: -1 });
-      // DAAR-50 (Zafar, 9 Nov late: "the speedometer needs to be on the left, and the counting thing needs to be on the right. Otherwise,
-      // it's completely like awkward ... you can keep the vertical stove ... a card that is balanced proportionally, maybe the same size as
-      // the speedo ... similar visual weight, a little bit taller but less narrow"): the dial in the room LEFT of the hob, centred in it
-      // and on the pot's height (smaller where the room asks); the lap card RIGHT of the hob, about the dial's height and a little
-      // narrower (lapCard's w), so the two balance either side of the upright stove
-      const dialW = 340;
-      const hobL = hob ? (hob.x - z.X(0)) / z.k : 590;
-      const hobR = hob ? (hob.x + hob.w - z.X(0)) / z.k : 1010;
-      const viewL = (Cook.view && Cook.view.left != null ? (Cook.view.left - z.X(0)) / z.k : 0) + 16;
-      const viewR = (Cook.view && Cook.view.right != null ? (Cook.view.right - z.X(0)) / z.k : 1600) - 16;
-      const roomL = hobL - 24 - viewL;
-      const kd = Math.max(0.45, Math.min(1, roomL / dialW));
-      const dialX = viewL + roomL / 2;
-      const dialY = (cy - z.Y(0)) / z.k + LIFT;
-      const dial = speedDial(z, S, { x: dialX, y: dialY, bands, max: k.dialMax || 3, asked, k: kd });
-      // (the card: the dial's visual weight, a little taller and narrower: about 0.72 of its width, never past the view's right edge)
-      const ws = Math.max(0.01, UI.worldScale ? UI.worldScale() : 1);
-      const cardW = Math.min(dialW * kd * 0.72, viewR - hobR - 24) * z.k * ws;
-      const card = lapCard(z, S, { cx, cy, right: z.X(hobR) - cx, bodyR, avoid, w: cardW });
-      let count = 0;
-      let ang = FLAG_AT; // the ladle's angle: it starts under the flag
-      let rot = 0; // the contents' turn
-      let since = 0; // turned (signed) since the last lap
-      let lapT = performance.now(); // when the last lap ended (or the stir began)
-      let saying = null; // the last number said, while it is being said
-      let prev = null;
-      let over = false;
-      let moved = 0;
-      let spd = 0;
-      let spdJ = 0;
-      let start = null;
-      let dragging = false;
-      let wrongT = 0;
-      let nudges = 0;
-      let corrected = false;
-      let judged = 0;
-      let inAsked = 0;
-      let overT = 0;
-      let lastSpill = -1e9;
-      let spills = 0;
-      let graceUntil = 0;
-      const offs = [];
-      Cook.stirCount = () => count;
-      Cook.stirSpeed = () => spd;
-      // (for build/shoot_daar_v3.py: stir at a steady real speed, laps per second, through turn() as a drag
-      // does; the headless browser's mouse is too slow to reach the hare band)
-      Cook.stirDrive = (rate, ms) =>
-        new Promise((done) => {
-          dragging = true;
-          const t0 = performance.now();
-          let tl = t0;
-          const step = () => {
-            const now = performance.now();
-            let da = TAU * rate * (Math.min(500, now - tl) / 1000);
-            while (da > 0) {
-              turn(Math.min(0.5, da));
-              da -= 0.5;
-            }
-            tl = now;
-            if (now - t0 < ms && !over) requestAnimationFrame(step);
-            else {
-              dragging = false;
-              done();
-            }
-          };
-          requestAnimationFrame(step);
-        });
-      // (SH-238: past the laps the step is complete and moves on by itself; nothing more is asked)
-      let stirred = null;
-      let ending = false;
-      const post = () => z.expect(count < laps ? { kind: "stir", x: cx, y: cy, rx: trackR, ry: trackR, target: laps, speed: asked, count: () => count } : { kind: "wait" });
-      const place = () => {
-        ladle.setPosition(cx + Math.cos(ang) * trackR, cy + Math.sin(ang) * trackR);
-        ladle.setRotation(ang - ladleHandle()); // DAAR-11: the handle points out over the rim, wherever the ladle is
-        ringG.setPosition(ladle.x, ladle.y);
-        still.setRotation(rot);
-        swirl.setRotation(rot * 1.7);
-        // DAAR-05: what went in turns with the daar
-        pieces.forEach((p) => p.img.active && p.img.setPosition(cx + Math.cos(p.a + rot) * p.r, cy + Math.sin(p.a + rot) * p.r).setRotation(p.turn + rot));
-      };
-      const lap = (da = 0) => {
-        count++;
-        const now = performance.now();
-        const period = now - lapT;
-        lapT = now;
-        // the flag's sound as the ladle passes it, the flag flutters, and the number on the dial changes at once
-        (Cook.sfx.lap || Cook.sfx.click)();
-        flag.wave();
-        // (DAAR-50: the number on the card; the dial's own chip only where the card cannot show)
-        let shownOnCard = false;
-        const showLap = (said) => {
-          shownOnCard = !!(card && card.show(count, said));
-          if (!shownOnCard) dial.laps(count);
-        };
-        // DAAR-24 retired (Zafar, 14 Oct, D12): the laps are said aloud at every level, the stir's own exception to the
-        // counting rule; the line carries role "laps" so the counting check (contract-19) knows it is not counting along.
-        // DAAR-27 (P10: "the counting doesn't keep up with the turns ... say it within like three quarters of one revolution"):
-        // the number is said the moment the ladle passes the flag. It waits behind nothing but the number before it (the one
-        // queue drops an older number still waiting); while Nani is still saying a line (her stir line, when the child starts
-        // at once) the number is not said late: it is left out and the next one is said (P10: "a late number is dropped")
-        const V = Cook.core && Cook.core.voice;
-        const busy = !saying && !!(V && V.busy && V.busy("cook"));
-        let said = "mute";
-        if (!(UI.naniMuted && UI.naniMuted())) {
-          if (busy) said = "quiet";
-          else {
-            said = "ok";
-            const mine = Lang.speak(Lang.role(Lang.numLine(count), "laps"), { kind: "count" }).catch(() => {});
-            saying = mine;
-            mine.then(() => saying === mine && (saying = null));
-            showLap(mine);
-          }
-        }
-        if (said !== "ok") showLap(null);
-        // (the log: the ladle's angle from the flag after the move that passed it, that move's size, the lap's time; lib/contract-daal.mjs)
-        const deg = (a) => Math.round(a * (180 / Math.PI));
-        const at = deg(((((ang - FLAG_AT) % TAU) + TAU + Math.PI) % TAU) - Math.PI);
-        stirNote("stir-lap", count, `deg:${at} da:${deg(Math.abs(da))} ms:${Math.round(period)} ${said}`);
-        z.progress({ lap: count });
-        post();
-        if (count >= laps && stirred) stirred();
-      };
-      // which turn round the flag an angle is in (the flag's line lies between two)
-      const lapOf = (a) => Math.floor((a - FLAG_AT) / TAU);
-      const turn = (da) => {
-        const before = ang;
-        ang += da;
-        since += da;
-        moved += Math.abs(da);
-        rot += da * 0.55;
-        place();
-        // DAAR-30: a lap counts as the ladle crosses the flag going the way it is going, after most of a turn (3/4) that way
-        // since the last one: stirring back and forth under the flag never counts; either way round does
-        if (lapOf(before) !== lapOf(ang) && Math.abs(since) >= TAU * 0.75 && Math.sign(since) === Math.sign(da)) {
-          since = 0;
-          lap(da);
-        }
-      };
-      /** Daar slops over the rim where the ladle is (way too fast). */
-      const spill = () => {
-        Cook.sfx.puff ? Cook.sfx.puff() : Cook.sfx.soft();
-        for (let i = 0; i < 6; i++) {
-          const a = ang + 0.2 + Math.random() * 0.6;
-          const x0 = cx + Math.cos(a) * inR;
-          const y0 = cy + Math.sin(a) * inR;
-          const out = z.L(50 + Math.random() * 70);
-          const dot = S.track(S.add.circle(x0, y0, z.L(6 + Math.random() * 7), 0xe0a42c, 1).setDepth(D.fx));
-          S.tweens.add({ targets: dot, x: x0 + Math.cos(a) * out, y: y0 + Math.sin(a) * out, alpha: 0, duration: 700, ease: "Cubic.easeOut", onComplete: () => dot.destroy() });
-        }
-      };
-      offs.push(
-        z.on("pointerdown", (p) => {
-          const d = Math.hypot(p.worldX - cx, p.worldY - cy);
-          if (d > inR * 1.35) return;
-          prev = Math.atan2(p.worldY - cy, p.worldX - cx);
-          ringG.setVisible(false);
-          dragging = true;
-          if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("daar:stir"); // (SH-236: the light goes as the stir starts)
-          if (!graceUntil) graceUntil = performance.now() + 700;
-          start = { t: performance.now(), moved: 0 };
-        }),
-        z.on("pointermove", (p) => {
-          if (prev == null || over) return;
-          const a = Math.atan2(p.worldY - cy, p.worldX - cx);
-          let da = a - prev;
-          if (da > Math.PI) da -= TAU;
-          if (da < -Math.PI) da += TAU;
-          prev = a;
-          if (Math.abs(da) > 1.3) return; // a jump isn't a stir
-          if (start) start.moved += Math.abs(da);
-          turn(da);
-        }),
-        z.on("pointerup", () => {
-          // a tap on the pot (no drag): the ladle goes round on its own, on past the flag (one lap a tap)
-          if (start && start.moved < 0.3 && performance.now() - start.t < 400 && !over) {
-            const o = { v: 0 };
-            let lastV = 0;
-            let rest = TAU - ((((ang - FLAG_AT) % TAU) + TAU) % TAU);
-            if (since + rest < TAU * 0.75) rest += TAU;
-            S.tweens.add({
-              targets: o,
-              v: rest + 0.03,
-              duration: 700,
-              ease: "Sine.easeInOut",
-              onUpdate: () => {
-                turn(o.v - lastV);
-                lastV = o.v;
-              },
-            });
-          }
-          if (prev != null && !over && Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("daar:stir"); // (let go, the stir not done)
-          prev = null;
-          start = null;
-          dragging = false;
-        })
-      );
-      let lastT = performance.now();
-      const stopTick = z.tick(() => {
-        const now = performance.now();
-        const dt = Math.min(0.25, Math.max(0.001, (now - lastT) / 1000));
-        lastT = now;
-        // the speed: real laps per second, smoothed so the needle glides
-        const raw = moved / TAU / dt;
-        moved = 0;
-        spd += (raw - spd) * (1 - Math.exp(-dt / (k.smoothS || 0.35)));
-        spdJ += (raw - spdJ) * (1 - Math.exp(-dt / (k.judgeS || 0.15)));
-        dial.set(spd);
-        // the swirl picture comes up as you go faster
-        swirl.setAlpha(Cook.clamp((spd - e1) / (e2 - e1), 0, 1) * 0.9);
-        if (over) return;
-        // the asked speed (the ear only): time on the asked side while stirring; Nani says it again
-        if (asked && dragging && spdJ > e1 * 0.5 && now > graceUntil) {
-          const right = (spdJ < e2 ? "slow" : "quick") === asked;
-          judged += dt;
-          if (right) {
-            inAsked += dt;
-            wrongT = 0;
-          } else if ((wrongT += dt) * 1000 >= (k.correctMs || 1600)) {
-            wrongT = 0;
-            if (nudges < (k.maxNudges || 2)) {
-              nudges++;
-              corrected = true;
-              z.say(Lang.line(k.speedWords[asked]), { hide }).catch(() => {});
-            }
-          }
-        }
-        // way too fast: it slops over the rim
-        if (dragging && spd > e3) {
-          overT += dt;
-          if (overT * 1000 >= (k.spillMs || 250) && now - lastSpill > (k.spillGapMs || 700)) {
-            lastSpill = now;
-            spills++;
-            spill();
-            if (spills === 1) Cook.oops(ctx); // R6 (S02-A hook): no arre re
-          }
-        } else overT = 0;
-      });
-      place();
-      /*
-       * DAAR-26, DAAR-32 (P9, P51; decision 13): Nani says the stir line ONCE and WHOLE as the stir opens, at every level, L1
-       * too: the verb, how many and how fast ("Firai! Trae! Jaldi jaldi."), never the count first and the verb seconds later.
-       * It is the engine's nearest whole line, three recorded pieces, until Mum records the one sentence (DAAR-26 waits on
-       * her); the step call says it (role call, the level table), and the help ladder says it again only after the pause.
-       */
-      // (Fable's daar flaw 2, non-negotiable 2: "Firai! Trae! aste thi" was three recordings stitched into a fragment. Until Mum records the
-      // one sentence, her box shows its English in grey italic, never spoken: the laps are still said as they come and the card's stir row
-      // writes how many and how fast; the gap is in docs/language/recording-sheet.md, daar-stir-ask)
-      const ask = ((Cook.data.settings || {}).daar || {}).askLines || {};
-      const enOf = (l) => String((l && l.en) || "").replace(/[.!?]+$/, "").trim().toLowerCase();
-      const speedEn = asked && k.speedWords ? enOf(Lang.line(k.speedWords[asked])) : "";
-      const tpl = speedEn ? ask.stirAsk : ask.stirAskPlain;
-      const stepLine = tpl ? Lang.toRecord(tpl.replace("{n}", enOf({ en: Cook.english(Cook.numId(laps)) }) || String(laps)).replace("{speed}", speedEn), "daar-stir-ask") : Lang.join([St.guideLine("daar:stir"), Lang.numLine(laps)]);
-      if (steps) steps.to("daar:stir", { line: stepLine, hide, force: retry });
-      else if (!retry) z.say(stepLine, { hide }).catch(() => {});
-      Cook.markSeen(Cook.numId(laps));
-      post();
-      // SH-238 (Zafar, 8 Nov: no ✓): the pot is stirred once the laps she asked for are done: it moves on by itself a beat later
-      stirred = () => {
-        if (ending) return;
-        ending = true;
-        UI.done().then(finishStir);
-      };
-      if (count >= laps) setTimeout(() => stirred(), 0);
-      const finishStir = () => {
-        over = true;
-        offs.forEach((o) => o());
-        Cook.stirCount = null;
-        Cook.stirSpeed = null;
-        Cook.stirDrive = null;
-        z.expect({ kind: "wait" });
-        S.tweens.killTweensOf(ringG);
-        ringG.destroy();
-        setTimeout(() => stopTick && stopTick(), 400);
-        dial.close();
-        if (card) card.close();
-        S.tweens.add({ targets: ladle, alpha: 0, duration: 300 });
-        flag.close();
-        // (stirred, the swirl stays: the daar looks stirred; not stirred at all, it goes)
-        S.tweens.add({ targets: swirl, alpha: count > 0 ? 0.9 : 0, duration: 300 });
-        const speedOk = asked && judged * 1000 >= (k.minJudgeMs || 500) ? !corrected && inAsked / judged >= (k.okFrac || 0.6) : asked && corrected ? false : null;
-        resolve({ count, asked, speedOk, corrected, spills });
-      };
-    });
-  }
 
   /*
    * DAAR-10 (D4): the trivet stays on the counter; only the bowl tips into the pot. With the art run's two pictures
