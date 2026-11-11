@@ -1082,6 +1082,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       }
       z.progress({ added: r.id });
       await Cook.wait(200);
+      // (contract-36: the next pile's card is the order card's new current card: its step opens again, said or its skip logged; its
+      // line waits on Mum, "Put the vegetables in", daar:veg)
+      if (left.length) kitHelps(steps.to("daar:veg", { id: `veg-${left[0]}` }));
     }
     Cook.daarPhase = "veg-in";
     // the daar: its bowl on the trivet tips into the pot, over the tadka. DAAR-10 (D4): only the bowl lifts (the art run's
