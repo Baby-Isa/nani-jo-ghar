@@ -58,13 +58,18 @@ test("contract-110: several pans (chai), each knob below its burner passes; one 
 
 test("contract-111: a tap at an item's foot that says its word is a break; one that picks the item passes", () => {
   const R = { flow: "cook:maani-line" };
-  const red = run(check111, R, [...ST, c(1000, "s19tap", { items: [{ id: "maani-wheat", foot: { x: 500, y: 600, who: "pill" }, gap: { x: 500, y: 612, who: "pill" }, pill: { x: 500, y: 630, who: "pill" } }] })]);
+  // (a tap sample stands until the next one: here to the station's end)
+  const at = (e) => [ST[0], e, ST[1]];
+  const red = run(check111, R, at(c(1000, "s19tap", { items: [{ id: "maani-wheat", foot: { x: 500, y: 600, who: "pill" }, gap: { x: 500, y: 612, who: "pill" }, pill: { x: 500, y: 630, who: "pill" } }] })));
   assert.equal(red.length, 1);
   assert.match(red[0].msg, /says the word/);
-  const green = run(check111, R, [...ST, c(1000, "s19tap", { items: [{ id: "maani-wheat", foot: { x: 500, y: 600, who: "item" }, gap: { x: 500, y: 612, who: "item" }, pill: { x: 500, y: 630, who: "pill" } }] })]);
+  const green = run(check111, R, at(c(1000, "s19tap", { items: [{ id: "maani-wheat", foot: { x: 500, y: 600, who: "item" }, gap: { x: 500, y: 612, who: "item" }, pill: { x: 500, y: 630, who: "pill" } }] })));
+  // s19-checks-1, the probe fault (s19-wave-d, chaat#hint at 740x320): sampled the moment before the shelf takes taps, right 400 ms later
+  const early = [ST[0], c(1000, "s19tap", { items: [{ id: "x", foot: { who: "none" }, gap: null, pill: { who: "none" } }] }), c(1400, "s19tap", { items: [{ id: "x", foot: { who: "item" }, gap: null, pill: { who: "pill" } }] }), ST[1]];
+  assert.deepEqual(run(check111, R, early), []);
   assert.deepEqual(green, []);
   // a hit area carrying the item's own word (daar's bowls) is the item; the pill must still say the word
-  const own = run(check111, R, [...ST, c(1000, "s19tap", { items: [{ id: "n.onion", foot: { who: "word", id: "n.onion" }, gap: null, pill: { who: "item" } }] })]);
+  const own = run(check111, R, at(c(1000, "s19tap", { items: [{ id: "n.onion", foot: { who: "word", id: "n.onion" }, gap: null, pill: { who: "item" } }] })));
   assert.match(own[0].msg, /the pill says the word/);
 });
 

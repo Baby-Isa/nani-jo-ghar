@@ -1,0 +1,199 @@
+{
+ "pages": {
+  "cook-chop-speed1@1280x665": {
+   "flow": "cook:chop#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "STD-E2-08a SH-253 CK-78 chop: the swipe light over the side panel and out to the frame, lit while the garlic and the knife fly in; its tally chip under the settings cog at the first move",
+   "red": {
+    "contract-112": [
+     "light 1 [332,196,1278,470]: cut by the frame at the right: its thing is 121 px from that edge; over the side panel by 14 px (the light [332,196,1278,470], the panel [0,0,346,665]); lit while veg-13 moved 248 px into it after the light came: nothing moves into a light (picture: lights/01/mark.jpg)"
+    ],
+    "contract-113": [
+     "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (47% of it, at [1182,8,1272,40]): nothing covers a face, a pill or a card's words"
+    ]
+   },
+   "shots": [
+    "c07-s19over.png"
+   ]
+  },
+  "cook-chop-speed1@740x320": {
+   "flow": "cook:chop#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "STD-E2-08a SH-253 CK-78 chop: the swipe light over the side panel and out to the frame, lit while the garlic and the knife fly in; its tally chip under the settings cog at the first move",
+   "red": {
+    "contract-112": [
+     "light 1 [210,52,736,220]: over the side panel by 14 px (the light [210,52,736,220], the panel [0,0,224,320]); lit while veg-13 moved 134 px into it after the light came: nothing moves into a light (picture: lights/01/mark.jpg)"
+    ],
+    "contract-113": [
+     "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (53% of it, at [642,8,732,40]): nothing covers a face, a pill or a card's words"
+    ]
+   },
+   "shots": [
+    "c07-s19over.png"
+   ]
+  },
+  "cook-corn-speed1@1280x665": {
+   "flow": "cook:corn#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-250 SH-254 corn: a circle and a box, the darker dim, the cob cut at both ends; Nana's face over the cob at well done",
+   "red": {
+    "contract-112": [
+     "light 1 [598,524,736,582]: the dim is darker than chai's: 0.75 of the way to the dim's colour against chai's 0.45 (within 0.08); cn4-raw [562,535,772,573] (its picture, pill and face) is not inside the light with its pad: left -36 px (wants 8), right -36 px (wants 8) (picture: lights/01/mark.jpg)"
+    ],
+    "contract-113": [
+     "nana's face sits over n.corn-on-the-cob (28% of it, at [707,213,835,342]): nothing covers a face, a pill or a card's words",
+     "nana's face sits over cn4-done (15% of it, at [707,216,835,345]): nothing covers a face, a pill or a card's words"
+    ]
+   },
+   "shots": [
+    "c09-s19over.png",
+    "c10-s19over.png"
+   ]
+  },
+  "cook-corn-speed1@740x320": {
+   "flow": "cook:corn#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-250 SH-254 corn: a circle and a box, the darker dim, the cob cut at both ends; Nana's face over the cob at well done",
+   "red": {
+    "contract-112": [
+     "light 1 [356,238,448,278]: the dim is darker than chai's: 0.75 of the way to the dim's colour against chai's 0.45 (within 0.08); cn4-raw [344,250,460,270] (its picture, pill and face) is not inside the light with its pad: left -12 px (wants 8), right -12 px (wants 8) (picture: lights/01/mark.jpg)",
+     "light 3 [366,70,412,224]: the dim is lighter than chai's: 0.23 of the way to the dim's colour against chai's 0.45 (within 0.08) (picture: lights/03/mark.jpg)",
+     "light 4 [426,26,538,140]: the dim is lighter than chai's: 0.26 of the way to the dim's colour against chai's 0.45 (within 0.08) (picture: lights/04/mark.jpg)"
+    ],
+    "contract-113": [
+     "nana's face sits over n.corn-on-the-cob (23% of it, at [443,41,488,86]): nothing covers a face, a pill or a card's words",
+     "nana's face sits over cn4-done (15% of it, at [439,36,491,87]): nothing covers a face, a pill or a card's words"
+    ]
+   },
+   "shots": [
+    "c08-s19over.png",
+    "c09-s19over.png"
+   ]
+  },
+  "cook-daar-speed1@1280x665": {
+   "flow": "cook:daar#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-253 daar: the onion's swipe light over the side panel, lit while the onion and the knife arrive; Nana's badge over the katori and the daar bowl at 740x320",
+   "red": {
+    "contract-112": [
+     "light 1 [332,294,1276,510]: over the side panel by 14 px (the light [332,294,1276,510], the panel [0,0,346,665]); lit while s02-knife moved 456 px into it after the light came: nothing moves into a light (picture: lights/01/mark.jpg)"
+    ]
+   },
+   "shots": []
+  },
+  "cook-daar-speed1@740x320": {
+   "flow": "cook:daar#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-253 daar: the onion's swipe light over the side panel, lit while the onion and the knife arrive; Nana's badge over the katori and the daar bowl at 740x320",
+   "red": {
+    "contract-113": [
+     "nana's face sits over dv5-katori (18% of it, at [598,166,627,195]): nothing covers a face, a pill or a card's words",
+     "nana's face sits over dv3-trivet-plain (20% of it, at [598,166,627,195]): nothing covers a face, a pill or a card's words",
+     "nana's face sits over dv3-bowl-daar (19% of it, at [598,166,627,195]): nothing covers a face, a pill or a card's words",
+     "nana's face sits over dv5-in-onion-soft (84% of it, at [598,166,627,195]): nothing covers a face, a pill or a card's words"
+    ]
+   },
+   "shots": [
+    "c13-s19over.png",
+    "c14-s19over.png"
+   ]
+  },
+  "cook-eggs-speed1@1280x665": {
+   "flow": "cook:eggs#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-250 eggs: a circle and a box at once (the old overlay over the shared light), its darker dim, the pan's round ring",
+   "red": {
+    "contract-112": [
+     "light 1 [618,530,716,650]: the dim is darker than chai's: 0.74 of the way to the dim's colour against chai's 0.45 (within 0.08); n.egg [629,545,705,655] (its picture, pill and face) is not inside the light with its pad: bottom -5 px (wants 9) (picture: lights/01/mark.jpg)"
+    ]
+   },
+   "shots": []
+  },
+  "cook-eggs-speed1@740x320": {
+   "flow": "cook:eggs#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-250 eggs: a circle and a box at once (the old overlay over the shared light), its darker dim, the pan's round ring",
+   "red": {
+    "contract-112": [
+     "light 1 [368,244,436,316]: not one box: only 87% of its own box is lit (two shapes, or a ring); the dim is darker than chai's: 0.74 of the way to the dim's colour against chai's 0.45 (within 0.08) (picture: lights/01/mark.jpg)",
+     "light 7 [224,30,740,320]: 2 lit regions, not one: [224,30,740,320] [322,74,342,140]; not one box: only 62% of its own box is lit (two shapes, or a ring); the dim is lighter than chai's: 0.2 of the way to the dim's colour against chai's 0.45 (within 0.08); the light frames a region round n.egg [377,254,426,318], not the thing: left 153 px, top 224 px, right 314 px of room (the pad is 8); cut by the frame at the right: its thing is 314 px from that edge; over a face it is not lighting: nana [567,69,596,98] (picture: lights/07/mark.jpg)"
+    ]
+   },
+   "shots": []
+  },
+  "cook-maani-line-speed1@1280x665": {
+   "flow": "cook:maani-line#speed1",
+   "size": "1280x665",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-254 maani: the pan's round ring on the tawa; Nana's well-done face over the plates' faces",
+   "red": {
+    "contract-112": [
+     "light 3 [872,120,1048,290]: not a rounded rectangle: a circle (corners 84 px on a box 170 px high, at most a quarter: 42 px); not one box: only 79% of its own box is lit (two shapes, or a ring); mv-raw-maani [874,120,1046,289] (its picture, pill and face) is not inside the light with its pad: left 2 px (wants 10), top 0 px (wants 10), right 2 px (wants 10), bottom 1 px (wants 10) (picture: lights/03/mark.jpg)"
+    ],
+    "contract-113": [
+     "nana's face is under nana's face (62% of it, at [918,521,952,555]): nothing covers a face, a pill or a card's words"
+    ]
+   },
+   "shots": [
+    "c07-s19over.png"
+   ]
+  },
+  "cook-maani-line-speed1@740x320": {
+   "flow": "cook:maani-line#speed1",
+   "size": "740x320",
+   "commit": "3c4882609",
+   "kind": "bad",
+   "name": "SH-249 SH-254 maani: the pan's round ring on the tawa; Nana's well-done face over the plates' faces",
+   "red": {
+    "contract-113": [
+     "nana's face is under nana's face (62% of it, at [540,240,559,259]): nothing covers a face, a pill or a card's words"
+    ]
+   },
+   "shots": [
+    "c07-s19over.png"
+   ]
+  },
+  "cook-chai-tray-speed1@1280x665": {
+   "flow": "cook:chai-tray#speed1",
+   "size": "1280x665",
+   "commit": "88898fd96",
+   "kind": "good",
+   "name": "good: chai at HEAD, the reference",
+   "red": {},
+   "shots": []
+  },
+  "cook-chai-tray-speed1@740x320": {
+   "flow": "cook:chai-tray#speed1",
+   "size": "740x320",
+   "commit": "88898fd96",
+   "kind": "good",
+   "name": "good: chai at HEAD, the reference",
+   "red": {
+    "contract-3": [
+     "\"Thank you!\" (speechSynthesis, 0.80 s, estimated) kept playing 800 ms past the end of cook:between1:marble (into cook:between1:service); it stopped by cancel"
+    ],
+    "contract-106": [
+     "the light [315,228,381,319] stayed round the child's press at (351, 266) for 452 ms: it goes within 300 ms of the move's start"
+    ]
+   },
+   "shots": []
+  }
+ }
+}

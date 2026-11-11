@@ -37,7 +37,8 @@ export const CARD_PART = 0.5;      // contract-105: a light round less than this
 // two lights against a pan's contact shadow); kept in the probe's scan below, the same words
 export const KNOB_CLEAR = 2;       // contract-110: the knob and the face this clear of the pan's picture and of the side panel
 export const KNOB_MID = 0.08;      // ... and their middle within this share of the pan's height (at least 8 px) of the burner's middle
-export const FOOT_IN = 4;          // contract-111: the foot's tap this many CSS px inside the item's picture, above its lowest edge
+export const FOOT_IN = 4;
+export const TAP_HOLD_MS = 900;    // contract-111: a shelf's tap areas judged once they have stood this long (the probe samples once a second)          // contract-111: the foot's tap this many CSS px inside the item's picture, above its lowest edge
 export const NOT_A_THING = /shadow|shade|halo|glow|dim|light/i;
 export const CRATE = /(crate|heap|pile|sack|basket)/i;
 export const OLD_CARD = ".oc-box, .oc-strip, .oc-skewer, .oc-group, .oc-item:not(.oc-items14)";
@@ -145,7 +146,8 @@ export function check102(r, tl, add) {
     if (!inStation(st, e.t) || held(glows, i, tEnd) < HOLD_MS) continue;
     // (a light that comes or goes within the hold is the same help: judged at the hold's end too)
     // (s19-games, 8 Nov: the s19lit sample can lag the light by about half a second: a light up within 600 ms counts)
-    const hs = holesAt(e.t).concat(holesAt(e.t + 600)), hs2 = holesAt(e.t + HOLD_MS);
+    // (s19-checks-1, the probe fault: a glow fades for up to 600 ms after its light has gone, chai's #hint glows: the light just gone counts)
+    const hs = holesAt(e.t).concat(holesAt(e.t + 600), holesAt(e.t - 600)), hs2 = holesAt(e.t + HOLD_MS);
     // (a kit piece's own glow, its texture named kit-: the pan's heat ring at its window, is the kit's, not the game's)
     const out = (e.list || []).find((g) => { if (/^kit-/.test(g.key || "")) return false; const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)); });
     if (!out || seen.has("glow:" + out.key)) continue;
@@ -249,7 +251,10 @@ export function check106(r, tl, add) {
     const pt = { x: p.x, y: p.y };
     const h0 = holesAt(p.t).find((h) => inBox(pt, h));
     if (!h0) continue;
-    const until = p.t + GOES_MS + SAMPLE_SLACK_MS;
+    // (s19-checks-1, the probe fault in orch-overlay-gone, eggs 740x320: a tap's move starts when the game takes it, its act note,
+    // which comes as the finger lifts; the light goes within GOES_MS of that, not of the finger going down)
+    const act = life(tl, "act").find((a) => a.t >= p.t && a.t <= p.t + 1500);
+    const until = Math.max(p.t, act ? act.t : p.t) + GOES_MS + SAMPLE_SLACK_MS;
     // gone: some sample between the press and the deadline with no box round the press
     const after = lits.filter((e) => e.t > p.t && e.t <= until);
     if (after.some((e) => !(e.holes || []).map(box).some((h) => inBox(pt, h)))) continue;
@@ -286,9 +291,9 @@ export function check107(r, tl, add) {
     (e.holes || []).forEach((hb, j) => {
       const th = (e.things || [])[j];
       if (!th || th.kind !== "word" || !th.shelf || seen.has("still:" + th.id)) return;
-      let g = null;
-      for (const x of glows) { if (x.t > e.t + HOLD_MS) break; g = x; }
-      const hop = g && (g.list || []).some((x) => x.bounce && inBox(mid(box(x.box)), box(hb), 2));
+      // (s19-checks-1, the probe fault s19-wave-d saw in chaat: the coach lights a shelf thing about 200 ms before its glow and hop,
+      // and the glow is sampled every 100 ms: a hop any time from the light to HOLD_MS + 400 ms after it counts)
+      const hop = glows.some((x) => x.t >= e.t - 100 && x.t <= e.t + HOLD_MS + 400 && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
       if (hop) return;
       seen.add("still:" + th.id);
       add("contract-107", e.t, `the shelf item ${th.id} is lit ${fmt(box(hb))} without its hop`);
@@ -316,8 +321,14 @@ export function check108(r, tl, v, add) {
 export function check109(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
   const med = (a) => { const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
-  for (const e of ev(tl, "s19shelf")) {
-    const it = e.items || [];
+  const sh = ev(tl, "s19shelf");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  for (let i = 0; i < sh.length; i++) {
+    const e = sh[i];
+    // (s19-checks-1, the probe fault s19-wave-d saw in baking#mistake: the kit's wrong-pick wiggle turns a thing for a moment, and its
+    // turned box crosses the line; a shelf held HOLD_MS, its turned things left out, is the shelf's line)
+    if (held(sh, i, tEnd) < HOLD_MS) continue;
+    const it = (e.items || []).filter((x) => !x.rot);
     if (it.length < 3) continue;
     const base = med(it.map((x) => x.foot)), chip = it.some((x) => x.chip != null) ? med(it.filter((x) => x.chip != null).map((x) => x.chip)) : null;
     const off = it.find((x) => Math.abs(x.foot - base) > BASE_TOL);
@@ -381,8 +392,14 @@ export function check111(r, tl, add) {
   const st = stations(tl);
   const seen = new Set();
   const own = (x, it) => x && (x.who === "item" || (x.who === "word" && String(x.id) === String(it.id)));
-  for (const e of ev(tl, "s19tap")) {
+  const taps = ev(tl, "s19tap");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  for (let i = 0; i < taps.length; i++) {
+    const e = taps[i];
     if (st.length && !inStation(st, e.t)) continue;
+    // (s19-checks-1, the probe fault s19-wave-d saw in chaat#hint at 740x320: sampled in the moment before the shelf takes taps, all
+    // pass a second later: a tap area is judged once it has stood TAP_HOLD_MS)
+    if (held(taps, i, tEnd) < TAP_HOLD_MS) continue;
     for (const it of e.items || []) {
       if (seen.has(it.id)) continue;
       const bad = [];
@@ -583,7 +600,8 @@ function s19hook() {
             if (ch && ch.active && cw) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = (cw / 2) * sx, hh = ((chh || 46) / 2) * sy; const [cl, ct] = P(ch.x - hw, ch.y - hh), [cr2, cb] = P(ch.x + hw, ch.y + hh); chipBox = [cl, ct, cr2, cb]; }
             // (a glowing thing hops: its foot is read from where it stands, glowFx.y, not mid-hop)
             const foot = o.glowFx && o.glowFx.y != null ? bt + (o.glowFx.y - o.y) * ky * cam.zoom : bt;
-            words.push({ id: String(o.wordId), pic: [l, t, r, bt], chip: chipBox, foot, glow: !!o.glowFx });
+            const rot = Math.abs(o.rotation || 0) > 0.02 || (o.parentContainer && Math.abs(o.parentContainer.rotation || 0) > 0.02) ? 1 : 0;
+            words.push({ id: String(o.wordId), pic: [l, t, r, bt], chip: chipBox, foot, glow: !!o.glowFx, rot });
           } else if (o.texture && o.texture.key && !/^__/.test(o.texture.key) && !/shadow|shade|halo|glow|dim|light/i.test(o.texture.key) && (o.type === "Image" || o.type === "Sprite")) {
             pics.push({ id: o.texture.key, box: [l, t, r, bt] });
           }
@@ -637,11 +655,265 @@ function s19hook() {
     try { const T = window.njgTest; const h = T && T.cook && T.cook.faces ? T.cook : null; faces = h ? h.faces().filter((f) => f.kind === "badge").map((f) => [f.left, f.top, f.right, f.bottom]) : []; } catch (e) { faces = []; }
     return { holes, things, near, faces, vw: innerWidth, vh: innerHeight };
   };
+  // ---- s19-checks-1: what the screen holds, for the pixel checks (lib/lightshot.mjs, lib/lightjudge.py; the overlap check below) ----
+  // every drawn canvas picture (its texture, its word and pill if it has them, its box in page px), the face badges and face circles,
+  // the item and order cards, the side panel, the kit's finger, the kit's light layers (only to name a variant) and the kit's numbers.
+  // Which objects are which comes from here; where the light is, and its shape, is measured on the pictures.
+  const screenScan = () => {
+    const out = { vw: innerWidth, vh: innerHeight, cv: null, words: [], pics: [], faces: [], cards: [], panels: [], fingers: [], guide: null, gear: null, layers: [], kit: null };
+    const O = window.Onboard;
+    if (O) out.kit = { BOX_PAD: O.BOX_PAD, LIGHT: O.LIGHT || null, DIM: O.DIM14 != null ? O.DIM14 : O.DIM, VARIANTS: O.VARIANTS || null };
+    for (const l of document.querySelectorAll(".njg-onboard.on:not(.ob-empty)")) out.layers.push({ variant: l.dataset.variant || l.dataset.light || null });
+    for (const f of document.querySelectorAll(".njg-onboard .ob-ghost, .njg-onboard .ob-finger")) if (shown(f)) out.fingers.push(R(f.getBoundingClientRect()));
+    out.panels = [...document.querySelectorAll("#side, .njg-side, #mission")].filter(shown).map((el) => R(el.getBoundingClientRect()));
+    // (what the page draws over the dim on purpose: the grown-ups' ? pop-up and its button, the cog, the kit's skip: never the light's)
+    out.above = [...document.querySelectorAll("#help-pop, .gb-pop, .njg-gb, #btn-help, .njg-cog, #cog, .ob-skip")].filter(shown).map((el) => R(el.getBoundingClientRect()));
+    const gd = document.querySelector("#guide");
+    if (gd && shown(gd)) out.guide = R(gd.getBoundingClientRect());
+    const gear = document.querySelector("#cog, .njg-cog, #btn-cog, .cog");
+    if (gear && shown(gear)) out.gear = R(gear.getBoundingClientRect());
+    for (const c of document.querySelectorAll(".wc14, .oc-card")) if (shown(c) && !c.closest(".njg-results")) out.cards.push({ id: (((c.querySelector(".wc14-k, .wc-k") || {}).textContent || c.dataset.who || "").trim().slice(0, 20)), card: c.matches(".wc14"), box: R(c.getBoundingClientRect()) });
+    for (const f of document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say, .ng-face")) { if (f.querySelector(".njg-face") || !shown(f)) continue; out.faces.push({ kind: "circle", id: f.dataset.who || f.dataset.face || "", box: R(f.getBoundingClientRect()) }); }
+    const g = games()[0];
+    if (!g) return out;
+    const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+    out.cv = R(cr);
+    for (const sc of g.scene.getScenes(true)) {
+      const cam = sc.cameras.main;
+      const P = (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+      const walk = (list, a0) => {
+        for (const o of list) {
+          if (!o || o.visible === false || o.alpha === 0) continue;
+          const a = a0 * (o.alpha == null ? 1 : o.alpha);
+          if (a < 0.15) continue;
+          if (o.list) {
+            // (a thing drawn as a group with its pill: maani's dough piles carry their pill, not a word id; s19-checks-1)
+            if (o.chip && o.chip.active && o.getBounds) { const b = safe(() => o.getBounds()); if (b) { const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom); const ch = o.chip, cw = ch.cardW || ch.pillW, chh = ch.cardH || ch.pillH; let chipBox = null; if (cw) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1); const [cl, ct] = P(ch.x - (cw / 2) * sx, ch.y - ((chh || 46) / 2) * sy), [cr2, cb] = P(ch.x + (cw / 2) * sx, ch.y + ((chh || 46) / 2) * sy); chipBox = rnd([cl, ct, cr2, cb]); } out.words.push({ id: String(o.wordId != null ? o.wordId : o.name || "group"), key: o.name || "group", pic: rnd([l, t, r, bt]), chip: chipBox, input: !!(o.input && o.input.enabled), glow: !!o.glowFx }); } }
+            walk(o.list, a);
+            continue;
+          }
+          if (!o.getBounds) continue;
+          const key = o.texture && o.texture.key;
+          if (!key || /^__/.test(key) || !o.frame || typeof o.setTexture !== "function") continue; // (a picture: maani's heaps set their own .type)
+          const b = safe(() => o.getBounds());
+          if (!b) continue;
+          const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
+          if (r - l < 2 || bt - t < 2) continue;
+          if (/-badge|-v2round/.test(key)) { out.faces.push({ kind: "badge", id: key.split(/-badge|-v2round|-face/)[0], box: rnd([l, t, r, bt]) }); continue; }
+          if (/shadow|shade|halo|glow|dim|light/i.test(key)) continue;
+          if (o.wordId != null || (o.chip && o.chip.active)) {
+            const ch = o.chip;
+            let chipBox = null;
+            const cw = ch && (ch.cardW || ch.pillW), chh = ch && (ch.cardH || ch.pillH);
+            if (ch && ch.active && ch.visible !== false && cw) { const sx = Math.abs(ch.scaleX || 1), sy = Math.abs(ch.scaleY || 1), hw = (cw / 2) * sx, hh = ((chh || 46) / 2) * sy; const [cl, ct] = P(ch.x - hw, ch.y - hh), [cr2, cb] = P(ch.x + hw, ch.y + hh); chipBox = rnd([cl, ct, cr2, cb]); }
+            out.words.push({ id: String(o.wordId != null ? o.wordId : key), key, pic: rnd([l, t, r, bt]), chip: chipBox, input: !!(o.input && o.input.enabled), glow: !!o.glowFx });
+          } else out.pics.push({ id: key, box: rnd([l, t, r, bt]) });
+        }
+      };
+      safe(() => walk(sc.children.list, 1));
+    }
+    if (out.pics.length > 160) out.pics = out.pics.slice(0, 160);
+    return out;
+  };
+  window.__njgScreenScan = () => safe(screenScan, null);
+
+  // ---- s19-checks-1, contract-113: a face, a word pill or a card's words covered by another drawn thing (or covering a dish) ----
+  // From the pixels of what is drawn: each canvas picture's own opaque pixels (its texture's alpha, read once per texture frame), and
+  // for the page's things, what the browser draws on top at each point (elementFromPoint). Not a list of named pairs.
+  // (surfaces things stand on, and effects: a pour's stream, steam, sparks, bubbles)
+  const SURF = /bg|wall|marble|worktop|counter|stage|panel|band|shelf|slab|tray|board|hob|stove|kitchen|floor|table|backdrop|room|^kit-flame|steam|smoke|spark|bubble|-pe-|pour|stream|splash|drip/i;
+  const masks = new Map();
+  const maskOf = (o) => {
+    const fr = o.frame;
+    if (!fr || !fr.source || !fr.source.image) return null;
+    const id = (o.texture && o.texture.key) + "|" + fr.name;
+    if (masks.has(id)) return masks.get(id);
+    let m = null;
+    try {
+      const N = 24, cvs = document.createElement("canvas");
+      cvs.width = N; cvs.height = N;
+      const cx = cvs.getContext("2d");
+      cx.drawImage(fr.source.image, fr.cutX, fr.cutY, fr.cutWidth, fr.cutHeight, 0, 0, N, N);
+      const d = cx.getImageData(0, 0, N, N).data;
+      m = new Uint8Array(N * N);
+      for (let i = 0; i < N * N; i++) m[i] = d[i * 4 + 3] > 96 ? 1 : 0;
+    } catch (e) { m = null; }
+    masks.set(id, m);
+    return m;
+  };
+  const overNow = () => {
+    const g = games()[0];
+    const out = [];
+    const vA = innerWidth * innerHeight;
+    // a modal layer drawn over everything on purpose (the order pop-up, the end screen, the grown-ups' pop-up, the title): not a cover
+    const MODAL = ".njg-results, .njg-rq-veil, .njg-grownup, #overlay, .gb-pop, #help-pop, .njg-gb, [role=dialog], .njg-onboard";
+    const modal = (el) => { if (!el || el.closest(MODAL)) return true; for (let x = el, i = 0; x && x !== document.body && i < 6; x = x.parentElement, i++) { const b = x.getBoundingClientRect(); if (b.width * b.height >= 0.4 * vA && !(g && x.contains(g.canvas))) return true; } return false; };
+    const PANEL = "#side, #mission, #guide, .oc-card, .wc14, .njg-results, .njg-rq-veil, .njg-grownup";
+    const items = []; // canvas things: {o, kind: face|pill|pic, id, box, order, W}
+    const area4 = (b) => Math.max(0, b[2] - b[0]) * Math.max(0, b[3] - b[1]);
+    const inter4 = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+    if (g) {
+      const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
+      const cvA = cr.width * cr.height;
+      let order = 0;
+      for (const sc of g.scene.getScenes(true)) {
+        const cam = sc.cameras.main;
+        const P = (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+        const W = (px, py) => [(px - cr.left) / (kx * cam.zoom) + cam.worldView.x, (py - cr.top) / (ky * cam.zoom) + cam.worldView.y];
+        // (in the order Phaser draws: each list by depth, ties as listed)
+        const walk = (list0, a0) => {
+          const list = list0.map((o, i) => [o, i]).sort((x, y) => ((x[0] && x[0].depth) || 0) - ((y[0] && y[0].depth) || 0) || x[1] - y[1]).map((x) => x[0]);
+          for (const o of list) {
+            if (!o || o.visible === false) continue;
+            const a = a0 * (o.alpha == null ? 1 : o.alpha);
+            if (a < 0.3) continue;
+            order++;
+            if (o.list) {
+              // a word pill: the kit's card container (cardW or pillW), or a small container holding words
+              const tx = o.list.find((c) => c && c.type === "Text" && (c.text || "").trim());
+              if (o.cardW || o.pillW || tx) { const b = safe(() => o.getBounds()); if (b) { const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom); if ((r - l) * (bt - t) < 0.06 * cvA) items.push({ o, kind: "pill", id: String(o.wordId || o.pillId || (tx && tx.text) || "pill").slice(0, 24), box: [l, t, r, bt], order, W }); } }
+              walk(o.list, a);
+              continue;
+            }
+            const key = o.texture && o.texture.key;
+            if (!key || /^__/.test(key) || !o.frame || typeof o.setTexture !== "function" || !o.getBounds) continue;
+            if (/shadow|shade|halo|glow|dim|light|ring|frame/i.test(key)) continue;
+            const b = safe(() => o.getBounds());
+            if (!b) continue;
+            const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
+            if (r - l < 6 || bt - t < 6) continue;
+            const ar = (r - l) * (bt - t);
+            // (a person's round face: the kit's <who>-badge and <who>-v2round pictures, the well done's big face among them)
+            // (a thing in a tween is moving: a bottle pouring, a pan tipping and coming back; what passes over is not a cover)
+            const tw = sc.tweens;
+            const moving = !!(tw && tw.isTweening && (safe(() => tw.isTweening(o)) || (o.parentContainer && safe(() => tw.isTweening(o.parentContainer)))));
+            if (/-badge|-v2round/.test(key)) items.push({ o, kind: "face", id: key.split(/-badge|-v2round|-face/)[0], box: [l, t, r, bt], order, W, moving });
+            else if (!SURF.test(key) && ar < 0.25 * cvA) items.push({ o, kind: "pic", id: String(o.wordId != null ? o.wordId : key), key, box: [l, t, r, bt], order, W, chip: o.chip || null, moving });
+          }
+        };
+        safe(() => walk(sc.children.list, 1));
+      }
+      // the page's face circles over the play area (a face the kit draws in the page over the kitchen: the well done's)
+      for (const f of document.querySelectorAll(".njg-face, .cv-face")) {
+        if (!shown(f) || f.closest(PANEL) || f.querySelector(".njg-face")) continue;
+        const b = f.getBoundingClientRect();
+        const box = [b.left, b.top, b.right, b.bottom];
+        if (inter4(box, [cr.left, cr.top, cr.right, cr.bottom]) < 0.5 * area4(box)) continue;
+        items.push({ kind: "face", dom: true, id: f.dataset.who || f.dataset.face || (f.closest("[data-who]") || { dataset: {} }).dataset.who || "a face", box, order: 1e9 });
+      }
+      // is thing x drawn (opaque) at page point (px, py)? (a page face: its circle)
+      const opaque = (x, px, py) => {
+        const inb = px >= x.box[0] && px <= x.box[2] && py >= x.box[1] && py <= x.box[3];
+        if (!inb) return false;
+        if (x.dom) { const cx = (x.box[0] + x.box[2]) / 2, cy = (x.box[1] + x.box[3]) / 2, r = Math.min(x.box[2] - x.box[0], x.box[3] - x.box[1]) / 2; return (px - cx) ** 2 + (py - cy) ** 2 <= r * r; }
+        if (x.kind === "pill") return true;
+        const m = maskOf(x.o);
+        if (!m) return true;
+        const [wx, wy] = x.W(px, py);
+        const M = safe(() => x.o.getWorldTransformMatrix());
+        if (!M) return false;
+        const p = M.applyInverse(wx, wy);
+        let u = (p.x + (x.o.displayOriginX || 0)) / (x.o.width || 1), v = (p.y + (x.o.displayOriginY || 0)) / (x.o.height || 1);
+        if (x.o.flipX) u = 1 - u;
+        if (x.o.flipY) v = 1 - v;
+        if (u < 0 || u >= 1 || v < 0 || v >= 1) return false;
+        return m[Math.floor(v * 24) * 24 + Math.floor(u * 24)] === 1;
+      };
+      // the share of x's drawn points that y also draws on (a grid over x's own box)
+      const share = (x, y) => {
+        if (inter4(x.box, y.box) < 4) return 0;
+        let mine = 0, both = 0;
+        const n = 12, sx = (x.box[2] - x.box[0]) / n, sy = (x.box[3] - x.box[1]) / n;
+        for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+          const px = x.box[0] + (i + 0.5) * sx, py = x.box[1] + (j + 0.5) * sy;
+          if (!opaque(x, px, py)) continue;
+          mine++;
+          if (opaque(y, px, py)) both++;
+        }
+        return mine ? both / mine : 0;
+      };
+      const iou = (a, b) => { const i = inter4(a, b); return i / (area4(a) + area4(b) - i); };
+      for (const x of items.filter((q) => q.kind === "face" || q.kind === "pill")) {
+        for (const y of items) {
+          if (y === x || y.moving || (x.kind === "face" && y.kind === "pill") || (x.kind === "pill" && y.kind === "face")) continue;
+          // a face over another face (the well done's big face over the plates' badges): a quarter of the lower face covered
+          if (x.kind === "face" && y.kind === "face") {
+            if (y.order < x.order || iou(x.box, y.box) > 0.6) continue;
+            const s = share(x, y);
+            if (s >= 0.25) out.push({ what: "face", id: x.id, box: x.box.map(Math.round), by: "face", byId: y.id + "'s face", byBox: y.box.map(Math.round), share: Math.round(s * 100) / 100, on: "under" });
+            continue;
+          }
+          if (x.kind === "pill" && (y.kind === "pill" || (y.chip && y.chip === x.o))) continue; // (its own item stands on its pill)
+          if (iou(x.box, y.box) > 0.6) continue; // (the face's own ring or frame)
+          const above = y.order > x.order;
+          if (x.kind === "pill") {
+            // a pill under a picture drawn after it
+            if (!above) continue;
+            const s = share(x, y);
+            if (s >= 0.12) out.push({ what: "pill", id: x.id, box: x.box.map(Math.round), by: "picture", byId: y.id, byBox: y.box.map(Math.round), share: Math.round(s * 100) / 100, on: "under" });
+            continue;
+          }
+          // a face: under a picture (any share of 6%), or over a dish (15% of the dish under it: a small badge on a plate's rim is a marker)
+          if (above) { const s = share(x, y); if (s >= 0.06) out.push({ what: "face", id: x.id, box: x.box.map(Math.round), by: "picture", byId: y.id, byBox: y.box.map(Math.round), share: Math.round(s * 100) / 100, on: "under" }); }
+          else { const s = share(y, x); if (s >= 0.15) out.push({ what: "face", id: x.id, box: x.box.map(Math.round), by: "picture", byId: y.id, byBox: y.box.map(Math.round), share: Math.round(s * 100) / 100, on: "over" }); }
+        }
+      }
+      // the page's own things drawn over a canvas face or pill (the settings cog over a pill, a bubble over a face)
+      for (const x of items.filter((q) => (q.kind === "face" || q.kind === "pill") && !q.dom)) {
+        const hits = new Map();
+        let n = 0;
+        for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) {
+          const px = x.box[0] + (i + 0.5) * (x.box[2] - x.box[0]) / 5, py = x.box[1] + (j + 0.5) * (x.box[3] - x.box[1]) / 5;
+          if (px < 0 || py < 0 || px >= innerWidth || py >= innerHeight) continue;
+          n++;
+          const top = document.elementFromPoint(px, py);
+          if (!top || top === g.canvas || top.contains(g.canvas) || modal(top)) continue;
+          const cs = getComputedStyle(top);
+          const paints = /^(img|svg|button|path|use)$/i.test(top.tagName) || (cs.backgroundColor && !/rgba\(0, 0, 0, 0\)|transparent/.test(cs.backgroundColor)) || (top.textContent || "").trim();
+          if (!paints) continue;
+          const el = top.closest("button, [role=button], .njg-face, #guide, .oc-card, .wc14, #side, [class*=bubble]") || top;
+          hits.set(el, (hits.get(el) || 0) + 1);
+        }
+        for (const [el, c] of hits) if (n && c / n >= 0.12) out.push({ what: x.kind, id: x.id, box: x.box.map(Math.round), by: "page", byId: desc(el), share: Math.round((c / n) * 100) / 100, on: "under" });
+      }
+    }
+    // the page's word pills (the word pop, the kit's pills, the tally) under a button (the settings cog, the help): buttons are drawn on top
+    const btns = [...document.querySelectorAll("button, [role=button]")].filter((b) => shown(b) && !modal(b) && !b.closest("#side, #mission, #guide, .oc-card, .wc14"));
+    // (and the picture tally's chips, top right: CK-78, chop's tally chip under the settings cog)
+    for (const p of document.querySelectorAll(".njg-wpill, .njg-pill, #count-badge, .njg-tally")) {
+      if (!shown(p) || modal(p)) continue;
+      const pb = R(p.getBoundingClientRect());
+      for (const b of btns) {
+        if (b.contains(p) || p.contains(b)) continue;
+        const s = inter4(pb, R(b.getBoundingClientRect())) / Math.max(1, area4(pb));
+        if (s >= 0.12) { out.push({ what: "pill", id: (p.textContent || "").trim().slice(0, 24), box: pb, by: "page", byId: desc(b), share: Math.round(s * 100) / 100, on: "under" }); break; }
+      }
+    }
+    // a card's words (the item cards, the order cards, Nani's line) under something of the page that is not in their own panel
+    for (const tx of document.querySelectorAll(".wc14-k, .wc14-en, .wc-k, .oc-card .oc-name, .ng-line")) {
+      if (!shown(tx) || modal(tx) || getComputedStyle(tx).pointerEvents === "none") continue;
+      // (only words that sit in their place: in the side panel, Nani's box or the order card; a card flying in is passing)
+      const root = tx.closest("#side, #mission, #guide, .njg-rq-card");
+      if (!root || tx.closest("[class*=flyer], .oc-flyer, .wc14-pop")) continue;
+      const range = document.createRange();
+      range.selectNodeContents(tx);
+      for (const q of [...range.getClientRects()].slice(0, 3)) {
+        if (q.width < 4) continue;
+        const top = document.elementFromPoint(q.left + q.width / 2, q.top + q.height / 2);
+        // (a word cut off by its row's edge is clipping, not covering: the canvas or its own panel under it)
+        // (a card behind another card of its own panel is the panel's stacking, judged by the eye: covers come from outside it)
+        if (!top || top.tagName === "CANVAS" || root.contains(top) || top.contains(root) || modal(top) || top.closest("#side, #mission, #guide, .njg-rq-card")) continue;
+        out.push({ what: "text", id: (tx.textContent || "").trim().slice(0, 24), box: R(q), by: "page", byId: desc(top), share: 1, on: "under" });
+        break;
+      }
+    }
+    return out;
+  };
   const shelfNow = () => {
     const s = scan();
     if (!s.cv) return null;
     const band = s.cv[1] + (630 / 900) * (s.cv[3] - s.cv[1]);
-    const items = s.words.filter((x) => x.foot >= band && !x.glow).map((x) => ({ id: x.id, foot: Math.round(x.foot), chip: x.chip ? Math.round((x.chip[1] + x.chip[3]) / 2) : null }));
+    const items = s.words.filter((x) => x.foot >= band && !x.glow).map((x) => ({ id: x.id, foot: Math.round(x.foot), chip: x.chip ? Math.round((x.chip[1] + x.chip[3]) / 2) : null, ...(x.rot ? { rot: x.rot } : {}) }));
     return items.length ? { items } : null;
   };
 
@@ -816,7 +1088,7 @@ function s19hook() {
     return [{ left: u[0], top: u[1], width: u[2] - u[0], height: u[3] - u[1] }];
   };
 
-  let shelfAt = 0, knobAt = 0, tapAt = 0;
+  let shelfAt = 0, knobAt = 0, tapAt = 0, overAt = 0;
   setInterval(() => {
     try {
       if (window.__njgFilm) return;
@@ -841,6 +1113,11 @@ function s19hook() {
         knobAt = Date.now();
         const kn = safe(knobsNow, null);
         if (kn && !same("s19knob", kn.list.map((q) => [q.knob.map((v) => Math.round(v / 4)), q.face && q.face.map((v) => Math.round(v / 4)), q.pan && q.pan.map((v) => Math.round(v / 4)), (q.beside || []).length > 0]))) emit({ k: "s19knob", ...kn });
+      }
+      if (Date.now() - overAt > 400) {
+        overAt = Date.now();
+        const ov = safe(overNow, null);
+        if (ov && !same("s19over", ov.map((x) => [x.what, x.id, x.byId, x.on, (x.byBox || []).map((v) => Math.round(v / 6))]))) emit({ k: "s19over", list: ov.slice(0, 20) });
       }
       if (Date.now() - tapAt > 1000) {
         tapAt = Date.now();

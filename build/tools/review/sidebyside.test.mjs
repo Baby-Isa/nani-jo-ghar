@@ -4,7 +4,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { flowsFor, slug, rubricByMoment, batchText, MOMENTS, GAMES } from "./sidebyside.mjs";
-import { stripWhy, stateMoment, pickMid, KEY_MOMENTS, BEFORE_MS, AFTER_MS, FRAME_MS } from "../../sandbox/lib/keyframes.mjs";
+import { stripWhy, stateMoment, pickMid, pickMidFrame, KEY_MOMENTS, BEFORE_MS, AFTER_MS, FRAME_MS } from "../../sandbox/lib/keyframes.mjs";
 
 test("it plays chai and the game at a child's pace, at the level asked", () => {
   assert.deepEqual(flowsFor("maani-line"), ["cook:chai-tray#speed1", "cook:maani-line#speed1"]);
@@ -57,13 +57,14 @@ test("a strip holds 0.5 s before to 2 s after its moment at even steps: a still 
   const { tmpdir } = await import("node:os");
   const { join } = await import("node:path");
   const kf = Object.create(KeyFrames.prototype);
-  Object.assign(kf, { dir: mkdtempSync(join(tmpdir(), "kf-")), buf: [], strips: [], st: { lit: false, lastStrip: -Infinity, station: true }, on: true });
+  Object.assign(kf, { dir: mkdtempSync(join(tmpdir(), "kf-")), fb: { buf: [] }, strips: [], cook: [], serving: [], st: { lit: false, lastStrip: -Infinity, station: true }, on: true });
   const T = 100000;
-  for (let t = T - 1000; t <= T - 200; t += 100) kf.frame({ t, jpg: Buffer.from("a" + t) });
+  const push = (f) => { kf.fb.buf.push(f); kf.frame(f); };
+  for (let t = T - 1000; t <= T - 200; t += 100) push({ t, jpg: Buffer.from("a" + t) });
   // the light comes at T (a strip starts), the screen is still until T+600, then moves every 100 ms to T+2100
   kf.strips.push({ n: 1, why: "light", t: T, frames: kf.buf.filter((f) => f.t >= T - 500), done: false });
   for (let t = T; t <= T + 600; t += 110) kf.tick(t);
-  for (let t = T + 600; t <= T + 2300; t += 100) kf.frame({ t, jpg: Buffer.from("b" + t) });
+  for (let t = T + 600; t <= T + 2300; t += 100) push({ t, jpg: Buffer.from("b" + t) });
   const d = join(kf.dir, "strip-01-light");
   const meta = JSON.parse(readFileSync(join(d, "strip.json"), "utf8"));
   assert.ok(meta.frames[0].ms <= -400 && meta.frames[meta.frames.length - 1].ms >= 1900, JSON.stringify(meta.frames.map((f) => f.ms)));
@@ -71,4 +72,33 @@ test("a strip holds 0.5 s before to 2 s after its moment at even steps: a still 
   assert.ok(Math.max(...gaps) <= 2 * FRAME_MS, `gaps ${gaps}`);
   assert.ok(meta.frames.some((f) => f.held), "the still stretch is filled with marked repeats");
   assert.equal(readdirSync(d).filter((f) => f.endsWith(".jpg")).length, meta.frames.length);
+});
+
+test("s19-checks-1: mid-cook is a station frame halfway from the first move to the serve, never the first move's or the end card's", () => {
+  const fr = [1000, 2000, 3000, 4000, 5000, 6000].map((t) => ({ t }));
+  assert.equal(pickMidFrame(fr, 1000, 6500).t, 4000, "halfway from 1000 to 6500, at least 1.2 s after the move");
+  assert.equal(pickMidFrame(fr, 5500, 6200), null, "no frame between the move and the serve: none (never the end card)");
+  const st = { lit: false };
+  assert.equal(stripWhy({ type: "c", k: "lit", holes: [[1, 2, 3, 4]] }, st), "light", "the kit's frame-timed light starts a strip");
+});
+
+test("s19-checks-1: the order frame is the one drawn as the order landed, never one with the first light; the serve is the last frame before the end card", async () => {
+  const { KeyFrames } = await import("../../sandbox/lib/keyframes.mjs");
+  const { mkdtempSync, readFileSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const T = Date.now();
+  const buf = [{ t: T - 3000, jpg: Buffer.from("order") }, { t: T - 1000, jpg: Buffer.from("lit") }];
+  const fb = { buf, before: (t) => buf.filter((f) => f.t < t).pop() || null, subscribe() {}, onTick() {} };
+  const page = { evaluate: async () => null, screenshot: async () => {} };
+  const kf = new KeyFrames(page, { dir: mkdtempSync(join(tmpdir(), "kf-")), flow: "cook:x", size: "740x320", fb });
+  kf.st.station = true;
+  kf.onEvent({ type: "c", k: "lit", t: T - 1500, holes: [[1, 2, 3, 4]] }); // (the first light came before the order's state was recorded)
+  kf.onState("order-card-in-sidebar");
+  kf.onEvent({ type: "c", k: "stage", key: "cook:between1:service", t: T - 900 });
+  buf.push({ t: T - 500, jpg: Buffer.from("serve") });
+  kf.onEvent({ type: "c", k: "stage", key: "end", t: T - 100 });
+  await kf.chain;
+  assert.equal(readFileSync(join(kf.dir, kf.keys.order.file), "utf8"), "order");
+  assert.equal(readFileSync(join(kf.dir, kf.keys.serve.file), "utf8"), "serve");
 });

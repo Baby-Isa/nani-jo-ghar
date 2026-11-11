@@ -15,6 +15,9 @@ import { installTouch } from "./touch.mjs";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 export const PORT = +(process.env.COOK_TEST_PORT || 8812);
+// (s19-checks-1: NJG_GAME_ROOT=<a checkout of an older commit> serves THAT commit's game while this checkout's sandbox plays and probes
+// it: how the real bad runs in build/sandbox/fixtures/bad-runs/ were played, the old code with today's checks)
+export const GAME_ROOT = process.env.NJG_GAME_ROOT || ROOT;
 export const BASE = `http://127.0.0.1:${PORT}`;
 export const FONTS_DIR = join(ROOT, "build", "sandbox", "fonts");
 // touch: phones and tablets are emulated with touch (hasTouch, isMobile) and the players' canvas gestures go in as real touch events
@@ -58,7 +61,7 @@ export function startServer(extraRoots = {}) {
   const srv = createServer((req, res) => {
     try {
       let p = decodeURIComponent(new URL(req.url, BASE).pathname);
-      let base = ROOT;
+      let base = GAME_ROOT;
       for (const [prefix, dir] of Object.entries(roots)) if (p.startsWith(prefix)) { base = dir; p = "/" + p.slice(prefix.length); break; }
       let f = normalize(join(base, p));
       if (!f.startsWith(base)) { res.writeHead(403); return res.end(); }

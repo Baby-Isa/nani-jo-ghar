@@ -29,6 +29,12 @@
 //             css/shared/fonts.css the files (assets/fonts/), js/shared/tokens.js the drawn text's last fallback; a face (Lora, Nunito,
 //             Baloo, Fraunces, Georgia, a generic serif or sans-serif, ...) or a Google Fonts link anywhere else in chai's files fails
 //             (CHAI_FONT_FILES); in every other file it is a warning, counted on the summary line, until the roll-out moves that game
+//   shared    the shared pieces are the kit's (SH-257, SH-255, SH-249, Zafar 10 Nov: "lights and bottom bars come only from the shared
+//             kit; exceptions become named variants in it"): outside js/shared/, css/shared/ and js/cook/kitchen-kit.js no dim (a
+//             shadow spread over the screen, a dim layer, a full-screen dark fill), no gold edge round a light, no light hole, no
+//             shelf drawn without the kit's band (a file that draws shelf pills calls St.stoneBand or Shelf.P.tray), and no light
+//             option that is not one of the shared light's named variants (Onboard.VARIANTS; round: true is gone). The prototypes
+//             and the parked modes are not judged (named on the summary line). A known break is named in SHARED_KNOWN, never hidden.
 // Known findings (today's debt, each must shrink, never grow): build/lint/static-known.json. A finding not in it fails, and so does
 // a check with more findings than the list holds for it; --write-known only shrinks the list (Zafar, 23 Oct: compareKnown, shrinkKnown).
 //   node build/lint/static.mjs [--only kit,tokens,...] [--write-known] [--all]
@@ -366,6 +372,104 @@ export function loadcapFindings(file, text) {
   return out;
 }
 
+// ---- shared: the dim, the gold edge, the light's hole, the bottom bar and the light's variants are the kit's (s19-checks-1) ----
+export const SHARED_HOME = /^(js\/shared\/|css\/shared\/|js\/cook\/kitchen-kit\.js$|js\/vendor\/)/;
+export const SHARED_SKIP = /(^js\/(monsoon|tidy|who|dress|find|snap)\/|^css\/(monsoon|tidy|who|dress|find|snap)\.css$|-proto(\/|\.css$)|^js\/farm\/)/;
+// the known breaks, each named with its owner and its way out (Zafar, 10 Nov: "named, not hidden")
+export const SHARED_KNOWN = {
+  "shared|js/cook/stations/baking.js|band": "baking's own counter and shelf row (bk-bg): a known break until its redraws (SH-255)",
+  "shared|js/cook/stations/chai-tray.js|round": "chai's pan light still passes round: true, dead since the round option went (e9f8afa4c); s19-fixes-e drops it",
+  "shared|js/cook/stations/daar.js|recipe-zone": "daar gives chop's game a zone of its own (SH-259): the known break until s19-fixes-e lands",
+  "shared|js/cook/stations/daar.js|recipe-call": "daar passes chop's game its own knife, band and timer (SH-259): the known break until s19-fixes-e lands",
+};
+// SH-259 (Zafar, 10 Nov): a recipe that calls a standalone game (Cook.Chop.play and the like) passes no layout, zone or light options of
+// its own: the game brings its own (its settings), so it looks the same alone and in the recipe
+// (a key given its value, or in shorthand: daar's "knifeKey, blade,")
+export const RECIPE_LAYOUT = /[{,]\s*(band|knifeKey|knifeAt|knife|blade|region|footprint|layout|lay|zone|zones|light|lights|variant|round|pad|peak|halves|shadows|timer|board|hopOn)\s*(?=[:,}])/g;
+export function standaloneGames(files) {
+  const out = new Set();
+  for (const [, text] of files) for (const m of String(text).matchAll(/Cook\.([A-Z]\w+)\s*=\s*\{[^}]*\bplay\b/g)) out.add(m[1]);
+  return [...out];
+}
+// the shared light's named variants: Onboard.VARIANTS in js/shared/onboard.js ({name: [games]}), or, until it is there, STD-E2-08a's
+// (Zafar, 10 Nov: one chop, chained into recipes: a variant is a game's, and goes wherever that game runs, alone or in daar or chaat)
+export const VARIANTS_DEFAULT = { swipe: ["chop"] };
+export function readVariants(onboardJs) {
+  const m = /VARIANTS\s*=\s*(?:Object\.freeze\()?(\{[\s\S]*?\})\)?\s*;/.exec(onboardJs || "");
+  if (!m) return { variants: VARIANTS_DEFAULT, from: "STD-E2-08a (Onboard.VARIANTS is not in js/shared/onboard.js yet)" };
+  const v = {};
+  for (const x of m[1].matchAll(/["']?([\w-]+)["']?\s*:\s*\[([^\]]*)\]/g)) v[x[1]] = [...x[2].matchAll(/["']([\w-]+)["']/g)].map((y) => y[1]);
+  return { variants: v, from: "Onboard.VARIANTS" };
+}
+const gameOfFile = (f) => (/\/stations\/([\w-]+)\.js$/.exec(f) || /\/mechanics\/([\w-]+)\.js$/.exec(f) || [])[1] || f;
+export function sharedFindings(file, text, { variants = VARIANTS_DEFAULT, standalone = ["Chop"] } = {}) {
+  if (SHARED_HOME.test(file) || SHARED_SKIP.test(file)) return [];
+  const out = [];
+  const add = (line, what, msg) => out.push({ check: "shared", at: `${file}:${line}`, key: `shared|${file}|${what}`, text: msg, ...(SHARED_KNOWN[`shared|${file}|${what}`] ? { known: SHARED_KNOWN[`shared|${file}|${what}`] } : {}) });
+  const L = lines(file.endsWith(".css") ? stripCssComments(text) : text);
+  if (file.endsWith(".css")) {
+    L.forEach((l, i) => {
+      // a dim: a shadow spread across the screen (a hole cut in a dim: Cook's old #coach .co-hole, 200vmax)
+      for (const m of l.matchAll(/box-shadow\s*:([^;}]*)/g)) if (/\b0\s+0\s+0\s+(\d{3,}px|\d+(vmax|vmin|vw|vh))/.test(m[1])) add(i + 1, "dim", `a dim drawn by the game: a shadow spread over the screen (${m[1].trim().slice(0, 60)}); the dim is the shared light's (Onboard.DIM)`);
+      // a light hole or a dim layer by name, with a fill or an edge of its own
+      const sel = /^([^{]*)\{/.exec(l);
+      if (sel && /(^|[^\w-])[.#][\w-]*(?:-hole|hole-|dim|scrim)\b/i.test(sel[1]) && /(background|box-shadow|border)\s*:/.test(l.slice(sel[0].length))) add(i + 1, "hole", `a light hole or dim layer of the game's own: ${sel[1].trim().slice(0, 60)}`);
+      // a gold edge round a light: a lit, hint, spot or highlight look drawing a gold ring
+      if (sel && /[.#][\w-]*(?:lit|light|hint|spot|highlight|halo)\b/i.test(sel[1]) && /(border|outline|box-shadow)[^;]*var\(--njg-(?:focus|gold)/.test(l)) add(i + 1, "gold", `a gold edge round a light of the game's own: ${sel[1].trim().slice(0, 60)}; the gold box is the shared light's`);
+    });
+    return out;
+  }
+  if (!file.endsWith(".js")) return out;
+  L.forEach((l, i) => {
+    if (/^\s*(\/\/|\*)/.test(l)) return;
+    // a light hole in the page: an element styled as a hole (the old coach's .co-hole and its left/top/width)
+    if (/querySelector\(\s*["'`][^"'`]*-hole/.test(l) || /\bhole\.style\.(left|top|width|height)\b/.test(l)) add(i + 1, "hole", `a light hole placed by the game: ${l.trim().slice(0, 80)}; the hole is the shared light's (Onboard.light)`);
+    // a full-screen dark fill on the canvas (a dim of the game's own)
+    if (/fillStyle\(\s*0x(?:[0-3][0-9a-f]){3}\s*,\s*0?\.(?:[2-8]\d*)/i.test(l)) {
+      const near = L.slice(i, i + 3).join(" ");
+      if (/fillRect\(\s*0\s*,\s*0\s*,\s*(W|w|width|1600|S\.scale|gameSize|view)/.test(near) || /\b(dim|scrim|darken)\w*\b/i.test(near)) add(i + 1, "dim", `a dim drawn on the canvas by the game: ${near.trim().slice(0, 80)}`);
+    }
+    // a gold edge round a light drawn on the canvas
+    if (/lineStyle\([^)]*(gold|GOLD|focus|FOCUS)/.test(l)) {
+      const near = L.slice(Math.max(0, i - 2), i + 3).join(" ");
+      if (/strokeR(ounded)?ect|strokeRect/.test(near) && /\b(light|lit|hint|spot|highlight|halo)\w*/i.test(near)) add(i + 1, "gold", `a gold edge round a light drawn by the game: ${l.trim().slice(0, 80)}`);
+    }
+    const lightCall = /Onboard\.|\.light\(|\.spot\(|Coach\.|nextLight|\btarget\s*:/.test(l);
+    // the light's options: round is gone (every light a rounded rectangle, Zafar 10 Nov); a variant must be one of the shared light's
+    if (lightCall && (/\bround\s*:\s*true\b/.test(l) || /\bround\s*:\s*o\.round\s*!==\s*false/.test(l))) add(i + 1, "round", `a light asked to be round (${l.trim().slice(0, 70)}): every light is one rounded rectangle; a shape of its own is a named variant in the shared light`);
+    // (only a light's own options: a call to the shared light or the coach, or a light target; a word card's variant is its own)
+    if (lightCall) for (const m of l.matchAll(/\b(?:variant|lightVariant)\s*:\s*["'`]([\w-]+)["'`]/g)) {
+      const g = gameOfFile(file);
+      if (!variants[m[1]]) add(i + 1, `variant-${m[1]}`, `a light variant "${m[1]}" that the shared light does not name (its variants: ${Object.keys(variants).join(", ") || "none"})`);
+      else if (!variants[m[1]].includes(g)) add(i + 1, `variant-${m[1]}`, `the light variant "${m[1]}" asked by ${g}, which the shared light names only for ${variants[m[1]].join(", ")}`);
+    }
+  });
+  // SH-259: a recipe calling a standalone game passes it no layout, zone or light of its own, and gives it no zone of its own
+  if (/^js\/cook\/stations\//.test(file)) {
+    for (const g of standalone) {
+      if (gameOfFile(file) === g.toLowerCase()) continue;
+      const re = new RegExp(`Cook\\.${g}\\.play\\(`, "g");
+      for (const m of text.matchAll(re)) {
+        let depth = 1, i = m.index + m[0].length;
+        while (i < text.length && depth) { if (text[i] === "(") depth++; else if (text[i] === ")") depth--; i++; }
+        const keys = [...new Set([...text.slice(m.index + m[0].length, i - 1).matchAll(RECIPE_LAYOUT)].map((x) => x[1]))];
+        if (keys.length) add(text.slice(0, m.index).split("\n").length, "recipe-call", `${gameOfFile(file)} calls ${g.toLowerCase()}'s game with layout or light options of its own (${keys.join(", ")}): the game brings its own (SH-259)`);
+      }
+      const zm = new RegExp(`mech\\s*:\\s*["'\`]${g.toLowerCase()}["'\`]`).exec(text);
+      if (zm) add(text.slice(0, zm.index).split("\n").length, "recipe-zone", `${gameOfFile(file)} gives ${g.toLowerCase()}'s game a zone of its own (a region and footprint): the game brings its own layout (SH-259)`);
+    }
+  }
+  // the bottom bar: a Cook file that draws shelf pills draws its band through the kit
+  // (a station draws its scene's band; a mechanic takes the band its station drew: chop's mechanic stands things on the caller's band)
+  if (/^js\/cook\/stations\//.test(file) && /\.chip\(/.test(text) && !/stoneBand\(|Shelf\.P\.tray|\bband\(S\b/.test(text)) {
+    const line = text.slice(0, text.search(/\.chip\(/)).split("\n").length;
+    add(line, "band", `${gameOfFile(file)} draws its shelf's pills without the kit's band (St.stoneBand or Shelf.P.tray): the bottom bar is the kit's`);
+  }
+  return out;
+}
+
+// what the shared rule did not judge, and its known breaks (printed every run: named, never hidden)
+export const SHARED_INFO = { from: "", skipped: 0, known: [] };
 // ---------- the repo ----------
 export function run(root = ROOT, only = null) {
   const want = (k) => !only || only.includes(k);
@@ -417,6 +521,15 @@ export function run(root = ROOT, only = null) {
   if (want("loadcap")) for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...loadcapFindings(f, rd(f)));
   if (want("voice")) for (const f of walk(root, "js", (p) => p.endsWith(".js"))) out.push(...voiceFindings(f, rd(f)));
   if (want("plane")) out.push(...planeFindings(J("data/clinic/scenes-v2.json")));
+  if (want("shared")) {
+    const v = readVariants(existsSync(join(root, "js/shared/onboard.js")) ? rd("js/shared/onboard.js") : "");
+    SHARED_INFO.from = v.from;
+    SHARED_INFO.skipped = [...css, ...walk(root, "js", (p) => p.endsWith(".js"))].filter((f) => SHARED_SKIP.test(f)).length;
+    const stations = walk(root, "js/cook/stations", (p) => p.endsWith(".js"));
+    const standalone = standaloneGames(stations.map((f) => [f, rd(f)]));
+    SHARED_INFO.standalone = standalone;
+    for (const f of [...css, ...walk(root, "js", (p) => p.endsWith(".js"))]) for (const x of sharedFindings(f, rd(f), { variants: v.variants, standalone })) (x.known ? SHARED_INFO.known : out).push(x);
+  }
   return out;
 }
 
@@ -478,6 +591,10 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   }
   for (const f of (argv.includes("--all") ? found : cmp.fresh).slice(0, 60)) console.log(`${known.has(f.key) ? "known" : "NEW"} ${f.check} ${f.at}: ${f.text}`);
   for (const u of cmp.up) console.log(`UP ${u.check}: ${u.now} findings, the known list holds ${u.known} (it only shrinks)`);
+  if (!only || only.includes("shared")) {
+    for (const k of SHARED_INFO.known) console.log(`known break shared ${k.at}: ${k.text} (${k.known})`);
+    console.log(`shared: variants from ${SHARED_INFO.from}; the standalone games a recipe may call: ${(SHARED_INFO.standalone || []).join(", ") || "none"}; not judged: ${SHARED_INFO.skipped} files of the prototypes and the parked modes`);
+  }
   if (FONT_WARN.length && argv.includes("--fonts")) for (const f of FONT_WARN) console.log(`warn fonts ${f.at}: ${f.text}`);
   const fontWarn = FONT_WARN.length ? `; fonts: ${FONT_WARN.length} face names outside the tokens in ${new Set(FONT_WARN.map((f) => f.at.split(":")[0])).size} files of the other games (warn until the roll-out; --fonts lists them)` : "";
   console.log(`static: ${found.length} findings (${Object.entries(cmp.by).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${found.length - cmp.fresh.length} known, ${cmp.fresh.length} new${cmp.up.length ? `, ${cmp.up.length} check(s) up` : ""}${cmp.gone.length ? `; ${cmp.gone.length} known ones are fixed: run --write-known to shrink the list` : ""}${fontWarn}`);

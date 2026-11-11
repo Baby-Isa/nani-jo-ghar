@@ -3,6 +3,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { sharedFindings, readVariants, SHARED_INFO, SHARED_KNOWN, VARIANTS_DEFAULT } from "./static.mjs";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { kitFindings, tokenFindings, ladderFindings, wordFindings, lexiconFindings, privacyFindings, rewardFindings, planeFindings, loadcapFindings, run, ROOT, compareKnown, shrinkKnown, shellFindings, kitImportFindings, motionFindings, jscolourFindings, ladderCopyFindings } from "./static.mjs";
 
 test("kit: a mode's CSS may not restyle the shared kit, but may keep its own element apart with :not()", () => {
@@ -169,4 +172,55 @@ test("fonts (SH-224): a face is named only in the type tokens; chai's files fail
   const found = run(ROOT, ["fonts"]);
   assert.deepEqual(found.filter((f) => CHAI_FONT_FILES.includes(f.at.split(":")[0])).map((f) => f.at + " " + f.text), []);
   assert.ok(FONT_WARN.length > 0 && FONT_WARN.every((f) => !CHAI_FONT_FILES.includes(f.at.split(":")[0])));
+});
+
+// ---- shared (s19-checks-1; SH-257, SH-255): red on the real bad code of commit 3c4882609, on round: true, green on HEAD bar its named breaks ----
+const FIX = join(dirname(fileURLToPath(import.meta.url)), "fixtures", "shared");
+const rd = (f) => readFileSync(join(FIX, f), "utf8");
+
+test("red on commit 3c4882609's coach overlay: its round light, its hole placed by hand, its dim spread over the screen", () => {
+  const js = sharedFindings("js/cook/coach.js", rd("3c48-coach.js"));
+  assert.ok(js.some((f) => /round/.test(f.key)), "the round light");
+  assert.ok(js.filter((f) => /\|hole$/.test(f.key)).length >= 3, "the hole placed by the game");
+  const css = sharedFindings("css/cook.css", rd("3c48-cook.css"));
+  assert.ok(css.some((f) => /\|dim$/.test(f.key) && /200vmax/.test(f.text)), "the 200vmax dim");
+});
+
+test("red on a test file that passes round: true, and on a variant the shared light does not name for that game", () => {
+  const f = sharedFindings("js/cook/stations/eggs.js", rd("round-true.js"));
+  assert.ok(f.some((x) => /\|round$/.test(x.key)), "round: true");
+  assert.ok(f.some((x) => /variant-swipe/.test(x.key) && /only for chop/.test(x.text)), "swipe asked by eggs");
+  assert.ok(sharedFindings("js/cook/stations/daar.js", rd("round-true.js")).some((x) => /variant-swipe/.test(x.key)), "daar asks chop's swipe itself: chop's game brings it");
+  assert.equal(sharedFindings("js/cook/stations/chop.js", rd("round-true.js")).filter((x) => /variant/.test(x.key)).length, 0, "chop may ask for its swipe");
+});
+
+test("the kit's own files and the shared folders are never judged; a word card's variant is not a light's", () => {
+  assert.deepEqual(sharedFindings("js/shared/onboard.js", rd("round-true.js")), []);
+  assert.deepEqual(sharedFindings("js/cook/kitchen-kit.js", rd("3c48-coach.js")), []);
+  assert.deepEqual(sharedFindings("js/clinic/screen.js", 'WordCard.big14(slot, w, { all: true, variant: "side" });'), []);
+});
+
+test("SH-259: a recipe calling a standalone game passes no layout, zone or light of its own; the game's own file may", () => {
+  const recipe = 'zones: [{ id: "daar", mech: "chop", region: [0, 0, 1600, 900] }],\nconst r = await Cook.Chop.play(z, { targets: want, level, onSlice, knifeKey, blade, band: { base: 1 } });';
+  const f = sharedFindings("js/cook/stations/daar.js", recipe);
+  assert.ok(f.some((x) => /recipe-call/.test(x.key) && /knifeKey, blade, band/.test(x.text)), "the call");
+  assert.ok(f.some((x) => /recipe-zone/.test(x.key)), "the zone");
+  assert.equal(sharedFindings("js/cook/stations/chaat.js", "await Cook.Chop.play(z, { targets: want, level, onSlice });").length, 0, "behaviour only: fine");
+  assert.equal(sharedFindings("js/cook/stations/chop.js", recipe).filter((x) => /recipe/.test(x.key)).length, 0, "chop's own file");
+});
+
+test("the variants come from Onboard.VARIANTS when it is there, else STD-E2-08a's list, and the run says which", () => {
+  assert.deepEqual(readVariants("Onboard.VARIANTS = { swipe: [\"chop\", \"daar\"], tray: [\"chai\"] };").variants, { swipe: ["chop", "daar"], tray: ["chai"] });
+  const none = readVariants("// no variants yet");
+  assert.deepEqual(none.variants, VARIANTS_DEFAULT);
+  assert.match(none.from, /not in js\/shared\/onboard\.js yet/);
+});
+
+test("HEAD: no new finding; the known breaks are named on every run (baking's counter until its redraws)", () => {
+  const found = run(undefined, ["shared"]);
+  assert.deepEqual(found.map((f) => `${f.at}: ${f.text}`), []);
+  assert.ok(SHARED_INFO.known.some((k) => /baking\.js/.test(k.at)), "baking named");
+  assert.ok(SHARED_INFO.standalone.includes("Chop"), "chop's game found as a standalone game");
+  for (const k of SHARED_INFO.known) assert.ok(SHARED_KNOWN[k.key], `${k.key} is on the named list`);
+  assert.ok(SHARED_INFO.skipped > 0, "the files not judged are counted");
 });
