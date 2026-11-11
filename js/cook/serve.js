@@ -109,7 +109,7 @@ import { Cook as CookNS } from "./ns.js";
       art.s02["kitchen-trays"] = Object.assign({}, kt, { file: c.mode === "two" ? c.order : c.tall, core: c.core, ready: true, meta: kt.meta || { trays: [[350, 662, 324, 64], [803, 662, 327, 64], [1258, 662, 329, 64]] } });
     });
 
-  const st = { serving: false, drop: 0, trays: [], ks: null };
+  const st = { serving: false, drop: 0, trays: [], ks: null, stop: null };
   const D = () => Cook.D || { bg: 0, occ: 20 };
   const key = (name) => `serve-${name}`;
   const dishOf = (name) => {
@@ -185,6 +185,7 @@ import { Cook as CookNS } from "./ns.js";
     st.drop = 0;
     st.trays = [];
     st.ks = null;
+    if (st.stop) st.stop();
     if (!S || !S.cameras || !S.cameras.main) return;
     S.cameras.main.scrollY = Cook.view ? Cook.view.top : 0;
     if (S.bg) S.bg.setAlpha(1);
@@ -202,6 +203,39 @@ import { Cook as CookNS } from "./ns.js";
     const occ = S.track(S.add.image(ox, oy, key("ks")).setOrigin(0).setCrop(0, cy, src.width, src.height - cy).setDepth(D().occ + 0.05).setAlpha(0));
     return { back, occ };
   }
+  /**
+   * The camera's slide, on the clock (s19-serve2): every frame puts it where the eased 0.8 s says, so a frame the device drops
+   * (a busy phone, a picture decoding) never stretches the glide past its 0.8 s nor leaves it moving after (contract-80 allows
+   * the announced glide 1 s; a tween's clock stalls with the frames). The scene's tween clock (Cook.speed in the tests) sets its
+   * pace, as a tween's. A view change (reset) stops it where it is.
+   */
+  function slide(S, cam, to, ms) {
+    if (st.stop) st.stop();
+    const from = cam.scrollY;
+    const real = ms / ((S.tweens && S.tweens.timeScale) || 1);
+    const now = () => (global.performance ? global.performance.now() : Date.now());
+    const t0 = now();
+    return new Promise((resolve) => {
+      if (!(real > 0) || from === to || !S.events) {
+        cam.scrollY = to;
+        return resolve();
+      }
+      const stop = () => {
+        S.events.off("preupdate", step);
+        S.events.off("shutdown", stop);
+        if (st.stop === stop) st.stop = null;
+        resolve();
+      };
+      const step = () => {
+        const k = Math.min(1, (now() - t0) / real);
+        cam.scrollY = from + (to - from) * (0.5 - Math.cos(Math.PI * k) / 2); // Sine in-out
+        if (k >= 1) stop();
+      };
+      st.stop = stop;
+      S.events.on("preupdate", step);
+      S.events.once("shutdown", stop);
+    });
+  }
   /** The camera glides to the serving view (down) or back to the ordering view; the two pictures crossfade as it goes. */
   async function glide(S, down = true) {
     if (!S || !S.cameras || !S.cameras.main) return;
@@ -214,7 +248,7 @@ import { Cook as CookNS } from "./ns.js";
     st.serving = down;
     st.drop = d;
     const ms = c.glideMs;
-    const jobs = [Cook.tween(S, { targets: cam, scrollY: top + d, duration: ms, ease: "Sine.easeInOut" })];
+    const jobs = [slide(S, cam, top + d, ms)];
     if (st.ks) {
       const fade = [S.bg].concat(S.bgExt || []).filter(Boolean);
       jobs.push(Cook.tween(S, { targets: fade, alpha: down ? 0 : 1, duration: ms * 0.6, ease: "Sine.easeInOut" }));
