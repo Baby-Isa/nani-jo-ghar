@@ -13,6 +13,7 @@ export const WO_EDGE_PX = 1;     // a card or an item may poke past the screen b
 export const WO_FACE_K = 1.5;    // the asker's face in the pop-up at least this many times the side panel's face circle
 export const WO_POP_MS = 15000;  // a wrong order served: the pop-up comes within this long of the serve's review (test speed 3)
 export const WO_GLIDE_MS = 900;  // after the redo starts, the panel has glided by then (the pop-up's 320 ms glide at speed 1)
+export const WO_WATCH_MS = 6000; // the probe watches the panel and the faces this long after the redo starts
 
 const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
 const ev = (tl, k) => tl.filter((e) => e.type === "c" && e.k === k);
@@ -62,8 +63,10 @@ export function check118(r, tl, add) {
     const info = json(n.by);
     const keep = new Set(info.keep || []);
     if (!keep.size) continue;
-    const t1 = (n.at || n.t) + WO_GLIDE_MS;
-    const s = wo.find((x) => x.t >= t1) || [...wo].reverse().find((x) => x.t <= t1 && x.t >= (n.at || n.t));
+    const t0 = n.at || n.t, t1 = t0 + WO_GLIDE_MS;
+    // (the probe samples on a change only: the sample standing at t1, else the first after it, within the redo's watch)
+    const live = wo.filter((x) => !x.idle && x.t >= t0 - 200 && x.t <= t0 + WO_WATCH_MS);
+    const s = [...live].reverse().find((x) => x.t <= t1) || live.find((x) => x.t > t1);
     if (!s) continue;
     const extra = (s.panel || []).filter((w) => !keep.has(w));
     if (extra.length) out("panel", s.t, `during the redo the side panel still shows the card of ${extra.join(", ")} (served right): only ${[...keep].join(", ")}'s card stays`);
@@ -127,9 +130,10 @@ function wohook() {
     try {
       const L = window.Lifecycle && window.Lifecycle.log;
       const lastRedo = L ? [...L].reverse().find((x) => x && x.what === "wo-redo") : null;
-      if (lastRedo && +lastRedo.t > redoUntil - 4000) redoUntil = Math.max(redoUntil, +lastRedo.t + 4000);
+      if (lastRedo) redoUntil = Math.max(redoUntil, +lastRedo.t + 6000);
       const veil = [...document.querySelectorAll(".njg-wo")].find(shown);
-      if (!veil && Date.now() > redoUntil) { if (last !== "none") { last = "none"; emit({ k: "s19wo", vw: innerWidth, vh: innerHeight, card: null, panel: [], faces: [] }); } return; }
+      // (idle: nothing watched, no pop-up and no redo starting: the checks skip it)
+      if (!veil && Date.now() > redoUntil) { if (last !== "none") { last = "none"; emit({ k: "s19wo", idle: true, vw: innerWidth, vh: innerHeight, card: null, panel: [], faces: [] }); } return; }
       let card = null;
       if (veil) {
         const el = veil.querySelector(".njg-wo-open") || veil.querySelector(".njg-wo-line");
