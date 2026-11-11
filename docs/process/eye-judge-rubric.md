@@ -100,7 +100,9 @@ the same moment, unless a look sheet Zafar accepted says it may differ. The judg
 
 Q3 two lights at once or a light left on a thing done (contract-87, -106) · Q11 a word cut, ellipsised or outside its card (the
 screen lint, contract-15, -51) · Q13 a row ticks as reached and well done waits for the last tick (contract-18, -108) · Q15 English for
-the child (contract-16, -39) · Q21 a tick, next or X button, a button outside the side panel (contract-103, -54).
+the child (contract-16, -39) · Q21 a tick, next or X button, a button outside the side panel (contract-103, -54). Measured halves
+(s19-checks-2; the eye keeps the rest): Q41's snaps and size jumps (contract-114; "is it chai's glide" stays here) · Q24's main thing
+and shelf heights (contract-115) · Q12's padding, gaps and a half-empty card (contract-116).
 
 ## What pictures still cannot show
 

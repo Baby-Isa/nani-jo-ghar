@@ -4,6 +4,7 @@
 // (lib/lightshot.mjs), never whole films. It then judges them as the contract does and writes expect.json: every check each page
 // is red on today, with why. build/sandbox/badruns.test.mjs fails if any of those stops going red (a check loosened too far).
 //   node build/sandbox/fixtures/bad-runs/make.mjs --run <run id> --commit <sha> [--good] [--name "<flow>@<size>=<ROW> <flaw>" ...]
+//     [--tag <tag>] (the pages are kept as <tag>-<flow>@<size>, beside another commit's of the same flow) [--only <flow>,...]
 // A bad run is played on the old code with today's sandbox: NJG_GAME_ROOT=<a checkout of the old commit> NJG_KEEP_LIGHTS=1
 // node build/sandbox/run.mjs --contract --keyframes --flow ... (lib/env.mjs serves that commit's game; see README.md).
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, cpSync, rmSync } from "node:fs";
@@ -31,7 +32,7 @@ export function judgePage(r, lightRoot) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const argv = process.argv.slice(2);
   const val = (f) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : null; };
-  const run = val("--run"), commit = val("--commit");
+  const run = val("--run"), commit = val("--commit"), tag = val("--tag"), only = val("--only") ? val("--only").split(",") : null;
   if (!run || !commit) { console.error("make: --run <run id> --commit <sha>"); process.exit(2); }
   const names = {};
   argv.forEach((a, i) => { if (a === "--name") { const [k, ...w] = argv[i + 1].split("="); names[k] = w.join("="); } });
@@ -40,8 +41,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const exp = existsSync(expFile) ? JSON.parse(readFileSync(expFile, "utf8")) : { pages: {} };
   for (const f of readdirSync(join(runDir, "data"))) {
     const r = JSON.parse(readFileSync(join(runDir, "data", f), "utf8"));
-    if (r.size === "static") continue;
-    const name = pageName(r);
+    if (r.size === "static" || (only && !only.includes(r.flow))) continue;
+    const name = (tag ? `${tag}-` : "") + pageName(r);
     const pd = join(HERE, "pages", name);
     rmSync(pd, { recursive: true, force: true });
     mkdirSync(pd, { recursive: true });

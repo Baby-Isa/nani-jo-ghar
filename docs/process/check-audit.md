@@ -99,7 +99,7 @@ break in the smoke run before it). "Built from" rows are the failures each was w
 | 8 | one highlight at a time (every page) | SH-53(o) SH-79(d) CK-34(d) CLN-143(d) CLN-144(d) CLN-145(d) | once on sekelo L2 (s05 report) | none extra (rides the page run) | KEEP |
 | 9 | no folded card from L3 (clinic L3+) | CLN-114(d) SH-110(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 10 | faces the player on the child's turn (clinic) | SH-71(d) CLN-157(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 11 | backgrounds in proportion and sharp (every page) | PAN-14(d) ART-05(d) ART-59(o) ART-60(o) | ART-59, ART-60 (open) | Cook is on its known list (contract-known.json, ART-05): it judges no Cook page | KEEP |
+| 11 | backgrounds in proportion and sharp (every page) | PAN-14(d) ART-05(d) ART-59(o) ART-60(o) | ART-59, ART-60 (open) | judges every page, Cook too (corrected, s19-checks-2): contract breaks never ratchet; `contract-known.json` (its ART-05 lines) is read by the publish gate alone, only while ART-05 waits, and ART-05 is off the fix list | KEEP |
 | 12 | buttons hidden until usable (every page) | SH-23(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 13 | each stage clears its own UI (clinic) | CLN-06(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 14 | one talk animation (every page) | ART-18(o) | ART-18 (open) | none extra (rides the page run) | KEEP |
@@ -118,10 +118,10 @@ break in the smoke run before it). "Built from" rows are the failures each was w
 | 31 | a replay is free and says what is left (every page) | SH-102(d) SH-114(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 32 | the review's divider leaves room (end screens) | SH-103(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 33 | the order pop-up's headlines: one size, wrap first (every page) | SH-107(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 34 | every go-on button has the arrow; every button the kit's (every page) | SH-106(o) | built from its rows; no break on record since | none extra (rides the page run) | KEEP: its go-on half goes quiet as SH-238 removes the buttons; its kit-button half still guards the pills |
+| 34 | every go-on button has the arrow; every button the kit's (every page) | SH-106(o) | built from its rows; no break on record since | none extra (rides the page run) | KEEP its kit-button half; its go-on arrow half RETIRED (s19-checks-2: contract-103 judges Cook; code kept) |
 | 35 | the card by level (every page) | SH-110(d) SAM-26(d) MAA-18(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 36 | Nani calls each step as it opens (every page) | SH-110(d) SEK-18(o) SH-133(d) | SEK-18 | none extra (rides the page run) | KEEP |
-| 37 | decoys by level (every page) | CK-49(d) SH-132(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
+| 36 | Nani calls each step as it opens (every page) | SH-110(d) SEK-18(o) SH-133(d) | SEK-18 | none extra (rides the page run) | FIX (s19-checks-2): its steps from the screen (each new lit thing, each new current card), not the game's step list |
+| 37 | decoys by level (every page) | CK-49(d) SH-132(d) | built from its rows; no break on record since | none extra (rides the page run) | FIX (s19-checks-2): decoys counted on the shelf against the order card, every game; no games.json field |
 | 38 | the end screen: two pages (end screens) | SH-104(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 39 | the word card's English: supported, then tapped (every page) | SH-123(d) CHAI-71(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 40 | one card markup; a blanked row has its speaker (every page) | SH-110(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
@@ -135,22 +135,22 @@ break in the smoke run before it). "Built from" rows are the failures each was w
 | 49 | one end screen (end screens) | - | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 50 | samosa: the card ticks at the one tick (samosa) | SAM-24(d) SAM-27(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 51 | every word inside its card (every page) | SH-142(o) SH-138(o) SH-170(d) CHAI-69(d) | CHAI-69 (found by it) | none extra (rides the page run) | KEEP |
-| 52 | a bubble keeps faces and the side panel clear (every page) | CK-18(d) SH-145(d) SH-138(o) CHAI-48(o) SH-177(o) | CHAI-48 (found by it, 30 Oct) | none extra (rides the page run) | KEEP |
+| 52 | a bubble keeps faces and the side panel clear (every page) | CK-18(d) SH-145(d) SH-138(o) CHAI-48(o) SH-177(o) | CHAI-48 (found by it, 30 Oct) | none extra (rides the page run) | KEEP its face half; its side-panel half RETIRED (s19-checks-2: contract-86 judges it with its room rule) |
 | 53 | the help's light holds one thing (every page) | CHAI-33(d) SH-138(o) CHAI-36(o) | CHAI-36 | none extra (rides the page run) | KEEP |
 | 54 | the side panel's buttons stay in it (every page) | CK-53(o) SH-138(o) | CK-53 | none extra (rides the page run) | KEEP |
 | 65 | the chop's waves without a gap (daar's chop) | DAAR-35(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 66 | a lap at the flag, its number heard in step (daar's stir) | DAAR-30(d) DAAR-27(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 70 | the turn-off line at the green (chai) | - | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 71 | once each into a pan (chai) | - | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 72 | the order row glides, never jumps (every page) | SH-152(o) CHAI-39(o) | SH-152, CHAI-39 (open) | none extra (rides the page run) | KEEP |
-| 73 | the bubble's speaker is big (every page) | SH-153(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 74 | a tap lands the whole order at once (every page) | CK-54(o) | CK-54 (open) | load-timing flakes (2 on one evening, s18 shelf swap) | KEEP |
+| 70 | the turn-off line at the green (chai) | - | built from its rows; no break on record since | none extra (rides the page run) | FIX (s19-checks-2): every timed window, from the kit's heat ring as drawn and the voiced call; no games.json field |
+| 71 | once each into a pan (chai) | - | built from its rows; no break on record since | none extra (rides the page run) | FIX (s19-checks-2): Cook's tick path (an add no row wants), every game; chai's add note still read |
+| 72 | the order row glides, never jumps (every page) | SH-152(o) CHAI-39(o) | SH-152, CHAI-39 (open) | none extra (rides the page run) | FIX (s19-checks-2): the row's scroll frame by frame (s19row), not the game's row-glide note |
+| 73 | the bubble's speaker is big (every page) | SH-153(d) | built from its rows; no break on record since | none extra (rides the page run) | FIX (s19-checks-2): the speaker's own box (s19spk); SH-153 as replaced 1 Nov: no speaker button in a speech bubble |
+| 74 | a tap lands the whole order at once (every page) | CK-54(o) | CK-54 (open) | load-timing flakes (2 on one evening, s18 shelf swap) | FIX (s19-checks-2): the big card, flyers and waiting cards on screen after a tap (s19ord), not the game's order-skip note |
 | 75 | a tap on a bubble, the side panel or the cog never skips the order (every page) | SH-157(o) | SH-157 (open) | none extra (rides the page run) | KEEP |
 | 76 | the big pop-out card is never over a face (every page) | SH-154(o) | SH-154 (open) | none extra (rides the page run) | KEEP |
-| 77 | the first-time hold is a new player's only, and ends at the tap (every page) | SH-158(o) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
-| 78 | a control's call and its light come together (every page) | CHAI-40(d) CHAI-49(o) CHAI-52(d) CHAI-60(o) SH-181(d) | CHAI-49 (found by it, 30 Oct) | none extra (rides the page run) | KEEP |
+| 77 | the first-time hold is a new player's only, and ends at the tap (every page) | SH-158(o) | built from its rows; no break on record since | none extra (rides the page run) | FIX (s19-checks-2): the kit's heat ring as drawn: a new player's first window holds; eggs and corn judged |
+| 78 | a control's call and its light come together (every page) | CHAI-40(d) CHAI-49(o) CHAI-52(d) CHAI-60(o) SH-181(d) | CHAI-49 (found by it, 30 Oct) | none extra (rides the page run) | KEEP; its control calls read from the page (a ring's green, a knob turning on), not games.json (s19-checks-2) |
 | 79 | the order card's light waits until nothing moves (every page) | CHAI-42(o) SH-178(o) | maani L1's card light 51-53 ms after the move (four audit reports, today's smoke run) | 100 ms sampling against a 167 ms window at test speed 3: fires intermittently on the same real fault | KEEP: the fault it reads is real; trust it at #speed1 |
-| 80 | the kitchen does not change after its first drawn frame (every page) | CHAI-45(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
+| 80 | the kitchen does not change after its first drawn frame (every page) | CHAI-45(d) | built from its rows; no break on record since | none extra (rides the page run) | FIX (s19-checks-2): every Cook page and view, cook.html too (its title backdrop aside) |
 | 81 | no picture over a gauge (every page) | CHAI-46(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 82 | no lit box edge across a face (every page) | CHAI-47(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 83 | no card over a face (every page) | SH-154(o) CHAI-43(d) SH-203(o) | SH-203; 4 breaks in s14 runs | none extra (rides the page run) | KEEP |
@@ -160,13 +160,13 @@ break in the smoke run before it). "Built from" rows are the failures each was w
 | 87 | one light at a time (every page) | CHAI-50(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 88 | no item on the order card before it is said (every page) | SH-171(o) | SH-171 (open) | none extra (rides the page run) | KEEP |
 | 89 | the helper says the item as her card opens (every page) | SH-172(o) CHAI-40(d) | SH-172 (open) | none extra (rides the page run) | KEEP |
-| 90 | the next item lit for a new player (every page) | CHAI-37(o) CHAI-77(o) CHAI-106(d) | CHAI-77, CHAI-106 | none extra (rides the page run) | KEEP |
+| 90 | the next item lit for a new player (every page) | CHAI-37(o) CHAI-77(o) CHAI-106(d) | CHAI-77, CHAI-106 | none extra (rides the page run) | FIX (s19-checks-2): from Cook's tick path and the lights, every game; no games.json field |
 | 91 | the help comes when stuck (every page) | SH-228(o) CLN-221(o) RIDE-11(o) | SH-228, CLN-221, RIDE-11 (open) | none extra (rides the page run) | KEEP |
 | 92 | the help's light leaves room round its thing (every page) | SH-230(o) CK-61(o) DAAR-43(o) | CK-61, DAAR-43 (wave 3) | none extra (rides the page run) | KEEP |
 | 93 | every part of an order is spoken (every page) | CK-59(o) | CK-59 (open) | none extra (rides the page run) | KEEP |
 | 94 | the word moment's card is the 6 Nov card (every page) | SH-231(d) | built from its rows; no break on record since | none extra (rides the page run) | KEEP |
 | 95 | nothing is said after a skip (every page) | CK-60(d) DAAR-40(o) | DAAR-40 | none extra (rides the page run) | KEEP |
-| 96 | after a boil-over the pot's rows open and its card shows the first item (#boil-over) | CHAI-105(d) CHAI-57(o) | CHAI-105 | none extra (rides the page run) | KEEP |
+| 96 | after a boil-over the pot's rows open and its card shows the first item (#boil-over) | CHAI-105(d) CHAI-57(o) | CHAI-105 | none extra (rides the page run) | FIX (s19-checks-2): a boil-over from the kit's heat ring as drawn, not chai's chai-boil note |
 | 97 | a light on a small part starts on the whole thing and shrinks onto the part (every page) | SH-213(o) | SH-213 (open) | none extra (rides the page run) | KEEP |
 | 98 | a first-time lesson due is shown (#tap-mid-order, #slow-cards) | DAAR-41(o) SH-196(o) | DAAR-41 | none extra (rides the page run) | KEEP |
 | 99 | after a served card folds the panel shows the next card in its place (every page) | SH-232(o) | SH-232 (open) | none extra (rides the page run) | KEEP |
@@ -178,6 +178,11 @@ and was red then green on a fixture (`build/sandbox/contract-s19.test.mjs`); tod
 (SH-238) · 104 card-pic (SH-242, SEK-24) · 105 light-whole (CK-63) · 106 light-goes (SH-236) · 107 hop-shelf (SH-237) · 108 praise-last
 (SH-239) · 109 shelf-line (SH-243). Building them found one more fault of the probes: the S17 probe and a following one ran as one
 expression (no `;` between two IIFEs), so a probe added after S17's never ran; fixed, with a test.
+
+**New (s19-checks-2, contract-114 to -116, `build/sandbox/lib/contract-s19b.mjs`, its probe `contract-s19b-hook.mjs`):** read from what is
+drawn, red on real runs (`build/sandbox/fixtures/bad-runs/`, tag s19c2): 114 no-snap (SH-256) · 115 item-size (SH-245, CK-77) · 116
+card-pad (SH-165; labcheck's measure in the game). 109 now judges one or two shelf items too. No check opts in through `games.json` any
+more (its check fields are gone: 35, 37, 44, 70, 71, 78, 90, 91 judge every game).
 
 ## 5. The sandbox's own gates and the evidence loop
 
@@ -210,14 +215,14 @@ expression (no `;` between two IIFEs), so a probe added after S17's never ran; f
 | pillcheck (chai's pills) | a shelf change | SH-219 | one run in three found no pills at 1920x1080 L4 (a 30 s wait against a 27 s intro) | FIX: waits 60 s; test |
 | teachgate (prototypes' first-time light) | a prototype kit's change | SH-197 | a browser run | KEEP |
 | tapgate (the lab page's play button) | the audit | SH-198 | a browser run | KEEP |
-| lightfollow (a new player tapping what is lit) | the audit | the light layers counted before contract-87 | a browser run | KEEP |
+| lightfollow (a new player tapping what is lit) | the audit | the light layers counted before contract-87 | a browser run | RETIRE (s19-checks-2: out of the audit; contract-87 and -112 judge the light; code kept) |
 | spkgap (the helper card's speaker padding) | the audit | SH-165 | a browser run | KEEP |
 | kitsheet (one element from every game, both sizes) | an element's build | S13's look differences by game | a browser run | KEEP |
 | labcheck (a lab page at the four sizes) | the lab-first loop | words leaving their cards (28 Oct) | a browser run | KEEP |
 | voicegate (no effect over a family line) | a sound change | CHAI-92's picks | reads a sound log | KEEP |
 | sprintcheck, touched, regress | each review | the rows and flows a change reaches | none | KEEP |
 | fever_bubbles, shoot_knee_wrap | evidence `cmd:` captures | CLN rows' bubbles and wraps | used only by specs | KEEP |
-| shotdiff | /review step 4 | nothing since Sprint 8 | reviewers opened "all new" sheets | RETIRE (from /review; code kept) |
+| shotdiff | /review step 4 | nothing since Sprint 8 | reviewers opened "all new" sheets | RETIRE (from /review; from the skeleton, s19-checks-2; code kept) |
 
 ## 8. Ops checks and hooks
 
@@ -232,7 +237,7 @@ expression (no `;` between two IIFEs), so a probe added after S17's never ran; f
 
 | Script | Runs | Caught | Cost | Verdict |
 |---|---|---|---|---|
-| check_onboard.mjs (every phase has a first-time help) | named by the QA checklist; no run | INT-04/INT-15 | fails today on 39 prototype phases (beach and town prototypes have no onboarding and no `onboardWhy`) | FIX (not this session's file: the report has the change) |
+| check_onboard.mjs (every phase has a first-time help) | named by the QA checklist; no run | INT-04/INT-15 | fails today on 39 prototype phases (beach and town prototypes have no onboarding and no `onboardWhy`) | RETIRE (s19-checks-2, the check sort's G0: runs nowhere, fails 39 prototype phases; contract-112 judges every light on the screen; code kept) |
 | check_vessel_meta.py (vessels centred on burners) | QA LAY-10; no run | C7/H11 | fails today: samosa's `META.karahi` and `META.plate` read as None | FIX (the report has it: the meta moved with samosa's kit switch or is missing) |
 | check_hotspots.py (clinic hit areas) | QA LAY-11 | the clinic's part sizes | passes today | KEEP |
 | test_clinic_heal_a.py (the heal games on the host) | no run | the heal lab A games | times out today on the heal host's mount | FIX (report: a look at the host, which may be a clinic fault) |
@@ -241,7 +246,7 @@ expression (no `;` between two IIFEs), so a probe added after S17's never ran; f
 | check_word_card_taps.mjs (EASY-11) | run today | 26 reveal buttons, 0 under 44 px | 3 s | KEEP |
 | check_sidebar_fit.mjs | run today | the S13-A2 sidebar | did not finish in 7 minutes | RETIRE |
 | check_stamps.mjs (B7) | the publish; run today | **today: cook.html asks for `js/shared/shelf.js` without its version stamp** (a phone keeps an old shelf.js after a publish) | ~5 min, a browser | KEEP (the finding is in the report) |
-| test_cook_mount.mjs (COOK-16), test_cook.py, test_clinic.py | the mount test in /review; the two older e2e tests nowhere since October | the mount's leaked listeners | not re-run today: the shared browser lock was needed by the other builder | KEEP; the two e2e tests to be run once at the next review, then judged |
+| test_cook_mount.mjs (COOK-16), test_cook.py, test_clinic.py | the mount test in /review; the two older e2e tests nowhere since October | the mount's leaked listeners | not re-run today: the shared browser lock was needed by the other builder | KEEP test_cook_mount; test_cook.py and test_clinic.py RETIRED (s19-checks-2, run once: test_cook.py --lab fails at its first click, the "?" no longer where it looks; test_clinic.py times out at waiting-W1-L1 with no expectation; the sandbox's cook-player and flows/clinic.mjs are their ports; code kept) |
 
 ## 10. The leak bots (`build/tools/review/leak-configs/`)
 

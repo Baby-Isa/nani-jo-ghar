@@ -9,6 +9,10 @@ SH-119, SH-238, SH-242, SEK-24, CK-63, SH-236, SH-237, SH-239's praise half, SH-
 **Built in Sprint 19 (s19-checks-1, 10 Nov):** contract-112 judges every light on the screen's own pixels (`lib/lightshot.mjs`,
 `lib/lightjudge.py`), contract-113 covers from drawn pixels, "judged N of M" per game in `contract.md`, the shared-pieces lint
 (`build/lint/static.mjs` shared), the real bad runs (`build/sandbox/fixtures/bad-runs/`).
+**Built in Sprint 19 (s19-checks-2, 11 Nov; the check sort's G0, G2, G3, G5):** contract-114 (an item keeps its size, no snap),
+-115 (the main thing as big as the height allows, the shelf at one height), -116 (the order card's padding and gaps in the game); 36,
+37, 70-74, 77, 80, 90 and 96 read the screen and the shared paths (the kit's heat ring, Cook's tick path), and `games.json` holds no
+check field (`lib/contract-s19b.mjs`); the art check's pink rim (`artcolour.py --rim`, `artcheck.mjs` rim; ART-76).
 **A check is built only when it goes red on a real bad run, and may be loosened only if it still does (Zafar, 10 Nov):** the
 fixtures' test (`build/sandbox/badruns.test.mjs`) fails the moment a light, dim or overlap check stops going red on its bad run.
 

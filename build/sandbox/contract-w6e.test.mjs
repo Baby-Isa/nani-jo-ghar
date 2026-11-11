@@ -53,9 +53,9 @@ test("contract-35: #side's data-level (the side sample's lv) is read when no not
   assert.equal(realLevel(tl, T + 100, 2), 2, "before any sample: the flow's label");
 });
 
-test("contract-36: a step opened and never called reports the stage's real level, not the flow's label", () => {
+test("contract-36: a step opened on screen and never called reports the stage's real level, not the flow's label", () => {
   const tl = sorted([stage(T, ST), life(T, "stage-start", "cook:station"), life(T + 5, "order-level", "3", { step: "3", by: "nani" }),
-    life(T + 2000, "step-open", "1", { by: "L3" }), C(T + 12000, "input", { x: 1, y: 1, on: "canvas", next: false, popup: false, side: false, play: true })]);
+    C(T + 2000, "s19lit", { holes: [[100, 100, 200, 200]], things: [{ kind: "pic", id: "pan", box: [100, 100, 200, 200] }] }), C(T + 12000, "input", { x: 1, y: 1, on: "canvas", next: false, popup: false, side: false, play: true })]);
   const b = of(run(page("cook:day3", tl)), "contract-36");
   assert.equal(b.length, 1);
   assert.equal(b[0].level, 3);

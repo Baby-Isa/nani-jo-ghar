@@ -3,7 +3,8 @@
 // No browser. Run: node --test build/sandbox/contract-s17.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { S17_CHECKS, checkS17, check96, check97, check98, check99 } from "./lib/contract-s17.mjs";
+import { S17_CHECKS, checkS17, check97, check98, check99 } from "./lib/contract-s17.mjs";
+import { check96 } from "./lib/contract-s19b.mjs";
 import { CONTRACT_HOOK } from "./lib/contract-hook.mjs";
 import { resolveFlow } from "./flows/index.mjs";
 
@@ -17,28 +18,30 @@ const lit = (t, ...holes) => ({ type: "c", k: "lit", t, holes, card: false, face
 const thing = (t, box, sel = "wc14") => ({ type: "c", k: "litthing", t, hole: box, thing: box, sel });
 const R = { flow: "cook:chai-tray@L2" };
 
-// ---- 96 ----
-const panelRows = (t, who, done, sl) => ({ type: "c", k: "panel", t, st: 0, sh: 400, view: 300, top: 0, cards: [], rows: [{ who, n: 6, done, sl }], focus: null });
+// ---- 96 (s19-checks-2: from the kitchen kit's heat ring as drawn and the order card, s19ring, s19pad, s19row; no chai-boil note) ----
+const c = (t, k, o = {}) => ({ type: "c", k, t, ...o });
+const ST = c(0, "stage", { key: "cook:station1:marble" });
+const pad = (t, done) => c(t, "s19pad", { box: [0, 0, 300, 300], row: [10, 50, 290, 250], cards: Array.from({ length: 3 }, (_, i) => ({ w: "c" + i, done: i < done ? 1 : 0, box: [10 + i * 118, 50, 120 + i * 118, 250], in: [17 + i * 118, 57, 113 + i * 118, 243] })) });
+const rowAt = (t, x) => c(t, "s19row", { x, w: 110, n: 3, vis: 1, px: x, pt: t - 16 });
+// the pot boils over: its ring past the green, then empties by itself (cleared, no tap)
+const boil = [0.5, 0.8, 0.95, 1.02].map((lv, i) => c(4000 + i * 300, "s19ring", { id: 1, lv, lo: 0.66, hi: 0.86 })).concat([c(5200, "s19ring", { id: 1, clear: 1 })]);
 
-test("contract-96: after the pot starts again its rows are open and its card is back at the first item", () => {
-  const tl = [panelRows(1000, "nana", 6, 130), life(5000, "chai-boil", "over", "nana 1"), panelRows(5100, "nana", 6, 130), life(6200, "chai-boil", "again", "nana 0"), panelRows(6300, "nana", 0, 0)];
+test("contract-96: after a boil-over the pot's rows are open and its card is back at the first item", () => {
+  const tl = [ST, pad(1000, 3), rowAt(1000, 130), ...boil, pad(5400, 0), rowAt(5500, 0)];
   assert.equal(run(check96, { flow: "cook:chai-tray#boil-over" }, tl).length, 0);
 });
 
 test("contract-96: rows left ticked, or the row left where it was, is a break", () => {
-  const stay = [panelRows(1000, "nana", 6, 130), life(6200, "chai-boil", "again", "nana 0"), panelRows(6300, "nana", 6, 0)];
-  const out = run(check96, { flow: "cook:chai-tray#boil-over" }, stay);
+  const out = run(check96, { flow: "cook:chai-tray#boil-over" }, [ST, pad(1000, 3), ...boil, pad(5400, 3)]);
   assert.equal(out.length, 1);
-  assert.match(out[0].msg, /6 of 6 rows are still ticked/);
-  const along = [panelRows(1000, "nana", 6, 130), life(6200, "chai-boil", "again", "nana 0"), panelRows(6300, "nana", 0, 130)];
-  assert.match(run(check96, { flow: "cook:chai-tray#boil-over" }, along)[0].msg, /scrolled 130 px along/);
-  // a sample after the window does not count; another person's card does not either
-  assert.equal(run(check96, { flow: "cook:chai-tray#boil-over" }, [life(6200, "chai-boil", "again", "nana 0"), panelRows(9000, "nana", 6, 0)]).length, 0);
-  assert.equal(run(check96, { flow: "cook:chai-tray#boil-over" }, [panelRows(1000, "ma", 6, 130), life(6200, "chai-boil", "again", "nana 0")]).length, 0);
+  assert.match(out[0].msg, /3 cards stayed ticked/);
+  assert.match(run(check96, { flow: "cook:chai-tray#boil-over" }, [ST, pad(1000, 3), ...boil, pad(5400, 0), rowAt(5500, 130)])[0].msg, /scrolled 130 px along/);
+  // a sample after the window does not count as open in time
+  assert.equal(run(check96, { flow: "cook:chai-tray#boil-over" }, [ST, pad(1000, 3), ...boil, pad(9000, 0)]).length, 1);
 });
 
-test("contract-96: the player's refill just after the reset is not a stuck tick (S18, CHAI-105)", () => {
-  const tl = [panelRows(1000, "nana", 5, 304), life(6200, "chai-boil", "again", "nana 0"), panelRows(6220, "nana", 0, 304), panelRows(6600, "nana", 0, 0), life(6730, "chai-add", "cook-paani", "nana:1"), panelRows(6740, "nana", 1, 0)];
+test("contract-96: a ring emptied by the child's own tap (a pan lifted off in time) is no boil-over", () => {
+  const tl = [ST, pad(1000, 3), ...boil, c(5000, "input", { x: 1, y: 1, on: "canvas", play: true }), pad(5400, 3)];
   assert.equal(run(check96, { flow: "cook:chai-tray@L3#returning" }, tl).length, 0);
 });
 

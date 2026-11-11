@@ -7,6 +7,7 @@ model looks, in the art judge's PASS / FLAG / FAIL words.
   python3 build/tools/art/artcolour.py --scan assets --worst 36 --sheet worst.png  # the retrospective: every asset
   python3 build/tools/art/artcolour.py x.webp --size-class M                       # a slot item: fills its cell (>= 85%)
   python3 build/tools/art/artcolour.py --changed [REF]                             # only pictures changed since REF (checks.mjs `art`)
+  python3 build/tools/art/artcolour.py --rim DIR_OR_FILE ... [--json out.json]     # the pink rim alone, every cut-out (artcheck.mjs rim)
   python3 build/tools/art/artcolour.py --swatch build/tools/art/data/house-swatch.png   # the house swatch strip
   python3 build/tools/art/artcolour.py --house-words                               # the house colours in words (the block)
 
@@ -19,6 +20,8 @@ Per picture:
   light    (cut-outs) the light direction from the shading inside each material on the outer ring; FLAG when it is clear
            and not from the upper left, above or the left (the art bible). Not on people (look-rules.json light.skip).
   halo     (cut-outs) FLAG a near-white band just inside the alpha edge, much whiter than the band behind it.
+  rim      (cut-outs, at the file's own size) FAIL a pink rim (ART-76): over 15% of the soft edge magenta-tinted where the piece's own
+           colour is not (look-rules.json rim); the fix is build/tools/art/edge_bleed.py. See-through glass is skipped by name.
   shadow   (cut-outs) FAIL a baked shadow: dark, low-chroma soft alpha below the body, a dark skirt wider than the body, or
            an opaque neutral strip under it that grows lighter away from a dark contact line (Fable, 6 Nov: pan-pour);
            FLAG a faint (warm-tinted, small) soft shadow.
@@ -830,11 +833,49 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
     return res
 
 
+def pink_rim(path, R=None):
+    """ART-76: the share of a cut-out's soft edge that is magenta-tinted where its piece is not, at the file's own size (a resize
+    blends the rim away). None when the file has no soft edge to judge or is skipped by name (see-through glass)."""
+    R = R or rules()
+    P = R["rim"]
+    rel = os.path.relpath(os.path.abspath(path), REPO)
+    if any(fnmatch.fnmatch(rel, g) for g in P["skip"]):
+        return None
+    im = Image.open(path)
+    if im.mode != "RGBA":
+        if "A" not in im.getbands():
+            return None
+        im = im.convert("RGBA")
+    a = np.asarray(im).astype(float)
+    al = a[..., 3]
+    soft = (al > P["soft_lo"]) & (al < P["soft_hi"])
+    if soft.sum() < P["min_px"]:
+        return None
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    pink = ((np.minimum(r, b) - g) > P["pink_g"]) & (np.abs(r - b) < P["red_near_blue"])
+    solid = al >= P["soft_hi"]
+    if not solid.any():
+        return None
+    _, (iy, ix) = ndi.distance_transform_edt(~solid, return_indices=True)
+    rim = pink & ~pink[iy, ix]  # (pinkish where the nearest solid pixel of the piece is not: a magenta rim, not a purple onion)
+    share = float(rim[soft].mean())
+    return {"share": round(share, 3), "px": int(rim[soft].sum()), "fail": share > P["max_share"] and int(rim[soft].sum()) >= P["min_px"]}
+
+
 def analyse(path, R=None, size_class=None):
     R = R or rules()
     rgb, alpha, size = load(path, max(R["colour"]["max_side"], 512))
     res = analyse_arrays(rgb, alpha, R, size_class or size_class_of(path, R), path)
     res["size"] = list(size)
+    if res.get("cutout"):
+        pr = pink_rim(path, R)
+        res["info"]["rim"] = pr
+        known = os.path.relpath(os.path.abspath(path), REPO) in set(R["rim"].get("known", []))
+        if pr and pr["fail"] and known:
+            res["flag"].append("pink rim (known art debt, look-rules.json rim.known): %.0f%% of the soft edge magenta-tinted; run python3 build/tools/art/edge_bleed.py on it" % (pr["share"] * 100))
+        elif pr and pr["fail"]:
+            res["fail"].append("pink rim: %.0f%% of the soft edge is magenta-tinted where the piece is not (over %.0f%%; ART-76): run python3 build/tools/art/edge_bleed.py on it"
+                               % (pr["share"] * 100, R["rim"]["max_share"] * 100))
     return res
 
 
@@ -1259,9 +1300,28 @@ def main(argv=None):
     ap.add_argument("--slot-css", type=float, metavar="H", help="a slot's height in CSS px at look-rules.json sizes.at: whether each size class's piece meets sizes.min_css_px, and stop")
     ap.add_argument("--house-words", action="store_true", help="print the house colours in words and stop")
     ap.add_argument("--changed", nargs="?", const="", metavar="REF", help="only the pictures under assets/ changed since REF (default: the merge-base with origin/main, or HEAD~1), uncommitted and untracked ones too; a named surface's other pictures are measured beside them, not judged (checks.mjs `art`)")
+    ap.add_argument("--rim", action="store_true", help="the pink rim alone (ART-76) on every cut-out given: one line each that fails, and with --json {path: share} of those; exit 1 on any")
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args(argv)
     R = rules(a.rules)
+    if a.rim:
+        bad = {}
+        for p in collect(([a.scan] if a.scan else []) + a.paths, R):
+            try:
+                pr = pink_rim(p, R)
+            except Exception as e:  # a file that cannot be read is not judged here (the art check's other families read it)
+                continue
+            if pr and pr["fail"]:
+                bad[os.path.relpath(os.path.abspath(p), REPO)] = pr["share"]
+                if not a.json:
+                    print("FAIL  %s  pink rim %.0f%% of the soft edge (run build/tools/art/edge_bleed.py)" % (os.path.relpath(os.path.abspath(p), REPO), pr["share"] * 100))
+        if a.json:
+            json.dump(bad, open(a.json, "w") if a.json != "-" else sys.stdout, indent=1)
+            if a.json == "-":
+                print()
+        else:
+            print("pink rim: %d cut-out(s) fail" % len(bad))
+        return 1 if bad else 0
     if a.swatch:
         n = len(combos()[a.combination]) if a.combination is not None else len(house(R))
         print("wrote %s: %d %s colours" % (swatch(a.swatch, R, combo=a.combination), n, "house" if a.combination is None else "combination %d" % a.combination))

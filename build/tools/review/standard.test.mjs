@@ -10,7 +10,7 @@ import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import {
   parseStandardText, parseStandardDir, parseCheckedBy, parseChecksOutput, parseAuditReport, parseAuditRows, mergeAuditRows, loadContract, auditRules, scopesFor, flowIsGame, countBy, renderReport,
-  TOOL_STEP, EXTRA_STEPS, JUDGE_TOOLS, PROCESS_TOOLS, DEFAULT_STEPS, ALL_STEPS,
+  TOOL_STEP, EXTRA_STEPS, JUDGE_TOOLS, PROCESS_TOOLS, RETIRED_TOOLS, DEFAULT_STEPS, ALL_STEPS,
 } from "./lib/standard.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -200,12 +200,15 @@ test("a process tool reads judge with its name, never not run", () => {
 
 test("a review tool the audit did not run is not run, and names the --only key that runs it", () => {
   const first = (tool, game = "chai-tray") => toolAudit(game, `tool:${tool}`, null).terms[0];
-  for (const [tool, key] of [["voicegate", "voicegate"], ["spkgap", "spkgap"], ["lightfollow", "lightfollow"], ["faces", "faces"], ["tapgate", "tapgate"], ["pillcheck", "pillcheck"], ["panelcheck", "panel"], ["loadtime", "load"], ["layout", "sandbox"]]) {
+  for (const [tool, key] of [["voicegate", "voicegate"], ["spkgap", "spkgap"], ["faces", "faces"], ["tapgate", "tapgate"], ["pillcheck", "pillcheck"], ["panelcheck", "panel"], ["loadtime", "load"], ["layout", "sandbox"]]) {
     const t = first(tool);
     assert.equal(t.result, "not run", tool);
     assert.equal(t.note, `run: audit.mjs chai-tray --only ${key}`);
   }
-  assert.equal(first("lightfollow", "daar").note, "run: audit.mjs daar --only lightfollow");
+  assert.equal(first("spkgap", "daar").note, "run: audit.mjs daar --only spkgap");
+  // a retired tool (s19-checks-2: lightfollow) reads judge, with why: never "the audit has no step for it"
+  assert.equal(first("lightfollow").result, "judge");
+  assert.match(first("lightfollow").note, /retired/);
 });
 
 test("a review tool the audit ran reads its pass or fail; a tool that cannot judge the game yet reads judge with why", () => {
@@ -244,11 +247,11 @@ test("the audit refuses an unknown --only key or --steps value before it plays a
   assert.equal(steps.status, 2); assert.match(steps.stderr, /--steps takes "all"/);
 });
 
-test("every tool the standard's pages cite has a place: run by the audit, judge, or process (none says 'no step')", () => {
+test("every tool the standard's pages cite has a place: run by the audit, judge, process or retired (none says 'no step')", () => {
   const { rules } = parseStandardDir(join(ROOT, "docs", "design-language", "standard"));
   const cited = new Set(rules.flatMap((r) => r.checkedBy.filter((t) => t.kind === "tool").map((t) => t.ref)));
   assert.ok(cited.size > 10, "the standard cites tools");
-  const known = new Set([...Object.keys(TOOL_STEP), ...Object.keys(EXTRA_STEPS), ...Object.keys(JUDGE_TOOLS), ...Object.keys(PROCESS_TOOLS)]);
+  const known = new Set([...Object.keys(TOOL_STEP), ...Object.keys(EXTRA_STEPS), ...Object.keys(JUDGE_TOOLS), ...Object.keys(PROCESS_TOOLS), ...Object.keys(RETIRED_TOOLS)]);
   assert.deepEqual([...cited].filter((t) => !known.has(t)), []);
-  for (const f of [...Object.values(EXTRA_STEPS).map((x) => x.file), ...Object.values(JUDGE_TOOLS).map((x) => x.file), ...Object.values(PROCESS_TOOLS)]) assert.ok(existsSync(join(ROOT, f)), `${f} exists`);
+  for (const f of [...Object.values(EXTRA_STEPS).map((x) => x.file), ...Object.values(JUDGE_TOOLS).map((x) => x.file), ...Object.values(PROCESS_TOOLS), ...Object.values(RETIRED_TOOLS).map((x) => x.file)]) assert.ok(existsSync(join(ROOT, f)), `${f} exists`);
 });
