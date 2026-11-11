@@ -8,7 +8,7 @@
 // Run: node --test build/sandbox/shared-checks.test.mjs  (python3 with numpy, Pillow and scipy for the light pictures)
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cpSync, mkdtempSync, existsSync, readdirSync } from "node:fs";
+import { cpSync, mkdtempSync, existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -122,4 +122,24 @@ test("contract-116: the current card cut just after a tick, before the row moves
   const run = (moveAt) => analyse({ flow: "cook:chai-tray", size: "1280x665", t0: 0, ms: 9000, states: [], timeline: [c(0, "stage", { key: "cook:station1:marble" }), c(100, "s19pad", { box: [10, 88, 334, 362], row: [19, 149.5, 325.5, 353], cards: cards(0) }), c(2000, "s19tick", { id: "cook-dudh", row: 1, done: 1 }), c(2187, "s19pad", { box: [10, 88, 334, 362], row: [19, 149.5, 325.5, 353], cards: cards(1) }), c(moveAt, "s19row", { x: 180, w: 115, n: 4, vis: 1 }), c(moveAt + 74, "s19pad", { box: [10, 88, 334, 362], row: [19, 149.5, 325.5, 353], cards: cards(1).map((x) => ({ ...x, box: [x.box[0] - 57, x.box[1], x.box[2] - 57, x.box[3]], in: [x.in[0] - 57, x.in[1], x.in[2] - 57, x.in[3]] })) })] }, { root: ROOT, lexicon: new Set(), numbers: new Set() }).filter((b) => b.check === "contract-116" && /current/.test(b.measured));
   assert.equal(run(3488).length, 0, "the row moved on 1.3 s after the tick");
   assert.equal(run(6000).length, 1, "the row left it cut for 4 s");
+});
+
+// ---- 112: an item changing its own picture in place (the egg browning in its pan). No run of this session caught such a light (only
+// a page's first lights are kept), so it is chai's good light 01 at 1280x665 (bad-runs library, real pictures) with its record changed
+// to say so: the thing under the light had another picture, at the same place, when the light came. The old judge failed it ("came
+// into it"); the same record with that picture elsewhere still fails. ----
+test("contract-112: a thing that changed its picture where it stands has not come in; one that was elsewhere still has", () => {
+  const src = join(HERE, "fixtures", "bad-runs", "pages", "cook-chai-tray-speed1@1280x665", "lights", "01");
+  const judge = (shift) => {
+    const tmp = mkdtempSync(join(tmpdir(), "inplace-"));
+    cpSync(src, tmp, { recursive: true });
+    const f = join(tmp, "light.json");
+    const d = JSON.parse(readFileSync(f, "utf8"));
+    for (const w of d.objs0.words) if (w.id === "cook-paani") { w.id = "eg-raw"; w.key = "eg-raw"; w.pic = w.pic.map((v, i) => (i % 2 ? v : v + shift)); }
+    writeFileSync(f, JSON.stringify(d));
+    return judgeDirs([tmp], { rejudge: true })[tmp];
+  };
+  const inPlace = judge(0);
+  assert.ok(inPlace.ok, (inPlace.fails || []).join(" | "));
+  assert.match((judge(150).fails || []).join(" | "), /came into it/);
 });
