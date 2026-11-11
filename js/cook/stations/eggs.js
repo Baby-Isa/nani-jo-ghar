@@ -181,7 +181,16 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // first egg holds in the middle of its green until it is lifted (js/cook/station-lib.js St.firstHold)
     const hold14 = St.firstHold(ctx, "eggs:lift");
     const sc = SCENE();
-    await St.loadArt(S, ART(K).concat(...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
+    // (s19-games-2, contract-37: the shelf's decoys by the levels table, data/rules.json: 1-4, one a lookalike at L4 (the sugar by the
+    // salt), from the settings' pool of chai's side-on jars with a recorded word; each a gentle no when tapped)
+    const shelfWants = ["n.egg"].concat(K.shakers ? ["spi-16", "spi-11"] : []);
+    const pool = ((SET().decoys || {}).pool || []).filter((id) => Cook.Art && Cook.Art.refUrl(`${id}.shelf`));
+    // (a shaker no plate's order names, yes or no, stands as one of them: it counts)
+    const unasked = K.shakers ? ["salt", "pepper"].filter((f) => !plates.some((q) => q[f] === "yes" || q[f] === "no")).length : 0;
+    const row = Cook.levelRow ? Cook.levelRow(level) : { decoys: level };
+    const decoyIds = St.tableDecoys && pool.length ? St.tableDecoys(pool, shelfWants, level, { n: Math.max(0, (row.decoys || 0) - unasked), also: unasked, what: KEY }) : [];
+    const decoyArt = decoyIds.map((id) => [`eg-dec-${id}`, Cook.Art.refUrl(`${id}.shelf`)]);
+    await St.loadArt(S, ART(K).concat(decoyArt, ...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
     await St.begin(S, ctx, KEY, "marble");
     const objs = [];
     const T = (o) => (objs.push(o), S.track(o));
@@ -276,6 +285,12 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const things = [];
     const PILL_SLOT = 180; // (the things stand 200 apart: a pill's tap area at most its slot)
     const STEP = sc.bandStep || 200;
+    // (the things' pitch: STEP, closer where the decoys make the row longer than the band's width)
+    const bandView = () => {
+      const V = Cook.view || {};
+      return [Math.max(40, (V.left != null ? V.left : 0) + 24), Math.min(1560, (V.right != null ? V.right : 1600) - 24)];
+    };
+    const step = () => Math.min(STEP, (bandView()[1] - bandView()[0]) / Math.max(1, things.length));
     const chip = (id, x) => {
       const c = SH.P.chip(S, x, chipY, Cook.display(id), {
         word: Cook.chipWord ? Cook.chipWord(id, ctx) : true,
@@ -307,10 +322,28 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       shakers["spi-16"] = { id: "spi-16", c: onBand("shakerSalt", "spi-16") };
       shakers["spi-11"] = { id: "spi-11", c: onBand("shakerPepper", "spi-11") };
     }
+    // the decoys, each in a random place among the shelf's things (a decoy never stands apart)
+    decoyIds.forEach((id) => {
+      if (!S.textures.exists(`eg-dec-${id}`)) return;
+      const d = onBand(`dec-${id}`, id);
+      things.splice(things.indexOf(d), 1);
+      things.splice(Math.floor(Math.random() * (things.length + 1)), 0, d);
+      S.tappable(d, () => {
+        began();
+        if (finished) return;
+        S.wiggle(d);
+        Cook.sfx.soft();
+        z.listen(false, `took ${id}, not asked`);
+        Cook.Coach.wrong();
+      });
+    });
     const fitBand = () => {
-      const mid = hob.x + hob.w / 2;
+      // (under the hob, as before; a row too long for that is held inside the view that shows)
+      const half = ((things.length - 1) / 2) * step() + step() / 2;
+      const [vl, vr] = bandView();
+      const mid = Math.max(vl + half, Math.min(vr - half, hob.x + hob.w / 2));
       things.forEach((img, i) => {
-        const x = mid + (i - (things.length - 1) / 2) * STEP;
+        const x = mid + (i - (things.length - 1) / 2) * step();
         img.x = x;
         img.chip.x = x;
       });
@@ -334,7 +367,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           // shelf thing, its size class (St.classFit: the band's room with the hop kept, the class's share, the floor on screen), as
           // chai's jars; its picture's clear foot on the shelf's line
           const foot = 16 / Math.max(1, img.height);
-          const f = St.classFit ? St.classFit(S, tex(img.k), img.wordId, { base: band.base, ppw, slotW: STEP - 8 }) : null;
+          const f = St.classFit ? St.classFit(S, tex(img.k), img.wordId, { base: band.base, ppw, slotW: step() - 8 }) : null;
           if (f && f.scale) img.setScale(f.scale);
           else {
             const want = (ITEM(img.k).drawn || {}).h || 118;
@@ -556,7 +589,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // (a thing's glow lasts exactly as long as the kit's light round it, and never without one: contract-102)
     // (s19-games-2, contract-107: a shelf thing hops as its light comes, even before the light's handle is there; it goes with the light)
     const glowWith = (o, h) => {
-      if (!Cook.Coach.onShelf(o)) return glowObj === o && glowOn(null);
+      if (!things.includes(o)) return glowObj === o && glowOn(null);
       glowOn(o);
       if (h && h.done) h.done.then(() => glowObj === o && glowOn(null));
     };

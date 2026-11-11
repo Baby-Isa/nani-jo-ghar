@@ -616,7 +616,20 @@
   "assets/cook/items/v4/eggs/boiled-firm-a.webp",
   "assets/cook/items/v4/eggs/boiled-firm-b.webp",
   "assets/cook/items/v4/eggs/boiled-over-a.webp",
-  "assets/cook/items/v4/eggs/boiled-over-b.webp"
+  "assets/cook/items/v4/eggs/boiled-over-b.webp",
+  "assets/cook/items-s17-stove/f-sugar-jar.webp",
+  "assets/cook/items-s17-stove/f-milk-carton.webp",
+  "assets/cook/items-s17-stove/f-chapati-flour-atta.webp",
+  "assets/cook/items-s17-stove/f-tea-jar.webp"
  ],
- "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic, cardOfIds): one card per egg (CK-64), the fried egg (v4 egg-cooked) for 'tarelo indo', a boiled egg's soft half (v4 boiled-soft-a, s19-games-2) for 'boiled egg', the whole egg (v4 egg-whole) for 'indo'"
+ "_card": "CK-62, SH-242 (Sprint 19): an item's 'card' is its order card's picture (js/cook/ui.js cardPic, cardOfIds): one card per egg (CK-64), the fried egg (v4 egg-cooked) for 'tarelo indo', a boiled egg's soft half (v4 boiled-soft-a, s19-games-2) for 'boiled egg', the whole egg (v4 egg-whole) for 'indo'",
+ "decoys": {
+  "pool": [
+   "cook-khun",
+   "cook-dudh",
+   "cook-atto",
+   "cook-chai"
+  ],
+  "_note": "s19-games-2 (contract-37, the levels table, data/rules.json levels.decoys 1-4, a lookalike at L4): chai's side-on jars with a recorded word stand among the egg box and the shakers, each a gentle no when tapped; the sugar is the salt's lookalike (data/cook.json lookalikes). Their pictures: data/cook.json art.sprites.shelf"
+ }
 }
