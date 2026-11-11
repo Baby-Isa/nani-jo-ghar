@@ -363,6 +363,11 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       .concat(St.artLoad(["knife", "daar-bowl", "daar-trivet"])); // S02-B: the art run's knife and split bowl/trivet, once they land
     // (chop's settings, its rounds and knobs by level, read before Nani's card is drawn)
     await Promise.all([St.loadArt(S, art), Cook.Chop ? Cook.Chop.settings().catch(() => null) : null]);
+    // SH-259 (Zafar, 10 Nov: one chop): daar's chop is chop's own game, its board, band, knife, pieces and light (Cook.Chop.play draws
+    // them); its pictures are loaded here while the order is read, so the board never comes up bare. CK-79: the same onion on the card
+    // (data/stations/daar.json items, role chop) as on chop's band and board
+    const chopArt = Cook.Chop && Cook.Chop.pictures ? Cook.Chop.pictures((((Cook.data && Cook.data.settings) || {}).chop) || {}, kinds, true) : null;
+    if (chopArt) await St.loadArt(S, chopArt.load).catch(() => {});
 
     /*
      * Decision 51 (CK-23, DAAR-09): a mistake redoes only that step, never the whole game. A wrong chop count chops
@@ -636,6 +641,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       img.chip = chip;
       items[id] = img;
     });
+    // SH-255: the pills at chai's size on screen (the kit's fitPills, chai's rule), not the zone's scale
+    if (Cook.Kit.fitPills) Cook.Kit.fitPills(S, Object.values(items).map((o) => o.chip), { slotW: z.L(pitch - 12), y: z.Y(CHIP_Y), bottom: z.Y(896), hit: false });
     return items;
   }
 
@@ -657,7 +664,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   async function chop(z, { want, kinds, no, pool, level, retry, nani, side }) {
     const S = z.S;
     const ctx = z.ctx;
-    backdrop(z, S);
+    // (SH-259: the scene is chop's own, drawn by Cook.Chop.play: the worktop, its stone band and its board)
     const C = SC().side.counter;
     const rows = []; // the vegetables in the order their first piece arrived (one row each)
     const piles = {}; // id -> the pile images
@@ -705,12 +712,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     };
     Cook.daarPhase = "chop"; // (for build/shoot_daar_v3.py: which state is on screen)
     // the chop mechanic itself (its levels, decoys and ring); Nani says what to chop (the number always said)
-    // DAAR-13 (D10): the margin-safe knife (the art run's when it lands), whose blade cuts too
-    const knifeKey = St.hasArt(S, "knife") ? St.artKey("knife") : "dv2-knife";
-    const blade = (St.hasArt(S, "knife") && (St.art("knife").meta || {}).blade) || KNIFE_BLADE;
     // Sprint 18 (wave 2): chop's own game (Cook.Chop.play, js/cook/stations/chop.js) at its settings for the level, graded there; daar
-    // keeps the pieces flying to the side (onSlice, KEEP-02) and Nani's card (onCall, onCount). Was the mechanic run here, graded here
-    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, knifeKey, blade, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false, timer: SC().chopTimer, band: { base: BASE, chipY: CHIP_Y } });
+    // keeps the pieces flying to the side (onSlice, KEEP-02) and Nani's card (onCall, onCount). SH-259 (Zafar, 10 Nov: one chop): daar
+    // tells chop only what to chop and what it hears back; the zone's scene, knife, ring, band, pieces and light are chop's own
+    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false });
     const cut = r.cut;
     const wrong = r.wrong;
     // (a sliced decoy falls away: it never reaches the pot; a count short marks its row on the order card, the first try's)

@@ -270,7 +270,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (quiet == null || Date.now() - quiet < R.pointAfterMoveMs() / sp) return void setTimeout(go, 60);
       const el = document.querySelector("#mission .oc-card");
       if (!el) return;
-      const h = Onboard.light(el, { look: "", pad: 4, pass: true });
+      const h = Onboard.light(el, { look: "", pad: 4, kit: true, pass: true });
       try {
         if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("rung", { step: `${obId(key)}:s14-card`, rung: 0, coach: true });
       } catch (e) {
@@ -676,9 +676,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   again), key (the game's key: the light's log step "<key>:s14-control"), note}.
    * -> handle {close(), rush(), lit() (the light up now, or null)}
    */
+  // SH-257: a game's own shape or margin for the kit's light is refused by the shared light's variant rule (Onboard.lightAsk: a warning,
+  // the light the kit's own); the kit's calls carry {kit: true}
+  const asks = (o) => {
+    const Onboard = OB();
+    if (Onboard && Onboard.lightAsk && (o.round != null || o.pad != null || o.shape != null || o.region != null)) Onboard.lightAsk({ round: o.round, pad: o.pad, shape: o.shape, region: o.region }, o.key || null);
+  };
   C.control = function (o = {}) {
     const Onboard = OB();
     if (!Onboard || !Onboard.light || !o.target) return null;
+    asks(o);
     const UI = Cook.UI || {};
     const W = Onboard.WAIT || { breathMax: 3000 };
     const step = o.note != null ? String(o.note) : `${o.key || "kit"}:s14-control`;
@@ -710,7 +717,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
     const light = (rung) => {
       if (lit) lit.close();
-      lit = Onboard.light(o.target, { look: "glow", pad: o.round ? 2 : 4, round: !!o.round, pass: true, live: [o.target].concat(o.also ? [o.also] : []) });
+      lit = Onboard.light(o.target, { look: "glow", pad: 4, kit: true, pass: true, live: [o.target].concat(o.also ? [o.also] : []) });
       note("rung", { step, rung, coach: rung === 0 });
       if (o.onLight) o.onLight(true, rung);
     };
@@ -733,7 +740,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (!cur()) return let_go();
       if (still()) quiet = quiet == null ? Date.now() : quiet;
       else quiet = null;
-      if (pauseMs && (quiet == null || Date.now() - quiet < pauseMs / speed()) && Date.now() - t0 < W.breathMax / speed()) return void (timer = setTimeout(go, 60));
+      // SH-253 (the eye judge, 10 Nov: the plate lit while the egg, the garlic or the pepper still flew to it): the light waits for the
+      // stage to be still (nothing of the game's in flight), then the breath (pauseMs) if it has one; never longer than breathMax
+      if ((quiet == null || (pauseMs && Date.now() - quiet < pauseMs / speed())) && Date.now() - t0 < W.breathMax / speed()) return void (timer = setTimeout(go, 60));
       if (!o.first) {
         let_go();
         if (o.noHint) return;
@@ -772,14 +781,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const W = (Onboard && Onboard.WAIT) || { nextVessel: 800, nextLit: 5000 };
     let t = 0;
     let lit = null;
+    asks(o);
     const fire = () => {
       if (!Onboard || !Onboard.light || !o.target) return;
       if (o.ok && !o.ok()) return;
-      lit = Onboard.light(o.target, { look: "glow", pad: o.pad != null ? o.pad : 2, pass: true, ms: (o.litMs != null ? o.litMs : W.nextLit) / speed(), quitIf: o.quitIf, note: o.note });
+      lit = Onboard.light(o.target, { look: "glow", pad: 2, kit: true, pass: true, ms: (o.litMs != null ? o.litMs : W.nextLit) / speed(), quitIf: o.quitIf, note: o.note });
       note("next-pan", { step: o.who != null ? String(o.who) : "", by: "light" });
     };
-    if (o.now) fire();
-    else t = setTimeout(fire, (o.delayMs != null ? o.delayMs : W.nextVessel) / speed());
+    // (SH-253: never while a thing of the game's is still in flight: it waits for the stage to be still, up to breathMax)
+    const t0 = Date.now();
+    const stillThenFire = () => {
+      let busy = false;
+      try {
+        const S = Cook.scene;
+        busy = !!(S && S.tweens && S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite));
+      } catch (e) {
+        busy = false;
+      }
+      if (busy && Date.now() - t0 < ((W.breathMax || 3000) / speed())) return void (t = setTimeout(stillThenFire, 60));
+      fire();
+    };
+    if (o.now) stillThenFire();
+    else t = setTimeout(stillThenFire, (o.delayMs != null ? o.delayMs : W.nextVessel) / speed());
     return {
       cancel: () => clearTimeout(t),
       stop() {
@@ -864,7 +887,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const r = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
           return r && r.width ? { x: r.left, y: r.top, w: r.width, h: r.height } : null;
         };
-        const h = Onboard.light(lit, { look: "", pad: 4, pass: true, ms: (R ? R.pointMs() : 0) / speed(), quitIf: endIf, note: o.note, box: onItem ? cardBox : undefined });
+        const h = Onboard.light(lit, { look: "", pad: 4, kit: true, pass: true, ms: (R ? R.pointMs() : 0) / speed(), quitIf: endIf, note: o.note, box: onItem ? cardBox : undefined });
         h.done.then(() => res(true));
       };
       go();

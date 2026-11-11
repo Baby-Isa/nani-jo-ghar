@@ -17,8 +17,8 @@
   }
  },
  "scene": {
-  "_about": "Sprint 18 (wave 2, STD-F2-03: a game's own numbers in its settings file): where daar's things stand, in design px on the 1600x900 grid (js/cook/stations/daar.js reads them as SC()). side: where the chopped pieces wait, counter while chopping (one row per vegetable, right to left from x), cook beside the hob (centred on x); pile: one piece's heap; chopTimer: chop's ring on the board; plainBowl: the plain daar on its trivet, waiting to pour (w: its round body); dial: the stir's speed dial's centre; serveBowl: the served bowl (w: its picture's width) and the review face over it; pop: the word pop's place from the pot's right rim (dx) and its centre (dy); pourMs: the daar's pour, each phase (the shared pour, SH-117).",
-  "side": {"counter": {"x": 1395, "y": 120, "row": 112}, "cook": {"x": 330, "y": 190, "row": 140}},
+  "_about": "Sprint 18 (wave 2, STD-F2-03: a game's own numbers in its settings file): where daar's things stand, in design px on the 1600x900 grid (js/cook/stations/daar.js reads them as SC()). side: where the chopped pieces wait, counter while chopping (one row per vegetable, right to left from x; SH-259, 10 Nov: left of chop's own board, under its ring, clear of the board and the knife), cook beside the hob (centred on x); pile: one piece's heap; chopTimer: chop's ring on the board; plainBowl: the plain daar on its trivet, waiting to pour (w: its round body); dial: the stir's speed dial's centre; serveBowl: the served bowl (w: its picture's width) and the review face over it; pop: the word pop's place from the pot's right rim (dx) and its centre (dy); pourMs: the daar's pour, each phase (the shared pour, SH-117).",
+  "side": {"counter": {"x": 250, "y": 262, "row": 104}, "cook": {"x": 330, "y": 190, "row": 140}},
   "pile": 96,
   "chopTimer": {"x": 130, "y": 130},
   "plainBowl": {"x": 1250, "y": 330, "w": 230},
@@ -39,9 +39,15 @@
   "bowl-lal-marcha": {"word": "spi-04", "card": "assets/cook/items/v4/daar/lal-marcha.webp", "view": "T", "role": "tray"},
   "bowl-lasan": {"word": "veg-13", "file": "assets/cook/items/v4/daar/lasan.webp", "view": "T", "role": "tray"},
   "bowl-lila-marcha": {"word": "veg-12", "file": "assets/cook/items/v4/daar/lila-marcha.webp", "view": "T", "role": "tray"},
-  "bowl-elchi": {"word": "spi-10", "card": "assets/cook/items/v4/daar/elchi.webp", "view": "T", "role": "tray"}
+  "bowl-elchi": {"word": "spi-10", "card": "assets/cook/items/v4/daar/elchi.webp", "view": "T", "role": "tray"},
+  "_chop": "CK-79 (the eye judge, 10 Nov: a golden onion on the card, a red one on the board): what daar's chop cuts shows on the order card as the chop game draws it (its whole pictures, data/stations/chop.json art), so card and board are one picture; role chop: never on the tray",
+  "chop-bataato": {"word": "veg-01", "card": "assets/cook/items/v4/chop/bataato-whole.webp", "view": "T", "role": "chop"},
+  "chop-dungri": {"word": "veg-02", "card": "assets/cook/items/v4/chop/dungri-whole.webp", "view": "T", "role": "chop"},
+  "chop-tameto": {"word": "veg-03", "card": "assets/cook/items/v4/chop/tameto-whole.webp", "view": "T", "role": "chop"},
+  "chop-marcha": {"word": "veg-12", "card": "assets/cook/items/v4/chop/marcha-whole.webp", "view": "T", "role": "chop"},
+  "chop-adu": {"word": "veg-14", "card": "assets/cook/items/v4/chop/adu-whole.webp", "view": "T", "role": "chop"}
  },
- "assets": ["assets/cook/items-s17-stove/t-small-glass-bowl.webp", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp", "assets/cook/items/v4/daar/*", "assets/cook/items/v4/kit/ladle.webp"],
+ "assets": ["assets/cook/items-s17-stove/t-small-glass-bowl.webp", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp", "assets/cook/items/v4/daar/*", "assets/cook/items/v4/kit/ladle.webp", "assets/cook/items/v4/chop/*"],
  "_assets": "S19 (decision 68, loadcheck): the pictures daar loads beyond data/cook.json art.assets.stations.daar: the chopped heaps' glass bowls and the serving katori; S19 wave A: the eight cream bowls on the stone tray (v4/daar) and the kit's ladle (v4/kit/ladle)",
  "mechanic": {
   "levels": [

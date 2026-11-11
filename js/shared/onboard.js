@@ -941,10 +941,12 @@
         // shelf pill on the play area's foot at 740x320 had its box's foot 1 px over the pill, short of the edge
         if (b) {
           const m = 1;
-          const W = root.innerWidth || 1e4;
-          const H = root.innerHeight || 1e4;
-          const x = Math.max(m, b.x);
-          const y = Math.max(m, b.y);
+          // (SH-257: a variant's bounds, the play area beside the side panel: its box stops at them as at the screen's edge)
+          const wi = o.within && o.within.w > 0 ? o.within : null;
+          const W = Math.min(root.innerWidth || 1e4, wi ? wi.x + wi.w : 1e4);
+          const H = Math.min(root.innerHeight || 1e4, wi ? wi.y + wi.h : 1e4);
+          const x = Math.max(m, wi ? wi.x + m : 0, b.x);
+          const y = Math.max(m, wi ? wi.y + m : 0, b.y);
           const w = Math.min(b.x + b.w, W - m) - x;
           const h = Math.min(b.y + b.h, H - m) - y;
           // (a target wholly off the screen, mid-move: no box until it is back)
@@ -1811,8 +1813,10 @@
       }
       // (SH-230: every thing's box by the one rule, Onboard.litBox; a caller's own pad only for a pan's rim circle, CHAI-68, or a part
       // of a card drawn by o.box, SH-213: shapes that are not a thing with a picture and a pill)
-      const tight = o.round || ob ? o.pad : null;
-      shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, tight, round: !!o.round, rings: [], els: sp.els });
+      // (SH-257: a named variant's own margin, the swipe's, Onboard.VARIANTS; and its bounds, o.within: never over the side panel)
+      const tight = o.variant || ob ? o.pad : null;
+      const within = typeof o.within === "function" ? o.within() : o.within || null;
+      shown = light.draw(ob ? [ob] : sp.rects, { avoid: o.avoid ? rectsOf(o.avoid) : null, tight, rings: [], els: sp.els, within });
       gameLight(!layer.__buried);
       if (!sp.els.length && !layer.__buried) bounce.tick();
       raf = requestAnimationFrame(draw);
@@ -1902,6 +1906,43 @@
   };
 
   /**
+   * SH-257 (Zafar, 10 Nov: "stricter on enforcing shared elements use and exceptions can and should be added as improved and expanded
+   * rules/definitions and variations in the shared elements"): the light's named variants, each with the games it is agreed for. The
+   * light is one rounded rectangle hugging one thing by the one rule (STD-E2-08); a game may only ask for another shape, margin or
+   * region by a variant's name ({variant, game}) when that game is on its list. Anything else it passes (shape, round, pad, region,
+   * within, or a variant it is not on the list for) is refused: a console warning, a line in Onboard.refused, and the light drawn as
+   * the kit's own, unchanged. The kitchen kit's own coach (js/cook/coach.js, a shared piece) marks its calls {kit: true}.
+   *   swipe (STD-E2-08a; chop's knife cut, the variant chop's own game owns, so it is the same wherever chop runs: alone, in daar, in
+   *     chaat, in any recipe; Zafar 10 Nov, SH-259): one rounded rectangle round the knife, the item and the
+   *     path between them (the target: their page boxes), its own margin (pad), stopping at the play area (within: never over the
+   *     side panel)
+   */
+  Onboard.VARIANTS = { swipe: ["chop"] };
+  Onboard.ASKS = ["shape", "round", "pad", "region", "within"];
+  Onboard.refused = [];
+  /** A light's options with what the game may not ask for taken out (and said): -> the options the light uses. */
+  Onboard.lightAsk = function (o, game) {
+    o = Object.assign({}, o || {});
+    const by = game || o.game || null;
+    const list = o.variant != null ? Onboard.VARIANTS[o.variant] : null;
+    const ok = !!(list && by && list.includes(by));
+    const asked = Onboard.ASKS.filter((k) => o[k] != null && o[k] !== false);
+    const bad = o.variant != null && !ok ? ["variant"].concat(asked) : ok || o.kit ? [] : asked;
+    if (bad.length) {
+      const why = `${by || "a game"} asked the light for ${bad.map((k) => (k === "variant" ? `variant ${o.variant}` : k)).join(", ")}: not a named variant for it (Onboard.VARIANTS)`;
+      if (Onboard.refused.length < 50) Onboard.refused.push(why);
+      try {
+        if (root.console && root.console.warn) root.console.warn(`Onboard.light: ${why}; the kit's own light instead (SH-257)`);
+      } catch (e) {
+        /* no console */
+      }
+      bad.forEach((k) => delete o[k === "variant" ? "variant" : k]);
+    }
+    if (!ok) delete o.variant;
+    return o;
+  };
+
+  /**
    * The light (the s14 look's one lit thing; module map piece 13): Onboard.light(target, o) -> handle {close(), stop(), box(), layer,
    * done}. o (the look): {look: "glow" | "bob" | "" (the order card: no glow, no bounce), pad, round (a circle: a pan's rim), live,
    * pass (the dim blocks no tap: the child is never held), box (a function giving the box drawn round a part), zoomFrom (the whole
@@ -1913,7 +1954,7 @@
    * handle.done resolves once the light has gone, whichever way. A null target lights nothing (handle.done resolved).
    */
   Onboard.light = function (target, o) {
-    o = o || {};
+    o = Onboard.lightAsk(o || {});
     if (target == null) return { layer: null, box: () => null, close() {}, stop() {}, done: Promise.resolve() };
     // (S19, SH-236: it goes on a press inside its box, unless o.stay; a lit control with o.onTap goes on its click instead, so the tap
     // still reaches onTap; o.onPress(e) is told first, and false keeps it)
@@ -1923,7 +1964,7 @@
       if (tapEl && e && e.target && tapEl.contains(e.target)) return false;
       return true;
     };
-    const h = Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, round: !!o.round, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom, stay: !!o.stay, onPress });
+    const h = Onboard.spot(target, { look: o.look == null ? "glow" : o.look, pad: o.pad == null ? 6 : o.pad, live: o.live || target, finger: false, container: o.container, pass: !!o.pass, box: o.box, avoid: o.avoid, zoomFrom: o.zoomFrom, stay: !!o.stay, onPress, variant: o.variant, within: o.within });
     if (o.note != null) LCnote("rung", { step: String(o.note), rung: 0, coach: true });
     let gone;
     h.done = new Promise((r) => (gone = r));

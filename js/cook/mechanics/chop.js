@@ -344,8 +344,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (S.contactShadow) img.shadow = S.contactShadow(img, { centerX: img.x, centerY: z.Y(band.base - 4), width: img.displayWidth * 0.8, height: z.L(16) });
           const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(x), z.Y(band.chipY), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: 128 }) : null;
           if (chip && chip.setScale) chip.setScale(z.k);
-          shelfAt[id] = { x, y: band.base - (img.displayHeight / z.k) / 2, img };
+          shelfAt[id] = { x, y: band.base - (img.displayHeight / z.k) / 2, img, chip };
         });
+        // SH-255 (the eye judge, 10 Nov: daar's band pills about half chai's at 740x320): the pills at chai's size on screen (the kit's
+        // fitPills, chai's rule, in world px: never the zone's scale)
+        if (Cook.Kit && Cook.Kit.fitPills) Cook.Kit.fitPills(S, Object.values(shelfAt).map((o) => o.chip), { slotW: z.L(SL ? SL.slotW - 12 : 148), y: z.Y(band.chipY), bottom: z.Y(896), hit: false });
       }
 
       /*
@@ -441,14 +444,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const chips = slots.map((x) => x.chip).filter((c) => c && c.active && c.faceW);
         if (!Sh || !Sh.pillScale || !chips.length) return;
         // (the floor: the shelf's pill rule and the kitchen kit's canvas text floor, 14 CSS px on the canvas's own scale, TXT-05)
-        const want = Math.max(Sh.pillWant(ppw), Cook.Kit && Cook.Kit.textFloor ? Cook.Kit.textFloor(S, (Sh.PILL || {}).text || 25) : 1);
-        const { k: pk, cap } = Sh.pillScale(chips.map((c) => ({ x: c.x / (z.k || 1), w: c.faceW(c.showsWord) })), { want, gap: Sh.pillGap(ppw), slotW });
-        const y = Math.min(band.chipY, 896 - (((Sh.PILL || {}).h || 46) / 2) * pk);
+        const zk0 = z.k || 1;
+        const want = Math.max(Sh.pillWant(ppw / zk0), Cook.Kit && Cook.Kit.textFloor ? Cook.Kit.textFloor(S, (Sh.PILL || {}).text || 25) : 1);
+        // SH-255 (the eye judge, 10 Nov: the band's pills about half chai's at 740x320): in world px, as chai's, so a pill is chai's size
+        // on screen whatever the zone's scale (the pill's scale is never the zone's)
+        const zk = z.k || 1;
+        const { k: pk, cap } = Sh.pillScale(chips.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })), { want, gap: Sh.pillGap(ppw / zk), slotW: slotW * zk });
+        const y = z.Y(band.chipY) + Math.min(0, z.Y(896) - (((Sh.PILL || {}).h || 46) / 2) * pk - z.Y(band.chipY));
         chips.forEach((c) => {
           if (c.capW !== cap) c.face(c.showsWord, cap);
-          c.k = pk;
+          c.k = pk / zk;
           if (c.hit) c.hit(slotW);
-          c.setScale(pk * z.k).setY(z.Y(y));
+          c.setScale(pk).setY(y);
         });
       }
       // (a slot's hop: t its game seconds; up while its middle is above the band's top, on the board)
@@ -506,6 +513,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const HG = HK.hang;
         const F = HK.fall;
         slots.forEach((s) => {
+          // SH-255 (the eye judge, 10 Nov: chop's "lasan" pill sat under an empty tray once the garlic had left): a pill shows only under
+          // its item at rest in its slot; it fades while the item is up, away or not yet back, and comes back with it
+          const ch = s.chip;
+          if (ch && ch.active) {
+            const home = !!(s.img && s.img.active && s.img.visible !== false && !s.hop && !(s.refill > 0));
+            const a = ch.alpha + ((home ? 1 : 0) - ch.alpha) * Math.min(1, dt * 12);
+            ch.setAlpha(Math.abs(a - (home ? 1 : 0)) < 0.02 ? (home ? 1 : 0) : a);
+          }
           if (s.refill > 0) {
             s.refill -= dt;
             if (s.refill <= 0) {
@@ -641,6 +656,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const cy = z.Y(c.y) - ox * 0.6;
           // (half-a's middle left of the gap by its own half width, half-b's right by its own)
           to = { k, xs: [cx - z.L(gap) / 2 - (A.w * k) / 2, cx + z.L(gap) / 2 + (Bs.w * k) / 2], y: cy };
+          // (where the cut pieces rest, world px: the game's well done shows them with their asker, CK-78)
+          (z.cuts = z.cuts || []).push({ x: to.xs[0] - (A.w * k) / 2, y: cy - (Math.max(A.h, Bs.h) * k) / 2, right: to.xs[1] + (Bs.w * k) / 2, bottom: cy + (Math.max(A.h, Bs.h) * k) / 2 });
         }
         [P.a, P.b].forEach((key, side) => {
           const d = side ? 1 : -1;
@@ -686,6 +703,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* ---------- the countdown ring (on the board, never over the throws) ---------- */
       const T = Object.assign({ x: 118, y: 124, r: 70, warn: 3 }, k.timer || {}, timer || {});
+      // CK-78 (the eye judge, 10 Nov: a count chip hidden under the settings gear at the first move): the count sits on the tool in use
+      // (SH-39, UI.tallyAt), here just under the ring, never in the corner the gear holds
+      if (tally && UI.tallyAt) UI.tallyAt([z.X(T.x), z.Y(T.y) + z.L(T.r) + z.L(34)]);
       const ring = S.track(S.add.graphics().setDepth(D.item + 1));
       let left = total; // seconds left on the ring
       let lastTick = Math.ceil(left);
@@ -1153,25 +1173,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const kb = () => knife.getBounds();
         // twice the knife's height, never more than 45% of the board
         const half = () => Math.min(z.L(900) * 0.225, Math.max(z.L(90), kb().height));
-        const left = () => Math.max(z.X(0), Cook.view ? Cook.view.left : z.X(0));
-        const right = () => Math.min(z.X(1600), Cook.view ? Cook.view.right : z.X(1600));
-        const rect = () => {
-          const a = UI.worldToScreen(left(), z.Y(SY) - half());
-          const b = UI.worldToScreen(right(), z.Y(SY) + half());
-          return [a.x, a.y, b.x - a.x, b.y - a.y];
-        };
-        const light = OB.light(rect, { live: [], pad: 0, note: "chop:s14-strip" });
-        // the finger on the handle (the knife's lower right, its blade and tip clear: DAAR-13, s08 w8A)
-        let fpt = null;
-        const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
-        const hold = () => (fpt = UI.worldToScreen(knife.x + z.L(40), knife.y + z.L(20)));
         const wait = (ms) => new Promise((r) => S.time.delayedCall(ms, r));
         const tween = (cfg) => new Promise((r) => S.tweens.add(Object.assign({}, cfg, { onComplete: r })));
         const x0 = z.X(1440);
-        const x1 = z.X(160);
-        // the knife to the strip's right end, the finger takes it
-        await tween({ targets: knife, x: x0, y: z.Y(SY), duration: 320, ease: "Sine.easeInOut", onUpdate: hold });
-        // the planted vegetable (one she asked for) jumps up into the strip; it is cut, never counted
+        // (the kit's finger holds the knife's handle once the light is on: the knife's lower right, its blade and tip clear: DAAR-13)
+        let fpt = null;
+        const hold = () => (fpt = UI.worldToScreen(knife.x + z.L(40), knife.y + z.L(20)));
+        // the planted vegetable (one she asked for) comes up into the strip; it is cut, never counted
         // (S19, CK-71: on the hop it is the thing's own slot item, hopping straight up from the band, never from off the board)
         const own = HOP ? slots.find((s) => s.id === ids[0] && s.img && s.img.active) : null;
         const ob = own ? own.img.getBounds() : null;
@@ -1179,6 +1187,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const veg = S.track(S.add.image(at, own ? ob.centerY : z.Y(990), texFor(ids[0])).setDepth(D.item + 2.5));
         veg.wordId = ids[0];
         const vs = S.fitScale(veg.texture.key, z.L(size), z.L(size));
+        // SH-253, SH-257 (the eye judge, 10 Nov: the garlic flew in through the lit box; daar's onion faded up through it, the light
+        // a band of bare worktop for half a second): the knife goes to the strip's right end and the vegetable comes up into it FIRST,
+        // and only then the light, round the three of them
         if (own) {
           own.img.setVisible(false);
           veg.setScale(own.scale);
@@ -1186,8 +1197,35 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else {
           veg.setScale(vs);
           veg.setAlpha(0);
-          S.tweens.add({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 760, ease: "Sine.easeOut" });
+          S.tweens.add({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 520, ease: "Sine.easeOut" });
         }
+        await tween({ targets: knife, x: x0, y: z.Y(SY), duration: 320, ease: "Sine.easeInOut", onUpdate: hold });
+        await wait(240);
+        // the knife's path ends just past the vegetable (it cuts it as it crosses, then stops), so the box holds the whole move
+        const x1 = Math.max(z.X(160), veg.x - veg.displayWidth * 0.5 - z.L(40));
+        const kHalf = kb().width / 2;
+        // STD-E2-08a (Zafar, 10 Nov: "the whole horizontal path needs lighting"), the shared light's swipe variant (Onboard.VARIANTS:
+        // chop's own, the same wherever chop runs, SH-259): one rounded rectangle round the knife where it starts, the vegetable and the path to where the knife stops;
+        // never over the side panel (within: the play area, Cook.view.left to the screen's right)
+        const vb = veg.getBounds(); // (where it waits to be cut: the box keeps its place as it is cut and goes)
+        const swipeBox = () => {
+          if (!knife.active) return null;
+          const kbx = kb();
+          const yc = z.Y(SY);
+          const top = Math.min(yc - half() * 0.75, vb ? vb.y : yc, kbx.y);
+          const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom);
+          const a = UI.worldToScreen(x1 - kHalf, top);
+          const b = UI.worldToScreen(Math.max(x0 + kHalf, kbx.right), bot);
+          return [[a.x, a.y, b.x - a.x, b.y - a.y]];
+        };
+        const within = () => {
+          const lx = UI.worldToScreen(Math.max(z.X(0), Cook.view ? Cook.view.left : z.X(0)), 0).x;
+          const W = global.innerWidth || 1e4;
+          return { x: lx, y: 0, w: W - lx, h: global.innerHeight || 1e4 };
+        };
+        const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: "chop", within, note: "chop:s14-strip" });
+        const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
+        hold();
         await wait(420);
         let cutYet = false;
         const D_MS = 1500 / slow;
@@ -1325,12 +1363,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       z.say(Lang.line("enough"), { ms: 900, caption: true }).catch(() => {});
       stop();
       offs.forEach((f) => f());
+      // (SH-255: the hops are over: every pill whose item is back in its slot shows again; one under nothing stays hidden)
+      slots.forEach((s) => {
+        const back = s.img && s.img.active && s.img.visible !== false;
+        if (s.chip && s.chip.active) S.tweens.add({ targets: s.chip, alpha: back || s.refill > 0 ? 1 : 0, duration: 220 });
+      });
       // (S19 wave B fix round: the knife goes back to its rest beside the board, never left lying on the cut pieces)
       if (knifeBack) knifeBack.remove();
       prev = null;
       if (knife.active) S.tweens.add({ targets: knife, x: knifeHome.x, y: knifeHome.y, angle: knifeAt ? knifeAt.angle || 0 : knife.angle, duration: 260, ease: "Sine.easeOut" });
       z.expect(null);
       if (tally) UI.hideCount();
+      if (tally && UI.tallyAt) UI.tallyAt(null);
       // graded now, not while you chop (so nothing tells you when to stop)
       ids.forEach((id) => {
         const c = cut[id] || 0;

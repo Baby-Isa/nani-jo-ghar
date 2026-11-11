@@ -156,6 +156,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       }
     };
     screenNote("grill");
+    // CK-80 (the eye judge, 10 Nov: "nothing shows whose cob this is until the plate scene"; chai has Nana's circle on the hob and the
+    // glass from the first frame): whose cobs these are, from the first frame, as chai's glasses: each person's face circle at the
+    // cooked tray's upper left, over its rim's edge only, in a row along its top; they go as the cobs go to their own plates
+    const trayFaces = [...new Set(people.map((q) => q.who))].map((w, i) => {
+      const fs = Math.min(84, L.tray.h * 0.3);
+      const img = T(S.add.image(L.tray.x - L.tray.w / 2 + fs * 0.35 + i * (fs + 8), L.tray.y - L.tray.h / 2 + fs * 0.35, Cook.Kit.badge(S, w)).setDisplaySize(fs, fs).setDepth(D.item + 2));
+      img.setName("corn-tray-face");
+      return img;
+    });
     const places = Math.min(4, K.slots || 3);
     const raw = [0, 1, 2, 3].map((i) => {
       const at = L.band.at(i);
@@ -172,6 +181,11 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, r[0] + Math.random() * r[1], col("smoke"), 0.45).setDepth(D.fx + 2));
       S.tweens.add({ targets: s, y: y - (sm.rise || 120), alpha: 0, scale: sm.grow || 2.2, duration: mo.smokeMs || 1300, onComplete: () => s.destroy() });
     };
+    // SH-256 (the eye judge, 10 Nov: the cob landed on the tray at a third of its grill size, lost in the tray, then grew on the plate):
+    // with one or two cobs the tray holds them lengthwise across its whole width, one above the other, as near their grill length as
+    // the tray allows; three or four keep the kit's two by two. The plate then keeps that length (cobLen below)
+    const trayLen = count <= 2 ? Math.max(L.tray.len, Math.min(L.grill.len, L.tray.w * 0.84)) : L.tray.len;
+    const trayAt = (k) => (count <= 2 ? { x: L.tray.x, y: count === 1 ? L.tray.y : L.tray.at(k ? 2 : 0).y } : L.tray.at(k));
     const cobs = []; // on the grill
     const inTray = []; // done, lying in the tray
     let made = 0;
@@ -354,9 +368,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         const k = inTray.length + lifting;
         lifting++;
         refresh();
-        const at = L.tray.at(k);
+        const at = trayAt(k);
         if (S.textures.exists(tex.done)) c.img.setTexture(tex.done);
-        await fly(() => GK.move(S, c.img, { x: at.x, y: at.y, len: L.tray.len, up: false, ms: mo.trayMs || 460 }));
+        await fly(() => GK.move(S, c.img, { x: at.x, y: at.y, len: trayLen, up: false, ms: mo.trayMs || 460 }));
         lifting--;
         inTray.push(c);
         c.img.setDepth(D.item + 0.2);
@@ -493,7 +507,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       await fly(async () => {
         await Cook.wait(mo.endHoldMs || 400);
         // the grill, the tray and the cobs left on the band go; the cooked cobs stay, to go to their plates
-        const away = [kit.grill, kit.tray].concat(onBand()).filter((o) => o && o.active);
+        // (SH-256: the tray stays under its cobs until they have gone to their plates, so no cob hangs in the air while the scene changes)
+        const away = [kit.grill].concat(onBand(), trayFaces).filter((o) => o && o.active);
         await Cook.tween(S, { targets: away, alpha: 0, duration: mo.screenMs || 380 });
         away.forEach((o) => o.destroy());
         // the six bowls on the band, each with its word pill (the shared shelf's pill, chai's floor): one row, or on a phone where the
@@ -530,9 +545,14 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             const c = inTray[i];
             q.cob = c.img;
             c.img.setDepth(D.item + 0.3);
-            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: d * (pl.cob || 0.84), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
+            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it)
+            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: Math.min(d * (pl.cob || 0.84), Math.max(trayLen, d * 0.6)), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
           })
         );
+        if (kit.tray && kit.tray.active) {
+          await Cook.tween(S, { targets: kit.tray, alpha: 0, duration: mo.screenMs || 380 });
+          kit.tray.destroy();
+        }
       });
       screen = 2;
       active = 0;
@@ -692,7 +712,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     plates.forEach((plate, i) => S.tappable(plate, () => servePlate(i)));
 
     /* ---------------- the serve, one person at a time: the kit's tick, faces, recast and redo (decision 51) ---------------- */
-    const serve = NjgServe.for(Cook);
+    const serve = Cook.Kit.serve(); // (the kitchen's serve: NjgServe.for(Cook), its well done shown in Nani's box, SH-252)
     const rev = lay.review || {};
     const rowsOf = (q, want) => {
       const Ld = UI.mission.ladders ? UI.mission.ladders()[dish] : null;
@@ -746,7 +766,14 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           const last = i === people.length - 1;
           const praise = last && !wrong.length && people.every((x, j) => j >= i || x.right);
           q.right = !wrong.length;
-          return [await serve.review(S, { who: q.who, ok: !wrong.length, x: q.at.x - q.at.d * 0.18, y: q.at.y - q.at.d * 0.2, size, side: last && people.length > 1 ? "left" : "right", line: praise ? undefined : false })];
+          // SH-254 (the eye judge, 10 Nov: Nana's face sat on the plate over the cob): the face beside the plate, over its rim's edge
+          // only, clear of the cob, the other plates and their faces (the kit's praiseSpot, chai's corner first)
+          const cobB = q.cob && q.cob.active ? q.cob.getBounds() : null;
+          const avoid = plates.filter((p) => p !== plates[i]).map((p) => p.getBounds()).concat(people.filter((x) => x !== q && x.face).map((x) => x.face.getBounds()));
+          if (cobB) avoid.push({ x: cobB.x, y: cobB.y, right: cobB.right, bottom: cobB.bottom });
+          const V = Cook.view || {};
+          const at = Cook.Kit.praiseSpot({ x: q.at.x, y: q.at.y, w: q.at.d, h: q.at.d }, size, { avoid, view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, B.top] });
+          return [await serve.review(S, { who: q.who, ok: !wrong.length, x: at.x, y: at.y, size, side: at.side, line: praise ? undefined : false })];
         },
         oops: () => z.oops(),
         recast: async (item, rows) => {

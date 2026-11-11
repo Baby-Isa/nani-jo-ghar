@@ -296,6 +296,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       img.chip = Kit.chip(S, type, x, CHIP_Y, { word: Cook.chipWord(type, ctx), w: 188 });
       return img;
     });
+    // SH-255 (the eye judge, 10 Nov: maani's pills about half chai's at 740x320): the pills at chai's size (the kit's fitPills, chai's rule)
+    if (Kit.fitPills) Kit.fitPills(S, plates.map((p) => p.chip), { slotW: PLATE_PITCH - 12, y: CHIP_Y, bottom: 896 });
     const pileShow = (pl) => S.tweens.add({ targets: [pl, pl.shadow].filter(Boolean), alpha: pl.left > 0 ? 1 : 0, duration: 250 });
     const plateOf = (type) => plates.find((b) => b.type === type);
     const dones = {};
@@ -709,7 +711,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
      * plates; a wrong one (the other dough, the other size, one too many) is lifted off and taken away, and a missing one's row
      * opens again. The second try has help (the right pile glows); at the third wrong try for that kind the game shows the right
      * way (its pile glows, a cooked maani lands on the plate) and moves on. Only the first try is scored. */
-    const serve = NjgServe.for(Cook);
+    const serve = Cook.Kit.serve(); // (the kitchen's serve: NjgServe.for(Cook), its well done shown in Nani's box, SH-252)
     const redo = St.redo(ctx);
     let allOk = true;
     let made = {};
@@ -793,9 +795,24 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       review: async () => {
         if (ctx.closeItem) ctx.closeItem([], { all: true });
         if (settled || !who) return [];
+        // SH-254 (the eye judge, 10 Nov: Nana's face sat across the hob's edge, his hob chip and the first plate's rim and chip): the
+        // face beside the plate the maani is on, over its rim's edge only (chai's corner), standing in for that plate's own face chip
+        // (one face per person, CK-07), clear of the other plate, the piles, their pills and the hob's face and knob (Kit.praiseSpot)
         const ds = Object.values(dones);
-        const fx = ds.reduce((a, d) => a + d.x, 0) / ds.length;
-        const look = await serve.review(S, { who, ok: allOk, x: fx, y: PLATE_Y - PLATE_D * 0.5 - 70, size: 230 });
+        const dd = ds.reduce((a, d) => (d.n > a.n ? d : a), ds[0]);
+        const size = Math.round(PLATE_D * 0.66);
+        const box = (o) => (o && o.active && o.visible !== false ? o.getBounds() : null);
+        const avoid = ds
+          .filter((d) => d !== dd)
+          .flatMap((d) => [box(d.img), box(d.img.face)])
+          .concat(plates.flatMap((p) => [box(p), box(p.chip)]))
+          .concat([box(burner.face), box(burner.knob), box(hob && hob.img)])
+          .filter(Boolean);
+        const V = Cook.view || {};
+        const at = Kit.praiseSpot({ x: dd.x, y: dd.y, w: PLATE_D, h: PLATE_D }, size, { avoid, view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, 900] });
+        if (dd.img.face) dd.img.face.setVisible(false);
+        const look = await serve.review(S, { who, ok: allOk, x: at.x, y: at.y, size, side: at.side });
+        if (dd.img.face) look.close = ((c) => async () => (await c(), dd.img.face.active && dd.img.face.setVisible(true)))(look.close);
         await Cook.wait(allOk ? 300 : 900);
         return [look];
       },

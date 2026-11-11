@@ -26347,5 +26347,835 @@
    "expect": null,
    "note": "maani's look from mock 38 on the new art: the chakla the tawa's own size across (within 3%), chai's hob, the tawa's handle and the smaller turner to the bottom right, the three-ball dough heaps on the stone tray with their pills, two round brushed-steel plates each with the asker's face circle"
   }
+ ],
+ "SH-252": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "dom:#guide",
+    "crop:#side"
+   ],
+   "expect": [
+    "textMatches:(?i)shabash"
+   ],
+   "delay": 300,
+   "note": "chai: well done done, back at the counter: Nani's box reads the engine's Shabash (intj.well-done), never the last step's line"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "dom:#guide",
+    "crop:#side"
+   ],
+   "expect": [
+    "textMatches:(?i)shabash"
+   ],
+   "delay": 300,
+   "note": "chop: Nani's Shabash at the counter: her box reads it (it read 'Nindha nindha kap!' before); the same in eggs, corn, daar and maani (the contract run's flows)"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:results",
+   "after": null,
+   "capture": [
+    "dom:#guide"
+   ],
+   "expect": [
+    "!textMatches:(?i)shabash"
+   ],
+   "note": "the end screen: her box is cleared, as chai clears it"
+  }
+ ],
+ "SH-249": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "eggs L1: each first-time light is one rounded box round one thing (no circle, no ring, no box round the whole tray), whole inside the frame"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "corn L1: one box at a time round one thing (no disc over the cob, no ring on the bowl)"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "chop L1: the knife's swipe light, one rounded box round knife, garlic and path, clear of the side panel (STD-E2-08a)"
+  }
+ ],
+ "SH-250": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "eggs: the dim outside the light at chai's strength (the order card and Nani's box readable under it)"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "corn: the dim at chai's strength"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "chai: the reference dim"
+  }
+ ],
+ "SH-253": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "strip:#game:8x150"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "eggs: no light on the pan or plate while the egg flies to it"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "strip:#game:8x150"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "chop: the garlic is in place before the light, never flying in through it"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "strip:#game:8x150"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "corn: no light on the plate while the pepper flies"
+  }
+ ],
+ "SH-254": [
+  {
+   "flow": "cook:maani-line",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "maani's well done: Nana's face beside the plate, clear of the plate's chip, the hob and its chip (every line said: the panel whose line is Shabash is the praise frame)"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "corn's well done: the face beside the cob, never over it (every line said: the panel whose line is Shabash is the praise frame)"
+  }
+ ],
+ "SH-255": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "chop's tray: pills at chai's size at 740x320, each pill under its item, no pill under nothing"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "corn's band: cobs spread along it, each with its pill"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "maani's band: pills at chai's size at 740x320 (daar's in CK-79)"
+  }
+ ],
+ "SH-256": [
+  {
+   "flow": "cook:maani-line",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "maani: the bread keeps its tawa size on the plate (every line said: the panel whose line is Shabash is the praise frame)"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "corn: the cob keeps one size from grill to tray to plate (every line said: the panel whose line is Shabash is the praise frame)"
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "strip:#game:8x250"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "eggs: the whole egg turns to fried gradually in the pan, not in one snap"
+  }
+ ],
+ "SH-257": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "js:Onboard.VARIANTS",
+    "js:Onboard.refused",
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "the shared light names its variants (Onboard.VARIANTS: swipe for chop and daar only) and logs every shape, pad or region a game asked for outside them (Onboard.refused, each with a console warning, the light unchanged); chop's knife light is the swipe variant by name"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "daar's onion: the swipe variant, one rounded box round knife, onion and path, clear of the side panel, the onion in place before the light"
+  }
+ ],
+ "CK-75": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "eggs' well done: the scene fills the play area, no marble strip above it (every line said: the panel whose line is Shabash is the praise frame)"
+  }
+ ],
+ "CK-76": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "dom:#guide",
+    "crop:#side"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "eggs: Nani's box names each step from the engine (not 'Hane indo!' throughout)"
+  }
+ ],
+ "CK-77": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "eggs' carton at chai's size and place on the shelf, its light and pill whole above the frame's bottom"
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:105"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "eggs' carton's first light whole, its pill not cut"
+  }
+ ],
+ "CK-78": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "chop's well done: the chopped garlic with its asker; Nani's box with her face (every line said: the panel whose line is Shabash is the praise frame)"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "chop: the whole garlic top-down, no chip under the settings gear"
+  }
+ ],
+ "CK-79": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "crop:#side"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "daar: one onion colour on card and board; knife, bowl and pills not on each other; pills at chai's size"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "crop:#side"
+   ],
+   "expect": null,
+   "max": 10,
+   "note": "daar: the order card never cuts a row; the chopped onion not a speck beside the pot"
+  }
+ ],
+ "CK-80": [
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "crop:#side"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "corn: makai and hakro with their card and pill; the lit bowl's box not over its pill; the grill scene's face circle"
+  }
+ ],
+ "SH-259": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "js:Cook.Chop.refused"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "chop alone: its board, band, knife and the swipe light (one rounded box round knife, item and path, the item in place first)"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "js:Cook.Chop.refused"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "daar's chop: the same board, band, knife and light as chop alone, clear of the side panel; nothing refused (Cook.Chop.refused empty)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "js:Cook.Chop.refused"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "chaat's chop: the same as chop alone, the tomato in place before the light"
+  }
  ]
 }
