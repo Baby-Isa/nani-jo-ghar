@@ -15,7 +15,7 @@ node build/tools/tiers/check-push.mjs [--dry-run] [--again]
 const a = args(); help(HELP, a);
 const { dry } = common(a);
 const t = CONFIG.tiers.push;
-const steps = [{ id: "checks", what: "checks.mjs: every fast check, no browser", cmd: "node", argv: t.argv, minutes: t.minutes, blocks: true }];
+const steps = [{ id: "checks", what: "checks.mjs: every fast check, no browser", cmd: "node", argv: t.argv, minutes: t.minutes, timeoutMin: t.timeoutMin, blocks: true }];
 
 if (dry) { printPlan("check-push (tier 0)", steps, ["a pass already on record for this commit (clean tree) is reused"]); process.exit(0); }
 const sha = head();

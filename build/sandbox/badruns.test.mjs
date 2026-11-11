@@ -24,7 +24,13 @@ export const MUST = {
     maani: [/a circle|not a rounded rectangle|lights nothing|not inside the light/],
   },
   "contract-113": { corn: [/nana's face sits over/], maani: [/nana's face/], chop: [/under the page's button#side-cog/] },
+  // s19-checks-2 (the eye judge's flaws, 10 Nov; build/reports/s19-four-beside-chai.md): played at HEAD and at 3c4882609, tag s19c2
+  "contract-114": { maani: [/maani rests at .*% of its/], corn: [/cn4-\w+ rests at .*% of its/], eggs: [/eg-friedEgg-\w+ .*swapped in one frame/] },
+  "contract-115": { corn: [/the main thing gk-grill stands/] },
+  "contract-116": { corn: [/of the card is blank/], maani: [/of the card is blank/], eggs: [/of the card is blank/] },
 };
+// the checks chai, the good run, must pass wherever its page carries their probe's samples (s19-checks-2)
+export const GOOD_GREEN = ["contract-112", "contract-113", "contract-114", "contract-115", "contract-116", "contract-72", "contract-73", "contract-74", "contract-80", "contract-109"];
 const gameOf = (flow) => (/cook:([\w-]+)/.exec(flow) || [])[1].replace("-line", "");
 
 const pages = Object.entries(EXP.pages);
@@ -50,8 +56,8 @@ for (const [name, p] of pages) {
         assert.ok((red[check] || []).some((m) => re.test(m)), `${check} on ${name} no longer says ${re}: ${(red[check] || []).join(" | ").slice(0, 300)}`);
       }
     } else {
-      for (const check of ["contract-112", "contract-113"]) assert.ok(!red[check], `the good run ${name} is red on ${check}: ${(red[check] || []).join(" | ").slice(0, 300)}`);
-      assert.ok((r.lights || []).filter((l) => l.verdict && l.verdict.ok).length >= 1, "the good run's lights were judged and passed");
+      for (const check of GOOD_GREEN) assert.ok(!red[check], `the good run ${name} is red on ${check}: ${(red[check] || []).join(" | ").slice(0, 300)}`);
+      if (!/^s19c2-/.test(name)) assert.ok((r.lights || []).filter((l) => l.verdict && l.verdict.ok).length >= 1, "the good run's lights were judged and passed");
     }
   });
 }

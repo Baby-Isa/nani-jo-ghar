@@ -32,10 +32,13 @@ test("contract-113: a cover held a second is a break, once per pair; a picture p
   assert.equal(run(check113, { flow: "cook:corn" }, passing).length, 0);
 });
 
-test("no silent passes: a game missing a games.json field is named with it; a page without a check's sample says so; the summary counts", () => {
+test("no silent passes: no check waits on a games.json field (s19-checks-2); a page without a check's sample says so; the summary counts", () => {
   const r = { flow: "cook:eggs#speed1", size: "740x320", lights: [] };
   const j = pageJudged(r, [...ST, c(5, "s19lit", { holes: [] })], CHECKS);
-  assert.equal(j["contract-70"], "games.json has no slowAtGreen for eggs");
+  // (contract-70 judges every timed window from the kit's heat ring as drawn: a page with no ring sample says so)
+  assert.equal(j["contract-70"], "no s19ring on its pages");
+  assert.ok(!Object.values(j).some((why) => /games\.json/.test(why || "")), "no reason names a games.json field");
+  assert.ok(pageJudged(r, [...ST, c(5, "s19ring", { id: 1, lv: 0.1, lo: 0.6, hi: 0.9 })], CHECKS)["contract-70"] == null, "judged with a ring on the page");
   assert.match(j["contract-110"], /no s19knob on its pages/);
   assert.equal(j["contract-112"], "no light caught on its pictures");
   const by = judgedByGame([{ r, tl: ST }], CHECKS);

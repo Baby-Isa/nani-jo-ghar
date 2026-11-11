@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { imageInfo, isBg, isCutout, findings, staleKnown } from "./artcheck.mjs";
+import { imageInfo, isBg, isCutout, findings, staleKnown, rimFindings } from "./artcheck.mjs";
 import { readFileSync, readdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
@@ -24,6 +24,24 @@ test("art check on the repo: nothing outside the known list (build/tools/art/art
   const found = findings();
   assert.deepEqual(found.filter((f) => !KNOWN.has(f.key)).map((f) => f.text), []);
   assert.deepEqual(staleKnown(KNOWN, found), [], "these pixel findings pass now: take them off the known list so a slip back is seen");
+});
+
+// ART-76 (the pink rim, 10 Nov; s19-checks-2): a real cut from before the edge fix (git show 02b28a678:assets/cook/items/v4/chaat/
+// bataato.webp, 35% of its soft edge magenta) is red; the same cut at HEAD, after edge_bleed.py, is green; see-through glass is skipped
+test("rim: the pink rim is red on a cut from before edge_bleed and green on it after; see-through glass is skipped by name", () => {
+  const old = "build/tools/art/data/rim-fixtures/bataato-02b28a678.webp";
+  const red = rimFindings([old]);
+  assert.equal(red.length, 1);
+  assert.match(red[0].text, /pink rim, \d+% of its soft edge .*edge_bleed\.py/);
+  assert.deepEqual(rimFindings(["assets/cook/items/v4/chaat/bataato.webp"]), [], "the same cut after edge_bleed.py");
+  const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--rim", "--json", "-", "assets/cook/items/v4/baking/jug-0.webp", old], { cwd: ROOT, encoding: "utf8" });
+  assert.deepEqual(Object.keys(JSON.parse(r.stdout)), [old], "the glass jug is skipped by name (look-rules.json rim.skip)");
+  // checks.mjs's art step (artcolour.py on changed pictures): the old cut FAILs; today's known pink rims read as flags, the same list
+  const a = spawnSync("python3", [join(HERE, "artcolour.py"), "--quiet", old], { cwd: ROOT, encoding: "utf8" });
+  assert.equal(a.status, 1);
+  assert.match(a.stdout, /FAIL\s+pink rim: \d+% of the soft edge/);
+  const rules = JSON.parse(readFileSync(join(HERE, "data", "look-rules.json"), "utf8")).rim;
+  assert.deepEqual([...KNOWN].filter((k) => k.startsWith("rim|")).map((k) => k.slice(4)).sort(), rules.known.slice().sort(), "look-rules.json rim.known and artcheck-known.json's rim| entries are one list");
 });
 
 // SH-115 (Zafar, 18 Oct: the foot's grey between the toes, the bottle, the tweezers and the thermometer slipped through): the pixel check, red then green

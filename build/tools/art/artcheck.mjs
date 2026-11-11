@@ -6,7 +6,10 @@
 //   ref      every assets/ path named in js/ or data/ exists (a retired or moved file still referenced)
 //   pixel    (SH-115) every cut-out's pixels, not just its header: key grey left on it, grey holes between toes or prongs, a wide
 //            soft rim on cream, a cast shadow or haze kept as alpha (build/tools/art/artpixels.py, its rules in its docstring).
-//            One finding per file and rule, `pixel|<path>|<rule>`. The known list may only shrink: a pixel finding that is in it
+//            One finding per file and rule, `pixel|<path>|<rule>`.
+//   rim      (ART-76, s19-checks-2) every cut-out's soft edge: over 15% magenta-tinted where the piece is not is a pink rim
+//            (build/tools/art/artcolour.py --rim, look-rules.json rim); the fix it names is build/tools/art/edge_bleed.py. See-through
+//            glass and thin steel are skipped by name. One finding per file, `rim|<path>`. The known list may only shrink: a pixel finding that is in it
 //            but no longer found fails ("fixed, take it off the list"), so a re-cut that passes today and slips tomorrow shows.
 // Today's findings are build/tools/art/artcheck-known.json (art debt for the next runs): a finding not in it fails.
 //   node build/tools/art/artcheck.mjs [--write-known] [--all]
@@ -57,18 +60,29 @@ export function pixelFindings() {
   for (const [p, fails] of Object.entries(res)) for (const why of fails) out.push({ check: "pixel", key: `pixel|${p}|${why.split(" ")[0]}`, text: `${p}: ${why}` });
   return out;
 }
-// pixel entries on the known list that no longer fail: the list may only shrink, so they must come off it
-export const staleKnown = (known, found) => [...known].filter((k) => k.startsWith("pixel|") && !found.some((f) => f.key === k));
+// the pink rim (artcolour.py --rim on the cut-outs given): {path: share}; a failure to run it is itself a finding
+export function rimFindings(paths) {
+  if (!paths.length) return [];
+  const r = spawnSync("python3", [join(ROOT, "build/tools/art/artcolour.py"), "--rim", "--json", "-", ...paths], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
+  let res;
+  try { res = JSON.parse(r.stdout); } catch { return [{ check: "rim", key: "rim|artcolour|did-not-run", text: `artcolour.py --rim did not run: ${(r.stderr || "").trim().split("\n").pop() || "no output"}` }]; }
+  return Object.entries(res).map(([p, share]) => ({ check: "rim", key: `rim|${p}`, text: `${p}: a pink rim, ${Math.round(share * 100)}% of its soft edge magenta-tinted (run python3 build/tools/art/edge_bleed.py ${p})` }));
+}
+// pixel and rim entries on the known list that no longer fail: the list may only shrink, so they must come off it
+export const staleKnown = (known, found) => [...known].filter((k) => (k.startsWith("pixel|") || k.startsWith("rim|")) && !found.some((f) => f.key === k));
 export function findings() {
   const out = [];
+  const cuts = [];
   for (const p of walk("assets", (x) => IMG.test(x))) {
     const i = imageInfo(head(join(ROOT, p)));
     if (!i) continue;
     const master = /-master-v\d+\./.test(p);
     if (isBg(p) && (master ? i.w !== 2100 || i.h !== 1350 : i.w !== 1600 || i.h !== 900)) out.push({ check: "bg", key: `bg|${p}`, text: `${p}: ${i.w}x${i.h}, not 1600x900` });
     if (isCutout(p) && (i.type !== "webp" || !i.alpha)) out.push({ check: "cutout", key: `cutout|${p}`, text: `${p}: ${i.type}${i.alpha ? "" : " without alpha"}, not WebP with alpha` });
+    if (isCutout(p) && i.alpha) cuts.push(p);
   }
   for (const f of pixelFindings()) out.push(f);
+  for (const f of rimFindings(cuts)) out.push(f);
   const refs = new Set();
   for (const f of [...walk("js", (x) => x.endsWith(".js") && !x.includes("/vendor/")), ...walk("data", (x) => x.endsWith(".json") && !/candidates|audio-manifest|asset-list/.test(x))]) {
     for (const m of readFileSync(join(ROOT, f), "utf8").matchAll(/["'`](assets\/[^"'`\s$*{}]+\.(?:png|webp|jpe?g|svg))["'`]/gi)) refs.add(`${f} -> ${m[1]}`);

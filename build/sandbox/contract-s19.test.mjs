@@ -24,15 +24,16 @@ test("contract-100 to -109 are registered, numbered and mapped to the rows they 
   assert.deepEqual(stations(ST).map((s) => [s.t0, s.t1]), [[0, 60000]]);
 });
 
-test("the S17 and S19 probes both start: each is its own statement (s19-checks found S19 silently never ran)", () => {
+test("the S17, S19 and S19b probes all start: each is its own statement (s19-checks found S19 silently never ran)", () => {
   // two IIFEs on adjacent lines with no ";" between call the first one's result with the second: the second probe never ran
   const tail = CONTRACT_HOOK.slice(CONTRACT_HOOK.indexOf("(function s17hook"));
   const w = { };
   const doc = { documentElement: {}, addEventListener() {}, querySelectorAll: () => [], querySelector: () => null };
-  const fn = new Function("window", "document", "location", "setInterval", "MutationObserver", "getComputedStyle", tail);
-  fn(w, doc, { pathname: "/cook.html" }, () => 0, class { observe() {} }, () => ({}));
+  const fn = new Function("window", "document", "location", "setInterval", "MutationObserver", "getComputedStyle", "setTimeout", tail);
+  fn(w, doc, { pathname: "/cook.html" }, () => 0, class { observe() {} }, () => ({}), () => 0);
   assert.equal(w.__njgS17Hook, true);
   assert.equal(w.__njgS19Hook, true);
+  assert.equal(w.__njgS19bHook, true, "the s19-checks-2 probe (contract-114 to -116, the screen rewrites)");
 });
 
 test("contract-100: the old card (count box, strip, old item) or the old type is a break; the 6 Nov card passes", () => {

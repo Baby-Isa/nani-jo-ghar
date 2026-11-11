@@ -24,31 +24,14 @@ const pct = (v) => `${Math.round(100 * v)}%`;
 const NOT_NEW = (r) => /#(returning|takeback)\b/.test(String(r.flow || "")) || ["returning", "seen", "numbers-known"].includes(String(r.profile || ""));
 
 export const S17_CHECKS = {
-  "contract-96": { item: "boil-reopen", title: "after a boil-over the pot's rows open and its card shows the first item", how: "Cook flows: each time a pot starts again after boiling over (the pot's boil log, life chai-boil again), the last panel sample (lib/contract-hook.mjs: each order card's rows done and its item row's sideways scroll) within 1.5 s must show that person's rows all open again and the item row back at its first item (scrolled no more than 2 px). Rows still ticked, or the row left where it was, is a break (CHAI-57, decision 5c: 'it boils over and you have to start again'; the checks-to-build row 26 driver cook:chai-tray#boil-over lets a pot boil over)." },
+  "contract-96": { item: "boil-reopen", title: "after a boil-over the pot's rows open and its card shows the first item", how: "Cook flows: every heat ring the kitchen kit draws (s19ring) that goes past its green and empties by itself (cleared, or back to 0, with no tap in the 400 ms before: a boil-over) while the order card had ticked cards: within 1500 ms some ticked card must open again (the s19pad sample) and the card's row come back to its first item (s19row at 2 px or less). Either missing is a break (CHAI-105, CHAI-57). No opt-in (s19-checks-2): it read chai's own chai-boil note." },
   "contract-97": { item: "zoom-in", title: "a light on a small part starts on the whole thing and shrinks onto the part", how: "Every light that comes up on a part smaller than a quarter of the thing it sits on (the S14 probe's lit boxes over time, and the S17 probe's litthing: the item card or order card under the light's middle): its first box must cover at least 60% of the whole thing, then shrink onto the part. A light drawn straight on the part (its first box smaller than a quarter of the thing) is a break, named with the sizes (SH-213, Zafar 5 Nov: 'initially the whole item card is highlighted, and then it quickly zooms in ... see if we can make it a generalizable principle/rule'; Onboard.light zoomFrom). A part with no DOM thing round it (a knob's mark on the canvas) is not read yet." },
   "contract-98": { item: "lesson-shown", title: "a first-time lesson due is shown", how: "Cook flows for a new player (not #returning, #takeback or a seen profile): when the order panel shows a dotted word (the S17 probe's reveal sample: the game's own selectors for the lesson's targets) after the station starts, a life reveal-lesson word whose by begins 'shown' must follow; a blurred picture, the same for reveal-lesson pic. Only none-in-view, or no reveal-lesson at all, is a break, once per step (SH-196, Zafar's recorded play 6 Nov, L2 New player: a tap during the order skipped it and the cards still landing, no lesson came; the paths #tap-mid-order and #slow-cards play it)." },
   "contract-99": { item: "panel-follow", title: "after a served card folds the panel shows the next card in its place", how: "Cook flows: every served card (done) that folds in play (the S17 probe's fold: a card going from open to folded) must leave the order panel, within the fold's time (420 ms) plus 400 ms, with the next card (the person the station is on, else the card speaking, else the first card after it that is not done) either whole in view or at its planned place: its top 4 px below the panel's top, 0 when the whole list fits, clamped to the scroll range (2 px of slack). A panel left where it was, the next card cut or under the top, is a break (SH-232, Zafar 7 Nov, phone L4: 'it scrolled down the left panel as if it had never been scrolled ... the better logic would have been to scroll the left menu such that the second order card found itself in the desired correct position')." },
 };
 
 // 96
-export function check96(r, tl, add) {
-  if (!isCookFlow(r.flow)) return;
-  const panels = ev(tl, "panel");
-  if (!panels.length) return;
-  for (const n of life(tl, "chai-boil").filter((x) => (x.reason || x.step) === "again")) {
-    const who = String(n.by || "").split(/\s+/)[0];
-    const t = n.at || n.t;
-    // (S18, CHAI-105 traced by chai's owner: the window ends where that person's pot takes its next thing, so a refill is not read as a
-    // stuck tick; the rows must all show open at some sample in it, and the row come home within REOPEN_MS)
-    const back = life(tl, "chai-add").find((x) => (x.at || x.t) > t && String(x.by || "").split(":")[0] === who);
-    const end = Math.min(t + REOPEN_MS, back ? (back.at || back.t) - 1 : Infinity);
-    const rowsIn = (to) => panels.filter((e) => e.t >= t - 1 && e.t <= to).map((e) => (e.rows || []).find((x) => x.who === who)).filter(Boolean);
-    const open = rowsIn(end), win = rowsIn(t + REOPEN_MS);
-    if (!open.length) continue;
-    if (!open.some((x) => x.done === 0)) { const l = open[open.length - 1]; add("contract-96", t, `${who}'s pot started again after boiling over and ${l.done} of ${l.n} rows are still ticked (never all open before ${REOPEN_MS} ms or the next thing in)`); return; }
-    if (!win.some((x) => x.sl <= 2)) { add("contract-96", t, `${who}'s pot started again after boiling over and its card is scrolled ${win[win.length - 1].sl} px along, not back at the first item within ${REOPEN_MS} ms`); return; }
-  }
-}
+// 96: judged in lib/contract-s19b.mjs since s19-checks-2 (from the heat ring and the card as drawn; it read chai's chai-boil note)
 
 // 97
 export function check97(tl, add) {
@@ -129,7 +112,6 @@ function nextCard(p, who) {
 }
 
 export function checkS17(r, tl, v, add) {
-  check96(r, tl, add);
   check97(tl, add);
   check98(r, tl, add);
   check99(r, tl, add);
