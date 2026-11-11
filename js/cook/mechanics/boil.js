@@ -526,6 +526,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /** turned down (over: the heat ran out with no tap: it boils over instead) */
       down(over = false) {
         st.note("down", b.heat.toFixed(3), `${lo}/${hi}/${b.id}`); // (contract-70)
+        note("green-window", over ? "over" : "down", String(b.id)); // (CHAI-108's log: the window closes)
         if (over) return b.over();
         b.state = "ready";
         if (ring) ring.clear();
@@ -593,8 +594,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const inBand = b.heat >= lo && b.heat <= hi;
           if (inBand && !was) {
             Cook.sfx.green(); // (CHAI-92, Zafar's pick green A: a kitchen oven's ding, so the moment to turn it down is heard)
+            // CHAI-108 (a log only: the gap between two pans' green windows, read from the test notes): this pan's green opens,
+            // and the time it would last untouched (real ms: the child's time over the test speed)
+            note("green-window", "open", `${b.id} ${Math.round(((hi - lo) / (o.rate * (o.greenRate || 1))) * 1000 / (Cook.speed || 1))}`);
             call("green");
           }
+          if (was && !inBand) note("green-window", "past", String(b.id));
           b.drawRing();
           call("tick", dt);
           if (b.heat >= 1) b.down(true);
