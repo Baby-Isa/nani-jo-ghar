@@ -69,7 +69,9 @@ export const S19B_CHECKS = {
 // jump still fails. Each with his words.
 export const ACCEPTED_SIZES = [
   { flow: /maani/, key: /^mv-(?!ball)/, words: "Zafar, 11 Nov morning: \"Maani's board, tawa and plate sizes ... fine as they are (a smooth tweened change)\"; 9 Nov (MAA-24, P8): \"you roll the mani the size of the rolling board ... it just shrinks down into the small tray ... probably one we just have to accept\"" },
-  { flow: /samosa/, key: /^sv3-fold/, words: "Zafar, 11 Nov morning: \"samosa's close-up fold: fine as they are (a smooth tweened change)\"" },
+  // (SH-256, s19-clean-a: the close-up fold is the strip and the filling's heaps on it, which shrink with it as the strip parks; the sweep
+  // found 21 breaks on the heaps alone, sv3-heap-*, with the accepted list naming the strip only)
+  { flow: /samosa/, key: /^sv3-(fold|heap)/, words: "Zafar, 11 Nov morning: \"samosa's close-up fold: fine as they are (a smooth tweened change)\"" },
 ];
 export function acceptedSize(flow, ...keys) {
   return ACCEPTED_SIZES.some((x) => x.flow.test(flow || "") && keys.some((k) => x.key.test(String(k || ""))));
@@ -424,11 +426,26 @@ export function check36(r, tl, segs, v, add) {
   const cs = calls(v);
   const skips = life(tl, "step-call").filter((n) => /^skip/.test(n.by || ""));
   const used = new Set();
+  // SH-172 (contract-89, Zafar 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ...
+  // when she expands her card to help you"): a step whose item Nani's helper card names while it is closed is called as her card opens,
+  // never before; if it does not open before the next step (the child made the move first), no call is due. s19-clean-a: 36 had asked
+  // for the call as the step opened, which 89 forbids (about 90 breaks between them, the fix-list sweep)
+  const hs = ev(tl, "helper");
+  const helperAt = (t) => { let st = null; for (const h of hs) { if (h.t > t) break; st = h; } return st; };
   steps.forEach((s, i) => {
     const next = steps[i + 1];
     const until = Math.min(s.t + CALL_WITHIN, next ? Math.max(next.t, s.t + 1500) : Infinity);
     const said = cs.find((l) => !used.has(l) && l.t0 >= s.t - CALL_BEFORE && l.t0 <= until);
     if (said) { used.add(said); return; }
+    const h0 = helperAt(s.t);
+    // (a step the kit's light shows is called with its light, as contract-89 lets a control's call be: only a card step waits on her card)
+    if (s.card && h0 && h0.named && !h0.open) {
+      const end = next ? next.t : Infinity;
+      const opened = hs.find((h) => h.t > s.t && h.t < end && h.open);
+      if (!opened) return; // (her card stayed closed: the call waits for it, contract-89)
+      const atOpen = cs.find((l) => !used.has(l) && l.t0 >= opened.t - 300 && l.t0 <= opened.t + CALL_WITHIN);
+      if (atOpen) { used.add(atOpen); return; }
+    }
     // (the game's own skip, logged as the step opened: no voiced line for it (a recording to make), Nani muted)
     if (skips.some((n) => n.t >= s.t - 1000 && n.t <= s.t + 3000)) return;
     add("contract-36", s.t, `a step opened on screen (${s.why}) and Nani did not call it (no call line from ${CALL_BEFORE / 1000} s before to ${Math.round((until - s.t) / 100) / 10} s after, no skip logged)`);
