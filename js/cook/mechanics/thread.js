@@ -91,6 +91,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        * (ctx.tickPiece: the unit being threaded of that kind, how many of its pieces are on); a piece that breaks the run (another
        * piece) or comes off opens them again. The card's piece rows are the order card's (js/cook/ui.js, the say entry's `pieces`).
        */
+      // (contract-36: each piece ticked moves the order card's current card on to the next piece; Nani said the order once, whole, the
+      // counting rule, so the next piece's step opens quietly, its line the threading's, and logs why it is not called)
+      const pieceStep = () => {
+        if (!UI.step || !St.guideLine) return;
+        UI.step(Lang.role(St.guideLine("mishkaki-grill:thread"), "howto"), { quiet: true, noCall: "order-said", hide: St.hideKnown ? St.hideKnown(ctx) : undefined });
+      };
       const plainTick = (sk) => {
         if (!ctx.tickPiece) return;
         const one = sk.ids.length > 0 && sk.ids.every((p) => p === sk.ids[0]);
@@ -307,6 +313,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           ctx.tickPiece(mixedW, sk.pieces);
         }
         plainTick(sk);
+        pieceStep();
         if (exp && exp.w) sk.target = exp.w;
         if (sk.ids.length >= n) await finish();
         busy = false;
