@@ -97,6 +97,10 @@ Four lighting states, planned now rather than left for later, since Arc 1 needs 
 - **Nothing floats.** An item without a contact shadow is a reject.
 - **Sprites carry no cast shadow of their own** unless they come from an edit-in-place cut (section 5), where the shadow is kept as a separate layer. Otherwise code draws the contact shadow (a soft multiply ellipse, offset down-right).
 
+### Scenes: light first, the colour book for local colour only (Zafar, 11 Nov)
+
+A background scene (a room, a yard) is governed by its light, not by named colours: one warm key light from the upper left and one warm white balance across everything; a value plan (wall mid-light, marble the lightest, cabinets mid, one dark such as the oven); nothing more saturated than the faces and the food. The colour book (Wada) names local colours only (the sage, the walnut, the brass); never "evenly lit, no window light" in a scene: that rule is for cut-out pieces. The kitchen polish of 11 Nov went cold and flat because a scene got the pieces' rules (build/reports/s19-kitchen-colour-lesson.md).
+
 ### Skies (Zafar, 6 Nov)
 
 "Less jarringly vibrant and more in theme, but still distinct and attractive." A sky is softly painted in our semi-3D look: gentle gradients from zenith to horizon, big soft cumulus with warm lit tops and cool shaded undersides, warm atmospheric light and haze near the horizon, colours slightly muted so the tones merge. Refined and calm, never a flat cartoon blue or a saturated stock gradient; it sits behind the scene, so it stays lighter and quieter than what stands on it.
