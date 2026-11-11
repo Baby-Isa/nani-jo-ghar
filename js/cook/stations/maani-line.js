@@ -109,6 +109,24 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const TURNER = { ox: 0.19, oy: 0.73, len: 170, rest: 62 };
   // MAA-24 (round 2: "the handle of the pan ... position it to the bottom right"): the tawa turned so its handle points down to the right
   const TAWA_TURN = 40;
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
   const ART = [
     // S19 (M1, ART-62): the run's round walnut board and its pin, both exactly from above
     ["mv-chakla", V4 + "maani/board.webp"],
@@ -215,7 +233,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const LX = left + CHAKLA_D / 2;
     const RX = left + CHAKLA_D + COL_GAP + hs.w / 2;
     // raised into the middle of a taller stage's worktop (the stage fill)
-    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM - Cook.lift() });
+    // (CHAI-89, the orchestrator 11 Nov: the board and the hob, one block, centred in the view above the band: chai's measure)
+    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM - centreLift(zt, HOB_BOTTOM - hs.h, HOB_BOTTOM) });
     const midY = hob.y + hob.h / 2; // the chakla sits on the hob's middle line
     const CH = { x: LX, y: midY };
 

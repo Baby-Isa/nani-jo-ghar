@@ -319,6 +319,24 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const it = Object.values(its).find((x) => x && x.role === "tray" && x.word === id && typeof (x.card || x.file) === "string");
     return it ? it.card || it.file : null;
   };
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
   const BOWL_D = 150; // a bowl's diameter on the tray, design px (narrower where the slots ask)
   const BOWL_GAP = 14; // between a bowl's foot and its pill's top
   const Shelf0 = () => global.Shelf;
@@ -754,6 +772,12 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
+    // (CHAI-89, the orchestrator 11 Nov: the hob with its pot, the stir's flag 17 px over the hob's top, centred in the view above the
+    // band: the hob is the kit's one-burner at 0.9, its foot 14 above the band)
+    {
+      const hobH = Kit.size ? Kit.size(1, 0.9).h : 658 * 0.9;
+      LIFT = centreLift(z, SHELF_TOP - 14 - hobH - 17, SHELF_TOP - 14) / (z.k || 1);
+    }
     /*
      * DAAR-42 (STD-D1-01, D1-06; kit (d)): the first time, the knob, the first pile and the daar's bowl are lit with their call
      * (Cook.Coach.control on the first-time gate), a light that lets every tap through. The spices are never lit (the light would be

@@ -70,6 +70,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ({ stripH: STRIP_H, ppu: PPU, strips: STRIPS } = s.grid);
   }
   const heapUrl = (id) => (ART && ART.heaps[id]) || null;
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
+
   // a samosa in the oil (design px wide) and where they float, by how many fry (grid.oil)
   const OIL = (n) => GRID.oil.find((o) => o.upTo == null || n <= o.upTo);
   /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
@@ -390,8 +409,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   async function fillFold(z, { who, ids, want, kinds, exclude, count, want2 = {}, kinds2 = [], count2 = 0, level, phases, retry, redo, steps, ready = null }) {
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
+    // (CHAI-89, the orchestrator 11 Nov: the board, centred in the view above the band: chai's measure)
     const z0 = z;
-    z = Cook.liftZone(z0);
+    z = Cook.liftZone(z0, centreLift(z0, BOARD.y - BOARD.h / 2, BOARD.y + BOARD.h / 2));
     const S = z.S;
     const ctx = z.ctx;
     const dish = ctx.dishAt || 0;
@@ -1215,7 +1235,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /* ---------- 3: fry in the karahi on the wide hob, lift onto the paper-lined plate ---------- */
   async function fry(z, { n, level, redo, steps, ready = null, who = null }) {
     const z0 = z;
-    z = Cook.liftZone(z0);
+    // (CHAI-89, the orchestrator 11 Nov: the wide hob with its karahi and the plate on its line, centred in the view above the band)
+    const hobH0 = Cook.Kit && Cook.Kit.size ? Cook.Kit.size(1, FRY.hobK, true).h : 568 * FRY.hobK;
+    z = Cook.liftZone(z0, centreLift(z0, SHELF_TOP - 16 - hobH0, SHELF_TOP - 16));
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;

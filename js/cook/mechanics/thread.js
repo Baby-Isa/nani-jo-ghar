@@ -46,6 +46,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
+  /*
+   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
+   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
+   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   */
+  const centreLift = (z, top0, bottom0, room = 0) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const viewTop = v.top != null ? v.top : z.Y(0);
+    const spanTop = viewTop + 16 * k;
+    const spanBot = z.Y(St.SHELF.top - 28);
+    const t = z.Y(top0) - room * k;
+    const b = z.Y(bottom0);
+    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
+    lift = Math.min(lift, t - (viewTop + 40 * k));
+    return Math.round(Math.max(lift, b - spanBot));
+  };
+
   Mech.define("thread", {
     station: "thread",
     view: "marble",
@@ -71,7 +90,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const BOARD = { x: 560, y: 346, w: 250, h: 586 };
       // the scene is raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
       const z0 = z;
-      z = Cook.liftZone(z0);
+      // (CHAI-89, the orchestrator 11 Nov: the board with its skewer and the tray, centred in the view above the band: chai's measure)
+      z = Cook.liftZone(z0, centreLift(z0, BOARD.y - BOARD.h / 2, BOARD.y + BOARD.h / 2));
       const SKY = 352; // the skewer's centre on the board
       const SKS = 0.84; // the skewer on the board
       const RACK = { x: 1090, y: SKY, s: 0.6 }; // the rack sized to its skewers (followup, 29 Sept); v3: the picture's centre
