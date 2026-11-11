@@ -4220,9 +4220,10 @@
   "s02": {
    "_about": "S02-B: the art run s02's Cook pictures (build/tools/art/specs/s02.run.yaml), by the id the game asks for. Until a line lands, `ready` is false and the game keeps the current art (or a drawn stand-in). When /art-run cuts one: set `file` (the game's webp), `ready: true` and the measured `meta` (sizes, registration points, the flat inner area). Nothing else changes in code.",
    "kitchen-trays": {
-    "line": "KT (s14, ART-28: the kitchen decluttered; was K1's service-master-v1.webp)",
+    "line": "KG (s19-k2, ART-77: the serving kitchen's tall painting; was KT, s14 ART-28)",
     "file": "assets/cook/serve/kitchen-tall.webp",
-    "_s19serve": "s19-serve (11 Nov): the tall kitchen with no trays; trays and dishes are pieces placed per person (js/cook/serve.js); today a stand-in from v2 until ART-77",
+    "_s19serve2": "s19-serve2 (11 Nov): KG 1448x1086 (sources/art/s19-k2/results/best/KG.png) to 2100x1575 by LANCZOS and a light unsharp mask (radius 1.2, 45%; no Real-ESRGAN here), not shifted: its island's back edge measured at y 1058.5 (core y 608.5, K1's 1058), its front lip at about 1465-1480 (design 1015-1030), so the ordering view keeps 292 px of marble and the serving view (158 down) is the island's top. KO and KS (1672x941) to 2100 wide, KO 130 px down and KS 216 (its view drawn 158 lower), each back edge on the same world line, the wall's top row carried on above, the island's bottom row below. The tray: tray-src's two ends joined (840 of its 1400 px, an 80 px blend), 480x208. meta.trays stay as the people's spots.",
+    "_s19serve": "s19-serve (11 Nov): the tall kitchen with no trays; trays and dishes are pieces placed per person (js/cook/serve.js); the stand-in from v2 until ART-77 landed (s19-serve2)",
     "_v2": "ART-28 (Zafar's s14 run, 29 Oct): KT on K1's placement (x1.367, 126 px down, the top row carried on; Real-ESRGAN x2, 29 Oct); its island's back edge at y 1054 (K1's 1058) and the trays where K1's were, so core, occluder and trays are unchanged.",
     "ready": true,
     "core": [
@@ -4965,7 +4966,7 @@
     ]
    }
   },
-  "serve": {"mode": "tall", "_about": "the serving kitchen (js/cook/serve.js, s19-serve, Zafar 11 Nov): tall = one painting scrolled down for the serve, two = the ordering and serving pictures crossfaded"},
+  "serve": {"mode": "tall", "_about": "the serving kitchen (js/cook/serve.js, s19-serve, Zafar 11 Nov): tall = one painting scrolled down for the serve (KG), two = the ordering and serving pictures crossfaded (KO, KS); the tray and each dish's size class are serve.js DEFAULTS (tray, sizes, dishes), any of them overridable here"},
   "assets": {
    "_about": "Decision 68 (J11, S02-E): what Cook loads, by screen. shared: the textures the scene preloads (the kitchen, Nani, the customers, the cousin's badge): nothing else loads at open. stations[key].props: the prop textures (assets/cook/props/<name>.webp, or the painted sprite data.art.sprites.props names) a station loads when it is chosen (Cook.Art.need, with its painted sprites data.art.sprites.need[key]); stations[key].files: the folders and files the station's own code may load (its art lists); stations[key].prefetch: the files it shows first, warmed into the browser's cache while its order is read, which build/tools/review/loadcheck.mjs holds every page to. A station that loads anything outside shared + its own entry fails the load check.",
    "shared": {
