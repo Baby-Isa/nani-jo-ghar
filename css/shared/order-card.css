@@ -690,7 +690,8 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo-mark.bad .njg-wo-disc { fill: var(--njg-wrong); }
 .njg-wo-mark .njg-wo-pen { stroke: var(--njg-card); }
 .njg-wo-card.njg-wo-ok { box-shadow: 0 0 0 calc(var(--njg-line) * 2) var(--njg-gold-hi), 0 0 calc(var(--njg-s5) * 1.4) var(--njg-s2) rgba(var(--njg-gold-hi-rgb), 0.85); }
-.njg-wo-card.njg-wo-bad { box-shadow: 0 0 0 calc(var(--njg-line) * 2) var(--njg-wrong), var(--njg-shadow-lift); }
+/* (Zafar, 11 Nov night: the red on the whole wrong card's border and on the wrong item, the palette's red) */
+.njg-wo-card.njg-wo-bad { box-shadow: 0 0 0 calc(var(--njg-line-2) * 1.5) var(--njg-wrong), var(--njg-shadow-lift); }
 .njg-wo-open { display: flex; align-items: center; gap: var(--njg-s5); padding: var(--njg-s4) var(--njg-s5); }
 .njg-wo-open > .njg-wo-mark { position: absolute; top: calc(var(--njg-s3) * -1); right: calc(var(--njg-s3) * -1); width: calc(var(--njg-face) * 0.75); height: calc(var(--njg-face) * 0.75); }
 /* the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): the kit's big circle, shown at twice its size */

@@ -9,7 +9,7 @@
  * After a serve with something wrong, a pop-up over the game (a light veil: the game's edges still seen) brings each order card to
  * the middle in turn, from its place in the side panel:
  *   - a right one: its compact single line (face, headline) ticks again with a ding, glows gold, and floats up off the screen;
- *   - a wrong one: marked in the palette's red (--njg-wrong, the end screen's) with a small cross and the opposite of a ding; it
+ *   - a wrong one: its whole border in the palette's red (--njg-wrong, the end screen's) with a small cross and a soft note (no buzz); it
  *     opens to all its items with the asker's face big, ticks the right ones while quickly saying each (the host's own lines: the
  *     language engine's, never written here) and crosses the wrong one, said too; then it shrinks back into its side panel card.
  * No game is named here. The host draws the cards (its own order card, js/shared/order-card.js) and says the rows; this piece
@@ -20,7 +20,10 @@
  *     o.cards       [{ who, ok, face: url, headline: html, from: Element (the side panel card it comes from and goes back to),
  *                      big: () => {el, rows: [{el, ok, say: () => Promise}]}   (a wrong card: the host draws it open, every item) }]
  *     o.wait(ms)    the host's clock (its test speed); default setTimeout
- *     o.sound(name) "ding" | "oops" (the host's sounds); o.speed: the host's speed (shortens the moves)
+ *     o.sound(name) "ding" | "oops" | "tick" (the host's sounds: Zafar, 11 Nov night, no buzz for "oops": Mum's recorded "oho" when
+ *                   it comes, until then a soft sound or none); o.speed: the host's speed (shortens the moves)
+ *     o.talk(el) -> stop()   the asker's big face talks while they say their own line (the kit's Lifecycle.talk.dom)
+ *     a wrong card's big() may give head: () => Promise (the asker says their own order line first)
  *     o.note(what, info)   a test hook (the contract checks read it): "wo-open", "wo-card", "wo-row", "wo-close"
  *     o.faceHtml(who, src) the face circle's HTML (the kit's Face.html(who, "big")); default a plain picture
  *   NjgWrongOrder.isOpen()   NjgWrongOrder.LOOK (the timings at speed 1)
@@ -28,17 +31,18 @@
  * Styles: css/shared/order-card.css ("the wrong-order pop-up"). An ES module (Cook imports it through js/shared/serve.js); it also
  * hangs on globalThis.NjgWrongOrder. Its lab: lab/wrong-order.html.
  */
+// (Zafar, 11 Nov night: "change minimum because you want to be fast": every beat as short as it can be and still be seen)
 const LOOK = Object.freeze({
-  veilIn: 220, // the veil fades in
-  fly: 420, // a card from the side panel to the middle, and a wrong one back
-  mark: 520, // a mark lands (the tick again, or the cross) and is seen
-  glow: 520, // a right line glows gold
-  float: 620, // a right line floats up off the screen
-  open: 360, // a wrong line opens to all its items
-  sayCap: 1600, // the most one row's line holds the next (a voice that never starts does not stall it)
-  rowGap: 140, // one row to the next, quickly
-  hold: 700, // the wrong card, all marked, before it shrinks back
-  gap: 200, // one card to the next
+  veilIn: 160, // the veil fades in
+  fly: 300, // a card from the side panel to the middle, and a wrong one back
+  mark: 380, // a mark lands (the tick again, or the cross) and is seen
+  glow: 380, // a right line glows gold
+  float: 420, // a right line fades up off the screen
+  open: 260, // a wrong line opens to all its items
+  sayCap: 1600, // the most one line holds the next (a voice that never starts does not stall it)
+  rowGap: 100, // one row to the next, quickly
+  hold: 520, // the wrong card, all marked, before it shrinks back
+  gap: 120, // one card to the next
   edge: 0.06, // the share of the play area kept clear round the pop-up (its edges still seen)
 });
 
@@ -162,12 +166,23 @@ async function play(o = {}) {
         fit(card);
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
         await move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open));
+        // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
+        const faceEl = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img") || card.querySelector(".njg-wo-who");
+        const said = async (fn) => {
+          if (!fn) return;
+          const stop = o.talk && faceEl ? o.talk(faceEl) : null;
+          try {
+            await Promise.race([Promise.resolve(fn()).catch(() => {}), wait(T(LOOK.sayCap))]);
+          } finally {
+            if (typeof stop === "function") stop();
+          }
+        };
+        await said(drawn.head);
         // each row in its order: said quickly, then its tick, or the red and the cross for the wrong one
         for (const r of drawn.rows || []) {
           if (!r || !r.el) continue;
           r.el.classList.add("njg-wo-now");
-          const said = r.say ? Promise.resolve(r.say()).catch(() => {}) : Promise.resolve();
-          await Promise.race([said, wait(T(LOOK.sayCap))]);
+          await said(r.say);
           r.el.classList.remove("njg-wo-now");
           r.el.classList.add(r.ok ? "njg-wo-ok" : "njg-wo-bad");
           r.el.appendChild(markEl(r.ok ? "ok" : "bad"));

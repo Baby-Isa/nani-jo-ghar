@@ -3979,7 +3979,9 @@
         const out = cardRows(data)
           .filter((p) => p.key && els.has(p.key))
           .map((p) => ({ el: els.get(p.key), ok: !p.key.wrong, say: p.key.line ? () => Lang.speak(p.key.line) : null }));
-        return { el, rows: out };
+        // the asker's own order line first (their headline, the engine's), said as theirs
+        const H = c.data.headline && c.data.headline.key;
+        return { el, rows: out, head: H && H.line ? () => Lang.speak(H.line) : null };
       },
     }));
     const done = await W.play({
@@ -3987,7 +3989,9 @@
       cards: list,
       speed: Cook.speed || 1,
       wait: (ms) => new Promise((r) => setTimeout(r, ms)), // (real time: the pop-up divides by the speed itself)
-      sound: (n) => (n === "ding" ? Cook.sfx.right() : n === "oops" ? Cook.sfx.oops() : n === "tick" && Cook.sfx.drop ? Cook.sfx.drop() : null),
+      // (Zafar, 11 Nov night: no buzz for a wrong card; Mum's Kutchi "oho" when it is recorded, until then the soft note)
+      sound: (n) => (n === "ding" ? Cook.sfx.right() : n === "oops" ? Cook.sfx.soft() : n === "tick" && Cook.sfx.drop ? Cook.sfx.drop() : null),
+      talk: (el) => (global.Lifecycle && global.Lifecycle.talk && global.Lifecycle.talk.dom ? global.Lifecycle.talk.dom(el) : null),
       note,
       faceHtml: (who, src, size) => (global.Face && global.Face.html ? global.Face.html(who, size, { src }) : `<img class="njg-face-img" src="${esc(src)}" alt="">`),
     });

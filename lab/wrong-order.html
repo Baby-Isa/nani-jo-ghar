@@ -81,7 +81,7 @@
         return { el, rows };
       },
     }));
-    const sound = (n) => window.Sfx && window.Sfx.play(n === "ding" ? "right" : n === "oops" ? "oops" : "tap", { volume: 0.4 });
+    const sound = (n) => window.Sfx && window.Sfx.play(n === "ding" ? "right" : n === "oops" ? "cook-soft" : "tap", { volume: 0.4 });
     await NjgWrongOrder.play({ host: stage, cards, sound, faceHtml: (who, src, size) => window.Face.html(who, size, { src }) });
     // SH-266: only the wrong orders stay (their glasses, cards and people); SH-265: the panel realigned, the one being worked on first
     stage.querySelectorAll(".glass").forEach((g) => g.classList.toggle("gone", !wrongs.includes(g.dataset.who)));
