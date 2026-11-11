@@ -372,24 +372,51 @@
         const dw = Math.min(cw * k, mw - at);
         ctx.drawImage(slab, cx, 0, dw / k, SH, mx + at, y0, dw, SH * k);
       }
-      const fy = y0 + A.face[0] * k, fh = (A.face[1] - A.face[0]) * k;
-      const tc = doc.createElement("canvas");
-      const ts = Math.max(8, Math.round(tile.naturalWidth * k));
-      tc.width = tc.height = ts;
-      tc.getContext("2d").drawImage(tile, 0, 0, ts, ts);
-      const pat = ctx.createPattern(tc, "repeat");
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(mx, fy, mw, fh);
-      ctx.clip();
-      ctx.globalAlpha = 0.55;
-      ctx.fillStyle = pat;
-      ctx.fillRect(mx, fy, mw, fh);
-      ctx.restore();
     }
-    // the two ends, cut from the slab
-    ctx.drawImage(slab, 0, 0, es, SH, x, y0, e, SH * k);
-    ctx.drawImage(slab, SW - es, 0, es, SH, x + w - e, y0, e, SH * k);
+    // the two ends, cut from the slab, each fading into the middle over as much again (the slab is lit from the upper left, so its
+    // right end is a little darker than its middle: a hard cut would show as a seam)
+    const end = (sx, dx, fadeLeft) => {
+      const ew = Math.min(e * 2, w / 2);
+      const sw = ew / k;
+      const tcv = doc.createElement("canvas");
+      tcv.width = Math.max(1, Math.ceil(ew));
+      tcv.height = Math.max(1, Math.ceil(SH * k));
+      const g = tcv.getContext("2d");
+      g.drawImage(slab, fadeLeft ? SW - sw : 0, 0, sw, SH, 0, 0, ew, SH * k);
+      g.globalCompositeOperation = "destination-in";
+      const gr = g.createLinearGradient(0, 0, ew, 0);
+      const solid = Math.min(1, e / ew);
+      if (fadeLeft) {
+        gr.addColorStop(0, "rgba(0,0,0,0)");
+        gr.addColorStop(1 - solid, "rgba(0,0,0,1)");
+        gr.addColorStop(1, "rgba(0,0,0,1)");
+      } else {
+        gr.addColorStop(0, "rgba(0,0,0,1)");
+        gr.addColorStop(solid, "rgba(0,0,0,1)");
+        gr.addColorStop(1, "rgba(0,0,0,0)");
+      }
+      g.fillStyle = gr;
+      g.fillRect(0, 0, ew, tcv.height);
+      ctx.drawImage(tcv, fadeLeft ? x + w - ew : x, y0);
+    };
+    end(0, x, false);
+    end(SW, x + w, true);
+    // the tile's stone over the plain face, end to end (inside the ends' rounding), so the ends and the middle are one stone
+    const fy = y0 + A.face[0] * k, fh = (A.face[1] - A.face[0]) * k;
+    const tc = doc.createElement("canvas");
+    const ts = Math.max(8, Math.round(tile.naturalWidth * k));
+    tc.width = tc.height = ts;
+    tc.getContext("2d").drawImage(tile, 0, 0, ts, ts);
+    ctx.save();
+    path(ctx, x, y, w, h, Math.min(A.radius * k, h / 2));
+    ctx.clip();
+    ctx.beginPath();
+    ctx.rect(x, fy, w, fh);
+    ctx.clip();
+    ctx.globalAlpha = 0.55;
+    ctx.fillStyle = ctx.createPattern(tc, "repeat");
+    ctx.fillRect(x, fy, w, fh);
+    ctx.restore();
     return { w: W, h: H };
   };
   Shelf.trayPaint = function (ctx, box, { scale = 1, seed = 7, ink = Shelf.trayInk() } = {}) {
