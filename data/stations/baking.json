@@ -801,6 +801,14 @@
   "assets/cook/items/v4/baking/jug-0.webp",
   "assets/cook/items/v4/baking/jug-4.webp",
   "assets/cook/items/v4/baking/tray-*.webp",
-  "assets/cook/items/v4/baking/naan-tray-*.webp"
+  "assets/cook/items/v4/baking/naan-tray-*.webp",
+  "assets/cook/items-s17-stove/f-chapati-flour-atta.webp",
+  "assets/cook/items-s17-stove/f-water-bottle.webp",
+  "assets/cook/items-s17-stove/f-milk-carton.webp",
+  "assets/cook/items-s17-stove/f-sugar-jar.webp",
+  "assets/cook/items-s17-stove/f-salt-jar.webp",
+  "assets/cook/items-s17-stove/f-yoghurt.webp",
+  "assets/cook/items-s17-stove/f-ghee.webp",
+  "assets/cook/items/v4/daar/loon.webp"
  ]
 }
