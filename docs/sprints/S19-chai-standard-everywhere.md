@@ -53,5 +53,10 @@ the timing floor, samosa, the scene and shelf, the timed windows, one stir; the 
 34 rows, 32 were answered and relabelled; open: SH-220 (screens flashing on load) and CHAI-76 (Nani's hint and the leak rule).
 
 ## Outcome
+So far (11 Nov, early): every kitchen game on its S19 art (wave B to E2), the stone tray in three slices, eggs at the table, one chop
+everywhere, Shabash at well done, chaat top-down; the September overlay deleted. The checks re-made to read the screen (s19-checks-1
+and -2: the light, covers, snaps, sizes, padding; judged N of M; real bad runs; no opt-ins) after the eye judge beside chai failed
+all ten games that the old checks passed (build/reports/s19-checks-review.md). Open: s19-fixes-f (the nine games' rows), the serving
+kitchen and the no-art wiring next, the kitchen art (ART-77), then the sprint's /review and publish.
 
 ## Look back (three lines)
