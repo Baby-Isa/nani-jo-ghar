@@ -5553,9 +5553,11 @@
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/v3/chaat/*",
       "assets/cook/items-s08b/chaat-bowl-side-s08b*",
-      "assets/cook/items-s08b/chaat-strips/*"
+      "assets/cook/items-s08b/chaat-strips/*",
+      "assets/cook/items/v4/chaat/*"
      ],
      "prefetch": [
+      "assets/cook/items/v4/chaat/bowl-empty.webp",
       "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
       "assets/cook/items/v3/chaat/pot-chana.webp",
       "assets/cook/items/v3/chaat/pot-imli.webp",
