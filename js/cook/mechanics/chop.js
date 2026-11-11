@@ -111,7 +111,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       // S19 (CK-71): the hop, the chop game's own (its numbers: data/stations/chop.json levels[].knobs.hop)
       const HOP = !!(hop && band);
-      const HOP_GROW = 1.12; // (SH-256: a thing up on the board, at most this much bigger than in its slot)
+      // (SH-256: a thing up on the board, at most this much bigger than in its slot; s19-games-2, contract-114: 1.08, as a turned thing's
+      // drawn box reads a few per cent bigger again, which took 1.12 past the 15%)
+      const HOP_GROW = 1.08;
       const HK = HOP ? Object.assign({ up: 1, rise: 0.45, hang: 1.8, fall: 0.4, every: 2.9, peak: 400, catchPad: 40, tapCuts: false, size: 190, phoneSize: 240, decoys: null, refill: 0.45 }, k.hop || {}) : null;
       // S19 (wave B, ART-37): the caller's board sets where an item's middle is at the top of its hop (the board's middle)
       if (HOP && peak != null) HK.peak = peak;
@@ -419,6 +421,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const s = { id, key, x: SL.x[id], px: topX(SL.x[id]), slotW: Math.min(150, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
           s.scale = St.classFit ? z.L(St.classFit(S, key, id, { base: band.base, ppw, slotW: s.slotW }).scale) : S.fitScale(key, z.L(130), z.L(130));
           s.img = sit(s);
+          // (s19-games-2, contract-114: a band built for the next round fades in, so a kind that sat elsewhere on the last band never
+          // jumps to its new slot in one frame)
+          s.img.setAlpha(0);
+          S.tweens.add({ targets: s.img, alpha: 1, duration: 200 });
           // (S19, wave B: the shared kit's pill as chai's shelf has it, Shelf.P.chip: its own face's width, fitted by the row's rule,
           // fitPills, SH-219; its card's size kept, so a light and its checks take the pill as part of the thing)
           const chip = global.Shelf && global.Shelf.P && global.Shelf.P.chip
@@ -659,7 +665,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const again = c.used++;
           const gap = Math.min(HV.part, c.w * 0.08);
           // (the pair fits its cell: across, the two halves and their gap; down, the taller half; never bigger than the cut)
-          const k = Math.min(wk * HV.k, z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h));
+          // (s19-games-2, contract-114: never under 15% smaller than on the board, though the pair may then reach its cell's edge)
+          const k = Math.max(Math.min(wk * HV.k, z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h)), Math.min(wk * HV.k, wk / 1.14));
           const ox = again ? z.L(12 * again) : 0;
           const cx = z.X(c.x) + ox;
           const cy = z.Y(c.y) - ox * 0.6;
