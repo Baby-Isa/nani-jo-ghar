@@ -48,6 +48,7 @@ function s19bhook() {
   let nextId = 1;
   const seen = new Map(); // id -> the last sent row
   let lastScan = 0;
+  let scanErr = null, errSaid = null;
   const tweenMs = (sc, o) => {
     const tw = safe(() => sc.tweens.getTweensOf(o), []) || [];
     let ms = 0;
@@ -69,9 +70,13 @@ function s19bhook() {
     for (const sc of safe(() => g.scene.getScenes(true), [])) {
       const cam = sc.cameras && sc.cameras.main;
       if (!cam) continue;
-      const P = (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+      // (the kitchen's own mapping where it has one, Cook.UI.worldToScreen: its camera may be scrolled or zoomed past what worldView says)
+      const C = window.Cook, W2S = C && C.UI && typeof C.UI.worldToScreen === "function" && sc === C.scene ? C.UI.worldToScreen : null;
+      const P = W2S ? (x, y) => { const p = W2S(x, y); return [p.x, p.y]; } : (x, y) => [cr.left + (x - cam.worldView.x) * kx * cam.zoom, cr.top + (y - cam.worldView.y) * ky * cam.zoom];
+      const SX = W2S ? (P(1000, 0)[0] - P(0, 0)[0]) / 1000 : kx * cam.zoom, SY = W2S ? (P(0, 1000)[1] - P(0, 0)[1]) / 1000 : ky * cam.zoom;
       const walk = (list, pa) => {
         for (const o of list || []) {
+          try {
           if (!o || o.visible === false) continue;
           const a = (o.alpha == null ? 1 : o.alpha) * pa;
           if (o.list) { walk(o.list, a); continue; }
@@ -93,7 +98,8 @@ function s19bhook() {
           // (a shelf thing's pill: its middle on screen, the kit's chip)
           const ch = o.wordId && o.chip && o.chip.active ? o.chip : null;
           const cm = ch ? P(ch.x, ch.y) : [0, 0];
-          now.set(id, [id, key + (o.frame && o.frame.name && o.frame.name !== "__BASE" ? "#" + o.frame.name : ""), R1(l), R1(t), R1(r), R1(bt), Math.round(a * 20) * 5, tweenMs(sc, o), o.wordId ? String(o.wordId) : 0, Math.round((o.depth || 0) * 10) / 10, R1(sx * kx * cam.zoom), R1(sy * ky * cam.zoom), Math.round((rot * 180) / Math.PI), R1(cm[0]), R1(cm[1])]);
+          now.set(id, [id, key + (o.frame && o.frame.name && o.frame.name !== "__BASE" ? "#" + o.frame.name : ""), R1(l), R1(t), R1(r), R1(bt), Math.round(a * 20) * 5, tweenMs(sc, o), o.wordId ? String(o.wordId) : 0, Math.round((o.depth || 0) * 10) / 10, R1(sx * SX), R1(sy * SY), Math.round((rot * 180) / Math.PI), R1(cm[0]), R1(cm[1])]);
+          } catch (e) { scanErr = String((e && e.message) || e).slice(0, 80); /* one picture that cannot be read never hides the rest */ }
         }
       };
       safe(() => walk(sc.children.list, 1));
@@ -106,7 +112,8 @@ function s19bhook() {
       if (!was || was[1] !== row[1] || Math.abs(was[6] - row[6]) >= 5 || (was[7] > 0) !== (row[7] > 0) || [2, 3, 4, 5, 10, 11, 13, 14].some((i) => Math.abs(was[i] - row[i]) > 0.75)) { ch.push(row); seen.set(id, row); }
     }
     for (const id of [...seen.keys()]) if (!now.has(id)) { gone.push(id); seen.delete(id); }
-    if (ch.length || gone.length) emit({ k: "s19it", ch, gone, cv: [R1(cr.left), R1(cr.top), R1(cr.right), R1(cr.bottom)] });
+    if (ch.length || gone.length || (scanErr && scanErr !== errSaid)) emit({ k: "s19it", ch, gone, cv: [R1(cr.left), R1(cr.top), R1(cr.right), R1(cr.bottom)], ...(scanErr && scanErr !== errSaid ? { err: scanErr } : {}) });
+    errSaid = scanErr;
   };
 
   // ---- the order row's scroll and the order's cards (72, 74) ----

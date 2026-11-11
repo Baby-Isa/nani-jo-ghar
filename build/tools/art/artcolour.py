@@ -870,7 +870,10 @@ def analyse(path, R=None, size_class=None):
     if res.get("cutout"):
         pr = pink_rim(path, R)
         res["info"]["rim"] = pr
-        if pr and pr["fail"]:
+        known = os.path.relpath(os.path.abspath(path), REPO) in set(R["rim"].get("known", []))
+        if pr and pr["fail"] and known:
+            res["flag"].append("pink rim (known art debt, look-rules.json rim.known): %.0f%% of the soft edge magenta-tinted; run python3 build/tools/art/edge_bleed.py on it" % (pr["share"] * 100))
+        elif pr and pr["fail"]:
             res["fail"].append("pink rim: %.0f%% of the soft edge is magenta-tinted where the piece is not (over %.0f%%; ART-76): run python3 build/tools/art/edge_bleed.py on it"
                                % (pr["share"] * 100, R["rim"]["max_share"] * 100))
     return res

@@ -74,7 +74,7 @@ test("contract-79 (B3, CHAI-42): the order card's light waits until nothing move
   assert.equal(run(check79, [mv(1000, 1, "x"), c("lit", 1100, { holes: [[1, 1, 9, 9]], card: false })]).length, 0, "only the order card's light is judged");
 });
 
-test("contract-80 (B5, CHAI-45): no change of the kitchen's fit in the first 2 s of a lab.html view", () => {
+test("contract-80 (B5, CHAI-45): no change of the kitchen's fit in the first 2 s of a view, lab.html and cook.html (s19-checks-2)", () => {
   const fit = (t, o = {}) => c("fit", t, { view: null, bg: "bg-service", drawn: true, box: [85.9, -186.1, 1044.1, 429.8], zoom: 1, scroll: [0, -42], canvas: [730, 430], world: [1600, 942], fade: 0, ...o });
   const r = { flow: "lab:cook/chai-tray@L3" };
   // main at 930x430: three fits in half a second (the canvas 730 to 614 wide, the world 942 to 1121 tall: the ceiling shows)
@@ -86,7 +86,9 @@ test("contract-80 (B5, CHAI-45): no change of the kitchen's fit in the first 2 s
   assert.equal(run(check80, r, [fit(1920), fit(10680, { view: "marble", bg: "spr:bg:marble", box: [199.6, -123.2, 1872.2, 951.3] })]).length, 0);
   assert.equal(run(check80, r, [fit(1000), fit(5000, { zoom: 1.2 })]).length, 0, "a change after 2 s is the game's own");
   assert.equal(run(check80, r, [fit(1000, { fade: 0.5 }), fit(1100, { box: [0, 0, 5, 5] })]).length, 0, "frames of a camera fade are not drawn frames");
-  assert.equal(run(check80, { flow: "cook:chai-tray" }, jump).length, 0, "cook.html's title backdrop is outside this check (a finding in the report)");
+  assert.equal(run(check80, { flow: "cook:chai-tray" }, jump).length, 0, "cook.html's title backdrop (its unnamed view) is outside this check");
+  // s19-checks-2: cook.html's own views are judged too, as lab.html's (the same jump in the station's view)
+  assert.equal(run(check80, { flow: "cook:chai-tray" }, jump.map((f) => ({ ...f, view: "marble" }))).length, 1, "a station's view on cook.html");
 });
 
 test("contract-81 (B7, CHAI-46): a picture of the pan drawn over its heat ring, lasting, is red", () => {
