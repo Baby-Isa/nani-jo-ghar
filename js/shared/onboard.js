@@ -725,6 +725,19 @@
     }
     return true;
   };
+  /** (s19-taps) A light went or stepped aside: the light now on top draws at once, never a frame with none (a blink of the dim). */
+  const redrawTop = () => {
+    for (let i = stack.length - 1; i >= 0; i--) {
+      const l = stack[i];
+      if (!l.isConnected || !l.__want) continue;
+      try {
+        if (l.__redraw) l.__redraw();
+      } catch (e) {
+        /* its own */
+      }
+      return;
+    }
+  };
   /** A light layer to the top of the stack (the newest light wins). */
   Onboard.raise = (layer) => layer && stackIn(layer);
   /** TEST HOOK (read-only): how many light boxes are drawn now (one at most). */
@@ -1210,7 +1223,7 @@
       // (SH-261: a press held on the step's thing is its hold begun)
       if (!moving && held(startAt)) {
         startAt = null;
-        move(true, true);
+        move(true, true, false);
       }
       const st = m.state().step;
       layer.__hold = moving;
@@ -1229,6 +1242,12 @@
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
+    // (s19-taps: drawn now, not at the next frame, as a spot's)
+    layer.__redraw = () => {
+      if (!layer.isConnected) return;
+      cancelAnimationFrame(raf);
+      draw();
+    };
 
     const playAudio = (st, i) => {
       try {
@@ -1330,8 +1349,9 @@
       layer.classList.remove("ob-moving");
       replay();
     };
-    const move = (on, press) => {
+    const move = (on, press, now = true) => {
       if (on) {
+        const was = moving;
         if (!moving) {
           moving = true;
           hideGhost();
@@ -1339,6 +1359,7 @@
         pressing = !!press;
         backAt = 0;
         layer.classList.add("ob-moving");
+        if (!was && now) layer.__redraw();
       } else if (moving) {
         pressing = false;
         backAt = Date.now() + Onboard.MOVE.back;
@@ -1561,6 +1582,7 @@
       hideGhost();
       pressHooks.delete(press);
       stackOut(layer);
+      redrawTop();
       light.clear();
       EV.forEach((t) => root.removeEventListener(t, block, { capture: true }));
       root.removeEventListener("pointerup", up, true);
@@ -1892,7 +1914,7 @@
     const draw = () => {
       if (away && !awayPress && awayBack && Date.now() >= awayBack && !busyNow()) away = false;
       // (a press held on the thing is a hold begun: SH-236)
-      if (!away && held(start)) goAway(true);
+      if (!away && held(start)) goAway(true, false);
       layer.__hold = away;
       layer.classList.toggle("ob-moving", away);
       const sp = away ? { els: [], rects: [], canvas: [] } : split(target);
@@ -1919,6 +1941,12 @@
       gameLight(!layer.__buried && !away);
       if (!sp.els.length && !layer.__buried && !away) bounce.tick();
       raf = requestAnimationFrame(draw);
+    };
+    // (s19-taps: drawn now, not at the next frame: it steps aside the moment the move starts, it shows the moment the light over it goes)
+    layer.__redraw = () => {
+      if (closed) return;
+      cancelAnimationFrame(raf);
+      draw();
     };
     draw();
     const firstRect = () => rectsOf(target)[0] || null;
@@ -1967,12 +1995,13 @@
     // only hides once it does (a drag past MOVE.slop, a press held MOVE.hold on the thing), never on a tap: a tap that does the thing
     // closes it by its result (its owner's close()), one that misses leaves it up. o.stay: it never hides; o.onPress(e) returning false:
     // that press is not this light's move (Onboard.light's tapped control, whose click does it)
-    function goAway(pressing) {
+    function goAway(pressing, now = true) {
       if (closed || o.stay) return;
       away = true;
       awayPress = !!pressing;
       awayBack = pressing ? 0 : Date.now() + Onboard.MOVE.back;
       start = null;
+      if (now) layer.__redraw();
     }
     const thingRects = () => rectsOf(o.live || target);
     const press = {
@@ -2021,6 +2050,7 @@
         pressHooks.delete(press);
         stackOut(layer);
         cancelAnimationFrame(raf);
+        redrawTop();
         if (finger) finger.stop();
         bounce.stop();
         light.clear();
