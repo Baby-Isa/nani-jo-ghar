@@ -156,6 +156,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: Lang.phrase(Lang.countParts(want[r.id], r.id)).en, done: r.done, key: r, say: () => Lang.speak(Lang.phrase(Lang.countParts(want[r.id], r.id))) }) : { label: r.label, done: r.done, key: r })) }],
         });
         const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
+        // (chaat top-down's builder, 11 Nov: "hakro" missing from the end review: her card is gone by the end, and the review read only
+        // the order card's words): the words her card taught, in the forms she said them, for the end review (flow.js reviewWords)
+        if (ctx) {
+          ctx.taught = ctx.taught || [];
+          Object.keys(want).forEach((id) => ctx.taught.push(...((Lang.phrase(Lang.countParts(want[id], id)) || {}).segs || [])));
+        }
         try {
           M.addCard("chop-nani", data(), cardOpts);
           // R4 (contract-20: one face per person): while she asks on her own card, her box keeps only its tools, as in daar's
