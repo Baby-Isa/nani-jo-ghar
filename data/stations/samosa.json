@@ -16,7 +16,7 @@
   "_about": "Samosa's own pictures (decision 68: loaded when samosa is chosen, each at its one drawn size) and what build/cut_cook_v3.py measured on them (assets/cook/items/v3/samosa/meta.json; fractions of each sprite, checked by build/check_vessel_meta.py). heaps: each filling's top-down heap (S2 / Q2, no bowls; 30 Sept: the chilli is daar's sliced rings; ART-11: the potato is the landed PT1 pile). pastry: the tile the coded fold is drawn in (SAM-21). fry: raw, light, golden, too dark (S19, s19-wave-e2: S4 #97, the closed samosa in four stages, cut by build/tools/art/s19_cut.py; was samosa-v2's). under: the round sheet's underside (S2 #92), shown by a flap of the coded fold seen from below (Cook.Pastry's under). meta: karahi (its round body, handles left out; oil = the oil's radius / the body's), plate (its rim; flat = the paper-lined centre's half-width / the rim r), jharo (its bowl's middle and radius: x, r of the width, y of the height), heap and fry (their canvases).",
   "board": "assets/cook/items/v3/samosa/board.webp",
   "plate": "assets/cook/items/v4/samosa/plate-napkin.webp",
-  "karahi": "assets/cook/items/v4/samosa/karahi-oil.webp",
+  "karahi": "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
   "jharo": "assets/cook/items/v3/samosa/jharo.webp",
   "thali": "assets/cook/items/vessel-thali-t.webp",
   "pastry": "assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp",
@@ -39,11 +39,12 @@
   },
   "meta": {
    "karahi": {
+    "_k3": "the k3 run's K8r-2 (11 Nov), measured on the cut (build/reports/s19-k3-cut.md): the rim's centre and radius; the oil's own centre sits about 10 px below the rim's (a deep karahi's wall shows wider at the top), the samosas float within 0.8 of the oil round the rim's centre (SAM-14)",
     "w": 1000,
-    "cx": 0.496,
-    "cy": 0.4994,
-    "r": 0.394,
-    "oil": 0.774
+    "cx": 0.4959,
+    "cy": 0.4982,
+    "r": 0.4031,
+    "oil": 0.748
    },
    "plate": {
     "w": 896,
@@ -151,7 +152,7 @@
  "assets": [
   "assets/cook/items/v4/samosa/samosa-*.webp",
   "assets/cook/items/v4/samosa/sheet-under.webp",
-  "assets/cook/items/v4/samosa/karahi-oil.webp",
+  "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
   "assets/cook/items/v4/samosa/plate-napkin.webp",
   "assets/cook/items-s17-stove/f-mince.webp",
   "assets/cook/items/served/samosa.webp"

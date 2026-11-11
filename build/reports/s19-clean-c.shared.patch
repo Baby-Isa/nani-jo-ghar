@@ -1,0 +1,187 @@
+diff --git a/data/cook.json b/data/cook.json
+index e41bc4c50..da04ff63b 100644
+--- a/data/cook.json
++++ b/data/cook.json
+@@ -1627,10 +1627,8 @@
+      ]
+     },
+     "speed": {
+-     "pick": [
+-      "slow",
+-      "quick"
+-     ],
++     "byLevel": [{"value": null}, {"value": null}, {"value": null}, {"pick": ["slow", "quick"]}],
++     "_byLevel": "DAAR-12 (Zafar, 11 Nov: daar asks no speed before L4; its word moment waits on Mum's lines): no speed at L1-L3, so neither Nani's stir line nor the card's stir row names one (js/cook/mechanics/stir.js Cook.StirKit.speedFrom, data/stations/daar.json stirSpeedFrom)",
+      "_about": "Decision 13 (P51, DAAR-32; Zafar, 17 Oct: 'she should say the speed as well, so either jaldi or aste'): a speed at every level, L1 too, said in Nani's stir line and shown on the dial and the card (was S02-B: none at level 1, and none some rounds from level 2)"
+     }
+    },
+@@ -1697,7 +1695,8 @@
+       }
+      ],
+      "when": "stir",
+-     "pic": "assets/cook/items-s08c/kadchi/kadchi-s08c.webp",
++     "pic": "assets/cook/items/v4/kit/ladle.webp",
++     "_pic": "DAAR-45 (s19-clean-c): the stir row's tool is the stir kit's own ladle (v4/kit/ladle, prefetched with daar), the one the child stirs with; the s08c kadchi did not load in time (contract-104)",
+      "_about": "T14 (DAAR-12, S02-B): the stir row on the card: the laps and the speed asked (from level 2), shown when the stir starts. pic (DAAR-19, S06 r2): the station's own ladle before the words, so the laps alone ('ba': Mum's 'Trae!' for 'stir three times', docs/language/lexicon.md) read as the stir's row, not a stray one; the stir verb is never written (the ladle is the tool, not a word) DAAR-02 (s08 w7A): the s08c kadchi, empty."
+     }
+    ],
+@@ -2399,7 +2398,9 @@
+      "tally": "$skewers",
+      "frame": "and",
+      "unit": "ph-lakri",
+-     "cards": 4
++     "cards": 4,
++     "pieces": {"ph-mishkaki": "ph-meat", "veg-02": "veg-02", "veg-03": "veg-03"},
++     "_pieces": "SEK-25 (Zafar, 8 Nov: 'the item card just say gos gos gos gos ... they get ticked off as you put them on'): each skewer kind's one piece, so its card row is four cards of that piece (js/cook/ui.js), ticked as each goes on (js/cook/mechanics/thread.js plainTick); a mixed skewer's pieces are its list's (cardOf)"
+     },
+     {
+      "if": "skewers.ph-mixed",
+@@ -5399,10 +5400,10 @@
+       "assets/cook/items/shelf-veg-12-bare-f.webp",
+       "assets/cook/items/tool-knife-t-v2.webp",
+       "assets/cook/items/v3/daar/chop-heap-chilli.webp",
+-      "assets/cook/items/v3/daar/chop-heap-onion.webp",
++      "assets/cook/items/v4/daar/chop-heap-onion.webp",
+       "assets/cook/items/v3/daar/chop-heap-tomato.webp",
+       "assets/cook/items/v3/daar/chop-piece-chilli.webp",
+-      "assets/cook/items/v3/daar/chop-piece-onion.webp",
++      "assets/cook/items/v4/daar/chop-piece-onion-1.webp",
+       "assets/cook/items/v3/daar/chop-piece-tomato.webp",
+       "assets/cook/items/v3/daar/daar-bowl-trivet-plain-v2.webp",
+       "assets/cook/items/v3/daar/daar-bowl-trivet-v2.webp",
+@@ -5440,7 +5441,14 @@
+       "assets/cook/items/v4/daar/loon.webp",
+       "assets/cook/items/v4/daar/pot-empty.webp",
+       "assets/cook/items/v4/daar/pot-oil.webp",
+-      "assets/cook/items/v4/daar/rai.webp"
++      "assets/cook/items/v4/daar/rai.webp",
++      "assets/cook/items/v4/kit/ladle.webp",
++      "assets/cook/items/v4/chop/dungri-whole.webp",
++      "assets/cook/items/v4/chop/tameto-whole.webp",
++      "assets/cook/items/v4/chop/marcha-whole.webp",
++      "assets/cook/items/v4/chop/bataato-whole.webp",
++      "assets/cook/items/v4/chop/adu-whole.webp",
++      "assets/cook/items/v4/chop/lasan-whole.webp"
+      ]
+     },
+     "chop": {
+@@ -5494,6 +5502,12 @@
+       "assets/cook/items/tool-ladle-t.webp",
+       "assets/cook/items/v3/daar/ladle-v3.webp",
+       "assets/cook/items-s08c/kadchi/*",
++      "assets/cook/items/v4/daar/pot-*.webp",
++      "assets/cook/items/v4/daar/disc-*.webp",
++      "assets/cook/items/v4/kit/ladle.webp",
++      "assets/cook/items/v3/daar/dial-*.webp",
++      "assets/cook/items/chai-station/*",
++      "assets/cook/items/v3/hob/*",
+       "assets/cook/items/shelf-veg-*-bare-f.webp"
+      ],
+      "prefetch": [
+@@ -5561,7 +5575,7 @@
+       "assets/cook/items-s08b/go-on/go-karahi-s08b*",
+       "assets/cook/tiles-s08b/pastry-tile-s08b*",
+       "assets/cook/items-s08b/potato/potato-pile-v3.webp",
+-      "assets/cook/items/v4/samosa/karahi-oil.webp",
++      "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
+       "assets/cook/items/v4/samosa/plate-napkin.webp",
+       "assets/cook/items-s17-stove/f-mince.webp",
+       "assets/cook/items/served/samosa.webp"
+@@ -5587,7 +5601,7 @@
+       "assets/cook/items/v3/samosa/fold-v2-6.webp",
+       "assets/cook/items/v3/samosa/jharo.webp",
+       "assets/cook/items/vessel-thali-t.webp",
+-      "assets/cook/items/v4/samosa/karahi-oil.webp",
++      "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
+       "assets/cook/items/v4/samosa/plate-napkin.webp",
+       "assets/cook/items/v4/samosa/samosa-cooked.webp",
+       "assets/cook/items/v4/samosa/samosa-over.webp",
+@@ -5690,7 +5704,10 @@
+       "assets/cook/items/v4/sekelo/tomato-cooked.webp",
+       "assets/cook/items/v4/sekelo/tomato-over.webp",
+       "assets/cook/items/v4/sekelo/tomato-part.webp",
+-      "assets/cook/items/v4/sekelo/tomato-raw.webp"
++      "assets/cook/items/v4/sekelo/tomato-raw.webp",
++      "assets/cook/items/mishkaki-meat-grilled-t.webp",
++      "assets/cook/items/skewer-mixed-grilled-t.png",
++      "assets/cook/items/v4/kit/tray-steel-long.webp"
+      ],
+      "_potato": "s08 w6F (ART-11): the potato's skewer piece is PT1's cube (veg-01.raw, a whole path: js/cook/art.js refUrl); its worktop bowl is PT1's pile (veg-bataato-cubed-v2-t), no longer the butter-yellow boiled cubes"
+     },
+diff --git a/js/cook/order.js b/js/cook/order.js
+index 04daa106b..597b1d56e 100644
+--- a/js/cook/order.js
++++ b/js/cook/order.js
+@@ -81,6 +81,8 @@
+       qty: r.qty || 1,
+       // Wave 6: one card per unit ("ba lakri gos" is two skewer cards, each with `cards` slots)
+       cards: r.cards || null,
++      // SEK-25: a kind's one piece (a skewer of mishkaki is four gos): its card row is that piece's cards
++      pieces: r.pieces || null,
+       // a list said for one card (a mixed skewer's pieces, in order): drawn on that card's slots
+       cardOf: r.cardOf || null,
+       // the first thing asked for, when the card has its own headline (the pantry's "Muke dudh de."): stays first
+diff --git a/js/cook/recipes.js b/js/cook/recipes.js
+index a4855ca70..482b1bd98 100644
+--- a/js/cook/recipes.js
++++ b/js/cook/recipes.js
+@@ -367,7 +367,7 @@
+         dot++;
+         // cards: one card per unit, each with that many slots (Wave 6: a skewer card always has four dots)
+         // block: a second block of the same dish (30 Sept: samosa's second kind), its own section on the card
+-        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null, block: e.block || null }));
++        ids.forEach((id, j) => rows.push({ kind: "item", ids: id.split("+"), qty: t[id], dot, group: "any", for: forWho, line: ls[j], parts: partsOf(id), sec, when, cards: e.cards || null, pieces: e.pieces || null, block: e.block || null }));
+         return;
+       }
+       const frame = e.frame === "order" ? Lang.orderFrame(i, d.level) : e.frame;
+diff --git a/js/cook/ui.js b/js/cook/ui.js
+index 19a35340d..bd4d8383d 100644
+--- a/js/cook/ui.js
++++ b/js/cook/ui.js
+@@ -3228,10 +3228,32 @@
+         // count written ("ba wadhi maani"), as chai's
+         const mixOf = (r) => L.sections.some((y) => y.cardOf && y.cardOf === r.ids[r.ids.length - 1]);
+         const plain = rows.filter((x) => x.r.cards && !mixOf(x.r));
+-        if (plain.length) {
+-          items.push({ label: null, parts: plain.map((x) => cardOf(x.r, x.gi)), ordered: false, src: plain });
+-          rowsShown.push(...plain.map((x) => x.r));
++        // SEK-25 (Zafar, 8 Nov: "four items ... the items that go on each skewer even if it's four of the same thing and they get ticked
++        // off as you put them on ... the item card just say gos gos gos gos"): a kind made of one piece (the say entry's `pieces`: a
++        // skewer of mishkaki is four gos) is a row of its piece's cards per unit, ticking as each piece goes on (M.tickPiece), whole once
++        // the unit is made (M.tickCard)
++        const pieceOf = (r) => (r.pieces && r.pieces[r.ids[r.ids.length - 1]]) || null;
++        const whole = plain.filter((x) => !pieceOf(x.r));
++        if (whole.length) {
++          items.push({ label: null, parts: whole.map((x) => cardOf(x.r, x.gi)), ordered: false, src: whole });
++          rowsShown.push(...whole.map((x) => x.r));
+         }
++        plain
++          .filter((x) => pieceOf(x.r))
++          .forEach(({ r }) => {
++            rowsShown.push(r);
++            const id = pieceOf(r);
++            const pr = (r._pieceRow = r._pieceRow || { kind: "item", ids: [id], qty: 1, parts: [id], line: Lang.phrase([id]), phrase: Lang.phrase([id]), for: r.for, piece: true });
++            for (let u = 0; u < (r.qty || 1); u++) {
++              const unit = !!(r.units && r.units[u]) || !!r.done;
++              const got = (r.unitGot && r.unitGot[u]) || 0;
++              // (each piece card its own key, so each logs its own step-close as it ticks: contract-18)
++              const keys = (r._pieceKeys = r._pieceKeys || []);
++              keys[u] = keys[u] || Array.from({ length: r.cards || 4 }, (_, pi) => ({ piece: id, unit: u, at: pi }));
++              const parts = Array.from({ length: r.cards || 4 }, (_, pi) => Object.assign(cardOf(pr, 0), { key: keys[u][pi], done: unit || pi < got, next: false }));
++              items.push({ label: null, parts, ordered: true, done: unit, src: [] });
++            }
++          });
+         rows
+           .filter((x) => x.r.cards && !plain.includes(x))
+           .forEach(({ r }) => {
+@@ -3240,7 +3262,9 @@
+             rowsShown.push(r);
+             // the skewer's kind ("ba lakri mixed": every number said is written, contract-30), or the skewer itself before its pieces
+             // are shown, as its own card
+-            if (!mixes.length || (r.qty || 1) > 1) items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
++            // (SEK-25: once its pieces show, a mixed skewer is its pieces' cards alone: "separate the names of the items that go on the
++            // skewer from the overall order")
++            if (!mixes.length || ((r.qty || 1) > 1 && !r.pieces)) items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
+             // SEK-03, SEK-13: each skewer's pieces, a row of cards per skewer, ticking as they go on (M.tickUnit for the first skewer
+             // of a mix, M.tickPiece for a later one of the same mix); several different mixes, a row each
+             const each = mixes.length > 1 && (r.qty || 1) === mixes.length ? mixes.map((ps) => [ps, 0]) : mixes.length === 1 ? Array.from({ length: r.qty || 1 }, (_, u) => [mixes[0], u]) : [];
