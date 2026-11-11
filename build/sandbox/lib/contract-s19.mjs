@@ -1,3 +1,4 @@
+import { sceneAt } from "./contract-s19b.mjs";
 // Sprint 19's part 1 (s19-checks; build/reports/s18-review-and-direction.md §2 and §10, the eye-judge experiment's change 1): the shared
 // pieces are THERE, as code checks, numbered from 100. Each guards a named failure of Zafar's 8 Nov play (docs/process/regressions.md),
 // read from what is on screen and in the shared logs, never from a game's own code. Registered in lib/contract.mjs (S19_CHECKS, checkS19)
@@ -32,6 +33,7 @@ export const BAND_TOP = 630 / 900; // js/shared/shelf.js Shelf.BAND: the band is
 export const BASE_TOL = 4;         // contract-109: a shelf item's foot this close to the line
 export const CHIP_TOL = 2;         // ... and its pill's middle this close to the chip line
 export const LOAD_MS = 600;        // contract-104: a picture not in after this long is blank (a card drawn again reloads its pictures)
+export const GROUP_IN = 0.8;        // contract-105: a picture this much inside a light is one of a group it lights (s19-shared-checks)
 export const CARD_PART = 0.5;      // contract-105: a light round less than this share of an item card is on a part of it (contract-97's)
 // contract-105: a picture whose key says it is a shadow, halo, glow, dim or light is never the lit thing (the final 8 Nov run judged
 // two lights against a pan's contact shadow); kept in the probe's scan below, the same words
@@ -222,6 +224,18 @@ export function check105(r, tl, add) {
         return;
       }
       // a canvas picture with no word (a pan, a board, a pot)
+      // (s19-shared-checks: a light round a group of pictures lying on a bigger one, sekelo's skewer of meat on the rack, lights the group,
+      // not the rack under its middle: when less than half of that picture is inside the light, and two or more pictures stand inside it
+      // (GROUP_IN of each), they together are its thing, judged as any picture is; contract-112 judges the same light so. A light half on a
+      // pan's handle has no group in it: the pan is still its thing, and still fails)
+      let group = null;
+      if (th.kind === "pic" && inter(h, t) < 0.5 * area(t)) {
+        const grp = sceneAt(tl, e.t).list.filter((x) => !NOT_A_THING.test(x.key)).map((x) => box(x.box)).filter((b) => area(b) > 0 && area(b) < area(h) && inter(h, b) >= GROUP_IN * area(b));
+        if (grp.length >= 2) {
+          group = grp.reduce((a, b) => ({ l: Math.min(a.l, b.l), t: Math.min(a.t, b.t), r: Math.max(a.r, b.r), b: Math.max(a.b, b.b) }));
+          Object.assign(t, group);
+        }
+      }
       // (Zafar, 29 Oct: "the highlight box on the chai tray should go under the face circle so the face circle sits on top": a face
       // badge mostly inside the light, touching the thing, is part of what it lights; the thing and its face are measured together)
       (e.faces || []).forEach((f0) => {
@@ -235,7 +249,7 @@ export function check105(r, tl, add) {
       const offX = Math.abs(hm.x - tm.x) / Math.max(1, t.r - t.l), offY = Math.abs(hm.y - tm.y) / Math.max(1, t.b - t.t);
       if (cover < PIC_COVER || offX > PIC_OFF || offY > PIC_OFF) {
         seen.add(id);
-        add("contract-105", e.t, `the light ${fmt(h)} is ${cover < PIC_COVER ? `round ${Math.round(100 * cover)}% of` : "off the middle of"} ${id} ${fmt(t)} (middle off by ${Math.round(100 * offX)}%, ${Math.round(100 * offY)}% of its size): it should sit whole round it`);
+        add("contract-105", e.t, `the light ${fmt(h)} is ${cover < PIC_COVER ? `round ${Math.round(100 * cover)}% of` : "off the middle of"} ${group ? `the group of pictures on ${id}` : id} ${fmt(t)} (middle off by ${Math.round(100 * offX)}%, ${Math.round(100 * offY)}% of its size): it should sit whole round it`);
       }
     });
   }
