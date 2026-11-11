@@ -159,9 +159,10 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
     const flagG = S.add.graphics();
     const n = 4;
     const m = 3;
+    const ink = global.Tokens.int("ink"); // (the chequer's dark: the ink token)
     flagG.fillStyle(0x28190a, 0.14).fillRoundedRect(L(3), -L(pole) + L(5), L(fw), L(fh), L(3));
-    for (let i = 0; i < n; i++) for (let j = 0; j < m; j++) flagG.fillStyle((i + j) % 2 ? 0x2a2522 : 0xfffaf1, 1).fillRect(L(2) + (i * L(fw)) / n, -L(pole) + L(2) + (j * L(fh)) / m, L(fw) / n + 0.5, L(fh) / m + 0.5);
-    flagG.lineStyle(L(2), 0x2a2522, 0.85).strokeRect(L(2), -L(pole) + L(2), L(fw), L(fh));
+    for (let i = 0; i < n; i++) for (let j = 0; j < m; j++) flagG.fillStyle((i + j) % 2 ? ink : 0xfffaf1, 1).fillRect(L(2) + (i * L(fw)) / n, -L(pole) + L(2) + (j * L(fh)) / m, L(fw) / n + 0.5, L(fh) / m + 0.5);
+    flagG.lineStyle(L(2), ink, 0.85).strokeRect(L(2), -L(pole) + L(2), L(fw), L(fh));
     // (an empty box named for the evidence probes' canvas:pot crop, so the flag is in the pot's frame; never drawn)
     const box = S.add.rectangle(L(fw / 2), -L(pole / 2), L(fw + 8), L(pole + 8), 0xffffff, 0).setName("daar-pot-flag");
     c.add([g, flagG, box]);
