@@ -1369,7 +1369,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       }
       // 2. a ready pan pours into its glass
       for (const q of pans) {
-        if (q.state === "ready" && !q.closed && q.poured < needOf(q)) return { e: tapOn(q.img, `pour-${q.who}`), obj: q.img, focal: true, phase: "pour" };
+        if (q.state === "ready" && !q.closed && q.poured < needOf(q)) return { e: tapOn(q.img, `pour-${q.who}`), obj: q.img, focal: true, phase: "pour", again: q.poured > 0 };
       }
       // 3. a pan still to fill: choose it, fill it, light it
       for (const q of pans) {
@@ -1717,6 +1717,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             busy: moving,
             endIf: () => moving() || on(),
             step: st || "",
+            // CHAI-109 (Zafar, 11 Nov evening, his child's play: "the highlight on the order card to show you the third item the first
+            // time you're playing the tea game ... It needs to be just half a second longer"): the kit's time and half a second more
+            // (a child's time: the kit divides it by the test speed; Cook.Coach.cardLight's o.ms, a kit line in the s19-clean-b report)
+            ms: (global.Rules && global.Rules.pointMs ? global.Rules.pointMs() : 1200) + 500,
             note: `${STATION14}:${S14_TAG}light`,
             onLit: () => {
               gate14.spend("card");
@@ -1760,7 +1764,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // held for the light (UI.holdCalls), so they still come together, contract-78)
         const target = rungCur.target, also = rungCur.also, obj = rungCur.obj;
         // (picking the next pan: its first time is CHAI-68's own light, so here only the stuck hint)
-        const firstTime = rungCur.panPick ? false : gate14.first(`ctl-${nx.phase}`);
+        // CHAI-110 (Zafar, 11 Nov evening, his child's play: "it wasn't clear ... that you need to tap the glass twice to fill it fully ... the
+        // onboarding should kick in after you've tapped it for the first time. Then the light should go on the glass, and it should
+        // force you to tap the glass a second time"): a full glass at half is its own first-time control, lit on the glass until the
+        // second tap fills it
+        const firstTime = rungCur.panPick ? false : gate14.first(nx.again ? "ctl-pour-again" : `ctl-${nx.phase}`);
         // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
         // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
         // the green, "Slow kar!", is timed and comes at once); after that the call alone and the same light as the stuck hint after
@@ -1964,7 +1972,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (nx) phase(nx.phase, nx.pid, !!(nx.e && /^pan-/.test(nx.e.key || ""))); // S02-B: nothing to do -> the box is empty (R2)
       // Sprint 11: the real item's demo and the hint rungs for the step Nani has just opened (and calls)
       // (picking the next pan is its own step, so the water after it opens as a new one with its own help: the sandbox, 3 Nov, contract-24)
-      coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}${nx.e && /^pan-/.test(nx.e.key || "") ? ":pick" : ""}` : null);
+      // (CHAI-110: a full glass's second pour is its own step, with its own first-time light)
+      coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}${nx.e && /^pan-/.test(nx.e.key || "") ? ":pick" : ""}${nx.again ? ":again" : ""}` : null);
       // Sprint 11: a ready pan can be served by calling "chai" (its microphone by the glass)
       if (nx && nx.phase === "pour") showMic(pans.find((q) => `pour-${q.who}` === nx.e.key) || null);
       else hideMic();
