@@ -405,6 +405,26 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
      * ball] -> [Roll it round] -> [Put it on the tawa]. Waiting on the tawa with nothing else to do: empty.
      */
     const steps = St.steps(ctx);
+    /*
+     * MAA-19 (Zafar, 8 Nov: "I'm not getting onboarding for flip"; contract-78: from L2 "Firai!" came with no light): the flip's first
+     * time on the kit's lights, as eggs' and samosa's controls: the first time a maani is in the green, its light with the call
+     * (Cook.Coach.control on the game's first-time gate, the call held for it), held in the green (St.firstHold); after that the call
+     * alone. Where the coach's staged script is running (its own "flip" step, the first plays) it lights the flip itself.
+     */
+    let flipCtl = null;
+    let flipOf = null;
+    let flipGate = null;
+    function flipLead(t) {
+      if (t && flipOf === t && flipCtl && !flipCtl.over) return;
+      if (flipCtl) flipCtl.close();
+      flipCtl = null;
+      flipOf = null;
+      if (!t || t.side !== 1 || !Cook.Coach || !Cook.Coach.control || !Cook.Coach.firsts || (Cook.Coach.active && Cook.Coach.active())) return;
+      flipGate = flipGate || Cook.Coach.firsts("maani-line", { round: new Set() });
+      if (!flipGate.first("ctl-flip")) return;
+      flipOf = t;
+      flipCtl = Cook.Coach.control({ key: "maani-line", target: Cook.Coach.box(t.it.sprite), first: true, noHint: true, current: () => flipOf === t && onTawa === t && t.side === 1 && !t.busy, note: `${flipGate.scope}:s14-control` });
+    }
     function stepNow() {
       if (finished) return steps.done();
       const t = onTawa;
@@ -412,7 +432,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // MAA-15 (P7, Zafar 17 Oct: "I didn't hear it the second time ... she should say it the second time"): side 2's step says
       // Firai too (data/cook.json guide maani-line:off; "take it off" waits on Mum), even right after side 1's
       // (contract-70: every timed window's green is called, a second maani's first side too: it was skipped as "just said")
-      if (hot) return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}`, again: true });
+      if (hot) {
+        flipLead(t);
+        return steps.to(t.side === 1 ? "maani-line:flip" : "maani-line:off", { id: `tawa-${t.side}-${items.indexOf(t.it)}`, again: true });
+      }
+      flipLead(null);
       if (waiting && waiting.landed && !onTawa) return steps.to("maani-line:tawa", { id: `tawa-on-${items.indexOf(waiting)}` });
       if (chakla && !chakla.busy) return steps.to("maani-line:roll", { id: `roll-${items.length}` });
       if (!chakla && !waiting && nextType()) return steps.to("maani-line:take", { id: `take-${items.length}` });
@@ -434,7 +458,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       stopStuck();
       if (!thing || !Cook.Coach || !Cook.Coach.stuck || (Cook.Coach.active && Cook.Coach.active())) return;
       const me = { key, thing };
-      me.h = Cook.Coach.stuck({ key: "maani-line", thing, current: () => stuck === me && !finished, busy: () => !!(chakla && chakla.busy) || !!(onTawa && onTawa.busy), glow: (on) => thing.active && S.glow(thing, on, { bounce: true, now: true }) });
+      me.h = Cook.Coach.stuck({ key: "maani-line", thing, current: () => stuck === me && !finished, busy: () => !!(chakla && chakla.busy) || !!(onTawa && onTawa.busy), glow: thing === board ? null : (on) => thing.active && S.glow(thing, on, { bounce: true, now: true }) });
       stuck = me;
     }
 
@@ -454,7 +478,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         zb.expect(lit(Object.assign({ kind: "tap", key: "dough", wrongs: plates.filter((o) => o !== b).map(centre) }, centre(b)), { thing: b }));
       } else zb.expect(null);
       zon.expect(toTawa ? lit(Object.assign({ kind: "tap", key: "tawa-on" }, centre(toTawa.sprite)), { thing: toTawa.sprite }) : null);
-      stuckSync(need ? plateOf(need) : toTawa ? toTawa.sprite : null, need ? `pile-${need}` : toTawa ? `tawa-on-${items.indexOf(toTawa)}` : null);
+      // (SH-228, contract-91: the roll too: a ball on the board not yet rolled, its light round the board whole, as the roll's own)
+      const toRoll = !need && !toTawa && chakla && !chakla.busy && !chakla.started ? chakla : null;
+      stuckSync(need ? plateOf(need) : toTawa ? toTawa.sprite : toRoll ? board : null, need ? `pile-${need}` : toTawa ? `tawa-on-${items.indexOf(toTawa)}` : toRoll ? `roll-${items.length}` : null);
       // quiet until they matter (§3): the finished plates, until a maani lands
       Object.values(dones).forEach((d) => d.img.setAlpha(d.n ? 1 : 0.9));
       // SH-238 (Zafar, 8 Nov: no tick button): the line ends by itself once as many maanis as they asked for are made and nothing is
@@ -614,6 +640,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // contract-8 (decision 95, S05-G): its "ready now" glow goes when it is tapped; it used to stay on, so a cooked
       // maani kept glowing on its plate beside the ✓'s pulse (two things lit at once)
       glowOn(sp, false);
+      flipLead(null); // (SH-236: the light goes with the press)
       inBand = false;
       const v = t.v;
       const burnt = v >= 1;
@@ -734,7 +761,129 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       await Cook.Coach.lessons({ gate, ctx });
       lessoning = false;
     }
+    // MAA-23: the first round with big and small, their word moment before the first pile
+    if (sizes) {
+      lessoning = true;
+      await bigSmall().catch((e) => console.warn("big and small:", e));
+      lessoning = false;
+    }
     update();
+
+    /*
+     * MAA-23 (Zafar, 9 Nov: "when the level arrives where we introduce big and small, we use that as the word focus ... it shows the
+     * maani being rolled small and the maani being rolled big, and there'll be the words nindo and waddo ... then after you've seen
+     * that, then the dash lines come on"; 11 Nov: built now, its lines from the engine only, a gap to Mum): the word moment for big and
+     * small, the round they first arrive in (the level table's sizes), once per player (Cook.save.seenStation, cleared by "Play as
+     * new") while either word is still new (stage 1-2), as chai's half and full (UI.wordMoment). On the board, with the two rings it
+     * keeps after: a ball rolls out to the small ring, the ring glows, and the maani turns in place into its word card (the kit's big
+     * word card, WordCard.big14), said by the language engine (Lang.phrase: "nindhi maani"); then the same for big. A line the engine
+     * can't say is its English in grey italic (the card's rec placeholder), never a word made up here: the recording sheet's gap.
+     * (The shared word moment, js/shared/word-moment.js, pours into glasses; a roll is this game's own move, so it is played here.)
+     */
+    async function bigSmall() {
+      const KEY = "maani-line:word-moment-big-small";
+      const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
+      const pair = ["ph-small", "ph-big"];
+      const W = global.WordCard;
+      if (seen[KEY] || !pair.some((id) => (Cook.wordStage ? Cook.wordStage(id) : 1) <= 2) || !W || !W.big14 || !UI.worldToScreen) return;
+      const order = pair.map((id) => sizes.find((s) => s.id === id)).filter(Boolean);
+      if (order.length < 2) return;
+      seen[KEY] = true;
+      if (Cook.writeSave) Cook.writeSave();
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("word-moment", { step: "maani-line", by: pair.join(",") });
+      zb.expect({ kind: "wait", wordMoment: true });
+      zon.expect(null);
+      stopStuck();
+      const type = Object.keys(want).map((k) => split(k).type)[0] || types[0];
+      const T = global.Tokens;
+      const tok = (name) => (T && T.int ? T.int(name) : 0xc9973a);
+      const rings = S.track(S.add.graphics().setDepth(D.fx));
+      const drawRings = (litId) => {
+        rings.clear();
+        order.forEach((sz) => {
+          const on = sz.id === litId;
+          if (on) {
+            rings.lineStyle(22, tok("focus"), 0.28);
+            rings.strokeCircle(CH.x, CH.y, sz.r);
+          }
+          rings.lineStyle(on ? 7 : 4, tok("gold"), on ? 1 : 0.45);
+          rings.strokeCircle(CH.x, CH.y, sz.r);
+        });
+      };
+      rings.setAlpha(0);
+      drawRings(null);
+      await Cook.tween(S, { targets: rings, alpha: 1, duration: 300 });
+      const ms = (v) => v / (Cook.speed || 1);
+      const urlOf = (key) => {
+        const hit = ART.find((a) => a[0] === key);
+        return hit ? Cook.v(hit[1]) : null;
+      };
+      let card = null;
+      const dropCard = () => {
+        const c = card;
+        card = null;
+        if (!c) return;
+        if (c.animate) c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms(260) }).onfinish = () => c.remove();
+        else c.remove();
+      };
+      S.events.once("shutdown", () => card && card.remove());
+      for (const sz of order) {
+        // a ball on the board, rolled out to this ring (the pin's move is the roll's own; here it grows as a roll does)
+        const dough = S.track(S.add.image(CH.x, CH.y, texOf(type, "ball")).setDepth(D.item + 1));
+        const st = { r: kRoll.startRadius };
+        const fit = () => {
+          const key = st.r < kRoll.startRadius * 1.5 ? texOf(type, "ball") : texOf(type, "raw");
+          if (dough.texture.key !== key) dough.setTexture(key);
+          dough.setScale(discScale(key, st.r));
+        };
+        fit();
+        pinRest(false);
+        await Cook.tween(S, { targets: st, r: sz.r, duration: ms(1100), ease: "Sine.easeInOut", onUpdate: fit });
+        pinRest(true);
+        drawRings(sz.id);
+        Cook.sfx.click();
+        await Cook.wait(ms(250));
+        // the maani turns into its word card, in place (the snap: its own picture on the card)
+        const line = Lang.phrase([sz.id, type]);
+        const rec = !line || line.ok === false || (line.segs || []).some((g) => g.lang === "e" || g.rec);
+        const word = {
+          id: sz.id,
+          kutchi: rec ? String((line && line.en) || Cook.english(sz.id)) : Lang.plain(line),
+          english: String((line && line.en) || Cook.english(sz.id) || "").replace(/[.!?]+$/, ""),
+          rec,
+          picture: urlOf(texOf(type, "raw")) ? { src: urlOf(texOf(type, "raw")), fit: "contain" } : null,
+        };
+        dropCard();
+        try {
+          const c = W.big14(null, word, { all: true, cls: "wc14-moment" });
+          const at = UI.worldToScreen(CH.x, CH.y);
+          const k = at.s || (UI.worldScale ? UI.worldScale() : 1) || 1;
+          const w = Math.round(Math.max(110, Math.min(240, CHAKLA_D * 0.62 * k)));
+          Object.assign(c.style, { position: "fixed", zIndex: "40", pointerEvents: "none", margin: "0", width: `${w}px` });
+          document.body.appendChild(c);
+          if (W.fit14) W.fit14(c);
+          c.style.left = `${Math.round(at.x - c.offsetWidth / 2)}px`;
+          c.style.top = `${Math.round(at.y - c.offsetHeight / 2)}px`;
+          if (c.animate) c.animate([{ opacity: 0, transform: "scale(0.7)" }, { opacity: 1, transform: "scale(1.06)" }, { transform: "scale(1)" }], { duration: ms(300), easing: "cubic-bezier(.2,.8,.2,1)" });
+          card = c;
+          const spk = c.querySelector(".wc14-spk");
+          if (spk && !rec) spk.classList.add("on");
+          S.tweens.add({ targets: dough, alpha: 0, duration: ms(200), onComplete: () => dough.destroy() });
+          await Promise.race([rec ? Cook.wait(ms(900)) : Lang.speak(line).catch(() => {}), Cook.wait(ms(4000))]);
+          if (spk) spk.classList.remove("on");
+          if (!rec) Cook.markSeen && Cook.markSeen(sz.id);
+        } catch (e) {
+          console.warn("big and small card:", e);
+          dough.destroy();
+        }
+        await Cook.wait(ms(700));
+        drawRings(null);
+      }
+      dropCard();
+      // (the rings stay on the board from here: rollOne draws them for every roll after)
+      S.tweens.add({ targets: rings, alpha: 0, duration: ms(300), onComplete: () => rings.destroy() });
+      await Cook.wait(ms(300));
+    }
 
     /* ---------- the tick: check the count of each kind ----------
      * Decision 51 (CK-23, S02-F) on the kitchen kit's tick and recast (NjgServe.round): a wrong maani is redone on the spot, never

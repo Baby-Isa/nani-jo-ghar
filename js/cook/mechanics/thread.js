@@ -85,6 +85,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const n = k.pieces;
       const ordered = Object.keys(want).filter((w) => want[w] > 0);
       const mixedW = SK.kindWord("mixed");
+      /*
+       * SEK-25 (Zafar, 8 Nov: "the item cards just say gos gos gos gos ... they get ticked off as you put them on"): a plain skewer (all
+       * one piece: mishkaki's gos, a dungri skewer) ticks its piece cards on the order as each piece goes on, as a mixed one's do
+       * (ctx.tickPiece: the unit being threaded of that kind, how many of its pieces are on); a piece that breaks the run (another
+       * piece) or comes off opens them again. The card's piece rows are the order card's (js/cook/ui.js, the say entry's `pieces`).
+       */
+      const plainTick = (sk) => {
+        if (!ctx.tickPiece) return;
+        const one = sk.ids.length > 0 && sk.ids.every((p) => p === sk.ids[0]);
+        const c = one ? SK.classify(sk.ids, []) : null;
+        const kind = c && c.ok && c.kind !== mixedW && c.kind !== SK.kindWord("veg") && (want[c.kind] || 0) > 0 ? c.kind : null;
+        if (sk.plain && sk.plain !== kind) ctx.tickPiece(sk.plain, 0);
+        sk.plain = kind;
+        if (kind) ctx.tickPiece(kind, sk.ids.length);
+      };
       // Sekelo v2 (§15): the board and its upright skewer on the left of the scene, the rack on the right,
       // the prep bowls on the shelf band below (the chai v2 grid)
       const BOARD = { x: 560, y: 346, w: 250, h: 586 };
@@ -291,6 +306,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           sk.pieces = sk.ids.length;
           ctx.tickPiece(mixedW, sk.pieces);
         }
+        plainTick(sk);
         if (exp && exp.w) sk.target = exp.w;
         if (sk.ids.length >= n) await finish();
         busy = false;
@@ -312,6 +328,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (UI.mission.untickItem) UI.mission.untickItem(t.id, ctx.dishAt || 0);
         }
         if (sk.pieces > sk.ids.length && ctx.tickPiece) ctx.tickPiece(mixedW, (sk.pieces = sk.ids.length));
+        plainTick(sk);
         const back = S.track(S.add.image(wx, wy, SK.tex(S, `piece:${id}`)).setScale(SK.pieceScale(n) * z.k * SKS).setDepth(D.item + 3));
         Cook.sfx.soft();
         await S.fly(back, bowls[id].x, bowls[id].y, { duration: 280, arc: z.L(60) });
@@ -340,6 +357,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } else if (pre.length && UI.mission.untickItem) pre.forEach((t) => UI.mission.untickItem(t.id, ctx.dishAt || 0)); // it wasn't that mix after all
         // SEK-13: a later skewer's own box: its pieces ticked as they went on; a wrong one opens them again
         if (sk.pieces && ctx.tickPiece && !(c.ok && c.kind === mixedW)) ctx.tickPiece(mixedW, 0);
+        // (SEK-25: a plain skewer's piece cards: made, its kind's card row ticks whole, tickCard; a wrong one opens its pieces again)
+        if (sk.plain && ctx.tickPiece && !(c.ok && c.kind === sk.plain)) ctx.tickPiece(sk.plain, 0);
+        sk.plain = null;
         sk.pieces = 0;
         if (c.ok && c.kind === mixedW && c.pat >= 0) madePat[c.pat]++;
         z.progress({ threaded: sk.ids.slice(), kind: c.kind });

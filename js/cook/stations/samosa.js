@@ -1296,6 +1296,29 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const cx = at.x;
     const cy = at.y;
     if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
+    /*
+     * SAM-30 (Zafar, 8 Nov: "nothing told me or showed me how to place them into the frying pan"; contract-78: from L2 the knob's, the
+     * fry's and the lift's calls came with no light, or a late one): the fry's first time on the kit's lights, as eggs does: each control
+     * the first time it comes up, its light with its call (Cook.Coach.control on the fry's first-time gate: the knob with "Chulo bar!",
+     * the first samosa with "Tar!", the golden one with "Samosa hane kadh.", held in the green: St.firstHold); after that the call alone
+     * and the stuck help. The coach's old staged script for the fry (data.onboard.fry) stands down: its light waited for the stage to be
+     * still and came after the call (contract-78), and from L3 not at all.
+     */
+    if (Cook.Coach && Cook.Coach.stop) Cook.Coach.stop(false);
+    const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("fry", { round: new Set() }) : null;
+    let ctl = null;
+    let ctlStep = null;
+    const lead = (step, thing, current) => {
+      if (step === ctlStep && ctl && !ctl.over) return;
+      if (ctl) ctl.close();
+      ctl = null;
+      ctlStep = null;
+      if (!step || !thing || !gate || !Cook.Coach || !Cook.Coach.control || !gate.first(step)) return;
+      ctlStep = step;
+      ctl = Cook.Coach.control({ key: "fry", target: Cook.Coach.box(thing), first: true, noHint: true, current: () => ctlStep === step && (!current || current()), note: `${gate.scope}:s14-control` });
+    };
+    if (burner.knob && burner.knob.getBounds) burner.knobHit.litBounds = () => (burner.knob.active ? burner.knob.getBounds() : null);
+    lead("ctl-fire", burner.knobHit, () => !burner.knobHit.firstOn);
     steps.to("samosa:fire");
     await new Promise((resolve) => {
       burner.knobHit.handAction = false;
@@ -1306,6 +1329,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       S.tappable(burner.knobHit, () => {
         S.untap(burner.knobHit);
         S.glow(burner.knobHit, false);
+        burner.knobHit.firstOn = true;
+        lead(null);
         // the pulse stops BEFORE the knob turns (30 Sept: killing the knob's tweens after set() stopped its quarter
         // turn too, so the "on" knob kept its bar flat, reading as off)
         S.tweens.killTweensOf(burner.knob);
@@ -1414,15 +1439,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       post = () => {
         const waiting = raw.filter((r) => !r.gone);
         const cur = frying.filter((f) => !f.out).sort((a, b) => b.level - a.level)[0];
-        if (!waiting.length && !cur) return resolveAll();
+        if (!waiting.length && !cur) return lead(null), resolveAll();
         // T17: the fire off -> Chulo bar!; a golden one at level 3 -> "Samosa hane kadh."; else Tar!
         if (!fireOn) {
+          lead("ctl-fire", burner.knobHit, () => !fireOn);
           steps.to("samosa:fire", { id: "fire-again" });
           return z.expect(Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit({ kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" }, { thing: burner.knobHit }) : { kind: "tap", x: burner.knobHit.x, y: burner.knobHit.y, key: "knob" });
         }
         // (contract-70, -36, decision 5e: every timed window's green is called as it opens, at every level, each samosa's own: was L3 up)
-        if (cur && cur.level >= lo && liftLine) steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine, again: true });
-        else steps.to("samosa:fry", { id: "fry" });
+        // (SAM-30: each control's light the first time, before its call, so the call waits for the light: Cook.Coach.control)
+        if (cur && cur.level >= lo && liftLine) {
+          lead("ctl-lift", cur.a, () => !cur.out && cur.level >= lo);
+          steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine, again: true });
+        } else {
+          if (waiting.length && !frying.length) lead("ctl-fry", waiting[0], () => !waiting[0].gone);
+          else if (ctlStep === "ctl-lift" || ctlStep === "ctl-fire") lead(null);
+          steps.to("samosa:fry", { id: "fry" });
+        }
         // the next thing pulses: a raw one while there's room, else the samosa furthest on
         // (SAM-30: the lift's moment, on the green, for the coach's staged step; each samosa and the knob lit whole: thing)
         const lit = (e, o) => (Cook.Coach && Cook.Coach.lit ? Cook.Coach.lit(e, o) : e);
@@ -1435,6 +1468,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.tappable(im, async () => {
           if (im.gone) return;
           im.gone = true;
+          if (ctlStep === "ctl-fry") lead(null); // (SH-236: the light goes with the press)
           S.untap(im);
           S.tweens.killTweensOf(im);
           const [sx, sy] = SPOTS[slot++ % SPOTS.length];
@@ -1453,6 +1487,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           frying.push(f);
           const lift = async () => {
             if (f.out) return;
+            if (ctlStep === "ctl-lift") lead(null); // (SH-236: the light goes with the press)
             if (f.level >= lo) hold14.end("samosa");
             const L = f.level;
             const verdict = L < lo ? "light" : L > (k.burnAt || 1.15) ? "dark" : "golden";
