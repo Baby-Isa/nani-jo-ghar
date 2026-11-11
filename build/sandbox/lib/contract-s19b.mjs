@@ -311,7 +311,9 @@ export function check116(r, tl, add) {
     // (a card ticked moves the row on after its tick, about 600 ms: the current card is judged where it stands a second)
     // (s19-shared-checks: after a tick the row moves on once the tick's moment is over: chai's own row at 1280x665 on a busy page moved
     // 1.3 s after its tick, so a card cut just after a tick is judged only if the row has not moved on within TICK_MOVE_MS of it)
-    const ticked = ticks.some((x) => x.t <= e.t + 50 && x.t >= e.t - 800);
+    // (and as the order lands: the row glides home once the last card is in, chaat at 1920x1080 1.6 s after it)
+    const landed = ord.some((o, i) => i > 0 && o.t <= e.t + 50 && o.t >= e.t - 800 && !(o.away > 0 || o.pop > 0 || o.fly > 0) && (ord[i - 1].away > 0 || ord[i - 1].pop > 0 || ord[i - 1].fly > 0));
+    const ticked = landed || ticks.some((x) => x.t <= e.t + 50 && x.t >= e.t - 800);
     const gliding = rowsS.some((x) => x.t >= e.t - 300 && x.t <= e.t + (ticked ? TICK_MOVE_MS : CUR_HOLD_MS)) || until - e.t < CUR_HOLD_MS;
     if (cur && !ordering(e.t) && !gliding && (cur.box[0] < e.row[0] - 1 || cur.box[2] > e.row[2] + 1)) out("cur", e.t, `${s.key}: the current order card "${cur.w}" at [${cur.box.map(Math.round)}] is cut by its row [${e.row.map(Math.round)}]: the current card whole in view`);
     const span = cards[cards.length - 1].box[2] - cards[0].box[0], rowW = e.row[2] - e.row[0];
