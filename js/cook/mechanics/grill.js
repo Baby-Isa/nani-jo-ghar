@@ -1882,9 +1882,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // S19 (s19-games-1, contract-114: the threading's tray went and this one stood elsewhere in the same frame): the grill's tray
       // and the skewers waiting on it fade in, as a new place does
       {
-        const ins = [rackArt && rackArt.img].concat(rack.filter(Boolean).map((r) => r.sk)).filter((o) => o && o.setAlpha);
+        const ins = [rackArt && rackArt.img, plateArt && plateArt.img].concat(rack.filter(Boolean).map((r) => r.sk)).filter((o) => o && o.setAlpha);
         ins.forEach((o) => o.setAlpha(0));
-        if (ins.length) S.tweens.add({ targets: ins, alpha: 1, duration: 320 });
+        if (ins.length) S.tweens.add({ targets: ins, alpha: 1, duration: 180 });
       }
       /* decision 51 (S02-B): the right skewers of a plate that wasn't quite right stay on it, grilled */
       (params.prePlated || []).forEach((pieces) => {

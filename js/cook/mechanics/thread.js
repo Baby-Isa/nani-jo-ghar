@@ -124,7 +124,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
       board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(BOARD.w), height: z.L(BOARD.h) });
-      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s });
+      // (S19, contract-114: a skewer keeps its size from the board to the tray: the tray is drawn at the board's skewer's size)
+      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s, bamboo: (SK.V3.HANDLE - SK.V3.TIP) * SKS });
       // S19 (Fable's sekelo flaw 2): the tray the skewers go to carries the asker's face from its first frame, as chai's tray does
       if (rack.v3 && handoff) SK.trayFace(S, z, rack.img, params.who || (ctx.order && ctx.order.who) || "nana");
 
