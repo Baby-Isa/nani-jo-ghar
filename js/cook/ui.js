@@ -776,7 +776,12 @@
       const hold = callHold;
       // (contract-78, CHAI-40: a staged first-time light about to come for this step, maani's flip, samosa's knob: the call waits for
       // it, Cook.Coach.lightWait, as a control's first call does)
-      const lightWait = () => (stepper && stepper.current === s && Cook.Coach && Cook.Coach.lightWait ? Cook.Coach.lightWait() : null);
+      // (an item's step whose call waits for Nani's helper card, SH-172 below, never waits for a light: only a control's call does)
+      const helperItem = () => {
+        const e = Cook.expect;
+        return UI.s14() && !!(e && typeof e.key === "string" && Cook.isItemWord && Cook.isItemWord(e.key)) && !!helperW && !helperOn;
+      };
+      const lightWait = () => (stepper && stepper.current === s && !helperItem() && Cook.Coach && Cook.Coach.lightWait ? Cook.Coach.lightWait() : null);
       return (lag ? new Promise((r) => global.setTimeout(r, lag)) : Promise.resolve()).then(() => hold).then(lightWait).then(() => {
         if (!stepper || stepper.current !== s) return callNote(s, "skip-closed");
         // SH-172 (Zafar, 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ... when
