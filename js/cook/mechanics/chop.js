@@ -1206,18 +1206,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // SH-253, SH-257 (the eye judge, 10 Nov: the garlic flew in through the lit box; daar's onion faded up through it, the light
         // a band of bare worktop for half a second): the knife goes to the strip's right end and the vegetable comes up into it FIRST,
         // and only then the light, round the three of them
+        let vegIn;
         if (own) {
           own.img.setVisible(false);
           veg.setScale(own.scale);
           // (SH-256, contract-114: the same size up in the strip as in its slot, within HOP_GROW)
           const up = Math.min(Math.max(own.scale, vs), own.scale * HOP_GROW);
-          S.tweens.add({ targets: veg, x: z.X(own.px != null ? own.px : own.x), y: z.Y(SY), scaleX: up, scaleY: up, duration: 520, ease: "Cubic.easeOut" });
+          vegIn = tween({ targets: veg, x: z.X(own.px != null ? own.px : own.x), y: z.Y(SY), scaleX: up, scaleY: up, duration: 520, ease: "Cubic.easeOut" });
         } else {
           veg.setScale(vs);
           veg.setAlpha(0);
-          S.tweens.add({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 520, ease: "Sine.easeOut" });
+          vegIn = tween({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 520, ease: "Sine.easeOut" });
         }
         await tween({ targets: knife, x: x0, y: z.Y(SY), duration: 320, ease: "Sine.easeInOut", onUpdate: hold });
+        // CK-83 (the eye judge, 10 Nov: chaat's chop light came 0.9 s before the tomato, rising from under the screen; contract-112, "lit
+        // while veg-01 was still moving inside it"): the light waits until the vegetable has arrived, then a beat
+        await vegIn;
         await wait(240);
         // the knife's path ends just past the vegetable (it cuts it as it crosses, then stops), so the box holds the whole move
         const x1 = Math.max(z.X(160), veg.x - veg.displayWidth * 0.5 - z.L(40));
@@ -1234,7 +1238,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom);
           const a = UI.worldToScreen(x1 - kHalf, top);
           const b = UI.worldToScreen(Math.max(x0 + kHalf, kbx.right), bot);
-          return [[a.x, a.y, b.x - a.x, b.y - a.y]];
+          // (CK-83, contract-112 "2 lit regions": the kit's hand holding the knife's handle lies below and right of its fingertip; the box
+          // takes it in, so the hand is never a second lit region outside it: Onboard.HOTSPOT in its 64x80 hand, at the size the page draws it)
+          let r = b.x;
+          let d = b.y;
+          if (fpt) {
+            const fe = global.document && document.querySelector(".ob-finger:not(.ob-circle)");
+            const k = fe && fe.offsetWidth ? fe.offsetWidth / 64 : 1;
+            const hs = (OB && OB.HOTSPOT) || [25, 3];
+            r = Math.max(r, fpt.x + (64 - hs[0]) * k);
+            d = Math.max(d, fpt.y + (80 - hs[1]) * k);
+          }
+          return [[a.x, a.y, r - a.x, d - a.y]];
         };
         const within = () => {
           const lx = UI.worldToScreen(Math.max(z.X(0), Cook.view ? Cook.view.left : z.X(0)), 0).x;
