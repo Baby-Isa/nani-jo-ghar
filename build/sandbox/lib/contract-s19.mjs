@@ -134,6 +134,20 @@ export function check101(r, tl, add) {
   }
 }
 
+// (s19-clean-a6, chai's report: the kit lights a rung's thing at once, its glow and hop with it, but the light box can be painted up to
+// 1.3 s later (1920x1080 under load). A glow or hop that starts with its rung, round a thing the rung's light box then frames within
+// LATE_LIGHT_MS, is that light's, not the game's own. A glow with no rung, or one its light never frames, is still the game's.)
+export const RUNG_WITH_MS = 700;   // the glow starts this close to its rung (the coach's note and the sampler's 100 ms)
+export const LATE_LIGHT_MS = 2000; // the rung's light box painted at most this late
+const glowStart = (glows, i, key) => { let j = i; while (j > 0 && (glows[j - 1].list || []).some((y) => y.key === key)) j--; return glows[j].t; };
+export function lateLight(glows, i, g, lits, rungs) {
+  const t0 = glowStart(glows, i, g.key);
+  const rg = rungs.find((n) => Math.abs(n.t - t0) <= RUNG_WITH_MS);
+  if (!rg) return false;
+  const m = mid(box(g.box));
+  return lits.some((l) => l.t >= t0 - SAMPLE_SLACK_MS && l.t <= Math.max(t0, rg.t) + LATE_LIGHT_MS && (l.holes || []).some((h) => inBox(m, box(h), 2)));
+}
+
 // 102
 export function check102(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
@@ -147,6 +161,7 @@ export function check102(r, tl, add) {
   const lits = ev(tl, "s19lit");
   const holesAt = (t) => { let cur = null; for (const e of lits) { if (e.t > t) break; cur = e; } return cur ? (cur.holes || []).map(box) : []; };
   const glows = ev(tl, "s19glow");
+  const rungs = life(tl, "rung");
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   for (let i = 0; i < glows.length; i++) {
     const e = glows[i];
@@ -156,7 +171,7 @@ export function check102(r, tl, add) {
     // (s19-checks-1, the probe fault: a glow fades for up to 600 ms after its light has gone, chai's #hint glows: the light just gone counts)
     const hs = holesAt(e.t).concat(holesAt(e.t + 600), holesAt(e.t - 600)), hs2 = holesAt(e.t + HOLD_MS);
     // (a kit piece's own glow, its texture named kit-: the pan's heat ring at its window, is the kit's, not the game's)
-    const out = (e.list || []).find((g) => { if (/^kit-/.test(g.key || "")) return false; const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)); });
+    const out = (e.list || []).find((g) => { if (/^kit-/.test(g.key || "")) return false; const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)) && !lateLight(glows, i, g, lits, rungs); });
     if (!out || seen.has("glow:" + out.key)) continue;
     seen.add("glow:" + out.key);
     add("contract-102", e.t, `${out.key} glows ${fmt(box(out.box))} outside the kit's light${hs.length ? ` (the light is at ${hs.map(fmt).join(" ")})` : " (no light up)"}: the game's own glow`);
@@ -298,6 +313,7 @@ export function check107(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
   const glows = ev(tl, "s19glow");
   const lits = ev(tl, "s19lit");
+  const rungs = life(tl, "rung");
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   const seen = new Set();
   for (const e of glows) {
@@ -321,7 +337,11 @@ export function check107(r, tl, add) {
       if (!th || th.kind !== "word" || !th.shelf || seen.has("still:" + th.id)) return;
       // (s19-checks-1, the probe fault s19-wave-d saw in chaat: the coach lights a shelf thing about 200 ms before its glow and hop,
       // and the glow is sampled every 100 ms: a hop any time from the light to HOLD_MS + 400 ms after it counts)
-      const hop = glows.some((x) => x.t >= e.t - 100 && x.t <= e.t + HOLD_MS + 400 && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
+      // (s19-clean-a6, chai's report: the light box painted late, up to LATE_LIGHT_MS after its rung: the hop that started with the rung
+      // counts, from the rung on)
+      const rg = rungs.filter((n) => n.t <= e.t && n.t >= e.t - LATE_LIGHT_MS).pop();
+      const from = Math.min(e.t - 100, rg ? rg.t - SAMPLE_SLACK_MS : Infinity);
+      const hop = glows.some((x) => x.t >= from && x.t <= e.t + HOLD_MS + 400 && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
       if (hop) return;
       seen.add("still:" + th.id);
       add("contract-107", e.t, `the shelf item ${th.id} is lit ${fmt(box(hb))} without its hop`);
@@ -880,9 +900,12 @@ function s19hook() {
     const modal = (el) => { if (!el || el.closest(MODAL)) return true; for (let x = el, i = 0; x && x !== document.body && i < 6; x = x.parentElement, i++) { const b = x.getBoundingClientRect(); if (b.width * b.height >= 0.4 * vA && !(g && x.contains(g.canvas))) return true; } return false; };
     const PANEL = "#side, #mission, #guide, .oc-card, .wc14, .njg-results, .njg-rq-veil, .njg-grownup";
     const items = []; // canvas things: {o, kind: face|pill|pic, id, box, order, W}
+    // (s19-clean-a6, chai's report: while the wrong-order pop-up is open (.njg-wo-open, js/shared/wrong-order.js) the kitchen is held
+    // behind its veil: no canvas face, pill or picture pair is judged; the page's own covers still are)
+    const woOpen = [...document.querySelectorAll(".njg-wo-open")].some((c) => shown(c));
     const area4 = (b) => Math.max(0, b[2] - b[0]) * Math.max(0, b[3] - b[1]);
     const inter4 = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
-    if (g) {
+    if (g && !woOpen) {
       const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
       const cvA = cr.width * cr.height;
       let order = 0;
