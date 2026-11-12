@@ -921,18 +921,24 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     }
     // (contract-78: the first step's call is held through the reveal lessons, then waits for its own light, so the call and its light
     // come together; her box still names the step from the start, R2)
+    // (the review of s19-clean-b, finding 11: the eggs' hold is let go, and its end has run, before refresh() opens the first control,
+    // whose own hold it would otherwise wipe (UI.holdCalls's end clears the one hold there is); the first control's light is staged in the
+    // same turn, before the held call reaches Coach.lightWait. The first step's naming is inside the try, so a throw never leaves the hold
+    // to the queue's 4 s timeout)
     let releaseCalls = null;
-    if (UI.holdCalls) UI.holdCalls(new Promise((r) => (releaseCalls = r)));
-    stepFor(nextThing()); // (her box names the first step from the start, as before: R2)
+    const callsHeld = new Promise((r) => (releaseCalls = r));
+    if (UI.holdCalls) UI.holdCalls(callsHeld);
     // the kitchen kit's reveal lessons (STD-D1-08): once the order has landed, the dotted word then the blurred picture
     try {
+      stepFor(nextThing()); // (her box names the first step from the start, as before: R2)
       if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
     } catch (e) {
       if (releaseCalls) releaseCalls();
       throw e;
     }
+    releaseCalls();
+    await callsHeld;
     refresh();
-    if (releaseCalls) releaseCalls();
     await doneP;
     steps.done();
     if (ctl) ctl.close();
