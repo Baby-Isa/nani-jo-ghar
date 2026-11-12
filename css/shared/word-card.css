@@ -230,3 +230,4 @@ body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { flex: none; width: 66%; height
 .wc14.wc14-flash { position: absolute; z-index: 120; width: clamp(calc(var(--njg-s7) * 2.6), 22vmin, calc(var(--njg-s7) * 5)); transform: translate(-50%, -50%) scale(.82); opacity: 0; pointer-events: none; transition: opacity .18s ease-out, transform .22s cubic-bezier(.3,1.4,.5,1); box-shadow: var(--njg-shadow-lift); }
 .wc14.wc14-flash.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 @media (prefers-reduced-motion: reduce) { .wc14.wc14-flash { transition: none; } }
+.wc14.wc14-flash.wc14-flash-fixed { position: fixed; z-index: 130; }

@@ -2344,7 +2344,7 @@
           if (!live()) return;
           const r = p.row;
           // SH-267 (Zafar, 12 Nov, level 1 only): as the customer says the dish, its card flashes up beside their bubble
-          if (r && r.head && who !== "nani") UI.dishFlash(who, r);
+          if (r && r.head) UI.dishFlash(who, r);
           const item = r && m.away.has(r);
           // CHAI-96 (Zafar, 6 Nov night: "any item that goes in the tea except for water and tea is listed ... saffron style tea and all
           // the other style teas as well"): the rows a headline says for itself ("Muke elchi waari chai khape" says the elchi row,
@@ -3677,12 +3677,15 @@
    */
   UI.dishFlash = function (who, head) {
     if (orderLevel() !== 1 || !global.WordCard || !global.WordCard.flash || !head) return null;
-    const host = $("#stage");
+    // (on the page's own layer, fixed over the play area: the stage's own children come and go with the order pop-up and its fold, which
+    // took the card with them within 100-200 ms, contract-119)
+    const stage = $("#stage");
+    const host = document.body;
     const w = UI.wordOf(head, { size: 240, written: true, head: true });
-    if (!host || !w) return null;
+    if (!stage || !w) return null;
     // the card a little off to the side of the speaker's bubble (it waits a beat for the bubble to be drawn); the play area's middle
     // when there is none
-    const hb = host.getBoundingClientRect();
+    const hb = stage.getBoundingClientRect();
     const bub = [...document.querySelectorAll("#bubble, .njg-bubble, .cl-bubble")].find((b) => b.getBoundingClientRect().width > 4);
     const bb = bub ? bub.getBoundingClientRect() : null;
     const room = Math.min(hb.width, hb.height) * 0.16;
@@ -3696,7 +3699,7 @@
     x = Math.max(room, Math.min(hb.width - room, x));
     y = Math.max(room, Math.min(hb.height - room, y));
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String((head.ids || [])[0] || "") });
-    return global.WordCard.flash(host, w.word, { x, y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts });
+    return global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
   };
   UI.personSpeaking = () => personTalks > 0;
   UI.hearPerson = async function (who, o = {}) {

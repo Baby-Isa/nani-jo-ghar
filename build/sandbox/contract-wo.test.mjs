@@ -78,3 +78,9 @@ test("contract-119 (SH-267): the dish's card flashes up as the customer says it 
   assert.equal(run("cook:samosa@L2", [say(1000), flash(1300, true), flash(1900, false), end]).length, 1, "never at L2");
   assert.deepEqual(run("cook:samosa@L3", [say(1000), end]), [], "L3: none, right");
 });
+
+test("contract-119: the card easing in (its box changing) is one flash, held to the sample it is gone", () => {
+  const run = (tl) => { const out = []; check119({ flow: "cook:chai-tray" }, tl, (id, t, msg) => out.push({ id, t, msg })); return out; };
+  const tl = [{ type: "line", text: "Muke chai khape,", t: 1000 }, c(1100, "s19flash", { on: true, box: [1, 1, 2, 2] }), c(1200, "s19flash", { on: true, box: [1, 1, 3, 3] }), c(1700, "s19flash", { on: false }), c(9000, "x")];
+  assert.deepEqual(run(tl), []);
+});

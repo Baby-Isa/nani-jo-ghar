@@ -97,7 +97,9 @@ export function check119(r, tl, add) {
   for (const l of says) {
     if (l.t + FLASH_WITHIN_MS > tEnd) continue;
     const up = fl.findIndex((e) => e.on && e.t >= l.t - 300 && e.t <= l.t + FLASH_WITHIN_MS);
-    const held = up >= 0 ? ((fl[up + 1] ? fl[up + 1].t : tEnd) - fl[up].t) : 0;
+    // (held: to the first sample with it gone; the probe samples on a change, its box easing in is a change too)
+    const off = up >= 0 ? fl.slice(up + 1).find((e) => !e.on) : null;
+    const held = up >= 0 ? (off ? off.t : tEnd) - fl[up].t : 0;
     if (up >= 0 && held >= FLASH_HOLD_MS) continue;
     add("contract-119", l.t, `the customer said the dish ("${(l.text || "").trim().slice(0, 40)}") at level 1 and its card ${up >= 0 ? `flashed only ${Math.round(held)} ms` : "never flashed up"} beside their bubble`);
     return;
