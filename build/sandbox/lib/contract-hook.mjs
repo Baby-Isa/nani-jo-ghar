@@ -708,7 +708,7 @@ const BASE_HOOK = `(() => {
     const all = document.querySelector(".njg-results .rs-p2 .rs-words.allright");
     if (all && shown(all)) {
       const ws = [...all.querySelectorAll(".rs-word")].map((x) => x.getBoundingClientRect()).filter((r) => r.width > 0);
-      const card = all.closest(".rs-card") || all;
+      const card = all.closest(".rs-page") || all.closest(".rs-card") || all; // (the page the words stand on: the card also holds its buttons and edge)
       const rc = card.getBoundingClientRect();
       if (!ws.length) return null;
       const l = Math.min(...ws.map((r) => r.left)), r = Math.max(...ws.map((r) => r.right));
@@ -955,7 +955,7 @@ const BASE_HOOK = `(() => {
       if (!ev.isTrusted) return;
       const t = ev.target;
       const btn = t && t.closest ? t.closest("button, " + BTN) : null;
-      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), play: !!(t && t.closest && t.closest(".njg-play, [data-njg-play], #stage, .cl-stage, .hs-root")), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage });
+      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), play: !!(t && t.closest && t.closest(".njg-play, [data-njg-play], #stage, .cl-stage, .hs-root")), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage, lesson: !!(t && t.closest && t.closest(".wc14-lesson")) });
     } catch (e) {}
     // the first-time help (js/shared/onboard.js) blocks a tap outside its light on capture (preventDefault): the game never gets it,
     // so no act is logged for it (contract-21 skips it). Read after the layers have run: a following {k: "input-blocked"}

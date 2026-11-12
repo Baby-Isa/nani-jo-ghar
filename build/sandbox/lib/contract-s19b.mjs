@@ -385,7 +385,8 @@ export function check74(r, tl, segs, add) {
   if (!ord.length) return;
   const at = (t) => { let o = null; for (const e of ord) { if (e.t > t) break; o = e; } return o; };
   const ordering = (o) => !!o && (o.away > 0 || o.pop > 0 || o.fly > 0);
-  const tap = ev(tl, "input").find((e) => e.play !== false && ordering(at(e.t)) && at(e.t).rows > 0);
+  // (SH-213: a tap on the big card lesson's card is the lesson's, never a skip of the order)
+  const tap = ev(tl, "input").find((e) => e.play !== false && !e.lesson && ordering(at(e.t)) && at(e.t).rows > 0);
   if (!tap) return;
   const after = at(tap.t + 1000);
   if (ordering(after)) add("contract-74", tap.t, `a tap during the order and 1 s later ${[after.pop ? `${after.pop} big card` : "", after.fly ? `${after.fly} card in flight` : "", after.away ? `${after.away} card${after.away > 1 ? "s" : ""} not yet in its row` : ""].filter(Boolean).join(", ")}: the tap lands the whole order at once`);

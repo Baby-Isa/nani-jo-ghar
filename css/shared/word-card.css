@@ -233,7 +233,5 @@ body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { flex: none; width: 66%; height
 .wc14.wc14-flash.wc14-flash-fixed { position: fixed; z-index: 130; }
 
 /* SH-213 (Zafar, 12 Nov morning): the big card lesson: the first card popped hidden during the order comes big to the middle of the play
-   area over a soft veil, everything hidden; each tap under the kit's light (z 950, above it) shows one thing (js/cook/ui.js blurLesson) */
+   area, everything hidden; each tap under the kit's light (its dim and box, z 950, above it) shows one thing (js/cook/ui.js blurLesson) */
 .wc14.wc14-lesson { z-index: 900; pointer-events: auto; box-shadow: var(--njg-shadow-lift); }
-.wc14-lesson-veil { position: fixed; inset: 0; z-index: 899; background: rgba(var(--njg-veil-rgb), .35); transition: background .28s ease-in; }
-.wc14-lesson-veil.going { background: rgba(var(--njg-veil-rgb), 0); }

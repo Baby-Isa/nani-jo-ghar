@@ -2236,9 +2236,9 @@
       c.classList.toggle("wc14-hide-pic", hasPic);
       c.classList.add("wc14-hide-k");
       c.classList.toggle("wc14-hide-en", hasEn);
-      const veil = document.createElement("div");
-      veil.className = "wc14-lesson-veil";
-      document.body.appendChild(veil);
+      // (the order's own card, popped out: out of sight while its big copy teaches, so one card is seen)
+      const popVis = pop.style.visibility;
+      pop.style.visibility = "hidden";
       const wd = Math.round(Math.min(340, play.width * 0.46));
       Object.assign(c.style, { position: "fixed", left: "0px", top: "0px", width: `${wd}px`, margin: "0" });
       document.body.appendChild(c);
@@ -2263,14 +2263,21 @@
       c.addEventListener("click", onClick, true);
       const here = () => token === Cook.run && c.isConnected;
       const say = (step, by) => global.Lifecycle && global.Lifecycle.note && global.Lifecycle.note("reveal-lesson", { step, by });
+      // one light the whole lesson (the kit's dim and box, no glow or hop: a part of a card, SH-237), starting on the whole card and
+      // shrinking onto the picture (SH-213's first rule, contract-97), then moving to each part in turn
+      let cur = null;
+      let lit = null;
       try {
         await Cook.wait(420);
         for (const [slot, sel, cls] of steps) {
           if (!here()) break;
           const el = c.querySelector(sel);
           if (!el) continue;
-          const lit = Onb.light(el, { look: "glow", pad: 6, stay: true, note: "order:s14-reveal-card" });
-          if (slot === steps[0][0]) say("card", `shown order-popup ${w.word.id} ${steps.map((x) => x[0]).join(",")}`);
+          cur = el;
+          if (!lit) {
+            lit = Onb.light(() => (cur && cur.isConnected ? cur : null), { look: "", pad: 6, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
+            say("card", `shown order-popup ${w.word.id} ${steps.map((x) => x[0]).join(",")}`);
+          }
           Cook.expect = { kind: "click", selector: `.wc14-lesson ${sel}` };
           await new Promise((res) => {
             want = { el, res };
@@ -2278,7 +2285,6 @@
             want.res = (v) => (clearInterval(q), res(v));
           });
           want = null;
-          lit.close();
           if (!here()) break;
           c.classList.remove(cls);
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
@@ -2287,14 +2293,15 @@
           await Cook.wait(slot === steps[steps.length - 1][0] ? 900 : 450);
         }
       } finally {
+        if (lit) lit.close();
         c.removeEventListener("click", onClick, true);
         Cook.expect = prevE;
         lessonOn = false;
-        const gone = () => (c.remove(), veil.remove());
-        if (c.animate && here()) {
-          veil.classList.add("going");
-          c.animate([{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0.6)" }], { duration: 280 / sp, easing: "ease-in", fill: "forwards" }).finished.then(gone, gone);
-        } else gone();
+        // (the order's card back at once: it flies into its row as the big copy fades)
+        if (pop.isConnected) pop.style.visibility = popVis;
+        const gone = () => c.remove();
+        if (c.animate && here()) c.animate([{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0.6)" }], { duration: 280 / sp, easing: "ease-in", fill: "forwards" }).finished.then(gone, gone);
+        else gone();
       }
     };
     // CK-60 (Zafar, 7 Nov: "skipping it should have stopped all sound"): the read's own voice generation (js/shared/request-popup.js
@@ -3103,6 +3110,8 @@
   // (Zafar, 5 Nov: "we need that bigger difference shown on item cards, and we also need non-milk tea versions as item cards for
   // non-milk tea orders": a person whose order says no milk has their half and full cards in plain tea; pack s17-art4,
   // build/tools/art/teacards.py)
+  // SH-267: the dish card's own picture where its shelf's is a jar (chai: the side-on glass, milk chai or black tea; Zafar, 12 Nov morning)
+  const DISH_PIC = { "cook-chai": { milk: "assets/shared/word-moment/card-full-chai-s17.webp", black: "assets/shared/word-moment/card-full-tea-s17.webp" } };
   const TEA_PIC = { "ph-half": "assets/shared/word-moment/card-half-tea-s17.webp", "ph-full": "assets/shared/word-moment/card-full-tea-s17.webp" };
   const noMilk = (r) => {
     if (!r || !mission || !mission.ladders) return false;
@@ -3136,6 +3145,8 @@
         rows = [];
       }
       rows.forEach((r) => {
+        // (SH-267: the dish card's own picture, the milk chai or the black tea glass, asked for with the order's cards)
+        if (r && r.head && DISH_PIC[wcWordId(r)]) [DISH_PIC[wcWordId(r)].milk, DISH_PIC[wcWordId(r)].black].forEach((u) => out.add(u));
         if (!r || r.head) return;
         const id = wcWordId(r);
         [rowCard(r), wcPicSrc(id), TEA_PIC[id], r.pic].forEach((u) => u && out.add(u));
@@ -3808,9 +3819,24 @@
     const dish = wcWordId(head);
     if (!dish || (head.rec && !(head.parts || []).length)) return null;
     const counted = (head.parts || []).some((p) => typeof p === "number");
-    const line = counted && head.phrase ? head.phrase : Lang.phrase(Lang.countParts(1, dish));
+    // (SH-267, Zafar 12 Nov morning: "kari chai" and "mori chai" named so on the card too: the head's own describing words with its
+    // dish, "hakri kari chai", never the bare dish)
+    const words = (head.parts || []).filter((p) => typeof p !== "number" && p !== "\u0000");
+    const named = words.length > 1 && words[words.length - 1] === dish ? words : null;
+    const one = Lang.countParts(1, "\u0000");
+    const line = counted && head.phrase ? head.phrase : Lang.phrase(named ? [].concat(...one.map((x) => (x === "\u0000" ? named : [x]))) : Lang.countParts(1, dish));
     const w = UI.wordOf(Object.assign({}, head, { line, phrase: line, head: true }), { size: 240, written: true, head: true });
     if (!stage || !w) return null;
+    // (SH-267, Zafar 12 Nov morning: "we should ensure we have the correct version of milk or no-milk tea on the image"): a dish with a
+    // served picture of its own shows it, never its shelf's jar (chai's tea tin): a glass of milk chai, or of black tea for a kari chai or
+    // an order that says no milk
+    const dp = DISH_PIC[dish];
+    if (dp && w.word) {
+      const ids = [].concat(head.ids || [], words);
+      const black = ids.includes("ph-kari") || noMilk(head);
+      w.word.picture = { src: Cook.v(black ? dp.black : dp.milk), fit: "contain" };
+      if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.picture = true;
+    }
     if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
     if (w.wordOpts) w.wordOpts.enShown = false;
     // the card a little off to the side of the speaker's bubble (it waits a beat for the bubble to be drawn); the play area's middle

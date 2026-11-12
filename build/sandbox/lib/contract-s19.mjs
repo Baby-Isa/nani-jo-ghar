@@ -756,6 +756,9 @@ function s19hook() {
       // a light in the page: the item card or order card under its middle that the box fits best (an item card, else its person's card)
       for (const el of document.elementsFromPoint(cx, cy)) {
         if (el.closest(".njg-onboard")) continue;
+        // (SH-213: the big card lesson lights one part of its card at a time, the picture, the Kutchi, the English: that part is its thing)
+        const ls = el.closest(".wc14-lesson") && (el.closest(".wc14-pic, .wc14-slot") || null);
+        if (ls) return { kind: "card", id: "lesson:" + (ls.dataset.slot || (ls.classList.contains("wc14-slot-k") ? "kutchi" : ls.classList.contains("wc14-slot-e") ? "english" : "part")), box: rnd(R(ls.getBoundingClientRect())) };
         const cands = [el.closest(".wc14"), el.closest(".oc-card")].filter(Boolean);
         if (!cands.length) break;
         const iou = (b) => { const i = Math.max(0, Math.min(h[2], b[2]) - Math.max(h[0], b[0])) * Math.max(0, Math.min(h[3], b[3]) - Math.max(h[1], b[1])); return i / ((h[2] - h[0]) * (h[3] - h[1]) + (b[2] - b[0]) * (b[3] - b[1]) - i); };
