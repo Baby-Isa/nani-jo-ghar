@@ -1896,8 +1896,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             g.busy = false;
             S.burst(spotX(i), Y(GRILL.skewerY - 60), [0xffb347, 0xffffff], 8, L(60));
             // (s19-clean-d, finding 1: at 740x320 with four places, 0.32 of a skewer was 35 px across with 13 px of dead coal between
-            // two; its whole place on the coal bed is 48 px there: a child's finger. Never into the next place)
-            const hit = hitFor(g.sk, L(Math.max(Math.min(LAY.tray ? LAY.bamboo * 0.32 : 130, bedW / k.spots), (bedW / k.spots) * 0.96)), L(LAY.tray ? LAY.bamboo * 1.15 : 420), g.phase >= k.turns ? "lift" : "turn");
+            // two; its whole place on the coal bed is 48 px there: a child's finger. The places meet, never overlap)
+            const hit = hitFor(g.sk, L(bedW / k.spots), L(LAY.tray ? LAY.bamboo * 1.15 : 420), g.phase >= k.turns ? "lift" : "turn");
             hit.setPosition(spotX(i), Y(GRILL.skewerY - 20));
             S.tappable(hit, () => tapGrill(g));
           },
