@@ -34,16 +34,27 @@
 // (Zafar, 11 Nov night: "change minimum because you want to be fast": every beat as short as it can be and still be seen)
 const LOOK = Object.freeze({
   veilIn: 160, // the veil fades in
-  fly: 300, // a card from the side panel to the middle, and a wrong one back
+  fly: 340, // a card from the side panel to the middle, and a wrong one back
   mark: 380, // a mark lands (the tick again, or the cross) and is seen
-  glow: 380, // a right line glows gold
-  float: 420, // a right line fades up off the screen
+  // s19-clean-a2 (the orchestrator's lab frames, 0.9 s apart, never caught a right one in the middle): a right line holds in the
+  // middle, ticked and glowing, long enough to be seen on any frame (~1.7 s from the panel to gone), still brisk
+  tick: 300, // a right line's tick lands (with its ding) before the glow
+  glow: 620, // a right line glows gold in the middle
+  float: 520, // a right line fades up off the screen
   open: 260, // a wrong line opens to all its items
-  sayCap: 1600, // the most one line holds the next (a voice that never starts does not stall it)
+  sayCap: 2400, // the most one line holds the next (a voice that never starts does not stall it; the Fable review, 11: at 1.6 s a
+  // longer line was overtaken by the next row's; a tap hurries the rest)
   rowGap: 100, // one row to the next, quickly
-  hold: 520, // the wrong card, all marked, before it shrinks back
-  gap: 120, // one card to the next
+  hold: 620, // the wrong card, all marked, before it shrinks back
+  gap: 140, // one card to the next
   edge: 0.06, // the share of the play area kept clear round the pop-up (its edges still seen)
+  // "big, central" (Zafar, 11 Nov night): the open card grows to fill the middle (never past the room the veil leaves), a line too
+  bigW: 0.92, // the open card's most width, a share of the room
+  bigH: 0.9, // its most height
+  bigK: 2.4, // its most growth
+  lineW: 0.78, // a compact line's most width
+  lineH: 0.34, // its most height
+  lineK: 1.7, // its most growth
 });
 
 let open = 0;
@@ -63,10 +74,11 @@ const markEl = (kind) => {
 };
 
 /** A transform that puts box a (a DOMRect) over box b, from b's own place: for the FLIP moves. */
-function over(a, b) {
+function over(a, b, z = 1) {
   const k = Math.max(0.05, Math.min(a.width / Math.max(1, b.width), a.height / Math.max(1, b.height)));
-  const dx = a.left + a.width / 2 - (b.left + b.width / 2);
-  const dy = a.top + a.height / 2 - (b.top + b.height / 2);
+  // (z: the element's own CSS zoom, which scales its transform's lengths too: the move is given in its unzoomed pixels)
+  const dx = (a.left + a.width / 2 - (b.left + b.width / 2)) / z;
+  const dy = (a.top + a.height / 2 - (b.top + b.height / 2)) / z;
   return `translate(${dx}px, ${dy}px) scale(${k})`;
 }
 function move(el, from, to, ms) {
@@ -90,8 +102,20 @@ async function play(o = {}) {
   if (!doc || !cards.length) return { shown: false, wrong: [] };
   const host = o.host || doc.body;
   const speed = Math.max(1, +o.speed || 1);
-  const T = (ms) => Math.round(ms / speed);
-  const wait = o.wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
+  // (the Fable review's finding 4, non-negotiable 7: a child never waits for speech. A tap on the pop-up hurries it: every beat a
+  // quarter as long and no line waited for; the page leaving the stage (Lifecycle.onStageEnd) ends it at once, its veil gone)
+  let hurry = 1;
+  let cut = false;
+  const T = (ms) => Math.round(ms / speed / hurry);
+  const wait0 = o.wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
+  const pend = new Set(); // (the waits running: the stage's end lets them all go at once)
+  const wait = (ms) =>
+    cut
+      ? Promise.resolve()
+      : new Promise((r) => {
+          pend.add(r);
+          wait0(ms).then(() => (pend.delete(r), r()));
+        });
   const sound = o.sound || (() => {});
   const note = o.note || (() => {});
   const faceHtml = o.faceHtml || ((who, src, size) => `<span class="njg-face njg-face-${size === "big" ? "big" : "row"}" data-who="${esc(who)}"><img class="njg-face-img" src="${esc(src)}" alt=""></span>`);
@@ -103,24 +127,48 @@ async function play(o = {}) {
   const stage = doc.createElement("div");
   stage.className = "njg-wo-stage";
   veil.appendChild(stage);
-  // (over the play area: the host is positioned by its own page; a body host gets a fixed layer)
-  if (host === doc.body) veil.classList.add("njg-wo-fixed");
-  host.appendChild(veil);
+  // over the play area: a fixed layer on the page laid over the host's box (s19-clean-a2: inside the host, whose own overflow is
+  // hidden, a wrong card going back into the side panel was cut at the play area's edge on its way)
+  veil.classList.add("njg-wo-fixed");
+  if (host !== doc.body) {
+    const hb = host.getBoundingClientRect();
+    Object.assign(veil.style, { left: `${hb.left}px`, top: `${hb.top}px`, width: `${hb.width}px`, height: `${hb.height}px`, right: "auto", bottom: "auto" });
+  }
+  doc.body.appendChild(veil);
+  veil.addEventListener("pointerdown", () => {
+    if (hurry > 1) return;
+    hurry = 4;
+    note("wo-hurry", {});
+  });
+  const LC = typeof globalThis !== "undefined" ? globalThis.Lifecycle : null;
+  const offEnd = LC && LC.onStageEnd ? LC.onStageEnd(() => ((cut = true), veil.remove(), pend.forEach((r) => r()), pend.clear())) : null;
   note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
   await move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn));
   const wrong = [];
-  const fit = (el) => {
-    // every item in one view: the card shrinks as a whole to the room the veil leaves (never cut, never scrolled)
+  const fit = (el, big) => {
+    // every item in one view, as big as the middle allows (Zafar, 11 Nov night: "big, central"): the card scales as a whole to the
+    // room the veil leaves, growing to its share of it or shrinking to fit (never cut, never scrolled)
     el.style.transform = "";
+    el.style.setProperty("--wo-k", "1");
     const room = stage.getBoundingClientRect();
     const w = el.offsetWidth || 1;
     const h = el.offsetHeight || 1;
-    const k = Math.min(1, room.width / w, room.height / h);
-    el.style.setProperty("--wo-k", String(Math.max(0.3, k)));
+    const k = big
+      ? Math.min(LOOK.bigK, (room.width * LOOK.bigW) / w, (room.height * LOOK.bigH) / h)
+      : Math.min(LOOK.lineK, (room.width * LOOK.lineW) / w, (room.height * LOOK.lineH) / h, room.width / w, room.height / h);
+    // (the Fable review, 11: a line that would shrink under 0.6 wraps its headline instead, at the room's width, never cut)
+    if (!big && k < 0.6 && !el.classList.contains("njg-wo-wrap")) {
+      el.classList.add("njg-wo-wrap");
+      el.style.maxWidth = `${Math.round(room.width / 0.6)}px`;
+      return fit(el, big);
+    }
+    el._woK = Math.max(0.3, k);
+    el.style.setProperty("--wo-k", String(el._woK));
     return k;
   };
   try {
     for (const [i, c] of cards.entries()) {
+      if (cut) break;
       if (i) await wait(T(LOOK.gap));
       const from = c.from && c.from.isConnected ? c.from : null;
       const fromBox = from ? from.getBoundingClientRect() : null;
@@ -130,14 +178,16 @@ async function play(o = {}) {
       fit(line);
       const at = line.getBoundingClientRect();
       note("wo-card", { who: c.who, ok: !!c.ok, phase: "line" });
-      if (fromBox && fromBox.width > 2) await move(line, { transform: over(fromBox, at), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly));
+      if (fromBox && fromBox.width > 2) await move(line, { transform: over(fromBox, at, line._woK), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly));
       if (c.ok) {
         // the tick again, a ding, the gold glow, then up and away
-        line.classList.add("njg-wo-ok");
         line.querySelector(".njg-wo-row").appendChild(markEl("ok"));
         sound("ding");
+        note("wo-card", { who: c.who, ok: true, phase: "tick" });
+        await wait(T(LOOK.tick));
+        line.classList.add("njg-wo-ok");
         await wait(T(LOOK.glow));
-        const up = -(line.getBoundingClientRect().bottom + 40);
+        const up = -(line.getBoundingClientRect().bottom + 40) / (line._woK || 1);
         await move(line, { transform: "none", opacity: 1 }, { transform: `translateY(${up}px)`, opacity: 0 }, T(LOOK.float));
         line.remove();
         continue;
@@ -163,7 +213,21 @@ async function play(o = {}) {
         card.appendChild(body);
         card.appendChild(markEl("bad"));
         line.replaceWith(card);
-        fit(card);
+        fit(card, true);
+        // the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): at least 1.7 times the side panel's face
+        // circle at every size. At 740x320 the card's shrink to fit took it to 67 px against a 45 px panel face (b2's item 2): the face
+        // grows within the card until it is, and the card is fitted again
+        // (the side panel card's face circle: its biggest face box, the circle round the picture, as the checks measure it)
+        const fromFace = from ? Math.max(0, ...[...from.querySelectorAll(".njg-face, .oc-face")].map((f) => f.getBoundingClientRect().width)) : 0;
+        const want = fromFace * 1.8;
+        for (let k = 0, f = 2; want && k < 5; k++) {
+          const fe = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+          const w = fe ? fe.getBoundingClientRect().width : 0;
+          if (!w || w >= want) break;
+          f = Math.min(6, f * (want / w) * 1.08);
+          card.style.setProperty("--wo-face", f.toFixed(2));
+          fit(card, true);
+        }
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
         await move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
@@ -172,7 +236,9 @@ async function play(o = {}) {
           if (!fn) return;
           const stop = o.talk && faceEl ? o.talk(faceEl) : null;
           try {
-            await Promise.race([Promise.resolve(fn()).catch(() => {}), wait(T(LOOK.sayCap))]);
+            // (hurried: the rest are marked without their lines, so no two voices overlap)
+            if (hurry > 1) await wait(T(LOOK.rowGap * 4));
+            else await Promise.race([Promise.resolve(fn()).catch(() => {}), wait(T(LOOK.sayCap))]);
           } finally {
             if (typeof stop === "function") stop();
           }
@@ -182,6 +248,7 @@ async function play(o = {}) {
         for (const r of drawn.rows || []) {
           if (!r || !r.el) continue;
           r.el.classList.add("njg-wo-now");
+          if (cut) break;
           await said(r.say);
           r.el.classList.remove("njg-wo-now");
           r.el.classList.add(r.ok ? "njg-wo-ok" : "njg-wo-bad");
@@ -193,14 +260,16 @@ async function play(o = {}) {
         await wait(T(LOOK.hold));
         // back into its side panel card
         const back = from && from.isConnected ? from.getBoundingClientRect() : null;
-        if (back && back.width > 2) await move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect()), opacity: 0.2 }, T(LOOK.fly));
+        card.classList.add("njg-wo-going"); // (on its way back: the checks judge the card standing open, never its flight)
+        if (back && back.width > 2) await move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly));
         card.remove();
       }
       if (line.isConnected) line.remove();
       if (from) from.classList.remove("njg-wo-out");
     }
   } finally {
-    await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
+    if (typeof offEnd === "function") offEnd();
+    if (!cut) await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
     veil.remove();
     open = Math.max(0, open - 1);
     note("wo-close", { wrong });
@@ -208,6 +277,33 @@ async function play(o = {}) {
   return { shown: true, wrong };
 }
 
-export const NjgWrongOrder = { play, isOpen: () => open > 0, LOOK };
+/**
+ * Which cards the pop-up brings, and which rows it marks wrong when the game marked none (no DOM; Node tests). s19-clean-a2, the
+ * Fable review of s19-clean-a's merge:
+ *   finding 2: only the people this serve judged (o.served: their names, from NjgServe.round). A game that serves one person at a time
+ *     (corn) has others whose dishes are not made yet: a ticked gold card for them would be a "well done" for nothing. When no card is
+ *     one of o.served (the dishes are not people: maani's kinds, chaat's bowl), every card in play. A card already marked wrong stays.
+ *   finding 3: one card and nothing marked on it: the rows of what this serve found wrong (o.wrong: the round's wrong dishes as keys;
+ *     a row matches a key it holds, or every "+" part of it: "ph-big+cook-maani"), never a first try's old misses. Nothing matched:
+ *     nothing marked, so no pop-up (the game's own recast says it again), never a cross on the wrong row.
+ *   pick(cards [{who, wrong (the card wrong as a whole: an unasked thing in it), rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row]}
+ */
+function pick(cards, { served = null, wrong = [] } = {}) {
+  const isWrong = (c) => !!c.wrong || (c.rows || []).some((r) => r.wrong);
+  const judged = new Set((served || []).filter(Boolean));
+  const all = (cards || []).filter((c) => c && c.who);
+  const people = all.some((c) => judged.has(c.who)) ? all.filter((c) => judged.has(c.who) || isWrong(c)) : all;
+  const mark = [];
+  if (!people.some(isWrong) && people.length === 1) {
+    const keys = (wrong || []).filter((k) => typeof k === "string" && k);
+    for (const r of people[0].rows || []) {
+      if (!r || r.head || !Array.isArray(r.ids)) continue;
+      if (keys.some((k) => r.ids.includes(k) || k.split("+").every((x) => r.ids.includes(x)))) mark.push(r);
+    }
+  }
+  return { people, mark };
+}
+
+export const NjgWrongOrder = { play, pick, isOpen: () => open > 0, LOOK };
 if (typeof globalThis !== "undefined") globalThis.NjgWrongOrder = NjgWrongOrder;
 export default NjgWrongOrder;

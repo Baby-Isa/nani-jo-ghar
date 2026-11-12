@@ -55,7 +55,7 @@
   const ORDERS = {
     nana: [[w("dudh"), "dudh"], [`ba ${w("khun")}`, "khun"], [w("elchi"), "elchi"]],
     ma: [[`${w("Dudh")} na.`, "no-dudh"], [`trae ${w("khun")}`, "khun"]],
-    cousin: [[w("dudh"), "dudh"], [`hakro ${w("khun")}`, "khun"]],
+    cousin: [[w("dudh"), "dudh"], [`ba ${w("khun")}`, "khun"]], // (the Fable review, 11: never Kutchi typed by hand: the rows as the game writes them)
   };
   const WRONG_ROW = { nana: "elchi", ma: "khun", cousin: "khun" };
   const side = document.getElementById("side");
@@ -65,7 +65,9 @@
   function draw() {
     side.innerHTML = "";
     for (const who of keep || Object.keys(ORDERS)) {
-      const c = OC.card(data(who), { fold: {} });
+      // (after the pop-up, the order being redone is open again, its rows to do, as the game's panel draws it: never a finished
+      // card folding, whose fold the frames caught half-way with "trae khun" cut)
+      const c = keep ? OC.card(data(who, true), {}) : OC.card(data(who), { fold: {} });
       c.dataset.ck = `0:${who}`;
       side.appendChild(c);
     }

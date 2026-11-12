@@ -1795,14 +1795,19 @@
    *   at      () -> {from: {x, y}, to: {x, y}} in page px, or {x, y, r} (a stir round a point); null: not yet (looked at again)
    *   o       {gesture ("drag" default, "roll", "swipe", "circle-stir", "hold"), ms (one play; the kit's own by gesture), delay (before
    *           the first), carry(dx, dy, t, press) (page px from the first press; home (0, 0) after each play), step (its log name),
-   *           once (one play), keepOnPress, look (the finger's own look: the lab's pair)}
+   *           once (one play), keepOnPress, look (the finger's own look: the lab's pair), ready () -> bool (waits for it: its light)}
+   *   gesture "tap": the kit's tapping finger on at().from (no drag, nothing carried)
    * Logged as the kit's ghost (Lifecycle ghost, no `at`: contract-102 tells it from a game's). -> {stop()}
    */
+  Onboard.READY_CAP = 3500; // (a gesture's o.ready: the most it waits for its light)
   Onboard.gesture = function (at, o) {
     o = o || {};
     style();
     pressWatch();
-    const gesture = GESTURES.includes(o.gesture) && o.gesture !== "tap" ? o.gesture : "drag";
+    // (the round-two review's finding 6: a "tap" is the finger's own tapping cadence on the point, logged as a tap, never a drag held
+    // in place; o.ready() (optional): the finger waits for it, the light it belongs to, up to READY_CAP ms, so it never comes first)
+    const tapOnly = o.gesture === "tap";
+    const gesture = GESTURES.includes(o.gesture) && !tapOnly ? o.gesture : "drag";
     const dur = o.ms || DUR[gesture] || 1500;
     const carry = typeof o.carry === "function" ? o.carry : null;
     let finger = null;
@@ -1832,11 +1837,25 @@
         pressHooks.delete(press);
       },
     };
+    const born = Date.now();
     const play = () => {
       if (stopped) return;
+      if (typeof o.ready === "function" && Date.now() - born < Onboard.READY_CAP && !o.ready()) return void (timer = setTimeout(play, 100));
       const v = typeof at === "function" ? at() : at;
       if (!v) return void (timer = setTimeout(play, 200));
       const from = v.from || v;
+      if (tapOnly) {
+        // the kit's tapping finger on the point (tap, lift off, its wait, again), following it as it moves
+        LCghost(o.step != null ? String(o.step) : "kit-gesture", { gesture: "tap", kit: true });
+        pt = { x: from.x, y: from.y };
+        if (!finger) finger = Onboard.finger(() => {
+          const w = typeof at === "function" ? at() : at;
+          const f = w && (w.from || w);
+          return f ? { x: f.x, y: f.y } : pt;
+        }, { look: o.look, beside: !!o.beside });
+        if (o.once) timer = setTimeout(() => g.stop(), dur);
+        return;
+      }
       const box = v.r ? { w: v.r / 0.28, h: v.r / 0.28 } : v.box || null;
       const keys = Onboard.path(gesture, { x: from.x, y: from.y }, v.to || null, box);
       LCghost(o.step != null ? String(o.step) : "kit-gesture", { gesture, kit: true });
@@ -2216,7 +2235,7 @@
    * STD-D2-04 (every game, Zafar 7 Nov): a wrong move brings the hint at once: rush() (or Onboard.rush(), every live step's) brings
    * the next rung now (Onboard.rushRung: the light help, else the box), whatever the clock says; the wrong tap's own press and lift
    * (within RUSH_GRACE of the rush) don't count as the action that would take that help away again.
-   *   o: {target (the live control), item (the finger's point), live, avoid, pad, light, move, line, glow, glowAt, at, first, id}
+   *   o: {target (the live control), item (the finger's point), live, avoid, pad, light, move, line, glow, glowAt, at, first, id, glowStays (the light stays through any action until the step is done, SH-261: Cook; else it goes on any action and the glow rung fires again)}
    *   -> {done(), stop(), rush(by), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
    */
   Onboard.stuck = function (step, o) {
@@ -2302,7 +2321,16 @@
         // a tap that missed, or one elsewhere, never takes it away; it hides only while the child does its move (Onboard.spot)
         // SH-261 at full strength (Zafar, 11 Nov night: "You have to do what it says, otherwise it doesn't let you move on"): Nani's help
         // light (the glow rung) stays too, through any tap, until the step is done; only the rungs' clock starts again
-        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) fired = glowing ? { g: true } : {};
+        // (s19-clean-a2, the Fable review's finding 1: only where the game keeps its own light lit through a tap, o.glowStays, Cook's
+        // rungs: a game that puts its light out itself on a move, farm's photo arrows, never tells the kit, so there the light goes on
+        // any action and the glow rung fires again after the next wait, pointing the right way from where the child now stands)
+        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) {
+          if (glowing && o.glowStays) fired = { g: true };
+          else {
+            fired = {};
+            glow(false);
+          }
+        }
         lastAct = la;
       }
       // (the rungs count from the child's last action or the step opening, whichever is later: a step that opens after a long

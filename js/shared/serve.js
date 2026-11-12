@@ -22,11 +22,14 @@
  *        close (o.afterReview()); with no tracker (o.redo) or nothing wrong it ends. Else each wrong dish asks the tracker
  *        (o.redo.wrong(o.key(item)): its third wrong try is shown the right way, o.showRight(item)); the rest are o.reset(item)
  *        and played again (o.again(items, round)). The first try is the one scored (the game's check knows the round).
- *        SH-264 to SH-266 (Zafar, 11 Nov evening): with a host's wrong-order hook (NjgServe.use({show, redo, end}): the kitchen's,
+ *        SH-264 to SH-266 (Zafar, 11 Nov evening): with a host's wrong-order hook (NjgServe.use({show, redo, end}); show gets
+ *        {rows, round, served: [who], wrong: [item], wrongWho: [who]}, the people this serve judged, o.who(item) naming them): the kitchen's,
  *        js/cook/kitchen-kit.js; js/shared/wrong-order.js draws it) a serve with a wrong dish closes the faces and opens the wrong-order
  *        pop-up in place of the recast (o.recast stays the way without a hook, or with o.popup false); before a redo the dishes done
  *        right leave (o.leave(item): the game takes their glasses or dishes and their people away; the stoves may stay) and the host
  *        keeps only the wrong orders' cards (hook.redo); hook.end() when the round is over (every card back for the thank-you scene).
+ *        o.undo(item, rows): the part of a recast that is work, not words (chaat's wrong layers out of the bowl), run when the
+ *        pop-up said the order in the recast's place (a recast that only speaks needs none)
  *   NjgServe.use(hook)             the host's wrong-order hook (null: none); NjgServe.hook() the one set
  *   NjgServe.env(Cook, win)        the review's needs from a mode's namespace (its badge maker, sounds, voice, lines, clock; the
  *                                  tokens and timers of win, the page it plays on: default this one)
@@ -192,9 +195,18 @@ async function round(o) {
         if (H && H.show) {
           await close();
           closed = true;
-          shown = !!(await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n })).catch(() => false));
+          // (s19-clean-a2, the Fable review's findings 2 and 3: the host is told which dishes this serve judged, and which were wrong,
+          // so it brings only those people's cards (corn serves one person at a time: the others are not made yet) and crosses the
+          // row of what is wrong now, never a first try's old miss. o.who(item): the person a dish is for; default the item itself
+          // when it is a name, or its own who)
+          const whoOf = (item) => (o.who ? o.who(item) : typeof item === "string" ? item : item && item.who) || null;
+          const judged = o.items.filter((item) => open.includes(item));
+          shown = !!(await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n, served: judged.map(whoOf), wrong: recasts.map((r) => r.item), wrongWho: recasts.map((r) => whoOf(r.item)) })).catch(() => false));
         }
         if (!shown) for (const { item, rows } of recasts) await o.recast(item, rows);
+        // (the Fable review's finding 7: the pop-up says the order in the recast's place, but a game whose recast also puts things
+        // right, chaat's taking the wrong layers out of the bowl, gives that part as o.undo(item, rows), run whenever the pop-up showed)
+        else if (o.undo) for (const { item, rows } of recasts) await Promise.resolve(o.undo(item, rows)).catch(() => {});
       }
       if (!closed) await close();
       if (o.afterReview) o.afterReview(n);
