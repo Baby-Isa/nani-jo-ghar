@@ -1087,4 +1087,5 @@ import { S19B_HOOK } from "./contract-s19b-hook.mjs";
 // (each probe its own statement: two IIFEs on adjacent lines with no ";" between would call the first one's result with the second)
 // ---- s19-clean-a: the wrong-order pop-up's probe (lib/contract-wo.mjs: contract-118) ----
 import { WO_HOOK } from "./contract-wo.mjs";
-export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";\n" + S19B_HOOK + ";\n" + WO_HOOK + ";";
+import { SHADE_HOOK, LESSON_HOOK } from "./contract-shade.mjs";
+export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";\n" + S19B_HOOK + ";\n" + WO_HOOK + ";\n" + SHADE_HOOK + ";\n" + LESSON_HOOK + ";";
