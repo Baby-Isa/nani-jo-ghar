@@ -44,7 +44,7 @@
    "accept": "registry.json covering every loaded picture; the tools' tests; the mapping table"
   },
   {
-   "do": "The checks (no game code changed): a loaded picture not in the registry fails, today's on a shrink-only known list; retired stays as built. The art board reads the registry: per game and per piece, status colours, version, source, where used. The catalogue's other half: every stored picture loaded by nothing and named by nothing, as a move-out list for Sprint 20 with its size (the site is 429 MB; about 190 MB looks unloaded), the two published videos and the ChatGPT folders (ART-74) included.",
+   "do": "The checks (no game code changed): a loaded picture not in the registry fails, today's on a shrink-only known list; retired stays as built. The art board reads the registry: per game and per piece, status colours, version, source, where used. The catalogue's other half: every stored picture loaded by nothing and named by nothing, as a move-out list for Sprint 20 with its size (the site is 429 MB; about 190 MB looks unloaded), the two published videos and the ChatGPT folders on main included.",
    "accept": "the board's screenshot at 1280x665 light and dark; the move-out list with sizes"
   },
   {
