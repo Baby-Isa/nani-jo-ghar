@@ -612,7 +612,9 @@ import { setTimeout } from "../life.js";
     let glass = null;
     // (contract-36: each step's call as it opens, from the engine only, R2: "open" said as a command; the naan "put in", as the
     // shelf's things are; where a word has no recording yet the engine shows its English in grey, a gap on the recording sheet)
-    const call = (l, step) => {
+    // (always: said and shown even with no voice of its own, as it was before s19-clean-b; the review's finding 12: Nani's "it's ready" is
+    // the oven's only cue and was dropped where it had no clip and no device voice)
+    const call = (l, step, always = false) => {
       // (a line the engine says with no family clip yet, "Tayar ai.": shown and said as the test build says it, and logged as the kit's
       // step call logs a line with no voice, skip-novoice: a recording to make)
       const clip = !!(l && l.ok !== false && (!Lang.planOf || Lang.planOf(l).some((c) => c.file)));
@@ -623,7 +625,7 @@ import { setTimeout } from "../life.js";
           /* only a log */
         }
       }
-      if (l && l.ok !== false && (!Lang.hasVoice || Lang.hasVoice(l))) say(Lang.role(l, "call"));
+      if (l && l.ok !== false && (always || !Lang.hasVoice || Lang.hasVoice(l))) say(Lang.role(l, "call"));
     };
     // 1. open the oven
     expectTap(ov, null);
@@ -681,7 +683,7 @@ import { setTimeout } from "../life.js";
     });
     expectTap(ov, "ph-naan");
     // (contract-36: said through the step's call, so a line still to record logs its skip, as the oven's open does)
-    await tapOn(ov, "oven-out", () => call(Lang.line("ready"), "oven-out"));
+    await tapOn(ov, "oven-out", () => call(Lang.line("ready"), "oven-out", true));
     offOver();
     z.expect({ kind: "wait" });
     ring.clear();
@@ -706,6 +708,18 @@ import { setTimeout } from "../life.js";
 
   /** The words a round asks for (its plan's parts), for the word moment's due check. */
   const askedIds = (plan) => [...new Set(plan.flatMap((s) => (s.parts || []).filter((x) => typeof x === "string")))];
+  /**
+   * The round's word moment (CK-72, Zafar 9 Nov: the jug's amounts "each a word moment"; the review of s19-clean-b, finding 9: three
+   * quarters had none, nor had a quarter, one and a half or two and a half, as nothing read the settings' ids): the settings' first
+   * moment (half and a cup), then one per amount (wordMoment.moments, each over the first's vessel and stream); the first that is due
+   * this round (UI.wordMomentDue: its pair asked, new to the child, its key unseen), at most one a round; null: none.
+   */
+  const wordMomentFor = (ids) => {
+    const wm = SET().wordMoment;
+    if (!wm) return null;
+    const sets = [wm].concat((wm.moments || []).map((m) => Object.assign({}, wm, m, { moments: undefined })));
+    return sets.find((m) => (UI.wordMomentDue ? UI.wordMomentDue(ids, m) : m === wm)) || null;
+  };
 
   Mech.lab(KEY, {
     name: "Baking (prototype)",
@@ -718,8 +732,9 @@ import { setTimeout } from "../life.js";
       const plans = (K.plans || [[]]).filter(sayable);
       d.plan = Cook.pick(plans.length ? plans : K.plans || [[]]);
       // the jug's amounts are a word moment (CHAI-67's system) before the order that first asks them: the kit's call with the game's
-      // settings (wordMoment: its pair, its jug pictures; ART-38's art to come)
-      if (UI.wordMoment && SET().wordMoment) await UI.wordMoment(askedIds(d.plan), SET().wordMoment);
+      // settings (wordMoment: its pair, its jug pictures, and one for each amount the jug adds; ART-38's art to come)
+      const wm = UI.wordMoment ? wordMomentFor(askedIds(d.plan)) : null;
+      if (wm) await UI.wordMoment(askedIds(d.plan), wm);
       L.ctx.steps = R.baking.steps(d);
       L.card(d, L.ctx.steps);
       await L.station(KEY, { plan: d.plan, who: "nana" });
