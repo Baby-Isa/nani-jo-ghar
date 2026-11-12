@@ -920,12 +920,21 @@ export function chaiExtra(asked, extras) {
     /* ---------- using the shelf: pour a bottle, or a spoonful ---------- */
     // (the kitchen kit's pour from the shelf, piece 6: Mech.pour lifts the bottle or carton, tips it over the pan with the short pour,
     // fades the pan's look and sets it back with its settle; Mech.pour.spoon the shared spoon. Chai keeps its own counts)
+    // SH-268 (Zafar, 12 Nov: one light, upper left; contract-120 at chai L2-L3, s19-clean-a4): a bottle set back in its place has its
+    // soft shadow back with it in the same moment. The pour shows the bottle again between frames, and its contact shadow only took the
+    // bottle's alpha at the next frame, so for that frame it stood with none. (A bottle with no shadow left gets the kit's.)
+    const shadowBack = (obj) => {
+      if (!obj || !obj.active) return;
+      if ((!obj.shadow || !obj.shadow.active) && Cook.Kit && Cook.Kit.shadow) Cook.Kit.shadow(S, obj);
+      const sh = obj.shadow;
+      if (sh && sh.active && !sh.lifted) sh.setVisible(obj.visible).setAlpha(obj.alpha);
+    };
     const pourInto = async (pan, obj, color, toLevel, look) => {
       busy++;
       moves14++;
       obj.flying = true;
       refresh();
-      await Mech.pour(S, { pan, from: obj, level: toLevel, look, settle: color === COL.water, onEnd: () => busy-- });
+      await Mech.pour(S, { pan, from: obj, level: toLevel, look, settle: color === COL.water, onEnd: () => (busy--, shadowBack(obj)) });
     };
     const spoonInto = async (pan, obj, id) => {
       // (counted for the order card's light only: it waits for a spoon to land, and skips once the child spoons the next thing)
