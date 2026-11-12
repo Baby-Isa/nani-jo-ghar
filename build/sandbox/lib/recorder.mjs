@@ -52,16 +52,24 @@ export class Recorder {
   // the contract probe's moments (a bubble, the badges, a ✓ or Next, a pop-up, a stage boundary): a plain screenshot at once, so a
   // contract break has the shot of its own moment (not linted, not a state). At most one per kind every 300 ms, 80 a page
   contractShot(e) {
-    if (!e || e.type !== "c" || !/^(bubble|badges|buttons|popup|stage|input|s19over)$/.test(e.k)) return;
+    if (!e || e.type !== "c" || !/^(bubble|badges|buttons|popup|stage|input|s19over|s19wo)$/.test(e.k)) return;
     if (e.k === "s19over" && !(e.list && e.list.length)) return; // (s19-checks-1: contract-113's moment, shot as it comes)
+    // (s19-clean-a2, SH-264 to SH-266: the wrong-order pop-up's beats, each shot as it comes: a line in the pop-up once ticked or
+    // crossed, the open card as its rows are marked, the side panel and the play area once the redo starts; the frames of each beat)
+    let kind = e.k;
+    if (e.k === "s19wo") {
+      if (e.idle) return;
+      kind = e.card ? (e.card.phase === "open" ? "s19wo-open" : e.card.ticked ? "s19wo-line" : "") : e.veil ? "" : "s19wo-redo";
+      if (!kind) return;
+    }
     if (e.k === "buttons" && !(e.list && e.list.length)) return;
     if (e.k === "input" && !e.next) return;
     this.cshots = this.cshots || [];
     this.clast = this.clast || {};
-    if (this.cshots.length >= 80 || (this.clast[e.k] && e.t - this.clast[e.k] < 300)) return;
-    this.clast[e.k] = e.t;
-    const shot = `c${String(this.cshots.length + 1).padStart(2, "0")}-${e.k}.png`;
-    const entry = { t: e.t, k: e.k, shot };
+    if (this.cshots.length >= 80 || (this.clast[kind] && e.t - this.clast[kind] < 300)) return;
+    this.clast[kind] = e.t;
+    const shot = `c${String(this.cshots.length + 1).padStart(2, "0")}-${kind}.png`;
+    const entry = { t: e.t, k: kind, shot };
     this.cshots.push(entry);
     this.page.screenshot({ path: join(this.dir, shot), animations: "allow", timeout: 5000 }).catch(() => { entry.shot = null; });
   }

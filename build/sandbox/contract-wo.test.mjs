@@ -84,3 +84,26 @@ test("contract-119: the card easing in (its box changing) is one flash, held to 
   const tl = [{ type: "line", text: "Muke chai khape,", t: 1000 }, c(1100, "s19flash", { on: true, box: [1, 1, 2, 2] }), c(1200, "s19flash", { on: true, box: [1, 1, 3, 3] }), c(1700, "s19flash", { on: false }), c(9000, "x")];
   assert.deepEqual(run(tl), []);
 });
+
+// s19-clean-a2: each right order's line in the middle, ticked, before it floats away
+test("red then green: a right order's line comes to the middle, ticked, held, before it floats away", () => {
+  const card = (who) => life(5000, "wo-card", { step: "line", by: JSON.stringify({ round: 0, who, ok: true, phase: "line" }) });
+  const line = (t, o = {}) => c(t, "s19wo", { vw: VW, vh: VH, veil, sideFaceW: 44, panel: [], faces: [], card: Object.assign({ who: "nana", phase: "line", box: [520, 280, 1000, 380], items: [], rows: 0, marked: 0, crossed: false, ticked: true, faceW: null }, o) });
+  const shut = (t) => [c(t, "s19wo", { vw: VW, vh: VH, veil, card: null, panel: [], faces: [] }), life(t + 50, "wo-close")];
+  // red: it never stood still in the middle (seen only flying in from the panel and floating off)
+  const fly = [card("nana"), line(5050, { box: [0, 60, 300, 120], ticked: false }), line(5150, { box: [520, -200, 1000, -100] }), ...shut(5300)];
+  assert.match(run(R, fly).map((b) => b.msg).join("|"), /nana's order was right and its line never stood in the middle/);
+  // red: in the middle, but never ticked
+  const bare = [card("nana"), line(5050, { ticked: false }), ...shut(5600)];
+  assert.match(run(R, bare).map((b) => b.msg).join("|"), /never stood in the middle/);
+  // green: in the middle, ticked, 350 ms
+  const good = [card("nana"), line(5050, { ticked: false }), line(5100), line(5450, { box: [520, -200, 1000, -100] }), ...shut(5600)];
+  assert.deepEqual(run(R, good), []);
+});
+
+test("finding 9: a pan picked during the redo brings its person's card first (red, then green)", () => {
+  const f = (t) => life(t, "wo-focus", { by: JSON.stringify({ first: "cousin" }) });
+  const s = (t, panel) => c(t, "s19wo", { vw: VW, vh: VH, card: null, panel, faces: [] });
+  assert.match(run(R, [f(8000), s(9000, ["ma", "cousin"])]).map((b) => b.msg).join("|"), /first card is still ma's/);
+  assert.deepEqual(run(R, [f(8000), s(8500, ["ma", "cousin"]), s(8800, ["cousin", "ma"])]), []);
+});

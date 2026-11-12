@@ -3218,7 +3218,12 @@
           const parts = flat.map((x) => cardOf(x.r, x.gi));
           const all = !!s.head.done || !!L.closedAll || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
           const head = Object.assign(cardOf(s.head, 0), { done: all, say: sayRow(s.head) });
-          items.push({ label: null, count: 1, parts: (headCard ? [head] : []).concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
+          // (the round-two review's finding 2: with no head card, a dish of several kinds wrote only the first kind's count, in the
+          // headline, and the second's nowhere, though the serve judges it. Each kind's fillings now sit under its own count and dish,
+          // the engine's phrase for the block's head ("ba samosa"), dotted as the level dots it; one kind alone: the headline says it)
+          const blocks = sections.filter((x) => x.s.block && x.s.head).length;
+          const title14 = !headCard && blocks > 1 && s.head.phrase ? rowText(text6(s.head.phrase, rowHide(s.head))) : null;
+          items.push({ label: null, count: 1, title14, parts: (headCard ? [head] : []).concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
           rowsShown.push(...(headCard ? [s.head] : []), ...flat.map((x) => x.r));
           return;
         }
@@ -3519,6 +3524,19 @@
   M.focus = function (who) {
     if (!mission || mission.focusWho === who) return;
     mission.focusWho = who || null;
+    // (the Fable review's finding 9, SH-265: during a redo the card being worked on goes first at every size, gliding there as
+    // M.redoStart's cards do; a big screen redrew only when compact, so picking the second pan left its card second)
+    if (mission.redo && who && mission.redo.has(who)) {
+      const before = new Map([...document.querySelectorAll("#mission .oc-card[data-ck]")].map((e) => [e.dataset.ck, e.getBoundingClientRect()]));
+      renderOrder();
+      document.querySelectorAll("#mission .oc-card[data-ck]").forEach((e) => {
+        const a = before.get(e.dataset.ck);
+        const b = e.getBoundingClientRect();
+        if (a && e.animate && Math.abs(a.top - b.top) > 1) e.animate([{ transform: `translateY(${a.top - b.top}px)` }, { transform: "none" }], { duration: 320 / (Cook.speed || 1), easing: "cubic-bezier(.3,.9,.4,1)" });
+      });
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("wo-focus", { by: JSON.stringify({ first: who }) });
+      return;
+    }
     if (mission.compact) renderOrder();
   };
   /** After a redraw (once the frame has fitted the sidebar): still overflowing with several people open? Fold the idle ones. */
@@ -3684,8 +3702,18 @@
     // took the card with them within 100-200 ms, contract-119)
     const stage = $("#stage");
     const host = document.body;
-    const w = UI.wordOf(head, { size: 240, written: true, head: true });
+    // (the Fable review's finding 10, Zafar 12 Nov: "1 cup of tea, 2 samosas": the dish with its count, the engine's phrase from the
+    // head row's own parts, never the whole sentence the person says; one when the order names no count. A headline with no dish of
+    // its own (the pantry's "bring me these", English still to record) flashes nothing. No written English on it: it is not the
+    // order card, non-negotiable 3)
+    const dish = (head.ids || [])[0];
+    if (!dish || (head.rec && !(head.parts || []).length)) return null;
+    const counted = (head.parts || []).some((p) => typeof p === "number");
+    const line = counted && head.phrase ? head.phrase : Lang.phrase(Lang.countParts(1, dish));
+    const w = UI.wordOf(Object.assign({}, head, { line, phrase: line, head: true }), { size: 240, written: true, head: true });
     if (!stage || !w) return null;
+    if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
+    if (w.wordOpts) w.wordOpts.enShown = false;
     // the card a little off to the side of the speaker's bubble (it waits a beat for the bubble to be drawn); the play area's middle
     // when there is none
     const hb = stage.getBoundingClientRect();
@@ -3702,7 +3730,11 @@
     x = Math.max(room, Math.min(hb.width - room, x));
     y = Math.max(room, Math.min(hb.height - room, y));
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String((head.ids || [])[0] || "") });
-    return global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
+    const f = global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
+    // (on the page's layer: the stage's end takes it away at once, never over whatever comes next)
+    const off = f && global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => f.close()) : null;
+    if (off && f.el) setTimeout(() => off(), 2000 / (Cook.speed || 1));
+    return f;
   };
   UI.personSpeaking = () => personTalks > 0;
   UI.hearPerson = async function (who, o = {}) {
@@ -3964,9 +3996,15 @@
    * drawn red on the card (the shared card's `wrong`), and the card stays open to show them, until they are redone
    * (M.reopen) or shown (a tick). Never mid-round: only a station's serve calls it. Returns the rows marked.
    */
-  M.serveWrong = function (ids, dish = 0, { for: forWho = null } = {}) {
+  M.serveWrong = function (ids, dish = 0, { for: forWho = null, unasked = null } = {}) {
     const L = ladderFor(dish);
     if (!L) return [];
+    // (b2's item 1: a thing in the dish nobody asked for, an unasked spice, has no row of its own on the card: kept here, so the
+    // wrong-order pop-up draws a row for it and crosses that, never an asked-for row: M.showWrong. Cleared at the reset, M.reopen)
+    if (unasked && [].concat(unasked).length) {
+      L.unasked = L.unasked || {};
+      L.unasked[forWho || ""] = [...new Set([].concat(L.unasked[forWho || ""] || [], unasked))];
+    }
     const want = [].concat(ids);
     const rows = Order()
       .rows(L, { all: true })
@@ -3984,6 +4022,7 @@
     if (!L) return [];
     // a cup made again: that person's dish is not made any more (decision 97 (3))
     if (opts.for && L.closedFor) delete L.closedFor[opts.for];
+    if (L.unasked) delete L.unasked[opts.for || ""];
     if (!opts.for) L.closedAll = false;
     const want = ids == null ? null : [].concat(ids);
     const rows = Order()
@@ -4013,7 +4052,7 @@
    *        gliding to their places;  M.redoEnd()   every card back (the round is over)
    */
   const cardRows = (data) => [].concat(...(data.items || []).map((it) => it.parts || []));
-  M.showWrong = async function ({ rows = [], round = 0 } = {}) {
+  M.showWrong = async function ({ rows = [], round = 0, served = null, wrong = [] } = {}) {
     const W = global.NjgWrongOrder;
     const OC = OCard();
     if (!mission || !W || !OC) return false;
@@ -4029,10 +4068,14 @@
     } finally {
       writtenCard = false;
     }
-    const people = cards.filter((c) => c.who);
-    const isWrong = (c) => c.rows.some((r) => r.wrong);
-    // one card and nothing marked on it: its first try's misses are what was wrong
-    if (!people.some(isWrong) && people.length === 1) people[0].rows.forEach((r) => r.miss && !r.head && mark(r));
+    // (an unasked thing in the dish makes the card wrong too: b2's item 1)
+    cards.forEach((c) => (c.wrong = !!(c.L && c.L.unasked && (c.L.unasked[c.who] || []).length)));
+    const isWrong = (c) => c.wrong || c.rows.some((r) => r.wrong);
+    // (the Fable review's findings 2 and 3: only the people this serve judged, and the rows of what it found wrong now:
+    // NjgWrongOrder.pick, js/shared/wrong-order.js)
+    const picked = W.pick(cards, { served, wrong });
+    const people = picked.people;
+    picked.mark.forEach(mark);
     const unmark = () => mine.length && (mine.forEach((r) => (r.wrong = false)), renderOrder());
     if (!people.some(isWrong)) return void unmark() || false;
     if (mine.length) renderOrder();
@@ -4048,6 +4091,16 @@
       big() {
         // the card open, every row to do (the pop-up ticks and crosses them itself), drawn as the order pop-up draws it
         const data = Object.assign({}, c.data, { done: false, items: (c.data.items || []).map((it) => Object.assign({}, it, { done: false, parts: (it.parts || []).map((p) => Object.assign({}, p, { done: false, wrong: false, next: false, miss: false })) })) });
+        // (b2's item 1: each thing put in that nobody asked for, a row of its own at the end, the one crossed: the engine's word)
+        const extra = ((c.L && c.L.unasked && c.L.unasked[c.who]) || []).filter((id) => Lang.known && Lang.known(id));
+        if (extra.length && data.items.length) {
+          const last = data.items[data.items.length - 1];
+          last.parts = last.parts.concat(extra.map((id) => {
+            const line = Lang.phrase([id]);
+            const xr = { ids: [id], parts: [id], head: false, no: false, for: c.who, done: false, wrong: true, miss: false, line, phrase: line, said: line, need: 1, got: 0, unasked: true };
+            return Object.assign(partNode(xr, 0), mission.wordRows ? UI.wordOf(xr) : null, { done: false, wrong: false, next: false });
+          }));
+        }
         const els = new Map();
         const el = OC.card(data, { big: true, onEl: (key, e) => e.classList && e.classList.contains("oc-row") && !els.has(key) && els.set(key, e) });
         const out = cardRows(data)
@@ -4095,6 +4148,16 @@
   };
   M.redoEnd = function () {
     document.querySelectorAll(".njg-wo-out").forEach((e) => e.classList.remove("njg-wo-out"));
+    // (the round-two review's finding 5: the serve's red marks end with the round: eggs has no redo, so its red rows went into the
+    // served moment and the thank-you scene both red and ticked. The first try's misses, r.miss, stay for the end review)
+    if (mission && mission.ladders) {
+      let red = false;
+      mission.ladders.forEach((L) => {
+        if (L.unasked) L.unasked = null;
+        Order().rows(L, { all: true }).forEach((r) => r.wrong && ((r.wrong = false), (red = true)));
+      });
+      if (red && !mission.redo) renderOrder();
+    }
     if (!mission || !mission.redo) return;
     mission.redo = null;
     renderOrder();

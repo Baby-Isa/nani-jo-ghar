@@ -211,8 +211,8 @@ export class CookPlayer {
       await this.tap(w.x, w.y, "look-alike, kept");
       // the review faces at the serve hold 2.5 s (Cook.tasteHold, the screenshot scripts' hook) for drv:review-face's crop
       await p.evaluate("Cook.tasted = null; Cook.tasteHold = 2500").catch(() => {});
-      await sleep(700);
-      await this.once("serve-wrong", { settle: 0 });
+      const hot = await this.exp().then((x) => !!x && x.kind === "timing").catch(() => false);
+      if (!hot) { await sleep(300); await this.once("serve-wrong", { settle: 0 }); } else d.pendShot = "serve-wrong";
       this.rec.note(`serve-wrong: ${jar ? (jar.id === "spi-16" ? "salt (spi-16)" : jar.id) : "a look-alike"} put in at the ${e.key} step, where ${e.key === "cook-khun" ? "the sugar" : "the right item"} goes, and left in`);
       this.made.add("serve-wrong");
       return true;
@@ -233,8 +233,9 @@ export class CookPlayer {
         await W("serve-wrong");
         await this.tap(other.x, other.y, `a spice nobody asked for (${other.id}), kept`);
         await p.evaluate("Cook.tasted = null; Cook.tasteHold = 2500").catch(() => {});
-        await sleep(700);
-        await this.once("serve-wrong", { settle: 0 });
+        // (b2's item 3: no 700 ms sleep and no shot while a pan heats: its green comes and goes meanwhile; the shot at the next calm)
+        const hot = await this.exp().then((x) => !!x && x.kind === "timing").catch(() => false);
+        if (!hot) { await sleep(300); await this.once("serve-wrong", { settle: 0 }); } else d.pendShot = "serve-wrong";
         this.rec.note(`serve-wrong: ${other.id} put in at the ${e.key} step (an extra nobody asked for) and left in`);
         this.made.add("serve-wrong");
         return true;
@@ -658,16 +659,21 @@ export class CookPlayer {
         await this.once("wrong-late", { settle: 0 });
         return;
       }
-      const t0 = Date.now();
-      while (Date.now() - t0 < 30000) {
-        const g = await this.gauge();
-        if (g && g.level >= (g.lo + g.hi) / 2) break;
-        const cur = await this.exp();
-        if (cur && cur.kind !== "timing") return;
-        if (cur && (cur.x !== e.x || cur.y !== e.y)) return;
-        await sleep(15);
-      }
-      await this.tap(e.sx, e.sy, "timing");
+      // (s19-clean-a2, b2's item 3: chai L3 and L4 at 740x320 boiled over at every try, 0.845 to 0.926 against the window's 0.84, until
+      // the page timed out: each poll was two round trips to a loaded page, and the tap came 1-3 s after the green opened. Now the page
+      // itself watches every frame and the tap goes the moment it says, a quarter into the green; the cover check after it)
+      const r = await this.page.waitForFunction(([x, y]) => {
+        const T = window.njgTest && window.njgTest.cook;
+        if (!T) return false;
+        const c = T.expectation();
+        if (c && (c.kind !== "timing" || c.x !== x || c.y !== y)) return "moved";
+        const g = T.gauge();
+        return g && g.level >= g.lo + (g.hi - g.lo) * 0.25 ? "green" : false;
+      }, [e.x, e.y], { polling: "raf", timeout: 30000 }).then((h) => h.jsonValue()).catch(() => "timeout");
+      if (r === "moved") return;
+      await this.page.mouse.click(e.sx, e.sy);
+      this.taps++;
+      await this.cover(e.sx, e.sy, "timing");
     } else if (k === "count") {
       // wrong-count (SH-50): the first counted step gets one fewer than asked, and is closed
       const short = this.mode === "wrong-count" && !this.drv.counted && e.target >= 2;
@@ -847,6 +853,13 @@ export class CookPlayer {
         }
       }
       if (Date.now() - t0 > timeout) { await this.once("timeout"); throw new Error(`timed out after ${Math.round((Date.now() - t0) / 1000)}s playing (last expectation ${JSON.stringify(lastKind)}, view ${lastView})`); }
+      // (b2's item 3: a heat's timing goes first, before the view's shot, the drivers' watch and the hint checks: each is a round trip
+      // to a loaded page, and the next pan's green lasts 0.7-2 s at the test speed)
+      if (this.mode === "fair" || this.mode === "serve-wrong") {
+        const e0 = await this.exp().catch(() => null);
+        if (e0 && e0.kind === "timing" && !e0.intro && lastKind === "timing") { await this.act(e0); await this.waitChange(e0, 25000); continue; }
+      }
+      if (this.drv.pendShot) { const n = this.drv.pendShot; this.drv.pendShot = null; await this.once(n, { settle: 0 }); } // (a shot put off while a pan heated)
       let view = null;
       try { view = await this.page.evaluate("njgTest.cook.state().view"); } catch (e) { /* navigating */ }
       if (view !== lastView) {
