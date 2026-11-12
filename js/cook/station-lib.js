@@ -1207,7 +1207,7 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
           const parts = C.parts ? [0, 1, 2, 3, 4, 5].map((i) => () => (target.active && target.visible ? C.parts(target)[i] || null : null)) : C.box(target, 6, { visible: true });
           let glowing = false;
           stuck = C.stuck({
-            key: "pick",
+            key: z.id || "zone",
             level: Cook.roundLevel ? Cook.roundLevel(z.ctx || Cook.ctx) : z.level,
             target: parts,
             current: () => !over && target.active,
@@ -1216,7 +1216,6 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
               glowing = on;
               S.glow(target, on, { bounce: C.onShelf ? C.onShelf(target) : true, now: true });
             },
-            note: "pick:s14-stuck",
           });
         }
       } else z.expect({ kind: "wait" }); // (SH-238: a complete step moves on by itself, UI.done: no ✓ to press)
