@@ -20,7 +20,7 @@ Retired hits: 11 real loads (all sekelo), 21 findings in all.
 - `node --test build/tools/art/artuse.test.mjs`: 4 pass.
 - `checks.mjs`: unit 880 pass, 3 fail (the art block tests in artcheck.test.mjs; they fail the same on the commit before mine: the sparse checkout lacks sources/); art, docs, specs, size, static, leak, bump all ok. artcheck: 0 new, 515 known.
 - loadcheck earlier: baking asks for 5 pictures outside its manifest (shared word-moment counter, worktop bg, juice td-1/3/5): not mine, not fixed (build/tools/review is read-only).
-- No game code touched, so the brief's before/after and the four-size contract replay were not run; check-change result: see below.
+- No game code touched, so the brief's before/after and the four-size contract replay were not run. check-change (tier 2) did not finish cleanly: push step failed on the same 3 pre-existing art block unit tests; scope flagged `sources/art/s19-tray-pot/results/run-report.md` (not mine); the play step was still running when I stopped waiting, so no pass is claimed (result files: build/reports/tiers/).
 
 ## Open
 - Add `build/tools/art/artuse.test.mjs` to checks.mjs (read-only for me) if it should run apart from artcheck.test.mjs.
