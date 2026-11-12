@@ -28404,7 +28404,7 @@
     "contract:98"
    ],
    "expect": null,
-   "note": "chai L2, a new player: the first card popped out hidden as Nana says it (dudh, its English dotted) comes big to the middle, everything hidden; the kit's light starts on the whole card and settles on the picture, then the Kutchi, then the English, each shown by a tap (the strip); the side panel's card has no in-game lesson after",
+   "note": "chai L2, a new player: the first card popped out hidden as Nana says it (dudh, its English dotted) keeps its place; once the sentence is said the kit's light comes to it (whole card, then settling on the picture) and each tap shows the picture, then the Kutchi, then the English, the light moving on; then it fades and the order goes on (the strip); no in-game lesson on the side panel after",
    "delay": 200
   },
   {
@@ -28427,7 +28427,7 @@
     "contract:98"
    ],
    "expect": null,
-   "note": "eggs L3: the same big card lesson on its order's first hidden pop-up card (its picture blurred too)",
+   "note": "eggs L3: the same lesson on its order's first hidden pop-up card where it stands (its picture blurred too)",
    "delay": 200
   }
  ]
