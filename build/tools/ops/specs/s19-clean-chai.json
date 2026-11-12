@@ -1,0 +1,46 @@
+{
+ "name": "s19-clean-chai: chai's open rows (the real remaining list) and chai's check faults",
+ "why": "build/reports/s19-fixlist-after-night.md: chai's 19 open rows, 11 failing their checks; chai is the standard every game is judged beside",
+ "cost": "about $25-35",
+ "port": 8912,
+ "read": [
+  "build/reports/s19-fixlist-after-night.md (THE REAL REMAINING LIST: chai's rows)",
+  "build/reports/s19-clean-b2.md, s19-clean-d.md, s19-clean-a3.md (chai's latest changes)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)"
+ ],
+ "owns": [
+  "js/cook/stations/chai-tray.js and data/stations/chai-tray.json",
+  "js/cook/mechanics/grill.js (only if a chai row needs it: no)",
+  "build/reports/s19-clean-chai.md"
+ ],
+ "readOnly": [
+  "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, data/cook.json, build/sandbox/** (s19-clean-a4)",
+  "every other station (s19-clean-e)",
+  "assets/**"
+ ],
+ "flows": [
+  "cook:chai-tray"
+ ],
+ "tasks": [
+  {
+   "do": "Chai's open rows: the failing checks first: CHAI-19, CHAI-49, CHAI-56, CHAI-58, CHAI-60, CHAI-65, CHAI-83, CHAI-89, CHAI-104, CK-65's and CK-78's chai part; then the rest of chai's rows in the list. CHAI-111 (the missing water hint): try once more at test speed 1 with Zafar's exact steps (his log: docs/feedback/logs/chai-playtest-2026-11-11T21-02.json); if it doesn't reproduce, say so. Chai is the standard: change nothing Zafar signed off; a fix that would change chai's look or feel is a question for him, not a change.",
+   "accept": "each row: before and after frames; chai L1-L4 and #mistake, #hint, #returning, #serve-wrong at 740x320 and 1280x665 (s19-clean-chai-after): every end reached, 0 page errors, chai's breaks before and after by check"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8912, flock /tmp/njg-browser-8912.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+   "accept": "build/reports/s19-clean-chai.md with a Proof section, under 700 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-chai in /home/user/wt/s19-clean-chai (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "report": "s19-clean-chai",
+ "publish": false,
+ "rows": []
+}

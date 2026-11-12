@@ -27934,5 +27934,143 @@
    "max": 8,
    "note": "ART-72 as its row says"
   }
+ ],
+ "CHAI-58": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "CHAI-58 as its row says"
+  }
+ ],
+ "CHAI-60": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "CHAI-60 as its row says"
+  }
+ ],
+ "CHAI-65": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "CHAI-65 as its row says"
+  }
+ ],
+ "CHAI-83": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "CHAI-83 as its row says"
+  }
+ ],
+ "CHAI-89": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "CHAI-89 as its row says"
+  }
+ ],
+ "CHAI-111": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "CHAI-111 as its row says"
+  }
  ]
 }

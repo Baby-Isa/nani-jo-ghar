@@ -1,0 +1,58 @@
+{
+ "name": "s19-clean-a4: the shared kitchen rows left (the real remaining list), the shared check faults",
+ "why": "build/reports/s19-fixlist-after-night.md and s19-clean-a3.md: about thirty shared kitchen rows not reached; Zafar, 12 Nov: 'Can you fix them'",
+ "cost": "about $35-45",
+ "port": 8914,
+ "read": [
+  "build/reports/s19-fixlist-after-night.md (THE REAL REMAINING LIST: the SH rows)",
+  "build/reports/s19-clean-a3.md (its flaws and what's left: 112, 72, 36, 79, 99; SH-249's rest; the L1 run's timing rise to re-run on a quieter machine)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)"
+ ],
+ "owns": [
+  "js/shared/**, css/shared/**",
+  "js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js and css/cook.css",
+  "data/cook.json (the only owner tonight: s19-clean-b and s19-clean-c send you their lines through the orchestrator)",
+  "build/sandbox/** (the checks, drivers and build/sandbox/data/evidence.json), build/lint/**, build/tools/review/**, build/tools/tiers/**",
+  "find.html, first.html, monsoon.html (SH-224 only)",
+  "build/reports/s19-clean-a4.md"
+ ],
+ "readOnly": [
+  "js/cook/stations/** and js/cook/mechanics/** (s19-clean-e and s19-clean-chai)",
+  "assets/**"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "The shared kitchen rows still open, in this order: SH-232, SH-230, SH-237, SH-249's rest, SH-236, SH-141 and SH-119 (one finger everywhere, the kit's), SH-228 (chaat's hint), SH-238, SH-240, SH-252, SH-253, SH-254, SH-255, SH-258, SH-260 and SH-259 (first check whether already done: prove with a frame), SH-239, SH-241, SH-242, SH-172, SH-173, SH-234, SH-227, SH-235, SH-248, SH-250, SH-152, SH-60, SH-178, SH-251, SH-267's L1 pages (contract-119: chop's dish card never flashes); and lab/wrong-order.html:58's hand-typed 'ba khun' (from the engine, or the lab's own data from it). Each row: read its own text (Zafar's words), fix, a before and after frame. A row too big: say so with what it needs.",
+   "accept": "each row: a frame or a test; the contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 (s19-clean-a4-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+   "accept": "build/reports/s19-clean-a4.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-a4 in /home/user/wt/s19-clean-a4 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": true,
+ "stubs": "none",
+ "report": "s19-clean-a4",
+ "publish": false,
+ "rows": []
+}
