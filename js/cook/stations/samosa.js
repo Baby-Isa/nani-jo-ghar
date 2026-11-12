@@ -688,6 +688,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let gotFirst = {};
     let got2First = null;
     let lastTap = 0;
+    // (s19-clean-e2, contract-111: a filling's heap takes its taps the whole fill long, never a dead picture between two moves: a tap
+    // while the last spoonful is still going in is kept a moment and is the next move, as soon as the fill takes one)
+    let early = null;
+    const keep = (id) => () => (early = { id, t: performance.now() });
+    // (kept, never begun: the light stays until the move itself starts, contract-117; the heap still takes the tap, contract-111)
+    const keepTaps = () =>
+      Object.entries(items).forEach(([id, o]) => {
+        if (!o || !o.active) return;
+        o.setInteractive({ useHandCursor: true });
+        if (global.Shelf && global.Shelf.P && global.Shelf.P.reach) global.Shelf.P.reach(o);
+        o.removeAllListeners("pointerdown");
+        o.on("pointerdown", () => !Cook.paused && keep(id)());
+      });
+    keepTaps();
     Cook.undoAt = () => {
       // (not while Nani's "pass me" or a first-time coach is up: only the thing they point at takes a tap)
       if (Cook.paused || (Cook.Coach && Cook.Coach.active())) return null;
@@ -706,8 +720,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             S.untap(x);
             x.blobs.forEach((b) => b.active && S.untap(b));
           });
-          Object.values(items).forEach((o) => o && o.active && S.untap(o));
+          keepTaps();
           lit.forEach((o) => litGlow(o, false));
+          // (s19-clean-e2, contract-106, SH-236: the press began the move: every help light on the board goes with it, the strip's and
+          // the heaps', not only this pick's own)
+          [...helpLit.keys()].forEach((o) => litGlow(o, false));
           UI.hideDone();
           z.expect(null);
           resolve(r);
@@ -717,6 +734,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           x.blobs.forEach((b) => b.active && b.tapReady && S.tappable(b, () => fin({ back: b, strip: x })));
         });
         Object.entries(items).forEach(([id, o]) => o && o.active && S.tappable(o, () => fin({ id })));
+        // (a heap tapped a moment ago, while the last move played out: that is this move)
+        const kept = early && performance.now() - early.t < 1200 ? early : null;
+        early = null;
+        if (kept) {
+          fin({ id: kept.id });
+          return;
+        }
         const filled = filledOf().length;
         const mv = nextMove();
         const glow = ctx.guided || helping;
@@ -742,7 +766,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // SH-60 (s08 w6J: at L2 her help line "Bhar! Chundo." came with nothing lit): the step's help lights the thing to tap
         // (the heap, or the strip to fill) in the same moment as her line, as the pantry does
         const helpGlow = (o) => (o ? (on) => litGlow(o, on, { bounce: true, now: true }) : null);
-        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
+        // (s19-clean-e2, contract-117/-36: the strip's step and its first heap's step are two steps, so the heap's help lights the heap;
+        // with one id the heap's step stayed the strip's and its help lit the strip while the game waited on the heap)
+        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}${at && strips.includes(at) ? "-strip" : ""}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
         if (mv.heap) {
           const o = items[mv.heap];
           if (o && o.active) {
@@ -960,6 +986,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (sayOrder) await Promise.race([UI.personSay(who, { line: () => orderLine(ladderOf(ctx)), hide: St.hideKnown(ctx) }), Cook.wait(8000)]);
     }
     Cook.undoAt = null;
+    // (the fill is over: its heaps take no more taps)
+    early = null;
+    Object.values(items).forEach((o) => o && o.active && S.untap(o));
     if (nextStrip) nextStrip.stop();
     // SAM-24: the fill closes now, for every strip at once: each kind's rows tick together, its samosas all made
     steps.done();
@@ -1200,6 +1229,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       offs.push(
         z.on("pointerdown", (p) => {
           start = { x: p.worldX, y: p.worldY };
+          // (s19-clean-e2, contract-106, SH-236: the swipe has begun: the light it began in steps aside now)
+          if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("swipe");
         }),
         z.on("pointermove", (p) => {
           if (!start || over) return;
@@ -1222,7 +1253,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
         }),
         z.on("pointerup", async () => {
-          if (!start || over) return;
+          if (over) return;
+          // (s19-clean-e2, contract-117: a press that never became the swipe gives the light back, as a swipe let go short does)
+          if (!start || t === 0) {
+            start = null;
+            if (Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("fold");
+            return;
+          }
           start = null;
           if (t >= minLen) {
             offs.forEach((o) => o());
