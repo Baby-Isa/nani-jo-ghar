@@ -399,15 +399,22 @@
     c.style.top = `${Math.round(o.y || 0)}px`;
     host.appendChild(c);
     const raf = root.requestAnimationFrame || ((f) => setTimeout(f, 16));
-    raf(() => c.classList.add("on"));
     let t = 0;
+    let shut = false;
     const close = () => {
+      shut = true;
       clearTimeout(t);
       if (!c.isConnected) return;
       c.classList.remove("on");
       setTimeout(() => c.remove(), 220);
     };
-    t = setTimeout(close, o.ms != null ? o.ms : 1500);
+    // (contract-119, SH-267's L1 pages: its time counts from the frame it is up, never from when it was made: on a busy page the first
+    // frame came 300-700 ms late, so the card was seen 40-220 ms, or its close ran before it was ever drawn)
+    raf(() => {
+      if (shut) return;
+      c.classList.add("on");
+      t = setTimeout(close, o.ms != null ? o.ms : 1500);
+    });
     return { el: c, close };
   };
   W.pop = function (el, word, o = {}) {
