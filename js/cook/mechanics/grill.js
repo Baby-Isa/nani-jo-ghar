@@ -43,6 +43,7 @@
  * mishkaki-grill.json -> mechanic.skewer.
  */
 import { Cook as CookNS } from "../ns.js";
+import "../grill-kit.js"; // SEK-26: the grill kit's grill v2 and its steel tray made deep (Cook.GrillKit)
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
 
 (function (global) {
@@ -1380,7 +1381,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     img.shadow = S.contactShadow(img);
     img.rackBox = { x: cx, y: cy, w: z.L(w), h: z.L(h) };
     img.setName("sekelo-tray");
-    const inner = w * (1 - 2 * 0.075); // the well, its walls left out
+    const inner = w * 0.8; // the four places across the well, clear of its walls
     const px = (i) => cx + z.L(-inner / 2 + ((Math.min(3, Math.max(0, i)) + 0.5) * inner) / 4);
     const line = (i) => [{ x: px(i), y: cy - z.L(bamboo) / 2 }, { x: px(i), y: cy + z.L(bamboo) / 2 }];
     const at = (i) => SK.lineAt(...line(i));

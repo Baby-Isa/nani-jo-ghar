@@ -36,6 +36,7 @@
  * showAfterMs (after Nani's hint, the piece glows: being shown).
  */
 import { Cook as CookNS } from "../ns.js";
+import "../grill-kit.js"; // SEK-26: the grill kit's grill v2 and its steel tray made deep (Cook.GrillKit)
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
 
 (function (global) {
