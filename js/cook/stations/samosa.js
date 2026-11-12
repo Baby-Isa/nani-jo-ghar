@@ -755,7 +755,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // SH-60 (s08 w6J: at L2 her help line "Bhar! Chundo." came with nothing lit): the step's help lights the thing to tap
         // (the heap, or the strip to fill) in the same moment as her line, as the pantry does
         const helpGlow = (o) => (o ? (on) => litGlow(o, on, { bounce: true, now: true }) : null);
-        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
+        // (s19-clean-e2, contract-117/-36: the strip's step and its first heap's step are two steps, so the heap's help lights the heap;
+        // with one id the heap's step stayed the strip's and its help lit the strip while the game waited on the heap)
+        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}${at && strips.includes(at) ? "-strip" : ""}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
         if (mv.heap) {
           const o = items[mv.heap];
           if (o && o.active) {
