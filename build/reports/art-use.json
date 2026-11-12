@@ -30,6 +30,7 @@
   "storedLoadedByNothing": 2994,
   "greyButNamed": 1573,
   "greyUnnamed": 1421,
+  "approvedLoaded": 101,
   "retiredStillLoaded": 11,
   "retiredStillNamed": 58
  },
@@ -38,7 +39,8 @@
    "label": null,
    "reached": "title",
    "green": 0,
-   "amber": 25,
+   "approved": 25,
+   "amber": 0,
    "red": 0,
    "total": 25
   },
@@ -46,7 +48,8 @@
    "label": "pantry",
    "reached": "first-step",
    "green": 1,
-   "amber": 63,
+   "approved": 31,
+   "amber": 32,
    "red": 0,
    "total": 64
   },
@@ -54,7 +57,8 @@
    "label": "chai",
    "reached": "first-step",
    "green": 0,
-   "amber": 101,
+   "approved": 101,
+   "amber": 0,
    "red": 0,
    "total": 101
   },
@@ -62,7 +66,8 @@
    "label": "maani",
    "reached": "first-step",
    "green": 7,
-   "amber": 47,
+   "approved": 33,
+   "amber": 14,
    "red": 0,
    "total": 54
   },
@@ -70,7 +75,8 @@
    "label": "sekelo",
    "reached": "first-step",
    "green": 39,
-   "amber": 39,
+   "approved": 28,
+   "amber": 11,
    "red": 11,
    "total": 89
   },
@@ -78,7 +84,8 @@
    "label": "daar",
    "reached": "first-step",
    "green": 30,
-   "amber": 67,
+   "approved": 34,
+   "amber": 33,
    "red": 0,
    "total": 97
   },
@@ -86,7 +93,8 @@
    "label": "chop",
    "reached": "first-step",
    "green": 6,
-   "amber": 36,
+   "approved": 27,
+   "amber": 9,
    "red": 0,
    "total": 42
   },
@@ -94,7 +102,8 @@
    "label": null,
    "reached": "first-step",
    "green": 2,
-   "amber": 39,
+   "approved": 32,
+   "amber": 7,
    "red": 0,
    "total": 41
   },
@@ -102,7 +111,8 @@
    "label": null,
    "reached": "first-step",
    "green": 10,
-   "amber": 39,
+   "approved": 33,
+   "amber": 6,
    "red": 0,
    "total": 49
   },
@@ -110,7 +120,8 @@
    "label": "chaat",
    "reached": "first-step",
    "green": 13,
-   "amber": 30,
+   "approved": 28,
+   "amber": 2,
    "red": 0,
    "total": 43
   },
@@ -118,7 +129,8 @@
    "label": "samosa",
    "reached": "first-step",
    "green": 9,
-   "amber": 46,
+   "approved": 32,
+   "amber": 14,
    "red": 0,
    "total": 55
   },
@@ -126,7 +138,8 @@
    "label": "baking",
    "reached": "first-step",
    "green": 15,
-   "amber": 46,
+   "approved": 31,
+   "amber": 15,
    "red": 0,
    "total": 61
   },
@@ -134,7 +147,8 @@
    "label": "eggs",
    "reached": "first-step",
    "green": 17,
-   "amber": 41,
+   "approved": 37,
+   "amber": 4,
    "red": 0,
    "total": 58
   },
@@ -142,7 +156,8 @@
    "label": "corn",
    "reached": "first-step",
    "green": 15,
-   "amber": 29,
+   "approved": 28,
+   "amber": 1,
    "red": 0,
    "total": 44
   }
@@ -733,7 +748,7 @@
   },
   "assets/characters/ali/cousin-blink.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -760,7 +775,7 @@
   },
   "assets/characters/ali/cousin-impatient.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -787,7 +802,7 @@
   },
   "assets/characters/ali/cousin-talk.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -3420,7 +3435,7 @@
   },
   "assets/characters/ma/ma-blink.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -3591,7 +3606,7 @@
   },
   "assets/characters/ma/ma-talk.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -3618,7 +3633,7 @@
   },
   "assets/characters/nana/nana-blink.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -3790,7 +3805,7 @@
   },
   "assets/characters/nana/nana-talk.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16468,7 +16483,7 @@
   },
   "assets/cook/characters/cousin-face.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16497,7 +16512,7 @@
   },
   "assets/cook/characters/cousin-happy.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16540,7 +16555,7 @@
   },
   "assets/cook/characters/cousin-neutral.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16683,7 +16698,7 @@
   },
   "assets/cook/characters/ma-happy.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16713,7 +16728,7 @@
   },
   "assets/cook/characters/ma-impatient.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16741,7 +16756,7 @@
   },
   "assets/cook/characters/ma-neutral.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16823,7 +16838,7 @@
   },
   "assets/cook/characters/nana-happy.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16852,7 +16867,7 @@
   },
   "assets/cook/characters/nana-impatient.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16880,7 +16895,7 @@
   },
   "assets/cook/characters/nana-neutral.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -16937,7 +16952,7 @@
   },
   "assets/cook/characters/nani-blink-v3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -17027,7 +17042,7 @@
   },
   "assets/cook/characters/nani-happy-v3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -17130,7 +17145,7 @@
   },
   "assets/cook/characters/nani-neutral-v3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -17158,7 +17173,7 @@
   },
   "assets/cook/characters/nani-point-front-v3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -17186,7 +17201,7 @@
   },
   "assets/cook/characters/nani-point-v3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -17231,7 +17246,7 @@
   },
   "assets/cook/characters/nani-talk-v3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -18970,7 +18985,7 @@
   },
   "assets/cook/items-s08c/teaspoon/teaspoon-chai-s08c.webp": {
    "version": "s08",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -18997,7 +19012,7 @@
   },
   "assets/cook/items-s08c/teaspoon/teaspoon-empty-s08c.webp": {
    "version": "s08",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19024,7 +19039,7 @@
   },
   "assets/cook/items-s08c/teaspoon/teaspoon-sugar-s08c.webp": {
    "version": "s08",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19179,7 +19194,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-black-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19195,7 +19210,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-boil-milky-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19211,7 +19226,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-black-1-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19227,7 +19242,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-black-2-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19243,7 +19258,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-black-3-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19259,7 +19274,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-black-4-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19275,7 +19290,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-black-5-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19291,7 +19306,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-black-6-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19307,7 +19322,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-milky-1-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19323,7 +19338,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-milky-2-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19339,7 +19354,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-milky-3-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19355,7 +19370,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-milky-4-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19371,7 +19386,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-milky-5-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19387,7 +19402,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-milky-6-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19475,7 +19490,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-empty-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19491,7 +19506,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-leaves-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19507,7 +19522,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-milk-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19523,7 +19538,7 @@
   },
   "assets/cook/items-s14/chai-pan/pan-water-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19572,7 +19587,7 @@
   },
   "assets/cook/items-s14/glass/glass-empty-top-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19595,7 +19610,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-black-1-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19619,7 +19634,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-black-2-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19643,7 +19658,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-black-3-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19667,7 +19682,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-black-4-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19691,7 +19706,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-black-5-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19715,7 +19730,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-black-6-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19739,7 +19754,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-milky-1-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19755,7 +19770,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-milky-2-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19771,7 +19786,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19787,7 +19802,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-milky-4-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19803,7 +19818,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-milky-5-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -19819,7 +19834,7 @@
   },
   "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp": {
    "version": "s14",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -20690,7 +20705,7 @@
   },
   "assets/cook/items-s17-stove/f-milk-carton.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "fetch"
@@ -20759,7 +20774,7 @@
   },
   "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "fetch"
@@ -21088,7 +21103,7 @@
   },
   "assets/cook/items-s17-stove/f-sugar-jar.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "eggs",
@@ -21144,7 +21159,7 @@
   },
   "assets/cook/items-s17-stove/f-tea-jar.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "fetch"
@@ -21224,7 +21239,7 @@
   },
   "assets/cook/items-s17-stove/f-water-bottle.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "fetch"
@@ -23301,7 +23316,7 @@
   },
   "assets/cook/items/chai-station/flame-high.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "daar",
@@ -23323,7 +23338,7 @@
   },
   "assets/cook/items/chai-station/flame-low.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "daar",
@@ -23702,7 +23717,7 @@
   },
   "assets/cook/items/chai-v2/tray-4-cutout-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "eggs"
@@ -23860,7 +23875,7 @@
   },
   "assets/cook/items/dry-chai-leaves-bowl-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -23938,7 +23953,7 @@
   },
   "assets/cook/items/dry-khun-bowl-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -26714,7 +26729,7 @@
   },
   "assets/cook/items/spice-elchi-bowl-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -26770,7 +26785,7 @@
   },
   "assets/cook/items/spice-jeeru-bowl-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "tadka"
@@ -26824,7 +26839,7 @@
   },
   "assets/cook/items/spice-loon-bowl-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "tadka"
@@ -26853,7 +26868,7 @@
   },
   "assets/cook/items/spice-rai-bowl-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "tadka"
@@ -27569,7 +27584,7 @@
   },
   "assets/cook/items/v3/chai/pan-boil-tea.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -27598,7 +27613,7 @@
   },
   "assets/cook/items/v3/chai/pan-foam.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -28204,7 +28219,7 @@
   },
   "assets/cook/items/v3/hob/hob-1.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "daar",
@@ -28223,7 +28238,7 @@
   },
   "assets/cook/items/v3/hob/hob-2.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "eggs"
@@ -28240,7 +28255,7 @@
   },
   "assets/cook/items/v3/hob/hob-3.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -28255,7 +28270,7 @@
   },
   "assets/cook/items/v3/hob/hob-4-v2.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -28297,7 +28312,7 @@
   },
   "assets/cook/items/v3/hob/knob-off-v2.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "daar",
@@ -28331,7 +28346,7 @@
   },
   "assets/cook/items/v3/hob/knob-on-v2.webp": {
    "version": "v3",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "daar",
@@ -32544,7 +32559,7 @@
   },
   "assets/cook/items/veg-aadu-grated-bowl-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -32835,7 +32850,7 @@
   },
   "assets/cook/items/veg-lasan-chopped-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray",
     "daar",
@@ -33217,7 +33232,7 @@
   },
   "assets/cook/items/vessel-milk-jug-f.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -33270,7 +33285,7 @@
   },
   "assets/cook/items/vessel-saucepan-t.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -33379,7 +33394,7 @@
   },
   "assets/cook/items/vessel-water-jug-f.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -34545,7 +34560,7 @@
   },
   "assets/cook/serve/dish-chai.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -34709,7 +34724,7 @@
   },
   "assets/cook/serve/kitchen-tall.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -34749,7 +34764,7 @@
   },
   "assets/cook/serve/tray.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "assemble",
     "baking",
@@ -34831,7 +34846,7 @@
   },
   "assets/cook/worktop-s17/marble-white-s17.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "assemble",
     "baking",
@@ -36548,7 +36563,7 @@
   },
   "assets/shared/faces/nana.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "assemble",
     "baking",
@@ -36579,7 +36594,7 @@
   },
   "assets/shared/faces/nani.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",
@@ -36767,7 +36782,7 @@
   },
   "assets/shared/juice/sk-2.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36781,7 +36796,7 @@
   },
   "assets/shared/juice/sk-3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36795,7 +36810,7 @@
   },
   "assets/shared/juice/sk-4.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36809,7 +36824,7 @@
   },
   "assets/shared/juice/sk-5.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36823,7 +36838,7 @@
   },
   "assets/shared/juice/st-1.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36837,7 +36852,7 @@
   },
   "assets/shared/juice/st-2.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36851,7 +36866,7 @@
   },
   "assets/shared/juice/st-3.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36901,7 +36916,7 @@
   },
   "assets/shared/juice/td-1.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "baking",
     "chai-tray"
@@ -36916,7 +36931,7 @@
   },
   "assets/shared/juice/td-2.webp": {
    "version": "unversioned",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "chai-tray"
    ],
@@ -36982,7 +36997,7 @@
   },
   "assets/shared/panel/stone-shelf-s17.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "baking",
     "chai-tray",
@@ -37012,7 +37027,7 @@
   },
   "assets/shared/panel/stone-tile-s17.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "baking",
     "chai-tray",
@@ -37031,7 +37046,7 @@
   },
   "assets/shared/panel/stone-tile-s17@1x.webp": {
    "version": "s17",
-   "status": "amber",
+   "status": "approved",
    "loadedBy": [
     "(title)",
     "assemble",

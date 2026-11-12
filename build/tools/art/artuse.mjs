@@ -101,6 +101,10 @@ export const loadRetired = (root = ROOT) => {
   const p = join(root, "data/art/retired.json");
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")).retired.map((r) => Object.assign({ re: globRe(r.glob) }, r)) : [];
 };
+export const loadApproved = (root = ROOT) => {
+  const p = join(root, "data/art/approved.json");
+  return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")).approved.map((r) => Object.assign({ re: globRe(r.glob) }, r)) : [];
+};
 export const retiredOf = (retired, p) => retired.find((r) => r.re.test(p)) || null;
 
 /* ---------- the page loads (cached) ---------- */
@@ -126,7 +130,7 @@ function runDiscover() {
 }
 
 /* ---------- the join ---------- */
-export function build({ pics, loads, names, retired }) {
+export function build({ pics, loads, names, retired, approved = [] }) {
   const loadedBy = {};
   for (const [id, pg] of Object.entries(loads.pages)) for (const p of pg.pictures) (loadedBy[p] = loadedBy[p] || []).push(id);
   const out = {};
@@ -137,7 +141,7 @@ export function build({ pics, loads, names, retired }) {
     const nm = names.byPicture[p] || [];
     const version = versionOf(p);
     let status;
-    if (lb.length) status = ret ? "red" : isNew(p) ? "green" : "amber";
+    if (lb.length) status = ret ? "red" : isNew(p) ? "green" : approved.some((a) => a.re.test(p)) ? "approved" : "amber";
     else status = "grey";
     out[p] = { version, status, loadedBy: lb.map(gameOf).sort(), namedIn: [...new Set(nm.map((n) => n.file))].sort(), namedHow: [...new Set(nm.map((n) => n.how))].sort(), retired: ret ? { glob: ret.glob, replacedBy: ret.replacedBy, row: ret.row } : null, onDisk: pics.includes ? undefined : undefined };
     delete out[p].onDisk;
@@ -146,7 +150,7 @@ export function build({ pics, loads, names, retired }) {
 }
 export function countsByGame(per, loads) {
   const g = {};
-  for (const [id, pg] of Object.entries(loads.pages)) g[gameOf(id)] = { label: FLOWS[gameOf(id)] || null, reached: pg.reached, green: 0, amber: 0, red: 0, total: 0 };
+  for (const [id, pg] of Object.entries(loads.pages)) g[gameOf(id)] = { label: FLOWS[gameOf(id)] || null, reached: pg.reached, green: 0, approved: 0, amber: 0, red: 0, total: 0 };
   for (const e of Object.values(per)) for (const game of e.loadedBy) { const c = g[game]; if (!c) continue; c[e.status]++; c.total++; }
   return g;
 }
@@ -158,13 +162,14 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const pics = pictures();
   const names = scanNames(pics);
   const retired = loadRetired();
-  const per = build({ pics, loads, names, retired });
+  const per = build({ pics, loads, names, retired, approved: loadApproved() });
   const games = countsByGame(per, loads);
   const disk = Object.entries(per).filter(([p]) => pics.includes(p) || true);
   const grey = Object.values(per).filter((e) => e.status === "grey");
   const summary = {
     onDisk: pics.length, loadedByAPage: Object.values(per).filter((e) => e.loadedBy.length).length,
     storedLoadedByNothing: grey.length, greyButNamed: grey.filter((e) => e.namedIn.length).length, greyUnnamed: grey.filter((e) => !e.namedIn.length).length,
+    approvedLoaded: Object.values(per).filter((e) => e.status === "approved").length,
     retiredStillLoaded: Object.values(per).filter((e) => e.status === "red").length,
     retiredStillNamed: Object.values(per).filter((e) => e.retired && e.namedIn.length).length,
   };
@@ -178,10 +183,10 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   };
   writeFileSync(OUT, JSON.stringify({ generated: loads.generated, loadsFrom: loads.source, completeness, summary, games, pictures: per }, null, 1) + "\n");
   // the board's data: loaded pictures per game, and the grey ones by folder
-  const boardPics = Object.entries(per).filter(([, e]) => e.loadedBy.length).map(([p, e]) => [p, e.version, e.status[0], e.loadedBy.join(","), e.retired ? e.retired.replacedBy : ""]);
+  const boardPics = Object.entries(per).filter(([, e]) => e.loadedBy.length).map(([p, e]) => [p, e.version, e.status === "approved" ? "p" : e.status[0], e.loadedBy.join(","), e.retired ? e.retired.replacedBy : ""]);
   const greyByFolder = {};
   for (const [p, e] of Object.entries(per)) if (e.status === "grey") { const d = p.replace(/\/[^/]*$/, ""); const c = (greyByFolder[d] = greyByFolder[d] || { n: 0, named: 0 }); c.n++; if (e.namedIn.length) c.named++; }
   writeFileSync(BOARD_DATA, `/* written by build/tools/art/artuse.mjs: do not edit */\nwindow.ART_BOARD = ${JSON.stringify({ generated: loads.generated, completeness, summary, games, pics: boardPics, grey: greyByFolder })};\n`);
   console.log(`art-use: ${pics.length} pictures on disk, ${summary.loadedByAPage} loaded by a page, ${summary.storedLoadedByNothing} stored and loaded by nothing (${summary.greyButNamed} named somewhere), ${summary.retiredStillLoaded} retired still loaded`);
-  for (const [g, c] of Object.entries(games)) console.log(`  ${g.padEnd(16)} ${c.reached.padEnd(10)} green ${c.green} amber ${c.amber} red ${c.red} (${c.total})`);
+  for (const [g, c] of Object.entries(games)) console.log(`  ${g.padEnd(16)} ${c.reached.padEnd(10)} green ${c.green} approved ${c.approved} amber ${c.amber} red ${c.red} (${c.total})`);
 }

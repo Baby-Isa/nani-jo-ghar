@@ -42,13 +42,13 @@ test("art use: the colours and the counts per game", () => {
   const retired = loadRetired(root);
   assert.equal(retiredOf(retired, "assets/cook/items/v3/sekelo/heap-meat.webp").row, "ART-79");
   const loads = { pages: { "cook:mishkaki-grill": { reached: "first-step", pictures: ["assets/cook/items/v4/sekelo/skewer-empty.webp", "assets/cook/items/pan-t.webp", "assets/cook/items/sekelo/stick-v.webp"] }, "cook:corn": { reached: "no", pictures: [] } } };
-  const per = build({ pics, loads, names, retired });
+  const per = build({ pics, loads, names, retired, approved: [{ re: globRe("assets/cook/items/pan-t.webp") }] });
   assert.equal(per["assets/cook/items/v4/sekelo/skewer-empty.webp"].status, "green");
-  assert.equal(per["assets/cook/items/pan-t.webp"].status, "amber");
+  assert.equal(per["assets/cook/items/pan-t.webp"].status, "approved");
   assert.equal(per["assets/cook/items/sekelo/stick-v.webp"].status, "red");
   assert.equal(per["assets/cook/bg/lonely.webp"].status, "grey");
   const c = countsByGame(per, loads);
-  assert.deepEqual([c["mishkaki-grill"].green, c["mishkaki-grill"].amber, c["mishkaki-grill"].red, c["mishkaki-grill"].total], [1, 1, 1, 3]);
+  assert.deepEqual([c["mishkaki-grill"].green, c["mishkaki-grill"].approved, c["mishkaki-grill"].amber, c["mishkaki-grill"].red, c["mishkaki-grill"].total], [1, 1, 0, 1, 3]);
   assert.equal(c.corn.reached, "no");
 });
 test("retired check: red on a name (path or glob) and on a real load; green when nothing names or loads a retired file", () => {

@@ -11,10 +11,14 @@
 ## How complete (honest)
 14 of 14 pages opened (title, 13 station labs); each only to its **first step at level 1**, none played to its end. Chaat has no page of its own: it is Assemble (its chop is Chop). Strings built in code (`${...}`) are not resolved (reported in art-use.json). So pictures a later step, level or mood brings in count as grey: the grey figure is an upper bound.
 
-## Counts (new / old / retired, still loaded)
-sekelo 39/39/**11**; chai 0/101/0; eggs 17/41/0; baking 15/46/0; corn 15/29/0; chop 6/36/0; chaat 13/30/0; pantry 1/63/0; daar 30/67/0; samosa 9/46/0; maani 7/47/0; tadka 2/39/0; stir 10/39/0; title 0/25/0.
-All pages: 371 loaded; 2,994 stored and loaded by nothing, of which 1,573 are named by some file and 1,421 by nothing.
-Retired hits: 11 real loads (all sekelo), 21 findings in all.
+## Approved art (coordinator, after review)
+`data/art/approved.json`: the 101 pictures chai-tray's page loads (none retired, none v4), row "Zafar's chai sign-off". The board shows them teal, dashed, "approved, current", counted apart from new (v4) and from old. Caution: chai's page loads the shared set (title, tools, backgrounds), so those pictures turn approved in every game too; approved counts below include them.
+
+## Counts (new / approved / old not approved / retired, still loaded)
+sekelo 39/28/11/**11**; chai 0/101/0/0; eggs 17/37/4/0; baking 15/31/15/0; corn 15/28/1/0; chop 6/27/9/0; chaat 13/28/2/0; pantry 1/31/32/0; daar 30/34/33/0; samosa 9/32/14/0; maani 7/33/14/0; tadka 2/32/7/0; stir 10/33/6/0; title 0/25/0/0.
+All pages: 371 loaded; 2,994 stored and loaded by nothing, of which 1,573 are named by some file and 1,421 by nothing. Retired hits: 11 real loads (all sekelo), 21 findings.
+
+Screenshots updated: `art-board-1280x665.png` and `-dark.png`.
 
 ## Proof
 - `node --test build/tools/art/artuse.test.mjs`: 4 pass.
