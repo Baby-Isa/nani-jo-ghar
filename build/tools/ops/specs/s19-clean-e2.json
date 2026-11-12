@@ -49,7 +49,7 @@
  "branch": "s19-clean-e (continue in /home/user/wt/s19-clean-e; its round one is merged); commit there, never push; the orchestrator merges",
  "kind": "code",
  "browser": true,
- "live": true,
+ "live": false,
  "specsByBuilder": false,
  "stubs": "none",
  "report": "s19-clean-e2",
