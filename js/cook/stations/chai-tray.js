@@ -253,6 +253,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (the kitchen kit's first-time gate, Cook.Coach.firsts: chai's lights once each for a new player; the lessons every game
     // shares once a round for the New player, CHAI-102)
     const gate14 = Cook.Coach.firsts(STATION14, { round: new Set() });
+    const POUR_AGAIN14 = `${STATION14}:l4-pour-again`; // (CHAI-110: the full glass's second-tap light, once per player; see the pour's light)
     const CONTROL_PAUSE_MS = 1000; // (Zafar, 30 Oct: a second's pause before a control's light and call, after the last move)
     const READ_AT_POUR = false; // (Zafar, 30 Oct: the pour says nothing; see the pour below)
     // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
@@ -1776,9 +1777,17 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // second tap fills it
         // (corrected, 11 Nov night: the first L4 round's full glass has no light before its first tap; the light comes on the glass after
         // it, for the second pour; a half glass's first pour keeps the pour's first-time light)
+        // (the review of s19-clean-b, finding 1: only at L4 (halves) does a glass ask two pours; below it needOf is 2 for every glass,
+        // so without `halves` every pour lost the new player's first-time light, a help removed)
+        // (finding 2: the light for the full glass's second tap is not behind the first-time gate, which is fresh only for the New player
+        // or while chai's coach is unseen, so a child who plays L1-L3 and then meets L4 got none: it comes the first time this player
+        // pours a full glass's second half (once ever on the save, once a visit for the New player, whose profile resets at launch),
+        // the first L4 round however it was reached; later rounds as normal: the stuck hint only)
         const pourPan = nx.phase === "pour" ? pans.find((q) => `pour-${q.who}` === (nx.e && nx.e.key)) : null;
-        const fullFirst = !!(pourPan && !nx.again && needOf(pourPan) > 1);
-        const firstTime = rungCur.panPick || fullFirst ? false : gate14.first(nx.again ? "ctl-pour-again" : `ctl-${nx.phase}`);
+        const fullFirst = !!(halves && pourPan && !nx.again && needOf(pourPan) > 1);
+        const againFirst = !!(halves && pourPan && nx.again && needOf(pourPan) > 1 && !seen14[POUR_AGAIN14]);
+        if (againFirst) seen14[POUR_AGAIN14] = true;
+        const firstTime = rungCur.panPick || fullFirst ? false : againFirst || (!nx.again && gate14.first(`ctl-${nx.phase}`));
         // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
         // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
         // the green, "Slow kar!", is timed and comes at once); after that the call alone and the same light as the stuck hint after
