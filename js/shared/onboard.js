@@ -1807,7 +1807,8 @@
     // (the round-two review's finding 6: a "tap" is the finger's own tapping cadence on the point, logged as a tap, never a drag held
     // in place; o.ready() (optional): the finger waits for it, the light it belongs to, up to READY_CAP ms, so it never comes first)
     const tapOnly = o.gesture === "tap";
-    const gesture = GESTURES.includes(o.gesture) && !tapOnly ? o.gesture : "drag";
+    // (s19-clean-d's line: a "tap" stays a tap, its own cadence and length, DUR.tap; any name not a gesture is a drag)
+    const gesture = GESTURES.includes(o.gesture) ? o.gesture : "drag";
     const dur = o.ms || DUR[gesture] || 1500;
     const carry = typeof o.carry === "function" ? o.carry : null;
     let finger = null;

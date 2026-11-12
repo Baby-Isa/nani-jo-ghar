@@ -4114,7 +4114,8 @@
           }));
         }
         const els = new Map();
-        const el = OC.card(data, { big: true, onEl: (key, e) => e.classList && e.classList.contains("oc-row") && !els.has(key) && els.set(key, e) });
+        // (contract-100: the side panel's own 6 Nov item cards, never the old rows: s19-clean-d's line)
+        const el = OC.card(data, { big: true, wo: true, s14: UI.s14(), onEl: (key, e) => e.classList && e.classList.contains("oc-row") && !els.has(key) && els.set(key, e) });
         const out = cardRows(data)
           .filter((p) => p.key && els.has(p.key))
           .map((p) => ({ el: els.get(p.key), ok: !p.key.wrong, say: p.key.line ? () => Lang.speak(p.key.line) : null }));

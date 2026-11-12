@@ -576,7 +576,8 @@
     // SH-241, SAM-31 (Zafar, 8 Nov: "no relic of the old order card"): a game's item rows are 6 Nov item cards (items14), its
     // ordered steps and its kinds of several too; the little skewer strip, the group box and the count box are gone. An item of
     // steps (the clinic's doctor's steps) keeps its plain rows in their order
-    if (opts.s14 && !opts.big && !it.row && it.parts.length && it.parts.every((p) => p.word) && root.WordCard && root.WordCard.item14) return items14(it, opts);
+    // (s19-clean-d's line, contract-100: the wrong-order pop-up's open card, opts.wo, is a big card drawn with the same 6 Nov item cards)
+    if (opts.s14 && (!opts.big || opts.wo) && !it.row && it.parts.length && it.parts.every((p) => p.word) && root.WordCard && root.WordCard.item14) return items14(it, opts);
     const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
     if (it.row) box.appendChild(rowEl(it, "oc-irow", opts));
     if (it.parts.length) {

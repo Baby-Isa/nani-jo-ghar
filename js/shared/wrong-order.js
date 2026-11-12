@@ -219,6 +219,17 @@ async function play(o = {}) {
     }
     return px;
   };
+  // (s19-clean-d's line, contract-100: a card of 6 Nov item cards, .oc-row14, is laid as the side panel's row is: the row its width
+  // there, so each item card is drawn exactly as in the panel (their insides are sized by the row's width), wrapping onto more lines,
+  // never a row that scrolls sideways: every item in one view, the whole then fitted, past the words' floor its rows scrolling)
+  const lay14 = (card, from) => {
+    const rows = [...card.querySelectorAll(".oc-row14")];
+    if (!rows.length) return;
+    card.classList.add("njg-wo-14");
+    const ref = from && from.querySelector(".oc-row14");
+    const w0 = ref ? ref.getBoundingClientRect().width : 0;
+    rows.forEach((row) => row.style.setProperty("--wo-row", `${Math.round(w0 || 220)}px`));
+  };
   let roomSet = false;
   const roomBack = () => {
     if (!roomSet) return;
@@ -303,6 +314,7 @@ async function play(o = {}) {
         card.appendChild(body);
         card.appendChild(markEl("bad"));
         line.replaceWith(card);
+        lay14(card, from);
         fit(card, true);
         // the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): at least 1.7 times the side panel's face
         // circle at every size. At 740x320 the card's shrink to fit took it to 67 px against a 45 px panel face (b2's item 2): the face

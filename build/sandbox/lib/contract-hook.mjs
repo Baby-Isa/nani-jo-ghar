@@ -580,6 +580,9 @@ const BASE_HOOK = `(() => {
   const faceKit = () => {
     const out = [];
     const seen = new Set();
+    // (s19-clean-d's line: each token's width measured once per sample, by its value as resolved, never a probe in every face: the probes
+    // took about 2.2 s of every 4.6 s at 740x320 and sekelo ran at 15 fps under them)
+    const tokW = new Map();
     for (const el of document.querySelectorAll(FACE_ROLES)) {
       const c = el.matches(".njg-face") ? el : el.querySelector(".njg-face");
       const k = c || el;
@@ -596,13 +599,19 @@ const BASE_HOOK = `(() => {
       // (the token resolved as the page lays it out: since SH-185 the side panel's sizes are calc() of its scale, which parseFloat
       // reads as 0; a hidden probe inside the circle takes the token's width)
       const tokName = { row: "--njg-face", guide: "--njg-guide-face", big: "--njg-big-face" }[size] || "--njg-face";
-      let tok = parseFloat(cs.getPropertyValue(tokName));
-      if (!/^\\s*[\\d.]+px\\s*$/.test(cs.getPropertyValue(tokName))) {
-        const pr = document.createElement("span");
-        pr.style.cssText = "position:absolute;visibility:hidden;left:0;top:0;height:1px;width:var(" + tokName + ")";
-        c.appendChild(pr);
-        tok = pr.offsetWidth;
-        pr.remove();
+      const raw = cs.getPropertyValue(tokName);
+      let tok = parseFloat(raw);
+      if (!/^\\s*[\\d.]+px\\s*$/.test(raw)) {
+        const key = tokName + "|" + raw;
+        if (tokW.has(key)) tok = tokW.get(key);
+        else {
+          const pr = document.createElement("span");
+          pr.style.cssText = "position:absolute;visibility:hidden;left:0;top:0;height:1px;width:var(" + tokName + ")";
+          c.appendChild(pr);
+          tok = pr.offsetWidth;
+          pr.remove();
+          tokW.set(key, tok);
+        }
       }
       tok = tok || 0;
       out.push({ sel: desc(el === c ? c : el) + (el === c ? "" : " > .njg-face"), kit: true, size, w: lw, h: lh, tok, d: parseFloat(cs.getPropertyValue("--njg-face-d")) || 0 });
