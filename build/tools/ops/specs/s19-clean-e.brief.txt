@@ -6,7 +6,7 @@ BRANCH:               s19-clean-e in /home/user/wt/s19-clean-e (made for you fro
 
 MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
 
-CONTEXT PACK: build/tools/ops/specs/s19-clean-e.context.md (861 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+CONTEXT PACK: build/tools/ops/specs/s19-clean-e.context.md (908 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
 
 READ FIRST (in this order):
   1. CLAUDE.md (all of it: the working agreement and non-negotiables)
@@ -20,11 +20,12 @@ READ FIRST (in this order):
 FILES THIS SESSION OWNS (edit only these):
   - js/cook/stations/eggs.js, baking.js, corn.js, chop.js, daar.js, samosa.js, maani-line.js, mishkaki-grill.js and their data/stations/*.json
   - js/cook/mechanics/chop.js, assemble.js, fetch.js, boil.js, stir.js, thread.js, roll.js, fry.js, fill-fold.js and js/cook/grill-kit.js
+  - js/cook/mechanics/grill.js and assets/cook/items/v4/kit/tray-deep.webp (ART-80's cut, new)
   - build/reports/s19-clean-e.md
 READ-ONLY (never edit):
-  - js/cook/stations/chai-tray.js and js/cook/mechanics/grill.js (s19-clean-a3 owns them now)
   - js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, data/cook.json, build/sandbox/** (s19-clean-a3)
   - assets/**
+  - js/cook/stations/chai-tray.js (s19-clean-chai)
   - js/shared/**, build/tools/** and every other session's files unless listed above
 SHARED PIECES NEEDED BUT MISSING: none
 
@@ -37,7 +38,9 @@ PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (
 TASKS (each with its acceptance criterion):
   1. The game rows still open: eggs, corn and chop CK-46, CK-55, CK-65, CK-75, CK-76, CK-78, CK-81, CK-82, CK-86 (sekelo's part with grill.js lines to the orchestrator); daar DAAR-36, DAAR-39 and CK-79's station part; maani MAA-20 (its lab pick stays Zafar's: build nothing he hasn't chosen); samosa SAM-34; sekelo SEK-26's open parts; chaat CHT-13, CHT-17, CHT-19; the pantry PAN-21; ART-52, ART-72, ART-79's station swaps. Each: read its row and the after-night note, fix it, a before and after frame. Then the games' own check faults from the a2 and d reports: baking's 111 (18, tap reach), 37 in eggs, corn and chaat (decoys by the levels table), 70 and 117 in eggs, 102 in corn, 44 in maani; samosa's 44 (a finger inside a light) waits on s19-clean-a3's reading of the standard: ask the orchestrator before changing it.
      Accept: each row: before and after frames; the contract run of your ten flows, L1-L4 at 740x320 and 1280x665 (s19-clean-e-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner
-  2. Standing: browser runs under your own lock (COOK_TEST_PORT=8911, flock /tmp/njg-browser-8911.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs (the disk is tight: about 9 GB free for two builders); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report (data/cook.json, js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js belong to the shared batch, s19-clean-a, running now).
+  2. Zafar, 12 Nov (rows SEK-27, ART-80, CK-89): sekelo's grill screen laid out as corn's: the threaded skewers on the stone band along the bottom, the grill in the middle or middle left, one cooked tray on the right; the trays as the mock's (deeper, realistic): cut one from sources/art/s19-mocks2/results/A1-sekelo-2-improved.png into assets/cook/items/v4/kit/tray-deep.webp (off its marble cleanly, its painted shadow dropped: code draws it); corn uses it too if it reads better (show both). Baking's salt back as a pinch (grey English: no word yet, never invented) and a teaspoon (chamchi), a small salt pile in the bowl as chai shows its sugar.
+     Accept: frames at 740x320 and 1280x665: sekelo beside corn and the mock; the tray cut on dark and light; baking's salt pile
+  3. Standing: browser runs under your own lock (COOK_TEST_PORT=8911, flock /tmp/njg-browser-8911.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs (the disk is tight: about 9 GB free for two builders); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report (data/cook.json, js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js belong to the shared batch, s19-clean-a, running now).
      Accept: build/reports/s19-clean-e.md with a Proof section, under 900 words
 
 KEEP (what Zafar liked in eggs, baking, corn, chop, chaat, fetch, daar, samosa, maani-line, mishkaki-grill: never change it without his word; 6):
@@ -48,8 +51,8 @@ KEEP (what Zafar liked in eggs, baking, corn, chop, chaat, fetch, daar, samosa, 
   KEEP-13: Pantry wrong-item handling; cooker on early is fine; daar dial and rotation; samosa fry and frying handle
   KEEP-16: Liked, 17 Oct: daal chop ("so much better ... the knife ... really nice"); the stir speed indicator ("looks very good"); chai's replayed order on a pot tap ("ve
 
-REGRESSION ROWS TO RECHECK (22; * = open or reopened; the contract replay of your flows covers the rest):
-  the rows the tasks name (22): CK-46*, CK-55*, CK-65*, CK-75*, CK-76*, CK-78*, CK-81*, CK-82*, CK-86*, DAAR-36*, DAAR-39*, CK-79*, MAA-20*, SAM-34*, SEK-26*, CHT-13*, CHT-17*, CHT-19*, PAN-21*, ART-52*, ART-72*, ART-79*
+REGRESSION ROWS TO RECHECK (25; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (25): CK-46*, CK-55*, CK-65*, CK-75*, CK-76*, CK-78*, CK-81*, CK-82*, CK-86*, DAAR-36*, DAAR-39*, CK-79*, MAA-20*, SAM-34*, SEK-26*, CHT-13*, CHT-17*, CHT-19*, PAN-21*, ART-52*, ART-72*, ART-79*, SEK-27*, ART-80*, CK-89*
 
 PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
   - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.

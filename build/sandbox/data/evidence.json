@@ -28430,5 +28430,75 @@
    "note": "eggs L3: the same lesson on its order's first hidden pop-up card where it stands (its picture blurred too)",
    "delay": 200
   }
+ ],
+ "SEK-27": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "sekelo laid out as corn: skewers on the band, the grill, one cooked tray right"
+  }
+ ],
+ "ART-80": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "the deep tray cut from the mock"
+  }
+ ],
+ "CK-89": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    2,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "salt as a pinch or a teaspoon, its small pile shown"
+  }
  ]
 }
