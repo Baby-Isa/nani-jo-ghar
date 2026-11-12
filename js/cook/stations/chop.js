@@ -284,7 +284,16 @@ import { Cook as CookNS } from "../ns.js";
         } catch (e) {
           /* the view as it is */
         }
-        const at = Cook.Kit.praiseSpot({ x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y }, size, { avoid: cuts, view: [vl + z.L(200), V.top != null ? V.top : 0, (V.right != null ? V.right : 1600) - z.L(200), z.Y(BAND.top)] });
+        const dish = { x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y };
+        const vt = V.top != null ? V.top : 0;
+        const vr = V.right != null ? V.right : 1600;
+        const room = z.L(200); // (the praise card beside the face: "Shabash!" at the kit's size, its gap)
+        const r = size / 2;
+        const fits = (q, v) => q.x - r >= v[0] && q.y - r >= v[1] && q.x + r <= v[2] && q.y + r <= v[3] && !cuts.some((a) => q.x + r > a.x && q.x - r < a.right && q.y + r > a.y && q.y - r < a.bottom);
+        // (the face clear of the cut pieces, its card inside the play area on whichever side it goes: a left card first, then a right one)
+        const tries = [[vl + room, vt, vr, z.Y(BAND.top)], [vl, vt, vr - room, z.Y(BAND.top)]].map((v) => [v, Cook.Kit.praiseSpot(dish, size, { avoid: cuts, view: v })]);
+        const ok = tries.find(([v, q]) => fits(q, v) && (q.side === "left" ? q.x - r - room >= vl : q.x + r + room <= vr));
+        const at = ok ? ok[1] : Cook.Kit.praiseSpot(dish, size, { avoid: cuts, view: [vl, vt, vr, z.Y(BAND.top)] });
         const look = await Cook.Kit.review(S, { who: d.who || "nani", ok: true, x: at.x, y: at.y, size, k: z.L(1), side: at.side });
         await Cook.wait(400);
         if (look && look.close) await look.close();
