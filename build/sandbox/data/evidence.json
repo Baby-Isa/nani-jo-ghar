@@ -28072,5 +28072,293 @@
    "max": 8,
    "note": "CHAI-111 as its row says"
   }
+ ],
+ "SH-173": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.njg-results .rs-card",
+    "contract:32"
+   ],
+   "expect": [
+    "count:.rs-words-bad=0"
+   ],
+   "note": "chai L1 played right: the end review's words one group in the middle of the card, no empty wrong-words half on the left (SH-173 amends SH-103 when nothing is wrong)",
+   "delay": 0
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "crop:.njg-results .rs-card",
+    "contract:32"
+   ],
+   "expect": [
+    "count:.rs-words-bad=0"
+   ],
+   "note": "eggs L1 played right: the same centred review in another game",
+   "delay": 0
+  }
+ ],
+ "SH-248": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "cmd:node --test build/core/band.test.mjs"
+   ],
+   "expect": null,
+   "note": "baking (the last game to join): its settings name its band (shelf) and it stands on the kit's stone shelf (St.stoneBand with game: baking); the unit test checks every kitchen game's settings, design table and code",
+   "delay": 0,
+   "max": 1
+  }
+ ],
+ "SH-251": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/tools/review/sidebyside.test.mjs",
+    "contract:112"
+   ],
+   "expect": null,
+   "note": "the side-by-side tool's key moments: order before the first light, the light shot with the screen to itself (never inside the pixel probe's hidden frame), mid-cook from the station's own frames, the serve from the middle of the service view; its unit tests; the after contract run is played with --keyframes and its keys.json lists the seven moments per page",
+   "delay": 0
+  }
+ ],
+ "SH-258": [
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "samosa L1: the asker's face circle beside their plate or the knob from the first light, as chai's Nana on the glass",
+   "delay": 0,
+   "max": 1
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "chaat L1: the asker's face circle beside their bowl from the first light",
+   "delay": 0,
+   "max": 1
+  },
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "baking L1: the asker's face circle on the bowl's rim from the first light",
+   "delay": 0,
+   "max": 1
+  }
+ ],
+ "SH-260": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "eggs L1, the first light: the play area centred in the height as chai's (the space above the group, less the counters' room, and below it within 10%)",
+   "delay": 0,
+   "max": 1
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "samosa L1: the play area centred in the height as chai's",
+   "delay": 0,
+   "max": 1
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "maani L1: the play area centred in the height as chai's",
+   "delay": 0,
+   "max": 1
+  }
+ ],
+ "SH-267": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "contract:119"
+   ],
+   "expect": null,
+   "note": "chop L1: as the customer says the dish, its card (the dish and its count, no English) flashes up beside their bubble and never joins the order card; contract-119 over the play",
+   "delay": 0,
+   "max": 2
+  },
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "contract:119"
+   ],
+   "expect": null,
+   "note": "chop L2: no dish card at all from level 2 (it would give the order away)",
+   "delay": 0,
+   "max": 2
+  }
  ]
 }
