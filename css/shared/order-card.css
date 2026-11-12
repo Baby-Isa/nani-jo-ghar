@@ -716,3 +716,8 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 { flex: 1 1 0 !important; min-width: 0 !important; padding: max(calc(var(--njg-px) * 3), 1.6cqi); }
 .oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 .oc-t { font-size: clamp(var(--njg-card14-u15), calc(36cqi / var(--oc-fit-n, 4)), var(--njg-card14-u32)); }
 .oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 > .oc-badge14 { width: var(--njg-card14-u16, var(--njg-card14-u22)); height: var(--njg-card14-u16, var(--njg-card14-u22)); }
+
+/* the round-two review's finding 2 (samosa L3-L4): a kind's own count and dish over its fillings' row, in the card's Kutchi type
+   (js/shared/order-card.js items14, it.title14) */
+.oc-card .oc-items14 > .oc-block14 { font-family: var(--njg-font-word); font-weight: 600; font-size: max(calc(var(--njg-px, 1px) * 14.5), var(--oc-p, 1rem)); line-height: 1.3; color: var(--njg-ink-kutchi); margin: var(--njg-s1) var(--njg-s2) 0; }
+.oc-card .oc-items14 > .oc-block14 .word { color: var(--oc-word); }

@@ -170,3 +170,31 @@ test("finding 7: with the pop-up shown, the recast's words are skipped but the g
     assert.deepEqual(log, ["undo:bowl", "reset:bowl"]);
   } finally { NjgServe.use(null); }
 });
+
+// the round-two review's finding 6: a "tap" gesture is the finger tapping on the point (logged as a tap), after its light (o.ready)
+test("finding 6 (round two): a tap's finger is a tap, and waits for its light", async (t) => {
+  let browser;
+  try { browser = await launch(); } catch (e) { return t.skip("no browser here"); }
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 800, height: 400 } });
+    const page = await ctx.newPage();
+    await page.setContent("<!doctype html><meta charset=utf-8><body></body>");
+    await page.evaluate(() => { window.__g = []; window.Lifecycle = { note: (w, i) => w === "ghost" && window.__g.push([Date.now(), i && i.step, i && i.by]), onStageEnd: () => () => {} }; });
+    await page.addScriptTag({ path: join(ROOT, "js", "shared", "onboard.js") });
+    const out = await page.evaluate(async () => {
+      let lit = false;
+      const t0 = Date.now();
+      const g = window.Onboard.gesture(() => ({ from: { x: 200, y: 200 }, to: { x: 200, y: 200 } }), { gesture: "tap", ms: 900, step: "x:tap", ready: () => lit });
+      await new Promise((r) => setTimeout(r, 600));
+      const before = document.querySelectorAll(".ob-finger").length;
+      lit = true;
+      await new Promise((r) => setTimeout(r, 700));
+      const after = document.querySelectorAll(".ob-finger").length;
+      g.stop();
+      return { before, after, ghosts: window.__g.map((x) => [x[0] - t0, x[2]]) };
+    });
+    assert.equal(out.before, 0, "no finger before its light");
+    assert.ok(out.after >= 1, "the finger once the light is up");
+    await ctx.close();
+  } finally { await browser.close(); }
+});

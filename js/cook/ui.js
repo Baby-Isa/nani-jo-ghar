@@ -3218,7 +3218,12 @@
           const parts = flat.map((x) => cardOf(x.r, x.gi));
           const all = !!s.head.done || !!L.closedAll || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
           const head = Object.assign(cardOf(s.head, 0), { done: all, say: sayRow(s.head) });
-          items.push({ label: null, count: 1, parts: (headCard ? [head] : []).concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
+          // (the round-two review's finding 2: with no head card, a dish of several kinds wrote only the first kind's count, in the
+          // headline, and the second's nowhere, though the serve judges it. Each kind's fillings now sit under its own count and dish,
+          // the engine's phrase for the block's head ("ba samosa"), dotted as the level dots it; one kind alone: the headline says it)
+          const blocks = sections.filter((x) => x.s.block && x.s.head).length;
+          const title14 = !headCard && blocks > 1 && s.head.phrase ? rowText(text6(s.head.phrase, rowHide(s.head))) : null;
+          items.push({ label: null, count: 1, title14, parts: (headCard ? [head] : []).concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
           rowsShown.push(...(headCard ? [s.head] : []), ...flat.map((x) => x.r));
           return;
         }
@@ -4143,6 +4148,16 @@
   };
   M.redoEnd = function () {
     document.querySelectorAll(".njg-wo-out").forEach((e) => e.classList.remove("njg-wo-out"));
+    // (the round-two review's finding 5: the serve's red marks end with the round: eggs has no redo, so its red rows went into the
+    // served moment and the thank-you scene both red and ticked. The first try's misses, r.miss, stay for the end review)
+    if (mission && mission.ladders) {
+      let red = false;
+      mission.ladders.forEach((L) => {
+        if (L.unasked) L.unasked = null;
+        Order().rows(L, { all: true }).forEach((r) => r.wrong && ((r.wrong = false), (red = true)));
+      });
+      if (red && !mission.redo) renderOrder();
+    }
     if (!mission || !mission.redo) return;
     mission.redo = null;
     renderOrder();

@@ -626,7 +626,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (v.r != null && !v.from) return Object.assign(page(v), { r: v.r * k() });
         return { from: page(v.from), to: page(v.to) };
       },
-      Object.assign({}, o, { carry: typeof o.carry === "function" ? (dx, dy, t, p) => o.carry(dx / k(), dy / k(), t, p) : null })
+      // (the round-two review's finding 6: a first-time tap's finger waits for its light, the kit's layer up, never on an undimmed screen first)
+      Object.assign({ ready: o.gesture === "tap" ? () => !!(Onboard.lightsShown && Onboard.lightsShown() > 0) : undefined }, o, { carry: typeof o.carry === "function" ? (dx, dy, t, p) => o.carry(dx / k(), dy / k(), t, p) : null })
     );
     demos.add(g);
     const stop = g.stop;

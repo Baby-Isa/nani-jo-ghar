@@ -339,6 +339,12 @@
     // (the Fable review's finding 5: a child's touch, drag or wheel on the row is theirs, even while the row's own glide is on)
     if (opts.fold) ["pointerdown", "touchstart", "wheel"].forEach((ev) => list.addEventListener(ev, () => (opts.fold.kid14 = Date.now()), { passive: true }));
     if (root.requestAnimationFrame) root.requestAnimationFrame(atEnd);
+    // (a block's own count and dish over its row, it.title14: samosa's second kind, "ba samosa"; the host's words, written as given)
+    if (it.title14) {
+      const t = el("div", "oc-block14");
+      t.innerHTML = it.title14;
+      box.appendChild(t);
+    }
     box.appendChild(list);
     return box;
   }
