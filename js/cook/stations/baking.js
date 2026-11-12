@@ -62,10 +62,16 @@ import { setTimeout } from "../life.js";
    * where the engine can't say it whole (an amount still to record), the whole sentence's English as the grey to-record line.
    */
   function amountLine(s) {
+    const frame = SET().amountFrame || "{amount} {thing}";
+    // (CK-89: a pinch has no Kutchi yet: the whole sentence is its English in grey, never the thing's word alone with the amount left
+    // out, never an invented word; a line for the recording sheet)
+    if (s.amt === "pinch") {
+      const amt = amountEn("pinch") || "a pinch";
+      return Lang.toRecord(frame.replace("{amount}", amt).replace("{thing}", Cook.english(s.id)), `baking: ${frame.replace("{amount}", amt)}`);
+    }
     const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(s.parts && s.parts.length ? s.parts : [s.id]) });
     if (doIt.ok !== false) return doIt;
-    const amt = amountEn(s.units) || `${s.units / 4}`;
-    const frame = SET().amountFrame || "{amount} {thing}";
+    const amt = amountEn(s.amt === "spoon" ? "spoon" : s.units) || `${s.units / 4}`;
     return Lang.toRecord(frame.replace("{amount}", amt).replace("{thing}", Cook.english(s.id)), `baking: ${frame.replace("{amount}", amt)}`);
   }
   /** Every word id a step names is the engine's (a new amount waits for its lexicon entry: its plans are skipped till then). */
@@ -262,12 +268,57 @@ import { setTimeout } from "../life.js";
     const bowlState = (k) => {
       const key = `bk-bowl-${k}`;
       if (has(key) && bowl.texture.key !== key) bowl.setTexture(key);
+      if (k === "mixing" || k === "dough") saltGone(); // (CK-89: mixed in)
     };
     /** The bowl after `done` of step s's taps (0-1): flour rises with the flour; anything wet makes the shaggy dough. */
     const bowlTo = (s, done) => {
       if (s && LIQUID_IDS.has(s.id) && done > 0) wet = true;
       if (wet) return bowlState("mixing");
       if (s && s.id === FLOUR && done > 0) return bowlState(done < 0.4 ? "flour1" : done < 0.75 ? "flour2" : "flour3");
+    };
+
+    /*
+     * CK-89 (Zafar, 12 Nov: "we'll just put a small salt pile"): the salt that went in lies in the bowl as a small pile of crystals on the
+     * flour (drawn in code, as chai's sugar lies on its tea): a pinch a small one, a teaspoon a bigger one (items.saltPile); it goes into
+     * the dough as something wet is mixed in (the bowl's shaggy picture).
+     */
+    const SP = I.saltPile || {};
+    const salt = T(S.add.graphics().setDepth(D.item + 0.2));
+    salt.setName("baking-salt");
+    const saltIn = [];
+    const drawSalt = () => {
+      salt.clear();
+      const at = SP.at || [0.5, 0.27];
+      const bw = bowl.displayWidth;
+      const top = bowl.y - bowl.displayHeight;
+      // (its colours, the settings': cool white faces, grey edges, a warm shade under it)
+      const C = SP.colours || {};
+      const hx = (k) => parseInt(String(C[k] || "#ffffff").slice(1), 16);
+      saltIn.forEach((amt, i) => {
+        const w = bw * (SP[amt] || (amt === "pinch" ? 0.12 : 0.22));
+        const x = bowl.x - bw / 2 + bw * at[0] + (i % 2 ? 1 : -1) * i * bw * 0.08;
+        const y = top + bowl.displayHeight * at[1];
+        // (cool white crystals on the warm flour: the salt reads as its own heap, the light from the upper left; its shade under it)
+        salt.fillStyle(hx("shade"), C.shadeA != null ? C.shadeA : 0.3).fillEllipse(x + w * 0.05, y + w * 0.03, w * 1.08, w * 0.3);
+        let seed = (i + 3) * 7919;
+        const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+        const n = Math.round(90 + w * 2);
+        const pts = [];
+        for (let c = 0; c < n; c++) {
+          const u = rnd() * 2 - 1; // across the mound
+          const hgt = (1 - u * u) * w * 0.36; // its height there (a low cone)
+          pts.push({ u, x: x + u * w * 0.5, y: y - Math.pow(rnd(), 0.7) * hgt, sz: Math.max(1.6, w * (0.03 + rnd() * 0.03)) });
+        }
+        // back to front, each crystal a lit face with a grey edge on its shaded side, the shaded flank greyer
+        pts.sort((p, q) => p.y - q.y).forEach((p, c) => {
+          salt.fillStyle(p.u > 0.2 ? hx("edgeDark") : hx("edge"), 1).fillRect(p.x - p.sz / 2 + p.sz * 0.25, p.y - p.sz / 2 + p.sz * 0.25, p.sz, p.sz);
+          salt.fillStyle(p.u > 0.35 ? hx("dim") : c % 7 === 0 ? hx("glint") : hx("face"), 1).fillRect(p.x - p.sz / 2, p.y - p.sz / 2, p.sz, p.sz);
+        });
+      });
+    };
+    const saltGone = () => {
+      if (!saltIn.length || !salt.active) return;
+      S.tweens.add({ targets: salt, alpha: 0, duration: 400 });
     };
 
     // the measuring jug (L3 up), on the worktop left of the bowl: the empty picture, and the full one revealed by a rising crop up to
@@ -428,7 +479,9 @@ import { setTimeout } from "../life.js";
       if (UI.mission.reveal) UI.mission.reveal(`bake-${i + 1}`);
       // the reveal lessons (the dotted word, then the blurred picture) as the first row that shows one appears (contract-98)
       await Cook.Coach.lessons({ gate, ctx, busy: () => busy });
-      const jugStep = !!jug;
+      // (CK-89: a pinch or a teaspoon of salt goes straight into the bowl, one tip, never through the jug)
+      const spoonful = s.amt === "pinch" || s.amt === "spoon";
+      const jugStep = !!jug && !spoonful;
       // (her turn is the order, said row by row: its row appears as she says it, as a person's order does. s19-games-2: kept the
       // order's role, not a call: an item said as a call while her helper card is closed breaks SH-172, contract-89)
       // CK-72: the amount and the thing in one sentence from the engine ("Hakro cup atto wiji chad!", "Ba cup atto wiji chad!", "Adh
@@ -467,7 +520,7 @@ import { setTimeout } from "../life.js";
       busy = false;
       const liquid = LIQUID.has(s.id);
       // how many taps: a quarter cup a tap, to her amount (CK-72)
-      const need = Math.max(1, s.units || 4);
+      const need = spoonful ? 1 : Math.max(1, s.units || 4);
       let taps = 0;
       let open = true;
       const tipOf = (t) => Math.min(115, 30 + t * (85 / Math.max(1, need)));
@@ -485,6 +538,10 @@ import { setTimeout } from "../life.js";
           if (jugStep) {
             jug.units = taps;
             jug.show(s.id);
+          } else if (spoonful) {
+            saltIn.push(s.amt);
+            drawSalt();
+            if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("baking-salt", { step: s.amt, by: `piles:${saltIn.length}` });
           } else bowlTo(s, taps / need);
           busy = false;
           if (taps >= need) return resolve();
