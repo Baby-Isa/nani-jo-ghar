@@ -329,6 +329,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     let screen = 1;
     let active = 0; // (screen 2: whose cob the dressings go on, left to right)
     let serveNow = null;
+    let dropping = 0; // (dressings flying to the cob: the next step waits for them to land, contract-117)
     const fly = async (fn) => {
       moving++;
       try {
@@ -373,6 +374,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       if (screen !== 2) return { step: screen === 3 ? null : "wait" };
       const q = people[active];
       if (!q || q.served) return { step: null };
+      // (CK-90, contract-117 at the S19 gate: the serve's light opened while the pepper still flew, a tap on the lit cob was
+      // swallowed mid-flight and the light was lost; the next step waits, unlit, until what is flying lands)
+      if (dropping) return { step: "wait" };
       const left = q.asked.find((id) => !q.dressed.includes(id));
       // (an item's step: said only as her helper card opens to show it, never as the step opens: SH-172, STD-D3-03)
       if (left && bowls[left]) return { step: "dress", id: `${active}:${left}`, o: bowls[left], key: left, word: left, line: St.addLine(left), noCall: "helper" };
@@ -825,10 +829,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       z.listen(ok, ok ? `put ${id}` : `put ${id}, not asked`);
       if (!ok) Cook.Coach.wrong(KEY); // (a wrong move brings the stuck hint at once: STD-D2-04)
       const dot = T(S.add.circle(img.x, img.y, 20, col(id), 1).setDepth(D.fx));
+      dropping++;
       refresh();
-      await fly(() => Cook.tween(S, { targets: dot, x: q.cob.x, y: q.cob.y, scale: 0.6, duration: mo.dropMs || 420, ease: "Cubic.easeInOut" }));
+      try {
+        await fly(() => Cook.tween(S, { targets: dot, x: q.cob.x, y: q.cob.y, scale: 0.6, duration: mo.dropMs || 420, ease: "Cubic.easeInOut" }));
+      } finally {
+        dropping--;
+      }
       dot.destroy();
-      if (!q.dressed.includes(id) || q.drops[id] || q.served) return; // (taken back while it flew)
+      if (!q.dressed.includes(id) || q.drops[id] || q.served) return refresh(); // (taken back while it flew: the step it left opens again)
       q.drops[id] = dropsOn(q, id);
       Cook.sfx.pop();
       if (ok) {
