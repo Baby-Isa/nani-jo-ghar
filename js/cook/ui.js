@@ -1983,6 +1983,14 @@
         c.classList.add("wc14-fitrow");
         c.style.height = `${Math.round(wd * (sb.height / sb.width))}px`;
       }
+      // (s19-clean-e's sekelo L2, 12 Nov: a two-line Kutchi squeezed the picture to nothing in the row's shape: the words shrink first; a
+      // card that still cannot keep its picture takes its own height, as it does where the row shape fits nowhere clear of a face)
+      const roomy = () => !global.WordCard.picRoom14 || global.WordCard.picRoom14(c);
+      if (c.classList.contains("wc14-fitrow") && !roomy()) {
+        c.classList.remove("wc14-fitrow");
+        c.style.height = "";
+        global.WordCard.fit14(c);
+      }
       // (shorter screens: the card keeps inside the play area, its picture shorter first)
       if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
       // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
@@ -1993,10 +2001,12 @@
       if (c.classList.contains("wc14-fitrow")) {
         const kept = { mission: popShape.mission, anchor: popShape.anchor, k: popShape.k };
         placeFree14(c, play, sr, wd, true);
+        const tight = !roomy();
         const cr = c.getBoundingClientRect();
-        if (popShape.anchor === "panel" || overlap14({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, faces14()) > 0) {
+        if (tight || popShape.anchor === "panel" || overlap14({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, faces14()) > 0) {
           c.classList.remove("wc14-fitrow");
           c.style.height = "";
+          if (tight) global.WordCard.fit14(c);
           popShape.mission = null; // (placed again, its own shape)
         } else Object.assign(popShape, kept); // (the same place again, logged)
       }

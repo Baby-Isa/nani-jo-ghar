@@ -58,3 +58,12 @@ test("contract-121: a part squeezed to a strip, covered, or outside the hole is 
   const skip = [lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120]), { type: "c", k: "input", t: 1100, x: 354, y: 8, on: "div.njg-rq-veil", exp: { cook: { selector: ".wc14-lesson .wc14-pic" } } }, { type: "c", k: "input-blocked", t: 1150 }, end];
   assert.equal(run121(skip).length, 0, "a skip tap held back: green");
 });
+
+// contract-122 (the coordinator, 12 Nov: sekelo's row-shaped pop-up card with its picture squeezed to 270x0 px)
+import { check122 } from "./lib/contract-shade.mjs";
+test("contract-122: a big card's picture squeezed to nothing is red; a real picture is green", () => {
+  const run = (pic) => { const out = []; check122({ flow: "cook:mishkaki-grill@L2" }, [{ type: "c", k: "s19pic", t: 1000, cards: [{ cls: "pop", card: [360, 10, 660, 210], pic: pic, fitrow: true }] }, { type: "c", k: "x", t: 3000 }], (c, t, m) => out.push(m)); return out; };
+  assert.equal(run([375, 25, 645, 25]).length, 1, "270x0: red");
+  assert.equal(run([375, 25, 645, 60]).length, 1, "270x35 on a 200 px card: red");
+  assert.equal(run([375, 25, 645, 110]).length, 0, "270x85: green");
+});

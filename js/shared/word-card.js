@@ -638,6 +638,33 @@
     const d = e.parentNode && e.parentNode.querySelector(".wc14-dots");
     if (d) d.style.fontSize = root.getComputedStyle(e).fontSize;
   }
+  /*
+   * The picture's room on a big card of a set height (the order's pop-up in its row card's shape, js/cook/ui.js pop14): s19-clean-e's
+   * sekelo L2, 12 Nov: a two-line Kutchi squeezed the picture to 270x0 px, a card with no picture. The picture keeps at least `frac` of
+   * the card's height: the words shrink first (a px at a time, never under minPx, the order card's floor: shrink, then wrap, never clip);
+   * false when even then it has not (the host then lets the card take its own height). Contract-122 judges it.
+   *   WordCard.picRoom14(card, {frac, minPx}) -> true when the picture has its room
+   */
+  W.picRoom14 = function (card, { frac = 0.34, minPx = 14 } = {}) {
+    const pic = card && card.querySelector(".wc14-pic");
+    if (!pic || !pic.offsetParent) return true;
+    const ok = () => pic.getBoundingClientRect().height >= card.getBoundingClientRect().height * frac - 1;
+    if (ok()) return true;
+    const texts = [...card.querySelectorAll(".wc14-k, .wc14-en")].filter((e) => e.offsetParent);
+    for (let n = 0; !ok() && n < 48; n++) {
+      let moved = false;
+      for (const e of texts) {
+        const fs = parseFloat(root.getComputedStyle(e).fontSize) || 16;
+        if (fs <= minPx) continue;
+        e.style.fontSize = `${fs - 1}px`;
+        const d = e.parentNode && e.parentNode.querySelector(".wc14-dots");
+        if (d) d.style.fontSize = e.style.fontSize;
+        moved = true;
+      }
+      if (!moved) break;
+    }
+    return ok();
+  };
   W.fit14 = function (rootEl) {
     const r = rootEl || doc;
     const all = (sel) => (r.matches && r.matches(sel) ? [r] : []).concat([...r.querySelectorAll(sel)]);

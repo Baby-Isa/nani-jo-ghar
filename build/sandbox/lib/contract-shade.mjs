@@ -71,9 +71,32 @@ export function check121(r, tl, add) {
   }
 }
 
+// ---- contract-122 (the coordinator, 12 Nov, from s19-clean-e's sekelo L2: the row-shaped pop-up card's two-line Kutchi squeezed its
+// picture to 270x0 px, a card with no picture): a big card's picture keeps a real size ----
+export const PIC_MIN_PX = 24;   // a big card's picture at least this many px each way
+export const PIC_MIN_K = 0.25;  // ... and at least this share of the card's smaller side
+export const PIC_HOLD_MS = 400; // a sample held this long (the card's 380 ms pop-in at speed 1 is about 130 ms at the test speed)
+LESSON_CHECKS["contract-122"] = { item: "card-picture", title: "a big card's picture is never squeezed to nothing", how: `Cook flows. Every s19pic sample (lib/contract-shade.mjs LESSON_HOOK: each big word card on screen with a picture, the order's pop-up .wc14-pop and the dish card .wc14-flash, as drawn) held ${PIC_HOLD_MS} ms: a picture whose smaller side is under ${PIC_MIN_PX} px or under ${Math.round(PIC_MIN_K * 100)}% of its card's smaller side is a break, once per page (the shared card's rule: the words shrink, then wrap, never clip; the picture is never squeezed out: js/shared/word-card.js WordCard.picRoom14).` };
+export function check122(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const P = tl.filter((e) => e.type === "c" && e.k === "s19pic");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  for (let i = 0; i < P.length; i++) {
+    const held = (P[i + 1] ? P[i + 1].t : tEnd) - P[i].t;
+    if (held < PIC_HOLD_MS) continue;
+    for (const c of P[i].cards || []) {
+      const pw = c.pic[2] - c.pic[0], ph = c.pic[3] - c.pic[1];
+      const cm = Math.min(c.card[2] - c.card[0], c.card[3] - c.card[1]);
+      const pm = Math.min(pw, ph);
+      if (pm < PIC_MIN_PX || pm < cm * PIC_MIN_K) return add("contract-122", P[i].t, `the ${c.cls === "pop" ? "order's pop-up" : "dish"} card${c.word ? ` for ${c.word}` : ""} [${c.card.join(",")}]${c.fitrow ? " (its row's shape)" : ""} shows its picture at ${pw}x${ph} px: squeezed under ${Math.max(PIC_MIN_PX, Math.round(cm * PIC_MIN_K))} px`);
+    }
+  }
+}
+
 export function checkShade(r, tl, v, add) {
   check120(r, tl, add);
   check121(r, tl, add);
+  check122(r, tl, add);
 }
 
 // The audit, per page: every worktop object seen, with or without its shadow (the report's table reads it from a run's results)
@@ -174,7 +197,21 @@ function lessonhook() {
     } catch (x) { /* a probe only */ }
   };
   let last = "";
+  let lastPic = "";
   setInterval(() => {
+    // (contract-122: the big cards' pictures as drawn: the order's pop-up, its lesson, the dish card)
+    try {
+      const R = (r) => [Math.round(r.left), Math.round(r.top), Math.round(r.right), Math.round(r.bottom)];
+      const cards = [...document.querySelectorAll(".wc14-pop, .wc14-flash.on, .wc14-flash-fixed")].filter((c) => {
+        const r = c.getBoundingClientRect();
+        if (r.width < 40 || r.height < 40) return false;
+        for (let x = c; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) < 0.5) return false; }
+        return !!c.querySelector(".wc14-pic");
+      });
+      const out = cards.map((c) => ({ cls: c.classList.contains("wc14-pop") ? "pop" : "flash", word: c.dataset.word || "", card: R(c.getBoundingClientRect()), pic: R(c.querySelector(".wc14-pic").getBoundingClientRect()), fitrow: c.classList.contains("wc14-fitrow") }));
+      const sig = JSON.stringify(out.map((o) => [o.cls, o.card.map((v) => Math.round(v / 4)), o.pic.map((v) => Math.round(v / 4))]));
+      if (sig !== lastPic) { lastPic = sig; emit({ k: "s19pic", cards: out }); }
+    } catch (e) { /* a probe only */ }
     try {
       const card = document.querySelector(".wc14-lesson");
       const ex = window.Cook && window.Cook.expect;
