@@ -498,7 +498,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         let i = phase.bag.findIndex((id) => {
           const s = slots.find((x) => x.id === id);
-          return s && !s.hop && !s.refill && s.img && s.img.active && clear(s);
+          return s && !s.hop && !s.refill && !(s.restUntil > Date.now()) && s.img && s.img.active && clear(s);
         });
         // (DAAR-35, P55: "the items should just come continuously": a slot still filling after a cut fills now and hops, rather
         // than hold the next hop back)
@@ -517,6 +517,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         throwNote(phase, hopDue + hopWaited);
         hopWaited = 0;
         const img = s.img;
+        // (s19-clean-e2, contract-114: it goes up from its own size, never from a squash still playing)
+        // (a slot just filled is fading in: its fade stays)
+        if (img.alpha >= 1) {
+          S.tweens.killTweensOf(img);
+          img.setScale(s.scale);
+        }
         const big = S.fitScale(s.key, z.L(hopPx), z.L(hopPx));
         // (SH-256, contract-114: an item keeps its size from step to step: up on the board it is at most HOP_GROW of its size in its
         // slot, never a third bigger; the swipe's catch pad, not the picture, makes it easy to catch)
@@ -585,6 +591,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             img.setPosition(z.X(s.x), foot0).setScale(h.s0).setAngle(0).setDepth(D.item + 1);
             s.hop = null;
             S.tweens.add({ targets: img, scaleY: h.s0 * 0.92, duration: 80, yoyo: true });
+            // (s19-clean-e2, CK-79's chop phase, contract-114: it settles in its slot, its squash played out, before it can go up again;
+            // a hop straight off the landing jumped from the squash to the hop's size between two frames)
+            // (the squash is a tween on the page's clock, so the rest is too)
+            s.restUntil = Date.now() + (HK.settleMs != null ? HK.settleMs : 220);
             return;
           }
           img.setPosition(z.X(s.x + ((s.px != null ? s.px : s.x) - s.x) * up), foot).setScale(sc);
@@ -648,16 +658,33 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         return out;
       })();
+      // (s19-clean-e2, contract-113: a cell under a face circle on the page, Nani's at the board's top on a phone, holds no halves:
+      // nothing covers a face)
+      const underFace = (c) => {
+        try {
+          if (!global.document || !UI.worldToScreen) return false;
+          const a = UI.worldToScreen(z.X(c.x - c.w / 2), z.Y(c.y - c.h / 2));
+          const b = UI.worldToScreen(z.X(c.x + c.w / 2), z.Y(c.y + c.h / 2));
+          return [...document.querySelectorAll(".njg-face")].some((f) => {
+            const r = f.getBoundingClientRect();
+            return r.width > 0 && r.height > 0 && r.left < b.x + 4 && r.right > a.x - 4 && r.top < b.y + 4 && r.bottom > a.y - 4;
+          });
+        } catch (e) {
+          return false;
+        }
+      };
       const cellFor = (x) => {
-        const least = Math.min(...cells.map((c) => c.used));
+        const open = cells.filter((c) => !underFace(c));
+        const pool = open.length ? open : cells;
+        const least = Math.min(...pool.map((c) => c.used));
         // (the bottom strip first, then the top: the nearest free cell in the first strip with one)
         const half = cells.length / 2;
-        const strips = [cells.slice(0, half), cells.slice(half)];
+        const strips = [cells.slice(0, half), cells.slice(half)].map((st) => st.filter((c) => pool.includes(c)));
         for (const st of strips) {
           const free = st.filter((c) => c.used === least);
           if (free.length) return free.sort((p, q) => Math.abs(p.x - x) - Math.abs(q.x - x))[0];
         }
-        return cells[0];
+        return pool[0];
       };
       const landPieces = (img, ang, P) => {
         const b = img.getBounds();

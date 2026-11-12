@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Language engine map</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #faf9f6; --surface: #ffffff; --ink: #1c1b19; --ink-2: #4f4d48; --ink-3: #6b6862;
+    --line: #e3e0d9; --line-strong: #c9c5bb; --track: #eae7e0; --accent: #2a78d6; --accent-soft: #e8f0fb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #171716; --surface: #1f1f1d; --ink: #f0efec; --ink-2: #c9c7be; --ink-3: #a3a198;
+      --line: #32312e; --line-strong: #4a4944; --track: #2c2b28; --accent: #3987e5; --accent-soft: #1d2a3b;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #171716; --surface: #1f1f1d; --ink: #f0efec; --ink-2: #c9c7be; --ink-3: #a3a198;
+    --line: #32312e; --line-strong: #4a4944; --track: #2c2b28; --accent: #3987e5; --accent-soft: #1d2a3b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+  h2 { font-size: 1.25rem; line-height: 1.3; margin: 56px 0 8px; }
+  h3 { font-size: 1.0625rem; margin: 0; }
+  p { margin: 0 0 12px; }
+  em { font-style: italic; }
+  .lede { color: var(--ink-2); font-size: 1.0625rem; margin-bottom: 24px; }
+  .note { color: var(--ink-2); font-size: 0.9375rem; }
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 0; padding: 0; list-style: none; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 14px 12px; }
+  .tile b { display: block; font-size: 1.75rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .tile span { display: block; color: var(--ink-2); font-size: 0.875rem; line-height: 1.35; margin-top: 6px; }
+  figure { margin: 20px 0 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 12px 14px; }
+  figure svg { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; font-family: inherit; }
+  figcaption { color: var(--ink-2); font-size: 0.875rem; margin: 12px 4px 0; }
+  .box { fill: var(--bg); stroke: var(--line-strong); }
+  .store { fill: var(--track); stroke: none; }
+  .out { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+  .gap { fill: none; stroke: var(--ink-3); stroke-dasharray: 4 3; }
+  .frame { fill: none; stroke: var(--ink-3); stroke-dasharray: 2 4; }
+  .flow { stroke: var(--accent); stroke-width: 2; }
+  .ah { fill: var(--accent); }
+  .reads { stroke: var(--ink-3); stroke-width: 1.25; stroke-dasharray: 3 3; }
+  .ah-muted { fill: var(--ink-3); }
+  .t-col { fill: var(--ink-3); font-size: 9.5px; letter-spacing: 0.08em; font-weight: 600; }
+  .t-frame { fill: var(--ink-3); font-size: 11px; }
+  .t-title { fill: var(--ink); font-size: 12.5px; font-weight: 650; }
+  .t-num { fill: var(--ink-3); font-weight: 600; }
+  .t-detail { fill: var(--ink-2); font-size: 11px; }
+  .t-kutchi { fill: var(--ink); font-size: 11px; font-style: italic; }
+  .t-store { fill: var(--ink); font-size: 11.5px; font-weight: 650; }
+  .t-out { fill: var(--ink); font-size: 13.5px; font-style: italic; font-weight: 600; }
+  .words { margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+  .words div { border-top: 1px solid var(--line); padding: 10px 0; }
+  .words dt { font-style: italic; font-weight: 650; }
+  .words dd { margin: 2px 0 0; color: var(--ink-2); font-size: 0.9375rem; line-height: 1.45; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 20px; color: var(--ink-2); font-size: 0.875rem; margin: 16px 0 0; padding: 0; list-style: none; }
+  .legend li { display: flex; align-items: center; gap: 8px; }
+  .sw { width: 22px; height: 10px; border-radius: 5px; background: var(--accent); }
+  .tk { width: 3px; height: 16px; border-radius: 1px; background: var(--ink); }
+  .group { margin-top: 36px; }
+  .group-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; }
+  .group-desc { color: var(--ink-3); font-weight: 400; font-size: 0.9375rem; margin-left: 6px; }
+  .group-avg { margin: 0; color: var(--ink-2); font-size: 0.9375rem; font-variant-numeric: tabular-nums; }
+  .group-avg b { color: var(--ink); }
+  .scale { display: flex; justify-content: space-between; color: var(--ink-3); font-size: 0.75rem; margin-top: 10px; font-variant-numeric: tabular-nums; }
+  .rows { list-style: none; margin: 4px 0 0; padding: 0; }
+  .row { border-top: 1px solid var(--line); padding: 14px 0 12px; }
+  .row-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .row-name { margin: 0; font-weight: 600; line-height: 1.35; min-width: 0; overflow-wrap: anywhere; }
+  .tech { color: var(--ink-3); font-weight: 400; font-size: 0.875rem; }
+  .row-val { margin: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .num { font-weight: 700; font-size: 1.125rem; }
+  .was { color: var(--ink-3); font-size: 0.8125rem; margin-left: 6px; }
+  .track { position: relative; height: 10px; border-radius: 5px; background: var(--track); margin: 8px 0 8px; }
+  .fill { position: absolute; inset: 0 auto 0 0; border-radius: 5px; background: var(--accent); }
+  .tick { position: absolute; top: -3px; width: 3px; height: 16px; margin-left: -1.5px; border-radius: 1px; background: var(--ink); box-shadow: 0 0 0 2px var(--bg); }
+  .row-left { margin: 0; color: var(--ink-2); font-size: 0.9375rem; line-height: 1.45; }
+  .facts { margin: 20px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.875rem; }
+  footer p { margin-bottom: 8px; }
+  code { font: 0.875em ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+  @media (max-width: 520px) {
+    h1 { font-size: 1.5rem; }
+    .tiles { grid-template-columns: 1fr; }
+    .tile { display: flex; align-items: baseline; gap: 12px; }
+    .tile b { font-size: 1.5rem; min-width: 3.2ch; }
+    .tile span { margin-top: 0; }
+    .words, .facts { grid-template-columns: 1fr; }
+    figure { padding: 12px 6px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>How the language engine builds a sentence</h1>
+    <p class="lede">Nani jo Ghar, 12 November 2026. The parts of the engine, one sentence passing through them, and how complete each part of Kutchi grammar is.</p>
+  </header>
+
+  <section aria-labelledby="h-picture">
+    <h2 id="h-picture" style="margin-top:8px">The picture: layers, not a hub</h2>
+    <p>A sentence is built in six steps, always in the same order, and each step needs the one before it. The engine cannot choose <em>munji</em> over <em>munjo</em> until it knows chai is a she-word, and it cannot voice a word it has not built.</p>
+    <p>The hub picture is right about one thing. The engine’s own code holds no Kutchi. Everything it knows sits in stores of data beside it, and each step reads from its own store. Context (polite, or to a child) is not a store. It is a note that travels with the request and changes which form a step picks.</p>
+    <figure>
+      <svg viewBox="0 0 400 614" role="img" aria-label="A sentence moves down through six steps: the meaning, the context, the sentence pattern, the word store, the form rules and the voice. Steps three to six are the engine, and each reads from its own store of data. The result is the Kutchi sentence in Mum’s voice, or grey English where a piece is missing.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 L10 5 L0 10 z"/></marker>
+          <marker id="ah-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-muted" d="M0 0 L10 5 L0 10 z"/></marker>
+        </defs>
+        <text class="t-col" x="14" y="20">THE SENTENCE MOVES DOWN</text>
+        <text class="t-col" x="386" y="20" text-anchor="end">WHAT IT READS</text>
+        <rect class="frame" x="6" y="184" width="252" height="328" rx="12"/>
+        <text class="t-frame" x="18" y="201">The engine</text>
+        <text class="t-frame" x="250" y="201" text-anchor="end">no Kutchi inside it</text>
+        
+        <rect class="box" x="14" y="34" width="236" height="56" rx="8"/>
+        <text class="t-title" x="28" y="57"><tspan class="t-num">1</tspan>  The meaning</text>
+        <text class="t-detail" x="28" y="76">in my chai: two sugars</text>
+        
+        <rect class="store" x="286" y="40" width="100" height="44" rx="4"/>
+        <text class="t-store" x="336" y="59" text-anchor="middle">Meanings</text>
+        <text class="t-detail" x="336" y="75" text-anchor="middle">159</text>
+        <line class="reads" x1="284" y1="62" x2="256" y2="62" marker-end="url(#ah-muted)"/>
+        <line class="flow" x1="132" y1="92" x2="132" y2="108" marker-end="url(#ah)"/>
+        
+        <rect class="box" x="14" y="112" width="236" height="56" rx="8"/>
+        <text class="t-title" x="28" y="135"><tspan class="t-num">2</tspan>  The context</text>
+        <text class="t-detail" x="28" y="154">polite · who speaks · to whom</text>
+        <text class="t-detail" x="336" y="136" text-anchor="middle">sent with</text>
+        <text class="t-detail" x="336" y="151" text-anchor="middle">the request</text>
+        <line class="flow" x1="132" y1="170" x2="132" y2="204" marker-end="url(#ah)"/>
+        
+        <rect class="box" x="14" y="208" width="236" height="56" rx="8"/>
+        <text class="t-title" x="28" y="231"><tspan class="t-num">3</tspan>  The sentence pattern</text>
+        <text class="t-detail" x="28" y="250">my · chai · in · two sugars · put</text>
+        
+        <rect class="store" x="286" y="214" width="100" height="44" rx="4"/>
+        <text class="t-store" x="336" y="233" text-anchor="middle">Patterns</text>
+        <text class="t-detail" x="336" y="249" text-anchor="middle">158</text>
+        <line class="reads" x1="284" y1="236" x2="256" y2="236" marker-end="url(#ah-muted)"/>
+        <line class="flow" x1="132" y1="266" x2="132" y2="282" marker-end="url(#ah)"/>
+        
+        <rect class="box" x="14" y="286" width="236" height="56" rx="8"/>
+        <text class="t-title" x="28" y="309"><tspan class="t-num">4</tspan>  The word store</text>
+        <text class="t-detail" x="28" y="328">chai: she-word · khun: he-word</text>
+        
+        <rect class="store" x="286" y="292" width="100" height="44" rx="4"/>
+        <text class="t-store" x="336" y="311" text-anchor="middle">Words</text>
+        <text class="t-detail" x="336" y="327" text-anchor="middle">1,218</text>
+        <line class="reads" x1="284" y1="314" x2="256" y2="314" marker-end="url(#ah-muted)"/>
+        <line class="flow" x1="132" y1="344" x2="132" y2="360" marker-end="url(#ah)"/>
+        
+        <rect class="box" x="14" y="364" width="236" height="56" rx="8"/>
+        <text class="t-title" x="28" y="387"><tspan class="t-num">5</tspan>  The form rules</text>
+        <text class="t-kutchi" x="28" y="406">munji · chai · me · ba · khun · wijij</text>
+        
+        <rect class="store" x="286" y="370" width="100" height="44" rx="4"/>
+        <text class="t-store" x="336" y="389" text-anchor="middle">Endings</text>
+        <text class="t-detail" x="336" y="405" text-anchor="middle">5 word classes</text>
+        <line class="reads" x1="284" y1="392" x2="256" y2="392" marker-end="url(#ah-muted)"/>
+        <line class="flow" x1="132" y1="422" x2="132" y2="438" marker-end="url(#ah)"/>
+        
+        <rect class="box" x="14" y="442" width="236" height="56" rx="8"/>
+        <text class="t-title" x="28" y="465"><tspan class="t-num">6</tspan>  The voice</text>
+        <text class="t-detail" x="28" y="484">Mum’s sentence, or word by word</text>
+        
+        <rect class="store" x="286" y="448" width="100" height="44" rx="4"/>
+        <text class="t-store" x="336" y="467" text-anchor="middle">Recordings</text>
+        <text class="t-detail" x="336" y="483" text-anchor="middle">568</text>
+        <line class="reads" x1="284" y1="470" x2="256" y2="470" marker-end="url(#ah-muted)"/>
+        <line class="flow" x1="132" y1="500" x2="132" y2="532" marker-end="url(#ah)"/>
+        <rect class="out" x="14" y="536" width="236" height="64" rx="8"/>
+        <text class="t-out" x="132" y="563" text-anchor="middle">Munji chai me ba khun wijij.</text>
+        <text class="t-detail" x="132" y="584" text-anchor="middle">in Mum’s voice, and on the card</text>
+        <path class="reads" d="M258 506 H329 V532" fill="none" marker-end="url(#ah-muted)"/>
+        <rect class="gap" x="270" y="536" width="118" height="64" rx="8"/>
+        <text class="t-store" x="329" y="556" text-anchor="middle">A piece missing?</text>
+        <text class="t-detail" x="329" y="573" text-anchor="middle">its English in grey,</text>
+        <text class="t-detail" x="329" y="588" text-anchor="middle">then Mum’s sheet</text>
+      </svg>
+      <figcaption>Blue arrows: the sentence moving on. Dashed arrows: what each step reads. The example is Mum’s sentence of 12 November: “In my chai, put two sugars, please.”</figcaption>
+    </figure>
+    <dl class="words">
+      <div><dt>munji</dt><dd>“My”, matched to chai, a she-word. For a he-word it would be <em>munjo</em>.</dd></div>
+      <div><dt>chai</dt><dd>From the word store. A she-word keeps its form before “in”.</dd></div>
+      <div><dt>me</dt><dd>“In”. It goes after its noun.</dd></div>
+      <div><dt>ba</dt><dd>Two. Only “one” changes for he-words and she-words.</dd></div>
+      <div><dt>khun</dt><dd>Sugar, counted, so the plural form. For <em>khun</em> that is the same word.</dd></div>
+      <div><dt>wijij</dt><dd>“Put in”, in its polite form. Said the everyday way, the sentence ends <em>khape</em>.</dd></div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="h-scores">
+    <h2 id="h-scores">How complete each part of the grammar is</h2>
+    <p>Thirty areas, each out of 100. A score counts what Mum has told us that the engine now holds. Where Kutchi does not have a thing at all (no “the” or “a”), that is a known answer and counts in full. Under each bar is what is left to close the gap.</p>
+    <ul class="tiles">
+      <li class="tile"><b>73</b><span>average across the 30 areas today</span></li>
+      <li class="tile"><b>66</b><span>average before Mum’s session on 12 November</span></li>
+      <li class="tile"><b>13</b><span>areas moved up; 1 moved down (a new doubt)</span></li>
+    </ul>
+    <ul class="legend">
+      <li><span class="sw"></span>Today</li>
+      <li><span class="tk"></span>Before the 12 November session, where it changed</li>
+    </ul>
+    
+    <section class="group" aria-labelledby="g-Words">
+      <div class="group-head">
+        <h3 id="g-Words">Words <span class="group-desc">single words and their forms</span></h3>
+        <p class="group-avg">average <b>82</b> <span class="was">was 71</span></p>
+      </div>
+      <div class="scale" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
+      <ul class="rows">
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">He-words and she-words <span class="tech">(noun gender)</span></p>
+          <p class="row-val"><span class="num">85</span><span class="was">was 70</span></p>
+        </div>
+        <div class="track" role="img" aria-label="85 out of 100 today, 70 before the 12 November session" title="85 today, 70 before 12 Nov">
+          <span class="fill" style="width:85%"></span><span class="tick" style="left:70%"></span>
+        </div>
+        <p class="row-left">9 kitchen nouns: 3 wait on Zafar’s word choice (salt, black pepper, chilli powder), 6 on Mum (meat, sekelo, naan, corn, vegetable, mixed); the clinic’s 5 were not asked.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">One and more than one <span class="tech">(plural)</span></p>
+          <p class="row-val"><span class="num">85</span><span class="was">was 80</span></p>
+        </div>
+        <div class="track" role="img" aria-label="85 out of 100 today, 80 before the 12 November session" title="85 today, 80 before 12 Nov">
+          <span class="fill" style="width:85%"></span><span class="tick" style="left:80%"></span>
+        </div>
+        <p class="row-left">When the <em>-yu</em> plural is needed; chilli’s plural; whether one tomato is <em>tameto</em> or the English word.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">“The” and “a” <span class="tech">(articles)</span></p>
+          <p class="row-val"><span class="num">100</span></p>
+        </div>
+        <div class="track" role="img" aria-label="100 out of 100 today, unchanged by the 12 November session" title="100 today">
+          <span class="fill" style="width:100%"></span>
+        </div>
+        <p class="row-left">Nothing: Kutchi has no “the” or “a”. A known answer.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Numbers and counting <span class="tech">(numerals)</span></p>
+          <p class="row-val"><span class="num">70</span><span class="was">was 45</span></p>
+        </div>
+        <div class="track" role="img" aria-label="70 out of 100 today, 45 before the 12 November session" title="70 today, 45 before 12 Nov">
+          <span class="fill" style="width:70%"></span><span class="tick" style="left:45%"></span>
+        </div>
+        <p class="row-left">5 to 10 (lost in the noise; five is still unconfirmed); 11 to 19 said but not yet in the engine; second, third.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">I, you, he, she, we, they, and “to me” <span class="tech">(pronouns and the dative)</span></p>
+          <p class="row-val"><span class="num">80</span></p>
+        </div>
+        <div class="track" role="img" aria-label="80 out of 100 today, unchanged by the 12 November session" title="80 today">
+          <span class="fill" style="width:80%"></span>
+        </div>
+        <p class="row-left">“To us” for the “we” that leaves the listener out; “with me” heard once.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">When, how and how much <span class="tech">(adverbs of time, manner and degree)</span></p>
+          <p class="row-val"><span class="num">70</span><span class="was">was 50</span></p>
+        </div>
+        <div class="track" role="img" aria-label="70 out of 100 today, 50 before the 12 November session" title="70 today, 50 before 12 Nov">
+          <span class="fill" style="width:70%"></span><span class="tick" style="left:50%"></span>
+        </div>
+        <p class="row-left">“A lot” (unclear), “very”, tomorrow and yesterday (unsettled), “today”, “each”.</p>
+      </li>
+      </ul>
+    </section>
+    <section class="group" aria-labelledby="g-Phrases">
+      <div class="group-head">
+        <h3 id="g-Phrases">Phrases <span class="group-desc">a few words that belong together</span></h3>
+        <p class="group-avg">average <b>74</b> <span class="was">was 63</span></p>
+      </div>
+      <div class="scale" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
+      <ul class="rows">
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">The form before “in”, “with”, “on” <span class="tech">(the oblique case)</span></p>
+          <p class="row-val"><span class="num">80</span><span class="was">was 70</span></p>
+        </div>
+        <div class="track" role="img" aria-label="80 out of 100 today, 70 before the 12 November session" title="80 today, 70 before 12 Nov">
+          <span class="fill" style="width:80%"></span><span class="tick" style="left:70%"></span>
+        </div>
+        <p class="row-left">More than one he-word before “with / in / on” (“with the big boys”), and “the boys’ cup”.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Whose it is <span class="tech">(possession, the genitive: <em>jo / ji / je / ja</em>)</span></p>
+          <p class="row-val"><span class="num">80</span></p>
+        </div>
+        <div class="track" role="img" aria-label="80 out of 100 today, unchanged by the 12 November session" title="80 today">
+          <span class="fill" style="width:80%"></span>
+        </div>
+        <p class="row-left">“Of” with more than one thing or owner before “in / on”; “our” and the elder “your” before “in / on”.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Describing words <span class="tech">(adjectives)</span></p>
+          <p class="row-val"><span class="num">85</span></p>
+        </div>
+        <div class="track" role="img" aria-label="85 out of 100 today, unchanged by the 12 November session" title="85 today">
+          <span class="fill" style="width:85%"></span>
+        </div>
+        <p class="row-left">A few forms not heard: “good” for more than one, “small” before “with”, the he-forms of the chai words.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Amounts: “a spoon of”, “half a cup” <span class="tech">(measure words)</span></p>
+          <p class="row-val"><span class="num">85</span><span class="was">was 30</span></p>
+        </div>
+        <div class="track" role="img" aria-label="85 out of 100 today, 30 before the 12 November session" title="85 today, 30 before 12 Nov">
+          <span class="fill" style="width:85%"></span><span class="tick" style="left:30%"></span>
+        </div>
+        <p class="row-left">“Half a cup of chai”, “a glass of chai”; <em>itli</em> or <em>itlo</em> with sugar; “as many as they said” is fixed lines, not a rule.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">“In”, “on”, “for”, “up to” <span class="tech">(postpositions)</span></p>
+          <p class="row-val"><span class="num">65</span><span class="was">was 50</span></p>
+        </div>
+        <div class="track" role="img" aria-label="65 out of 100 today, 50 before the 12 November session" title="65 today, 50 before 12 Nov">
+          <span class="fill" style="width:65%"></span><span class="tick" style="left:50%"></span>
+        </div>
+        <p class="row-left">“From” (the pantry, the cupboard); near, left and right of, on top of, in the corner: 10 with no Kutchi.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Marking who it is done to <span class="tech">(the object marker <em>ke</em>)</span></p>
+          <p class="row-val"><span class="num">75</span></p>
+        </div>
+        <div class="track" role="img" aria-label="75 out of 100 today, unchanged by the 12 November session" title="75 today">
+          <span class="fill" style="width:75%"></span>
+        </div>
+        <p class="row-left">When a thing (not a person) takes <em>ke</em>; “give it to Nana” with a name.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">“To cook”, “for tasting” <span class="tech">(verb nouns (the infinitive))</span></p>
+          <p class="row-val"><span class="num">65</span></p>
+        </div>
+        <div class="track" role="img" aria-label="65 out of 100 today, unchanged by the 12 November session" title="65 today">
+          <span class="fill" style="width:65%"></span>
+        </div>
+        <p class="row-left">“To cook” (unclear hearing); whether <em>winnu</em> changes before <em>ji</em>; making it from any verb.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">“The one with milk”, “very”, “again” <span class="tech">(relative clauses and intensifiers)</span></p>
+          <p class="row-val"><span class="num">60</span><span class="was">was 50</span></p>
+        </div>
+        <div class="track" role="img" aria-label="60 out of 100 today, 50 before the 12 November session" title="60 today, 50 before 12 Nov">
+          <span class="fill" style="width:60%"></span><span class="tick" style="left:50%"></span>
+        </div>
+        <p class="row-left">“The one with milk” (the short word after <em>je laal ai</em> was not caught); “very” and “again” heard once each.</p>
+      </li>
+      </ul>
+    </section>
+    <section class="group" aria-labelledby="g-Sentences">
+      <div class="group-head">
+        <h3 id="g-Sentences">Sentences <span class="group-desc">verbs and whole sentences</span></h3>
+        <p class="group-avg">average <b>67</b> <span class="was">was 64</span></p>
+      </div>
+      <div class="scale" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
+      <ul class="rows">
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">“Is”, “am”, “are”, “was” <span class="tech">(the verb “be” (the copula))</span></p>
+          <p class="row-val"><span class="num">60</span></p>
+        </div>
+        <div class="track" role="img" aria-label="60 out of 100 today, unchanged by the 12 November session" title="60 today">
+          <span class="fill" style="width:60%"></span>
+        </div>
+        <p class="row-left">“Was” for she-words and for more than one; “there is”, “there isn’t”, “I have”.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">“I’d like” <span class="tech">(<em>muke … khape</em> (the dative-subject construction))</span></p>
+          <p class="row-val"><span class="num">90</span><span class="was">was 100</span></p>
+        </div>
+        <div class="track" role="img" aria-label="90 out of 100 today, 100 before the 12 November session" title="90 today, 100 before 12 Nov">
+          <span class="fill" style="width:90%"></span><span class="tick" style="left:100%"></span>
+        </div>
+        <p class="row-left">Polite with more than one thing: Mum’s <em>khapanta</em> (25 Sept) or <em>khapeta</em> (Zafar’s voice, 12 Nov). Zafar rules, then Mum once more.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">What happens now and every day <span class="tech">(present tense)</span></p>
+          <p class="row-val"><span class="num">60</span></p>
+        </div>
+        <div class="track" role="img" aria-label="60 out of 100 today, unchanged by the 12 November session" title="60 today">
+          <span class="fill" style="width:60%"></span>
+        </div>
+        <p class="row-left">“Right now” against “every day”; any verb other than eat, see and can; “like” for a he-thing.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">What will happen <span class="tech">(future tense)</span></p>
+          <p class="row-val"><span class="num">60</span></p>
+        </div>
+        <div class="track" role="img" aria-label="60 out of 100 today, unchanged by the 12 November session" title="60 today">
+          <span class="fill" style="width:60%"></span>
+        </div>
+        <p class="row-left">“You will”, “we will”, “they will”; <em>achdo</em> against <em>achindo</em>.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">What happened: “came”, “went” <span class="tech">(past tense, no object (intransitive))</span></p>
+          <p class="row-val"><span class="num">40</span></p>
+        </div>
+        <div class="track" role="img" aria-label="40 out of 100 today, unchanged by the 12 November session" title="40 today">
+          <span class="fill" style="width:40%"></span>
+        </div>
+        <p class="row-left">“I went” (boy, girl), “they went”, and a plain past without the “went” helper.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">What someone did to something: “ate”, “made”, “found” <span class="tech">(past tense with an object (transitive; the agreement split))</span></p>
+          <p class="row-val"><span class="num">50</span></p>
+        </div>
+        <div class="track" role="img" aria-label="50 out of 100 today, unchanged by the 12 November session" title="50 today">
+          <span class="fill" style="width:50%"></span>
+        </div>
+        <p class="row-left">“He saw”, “she saw”, “Nana saw me”; “ate / made / found / cut” without the helper; we, you, they.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Two-part verbs and helpers <span class="tech">(compound and auxiliary verbs)</span></p>
+          <p class="row-val"><span class="num">80</span><span class="was">was 75</span></p>
+        </div>
+        <div class="track" role="img" aria-label="80 out of 100 today, 75 before the 12 November session" title="80 today, 75 before 12 Nov">
+          <span class="fill" style="width:80%"></span><span class="tick" style="left:75%"></span>
+        </div>
+        <p class="row-left">17 verbs with no Kutchi yet (roll, sprinkle, serve, open, close …); the “for me” and polite forms of the cooking verbs.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Saying no and not <span class="tech">(negation)</span></p>
+          <p class="row-val"><span class="num">60</span></p>
+        </div>
+        <div class="track" role="img" aria-label="60 out of 100 today, unchanged by the 12 November session" title="60 today">
+          <span class="fill" style="width:60%"></span>
+        </div>
+        <p class="row-left">“No chilli” inside a whole order; “without” with a he-word dish; “I don’t eat”, “she didn’t go”; she can’t, they can’t.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Joining: “and”, “with”, lists, “first … then” <span class="tech">(conjunctions and coordination)</span></p>
+          <p class="row-val"><span class="num">80</span><span class="was">was 55</span></p>
+        </div>
+        <div class="track" role="img" aria-label="80 out of 100 today, 55 before the 12 November session" title="80 today, 55 before 12 Nov">
+          <span class="fill" style="width:80%"></span><span class="tick" style="left:55%"></span>
+        </div>
+        <p class="row-left">“And one with potato” is answered but not built; a list of 3 to 6 things with one verb; but, because, if, when.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Word order <span class="tech">(syntax)</span></p>
+          <p class="row-val"><span class="num">90</span><span class="was">was 75</span></p>
+        </div>
+        <div class="track" role="img" aria-label="90 out of 100 today, 75 before the 12 November session" title="90 today, 75 before 12 Nov">
+          <span class="fill" style="width:90%"></span><span class="tick" style="left:75%"></span>
+        </div>
+        <p class="row-left">Where <em>na</em> goes in a long sentence.</p>
+      </li>
+      </ul>
+    </section>
+    <section class="group" aria-labelledby="g-Conversation">
+      <div class="group-head">
+        <h3 id="g-Conversation">Conversation <span class="group-desc">who is speaking, and to whom</span></h3>
+        <p class="group-avg">average <b>73</b> <span class="was">was 71</span></p>
+      </div>
+      <div class="scale" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
+      <ul class="rows">
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Talking to a child or an elder <span class="tech">(person and politeness (register))</span></p>
+          <p class="row-val"><span class="num">70</span><span class="was">was 65</span></p>
+        </div>
+        <div class="track" role="img" aria-label="70 out of 100 today, 65 before the 12 November session" title="70 today, 65 before 12 Nov">
+          <span class="fill" style="width:70%"></span><span class="tick" style="left:65%"></span>
+        </div>
+        <p class="row-left">“Will you make…”: <em>dinda</em> or <em>dinde</em> for whom; how to speak to several children; the “please” form beyond one verb.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Telling someone to do something <span class="tech">(commands (the imperative))</span></p>
+          <p class="row-val"><span class="num">50</span></p>
+        </div>
+        <div class="track" role="img" aria-label="50 out of 100 today, unchanged by the 12 November session" title="50 today">
+          <span class="fill" style="width:50%"></span>
+        </div>
+        <p class="row-left">The elder or polite form of 32 of the 35 command verbs; commands to several children; “let’s eat”.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Asking <span class="tech">(questions (interrogatives))</span></p>
+          <p class="row-val"><span class="num">75</span></p>
+        </div>
+        <div class="track" role="img" aria-label="75 out of 100 today, unchanged by the 12 November session" title="75 today">
+          <span class="fill" style="width:75%"></span>
+        </div>
+        <p class="row-left">“When”; “who” as the doer (<em>kere</em>, unconfirmed).</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Calling out to someone <span class="tech">(the vocative)</span></p>
+          <p class="row-val"><span class="num">75</span></p>
+        </div>
+        <div class="track" role="img" aria-label="75 out of 100 today, unchanged by the 12 November session" title="75 today">
+          <span class="fill" style="width:75%"></span>
+        </div>
+        <p class="row-left">Calling several at once (“Boys!”).</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">A boy or a girl speaking <span class="tech">(speaker-gender agreement)</span></p>
+          <p class="row-val"><span class="num">85</span></p>
+        </div>
+        <div class="track" role="img" aria-label="85 out of 100 today, unchanged by the 12 November session" title="85 today">
+          <span class="fill" style="width:85%"></span>
+        </div>
+        <p class="row-left">“I found”, “I ate”, “I’m eating” for verbs beyond give, see, eat and can.</p>
+      </li>
+      <li class="row">
+        <div class="row-head">
+          <p class="row-name">Set phrases, recorded whole <span class="tech">(fixed expressions)</span></p>
+          <p class="row-val"><span class="num">80</span><span class="was">was 75</span></p>
+        </div>
+        <div class="track" role="img" aria-label="80 out of 100 today, 75 before the 12 November session" title="80 today, 75 before 12 Nov">
+          <span class="fill" style="width:80%"></span><span class="tick" style="left:75%"></span>
+        </div>
+        <p class="row-left">28 of the kitchen’s 76 set lines, and 204 of the clinic’s 219 lines, have no Kutchi yet.</p>
+      </li>
+      </ul>
+    </section>
+  </section>
+
+  <section aria-labelledby="h-vocab">
+    <h2 id="h-vocab">Vocabulary: the kitchen games</h2>
+    <p>Words have no score out of 100, because the list is never finished. This counts the words the kitchen games use today against what is known, recorded and approved.</p>
+    <ul class="rows">
+      <li class="row">
+        <div class="row-head"><p class="row-name">Words the kitchen games use</p><p class="row-val"><span class="num">73</span><span class="was">of 73</span></p></div>
+        <div class="track" role="img" aria-label="73 of 73"><span class="fill" style="width:100.0%"></span></div>
+        
+      </li>
+      <li class="row">
+        <div class="row-head"><p class="row-name">Have a Kutchi word</p><p class="row-val"><span class="num">71</span><span class="was">of 73</span></p></div>
+        <div class="track" role="img" aria-label="71 of 73"><span class="fill" style="width:97.3%"></span></div>
+        <p class="row-left">The other 2, green pepper and turner, have none: that is Mum’s answer.</p>
+      </li>
+      <li class="row">
+        <div class="row-head"><p class="row-name">Confirmed, not a draft</p><p class="row-val"><span class="num">47</span><span class="was">of 73</span></p></div>
+        <div class="track" role="img" aria-label="47 of 73"><span class="fill" style="width:64.4%"></span></div>
+        <p class="row-left">24 are drafts: heard once, or a spelling waits for Zafar.</p>
+      </li>
+      <li class="row">
+        <div class="row-head"><p class="row-name">Recorded in a family voice</p><p class="row-val"><span class="num">46</span><span class="was">of 73</span></p></div>
+        <div class="track" role="img" aria-label="46 of 73"><span class="fill" style="width:63.0%"></span></div>
+        <p class="row-left">All 46 are approved for the game (Zafar, 12 Nov).</p>
+      </li>
+      <li class="row">
+        <div class="row-head"><p class="row-name">Recorded and checked OK</p><p class="row-val"><span class="num">29</span><span class="was">of 73</span></p></div>
+        <div class="track" role="img" aria-label="29 of 73"><span class="fill" style="width:39.7%"></span></div>
+        <p class="row-left">By Zafar’s ear or the blind check.</p>
+      </li>
+      <li class="row">
+        <div class="row-head"><p class="row-name">Approved for the app stores</p><p class="row-val"><span class="num">0</span><span class="was">of 73</span></p></div>
+        <div class="track" role="img" aria-label="0 of 73"><span class="fill" style="width:0.0%"></span></div>
+        <p class="row-left">Every clip is re-recorded before the stores.</p>
+      </li>
+    </ul>
+    <ul class="facts">
+      <li class="tile"><b>41 of 50</b><span>kitchen nouns with a known he-word or she-word</span></li>
+      <li class="tile"><b>94 of 125</b><span>kitchen lines the engine says in full Kutchi; the rest show grey English</span></li>
+      <li class="tile"><b>25 of 129</b><span>clinic words with Kutchi; 15 of its 219 lines</span></li>
+      <li class="tile"><b>1,218</b><span>words in the whole store: 344 confirmed, 209 draft, 665 English only</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p><b>How a score is made.</b> Each area has a short list of things the engine needs to know. Each is worth 1 if Mum said it and the engine holds it (or Kutchi has no such thing), a half if it was heard once, is unclear, waits on a ruling or is not built yet, and 0 if nobody has asked. The score is the share of points, to the nearest 5. A spelling still to confirm does not lower a score, and recordings are counted under vocabulary.</p>
+    <p>The lists, each with its source in Mum’s answers, are in <code>docs/language/grammar-kb.md</code> (score sheet). The plain-words guide is <code>docs/language/engine-map.md</code>. Counts come from <code>data/lang/</code> as built on 12 November. This page is a snapshot: the scores are re-made after every recording session.</p>
+  </footer>
+</main>
+</body>
+</html>

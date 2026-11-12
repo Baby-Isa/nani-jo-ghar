@@ -284,16 +284,35 @@ import { Cook as CookNS } from "../ns.js";
         } catch (e) {
           /* the view as it is */
         }
+        // (s19-clean-e2, contract-113 at 740x320: her face sat under the knife at rest and her "Shabash!" under the settings cog: both
+        // are kept clear, as the cut pieces are; the cog's box reaches left by the card's room, the card lying beside the face)
+        const keep = cuts.slice();
+        try {
+          const kn = (S.children.list || []).find((o) => o.active && o.visible !== false && o.texture && /knife/.test(o.texture.key));
+          if (kn) {
+            const b = kn.getBounds();
+            keep.push({ x: b.x, y: b.y, right: b.right, bottom: b.bottom });
+          }
+          const cog = global.document && document.querySelector("#side-cog, [data-njg-zone=cog]");
+          const cr = cog && cog.getBoundingClientRect ? cog.getBoundingClientRect() : null;
+          if (cr && cr.width > 0) {
+            const p0 = UI.worldToScreen(0, 0);
+            const ppw = UI.worldToScreen(1, 0).x - p0.x || 1;
+            keep.push({ x: (cr.left - p0.x) / ppw - z.L(200), y: (cr.top - p0.y) / ppw, right: (cr.right - p0.x) / ppw, bottom: (cr.bottom - p0.y) / ppw + z.L(20) });
+          }
+        } catch (e) {
+          /* the cut pieces alone */
+        }
         const dish = { x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y };
         const vt = V.top != null ? V.top : 0;
         const vr = V.right != null ? V.right : 1600;
         const room = z.L(200); // (the praise card beside the face: "Shabash!" at the kit's size, its gap)
         const r = size / 2;
-        const fits = (q, v) => q.x - r >= v[0] && q.y - r >= v[1] && q.x + r <= v[2] && q.y + r <= v[3] && !cuts.some((a) => q.x + r > a.x && q.x - r < a.right && q.y + r > a.y && q.y - r < a.bottom);
+        const fits = (q, v) => q.x - r >= v[0] && q.y - r >= v[1] && q.x + r <= v[2] && q.y + r <= v[3] && !keep.some((a) => q.x + r > a.x && q.x - r < a.right && q.y + r > a.y && q.y - r < a.bottom);
         // (the face clear of the cut pieces, its card inside the play area on whichever side it goes: a left card first, then a right one)
-        const tries = [[vl + room, vt, vr, z.Y(BAND.top)], [vl, vt, vr - room, z.Y(BAND.top)]].map((v) => [v, Cook.Kit.praiseSpot(dish, size, { avoid: cuts, view: v })]);
+        const tries = [[vl + room, vt, vr, z.Y(BAND.top)], [vl, vt, vr - room, z.Y(BAND.top)]].map((v) => [v, Cook.Kit.praiseSpot(dish, size, { avoid: keep, view: v })]);
         const ok = tries.find(([v, q]) => fits(q, v) && (q.side === "left" ? q.x - r - room >= vl : q.x + r + room <= vr));
-        const at = ok ? ok[1] : Cook.Kit.praiseSpot(dish, size, { avoid: cuts, view: [vl, vt, vr, z.Y(BAND.top)] });
+        const at = ok ? ok[1] : Cook.Kit.praiseSpot(dish, size, { avoid: keep, view: [vl, vt, vr, z.Y(BAND.top)] });
         const look = await Cook.Kit.review(S, { who: d.who || "nani", ok: true, x: at.x, y: at.y, size, k: z.L(1), side: at.side });
         await Cook.wait(400);
         if (look && look.close) await look.close();

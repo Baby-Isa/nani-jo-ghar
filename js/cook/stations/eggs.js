@@ -786,7 +786,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // where the i-th of n eggs sits on a plate, and its size
     const eggOnPlate = (pl, i, n, fried) => {
       const d = plateD;
-      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * FRIED.one } : { x: pl.x + (i ? 1 : -1) * d * 0.2, y: pl.y + (i ? 1 : -1) * d * 0.08, w: d * FRIED.two };
+      // (s19-clean-e2, contract-114: where the pan holds it smaller than the plate's share, the pan's own size wins: the egg keeps its size)
+      const cap = friedW() * 1.02;
+      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: Math.min(d * FRIED.one, cap) } : { x: pl.x + (i ? 1 : -1) * d * 0.2, y: pl.y + (i ? 1 : -1) * d * 0.08, w: Math.min(d * FRIED.two, cap) };
       return n === 1 ? { x: pl.x, y: pl.y, h: d * 0.52 } : { x: pl.x, y: pl.y + (i ? 1 : -1) * d * 0.19, h: d * 0.36 };
     };
     const onPlate = async (pl) => {
