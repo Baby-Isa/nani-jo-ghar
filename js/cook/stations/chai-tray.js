@@ -2013,7 +2013,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (guided) UI.glowDone(!!nx && nx.e.kind === "click");
       // serving: once every pan is poured the hob steps back and the tray is the focus
       const served = pans.every((q) => q.poured > 0);
-      [hob, ...pans.flatMap((q) => [q.img, q.face, q.knob])].forEach((o) => o.setAlpha(served ? 0.88 : 1));
+      // (a person served right whose glass left before a redo, SH-266: their face stays gone, contract-118)
+      [hob, ...pans.flatMap((q) => [q.img, q.gone ? null : q.face, q.knob])].forEach((o) => o && o.setAlpha(served ? 0.88 : 1));
     }
 
     /* ---------- the start: everyone says how they like it ---------- */
@@ -2200,7 +2201,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       reset: emptyPan,
       // SH-266 (Zafar, 11 Nov evening: before a redo the orders done right leave with their people): a right glass, its face and its
       // person's badge fade away; its pan stays on the stove
-      leave: (pan) => Cook.tween(S, { targets: [pan.face, pan.well.face, pan.well.glass.empty, pan.well.glass.half, pan.well.glass.full].filter((o) => o && o.active), alpha: 0, duration: 300 }),
+      leave: (pan) => (pan.gone = true) && Cook.tween(S, { targets: [pan.face, pan.well.face, pan.well.glass.empty, pan.well.glass.half, pan.well.glass.full].filter((o) => o && o.active), alpha: 0, duration: 300 }),
       again: (again) => {
         finished = false;
         doneShown = false;
