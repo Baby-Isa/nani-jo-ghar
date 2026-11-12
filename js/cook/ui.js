@@ -3706,7 +3706,8 @@
     // head row's own parts, never the whole sentence the person says; one when the order names no count. A headline with no dish of
     // its own (the pantry's "bring me these", English still to record) flashes nothing. No written English on it: it is not the
     // order card, non-negotiable 3)
-    const dish = (head.ids || [])[0];
+    // (the a2 review's finding 9: the dish is the word the card's picture is, wcWordId, never a first word that is not the dish)
+    const dish = wcWordId(head);
     if (!dish || (head.rec && !(head.parts || []).length)) return null;
     const counted = (head.parts || []).some((p) => typeof p === "number");
     const line = counted && head.phrase ? head.phrase : Lang.phrase(Lang.countParts(1, dish));
@@ -3729,7 +3730,7 @@
     }
     x = Math.max(room, Math.min(hb.width - room, x));
     y = Math.max(room, Math.min(hb.height - room, y));
-    if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String((head.ids || [])[0] || "") });
+    if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(dish || "") });
     const f = global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
     // (on the page's layer: the stage's end takes it away at once, never over whatever comes next)
     const off = f && global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => f.close()) : null;
@@ -4001,9 +4002,13 @@
     if (!L) return [];
     // (b2's item 1: a thing in the dish nobody asked for, an unasked spice, has no row of its own on the card: kept here, so the
     // wrong-order pop-up draws a row for it and crosses that, never an asked-for row: M.showWrong. Cleared at the reset, M.reopen)
+    // (the a2 review's finding 5: a call without `for` files it under the card's one person, the ladder's only asker, never under ""
+    // where no card would look)
     if (unasked && [].concat(unasked).length) {
+      const fors = [...new Set(Order().rows(L, { all: true }).map((r) => r.for).filter(Boolean))];
+      const key = forWho || (fors.length === 1 ? fors[0] : (mission && mission.who) || "");
       L.unasked = L.unasked || {};
-      L.unasked[forWho || ""] = [...new Set([].concat(L.unasked[forWho || ""] || [], unasked))];
+      L.unasked[key] = [...new Set([].concat(L.unasked[key] || [], unasked))];
     }
     const want = [].concat(ids);
     const rows = Order()
@@ -4068,14 +4073,20 @@
     } finally {
       writtenCard = false;
     }
-    // (an unasked thing in the dish makes the card wrong too: b2's item 1)
-    cards.forEach((c) => (c.wrong = !!(c.L && c.L.unasked && (c.L.unasked[c.who] || []).length)));
+    // (an unasked thing in the dish makes the card wrong too: b2's item 1; only one the engine can say, so a red card always has its
+    // crossed row: the a2 review's finding 5)
+    const unaskedOf = (c) => ((c.L && c.L.unasked && c.L.unasked[c.who]) || []).filter((id) => Lang.known && Lang.known(id));
+    cards.forEach((c) => (c.wrong = !!unaskedOf(c).length));
     const isWrong = (c) => c.wrong || c.rows.some((r) => r.wrong);
     // (the Fable review's findings 2 and 3: only the people this serve judged, and the rows of what it found wrong now:
     // NjgWrongOrder.pick, js/shared/wrong-order.js)
     const picked = W.pick(cards, { served, wrong });
     const people = picked.people;
     picked.mark.forEach(mark);
+    // (the a2 review's finding 8: a dish made that matches no row, maani's kind nobody asked for, is that card's own crossed row, the
+    // engine's words for it, never no pop-up at all)
+    const made = (picked.extra || []).map((k) => k.split("+")).filter((ids) => ids.every((id) => Lang.known && Lang.known(id)));
+    if (made.length && people.length === 1) (people[0].made = made), (people[0].wrong = true);
     const unmark = () => mine.length && (mine.forEach((r) => (r.wrong = false)), renderOrder());
     if (!people.some(isWrong)) return void unmark() || false;
     if (mine.length) renderOrder();
@@ -4092,12 +4103,13 @@
         // the card open, every row to do (the pop-up ticks and crosses them itself), drawn as the order pop-up draws it
         const data = Object.assign({}, c.data, { done: false, items: (c.data.items || []).map((it) => Object.assign({}, it, { done: false, parts: (it.parts || []).map((p) => Object.assign({}, p, { done: false, wrong: false, next: false, miss: false })) })) });
         // (b2's item 1: each thing put in that nobody asked for, a row of its own at the end, the one crossed: the engine's word)
-        const extra = ((c.L && c.L.unasked && c.L.unasked[c.who]) || []).filter((id) => Lang.known && Lang.known(id));
+        const extra = unaskedOf(c).map((id) => [id]).concat(c.made || []);
         if (extra.length && data.items.length) {
           const last = data.items[data.items.length - 1];
-          last.parts = last.parts.concat(extra.map((id) => {
-            const line = Lang.phrase([id]);
-            const xr = { ids: [id], parts: [id], head: false, no: false, for: c.who, done: false, wrong: true, miss: false, line, phrase: line, said: line, need: 1, got: 0, unasked: true };
+          last.parts = last.parts.concat(extra.map((ids) => {
+            const id = ids[ids.length - 1];
+            const line = Lang.phrase(ids);
+            const xr = { ids, parts: ids, head: false, no: false, for: c.who, done: false, wrong: true, miss: false, line, phrase: line, said: line, need: 1, got: 0, unasked: true };
             return Object.assign(partNode(xr, 0), mission.wordRows ? UI.wordOf(xr) : null, { done: false, wrong: false, next: false });
           }));
         }

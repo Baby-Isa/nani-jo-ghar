@@ -89,7 +89,7 @@ export async function launch({ webgl = false } = {}) {
   const exe = existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined;
   return pw.chromium.launch({
     executablePath: exe,
-    args: ["--no-sandbox", "--autoplay-policy=no-user-gesture-required", ...(webgl ? [] : ["--disable-webgl"])],
+    args: ["--no-sandbox", "--autoplay-policy=no-user-gesture-required", "--no-proxy-server", "--host-resolver-rules=MAP * ~NOTFOUND , EXCLUDE 127.0.0.1 , EXCLUDE localhost", ...(webgl ? [] : ["--disable-webgl"])],
   });
 }
 
@@ -103,7 +103,13 @@ const fontsCss = () => readFileSync(join(FONTS_DIR, "fonts.css"), "utf8").replac
 // DevTools Fetch domain for https:// only, never Playwright's route(), which turns the browser's cache off for the whole context, so
 // every card drawn again fetched its pictures afresh through Node (a card blank for over a second on a loaded machine) and a page
 // loaded every file it had already loaded; the local server's media are cached as GitHub Pages caches them (max-age=600).
+// s19-clean-a3 (the a2 review's finding 7): every page the context opens is taken offline, not only its first; and plain http:// to any
+// host but the local server is refused by the browser itself (launch(): no host resolves but the local one), with no pause per request
 async function offline(ctx, page) {
+  if (!ctx.__njgOffline) {
+    ctx.__njgOffline = true;
+    ctx.on("page", (p) => p !== page && offline(ctx, p).catch(() => {}));
+  }
   const cdp = await ctx.newCDPSession(page);
   const css = Buffer.from(fontsCss()).toString("base64");
   cdp.on("Fetch.requestPaused", (e) => {

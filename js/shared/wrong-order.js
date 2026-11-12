@@ -153,10 +153,15 @@ async function play(o = {}) {
   // over the play area: a fixed layer on the page laid over the host's box (s19-clean-a2: inside the host, whose own overflow is
   // hidden, a wrong card going back into the side panel was cut at the play area's edge on its way)
   veil.classList.add("njg-wo-fixed");
-  if (host !== doc.body) {
+  // (the a2 review's finding 9: laid again over the play area at a resize or a turn of the phone, never part of it left uncovered)
+  const place = () => {
+    if (host === doc.body || cut) return;
     const hb = host.getBoundingClientRect();
     Object.assign(veil.style, { left: `${hb.left}px`, top: `${hb.top}px`, width: `${hb.width}px`, height: `${hb.height}px`, right: "auto", bottom: "auto" });
-  }
+  };
+  place();
+  const view = typeof window !== "undefined" ? window : null;
+  if (view) view.addEventListener("resize", place);
   doc.body.appendChild(veil);
   let hush = null; // (the line being said: a tap stops it, if it may be cut)
   veil.addEventListener("pointerdown", () => {
@@ -170,6 +175,7 @@ async function play(o = {}) {
   const end = () => {
     if (cut) return;
     cut = true;
+    if (view) view.removeEventListener("resize", place);
     veil.remove();
     open = Math.max(0, open - 1);
     [...pend].forEach((r) => r());
@@ -374,6 +380,7 @@ async function play(o = {}) {
     if (e !== CUT) throw e;
   } finally {
     offs.forEach((off) => typeof off === "function" && off());
+    if (view) view.removeEventListener("resize", place);
     touched.forEach((f) => f.classList.remove("njg-wo-out"));
     if (!cut) {
       await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
@@ -393,8 +400,9 @@ async function play(o = {}) {
  *     one of o.served (the dishes are not people: maani's kinds, chaat's bowl), every card in play. A card already marked wrong stays.
  *   finding 3: one card and nothing marked on it: the rows of what this serve found wrong (o.wrong: the round's wrong dishes as keys;
  *     a row matches a key it holds, or every "+" part of it: "ph-big+cook-maani"), never a first try's old misses. Nothing matched:
- *     nothing marked, so no pop-up (the game's own recast says it again), never a cross on the wrong row.
- *   pick(cards [{who, wrong (the card wrong as a whole: an unasked thing in it), rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row]}
+ *     nothing marked, never a cross on the wrong row; the keys that matched no row come back as extra (s19-clean-a3: the host draws
+ *     them as the card's own crossed rows, maani's kind nobody asked for; a key the host cannot say leaves no pop-up, the game's recast).
+ *   pick(cards [{who, wrong (the card wrong as a whole: an unasked thing in it), rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row], extra: [key]}
  */
 function pick(cards, { served = null, wrong = [] } = {}) {
   const isWrong = (c) => !!c.wrong || (c.rows || []).some((r) => r.wrong);
@@ -402,14 +410,22 @@ function pick(cards, { served = null, wrong = [] } = {}) {
   const all = (cards || []).filter((c) => c && c.who);
   const people = all.some((c) => judged.has(c.who)) ? all.filter((c) => judged.has(c.who) || isWrong(c)) : all;
   const mark = [];
+  const extra = [];
   if (!people.some(isWrong) && people.length === 1) {
     const keys = (wrong || []).filter((k) => typeof k === "string" && k);
+    const hit = (k, r) => r.ids.includes(k) || k.split("+").every((x) => r.ids.includes(x));
     for (const r of people[0].rows || []) {
       if (!r || r.head || !Array.isArray(r.ids)) continue;
-      if (keys.some((k) => r.ids.includes(k) || k.split("+").every((x) => r.ids.includes(x)))) mark.push(r);
+      if (keys.some((k) => hit(k, r))) mark.push(r);
     }
+    // (s19-clean-a3, the a2 review's finding 8: nothing matched: the keys made that no row asked for, for the host to draw as the card's
+    // own crossed rows (maani's kind nobody ordered), never no pop-up at all)
+    // Only a key that shares a part with some row (a kind of a dish on the card: "ph-millet+cook-maani" beside "ph-wheat+cook-maani"),
+    // never a key that is no dish of the card at all (chaat's "bowl": its own recast puts the bowl right)
+    const rows = (people[0].rows || []).filter((r) => r && !r.head && Array.isArray(r.ids));
+    if (!mark.length) keys.forEach((k) => k.includes("+") && !rows.some((r) => hit(k, r)) && rows.some((r) => k.split("+").some((x) => r.ids.includes(x))) && extra.push(k));
   }
-  return { people, mark };
+  return { people, mark, extra };
 }
 
 export const NjgWrongOrder = { play, pick, isOpen: () => open > 0, LOOK };

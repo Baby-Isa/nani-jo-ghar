@@ -200,3 +200,17 @@ test("a2 finding 4: a five- and a seven-row wrong card at 740x320 keeps its word
     }
   } finally { await browser.close(); srv.close(); }
 });
+
+// a2 finding 8: maani's kind nobody asked for comes back as the card's own row to cross; chaat's bowl never does
+test("a2 finding 8: a made kind no row asked for is the card's extra row (maani); a key that is no dish of the card is not (chaat's bowl)", async () => {
+  const { NjgWrongOrder } = await import("../../js/shared/wrong-order.js");
+  const row = (ids) => ({ ids, head: false, wrong: false });
+  const maani = [{ who: "nana", rows: [{ ids: [], head: true }, row(["ph-wheat", "cook-maani"])] }];
+  const p = NjgWrongOrder.pick(maani, { wrong: ["ph-millet+cook-maani"] });
+  assert.deepEqual(p.mark, []);
+  assert.deepEqual(p.extra, ["ph-millet+cook-maani"]);
+  const chaat = [{ who: "nana", rows: [row(["sev"]), row(["dahi"])] }];
+  assert.deepEqual(NjgWrongOrder.pick(chaat, { wrong: ["bowl"] }).extra, []);
+  // a key that matches a row is marked, never extra
+  assert.deepEqual(NjgWrongOrder.pick(maani, { wrong: ["ph-wheat+cook-maani"] }).extra, []);
+});

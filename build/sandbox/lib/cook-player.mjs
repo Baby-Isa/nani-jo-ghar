@@ -662,18 +662,26 @@ export class CookPlayer {
       // (s19-clean-a2, b2's item 3: chai L3 and L4 at 740x320 boiled over at every try, 0.845 to 0.926 against the window's 0.84, until
       // the page timed out: each poll was two round trips to a loaded page, and the tap came 1-3 s after the green opened. Now the page
       // itself watches every frame and the tap goes the moment it says, a quarter into the green; the cover check after it)
-      const r = await this.page.waitForFunction(([x, y]) => {
+      // (s19-clean-a3, the a2 review's finding 6: what stands over the knob is read in the same frame as the green, before the click, so
+      // something the click itself would close is still reported)
+      const r = await this.page.waitForFunction(([x, y, sx, sy]) => {
         const T = window.njgTest && window.njgTest.cook;
         if (!T) return false;
         const c = T.expectation();
         if (c && (c.kind !== "timing" || c.x !== x || c.y !== y)) return "moved";
         const g = T.gauge();
-        return g && g.level >= g.lo + (g.hi - g.lo) * 0.25 ? "green" : false;
-      }, [e.x, e.y], { polling: "raf", timeout: 30000 }).then((h) => h.jsonValue()).catch(() => "timeout");
+        if (!(g && g.level >= g.lo + (g.hi - g.lo) * 0.25)) return false;
+        const o = document.elementFromPoint(sx, sy);
+        return "green:" + (o ? o.tagName + "#" + o.id + "." + (typeof o.className === "string" ? o.className : "") : "none");
+      }, [e.x, e.y, e.sx, e.sy], { polling: "raf", timeout: 30000 }).then((h) => h.jsonValue()).catch(() => "timeout");
       if (r === "moved") return;
       await this.page.mouse.click(e.sx, e.sy);
       this.taps++;
-      await this.cover(e.sx, e.sy, "timing");
+      const tag = typeof r === "string" && r.startsWith("green:") ? r.slice(6) : null;
+      if (tag && !tag.startsWith("CANVAS")) {
+        this.covers.add(`timing at (${Math.round(e.sx)},${Math.round(e.sy)}) is covered by ${tag}`);
+        this.rec.pend("covered", "canvas tap: timing", `covered by ${tag} at (${Math.round(e.sx)},${Math.round(e.sy)})`);
+      } else if (!tag) await this.cover(e.sx, e.sy, "timing");
     } else if (k === "count") {
       // wrong-count (SH-50): the first counted step gets one fewer than asked, and is closed
       const short = this.mode === "wrong-count" && !this.drv.counted && e.target >= 2;
@@ -857,7 +865,16 @@ export class CookPlayer {
       // to a loaded page, and the next pan's green lasts 0.7-2 s at the test speed)
       if (this.mode === "fair" || this.mode === "serve-wrong") {
         const e0 = await this.exp().catch(() => null);
-        if (e0 && e0.kind === "timing" && !e0.intro && lastKind === "timing") { await this.act(e0); await this.waitChange(e0, 25000); continue; }
+        if (e0 && e0.kind === "timing" && !e0.intro && lastKind === "timing") {
+          // (the a2 review's finding 6: counted as every other step is, so a knob that never answers is "stuck repeating", not a timeout)
+          const k0 = JSON.stringify({ kind: e0.kind, key: e0.key, x: e0.x, y: e0.y, selector: e0.selector });
+          this.repeats = k0 === this.lastKey ? this.repeats + 1 : 0;
+          this.lastKey = k0;
+          if (this.repeats > 8) { await this.once("stuck"); throw new Error(`stuck repeating ${k0}`); }
+          await this.act(e0);
+          await this.waitChange(e0, 25000);
+          continue;
+        }
       }
       if (this.drv.pendShot) { const n = this.drv.pendShot; this.drv.pendShot = null; await this.once(n, { settle: 0 }); } // (a shot put off while a pan heated)
       let view = null;
