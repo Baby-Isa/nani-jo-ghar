@@ -692,7 +692,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // while the last spoonful is still going in is kept a moment and is the next move, as soon as the fill takes one)
     let early = null;
     const keep = (id) => () => (early = { id, t: performance.now() });
-    const keepTaps = () => Object.entries(items).forEach(([id, o]) => o && o.active && S.tappable(o, keep(id)));
+    // (kept, never begun: the light stays until the move itself starts, contract-117; the heap still takes the tap, contract-111)
+    const keepTaps = () =>
+      Object.entries(items).forEach(([id, o]) => {
+        if (!o || !o.active) return;
+        o.setInteractive({ useHandCursor: true });
+        if (global.Shelf && global.Shelf.P && global.Shelf.P.reach) global.Shelf.P.reach(o);
+        o.removeAllListeners("pointerdown");
+        o.on("pointerdown", () => !Cook.paused && keep(id)());
+      });
     keepTaps();
     Cook.undoAt = () => {
       // (not while Nani's "pass me" or a first-time coach is up: only the thing they point at takes a tap)
@@ -1245,7 +1253,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
         }),
         z.on("pointerup", async () => {
-          if (!start || over) return;
+          if (over) return;
+          // (s19-clean-e2, contract-117: a press that never became the swipe gives the light back, as a swipe let go short does)
+          if (!start || t === 0) {
+            start = null;
+            if (Cook.Coach && Cook.Coach.ended) Cook.Coach.ended("fold");
+            return;
+          }
           start = null;
           if (t >= minLen) {
             offs.forEach((o) => o());
