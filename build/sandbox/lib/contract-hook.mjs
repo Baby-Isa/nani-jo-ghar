@@ -800,7 +800,9 @@ const BASE_HOOK = `(() => {
       if (!shown(c)) continue;
       const k = c.querySelector(".wc-slot.wc14-k"), en = c.querySelector(".wc-slot.wc14-en"), sp = c.querySelector(".wc14-spk");
       const eb = en && en.getBoundingClientRect(), sb = sp && sp.getBoundingClientRect();
-      list.push({ word: ((k && k.textContent) || "").trim().slice(0, 20), kf: fam(k), ef: fam(en), gap: eb && sb && eb.height > 0 ? Math.round(sb.top - eb.bottom) : null });
+      // (a Kutchi still to record shows its English, grey italic, in the English's face: decision 84, the kit's .njg-ph; b2's item 4)
+      const ph = !!(k && (k.matches(".to-record, .njg-ph") || k.querySelector(".to-record, .njg-ph")));
+      list.push({ word: ((k && k.textContent) || "").trim().slice(0, 20), kf: fam(k), ef: fam(en), ph, gap: eb && sb && eb.height > 0 ? Math.round(sb.top - eb.bottom) : null });
     }
     return list.length ? { list, lora: document.documentElement.classList.contains("njg-lora") } : null;
   };

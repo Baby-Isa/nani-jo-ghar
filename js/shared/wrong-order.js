@@ -214,6 +214,19 @@ async function play(o = {}) {
         card.appendChild(markEl("bad"));
         line.replaceWith(card);
         fit(card, true);
+        // the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): at least 1.7 times the side panel's face
+        // circle at every size. At 740x320 the card's shrink to fit took it to 67 px against a 45 px panel face (b2's item 2): the face
+        // grows within the card until it is, and the card is fitted again
+        const fromFace = from && from.querySelector(".njg-face, .oc-face");
+        const want = fromFace ? fromFace.getBoundingClientRect().width * 1.7 : 0;
+        for (let k = 0, f = 2; want && k < 4; k++) {
+          const fe = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+          const w = fe ? fe.getBoundingClientRect().width : 0;
+          if (!w || w >= want) break;
+          f = Math.min(5, f * (want / w) * 1.05);
+          card.style.setProperty("--wo-face", f.toFixed(2));
+          fit(card, true);
+        }
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
         await move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
@@ -271,10 +284,10 @@ async function play(o = {}) {
  *   finding 3: one card and nothing marked on it: the rows of what this serve found wrong (o.wrong: the round's wrong dishes as keys;
  *     a row matches a key it holds, or every "+" part of it: "ph-big+cook-maani"), never a first try's old misses. Nothing matched:
  *     nothing marked, so no pop-up (the game's own recast says it again), never a cross on the wrong row.
- *   pick(cards [{who, rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row]}
+ *   pick(cards [{who, wrong (the card wrong as a whole: an unasked thing in it), rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row]}
  */
 function pick(cards, { served = null, wrong = [] } = {}) {
-  const isWrong = (c) => (c.rows || []).some((r) => r.wrong);
+  const isWrong = (c) => !!c.wrong || (c.rows || []).some((r) => r.wrong);
   const judged = new Set((served || []).filter(Boolean));
   const all = (cards || []).filter((c) => c && c.who);
   const people = all.some((c) => judged.has(c.who)) ? all.filter((c) => judged.has(c.who) || isWrong(c)) : all;

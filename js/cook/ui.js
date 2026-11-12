@@ -3991,9 +3991,15 @@
    * drawn red on the card (the shared card's `wrong`), and the card stays open to show them, until they are redone
    * (M.reopen) or shown (a tick). Never mid-round: only a station's serve calls it. Returns the rows marked.
    */
-  M.serveWrong = function (ids, dish = 0, { for: forWho = null } = {}) {
+  M.serveWrong = function (ids, dish = 0, { for: forWho = null, unasked = null } = {}) {
     const L = ladderFor(dish);
     if (!L) return [];
+    // (b2's item 1: a thing in the dish nobody asked for, an unasked spice, has no row of its own on the card: kept here, so the
+    // wrong-order pop-up draws a row for it and crosses that, never an asked-for row: M.showWrong. Cleared at the reset, M.reopen)
+    if (unasked && [].concat(unasked).length) {
+      L.unasked = L.unasked || {};
+      L.unasked[forWho || ""] = [...new Set([].concat(L.unasked[forWho || ""] || [], unasked))];
+    }
     const want = [].concat(ids);
     const rows = Order()
       .rows(L, { all: true })
@@ -4011,6 +4017,7 @@
     if (!L) return [];
     // a cup made again: that person's dish is not made any more (decision 97 (3))
     if (opts.for && L.closedFor) delete L.closedFor[opts.for];
+    if (L.unasked) delete L.unasked[opts.for || ""];
     if (!opts.for) L.closedAll = false;
     const want = ids == null ? null : [].concat(ids);
     const rows = Order()
@@ -4056,7 +4063,9 @@
     } finally {
       writtenCard = false;
     }
-    const isWrong = (c) => c.rows.some((r) => r.wrong);
+    // (an unasked thing in the dish makes the card wrong too: b2's item 1)
+    cards.forEach((c) => (c.wrong = !!(c.L && c.L.unasked && (c.L.unasked[c.who] || []).length)));
+    const isWrong = (c) => c.wrong || c.rows.some((r) => r.wrong);
     // (the Fable review's findings 2 and 3: only the people this serve judged, and the rows of what it found wrong now:
     // NjgWrongOrder.pick, js/shared/wrong-order.js)
     const picked = W.pick(cards, { served, wrong });
@@ -4077,6 +4086,16 @@
       big() {
         // the card open, every row to do (the pop-up ticks and crosses them itself), drawn as the order pop-up draws it
         const data = Object.assign({}, c.data, { done: false, items: (c.data.items || []).map((it) => Object.assign({}, it, { done: false, parts: (it.parts || []).map((p) => Object.assign({}, p, { done: false, wrong: false, next: false, miss: false })) })) });
+        // (b2's item 1: each thing put in that nobody asked for, a row of its own at the end, the one crossed: the engine's word)
+        const extra = ((c.L && c.L.unasked && c.L.unasked[c.who]) || []).filter((id) => Lang.known && Lang.known(id));
+        if (extra.length && data.items.length) {
+          const last = data.items[data.items.length - 1];
+          last.parts = last.parts.concat(extra.map((id) => {
+            const line = Lang.phrase([id]);
+            const xr = { ids: [id], parts: [id], head: false, no: false, for: c.who, done: false, wrong: true, miss: false, line, phrase: line, said: line, need: 1, got: 0, unasked: true };
+            return Object.assign(partNode(xr, 0), mission.wordRows ? UI.wordOf(xr) : null, { done: false, wrong: false, next: false });
+          }));
+        }
         const els = new Map();
         const el = OC.card(data, { big: true, onEl: (key, e) => e.classList && e.classList.contains("oc-row") && !els.has(key) && els.set(key, e) });
         const out = cardRows(data)

@@ -696,7 +696,7 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo-open { display: flex; align-items: center; gap: var(--njg-s5); padding: var(--njg-s4) var(--njg-s5); }
 .njg-wo-open > .njg-wo-mark { position: absolute; top: calc(var(--njg-s3) * -1); right: calc(var(--njg-s3) * -1); width: calc(var(--njg-face) * 0.75); height: calc(var(--njg-face) * 0.75); }
 /* the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): the kit's big circle, shown at twice its size */
-.njg-wo-who { flex: none; margin: calc(var(--njg-big-face) * 0.5); transform: scale(2); transform-origin: center; }
+.njg-wo-who { flex: none; margin: calc(var(--njg-big-face) * (var(--wo-face, 2) - 1) / 2); transform: scale(var(--wo-face, 2)); transform-origin: center; } /* (--wo-face: js/shared/wrong-order.js grows it until the face is 1.7x the side panel's, b2's item 2) */
 .njg-wo-body { overflow: visible; }
 .njg-wo-body > .oc-card { margin: 0; box-shadow: none; }
 .njg-wo .oc-row { position: relative; }
