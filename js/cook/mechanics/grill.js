@@ -1840,6 +1840,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         rackArt.set(n);
         rack.forEach((q) => q && SK.stickShown(q.sk, rackArt.painted === false || !(q.settled && q.slot < n)));
       };
+      // SH-268 (contract-120): a skewer lying on the band casts the kit's soft shadow (the stations' contact shadow, down and to the right,
+      // under its box as it lies); it lifts with the skewer as it goes up to the grill, and lies down again with it when it comes back
+      const bandShade = (r, on) => {
+        if (!rackArt.band || !r || !r.sk || !r.sk.active) return;
+        if (on && !r.sk.shadow && S.contactShadow) {
+          r.sk.shadow = S.contactShadow(r.sk);
+          if (r.sk.shadow) r.sk.shadow.njgShadow = true;
+        }
+        if (r.sk.shadow) r.sk.shadow.lifted = !on;
+      };
       const placeOnRack = (item) => {
         const i = rack.indexOf(null);
         if (rackArt.v3) {
@@ -1854,6 +1864,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const land = () => {
             r.settled = true;
             rackSync();
+            bandShade(r, true);
           };
           if (item.sprite) SK.glide(S, sk, { x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut", onComplete: land });
           else {
@@ -1892,6 +1903,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return;
         }
         rack[r.slot] = null;
+        bandShade(r, false);
         r.sk.hit.destroy();
         r.sk.wordId = null; // (on its way to the grill: no longer the rack's)
         if (r.glowing) S.glow(r.sk, false);
