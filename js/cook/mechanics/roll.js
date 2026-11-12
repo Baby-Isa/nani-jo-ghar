@@ -121,6 +121,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    *   patient  a pause only ends the roll on (or past) a circle: stop short,
    *            or between the two, and it waits for you (to flip a maani)
    *   onStart  called once, when the pin first moves the dough
+   *   onTex    (key, dough): called as the dough's picture changes (the ball to the flat raw one)
    *   handle   {} that gets cancel(): stop without a score (resolves null)
    *   pinTex   a rolling-pin texture (level, e.g. the maani v2 velan): the pin rolls on its own, no hands;
    *            pinW its width (design px)
@@ -151,7 +152,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (S19, s19-games-1: flat from 1.5 x the starting ball's radius, 90 at the old 470 board; maani's board-sized roll (MAA-24,
         // ROLL_K) left its small maani a ball picture under 90, and it flew to the tawa as one)
         const key = r < z.L(k.startRadius * 1.5) ? tex.ball : tex.raw;
-        if (dough.texture.key !== key) dough.setTexture(key);
+        if (dough.texture.key !== key) {
+          dough.setTexture(key);
+          if (opts.onTex) opts.onTex(key, dough); // (SH-268: maani's rolled-out dough takes its shadow as it turns flat)
+        }
         // opts.body(key): how much of its canvas the dough's round body fills (the v3 maani art has
         // margins), so the dough's edge, not its box, is r across; default the whole width
         const fr = (opts.body && opts.body(key)) || 0.5;

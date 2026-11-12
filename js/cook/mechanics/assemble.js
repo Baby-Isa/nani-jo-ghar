@@ -300,6 +300,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const dish = S.track(S.add.image(x, y, "ct-serve").setDisplaySize(d, h).setDepth(D.item - 0.2));
     const food = S.track(S.add.image(fx, fy, key).setDisplaySize(N / u, N / u).setDepth(D.item));
     dish.setName("chaat-bowl");
+    // (SH-268, Zafar 12 Nov, the newest word over CHT-12's: one upper-left light everywhere, the kit's soft shadow under the bowl too)
+    Cook.Kit.shadow(S, dish);
+    // (the food lies in the bowl: the bowl's shadow is its shadow, never one of its own drawn on the bowl's inside, contract-120)
+    food.shadow = dish.shadow;
     const parts = [dish, food];
     const layers = []; // {id, cv, grow, at: {x, y} (canvas px, where its spoonful landed)}
 

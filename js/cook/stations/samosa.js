@@ -991,7 +991,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (S.textures.exists(foldKey)) S.textures.remove(foldKey);
     const cv = S.textures.createCanvas(foldKey, proto.canvas.width, proto.canvas.height);
     const fimg = S.track(S.add.image(z.X(P0.x), z.Y(P0.y), foldKey).setDepth(D.item + 0.5).setScale(FULL).setVisible(false));
-    fimg.litBounds = pastryBody; // (the strip being folded: its light hugs the pastry, SH-230, contract-105)
+    fimg.litBounds = pastryBody;
+    // (SH-268: the pastry lies flat on the board: the board's shadow is its shadow, never one of its own on the board, contract-120)
+    fimg.shadow = board.shadow; // (the strip being folded: its light hugs the pastry, SH-230, contract-105)
     const doneKey = `sv3-fold-done-${folds}`;
     let doneInfo = null;
     // the live fold: redrawn every frame while a strip is being folded (the lit flap breathes)
@@ -1382,6 +1384,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const im = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY - 4), "sv2-fry-0").setScale(FS * 0.92).setAngle(i % 2 ? 6 : -6).setDepth(D.item + 0.1 + i * 0.01));
       im.baseScale = im.scale;
       im.handAction = false;
+      Cook.Kit.shadow(S, im, { k: 0.6 }); // (SH-268: a small thing's lighter shadow; it follows it into the oil and onto the plate)
       raw.push(im);
     }
 
@@ -1577,10 +1580,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     }
     const jharo = S.track(S.add.image(rest.x, rest.y, spoonTex(S)).setOrigin(SPM.bx, SPM.by).setDepth(D.item - 1).setScale(spoonK));
     jharo.handAction = false;
+    // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kit's soft shadow while it rests on its cloth; none while it is in the
+    // oil or in the air, sh.lifted)
+    Cook.Kit.shadow(S, jharo);
     const SPOON_A = -25; // (in use, its handle down to the right, towards its cloth)
     const spoonHome = () => {
       S.tweens.killTweensOf(jharo);
-      S.tweens.add({ targets: jharo, x: rest.x, y: rest.y, angle: 0, duration: 320, ease: "Sine.easeInOut", onComplete: () => jharo.active && jharo.setDepth(D.item - 1) });
+      S.tweens.add({ targets: jharo, x: rest.x, y: rest.y, angle: 0, duration: 320, ease: "Sine.easeInOut", onComplete: () => {
+          if (!jharo.active) return;
+          jharo.setDepth(D.item - 1);
+          if (jharo.shadow) jharo.shadow.lifted = false;
+        } });
     };
     let scooping = Promise.resolve();
     // the plate's flat middle: the lifted ones shuffle up to make room (S10)
@@ -1704,6 +1714,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             // (SAM-34: from its cloth, its handle turned down to the right; it goes in under the samosa, above the oil)
             S.tweens.killTweensOf(jharo);
             jharo.setDepth(D.item + 0.06);
+            if (jharo.shadow) jharo.shadow.lifted = true;
             await new Promise((r) => S.tweens.add({ targets: jharo, x: sx0, y: sy0 + z.L(6), angle: SPOON_A, duration: 240, ease: "Quad.easeOut", onComplete: r }));
             Cook.sfx.pop();
             // onto the plate: the samosa rides on the jharo's bowl

@@ -130,6 +130,16 @@
        ]
       },
       {
+       "id": "spi-16",
+       "amt": "spoon",
+       "units": 1,
+       "parts": [
+        1,
+        "chamchi",
+        "spi-16"
+       ]
+      },
+      {
        "id": "cook-paani",
        "amt": "jug",
        "units": 4,
@@ -158,6 +168,14 @@
         2,
         "ph-cup",
         "cook-atto"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "pinch",
+       "units": 1,
+       "parts": [
+        "spi-16"
        ]
       },
       {
@@ -191,6 +209,16 @@
        ]
       },
       {
+       "id": "spi-16",
+       "amt": "spoon",
+       "units": 1,
+       "parts": [
+        1,
+        "chamchi",
+        "spi-16"
+       ]
+      },
+      {
        "id": "cook-paani",
        "amt": "jug",
        "units": 2,
@@ -209,7 +237,8 @@
        ]
       }
      ]
-    ]
+    ],
+    "_salt": "CK-89 (Zafar, 12 Nov: 'for salt, we have a word for pinch, and we have a word for teaspoon. So we can include salt as a pinch and as a teaspoon in the game ... we'll just put a small salt pile'): from L2 every plan puts salt in after the flour, a teaspoon ('Hakri chamchi loon wiji chad!', the engine's) or a pinch (no Kutchi yet: its sentence is grey English, Lang.toRecord of amountFrame, never invented; its row the thing alone until Mum records the word). amt spoon or pinch: tipped once straight over the bowl (no jug), a small salt pile in the bowl, a pinch smaller than a teaspoon (items.saltPile)"
    },
    {
     "plans": [
@@ -221,6 +250,14 @@
        "parts": [
         "ph-cups-1h",
         "cook-atto"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "pinch",
+       "units": 1,
+       "parts": [
+        "spi-16"
        ]
       },
       {
@@ -254,6 +291,16 @@
        ]
       },
       {
+       "id": "spi-16",
+       "amt": "spoon",
+       "units": 1,
+       "parts": [
+        1,
+        "chamchi",
+        "spi-16"
+       ]
+      },
+      {
        "id": "cook-paani",
        "amt": "jug",
        "units": 6,
@@ -280,6 +327,14 @@
        "parts": [
         "ph-cups-1h",
         "cook-atto"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "pinch",
+       "units": 1,
+       "parts": [
+        "spi-16"
        ]
       },
       {
@@ -318,6 +373,16 @@
        ]
       },
       {
+       "id": "spi-16",
+       "amt": "spoon",
+       "units": 1,
+       "parts": [
+        1,
+        "chamchi",
+        "spi-16"
+       ]
+      },
+      {
        "id": "cook-paani",
        "amt": "jug",
        "units": 6,
@@ -353,6 +418,14 @@
        "parts": [
         "ph-cups-2h",
         "cook-atto"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "pinch",
+       "units": 1,
+       "parts": [
+        "spi-16"
        ]
       },
       {
@@ -393,6 +466,16 @@
         2,
         "ph-cup",
         "cook-atto"
+       ]
+      },
+      {
+       "id": "spi-16",
+       "amt": "spoon",
+       "units": 1,
+       "parts": [
+        1,
+        "chamchi",
+        "spi-16"
        ]
       },
       {
@@ -764,6 +847,24 @@
     "cook-khun": "assets/shared/word-moment/stream-sugar-s17.webp"
    },
    "_note": "the shared pour columns (WS), stretched from a container's lip to the bowl or jug; yoghurt, salt and ghee have none yet (the drawn drops stay)"
+  },
+  "saltPile": {
+   "_about": "CK-89: the salt that went in lies in the bowl as a small pile of crystals on what is there (drawn in code, as chai's sugar on its tea): its width as a share of the bowl's drawn width, its place on the bowl's picture (x, y: shares of its width and height from its top left, on the flour's top)",
+   "pinch": 0.12,
+   "spoon": 0.22,
+   "at": [
+    0.5,
+    0.27
+   ],
+   "colours": {
+    "face": "#f6f8fa",
+    "glint": "#ffffff",
+    "dim": "#e4e8eb",
+    "edge": "#c4cacf",
+    "edgeDark": "#a9b0b6",
+    "shade": "#6f6458",
+    "shadeA": 0.3
+   }
   }
  },
  "vocab": {
@@ -891,22 +992,22 @@
     ],
     "_why": "a quarter beside the half the child met at L1 (L2's plans ask a quarter first)",
     "measures": [
-    {
-     "id": "ph-quartercup",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.77,
-     "fill": 0.167,
-     "card": "assets/cook/items/v4/baking/jug-4.webp"
-    },
-    {
-     "id": "ph-half",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.7,
-     "fill": 0.26,
-     "card": "assets/cook/items/v4/baking/jug-4.webp"
-    }
+     {
+      "id": "ph-quartercup",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.77,
+      "fill": 0.167,
+      "card": "assets/cook/items/v4/baking/jug-4.webp"
+     },
+     {
+      "id": "ph-half",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.7,
+      "fill": 0.26,
+      "card": "assets/cook/items/v4/baking/jug-4.webp"
+     }
     ]
    },
    {
@@ -916,22 +1017,22 @@
     ],
     "_why": "three quarters beside a cup (L3 plan 1, L4 plan 1)",
     "measures": [
-    {
-     "id": "ph-cups-34",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.625,
-     "fill": 0.353,
-     "card": "assets/cook/items/v4/baking/jug-4.webp"
-    },
-    {
-     "id": "ph-cup",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.55,
-     "fill": 0.45,
-     "card": "assets/cook/items/v4/baking/jug-flour.webp"
-    }
+     {
+      "id": "ph-cups-34",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.625,
+      "fill": 0.353,
+      "card": "assets/cook/items/v4/baking/jug-4.webp"
+     },
+     {
+      "id": "ph-cup",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.55,
+      "fill": 0.45,
+      "card": "assets/cook/items/v4/baking/jug-flour.webp"
+     }
     ]
    },
    {
@@ -941,22 +1042,22 @@
     ],
     "_why": "one and a half beside a cup (L3 up)",
     "measures": [
-    {
-     "id": "ph-cup",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.55,
-     "fill": 0.45,
-     "card": "assets/cook/items/v4/baking/jug-flour.webp"
-    },
-    {
-     "id": "ph-cups-1h",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.41,
-     "fill": 0.628,
-     "card": "assets/cook/items/v4/baking/jug-4.webp"
-    }
+     {
+      "id": "ph-cup",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.55,
+      "fill": 0.45,
+      "card": "assets/cook/items/v4/baking/jug-flour.webp"
+     },
+     {
+      "id": "ph-cups-1h",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.41,
+      "fill": 0.628,
+      "card": "assets/cook/items/v4/baking/jug-4.webp"
+     }
     ]
    },
    {
@@ -966,22 +1067,22 @@
     ],
     "_why": "two and a half beside one and a half (L4)",
     "measures": [
-    {
-     "id": "ph-cups-1h",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.41,
-     "fill": 0.628,
-     "card": "assets/cook/items/v4/baking/jug-4.webp"
-    },
-    {
-     "id": "ph-cups-2h",
-     "empty": "assets/cook/items/v4/baking/jug-0.webp",
-     "full": "assets/cook/items/v4/baking/jug-4.webp",
-     "lineAt": 0.125,
-     "fill": 0.994,
-     "card": "assets/cook/items/v4/baking/jug-4.webp"
-    }
+     {
+      "id": "ph-cups-1h",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.41,
+      "fill": 0.628,
+      "card": "assets/cook/items/v4/baking/jug-4.webp"
+     },
+     {
+      "id": "ph-cups-2h",
+      "empty": "assets/cook/items/v4/baking/jug-0.webp",
+      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "lineAt": 0.125,
+      "fill": 0.994,
+      "card": "assets/cook/items/v4/baking/jug-4.webp"
+     }
     ]
    }
   ],
@@ -1027,6 +1128,12 @@
    "english": "Put in a quarter cup / three quarters of a cup / one and a half cups / two and a half cups of flour (water, milk, yoghurt, sugar)",
    "kind": "the amount is a to-record word, so the sentence shows its English in grey (Lang.toRecord); 'Hakro cup atto wiji chad!', 'Ba cup atto wiji chad!' and 'Adh paani wiji chad!' are the engine's",
    "sheet": "R6-136"
+  },
+  {
+   "id": "pinch",
+   "english": "a pinch (of salt)",
+   "kind": "no Kutchi (CK-89): the lexicon has no word for pinch; Nani's sentence is its English in grey ('Put in a pinch of salt.'), never invented; the row shows the salt alone",
+   "sheet": "a pinch (new, CK-89): ask Mum; then data/lang/lexicon.json n.pinch (to record, alias ph-pinch) and the pinch steps' parts become ['ph-pinch', 'spi-16']"
   }
  ],
  "assets": [
@@ -1074,7 +1181,9 @@
   "6": "one and a half cups",
   "8": "two cups",
   "10": "two and a half cups",
-  "_about": "CK-72: each amount's English by the jug's quarter cups, for a sentence still to record (Lang.toRecord of amountFrame), grey English until Mum records it"
+  "_about": "CK-72: each amount's English by the jug's quarter cups, for a sentence still to record (Lang.toRecord of amountFrame), grey English until Mum records it",
+  "pinch": "a pinch",
+  "spoon": "a teaspoon"
  },
  "amountFrame": "Put in {amount} of {thing}."
 }
