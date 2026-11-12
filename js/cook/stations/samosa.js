@@ -991,7 +991,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (S.textures.exists(foldKey)) S.textures.remove(foldKey);
     const cv = S.textures.createCanvas(foldKey, proto.canvas.width, proto.canvas.height);
     const fimg = S.track(S.add.image(z.X(P0.x), z.Y(P0.y), foldKey).setDepth(D.item + 0.5).setScale(FULL).setVisible(false));
-    fimg.litBounds = pastryBody; // (the strip being folded: its light hugs the pastry, SH-230, contract-105)
+    fimg.litBounds = pastryBody;
+    // (SH-268: the pastry lies flat on the board: the board's shadow is its shadow, never one of its own on the board, contract-120)
+    fimg.shadow = board.shadow; // (the strip being folded: its light hugs the pastry, SH-230, contract-105)
     const doneKey = `sv3-fold-done-${folds}`;
     let doneInfo = null;
     // the live fold: redrawn every frame while a strip is being folded (the lit flap breathes)
