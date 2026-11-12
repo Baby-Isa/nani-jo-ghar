@@ -20,6 +20,18 @@ What we already know is not done, so your play time goes on what we missed. Anyt
 - **The pop-up** runs only when an order is wrong (say if you want it every round).
 - **Mum's session (build/reports/mum-2026-11-12.md):** khape or khapeti; salt *mitho* and pepper *miryo*; the pantry's full sentence; "thank you" kept in English; daar's stir line without "slowly"; more than one tomato; and the 18 spellings.
 
+## Every game but chai: not at chai's standard yet (the eye judge beside chai, 12 Nov)
+Sprint 20's work, all on the fix list (build/reports/s19-gate-eye-rows.md):
+- **The shelf** is a floating slab, not chai's stone band (chop, chaat, daar, maani, samosa, corn: SH-269).
+- **On the chop screen** Nani's box has no face, and the order card shows "Chop these" (chop, chaat, daar: SH-270, SH-276).
+- **The first light** can blink off and back on once (chop, chaat, maani, samosa: SH-271).
+- **Timers** sit on a separate dial, not a ring on the thing (eggs, baking, chop, chaat, daar: SH-275).
+- **Nani's head** shows above the end panel (SH-272).
+- **Hard cuts** between stages (baking, chaat, samosa: SH-280).
+- **Eggs:** the egg is small in the pan and snaps from its shell to fried.
+- **Baking:** mixed camera angles and a toy-sized oven.
+- **Mishkaki:** the plate shows two pepper skewers, whatever the child made (SEK-28).
+
 ## By game
 - **Chai:** the boil-over's old foam picture (ART-32). The missing water hint (CHAI-111) never came back in testing: if it happens, send the log; it now records what resets Nani's wait.
 - **Eggs:** a wrong plate shows the pop-up but has no redo (the cooking is gone), so the round ends after it.
