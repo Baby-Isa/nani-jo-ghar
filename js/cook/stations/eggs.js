@@ -621,7 +621,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       if (n.what === "vessel") {
         if (gate.first("next-pan"))
           nextV = Cook.Coach.nextLight({ now: true, target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }), quitIf: () => finished || ctlKey !== key, who: n.obj === pot ? "pot" : "pan", note: NOTE });
-      } else first = gate.first(`ctl-${n.what}`);
+      // (contract-78: lifting the fried egg from the pan is its own control, as the boiled egg's from the pot is: each lit the first
+      // time it comes up, with its own call, "Tarelo indo hane kadh." / "Indo hane kadh.")
+      } else first = gate.first(n.what === "egg" ? `ctl-egg:${n.key}` : `ctl-${n.what}`);
       const current = () => ctlKey === key && !finished;
       // (its glow lasts as long as its light, which goes as the child starts the move: contract-102, SH-236; only a thing on the band
       // glows and hops with its light, so Nani's call reading its row is the one other highlight: contract-8)
@@ -917,10 +919,20 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     } catch (e) {
       /* only a log */
     }
+    // (contract-78: the first step's call is held through the reveal lessons, then waits for its own light, so the call and its light
+    // come together; her box still names the step from the start, R2)
+    let releaseCalls = null;
+    if (UI.holdCalls) UI.holdCalls(new Promise((r) => (releaseCalls = r)));
     stepFor(nextThing()); // (her box names the first step from the start, as before: R2)
     // the kitchen kit's reveal lessons (STD-D1-08): once the order has landed, the dotted word then the blurred picture
-    if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
+    try {
+      if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
+    } catch (e) {
+      if (releaseCalls) releaseCalls();
+      throw e;
+    }
     refresh();
+    if (releaseCalls) releaseCalls();
     await doneP;
     steps.done();
     if (ctl) ctl.close();

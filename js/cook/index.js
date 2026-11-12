@@ -80,7 +80,7 @@ const LABS = [
   ["samosa", "Samosa", "Fill, fold, fry"],
   ["daar", "Daar", "Chop, tadka, stir"],
   ["eggs", "Eggs (prototype)", "Boil or fry, then the plates"],
-  ["baking", "Baking (prototype)", "Nani's turns: a little, a lot; then the oven"],
+  ["baking", "Baking (prototype)", "Nani's amounts by the jug; then the oven"],
   ["corn", "Corn stall (prototype)", "Grill, turn once, then what goes on"],
 ];
 const COMBINED = ["roll-tawa", "maani-line", "chai-tray", "mishkaki-grill", "samosa", "daar", "eggs", "baking", "corn"];

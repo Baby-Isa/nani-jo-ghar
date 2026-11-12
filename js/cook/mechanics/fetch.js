@@ -51,6 +51,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * that followed the word's stage (Cook.labelMode) left the words already ordered unlabelled, so the bare jars were
    * this order. The rule: no word label on any jar; a jar's own label is its painted sticker of what is inside (PAN-06,
    * H52), and the word is on the card's face (tap it to hear it). A new word is still taught by Nani's line and its glow.
+   * PAN-20 (Zafar, 30 Oct, newer): every jar has the kit's word pill by the word ladder, as every station's shelf (below, in run):
+   * the old canvas label stays off, the pill is the one label.
    */
   const shelfLabel = (S, obj, id) => S.label(obj, id, { mode: "none" });
   /** Every word in the current order (pass me in the pantry never asks for one). */
@@ -145,12 +147,60 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // shelf (what the order could ask for always goes up, drawn or not)
       const all = need.concat(Cook.shuffle(decoys).filter((id) => always.includes(id) || Cook.Art.refUrl(`${id}.shelf`)));
       const items = {};
+      const placed = [];
       all.forEach((id) => {
         const slot = free[fridge.has(id) ? "fridge" : "shelf"].pop();
-        if (!slot) return;
+        if (slot) placed.push({ id, slot });
+      });
+      /*
+       * PAN-20 (Zafar, 30 Oct: "I see no words under the items in the pantry. I don't even see any speaker buttons"; it replaces PAN-15's
+       * no-label rule): every jar its word pill by the word ladder (Cook.chipWord: the word written while it is new, the speaker alone once
+       * used right), the kit's pill as every other station's shelf (Cook.Kit.chip), on the shelf's front edge under its thing. The pills
+       * first, at the row's one scale (chai's rule: Shelf.pillWant, .pillScale): their height is the room the thing on the shelf below
+       * leaves above itself. A thing's tap area reaches down to its pill (S.tappable, Shelf.P.reach: obj.chip).
+       */
+      const SH = global.Shelf;
+      const PH = ((SH && SH.PILL) || {}).h || 46;
+      let ppw = 1;
+      try {
+        ppw = (UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1) * z.L(1);
+      } catch (e) {
+        ppw = 1;
+      }
+      const chips = {};
+      if (Cook.Kit && Cook.Kit.chip)
+        placed.forEach(({ id, slot }) => {
+          const c = Cook.Kit.chip(S, id, z.X(slot.x), z.Y(slot.y), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, depth: D.item + 2 });
+          c.pillId = id;
+          chips[id] = c;
+        });
+      // the rows (the shelves and the fridge's levels at one height), left to right
+      const rowsAt = [];
+      placed.forEach((p) => {
+        const r = rowsAt.find((x) => Math.abs(x.y - p.slot.y) < 20);
+        if (r) r.list.push(p);
+        else rowsAt.push({ y: p.slot.y, list: [p] });
+      });
+      rowsAt.sort((a, b) => a.y - b.y).forEach((r) => r.list.sort((a, b) => a.slot.x - b.slot.x));
+      const want = SH && SH.pillWant ? SH.pillWant(ppw) : 1;
+      const gap = SH && SH.pillGap ? SH.pillGap(ppw) : 12;
+      const rowFit = (r, w) => SH.pillScale(r.list.filter((p) => chips[p.id]).map((p) => ({ x: z.X(p.slot.x), w: chips[p.id].faceW(chips[p.id].showsWord) })), { want: w, gap, slotW: z.L(Math.min(...r.list.map((p) => p.slot.w))) });
+      // (each row its one scale, as chai's one row: the shelves' wide slots reach the floor's size; the fridge's narrow ones as far as
+      // their neighbours allow, a long word narrowing to its slot there, the kit's rule)
+      rowsAt.forEach((r) => (r.fit = SH && SH.pillScale && Object.keys(chips).length ? rowFit(r, want) : { k: 1, cap: Infinity }));
+      const pk = Math.max(1, ...rowsAt.map((r) => r.fit.k));
+      const pillH = z.L(PH) * pk;
+      // (the pill's middle on the painted shelf's front edge, its plank about 44 design px deep under the line the things stand on)
+      const PILL_MID = (P.pillMid != null ? P.pillMid : 22);
+      // the room between two shelves, less the pill's part below the plank and a small gap, is the most a thing may stand (the shelf's
+      // own box, slot.h, else): a pill never covers the thing on the shelf below
+      const ys = rowsAt.map((r) => r.y);
+      const pitchY = ys.length > 1 ? Math.min(...ys.slice(1).map((y, i) => y - ys[i])) : Infinity;
+      const tallest = Object.keys(chips).length ? pitchY - PILL_MID - pillH / z.L(1) / 2 - 4 : Infinity;
+      placed.forEach(({ id, slot }) => {
         const key = Cook.Art.wordTex(S, id);
         // in the fridge the small things (a yoghurt tub) come up nearer a milk carton's size, to be seen
-        const sc = fitAt(key, id, z.L(slot.w), z.L(slot.h), slot.zone === "fridge" ? P.fridgeMin : null, z.L(shelfCap(slot)));
+        const sc = fitAt(key, id, z.L(slot.w), z.L(Math.min(slot.h, tallest)), slot.zone === "fridge" ? P.fridgeMin : null, z.L(shelfCap(slot)));
         const { w: tw, h: th } = S.texSize(key);
         items[id] = S.prop(key, z.X(slot.x), z.Y(slot.y) + sink(key, sc), tw * sc, th * sc);
         items[id].wordId = id; // what it is (as S.ingredient marks it): the pantry leak bot reads the shelf by it
@@ -158,6 +208,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // where it lives, so a thing taken back off the tray goes home (E14)
         items[id].home = { x: items[id].x, y: items[id].y, scale: items[id].scale, depth: items[id].depth };
       });
+      rowsAt.forEach((r) => {
+        const { k: rk, cap } = r.fit;
+        r.list.forEach(({ id, slot }) => {
+          const c = chips[id];
+          if (!c) return;
+          if (c.capW !== cap) c.face(c.showsWord, cap);
+          c.k = rk;
+          c.hit(z.L(slot.w));
+          c.setScale(rk).setY(z.Y(slot.y) + z.L(PILL_MID));
+          if (items[id]) items[id].chip = c;
+          else c.destroy();
+        });
+      });
+      // (a thing off its shelf, on the tray or in Nani's hand, has no pill; it comes back with the thing)
+      const pillShown = (id, on) => {
+        const c = chips[id];
+        if (!c || !c.active) return;
+        c.setVisible(on);
+        if (c.input) c.input.enabled = on;
+      };
       // CK-49 (contract-37): the shelf's decoys (PAN-06: from L2 every slot holds one, so at least the table's), and whether a
       // lookalike of a thing asked for is among them
       {
@@ -205,6 +275,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // R2, her box never reads the whole card, and the pantry header at L3/L4 crammed five sentences into a tiny font)
       const LC = global.Lifecycle;
       if (ctx.guided && askLines && !(LC && LC.asked && LC.asked())) await z.say(Lang.join(need.map((id, i) => ask(id, i === 0))));
+      // SH-60, PAN-22 (contract-98): the kitchen kit's reveal lessons (the dotted word, then the blurred picture) once the order has
+      // landed, as every game's (Cook.Coach.lessons on the kit's first-time gate; the gate also makes the scene's glow hop only a thing
+      // on the bottom band, SH-237)
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("fetch", { round: new Set() }) : null;
+      if (gate && Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => false });
       const remaining = need.slice();
       const fetched = new Set();
       let n = 0;
@@ -222,6 +297,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const obj = items[pick];
         if (obj && obj.active) {
           delete items[pick];
+          pillShown(pick, false);
           await S.fly(obj, z.X(1560), z.Y(60), { scale: obj.scale * 0.5, duration: 420, arc: z.L(80) });
           obj.destroy();
         }
@@ -236,6 +312,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return { x: at.x, y: at.y + z.L(4) + sink(obj.texture.key, sc), scale: sc };
       };
       const onTray = (id, obj, right = false) => {
+        pillShown(id, false);
         if (n >= need.length) outlines.push(outline(n, id));
         const t = trayAt(n, id, obj);
         const space = outlines[n];
@@ -275,6 +352,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         S.fly(e.obj, h.x, h.y, { scale: h.scale, depth: h.depth, duration: k.flyMs }).then(() => {
           if (!e.obj.active || !fetching) return;
           e.obj.label = shelfLabel(S, e.obj, e.id);
+          pillShown(e.id, true);
           items[e.id] = e.obj;
           // the waiting step starts again, with it back on the shelf
           if (step.cancel) step.cancel();
@@ -383,6 +461,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           await Cook.wait(260);
           await S.fly(e.obj, h.x, h.y, { scale: h.scale, depth: h.depth, duration: k.flyMs });
           if (e.obj.active) e.obj.label = shelfLabel(S, e.obj, e.id);
+          pillShown(e.id, true);
         }
         tray.forEach((x, i) => {
           const t = trayAt(i, x.id, x.obj);

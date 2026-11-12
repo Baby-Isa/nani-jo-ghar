@@ -54,9 +54,12 @@
    "ph-dhana": "layer-fudino",
    "ph-dahi": "layer-dai",
    "ph-lili": "layer-lili-drizzle",
-   "ph-amli": "layer-amli-drizzle"
+   "ph-amli": "layer-amli-drizzle",
+   "veg-01": "layer-bataato",
+   "ph-chana": "layer-chana",
+   "ph-sev": "layer-sev"
   },
-  "_files": "Zafar, 10 Nov: the chutneys are the drizzles (C5-drizzle #111, C10-drizzle #110); the ribbons (layer-lili, layer-amli) stay cut, unused. Potato, chickpeas and sev have no layer picture: they are stamped from their bowl's food (heap).",
+  "_files": "Zafar, 10 Nov: the chutneys are the drizzles (C5-drizzle #111, C10-drizzle #110); the ribbons (layer-lili, layer-amli) stay cut, unused. s19-k3 (C12-3, CK-85): potato, chickpeas and sev have their own top-down scatters now (layer-bataato, layer-chana, layer-sev), no longer stamped from their bowl's food.",
   "k": 0.9,
   "kJitter": 0.06,
   "spread": 0.05,

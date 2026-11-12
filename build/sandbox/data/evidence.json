@@ -27555,6 +27555,120 @@
    "note": "corn's grill and the steel tray beside it, the same height, one centred rectangle"
   }
  ],
+ "SEK-26": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "sekelo's grill as the mock: grill-v2, deep trays, the skewer from the grill's bottom edge to its top edge, the v4 skewer"
+  }
+ ],
+ "SAM-35": [
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 10,
+   "note": "samosa's order line says the count; the order card holds the fillings, no finished-samosa card"
+  }
+ ],
+ "ART-78": [
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "the stone shelf band's edges clean on the marble"
+  }
+ ],
+ "ART-79": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "daar's pictures all v4 where one exists"
+  },
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "sekelo's board, skewer, grill and trays all v4"
+  }
+ ],
  "SH-264": [
   {
    "flow": "cook:chai-tray",

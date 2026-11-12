@@ -1369,7 +1369,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       }
       // 2. a ready pan pours into its glass
       for (const q of pans) {
-        if (q.state === "ready" && !q.closed && q.poured < needOf(q)) return { e: tapOn(q.img, `pour-${q.who}`), obj: q.img, focal: true, phase: "pour" };
+        if (q.state === "ready" && !q.closed && q.poured < needOf(q)) return { e: tapOn(q.img, `pour-${q.who}`), obj: q.img, focal: !s14, phase: "pour", again: q.poured > 0 };
       }
       // 3. a pan still to fill: choose it, fill it, light it
       for (const q of pans) {
@@ -1535,7 +1535,13 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // (s14: the glass is lit for the pour, its pan still takes the tap: both live under the light)
         // (Zafar, 29 Oct: "the highlight box on the chai tray should go under the face circle so the face circle sits on top and
         // doesn't get a line over the face": the glass's box takes in its face badge, so no edge crosses the face)
-        if (pan && s14 && pan.well && pan.well.hit) return { obj: pan.img, target: unionRect(Cook.Coach.box(pan.well.hit), pan.well.face ? Cook.Coach.box(pan.well.face) : null), also: Cook.Coach.box(pan.glowRing) };
+        // CHAI-112 (Zafar, 11 Nov evening, his second play: "there was still an onboarding circle highlight around the teapot ... it
+        // shouldn't have kicked in straight away because ... the user had already played the game before ... it should be the
+        // rectangular light, not the circular one. And it should be over the glass, not the teapot"): the pour's light is the kit's
+        // rectangle on the glass alone (the glass takes the tap; its pan still does, live under it), with no ring round the pan (obj
+        // null: no glow of the pan's own; the plan's focal pulse, the ring at once, is off for the pour on the s14 look); a new player's
+        // the first time, at once; a returning player's only as the stuck hint after the level's wait (Cook.Coach.control)
+        if (pan && s14 && pan.well && pan.well.hit) return { obj: null, target: unionRect(Cook.Coach.box(pan.well.hit), pan.well.face ? Cook.Coach.box(pan.well.face) : null), also: Cook.Coach.box(pan.glowRing) };
         return pan && { obj: pan.img, target: Cook.Coach.box(pan.glowRing) };
       }
       // (SH-230: a control's box is its own picture; the margin round it is the one rule's, Onboard.litBox: was 4 px here and 4 more there)
@@ -1717,6 +1723,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             busy: moving,
             endIf: () => moving() || on(),
             step: st || "",
+            // CHAI-109 (Zafar, 11 Nov evening, his child's play: "the highlight on the order card to show you the third item the first
+            // time you're playing the tea game ... It needs to be just half a second longer"): the kit's time and half a second more
+            // (a child's time: the kit divides it by the test speed; Cook.Coach.cardLight's o.ms, a kit line in the s19-clean-b report)
+            ms: (global.Rules && global.Rules.pointMs ? global.Rules.pointMs() : 1200) + 500,
             note: `${STATION14}:${S14_TAG}light`,
             onLit: () => {
               gate14.spend("card");
@@ -1760,7 +1770,15 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // held for the light (UI.holdCalls), so they still come together, contract-78)
         const target = rungCur.target, also = rungCur.also, obj = rungCur.obj;
         // (picking the next pan: its first time is CHAI-68's own light, so here only the stuck hint)
-        const firstTime = rungCur.panPick ? false : gate14.first(`ctl-${nx.phase}`);
+        // CHAI-110 (Zafar, 11 Nov evening, his child's play: "it wasn't clear ... that you need to tap the glass twice to fill it fully ... the
+        // onboarding should kick in after you've tapped it for the first time. Then the light should go on the glass, and it should
+        // force you to tap the glass a second time"): a full glass at half is its own first-time control, lit on the glass until the
+        // second tap fills it
+        // (corrected, 11 Nov night: the first L4 round's full glass has no light before its first tap; the light comes on the glass after
+        // it, for the second pour; a half glass's first pour keeps the pour's first-time light)
+        const pourPan = nx.phase === "pour" ? pans.find((q) => `pour-${q.who}` === (nx.e && nx.e.key)) : null;
+        const fullFirst = !!(pourPan && !nx.again && needOf(pourPan) > 1);
+        const firstTime = rungCur.panPick || fullFirst ? false : gate14.first(nx.again ? "ctl-pour-again" : `ctl-${nx.phase}`);
         // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
         // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
         // the green, "Slow kar!", is timed and comes at once); after that the call alone and the same light as the stuck hint after
@@ -1964,7 +1982,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (nx) phase(nx.phase, nx.pid, !!(nx.e && /^pan-/.test(nx.e.key || ""))); // S02-B: nothing to do -> the box is empty (R2)
       // Sprint 11: the real item's demo and the hint rungs for the step Nani has just opened (and calls)
       // (picking the next pan is its own step, so the water after it opens as a new one with its own help: the sandbox, 3 Nov, contract-24)
-      coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}${nx.e && /^pan-/.test(nx.e.key || "") ? ":pick" : ""}` : null);
+      // (CHAI-110: a full glass's second pour is its own step, with its own first-time light)
+      coachStep(nx, nx && nx.phase ? `${nx.phase}:${nx.pid || ""}${nx.e && /^pan-/.test(nx.e.key || "") ? ":pick" : ""}${nx.again ? ":again" : ""}` : null);
       // Sprint 11: a ready pan can be served by calling "chai" (its microphone by the glass)
       if (nx && nx.phase === "pour") showMic(pans.find((q) => `pour-${q.who}` === nx.e.key) || null);
       else hideMic();

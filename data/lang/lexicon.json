@@ -821,6 +821,25 @@
    }
   },
   {
+   "id": "n.three-quarters-of-a-cup",
+   "pos": "N",
+   "gender": null,
+   "gloss": "three quarters of a cup",
+   "glossPl": "three quarters of a cup",
+   "status": "to-record",
+   "src": [
+    "CK-72 (Zafar, 11 Nov): baking's fixed measures (quarter, half, 3/4, full, 1 1/2, 2, 2 1/2)"
+   ],
+   "aliases": [
+    "ph-cups-34"
+   ],
+   "ask": {
+    "word": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.a-while",
    "pos": "N",
    "gender": null,

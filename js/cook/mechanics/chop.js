@@ -418,7 +418,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         kinds.forEach((id) => {
           const key = texFor(id);
-          const s = { id, key, x: SL.x[id], px: topX(SL.x[id]), slotW: Math.min(150, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
+          // (SH-245, contract-115: a wide thing lying on the band, the ginger or the potato, stands at its class's height where its slot is
+          // wide enough; it was held to 150 design px wide whatever its slot, so it stood at 86% of chai's height)
+          const s = { id, key, x: SL.x[id], px: topX(SL.x[id]), slotW: Math.min(200, SL.slotW - 18), scale: 1, img: null, hop: null, refill: 0 };
           s.scale = St.classFit ? z.L(St.classFit(S, key, id, { base: band.base, ppw, slotW: s.slotW }).scale) : S.fitScale(key, z.L(130), z.L(130));
           s.img = sit(s);
           // (s19-games-2, contract-114: a band built for the next round fades in, so a kind that sat elsewhere on the last band never
@@ -1060,7 +1062,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         last = now;
         // (the hops move first, so one landing this frame frees its place for the next; on the beat's clock, the one the hops are
         // started on, so a slow frame never keeps an item up past its place in the schedule)
-        if (HOP) hopTick(beat);
+        // (SH-256, contract-114: a slow frame moves a hop at most a third of its rise, so an item never jumps from its slot to the top of its
+        // hop, or back, in one frame: on a busy machine at the test's speed a whole rise fitted in one frame and the item snapped)
+        if (HOP) hopTick(Math.min(beat, HK.rise / 3));
         if (running && phase) {
           roundT += beat;
           idle += beat;
@@ -1206,18 +1210,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // SH-253, SH-257 (the eye judge, 10 Nov: the garlic flew in through the lit box; daar's onion faded up through it, the light
         // a band of bare worktop for half a second): the knife goes to the strip's right end and the vegetable comes up into it FIRST,
         // and only then the light, round the three of them
+        let vegIn;
         if (own) {
           own.img.setVisible(false);
           veg.setScale(own.scale);
           // (SH-256, contract-114: the same size up in the strip as in its slot, within HOP_GROW)
           const up = Math.min(Math.max(own.scale, vs), own.scale * HOP_GROW);
-          S.tweens.add({ targets: veg, x: z.X(own.px != null ? own.px : own.x), y: z.Y(SY), scaleX: up, scaleY: up, duration: 520, ease: "Cubic.easeOut" });
+          vegIn = tween({ targets: veg, x: z.X(own.px != null ? own.px : own.x), y: z.Y(SY), scaleX: up, scaleY: up, duration: 520, ease: "Cubic.easeOut" });
         } else {
           veg.setScale(vs);
           veg.setAlpha(0);
-          S.tweens.add({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 520, ease: "Sine.easeOut" });
+          vegIn = tween({ targets: veg, y: z.Y(SY), alpha: 1, angle: 40, duration: 520, ease: "Sine.easeOut" });
         }
         await tween({ targets: knife, x: x0, y: z.Y(SY), duration: 320, ease: "Sine.easeInOut", onUpdate: hold });
+        // CK-83 (the eye judge, 10 Nov: chaat's chop light came 0.9 s before the tomato, rising from under the screen; contract-112, "lit
+        // while veg-01 was still moving inside it"): the light waits until the vegetable has arrived, then a beat
+        await vegIn;
         await wait(240);
         // the knife's path ends just past the vegetable (it cuts it as it crosses, then stops), so the box holds the whole move
         const x1 = Math.max(z.X(160), veg.x - veg.displayWidth * 0.5 - z.L(40));
@@ -1234,7 +1242,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom);
           const a = UI.worldToScreen(x1 - kHalf, top);
           const b = UI.worldToScreen(Math.max(x0 + kHalf, kbx.right), bot);
-          return [[a.x, a.y, b.x - a.x, b.y - a.y]];
+          // (CK-83, contract-112 "2 lit regions": the kit's hand holding the knife's handle lies below and right of its fingertip; the box
+          // takes it in, so the hand is never a second lit region outside it: Onboard.HOTSPOT in its 64x80 hand, at the size the page draws it)
+          let r = b.x;
+          let d = b.y;
+          if (fpt) {
+            const fe = global.document && document.querySelector(".ob-finger:not(.ob-circle)");
+            const k = fe && fe.offsetWidth ? fe.offsetWidth / 64 : 1;
+            const hs = (OB && OB.HOTSPOT) || [25, 3];
+            r = Math.max(r, fpt.x + (64 - hs[0]) * k);
+            d = Math.max(d, fpt.y + (80 - hs[1]) * k);
+          }
+          return [[a.x, a.y, r - a.x, d - a.y]];
         };
         const within = () => {
           const lx = UI.worldToScreen(Math.max(z.X(0), Cook.view ? Cook.view.left : z.X(0)), 0).x;
