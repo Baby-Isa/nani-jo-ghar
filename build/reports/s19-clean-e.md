@@ -1,4 +1,4 @@
-# s19-clean-e: report (second part, after the stop)
+# s19-clean-e: report
 
 ## Flaws first
 - **Most of task 1's rows were not touched in this part.** Zafar's three new asks, SH-268's shadow lines and the two coordinator items came first. These rows are still open: CK-46, CK-55, CK-65, CK-75, CK-76, CK-79, DAAR-36, DAAR-39, MAA-20, CHT-13, CHT-17, CHT-19, PAN-21, ART-52, ART-72. Their owners: PAN-21's count pills, CK-46 and CK-55 are `js/cook/ui.js` (a4). Corn's contract-37 needs the corn recipe's asks in `data/cook.json` (six bowls cannot give four decoys).
