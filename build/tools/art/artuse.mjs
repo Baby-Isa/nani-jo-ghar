@@ -372,5 +372,6 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const mb = (b) => (b / 1e6).toFixed(1) + " MB";
   console.log(`move-out: ${mo.totals.unloadedUnnamed.files} pictures loaded by nothing and named by nothing (${mb(mo.totals.unloadedUnnamed.bytes)}); ${mo.totals.namedNotLoaded.files} named but not loaded (${mb(mo.totals.namedNotLoaded.bytes)}); ${mo.totals.videos.files} videos (${mb(mo.totals.videos.bytes)}); ChatGPT folders on main ${mo.totals.chatgptOnMain.folders} (${mb(mo.totals.chatgptOnMain.bytes)})`);
   for (const [g, c] of Object.entries(games)) console.log(`  ${g.padEnd(16)} ${c.howComplete.padEnd(60)} ${c.total} pictures`);
-  if (existsSync(join(ROOT, "data/art/registry.json"))) { const R = await import("./registry.mjs"); R.writeBoard({ root: ROOT, use: { generated: loads.generated, completeness, summary, games, pictures: per }, moveOut: mo }); console.log("lab/art-board-data.js written from the registry"); }
+  // the board's data comes from the registry (a child process: registry.mjs imports this file, so no import cycle at the top level)
+  if (existsSync(join(ROOT, "data/art/registry.json"))) { const r = spawnSync(process.execPath, [join(ROOT, "build/tools/art/registry.mjs"), "--board"], { cwd: ROOT, encoding: "utf8" }); process.stdout.write(r.stdout || ""); process.stderr.write(r.stderr || ""); }
 }

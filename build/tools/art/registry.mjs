@@ -288,8 +288,8 @@ export function save(reg, root = ROOT) {
   reg.pieces = pieces;
   // one line per piece: a diff shows exactly which pieces changed
   const body = Object.entries(pieces).map(([id, e]) => `  ${JSON.stringify(id)}: ${JSON.stringify(e)}`).join(",\n");
-  const head = Object.entries(reg).filter(([k]) => k !== "pieces").map(([k, v]) => ` ${JSON.stringify(k)}: ${JSON.stringify(v)}`).join(",\n");
-  writeFileSync(join(root, REG_PATH), `{\n${head},\n "pieces": {\n${body}\n }\n}\n`);
+  const head = Object.entries(reg).filter(([k]) => k !== "pieces").map(([k, v]) => ` ${JSON.stringify(k)}: ${JSON.stringify(v)},\n`).join("");
+  writeFileSync(join(root, REG_PATH), `{\n${head} "pieces": {\n${body}\n }\n}\n`);
 }
 const ABOUT = "The art registry (s19-artreg; how it works: docs/design-language/art-registry.md). One entry per piece by a stable id: its current file per state or variant, version, status, source, what it replaced, its measurements (each with where it came from). Seeded by build/tools/art/registry.mjs --seed from what the pages really load (build/reports/art-use.json); the cutter adds lines with registry.mjs add; never typed by hand. migrated: the games whose code asks by id (Sprint 20 on); for those, the contract rules fail instead of warn.";
 // every file the registry knows: path -> {id, role, state}
