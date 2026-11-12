@@ -81,6 +81,8 @@
       qty: r.qty || 1,
       // Wave 6: one card per unit ("ba lakri gos" is two skewer cards, each with `cards` slots)
       cards: r.cards || null,
+      // SEK-25: a kind's one piece (a skewer of mishkaki is four gos): its card row is that piece's cards
+      pieces: r.pieces || null,
       // a list said for one card (a mixed skewer's pieces, in order): drawn on that card's slots
       cardOf: r.cardOf || null,
       // the first thing asked for, when the card has its own headline (the pantry's "Muke dudh de."): stays first

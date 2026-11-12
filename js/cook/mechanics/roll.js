@@ -273,6 +273,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (opts.onStart) opts.onStart();
         }
         pin.y = Cook.clamp(p.worldY, cy - z.L(150), cy + z.L(150));
+        // (SH-228, contract-91: rolling is the child's action: the idle clock starts again, at most twice a second)
+        const nowP = performance.now();
+        if (global.NaniGuide && global.NaniGuide.poke && nowP - (rollOne.poked || 0) > 500) {
+          rollOne.poked = nowP;
+          global.NaniGuide.poke();
+        }
         r = Math.min(rimR || Rmax * k.maxSize, r + d * k.grow);
         if (rimR && r >= rimR) {
           setR();
