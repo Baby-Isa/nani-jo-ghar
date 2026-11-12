@@ -200,6 +200,17 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // how much of its canvas a picture's round body fills (the v3 art has margins): a maani r px across is its disc, not its box
     const bodyOf = (key) => (/^mv-(raw|half|cooked|burnt)-/.test(key) ? DISC_R : /^mv-ball-/.test(key) ? BALL_R : 0.5);
     const discScale = (key, r) => r / (bodyOf(key) * S.texSize(key).w);
+    /*
+     * SH-268 (Zafar, 12 Nov: maani's rotis cast the kit's shadow like every worktop object; its dough balls and heaps stay as MAA-09 has
+     * them): a maani rolled out, on the tawa and on its plate gets the kit's one soft shadow, made afresh where it comes to rest (a
+     * flight lifts the old one, S.fly; the ball it was had none)
+     */
+    const rotiShade = (sp) => {
+      if (!sp || !sp.active || !Cook.Kit || !Cook.Kit.shadow || !/^mv-(raw|half|cooked|burnt)-|^chapati-/.test(sp.texture.key)) return;
+      if (sp.shadow && sp.shadow.active) sp.shadow.destroy();
+      sp.shadow = null;
+      Cook.Kit.shadow(S, sp);
+    };
     const sizes = K.sizes ? Object.keys(K.sizes).map((id) => ({ id, r: K.sizes[id] * ROLL_K })) : null;
     const rMax = sizes ? Math.max(...sizes.map((s) => s.r)) : kRoll.radius;
     // MAA-21 (Zafar, 9 Nov: "at the beginning, there's a hard stop around the perimeter of, or maybe just inside the perimeter of the
@@ -570,10 +581,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           c.started = true;
           update();
         },
+        onTex: (key, dough) => rotiShade(dough),
       });
       pinRest(true);
       if (!r) return; // it went back to its pile
       zr.skill(r.score, "roll");
+      rotiShade(r.sprite); // (SH-268: rolled out on the board)
       chakla = null;
       const it = { sprite: r.sprite, type: c.type, size: r.target || null, key: keyOf(c.type, r.target), score: r.score, where: "board", landed: true };
       it.sizeF = sizes ? Math.sqrt((sizes.find((s) => s.id === it.size) || { r: rMax }).r / rMax) : 1;
@@ -612,6 +625,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const sz = discScale(it.sprite.texture.key, TAWA_R * 0.72 * it.sizeF);
       it.sprite.setDepth(D.item + 1);
       await S.fly(it.sprite, TW.x, TW.y, { scale: sz, duration: 380, arc: 90 });
+      rotiShade(it.sprite); // (SH-268: on the tawa)
       t.flying = false;
       it.sprite.baseScale = sz;
       // (MAA-19: the staged script's last step, the flip, is the kit's control now (flipLead): the script stands down as the first maani
@@ -713,6 +727,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const fly = S.fly(sp, d.x + fx, d.y + fy, { scale: discScale(sp.texture.key, pr), duration: 450 });
       update();
       await fly;
+      rotiShade(sp); // (SH-268: on its plate)
       it.where = "plate";
       it.state = state;
       // no separate tally: the stack on its plate is the count (§14a's rule, here too)
@@ -859,6 +874,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         const rawKey = texOf(type, "raw");
         const dough = S.track(S.add.image(CH.x, CH.y, rawKey).setDepth(D.item + 1));
         dough.setScale(discScale(rawKey, kRoll.startRadius * 1.5));
+        rotiShade(dough); // (SH-268)
         pinRest(false);
         await Cook.tween(S, { targets: dough, scale: discScale(rawKey, sz.r), duration: ms(1100), ease: "Sine.easeInOut" });
         pinRest(true);
@@ -962,6 +978,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const [f0x, f0y] = FAN[j % FAN.length];
       const fk = Math.min(1, room / Math.max(1, Math.hypot(f0x, f0y)));
       await S.fly(it.sprite, d.x + f0x * fk, d.y + f0y * fk, { scale: discScale(tex, pr), duration: 520, arc: 120 });
+      rotiShade(it.sprite); // (SH-268: on its plate)
       S.sparkle(d.x, d.y);
       if (ctx.tickCard) ctx.tickCard(key);
     };
