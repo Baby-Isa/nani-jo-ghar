@@ -2245,7 +2245,23 @@
       c.querySelectorAll(".wc14-pic, .wc14-k, .wc14-en").forEach((x) => x.classList.remove("revealed", "wc14-peek"));
       c.querySelectorAll(".wc14-dots").forEach((x) => x.classList.remove("wc14-gone"));
       if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
-      const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, , cls]) => c.classList.contains(cls));
+      // (s19-clean-e's sekelo L2-L4, 12 Nov: a part with no room on the card, sekelo's picture squeezed to 0 px by its two-line Kutchi in
+      // the row-shaped card, was asked for and lit as a 12 px strip, its tap landing on the order's veil: the child stuck. A part is
+      // asked for only while the child can tap it: a box of its own at least TAP_MIN px each way, the card itself under its middle)
+      const TAP_MIN = 16;
+      const tappable = (el) => {
+        if (!el || !el.isConnected) return false;
+        const b = el.getBoundingClientRect();
+        if (b.width < TAP_MIN || b.height < TAP_MIN) return false;
+        const at = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+        return !!at && c.contains(at);
+      };
+      const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, sel, cls]) => {
+        if (!c.classList.contains(cls)) return false;
+        if (tappable(c.querySelector(sel))) return true;
+        c.classList.remove(cls); // (a part with no room is shown, never asked for)
+        return false;
+      });
       let want = null;
       // (the lesson's own taps: the card's peek buttons never take them, so nothing is logged as a peek or counted as help)
       const onClick = (ev) => {
@@ -2274,9 +2290,15 @@
             say("card", `shown order-popup ${c.dataset.word || ""} ${steps.map((x) => x[0]).join(",")}`);
           }
           Cook.expect = { kind: "click", selector: `.wc14-lesson ${sel}` };
+          // (never stuck: a part that stops being tappable for a second, its card moved or covered, is shown and the lesson goes on)
+          let lost = 0;
           await new Promise((res) => {
             want = { el, res };
-            const q = setInterval(() => !here() && (clearInterval(q), res(false)), 200);
+            const q = setInterval(() => {
+              if (!here()) return clearInterval(q), res(false);
+              lost = tappable(el) ? 0 : lost + 200;
+              if (lost >= 1000) clearInterval(q), say(slot, "not tappable"), res(true);
+            }, 200);
             want.res = (v) => (clearInterval(q), res(v));
           });
           want = null;
@@ -2444,11 +2466,20 @@
         if (M.focus) M.focus(who);
         const onlyRow = (p) => [].concat(p.row || [], (p.line && p.line.rows) || []).some((r) => only.includes(r));
         const parts = only ? c._parts().filter(onlyRow) : c._parts();
+        // (SH-267: an order with no dish of its own, chop's "Muke ba dungri khape": what its first sentence asks for is its dish, the
+        // first thing that sentence says, with its count, "2 onions"; contract-119 found chop's card never flashed)
+        const headless = !c._parts().some((q) => q.row && q.row.head);
+        let flashed = false;
         for (const p of parts) {
           if (!live()) return;
           const r = p.row;
           // SH-267 (Zafar, 12 Nov, level 1 only): as the customer says the dish, its card flashes up beside their bubble
           if (r && r.head) UI.dishFlash(who, r);
+          else if (headless && !flashed && p === parts[0] && !only) {
+            const first = r && m.away.has(r) ? r : foldedOf(p)[0];
+            if (first) UI.dishFlash(who, first);
+          }
+          flashed = true;
           const item = r && m.away.has(r);
           // CHAI-96 (Zafar, 6 Nov night: "any item that goes in the tea except for water and tea is listed ... saffron style tea and all
           // the other style teas as well"): the rows a headline says for itself ("Muke elchi waari chai khape" says the elchi row,

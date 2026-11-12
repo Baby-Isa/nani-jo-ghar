@@ -42,3 +42,18 @@ test("contract-120: not a Cook flow, not judged", () => {
   check120({ flow: "clinic:waiting" }, [sample(1000, [pan(null)]), { type: "c", k: "x", t: 9000 }], (c) => out.push(c));
   assert.equal(out.length, 0);
 });
+
+// contract-121 (s19-clean-e's report, 12 Nov: sekelo L2-L4 stuck at the order pop-up's card lesson)
+import { check121 } from "./lib/contract-shade.mjs";
+const run121 = (tl) => { const out = []; check121({ flow: "cook:mishkaki-grill@L2" }, tl, (c, t, m) => out.push(m)); return out; };
+const L = (t, box, hit = true) => ({ type: "c", k: "s19lesson", t, sel: ".wc14-lesson .wc14-pic", box, hit, top: hit ? "img" : "div.njg-rq-veil" });
+const lit = (t, holes) => ({ type: "c", k: "s19lit", t, holes });
+test("contract-121: a part squeezed to a strip, covered, or outside the hole is red; a roomy part in the hole is green", () => {
+  const end = { type: "c", k: "x", t: 5000 };
+  assert.equal(run121([lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120]), end]).length, 0, "roomy, on top, in the hole: green");
+  assert.equal(run121([lit(900, [[369, 19, 651, 31]]), L(1000, [375, 25, 645, 25]), end]).length, 1, "0 px tall: red");
+  assert.equal(run121([lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120], false), end]).length, 1, "under the veil: red");
+  assert.equal(run121([lit(900, [[700, 10, 900, 200]]), L(1000, [370, 20, 650, 120]), end]).length, 1, "outside the hole: red");
+  const blocked = [{ type: "c", k: "input", t: 1000, x: 354, y: 8, on: "div.njg-rq-veil", exp: { cook: { selector: ".wc14-lesson .wc14-pic" } } }, { type: "c", k: "input-blocked", t: 1050 }, end];
+  assert.equal(run121(blocked).length, 1, "a lesson tap blocked by the light: red");
+});

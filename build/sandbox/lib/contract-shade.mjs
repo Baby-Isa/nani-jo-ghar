@@ -44,8 +44,41 @@ export function check120(r, tl, add) {
   }
 }
 
+// ---- contract-121 (s19-clean-e's report, 12 Nov: sekelo L2-L4 stuck at the order pop-up's card lesson, its picture squeezed to 0 px
+// and lit as a 12 px strip, the tap landing on the order's veil): the card lesson's part asked for is tappable under the light ----
+export const LESSON_MIN = 16;    // the part asked for: at least this many px each way
+export const LESSON_HOLD_MS = 600; // a sample held this long is what the child sees
+export const LESSON_CHECKS = {
+  "contract-121": { item: "lesson-tappable", title: "the card lesson's part asked for is tappable under the light", how: `Cook flows. Every s19lesson sample (lib/contract-shade.mjs LESSON_HOOK: while the order pop-up's card lesson waits for a tap, js/cook/ui.js blurLesson, the part it asks for by Cook.expect) held ${LESSON_HOLD_MS} ms: the part smaller than ${LESSON_MIN} px either way, the page's top thing at its middle not the lesson's card (the order's veil, another layer), or its middle outside every lit hole of the light (the s19lit sample before it) is a break; a tap the light blocked while the lesson waited (input-blocked with the lesson's selector expected) is a break too. Once per page (SH-213; a child can get stuck: non-negotiable 7).` },
+};
+export function check121(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const L = tl.filter((e) => e.type === "c" && e.k === "s19lesson");
+  const lit = tl.filter((e) => e.type === "c" && e.k === "s19lit");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  for (let i = 0; i < L.length; i++) {
+    const e = L[i];
+    if (!e.box) continue;
+    const held = (L[i + 1] ? L[i + 1].t : tEnd) - e.t;
+    if (held < LESSON_HOLD_MS) continue;
+    const [l, t, rr, b] = e.box;
+    const cx = (l + rr) / 2, cy = (t + b) / 2;
+    const h = [...lit].reverse().find((x) => x.t <= e.t + LESSON_HOLD_MS);
+    const inHole = !h || !(h.holes || []).length || h.holes.some((q) => cx >= q[0] && cx <= q[2] && cy >= q[1] && cy <= q[3]);
+    if (rr - l < LESSON_MIN || b - t < LESSON_MIN) return add("contract-121", e.t, `the card lesson asks for ${e.sel} but it is ${Math.round(rr - l)}x${Math.round(b - t)} px [${e.box.join(",")}]: nothing a child can tap`);
+    if (!e.hit) return add("contract-121", e.t, `the card lesson asks for ${e.sel} [${e.box.join(",")}] but the page's top thing at its middle is ${e.top || "?"}: the tap never reaches it`);
+    if (!inHole) return add("contract-121", e.t, `the card lesson asks for ${e.sel} [${e.box.join(",")}] but its middle is outside the light's hole${h ? ` ${JSON.stringify(h.holes)}` : ""}: the light blocks the tap`);
+  }
+  const blocked = tl.filter((e) => e.type === "c" && e.k === "input" && /wc14-lesson/.test(JSON.stringify(e.exp || "")));
+  for (const b of blocked) {
+    const nx = tl.find((x) => x.t >= b.t && x.t <= b.t + 300 && x.type === "c" && x.k === "input-blocked");
+    if (nx) return add("contract-121", b.t, `a tap while the card lesson waited (${(b.exp && b.exp.cook && b.exp.cook.selector) || "its part"}) was blocked by the light at ${b.x},${b.y} on ${b.on || "?"}: the child is stuck`);
+  }
+}
+
 export function checkShade(r, tl, v, add) {
   check120(r, tl, add);
+  check121(r, tl, add);
 }
 
 // The audit, per page: every worktop object seen, with or without its shadow (the report's table reads it from a run's results)
@@ -135,4 +168,35 @@ function shadehook(MIN, D0, D1, INSIDE, SKIP, P0, P1, MAX) {
     } catch (e) { /* a probe only */ }
   }, 400);
 }
+// the card lesson's part asked for, while it waits: {k: "s19lesson", sel, box, hit, top} on a change, {k: "s19lesson", box: null} when gone
+function lessonhook() {
+  if (window.__njgLessonHook) return;
+  window.__njgLessonHook = true;
+  const emit = (e) => {
+    try {
+      e.type = "c"; e.t = Date.now(); e.page = location.pathname.replace(/^\//, "");
+      if (window.__njgLog) window.__njgLog(e); else (window.__njgPending = window.__njgPending || []).push(e);
+    } catch (x) { /* a probe only */ }
+  };
+  let last = "";
+  setInterval(() => {
+    try {
+      const card = document.querySelector(".wc14-lesson");
+      const ex = window.Cook && window.Cook.expect;
+      const sel = card && ex && typeof ex.selector === "string" && /wc14-lesson/.test(ex.selector) ? ex.selector : null;
+      const el = sel ? document.querySelector(sel) : null;
+      if (!el) { if (last !== "none") { last = "none"; emit({ k: "s19lesson", box: null }); } return; }
+      const r = el.getBoundingClientRect();
+      const box = [Math.round(r.left), Math.round(r.top), Math.round(r.right), Math.round(r.bottom)];
+      const at = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      const hit = !!at && card.contains(at);
+      const top = at ? `${at.tagName.toLowerCase()}${at.className && typeof at.className === "string" ? "." + at.className.trim().split(/\s+/).join(".") : ""}` : null;
+      const sig = JSON.stringify([sel, box, hit]);
+      if (sig === last) return;
+      last = sig;
+      emit({ k: "s19lesson", sel, box, hit, top });
+    } catch (e) { /* a probe only */ }
+  }, 150);
+}
+export const LESSON_HOOK = `(${lessonhook.toString()})()`;
 export const SHADE_HOOK = `(${shadehook.toString()})(${SHADE_MIN}, ${SHADE_DEPTH[0]}, ${SHADE_DEPTH[1]}, ${SHADE_INSIDE}, ${JSON.stringify(SHADE_SKIP.source)}, ${SHADE_PEOPLE[0]}, ${SHADE_PEOPLE[1]}, ${SHADE_MAX})`;
