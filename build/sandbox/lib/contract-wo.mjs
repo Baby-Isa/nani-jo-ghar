@@ -203,7 +203,7 @@ function wohook() {
           const rows = [...el.querySelectorAll(".oc-row")].filter(shown);
           const face = el.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
           card = {
-            who: el.dataset.who || "?", phase: el.classList.contains("njg-wo-open") ? "open" : "line", box: R(el.getBoundingClientRect()),
+            who: el.dataset.who || "?", phase: el.classList.contains("njg-wo-going") ? "back" : el.classList.contains("njg-wo-open") ? "open" : "line", box: R(el.getBoundingClientRect()),
             items: rows.map((x) => R(x.getBoundingClientRect())), rows: rows.length,
             marked: rows.filter((x) => x.querySelector(".njg-wo-mark")).length,
             ticked: el.classList.contains("njg-wo-line") ? !!el.querySelector(".njg-wo-mark.ok") || el.classList.contains("njg-wo-bad") : undefined,

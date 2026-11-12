@@ -217,13 +217,14 @@ async function play(o = {}) {
         // the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): at least 1.7 times the side panel's face
         // circle at every size. At 740x320 the card's shrink to fit took it to 67 px against a 45 px panel face (b2's item 2): the face
         // grows within the card until it is, and the card is fitted again
-        const fromFace = from && from.querySelector(".njg-face, .oc-face");
-        const want = fromFace ? fromFace.getBoundingClientRect().width * 1.7 : 0;
-        for (let k = 0, f = 2; want && k < 4; k++) {
+        // (the side panel card's face circle: its biggest face box, the circle round the picture, as the checks measure it)
+        const fromFace = from ? Math.max(0, ...[...from.querySelectorAll(".njg-face, .oc-face")].map((f) => f.getBoundingClientRect().width)) : 0;
+        const want = fromFace * 1.8;
+        for (let k = 0, f = 2; want && k < 5; k++) {
           const fe = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
           const w = fe ? fe.getBoundingClientRect().width : 0;
           if (!w || w >= want) break;
-          f = Math.min(5, f * (want / w) * 1.05);
+          f = Math.min(6, f * (want / w) * 1.08);
           card.style.setProperty("--wo-face", f.toFixed(2));
           fit(card, true);
         }
@@ -259,6 +260,7 @@ async function play(o = {}) {
         await wait(T(LOOK.hold));
         // back into its side panel card
         const back = from && from.isConnected ? from.getBoundingClientRect() : null;
+        card.classList.add("njg-wo-going"); // (on its way back: the checks judge the card standing open, never its flight)
         if (back && back.width > 2) await move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly));
         card.remove();
       }
