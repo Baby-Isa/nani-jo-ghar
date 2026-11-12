@@ -2648,7 +2648,17 @@
         if ($("#mission")) $("#mission").scrollTop = 0; // (from its top, the first card whole)
         // (the row from its first card)
         // (as a glide, so a redraw carries it on: never back to the order's last card)
-        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild, { home: true }));
+        // (contract-116, daar's tadka at 740x320: the row went home with its first cards ticked and the card to do now, lasan, cut at the
+        // row's edge for 2 s: the row goes home only as far as keeps the current card whole: else it leads to it, as while the order
+        // is given)
+        if (s14)
+          document.querySelectorAll("#mission .oc-row14").forEach((x) => {
+            const first = x.firstElementChild;
+            if (!first) return;
+            const cur = [...x.querySelectorAll(":scope > .oc-row[data-key]")].find((r) => !r.classList.contains("done") && !r.classList.contains("no") && r.dataset.serve !== "1");
+            const whole = !cur || cur.offsetLeft - first.offsetLeft + cur.offsetWidth <= x.clientWidth + 1;
+            OCard().glideTo(whole ? first : cur, whole ? { home: true } : { lead: true });
+          });
       }
       // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
       // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
