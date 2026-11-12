@@ -66,7 +66,7 @@ import { setTimeout } from "../life.js";
     // (CK-89: a pinch has no Kutchi yet: the whole sentence is its English in grey, never the thing's word alone with the amount left
     // out, never an invented word; a line for the recording sheet)
     if (s.amt === "pinch") {
-      const amt = amountEn("pinch") || "a pinch";
+      const amt = amountEn("pinch") || amountEn(s.units) || "";
       return Lang.toRecord(frame.replace("{amount}", amt).replace("{thing}", Cook.english(s.id)), `baking: ${frame.replace("{amount}", amt)}`);
     }
     const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(s.parts && s.parts.length ? s.parts : [s.id]) });
@@ -293,7 +293,7 @@ import { setTimeout } from "../life.js";
       const top = bowl.y - bowl.displayHeight;
       // (its colours, the settings': cool white faces, grey edges, a warm shade under it)
       const C = SP.colours || {};
-      const hx = (k) => parseInt(String(C[k] || "#ffffff").slice(1), 16);
+      const hx = (k) => parseInt(String(C[k] || "").slice(1), 16) || 0;
       saltIn.forEach((amt, i) => {
         const w = bw * (SP[amt] || (amt === "pinch" ? 0.12 : 0.22));
         const x = bowl.x - bw / 2 + bw * at[0] + (i % 2 ? 1 : -1) * i * bw * 0.08;
