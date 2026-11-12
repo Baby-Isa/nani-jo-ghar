@@ -82,38 +82,10 @@
   "_s19k2": "S19 (s19-games-1; the kitchen-and-items run, 11 Nov): karahi is the run's K8, the karahi with oil straight down (v4/samosa/karahi-oil; a redo keeps its name and box, ART-75), measured on the cut: body cx, cy, r (of w, handles left out) and oil (the oil's radius, 305 px, over the body's, 394); plate is S5, the cream plate with its paper napkin (v4/samosa/plate-napkin, ART-71), its rim's circle (421 px of 896) and flat: the napkin's square middle over the rim's radius."
  },
  "items": {
-  "_ck82": "CK-82 (the eye judge, 10 Nov: 'the order card's chundo picture matches the shelf's'; the coordinator, 10 Nov: a game's own items[].card wins, the card shows what the child taps): each filling's card on the order is its heap as it lies on the band (art.heaps), read by js/cook/ui.js cardOfIds",
+  "_ck82": "CK-82 (the eye judge, 10 Nov: 'the order card's chundo picture matches the shelf's'): chundo's card on the order is its filling as it lies on the band (art.heaps), read by js/cook/ui.js cardOfIds (a game's own items[].card wins). Only chundo: the other fillings keep one of the thing on their cards (contract-104: a card is never the shelf's heap or pile); mince has no 'one of it'",
   "ph-keema": {
    "word": "ph-keema",
    "card": "assets/cook/items/v3/samosa/fill-chundo.webp"
-  },
-  "veg-01": {
-   "word": "veg-01",
-   "card": "assets/cook/items-s08b/potato/potato-pile-v3.webp"
-  },
-  "veg-10": {
-   "word": "veg-10",
-   "card": "assets/cook/items/v3/samosa/fill-peas.webp"
-  },
-  "veg-02": {
-   "word": "veg-02",
-   "card": "assets/cook/items/v3/samosa/fill-onion.webp"
-  },
-  "veg-12": {
-   "word": "veg-12",
-   "card": "assets/cook/items/v3/daar/chop-heap-chilli.webp"
-  },
-  "ph-dhana": {
-   "word": "ph-dhana",
-   "card": "assets/cook/items/v3/samosa/fill-dhania.webp"
-  },
-  "veg-carrot": {
-   "word": "veg-carrot",
-   "card": "assets/cook/items/v3/samosa/fill-carrot.webp"
-  },
-  "veg-cabbage": {
-   "word": "veg-cabbage",
-   "card": "assets/cook/items/v3/samosa/fill-cabbage.webp"
   }
  },
  "grid": {

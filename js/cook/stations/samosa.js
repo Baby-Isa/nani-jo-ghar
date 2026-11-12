@@ -1341,6 +1341,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the flames peek out past the karahi's body (flame-high's ring: 1.2 x flameR)
     // (SH-258: the asker's face beside the knob from the first frame, as chai's hob carries it: the kit's burner badge)
     const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.9, who: who || undefined, reach: bodyR * reachK });
+    // (s19-clean-e, contract-82: the knob's light, its box and the light's pad, reached the face above it in the column at 740x320, where the
+    // pad is more world px: the face stands that much higher, its gap the pad and a little more)
+    if (hob.knobs === "left" && burner.face && burner.knob) {
+      try {
+        const ppw = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+        const pad = (((global.Onboard && global.Onboard.BOX_PAD) || 10) + 4) / ppw;
+        const gap = burner.knob.y - (Kit.KNOB || 76) / 2 - (burner.face.y + burner.face.displayHeight / 2);
+        if (gap < pad) burner.face.y -= pad - gap;
+      } catch (e) {
+        /* the kit's column as it is */
+      }
+    }
     // the karahi, placed by its measured round body (never the handle-inclusive box)
     const KM = META.karahi;
     const karahi = S.track(S.add.image(at.x, at.y, "sv3-karahi").setOrigin(KM.cx, KM.cy).setDepth(D.item));

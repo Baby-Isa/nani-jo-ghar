@@ -326,13 +326,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
       // (S19, wave B: on the hop the spacing a hop is started at is its own: the gap scheduled before it plus any wait for a free
       // place, HK.up being up already; sec, game seconds)
-      // (s19-clean-e, contract-65 at 740x320 on a busy machine: the round's clock is the hops' capped beat, so on slow frames it runs
-      // slower than the test speed; a spacing in game seconds is turned into real ms at the clock's measured rate, game seconds a real
-      // second, never assumed to be the test speed: the waves' schedule and the hops are unchanged)
-      let clockRate = Cook.speed || 1;
       const throwNote = (r, sec) => {
         try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round(((sec != null ? sec : r.every) * 1000) / Math.max(0.05, clockRate))} x:${Cook.speed || 1}` });
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round(((sec != null ? sec : r.every) * 1000) / (Cook.speed || 1))} x:${Cook.speed || 1}` });
         } catch (e) {
           /* only a log */
         }
@@ -1069,7 +1065,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // still up past its hang)
         const beat0 = Math.min(0.25, (now - last) / 1000) * Cook.speed;
         const beat = HOP ? Math.min(beat0, HK.rise / 3) : beat0;
-        if (now > last) clockRate += ((beat * 1000) / (now - last) - clockRate) * 0.2;
         // game seconds per real second (slow frames are capped), for the test's aim below
         if (now > last) gameRate += ((dt * 1000) / (now - last) - gameRate) * 0.2;
         last = now;
