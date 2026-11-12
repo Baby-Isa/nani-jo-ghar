@@ -562,7 +562,7 @@
    "size": "L",
    "view": "F",
    "states": {
-    "empty": "assets/cook/proto/baking/jug-empty.webp",
+    "empty": "assets/cook/items/v4/baking/jug-0.webp",
     "water": "assets/cook/items/v4/baking/jug-4.webp",
     "milk": "assets/cook/items/v4/baking/jug-milk.webp",
     "flour": "assets/cook/items/v4/baking/jug-flour.webp",
@@ -795,11 +795,11 @@
   },
   "ph-cup": {
    "item": "jug",
-   "card": "assets/cook/proto/baking/jug-flour.webp"
+   "card": "assets/cook/items/v4/baking/jug-flour.webp"
   },
   "ph-half": {
    "item": "jug",
-   "card": "assets/cook/proto/baking/jug-water.webp",
+   "card": "assets/cook/items/v4/baking/jug-4.webp",
    "note": "adh, recorded; CHAI-67's word moment names it"
   },
   "ph-quartercup": {
@@ -857,19 +857,19 @@
   "measures": [
    {
     "id": "ph-half",
-    "empty": "assets/cook/proto/baking/jug-empty.webp",
-    "full": "assets/cook/proto/baking/jug-water.webp",
-    "lineAt": 0.672,
-    "fill": 0.29,
-    "card": "assets/cook/proto/baking/jug-water.webp"
+    "empty": "assets/cook/items/v4/baking/jug-0.webp",
+    "full": "assets/cook/items/v4/baking/jug-4.webp",
+    "lineAt": 0.7,
+    "fill": 0.26,
+    "card": "assets/cook/items/v4/baking/jug-4.webp"
    },
    {
     "id": "ph-cup",
-    "empty": "assets/cook/proto/baking/jug-empty.webp",
-    "full": "assets/cook/proto/baking/jug-water.webp",
-    "lineAt": 0.532,
-    "fill": 0.47,
-    "card": "assets/cook/proto/baking/jug-flour.webp"
+    "empty": "assets/cook/items/v4/baking/jug-0.webp",
+    "full": "assets/cook/items/v4/baking/jug-4.webp",
+    "lineAt": 0.55,
+    "fill": 0.45,
+    "card": "assets/cook/items/v4/baking/jug-flour.webp"
    }
   ],
   "_measures": "each measure the jug, empty, then its full picture revealed from the bottom up to its line (items.jug.lineAt: 2 quarter cups 0.672, 4 quarter cups 0.532, from the picture's top); fill, the word moment's share of the inside (the jug's inside about 0.12 to 0.90 of the picture: (0.90 - lineAt) / 0.78); placeholders until ART-38 (a vessel tilted into a side-on measure, empty, half and full)",
@@ -881,7 +881,8 @@
    "ph-cups-2h"
   ],
   "ref": "docs/design-language/art-plans/s17-art1-art-plan.md §1.1; baking's own word moment art (ART-37/38) is a placeholder this sprint",
-  "note": "adh is recorded; the other four are grey English until Mum gives them"
+  "note": "adh is recorded; the other four are grey English until Mum gives them",
+  "_measuresK3": "ART-79 (12 Nov): the moment's jug is the v4 glass jug (B2: jug-0 empty, jug-4 its water), its lines the water levels drawn on it (items.jug.lineAtFor.water: a half 0.70, a cup 0.55); the cards the v4 jugs"
  },
  "end": {
   "display": "progress",
@@ -930,8 +931,6 @@
   "assets/cook/proto/baking/oven-shut.webp",
   "assets/cook/proto/baking/oven-baking.webp",
   "assets/cook/proto/baking/oven-open.webp",
-  "assets/cook/proto/baking/jug-empty.webp",
-  "assets/cook/proto/baking/jug-water.webp",
   "assets/cook/items/v4/baking/jug-milk.webp",
   "assets/cook/items/v4/baking/jug-flour.webp",
   "assets/cook/items/v4/baking/jug-yoghurt.webp",
@@ -962,8 +961,7 @@
   "assets/cook/items-s17-stove/f-salt-jar.webp",
   "assets/cook/items-s17-stove/f-yoghurt.webp",
   "assets/cook/items-s17-stove/f-ghee.webp",
-  "assets/cook/items/v4/daar/loon.webp",
-  "assets/cook/proto/baking/jug-flour.webp"
+  "assets/cook/items/v4/daar/loon.webp"
  ],
  "amountEn": {
   "1": "a quarter cup",
