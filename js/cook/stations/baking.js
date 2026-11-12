@@ -499,7 +499,9 @@ import { setTimeout } from "../life.js";
       const r = await S.step({
         items: Object.assign({}, shelf),
         expected: s.id,
-        sayLine: call,
+        // (s19-clean-e2, contract-36: her line again after the pause comes with the jar's light, so it is the step's call; the first
+        // saying above stays the order, contract-89)
+        sayLine: Lang.role(amountLine(s), "call"),
         io: z.io,
         quiet: z.quiet,
         onWrong: (key) => (Cook.Coach.wrong(), z.listen(false, `took ${key} for ${s.id}`)),
