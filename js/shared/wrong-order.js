@@ -34,16 +34,26 @@
 // (Zafar, 11 Nov night: "change minimum because you want to be fast": every beat as short as it can be and still be seen)
 const LOOK = Object.freeze({
   veilIn: 160, // the veil fades in
-  fly: 300, // a card from the side panel to the middle, and a wrong one back
+  fly: 340, // a card from the side panel to the middle, and a wrong one back
   mark: 380, // a mark lands (the tick again, or the cross) and is seen
-  glow: 380, // a right line glows gold
-  float: 420, // a right line fades up off the screen
+  // s19-clean-a2 (the orchestrator's lab frames, 0.9 s apart, never caught a right one in the middle): a right line holds in the
+  // middle, ticked and glowing, long enough to be seen on any frame (~1.7 s from the panel to gone), still brisk
+  tick: 300, // a right line's tick lands (with its ding) before the glow
+  glow: 620, // a right line glows gold in the middle
+  float: 520, // a right line fades up off the screen
   open: 260, // a wrong line opens to all its items
   sayCap: 1600, // the most one line holds the next (a voice that never starts does not stall it)
   rowGap: 100, // one row to the next, quickly
-  hold: 520, // the wrong card, all marked, before it shrinks back
-  gap: 120, // one card to the next
+  hold: 620, // the wrong card, all marked, before it shrinks back
+  gap: 140, // one card to the next
   edge: 0.06, // the share of the play area kept clear round the pop-up (its edges still seen)
+  // "big, central" (Zafar, 11 Nov night): the open card grows to fill the middle (never past the room the veil leaves), a line too
+  bigW: 0.92, // the open card's most width, a share of the room
+  bigH: 0.9, // its most height
+  bigK: 2.4, // its most growth
+  lineW: 0.78, // a compact line's most width
+  lineH: 0.34, // its most height
+  lineK: 1.7, // its most growth
 });
 
 let open = 0;
@@ -63,10 +73,11 @@ const markEl = (kind) => {
 };
 
 /** A transform that puts box a (a DOMRect) over box b, from b's own place: for the FLIP moves. */
-function over(a, b) {
+function over(a, b, z = 1) {
   const k = Math.max(0.05, Math.min(a.width / Math.max(1, b.width), a.height / Math.max(1, b.height)));
-  const dx = a.left + a.width / 2 - (b.left + b.width / 2);
-  const dy = a.top + a.height / 2 - (b.top + b.height / 2);
+  // (z: the element's own CSS zoom, which scales its transform's lengths too: the move is given in its unzoomed pixels)
+  const dx = (a.left + a.width / 2 - (b.left + b.width / 2)) / z;
+  const dy = (a.top + a.height / 2 - (b.top + b.height / 2)) / z;
   return `translate(${dx}px, ${dy}px) scale(${k})`;
 }
 function move(el, from, to, ms) {
@@ -103,20 +114,30 @@ async function play(o = {}) {
   const stage = doc.createElement("div");
   stage.className = "njg-wo-stage";
   veil.appendChild(stage);
-  // (over the play area: the host is positioned by its own page; a body host gets a fixed layer)
-  if (host === doc.body) veil.classList.add("njg-wo-fixed");
-  host.appendChild(veil);
+  // over the play area: a fixed layer on the page laid over the host's box (s19-clean-a2: inside the host, whose own overflow is
+  // hidden, a wrong card going back into the side panel was cut at the play area's edge on its way)
+  veil.classList.add("njg-wo-fixed");
+  if (host !== doc.body) {
+    const hb = host.getBoundingClientRect();
+    Object.assign(veil.style, { left: `${hb.left}px`, top: `${hb.top}px`, width: `${hb.width}px`, height: `${hb.height}px`, right: "auto", bottom: "auto" });
+  }
+  doc.body.appendChild(veil);
   note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
   await move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn));
   const wrong = [];
-  const fit = (el) => {
-    // every item in one view: the card shrinks as a whole to the room the veil leaves (never cut, never scrolled)
+  const fit = (el, big) => {
+    // every item in one view, as big as the middle allows (Zafar, 11 Nov night: "big, central"): the card scales as a whole to the
+    // room the veil leaves, growing to its share of it or shrinking to fit (never cut, never scrolled)
     el.style.transform = "";
+    el.style.setProperty("--wo-k", "1");
     const room = stage.getBoundingClientRect();
     const w = el.offsetWidth || 1;
     const h = el.offsetHeight || 1;
-    const k = Math.min(1, room.width / w, room.height / h);
-    el.style.setProperty("--wo-k", String(Math.max(0.3, k)));
+    const k = big
+      ? Math.min(LOOK.bigK, (room.width * LOOK.bigW) / w, (room.height * LOOK.bigH) / h)
+      : Math.min(LOOK.lineK, (room.width * LOOK.lineW) / w, (room.height * LOOK.lineH) / h, room.width / w, room.height / h);
+    el._woK = Math.max(0.3, k);
+    el.style.setProperty("--wo-k", String(el._woK));
     return k;
   };
   try {
@@ -130,14 +151,16 @@ async function play(o = {}) {
       fit(line);
       const at = line.getBoundingClientRect();
       note("wo-card", { who: c.who, ok: !!c.ok, phase: "line" });
-      if (fromBox && fromBox.width > 2) await move(line, { transform: over(fromBox, at), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly));
+      if (fromBox && fromBox.width > 2) await move(line, { transform: over(fromBox, at, line._woK), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly));
       if (c.ok) {
         // the tick again, a ding, the gold glow, then up and away
-        line.classList.add("njg-wo-ok");
         line.querySelector(".njg-wo-row").appendChild(markEl("ok"));
         sound("ding");
+        note("wo-card", { who: c.who, ok: true, phase: "tick" });
+        await wait(T(LOOK.tick));
+        line.classList.add("njg-wo-ok");
         await wait(T(LOOK.glow));
-        const up = -(line.getBoundingClientRect().bottom + 40);
+        const up = -(line.getBoundingClientRect().bottom + 40) / (line._woK || 1);
         await move(line, { transform: "none", opacity: 1 }, { transform: `translateY(${up}px)`, opacity: 0 }, T(LOOK.float));
         line.remove();
         continue;
@@ -163,7 +186,7 @@ async function play(o = {}) {
         card.appendChild(body);
         card.appendChild(markEl("bad"));
         line.replaceWith(card);
-        fit(card);
+        fit(card, true);
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
         await move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
@@ -193,7 +216,7 @@ async function play(o = {}) {
         await wait(T(LOOK.hold));
         // back into its side panel card
         const back = from && from.isConnected ? from.getBoundingClientRect() : null;
-        if (back && back.width > 2) await move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect()), opacity: 0.2 }, T(LOOK.fly));
+        if (back && back.width > 2) await move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly));
         card.remove();
       }
       if (line.isConnected) line.remove();

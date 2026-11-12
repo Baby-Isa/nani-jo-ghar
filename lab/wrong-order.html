@@ -65,7 +65,9 @@
   function draw() {
     side.innerHTML = "";
     for (const who of keep || Object.keys(ORDERS)) {
-      const c = OC.card(data(who), { fold: {} });
+      // (after the pop-up, the order being redone is open again, its rows to do, as the game's panel draws it: never a finished
+      // card folding, whose fold the frames caught half-way with "trae khun" cut)
+      const c = keep ? OC.card(data(who, true), {}) : OC.card(data(who), { fold: {} });
       c.dataset.ck = `0:${who}`;
       side.appendChild(c);
     }

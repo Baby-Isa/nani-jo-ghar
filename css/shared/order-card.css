@@ -678,7 +678,7 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
   position: absolute; inset: 0; z-index: 115; display: flex; align-items: center; justify-content: center;
   background: rgba(var(--njg-veil-rgb), 0.22); pointer-events: auto; overflow: hidden;
 }
-.njg-wo.njg-wo-fixed { position: fixed; }
+.njg-wo.njg-wo-fixed { position: fixed; overflow: visible; } /* (its cards fly to and from the side panel, outside its box) */
 .njg-wo-stage { position: absolute; inset: 6%; display: flex; align-items: center; justify-content: center; pointer-events: none; }
 .njg-wo-card { position: relative; zoom: var(--wo-k, 1); width: auto; max-width: none; max-height: none; overflow: visible; animation: none; flex: none; }
 .njg-wo-line { padding: var(--njg-s3) var(--njg-s5); }
@@ -700,7 +700,9 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo-body > .oc-card { margin: 0; box-shadow: none; }
 .njg-wo .oc-row { position: relative; }
 .njg-wo .oc-row .oc-tk { visibility: hidden; }
-.njg-wo .oc-row > .njg-wo-mark { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s2) * -1); z-index: 2; }
+/* (s19-clean-a2: a row's mark sits inside its row at the right, centred, its room kept from the start so the card never reflows: on the corner it was cut by the card's own edge) */
+.njg-wo-open .oc-row { padding-right: calc(var(--njg-face) * 0.62 + var(--njg-s3)); }
+.njg-wo .oc-row > .njg-wo-mark { position: absolute; top: 50%; right: var(--njg-s2); transform: translateY(-50%); z-index: 2; }
 .njg-wo .oc-row.njg-wo-now { box-shadow: 0 0 0 calc(var(--njg-line) * 2) var(--njg-focus); }
 .njg-wo .oc-row.njg-wo-ok { border-color: var(--njg-gold); }
 .njg-wo .oc-row.njg-wo-bad { border-color: var(--njg-wrong) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-wrong) !important; }
