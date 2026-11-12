@@ -12,7 +12,7 @@ export const SHADE_PEOPLE = [8, 16];
 export const SHADE_MAX = 0.7;     // a picture wider or taller than this share of the play area is a background or a band, not a thing on it
 export const SHADE_HOLD_MS = 1200; // an object judged once seen this long in place (a thing flying or being carried is not on the worktop)
 export const SHADE_INSIDE = 1.6;  // a picture whose middle lies in one this many times its size, under it, is inside it (a glass on a tray, food in a pan)
-export const SHADE_SKIP = /shadow|shade|glow|hand|badge|face|bubble|ring|steam|flame|spark|smoke|light|halo|arrow|tick|cross|label|chip|pill|dot|mark|veil|quiet|mask|cover|occ|front|lip|rim|fx|wisp|drip|splash|pour|stream|crumb|burst|-(happy|neutral|frown|sad)$/i;
+export const SHADE_SKIP = /shadow|shade|glow|hand|badge|face|bubble|ring|steam|flame|spark|smoke|light|halo|arrow|tick|cross|label|chip|pill|dot|mark|veil|quiet|mask|cover|occ|front|lip|rim|fx|wisp|drip|splash|pour|stream|crumb|burst|-(happy|neutral|frown|sad)$|-cat$/i;
 
 const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
 

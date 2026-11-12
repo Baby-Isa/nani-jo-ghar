@@ -28500,5 +28500,73 @@
    "max": 8,
    "note": "salt as a pinch or a teaspoon, its small pile shown"
   }
+ ],
+ "SH-268": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "contract:120"
+   ],
+   "expect": null,
+   "note": "chop L1, the worktop once the order is in: the walnut board and what stands on it each with the kit's soft shadow down and to the right (one light, upper left); contract-120 over the play",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "contract:120"
+   ],
+   "expect": null,
+   "note": "baking L1, the worktop once the order is in: the glass bowl, the jars on the shelf and the oven each with the kit's soft shadow down and to the right; contract-120 over the play",
+   "delay": 1500
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#stage",
+    "contract:120"
+   ],
+   "expect": null,
+   "note": "samosa L1, the worktop once the order is in: the board, the plate, the karahi and the spoon each with the kit's soft shadow down and to the right; contract-120 over the play",
+   "delay": 1500
+  }
  ]
 }
