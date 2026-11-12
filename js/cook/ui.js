@@ -3845,27 +3845,70 @@
     }
     if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
     if (w.wordOpts) w.wordOpts.enShown = false;
-    // the card a little off to the side of the speaker's bubble (it waits a beat for the bubble to be drawn); the play area's middle
-    // when there is none
-    const hb = stage.getBoundingClientRect();
-    const bub = [...document.querySelectorAll("#bubble, .njg-bubble, .cl-bubble")].find((b) => b.getBoundingClientRect().width > 4);
-    const bb = bub ? bub.getBoundingClientRect() : null;
-    const room = Math.min(hb.width, hb.height) * 0.16;
-    let x = hb.width / 2;
-    let y = hb.height * 0.38;
-    if (bb) {
-      const right = bb.right - hb.left + room * 1.2;
-      x = right + room < hb.width ? right : bb.left - hb.left - room * 1.2;
-      y = bb.top - hb.top + bb.height / 2;
-    }
-    x = Math.max(room, Math.min(hb.width - room, x));
-    y = Math.max(room, Math.min(hb.height - room, y));
+    // the card a little off to the side of the speaker's bubble, clear of every face and bubble (SH-267's frames, 12 Nov: with no bubble
+    // drawn yet it sat in the play area's middle, over the customer's head and bubble). It waits a beat for the bubble to be drawn.
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(dish || "") });
-    const f = global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
+    const sp = Cook.speed || 1;
+    const handle = { el: null, closed: false, close() { handle.closed = true; if (handle.f) handle.f.close(); } };
+    const offEnd = global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => handle.close()) : null;
+    const boxes = () => {
+      const out = [];
+      const S = Cook.scene;
+      try {
+        Object.values((S && S.chars) || {}).forEach((img) => {
+          if (!img || !img.active || img.visible === false || !S.headBox) return;
+          const hb = S.headBox(img);
+          const a = UI.worldToScreen(hb.x, hb.y);
+          const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
+          out.push({ left: a.x - 6, top: a.y - 6, right: z.x + 6, bottom: z.y + 6 });
+        });
+      } catch (e) {
+        /* no scene */
+      }
+      document.querySelectorAll(".cv-bubble, #bubble:not(.hidden), .njg-bubble, .njg-face").forEach((b) => {
+        if (b.closest("#side, .wc14")) return;
+        const r = b.getBoundingClientRect();
+        if (r.width > 4 && r.height > 4) out.push({ left: r.left - 6, top: r.top - 6, right: r.right + 6, bottom: r.bottom + 6 });
+      });
+      return out;
+    };
+    const bubble = () => [...document.querySelectorAll(".cv-bubble, #bubble:not(.hidden), .njg-bubble, .cl-bubble")].find((b) => !b.closest("#side") && b.getBoundingClientRect().width > 4) || null;
+    const show = () => {
+      if (handle.closed || !stage.isConnected) return;
+      const hb = stage.getBoundingClientRect();
+      const f = global.WordCard.flash(host, w.word, { x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38, ms: 1500 / sp, opts: w.wordOpts, cls: "wc14-flash-fixed" });
+      handle.f = f;
+      handle.el = f && f.el;
+      if (!f || !f.el) return;
+      // (its own size, measured once drawn; then the first place clear of every face and bubble: right of the bubble, left of it, the
+      // play area's top corners, its middle last)
+      const cw = f.el.offsetWidth || 120;
+      const ch = f.el.offsetHeight || 160;
+      const bb = bubble() ? bubble().getBoundingClientRect() : null;
+      const pad = 10;
+      const cands = [];
+      if (bb) {
+        cands.push({ x: bb.right + pad + cw / 2, y: bb.top + bb.height / 2 });
+        cands.push({ x: bb.left - pad - cw / 2, y: bb.top + bb.height / 2 });
+      }
+      cands.push({ x: hb.left + pad + cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.right - pad - cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38 });
+      const avoid = boxes();
+      const inside = (c) => c.x - cw / 2 >= hb.left + 2 && c.x + cw / 2 <= hb.right - 2 && c.y - ch / 2 >= hb.top + 2 && c.y + ch / 2 <= hb.bottom - 2;
+      const hits = (c) => avoid.reduce((n, r) => n + Math.max(0, Math.min(c.x + cw / 2, r.right) - Math.max(c.x - cw / 2, r.left)) * Math.max(0, Math.min(c.y + ch / 2, r.bottom) - Math.max(c.y - ch / 2, r.top)), 0);
+      const fits = cands.map((c) => ({ x: Math.max(hb.left + cw / 2 + 2, Math.min(hb.right - cw / 2 - 2, c.x)), y: Math.max(hb.top + ch / 2 + 2, Math.min(hb.bottom - ch / 2 - 2, c.y)) })).filter(inside);
+      const pick = fits.find((c) => hits(c) === 0) || fits.slice().sort((a, b2) => hits(a) - hits(b2))[0];
+      if (pick) Object.assign(f.el.style, { left: `${Math.round(pick.x)}px`, top: `${Math.round(pick.y)}px` });
+    };
     // (on the page's layer: the stage's end takes it away at once, never over whatever comes next)
-    const off = f && global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => f.close()) : null;
-    if (off && f.el) setTimeout(() => off(), 2000 / (Cook.speed || 1));
-    return f;
+    const t0 = Date.now();
+    const wait = () => {
+      if (handle.closed) return;
+      if (bubble() || Date.now() - t0 > 400 / sp) return show();
+      setTimeout(wait, 40);
+    };
+    wait();
+    if (offEnd) setTimeout(() => offEnd(), 2400 / sp);
+    return handle;
   };
   UI.personSpeaking = () => personTalks > 0;
   UI.hearPerson = async function (who, o = {}) {
