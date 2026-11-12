@@ -714,6 +714,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           });
           keepTaps();
           lit.forEach((o) => litGlow(o, false));
+          // (s19-clean-e2, contract-106, SH-236: the press began the move: every help light on the board goes with it, the strip's and
+          // the heaps', not only this pick's own)
+          [...helpLit.keys()].forEach((o) => litGlow(o, false));
           UI.hideDone();
           z.expect(null);
           resolve(r);
@@ -1218,6 +1221,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       offs.push(
         z.on("pointerdown", (p) => {
           start = { x: p.worldX, y: p.worldY };
+          // (s19-clean-e2, contract-106, SH-236: the swipe has begun: the light it began in steps aside now)
+          if (Cook.Coach && Cook.Coach.began) Cook.Coach.began("swipe");
         }),
         z.on("pointermove", (p) => {
           if (!start || over) return;

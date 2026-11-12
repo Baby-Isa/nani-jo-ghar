@@ -1096,31 +1096,31 @@
   {
    "id": "ph-naan",
    "english": "naan",
-   "kind": "no Kutchi",
+   "kind": "Kutchi from Mum, 12 Nov (Round 6: 'naan', data/lang/seed/cook.json, draft: Zafar confirms the spelling); was no Kutchi",
    "sheet": "naan (R6-18)"
   },
   {
    "id": "ph-quartercup",
    "english": "a quarter cup",
-   "kind": "no Kutchi",
+   "kind": "Kutchi from Mum, 12 Nov (Round 6: 'pa cup', seed, draft: Zafar confirms the spelling); was no Kutchi",
    "sheet": "added by this prep (R6-135)"
   },
   {
    "id": "ph-cups-1h",
    "english": "one and a half cups",
-   "kind": "no Kutchi",
+   "kind": "Kutchi from Mum, 12 Nov (Round 6: 'dedh cup', seed, draft: Zafar confirms the spelling); was no Kutchi",
    "sheet": "added by this prep (R6-135)"
   },
   {
    "id": "ph-cups-2h",
    "english": "two and a half cups",
-   "kind": "no Kutchi",
+   "kind": "Kutchi in the seed from Mum's 12 Nov sitting (draft: Zafar confirms the spelling); was no Kutchi",
    "sheet": "added by this prep (R6-135)"
   },
   {
    "id": "ph-cups-34",
    "english": "three quarters of a cup",
-   "kind": "not in the lexicon yet (CK-72): its round is skipped until data/lang/lexicon.json has it (the s19-clean-b report gives the entry)",
+   "kind": "Mum said 'pono cup', 12 Nov (Round 6, grammar-notes \u00a764-\u00a767): the lexicon has pono (num.three-quarters, draft) but the seed has no ph-cups-34 word yet, so its round is still skipped; the language owner adds ph-cups-34 'pono cup' to data/lang/seed/cook.json (s19-clean-e2: was 'not in the lexicon yet')",
    "sheet": "three quarters of a cup (new, CK-72)"
   },
   {
