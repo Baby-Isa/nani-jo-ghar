@@ -468,11 +468,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // a raw cob on the band, tapped: it goes up onto the grill (as many as asked, as many places as the grill has)
     raw.forEach((img) =>
       S.tappable(img, () => {
-        began();
+        // (CK-90, contract-117 at corn L4: a tap the game turns down keeps its light; it goes only as the move begins)
         if (screen !== 1 || img.onBand === false || cobs.length + lifting + inTray.length >= count || cobs.length >= places) {
           S.wiggle(img);
           return;
         }
+        began();
         img.onBand = false;
         S.untap(img);
         // (s19-clean-e, contract-102: its glow went with its light only when the step changed; the next cob's step has the same name, so
@@ -500,8 +501,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     );
 
     const tapCob = async (c) => {
+      // (CK-90: a cob tapped before it is ready shakes and the lit step keeps its light; it goes only as a turn or a lift begins)
+      if (c.state !== "turn" && c.state !== "lift") return S.wiggle(c.img);
       began();
-      if (c.state === "turn" || c.state === "lift") hold14.end("corn");
+      hold14.end("corn");
       if (c.state === "turn") {
         // turned once: it rolls over where it lies (its light's box fades out round it, contract-53), the grilled side under
         c.state = "flip";
@@ -808,13 +811,13 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
 
     // what goes on: named as it goes on, their row ticks; a second tap takes it back until they have it (non-negotiable 7)
     const tapBowl = async (img) => {
-      began();
       const id = img.wordId;
       const q = people[active];
       if (screen !== 2 || !q || q.served) {
         S.wiggle(img);
         return;
       }
+      began();
       if (q.dressed.includes(id)) {
         // taken back: its dressing goes, its row opens again
         takeOff(q, id);
@@ -849,7 +852,6 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     };
 
     const servePlate = (i) => {
-      began();
       const q = people[i];
       if (screen !== 2 || i !== active || !q || q.served || !serveNow) {
         // (a round plate shakes side to side, never turned: a turned square picture grows its box into the band, contract-109)
@@ -857,6 +859,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         if (pt && !S.tweens.isTweening(pt)) S.tweens.add({ targets: pt, x: pt.x + 8, duration: 60, yoyo: true, repeat: 2 });
         return;
       }
+      began();
       const go = serveNow;
       serveNow = null;
       go();

@@ -3952,6 +3952,13 @@
       });
       return out;
     };
+    // (CK-91, the S19 gate's eye judge, 12 Nov: at 740x320 the card sat over the settings cog in baking, chop and chaat: the page's
+    // keep-out places, the cog among them, as the conversation bubbles keep them (js/shared/conversations.js), are never covered)
+    const keepOut = () =>
+      [...document.querySelectorAll("[data-njg-keepout], [data-njg-avoid], .side-cog, #side-cog, [data-njg-zone=cog]")]
+        .map((b) => b.getBoundingClientRect())
+        .filter((r) => r.width > 4 && r.height > 4)
+        .map((r) => ({ left: r.left - 6, top: r.top - 6, right: r.right + 6, bottom: r.bottom + 6 }));
     const bubble = () => [...document.querySelectorAll(".cv-bubble, #bubble:not(.hidden), .njg-bubble, .cl-bubble")].find((b) => !b.closest("#side") && b.getBoundingClientRect().width > 4) || null;
     const show = () => {
       if (handle.closed || !stage.isConnected) return;
@@ -3971,11 +3978,16 @@
         cands.push({ x: bb.right + pad + cw / 2, y: bb.top + bb.height / 2 });
         cands.push({ x: bb.left - pad - cw / 2, y: bb.top + bb.height / 2 });
       }
-      cands.push({ x: hb.left + pad + cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.right - pad - cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38 });
+      const hard = keepOut();
+      cands.push({ x: hb.left + pad + cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.right - pad - cw / 2, y: hb.top + pad + ch / 2 });
+      // (the top right corner left of the cog, and under it)
+      hard.forEach((k) => cands.push({ x: k.left - pad - cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.right - pad - cw / 2, y: k.bottom + pad + ch / 2 }));
+      cands.push({ x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38 });
       const avoid = boxes();
       const inside = (c) => c.x - cw / 2 >= hb.left + 2 && c.x + cw / 2 <= hb.right - 2 && c.y - ch / 2 >= hb.top + 2 && c.y + ch / 2 <= hb.bottom - 2;
       const hits = (c) => avoid.reduce((n, r) => n + Math.max(0, Math.min(c.x + cw / 2, r.right) - Math.max(c.x - cw / 2, r.left)) * Math.max(0, Math.min(c.y + ch / 2, r.bottom) - Math.max(c.y - ch / 2, r.top)), 0);
-      const fits = cands.map((c) => ({ x: Math.max(hb.left + cw / 2 + 2, Math.min(hb.right - cw / 2 - 2, c.x)), y: Math.max(hb.top + ch / 2 + 2, Math.min(hb.bottom - ch / 2 - 2, c.y)) })).filter(inside);
+      const covers = (c) => hard.some((r) => Math.min(c.x + cw / 2, r.right) > Math.max(c.x - cw / 2, r.left) && Math.min(c.y + ch / 2, r.bottom) > Math.max(c.y - ch / 2, r.top));
+      const fits = cands.map((c) => ({ x: Math.max(hb.left + cw / 2 + 2, Math.min(hb.right - cw / 2 - 2, c.x)), y: Math.max(hb.top + ch / 2 + 2, Math.min(hb.bottom - ch / 2 - 2, c.y)) })).filter((c) => inside(c) && !covers(c));
       const pick = fits.find((c) => hits(c) === 0) || fits.slice().sort((a, b2) => hits(a) - hits(b2))[0];
       if (pick) Object.assign(f.el.style, { left: `${Math.round(pick.x)}px`, top: `${Math.round(pick.y)}px` });
     };
