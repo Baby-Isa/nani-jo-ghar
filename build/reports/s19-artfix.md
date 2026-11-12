@@ -1,21 +1,21 @@
 # s19-artfix: sekelo's doubled stone edge, and the art check (12 Nov evening)
 
 ## For Zafar
-- **The doubled edge came from the code; the stone art is fine.** No new stone art is needed. The code drew a darker rounded box under the stone, with tighter corners and slightly wider sides than the picture, so a second edge showed above and to the left of the band's corners. It happened in every game with the stone tray (sekelo, corn, chop, chaat, daar, maani, samosa), at every size. Now the one soft shadow comes from the stone's own outline and falls down and to the right.
-- **Every game loads its current art, except one picture.** I played all 55 flows to the end. The one old picture still loaded is **sekelo's serving plate** (the v3 plate, seen when the dish is served). Its steel replacement is already cut, and the swap is a two-line data change (below).
-- **Old art still named but never drawn:** 14 places, all old sekelo file lists and dead code. They should be cleared, but nothing on screen changes.
+- **The doubled edge came from the code; the stone art is fine.** No new stone art is needed. The code drew a darker rounded box under the stone, with tighter corners and slightly wider sides than the picture, so a second edge showed above and to the left of the band's corners. It was in every stone-tray game at every size. Now the one soft shadow comes from the stone's own outline and falls down and to the right.
+- **Every game loads its current art except sekelo's serving plate** (the v3 plate, at serving), across 55 flows played to the end. Its steel replacement is cut; the swap is two data lines (below).
+- **Old art named but never drawn:** 14 places (old sekelo file lists, dead code); clearing them changes nothing on screen.
 - **For the next art run:** 17 pieces are marked "needs replacing" and about 440 are stand-ins. One stand-in already has its v4 piece cut: daar's ladle (the kit ladle).
 
 ## What changed
 - `js/shared/shelf.js` `trayPaintArt`: the slab is put together first, then laid with its one shadow. The tile now lands only on the slab (`source-atop`), where it used to be clipped to a 34 px box wider than the picture.
 - `js/cook/stations.js` `contactShadow`: records its footprint (`sh.njgFoot`), so a pan's shadow is judged from the pan's body, not its handle.
 - **New check** `build/tools/art/shadowcheck.mjs`: runs every band game at four sizes. It fails on solid paint more than 1.5 px outside the slab's outline, and on any shadow up or left of its object. **On the old code: 28 of 28 fail. Now: 40 of 40 pass.**
-- **Art map:** `artuse --full` played 55 flows (0 page errors). I registered 5 newly loaded pictures and shrank `artcheck-known.json` by 2.
+- **Art map:** `artuse --full`, 55 flows, 0 page errors; 5 pictures registered; `artcheck-known.json` 2 shorter.
 - **a5's lines:**
   - contract-117 skips lights buried under the "?" pop-up.
   - contract-116 skips `.oc-away` rows and samples taken while cards slide.
   - SH-267's probe now plays chai's fair path, and `life:dish-flash` is a moment the drivers reach.
-  - Each of these has a test showing the bad run still fails.
+  - Each has a test keeping the bad run red.
 - **Not done:**
   - contract-18 had 0 breaks in tonight's 55 plays, so there was no failing run to work from.
   - None of e2's five lines are done: 36's skip window, 105 on chop's swipe, 78's "Pela mirchi.", 37 eggs' decoys, and ART-72's probe on corn, daar, maani and chop.
