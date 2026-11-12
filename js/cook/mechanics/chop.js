@@ -326,9 +326,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (a test log: contract-65 reads each throw's wave and the spacing it was thrown at, in real ms)
       // (S19, wave B: on the hop the spacing a hop is started at is its own: the gap scheduled before it plus any wait for a free
       // place, HK.up being up already; sec, game seconds)
+      // (s19-clean-e, contract-65 at 740x320 on a busy machine: the round's clock is the hops' capped beat, so on slow frames it runs
+      // slower than the test speed; a spacing in game seconds is turned into real ms at the clock's measured rate, game seconds a real
+      // second, never assumed to be the test speed: the waves' schedule and the hops are unchanged)
+      let clockRate = Cook.speed || 1;
       const throwNote = (r, sec) => {
         try {
-          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round(((sec != null ? sec : r.every) * 1000) / (Cook.speed || 1))} x:${Cook.speed || 1}` });
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("chop-throw", { step: String(r.i), by: `ms:${Math.round(((sec != null ? sec : r.every) * 1000) / Math.max(0.05, clockRate))} x:${Cook.speed || 1}` });
         } catch (e) {
           /* only a log */
         }
@@ -509,6 +513,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (s.refill > 0) {
           s.refill = 0;
           s.img = sit(s);
+          // (s19-clean-e, CK-79's chop phase, contract-114: a slot filled now to hop fades in as it rises, as a refill does, never appearing
+          // whole in the frame the cut one went)
+          s.img.setAlpha(0);
+          S.tweens.add({ targets: s.img, alpha: 1, duration: 220 });
         }
         throwNote(phase, hopDue + hopWaited);
         hopWaited = 0;
@@ -1061,6 +1069,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // still up past its hang)
         const beat0 = Math.min(0.25, (now - last) / 1000) * Cook.speed;
         const beat = HOP ? Math.min(beat0, HK.rise / 3) : beat0;
+        if (now > last) clockRate += ((beat * 1000) / (now - last) - clockRate) * 0.2;
         // game seconds per real second (slow frames are capped), for the test's aim below
         if (now > last) gameRate += ((dt * 1000) / (now - last) - gameRate) * 0.2;
         last = now;
@@ -1273,6 +1282,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const lit0 = Date.now();
         await wait(420);
         while (Date.now() - lit0 < 1500 && knife.active) await wait(50);
+        // (s19-clean-e, contract-36: the strip is the chop's step on screen, the knife lit; Nani calls it as the finger draws the knife,
+        // with the family's recorded "Nindha nindha kap!" (lines.guide-chop, the line her guide box already shows): the order was said
+        // before the strip, more than the call's 2 s before the knife's light, or heard in its pop-up and not said again)
+        if (z.say && Lang.line) z.say(Lang.role(Lang.line("guide-chop"), "call"), { hide }).catch(() => {});
         let cutYet = false;
         const D_MS = 1500 / slow;
         await new Promise((resolve) =>

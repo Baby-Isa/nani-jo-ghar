@@ -17,7 +17,8 @@
   "board": "assets/cook/items/v3/samosa/board.webp",
   "plate": "assets/cook/items/v4/samosa/plate-napkin.webp",
   "karahi": "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
-  "jharo": "assets/cook/items/v3/samosa/jharo.webp",
+  "spoon": "assets/cook/items/v4/kit/slotted-spoon-cloth.webp",
+  "cloth": "assets/cook/items/v4/kit/cloth.webp",
   "thali": "assets/cook/items/vessel-thali-t.webp",
   "pastry": "assets/cook/tiles-s08b/pastry-tile-s08b-tile.webp",
   "under": "assets/cook/items/v4/samosa/sheet-under.webp",
@@ -53,12 +54,14 @@
     "r": 0.47,
     "flat": 0.66
    },
-   "jharo": {
-    "w": 657,
-    "h": 837,
-    "bx": 0.279,
-    "by": 0.227,
-    "br": 0.25
+   "spoon": {
+    "_sam34": "SAM-34 (Zafar, 9 Nov, round 2: the slotted spoon on its folded cloth kept, wood and metal; B3-3): the run's K6b, straight down, 273 x 700; its bowl's middle (bx, by: of the width and height) and radius (br, of the width), measured on the picture; cut: the row (of the height) from which only the walnut handle is kept, the cloth under it cleared in code (js/cook/stations/samosa.js spoonTex), so the spoon lifts off the cloth (kit/cloth stays)",
+    "w": 273,
+    "h": 700,
+    "bx": 0.5,
+    "by": 0.193,
+    "br": 0.476,
+    "cut": 0.6
    },
    "heap": {
     "w": 419,
@@ -77,6 +80,41 @@
    "fillPuff": "#f3e3b0"
   },
   "_s19k2": "S19 (s19-games-1; the kitchen-and-items run, 11 Nov): karahi is the run's K8, the karahi with oil straight down (v4/samosa/karahi-oil; a redo keeps its name and box, ART-75), measured on the cut: body cx, cy, r (of w, handles left out) and oil (the oil's radius, 305 px, over the body's, 394); plate is S5, the cream plate with its paper napkin (v4/samosa/plate-napkin, ART-71), its rim's circle (421 px of 896) and flat: the napkin's square middle over the rim's radius."
+ },
+ "items": {
+  "_ck82": "CK-82 (the eye judge, 10 Nov: 'the order card's chundo picture matches the shelf's'; the coordinator, 10 Nov: a game's own items[].card wins, the card shows what the child taps): each filling's card on the order is its heap as it lies on the band (art.heaps), read by js/cook/ui.js cardOfIds",
+  "ph-keema": {
+   "word": "ph-keema",
+   "card": "assets/cook/items/v3/samosa/fill-chundo.webp"
+  },
+  "veg-01": {
+   "word": "veg-01",
+   "card": "assets/cook/items-s08b/potato/potato-pile-v3.webp"
+  },
+  "veg-10": {
+   "word": "veg-10",
+   "card": "assets/cook/items/v3/samosa/fill-peas.webp"
+  },
+  "veg-02": {
+   "word": "veg-02",
+   "card": "assets/cook/items/v3/samosa/fill-onion.webp"
+  },
+  "veg-12": {
+   "word": "veg-12",
+   "card": "assets/cook/items/v3/daar/chop-heap-chilli.webp"
+  },
+  "ph-dhana": {
+   "word": "ph-dhana",
+   "card": "assets/cook/items/v3/samosa/fill-dhania.webp"
+  },
+  "veg-carrot": {
+   "word": "veg-carrot",
+   "card": "assets/cook/items/v3/samosa/fill-carrot.webp"
+  },
+  "veg-cabbage": {
+   "word": "veg-cabbage",
+   "card": "assets/cook/items/v3/samosa/fill-cabbage.webp"
+  }
  },
  "grid": {
   "_about": "Where samosa's things sit, in the 1600x900 design box (chai v2's grid; the band is the bottom 30%, St.SHELF). heapY, chipY, pitch, heapW, shelfSpan: the heaps on the band and their pills, the row centred in the span (clear of the tick, bottom right; the shared kit's Shelf.slots) (SH-112: a quarter bigger, centred between the band's top gap and the chips). board: the house board (S6; board.webp is 1397 x 847, so h = w x 847 / 1397), bigger for six strips (SAM-25, P43) and its foot above the band. plate: where the folded ones wait (S10). strips: six at every level (SAM-25); stripH: a strip's height at full size; ppu: the fold's canvas px per strip height. fry (S17, S19, Q9): the wide hob's scale and middle, the karahi's body radius (237: at 270 its rim ran over the knob; SH-112: 5% smaller), the plate right of the hob, the raw ones' thalis on the band. oil: a samosa's size in the oil and where they float (degrees round the middle, r a fraction of the oil's radius), by how many fry (the first whose upTo holds; SAM-14: a spot plus half its size stays within 0.8 of the oil).",
@@ -110,7 +148,13 @@
    "pd": 360,
    "trayY": 744,
    "trayD": 180,
-   "trayPitch": 210
+   "trayPitch": 210,
+   "_sam34": "SAM-34 (Zafar, 9 Nov: 'a button to turn on the fryer ... off to the left-hand side, so that the frying pan can remain bigger'; decision 2026-11-09-tiers-flash-merge #5: 'one hob in chai's proportions'; round 2's B3-3, sources/art/s19-mocks2/results/B3-samosa-3-fry.png): chai's one-burner hob with its knob and face on the left (the kit's knobs 'left', SH-247), the spoon on its cloth beside it, then the plate, one row centred in the view above the band. hobH: the hob's height at most (design px; less where the row must fit the view's width); karahi: the karahi's body radius as a share of the hob's height; spoon, plate: their heights as shares of the hob's; gap: between the three.",
+   "hobH": 560,
+   "karahi": 0.46,
+   "spoon": 0.9,
+   "plate": 0.7,
+   "gap": 30
   },
   "oil": [
    {
@@ -155,7 +199,9 @@
   "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
   "assets/cook/items/v4/samosa/plate-napkin.webp",
   "assets/cook/items-s17-stove/f-mince.webp",
-  "assets/cook/items/served/samosa.webp"
+  "assets/cook/items/served/samosa.webp",
+  "assets/cook/items/v4/kit/slotted-spoon-cloth.webp",
+  "assets/cook/items/v4/kit/cloth.webp"
  ],
  "_assets": "S19 (s19-wave-e2; decision 68, loadcheck): the v4 fry stages and the sheet's underside (art.fry, art.under), beyond data/cook.json art.assets.stations S19 (s19-games-1, loadcheck): the mince's item card picture (ph-keema's card, data/cook.json's f-mince). S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served samosa), until s19-serve2's kitchen dishes take its place."
 }

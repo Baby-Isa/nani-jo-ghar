@@ -273,7 +273,18 @@ import { Cook as CookNS } from "../ns.js";
         const u = cuts.reduce((a, c) => ({ x: Math.min(a.x, c.x), y: Math.min(a.y, c.y), right: Math.max(a.right, c.right), bottom: Math.max(a.bottom, c.bottom) }));
         const V = Cook.view || {};
         const size = z.L(150);
-        const at = Cook.Kit.praiseSpot({ x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y }, size, { avoid: cuts, view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, z.Y(BAND.top)] });
+        // (s19-clean-e, CK-78, contract-113 at 740x320 L4: the face fitted the view, but its "Shabash!" card beside it, on its left, ran under
+        // the side panel, which lies over the canvas's left: the view's left is where the panel ends, less the card's room on that side)
+        let vl = V.left != null ? V.left : 0;
+        try {
+          const side = global.document && document.querySelector("#side");
+          const p0 = UI.worldToScreen(0, 0);
+          const ppw = UI.worldToScreen(1, 0).x - p0.x || 1;
+          if (side) vl = Math.max(vl, (side.getBoundingClientRect().right - p0.x) / ppw + 8);
+        } catch (e) {
+          /* the view as it is */
+        }
+        const at = Cook.Kit.praiseSpot({ x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y }, size, { avoid: cuts, view: [vl + z.L(200), V.top != null ? V.top : 0, (V.right != null ? V.right : 1600) - z.L(200), z.Y(BAND.top)] });
         const look = await Cook.Kit.review(S, { who: d.who || "nani", ok: true, x: at.x, y: at.y, size, k: z.L(1), side: at.side });
         await Cook.wait(400);
         if (look && look.close) await look.close();
