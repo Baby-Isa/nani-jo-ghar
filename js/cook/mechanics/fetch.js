@@ -174,12 +174,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           c.pillId = id;
           chips[id] = c;
         });
-      // the rows (the shelves and the fridge's levels at one height), left to right
+      // the rows (each shelf, and each of the fridge's levels: its own row, never one with the shelf at its height), left to right
+      // (the review of s19-clean-b, finding 7: the fridge's levels, y 202, 416, 620, fell into the shelves' rows, 199, 417, 626, and a
+      // shelf row took the fridge's narrow slot, 140 for 200, so its pills were capped as if they stood in the fridge)
       const rowsAt = [];
       placed.forEach((p) => {
-        const r = rowsAt.find((x) => Math.abs(x.y - p.slot.y) < 20);
+        const r = rowsAt.find((x) => x.zone === p.slot.zone && Math.abs(x.y - p.slot.y) < 20);
         if (r) r.list.push(p);
-        else rowsAt.push({ y: p.slot.y, list: [p] });
+        else rowsAt.push({ y: p.slot.y, zone: p.slot.zone, list: [p] });
       });
       rowsAt.sort((a, b) => a.y - b.y).forEach((r) => r.list.sort((a, b) => a.slot.x - b.slot.x));
       const want = SH && SH.pillWant ? SH.pillWant(ppw) : 1;
@@ -194,8 +196,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const PILL_MID = (P.pillMid != null ? P.pillMid : 22);
       // the room between two shelves, less the pill's part below the plank and a small gap, is the most a thing may stand (the shelf's
       // own box, slot.h, else): a pill never covers the thing on the shelf below
-      const ys = rowsAt.map((r) => r.y);
-      const pitchY = ys.length > 1 ? Math.min(...ys.slice(1).map((y, i) => y - ys[i])) : Infinity;
+      // (the pitch within each zone: a shelf and a fridge level at about one height are not two rows a pill sits between)
+      const pitchOf = (ys) => (ys.length > 1 ? Math.min(...ys.slice(1).map((y, i) => y - ys[i])) : Infinity);
+      const pitchY = Math.min(...[...new Set(rowsAt.map((r) => r.zone))].map((zn) => pitchOf(rowsAt.filter((r) => r.zone === zn).map((r) => r.y))), Infinity);
       const tallest = Object.keys(chips).length ? pitchY - PILL_MID - pillH / z.L(1) / 2 - 4 : Infinity;
       placed.forEach(({ id, slot }) => {
         const key = Cook.Art.wordTex(S, id);
@@ -289,7 +292,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!force && (ctx.guided || ctx.lab || !ctx.maybePassMe || (ctx.interrupts || 0) >= (ctx.maxInterrupts || 0) || Math.random() > k.passMe)) return;
         const said = inOrder(ctx);
         // not a word whose shelf label shows it as text (you'd just match the letters)
-        const pick = Cook.shuffle(Object.keys(items)).find((id) => !remaining.includes(id) && !said.has(id) && !always.includes(id) && (force || Cook.labelMode(id) !== "text"));
+        // (the review of s19-clean-b, finding 6; the leak test, non-negotiable 4: since PAN-20 the jar's pill is written by its own
+        // ladder, Cook.chipWord, not the old word stage, so a word past support could still be written on its pill and won by
+        // matching it: a jar whose pill shows its word is never the one she asks for; the lab's "always" takes one only if no other)
+        const written = (id) => !!(chips[id] ? chips[id].showsWord : Cook.chipWord && Cook.chipWord(id, ctx)) || Cook.labelMode(id) === "text";
+        const can = Cook.shuffle(Object.keys(items)).filter((id) => !remaining.includes(id) && !said.has(id) && !always.includes(id));
+        const pick = can.find((id) => !written(id)) || (force ? can[0] : null);
         if (!pick) return;
         ctx.interrupts = (ctx.interrupts || 0) + 1;
         await St.passMe(S, ctx, { want: pick });

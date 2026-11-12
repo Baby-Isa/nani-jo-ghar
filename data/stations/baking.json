@@ -618,44 +618,44 @@
      "10": 0.125
     },
     "milk": {
-     "1": 0.824,
-     "2": 0.754,
-     "3": 0.683,
-     "4": 0.613,
-     "6": 0.471,
-     "8": 0.33,
-     "10": 0.189
+     "1": 0.773,
+     "2": 0.704,
+     "3": 0.63,
+     "4": 0.556,
+     "6": 0.418,
+     "8": 0.278,
+     "10": 0.137
     },
     "flour": {
-     "1": 0.824,
-     "2": 0.754,
-     "3": 0.683,
-     "4": 0.613,
-     "6": 0.471,
-     "8": 0.33,
-     "10": 0.189
+     "1": 0.773,
+     "2": 0.704,
+     "3": 0.63,
+     "4": 0.556,
+     "6": 0.418,
+     "8": 0.278,
+     "10": 0.137
     },
     "yoghurt": {
-     "1": 0.824,
-     "2": 0.754,
-     "3": 0.683,
-     "4": 0.613,
-     "6": 0.471,
-     "8": 0.33,
-     "10": 0.189
+     "1": 0.773,
+     "2": 0.704,
+     "3": 0.63,
+     "4": 0.556,
+     "6": 0.418,
+     "8": 0.278,
+     "10": 0.137
     },
     "sugar": {
-     "1": 0.824,
-     "2": 0.754,
-     "3": 0.683,
-     "4": 0.613,
-     "6": 0.471,
-     "8": 0.33,
-     "10": 0.189
+     "1": 0.773,
+     "2": 0.704,
+     "3": 0.63,
+     "4": 0.556,
+     "6": 0.418,
+     "8": 0.278,
+     "10": 0.137
     }
    },
    "_jugV4": "S19 (s19-wave-e2): water is drawn in the new glass jug (B2 #83: its empty jug-0 and its full jug-4; emptyFor swaps the empty picture for that fill; lineAtFor: its lines, from the four water levels drawn on B2, read off the cut); milk, flour, yoghurt and sugar keep the old jug's pictures until the new jug has them. The jug stands on the worktop now (at: its base), never on the band.",
-   "_jugK3": "s19-k3 (B5r-3, the k3 cut, build/reports/s19-k3-cut.md): milk, flour, yoghurt and sugar in the new glass jugs too (one box, bottom-aligned; their empty jug is B2's jug-0, about 1.5% wider a canvas). The new jugs have no drawn lines, so CK-72's seven fixed amounts rise in proportion to the amount, the inside's floor (0.895 of the picture from its top) to its brim at two and a half cups (0.189): lineAtFor; water keeps the four levels drawn on B2."
+   "_jugK3": "s19-k3 (B5r-3, the k3 cut, build/reports/s19-k3-cut.md): milk, flour, yoghurt and sugar in the new glass jugs too (one box, bottom-aligned; their empty jug is B2's jug-0, about 1.5% wider a canvas). The new jugs have no drawn lines, so CK-72's seven fixed amounts rise in proportion to the amount, the inside's floor (0.895 of the picture from its top) to its brim at two and a half cups (0.189): lineAtFor; water keeps the four levels drawn on B2. s19-clean-b2 (the review's finding 8: a cup of water stood about 14 design px higher than a cup of milk in one round): one height per amount, every fill's line at water's height above the jug's base (water's levels drawn on B2, the empty jug every fill shows; three quarters and two cups between them), turned into each picture's own fraction (the water jug 271x249, the new jugs 323x301, both drawn 260 wide on one base)."
   },
   "tray": {
    "size": "M",
@@ -841,7 +841,7 @@
    "ph-half",
    "ph-cup"
   ],
-  "_pair": "L3's first jug round asks a cup of flour and half a cup of water or milk (mechanic.levels[2].plans): the two the moment shows, side by side, before it names either (STD-A3-03)",
+  "_pair": "L1's first round asks a cup of flour and half a cup of water or milk (mechanic.levels[0].plans, CK-72: the jug at every level): the two the moment shows, side by side, before it names either (STD-A3-03); the jug's other amounts: moments below",
   "vessel": {
    "src": "assets/cook/items/shelf-cook-paani-bare-f.webp",
    "spout": [
@@ -872,7 +872,7 @@
     "card": "assets/cook/items/v4/baking/jug-flour.webp"
    }
   ],
-  "_measures": "each measure the jug, empty, then its full picture revealed from the bottom up to its line (items.jug.lineAt: 2 quarter cups 0.672, 4 quarter cups 0.532, from the picture's top); fill, the word moment's share of the inside (the jug's inside about 0.12 to 0.90 of the picture: (0.90 - lineAt) / 0.78); placeholders until ART-38 (a vessel tilted into a side-on measure, empty, half and full)",
+  "_measures": "each measure the jug, empty, then its full picture revealed from the bottom up to its line (water's, items.jug.lineAtFor.water: 2 quarter cups 0.70, 4 quarter cups 0.55, from the picture's top); fill, the word moment's share of the inside (the jug's inside about 0.12 to 0.90 of the picture: (0.90 - lineAt) / 0.78); placeholders until ART-38 (a vessel tilted into a side-on measure, empty, half and full)",
   "ids": [
    "ph-quartercup",
    "ph-half",
@@ -882,7 +882,110 @@
   ],
   "ref": "docs/design-language/art-plans/s17-art1-art-plan.md §1.1; baking's own word moment art (ART-37/38) is a placeholder this sprint",
   "note": "adh is recorded; the other four are grey English until Mum gives them",
-  "_measuresK3": "ART-79 (12 Nov): the moment's jug is the v4 glass jug (B2: jug-0 empty, jug-4 its water), its lines the water levels drawn on it (items.jug.lineAtFor.water: a half 0.70, a cup 0.55); the cards the v4 jugs"
+  "_measuresK3": "ART-79 (12 Nov): the moment's jug is the v4 glass jug (B2: jug-0 empty, jug-4 its water), its lines the water levels drawn on it (items.jug.lineAtFor.water: a half 0.70, a cup 0.55); the cards the v4 jugs",
+  "moments": [
+   {
+    "key": "baking:word-moment-quarter",
+    "pair": [
+     "ph-quartercup"
+    ],
+    "_why": "a quarter beside the half the child met at L1 (L2's plans ask a quarter first)",
+    "measures": [
+    {
+     "id": "ph-quartercup",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.77,
+     "fill": 0.167,
+     "card": "assets/cook/items/v4/baking/jug-4.webp"
+    },
+    {
+     "id": "ph-half",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.7,
+     "fill": 0.26,
+     "card": "assets/cook/items/v4/baking/jug-4.webp"
+    }
+    ]
+   },
+   {
+    "key": "baking:word-moment-34",
+    "pair": [
+     "ph-cups-34"
+    ],
+    "_why": "three quarters beside a cup (L3 plan 1, L4 plan 1)",
+    "measures": [
+    {
+     "id": "ph-cups-34",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.625,
+     "fill": 0.353,
+     "card": "assets/cook/items/v4/baking/jug-4.webp"
+    },
+    {
+     "id": "ph-cup",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.55,
+     "fill": 0.45,
+     "card": "assets/cook/items/v4/baking/jug-flour.webp"
+    }
+    ]
+   },
+   {
+    "key": "baking:word-moment-1h",
+    "pair": [
+     "ph-cups-1h"
+    ],
+    "_why": "one and a half beside a cup (L3 up)",
+    "measures": [
+    {
+     "id": "ph-cup",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.55,
+     "fill": 0.45,
+     "card": "assets/cook/items/v4/baking/jug-flour.webp"
+    },
+    {
+     "id": "ph-cups-1h",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.41,
+     "fill": 0.628,
+     "card": "assets/cook/items/v4/baking/jug-4.webp"
+    }
+    ]
+   },
+   {
+    "key": "baking:word-moment-2h",
+    "pair": [
+     "ph-cups-2h"
+    ],
+    "_why": "two and a half beside one and a half (L4)",
+    "measures": [
+    {
+     "id": "ph-cups-1h",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.41,
+     "fill": 0.628,
+     "card": "assets/cook/items/v4/baking/jug-4.webp"
+    },
+    {
+     "id": "ph-cups-2h",
+     "empty": "assets/cook/items/v4/baking/jug-0.webp",
+     "full": "assets/cook/items/v4/baking/jug-4.webp",
+     "lineAt": 0.125,
+     "fill": 0.994,
+     "card": "assets/cook/items/v4/baking/jug-4.webp"
+    }
+    ]
+   }
+  ],
+  "_moments": "s19-clean-b2 (the review of s19-clean-b, finding 9; CK-72, Zafar 9 Nov: the jug's amounts 'each a word moment'): the moment above (half and a cup) and then one for each amount the jug adds, each its own once-per-player key, the round that first asks it while it is new (UI.wordMomentDue: its pair asked, stage 1-2); the base's vessel and stream; at most one moment a round, the first due in this order (js/cook/stations/baking.js wordMomentFor). Was: ids listed the amounts, but nothing read ids, so only half and a cup ever had a moment. The measures' lineAt and fill are water's levels (items.jug.lineAtFor.water; fill (0.90 - lineAt) / 0.78); the cards the v4 jugs, as the first moment's"
  },
  "end": {
   "display": "progress",

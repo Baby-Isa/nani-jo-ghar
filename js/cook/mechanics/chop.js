@@ -1056,7 +1056,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const stop = z.tick(() => {
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000) * Cook.speed;
-        const beat = Math.min(0.25, (now - last) / 1000) * Cook.speed;
+        // (the review of s19-clean-b, finding 10: the hops' third-of-a-rise cap below is the round's clock too, so the schedule never runs
+        // ahead of the hops: was the hops capped while spawnT took the whole beat, so after a slow frame the next hop came due while one was
+        // still up past its hang)
+        const beat0 = Math.min(0.25, (now - last) / 1000) * Cook.speed;
+        const beat = HOP ? Math.min(beat0, HK.rise / 3) : beat0;
         // game seconds per real second (slow frames are capped), for the test's aim below
         if (now > last) gameRate += ((dt * 1000) / (now - last) - gameRate) * 0.2;
         last = now;
@@ -1064,7 +1068,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // started on, so a slow frame never keeps an item up past its place in the schedule)
         // (SH-256, contract-114: a slow frame moves a hop at most a third of its rise, so an item never jumps from its slot to the top of its
         // hop, or back, in one frame: on a busy machine at the test's speed a whole rise fitted in one frame and the item snapped)
-        if (HOP) hopTick(Math.min(beat, HK.rise / 3));
+        if (HOP) hopTick(beat);
         if (running && phase) {
           roundT += beat;
           idle += beat;

@@ -921,18 +921,24 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     }
     // (contract-78: the first step's call is held through the reveal lessons, then waits for its own light, so the call and its light
     // come together; her box still names the step from the start, R2)
+    // (the review of s19-clean-b, finding 11: the eggs' hold is let go, and its end has run, before refresh() opens the first control,
+    // whose own hold it would otherwise wipe (UI.holdCalls's end clears the one hold there is); the first control's light is staged in the
+    // same turn, before the held call reaches Coach.lightWait. The first step's naming is inside the try, so a throw never leaves the hold
+    // to the queue's 4 s timeout)
     let releaseCalls = null;
-    if (UI.holdCalls) UI.holdCalls(new Promise((r) => (releaseCalls = r)));
-    stepFor(nextThing()); // (her box names the first step from the start, as before: R2)
+    const callsHeld = new Promise((r) => (releaseCalls = r));
+    if (UI.holdCalls) UI.holdCalls(callsHeld);
     // the kitchen kit's reveal lessons (STD-D1-08): once the order has landed, the dotted word then the blurred picture
     try {
+      stepFor(nextThing()); // (her box names the first step from the start, as before: R2)
       if (Cook.Coach.lessons) await Cook.Coach.lessons({ gate, ctx, busy: () => busy > 0 });
     } catch (e) {
       if (releaseCalls) releaseCalls();
       throw e;
     }
+    releaseCalls();
+    await callsHeld;
     refresh();
-    if (releaseCalls) releaseCalls();
     await doneP;
     steps.done();
     if (ctl) ctl.close();
@@ -1017,9 +1023,13 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       return { pl, img, who };
     });
     await Cook.wait(400);
+    // (is this plate what its person asked for: the kind and count of eggs, and the salt and pepper as asked)
+    const kindsOk = (pl) => pl.eggs.length === (pl.q.n || 1) && pl.eggs.every((e) => e.fried === !!pl.q.fried);
+    const seasonOk = (pl) => (pl.q.salt === "yes") === !!pl.salt && (pl.q.pepper === "yes") === !!pl.pepper;
+    const plateOk = (pl) => kindsOk(pl) && seasonOk(pl);
     // each plate slides in to its person; they swap to happy and bounce; steam rises
     let allRight = true;
-    for (const { pl, img, who } of people) {
+    const slideIn = async ({ pl, img, who }) => {
       const x = img.x;
       const plate = T(S.add.container(x, tb.plateFrom || 1050).setDepth(D.item + 1));
       // the table's plate (10 Nov's art, ART-72's run): its camera a little higher than the table's (its ellipse about 0.40 of its width
@@ -1046,9 +1056,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       const py = tb.plateY || 752;
       await Cook.tween(S, { targets: plate, y: py, duration: 520, ease: "Cubic.easeOut" });
       Cook.sfx.pop();
-      const kindsRight = pl.eggs.length === (pl.q.n || 1) && pl.eggs.every((e) => e.fried === !!pl.q.fried);
-      const seasonRight = (pl.q.salt === "yes") === !!pl.salt && (pl.q.pepper === "yes") === !!pl.pepper;
-      const ok = kindsRight && seasonRight;
+      const ok = plateOk(pl);
       if (!ok) allRight = false;
       for (let i = 0; i < 3; i++) {
         const s = T(S.add.circle(x + (i - 1) * 30, py - 20, 12, col("white"), 0.6).setDepth(D.item + 2));
@@ -1062,7 +1070,47 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         await Cook.tween(S, { targets: img, y: img.y - 26, duration: 170, yoyo: true, repeat: 1, ease: "Sine.easeOut" });
       } else Cook.sfx.soft();
       await Cook.wait(250);
-    }
+    };
+    // a person's rows on the order card (their section of the order's ladder)
+    const rowsOf = (who) => {
+      const L = (ctx.ladders || []).find((l) => l && (l.sections || []).some((x) => x.for === who));
+      const sec = L && L.sections.find((x) => x.for === who);
+      return sec ? [].concat(...sec.groups).filter((r) => r && !r.head && Array.isArray(r.ids)) : [];
+    };
+    /*
+     * SH-264 to SH-266 (Zafar's child play-test, 11 Nov evening; the orchestrator, 12 Nov: eggs serves through the shared round as chai
+     * does): the plates through the kitchen's serve round (Cook.Kit.serve().round), so a wrong plate brings the wrong-order pop-up, its
+     * card in the middle with the wrong rows red and crossed. Its check marks the rows the plate got wrong (UI.mission.serveWrong): the
+     * egg cards for the wrong kind or count, the salt or pepper row for a seasoning not as asked; a seasoning nobody asked for has no row
+     * of its own, so the person's first said row, else their first, takes the mark (chai's rule for an extra nobody asked for). No redo:
+     * the plates are on the table and the cooking is gone (the kit's way without a tracker: the pop-up, then the round ends); the faces
+     * were the plates' own (the pose swap as each lands), so the round's review shows none.
+     */
+    const K = Cook.Kit && Cook.Kit.serve ? Cook.Kit.serve() : null;
+    if (K && K.round) {
+      await K.round({
+        items: people,
+        done: async () => {
+          for (const p of people) await slideIn(p);
+        },
+        check: (p) => {
+          const pl = p.pl;
+          const ok = plateOk(pl);
+          if (ok) return { ok };
+          const want = [];
+          if (!kindsOk(pl)) want.push(...kindIds(!!pl.q.fried));
+          if ((pl.q.salt === "yes") !== !!pl.salt) want.push("spi-16");
+          if ((pl.q.pepper === "yes") !== !!pl.pepper) want.push("spi-11");
+          const rows = rowsOf(p.who);
+          let bad = rows.filter((r) => r.ids.some((id) => want.includes(id)));
+          if (!bad.length) bad = rows.filter((r) => !r.unsaid).slice(0, 1).concat(rows).slice(0, 1);
+          if (UI.mission.serveWrong && bad.length) UI.mission.serveWrong(bad.map((r) => r.ids[0]), 0, { for: p.who });
+          return { ok, rows: bad.length ? bad : null };
+        },
+        review: async () => [],
+        recast: async () => {},
+      });
+    } else for (const p of people) await slideIn(p);
     UI.mission.closeItem([], 0, { all: true });
     if (St.helperWatch) St.helperWatch(ctx, null);
     if (UI.helper) UI.helper(null);
