@@ -96,7 +96,7 @@ export const CHECKS = {
   "contract-26": { item: "opening", title: "the opening line is heard whole", how: "Every Cook line said while the request pop-up is up: each of its words that is in the lexicon must have a sound, a family clip of that word or the device voice saying it (the sound log); a word that made no sound (the device voice's text thrown away by a cancel, no stand-in at all) is a break (LNG-16: \"I didn't hear the muke\")." },
   "contract-30": { item: "written", title: "everything said is written", how: "The card sample (everything written on the sidebar cards, shown or folded: row and headline words, count chips) against the lines said in the stage (the sound log, not item names on a tap, laps or count-downs): every number word (the lexicon's Num entries) a line says must be written on a card of that stage, and every English placeholder in its brackets ([red]); at every level and in every round, taught ones too (SH-99, CLN-161, CLN-169, CLN-171). One is the exception (Zafar, 19 Oct: 'we don't need to write one, only two or more'): a said one (hakro, hakri) whose item is written bare passes. Counting along the taps (role count) is a tally, not the order." },
   "contract-31": { item: "free-replay", title: "a replay is free and says what is left", how: "A help Cook counts (the hint sample: Cook.onHelp's kind) of kind replay is a break (SH-102: only seeing it written costs); and after a tap on a face (the card's replay) with rows already ticked (the rows sample), no line said in the next 7 s may be a ticked row's words (SH-114: a replay reads out the remaining steps)." },
-  "contract-32": { item: "divider", title: "the review's divider leaves room", how: "The review sample (the word review's two halves, side by side: the wrong words' column and the right words' column, their widths and counts): with no wrong word the right words take 4/5 of the width (room for four right and one wrong, SH-103, Zafar, 17 Oct: 'a little bit more to the left'); the wrong half is as many units wide as it has words (1 to 3) against the right half's 4, so the divider moves over as wrong words grow. Not judged on a taught round (one group) or stacked on a portrait phone." },
+  "contract-32": { item: "divider", title: "the review's divider leaves room", how: "The review sample (the word review's two halves, side by side: the wrong words' column and the right words' column, their widths and counts): with no wrong word the words are one group in the middle of the card, within 12 px, and no wrong-words half (SH-173, Zafar, 30 Oct; amends SH-103); with wrong words the wrong half is as many units wide as it has words (1 to 3) against the right half's 4, so the divider moves over as wrong words grow. Not judged on a taught round (one group) or stacked on a portrait phone." },
   "contract-33": { item: "headline-size", title: "the order pop-up's headlines: one size, wrap first", how: "The heads sample (each headline of the order pop-up with its size, its full size from a bare clone of it, and its line count; settled 400 ms): two sizes on one pop-up, or headlines all on one line while shrunk under their full size, is a break (SH-107, Zafar, 18 Oct: 'it was better to have the bigger text'; only the order pop-up: everywhere else keeps shrink, then wrap, non-negotiable 9)." },
   "contract-17": { item: "voice-src", title: "only family voices on the store build", how: "On a run with --store (window.NJG_BUILD = \"store\", the packaged app's voice path) every sound the page played is classified against data/family-audio.json and data/cook-tts.json (lib/sound.mjs): anything but a family clip marked checked: ok (the device voice, a placeholder TTS file, an unchecked or redo clip, unknown audio) is a break. A line with no clip at all is the recording gap list, never silent." },
   "contract-18": { item: "card-rows", title: "card rows tick when their step closes", how: "Every rows sample (lib/contract-hook.mjs: each sidebar card row with its key, words and tick) against the shared lifecycle's step-close log (Lifecycle.note: the order card's tick path and the heal host, at their own millisecond, with the step's key): a row that turns ticked with no step-close for its key (any step-close for a row with no key) in the 1.1 s before is a break; a row whose words change while it stays in the same stage (not to or from a row with no letters, not under the bulb's English) is a break." },
@@ -1244,7 +1244,26 @@ export function reviewShare(bad) { return 4 / (Math.max(1, Math.min(bad, 3)) + 4
 function check32(tl, add) {
   const seen = new Set();
   for (const e of tl) {
-    if (e.type !== "c" || e.k !== "review" || e.none || !(e.badW + e.okW > 0)) continue;
+    if (e.type !== "c" || e.k !== "review" || e.none) continue;
+    // SH-173 (Zafar, 30 Oct): nothing wrong: one group, in the middle of the card (never beside an empty wrong-words half)
+    if (e.allRight) {
+      const k = `all|${e.ok}`;
+      if ((e.halves || Math.abs(e.off) > 12) && !seen.has(k)) {
+        seen.add(k);
+        add("contract-32", e.t, e.halves ? `nothing wrong, yet the review keeps a wrong-words half (SH-173: the right words one group in the middle)` : `nothing wrong, and the review's ${e.ok} words sit ${e.off} px off the card's middle (SH-173: centred)`);
+      }
+      continue;
+    }
+    if (e.bad === 0) {
+      // (SH-173: a review with nothing wrong drawn as two halves: the old SH-103 look, the empty wrong half on the left)
+      const k = `half0|${e.ok}`;
+      if (!seen.has(k)) {
+        seen.add(k);
+        add("contract-32", e.t, `nothing wrong, yet the review is two halves with an empty wrong-words side (SH-173: the right words one group in the middle)`);
+      }
+      continue;
+    }
+    if (!(e.badW + e.okW > 0)) continue;
     const share = e.okW / (e.badW + e.okW);
     const want = reviewShare(e.bad);
     // content may push a narrow half wider than its share (a long word in one tile at 800x360): never narrower than it, so lower is judged loosely

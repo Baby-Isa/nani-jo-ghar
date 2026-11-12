@@ -704,6 +704,16 @@ const BASE_HOOK = `(() => {
   // contract-32 (SH-103): the end review's two halves: where the wrong (left) and right (right) words sit. Null unless the word review
   // is up with its two halves side by side (a taught round has one group; a portrait phone stacks them)
   const review = () => {
+    // SH-173 (Zafar, 30 Oct): a review with nothing wrong is one group in the middle: how far its words sit off the card's middle
+    const all = document.querySelector(".njg-results .rs-p2 .rs-words.allright");
+    if (all && shown(all)) {
+      const ws = [...all.querySelectorAll(".rs-word")].map((x) => x.getBoundingClientRect()).filter((r) => r.width > 0);
+      const card = all.closest(".rs-card") || all;
+      const rc = card.getBoundingClientRect();
+      if (!ws.length) return null;
+      const l = Math.min(...ws.map((r) => r.left)), r = Math.max(...ws.map((r) => r.right));
+      return { allRight: true, bad: 0, ok: ws.length, halves: !!all.querySelector(".rs-words-bad"), off: Math.round((l + r) / 2 - (rc.left + rc.right) / 2), l: Math.round(l), r: Math.round(r) };
+    }
     const w = document.querySelector(".njg-results .rs-p2 .rs-words:not(.one)");
     if (!w || !shown(w)) return null;
     const b = w.querySelector(".rs-words-bad"), o = w.querySelector(".rs-words-ok");

@@ -101,13 +101,16 @@ test("contract-22: 'Shabash!' said twice at the serve (the station's praise, the
 
 const review = (t, o) => C(t, "review", { bad: 0, ok: 4, badW: 300, okW: 300, l: 100, r: 700, ...o });
 
-test("contract-32: the review's divider at the middle with no wrong word (the old equal halves) is a break; 4/5 with none wrong, growing with the wrong words, passes", () => {
-  const halves = sorted([stage(T, "cook:station1:chai-tray"), review(T + 500, { bad: 0, ok: 4, badW: 300, okW: 300 })]);
+test("contract-32: with no wrong word the review is one group in the middle (SH-173); two halves with an empty wrong side, or a group off the middle, are breaks; with wrong words the halves grow with them", () => {
+  const halves = sorted([stage(T, "cook:station1:chai-tray"), review(T + 500, { bad: 0, ok: 4, badW: 120, okW: 480 })]);
   const b = of(run(page("cook:chai-tray", halves)), "contract-32");
-  assert.equal(b.length, 1);
-  assert.match(b[0].measured, /take 50% of the width with 0 wrong and 4 right \(wanted about 80%/);
-  const fair = [stage(T, "cook:station1:chai-tray"), review(T + 500, { bad: 0, ok: 4, badW: 120, okW: 480 }), review(T + 900, { bad: 1, ok: 4, badW: 120, okW: 480 }), review(T + 1300, { bad: 3, ok: 3, badW: 258, okW: 342 })];
-  assert.equal(of(run(page("cook:chai-tray", sorted(fair))), "contract-32").length, 0, "0 and 1 wrong: 80%; 3 wrong: 4/7 = 57%");
+  assert.equal(b.length, 1, "SH-173: nothing wrong drawn as halves (the old 4/5 look) is a break");
+  assert.match(b[0].measured, /nothing wrong, yet the review is two halves/);
+  const all = (t, o) => C(t, "review", { allRight: true, bad: 0, ok: 4, halves: false, off: 0, ...o });
+  const fair = [stage(T, "cook:station1:chai-tray"), all(T + 500), review(T + 900, { bad: 1, ok: 4, badW: 120, okW: 480 }), review(T + 1300, { bad: 3, ok: 3, badW: 258, okW: 342 })];
+  assert.equal(of(run(page("cook:chai-tray", sorted(fair))), "contract-32").length, 0, "none wrong centred; 1 wrong: 80%; 3 wrong: 4/7 = 57%");
+  assert.equal(of(run(page("cook:chai-tray", sorted([stage(T, "x"), all(T + 500, { off: -60 })]))), "contract-32").length, 1, "nothing wrong, the group 60 px left of the middle");
+  assert.equal(of(run(page("cook:chai-tray", sorted([stage(T, "x"), all(T + 500, { halves: true })]))), "contract-32").length, 1, "nothing wrong, a wrong half kept");
   // one wrong word still at the old middle, and three wrong squeezed into a fifth, are breaks
   assert.equal(of(run(page("cook:chai-tray", sorted([stage(T, "x"), review(T + 500, { bad: 1, ok: 4, badW: 300, okW: 300 })]))), "contract-32").length, 1);
   assert.equal(of(run(page("cook:chai-tray", sorted([stage(T, "x"), review(T + 500, { bad: 3, ok: 3, badW: 120, okW: 480 })]))), "contract-32").length, 1);

@@ -310,6 +310,9 @@
     // at 1/5 of the width with none wrong and moves over as the wrong words grow (contract-32 reads it)
     const col = (cls, list, w = 1) => `<div class="rs-words-col ${cls} c${Results.wordCols(list.length)}${list.length >= 10 ? " many" : ""}" style="--rs-cols:${Results.wordCols(list.length)};--rs-w:${w}">${list.join("")}</div>`;
     if (one) return col("rs-words-all", ok);
+    // SH-173 (Zafar, 30 Oct: yes to S13 question 40; amends SH-103 when no item is wrong): nothing wrong, the right words are one group
+    // in the middle, never beside an empty wrong-words half
+    if (!bad.length) return col("rs-words-all rs-words-ok", ok);
     return col("rs-words-bad", bad, Math.max(1, Math.min(bad.length, 3))) + col("rs-words-ok", ok, 4);
   }
 
@@ -504,7 +507,7 @@
           ${taught ? "" : `<div class="rs-page rs-p1" data-page="1">
             ${body ? '<div class="rs-body"></div>' : `<div class="rs-badges n${(timed ? 3 : 2) + (looks != null ? 1 : 0)}">${timeBadge(b.time)}${accuracyBadge(b.accuracy)}${hintsBadge(b.hints)}${looks != null ? lookBadge(looks) : ""}</div>`}
           </div>`}
-          ${words.length ? `<div class="rs-page rs-p2" data-page="2"${first === 2 ? "" : ' aria-hidden="true"'}><div class="rs-words${denseWords(words) ? " dense" : ""}${taught ? " one" : ""}">${wordsHtml(words, { one: taught })}</div></div>` : ""}
+          ${words.length ? `<div class="rs-page rs-p2" data-page="2"${first === 2 ? "" : ' aria-hidden="true"'}><div class="rs-words${denseWords(words) ? " dense" : ""}${taught || !words.some((w) => w.right === false) ? " one" : ""}${!taught && !words.some((w) => w.right === false) ? " allright" : ""}">${wordsHtml(words, { one: taught })}</div></div>` : ""}
           ${steps.length ? stepsHtml(steps) : ""}
         </div>
         ${many ? `<div class="rs-actions rs-first"><button class="rs-btn rs-next primary" type="button" aria-label="Next">${ICON.next}</button></div>` : ""}
