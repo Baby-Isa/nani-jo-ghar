@@ -105,6 +105,7 @@
     readCard: 900, // the least a whole card (no people) is read for
     fold: 320, // a card folding or opening as the order passes on, the panel gliding with it (SH-180)
     foldAfter: 700, // a finished card holds its last tick this long before it folds (opts.foldAfter overrides)
+    homeWait: 1500, // ... and waits at most this long more for its row's glide home (SH-152)
     followFold: 420, // a served card's fold in play, the panel following the next card (SH-232)
     landed: 400, // the side panel's "landed" glow as the order arrives
     arriveNani: 500, // Nani asks herself, before her order
@@ -333,7 +334,7 @@
         opts.fold.want14 = null;
         opts.fold.kid14 = Date.now(); // (the child's own: the current card's guard below leaves it alone)
         const c = list.closest(".oc-card");
-        if (c && c.dataset.ck) glideWant.delete(c.dataset.ck);
+        if (c && c.dataset.ck) glideWant.delete(rowKey(c, list));
       }
     }, { passive: true });
     // (the Fable review's finding 5: a child's touch, drag or wheel on the row is theirs, even while the row's own glide is on)
@@ -360,20 +361,30 @@
   OC.snap14 = function (box) {
     const out = new Map();
     if (!box) return out;
-    box.querySelectorAll(".oc-card[data-ck] .oc-row14").forEach((row) => {
-      const c = row.closest(".oc-card");
-      const lefts = new Map();
-      // SH-180 (the judge, 3 Nov: as a card opened, its empty slots began stacked on one spot and fanned out, 120 px in a frame): a
-      // row not on screen (a folded card's, headline only) has no places to slide from; its cards simply appear where they belong
-      const shown = row.getBoundingClientRect().width > 0 && row.offsetParent !== null;
-      if (shown)
-        row.querySelectorAll(":scope > .oc-row[data-key]").forEach((r) => {
-          const rb = r.getBoundingClientRect();
-          if (rb.width > 0) lefts.set(r.dataset.key, rb.left);
-        });
-      out.set(c.dataset.ck, { scroll: row.scrollLeft, lefts, done: new Set([...row.querySelectorAll(":scope > .oc-row.done[data-key]")].map((r) => r.dataset.key)) });
+    // (SH-152, contract-72: a card with more than one row, chaat's dish and its layers, kept only its LAST row's scroll under its key,
+    // and the redraw put its FIRST row there: the first row jumped back to its start at every tick, 181 px in a frame. Each row of a
+    // card is kept in order now, rows[i]; the card's own fields stay its first row's)
+    box.querySelectorAll(".oc-card[data-ck]").forEach((c) => {
+      const rows = [...c.querySelectorAll(".oc-row14")].filter((row) => row.closest(".oc-card") === c).map((row) => {
+        const lefts = new Map();
+        // SH-180 (the judge, 3 Nov: as a card opened, its empty slots began stacked on one spot and fanned out, 120 px in a frame): a
+        // row not on screen (a folded card's, headline only) has no places to slide from; its cards simply appear where they belong
+        const shown = row.getBoundingClientRect().width > 0 && row.offsetParent !== null;
+        if (shown)
+          row.querySelectorAll(":scope > .oc-row[data-key]").forEach((r) => {
+            const rb = r.getBoundingClientRect();
+            if (rb.width > 0) lefts.set(r.dataset.key, rb.left);
+          });
+        return { scroll: row.scrollLeft, lefts, done: new Set([...row.querySelectorAll(":scope > .oc-row.done[data-key]")].map((r) => r.dataset.key)) };
+      });
+      if (rows.length) out.set(c.dataset.ck, Object.assign({}, rows[0], { rows }));
     });
     return out;
+  };
+  // (a card's row's key for its glide: the card's data-ck for its first row, data-ck#i for its i-th)
+  const rowKey = (c, row) => {
+    const i = [...c.querySelectorAll(".oc-row14")].filter((r) => r.closest(".oc-card") === c).indexOf(row);
+    return i > 0 ? `${c.dataset.ck}#${i}` : c.dataset.ck;
   };
   /** The row glides (smoothly) just enough to show the whole card (the lab's glideTo: never a jump). */
   const glideWant = new Map(); // (a card's row glide in flight, by its data-ck: a redraw carries it on)
@@ -396,6 +407,8 @@
     } else if (l < x) x = l - 2;
     else if (r > x + row.clientWidth) x = r - row.clientWidth + 2;
     const c = row.closest(".oc-card");
+    // (each row of a card its own glide: rowKey, as settle14 keeps them)
+    const ckey = c && c.dataset.ck ? rowKey(c, row) : null;
     // contract-72 (the audit, 3 Nov: the row glided 3-5 cards at once when the order was read from a card far along): a glide never
     // goes more than two cards in one move; a longer one goes two cards, then on (the row follows, never leaps). A glide back to the
     // first card is the row going home (logged as row-home, as the end of the order's)
@@ -404,7 +417,7 @@
     if (!home && !opts.instant && span > 0 && Math.abs(x - row.scrollLeft) > span + 2) {
       const sp = (root.Cook && root.Cook.speed) || 1;
       const step = row.scrollLeft + Math.sign(x - row.scrollLeft) * span;
-      if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
+      if (ckey) glideWant.set(ckey, x);
       try {
         if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("row-glide", { step: String(Math.round(span)), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(step)} (on to ${Math.round(x)})` });
       } catch (e) {
@@ -412,7 +425,7 @@
       }
       row._auto = true;
       row.scrollTo({ left: step, behavior: "smooth" });
-      const ck = c && c.dataset.ck;
+      const ck = ckey;
       setTimeout(() => {
         row._auto = false;
         // (on, unless something else has moved the row since: a redraw's own want, a child's scroll)
@@ -420,7 +433,7 @@
       }, 320 / sp);
       return;
     }
-    if (c && c.dataset.ck) glideWant.set(c.dataset.ck, x);
+    if (ckey) glideWant.set(ckey, x);
     // SH-152's check (contract-72): each glide, how far and how (always smooth), against a card's width
     try {
       if (root.Lifecycle && root.Lifecycle.note && Math.abs(x - row.scrollLeft) > 1) root.Lifecycle.note(home ? "row-home" : "row-glide", { step: String(Math.round(Math.abs(x - row.scrollLeft))), by: `card:${Math.round(card.offsetWidth)} smooth from:${Math.round(row.scrollLeft)} to:${Math.round(x)}` });
@@ -443,12 +456,29 @@
    * scroll (fold.scroll14) stays.
    */
   OC.settle14 = function (card, snap, fold) {
-    const row = card && card.querySelector(".oc-row14");
-    if (!row) return;
+    if (!card || !card.querySelectorAll) return;
+    const rows = [...card.querySelectorAll(".oc-row14")].filter((row) => row.closest(".oc-card") === card);
+    if (!rows.length) return;
+    // (SH-152, contract-72: every row of the card put back where it was, each from its own snapshot; the card's fold state, its child's
+    // scroll and its glide home, is its first row's; a later row keeps its own small state on it, fold.rows14[i])
+    rows.forEach((row, i) => {
+      const own = snap ? (snap.rows ? snap.rows[i] : i === 0 ? snap : null) : null;
+      const st = i === 0 ? fold : fold ? ((fold.rows14 = fold.rows14 || [])[i] = fold.rows14[i] || {}) : null;
+      settleRow(card, row, own || null, st, i === 0 ? card.dataset.ck : `${card.dataset.ck}#${i}`, i === 0);
+    });
+    if (root.WordCard && root.WordCard.fit14) root.WordCard.fit14(card);
+    // (and where the fit moved a card's size under it, each row is put back on its place once more: a scroll the fit clamped)
+    rows.forEach((row) => {
+      if (row._want14 != null && Math.abs(row.scrollLeft - row._want14) > 1) row.scrollLeft = row._want14;
+      row._want14 = null;
+    });
+  };
+  function settleRow(card, row, snap, fold, ck, first) {
     const max = () => Math.max(0, row.scrollWidth - row.clientWidth);
     const was = snap ? snap.scroll : fold && fold.scroll14 != null ? fold.scroll14 : 0;
     row._auto = true;
     row.scrollLeft = was;
+    row._want14 = was;
     const rows = [...row.querySelectorAll(":scope > .oc-row[data-key]")];
     const fresh = snap ? rows.filter((r) => r.classList.contains("done") && !snap.done.has(r.dataset.key)) : [];
     // CHAI-62 (Zafar, 1 Nov: "the contents emptied, but the menu card didn't reset by scrolling to the start again ... every time the
@@ -501,7 +531,7 @@
       setTimeout(() => row.isConnected && row.scrollTo({ left: to, behavior: "smooth" }), 400 / spd);
     } else if (again.length) {
       if (fold) fold.scroll14 = fold.want14 = 0;
-      glideWant.delete(card.dataset.ck);
+      glideWant.delete(ck);
       try {
         if (root.Lifecycle && root.Lifecycle.note && row.scrollLeft > 1) root.Lifecycle.note("row-home", { step: String(Math.round(row.scrollLeft)), by: `again:${again.length} smooth from:${Math.round(row.scrollLeft)} to:0` });
       } catch (e) {
@@ -512,14 +542,14 @@
     }
     // (a redraw in the middle of the row's own glide: it carries on to where it was going)
     else {
-      const want = fold && fold.want14 != null ? fold.want14 : glideWant.get(card.dataset.ck);
+      const want = fold && fold.want14 != null ? fold.want14 : glideWant.get(ck);
       if (want != null && Math.abs(want - row.scrollLeft) > 1) row.scrollTo({ left: Math.min(max(), want), behavior: "smooth" });
     }
-    if (fresh.length) glideWant.delete(card.dataset.ck);
+    if (fresh.length) glideWant.delete(ck);
     // (Zafar, 4 Nov evening: "only once the tea is served should the menu card scroll the items back to the beginning. And then
     // minimize. In that sequence"): a finished card (served) holds its ticks a moment at the row's end, glides home, then folds (the
     // host's foldAfter for the s14 card leaves room for the glide)
-    if (fold) {
+    if (fold && first) {
       if (!card.classList.contains("done")) fold.home14 = false;
       else if (!fold.home14) {
         fold.home14 = true;
@@ -528,7 +558,7 @@
           const r = fold.el && fold.el.isConnected ? fold.el.querySelector(".oc-row14") : null;
           if (!r || !fold.el.classList.contains("done")) return;
           fold.scroll14 = fold.want14 = 0;
-          glideWant.delete(card.dataset.ck);
+          glideWant.delete(ck);
           if (r.scrollLeft > 1) {
             try {
               if (root.Lifecycle && root.Lifecycle.note) root.Lifecycle.note("row-home", { step: String(Math.round(r.scrollLeft)), by: `served smooth from:${Math.round(r.scrollLeft)} to:0` });
@@ -569,8 +599,7 @@
       setTimeout(() => (row._auto = false), 700);
     }, 950 / spd0);
     row.classList.toggle("oc-at-end", row.scrollLeft + row.clientWidth >= row.scrollWidth - 4);
-    if (root.WordCard && root.WordCard.fit14) root.WordCard.fit14(card);
-  };
+  }
 
   function itemEl(it, opts) {
     // SH-241, SAM-31 (Zafar, 8 Nov: "no relic of the old order card"): a game's item rows are 6 Nov item cards (items14), its
@@ -755,12 +784,18 @@
     } else {
       clearTimeout(st.timer);
       // the card as it is then (a host may have drawn it again since): the one that carries this state
-      st.timer = setTimeout(() => {
+      // (SH-152, contract-72: a served card's row glides home before it folds: the fold waits for the glide to reach the first card,
+      // never longer than OC.TIMES.homeWait; folded half-way, the row stopped short of its start, a glide cut off)
+      const t1 = Date.now() + due;
+      const fold = () => {
         const cur = st.el && st.el.isConnected ? st.el : null;
         if (!cur || st.open || !cur.classList.contains("done")) return;
+        const r = st.home14 ? cur.querySelector(".oc-row14") : null;
+        if (r && r.scrollLeft > 1 && Date.now() - t1 < OC.TIMES.homeWait) return void (st.timer = setTimeout(fold, 60));
         st.followed = true;
         OC.followFold(cur, () => cur.classList.add("folded"), opts);
-      }, due);
+      };
+      st.timer = setTimeout(fold, due);
     }
     c.addEventListener("click", (e) => {
       if (e.target.closest(".oc-face")) return; // the face is replay

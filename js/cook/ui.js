@@ -1162,6 +1162,15 @@
     const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
     raf(() => raf(r));
   });
+  // (s19-clean-chai's finding, contract-22: "Dudh wiji chad!" twice: the helper's line waited in the speech queue, unmarked, while the
+  // help ladder's pause came and said it again; it is marked as said the moment it is queued, as Lang.speak marks a line it starts)
+  const saidNow = (l) => {
+    try {
+      if (global.NaniGuide && global.NaniGuide.markSaid && l) global.NaniGuide.markSaid(Lang.plain(l));
+    } catch (e) {
+      /* only the repeat rule's memory */
+    }
+  };
   function helperCall(by) {
     const s = stepper && stepper.current;
     if (!s || UI.naniMuted()) return;
@@ -1176,6 +1185,7 @@
       } catch (e) {
         /* only a log */
       }
+      saidNow(w);
       queued(() => drawn().then(() => (helperOn && stepper && stepper.current === s ? Lang.speak(Lang.role(w, "call")) : null))).catch(() => {});
       return;
     }
@@ -1185,6 +1195,7 @@
       /* only a log */
     }
     const line = Lang.role(copyLine(s.line), "call");
+    saidNow(line);
     queued(() =>
       drawn().then(() => {
         if (!helperOn || !stepper || stepper.current !== s) return null;
