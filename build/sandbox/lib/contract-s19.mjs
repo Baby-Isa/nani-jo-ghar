@@ -139,13 +139,15 @@ export function check101(r, tl, add) {
 // LATE_LIGHT_MS, is that light's, not the game's own. A glow with no rung, or one its light never frames, is still the game's.)
 export const RUNG_WITH_MS = 700;   // the glow starts this close to its rung (the coach's note and the sampler's 100 ms)
 export const LATE_LIGHT_MS = 2000; // the rung's light box painted at most this late
+// (a lifecycle note's own time is its `at`; its sample's t is when the probe read the log)
+const noteT = (n) => (n.at != null ? n.at : n.t);
 const glowStart = (glows, i, key) => { let j = i; while (j > 0 && (glows[j - 1].list || []).some((y) => y.key === key)) j--; return glows[j].t; };
 export function lateLight(glows, i, g, lits, rungs) {
   const t0 = glowStart(glows, i, g.key);
-  const rg = rungs.find((n) => Math.abs(n.t - t0) <= RUNG_WITH_MS);
+  const rg = rungs.find((n) => Math.abs(noteT(n) - t0) <= RUNG_WITH_MS);
   if (!rg) return false;
   const m = mid(box(g.box));
-  return lits.some((l) => l.t >= t0 - SAMPLE_SLACK_MS && l.t <= Math.max(t0, rg.t) + LATE_LIGHT_MS && (l.holes || []).some((h) => inBox(m, box(h), 2)));
+  return lits.some((l) => l.t >= t0 - SAMPLE_SLACK_MS && l.t <= Math.max(t0, noteT(rg)) + LATE_LIGHT_MS && (l.holes || []).some((h) => inBox(m, box(h), 2)));
 }
 
 // 102
@@ -339,8 +341,8 @@ export function check107(r, tl, add) {
       // and the glow is sampled every 100 ms: a hop any time from the light to HOLD_MS + 400 ms after it counts)
       // (s19-clean-a6, chai's report: the light box painted late, up to LATE_LIGHT_MS after its rung: the hop that started with the rung
       // counts, from the rung on)
-      const rg = rungs.filter((n) => n.t <= e.t && n.t >= e.t - LATE_LIGHT_MS).pop();
-      const from = Math.min(e.t - 100, rg ? rg.t - SAMPLE_SLACK_MS : Infinity);
+      const rg = rungs.filter((n) => noteT(n) <= e.t && noteT(n) >= e.t - LATE_LIGHT_MS).pop();
+      const from = Math.min(e.t - 100, rg ? noteT(rg) - SAMPLE_SLACK_MS : Infinity);
       const hop = glows.some((x) => x.t >= from && x.t <= e.t + HOLD_MS + 400 && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
       if (hop) return;
       seen.add("still:" + th.id);

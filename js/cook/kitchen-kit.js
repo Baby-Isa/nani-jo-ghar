@@ -506,15 +506,20 @@ const serveEnv = () => {
    */
   St.bandOf = (game) => ((((Cook.data && Cook.data.settings) || {})[game] || {}).band) || null;
   St.stoneBand = function (S, { top, base, far = 2000, depth = 0, tray = base == null, alpha = 0.18, game = null }) {
+    const named = game ? St.bandOf(game) : null;
     if (game) {
-      const b = St.bandOf(game);
-      if (b === "tray" || b === "shelf") tray = b === "tray";
+      if (named === "tray" || named === "shelf") tray = named === "tray";
       else if (global.console) console.warn(`St.stoneBand: ${game}'s settings name no band ("tray" or "shelf")`);
     }
     const ST = St.STONE;
     const W = 1600 + 2 * far;
     const SH = global.Shelf;
-    if (tray && SH && SH.P && SH.P.tray && SH.trayInk && SH.trayInk()) {
+    const kitTray = !!(tray && SH && SH.P && SH.P.tray && SH.trayInk && SH.trayInk());
+    // (SH-248, contract-123: which band the kit drew and for which game, so the checks see each game draw the one its settings name)
+    try {
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("band", { step: game || "", by: `${kitTray ? "tray" : "shelf"} named ${named || "none"}` });
+    } catch (e) { /* a log only */ }
+    if (kitTray) {
       // (the worktop's wash carried on under the tray, as Kit.worktop draws it above: the slab sits on the same marble)
       S.track(S.add.rectangle(-far, top, W, 900 - top + far, St.worktopWash(), alpha).setOrigin(0).setDepth(D.bg + 1));
       const view = () => {

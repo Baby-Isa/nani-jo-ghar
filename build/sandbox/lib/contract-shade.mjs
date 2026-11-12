@@ -14,6 +14,8 @@ export const SHADE_HOLD_MS = 1200; // an object judged once seen this long in pl
 export const SHADE_INSIDE = 1.6;  // a picture whose middle lies in one this many times its size, under it, is inside it (a glass on a tray, food in a pan)
 export const SHADE_SKIP = /shadow|shade|glow|hand|badge|face|bubble|ring|steam|flame|spark|smoke|light|halo|arrow|tick|cross|label|chip|pill|dot|mark|veil|quiet|mask|cover|occ|front|lip|rim|fx|wisp|drip|splash|pour|stream|crumb|burst|-(happy|neutral|frown|sad)$|-cat$/i;
 
+import { readFileSync } from "node:fs";
+
 const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
 
 export const SHADE_CHECKS = {
@@ -48,6 +50,7 @@ export function check120(r, tl, add) {
 // and lit as a 12 px strip, the tap landing on the order's veil): the card lesson's part asked for is tappable under the light ----
 export const LESSON_MIN = 8;     // the part asked for: at least this many px each way (js/cook/ui.js blurLesson TAP_MIN; the stuck one was 0)
 export const LESSON_HOLD_MS = 600; // a sample held this long is what the child sees
+export const BAND_CHECKS = {};
 export const LESSON_CHECKS = {
   "contract-121": { item: "lesson-tappable", title: "the card lesson's part asked for is tappable under the light", how: `Cook flows. Every s19lesson sample (lib/contract-shade.mjs LESSON_HOOK: while the order pop-up's card lesson waits for a tap, js/cook/ui.js blurLesson, the part it asks for by Cook.expect) held ${LESSON_HOLD_MS} ms: the part smaller than ${LESSON_MIN} px either way, the page's top thing at its middle not the lesson's card (the order's veil, another layer), or its middle outside every lit hole of the light (the s19lit sample before it) is a break (a play-area tap the light blocks meanwhile is the order's skip held back, not the lesson's). Once per page (SH-213; a child can get stuck: non-negotiable 7).` },
 };
@@ -93,10 +96,42 @@ export function check122(r, tl, add) {
   }
 }
 
+// ---- 123 (s19-clean-a6, SH-248): each kitchen game draws the band its settings name, through the kit ----
+// (Zafar, 10 Nov: "the decision about which bottom element each game uses, the stone tray or the vertical shelf, should be in their
+// game file design, but also in their actual code, so it pulls the [one] shared element": build/core/band.test.mjs reads the files;
+// this reads what was drawn: St.stoneBand's Lifecycle note "band", step = the game's key, by = "<drawn> named <its settings' band>")
+const STATIONS_DIR = new URL("../../../data/stations/", import.meta.url);
+const bandCache = new Map();
+export function bandSetting(game) {
+  if (!bandCache.has(game)) {
+    let b = null;
+    try { b = JSON.parse(readFileSync(new URL(`${game}.json`, STATIONS_DIR), "utf8")).band || null; } catch (e) { b = null; }
+    bandCache.set(game, b);
+  }
+  return bandCache.get(game);
+}
+export const flowGame = (flow) => (/^(?:cook:|lab:cook\/)(?:recipe:)?([\w-]+)/.exec(flow || "") || [])[1] || null;
+BAND_CHECKS["contract-123"] = { item: "kit-band", title: "each kitchen game draws the band its settings name, through the kit", how: "Cook flows. Each band the kit draws (js/cook/kitchen-kit.js St.stoneBand logs Lifecycle \"band\": the game's key and the band drawn) must be the one that game's settings name (data/stations/<game>.json band: \"tray\", the kit's stone tray, or \"shelf\", the stone shelf), and a band drawn with no game's key is a break (a station choosing its own). A page of a game whose settings name a band that reached a station and never drew the kit's band is a break (its own counter: baking's before wave D). Once per page (SH-248, SH-255)." };
+export function check123(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const notes = tl.filter((e) => e.type === "c" && e.k === "life" && e.what === "band");
+  for (const n of notes) {
+    const game = n.step || "", [drawn, , named] = String(n.by || "").split(" ");
+    if (!game) return add("contract-123", n.t, `a band (${drawn}) drawn with no game's key: each game's band comes from its settings (St.stoneBand(S, {game}))`);
+    const want = bandSetting(game);
+    if (!want) return add("contract-123", n.t, `${game}'s settings (data/stations/${game}.json) name no band; the kit drew the ${drawn}`);
+    if (drawn !== want) return add("contract-123", n.t, `${game} drew the kit's ${drawn} but its settings name the ${want}${named !== want ? ` (the page read ${named})` : ""}`);
+  }
+  const g = flowGame(r.flow), want = g ? bandSetting(g) : null;
+  const station = tl.find((e) => e.type === "c" && e.k === "stage" && /(^|\|)cook:station/.test(e.key || ""));
+  if (want && station && !notes.length) add("contract-123", station.t, `${g}'s settings name the ${want}, and the page reached its station without the kit drawing a band: the bottom bar is the kit's`);
+}
+
 export function checkShade(r, tl, v, add) {
   check120(r, tl, add);
   check121(r, tl, add);
   check122(r, tl, add);
+  check123(r, tl, add);
 }
 
 // The audit, per page: every worktop object seen, with or without its shadow (the report's table reads it from a run's results)

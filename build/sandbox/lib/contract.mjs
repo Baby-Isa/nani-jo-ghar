@@ -78,7 +78,7 @@ import { S17_CHECKS, checkS17 } from "./contract-s17.mjs";
 // contracts 100 and up: the shared pieces present (s19-checks, Sprint 19 part 1), in a file of their own
 import { S19_CHECKS, checkS19 } from "./contract-s19.mjs";
 import { WO_CHECKS, checkWO } from "./contract-wo.mjs"; // (s19-clean-a: contract-118, the wrong-order pop-up and the redo)
-import { SHADE_CHECKS, LESSON_CHECKS, checkShade } from "./contract-shade.mjs"; // (s19-clean-a4: contract-120, SH-268 every worktop object's shadow)
+import { SHADE_CHECKS, LESSON_CHECKS, BAND_CHECKS, checkShade } from "./contract-shade.mjs"; // (s19-clean-a4: contract-120, SH-268 every worktop object's shadow)
 import { SCREEN_CHECKS, check112, check113, judgedByGame, judgedMd, judgedLine } from "./contract-screen.mjs";
 // s19-checks-2: the screen checks of the check sort's G2, G3 and G5 (contract-114 to -116; 72, 73 and 74 rewritten from the screen)
 import { S19B_CHECKS, check114, check115, check116, check72, check73, check74, check36, check37, check70, check71, check77, check90, check96, check109few } from "./contract-s19b.mjs";
@@ -137,6 +137,7 @@ export const CHECKS = {
   ...WO_CHECKS,
   ...SHADE_CHECKS,
   ...LESSON_CHECKS,
+  ...BAND_CHECKS,
 };
 
 // the route the contract run plays by default (run.mjs --contract with no --flow): what Zafar played on 8 Oct and the places his

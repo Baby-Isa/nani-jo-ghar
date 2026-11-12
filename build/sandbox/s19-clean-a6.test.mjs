@@ -92,3 +92,24 @@ test("contract-115: the main thing at 65% of the room (chai's hob) is green, at 
   assert.equal(red.length, 1, "55%: red");
   assert.match(red[0].msg, /under the 60% floor, flagged for a look/);
 });
+
+// ---- contract-123 (SH-248): each kitchen game draws the band its settings name, through the kit ----
+import { check123, bandSetting, flowGame } from "./lib/contract-shade.mjs";
+import { CHECKS } from "./lib/contract.mjs";
+test("contract-123: the band drawn is the one the game's settings name; none drawn, or a band with no game, is red", () => {
+  assert.ok(CHECKS["contract-123"]);
+  assert.equal(bandSetting("chai-tray"), "shelf");
+  assert.equal(bandSetting("chaat"), "tray");
+  assert.equal(flowGame("cook:maani-line@L3#speed1"), "maani-line");
+  const run = (flow, tl) => collect((add) => check123({ flow }, tl, add));
+  const stage = c(100, "stage", { key: "cook:station1:marble" });
+  const band = (game, by) => c(200, "life", { what: "band", step: game, by, at: 200 });
+  assert.equal(run("cook:chai-tray", [stage, band("chai-tray", "shelf named shelf"), c(9000, "x")]).length, 0, "chai's shelf: green");
+  assert.equal(run("cook:samosa@L2", [stage, band("samosa", "tray named tray"), c(9000, "x")]).length, 0, "samosa's tray: green");
+  assert.equal(run("cook:samosa", [stage, band("samosa", "shelf named tray"), c(9000, "x")]).length, 1, "the tray named, the shelf drawn (the kit's tray not ready): red");
+  assert.equal(run("cook:baking", [stage, c(9000, "x")]).length, 1, "a game with a band in its settings drew none (its own counter): red");
+  assert.equal(run("cook:corn", [stage, band("", "tray named none"), c(9000, "x")]).length, 1, "a band with no game's key: red");
+  assert.equal(run("cook:fetch", [stage, c(9000, "x")]).length, 0, "the pantry names no band (its painted shelves, PAN-06): not judged");
+  const src = readFileSync(new URL("../../js/cook/kitchen-kit.js", import.meta.url), "utf8");
+  assert.match(src, /Lifecycle\.note\("band", \{ step: game \|\| "", by: `\$\{kitTray \? "tray" : "shelf"\} named/, "the kit logs the band it drew");
+});
