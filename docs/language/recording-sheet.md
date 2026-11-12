@@ -772,7 +772,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ## 7. Other modes
 
-320 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
+321 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
@@ -966,6 +966,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | The families are coming back for their pets! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | The families come back this afternoon. Let's look after their pets! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | things | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
+| three quarters of a cup | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | tin can | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Tomorrow is school! Who wakes up when? | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | toppings | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
