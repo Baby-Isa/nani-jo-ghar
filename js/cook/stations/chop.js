@@ -345,43 +345,8 @@ import { Cook as CookNS } from "../ns.js";
    * blur (screen px). Returns the shadow image.
    */
   function shadow(S, img, { dx = 8, dy = 10, alpha = 0.26, blur = 6 } = {}) {
-    const key = img.texture.key;
-    const k = Math.max(0.01, Math.abs(img.scaleX) || 1);
-    const b = Math.max(1, Math.round(blur / k));
-    const sk = `${key}:shade:${b}`;
-    if (!S.textures.exists(sk)) {
-      const src = S.textures.get(key).getSourceImage();
-      const pad = b * 3;
-      const c = document.createElement("canvas");
-      c.width = src.width + 2 * pad;
-      c.height = src.height + 2 * pad;
-      const g = c.getContext("2d");
-      g.filter = `blur(${b}px)`;
-      g.drawImage(src, pad, pad);
-      g.filter = "none";
-      g.globalCompositeOperation = "source-in";
-      // (the shade colour, a token: one shade for every shadow)
-      const TK = global.Tokens;
-      g.fillStyle = TK && TK.rgb ? `rgb(${TK.rgb("shade-rgb") || "60, 35, 20"})` : "black";
-      g.fillRect(0, 0, c.width, c.height);
-      S.textures.addCanvas(sk, c);
-    }
-    const src = S.textures.get(key).getSourceImage();
-    const pad = b * 3;
-    const sh = S.track(S.add.image(img.x + dx, img.y + dy, sk));
-    sh.setOrigin((pad + img.originX * src.width) / (src.width + 2 * pad), (pad + img.originY * src.height) / (src.height + 2 * pad));
-    const follow = () => {
-      if (!img.active || !sh.active) return;
-      sh.setPosition(img.x + dx, img.y + dy).setScale(img.scaleX, img.scaleY).setRotation(img.rotation).setDepth(img.depth - 0.05);
-      sh.setVisible(img.visible).setAlpha(alpha * img.alpha);
-    };
-    follow();
-    S.events.on("update", follow);
-    img.once("destroy", () => {
-      S.events.off("update", follow);
-      if (sh.active) sh.destroy();
-    });
-    return sh;
+    // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kitchen kit's one shadow)
+    return Cook.Kit && Cook.Kit.shadow ? Cook.Kit.shadow(S, img, { dx, dy, alpha, blur }) : null;
   }
 
   Cook.Chop = { settings, knobs, play, shadow, pictures, ASK, refused };

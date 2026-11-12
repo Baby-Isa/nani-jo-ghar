@@ -296,6 +296,8 @@
   "layout": {
    "_about": "Every place in the 1600 x 900 design box, inside x 150-1450 (the narrowest play area shows that much). grill: the kit's layout's own numbers (trayW the cooked tray's width, bandLen a raw cob's length lying on the band, ringRoom the heat rings' room above the grill); plates: screen 2, each person's plate (d its most diameter, gap between two; its middle in the room above the bowls, a light's margin clear of them, face: the face circle's size as a share of the plate, at its upper left; cob: the cob's length as a share of the plate and its turn, degrees; dim: the plates of the people still waiting, a little faded, CMP-10); bowls: the six dressing bowls on the band (size: most diameter), each pill under its bowl at least the pill floor, never narrowed, a light's margin apart; one row, or two rows of three on a taller tray where one row can't hold them at the floor (a phone); ring: the kit's heat ring above each cob's top end (r); smoke; dress: how each dressing is drawn on a cob in code (kind: squeeze, crystals, powder, drizzle, specks; n: how many marks).",
    "grill": {
+    "tray": "deep",
+    "_tray": "ART-80 (Zafar, 12 Nov: 'the trays look much nicer there. They look deeper and more realistic. We should be copying those trays'): the cooked tray beside the grill is the mock's deep tray (kit/tray-deep, js/cook/grill-kit.js GK.deepTex); 'steel' puts back the flat brushed tray (kit/tray-steel), turned upright",
     "trayW": 360,
     "bandLen": 360,
     "ringRoom": 92
@@ -475,6 +477,7 @@
  "assets": [
   "assets/cook/items/v4/kit/grill-v2.webp",
   "assets/cook/items/v4/kit/tray-steel.webp",
+  "assets/cook/items/v4/kit/tray-deep.webp",
   "assets/cook/items/v4/kit/plate-cream.webp",
   "assets/cook/items/v4/corn/cob-raw.webp",
   "assets/cook/items/v4/corn/cob-turned.webp",
