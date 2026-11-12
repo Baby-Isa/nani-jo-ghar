@@ -408,13 +408,21 @@
       c.classList.remove("on");
       setTimeout(() => c.remove(), 220);
     };
-    // (contract-119, SH-267's L1 pages: its time counts from the frame it is up, never from when it was made: on a busy page the first
-    // frame came 300-700 ms late, so the card was seen 40-220 ms, or its close ran before it was ever drawn)
-    raf(() => {
-      if (shut) return;
-      c.classList.add("on");
-      t = setTimeout(close, o.ms != null ? o.ms : 1500);
-    });
+    // (contract-119, SH-267's L1 pages: its time counts only while frames are drawn, from the first frame it is up: on a busy page (the
+    // order's start decodes its pictures) the page froze 300-700 ms at a time, so the card was seen 40-220 ms, or closed before it was
+    // ever drawn. A frame that comes late counts at most 50 ms)
+    const want = o.ms != null ? o.ms : 1500;
+    let seen = 0;
+    let last = 0;
+    const tick = (now) => {
+      if (shut || !c.isConnected) return;
+      if (!last) c.classList.add("on");
+      else seen += Math.min(50, Math.max(0, now - last));
+      last = now || 1;
+      if (seen >= want) return close();
+      raf(tick);
+    };
+    raf(tick);
     return { el: c, close };
   };
   W.pop = function (el, word, o = {}) {
