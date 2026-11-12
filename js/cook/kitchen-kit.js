@@ -595,7 +595,7 @@ const serveEnv = () => {
       g.globalCompositeOperation = "source-in";
       // (the shade colour, a token: one shade for every shadow)
       const TK = global.Tokens;
-      g.fillStyle = TK && TK.rgb ? `rgb(${TK.rgb("shade-rgb") || "60, 35, 20"})` : "rgb(60, 35, 20)";
+      g.fillStyle = TK && TK.rgb && TK.rgb("shade-rgb") ? `rgb(${TK.rgb("shade-rgb")})` : "black";
       g.fillRect(0, 0, c.width, c.height);
       S.textures.addCanvas(sk, c);
     }

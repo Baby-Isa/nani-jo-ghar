@@ -2312,7 +2312,7 @@
             const q = setInterval(() => {
               if (!here()) return clearInterval(q), res(false);
               lost = tappable(el) ? 0 : lost + 200;
-              if (lost >= 1000) clearInterval(q), say(slot, "not tappable"), res(true);
+              if (lost >= 1000) clearInterval(q), say(slot, "untappable"), res(true);
             }, 200);
             want.res = (v) => (clearInterval(q), res(v));
           });
