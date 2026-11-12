@@ -2215,7 +2215,8 @@
      * (js/cook/coach.js C.lessons). A tap during it is the lesson's, never the order's skip (the request's ignore).
      */
     let lessonOn = false;
-    const blurLesson = async (pop, r) => {
+    // (before: what must be over first, the line still being said when the card came with the headline: awaited only if it will run)
+    const blurLesson = async (pop, r, before = null) => {
       if (only || !pop || !pop.isConnected || !live() || !global.WordCard || !global.WordCard.big14) return;
       if (!["wc14-hide-pic", "wc14-hide-en", "wc14-hide-k"].some((k) => pop.classList.contains(k))) return;
       const Onb = global.Onboard;
@@ -2224,6 +2225,8 @@
       const w = UI.wordOf(r, { size: 240, written: true });
       const st = $("#stage");
       if (!w || !st) return;
+      if (before) await before();
+      if (!pop.isConnected || !live()) return;
       gate.spend("reveal-card", true);
       lessonOn = true;
       const prevE = Cook.expect;
@@ -2539,6 +2542,9 @@
               if (!live()) break;
               popRow(x);
               await Cook.wait(s14 ? hold14(x) : ORDER_T.popHold);
+              if (skipped) break;
+              // (SH-213: a card the headline says for itself is a pop-up card of the spoken sentence too: its lesson once the line is said)
+              if (s14) await blurLesson(big14, x, () => saying);
               if (skipped) break;
               await land(x, who, false);
               if (box) box.innerHTML = "";
