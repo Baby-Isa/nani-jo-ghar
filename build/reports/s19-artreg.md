@@ -9,15 +9,14 @@ How it works, the five part-registries' mapping and Sprint 20's plan: `docs/desi
 2. **Statuses are machine-seeded:** a v4 cut a game loads is `approved` "by art run pick" (Zafar's supervised picks, not a judge pass
    per piece); old art is `stand-in` unless the audit or fix list named a fault (18 marks). Clinic, day and house art was never
    judged: there "stand-in" means "not judged".
-3. **11 chai pieces show as stand-in** (s14 pan frames, ginger, word moment): `approved.json` lists only chai's first step. Decision 1.
+3. **11 chai pieces show as stand-in**: `approved.json` lists only chai's first step. Decision 1.
 4. Old art's ids come from file names; 48 pieces warn that their states differ in canvas. Hash, canvas, stage and `needs` rules
    warn until a game is `migrated`; `rawpath`, `orphan`, `store` are not built.
 5. `unregistered` reads the cached traces: a new picture fails once they are refreshed (`artuse.mjs --full`, about 70 minutes).
 6. Only 143 of 715 pieces have a run and line (the S19 runs); older art's source is its folder label.
 7. Outside my files, to fix what I broke: `build/tools/art/data/look-rules.json` (the colour tool leaves out `data/art/*` and the
-   board's data, which name every picture) and one `DOC_LIMITS` line in `build/tools/review/docs.mjs`. `docs/README.md` has no line
-   for the new doc yet.
-8. Tier 2 was stopped (Proof).
+   board's data) and one `DOC_LIMITS` line in `build/tools/review/docs.mjs`. `docs/README.md` lacks the new doc.
+8. Tier 2 was stopped at its play (Proof).
 
 ## What changed
 - `artuse.mjs --full`: every kitchen flow to its end at L1-L4, the serving kitchen, title, house, first launch, story, a clinic
@@ -27,8 +26,7 @@ How it works, the five part-registries' mapping and Sprint 20's plan: `docs/desi
   today's file), `promote` (old file to `retired.json`; people need Zafar), `status`, `--validate`, `--board`. Measurements from all
   five part-registries, each with `from`. 13 old pieces point at their cut replacement (`next`).
 - `artcheck.mjs`: `unregistered` and `registry` checks; `retired` reads every trace (known list: 6 fixed sekelo loads off, 1 on).
-- The board: per game and piece, status colour, version, source, where used, old beside new, the move-out list.
-- The art-run skill's step 4: the cutter writes the registry line.
+- The board reads the registry; the art-run skill's step 4: the cutter writes the registry line.
 
 ## How complete
 Every kitchen game: 4 plays to the end (L1-L4) plus its first step. Serving kitchen (story day 1, free cooking, shop), title,
