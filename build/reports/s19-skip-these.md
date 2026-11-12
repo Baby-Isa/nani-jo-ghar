@@ -1,33 +1,34 @@
-# Known, skip these: Zafar's play, end of Sprint 19 (draft, 12 Nov early)
+# Known, skip these: Zafar's play, end of Sprint 19 (12 Nov evening)
 
-What we already know is not done, so your play time goes on what we missed. Updated from the sweep's list (build/reports/s19-fixlist-sweep.md §4) with tonight's work; finalised after the last builder and Fable's judging.
+What we already know is not done, so your play time goes on what we missed. Anything you find that a check said was fine is a lesson for the checks: say so and it becomes a row.
 
 ## Every kitchen game
-- **Grey English lines** are lines Mum hasn't recorded yet (each is on her sheet): "Thread them.", "Take a dough ball.", "Stir it three times.", "Bring these from the pantry", "Chop these.", baking's quarter, three quarters, one and a half and two and a half cups, the oven's lines. The order headline's short and long forms wait on her too (SH-70).
-- **The wrong-order "oho"** is a soft note until Mum records it.
+- **Grey English lines** are lines Mum hasn't given or recorded yet: the pantry, daar, samosa, maani, sekelo and chop lines weren't reached on 12 Nov. Their list is on the recording sheet.
+- **Recordings** are all marked "approved for the game, not the store": everything is re-recorded before the stores. Some of the 12 Nov clips are quiet or short (the table noise); flag any bad take in lab/family-audio.html.
 - **Nani has one cooking mood**; the family's impatient faces still smile (ART-10).
-- **The big blurred-card lesson** waits on you, after this play (SH-213); the small zoom lesson still plays.
 - **Recorded sounds** are chai's only (SH-226); no vibration until the store build (SH-225).
-- **Old-but-not-retired art** shows amber on the art board (lab/art-board.html): the pantry has the most. It is the next art run's list.
+- **Old art** shows amber on the art board (lab/art-board.html): about 440 stand-ins, 17 marked for replacement. That is the next art run's list. The deep tray in sekelo and corn is cut from your mock: a clean one comes from the next art run.
+- **A card still to come** shows as a dashed box in the side panel (your 29 Oct look). In sekelo there are several at once: say if you want them smaller or hidden.
 - **Loading between games** is a before-the-stores job (SH-212).
 
 ## Your open calls (decide as you play)
-- **Corn:** the cob shrinks on the plate (bigger plates, or the cob past the rim).
-- **Sekelo:** the trays stand side by side (a full-size skewer can't fit a stacked tray); keep, or a ChatGPT mock first.
-- **Baking:** salt left the recipe with "a little"; Claude recommends it stays a decoy only.
-- **Samosa:** the fold's arrow.
+- **Corn:** the cob shrinks from tray to plate (bigger plates, or the cob past the rim). Corn at L4 now asks one topping per cob and no "no", so its six bowls fit the decoy rule: keep or change.
+- **Chai at L4 on a phone:** the elchi jar's light stops short so it doesn't cover the next labels; changing that changes chai's look.
+- **Daar's chopped heap** is smaller on the chop screen than in its glass; shrinking it fights "not a speck".
 - **Maani:** the roll's finger or circle (MAA-20, the lab page).
-- **The pop-up** runs only when an order is wrong (Claude's call; say if you want it every round).
+- **Samosa:** the fold's arrow.
+- **The pop-up** runs only when an order is wrong (say if you want it every round).
+- **Mum's session (build/reports/mum-2026-11-12.md):** khape or khapeti; salt *mitho* and pepper *miryo*; the pantry's full sentence; "thank you" kept in English; daar's stir line without "slowly"; more than one tomato; and the 18 spellings.
 
 ## By game
-- **Chai:** the boil-over's old foam picture (ART-32); "no" items said last, for Mum to confirm (CHAI-39). The missing water hint (CHAI-111) could not be reproduced: if it happens, send the log; it now records what resets Nani's wait.
-- **Eggs:** a wrong plate shows the pop-up but has no redo (the cooking is gone), so the round ends after it. The pot's wall is a little wider at the top left (ART-75).
-- **Baking:** what the oven teaches waits on Mum (CK-70).
-- **Chop:** its background and the pieces' hop wait on art (CHT-16, CK-71); garlic waits on art and Mum.
-- **Daar:** fast and slow come only at L4 now; their word moment waits on Mum's lines (DAAR-12). The golden onion is cut but not yet used.
-- **Sekelo:** a deep square tray still to draw (today's is the steel tray rebuilt in code).
-- **Pantry:** the shelves are the old painting (PAN-06); the wording of Nani's ask waits on Mum (PAN-10); some fruit and vegetables have no single-item picture (ART-65).
+- **Chai:** the boil-over's old foam picture (ART-32). The missing water hint (CHAI-111) never came back in testing: if it happens, send the log; it now records what resets Nani's wait.
+- **Eggs:** a wrong plate shows the pop-up but has no redo (the cooking is gone), so the round ends after it.
+- **Baking:** a pinch of salt is *chapti* from Mum; until it's wired its line may still show grey English. What the oven teaches waits on Mum (CK-70).
+- **Chop:** its background and garlic wait on art and Mum.
+- **Daar:** fast and slow come only at L4; their word moment waits on Mum's lines (DAAR-12). The golden onion is cut but not used yet.
+- **Sekelo:** laid out as corn now; the deep tray is the mock's, a clean one to come.
+- **Pantry:** the shelves are the old painting (PAN-06), so its bottom bar isn't the shared one yet; the wording of Nani's ask waits on your call on Mum's sentence.
 - **Not a game:** the ChatGPT folders and two phone videos leave the live site at this publish (ART-74).
 
 ## Proof
-Rests on docs/process/regressions.md (the waiting rows), build/reports/s19-fixlist-sweep.md §4, and tonight's builder reports: s19-clean-a.md, -b.md, -c.md, -b2.md, -c2.md, s19-artuse.md (the art board's counts).
+Rests on docs/process/regressions.md (the waiting rows), build/reports/s19-fixlist-after-night.md, the night's builder reports (s19-clean-a* to -e2, s19-artfix, s19-artreg) and build/reports/mum-2026-11-12.md.
