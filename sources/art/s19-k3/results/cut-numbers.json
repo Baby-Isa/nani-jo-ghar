@@ -215,7 +215,8 @@
   "chaat/layer-sev.webp": 0.0,
   "kit/tray-steel-long.webp": 0.0,
   "samosa/karahi-oil-v2.webp": 0.0,
-  "kit/grill-v2.webp": 0.0
+  "kit/grill-v2.webp": 0.0,
+  "kit/tray-stone.webp": 0.0
  },
  "kitchen-tall": {
   "src": [
@@ -247,5 +248,23 @@
    "r-b": 27.3,
    "r-g": 16.5
   }
+ },
+ "tray-stone": {
+  "size": [
+   1593,
+   292
+  ],
+  "box": [
+   39,
+   326,
+   1632,
+   618
+  ],
+  "ground": [
+   252,
+   5,
+   250
+  ],
+  "parts": 1
  }
 }

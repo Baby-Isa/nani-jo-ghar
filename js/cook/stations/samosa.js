@@ -1310,18 +1310,39 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Cook.wait(80);
     }
     const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("fry", { round: new Set() }) : null;
+    /*
+     * The s19-clean-c review's finding 4 (a help removed: non-negotiable 1): the first-time control (Cook.Coach.control: the dim and the
+     * gold box) took the place of the coach's staged step, whose ghost finger showed the tap. The finger is back with it: the kit's demo
+     * (Cook.Coach.demo, the one finger, Onboard.gesture's "tap") on the thing, the first time its light is up; it goes on any press, and
+     * with its light. thing: a canvas thing (its litBounds when it has them). -> {stop()} or null
+     */
+    const finger = (thing, step) => {
+      if (!Cook.Coach || !Cook.Coach.demo || !thing) return null;
+      const at = () => {
+        if (!thing.active) return null;
+        const b = (thing.litBounds && thing.litBounds()) || thing.getBounds();
+        if (!b) return null;
+        const p = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+        return { from: p, to: p };
+      };
+      return Cook.Coach.demo(at, { gesture: "tap", ms: 900, delay: 300, step });
+    };
     let ctl = null;
     let ctlStep = null;
     let eachOn = null; // (the first fry: each samosa lit in turn, as the old staged step's "each", until they are all in)
     const lead = (step, thing, current, again = false) => {
       if (step === ctlStep && ctl && !ctl.over && ctl.thing === thing) return;
       if (ctl) ctl.close();
+      if (ctl && ctl.finger) ctl.finger.stop();
       ctl = null;
       ctlStep = null;
       if (!step || !thing || !gate || !Cook.Coach || !Cook.Coach.control || !(again || gate.first(step))) return;
       ctlStep = step;
       ctl = Cook.Coach.control({ key: "fry", target: Cook.Coach.box(thing), first: true, noHint: true, current: () => ctlStep === step && (!current || current()), note: `${gate.scope}:s14-control` });
-      if (ctl) ctl.thing = thing;
+      if (ctl) {
+        ctl.thing = thing;
+        ctl.finger = finger(thing, `fry:${step}`);
+      }
     };
     if (burner.knob && burner.knob.getBounds) burner.knobHit.litBounds = () => (burner.knob.active ? burner.knob.getBounds() : null);
     lead("ctl-fire", burner.knobHit, () => !burner.knobHit.firstOn);

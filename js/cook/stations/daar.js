@@ -1248,6 +1248,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         bodyR,
         laps,
         speed: asked,
+        exact: true, // (DAAR-12: daar's own order's speed, none before its level; the stir game picks its own)
         level,
         retry: retry || t > 0,
         steps,
