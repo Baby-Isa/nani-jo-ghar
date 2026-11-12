@@ -4112,7 +4112,9 @@
       },
     }));
     mission.lastWrong = new Set(list.filter((c) => !c.ok).map((c) => c.who)); // (M.redoStart keeps these, whoever marked them)
-    const done = await W.play({
+    let done = null;
+    try {
+      done = await W.play({
       host: $("#stage") || document.body,
       cards: list,
       speed: Cook.speed || 1,
@@ -4122,7 +4124,16 @@
       talk: (el) => (global.Lifecycle && global.Lifecycle.talk && global.Lifecycle.talk.dom ? global.Lifecycle.talk.dom(el) : null),
       note,
       faceHtml: (who, src, size) => (global.Face && global.Face.html ? global.Face.html(who, size, { src }) : `<img class="njg-face-img" src="${esc(src)}" alt="">`),
-    }).finally(unmark);
+      // (the a2 review's finding 1: leaving with Home fires no stage end, so the pop-up ends with Cook's own lifetime too, and a tap
+      // stops the line being said through Cook's voice)
+      onEnd: Cook.life && Cook.life.onEnd ? (fn) => Cook.life.onEnd(fn) : null,
+      hush: () => Cook.stopVoice && Cook.stopVoice(),
+      });
+    } finally {
+      // (cut: Cook has gone; its mission is not touched again, and the round never goes on: "cut" to js/shared/serve.js)
+      if (!(done && done.cut)) unmark();
+    }
+    if (done && done.cut) return "cut";
     return !!(done && done.shown);
   };
   M.redoStart = function () {

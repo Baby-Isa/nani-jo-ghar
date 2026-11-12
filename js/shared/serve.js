@@ -175,6 +175,7 @@ async function round(o) {
   let n = 0;
   let open = o.items.slice();
   const H = o.popup === false ? null : hook();
+  let left = false;
   try {
     for (;;) {
       await o.done(n);
@@ -201,7 +202,14 @@ async function round(o) {
           // when it is a name, or its own who)
           const whoOf = (item) => (o.who ? o.who(item) : typeof item === "string" ? item : item && item.who) || null;
           const judged = o.items.filter((item) => open.includes(item));
-          shown = !!(await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n, served: judged.map(whoOf), wrong: recasts.map((r) => r.item), wrongWho: recasts.map((r) => whoOf(r.item)) })).catch(() => false));
+          shown = await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n, served: judged.map(whoOf), wrong: recasts.map((r) => r.item), wrongWho: recasts.map((r) => whoOf(r.item)) })).catch(() => false);
+          // (the a2 review's finding 1: "cut", the pop-up ended because the game went (the child left with Home): the round never
+          // goes on, as every other wait of a game that has gone; nothing of it touches the next game on screen)
+          if (shown === "cut") {
+            left = true;
+            return new Promise(() => {});
+          }
+          shown = !!shown;
         }
         if (!shown) for (const { item, rows } of recasts) await o.recast(item, rows);
         // (the Fable review's finding 7: the pop-up says the order in the recast's place, but a game whose recast also puts things
@@ -232,7 +240,7 @@ async function round(o) {
       if (o.again) o.again(again, n);
     }
   } finally {
-    if (H && H.end) H.end({ rounds: n + 1 });
+    if (H && H.end && !left) H.end({ rounds: n + 1 });
   }
   return { rounds: n + 1 };
 }

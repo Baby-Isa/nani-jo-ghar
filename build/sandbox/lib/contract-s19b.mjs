@@ -220,6 +220,8 @@ const BAND = 0.3;       // js/shared/shelf.js Shelf.BAND: the bottom 270 of the 
 // ---- 115: the main thing as big as the height allows; the shelf's items at one height (SH-245, CK-77) ----
 export const MAIN_ROOM = 0.7;      // the main thing's height at least this share of the room above the band (chai's hob: 0.75, 0.86)
 export const MAIN_WIDE = 0.85;     // ... unless its width already takes this share of the play area (a wide thing is width-bound)
+// the one set laid side by side at the main thing's height, judged as one width: sekelo's (corn's) grill and its trays (js/cook/grill-kit.js)
+export const GRILL_SET = { main: /^gk-grill\b/, part: /^gk-(grill|tray)\b/ };
 // a shelf item stands at chai's height for its size class (data/cook.json words[id].size: L, M, S; M when none; Shelf.CLASS_K L 1, M .91,
 // S .84), measured on chai at HEAD (11 Nov) as its L jars' height over the band's at each size; within SHELF_TOL under it. Chai's own
 // jars sit within 2% of these; the eye judge's eggs bowl (CK-77, 3c4882609) stood at 86% of chai's M
@@ -240,7 +242,7 @@ export const SIZE_AT_MS = 3000;    // judged this long into each station (laid o
 // a work surface the shelf's things go into, not a thing sized to the height (Zafar, 11 Nov: "yes" to the bowl as a work surface)
 export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat|bk-bowl|bk-jug/i; // (s19-clean-a, s19-clean-b's note: baking's jug is a work tool, as its bowl is)
 Object.assign(S19B_CHECKS, {
-  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width (with the things laid beside it at its height, a set: sekelo's grill and trays) already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Zafar's accepted sizes (11 Nov morning: "Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change)") are a thing's size from step to step, judged by contract-114 (ACCEPTED_SIZES); no station's main thing or shelf is let off here for them. Once per station.` },
+  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width (sekelo's grill with its trays laid beside it at its height, one set, by key: no other things) already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Zafar's accepted sizes (11 Nov morning: "Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change)") are a thing's size from step to step, judged by contract-114 (ACCEPTED_SIZES); no station's main thing or shelf is let off here for them. Once per station.` },
 });
 export function check115(r, tl, add, { root = "." } = {}) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19it").length) return;
@@ -258,8 +260,10 @@ export function check115(r, tl, add, { root = "." } = {}) {
       // (s19-clean-a2, c2's item: the main thing's set, laid side by side at its height, is one rectangle: sekelo's grill and its two
       // trays, which at the same size share the width, so the grill alone is shorter; the set filling the width lets it off as one
       // thing filling the width would be)
+      // (s19-clean-a3, the a2 review's finding 2: the set is sekelo's grill and its trays only, by key (GRILL_SET): any other things
+      // beside the main thing, chai's tray, or three small hobs spread across the width, never let a short main thing off)
       const ov = (a, b) => Math.max(0, Math.min(a.box[3], b.box[3]) - Math.max(a.box[1], b.box[1])) / Math.max(1, Math.min(a.box[3] - a.box[1], b.box[3] - b.box[1]));
-      const set = above.filter((x) => x === main || (area(x) >= 0.25 * big && ov(x, main) >= 0.6));
+      const set = GRILL_SET.main.test(main.key) ? above.filter((x) => x === main || (GRILL_SET.part.test(x.key) && area(x) >= 0.25 * big && ov(x, main) >= 0.6)) : [main];
       const ux = [Math.min(...set.map((x) => x.box[0])), Math.max(...set.map((x) => x.box[2]))];
       const h = main.box[3] - main.box[1], w = ux[1] - ux[0];
       if (h < MAIN_ROOM * room && w < MAIN_WIDE * W) add("contract-115", t, `${s.key}: the main thing ${main.key} stands ${Math.round(h)} px, ${Math.round((100 * h) / room)}% of the ${Math.round(room)} px above the shelf band (at least ${MAIN_ROOM * 100}%: as big as the height allows; it is ${Math.round((100 * w) / W)}% of the width)`);

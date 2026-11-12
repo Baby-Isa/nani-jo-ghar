@@ -326,7 +326,8 @@ const serveEnv = () => {
      * await Cook.Kit.wrongOrder(); before making only the wrong orders again, Cook.Kit.redoOnly() (the panel keeps their cards, the
      * one being worked on first) and, when the round is over, Cook.Kit.redoDone(). Resolves true when the pop-up was shown.
      */
-    wrongOrder: (o = {}) => (Cook.UI && Cook.UI.mission && Cook.UI.mission.showWrong ? Cook.UI.mission.showWrong(o) : Promise.resolve(false)),
+    // (cut: the child left mid-pop-up; the game has gone and its await never wakes: the a2 review's finding 1)
+    wrongOrder: (o = {}) => (Cook.UI && Cook.UI.mission && Cook.UI.mission.showWrong ? Cook.UI.mission.showWrong(o).then((r) => (r === "cut" ? new Promise(() => {}) : r)) : Promise.resolve(false)),
     redoOnly: () => (Cook.UI && Cook.UI.mission && Cook.UI.mission.redoStart ? Cook.UI.mission.redoStart() : []),
     redoDone: () => Cook.UI && Cook.UI.mission && Cook.UI.mission.redoEnd && Cook.UI.mission.redoEnd(),
 

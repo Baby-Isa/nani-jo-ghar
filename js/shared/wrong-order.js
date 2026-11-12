@@ -23,9 +23,14 @@
  *     o.sound(name) "ding" | "oops" | "tick" (the host's sounds: Zafar, 11 Nov night, no buzz for "oops": Mum's recorded "oho" when
  *                   it comes, until then a soft sound or none); o.speed: the host's speed (shortens the moves)
  *     o.talk(el) -> stop()   the asker's big face talks while they say their own line (the kit's Lifecycle.talk.dom)
+ *     o.hush()      stop the voice now (a tap ending a line: the host's own voice stop)
  *     a wrong card's big() may give head: () => Promise (the asker says their own order line first)
  *     o.note(what, info)   a test hook (the contract checks read it): "wo-open", "wo-card", "wo-row", "wo-close"
  *     o.faceHtml(who, src) the face circle's HTML (the kit's Face.html(who, "big")); default a plain picture
+ *     o.onEnd(fn) -> off()  the host's own end (Cook's lifetime, Cook.life.onEnd: the child leaving with Home, where the page fires
+ *                   no stage end, host.js). The pop-up ends at once at either end, the stage's or the host's: its veil goes, no
+ *                   sound or note after, and play() resolves {shown: true, wrong, cut: true}: the host's round never goes on from a
+ *                   cut pop-up (the a2 review's finding 1)
  *   NjgWrongOrder.isOpen()   NjgWrongOrder.LOOK (the timings at speed 1)
  *
  * Styles: css/shared/order-card.css ("the wrong-order pop-up"). An ES module (Cook imports it through js/shared/serve.js); it also
@@ -43,7 +48,8 @@ const LOOK = Object.freeze({
   float: 520, // a right line fades up off the screen
   open: 260, // a wrong line opens to all its items
   sayCap: 2400, // the most one line holds the next (a voice that never starts does not stall it; the Fable review, 11: at 1.6 s a
-  // longer line was overtaken by the next row's; a tap hurries the rest)
+  // longer line was overtaken by the next row's; a tap stops the line being said)
+  minSay: 500, // a line a tap stops is heard this long first (the a2 review's finding 3)
   rowGap: 100, // one row to the next, quickly
   hold: 620, // the wrong card, all marked, before it shrinks back
   gap: 140, // one card to the next
@@ -102,22 +108,38 @@ async function play(o = {}) {
   if (!doc || !cards.length) return { shown: false, wrong: [] };
   const host = o.host || doc.body;
   const speed = Math.max(1, +o.speed || 1);
-  // (the Fable review's finding 4, non-negotiable 7: a child never waits for speech. A tap on the pop-up hurries it: every beat a
-  // quarter as long and no line waited for; the page leaving the stage (Lifecycle.onStageEnd) ends it at once, its veil gone)
-  let hurry = 1;
+  // (the Fable review's finding 4, non-negotiable 7: a child never waits for speech. A tap on the pop-up hurries the beat in flight
+  // only: the wait it is in ends, or the line being said stops (once it has been heard LOOK.minSay) and its row is marked; every
+  // later line is still said, and a wrong row's own line is never cut (the a2 review's finding 3: one stray tap had silenced and
+  // compressed the whole pop-up, the wrong card included). The page leaving the stage, or the host's end, ends it at once)
   let cut = false;
-  const T = (ms) => Math.round(ms / speed / hurry);
+  const T = (ms) => Math.round(ms / speed);
   const wait0 = o.wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
-  const pend = new Set(); // (the waits running: the stage's end lets them all go at once)
-  const wait = (ms) =>
+  // (the a2 review's finding 1: at the end, the stage's or the host's, every wait and move in flight lets go at once and throws CUT,
+  // so nothing after it runs: no tick, no row marked, no note; the finally takes the veil away)
+  const CUT = { cut: true };
+  const pend = new Set(); // (the waits running: an end lets them all go at once)
+  const gate = (p) =>
     cut
-      ? Promise.resolve()
-      : new Promise((r) => {
-          pend.add(r);
-          wait0(ms).then(() => (pend.delete(r), r()));
+      ? Promise.reject(CUT)
+      : new Promise((ok, no) => {
+          const rec = () => no(CUT);
+          pend.add(rec);
+          Promise.resolve(p).then(
+            (v) => (pend.delete(rec), cut ? no(CUT) : ok(v)),
+            (e) => (pend.delete(rec), cut ? no(CUT) : no(e))
+          );
         });
-  const sound = o.sound || (() => {});
-  const note = o.note || (() => {});
+  const beat = new Set(); // (the waits a tap may end now: the beat in flight)
+  const wait = (ms) => {
+    let skip;
+    const p = new Promise((r) => ((skip = r), beat.add(r), wait0(ms).then(r)));
+    return gate(p).finally(() => beat.delete(skip));
+  };
+  const sound0 = o.sound || (() => {});
+  const note0 = o.note || (() => {});
+  const sound = (n) => !cut && sound0(n);
+  const note = (what, info) => !cut && note0(what, info);
   const faceHtml = o.faceHtml || ((who, src, size) => `<span class="njg-face njg-face-${size === "big" ? "big" : "row"}" data-who="${esc(who)}"><img class="njg-face-img" src="${esc(src)}" alt=""></span>`);
   open++;
   const veil = doc.createElement("div");
@@ -135,16 +157,27 @@ async function play(o = {}) {
     Object.assign(veil.style, { left: `${hb.left}px`, top: `${hb.top}px`, width: `${hb.width}px`, height: `${hb.height}px`, right: "auto", bottom: "auto" });
   }
   doc.body.appendChild(veil);
+  let hush = null; // (the line being said: a tap stops it, if it may be cut)
   veil.addEventListener("pointerdown", () => {
-    if (hurry > 1) return;
-    hurry = 4;
-    note("wo-hurry", {});
+    if (cut) return;
+    const n = beat.size + (hush ? 1 : 0);
+    if (hush) hush();
+    else [...beat].forEach((r) => r());
+    if (n) note("wo-hurry", {});
   });
   const LC = typeof globalThis !== "undefined" ? globalThis.Lifecycle : null;
-  const offEnd = LC && LC.onStageEnd ? LC.onStageEnd(() => ((cut = true), veil.remove(), pend.forEach((r) => r()), pend.clear())) : null;
-  note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
-  await move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn));
+  const end = () => {
+    if (cut) return;
+    cut = true;
+    veil.remove();
+    open = Math.max(0, open - 1);
+    [...pend].forEach((r) => r());
+    pend.clear();
+  };
+  const offs = [LC && LC.onStageEnd ? LC.onStageEnd(end) : null, typeof o.onEnd === "function" ? o.onEnd(end) : null];
   const wrong = [];
+  const touched = new Set(); // (the side panel cards sent out: they come back whatever ends the pop-up)
+  note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
   const fit = (el, big) => {
     // every item in one view, as big as the middle allows (Zafar, 11 Nov night: "big, central"): the card scales as a whole to the
     // room the veil leaves, growing to its share of it or shrinking to fit (never cut, never scrolled)
@@ -167,18 +200,19 @@ async function play(o = {}) {
     return k;
   };
   try {
+    await gate(move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn)));
     for (const [i, c] of cards.entries()) {
       if (cut) break;
       if (i) await wait(T(LOOK.gap));
       const from = c.from && c.from.isConnected ? c.from : null;
       const fromBox = from ? from.getBoundingClientRect() : null;
-      if (from) from.classList.add("njg-wo-out"); // (its copy is out in the pop-up)
+      if (from) from.classList.add("njg-wo-out"), touched.add(from); // (its copy is out in the pop-up)
       const line = lineEl(c, faceHtml);
       stage.appendChild(line);
       fit(line);
       const at = line.getBoundingClientRect();
       note("wo-card", { who: c.who, ok: !!c.ok, phase: "line" });
-      if (fromBox && fromBox.width > 2) await move(line, { transform: over(fromBox, at, line._woK), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly));
+      if (fromBox && fromBox.width > 2) await gate(move(line, { transform: over(fromBox, at, line._woK), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly)));
       if (c.ok) {
         // the tick again, a ding, the gold glow, then up and away
         line.querySelector(".njg-wo-row").appendChild(markEl("ok"));
@@ -188,7 +222,7 @@ async function play(o = {}) {
         line.classList.add("njg-wo-ok");
         await wait(T(LOOK.glow));
         const up = -(line.getBoundingClientRect().bottom + 40) / (line._woK || 1);
-        await move(line, { transform: "none", opacity: 1 }, { transform: `translateY(${up}px)`, opacity: 0 }, T(LOOK.float));
+        await gate(move(line, { transform: "none", opacity: 1 }, { transform: `translateY(${up}px)`, opacity: 0 }, T(LOOK.float)));
         line.remove();
         continue;
       }
@@ -229,17 +263,33 @@ async function play(o = {}) {
           fit(card, true);
         }
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
-        await move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open));
+        await gate(move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open)));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
         const faceEl = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img") || card.querySelector(".njg-wo-who");
-        const said = async (fn) => {
+        // (keep: a wrong row's line, never cut by a tap; any other line a tap stops once heard LOOK.minSay, the host's o.hush()
+        // stopping the voice, so no two voices overlap)
+        const said = async (fn, keep) => {
           if (!fn) return;
           const stop = o.talk && faceEl ? o.talk(faceEl) : null;
+          const t0 = Date.now();
+          let tapped;
+          const tap = new Promise((r) => (tapped = r));
+          if (!keep)
+            hush = () => {
+              hush = null;
+              const left = T(LOOK.minSay) - (Date.now() - t0);
+              const go = () => {
+                if (typeof o.hush === "function") o.hush();
+                tapped();
+              };
+              if (left > 0) wait0(left).then(go);
+              else go();
+            };
           try {
-            // (hurried: the rest are marked without their lines, so no two voices overlap)
-            if (hurry > 1) await wait(T(LOOK.rowGap * 4));
-            else await Promise.race([Promise.resolve(fn()).catch(() => {}), wait(T(LOOK.sayCap))]);
+            // (the cap is no beat a tap ends: a kept line runs to its end or its cap)
+            await gate(Promise.race([Promise.resolve(fn()).catch(() => {}), wait0(T(LOOK.sayCap)), tap]));
           } finally {
+            hush = null;
             if (typeof stop === "function") stop();
           }
         };
@@ -249,7 +299,7 @@ async function play(o = {}) {
           if (!r || !r.el) continue;
           r.el.classList.add("njg-wo-now");
           if (cut) break;
-          await said(r.say);
+          await said(r.say, !r.ok);
           r.el.classList.remove("njg-wo-now");
           r.el.classList.add(r.ok ? "njg-wo-ok" : "njg-wo-bad");
           r.el.appendChild(markEl(r.ok ? "ok" : "bad"));
@@ -261,20 +311,25 @@ async function play(o = {}) {
         // back into its side panel card
         const back = from && from.isConnected ? from.getBoundingClientRect() : null;
         card.classList.add("njg-wo-going"); // (on its way back: the checks judge the card standing open, never its flight)
-        if (back && back.width > 2) await move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly));
+        if (back && back.width > 2) await gate(move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly)));
         card.remove();
       }
       if (line.isConnected) line.remove();
       if (from) from.classList.remove("njg-wo-out");
     }
+  } catch (e) {
+    if (e !== CUT) throw e;
   } finally {
-    if (typeof offEnd === "function") offEnd();
-    if (!cut) await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
-    veil.remove();
-    open = Math.max(0, open - 1);
-    note("wo-close", { wrong });
+    offs.forEach((off) => typeof off === "function" && off());
+    touched.forEach((f) => f.classList.remove("njg-wo-out"));
+    if (!cut) {
+      await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
+      veil.remove();
+      open = Math.max(0, open - 1);
+      note("wo-close", { wrong });
+    }
   }
-  return { shown: true, wrong };
+  return cut ? { shown: true, wrong, cut: true } : { shown: true, wrong };
 }
 
 /**
