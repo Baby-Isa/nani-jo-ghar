@@ -4379,14 +4379,25 @@
     }));
     mission.lastWrong = new Set(list.filter((c) => !c.ok).map((c) => c.who)); // (M.redoStart keeps these, whoever marked them)
     let done = null;
+    const oho = () => {
+      let line = null;
+      try {
+        line = Lang.say ? Lang.role(Lang.say({ fn: "Exclaim", x: "intj.oh-no" }), "exclaim") : null;
+      } catch (e) {
+        line = null;
+      }
+      if (line && line.ok !== false && Lang.hasVoice(line) && !UI.naniMuted()) return Lang.speak(line);
+      return Cook.sfx.soft();
+    };
     try {
       done = await W.play({
       host: $("#stage") || document.body,
       cards: list,
       speed: Cook.speed || 1,
       wait: (ms) => new Promise((r) => setTimeout(r, ms)), // (real time: the pop-up divides by the speed itself)
-      // (Zafar, 11 Nov night: no buzz for a wrong card; Mum's Kutchi "oho" when it is recorded, until then the soft note)
-      sound: (n) => (n === "ding" ? Cook.sfx.right() : n === "oops" ? Cook.sfx.soft() : n === "tick" && Cook.sfx.drop ? Cook.sfx.drop() : null),
+      // (Zafar, 11 Nov night: no buzz for a wrong card; SH-264, Mum's 12 Nov session: her "Oho" (intj.oh-no) as the wrong card opens,
+      // said through the engine as Nani's exclaim; the soft note only where the line has no voice yet)
+      sound: (n) => (n === "ding" ? Cook.sfx.right() : n === "oops" ? oho() : n === "tick" && Cook.sfx.drop ? Cook.sfx.drop() : null),
       talk: (el) => (global.Lifecycle && global.Lifecycle.talk && global.Lifecycle.talk.dom ? global.Lifecycle.talk.dom(el) : null),
       note,
       faceHtml: (who, src, size) => (global.Face && global.Face.html ? global.Face.html(who, size, { src }) : `<img class="njg-face-img" src="${esc(src)}" alt="">`),
