@@ -2231,8 +2231,11 @@
       const prevE = Cook.expect;
       const c = pop;
       const wasPE = c.style.pointerEvents;
+      const wasZ = c.style.zIndex;
       c.classList.add("wc14-lesson");
+      // (above the order pop-up's see-through veil, which takes every other tap as the order's skip; under the kit's light, z 950)
       c.style.pointerEvents = "auto";
+      c.style.zIndex = "900";
       const img = c.querySelector(".wc14-pic img");
       const hasPic = !!img;
       const hasEn = !!((c.querySelector(".wc14-en") || {}).textContent || "").trim();
@@ -2298,6 +2301,7 @@
         if (c.isConnected) {
           c.classList.remove("wc14-lesson");
           c.style.pointerEvents = wasPE;
+          c.style.zIndex = wasZ;
         }
         Cook.expect = prevE;
         lessonOn = false;
