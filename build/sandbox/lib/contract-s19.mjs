@@ -286,8 +286,10 @@ export function check105(r, tl, add) {
 // 106
 export function check106(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
-  const lits = ev(tl, "s19lit");
-  if (!lits.length) return;
+  // (s19-clean-a6, the a6 before run, daar L2: the s19lit sample lagged the light's move by 570 ms under load 30; the S14 hook's "lit"
+  // is read every animation frame: both are the light's samples, so a light gone to another thing is seen when it went)
+  const lits = ev(tl, "s19lit").concat(ev(tl, "lit")).sort((a, b) => a.t - b.t);
+  if (!ev(tl, "s19lit").length) return;
   const holesAt = (t) => { let cur = null; for (const e of lits) { if (e.t > t) break; cur = e; } return cur ? (cur.holes || []).map(box) : []; };
   // (s19-taps, SH-261: a tap the miss-light driver made off the thing is not the move a light shows: contract-117 judges it stays)
   const misses = life(tl, "probe-tap").map((q) => { const m = /^(-?\d+),(-?\d+)\|/.exec(q.by || ""); return m ? { x: +m[1], y: +m[2], t: q.at || q.t } : null; }).filter(Boolean);

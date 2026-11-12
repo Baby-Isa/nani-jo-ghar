@@ -113,3 +113,15 @@ test("contract-123: the band drawn is the one the game's settings name; none dra
   const src = readFileSync(new URL("../../js/cook/kitchen-kit.js", import.meta.url), "utf8");
   assert.match(src, /Lifecycle\.note\("band", \{ step: game \|\| "", by: `\$\{kitTray \? "tray" : "shelf"\} named/, "the kit logs the band it drew");
 });
+
+// ---- contract-106: the light's frame-timed sample (the S14 hook's "lit") counts, not only the 100 ms s19lit (lags 0.5 s under load) ----
+import { check106 } from "./lib/contract-s19.mjs";
+test("contract-106: a light gone at once by its frame-timed sample is green though s19lit lags; a light that stays in both is red", () => {
+  const run = (tl) => collect((add) => check106({ flow: "cook:daar@L2" }, tl, add));
+  const A = [[369, 19, 651, 278]], B = [[369, 273, 651, 382]];
+  const press = c(38900, "input", { x: 510, y: 149 });
+  const lag = [...ST, c(38000, "s19lit", { holes: A }), press, c(38950, "lit", { holes: B }), c(39520, "s19lit", { holes: B }), c(45000, "x")];
+  assert.equal(run(lag).length, 0, "the light moved 50 ms after the press (the frame-timed sample): green");
+  const stays = [...ST, c(38000, "s19lit", { holes: A }), press, c(39520, "s19lit", { holes: B }), c(45000, "x")];
+  assert.equal(run(stays).length, 1, "only the lagging sample, gone at 620 ms: red");
+});
