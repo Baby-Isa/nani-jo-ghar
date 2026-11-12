@@ -706,3 +706,10 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo .oc-row.njg-wo-bad { border-color: var(--njg-wrong) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-wrong) !important; }
 /* the side panel card whose copy is out in the pop-up */
 .njg-wo-out { visibility: hidden; }
+
+/* CK-79, SH-148 (s19-clean-a; sekelo's piece rows, SEK-25 "gos gos gos gos"): a row of one thing's pieces (js/shared/order-card.js
+   items14 it.fit, at most four) is drawn whole across its row, each card a share of it: no card runs off the row's edge, no fade */
+.oc-card.oc-s14 .oc-row14.oc-fit14 { overflow-x: hidden; -webkit-mask-image: none; mask-image: none; }
+.oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 { flex: 1 1 0 !important; min-width: 0 !important; padding: max(calc(var(--njg-px) * 3), 1.6cqi); }
+.oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 .oc-t { font-size: clamp(var(--njg-card14-u15), calc(36cqi / var(--oc-fit-n, 4)), var(--njg-card14-u32)); }
+.oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 > .oc-badge14 { width: var(--njg-card14-u16, var(--njg-card14-u22)); height: var(--njg-card14-u16, var(--njg-card14-u22)); }

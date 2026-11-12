@@ -3251,7 +3251,8 @@
               const keys = (r._pieceKeys = r._pieceKeys || []);
               keys[u] = keys[u] || Array.from({ length: r.cards || 4 }, (_, pi) => ({ piece: id, unit: u, at: pi }));
               const parts = Array.from({ length: r.cards || 4 }, (_, pi) => Object.assign(cardOf(pr, 0), { key: keys[u][pi], done: unit || pi < got, next: false }));
-              items.push({ label: null, parts, ordered: true, done: unit, src: [] });
+              // (fit: the four pieces drawn whole across the row, never run off its edge: CK-79, SH-148)
+              items.push({ label: null, parts, ordered: true, done: unit, src: [], fit: true });
             }
           });
         rows

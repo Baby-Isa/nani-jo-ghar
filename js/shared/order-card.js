@@ -306,7 +306,11 @@
   }
   function items14(it, opts) {
     const box = el("div", ["oc-item", "oc-direct", "oc-items14", it.done ? "done" : ""].filter(Boolean).join(" "));
-    const list = el("div", "oc-parts oc-row14");
+    // CK-79, SH-148 (a cut card at the row's edge; sekelo's piece rows, SEK-25: "gos gos gos gos"): an item's own one-thing row (it.fit:
+    // every card the same piece, at most four) is drawn whole across the row, each card a share of it, never scrolling off its edge
+    const fit = !!it.fit && it.parts.length > 1 && it.parts.length <= 4;
+    const list = el("div", ["oc-parts", "oc-row14", fit ? "oc-fit14" : ""].filter(Boolean).join(" "));
+    if (fit) list.style.setProperty("--oc-fit-n", String(it.parts.length));
     // ticked first, in the order they were ticked (the fold state's ticked set keeps it), then the ones to do, then the "no" cards
     const seen = (opts.fold && opts.fold.ticked && [...opts.fold.ticked]) || [];
     const rank = (p) => {
