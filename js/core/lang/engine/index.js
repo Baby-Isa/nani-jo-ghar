@@ -84,10 +84,13 @@ export function createEngine({ data, audio = [], voice = null, path = null, phra
     }
     const abs = functions[v.fn];
     if (!abs || !abs.en) return v.fn;
+    if (v.fn === "Times" && Number(v.n) === 1) return "once";
     const num = v.number || (v.n != null && Number(v.n) !== 1 ? "pl" : null);
     // the grown-ups' English (the bulb, SH-52): "put it in!", never "put in it !"
     return abs.en
-      .replace(/\{(\w+)\}/g, (_, a) => enOf(v[a], num))
+      // (Mum's 12 Nov session, code change 2: an argument the grammar says through a function, Item's with and without, takes that
+      // function's English, "with potato", never the bare noun; a count of one is "once", never "one times")
+      .replace(/\{(\w+)\}/g, (_, a) => { const via = ((((data.concrete || {}).lin || {})[v.fn] || {}).slots || []).find((x) => x.arg === a && x.via); const w = v[a] == null || (Array.isArray(v[a]) && !v[a].length) ? "" : via && functions[via.via] && functions[via.via].en ? functions[via.via].en.replace(/\{\w+\}/, enOf(v[a], num)) : enOf(v[a], num); return w; })
       .replace(/\s+/g, " ")
       .replace(/\b(\w+) (in|out|on|off|up|down|back|away) it\b/g, "$1 it $2")
       .replace(/\s+([!?.,])/g, "$1")

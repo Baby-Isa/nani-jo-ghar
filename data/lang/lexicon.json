@@ -950,6 +950,22 @@
    ]
   },
   {
+   "id": "n.three-quarter-cup",
+   "pos": "N",
+   "gender": "he",
+   "paradigm": "noun.invariant",
+   "lemma": "pono cup",
+   "gloss": "three quarters of a cup",
+   "glossPl": "three quarters of a cup",
+   "status": "draft",
+   "src": [
+    "data/stations/baking.json ph-cups-34 (CK-72): Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§67: pa cup, adho cup, pono cup, aakho cup, 55:58-56:15; pono for a he-word like cup, 56:08): the engine's num.three-quarters with cup; spelling to confirm by Zafar"
+   ],
+   "aliases": [
+    "ph-cups-34"
+   ]
+  },
+  {
    "id": "n.a-while",
    "pos": "N",
    "gender": null,
