@@ -1,0 +1,55 @@
+{
+ "name": "s19-clean-e: the games' last open rows (eggs, baking, corn, chop, chaat, the pantry, daar, samosa, maani, sekelo) and their check faults",
+ "why": "build/reports/s19-fixlist-after-night.md: the real remaining list; Zafar, 12 Nov morning: 'What are the remaining open fixes? Can you fix them.'",
+ "cost": "about $35-45",
+ "port": 8911,
+ "read": [
+  "build/reports/s19-fixlist-after-night.md (THE REAL REMAINING LIST: yours are the game rows below)",
+  "build/reports/s19-clean-a2.md and s19-clean-d.md ('the breaks left, by owner': the games' share)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)"
+ ],
+ "owns": [
+  "js/cook/stations/eggs.js, baking.js, corn.js, chop.js, daar.js, samosa.js, maani-line.js, mishkaki-grill.js and their data/stations/*.json",
+  "js/cook/mechanics/chop.js, assemble.js, fetch.js, boil.js, stir.js, thread.js, roll.js, fry.js, fill-fold.js and js/cook/grill-kit.js",
+  "build/reports/s19-clean-e.md"
+ ],
+ "readOnly": [
+  "js/cook/stations/chai-tray.js and js/cook/mechanics/grill.js (s19-clean-a3 owns them now)",
+  "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, data/cook.json, build/sandbox/** (s19-clean-a3)",
+  "assets/**"
+ ],
+ "flows": [
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "The game rows still open: eggs, corn and chop CK-46, CK-55, CK-65, CK-75, CK-76, CK-78, CK-81, CK-82, CK-86 (sekelo's part with grill.js lines to the orchestrator); daar DAAR-36, DAAR-39 and CK-79's station part; maani MAA-20 (its lab pick stays Zafar's: build nothing he hasn't chosen); samosa SAM-34; sekelo SEK-26's open parts; chaat CHT-13, CHT-17, CHT-19; the pantry PAN-21; ART-52, ART-72, ART-79's station swaps. Each: read its row and the after-night note, fix it, a before and after frame. Then the games' own check faults from the a2 and d reports: baking's 111 (18, tap reach), 37 in eggs, corn and chaat (decoys by the levels table), 70 and 117 in eggs, 102 in corn, 44 in maani; samosa's 44 (a finger inside a light) waits on s19-clean-a3's reading of the standard: ask the orchestrator before changing it.",
+   "accept": "each row: before and after frames; the contract run of your ten flows, L1-L4 at 740x320 and 1280x665 (s19-clean-e-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8911, flock /tmp/njg-browser-8911.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs (the disk is tight: about 9 GB free for two builders); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report (data/cook.json, js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js belong to the shared batch, s19-clean-a, running now).",
+   "accept": "build/reports/s19-clean-e.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-e in /home/user/wt/s19-clean-e (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "code",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "report": "s19-clean-e",
+ "publish": false,
+ "rows": []
+}
