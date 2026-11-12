@@ -460,7 +460,7 @@
   "sentence": "Use the attached colour strip only as the palette (tones of these colours; never draw the strip, swatches or any text). Clean edges, no white halo, no baked shadow, light from the upper left."
  },
  "shipped": {
-  "_about": "Shipped by reference, not by folder (Fable, 6 Nov): a picture ships when a page, script, style or data file the game loads names it (pages), written out or built in code (a template literal's pattern, or its bare name quoted where its folder is named). lab: the lab pages, reported apart. exclude: data/asset-list.json is build/gen_assets.py's generation record (what was made, not what is shown: it names items/cook/onion-whole.png, which no page uses).",
+  "_about": "Shipped by reference, not by folder (Fable, 6 Nov): a picture ships when a page, script, style or data file the game loads names it (pages), written out or built in code (a template literal's pattern, or its bare name quoted where its folder is named). lab: the lab pages, reported apart. exclude: data/asset-list.json is build/gen_assets.py's generation record (what was made, not what is shown: it names items/cook/onion-whole.png, which no page uses). data/art/* (the art registry, the retired and approved lists) and lab/art-board-data.js (the art board) name every picture they catalogue, which is not shipping it (s19-artreg).",
   "pages": [
    "*.html",
    "js/**/*.js",
@@ -479,7 +479,9 @@
    "data/asset-list.json",
    "lab.html",
    "labs.html",
-   "js/vendor/*"
+   "js/vendor/*",
+   "data/art/*",
+   "lab/art-board-data.js"
   ]
  },
  "scan": {
