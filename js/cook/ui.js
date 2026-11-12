@@ -2239,6 +2239,8 @@
       const img = c.querySelector(".wc14-pic img");
       const hasPic = !!img;
       const hasEn = !!((c.querySelector(".wc14-en") || {}).textContent || "").trim();
+      // (the card's own hidden parts before the lesson: a part the lesson cannot ask for goes back to how it was, never shown untapped)
+      const was = { "wc14-hide-pic": c.classList.contains("wc14-hide-pic"), "wc14-hide-k": c.classList.contains("wc14-hide-k"), "wc14-hide-en": c.classList.contains("wc14-hide-en") };
       c.classList.toggle("wc14-hide-pic", hasPic);
       c.classList.add("wc14-hide-k");
       c.classList.toggle("wc14-hide-en", hasEn);
@@ -2247,8 +2249,9 @@
       if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
       // (s19-clean-e's sekelo L2-L4, 12 Nov: a part with no room on the card, sekelo's picture squeezed to 0 px by its two-line Kutchi in
       // the row-shaped card, was asked for and lit as a 12 px strip, its tap landing on the order's veil: the child stuck. A part is
-      // asked for only while the child can tap it: a box of its own at least TAP_MIN px each way, the card itself under its middle)
-      const TAP_MIN = 16;
+      // asked for only while the child can tap it: a box of its own at least TAP_MIN px each way, the card itself under its middle; one
+      // that is not stays as the card had it)
+      const TAP_MIN = 8;
       const tappable = (el) => {
         if (!el || !el.isConnected) return false;
         const b = el.getBoundingClientRect();
@@ -2259,7 +2262,7 @@
       const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, sel, cls]) => {
         if (!c.classList.contains(cls)) return false;
         if (tappable(c.querySelector(sel))) return true;
-        c.classList.remove(cls); // (a part with no room is shown, never asked for)
+        c.classList.toggle(cls, was[cls]); // (a part with no room is never asked for: as it was before the lesson)
         return false;
       });
       let want = null;

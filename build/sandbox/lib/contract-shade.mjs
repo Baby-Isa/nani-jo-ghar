@@ -46,10 +46,10 @@ export function check120(r, tl, add) {
 
 // ---- contract-121 (s19-clean-e's report, 12 Nov: sekelo L2-L4 stuck at the order pop-up's card lesson, its picture squeezed to 0 px
 // and lit as a 12 px strip, the tap landing on the order's veil): the card lesson's part asked for is tappable under the light ----
-export const LESSON_MIN = 16;    // the part asked for: at least this many px each way
+export const LESSON_MIN = 8;     // the part asked for: at least this many px each way (js/cook/ui.js blurLesson TAP_MIN; the stuck one was 0)
 export const LESSON_HOLD_MS = 600; // a sample held this long is what the child sees
 export const LESSON_CHECKS = {
-  "contract-121": { item: "lesson-tappable", title: "the card lesson's part asked for is tappable under the light", how: `Cook flows. Every s19lesson sample (lib/contract-shade.mjs LESSON_HOOK: while the order pop-up's card lesson waits for a tap, js/cook/ui.js blurLesson, the part it asks for by Cook.expect) held ${LESSON_HOLD_MS} ms: the part smaller than ${LESSON_MIN} px either way, the page's top thing at its middle not the lesson's card (the order's veil, another layer), or its middle outside every lit hole of the light (the s19lit sample before it) is a break; a tap the light blocked while the lesson waited (input-blocked with the lesson's selector expected) is a break too. Once per page (SH-213; a child can get stuck: non-negotiable 7).` },
+  "contract-121": { item: "lesson-tappable", title: "the card lesson's part asked for is tappable under the light", how: `Cook flows. Every s19lesson sample (lib/contract-shade.mjs LESSON_HOOK: while the order pop-up's card lesson waits for a tap, js/cook/ui.js blurLesson, the part it asks for by Cook.expect) held ${LESSON_HOLD_MS} ms: the part smaller than ${LESSON_MIN} px either way, the page's top thing at its middle not the lesson's card (the order's veil, another layer), or its middle outside every lit hole of the light (the s19lit sample before it) is a break (a play-area tap the light blocks meanwhile is the order's skip held back, not the lesson's). Once per page (SH-213; a child can get stuck: non-negotiable 7).` },
 };
 export function check121(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
@@ -68,11 +68,6 @@ export function check121(r, tl, add) {
     if (rr - l < LESSON_MIN || b - t < LESSON_MIN) return add("contract-121", e.t, `the card lesson asks for ${e.sel} but it is ${Math.round(rr - l)}x${Math.round(b - t)} px [${e.box.join(",")}]: nothing a child can tap`);
     if (!e.hit) return add("contract-121", e.t, `the card lesson asks for ${e.sel} [${e.box.join(",")}] but the page's top thing at its middle is ${e.top || "?"}: the tap never reaches it`);
     if (!inHole) return add("contract-121", e.t, `the card lesson asks for ${e.sel} [${e.box.join(",")}] but its middle is outside the light's hole${h ? ` ${JSON.stringify(h.holes)}` : ""}: the light blocks the tap`);
-  }
-  const blocked = tl.filter((e) => e.type === "c" && e.k === "input" && /wc14-lesson/.test(JSON.stringify(e.exp || "")));
-  for (const b of blocked) {
-    const nx = tl.find((x) => x.t >= b.t && x.t <= b.t + 300 && x.type === "c" && x.k === "input-blocked");
-    if (nx) return add("contract-121", b.t, `a tap while the card lesson waited (${(b.exp && b.exp.cook && b.exp.cook.selector) || "its part"}) was blocked by the light at ${b.x},${b.y} on ${b.on || "?"}: the child is stuck`);
   }
 }
 

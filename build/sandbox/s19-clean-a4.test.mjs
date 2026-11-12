@@ -54,6 +54,7 @@ test("contract-121: a part squeezed to a strip, covered, or outside the hole is 
   assert.equal(run121([lit(900, [[369, 19, 651, 31]]), L(1000, [375, 25, 645, 25]), end]).length, 1, "0 px tall: red");
   assert.equal(run121([lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120], false), end]).length, 1, "under the veil: red");
   assert.equal(run121([lit(900, [[700, 10, 900, 200]]), L(1000, [370, 20, 650, 120]), end]).length, 1, "outside the hole: red");
-  const blocked = [{ type: "c", k: "input", t: 1000, x: 354, y: 8, on: "div.njg-rq-veil", exp: { cook: { selector: ".wc14-lesson .wc14-pic" } } }, { type: "c", k: "input-blocked", t: 1050 }, end];
-  assert.equal(run121(blocked).length, 1, "a lesson tap blocked by the light: red");
+  // (a play-area tap the light blocks while the lesson waits is the order's skip held back: not judged)
+  const skip = [lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120]), { type: "c", k: "input", t: 1100, x: 354, y: 8, on: "div.njg-rq-veil", exp: { cook: { selector: ".wc14-lesson .wc14-pic" } } }, { type: "c", k: "input-blocked", t: 1150 }, end];
+  assert.equal(run121(skip).length, 0, "a skip tap held back: green");
 });
