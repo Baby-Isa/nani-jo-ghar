@@ -214,3 +214,30 @@ test("a2 finding 8: a made kind no row asked for is the card's extra row (maani)
   // a key that matches a row is marked, never extra
   assert.deepEqual(NjgWrongOrder.pick(maani, { wrong: ["ph-wheat+cook-maani"] }).extra, []);
 });
+
+// the s19-clean-d review's findings 1 and 2 (non-negotiable 4): chai's asked spice is scored right only when it was chosen; a cup wrong
+// only by an unasked spice costs a first-try row. chai-tray.js loaded in Node with its kitchen stubbed (its scoring is chaiExtra, pure)
+test("d-review 1-2: spooning every jar never wins the asked spice's word; an unasked spice alone is a miss", async () => {
+  globalThis.window = globalThis.window || globalThis;
+  const deep = () => new Proxy(function () {}, { get: (t, k) => (k === Symbol.toPrimitive ? () => 0 : k === "then" ? undefined : deep()), apply: () => deep() });
+  const { Cook } = await import("../../js/cook/ns.js");
+  const keep = {};
+  for (const k of ["Stations", "UI", "Lang", "D", "Mech"]) (keep[k] = Cook[k]), (Cook[k] = deep());
+  let m;
+  try { m = await import("../../js/cook/stations/chai-tray.js"); } finally { for (const k of Object.keys(keep)) Cook[k] = keep[k]; }
+  const { chaiExtra } = m;
+  assert.equal(typeof chaiExtra, "function", "chai-tray.js exports its spice scoring");
+  const all = chaiExtra("elchi", ["elchi", "jeeru", "aadu", "lasan"]);
+  assert.equal(all.shown, true, "the asked row is ticked on the card (the pop-up crosses the others)");
+  assert.equal(all.right, false, "every jar spooned in: the asked word is not scored right");
+  assert.equal(all.miss, true, "and the cup costs a first-try row");
+  assert.deepEqual(chaiExtra("elchi", ["elchi"]), { shown: true, right: true, unasked: [], miss: false }, "chosen alone: right");
+  assert.equal(chaiExtra(null, ["jeeru"]).miss, true, "plain chai with an unasked spice: a miss");
+  assert.equal(chaiExtra(null, []).right, true);
+  // the check scores with it: the ladder, the first-try list and the word pill all read the chosen value, never the shown one
+  const src = readFileSync(join(ROOT, "js/cook/stations/chai-tray.js"), "utf8");
+  assert.match(src, /if \(p\.extra\) \(ex\.right \? right : Cook\.markMiss\)\(p\.extra\)/);
+  assert.match(src, /p\.extra \? \[\[p\.extra, ex\.right\]\] : \[\]/);
+  assert.match(src, /const scored = id !== p\.extra \|\| ex\.right;/);
+  assert.match(src, /ex\.miss && rows\.find\(\(r\) => r\.ids\[0\] === p\.extra\)/);
+});
