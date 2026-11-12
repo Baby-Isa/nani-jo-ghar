@@ -225,6 +225,8 @@ function wohook() {
             card.minPx = px ? Math.round(px * 10) / 10 : null;
             const body = el.querySelector(".njg-wo-body");
             if (body && body.scrollHeight > body.clientHeight + 2 && /auto|scroll/.test(getComputedStyle(body).overflowY)) card.scroll = true;
+            // (the row of item cards scrolling sideways as the panel's: Zafar, 12 Nov morning; the card's own box is judged)
+            if ([...el.querySelectorAll(".njg-wo-slide")].some((x) => x.scrollWidth > x.clientWidth + 2)) card.scroll = true;
             const st = veil.querySelector(".njg-wo-stage");
             if (st && st.style.left) card.wide = true; // (the whole screen its room: centred on the screen)
           }

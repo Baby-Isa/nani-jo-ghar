@@ -241,21 +241,6 @@ async function play(o = {}) {
       if (row.parentElement) row.parentElement.style.minWidth = need > rb.width / z ? `${Math.ceil(need)}px` : "";
     });
   };
-  // past the words' floor, a line of four or more item cards is laid in two lines (the same cards, each line its own row as the panel's)
-  const split14 = (card) => {
-    let did = false;
-    card.querySelectorAll(".oc-row14").forEach((row) => {
-      const kids = [...row.children];
-      if (kids.length < 4 || row.dataset.woSplit) return;
-      const two = row.cloneNode(false);
-      row.dataset.woSplit = two.dataset.woSplit = "1";
-      kids.slice(Math.ceil(kids.length / 2)).forEach((k) => two.appendChild(k));
-      row.after(two);
-      did = true;
-    });
-    if (did) (card.style.setProperty("--wo-k", "1"), (card._woK = 1), widen14(card));
-    return did;
-  };
   let roomSet = false;
   const roomBack = () => {
     if (!roomSet) return;
@@ -272,7 +257,9 @@ async function play(o = {}) {
     if (fe && faceWant) {
       const f0 = parseFloat(card.style.getPropertyValue("--wo-face")) || 2;
       const w = fe.getBoundingClientRect().width / (card._woK || 1);
-      const f = Math.max(1, (f0 * faceWant) / need / Math.max(1, w));
+      // (a quarter over, as the checks measure the side panel's face and the pop-up's circle a little differently: chai at 740x320 stood
+      // at 71 px against 72)
+      const f = Math.max(1, (f0 * faceWant * 1.25) / need / Math.max(1, w));
       if (f < f0) {
         card.style.setProperty("--wo-face", f.toFixed(2));
         fit(card, true);
@@ -280,10 +267,8 @@ async function play(o = {}) {
       }
     }
     if (card.classList.contains("njg-wo-14")) {
-      if (split14(card)) {
-        fit(card, true);
-        if (card._woK >= need - 0.001) return false;
-      }
+      // (Zafar, 12 Nov morning: "side by side in a row and in the same mini vertical card format": the asker's item cards stay one
+      // row; past the floor the row scrolls sideways as the panel's does, the card being said brought into view: slide14 below)
     } else if (rows >= 4) {
       const k0 = card._woK;
       card.classList.add("njg-wo-cols");
@@ -299,10 +284,29 @@ async function play(o = {}) {
     roomSet = true;
     fit(card, true);
     if (card._woK >= need - 0.001) return false;
-    // at the floor: the card as tall as the room, its rows scrolling
+    // at the floor: the card as wide and as tall as the room, its row of item cards scrolling sideways (as the panel's), or its rows
+    // scrolling down
     card._woK = need;
     card.style.setProperty("--wo-k", String(need));
     const room = stage.getBoundingClientRect();
+    if (card.classList.contains("njg-wo-14")) {
+      let slid = false;
+      card.querySelectorAll(".oc-row14").forEach((row) => {
+        const box = row.parentElement;
+        if (!box) return;
+        box.style.minWidth = "";
+        const extra = (card.offsetWidth || 0) - (box.offsetWidth || 0);
+        const w = Math.floor(room.width / need - extra);
+        if (row.scrollWidth > w + 1 || box.scrollWidth > w + 1) {
+          box.classList.add("njg-wo-slide");
+          const end = () => box.classList.toggle("njg-wo-end", box.scrollLeft + box.clientWidth >= box.scrollWidth - 4);
+          box.addEventListener("scroll", end, { passive: true });
+          box.style.maxWidth = `${Math.max(80, w)}px`;
+          slid = true;
+        }
+      });
+      if (slid && card.offsetHeight * need <= room.height + 1) return true;
+    }
     const extra = (card.offsetHeight || 0) - (body.offsetHeight || 0);
     body.style.maxHeight = `${Math.max(40, Math.floor(room.height / need - extra))}px`;
     body.style.overflowY = "auto";
@@ -411,7 +415,7 @@ async function play(o = {}) {
           if (!r || !r.el) continue;
           r.el.classList.add("njg-wo-now");
           if (cut) break;
-          if (scroll && r.el.scrollIntoView) r.el.scrollIntoView({ block: "nearest", behavior: motion() ? "smooth" : "auto" });
+          if (scroll && r.el.scrollIntoView) r.el.scrollIntoView({ block: "nearest", inline: "nearest", behavior: motion() ? "smooth" : "auto" });
           await said(r.say, !r.ok);
           r.el.classList.remove("njg-wo-now");
           r.el.classList.add(r.ok ? "njg-wo-ok" : "njg-wo-bad");

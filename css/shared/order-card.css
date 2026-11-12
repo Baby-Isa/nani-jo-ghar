@@ -703,7 +703,10 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo-14 .oc-card.oc-s14 .oc-row14 { width: var(--wo-row, auto); overflow: visible; -webkit-mask-image: none; mask-image: none; }
 .njg-wo-open .oc-row.oc-it14 { padding-right: max(calc(var(--njg-px) * 4), 2.6cqi); }
 .njg-wo .oc-row.oc-it14 > .njg-wo-mark { top: 0; right: 0; transform: translate(25%, -25%); }
-.njg-wo-14 .oc-card.oc-s14 .oc-row14 + .oc-row14 { margin-top: var(--njg-s2); }
+/* past the words' floor the row of item cards scrolls sideways as the panel's row does, its far edge fading (Zafar, 12 Nov morning) */
+.njg-wo-14 .oc-item.njg-wo-slide { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; overscroll-behavior: contain; -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); }
+.njg-wo-14 .oc-item.njg-wo-slide::-webkit-scrollbar { display: none; }
+.njg-wo-14 .oc-item.njg-wo-slide.njg-wo-end { -webkit-mask-image: none; mask-image: none; }
 .njg-wo-cols .oc-parts:not(.oc-row14) { display: grid; grid-template-columns: repeat(2, minmax(0, auto)); column-gap: var(--njg-s3); }
 .njg-wo-scroll .njg-wo-body { overscroll-behavior: contain; scrollbar-width: thin; }
 .njg-wo-body > .oc-card { margin: 0; box-shadow: none; }
