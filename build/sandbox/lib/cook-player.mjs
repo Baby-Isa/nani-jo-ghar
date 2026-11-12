@@ -224,7 +224,9 @@ export class CookPlayer {
     if (m === "serve-wrong" && !d.served && e.kind === "tap" && /^(spi|veg|ph)-/.test(e.key || "") && !/^(ph-half|ph-full)$/.test(e.key) && e.key !== "cook-khun") {
       const W = (o) => p.evaluate(`window.Lifecycle && Lifecycle.note && Lifecycle.note("probe-wrong", { step: ${JSON.stringify(o)} })`).catch(() => {});
       const jars = (await canvasObjects(p, /^jar-/).catch(() => [])).filter((j) => j.alpha > 0.05).map((j) => ({ ...j, id: j.key.slice(4) }));
-      const other = jars.filter((j) => j.id !== e.key && /^(spi|veg|ph)-/.test(j.id) && j.id !== "spi-16").sort((a, b) => Math.hypot(a.x - e.sx, a.y - e.sy) - Math.hypot(b.x - e.sx, b.y - e.sy))[0];
+      // (a spice nobody on the order card asks for: one another person asked for may be a right cup's after all; chai L3 at 740x320)
+      const asked = new Set(await p.evaluate(() => [...document.querySelectorAll("#mission [data-word], #mission [data-key]")].map((x) => x.dataset.word || x.dataset.key)).catch(() => []));
+      const other = jars.filter((j) => j.id !== e.key && /^(spi|veg|ph)-/.test(j.id) && j.id !== "spi-16" && !asked.has(j.id)).sort((a, b) => Math.hypot(a.x - e.sx, a.y - e.sy) - Math.hypot(b.x - e.sx, b.y - e.sy))[0];
       const shakers = (await canvasObjects(p, /^eg-shaker/).catch(() => [])).filter((j) => j.alpha > 0.05);
       if (other) {
         d.served = true;
