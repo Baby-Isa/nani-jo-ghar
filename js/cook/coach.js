@@ -1090,7 +1090,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const first = newPlayer() || !(Cook.save.coached || {})[key];
     // (o.name: the step's name in the play log and the step log, e.g. Nani's stepper's own id for that step)
     // (SH-261 at full strength: the kitchen's own help light stays through any tap until the step is done: o.glowStays)
-    return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first, glowStays: true }, o));
+    // SH-230 (the one rule, Zafar 6 Nov night: the box shrinks on a side only where it would touch another item): a station that names no
+    // neighbours gets the step's thing's (every other thing with a word on the stage), as the script's lights have; contract-92, -53 at
+    // 740x320: the pantry's help light round the milk took in the yoghurt beside it
+    const avoid = o.avoid != null ? null : () => {
+      const e = Cook.expect;
+      const th = e && (e.x != null || (e.thing && e.thing.active)) ? thingFor(e) : null;
+      return th ? neighbours(th) : null;
+    };
+    return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first, glowStays: true }, o, avoid ? { avoid } : {}));
   };
 
   /*
