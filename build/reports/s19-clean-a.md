@@ -9,7 +9,7 @@ Opus, high. Branch `s19-clean-a`, never pushed (a hook asked for a push; the bri
 - **SH-175 fails:** chai L3 930x430 at 4000/60 loads in 32.9 s against 26.7 s (+23%, 412 requests); not fixed.
 - **Not done:** SH-232, SH-152 (99 3, 72 12), SH-230 (105, 92, 53), SH-237 (107 14), SH-249 (112 8), contract-104 (17; cause not found), SH-60, SH-178, SH-251, CHAI-111's lab-host path, the full `evidence.mjs --after --brief` (no before folders exist for this brief's rows).
 - **CHAI-109:** the card light has no timer now (SH-261), so it stays until the child moves on: longer than any `o.ms`; s19-clean-b's `o.ms` line not applied.
-- **Mine to say:** the asker's face in the pop-up is the kit's big circle scaled 2x (contract-42 measures the laid-out size); `docs/language/recording-sheet.md` is stale on `checks.mjs` (not mine: `node build/tools/ops/recordings.mjs`); `cook.html` still loads Google fonts (not mine; SH-224).
+- **Mine to say:** the asker's face in the pop-up is the kit's big circle scaled 2x (contract-42 measures the laid-out size); `cook.html` still loads Google fonts (not mine; SH-224).
 - **Zafar's choices I made:** the pop-up runs only when a round has a wrong order; an all-right round ends as before. The reveal lesson's light keeps its timer (a showing, not a move).
 
 ## What changed
@@ -31,5 +31,5 @@ Opus, high. Branch `s19-clean-a`, never pushed (a hook asked for a push; the bri
 - By check, before to after: 118 4→5, 109 16→1, 111 29→14, 106 28→18, 114 29→17, 36 44→57, 104 8→17, 107 7→14, 72 8→12, 112 3→8, 37 16→19, 115 31→33, 99 4→3, 116 6→4. 117's full-strength rule and 119 are not comparable (their samples are new). Left by owner: chai and eggs 118, 113 and 107 (s19-clean-b2); 36, 111, 117 in samosa, maani, sekelo, daar, baking and the pantry (their builders: missing calls, taps on jars, lights a drag hides); 104, 72, 99, 112, 116 (mine, open).
 - Proof run, four sizes, L1 (`s19-clean-a-contract`): 44 of 44 ends, 0 page errors, `CONTRACT FAILED: 123 breaks` (re-judged; 36 31, 111 20, 119 12, 106 10, 117 10, 114 6, the rest 1-4).
 - contract-118 red before (chai and eggs L3 `#serve-wrong`), green on chai's pop-up after, red on its leave and on eggs (s19-clean-b2). Evidence sheets: `build/screenshots/evidence/s19-clean-a-wo-ev-before/` and `-after/` (SH-265, SH-266; SH-264 never reached, above).
-- Unit: `checks.mjs` before the merges: all ok but `recordings` (not mine) and three tests I then fixed; sandbox tests 275 pass.
-- check-change: CC_PLACEHOLDER
+- Unit: sandbox tests 275 pass; `checks.mjs` all ok (above).
+- check-change: its push tier PASSED, `checks.mjs` all 13 steps ok (`build/reports/tiers/push-0d7553f207.md`); its play step (276 pages, one at a time: about 6 h on this machine) I stopped after 2 pages, both ended (`build/screenshots/tiers/change-79f2eda3b1/logs/`). Not passed as a whole.
