@@ -40,6 +40,10 @@ test("SH-261 at full strength: contract-117 breaks on a light that goes with its
   assert.deepEqual(run(moved), [], "the right move: the step moved on");
   const back = [...ST2, want(900, "pan-ma"), lit(1000, true), c(5800, "input", { x: 150, y: 150 }), lit(6000, false), lit(6800, true), want(20000, "x")];
   assert.deepEqual(run(back), [], "hidden while the move is done, back after the release");
+  // (s19-clean-a5's line: a light buried while the grown-ups' "?" pop-up is open is not a fade; the same fade with the pop-up shut is)
+  const guLit = (t, on, gu) => ({ ...lit(t, on), gu });
+  assert.deepEqual(run([...ST2, want(900, "pan-ma"), lit(1000, true), guLit(6000, false, true), want(20000, "x")]), [], "stepped back under the ? pop-up");
+  assert.match(run([...ST2, want(900, "pan-ma"), lit(1000, true), guLit(6000, false, false), want(20000, "x")]).map((b) => b.msg).join("|"), /a fade on a timer/, "the bad run stays red");
 });
 
 import { check109 } from "./lib/contract-s19.mjs";

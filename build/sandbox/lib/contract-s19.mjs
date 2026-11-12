@@ -544,6 +544,8 @@ export function check117stay(r, tl, add) {
   for (let i = 1; i < lits.length; i++) {
     const before = lits[i - 1], now = lits[i];
     if (!inStation(st, before.t) || !inStation(st, now.t)) continue;
+    // (s19-clean-a5: a light that steps back while the grown-ups' "?" pop-up is open is buried on purpose, back as it shuts; not a fade)
+    if (now.gu) continue;
     const gone = (before.holes || []).map(box).filter((h) => !(now.holes || []).map(box).some((n) => inBox(mid(h), n)));
     for (const h of gone) {
       const c = mid(h);
@@ -597,7 +599,7 @@ export function checkS19(r, tl, v, add) {
 //   k: "s19ghost" {step, gesture, game, at}   a ghost finger played (Lifecycle ghost); game: Cook's S.ghost (it logs where it points) (102)
 //   k: "s19glow"  {list: [{key, bounce, box}], canvas}   the glowing pictures (njgTest.cook.glowing()) and the canvas's box (102, 107)
 //   k: "s19btn"   {list: [{sel, kind, text}]}   a tick, next or close button on screen outside the end screen, pop-ups and cog (103)
-//   k: "s19lit"   {holes, things, near, vw, vh}   the kit's light boxes, the thing under each box's middle, the other things with a word (105-107)
+//   k: "s19lit"   {holes, things, near, vw, vh, gu}   the kit's light boxes (gu: the grown-ups' "?" pop-up open), the thing under each box's middle, the other things with a word (105-107)
 //   k: "s19shelf" {items: [{id, foot, chip}]}   the shelf's pictures with a word, their feet and their pills' middles (109)
 function s19hook() {
   if (window.__njgS19Hook) return;
@@ -1295,7 +1297,8 @@ function s19hook() {
       const bt = safe(buttonsNow, []);
       if (!same("s19btn", bt.map((b) => b.sel + b.kind))) emit({ k: "s19btn", list: bt });
       const hs = safe(holesNow, []);
-      if (!same("s19holes", hs)) { const lt = safe(() => litNow(hs), { holes: hs, things: [], near: [] }); emit({ k: "s19lit", ...lt }); }
+      // (gu: the grown-ups' "?" pop-up open, the lights stepped back under it (js/shared/onboard.js draw): contract-117 leaves those out)
+      if (!same("s19holes", hs)) { const lt = safe(() => litNow(hs), { holes: hs, things: [], near: [] }); emit({ k: "s19lit", ...lt, gu: !!document.querySelector(".njg-gu-pop:not(.hidden)") }); }
       if (Date.now() - shelfAt > 1000) {
         shelfAt = Date.now();
         const sh = safe(shelfNow, null);
