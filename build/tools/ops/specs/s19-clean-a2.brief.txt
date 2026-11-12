@@ -1,0 +1,76 @@
+SESSION NAME / MODE:  s19-clean-a2: the shared pieces, round two: the pop-up as Zafar described it, the shared rows not reached, the checks
+MODEL AND EFFORT:     Opus, high effort (s19-clean-a left SH-232, SH-152, SH-230, SH-237, SH-249, SH-60, SH-178, SH-251, contract-104, SH-175 and the pop-up's flaws; the fix list to zero before Zafar plays)
+COST ESTIMATE:        about $35-45
+STOP:                 when the tasks are done. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               s19-clean-a2 in /home/user/wt/s19-clean-a2 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s19-clean-a2.context.md (859 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s19-clean-a.md (round one: its 'Not done' list is your work)
+     build/reports/s19-wrong-order-lab-frames.png (the pop-up's lab page, frames 0.9 s apart, 'Ma's wrong': the orchestrator's look)
+     docs/process/regressions.md rows SH-264 to SH-266 (Zafar's words, with his 11 Nov night answers) and build/reports/s19-feedback-1111-second-reader.md
+     build/reports/s19-clean-b-review.md and s19-clean-c-review.md (the findings in your files)
+     docs/decisions/2026-11-10-overnight.md (the last sections)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/shared/**, css/shared/**
+  - js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js and css/cook.css
+  - data/cook.json (the only owner tonight: s19-clean-b and s19-clean-c send you their lines through the orchestrator)
+  - build/sandbox/** (the checks, drivers and build/sandbox/data/evidence.json), build/lint/**, build/tools/review/**, build/tools/tiers/**
+  - find.html, first.html, monsoon.html (SH-224 only)
+  - build/reports/s19-clean-a.md
+READ-ONLY (never edit):
+  - js/cook/stations/** and js/cook/mechanics/**, js/cook/grill-kit.js and data/stations/*.json (s19-clean-b and s19-clean-c: an edit there goes in your report as an exact line)
+  - assets/**, build/tools/art/**
+  - build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The pop-up as he said it, flaws first (from the lab frames): the right orders must each come to the middle in turn, their compact single line re-ticked with a ding, glow gold or green and float up off the screen before the wrong one (the lab's frames 0.9 s apart never show this); the redo card in the side panel clips its last row ('trae khun' cut: no clipped text, non-negotiable 6); the card 'big, central'. Then prove it in the games, not the lab: chai and eggs at L3 with a real wrong order (the serve-wrong driver), frames of the pop-up, the redo and the panel at 740x320 and 1280x665 (s19-clean-b2 adds chai's leave line and eggs' round: confirm with the orchestrator they've merged before the proof run).
+     Accept: frames of each beat in chai and eggs; contract-118 green at both sizes
+  2. Round one's not-done list: SH-232, SH-152, SH-230, SH-237, SH-249, contract-104 (17: find the cause), SH-60, SH-178, SH-251, CHAI-111's lab-host path (New player, resize to 736x750, Play again, idle 30 s at the water, expect help), SH-175 (chai L3 at 930x430 loads 23% slower: find and fix), and the rise of contract-36 (44 to 57), -104, -107, -72 and -112 in round one's after run: split merge from code and fix the shared part. SH-267's 12 red level-1 pages: re-play and fix.
+     Accept: each row: before and after frames; the contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 (s19-clean-a2-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner
+  3. Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.
+     Accept: build/reports/s19-clean-a2.md with a Proof section, under 900 words
+
+KEEP (what Zafar liked in chai, eggs, baking, corn, chop, chaat, fetch, daar, samosa, maani-line, mishkaki-grill: never change it without his word; 12):
+  KEEP-01: Underline while a line is spoken; order card and pop-up are "the bar we want to set"
+  KEEP-02: Daar: chopped things wait at the side and you add them in
+  KEEP-03: Samosa: oil looks better, frying is fun, adding samosas is fun, slotted-spoon lift is good
+  KEEP-04: Samosa fold swipe stays and feels great; no dashed line, no red dot
+  KEEP-11: Nana's voice; Nani and Nana talking; two-person chai; maani speed; the greeting hand gesture
+  KEEP-12: The card that shows then blanks words; chai highlighted at the start; calling out items as they go in · 26 Oct: the blanking keeps only with each row's speaker 
+  KEEP-13: Pantry wrong-item handling; cooker on early is fine; daar dial and rotation; samosa fry and frying handle
+  KEEP-15: Chai: the pan's boiling bubbles and the flames ("the tea animation with the bubbles")
+  KEEP-16: Liked, 17 Oct: daal chop ("so much better ... the knife ... really nice"); the stir speed indicator ("looks very good"); chai's replayed order on a pot tap ("ve
+  KEEP-18: Liked, 22 Oct: chai's water bouncing with its own glow ("I like that the water is bouncing", "has a bit of a glow"); the rectangle; "the onboarding is clear"; "
+  KEEP-19: Liked, 22 Oct: "it's becoming a lot clearer and easier to play and easier to understand ... a very positive strong step" (Sprint 11's direction)
+  KEEP-21: Liked, 1 Nov: "The half mechanism for level 4 kind of works well, actually. In terms of the pouring, it works quite well. It's quite clever"; "I had a quick loo
+
+REGRESSION ROWS TO RECHECK (11; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (11): SH-232*, SH-152*, SH-230*, SH-237*, SH-249*, SH-60*, SH-178*, SH-251*, CHAI-111*, SH-175*, SH-267*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s19-clean-a2.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8914 NJG_LOCK=/tmp/njg-browser-8914.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s19-clean-a2.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8914.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:eggs,cook:baking,cook:corn,cook:chop,cook:chaat,cook:fetch,cook:daar,cook:samosa,cook:maani-line,cook:mishkaki-grill --sizes 740x320,930x430,1280x665,1920x1080 --run-id s19-clean-a2-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s19-clean-a2.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s19-clean-a2.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8914.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8914; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+Before the report (tier 2, check-change; Zafar, 10 Nov: the checks run by themselves): COOK_TEST_PORT=8914 NJG_LOCK=/tmp/njg-browser-8914.lock node build/tools/tiers/check-change.mjs --brief build/tools/ops/specs/s19-clean-a2.json; it must pass; its result file goes in the report. FINISH: build/reports/s19-clean-a2.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

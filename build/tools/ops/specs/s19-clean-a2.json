@@ -1,0 +1,64 @@
+{
+ "name": "s19-clean-a2: the shared pieces, round two: the pop-up as Zafar described it, the shared rows not reached, the checks",
+ "why": "s19-clean-a left SH-232, SH-152, SH-230, SH-237, SH-249, SH-60, SH-178, SH-251, contract-104, SH-175 and the pop-up's flaws; the fix list to zero before Zafar plays",
+ "cost": "about $35-45",
+ "port": 8914,
+ "read": [
+  "build/reports/s19-clean-a.md (round one: its 'Not done' list is your work)",
+  "build/reports/s19-wrong-order-lab-frames.png (the pop-up's lab page, frames 0.9 s apart, 'Ma's wrong': the orchestrator's look)",
+  "docs/process/regressions.md rows SH-264 to SH-266 (Zafar's words, with his 11 Nov night answers) and build/reports/s19-feedback-1111-second-reader.md",
+  "build/reports/s19-clean-b-review.md and s19-clean-c-review.md (the findings in your files)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)"
+ ],
+ "owns": [
+  "js/shared/**, css/shared/**",
+  "js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js and css/cook.css",
+  "data/cook.json (the only owner tonight: s19-clean-b and s19-clean-c send you their lines through the orchestrator)",
+  "build/sandbox/** (the checks, drivers and build/sandbox/data/evidence.json), build/lint/**, build/tools/review/**, build/tools/tiers/**",
+  "find.html, first.html, monsoon.html (SH-224 only)",
+  "build/reports/s19-clean-a.md"
+ ],
+ "readOnly": [
+  "js/cook/stations/** and js/cook/mechanics/**, js/cook/grill-kit.js and data/stations/*.json (s19-clean-b and s19-clean-c: an edit there goes in your report as an exact line)",
+  "assets/**, build/tools/art/**"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "The pop-up as he said it, flaws first (from the lab frames): the right orders must each come to the middle in turn, their compact single line re-ticked with a ding, glow gold or green and float up off the screen before the wrong one (the lab's frames 0.9 s apart never show this); the redo card in the side panel clips its last row ('trae khun' cut: no clipped text, non-negotiable 6); the card 'big, central'. Then prove it in the games, not the lab: chai and eggs at L3 with a real wrong order (the serve-wrong driver), frames of the pop-up, the redo and the panel at 740x320 and 1280x665 (s19-clean-b2 adds chai's leave line and eggs' round: confirm with the orchestrator they've merged before the proof run).",
+   "accept": "frames of each beat in chai and eggs; contract-118 green at both sizes"
+  },
+  {
+   "do": "Round one's not-done list: SH-232, SH-152, SH-230, SH-237, SH-249, contract-104 (17: find the cause), SH-60, SH-178, SH-251, CHAI-111's lab-host path (New player, resize to 736x750, Play again, idle 30 s at the water, expect help), SH-175 (chai L3 at 930x430 loads 23% slower: find and fix), and the rise of contract-36 (44 to 57), -104, -107, -72 and -112 in round one's after run: split merge from code and fix the shared part. SH-267's 12 red level-1 pages: re-play and fix.",
+   "accept": "each row: before and after frames; the contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 (s19-clean-a2-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+   "accept": "build/reports/s19-clean-a2.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-a2 in /home/user/wt/s19-clean-a2 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": true,
+ "stubs": "none",
+ "report": "s19-clean-a2",
+ "publish": false,
+ "rows": []
+}
