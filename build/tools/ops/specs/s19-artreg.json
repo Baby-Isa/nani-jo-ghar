@@ -1,0 +1,71 @@
+{
+ "name": "s19-artreg: the art registry and catalogue (the plan Fable reviewed), ready for Sprint 20's migration",
+ "why": "Zafar, 12 Nov: 'set it off now ... this artwork will just start now and will hopefully land before or at the start of sprint 20 to be implemented'; the plan: docs/ideas.md 'An art registry' and build/reports/s19-art-registry-second-opinion.md",
+ "cost": "about $40-60",
+ "port": 8913,
+ "read": [
+  "build/reports/s19-art-registry-second-opinion.md (the plan, Fable's shape: all of it) and docs/ideas.md's last section",
+  "build/reports/s19-artuse.md and build/tools/art/artuse.mjs, data/art/retired.json, data/art/approved.json, lab/art-board.html (the first step, built)",
+  "the five part-registries the registry replaces: data/cook.json art.sprites, art.s02, art.assets; assets/**/meta.json; build/tools/art/artcheck-known.json",
+  "docs/design-language/art-pipeline.md, .claude/skills/art-run/SKILL.md, the cut tools in build/tools/art/ (s19_k3_cut.py the newest), sources/art/*/results/run-report.txt (the runs and picks)"
+ ],
+ "owns": [
+  "data/art/** (registry.json new; retired.json, approved.json)",
+  "build/tools/art/registry*.mjs and their tests, build/tools/art/artuse.mjs, build/tools/art/artcheck.mjs (the registry checks only)",
+  "lab/art-board.html and its data",
+  "docs/design-language/art-registry.md (new: how it works, for builders and Zafar)",
+  ".claude/skills/art-run/SKILL.md (the cutter writes registry lines: one step)",
+  "build/reports/s19-artreg.md"
+ ],
+ "readOnly": [
+  "js/**, data/cook.json, data/stations/** (four builders: no migration this sprint)",
+  "assets/** (move or delete nothing: list moves for Sprint 20)"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "Make the map complete: play every kitchen flow to its end, L1-L4, under the load trace (artuse.mjs --refresh with full plays, at --parallel 1: the machine is shared), plus the serving kitchen, the title and the lab pages; then the other modes' pages to their first step (clinic, farm, story) so the catalogue covers the whole site. Say how complete it is per page.",
+   "accept": "art-use.json from full plays; the board's 'how complete' line honest"
+  },
+  {
+   "do": "data/art/registry.json, seeded by machine: one entry per piece with a stable id (game.piece, kit.piece, char.name.mood, scene.name), its current file per state or variant (raw, part, cooked, over; water, empty), version, status (approved, candidate, stand-in, needs-redo, retired; real people's art approved only by Zafar), source (art run, pick, date, from sources/art/*/results), what it replaced, and its measurements (pulled from the meta.json files and the station data's body/rim/reach fields, with where each came from). A tool to add or update an entry (the cutter's step) and one to validate it. Document in art-registry.md how each of the five part-registries maps into it (not migrated: Sprint 20).",
+   "accept": "registry.json covering every loaded picture; the tools' tests; the mapping table"
+  },
+  {
+   "do": "The checks (no game code changed): a loaded picture not in the registry fails, today's on a shrink-only known list; retired stays as built. The art board reads the registry: per game and per piece, status colours, version, source, where used. The catalogue's other half: every stored picture loaded by nothing and named by nothing, as a move-out list for Sprint 20 with its size (the site is 429 MB; about 190 MB looks unloaded), the two published videos and the ChatGPT folders (ART-74) included.",
+   "accept": "the board's screenshot at 1280x665 light and dark; the move-out list with sizes"
+  },
+  {
+   "do": "Sprint 20's migration plan, in art-registry.md: per game, the steps to ask for ids not paths (sekelo first, with its art swap), the no-pixel-changed proof (a screenshot diff of the same flow before and after the id switch), and the order of the games; the art-run skill's one new step (the cutter writes the registry line). Then the next art run's list from the registry: every needs-redo and stand-in piece, by game, for Zafar.",
+   "accept": "the plan and the next art run's list in the report"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8913, flock /tmp/njg-browser-8913.lock), --parallel 2 at most; commit on your branch, never push; move or delete no asset; never run `git sparse-checkout disable`; keep under 1 GB.",
+   "accept": "build/reports/s19-artreg.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-artreg in /home/user/wt/s19-artreg (made for you from the integration branch, with sources/art's run reports); commit there, never push; the orchestrator merges",
+ "kind": "tools",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "report": "s19-artreg",
+ "publish": false,
+ "rows": []
+}
