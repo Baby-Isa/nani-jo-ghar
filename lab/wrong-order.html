@@ -47,15 +47,25 @@
 <script src="../js/shared/order-card.js?v=20261110T002839Z"></script>
 <script type="module">
   import { NjgWrongOrder } from "../js/shared/wrong-order.js";
+  import { createEngine } from "../js/core/lang/engine/index.js";
   const OC = window.OrderCard;
-  const w = (t) => `<span class="word">${t}</span>`;
   const face = (who) => `../assets/cook/characters/${who}-badge.webp`;
-  const head = { html: `Muke ${w("chai")} khape.` };
+  // (the Fable review, 11; s19-clean-a4: never Kutchi typed by hand: every line from the language engine, through Cook's own bridge
+  // js/cook/words.js, as the game writes its rows; a word the engine can't say comes out as its English placeholder, grey)
+  const J = async (p) => (await fetch(p)).json();
+  const lang = {};
+  await Promise.all(["params", "lexicon", "paradigms", "abstract", "concrete", "clips"].map(async (f) => (lang[f] = await J(`../data/lang/${f}.json`))));
+  const [cookData, audio] = await Promise.all([J("../data/cook.json"), J("../data/family-audio.json")]);
+  window.Cook = { data: cookData, langEngine: createEngine({ data: lang, audio }), speed: 1 };
+  await new Promise((ok, no) => { const s = document.createElement("script"); s.src = "../js/cook/words.js"; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  const L = window.Cook.Lang;
+  const row = (parts) => L.html(L.phrase(parts));
+  const head = { html: L.html(L.line("need", L.phrase(["cook-chai"]))) };
   // each person's rows: [label, the row's key]; the wrong row is the one the serve found wrong
   const ORDERS = {
-    nana: [[w("dudh"), "dudh"], [`ba ${w("khun")}`, "khun"], [w("elchi"), "elchi"]],
-    ma: [[`${w("Dudh")} na.`, "no-dudh"], [`trae ${w("khun")}`, "khun"]],
-    cousin: [[w("dudh"), "dudh"], [`ba ${w("khun")}`, "khun"]], // (the Fable review, 11: never Kutchi typed by hand: the rows as the game writes them)
+    nana: [[row(["cook-dudh"]), "dudh"], [row([2, "cook-khun"]), "khun"], [row(["spi-10"]), "elchi"]],
+    ma: [[L.html(L.line("no", L.phrase(["cook-dudh"]))), "no-dudh"], [row([3, "cook-khun"]), "khun"]],
+    cousin: [[row(["cook-dudh"]), "dudh"], [row([2, "cook-khun"]), "khun"]],
   };
   const WRONG_ROW = { nana: "elchi", ma: "khun", cousin: "khun" };
   const side = document.getElementById("side");
