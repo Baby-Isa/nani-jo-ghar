@@ -1,0 +1,68 @@
+{
+ "name": "s19-artuse: what each game really loads, the retired list and its check, the art board",
+ "why": "Zafar, 12 Nov: make it easily known when art is fine, needs replacing or has been replaced (the art registry, first step, as Fable's second opinion)",
+ "cost": "about $10-15",
+ "port": 8913,
+ "read": [
+  "build/reports/s19-art-registry-second-opinion.md (the plan: 'The recommended first step (tonight)' is your work)",
+  "docs/ideas.md, the last section (the art registry)",
+  "build/tools/art/artcheck.mjs (its checks and its known list) and the loadcheck tool (find it: grep -rl 'discover' build/tools build/sandbox)",
+  "build/reports/s19-clean-b.md and s19-clean-c.md (their ART-79 lists of old pictures)",
+  "sources/art/s19-k3/results/cut-sheet.jpg and assets/cook/items/v4/ (the new pieces)"
+ ],
+ "owns": [
+  "build/tools/art/artuse.mjs (new) and its test",
+  "data/art/retired.json (new)",
+  "build/tools/art/artcheck.mjs (the retired check only) and its test",
+  "lab/art-board.html (new, read-only page) and its data file",
+  "build/reports/art-use.json, build/reports/s19-artuse.md"
+ ],
+ "readOnly": [
+  "js/**, data/cook.json, data/stations/** (two builders own them tonight)",
+  "assets/** (move nothing tonight)",
+  "build/tools/review/**, build/sandbox/** (s19-clean-a)"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "artuse.mjs: run the load check's discover mode over every kitchen page (the eleven flows and their lab pages) and join it with the files on disk and every name of them in js, data, html, css and lab (stems and globs too: the manifests' patterns). Write build/reports/art-use.json: per picture, which pages load it, which files name it, its folder's version (v4 = Sprint 19). Fast enough to rerun (cache the discover run; --refresh to replay).",
+   "accept": "art-use.json written; a test on a small fixture"
+  },
+  {
+   "do": "data/art/retired.json: a short list of globs, each with replacedBy and row (ART-79 and the builders' lists: e.g. assets/cook/items-s08c/sekelo/**, assets/cook/items/v3/sekelo/board*, sekelo/stick-v, sekelo/rack-t, tool-board-t where a v4 replaces it). Only what has a v4 replacement; the rest is 'old, no replacement yet'. The retired check in artcheck.mjs: fails on any name (path, stem or glob match) or real load (art-use.json) of a retired file; today's hits go on a known list that may only shrink (as artcheck's own known list works).",
+   "accept": "the check red on today's sekelo hits until they are on the known list; a test"
+  },
+  {
+   "do": "lab/art-board.html: read-only, from art-use.json and retired.json: per kitchen game, every picture it loads as a thumbnail with its path, version and colour: green (v4 and loaded), amber (old, no replacement yet, loaded), red (retired and still loaded), grey (stored, loaded by nothing). Counts per game at the top. Light and dark, the four sizes. Then a small run with Playwright to screenshot it at 1280x665 for Zafar.",
+   "accept": "the board's screenshot; the counts per game in the report"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8913, flock /tmp/njg-browser-8913.lock), --parallel 2 at most; commit on your branch, never push; move or delete no asset; never run `git sparse-checkout disable`; keep under 0.5 GB.",
+   "accept": "build/reports/s19-artuse.md with a Proof section, under 600 words"
+  }
+ ],
+ "model": "Sonnet",
+ "effort": "medium",
+ "stop": "when the tasks are done",
+ "branch": "s19-artuse in /home/user/wt/s19-artuse (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "tools",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "report": "s19-artuse",
+ "publish": false,
+ "rows": []
+}
