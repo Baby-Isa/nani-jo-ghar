@@ -328,6 +328,7 @@ export function check107(r, tl, add) {
   const glows = ev(tl, "s19glow");
   const lits = ev(tl, "s19lit");
   const rungs = life(tl, "rung");
+  const glowOn = life(tl, "glow").filter((n) => n.reason === "on");
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   const seen = new Set();
   for (const e of glows) {
@@ -355,7 +356,11 @@ export function check107(r, tl, add) {
       // counts, from the rung on)
       const rg = rungs.filter((n) => noteT(n) <= e.t && noteT(n) >= e.t - LATE_LIGHT_MS).pop();
       const from = Math.min(e.t - 100, rg ? noteT(rg) - SAMPLE_SLACK_MS : Infinity);
-      const hop = glows.some((x) => x.t >= from && x.t <= e.t + HOLD_MS + 400 && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
+      // (s19-clean-a6, the a6 after run, eggs: the game logs its glow on the thing (Lifecycle glow on <id>) with the light, and the 100 ms
+      // glow sample, heavy under load, shows the hop a second later: with that note, a hop up to LATE_LIGHT_MS after it counts)
+      const note = glowOn.find((n) => n.by === th.id && noteT(n) >= e.t - 500 && noteT(n) <= e.t + HOLD_MS);
+      const until = note ? Math.max(e.t + HOLD_MS + 400, noteT(note) + LATE_LIGHT_MS) : e.t + HOLD_MS + 400;
+      const hop = glows.some((x) => x.t >= from && x.t <= until && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
       if (hop) return;
       seen.add("still:" + th.id);
       add("contract-107", e.t, `the shelf item ${th.id} is lit ${fmt(box(hb))} without its hop`);

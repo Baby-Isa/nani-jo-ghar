@@ -150,3 +150,15 @@ test("contract-101: her line in Lora 500 is green; in the old type (Nunito 700) 
   assert.match(red[0].msg, /set in Nunito Sans 700, not chai's Lora 500/);
   assert.equal(run({}).length, 0, "no type read (an older probe): not judged");
 });
+
+// ---- contract-107: the game's own glow note with the light lets a hop the heavy glow sample shows a second late count ----
+test("contract-107: a hop 1 s after the light, with the game's glow note on the thing at the light, is green; without the note red", () => {
+  const run = (tl) => collect((add) => check107({ flow: "cook:eggs" }, tl, add));
+  const th = [{ kind: "word", id: "n.egg", shelf: 1, box: [397, 233, 464, 319] }];
+  const lit = c(16610, "s19lit", { holes: [[397, 233, 464, 319]], things: th, vh: 320 });
+  const hop = c(17580, "s19glow", { canvas: [0, 0, 740, 320], list: [{ key: "eg-bowl", box: [405, 241, 456, 291], bounce: true }] });
+  const note = c(16800, "life", { what: "glow", reason: "on", step: "on", by: "n.egg", at: 16620 });
+  assert.equal(run([...ST, lit, note, hop, c(9e4, "x")]).length, 0, "the note with the light, the hop sampled late: green");
+  assert.equal(run([...ST, lit, hop, c(9e4, "x")]).length, 1, "no note: red");
+  assert.equal(run([...ST, lit, { ...note, by: "n.salt" }, hop, c(9e4, "x")]).length, 1, "a note on another thing: red");
+});
