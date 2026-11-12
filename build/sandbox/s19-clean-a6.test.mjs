@@ -139,3 +139,14 @@ test("contract-36: the light's step time is its frame-timed sample's; a call 2.0
   assert.equal(screenSteps(other)[0].t, 37480, "another hole's sample does not time it");
   assert.equal(run([...ST, c(37480, "s19lit", { holes: h, things: [{ kind: "pic", id: "sv3-fold-strip", box: [480, 100, 700, 210] }] }), c(50000, "x")], [{ ...call, t0: 35000 }]).length, 1, "a call 2.48 s before: red");
 });
+
+// ---- contract-101 (SH-240): Nani's line in chai's type, Lora 500, in every game ----
+import { check101 } from "./lib/contract-s19.mjs";
+test("contract-101: her line in Lora 500 is green; in the old type (Nunito 700) red; a sample with no type read is not judged", () => {
+  const run = (g) => collect((add) => check101({ flow: "cook:mishkaki-grill" }, [...ST, c(500, "life", { what: "step-open", at: 500 }), c(1000, "s19guide", { shown: true, s14: true, arrow: true, lines: 1, fits1: true, text: "Thread them.", ...g }), c(9000, "x")], add));
+  assert.equal(run({ ff: "Lora", fw: "500" }).length, 0, "chai's type: green");
+  const red = run({ ff: "Nunito Sans", fw: "700" });
+  assert.equal(red.length, 1, "the old type: red");
+  assert.match(red[0].msg, /set in Nunito Sans 700, not chai's Lora 500/);
+  assert.equal(run({}).length, 0, "no type read (an older probe): not judged");
+});
