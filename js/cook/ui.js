@@ -3242,6 +3242,9 @@
           .filter((x) => pieceOf(x.r))
           .forEach(({ r }) => {
             rowsShown.push(r);
+            // (the Fable review of s19-clean-c, 5, contract-30: the skewers' count and kind stay written, "ba lakri mishkaki", as the
+            // first card, its pieces' rows after it: every number Nani says is written)
+            items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
             const id = pieceOf(r);
             const pr = (r._pieceRow = r._pieceRow || { kind: "item", ids: [id], qty: 1, parts: [id], line: Lang.phrase([id]), phrase: Lang.phrase([id]), for: r.for, piece: true });
             for (let u = 0; u < (r.qty || 1); u++) {
@@ -3265,7 +3268,8 @@
             // are shown, as its own card
             // (SEK-25: once its pieces show, a mixed skewer is its pieces' cards alone: "separate the names of the items that go on the
             // skewer from the overall order")
-            if (!mixes.length || ((r.qty || 1) > 1 && !r.pieces)) items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
+            // (the Fable review of s19-clean-c, 5: a mixed skewer of two keeps its kind's card too: its count is written, contract-30)
+            if (!mixes.length || (r.qty || 1) > 1) items.push({ label: null, parts: [Object.assign(cardOf(r, 0), { done: !!r.done, wrong: !!r.wrong })], ordered: false, src: [] });
             // SEK-03, SEK-13: each skewer's pieces, a row of cards per skewer, ticking as they go on (M.tickUnit for the first skewer
             // of a mix, M.tickPiece for a later one of the same mix); several different mixes, a row each
             const each = mixes.length > 1 && (r.qty || 1) === mixes.length ? mixes.map((ps) => [ps, 0]) : mixes.length === 1 ? Array.from({ length: r.qty || 1 }, (_, u) => [mixes[0], u]) : [];
@@ -3308,7 +3312,10 @@
       cards.forEach((c) => {
         const its = c.data.items;
         // (not a samosa kind's block, nor several ordered rows: a mixed skewer's pieces stay a row per skewer)
-        if (its.length < 2 || its.some((it) => it.count != null) || its.filter((it) => it.ordered).length > 1) return;
+        // (s19-clean-a, the Fable review of s19-clean-c, 3: a plain skewer's piece rows, SEK-25, fit rows of one thing, do fold into the one
+        // sideways row: two skewers were two rows of four cards and the card ran past a 320 px screen)
+        const pieceRows = its.filter((it) => it.ordered).every((it) => it.fit);
+        if (its.length < 2 || its.some((it) => it.count != null) || (its.filter((it) => it.ordered).length > 1 && !pieceRows)) return;
         c.data.items = [{ label: null, parts: [].concat(...its.map((it) => it.parts)), ordered: its.some((it) => it.ordered), done: its.every((it) => it.done) || undefined, src: [].concat(...its.map((it) => it.src || [])), at: 0, keep: its.some((it) => it.keep) }];
       });
     return redoCards(cards);
@@ -3951,6 +3958,9 @@
       r.got = 0;
       r.wrong = false; // CK-32: open again, plain (the red was the review's)
       if (r.units) r.units = r.units.map(() => false); // (SH-239: its units are made again, ticking it as the last one is)
+      // (the Fable review of s19-clean-c, 2: the pieces already on each unit go too, or a redo's piece cards showed four gos ticked
+      // before anything was threaded: M.tickPiece's unitGot)
+      if (r.unitGot) r.unitGot = [];
     });
     if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
     renderOrder();

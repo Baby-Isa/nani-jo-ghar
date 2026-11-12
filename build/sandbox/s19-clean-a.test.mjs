@@ -48,3 +48,15 @@ test("contract-109: the pantry's painted shelves (rows of things) are not one sh
   assert.deepEqual(run("cook:fetch@L2"), []);
   assert.ok(run("cook:corn@L2").length >= 1, "a game's shelf band is still one line");
 });
+
+import { readFileSync } from "node:fs";
+test("the Fable review of s19-clean-c (2, 3, 5), in js/cook/ui.js: a redo clears the pieces on each unit; a skewer keeps its counted kind card; piece rows fold into one row on a short panel", () => {
+  const ui = readFileSync(new URL("../../js/cook/ui.js", import.meta.url), "utf8");
+  const reopen = ui.slice(ui.indexOf("M.reopen = function"), ui.indexOf("M.missNext = function") > 0 ? ui.indexOf("/** The next open step went wrong") : undefined);
+  assert.match(reopen, /r\.units = r\.units\.map\(\(\) => false\)[\s\S]{0,400}if \(r\.unitGot\) r\.unitGot = \[\]/, "2: unitGot cleared with the units");
+  const pieces = ui.slice(ui.indexOf("const pieceOf = (r)"), ui.indexOf("SEK-03, SEK-13: each skewer's pieces"));
+  assert.ok(pieces.indexOf("cardOf(r, 0)") > 0 && pieces.indexOf("cardOf(r, 0)") < pieces.indexOf("const id = pieceOf(r)"), "5: the kind card (its count written) before the piece rows");
+  assert.match(ui, /if \(!mixes\.length \|\| \(r\.qty \|\| 1\) > 1\) items\.push/, "5: a mixed skewer of two keeps its kind card");
+  assert.match(ui, /const pieceRows = its\.filter\(\(it\) => it\.ordered\)\.every\(\(it\) => it\.fit\)/, "3: piece rows fold on a short panel");
+  assert.match(ui, /parts, ordered: true, done: unit, src: \[\], fit: true/, "3: a piece row is a fit row (whole across, never off the edge)");
+});
