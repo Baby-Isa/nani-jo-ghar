@@ -658,10 +658,12 @@ export class CookPlayer {
         await this.once("wrong-late", { settle: 0 });
         return;
       }
+      // (s19-clean-a2: a quarter into the green, not its middle: on a loaded machine the tap lands a beat after the gauge is read,
+      // and chai L3 at 740x320 boiled over at every try, 0.845 to 0.926 against the window's 0.84, until the page timed out)
       const t0 = Date.now();
       while (Date.now() - t0 < 30000) {
         const g = await this.gauge();
-        if (g && g.level >= (g.lo + g.hi) / 2) break;
+        if (g && g.level >= g.lo + (g.hi - g.lo) * 0.25) break;
         const cur = await this.exp();
         if (cur && cur.kind !== "timing") return;
         if (cur && (cur.x !== e.x || cur.y !== e.y)) return;

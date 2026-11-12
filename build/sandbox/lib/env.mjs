@@ -94,6 +94,24 @@ const SEED_SCRIPT = (seed) => `(() => { let a = ${seed >>> 0}; Math.random = fun
 
 const fontsCss = () => readFileSync(join(FONTS_DIR, "fonts.css"), "utf8").replaceAll("__FONTS__", `${BASE}/__fonts`);
 
+// No network beyond the local server (an http:// address): every https:// request is caught (the Google fonts' sheet answered with the
+// sandbox's own fonts, the rest refused). s19-clean-a2 (contract-104's blank cards, SH-175's slow load): through the Chrome
+// DevTools Fetch domain for https:// only, never Playwright's route(), which turns the browser's cache off for the whole context, so
+// every card drawn again fetched its pictures afresh through Node (a card blank for over a second on a loaded machine) and a page
+// loaded every file it had already loaded; the local server's media are cached as GitHub Pages caches them (max-age=600).
+async function offline(ctx, page) {
+  const cdp = await ctx.newCDPSession(page);
+  const css = Buffer.from(fontsCss()).toString("base64");
+  cdp.on("Fetch.requestPaused", (e) => {
+    const u = e.request.url;
+    const done = u.includes("fonts.googleapis.com")
+      ? cdp.send("Fetch.fulfillRequest", { requestId: e.requestId, responseCode: 200, responseHeaders: [{ name: "content-type", value: "text/css" }], body: css })
+      : cdp.send("Fetch.failRequest", { requestId: e.requestId, errorReason: "BlockedByClient" });
+    done.catch(() => {});
+  });
+  await cdp.send("Fetch.enable", { patterns: [{ urlPattern: "https://*", requestStage: "Request" }] });
+}
+
 // A fresh context + page: the size, no network beyond the local server, the real fonts from build/sandbox/fonts.
 export async function newPage(browser, sizeKey, { seed = 1, touch, dpr = 1 } = {}) {
   const size = SIZES[sizeKey];
@@ -101,12 +119,6 @@ export async function newPage(browser, sizeKey, { seed = 1, touch, dpr = 1 } = {
   // (NJG_VIDEO=<dir>: every page filmed, run.mjs files it as <run>/films/<flow>@<size>.webm: chai's frozen run, frozen.mjs)
   const video = process.env.NJG_VIDEO ? { recordVideo: { dir: process.env.NJG_VIDEO, size: { width: size.width, height: size.height } } } : {};
   const ctx = await browser.newContext({ viewport: { width: size.width, height: size.height }, deviceScaleFactor: dpr, serviceWorkers: "block", ...(useTouch ? { hasTouch: true, isMobile: true } : {}), ...video });
-  await ctx.route(/^https?:\/\//, (route) => {
-    const u = route.request().url();
-    if (u.startsWith(BASE)) return route.fallback();
-    if (u.includes("fonts.googleapis.com")) return route.fulfill({ status: 200, contentType: "text/css", body: fontsCss() });
-    return route.abort();
-  });
   // run.mjs --store: the packaged app's voice path (js/core/voice.js path(): only OK family clips, never a computer voice)
   if (process.env.NJG_STORE === "1") await ctx.addInitScript('window.NJG_BUILD = "store";');
   await ctx.addInitScript(SEED_SCRIPT(seed));
@@ -118,6 +130,7 @@ export async function newPage(browser, sizeKey, { seed = 1, touch, dpr = 1 } = {
   const sound = new SoundLog();
   await ctx.exposeFunction("__njgLog", (e) => { sound.push(e); if (sound.onEvent) try { sound.onEvent(e); } catch (x) { /* a shot that failed */ } });
   const page = await ctx.newPage();
+  await offline(ctx, page);
   if (useTouch) await installTouch(page, ctx);
   const errors = [];
   page.on("pageerror", (e) => { if (!/ResizeObserver loop/.test(String(e.message || e))) errors.push(`${new URL(page.url()).pathname}: ${e.message || e}`); }); // the ResizeObserver notice is the browser's, not a bug
