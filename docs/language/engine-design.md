@@ -321,7 +321,7 @@ Rule G12: the most frequent phrases are recorded whole so they sound human; the 
 
 Given tokens and the recordings:
 
-1. **Whole first.** Find recordings whose `meaning` matches a subtree exactly (same words, same forms, register and speaker gender). Prefer the longest, then the preferred speaker (`ctx.voice`). **Only clips Zafar marked `checked: "ok"` are used in production** (rule G16); unchecked clips are allowed only in a test build, and `redo` never plays. Note for the gap analysis: today's `js/shared/family-voice.js` (lines 47–60) ranks unchecked clips below OK ones but still returns them, which is the same leak.
+1. **Whole first.** Find recordings whose `meaning` matches a subtree exactly (same words, same forms, register and speaker gender). Prefer the longest, then the preferred speaker (`ctx.voice`). **Zafar, 12 Nov:** every clip is `approved: "game"` and plays in the game now; the store build needs every playable clip `approved: "final"` (re-recorded; `build/tools/ops/storeaudio.mjs`, `fill-the-engine.md` § 4), and `redo` never plays. Note for the gap analysis: today's `js/shared/family-voice.js` (lines 47–60) ranks unchecked clips below OK ones but still returns them, which is the same leak.
 2. **Then by text.** For the rest, match runs of tokens by normalised text (`FamilyVoice.norm`).
 3. **Then per word**, preferring a word cut from a sentence (it sounds natural in a sentence) over a citation form said alone.
 4. **Anything left is `missing`**: an audio gap, listed for recording.
