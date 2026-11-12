@@ -28,6 +28,8 @@
  *                                         happy when it's right, gently frowning when it's wrong
  *   Cook.Kit.chip(S, id, x, y, opts)      the shelf's `🔊 word` chip (speaker only when opts.word is false)
  *   Cook.Kit.speaker(g, x, y, s)          the flat speaker icon, drawn into a Graphics
+ *   Cook.Kit.shadow(S, obj, opts)         SH-268: the one soft shadow of a thing on the worktop (one light, upper left: down and to
+ *                                         the right), its own outline, round or square, following it
  *   Cook.Kit.worktop(S, {top, far, depth}) the worktop's wash; St.worktopWash() its colour; St.stoneBand(S, {top, base, far,
  *                                         depth}) the stone shelf band (at the foot of this file)
  *
@@ -549,6 +551,71 @@ const serveEnv = () => {
   Kit.worktop = (S, { top, far = 2000, depth = D.bg + 1, alpha = 0.18 } = {}) => S.track(S.add.rectangle(-far, -far, 1600 + 2 * far, top + far, St.worktopWash(), alpha).setOrigin(0).setDepth(depth));
   Kit.worktopWash = St.worktopWash;
   Kit.stoneBand = St.stoneBand;
+
+  /*
+   * SH-268 (Zafar, 12 Nov: "We decided to implement these shadows from a global upper left light source across all the game modes"):
+   * THE ONE SHADOW of a thing standing on the worktop, every game: one light from the upper left, so the soft shadow lies down and to
+   * the right (art-bible "Shadow rules"; the mock's trays and grill at about half its weight). The thing's own outline, blurred and a
+   * little see-through, so a round pan, a square tray, a long board or a plate each casts its own shape (made once per picture on a
+   * canvas: no tints, either renderer). It follows the thing (moved, scaled, turned, faded, hidden) and hides while the thing is in the
+   * air (fly() marks sh.lifted). Its reach grows with the thing: 2.5% of its smaller side across and 3.4% down by default (4-16 px),
+   * its blur about the same. A thing with no picture of its own (a container, a drawn shape) gets the stations' soft round contact
+   * shadow (S.contactShadow) under its box. A thing that already has one keeps it.
+   *   Cook.Kit.shadow(S, obj, {dx, dy, alpha, blur, k}) -> the shadow image (also obj.shadow)
+   */
+  Kit.shadow = (S, img, { dx, dy, alpha = 0.26, blur, k = 1 } = {}) => {
+    if (!img || !S || !S.add) return null;
+    if (img.shadow && img.shadow.active) return img.shadow;
+    let b = null;
+    try { b = img.getBounds(); } catch (e) { b = null; }
+    const side = b ? Math.max(1, Math.min(b.width, b.height)) : 200;
+    const clamp = (v) => Math.max(4, Math.min(16, v));
+    if (dx == null) dx = clamp(side * 0.025 * k);
+    if (dy == null) dy = clamp(side * 0.034 * k);
+    if (blur == null) blur = clamp(side * 0.03 * k);
+    const key = img.texture && img.texture.key;
+    if (!key || key === "__DEFAULT" || !S.textures || !S.textures.exists(key)) {
+      const sh = S.contactShadow ? S.contactShadow(img) : null;
+      if (sh) (sh.njgShadow = true), (img.shadow = sh);
+      return sh;
+    }
+    const kk = Math.max(0.01, Math.abs(img.scaleX) || 1);
+    const bl = Math.max(1, Math.round(blur / kk));
+    const sk = `${key}:shade:${bl}`;
+    const src = S.textures.get(key).getSourceImage();
+    const pad = bl * 3;
+    if (!S.textures.exists(sk)) {
+      const c = document.createElement("canvas");
+      c.width = src.width + 2 * pad;
+      c.height = src.height + 2 * pad;
+      const g = c.getContext("2d");
+      g.filter = `blur(${bl}px)`;
+      g.drawImage(src, pad, pad);
+      g.filter = "none";
+      g.globalCompositeOperation = "source-in";
+      // (the shade colour, a token: one shade for every shadow)
+      const TK = global.Tokens;
+      g.fillStyle = TK && TK.rgb ? `rgb(${TK.rgb("shade-rgb") || "60, 35, 20"})` : "rgb(60, 35, 20)";
+      g.fillRect(0, 0, c.width, c.height);
+      S.textures.addCanvas(sk, c);
+    }
+    const sh = S.track(S.add.image(img.x + dx, img.y + dy, sk));
+    sh.njgShadow = true;
+    sh.setOrigin((pad + img.originX * src.width) / (src.width + 2 * pad), (pad + img.originY * src.height) / (src.height + 2 * pad));
+    const follow = () => {
+      if (!img.active || !sh.active) return;
+      sh.setPosition(img.x + dx, img.y + dy).setScale(img.scaleX, img.scaleY).setRotation(img.rotation).setDepth(img.depth - 0.05);
+      sh.setVisible(img.visible && !sh.lifted).setAlpha(alpha * img.alpha);
+    };
+    follow();
+    S.events.on("update", follow);
+    img.once("destroy", () => {
+      S.events.off("update", follow);
+      if (sh.active) sh.destroy();
+    });
+    img.shadow = sh;
+    return sh;
+  };
 
   Cook.Kit = Kit;
 })(window);
