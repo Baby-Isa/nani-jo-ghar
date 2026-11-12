@@ -1,0 +1,58 @@
+{
+ "name": "s19-clean-b2: chai, eggs, baking, corn, chop, chaat and the pantry, round two: the review's findings and the breaks left",
+ "why": "the Fable review of the s19-clean-b merge (build/reports/s19-clean-b-review.md): a help removed in chai, CHAI-110 unreachable by play, a leak in the pantry; the fix list to zero before Zafar plays",
+ "cost": "about $25-35",
+ "port": 8911,
+ "read": [
+  "build/reports/s19-clean-b-review.md (twelve findings: yours are 1, 2's chai-tray part, 6, 7, 8, 9, 10, 11, 12; 3, 4, 5 and 2's cook.json line are s19-clean-a's)",
+  "build/reports/s19-clean-b.md (round one: what's left, by owner)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)"
+ ],
+ "owns": [
+  "js/cook/stations/chai-tray.js, eggs.js, baking.js, corn.js, chop.js and their data/stations/*.json",
+  "js/cook/mechanics/chop.js, assemble.js, fetch.js, boil.js and data/stations/chaat.json",
+  "build/reports/s19-clean-b2.md"
+ ],
+ "readOnly": [
+  "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js (s19-clean-a)",
+  "data/cook.json (s19-clean-a: your exact lines in your report)",
+  "js/cook/stations/daar.js, samosa.js, maani-line.js, mishkaki-grill.js and their mechanics, grill-kit.js (s19-clean-c)",
+  "build/sandbox/**, build/lint/**, build/tools/** (s19-clean-a)",
+  "assets/** (new art reaches you from the orchestrator, cut)"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch"
+ ],
+ "tasks": [
+  {
+   "do": "The review's findings in your files, most severe first: 1 (chai: a new player's first-time pour light gone at L1-L3, chai-tray.js:1780-1781 and :226: a help removed, put it back), 2 (CHAI-110 for a child who reaches L4 by playing: the full glass's second-tap light must not sit behind the first-time gate that closes after chai's first round; the first L4 round, however reached, is full then half: s19-clean-a applies the cook.json seats line), 6 (the pantry's pass-me won by reading the pill: the Kutchi leak test, non-negotiable 4: past support no pill gives the answer), 7, 8, 9 (baking: salt back in the recipe if it left without Zafar's word; three quarters' word moment), 10, 11, 12. Each with a test or a before and after frame.",
+   "accept": "each finding fixed or argued with evidence in the report"
+  },
+  {
+   "do": "Then the station-owned breaks left in round one's report for your seven games to zero except missing recordings and those whose owner is s19-clean-a (named with file:line). Chai L4 at 740x320 times out (the test player's knob misses the green): make the test player hit it or the page finish.",
+   "accept": "the contract run of your seven flows, L1-L4 at 740x320 and 1280x665 (s19-clean-b2-after): every end reached, 0 page errors, breaks before and after by check, each left named with its owner"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8911, flock /tmp/njg-browser-8911.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs (the disk is tight: about 9 GB free for four builders); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report (data/cook.json, js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js belong to the shared batch, s19-clean-a, running now).",
+   "accept": "build/reports/s19-clean-b2.md with a Proof section, under 800 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-b2 in /home/user/wt/s19-clean-b2 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "code",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "report": "s19-clean-b2",
+ "publish": false,
+ "rows": []
+}

@@ -1,0 +1,70 @@
+SESSION NAME / MODE:  s19-clean-b2: chai, eggs, baking, corn, chop, chaat and the pantry, round two: the review's findings and the breaks left
+MODEL AND EFFORT:     Opus, high effort (the Fable review of the s19-clean-b merge (build/reports/s19-clean-b-review.md): a help removed in chai, CHAI-110 unreachable by play, a leak in the pantry; the fix list to zero before Zafar plays)
+COST ESTIMATE:        about $25-35
+STOP:                 when the tasks are done. Commit every 30-40 minutes (builders never push: the orchestrator merges).
+BRANCH:               s19-clean-b2 in /home/user/wt/s19-clean-b2 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges. Never push to main.
+
+MODEL TABLE (defaults by kind of work): art: Fable high; design: Fable high; review: Fable high; code: Opus high; shared: Opus high; spec: Sonnet medium; driver: Sonnet medium; tools: Sonnet medium; docs: Sonnet medium; verdicts: Sonnet medium; report: Sonnet medium; text: Haiku low; counts: Haiku low; logs: Haiku low
+
+CONTEXT PACK: build/tools/ops/specs/s19-clean-b2.context.md (859 words: the last 15 decisions, the rules this task names and the checks it must pass; paste it after this brief)
+
+READ FIRST (in this order):
+  1. CLAUDE.md (all of it: the working agreement and non-negotiables)
+  2. docs/tools.md (the checks are the rules) and the context pack
+  3. docs/process/qa-checklist.md (definition of done)
+  4. the design doc(s) for this area:
+     build/reports/s19-clean-b-review.md (twelve findings: yours are 1, 2's chai-tray part, 6, 7, 8, 9, 10, 11, 12; 3, 4, 5 and 2's cook.json line are s19-clean-a's)
+     build/reports/s19-clean-b.md (round one: what's left, by owner)
+     docs/decisions/2026-11-10-overnight.md (the last sections)
+
+FILES THIS SESSION OWNS (edit only these):
+  - js/cook/stations/chai-tray.js, eggs.js, baking.js, corn.js, chop.js and their data/stations/*.json
+  - js/cook/mechanics/chop.js, assemble.js, fetch.js, boil.js and data/stations/chaat.json
+  - build/reports/s19-clean-b2.md
+READ-ONLY (never edit):
+  - js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js (s19-clean-a)
+  - data/cook.json (s19-clean-a: your exact lines in your report)
+  - js/cook/stations/daar.js, samosa.js, maani-line.js, mishkaki-grill.js and their mechanics, grill-kit.js (s19-clean-c)
+  - build/sandbox/**, build/lint/**, build/tools/** (s19-clean-a)
+  - assets/** (new art reaches you from the orchestrator, cut)
+  - js/shared/**, build/tools/** and every other session's files unless listed above
+SHARED PIECES NEEDED BUT MISSING: none
+
+DO NOT remove or replace any mechanic or mini-game Zafar hasn't commented on.
+LOAD ONLY WHAT'S ON SCREEN (decision 68): a mode or mini-game declares its own asset list and loads it only when chosen (prefetched during the greeting or request pop-up); never preload another game's art; images at drawn size. `node build/tools/review/loadcheck.mjs` must pass.
+NO helper sessions or background helpers (B3).
+A new or changed evidence spec must pass `node build/tools/review/evidence.mjs --lint-specs`, and its first red run must show the probe reached its state (the panel shows it) before any fix is judged on it.
+PERMISSIONS NEEDED UP FRONT: git push to the branch; Node, Python; the browser (Playwright, /opt/pw-browsers/chromium)
+
+TASKS (each with its acceptance criterion):
+  1. The review's findings in your files, most severe first: 1 (chai: a new player's first-time pour light gone at L1-L3, chai-tray.js:1780-1781 and :226: a help removed, put it back), 2 (CHAI-110 for a child who reaches L4 by playing: the full glass's second-tap light must not sit behind the first-time gate that closes after chai's first round; the first L4 round, however reached, is full then half: s19-clean-a applies the cook.json seats line), 6 (the pantry's pass-me won by reading the pill: the Kutchi leak test, non-negotiable 4: past support no pill gives the answer), 7, 8, 9 (baking: salt back in the recipe if it left without Zafar's word; three quarters' word moment), 10, 11, 12. Each with a test or a before and after frame.
+     Accept: each finding fixed or argued with evidence in the report
+  2. Then the station-owned breaks left in round one's report for your seven games to zero except missing recordings and those whose owner is s19-clean-a (named with file:line). Chai L4 at 740x320 times out (the test player's knob misses the green): make the test player hit it or the page finish.
+     Accept: the contract run of your seven flows, L1-L4 at 740x320 and 1280x665 (s19-clean-b2-after): every end reached, 0 page errors, breaks before and after by check, each left named with its owner
+  3. Standing: browser runs under your own lock (COOK_TEST_PORT=8911, flock /tmp/njg-browser-8911.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs (the disk is tight: about 9 GB free for four builders); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report (data/cook.json, js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js belong to the shared batch, s19-clean-a, running now).
+     Accept: build/reports/s19-clean-b2.md with a Proof section, under 800 words
+
+KEEP (what Zafar liked in chai, eggs, baking, corn, chop, chaat, fetch: never change it without his word; 8):
+  KEEP-01: Underline while a line is spoken; order card and pop-up are "the bar we want to set"
+  KEEP-11: Nana's voice; Nani and Nana talking; two-person chai; maani speed; the greeting hand gesture
+  KEEP-12: The card that shows then blanks words; chai highlighted at the start; calling out items as they go in · 26 Oct: the blanking keeps only with each row's speaker 
+  KEEP-15: Chai: the pan's boiling bubbles and the flames ("the tea animation with the bubbles")
+  KEEP-16: Liked, 17 Oct: daal chop ("so much better ... the knife ... really nice"); the stir speed indicator ("looks very good"); chai's replayed order on a pot tap ("ve
+  KEEP-18: Liked, 22 Oct: chai's water bouncing with its own glow ("I like that the water is bouncing", "has a bit of a glow"); the rectangle; "the onboarding is clear"; "
+  KEEP-19: Liked, 22 Oct: "it's becoming a lot clearer and easier to play and easier to understand ... a very positive strong step" (Sprint 11's direction)
+  KEEP-21: Liked, 1 Nov: "The half mechanism for level 4 kind of works well, actually. In terms of the pouring, it works quite well. It's quite clever"; "I had a quick loo
+
+REGRESSION ROWS TO RECHECK (1; * = open or reopened; the contract replay of your flows covers the rest):
+  the rows the tasks name (1): CHAI-110*
+
+PROOF (the one loop, S13: docs/architecture/evidence-loop.md "The one loop (S13)"; machine checks first, then pictures the script makes):
+  - You never shoot your own frames (no shoot scripts, no screenshots of your own, no runs pasted into the report); the evidence tool and the sandbox make every picture.
+  - While building: `node build/tools/review/checks.mjs` and the unit tests (node --test on the files you touched); at most about 15 minutes of browser checks at a time.
+  - The rows' BEFORE was played at launch (`node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s19-clean-b2.json`; the judge checked the probes see the problem). If a row has no before folder, say so in the report; never play one yourself after you changed code.
+  - AFTER the build, the same rows, probes and sizes: `COOK_TEST_PORT=8911 NJG_LOCK=/tmp/njg-browser-8911.lock node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s19-clean-b2.json`.
+  - BEFORE THE FINISH, your own flows at 740x320, 930x430, 1280x665 and 1920x1080 under your lock: `flock -w 3600 /tmp/njg-browser-8911.lock timeout 1800 node build/sandbox/run.mjs --contract --flow cook:chai-tray,cook:eggs,cook:baking,cook:corn,cook:chop,cook:chaat,cook:fetch --sizes 740x320,930x430,1280x665,1920x1080 --run-id s19-clean-b2-contract --no-sheets`. Every flow must reach its end with 0 contract breaks the report doesn't explain.
+  - The report (build/reports/s19-clean-b2.md) lists only the after folder (build/screenshots/brief/<brief>/), the contract run's last line and the checks' lines; the orchestrator sends the script-made before|after batch to the judge (`evidence.mjs --judge --brief build/tools/ops/specs/s19-clean-b2.json`).
+TESTS: your own browser lock (`flock -w 1800 /tmp/njg-browser-8911.lock timeout ...`: each builder runs its own browser, two at most on this machine; Zafar, 21 Oct), own COOK_TEST_PORT = 8911; batch proofs: fix several rows, then one --after run of the brief's rows and one contract replay.
+
+GIT: commit small and often, never force-push, messages end with the Co-Authored-By and Claude-Session lines.
+Before the report (tier 2, check-change; Zafar, 10 Nov: the checks run by themselves): COOK_TEST_PORT=8911 NJG_LOCK=/tmp/njg-browser-8911.lock node build/tools/tiers/check-change.mjs --brief build/tools/ops/specs/s19-clean-b2.json; it must pass; its result file goes in the report. FINISH: build/reports/s19-clean-b2.md (under 300 words: what changed, the proof, open rows), the QA checklist results, one line in docs/process/overnight-log.md (append only), commit the branch (never push). No bump_version, no push to main.

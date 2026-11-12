@@ -27668,5 +27668,28 @@
    "max": 8,
    "note": "sekelo's board, skewer, grill and trays all v4"
   }
+ ],
+ "CHAI-110": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 10,
+   "note": "chai's first L4 round: order 1 full (no light before the first tap; the glass lit after the half pour until the second tap), order 2 half"
+  }
  ]
 }
