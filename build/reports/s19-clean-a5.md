@@ -42,6 +42,6 @@ Already built, proven by the run (0 breaks over 88 pages): SH-238 (103), SH-241 
 - **Before → after, the 9 base pages:** 48 → 36 breaks. contract-72 4→0, 18 5→0, 114 6→2, 102 1→0, 73 1→0; 65 6→9 (chop's waves, under load).
 - **Four sizes, L1** (`build/screenshots/sandbox/s19-clean-a5-contract/`, the code before Mum's merge, with e's): 44 of 44 ends, 0 page errors, `CONTRACT FAILED: 112 breaks` (36 34, 106 12, 117 10, 114 9, 73 6). **contract-119 (SH-267) 0** (a4: 14), **contract-72 0**, contract-24 2 (eggs' bowl glows at 2.9 s: e's), contract-79 1 (chai, 18 ms early).
 - **Frames** (under build/screenshots/sandbox/): s19-clean-a5-after/cook-eggs/1280x665/01-start.png (CK-46), s19-clean-a5-title/cook-title/740x320/07-shop-grown-ups.png (CK-55), s19-clean-a5-after/cook-fetch-l3/1280x665/07-kind-tap.png (PAN-21).
-- `checks: 14 steps in 344 s`, every step ok on the final commit (unit 900 pass, 0 fail).
+- `checks: 14 steps in 344 s`, all ok on the final commit (unit 900 pass).
 
 QA: builder · checks ✅ · contract ❌ (owners named) · check-change not run · no Kutchi written
