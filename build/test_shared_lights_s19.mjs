@@ -178,7 +178,12 @@ test("coach: the stuck help, chai's method, any game: after the level's wait, th
   named = false;
   await sleep(650);
   assert.equal(!!lit[0].closed, false, "the help light stays through a tap");
-  assert.deepEqual(hints, ["helper"], "no second hint while it is up");
+  // (s19-clean-a2, the Fable review's finding 8, SH-261: stuck again, helped again: after the action and the wait her line comes again
+  // (her box names nothing now), the light kept, never a second box)
+  assert.deepEqual(hints, ["helper", "line"], "helped again after the action and the wait");
+  assert.equal(lit.length, 1, "the same light, never a second");
+  await sleep(500);
+  assert.equal(hints.length, 2, "and once, until the child does something again");
   h.close();
   assert.equal(lit[0].closed, true, "the step done: it goes");
   // waiting: false holds it (the game's own moves, the pop-up)
@@ -186,10 +191,10 @@ test("coach: the stuck help, chai's method, any game: after the level's wait, th
   const w = Cook.Coach.stuck({ hintMs: () => 100, waiting: () => waiting, onHint: (by) => hints.push(by) });
   last = Date.now();
   await sleep(400);
-  assert.equal(hints.length, 1);
+  assert.equal(hints.length, 2);
   waiting = true;
   await sleep(300);
-  assert.equal(hints.length, 2);
+  assert.equal(hints.length, 3);
   w.close();
   delete globalThis.NaniGuide;
 });
