@@ -142,6 +142,7 @@
     if (p.used.length) lines.push("used in " + h(p.used.map(nm).join(", ")));
     else if (p.s !== "retired") lines.push("not loaded by any page played");
     if (p.repBy) lines.push("replaced by " + h(p.repBy));
+    if (p.next) lines.push("<b>the new one is cut:</b> " + h(p.next) + " (to wire)");
     if (p.flaws.length) lines.push('<span class="red">flaw: ' + h(p.flaws.join(", ")) + "</span>");
     if (p.rl && p.rl.length) lines.push('<span class="red">its old file is still loaded (' + h(p.rl[0].games.map(nm).join(", ")) + ")</span>");
     var was = p.rep.length && first ? '<div class="was">was ' + p.rep.slice(0, 4).map(function (f) { return '<img loading="lazy" src="../' + h(f) + '" alt="" title="' + h(f) + '">'; }).join("") + (p.rep.length > 4 ? " +" + (p.rep.length - 4) : "") + "</div>" : "";

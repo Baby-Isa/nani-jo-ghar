@@ -58,7 +58,7 @@ export const hashOf = (path) => { try { return createHash("sha256").update(readF
 
 /* ---------------- ids ---------------- */
 // the state and variant words a file name may end with (the rest is the piece)
-const STATE_WORDS = ["raw", "part", "cooked", "over", "overdone", "done", "turned", "burnt", "grilled", "charred", "golden", "folded", "fried", "empty", "water", "full", "oil", "whole", "half-a", "half-b", "half", "top", "side",
+const STATE_WORDS = ["raw", "part", "cooked", "over", "overdone", "done", "turned", "burnt", "grilled", "charred", "baked", "golden", "folded", "fried", "empty", "water", "full", "oil", "whole", "half-a", "half-b", "half", "top", "side",
   "blink", "talk", "happy", "neutral", "impatient", "sad", "point", "point-front", "face", "wave", "think", "cheer", "day", "evening", "night", "open", "closed", "on", "off"];
 const STATE_RE = new RegExp(`-(${STATE_WORDS.sort((a, b) => b.length - a.length).join("|")}|\\d)$`);
 // version marks inside a name, taken off for the piece's name (kept in its version label)
@@ -280,6 +280,15 @@ export const MARKS = [
   { glob: "assets/cook/proto/corn/bg-table*", status: "needs-redo", row: "ART-60", note: "too small for 1920x1080" },
 ];
 const markOf = (p) => MARKS.find((m) => globRe(m.glob).test(p)) || null;
+// the old pieces a cut new piece is to replace once wired (the audit's "FIX IN CODE: no new art"): old id -> {next, row}. The board
+// shows "next: <id>"; Sprint 20's swap promotes the wiring, then the old piece's files go on the retired list
+export const NEXT = [
+  ["samosa.fill-peas", "samosa.vatana", "ART-79"], ["samosa.fill-onion", "samosa.dungri", "ART-79"], ["samosa.fill-dhania", "samosa.kothmir", "ART-79"],
+  ["samosa.potato-pile", "samosa.bataato", "ART-79"], ["samosa.jharo", "kit.slotted-spoon-cloth", "ART-79"], ["kit.tool-slotted-spoon", "kit.slotted-spoon-cloth", "ART-79"],
+  ["kit.tool-knife", "kit.knife", "SH-259"], ["daar.tool-ladle", "kit.ladle", "ART-79"], ["sekelo.skewer@unversioned", "sekelo.skewer", "ART-79"],
+  ["sekelo.mishkaki-meat", "sekelo.meat", "ART-79"], ["sekelo.mishkaki-tameto", "sekelo.tomato", "ART-79"], ["sekelo.mishkaki-dungri", "sekelo.onion", "ART-79"], ["sekelo.mishkaki-pepper", "sekelo.pepper", "ART-79"],
+  ["sekelo.potato-cube", "sekelo.potato", "ART-79"], ["kit.tool-board", "maani.board", "ART-62"], ["sekelo.tool-board", "maani.board", "ART-62"],
+];
 
 /* ---------------- load, save, index ---------------- */
 export function load(root = ROOT) {
@@ -398,6 +407,7 @@ export function seed({ root = ROOT, use, reg = load(root), pics = pictures(root)
     // loaded files that could not share the entry (another file of the same state is current): their own entries, by version
     for (const f of extra) { const pc = pieceOf(f.p, f.games); make({ ...pc, id: `${pc.id}@${slug(labelOf(f.p))}` }, { [f.state]: f.p }, [f], null); }
   }
+  for (const [from, to, row] of NEXT) if (reg.pieces[from] && reg.pieces[to] && !reg.pieces[from].next && added.includes(from)) reg.pieces[from].next = { id: to, row };
   // the retired list's replacements: a retired file's own piece points at what replaced it, when that file is registered
   const idx2 = fileIndex(reg);
   for (const r of retired) {
@@ -545,7 +555,7 @@ export function writeBoard({ root = ROOT, reg = load(root), use, moveOut }) {
     const usedBy = [...new Set(files.flatMap((f) => (per[f] ? per[f].games : [])))].sort();
     const pages = [...new Set(files.flatMap((f) => (per[f] ? per[f].loadedBy : [])))].sort();
     const retiredLoaded = (e.replaced || []).filter((r) => per[r.file] && per[r.file].games.length).map((r) => ({ file: r.file, games: per[r.file].games }));
-    pieces.push({ id, n: e.name, k: e.kind, g: e.game, s: e.status, v: e.version, rev: e.rev || 1, by: e.by || "", on: e.on || "", row: e.row || "", note: e.note || "", st: e.states, cand: e.candidate ? e.candidate.states : null, rep: (e.replaced || []).map((r) => r.file), repBy: e.replacedBy || "", src: e.source && e.source.run ? `${e.source.run} ${e.source.line || ""}`.trim() : "", srcDate: e.source && e.source.date || "", used: usedBy, pages: pages.length, rl: retiredLoaded, flaws: [] });
+    pieces.push({ id, n: e.name, k: e.kind, g: e.game, s: e.status, v: e.version, rev: e.rev || 1, by: e.by || "", on: e.on || "", row: e.row || "", note: e.note || "", st: e.states, cand: e.candidate ? e.candidate.states : null, rep: (e.replaced || []).map((r) => r.file), repBy: e.replacedBy || "", next: e.next ? e.next.id : "", src: e.source && e.source.run ? `${e.source.run} ${e.source.line || ""}`.trim() : "", srcDate: e.source && e.source.date || "", used: usedBy, pages: pages.length, rl: retiredLoaded, flaws: [] });
   }
   // the known flaws (artcheck-known.json: pink rims, pixel faults) on each piece
   const kp = join(root, "build/tools/art/artcheck-known.json");
