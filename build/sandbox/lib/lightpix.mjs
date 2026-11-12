@@ -57,6 +57,8 @@ export function lightPix(e, page, sound, { wait = 550 } = {}) {
   if (!e || e.type !== "c" || e.k !== "lit" || !e.holes || !e.holes.length) return;
   setTimeout(async () => {
     try {
+      // (a light zooming from its whole thing onto a part, Onboard.ZOOM: measured once it has settled, never half-way: data-zoom)
+      await page.waitForFunction(() => !document.querySelector(".njg-onboard[data-zoom]"), null, { timeout: 2500 }).catch(() => {});
       const HOLES = () => { const o = []; for (const l of document.querySelectorAll(".njg-onboard.on:not(.ob-empty)")) { try { for (const h of JSON.parse(l.dataset.holes || "[]")) o.push([Math.round(h.x), Math.round(h.y), Math.round(h.x + h.w), Math.round(h.y + h.h)]); } catch (x) { /* none */ } } return o; };
       const still = await page.evaluate(`(${HOLES})()`);
       // (the light has moved on, or is closing: a closed layer keeps its holes while it fades out for 300 ms, without "on"; measured

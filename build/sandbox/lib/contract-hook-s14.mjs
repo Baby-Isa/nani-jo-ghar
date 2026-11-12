@@ -38,7 +38,14 @@ function s14hook() {
   const over = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
 
   // ---- the faces: the page's own hook (njgTest.faces / .cook.faces / .clinic.faces), else Cook's heads and the face circles ----
+  // (SH-213: a face under the big card lesson's card, opaque in the middle of the play area, is not on screen: left out)
   const facesNow = () => {
+    const L = [...document.querySelectorAll(".wc14-lesson")].map((x) => x.getBoundingClientRect());
+    const under = (b) => L.some((r) => b[0] >= r.left - 2 && b[2] <= r.right + 2 && b[1] >= r.top - 2 && b[3] <= r.bottom + 2) || L.some((r) => { const i = Math.max(0, Math.min(b[2], r.right) - Math.max(b[0], r.left)) * Math.max(0, Math.min(b[3], r.bottom) - Math.max(b[1], r.top)); return i >= 0.6 * Math.max(1, (b[2] - b[0]) * (b[3] - b[1])); });
+    const all = facesAll();
+    return L.length ? all.filter((f) => !under(f.box)) : all;
+  };
+  const facesAll = () => {
     const T = window.njgTest;
     const h = T && (T.faces ? T : T.cook && T.cook.faces ? T.cook : T.clinic && T.clinic.faces ? T.clinic : null);
     if (h) return safe(() => h.faces().map((f) => ({ who: f.who, kind: f.kind, box: [f.left, f.top, f.right, f.bottom].map((v) => Math.round(v * 10) / 10) })), []);

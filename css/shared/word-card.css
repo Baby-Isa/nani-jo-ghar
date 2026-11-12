@@ -231,3 +231,7 @@ body.njg-s14 .cv-bubble .wp.wp-line .wp-say svg { flex: none; width: 66%; height
 .wc14.wc14-flash.on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 @media (prefers-reduced-motion: reduce) { .wc14.wc14-flash { transition: none; } }
 .wc14.wc14-flash.wc14-flash-fixed { position: fixed; z-index: 130; }
+
+/* SH-213 (Zafar, 12 Nov): the blurred-card lesson on the order's pop-up card where it stands (js/cook/ui.js blurLesson): the card takes
+   the lesson's taps under the kit's light (its dim and box, z 950, above it) */
+.wc14.wc14-lesson { pointer-events: auto; }

@@ -68,36 +68,28 @@ test("contract-97: a first box that covers little of the whole thing is a break;
   assert.equal(run(check97, [lit(100), { ...thing(150, CARD), thing: null }, lit(200, [57, 264, 97, 284]), lit(3000)]).length, 0);
 });
 
-// ---- 98 ----
-const reveal = (t, dots, eyes = 0) => ({ type: "c", k: "reveal", t, dots, eyes });
+// ---- 98 (SH-213, Zafar 12 Nov morning: the big card lesson on the order's pop-up; the in-game lesson retired) ----
+const reveal = (t, dots, eyes = 0, pop = 0) => ({ type: "c", k: "reveal", t, dots, eyes, pop });
 const station = life(1000, "stage-start", "cook:station", null);
 
-test("contract-98: a dotted word on the panel and its lesson shown passes", () => {
-  const tl = [station, reveal(2000, 2), life(3000, "reveal-lesson", "word", "shown nana:ok")];
+test("contract-98: a hidden card popped out during the order and the big card lesson shown passes; the panel's dots alone ask nothing", () => {
+  const tl = [reveal(500, 0, 0, 1), life(900, "reveal-lesson", "card", "shown order-popup cook-dudh picture,text,english"), station, reveal(2000, 2)];
   assert.equal(run(check98, R, tl).length, 0);
+  assert.equal(run(check98, R, [station, reveal(2000, 2, 1)]).length, 0, "nothing popped hidden (an order skipped): nothing due");
 });
 
-test("contract-98: a missing 'shown', or only none-in-view, is a break; a returning player has no first time", () => {
-  const none = run(check98, R, [station, reveal(2000, 2)]);
+test("contract-98: a hidden pop-up card with no big card lesson is a break; a returning player has no first time", () => {
+  const none = run(check98, R, [reveal(500, 0, 0, 1), station, reveal(2000, 2)]);
   assert.equal(none.length, 1);
-  assert.match(none[0].msg, /never logged/);
-  const lost = run(check98, R, [station, reveal(2000, 2), life(3000, "reveal-lesson", "word", "none-in-view nana:out@10,20")]);
-  assert.equal(lost.length, 1);
-  assert.match(lost[0].msg, /not shown \(none-in-view/);
-  assert.equal(run(check98, { flow: "cook:chai-tray@L3#returning" }, [station, reveal(2000, 2)]).length, 0);
-  assert.equal(run(check98, { flow: "cook:chai-tray@L3", profile: "seen" }, [station, reveal(2000, 2)]).length, 0);
-  // no dotted word on the panel: nothing was due
-  assert.equal(run(check98, R, [station, reveal(2000, 0)]).length, 0);
-  // before the station starts is the order's, not the lesson's
-  assert.equal(run(check98, R, [station, reveal(500, 2)]).length, 0);
+  assert.match(none[0].msg, /big card lesson never came/);
+  assert.equal(run(check98, { flow: "cook:chai-tray@L3#returning" }, [reveal(500, 0, 0, 1)]).length, 0);
+  assert.equal(run(check98, { flow: "cook:chai-tray@L3", profile: "seen" }, [reveal(500, 0, 0, 1)]).length, 0);
 });
 
-test("contract-98: the blurred picture's lesson is judged on its own", () => {
-  const ok = [station, reveal(2000, 2, 1), life(3000, "reveal-lesson", "word", "shown nana:ok"), life(6000, "reveal-lesson", "pic", "shown nana:ok")];
-  assert.equal(run(check98, R, ok).length, 0);
-  const miss = run(check98, R, [station, reveal(2000, 2, 1), life(3000, "reveal-lesson", "word", "shown nana:ok")]);
-  assert.equal(miss.length, 1);
-  assert.match(miss[0].msg, /blurred picture/);
+test("contract-98: the old in-game lesson on the side panel's card is retired: shown, it is a break", () => {
+  const old = run(check98, R, [station, reveal(2000, 2), life(3000, "reveal-lesson", "word", "shown nana:ok")]);
+  assert.equal(old.length, 1);
+  assert.match(old[0].msg, /retired/);
 });
 
 // ---- 99 ----

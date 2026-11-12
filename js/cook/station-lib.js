@@ -1157,13 +1157,32 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
    * wants next (for the guided glow and the test only; never shown
    * otherwise). Nothing is refused.
    */
+  /*
+   * SH-228 (Zafar, 8 Nov, chaat: "there's meant to be a hint that kicks in to tell me to press the next item that's not happened"): a free
+   * pick in a recipe whose settings ask for it (data/cook.json recipes.<id>.stuckHelp: chaat's layers) has chai's stuck help, the kit's
+   * (Cook.Coach.stuck): past the level's wait with nothing done, Nani's line again and the light on the next thing with its glow and hop
+   * (a thing on the shelf); a wrong pick brings it at once. A recipe whose order is the answer to a free pick (daar's tadka, STD-D2-05)
+   * leaves it off.
+   */
+  const recipeOf = (ctx) => {
+    const o = ctx && ctx.order;
+    const d = o && o.dishes ? o.dishes[ctx.dishAt || 0] : null;
+    return (d && d.recipe) || (ctx && ctx.recipe) || null;
+  };
+  S$.stuckHelp = (ctx) => {
+    const r = recipeOf(ctx);
+    return !!(r && (((Cook.data || {}).recipes || {})[r] || {}).stuckHelp);
+  };
   S$.freePick = (z, { items, next, doneOk, doneGlow, help = false }) =>
     new Promise((resolve) => {
       const S = z.S;
       let over = false;
+      let stuck = null;
       const finish = (r) => {
         if (over) return;
         over = true;
+        if (stuck) stuck.close();
+        stuck = null;
         Object.values(items).forEach((o) => {
           if (!o || !o.active) return;
           S.untap(o);
@@ -1183,6 +1202,35 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
           .filter((k) => k !== next && items[k] && items[k].active)
           .map((k) => S.centre(items[k]));
         z.expect({ kind: "tap", x: c.x, y: c.y, key: next, wrongs });
+        const C = Cook.Coach;
+        if (C && C.stuck && S$.stuckHelp(z.ctx || Cook.ctx)) {
+          const parts = C.parts ? [0, 1, 2, 3, 4, 5].map((i) => () => (target.active && target.visible ? C.parts(target)[i] || null : null)) : C.box(target, 6, { visible: true });
+          let glowing = false;
+          stuck = C.stuck({
+            key: z.id || "zone",
+            level: Cook.roundLevel ? Cook.roundLevel(z.ctx || Cook.ctx) : z.level,
+            target: parts,
+            current: () => !over && target.active,
+            // (the glow and its hop only while the kit's light is up round it, and gone with it: contract-102, -107)
+            glow: (on) => {
+              if (!on) {
+                if (glowing && target.active) S.glow(target, false);
+                glowing = false;
+                return;
+              }
+              setTimeout(() => {
+                const h = stuck && stuck.lit ? stuck.lit() : null;
+                if (over || glowing || !h || !h.done || !target.active) return;
+                glowing = true;
+                S.glow(target, true, { bounce: C.onShelf ? C.onShelf(target) : true, now: true });
+                h.done.then(() => {
+                  glowing = false;
+                  if (target.active) S.glow(target, false);
+                });
+              }, 0);
+            },
+          });
+        }
       } else z.expect({ kind: "wait" }); // (SH-238: a complete step moves on by itself, UI.done: no ✓ to press)
     });
 

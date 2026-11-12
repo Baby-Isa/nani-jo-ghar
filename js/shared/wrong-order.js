@@ -62,6 +62,10 @@ const LOOK = Object.freeze({
   lineW: 0.78, // a compact line's most width
   lineH: 0.34, // its most height
   lineK: 1.7, // its most growth
+  // SH-264 (Zafar, 12 Nov morning: the face and the sentence "a little bigger than the side panel's, so it's clear who ordered"): the
+  // open card's head (the asker's face and their order sentence, at its top) at least these times the side panel card's, as drawn
+  headFace: 1.3,
+  headText: 1.15,
 });
 
 let open = 0;
@@ -354,7 +358,12 @@ async function play(o = {}) {
         const card = doc.createElement("div");
         card.className = "njg-rq-card njg-wo-card njg-wo-open njg-wo-bad";
         card.dataset.who = c.who || "";
-        card.innerHTML = `<div class="njg-wo-who">${faceHtml(c.who, c.face, "big")}</div>`;
+        // SH-264 (Zafar, 12 Nov morning): no face on the left beside the item cards; the asker's face is the card's own, at the top
+        // beside their order sentence, and that face and sentence a little bigger than the side panel's (--wo-head below). A drawn card
+        // with no face of its own keeps the big one on the left, so a face is always there.
+        const ownFace = !!drawn.el.querySelector(".oc-head .oc-face");
+        card.innerHTML = ownFace ? "" : `<div class="njg-wo-who">${faceHtml(c.who, c.face, "big")}</div>`;
+        if (ownFace) card.classList.add("njg-wo-headface");
         const body = doc.createElement("div");
         body.className = "njg-rq-body njg-wo-body";
         body.appendChild(drawn.el);
@@ -368,20 +377,37 @@ async function play(o = {}) {
         // grows within the card until it is, and the card is fitted again
         // (the side panel card's face circle: its biggest face box, the circle round the picture, as the checks measure it)
         const fromFace = from ? Math.max(0, ...[...from.querySelectorAll(".njg-face, .oc-face")].map((f) => f.getBoundingClientRect().width)) : 0;
-        const want = fromFace * 1.8;
-        for (let k = 0, f = 2; want && k < 5; k++) {
-          const fe = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
-          const w = fe ? fe.getBoundingClientRect().width : 0;
-          if (!w || w >= want) break;
-          f = Math.min(6, f * (want / w) * 1.08);
-          card.style.setProperty("--wo-face", f.toFixed(2));
-          fit(card, true);
-        }
-        const scroll = floor(card, body, (drawn.rows || []).length, want);
+        const want = fromFace * (ownFace ? LOOK.headFace : 1.8);
+        if (ownFace) {
+          // (SH-264: the head, face and sentence together, grown until the face is LOOK.headFace times the side panel's and the sentence
+          // LOOK.headText times the panel's headline, as drawn, the card's own fit counted)
+          const fromHead = from ? from.querySelector(".oc-headline") : null;
+          const headPx = fromHead ? parseFloat(getComputedStyle(fromHead).fontSize) * (fromHead.currentCSSZoom || 1) : 0;
+          for (let k = 0, f = 1; k < 6; k++) {
+            const fe = card.querySelector(".oc-head .oc-face .njg-face, .oc-head .oc-face img, .oc-head .oc-face");
+            const hl = card.querySelector(".oc-head .oc-headline");
+            const w = fe ? fe.getBoundingClientRect().width : 0;
+            const px = hl ? parseFloat(getComputedStyle(hl).fontSize) * (hl.currentCSSZoom || 1) : 0;
+            const r = Math.max(want && w ? want / w : 0, headPx && px ? (headPx * LOOK.headText) / px : 0);
+            if (r <= 1.005) break;
+            f = Math.min(2, f * r * 1.04);
+            card.style.setProperty("--wo-head", f.toFixed(3));
+            fit(card, true);
+          }
+        } else
+          for (let k = 0, f = 2; want && k < 5; k++) {
+            const fe = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+            const w = fe ? fe.getBoundingClientRect().width : 0;
+            if (!w || w >= want) break;
+            f = Math.min(6, f * (want / w) * 1.08);
+            card.style.setProperty("--wo-face", f.toFixed(2));
+            fit(card, true);
+          }
+        const scroll = floor(card, body, (drawn.rows || []).length, ownFace ? 0 : want);
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
         await gate(move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open)));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
-        const faceEl = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img") || card.querySelector(".njg-wo-who");
+        const faceEl = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img") || card.querySelector(".njg-wo-who") || card.querySelector(".oc-head .oc-face .njg-face, .oc-head .oc-face");
         // (keep: a wrong row's line, never cut by a tap; any other line a tap stops once heard LOOK.minSay, the host's o.hush()
         // stopping the voice, so no two voices overlap)
         const said = async (fn, keep) => {

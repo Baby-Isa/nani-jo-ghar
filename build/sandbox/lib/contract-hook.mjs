@@ -704,6 +704,16 @@ const BASE_HOOK = `(() => {
   // contract-32 (SH-103): the end review's two halves: where the wrong (left) and right (right) words sit. Null unless the word review
   // is up with its two halves side by side (a taught round has one group; a portrait phone stacks them)
   const review = () => {
+    // SH-173 (Zafar, 30 Oct): a review with nothing wrong is one group in the middle: how far its words sit off the card's middle
+    const all = document.querySelector(".njg-results .rs-p2 .rs-words.allright");
+    if (all && shown(all)) {
+      const ws = [...all.querySelectorAll(".rs-word")].map((x) => x.getBoundingClientRect()).filter((r) => r.width > 0);
+      const card = all.closest(".rs-page") || all.closest(".rs-card") || all; // (the page the words stand on: the card also holds its buttons and edge)
+      const rc = card.getBoundingClientRect();
+      if (!ws.length) return null;
+      const l = Math.min(...ws.map((r) => r.left)), r = Math.max(...ws.map((r) => r.right));
+      return { allRight: true, bad: 0, ok: ws.length, halves: !!all.querySelector(".rs-words-bad"), off: Math.round((l + r) / 2 - (rc.left + rc.right) / 2), l: Math.round(l), r: Math.round(r) };
+    }
     const w = document.querySelector(".njg-results .rs-p2 .rs-words:not(.one)");
     if (!w || !shown(w)) return null;
     const b = w.querySelector(".rs-words-bad"), o = w.querySelector(".rs-words-ok");
@@ -945,7 +955,7 @@ const BASE_HOOK = `(() => {
       if (!ev.isTrusted) return;
       const t = ev.target;
       const btn = t && t.closest ? t.closest("button, " + BTN) : null;
-      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), play: !!(t && t.closest && t.closest(".njg-play, [data-njg-play], #stage, .cl-stage, .hs-root")), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage });
+      emit({ k: "input", x: Math.round(ev.clientX), y: Math.round(ev.clientY), on: desc(t), play: !!(t && t.closest && t.closest(".njg-play, [data-njg-play], #stage, .cl-stage, .hs-root")), next: !!(btn && isNextBtn(btn)), btn: btn ? desc(btn) : null, popup: inPopup(t) || popupEls().length > 0, side: !!(t && t.closest && t.closest("#side, .cl-side, .ng-side, #help-pop, .njg-results, #btn-help, #btn-bulb, .ng-bulb, #gu-btn")), exp: exp(), poses: poses(), stage, lesson: !!(t && t.closest && t.closest(".wc14-lesson")) });
     } catch (e) {}
     // the first-time help (js/shared/onboard.js) blocks a tap outside its light on capture (preventDefault): the game never gets it,
     // so no act is logged for it (contract-21 skips it). Read after the layers have run: a following {k: "input-blocked"}
@@ -1017,7 +1027,8 @@ function s17hook() {
   const EYE = "#mission .oc-row14 .wc14-hide-pic .wc14-eye";
   const reveal = () => {
     const n = (sel) => [...document.querySelectorAll(sel)].filter((x) => shown(x) && !x.closest(".oc-card.folded")).length;
-    const v = { dots: n(DOTS), eyes: n(EYE) };
+    // (SH-213: a card popped out during the order with something hidden, the big card lesson's cue)
+    const v = { dots: n(DOTS), eyes: n(EYE), pop: n(".wc14-pop.wc14-hide-pic, .wc14-pop.wc14-hide-en, .wc14-pop.wc14-hide-k") };
     if (!same("reveal", v)) emit({ k: "reveal", ...v });
   };
 

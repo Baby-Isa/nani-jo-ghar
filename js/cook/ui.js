@@ -2203,6 +2203,110 @@
       big.remove();
       return flight;
     };
+    /*
+     * SH-213 (Zafar, 12 Nov morning: "do it on the first pop up card that gets blurred during an order, when it first gets blurred. ensure
+     * it's only the pop up card that happens during the orders spoken sentence, e.g chai when the person orders chai. Use the same
+     * highlight onboarding box to bring attention to the right areas. Remove the onboarding from within the game mode for the blurred
+     * card"; Zafar, 12 Nov, on the row: the card does NOT come big and central, it stays where it appears, it is already big): the first
+     * time a card popped out as its item is said (the order's pop-up, never a part revealed mid-station) has anything hidden (its picture
+     * blurred, its English or Kutchi dotted), once the customer's sentence is said the lesson plays on that card where it stands: its
+     * picture, Kutchi and English hidden, the kit's light (the same dim and gold box as every first-time light) comes to it and settles on
+     * the picture; each tap shows one thing in turn, the picture, the Kutchi, the English, the light moving on to the next; then the light
+     * fades and the order goes on (milk, sugar ...). The pop-up stays up until it is done. Once per player (the kit's first-time gate,
+     * Cook.Coach.firsts("order"), key reveal-card). The game's own reveal lessons on the side panel are retired (js/cook/coach.js
+     * C.lessons). A tap during it is the lesson's, never the order's skip (the request's ignore); nothing is logged as a peek or help.
+     */
+    let lessonOn = false;
+    // (before: what must be over first, the line still being said when the card came with the headline: awaited only if it will run)
+    const blurLesson = async (pop, r, before = null) => {
+      if (only || !pop || !pop.isConnected || !live()) return;
+      if (!["wc14-hide-pic", "wc14-hide-en", "wc14-hide-k"].some((k) => pop.classList.contains(k))) return;
+      const Onb = global.Onboard;
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("order") : null;
+      if (!Onb || !Onb.light || !gate || !gate.due("reveal-card", true)) return;
+      if (before) await before();
+      if (!pop.isConnected || !live()) return;
+      gate.spend("reveal-card", true);
+      lessonOn = true;
+      const prevE = Cook.expect;
+      const c = pop;
+      const wasPE = c.style.pointerEvents;
+      const wasZ = c.style.zIndex;
+      c.classList.add("wc14-lesson");
+      // (above the order pop-up's see-through veil, which takes every other tap as the order's skip; under the kit's light, z 950)
+      c.style.pointerEvents = "auto";
+      c.style.zIndex = "900";
+      const img = c.querySelector(".wc14-pic img");
+      const hasPic = !!img;
+      const hasEn = !!((c.querySelector(".wc14-en") || {}).textContent || "").trim();
+      c.classList.toggle("wc14-hide-pic", hasPic);
+      c.classList.add("wc14-hide-k");
+      c.classList.toggle("wc14-hide-en", hasEn);
+      c.querySelectorAll(".wc14-pic, .wc14-k, .wc14-en").forEach((x) => x.classList.remove("revealed", "wc14-peek"));
+      c.querySelectorAll(".wc14-dots").forEach((x) => x.classList.remove("wc14-gone"));
+      if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
+      const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, , cls]) => c.classList.contains(cls));
+      let want = null;
+      // (the lesson's own taps: the card's peek buttons never take them, so nothing is logged as a peek or counted as help)
+      const onClick = (ev) => {
+        ev.stopPropagation();
+        ev.preventDefault();
+        if (want && want.el && want.el.contains(ev.target)) want.res(true);
+      };
+      c.addEventListener("click", onClick, true);
+      const here = () => token === Cook.run && c.isConnected;
+      const say = (step, by) => global.Lifecycle && global.Lifecycle.note && global.Lifecycle.note("reveal-lesson", { step, by });
+      // one light the whole lesson (the kit's dim and box, no glow or hop: a part of a card, SH-237), starting on the whole card and
+      // shrinking onto the picture (SH-213's first rule, contract-97), then moving to each part in turn
+      let cur = null;
+      let lit = null;
+      try {
+        await Cook.wait(200);
+        for (const [slot, sel, cls] of steps) {
+          if (!here()) break;
+          const el = c.querySelector(sel);
+          if (!el) continue;
+          cur = el;
+          if (!lit) {
+            lit = Onb.light(() => (cur && cur.isConnected ? cur : null), { look: "", pad: 6, kit: true, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
+            // (it lights a part of a card, as the reveal lessons' light did: its layer says so, js/shared/onboard.js Onboard.lesson)
+            if (lit && lit.layer && lit.layer.dataset) lit.layer.dataset.light = "part";
+            say("card", `shown order-popup ${c.dataset.word || ""} ${steps.map((x) => x[0]).join(",")}`);
+          }
+          Cook.expect = { kind: "click", selector: `.wc14-lesson ${sel}` };
+          await new Promise((res) => {
+            want = { el, res };
+            const q = setInterval(() => !here() && (clearInterval(q), res(false)), 200);
+            want.res = (v) => (clearInterval(q), res(v));
+          });
+          want = null;
+          if (!here()) break;
+          c.classList.remove(cls);
+          // (shown by the child's tap: marked as a tapped-open part is, contract-39)
+          const shownEl = c.querySelector(slot === "picture" ? ".wc14-pic" : slot === "text" ? ".wc14-k" : ".wc14-en");
+          if (shownEl) shownEl.classList.add("revealed");
+          if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
+          else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
+          if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
+          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or fades after the last)
+          const k2 = steps.findIndex((x) => x[0] === slot);
+          const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
+          if (nx) cur = nx;
+          else if (lit) (lit.close(), (lit = null));
+          await Cook.wait(nx ? 450 : 700);
+        }
+      } finally {
+        if (lit) lit.close();
+        c.removeEventListener("click", onClick, true);
+        if (c.isConnected) {
+          c.classList.remove("wc14-lesson");
+          c.style.pointerEvents = wasPE;
+          c.style.zIndex = wasZ;
+        }
+        Cook.expect = prevE;
+        lessonOn = false;
+      }
+    };
     // CK-60 (Zafar, 7 Nov: "skipping it should have stopped all sound"): the read's own voice generation (js/shared/request-popup.js
     // VoiceStop), taken as the read starts; a skip, a run left or any voice stop since ends the read, and no line is asked for after it
     const VS = global.Lifecycle && global.Lifecycle.voice;
@@ -2415,6 +2519,9 @@
               popRow(x);
               await Cook.wait(s14 ? hold14(x) : ORDER_T.popHold);
               if (skipped) break;
+              // (SH-213: a card the headline says for itself is a pop-up card of the spoken sentence too: its lesson once the line is said)
+              if (s14) await blurLesson(big14, x, () => saying);
+              if (skipped) break;
               await land(x, who, false);
               if (box) box.innerHTML = "";
             }
@@ -2422,6 +2529,8 @@
           if (item && live()) popRow(r);
           // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it)
           await Promise.all([saying || sayOk(sayPart(who, p.line)), item && s14 ? sayOk(Cook.wait(hold14(r))) : null]);
+          // (SH-213: the first card popped hidden, once its sentence is said: the big card lesson)
+          if (item && s14 && !skipped) await blurLesson(big14, r);
           if (item && !skipped) await land(r, who, false);
           if (box) box.innerHTML = "";
           if (!skipped) await Cook.wait(ORDER_T.partGap);
@@ -2443,6 +2552,8 @@
           // global.Rules.skips(target), through the pop-up's zones)
           // (a part revealed mid-station, opts.only, is not the order's start: its tap is the old reveal's, no skip zones or skip note)
           zones: s14 && !!global.Rules && typeof global.Rules.skips === "function" && !only,
+          // (SH-213: a tap while the big card lesson is up is the lesson's, never a skip)
+          ignore: () => lessonOn,
           // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
@@ -3005,6 +3116,8 @@
   // (Zafar, 5 Nov: "we need that bigger difference shown on item cards, and we also need non-milk tea versions as item cards for
   // non-milk tea orders": a person whose order says no milk has their half and full cards in plain tea; pack s17-art4,
   // build/tools/art/teacards.py)
+  // SH-267: the dish card's own picture where its shelf's is a jar (chai: the side-on glass, milk chai or black tea; Zafar, 12 Nov morning)
+  const DISH_PIC = { "cook-chai": { milk: "assets/shared/word-moment/card-full-chai-s17.webp", black: "assets/shared/word-moment/card-full-tea-s17.webp" } };
   const TEA_PIC = { "ph-half": "assets/shared/word-moment/card-half-tea-s17.webp", "ph-full": "assets/shared/word-moment/card-full-tea-s17.webp" };
   const noMilk = (r) => {
     if (!r || !mission || !mission.ladders) return false;
@@ -3038,6 +3151,8 @@
         rows = [];
       }
       rows.forEach((r) => {
+        // (SH-267: the dish card's own picture, the milk chai or the black tea glass, asked for with the order's cards)
+        if (r && r.head && DISH_PIC[wcWordId(r)]) [DISH_PIC[wcWordId(r)].milk, DISH_PIC[wcWordId(r)].black].forEach((u) => out.add(u));
         if (!r || r.head) return;
         const id = wcWordId(r);
         [rowCard(r), wcPicSrc(id), TEA_PIC[id], r.pic].forEach((u) => u && out.add(u));
@@ -3710,32 +3825,90 @@
     const dish = wcWordId(head);
     if (!dish || (head.rec && !(head.parts || []).length)) return null;
     const counted = (head.parts || []).some((p) => typeof p === "number");
-    const line = counted && head.phrase ? head.phrase : Lang.phrase(Lang.countParts(1, dish));
+    // (SH-267, Zafar 12 Nov morning: "kari chai" and "mori chai" named so on the card too: the head's own describing words with its
+    // dish, "hakri kari chai", never the bare dish)
+    const words = (head.parts || []).filter((p) => typeof p !== "number" && p !== "\u0000");
+    const named = words.length > 1 && words[words.length - 1] === dish ? words : null;
+    const one = Lang.countParts(1, "\u0000");
+    const line = counted && head.phrase ? head.phrase : Lang.phrase(named ? [].concat(...one.map((x) => (x === "\u0000" ? named : [x]))) : Lang.countParts(1, dish));
     const w = UI.wordOf(Object.assign({}, head, { line, phrase: line, head: true }), { size: 240, written: true, head: true });
     if (!stage || !w) return null;
+    // (SH-267, Zafar 12 Nov morning: "we should ensure we have the correct version of milk or no-milk tea on the image"): a dish with a
+    // served picture of its own shows it, never its shelf's jar (chai's tea tin): a glass of milk chai, or of black tea for a kari chai or
+    // an order that says no milk
+    const dp = DISH_PIC[dish];
+    if (dp && w.word) {
+      const ids = [].concat(head.ids || [], words);
+      const black = ids.includes("ph-kari") || noMilk(head);
+      w.word.picture = { src: Cook.v(black ? dp.black : dp.milk), fit: "contain" };
+      if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.picture = true;
+    }
     if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
     if (w.wordOpts) w.wordOpts.enShown = false;
-    // the card a little off to the side of the speaker's bubble (it waits a beat for the bubble to be drawn); the play area's middle
-    // when there is none
-    const hb = stage.getBoundingClientRect();
-    const bub = [...document.querySelectorAll("#bubble, .njg-bubble, .cl-bubble")].find((b) => b.getBoundingClientRect().width > 4);
-    const bb = bub ? bub.getBoundingClientRect() : null;
-    const room = Math.min(hb.width, hb.height) * 0.16;
-    let x = hb.width / 2;
-    let y = hb.height * 0.38;
-    if (bb) {
-      const right = bb.right - hb.left + room * 1.2;
-      x = right + room < hb.width ? right : bb.left - hb.left - room * 1.2;
-      y = bb.top - hb.top + bb.height / 2;
-    }
-    x = Math.max(room, Math.min(hb.width - room, x));
-    y = Math.max(room, Math.min(hb.height - room, y));
+    // the card a little off to the side of the speaker's bubble, clear of every face and bubble (SH-267's frames, 12 Nov: with no bubble
+    // drawn yet it sat in the play area's middle, over the customer's head and bubble). It waits a beat for the bubble to be drawn.
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(dish || "") });
-    const f = global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
+    const sp = Cook.speed || 1;
+    const handle = { el: null, closed: false, close() { handle.closed = true; if (handle.f) handle.f.close(); } };
+    const offEnd = global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => handle.close()) : null;
+    const boxes = () => {
+      const out = [];
+      const S = Cook.scene;
+      try {
+        Object.values((S && S.chars) || {}).forEach((img) => {
+          if (!img || !img.active || img.visible === false || !S.headBox) return;
+          const hb = S.headBox(img);
+          const a = UI.worldToScreen(hb.x, hb.y);
+          const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
+          out.push({ left: a.x - 6, top: a.y - 6, right: z.x + 6, bottom: z.y + 6 });
+        });
+      } catch (e) {
+        /* no scene */
+      }
+      document.querySelectorAll(".cv-bubble, #bubble:not(.hidden), .njg-bubble, .njg-face").forEach((b) => {
+        if (b.closest("#side, .wc14")) return;
+        const r = b.getBoundingClientRect();
+        if (r.width > 4 && r.height > 4) out.push({ left: r.left - 6, top: r.top - 6, right: r.right + 6, bottom: r.bottom + 6 });
+      });
+      return out;
+    };
+    const bubble = () => [...document.querySelectorAll(".cv-bubble, #bubble:not(.hidden), .njg-bubble, .cl-bubble")].find((b) => !b.closest("#side") && b.getBoundingClientRect().width > 4) || null;
+    const show = () => {
+      if (handle.closed || !stage.isConnected) return;
+      const hb = stage.getBoundingClientRect();
+      const f = global.WordCard.flash(host, w.word, { x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38, ms: 1500 / sp, opts: w.wordOpts, cls: "wc14-flash-fixed" });
+      handle.f = f;
+      handle.el = f && f.el;
+      if (!f || !f.el) return;
+      // (its own size, measured once drawn; then the first place clear of every face and bubble: right of the bubble, left of it, the
+      // play area's top corners, its middle last)
+      const cw = f.el.offsetWidth || 120;
+      const ch = f.el.offsetHeight || 160;
+      const bb = bubble() ? bubble().getBoundingClientRect() : null;
+      const pad = 10;
+      const cands = [];
+      if (bb) {
+        cands.push({ x: bb.right + pad + cw / 2, y: bb.top + bb.height / 2 });
+        cands.push({ x: bb.left - pad - cw / 2, y: bb.top + bb.height / 2 });
+      }
+      cands.push({ x: hb.left + pad + cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.right - pad - cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38 });
+      const avoid = boxes();
+      const inside = (c) => c.x - cw / 2 >= hb.left + 2 && c.x + cw / 2 <= hb.right - 2 && c.y - ch / 2 >= hb.top + 2 && c.y + ch / 2 <= hb.bottom - 2;
+      const hits = (c) => avoid.reduce((n, r) => n + Math.max(0, Math.min(c.x + cw / 2, r.right) - Math.max(c.x - cw / 2, r.left)) * Math.max(0, Math.min(c.y + ch / 2, r.bottom) - Math.max(c.y - ch / 2, r.top)), 0);
+      const fits = cands.map((c) => ({ x: Math.max(hb.left + cw / 2 + 2, Math.min(hb.right - cw / 2 - 2, c.x)), y: Math.max(hb.top + ch / 2 + 2, Math.min(hb.bottom - ch / 2 - 2, c.y)) })).filter(inside);
+      const pick = fits.find((c) => hits(c) === 0) || fits.slice().sort((a, b2) => hits(a) - hits(b2))[0];
+      if (pick) Object.assign(f.el.style, { left: `${Math.round(pick.x)}px`, top: `${Math.round(pick.y)}px` });
+    };
     // (on the page's layer: the stage's end takes it away at once, never over whatever comes next)
-    const off = f && global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => f.close()) : null;
-    if (off && f.el) setTimeout(() => off(), 2000 / (Cook.speed || 1));
-    return f;
+    const t0 = Date.now();
+    const wait = () => {
+      if (handle.closed) return;
+      if (bubble() || Date.now() - t0 > 400 / sp) return show();
+      setTimeout(wait, 40);
+    };
+    wait();
+    if (offEnd) setTimeout(() => offEnd(), 2400 / sp);
+    return handle;
   };
   UI.personSpeaking = () => personTalks > 0;
   UI.hearPerson = async function (who, o = {}) {

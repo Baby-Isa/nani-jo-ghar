@@ -49,6 +49,15 @@ test("red: off the middle, an item past the screen, a small face, no cross", () 
   assert.match(run(R, nocross).map((b) => b.msg).join("|"), /no item marked red with a cross/);
 });
 
+test("SH-264 (Zafar, 12 Nov morning): a face on the left beside the card's own at the top, or the sentence no bigger than the side panel's, is a break", () => {
+  const left = [open(5100, { leftFace: true }), open(5900, { leftFace: true, marked: 2, crossed: true }), c(6500, "s19wo", { card: null })];
+  assert.match(run(R, left).map((b) => b.msg).join("|"), /face on the left/);
+  const small = [open(5100, { headPx: 20, sideHeadPx: 20 }), open(5900, { headPx: 20, sideHeadPx: 20, marked: 2, crossed: true }), c(6500, "s19wo", { card: null })];
+  assert.match(run(R, small).map((b) => b.msg).join("|"), /order sentence in the pop-up is 20 px/);
+  const ok = [open(5100, { headPx: 24, sideHeadPx: 20, faceW: 60 }), open(5900, { headPx: 24, sideHeadPx: 20, faceW: 60, marked: 2, crossed: true }), c(6500, "s19wo", { card: null })];
+  assert.equal(run(R, ok).filter((b) => /face|sentence/.test(b.msg)).length, 0);
+});
+
 test("the redo: only the wrong order's card, the one worked on first, no face of an order made right; the game's leave", () => {
   const keep = JSON.stringify({ keep: ["ma"], first: "ma" });
   const ok = [life(8000, "wo-leave", { step: "game", by: "2" }), life(8000, "wo-redo", { by: keep }), c(9000, "s19wo", { vw: VW, vh: VH, card: null, panel: ["ma"], faces: ["ma"] })];

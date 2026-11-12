@@ -10,7 +10,9 @@
 export const WO_MIDDLE = 0.15;   // the open card's middle within this share of the pop-up's width and height of the pop-up's middle
 export const WO_HOLD_MS = 300;   // a sample held this long is on screen
 export const WO_EDGE_PX = 1;     // a card or an item may poke past the screen by this much (rounding)
-export const WO_FACE_K = 1.5;    // the asker's face in the pop-up at least this many times the side panel's face circle
+export const WO_FACE_K = 1.25;   // the asker's face in the pop-up at least this many times the side panel's face circle (SH-264, Zafar 12 Nov
+                                 // morning: "a little bigger than the side panel's", at the top beside the sentence: the pop-up aims at 1.3)
+export const WO_HEAD_K = 1.1;    // the order sentence beside it at least this many times the side panel's headline (the pop-up aims at 1.15)
 export const WO_POP_MS = 15000;  // a wrong order served: the pop-up comes within this long of the serve's review (test speed 3)
 export const WO_LINE_MS = 150;   // a right order's line in the middle, ticked, held this long (its glow, 620 ms at speed 1, is about 210 ms at the test speed)
 export const WO_TEXT_PX = 14;    // the open card's smallest word as drawn at least this (css/shared/order-card.css: nothing under 14 px)
@@ -30,7 +32,7 @@ function held(list, i, tEnd) { const n = list[i + 1]; return (n ? n.t : tEnd) - 
 
 export const WO_CHECKS = {
   "contract-119": { item: "dish-flash", title: "the dish's card flashes up as the customer says it, at level 1 only", how: `Cook flows. At level 1, each line a customer starts saying the dish with ("Muke ... khape", the sound log) must bring the dish's card (.wc14-flash, js/shared/word-card.js WordCard.flash through js/cook/ui.js UI.dishFlash) on screen within ${FLASH_WITHIN_MS} ms, held at least ${FLASH_HOLD_MS} ms (its 1.5 s at the test speed); none is a break, once per page. From level 2 any such card on screen is a break: it would give the order away (SH-267, Zafar 12 Nov: "Yes ... only at level 1").` },
-  "contract-118": { item: "wrong-order", title: "a wrong order: its card in the middle, only the wrong order redone", how: `Cook flows. A wrong order served (the serve-wrong driver's look-alike put in and kept: a Lifecycle probe-wrong note) must bring the wrong-order pop-up (js/shared/wrong-order.js) within ${WO_POP_MS / 1000} s: its card in the middle; none is a break. Every s19wo sample (lib/contract-wo.mjs WO_HOOK: the pop-up's card, its items, the asker's face, the side panel's people cards in order, the people's faces on the play area) held ${WO_HOLD_MS} ms with the wrong card open: its middle within ${WO_MIDDLE * 100}% of the pop-up's middle, the card and every item inside the screen (${WO_EDGE_PX} px), the asker's face at least ${WO_FACE_K} times the side panel's face circle; its smallest word at least ${WO_TEXT_PX} px as drawn (s19-clean-a3: the card's floor; a card past it lays its rows in two columns, takes the whole screen, then scrolls its rows, judged by its own box); before it closes an item marked wrong with its cross (.njg-wo-bad and .njg-wo-mark.bad). Every order it names right (a wo-card note, ok, phase line) is seen as its single line in the middle, ticked, held ${WO_LINE_MS} ms before it floats away (s19-clean-a2). After the redo starts (the wo-redo note: the people kept and the one being worked on), the first sample ${WO_GLIDE_MS} ms on: the side panel's people cards only the kept ones, the one being worked on first, and no face of a person served right on the play area; a redo with orders made right whose game gives the shared round no leave (wo-leave none: their glasses or dishes stay) is a break too. Once per kind per page (SH-264, SH-265, SH-266, Zafar 11 Nov evening, his child play-test: "the order card for the incorrect one probably needs to come up in the middle of the screen ... All the items should be visible in one view ... it should be red, and there should be a little cross instead of a tick"; "they don't put the one you're working on at the top"; "The correct ones disappear ... and you're just left with the person that got it wrong").` },
+  "contract-118": { item: "wrong-order", title: "a wrong order: its card in the middle, only the wrong order redone", how: `Cook flows. A wrong order served (the serve-wrong driver's look-alike put in and kept: a Lifecycle probe-wrong note) must bring the wrong-order pop-up (js/shared/wrong-order.js) within ${WO_POP_MS / 1000} s: its card in the middle; none is a break. Every s19wo sample (lib/contract-wo.mjs WO_HOOK: the pop-up's card, its items, the asker's face, the side panel's people cards in order, the people's faces on the play area) held ${WO_HOLD_MS} ms with the wrong card open: its middle within ${WO_MIDDLE * 100}% of the pop-up's middle, the card and every item inside the screen (${WO_EDGE_PX} px), the asker's face at least ${WO_FACE_K} times the side panel's face circle, at the card's top beside the order sentence, with no second face on the left (SH-264, Zafar 12 Nov morning), and the sentence at least ${WO_HEAD_K} times the side panel's headline; its smallest word at least ${WO_TEXT_PX} px as drawn (s19-clean-a3: the card's floor; a card past it lays its rows in two columns, takes the whole screen, then scrolls its rows, judged by its own box); before it closes an item marked wrong with its cross (.njg-wo-bad and .njg-wo-mark.bad). Every order it names right (a wo-card note, ok, phase line) is seen as its single line in the middle, ticked, held ${WO_LINE_MS} ms before it floats away (s19-clean-a2). After the redo starts (the wo-redo note: the people kept and the one being worked on), the first sample ${WO_GLIDE_MS} ms on: the side panel's people cards only the kept ones, the one being worked on first, and no face of a person served right on the play area; a redo with orders made right whose game gives the shared round no leave (wo-leave none: their glasses or dishes stay) is a break too. Once per kind per page (SH-264, SH-265, SH-266, Zafar 11 Nov evening, his child play-test: "the order card for the incorrect one probably needs to come up in the middle of the screen ... All the items should be visible in one view ... it should be red, and there should be a little cross instead of a tick"; "they don't put the one you're working on at the top"; "The correct ones disappear ... and you're just left with the person that got it wrong").` },
 };
 
 export function check118(r, tl, add) {
@@ -63,6 +65,8 @@ export function check118(r, tl, add) {
     if (!inView(c) || outItems.length) out("view", e.t, `${e.card.who}'s wrong order card ${fmt(c)}: ${outItems.length ? `${outItems.length} item(s) out of view (${outItems.map(fmt).join(" ")})` : "past the screen's edge"} at ${e.vw}x${e.vh}: every item in one view`);
     if (e.card.faceW != null && e.sideFaceW && e.card.faceW < e.sideFaceW * WO_FACE_K) out("face", e.t, `${e.card.who}'s face in the pop-up is ${Math.round(e.card.faceW)} px, under ${WO_FACE_K} times the side panel's ${Math.round(e.sideFaceW)} px: the asker's face big`);
     if (e.card.minPx != null && e.card.minPx < WO_TEXT_PX - 0.5) out("words", e.t, `${e.card.who}'s wrong order card's smallest word is ${e.card.minPx} px at ${e.vw}x${e.vh}: never under the card's ${WO_TEXT_PX} px floor (two columns, the whole screen, or its rows scrolling first)`);
+    if (e.card.leftFace) out("face", e.t, `${e.card.who}'s wrong order card has a face on the left beside its item cards as well as its own at the top: only the asker's face at the top, beside the order sentence (SH-264, Zafar 12 Nov morning)`);
+    if (e.card.headPx != null && e.card.sideHeadPx && e.card.headPx < e.card.sideHeadPx * WO_HEAD_K) out("face", e.t, `${e.card.who}'s order sentence in the pop-up is ${e.card.headPx} px, under ${WO_HEAD_K} times the side panel's ${e.card.sideHeadPx} px: a little bigger, so it's clear who ordered (SH-264)`);
     if (e.card.faceW == null) out("face", e.t, `${e.card.who}'s wrong order card shows no face: the asker's face big, so the child knows who it is`);
   }
   // 5. (s19-clean-a2, the orchestrator's lab frames: "the right orders must each come to the middle in turn ... re-ticked with a ding,
@@ -204,7 +208,14 @@ function wohook() {
         const el = veil.querySelector(".njg-wo-open") || veil.querySelector(".njg-wo-line");
         if (el && shown(el)) {
           const rows = [...el.querySelectorAll(".oc-row")].filter(shown);
-          const face = el.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+          // (SH-264, Zafar 12 Nov morning: the asker's face is the open card's own, at its top beside the order sentence; a face on the
+          // left, .njg-wo-who, beside a card that has its own is a break)
+          const own = el.querySelector(".oc-head .oc-face .njg-face, .oc-head .oc-face img");
+          const left = el.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+          const face = own && shown(own) ? own : left;
+          const hl = el.querySelector(".oc-head .oc-headline");
+          const sideHl = [...document.querySelectorAll("#mission .oc-card .oc-headline")].find(shown);
+          const px = (x) => (x ? Math.round(parseFloat(getComputedStyle(x).fontSize) * (x.currentCSSZoom || 1) * 10) / 10 : null);
           card = {
             who: el.dataset.who || "?", phase: el.classList.contains("njg-wo-going") ? "back" : el.classList.contains("njg-wo-open") ? "open" : "line", box: R(el.getBoundingClientRect()),
             items: rows.map((x) => R(x.getBoundingClientRect())), rows: rows.length,
@@ -212,6 +223,9 @@ function wohook() {
             ticked: el.classList.contains("njg-wo-line") ? !!el.querySelector(".njg-wo-mark.ok") || el.classList.contains("njg-wo-bad") : undefined,
             crossed: rows.some((x) => x.classList.contains("njg-wo-bad") && x.querySelector(".njg-wo-mark.bad") && shown(x.querySelector(".njg-wo-mark.bad"))),
             faceW: face && shown(face) ? face.getBoundingClientRect().width : null,
+            leftFace: !!(own && left && shown(left)),
+            headPx: hl && shown(hl) ? px(hl) : null,
+            sideHeadPx: sideHl ? px(sideHl) : null,
           };
           // (s19-clean-a3, the a2 review's finding 4: the open card's smallest word as drawn, its zoom counted; and whether its rows
           // scroll, the floor's last step: a row scrolled out of the card's box is not "out of view")

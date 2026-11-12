@@ -212,6 +212,8 @@ export function check105(r, tl, add) {
       const t = { ...box(th.box) };
       const id = th.id || th.kind;
       if (seen.has(id)) return;
+      // (SH-213: the big card lesson's one light, starting on its card and moving over its parts: contract-97 and -112 judge it)
+      if (/^lesson:/.test(String(id))) return;
       const hm = mid(h), tm = mid(t);
       const near = (side) => (e.near || []).some((o0) => { const o = box(o0); if (side === "l") return o.r <= t.l + 1 && o.r >= h.l - 6 && Math.min(o.b, h.b) > Math.max(o.t, h.t); if (side === "r") return o.l >= t.r - 1 && o.l <= h.r + 6 && Math.min(o.b, h.b) > Math.max(o.t, h.t); if (side === "t") return o.b <= t.t + 1 && o.b >= h.t - 6 && Math.min(o.r, h.r) > Math.max(o.l, h.l); return o.t >= t.b - 1 && o.t <= h.b + 6 && Math.min(o.r, h.r) > Math.max(o.l, h.l); });
       const edge = { l: h.l <= 1, r: h.r >= W - 1, t: h.t <= 1, b: h.b >= H - 1 };
@@ -756,6 +758,11 @@ function s19hook() {
       // a light in the page: the item card or order card under its middle that the box fits best (an item card, else its person's card)
       for (const el of document.elementsFromPoint(cx, cy)) {
         if (el.closest(".njg-onboard")) continue;
+        // (SH-213: the big card lesson lights one part of its card at a time, the picture, the Kutchi, the English: that part is its thing)
+        const lc = el.closest(".wc14-lesson");
+        if (lc) { const cb = R(lc.getBoundingClientRect()); if ((h[2] - h[0]) * (h[3] - h[1]) >= 0.7 * ar0(cb)) return { kind: "card", id: "lesson:card", box: rnd(cb) }; }
+        const ls = lc && (el.closest(".wc14-pic, .wc14-slot") || null);
+        if (ls) return { kind: "card", id: "lesson:" + (ls.dataset.slot || (ls.classList.contains("wc14-slot-k") ? "kutchi" : ls.classList.contains("wc14-slot-e") ? "english" : "part")), box: rnd(R(ls.getBoundingClientRect())) };
         const cands = [el.closest(".wc14"), el.closest(".oc-card")].filter(Boolean);
         if (!cands.length) break;
         const iou = (b) => { const i = Math.max(0, Math.min(h[2], b[2]) - Math.max(h[0], b[0])) * Math.max(0, Math.min(h[3], b[3]) - Math.max(h[1], b[1])); return i / ((h[2] - h[0]) * (h[3] - h[1]) + (b[2] - b[0]) * (b[3] - b[1]) - i); };
