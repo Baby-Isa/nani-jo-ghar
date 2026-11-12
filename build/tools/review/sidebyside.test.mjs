@@ -121,3 +121,20 @@ test("SH-251: --reach names each page's moments not reached (a key with no pictu
   assert.deepEqual(r.map((x) => [x.page, x.missing]), [["cook-chop-speed1@740x320", ["mid", "serve"]], ["cook-eggs-speed1@740x320", []]]);
   assert.equal(reach(join(run, "none")), null);
 });
+
+import { KeyFrames } from "../../sandbox/lib/keyframes.mjs";
+test("SH-251: a game with no order-card-in-sidebar state (chop) keeps the frame as its station starts for the order", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "kf-order-"));
+  const buf = [{ t: 1000, jpg: Buffer.from("a") }, { t: 2000, jpg: Buffer.from("b") }];
+  const fb = { buf, subscribe() {}, onTick() {}, before: (t) => buf.filter((f) => f.t <= t).pop() || null };
+  const page = { evaluate: async () => null };
+  const k = new KeyFrames(page, { dir, flow: "cook:chop", size: "740x320", fb });
+  k.onEvent({ type: "c", k: "stage", key: "cook:station1:marble", t: 2100 });
+  await k.chain;
+  assert.equal(k.keys.order && k.keys.order.t, 2000, "the frame before the station's start");
+  const k2 = new KeyFrames(page, { dir: mkdtempSync(join(tmpdir(), "kf-order2-")), flow: "cook:eggs", size: "740x320", fb });
+  k2.keys.order = { file: "key-order.jpg", t: 1000 };
+  k2.onEvent({ type: "c", k: "stage", key: "cook:station1:marble", t: 2100 });
+  await k2.chain;
+  assert.equal(k2.keys.order.t, 1000, "an order frame already kept stays");
+});
