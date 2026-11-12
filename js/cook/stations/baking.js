@@ -556,7 +556,9 @@ import { setTimeout } from "../life.js";
         S.tappable(img, tap);
         reachWhole(img);
         expectTap(img, s.id);
-        control(img, "tip", () => open);
+        // (s19-clean-e2, contract-36: the tip is a step of its own, the lifted jar lit; Nani calls it with its light, Mum's recorded
+        // "Wiji chad!" (lines.guide-add, put it in), the engine's line: the amount was said as the order as the jar was asked for)
+        control(img, "tip", () => open, () => say(line("guide-add", "call")));
       });
       open = false;
       unlight();

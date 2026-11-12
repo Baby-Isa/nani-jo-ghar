@@ -498,7 +498,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         let i = phase.bag.findIndex((id) => {
           const s = slots.find((x) => x.id === id);
-          return s && !s.hop && !s.refill && s.img && s.img.active && clear(s);
+          return s && !s.hop && !s.refill && !(s.rest > 0) && s.img && s.img.active && clear(s);
         });
         // (DAAR-35, P55: "the items should just come continuously": a slot still filling after a cut fills now and hops, rather
         // than hold the next hop back)
@@ -542,6 +542,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const a = ch.alpha + ((home ? 1 : 0) - ch.alpha) * Math.min(1, dt * 12);
             ch.setAlpha(Math.abs(a - (home ? 1 : 0)) < 0.02 ? (home ? 1 : 0) : a);
           }
+          if (s.rest > 0) s.rest = Math.max(0, s.rest - dt);
           if (s.refill > 0) {
             s.refill -= dt;
             if (s.refill <= 0) {
@@ -585,6 +586,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             img.setPosition(z.X(s.x), foot0).setScale(h.s0).setAngle(0).setDepth(D.item + 1);
             s.hop = null;
             S.tweens.add({ targets: img, scaleY: h.s0 * 0.92, duration: 80, yoyo: true });
+            // (s19-clean-e2, CK-79's chop phase, contract-114: it settles in its slot, its squash played out, before it can go up again;
+            // a hop straight off the landing jumped from the squash to the hop's size between two frames)
+            s.rest = HK.settle != null ? HK.settle : 0.2;
             return;
           }
           img.setPosition(z.X(s.x + ((s.px != null ? s.px : s.x) - s.x) * up), foot).setScale(sc);
