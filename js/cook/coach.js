@@ -685,8 +685,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (G) G.idleHelp = false;
         }
       }
-      if (target && Onboard && Onboard.light) {
-        unlight();
+      // (the light stays up from the first hint, SH-261: a hint that comes again keeps it, never a second box)
+      if (target && Onboard && Onboard.light && !lit) {
         lit = Onboard.light(target, { look: "glow", pass: true, live: [target], quitIf: () => !cur(), note: o.note != null ? String(o.note) : `${o.key || "kit"}:s14-stuck` });
       }
       if (o.glow) o.glow(true);
@@ -700,7 +700,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // CHAI-32, SH-60): an action since the hint leaves its light up; it goes when the step is done (o.current() false: h.close)
       const due = Onboard && Onboard.hintDue ? Onboard.hintDue(opened, la, wait(), rushed) : Math.max(opened, la) + wait();
       const waiting = !o.waiting || o.waiting();
-      if (!helpedAt && waiting && !(o.busy && o.busy()) && Date.now() >= due) hint();
+      // (the Fable review's finding 8, SH-261: stuck again, helped again. After the hint, an action and the wait (or a wrong move, at
+      // once) bring Nani's card or line again; the light was never taken down. A child who does nothing is helped once, not looped)
+      const again = !helpedAt || la > helpedAt || rushed;
+      if (again && waiting && !(o.busy && o.busy()) && Date.now() >= due) hint();
       timer = setTimeout(tick, 200);
     };
     h.rush = () => (rushed = true);
@@ -955,8 +958,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const r = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
           return r && r.width ? { x: r.left, y: r.top, w: r.width, h: r.height } : null;
         };
-        // (SH-261: no timer; it goes as the child moves on or the step changes, endIf)
-        const h = Onboard.light(lit, { look: "", pad: 4, kit: true, pass: true, quitIf: endIf, note: o.note, box: onItem ? cardBox : undefined });
+        // (SH-261: no timer; it goes as the child moves on or the step changes, endIf. The Fable review's finding 6: and as soon as the
+        // item it points at is no longer the next thing, whatever moved it on (another pan picked, a knob, the step's change), so it
+        // never sits on the card of an item already in or no longer asked for: chai's endIf was only a pour, a spoon or a take-back)
+        const keyOf = (el) => {
+          if (!el || !el.dataset) return "";
+          const c = el.closest && el.closest(".oc-card");
+          return `${(c && c.dataset.who) || ""}/${el.dataset.key || el.dataset.word || ""}`;
+        };
+        const k0 = onItem ? keyOf(itemOf()) : "";
+        const moved = () => {
+          if (!k0) return false;
+          const it = itemOf();
+          return !it || keyOf(it) !== k0 || (it.classList && it.classList.contains("done"));
+        };
+        const h = Onboard.light(lit, { look: "", pad: 4, kit: true, pass: true, quitIf: () => endIf() || moved(), note: o.note, box: onItem ? cardBox : undefined });
         h.done.then(() => res(true));
       };
       go();

@@ -28,6 +28,8 @@
  *        pop-up in place of the recast (o.recast stays the way without a hook, or with o.popup false); before a redo the dishes done
  *        right leave (o.leave(item): the game takes their glasses or dishes and their people away; the stoves may stay) and the host
  *        keeps only the wrong orders' cards (hook.redo); hook.end() when the round is over (every card back for the thank-you scene).
+ *        o.undo(item, rows): the part of a recast that is work, not words (chaat's wrong layers out of the bowl), run when the
+ *        pop-up said the order in the recast's place (a recast that only speaks needs none)
  *   NjgServe.use(hook)             the host's wrong-order hook (null: none); NjgServe.hook() the one set
  *   NjgServe.env(Cook, win)        the review's needs from a mode's namespace (its badge maker, sounds, voice, lines, clock; the
  *                                  tokens and timers of win, the page it plays on: default this one)
@@ -202,6 +204,9 @@ async function round(o) {
           shown = !!(await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n, served: judged.map(whoOf), wrong: recasts.map((r) => r.item), wrongWho: recasts.map((r) => whoOf(r.item)) })).catch(() => false));
         }
         if (!shown) for (const { item, rows } of recasts) await o.recast(item, rows);
+        // (the Fable review's finding 7: the pop-up says the order in the recast's place, but a game whose recast also puts things
+        // right, chaat's taking the wrong layers out of the bowl, gives that part as o.undo(item, rows), run whenever the pop-up showed)
+        else if (o.undo) for (const { item, rows } of recasts) await Promise.resolve(o.undo(item, rows)).catch(() => {});
       }
       if (!closed) await close();
       if (o.afterReview) o.afterReview(n);

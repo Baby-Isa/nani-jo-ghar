@@ -156,3 +156,17 @@ test("finding 5: the child's own scroll of the item row is not undone by the nex
     await ctx.close();
   } finally { await browser.close(); srv.close(); }
 });
+
+test("finding 7: with the pop-up shown, the recast's words are skipped but the game's undo (chaat's wrong layers out) runs", async () => {
+  const log = [];
+  NjgServe.use({ show: () => true, redo() {}, end() {} });
+  try {
+    let n = 0;
+    await NjgServe.round({
+      items: ["bowl"], done: async () => {}, review: async () => [], check: () => ({ ok: n++ > 0, rows: [] }),
+      recast: async () => log.push("recast"), undo: async (item) => log.push(`undo:${item}`),
+      redo: { wrong: () => ({ action: "again" }) }, key: (x) => x, reset: (x) => log.push(`reset:${x}`), again() {},
+    });
+    assert.deepEqual(log, ["undo:bowl", "reset:bowl"]);
+  } finally { NjgServe.use(null); }
+});

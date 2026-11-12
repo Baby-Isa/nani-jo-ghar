@@ -93,6 +93,15 @@ export function check118(r, tl, add) {
     const faces = (s.faces || []).filter((w) => !keep.has(w));
     if (faces.length) out("faces", s.t, `during the redo the face of ${[...new Set(faces)].join(", ")} (served right) is still on the play area: only the person whose order was wrong stays`);
   }
+  // (s19-clean-a2, the Fable review's finding 9: a pan picked during the redo brings its person's card first, at every size)
+  for (const n of life(tl, "wo-focus")) {
+    const info = json(n.by);
+    if (!info.first) continue;
+    const t0 = n.at || n.t, t1 = t0 + WO_GLIDE_MS;
+    const live = wo.filter((x) => !x.idle && x.t >= t0 - 200 && x.t <= t0 + WO_WATCH_MS);
+    const s = [...live].reverse().find((x) => x.t <= t1) || live.find((x) => x.t > t1);
+    if (s && s.panel && s.panel.length && s.panel[0] !== info.first) out("focus", s.t, `during the redo ${info.first}'s order was picked and the side panel's first card is still ${s.panel[0]}'s: the one being worked on first`);
+  }
   for (const n of life(tl, "wo-leave")) if (n.step === "none") out("leave", n.at || n.t, `a redo with ${n.by || "some"} order(s) made right whose game gives the shared round no leave (NjgServe.round o.leave): their glasses or dishes stay on the screen`);
 }
 
@@ -182,7 +191,7 @@ function wohook() {
     } catch (e) { /* a probe only */ }
     try {
       const L = window.Lifecycle && window.Lifecycle.log;
-      const lastRedo = L ? [...L].reverse().find((x) => x && x.what === "wo-redo") : null;
+      const lastRedo = L ? [...L].reverse().find((x) => x && (x.what === "wo-redo" || x.what === "wo-focus")) : null;
       if (lastRedo) redoUntil = Math.max(redoUntil, +lastRedo.t + 6000);
       const veil = [...document.querySelectorAll(".njg-wo")].find(shown);
       // (idle: nothing watched, no pop-up and no redo starting: the checks skip it)

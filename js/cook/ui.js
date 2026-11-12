@@ -3516,6 +3516,19 @@
   M.focus = function (who) {
     if (!mission || mission.focusWho === who) return;
     mission.focusWho = who || null;
+    // (the Fable review's finding 9, SH-265: during a redo the card being worked on goes first at every size, gliding there as
+    // M.redoStart's cards do; a big screen redrew only when compact, so picking the second pan left its card second)
+    if (mission.redo && who && mission.redo.has(who)) {
+      const before = new Map([...document.querySelectorAll("#mission .oc-card[data-ck]")].map((e) => [e.dataset.ck, e.getBoundingClientRect()]));
+      renderOrder();
+      document.querySelectorAll("#mission .oc-card[data-ck]").forEach((e) => {
+        const a = before.get(e.dataset.ck);
+        const b = e.getBoundingClientRect();
+        if (a && e.animate && Math.abs(a.top - b.top) > 1) e.animate([{ transform: `translateY(${a.top - b.top}px)` }, { transform: "none" }], { duration: 320 / (Cook.speed || 1), easing: "cubic-bezier(.3,.9,.4,1)" });
+      });
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("wo-focus", { by: JSON.stringify({ first: who }) });
+      return;
+    }
     if (mission.compact) renderOrder();
   };
   /** After a redraw (once the frame has fitted the sidebar): still overflowing with several people open? Fold the idle ones. */

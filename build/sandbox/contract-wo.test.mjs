@@ -100,3 +100,10 @@ test("red then green: a right order's line comes to the middle, ticked, held, be
   const good = [card("nana"), line(5050, { ticked: false }), line(5100), line(5450, { box: [520, -200, 1000, -100] }), ...shut(5600)];
   assert.deepEqual(run(R, good), []);
 });
+
+test("finding 9: a pan picked during the redo brings its person's card first (red, then green)", () => {
+  const f = (t) => life(t, "wo-focus", { by: JSON.stringify({ first: "cousin" }) });
+  const s = (t, panel) => c(t, "s19wo", { vw: VW, vh: VH, card: null, panel, faces: [] });
+  assert.match(run(R, [f(8000), s(9000, ["ma", "cousin"])]).map((b) => b.msg).join("|"), /first card is still ma's/);
+  assert.deepEqual(run(R, [f(8000), s(8500, ["ma", "cousin"]), s(8800, ["cousin", "ma"])]), []);
+});
