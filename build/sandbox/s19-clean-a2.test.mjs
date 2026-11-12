@@ -82,3 +82,77 @@ test("the serve tells the host's pop-up which people it judged and which dishes 
     assert.deepEqual(seen[0].wrongWho, ["nana"]);
   } finally { NjgServe.use(null); }
 });
+
+// finding 4 (non-negotiable 7): a tap on the pop-up hurries it past the lines; leaving the stage ends it, its veil gone
+test("finding 4: a tap hurries the wrong-order pop-up past its lines; the stage's end takes it away", async (t) => {
+  let browser;
+  try { browser = await launch(); } catch (e) { return t.skip("no browser here"); }
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 900, height: 400 } });
+    const page = await ctx.newPage();
+    await page.setContent("<!doctype html><meta charset=utf-8><body style='margin:0'><div id=stage style='position:absolute;inset:0'></div></body>");
+    await page.evaluate(() => { const ends = []; window.Lifecycle = { onStageEnd: (f) => (ends.push(f), () => ends.splice(ends.indexOf(f), 1)), end: () => ends.slice().forEach((f) => f()) }; });
+    await page.addScriptTag({ path: join(ROOT, "js", "shared", "wrong-order.js"), type: "module" });
+    await page.waitForFunction(() => window.NjgWrongOrder);
+    const run = (tap, end) => page.evaluate(async ({ tap, end }) => {
+      const never = () => new Promise(() => {}); // a voice that never ends
+      const big = () => { const el = document.createElement("div"); el.textContent = "card"; const rows = [1, 2, 3, 4, 5].map((i) => { const r = document.createElement("div"); r.className = "oc-row"; r.textContent = "row " + i; el.appendChild(r); return { el: r, ok: i !== 3, say: never }; }); return { el, rows, head: never }; };
+      const t0 = performance.now();
+      const p = window.NjgWrongOrder.play({ host: document.getElementById("stage"), cards: [{ who: "ma", ok: false, face: "", headline: "x", big }] });
+      if (tap) setTimeout(() => document.querySelector(".njg-wo").dispatchEvent(new PointerEvent("pointerdown", { bubbles: true })), 1200);
+      if (end) setTimeout(() => window.Lifecycle.end(), 1200);
+      await p;
+      return { ms: performance.now() - t0, left: document.querySelectorAll(".njg-wo").length };
+    }, { tap, end });
+    const slow = await run(false, false);
+    const fast = await run(true, false);
+    const gone = await run(false, true);
+    assert.ok(slow.ms > 9000, `untouched: every line waited for, up to its cap (${Math.round(slow.ms)} ms)`);
+    assert.ok(fast.ms < slow.ms / 2, `a tap hurries it: ${Math.round(fast.ms)} against ${Math.round(slow.ms)} ms`);
+    assert.ok(gone.ms < 2500 && gone.left === 0, `the stage's end takes it away at once: ${Math.round(gone.ms)} ms, ${gone.left} left`);
+    await ctx.close();
+  } finally { await browser.close(); }
+});
+
+// finding 5: a child's own swipe along an order card's item row stays through a redraw (Nani's hint, a focus change) until the next tick
+test("finding 5: the child's own scroll of the item row is not undone by the next redraw", async (t) => {
+  let browser;
+  try { browser = await launch(); } catch (e) { return t.skip("no browser here"); }
+  const { startServer, BASE } = await import("./lib/env.mjs");
+  let srv;
+  try { srv = await startServer(); } catch (e) { await browser.close(); return t.skip("port busy"); }
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 740, height: 320 } });
+    const page = await ctx.newPage();
+    await page.goto(`${BASE}/lab/order-card.html`, { waitUntil: "load" });
+    await page.addStyleTag({ url: `${BASE}/css/shared/word-card.css` });
+    await page.addScriptTag({ url: `${BASE}/js/shared/word-card.js` });
+    const out = await page.evaluate(async () => {
+      const OC = window.OrderCard;
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      const word = (k) => ({ kutchi: k, english: k, picture: "assets/cook/items-s17-stove/f-tea-jar.webp" });
+      const parts = ["paani", "chai", "dudh", "khun", "elchi", "aadu", "jeeru"].map((k, i) => ({ label: k, key: { id: k }, word: word(k), done: i === 0 }));
+      const data = { person: { id: "ma", face: "assets/cook/characters/ma-face.webp" }, headline: { html: "x" }, items: [{ label: null, parts }] };
+      const fold = {};
+      const host = document.createElement("div");
+      host.style.cssText = "position:fixed;left:0;top:0;width:240px;z-index:999;background:#fff";
+      document.body.appendChild(host);
+      const draw = () => { host.innerHTML = ""; const c = OC.card(data, { fold, s14: true }); host.appendChild(c); OC.settle14(c, null, fold); return c; };
+      let c = draw();
+      await wait(1500);
+      const row = c.querySelector(".oc-row14");
+      if (!row || row.scrollWidth <= row.clientWidth + 4) return { skip: `no scrolling row (${c.className}; ${row ? row.scrollWidth + "/" + row.clientWidth : "none"})` };
+      row.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+      row.scrollLeft = row.scrollWidth; // the child swipes to the end
+      await wait(400);
+      const swiped = row.scrollLeft;
+      c = draw(); // a redraw (a hint, a focus change)
+      await wait(1600);
+      return { swiped, after: c.querySelector(".oc-row14").scrollLeft };
+    });
+    if (out.skip) return t.skip(out.skip);
+    assert.ok(out.swiped > 20, `the swipe moved the row (${out.swiped})`);
+    assert.ok(Math.abs(out.after - out.swiped) <= 2, `the redraw kept the child's scroll: ${out.after} against ${out.swiped}`);
+    await ctx.close();
+  } finally { await browser.close(); srv.close(); }
+});

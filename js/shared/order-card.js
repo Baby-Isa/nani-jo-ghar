@@ -177,6 +177,7 @@
     if (!done) return seen.delete(id);
     if (seen.has(id)) return;
     seen.add(id);
+    st.tickAt14 = Date.now(); // (a child's own scroll of the row is kept until the next tick: the current card's guard, settle14)
     const L = root.Lifecycle;
     if (L && L.note) L.note("step-close", { step: id, by: "card" });
   }
@@ -335,6 +336,8 @@
         if (c && c.dataset.ck) glideWant.delete(c.dataset.ck);
       }
     }, { passive: true });
+    // (the Fable review's finding 5: a child's touch, drag or wheel on the row is theirs, even while the row's own glide is on)
+    if (opts.fold) ["pointerdown", "touchstart", "wheel"].forEach((ev) => list.addEventListener(ev, () => (opts.fold.kid14 = Date.now()), { passive: true }));
     if (root.requestAnimationFrame) root.requestAnimationFrame(atEnd);
     box.appendChild(list);
     return box;
@@ -533,7 +536,9 @@
     const t0 = Date.now();
     setTimeout(() => {
       if (!row.isConnected || card.classList.contains("done") || card.classList.contains("folded") || row._pend14) return;
-      if (fold && fold.kid14 && fold.kid14 > t0) return;
+      // (the Fable review's finding 5: a child's own scroll stays until the next tick, not only one made since this redraw: any
+      // redraw, Nani's hint or a focus change, slid a row the child had swiped back to the current card)
+      if (fold && fold.kid14 && (fold.kid14 > t0 || fold.kid14 > (fold.tickAt14 || 0))) return;
       const cur = [...row.querySelectorAll(":scope > .oc-row[data-key]")].find((r) => !r.classList.contains("done") && !r.classList.contains("no") && r.dataset.serve !== "1");
       if (!cur) return;
       const a = cur.getBoundingClientRect();

@@ -101,8 +101,13 @@ async function play(o = {}) {
   if (!doc || !cards.length) return { shown: false, wrong: [] };
   const host = o.host || doc.body;
   const speed = Math.max(1, +o.speed || 1);
-  const T = (ms) => Math.round(ms / speed);
-  const wait = o.wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
+  // (the Fable review's finding 4, non-negotiable 7: a child never waits for speech. A tap on the pop-up hurries it: every beat a
+  // quarter as long and no line waited for; the page leaving the stage (Lifecycle.onStageEnd) ends it at once, its veil gone)
+  let hurry = 1;
+  let cut = false;
+  const T = (ms) => Math.round(ms / speed / hurry);
+  const wait0 = o.wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
+  const wait = (ms) => (cut ? Promise.resolve() : wait0(ms));
   const sound = o.sound || (() => {});
   const note = o.note || (() => {});
   const faceHtml = o.faceHtml || ((who, src, size) => `<span class="njg-face njg-face-${size === "big" ? "big" : "row"}" data-who="${esc(who)}"><img class="njg-face-img" src="${esc(src)}" alt=""></span>`);
@@ -122,6 +127,13 @@ async function play(o = {}) {
     Object.assign(veil.style, { left: `${hb.left}px`, top: `${hb.top}px`, width: `${hb.width}px`, height: `${hb.height}px`, right: "auto", bottom: "auto" });
   }
   doc.body.appendChild(veil);
+  veil.addEventListener("pointerdown", () => {
+    if (hurry > 1) return;
+    hurry = 4;
+    note("wo-hurry", {});
+  });
+  const LC = typeof globalThis !== "undefined" ? globalThis.Lifecycle : null;
+  const offEnd = LC && LC.onStageEnd ? LC.onStageEnd(() => ((cut = true), veil.remove())) : null;
   note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
   await move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn));
   const wrong = [];
@@ -142,6 +154,7 @@ async function play(o = {}) {
   };
   try {
     for (const [i, c] of cards.entries()) {
+      if (cut) break;
       if (i) await wait(T(LOOK.gap));
       const from = c.from && c.from.isConnected ? c.from : null;
       const fromBox = from ? from.getBoundingClientRect() : null;
@@ -195,7 +208,9 @@ async function play(o = {}) {
           if (!fn) return;
           const stop = o.talk && faceEl ? o.talk(faceEl) : null;
           try {
-            await Promise.race([Promise.resolve(fn()).catch(() => {}), wait(T(LOOK.sayCap))]);
+            // (hurried: the rest are marked without their lines, so no two voices overlap)
+            if (hurry > 1) await wait(T(LOOK.rowGap * 4));
+            else await Promise.race([Promise.resolve(fn()).catch(() => {}), wait(T(LOOK.sayCap))]);
           } finally {
             if (typeof stop === "function") stop();
           }
@@ -205,6 +220,7 @@ async function play(o = {}) {
         for (const r of drawn.rows || []) {
           if (!r || !r.el) continue;
           r.el.classList.add("njg-wo-now");
+          if (cut) break;
           await said(r.say);
           r.el.classList.remove("njg-wo-now");
           r.el.classList.add(r.ok ? "njg-wo-ok" : "njg-wo-bad");
@@ -223,7 +239,8 @@ async function play(o = {}) {
       if (from) from.classList.remove("njg-wo-out");
     }
   } finally {
-    await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
+    if (typeof offEnd === "function") offEnd();
+    if (!cut) await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
     veil.remove();
     open = Math.max(0, open - 1);
     note("wo-close", { wrong });
