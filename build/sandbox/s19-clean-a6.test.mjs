@@ -172,3 +172,15 @@ test("contract-36: baking's help light with its order line said is called (green
   assert.equal(run(tl(true)).length, 0, "the help's light with her line: green");
   assert.equal(run(tl(false)).length, 1, "no help: the order line is not the light's call, red");
 });
+
+// ---- the grown-ups' English (Mum's 12 Nov session, code change 2): "with" kept, "once" not "one times" ----
+import { createEngine, DATA_FILES } from "../../js/core/lang/engine/index.js";
+test("the engine's English keeps an Item's with and without, and says once", () => {
+  const data = Object.fromEntries(DATA_FILES.map((f) => [f, JSON.parse(readFileSync(new URL(`../../data/lang/${f}.json`, import.meta.url), "utf8"))]));
+  const L = createEngine({ data });
+  assert.equal(L.say({ fn: "Item", kind: "ph-samosa", n: 2, with: ["veg-01"] }).en, "two samosas with potato");
+  assert.equal(L.say({ fn: "Item", kind: "cook-chai", without: ["cook-dudh"] }).en, "chai without milk");
+  assert.equal(L.say({ fn: "Item", kind: "ph-samosa", n: 2 }).en, "two samosas");
+  assert.equal(L.say({ fn: "Times", n: 1 }).en, "once");
+  assert.equal(L.say({ fn: "Times", n: 3 }).en, "three times");
+});
