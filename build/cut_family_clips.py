@@ -9,7 +9,8 @@ sound examples for future use"). This script turns such a recording into:
   assets/audio/family/zafar/<id>.mp3   Zafar's best take (the second voice)
   data/family-audio.json               the manifest: a flat list of
       {id, qid, kutchi, english, speaker, file, start, end, source,
-       confidence, note, checked}. `checked` is Zafar's verdict by ear
+       confidence, note, checked, approved}. `approved` is the release status (Zafar, 12 Nov): "game" = plays in
+      the game now, "final" = store-ready (re-recorded properly). `checked` is Zafar's verdict by ear
       (ok / redo), kept across re-runs while the clip's cut is unchanged. A word that couldn't be cut is a row too, with
       file/start/end null and confidence "skipped", so read rows with a file.
 
@@ -1032,6 +1033,11 @@ def main():
         o = was.get((m["id"], m["speaker"]))
         if o and o.get("checked") and abs(o["start"] - m["start"]) < 0.005 and abs(o["end"] - m["end"]) < 0.005:
             m["checked"] = o["checked"]
+        # Release status (Zafar, 12 Nov): every family clip is "game" (plays in the game now, before any ear check) until it
+        # is re-recorded for the stores and marked "final"; a re-cut keeps "final" only while its cut hasn't moved.
+        # build/tools/ops/storeaudio.mjs fails a store build while any playable clip is short of "final".
+        same = o and abs(o["start"] - m["start"]) < 0.005 and abs(o["end"] - m["end"]) < 0.005
+        m["approved"] = o["approved"] if same and o.get("approved") else "game"
     for sk in skips:
         manifest.append({"id": sk.get("id"), "qid": sk["qid"], "kutchi": sk["kutchi"], "english": sk.get("english"),
                          "speaker": sk.get("speaker"), "file": None, "start": None, "end": None, "source": source,

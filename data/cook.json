@@ -6615,14 +6615,14 @@
   "_about": "28 Sept (Zafar): Nani's guide box at the top of the sidebar says what to do NOW, in Kutchi. Until 5 Oct none was recorded, so each showed as an English placeholder flagged 'to record' (build/reports/archive/cook-ui-28sept.md lists them). W1, 5 Oct: Mum's Round 4 answers give ten of them a `line` (guide-*: add, watch, knead, flip, stir, chop, fold, fry, fill, chai-tray:knob; build/reports/archive/w1-words.md); the rest stay flagged placeholders (pour, roll, the pantry headline and others Mum hasn't answered). Once Mum records one, give it a `line` (a key in `lines`) and the box shows and says that instead. Keys: a station (data.stations), or station:phase. While Nani says one of her own lines at a station (Hane …!, Bareto!, Jaldi kar!), the box shows that line.",
   "fetch": {},
   "passme": {},
-  "pour": {},
+  "pour": {"line": "guide-line"},
   "add": {
    "line": "guide-add"
   },
   "watch": {
    "line": "guide-slow"
   },
-  "count": {},
+  "count": {"line": "guide-spoons"},
   "knead": {
    "line": "guide-knead"
   },
@@ -6664,24 +6664,24 @@
   "daar:cook": {
    "line": "guide-add"
   },
-  "chai-tray": {},
-  "chai-tray:water": {},
-  "chai-tray:tea": {},
+  "chai-tray": {"line": "guide-chai-tray"},
+  "chai-tray:water": {"line": "guide-water-pan"},
+  "chai-tray:tea": {"line": "guide-tea-pan"},
   "chai-tray:knob": {
    "line": "guide-fire"
   },
   "chai-tray:cups": {},
-  "chai-tray:pour": {},
+  "chai-tray:pour": {"line": "guide-glass"},
   "mishkaki-grill": {},
   "mishkaki-grill:thread": {},
   "mishkaki-grill:grill": {},
   "maani-line": {},
   "roll-tawa": {},
-  "default": {},
+  "default": {"line": "guide-the-way"},
   "chai-tray:slow": {
    "line": "guide-slow"
   },
-  "chai-tray:next": {},
+  "chai-tray:next": {"line": "guide-now-this"},
   "maani-line:take": {},
   "maani-line:roll": {},
   "maani-line:tawa": {},
@@ -6709,6 +6709,6 @@
   "mishkaki-grill:flip": {
    "line": "guide-firai"
   },
-  "assemble:next": {}
+  "assemble:next": {"line": "guide-now-this"}
  }
 }

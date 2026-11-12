@@ -233,15 +233,16 @@ test("what Mum has not said stays a gap: no guess, an English placeholder 'to re
   assert.equal(w.ok, false);
   assert.ok(w.gaps.some((g) => g.kind === "lexeme"));
   assert.ok(!w.tokens.some((t) => t.lang === "k" && /oil|tel/i.test(t.t)));
-  // an unknown tomato plural is asked, not derived from the -o rule
-  const t = E.say(item("veg-03", { n: 3 }));
-  assert.ok(t.gaps.some((g) => g.kind === "form"));
+  // tomato's plural was asked, not derived from the -o rule, until Mum said trae tameta (12 Nov, grammar-notes §64)
+  assert.equal(strip(E.say(item("veg-03", { n: 3 })).text), "trae tameta");
 });
 
 test("an unknown noun gender takes the he-form and is reported (decision 21, Mum's rule)", () => {
-  const r = E.say({ fn: "Need", who: "p1", thing: item("cook-khun", { n: 1 }) }, { register: "polite" });
-  assert.equal(r.text, "Muke hakro khun khapeto.");
-  assert.ok(r.gaps.some((g) => g.kind === "feature" && g.lex === "n.sugar" && g.ask.includes("L34")));
+  // sugar was the example until Mum gave its gender (12 Nov, §64: hakro khun); meat is still unknown
+  const r = E.say({ fn: "Need", who: "p1", thing: item("ph-meat", { n: 1 }) }, { register: "polite" });
+  assert.equal(r.text, "Muke hakro gos khapeto.");
+  assert.ok(r.gaps.some((g) => g.kind === "feature" && g.lex === "n.meat"));
+  assert.ok(!E.say({ fn: "Need", who: "p1", thing: item("cook-khun", { n: 1 }) }, { register: "polite" }).gaps.some((g) => g.kind === "feature"), "sugar's gender is Mum's now");
 });
 
 test("the 5 Oct words: describing words, 'of', 'be' and the two 'we's agree (decision 30)", () => {
@@ -293,9 +294,9 @@ test("the placeholder voices' words (data/cook-tts.json) are all in the lexicon,
   }
   const missing = new Set();
   for (const k of Object.keys(J("data/cook-tts.json").lines)) if (!k.startsWith("en|")) for (const w of k.split(" ")) if (!known.has(w)) missing.add(w);
-  // daal, hikdo, dine, vatana and lal are superseded spellings (rules G4, G5, decision 32), and aabhar aanjo the dropped draft
-  // for Thank you (decision 87), kept only in the test-only voice index
-  assert.deepEqual(Array.from(missing).sort(), ["aabhar", "aanjo", "daal", "dine", "hikdo", "lal", "vatana"]);
+  // daal, hikdo, dine, vatana and lal are superseded spellings (rules G4, G5, decision 32), and aanjo the dropped draft
+  // for Thank you (decision 87), kept only in the test-only voice index; aabhar is Mum's since 12 Nov (aabhar anjo, §67)
+  assert.deepEqual(Array.from(missing).sort(), ["aanjo", "daal", "dine", "hikdo", "lal", "vatana"]);
 });
 
 /* ---------------- the recordings ---------------- */
@@ -350,4 +351,18 @@ test("Round 5 C80-C103 (24 Oct): the speaker's gender, the giver's, the eater's 
   assert.equal(say({ fn: "EveryDay", who: "p3pl.far", thing: "n.chapati", verb: "v.eat" }), "huloka roj maani kenta", "§63");
   // no speaker and no g: a gap, never a guessed gender
   assert.equal(E.say({ fn: "EveryDay", who: "p1", thing: "n.chapati", verb: "v.eat" }).ok, false);
+});
+
+test("Round 6 sheet (12 Nov): with a filling, in my chai, times, bring me these, tomatoes, genders (grammar-notes §64-§66)", () => {
+  const say = (m, ctx = {}) => strip(E.say(m, ctx).text);
+  assert.equal(say({ fn: "Need", who: "p1", thing: item("n.samosa", { n: 2, with: [item("n.mince")] }) }), "muke ba chunde ja samosa khape", "§65 (5:43)");
+  assert.equal(say({ fn: "Need", who: "p1", thing: item("n.samosa", { n: 1, with: [item("n.mince")] }) }, { register: "polite" }), "muke hakro chunde jo samosa khapeto", "§65 (11:00: Mum says samoso for one)");
+  assert.equal(say({ fn: "WantIn", container: "n.tea", thing: item("n.sugar", { n: 2 }) }), "munji chai me ba khun khape", "§65 (12:21)");
+  assert.equal(say({ fn: "WantIn", container: "n.tea", thing: item("n.sugar", { n: 2 }) }, { register: "polite" }), "munji chai me ba khun wijij", "§65 (12:36)");
+  assert.equal(say({ fn: "Times", n: 1 }), "hakre fare", "§66 (15:57)");
+  assert.equal(say({ fn: "Times", n: 3 }), "trae fare", "§66 (15:57)");
+  assert.equal(say({ fn: "BringMeTheseForX", x: "n.tea" }), "hi muke chai lai khani achi de", "§65 (0:41)");
+  assert.equal(say({ fn: "Need", who: "p1", thing: item("n.tomato", { n: 3 }) }), "muke trae tameta khape", "§64 (17:31)");
+  assert.equal(say({ fn: "Need", who: "p1", thing: item("n.onion", { n: 1 }) }, { register: "polite" }), "muke hakri dungri khapeti", "§64 (21:07): onion is a she-word");
+  assert.equal(say({ fn: "Need", who: "p1", thing: item("n.sugar", { n: 1 }) }, { register: "polite" }), "muke hakro khun khapeto", "§64 (19:46): sugar is a he-word");
 });
