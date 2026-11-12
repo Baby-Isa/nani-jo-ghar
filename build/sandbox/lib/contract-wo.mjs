@@ -13,6 +13,7 @@ export const WO_EDGE_PX = 1;     // a card or an item may poke past the screen b
 export const WO_FACE_K = 1.5;    // the asker's face in the pop-up at least this many times the side panel's face circle
 export const WO_POP_MS = 15000;  // a wrong order served: the pop-up comes within this long of the serve's review (test speed 3)
 export const WO_LINE_MS = 150;   // a right order's line in the middle, ticked, held this long (its glow, 620 ms at speed 1, is about 210 ms at the test speed)
+export const WO_TEXT_PX = 14;    // the open card's smallest word as drawn at least this (css/shared/order-card.css: nothing under 14 px)
 export const WO_GLIDE_MS = 900;  // after the redo starts, the panel has glided by then (the pop-up's 320 ms glide at speed 1)
 export const WO_WATCH_MS = 6000; // the probe watches the panel and the faces this long after the redo starts
 export const FLASH_WITHIN_MS = 1500; // (the card up this soon after the line starts, test speed 3)
@@ -29,7 +30,7 @@ function held(list, i, tEnd) { const n = list[i + 1]; return (n ? n.t : tEnd) - 
 
 export const WO_CHECKS = {
   "contract-119": { item: "dish-flash", title: "the dish's card flashes up as the customer says it, at level 1 only", how: `Cook flows. At level 1, each line a customer starts saying the dish with ("Muke ... khape", the sound log) must bring the dish's card (.wc14-flash, js/shared/word-card.js WordCard.flash through js/cook/ui.js UI.dishFlash) on screen within ${FLASH_WITHIN_MS} ms, held at least ${FLASH_HOLD_MS} ms (its 1.5 s at the test speed); none is a break, once per page. From level 2 any such card on screen is a break: it would give the order away (SH-267, Zafar 12 Nov: "Yes ... only at level 1").` },
-  "contract-118": { item: "wrong-order", title: "a wrong order: its card in the middle, only the wrong order redone", how: `Cook flows. A wrong order served (the serve-wrong driver's look-alike put in and kept: a Lifecycle probe-wrong note) must bring the wrong-order pop-up (js/shared/wrong-order.js) within ${WO_POP_MS / 1000} s: its card in the middle; none is a break. Every s19wo sample (lib/contract-wo.mjs WO_HOOK: the pop-up's card, its items, the asker's face, the side panel's people cards in order, the people's faces on the play area) held ${WO_HOLD_MS} ms with the wrong card open: its middle within ${WO_MIDDLE * 100}% of the pop-up's middle, the card and every item inside the screen (${WO_EDGE_PX} px), the asker's face at least ${WO_FACE_K} times the side panel's face circle; before it closes an item marked wrong with its cross (.njg-wo-bad and .njg-wo-mark.bad). Every order it names right (a wo-card note, ok, phase line) is seen as its single line in the middle, ticked, held ${WO_LINE_MS} ms before it floats away (s19-clean-a2). After the redo starts (the wo-redo note: the people kept and the one being worked on), the first sample ${WO_GLIDE_MS} ms on: the side panel's people cards only the kept ones, the one being worked on first, and no face of a person served right on the play area; a redo with orders made right whose game gives the shared round no leave (wo-leave none: their glasses or dishes stay) is a break too. Once per kind per page (SH-264, SH-265, SH-266, Zafar 11 Nov evening, his child play-test: "the order card for the incorrect one probably needs to come up in the middle of the screen ... All the items should be visible in one view ... it should be red, and there should be a little cross instead of a tick"; "they don't put the one you're working on at the top"; "The correct ones disappear ... and you're just left with the person that got it wrong").` },
+  "contract-118": { item: "wrong-order", title: "a wrong order: its card in the middle, only the wrong order redone", how: `Cook flows. A wrong order served (the serve-wrong driver's look-alike put in and kept: a Lifecycle probe-wrong note) must bring the wrong-order pop-up (js/shared/wrong-order.js) within ${WO_POP_MS / 1000} s: its card in the middle; none is a break. Every s19wo sample (lib/contract-wo.mjs WO_HOOK: the pop-up's card, its items, the asker's face, the side panel's people cards in order, the people's faces on the play area) held ${WO_HOLD_MS} ms with the wrong card open: its middle within ${WO_MIDDLE * 100}% of the pop-up's middle, the card and every item inside the screen (${WO_EDGE_PX} px), the asker's face at least ${WO_FACE_K} times the side panel's face circle; its smallest word at least ${WO_TEXT_PX} px as drawn (s19-clean-a3: the card's floor; a card past it lays its rows in two columns, takes the whole screen, then scrolls its rows, judged by its own box); before it closes an item marked wrong with its cross (.njg-wo-bad and .njg-wo-mark.bad). Every order it names right (a wo-card note, ok, phase line) is seen as its single line in the middle, ticked, held ${WO_LINE_MS} ms before it floats away (s19-clean-a2). After the redo starts (the wo-redo note: the people kept and the one being worked on), the first sample ${WO_GLIDE_MS} ms on: the side panel's people cards only the kept ones, the one being worked on first, and no face of a person served right on the play area; a redo with orders made right whose game gives the shared round no leave (wo-leave none: their glasses or dishes stay) is a break too. Once per kind per page (SH-264, SH-265, SH-266, Zafar 11 Nov evening, his child play-test: "the order card for the incorrect one probably needs to come up in the middle of the screen ... All the items should be visible in one view ... it should be red, and there should be a little cross instead of a tick"; "they don't put the one you're working on at the top"; "The correct ones disappear ... and you're just left with the person that got it wrong").` },
 };
 
 export function check118(r, tl, add) {
@@ -54,12 +55,14 @@ export function check118(r, tl, add) {
     const last = !next || !next.card || next.card.who !== e.card.who || next.card.phase !== "open";
     if (last && !e.card.crossed && (e.card.rows || 0) > 0) out("cross", e.t, `${e.card.who}'s wrong order card closed with no item marked red with a cross (${e.card.marked || 0} of its ${e.card.rows} items marked)`);
     if (held(wo, i, tEnd) < WO_HOLD_MS) continue;
-    const c = box(e.card.box), v = box(e.veil), m = mid(c), vm = mid(v);
+    const c = box(e.card.box), v = e.card.wide ? { l: 0, t: 0, r: e.vw, b: e.vh } : box(e.veil), m = mid(c), vm = mid(v);
     if (Math.abs(m.x - vm.x) > (v.r - v.l) * WO_MIDDLE || Math.abs(m.y - vm.y) > (v.b - v.t) * WO_MIDDLE) out("middle", e.t, `${e.card.who}'s wrong order card ${fmt(c)} is not in the middle of the pop-up ${fmt(v)}`);
     const inView = (b) => b.l >= -WO_EDGE_PX && b.t >= -WO_EDGE_PX && b.r <= e.vw + WO_EDGE_PX && b.b <= e.vh + WO_EDGE_PX;
-    const outItems = (e.card.items || []).map(box).filter((b) => !inView(b));
+    // (a card whose rows scroll, past the words' floor: its rows scroll inside its own box, which is judged)
+    const outItems = e.card.scroll ? [] : (e.card.items || []).map(box).filter((b) => !inView(b));
     if (!inView(c) || outItems.length) out("view", e.t, `${e.card.who}'s wrong order card ${fmt(c)}: ${outItems.length ? `${outItems.length} item(s) out of view (${outItems.map(fmt).join(" ")})` : "past the screen's edge"} at ${e.vw}x${e.vh}: every item in one view`);
     if (e.card.faceW != null && e.sideFaceW && e.card.faceW < e.sideFaceW * WO_FACE_K) out("face", e.t, `${e.card.who}'s face in the pop-up is ${Math.round(e.card.faceW)} px, under ${WO_FACE_K} times the side panel's ${Math.round(e.sideFaceW)} px: the asker's face big`);
+    if (e.card.minPx != null && e.card.minPx < WO_TEXT_PX - 0.5) out("words", e.t, `${e.card.who}'s wrong order card's smallest word is ${e.card.minPx} px at ${e.vw}x${e.vh}: never under the card's ${WO_TEXT_PX} px floor (two columns, the whole screen, or its rows scrolling first)`);
     if (e.card.faceW == null) out("face", e.t, `${e.card.who}'s wrong order card shows no face: the asker's face big, so the child knows who it is`);
   }
   // 5. (s19-clean-a2, the orchestrator's lab frames: "the right orders must each come to the middle in turn ... re-ticked with a ding,
@@ -210,6 +213,21 @@ function wohook() {
             crossed: rows.some((x) => x.classList.contains("njg-wo-bad") && x.querySelector(".njg-wo-mark.bad") && shown(x.querySelector(".njg-wo-mark.bad"))),
             faceW: face && shown(face) ? face.getBoundingClientRect().width : null,
           };
+          // (s19-clean-a3, the a2 review's finding 4: the open card's smallest word as drawn, its zoom counted; and whether its rows
+          // scroll, the floor's last step: a row scrolled out of the card's box is not "out of view")
+          if (card.phase !== "line") {
+            let px = 0;
+            for (const x of el.querySelectorAll("*")) {
+              if (![...x.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim()) || !shown(x)) continue;
+              const f = parseFloat(getComputedStyle(x).fontSize) * (x.currentCSSZoom || 1);
+              if (f && (!px || f < px)) px = f;
+            }
+            card.minPx = px ? Math.round(px * 10) / 10 : null;
+            const body = el.querySelector(".njg-wo-body");
+            if (body && body.scrollHeight > body.clientHeight + 2 && /auto|scroll/.test(getComputedStyle(body).overflowY)) card.scroll = true;
+            const st = veil.querySelector(".njg-wo-stage");
+            if (st && st.style.left) card.wide = true; // (the whole screen its room: centred on the screen)
+          }
         }
       }
       const s = { k: "s19wo", vw: innerWidth, vh: innerHeight, veil: veil ? R(veil.getBoundingClientRect()) : null, card, sideFaceW: safe(sideFace), panel: safe(panel, []), faces: safe(canvasFaces, []) };

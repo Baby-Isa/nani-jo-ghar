@@ -52,6 +52,7 @@ const LOOK = Object.freeze({
   minSay: 500, // a line a tap stops is heard this long first (the a2 review's finding 3)
   rowGap: 100, // one row to the next, quickly
   hold: 620, // the wrong card, all marked, before it shrinks back
+  minText: 14, // px: the open card's smallest word at least this (css/shared/order-card.css: nothing under 14 px; the a2 review's finding 4)
   gap: 140, // one card to the next
   edge: 0.06, // the share of the play area kept clear round the pop-up (its edges still seen)
   // "big, central" (Zafar, 11 Nov night): the open card grows to fill the middle (never past the room the veil leaves), a line too
@@ -180,7 +181,7 @@ async function play(o = {}) {
   note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
   const fit = (el, big) => {
     // every item in one view, as big as the middle allows (Zafar, 11 Nov night: "big, central"): the card scales as a whole to the
-    // room the veil leaves, growing to its share of it or shrinking to fit (never cut, never scrolled)
+    // room the veil leaves, growing to its share of it or shrinking to fit (never cut; scrolled only past the words' floor: floor())
     el.style.transform = "";
     el.style.setProperty("--wo-k", "1");
     const room = stage.getBoundingClientRect();
@@ -198,6 +199,55 @@ async function play(o = {}) {
     el._woK = Math.max(0.3, k);
     el.style.setProperty("--wo-k", String(el._woK));
     return k;
+  };
+  // the words' floor (the a2 review's finding 4; css/shared/order-card.css: nothing under LOOK.minText px): a card whose fit would take
+  // its smallest word under the floor lays its rows in two columns, then takes the whole screen as its room (over the side panel), and
+  // only then stands at the floor with its rows scrolling, the row being said always in view. Returns true when its rows scroll
+  const minText = (el) => {
+    let px = 0;
+    for (const e of el.querySelectorAll("*")) {
+      if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+      if (!e.getClientRects().length) continue;
+      const f = parseFloat(getComputedStyle(e).fontSize) || 0;
+      if (f && (!px || f < px)) px = f;
+    }
+    return px;
+  };
+  let roomSet = false;
+  const roomBack = () => {
+    if (!roomSet) return;
+    roomSet = false;
+    ["left", "top", "width", "height", "right", "bottom"].forEach((k) => stage.style.removeProperty(k));
+  };
+  const floor = (card, body, rows) => {
+    const px = minText(card); // (a computed size is the card's own, before its zoom)
+    if (!px) return false;
+    const need = LOOK.minText / px;
+    if (card._woK >= need - 0.001) return false;
+    if (rows >= 4) {
+      const k0 = card._woK;
+      card.classList.add("njg-wo-cols");
+      fit(card, true);
+      if (card._woK >= need - 0.001) return false;
+      if (card._woK < k0) (card.classList.remove("njg-wo-cols"), fit(card, true));
+    }
+    const vb = veil.getBoundingClientRect();
+    const vw = doc.documentElement.clientWidth || vb.width;
+    const vh = doc.documentElement.clientHeight || vb.height;
+    const m = 8;
+    Object.assign(stage.style, { left: `${m - vb.left}px`, top: `${m - vb.top}px`, width: `${vw - 2 * m}px`, height: `${vh - 2 * m}px`, right: "auto", bottom: "auto" });
+    roomSet = true;
+    fit(card, true);
+    if (card._woK >= need - 0.001) return false;
+    // at the floor: the card as tall as the room, its rows scrolling
+    card._woK = need;
+    card.style.setProperty("--wo-k", String(need));
+    const room = stage.getBoundingClientRect();
+    const extra = (card.offsetHeight || 0) - (body.offsetHeight || 0);
+    body.style.maxHeight = `${Math.max(40, Math.floor(room.height / need - extra))}px`;
+    body.style.overflowY = "auto";
+    card.classList.add("njg-wo-scroll");
+    return true;
   };
   try {
     await gate(move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn)));
@@ -262,6 +312,7 @@ async function play(o = {}) {
           card.style.setProperty("--wo-face", f.toFixed(2));
           fit(card, true);
         }
+        const scroll = floor(card, body, (drawn.rows || []).length);
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
         await gate(move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open)));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
@@ -299,6 +350,7 @@ async function play(o = {}) {
           if (!r || !r.el) continue;
           r.el.classList.add("njg-wo-now");
           if (cut) break;
+          if (scroll && r.el.scrollIntoView) r.el.scrollIntoView({ block: "nearest", behavior: motion() ? "smooth" : "auto" });
           await said(r.say, !r.ok);
           r.el.classList.remove("njg-wo-now");
           r.el.classList.add(r.ok ? "njg-wo-ok" : "njg-wo-bad");
@@ -313,6 +365,7 @@ async function play(o = {}) {
         card.classList.add("njg-wo-going"); // (on its way back: the checks judge the card standing open, never its flight)
         if (back && back.width > 2) await gate(move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly)));
         card.remove();
+        roomBack();
       }
       if (line.isConnected) line.remove();
       if (from) from.classList.remove("njg-wo-out");

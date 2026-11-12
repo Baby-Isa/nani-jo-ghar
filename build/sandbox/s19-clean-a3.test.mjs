@@ -152,3 +152,51 @@ test("a2 finding 2: three small hobs spread across the width are red on contract
   // the same short grill alone in the middle: red
   assert.ok(judge(scene([pic(912, "gk-grill", 340, 140, 940, 340)])).length, "the grill alone, short: red");
 });
+
+// a2 finding 4: the open card's smallest word never under 14 px (the card's own floor), measured as drawn; contract-118 judges it
+test("a2 finding 4: contract-118 is red on an open card with 10 px words, green at 14", async () => {
+  const { check118 } = await import("./lib/contract-wo.mjs");
+  const run = (minPx) => {
+    const card = { who: "ma", phase: "open", box: [200, 40, 540, 280], items: [[220, 60, 520, 100]], rows: 1, marked: 1, crossed: true, faceW: 90, minPx };
+    const tl = [{ type: "c", k: "s19wo", t: 1000, vw: 740, vh: 320, veil: [0, 0, 740, 320], card, sideFaceW: 40, panel: [], faces: [] }, { type: "c", k: "s19wo", t: 2000, vw: 740, vh: 320, card: null, idle: true, panel: [], faces: [] }];
+    const out = [];
+    check118({ flow: "cook:chai-tray@L3#serve-wrong" }, tl, (id, t, m) => out.push(m));
+    return out.filter((m) => /smallest word/.test(m));
+  };
+  assert.equal(run(10).length, 1, "10 px words: red");
+  assert.deepEqual(run(14.2), [], "14 px: green");
+});
+
+test("a2 finding 4: a five- and a seven-row wrong card at 740x320 keeps its words at 14 px or more, every row in view or scrolled to", async (t) => {
+  let browser;
+  try { browser = await launch(); } catch (e) { return t.skip("no browser here"); }
+  const { startServer, BASE } = await import("./lib/env.mjs");
+  let srv;
+  try { srv = await startServer(); } catch (e) { await browser.close(); return t.skip("port busy"); }
+  try {
+    for (const n of [5, 7]) {
+      const ctx = await browser.newContext({ viewport: { width: 740, height: 320 } });
+      const page = await ctx.newPage();
+      await page.goto(`${BASE}/lab/wrong-order.html`, { waitUntil: "load" });
+      await page.waitForFunction(() => window.OrderCard && window.Face);
+      const r = await page.evaluate(async (n) => {
+        const { NjgWrongOrder } = await import("/js/shared/wrong-order.js");
+        const OC = window.OrderCard;
+        const w = (x) => `<span class="word">${x}</span>`;
+        const parts = [["dudh"], ["ba", "khun"], ["elchi"], ["aadu"], ["trae", "jeeru"], ["paani"], ["chai"]].slice(0, n).map(([a, b], i) => ({ label: b ? `${a} ${w(b)}` : w(a), key: "k" + i, done: false }));
+        const data = { person: { id: "ma", face: "/assets/cook/characters/ma-badge.webp", name: "ma" }, headline: { html: `Muke ${w("chai")} khape.` }, items: [{ label: null, parts }] };
+        NjgWrongOrder.play({ host: document.getElementById("stage"), cards: [{ who: "ma", ok: false, face: data.person.face, headline: data.headline.html, from: document.querySelector("#side .oc-card"), big() { const rows = []; const el = OC.card(data, { big: true, onEl: (k, e) => e.classList.contains("oc-row") && rows.push({ el: e, ok: k !== "k1", say: () => new Promise((r) => setTimeout(r, 3000)) }) }); return { el, rows }; } }], faceHtml: (who, src, size) => window.Face.html(who, size, { src }) });
+        for (let i = 0; i < 100 && !document.querySelector(".njg-wo-open"); i++) await new Promise((r) => setTimeout(r, 50));
+        await new Promise((r) => setTimeout(r, 400));
+        const card = document.querySelector(".njg-wo-open");
+        let px = 0;
+        for (const x of card.querySelectorAll("*")) if ([...x.childNodes].some((m) => m.nodeType === 3 && m.textContent.trim())) { const f = parseFloat(getComputedStyle(x).fontSize) * (x.currentCSSZoom || 1); if (!px || f < px) px = f; }
+        const b = card.getBoundingClientRect();
+        return { px, inView: b.top >= -1 && b.left >= -1 && b.bottom <= innerHeight + 1 && b.right <= innerWidth + 1 };
+      }, n);
+      assert.ok(r.px >= 13.9, `${n} rows at 740x320: the smallest word is ${r.px.toFixed(1)} px`);
+      assert.ok(r.inView, `${n} rows: the card inside the screen`);
+      await ctx.close();
+    }
+  } finally { await browser.close(); srv.close(); }
+});

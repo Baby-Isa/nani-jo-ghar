@@ -698,6 +698,9 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 /* the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): the kit's big circle, shown at twice its size */
 .njg-wo-who { flex: none; margin: calc(var(--njg-big-face) * (var(--wo-face, 2) - 1) / 2); transform: scale(var(--wo-face, 2)); transform-origin: center; } /* (--wo-face: js/shared/wrong-order.js grows it until the face is 1.7x the side panel's, b2's item 2) */
 .njg-wo-body { overflow: visible; }
+/* the words' floor (js/shared/wrong-order.js floor(), the a2 review's finding 4): a long card's rows in two columns, then scrolling */
+.njg-wo-cols .oc-parts { display: grid; grid-template-columns: repeat(2, minmax(0, auto)); column-gap: var(--njg-s3); }
+.njg-wo-scroll .njg-wo-body { overscroll-behavior: contain; scrollbar-width: thin; }
 .njg-wo-body > .oc-card { margin: 0; box-shadow: none; }
 .njg-wo .oc-row { position: relative; }
 .njg-wo .oc-row .oc-tk { visibility: hidden; }
