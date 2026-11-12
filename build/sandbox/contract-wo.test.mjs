@@ -65,3 +65,16 @@ test("not a kitchen flow, or no wrong order and no pop-up: nothing", () => {
   assert.deepEqual(run({ flow: "clinic:waiting" }, [life(1000, "probe-wrong")]), []);
   assert.deepEqual(run({ flow: "cook:chai-tray" }, [c(1000, "s19wo", { card: null })]), []);
 });
+
+import { check119 } from "./lib/contract-wo.mjs";
+test("contract-119 (SH-267): the dish's card flashes up as the customer says it at L1, never from L2", () => {
+  const run = (flow, tl) => { const out = []; check119({ flow }, tl, (id, t, msg) => out.push({ id, t, msg })); return out; };
+  const say = (t) => ({ type: "line", who: "cook", text: "Muke ba samosa khape,", t });
+  const flash = (t, on) => c(t, "s19flash", { on, box: on ? [500, 100, 640, 260] : null });
+  const end = c(20000, "x");
+  assert.equal(run("cook:samosa", [say(1000), end]).length, 1, "red: said, no card");
+  assert.deepEqual(run("cook:samosa", [say(1000), flash(1300, true), flash(1900, false), end]), [], "green: up 600 ms");
+  assert.equal(run("cook:samosa", [say(1000), flash(1300, true), flash(1350, false), end]).length, 1, "a blink is not a flash");
+  assert.equal(run("cook:samosa@L2", [say(1000), flash(1300, true), flash(1900, false), end]).length, 1, "never at L2");
+  assert.deepEqual(run("cook:samosa@L3", [say(1000), end]), [], "L3: none, right");
+});

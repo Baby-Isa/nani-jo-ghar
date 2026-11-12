@@ -14,6 +14,8 @@ export const WO_FACE_K = 1.5;    // the asker's face in the pop-up at least this
 export const WO_POP_MS = 15000;  // a wrong order served: the pop-up comes within this long of the serve's review (test speed 3)
 export const WO_GLIDE_MS = 900;  // after the redo starts, the panel has glided by then (the pop-up's 320 ms glide at speed 1)
 export const WO_WATCH_MS = 6000; // the probe watches the panel and the faces this long after the redo starts
+export const FLASH_WITHIN_MS = 1500; // (the card up this soon after the line starts, test speed 3)
+export const FLASH_HOLD_MS = 250;     // ... and held this long (its 1.5 s at the test speed is 500 ms)
 
 const isCookFlow = (flow) => /^(cook:|lab:cook\/)/.test(flow || "");
 const ev = (tl, k) => tl.filter((e) => e.type === "c" && e.k === k);
@@ -25,6 +27,7 @@ const fmt = (b) => `[${[b.l, b.t, b.r, b.b].map(Math.round).join(",")}]`;
 function held(list, i, tEnd) { const n = list[i + 1]; return (n ? n.t : tEnd) - list[i].t; }
 
 export const WO_CHECKS = {
+  "contract-119": { item: "dish-flash", title: "the dish's card flashes up as the customer says it, at level 1 only", how: `Cook flows. At level 1, each line a customer starts saying the dish with ("Muke ... khape", the sound log) must bring the dish's card (.wc14-flash, js/shared/word-card.js WordCard.flash through js/cook/ui.js UI.dishFlash) on screen within ${FLASH_WITHIN_MS} ms, held at least ${FLASH_HOLD_MS} ms (its 1.5 s at the test speed); none is a break, once per page. From level 2 any such card on screen is a break: it would give the order away (SH-267, Zafar 12 Nov: "Yes ... only at level 1").` },
   "contract-118": { item: "wrong-order", title: "a wrong order: its card in the middle, only the wrong order redone", how: `Cook flows. A wrong order served (the serve-wrong driver's look-alike put in and kept: a Lifecycle probe-wrong note) must bring the wrong-order pop-up (js/shared/wrong-order.js) within ${WO_POP_MS / 1000} s: its card in the middle; none is a break. Every s19wo sample (lib/contract-wo.mjs WO_HOOK: the pop-up's card, its items, the asker's face, the side panel's people cards in order, the people's faces on the play area) held ${WO_HOLD_MS} ms with the wrong card open: its middle within ${WO_MIDDLE * 100}% of the pop-up's middle, the card and every item inside the screen (${WO_EDGE_PX} px), the asker's face at least ${WO_FACE_K} times the side panel's face circle; before it closes an item marked wrong with its cross (.njg-wo-bad and .njg-wo-mark.bad). After the redo starts (the wo-redo note: the people kept and the one being worked on), the first sample ${WO_GLIDE_MS} ms on: the side panel's people cards only the kept ones, the one being worked on first, and no face of a person served right on the play area; a redo with orders made right whose game gives the shared round no leave (wo-leave none: their glasses or dishes stay) is a break too. Once per kind per page (SH-264, SH-265, SH-266, Zafar 11 Nov evening, his child play-test: "the order card for the incorrect one probably needs to come up in the middle of the screen ... All the items should be visible in one view ... it should be red, and there should be a little cross instead of a tick"; "they don't put the one you're working on at the top"; "The correct ones disappear ... and you're just left with the person that got it wrong").` },
 };
 
@@ -77,8 +80,33 @@ export function check118(r, tl, add) {
   for (const n of life(tl, "wo-leave")) if (n.step === "none") out("leave", n.at || n.t, `a redo with ${n.by || "some"} order(s) made right whose game gives the shared round no leave (NjgServe.round o.leave): their glasses or dishes stay on the screen`);
 }
 
+// 119 (SH-267, Zafar 12 Nov: "Yes ... only at level 1"): as a customer says the dish (a line "Muke ... khape" starting), the dish's card
+// flashes up beside their bubble at level 1, and never from level 2
+const levelOf = (flow) => +((/@L(\d)/.exec(flow || "") || [])[1] || 1);
+export function check119(r, tl, add) {
+  if (!isCookFlow(r.flow)) return;
+  const fl = ev(tl, "s19flash");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  const level = levelOf(r.flow);
+  if (level >= 2) {
+    const on = fl.find((e) => e.on);
+    if (on) add("contract-119", on.t, `the dish's card flashed up at level ${level} ${on.box ? `[${on.box.join(",")}]` : ""}: only at level 1 (from level 2 it gives the order away)`);
+    return;
+  }
+  const says = tl.filter((e) => e.type === "line" && /^\s*muke\b[\s\S]*\bkhape\b/i.test(e.text || ""));
+  for (const l of says) {
+    if (l.t + FLASH_WITHIN_MS > tEnd) continue;
+    const up = fl.findIndex((e) => e.on && e.t >= l.t - 300 && e.t <= l.t + FLASH_WITHIN_MS);
+    const held = up >= 0 ? ((fl[up + 1] ? fl[up + 1].t : tEnd) - fl[up].t) : 0;
+    if (up >= 0 && held >= FLASH_HOLD_MS) continue;
+    add("contract-119", l.t, `the customer said the dish ("${(l.text || "").trim().slice(0, 40)}") at level 1 and its card ${up >= 0 ? `flashed only ${Math.round(held)} ms` : "never flashed up"} beside their bubble`);
+    return;
+  }
+}
+
 export function checkWO(r, tl, v, add) {
   check118(r, tl, add);
+  check119(r, tl, add);
 }
 
 // ---- the probe: what contract-118 reads. A function, not a string: the page gets its source ----
@@ -126,7 +154,14 @@ function wohook() {
     return cr.width > 2 ? out : [];
   };
   let last = "";
+  let lastFlash = "";
   setInterval(() => {
+    // (contract-119: the dish card's flash, SH-267: on screen or not, and where)
+    try {
+      const f = [...document.querySelectorAll(".wc14-flash")].find((el) => el.classList.contains("on") && shown(el));
+      const fv = f ? JSON.stringify(R(f.getBoundingClientRect())) : "";
+      if (fv !== lastFlash) { lastFlash = fv; emit({ k: "s19flash", on: !!f, box: f ? R(f.getBoundingClientRect()) : null, vw: innerWidth, vh: innerHeight }); }
+    } catch (e) { /* a probe only */ }
     try {
       const L = window.Lifecycle && window.Lifecycle.log;
       const lastRedo = L ? [...L].reverse().find((x) => x && x.what === "wo-redo") : null;

@@ -384,6 +384,32 @@
    * (the order pop-up's along body, js/shared/request-popup.js), popping in from the left (.wc-pop, css/shared/word-card.css).
    * Returns the card. (Called with two elements it is the fly above, its older name.)
    */
+  /**
+   * SH-267 (Zafar, 12 Nov: "Yes ... only at level 1"): as a customer says the dish ("Muke ba samosa khape"), the dish's card flashes up
+   * beside the speaker's bubble, its count written as the engine says it ("ba samosa"), for about 1.5 s; it never joins the order card.
+   * The host says when (level 1 only: from level 2 it would give the order away). host: the element it stands in (the play area);
+   * o.x, o.y: its middle in host px; o.ms: how long it shows (default 1500, the host's speed already in it); o.cls more classes.
+   * -> {el, close()} (it closes itself after o.ms)
+   */
+  W.flash = function (host, word, o = {}) {
+    if (!host || !word) return { el: null, close() {} };
+    const c = W.big14(null, word, Object.assign({}, o.opts || {}, { cls: ["wc14-flash", o.cls || ""].filter(Boolean).join(" ") }));
+    c.setAttribute("aria-hidden", "true");
+    c.style.left = `${Math.round(o.x || 0)}px`;
+    c.style.top = `${Math.round(o.y || 0)}px`;
+    host.appendChild(c);
+    const raf = root.requestAnimationFrame || ((f) => setTimeout(f, 16));
+    raf(() => c.classList.add("on"));
+    let t = 0;
+    const close = () => {
+      clearTimeout(t);
+      if (!c.isConnected) return;
+      c.classList.remove("on");
+      setTimeout(() => c.remove(), 220);
+    };
+    t = setTimeout(close, o.ms != null ? o.ms : 1500);
+    return { el: c, close };
+  };
   W.pop = function (el, word, o = {}) {
     if (word && word.nodeType) return W.fly(el, word, o);
     if (!el) return null;
