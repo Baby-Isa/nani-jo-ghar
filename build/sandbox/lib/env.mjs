@@ -70,8 +70,12 @@ export function startServer(extraRoots = {}) {
       // (s19-clean-a, SH-242: pictures, sounds and fonts cached as GitHub Pages serves them, max-age=600; the game's code and data never.
       // With no-store every card drawn again fetched its picture afresh, so on a loaded machine a card's picture was "not in" 600 ms on:
       // contract-104's blank cards that the live site never shows)
-      const media = /\.(webp|png|jpe?g|gif|svg|mp3|ogg|wav|m4a|woff2?|ttf)$/i.test(f);
-      res.writeHead(200, { "content-type": MIME[extname(f).toLowerCase()] || "application/octet-stream", "cache-control": media ? "max-age=600" : "no-store" });
+      // s19-clean-a2 (SH-175): the code and data too, as Pages serves every file (max-age=600). With no-store, lab.html and the game's
+      // own frame each fetched the shared scripts and sheets afresh (tokens.css four times, onboard.js twice: 46 repeats, about 1.5 MB
+      // to chai L3's first tap) that a phone on the live site takes from its cache. Each page is a fresh browser context, so a run
+      // never sees an earlier page's files; the HTML pages stay uncached.
+      const cached = !/\.html?$/i.test(f);
+      res.writeHead(200, { "content-type": MIME[extname(f).toLowerCase()] || "application/octet-stream", "cache-control": cached ? "max-age=600" : "no-store" });
       createReadStream(f).pipe(res);
     } catch (e) { res.writeHead(500); res.end(String(e)); }
   });
