@@ -2,11 +2,11 @@
 
 Built by `node build/tools/ops/recordings.mjs` (do not edit by hand; `--check` says when it is out of date). English meanings and gaps only: this sheet never holds Kutchi we have not been given. Zafar, 20 Oct: **lock the grammar first, then the vocabulary slots in.** So Mum's next sitting starts at section 1; each later section is a table to work down, most-used first.
 
-**Status words:** *No Kutchi yet* = the game shows the English (grey italic; Zafar, 3 Nov: no "to record" sign, this sheet is the log). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet ticked in `lab/family-audio.html` (only OK takes ship). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).
+**Status words:** *No Kutchi yet* = the game shows the English (grey italic; Zafar, 3 Nov: no "to record" sign, this sheet is the log). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet heard by Zafar in `lab/family-audio.html` (it plays in the game already: every clip is approved for the game, Zafar 12 Nov; the stores need re-recorded "final" clips). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).
 
 ## 1. Grammar first
 
-The open questions that unlock many lines at once. 8 rows that block lines now, then the wider grammar (from `docs/language/grammar-kb.md`) and the questions already written down for the next sitting.
+The open questions that unlock many lines at once. 5 rows that block lines now, then the wider grammar (from `docs/language/grammar-kb.md`) and the questions already written down for the next sitting.
 
 ### 1a. Blocking lines today
 
@@ -14,11 +14,8 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 |---|---|---|---|
 | Bring me these for chai | Cook line: Bring me these for {x} | 1 line | Rule not known yet: needs Mum. |
 | I'd like two samosas with mince, and one with potato. | Cook line: and {x} | 1 line | Rule not known yet: needs Mum. Asked before: L23, L26, L27. |
-| I'd like two samosas with mince. · I'd like one samosa with potato and one with mince. | Cook line: with {x} | 1 line | Rule not known yet: needs Mum. Asked before: L17, L22, L23, L27. |
-| In my tea I want two sugars. | Cook line: In my chai I want {x}. | 1 line | Rule not known yet: needs Mum. Asked before: L34, L9. |
-| once; twice; three times (stir it three times) | Cook line: {x} times | 1 line | Rule not known yet: needs Mum. Asked before: L54. |
-| One tomato, three tomatoes. | Cook: tomato | 1 line | Form missing: Mum's answer unlocks it. Asked before: Q14. Zafar, 20 Oct: see 1c. |
-| He-word or she-word? 33 nouns in Cook: sugar, flour, daal, potato, onion, tomato, chilli, garlic, peas (green peas), ginger, turmeric, cumin seeds, mustard seeds, cardamom, salt, red chilli powder, chickpeas, yoghurt, sev, coriander, mince, meat, ghee, chaat, samosa, sekelo, mishkaki, cupboard, corn on the cob, egg, black pepper, vegetable, mixed | Cook: every line that names them | 71 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
+| I'd like two samosas with mince. · I'd like one samosa with potato and one with mince. | Cook line: with {x} | 1 line | Rule not known yet: needs Mum. |
+| He-word or she-word? 9 nouns in Cook: salt, red chilli powder, meat, sekelo, naan, corn on the cob, black pepper, vegetable, mixed | Cook: every line that names them | 18 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
 | He-word or she-word? 5 nouns in the clinic: foot, ear, drops (not sprinkle), apple, medicine | Clinic: every line that names them | 12 lines | Gender not known; until asked the game uses the he-form (Mum's rule) and flags it |
 
 ### 1b. Wider grammar still open
@@ -62,73 +59,72 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 
 ## 2. Cook
 
-123 rows: 44 with no Kutchi yet, 79 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
+114 rows: 29 with no Kutchi yet, 85 with Kutchi but no recording. Cook's sentence gaps and genders are in section 1.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
-| one | Cook: water; Cook: milk; Cook: sugar | 48 lines | Kutchi known (hakro); no family recording. |
-| three | Cook: water; Cook: milk; Cook: sugar (+3 more) | 46 lines | Kutchi known (trae); no family recording. |
-| I / me | Cook line: I need {x}. | 16 lines | Kutchi known (muke); no family recording. |
-| chai | Cook: chai; Cook: black (of tea: no milk); Cook: unsweetened (of tea) | 13 lines | Kutchi known (chai); no family recording. |
-| milk | Cook: milk; Cook line: I need {x}. | 10 lines | Kutchi known (dudh); no family recording. |
-| one | Cook: chai; Cook: chapati; Cook: millet chapati | 8 lines | Kutchi known (hakri); no family recording. |
-| sugar | Cook: sugar; Cook line: I need {x}.; Cook line: In my chai I want {x}. | 8 lines | Kutchi known (khun); no family recording. |
+| I / me | Cook line: I need {x}. | 15 lines | Kutchi known (muke); no family recording. |
+| put in, add | Cook line: Put it in their glass.; Cook line: Pour it up to the line.; Cook line: Put in as many spoons as they want. | 13 lines | Kutchi known (wij); no family recording. |
+| of ('s) | Cook: millet chapati; Cook: tamarind chutney | 8 lines | Kutchi known (ji); no family recording. |
 | be wanted (by someone) | Cook line: I need {x}. | 6 lines | Kutchi known (khape); no family recording. |
-| of ('s) | Cook: millet chapati; Cook: tamarind chutney | 6 lines | Kutchi known (ji); no family recording. |
-| with (mixed in) | Cook: with (mixed in); Cook line: I want chai with {x}. | 5 lines | Kutchi known (waari); no family recording. |
+| be | Cook line: I'm fine, thank you.; Cook line: This is for {x}.; Cook line: It's ready. | 4 lines | Kutchi known (ai); no family recording. |
 | chutney | Cook: tamarind chutney; Cook: mint chutney | 4 lines | Kutchi known (chutney); no family recording. |
 | daal | Cook: daal; Cook line: Can you make me {x}?; Cook line: First {x}. | 4 lines | Kutchi known (daar); no family recording. |
 | for | Cook line: Wait for me!; Cook line: This is for {x}.; Cook line: For {x}. | 4 lines | Kutchi known (lai); no family recording. |
 | give (also: pass) | Cook line: Give me {x}.; Cook line: Leave the {x}. | 4 lines | Kutchi known (de); no family recording. |
+| make | Cook line: Can you make me {x}?; Cook line: Make everyone's chai.; Cook line: Make each cup the way they said | 4 lines | Kutchi known (banai); no family recording. |
+| pot | Cook line: Put the chai in the pan.; Cook line: Put water in the pan.; Cook line: Put water in the pan | 4 lines | Kutchi known (tapele); no family recording. |
+| water | Cook: water; Cook line: Put water in the pan.; Cook line: Put water in the pan | 4 lines | Kutchi known (paani); no family recording. |
 | and then | Cook: and then; Cook line: And then {x}. | 3 lines | Kutchi known (ne poi); no family recording. |
-| be | Cook line: I'm fine, thank you.; Cook line: This is for {x}.; Cook line: It's ready. | 3 lines | Kutchi known (ai); no family recording. |
-| be wanted (by someone) | Cook line: I need {x}.; Cook line: I want chai with {x}. | 3 lines | Kutchi known (khapeti); no family recording. |
 | cut | Cook line: Chop it small!; Cook line: Chop what they said | 3 lines | Kutchi known (kap); no family recording. |
 | fold | Cook line: Fold the samosa!; Cook line: Fold the samosa | 3 lines | Kutchi known (waar); no family recording. |
 | fry | Cook line: Fry it!; Cook line: Fry them, then lift them out | 3 lines | Kutchi known (tar); no family recording. |
 | leave, finish (the helper in wiji chad, chadi de) | Cook line: Put it in!; Cook line: Put it in the pan | 3 lines | Kutchi known (chad); no family recording. |
 | potato | Cook: potato; Cook: chips | 3 lines | Kutchi known (bataata); no family recording. |
 | put in, add | Cook line: Put it in!; Cook line: Put it in the pan | 3 lines | Kutchi known (wiji); no family recording. |
-| two | Cook: two; Cook line: In my chai I want {x}. | 3 lines | Kutchi known (ba); no family recording. |
 | you (a child) | Cook line: How are you?; Cook line: Can you make me {x}? | 3 lines | Kutchi known (tu); no family recording. |
+| a quarter cup | Cook: a quarter cup | 2 lines | Kutchi known (pa cup); no family recording. |
+| all (after hi / hu: hi mare = all of these) | Cook line: Make everyone's chai.; Cook line: Make each cup the way they said | 2 lines | Kutchi known (mare); no family recording. |
 | and | Cook line: And {x}. | 2 lines | Kutchi known (ne); no family recording. |
+| as many as (jitli … itli: as many … that many) | Cook line: Put in as many spoons as they want.; Cook line: Put in as many spoons as they said | 2 lines | Kutchi known (jitli); no family recording. |
 | be wanted (by someone) | Cook line: I need {x}. | 2 lines | Kutchi known (khapeto); no family recording. |
 | black pepper | Cook: black pepper | 2 lines | Kutchi known (mari); no family recording. |
-| cardamom | Cook: cardamom | 2 lines | Kutchi known (elchi); no family recording. |
 | chicken | Cook: chicken | 2 lines | Kutchi known (murgi); no family recording. |
 | chilli (the dried chilli, or the plural: Zafar's word) | Cook: red chilli powder | 2 lines | Kutchi known (marcha); no family recording. |
 | chips | Cook: chips | 2 lines | Kutchi known (tarela); no family recording. |
+| Cook it the way they said. | Cook line: Cook it the way they said.; Cook line: Cook it the way they said | 2 lines | Kutchi known (e chai erte rand); no family recording. |
 | cumin seeds | Cook: cumin seeds | 2 lines | Kutchi known (jeeru); no family recording. |
 | first | Cook: first; Cook line: First {x}. | 2 lines | Kutchi known (pela); no family recording. |
 | garlic | Cook: garlic | 2 lines | Kutchi known (lasan); no family recording. |
-| ginger | Cook: ginger | 2 lines | Kutchi known (aadu); no family recording. |
 | give (also: pass) | Cook line: Can you make me {x}? | 2 lines | Kutchi known (dinda); no family recording. |
-| make | Cook line: Can you make me {x}? | 2 lines | Kutchi known (banai); no family recording. |
+| glass (the English word) | Cook line: Put it in their glass.; Cook line: Pour it into their glass | 2 lines | Kutchi known (glass); no family recording. |
+| he / she | Cook line: Put in as many spoons as they want.; Cook line: Put in as many spoons as they said | 2 lines | Kutchi known (inke); no family recording. |
+| I / me | Cook line: In my chai I want {x}. | 2 lines | Kutchi known (munji); no family recording. |
+| line (a drawn line) | Cook line: Pour it up to the line.; Cook line: Pour it up to the line | 2 lines | Kutchi known (liti); no family recording. |
 | millet | Cook: millet chapati | 2 lines | Kutchi known (bajr); no family recording. |
 | mint | Cook: mint chutney | 2 lines | Kutchi known (fudino); no family recording. |
 | mustard seeds | Cook: mustard seeds | 2 lines | Kutchi known (rai); no family recording. |
+| naan | Cook: naan | 2 lines | Kutchi known (naan); no family recording. |
+| of ('s) / (links a thing to a place word) | Cook line: Put it in their glass.; Cook line: Pour it into their glass | 2 lines | Kutchi known (je); no family recording. |
 | potato | Cook: potato; Cook line: And then {x}. | 2 lines | Kutchi known (bataato); no family recording. |
 | put (down), place; keep | Cook line: Leave it a bit longer.; Cook line: Careful! | 2 lines | Kutchi known (rakh); no family recording. |
-| Put in the next thing | Cook line: Put in the next thing | 2 lines | No Kutchi yet (grey English). |
 | Roll the maani, then cook it | Cook line: Roll the maani, then cook it | 2 lines | No Kutchi yet (grey English). |
 | salt | Cook: salt | 2 lines | Kutchi known (loon); no family recording. |
+| that many, that much (itlo dudh, itli khun) | Cook line: Put in as many spoons as they want.; Cook line: Put in as many spoons as they said | 2 lines | Kutchi known (itli); no family recording. |
+| they / them (those people) | Cook line: Put it in their glass.; Cook line: Pour it into their glass | 2 lines | Kutchi known (iloka); no family recording. |
 | turmeric | Cook: turmeric | 2 lines | Kutchi known (hardar); no family recording. |
-| water | Cook: water | 2 lines | Kutchi known (paani); no family recording. |
+| up to, until (after the thing) | Cook line: Pour it up to the line.; Cook line: Pour it up to the line | 2 lines | Kutchi known (sudhi); no family recording. |
 | a little, a bit (in thori war: a bit of time) | Cook line: Leave it a bit longer. | 1 line | Kutchi known (thori); no family recording. |
 | A lot. | Cook line: A lot. | 1 line | No Kutchi yet (grey English). |
-| a quarter cup | Cook: a quarter cup | 1 line | No Kutchi yet (grey English). |
 | a while (thori war = a bit longer) | Cook line: Leave it a bit longer. | 1 line | Kutchi known (war); no family recording. |
 | Add the spices, in order | Cook line: Add the spices, in order | 1 line | No Kutchi yet (grey English). |
 | be | Cook line: How are you? | 1 line | Kutchi known (aiye); no family recording. |
 | big | Cook: big | 1 line | Kutchi known (wadho); no family recording. |
-| black (of tea: no milk) / do, make | Cook: black (of tea: no milk) | 1 line | Kutchi known (kari); no family recording. |
-| boiled egg | Cook: boiled egg | 1 line | No Kutchi yet (grey English). |
 | Bring me these | Cook line: Bring me these | 1 line | No Kutchi yet (grey English). |
 | Bring these from the pantry | Cook line: Bring these from the pantry | 1 line | No Kutchi yet (grey English). |
 | Bye! | Cook line: Bye! | 1 line | Kutchi known (achija); no family recording. |
 | care, attention | Cook line: Careful! | 1 line | Kutchi known (dhyan); no family recording. |
 | Chop these | Cook line: Chop these | 1 line | No Kutchi yet (grey English). |
-| Cook it the way they said | Cook line: Cook it the way they said | 1 line | No Kutchi yet (grey English). |
 | egg | Cook: egg | 1 line | Kutchi known (inda); no family recording. |
 | Fill the next one | Cook line: Fill the next one | 1 line | No Kutchi yet (grey English). |
 | fine, all right (never changes) | Cook line: I'm fine, thank you. | 1 line | Kutchi known (theek); no family recording. |
@@ -138,6 +134,7 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | fried | Cook: fried | 1 line | Kutchi known (tarelo); no family recording. |
 | Fry them | Cook line: Fry them | 1 line | No Kutchi yet (grey English). |
 | Give me | Cook line: Give me | 1 line | No Kutchi yet (grey English). |
+| good (things) | Cook line: That's good. | 1 line | Kutchi known (saro); no family recording. |
 | green pepper | Cook: green pepper | 1 line | No Kutchi yet (grey English). Asked before: B34. |
 | Grill the skewers | Cook line: Grill the skewers | 1 line | No Kutchi yet (grey English). |
 | Grill them | Cook line: Grill them | 1 line | No Kutchi yet (grey English). |
@@ -149,44 +146,35 @@ The open questions that unlock many lines at once. 8 rows that block lines now, 
 | I / me | Cook line: I'm fine, thank you. | 1 line | Kutchi known (aau); no family recording. |
 | I / me | Cook line: Wait for me! | 1 line | Kutchi known (mu); no family recording. |
 | I'll give you pocket money for helping. Get it all right and be quick, and you get more! | Cook line: I'll give you pocket money for helping. Get it all right and be quick, and you get more! | 1 line | No Kutchi yet (grey English). |
-| in | Cook line: In my chai I want {x}. | 1 line | Kutchi known (me); no family recording. |
 | leave, finish (the helper in wiji chad, chadi de) | Cook line: Leave the {x}. | 1 line | Kutchi known (chadi); no family recording. |
 | Ma (mother) | Cook: Ma (mother) | 1 line | Kutchi known (Ma); no family recording. |
-| Make each cup the way they said | Cook line: Make each cup the way they said | 1 line | No Kutchi yet (grey English). |
 | Make each pan the way they said | Cook line: Make each pan the way they said | 1 line | No Kutchi yet (grey English). |
 | Make the bowl, in order | Cook line: Make the bowl, in order | 1 line | No Kutchi yet (grey English). |
 | mince | Cook: mince | 1 line | Kutchi known (chunda); no family recording. |
-| naan | Cook: naan | 1 line | No Kutchi yet (grey English). |
 | oh dear! | Cook line: Oh dear! | 1 line | Kutchi known (arre re); no family recording. |
-| one and a half cups | Cook: one and a half cups | 1 line | No Kutchi yet (grey English). |
 | Pass me that one | Cook line: Pass me that one | 1 line | No Kutchi yet (grey English). |
-| Pour it into their glass | Cook line: Pour it into their glass | 1 line | No Kutchi yet (grey English). |
-| Pour it up to the line | Cook line: Pour it up to the line | 1 line | No Kutchi yet (grey English). |
-| Put in as many spoons as they said | Cook line: Put in as many spoons as they said | 1 line | No Kutchi yet (grey English). |
+| put in, add | Cook line: In my chai I want {x}. | 1 line | Kutchi known (wijij); no family recording. |
 | Put it on the tawa | Cook line: Put it on the tawa | 1 line | No Kutchi yet (grey English). |
-| Put the chai in the pan | Cook line: Put the chai in the pan | 1 line | No Kutchi yet (grey English). |
 | Put the daar in | Cook line: Put the daar in | 1 line | No Kutchi yet (grey English). |
 | Put the vegetables in | Cook line: Put the vegetables in | 1 line | No Kutchi yet (grey English). |
-| Put water in the pan | Cook line: Put water in the pan | 1 line | No Kutchi yet (grey English). |
 | ready | Cook line: It's ready. | 1 line | Kutchi known (tayar); no family recording. |
 | Roll it round | Cook line: Roll it round | 1 line | No Kutchi yet (grey English). |
 | Roll the maani round | Cook line: Roll the maani round | 1 line | No Kutchi yet (grey English). |
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekelo); no family recording. |
 | sekelo | Cook: sekelo | 1 line | Kutchi known (sekela); no family recording. |
-| Still a little more. | Cook line: Still a little more. | 1 line | No Kutchi yet (grey English). |
+| still (haji thorok wadhare: still a little more) | Cook line: Still a little more. | 1 line | Kutchi known (haji); no family recording. |
 | Stir it three times, slowly. | Cook line: Stir it three times, slowly. | 1 line | No Kutchi yet (grey English). |
 | Take a dough ball | Cook line: Take a dough ball | 1 line | No Kutchi yet (grey English). |
 | take out | Cook line: Lift out the {x}. | 1 line | Kutchi known (kadh); no family recording. |
 | tasting (muke chakhan lai de: let me taste it) | Cook line: Let me taste it. | 1 line | Kutchi known (chakhan); no family recording. |
 | thank you | Cook line: Thank you! | 1 line | No Kutchi yet (grey English). |
-| That's good. | Cook line: That's good. | 1 line | No Kutchi yet (grey English). |
 | Thread the skewers | Cook line: Thread the skewers | 1 line | No Kutchi yet (grey English). |
 | Thread the skewers, then grill them | Cook line: Thread the skewers, then grill them | 1 line | No Kutchi yet (grey English). |
 | Thread them | Cook line: Thread them | 1 line | No Kutchi yet (grey English). |
+| times, turns (hakre fare, ba fare, trae fare: once, twice, three times) | Cook line: {x} times | 1 line | Kutchi known (fare); no family recording. |
 | To the grill | Cook line: To the grill | 1 line | No Kutchi yet (grey English). |
+| tomato | Cook: tomato | 1 line | Kutchi known (tameta); no family recording. |
 | turner | Cook: turner | 1 line | No Kutchi yet (grey English). |
-| two and a half cups | Cook: two and a half cups | 1 line | No Kutchi yet (grey English). |
-| unsweetened (of tea) | Cook: unsweetened (of tea) | 1 line | Kutchi known (mori); no family recording. |
 | wait | Cook line: Wait for me! | 1 line | Kutchi known (khobar); no family recording. |
 | you're welcome (it's no trouble at all) | Cook line: You're welcome. | 1 line | Kutchi known (jara e wandho nai); no family recording. |
 
@@ -360,7 +348,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | **E15** I feel happy. · I feel sad. · I feel hot. · I feel cold. | the send-off | when he plays the patient | To record |
 | **E16** Thank you! · Bye! | the goodbye at the door | when he plays the patient | To record (some words known: thank you (the family says it in English)) |
 
-### 3b. Sentences the engine cannot say yet (41)
+### 3b. Sentences the engine cannot say yet (40)
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
@@ -392,7 +380,6 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | No, the knee. | Clinic line: No, the {x}. | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | Not that one. My other knee. | Clinic line: Not that one. My other {x}. | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | Now the knee. | Clinic line: Now the {x}. | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
-| once; twice; three times (stir it three times) | Clinic line: {x} times | 1 line | Sentence not buildable yet: the doctor's script. Asked before: L54. |
 | Round knee times. | Clinic line: Round {x} times. | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | Round the knee. | Clinic line: Round the {x}. | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | Take the temperature: the knee. | Clinic line: Take the temperature: the {x}. | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
@@ -406,13 +393,10 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | What's wrong with knee? | Clinic line: What's wrong with {x}? | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 | X-ray the leg, then clonk the bone two times | Clinic line: X-ray the leg, then clonk the bone {n} times | 1 line | Sentence not buildable yet: the doctor's script. Round 4 Section G (the doctor's script). |
 
-### 3c. Words (288): 255 with no Kutchi yet, 33 with Kutchi but no recording
+### 3c. Words (282): 255 with no Kutchi yet, 27 with Kutchi but no recording
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
-| one | Clinic: head; Clinic: tummy; Clinic: arm | 108 lines | Kutchi known (hakro); no family recording. |
-| three | Clinic: hand; Clinic: foot; Clinic: ear (+2 more) | 13 lines | Kutchi known (trae); no family recording. |
-| milk | Clinic line: {x}? No, my {y} hurts.; Clinic line: This is the {x}. The {y}, please.; Clinic line: Is it the {x}, or the {y}? | 7 lines | Kutchi known (dudh); no family recording. |
 | hand | Clinic: hand | 6 lines | Kutchi known (hath); no family recording. |
 | I / me | Clinic line: I need {a}; Clinic line: I need {a}, and {rest} | 5 lines | Kutchi known (muke); no family recording. |
 | and then | Clinic line: And then {x}; Clinic line: First {a}, and then {b}; Clinic line: I need {a} first, and then {rest} | 4 lines | Kutchi known (ne poi); no family recording. |
@@ -422,7 +406,6 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | bandage | Clinic: bandage | 3 lines | No Kutchi yet (grey English). Asked before: G74. |
 | be wanted (by someone) | Clinic line: I need {a}; Clinic line: I need {a}, and {rest}; Clinic line: I need {a} first, and then {rest} | 3 lines | Kutchi known (khape); no family recording. |
 | blanket | Clinic: blanket | 3 lines | No Kutchi yet (grey English). Asked before: G78. |
-| chai | Clinic: right (side) | 3 lines | Kutchi known (chai); no family recording. |
 | daal | Clinic line: First {a}, and then {b}; Clinic line: I need {a} first, and then {rest}; Clinic line: First {a}, then {b} | 3 lines | Kutchi known (daar); no family recording. |
 | honey | Clinic: honey | 3 lines | No Kutchi yet (grey English). |
 | left | Clinic: left | 3 lines | Kutchi known (dabo); no family recording. |
@@ -430,7 +413,6 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | thermometer | Clinic: thermometer | 3 lines | No Kutchi yet (grey English). Asked before: G111. |
 | torch | Clinic: torch; Clinic line: {tool} the {part} | 3 lines | No Kutchi yet (grey English). Asked before: G110. |
 | apple | Clinic: apple | 2 lines | Kutchi known (safarjan); no family recording. |
-| be wanted (by someone) | Clinic line: I need {a}; Clinic line: I need {a}, and {rest} | 2 lines | Kutchi known (khapeti); no family recording. |
 | Bye! | Clinic: Bye!; Clinic line: Good! (bye) | 2 lines | Kutchi known (achija); no family recording. |
 | cloth | Clinic: cloth | 2 lines | No Kutchi yet (grey English). |
 | cotton bud | Clinic: cotton bud | 2 lines | No Kutchi yet (grey English). |
@@ -443,12 +425,10 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | ice pack | Clinic: ice pack | 2 lines | No Kutchi yet (grey English). Asked before: G76. |
 | knee | Clinic: knee | 2 lines | Kutchi known (gutan); no family recording. |
 | medicine | Clinic: medicine | 2 lines | Kutchi known (dawa); no family recording. |
-| one | Clinic: eye; Clinic: teaspoon | 2 lines | Kutchi known (hakri); no family recording. |
 | Ow! | Clinic: Ow!; Clinic line: Ow! | 2 lines | No Kutchi yet (grey English). |
 | pointer | Clinic: pointer | 2 lines | No Kutchi yet (grey English). |
 | Say bye. | Clinic line: Say bye. | 2 lines | No Kutchi yet (grey English). |
 | stethoscope | Clinic: stethoscope | 2 lines | No Kutchi yet (grey English). Asked before: G110. |
-| sugar | Clinic line: First {a}, then {b}, then {c}; Clinic line: Bandage: first the {a}, then the {b}, then the {c} | 2 lines | Kutchi known (khun); no family recording. |
 | thank you | Clinic line: Thank you! | 2 lines | No Kutchi yet (grey English). |
 | That tickles! | Clinic line: That tickles! | 2 lines | No Kutchi yet (grey English). |
 | That's it! | Clinic line: That's it!; Clinic line: That's it | 2 lines | No Kutchi yet (grey English). |
@@ -668,6 +648,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | throat | Clinic: throat | 1 line | No Kutchi yet (grey English). Asked before: G53. |
 | Time for my jab. | Clinic line: Time for my jab. | 1 line | No Kutchi yet (grey English). |
 | Time for the jab | Clinic line: Time for the jab | 1 line | No Kutchi yet (grey English). |
+| times, turns (hakre fare, ba fare, trae fare: once, twice, three times) | Clinic line: {x} times | 1 line | Kutchi known (fare); no family recording. |
 | To the bench | Clinic line: To the bench | 1 line | No Kutchi yet (grey English). |
 | To the counter | Clinic line: To the counter | 1 line | No Kutchi yet (grey English). |
 | toe | Clinic: toe | 1 line | No Kutchi yet (grey English). Asked before: G59. |
@@ -772,7 +753,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ## 7. Other modes
 
-321 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
+320 rows: words and lines of the parked modes (dress, who, relations, monsoon, snap, tidy, find), the conversations, and words asked in earlier rounds that no game uses yet. They wait until those modes return; none blocks story mode.
 
 | English meaning | Where it is used | How often | Status |
 |---|---|---|---|
@@ -966,7 +947,6 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 | The families are coming back for their pets! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | The families come back this afternoon. Let's look after their pets! | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | things | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
-| three quarters of a cup | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | tin can | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | Tomorrow is school! Who wakes up when? | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
 | toppings | asked in Mum's rounds (grammar-notes), not used by a game yet | — | No Kutchi yet |
@@ -1100,7 +1080,7 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ## 8. In the game with a family voice
 
-255 recordings of words and lines by the family, and OK'd, so the game says them in a family voice (402 OK takes; 485 more takes wait for Zafar's OK in `lab/family-audio.html`, 43 are marked for a redo). Everything in sections 1-7 is still English in the game (Zafar, 3 Nov: where there is no Kutchi the game uses the English; this sheet is the log).
+255 recordings of words and lines by the family, and OK'd, so the game says them in a family voice (402 OK takes; 659 more takes wait for Zafar's OK in `lab/family-audio.html`, 43 are marked for a redo). Everything in sections 1-7 is still English in the game (Zafar, 3 Nov: where there is no Kutchi the game uses the English; this sheet is the log).
 
 | English | Kutchi | Who | OK |
 |---|---|---|---|
@@ -1362,4 +1342,4 @@ The doctor says these himself (Zafar as the doctor; Mum helps with the words). 1
 
 ---
 
-*Sources: `data/lang/reports/gap-list.md` (179 Cook and 342 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 17 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*
+*Sources: `data/lang/reports/gap-list.md` (141 Cook and 334 clinic gaps; rebuild with `node build/lang/import_all.mjs`), `data/lang/*.json`, `data/day.json`, `data/family-audio.json`, `docs/language/doctor-recording-list.md`, `docs/language/grammar-kb.md`, `docs/language/mum-questions/README.md`. 46 recorded words wait for Zafar's OK. Words with a draft Kutchi (spoken, flagged) are not listed; `build/reports/lines-needing-family.md` is the retired shopping game's list and is not a source.*

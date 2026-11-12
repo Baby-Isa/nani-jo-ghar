@@ -4,18 +4,18 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Lexicon
 
-1197 entries (153 are fixed expressions made of other words).
+1217 entries (162 are fixed expressions made of other words).
 
 | By part of speech | Entries |
 |---|---|
-| Phrase | 537 |
-| N | 438 |
+| Phrase | 538 |
+| N | 443 |
 | V | 66 |
-| A | 48 |
-| Adv | 27 |
-| Post | 26 |
+| A | 51 |
+| Adv | 29 |
+| Post | 28 |
+| Num | 17 |
 | PN | 16 |
-| Num | 10 |
 | Pron | 9 |
 | Q | 7 |
 | Dem | 4 |
@@ -27,13 +27,13 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 | By status | Entries |
 |---|---|
-| to-record | 682 |
+| to-record | 665 |
 | confirmed | 344 |
-| draft | 171 |
+| draft | 208 |
 
 | By source (an entry can cite several) | Citations |
 |---|---|
-| grammar-notes | 498 |
+| grammar-notes | 520 |
 | data/clinic* | 482 |
 | other | 246 |
 | parked modes | 166 |
@@ -45,15 +45,15 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Grammar
 
-5 word classes (paradigms); 158 meanings; 157 rules (38 confirmed, 22 draft, 97 unknown, asking Mum); 10 exceptions.
+5 word classes (paradigms); 159 meanings; 158 rules (38 confirmed, 25 draft, 95 unknown, asking Mum); 9 exceptions.
 
 ## Recordings
 
-481 distinct recordings in data/family-audio.json (459 with a file). 653 rows in clips.json: 158 word forms, 258 fixed phrases, 237 sentences the rules build. 34 recordings are not linked (clash list § 6).
+568 distinct recordings in data/family-audio.json (546 with a file). 742 rows in clips.json: 186 word forms, 291 fixed phrases, 265 sentences the rules build. 63 recordings are not linked (clash list § 6).
 
 ## Games
 
-Game lines registered: 555 (cook 117, clinic 219, and 219 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 76.
+Game lines registered: 563 (cook 125, clinic 219, and 219 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 78.
 
 ## Sources loaded, and sources deliberately not
 

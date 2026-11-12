@@ -448,6 +448,47 @@ Source: `grammar-notes.md` §56–§63; recordings in `sources/audio/mum-2026-10
 | ***kianta*** | (you, an elder; we) eat | Mum's version (Zafar 26 Oct, decision 3); Masi's *kauta* is a noted variant, not used | s2 14:30, 15:18 | ⚠ draft |
 | ***kenta*** | (they) eat | the same for boys and girls | s2 15:31–15:53 | ⚠ draft |
 
+## 8. Words from the 12 Nov sitting (Round 6 sheet: Mum and Zafar)
+
+Source: `grammar-notes.md` §64-§67; recording `sources/audio/mum-2026-11-12/voice-261112-113106.m4a` (mm:ss). **Every row is a draft until Zafar ticks its spelling** (`build/reports/mum-2026-11-12.md`). In the engine: `build/lang/hand/words.mjs` and `late.mjs` (the block "Round 6, the 12 Nov sitting"), the genders in `data/lang/seed/cook.json`; this table is for reading, the importer does not parse it. Clips: `data/family-audio.json` (source `sources/audio/mum-2026-11-12/…`), not yet ear-checked.
+
+| Kutchi | English | Notes | Time | Status |
+|---|---|---|---|---|
+| ***chunde ja / chunde jo*** | with mince (a filling) | the "of" word before the dish: *ba chunde ja samosa*, *hakro chunde jo samoso* | 2:33-11:03 | ⚠ draft |
+| ***batate jo*** | with potato | *ne hakro batate jo*: and one with potato | 4:48, 11:00 | ⚠ draft |
+| ***samoso · samosa*** | one samosa · samosas | she also says *muke samosa khapeto* for one | 10:15, 29:24 | ⚠ draft |
+| ***munji chai me*** | in my chai | *munji* agrees with *chai* | 12:21 | ⚠ draft |
+| ***wijij*** | put (please) | *munji chai me ba khun wijij* | 12:36, 46:34 | ⚠ draft |
+| ***fare*** | times (*hakre fare, ba fare, trae fare*) | *hakre* before *fare* | 15:57 | ⚠ draft |
+| ***tameta*** | tomatoes | *hakro tomato, trae tameta* | 17:31 | ⚠ draft |
+| ***mitho*** | salt (Mum's word; the game: *loon*) | a he-word | 23:36-23:47 | ⚠ for Zafar |
+| ***miryo*** | black pepper (Mum's word; the game: *mari*) | a she-word, no singular (heard *miryu*) | 31:00-31:28 | ⚠ for Zafar |
+| ***chano · chana*** | one chickpea · chickpeas | | 24:21 | ⚠ draft |
+| ***indo · inda*** | an egg · eggs | *mayai* is Swahili | 30:48-30:53 | ⚠ draft |
+| ***bafelo indo*** | a boiled egg | *bafelo* = boiled | 46:42 | ⚠ draft |
+| ***mithi chai*** | sweet chai | *muke mithi chai khapeti* | 46:05 | ⚠ draft |
+| ***kari chai · mori chai*** | chai with no milk · with no sugar | recorded alone at 45:20-45:26 | 45:23-46:10 | confirmed (§10), re-said |
+| ***mare ji chai banai*** | make everyone's chai | *mare* = all | 35:06 | ⚠ draft |
+| ***jerte … erte*** | the way … that way | *jerte iloka ke khapeti erte* | 35:06 | ⚠ draft |
+| ***pramane*** | according to | *order pramane*, *reet pramane* | 35:57, 61:15 | ⚠ draft |
+| ***reet*** | the way things are done | | 60:54 | ⚠ draft |
+| ***iloka je glass me*** | in their glass | there is no word for pour | 36:45 | ⚠ draft |
+| ***liti · sudhi*** | line · up to | *liti sudhi wij* (heard *sudhe*) | 37:12 | ⚠ draft |
+| ***jitli … itli / itlo*** | as many … that many | *itlo* with a he-word (*itlo dudh*) | 37:36-41:06 | ⚠ draft |
+| ***e chai*** | he or she said | *e chai itli khun wij*; heard *iche, ichai, ichein* | 39:03, 40:45 | ⚠ spelling |
+| ***tapelo · tapele me*** | the pan · in the pan | | 42:04 | ⚠ draft |
+| ***hane hi wij*** | now put this in | no word for "next" | 48:21 | ⚠ draft |
+| ***e chai erte rand*** | cook it the way they said | | 51:06 | ⚠ draft |
+| ***haji*** | still | *haji thorok wadhare* | 52:42-53:27 | ⚠ draft |
+| ***aabhar · tojo aabhar · aabhar anjo*** | thanks · to a child · to an elder | the family says "thank you" | 53:33-55:20 | ⚠ draft |
+| ***saro ai*** | that's good | | 55:28 | ⚠ draft |
+| ***oho*** | oho (kindly: it came out wrong) | | 55:35 | ⚠ draft |
+| ***pa · adho · pono / poni · aakho*** | a quarter · half · three quarters · whole (cup) | *pono cup* (cup is a he-word) | 55:58-56:15 | ⚠ draft |
+| ***sawa · dedh · adhi · pona ba*** | 1¼ · 1½ · 2½ · 1¾ (cups) | | 56:18-56:42 | ⚠ draft |
+| ***chapti · mut*** | a pinch · a handful | *hakri chapti mitho* | 57:14-57:24 | ⚠ draft |
+| ***atto gund*** | knead the dough | heard a second time (§38 I6) | 59:47 | ⚠ draft |
+| ***naan*** | naan | "naan is just naan" | 57:06 | ⚠ draft |
+
 ---
 
 ## Corrections (superseded handout and Cook spellings)

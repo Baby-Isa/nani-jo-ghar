@@ -1,0 +1,1482 @@
+[
+ {
+  "qid": "1a.1",
+  "at": 40.64,
+  "items": [
+   {
+    "id": "hi-muke-chai-lai-khani-achi-de",
+    "kutchi": "Hi muke chai lai khani achi de",
+    "english": "Bring me these for chai.",
+    "mum": [
+     40.94,
+     42.98
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "sheet 1a: 'Bring me these for chai'; khani achi heard so every time (khanye chi, kani echi): spelling to confirm"
+   }
+  ]
+ },
+ {
+  "qid": "1a.2",
+  "at": 287.86,
+  "items": [
+   {
+    "id": "muke-trae-samosa-khape-ba-chunde-ja-ne-hakro-batate-jo",
+    "kutchi": "Muke trae samosa khape, ba chunde ja ne hakro batate jo",
+    "english": "I'd like three samosas: two with mince and one with potato.",
+    "mum": [
+     288.16,
+     292.46
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "the re-take after the ja / jo talk (4:16-4:59); first takes at 2:33 and 4:29"
+   }
+  ]
+ },
+ {
+  "qid": "1a.3",
+  "at": 342.88,
+  "items": [
+   {
+    "id": "muke-ba-chunde-ja-samosa-khape",
+    "kutchi": "Muke ba chunde ja samosa khape",
+    "english": "I'd like two samosas with mince.",
+    "mum": [
+     343.18,
+     345.14
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum's take; the khapeta take after it (5:48) is Zafar's voice"
+   }
+  ]
+ },
+ {
+  "qid": "1a.3b",
+  "at": 615.8,
+  "items": [
+   {
+    "id": "muke-hakro-chunde-jo-samoso-khapeto-ne-hakro-batate-jo-samoso-khapeto",
+    "kutchi": "Muke hakro chunde jo samoso khapeto, ne hakro batate jo samoso khapeto",
+    "english": "I'd like one samosa with mince, and one samosa with potato.",
+    "mum": [
+     616.1,
+     620.8
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "the full version, samoso said twice"
+   }
+  ]
+ },
+ {
+  "qid": "1a.3b",
+  "at": 659.86,
+  "items": [
+   {
+    "id": "muke-hakro-chunde-jo-samoso-khapeto-ne-hakro-batate-jo",
+    "kutchi": "Muke hakro chunde jo samoso khapeto, ne hakro batate jo",
+    "english": "I'd like one samosa with mince, and one with potato.",
+    "mum": [
+     660.16,
+     663.38
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "without repeating samoso (Zafar: 'a direct translation')"
+   }
+  ]
+ },
+ {
+  "qid": "1a.4",
+  "at": 673.56,
+  "items": [
+   {
+    "id": "munji-chai-me-ba-chamchi-khun-wijij",
+    "kutchi": "Munji chai me ba chamchi khun wijij",
+    "english": "In my chai put two spoons of sugar, please.",
+    "mum": [
+     673.86,
+     676.8
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "wijij: heard vichichi, vijij; spelling to confirm"
+   }
+  ]
+ },
+ {
+  "qid": "1a.4",
+  "at": 742.02,
+  "items": [
+   {
+    "id": "munji-chai-me-ba-khun-khape",
+    "kutchi": "Munji chai me ba khun khape",
+    "english": "In my chai I want two sugars.",
+    "mum": [
+     742.32,
+     744.12
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.4",
+  "at": 756.12,
+  "items": [
+   {
+    "id": "munji-chai-me-ba-khun-wijij",
+    "kutchi": "Munji chai me ba khun wijij",
+    "english": "In my chai put two sugars, please.",
+    "mum": [
+     756.42,
+     757.98
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "'actual final time now': the answer Mum settled on (12:31)"
+   }
+  ]
+ },
+ {
+  "qid": "1a.5",
+  "at": 924.22,
+  "items": [
+   {
+    "id": "hakre-fare-firai-ba-fare-firai-trae-fare-firai",
+    "kutchi": "Hakre fare firai, ba fare firai, trae fare firai",
+    "english": "Stir it once, stir it twice, stir it three times.",
+    "mum": [
+     924.52,
+     928.44
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum says bo fare here and ba fare at 15:57; tre for trae"
+   }
+  ]
+ },
+ {
+  "qid": "1a.5",
+  "at": 957.42,
+  "items": [
+   {
+    "id": "hakre-fare-ba-fare-trae-fare",
+    "kutchi": "Hakre fare, ba fare, trae fare",
+    "english": "Once, twice, three times.",
+    "mum": [
+     957.72,
+     959.84
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.6",
+  "at": 1051.84,
+  "items": [
+   {
+    "id": "hakro-tomato-trae-tameta",
+    "kutchi": "Hakro tomato, trae tameta",
+    "english": "One tomato, three tomatoes.",
+    "mum": [
+     1052.14,
+     1054.18
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum says the English tomato for one ('there's a Kutchi word, I can't remember right now')"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1187.4,
+  "items": [
+   {
+    "id": "hakro-khun",
+    "kutchi": "Hakro khun",
+    "english": "one sugar",
+    "mum": [
+     1187.7,
+     1188.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "heard khan"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1238.36,
+  "items": [
+   {
+    "id": "hakro-atto",
+    "kutchi": "Hakro atto",
+    "english": "one flour",
+    "mum": [
+     1238.66,
+     1239.48
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1245.8,
+  "items": [
+   {
+    "id": "hakri-daar",
+    "kutchi": "Hakri daar",
+    "english": "one daal (one grain of daal)",
+    "mum": [
+     1246.1,
+     1246.95
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1261.46,
+  "items": [
+   {
+    "id": "hakro-bataato",
+    "kutchi": "Hakro bataato",
+    "english": "one potato",
+    "mum": [
+     1261.76,
+     1263.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "heard bateto"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1267.9,
+  "items": [
+   {
+    "id": "hakri-dungri",
+    "kutchi": "Hakri dungri",
+    "english": "one onion",
+    "mum": [
+     1268.2,
+     1269.22
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1277.94,
+  "items": [
+   {
+    "id": "hakri-mirchi",
+    "kutchi": "Hakri mirchi",
+    "english": "one chilli",
+    "mum": [
+     1278.24,
+     1279.02
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1334.12,
+  "items": [
+   {
+    "id": "hakro-lasan",
+    "kutchi": "Hakro lasan",
+    "english": "one garlic",
+    "mum": [
+     1334.42,
+     1335.18
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum: 'I think on its own would be masculine'"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1339.8,
+  "items": [
+   {
+    "id": "hakro-matar",
+    "kutchi": "Hakro matar",
+    "english": "one pea (green peas)",
+    "mum": [
+     1340.1,
+     1340.9
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1345.72,
+  "items": [
+   {
+    "id": "hakro-aadu",
+    "kutchi": "Hakro aadu",
+    "english": "one ginger",
+    "mum": [
+     1346.02,
+     1346.8
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1350.4,
+  "items": [
+   {
+    "id": "hakro-hardar",
+    "kutchi": "Hakro hardar",
+    "english": "one turmeric",
+    "mum": [
+     1350.7,
+     1351.46
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1358.2,
+  "items": [
+   {
+    "id": "hakro-jeeru",
+    "kutchi": "Hakro jeeru",
+    "english": "one cumin seed",
+    "mum": [
+     1358.5,
+     1359.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "heard jeero / jeera"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1388.45,
+  "items": [
+   {
+    "id": "hakri-rai",
+    "kutchi": "Hakri rai",
+    "english": "one mustard seed",
+    "mum": [
+     1388.75,
+     1389.45
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum: 'I've never heard anybody ever saying that'"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1410.56,
+  "items": [
+   {
+    "id": "hakri-elchi",
+    "kutchi": "Hakri elchi",
+    "english": "one cardamom",
+    "mum": [
+     1410.86,
+     1411.62
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1419.64,
+  "items": [
+   {
+    "id": "mitho",
+    "kutchi": "Mitho",
+    "english": "salt",
+    "mum": [
+     1419.94,
+     1420.3
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum's word for salt; 'mitho would be male' (23:45)"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1463.5,
+  "items": [
+   {
+    "id": "hakro-chano",
+    "kutchi": "Hakro chano",
+    "english": "one chickpea",
+    "mum": [
+     1463.8,
+     1464.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "'actually it'll be hakro chano'"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1488.0,
+  "items": [
+   {
+    "id": "muke-dai-khapeti",
+    "kutchi": "Muke dai khapeti",
+    "english": "I'd like yoghurt.",
+    "mum": [
+     1488.3,
+     1489.26
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "'even if I was a man I'd still say khapeti'"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1520.7,
+  "items": [
+   {
+    "id": "muke-sev-khapeti",
+    "kutchi": "Muke sev khapeti",
+    "english": "I'd like sev.",
+    "mum": [
+     1521.0,
+     1522.4
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1580.6,
+  "items": [
+   {
+    "id": "muke-hakro-dhania-de",
+    "kutchi": "Muke hakro dhania de",
+    "english": "Give me a (bunch of) coriander.",
+    "mum": [
+     1580.9,
+     1582.12
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1682.14,
+  "items": [
+   {
+    "id": "muke-maani-ghee-sathe-khapeti",
+    "kutchi": "Muke maani ghee sathe khapeti",
+    "english": "I'd like a chapati with ghee.",
+    "mum": [
+     1682.44,
+     1683.98
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1726.42,
+  "items": [
+   {
+    "id": "muke-thoro-ghee-khapeto",
+    "kutchi": "Muke thoro ghee khapeto",
+    "english": "I'd like a little ghee.",
+    "mum": [
+     1726.72,
+     1727.7
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "thoro: heard so (thorok elsewhere)"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1764.74,
+  "items": [
+   {
+    "id": "muke-samosa-khapeto",
+    "kutchi": "Muke samosa khapeto",
+    "english": "I'd like a samosa.",
+    "mum": [
+     1765.04,
+     1766.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1788.6,
+  "items": [
+   {
+    "id": "hakri-mishkaki-khapeti",
+    "kutchi": "Hakri mishkaki khapeti",
+    "english": "I'd like one (skewer of) mishkaki.",
+    "mum": [
+     1788.9,
+     1790.1
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "'so it'd be like one skewer of mishkaki'"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1849.2,
+  "items": [
+   {
+    "id": "hakro-indo",
+    "kutchi": "Hakro indo",
+    "english": "one egg",
+    "mum": [
+     1849.5,
+     1850.08
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1853.2,
+  "items": [
+   {
+    "id": "ba-inda",
+    "kutchi": "Ba inda",
+    "english": "two eggs",
+    "mum": [
+     1853.5,
+     1854.1
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "1a.7",
+  "at": 1881.06,
+  "items": [
+   {
+    "id": "muke-miryo-khapeti",
+    "kutchi": "Muke miryo khapeti",
+    "english": "I'd like black pepper.",
+    "mum": [
+     1881.36,
+     1882.18
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "heard miryo, miryu (the game has mari)"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2105.5,
+  "items": [
+   {
+    "id": "mare-ji-chai-banai",
+    "kutchi": "Mare ji chai banai",
+    "english": "Make everyone's chai.",
+    "mum": [
+     2105.8,
+     2107.02
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2105.5,
+  "items": [
+   {
+    "id": "mare-ji-chai-banai-jerte-iloka-ke-khapeti-erte",
+    "kutchi": "Mare ji chai banai, jerte iloka ke khapeti erte",
+    "english": "Make everyone's chai the way they want it.",
+    "mum": [
+     2105.8,
+     2110.46
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "jerte ... erte = the way ... that way (Mum: 'it's emphasis')"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2156.86,
+  "items": [
+   {
+    "id": "order-pramane-mare-ji-chai-banai",
+    "kutchi": "Order pramane mare ji chai banai",
+    "english": "Make everyone's chai according to the order.",
+    "mum": [
+     2157.16,
+     2159.6
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2207.9,
+  "items": [
+   {
+    "id": "iloka-je-glass-me-wij",
+    "kutchi": "Iloka je glass me wij",
+    "english": "Put it in their glass.",
+    "mum": [
+     2208.2,
+     2209.48
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "'there's no pour, just put'; the same for their glasses"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2234.4,
+  "items": [
+   {
+    "id": "liti-sudhi-wij",
+    "kutchi": "Liti sudhi wij",
+    "english": "Pour it up to the line.",
+    "mum": [
+     2234.7,
+     2236.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "liti = line, sudhi = up to (heard sudhe)"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2258.24,
+  "items": [
+   {
+    "id": "jitli-chamchi-inke-khapeti-itli-wij",
+    "kutchi": "Jitli chamchi inke khapeti itli wij",
+    "english": "Put in as many spoons as he or she wants.",
+    "mum": [
+     2258.54,
+     2262.18
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2447.24,
+  "items": [
+   {
+    "id": "e-chai-itli-khun-wij",
+    "kutchi": "E chai itli khun wij",
+    "english": "Put in as much sugar as they said.",
+    "mum": [
+     2447.54,
+     2450.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "e chai = he or she said (Mum, 39:03); heard iche, ichai, ichein: spelling to confirm"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2451.22,
+  "items": [
+   {
+    "id": "e-chai-itlo-dudh-wij",
+    "kutchi": "E chai itlo dudh wij",
+    "english": "Put in as much milk as they said.",
+    "mum": [
+     2451.52,
+     2453.2
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2453.98,
+  "items": [
+   {
+    "id": "e-chai-itli-elchi-wij",
+    "kutchi": "E chai itli elchi wij",
+    "english": "Put in as much cardamom as they said.",
+    "mum": [
+     2454.28,
+     2456.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2456.88,
+  "items": [
+   {
+    "id": "e-chai-itlo-aadu-wij",
+    "kutchi": "E chai itlo aadu wij",
+    "english": "Put in as much ginger as they said.",
+    "mum": [
+     2457.18,
+     2458.92
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2460.9,
+  "items": [
+   {
+    "id": "e-chai-itlo-lasan-wij",
+    "kutchi": "E chai itlo lasan wij",
+    "english": "Put in as much garlic as they said.",
+    "mum": [
+     2461.2,
+     2463.0
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2463.68,
+  "items": [
+   {
+    "id": "e-chai-itlo-kesar-wij",
+    "kutchi": "E chai itlo kesar wij",
+    "english": "Put in as much saffron as they said.",
+    "mum": [
+     2463.98,
+     2466.6
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2524.94,
+  "items": [
+   {
+    "id": "chai-tapele-me-wij",
+    "kutchi": "Chai tapele me wij",
+    "english": "Put the chai in the pan.",
+    "mum": [
+     2525.24,
+     2526.34
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "tapelo (pan) becomes tapele before me"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai",
+  "at": 2683.66,
+  "items": [
+   {
+    "id": "paani-tapele-me-wij",
+    "kutchi": "Paani tapele me wij",
+    "english": "Put water in the pan.",
+    "mum": [
+     2683.96,
+     2686.2
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2700.62,
+  "items": [
+   {
+    "id": "hakro",
+    "kutchi": "hakro",
+    "english": "one (a he-word)",
+    "mum": [
+     2700.92,
+     2701.98
+    ],
+    "zafar": "skip: Zafar's take runs into Mum's",
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2703.86,
+  "items": [
+   {
+    "id": "trae",
+    "kutchi": "trae",
+    "english": "three",
+    "mum": [
+     2704.16,
+     2704.56
+    ],
+    "zafar": "skip: Zafar's take runs into Mum's",
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2704.38,
+  "items": [
+   {
+    "id": "chai",
+    "kutchi": "chai",
+    "english": "chai",
+    "mum": [
+     2705.86,
+     2706.62
+    ],
+    "zafar": [
+     2704.68,
+     2705.46
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2706.58,
+  "items": [
+   {
+    "id": "dudh",
+    "kutchi": "dudh",
+    "english": "milk",
+    "mum": [
+     2707.62,
+     2708.04
+    ],
+    "zafar": [
+     2706.88,
+     2707.32
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2707.94,
+  "items": [
+   {
+    "id": "hakri",
+    "kutchi": "hakri",
+    "english": "one (a she-word)",
+    "mum": [
+     2708.92,
+     2709.82
+    ],
+    "zafar": [
+     2708.24,
+     2708.78
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2709.72,
+  "items": [
+   {
+    "id": "khun",
+    "kutchi": "khun",
+    "english": "sugar",
+    "mum": [
+     2710.84,
+     2711.32
+    ],
+    "zafar": [
+     2710.02,
+     2710.44
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2711.96,
+  "items": [
+   {
+    "id": "waari",
+    "kutchi": "waari",
+    "english": "with (mixed in)",
+    "mum": [
+     2713.36,
+     2714.1
+    ],
+    "zafar": [
+     2712.26,
+     2713.04
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2714.0,
+  "items": [
+   {
+    "id": "khapeti",
+    "kutchi": "khapeti",
+    "english": "is wanted (a she-thing)",
+    "mum": [
+     2715.54,
+     2716.26
+    ],
+    "zafar": [
+     2714.3,
+     2715.42
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2716.14,
+  "items": [
+   {
+    "id": "ba-word",
+    "kutchi": "ba",
+    "english": "two",
+    "mum": [
+     2717.18,
+     2717.54
+    ],
+    "zafar": [
+     2716.44,
+     2716.9
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2717.66,
+  "items": [
+   {
+    "id": "elchi",
+    "kutchi": "elchi",
+    "english": "cardamom",
+    "mum": [
+     2718.84,
+     2719.46
+    ],
+    "zafar": [
+     2717.96,
+     2718.6
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2719.32,
+  "items": [
+   {
+    "id": "aadu",
+    "kutchi": "aadu",
+    "english": "ginger",
+    "mum": [
+     2720.56,
+     2721.24
+    ],
+    "zafar": [
+     2719.62,
+     2720.14
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2721.08,
+  "items": [
+   {
+    "id": "kari",
+    "kutchi": "kari",
+    "english": "black (of chai: no milk)",
+    "mum": [
+     2722.1,
+     2722.58
+    ],
+    "zafar": [
+     2721.38,
+     2721.9
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2724.16,
+  "items": [
+   {
+    "id": "me-word",
+    "kutchi": "me",
+    "english": "in",
+    "mum": [
+     2725.98,
+     2726.4
+    ],
+    "zafar": [
+     2724.46,
+     2724.86
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.words",
+  "at": 2726.68,
+  "items": [
+   {
+    "id": "mori",
+    "kutchi": "mori",
+    "english": "unsweetened (of chai: no sugar)",
+    "mum": [
+     2727.92,
+     2728.52
+    ],
+    "zafar": [
+     2726.98,
+     2727.5
+    ],
+    "note": "Zafar reads each word, Mum says it after him"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai-orders",
+  "at": 2764.58,
+  "items": [
+   {
+    "id": "muke-mithi-chai-khapeti",
+    "kutchi": "Muke mithi chai khapeti",
+    "english": "I'd like sweet chai.",
+    "mum": [
+     2764.88,
+     2766.74
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "mithi = sweet (with sugar); the standard was two spoons"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai-orders",
+  "at": 2766.84,
+  "items": [
+   {
+    "id": "muke-mori-chai-khapeti",
+    "kutchi": "Muke mori chai khapeti",
+    "english": "I'd like chai with no sugar.",
+    "mum": [
+     2767.14,
+     2769.44
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.chai-orders",
+  "at": 2794.24,
+  "items": [
+   {
+    "id": "mithi-chai-khapeti-ba-khun-wijij",
+    "kutchi": "Mithi chai khapeti, ba khun wijij",
+    "english": "Sweet chai, please: put in two sugars.",
+    "mum": [
+     2794.54,
+     2797.12
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum: 'No, muke mithi chai khapeti, ba khan vijjij' (46:34); the take may begin after muke"
+   }
+  ]
+ },
+ {
+  "qid": "2.eggs",
+  "at": 2802.86,
+  "items": [
+   {
+    "id": "bafelo-indo",
+    "kutchi": "Bafelo indo",
+    "english": "a boiled egg",
+    "mum": [
+     2803.16,
+     2805.44
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "bafelo = boiled"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 2899.6,
+  "items": [
+   {
+    "id": "hane-hi-wij",
+    "kutchi": "Hane hi wij",
+    "english": "Now put this in.",
+    "mum": [
+     2899.9,
+     2901.1
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "'you would just instead say hane hi wij'; there's no word for next (Mum)"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 2909.1,
+  "items": [
+   {
+    "id": "hane-dudh-wij",
+    "kutchi": "Hane dudh wij",
+    "english": "Now put the milk in.",
+    "mum": [
+     2909.4,
+     2910.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3067.06,
+  "items": [
+   {
+    "id": "e-chai-erte-rand",
+    "kutchi": "E chai erte rand",
+    "english": "Cook it the way they said.",
+    "mum": [
+     3067.36,
+     3069.42
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3112.02,
+  "items": [
+   {
+    "id": "mare-khenjo-banai-chad",
+    "kutchi": "Mare khenjo banai chad",
+    "english": "Make all the food.",
+    "mum": [
+     3112.32,
+     3113.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "also said: mare randhi chad, mare saag banai chad (51:48)"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3164.88,
+  "items": [
+   {
+    "id": "haji-wadhare",
+    "kutchi": "Haji wadhare",
+    "english": "Still more.",
+    "mum": [
+     3165.18,
+     3165.94
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3190.26,
+  "items": [
+   {
+    "id": "haji-thorok-wadhare-wij",
+    "kutchi": "Haji thorok wadhare wij",
+    "english": "Put in still a little more.",
+    "mum": [
+     3190.56,
+     3192.08
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3195.6,
+  "items": [
+   {
+    "id": "haji-thorok-wadhare",
+    "kutchi": "Haji thorok wadhare",
+    "english": "Still a little more.",
+    "mum": [
+     3195.9,
+     3197.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "haji = still, thorok = a little (Mum, 53:26)"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3215.6,
+  "items": [
+   {
+    "id": "aabhar-tojo-aabhar",
+    "kutchi": "Aabhar, tojo aabhar",
+    "english": "Thanks; thanks to you (to a child).",
+    "mum": [
+     3215.9,
+     3218.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3319.22,
+  "items": [
+   {
+    "id": "aabhar-anjo",
+    "kutchi": "Aabhar anjo",
+    "english": "Thank you (to an elder).",
+    "mum": [
+     3319.52,
+     3320.36
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "said once 'so we have a standard'; Mum: everybody just says thank you"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3327.6,
+  "items": [
+   {
+    "id": "saro-ai",
+    "kutchi": "Saro ai",
+    "english": "That's good.",
+    "mum": [
+     3327.9,
+     3328.62
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "'we'd say saro ai' (55:24)"
+   }
+  ]
+ },
+ {
+  "qid": "2.every",
+  "at": 3335.14,
+  "items": [
+   {
+    "id": "oho",
+    "kutchi": "Oho",
+    "english": "Oho! (kindly: an order came out wrong)",
+    "mum": [
+     3335.44,
+     3336.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "Mum: like the French oh la la"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3371.7,
+  "items": [
+   {
+    "id": "pa-cup-adho-cup-pono-cup-aakho-cup",
+    "kutchi": "Pa cup, adho cup, pono cup, aakho cup",
+    "english": "a quarter cup, half a cup, three quarters of a cup, a whole cup",
+    "mum": [
+     3372.0,
+     3376.1
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "pono for a he-word (cup), poni for a she-word (Mum, 55:58-56:08); adho heard ardho"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3378.84,
+  "items": [
+   {
+    "id": "dedh-cup",
+    "kutchi": "Dedh cup",
+    "english": "one and a half cups",
+    "mum": [
+     3379.14,
+     3379.82
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3381.2,
+  "items": [
+   {
+    "id": "adhi-cup",
+    "kutchi": "Adhi cup",
+    "english": "two and a half cups",
+    "mum": [
+     3381.5,
+     3383.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3386.0,
+  "items": [
+   {
+    "id": "sawa-cup",
+    "kutchi": "Sawa cup",
+    "english": "one and a quarter cups",
+    "mum": [
+     3386.3,
+     3387.22
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3402.3,
+  "items": [
+   {
+    "id": "pona-ba-cup",
+    "kutchi": "Pona ba cup",
+    "english": "one and three quarter cups (a quarter to two)",
+    "mum": [
+     3402.6,
+     3403.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3440.02,
+  "items": [
+   {
+    "id": "hakri-chapti-mitho",
+    "kutchi": "Hakri chapti mitho",
+    "english": "a pinch of salt",
+    "mum": [
+     3440.32,
+     3442.5
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "chapti = a pinch; mut = a handful"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3589.36,
+  "items": [
+   {
+    "id": "atto-gund-b",
+    "kutchi": "Atto gund",
+    "english": "Knead the dough.",
+    "mum": [
+     3589.66,
+     3590.36
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "the second time Mum says gund (first: 5 Oct, I6)"
+   }
+  ]
+ },
+ {
+  "qid": "2.baking",
+  "at": 3675.52,
+  "items": [
+   {
+    "id": "chaat-inji-reet-pramane-banai",
+    "kutchi": "Chaat inji reet pramane banai",
+    "english": "Make the chaat the way it's meant to be made.",
+    "mum": [
+     3675.82,
+     3678.14
+    ],
+    "zafar": "skip: Zafar asked in English; Mum's answers only in this recording",
+    "note": "reet = the system, how things are done; pramane = according to; the last word may end -j (banaij): to hear"
+   }
+  ]
+ }
+]

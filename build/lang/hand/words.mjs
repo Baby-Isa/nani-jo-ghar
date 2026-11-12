@@ -458,4 +458,36 @@ export function apply(S) {
   w("N", "jaruri", "need (a necessity)", [R("§58 C86 (Muke chai ji jaruri: I need chai, s1 12:36)")], { id: "n.need", g: null, par: false, f: { "*": d("jaruri", "§58 C86-C92") }, ask: { gender: ["new"] }, n: ["Stronger than wanting (Mum: 'I really need it, like medicine', s1 12:57)."] });
   w("Adv", "roj", "every day", [R("§62 C97 (Mum: roj is every day, s2 4:39)")], { id: "adv.every-day", d: true });
   w("N", "dawa", "medicine", [R("§58 C87 (Toke dawa ji jaruri: you need medicine, s1 14:05)")], { id: "n.medicine", g: null, par: false, f: { "*": d("dawa", "§58 C87") }, ask: { gender: ["new"] }, n: ["dawa heard once, in Mum's example 'like you would say with medicine' (§58); gender unheard."] });
+
+  /* ---------------- Round 6, the 12 Nov sitting (Mum and Zafar; grammar-notes §64-§67) ----------------
+     One file, sources/audio/mum-2026-11-12/voice-261112-113106.m4a (62 min); times are mm:ss in it. Every cell here is a
+     draft until Zafar ticks its spelling (build/reports/mum-2026-11-12.md, the numbered list). Nouns' genders are in
+     data/lang/seed/cook.json (each word's _gender note). */
+  const N6 = (where) => `${GN} §64-§67, 12 Nov ${where}`;
+  const d6 = (t, where) => ({ t, status: "draft", src: N6(where) });
+  S.patch("num.1", { forms: { "he.obl": d6("hakre", "15:57 (hakre fare: once)") } }, { source: "hand: grammar-notes prose" });
+  S.patch("v.put-in", { forms: { "imp.polite": d6("wijij", "12:31-12:38 (munji chai me ba khun wijij: in my chai put two sugars, please), 46:34") }, notes: ["wijij is the 'please put' form (kept in the polite cell: whether it is also the command to an elder is still asked, C142-C151) a customer says to the cook (Mum, 12 Nov §65); wij alone is the short answer ('do I put it in?' 'wij', 41:31)."] }, { source: "hand: grammar-notes prose" });
+  S.patch("intj.oh-no", { notes: ["Mum recorded oho for the wrong-order card (12 Nov 55:35, SH-264): 'like the French oh la la'."] }, { source: "hand: grammar-notes prose" });
+  w("N", "fare", "times, turns (hakre fare, ba fare, trae fare: once, twice, three times)", [N6("12:49-16:01 (hakre fare, ba fare, trae fare; trae fare firai: stir it three times)")], { id: "n.times", g: "he", d: true, par: false, f: { "*": d6("fare", "15:57") }, n: ["Not taano: hakre taano is 'at one time, some time' (Mum, 14:01-14:44). hakre, not hakro, before fare."] });
+  w("Adv", "haji", "still (haji thorok wadhare: still a little more)", [N6("52:42-53:27 (haji is still)")], { id: "adv.still", d: true });
+  w("A", "mithi", "sweet (of chai: with sugar)", [N6("45:42-46:37 (muke mithi chai khapeti: I want sweet chai)")], { id: "a.sweet", d: true, f: { "she.*.dir": d6("mithi", "46:05") }, n: ["The he-form was not said. mitho is salt (§64), not 'sweet' here."] });
+  w("N", "mitho", "salt (Mum's word; the game says loon)", [N6("23:36-23:48 (mitho; 'mitho would be male'), 57:14 (hakri chapti mitho: a pinch of salt)")], { id: "n.salt.mums-word", g: "he", d: true, q: [{ q: "Salt: Mum says mitho (12 Nov); the game says loon (content master, never said by Mum). Which does Nani say?", src: N6("23:36") }] });
+  w("N", "miryo", "black pepper (Mum's word; the game says mari)", [N6("31:00-31:28 (miryo, no singular; muke miryo khapeti)")], { id: "n.black-pepper.mums-word", g: "she", d: true, par: false, f: { "*": d6("miryo", "31:20 (heard miryo, miryu)") }, q: [{ q: "Black pepper: Mum says miryo (12 Nov, a she-word, no singular); the game says mari. Which does Nani say?", src: N6("31:00") }] });
+  w("N", "liti", "line (a drawn line)", [N6("37:09-37:21 (liti sudhi wij: up to the line)")], { id: "n.line", d: true, ask: { gender: ["new"] } });
+  w("Post", "sudhi", "up to, until (after the thing)", [N6("37:12 (liti sudhi wij; heard sudhe)")], { id: "post.up-to", d: true });
+  w("Adv", "jitli", "as many as (jitli … itli: as many … that many)", [N6("37:34-38:20 (jitli chamchi inke khapeti, itli wij)")], { id: "adv.as-many", d: true, n: ["jitli / itli agree with the thing: itli chamchi (she), itlo dudh, itlo aadu (he) (40:45-41:06)."] });
+  w("A", "itlo", "that many, that much (itlo dudh, itli khun)", [N6("40:45-41:06 (e chai itli khun wij; e chai itlo dudh wij)")], { id: "a.that-much", d: true, f: { "he.sg.dir": d6("itlo", "40:48"), "she.*.dir": d6("itli", "40:52 (itli elchi)") }, n: ["With khun Mum says itli though khun is a he-word (hakro khun, 19:46): perhaps the spoons (chamchi) she means. For Zafar's ear."] });
+  w("Adv", "erte", "that way, like that (jerte … erte: the way … that way)", [N6("34:54-35:37 (mare ji chai banai, jerte iloka ke khapeti erte), 51:04 (e chai erte rand)")], { id: "adv.that-way", d: true });
+  w("Post", "pramane", "according to (order pramane, reet pramane)", [N6("35:54-36:00 (order pramane mare ji chai banai), 39:48 (recipe pramane kar), 61:15")], { id: "post.according-to", d: true });
+  w("N", "reet", "the way things are done, the system", [N6("60:25-61:20 (reet is system; chaat inji reet pramane banai)")], { id: "n.custom", d: true, ask: { gender: ["new"] } });
+  w("A", "bafelo", "boiled", [N6("46:42 (bafelo indo: a boiled egg)")], { id: "a.boiled", d: true, f: { "he.sg.dir": d6("bafelo", "46:42") } });
+  w("N", "chapti", "a pinch (hakri chapti mitho: a pinch of salt)", [N6("57:14-57:21")], { id: "n.pinch", g: "she", d: true });
+  w("Num", "pa", "a quarter (pa cup)", [N6("55:58-56:12 (pa cup, adho cup, pono cup, aakho cup)")], { id: "num.quarter", d: true, f: { "*": d6("pa", "56:00") } });
+  w("Num", "pono", "three quarters (pono cup; poni for a she-word)", [N6("55:58-56:12 (pono cup because cup is masculine)")], { id: "num.three-quarters", d: true, f: { he: d6("pono", "56:08"), she: d6("poni", "55:58 (poni is three quarter)") } });
+  w("Num", "adho", "half (adho cup)", [N6("56:12 (heard ardho)")], { id: "num.half-cup", d: true, f: { he: d6("adho", "56:12") }, n: ["The game's half is adh (§24 B4); here Mum says adho cup in the list (heard ardho). For Zafar's ear."] });
+  w("Num", "sawa", "one and a quarter (sawa cup)", [N6("56:23-56:30")], { id: "num.one-and-quarter", d: true, f: { "*": d6("sawa", "56:27") } });
+  w("Num", "dedh", "one and a half (dedh cup)", [N6("56:16-56:19, 56:30")], { id: "num.one-and-half", d: true, f: { "*": d6("dedh", "56:18") } });
+  w("Num", "adhi", "two and a half (adhi cup)", [N6("56:19-56:22")], { id: "num.two-and-half", d: true, f: { "*": d6("adhi", "56:20") } });
+  w("Num", "pona", "a quarter less than (pona ba cup: one and three quarters)", [N6("56:35-56:42 ('they say it for time, and for cups')")], { id: "num.quarter-less", d: true, f: { "*": d6("pona", "56:38") } });
+  w("Phrase", "aabhar anjo", "thank you (to an elder: 'thanks to you')", [N6("53:32-55:20 (aabhar, tojo aabhar, aabhar anjo; 'everybody just says thank you')")], { id: "phrase.thanks-elder", d: true, n: ["tojo aabhar to a child (53:35). Mum: 'I haven't heard anyone say aabhar, everybody just says thank you' (54:44); said once 'so we have a standard'."] });
 }
