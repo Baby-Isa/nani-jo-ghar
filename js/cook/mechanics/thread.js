@@ -158,8 +158,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // SEK-26: the deep tray (the grill's: SK.rackDeep), its rims a skewer's length apart, level with the board's skewer
       const bamboo = (SK.V3.HANDLE - SK.V3.TIP) * SKS;
       const GKA = Cook.GrillKit && Cook.GrillKit.ART;
-      const deep = GKA ? { w: 1.1 * bamboo, h: bamboo + 2 * Cook.GrillKit.TRAY_RIM * 1.1 * bamboo } : null;
-      const rack = SK.rack(S, z, { x: RACK.x, y: deep ? SKY + ((SK.V3.TIP + SK.V3.HANDLE) / 2) * SKS : RACK.y, slots, s: RACK.s, bamboo, deep });
+      // (ART-80: the mock's deep tray where it loaded, its rims measured on it: SK.deepBox)
+      const deep = GKA ? SK.deepBox(bamboo, 1.1, S) : null;
+      const rack = SK.rack(S, z, { x: RACK.x, y: deep ? SKY + ((SK.V3.TIP + SK.V3.HANDLE) / 2) * SKS + deep.h / 2 - deep.far - bamboo / 2 : RACK.y, slots, s: RACK.s, bamboo, deep });
       // S19 (Fable's sekelo flaw 2): the tray the skewers go to carries the asker's face from its first frame, as chai's tray does
       if (rack.v3 && handoff) SK.trayFace(S, z, rack.img, params.who || (ctx.order && ctx.order.who) || "nana");
 
