@@ -271,8 +271,15 @@ def judge(d):
         return inter(b, box) / max(1.0, area(b))
 
     thing, T = None, None
-    cand = [w for w in words if share_in(U(w), R) >= 0.5 and not ("knife" in (w.get("key") or "").lower())]
-    if cand:
+    # (s19-clean-a3: a reveal lesson's light says on its layer that it lights a part of a card, the dotted word or the blurred picture,
+    # js/shared/onboard.js Onboard.lesson: the part is what it lights, never the whole item card round it)
+    part_v = any((l or {}).get("variant") == "part" for l in (o1.get("layers") or []))
+    part_in = [x for x in cards if share_in(R, x["box"]) >= 0.9] if part_v else []
+    cand = [] if part_in else [w for w in words if share_in(U(w), R) >= 0.5 and not ("knife" in (w.get("key") or "").lower())]
+    if part_in:
+        x = min(part_in, key=lambda x: area(x["box"]))
+        thing, T = {"kind": "card", "id": x["id"] + " (a part)"}, list(R)
+    elif cand:
         w = max(cand, key=lambda w: inter(U(w), R) / (area(U(w)) + area(R) - inter(U(w), R)))
         thing, T = {"kind": "word", "id": w["id"]}, U(w)
     else:

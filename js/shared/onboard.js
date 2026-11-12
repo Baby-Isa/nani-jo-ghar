@@ -2586,6 +2586,9 @@
     // (avoid the face circle, never its 48 px tap area: the tap area reached into the first card at 740x320 and pushed the light off the
     // card's top, contract-105 on every kitchen game, 10 Nov)
     const lit = Onboard.light(live, { look: "glow", pad: isEye ? 2 : 0, pass: true, ms: (Onboard.WAIT.lessonLit + zoomMs) / sp, onTap: () => {}, quitIf: () => over, note: o.note, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll(`${o.list || LIST} .oc-face`)].map((f) => f.querySelector(".njg-face") || f) });
+    // (s19-clean-a3: the layer says it lights a part of a card, the dotted word or the blurred picture, so the checks judge the part,
+    // never the whole card round it: lib/lightjudge.py, contract-112)
+    if (lit && lit.layer && lit.layer.dataset) lit.layer.dataset.light = "part";
     const end = () => {
       live().classList.remove("ob-dots-now");
       if (o.hold) o.hold(false);

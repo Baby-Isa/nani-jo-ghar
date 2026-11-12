@@ -700,8 +700,7 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo-body { overflow: visible; }
 /* the words' floor (js/shared/wrong-order.js floor(), the a2 review's finding 4): a long card's rows in two columns, then scrolling */
 /* (contract-100: the open card's 6 Nov item cards, js/shared/wrong-order.js lay14: the row as wide as all of them take, never scrolling) */
-.njg-wo-14 .oc-card.oc-s14 .oc-row14 { width: var(--wo-row, auto); flex-wrap: wrap !important; overflow: visible; row-gap: var(--njg-s2); -webkit-mask-image: none; mask-image: none; }
-.njg-wo-14 .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { flex-basis: calc((100% - 2 * var(--njg-s2)) / 2.3) !important; }
+.njg-wo-14 .oc-card.oc-s14 .oc-row14 { width: var(--wo-row, auto); overflow: visible; -webkit-mask-image: none; mask-image: none; }
 .njg-wo-open .oc-row.oc-it14 { padding-right: max(calc(var(--njg-px) * 4), 2.6cqi); }
 .njg-wo .oc-row.oc-it14 > .njg-wo-mark { top: auto; bottom: 0; right: 50%; transform: translate(50%, 40%); }
 .njg-wo-cols .oc-parts:not(.oc-row14) { display: grid; grid-template-columns: repeat(2, minmax(0, auto)); column-gap: var(--njg-s3); }

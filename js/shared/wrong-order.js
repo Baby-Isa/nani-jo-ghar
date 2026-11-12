@@ -220,8 +220,8 @@ async function play(o = {}) {
     return px;
   };
   // (s19-clean-d's line, contract-100: a card of 6 Nov item cards, .oc-row14, is laid as the side panel's row is: the row its width
-  // there, so each item card is drawn exactly as in the panel (their insides are sized by the row's width), wrapping onto more lines,
-  // never a row that scrolls sideways: every item in one view, the whole then fitted, past the words' floor its rows scrolling)
+  // there, so each item card is drawn exactly as in the panel (their insides are sized by the row's width), all of them in one line
+  // shown past the row's own box, never scrolled: the item's box takes the line's whole width, every item in one view, the whole fitted)
   const lay14 = (card, from) => {
     const rows = [...card.querySelectorAll(".oc-row14")];
     if (!rows.length) return;
@@ -229,6 +229,12 @@ async function play(o = {}) {
     const ref = from && from.querySelector(".oc-row14");
     const w0 = ref ? ref.getBoundingClientRect().width : 0;
     rows.forEach((row) => row.style.setProperty("--wo-row", `${Math.round(w0 || 220)}px`));
+    rows.forEach((row) => {
+      const last = row.lastElementChild;
+      const rb = row.getBoundingClientRect();
+      const need = last ? last.getBoundingClientRect().right - rb.left + parseFloat(getComputedStyle(row).paddingLeft || 0) : 0;
+      if (need > rb.width && row.parentElement) row.parentElement.style.minWidth = `${Math.ceil(need)}px`;
+    });
   };
   let roomSet = false;
   const roomBack = () => {
