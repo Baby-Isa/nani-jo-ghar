@@ -1325,6 +1325,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const p = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
         return { from: p, to: p };
       };
+      // (the shared Onboard.gesture plays "tap" as a press held in place: its "tap" is s19-clean-a2's line in the s19-clean-d report)
       return Cook.Coach.demo(at, { gesture: "tap", ms: 900, delay: 300, step });
     };
     let ctl = null;
@@ -1338,11 +1339,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       ctlStep = null;
       if (!step || !thing || !gate || !Cook.Coach || !Cook.Coach.control || !(again || gate.first(step))) return;
       ctlStep = step;
-      ctl = Cook.Coach.control({ key: "fry", target: Cook.Coach.box(thing), first: true, noHint: true, current: () => ctlStep === step && (!current || current()), note: `${gate.scope}:s14-control` });
+      // (the round-two review's finding 6: the finger comes with its light, never before it on an undimmed screen: the light waits for a
+      // still stage, up to 3 s, and the finger started 300 ms after the step opened. Its light can be up before control() returns)
+      const own = { finger: null, over: false };
+      const lit = () => {
+        if (own.over || own.finger || ctlStep !== step) return;
+        own.finger = finger(thing, `fry:${step}`);
+        if (ctl && ctl.own === own) ctl.finger = own.finger;
+      };
+      ctl = Cook.Coach.control({ key: "fry", target: Cook.Coach.box(thing), first: true, noHint: true, current: () => ctlStep === step && (!current || current()), note: `${gate.scope}:s14-control`, onLight: lit });
       if (ctl) {
         ctl.thing = thing;
-        ctl.finger = finger(thing, `fry:${step}`);
-      }
+        ctl.own = own;
+        ctl.finger = own.finger;
+        const close = ctl.close;
+        ctl.close = () => {
+          own.over = true;
+          if (own.finger) own.finger.stop();
+          close();
+        };
+      } else own.over = true;
     };
     if (burner.knob && burner.knob.getBounds) burner.knobHit.litBounds = () => (burner.knob.active ? burner.knob.getBounds() : null);
     lead("ctl-fire", burner.knobHit, () => !burner.knobHit.firstOn);
