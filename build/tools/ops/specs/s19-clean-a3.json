@@ -53,7 +53,7 @@
  "branch": "s19-clean-a3 in /home/user/wt/s19-clean-a3 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
  "kind": "shared",
  "browser": true,
- "live": true,
+ "live": false,
  "specsByBuilder": true,
  "stubs": "none",
  "report": "s19-clean-a3",
