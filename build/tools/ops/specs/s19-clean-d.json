@@ -1,0 +1,50 @@
+{
+ "name": "s19-clean-d: the round-two review's station findings: sekelo on a phone, chai's redo and CHAI-110's light, eggs' marks, samosa's station part",
+ "why": "build/reports/s19-round2-review.md: sekelo L3-L4 at 740x320 never finish (high), chai's redo faces, CHAI-110's light spent before drawn; the fix list to zero before Zafar plays",
+ "cost": "about $20-30",
+ "port": 8911,
+ "read": [
+  "build/reports/s19-round2-review.md (your findings: 1, 3, 4, 5's station part, 6's station part, 7, 8; 2 and the shared parts are s19-clean-a2's)",
+  "build/reports/s19-clean-b2.md and s19-clean-c2.md (what round two did)",
+  "docs/process/regressions.md rows CHAI-110, SEK-26 (Zafar's words)"
+ ],
+ "owns": [
+  "js/cook/stations/chai-tray.js, eggs.js, samosa.js, mishkaki-grill.js and their data/stations/*.json",
+  "js/cook/mechanics/grill.js, thread.js and js/cook/grill-kit.js",
+  "build/reports/s19-clean-d.md"
+ ],
+ "readOnly": [
+  "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, data/cook.json, build/sandbox/** (s19-clean-a2, running)",
+  "every other station file",
+  "assets/**"
+ ],
+ "flows": [
+  "cook:mishkaki-grill",
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:samosa",
+  "cook:corn"
+ ],
+ "tasks": [
+  {
+   "do": "Finding 1 first: sekelo at 740x320 must finish L3 and L4 (the grill: 75 taps on the tray's first skewer moved nothing; threading twice as slow as at 1280x665). Find the cause (a tap target too small or covered at 740x320, a hit box in design units, the piece cards' redraw) with a measurement, fix it, replay sekelo L1-L4 at 740x320 and 1280x665 to their ends. Then 3 (chai's redo: the people who left come back as review faces at the second serve), 4 (CHAI-110's second-tap light spent before it is drawn: it must be seen), 5 and 6 where they are station code, 7 (sekelo's tray skewer glow: placeLit && !h.over), 8 (the tray's fallback asks for the retired rack: point it at a v4 piece). Corn shares grill-kit.js: replay it.",
+   "accept": "each finding: a frame or a test; sekelo L1-L4 at 740x320 reaching its end; chai L3 with a wrong order showing the redo without the faces; CHAI-110's light in a frame"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8911, flock /tmp/njg-browser-8911.lock); one size while building; commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs (the disk is tight: about 9 GB free for two builders); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report (data/cook.json, js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js belong to the shared batch, s19-clean-a, running now).",
+   "accept": "build/reports/s19-clean-d.md with a Proof section, under 700 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-d in /home/user/wt/s19-clean-d (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "code",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "report": "s19-clean-d",
+ "publish": false,
+ "rows": []
+}
