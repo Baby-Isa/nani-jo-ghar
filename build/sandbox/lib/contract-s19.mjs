@@ -506,11 +506,20 @@ export function check117stay(r, tl, add) {
       if (!th || th.kind === "card") continue;
       const td = now.t;
       if (td + STAY_BACK_MS > tEnd) continue;
-      const back = lits.some((e) => e.t > td && e.t <= td + STAY_BACK_MS && (e.holes || []).map(box).some((n) => inBox(c, n)));
-      if (back) continue;
-      const w0 = wantAt(before.t), w1 = wantAt(td + STAY_BACK_MS);
-      if (!w0 || !w1 || w0.key == null || w0.kind !== w1.kind || w0.key !== w1.key || !w0.kind || /^(wait|click|end)$/.test(w0.kind) || !inStation(st, td + STAY_BACK_MS)) continue;
+      const w0 = wantAt(before.t);
+      // (a move that is not a tap, a drag, roll, swipe, stir or hold: its light is away while the child does it and back MOVE.back, 2 s,
+      // after the release, Onboard.spot; a press then is that move begun, not a miss)
+      const tap = w0 && w0.kind === "tap";
       const pressed = presses.some((p) => p.t <= td && p.t >= td - 2500);
+      if (!tap && pressed) continue;
+      const backMs = tap ? STAY_BACK_MS : STAY_BACK_MS + 1100;
+      const back = lits.some((e) => e.t > td && e.t <= td + backMs && (e.holes || []).map(box).some((n) => inBox(c, n)));
+      if (back) continue;
+      const w1 = wantAt(td + backMs);
+      // (the same step: the same kind and key, and the same place where the probe gives it)
+      const same = w0 && w1 && w0.key != null && w0.kind === w1.kind && w0.key === w1.key && (!w0.at || !w1.at || w0.at === w1.at);
+      if (!same || !w0.kind || /^(wait|click|end)$/.test(w0.kind) || !inStation(st, td + backMs)) continue;
+      if (w0.at == null && tap) continue; // (an older run's samples, no place: a tap's next step can share its key)
       const kind = pressed ? "tap" : "fade";
       if (said.has(kind)) continue;
       said.add(kind);

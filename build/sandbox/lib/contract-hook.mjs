@@ -663,7 +663,8 @@ const BASE_HOOK = `(() => {
   const want = () => {
     const ce = safe(() => window.njgTest?.cook && window.njgTest?.cook.expectation && window.njgTest?.cook.expectation());
     // (key: the step it waits on, so contract-117 knows a light went with no move made: the same step still wanted)
-    if (ce) return { by: "cook", kind: String(ce.kind || ""), intro: !!ce.intro, key: String(ce.key || "") };
+    // (at: where it waits, coarse: the same key at another place is another step, eggs' "n.egg" from the bowl to the pan)
+    if (ce) return { by: "cook", kind: String(ce.kind || ""), intro: !!ce.intro, key: String(ce.key || ""), at: ce.x != null ? Math.round(ce.x / 24) + "," + Math.round(ce.y / 24) : "" };
     const k = safe(() => window.njgTest?.clinic && window.njgTest?.clinic.expect && window.njgTest?.clinic.expect());
     if (k) return { by: "clinic", kind: String(k.kind || "") };
     const hx = safe(() => window.njgTest && window.njgTest.expect && window.njgTest.expect());

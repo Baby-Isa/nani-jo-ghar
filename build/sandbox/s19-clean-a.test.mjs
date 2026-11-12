@@ -31,7 +31,7 @@ test("SH-261 at full strength: contract-117 breaks on a light that goes with its
   const run = (tl) => { const out = []; check117stay({ flow: "cook:chai-tray@L2" }, tl, (id, t, msg) => out.push({ id, t, msg })); return out; };
   const ST2 = [c(0, "stage", { key: "cook:station1:chai" }), c(60000, "stage", { key: "cook:between1:-" })];
   const lit = (t, on) => c(t, "s19lit", { holes: on ? [[100, 100, 200, 200]] : [], things: on ? [{ kind: "pic", id: "s14-pan", box: [110, 110, 190, 190] }] : [] });
-  const want = (t, key) => c(t, "want", { by: "cook", kind: "tap", key });
+  const want = (t, key) => c(t, "want", { by: "cook", kind: "tap", key, at: "6,6" });
   const fade = [...ST2, want(900, "pan-ma"), lit(1000, true), lit(6000, false), want(20000, "x")];
   assert.match(run(fade).map((b) => b.msg).join("|"), /a fade on a timer/);
   const tap = [...ST2, want(900, "pan-ma"), lit(1000, true), c(5800, "input", { x: 400, y: 400 }), lit(6000, false), want(20000, "x")];
