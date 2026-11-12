@@ -214,7 +214,10 @@
  "assets": [
   "assets/cook/items/skewer-mixed-grilled-t.png",
   "assets/cook/items/v4/sekelo/*",
-  "assets/cook/items/served/sekelo.webp", "assets/cook/items/v4/kit/tray-steel-long.webp"
+  "assets/cook/items/served/sekelo.webp",
+  "assets/cook/items/v4/kit/grill-v2.webp",
+  "assets/cook/items/v4/kit/tray-steel.webp",
+  "assets/cook/items/v3/samosa/board.webp"
  ],
- "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces) S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served sekelo), until s19-serve2's kitchen dishes take its place."
+ "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces) S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served sekelo), until s19-serve2's kitchen dishes take its place. SEK-26 (s19-clean-c2, Zafar 12 Nov night): the kit's grill v2 and steel tray (Cook.GrillKit: the trays made deep from it, never stretched) and the walnut board (the chop's), in place of the k3 wide tray, the old oak board, rack and stick."
 }

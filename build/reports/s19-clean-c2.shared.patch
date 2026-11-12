@@ -1,0 +1,136 @@
+diff --git a/build/test_shared_w1b_card.mjs b/build/test_shared_w1b_card.mjs
+index f8f73afe9..35d6c2e59 100644
+--- a/build/test_shared_w1b_card.mjs
++++ b/build/test_shared_w1b_card.mjs
+@@ -52,23 +52,22 @@ test("SH-99: every number Cook says in an order is written on its card, at every
+   assert.deepEqual([...new Set(bad)].slice(0, 12), []);
+ });
+ 
+-test("SAM-23: samosa's title has no number in either language; its blocks' rows say how many (\"ba samosa\", \"trae samosa\")", async () => {
++test("SAM-35 (Zafar, 12 Nov night; was SAM-23): samosa's title says the count (\"Muke ba samosa khape.\"), in Kutchi and English; no block has a head row of its own", async () => {
+   const { Cook } = await loadCookEngine({ seed: 9 });
+   const Lang = Cook.Lang;
+-  let counted = 0;
+   for (const who of Object.keys(Cook.data.customers)) for (const level of [1, 2, 3, 4]) {
+-    const L = Cook.Order.ladder(Cook.Recipes.samosa.make(who, { level }), 0);
+-    assert.equal(L.head.uncountedTitle, true);
++    const d = Cook.Recipes.samosa.make(who, { level });
++    const L = Cook.Order.ladder(d, 0);
++    assert.equal(!!L.head.uncountedTitle, false);
+     const title = L.head.cardLine || L.head.line;
+-    assert.doesNotMatch(Lang.plain(title).toLowerCase(), /\b(hakro|ba|trae|char|panj)\b/);
+-    assert.doesNotMatch(String(title.en || "").toLowerCase(), /\b(one|two|three|four|five|\d)\b/, `English title: ${title.en}`);
+-    for (const s of L.sections.filter((x) => x.block && x.head && (x.head.parts || []).some((n) => typeof n === "number" && n > 1))) {
+-      counted++;
+-      assert.match(Lang.plain(s.head.cardLine || s.head.line).toLowerCase(), /\b(ba|trae|char|panj)\b/, "a block's row writes its count");
+-      assert.match(String((s.head.cardLine || s.head.line).en || "").toLowerCase(), /\b(two|three|four|five)\b/, "and its English says it");
++    const n = (L.head.parts || []).find((p) => typeof p === "number");
++    if (n > 1) {
++      assert.match(Lang.plain(title).toLowerCase(), /\b(ba|trae|char|panj|che)\b/, `L${level} ${who}: ${Lang.plain(title)}`);
++      assert.match(String(title.en || "").toLowerCase(), /\b(two|three|four|five|six)\b/, `English title: ${title.en}`);
+     }
+   }
+-  assert.ok(counted > 0, "some block says more than one");
++  // (the card: data/cook.json recipes.samosa.blockHeads false, so js/cook/ui.js draws a block's fillings without the samosa head card)
++  assert.equal(Cook.data.recipes.samosa.blockHeads, false);
+ });
+ 
+ test("SH-99, CLN-169, CLN-171: boing writes the drops' colour and the plaster's colour at every level; counts stay in the taught round", () => {
+diff --git a/build/tools/art/artcheck-known.json b/build/tools/art/artcheck-known.json
+index cf91fa0b7..5db69989c 100644
+--- a/build/tools/art/artcheck-known.json
++++ b/build/tools/art/artcheck-known.json
+@@ -491,6 +491,5 @@
+  "rim|assets/cook/items/v4/chop/dungri-whole.webp",
+  "rim|assets/cook/items/v4/chop/lasan-half-a.webp",
+  "rim|assets/cook/items/v4/chop/lasan-half-b.webp",
+- "rim|assets/cook/items/v4/chop/tameto-whole.webp",
+- "rim|assets/cook/items/v4/kit/tray-stone.webp"
++ "rim|assets/cook/items/v4/chop/tameto-whole.webp"
+ ]
+diff --git a/data/cook.json b/data/cook.json
+index da04ff63b..053175f12 100644
+--- a/data/cook.json
++++ b/data/cook.json
+@@ -1961,8 +1961,8 @@
+     "kinds",
+     "kinds2"
+    ],
+-   "blockHeads": true,
+-   "_blockHeads": "SAM-11: the headline is written without the count (Muke samosa khape.); each block's head carries it",
++   "blockHeads": false,
++   "_blockHeads": "SAM-11: the headline was written without the count (Muke samosa khape.); each block's head carried it, a finished-samosa card. SAM-35 (Zafar, 12 Nov night: 'If there's two samosas being ordered, the sentence should say, I want two samosas ... If he's ordering samosa, then the item card should be the fillings, not the finished samosa'): the headline says the count (Muke ba samosa khape., the engine's line); a block has no head card, its fillings' cards alone (js/cook/ui.js orderCards)",
+    "_baseFirst": "30 Sept (Zafar): the base filling (chundo or bataato: each block's first kind) is the first row on the card and said first; the rest stay shuffled (js/cook/order.js)",
+    "english": "Samosa",
+    "price": 5,
+@@ -5631,37 +5631,7 @@
+       "assets/cook/items/served/sekelo.webp"
+      ],
+      "prefetch": [
+-      "assets/cook/items/mishkaki-bataato-raw-t.webp",
+-      "assets/cook/items/mishkaki-dungri-raw-t.webp",
+-      "assets/cook/items/mishkaki-meat-raw-t.webp",
+-      "assets/cook/items/mishkaki-pepper-raw-t.webp",
+-      "assets/cook/items/mishkaki-tameto-raw-t.webp",
+-      "assets/cook/items/plate-enamel-empty-t.webp",
+-      "assets/cook/items/sekelo/grill-t.webp",
+-      "assets/cook/items/sekelo/rack-t.webp",
+-      "assets/cook/items/sekelo/stick-v.webp",
+-      "assets/cook/items/skewer-empty-t.webp",
+-      "assets/cook/items/tool-board-t.webp",
+-      "assets/cook/items/v3/sekelo/grill.webp",
+-      "assets/cook/items/v3/sekelo/meat-charred.webp",
+-      "assets/cook/items/v3/sekelo/meat-grilled.webp",
+-      "assets/cook/items/v3/sekelo/meat-raw.webp",
+-      "assets/cook/items/v3/sekelo/onion-charred.webp",
+-      "assets/cook/items/v3/sekelo/onion-grilled.webp",
+-      "assets/cook/items/v3/sekelo/onion-raw.webp",
+       "assets/cook/items/v3/sekelo/plate-plain-t.webp",
+-      "assets/cook/items/v3/sekelo/potato-charred.webp",
+-      "assets/cook/items/v3/sekelo/potato-grilled.webp",
+-      "assets/cook/items/v3/sekelo/potato-raw.webp",
+-      "assets/cook/items/v3/sekelo/rack-0.webp",
+-      "assets/cook/items/v3/sekelo/rack-1.webp",
+-      "assets/cook/items/v3/sekelo/rack-2.webp",
+-      "assets/cook/items/v3/sekelo/rack-3.webp",
+-      "assets/cook/items/v3/sekelo/rack-4.webp",
+-      "assets/cook/items/v3/sekelo/stick.webp",
+-      "assets/cook/items/v3/sekelo/tomato-charred.webp",
+-      "assets/cook/items/v3/sekelo/tomato-grilled.webp",
+-      "assets/cook/items/v3/sekelo/tomato-raw.webp",
+       "assets/cook/items/veg-bataato-cubed-t.webp",
+       "assets/cook/items/vessel-katori-t.webp",
+       "assets/cook/items/v4/sekelo/bowl-chicken.webp",
+@@ -5707,7 +5677,9 @@
+       "assets/cook/items/v4/sekelo/tomato-raw.webp",
+       "assets/cook/items/mishkaki-meat-grilled-t.webp",
+       "assets/cook/items/skewer-mixed-grilled-t.png",
+-      "assets/cook/items/v4/kit/tray-steel-long.webp"
++      "assets/cook/items/v4/kit/grill-v2.webp",
++      "assets/cook/items/v4/kit/tray-steel.webp",
++      "assets/cook/items/v3/samosa/board.webp"
+      ],
+      "_potato": "s08 w6F (ART-11): the potato's skewer piece is PT1's cube (veg-01.raw, a whole path: js/cook/art.js refUrl); its worktop bowl is PT1's pile (veg-bataato-cubed-v2-t), no longer the butter-yellow boiled cubes"
+     },
+diff --git a/js/cook/ui.js b/js/cook/ui.js
+index bd4d8383d..92c218ac8 100644
+--- a/js/cook/ui.js
++++ b/js/cook/ui.js
+@@ -3209,12 +3209,15 @@
+         if (s.block && s.head) {
+           // a block of the dish (samosa's kind): its count and dish ("trae samosa") as the row's first card, its fillings after it;
+           // several of a kind tick together when all its samosas are made (SAM-24's one tick, contract-50), one with its fillings
++          // SAM-35 (Zafar, 12 Nov night: "If he's ordering samosa, then the item card should be the fillings, not the finished samosa"): a
++          // dish whose headline says its count (data/cook.json recipes.<dish>.blockHeads false) has no head card: the fillings' cards alone
++          const headCard = !!(Cook.data.recipes[L.recipe] || {}).blockHeads;
+           const n = s.head.qty || 1;
+           const parts = flat.map((x) => cardOf(x.r, x.gi));
+           const all = !!s.head.done || !!L.closedAll || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
+           const head = Object.assign(cardOf(s.head, 0), { done: all, say: sayRow(s.head) });
+-          items.push({ label: null, count: 1, parts: [head].concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
+-          rowsShown.push(s.head, ...flat.map((x) => x.r));
++          items.push({ label: null, count: 1, parts: (headCard ? [head] : []).concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
++          rowsShown.push(...(headCard ? [s.head] : []), ...flat.map((x) => x.r));
+           return;
+         }
+         if (flat.length) {

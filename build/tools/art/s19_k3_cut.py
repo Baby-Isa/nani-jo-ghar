@@ -16,7 +16,9 @@ The magenta is never exact (#EC-#FA, green 0-44): each picture's own ground colo
   the median of columns 300-1800). --kitchen also writes a side-by-side and marble crops of today's file and the new one.
 Writes the contact sheet (every cut on a dark and a light ground) to sources/art/s19-k3/results/cut-sheet.jpg and the numbers to
 sources/art/s19-k3/results/cut-numbers.json.
-Usage: python3 build/tools/art/s19_k3_cut.py [--only B5r,B6,D4,C12,K10,K8r,G1r,KF]"""
+ART-78 (12 Nov): ST recuts the stone shelf band (kit/tray-stone) from the tray-pot run's T1 on its own canvas (NJG_SOURCES: where
+sources/ lives, for a sparse checkout); its sheet is cut-sheet-stone.jpg.
+Usage: python3 build/tools/art/s19_k3_cut.py [--only B5r,B6,D4,C12,K10,K8r,G1r,KF,ST]"""
 import os, sys, json
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -403,6 +405,51 @@ def kitchen():
     NUM["kitchen-tall"]["marbleOld"] = stats(olda); NUM["kitchen-tall"]["marbleNew"] = stats(na)
 
 
+# ---------------- ART-78 (Zafar, 12 Nov night: "The stone serving tray is cut out really poorly"): the stone band, recut ----------------
+STONE_SRC = os.environ.get("NJG_SOURCES", "sources") + "/art/s19-tray-pot/results/best/T1.png"
+
+
+def stone():
+    """The tray-pot run's T1 (s19_tp_cut.py cut it with the plain #FF00FF key: a pink-grey fringe round the rim and soft specks of the
+    ground left above it). Recut on the same canvas, so nothing that draws it moves: the same box (s19_cut's key over 0.5, 6 px round)
+    at the same size (1593 x 292). The key is the picture's own ground (its median border colour); only the band itself is kept (no
+    specks); the edge's alpha is smoothed a little (a clean rounded rim, not stair-stepped), its colour taken from the stone just
+    inside, then edge_pink and edge_bleed as every k3 cut."""
+    a = np.asarray(Image.open(STONE_SRC).convert("RGB")).astype(float)
+    e = np.concatenate([a[:8].reshape(-1, 3), a[-8:].reshape(-1, 3), a[:, :8].reshape(-1, 3), a[:, -8:].reshape(-1, 3)])
+    bg = np.median(e, 0)
+    # today's canvas: s19_tp_cut's box (s19_cut.alpha_of over 0.5, its tight box, 6 px round)
+    al0 = alpha_of(a)
+    ys, xs = np.where(al0 > 0.5)
+    y0, y1, x0, x1 = max(0, ys.min() - 6), min(a.shape[0], ys.max() + 1 + 6), max(0, xs.min() - 6), min(a.shape[1], xs.max() + 1 + 6)
+    # the key against the picture's own ground: how far a pixel is from the ground's magenta, in the ground's own terms
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    m = np.minimum(r, b) - g
+    mbg = min(bg[0], bg[2]) - bg[1]
+    al = np.clip((mbg * 0.82 - m) / (mbg * 0.6), 0, 1)
+    # only the band: its one big part, its holes filled; every speck of the ground outside it cleared
+    lab, k = ndimage.label(al > 0.5)
+    sizes = ndimage.sum(np.ones_like(al), lab, range(1, k + 1))
+    body = ndimage.binary_fill_holes(lab == int(np.argmax(sizes)) + 1)
+    al = al * ndimage.binary_dilation(body, iterations=2)
+    al[ndimage.binary_erosion(body, iterations=3)] = 1.0
+    # a smooth rim: the alpha softened over about a pixel (the key steps along the rounded corners)
+    al = np.clip(ndimage.gaussian_filter(al, 0.8), 0, 1)
+    al[al < 0.03] = 0
+    rgb = despill(a, al, bg)
+    rgba = np.dstack([np.clip(rgb, 0, 255), al * 255]).astype(np.uint8)[y0:y1, x0:x1]
+    rgba = rim_from_inside(rgba)
+    path = os.environ.get("NJG_STONE_OUT", f"{OUT}kit/tray-stone.webp")
+    old = Image.open(f"{OUT}kit/tray-stone.webp").size if os.path.exists(f"{OUT}kit/tray-stone.webp") else (1593, 292)
+    # (written as a new file, never over the old one's inode: a hard-linked copy of the tree keeps today's picture)
+    if os.path.exists(path): os.remove(path)
+    write(rgba, path, size=old)
+    DONE.append(path)
+    q = np.asarray(Image.open(path).convert("RGBA"))
+    NUM["tray-stone"] = {"size": list(q.shape[1::-1]), "box": [int(x0), int(y0), int(x1), int(y1)], "ground": [round(v) for v in bg],
+                         "parts": int(ndimage.label(q[..., 3] > 8)[1])}
+
+
 def sheet(path):
     f = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 13)
     cell = 260; cols = 4
@@ -420,14 +467,15 @@ def sheet(path):
 def main():
     only = None
     if "--only" in sys.argv: only = sys.argv[sys.argv.index("--only") + 1].split(",")
-    steps = {"B5r": jugs, "B6": jars, "D4": onion, "C12": scatters, "K10": tray, "K8r": karahi, "G1r": grill, "KF": kitchen}
+    steps = {"B5r": jugs, "B6": jars, "D4": onion, "C12": scatters, "K10": tray, "K8r": karahi, "G1r": grill, "KF": kitchen, "ST": stone}
     for k, fn in steps.items():
         if only and k not in only: continue
         fn(); print(k, "done")
     for p in DONE:
         a = np.asarray(Image.open(p).convert("RGBA"))
         NUM.setdefault("pinkRim", {})[p.replace(OUT, "")] = round(pink_share(a), 3)
-    if DONE: sheet(RES + "cut-sheet.jpg")
+    # (ART-78's recut alone has its own sheet: the k3 sheet keeps every pick)
+    if DONE: sheet(RES + ("cut-sheet-stone.jpg" if only == ["ST"] else "cut-sheet.jpg"))
     prev = {}
     if os.path.exists(RES + "cut-numbers.json"): prev = json.load(open(RES + "cut-numbers.json"))
     prev.update({k: v for k, v in NUM.items() if k != "pinkRim"}); prev.setdefault("pinkRim", {}).update(NUM.get("pinkRim", {}))

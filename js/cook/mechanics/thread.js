@@ -36,6 +36,7 @@
  * showAfterMs (after Nani's hint, the piece glows: being shown).
  */
 import { Cook as CookNS } from "../ns.js";
+import "../grill-kit.js"; // SEK-26: the grill kit's grill v2 and its steel tray made deep (Cook.GrillKit)
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
 
 (function (global) {
@@ -141,12 +142,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
       // (the chips: the word until it is used right, then the speaker alone: Cook.chipWord, Zafar, 20 Oct)
       const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)), go: handoff ? handoff.label || "" : null });
-      const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
-      if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
+      /*
+       * SEK-26, ART-79 (Zafar, 12 Nov night: "that's old artwork for the board that the skewers sit on"): the walnut board (the chop's,
+       * sk4-board, the walnut rule) stood the long way, at its own shape (the old oak board was drawn 2.3 times its width: BOARD.h tall),
+       * turned a quarter to the left so its lit edge stays on the light's side.
+       */
+      const walnut = S.textures.exists("sk4-board");
+      const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), walnut ? "sk4-board" : S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
+      if (walnut) board.setAngle(-90).setScale(z.L(BOARD.h) / board.width);
+      else if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
       else board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
-      board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(BOARD.w), height: z.L(BOARD.h) });
+      const boardW = walnut ? board.displayHeight / z.k : BOARD.w; // (turned: its picture's height is its width on screen)
+      board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(boardW), height: z.L(BOARD.h) });
       // (S19, contract-114: a skewer keeps its size from the board to the tray: the tray is drawn at the board's skewer's size)
-      const rack = SK.rack(S, z, { x: RACK.x, y: RACK.y, slots, s: RACK.s, bamboo: (SK.V3.HANDLE - SK.V3.TIP) * SKS });
+      // SEK-26: the deep tray (the grill's: SK.rackDeep), its rims a skewer's length apart, level with the board's skewer
+      const bamboo = (SK.V3.HANDLE - SK.V3.TIP) * SKS;
+      const GKA = Cook.GrillKit && Cook.GrillKit.ART;
+      const deep = GKA ? { w: 1.1 * bamboo, h: bamboo + 2 * Cook.GrillKit.TRAY_RIM * 1.1 * bamboo } : null;
+      const rack = SK.rack(S, z, { x: RACK.x, y: deep ? SKY + ((SK.V3.TIP + SK.V3.HANDLE) / 2) * SKS : RACK.y, slots, s: RACK.s, bamboo, deep });
       // S19 (Fable's sekelo flaw 2): the tray the skewers go to carries the asker's face from its first frame, as chai's tray does
       if (rack.v3 && handoff) SK.trayFace(S, z, rack.img, params.who || (ctx.order && ctx.order.who) || "nana");
 
@@ -388,7 +401,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const t = SK.lineAt(...rack.line(Math.min(j, slots - 1), j + 1));
             await SK.glide(S, sk, { x: t.x, y: t.y, scale: t.scale, rotation: t.rotation, duration: 420, ease: "Sine.easeInOut" });
             rack.set(j + 1);
-            SK.stickShown(sk, false);
+            SK.stickShown(sk, rack.painted === false);
           } else await SK.glide(S, sk, { x: rack.x(Math.min(j, slots - 1)), y: rack.y, scale: RACK.s * z.k, duration: 420, ease: "Sine.easeInOut" });
           // (the orchestrator, 30 Oct: the go is the kit's move-on, which presses itself a beat after it shows (Sprint 11, "no Next and no
           // Done anywhere"): shown after the first skewer, it took an L2-L4 order to the grill with one skewer made and the grill then

@@ -51,6 +51,102 @@ import { Cook as CookNS } from "./ns.js";
   };
   GK.art = () => [GK.ART.grill, GK.ART.tray].map((a) => [a.key, a.url]);
 
+  /*
+   * SEK-26 (Zafar, 12 Nov night: "Why did the trays next to the barbecue look super shallow, like they wouldn't be able to hold skewers
+   * in them?"; the mock A1-sekelo-2-improved's deep square trays): a tray of any shape from the kit's steel tray (GK.ART.tray, the
+   * deepest tray drawn so far: no deep tray piece exists yet), cut by its corners and rims (a nine-slice): the corners at one scale, the
+   * rims only lengthened along their run, the brushed floor repeated (mirrored, so it has no seam) rather than stretched, so nothing is
+   * drawn out of its shape. Its well a little deeper than the flat picture: the walls' soft shadow on the floor under the top and left
+   * walls (one light, upper left), drawn in code as every shadow is. aspect: width over height. -> a texture key (its canvas 720 px
+   * across; GK.TRAY_RIM: the rim's middle from the outer edge, a share of the width, where a skewer's tip and handle rest).
+   */
+  GK.TRAY_SLICE = 90; // the corner (outer radius 70 px, the bright rim 0-26, the wall's shade to about 60) in the tray picture's px
+  GK.TRAY_RIM = 13 / 1000; // the bright rim's middle, a share of the picture's width (measured on kit/tray-steel)
+  GK.trayTex = function (S, aspect) {
+    const a = Math.max(0.3, Math.min(4, aspect || 1));
+    const key = `gk-tray-deep:${a.toFixed(3)}`;
+    if (S.textures.exists(key) || !S.textures.exists(GK.ART.tray.key)) return S.textures.exists(key) ? key : null;
+    const src = S.textures.get(GK.ART.tray.key).getSourceImage();
+    const sw = src.width;
+    const sh = src.height;
+    const W = 720;
+    const H = Math.round(W / a);
+    const f = W / sw; // (the rims and corners at the width's scale: a rim as thick as the flat tray's sides)
+    const c = GK.TRAY_SLICE * (sw / GK.ART.tray.w);
+    const d = Math.round(c * f);
+    const cv = document.createElement("canvas");
+    cv.width = W;
+    cv.height = H;
+    const g = cv.getContext("2d");
+    const mw = sw - 2 * c; // the source's middle, across
+    const mh = sh - 2 * c; // and down
+    const dw = W - 2 * d;
+    const dh = H - 2 * d;
+    // the four corners, as drawn
+    g.drawImage(src, 0, 0, c, c, 0, 0, d, d);
+    g.drawImage(src, sw - c, 0, c, c, W - d, 0, d, d);
+    g.drawImage(src, 0, sh - c, c, c, 0, H - d, d, d);
+    g.drawImage(src, sw - c, sh - c, c, c, W - d, H - d, d, d);
+    // the top and bottom rims lengthened along their run (they are the same all along), the side rims likewise
+    g.drawImage(src, c, 0, mw, c, d, 0, dw, d);
+    g.drawImage(src, c, sh - c, mw, c, d, H - d, dw, d);
+    // (the side rims and the floor: repeated down in bands of the source's own height, every other band mirrored so it meets its
+    // neighbour seamlessly; the brushing runs across, so it keeps its grain)
+    const band = Math.max(1, Math.round(mh * f));
+    for (let y = 0, i = 0; y < dh; y += band, i++) {
+      const h = Math.min(band, dh - y);
+      const sy = (h / band) * mh;
+      const draw = (sx, swid, dx, dwid) => {
+        g.save();
+        if (i % 2) {
+          g.translate(0, d + y + h);
+          g.scale(1, -1);
+          g.drawImage(src, sx, c + (i % 2 ? mh - sy : 0), swid, sy, dx, 0, dwid, h);
+        } else g.drawImage(src, sx, c, swid, sy, dx, d + y, dwid, h);
+        g.restore();
+      };
+      draw(0, c, 0, d);
+      draw(sw - c, c, W - d, d);
+      draw(c, mw, d, dw);
+    }
+    // the walls' shade on the floor: under the top wall and the left one (the light from the upper left), a little under the others
+    const wall = Math.round(W * 0.027); // (the wall's inner edge: the picture's dark line at 27-35 px of 1000)
+    const deep = Math.round(W * 0.06);
+    const TK = global.Tokens;
+    const rgb = (TK && TK.rgb && TK.rgb("shade-rgb")) || "60, 35, 20";
+    const shade = (x0, y0, x1, y1, a0) => {
+      const gr = g.createLinearGradient(x0, y0, x1, y1);
+      gr.addColorStop(0, `rgba(${rgb}, ${a0})`);
+      gr.addColorStop(1, `rgba(${rgb}, 0)`);
+      return gr;
+    };
+    g.save();
+    g.beginPath();
+    const r = d * 0.55;
+    const x0 = wall;
+    const y0 = wall;
+    const x1 = W - wall;
+    const y1 = H - wall;
+    g.moveTo(x0 + r, y0);
+    g.arcTo(x1, y0, x1, y1, r);
+    g.arcTo(x1, y1, x0, y1, r);
+    g.arcTo(x0, y1, x0, y0, r);
+    g.arcTo(x0, y0, x1, y0, r);
+    g.closePath();
+    g.clip();
+    g.fillStyle = shade(0, y0, 0, y0 + deep, 0.26);
+    g.fillRect(x0, y0, x1 - x0, deep);
+    g.fillStyle = shade(x0, 0, x0 + deep, 0, 0.2);
+    g.fillRect(x0, y0, deep, y1 - y0);
+    g.fillStyle = shade(0, y1, 0, y1 - deep * 0.5, 0.08);
+    g.fillRect(x0, y1 - deep * 0.5, x1 - x0, deep * 0.5);
+    g.fillStyle = shade(x1, 0, x1 - deep * 0.5, 0, 0.08);
+    g.fillRect(x1 - deep * 0.5, y0, deep * 0.5, y1 - y0);
+    g.restore();
+    S.textures.addCanvas(key, cv);
+    return key;
+  };
+
   /** The places (design px). thick: a thing's thickness over its length (corn's cob 0.18). */
   GK.layout = function ({ thick = 0.18, n = 4, band, view = [150, 1450], ringRoom = 92, gap = 44, trayW = 400, bandLen = 300, top = 18 } = {}) {
     const B = band || (global.Shelf && global.Shelf.BAND) || { top: 630, bottom: 900 };

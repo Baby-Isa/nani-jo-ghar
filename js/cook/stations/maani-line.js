@@ -414,9 +414,18 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     let flipCtl = null;
     let flipOf = null;
     let flipGate = null;
+    /*
+     * The s19-clean-c review's finding 4 (a help removed: non-negotiable 1): the first-time control (Cook.Coach.control: the dim and the
+     * gold box) took the place of the coach's staged step, whose ghost finger showed the tap. The finger is back with it: the kit's demo
+     * (Cook.Coach.demo, the one finger, Onboard.gesture's "tap") on the thing, the first time its light is up; it goes on any press, and
+     * with its light. thing: a canvas thing (its litBounds when it has them). -> {stop()} or null
+     */
+    let flipFinger = null;
     function flipLead(t) {
       if (t && flipOf === t && flipCtl && !flipCtl.over) return;
       if (flipCtl) flipCtl.close();
+      if (flipFinger) flipFinger.stop();
+      flipFinger = null;
       flipCtl = null;
       flipOf = null;
       if (!t || t.side !== 1 || !Cook.Coach || !Cook.Coach.control || !Cook.Coach.firsts) return;
@@ -427,6 +436,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (Cook.Coach.active && Cook.Coach.active() && Cook.Coach.stop) Cook.Coach.stop(false);
       flipOf = t;
       flipCtl = Cook.Coach.control({ key: "maani-line", target: Cook.Coach.box(t.it.sprite), first: true, noHint: true, current: () => flipOf === t && onTawa === t && t.side === 1 && !t.busy, note: `${flipGate.scope}:s14-control` });
+      if (flipCtl && Cook.Coach.demo) {
+        const sp = t.it.sprite;
+        flipFinger = Cook.Coach.demo(() => (sp.active && flipOf === t ? { from: { x: sp.x, y: sp.y }, to: { x: sp.x, y: sp.y } } : null), { gesture: "tap", ms: 900, delay: 300, step: "maani-line:flip" });
+      }
     }
     function stepNow() {
       if (finished) return steps.done();
@@ -794,8 +807,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (seen[KEY] || !pair.some((id) => (Cook.wordStage ? Cook.wordStage(id) : 1) <= 2) || !W || !W.big14 || !UI.worldToScreen) return;
       const order = pair.map((id) => sizes.find((s) => s.id === id)).filter(Boolean);
       if (order.length < 2) return;
-      seen[KEY] = true;
-      if (Cook.writeSave) Cook.writeSave();
+      // (the review's finding 8: it is marked seen once it has played, below; a round left mid-moment shows it again next time)
       if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("word-moment", { step: "maani-line", by: pair.join(",") });
       // (the moment is the round's first step: it opens as one, so its words are never "said after a skip, before the first step")
       if (global.PlayLog && global.PlayLog.step) global.PlayLog.step("maani-line:big-small");
@@ -834,7 +846,15 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (c.animate) c.animate([{ opacity: 1 }, { opacity: 0 }], { duration: ms(260) }).onfinish = () => c.remove();
         else c.remove();
       };
-      S.events.once("shutdown", () => card && card.remove());
+      // (the review's finding 8: the page's card goes with the scene, shut down or destroyed (leaving Cook), and with the stage, so a
+      // round left mid-moment never leaves it over the next screen; the stir's lap card does the same)
+      const gone = () => {
+        if (card) card.remove();
+        card = null;
+      };
+      S.events.once("shutdown", gone);
+      S.events.once("destroy", gone);
+      const offStage = global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(gone) : null;
       for (const sz of order) {
         // a ball on the board, rolled out to this ring (the pin's move is the roll's own; here it grows as a roll does)
         // (contract-114: one picture, the raw maani, its own scale tweened from the ball's size out to the ring: never a picture swapped mid-way)
@@ -884,6 +904,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         drawRings(null);
       }
       dropCard();
+      if (offStage) offStage();
+      seen[KEY] = true;
+      if (Cook.writeSave) Cook.writeSave();
       // (the rings stay on the board from here: rollOne draws them for every roll after)
       S.tweens.add({ targets: rings, alpha: 0, duration: ms(300), onComplete: () => rings.destroy() });
       await Cook.wait(ms(300));

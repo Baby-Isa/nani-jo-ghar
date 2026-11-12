@@ -43,6 +43,7 @@
  * mishkaki-grill.json -> mechanic.skewer.
  */
 import { Cook as CookNS } from "../ns.js";
+import "../grill-kit.js"; // SEK-26: the grill kit's grill v2 and its steel tray made deep (Cook.GrillKit)
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
 
 (function (global) {
@@ -132,7 +133,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * The pieces (meat/onion/tomato/pepper/potato, raw/grilled/charred) and the heaps are the same chunks
    * (K5). A skewer on screen is a container whose local tip is y = -318 and handle y = 164 (the drawn stick's
    * 70x640 canvas, centre 320): SK.onLine lays it along any drawn skewer. */
-  const TRAY8 = "assets/cook/items-s08c/sekelo-tray/";
   const V3 = (SK.V3 = {
     DIR: "assets/cook/items/v3/sekelo/",
     /*
@@ -161,7 +161,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     HANDLE: 164,
   });
   /** The painted v3 art is loaded (else the drawn v2 placeholders stand in). */
-  SK.v3 = (S) => S.textures.exists("sk3-rack-0") && S.textures.exists("sk3-stick");
+  // (SEK-26: the v4 stick, v4/sekelo/skewer-empty, with the deep trays and grill-v2: no rack picture needed)
+  SK.v3 = (S) => S.textures.exists("sk4-stick") || (S.textures.exists("sk3-rack-0") && S.textures.exists("sk3-stick"));
   /** The v3 piece name for a piece id (ph-mishkaki -> meat), or null. */
   // (s08 w7A, contract-37: a piece may name its own files, {name, file: "assets/...-{state}-s08c"}: the s08c decoys)
   SK.v3Name = (id) => {
@@ -306,6 +307,27 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ctx.drawImage(img, STICK.w / 2 - (img.width * s) / 2, STICK.cy + V3.TIP - m.tip * img.height * s, img.width * s, img.height * s);
     return c;
   }
+  /*
+   * SEK-26 (Zafar, 12 Nov night: "We should also be using the new skewer"): the v4 skewer (v4/sekelo/skewer-empty, 1000 x 61, lying
+   * with its handle on the left) stood up in the stick's canvas: its metal tip at y 2 (local -318), where its wooden handle starts at
+   * 484 (local 164: the same two marks every skewer is laid by), the handle below to its end (STICK4.end). Measured on the cut: the
+   * wood from x 4 to 202, its steel collar to 221, the rod to the tip at 995 (of 1000).
+   */
+  const STICK4 = { tip: 0.995, handle: 0.202, end: 0.004 };
+  function drawStickV4(img) {
+    const c = cv(STICK.w, STICK.h);
+    const ctx = c.getContext("2d");
+    const s = (V3.HANDLE - V3.TIP) / ((STICK4.tip - STICK4.handle) * img.width);
+    ctx.save();
+    // (turned a quarter: its right end, the tip, up)
+    ctx.translate(STICK.w / 2, STICK.cy + V3.TIP);
+    ctx.rotate(-Math.PI / 2);
+    ctx.drawImage(img, -STICK4.tip * img.width * s, (-img.height * s) / 2, img.width * s, img.height * s);
+    ctx.restore();
+    return c;
+  }
+  /** The stick canvas's handle end below its centre (local px): where a skewer's picture ends (the trays' and the grill's room). */
+  SK.stickEnd = (S) => (S && S.textures.exists("sk4-stick") ? V3.HANDLE + ((STICK4.handle - STICK4.end) * (V3.HANDLE - V3.TIP)) / (STICK4.tip - STICK4.handle) : V3.HANDLE + ((V3.stick.end - V3.stick.handle) * (V3.HANDLE - V3.TIP)) / (V3.stick.handle - V3.stick.tip));
   const PIECE = 112;
   function drawPiece(id) {
     const c = cv(PIECE, PIECE);
@@ -657,7 +679,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // a veg piece (a wedge of onion or tomato, a square of pepper, a potato cube) sits a little smaller,
     // about a cube's size, so the pieces look in proportion on the stick (followup, 29 Sept)
     const b = alphaBox(img);
-    const fit = v3key || S.textures.exists("sk3-stick") ? 110 : SK.cls(id) === "meat" ? 90 : 76;
+    const fit = v3key || SK.v3(S) ? 110 : SK.cls(id) === "meat" ? 90 : 76;
     const s = fit / Math.max(b.w, b.h);
     // its soft shadow, the size of the piece
     ctx.fillStyle = "rgba(40,20,5,0.2)";
@@ -697,6 +719,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (key.startsWith("piece:")) {
       const painted = SK.pieceTex(S, key.slice(6));
       if (painted) return painted;
+    }
+    // SEK-26: the v4 skewer, everywhere (the board, the trays, the grill, the served plate)
+    if (key === "stick" && S.textures.exists("sk4-stick")) {
+      const k = "mk:stick:v4";
+      if (!S.textures.exists(k)) S.textures.addCanvas(k, drawStickV4(S.textures.get("sk4-stick").getSourceImage()));
+      return k;
     }
     // Sekelo v3 (K9): the rack's own drawn skewer, so the one you move is the one in the pictures
     if (key === "stick" && S.textures.exists("sk3-stick")) {
@@ -983,28 +1011,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     RIGHT: 190, // the shelf keeps clear of the phase button and the tick, bottom right
     DIR: "assets/cook/items/sekelo/",
   });
+  // SEK-26: the v4 skewer and the walnut board (the chop's board, the art plan's walnut rule; ART-79)
+  SK.V4_STICK = "assets/cook/items/v4/sekelo/skewer-empty.webp";
+  SK.V4_BOARD = "assets/cook/items/v3/samosa/board.webp";
   /** The piece that is meat (ph-meat, gos: SEK-19, decision 11; the cooked all-meat skewer is mishkaki) and a piece's word. */
   SK.meatPiece = () => SK.cfg().meatPiece || SK.kindWord("meat");
   /** Sekelo v2's own art: the grill, the rack, the board and the top-down prep bowls. */
   SK.loadArt = function (S, ids = []) {
     const bowls = SK.cfg().bowls || {};
-    const list = [
-      ["sk2-grill", V2.DIR + "grill-t.webp"],
-      ["sk2-rack", V2.DIR + "rack-t.webp"],
-      ["sk2-stick", V2.DIR + "stick-v.webp"],
-      ["sk2-board", "assets/cook/items/tool-board-t.webp"],
-      ["sk2-plate", "assets/cook/items/plate-enamel-empty-t.webp"],
-    ].concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, SK.bowlFile(bowls[id])]));
-    // v3 (K5, K6, K9): the pictured rack and plate, the grill, the one stick, the chunky pieces
-    const v3 = [["sk3-grill", V3.DIR + "grill.webp"], ["sk3-stick", V3.DIR + "stick.webp"]];
+    /*
+     * SEK-26, ART-79 (Zafar, 12 Nov night: "old artwork for skewer, old artwork for the board ... It might even be the old artwork for the
+     * tray"): every picture of the thread and grill screens is the new art: the v4 skewer (sk4-stick), the walnut board (the chop's,
+     * sk4-board), the kit's grill v2 and its steel tray made deep (Cook.GrillKit: gk-grill, gk-tray). The old ones are no longer loaded:
+     * Sekelo v2's grill, rack, stick, oak board and enamel plate, v3's grill and stick, s08c's trays with their sticks painted in, the
+     * k3 wide tray (CK-86).
+     */
+    const GK = Cook.GrillKit;
+    const list = [["sk4-stick", SK.V4_STICK], ["sk4-board", SK.V4_BOARD]]
+      .concat(GK ? GK.art() : [])
+      .concat(ids.filter((id) => bowls[id]).map((id) => [`sk2-bowl-${id}`, SK.bowlFile(bowls[id])]));
+    // v3 (K5, K6, K9): the plate (the served picture) and the chunky pieces
+    const v3 = [];
     // SEK-07 / S2 (S02-E): the art run's plain plate (art.s02 "sekelo-plate", C7): the skewers are laid on it by code,
     // straight and side by side, left to right (SK.platePlain), in place of the fanned plate-n pictures
     const plain = Cook.Stations.art("sekelo-plate");
-    for (let n = 0; n <= 4; n++) {
-      v3.push([`sk3-rack-${n}`, `${TRAY8}tray-${n}-s08c.webp`]); // SEK-14, SEK-20: s08c SK4's tray holding n skewers
-      if (!n) v3.push(["sk3-tray-long", "assets/cook/items/v4/kit/tray-steel-long.webp"]); // CK-86: the grill's two plain wide trays (k3 run)
-      if (!plain) v3.push([`sk3-plate-${n}`, `${V3.DIR}plate-${n}-v2.webp`]);
-    }
+    for (let n = 0; n <= 4; n++) if (!plain) v3.push([`sk3-plate-${n}`, `${V3.DIR}plate-${n}-v2.webp`]);
     if (plain) v3.push(["sk3-plate-plain", plain.file]);
     const names = [...new Set(ids.concat(SK.pieceIds()).map(SK.v3Name).filter(Boolean))];
     // (part: the v4 pieces' stage after the first turn; a piece with no v4 file has none, and shows its grilled one)
@@ -1014,17 +1045,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return Cook.Stations.capLoad(Cook.Stations.load(S, list).then(() => plain && SK.platePlain(S)), 15000); // real time (loadcap)
   };
   /**
-   * SEK-07 / S2 (S02-E): the plate pictures sk3-plate-0..4 made from the plain plate and the one stick (sk3-stick):
+   * SEK-07 / S2 (S02-E): the plate pictures sk3-plate-0..4 made from the plain plate and the one stick (SEK-26: the v4 skewer):
    * n skewers lying straight and parallel, tips to the left, their handles off the plate's right edge, spaced evenly
    * down the plate. V3.plate becomes this canvas's measures, so everything that plates along a drawn skewer (the
    * served picture, SK.plate3) works on it unchanged.
    */
   SK.platePlain = function (S) {
-    if (!S.textures.exists("sk3-plate-plain") || !S.textures.exists("sk3-stick")) return;
+    if (!S.textures.exists("sk3-plate-plain") || !SK.v3(S)) return;
     const pl = S.textures.get("sk3-plate-plain").getSourceImage();
-    const st = S.textures.get("sk3-stick").getSourceImage();
+    // (SEK-26: the stick canvas, whichever skewer it holds: its tip at 2 of 640, its handle at 484, its end at SK.stickEnd)
+    const st = S.textures.get(SK.tex(S, "stick")).getSourceImage();
     const fl = ((Cook.Stations.art("sekelo-plate") || {}).meta || {}).flat || [0.5, 0.5, 0.4, 0.37];
-    const ST = V3.stick;
+    const ST = { tip: (STICK.cy + V3.TIP) / STICK.h, handle: (STICK.cy + V3.HANDLE) / STICK.h, end: (STICK.cy + SK.stickEnd(S)) / STICK.h };
     const len = pl.width * fl[2] * 2 * 0.86; // tip to handle: most of the plate's flat width
     const k = len / ((ST.handle - ST.tip) * st.height);
     const tipX = pl.width * (fl[0] - fl[2] * 0.86);
@@ -1263,7 +1295,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     S.textures.addCanvas(key, c);
     return key;
   };
-  SK.rack = function (S, z, { x, y, slots, s, bamboo, wide = 0 }) {
+  SK.rack = function (S, z, { x, y, slots, s, bamboo, wide = 0, deep = null }) {
+    if (deep && Cook.GrillKit && S.textures.exists(Cook.GrillKit.ART.tray.key)) return SK.rackDeep(S, z, Object.assign({ x, y, bamboo }, deep));
     if (SK.v3(S)) return SK.rack3(S, z, { x, y, bamboo, wide });
     const w = (slots * RK.pitch + 2 * RK.end) * s;
     const cy = y + ((RK.top + RK.bot) / 2) * s;
@@ -1330,6 +1363,30 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const at = (i) => SK.lineAt(...line(i));
     return { img, w: wide, x: (i) => at(i).x, y: at(0).y, line, set: () => {}, painted: false, v3: true };
   };
+  /*
+   * SEK-26 (Zafar, 12 Nov night: "the trays next to the barbecue look super shallow, like they wouldn't be able to hold skewers in them";
+   * the mock A1-sekelo-2-improved's deep trays): a deep steel tray (Cook.GrillKit.trayTex: the kit's steel tray cut by its corners and
+   * rims to this shape, never stretched) that holds its skewers as the grill does: upright, side by side, each the same size as on the
+   * board and the grill, its metal tip resting on the tray's far rim and its handle on the near rim, the wooden handle off the tray by
+   * your hands. (x, y): the tray's centre; w, h: its size (design px); bamboo: a skewer's tip to handle (the rims' middles are that far
+   * apart). Four places across its well. The same API as rack3 (painted: false: every skewer shows its own stick).
+   */
+  SK.rackDeep = function (S, z, { x, y, bamboo, w, h }) {
+    const GK = Cook.GrillKit;
+    const key = GK.trayTex(S, w / h);
+    const cx = z.X(x);
+    const cy = z.Y(y);
+    const img = S.track(S.add.image(cx, cy, key).setDepth(D.item - 2));
+    img.setDisplaySize(z.L(w), z.L(h)); // (the texture is made at this shape: one scale)
+    img.shadow = S.contactShadow(img);
+    img.rackBox = { x: cx, y: cy, w: z.L(w), h: z.L(h) };
+    img.setName("sekelo-tray");
+    const inner = w * 0.8; // the four places across the well, clear of its walls
+    const px = (i) => cx + z.L(-inner / 2 + ((Math.min(3, Math.max(0, i)) + 0.5) * inner) / 4);
+    const line = (i) => [{ x: px(i), y: cy - z.L(bamboo) / 2 }, { x: px(i), y: cy + z.L(bamboo) / 2 }];
+    const at = (i) => SK.lineAt(...line(i));
+    return { img, w, x: (i) => at(i).x, y: at(0).y, line, set: () => {}, painted: false, v3: true, deep: true, pitch: inner / 4 };
+  };
   /**
    * S19 (Fable's sekelo flaw 2, STD-E2-07; chai's tray): the asker's face circle (the kit's badge, Cook.Kit.badge) on the serving tray
    * from its first frame, beside its top right corner (CK-81; was its top-left, as chai's tray carries it): the kit's badge size (64 design px), at least 30 CSS px as
@@ -1386,8 +1443,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * (rack-0..4), the j-th grilled skewer in slot j, upright, its chunks at their rack size. (x, y): the picture's centre
    * (design px). The same API as SK.plate3 ({img, d, line(j, n), rank, set(n)}), so the grill plates onto it unchanged.
    */
-  SK.cooked3 = function (S, z, { x, y, bamboo, wide = 0 }) {
-    const r = SK.rack3(S, z, { x, y, bamboo, wide });
+  SK.cooked3 = function (S, z, { x, y, bamboo, wide = 0, deep = null }) {
+    const r = deep ? SK.rackDeep(S, z, Object.assign({ x, y, bamboo }, deep)) : SK.rack3(S, z, { x, y, bamboo, wide });
     return { img: r.img, d: r.img.displayHeight, line: (j, n) => r.line(j, Math.max(n, j + 1)), rank: (j) => j, set: r.set, painted: r.painted, rack: true };
   };
   /** For each plate picture n: which of its drawn skewers is the j-th plated (the same place as in picture n-1). */
@@ -1501,6 +1558,63 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     };
   };
 
+  /*
+   * SEK-26 (Zafar, 12 Nov night: "The skewer on the barbecue is tiny. It should have its handle resting on the bottom edge of the bottom
+   * barbecue and the top metal tip resting on the top edge of the barbecue, like we did in our mock-ups"; the mock A1-sekelo-2-improved):
+   * the kit's grill v2 (Cook.GrillKit.ART.grill) with each skewer as long as the grill is deep, its tip on the far rim and its handle on
+   * the near rim (the wood off the grill by your hands), and the two deep trays on its left, raw then cooked, each the grill's height
+   * holding four skewers upright at the same size (SK.rackDeep): one tidy rectangle, as big as the view allows with even padding, centred
+   * across and up and down (the screen has no band). M, a skewer's tip to handle, sets every size: the grill's rims are M apart; a tray
+   * is TRAY_W M across (four skewers side by side) and its rims M apart. The rings' icons need a little room above the grill and the
+   * handles hang below it; the group (icons to handles) is what is centred. -> LAYOUT3's shape (design px, no lift), with tray: {w, h}.
+   */
+  const layout4 = (z, S) => {
+    const v = Cook.view || {};
+    const k = z.k || 1;
+    const d = (wy) => (wy - z.Y(0)) / k;
+    const dX = (wx) => (wx - z.X(0)) / k;
+    const top = v.top != null ? d(v.top) : 0;
+    const bot = v.bottom != null ? d(v.bottom) : 900;
+    const left = v.left != null ? Math.max(-200, dX(v.left)) : 0;
+    const right = v.right != null ? Math.min(1800, dX(v.right)) : 1600;
+    const PAD = 44;
+    const GK = Cook.GrillKit;
+    const G = GK.ART.grill;
+    const gH = 1 / (G.near - G.far); // the grill's height per unit of M
+    const gW = (gH * G.w) / G.h;
+    const TRAY_W = 1.1; // a tray across, per M: four upright skewers side by side in its well
+    const GAP = 0.06;
+    const hang = (SK.stickEnd(S) - V3.HANDLE) / (V3.HANDLE - V3.TIP); // the handle below the near rim, per M
+    const ICON = 56; // (the ring's icon over its top: 32 + its 22 radius, design px; the ring's top is 0.122 M under the far rim)
+    const W = right - left - 2 * PAD;
+    const H = bot - top - 2 * PAD;
+    const Mw = W / (2 * TRAY_W + 2 * GAP + gW);
+    // the group's height: from the higher of the grill's top and the icons' top, to the handles' end
+    const tall = (M) => M * (1 + hang) + Math.max(G.far * gH * M, ICON - 0.122 * M);
+    let Mh = H / (1 + hang + G.far * gH);
+    if (tall(Mh) > H) Mh = (H - ICON) / (1 + hang - 0.122);
+    const M = Math.max(120, Math.min(Mw, Mh));
+    const x0 = (left + right) / 2 - (M * (2 * TRAY_W + 2 * GAP + gW)) / 2;
+    const above = Math.max(G.far * gH * M, ICON - 0.122 * M);
+    const farY = (top + bot) / 2 - tall(M) / 2 + above;
+    const nearY = farY + M;
+    const rim = GK.TRAY_RIM * TRAY_W * M; // (the tray's rims' middles M apart: its height M and a rim)
+    const tray = { w: TRAY_W * M, h: M + 2 * rim };
+    const trayY = (farY + nearY) / 2;
+    const gx = x0 + 2 * (TRAY_W + GAP) * M + (gW * M) / 2;
+    const gy = farY - G.far * gH * M + (gH * M) / 2;
+    const bk = M / 262; // (the ring's sizes were for a 262 skewer)
+    return {
+      RACK: { x: x0 + (TRAY_W * M) / 2, y: trayY },
+      PLATE: { x: x0 + (TRAY_W + GAP) * M + (TRAY_W * M) / 2, y: trayY, rack: true },
+      GRILL: { x: gx, y: gy, w: gW * M, skewerY: farY + (-V3.TIP / (V3.HANDLE - V3.TIP)) * M, s: M / (V3.HANDLE - V3.TIP), bed: G.bed.slice(), key: G.key },
+      RING: { dy: -22 * bk, w: 80 * bk, h: 238 * bk },
+      bamboo: M,
+      tray,
+      trayWide: 0,
+    };
+  };
+
   Mech.define("grill", {
     station: "grill",
     view: "marble",
@@ -1551,7 +1665,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const shelfIds = params.shelf || [meatIds, SK.pieceIds().filter((id) => !meatIds.includes(id))];
       await SK.loadArt(S, [].concat(...shelfIds));
       const v3 = SK.v3(S);
-      const LAY = v3 ? layout3(z, S.textures.exists("sk3-tray-long")) : LAYOUT2;
+      // (SEK-26: the grill v2 and the deep trays, layout4; layout3 stays for a page whose kit art did not load)
+      const GKA = Cook.GrillKit && Cook.GrillKit.ART;
+      const deep = v3 && !!GKA && S.textures.exists(GKA.grill.key) && S.textures.exists(GKA.tray.key);
+      const LAY = deep ? layout4(z, S) : v3 ? layout3(z, false) : LAYOUT2;
       if (v3) LIFT = 0;
       const { RACK, GRILL, PLATE, RING } = LAY;
       SK.band(S, z, { full: v3 && !!PLATE.rack });
@@ -1564,7 +1681,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (b.shadow) b.shadow.setVisible(false);
       });
       const gw = GRILL.w;
-      const grillImg = S.track(S.add.image(X(GRILL.x), Y(GRILL.y), v3 ? "sk3-grill" : S.textures.exists("sk2-grill") ? "sk2-grill" : SK.tex(S, `grill:${gw}x${Math.round(gw * 0.56)}`)).setDepth(D.item - 3));
+      const grillImg = S.track(S.add.image(X(GRILL.x), Y(GRILL.y), GRILL.key || SK.tex(S, `grill:${gw}x${Math.round(gw * 0.56)}`)).setDepth(D.item - 3));
       grillImg.setScale(L(gw) / grillImg.width);
       const gh = grillImg.displayHeight / z.k;
       grillImg.shadow = S.contactShadow(grillImg);
@@ -1585,7 +1702,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       /* the rack, with fixed slots (never one per skewer ordered) */
       // (v3: raised with the rest of the scene, so it lines up with the grill and the plate)
-      const rackArt = SK.rack(S, z, { x: RACK.x + dx, y: v3 ? RACK.y - LIFT / z.k : RACK.y, slots: k.rack, s: RACK.scale, bamboo: LAY.bamboo, wide: LAY.trayWide });
+      const rackArt = SK.rack(S, z, { x: RACK.x + dx, y: v3 ? RACK.y - LIFT / z.k : RACK.y, slots: k.rack, s: RACK.scale, bamboo: LAY.bamboo, wide: LAY.trayWide, deep: LAY.tray || null });
       if (rackArt && rackArt.img && rackArt.img.setAlpha) rackArt.img.setAlpha(0); // (S19: it fades in below, with its skewers)
       const rackX = (i) => rackArt.x(i);
       const rack = Array(k.rack).fill(null);
@@ -1595,7 +1712,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       /* the plate and the chips basket */
       // v3 (K8, K9): the plate's picture holds the skewers plated so far, handles off the plate
       // s08 w3B (SEK-20): layout D's cooked rack under the raw one (the same picture), raised with the scene as the raw rack is
-      const plateArt = v3 ? (PLATE.rack ? SK.cooked3(S, z, { x: PLATE.x + dx, y: PLATE.y - LIFT / z.k, bamboo: LAY.bamboo, wide: LAY.trayWide }) : SK.plate3(S, { x: X(PLATE.x), y: Y(PLATE.y), L })) : null;
+      const plateArt = v3 ? (PLATE.rack ? SK.cooked3(S, z, { x: PLATE.x + dx, y: PLATE.y - LIFT / z.k, bamboo: LAY.bamboo, wide: LAY.trayWide, deep: LAY.tray || null }) : SK.plate3(S, { x: X(PLATE.x), y: Y(PLATE.y), L })) : null;
       // a chunk's size and place along a cooked skewer: the rack's own (1, 0, 0), or the plate's closer skewers' (V3.PLATE_*)
       const PK = plateArt && plateArt.rack ? { piece: 1, shift: 0, stagger: 0 } : { piece: V3.PLATE_PIECE, shift: V3.PLATE_SHIFT, stagger: V3.PLATE_STAGGER };
       const plateImg = plateArt ? plateArt.img : S.track(S.add.image(X(PLATE.x), Y(PLATE.y), S.textures.exists("sk2-plate") ? "sk2-plate" : SK.tex(S, "plate")).setDepth(D.item - 1));
@@ -1679,7 +1796,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             SK.onLine(sk, tip, hd);
             land();
           }
-          const hit = hitFor(sk, L(86), L(340), "rack");
+          // (SEK-26: the whole skewer, as big as it is drawn now: its place's width and its length, tip to handle's end)
+          const hit = hitFor(sk, L(rackArt.pitch ? rackArt.pitch * 0.95 : 86), L(LAY.bamboo ? LAY.bamboo * 1.2 : 340), "rack");
           hit.setPosition(t.x, t.y);
           S.tappable(hit, () => toGrill(r));
           return r;
@@ -1767,7 +1885,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           onComplete: () => {
             g.busy = false;
             S.burst(spotX(i), Y(GRILL.skewerY - 60), [0xffb347, 0xffffff], 8, L(60));
-            const hit = hitFor(g.sk, L(Math.min(130, bedW / k.spots)), L(420), g.phase >= k.turns ? "lift" : "turn");
+            const hit = hitFor(g.sk, L(Math.min(LAY.tray ? LAY.bamboo * 0.32 : 130, bedW / k.spots)), L(LAY.tray ? LAY.bamboo * 1.15 : 420), g.phase >= k.turns ? "lift" : "turn");
             hit.setPosition(spotX(i), Y(GRILL.skewerY - 20));
             S.tappable(hit, () => tapGrill(g));
           },

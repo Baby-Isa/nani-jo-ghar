@@ -494,8 +494,10 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
       const k = Mech.knobs("stir", { level });
       const bands = k.bands || [0.12, 0.9, 2.2];
       const [e1, e2, e3] = bands;
-      // DAAR-12 (Zafar, 11 Nov): no speed asked before its level (its word moment waits on Mum's lines)
-      let asked = k.speeds && level >= speedFrom() ? o.speed || null : null;
+      // DAAR-12 (Zafar, 11 Nov: "daar asks no speed before L4"): daar asks exactly its order's speed (o.exact: none before its level,
+      // speedFrom); the stir game keeps its own rule (the review's finding 6: a mechanic is never removed without Zafar's word): a speed
+      // at every level its knobs ask one (k.speeds), a missing one picked at random, and its level-3 switch (k.switch)
+      let asked = o.exact ? o.speed || null : k.speeds ? o.speed || Cook.pick(["slow", "quick"]) : null;
       const trackR = inR * 0.62;
       // the turning contents (DAAR-29, s08 w4A): the pot's disc itself turns about its centre under the still rim (drawn over it:
       // rimTex), and the stirred swirl comes up over it as you go faster, turning a little faster
@@ -688,10 +690,12 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
           S.tweens.add({ targets: dot, x: x0 + Math.cos(a) * out, y: y0 + Math.sin(a) * out, alpha: 0, duration: 700, ease: "Cubic.easeOut", onComplete: () => dot.destroy() });
         }
       };
-      // DAAR-46: the child stopped (let go after a lap, no tap still turning): the move-on beat, then it is counted; a new grab in the
-      // beat carries on stirring (UI.hideDone)
+      // DAAR-46: the child stopped (let go at or past the count, no tap still turning): the move-on beat, then it is counted; a new grab
+      // in the beat carries on stirring (UI.hideDone). (The review's finding 1: letting go before the count is never the end, as the stir
+      // game's SH-238 said: "children did that by accident"; a tap a lap, or a re-grip, waits for the next lap. Stuck under the count,
+      // the stuck help comes: Nani's line again with the light on the ladle.)
       const stopped = () => {
-        if (over || dragging || turning || count < 1) return;
+        if (over || dragging || turning || count < laps) return;
         ending = true;
         z.expect({ kind: "wait" });
         UI.done().then(() => ending && !dragging && !turning && finishStir());
@@ -715,7 +719,7 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
           level,
           thing: ladle,
           hintMs: () => (R0 && R0.hintMs ? R0.hintMs(Cook.roundLevel(ctx) || level) : 0) || 7000,
-          current: () => !over && count < 1,
+          current: () => !over && count < laps,
           busy: () => dragging || turning > 0,
           note: `${key}:stir-stuck`,
         });
@@ -743,37 +747,40 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
           if (start) start.moved += Math.abs(da);
           turn(da);
         }),
-        z.on("pointerup", () => {
-          if (prev == null) return;
-          // a tap on the pot (no drag): the ladle goes round on its own, on past the flag (one lap a tap)
-          if (start && start.moved < 0.3 && performance.now() - start.t < 400 && !over) {
-            const tw = { v: 0 };
-            let lastV = 0;
-            let rest = TAU - ((((ang - FLAG_AT) % TAU) + TAU) % TAU);
-            if (since + rest < TAU * 0.75) rest += TAU;
-            turning++;
-            S.tweens.add({
-              targets: tw,
-              v: rest + 0.03,
-              duration: 700,
-              ease: "Sine.easeInOut",
-              onUpdate: () => {
-                turn(tw.v - lastV);
-                lastV = tw.v;
-              },
-              onComplete: () => {
-                turning--;
-                stopped();
-              },
-            });
-          }
-          if (!over && count < 1 && Cook.Coach && Cook.Coach.ended) Cook.Coach.ended(step); // (let go, the stir not begun)
-          prev = null;
-          start = null;
-          dragging = false;
-          stopped();
-        })
+        z.on("pointerup", (p) => release(p)),
+        // (the review's finding 7: a mouse let go off the canvas, over the side panel, sends pointerupoutside: the stir ends all the same)
+        z.on("pointerupoutside", (p) => release(p))
       );
+      function release() {
+        if (prev == null) return;
+        // a tap on the pot (no drag): the ladle goes round on its own, on past the flag (one lap a tap)
+        if (start && start.moved < 0.3 && performance.now() - start.t < 400 && !over) {
+          const tw = { v: 0 };
+          let lastV = 0;
+          let rest = TAU - ((((ang - FLAG_AT) % TAU) + TAU) % TAU);
+          if (since + rest < TAU * 0.75) rest += TAU;
+          turning++;
+          S.tweens.add({
+            targets: tw,
+            v: rest + 0.03,
+            duration: 700,
+            ease: "Sine.easeInOut",
+            onUpdate: () => {
+              turn(tw.v - lastV);
+              lastV = tw.v;
+            },
+            onComplete: () => {
+              turning--;
+              stopped();
+            },
+          });
+        }
+        if (!over && count < 1 && Cook.Coach && Cook.Coach.ended) Cook.Coach.ended(step); // (let go, the stir not begun)
+        prev = null;
+        start = null;
+        dragging = false;
+        stopped();
+      }
       let lastT = performance.now();
       const stopTick = z.tick(() => {
         const now = performance.now();
@@ -924,11 +931,12 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
     verb: "Count and speed",
     async run(L) {
       const R = Cook.Recipes;
-      // DAAR-12: the speed is on the card whenever she asks one (from its level): an order that names it
-      let d = R.daal.make("nana", { level: L.level });
-      for (let i = 0; i < 30 && L.level >= speedFrom() && !d.speed; i++) d = R.daal.make("nana", { level: L.level });
+      // the speed is on the card whenever she asks one: the stir game asks one at every level (decision 13; DAAR-12's "no speed before
+      // L4" is daar's own: the review's finding 6), so an order with none (daar's L1-L3) is given one here, said and shown
+      const d = R.daal.make("nana", { level: L.level });
+      if (!d.speed && Mech.knobs("stir", { level: L.level }).speeds) d.speed = Cook.pick(["slow", "quick"]);
       L.card(d, ["Stir"]);
-      await L.station("stir", { laps: d.laps, speed: L.level >= speedFrom() ? d.speed : null });
+      await L.station("stir", { laps: d.laps, speed: d.speed || null });
     },
   });
 })(window);
