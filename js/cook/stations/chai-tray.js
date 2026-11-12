@@ -2198,6 +2198,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       key: (pan) => `chai:${pan.who}`,
       showRight,
       reset: emptyPan,
+      // SH-266 (Zafar, 11 Nov evening: before a redo the orders done right leave with their people): a right glass, its face and its
+      // person's badge fade away; its pan stays on the stove
+      leave: (pan) => Cook.tween(S, { targets: [pan.face, pan.well.face, pan.well.glass.empty, pan.well.glass.half, pan.well.glass.full].filter((o) => o && o.active), alpha: 0, duration: 300 }),
       again: (again) => {
         finished = false;
         doneShown = false;
