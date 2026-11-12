@@ -273,7 +273,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const vegAll = [...new Set(kinds.concat(no, pool))].filter((id) => VEG[id]);
     // (CK-49, contract-37: the chop's decoys are reported by chop's game, each round's as it throws them: Cook.Chop.play's note)
     const art = [
-      ["dv2-knife", IT + "tool-knife-t-v2.webp"], // the fallback is the current knife (Z8: tool-knife-t.png/.webp are retired art; S13 decodes every load)
+      // (ART-79, s19-clean-e: the old knife, tool-knife-t-v2, is no longer loaded: nothing here drew it; daar's chop is chop's own game,
+      // which draws the v4 kit knife, Cook.Chop.pictures)
       ["dv3-trivet", V3 + "daar-bowl-trivet-v2.webp"],
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
@@ -290,7 +291,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       .concat([...new Set(vegAll.concat(spiceIds))].filter((id) => DS1[id]).map((id) => [ds1Key(id), `${S8C}daar-in/in-${DS1[id]}-s08c.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
-      .concat(St.artLoad(["knife", "daar-bowl", "daar-trivet"])); // S02-B: the art run's knife and split bowl/trivet, once they land
+      .concat(St.artLoad(["daar-bowl", "daar-trivet"])); // S02-B: the art run's split bowl/trivet, once they land (its old knife: ART-79, above)
     // (chop's settings, its rounds and knobs by level, read before Nani's card is drawn)
     await Promise.all([St.loadArt(S, art), Cook.Chop ? Cook.Chop.settings().catch(() => null) : null]);
     // SH-259 (Zafar, 10 Nov: one chop): daar's chop is chop's own game, its board, band, knife, pieces and light (Cook.Chop.play draws

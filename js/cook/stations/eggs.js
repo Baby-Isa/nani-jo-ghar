@@ -527,6 +527,13 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
 
     /** the next thing in the card's order (chai's rule): the first plate not finished, its eggs, then its salt and pepper; then the tray */
     function nextThing() {
+      // (s19-clean-e, contract-70: an egg is a timed window, as chai's heat and corn's turn: one that has reached its green is the next thing
+      // to do before a plate's salt or pepper or another egg is begun, so Nani's "(Tarelo) indo hane kadh." comes as its green opens; was
+      // the first plate's seasoning first, and the second plate's egg went green with no call)
+      if (!held) {
+        const ripe = all().find((e) => !e.out && !e.lifted && e.p >= ready && P0.some((pl) => !plateFull(pl) && !!pl.q.fried === e.fried));
+        if (ripe) return { obj: ripe.obj, key: ripe.fried ? "n.egg" : "ph-boiledegg", what: "egg" };
+      }
       for (const pl of P0) {
         if (!plateFull(pl)) {
           const want = !!pl.q.fried;
@@ -537,7 +544,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           const coming = all().filter((e) => !e.out && e.fried === want).length;
           const need = P0.filter((x) => !!x.q.fried === want).reduce((a, x) => a + Math.max(0, plateWants(x) - x.eggs.length), 0);
           if (coming >= need) return { obj: null, key: null, what: "wait" };
-          if (held && held.kind === "raw") return { obj: want ? pan : pot, key, what: "vessel" };
+          // (s19-clean-e, contract-117: putting the egg in is the pan's or the pot's tap, its own step: it was keyed as the egg, so the egg box's
+          // step and this one read as one step still waiting after the egg was taken)
+          if (held && held.kind === "raw") return { obj: want ? pan : pot, key: want ? "pan" : "pot", what: "vessel" };
           return { obj: bowl, key: "n.egg", what: "bowl" };
         }
         if (!seasonDone(pl)) {
@@ -1108,7 +1117,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           // for it and crosses that, never a row made right (UI.mission.serveWrong's unasked); the red ends with the round, M.redoEnd)
           const unasked = want.filter((id) => !rows.some((r) => r.ids.includes(id)));
           if (!bad.length && !unasked.length) bad = rows.filter((r) => !r.unsaid).slice(0, 1).concat(rows).slice(0, 1);
-          if (UI.mission.serveWrong && (bad.length || unasked.length)) UI.mission.serveWrong(bad.map((r) => r.ids[0]), 0, { for: p.who, unasked });
+          if (UI.mission.serveWrong && (bad.length || unasked.length)) UI.mission.serveWrong(bad.map((r) => r.ids[0]), ctx.dishAt || 0, { for: p.who, unasked }); // (the d review's finding 4: its dish, never 0)
           return { ok, rows: bad.length ? bad : null };
         },
         review: async () => [],

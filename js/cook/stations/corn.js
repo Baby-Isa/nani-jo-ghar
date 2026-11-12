@@ -446,6 +446,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         }
         img.onBand = false;
         S.untap(img);
+        // (s19-clean-e, contract-102: its glow went with its light only when the step changed; the next cob's step has the same name, so
+        // the cob flew to the grill still glowing, with no light: its glow goes as it leaves the band)
+        if (lit === img) glow(null);
         const used = cobs.map((c) => c.slot);
         // (the places fill from the grill's middle out)
         const slot = [1, 2, 0, 3].find((k) => !used.includes(k));

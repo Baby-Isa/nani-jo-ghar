@@ -399,6 +399,30 @@ import { setTimeout } from "../life.js";
       drops.clear();
     };
 
+    /*
+     * s19-clean-e (contract-111, SH-244: the item wins the taps meant for it): a jar lifted over the jug or the bowl is tipped a little more
+     * at each tap, so its picture's own frame turns with it and the corners of the box it is seen in (its edges' middles, 4 px in) fell
+     * outside its tap area: a tap there did nothing. While it is up, a tap anywhere in the box it is drawn in tips it (its world bounds,
+     * read at each tap); it has no pill and nothing else stands there. Back in its slot its area is the shelf's again (Shelf.P.reach).
+     */
+    const reachWhole = (img) => {
+      const inp = img && img.input;
+      if (!inp || inp.njgWhole || typeof inp.hitAreaCallback !== "function") return;
+      const own = inp.hitAreaCallback;
+      inp.njgWhole = true;
+      inp.hitAreaCallback = function (area, x, y, o) {
+        if (own(area, x, y, o)) return true;
+        if (!o.lifted) return false;
+        try {
+          const p = o.getWorldTransformMatrix().transformPoint(x - (o.displayOriginX || 0), y - (o.displayOriginY || 0));
+          const b = o.getBounds();
+          return p.x >= b.x && p.x <= b.right && p.y >= b.y && p.y <= b.bottom;
+        } catch (e) {
+          return false;
+        }
+      };
+    };
+
     /** One instruction: Nani says it, its row appears; the child taps the container, then taps to tip it, to the amount. */
     async function step(s, i) {
       if (UI.mission.reveal) UI.mission.reveal(`bake-${i + 1}`);
@@ -437,6 +461,7 @@ import { setTimeout } from "../life.js";
         if (pill.input) pill.input.enabled = on;
       };
       pillShow(false);
+      img.lifted = true;
       busy = true;
       await Cook.tween(S, { targets: img, x: into.x - 150, y: into.y - 60, duration: 360, ease: "Cubic.easeOut" });
       busy = false;
@@ -466,6 +491,7 @@ import { setTimeout } from "../life.js";
           expectTap(img, s.id);
         };
         S.tappable(img, tap);
+        reachWhole(img);
         expectTap(img, s.id);
         control(img, "tip", () => open);
       });
@@ -482,6 +508,7 @@ import { setTimeout } from "../life.js";
       await new Promise((r) => setTimeout(r, FADE_MS));
       await Cook.tween(S, { targets: img, angle: 0, x: img.home.x, y: img.home.y, duration: 380, ease: "Cubic.easeInOut" });
       img.chip = pill;
+      img.lifted = false;
       pillShow(true);
       if (jugStep) {
         // the jug tips into the bowl by itself

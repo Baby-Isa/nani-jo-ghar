@@ -509,6 +509,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (s.refill > 0) {
           s.refill = 0;
           s.img = sit(s);
+          // (s19-clean-e, CK-79's chop phase, contract-114: a slot filled now to hop fades in as it rises, as a refill does, never appearing
+          // whole in the frame the cut one went)
+          s.img.setAlpha(0);
+          S.tweens.add({ targets: s.img, alpha: 1, duration: 220 });
         }
         throwNote(phase, hopDue + hopWaited);
         hopWaited = 0;
@@ -1273,6 +1277,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const lit0 = Date.now();
         await wait(420);
         while (Date.now() - lit0 < 1500 && knife.active) await wait(50);
+        // (s19-clean-e, contract-36: the strip is the chop's step on screen, the knife lit; Nani calls it as the finger draws the knife,
+        // with the family's recorded "Nindha nindha kap!" (lines.guide-chop, the line her guide box already shows): the order was said
+        // before the strip, more than the call's 2 s before the knife's light, or heard in its pop-up and not said again)
+        if (z.say && Lang.line) z.say(Lang.role(Lang.line("guide-chop"), "call"), { hide }).catch(() => {});
         let cutYet = false;
         const D_MS = 1500 / slow;
         await new Promise((resolve) =>
