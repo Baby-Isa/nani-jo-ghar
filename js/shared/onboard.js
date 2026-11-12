@@ -2216,7 +2216,7 @@
    * STD-D2-04 (every game, Zafar 7 Nov): a wrong move brings the hint at once: rush() (or Onboard.rush(), every live step's) brings
    * the next rung now (Onboard.rushRung: the light help, else the box), whatever the clock says; the wrong tap's own press and lift
    * (within RUSH_GRACE of the rush) don't count as the action that would take that help away again.
-   *   o: {target (the live control), item (the finger's point), live, avoid, pad, light, move, line, glow, glowAt, at, first, id}
+   *   o: {target (the live control), item (the finger's point), live, avoid, pad, light, move, line, glow, glowAt, at, first, id, glowStays (the light stays through any action until the step is done, SH-261: Cook; else it goes on any action and the glow rung fires again)}
    *   -> {done(), stop(), rush(by), rung}   done() when the step is complete (the spotlight goes); the stage's end stops it too
    */
   Onboard.stuck = function (step, o) {
@@ -2302,7 +2302,16 @@
         // a tap that missed, or one elsewhere, never takes it away; it hides only while the child does its move (Onboard.spot)
         // SH-261 at full strength (Zafar, 11 Nov night: "You have to do what it says, otherwise it doesn't let you move on"): Nani's help
         // light (the glow rung) stays too, through any tap, until the step is done; only the rungs' clock starts again
-        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) fired = glowing ? { g: true } : {};
+        // (s19-clean-a2, the Fable review's finding 1: only where the game keeps its own light lit through a tap, o.glowStays, Cook's
+        // rungs: a game that puts its light out itself on a move, farm's photo arrows, never tells the kit, so there the light goes on
+        // any action and the glow rung fires again after the next wait, pointing the right way from where the child now stands)
+        if (lastAct != null && !(rushT && Math.abs(la - rushT) < Onboard.RUSH_GRACE)) {
+          if (glowing && o.glowStays) fired = { g: true };
+          else {
+            fired = {};
+            glow(false);
+          }
+        }
         lastAct = la;
       }
       // (the rungs count from the child's last action or the step opening, whichever is later: a step that opens after a long

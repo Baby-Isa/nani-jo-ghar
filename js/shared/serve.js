@@ -22,7 +22,8 @@
  *        close (o.afterReview()); with no tracker (o.redo) or nothing wrong it ends. Else each wrong dish asks the tracker
  *        (o.redo.wrong(o.key(item)): its third wrong try is shown the right way, o.showRight(item)); the rest are o.reset(item)
  *        and played again (o.again(items, round)). The first try is the one scored (the game's check knows the round).
- *        SH-264 to SH-266 (Zafar, 11 Nov evening): with a host's wrong-order hook (NjgServe.use({show, redo, end}): the kitchen's,
+ *        SH-264 to SH-266 (Zafar, 11 Nov evening): with a host's wrong-order hook (NjgServe.use({show, redo, end}); show gets
+ *        {rows, round, served: [who], wrong: [item], wrongWho: [who]}, the people this serve judged, o.who(item) naming them): the kitchen's,
  *        js/cook/kitchen-kit.js; js/shared/wrong-order.js draws it) a serve with a wrong dish closes the faces and opens the wrong-order
  *        pop-up in place of the recast (o.recast stays the way without a hook, or with o.popup false); before a redo the dishes done
  *        right leave (o.leave(item): the game takes their glasses or dishes and their people away; the stoves may stay) and the host
@@ -192,7 +193,13 @@ async function round(o) {
         if (H && H.show) {
           await close();
           closed = true;
-          shown = !!(await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n })).catch(() => false));
+          // (s19-clean-a2, the Fable review's findings 2 and 3: the host is told which dishes this serve judged, and which were wrong,
+          // so it brings only those people's cards (corn serves one person at a time: the others are not made yet) and crosses the
+          // row of what is wrong now, never a first try's old miss. o.who(item): the person a dish is for; default the item itself
+          // when it is a name, or its own who)
+          const whoOf = (item) => (o.who ? o.who(item) : typeof item === "string" ? item : item && item.who) || null;
+          const judged = o.items.filter((item) => open.includes(item));
+          shown = !!(await Promise.resolve(H.show({ rows: [].concat(...recasts.map((r) => r.rows || [])), round: n, served: judged.map(whoOf), wrong: recasts.map((r) => r.item), wrongWho: recasts.map((r) => whoOf(r.item)) })).catch(() => false));
         }
         if (!shown) for (const { item, rows } of recasts) await o.recast(item, rows);
       }

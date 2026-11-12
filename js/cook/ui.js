@@ -4010,7 +4010,7 @@
    *        gliding to their places;  M.redoEnd()   every card back (the round is over)
    */
   const cardRows = (data) => [].concat(...(data.items || []).map((it) => it.parts || []));
-  M.showWrong = async function ({ rows = [], round = 0 } = {}) {
+  M.showWrong = async function ({ rows = [], round = 0, served = null, wrong = [] } = {}) {
     const W = global.NjgWrongOrder;
     const OC = OCard();
     if (!mission || !W || !OC) return false;
@@ -4026,10 +4026,12 @@
     } finally {
       writtenCard = false;
     }
-    const people = cards.filter((c) => c.who);
     const isWrong = (c) => c.rows.some((r) => r.wrong);
-    // one card and nothing marked on it: its first try's misses are what was wrong
-    if (!people.some(isWrong) && people.length === 1) people[0].rows.forEach((r) => r.miss && !r.head && mark(r));
+    // (the Fable review's findings 2 and 3: only the people this serve judged, and the rows of what it found wrong now:
+    // NjgWrongOrder.pick, js/shared/wrong-order.js)
+    const picked = W.pick(cards, { served, wrong });
+    const people = picked.people;
+    picked.mark.forEach(mark);
     const unmark = () => mine.length && (mine.forEach((r) => (r.wrong = false)), renderOrder());
     if (!people.some(isWrong)) return void unmark() || false;
     if (mine.length) renderOrder();

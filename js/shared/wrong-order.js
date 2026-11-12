@@ -231,6 +231,33 @@ async function play(o = {}) {
   return { shown: true, wrong };
 }
 
-export const NjgWrongOrder = { play, isOpen: () => open > 0, LOOK };
+/**
+ * Which cards the pop-up brings, and which rows it marks wrong when the game marked none (no DOM; Node tests). s19-clean-a2, the
+ * Fable review of s19-clean-a's merge:
+ *   finding 2: only the people this serve judged (o.served: their names, from NjgServe.round). A game that serves one person at a time
+ *     (corn) has others whose dishes are not made yet: a ticked gold card for them would be a "well done" for nothing. When no card is
+ *     one of o.served (the dishes are not people: maani's kinds, chaat's bowl), every card in play. A card already marked wrong stays.
+ *   finding 3: one card and nothing marked on it: the rows of what this serve found wrong (o.wrong: the round's wrong dishes as keys;
+ *     a row matches a key it holds, or every "+" part of it: "ph-big+cook-maani"), never a first try's old misses. Nothing matched:
+ *     nothing marked, so no pop-up (the game's own recast says it again), never a cross on the wrong row.
+ *   pick(cards [{who, rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row]}
+ */
+function pick(cards, { served = null, wrong = [] } = {}) {
+  const isWrong = (c) => (c.rows || []).some((r) => r.wrong);
+  const judged = new Set((served || []).filter(Boolean));
+  const all = (cards || []).filter((c) => c && c.who);
+  const people = all.some((c) => judged.has(c.who)) ? all.filter((c) => judged.has(c.who) || isWrong(c)) : all;
+  const mark = [];
+  if (!people.some(isWrong) && people.length === 1) {
+    const keys = (wrong || []).filter((k) => typeof k === "string" && k);
+    for (const r of people[0].rows || []) {
+      if (!r || r.head || !Array.isArray(r.ids)) continue;
+      if (keys.some((k) => r.ids.includes(k) || k.split("+").every((x) => r.ids.includes(x)))) mark.push(r);
+    }
+  }
+  return { people, mark };
+}
+
+export const NjgWrongOrder = { play, pick, isOpen: () => open > 0, LOOK };
 if (typeof globalThis !== "undefined") globalThis.NjgWrongOrder = NjgWrongOrder;
 export default NjgWrongOrder;

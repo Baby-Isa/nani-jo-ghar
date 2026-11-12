@@ -1053,7 +1053,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (o.word != null && Onboard.hintHides && Onboard.hintHides({ answer: !!o.answer, stage: Cook.wordStage ? Cook.wordStage(o.word) : null, study: !!o.study })) return null;
     const first = newPlayer() || !(Cook.save.coached || {})[key];
     // (o.name: the step's name in the play log and the step log, e.g. Nani's stepper's own id for that step)
-    return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first }, o));
+    // (SH-261 at full strength: the kitchen's own help light stays through any tap until the step is done: o.glowStays)
+    return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first, glowStays: true }, o));
   };
 
   /*
