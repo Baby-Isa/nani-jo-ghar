@@ -84,6 +84,8 @@ export class LightShot {
     // and the fixtures; the first light of a station often comes in the same frame as its scene, so the measure uses the screen below)
     const prev = this.fb ? this.fb.before(L.t0 - 8, L.chained ? Infinity : L.offAt + FADE_MS) : null;
     await sleep(Math.max(0, L.t0 + LIT_MS - Date.now()));
+    // (a light zooming from its whole thing onto a part, Onboard.ZOOM: judged once settled, never half-way: the layer's data-zoom)
+    await page.waitForFunction(() => !document.querySelector(".njg-onboard[data-zoom]"), null, { timeout: 2500 }).catch(() => {});
     if (this.cur !== L) return; // (it went, or moved on, before it was whole: a light nobody saw)
     let objs1 = null, withJpg = null, withJpg2 = null, under = null, up = null;
     await withScreen(page, async () => {

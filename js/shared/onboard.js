@@ -1931,6 +1931,11 @@
     let awayBack = 0;
     let start = null;
     const zoom = o.zoomFrom ? { t0: Date.now() } : null;
+    // (the zoom's time marked on the layer while it runs, so a probe measures the box it settles on, not one half-way: data-zoom)
+    if (zoom) {
+      layer.dataset.zoom = "1";
+      setTimeout(() => delete layer.dataset.zoom, Onboard.ZOOM.total() + 60);
+    }
     const draw = () => {
       if (away && !awayPress && awayBack && Date.now() >= awayBack && !busyNow()) away = false;
       // (a press held on the thing is a hold begun: SH-236)
