@@ -1,0 +1,19 @@
+{
+ "_about": "Pictures replaced by a Sprint 19 (v4) piece. A retired file must be named by nothing and loaded by nothing (build/tools/art/artcheck.mjs, the 'retired' check; today's hits are on artcheck-known.json and may only shrink). Only what has a v4 replacement is here; old art with no replacement yet is amber on lab/art-board.html, not retired. Globs: * is one folder level, ** any depth. Source: ART-79, s19-art-audit.md table (a), the builders' lists (s19-clean-b, s19-clean-c).",
+ "retired": [
+  { "glob": "assets/cook/items-s08c/sekelo/**", "replacedBy": "v4/sekelo/{chicken,chilli,corn}-{raw,part,cooked,over}.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items-s08c/sekelo-tray/**", "replacedBy": "v4/kit/tray-steel-long.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v3/sekelo/*-raw.webp", "replacedBy": "v4/sekelo/<kind>-raw.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v3/sekelo/*-grilled.webp", "replacedBy": "v4/sekelo/<kind>-part.webp, <kind>-cooked.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v3/sekelo/*-charred.webp", "replacedBy": "v4/sekelo/<kind>-over.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v3/sekelo/heap-*.webp", "replacedBy": "v4/sekelo/bowl-<kind>.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v3/sekelo/grill.webp", "replacedBy": "v4/kit/grill-v2.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v3/sekelo/stick.webp", "replacedBy": "v4/sekelo/skewer-empty.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v3/sekelo/plate-*.webp", "replacedBy": "v4/kit/plate-steel.webp, plate-cream.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/sekelo/stick-v.webp", "replacedBy": "v4/sekelo/skewer-empty.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/sekelo/rack-t.webp", "replacedBy": "v4/kit/grill-v2.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/sekelo/grill-t.webp", "replacedBy": "v4/kit/grill-v2.webp", "row": "ART-79", "game": "mishkaki-grill" },
+  { "glob": "assets/cook/items/v4/kit/grill.webp", "replacedBy": "v4/kit/grill-v2.webp", "row": "ART-79", "game": "corn" },
+  { "glob": "assets/cook/items/v4/samosa/karahi-oil.webp", "replacedBy": "v4/samosa/karahi-oil-v2.webp", "row": "ART-79", "game": "samosa" }
+ ]
+}

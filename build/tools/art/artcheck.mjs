@@ -11,12 +11,17 @@
 //            (build/tools/art/artcolour.py --rim, look-rules.json rim); the fix it names is build/tools/art/edge_bleed.py. See-through
 //            glass and thin steel are skipped by name. One finding per file, `rim|<path>`. The known list may only shrink: a pixel finding that is in it
 //            but no longer found fails ("fixed, take it off the list"), so a re-cut that passes today and slips tomorrow shows.
+//   retired  (s19-artuse) a file on data/art/retired.json (a v4 piece replaced it) is named anywhere (js, data, css, html, lab: by
+//            path, glob or stem; build/tools/art/artuse.mjs) or loaded by a kitchen page (build/reports/art-use-loads.json, the
+//            cached load check). One finding per retired entry and place, `retired|<glob>|named in <file>` or `|loaded by <page>`.
+//            Today's hits are on the known list, which may only shrink (a retired hit on it that no longer fails must come off).
 // Today's findings are build/tools/art/artcheck-known.json (art debt for the next runs): a finding not in it fails.
 //   node build/tools/art/artcheck.mjs [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, openSync, readSync, closeSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { pictures as allPictures, scanNames, loadRetired, retiredOf } from "./artuse.mjs";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const KNOWN = join(ROOT, "build/tools/art/artcheck-known.json");
@@ -69,7 +74,21 @@ export function rimFindings(paths) {
   return Object.entries(res).map(([p, share]) => ({ check: "rim", key: `rim|${p}`, text: `${p}: a pink rim, ${Math.round(share * 100)}% of its soft edge magenta-tinted (run python3 build/tools/art/edge_bleed.py ${p})` }));
 }
 // pixel and rim entries on the known list that no longer fail: the list may only shrink, so they must come off it
-export const staleKnown = (known, found) => [...known].filter((k) => (k.startsWith("pixel|") || k.startsWith("rim|")) && !found.some((f) => f.key === k));
+export const staleKnown = (known, found) => [...known].filter((k) => (k.startsWith("pixel|") || k.startsWith("rim|") || k.startsWith("retired|")) && !found.some((f) => f.key === k));
+// the retired check: names are scanned live (no browser); loads come from the cached load check. `loads` {pages:{id:{pictures}}} may be given (tests)
+export function retiredFindings(root = ROOT, loads = null, pics = null) {
+  const retired = loadRetired(root);
+  if (!retired.length) return [];
+  pics = pics || allPictures(root);
+  const out = [], seen = new Set();
+  const names = scanNames(pics, root).byPicture;
+  const push = (r, where, p) => { const key = `retired|${r.glob}|${where}`; if (seen.has(key)) return; seen.add(key); out.push({ check: "retired", key, text: `${p} (retired, ${r.row}; replaced by ${r.replacedBy}) is ${where}` }); };
+  for (const [p, list] of Object.entries(names)) { const r = retiredOf(retired, p); if (r) for (const n of list) push(r, `named in ${n.file}`, p); }
+  const lp = join(root, "build/reports/art-use-loads.json");
+  if (!loads && existsSync(lp)) loads = JSON.parse(readFileSync(lp, "utf8"));
+  if (loads) for (const [id, pg] of Object.entries(loads.pages)) for (const p of pg.pictures) { const r = retiredOf(retired, p); if (r) push(r, `loaded by ${id}`, p); }
+  return out;
+}
 export function findings() {
   const out = [];
   const cuts = [];
@@ -88,6 +107,7 @@ export function findings() {
     for (const m of readFileSync(join(ROOT, f), "utf8").matchAll(/["'`](assets\/[^"'`\s$*{}]+\.(?:png|webp|jpe?g|svg))["'`]/gi)) refs.add(`${f} -> ${m[1]}`);
   }
   for (const r of refs) { const p = r.split(" -> ")[1]; if (!existsSync(join(ROOT, p))) out.push({ check: "ref", key: `ref|${r}`, text: `${r.replace(" -> ", " names ")}, which does not exist` }); }
+  for (const f of retiredFindings()) out.push(f);
   return out;
 }
 
