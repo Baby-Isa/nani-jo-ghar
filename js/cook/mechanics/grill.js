@@ -1652,7 +1652,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const M = Math.max(120, Math.min(Mw, Mh));
     const x0 = (vl + vr) / 2 - (M * (gW + GAP + ACROSS)) / 2;
     const farY = spanTop + (H - tall(M)) / 2 + above(M);
-    const tray = { w: box.w * M, h: box.h * M, far: box.far * M };
+    // (the tray no taller than the grill beside it: the grill is the screen's main thing, as big as the height allows, contract-115;
+    // the skewer's tip still on the tray's far rim, its handle a few px past the near rim's middle, on the rim's outer edge)
+    const tray = { w: box.w * M, h: Math.min(box.h, gH * 0.99) * M, far: box.far * M };
     const gx = x0 + (gW * M) / 2;
     const gy = farY - G.far * gH * M + (gH * M) / 2;
     const bk = M / 262; // (the ring's sizes were for a 262 skewer)
