@@ -70,6 +70,7 @@ export const DOC_LIMITS = {
   "docs/game-design/modes/who-did-it.md": 500,
   "docs/design-language/art-bible.md": 6500,
   "docs/design-language/art-pipeline.md": 13500,
+  "docs/design-language/art-registry.md": 2500, // s19-artreg (12 Nov): the art registry, new (its size rounded up to 500)
   "docs/design-language/audio.md": 1000,
   "docs/design-language/guide-and-card.md": 3000,
   "docs/design-language/tone-of-voice.md": 1000,

@@ -15,13 +15,21 @@
 //            path, glob or stem; build/tools/art/artuse.mjs) or loaded by a kitchen page (build/reports/art-use-loads.json, the
 //            cached load check). One finding per retired entry and place, `retired|<glob>|named in <file>` or `|loaded by <page>`.
 //            Today's hits are on the known list, which may only shrink (a retired hit on it that no longer fails must come off).
+//   unregistered (s19-artreg) a picture a page loaded (the cached traces: build/reports/art-use-loads.json, -plays.json,
+//            -static.json; refreshed by build/tools/art/artuse.mjs --refresh / --full / --static) that data/art/registry.json does not
+//            know (as a current file, a candidate or a replaced one). `unregistered|<path>`. The fix: registry.mjs add (the cutter's
+//            step), or registry.mjs --seed for old art.
+//   registry (s19-artreg) the registry's own rules (build/tools/art/registry.mjs validate): a bad id or status, a missing file, a
+//            person approved by anyone but Zafar, a file current in two pieces; for a migrated game also a changed hash, unequal
+//            canvases, an incomplete stage set or a missing measure. `registry|<id>|<rule>`.
 // Today's findings are build/tools/art/artcheck-known.json (art debt for the next runs): a finding not in it fails.
 //   node build/tools/art/artcheck.mjs [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, openSync, readSync, closeSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { pictures as allPictures, scanNames, loadRetired, retiredOf } from "./artuse.mjs";
+import { pictures as allPictures, scanNames, loadRetired, retiredOf, allLoads } from "./artuse.mjs";
+import { load as loadRegistry, fileIndex, validate as validateRegistry } from "./registry.mjs";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const KNOWN = join(ROOT, "build/tools/art/artcheck-known.json");
@@ -74,7 +82,7 @@ export function rimFindings(paths) {
   return Object.entries(res).map(([p, share]) => ({ check: "rim", key: `rim|${p}`, text: `${p}: a pink rim, ${Math.round(share * 100)}% of its soft edge magenta-tinted (run python3 build/tools/art/edge_bleed.py ${p})` }));
 }
 // pixel and rim entries on the known list that no longer fail: the list may only shrink, so they must come off it
-export const staleKnown = (known, found) => [...known].filter((k) => (k.startsWith("pixel|") || k.startsWith("rim|") || k.startsWith("retired|")) && !found.some((f) => f.key === k));
+export const staleKnown = (known, found) => [...known].filter((k) => /^(pixel|rim|retired|unregistered|registry)\|/.test(k) && !found.some((f) => f.key === k));
 // the retired check: names are scanned live (no browser); loads come from the cached load check. `loads` {pages:{id:{pictures}}} may be given (tests)
 export function retiredFindings(root = ROOT, loads = null, pics = null) {
   const retired = loadRetired(root);
@@ -84,10 +92,25 @@ export function retiredFindings(root = ROOT, loads = null, pics = null) {
   const names = scanNames(pics, root).byPicture;
   const push = (r, where, p) => { const key = `retired|${r.glob}|${where}`; if (seen.has(key)) return; seen.add(key); out.push({ check: "retired", key, text: `${p} (retired, ${r.row}; replaced by ${r.replacedBy}) is ${where}` }); };
   for (const [p, list] of Object.entries(names)) { const r = retiredOf(retired, p); if (r) for (const n of list) push(r, `named in ${n.file}`, p); }
-  const lp = join(root, "build/reports/art-use-loads.json");
-  if (!loads && existsSync(lp)) loads = JSON.parse(readFileSync(lp, "utf8"));
-  if (loads) for (const [id, pg] of Object.entries(loads.pages)) for (const p of pg.pictures) { const r = retiredOf(retired, p); if (r) push(r, `loaded by ${id}`, p); }
+  if (!loads) loads = allLoads(root);
+  // (one finding per retired entry and page, whatever level or path of that page loaded it)
+  if (loads) for (const [key, pg] of Object.entries(loads.pages)) for (const p of pg.pictures) { const r = retiredOf(retired, p); if (r) push(r, `loaded by ${String(pg.id || key).replace(/[@#].*$/, "")}`, p); }
   return out;
+}
+// the unregistered check: every picture in the cached load traces must be in the registry (current, candidate or replaced)
+export function unregisteredFindings(root = ROOT, loads = allLoads(root), reg = loadRegistry(root)) {
+  if (!reg || !reg.pieces || !Object.keys(reg.pieces).length) return [];
+  const idx = fileIndex(reg), out = [], seen = new Set();
+  for (const [key, pg] of Object.entries(loads.pages)) for (const p of pg.pictures) {
+    if (idx.has(p) || seen.has(p)) continue;
+    seen.add(p);
+    out.push({ check: "unregistered", key: `unregistered|${p}`, text: `${p} is loaded (${String(pg.id || key)}) but not in data/art/registry.json (registry.mjs add <id> --file ${p})` });
+  }
+  return out;
+}
+export function registryFindings(root = ROOT, reg = loadRegistry(root)) {
+  if (!reg || !reg.pieces) return [];
+  return validateRegistry(reg, { root }).filter((x) => x.level === "error").map((x) => ({ check: "registry", key: `registry|${x.id}|${x.rule}`, text: `${x.id}: ${x.text}` }));
 }
 export function findings() {
   const out = [];
@@ -108,6 +131,8 @@ export function findings() {
   }
   for (const r of refs) { const p = r.split(" -> ")[1]; if (!existsSync(join(ROOT, p))) out.push({ check: "ref", key: `ref|${r}`, text: `${r.replace(" -> ", " names ")}, which does not exist` }); }
   for (const f of retiredFindings()) out.push(f);
+  for (const f of unregisteredFindings()) out.push(f);
+  for (const f of registryFindings()) out.push(f);
   return out;
 }
 

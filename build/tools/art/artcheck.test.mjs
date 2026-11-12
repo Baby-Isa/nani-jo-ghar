@@ -533,3 +533,5 @@ test("art blocks (Zafar, 9 Nov): the Library's bulk download, the report as a co
 
 // s19-artuse: the art-use join and the retired check are tested in artuse.test.mjs (checks.mjs lists only this file)
 import "./artuse.test.mjs";
+// s19-artreg: the art registry (ids, seed, add, promote, the rules, the unregistered and registry checks)
+import "./registry.test.mjs";

@@ -40,8 +40,14 @@ description: Plan, run and land a ChatGPT art run through Claude in Chrome - gen
    python3 build/tools/art/artcut.py build/tools/art/specs/<pack>.cut.json [--only ID]
    python3 build/tools/art/artdiff.py --help
    ```
-4. In the same commit as the cut, move on every "waiting on art" row the art serves (`grep -n "waiting on art" docs/process/regressions.md`), and check each one's design doc says what the row decided (chaat top-down slipped this way, 10 Nov).
-5. Wiring is a separate build session (`/brief`), then `/review`.
+4. **The cutter writes the registry line** (s19-artreg, `docs/design-language/art-registry.md`): for every file the cut wrote, one line, never typed into the JSON by hand. A re-cut of a piece lands as its candidate beside today's file (the art board shows them side by side); a new piece or state is current at once, status candidate. Then `--validate` must pass:
+   ```
+   node build/tools/art/registry.mjs add <id> --file <the cut's webp> [--state raw] --run <pack> --line <line> [--pick <line-try>] [--row ART-nn]
+   node build/tools/art/registry.mjs --validate
+   ```
+   The judge (or Zafar, for people: always) says yes with `registry.mjs promote <id> --by judge|Zafar`: the candidate becomes current and the old file goes on `data/art/retired.json`, so the retired check lists every game still asking for it. If the new cut's states or measurements differ (`metaStale`, a missing stage), open a wiring row: re-pointing is not enough.
+5. In the same commit as the cut, move on every "waiting on art" row the art serves (`grep -n "waiting on art" docs/process/regressions.md`), and check each one's design doc says what the row decided (chaat top-down slipped this way, 10 Nov).
+6. Wiring is a separate build session (`/brief`), then `/review`.
 
 ## Standing lines
 
