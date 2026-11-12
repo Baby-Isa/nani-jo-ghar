@@ -2209,6 +2209,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     coachesSeen() {
       Cook.save.coached = Cook.save.coached || {};
       Object.keys((Cook.data && Cook.data.onboard) || {}).forEach((k) => k[0] !== "_" && (Cook.save.coached[k] = true));
+      Cook.save.coached.order = true; // (SH-213: the big card lesson on the order's pop-up, Cook.Coach.firsts("order"), seen too)
       return Object.keys(Cook.save.coached).length;
     },
     expectation() {

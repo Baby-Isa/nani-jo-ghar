@@ -37,7 +37,7 @@ export function cookStation(key, level = 1, { recipe = false, mode = "fair", gro
     id,
     group,
     title: `Cook, Station lab: ${labKey}, level ${level}${mode !== "fair" ? `, ${mode} player` : ""}`,
-    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000 * (mode === "hint" ? 1.3 : mode === "start-over" ? 2.2 : 1) * (speed < 3 ? 2.5 : 1),
+    timeoutMs: (LONG[labKey] || LONG[key] || 300) * 1000 * (mode === "hint" ? 1.3 : mode === "start-over" ? 2.2 : mode === "serve-wrong" ? 1.6 : 1) * (speed < 3 ? 2.5 : 1),
     async run(ctx) {
       const { page, rec } = ctx;
       await openCook(ctx, { speed });

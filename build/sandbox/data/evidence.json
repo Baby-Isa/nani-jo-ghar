@@ -28326,16 +28326,15 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "visible:.wc14-flash",
+   "at": "life:dish-flash",
    "after": null,
    "capture": [
     "shot",
-    "crop:.wc14-flash",
     "contract:119"
    ],
    "expect": null,
    "note": "chai L1: as the customer says 'Muke chai khape', the dish card flashes up with a glass of milk chai (every L1 cup has milk), its words the engine's 'hakri chai'; a kari chai order (from L3) shows the black tea glass and says kari",
-   "delay": 250
+   "delay": 350
   },
   {
    "flow": "cook:chop",
