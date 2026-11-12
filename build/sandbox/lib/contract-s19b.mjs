@@ -238,7 +238,7 @@ export function sizeClasses(root) {
 export const SIZE_AT_MS = 3000;    // judged this long into each station (laid out; the order in)
 // not the main thing: the shelf band's own tray, the knobs, faces and badges, the tools in the hand, the cat; baking's mixing bowl,
 // a work surface the shelf's things go into, not a thing sized to the height (Zafar, 11 Nov: "yes" to the bowl as a work surface)
-export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat|bk-bowl/i;
+export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat|bk-bowl|bk-jug/i; // (s19-clean-a, s19-clean-b's note: baking's jug is a work tool, as its bowl is)
 Object.assign(S19B_CHECKS, {
   "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Zafar's accepted sizes (11 Nov morning: "Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change)") are a thing's size from step to step, judged by contract-114 (ACCEPTED_SIZES); no station's main thing or shelf is let off here for them. Once per station.` },
 });
@@ -263,7 +263,9 @@ export function check115(r, tl, add, { root = "." } = {}) {
     if (shelf.length && ref) {
       const bandH = BAND * H, cls = sizeClasses(root);
       for (const x of shelf) {
-        const c = cls.get(x.word) || "M", want = ref * CLASS_K[c] * bandH, h = x.h;
+        // (s19-clean-a, s19-clean-b's note: a long thing lying on the band, the chilli, is judged by its length, its longer side)
+        const len = x.box ? x.box[2] - x.box[0] : 0;
+        const c = cls.get(x.word) || "M", want = ref * CLASS_K[c] * bandH, h = len > 1.6 * x.h ? len : x.h;
         if (h < (1 - SHELF_TOL) * want) { add("contract-115", t, `${s.key}: the shelf item ${x.word} (${x.key}, class ${c}) stands ${Math.round(h)} px, ${Math.round((100 * h) / want)}% of chai's ${c} height at ${r.size} (${Math.round(want)} px): one height per size class, within ${SHELF_TOL * 100}%`); break; }
       }
     }
@@ -437,6 +439,10 @@ export function check36(r, tl, segs, v, add) {
     const until = Math.min(s.t + CALL_WITHIN, next ? Math.max(next.t, s.t + 1500) : Infinity);
     const said = cs.find((l) => !used.has(l) && l.t0 >= s.t - CALL_BEFORE && l.t0 <= until);
     if (said) { used.add(said); return; }
+    // (s19-clean-a, s19-clean-b's note: a card step the order line itself brings, Nani saying the item as its card is revealed, baking's
+    // amounts and the pantry's list: that line, voiced, is the step's call; contract-89 forbids a second one)
+    const ord = s.card ? lines(v).find((l) => !used.has(l) && l.role !== "item" && l.role !== "count" && l.role !== "laps" && l.role !== "countdown" && (l.text || "").trim() && l.plays && l.plays.length && l.t0 >= s.t - CALL_BEFORE && l.t0 <= s.t + 1500) : null;
+    if (ord) { used.add(ord); return; }
     const h0 = helperAt(s.t);
     // (a step the kit's light shows is called with its light, as contract-89 lets a control's call be: only a card step waits on her card)
     if (s.card && h0 && h0.named && !h0.open) {

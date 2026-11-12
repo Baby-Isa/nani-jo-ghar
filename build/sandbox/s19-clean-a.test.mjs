@@ -60,3 +60,9 @@ test("the Fable review of s19-clean-c (2, 3, 5), in js/cook/ui.js: a redo clears
   assert.match(ui, /const pieceRows = its\.filter\(\(it\) => it\.ordered\)\.every\(\(it\) => it\.fit\)/, "3: piece rows fold on a short panel");
   assert.match(ui, /parts, ordered: true, done: unit, src: \[\], fit: true/, "3: a piece row is a fit row (whole across, never off the edge)");
 });
+
+test("contract-36: on a card step the order line that brings the card (voiced) is its call (baking's amounts, the pantry's list)", () => {
+  const order = (t0) => ({ role: "order", text: "Hakro cup atto.", t0, plays: [{}] });
+  assert.deepEqual(run([...ST, ...pads], { lines: [order(10100)] }), []);
+  assert.equal(run([...ST, ...pads], { lines: [{ role: "item", text: "atto", t0: 10100, plays: [{}] }] }).length, 1, "an item's own name is not the call");
+});
