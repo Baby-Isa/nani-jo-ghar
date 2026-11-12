@@ -156,7 +156,7 @@ export function gapListMarkdown(S, gl) {
     "|---|---|---|",
     ...KIND_ORDER.map((k) => `| ${KIND_HEADS[k]} | ${n(gl.cook, k)} | ${n(gl.clinic, k)} |`),
     "",
-    `Lines and words checked: Cook ${gl.cookNeeds.length}, clinic ${gl.clinicNeeds.length}. A recording counts here if any take exists; ${gl.awaiting.length} more words have a take that is not yet ticked OK in \`lab/family-audio.html\` (only OK takes ship, rule G16).`,
+    `Lines and words checked: Cook ${gl.cookNeeds.length}, clinic ${gl.clinicNeeds.length}. A recording counts here if any take exists; ${gl.awaiting.length} more words have a take that is not yet heard by Zafar in \`lab/family-audio.html\` (every clip is approved for the game and plays now; a store build needs every clip re-recorded and marked final: Zafar, 12 Nov).`,
     "",
     "Gaps are listed once, however many lines need them: closing a word closes it everywhere. The words and lines that exist only in the parked modes (dress, who, snap, tidy, find, monsoon, relations) are in the lexicon as to-record entries and are not repeated here.",
     "",

@@ -42,6 +42,7 @@ const ABSTRACT = [
   ["AndKind", "Utt", { x: NP }, "and {x} (a second kind of one dish)", ["I'd like two samosas with mince, and one with potato."], { rows: ["x"] }],
   ["ButNo", "Utt", { head: NP, x: NP }, "{head}, but no {x}", ["I'd like lentils, but no onion."]],
   ["Times", "Utt", { n: { type: "Num" } }, "{n} times", ["once; twice; three times (stir it three times)"]],
+  ["BringMeTheseForX", "Utt", { x: NP }, "Bring me these for {x}.", ["Bring me these for chai."]],
   ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "b"] }],
   ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "rest"] }],
   ["OnShort", "PP", { x: NP }, "on {x} (the short way)", ["on the big mango (the everyday way)"]],
@@ -155,14 +156,16 @@ const CONCRETE = {
   Ask: { slots: [S("x")], mark: "?", status: "confirmed", src: "a fixed phrase said as a question (grammar-kb feature 29)" },
   WantIn: {
     variants: {
-      informal: [L("pron.p1", "dat"), S("container", { case: "dir" }), L("post.in"), S("thing"), L("v.want", "informal")],
+      informal: [L("pron.p1", "poss.she.*.obl"), S("container", { case: "obl" }), L("post.in"), S("thing"), L("v.want", "informal")],
+      polite: [L("pron.p1", "poss.she.*.obl"), S("container", { case: "obl" }), L("post.in"), S("thing"), L("v.put-in", "imp.polite")],
     },
     defaultVariant: "informal",
+    only: { "container.gender": ["she"] },
+    onlyAsk: ["new (in my cup, a he-word: munje cup me? not said)"],
     mark: ".",
     status: "draft",
-    src: `${GN} §6 (Muke chai me ba khun khapeti: in my tea I want two sugars; khape is the informal ending the game uses); data/cook.json lines.sugar (draft)`,
-    notes: ["Mum's own sentence was the polite one, with khapeti after ba khun (two sugars): a she-singular ending on a count of two, unexplained until the gender of khun is settled (L34)."],
-    exceptions: [{ only: { register: ["polite"] }, status: "unknown", ask: ["L34", "L9"], english: "In my {container} I want {thing}", what: "the polite 'in my chai I want two sugars' (Mum said khapeti with ba khun)", src: `${GN} §6` }],
+    src: `${GN} §65 (12 Nov 12:18-12:39: Munji chai me ba khun khape, in my chai I want two sugars; her final answer Munji chai me ba khun wijij, in my chai put two sugars, please); §6 (Muke chai me ba khun khapeti, 25 Sept)`,
+    notes: ["munji (my) agrees with chai, a she-word (§54). Mum: 'you wouldn't say I want two sugars, you'd say put two sugars in' (11:33): the polite variant is that one (wijij, please put)."],
   },
   OnShort: { slots: [S("x", { case: "obl" }), L("post.on")], status: "confirmed", src: `${GN} §55 C79 (toje ambe mathe, toji kursi mathe: the short postposition sits straight after the noun; the fuller one adds je, §15)` },
   Or: { feats: { gender: "{a.gender}", number: "{a.number|sg}", person: "p3", lex: "{a.lex}" }, slots: [S("a"), L("conj.or"), S("b")], status: "confirmed", src: `${GN} §9 (hi ambo khan, ke hi maani khan: ke = or), §46 (wadho ke nindho?)` },
@@ -175,7 +178,8 @@ const CONCRETE = {
   NeedFirstThen: { slots: [L("pron.p1", "dat"), L("adv.first"), S("a"), L("v.want", "informal"), P(","), L("phrase.and-then"), S("rest")], mark: ".", status: "draft", src: `${GN} §7 (Muke pela daar khape, ne poi maani: Mum's own sentence); pela is a draft in data/cook.json` },
   AndKind: { status: "unknown", ask: ["L23", "L26", "L27"], english: "and {x}", what: "joining a second kind of the same dish ('and one with potato')", src: "docs/archive/feedback/cook-playtest-2026-09-29.md Q5 4; data/cook.json lines.and_join (to record)" },
   ButNo: { status: "unknown", ask: ["L19", "L24"], english: "{head}, but no {x}", what: "'but no onion' inside an order", src: "grammar-kb feature 19; Round 5 L19, L24" },
-  Times: { status: "unknown", ask: ["L54"], english: "{n} times", what: "'three times' (stir it three times)", src: "data/clinic/lang.json lines.times (no Kutchi: gap Times); Round 5 L54" },
+  Times: { slots: [S("n", { cell: "he.obl" }), L("n.times")], status: "draft", src: `${GN} §66 (12 Nov 15:57: hakre fare, ba fare, trae fare; 15:19: hakre fare firai, ba fare firai, trae fare firai)`, notes: ["hakre (not hakro) before fare. Not taano: hakre taano is 'at one time, some time' (14:01-14:44)."] },
+  BringMeTheseForX: { slots: [L("dem.this"), L("pron.p1", "dat"), S("x", { case: "obl" }), L("post.for"), L("v.take", "conj"), L("v.come", "conj"), L("v.give", "imp.informal")], mark: ".", status: "draft", src: `${GN} §65 (12 Nov 0:38-0:43: Hi muke chai lai khani achi de, bring me these for chai: khani achi de, take and come and give)`, notes: ["Said with chai only; a he-word dish takes its -e form before lai (§18, §41)."] },
   Fetch: { status: "unknown", ask: ["L29", "N1", "N2"], english: "Bring me {things}", what: "Nani sending the child to fetch a list ('bring me flour, sugar and milk')", src: "grammar-kb feature 23; Round 5 L29" },
 
   /* Round 5 C80-C103, the 24 Oct sitting (Mum, Masi and Zafar): grammar-notes §56-§63. Draft until Zafar ticks the
@@ -268,6 +272,13 @@ export const SENTENCES = [
   ...["p1", "p3", "p3pl"].flatMap((who) => [{ fn: "Likes", who, thing: "n.tea" }, ...["WantTo", "HaveTo", "NeedTo"].map((fn) => ({ fn, who, verb: "v.to-go" }))]),
   { fn: "CanDo", who: "p3pl", verb: "v.go" },
   ...["p1pl.incl", "p3pl", "p3pl.far"].map((who) => ({ fn: "EveryDay", who, thing: "n.chapati", verb: "v.eat" })),
+  // 12 Nov (§64-§66)
+  { fn: "Need", who: "p1", thing: { fn: "Item", kind: "n.samosa", n: 2, with: ["n.mince"] } },
+  { fn: "WantIn", container: "n.tea", thing: { fn: "Item", kind: "n.sugar", n: 2 } },
+  { fn: "WantIn", container: "n.tea", thing: { fn: "Item", kind: "n.sugar", n: 2 }, register: "polite" },
+  { fn: "BringMeTheseForX", x: "n.tea" },
+  { fn: "Need", who: "p1", thing: { fn: "Item", kind: "n.tea", mods: ["a.sweet"] } },
+  { fn: "Need", who: "p1", thing: { fn: "Item", kind: "n.tea", mods: ["a.unsweetened"] } },
 ];
 
 export function apply(S_) {
@@ -282,6 +293,15 @@ export function apply(S_) {
     const r = { ...rule };
     if (r.mark === undefined) delete r.mark;
     S_.lin[name] = r;
+  }
+  // Mum, 12 Nov (§65, 2:33-11:03): "with" a filling is the "of" word before the dish, agreeing with the dish: ba chunde ja
+  // samosa (two samosas with mince), hakro chunde jo samoso (one with mince), hakro batate jo (one with potato)
+  S_.lin.WithFood = { slots: [S("x", { case: "obl" }), L("gen.of", "{parent.gender}.{parent.number}.dir")], status: "draft", src: `${GN} §65 (12 Nov 4:48: Muke trae samosa khape, ba chunde ja ne hakro batate jo; 5:43: Muke ba chunde ja samosa khape; 11:00: Muke hakro chunde jo samoso khapeto, ne hakro batate jo)`, notes: ["A filling only. A side is sathe after the dish: muke maani ghee sathe khapeti (a chapati with ghee, 28:00). In chai it is waari (MixedIn)."] };
+  const it = S_.lin.Item;
+  if (it && it.slots) {
+    const w = it.slots.find((x) => x.arg === "with");
+    it.slots = it.slots.filter((x) => x !== w);
+    it.slots.splice(it.slots.findIndex((x) => x.arg === "n") + 1, 0, w); // the filling comes after the number, before the dish (§65)
   }
   // PossPron's owner is a person word: its possessive forms are in the pronoun entries (poss.* cells)
   // Item takes an optional pointing word? No: Point does (hi wadho chokro).

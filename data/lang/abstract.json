@@ -713,6 +713,18 @@
     "once; twice; three times (stir it three times)"
    ]
   },
+  "BringMeTheseForX": {
+   "cat": "Utt",
+   "args": {
+    "x": {
+     "type": "NP"
+    }
+   },
+   "en": "Bring me these for {x}.",
+   "elicit": [
+    "Bring me these for chai."
+   ]
+  },
   "FirstThen": {
    "cat": "Utt",
    "args": {
@@ -1012,7 +1024,7 @@
     "I eat chapatis every day. (a man says it, a woman says it)"
    ]
   },
-  "BringMeTheseForX": {
+  "BringMeTheseForX2": {
    "cat": "Utt",
    "args": {
     "x": {
