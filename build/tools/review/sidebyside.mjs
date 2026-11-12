@@ -5,6 +5,7 @@
  * moments at a child's pace and hand the eye judge full-size pairs (chai left, the game right), close-ups of the order card and Nani's
  * box beside chai's, and frame strips round each first-time light and lesson (0.5 s before to 2 s after, about every 110 ms).
  *   node build/tools/review/sidebyside.mjs <game> [--level 1] [--sizes 740x320,1280x665] [--run <run id>] [--out <dir>] [--no-lock]
+ *   node build/tools/review/sidebyside.mjs --reach <run id>   (SH-251: which of the seven moments each page of a --keyframes run reached)
  * <game>: a kitchen game's station id (maani-line, daar, mishkaki-grill, chaat, samosa, eggs, corn, baking, chop).
  * It plays cook:chai-tray and cook:<game> (#speed1, a child's pace; @L<n> for --level) through the sandbox with --keyframes
  * (build/sandbox/lib/keyframes.mjs: no new browser plumbing, the sandbox's players and probes), taking /tmp/njg-browser-all.lock
@@ -15,7 +16,7 @@
  * move, mid-cook, the serve, well done, the end. The run's own contract breaks (part 1's code checks among them) are listed first.
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { args, help, ROOT, RUNS, locked } from "./lib/common.mjs";
 
@@ -59,6 +60,17 @@ export function rubricByMoment(text) {
   return out;
 }
 
+// SH-251 (the eye judge, 10 Nov: the side-by-side tool must reach every key moment): which of the seven moments each page of a played
+// --keyframes run reached, from its keys.json. A moment missing is named with its page; `--reach <run id>` prints them and exits 1.
+export function reach(runDir) {
+  const kd = join(runDir, "keyframes");
+  if (!existsSync(kd)) return null;
+  return readdirSync(kd).filter((d) => existsSync(join(kd, d, "keys.json"))).sort().map((page) => {
+    const keys = (JSON.parse(readFileSync(join(kd, page, "keys.json"), "utf8")).keys) || {};
+    return { page, missing: MOMENTS.map((m) => m[0]).filter((m) => !keys[m] || !keys[m].file || !existsSync(join(kd, page, keys[m].file))) };
+  });
+}
+
 export function indexHtml({ game, level, man, batch }) {
   const img = (p) => `<figure><img src="${p}" loading="lazy"><figcaption>${p}</figcaption></figure>`;
   return `<!doctype html><meta charset="utf-8"><title>${game} beside chai, L${level}</title>
@@ -73,6 +85,14 @@ ${(man.missing || []).length ? `<h2>Not reached</h2><ul>${man.missing.map((x) =>
 if (import.meta.url === `file://${process.argv[1]}`) {
   const a = args();
   help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
+  if (a.val("reach")) {
+    const rs = reach(join(RUNS, a.val("reach")));
+    if (!rs) { console.error(`sidebyside: ${a.val("reach")} has no keyframes (play it with run.mjs --keyframes)`); process.exit(2); }
+    for (const x of rs) console.log(`${x.page}: ${x.missing.length ? `NOT REACHED ${x.missing.join(", ")}` : `all ${MOMENTS.length} moments`}`);
+    const bad = rs.filter((x) => x.missing.length);
+    console.log(`sidebyside --reach: ${rs.length - bad.length} of ${rs.length} pages reach all ${MOMENTS.length} moments`);
+    process.exit(bad.length ? 1 : 0);
+  }
   const game = a.pos[0];
   if (!game || !GAMES.includes(game)) { console.error(`sidebyside: name a kitchen game (${GAMES.join(", ")})`); process.exit(2); }
   const level = +(a.val("level") || 1);

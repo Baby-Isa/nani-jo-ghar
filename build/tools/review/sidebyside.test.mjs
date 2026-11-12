@@ -2,8 +2,10 @@
 // judge's batch, and the key-frame recorder's choices. No browser. Run: node --test build/tools/review/sidebyside.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { flowsFor, slug, rubricByMoment, batchText, MOMENTS, GAMES } from "./sidebyside.mjs";
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { flowsFor, slug, rubricByMoment, batchText, MOMENTS, GAMES, reach } from "./sidebyside.mjs";
 import { stripWhy, stateMoment, pickMid, pickMidFrame, KEY_MOMENTS, BEFORE_MS, AFTER_MS, FRAME_MS } from "../../sandbox/lib/keyframes.mjs";
 
 test("it plays chai and the game at a child's pace, at the level asked", () => {
@@ -101,4 +103,21 @@ test("s19-checks-1: the order frame is the one drawn as the order landed, never 
   await kf.chain;
   assert.equal(readFileSync(join(kf.dir, kf.keys.order.file), "utf8"), "order");
   assert.equal(readFileSync(join(kf.dir, kf.keys.serve.file), "utf8"), "serve");
+});
+
+test("SH-251: --reach names each page's moments not reached (a key with no picture is not reached)", () => {
+  const run = mkdtempSync(join(tmpdir(), "sbs-reach-"));
+  const page = (name, moments) => {
+    const d = join(run, "keyframes", name);
+    mkdirSync(d, { recursive: true });
+    const keys = {};
+    for (const m of moments) { keys[m] = { file: `key-${m}.jpg` }; writeFileSync(join(d, `key-${m}.jpg`), "x"); }
+    keys.ghost = { file: "key-ghost.jpg" };
+    writeFileSync(join(d, "keys.json"), JSON.stringify({ keys }));
+  };
+  page("cook-eggs-speed1@740x320", KEY_MOMENTS);
+  page("cook-chop-speed1@740x320", KEY_MOMENTS.filter((m) => m !== "serve" && m !== "mid"));
+  const r = reach(run);
+  assert.deepEqual(r.map((x) => [x.page, x.missing]), [["cook-chop-speed1@740x320", ["mid", "serve"]], ["cook-eggs-speed1@740x320", []]]);
+  assert.equal(reach(join(run, "none")), null);
 });
