@@ -85,12 +85,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const fridge = new Set(P.fridge || []);
       // (the S14 roll-out, PAN-18: the cog sits top right of the play area, lesson 8: "pinned controls take real space": on a phone it
       // covers the fridge's top right slot, where the milk could not be tapped; a slot under the cog is left empty)
-      const cog = document.querySelector("[data-njg-zone=cog]");
-      const cr = cog && cog.offsetParent ? cog.getBoundingClientRect() : null;
+      // (and the grown-ups' "?" beside it, contract-113: the box round both)
+      const cr = ["[data-njg-zone=cog]", "#btn-help"].map((q) => document.querySelector(q)).filter((e) => e && e.offsetParent).map((e) => e.getBoundingClientRect()).reduce((u, r) => (u ? { left: Math.min(u.left, r.left), top: Math.min(u.top, r.top), right: Math.max(u.right, r.right), bottom: Math.max(u.bottom, r.bottom) } : r), null);
       const underCog = (s) => {
         if (!cr || !Cook.UI.worldToScreen) return false;
         const a = Cook.UI.worldToScreen(z.X(s.x - s.w / 2), z.Y(s.y - s.h / 2));
-        const b = Cook.UI.worldToScreen(z.X(s.x + s.w / 2), z.Y(s.y + s.h / 2));
+        // (the slot's pill under it too, PAN-20: a pill under the "?" or the cog could not be heard, contract-113)
+        const b = Cook.UI.worldToScreen(z.X(s.x + s.w / 2), z.Y(s.y + s.h / 2 + 70));
         return a.x < cr.right + 6 && b.x > cr.left - 6 && a.y < cr.bottom + 6 && b.y > cr.top - 6;
       };
       // s19-pantry (the art audit; Zafar, 6 Nov: size classes, never true sizes): each thing stands at its class's share of its
@@ -196,7 +197,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // own box, slot.h, else): a pill never covers the thing on the shelf below
       const ys = rowsAt.map((r) => r.y);
       const pitchY = ys.length > 1 ? Math.min(...ys.slice(1).map((y, i) => y - ys[i])) : Infinity;
-      const tallest = Object.keys(chips).length ? pitchY - PILL_MID - pillH / z.L(1) / 2 - 4 : Infinity;
+      // (and the pill's tap margin at its foot, Shelf.PILL.margin: a tap at the top of the thing below picks that thing, never the pill
+      // above it, contract-111)
+      const PM = ((SH && SH.PILL) || {}).margin || 8;
+      const tallest = Object.keys(chips).length ? pitchY - PILL_MID - pillH / z.L(1) / 2 - 4 - PM * pk : Infinity;
       placed.forEach(({ id, slot }) => {
         const key = Cook.Art.wordTex(S, id);
         // in the fridge the small things (a yoghurt tub) come up nearer a milk carton's size, to be seen
