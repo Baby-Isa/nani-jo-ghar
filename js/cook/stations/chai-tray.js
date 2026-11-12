@@ -2122,7 +2122,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         const hasMilk = pan.has.milk > 0;
         const got = { chai: made, milk: hasMilk === !!p.dudh, sugar: pan.sugar === (p.khun || 0) && !pan.salt };
         // SH-50: a wrong extra in the cup marks that person's extra row too (not only a missing one)
-        got.extra = p.extra ? pan.extras.includes(p.extra) && pan.extras.every((id) => id === p.extra) : !pan.extras.length;
+        // (s19-clean-a2's line, the round-two pop-up: the asked extra's row is right when it is in; a spice nobody asked for is its own
+        // row in the pop-up, crossed, never the asked one's: `unasked` below)
+        got.extra = p.extra ? pan.extras.includes(p.extra) : true;
         const amount = !p.amount ? null : pan.poured >= 2 ? "ph-full" : "ph-half";
         got.amount = !p.amount || (got.chai && amount === p.amount);
         const why = [];
@@ -2152,10 +2154,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             bad.push(r);
           }
         });
-        // a wrong cup with no row of its own to blame (a plain chai with an extra in it): its person's first row
-        if (!round && (why.length || pan.salt) && !bad.length && said[0]) UI.mission.missItem(said[0].ids[0], dish, { for: pan.who, no: said[0].no });
+        // the spices in the cup nobody asked for: rows of their own in the wrong-order pop-up (UI.mission.serveWrong's unasked)
+        const unasked = pan.extras.filter((id) => id !== p.extra);
+        // a wrong cup with no row of its own to blame and nothing unasked to name (the salt for sugar): its person's first row
+        if (!round && (why.length || pan.salt) && !bad.length && !unasked.length && said[0]) UI.mission.missItem(said[0].ids[0], dish, { for: pan.who, no: said[0].no });
         // CK-32: at the review the rows found wrong are red on that person's card (it stays open to show them), every try
-        if ((why.length || pan.salt) && UI.mission.serveWrong) UI.mission.serveWrong((bad.length ? bad : said.slice(0, 1)).map((r) => r.ids[0]), dish, { for: pan.who });
+        if ((why.length || pan.salt) && UI.mission.serveWrong) UI.mission.serveWrong((bad.length ? bad : unasked.length ? [] : said.slice(0, 1)).map((r) => r.ids[0]), dish, { for: pan.who, unasked });
         if (!round) why.forEach((w) => ctx.listen(false, w));
         if (tookBack.length) {
           tookBack.forEach((t) => t.why && ctx.listen(false, t.why));

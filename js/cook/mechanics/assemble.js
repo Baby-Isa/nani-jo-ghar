@@ -1009,6 +1009,26 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
          * wrong try shows the right way (each layer glows and goes in). Only the first mistake counts. (Was chaat's own loop.)
          */
         let miss = null;
+        // the wrong layer (and any above it) out of the bowl, its rows open again: the recast's work (run once; a second call finds
+        // nothing above the keep line)
+        const undoWrong = async () => {
+          const keep = miss.got === undefined ? got.length : miss.at;
+          const back = [];
+          while (got.length > keep) {
+            await bowl.removeTop();
+            got.pop();
+            const r = ticked.pop();
+            if (r) {
+              r.got = Math.max(0, (r.got || 1) - 1);
+              r.done = false;
+              if (!back.includes(r)) back.push(r);
+            }
+          }
+          const L = ladderOf(ctx);
+          const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
+          if (sq && sq.at) sq.at = Math.max(0, sq.at - back.length);
+          UI.mission.refresh();
+        };
         await NjgServe.round({
           items: ["bowl"],
           done: build,
@@ -1028,23 +1048,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
             if (!wrong.length) await Cook.wait(M.rightHoldMs);
             return [look];
           },
+          // (s19-clean-a2's line, the round-two pop-up: the wrong layers coming out of the bowl are the recast's work, not its words: the
+          // shared round runs it as o.undo when the wrong-order pop-up showed in place of the recast; idempotent, so the recast runs it too)
+          undo: () => undoWrong(),
           recast: async () => {
-            const keep = miss.got === undefined ? got.length : miss.at;
-            const back = [];
-            while (got.length > keep) {
-              await bowl.removeTop();
-              got.pop();
-              const r = ticked.pop();
-              if (r) {
-                r.got = Math.max(0, (r.got || 1) - 1);
-                r.done = false;
-                if (!back.includes(r)) back.push(r);
-              }
-            }
+            await undoWrong();
             const L = ladderOf(ctx);
-            const sq = L && L.sections.find((x) => x.seq && !x.cardOf);
-            if (sq && sq.at) sq.at = Math.max(0, sq.at - back.length);
-            UI.mission.refresh();
             // the rows still to do (the redone ones and anything after them), said again from his card (the kitchen kit's people say
             // their orders, UI.personSay: kit e); level 4 is from memory: they say it again, but it isn't written out (the card stays folded)
             const todo = L ? Cook.Order.rows(L, { all: true }).filter((r) => !r.head && !r.no && !r.done) : [];

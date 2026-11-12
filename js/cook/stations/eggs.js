@@ -1080,10 +1080,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     /*
      * SH-264 to SH-266 (Zafar's child play-test, 11 Nov evening; the orchestrator, 12 Nov: eggs serves through the shared round as chai
      * does): the plates through the kitchen's serve round (Cook.Kit.serve().round), so a wrong plate brings the wrong-order pop-up, its
-     * card in the middle with the wrong rows red and crossed. Its check gives the pop-up the rows the plate got wrong (the pop-up marks them
-     * while it shows, UI.mission.showWrong; finding 5 of the round-two review: never UI.mission.serveWrong, whose red stays): the
+     * card in the middle with the wrong rows red and crossed. Its check marks the rows the plate got wrong (UI.mission.serveWrong; the red
+     * ends with the round, UI.mission.redoEnd): the
      * egg cards for the wrong kind or count, the salt or pepper row for a seasoning not as asked; a seasoning nobody asked for has no row
-     * of its own, so the person's first said row, else their first, takes the mark (chai's rule for an extra nobody asked for). No redo:
+     * of its own: the pop-up draws a row for it (serveWrong's unasked); only with nothing to name does the person's first said row take it. No redo:
      * the plates are on the table and the cooking is gone (the kit's way without a tracker: the pop-up, then the round ends); the faces
      * were the plates' own (the pose swap as each lands), so the round's review shows none.
      */
@@ -1104,10 +1104,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
           if ((pl.q.pepper === "yes") !== !!pl.pepper) want.push("spi-11");
           const rows = rowsOf(p.who);
           let bad = rows.filter((r) => r.ids.some((id) => want.includes(id)));
-          if (!bad.length) bad = rows.filter((r) => !r.unsaid).slice(0, 1).concat(rows).slice(0, 1);
-          // (the round-two review's finding 5: eggs has no redo, so a mark of its own (UI.mission.serveWrong) was never cleared and the
-          // card went into the served moment and the thank-you with rows both red and done. The rows go to the pop-up, which marks
-          // them for itself and takes the red off once it is over: UI.mission.showWrong)
+          // (the round-two review's finding 5, s19-clean-a2's line: a salt or pepper nobody asked for has no row: the pop-up draws one
+          // for it and crosses that, never a row made right (UI.mission.serveWrong's unasked); the red ends with the round, M.redoEnd)
+          const unasked = want.filter((id) => !rows.some((r) => r.ids.includes(id)));
+          if (!bad.length && !unasked.length) bad = rows.filter((r) => !r.unsaid).slice(0, 1).concat(rows).slice(0, 1);
+          if (UI.mission.serveWrong && (bad.length || unasked.length)) UI.mission.serveWrong(bad.map((r) => r.ids[0]), 0, { for: p.who, unasked });
           return { ok, rows: bad.length ? bad : null };
         },
         review: async () => [],
