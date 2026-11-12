@@ -1541,6 +1541,21 @@ export function chaiExtra(asked, extras) {
       unglow();
       refresh();
     };
+    // (contract-102, chai L1 at 1920x1080: the thing's glow came a few frames before the light round it was on the screen, so for
+    // that moment it glowed alone: the glow waits for the light's box to be drawn, a frame more, at most 0.6 s)
+    const whenLit = (fn) => {
+      const t0 = Date.now();
+      let drawn = 0;
+      const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(f) : (f) => setTimeout(f, 16);
+      const tick = () => {
+        const box = document.querySelector(".njg-onboard .ob-box");
+        if (box && box.isConnected && box.style.display !== "none") drawn++;
+        if (drawn >= 2 || Date.now() - t0 > 600) fn();
+        else raf(tick);
+      };
+      raf(tick);
+    };
+    let spotGlow14 = 0; // (the first-time spotlight's glow: a later on or off wins over a glow still waiting for its box)
     let rung = null;
     let rungKey = null;
     // within a step the live thing can change (the next pan's knob): the help follows the one live now (rungCur)
@@ -1849,7 +1864,7 @@ export function chaiExtra(asked, extras) {
           onLight: (on, rungN) => {
             if (againFirst && !rungN) seen14[POUR_AGAIN14] = true;
             if (ctlFirst && !rungN) gate14.spend(ctlKey);
-            helpGlow(obj);
+            whenLit(() => rungKey === sid && !finished && helpGlow(obj));
           },
           onHint: () => {
             hints14++; // (SH-160: the guide's hint came)
@@ -1877,7 +1892,13 @@ export function chaiExtra(asked, extras) {
       rung = trackRung(Cook.Coach.rungs("chai-tray", step, Object.assign(
         { word: cur.id, answer, study: !!(guided || (sel && sel.redo)) },
         // (the judge, 23 Oct: the finger taps the thing's body from above, never over its word chip under it)
-        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? ((firstLit14[step] = true), mark(), helpGlow(lightObj())) : helpGlow(null)) },
+        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => {
+          const k = ++spotGlow14;
+          if (!on) return helpGlow(null);
+          firstLit14[step] = true;
+          mark();
+          whenLit(() => k === spotGlow14 && rungKey === sid && !finished && helpGlow(lightObj())); // (its glow once the box is drawn, contract-102)
+        } },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
         answer ? { first: false } : {},
         items
@@ -1894,8 +1915,17 @@ export function chaiExtra(asked, extras) {
                   hints14++; // (SH-160: the guide's hint came)
                   mark();
                   showCallout(cur.id);
-                  helpGlow(lightObj());
-                  if (OB14 && OB14.light) hintLit14 = OB14.light(target, { look: "glow", pass: true, live, avoid: cur.avoid ? cur.avoid() : null, quitIf: () => finished || !helpObj, note: `${STATION14}:s14-stuck` });
+                  // (the light first, its thing's glow once it is drawn: whenLit, contract-102; the light goes with the glow)
+                  let glowed = false;
+                  if (OB14 && OB14.light) hintLit14 = OB14.light(target, { look: "glow", pass: true, live, avoid: cur.avoid ? cur.avoid() : null, quitIf: () => finished || (glowed && !helpObj), note: `${STATION14}:s14-stuck` });
+                  const hl = hintLit14;
+                  const glowNow = () => {
+                    if (hintLit14 !== hl || rungKey !== sid || finished) return;
+                    helpGlow(lightObj());
+                    glowed = true;
+                  };
+                  if (hl) whenLit(glowNow);
+                  else glowNow();
                 } else {
                   hideCallout();
                   helpGlow(null);
