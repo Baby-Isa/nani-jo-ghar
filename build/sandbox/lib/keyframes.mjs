@@ -3,7 +3,8 @@
 // onboarding moment for motion and timing"). Opt-in: run.mjs --keyframes. Per page it writes <run>/keyframes/<flow>@<size>/:
 //   key-<moment>.png|jpg + keys.json   the whole screen at each key moment, with the boxes of the order panel and Nani's box then:
 //     order   the order in the side panel: the frame drawn as the player's order-card-in-sidebar state came, and never after the first
-//             light (the state is recorded after its lint, so its own shot came after the light: the 10 Nov judge saw them swapped)
+//             light (the state is recorded after its lint, so its own shot came after the light: the 10 Nov judge saw them swapped);
+//             with no such state (chop's order goes straight to its station), the frame as the station starts
 //     light   the first first-time light in the kitchen, LIGHT_MS after the kit's light came (the S14 hook's frame-timed "lit"), taken
 //             with the screen to itself (lib/framebuf.mjs withScreen: never while a pixel check hides the light, which left the
 //             10 Nov judge a picture with no box); key-light-before.jpg beside it, the frame just before the light
@@ -137,6 +138,12 @@ export class KeyFrames {
     if (e.k === "stage") {
       const inSt = /(^|\|)cook:station/.test(e.key || "");
       if (this.st.station && !inSt && this.st.kindT && !this.st.cookEnd) this.st.cookEnd = e.t; // (the cooking is over: mid-cook is before)
+      // (s19-clean-a6, SH-251 --reach: a game whose order goes straight to its station records no order-card-in-sidebar state (chop,
+      // and fetch at 930x430): the order is the frame on screen as the station starts, before its first light)
+      if (inSt && !this.st.station && !this.keys.order && this.fb) {
+        const f = this.fb.before(this.st.lightT != null ? Math.min(e.t, this.st.lightT - 8) : e.t);
+        if (f) this.chain = this.chain.then(async () => { const boxes = await this.page.evaluate(BOXES_JS).catch(() => null); this.keep("order", f, boxes); });
+      }
       this.st.station = this.st.station || inSt;
       if (/:service$/.test(e.key || "")) { this.st.service = true; if (!this.st.serviceT) this.st.serviceT = e.t; }
       // the serve: the middle of the service view, before the end card (stage "end"); else its last frame

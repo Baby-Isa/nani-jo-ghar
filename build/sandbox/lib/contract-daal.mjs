@@ -16,7 +16,9 @@ const LAP_SHARE = 0.75; // P10: "within like three quarters of one revolution"
 const LAP_MIN_MS = 300; // a spill-fast lap still gives the number this long
 const LINE_WITHIN = 250; // a lap's number is asked for this soon after it
 
-const lifes = (tl, what) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === what);
+// (s19-clean-a6, the a6 before run: a lifecycle note's sample comes when the probe next reads the log, 100 ms apart unloaded and over a
+// second at load 30, so the waves' gaps (65) and the laps' numbers (66) are timed by the note's own time, its `at`)
+const lifes = (tl, what) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === what).map((e) => (e.at != null ? { ...e, t: e.at } : e));
 const num = (by, key) => {
   const m = new RegExp(`${key}:(-?[\\d.]+)`).exec(by || "");
   return m ? Number(m[1]) : null;

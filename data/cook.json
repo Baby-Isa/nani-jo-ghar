@@ -789,8 +789,8 @@
    "lists": {"dress": ["fru-02", "spi-16", "spi-04", "ph-lili", "ph-amli", "spi-11"]},
    "slots": {
     "count": {"byLevel": [1, 1, 2, 2]},
-    "no": {"type": "no", "else": {"chance": {"byLevel": [0, 0, 0, 0.6]}, "from": "$dress"}},
-    "dress": {"type": "items", "from": "$dress", "exclude": "no", "take": {"byLevel": [[1, 1], [2, 2], [2, 2], [2, 3]]}, "order": "any"}
+    "no": {"type": "no", "else": {"chance": {"byLevel": [0, 0, 0, 0]}, "from": "$dress"}},
+    "dress": {"type": "items", "from": "$dress", "exclude": "no", "take": {"byLevel": [[1, 1], [2, 2], [1, 1], [1, 1]]}, "order": "any"}
    },
    "say": [
     {"frame": "order", "x": [{"n": "$count", "of": "n.corn-on-the-cob"}]},
