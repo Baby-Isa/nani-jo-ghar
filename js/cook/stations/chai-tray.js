@@ -970,6 +970,9 @@ export function chaiExtra(asked, extras) {
       // (the tap's sound, at the tap: CHAI-92, Zafar's pick "Now", today's soft pop; the bottle's late sound is its settle, pourInto)
       Cook.sfx.pop();
       unglow();
+      // (contract-106: the right thing tapped is the step's move begun, so its light goes now, not at the next refresh up to a quarter
+      // second later and then the pour's own wait; the next step's help starts afresh after it, as refresh does while a pan pours)
+      coachEnd();
       const look = pan.shown;
       if (id === "cook-paani") {
         pop(id, pan);
@@ -1730,12 +1733,26 @@ export function chaiExtra(asked, extras) {
           const m0 = moves14;
           const on = () => moves14 !== m0;
           const moving = () => busy || spoons14 > 0 || pans.some((q) => q.away);
+          // (contract-79, chai L3-L4 at 740x320: the light came while the pan's count chip still bumped, a page animation the kit's
+          // still-test does not see: the light waits for it too, then the rules' beat)
+          const countBump = () => {
+            try {
+              return !!(document.getAnimations && document.getAnimations().some((a) => a.playState === "running" && a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest(".njg-tally-chip, #count-badge, .oc-count")));
+            } catch (e) {
+              return false;
+            }
+          };
           const forStep = sid;
           const keyBefore = rungKey;
+          // (contract-79, chai L2-L4: the item's card is the one asked for as the light was set up, never the next one: following the
+          // next item, the light jumped to the next card as the child tapped the lit item in, the pan's count still bumping, and the probe
+          // saw a second card light start mid-move; a card ticked done ends the light, the kit's own rule)
+          const litId = rungCur && rungCur.id;
+          const litWho = sel ? sel.who : null;
           Cook.Coach.cardLight({
-            item: () => Cook.Coach.itemCard(rungCur && rungCur.id, sel ? sel.who : null),
+            item: () => Cook.Coach.itemCard(litId, litWho),
             quitIf: () => on() || finished || (rungKey !== forStep && rungKey !== keyBefore),
-            busy: moving,
+            busy: () => moving() || countBump(),
             endIf: () => moving() || on(),
             step: st || "",
             // CHAI-109 (Zafar, 11 Nov evening, his child's play: "the highlight on the order card to show you the third item the first
