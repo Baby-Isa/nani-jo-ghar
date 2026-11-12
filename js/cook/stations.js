@@ -530,7 +530,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         } catch (e) {
           console.warn("hands:", e);
         }
-        fn(p);
+        // (CK-113, contract-117: a tap the game turns down shakes its thing, S.wiggle, as it runs: the light it hid comes back at once)
+        this.__shook = false;
+        const out = fn(p);
+        if (this.__shook) this.refused();
+        return out;
       });
       return obj;
     }
@@ -696,7 +700,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return out; // a tainted or odd texture: its bounds
       }
     }
+    /** CK-113: the move the tap began was turned down: every light it hid is back now (Onboard.refused) */
+    refused() {
+      const OB = global.Onboard;
+      if (OB && OB.refused) OB.refused();
+    }
     wiggle(obj) {
+      this.__shook = true;
       const a = obj.angle;
       this.tweens.add({ targets: obj, angle: { from: a - 8, to: a + 8 }, duration: 70, yoyo: true, repeat: 2, onComplete: () => obj.active && obj.setAngle(a) });
     }

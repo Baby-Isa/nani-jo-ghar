@@ -566,6 +566,9 @@ export function check117stay(r, tl, add) {
       // (the same step: the same kind and key, and the same place where the probe gives it)
       const same = w0 && w1 && w0.key != null && w0.kind === w1.kind && w0.key === w1.key && (!w0.at || !w1.at || w0.at === w1.at);
       if (!same || !w0.kind || /^(wait|click|end)$/.test(w0.kind) || !inStation(st, td + backMs)) continue;
+      // (the S19 gate, 12 Nov: eggs at L3 asks n.egg, then the pan, then n.egg again for the next egg: a step that asked for something
+      // else in between is the tap's step done and a new one with the same key, not the old one still waiting)
+      if (wants.some((w) => w.t > before.t && w.t <= td + backMs && (w.kind !== w0.kind || w.key !== w0.key))) continue;
       if (w0.at == null && tap) continue; // (an older run's samples, no place: a tap's next step can share its key)
       const kind = pressed ? "tap" : "fade";
       if (said.has(kind)) continue;

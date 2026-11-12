@@ -833,6 +833,15 @@
     }
     return true;
   };
+  /**
+   * CK-113 (the S19 gate's full run, 12 Nov: contract-117 in eggs, samosa, mishkaki, chai's fetch: "the light went after a tap that did
+   * not do its thing"; Zafar 11 Nov night, SH-261: every light stays until the right move): the game turned the tap down (its thing
+   * shook, S.wiggle): every light the tap hid is back at once, not MOVE.back later.
+   */
+  Onboard.refused = function () {
+    [...liveSpots].forEach((sp) => sp.back && sp.back());
+    if (active && active.back) active.back();
+  };
   /** The move ended (the child let go) with its step still open: the script's light may come back after MOVE.back. */
   Onboard.ended = function () {
     if (active && active.move) active.move(false);
@@ -1612,6 +1621,8 @@
       leave: () => end("left"),
       // S19: the step's move started (on) or ended (off): Onboard.began / Onboard.ended
       move,
+      /** SH-271's tap twin (contract-117): the game turned the tap down; the light it hid is back now, never MOVE.back later */
+      back: () => moving && back(),
       /** SH-261: was the page's last press in this step's drawn box (Onboard.began hides only the light the move began in)? */
       pressedIn: () => !!shownBox && !layer.__buried && pressedIn(shownBox),
       /** S19: is the step's light off now (the child doing the move, or a newer light over it)? */
@@ -2069,6 +2080,14 @@
       },
       /** Is it hidden now, the child doing its move? */
       isAway: () => away,
+      /** The game turned the move down (Onboard.refused): back at once */
+      back() {
+        if (closed || !away) return;
+        away = false;
+        awayPress = false;
+        awayBack = 0;
+        layer.__redraw();
+      },
       close() {
         if (closed) return;
         closed = true;
