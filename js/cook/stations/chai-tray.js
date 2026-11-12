@@ -920,12 +920,21 @@ export function chaiExtra(asked, extras) {
     /* ---------- using the shelf: pour a bottle, or a spoonful ---------- */
     // (the kitchen kit's pour from the shelf, piece 6: Mech.pour lifts the bottle or carton, tips it over the pan with the short pour,
     // fades the pan's look and sets it back with its settle; Mech.pour.spoon the shared spoon. Chai keeps its own counts)
+    // SH-268 (Zafar, 12 Nov: one light, upper left; contract-120 at chai L2-L3, s19-clean-a4): a bottle set back in its place has its
+    // soft shadow back with it in the same moment. The pour shows the bottle again between frames, and its contact shadow only took the
+    // bottle's alpha at the next frame, so for that frame it stood with none. (A bottle with no shadow left gets the kit's.)
+    const shadowBack = (obj) => {
+      if (!obj || !obj.active) return;
+      if ((!obj.shadow || !obj.shadow.active) && Cook.Kit && Cook.Kit.shadow) Cook.Kit.shadow(S, obj);
+      const sh = obj.shadow;
+      if (sh && sh.active && !sh.lifted) sh.setVisible(obj.visible).setAlpha(obj.alpha);
+    };
     const pourInto = async (pan, obj, color, toLevel, look) => {
       busy++;
       moves14++;
       obj.flying = true;
       refresh();
-      await Mech.pour(S, { pan, from: obj, level: toLevel, look, settle: color === COL.water, onEnd: () => busy-- });
+      await Mech.pour(S, { pan, from: obj, level: toLevel, look, settle: color === COL.water, onEnd: () => (busy--, shadowBack(obj)) });
     };
     const spoonInto = async (pan, obj, id) => {
       // (counted for the order card's light only: it waits for a spoon to land, and skips once the child spoons the next thing)
@@ -1541,13 +1550,11 @@ export function chaiExtra(asked, extras) {
       unglow();
       refresh();
     };
-    // (contract-102, chai L1 at 1920x1080: the thing's glow came a few frames before the light round it was on the screen, so for
-    // that moment it glowed alone: the glow waits two frames for the light to be drawn and a beat of its fade-in, 120 ms, as the
-    // kit's call waits for its light (Cook.Coach.control); well inside contract-107's 300 ms for a lit shelf thing's hop)
-    const whenLit = (fn) => {
-      const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(f) : (f) => setTimeout(f, 16);
-      raf(() => raf(() => setTimeout(fn, 120)));
-    };
+    // (the thing's glow comes with its light, in the same moment, as Zafar signed it off. s19-clean-chai tried holding the glow two
+    // frames and 120 ms for the light's box (contract-102 at 1920x1080: the glow a frame or two before the box was painted); on a
+    // loaded machine that hold ran to 0.6-2.2 s, the first water's glow came late and the focal glow fell back to Nani's pause
+    // (contract-24, -107 at L1). The glow is at once again; the frame or two is a question for the check, not a change to chai)
+    const whenLit = (fn) => fn();
     let spotGlow14 = 0; // (the first-time spotlight's glow: a later on or off wins over a glow still waiting for its box)
     let rung = null;
     let rungKey = null;
