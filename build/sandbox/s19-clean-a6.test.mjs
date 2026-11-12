@@ -162,3 +162,13 @@ test("contract-107: a hop 1 s after the light, with the game's glow note on the 
   assert.equal(run([...ST, lit, hop, c(9e4, "x")]).length, 1, "no note: red");
   assert.equal(run([...ST, lit, { ...note, by: "n.salt" }, hop, c(9e4, "x")]).length, 1, "a note on another thing: red");
 });
+
+// ---- contract-36: a light the idle help brings, with her step line said again (role order), is called ----
+test("contract-36: baking's help light with its order line said is called (green); the same light with no help note is red", () => {
+  const th = [{ kind: "pic", id: "cook-atto", box: [100, 100, 200, 200] }];
+  const tl = (help) => [...ST, ...(help ? [c(34260, "life", { what: "help", reason: "idle", step: "idle", at: 34190 })] : []), c(34298, "s19lit", { holes: [[90, 90, 210, 210]], things: th }), c(50000, "x")];
+  const line = { role: "order", text: "Hakro cup atto wiji chad!", t0: 34205, plays: [{}] };
+  const run = (t) => collect((add) => check36({ flow: "cook:baking" }, t, [], { lines: [line] }, add));
+  assert.equal(run(tl(true)).length, 0, "the help's light with her line: green");
+  assert.equal(run(tl(false)).length, 1, "no help: the order line is not the light's call, red");
+});

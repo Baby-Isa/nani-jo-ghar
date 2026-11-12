@@ -453,6 +453,7 @@ export function check36(r, tl, segs, v, add) {
   const steps = screenSteps(tl);
   const cs = calls(v);
   const skips = life(tl, "step-call").filter((n) => /^skip/.test(n.by || ""));
+  const helps = life(tl, "help");
   const used = new Set(), usedSkip = new Set();
   // SH-172 (contract-89, Zafar 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ...
   // when she expands her card to help you"): a step whose item Nani's helper card names while it is closed is called as her card opens,
@@ -467,7 +468,10 @@ export function check36(r, tl, segs, v, add) {
     if (said) { used.add(said); return; }
     // (s19-clean-a, s19-clean-b's note: a card step the order line itself brings, Nani saying the item as its card is revealed, baking's
     // amounts and the pantry's list: that line, voiced, is the step's call; contract-89 forbids a second one)
-    const ord = s.card ? lines(v).find((l) => !used.has(l) && l.role !== "item" && l.role !== "count" && l.role !== "laps" && l.role !== "countdown" && (l.text || "").trim() && l.plays && l.plays.length && l.t0 >= s.t - CALL_BEFORE && l.t0 <= s.t + 1500) : null;
+    // (s19-clean-a6, the a6 after run, baking at every level: a light the idle help brings comes with her line said again, the order's
+    // own step line (role order, s19-games-2): that line is the step's call, as on a card step)
+    const helped = !s.card && helps.some((h) => (h.at != null ? h.at : h.t) >= s.t - 1500 && (h.at != null ? h.at : h.t) <= s.t + 300);
+    const ord = s.card || helped ? lines(v).find((l) => !used.has(l) && l.role !== "item" && l.role !== "count" && l.role !== "laps" && l.role !== "countdown" && (l.text || "").trim() && l.plays && l.plays.length && l.t0 >= s.t - CALL_BEFORE && l.t0 <= s.t + 1500) : null;
     if (ord) { used.add(ord); return; }
     const h0 = helperAt(s.t);
     // (a step the kit's light shows is called with its light, as contract-89 lets a control's call be: only a card step waits on her card)
