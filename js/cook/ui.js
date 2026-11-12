@@ -2251,7 +2251,7 @@
       if (k < 0.999) c.style.zoom = String(Math.round(k * 1000) / 1000);
       const kz = c.style.zoom ? Number(c.style.zoom) : 1;
       Object.assign(c.style, { left: `${Math.round((play.left + play.width / 2 - (wd * kz) / 2) / kz)}px`, top: `${Math.round((play.top + play.height / 2 - (h0 * kz) / 2) / kz)}px` });
-      if (c.animate) c.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / sp, easing: "cubic-bezier(.2,.8,.2,1)" });
+      const inAnim = c.animate ? c.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / sp, easing: "cubic-bezier(.2,.8,.2,1)" }) : null;
       const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, , cls]) => c.classList.contains(cls));
       let want = null;
       // (the lesson's own taps: the card's peek buttons never take them, so nothing is logged as a peek or counted as help)
@@ -2268,14 +2268,18 @@
       let cur = null;
       let lit = null;
       try {
-        await Cook.wait(420);
+        // (the light comes once the card stands at its size: measured mid-entrance it would start on a part of it, contract-97)
+        if (inAnim) await Promise.race([inAnim.finished.catch(() => {}), Cook.wait(600)]);
+        await Cook.wait(200);
         for (const [slot, sel, cls] of steps) {
           if (!here()) break;
           const el = c.querySelector(sel);
           if (!el) continue;
           cur = el;
           if (!lit) {
-            lit = Onb.light(() => (cur && cur.isConnected ? cur : null), { look: "", pad: 6, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
+            lit = Onb.light(() => (cur && cur.isConnected ? cur : null), { look: "", pad: 6, kit: true, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
+            // (it lights a part of a card, as the reveal lessons' light did: its layer says so, js/shared/onboard.js Onboard.lesson)
+            if (lit && lit.layer && lit.layer.dataset) lit.layer.dataset.light = "part";
             say("card", `shown order-popup ${w.word.id} ${steps.map((x) => x[0]).join(",")}`);
           }
           Cook.expect = { kind: "click", selector: `.wc14-lesson ${sel}` };
@@ -2290,7 +2294,12 @@
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
           else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
           global.WordCard.fit14(c);
-          await Cook.wait(slot === steps[steps.length - 1][0] ? 900 : 450);
+          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or gone after the last)
+          const k2 = steps.findIndex((x) => x[0] === slot);
+          const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
+          if (nx) cur = nx;
+          else if (lit) (lit.close(), (lit = null));
+          await Cook.wait(nx ? 450 : 900);
         }
       } finally {
         if (lit) lit.close();
@@ -2300,8 +2309,12 @@
         // (the order's card back at once: it flies into its row as the big copy fades)
         if (pop.isConnected) pop.style.visibility = popVis;
         const gone = () => c.remove();
-        if (c.animate && here()) c.animate([{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0.6)" }], { duration: 280 / sp, easing: "ease-in", fill: "forwards" }).finished.then(gone, gone);
-        else gone();
+        // (gone by a timer too: a page whose animations are held, a hidden tab, never keeps the card)
+        if (c.animate && here()) {
+          c.style.pointerEvents = "none";
+          c.animate([{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0.6)" }], { duration: 280 / sp, easing: "ease-in", fill: "forwards" }).finished.then(gone, gone);
+          setTimeout(gone, 280 / sp + 60);
+        } else gone();
       }
     };
     // CK-60 (Zafar, 7 Nov: "skipping it should have stopped all sound"): the read's own voice generation (js/shared/request-popup.js

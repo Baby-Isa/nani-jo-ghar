@@ -735,4 +735,6 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 /* SH-264 (Zafar, 12 Nov morning): no face on the left of the open wrong-order card; the asker's face is its own head's, at the top beside
    the order sentence, the two grown together (--wo-head, js/shared/wrong-order.js) a little past the side panel's */
 .njg-wo-open.njg-wo-headface { flex-direction: column; align-items: stretch; }
-.njg-wo-open.njg-wo-headface .oc-card.oc-big > .oc-head { zoom: var(--wo-head, 1); }
+.njg-wo-open.njg-wo-headface .oc-card.oc-big > .oc-head { zoom: var(--wo-head, 1); width: calc(100% / var(--wo-head, 1)); max-width: calc(100% / var(--wo-head, 1)); box-sizing: border-box; contain: inline-size; }
+/* (grown, the sentence wraps inside the card's width, never widening the card past its items: contract-118's view) */
+.njg-wo-open.njg-wo-headface .oc-card.oc-big > .oc-head > .oc-headline { min-width: 0; white-space: normal; }

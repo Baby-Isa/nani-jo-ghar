@@ -757,7 +757,9 @@ function s19hook() {
       for (const el of document.elementsFromPoint(cx, cy)) {
         if (el.closest(".njg-onboard")) continue;
         // (SH-213: the big card lesson lights one part of its card at a time, the picture, the Kutchi, the English: that part is its thing)
-        const ls = el.closest(".wc14-lesson") && (el.closest(".wc14-pic, .wc14-slot") || null);
+        const lc = el.closest(".wc14-lesson");
+        if (lc) { const cb = R(lc.getBoundingClientRect()); if ((h[2] - h[0]) * (h[3] - h[1]) >= 0.7 * ar0(cb)) return { kind: "card", id: "lesson:card", box: rnd(cb) }; }
+        const ls = lc && (el.closest(".wc14-pic, .wc14-slot") || null);
         if (ls) return { kind: "card", id: "lesson:" + (ls.dataset.slot || (ls.classList.contains("wc14-slot-k") ? "kutchi" : ls.classList.contains("wc14-slot-e") ? "english" : "part")), box: rnd(R(ls.getBoundingClientRect())) };
         const cands = [el.closest(".wc14"), el.closest(".oc-card")].filter(Boolean);
         if (!cands.length) break;

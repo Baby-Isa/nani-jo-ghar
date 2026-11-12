@@ -28315,6 +28315,29 @@
  ],
  "SH-267": [
   {
+   "flow": "cook:chai-tray",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.wc14-flash",
+   "after": null,
+   "capture": [
+    "shot",
+    "crop:.wc14-flash",
+    "contract:119"
+   ],
+   "expect": null,
+   "note": "chai L1: as the customer says 'Muke chai khape', the dish card flashes up with a glass of milk chai (every L1 cup has milk), its words the engine's 'hakri chai'; a kari chai order (from L3) shows the black tea glass and says kari",
+   "delay": 250
+  },
+  {
    "flow": "cook:chop",
    "path": "speed1",
    "level": [
@@ -28359,6 +28382,54 @@
    "note": "chop L2: no dish card at all from level 2 (it would give the order away)",
    "delay": 0,
    "max": 2
+  }
+ ],
+ "SH-213": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.wc14-lesson",
+   "after": null,
+   "capture": [
+    "shot",
+    "strip:body:6x450",
+    "contract:98"
+   ],
+   "expect": null,
+   "note": "chai L2, a new player: the first card popped out hidden as Nana says it (dudh, its English dotted) comes big to the middle, everything hidden; the kit's light starts on the whole card and settles on the picture, then the Kutchi, then the English, each shown by a tap (the strip); the side panel's card has no in-game lesson after",
+   "delay": 200
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "visible:.wc14-lesson",
+   "after": null,
+   "capture": [
+    "shot",
+    "strip:body:6x450",
+    "contract:98"
+   ],
+   "expect": null,
+   "note": "eggs L3: the same big card lesson on its order's first hidden pop-up card (its picture blurred too)",
+   "delay": 200
   }
  ]
 }

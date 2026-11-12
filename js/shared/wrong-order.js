@@ -390,7 +390,7 @@ async function play(o = {}) {
             const px = hl ? parseFloat(getComputedStyle(hl).fontSize) * (hl.currentCSSZoom || 1) : 0;
             const r = Math.max(want && w ? want / w : 0, headPx && px ? (headPx * LOOK.headText) / px : 0);
             if (r <= 1.005) break;
-            f = Math.min(3, f * r * 1.04);
+            f = Math.min(2, f * r * 1.04);
             card.style.setProperty("--wo-head", f.toFixed(3));
             fit(card, true);
           }
