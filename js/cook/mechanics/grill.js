@@ -2095,11 +2095,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const fstep = Cook.Stations.steps(ctx);
       const stop = z.tick(() => {
         const now = performance.now();
-        // s19-clean-d (the round-two review's finding 1, measured at 740x320): a frame never moves the rings more than a 30th of a
-        // second. At 0.1 a slow frame (15 fps on a busy phone) stepped a ring 0.07 of its way at once: from "nearly green" to charred in
-        // 7 frames at L3-L4, so the green came and went between two looks and every skewer went back to the tray. At 30 fps or more
-        // nothing changes; below it the grill slows with the screen, never skipping the green
-        const dt = Math.min(1 / 30, (now - last) / 1000) * Cook.speed;
+        // (s19-clean-a3, the s19-clean-d review's finding 3: the grill keeps real time down to 10 fps; a 30th of a second cap ran it at
+        // half speed at 15 fps. The 15 fps that made sekelo L3-L4 fail at 740x320 was the sandbox's face probe, not the game: with the
+        // probe measuring each token once, L3 and L4 at 740x320 end on the 0.1 s cap, twice)
+        const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
         last = now;
         ringG.clear();
         grilling.slice().forEach((g) => {

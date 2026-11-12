@@ -84,7 +84,7 @@ test("the serve tells the host's pop-up which people it judged and which dishes 
 });
 
 // finding 4 (non-negotiable 7): a tap on the pop-up hurries it past the lines; leaving the stage ends it, its veil gone
-test("finding 4: a tap hurries the wrong-order pop-up past its lines; the stage's end takes it away", async (t) => {
+test("finding 4: a tap hurries the wrong-order pop-up's line in flight; the stage's end takes it away", async (t) => {
   let browser;
   try { browser = await launch(); } catch (e) { return t.skip("no browser here"); }
   try {
@@ -108,7 +108,8 @@ test("finding 4: a tap hurries the wrong-order pop-up past its lines; the stage'
     const fast = await run(true, false);
     const gone = await run(false, true);
     assert.ok(slow.ms > 9000, `untouched: every line waited for, up to its cap (${Math.round(slow.ms)} ms)`);
-    assert.ok(fast.ms < slow.ms / 2, `a tap hurries it: ${Math.round(fast.ms)} against ${Math.round(slow.ms)} ms`);
+    // (s19-clean-a3, the a2 review's finding 3: a tap hurries the line being said only, never the whole pop-up: the rest are said)
+    assert.ok(fast.ms < slow.ms - 900 && fast.ms > slow.ms - 3000, `a tap hurries the line in flight only: ${Math.round(fast.ms)} against ${Math.round(slow.ms)} ms`);
     assert.ok(gone.ms < 2500 && gone.left === 0, `the stage's end takes it away at once: ${Math.round(gone.ms)} ms, ${gone.left} left`);
     await ctx.close();
   } finally { await browser.close(); }

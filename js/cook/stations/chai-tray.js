@@ -38,6 +38,20 @@ import { Cook as CookNS } from "../ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "../life.js";
 import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (Sprint 18 piece 8): the review faces, the tick and the recast
 
+/**
+ * The asked spice in a cup (the s19-clean-d review's findings 1 and 2; non-negotiable 4, the leak test): shown, its row ticked on the
+ * card and in the wrong-order pop-up, when it is in the cup (a spice nobody asked for is its own crossed row there); scored right (its
+ * word's ladder, the first-try list, its word pill) only when it was chosen: in, with nothing unasked beside it, so spooning in every
+ * jar never wins the asked word by elimination; and a cup wrong only by an unasked spice still costs a first-try row (miss).
+ *   chaiExtra(asked | null, extras [id]) -> {shown, right, unasked: [id], miss}
+ */
+export function chaiExtra(asked, extras) {
+  const list = (extras || []).filter(Boolean);
+  const inCup = asked ? list.includes(asked) : true;
+  const unasked = list.filter((id) => id !== asked);
+  return { shown: inCup, right: inCup && !unasked.length, unasked, miss: unasked.length > 0 };
+}
+
 (function (global) {
   const Cook = CookNS;
   const UI = Cook.UI;
@@ -2124,7 +2138,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // SH-50: a wrong extra in the cup marks that person's extra row too (not only a missing one)
         // (s19-clean-a2's line, the round-two pop-up: the asked extra's row is right when it is in; a spice nobody asked for is its own
         // row in the pop-up, crossed, never the asked one's: `unasked` below)
-        got.extra = p.extra ? pan.extras.includes(p.extra) : true;
+        const ex = chaiExtra(p.extra, pan.extras);
+        got.extra = ex.shown;
         const amount = !p.amount ? null : pan.poured >= 2 ? "ph-full" : "ph-half";
         got.amount = !p.amount || (got.chai && amount === p.amount);
         const why = [];
@@ -2147,7 +2162,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           const ok = id === "cook-paani" ? pan.has.water > 0 : id === "cook-chai" ? pan.has.leaves > 0 : id === "cook-dudh" ? got.milk : id === "cook-khun" ? got.sugar : id === "ph-half" || id === "ph-full" ? got.amount : got.extra;
           if (ok) {
             UI.mission.tickItem(id, dish, { for: pan.who, no: r.no });
-            if (!round && !r.no && !r.unsaid && id !== "cook-khun" && ctx.did && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
+            // (the asked spice is done right only when chosen: chaiExtra's right, never swept in with every jar)
+            const scored = id !== p.extra || ex.right;
+            if (!round && scored && !r.no && !r.unsaid && id !== "cook-khun" && ctx.did && ctx.did.length < 14) ctx.did.push({ line: Lang.wordLine(id), ok: true });
           } else {
             // the first try is the one scored: a redo marks nothing new
             if (!round) UI.mission.missItem(id, dish, { for: pan.who, no: r.no });
@@ -2155,9 +2172,13 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           }
         });
         // the spices in the cup nobody asked for: rows of their own in the wrong-order pop-up (UI.mission.serveWrong's unasked)
-        const unasked = pan.extras.filter((id) => id !== p.extra);
-        // a wrong cup with no row of its own to blame and nothing unasked to name (the salt for sugar): its person's first row
-        if (!round && (why.length || pan.salt) && !bad.length && !unasked.length && said[0]) UI.mission.missItem(said[0].ids[0], dish, { for: pan.who, no: said[0].no });
+        const unasked = ex.unasked;
+        // a wrong cup with no row of its own to blame (the salt for sugar; or only an unasked spice, chaiExtra's miss: the asked spice's
+        // row, else the person's first): that row carries the first try's miss
+        if (!round && (why.length || pan.salt) && !bad.length && said[0]) {
+          const r0 = (ex.miss && rows.find((r) => r.ids[0] === p.extra)) || said[0];
+          UI.mission.missItem(r0.ids[0], dish, { for: pan.who, no: r0.no });
+        }
         // CK-32: at the review the rows found wrong are red on that person's card (it stays open to show them), every try
         if ((why.length || pan.salt) && UI.mission.serveWrong) UI.mission.serveWrong((bad.length ? bad : unasked.length ? [] : said.slice(0, 1)).map((r) => r.ids[0]), dish, { for: pan.who, unasked });
         if (!round) why.forEach((w) => ctx.listen(false, w));
@@ -2177,12 +2198,12 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           // (a count the jar stopped at its number, L1, is supported counting: it never advances the number word; rule 6)
           if (p.khun && !pan.capped) (got.sugar ? right : Cook.markMiss)(Cook.numId(p.khun), "cook-khun");
           (got.sugar ? right : Cook.markMiss)("cook-khun");
-          if (p.extra) (got.extra ? right : Cook.markMiss)(p.extra);
+          if (p.extra) (ex.right ? right : Cook.markMiss)(p.extra);
           // SH-159: each asked-for thing's word pill: right on the first try (no wrong spoonful for it) and no peek or help
           if (P14()) {
             const wrongFirst = (id) => (pan.firstWrong || []).some((w) => w.row === id);
             const peeked = (id) => helped.has(id) || !!(ctx.wordHelp && ctx.wordHelp.has(id));
-            const asked = [["cook-paani", got.chai], ["cook-chai", got.chai]].concat(p.dudh ? [["cook-dudh", got.milk]] : [], p.khun ? [["cook-khun", got.sugar]] : [], p.extra ? [[p.extra, got.extra]] : []);
+            const asked = [["cook-paani", got.chai], ["cook-chai", got.chai]].concat(p.dudh ? [["cook-dudh", got.milk]] : [], p.khun ? [["cook-khun", got.sugar]] : [], p.extra ? [[p.extra, ex.right]] : []);
             asked.forEach(([id, ok]) => {
               P14().pill(id, { ok: !!ok, firstTry: !wrongFirst(id), peek: peeked(id) });
               pillNote(id);

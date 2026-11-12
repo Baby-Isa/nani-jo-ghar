@@ -1807,7 +1807,8 @@
     // (the round-two review's finding 6: a "tap" is the finger's own tapping cadence on the point, logged as a tap, never a drag held
     // in place; o.ready() (optional): the finger waits for it, the light it belongs to, up to READY_CAP ms, so it never comes first)
     const tapOnly = o.gesture === "tap";
-    const gesture = GESTURES.includes(o.gesture) && !tapOnly ? o.gesture : "drag";
+    // (s19-clean-d's line: a "tap" stays a tap, its own cadence and length, DUR.tap; any name not a gesture is a drag)
+    const gesture = GESTURES.includes(o.gesture) ? o.gesture : "drag";
     const dur = o.ms || DUR[gesture] || 1500;
     const carry = typeof o.carry === "function" ? o.carry : null;
     let finger = null;
@@ -2585,6 +2586,9 @@
     // (avoid the face circle, never its 48 px tap area: the tap area reached into the first card at 740x320 and pushed the light off the
     // card's top, contract-105 on every kitchen game, 10 Nov)
     const lit = Onboard.light(live, { look: "glow", pad: isEye ? 2 : 0, pass: true, ms: (Onboard.WAIT.lessonLit + zoomMs) / sp, onTap: () => {}, quitIf: () => over, note: o.note, box: isEye ? (picEl && picEl() ? picBox : undefined) : boxNow, zoomFrom: whole() ? whole : undefined, avoid: [...document.querySelectorAll(`${o.list || LIST} .oc-face`)].map((f) => f.querySelector(".njg-face") || f) });
+    // (s19-clean-a3: the layer says it lights a part of a card, the dotted word or the blurred picture, so the checks judge the part,
+    // never the whole card round it: lib/lightjudge.py, contract-112)
+    if (lit && lit.layer && lit.layer.dataset) lit.layer.dataset.light = "part";
     const end = () => {
       live().classList.remove("ob-dots-now");
       if (o.hold) o.hold(false);

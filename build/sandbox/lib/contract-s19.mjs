@@ -251,6 +251,10 @@ export function check105(r, tl, add) {
       tm.x = tm2.x, tm.y = tm2.y;
       const cover = inter(h, t) / Math.max(1, area(t));
       if (area(h) < 0.25 * area(t)) return; // (a part of it: contract-97's)
+      // (s19-clean-a3: the knife's swipe, STD-E2-08a, Zafar 10 Nov, Onboard.VARIANTS.swipe: chop's game wherever it runs, alone, in daar, in
+      // chaat: its light holds the knife, the item and the path between them, so it is off the knife's middle by design; the knife whole
+      // inside it, contract-112 judges its path)
+      if (/knife/i.test(id) && cover >= 0.95 && area(h) <= 12 * area(t)) return;
       const offX = Math.abs(hm.x - tm.x) / Math.max(1, t.r - t.l), offY = Math.abs(hm.y - tm.y) / Math.max(1, t.b - t.t);
       if (cover < PIC_COVER || offX > PIC_OFF || offY > PIC_OFF) {
         seen.add(id);

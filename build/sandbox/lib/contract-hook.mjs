@@ -580,6 +580,9 @@ const BASE_HOOK = `(() => {
   const faceKit = () => {
     const out = [];
     const seen = new Set();
+    // (s19-clean-d's line: each token's width measured once per sample, by its value as resolved, never a probe in every face: the probes
+    // took about 2.2 s of every 4.6 s at 740x320 and sekelo ran at 15 fps under them)
+    const tokW = new Map();
     for (const el of document.querySelectorAll(FACE_ROLES)) {
       const c = el.matches(".njg-face") ? el : el.querySelector(".njg-face");
       const k = c || el;
@@ -596,13 +599,19 @@ const BASE_HOOK = `(() => {
       // (the token resolved as the page lays it out: since SH-185 the side panel's sizes are calc() of its scale, which parseFloat
       // reads as 0; a hidden probe inside the circle takes the token's width)
       const tokName = { row: "--njg-face", guide: "--njg-guide-face", big: "--njg-big-face" }[size] || "--njg-face";
-      let tok = parseFloat(cs.getPropertyValue(tokName));
-      if (!/^\\s*[\\d.]+px\\s*$/.test(cs.getPropertyValue(tokName))) {
-        const pr = document.createElement("span");
-        pr.style.cssText = "position:absolute;visibility:hidden;left:0;top:0;height:1px;width:var(" + tokName + ")";
-        c.appendChild(pr);
-        tok = pr.offsetWidth;
-        pr.remove();
+      const raw = cs.getPropertyValue(tokName);
+      let tok = parseFloat(raw);
+      if (!/^\\s*[\\d.]+px\\s*$/.test(raw)) {
+        const key = tokName + "|" + raw;
+        if (tokW.has(key)) tok = tokW.get(key);
+        else {
+          const pr = document.createElement("span");
+          pr.style.cssText = "position:absolute;visibility:hidden;left:0;top:0;height:1px;width:var(" + tokName + ")";
+          c.appendChild(pr);
+          tok = pr.offsetWidth;
+          pr.remove();
+          tokW.set(key, tok);
+        }
       }
       tok = tok || 0;
       out.push({ sel: desc(el === c ? c : el) + (el === c ? "" : " > .njg-face"), kit: true, size, w: lw, h: lh, tok, d: parseFloat(cs.getPropertyValue("--njg-face-d")) || 0 });
@@ -801,7 +810,9 @@ const BASE_HOOK = `(() => {
       const k = c.querySelector(".wc-slot.wc14-k"), en = c.querySelector(".wc-slot.wc14-en"), sp = c.querySelector(".wc14-spk");
       const eb = en && en.getBoundingClientRect(), sb = sp && sp.getBoundingClientRect();
       // (a Kutchi still to record shows its English, grey italic, in the English's face: decision 84, the kit's .njg-ph; b2's item 4)
-      const ph = !!(k && (k.matches(".to-record, .njg-ph") || k.querySelector(".to-record, .njg-ph")));
+      // (s19-clean-a3, the a2 review's finding 7: only a slot that is all placeholder may be the sans face; a phrase with one word still to
+      // record keeps its real Kutchi in Lora, its placeholder in its own element)
+      const ph = !!(k && k.matches(".to-record, .njg-ph"));
       list.push({ word: ((k && k.textContent) || "").trim().slice(0, 20), kf: fam(k), ef: fam(en), ph, gap: eb && sb && eb.height > 0 ? Math.round(sb.top - eb.bottom) : null });
     }
     return list.length ? { list, lora: document.documentElement.classList.contains("njg-lora") } : null;

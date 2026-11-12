@@ -23,9 +23,14 @@
  *     o.sound(name) "ding" | "oops" | "tick" (the host's sounds: Zafar, 11 Nov night, no buzz for "oops": Mum's recorded "oho" when
  *                   it comes, until then a soft sound or none); o.speed: the host's speed (shortens the moves)
  *     o.talk(el) -> stop()   the asker's big face talks while they say their own line (the kit's Lifecycle.talk.dom)
+ *     o.hush()      stop the voice now (a tap ending a line: the host's own voice stop)
  *     a wrong card's big() may give head: () => Promise (the asker says their own order line first)
  *     o.note(what, info)   a test hook (the contract checks read it): "wo-open", "wo-card", "wo-row", "wo-close"
  *     o.faceHtml(who, src) the face circle's HTML (the kit's Face.html(who, "big")); default a plain picture
+ *     o.onEnd(fn) -> off()  the host's own end (Cook's lifetime, Cook.life.onEnd: the child leaving with Home, where the page fires
+ *                   no stage end, host.js). The pop-up ends at once at either end, the stage's or the host's: its veil goes, no
+ *                   sound or note after, and play() resolves {shown: true, wrong, cut: true}: the host's round never goes on from a
+ *                   cut pop-up (the a2 review's finding 1)
  *   NjgWrongOrder.isOpen()   NjgWrongOrder.LOOK (the timings at speed 1)
  *
  * Styles: css/shared/order-card.css ("the wrong-order pop-up"). An ES module (Cook imports it through js/shared/serve.js); it also
@@ -43,9 +48,11 @@ const LOOK = Object.freeze({
   float: 520, // a right line fades up off the screen
   open: 260, // a wrong line opens to all its items
   sayCap: 2400, // the most one line holds the next (a voice that never starts does not stall it; the Fable review, 11: at 1.6 s a
-  // longer line was overtaken by the next row's; a tap hurries the rest)
+  // longer line was overtaken by the next row's; a tap stops the line being said)
+  minSay: 500, // a line a tap stops is heard this long first (the a2 review's finding 3)
   rowGap: 100, // one row to the next, quickly
   hold: 620, // the wrong card, all marked, before it shrinks back
+  minText: 14, // px: the open card's smallest word at least this (css/shared/order-card.css: nothing under 14 px; the a2 review's finding 4)
   gap: 140, // one card to the next
   edge: 0.06, // the share of the play area kept clear round the pop-up (its edges still seen)
   // "big, central" (Zafar, 11 Nov night): the open card grows to fill the middle (never past the room the veil leaves), a line too
@@ -102,22 +109,38 @@ async function play(o = {}) {
   if (!doc || !cards.length) return { shown: false, wrong: [] };
   const host = o.host || doc.body;
   const speed = Math.max(1, +o.speed || 1);
-  // (the Fable review's finding 4, non-negotiable 7: a child never waits for speech. A tap on the pop-up hurries it: every beat a
-  // quarter as long and no line waited for; the page leaving the stage (Lifecycle.onStageEnd) ends it at once, its veil gone)
-  let hurry = 1;
+  // (the Fable review's finding 4, non-negotiable 7: a child never waits for speech. A tap on the pop-up hurries the beat in flight
+  // only: the wait it is in ends, or the line being said stops (once it has been heard LOOK.minSay) and its row is marked; every
+  // later line is still said, and a wrong row's own line is never cut (the a2 review's finding 3: one stray tap had silenced and
+  // compressed the whole pop-up, the wrong card included). The page leaving the stage, or the host's end, ends it at once)
   let cut = false;
-  const T = (ms) => Math.round(ms / speed / hurry);
+  const T = (ms) => Math.round(ms / speed);
   const wait0 = o.wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
-  const pend = new Set(); // (the waits running: the stage's end lets them all go at once)
-  const wait = (ms) =>
+  // (the a2 review's finding 1: at the end, the stage's or the host's, every wait and move in flight lets go at once and throws CUT,
+  // so nothing after it runs: no tick, no row marked, no note; the finally takes the veil away)
+  const CUT = { cut: true };
+  const pend = new Set(); // (the waits running: an end lets them all go at once)
+  const gate = (p) =>
     cut
-      ? Promise.resolve()
-      : new Promise((r) => {
-          pend.add(r);
-          wait0(ms).then(() => (pend.delete(r), r()));
+      ? Promise.reject(CUT)
+      : new Promise((ok, no) => {
+          const rec = () => no(CUT);
+          pend.add(rec);
+          Promise.resolve(p).then(
+            (v) => (pend.delete(rec), cut ? no(CUT) : ok(v)),
+            (e) => (pend.delete(rec), cut ? no(CUT) : no(e))
+          );
         });
-  const sound = o.sound || (() => {});
-  const note = o.note || (() => {});
+  const beat = new Set(); // (the waits a tap may end now: the beat in flight)
+  const wait = (ms) => {
+    let skip;
+    const p = new Promise((r) => ((skip = r), beat.add(r), wait0(ms).then(r)));
+    return gate(p).finally(() => beat.delete(skip));
+  };
+  const sound0 = o.sound || (() => {});
+  const note0 = o.note || (() => {});
+  const sound = (n) => !cut && sound0(n);
+  const note = (what, info) => !cut && note0(what, info);
   const faceHtml = o.faceHtml || ((who, src, size) => `<span class="njg-face njg-face-${size === "big" ? "big" : "row"}" data-who="${esc(who)}"><img class="njg-face-img" src="${esc(src)}" alt=""></span>`);
   open++;
   const veil = doc.createElement("div");
@@ -130,24 +153,41 @@ async function play(o = {}) {
   // over the play area: a fixed layer on the page laid over the host's box (s19-clean-a2: inside the host, whose own overflow is
   // hidden, a wrong card going back into the side panel was cut at the play area's edge on its way)
   veil.classList.add("njg-wo-fixed");
-  if (host !== doc.body) {
+  // (the a2 review's finding 9: laid again over the play area at a resize or a turn of the phone, never part of it left uncovered)
+  const place = () => {
+    if (host === doc.body || cut) return;
     const hb = host.getBoundingClientRect();
     Object.assign(veil.style, { left: `${hb.left}px`, top: `${hb.top}px`, width: `${hb.width}px`, height: `${hb.height}px`, right: "auto", bottom: "auto" });
-  }
+  };
+  place();
+  const view = typeof window !== "undefined" ? window : null;
+  if (view) view.addEventListener("resize", place);
   doc.body.appendChild(veil);
+  let hush = null; // (the line being said: a tap stops it, if it may be cut)
   veil.addEventListener("pointerdown", () => {
-    if (hurry > 1) return;
-    hurry = 4;
-    note("wo-hurry", {});
+    if (cut) return;
+    const n = beat.size + (hush ? 1 : 0);
+    if (hush) hush();
+    else [...beat].forEach((r) => r());
+    if (n) note("wo-hurry", {});
   });
   const LC = typeof globalThis !== "undefined" ? globalThis.Lifecycle : null;
-  const offEnd = LC && LC.onStageEnd ? LC.onStageEnd(() => ((cut = true), veil.remove(), pend.forEach((r) => r()), pend.clear())) : null;
-  note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
-  await move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn));
+  const end = () => {
+    if (cut) return;
+    cut = true;
+    if (view) view.removeEventListener("resize", place);
+    veil.remove();
+    open = Math.max(0, open - 1);
+    [...pend].forEach((r) => r());
+    pend.clear();
+  };
+  const offs = [LC && LC.onStageEnd ? LC.onStageEnd(end) : null, typeof o.onEnd === "function" ? o.onEnd(end) : null];
   const wrong = [];
+  const touched = new Set(); // (the side panel cards sent out: they come back whatever ends the pop-up)
+  note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
   const fit = (el, big) => {
     // every item in one view, as big as the middle allows (Zafar, 11 Nov night: "big, central"): the card scales as a whole to the
-    // room the veil leaves, growing to its share of it or shrinking to fit (never cut, never scrolled)
+    // room the veil leaves, growing to its share of it or shrinking to fit (never cut; scrolled only past the words' floor: floor())
     el.style.transform = "";
     el.style.setProperty("--wo-k", "1");
     const room = stage.getBoundingClientRect();
@@ -166,19 +206,127 @@ async function play(o = {}) {
     el.style.setProperty("--wo-k", String(el._woK));
     return k;
   };
+  // the words' floor (the a2 review's finding 4; css/shared/order-card.css: nothing under LOOK.minText px): a card whose fit would take
+  // its smallest word under the floor lays its rows in two columns, then takes the whole screen as its room (over the side panel), and
+  // only then stands at the floor with its rows scrolling, the row being said always in view. Returns true when its rows scroll
+  const minText = (el) => {
+    let px = 0;
+    for (const e of el.querySelectorAll("*")) {
+      if (![...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+      if (!e.getClientRects().length) continue;
+      const f = parseFloat(getComputedStyle(e).fontSize) || 0;
+      if (f && (!px || f < px)) px = f;
+    }
+    return px;
+  };
+  // (s19-clean-d's line, contract-100: a card of 6 Nov item cards, .oc-row14, is laid as the side panel's row is: the row its width
+  // there, so each item card is drawn exactly as in the panel (their insides are sized by the row's width), all of them in one line
+  // shown past the row's own box, never scrolled: the item's box takes the line's whole width, every item in one view, the whole fitted)
+  const lay14 = (card, from) => {
+    const rows = [...card.querySelectorAll(".oc-row14")];
+    if (!rows.length) return;
+    card.classList.add("njg-wo-14");
+    const ref = from && from.querySelector(".oc-row14");
+    const w0 = ref ? ref.getBoundingClientRect().width : 0;
+    rows.forEach((row) => row.style.setProperty("--wo-row", `${Math.round(w0 || 220)}px`));
+    widen14(card);
+  };
+  // (each line's item box as wide as its line of cards, so the card takes it in its width)
+  const widen14 = (card) => {
+    const z = card._woK || 1;
+    card.querySelectorAll(".oc-row14").forEach((row) => {
+      const last = row.lastElementChild;
+      const rb = row.getBoundingClientRect();
+      const need = last ? (last.getBoundingClientRect().right - rb.left) / z + parseFloat(getComputedStyle(row).paddingLeft || 0) : 0;
+      if (row.parentElement) row.parentElement.style.minWidth = need > rb.width / z ? `${Math.ceil(need)}px` : "";
+    });
+  };
+  let roomSet = false;
+  const roomBack = () => {
+    if (!roomSet) return;
+    roomSet = false;
+    ["left", "top", "width", "height", "right", "bottom"].forEach((k) => stage.style.removeProperty(k));
+  };
+  const floor = (card, body, rows, faceWant) => {
+    const px = minText(card); // (a computed size is the card's own, before its zoom)
+    if (!px) return false;
+    const need = LOOK.minText / px;
+    if (card._woK >= need - 0.001) return false;
+    // first the asker's face no bigger than it must be (1.8 times the side panel's, as drawn at the floor's zoom): the room is the words'
+    const fe = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+    if (fe && faceWant) {
+      const f0 = parseFloat(card.style.getPropertyValue("--wo-face")) || 2;
+      const w = fe.getBoundingClientRect().width / (card._woK || 1);
+      // (a quarter over, as the checks measure the side panel's face and the pop-up's circle a little differently: chai at 740x320 stood
+      // at 71 px against 72)
+      const f = Math.max(1, (f0 * faceWant * 1.25) / need / Math.max(1, w));
+      if (f < f0) {
+        card.style.setProperty("--wo-face", f.toFixed(2));
+        fit(card, true);
+        if (card._woK >= need - 0.001) return false;
+      }
+    }
+    if (card.classList.contains("njg-wo-14")) {
+      // (Zafar, 12 Nov morning: "side by side in a row and in the same mini vertical card format": the asker's item cards stay one
+      // row; past the floor the row scrolls sideways as the panel's does, the card being said brought into view: slide14 below)
+    } else if (rows >= 4) {
+      const k0 = card._woK;
+      card.classList.add("njg-wo-cols");
+      fit(card, true);
+      if (card._woK >= need - 0.001) return false;
+      if (card._woK < k0) (card.classList.remove("njg-wo-cols"), fit(card, true));
+    }
+    const vb = veil.getBoundingClientRect();
+    const vw = doc.documentElement.clientWidth || vb.width;
+    const vh = doc.documentElement.clientHeight || vb.height;
+    const m = 8;
+    Object.assign(stage.style, { left: `${m - vb.left}px`, top: `${m - vb.top}px`, width: `${vw - 2 * m}px`, height: `${vh - 2 * m}px`, right: "auto", bottom: "auto" });
+    roomSet = true;
+    fit(card, true);
+    if (card._woK >= need - 0.001) return false;
+    // at the floor: the card as wide and as tall as the room, its row of item cards scrolling sideways (as the panel's), or its rows
+    // scrolling down
+    card._woK = need;
+    card.style.setProperty("--wo-k", String(need));
+    const room = stage.getBoundingClientRect();
+    if (card.classList.contains("njg-wo-14")) {
+      let slid = false;
+      card.querySelectorAll(".oc-row14").forEach((row) => {
+        const box = row.parentElement;
+        if (!box) return;
+        box.style.minWidth = "";
+        const extra = (card.offsetWidth || 0) - (box.offsetWidth || 0);
+        const w = Math.floor(room.width / need - extra);
+        if (row.scrollWidth > w + 1 || box.scrollWidth > w + 1) {
+          box.classList.add("njg-wo-slide");
+          const end = () => box.classList.toggle("njg-wo-end", box.scrollLeft + box.clientWidth >= box.scrollWidth - 4);
+          box.addEventListener("scroll", end, { passive: true });
+          box.style.maxWidth = `${Math.max(80, w)}px`;
+          slid = true;
+        }
+      });
+      if (slid && card.offsetHeight * need <= room.height + 1) return true;
+    }
+    const extra = (card.offsetHeight || 0) - (body.offsetHeight || 0);
+    body.style.maxHeight = `${Math.max(40, Math.floor(room.height / need - extra))}px`;
+    body.style.overflowY = "auto";
+    card.classList.add("njg-wo-scroll");
+    return true;
+  };
   try {
+    await gate(move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn)));
     for (const [i, c] of cards.entries()) {
       if (cut) break;
       if (i) await wait(T(LOOK.gap));
       const from = c.from && c.from.isConnected ? c.from : null;
       const fromBox = from ? from.getBoundingClientRect() : null;
-      if (from) from.classList.add("njg-wo-out"); // (its copy is out in the pop-up)
+      if (from) from.classList.add("njg-wo-out"), touched.add(from); // (its copy is out in the pop-up)
       const line = lineEl(c, faceHtml);
       stage.appendChild(line);
       fit(line);
       const at = line.getBoundingClientRect();
       note("wo-card", { who: c.who, ok: !!c.ok, phase: "line" });
-      if (fromBox && fromBox.width > 2) await move(line, { transform: over(fromBox, at, line._woK), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly));
+      if (fromBox && fromBox.width > 2) await gate(move(line, { transform: over(fromBox, at, line._woK), opacity: 0.6 }, { transform: "none", opacity: 1 }, T(LOOK.fly)));
       if (c.ok) {
         // the tick again, a ding, the gold glow, then up and away
         line.querySelector(".njg-wo-row").appendChild(markEl("ok"));
@@ -188,7 +336,7 @@ async function play(o = {}) {
         line.classList.add("njg-wo-ok");
         await wait(T(LOOK.glow));
         const up = -(line.getBoundingClientRect().bottom + 40) / (line._woK || 1);
-        await move(line, { transform: "none", opacity: 1 }, { transform: `translateY(${up}px)`, opacity: 0 }, T(LOOK.float));
+        await gate(move(line, { transform: "none", opacity: 1 }, { transform: `translateY(${up}px)`, opacity: 0 }, T(LOOK.float)));
         line.remove();
         continue;
       }
@@ -213,6 +361,7 @@ async function play(o = {}) {
         card.appendChild(body);
         card.appendChild(markEl("bad"));
         line.replaceWith(card);
+        lay14(card, from);
         fit(card, true);
         // the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): at least 1.7 times the side panel's face
         // circle at every size. At 740x320 the card's shrink to fit took it to 67 px against a 45 px panel face (b2's item 2): the face
@@ -228,18 +377,35 @@ async function play(o = {}) {
           card.style.setProperty("--wo-face", f.toFixed(2));
           fit(card, true);
         }
+        const scroll = floor(card, body, (drawn.rows || []).length, want);
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
-        await move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open));
+        await gate(move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open)));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
         const faceEl = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img") || card.querySelector(".njg-wo-who");
-        const said = async (fn) => {
+        // (keep: a wrong row's line, never cut by a tap; any other line a tap stops once heard LOOK.minSay, the host's o.hush()
+        // stopping the voice, so no two voices overlap)
+        const said = async (fn, keep) => {
           if (!fn) return;
           const stop = o.talk && faceEl ? o.talk(faceEl) : null;
+          const t0 = Date.now();
+          let tapped;
+          const tap = new Promise((r) => (tapped = r));
+          if (!keep)
+            hush = () => {
+              hush = null;
+              const left = T(LOOK.minSay) - (Date.now() - t0);
+              const go = () => {
+                if (typeof o.hush === "function") o.hush();
+                tapped();
+              };
+              if (left > 0) wait0(left).then(go);
+              else go();
+            };
           try {
-            // (hurried: the rest are marked without their lines, so no two voices overlap)
-            if (hurry > 1) await wait(T(LOOK.rowGap * 4));
-            else await Promise.race([Promise.resolve(fn()).catch(() => {}), wait(T(LOOK.sayCap))]);
+            // (the cap is no beat a tap ends: a kept line runs to its end or its cap)
+            await gate(Promise.race([Promise.resolve(fn()).catch(() => {}), wait0(T(LOOK.sayCap)), tap]));
           } finally {
+            hush = null;
             if (typeof stop === "function") stop();
           }
         };
@@ -249,7 +415,8 @@ async function play(o = {}) {
           if (!r || !r.el) continue;
           r.el.classList.add("njg-wo-now");
           if (cut) break;
-          await said(r.say);
+          if (scroll && r.el.scrollIntoView) r.el.scrollIntoView({ block: "nearest", inline: "nearest", behavior: motion() ? "smooth" : "auto" });
+          await said(r.say, !r.ok);
           r.el.classList.remove("njg-wo-now");
           r.el.classList.add(r.ok ? "njg-wo-ok" : "njg-wo-bad");
           r.el.appendChild(markEl(r.ok ? "ok" : "bad"));
@@ -261,20 +428,27 @@ async function play(o = {}) {
         // back into its side panel card
         const back = from && from.isConnected ? from.getBoundingClientRect() : null;
         card.classList.add("njg-wo-going"); // (on its way back: the checks judge the card standing open, never its flight)
-        if (back && back.width > 2) await move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly));
+        if (back && back.width > 2) await gate(move(card, { transform: "none", opacity: 1 }, { transform: over(back, card.getBoundingClientRect(), card._woK), opacity: 0.2 }, T(LOOK.fly)));
         card.remove();
+        roomBack();
       }
       if (line.isConnected) line.remove();
       if (from) from.classList.remove("njg-wo-out");
     }
+  } catch (e) {
+    if (e !== CUT) throw e;
   } finally {
-    if (typeof offEnd === "function") offEnd();
-    if (!cut) await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
-    veil.remove();
-    open = Math.max(0, open - 1);
-    note("wo-close", { wrong });
+    offs.forEach((off) => typeof off === "function" && off());
+    if (view) view.removeEventListener("resize", place);
+    touched.forEach((f) => f.classList.remove("njg-wo-out"));
+    if (!cut) {
+      await move(veil, { opacity: 1 }, { opacity: 0 }, T(LOOK.veilIn));
+      veil.remove();
+      open = Math.max(0, open - 1);
+      note("wo-close", { wrong });
+    }
   }
-  return { shown: true, wrong };
+  return cut ? { shown: true, wrong, cut: true } : { shown: true, wrong };
 }
 
 /**
@@ -285,8 +459,9 @@ async function play(o = {}) {
  *     one of o.served (the dishes are not people: maani's kinds, chaat's bowl), every card in play. A card already marked wrong stays.
  *   finding 3: one card and nothing marked on it: the rows of what this serve found wrong (o.wrong: the round's wrong dishes as keys;
  *     a row matches a key it holds, or every "+" part of it: "ph-big+cook-maani"), never a first try's old misses. Nothing matched:
- *     nothing marked, so no pop-up (the game's own recast says it again), never a cross on the wrong row.
- *   pick(cards [{who, wrong (the card wrong as a whole: an unasked thing in it), rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row]}
+ *     nothing marked, never a cross on the wrong row; the keys that matched no row come back as extra (s19-clean-a3: the host draws
+ *     them as the card's own crossed rows, maani's kind nobody asked for; a key the host cannot say leaves no pop-up, the game's recast).
+ *   pick(cards [{who, wrong (the card wrong as a whole: an unasked thing in it), rows: [{ids, head, wrong}]}], {served, wrong}) -> {people: [card], mark: [row], extra: [key]}
  */
 function pick(cards, { served = null, wrong = [] } = {}) {
   const isWrong = (c) => !!c.wrong || (c.rows || []).some((r) => r.wrong);
@@ -294,14 +469,22 @@ function pick(cards, { served = null, wrong = [] } = {}) {
   const all = (cards || []).filter((c) => c && c.who);
   const people = all.some((c) => judged.has(c.who)) ? all.filter((c) => judged.has(c.who) || isWrong(c)) : all;
   const mark = [];
+  const extra = [];
   if (!people.some(isWrong) && people.length === 1) {
     const keys = (wrong || []).filter((k) => typeof k === "string" && k);
+    const hit = (k, r) => r.ids.includes(k) || k.split("+").every((x) => r.ids.includes(x));
     for (const r of people[0].rows || []) {
       if (!r || r.head || !Array.isArray(r.ids)) continue;
-      if (keys.some((k) => r.ids.includes(k) || k.split("+").every((x) => r.ids.includes(x)))) mark.push(r);
+      if (keys.some((k) => hit(k, r))) mark.push(r);
     }
+    // (s19-clean-a3, the a2 review's finding 8: nothing matched: the keys made that no row asked for, for the host to draw as the card's
+    // own crossed rows (maani's kind nobody ordered), never no pop-up at all)
+    // Only a key that shares a part with some row (a kind of a dish on the card: "ph-millet+cook-maani" beside "ph-wheat+cook-maani"),
+    // never a key that is no dish of the card at all (chaat's "bowl": its own recast puts the bowl right)
+    const rows = (people[0].rows || []).filter((r) => r && !r.head && Array.isArray(r.ids));
+    if (!mark.length) keys.forEach((k) => k.includes("+") && !rows.some((r) => hit(k, r)) && rows.some((r) => k.split("+").some((x) => r.ids.includes(x))) && extra.push(k));
   }
-  return { people, mark };
+  return { people, mark, extra };
 }
 
 export const NjgWrongOrder = { play, pick, isOpen: () => open > 0, LOOK };

@@ -627,7 +627,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return { from: page(v.from), to: page(v.to) };
       },
       // (the round-two review's finding 6: a first-time tap's finger waits for its light, the kit's layer up, never on an undimmed screen first)
-      Object.assign({ ready: o.gesture === "tap" ? () => !!(Onboard.lightsShown && Onboard.lightsShown() > 0) : undefined }, o, { carry: typeof o.carry === "function" ? (dx, dy, t, p) => o.carry(dx / k(), dy / k(), t, p) : null })
+      // (the a2 review's finding 9: where no first-time script is up to light anything, maani's flip, the finger waits a beat only,
+      // never the kit's whole 3.5 s cap)
+      Object.assign({ ready: o.gesture === "tap" ? ((t0) => () => !!(Onboard.lightsShown && Onboard.lightsShown() > 0) || (!(Onboard.active && Onboard.active()) && Date.now() - t0 > 600))(Date.now()) : undefined }, o, { carry: typeof o.carry === "function" ? (dx, dy, t, p) => o.carry(dx / k(), dy / k(), t, p) : null })
     );
     demos.add(g);
     const stop = g.stop;

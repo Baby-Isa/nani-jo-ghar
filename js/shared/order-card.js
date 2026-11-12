@@ -337,7 +337,15 @@
       }
     }, { passive: true });
     // (the Fable review's finding 5: a child's touch, drag or wheel on the row is theirs, even while the row's own glide is on)
-    if (opts.fold) ["pointerdown", "touchstart", "wheel"].forEach((ev) => list.addEventListener(ev, () => (opts.fold.kid14 = Date.now()), { passive: true }));
+    // (the a2 review's finding 9: a drag, not a touch: a tap on a speaker is no scroll, and never holds the row still)
+    if (opts.fold) {
+      let down = null;
+      const kid = () => (opts.fold.kid14 = Date.now());
+      list.addEventListener("pointerdown", (e) => (down = { x: e.clientX, y: e.clientY }), { passive: true });
+      list.addEventListener("pointermove", (e) => down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 8 && (kid(), (down = null)), { passive: true });
+      ["pointerup", "pointercancel"].forEach((ev) => list.addEventListener(ev, (e) => (ev === "pointercancel" && down && kid(), (down = null)), { passive: true })); // (a cancel: the browser took the touch to scroll)
+      list.addEventListener("wheel", kid, { passive: true });
+    }
     if (root.requestAnimationFrame) root.requestAnimationFrame(atEnd);
     // (a block's own count and dish over its row, it.title14: samosa's second kind, "ba samosa"; the host's words, written as given)
     if (it.title14) {
@@ -568,7 +576,8 @@
     // SH-241, SAM-31 (Zafar, 8 Nov: "no relic of the old order card"): a game's item rows are 6 Nov item cards (items14), its
     // ordered steps and its kinds of several too; the little skewer strip, the group box and the count box are gone. An item of
     // steps (the clinic's doctor's steps) keeps its plain rows in their order
-    if (opts.s14 && !opts.big && !it.row && it.parts.length && it.parts.every((p) => p.word) && root.WordCard && root.WordCard.item14) return items14(it, opts);
+    // (s19-clean-d's line, contract-100: the wrong-order pop-up's open card, opts.wo, is a big card drawn with the same 6 Nov item cards)
+    if (opts.s14 && (!opts.big || opts.wo) && !it.row && it.parts.length && it.parts.every((p) => p.word) && root.WordCard && root.WordCard.item14) return items14(it, opts);
     const box = el("div", ["oc-item", it.row ? "" : "oc-direct", it.done ? "done" : "", it.folded ? "folded" : ""].filter(Boolean).join(" "));
     if (it.row) box.appendChild(rowEl(it, "oc-irow", opts));
     if (it.parts.length) {

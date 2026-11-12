@@ -357,7 +357,7 @@ export function check94(tl, add) {
   for (const e of ev(tl, "wmcard")) {
     for (const c of e.list || []) {
       // (s19-clean-a2, b2's item 4: a Kutchi still to record is its English in grey italic, decision 84, so it is set as English is: the
-      // kit's placeholder look in the sans face; Lora is for Kutchi only)
+      // kit's placeholder look in the sans face; Lora is for Kutchi only. c.ph: the whole slot a placeholder, never one word in it: s19-clean-a3)
       if (e.lora && ((c.ph ? !/nunito/i.test(c.kf || "") : !/lora/i.test(c.kf || "")) || !/nunito sans/i.test(c.ef || ""))) { add("contract-94", e.t, `the word moment's card "${c.word}" is set in ${c.kf} / ${c.ef}: Lora for the Kutchi, Nunito Sans for the English`); return; }
       if (c.gap != null && c.gap < 2) { add("contract-94", e.t, `the word moment's card "${c.word}": its speaker sits ${c.gap} px from its English (at least 2 px clear)`); return; }
     }
