@@ -1296,7 +1296,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return key;
   };
   SK.rack = function (S, z, { x, y, slots, s, bamboo, wide = 0, deep = null }) {
-    if (deep && Cook.GrillKit && S.textures.exists(Cook.GrillKit.ART.tray.key)) return SK.rackDeep(S, z, Object.assign({ x, y, bamboo }, deep));
+    if (deep && Cook.GrillKit) return SK.rackDeep(S, z, Object.assign({ x, y, bamboo }, deep));
+    // (finding 8: the old tray pictures are no longer loaded: with the v4 stick alone, the deep tray's shape, SK.rackDeep's own fallback)
+    if (SK.v3(S) && !S.textures.exists("sk3-rack-0")) return SK.rackDeep(S, z, Object.assign({ x, y }, SK.deepBox(bamboo || V3.BAMBOO)));
     if (SK.v3(S)) return SK.rack3(S, z, { x, y, bamboo, wide });
     const w = (slots * RK.pitch + 2 * RK.end) * s;
     const cy = y + ((RK.top + RK.bot) / 2) * s;
@@ -1371,9 +1373,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * your hands. (x, y): the tray's centre; w, h: its size (design px); bamboo: a skewer's tip to handle (the rims' middles are that far
    * apart). Four places across its well. The same API as rack3 (painted: false: every skewer shows its own stick).
    */
+  /** A deep tray's box for a skewer this long (design px): four upright side by side, its rims a skewer's length apart. */
+  SK.deepBox = (bamboo) => {
+    const rim = (Cook.GrillKit ? Cook.GrillKit.TRAY_RIM : 13 / 1000) * 1.1 * bamboo;
+    return { bamboo, w: 1.1 * bamboo, h: bamboo + 2 * rim };
+  };
   SK.rackDeep = function (S, z, { x, y, bamboo, w, h }) {
     const GK = Cook.GrillKit;
-    const key = GK.trayTex(S, w / h);
+    // (finding 8: the kit's steel tray did not load (the loader's 15 s cap): the walnut board the skewers were threaded on, a v4 piece
+    // already loaded, holds them; with neither, the drawn tray. Never the retired rack, which is no longer loaded)
+    const key = (GK && GK.trayTex(S, w / h)) || (S.textures.exists("sk4-board") ? "sk4-board" : SK.tex(S, `rack:${Math.round(w)}x${Math.round(h)}x4`));
     const cx = z.X(x);
     const cy = z.Y(y);
     const img = S.track(S.add.image(cx, cy, key).setDepth(D.item - 2));
@@ -1444,7 +1453,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * (design px). The same API as SK.plate3 ({img, d, line(j, n), rank, set(n)}), so the grill plates onto it unchanged.
    */
   SK.cooked3 = function (S, z, { x, y, bamboo, wide = 0, deep = null }) {
-    const r = deep ? SK.rackDeep(S, z, Object.assign({ x, y, bamboo }, deep)) : SK.rack3(S, z, { x, y, bamboo, wide });
+    const r = deep ? SK.rackDeep(S, z, Object.assign({ x, y, bamboo }, deep)) : S.textures.exists("sk3-rack-0") ? SK.rack3(S, z, { x, y, bamboo, wide }) : SK.rackDeep(S, z, Object.assign({ x, y }, SK.deepBox(bamboo || V3.BAMBOO)));
     return { img: r.img, d: r.img.displayHeight, line: (j, n) => r.line(j, Math.max(n, j + 1)), rank: (j) => j, set: r.set, painted: r.painted, rack: true };
   };
   /** For each plate picture n: which of its drawn skewers is the j-th plated (the same place as in picture n-1). */
@@ -1667,7 +1676,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const v3 = SK.v3(S);
       // (SEK-26: the grill v2 and the deep trays, layout4; layout3 stays for a page whose kit art did not load)
       const GKA = Cook.GrillKit && Cook.GrillKit.ART;
-      const deep = v3 && !!GKA && S.textures.exists(GKA.grill.key) && S.textures.exists(GKA.tray.key);
+      // (finding 8: the grill alone decides it; a tray that did not load is SK.rackDeep's fallback, never the retired rack)
+      const deep = v3 && !!GKA && S.textures.exists(GKA.grill.key);
       const LAY = deep ? layout4(z, S) : v3 ? layout3(z, false) : LAYOUT2;
       if (v3) LIFT = 0;
       const { RACK, GRILL, PLATE, RING } = LAY;
@@ -1885,7 +1895,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           onComplete: () => {
             g.busy = false;
             S.burst(spotX(i), Y(GRILL.skewerY - 60), [0xffb347, 0xffffff], 8, L(60));
-            const hit = hitFor(g.sk, L(Math.min(LAY.tray ? LAY.bamboo * 0.32 : 130, bedW / k.spots)), L(LAY.tray ? LAY.bamboo * 1.15 : 420), g.phase >= k.turns ? "lift" : "turn");
+            // (s19-clean-d, finding 1: at 740x320 with four places, 0.32 of a skewer was 35 px across with 13 px of dead coal between
+            // two; its whole place on the coal bed is 48 px there: a child's finger. Never into the next place)
+            const hit = hitFor(g.sk, L(Math.max(Math.min(LAY.tray ? LAY.bamboo * 0.32 : 130, bedW / k.spots), (bedW / k.spots) * 0.96)), L(LAY.tray ? LAY.bamboo * 1.15 : 420), g.phase >= k.turns ? "lift" : "turn");
             hit.setPosition(spotX(i), Y(GRILL.skewerY - 20));
             S.tappable(hit, () => tapGrill(g));
           },
@@ -2083,7 +2095,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const fstep = Cook.Stations.steps(ctx);
       const stop = z.tick(() => {
         const now = performance.now();
-        const dt = Math.min(0.1, (now - last) / 1000) * Cook.speed;
+        // s19-clean-d (the round-two review's finding 1, measured at 740x320): a frame never moves the rings more than a 30th of a
+        // second. At 0.1 a slow frame (15 fps on a busy phone) stepped a ring 0.07 of its way at once: from "nearly green" to charred in
+        // 7 frames at L3-L4, so the green came and went between two looks and every skewer went back to the tray. At 30 fps or more
+        // nothing changes; below it the grill slows with the screen, never skipping the green
+        const dt = Math.min(1 / 30, (now - last) / 1000) * Cook.speed;
         last = now;
         ringG.clear();
         grilling.slice().forEach((g) => {
@@ -2129,7 +2145,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // guided: the next rack skewer to grill glows, inside the kit's light only (contract-102: no game's own glow with no light up;
         // the kit's first-time light, grill-place, is the help that shows it)
         const next = pickRack();
-        const placeLit = !!(lights["grill-place"] && lights["grill-place"].h);
+        // (finding 7: only while that light is up: its handle stays after the light closed by itself, or never showed)
+        const ph = lights["grill-place"] && lights["grill-place"].h;
+        const placeLit = !!(ph && !ph.over && ph.lit && ph.lit());
         rack.forEach((r) => {
           const on = !!(r && r.settled && z.guided && placeLit && r === next && spots.includes(null));
           if (r && on !== !!r.glowing) {
