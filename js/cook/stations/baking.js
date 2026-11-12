@@ -10,10 +10,11 @@
  * containers standing in a row in front, each with its word chip; from L3 the measuring jug beside the bowl, its lines at a quarter,
  * half, full, one and a half and two and a half (no numbers).
  *   - Nani gives ONE instruction at a time; its row appears on the card as she says it (UI.mission.reveal).
- *   - Tap what she names: it lifts over the bowl (or the jug). Each tap tips it a bit more and some goes in:
- *       "a little": one tap, it stops, "that's good";   "a lot": tap until it's a lot, "enough"; more taps don't land;
- *       "a little more": "a little", tap, "still a little more", tap, "enough";
- *       the jug: tap until the jug reaches the amount (a quarter cup a tap), "enough"; then it tips into the bowl.
+ *   - Tap what she names: it lifts over the jug. Each tap tips it a bit more and a quarter cup goes in, until the jug reaches
+ *     her amount, "enough" (more taps don't land); then the jug tips into the bowl. CK-72 (Zafar, 11 Nov evening: "just remove a
+ *     little and a lot - those non specific measurements ... go with fixed measurements (quarter, half, 3/4, full, 1 1/2 and 2 and
+ *     2 1/2)"): every amount is the jug's, at every level (a cup and a half at L1, up to two and a half at L4; the plans in
+ *     data/stations/baking.json); "a little", "a lot" and "a little more" left baking for another game.
  *     The row ticks the moment the amount is there (Zafar, 1 Nov: counts and amounts tick at the number).
  *   - Tap the bowl: the dough. Then the oven: tap it, it opens; tap the naan, in it goes and the door shuts; its ring fills; when
  *     Nani says it's ready, tap the oven: out it comes with steam, and Nana's happy face.
@@ -54,6 +55,22 @@ import { setTimeout } from "../life.js";
     },
   });
 
+  /** The step's amounts in English for a sentence still to record (the jug's units: quarter cups; the settings' amountEn). */
+  const amountEn = (u) => (SET().amountEn || {})[String(u)] || null;
+  /**
+   * CK-72: Nani's instruction for step s, "put in <amount> <thing>", from the engine (DoIt v.put-in over the step's parts: Lang.itemOf);
+   * where the engine can't say it whole (an amount still to record), the whole sentence's English as the grey to-record line.
+   */
+  function amountLine(s) {
+    const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(s.parts && s.parts.length ? s.parts : [s.id]) });
+    if (doIt.ok !== false) return doIt;
+    const amt = amountEn(s.units) || `${s.units / 4}`;
+    const frame = SET().amountFrame || "{amount} {thing}";
+    return Lang.toRecord(frame.replace("{amount}", amt).replace("{thing}", Cook.english(s.id)), `baking: ${frame.replace("{amount}", amt)}`);
+  }
+  /** Every word id a step names is the engine's (a new amount waits for its lexicon entry: its plans are skipped till then). */
+  const sayable = (plan) => plan.every((s) => (s.parts || []).every((x) => typeof x !== "string" || Lang.known(x)));
+
   /** The pictures this round draws, from the settings' items (decision 68: only these, and only what this round shows). */
   function artFor(onShelf, plan, jug, who) {
     const I = ITEMS();
@@ -91,7 +108,8 @@ import { setTimeout } from "../life.js";
     // the decoys by the central rules (1-4 by level, one a lookalike at L4: STD-C2-03), noted for contract-37
     const decoys = St.tableDecoys(Object.keys(CT.files || {}), ids, level, { what: KEY });
     const onShelf = Cook.shuffle(ids.concat(decoys));
-    const hasJug = !!K.jug;
+    // (CK-72: every amount is measured in the jug, at every level)
+    const hasJug = K.jug !== false;
     await St.loadArt(S, artFor(onShelf, plan, hasJug, who)).catch(() => {});
     const has = (k) => S.textures.exists(k);
     const objs = [];
@@ -302,16 +320,36 @@ import { setTimeout } from "../life.js";
      */
     const SH = global.Shelf;
     const tall = (CT.drawn || {}).h || 150;
+    const FLOUR_ID = (I.mixBowl || {}).flour || "cook-atto";
     const shelf = {};
     const n = onShelf.length;
     const PILL_SLOT = 200;
-    const pitch = Math.min(CT.pitch || 300, 1100 / Math.max(1, n));
+    // (the row across the narrowest play area, x 150-1450: eight things at L4 each keep a slot their picture and pill fit in, contract-111)
+    const pitch = Math.min(CT.pitch || 300, 1300 / Math.max(1, n));
     const pills = [];
+    // CK-84, ART-52 (Zafar, 6 Nov: size classes for every item): each thing by its size class, as chai's jars (St.classFit: the band's
+    // room with the hop kept, the class's share, the floor on screen; never wider than its slot), its picture's clear foot on the shelf's
+    // line (the opaque bottom, St.opaqueSpan, as chai's); its tap area reaches down its slot to its pill (S.tappable, Shelf.P.reach)
+    let ppwShelf = 1;
+    try {
+      ppwShelf = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+    } catch (e) {
+      ppwShelf = 1;
+    }
     onShelf.forEach((id, i) => {
       const x = bowlX + (i - (n - 1) / 2) * pitch;
-      const img = T(S.add.image(x, band.base, `bk-${id}`).setOrigin(0.5, 1).setDepth(D.item + 1));
-      // (s19-games-2: by size class (St.classFit, contract-115) their tap reach to the pill failed (contract-111): the old size, next round)
-      img.setScale(Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      const key = `bk-${id}`;
+      const foot = St.opaqueSpan && has(key) ? St.opaqueSpan(S, key)[1] : 1;
+      const img = T(S.add.image(x, band.base, key).setOrigin(0.5, foot).setDepth(D.item + 1));
+      // (s19-k3, CK-84: the three walnut-lid jars, flour, sugar and salt, told apart by their height as well as their pills: each at the
+      // flour jar's class height times its share as cut, CT.heights: 1, 0.825, 0.664; a thing with no share by its own class)
+      const share = (CT.heights || {})[id];
+      const f = St.classFit && has(key) ? St.classFit(S, key, share != null ? FLOUR_ID : id, { base: band.base, ppw: ppwShelf, slotW: (pitch - 12) / Math.max(0.1, share || 1) }) : null;
+      // (never under its own class's height: one height per size class, contract-115; flour, sugar and salt still stand at three
+      // heights, L, M and S)
+      const own = share != null && St.classFit && has(key) ? St.classFit(S, key, id, { base: band.base, ppw: ppwShelf, slotW: pitch - 12 }) : null;
+      const sc = f && f.scale ? Math.max(f.scale * (share != null ? share : 1), own && own.scale ? own.scale : 0) : 0;
+      img.setScale(sc || Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
       img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;
@@ -331,7 +369,7 @@ import { setTimeout } from "../life.js";
       row.forEach((c) => {
         if (c.capW !== cap && c.face) c.face(c.showsWord, cap);
         c.k = k;
-        if (c.hit) c.hit(PILL_SLOT);
+        if (c.hit) c.hit(Math.min(PILL_SLOT, pitch - 4)); // (a pill's tap area never reaches past its own slot into the next thing's)
         c.setScale(k).setY(y);
       });
     };
@@ -366,14 +404,13 @@ import { setTimeout } from "../life.js";
       if (UI.mission.reveal) UI.mission.reveal(`bake-${i + 1}`);
       // the reveal lessons (the dotted word, then the blurred picture) as the first row that shows one appears (contract-98)
       await Cook.Coach.lessons({ gate, ctx, busy: () => busy });
-      const jugStep = s.amt === "jug" && jug;
-      const amtLine = s.amt === "lot" ? Lang.line("alot") : s.amt === "jug" ? null : Lang.line("little");
-      const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(jugStep ? s.parts : [s.id]) });
-      // (her turn is the order, said row by row: its row appears as she says it, as a person's order does; the engine has no
-      // "a little / a lot of X" frame, R6-136, so two engine lines side by side. s19-games-2: kept the order's role, not a call: an
-      // item said as a call while her helper card is closed breaks SH-172, contract-89; contract-36 wants it called: the checks' conflict
-      // is in the report)
-      const call = Lang.role(amtLine ? Lang.join([doIt, amtLine]) : doIt, "order");
+      const jugStep = !!jug;
+      // (her turn is the order, said row by row: its row appears as she says it, as a person's order does. s19-games-2: kept the
+      // order's role, not a call: an item said as a call while her helper card is closed breaks SH-172, contract-89)
+      // CK-72: the amount and the thing in one sentence from the engine ("Hakro cup atto wiji chad!", "Ba cup atto wiji chad!", "Adh
+      // paani wiji chad!"); an amount still to record (a quarter, three quarters, one and a half, two and a half) makes a sentence the
+      // engine can't say whole: its English in grey, never stitched from fragments (non-negotiable 2), a line for the recording sheet
+      const call = Lang.role(amountLine(s), "order");
       say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
@@ -389,19 +426,31 @@ import { setTimeout } from "../life.js";
       if (!ctx.guided && Lang.known(s.id)) Cook.markRight(s.id);
       const img = shelf[r.key];
       const into = jugStep ? jug.mouth() : { x: bowlX, y: bowlY - 60 };
-      // lift it over the target
+      // lift it over the target (its pill stays on the shelf: while it is up, the thing's light is the thing alone, contract-105)
+      // (and the pill itself fades while its thing is up, as chop's band does, SH-255: the word stays with the thing at rest in its slot;
+      // contract-111 read a lifted jar's slot as a shelf item that took no tap)
+      const pill = img.chip;
+      img.chip = null;
+      const pillShow = (on) => {
+        if (!pill || !pill.active) return;
+        S.tweens.add({ targets: pill, alpha: on ? 1 : 0, duration: 160 });
+        if (pill.input) pill.input.enabled = on;
+      };
+      pillShow(false);
       busy = true;
       await Cook.tween(S, { targets: img, x: into.x - 150, y: into.y - 60, duration: 360, ease: "Cubic.easeOut" });
       busy = false;
       const liquid = LIQUID.has(s.id);
-      // how many taps, and Nani's turns
-      const need = s.amt === "little" ? 1 : s.amt === "more" ? 2 : s.amt === "lot" ? K.lotTaps || 4 : s.units || 4;
+      // how many taps: a quarter cup a tap, to her amount (CK-72)
+      const need = Math.max(1, s.units || 4);
       let taps = 0;
       let open = true;
       const tipOf = (t) => Math.min(115, 30 + t * (85 / Math.max(1, need)));
       await new Promise((resolve) => {
         const tap = async () => {
           if (busy || taps >= need) return; // more taps don't land
+          // (SH-236, contract-102: the light goes as the child starts the move, and the thing's glow with it)
+          if (ctlObj === img) S.glow(img, false);
           busy = true;
           taps++;
           // each tap tips it a bit more (to 115 degrees), and some goes in
@@ -412,7 +461,6 @@ import { setTimeout } from "../life.js";
             jug.units = taps;
             jug.show(s.id);
           } else bowlTo(s, taps / need);
-          if (s.amt === "more" && taps === 1) speak(line("stillmore", "react"));
           busy = false;
           if (taps >= need) return resolve();
           expectTap(img, s.id);
@@ -428,18 +476,21 @@ import { setTimeout } from "../life.js";
       // the amount is there: the row ticks at once (Zafar, 1 Nov), then her word
       UI.mission.tickItem(s.id, 0, { close: true });
       Cook.sfx.right();
-      speak(line(s.amt === "little" ? "good" : "enough", "react"));
+      speak(line("enough", "react"));
       busy = true;
       // (it rests tipped a moment, its pour done, while the light that followed it fades: Onboard.light's 300 ms, real time)
       await new Promise((r) => setTimeout(r, FADE_MS));
       await Cook.tween(S, { targets: img, angle: 0, x: img.home.x, y: img.home.y, duration: 380, ease: "Cubic.easeInOut" });
+      img.chip = pill;
+      pillShow(true);
       if (jugStep) {
         // the jug tips into the bowl by itself
         await Cook.tween(S, { targets: jug.c, x: bowlX - 170, y: bowlY - 60, angle: 70, duration: 420 });
         await pourOnce({ x: jug.c.x, y: jug.c.y, angle: 70, displayHeight: jug.h }, { x: bowlX, y: bowlY - 40 }, s.id, true);
         jug.units = 0;
         jug.show(null);
-        bowlTo(s, 1);
+        // (the flour in the bowl by how much went in: two cups and more fill it to three quarters)
+        bowlTo(s, Math.min(1, need / 8));
         await Cook.tween(S, { targets: jug.c, x: jug.x, y: jug.y, angle: 0, duration: 380 });
       }
       busy = false;
@@ -448,8 +499,7 @@ import { setTimeout } from "../life.js";
 
     for (let i = 0; i < plan.length; i++) await step(plan[i], i);
 
-    // the dough: tap the bowl
-    say(line("now", "call", Lang.phrase(["ph-naan"])));
+    // the dough: tap the bowl (its call comes with its light the first time, contract-36 and -78; at once after that)
     let bowlOpen = true;
     await new Promise((resolve) => {
       S.tappable(bowl, () => {
@@ -459,7 +509,7 @@ import { setTimeout } from "../life.js";
       // CK-84 (the eye judge, 10 Nov: the order's headline lit gold with the bowl): the bowl's tap names no word (the naan's word lit
       // the card's headline as a second gold thing); its light is the bowl's alone
       expectTap(bowl, null);
-      control(bowl, "bowl", () => bowlOpen);
+      control(bowl, "bowl", () => bowlOpen, () => say(line("now", "call", Lang.phrase(["ph-naan"]))));
     });
     bowlOpen = false;
     unlight();
@@ -563,13 +613,17 @@ import { setTimeout } from "../life.js";
     // (contract-36: each step's call as it opens, from the engine only, R2: "open" said as a command; the naan "put in", as the
     // shelf's things are; where a word has no recording yet the engine shows its English in grey, a gap on the recording sheet)
     const call = (l, step) => {
-      if (l && l.ok !== false && (!Lang.hasVoice || Lang.hasVoice(l))) return say(Lang.role(l, "call"));
-      // (the engine cannot say it yet, a recording to make: logged as the kit's step call logs a line with no voice, skip-novoice)
-      try {
-        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${step}`, by: "skip-novoice" });
-      } catch (e) {
-        /* only a log */
+      // (a line the engine says with no family clip yet, "Tayar ai.": shown and said as the test build says it, and logged as the kit's
+      // step call logs a line with no voice, skip-novoice: a recording to make)
+      const clip = !!(l && l.ok !== false && (!Lang.planOf || Lang.planOf(l).some((c) => c.file)));
+      if (!clip) {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${step}`, by: "skip-novoice" });
+        } catch (e) {
+          /* only a log */
+        }
       }
+      if (l && l.ok !== false && (!Lang.hasVoice || Lang.hasVoice(l))) say(Lang.role(l, "call"));
     };
     // 1. open the oven
     expectTap(ov, null);
@@ -626,7 +680,8 @@ import { setTimeout } from "../life.js";
       toLook("over");
     });
     expectTap(ov, "ph-naan");
-    await tapOn(ov, "oven-out", () => say(line("ready", "call")));
+    // (contract-36: said through the step's call, so a line still to record logs its skip, as the oven's open does)
+    await tapOn(ov, "oven-out", () => call(Lang.line("ready"), "oven-out"));
     offOver();
     z.expect({ kind: "wait" });
     ring.clear();
@@ -654,12 +709,14 @@ import { setTimeout } from "../life.js";
 
   Mech.lab(KEY, {
     name: "Baking (prototype)",
-    verb: "Nani's turns: a little, a lot; then the oven",
+    verb: "Nani's amounts by the jug; then the oven",
     async run(L) {
       const R = Cook.Recipes;
       const d = R.baking.make("nana", { level: L.level });
       const K = Mech.knobs(KEY, { level: L.level });
-      d.plan = Cook.pick(K.plans || [[]]);
+      // (CK-72: a plan naming an amount the engine doesn't know yet, three quarters, waits for its lexicon entry)
+      const plans = (K.plans || [[]]).filter(sayable);
+      d.plan = Cook.pick(plans.length ? plans : K.plans || [[]]);
       // the jug's amounts are a word moment (CHAI-67's system) before the order that first asks them: the kit's call with the game's
       // settings (wordMoment: its pair, its jug pictures; ART-38's art to come)
       if (UI.wordMoment && SET().wordMoment) await UI.wordMoment(askedIds(d.plan), SET().wordMoment);

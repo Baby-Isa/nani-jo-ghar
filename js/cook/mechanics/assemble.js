@@ -6,7 +6,8 @@
  * design: docs/game-design/modes/cook-bottom-row.md, chaat "tray"; the layering: build/reports/s19-fable-mock-answers.md §4):
  *  - THE BOWL (in the scene above the tray): the opaque cream serving bowl seen straight down (the settings' bowl.file). Each topping
  *    is one transparent picture on the bowl's one canvas, drawn in the order added (the settings' layers: the C5-C11 tops, the
- *    chutneys as their drizzles); the base (potato, chickpeas) and sev are their F3 bowl's food, stamped: the first thing in the bowl
+ *    chutneys as their drizzles; s19-k3: potato, chickpeas and sev their own scatters, CK-85); a topping with no layer picture is its F3
+ *    bowl's food, stamped: the first thing in the bowl
  *    covers its floor, anything after it lies in loose heaps, so what is beneath shows at the edges. Each new layer grows in from
  *    where its spoonful landed over the settings' fillMs (about 0.9 s), never a snap; its word pops beside the bowl with the family
  *    clip (§4: learning happens during the action).
