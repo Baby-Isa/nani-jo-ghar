@@ -684,6 +684,7 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo-line { padding: var(--njg-s3) var(--njg-s5); }
 .njg-wo-row { display: flex; align-items: center; gap: var(--njg-s3); }
 .njg-wo-head { font-family: var(--njg-font-word); font-weight: 700; font-size: var(--njg-big-h); line-height: 1.25; color: var(--njg-ink-kutchi); white-space: nowrap; }
+.njg-wo-wrap .njg-wo-head { white-space: normal; } /* (a long headline at a small size: wraps, then shrinks; never cut) */
 .njg-wo-mark { display: inline-block; flex: none; width: calc(var(--njg-face) * 0.62); height: calc(var(--njg-face) * 0.62); line-height: 0; }
 .njg-wo-mark svg { width: 100%; height: 100%; display: block; }
 .njg-wo-mark.ok .njg-wo-disc { fill: var(--njg-gold); }

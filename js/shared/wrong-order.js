@@ -42,7 +42,8 @@ const LOOK = Object.freeze({
   glow: 620, // a right line glows gold in the middle
   float: 520, // a right line fades up off the screen
   open: 260, // a wrong line opens to all its items
-  sayCap: 1600, // the most one line holds the next (a voice that never starts does not stall it)
+  sayCap: 2400, // the most one line holds the next (a voice that never starts does not stall it; the Fable review, 11: at 1.6 s a
+  // longer line was overtaken by the next row's; a tap hurries the rest)
   rowGap: 100, // one row to the next, quickly
   hold: 620, // the wrong card, all marked, before it shrinks back
   gap: 140, // one card to the next
@@ -107,7 +108,14 @@ async function play(o = {}) {
   let cut = false;
   const T = (ms) => Math.round(ms / speed / hurry);
   const wait0 = o.wait || ((ms) => new Promise((r) => setTimeout(r, ms)));
-  const wait = (ms) => (cut ? Promise.resolve() : wait0(ms));
+  const pend = new Set(); // (the waits running: the stage's end lets them all go at once)
+  const wait = (ms) =>
+    cut
+      ? Promise.resolve()
+      : new Promise((r) => {
+          pend.add(r);
+          wait0(ms).then(() => (pend.delete(r), r()));
+        });
   const sound = o.sound || (() => {});
   const note = o.note || (() => {});
   const faceHtml = o.faceHtml || ((who, src, size) => `<span class="njg-face njg-face-${size === "big" ? "big" : "row"}" data-who="${esc(who)}"><img class="njg-face-img" src="${esc(src)}" alt=""></span>`);
@@ -133,7 +141,7 @@ async function play(o = {}) {
     note("wo-hurry", {});
   });
   const LC = typeof globalThis !== "undefined" ? globalThis.Lifecycle : null;
-  const offEnd = LC && LC.onStageEnd ? LC.onStageEnd(() => ((cut = true), veil.remove())) : null;
+  const offEnd = LC && LC.onStageEnd ? LC.onStageEnd(() => ((cut = true), veil.remove(), pend.forEach((r) => r()), pend.clear())) : null;
   note("wo-open", { n: cards.length, wrong: cards.filter((c) => !c.ok).map((c) => c.who) });
   await move(veil, { opacity: 0 }, { opacity: 1 }, T(LOOK.veilIn));
   const wrong = [];
@@ -148,6 +156,12 @@ async function play(o = {}) {
     const k = big
       ? Math.min(LOOK.bigK, (room.width * LOOK.bigW) / w, (room.height * LOOK.bigH) / h)
       : Math.min(LOOK.lineK, (room.width * LOOK.lineW) / w, (room.height * LOOK.lineH) / h, room.width / w, room.height / h);
+    // (the Fable review, 11: a line that would shrink under 0.6 wraps its headline instead, at the room's width, never cut)
+    if (!big && k < 0.6 && !el.classList.contains("njg-wo-wrap")) {
+      el.classList.add("njg-wo-wrap");
+      el.style.maxWidth = `${Math.round(room.width / 0.6)}px`;
+      return fit(el, big);
+    }
     el._woK = Math.max(0.3, k);
     el.style.setProperty("--wo-k", String(el._woK));
     return k;

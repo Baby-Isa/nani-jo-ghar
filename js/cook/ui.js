@@ -3694,8 +3694,18 @@
     // took the card with them within 100-200 ms, contract-119)
     const stage = $("#stage");
     const host = document.body;
-    const w = UI.wordOf(head, { size: 240, written: true, head: true });
+    // (the Fable review's finding 10, Zafar 12 Nov: "1 cup of tea, 2 samosas": the dish with its count, the engine's phrase from the
+    // head row's own parts, never the whole sentence the person says; one when the order names no count. A headline with no dish of
+    // its own (the pantry's "bring me these", English still to record) flashes nothing. No written English on it: it is not the
+    // order card, non-negotiable 3)
+    const dish = (head.ids || [])[0];
+    if (!dish || (head.rec && !(head.parts || []).length)) return null;
+    const counted = (head.parts || []).some((p) => typeof p === "number");
+    const line = counted && head.phrase ? head.phrase : Lang.phrase(Lang.countParts(1, dish));
+    const w = UI.wordOf(Object.assign({}, head, { line, phrase: line, head: true }), { size: 240, written: true, head: true });
     if (!stage || !w) return null;
+    if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
+    if (w.wordOpts) w.wordOpts.enShown = false;
     // the card a little off to the side of the speaker's bubble (it waits a beat for the bubble to be drawn); the play area's middle
     // when there is none
     const hb = stage.getBoundingClientRect();
@@ -3712,7 +3722,11 @@
     x = Math.max(room, Math.min(hb.width - room, x));
     y = Math.max(room, Math.min(hb.height - room, y));
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String((head.ids || [])[0] || "") });
-    return global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
+    const f = global.WordCard.flash(host, w.word, { x: hb.left + x, y: hb.top + y, ms: 1500 / (Cook.speed || 1), opts: w.wordOpts, cls: "wc14-flash-fixed" });
+    // (on the page's layer: the stage's end takes it away at once, never over whatever comes next)
+    const off = f && global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => f.close()) : null;
+    if (off && f.el) setTimeout(() => off(), 2000 / (Cook.speed || 1));
+    return f;
   };
   UI.personSpeaking = () => personTalks > 0;
   UI.hearPerson = async function (who, o = {}) {
