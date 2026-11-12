@@ -1,0 +1,483 @@
+{
+ "generated": "2026-11-12",
+ "source": "each lab page and root page opened at 1280x665 and left 2.5 s (no play)",
+ "pages": {
+  "page:clinic.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/clinic/closeups/child/knee-bump.webp",
+    "assets/clinic/closeups/child/knee-kick.webp",
+    "assets/clinic/closeups/child/knee.webp",
+    "assets/clinic/items-v2/bandage-roll.webp",
+    "assets/clinic/items-v2/reflex-hammer.webp",
+    "assets/clinic/patients/boy/boy-front.webp",
+    "assets/clinic/patients/doctor/v2/doctor-wave-front-face-closed.webp",
+    "assets/clinic/patients/doctor/v2/doctor-wave-front-front.webp",
+    "assets/clinic/patients/girl/girl-front.webp",
+    "assets/clinic/rooms/bg-clinic-waiting-cb1b-v1.webp",
+    "assets/clinic/tiles-s08b/bandage-band-s08b-tile.webp",
+    "assets/shared/faces/doctor.webp"
+   ]
+  },
+  "page:cook.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/characters/ali/cousin-blink.webp",
+    "assets/characters/ali/cousin-impatient.webp",
+    "assets/characters/ali/cousin-talk.webp",
+    "assets/characters/ma/ma-blink.webp",
+    "assets/characters/ma/ma-talk.webp",
+    "assets/characters/nana/nana-blink.webp",
+    "assets/characters/nana/nana-talk.webp",
+    "assets/cook/characters/cousin-face.webp",
+    "assets/cook/characters/cousin-happy.webp",
+    "assets/cook/characters/cousin-neutral.webp",
+    "assets/cook/characters/ma-happy.webp",
+    "assets/cook/characters/ma-impatient.webp",
+    "assets/cook/characters/ma-neutral.webp",
+    "assets/cook/characters/nana-happy.webp",
+    "assets/cook/characters/nana-impatient.webp",
+    "assets/cook/characters/nana-neutral.webp",
+    "assets/cook/characters/nani-blink-v3.webp",
+    "assets/cook/characters/nani-happy-v3.webp",
+    "assets/cook/characters/nani-neutral-v3.webp",
+    "assets/cook/characters/nani-point-front-v3.webp",
+    "assets/cook/characters/nani-point-v3.webp",
+    "assets/cook/characters/nani-talk-v3.webp",
+    "assets/cook/serve/kitchen-tall.webp",
+    "assets/shared/faces/nani.webp",
+    "assets/shared/panel/stone-tile-s17@1x.webp"
+   ]
+  },
+  "page:day.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/backgrounds/bg-nani-kitchen-e-v1.webp",
+    "assets/cook/props/pot-daal.webp",
+    "assets/day/s09b/house-empty.webp",
+    "assets/day/s09b/nani-fan.webp",
+    "assets/day/s09b/nani-listen.webp",
+    "assets/day/s09b/nani-shade-eyes.webp",
+    "assets/day/s09b/nani-wave.webp",
+    "assets/day/s09b/nani-welcome.webp",
+    "assets/day/s09b/sky-sunny.webp",
+    "assets/day/s12/door-sun.webp",
+    "assets/day/s12/nani-come-beckon.webp",
+    "assets/day/s12/nani-come-open.webp"
+   ]
+  },
+  "page:dress.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/ma-happy.webp",
+    "assets/cook/serve/kitchen-tall.webp"
+   ]
+  },
+  "page:find.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/backgrounds/bg-bazaar-stall-v3.jpg",
+    "assets/characters/shopkeeper/shopkeeper-neutral.png",
+    "assets/cook/characters/nani-badge.webp",
+    "assets/cook/characters/nani-ledge-happy-v3.webp",
+    "assets/cook/serve/kitchen-tall.webp",
+    "assets/scene/basket-back.png",
+    "assets/scene/basket-front.png"
+   ]
+  },
+  "page:first.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/character/body.svg",
+    "assets/character/bottom-boy.svg",
+    "assets/character/bottom-girl.svg",
+    "assets/character/eyes.svg",
+    "assets/character/hair-back-boy.svg",
+    "assets/character/hair-back-girl.svg",
+    "assets/character/hair-boy.svg",
+    "assets/character/hair-girl.svg",
+    "assets/character/head.svg",
+    "assets/character/top-boy.svg",
+    "assets/character/top-girl.svg",
+    "assets/ui/results/tick-gold.webp"
+   ]
+  },
+  "page:index.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/character/body.svg",
+    "assets/character/bottom-boy.svg",
+    "assets/character/bottom-girl.svg",
+    "assets/character/eyes.svg",
+    "assets/character/hair-back-boy.svg",
+    "assets/character/hair-back-girl.svg",
+    "assets/character/hair-boy.svg",
+    "assets/character/hair-girl.svg",
+    "assets/character/head.svg",
+    "assets/character/top-boy.svg",
+    "assets/character/top-girl.svg",
+    "assets/cook/characters/nani-badge.webp",
+    "assets/ui/results/tick-gold.webp"
+   ]
+  },
+  "page:lab.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/basket-angle.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/items/fruit/fru-01.png",
+    "assets/items/fruit/fru-02.png",
+    "assets/items/fruit/fru-03.png",
+    "assets/items/fruit/fru-04.png",
+    "assets/items/fruit/fru-06.png",
+    "assets/items/fruit/fru-07.png",
+    "assets/items/fruit/fru-09.png",
+    "assets/items/fruit/fru-13.png",
+    "assets/items/fruit/fru-15.png",
+    "assets/items/fruit/fru-16.png",
+    "assets/scene/basket-back.png",
+    "assets/scene/basket-front.png"
+   ]
+  },
+  "page:lab/card-options.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/cousin-happy.webp",
+    "assets/cook/characters/nana-happy.webp",
+    "assets/cook/characters/nani-face-talk.webp",
+    "assets/cook/items/dry-chai-leaves-bowl-t.webp",
+    "assets/cook/items/dry-khun-bowl-t.webp",
+    "assets/cook/items/jug-dudh-f.png",
+    "assets/cook/items/mishkaki-dungri-raw-t.webp",
+    "assets/cook/items/mishkaki-meat-raw-t.webp",
+    "assets/cook/items/mishkaki-tameto-raw-t.webp",
+    "assets/ui/results/icon-bulb.webp",
+    "assets/ui/results/tick-gold.webp"
+   ]
+  },
+  "page:lab/cards.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/bg/service-master-v2.webp",
+    "assets/cook/characters/cousin-face.webp",
+    "assets/cook/characters/nana-neutral.webp",
+    "assets/cook/items-s08b/chai-pan/pan-top-empty-s08b.webp",
+    "assets/cook/items-s08b/chai-pan/pan-top-milk-s08b.webp",
+    "assets/cook/items-s12/glass/glass-empty-top-s12.webp",
+    "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+    "assets/cook/items/shelf-aadu-jar-v2-f.webp",
+    "assets/cook/items/shelf-cook-chai-bare-f.webp",
+    "assets/cook/items/shelf-cook-dudh-bare-f.webp",
+    "assets/cook/items/shelf-cook-khun-bare-f.webp",
+    "assets/cook/items/shelf-cook-paani-bare-f.webp",
+    "assets/cook/items/v3/hob/hob-1.webp",
+    "assets/cook/items/v3/hob/knob-off-v2.webp",
+    "assets/shared/faces/nana.webp",
+    "assets/shared/faces/nani.webp"
+   ]
+  },
+  "page:lab/chai-v2-mockup.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/bg/bg-cook-worktop-t-v1-1600.webp",
+    "assets/cook/characters/cousin-badge.webp",
+    "assets/cook/characters/nana-badge.webp",
+    "assets/cook/characters/nani-talk-v3.webp",
+    "assets/cook/items/chai-station/flame-high.webp",
+    "assets/cook/items/chai-station/knob-off.webp",
+    "assets/cook/items/chai-v2/hob-2-burner-t.webp",
+    "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+    "assets/cook/items/shelf-cook-chai-bare-f.webp",
+    "assets/cook/items/shelf-cook-dudh-bare-f.webp",
+    "assets/cook/items/shelf-cook-khun-bare-f.webp",
+    "assets/cook/items/shelf-cook-paani-bare-f.webp",
+    "assets/cook/items/shelf-spi-02-bare-f.webp",
+    "assets/cook/items/shelf-spi-05-bare-f.webp",
+    "assets/cook/items/shelf-spi-10-bare-f.webp",
+    "assets/cook/items/vessel-saucepan-t.webp",
+    "assets/ui/results/icon-bulb.webp"
+   ]
+  },
+  "page:lab/clinic-core.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/clinic-heal-a.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/clinic-heal-b.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/clinic-heal-c.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/clinic-heal-host.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/conversations.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/day.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/family-audio.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/fonts.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/bg/service-master-v2.webp",
+    "assets/cook/characters/cousin-face.webp",
+    "assets/cook/characters/nana-neutral.webp",
+    "assets/cook/items-s08b/chai-pan/pan-top-empty-s08b.webp",
+    "assets/cook/items-s08b/chai-pan/pan-top-milk-s08b.webp",
+    "assets/cook/items-s12/glass/glass-empty-top-s12.webp",
+    "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+    "assets/cook/items/shelf-aadu-jar-v2-f.webp",
+    "assets/cook/items/shelf-cook-chai-bare-f.webp",
+    "assets/cook/items/shelf-cook-dudh-bare-f.webp",
+    "assets/cook/items/shelf-cook-khun-bare-f.webp",
+    "assets/cook/items/shelf-cook-paani-bare-f.webp",
+    "assets/cook/items/v3/hob/hob-1.webp",
+    "assets/cook/items/v3/hob/knob-off-v2.webp",
+    "assets/shared/faces/nana.webp",
+    "assets/shared/faces/nani.webp"
+   ]
+  },
+  "page:lab/juice.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/items-s14/chai-pan/pan-milk-s14.webp",
+    "assets/shared/word-moment/glass-side-5-s17.webp",
+    "assets/ui/results/stopwatch-good.webp"
+   ]
+  },
+  "page:lab/kit.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/cousin-badge.webp",
+    "assets/cook/characters/isa-badge.webp",
+    "assets/cook/characters/ma-badge.webp",
+    "assets/cook/characters/nana-badge.webp",
+    "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+    "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+    "assets/cook/items-s17-stove/f-garlic-jar.webp",
+    "assets/cook/items-s17-stove/f-ginger-jar.webp",
+    "assets/cook/items-s17-stove/f-milk-carton.webp",
+    "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
+    "assets/cook/items-s17-stove/f-salt-jar.webp",
+    "assets/cook/items-s17-stove/f-sugar-jar.webp",
+    "assets/cook/items-s17-stove/f-tea-jar.webp",
+    "assets/cook/items-s17-stove/f-water-bottle.webp",
+    "assets/cook/items/hob-knob-off-t.png",
+    "assets/cook/items/icon-cook-chai.webp",
+    "assets/cook/items/icon-cook-dudh.webp",
+    "assets/cook/items/icon-cook-paani.webp",
+    "assets/cook/items/v3/maani/chakla.webp",
+    "assets/cook/items/v3/maani/maani-wheat-raw.webp",
+    "assets/cook/items/v3/maani/velan.webp",
+    "assets/cook/props/saucepan-chai.webp",
+    "assets/shared/faces/nana.webp",
+    "assets/shared/faces/nani.webp",
+    "assets/ui/results/icon-bulb.webp",
+    "assets/ui/results/icon-crown.webp",
+    "assets/ui/results/tick-gold.webp"
+   ]
+  },
+  "page:lab/kitchen-kit.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/nani-alive.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/backgrounds/bg-nani-kitchen-v1.jpg"
+   ]
+  },
+  "page:lab/order-card.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/cousin-badge.webp",
+    "assets/cook/characters/ma-badge.webp",
+    "assets/cook/characters/nana-badge.webp",
+    "assets/shared/faces/nana.webp"
+   ]
+  },
+  "page:lab/play-log.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/ride-preview.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/day/ride/s09r/bird.webp",
+    "assets/day/ride/s09r/bush.webp",
+    "assets/day/ride/s09r/dog.webp",
+    "assets/day/ride/s09r/goat.webp",
+    "assets/day/ride/s09r/green-door.webp",
+    "assets/day/ride/s09r/haystack.webp",
+    "assets/day/ride/s09r/hen.webp",
+    "assets/day/ride/s09r/middle-fields.webp",
+    "assets/day/ride/s09r/near-verge.webp",
+    "assets/day/ride/s09r/red-door.webp",
+    "assets/day/ride/s09r/town-shops.webp",
+    "assets/day/ride/s09r/tree.webp",
+    "assets/day/ride/s09r/wall.webp",
+    "assets/day/s09b/aeroplane.webp",
+    "assets/day/s09b/bicycle.webp",
+    "assets/day/s09b/buffalo.webp",
+    "assets/day/s09b/bus.webp",
+    "assets/day/s09b/butterfly.webp",
+    "assets/day/s09b/camel.webp",
+    "assets/day/s09b/car-window-wide.webp",
+    "assets/day/s09b/car.webp",
+    "assets/day/s09b/cow.webp",
+    "assets/day/s09b/donkey.webp",
+    "assets/day/s09b/duck.webp",
+    "assets/day/s09b/far-hills.webp",
+    "assets/day/s09b/hen-chicks.webp",
+    "assets/day/s09b/horse.webp",
+    "assets/day/s09b/kite.webp",
+    "assets/day/s09b/milk-van.webp",
+    "assets/day/s09b/rainbow.webp",
+    "assets/day/s09b/sheep.webp",
+    "assets/day/s09b/tractor.webp",
+    "assets/day/s09b/well.webp",
+    "assets/day/s09b/windmill.webp"
+   ]
+  },
+  "page:lab/shared-ui.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:lab/shared.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/nana-neutral.webp"
+   ]
+  },
+  "page:lab/sidebar-v2.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/bg/bg-cook-worktop-t-v1-1600.webp",
+    "assets/cook/characters/cousin-badge.webp",
+    "assets/cook/characters/ma-badge.webp",
+    "assets/cook/characters/nana-badge.webp",
+    "assets/cook/characters/nani-badge.webp",
+    "assets/shared/faces/nani.webp",
+    "assets/ui/results/tick-gold.webp"
+   ]
+  },
+  "page:lab/word-card.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/props/glass-chai.webp",
+    "assets/cook/props/saucepan.webp",
+    "assets/cook/props/tea-tin.webp"
+   ]
+  },
+  "page:lab/word-moment.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/bg/bg-cook-worktop-t-v1.webp",
+    "assets/shared/word-moment/glass-side-1-s17.webp",
+    "assets/shared/word-moment/glass-side-2-s17.webp",
+    "assets/shared/word-moment/glass-side-3-s17.webp",
+    "assets/shared/word-moment/iris-half-s17.webp",
+    "assets/shared/word-moment/iris-open-s17.webp",
+    "assets/shared/word-moment/iris-shut-s17.webp",
+    "assets/shared/word-moment/kettle-tilted-pour-s17.webp",
+    "assets/shared/word-moment/kettle-tilted-s17.webp",
+    "assets/shared/word-moment/snap-corners-s17.webp",
+    "assets/shared/word-moment/stream-chai-s17.webp"
+   ]
+  },
+  "page:lab/wrong-order.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/bg/bg-cook-hob-t-v1-1600.webp",
+    "assets/cook/characters/cousin-badge.webp",
+    "assets/cook/characters/ma-badge.webp",
+    "assets/cook/characters/nana-badge.webp",
+    "assets/shared/faces/nana.webp"
+   ]
+  },
+  "page:labs.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  },
+  "page:monsoon.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/nani-badge.webp"
+   ]
+  },
+  "page:snap.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/cousin-happy.webp",
+    "assets/cook/characters/nani-badge.webp",
+    "assets/cook/characters/nani-ledge-happy-v3.webp",
+    "assets/cook/serve/kitchen-tall.webp"
+   ]
+  },
+  "page:tidy.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": [
+    "assets/cook/characters/nani-badge.webp"
+   ]
+  },
+  "page:who.html": {
+   "reached": "opened",
+   "note": "",
+   "pictures": []
+  }
+ }
+}

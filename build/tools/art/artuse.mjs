@@ -130,7 +130,7 @@ export const retiredOf = (retired, p) => retired.find((r) => r.re.test(p)) || nu
 const KITCHEN_KEYS = ["chai-tray", "eggs", "baking", "corn", "chop", "chaat", "fetch", "daar", "samosa", "maani-line", "mishkaki-grill"];
 export function gameOf(id) {
   const base = String(id).replace(/[@#].*$/, "");
-  if (base === "cook" || base === "cook:title") return "title";
+  if (base === "cook" || base === "cook:title" || base === "page:cook.html") return "title";
   if (base === "cook:assemble" || base === "cook:chaat") return "chaat";
   if (base === "cook:tadka" || base === "cook:stir") return "daar";
   if (/^cook:(day\d|open-kitchen|shop)$/.test(base)) return "serve";
@@ -339,7 +339,13 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   if (argv.includes("--full")) { const code = runFull({ resume: argv.includes("--resume"), runId: process.env.ARTUSE_RUN || "artuse-full" }); console.log(`full plays: the sandbox ended with ${code}`); }
   const fromRun = argv.includes("--from-run") ? argv[argv.indexOf("--from-run") + 1] : argv.includes("--full") ? process.env.ARTUSE_RUN || "artuse-full" : null;
   if (fromRun) { const d = join(ROOT, "build/screenshots/sandbox", fromRun, "data"); const plays = harvest(d); const old = existsSync(PLAYS) ? JSON.parse(readFileSync(PLAYS, "utf8")).flows : {}; writeFileSync(PLAYS, JSON.stringify({ generated: new Date().toISOString().slice(0, 10), source: `build/sandbox/run.mjs at ${FULL_SIZE}, each flow played by the sandbox's player, every picture fetched (resource timing) or drawn (the contract hook); run ${fromRun}`, flows: Object.assign(old, plays) }, null, 1) + "\n"); console.log(`full plays harvested: ${Object.keys(plays).length} flows from ${fromRun}`); }
-  if (argv.includes("--static")) { const st = await runStatic(); writeFileSync(STATIC, JSON.stringify(st, null, 1) + "\n"); console.log(`static pages: ${Object.keys(st.pages).length} opened`); }
+  // (the lab pages' own browser and server, on COOK_TEST_PORT: under the browser lock, so it never meets a sandbox run of ours)
+  if (argv.includes("--static") && !process.env.ARTUSE_LOCKED) {
+    const port = process.env.COOK_TEST_PORT || "8913", lock = process.env.NJG_LOCK || `/tmp/njg-browser-${port}.lock`;
+    const r = spawnSync("flock", ["-w", "3600", lock, "timeout", "900", process.execPath, fileURLToPath(import.meta.url), "--static", "--static-only"], { cwd: ROOT, stdio: "inherit", env: Object.assign({}, process.env, { ARTUSE_LOCKED: "1", COOK_TEST_PORT: port }) });
+    if (r.status) console.log(`static pages: ended with ${r.status}`);
+  } else if (argv.includes("--static")) { const st = await runStatic(); writeFileSync(STATIC, JSON.stringify(st, null, 1) + "\n"); console.log(`static pages: ${Object.keys(st.pages).length} opened`); }
+  if (argv.includes("--static-only")) process.exit(0);
   if (argv.includes("--refresh") || !existsSync(LOADS)) { const l = runDiscover(); writeFileSync(LOADS, JSON.stringify(l, null, 1) + "\n"); console.log(`page loads replayed: ${Object.values(l.pages).filter((p) => p.reached !== "no").length}/${Object.keys(l.pages).length} pages opened`); }
   const loads = allLoads();
   const pics = pictures();

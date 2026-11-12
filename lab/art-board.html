@@ -95,22 +95,31 @@
   var rl = P.filter(function (p) { return p.rl && p.rl.length; });
   var GN = { "chai-tray": "Chai", eggs: "Eggs", baking: "Baking", corn: "Corn", chop: "Chop", chaat: "Chaat", fetch: "Pantry", daar: "Daar", samosa: "Samosa", "maani-line": "Maani", "mishkaki-grill": "Sekelo (grill)", serve: "Serving kitchen", title: "Cook title", story: "Story mode", house: "House and first launch", clinic: "Clinic", day: "A day at Nani's", labs: "Lab pages", "parked modes": "Parked modes", shared: "Shared by several games", other: "Not loaded by any page played" };
   var nm = function (g) { return GN[g] || g; };
-  $("alarm").innerHTML = (rl.length ? '<div class="alarm"><b>Old art still showing: ' + rl.reduce(function (a, p) { return a + p.rl.length; }, 0) + " replaced pictures are still loaded</b> (" + rl.map(function (p) { return h(p.n) + " in " + h(p.rl[0].games.map(nm).join(", ")); }).slice(0, 8).join("; ") + (rl.length > 8 ? "; ..." : "") + "). The retired check lists each place.</div>" : "") +
+  var nrl = rl.reduce(function (a, p) { return a + p.rl.length; }, 0);
+  $("alarm").innerHTML = (rl.length ? '<div class="alarm"><b>Old art still showing: ' + nrl + (nrl === 1 ? " replaced picture is" : " replaced pictures are") + " still loaded</b> (" + rl.map(function (p) { return h(p.n) + " in " + h(p.rl[0].games.map(nm).join(", ")); }).slice(0, 8).join("; ") + (rl.length > 8 ? "; ..." : "") + "). The retired check lists each place.</div>" : "") +
     (D.unregistered && D.unregistered.length ? '<div class="alarm"><b>' + D.unregistered.length + " loaded pictures are not in the registry</b>: " + h(D.unregistered.slice(0, 6).join(", ")) + "</div>" : "");
   // what needs Zafar: people's art waiting for his yes; and the next art run's count
   var people = P.filter(function (p) { return p.k === "person" && p.s === "candidate"; });
-  var redo = P.filter(function (p) { return p.s === "needs-redo" && p.used.length; }), stand = P.filter(function (p) { return p.s === "stand-in" && p.used.length; });
+  var KG = ["chai-tray", "eggs", "baking", "corn", "chop", "chaat", "fetch", "daar", "samosa", "maani-line", "mishkaki-grill", "serve"];
+  var inKitchen = function (p) { return p.used.some(function (g) { return KG.indexOf(g) >= 0; }); };
+  var redo = P.filter(function (p) { return p.s === "needs-redo" && inKitchen(p); }), stand = P.filter(function (p) { return p.s === "stand-in" && inKitchen(p); });
   $("needs").innerHTML = "<b>Needs you:</b> " + (people.length ? people.length + " people's pictures wait for your yes (" + people.slice(0, 6).map(function (p) { return h(p.n); }).join(", ") + ")" : "no people's art waits for your yes") +
-    ". <b>The next art run:</b> " + redo.length + " pieces in use need replacing, " + stand.length + " in use are stand-ins (red and amber in each game below).";
+    ". <b>The next art run (the kitchen games):</b> " + redo.length + " pieces in use need replacing, " + stand.length + " in use are stand-ins (red and amber in each game below). The clinic, the day and the house art is not judged yet: it shows as stand-in.";
   // how complete the map is, per game (from the plays)
   var ORDER = ["chai-tray", "eggs", "baking", "corn", "chop", "chaat", "fetch", "daar", "samosa", "maani-line", "mishkaki-grill", "serve", "title", "story", "house", "clinic", "day", "labs", "parked modes"];
   var C = D.completeness || {}, pg = C.perGame || {};
-  $("complete").innerHTML = "<b>How complete:</b> " + ORDER.filter(function (g) { return pg[g]; }).map(function (g) { return h(nm(g)) + ": " + h(pg[g]); }).join("; ") + ". " +
+  // (games with the same line are said once: "Chai, Eggs, ...: 4 plays to the end, 1 to the first step only")
+  var same = {}; ORDER.filter(function (g) { return pg[g]; }).forEach(function (g) { (same[pg[g]] = same[pg[g]] || []).push(nm(g)); });
+  $("complete").innerHTML = "<b>How complete:</b> " + Object.keys(same).map(function (k) { return h(same[k].join(", ")) + ": " + h(k); }).join("; ") + ". " +
     (C.notReached && C.notReached.length ? "Not reached: " + h(C.notReached.slice(0, 6).join("; ")) + (C.notReached.length > 6 ? "; ..." : "") + ". " : "") +
     "A picture only a path these plays did not take asks for (a mistake, a rare order) is not counted as loaded: it stays on the move-out list's \"named, not loaded\" side until a play reaches it.";
   // each piece's home: the one game that loads it; several games: shared; none: its own game's, else "other"
   var SHORT = { chai: "chai-tray", sekelo: "mishkaki-grill", maani: "maani-line", pantry: "fetch", cook: "title" };
+  // (a story day, the serving kitchen, the title and the lab pages show every game's art: a piece one kitchen game uses lives there)
+  var KITCHEN = ORDER.slice(0, 11);
   var home = function (p) {
+    var kit = p.used.filter(function (g) { return KITCHEN.indexOf(g) >= 0; });
+    if (kit.length === 1) return kit[0];
     if (p.used.length === 1) return p.used[0];
     if (p.used.length > 1) return "shared";
     var g = SHORT[p.g] || p.g;

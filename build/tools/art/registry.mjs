@@ -58,7 +58,7 @@ export const hashOf = (path) => { try { return createHash("sha256").update(readF
 
 /* ---------------- ids ---------------- */
 // the state and variant words a file name may end with (the rest is the piece)
-const STATE_WORDS = ["raw", "part", "cooked", "over", "overdone", "done", "turned", "burnt", "empty", "water", "full", "oil", "whole", "half-a", "half-b", "half", "top", "side",
+const STATE_WORDS = ["raw", "part", "cooked", "over", "overdone", "done", "turned", "burnt", "grilled", "charred", "golden", "folded", "fried", "empty", "water", "full", "oil", "whole", "half-a", "half-b", "half", "top", "side",
   "blink", "talk", "happy", "neutral", "impatient", "sad", "point", "point-front", "face", "wave", "think", "cheer", "day", "evening", "night", "open", "closed", "on", "off"];
 const STATE_RE = new RegExp(`-(${STATE_WORDS.sort((a, b) => b.length - a.length).join("|")}|\\d)$`);
 // version marks inside a name, taken off for the piece's name (kept in its version label)
@@ -66,6 +66,8 @@ const stripMarks = (s) => s.replace(/@\dx$/, "").replace(/-(t|f)(-v\d+)?$/, "").
 const PEOPLE = { cousin: "ali" };
 const GAME_SHORT = { "chai-tray": "chai", "mishkaki-grill": "sekelo", "maani-line": "maani", fetch: "pantry", chaat: "chaat", daar: "daar", eggs: "eggs", baking: "baking", corn: "corn", chop: "chop", samosa: "samosa", title: "cook", serve: "serve", house: "house", story: "story", clinic: "clinic", day: "day", labs: "lab" };
 export const shortGame = (g) => GAME_SHORT[g] || g;
+const KITCHEN_GAMES = ["chai-tray", "eggs", "baking", "corn", "chop", "chaat", "fetch", "daar", "samosa", "maani-line", "mishkaki-grill"];
+const SHORT_NAMES = ["chai", "sekelo", "maani", "daar", "samosa", "chaat", "chop", "corn", "eggs", "baking", "pantry", "kit", "serve"];
 const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9@-]+/g, "-").replace(/^-+|-+$/g, "");
 // a picture's piece: {id, state, kind, game, name}. games: the board's game keys that load it (art-use), used for old shared art
 export function pieceOf(p, games = []) {
@@ -74,18 +76,20 @@ export function pieceOf(p, games = []) {
   const res = (file.match(/@(\dx)$/) || [])[1];
   let base = stripMarks(file), state = null;
   const st = (b) => { const m = b.match(STATE_RE); return m && m.index > 0 ? [b.slice(0, m.index), m[1]] : [b, null]; };
-  const one = games.length === 1 ? shortGame(games[0]) : null;
+  // the one kitchen game that uses it (a story day, the serving kitchen, the title and the labs show every game's art), else the one game
+  const kitchen = games.filter((g) => KITCHEN_GAMES.includes(g));
+  const one = kitchen.length === 1 ? shortGame(kitchen[0]) : games.length === 1 ? shortGame(games[0]) : null;
   const gameFromDir = () => {
     const d = dirs.join("/");
     let m = d.match(/(?:^|\/)v\d+\/([a-z-]+)$/);
-    if (m) return m[1];
+    if (m) return SHORT_NAMES.includes(m[1]) ? m[1] : one || "kit";
     m = d.match(/^cook\/items\/(chai|samosa|chaat|maani)-v\d$/);
     if (m) return m[1];
     if (/^cook\/items-s14\/(chai-pan|glass)$/.test(d) || /^cook\/items\/chai-station$/.test(d)) return "chai";
     m = d.match(/^cook\/proto\/([a-z-]+)$/);
     if (m) return m[1];
-    m = d.match(/^cook\/items-s0\dc?\/([a-z-]+)$/) || d.match(/^cook\/items-s\d\d[a-z]?\/([a-z-]+)$/);
-    if (m) return one || m[1];
+    m = d.match(/^cook\/items-s\d\d[a-z]?\/([a-z-]+)$/);
+    if (m) return SHORT_NAMES.includes(m[1]) ? m[1] : one || "kit";
     return null;
   };
   // people: char.<name>.<mood> (all of one person's moods swap together: set char.<name>)
@@ -124,7 +128,7 @@ export function pieceOf(p, games = []) {
   [base, state] = st(base);
   let game = gameFromDir();
   if (!game) game = one || (dirs[0] === "cook" ? "kit" : dirs[0] || "misc");
-  if (game === "sekelo-tray") game = "sekelo";
+  if (game === "sekelo-tray" || game === "mishkaki") game = "sekelo";
   return { id: `${slug(game)}.${slug(base)}`, state: state || res || "default", kind: "piece", game, name: `${game}: ${base}` };
 }
 
@@ -358,6 +362,7 @@ export function seed({ root = ROOT, use, reg = load(root), pics = pictures(root)
       if (!all.length) { status = "retired"; }
       else if (isApproved) { status = "approved"; by = "Zafar"; row = "Zafar's chai sign-off"; on = "2026-11-12"; }
       else if (mk) { status = mk.status; row = mk.row; note = mk.note; if (mk.by) { by = mk.by; on = mk.on || null; } }
+      else if (games.length && games.every((g) => g === "parked modes")) status = "parked"; // a parked game's art (dress, find, monsoon ...)
       else if (pc.kind === "person") status = isNewCut ? "candidate" : "stand-in";
       else if (isNewCut && files.some((f) => f.isLoaded)) { status = "approved"; by = "art run pick"; on = s0 ? s0.date : null; }
       else if (isNewCut) status = "candidate";
