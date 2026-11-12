@@ -965,6 +965,12 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     return out;
   }
   // a chai cup with no milk (CHAI-07) is served as black tea
+  // (SAM-36, the S19 gate's eye judge, 12 Nov: "three samosas are served for an order of two": a served picture that shows a count of
+  // its own, data "shows", stands only for an order of that many; any other count is drawn one by one)
+  const servedShows = (d) => {
+    const a = Cook.Art.servedArt(servedRecipe(d));
+    return !a || !a.shows || a.shows === d.count;
+  };
   const servedRecipe = (d, c = 0) => Cook.Art.servedName(d.recipe, { noMilk: Array.isArray(d.cups) && !!d.cups[c] && d.cups[c].dudh === false });
   function drawServed(ctx, x0) {
     const s = S();
@@ -1001,7 +1007,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       const y = tray.y - 4;
       if (d.recipe === "chai" && Cook.Art.servedArt("chai") && s.textures.exists(Cook.Art.servedKey("chai"))) {
         for (let c = 0; c < d.count; c++) servedPic(s, servedRecipe(d, c), px + c * 56 - (d.count - 1) * 28, tray, c, (tray.w * 0.92) / Math.max(1, n));
-      } else if (d.recipe !== "chai" && servedPic(s, servedRecipe(d), px, tray, i, (tray.w * 0.92) / Math.max(1, n)));
+      } else if (d.recipe !== "chai" && servedShows(d) && servedPic(s, servedRecipe(d), px, tray, i, (tray.w * 0.92) / Math.max(1, n)));
       else if (d.recipe === "chai") for (let c = 0; c < d.count; c++) prop("glass-chai", px + c * 50 - (d.count - 1) * 25, y, 100, 130, { depth: Cook.D.occ + 2 });
       else if (d.recipe === "maani") {
         prop("thali", px, y, 210, 110, { depth: Cook.D.occ + 2 });
@@ -1010,7 +1016,16 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       else if (d.recipe === "chaat") {
         s.prop(s.tex("vessel:serving"), px, y + 10, 210, 150, { depth: Cook.D.occ + 2 });
         (d.seq || []).forEach((id, k) => s.track(s.add.image(px, 660 - k * 3, s.tex(`layer:${id}`)).setScale(0.45).setDepth(Cook.D.occ + 3 + k * 0.01)));
-      } else if (d.recipe === "samosa") for (let k = 0; k < d.count; k++) s.track(s.add.image(px + k * 70 - (d.count - 1) * 35, 680, s.tex("pastry:4")).setScale(0.32).setDepth(Cook.D.occ + 3));
+      } else if (d.recipe === "samosa") {
+        // (SAM-36: as many fried samosas as were ordered, standing on the tray's floor as a served picture stands, CK-21)
+        const tex = s.tex("pastry:4");
+        const src = s.textures.exists(tex) ? s.textures.get(tex).getSourceImage() : null;
+        const hh = 80;
+        const ww = src && src.height ? (hh * src.width) / src.height : hh;
+        const step = Math.min(ww * 0.8, (tray.w * 0.84) / Math.max(1, d.count * n));
+        for (let k = 0; k < d.count; k++) s.track(s.add.image(px + (k - (d.count - 1) / 2) * step, tray.y + tray.h * 0.18, tex).setOrigin(0.5, 0.94).setDisplaySize(ww, hh).setDepth(Cook.D.occ + 3 + k * 0.01));
+        trayFront(s, tray);
+      }
       else if (d.recipe === "mishkaki" && !d.art) {
         s.track(s.add.image(px, 690, s.tex("skewer")).setScale(0.3).setDepth(Cook.D.occ + 3));
         (d.seq || []).forEach((id, k) => s.track(s.add.image(px + 60 - k * 33, 690, s.tex(`piece:${id}`)).setScale(0.35).setDepth(Cook.D.occ + 4)));

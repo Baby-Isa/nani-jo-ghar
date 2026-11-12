@@ -130,6 +130,13 @@ import { Cook as CookNS } from "./ns.js";
       return cups.map((c) => ({ who: c.who || who, dish: c.dudh === false ? "chai-black" : "chai", n: 1 }));
     }
     if (r === "eggs") return (dish.plates || []).map((q) => ({ who: q.who || who, dish: q.fried ? "eggs-fried" : "eggs-boiled", n: 1 }));
+    // SAM-36 (the S19 gate's eye judge, 12 Nov: "three samosas are served for an order of two"): the plate picture shows three; any
+    // other count is that many single samosas side by side, so "ba samosa" is two on the tray
+    if (r === "samosa" && dish.count != null) {
+      const n = (dish.count || 0) + (dish.count2 || 0);
+      const a = Cook.Art && Cook.Art.servedArt ? Cook.Art.servedArt("samosa") : null;
+      if (n > 0 && !(a && a.shows === n) && dishOf("samosa-one")) return [{ who: dish.who || who, dish: "samosa-one", n }];
+    }
     return [{ who: dish.who || who, dish: r, n: 1 }];
   }
   /** Only the dishes the serve can show (a picture known). */

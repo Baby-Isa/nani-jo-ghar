@@ -4303,7 +4303,16 @@
        "file": "assets/cook/items/served/samosa.webp",
        "w": 300,
        "h": 257,
-       "drawH": 128
+       "drawH": 128,
+       "shows": 3
+      },
+      "samosa-one": {
+       "file": "assets/cook/items/samosa-fried-golden-t.webp",
+       "w": 256,
+       "h": 221,
+       "drawH": 88,
+       "of": "samosa",
+       "_about": "SAM-36: one fried samosa, drawn as many times as were ordered when the plate picture (shows 3) is another count"
       },
       "pantry": {
        "file": "assets/cook/items/served/pantry-basket-v2.webp",
