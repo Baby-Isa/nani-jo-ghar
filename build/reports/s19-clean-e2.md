@@ -5,18 +5,18 @@
   - The four games I changed and played again went from 53 to 33: baking 9 to 2, samosa 19 to 7, eggs 20 to 18, chop 5 to 6.
   - The other six went from 86 to 113: daar 12 to 24, chaat 12 to 23, fetch 18 to 28.
   - Those six were played before a5's merge and my last chop fix, on a shared, loaded machine.
-  - Their rises are the timing checks (106, 65), the shared checks (73: speaker 45-47 px; 74; 119) and fetch's pills under the side panel (113 x12, new in this run).
+  - Their rises: timing checks (106, 65), shared checks (73, 74, 119), fetch's pills under the side panel (113 x12).
 - **Not fixed (owner: me):**
   - **Chai L4 at 740x320:** the elchi light stops 54 px short (112). The cause: the light avoids its neighbours' pills (`shelfBut`, chai-tray.js:1454). Fixing it changes chai's signed-off light, so I left it for a decision.
-  - **Daar:** the chopped heap is 25 px on the chop screen and 46 px in its glass at the tadka (114, +84%). This clashes with CK-79's "not a speck".
+  - **Daar:** the chopped heap is 25 px on the chop screen and 46 px in its glass at the tadka (114, +84%)., against CK-79's "not a speck".
   - **Corn:** cob 289 px on the tray, 222 px on the plate (114 x7). This is SH-256, Zafar's call.
 - **Tier 2 (`check-change.mjs`) not run:** it plans 36 steps, about 316 min. Its rows step refuses the brief, because CHT-13 has no probe.
-- **No before folder for this brief.** - **The push hook asked for a push.** The brief says never push, so the branch is committed only.
+- **No before folder for this brief.** - **Not pushed** (the brief), though the push hook asked.
 
 ## Rows
 - **Proven, no code (the after frames):** CK-65 (machine PASS), CK-75 (eggs' praise fills the play area), CK-76, CHT-19.
   - CK-76 and CHT-19: contract-36 at 0 for eggs and chaat at L1-L4.
-  - CHT-19 also has a checker test: 11 calls over three orders, each the next layer as said.
+  - CHT-19: a checker test, 11 calls over three orders, each the next layer as said.
 - **ART-52:** daar, chop, the pantry and chaat take every item's size class (`St.classFit`). Every item id in daar.json, chop.json and chaat.json has a class.
   - Still open: the clinic and `sizecheck.mjs` (not mine).
 - **ART-72:** wired in `Shelf.TRAY_ART`. Its probe plays baking, which has the shelf, not the tray. Spec change for a6: corn, daar, maani, chop.
