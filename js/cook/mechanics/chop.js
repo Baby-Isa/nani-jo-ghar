@@ -652,16 +652,33 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         });
         return out;
       })();
+      // (s19-clean-e2, contract-113: a cell under a face circle on the page, Nani's at the board's top on a phone, holds no halves:
+      // nothing covers a face)
+      const underFace = (c) => {
+        try {
+          if (!global.document || !UI.worldToScreen) return false;
+          const a = UI.worldToScreen(z.X(c.x - c.w / 2), z.Y(c.y - c.h / 2));
+          const b = UI.worldToScreen(z.X(c.x + c.w / 2), z.Y(c.y + c.h / 2));
+          return [...document.querySelectorAll(".njg-face")].some((f) => {
+            const r = f.getBoundingClientRect();
+            return r.width > 0 && r.height > 0 && r.left < b.x + 4 && r.right > a.x - 4 && r.top < b.y + 4 && r.bottom > a.y - 4;
+          });
+        } catch (e) {
+          return false;
+        }
+      };
       const cellFor = (x) => {
-        const least = Math.min(...cells.map((c) => c.used));
+        const open = cells.filter((c) => !underFace(c));
+        const pool = open.length ? open : cells;
+        const least = Math.min(...pool.map((c) => c.used));
         // (the bottom strip first, then the top: the nearest free cell in the first strip with one)
         const half = cells.length / 2;
-        const strips = [cells.slice(0, half), cells.slice(half)];
+        const strips = [cells.slice(0, half), cells.slice(half)].map((st) => st.filter((c) => pool.includes(c)));
         for (const st of strips) {
           const free = st.filter((c) => c.used === least);
           if (free.length) return free.sort((p, q) => Math.abs(p.x - x) - Math.abs(q.x - x))[0];
         }
-        return cells[0];
+        return pool[0];
       };
       const landPieces = (img, ang, P) => {
         const b = img.getBounds();

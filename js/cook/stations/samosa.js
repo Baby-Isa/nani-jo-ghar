@@ -688,6 +688,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     let gotFirst = {};
     let got2First = null;
     let lastTap = 0;
+    // (s19-clean-e2, contract-111: a filling's heap takes its taps the whole fill long, never a dead picture between two moves: a tap
+    // while the last spoonful is still going in is kept a moment and is the next move, as soon as the fill takes one)
+    let early = null;
+    const keep = (id) => () => (early = { id, t: performance.now() });
+    const keepTaps = () => Object.entries(items).forEach(([id, o]) => o && o.active && S.tappable(o, keep(id)));
+    keepTaps();
     Cook.undoAt = () => {
       // (not while Nani's "pass me" or a first-time coach is up: only the thing they point at takes a tap)
       if (Cook.paused || (Cook.Coach && Cook.Coach.active())) return null;
@@ -706,7 +712,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             S.untap(x);
             x.blobs.forEach((b) => b.active && S.untap(b));
           });
-          Object.values(items).forEach((o) => o && o.active && S.untap(o));
+          keepTaps();
           lit.forEach((o) => litGlow(o, false));
           UI.hideDone();
           z.expect(null);
@@ -717,6 +723,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           x.blobs.forEach((b) => b.active && b.tapReady && S.tappable(b, () => fin({ back: b, strip: x })));
         });
         Object.entries(items).forEach(([id, o]) => o && o.active && S.tappable(o, () => fin({ id })));
+        // (a heap tapped a moment ago, while the last move played out: that is this move)
+        const kept = early && performance.now() - early.t < 1200 ? early : null;
+        early = null;
+        if (kept) {
+          fin({ id: kept.id });
+          return;
+        }
         const filled = filledOf().length;
         const mv = nextMove();
         const glow = ctx.guided || helping;
@@ -960,6 +973,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (sayOrder) await Promise.race([UI.personSay(who, { line: () => orderLine(ladderOf(ctx)), hide: St.hideKnown(ctx) }), Cook.wait(8000)]);
     }
     Cook.undoAt = null;
+    // (the fill is over: its heaps take no more taps)
+    early = null;
+    Object.values(items).forEach((o) => o && o.active && S.untap(o));
     if (nextStrip) nextStrip.stop();
     // SAM-24: the fill closes now, for every strip at once: each kind's rows tick together, its samosas all made
     steps.done();
