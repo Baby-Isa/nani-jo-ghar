@@ -530,3 +530,6 @@ test("art blocks (Zafar, 9 Nov): the Library's bulk download, the report as a co
     assert.match(t, /(three|3) (ChatGPT )?(windows|tabs|conversations)|windows/i, `${f}: say how many ChatGPT windows run at once (up to three)`);
   }
 });
+
+// s19-artuse: the art-use join and the retired check are tested in artuse.test.mjs (checks.mjs lists only this file)
+import "./artuse.test.mjs";
