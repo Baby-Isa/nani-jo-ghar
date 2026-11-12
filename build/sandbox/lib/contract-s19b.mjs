@@ -389,7 +389,8 @@ export function check74(r, tl, segs, add) {
   // (and a tap the miss-light driver made off a lit thing, a probe's, never the child's skip: as contract-106 leaves it out)
   const misses = life(tl, "probe-tap").map((q) => { const m = /^(-?\d+),(-?\d+)\|/.exec(q.by || ""); return m ? { x: +m[1], y: +m[2], t: q.at || q.t } : null; }).filter(Boolean);
   const probe = (e) => misses.some((q) => Math.abs(q.x - e.x) <= 2 && Math.abs(q.y - e.y) <= 2 && Math.abs(q.t - e.t) < 1500);
-  const tap = ev(tl, "input").find((e) => e.play !== false && !e.lesson && !probe(e) && ordering(at(e.t)) && at(e.t).rows > 0);
+  const lessonExp = (e) => /wc14-lesson/.test((e.exp && e.exp.cook && e.exp.cook.selector) || "");
+  const tap = ev(tl, "input").find((e) => e.play !== false && !e.lesson && !lessonExp(e) && !probe(e) && ordering(at(e.t)) && at(e.t).rows > 0);
   if (!tap) return;
   const after = at(tap.t + 1000);
   if (ordering(after)) add("contract-74", tap.t, `a tap during the order and 1 s later ${[after.pop ? `${after.pop} big card` : "", after.fly ? `${after.fly} card in flight` : "", after.away ? `${after.away} card${after.away > 1 ? "s" : ""} not yet in its row` : ""].filter(Boolean).join(", ")}: the tap lands the whole order at once`);

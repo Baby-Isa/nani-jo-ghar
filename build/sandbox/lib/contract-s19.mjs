@@ -212,6 +212,8 @@ export function check105(r, tl, add) {
       const t = { ...box(th.box) };
       const id = th.id || th.kind;
       if (seen.has(id)) return;
+      // (SH-213: the big card lesson's one light, starting on its card and moving over its parts: contract-97 and -112 judge it)
+      if (/^lesson:/.test(String(id))) return;
       const hm = mid(h), tm = mid(t);
       const near = (side) => (e.near || []).some((o0) => { const o = box(o0); if (side === "l") return o.r <= t.l + 1 && o.r >= h.l - 6 && Math.min(o.b, h.b) > Math.max(o.t, h.t); if (side === "r") return o.l >= t.r - 1 && o.l <= h.r + 6 && Math.min(o.b, h.b) > Math.max(o.t, h.t); if (side === "t") return o.b <= t.t + 1 && o.b >= h.t - 6 && Math.min(o.r, h.r) > Math.max(o.l, h.l); return o.t >= t.b - 1 && o.t <= h.b + 6 && Math.min(o.r, h.r) > Math.max(o.l, h.l); });
       const edge = { l: h.l <= 1, r: h.r >= W - 1, t: h.t <= 1, b: h.b >= H - 1 };

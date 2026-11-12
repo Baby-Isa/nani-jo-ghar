@@ -2247,10 +2247,18 @@
       const spk = c.querySelector(".wc14-spk");
       const sb = spk ? spk.getBoundingClientRect() : null;
       const h0 = c.offsetHeight + (sb && sb.height ? Math.max(0, sb.bottom - cb.bottom) : 0);
-      const k = Math.min(1, (play.height - 24) / h0, (play.width - 24) / wd);
-      if (k < 0.999) c.style.zoom = String(Math.round(k * 1000) / 1000);
-      const kz = c.style.zoom ? Number(c.style.zoom) : 1;
-      Object.assign(c.style, { left: `${Math.round((play.left + play.width / 2 - (wd * kz) / 2) / kz)}px`, top: `${Math.round((play.top + play.height / 2 - (h0 * kz) / 2) / kz)}px` });
+      // (too tall for the play area: a narrower card, fitted again, never a zoom: a zoomed card's taps land off its parts)
+      let w1 = wd;
+      let h1 = h0;
+      for (let i = 0; i < 4 && (h1 > play.height - 24 || w1 > play.width - 24); i++) {
+        w1 = Math.max(120, Math.floor(w1 * Math.min((play.height - 24) / h1, (play.width - 24) / w1)));
+        c.style.width = `${w1}px`;
+        global.WordCard.fit14(c);
+        const cb1 = c.getBoundingClientRect();
+        const sb1 = spk ? spk.getBoundingClientRect() : null;
+        h1 = c.offsetHeight + (sb1 && sb1.height ? Math.max(0, sb1.bottom - cb1.bottom) : 0);
+      }
+      Object.assign(c.style, { left: `${Math.round(play.left + play.width / 2 - w1 / 2)}px`, top: `${Math.round(play.top + play.height / 2 - h1 / 2)}px` });
       const inAnim = c.animate ? c.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / sp, easing: "cubic-bezier(.2,.8,.2,1)" }) : null;
       const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, , cls]) => c.classList.contains(cls));
       let want = null;
@@ -2291,6 +2299,9 @@
           want = null;
           if (!here()) break;
           c.classList.remove(cls);
+          // (shown by the child's tap: marked as a tapped-open part is, contract-39)
+          const shownEl = c.querySelector(slot === "picture" ? ".wc14-pic" : slot === "text" ? ".wc14-k" : ".wc14-en");
+          if (shownEl) shownEl.classList.add("revealed");
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
           else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
           global.WordCard.fit14(c);
