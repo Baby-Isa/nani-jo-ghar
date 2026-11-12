@@ -45,7 +45,8 @@ import { Cook as CookNS } from "./ns.js";
    * height.
    */
   GK.ART = {
-    grill: { key: "gk-grill", url: K4 + "grill.webp", w: 1621, h: 813, far: 0.022, near: 0.972, bed: [0.105, 0.895] },
+    // (the k3 run's G1r-2, 11 Nov: the same canvas, two bars as before; its rims and bed measured on the cut, build/reports/s19-k3-cut.md)
+    grill: { key: "gk-grill", url: K4 + "grill-v2.webp", w: 1621, h: 813, far: 0.019, near: 0.974, bed: [0.083, 0.916] },
     tray: { key: "gk-tray", url: K4 + "tray-steel.webp", w: 1000, h: 422, inner: [0.05, 0.11] },
   };
   GK.art = () => [GK.ART.grill, GK.ART.tray].map((a) => [a.key, a.url]);
