@@ -12,9 +12,120 @@ Step 2b, 1 Oct 2026. For every grammar feature the language engine needs, this f
 
 **Priority** (P1 blocks Cook; P2 blocks Arc 1, the Birthday; P3 later modes) is how the questionnaire was ordered.
 
+**Scores (12 Nov 2026).** The summary table scores each area out of 100, by the rule under it; re-score after every recording session.
+
 ---
 
-## Summary table
+## Summary table: how complete each area is (scored 12 Nov 2026)
+
+Each area's plain name comes first, its technical name in brackets. **Today** and **Before 12 Nov** are scores out of 100, made by the rule below from the score sheet under it. Average: **73** today, 66 before Mum's 12 Nov session (Words 82, Phrases 74, Sentences 67, Conversation 73). Area 12 went down: the session opened a doubt. Vocabulary has no score; its coverage follows the score sheet. The picture of this table: `build/reports/language-engine-map.html` (a 12 Nov snapshot); the engine in plain words: `engine-map.md`.
+
+| Area: plain name (technical name) | # | Group | Today | Before 12 Nov | What's left to close the gap |
+|---|---|---|---|---|---|
+| He-words and she-words (noun gender) | 1 | Words | **85** | 70 | 9 kitchen nouns: 3 wait on Zafar's word choice (salt, black pepper, chilli powder), 6 on Mum (meat, sekelo, naan, corn, vegetable, mixed); the clinic's 5 were not asked. |
+| One and more than one (plural) | 2 | Words | **85** | 80 | When the *-yu* plural is needed; chilli's plural; whether one tomato is *tameto* or the English word. |
+| The form before "in", "with", "on" (the oblique case) | 3 | Phrases | **80** | 70 | More than one he-word before "with / in / on" ("with the big boys"), and "the boys' cup". |
+| "The" and "a" (articles) | 4 | Words | **100** | 100 | Nothing: Kutchi has no "the" or "a". A known answer. |
+| Whose it is (possession, the genitive: *jo / ji / je / ja*) | 5 | Phrases | **80** | 80 | "Of" with more than one thing or owner before "in / on"; "our" and the elder "your" before "in / on". |
+| Describing words (adjectives) | 6 | Phrases | **85** | 85 | A few forms not heard: "good" for more than one, "small" before "with", the he-forms of the chai words. |
+| Numbers and counting (numerals) | 7 | Words | **70** | 45 | 5 to 10 (lost in the noise; five is still unconfirmed); 11 to 19 said but not yet in the engine; second, third. |
+| Amounts: "a spoon of", "half a cup" (measure words) | 8 | Phrases | **85** | 30 | "Half a cup of chai", "a glass of chai"; *itli* or *itlo* with sugar; "as many as they said" is fixed lines, not a rule. |
+| I, you, he, she, we, they, and "to me" (pronouns and the dative) | 9 | Words | **80** | 80 | "To us" for the "we" that leaves the listener out; "with me" heard once. |
+| Talking to a child or an elder (person and politeness (register)) | 10 | Conversation | **70** | 65 | "Will you make…": *dinda* or *dinde* for whom; how to speak to several children; the "please" form beyond one verb. |
+| "Is", "am", "are", "was" (the verb "be" (the copula)) | 11 | Sentences | **60** | 60 | "Was" for she-words and for more than one; "there is", "there isn't", "I have". |
+| "I'd like" (*muke … khape* (the dative-subject construction)) | 12 | Sentences | **90** | 100 | Polite with more than one thing: Mum's *khapanta* (25 Sept) or *khapeta* (Zafar's voice, 12 Nov). Zafar rules, then Mum once more. |
+| What happens now and every day (present tense) | 13 | Sentences | **60** | 60 | "Right now" against "every day"; any verb other than eat, see and can; "like" for a he-thing. |
+| What will happen (future tense) | 14 | Sentences | **60** | 60 | "You will", "we will", "they will"; *achdo* against *achindo*. |
+| What happened: "came", "went" (past tense, no object (intransitive)) | 15 | Sentences | **40** | 40 | "I went" (boy, girl), "they went", and a plain past without the "went" helper. |
+| What someone did to something: "ate", "made", "found" (past tense with an object (transitive; the agreement split)) | 16 | Sentences | **50** | 50 | "He saw", "she saw", "Nana saw me"; "ate / made / found / cut" without the helper; we, you, they. |
+| Two-part verbs and helpers (compound and auxiliary verbs) | 17 | Sentences | **80** | 75 | 17 verbs with no Kutchi yet (roll, sprinkle, serve, open, close …); the "for me" and polite forms of the cooking verbs. |
+| Telling someone to do something (commands (the imperative)) | 18 | Conversation | **50** | 50 | The elder or polite form of 32 of the 35 command verbs; commands to several children; "let's eat". |
+| Saying no and not (negation) | 19 | Sentences | **60** | 60 | "No chilli" inside a whole order; "without" with a he-word dish; "I don't eat", "she didn't go"; she can't, they can't. |
+| Asking (questions (interrogatives)) | 20 | Conversation | **75** | 75 | "When"; "who" as the doer (*kere*, unconfirmed). |
+| "In", "on", "for", "up to" (postpositions) | 21 | Phrases | **65** | 50 | "From" (the pantry, the cupboard); near, left and right of, on top of, in the corner: 10 with no Kutchi. |
+| Marking who it is done to (the object marker *ke*) | 22 | Phrases | **75** | 75 | When a thing (not a person) takes *ke*; "give it to Nana" with a name. |
+| Joining: "and", "with", lists, "first … then" (conjunctions and coordination) | 23 | Sentences | **80** | 55 | "And one with potato" is answered but not built; a list of 3 to 6 things with one verb; but, because, if, when. |
+| Word order (syntax) | 24 | Sentences | **90** | 75 | Where *na* goes in a long sentence. |
+| Calling out to someone (the vocative) | 25 | Conversation | **75** | 75 | Calling several at once ("Boys!"). |
+| When, how and how much (adverbs of time, manner and degree) | 26 | Words | **70** | 50 | "A lot" (unclear), "very", tomorrow and yesterday (unsettled), "today", "each". |
+| "To cook", "for tasting" (verb nouns (the infinitive)) | 27 | Phrases | **65** | 65 | "To cook" (unclear hearing); whether *winnu* changes before *ji*; making it from any verb. |
+| A boy or a girl speaking (speaker-gender agreement) | 28 | Conversation | **85** | 85 | "I found", "I ate", "I'm eating" for verbs beyond give, see, eat and can. |
+| Set phrases, recorded whole (fixed expressions) | 29 | Conversation | **80** | 75 | 28 of the kitchen's 76 set lines, and 204 of the clinic's 219 lines, have no Kutchi yet. |
+| "The one with milk", "very", "again" (relative clauses and intensifiers) | 30 | Phrases | **60** | 50 | "The one with milk" (the short word after *je laal ai* was not caught); "very" and "again" heard once each. |
+
+## How the scores are made (the scoring rule)
+
+Re-score after every recording session (`/mum-round`, step 5). It takes the score sheet, the new section of `grammar-notes.md` and the gap counts.
+
+1. **Each area has a fixed list of needs:** the things the engine must know to say that area's sentences in the games (Cook, the clinic, Arc 1 and the modes named in each area's "Needed by"). Add a need only when a game line needs it (a new row in `data/lang/reports/gap-list.md`), and say so in the session report: a score can go down that way, and that is honest.
+2. **Mark each need:**
+   - **✔ = 1.** Mum, Masi or Zafar's ruling said it clearly, **and** the engine holds it (a form, a word-class cell or a rule in `data/lang/`, draft or confirmed). **A known "none" is ✔ too:** when Mum says Kutchi has no such thing (no "the", no word for "next"), that is the answer.
+   - **◐ = ½.** Heard once; an unclear hearing (⚠); Mum unsure; Mum and Masi differ with no ruling; waiting on Zafar's ruling; or answered but not yet built into the engine.
+   - **○ = 0.** Not asked, or only predicted by an outside grammar (a hypothesis is never Kutchi: rule G1).
+   - **A need that is a list** (the genders of the kitchen nouns, the verbs with a polite form) scores its fraction, known ÷ needed, counted from `data/lang/`.
+3. **Score = 100 × points ÷ needs, to the nearest 5; a tie goes down.** 100 only when every need is ✔.
+4. **What does not move a score:** a spelling still to confirm (it is on the session report's list), and recordings (they are counted under vocabulary coverage).
+5. **Each mark cites its source** (`grammar-notes.md` §n). No source, no ✔.
+6. **Before** is the same sheet with that session's answers taken out, so the table shows what one sitting bought. After the next session, today's column becomes "Before".
+7. **Keep the area number out of a row's first cell** in the two tables here: `build/tools/ops/recordings.mjs` reads every row of this file that starts with a bare number (the status table further down) into the recording sheet.
+
+## Score sheet (12 Nov 2026)
+
+§n = `grammar-notes.md`. "[before: …]" is the need's mark before the 12 Nov session, where the session changed it. The area sections further down date from 1 and 5 Oct; where they are older than a mark here (the 24 Oct answers, §56-§63, and the 12 Nov answers, §64-§67), this sheet is the newer word.
+
+| Area | Needs, each marked (and its mark before 12 Nov where it changed) | Points | Today | Before |
+|---|---|---|---|---|
+| 1. He-words and she-words | ✔ two genders, no third; an unknown word takes the he-form (§1, §5, §24 B4, §37.5) · ✔ how it shows: "one", "big", the polite "I'd like" (§2, §31, §40) · 0.82 kitchen nouns with a known gender: 41 of 50 (§64) [before: 0.34 17 of 50] · 0.50 clinic nouns that have Kutchi: 5 of 10 | 3.32 of 4 (before 2.84) | 85 | 70 |
+| 2. One and more than one | ✔ he-words in *-o* take *-a* (§4, §34) · ✔ she-words in *-i* don't change (§4) · ✔ other endings don't change (§34) · ✔ a counted noun takes the plural (§34) · ✔ tomato: *tameta* (§64) [before: ◐ a wrong hearing, §34 P3] · ◐ the *-yu* plural: Mum gave the words, not when it is needed (§40, §45, §54) · ◐ chilli's plural: *mirchi* only for now (decision 5) | 6 of 7 (before 5.5) | 85 | 80 |
+| 3. The form before "in", "with", "on" | ✔ a he-word in *-o* takes *-e* (§41, §48; *chunde*, *batate*, *tapele*, §65, §67) · ✔ so do its describing word and its "of" word (§41, §49) · ✔ other nouns don't change (§36, §41) · ✔ an owner before "of" takes it (§48) · ◐ "one" in that form: *hakre fare* only (§66) [before: ○ not heard] · ◐ more than one he-word: *chokra sathe* heard once (§36); open (§55 "still open") · ◐ plural owners ⚠ (§48) | 5.5 of 7 (before 5) | 80 | 70 |
+| 4. "The" and "a" | ✔ Kutchi has none (§9, §43; rule G4) | 1 of 1 | 100 | 100 |
+| 5. Whose it is | ✔ "of" agrees with the thing owned (§47) · ✔ *je* before "in / on" (§49) · ✔ my, your (child, elder), his/her, our (both), their (§54) · ◐ those before "in / on": my, your, his/her known (§55); elder "your" and "our" not said · ◐ more than one thing or owner before "in / on" (§48 ⚠; not asked) | 4 of 5 | 80 | 80 |
+| 6. Describing words | ✔ four forms: he one, he more, she, before "in / with" (§40, §41) · ✔ the same after "is" (§42) · ✔ the ones that never change (§44) · ✔ it goes before the noun (§24, §25) · ✔ no "the big one": Kutchi points, or adds a verb (§43): a known "none" · ✔ the biggest: *wadho ma wadho* (§43) · ○ forms not heard: *saro* for more than one, *nindhe*, the he-forms of *kari / mori* (§10, §45, §46) | 6 of 7 | 85 | 85 |
+| 7. Numbers and counting | ✔ "one" agrees: *hakro / hakri* (§2) · ✔ two, three, four (§3, §34) · ✔ the number goes before the noun; only "one" changes (§3) · ✔ "{x} times": *hakre fare, ba fare, trae fare* (§66) [before: ○ English in the game] · ◐ 11 to 19, 21, 22, 90, 100, 1,000: said (§67), not yet in the engine [before: ○ not asked] · ◐ counting aloud starts *hakro* (§67, in noise) [before: ○ not asked] · ◐ first is *pela* (§7); second, third not asked · ○ 5 to 10: unclear in the noise (§67); five is from the handout only | 5.5 of 8 (before 3.5) | 70 | 45 |
+| 8. Amounts: "a spoon of", "half a cup" | ✔ the measure first, the stuff after it (§25, §29 R7) · ✔ whole, heaped, half (§24 B4-B5) · ✔ a spoon of sugar: *hakri chamchi khun* (§64, §65) [before: ○ M1 not asked] · ✔ a quarter to two and a half cups (§67) [before: ○ not asked] · ✔ a pinch, a handful (§67) [before: ○ not asked] · ◐ half a cup: *adho cup* (§67); "of chai" and "a glass of" not said [before: ○ not asked] · ◐ as many … that many: *jitli … itli* (§67): fixed lines, no rule; *itli* or *itlo* open [before: ○ not asked] | 6 of 7 (before 2) | 85 | 30 |
+| 9. I, you, he, she, we, they, and "to me" | ✔ I, you (child), you (elder), he/she: one word (§21, §23, §51) · ✔ two "we"s: *pa*, *asa* (§52) · ✔ they, these, those (§53, §63) · ✔ to me, you, him/her, us, them: *muke, toke, anke, inke, panke, iloka ke* (§56) · ✔ this, that, here, there, where (§13, §23) · ◐ "with me": *mu sathe*, once (§12) · ○ "to us" for *asa*: not asked | 5.5 of 7 | 80 | 80 |
+| 10. Talking to a child or an elder | ✔ *tu* to a child, *aai* to an elder (§21; rule G6) · ✔ respect uses the plural ending, the same for a man or a woman (§21) · ✔ the elder "you" and "we" share a form (§51, §62) · ✔ everyday *khape* against the polite form that agrees (§1, §31, §58) · ◐ *dinda* or *dinde*: which for whom (§37.7) · ◐ the "please" form: one verb, *wijij* (§65) [before: ○ not heard] · ○ several children at once: not asked | 5 of 7 (before 4.5) | 70 | 65 |
+| 11. "Is", "am", "are", "was" | ✔ am, are, is, by person: *aiya, aiye, aayo, ai, ain* (§42, §51) · ✔ it goes last (§15) · ◐ was: *wo*, for one he-thing only (§20) · ◐ isn't: *nai* (§14) · ○ there is, there isn't, I have: not asked | 3 of 5 | 60 | 60 |
+| 12. "I'd like" | ✔ everyday *khape* never changes (§1) · ✔ the polite form follows the thing: *khapeto / khapeti* (§1, §31, §58) · ✔ not wanting (§11, §24 B1) · ✔ you, he/she, we, they want (§58) · ✔ need is *… ji jaruri* (§58) · ◐ polite with more than one thing: *khapanta* (§1) or *khapeta* (Zafar's voice, §65) [before: ✔ *khapanta*, §1, unquestioned] | 5.5 of 6 (before 6) | 90 | 100 |
+| 13. What happens now and every day | ✔ every day, for every person, with "eat" (§62) · ✔ "I see", "I can" follow the speaker (§57, §61) · ◐ right now: *ukreto*, *bareto* (§25); the same as every day? · ◐ like: *arreti* ⚠; the he-thing form not heard (§59) · ○ any other verb: forms are held verb by verb | 3 of 5 | 60 | 60 |
+| 14. What will happen | ✔ "I will" follows the speaker (§32, §57) · ✔ he/she will come, child and elder (§21) · ◐ you will: *dinda / dinde* (§37.7) · ◐ *achdo* or *achindo* (§21) · ○ we will, they will: not asked | 3 of 5 | 60 | 60 |
+| 15. What happened: "came", "went" | ✔ came, became, with the "went" helper (§19, §21) · ✔ the ending follows who did it (§19, §21) · ○ I went (boy, girl): not asked · ○ they went: not asked · ○ a plain past without the helper: not asked | 2 of 5 | 40 | 40 |
+| 16. What someone did to something: "ate", "made", "found" | ✔ gave: the ending follows the giver, not the thing (§56) · ✔ I saw: it follows the speaker (§57; Zafar, 26 Oct) · ◐ he saw, she saw, Nana saw me: inconclusive (§57) · ◐ ate: with the "went" helper only (§20) · ○ ate, made, found, cut without it (C123-C136 not asked) · ○ we, you, they did: not asked | 3 of 6 | 50 | 50 |
+| 17. Two-part verbs and helpers | ✔ "for me": *banai de*, *kar de* (§9, §27) · ✔ "finish it": *chad* (§38) · ✔ the "went" helper (§19, §20) · ✔ can; want to, have to, need to (§60, §61) · ✔ bring: *khani achi de* (§65) [before: ◐ *khanechi* ⚠, §33] · 0.74 verbs with Kutchi, or a known "no word" (pour): 49 of 66 (§38, §67) · ○ the "for me" and polite forms of the cooking verbs: not asked | 5.74 of 7 (before 5.24) | 80 | 75 |
+| 18. Telling someone to do something | ✔ to a child: the bare verb (§21, §27, §38) · ✔ don't: *na* after the verb; before it when urgent (§12) · ◐ let's go: *winja* ⚠ (§33); let's eat not asked · 0.09 the elder or polite form: 3 of 35 verbs (*acho*, *karo*, §21; *wijij*, §65) [before: 0.06 2 of 35] · ○ to several children: not asked | 2.59 of 5 (before 2.56) | 50 | 50 |
+| 19. Saying no and not | ✔ no, and a polite refusal (§11) · ✔ don't want (§11, §24 B1) · ✔ don't, with a verb (§12) · ✔ not this, that; nothing; none left (§13, §14) · ◐ can't: "I" only (§61) · ◐ without: *wagar ji*; with a he-word dish? (§10); *mori*, *kari* (§64) · ○ "no chilli" inside a whole order (L19, L24 not asked) · ○ I don't eat, she didn't go: not asked | 5 of 8 | 60 | 60 |
+| 20. Asking | ✔ yes or no: the voice rises, no extra word (§27 B40, §58) · ✔ what, who, where, how many, how (§23) · ✔ which (§23; Zafar, 26 Sept) · ✔ the question word sits where the answer would (§30 K12) · ◐ who, as the doer: *kere* ⚠ (§23) · ○ when: not asked | 4.5 of 6 | 75 | 75 |
+| 21. "In", "on", "for", "up to" | ✔ in, for, with a person, also (§6, §8, §36) · ✔ on, under, inside, behind, beside, in front, facing, between (§15, §16) · ✔ the short and the long way (§41, §55) · ✔ up to, according to (§67) [before: ○ not asked] · ○ from: not answered · ○ near, left and right of, on top of, in the corner, with a tool (§17: the family points) | 4 of 6 (before 3) | 65 | 50 |
+| 22. Marking who it is done to | ✔ to me, you, him/her, us, them (§56) · ✔ a name takes *ke* (§20, §57) · ◐ a thing taking *ke*: once (§25 B19) · ◐ "give it to Nana": the pattern is known, the sentence not said | 3 of 4 | 75 | 75 |
+| 23. Joining: "and", "with", lists, "first … then" | ✔ and; a list (§6) · ✔ first … and then (§7) · ✔ or (§9) · ✔ mixed into chai: *waari* (§6) · ✔ with a person, with a side: *sathe* (§7, §36, §64) · ✔ with a filling: *chunde ja samosa* (§65, built) [before: ○ Cook's biggest gap] · ◐ "and one with potato": answered (§65), not built [before: ○ not asked] · ◐ a list with one verb: "bring me these for chai" built (§65); 3 to 6 things not [before: ○ not asked] · ○ but, because, if, when: not asked | 7 of 9 (before 5) | 80 | 55 |
+| 24. Word order | ✔ the verb last (notes, "Is Kutchi like Japanese?") · ✔ "in / on / with" after the noun; number and describing word before (§3, §15) · ✔ "to me" first; "I" and "you" often dropped (§1, §20) · ✔ the question word stays in place (§30 K12) · ✔ where a filling and "in my chai" go (§65) [before: ○ unknown] · ◐ where *na* goes in a long sentence: one example (§61) | 5.5 of 6 (before 4.5) | 90 | 75 |
+| 25. Calling out to someone | ✔ *E chokro! / E chokri!* (§36 C21) · ✔ names and titles alone (§36) · ✔ *beta* for a grandchild (§22) · ○ several at once: not asked | 3 of 4 | 75 | 75 |
+| 26. When, how and how much | ✔ now (two kinds), quickly, slowly, a little while (§24, §25) · ✔ a little, more, enough, only, still (§24, §25, §67) · ✔ every day: *roj* (§62) · ✔ "next": Kutchi has no word (§67): a known "none" [before: ○ not asked] · ◐ tomorrow ⚠, yesterday (§33, §37.9, §57, §60) · ◐ very: *bo* ⚠ (§33, §45) · ◐ a lot: unclear (§67) [before: ○ not asked] · ○ today, each: not asked | 5.5 of 8 (before 4) | 70 | 50 |
+| 27. "To cook", "for tasting" | ✔ to go, after want, have to, need (§60) · ✔ let me taste (§27 B46) · ✔ the form before a helper: *kari, khai, winni* (§38, §61) · ◐ to cook: *randhnu* ⚠ (§33) · ◐ does *winnu* change before *ji*? (§60) · ○ making it from any verb: no rule | 4 of 6 | 65 | 65 |
+| 28. A boy or a girl speaking | ✔ I will (§32, §57) · ✔ I gave, I saw (§56, §57) · ✔ I eat, I can (§61, §62) · ✔ want and like follow the thing, never the speaker (§58, §59, §64) · ✔ I am: the same for both (§51) · ○ I found, I ate, I'm eating: not asked | 5 of 6 | 85 | 85 |
+| 29. Set phrases, recorded whole | ✔ greetings and goodbyes (§21, §30) · ✔ how are you, I'm fine (§21, §27) · ✔ yes, no, well done, enough, careful, wait (§23 to §27) · ✔ thank you: the family says the English; *aabhar* given (§67) · 0.63 the kitchen's set lines in Kutchi: 48 of 76 (§67) [before: 0.50 38 of 76] · 0.07 the clinic's lines in Kutchi: 15 of 219 | 4.7 of 6 (before 4.57) | 80 | 75 |
+| 30. "The one with milk", "very", "again" | ✔ "the big one": none; Kutchi points, or adds a verb (§43): a known "none" · ◐ "the one that is red": *je laal ai …* ⚠ (§44 C43) · ◐ very: *bo* ⚠ (§33, §45) · ◐ again: *be fare na kara*, once (§66) [before: ○ not heard] | 2.5 of 4 (before 2) | 60 | 50 |
+
+## Vocabulary coverage: the kitchen games (12 Nov 2026)
+
+Vocabulary is never "100%", so it gets a coverage figure: the words the kitchen games use today (the word ids in `data/cook.json` and `data/stations/*.json`, each asked once the way the gap list asks it) against what is known, recorded and approved.
+
+| | Words | Of |
+|---|---|---|
+| The kitchen games use | 73 | |
+| Have a Kutchi word | 71 | 73 (the other 2, green pepper and turner, have none: Mum, §67) |
+| Confirmed, not a draft | 47 | 73 (24 drafts: heard once, or a spelling waits for Zafar) |
+| He-word or she-word known | 41 | 50 nouns |
+| Recorded in a family voice (any take) | 46 | 73 |
+| Recorded and checked OK (Zafar's ear or the blind check) | 29 | 73 |
+| Approved for the game | 46 | 73 (every clip: Zafar, 12 Nov) |
+| Approved for the app stores (`"final"`) | 0 | 73 |
+
+Around it: the engine says 94 of the kitchen's 125 lines in full Kutchi (the other 31 show grey English); the clinic has Kutchi for 25 of its 129 words and 15 of its 219 lines; the whole word store holds 1,218 entries (344 confirmed, 209 draft, 665 English only). Sources: `data/lang/lexicon.json`, `data/family-audio.json`, `data/lang/reports/gap-list.md` and `coverage.md`, as built by `node build/lang/import_all.mjs` on 12 Nov.
+
+## Status by area, 1 and 5 Oct (this table feeds the recording sheet)
+
+`build/tools/ops/recordings.mjs` reads these rows into `recording-sheet.md` §1b, so a changed cell here needs the sheet rebuilt. The Status column is as it stood on 5 Oct and is older than the scores above (areas 1, 7, 9, 13, 16, 22, 23, 28 and 30 among those that have moved since); **Settled by** names the Round 5 questions.
 
 | # | Feature | Status | Priority | Settled by |
 |---|---|---|---|---|
