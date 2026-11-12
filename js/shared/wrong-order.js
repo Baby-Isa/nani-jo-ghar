@@ -229,12 +229,32 @@ async function play(o = {}) {
     const ref = from && from.querySelector(".oc-row14");
     const w0 = ref ? ref.getBoundingClientRect().width : 0;
     rows.forEach((row) => row.style.setProperty("--wo-row", `${Math.round(w0 || 220)}px`));
-    rows.forEach((row) => {
+    widen14(card);
+  };
+  // (each line's item box as wide as its line of cards, so the card takes it in its width)
+  const widen14 = (card) => {
+    const z = card._woK || 1;
+    card.querySelectorAll(".oc-row14").forEach((row) => {
       const last = row.lastElementChild;
       const rb = row.getBoundingClientRect();
-      const need = last ? last.getBoundingClientRect().right - rb.left + parseFloat(getComputedStyle(row).paddingLeft || 0) : 0;
-      if (need > rb.width && row.parentElement) row.parentElement.style.minWidth = `${Math.ceil(need)}px`;
+      const need = last ? (last.getBoundingClientRect().right - rb.left) / z + parseFloat(getComputedStyle(row).paddingLeft || 0) : 0;
+      if (row.parentElement) row.parentElement.style.minWidth = need > rb.width / z ? `${Math.ceil(need)}px` : "";
     });
+  };
+  // past the words' floor, a line of four or more item cards is laid in two lines (the same cards, each line its own row as the panel's)
+  const split14 = (card) => {
+    let did = false;
+    card.querySelectorAll(".oc-row14").forEach((row) => {
+      const kids = [...row.children];
+      if (kids.length < 4 || row.dataset.woSplit) return;
+      const two = row.cloneNode(false);
+      row.dataset.woSplit = two.dataset.woSplit = "1";
+      kids.slice(Math.ceil(kids.length / 2)).forEach((k) => two.appendChild(k));
+      row.after(two);
+      did = true;
+    });
+    if (did) (card.style.setProperty("--wo-k", "1"), (card._woK = 1), widen14(card));
+    return did;
   };
   let roomSet = false;
   const roomBack = () => {
@@ -242,12 +262,29 @@ async function play(o = {}) {
     roomSet = false;
     ["left", "top", "width", "height", "right", "bottom"].forEach((k) => stage.style.removeProperty(k));
   };
-  const floor = (card, body, rows) => {
+  const floor = (card, body, rows, faceWant) => {
     const px = minText(card); // (a computed size is the card's own, before its zoom)
     if (!px) return false;
     const need = LOOK.minText / px;
     if (card._woK >= need - 0.001) return false;
-    if (rows >= 4) {
+    // first the asker's face no bigger than it must be (1.8 times the side panel's, as drawn at the floor's zoom): the room is the words'
+    const fe = card.querySelector(".njg-wo-who .njg-face, .njg-wo-who img");
+    if (fe && faceWant) {
+      const f0 = parseFloat(card.style.getPropertyValue("--wo-face")) || 2;
+      const w = fe.getBoundingClientRect().width / (card._woK || 1);
+      const f = Math.max(1, (f0 * faceWant) / need / Math.max(1, w));
+      if (f < f0) {
+        card.style.setProperty("--wo-face", f.toFixed(2));
+        fit(card, true);
+        if (card._woK >= need - 0.001) return false;
+      }
+    }
+    if (card.classList.contains("njg-wo-14")) {
+      if (split14(card)) {
+        fit(card, true);
+        if (card._woK >= need - 0.001) return false;
+      }
+    } else if (rows >= 4) {
       const k0 = card._woK;
       card.classList.add("njg-wo-cols");
       fit(card, true);
@@ -336,7 +373,7 @@ async function play(o = {}) {
           card.style.setProperty("--wo-face", f.toFixed(2));
           fit(card, true);
         }
-        const scroll = floor(card, body, (drawn.rows || []).length);
+        const scroll = floor(card, body, (drawn.rows || []).length, want);
         note("wo-card", { who: c.who, ok: false, phase: "open", rows: (drawn.rows || []).length });
         await gate(move(card, { transform: "scale(.82)", opacity: 0.4 }, { transform: "none", opacity: 1 }, T(LOOK.open)));
         // the asker says their own line (Zafar, 11 Nov night: "the asker always speaks their own line"), their big face talking
