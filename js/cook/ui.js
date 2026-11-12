@@ -2149,6 +2149,7 @@
           m.away.delete(r);
           (m.landed = m.landed || new Set()).add(r); // (SH-171: a row said and landed never waits as a slot again)
           if (to) to.classList.remove("oc-away");
+          pieceEls(r).forEach((e) => e.classList.remove("oc-away"));
           if (big) big.remove();
         };
         if (fast || !big || !to) return Promise.resolve(done());
@@ -2198,6 +2199,7 @@
         return global.WordCard.morph(big, to, { bend }).catch(() => {}).then(done);
       }
       m.away.delete(r);
+      pieceEls(r).forEach((e) => e.classList.remove("oc-away"));
       const to = rowElOf(who, r);
       if (!to) return Promise.resolve();
       const big = box && box.querySelector(".wc-card");
@@ -2932,6 +2934,9 @@
    * cards and Nani's timed hint, chai's method.)
    */
   const sideEls = new Map(); // row -> [elements] on the sidebar card
+  // (SEK-25's piece rows, the four cards of a skewer's one thing, keyed per piece: they belong to their skewer's row. The coordinator, 12 Nov,
+  // sekelo L2: the tameto pieces stood written on the panel before Nana said their skewer, under and over big empty slots)
+  const pieceEls = (r) => (!r ? [] : [].concat(...((r._pieceKeys || []).map((ks) => [].concat(...(ks || []).map((k) => sideEls.get(k) || []))))).filter((e) => e.classList && e.classList.contains("oc-row")));
   const introEls = new Map(); // row -> [elements] on the request card
   const addEl = (map, r, el) => r && map.set(r, (map.get(r) || []).concat(el));
   function orderLevel() {
@@ -3985,7 +3990,7 @@
     // (and no paint) ever finds it on one unwrapped line past the card's edge ("khape." 15-20 px out at 740x320 and 930x430)
     if (global.FitText && global.FitText.run) global.FitText.run(box);
     // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
-    if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
+    if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).concat(pieceEls(r)).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
     // SH-171 (Zafar, 1 Nov night: "the menu card should only appear when that person starts their order, saying the sentence that is
     // the sentence of the menu card ... It should appear in its collapsed form, and then as they start listing what they want ... the
     // menu card should open up"): a person's card is not drawn until they start (unsaid), shows folded (face and headline) while they
