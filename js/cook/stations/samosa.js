@@ -1412,8 +1412,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      * (Cook.Coach.demo, the one finger, Onboard.gesture's "tap") on the thing, the first time its light is up; it goes on any press, and
      * with its light. thing: a canvas thing (its litBounds when it has them). -> {stop()} or null
      */
+    // Zafar, 12 Nov: "Samosa should match chai in terms of onboarding fingers, i.e. not having them, except for drags, holds and swipes"
+    // (STD-D1-02, SH-141; contract-44): the fry's steps are taps (the knob, a samosa into the oil, the lift), so their light comes alone,
+    // as chai's; the fill's and the fold's fingers (a swipe, a drag) stay. The demo below is kept for a drag a later step may need.
+    const TAP_FINGERS = false;
     const finger = (thing, step) => {
-      if (!Cook.Coach || !Cook.Coach.demo || !thing) return null;
+      if (!TAP_FINGERS || !Cook.Coach || !Cook.Coach.demo || !thing) return null;
       const at = () => {
         if (!thing.active) return null;
         const b = (thing.litBounds && thing.litBounds()) || thing.getBounds();

@@ -436,10 +436,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (Cook.Coach.active && Cook.Coach.active() && Cook.Coach.stop) Cook.Coach.stop(false);
       flipOf = t;
       flipCtl = Cook.Coach.control({ key: "maani-line", target: Cook.Coach.box(t.it.sprite), first: true, noHint: true, current: () => flipOf === t && onTawa === t && t.side === 1 && !t.busy, note: `${flipGate.scope}:s14-control` });
-      if (flipCtl && Cook.Coach.demo) {
-        const sp = t.it.sprite;
-        flipFinger = Cook.Coach.demo(() => (sp.active && flipOf === t ? { from: { x: sp.x, y: sp.y }, to: { x: sp.x, y: sp.y } } : null), { gesture: "tap", ms: 900, delay: 300, step: "maani-line:flip" });
-      }
+      // (Zafar, 12 Nov: the onboarding fingers as chai's, none on a tap, only on a drag, hold or swipe: the flip is a tap, so its light
+      // comes alone; the roll's finger, a drag, stays: contract-44)
     }
     function stepNow() {
       if (finished) return steps.done();
