@@ -4,7 +4,7 @@
   "pages": 126,
   "sources": [
    "loadcheck --discover (the Cook title, each station lab and each clinic game to its first step at level 1; the mode pages opened)",
-   "build/sandbox/run.mjs at 1280x665, each flow played to its end by the sandbox's player, every picture fetched (resource timing) or drawn (the contract hook); run artuse-full",
+   "build/sandbox/run.mjs at 1280x665, each flow played by the sandbox's player, every picture fetched (resource timing) or drawn (the contract hook); run artuse-full",
    "each lab page and root page opened at 1280x665 and left 2.5 s (no play)"
   ],
   "perGame": {
@@ -32,22 +32,22 @@
   "namesNotResolved": "49 paths built in code (${...}) are read as patterns (how \"built\"), so a picture one may name is never on the move-out list; 548 files scanned"
  },
  "summary": {
-  "onDisk": 3365,
-  "loadedByAPage": 817,
+  "onDisk": 3366,
+  "loadedByAPage": 802,
   "askedForMissing": 0,
-  "storedLoadedByNothing": 2548,
-  "greyButNamed": 1384,
-  "greyUnnamed": 1164,
+  "storedLoadedByNothing": 2564,
+  "greyButNamed": 1402,
+  "greyUnnamed": 1162,
   "retiredStillLoaded": 1,
   "retiredStillNamed": 58,
   "moveOut": {
    "unloadedUnnamed": {
-    "files": 1164,
-    "bytes": 223144480
+    "files": 1162,
+    "bytes": 223058464
    },
    "namedNotLoaded": {
-    "files": 1384,
-    "bytes": 76813936
+    "files": 1402,
+    "bytes": 77241438
    },
    "videos": {
     "files": 2,
@@ -62,8 +62,8 @@
     "bytes": 526366240
    },
    "assets": {
-    "files": 4954,
-    "bytes": 389054461
+    "files": 5054,
+    "bytes": 390320254
    }
   }
  },
@@ -131,11 +131,11 @@
    "firstStep": 1,
    "opened": 0,
    "notOpened": [],
-   "green": 42,
+   "green": 43,
    "approved": 28,
    "amber": 33,
    "red": 1,
-   "total": 104,
+   "total": 105,
    "howComplete": "4 plays to the end, 1 to the first step only"
   },
   "daar": {
@@ -173,9 +173,9 @@
    "firstStep": 1,
    "opened": 0,
    "notOpened": [],
-   "green": 38,
+   "green": 37,
    "approved": 28,
-   "amber": 23,
+   "amber": 24,
    "red": 0,
    "total": 89,
    "howComplete": "4 plays to the end, 1 to the first step only"
@@ -187,11 +187,11 @@
    "firstStep": 1,
    "opened": 0,
    "notOpened": [],
-   "green": 12,
-   "approved": 32,
-   "amber": 30,
+   "green": 14,
+   "approved": 33,
+   "amber": 29,
    "red": 0,
-   "total": 74,
+   "total": 76,
    "howComplete": "4 plays to the end, 1 to the first step only"
   },
   "baking": {
@@ -201,11 +201,11 @@
    "firstStep": 1,
    "opened": 0,
    "notOpened": [],
-   "green": 18,
+   "green": 19,
    "approved": 33,
    "amber": 30,
    "red": 0,
-   "total": 81,
+   "total": 82,
    "howComplete": "4 plays to the end, 1 to the first step only"
   },
   "eggs": {
@@ -229,11 +229,11 @@
    "firstStep": 1,
    "opened": 0,
    "notOpened": [],
-   "green": 15,
+   "green": 16,
    "approved": 28,
    "amber": 15,
    "red": 0,
-   "total": 58,
+   "total": 59,
    "howComplete": "4 plays to the end, 1 to the first step only"
   },
   "clinic": {
@@ -259,9 +259,9 @@
    "notOpened": [],
    "green": 2,
    "approved": 100,
-   "amber": 103,
+   "amber": 105,
    "red": 0,
-   "total": 205,
+   "total": 207,
    "howComplete": "2 plays to the end, 4 pages opened (no play)"
   },
   "parked modes": {
@@ -285,11 +285,11 @@
    "firstStep": 0,
    "opened": 0,
    "notOpened": [],
-   "green": 79,
+   "green": 41,
    "approved": 101,
-   "amber": 157,
-   "red": 1,
-   "total": 338,
+   "amber": 141,
+   "red": 0,
+   "total": 283,
    "howComplete": "3 plays to the end"
   },
   "day": {
@@ -314,8 +314,8 @@
    "opened": 0,
    "notOpened": [],
    "green": 2,
-   "approved": 100,
-   "amber": 61,
+   "approved": 101,
+   "amber": 60,
    "red": 0,
    "total": 163,
    "howComplete": "1 play to the end"
@@ -19741,6 +19741,7 @@
     "cook:chai-tray@L2",
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
+    "cook:day1",
     "cook:eggs@L2",
     "cook:eggs@L3",
     "cook:eggs@L4",
@@ -19771,6 +19772,7 @@
     "cook:chai-tray@L2",
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
+    "cook:day1",
     "cook:eggs@L2",
     "cook:eggs@L3",
     "cook:eggs@L4",
@@ -20243,8 +20245,7 @@
     "chai-tray",
     "corn",
     "eggs",
-    "serve",
-    "story"
+    "serve"
    ],
    "loadedBy": [
     "cook:chai-tray@L4",
@@ -20252,8 +20253,7 @@
     "cook:corn@L4",
     "cook:eggs@L3",
     "cook:eggs@L4",
-    "cook:open-kitchen",
-    "lab:cook/story-birthday"
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -20275,8 +20275,7 @@
     "chai-tray",
     "corn",
     "eggs",
-    "serve",
-    "story"
+    "serve"
    ],
    "loadedBy": [
     "cook:chai-tray@L4",
@@ -20284,8 +20283,7 @@
     "cook:corn@L4",
     "cook:eggs@L3",
     "cook:eggs@L4",
-    "cook:open-kitchen",
-    "lab:cook/story-birthday"
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -20308,7 +20306,6 @@
     "corn",
     "eggs",
     "serve",
-    "story",
     "title"
    ],
    "loadedBy": [
@@ -20318,8 +20315,7 @@
     "cook:eggs@L3",
     "cook:eggs@L4",
     "cook:open-kitchen",
-    "cook:title",
-    "lab:cook/story-birthday"
+    "cook:title"
    ],
    "namedIn": [
     "data/cook.json",
@@ -22668,13 +22664,9 @@
   },
   "assets/cook/items-s08b/chaat-bowl-side-s08b.webp": {
    "version": "s08",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -23014,15 +23006,13 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23075,15 +23065,13 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23298,13 +23286,15 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23318,11 +23308,13 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23336,13 +23328,15 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23356,13 +23350,15 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23376,12 +23372,14 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23395,13 +23393,15 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23428,13 +23428,15 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23448,13 +23450,15 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -23976,6 +23980,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24016,6 +24021,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24056,6 +24062,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24244,6 +24251,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24272,6 +24280,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24300,6 +24309,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24328,6 +24338,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24356,6 +24367,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24384,6 +24396,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24412,6 +24425,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24440,6 +24454,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24468,6 +24483,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24496,6 +24512,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24524,6 +24541,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24552,6 +24570,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24580,6 +24599,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24608,6 +24628,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24714,6 +24735,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24742,6 +24764,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24771,6 +24794,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/juice.html"
@@ -24800,6 +24824,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24865,6 +24890,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24901,6 +24927,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24938,6 +24965,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -24975,6 +25003,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25012,6 +25041,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25049,6 +25079,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25086,6 +25117,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25123,6 +25155,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25151,6 +25184,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25179,6 +25213,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25207,6 +25242,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25235,6 +25271,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25263,6 +25300,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -25579,6 +25617,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -25927,13 +25966,14 @@
     "story"
    ],
    "loadedBy": [
+    "cook:chai-tray@L2",
     "cook:chai-tray@L3",
-    "cook:chai-tray@L4",
     "cook:day1",
     "cook:fetch",
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -26003,7 +26043,6 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
-    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -26151,14 +26190,13 @@
     "story"
    ],
    "loadedBy": [
-    "cook:chai-tray",
-    "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
     "cook:fetch",
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -26219,6 +26257,7 @@
     "story"
    ],
    "loadedBy": [
+    "cook:chai-tray",
     "cook:chai-tray@L2",
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
@@ -26227,6 +26266,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -26382,7 +26422,6 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
-    "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
     "cook:mishkaki-grill@L4",
@@ -26483,6 +26522,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -26525,7 +26565,6 @@
    "games": [
     "fetch",
     "house",
-    "samosa",
     "serve",
     "story"
    ],
@@ -26535,10 +26574,6 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
-    "cook:open-kitchen",
-    "cook:samosa@L2",
-    "cook:samosa@L3",
-    "cook:samosa@L4",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -26582,12 +26617,14 @@
    ],
    "loadedBy": [
     "cook:chai-tray",
-    "cook:chai-tray@L2",
+    "cook:chai-tray@L3",
+    "cook:chai-tray@L4",
     "cook:day1",
     "cook:fetch",
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -26838,6 +26875,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "cook:stir",
     "cook:tadka",
     "first",
@@ -26938,6 +26976,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -27075,6 +27114,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -27167,6 +27207,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -27298,6 +27339,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/kit.html"
@@ -27325,6 +27367,7 @@
    "status": "amber",
    "games": [
     "baking",
+    "chaat",
     "fetch",
     "house",
     "serve",
@@ -27334,6 +27377,7 @@
     "cook:baking@L2",
     "cook:baking@L3",
     "cook:baking@L4",
+    "cook:chaat@L2",
     "cook:day1",
     "cook:fetch",
     "cook:fetch@L2",
@@ -28984,13 +29028,15 @@
    "version": "s17",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/stations/daar.json",
@@ -29041,13 +29087,15 @@
    "version": "s17",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/stations/daar.json",
@@ -29843,13 +29891,14 @@
    "status": "amber",
    "games": [
     "chai-tray",
-    "story"
+    "serve"
    ],
    "loadedBy": [
+    "cook:chai-tray",
     "cook:chai-tray@L2",
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
-    "lab:cook/story-birthday"
+    "cook:day1"
    ],
    "namedIn": [
     "data/cook.json"
@@ -29884,6 +29933,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -29906,6 +29956,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -29928,6 +29979,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -29950,6 +30002,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -29972,6 +30025,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -30201,6 +30255,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -30234,6 +30289,7 @@
     "cook:eggs@L2",
     "cook:eggs@L3",
     "cook:eggs@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/cards.html",
@@ -30286,15 +30342,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -30328,11 +30382,9 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -30488,6 +30540,7 @@
     "cook:day1",
     "cook:fetch@L2",
     "cook:fetch@L3",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/card-options.html"
@@ -30608,6 +30661,7 @@
     "cook:day1",
     "cook:fetch",
     "cook:fetch@L2",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/card-options.html"
@@ -32464,15 +32518,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32506,15 +32558,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32549,15 +32599,13 @@
    "status": "amber",
    "games": [
     "labs",
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
     "cook:mishkaki-grill@L4",
-    "cook:open-kitchen",
     "page:lab/card-options.html"
    ],
    "namedIn": [
@@ -32592,15 +32640,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32634,15 +32680,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32679,15 +32723,13 @@
    "status": "amber",
    "games": [
     "labs",
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
     "cook:mishkaki-grill@L4",
-    "cook:open-kitchen",
     "page:lab/card-options.html"
    ],
    "namedIn": [
@@ -32722,15 +32764,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32764,15 +32804,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32806,15 +32844,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32863,15 +32899,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32905,15 +32939,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -32948,15 +32980,13 @@
    "status": "amber",
    "games": [
     "labs",
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
     "cook:mishkaki-grill@L4",
-    "cook:open-kitchen",
     "page:lab/card-options.html"
    ],
    "namedIn": [
@@ -33093,11 +33123,9 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -33133,11 +33161,9 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -33183,13 +33209,9 @@
   },
   "assets/cook/items/samosa-v2/fry-0.webp": {
    "version": "unversioned",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -33201,13 +33223,9 @@
   },
   "assets/cook/items/samosa-v2/fry-1.webp": {
    "version": "unversioned",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -33219,13 +33237,9 @@
   },
   "assets/cook/items/samosa-v2/fry-2.webp": {
    "version": "unversioned",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -33237,13 +33251,9 @@
   },
   "assets/cook/items/samosa-v2/fry-3.webp": {
    "version": "unversioned",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -33455,13 +33465,9 @@
   },
   "assets/cook/items/served/chaat-v2.webp": {
    "version": "unversioned",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -33489,6 +33495,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -33510,6 +33517,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -33523,9 +33531,13 @@
   },
   "assets/cook/items/served/daar-v2.webp": {
    "version": "unversioned",
-   "status": "grey",
-   "games": [],
-   "loadedBy": [],
+   "status": "amber",
+   "games": [
+    "serve"
+   ],
+   "loadedBy": [
+    "cook:open-kitchen"
+   ],
    "namedIn": [
     "data/cook.json"
    ],
@@ -33597,13 +33609,9 @@
   },
   "assets/cook/items/served/samosa.webp": {
    "version": "unversioned",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json",
     "data/stations/samosa.json",
@@ -33616,13 +33624,9 @@
   },
   "assets/cook/items/served/sekelo.webp": {
    "version": "unversioned",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json",
     "data/stations/mishkaki-grill.json"
@@ -33724,6 +33728,7 @@
    "loadedBy": [
     "cook:baking",
     "cook:baking@L2",
+    "cook:baking@L3",
     "cook:baking@L4",
     "page:lab/cards.html",
     "page:lab/chai-v2-mockup.html",
@@ -34326,6 +34331,7 @@
    ],
    "loadedBy": [
     "cook:baking",
+    "cook:baking@L2",
     "cook:baking@L3",
     "cook:baking@L4"
    ],
@@ -34616,9 +34622,13 @@
   },
   "assets/cook/items/shelf-spi-01-bare-f.webp": {
    "version": "unversioned",
-   "status": "grey",
-   "games": [],
-   "loadedBy": [],
+   "status": "amber",
+   "games": [
+    "serve"
+   ],
+   "loadedBy": [
+    "cook:open-kitchen"
+   ],
    "namedIn": [
     "data/cook.json",
     "js/cook/mechanics/grill.js",
@@ -34637,9 +34647,11 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "labs"
+    "labs",
+    "serve"
    ],
    "loadedBy": [
+    "cook:open-kitchen",
     "page:lab/chai-v2-mockup.html"
    ],
    "namedIn": [
@@ -34864,9 +34876,13 @@
   },
   "assets/cook/items/shelf-veg-12-bare-f.webp": {
    "version": "unversioned",
-   "status": "grey",
-   "games": [],
-   "loadedBy": [],
+   "status": "amber",
+   "games": [
+    "serve"
+   ],
+   "loadedBy": [
+    "cook:open-kitchen"
+   ],
    "namedIn": [
     "data/cook.json",
     "js/cook/mechanics/grill.js",
@@ -34974,15 +34990,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -35039,13 +35053,11 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -35091,6 +35103,7 @@
     "cook:day1",
     "cook:fetch@L2",
     "cook:fetch@L3",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -35177,6 +35190,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "cook:tadka",
     "first",
     "lab:cook/story-birthday"
@@ -35259,6 +35273,7 @@
     "cook:chai-tray@L4",
     "cook:day1",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "cook:tadka",
     "first",
     "lab:cook/story-birthday"
@@ -35307,6 +35322,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "cook:tadka",
     "first",
     "lab:cook/story-birthday"
@@ -35543,11 +35559,9 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -36087,13 +36101,9 @@
   },
   "assets/cook/items/v3/chaat/pot-chana.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -36157,13 +36167,9 @@
   },
   "assets/cook/items/v3/chaat/pot-imli.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -36201,13 +36207,9 @@
   },
   "assets/cook/items/v3/chaat/pot-potato.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -36253,6 +36255,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -36280,6 +36283,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -36322,6 +36326,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -36346,6 +36351,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -36381,6 +36387,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -36416,6 +36423,7 @@
    ],
    "loadedBy": [
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -36433,13 +36441,15 @@
    "status": "amber",
    "games": [
     "daar",
-    "samosa"
+    "samosa",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -36472,13 +36482,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -36493,13 +36505,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -36527,13 +36541,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -36548,13 +36564,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -36569,13 +36587,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -36603,13 +36623,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -36637,13 +36659,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -36659,13 +36683,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -36681,13 +36707,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -36703,13 +36731,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -36814,9 +36844,13 @@
   },
   "assets/cook/items/v3/daar/ladle-v3.webp": {
    "version": "v3",
-   "status": "grey",
-   "games": [],
-   "loadedBy": [],
+   "status": "amber",
+   "games": [
+    "serve"
+   ],
+   "loadedBy": [
+    "cook:open-kitchen"
+   ],
    "namedIn": [
     "data/cook.json"
    ],
@@ -37025,13 +37059,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -37046,13 +37082,15 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json"
@@ -37072,6 +37110,7 @@
     "house",
     "labs",
     "maani-line",
+    "samosa",
     "serve",
     "story"
    ],
@@ -37090,6 +37129,10 @@
     "cook:maani-line@L3",
     "cook:maani-line@L4",
     "cook:open-kitchen",
+    "cook:samosa",
+    "cook:samosa@L2",
+    "cook:samosa@L3",
+    "cook:samosa@L4",
     "cook:stir",
     "first",
     "lab:cook/story-birthday",
@@ -37126,6 +37169,7 @@
     "cook:eggs@L2",
     "cook:eggs@L3",
     "cook:eggs@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -37154,6 +37198,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -37181,6 +37226,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -37210,15 +37256,10 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
-    "cook:samosa",
-    "cook:samosa@L2",
-    "cook:samosa@L3",
-    "cook:samosa@L4"
+    "cook:samosa"
    ],
    "namedIn": [
     "data/cook.json"
@@ -37824,11 +37865,9 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -37848,11 +37887,9 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -38005,13 +38042,9 @@
   },
   "assets/cook/items/v3/samosa/fold-v2-1.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -38023,13 +38056,9 @@
   },
   "assets/cook/items/v3/samosa/fold-v2-2.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -38041,13 +38070,9 @@
   },
   "assets/cook/items/v3/samosa/fold-v2-3.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -38059,13 +38084,9 @@
   },
   "assets/cook/items/v3/samosa/fold-v2-4.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -38077,13 +38098,9 @@
   },
   "assets/cook/items/v3/samosa/fold-v2-5.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -38095,13 +38112,9 @@
   },
   "assets/cook/items/v3/samosa/fold-v2-6.webp": {
    "version": "v3",
-   "status": "amber",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json"
    ],
@@ -38115,19 +38128,13 @@
    "version": "v3",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
-    "cook:samosa",
-    "cook:samosa@L2",
-    "cook:samosa@L3",
-    "cook:samosa@L4"
+    "cook:samosa"
    ],
    "namedIn": [
-    "data/cook.json",
-    "data/stations/samosa.json"
+    "data/cook.json"
    ],
    "namedHow": [
     "glob",
@@ -38590,15 +38597,13 @@
    "version": "v3",
    "status": "red",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json"
@@ -38942,6 +38947,7 @@
     "baking"
    ],
    "loadedBy": [
+    "cook:baking@L2",
     "cook:baking@L3",
     "cook:baking@L4"
    ],
@@ -38960,7 +38966,6 @@
     "baking"
    ],
    "loadedBy": [
-    "cook:baking@L2",
     "cook:baking@L3",
     "cook:baking@L4"
    ],
@@ -39229,9 +39234,7 @@
     "chaat"
    ],
    "loadedBy": [
-    "cook:chaat@L2",
-    "cook:chaat@L3",
-    "cook:chaat@L4"
+    "cook:chaat"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39246,16 +39249,14 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39270,16 +39271,14 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39295,16 +39294,14 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39322,6 +39319,7 @@
     "chaat"
    ],
    "loadedBy": [
+    "cook:chaat@L2",
     "cook:chaat@L4"
    ],
    "namedIn": [
@@ -39378,9 +39376,7 @@
     "chaat"
    ],
    "loadedBy": [
-    "cook:chaat@L2",
-    "cook:chaat@L3",
-    "cook:chaat@L4"
+    "cook:chaat"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39409,16 +39405,14 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39433,16 +39427,14 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39460,6 +39452,7 @@
     "chaat"
    ],
    "loadedBy": [
+    "cook:chaat@L2",
     "cook:chaat@L4"
    ],
    "namedIn": [
@@ -39517,7 +39510,7 @@
    ],
    "loadedBy": [
     "cook:chaat",
-    "cook:chaat@L2",
+    "cook:chaat@L3",
     "cook:chaat@L4"
    ],
    "namedIn": [
@@ -39547,15 +39540,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39570,16 +39561,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
-    "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39597,7 +39585,9 @@
     "chaat"
    ],
    "loadedBy": [
-    "cook:chaat@L3"
+    "cook:chaat@L2",
+    "cook:chaat@L3",
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39616,7 +39606,7 @@
    ],
    "loadedBy": [
     "cook:chaat",
-    "cook:chaat@L2",
+    "cook:chaat@L3",
     "cook:chaat@L4"
    ],
    "namedIn": [
@@ -39632,15 +39622,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39655,16 +39643,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
-    "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39682,7 +39667,9 @@
     "chaat"
    ],
    "loadedBy": [
-    "cook:chaat@L3"
+    "cook:chaat@L2",
+    "cook:chaat@L3",
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39730,7 +39717,8 @@
     "chaat",
     "chai-tray",
     "chop",
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:chaat@L2",
@@ -39743,7 +39731,8 @@
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -39760,15 +39749,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/stations/chop.json",
@@ -39784,15 +39771,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/stations/chop.json",
@@ -40002,7 +39987,8 @@
    "games": [
     "chaat",
     "chop",
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:chaat@L2",
@@ -40015,7 +40001,8 @@
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40117,8 +40104,7 @@
    "status": "green",
    "games": [
     "chaat",
-    "chop",
-    "serve"
+    "chop"
    ],
    "loadedBy": [
     "cook:chaat",
@@ -40127,8 +40113,7 @@
     "cook:chaat@L4",
     "cook:chop@L2",
     "cook:chop@L3",
-    "cook:chop@L4",
-    "cook:open-kitchen"
+    "cook:chop@L4"
    ],
    "namedIn": [
     "data/stations/chop.json",
@@ -40145,8 +40130,7 @@
    "status": "green",
    "games": [
     "chaat",
-    "chop",
-    "serve"
+    "chop"
    ],
    "loadedBy": [
     "cook:chaat",
@@ -40155,8 +40139,7 @@
     "cook:chaat@L4",
     "cook:chop@L2",
     "cook:chop@L3",
-    "cook:chop@L4",
-    "cook:open-kitchen"
+    "cook:chop@L4"
    ],
    "namedIn": [
     "data/stations/chop.json",
@@ -40316,11 +40299,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "chaat",
     "corn"
    ],
    "loadedBy": [
-    "cook:chaat@L2",
     "cook:corn",
     "cook:corn@L2",
     "cook:corn@L3",
@@ -40432,13 +40413,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40454,13 +40437,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40476,13 +40461,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40497,13 +40484,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40518,13 +40507,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40539,13 +40530,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40560,13 +40553,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40693,13 +40688,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -40716,13 +40713,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -40739,13 +40738,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -40762,13 +40763,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -40785,13 +40788,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -40808,13 +40813,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -40845,6 +40852,7 @@
     "cook:day1",
     "cook:fetch@L2",
     "cook:fetch@L3",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -40863,7 +40871,8 @@
    "status": "green",
    "games": [
     "daar",
-    "fetch"
+    "fetch",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
@@ -40871,6 +40880,7 @@
     "cook:daar@L3",
     "cook:daar@L4",
     "cook:fetch@L3",
+    "cook:open-kitchen",
     "cook:tadka"
    ],
    "namedIn": [
@@ -40887,11 +40897,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40907,11 +40919,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40927,12 +40941,14 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40948,13 +40964,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40970,14 +40988,20 @@
    "version": "v4",
    "status": "green",
    "games": [
+    "baking",
     "daar",
-    "fetch"
+    "fetch",
+    "serve"
    ],
    "loadedBy": [
+    "cook:baking@L2",
+    "cook:baking@L3",
+    "cook:baking@L4",
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L4",
-    "cook:fetch@L4"
+    "cook:fetch@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -40994,13 +41018,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -41017,13 +41043,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -41040,12 +41068,14 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -41421,11 +41451,22 @@
   },
   "assets/cook/items/v4/kit/cloth.webp": {
    "version": "v4",
-   "status": "grey",
-   "games": [],
-   "loadedBy": [],
-   "namedIn": [],
-   "namedHow": [],
+   "status": "green",
+   "games": [
+    "samosa"
+   ],
+   "loadedBy": [
+    "cook:samosa",
+    "cook:samosa@L2",
+    "cook:samosa@L3",
+    "cook:samosa@L4"
+   ],
+   "namedIn": [
+    "data/stations/samosa.json"
+   ],
+   "namedHow": [
+    "path"
+   ],
    "retired": null
   },
   "assets/cook/items/v4/kit/grill-v2.webp": {
@@ -41433,8 +41474,7 @@
    "status": "green",
    "games": [
     "corn",
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:corn",
@@ -41444,8 +41484,7 @@
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -41506,13 +41545,15 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir"
    ],
    "namedIn": [
@@ -41608,11 +41649,48 @@
   },
   "assets/cook/items/v4/kit/slotted-spoon-cloth.webp": {
    "version": "v4",
-   "status": "grey",
-   "games": [],
-   "loadedBy": [],
-   "namedIn": [],
-   "namedHow": [],
+   "status": "green",
+   "games": [
+    "samosa"
+   ],
+   "loadedBy": [
+    "cook:samosa",
+    "cook:samosa@L2",
+    "cook:samosa@L3",
+    "cook:samosa@L4"
+   ],
+   "namedIn": [
+    "data/stations/samosa.json"
+   ],
+   "namedHow": [
+    "path"
+   ],
+   "retired": null
+  },
+  "assets/cook/items/v4/kit/tray-deep.webp": {
+   "version": "v4",
+   "status": "green",
+   "games": [
+    "corn",
+    "mishkaki-grill"
+   ],
+   "loadedBy": [
+    "cook:corn",
+    "cook:corn@L2",
+    "cook:corn@L3",
+    "cook:corn@L4",
+    "cook:mishkaki-grill",
+    "cook:mishkaki-grill@L2",
+    "cook:mishkaki-grill@L3",
+    "cook:mishkaki-grill@L4"
+   ],
+   "namedIn": [
+    "data/stations/corn.json",
+    "data/stations/mishkaki-grill.json"
+   ],
+   "namedHow": [
+    "path"
+   ],
    "retired": null
   },
   "assets/cook/items/v4/kit/tray-steel-long.webp": {
@@ -41629,24 +41707,15 @@
    "status": "green",
    "games": [
     "corn",
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:corn",
-    "cook:corn@L2",
-    "cook:corn@L3",
-    "cook:corn@L4",
-    "cook:mishkaki-grill",
-    "cook:mishkaki-grill@L2",
-    "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill"
    ],
    "namedIn": [
     "data/cook.json",
-    "data/stations/corn.json",
-    "data/stations/mishkaki-grill.json"
+    "data/stations/corn.json"
    ],
    "namedHow": [
     "path"
@@ -41944,11 +42013,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -42016,11 +42083,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -42039,11 +42104,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -42063,11 +42126,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -42087,11 +42148,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -42111,11 +42170,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -42144,11 +42201,9 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -42176,15 +42231,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42201,15 +42254,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42226,15 +42277,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42251,15 +42300,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42276,15 +42323,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42299,13 +42344,9 @@
   },
   "assets/cook/items/v4/sekelo/bowl-pepper.webp": {
    "version": "v4",
-   "status": "green",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json",
     "data/stations/mishkaki-grill.json"
@@ -42321,15 +42362,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42346,15 +42385,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42371,15 +42408,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42395,15 +42430,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42419,15 +42452,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42443,15 +42474,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42467,15 +42496,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42491,15 +42518,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42515,15 +42540,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42539,15 +42562,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42563,15 +42584,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42587,15 +42606,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42611,15 +42628,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42635,15 +42650,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42659,15 +42672,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42683,15 +42694,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42707,15 +42716,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42731,15 +42738,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42755,15 +42760,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42779,15 +42782,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42803,15 +42804,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42827,15 +42826,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42849,13 +42846,9 @@
   },
   "assets/cook/items/v4/sekelo/pepper-cooked.webp": {
    "version": "v4",
-   "status": "green",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json",
     "data/stations/mishkaki-grill.json"
@@ -42868,13 +42861,9 @@
   },
   "assets/cook/items/v4/sekelo/pepper-over.webp": {
    "version": "v4",
-   "status": "green",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json",
     "data/stations/mishkaki-grill.json"
@@ -42887,13 +42876,9 @@
   },
   "assets/cook/items/v4/sekelo/pepper-part.webp": {
    "version": "v4",
-   "status": "green",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json",
     "data/stations/mishkaki-grill.json"
@@ -42906,13 +42891,9 @@
   },
   "assets/cook/items/v4/sekelo/pepper-raw.webp": {
    "version": "v4",
-   "status": "green",
-   "games": [
-    "serve"
-   ],
-   "loadedBy": [
-    "cook:open-kitchen"
-   ],
+   "status": "grey",
+   "games": [],
+   "loadedBy": [],
    "namedIn": [
     "data/cook.json",
     "data/stations/mishkaki-grill.json"
@@ -42927,15 +42908,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42951,15 +42930,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42975,15 +42952,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -42999,15 +42974,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -43023,15 +42996,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -43048,15 +43019,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -43072,15 +43041,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -43096,15 +43063,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -43120,15 +43085,13 @@
    "version": "v4",
    "status": "green",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -43159,13 +43122,15 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
-    "cook:daar@L4"
+    "cook:daar@L4",
+    "cook:open-kitchen"
    ],
    "namedIn": [
     "data/cook.json",
@@ -43210,6 +43175,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -43662,6 +43628,7 @@
     "cook:daar@L3",
     "cook:daar@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "cook:tadka",
     "first",
     "lab:cook/story-birthday"
@@ -44136,11 +44103,9 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -44176,15 +44141,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json",
@@ -44244,6 +44207,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -44325,6 +44289,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday",
     "page:lab/chai-v2-mockup.html"
@@ -44449,11 +44414,9 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -44504,6 +44467,7 @@
     "cook:fetch@L2",
     "cook:fetch@L3",
     "cook:fetch@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -44701,12 +44665,14 @@
    "status": "amber",
    "games": [
     "chai-tray",
-    "serve"
+    "serve",
+    "story"
    ],
    "loadedBy": [
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
-    "cook:day1"
+    "cook:open-kitchen",
+    "lab:cook/story-birthday"
    ],
    "namedIn": [
     "js/cook/art.js",
@@ -46091,16 +46057,14 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "chaat",
-    "serve"
+    "chaat"
    ],
    "loadedBy": [
     "cook:assemble",
     "cook:chaat",
     "cook:chaat@L2",
     "cook:chaat@L3",
-    "cook:chaat@L4",
-    "cook:open-kitchen"
+    "cook:chaat@L4"
    ],
    "namedIn": [
     "data/cook.json"
@@ -46142,6 +46106,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -46197,13 +46162,15 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "daar"
+    "daar",
+    "serve"
    ],
    "loadedBy": [
     "cook:daar",
     "cook:daar@L2",
     "cook:daar@L3",
     "cook:daar@L4",
+    "cook:open-kitchen",
     "cook:stir",
     "cook:tadka"
    ],
@@ -46301,11 +46268,9 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -46323,15 +46288,13 @@
    "version": "unversioned",
    "status": "amber",
    "games": [
-    "mishkaki-grill",
-    "serve"
+    "mishkaki-grill"
    ],
    "loadedBy": [
     "cook:mishkaki-grill",
     "cook:mishkaki-grill@L2",
     "cook:mishkaki-grill@L3",
-    "cook:mishkaki-grill@L4",
-    "cook:open-kitchen"
+    "cook:mishkaki-grill@L4"
    ],
    "namedIn": [
     "data/cook.json"
@@ -46557,11 +46520,9 @@
    "version": "s08",
    "status": "amber",
    "games": [
-    "samosa",
-    "serve"
+    "samosa"
    ],
    "loadedBy": [
-    "cook:open-kitchen",
     "cook:samosa",
     "cook:samosa@L2",
     "cook:samosa@L3",
@@ -46767,7 +46728,6 @@
    ],
    "loadedBy": [
     "day:book",
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46791,7 +46751,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46813,7 +46772,6 @@
    ],
    "loadedBy": [
     "day:book",
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46850,7 +46808,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46872,7 +46829,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46892,7 +46848,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46913,7 +46868,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46935,7 +46889,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46956,7 +46909,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -46978,7 +46930,6 @@
    ],
    "loadedBy": [
     "day:book",
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47020,7 +46971,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47041,7 +46991,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47062,7 +47011,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47082,7 +47030,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47129,7 +47076,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47150,7 +47096,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47170,7 +47115,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47190,7 +47134,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47211,7 +47154,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47232,7 +47174,6 @@
    ],
    "loadedBy": [
     "day:book",
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47255,7 +47196,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47276,7 +47216,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47297,7 +47236,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47318,7 +47256,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47338,7 +47275,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47358,7 +47294,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47398,7 +47333,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47418,7 +47352,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47579,7 +47512,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47599,7 +47531,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47682,7 +47613,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47702,7 +47632,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -47722,7 +47651,6 @@
     "labs"
    ],
    "loadedBy": [
-    "day:door",
     "day:window",
     "page:lab/ride-preview.html"
    ],
@@ -49017,6 +48945,7 @@
     "mishkaki-grill",
     "samosa",
     "serve",
+    "story",
     "title"
    ],
    "loadedBy": [
@@ -49061,6 +48990,7 @@
     "cook:stir",
     "cook:tadka",
     "cook:title",
+    "lab:cook/story-birthday",
     "page:lab/cards.html",
     "page:lab/fonts.html",
     "page:lab/kit.html",
@@ -49160,7 +49090,6 @@
     "cook:tadka",
     "cook:title",
     "day:book",
-    "day:door",
     "day:window",
     "first",
     "lab:cook/story-birthday",
@@ -49449,6 +49378,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49477,6 +49407,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49505,6 +49436,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49533,6 +49465,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49561,6 +49494,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49589,6 +49523,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49617,6 +49552,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49695,6 +49631,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49723,6 +49660,7 @@
     "cook:chai-tray@L3",
     "cook:chai-tray@L4",
     "cook:day1",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49839,6 +49777,7 @@
     "cook:eggs@L2",
     "cook:eggs@L3",
     "cook:eggs@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49890,6 +49829,7 @@
     "cook:eggs@L2",
     "cook:eggs@L3",
     "cook:eggs@L4",
+    "cook:open-kitchen",
     "first",
     "lab:cook/story-birthday"
    ],
@@ -49995,10 +49935,18 @@
    "version": "s17",
    "status": "amber",
    "games": [
-    "chai-tray"
+    "chai-tray",
+    "house",
+    "serve",
+    "story"
    ],
    "loadedBy": [
-    "cook:chai-tray@L4"
+    "cook:chai-tray",
+    "cook:chai-tray@L4",
+    "cook:day1",
+    "cook:open-kitchen",
+    "first",
+    "lab:cook/story-birthday"
    ],
    "namedIn": [
     "data/cook.json",
@@ -50014,10 +49962,17 @@
    "version": "s17",
    "status": "amber",
    "games": [
-    "chai-tray"
+    "chai-tray",
+    "house",
+    "serve",
+    "story"
    ],
    "loadedBy": [
-    "cook:chai-tray@L4"
+    "cook:chai-tray@L4",
+    "cook:day1",
+    "cook:open-kitchen",
+    "first",
+    "lab:cook/story-birthday"
    ],
    "namedIn": [
     "data/cook.json",
