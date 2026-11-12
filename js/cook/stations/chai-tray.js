@@ -1542,18 +1542,11 @@ export function chaiExtra(asked, extras) {
       refresh();
     };
     // (contract-102, chai L1 at 1920x1080: the thing's glow came a few frames before the light round it was on the screen, so for
-    // that moment it glowed alone: the glow waits for the light's box to be drawn, a frame more, at most 0.6 s)
+    // that moment it glowed alone: the glow waits two frames for the light to be drawn and a beat of its fade-in, 120 ms, as the
+    // kit's call waits for its light (Cook.Coach.control); well inside contract-107's 300 ms for a lit shelf thing's hop)
     const whenLit = (fn) => {
-      const t0 = Date.now();
-      let drawn = 0;
       const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(f) : (f) => setTimeout(f, 16);
-      const tick = () => {
-        const box = document.querySelector(".njg-onboard .ob-box");
-        if (box && box.isConnected && box.style.display !== "none") drawn++;
-        if (drawn >= 2 || Date.now() - t0 > 600) fn();
-        else raf(tick);
-      };
-      raf(tick);
+      raf(() => raf(() => setTimeout(fn, 120)));
     };
     let spotGlow14 = 0; // (the first-time spotlight's glow: a later on or off wins over a glow still waiting for its box)
     let rung = null;
