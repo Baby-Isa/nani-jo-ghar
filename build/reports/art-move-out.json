@@ -5028,19 +5028,9 @@
    "why": ""
   },
   {
-   "path": "assets/cook/items/v4/kit/cloth.webp",
-   "bytes": 56166,
-   "why": ""
-  },
-  {
    "path": "assets/cook/items/v4/kit/grill.webp",
    "bytes": 258756,
    "why": "retired (ART-79)"
-  },
-  {
-   "path": "assets/cook/items/v4/kit/slotted-spoon-cloth.webp",
-   "bytes": 29850,
-   "why": ""
   },
   {
    "path": "assets/cook/items/v4/kit/tray-steel-long.webp",
@@ -15145,6 +15135,18 @@
    ]
   },
   {
+   "path": "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
+   "bytes": 141350,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
    "path": "assets/cook/items-s08b/chaat-bowl-side-s08b@2x.webp",
    "bytes": 236662,
    "why": "",
@@ -17835,6 +17837,54 @@
    ]
   },
   {
+   "path": "assets/cook/items/samosa-v2/fry-0.webp",
+   "bytes": 15564,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/samosa-v2/fry-1.webp",
+   "bytes": 21294,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/samosa-v2/fry-2.webp",
+   "bytes": 23336,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/samosa-v2/fry-3.webp",
+   "bytes": 27676,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
    "path": "assets/cook/items/samosa-v2/karahi.webp",
    "bytes": 49430,
    "why": "",
@@ -17995,11 +18045,36 @@
    ]
   },
   {
-   "path": "assets/cook/items/served/daar-v2.webp",
-   "bytes": 15734,
+   "path": "assets/cook/items/served/chaat-v2.webp",
+   "bytes": 28808,
    "why": "",
    "namedIn": [
     "data/cook.json"
+   ],
+   "how": [
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/served/samosa.webp",
+   "bytes": 20842,
+   "why": "",
+   "namedIn": [
+    "data/cook.json",
+    "data/stations/samosa.json",
+    "js/party-proto/art.js"
+   ],
+   "how": [
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/served/sekelo.webp",
+   "bytes": 16238,
+   "why": "",
+   "namedIn": [
+    "data/cook.json",
+    "data/stations/mishkaki-grill.json"
    ],
    "how": [
     "path"
@@ -18611,21 +18686,6 @@
    ]
   },
   {
-   "path": "assets/cook/items/shelf-spi-01-bare-f.webp",
-   "bytes": 23732,
-   "why": "",
-   "namedIn": [
-    "data/cook.json",
-    "js/cook/mechanics/grill.js",
-    "js/cook/stations/chai-tray.js"
-   ],
-   "how": [
-    "built",
-    "glob",
-    "path"
-   ]
-  },
-  {
    "path": "assets/cook/items/shelf-spi-04-bare-f.webp",
    "bytes": 24524,
    "why": "",
@@ -18749,21 +18809,6 @@
    "how": [
     "built",
     "glob"
-   ]
-  },
-  {
-   "path": "assets/cook/items/shelf-veg-12-bare-f.webp",
-   "bytes": 19166,
-   "why": "",
-   "namedIn": [
-    "data/cook.json",
-    "js/cook/mechanics/grill.js",
-    "js/cook/stations/chai-tray.js"
-   ],
-   "how": [
-    "built",
-    "glob",
-    "path"
    ]
   },
   {
@@ -19559,6 +19604,18 @@
    ]
   },
   {
+   "path": "assets/cook/items/v3/chaat/pot-chana.webp",
+   "bytes": 45700,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
    "path": "assets/cook/items/v3/chaat/pot-chilli.webp",
    "bytes": 65020,
    "why": "",
@@ -19603,6 +19660,18 @@
    ]
   },
   {
+   "path": "assets/cook/items/v3/chaat/pot-imli.webp",
+   "bytes": 48568,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
    "path": "assets/cook/items/v3/chaat/pot-onion.webp",
    "bytes": 60916,
    "why": "",
@@ -19622,6 +19691,18 @@
    ],
    "how": [
     "glob"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v3/chaat/pot-potato.webp",
+   "bytes": 41142,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
    ]
   },
   {
@@ -19798,18 +19879,6 @@
    ],
    "how": [
     "glob"
-   ]
-  },
-  {
-   "path": "assets/cook/items/v3/daar/ladle-v3.webp",
-   "bytes": 15416,
-   "why": "",
-   "namedIn": [
-    "data/cook.json"
-   ],
-   "how": [
-    "glob",
-    "path"
    ]
   },
   {
@@ -20122,6 +20191,78 @@
    ],
    "how": [
     "glob"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v3/samosa/fold-v2-1.webp",
+   "bytes": 4268,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v3/samosa/fold-v2-2.webp",
+   "bytes": 5130,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v3/samosa/fold-v2-3.webp",
+   "bytes": 5306,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v3/samosa/fold-v2-4.webp",
+   "bytes": 3702,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v3/samosa/fold-v2-5.webp",
+   "bytes": 3566,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v3/samosa/fold-v2-6.webp",
+   "bytes": 2838,
+   "why": "",
+   "namedIn": [
+    "data/cook.json"
+   ],
+   "how": [
+    "glob",
+    "path"
    ]
   },
   {
@@ -20774,6 +20915,72 @@
     "data/stations/eggs.json"
    ],
    "how": [
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v4/sekelo/bowl-pepper.webp",
+   "bytes": 16674,
+   "why": "",
+   "namedIn": [
+    "data/cook.json",
+    "data/stations/mishkaki-grill.json"
+   ],
+   "how": [
+    "glob",
+    "path",
+    "stem"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v4/sekelo/pepper-cooked.webp",
+   "bytes": 9126,
+   "why": "",
+   "namedIn": [
+    "data/cook.json",
+    "data/stations/mishkaki-grill.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v4/sekelo/pepper-over.webp",
+   "bytes": 9322,
+   "why": "",
+   "namedIn": [
+    "data/cook.json",
+    "data/stations/mishkaki-grill.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v4/sekelo/pepper-part.webp",
+   "bytes": 7350,
+   "why": "",
+   "namedIn": [
+    "data/cook.json",
+    "data/stations/mishkaki-grill.json"
+   ],
+   "how": [
+    "glob",
+    "path"
+   ]
+  },
+  {
+   "path": "assets/cook/items/v4/sekelo/pepper-raw.webp",
+   "bytes": 3750,
+   "why": "",
+   "namedIn": [
+    "data/cook.json",
+    "data/stations/mishkaki-grill.json"
+   ],
+   "how": [
+    "glob",
     "path"
    ]
   },
@@ -22919,12 +23126,12 @@
  ],
  "totals": {
   "unloadedUnnamed": {
-   "files": 1164,
-   "bytes": 223144480
+   "files": 1162,
+   "bytes": 223058464
   },
   "namedNotLoaded": {
-   "files": 1384,
-   "bytes": 76813936
+   "files": 1402,
+   "bytes": 77241438
   },
   "videos": {
    "files": 2,
@@ -22939,8 +23146,8 @@
    "bytes": 526366240
   },
   "assets": {
-   "files": 4954,
-   "bytes": 389054461
+   "files": 5054,
+   "bytes": 390320254
   }
  },
  "foldersUnloadedUnnamed": [
@@ -23080,11 +23287,6 @@
    "bytes": 393628
   },
   {
-   "path": "assets/cook/items/v4/kit",
-   "files": 4,
-   "bytes": 387786
-  },
-  {
    "path": "assets/backgrounds/s17-sky",
    "files": 15,
    "bytes": 378080
@@ -23103,6 +23305,11 @@
    "path": "assets/cook/proto/eggs",
    "files": 19,
    "bytes": 311176
+  },
+  {
+   "path": "assets/cook/items/v4/kit",
+   "files": 2,
+   "bytes": 301770
   },
   {
    "path": "assets/town-proto",
@@ -23263,8 +23470,8 @@
  "foldersNamedNotLoaded": [
   {
    "path": "assets/cook/items",
-   "files": 291,
-   "bytes": 21135113
+   "files": 289,
+   "bytes": 21092215
   },
   {
    "path": "assets/clinic/rooms",
@@ -23332,6 +23539,11 @@
    "bytes": 1012578
   },
   {
+   "path": "assets/cook/items/v3/chaat",
+   "files": 13,
+   "bytes": 979700
+  },
+  {
    "path": "assets/clinic/patients/doctor/v2",
    "files": 20,
    "bytes": 941260
@@ -23343,18 +23555,13 @@
   },
   {
    "path": "assets/cook/items/v3/daar",
-   "files": 27,
-   "bytes": 904668
+   "files": 26,
+   "bytes": 889252
   },
   {
    "path": "assets/characters/hen",
    "files": 8,
    "bytes": 867494
-  },
-  {
-   "path": "assets/cook/items/v3/chaat",
-   "files": 10,
-   "bytes": 844290
   },
   {
    "path": "assets/clinic/patients/ma",
@@ -23418,13 +23625,18 @@
   },
   {
    "path": "assets/cook/items/v3/samosa",
-   "files": 12,
-   "bytes": 513082
+   "files": 18,
+   "bytes": 537892
   },
   {
    "path": "assets/items/fruit",
    "files": 6,
    "bytes": 495666
+  },
+  {
+   "path": "assets/cook/items-s08b",
+   "files": 3,
+   "bytes": 467978
   },
   {
    "path": "assets/cook/hands/player-girl",
@@ -23457,14 +23669,14 @@
    "bytes": 332010
   },
   {
-   "path": "assets/cook/items-s08b",
-   "files": 2,
-   "bytes": 326628
-  },
-  {
    "path": "assets/clinic/items-s08b",
    "files": 6,
    "bytes": 320140
+  },
+  {
+   "path": "assets/cook/items/samosa-v2",
+   "files": 14,
+   "bytes": 317450
   },
   {
    "path": "assets/cook/items/chai-v2",
@@ -23495,11 +23707,6 @@
    "path": "assets/day/ride/s09r",
    "files": 1,
    "bytes": 257410
-  },
-  {
-   "path": "assets/cook/items/samosa-v2",
-   "files": 10,
-   "bytes": 229580
   },
   {
    "path": "assets/cook/characters",
@@ -23802,6 +24009,11 @@
    "bytes": 66132
   },
   {
+   "path": "assets/cook/items/served",
+   "files": 3,
+   "bytes": 65888
+  },
+  {
    "path": "assets/cook/items-s08c/glass",
    "files": 1,
    "bytes": 61512
@@ -23845,6 +24057,11 @@
    "path": "assets/cook/items-s08c/daar-in",
    "files": 2,
    "bytes": 48620
+  },
+  {
+   "path": "assets/cook/items/v4/sekelo",
+   "files": 5,
+   "bytes": 46222
   },
   {
    "path": "assets/clinic/rough/ui",
@@ -23905,11 +24122,6 @@
    "path": "assets/cook/proto",
    "files": 2,
    "bytes": 17402
-  },
-  {
-   "path": "assets/cook/items/served",
-   "files": 1,
-   "bytes": 15734
   },
   {
    "path": "assets/cook/items/jar",

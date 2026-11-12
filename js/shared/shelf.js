@@ -311,7 +311,7 @@
     body: [7, 286], // (the slab picture's opaque rows: its top and its foot)
     face: [16, 274], // (the plain stone between the top bevel and the front band)
     end: 120, // (each end slice's width, slab px: the rounded corner and a little of the stone)
-    radius: 34, // (the ends' corner radius, slab px: the shadow's shape)
+    radius: 34, // (the ends' corner radius, slab px; the shadow and the tile now follow the picture's own outline)
   };
   const trayImgs = { slab: null, tile: null, wait: [] };
   Shelf.trayArt = function (onReady) {
@@ -354,17 +354,15 @@
     const y0 = y - A.body[0] * k; // (where the slab picture's top row lands)
     const e = Math.min(A.end * k, w / 2);
     const es = e / k; // (the end slice in slab px)
-    ctx.clearRect(0, 0, W, H);
-    // the kit's contact shadow, lower-right, soft (as the painted tray's)
-    ctx.save();
-    ctx.shadowColor = ink ? `rgba(${ink.shadow}, 0.3)` : "transparent"; // (no tokens on the page: no shadow, never a colour of its own)
-    ctx.shadowBlur = Math.max(2, sh * 2);
-    ctx.shadowOffsetX = sh * 0.6;
-    ctx.shadowOffsetY = sh;
-    path(ctx, x + 1, y + 1, w - 2, h - 2, Math.min(A.radius * k, h / 2));
-    ctx.fillStyle = ink ? `rgba(${ink.edge}, 1)` : "transparent";
-    ctx.fill();
-    ctx.restore();
+    // s19-artfix (Zafar, 12 Nov evening, sekelo's grill: "This doesn't look correctly cut out"): the slab is put together on a
+    // canvas of its own, then laid on ctx with the one soft shadow, so the shadow is the picture's own outline, down and to the
+    // right (SH-268). It was a rounded box filled in the stone's edge colour under the slab, its corners tighter (34 px) and its
+    // sides wider (the picture's 6 px margin) than the picture's: a darker second edge up and to the left of the band's corners.
+    const lay = doc.createElement("canvas");
+    lay.width = W;
+    lay.height = H;
+    const out = ctx;
+    ctx = lay.getContext("2d");
     // the middle: the slab's stone along the length (its bevel and front band), then the tile's stone over the plain face, so no
     // stretch and no repeat shows
     const mx = x + e, mw = w - 2 * e;
@@ -407,15 +405,15 @@
     };
     end(0, x, false);
     end(SW, x + w, true);
-    // the tile's stone over the plain face, end to end (inside the ends' rounding), so the ends and the middle are one stone
+    // the tile's stone over the plain face, end to end, only where the slab is (source-atop: the picture's own outline, so no
+    // see-through stone outside its rounded corners or past its sides; it was clipped to a 34 px box wider than the picture)
     const fy = y0 + A.face[0] * k, fh = (A.face[1] - A.face[0]) * k;
     const tc = doc.createElement("canvas");
     const ts = Math.max(8, Math.round(tile.naturalWidth * k));
     tc.width = tc.height = ts;
     tc.getContext("2d").drawImage(tile, 0, 0, ts, ts);
     ctx.save();
-    path(ctx, x, y, w, h, Math.min(A.radius * k, h / 2));
-    ctx.clip();
+    ctx.globalCompositeOperation = "source-atop";
     ctx.beginPath();
     ctx.rect(x, fy, w, fh);
     ctx.clip();
@@ -423,6 +421,15 @@
     ctx.fillStyle = ctx.createPattern(tc, "repeat");
     ctx.fillRect(x, fy, w, fh);
     ctx.restore();
+    // the slab laid on with the kit's contact shadow, lower-right, soft (as the painted tray's): one shadow, of its own outline
+    out.clearRect(0, 0, W, H);
+    out.save();
+    out.shadowColor = ink ? `rgba(${ink.shadow}, 0.3)` : "transparent"; // (no tokens on the page: no shadow, never a colour of its own)
+    out.shadowBlur = Math.max(2, sh * 2);
+    out.shadowOffsetX = sh * 0.6;
+    out.shadowOffsetY = sh;
+    out.drawImage(lay, 0, 0);
+    out.restore();
     return { w: W, h: H };
   };
   Shelf.trayPaint = function (ctx, box, { scale = 1, seed = 7, ink = Shelf.trayInk() } = {}) {

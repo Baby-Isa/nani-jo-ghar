@@ -8,7 +8,8 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { DRIVERS, FAIR_MOMENTS } from "../drivers/catalog.mjs";
 
-const LIFE = ["line:*", "line:*-*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "life:stir-lap", "life:order-pass", "life:next-pan", "life:card-light", "life:corn-screen", "page:end", "page:start", "bubble"];
+const LIFE = ["line:*", "line:*-*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "life:stir-lap", "life:order-pass", "life:next-pan", "life:card-light", "life:corn-screen", "life:dish-flash", "page:end", "page:start", "bubble"];
+// (life:dish-flash: the dish card flashing up as the customer says the dish at L1, js/cook/ui.js; SH-267, on the fair path, s19-clean-a5)
 // the spec's named moments (evidence.json _moments, _at's every:<x>) that an existing signal answers; `delay` waits after it.
 // A named moment with no entry here has no driver yet: --plan refuses it (the driver lands with the spec, Fable 2)
 export const ALIASES = {

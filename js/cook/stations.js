@@ -433,6 +433,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         this.events.off("update", follow);
         sh.destroy();
       });
+      // (the footprint's middle now, the point its shadow lies down and to the right of: build/tools/art/shadowcheck.mjs)
+      const foot = { dx: b.centerX - s0.x, dy: b.centerY - s0.y };
+      sh.njgFoot = () => ({ x: img.x + foot.dx * (img.scaleX / s0.sx), y: img.y + foot.dy * (img.scaleY / s0.sy) });
       return sh;
     }
     /** An ingredient as a heaped bowl (or its photo), with a stage label. */

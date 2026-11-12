@@ -10,7 +10,7 @@
 //   k: "s19row"  {x, w, n, vis, px, pt}   the order row's scroll (px), a card's width, how many cards, whether it shows, every
 //                                 animation frame it changes, with the frame before it (px its scroll, pt its time) (72)
 //   k: "s19ord"  {pop, fly, away, rows}   the big card and the cards in flight on screen, the rows waiting away, every frame it changes (74)
-//   k: "s19pad"  {box, row, cards: [{w, id, done, box, in}], room}   the side panel's order card, its row and each item card with its
+//   k: "s19pad"  {box, row, away, slide, cards: [{w, id, done, box, in}], room}   the side panel's order card, its row and each item card with its
 //                                 content's box (picture, words, speaker) and its word id (data-word: 37), every 300 ms it changes (116)
 //   k: "s19spk"  {list: [{who, box, tap, em, icon, text}]}   each speech bubble's speaker as drawn: its box, its tap (grown by a positioned ::before), its words' size, its icon (73)
 //   k: "s19ring" {id, lv, lo, hi} / {id, clear: 1}   the kit's heat ring as drawn (Cook.Kit.heatRing draw): its level and green, on
@@ -160,9 +160,14 @@ function s19bhook() {
     const card = [...document.querySelectorAll("#mission .oc-card, #side .oc-card")].find((c) => shown(c) && !c.closest(".njg-results, .njg-rq-card") && c.querySelector(".oc-row14"));
     if (!card) { if (last.pad != null) { last.pad = null; emit({ k: "s19pad", box: null }); } return; }
     const row = card.querySelector(".oc-row14");
-    const its = [...row.querySelectorAll(":scope > .oc-it14")].filter((c) => !c.classList.contains("oc-away") && shown(c));
+    const all = [...row.querySelectorAll(":scope > .oc-it14")];
+    const its = all.filter((c) => !c.closest(".oc-away") && shown(c));
+    // (s19-clean-a5's lines: away, the row's cards still to be said (.oc-away: their places kept unseen, so the gaps and the fill are
+    // not yet the row's); slide, a card still sliding to its place (settle14's FLIP, a running animation): contract-116 leaves both out)
+    const away = all.filter((c) => c.closest(".oc-away")).length;
+    const slide = all.some((c) => c.getAnimations && c.getAnimations().some((a) => a.playState === "running")) ? 1 : 0;
     const v = {
-      box: R(card.getBoundingClientRect()), row: R(row.getBoundingClientRect()),
+      box: R(card.getBoundingClientRect()), row: R(row.getBoundingClientRect()), away, slide,
       cards: its.map((c) => ({ w: ((c.querySelector(".wc14-k, .oc-t") || c).textContent || "").replace(/\s+/g, " ").trim().slice(0, 24), id: c.dataset.word || (c.querySelector("[data-word]") || {dataset: {}}).dataset.word || null, done: c.classList.contains("done") ? 1 : 0, box: R(c.getBoundingClientRect()), in: contentBox(c) })),
     };
     if (!same("pad", v)) emit({ k: "s19pad", ...v });
