@@ -330,6 +330,7 @@
       if (!list._auto && opts.fold) {
         opts.fold.scroll14 = list.scrollLeft;
         opts.fold.want14 = null;
+        opts.fold.kid14 = Date.now(); // (the child's own: the current card's guard below leaves it alone)
         const c = list.closest(".oc-card");
         if (c && c.dataset.ck) glideWant.delete(c.dataset.ck);
       }
@@ -525,6 +526,29 @@
       }
     }
     setTimeout(() => (row._auto = false), 900);
+    // SH-227, CK-79, SH-165 (contract-116: "the current card whole in view"; daar's, chaat's and samosa's current card cut at the row's edge
+    // at 740x320): once the row's own glides are over, the card to do now (the first not ticked, not one ticked only at the serve) is
+    // whole in the row: a cut one glides in by as little as it takes. Never on a finished card, nor after the child's own scroll
+    const spd0 = (root.Cook && root.Cook.speed) || 1;
+    const t0 = Date.now();
+    setTimeout(() => {
+      if (!row.isConnected || card.classList.contains("done") || card.classList.contains("folded") || row._pend14) return;
+      if (fold && fold.kid14 && fold.kid14 > t0) return;
+      const cur = [...row.querySelectorAll(":scope > .oc-row[data-key]")].find((r) => !r.classList.contains("done") && !r.classList.contains("no") && r.dataset.serve !== "1");
+      if (!cur) return;
+      const a = cur.getBoundingClientRect();
+      const b = row.getBoundingClientRect();
+      if (!a.width || !b.width) return;
+      let dx = 0;
+      if (a.left < b.left - 1) dx = a.left - b.left - 2;
+      else if (a.right > b.right + 1) dx = Math.min(a.right - b.right + 2, a.left - b.left);
+      if (Math.abs(dx) <= 1) return;
+      const to = Math.max(0, Math.min(max(), row.scrollLeft + dx));
+      if (fold) fold.scroll14 = fold.want14 = to;
+      row._auto = true;
+      row.scrollTo({ left: to, behavior: "smooth" });
+      setTimeout(() => (row._auto = false), 700);
+    }, 950 / spd0);
     row.classList.toggle("oc-at-end", row.scrollLeft + row.clientWidth >= row.scrollWidth - 4);
     if (root.WordCard && root.WordCard.fit14) root.WordCard.fit14(card);
   };
