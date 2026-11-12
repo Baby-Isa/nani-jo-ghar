@@ -253,7 +253,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (the kitchen kit's first-time gate, Cook.Coach.firsts: chai's lights once each for a new player; the lessons every game
     // shares once a round for the New player, CHAI-102)
     const gate14 = Cook.Coach.firsts(STATION14, { round: new Set() });
-    const POUR_AGAIN14 = `${STATION14}:l4-pour-again`; // (CHAI-110: the full glass's second-tap light, once per player; see the pour's light)
+    const POUR_AGAIN14 = gate14.key("ctl-pour-again"); // (CHAI-110: the full glass's second-tap light, once per player; see the pour's light)
     const CONTROL_PAUSE_MS = 1000; // (Zafar, 30 Oct: a second's pause before a control's light and call, after the last move)
     const READ_AT_POUR = false; // (Zafar, 30 Oct: the pour says nothing; see the pour below)
     // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
