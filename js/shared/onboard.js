@@ -1018,7 +1018,8 @@
           const w = Math.min(b.x + b.w, W - m) - x;
           const h = Math.min(b.y + b.h, H - m) - y;
           // (a target wholly off the screen, mid-move: no box until it is back)
-          b = w > 0 && h > 0 ? Object.assign({}, b, { x, y, w, h }) : null;
+          // (SH-249, contract-112 "corners too round": a box cut at the edge keeps the one corner rule, a quarter of its new height)
+          b = w > 0 && h > 0 ? Object.assign({}, b, { x, y, w, h, r: Math.min(b.r, 12, w / 2, h / 4) }) : null;
         }
         [hole, box].forEach((el) => {
           el.style.display = b ? "" : "none";
