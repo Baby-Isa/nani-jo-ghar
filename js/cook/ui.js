@@ -2207,62 +2207,41 @@
      * SH-213 (Zafar, 12 Nov morning: "do it on the first pop up card that gets blurred during an order, when it first gets blurred. ensure
      * it's only the pop up card that happens during the orders spoken sentence, e.g chai when the person orders chai. Use the same
      * highlight onboarding box to bring attention to the right areas. Remove the onboarding from within the game mode for the blurred
-     * card"): the first time a card popped out as its item is said (the order's pop-up, never a part revealed mid-station) has anything
-     * hidden (its picture blurred, its English or Kutchi dotted), once its sentence is said it comes big to the middle of the play area,
-     * everything hidden. Each tap shows one thing, in turn: the picture, the Kutchi, the English, each lit by the kit's light (the same
-     * dim and gold box as every first-time light), its sound with it. Then it goes, and the order goes on. Once per player (the kit's
-     * first-time gate, Cook.Coach.firsts("order"), key reveal-card). The game's own reveal lessons on the side panel are retired
-     * (js/cook/coach.js C.lessons). A tap during it is the lesson's, never the order's skip (the request's ignore).
+     * card"; Zafar, 12 Nov, on the row: the card does NOT come big and central, it stays where it appears, it is already big): the first
+     * time a card popped out as its item is said (the order's pop-up, never a part revealed mid-station) has anything hidden (its picture
+     * blurred, its English or Kutchi dotted), once the customer's sentence is said the lesson plays on that card where it stands: its
+     * picture, Kutchi and English hidden, the kit's light (the same dim and gold box as every first-time light) comes to it and settles on
+     * the picture; each tap shows one thing in turn, the picture, the Kutchi, the English, the light moving on to the next; then the light
+     * fades and the order goes on (milk, sugar ...). The pop-up stays up until it is done. Once per player (the kit's first-time gate,
+     * Cook.Coach.firsts("order"), key reveal-card). The game's own reveal lessons on the side panel are retired (js/cook/coach.js
+     * C.lessons). A tap during it is the lesson's, never the order's skip (the request's ignore); nothing is logged as a peek or help.
      */
     let lessonOn = false;
     // (before: what must be over first, the line still being said when the card came with the headline: awaited only if it will run)
     const blurLesson = async (pop, r, before = null) => {
-      if (only || !pop || !pop.isConnected || !live() || !global.WordCard || !global.WordCard.big14) return;
+      if (only || !pop || !pop.isConnected || !live()) return;
       if (!["wc14-hide-pic", "wc14-hide-en", "wc14-hide-k"].some((k) => pop.classList.contains(k))) return;
       const Onb = global.Onboard;
       const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("order") : null;
       if (!Onb || !Onb.light || !gate || !gate.due("reveal-card", true)) return;
-      const w = UI.wordOf(r, { size: 240, written: true });
-      const st = $("#stage");
-      if (!w || !st) return;
       if (before) await before();
       if (!pop.isConnected || !live()) return;
       gate.spend("reveal-card", true);
       lessonOn = true;
       const prevE = Cook.expect;
-      const sp = Cook.speed || 1;
-      const play = st.getBoundingClientRect();
-      // (no peek and no help counted: the lesson shows, the child is not asking)
-      const c = global.WordCard.big14(null, w.word, Object.assign({}, w.wordOpts || {}, { cls: "wc14-lesson", progress: null, onReveal: null }));
-      const hasPic = !!(w.word && w.word.picture);
-      const hasEn = !!(w.word && w.word.english && !w.word.rec);
+      const c = pop;
+      const wasPE = c.style.pointerEvents;
+      c.classList.add("wc14-lesson");
+      c.style.pointerEvents = "auto";
+      const img = c.querySelector(".wc14-pic img");
+      const hasPic = !!img;
+      const hasEn = !!((c.querySelector(".wc14-en") || {}).textContent || "").trim();
       c.classList.toggle("wc14-hide-pic", hasPic);
       c.classList.add("wc14-hide-k");
       c.classList.toggle("wc14-hide-en", hasEn);
-      // (the order's own card, popped out: out of sight while its big copy teaches, so one card is seen)
-      const popVis = pop.style.visibility;
-      pop.style.visibility = "hidden";
-      const wd = Math.round(Math.min(340, play.width * 0.46));
-      Object.assign(c.style, { position: "fixed", left: "0px", top: "0px", width: `${wd}px`, margin: "0" });
-      document.body.appendChild(c);
-      global.WordCard.fit14(c);
-      const cb = c.getBoundingClientRect();
-      const spk = c.querySelector(".wc14-spk");
-      const sb = spk ? spk.getBoundingClientRect() : null;
-      const h0 = c.offsetHeight + (sb && sb.height ? Math.max(0, sb.bottom - cb.bottom) : 0);
-      // (too tall for the play area: a narrower card, fitted again, never a zoom: a zoomed card's taps land off its parts)
-      let w1 = wd;
-      let h1 = h0;
-      for (let i = 0; i < 4 && (h1 > play.height - 24 || w1 > play.width - 24); i++) {
-        w1 = Math.max(120, Math.floor(w1 * Math.min((play.height - 24) / h1, (play.width - 24) / w1)));
-        c.style.width = `${w1}px`;
-        global.WordCard.fit14(c);
-        const cb1 = c.getBoundingClientRect();
-        const sb1 = spk ? spk.getBoundingClientRect() : null;
-        h1 = c.offsetHeight + (sb1 && sb1.height ? Math.max(0, sb1.bottom - cb1.bottom) : 0);
-      }
-      Object.assign(c.style, { left: `${Math.round(play.left + play.width / 2 - w1 / 2)}px`, top: `${Math.round(play.top + play.height / 2 - h1 / 2)}px` });
-      const inAnim = c.animate ? c.animate([{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / sp, easing: "cubic-bezier(.2,.8,.2,1)" }) : null;
+      c.querySelectorAll(".wc14-pic, .wc14-k, .wc14-en").forEach((x) => x.classList.remove("revealed", "wc14-peek"));
+      c.querySelectorAll(".wc14-dots").forEach((x) => x.classList.remove("wc14-gone"));
+      if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
       const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, , cls]) => c.classList.contains(cls));
       let want = null;
       // (the lesson's own taps: the card's peek buttons never take them, so nothing is logged as a peek or counted as help)
@@ -2279,8 +2258,6 @@
       let cur = null;
       let lit = null;
       try {
-        // (the light comes once the card stands at its size: measured mid-entrance it would start on a part of it, contract-97)
-        if (inAnim) await Promise.race([inAnim.finished.catch(() => {}), Cook.wait(600)]);
         await Cook.wait(200);
         for (const [slot, sel, cls] of steps) {
           if (!here()) break;
@@ -2291,7 +2268,7 @@
             lit = Onb.light(() => (cur && cur.isConnected ? cur : null), { look: "", pad: 6, kit: true, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
             // (it lights a part of a card, as the reveal lessons' light did: its layer says so, js/shared/onboard.js Onboard.lesson)
             if (lit && lit.layer && lit.layer.dataset) lit.layer.dataset.light = "part";
-            say("card", `shown order-popup ${w.word.id} ${steps.map((x) => x[0]).join(",")}`);
+            say("card", `shown order-popup ${c.dataset.word || ""} ${steps.map((x) => x[0]).join(",")}`);
           }
           Cook.expect = { kind: "click", selector: `.wc14-lesson ${sel}` };
           await new Promise((res) => {
@@ -2307,28 +2284,23 @@
           if (shownEl) shownEl.classList.add("revealed");
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
           else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
-          global.WordCard.fit14(c);
-          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or gone after the last)
+          if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
+          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or fades after the last)
           const k2 = steps.findIndex((x) => x[0] === slot);
           const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
           if (nx) cur = nx;
           else if (lit) (lit.close(), (lit = null));
-          await Cook.wait(nx ? 450 : 900);
+          await Cook.wait(nx ? 450 : 700);
         }
       } finally {
         if (lit) lit.close();
         c.removeEventListener("click", onClick, true);
+        if (c.isConnected) {
+          c.classList.remove("wc14-lesson");
+          c.style.pointerEvents = wasPE;
+        }
         Cook.expect = prevE;
         lessonOn = false;
-        // (the order's card back at once: it flies into its row as the big copy fades)
-        if (pop.isConnected) pop.style.visibility = popVis;
-        const gone = () => c.remove();
-        // (gone by a timer too: a page whose animations are held, a hidden tab, never keeps the card)
-        if (c.animate && here()) {
-          c.style.pointerEvents = "none";
-          c.animate([{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0.6)" }], { duration: 280 / sp, easing: "ease-in", fill: "forwards" }).finished.then(gone, gone);
-          setTimeout(gone, 280 / sp + 60);
-        } else gone();
       }
     };
     // CK-60 (Zafar, 7 Nov: "skipping it should have stopped all sound"): the read's own voice generation (js/shared/request-popup.js
