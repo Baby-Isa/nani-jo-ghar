@@ -48,8 +48,14 @@ import { Cook as CookNS } from "./ns.js";
     // (the k3 run's G1r-2, 11 Nov: the same canvas, two bars as before; its rims and bed measured on the cut, build/reports/s19-k3-cut.md)
     grill: { key: "gk-grill", url: K4 + "grill-v2.webp", w: 1621, h: 813, far: 0.019, near: 0.974, bed: [0.083, 0.916] },
     tray: { key: "gk-tray", url: K4 + "tray-steel.webp", w: 1000, h: 422, inner: [0.05, 0.11] },
+    // ART-80 (Zafar, 12 Nov: "the trays look much nicer there. They look deeper and more realistic. We should be copying those trays"):
+    // the deep steel tray cut from the mock A1-sekelo-2-improved (its top tray, off the marble on its outline, its painted shadow left
+    // behind: code draws it), the stand-in until the next art run's clean one. rim: the rim's middle from the outer edge, a share of the
+    // width (left, right) and of the height (far, near); inner: the well's floor inset, shares of the width and the height
+    deep: { key: "gk-tray-deep", url: K4 + "tray-deep.webp", w: 790, h: 658, rim: [0.033, 0.04, 0.05], inner: [0.12, 0.13] },
   };
-  GK.art = () => [GK.ART.grill, GK.ART.tray].map((a) => [a.key, a.url]);
+  /** What to load: the grill and the steel tray, or the pictures named (keys of GK.ART: a game loads only the ones it draws). */
+  GK.art = (which = ["grill", "tray"]) => which.map((k) => GK.ART[k]).filter(Boolean).map((a) => [a.key, a.url]);
 
   /*
    * SEK-26 (Zafar, 12 Nov night: "Why did the trays next to the barbecue look super shallow, like they wouldn't be able to hold skewers
@@ -143,6 +149,56 @@ import { Cook as CookNS } from "./ns.js";
     g.fillStyle = shade(x1, 0, x1 - deep * 0.5, 0, 0.08);
     g.fillRect(x1 - deep * 0.5, y0, deep * 0.5, y1 - y0);
     g.restore();
+    S.textures.addCanvas(key, cv);
+    return key;
+  };
+
+  /*
+   * ART-80: the deep tray (GK.ART.deep) at any shape, cut by its corners (a nine-slice): the corners as drawn at the width's scale, the
+   * rims and the brushed floor between them drawn out along their run only (the floor's grain runs across, so a longer floor keeps it).
+   * Its own depth is painted (the walls' shade inside), so code adds none; its shadow under it is code's (S.contactShadow, GK.shadow).
+   * aspect: width over height. -> a texture key (its canvas 720 px across), or null when the picture did not load. GK.DEEP: the rims'
+   * middles from the outer edge (where a skewer's tip and handle rest) and the well's inset, as shares of the WIDTH at any shape.
+   */
+  GK.DEEP = (() => {
+    const A = GK.ART.deep;
+    const hw = A.h / A.w;
+    return { side: A.rim[0], far: A.rim[1] * hw, near: A.rim[2] * hw, inX: A.inner[0], inY: A.inner[1] * hw };
+  })();
+  GK.deepTex = function (S, aspect) {
+    const A = GK.ART.deep;
+    const a = Math.max(0.4, Math.min(4, aspect || A.w / A.h));
+    const key = `gk-tray-deep:${a.toFixed(3)}`;
+    if (S.textures.exists(key)) return key;
+    if (!S.textures.exists(A.key)) return null;
+    const src = S.textures.get(A.key).getSourceImage();
+    const sw = src.width;
+    const sh = src.height;
+    const W = 720;
+    const H = Math.round(W / a);
+    const f = W / sw;
+    const c = Math.round(0.2 * sw); // (the corner: the outer radius, 0.14 of the width, and the well's own rounded corner inside it)
+    const d = Math.min(Math.round(c * f), Math.floor(H / 2) - 1);
+    const cy = Math.round(d / f);
+    const cv = document.createElement("canvas");
+    cv.width = W;
+    cv.height = H;
+    const g = cv.getContext("2d");
+    const mw = sw - 2 * c;
+    const mh = sh - 2 * cy;
+    const dw = W - 2 * d;
+    const dh = H - 2 * d;
+    const part = (sx, sy, swd, shd, dx, dy, dwd, dhd) => swd > 0 && shd > 0 && dwd > 0 && dhd > 0 && g.drawImage(src, sx, sy, swd, shd, dx, dy, dwd, dhd);
+    // the corners, the four rims, the floor
+    part(0, 0, c, cy, 0, 0, d, d);
+    part(sw - c, 0, c, cy, W - d, 0, d, d);
+    part(0, sh - cy, c, cy, 0, H - d, d, d);
+    part(sw - c, sh - cy, c, cy, W - d, H - d, d, d);
+    part(c, 0, mw, cy, d, 0, dw, d);
+    part(c, sh - cy, mw, cy, d, H - d, dw, d);
+    part(0, cy, c, mh, 0, d, d, dh);
+    part(sw - c, cy, c, mh, W - d, d, d, dh);
+    part(c, cy, mw, mh, d, d, dw, dh);
     S.textures.addCanvas(key, cv);
     return key;
   };
@@ -251,44 +307,8 @@ import { Cook as CookNS } from "./ns.js";
    * following the picture until it goes. o: dx, dy (world px), alpha, blur (world px).
    */
   GK.shadow = function (S, img, { dx = 8, dy = 10, alpha = 0.26, blur = 6 } = {}) {
-    if (!img || !img.texture || !S.textures) return null;
-    const key = img.texture.key;
-    const k = Math.max(0.01, Math.abs(img.scaleX) || 1);
-    const b = Math.max(1, Math.round(blur / k));
-    const sk = `${key}:shade:${b}`;
-    const src = S.textures.get(key).getSourceImage();
-    const pad = b * 3;
-    if (!S.textures.exists(sk)) {
-      const c = document.createElement("canvas");
-      c.width = src.width + 2 * pad;
-      c.height = src.height + 2 * pad;
-      const g = c.getContext("2d");
-      g.filter = `blur(${b}px)`;
-      g.drawImage(src, pad, pad);
-      g.filter = "none";
-      g.globalCompositeOperation = "source-in";
-      // (the shade colour, a token: one shade for every shadow)
-      const TK = global.Tokens;
-      g.fillStyle = TK && TK.rgb ? `rgb(${TK.rgb("shade-rgb") || "60, 35, 20"})` : "black";
-      g.fillRect(0, 0, c.width, c.height);
-      S.textures.addCanvas(sk, c);
-    }
-    const sh = S.track(S.add.image(img.x + dx, img.y + dy, sk));
-    sh.setOrigin((pad + img.originX * src.width) / (src.width + 2 * pad), (pad + img.originY * src.height) / (src.height + 2 * pad));
-    // (a thing that changes its picture keeps the first one's outline: every state of one thing shares one canvas, ART-08)
-    const follow = () => {
-      if (!img.active || !sh.active) return;
-      sh.setPosition(img.x + dx, img.y + dy).setScale(img.scaleX, img.scaleY).setRotation(img.rotation).setDepth(img.depth - 0.05);
-      sh.setVisible(img.visible && !sh.lifted).setAlpha(alpha * img.alpha);
-    };
-    follow();
-    S.events.on("update", follow);
-    img.once("destroy", () => {
-      S.events.off("update", follow);
-      if (sh.active) sh.destroy();
-    });
-    img.shadow = sh;
-    return sh;
+    // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kitchen kit's one shadow, Cook.Kit.shadow)
+    return Cook.Kit && Cook.Kit.shadow ? Cook.Kit.shadow(S, img, { dx, dy, alpha, blur }) : null;
   };
 
   Cook.GrillKit = GK;

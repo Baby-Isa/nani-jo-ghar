@@ -95,9 +95,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
    * middle). The raw cobs stay on the stone band, two by two, within 15% of their grill length (contract-114). k: the kit's layout,
    * for its band rows. -> L in the kit's shape (grill, tray, band, ring).
    */
-  function rectLayout(k, { thick, count, B, ringRoom = 92, gap = 36 }) {
+  function rectLayout(k, { thick, count, B, ringRoom = 92, gap = 36, deep = false }) {
     const G = Cook.GrillKit.ART.grill;
     const TI = Cook.GrillKit.ART.tray.inner; // (its well's inset, of its own width and height: turned upright they swap)
+    // (ART-80: the deep tray stands as it is drawn, its rims cut to any shape at its width's scale (GK.deepTex): a cob lies inside its
+    // rims' inner edges, about 1.6 rims in from each outer edge, its sides' share of the width; the well across inside its walls)
+    const DP = Cook.GrillKit.DEEP;
     const V = Cook.view || {};
     const pad = 32;
     const vl = Math.max(56, (V.left != null ? V.left : 0) + pad);
@@ -110,6 +113,17 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // (for a grill gh tall: the cob's length on the grill, on the tray, the tray's width)
     const sizes = (gh) => {
       const glen = (G.near - G.far) * gh;
+      if (deep) {
+        // (the tray's width sets its rims and the rims the cob's room: a few rounds, as the two depend on each other)
+        let tlen = glen;
+        let tw = 0;
+        for (let i = 0; i < 6; i++) {
+          const cw0 = across(tlen);
+          tw = (n2 * cw0 + (n2 + 1) * cw0 * 0.25) / (1 - 2 * DP.inX);
+          tlen = Math.min(glen, (gh - 2 * 2 * DP.far * tw) * 0.97);
+        }
+        return { glen, tlen, cw: across(tlen), tw, gw: (gh * G.w) / G.h };
+      }
       const tlen = Math.min(glen, gh * (1 - 2 * TI[0]) * 0.97);
       const cw = across(tlen);
       const inner = n2 * cw + (n2 + 1) * cw * 0.25;
@@ -151,6 +165,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       h: gh,
       len: z.tlen,
       up: true,
+      deep,
       // (count cobs side by side, upright, centred in the well)
       at: (i) => ({ x: tx + (i - (count - 1) / 2) * step, y: gy }),
     };
@@ -173,7 +188,14 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       GK.shadow(S, g, { dx: 12, dy: 16, alpha: 0.3, blur: 12 });
       out.grill = g;
     }
-    if (S.textures.exists(GK.ART.tray.key)) {
+    const dk = L.tray.deep && GK.deepTex ? GK.deepTex(S, L.tray.w / L.tray.h) : null;
+    if (dk) {
+      // (ART-80: the mock's deep tray at this shape, standing as drawn: its lit rim stays on the light's side)
+      const t = S.track(S.add.image(L.tray.x, L.tray.y, dk).setDepth(depth));
+      t.setDisplaySize(L.tray.w, L.tray.h);
+      GK.shadow(S, t, { dx: 8, dy: 11, alpha: 0.26, blur: 8 });
+      out.tray = t;
+    } else if (S.textures.exists(GK.ART.tray.key)) {
       // (turned a quarter: its long side up the grill's height; its own width across)
       const t = S.track(S.add.image(L.tray.x, L.tray.y, GK.ART.tray.key).setDepth(depth).setAngle(90));
       t.setDisplaySize(L.tray.h, L.tray.w);
@@ -227,6 +249,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // never a verdict, as eggs' overdone)
     const tex = { raw: "cn4-raw", turned: "cn4-turned", done: "cn4-done", over: "cn4-over" };
     const thick = (it.cob || {}).thick || 0.18;
+    // (ART-80: the cooked tray, the mock's deep one or the flat steel one: the settings' scene.layout.grill.tray)
+    const deepTray = ((lay.grill || {}).tray || "steel") === "deep";
     // (the art the settings name, loaded behind the order; settings.assets lists the same files)
     await St.loadArt(
       S,
@@ -234,7 +258,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         .map((id) => [`cn4-${id}`, DRESS[id]])
         .concat(Object.keys(tex).filter((k) => states[k]).map((k) => [tex[k], states[k]]))
         .concat([["cn4-plate", (sc.plate || {}).file]])
-        .concat(GK.art())
+        .concat(GK.art(["grill", deepTray ? "deep" : "tray"]))
         .filter((a) => a[1])
         .concat(...[...new Set(people.map((q) => q.who))].map((w) => Cook.Kit.faceArt(w)))
     ).catch(() => {});
@@ -247,7 +271,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
 
     /* ---------------- screen 1: the grill (the grill kit's option 3) ---------------- */
     const gl = lay.grill || {};
-    const L = rectLayout(GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom }), { thick, count, B, ringRoom: gl.ringRoom, gap: gl.gap });
+    const deep = deepTray && S.textures.exists(GK.ART.deep.key);
+    const L = rectLayout(GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom }), { thick, count, B, ringRoom: gl.ringRoom, gap: gl.gap, deep });
     const kit = buildRect(S, L);
     // (a test log: which screen is up, for the evidence probes' moments, "life:corn-screen")
     const screenNote = (step) => {
