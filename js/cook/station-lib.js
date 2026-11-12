@@ -1211,10 +1211,23 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
             level: Cook.roundLevel ? Cook.roundLevel(z.ctx || Cook.ctx) : z.level,
             target: parts,
             current: () => !over && target.active,
+            // (the glow and its hop only while the kit's light is up round it, and gone with it: contract-102, -107)
             glow: (on) => {
-              if (glowing === on || !target.active) return;
-              glowing = on;
-              S.glow(target, on, { bounce: C.onShelf ? C.onShelf(target) : true, now: true });
+              if (!on) {
+                if (glowing && target.active) S.glow(target, false);
+                glowing = false;
+                return;
+              }
+              setTimeout(() => {
+                const h = stuck && stuck.lit ? stuck.lit() : null;
+                if (over || glowing || !h || !h.done || !target.active) return;
+                glowing = true;
+                S.glow(target, true, { bounce: C.onShelf ? C.onShelf(target) : true, now: true });
+                h.done.then(() => {
+                  glowing = false;
+                  if (target.active) S.glow(target, false);
+                });
+              }, 0);
             },
           });
         }
