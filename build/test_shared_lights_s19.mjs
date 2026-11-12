@@ -172,25 +172,24 @@ test("coach: the stuck help, chai's method, any game: after the level's wait, th
   assert.deepEqual(glows, [true]);
   await sleep(500);
   assert.equal(hints.length, 1, "once, until the child does something");
-  // an action: the light goes, the clock again from it
+  // SH-261 at full strength (Zafar, 11 Nov night: Nani's help light stays until the right move): an action leaves the light up, and
+  // no second hint comes over it; the step done (the game's close) takes it away
   last = Date.now();
   named = false;
-  await sleep(250);
-  assert.equal(lit[0].closed, true);
-  await sleep(400);
-  assert.deepEqual(hints, ["helper", "line"], "her line again when her box names nothing");
-  assert.equal(lines, 1);
+  await sleep(650);
+  assert.equal(!!lit[0].closed, false, "the help light stays through a tap");
+  assert.deepEqual(hints, ["helper"], "no second hint while it is up");
   h.close();
-  assert.equal(lit[1].closed, true);
+  assert.equal(lit[0].closed, true, "the step done: it goes");
   // waiting: false holds it (the game's own moves, the pop-up)
   let waiting = false;
   const w = Cook.Coach.stuck({ hintMs: () => 100, waiting: () => waiting, onHint: (by) => hints.push(by) });
   last = Date.now();
   await sleep(400);
-  assert.equal(hints.length, 2);
+  assert.equal(hints.length, 1);
   waiting = true;
   await sleep(300);
-  assert.equal(hints.length, 3);
+  assert.equal(hints.length, 2);
   w.close();
   delete globalThis.NaniGuide;
 });

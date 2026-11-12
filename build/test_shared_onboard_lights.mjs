@@ -205,7 +205,7 @@ test("coach: the next vessel's light after its delay, only if still right (STD-D
   await sleep(150);
   assert.equal(lit.length, 1);
   assert.ok(!lit[0].o.round, "a rounded rectangle, never a circle (Zafar, 10 Nov)");
-  assert.equal(lit[0].o.ms, 500, "nextLit at the game's speed");
+  assert.equal(lit[0].o.ms, undefined, "no timer: it stays until the next vessel is picked (SH-261 at full strength, Zafar 11 Nov night)");
   n.stop();
   assert.equal(lit[0].closed, true);
   Cook.Coach.nextLight({ target: () => [0, 0, 50, 50], now: true });

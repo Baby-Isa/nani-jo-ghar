@@ -67,7 +67,11 @@ export function startServer(extraRoots = {}) {
       if (!f.startsWith(base)) { res.writeHead(403); return res.end(); }
       if (existsSync(f) && statSync(f).isDirectory()) f = join(f, "index.html");
       if (!existsSync(f)) { res.writeHead(404); return res.end("not found"); }
-      res.writeHead(200, { "content-type": MIME[extname(f).toLowerCase()] || "application/octet-stream", "cache-control": "no-store" });
+      // (s19-clean-a, SH-242: pictures, sounds and fonts cached as GitHub Pages serves them, max-age=600; the game's code and data never.
+      // With no-store every card drawn again fetched its picture afresh, so on a loaded machine a card's picture was "not in" 600 ms on:
+      // contract-104's blank cards that the live site never shows)
+      const media = /\.(webp|png|jpe?g|gif|svg|mp3|ogg|wav|m4a|woff2?|ttf)$/i.test(f);
+      res.writeHead(200, { "content-type": MIME[extname(f).toLowerCase()] || "application/octet-stream", "cache-control": media ? "max-age=600" : "no-store" });
       createReadStream(f).pipe(res);
     } catch (e) { res.writeHead(500); res.end(String(e)); }
   });

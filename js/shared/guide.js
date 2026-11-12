@@ -123,9 +123,18 @@
     const d = root.document;
     if (clock.on || !d || !d.addEventListener) return;
     clock.on = true;
-    const bump = () => (clock.t = Date.now());
+    // (CHAI-111, s19-clean-b's note: what bumped the clock goes in the log, at most once a 2 s per kind, so a play log shows why a hint
+    // did not come: a wheel, a key, a pointer)
+    const noted = {};
+    const bump = (e) => {
+      clock.t = Date.now();
+      const k = (e && e.type) || "?";
+      if (clock.t - (noted[k] || 0) < 2000) return;
+      noted[k] = clock.t;
+      logHelp("idle-bump", { step: k });
+    };
     ["pointerdown", "pointerup", "keydown", "wheel", "touchstart"].forEach((ev) => d.addEventListener(ev, bump, true));
-    d.addEventListener("pointermove", (e) => e.buttons && bump(), true); // a drag or a stir is doing something
+    d.addEventListener("pointermove", (e) => e.buttons && bump(e), true); // a drag or a stir is doing something
   };
   // (a legitimate action that has ENDED, St.acted: the end of a pour or a spoonful; logged for the help-comes check, contract-91)
   G.poke = () => {

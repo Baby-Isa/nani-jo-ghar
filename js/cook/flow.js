@@ -471,6 +471,8 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     if (!demo && who === "nani") {
       // Nani asks herself (the pantry): she's already here, no small talk
       await serviceView(null);
+      // (PAN-19, s19-clean-b's line: her box is the pantry's from the start, as she comes to the counter and says her list)
+      if (UI.guideFor) UI.guideFor("fetch");
       await Cook.wait(OT().arriveNani);
     } else if (!demo) {
       // CHT-07: a customer who asked before the pantry trip is still at the counter: straight to the order
@@ -1835,10 +1837,12 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       closedCards(level);
       // CHAI-15 (decision 53, S05-C): everyone who orders comes in first, in the lab too: each person on the card walks
       // up to their own tray at the counter, then the one request pop-up shows every order
-      const people = asker === "nani" ? [] : [...new Set((ctx.ladders || []).flatMap((L) => (L.sections || []).map((x) => x.for)).filter(Boolean))];
+      // (PAN-19, s19-clean-b: Nani's own order is said by her, at the counter, as every customer's is)
+      const people = asker === "nani" ? ["nani"] : [...new Set((ctx.ladders || []).flatMap((L) => (L.sections || []).map((x) => x.for)).filter(Boolean))];
       if (asker !== "nani" && !people.length) people.push(asker);
+      if (asker === "nani" && UI.guideFor) UI.guideFor("fetch");
       const spots = traySpots().map((t) => t[0]);
-      const came = people.filter((w) => w !== "nani" && Cook.CHARS[w] && s.textures.exists(`${w}-neutral`) && !(s.chars || {})[w]);
+      const came = people.filter((w) => Cook.CHARS[w] && s.textures.exists(`${w}-neutral`) && !(s.chars || {})[w]);
       ctx.came = came.slice(); // (SH-214: the same people back for the closing thanks)
       if (came.length) s.occluder(); // the counter's front, over them (as at a day's service)
       // (Zafar, 29 Oct: two people stand middle and right, the left free for the cards: the central rules' scene.counterSpots)

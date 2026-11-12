@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wrong-order pop-up lab</title>
+<!-- The wrong-order pop-up (js/shared/wrong-order.js; SH-264 to SH-266, Zafar's child play-test, 11 Nov evening): a mock of chai at
+     level 3 with three people, one of them served wrong. Press a button: each order card comes to the middle in turn over the game; a
+     right one ticks again, glows gold and floats away; the wrong one is red with a small cross, opens to all its items with the asker's
+     face big, ticks the right ones as each is said and crosses the wrong one, then shrinks back into the side panel, and the panel
+     keeps only that person's card. The words are the order-card lab's (data/cook.json's); nothing is spoken here. Try it at 740x320,
+     930x430, 1280x665 and 1920x1080. -->
+<link rel="stylesheet" href="../css/shared/kit.css?v=20261110T002839Z">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--njg-page); font-family: var(--njg-font); color: var(--njg-ink); overflow: hidden; }
+  .app { display: grid; grid-template-columns: clamp(220px, 27vw, 380px) 1fr; height: 100dvh; }
+  .side { display: flex; flex-direction: column; gap: var(--njg-s2); padding: var(--njg-s2); background: var(--njg-stone); overflow: hidden; }
+  .side .oc-card { transition: transform .32s ease; }
+  .stage { position: relative; overflow: hidden; background: center / cover no-repeat url("../assets/cook/bg/bg-cook-hob-t-v1-1600.webp"); }
+  .bar { position: absolute; left: var(--njg-s2); bottom: var(--njg-s2); display: flex; flex-wrap: wrap; gap: var(--njg-s2); z-index: 130; }
+  .bar button { font: inherit; font-weight: 800; padding: var(--njg-s2) var(--njg-s3); border-radius: var(--njg-radius); border: 0; background: var(--njg-card); box-shadow: var(--njg-shadow); cursor: pointer; }
+  .glass { position: absolute; bottom: 18%; width: 9%; aspect-ratio: 1; border-radius: 50%; background: var(--njg-card); box-shadow: var(--njg-shadow); display: grid; place-items: center; transition: opacity .4s, transform .4s; }
+  .glass.gone { opacity: 0; transform: translateY(-40%); }
+  .glass img { width: 70%; border-radius: 50%; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="side" id="side"></div>
+  <div class="stage" id="stage">
+    <div class="glass" data-who="nana" style="left: 22%"><img src="../assets/cook/characters/nana-badge.webp" alt=""></div>
+    <div class="glass" data-who="ma" style="left: 45%"><img src="../assets/cook/characters/ma-badge.webp" alt=""></div>
+    <div class="glass" data-who="cousin" style="left: 68%"><img src="../assets/cook/characters/cousin-badge.webp" alt=""></div>
+    <div class="bar">
+      <button data-play="ma">Ma's wrong</button>
+      <button data-play="ma,cousin">Two wrong</button>
+      <button data-play="nana">The first one wrong</button>
+      <button data-reset>Again</button>
+    </div>
+  </div>
+</div>
+<script src="../js/shared/fit.js?v=20261110T002839Z"></script>
+<script src="../js/shared/face.js?v=20261110T002839Z"></script>
+<script src="../js/shared/sfx.js?v=20261110T002839Z"></script>
+<script src="../js/shared/order-card.js?v=20261110T002839Z"></script>
+<script type="module">
+  import { NjgWrongOrder } from "../js/shared/wrong-order.js";
+  const OC = window.OrderCard;
+  const w = (t) => `<span class="word">${t}</span>`;
+  const face = (who) => `../assets/cook/characters/${who}-badge.webp`;
+  const head = { html: `Muke ${w("chai")} khape.` };
+  // each person's rows: [label, the row's key]; the wrong row is the one the serve found wrong
+  const ORDERS = {
+    nana: [[w("dudh"), "dudh"], [`ba ${w("khun")}`, "khun"], [w("elchi"), "elchi"]],
+    ma: [[`${w("Dudh")} na.`, "no-dudh"], [`trae ${w("khun")}`, "khun"]],
+    cousin: [[w("dudh"), "dudh"], [`hakro ${w("khun")}`, "khun"]],
+  };
+  const WRONG_ROW = { nana: "elchi", ma: "khun", cousin: "khun" };
+  const side = document.getElementById("side");
+  const stage = document.getElementById("stage");
+  let keep = null; // the people still to make (after a redo), the one being worked on first
+  const data = (who, open) => ({ person: { id: who, face: face(who), name: who }, headline: head, items: [{ label: null, parts: ORDERS[who].map(([label, key]) => ({ label, key, done: !open })) }] });
+  function draw() {
+    side.innerHTML = "";
+    for (const who of keep || Object.keys(ORDERS)) {
+      const c = OC.card(data(who), { fold: {} });
+      c.dataset.ck = `0:${who}`;
+      side.appendChild(c);
+    }
+  }
+  async function play(wrongs) {
+    draw();
+    const from = (who) => side.querySelector(`[data-ck="0:${who}"]`);
+    const cards = Object.keys(ORDERS).map((who) => ({
+      who, ok: !wrongs.includes(who), face: face(who), headline: head.html, from: from(who),
+      big() {
+        const rows = [];
+        const el = OC.card(data(who, true), { big: true, onEl: (key, e) => e.classList.contains("oc-row") && rows.push({ el: e, ok: key !== WRONG_ROW[who], say: () => new Promise((r) => setTimeout(r, 420)) }) });
+        return { el, rows };
+      },
+    }));
+    const sound = (n) => window.Sfx && window.Sfx.play(n === "ding" ? "right" : n === "oops" ? "cook-soft" : "tap", { volume: 0.4 });
+    await NjgWrongOrder.play({ host: stage, cards, sound, faceHtml: (who, src, size) => window.Face.html(who, size, { src }) });
+    // SH-266: only the wrong orders stay (their glasses, cards and people); SH-265: the panel realigned, the one being worked on first
+    stage.querySelectorAll(".glass").forEach((g) => g.classList.toggle("gone", !wrongs.includes(g.dataset.who)));
+    keep = wrongs.slice();
+    draw();
+  }
+  document.querySelectorAll("[data-play]").forEach((b) => b.addEventListener("click", () => { if (window.Sfx) window.Sfx.unlock(); keep = null; stage.querySelectorAll(".glass").forEach((g) => g.classList.remove("gone")); play(b.dataset.play.split(",")); }));
+  document.querySelector("[data-reset]").addEventListener("click", () => { keep = null; stage.querySelectorAll(".glass").forEach((g) => g.classList.remove("gone")); draw(); });
+  draw();
+</script>
+</body>
+</html>

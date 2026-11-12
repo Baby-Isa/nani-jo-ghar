@@ -668,3 +668,48 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 @media (min-height: 501px) {
   :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child > .wc14-pic { height: calc(var(--njg-c14i) * 5 / 6); }
 }
+
+/* ---- the wrong-order pop-up (js/shared/wrong-order.js; SH-264, SH-265, SH-266, Zafar 11 Nov evening): after a serve with something
+   wrong, each order card comes to the middle in turn over a light veil (the game's edges still seen). A right one's single line ticks
+   again and glows gold, then floats away; a wrong one is marked in the end screen's red with a small cross (his exception to "no red,
+   no cross", ux-principles §11), opens to all its items with the asker's face big, its right items ticked and its wrong one crossed
+   as each is said, then shrinks back into its side panel card ---- */
+.njg-wo {
+  position: absolute; inset: 0; z-index: 115; display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--njg-veil-rgb), 0.22); pointer-events: auto; overflow: hidden;
+}
+.njg-wo.njg-wo-fixed { position: fixed; }
+.njg-wo-stage { position: absolute; inset: 6%; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.njg-wo-card { position: relative; zoom: var(--wo-k, 1); width: auto; max-width: none; max-height: none; overflow: visible; animation: none; flex: none; }
+.njg-wo-line { padding: var(--njg-s3) var(--njg-s5); }
+.njg-wo-row { display: flex; align-items: center; gap: var(--njg-s3); }
+.njg-wo-head { font-family: var(--njg-font-word); font-weight: 700; font-size: var(--njg-big-h); line-height: 1.25; color: var(--njg-ink-kutchi); white-space: nowrap; }
+.njg-wo-mark { display: inline-block; flex: none; width: calc(var(--njg-face) * 0.62); height: calc(var(--njg-face) * 0.62); line-height: 0; }
+.njg-wo-mark svg { width: 100%; height: 100%; display: block; }
+.njg-wo-mark.ok .njg-wo-disc { fill: var(--njg-gold); }
+.njg-wo-mark.bad .njg-wo-disc { fill: var(--njg-wrong); }
+.njg-wo-mark .njg-wo-pen { stroke: var(--njg-card); }
+.njg-wo-card.njg-wo-ok { box-shadow: 0 0 0 calc(var(--njg-line) * 2) var(--njg-gold-hi), 0 0 calc(var(--njg-s5) * 1.4) var(--njg-s2) rgba(var(--njg-gold-hi-rgb), 0.85); }
+/* (Zafar, 11 Nov night: the red on the whole wrong card's border and on the wrong item, the palette's red) */
+.njg-wo-card.njg-wo-bad { box-shadow: 0 0 0 calc(var(--njg-line-2) * 1.5) var(--njg-wrong), var(--njg-shadow-lift); }
+.njg-wo-open { display: flex; align-items: center; gap: var(--njg-s5); padding: var(--njg-s4) var(--njg-s5); }
+.njg-wo-open > .njg-wo-mark { position: absolute; top: calc(var(--njg-s3) * -1); right: calc(var(--njg-s3) * -1); width: calc(var(--njg-face) * 0.75); height: calc(var(--njg-face) * 0.75); }
+/* the asker's face big (Zafar: "the person's face who's ordering needs to be bigger"): the kit's big circle, shown at twice its size */
+.njg-wo-who { flex: none; margin: calc(var(--njg-big-face) * 0.5); transform: scale(2); transform-origin: center; }
+.njg-wo-body { overflow: visible; }
+.njg-wo-body > .oc-card { margin: 0; box-shadow: none; }
+.njg-wo .oc-row { position: relative; }
+.njg-wo .oc-row .oc-tk { visibility: hidden; }
+.njg-wo .oc-row > .njg-wo-mark { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s2) * -1); z-index: 2; }
+.njg-wo .oc-row.njg-wo-now { box-shadow: 0 0 0 calc(var(--njg-line) * 2) var(--njg-focus); }
+.njg-wo .oc-row.njg-wo-ok { border-color: var(--njg-gold); }
+.njg-wo .oc-row.njg-wo-bad { border-color: var(--njg-wrong) !important; box-shadow: inset 0 0 0 var(--njg-line) var(--njg-wrong) !important; }
+/* the side panel card whose copy is out in the pop-up */
+.njg-wo-out { visibility: hidden; }
+
+/* CK-79, SH-148 (s19-clean-a; sekelo's piece rows, SEK-25 "gos gos gos gos"): a row of one thing's pieces (js/shared/order-card.js
+   items14 it.fit, at most four) is drawn whole across its row, each card a share of it: no card runs off the row's edge, no fade */
+.oc-card.oc-s14 .oc-row14.oc-fit14 { overflow-x: hidden; -webkit-mask-image: none; mask-image: none; }
+.oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 { flex: 1 1 0 !important; min-width: 0 !important; padding: max(calc(var(--njg-px) * 3), 1.6cqi); }
+.oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 .oc-t { font-size: clamp(var(--njg-card14-u15), calc(36cqi / var(--oc-fit-n, 4)), var(--njg-card14-u32)); }
+.oc-card.oc-s14 .oc-row14.oc-fit14 > .oc-row.oc-it14 > .oc-badge14 { width: var(--njg-card14-u16, var(--njg-card14-u22)); height: var(--njg-card14-u16, var(--njg-card14-u22)); }

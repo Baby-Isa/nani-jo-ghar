@@ -92,3 +92,34 @@ test("round: without a redo tracker it ends after the first review", async () =>
   await V.round(o);
   assert.deepEqual(log, ["done 0", "check a 0 wrong", "faces 0 a", "oops", "recast a", "close", "after"]);
 });
+
+// SH-264 to SH-266 (Zafar, 11 Nov evening): with a host's wrong-order hook the faces close, the pop-up is the recast, the right dishes
+// leave before the redo, the panel keeps the wrong orders (hook.redo) and every card comes back at the end (hook.end)
+test("round with a wrong-order hook: faces close, the pop-up in place of the recast, the right ones leave, redo and end", async () => {
+  const { o, log } = game({ wrongTries: { a: 0, b: 1 } });
+  o.leave = async (it) => log.push(`leave ${it.who}`);
+  V.use({ show: async ({ rows, round }) => (log.push(`popup ${round} ${rows.length}`), true), redo: ({ round }) => log.push(`panel ${round}`), end: () => log.push("end") });
+  try {
+    await V.round(o);
+  } finally {
+    V.use(null);
+  }
+  assert.deepEqual(log, ["done 0", "check a 0 ok", "right a", "check b 0 wrong", "faces 0 b", "oops", "close", "popup 0 1", "after", "leave a", "panel 1", "reset b", "again 1 b", "done 1", "check b 1 ok", "right b", "faces 1 -", "close", "after", "end"]);
+});
+
+test("round with a hook that shows nothing (no card marked): the recast as before; o.popup false skips the hook", async () => {
+  const { o, log } = game({ wrongTries: { a: 1 } });
+  V.use({ show: async () => false, end: () => log.push("end") });
+  try {
+    delete o.redo;
+    await V.round(o);
+    assert.deepEqual(log, ["done 0", "check a 0 wrong", "faces 0 a", "oops", "close", "recast a", "after", "end"]);
+    const g = game({ wrongTries: { a: 1 } });
+    delete g.o.redo;
+    g.o.popup = false;
+    await V.round(g.o);
+    assert.deepEqual(g.log, ["done 0", "check a 0 wrong", "faces 0 a", "oops", "recast a", "close", "after"]);
+  } finally {
+    V.use(null);
+  }
+});

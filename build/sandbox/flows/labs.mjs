@@ -37,7 +37,7 @@ export async function logTextures(page, round, rec) {
   return tex;
 }
 
-// one Cook plan on lab.html: every stage the host runs (the player hands Cook's own hook over, as test_cook_host.mjs does),
+// one Cook plan on lab.html: every stage the host runs (the player hands Cook's own hook over; it replaced build/test_cook_host.mjs, retired by s19-clean-a, CK-56),
 // then the one end screen
 // mode: "fair", "mistake" (the mistake player, CK-07), or the evidence loop's "mute-across-modes" (SH-22: in the first stage Nani's
 // guide box is muted; the clinic (clinic.html, a heal game) is opened on the same save and "after-mute" recorded at its first heal
