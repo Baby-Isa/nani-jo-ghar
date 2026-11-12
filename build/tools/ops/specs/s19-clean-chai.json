@@ -10,7 +10,6 @@
  ],
  "owns": [
   "js/cook/stations/chai-tray.js and data/stations/chai-tray.json",
-  "js/cook/mechanics/grill.js (only if a chai row needs it: no)",
   "build/reports/s19-clean-chai.md"
  ],
  "readOnly": [

@@ -19,7 +19,6 @@ READ FIRST (in this order):
 
 FILES THIS SESSION OWNS (edit only these):
   - js/cook/stations/chai-tray.js and data/stations/chai-tray.json
-  - js/cook/mechanics/grill.js (only if a chai row needs it: no)
   - build/reports/s19-clean-chai.md
 READ-ONLY (never edit):
   - js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, data/cook.json, build/sandbox/** (s19-clean-a4)

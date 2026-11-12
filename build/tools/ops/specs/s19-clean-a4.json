@@ -39,6 +39,10 @@
    "accept": "each row: a frame or a test; the contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 (s19-clean-a4-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner"
   },
   {
+   "do": "Zafar, 12 Nov (SH-268): one light from the upper left; every worktop object (vessels, trays, the grill, boards, plates) casts the kit's soft shadow down and to the right, as in the mocks, every mode. First an audit table per kitchen game: which objects have their shadow, which don't (Zafar asked how much is implemented). Then one shared helper for round and rectangular objects, the missing shadows in shared pieces, a contract check (present, lower right), and exact lines for s19-clean-e and s19-clean-chai. CK-21's 'no tray shadow' is only the serving tray's dish: keep it. Also: make build/sandbox/s19-clean-a2.test.mjs 'finding 4' robust to a loaded machine (not looser).",
+   "accept": "the audit table; the check red before, green after on the games you touched"
+  },
+  {
    "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
    "accept": "build/reports/s19-clean-a4.md with a Proof section, under 900 words"
   }
