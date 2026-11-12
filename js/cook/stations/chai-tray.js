@@ -1797,6 +1797,9 @@ export function chaiExtra(asked, extras) {
         // (the orchestrator's film, 30 Oct: the pour's one box round the glass and its pan took in the other person's pan between
         // them: the box is the control alone (the glass, which pours at a tap too); its pan keeps its glow and its tap)
         if (ctl14) ctl14.close(); // (one light at a time, whatever came back in above)
+        // (contract-102, chai #hint L1: the last control's glow, the knob turned down at the green, stayed on with no light while the
+        // pour's light waited for the level's hint: the glow goes with its step; the new step's light brings its own, onLight below)
+        if (helpObj) helpGlow(null);
         // (Zafar, 30 Oct: "add a second extra to the pause between the last item being added (including its animation) and the chulo
         // bar onboarding": the control's light and its call wait until nothing moves on the stage, then a second more; the call is
         // held for the light (UI.holdCalls), so they still come together, contract-78)
@@ -1835,6 +1838,9 @@ export function chaiExtra(asked, extras) {
           hintMs: hintMs14,
           current: () => rungKey === sid && !finished,
           busy: () => busy || pans.some((q) => q.away),
+          // (CHAI-58, CHAI-24, contract-70: the knob at the green is timed: its light and call come as the ring enters the green, never
+          // after the stage stills (another pan's water settling held them 1.2 s, the call 2.2 s late at L2); nothing flies to a knob)
+          still: nx.phase === "slow" ? () => true : undefined,
           noHint: nx.phase === "slow",
           onLight: (on, rungN) => {
             if (againFirst && !rungN) seen14[POUR_AGAIN14] = true;
