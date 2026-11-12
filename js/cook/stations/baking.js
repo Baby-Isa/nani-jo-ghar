@@ -143,7 +143,7 @@ import { setTimeout } from "../life.js";
     };
     /** The control o (a container to tip, the bowl, the oven, the naan) lit as the kit lights one: the first time with its call,
      *  after that only as the stuck hint after the level's wait from the last action (STD-D1-06, D2-01). */
-    const control = (o, name, current, withLight = null) => {
+    const control = (o, name, current, withLight = null, { lightOnly = false } = {}) => {
       unlight();
       ctlObj = o;
       // (withLight: the step's call, said as its light comes up the first time, else at once: CHAI-40, contract-36 and -78)
@@ -154,8 +154,10 @@ import { setTimeout } from "../life.js";
         said = true;
         if (!current || current()) withLight();
       };
-      if (!first) sayNow();
-      else setTimeout(sayNow, 3000 / (Cook.speed || 1)); // (never silent: a light that cannot come)
+      // (lightOnly: a call that belongs to the light alone, the tip's "Wiji chad!": said with the first-time light, never at once after)
+      if (!first) {
+        if (!lightOnly) sayNow();
+      } else setTimeout(sayNow, 3000 / (Cook.speed || 1)); // (never silent: a light that cannot come)
       ctl = Cook.Coach.control({
         key: KEY,
         // (s19-games-2, contract-78/-36: the oven's steam is an effect, never a move the light waits for)
@@ -560,7 +562,8 @@ import { setTimeout } from "../life.js";
         expectTap(img, s.id);
         // (s19-clean-e2, contract-36: the tip is a step of its own, the lifted jar lit; Nani calls it with its light, Mum's recorded
         // "Wiji chad!" (lines.guide-add, put it in), the engine's line: the amount was said as the order as the jar was asked for)
-        control(img, "tip", () => open, () => say(line("guide-add", "call")));
+        // (only with its first-time light: said at once on every tip it came 2 s after the amount, twice in a row, contract-22, -89)
+        control(img, "tip", () => open, () => say(line("guide-add", "call")), { lightOnly: true });
       });
       open = false;
       unlight();
