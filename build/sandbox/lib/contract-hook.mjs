@@ -1027,7 +1027,8 @@ function s17hook() {
   const EYE = "#mission .oc-row14 .wc14-hide-pic .wc14-eye";
   const reveal = () => {
     const n = (sel) => [...document.querySelectorAll(sel)].filter((x) => shown(x) && !x.closest(".oc-card.folded")).length;
-    const v = { dots: n(DOTS), eyes: n(EYE) };
+    // (SH-213: a card popped out during the order with something hidden, the big card lesson's cue)
+    const v = { dots: n(DOTS), eyes: n(EYE), pop: n(".wc14-pop.wc14-hide-pic, .wc14-pop.wc14-hide-en, .wc14-pop.wc14-hide-k") };
     if (!same("reveal", v)) emit({ k: "reveal", ...v });
   };
 

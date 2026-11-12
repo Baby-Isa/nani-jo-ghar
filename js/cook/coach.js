@@ -988,11 +988,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * spent only once its box is drawn; the picture's only after the word's was ever shown. Cook's expect is "wait" while one runs (the
    * tester waits). Logged: "order-landed", "reveal-lesson" (shown <why> | none-in-view <why...>). -> Promise<{word, pic}>
    */
+  // SH-213 (Zafar, 12 Nov morning: "Remove the onboarding from within the game mode for the blurred card (both blurred image and text)"):
+  // retired. The big card lesson on the order's pop-up teaches it now (js/cook/ui.js blurLesson); every game still calls this, and it
+  // shows nothing (C.LESSONS_IN_GAME false). The code below stays for the lab's Onboard.lesson tiles.
+  C.LESSONS_IN_GAME = false;
   C.lessons = async function (o = {}) {
     const Onboard = OB();
     const gate = o.gate;
     const out = { word: false, pic: false };
-    if (!Onboard || !Onboard.lesson || !gate) return out;
+    if (!C.LESSONS_IN_GAME || !Onboard || !Onboard.lesson || !gate) return out;
     const L = Onboard.LESSON;
     const wordSel = o.wordSel || L.word;
     const picSel = o.picSel || L.pic;
