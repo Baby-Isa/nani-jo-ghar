@@ -1786,7 +1786,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         const pourPan = nx.phase === "pour" ? pans.find((q) => `pour-${q.who}` === (nx.e && nx.e.key)) : null;
         const fullFirst = !!(halves && pourPan && !nx.again && needOf(pourPan) > 1);
         const againFirst = !!(halves && pourPan && nx.again && needOf(pourPan) > 1 && !seen14[POUR_AGAIN14]);
-        if (againFirst) seen14[POUR_AGAIN14] = true;
+        // (the round-two review's finding 4, SH-178's rule: the showing is spent only once the light is up (onLight below), never as the
+        // step opens: the light waits for a still stage, and a pan reaching its green meanwhile took the step, so the key was spent on
+        // a light never drawn and the glass got none, now or ever)
         const firstTime = rungCur.panPick || fullFirst ? false : againFirst || (!nx.again && gate14.first(`ctl-${nx.phase}`));
         // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
         // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
@@ -1803,7 +1805,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           current: () => rungKey === sid && !finished,
           busy: () => busy || pans.some((q) => q.away),
           noHint: nx.phase === "slow",
-          onLight: () => helpGlow(obj),
+          onLight: (on, rungN) => {
+            if (againFirst && !rungN) seen14[POUR_AGAIN14] = true;
+            helpGlow(obj);
+          },
           onHint: () => {
             hints14++; // (SH-160: the guide's hint came)
             if (UI.stepHelp) UI.stepHelp(); // (her call again with the light: contract-78)
@@ -2041,8 +2046,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // CHAI-08's flaw (the judge, 20 Oct): each face at its glass's upper left, over the rim's edge only, sized so it never reaches
       // the next glass; (s08 sweep, CK-07's flaw) a face stays on the tray, its left edge inside the tray's own; the praise card right
       // of the last face, or left of the leftmost where it would run off the view (NjgServe.layout)
-      const dishes = pans.map((q) => ({ who: q.who, x: q.well.x, y: q.well.y, w: q.well.glass.empty.displayWidth }));
-      return serve.faces(S, dishes, wrongPans.map((q) => pans.indexOf(q)), { left: tray.x, right: (Cook.view && Cook.view.right) || 1600 });
+      // (the round-two review's finding 3, SH-266: at a redo's serve the people who left with their glasses are not called back: the
+      // faces are the ones still at the tray, the praise card beside the last of them)
+      const here = pans.filter((q) => !q.gone);
+      const dishes = here.map((q) => ({ who: q.who, x: q.well.x, y: q.well.y, w: q.well.glass.empty.displayWidth }));
+      return serve.faces(S, dishes, wrongPans.filter((q) => !q.gone).map((q) => here.indexOf(q)), { left: tray.x, right: (Cook.view && Cook.view.right) || 1600 });
     }
 
     /* ---------- the tick: check every glass against what its person said ----------
@@ -2194,7 +2202,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         select(pan);
         await UI.personSay(pan.who, orderOf(pan, rows || undefined));
       },
-      afterReview: () => pans.forEach((q) => q.well.face && q.well.face.active && q.well.face.setVisible(true)),
+      afterReview: () => pans.forEach((q) => !q.gone && q.well.face && q.well.face.active && q.well.face.setVisible(true)),
       redo: ctx.redo,
       key: (pan) => `chai:${pan.who}`,
       showRight,
