@@ -69,7 +69,9 @@ export const S19B_CHECKS = {
 // jump still fails. Each with his words.
 export const ACCEPTED_SIZES = [
   { flow: /maani/, key: /^mv-(?!ball)/, words: "Zafar, 11 Nov morning: \"Maani's board, tawa and plate sizes ... fine as they are (a smooth tweened change)\"; 9 Nov (MAA-24, P8): \"you roll the mani the size of the rolling board ... it just shrinks down into the small tray ... probably one we just have to accept\"" },
-  { flow: /samosa/, key: /^sv3-fold/, words: "Zafar, 11 Nov morning: \"samosa's close-up fold: fine as they are (a smooth tweened change)\"" },
+  // (SH-256, s19-clean-a: the close-up fold is the strip and the filling's heaps on it, which shrink with it as the strip parks; the sweep
+  // found 21 breaks on the heaps alone, sv3-heap-*, with the accepted list naming the strip only)
+  { flow: /samosa/, key: /^sv3-(fold|heap)/, words: "Zafar, 11 Nov morning: \"samosa's close-up fold: fine as they are (a smooth tweened change)\"" },
 ];
 export function acceptedSize(flow, ...keys) {
   return ACCEPTED_SIZES.some((x) => x.flow.test(flow || "") && keys.some((k) => x.key.test(String(k || ""))));
@@ -236,7 +238,7 @@ export function sizeClasses(root) {
 export const SIZE_AT_MS = 3000;    // judged this long into each station (laid out; the order in)
 // not the main thing: the shelf band's own tray, the knobs, faces and badges, the tools in the hand, the cat; baking's mixing bowl,
 // a work surface the shelf's things go into, not a thing sized to the height (Zafar, 11 Nov: "yes" to the bowl as a work surface)
-export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat|bk-bowl/i;
+export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat|bk-bowl|bk-jug/i; // (s19-clean-a, s19-clean-b's note: baking's jug is a work tool, as its bowl is)
 Object.assign(S19B_CHECKS, {
   "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Zafar's accepted sizes (11 Nov morning: "Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change)") are a thing's size from step to step, judged by contract-114 (ACCEPTED_SIZES); no station's main thing or shelf is let off here for them. Once per station.` },
 });
@@ -261,7 +263,9 @@ export function check115(r, tl, add, { root = "." } = {}) {
     if (shelf.length && ref) {
       const bandH = BAND * H, cls = sizeClasses(root);
       for (const x of shelf) {
-        const c = cls.get(x.word) || "M", want = ref * CLASS_K[c] * bandH, h = x.h;
+        // (s19-clean-a, s19-clean-b's note: a long thing lying on the band, the chilli, is judged by its length, its longer side)
+        const len = x.box ? x.box[2] - x.box[0] : 0;
+        const c = cls.get(x.word) || "M", want = ref * CLASS_K[c] * bandH, h = len > 1.6 * x.h ? len : x.h;
         if (h < (1 - SHELF_TOL) * want) { add("contract-115", t, `${s.key}: the shelf item ${x.word} (${x.key}, class ${c}) stands ${Math.round(h)} px, ${Math.round((100 * h) / want)}% of chai's ${c} height at ${r.size} (${Math.round(want)} px): one height per size class, within ${SHELF_TOL * 100}%`); break; }
       }
     }
@@ -424,11 +428,30 @@ export function check36(r, tl, segs, v, add) {
   const cs = calls(v);
   const skips = life(tl, "step-call").filter((n) => /^skip/.test(n.by || ""));
   const used = new Set();
+  // SH-172 (contract-89, Zafar 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ...
+  // when she expands her card to help you"): a step whose item Nani's helper card names while it is closed is called as her card opens,
+  // never before; if it does not open before the next step (the child made the move first), no call is due. s19-clean-a: 36 had asked
+  // for the call as the step opened, which 89 forbids (about 90 breaks between them, the fix-list sweep)
+  const hs = ev(tl, "helper");
+  const helperAt = (t) => { let st = null; for (const h of hs) { if (h.t > t) break; st = h; } return st; };
   steps.forEach((s, i) => {
     const next = steps[i + 1];
     const until = Math.min(s.t + CALL_WITHIN, next ? Math.max(next.t, s.t + 1500) : Infinity);
     const said = cs.find((l) => !used.has(l) && l.t0 >= s.t - CALL_BEFORE && l.t0 <= until);
     if (said) { used.add(said); return; }
+    // (s19-clean-a, s19-clean-b's note: a card step the order line itself brings, Nani saying the item as its card is revealed, baking's
+    // amounts and the pantry's list: that line, voiced, is the step's call; contract-89 forbids a second one)
+    const ord = s.card ? lines(v).find((l) => !used.has(l) && l.role !== "item" && l.role !== "count" && l.role !== "laps" && l.role !== "countdown" && (l.text || "").trim() && l.plays && l.plays.length && l.t0 >= s.t - CALL_BEFORE && l.t0 <= s.t + 1500) : null;
+    if (ord) { used.add(ord); return; }
+    const h0 = helperAt(s.t);
+    // (a step the kit's light shows is called with its light, as contract-89 lets a control's call be: only a card step waits on her card)
+    if (s.card && h0 && h0.named && !h0.open) {
+      const end = next ? next.t : Infinity;
+      const opened = hs.find((h) => h.t > s.t && h.t < end && h.open);
+      if (!opened) return; // (her card stayed closed: the call waits for it, contract-89)
+      const atOpen = cs.find((l) => !used.has(l) && l.t0 >= opened.t - 300 && l.t0 <= opened.t + CALL_WITHIN);
+      if (atOpen) { used.add(atOpen); return; }
+    }
     // (the game's own skip, logged as the step opened: no voiced line for it (a recording to make), Nani muted)
     if (skips.some((n) => n.t >= s.t - 1000 && n.t <= s.t + 3000)) return;
     add("contract-36", s.t, `a step opened on screen (${s.why}) and Nani did not call it (no call line from ${CALL_BEFORE / 1000} s before to ${Math.round((until - s.t) / 100) / 10} s after, no skip logged)`);
@@ -474,8 +497,11 @@ export function itemWords(root) {
   LEX.set(root, map);
   return map;
 }
-// (stations whose rows are full by design: the pantry's shelf and the daar's chop hold at least the table's count)
-export const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal)$/;
+// (stations whose rows are full by design: the pantry's shelf and the daar's chop hold at least the table's count. s19-clean-a, the
+// sweep's x28: so do the stations whose shelf is the dish's whole kit, every choice in view at every level: corn's six bowls (his
+// mock, 10 Nov: "The six bowls ... are right"), sekelo's threading bowls (each mix's pieces), samosa's fillings and baking's jars
+// (Zafar, 11 Nov morning: "The jars: Claude's call (three: flour, sugar, salt)"); fewer than the table's count is still a break)
+export const DECOY_AT_LEAST = /^(fetch|pantry|daar|daal|corn|mishkaki-grill|sekelo|samosa|baking)$/;
 // s19-shared-checks (Zafar, 11 Nov: contract-37 judged by the levels table): the count a station wants at a level is the levels table's
 // (data/rules.json levels.decoys, read from the game being judged), a station's own row first where it has one (data/cook.json
 // levelTable.stations[game].decoys, as js/cook/station-lib.js Cook.levelRow reads it), and none for chop's hop at L1 (CK-71). The game
@@ -540,7 +566,8 @@ export function check37(r, tl, add, { root = ".", table = {} } = {}) {
 // (chai at HEAD, measured by this check's probe, 11 Nov: its shelf's feet and pills' middles, px from the canvas top)
 export const CHAI_LINE = { "740x320": { foot: 296, chip: 307 }, "930x430": { foot: 397, chip: 412 }, "1280x665": { foot: 621, chip: 642 }, "1920x1080": { foot: 1008, chip: 1042 } };
 export function check109few(r, tl, add) {
-  if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length) return;
+  // (the pantry's painted shelves: lib/contract-s19.mjs PAINTED_SHELVES)
+  if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length || /^cook:fetch\b|^lab:cook\/fetch\b/.test(r.flow || "")) return;
   const line = CHAI_LINE[r.size];
   const tEnd = r.t0 && r.ms ? r.t0 + r.ms : tl.length ? tl[tl.length - 1].t : 0;
   for (const { e } of heldSamples(tl, "s19shelf", 300, tEnd)) {

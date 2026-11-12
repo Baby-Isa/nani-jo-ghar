@@ -51,6 +51,13 @@ const serveEnv = () => {
 (function (global) {
   const Cook = CookNS;
   const D = Cook.D;
+  // SH-264 to SH-266: every kitchen game's serve (NjgServe.round) opens the wrong-order pop-up and keeps only the wrong orders for the
+  // redo, through the side panel's own pieces (js/cook/ui.js M.showWrong, M.redoStart, M.redoEnd)
+  NjgServe.use({
+    show: (o) => (Cook.UI && Cook.UI.mission && Cook.UI.mission.showWrong ? Cook.UI.mission.showWrong(o) : false),
+    redo: () => Cook.UI && Cook.UI.mission && Cook.UI.mission.redoStart && Cook.UI.mission.redoStart(),
+    end: () => Cook.UI && Cook.UI.mission && Cook.UI.mission.redoEnd && Cook.UI.mission.redoEnd(),
+  });
 
   const V2 = "assets/cook/items/chai-v2/";
   const ST = "assets/cook/items/chai-station/";
@@ -312,6 +319,16 @@ const serveEnv = () => {
       const E = serveEnv();
       return { review: (S, o) => NjgServe.review(S, o, E), faces: (S, d, w, o) => NjgServe.faces(S, d, w, o, E), round: NjgServe.round, layout: NjgServe.layout, env: E };
     },
+
+    /**
+     * SH-264 (Zafar's child play-test, 11 Nov evening): the wrong-order pop-up over the game, for a game that serves without the shared
+     * round (NjgServe.round shows it by itself): mark the wrong rows first (UI.mission.serveWrong(ids, dish, {for: who})), then
+     * await Cook.Kit.wrongOrder(); before making only the wrong orders again, Cook.Kit.redoOnly() (the panel keeps their cards, the
+     * one being worked on first) and, when the round is over, Cook.Kit.redoDone(). Resolves true when the pop-up was shown.
+     */
+    wrongOrder: (o = {}) => (Cook.UI && Cook.UI.mission && Cook.UI.mission.showWrong ? Cook.UI.mission.showWrong(o) : Promise.resolve(false)),
+    redoOnly: () => (Cook.UI && Cook.UI.mission && Cook.UI.mission.redoStart ? Cook.UI.mission.redoStart() : []),
+    redoDone: () => Cook.UI && Cook.UI.mission && Cook.UI.mission.redoEnd && Cook.UI.mission.redoEnd(),
 
     /**
      * Burner i's front-edge controls and flames. opts: who (a face badge left of the knob; omit for

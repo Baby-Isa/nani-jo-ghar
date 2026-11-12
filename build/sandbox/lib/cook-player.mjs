@@ -206,6 +206,8 @@ export class CookPlayer {
       const w = e.swrongs[0];
       // which jar that is, for the log (the jars on the canvas are keyed jar-<id>; the salt is spi-16)
       const jar = (await canvasObjects(p, /^jar-/).catch(() => [])).map((j) => ({ ...j, id: j.key.slice(4) })).sort((a, b) => Math.hypot(a.x - w.x, a.y - w.y) - Math.hypot(b.x - w.x, b.y - w.y))[0];
+      // (contract-118: a wrong order is on its way to the serve; the shared lifecycle's note marks when)
+      await p.evaluate(`window.Lifecycle && Lifecycle.note && Lifecycle.note("probe-wrong", { step: "serve-wrong" })`).catch(() => {});
       await this.tap(w.x, w.y, "look-alike, kept");
       // the review faces at the serve hold 2.5 s (Cook.tasteHold, the screenshot scripts' hook) for drv:review-face's crop
       await p.evaluate("Cook.tasted = null; Cook.tasteHold = 2500").catch(() => {});
@@ -214,6 +216,48 @@ export class CookPlayer {
       this.rec.note(`serve-wrong: ${jar ? (jar.id === "spi-16" ? "salt (spi-16)" : jar.id) : "a look-alike"} put in at the ${e.key} step, where ${e.key === "cook-khun" ? "the sugar" : "the right item"} goes, and left in`);
       this.made.add("serve-wrong");
       return true;
+    }
+    // serve-wrong, from level 3 (s19-clean-a, SH-264 to SH-266: chai L3 and eggs L3 offered no look-alike, so no wrong was ever served):
+    // chai: at an extra's step (a spice a person asked for), a different spice on the shelf goes in first and stays (an extra nobody
+    // asked for: a wrong cup); eggs: at a shaker step, the right shaker taken to find the plate, then the other shaker shaken on that
+    // plate (a seasoning that person did not ask for). Then the rest is played fair, so the serve finds that one order wrong
+    if (m === "serve-wrong" && !d.served && e.kind === "tap" && /^(spi|veg|ph)-/.test(e.key || "") && !/^(ph-half|ph-full)$/.test(e.key) && e.key !== "cook-khun") {
+      const W = (o) => p.evaluate(`window.Lifecycle && Lifecycle.note && Lifecycle.note("probe-wrong", { step: ${JSON.stringify(o)} })`).catch(() => {});
+      const jars = (await canvasObjects(p, /^jar-/).catch(() => [])).filter((j) => j.alpha > 0.05).map((j) => ({ ...j, id: j.key.slice(4) }));
+      // (a spice nobody on the order card asks for: one another person asked for may be a right cup's after all; chai L3 at 740x320)
+      const asked = new Set(await p.evaluate(() => [...document.querySelectorAll("#mission [data-word], #mission [data-key]")].map((x) => x.dataset.word || x.dataset.key)).catch(() => []));
+      const other = jars.filter((j) => j.id !== e.key && /^(spi|veg|ph)-/.test(j.id) && j.id !== "spi-16" && !asked.has(j.id)).sort((a, b) => Math.hypot(a.x - e.sx, a.y - e.sy) - Math.hypot(b.x - e.sx, b.y - e.sy))[0];
+      const shakers = (await canvasObjects(p, /^eg-shaker/).catch(() => [])).filter((j) => j.alpha > 0.05 && !/shade|shadow/.test(j.key)); // (not a shaker's soft shadow)
+      if (other) {
+        d.served = true;
+        await W("serve-wrong");
+        await this.tap(other.x, other.y, `a spice nobody asked for (${other.id}), kept`);
+        await p.evaluate("Cook.tasted = null; Cook.tasteHold = 2500").catch(() => {});
+        await sleep(700);
+        await this.once("serve-wrong", { settle: 0 });
+        this.rec.note(`serve-wrong: ${other.id} put in at the ${e.key} step (an extra nobody asked for) and left in`);
+        this.made.add("serve-wrong");
+        return true;
+      }
+      if (shakers.length >= 2 && /^spi-(16|11)$/.test(e.key)) {
+        const right = shakers.sort((a, b) => Math.hypot(a.x - e.sx, a.y - e.sy) - Math.hypot(b.x - e.sx, b.y - e.sy))[0];
+        const wrongShaker = shakers.find((x) => x !== right);
+        await this.tap(e.sx, e.sy, "the right shaker, to find its plate");
+        await sleep(450);
+        const pl = await this.exp().catch(() => null);
+        if (pl && pl.kind === "tap" && pl.sx != null && wrongShaker) {
+          d.served = true;
+          await W("serve-wrong");
+          await this.tap(wrongShaker.x, wrongShaker.y, `the other shaker (${wrongShaker.key})`);
+          await sleep(450);
+          await this.tap(pl.sx, pl.sy, "on the plate: a seasoning not asked for");
+          await sleep(900);
+          await this.once("serve-wrong", { settle: 0 });
+          this.rec.note(`serve-wrong: ${wrongShaker.key} shaken on the plate at (${Math.round(pl.sx)}, ${Math.round(pl.sy)}), where ${e.key} was asked`);
+          this.made.add("serve-wrong");
+        }
+        return true;
+      }
     }
     // miss-chop (DAAR-25): the first slice step lets the vegetables fly by uncut for 3 s, so a count is short and the chop
     // comes again (decision 51: only the wrong ones, opened by the request pop-up), then fair

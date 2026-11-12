@@ -20,7 +20,9 @@ test("Cook's Lang.speak plays the engine's plan: stitched word by word, no whole
     this.text = t;
   };
   // the core's one voice, playing through Cook's player (js/cook/boot.js's player)
-  const player = { play: (u) => Cook.speakFile(u), stop() {}, synth: (t) => Cook.synthSay(t) };
+  // (CK-56, s19-clean-a: Cook.synthSay is the core's device voice now, js/cook/words.js, which reads the page's own speechSynthesis, not
+  // this test's window: the player's device voice is counted here directly, as the test path plays it)
+  const player = { play: (u) => Cook.speakFile(u), stop() {}, synth: async () => (played.push("device"), true) };
   Cook.core = { voice: createVoice({ index: null, player, path: "test", phrases: false, gapMs: 0 }) };
   assert.equal(voicePath(), "test");
   const lines = allOrderLines(Cook).map((x) => x.line);

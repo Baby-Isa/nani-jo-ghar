@@ -823,7 +823,7 @@
    "need": [],
    "steps": ["Mix", "Oven"],
    "run": [{"do": "baking", "plan": "$plan"}],
-   "how": "Nani says one thing at a time: a little, a lot, a cup. Tap it to tip it in. Then bake the naan."
+   "how": "Nani says one amount at a time: a cup, half a cup, two cups, a quarter. Tap it to tip it into the jug. Then bake the naan."
   },
   "pantry": {
    "_about": "Wave 6 (docs/design-language/ux-principles.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
@@ -1086,15 +1086,15 @@
         null,
         null,
         {
-         "_teach": "CHAI-55 (Zafar, 1 Nov; decision 4): while adh and aako are new to the child (word stage 1-2), the first person asks half and the second full; the third, and everyone once the words are known, at random (js/cook/recipes.js teach)",
+         "_teach": "CHAI-55 (Zafar, 1 Nov; decision 4): while adh and aako are new to the child (word stage 1-2), the first person asks full and the second half (CHAI-110, corrected 11 Nov night: the first L4 round full, then half); the third, and everyone once the words are known, at random (js/cook/recipes.js teach)",
          "teach": {
           "words": [
            "ph-half",
            "ph-full"
           ],
           "seats": [
-           "ph-half",
-           "ph-full"
+           "ph-full",
+           "ph-half"
           ]
          },
          "pick": [

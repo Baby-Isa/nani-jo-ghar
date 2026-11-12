@@ -662,7 +662,9 @@ const BASE_HOOK = `(() => {
   // game's next move): the child's turn is a kind that asks for a move; "wait", "end", a button or a timing window is not being stuck
   const want = () => {
     const ce = safe(() => window.njgTest?.cook && window.njgTest?.cook.expectation && window.njgTest?.cook.expectation());
-    if (ce) return { by: "cook", kind: String(ce.kind || ""), intro: !!ce.intro };
+    // (key: the step it waits on, so contract-117 knows a light went with no move made: the same step still wanted)
+    // (at: where it waits, coarse: the same key at another place is another step, eggs' "n.egg" from the bowl to the pan)
+    if (ce) return { by: "cook", kind: String(ce.kind || ""), intro: !!ce.intro, key: String(ce.key || ""), at: ce.x != null ? Math.round(ce.x / 24) + "," + Math.round(ce.y / 24) : "" };
     const k = safe(() => window.njgTest?.clinic && window.njgTest?.clinic.expect && window.njgTest?.clinic.expect());
     if (k) return { by: "clinic", kind: String(k.kind || "") };
     const hx = safe(() => window.njgTest && window.njgTest.expect && window.njgTest.expect());
@@ -1059,4 +1061,6 @@ import { S19_HOOK } from "./contract-s19.mjs";
 // ---- s19-checks-2: the screen checks' probe (lib/contract-s19b-hook.mjs: contract-114 to -116 and the rewrites of 36, 37, 70-74, 77, 96) ----
 import { S19B_HOOK } from "./contract-s19b-hook.mjs";
 // (each probe its own statement: two IIFEs on adjacent lines with no ";" between would call the first one's result with the second)
-export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";\n" + S19B_HOOK + ";";
+// ---- s19-clean-a: the wrong-order pop-up's probe (lib/contract-wo.mjs: contract-118) ----
+import { WO_HOOK } from "./contract-wo.mjs";
+export const CONTRACT_HOOK = BASE_HOOK + "\n" + S17_HOOK + ";\n" + S19_HOOK + ";\n" + S19B_HOOK + ";\n" + WO_HOOK + ";";

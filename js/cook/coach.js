@@ -334,8 +334,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         clearTimeout(t);
         h.close();
       };
+      // (SH-261, Zafar 11 Nov night: no light fades on a timer: it goes as the child moves on)
       q = setInterval(() => (moved() || moving()) && end(), 60);
-      t = setTimeout(end, R.pointMs() / sp);
     };
     go();
   }
@@ -696,11 +696,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const tick = () => {
       if (!cur()) return void h.close();
       const la = lastAct();
-      // (an action since the hint: its light goes, and the clock runs again from that action)
-      if (helpedAt && la > helpedAt) {
-        helpedAt = 0;
-        unlight();
-      }
+      // SH-261 at full strength (Zafar, 11 Nov night: every light, Nani's help lights too, stays until the right move; it went on any tap,
+      // CHAI-32, SH-60): an action since the hint leaves its light up; it goes when the step is done (o.current() false: h.close)
       const due = Onboard && Onboard.hintDue ? Onboard.hintDue(opened, la, wait(), rushed) : Math.max(opened, la) + wait();
       const waiting = !o.waiting || o.waiting();
       if (!helpedAt && waiting && !(o.busy && o.busy()) && Date.now() >= due) hint();
@@ -855,7 +852,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const fire = () => {
       if (!Onboard || !Onboard.light || !o.target) return;
       if (o.ok && !o.ok()) return;
-      lit = Onboard.light(o.target, { look: "glow", pad: 2, kit: true, pass: true, ms: (o.litMs != null ? o.litMs : W.nextLit) / speed(), quitIf: o.quitIf, note: o.note });
+      // (SH-261, Zafar 11 Nov night, the pan-switch light he saw fade: it stays until the next vessel is picked, o.quitIf, never a timer)
+      lit = Onboard.light(o.target, { look: "glow", pad: 2, kit: true, pass: true, ms: o.litMs != null ? o.litMs / speed() : undefined, quitIf: o.quitIf, note: o.note });
       note("next-pan", { step: o.who != null ? String(o.who) : "", by: "light" });
     };
     // (SH-253: never while a thing of the game's is still in flight: it waits for the stage to be still, up to breathMax)
@@ -957,7 +955,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const r = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
           return r && r.width ? { x: r.left, y: r.top, w: r.width, h: r.height } : null;
         };
-        const h = Onboard.light(lit, { look: "", pad: 4, kit: true, pass: true, ms: (R ? R.pointMs() : 0) / speed(), quitIf: endIf, note: o.note, box: onItem ? cardBox : undefined });
+        // (SH-261: no timer; it goes as the child moves on or the step changes, endIf)
+        const h = Onboard.light(lit, { look: "", pad: 4, kit: true, pass: true, quitIf: endIf, note: o.note, box: onItem ? cardBox : undefined });
         h.done.then(() => res(true));
       };
       go();

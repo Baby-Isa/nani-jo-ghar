@@ -23327,7 +23327,7 @@
    "sizes": [
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "second-play",
    "want": null,
    "at": "rec:order-card-big",
    "after": null,
@@ -23336,7 +23336,7 @@
     "voice"
    ],
    "expect": null,
-   "note": "a returning player at L4: no word moment (no shutter in the voice timeline), the order straight away",
+   "note": "a returning player at L4 (CHAI-67, s19-clean-a: the second play on the first play's save, which met adh and aako in its word moment; the seen profile never had): no word moment (no shutter in the voice timeline), the order straight away",
    "delay": 0
   }
  ],
@@ -27667,6 +27667,88 @@
    "expect": null,
    "max": 8,
    "note": "sekelo's board, skewer, grill and trays all v4"
+  }
+ ],
+ "SH-264": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "serve-wrong",
+   "level": 3,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.njg-wo-open .oc-row.njg-wo-bad",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chai L3, one cup served wrong (the serve-wrong driver: a spice nobody asked for): the pop-up over the game, the wrong card big in the middle with every item in view, the asker's face big, its border and the wrong item red with a cross, the right items ticked (the before has no pop-up: never reached)",
+   "delay": 0
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "serve-wrong",
+   "level": 3,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "visible:.njg-wo-open .oc-row.njg-wo-bad",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "eggs L3, one plate served wrong (the driver: the other shaker on a plate): the same pop-up (eggs serves through s19-clean-b's wiring; the before has none)",
+   "delay": 0
+  }
+ ],
+ "SH-265": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "serve-wrong",
+   "level": 3,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "drv:retry",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chai L3 after a wrong cup: the redo has begun (the driver's retry: a ticked row opened again); the side panel's cards realigned, the one being worked on first",
+   "delay": 900
+  }
+ ],
+ "SH-266": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "serve-wrong",
+   "level": 3,
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "drv:retry",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "chai L3 after a wrong cup: only the wrong order stays (its card, its glass and face); the right orders' glasses, cards and faces gone (the stoves may stay)",
+   "delay": 900
   }
  ],
  "CHAI-110": [
