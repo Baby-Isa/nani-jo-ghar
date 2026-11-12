@@ -415,10 +415,16 @@ const calls = (v) => lines(v).filter((l) => l.role === "call" && (l.text || "").
 // did not light just before) and each new current card on the order card (the first card not ticked), in a station
 export const CALL_WITHIN = 6000;
 export const CALL_BEFORE = 2000;   // a call may come just before its light (the call opens the step; the light follows)
+export const LIT_LAG_MS = 700;     // the s19lit sample's lag behind the frame-timed light it samples, at most
 export function screenSteps(tl) {
   const st = stationsOf(tl);
   const out = [];
   let lastThing = null;
+  // (s19-clean-a6: the s19lit sample comes up to half a second after the light under load; the S14 hook's "lit", read every animation
+  // frame, times it: the same hole in a "lit" sample up to LIT_LAG_MS before is when the step's light came)
+  const fast = ev(tl, "lit").filter((e) => (e.holes || []).length);
+  const sameHole = (a, b) => Math.abs(a[0] - b[0]) <= 3 && Math.abs(a[1] - b[1]) <= 3 && Math.abs(a[2] - b[2]) <= 3 && Math.abs(a[3] - b[3]) <= 3;
+  const asBox = (h) => (Array.isArray(h) ? h : [h.l, h.t, h.r, h.b]);
   for (const e of ev(tl, "s19lit")) {
     const th = (e.things || [])[0];
     // (a light on a card is the help pointing at the order card's next item, contract-90's, not a step of the kitchen)
@@ -426,7 +432,9 @@ export function screenSteps(tl) {
     const m = midOf(th.box);
     if (lastThing && (lastThing.id === th.id || dist(m, lastThing.m) < 30)) { lastThing.m = m; continue; }
     lastThing = { id: th.id, m };
-    out.push({ t: e.t, why: `the light on ${th.id}` });
+    const h0 = (e.holes || [])[0];
+    const f = h0 ? fast.filter((x) => x.t <= e.t && x.t >= e.t - LIT_LAG_MS && x.holes.some((h) => sameHole(asBox(h), asBox(h0)))).shift() : null;
+    out.push({ t: f ? f.t : e.t, why: `the light on ${th.id}` });
   }
   let cur = null;
   for (const e of ev(tl, "s19pad")) {

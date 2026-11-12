@@ -125,3 +125,17 @@ test("contract-106: a light gone at once by its frame-timed sample is green thou
   const stays = [...ST, c(38000, "s19lit", { holes: A }), press, c(39520, "s19lit", { holes: B }), c(45000, "x")];
   assert.equal(run(stays).length, 1, "only the lagging sample, gone at 620 ms: red");
 });
+
+// ---- contract-36: a step's light is timed by the frame-timed "lit" sample of the same hole (the s19lit sample lags it) ----
+import { screenSteps } from "./lib/contract-s19b.mjs";
+test("contract-36: the light's step time is its frame-timed sample's; a call 2.0 s before the frame-timed light is in time", () => {
+  const h = [[470, 93, 704, 215]];
+  const tl = [...ST, c(37440, "lit", { holes: h }), c(37480, "s19lit", { holes: h, things: [{ kind: "pic", id: "sv3-fold-strip", box: [480, 100, 700, 210] }] }), c(50000, "x")];
+  assert.equal(screenSteps(tl)[0].t, 37440, "timed by the frame-timed light");
+  const run = (tl2, lines) => collect((add) => check36({ flow: "cook:samosa@L2" }, tl2, [], { lines }, add));
+  const call = { role: "call", text: "Bhar! Chundo.", t0: 35450, plays: [{}] };
+  assert.equal(run(tl, [call]).length, 0, "the call 1.99 s before the light: green");
+  const other = [...ST, c(36000, "lit", { holes: [[10, 10, 50, 50]] }), c(37480, "s19lit", { holes: h, things: [{ kind: "pic", id: "sv3-fold-strip", box: [480, 100, 700, 210] }] }), c(50000, "x")];
+  assert.equal(screenSteps(other)[0].t, 37480, "another hole's sample does not time it");
+  assert.equal(run([...ST, c(37480, "s19lit", { holes: h, things: [{ kind: "pic", id: "sv3-fold-strip", box: [480, 100, 700, 210] }] }), c(50000, "x")], [{ ...call, t0: 35000 }]).length, 1, "a call 2.48 s before: red");
+});
