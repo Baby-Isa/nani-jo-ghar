@@ -3211,12 +3211,15 @@
         if (s.block && s.head) {
           // a block of the dish (samosa's kind): its count and dish ("trae samosa") as the row's first card, its fillings after it;
           // several of a kind tick together when all its samosas are made (SAM-24's one tick, contract-50), one with its fillings
+          // SAM-35 (Zafar, 12 Nov night: "If he's ordering samosa, then the item card should be the fillings, not the finished samosa"): a
+          // dish whose headline says its count (data/cook.json recipes.<dish>.blockHeads false) has no head card: the fillings' cards alone
+          const headCard = !!(Cook.data.recipes[L.recipe] || {}).blockHeads;
           const n = s.head.qty || 1;
           const parts = flat.map((x) => cardOf(x.r, x.gi));
           const all = !!s.head.done || !!L.closedAll || (n <= 1 && parts.length > 0 && parts.every((p) => p.done || p.no));
           const head = Object.assign(cardOf(s.head, 0), { done: all, say: sayRow(s.head) });
-          items.push({ label: null, count: 1, parts: [head].concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
-          rowsShown.push(s.head, ...flat.map((x) => x.r));
+          items.push({ label: null, count: 1, parts: (headCard ? [head] : []).concat(parts.map((p) => Object.assign(p, { done: all || (n <= 1 && p.done), next: false }))), ordered: false, done: all, src: [] });
+          rowsShown.push(...(headCard ? [s.head] : []), ...flat.map((x) => x.r));
           return;
         }
         if (flat.length) {

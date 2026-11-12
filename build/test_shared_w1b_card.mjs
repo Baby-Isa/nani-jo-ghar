@@ -52,23 +52,22 @@ test("SH-99: every number Cook says in an order is written on its card, at every
   assert.deepEqual([...new Set(bad)].slice(0, 12), []);
 });
 
-test("SAM-23: samosa's title has no number in either language; its blocks' rows say how many (\"ba samosa\", \"trae samosa\")", async () => {
+test("SAM-35 (Zafar, 12 Nov night; was SAM-23): samosa's title says the count (\"Muke ba samosa khape.\"), in Kutchi and English; no block has a head row of its own", async () => {
   const { Cook } = await loadCookEngine({ seed: 9 });
   const Lang = Cook.Lang;
-  let counted = 0;
   for (const who of Object.keys(Cook.data.customers)) for (const level of [1, 2, 3, 4]) {
-    const L = Cook.Order.ladder(Cook.Recipes.samosa.make(who, { level }), 0);
-    assert.equal(L.head.uncountedTitle, true);
+    const d = Cook.Recipes.samosa.make(who, { level });
+    const L = Cook.Order.ladder(d, 0);
+    assert.equal(!!L.head.uncountedTitle, false);
     const title = L.head.cardLine || L.head.line;
-    assert.doesNotMatch(Lang.plain(title).toLowerCase(), /\b(hakro|ba|trae|char|panj)\b/);
-    assert.doesNotMatch(String(title.en || "").toLowerCase(), /\b(one|two|three|four|five|\d)\b/, `English title: ${title.en}`);
-    for (const s of L.sections.filter((x) => x.block && x.head && (x.head.parts || []).some((n) => typeof n === "number" && n > 1))) {
-      counted++;
-      assert.match(Lang.plain(s.head.cardLine || s.head.line).toLowerCase(), /\b(ba|trae|char|panj)\b/, "a block's row writes its count");
-      assert.match(String((s.head.cardLine || s.head.line).en || "").toLowerCase(), /\b(two|three|four|five)\b/, "and its English says it");
+    const n = (L.head.parts || []).find((p) => typeof p === "number");
+    if (n > 1) {
+      assert.match(Lang.plain(title).toLowerCase(), /\b(ba|trae|char|panj|che)\b/, `L${level} ${who}: ${Lang.plain(title)}`);
+      assert.match(String(title.en || "").toLowerCase(), /\b(two|three|four|five|six)\b/, `English title: ${title.en}`);
     }
   }
-  assert.ok(counted > 0, "some block says more than one");
+  // (the card: data/cook.json recipes.samosa.blockHeads false, so js/cook/ui.js draws a block's fillings without the samosa head card)
+  assert.equal(Cook.data.recipes.samosa.blockHeads, false);
 });
 
 test("SH-99, CLN-169, CLN-171: boing writes the drops' colour and the plaster's colour at every level; counts stay in the taught round", () => {
