@@ -17,6 +17,8 @@
  * decisions every answered decision list's rows carry his answer (docs/decisions/, Zafar 9 Nov)
  * fixlist  every open row on the fix list starts its status with one label (to fix: code / to fix: check / waiting on Zafar / Mum / art, before app store; Zafar, 21 Oct)
  * recordings  build/tools/ops/recordings.mjs --check (Zafar, 20 Oct): docs/language/recording-sheet.md is current (regenerate: node build/tools/ops/recordings.mjs)
+ * audio  build/tools/ops/storeaudio.mjs --check (Zafar, 12 Nov): every playable family clip has a release status ("game" plays now,
+ *        "final" is store-ready); says how far the store gate (storeaudio.mjs with no flag, which fails while any clip is short of "final") is
  * art    build/tools/art/artcolour.py --changed (Fable's view, 6 Nov): the colour and look checks on the pictures changed since the merge-base
  *        with origin/main (HEAD~1 on main), so no pack lands unmeasured; FAIL only on a FAIL (a baked shadow); flags are counted, not failed
  * size   build/tools/review/sitesize.mjs (Zafar, 14 Oct): the live site stays under 800 MB (GitHub Pages stops deploying near 1 GB)
@@ -38,7 +40,7 @@ import { args, help, ROOT, locked } from "./lib/common.mjs";
 const a = args();
 help(readFileSync(new URL(import.meta.url), "utf8").split("*/")[0].replace(/^[\s\S]*?\/\*\n?/, "").replace(/^ \* ?/gm, ""), a);
 const FULL = a.has("full");
-const STEPS = ["unit", "words", "static", "leak", "bump", "specs", "docs", "stdids", "recordings", "fixlist", "decisions", "art", "size", "load"];
+const STEPS = ["unit", "words", "static", "leak", "bump", "specs", "docs", "stdids", "recordings", "audio", "fixlist", "decisions", "art", "size", "load"];
 // the steps a run does: --only's, else every step but the browser's load check unless --browser or --full
 export const pick = ({ only = null, full = false, browser = false } = {}) => (only ? only.split(",") : STEPS.filter((s) => s !== "load" || full || browser));
 const only = pick({ only: a.val("only"), full: FULL, browser: a.has("browser") });
@@ -138,6 +140,11 @@ steps.fixlist = async () => {
 steps.recordings = async () => {
   const r = await go(process.execPath, ["build/tools/ops/recordings.mjs", "--check"]);
   return line("recordings", r.status === 0, ((r.status === 0 ? r.stdout : r.stderr || r.stdout).trim().split("\n").pop()) || `recordings.mjs exited ${r.status}`);
+};
+steps.audio = async () => {
+  const r = await go(process.execPath, ["build/tools/ops/storeaudio.mjs", "--check"]);
+  const out = r.stdout.trim().split("\n");
+  return line("audio", r.status === 0, out[0] || `storeaudio.mjs exited ${r.status}`, r.status !== 0 ? out.slice(1, 9).map((l) => l.trim()) : []);
 };
 steps.art = async () => {
   const r = await go("python3", ["build/tools/art/artcolour.py", "--changed", "--quiet"]);

@@ -454,7 +454,8 @@ test("meanings are language-neutral: no Kutchi in abstract.json, and word ids na
 test("a plural built on a defaulted gender is a draft; a confirmed-gender noun's plural stays confirmed", () => {
   const real = createEngine({ data: loadData({ seed: false }), audio: AUDIO, path: "store", phrases: false });
   const gen = (id) => real.word ? real.word(id, "pl.dir") : null;
-  for (const [id, t] of [["n.mince", "chunda"], ["n.potato", "bataata"]]) {
+  // mince and potato were the examples until Mum gave their genders (12 Nov, grammar-notes §64); two -o nouns still unknown
+  for (const [id, t] of [["n.cassava", "moga"], ["n.food-cage", "pinjra"]]) {
     const r = gen(id);
     assert.equal(r.tokens[0].t, t);
     assert.notEqual(r.tokens[0].status, "confirmed", `${t} must be a draft`);
@@ -462,8 +463,7 @@ test("a plural built on a defaulted gender is a draft; a confirmed-gender noun's
     assert.ok(r.gaps.some((g) => g.kind === "feature" && g.lex === id), `${t} must reach the gap list`);
     assert.equal(r.drafts.length, 1);
   }
-  const sg = gen("n.mince");
-  assert.equal(real.word("n.mince", "sg.dir").tokens[0].status, "confirmed", "the recorded singular is no guess");
+  assert.equal(real.word("n.cassava", "sg.dir").tokens[0].status, "confirmed", "the recorded singular is no guess");
   const ok = real.word("n.billy-goat", "pl.dir");
   assert.equal(ok.tokens[0].status, "confirmed");
   assert.equal(ok.tokens[0].defaulted, undefined);

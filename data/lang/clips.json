@@ -1824,6 +1824,278 @@
    "cell": "he.sg.dir"
   },
   {
+   "clip": "mitho",
+   "lex": "n.salt.mums-word",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "mare-ji-chai-banai",
+   "meaning": "Say(phrase.make-everyones-chai)"
+  },
+  {
+   "clip": "mare-ji-chai-banai",
+   "meaning": "Exclaim(phrase.make-everyones-chai)"
+  },
+  {
+   "clip": "mare-ji-chai-banai",
+   "meaning": "Ask(phrase.make-everyones-chai)"
+  },
+  {
+   "clip": "iloka-je-glass-me-wij",
+   "meaning": "Say(phrase.put-it-in-their-glass)"
+  },
+  {
+   "clip": "iloka-je-glass-me-wij",
+   "meaning": "Exclaim(phrase.put-it-in-their-glass)"
+  },
+  {
+   "clip": "iloka-je-glass-me-wij",
+   "meaning": "Ask(phrase.put-it-in-their-glass)"
+  },
+  {
+   "clip": "liti-sudhi-wij",
+   "meaning": "Say(phrase.pour-it-up-to-the-line)"
+  },
+  {
+   "clip": "liti-sudhi-wij",
+   "meaning": "Exclaim(phrase.pour-it-up-to-the-line)"
+  },
+  {
+   "clip": "liti-sudhi-wij",
+   "meaning": "Ask(phrase.pour-it-up-to-the-line)"
+  },
+  {
+   "clip": "jitli-chamchi-inke-khapeti-itli-wij",
+   "meaning": "Say(phrase.put-in-as-many-spoons-as-they-want)"
+  },
+  {
+   "clip": "jitli-chamchi-inke-khapeti-itli-wij",
+   "meaning": "Exclaim(phrase.put-in-as-many-spoons-as-they-want)"
+  },
+  {
+   "clip": "jitli-chamchi-inke-khapeti-itli-wij",
+   "meaning": "Ask(phrase.put-in-as-many-spoons-as-they-want)"
+  },
+  {
+   "clip": "chai-tapele-me-wij",
+   "meaning": "Say(phrase.put-the-chai-in-the-pan)"
+  },
+  {
+   "clip": "chai-tapele-me-wij",
+   "meaning": "Exclaim(phrase.put-the-chai-in-the-pan)"
+  },
+  {
+   "clip": "chai-tapele-me-wij",
+   "meaning": "Ask(phrase.put-the-chai-in-the-pan)"
+  },
+  {
+   "clip": "paani-tapele-me-wij",
+   "meaning": "Say(phrase.put-water-in-the-pan)"
+  },
+  {
+   "clip": "paani-tapele-me-wij",
+   "meaning": "Exclaim(phrase.put-water-in-the-pan)"
+  },
+  {
+   "clip": "paani-tapele-me-wij",
+   "meaning": "Ask(phrase.put-water-in-the-pan)"
+  },
+  {
+   "clip": "hakro",
+   "lex": "num.1",
+   "cell": "he"
+  },
+  {
+   "clip": "trae",
+   "lex": "num.3",
+   "cell": "*"
+  },
+  {
+   "clip": "chai",
+   "lex": "n.tea",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "chai",
+   "lex": "n.tea",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "chai",
+   "lex": "n.tea",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "chai",
+   "lex": "n.tea",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "dudh",
+   "lex": "n.milk",
+   "cell": "*"
+  },
+  {
+   "clip": "hakri",
+   "lex": "num.1",
+   "cell": "she"
+  },
+  {
+   "clip": "khun",
+   "lex": "n.sugar",
+   "cell": "*"
+  },
+  {
+   "clip": "waari",
+   "lex": "post.mixed-in",
+   "cell": "*"
+  },
+  {
+   "clip": "khapeti",
+   "lex": "v.want",
+   "cell": "pres.she.sg"
+  },
+  {
+   "clip": "ba-word",
+   "lex": "num.2",
+   "cell": "*"
+  },
+  {
+   "clip": "elchi",
+   "lex": "n.cardamom",
+   "cell": "sg.dir"
+  },
+  {
+   "clip": "elchi",
+   "lex": "n.cardamom",
+   "cell": "sg.obl"
+  },
+  {
+   "clip": "elchi",
+   "lex": "n.cardamom",
+   "cell": "pl.dir"
+  },
+  {
+   "clip": "elchi",
+   "lex": "n.cardamom",
+   "cell": "pl.obl"
+  },
+  {
+   "clip": "aadu",
+   "lex": "n.ginger",
+   "cell": "*"
+  },
+  {
+   "clip": "kari",
+   "lex": "a.black",
+   "cell": "she.sg.dir"
+  },
+  {
+   "clip": "kari",
+   "lex": "a.black",
+   "cell": "she.pl.dir"
+  },
+  {
+   "clip": "kari",
+   "lex": "v.do",
+   "cell": "conj"
+  },
+  {
+   "clip": "me-word",
+   "lex": "post.in",
+   "cell": "*"
+  },
+  {
+   "clip": "mori",
+   "lex": "a.unsweetened",
+   "cell": "she.sg.dir"
+  },
+  {
+   "clip": "mori",
+   "lex": "a.unsweetened",
+   "cell": "she.pl.dir"
+  },
+  {
+   "clip": "bafelo-indo",
+   "lex": "n.boiled-egg",
+   "cell": "*"
+  },
+  {
+   "clip": "hane-hi-wij",
+   "meaning": "Say(phrase.now-put-this-in)"
+  },
+  {
+   "clip": "hane-hi-wij",
+   "meaning": "Exclaim(phrase.now-put-this-in)"
+  },
+  {
+   "clip": "hane-hi-wij",
+   "meaning": "Ask(phrase.now-put-this-in)"
+  },
+  {
+   "clip": "e-chai-erte-rand",
+   "meaning": "Say(phrase.cook-it-the-way-they-said)"
+  },
+  {
+   "clip": "e-chai-erte-rand",
+   "meaning": "Exclaim(phrase.cook-it-the-way-they-said)"
+  },
+  {
+   "clip": "e-chai-erte-rand",
+   "meaning": "Ask(phrase.cook-it-the-way-they-said)"
+  },
+  {
+   "clip": "haji-thorok-wadhare",
+   "meaning": "Say(phrase.still-a-little-more)"
+  },
+  {
+   "clip": "haji-thorok-wadhare",
+   "meaning": "Exclaim(phrase.still-a-little-more)"
+  },
+  {
+   "clip": "haji-thorok-wadhare",
+   "meaning": "Ask(phrase.still-a-little-more)"
+  },
+  {
+   "clip": "aabhar-anjo",
+   "meaning": "Say(phrase.thanks-elder)"
+  },
+  {
+   "clip": "aabhar-anjo",
+   "meaning": "Exclaim(phrase.thanks-elder)"
+  },
+  {
+   "clip": "aabhar-anjo",
+   "meaning": "Ask(phrase.thanks-elder)"
+  },
+  {
+   "clip": "saro-ai",
+   "meaning": "Say(phrase.thats-good)"
+  },
+  {
+   "clip": "saro-ai",
+   "meaning": "Exclaim(phrase.thats-good)"
+  },
+  {
+   "clip": "saro-ai",
+   "meaning": "Ask(phrase.thats-good)"
+  },
+  {
+   "clip": "oho",
+   "lex": "intj.oh-no",
+   "cell": "*"
+  },
+  {
+   "clip": "dedh-cup",
+   "lex": "n.one-and-a-half-cups",
+   "cell": "*"
+  },
+  {
+   "clip": "adhi-cup",
+   "lex": "n.two-and-a-half-cups",
+   "cell": "*"
+  },
+  {
    "clip": "nana-muke-ambo-dino",
    "meaning": "GaveTo(pn.nana,p1,n.mango)"
   },
@@ -2066,6 +2338,30 @@
   {
    "clip": "huloka-roj-maani-kenta",
    "meaning": "EveryDay(p3pl.far,n.chapati,v.eat)"
+  },
+  {
+   "clip": "muke-ba-chunde-ja-samosa-khape",
+   "meaning": "Need(p1,Item(n.samosa,2,[n.mince]))|informal|"
+  },
+  {
+   "clip": "munji-chai-me-ba-khun-khape",
+   "meaning": "WantIn(n.tea,Item(n.sugar,2))|informal|"
+  },
+  {
+   "clip": "munji-chai-me-ba-khun-wijij",
+   "meaning": "WantIn(n.tea,Item(n.sugar,2))|polite|"
+  },
+  {
+   "clip": "hi-muke-chai-lai-khani-achi-de",
+   "meaning": "BringMeTheseForX(n.tea)"
+  },
+  {
+   "clip": "muke-mithi-chai-khapeti",
+   "meaning": "Need(p1,Item(n.tea,[a.sweet]))|polite|"
+  },
+  {
+   "clip": "muke-mori-chai-khapeti",
+   "meaning": "Need(p1,Item(n.tea,[a.unsweetened]))|polite|"
   },
   {
    "clip": "chokra-sathe-b",
@@ -2448,6 +2744,10 @@
    "meaning": "Need(p1,Item(n.milk))|polite|"
   },
   {
+   "clip": "hakro-khun",
+   "meaning": "Item(n.sugar,1)"
+  },
+  {
    "clip": "nana-sathe",
    "meaning": "With(Item(pn.nana,number=pl))"
   },
@@ -2490,6 +2790,14 @@
   {
    "clip": "wadho-chamcho",
    "meaning": "Item(n.tablespoon,[a.big])"
+  },
+  {
+   "clip": "hakri-mirchi",
+   "meaning": "Item(n.chilli,1)"
+  },
+  {
+   "clip": "hakro-matar",
+   "meaning": "Item(n.green-peas,1)"
   },
   {
    "clip": "bakra-sathe",
@@ -2552,6 +2860,18 @@
    "meaning": "Place(n.table,post.under)"
   },
   {
+   "clip": "muke-miryo-khapeti",
+   "meaning": "Need(p1,Item(n.black-pepper.mums-word))|polite|"
+  },
+  {
+   "clip": "hakro-indo",
+   "meaning": "Item(n.egg,1)"
+  },
+  {
+   "clip": "ba-inda",
+   "meaning": "Item(n.egg,2)"
+  },
+  {
    "clip": "chulo-bar",
    "meaning": "Command(v.light,n.stove)"
   },
@@ -2608,8 +2928,20 @@
    "meaning": "DoIt(v.fill,n.water)"
   },
   {
+   "clip": "hakro-atto",
+   "meaning": "Item(n.flour,1)"
+  },
+  {
    "clip": "atto-gund",
    "meaning": "Command(v.knead,n.flour)"
+  },
+  {
+   "clip": "atto-gund-b",
+   "meaning": "Command(v.knead,n.flour)"
+  },
+  {
+   "clip": "hakri-daar",
+   "meaning": "Item(n.daal,1)"
   },
   {
    "clip": "tu-muke-daar-banai-dinda",
@@ -2620,12 +2952,52 @@
    "meaning": "Item(n.millet-chapati)"
   },
   {
+   "clip": "hakro-bataato",
+   "meaning": "Item(n.potato,1)"
+  },
+  {
    "clip": "tarela-bataata",
    "meaning": "Item(n.potato,[a.fried],number=pl)"
   },
   {
+   "clip": "hakri-dungri",
+   "meaning": "Item(n.onion,1)"
+  },
+  {
    "clip": "trae-dungri",
    "meaning": "Item(n.onion,3)"
+  },
+  {
+   "clip": "hakro-lasan",
+   "meaning": "Item(n.garlic,1)"
+  },
+  {
+   "clip": "hakro-aadu",
+   "meaning": "Item(n.ginger,1)"
+  },
+  {
+   "clip": "hakro-hardar",
+   "meaning": "Item(n.turmeric,1)"
+  },
+  {
+   "clip": "hakro-jeeru",
+   "meaning": "Item(n.cumin-seeds,1)"
+  },
+  {
+   "clip": "hakri-rai",
+   "meaning": "Item(n.mustard-seeds,1)"
+  },
+  {
+   "clip": "hakri-elchi",
+   "meaning": "Item(n.cardamom,1)"
+  },
+  {
+   "clip": "hakro-chano",
+   "meaning": "Item(n.chickpeas,1)"
+  },
+  {
+   "clip": "muke-dai-khapeti",
+   "meaning": "Need(p1,Item(n.yoghurt))|polite|"
   },
   {
    "clip": "amli-ji-chutney",
@@ -2636,8 +3008,20 @@
    "meaning": "Item(n.mint-chutney)"
   },
   {
+   "clip": "muke-sev-khapeti",
+   "meaning": "Need(p1,Item(n.sev))|polite|"
+  },
+  {
+   "clip": "muke-hakro-dhania-de",
+   "meaning": "GiveMe(Item(n.coriander,1))"
+  },
+  {
    "clip": "tu-muke-chaat-banai-dinda",
    "meaning": "CanYouMake(p2,n.chaat)"
+  },
+  {
+   "clip": "muke-samosa-khapeto",
+   "meaning": "Need(p1,Item(n.samosa))|polite|"
   },
   {
    "clip": "tu-muke-samosa-banai-dinda",

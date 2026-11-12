@@ -546,7 +546,12 @@
    "gloss": "one",
    "forms": {
     "he": "hakro",
-    "she": "hakri"
+    "she": "hakri",
+    "he.obl": {
+     "t": "hakre",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 15:57 (hakre fare: once)"
+    }
    },
    "status": "confirmed",
    "src": [
@@ -783,6 +788,133 @@
    ]
   },
   {
+   "id": "num.half-cup",
+   "pos": "Num",
+   "lemma": "adho",
+   "gloss": "half (adho cup)",
+   "forms": {
+    "he": {
+     "t": "adho",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 56:12"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 56:12 (heard ardho)"
+   ],
+   "notes": [
+    "The game's half is adh (§24 B4); here Mum says adho cup in the list (heard ardho). For Zafar's ear."
+   ]
+  },
+  {
+   "id": "num.one-and-half",
+   "pos": "Num",
+   "lemma": "dedh",
+   "gloss": "one and a half (dedh cup)",
+   "forms": {
+    "*": {
+     "t": "dedh",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 56:18"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 56:16-56:19, 56:30"
+   ]
+  },
+  {
+   "id": "num.one-and-quarter",
+   "pos": "Num",
+   "lemma": "sawa",
+   "gloss": "one and a quarter (sawa cup)",
+   "forms": {
+    "*": {
+     "t": "sawa",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 56:27"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 56:23-56:30"
+   ]
+  },
+  {
+   "id": "num.quarter",
+   "pos": "Num",
+   "lemma": "pa",
+   "gloss": "a quarter (pa cup)",
+   "forms": {
+    "*": {
+     "t": "pa",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 56:00"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 55:58-56:12 (pa cup, adho cup, pono cup, aakho cup)"
+   ]
+  },
+  {
+   "id": "num.quarter-less",
+   "pos": "Num",
+   "lemma": "pona",
+   "gloss": "a quarter less than (pona ba cup: one and three quarters)",
+   "forms": {
+    "*": {
+     "t": "pona",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 56:38"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 56:35-56:42 ('they say it for time, and for cups')"
+   ]
+  },
+  {
+   "id": "num.three-quarters",
+   "pos": "Num",
+   "lemma": "pono",
+   "gloss": "three quarters (pono cup; poni for a she-word)",
+   "forms": {
+    "he": {
+     "t": "pono",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 56:08"
+    },
+    "she": {
+     "t": "poni",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 55:58 (poni is three quarter)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 55:58-56:12 (pono cup because cup is masculine)"
+   ]
+  },
+  {
+   "id": "num.two-and-half",
+   "pos": "Num",
+   "lemma": "adhi",
+   "gloss": "two and a half (adhi cup)",
+   "forms": {
+    "*": {
+     "t": "adhi",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 56:20"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 56:19-56:22"
+   ]
+  },
+  {
    "id": "n.a-full-glass-of",
    "pos": "N",
    "gender": null,
@@ -804,40 +936,18 @@
   {
    "id": "n.a-quarter-cup",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
+   "paradigm": "noun.invariant",
+   "lemma": "pa cup",
    "gloss": "a quarter cup",
    "glossPl": "a quarter cups",
-   "status": "to-record",
+   "status": "draft",
    "src": [
-    "data/cook.json words.ph-quartercup: placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+    "data/cook.json words.ph-quartercup: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, pa cup, a quarter cup; pa cup, adho cup, pono cup, aakho cup, 55:58-56:05, 56:12): spelling to confirm by Zafar"
    ],
    "aliases": [
     "ph-quartercup"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "n.three-quarters-of-a-cup",
-   "pos": "N",
-   "gender": null,
-   "gloss": "three quarters of a cup",
-   "glossPl": "three quarters of a cup",
-   "status": "to-record",
-   "src": [
-    "CK-72 (Zafar, 11 Nov): baking's fixed measures (quarter, half, 3/4, full, 1 1/2, 2, 2 1/2)"
-   ],
-   "aliases": [
-    "ph-cups-34"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "n.a-while",
@@ -1512,7 +1622,41 @@
     "gender": [
      "new"
     ]
-   }
+   },
+   "open": [
+    {
+     "q": "The handout says \"mari\" for black pepper; Mum said \"miryo\". Which one does the game use?",
+     "src": "data/content.json words.spi-11: sindhi-cognate (class handout / content master; never confirmed by Mum)"
+    }
+   ]
+  },
+  {
+   "id": "n.black-pepper.mums-word",
+   "pos": "N",
+   "gender": "she",
+   "lemma": "miryo",
+   "gloss": "black pepper (Mum's word; the game says mari)",
+   "forms": {
+    "*": {
+     "t": "miryo",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 31:20 (heard miryo, miryu)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 31:00-31:28 (miryo, no singular; muke miryo khapeti)"
+   ],
+   "open": [
+    {
+     "q": "Black pepper: Mum says miryo (12 Nov, a she-word, no singular); the game says mari. Which does Nani say?",
+     "src": "grammar-notes §64-§67, 12 Nov 31:00"
+    },
+    {
+     "q": "The class handout (spi-11) says \"mari\" for the same thing: black pepper. Mum's word is \"miryo\".",
+     "src": "data/content.json words.spi-11: sindhi-cognate (class handout / content master; never confirmed by Mum)"
+    }
+   ]
   },
   {
    "id": "n.black-tea",
@@ -1663,21 +1807,18 @@
   {
    "id": "n.boiled-egg",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
+   "paradigm": "noun.o-he",
+   "lemma": "bafelo indo",
    "gloss": "boiled egg",
    "glossPl": "boiled eggs",
-   "status": "to-record",
+   "status": "draft",
    "src": [
-    "data/cook.json words.ph-boiledegg: placeholder (proto-kitchen, 1 Nov): 'a boiled egg' is to record (build/reports/designs/cook-baking-eggs.md §1: the engine may build it from ukar and indo once Mum gives the form)"
+    "data/cook.json words.ph-boiledegg: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, bafelo indo: bafelo is boiled, 46:42): spelling to confirm by Zafar"
    ],
    "aliases": [
     "ph-boiledegg"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "n.book",
@@ -2087,7 +2228,7 @@
   {
    "id": "n.cardamom",
    "pos": "N",
-   "gender": null,
+   "gender": "she",
    "paradigm": "noun.i-she",
    "lemma": "elchi",
    "gloss": "cardamom",
@@ -2100,11 +2241,9 @@
    "aliases": [
     "spi-10"
    ],
-   "ask": {
-    "gender": [
-     "L44"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri elchi, 23:29)"
+   ]
   },
   {
    "id": "n.cardigan",
@@ -2264,7 +2403,7 @@
   {
    "id": "n.chaat",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "chaat",
    "gloss": "chaat",
@@ -2276,11 +2415,9 @@
    "aliases": [
     "ph-chaat"
    ],
-   "ask": {
-    "gender": [
-     "L36"
-    ]
-   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke chaat khapeto ⚠, 29:10)"
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -2458,11 +2595,23 @@
   {
    "id": "n.chickpeas",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "chana",
    "gloss": "chickpeas",
    "glossPl": "chickpeas",
+   "forms": {
+    "sg.dir": {
+     "t": "chano",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 24:21 (hakro chano: 'actually it'll be hakro chano')"
+    },
+    "pl.dir": {
+     "t": "chana",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 24:19"
+    }
+   },
    "status": "confirmed",
    "src": [
     "data/cook.json words.ph-chana: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B9)"
@@ -2470,11 +2619,9 @@
    "aliases": [
     "ph-chana"
    ],
-   "ask": {
-    "gender": [
-     "L39"
-    ]
-   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro chano: one is chano, more are chana, 24:21)"
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -2505,7 +2652,7 @@
   {
    "id": "n.chilli",
    "pos": "N",
-   "gender": null,
+   "gender": "she",
    "paradigm": "noun.i-she",
    "lemma": "mirchi",
    "gloss": "chilli",
@@ -2530,7 +2677,8 @@
    },
    "notes": [
     "count_mum: Mum 28 Sept (Round 3 P4; docs/language/grammar-notes.md §34): Mum says mirchi for one and for more (trae mirchi de, 'like salt'); she thinks marcha may be Gujarati or the whole dried chilli. Contradicts Zafar's 26 Sept note: Zafar to decide. Not changed.",
-    "note: Zafar 26 Sept: mirchi = one chilli, marcha = plural. The game has no singular/plural switch yet (see cook-with-nani-todo: noun plurals), so marcha stays for counts; mirchi is kept for when one chilli is asked for."
+    "note: Zafar 26 Sept: mirchi = one chilli, marcha = plural. The game has no singular/plural switch yet (see cook-with-nani-todo: noun plurals), so marcha stays for counts; mirchi is kept for when one chilli is asked for.",
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri mirchi; the same word for chilli powder, 21:15, 23:54)"
    ],
    "open": [
     {
@@ -2975,7 +3123,7 @@
   {
    "id": "n.coriander",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "dhania",
    "gloss": "coriander",
@@ -2987,11 +3135,9 @@
    "aliases": [
     "ph-dhana"
    ],
-   "ask": {
-    "gender": [
-     "L40"
-    ]
-   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke hakro dhania de (a bunch): 'I would say hakro, I wouldn't say hakri', 26:20, 27:08)"
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -3217,7 +3363,7 @@
   {
    "id": "n.cumin-seeds",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "jeeru",
    "gloss": "cumin seeds",
@@ -3230,11 +3376,9 @@
    "aliases": [
     "spi-02"
    ],
-   "ask": {
-    "gender": [
-     "L43"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro jeeru (heard jeero, jeera), 22:38)"
+   ]
   },
   {
    "id": "n.cup",
@@ -3269,7 +3413,7 @@
   {
    "id": "n.cupboard",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "kabaat",
    "gloss": "cupboard",
@@ -3289,7 +3433,9 @@
     ]
    },
    "notes": [
-    "Also khanje jo kabaat (a food cupboard: ⚠) and pinjro (the old netted food cage, §34 P13)."
+    "Also khanje jo kabaat (a food cupboard: ⚠) and pinjro (the old netted food cage, §34 P13).",
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, kabaat jo darwajo (the cupboard's door): jo, so a he-word, 29:59)",
+    "A he-word: kabaat jo darwajo, the cupboard's door (Mum, 12 Nov 29:57, §64)."
    ],
    "open": [
     {
@@ -3337,9 +3483,26 @@
    }
   },
   {
-   "id": "n.daal",
+   "id": "n.custom",
    "pos": "N",
    "gender": null,
+   "paradigm": "noun.invariant",
+   "lemma": "reet",
+   "gloss": "the way things are done, the system",
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 60:25-61:20 (reet is system; chaat inji reet pramane banai)"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.daal",
+   "pos": "N",
+   "gender": "she",
    "paradigm": "noun.invariant",
    "lemma": "daar",
    "gloss": "daal",
@@ -3358,6 +3521,9 @@
      "L36"
     ]
    },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri daar, one grain of daal, 20:44)"
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -3698,11 +3864,23 @@
   {
    "id": "n.egg",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.o-he",
    "lemma": "indo",
    "gloss": "egg",
    "glossPl": "eggs",
+   "forms": {
+    "sg.dir": {
+     "t": "indo",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 30:48 (hakro indo: a he-word)"
+    },
+    "pl.dir": {
+     "t": "inda",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 30:52 (ba inda)"
+    }
+   },
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 4:40)"
@@ -3713,7 +3891,8 @@
     ]
    },
    "notes": [
-    "indo: Kutchi"
+    "indo: Kutchi",
+    "Mum: the family often says mayai (Swahili), but the proper word is indo (30:44)."
    ],
    "open": [
     {
@@ -4151,7 +4330,7 @@
   {
    "id": "n.flour",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.o-he",
    "lemma": "atto",
    "gloss": "flour",
@@ -4163,11 +4342,9 @@
    "aliases": [
     "cook-atto"
    ],
-   "ask": {
-    "gender": [
-     "L35"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro atto, 20:37)"
+   ]
   },
   {
    "id": "n.flower",
@@ -4327,7 +4504,7 @@
   {
    "id": "n.garlic",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "lasan",
    "gloss": "garlic",
@@ -4340,16 +4517,14 @@
    "aliases": [
     "veg-13"
    ],
-   "ask": {
-    "gender": [
-     "L42"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro lasan; Mum: 'I think on its own would be masculine', 22:12)"
+   ]
   },
   {
    "id": "n.ghee",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "ghee",
    "gloss": "ghee",
@@ -4361,11 +4536,9 @@
    "aliases": [
     "ph-ghee"
    ],
-   "ask": {
-    "gender": [
-     "L38"
-    ]
-   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, Mum: ghee has 'no gender, neutral'; she says muke thoro ghee khapeto, so the he-form (her rule for no gender), 28:21, 28:45)"
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -4377,7 +4550,7 @@
   {
    "id": "n.ginger",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "aadu",
    "gloss": "ginger",
@@ -4390,11 +4563,9 @@
    "aliases": [
     "veg-14"
    ],
-   "ask": {
-    "gender": [
-     "L42"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro aadu, 22:25)"
+   ]
   },
   {
    "id": "n.giraffe",
@@ -4589,7 +4760,7 @@
   {
    "id": "n.green-peas",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "matar",
    "gloss": "peas (green peas)",
@@ -4610,6 +4781,9 @@
      "new"
     ]
    },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro matar, 22:19)"
+   ],
    "open": [
     {
      "q": "Decision 61 (Zafar, 6 Oct): Cook's peas are green peas, matar (with the R); watana are fried peas (the snack), n.peas. Round 5 Q12 answered.",
@@ -5472,6 +5646,23 @@
    }
   },
   {
+   "id": "n.line",
+   "pos": "N",
+   "gender": null,
+   "paradigm": "noun.i-she",
+   "lemma": "liti",
+   "gloss": "line (a drawn line)",
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 37:09-37:21 (liti sudhi wij: up to the line)"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.little-toe",
    "pos": "N",
    "gender": null,
@@ -5835,7 +6026,7 @@
   {
    "id": "n.mince",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.o-he",
    "lemma": "chundo",
    "gloss": "mince",
@@ -5847,12 +6038,8 @@
    "aliases": [
     "ph-keema"
    ],
-   "ask": {
-    "gender": [
-     "L37"
-    ]
-   },
    "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke chundo khapeto; chunde before jo / ja (chunde ja samosa), 27:22, 2:38-4:53)",
     "also accepted: keema (alt)"
    ],
    "history": [
@@ -5944,7 +6131,7 @@
   {
    "id": "n.mishkaki",
    "pos": "N",
-   "gender": null,
+   "gender": "she",
    "paradigm": "noun.i-she",
    "lemma": "mishkaki",
    "gloss": "mishkaki",
@@ -5956,11 +6143,9 @@
    "aliases": [
     "ph-mishkaki"
    ],
-   "ask": {
-    "gender": [
-     "new"
-    ]
-   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri mishkaki khapeti, 'like one skewer of mishkaki' (lakri, a skewer, is a she-word): ⚠ the hakri may be the skewer's, 29:48)"
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -6083,7 +6268,7 @@
   {
    "id": "n.mustard-seeds",
    "pos": "N",
-   "gender": null,
+   "gender": "she",
    "paradigm": "noun.i-she",
    "lemma": "rai",
    "gloss": "mustard seeds",
@@ -6096,11 +6281,9 @@
    "aliases": [
     "spi-05"
    ],
-   "ask": {
-    "gender": [
-     "L43"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri rai, after hakro rai; Mum: 'I've never heard anybody ever saying that', 23:08)"
+   ]
   },
   {
    "id": "n.my-left-arm",
@@ -6144,17 +6327,19 @@
    "id": "n.naan",
    "pos": "N",
    "gender": null,
+   "paradigm": "noun.invariant",
+   "lemma": "naan",
    "gloss": "naan",
    "glossPl": "naans",
-   "status": "to-record",
+   "status": "draft",
    "src": [
-    "data/cook.json words.ph-naan: placeholder (proto-kitchen, 1 Nov): the oven's bake, to record"
+    "data/cook.json words.ph-naan: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, 'naan is just naan', 57:06): spelling to confirm by Zafar"
    ],
    "aliases": [
     "ph-naan"
    ],
    "ask": {
-    "word": [
+    "gender": [
      "new"
     ]
    }
@@ -6346,21 +6531,18 @@
   {
    "id": "n.one-and-a-half-cups",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
+   "paradigm": "noun.invariant",
+   "lemma": "dedh cup",
    "gloss": "one and a half cups",
    "glossPl": "one and a half cups",
-   "status": "to-record",
+   "status": "draft",
    "src": [
-    "data/cook.json words.ph-cups-1h: placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+    "data/cook.json words.ph-cups-1h: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, dedh cup, 56:18-56:19): spelling to confirm by Zafar"
    ],
    "aliases": [
     "ph-cups-1h"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "n.ones",
@@ -6384,7 +6566,7 @@
   {
    "id": "n.onion",
    "pos": "N",
-   "gender": null,
+   "gender": "she",
    "paradigm": "noun.i-she",
    "lemma": "dungri",
    "gloss": "onion",
@@ -6397,13 +6579,9 @@
    "aliases": [
     "veg-02"
    ],
-   "ask": {
-    "gender": [
-     "L46"
-    ]
-   },
    "notes": [
-    "count: Mum 28 Sept (Round 3 P2; docs/language/grammar-notes.md §34): trae dungri, no change"
+    "count: Mum 28 Sept (Round 3 P2; docs/language/grammar-notes.md §34): trae dungri, no change",
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri dungri, 21:07)"
    ]
   },
   {
@@ -6678,6 +6856,18 @@
    }
   },
   {
+   "id": "n.pinch",
+   "pos": "N",
+   "gender": "she",
+   "paradigm": "noun.i-she",
+   "lemma": "chapti",
+   "gloss": "a pinch (hakri chapti mitho: a pinch of salt)",
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 57:14-57:21"
+   ]
+  },
+  {
    "id": "n.pineapple",
    "pos": "N",
    "gender": null,
@@ -6856,6 +7046,13 @@
    "lemma": "tapelo",
    "gloss": "pot",
    "glossPl": "pots",
+   "forms": {
+    "sg.obl": {
+     "t": "tapele",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 41:54-42:54 (chai tapele me wij: tapelo becomes tapele before me)"
+    }
+   },
    "status": "confirmed",
    "src": [
     "lexicon.md §6.2 (I1-I35 5:40)"
@@ -6897,7 +7094,7 @@
   {
    "id": "n.potato",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.o-he",
    "lemma": "bataato",
    "gloss": "potato",
@@ -6911,13 +7108,9 @@
    "aliases": [
     "veg-01"
    ],
-   "ask": {
-    "gender": [
-     "Q14"
-    ]
-   },
    "notes": [
-    "count: Mum 28 Sept (Round 3 P1; docs/language/grammar-notes.md §34): one bateto, three bateta (Whisper's spelling, kept in the game's bataato/bataata spelling for Zafar to check); a he-word in -o, -o -> -a"
+    "count: Mum 28 Sept (Round 3 P1; docs/language/grammar-notes.md §34): one bateto, three bateta (Whisper's spelling, kept in the game's bataato/bataata spelling for Zafar to check); a he-word in -o, -o -> -a",
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro bataato; batate before jo: hakro batate jo samoso, 21:00)"
    ],
    "open": [
     {
@@ -7175,9 +7368,27 @@
    }
   },
   {
+   "id": "n.salt.mums-word",
+   "pos": "N",
+   "gender": "he",
+   "paradigm": "noun.o-he",
+   "lemma": "mitho",
+   "gloss": "salt (Mum's word; the game says loon)",
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 23:36-23:48 (mitho; 'mitho would be male'), 57:14 (hakri chapti mitho: a pinch of salt)"
+   ],
+   "open": [
+    {
+     "q": "Salt: Mum says mitho (12 Nov); the game says loon (content master, never said by Mum). Which does Nani say?",
+     "src": "grammar-notes §64-§67, 12 Nov 23:36"
+    }
+   ]
+  },
+  {
    "id": "n.samosa",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "samosa",
    "gloss": "samosa",
@@ -7189,13 +7400,9 @@
    "aliases": [
     "ph-samosa"
    ],
-   "ask": {
-    "gender": [
-     "L47"
-    ]
-   },
    "notes": [
-    "count: Mum 28 Sept (Round 3 P7; docs/language/grammar-notes.md §34): no change. Zafar asked for Nani to say 'sambusa' (the family's word; clip sambusa-r3): not changed here yet"
+    "count: Mum 28 Sept (Round 3 P7; docs/language/grammar-notes.md §34): no change. Zafar asked for Nani to say 'sambusa' (the family's word; clip sambusa-r3): not changed here yet",
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke samosa khapeto; one is samoso, more are samosa (hakro chunde jo samoso, ba chunde ja samosa), 29:24, 10:15)"
    ],
    "history": [
     {
@@ -7448,7 +7655,7 @@
   {
    "id": "n.sev",
    "pos": "N",
-   "gender": null,
+   "gender": "she",
    "paradigm": "noun.invariant",
    "lemma": "sev",
    "gloss": "sev",
@@ -7460,11 +7667,9 @@
    "aliases": [
     "ph-sev"
    ],
-   "ask": {
-    "gender": [
-     "L39"
-    ]
-   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke sev khapeti; sev has no plural, like water, 25:20, 26:06)"
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -8244,7 +8449,7 @@
   {
    "id": "n.sugar",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "khun",
    "gloss": "sugar",
@@ -8265,7 +8470,10 @@
     "gender": [
      "L34"
     ]
-   }
+   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro khun; hakri chamchi khun is the she-word teaspoon, 19:46, 18:49)"
+   ]
   },
   {
    "id": "n.sun-hat",
@@ -9175,22 +9383,30 @@
   {
    "id": "n.times",
    "pos": "N",
-   "gender": null,
-   "gloss": "times",
-   "glossPl": "times",
-   "status": "to-record",
+   "gender": "he",
+   "lemma": "fare",
+   "gloss": "times, turns (hakre fare, ba fare, trae fare: once, twice, three times)",
+   "forms": {
+    "*": {
+     "t": "fare",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 15:57"
+    }
+   },
+   "status": "draft",
    "src": [
+    "grammar-notes §64-§67, 12 Nov 12:49-16:01 (hakre fare, ba fare, trae fare; trae fare firai: stir it three times)",
     "data/clinic/heal/boing.json words.times: no source given",
+    "data/clinic/heal/ear.json words.w-times: no source given",
     "data/clinic/heal/hair.json words.times: no source given"
    ],
    "aliases": [
-    "times"
+    "times",
+    "w-times"
    ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   "notes": [
+    "Not taano: hakre taano is 'at one time, some time' (Mum, 14:01-14:44). hakre, not hakro, before fare."
+   ]
   },
   {
    "id": "n.tin-can",
@@ -9258,18 +9474,16 @@
   {
    "id": "n.tomato",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.o-he",
    "lemma": "tameto",
    "gloss": "tomato",
    "glossPl": "tomatoes",
    "forms": {
     "pl.dir": {
-     "status": "unknown",
-     "ask": [
-      "Q14"
-     ],
-     "src": "grammar-notes §34 P3 ('tomato doesn't change': ⚠ Whisper; the -o -> -a rule would give tameta)"
+     "t": "tameta",
+     "status": "draft",
+     "src": "grammar-notes §64 (12 Nov 17:31: hakro tomato, trae tameta; §34 P3's 'doesn't change' was Whisper's hearing)"
     }
    },
    "status": "confirmed",
@@ -9281,18 +9495,13 @@
    "aliases": [
     "veg-03"
    ],
-   "ask": {
-    "gender": [
-     "L46"
-    ]
-   },
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro tomato, trae tameta (Mum used the English tomato for one: 'there's a Kutchi word, I can't remember'), 17:31)"
+   ],
    "open": [
     {
-     "q": "tomato: does the plural change? Mum said it doesn't; the rule for he-words in -o says tameta. Spelling: tameto or tumata?",
-     "ask": [
-      "Q14"
-     ],
-     "src": "grammar-notes §34 P3"
+     "q": "tomato: for one Mum said the English tomato ('there's a Kutchi word, I can't remember', 12 Nov 17:20); the game says tameto. Is one tameto?",
+     "src": "grammar-notes §64"
     },
     {
      "q": "Sources disagree on the lemma: \"tameto\" (data/cook.json; data/content.json) vs \"tumata\" (grammar-notes §34 P3 (Whisper's hearing)). Using \"tameto\" for now.",
@@ -9462,7 +9671,7 @@
   {
    "id": "n.turmeric",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
    "paradigm": "noun.invariant",
    "lemma": "hardar",
    "gloss": "turmeric",
@@ -9475,11 +9684,9 @@
    "aliases": [
     "spi-01"
    ],
-   "ask": {
-    "gender": [
-     "L43"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro hardar, 22:30)"
+   ]
   },
   {
    "id": "n.turner",
@@ -9564,21 +9771,18 @@
   {
    "id": "n.two-and-a-half-cups",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
+   "paradigm": "noun.invariant",
+   "lemma": "adhi cup",
    "gloss": "two and a half cups",
    "glossPl": "two and a half cups",
-   "status": "to-record",
+   "status": "draft",
    "src": [
-    "data/cook.json words.ph-cups-2h: placeholder (proto-kitchen, 1 Nov, Zafar's baking design): to record; Zafar says 1.5 and 2.5 have their own names in Kutchi (zafar-answers-2026-11-01.md), to confirm with Mum"
+    "data/cook.json words.ph-cups-2h: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, adhi cup, 56:20-56:23): spelling to confirm by Zafar"
    ],
    "aliases": [
     "ph-cups-2h"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "n.umbrella",
@@ -9945,7 +10149,7 @@
   {
    "id": "n.yoghurt",
    "pos": "N",
-   "gender": null,
+   "gender": "she",
    "paradigm": "noun.i-she",
    "lemma": "dai",
    "gloss": "yoghurt",
@@ -9957,11 +10161,9 @@
    "aliases": [
     "ph-dahi"
    ],
-   "ask": {
-    "gender": [
-     "L38"
-    ]
-   }
+   "notes": [
+    "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke dai khapeti: 'even if I was a man I'd still say khapeti'; no 'one' of a liquid, 24:46)"
+   ]
   },
   {
    "id": "n.yoghurt-starter-culture",
@@ -10480,6 +10682,23 @@
      "E62"
     ]
    }
+  },
+  {
+   "id": "a.boiled",
+   "pos": "A",
+   "lemma": "bafelo",
+   "gloss": "boiled",
+   "forms": {
+    "he.sg.dir": {
+     "t": "bafelo",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 46:42"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 46:42 (bafelo indo: a boiled egg)"
+   ]
   },
   {
    "id": "a.closed",
@@ -11133,6 +11352,51 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "a.sweet",
+   "pos": "A",
+   "lemma": "mithi",
+   "gloss": "sweet (of chai: with sugar)",
+   "forms": {
+    "she.*.dir": {
+     "t": "mithi",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 46:05"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 45:42-46:37 (muke mithi chai khapeti: I want sweet chai)"
+   ],
+   "notes": [
+    "The he-form was not said. mitho is salt (§64), not 'sweet' here."
+   ]
+  },
+  {
+   "id": "a.that-much",
+   "pos": "A",
+   "lemma": "itlo",
+   "gloss": "that many, that much (itlo dudh, itli khun)",
+   "forms": {
+    "he.sg.dir": {
+     "t": "itlo",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 40:48"
+    },
+    "she.*.dir": {
+     "t": "itli",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 40:52 (itli elchi)"
+    }
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 40:45-41:06 (e chai itli khun wij; e chai itlo dudh wij)"
+   ],
+   "notes": [
+    "With khun Mum says itli though khun is a he-word (hakro khun, 19:46): perhaps the spoons (chamchi) she means. For Zafar's ear."
+   ]
   },
   {
    "id": "a.thick",
@@ -12432,11 +12696,9 @@
      "src": "grammar-notes §38 I4 (wiji chad); spelling confirmed by Zafar 5 Oct"
     },
     "imp.polite": {
-     "status": "unknown",
-     "ask": [
-      "C142-C151"
-     ],
-     "src": "grammar-notes §38 (only the bare commands to a child were said); the elder's form is asked in Round 5 C142-C151"
+     "t": "wijij",
+     "status": "draft",
+     "src": "grammar-notes §64-§67, 12 Nov 12:31-12:38 (munji chai me ba khun wijij: in my chai put two sugars, please), 46:34"
     }
    },
    "status": "confirmed",
@@ -12446,6 +12708,7 @@
     "lexicon.md §6.1 (I1-I35 1:22)"
    ],
    "notes": [
+    "wijij is the 'please put' form (kept in the polite cell: whether it is also the command to an elder is still asked, C142-C151) a customer says to the cook (Mum, 12 Nov §65); wij alone is the short answer ('do I put it in?' 'wij', 41:31).",
     "wij already in §9; chad = \"leave it / finish it\" helper"
    ]
   },
@@ -13216,6 +13479,19 @@
    ]
   },
   {
+   "id": "post.according-to",
+   "pos": "Post",
+   "lemma": "pramane",
+   "gloss": "according to (order pramane, reet pramane)",
+   "forms": {
+    "-": "pramane"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 35:54-36:00 (order pramane mare ji chai banai), 39:48 (recipe pramane kar), 61:15"
+   ]
+  },
+  {
    "id": "post.among",
    "pos": "Post",
    "lemma": "ma",
@@ -13644,6 +13920,19 @@
    ]
   },
   {
+   "id": "post.up-to",
+   "pos": "Post",
+   "lemma": "sudhi",
+   "gloss": "up to, until (after the thing)",
+   "forms": {
+    "-": "sudhi"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 37:12 (liti sudhi wij; heard sudhe)"
+   ]
+  },
+  {
    "id": "post.with",
    "pos": "Post",
    "lemma": "sathe",
@@ -13784,6 +14073,22 @@
    "src": [
     "grammar-notes §8 (Ma lai pan hakro banai)",
     "grammar-notes §9 (dungri pan wij)"
+   ]
+  },
+  {
+   "id": "adv.as-many",
+   "pos": "Adv",
+   "lemma": "jitli",
+   "gloss": "as many as (jitli … itli: as many … that many)",
+   "forms": {
+    "-": "jitli"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 37:34-38:20 (jitli chamchi inke khapeti, itli wij)"
+   ],
+   "notes": [
+    "jitli / itli agree with the thing: itli chamchi (she), itlo dudh, itlo aadu (he) (40:45-41:06)."
    ]
   },
   {
@@ -14007,6 +14312,32 @@
    ]
   },
   {
+   "id": "adv.still",
+   "pos": "Adv",
+   "lemma": "haji",
+   "gloss": "still (haji thorok wadhare: still a little more)",
+   "forms": {
+    "-": "haji"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 52:42-53:27 (haji is still)"
+   ]
+  },
+  {
+   "id": "adv.that-way",
+   "pos": "Adv",
+   "lemma": "erte",
+   "gloss": "that way, like that (jerte … erte: the way … that way)",
+   "forms": {
+    "-": "erte"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 34:54-35:37 (mare ji chai banai, jerte iloka ke khapeti erte), 51:04 (e chai erte rand)"
+   ]
+  },
+  {
    "id": "adv.then",
    "pos": "Adv",
    "lemma": "poi",
@@ -14022,23 +14353,6 @@
    "notes": [
     "Only heard in ne poi."
    ]
-  },
-  {
-   "id": "adv.times",
-   "pos": "Adv",
-   "gloss": "times",
-   "status": "to-record",
-   "src": [
-    "data/clinic/heal/ear.json words.w-times: no source given"
-   ],
-   "aliases": [
-    "w-times"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
   },
   {
    "id": "adv.together",
@@ -14238,6 +14552,9 @@
    "status": "draft",
    "src": [
     "grammar-notes §33 S5 (Oho, kenjo nai!)"
+   ],
+   "notes": [
+    "Mum recorded oho for the wrong-order card (12 Nov 55:35, SH-264): 'like the French oh la la'."
    ]
   },
   {
@@ -15799,19 +16116,22 @@
   {
    "id": "phrase.cook-it-the-way-they-said",
    "pos": "Phrase",
-   "gloss": "Cook it the way they said",
-   "status": "to-record",
+   "lemma": "e chai erte rand",
+   "gloss": "Cook it the way they said.",
+   "forms": {
+    "-": "e chai erte rand"
+   },
+   "status": "draft",
    "src": [
-    "data/cook.json guide.default: Nani's guide box says what to do now; no Kutchi recorded yet"
+    "data/cook.json lines.guide-the-way: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 51:04-51:09): e chai, he or she said; erte, that way; rand, cook; spellings to confirm by Zafar"
    ],
    "aliases": [
+    "cook.line.guide-the-way",
     "cook.guide.default"
    ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   "notes": [
+    "not analysed into words yet: rand is not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.count-out-the-coins-then-give-them-to-him",
@@ -19566,23 +19886,6 @@
    }
   },
   {
-   "id": "phrase.make-each-cup-the-way-they-said",
-   "pos": "Phrase",
-   "gloss": "Make each cup the way they said",
-   "status": "to-record",
-   "src": [
-    "data/cook.json guide.chai-tray: Nani's guide box says what to do now; no Kutchi recorded yet"
-   ],
-   "aliases": [
-    "cook.guide.chai-tray"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
-  },
-  {
    "id": "phrase.make-each-pan-the-way-they-said",
    "pos": "Phrase",
    "gloss": "Make each pan the way they said",
@@ -19598,6 +19901,38 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "phrase.make-everyones-chai",
+   "pos": "Phrase",
+   "lemma": "mare ji chai banai",
+   "gloss": "Make everyone's chai.",
+   "parts": [
+    {
+     "lex": "adv.all",
+     "cell": "-"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "n.tea",
+     "cell": "sg.dir"
+    },
+    {
+     "lex": "v.make",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "draft",
+   "src": [
+    "data/cook.json lines.guide-chai-tray: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 35:04-35:21): mare ji chai banai, make everyone's chai; in full: mare ji chai banai, jerte iloka ke khapeti erte, the way they want it (Zafar chose the simpler one in the sitting, 36:02); spellings to confirm by Zafar"
+   ],
+   "aliases": [
+    "cook.line.guide-chai-tray",
+    "cook.guide.chai-tray"
+   ]
   },
   {
    "id": "phrase.make-one-for-ma-too",
@@ -20585,7 +20920,7 @@
     },
     {
      "lex": "n.tomato",
-     "cell": "pl.obl"
+     "cell": "pl.dir"
     },
     {
      "lex": "v.put-in",
@@ -20595,6 +20930,35 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §25 B14"
+   ]
+  },
+  {
+   "id": "phrase.now-put-this-in",
+   "pos": "Phrase",
+   "lemma": "hane hi wij",
+   "gloss": "Now put this in.",
+   "parts": [
+    {
+     "lex": "adv.now-in-steps",
+     "cell": "-"
+    },
+    {
+     "lex": "dem.this",
+     "cell": "-"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "draft",
+   "src": [
+    "data/cook.json lines.guide-now-this: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 48:18-48:35): there is no word for next: 'you just name the item and say put this now' (hane hi wij; hane dudh wij); spellings to confirm by Zafar"
+   ],
+   "aliases": [
+    "cook.line.guide-now-this",
+    "cook.guide.chai-tray:next",
+    "cook.guide.assemble:next"
    ]
   },
   {
@@ -21013,38 +21377,32 @@
    }
   },
   {
-   "id": "phrase.pour-it-into-their-glass",
-   "pos": "Phrase",
-   "gloss": "Pour it into their glass",
-   "status": "to-record",
-   "src": [
-    "data/cook.json guide.chai-tray:pour: Nani's guide box says what to do now; no Kutchi recorded yet"
-   ],
-   "aliases": [
-    "cook.guide.chai-tray:pour"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
-  },
-  {
    "id": "phrase.pour-it-up-to-the-line",
    "pos": "Phrase",
-   "gloss": "Pour it up to the line",
-   "status": "to-record",
+   "lemma": "liti sudhi wij",
+   "gloss": "Pour it up to the line.",
+   "parts": [
+    {
+     "lex": "n.line",
+     "cell": "sg.dir"
+    },
+    {
+     "lex": "post.up-to",
+     "cell": "-"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "draft",
    "src": [
-    "data/cook.json guide.pour: Nani's guide box says what to do now; no Kutchi recorded yet"
+    "data/cook.json lines.guide-line: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:09-37:21): liti is line, sudhi (heard sudhe) is up to: put it until the line; spellings to confirm by Zafar"
    ],
    "aliases": [
+    "cook.line.guide-line",
     "cook.guide.pour"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "phrase.press-it",
@@ -21081,21 +21439,44 @@
    }
   },
   {
-   "id": "phrase.put-in-as-many-spoons-as-they-said",
+   "id": "phrase.put-in-as-many-spoons-as-they-want",
    "pos": "Phrase",
-   "gloss": "Put in as many spoons as they said",
-   "status": "to-record",
+   "lemma": "jitli chamchi inke khapeti itli wij",
+   "gloss": "Put in as many spoons as they want.",
+   "parts": [
+    {
+     "lex": "adv.as-many",
+     "cell": "-"
+    },
+    {
+     "lex": "n.teaspoon",
+     "cell": "sg.dir"
+    },
+    {
+     "lex": "pron.p3",
+     "cell": "dat"
+    },
+    {
+     "lex": "v.want",
+     "cell": "pres.she.sg"
+    },
+    {
+     "lex": "a.that-much",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "draft",
    "src": [
-    "data/cook.json guide.count: Nani's guide box says what to do now; no Kutchi recorded yet"
+    "data/cook.json lines.guide-spoons: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:34-38:20): jitli chamchi inke khapeti, itli wij: as many spoons as he or she wants, put that many; spellings to confirm by Zafar"
    ],
    "aliases": [
+    "cook.line.guide-spoons",
     "cook.guide.count"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "phrase.put-in-the-bag-what-nani-says",
@@ -21111,24 +21492,6 @@
    "ask": {
     "word": [
      "to record"
-    ]
-   }
-  },
-  {
-   "id": "phrase.put-in-the-next-thing",
-   "pos": "Phrase",
-   "gloss": "Put in the next thing",
-   "status": "to-record",
-   "src": [
-    "data/cook.json guide.chai-tray:next: Nani's guide box says what to do now; no Kutchi recorded yet"
-   ],
-   "aliases": [
-    "cook.guide.chai-tray:next",
-    "cook.guide.assemble:next"
-   ],
-   "ask": {
-    "word": [
-     "new"
     ]
    }
   },
@@ -21266,6 +21629,42 @@
    ]
   },
   {
+   "id": "phrase.put-it-in-their-glass",
+   "pos": "Phrase",
+   "lemma": "iloka je glass me wij",
+   "gloss": "Put it in their glass.",
+   "parts": [
+    {
+     "lex": "pron.they",
+     "cell": "dir"
+    },
+    {
+     "lex": "link.place",
+     "cell": "-"
+    },
+    {
+     "lex": "n.glass",
+     "cell": "-"
+    },
+    {
+     "lex": "post.in",
+     "cell": "-"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "draft",
+   "src": [
+    "data/cook.json lines.guide-glass: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 36:29-36:50): there's no word for pour, just put: iloka je glass me wij (their glass; the same for their glasses); spellings to confirm by Zafar"
+   ],
+   "aliases": [
+    "cook.line.guide-glass",
+    "cook.guide.chai-tray:pour"
+   ]
+  },
+  {
    "id": "phrase.put-it-on-the-table",
    "pos": "Phrase",
    "lemma": "table mathe rakhi chad",
@@ -21313,19 +21712,34 @@
   {
    "id": "phrase.put-the-chai-in-the-pan",
    "pos": "Phrase",
-   "gloss": "Put the chai in the pan",
-   "status": "to-record",
+   "lemma": "chai tapele me wij",
+   "gloss": "Put the chai in the pan.",
+   "parts": [
+    {
+     "lex": "n.tea",
+     "cell": "sg.dir"
+    },
+    {
+     "lex": "n.pot",
+     "cell": "sg.obl"
+    },
+    {
+     "lex": "post.in",
+     "cell": "-"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "draft",
    "src": [
-    "data/cook.json guide.chai-tray:tea: Nani's guide box says what to do now; no Kutchi recorded yet"
+    "data/cook.json lines.guide-tea-pan: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 41:45-42:54): tapelo, the pan, becomes tapele before me; spellings to confirm by Zafar"
    ],
    "aliases": [
+    "cook.line.guide-tea-pan",
     "cook.guide.chai-tray:tea"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "phrase.put-the-daar-in",
@@ -21364,19 +21778,34 @@
   {
    "id": "phrase.put-water-in-the-pan",
    "pos": "Phrase",
-   "gloss": "Put water in the pan",
-   "status": "to-record",
+   "lemma": "paani tapele me wij",
+   "gloss": "Put water in the pan.",
+   "parts": [
+    {
+     "lex": "n.water",
+     "cell": "-"
+    },
+    {
+     "lex": "n.pot",
+     "cell": "sg.obl"
+    },
+    {
+     "lex": "post.in",
+     "cell": "-"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "draft",
    "src": [
-    "data/cook.json guide.chai-tray:water: Nani's guide box says what to do now; no Kutchi recorded yet"
+    "data/cook.json lines.guide-water-pan: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 44:36-44:46): paani tapele me wij (also paani sufuri me wij, the Swahili-like word); spellings to confirm by Zafar"
    ],
    "aliases": [
+    "cook.line.guide-water-pan",
     "cook.guide.chai-tray:water"
-   ],
-   "ask": {
-    "word": [
-     "new"
-    ]
-   }
+   ]
   },
   {
    "id": "phrase.quickly-quickly-doubling-for-emphasis",
@@ -21993,21 +22422,28 @@
   {
    "id": "phrase.still-a-little-more",
    "pos": "Phrase",
+   "lemma": "haji thorok wadhare",
    "gloss": "Still a little more.",
-   "status": "to-record",
+   "parts": [
+    {
+     "lex": "adv.still",
+     "cell": "-"
+    },
+    {
+     "lex": "adv.a-little",
+     "cell": "-"
+    },
+    {
+     "lex": "adv.more",
+     "cell": "-"
+    }
+   ],
+   "status": "draft",
    "src": [
-    "data/cook.json lines.stillmore: no source given"
+    "data/cook.json lines.stillmore: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 53:24-53:28): haji = still, thorok = a little, wadhare = more (Mum: 'if you just want to say still a bit more'); with wij it is haji thorok wadhare wij, put in still a little more (53:12); spellings to confirm by Zafar"
    ],
    "aliases": [
     "cook.line.stillmore"
-   ],
-   "ask": {
-    "word": [
-     "to record"
-    ]
-   },
-   "notes": [
-    "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
    ]
   },
   {
@@ -22409,6 +22845,23 @@
    "loan": "en"
   },
   {
+   "id": "phrase.thanks-elder",
+   "pos": "Phrase",
+   "lemma": "aabhar anjo",
+   "gloss": "thank you (to an elder: 'thanks to you')",
+   "forms": {
+    "-": "aabhar anjo"
+   },
+   "status": "draft",
+   "src": [
+    "grammar-notes §64-§67, 12 Nov 53:32-55:20 (aabhar, tojo aabhar, aabhar anjo; 'everybody just says thank you')"
+   ],
+   "notes": [
+    "tojo aabhar to a child (53:35). Mum: 'I haven't heard anyone say aabhar, everybody just says thank you' (54:44); said once 'so we have a standard'.",
+    "not analysed into words yet: aabhar is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
    "id": "phrase.that",
    "pos": "Phrase",
    "gloss": "that",
@@ -22536,21 +22989,24 @@
   {
    "id": "phrase.thats-good",
    "pos": "Phrase",
+   "lemma": "saro ai",
    "gloss": "That's good.",
-   "status": "to-record",
+   "parts": [
+    {
+     "lex": "a.good",
+     "cell": "he.sg.dir"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.sg"
+    }
+   ],
+   "status": "draft",
    "src": [
-    "data/cook.json lines.good: no source given"
+    "data/cook.json lines.good: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 55:24-55:30): 'we'd say saro ai' (saro, good, §45, with ai, is); ⚠ the take's first words are unclear; spellings to confirm by Zafar"
    ],
    "aliases": [
     "cook.line.good"
-   ],
-   "ask": {
-    "word": [
-     "to record"
-    ]
-   },
-   "notes": [
-    "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
    ]
   },
   {
