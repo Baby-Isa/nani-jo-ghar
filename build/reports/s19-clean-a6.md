@@ -1,6 +1,6 @@
 # s19-clean-a6: the shared consistency rows and the checks (12 Nov)
 
-Opus, high. Branch `s19-clean-a6`, with integration c437318b9 merged in. Never pushed (the push hook asked; the brief forbids it).
+Opus, high. Branch `s19-clean-a6`, with c437318b9 and Mum's session (3fe6c7d09) merged in. Never pushed (the push hook asked; the brief forbids it).
 
 ## Flaws and open, first
 - **check-change not run:** 38 steps, about 352 min unloaded, at load 26-34. The contract runs are the proof.
@@ -17,6 +17,7 @@ Opus, high. Branch `s19-clean-a6`, with integration c437318b9 merged in. Never p
 - **73:** the tap includes the speaker's `::before`. **113:** no canvas pairs judged while `.njg-wo-open` is up. **115:** 60% floor, "flagged for a look". **106:** reads the frame-timed light too. **65 and 66:** timed by each note's own time.
 - **SH-240:** contract-101 holds Nani's line to Lora 500 (the probe reads its type). **SH-248:** new **contract-123**: each game draws the band its settings name (`St.stoneBand` logs it). **SH-251:** `sidebyside.mjs --reach <run>`; the order key frame falls back to the station's start (chop has no order state).
 - Evidence: CK-89 at `life:baking-salt`; a probe for CHT-13.
+- **Mum's code changes 2 and 5** (after the runs): the engine's English keeps "with"/"without" and says "once" (`enOf`); `ph-cups-34` is the lexicon's `n.three-quarter-cup`, *pono cup* (Mum, 12 Nov 56:08), so baking's three-quarter plans play. `data/stations/baking.json`'s gap note on it is now stale (e's). Checks 14/14 ok.
 
 ## Your item 4
 - **121, pantry L2-L4 at 740x320: real.** About 3 s into the card lesson, the pop-up's veil (`njg-rq-veil.njg-rq-along.njg-rq-open`) covers the picture, and the lesson skips it as untappable (a5).
@@ -31,7 +32,7 @@ Opus, high. Branch `s19-clean-a6`, with integration c437318b9 merged in. Never p
 - **After** (`s19-clean-a6-after`, L1-L4 at 740x320 and 1280x665): 86 of 88 ends, 0 page errors. Base checks → new checks: **421 → 354** (36 51→16, 106 26→7, 102 9→3, 107 6→2, 115 2→0, 73 1→0; 123, 101 and 109 at 0).
 - **Four sizes** (`s19-clean-a6-contract`, L1, `--keyframes`, merged): **44/44 ends, 0 page errors, `CONTRACT FAILED: 101 breaks`.** 119 19, 36 14 (samosa 7, maani 4), 114 9, 107 6, 104 6, 117 6, 106 5, 111 5, 70 4, 116 4, 109 3 (baking 1920x1080, samosa); 120, 123, 101, 115 and 73 at 0.
 - **SH-251:** `--reach` gave 38 of 44. After the order fix, `s19-clean-a6-sbs` (chop and pantry at 740x320 and 930x430) reaches all seven moments on 4 of 4 pages.
-- `checks.mjs`: 13 ok (908 unit). Bad runs: 30 pass. Sandbox and review tests: pass. Specs: lint clean.
+- `checks.mjs`: 14 ok (915 unit). Bad runs: 30 pass. Specs: lint clean.
 
 ## Breaks left, by owner
 - **e:** samosa's 36, 102, 107, 117; corn's 114; the daal's 65; baking's 109; 111 in daar and chaat; 37.
