@@ -1983,6 +1983,14 @@
         c.classList.add("wc14-fitrow");
         c.style.height = `${Math.round(wd * (sb.height / sb.width))}px`;
       }
+      // (s19-clean-e's sekelo L2, 12 Nov: a two-line Kutchi squeezed the picture to nothing in the row's shape: the words shrink first; a
+      // card that still cannot keep its picture takes its own height, as it does where the row shape fits nowhere clear of a face)
+      const roomy = () => !global.WordCard.picRoom14 || global.WordCard.picRoom14(c);
+      if (c.classList.contains("wc14-fitrow") && !roomy()) {
+        c.classList.remove("wc14-fitrow");
+        c.style.height = "";
+        global.WordCard.fit14(c);
+      }
       // (shorter screens: the card keeps inside the play area, its picture shorter first)
       if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
       // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
@@ -1993,10 +2001,12 @@
       if (c.classList.contains("wc14-fitrow")) {
         const kept = { mission: popShape.mission, anchor: popShape.anchor, k: popShape.k };
         placeFree14(c, play, sr, wd, true);
+        const tight = !roomy();
         const cr = c.getBoundingClientRect();
-        if (popShape.anchor === "panel" || overlap14({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, faces14()) > 0) {
+        if (tight || popShape.anchor === "panel" || overlap14({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, faces14()) > 0) {
           c.classList.remove("wc14-fitrow");
           c.style.height = "";
+          if (tight) global.WordCard.fit14(c);
           popShape.mission = null; // (placed again, its own shape)
         } else Object.assign(popShape, kept); // (the same place again, logged)
       }
@@ -2139,6 +2149,7 @@
           m.away.delete(r);
           (m.landed = m.landed || new Set()).add(r); // (SH-171: a row said and landed never waits as a slot again)
           if (to) to.classList.remove("oc-away");
+          pieceEls(r).forEach((e) => e.classList.remove("oc-away"));
           if (big) big.remove();
         };
         if (fast || !big || !to) return Promise.resolve(done());
@@ -2188,6 +2199,7 @@
         return global.WordCard.morph(big, to, { bend }).catch(() => {}).then(done);
       }
       m.away.delete(r);
+      pieceEls(r).forEach((e) => e.classList.remove("oc-away"));
       const to = rowElOf(who, r);
       if (!to) return Promise.resolve();
       const big = box && box.querySelector(".wc-card");
@@ -2239,13 +2251,32 @@
       const img = c.querySelector(".wc14-pic img");
       const hasPic = !!img;
       const hasEn = !!((c.querySelector(".wc14-en") || {}).textContent || "").trim();
+      // (the card's own hidden parts before the lesson: a part the lesson cannot ask for goes back to how it was, never shown untapped)
+      const was = { "wc14-hide-pic": c.classList.contains("wc14-hide-pic"), "wc14-hide-k": c.classList.contains("wc14-hide-k"), "wc14-hide-en": c.classList.contains("wc14-hide-en") };
       c.classList.toggle("wc14-hide-pic", hasPic);
       c.classList.add("wc14-hide-k");
       c.classList.toggle("wc14-hide-en", hasEn);
       c.querySelectorAll(".wc14-pic, .wc14-k, .wc14-en").forEach((x) => x.classList.remove("revealed", "wc14-peek"));
       c.querySelectorAll(".wc14-dots").forEach((x) => x.classList.remove("wc14-gone"));
       if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
-      const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, , cls]) => c.classList.contains(cls));
+      // (s19-clean-e's sekelo L2-L4, 12 Nov: a part with no room on the card, sekelo's picture squeezed to 0 px by its two-line Kutchi in
+      // the row-shaped card, was asked for and lit as a 12 px strip, its tap landing on the order's veil: the child stuck. A part is
+      // asked for only while the child can tap it: a box of its own at least TAP_MIN px each way, the card itself under its middle; one
+      // that is not stays as the card had it)
+      const TAP_MIN = 8;
+      const tappable = (el) => {
+        if (!el || !el.isConnected) return false;
+        const b = el.getBoundingClientRect();
+        if (b.width < TAP_MIN || b.height < TAP_MIN) return false;
+        const at = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+        return !!at && c.contains(at);
+      };
+      const steps = [["picture", ".wc14-pic", "wc14-hide-pic"], ["text", ".wc14-slot-k", "wc14-hide-k"], ["english", ".wc14-slot-e", "wc14-hide-en"]].filter(([, sel, cls]) => {
+        if (!c.classList.contains(cls)) return false;
+        if (tappable(c.querySelector(sel))) return true;
+        c.classList.toggle(cls, was[cls]); // (a part with no room is never asked for: as it was before the lesson)
+        return false;
+      });
       let want = null;
       // (the lesson's own taps: the card's peek buttons never take them, so nothing is logged as a peek or counted as help)
       const onClick = (ev) => {
@@ -2274,9 +2305,15 @@
             say("card", `shown order-popup ${c.dataset.word || ""} ${steps.map((x) => x[0]).join(",")}`);
           }
           Cook.expect = { kind: "click", selector: `.wc14-lesson ${sel}` };
+          // (never stuck: a part that stops being tappable for a second, its card moved or covered, is shown and the lesson goes on)
+          let lost = 0;
           await new Promise((res) => {
             want = { el, res };
-            const q = setInterval(() => !here() && (clearInterval(q), res(false)), 200);
+            const q = setInterval(() => {
+              if (!here()) return clearInterval(q), res(false);
+              lost = tappable(el) ? 0 : lost + 200;
+              if (lost >= 1000) clearInterval(q), say(slot, "untappable"), res(true);
+            }, 200);
             want.res = (v) => (clearInterval(q), res(v));
           });
           want = null;
@@ -2444,11 +2481,20 @@
         if (M.focus) M.focus(who);
         const onlyRow = (p) => [].concat(p.row || [], (p.line && p.line.rows) || []).some((r) => only.includes(r));
         const parts = only ? c._parts().filter(onlyRow) : c._parts();
+        // (SH-267: an order with no dish of its own, chop's "Muke ba dungri khape": what its first sentence asks for is its dish, the
+        // first thing that sentence says, with its count, "2 onions"; contract-119 found chop's card never flashed)
+        const headless = !c._parts().some((q) => q.row && q.row.head);
+        let flashed = false;
         for (const p of parts) {
           if (!live()) return;
           const r = p.row;
           // SH-267 (Zafar, 12 Nov, level 1 only): as the customer says the dish, its card flashes up beside their bubble
           if (r && r.head) UI.dishFlash(who, r);
+          else if (headless && !flashed && p === parts[0] && !only) {
+            const first = r && m.away.has(r) ? r : foldedOf(p)[0];
+            if (first) UI.dishFlash(who, first);
+          }
+          flashed = true;
           const item = r && m.away.has(r);
           // CHAI-96 (Zafar, 6 Nov night: "any item that goes in the tea except for water and tea is listed ... saffron style tea and all
           // the other style teas as well"): the rows a headline says for itself ("Muke elchi waari chai khape" says the elchi row,
@@ -2888,6 +2934,9 @@
    * cards and Nani's timed hint, chai's method.)
    */
   const sideEls = new Map(); // row -> [elements] on the sidebar card
+  // (SEK-25's piece rows, the four cards of a skewer's one thing, keyed per piece: they belong to their skewer's row. The coordinator, 12 Nov,
+  // sekelo L2: the tameto pieces stood written on the panel before Nana said their skewer, under and over big empty slots)
+  const pieceEls = (r) => (!r ? [] : [].concat(...((r._pieceKeys || []).map((ks) => [].concat(...(ks || []).map((k) => sideEls.get(k) || []))))).filter((e) => e.classList && e.classList.contains("oc-row")));
   const introEls = new Map(); // row -> [elements] on the request card
   const addEl = (map, r, el) => r && map.set(r, (map.get(r) || []).concat(el));
   function orderLevel() {
@@ -3941,7 +3990,7 @@
     // (and no paint) ever finds it on one unwrapped line past the card's edge ("khape." 15-20 px out at 740x320 and 930x430)
     if (global.FitText && global.FitText.run) global.FitText.run(box);
     // Sprint 11: a row not said yet waits off the card (introduceAlong pops it in as it is said)
-    if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
+    if (mission.away && mission.away.size) mission.away.forEach((r) => (sideEls.get(r) || []).concat(pieceEls(r)).forEach((e) => e.classList && e.classList.contains("oc-row") && e.classList.add("oc-away")));
     // SH-171 (Zafar, 1 Nov night: "the menu card should only appear when that person starts their order, saying the sentence that is
     // the sentence of the menu card ... It should appear in its collapsed form, and then as they start listing what they want ... the
     // menu card should open up"): a person's card is not drawn until they start (unsaid), shows folded (face and headline) while they

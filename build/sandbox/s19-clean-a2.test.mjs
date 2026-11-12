@@ -94,22 +94,44 @@ test("finding 4: a tap hurries the wrong-order pop-up's line in flight; the stag
     await page.evaluate(() => { const ends = []; window.Lifecycle = { onStageEnd: (f) => (ends.push(f), () => ends.splice(ends.indexOf(f), 1)), end: () => ends.slice().forEach((f) => f()) }; });
     await page.addScriptTag({ path: join(ROOT, "js", "shared", "wrong-order.js"), type: "module" });
     await page.waitForFunction(() => window.NjgWrongOrder);
+    // (s19-clean-a4: robust to a loaded machine, not looser: each line's own start is logged (the say calls), so the measures are each
+    // line's length against the pop-up's own cap and floor (load only makes a wait longer, never a hurried line look kept), and the
+    // tap lands inside a line by the log, not by a wall-clock guess)
     const run = (tap, end) => page.evaluate(async ({ tap, end }) => {
-      const never = () => new Promise(() => {}); // a voice that never ends
+      const calls = [];
+      const never = () => { calls.push(performance.now()); return new Promise(() => {}); }; // a voice that never ends
       const big = () => { const el = document.createElement("div"); el.textContent = "card"; const rows = [1, 2, 3, 4, 5].map((i) => { const r = document.createElement("div"); r.className = "oc-row"; r.textContent = "row " + i; el.appendChild(r); return { el: r, ok: i !== 3, say: never }; }); return { el, rows, head: never }; };
       const t0 = performance.now();
+      let tapAt = null;
       const p = window.NjgWrongOrder.play({ host: document.getElementById("stage"), cards: [{ who: "ma", ok: false, face: "", headline: "x", big }] });
-      if (tap) setTimeout(() => document.querySelector(".njg-wo").dispatchEvent(new PointerEvent("pointerdown", { bubbles: true })), 1200);
+      // (the tap: inside the second row's line (a line a tap may stop), 700 ms after it started by the log: past the floor, short of the cap)
+      if (tap) {
+        const want = 3; // head, row 1, row 2
+        await new Promise((res) => { const q = setInterval(() => { if (calls.length >= want) { clearInterval(q); res(); } }, 20); });
+        await new Promise((res) => setTimeout(res, Math.max(0, calls[want - 1] + 700 - performance.now())));
+        tapAt = performance.now();
+        document.querySelector(".njg-wo").dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+      }
       if (end) setTimeout(() => window.Lifecycle.end(), 1200);
       await p;
-      return { ms: performance.now() - t0, left: document.querySelectorAll(".njg-wo").length };
+      return { ms: performance.now() - t0, left: document.querySelectorAll(".njg-wo").length, calls: calls.map((c) => c - t0), tapAt: tapAt == null ? null : tapAt - t0 };
     }, { tap, end });
+    const CAP = 2400, FLOOR = 500; // (js/shared/wrong-order.js LOOK.sayCap and LOOK.minSay, speed 1)
     const slow = await run(false, false);
     const fast = await run(true, false);
     const gone = await run(false, true);
-    assert.ok(slow.ms > 9000, `untouched: every line waited for, up to its cap (${Math.round(slow.ms)} ms)`);
+    const gaps = (c) => c.slice(1).map((x, i) => x - c[i]);
+    // untouched: every line said (the head and the five rows), each held to its cap (load only lengthens a wait)
+    assert.equal(slow.calls.length, 6, `untouched: the head and the five rows each said (${slow.calls.length} lines)`);
+    assert.ok(gaps(slow.calls).every((g) => g >= CAP - 60), `untouched: every line waited for up to its cap (${gaps(slow.calls).map(Math.round).join(", ")} ms)`);
     // (s19-clean-a3, the a2 review's finding 3: a tap hurries the line being said only, never the whole pop-up: the rest are said)
-    assert.ok(fast.ms < slow.ms - 900 && fast.ms > slow.ms - 3000, `a tap hurries the line in flight only: ${Math.round(fast.ms)} against ${Math.round(slow.ms)} ms`);
+    assert.equal(fast.calls.length, 6, `a tap hurries the line in flight only: every line still said (${fast.calls.length} lines)`);
+    const g = gaps(fast.calls);
+    const k = fast.calls.findIndex((c, i) => c <= fast.tapAt && (fast.calls[i + 1] == null || fast.calls[i + 1] > fast.tapAt));
+    assert.equal(k, 2, `the tap landed in the second row's line (line ${k})`);
+    assert.ok(g[k] < CAP - 600, `the line in flight ends at the tap, short of its cap: ${Math.round(g[k])} ms (cap ${CAP})`);
+    assert.ok(g[k] >= FLOOR - 60, `... once heard its floor: ${Math.round(g[k])} ms`);
+    assert.ok(g.every((x, i) => i === k || x >= CAP - 60), `the other lines each held to their cap: ${g.map(Math.round).join(", ")} ms`);
     assert.ok(gone.ms < 2500 && gone.left === 0, `the stage's end takes it away at once: ${Math.round(gone.ms)} ms, ${gone.left} left`);
     await ctx.close();
   } finally { await browser.close(); }

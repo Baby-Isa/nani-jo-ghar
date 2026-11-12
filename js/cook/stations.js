@@ -383,7 +383,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       let sh = null;
       if (shadow) {
         const { w } = this.texSize(key);
-        sh = this.track(this.add.ellipse(x, baseline - 4, w * s * 0.8, Math.max(10, w * s * 0.12), 0x3a2410, 0.22).setDepth(depth - 1));
+        // (SH-268: one light from the upper left, so the contact shadow sits a little to the right of the foot, never centred under it)
+        // (the shade colour, the token every shadow uses: --njg-shade-rgb)
+        const rgb = String((window.Tokens && window.Tokens.rgb && window.Tokens.rgb("shade-rgb")) || "").split(",").map(Number);
+        const shade = rgb.length === 3 && rgb.every((v) => v >= 0) ? (rgb[0] << 16) | (rgb[1] << 8) | rgb[2] : 0;
+        sh = this.track(this.add.ellipse(x + w * s * 0.05, baseline - 2, w * s * 0.8, Math.max(10, w * s * 0.12), shade, 0.22).setDepth(depth - 1));
+        sh.njgShadow = true;
       }
       const img = this.track(this.add.image(x, baseline + 4, key).setOrigin(0.5, 1).setScale(s).setDepth(depth));
       img.baseScale = s;
@@ -395,7 +400,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const s = this.fitScale(key, maxW, maxH);
       const img = this.track(this.add.image(x, y, key).setScale(s).setDepth(depth));
       img.baseScale = s;
+      // (SH-268, Zafar 12 Nov: every thing on the worktop casts the kit's soft shadow, down and to the right: a painted sprite its round
+      // contact shadow as before, every other picture its own outline's, Cook.Kit.shadow)
       if (Cook.Art.isPainted(key)) img.shadow = this.contactShadow(img);
+      else if (Cook.Kit && Cook.Kit.shadow) Cook.Kit.shadow(this, img);
       return img;
     }
     /**

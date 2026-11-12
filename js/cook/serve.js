@@ -289,6 +289,9 @@ import { Cook as CookNS } from "./ns.js";
     if (S.textures.exists(key("tray"))) {
       const src = S.textures.get(key("tray")).getSourceImage();
       t.img = S.track(S.add.image(t.x, t.y, key("tray")).setDisplaySize(t.w, t.h).setDepth(dep + 1.5));
+      // (SH-268, Zafar 12 Nov: the tray on the island casts the kit's soft shadow down and to the right, as every worktop thing; the dish
+      // in it none, CK-21's "no tray shadow")
+      if (Cook.Kit && Cook.Kit.shadow) Cook.Kit.shadow(S, t.img);
       const ry = Math.round(src.height * c.tray.rim);
       t.rim = S.track(S.add.image(t.x, t.y, key("tray")).setDisplaySize(t.w, t.h).setCrop(0, ry, src.width, src.height - ry).setDepth(dep + 2.6));
     }

@@ -9,6 +9,7 @@ import { mark, watchVoice, until, canvasObjects, popupOpen, tapPopup, numberWord
 // fair except for its one move (driverMove before an expectation is done, driverWatch on what the page shows, and a few in act())
 const VOICE_MODES = new Set(["tap-during-speech", "tap-during-pause", "tap-quick", "answer-while-asked"]);
 const CALM = ["tap", "hold", "count", "more", "swipe", "roll", "knead", "stir"];
+const GRILL_DUE_MS = 1000; // (sekelo: a rack tap waits for a grill ring due within this long, cook-player's grillDue)
 // a step's "wrong" that really spoils the dish (s08 w6E, CK-31): chai's salt at the sugar (cook-khun), or another station's look-alike.
 // Chai's tea leaves, milk and a pan's knob also offer a "wrong", a second water or milk, which the game only wiggles at: not these
 export const realWrong = (e) => !!e && !!(e.swrongs && e.swrongs.length) && !/^(cook-chai|cook-paani|cook-dudh|knob-on-|pan-|pour-)/.test(e.key || "");
@@ -436,6 +437,34 @@ export class CookPlayer {
       this.rec.pend("covered", `canvas tap: ${what}`, `covered by ${tag} at (${Math.round(x)},${Math.round(y)})`);
     }
   }
+  /**
+   * Is a grill ring (Cook.Skewer.ring, js/cook/mechanics/grill.js) due within ms: at or past the start of its green and not over, or
+   * coming to it within ms at the rate it is filling now? The ring's draws are watched in the page from the first call (a wrapper that
+   * keeps each ring's last two levels and when), so the first call says no.
+   */
+  grillDue(ms) {
+    return this.page.evaluate((ms) => {
+      const SK = window.Cook && window.Cook.Skewer;
+      if (!SK || typeof SK.ring !== "function") return false;
+      if (!SK.__njgDue) {
+        const f = SK.ring;
+        const rings = (SK.__njgDue = new Map());
+        SK.ring = function (g, o) {
+          try { const k = `${Math.round(o.cx)},${Math.round(o.cy)}`; const now = performance.now(); const was = rings.get(k); rings.set(k, { v: o.v, lo: o.lo, hi: o.hi, t: now, pv: was ? was.v : null, pt: was ? was.t : null }); } catch (e) { /* a probe only */ }
+          return f.apply(this, arguments);
+        };
+        return false;
+      }
+      const now = performance.now();
+      for (const r of SK.__njgDue.values()) {
+        if (now - r.t > 400 || r.v == null || r.v > r.hi) continue; // (a ring not drawn lately is gone or idle)
+        if (r.v >= r.lo) return true;
+        const rate = r.pv != null && r.t > r.pt ? (r.v - r.pv) / (r.t - r.pt) : 0;
+        if (rate > 0 && (r.lo - r.v) / rate <= ms) return true;
+      }
+      return false;
+    }, ms).catch(() => false);
+  }
   async tap(x, y, what = "tap") { await this.cover(x, y, what); await this.page.mouse.click(x, y); this.taps++; }
 
   async waitChange(prev, timeout = 20000) {
@@ -614,6 +643,17 @@ export class CookPlayer {
       // (a pass-me card that leaves under the click: her ring ran out; anything else that stops a click still stops the run)
       try { await p.click(sel, { timeout: 10000 }); } catch (err) { if (await movedOn()) { this.rec.note(`${sel} went before the click: the game moved on`); return; } throw err; }
     } else if (k === "tap") {
+      // (s19-clean-e's measure, 12 Nov: sekelo L4 at 740x320 never ended: at test speed 3 the grill's green lasts about 0.3 s, and placing
+      // the next rack skewer took the player about 5 s on a loaded machine, so the first skewer went past its green, charred, back to the
+      // band, again and again. A child at speed 1 has 0.83-1.1 s. Before a rack tap: a grill ring due within GRILL_DUE_MS waits first)
+      // (once per rack skewer asked for: a ring that is due but never asks, one being turned, cannot hold the tap twice)
+      const rk = JSON.stringify([e.x, e.y]);
+      if (e.key === "rack" && this.rackHeld !== rk && (await this.grillDue(GRILL_DUE_MS))) {
+        this.rackHeld = rk;
+        await this.page.waitForFunction(() => { const c = window.njgTest && window.njgTest.cook.expectation(); return !c || c.kind === "timing"; }, null, { polling: "raf", timeout: GRILL_DUE_MS + 1500 }).catch(() => {});
+        this.rec.note("rack tap held: a grill ring was due");
+        return;
+      }
       // mistake: a wrong item first (the first three different things asked for), then the right one
       if (this.mistakes && e.swrongs && e.swrongs.length && !this.made.has("tap:" + e.key) && this.made.size < 6) {
         this.made.add("tap:" + e.key);
@@ -627,6 +667,7 @@ export class CookPlayer {
         await sleep(500);
       }
       await this.tap(e.sx, e.sy, e.key || "item");
+      if (e.key === "rack") this.rackHeld = null;
       // the daar station's bowl tipped into the pot (DAAR-10: the trivet stays on the counter)
       if (e.key === "daar") await mark(p, "daar-in", { settle: 60 });
     } else if (k === "hold") {
@@ -865,7 +906,9 @@ export class CookPlayer {
       // to a loaded page, and the next pan's green lasts 0.7-2 s at the test speed)
       if (this.mode === "fair" || this.mode === "serve-wrong") {
         const e0 = await this.exp().catch(() => null);
-        if (e0 && e0.kind === "timing" && !e0.intro && lastKind === "timing") {
+        // (a timing after another kind of step, once its first shot is taken, goes straight to it too: sekelo's turns come between rack
+        // taps, and the slow way round, the view's shot, the watch and the hint checks, took longer than the grill's green at test speed)
+        if (e0 && e0.kind === "timing" && !e0.intro && (lastKind === "timing" || this.seen.has("kind-timing"))) {
           // (the a2 review's finding 6: counted as every other step is, so a knob that never answers is "stuck repeating", not a timeout)
           const k0 = JSON.stringify({ kind: e0.kind, key: e0.key, x: e0.x, y: e0.y, selector: e0.selector });
           this.repeats = k0 === this.lastKey ? this.repeats + 1 : 0;
