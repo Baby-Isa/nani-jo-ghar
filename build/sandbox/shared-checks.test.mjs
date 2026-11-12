@@ -95,6 +95,18 @@ test("contract-116: the foot is the padding or the card's gap g; a lone card fil
   assert.deepEqual(page116([card(21, 323.5, 9)]), []);
   assert.match(page116([card(19, 134.5, 6.5)])[0], /fills 38% of its 307 px row/);
 });
+test("contract-116 (s19-clean-a5's lines): a row with cards still to be said (.oc-away) and a sample mid-slide are left out; the bad runs stay red", () => {
+  const card = (l, r) => ({ w: "x", done: 0, box: [l, 151.5, r, 365.5], in: [l + 9, 160.5, r - 9, 365.5 - 9] });
+  const page = (cards, more) =>
+    analyse({ flow: "cook:eggs", size: "1280x665", t0: 0, ms: 5000, states: [], timeline: [c(0, "stage", { key: "cook:station1:marble" }), c(100, "s19pad", { box: [5, 100, 330, 400], row: [19, 149.5, 325.5, 372], cards, ...more }), c(3000, "s19pad", { box: null })] }, { root: ROOT, lexicon: new Set(), numbers: new Set() }).filter((b) => b.check === "contract-116").map((b) => b.measured);
+  // (two cards said, the middle one's place kept unseen: a gap twice the other)
+  const gapped = [card(19, 100), card(108, 189), card(278, 359)];
+  assert.match(page(gapped).join("|"), /gaps are 8, 89 px/, "uneven gaps with nothing away: red");
+  assert.deepEqual(page(gapped, { away: 1 }), [], "a card still to be said: left out");
+  assert.match(page([card(19, 134.5)], { away: 0 }).join("|"), /fills 38%/, "a two-thirds-empty row with nothing away: still red");
+  assert.deepEqual(page(gapped, { slide: 1 }), [], "mid-slide: left out");
+  assert.match(page([{ ...card(19, 134.5), in: [22, 160.5, 125.5, 356.5] }, card(142.5, 258), card(266, 381.5)], { away: 1 }).join("|"), /has padding 3\/9\/9\/9 px/, "a card's own padding is still judged with a card away");
+});
 
 // ---- 105, 114's landing flights, 116's row after a tick (the before run's own numbers, s19-shared-checks-before) ----
 const it = (id, key, b, a = 100, tw = 0) => [id, key, ...b, a, tw, 0, 1, b[2] - b[0], b[3] - b[1], 0, 0, 0];

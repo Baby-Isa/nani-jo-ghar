@@ -308,6 +308,8 @@ export function check116(r, tl, add) {
   for (const { e, until } of heldSamples(tl, "s19pad", PAD_HOLD_MS, tEnd)) {
     const s = inSt(st, e.t);
     if (!s || !e.box || !(e.cards || []).length || !e.row) continue;
+    // (s19-clean-a5: a sample taken while a card slides to its place (the FLIP) is not where the cards stand)
+    if (e.slide) continue;
     const cards = e.cards.slice().sort((a, b) => a.box[0] - b.box[0]);
     for (const c of cards) {
       if (!c.in) continue;
@@ -319,6 +321,9 @@ export function check116(r, tl, add) {
       const footOk = Math.abs(pads[3] - (Math.max(...sides) + Math.min(...sides)) / 2) <= tolPad || Math.abs(pads[3] - g) <= tolPad;
       if (Math.max(...sides) - Math.min(...sides) > tolPad || !footOk) out("pad", e.t, `${s.key}: the order card "${c.w}" has padding ${pads.map((p) => Math.round(p * 2) / 2).join("/")} px (left/top/right/bottom): equal on every side within ${Math.round(tolPad * 10) / 10} px`);
     }
+    // (s19-clean-a5: a row with cards still to be said (.oc-away) keeps their places unseen: its gaps, fill and current card are judged
+    // once they are said)
+    if (e.away > 0) continue;
     const gaps = cards.slice(1).map((c, i) => c.box[0] - cards[i].box[2]);
     if (gaps.length > 1 && Math.max(...gaps) - Math.min(...gaps) > tolGap) out("gap", e.t, `${s.key}: the order cards' gaps are ${gaps.map(Math.round).join(", ")} px: equal within ${Math.round(tolGap * 10) / 10} px`);
     // (while the order is given the row follows the cards as they are said: the current card is judged once the order is in)
