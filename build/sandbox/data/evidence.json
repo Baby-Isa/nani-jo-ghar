@@ -16128,9 +16128,51 @@
    "note": "the chaat bowl has no drop shadow of its own under it ('doesn't make sense')"
   }
  ],
- "CHT-13": {
-  "human": "Waits on art: when the chaat items and the redrawn side-on bowl (a horizontal strip) land, look at every item sitting in the bowl and say whether it reads."
- },
+ "CHT-13": [
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-marble",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:120"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "chaat top down (Zafar, 9 Nov: 'I think maybe we go top down for chaat ... Opaque bowl looks better than the glass bowl'): the topping bowls seen from above on the kit's stone tray, the opaque cream serving bowl from above beside them; every item that goes in the bowl reads"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "view-service",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "delay": 800,
+   "note": "the made chaat served: the items layered in the opaque bowl, seen from above, each one reading"
+  }
+ ],
  "CHT-14": [
   {
    "flow": "repo",
@@ -28491,14 +28533,16 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "life:baking-salt",
    "after": null,
    "capture": [
     "crop:#game"
    ],
    "expect": null,
-   "max": 8,
-   "note": "salt as a pinch or a teaspoon, its small pile shown"
+   "max": 3,
+   "note": "salt as a pinch or a teaspoon, its small pile shown",
+   "every": true,
+   "delay": 500
   }
  ],
  "SH-268": [
