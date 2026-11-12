@@ -1,0 +1,58 @@
+{
+ "name": "s19-clean-a6: the shared consistency rows and the checks",
+ "why": "Zafar, 12 Nov afternoon: 'continue, fix everything you can fix' before his play late this evening",
+ "cost": "about $30-40",
+ "port": 8913,
+ "read": [
+  "build/reports/s19-clean-a4.md ('Still open': your rows) and s19-clean-chai.md ('For a4': the ui.js markSaid line)",
+  "docs/process/regressions.md (each row's own text, Zafar's words)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)",
+  "build/reports/s19-clean-chai.md ('For a4': the check lines) and s19-clean-a4.md's contract run (the breaks by check)"
+ ],
+ "owns": [
+  "js/shared/shelf.js, js/shared/guide.js, js/cook/station-lib.js, js/cook/stations.js, js/cook/kitchen-kit.js",
+  "data/cook.json",
+  "build/sandbox/** (the checks, drivers, the test player, evidence.json), build/lint/**, build/tools/review/**, build/tools/tiers/**",
+  "build/reports/s19-clean-a6.md"
+ ],
+ "readOnly": [
+  "js/shared/onboard.js, word-card.js, order-card.js, wrong-order.js, css/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js (s19-clean-a5)",
+  "js/cook/stations/**, js/cook/mechanics/** (s19-clean-e)",
+  "assets/**, data/family-audio.json, data/lang/** (the Mum-session agent)"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "The consistency rows: SH-240 (Nani's line in chai's type in every game), SH-255 (every bottom bar from the shared kit only: the pantry's shelves, contract-109), SH-248 (the shared bands for sekelo, samosa, chaat and baking), SH-172 (every step's call: contract-36, 35 breaks), SH-251 (the side-by-side tool reaching every key moment). The checks from chai's report: contract-36 allows the call from CALL_BEFORE, not 1000 ms; contract-102 and -107 count a glow or hop that starts with its rung as the light's even when the light box paints late; contract-73 and -113 on chai's pages; contract-115's floor for the main thing set to 60% of the room (Zafar, 12 Nov: chai's hob is 65%; under 60% is flagged for a look). Every check change keeps the bad runs red (build/sandbox/badruns.test.mjs). Then the remaining check faults that are the checks' own or shared, by the a4 contract run's list.",
+   "accept": "each: a frame or a test; badruns green; the contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 (s19-clean-a6-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8913, flock /tmp/njg-browser-8913.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+   "accept": "build/reports/s19-clean-a6.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-a6 in /home/user/wt/s19-clean-a6 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": true,
+ "stubs": "none",
+ "report": "s19-clean-a6",
+ "publish": false,
+ "rows": []
+}

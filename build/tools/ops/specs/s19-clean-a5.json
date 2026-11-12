@@ -1,0 +1,56 @@
+{
+ "name": "s19-clean-a5: the shared lights, fingers and order card rows left",
+ "why": "Zafar, 12 Nov afternoon: 'continue, fix everything you can fix' before his play late this evening",
+ "cost": "about $35-45",
+ "port": 8914,
+ "read": [
+  "build/reports/s19-clean-a4.md ('Still open': your rows) and s19-clean-chai.md ('For a4': the ui.js markSaid line)",
+  "docs/process/regressions.md (each row's own text, Zafar's words)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)"
+ ],
+ "owns": [
+  "js/shared/onboard.js, coach-related shared code, js/shared/word-card.js, js/shared/order-card.js, js/shared/wrong-order.js and css/shared/**",
+  "js/cook/ui.js, js/cook/coach.js, js/cook/flow.js, js/cook/serve.js",
+  "build/reports/s19-clean-a5.md"
+ ],
+ "readOnly": [
+  "js/shared/shelf.js, js/shared/guide.js, js/cook/station-lib.js, js/cook/stations.js, js/cook/kitchen-kit.js, data/cook.json, build/sandbox/** (s19-clean-a6)",
+  "js/cook/stations/**, js/cook/mechanics/** (s19-clean-e)",
+  "assets/**"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "The shared rows left, in this order: SH-236 (the first-time light goes the moment the child starts the move), SH-230 (a light smaller than its card or clipping it), SH-250 (the lesson dim stacking 0.55 on 0.45), SH-249's rest, SH-141 and SH-119 (one finger, the kit's, in every game: samosa and maani have it; the rest), SH-239 (the card ticks as you go; well done waits for the whole card), SH-152 (the order row glides), SH-227 (the card's typography), SH-241 (the old skewer strip), SH-242 (item cards show the single item, not the crate), SH-238 (no old tick button), SH-60 and SH-178 (stuck help and the next pan), SH-267's L1 dish card seen too briefly (contract-119, 14), and chai's report's ui.js line (NaniGuide.markSaid when queued, so a helper line is never said twice). Each: read the row, fix, a before and after frame; a row already done: prove it with a frame.",
+   "accept": "each row: a frame or a test; the contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 (s19-clean-a5-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+   "accept": "build/reports/s19-clean-a5.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-a5 in /home/user/wt/s19-clean-a5 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": true,
+ "stubs": "none",
+ "report": "s19-clean-a5",
+ "publish": false,
+ "rows": []
+}
