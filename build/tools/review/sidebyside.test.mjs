@@ -2,8 +2,10 @@
 // judge's batch, and the key-frame recorder's choices. No browser. Run: node --test build/tools/review/sidebyside.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { flowsFor, slug, rubricByMoment, batchText, MOMENTS, GAMES } from "./sidebyside.mjs";
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { flowsFor, slug, rubricByMoment, batchText, MOMENTS, GAMES, reach } from "./sidebyside.mjs";
 import { stripWhy, stateMoment, pickMid, pickMidFrame, KEY_MOMENTS, BEFORE_MS, AFTER_MS, FRAME_MS } from "../../sandbox/lib/keyframes.mjs";
 
 test("it plays chai and the game at a child's pace, at the level asked", () => {
@@ -101,4 +103,38 @@ test("s19-checks-1: the order frame is the one drawn as the order landed, never 
   await kf.chain;
   assert.equal(readFileSync(join(kf.dir, kf.keys.order.file), "utf8"), "order");
   assert.equal(readFileSync(join(kf.dir, kf.keys.serve.file), "utf8"), "serve");
+});
+
+test("SH-251: --reach names each page's moments not reached (a key with no picture is not reached)", () => {
+  const run = mkdtempSync(join(tmpdir(), "sbs-reach-"));
+  const page = (name, moments) => {
+    const d = join(run, "keyframes", name);
+    mkdirSync(d, { recursive: true });
+    const keys = {};
+    for (const m of moments) { keys[m] = { file: `key-${m}.jpg` }; writeFileSync(join(d, `key-${m}.jpg`), "x"); }
+    keys.ghost = { file: "key-ghost.jpg" };
+    writeFileSync(join(d, "keys.json"), JSON.stringify({ keys }));
+  };
+  page("cook-eggs-speed1@740x320", KEY_MOMENTS);
+  page("cook-chop-speed1@740x320", KEY_MOMENTS.filter((m) => m !== "serve" && m !== "mid"));
+  const r = reach(run);
+  assert.deepEqual(r.map((x) => [x.page, x.missing]), [["cook-chop-speed1@740x320", ["mid", "serve"]], ["cook-eggs-speed1@740x320", []]]);
+  assert.equal(reach(join(run, "none")), null);
+});
+
+import { KeyFrames } from "../../sandbox/lib/keyframes.mjs";
+test("SH-251: a game with no order-card-in-sidebar state (chop) keeps the frame as its station starts for the order", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "kf-order-"));
+  const buf = [{ t: 1000, jpg: Buffer.from("a") }, { t: 2000, jpg: Buffer.from("b") }];
+  const fb = { buf, subscribe() {}, onTick() {}, before: (t) => buf.filter((f) => f.t <= t).pop() || null };
+  const page = { evaluate: async () => null };
+  const k = new KeyFrames(page, { dir, flow: "cook:chop", size: "740x320", fb });
+  k.onEvent({ type: "c", k: "stage", key: "cook:station1:marble", t: 2100 });
+  await k.chain;
+  assert.equal(k.keys.order && k.keys.order.t, 2000, "the frame before the station's start");
+  const k2 = new KeyFrames(page, { dir: mkdtempSync(join(tmpdir(), "kf-order2-")), flow: "cook:eggs", size: "740x320", fb });
+  k2.keys.order = { file: "key-order.jpg", t: 1000 };
+  k2.onEvent({ type: "c", k: "stage", key: "cook:station1:marble", t: 2100 });
+  await k2.chain;
+  assert.equal(k2.keys.order.t, 1000, "an order frame already kept stays");
 });

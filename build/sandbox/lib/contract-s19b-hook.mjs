@@ -12,7 +12,7 @@
 //   k: "s19ord"  {pop, fly, away, rows}   the big card and the cards in flight on screen, the rows waiting away, every frame it changes (74)
 //   k: "s19pad"  {box, row, cards: [{w, id, done, box, in}], room}   the side panel's order card, its row and each item card with its
 //                                 content's box (picture, words, speaker) and its word id (data-word: 37), every 300 ms it changes (116)
-//   k: "s19spk"  {list: [{who, box, em, icon, text}]}   each speech bubble's speaker as drawn: its box, its words' size, its icon (73)
+//   k: "s19spk"  {list: [{who, box, tap, em, icon, text}]}   each speech bubble's speaker as drawn: its box, its tap (grown by a positioned ::before), its words' size, its icon (73)
 //   k: "s19ring" {id, lv, lo, hi} / {id, clear: 1}   the kit's heat ring as drawn (Cook.Kit.heatRing draw): its level and green, on
 //                                 each 0.01 or crossing (70, 77, 96)
 //   k: "s19tick" {id, dish, un, row, got, need, done}   each tick of the order card (Cook's UI.mission.tickItem; un 1: untickItem): the
@@ -178,7 +178,21 @@ function s19bhook() {
       const tx = b.querySelector(".wp-text, .cv-text");
       const ic = sp.querySelector("svg, img");
       const r = sp.getBoundingClientRect();
-      list.push({ who: b.dataset.who || null, cls: [...sp.classList].filter((c) => /say|spk/.test(c)).join(".") || sp.tagName.toLowerCase(), box: R(r), em: tx ? Math.round(parseFloat(getComputedStyle(tx).fontSize) * 10) / 10 : null, own: Math.round(parseFloat(getComputedStyle(sp).fontSize) * 10) / 10, icon: ic ? R(ic.getBoundingClientRect()) : null, text: ((tx && tx.textContent) || "").replace(/\s+/g, " ").trim().slice(0, 30) });
+      // (s19-clean-a6, chai's CHAI-104: the speaker's tap is its box grown by its ::before or ::after, a positioned pseudo-element with
+      // negative insets: .cv-bubble .cv-spk::before reaches the 48 px tap round a smaller drawn button)
+      const tapOf = () => {
+        let [l, t, rr, bb] = [r.left, r.top, r.right, r.bottom];
+        for (const ps of ["::before", "::after"]) {
+          const cs = getComputedStyle(sp, ps);
+          if (!cs || cs.content === "none" || cs.content === "normal" || cs.display === "none" || cs.position !== "absolute" || cs.pointerEvents === "none") continue;
+          const px = (v) => (/px$/.test(v) ? parseFloat(v) : NaN);
+          const [it, il, ir, ib] = [cs.top, cs.left, cs.right, cs.bottom].map(px);
+          if ([it, il, ir, ib].some((v) => !Number.isFinite(v))) continue;
+          l = Math.min(l, r.left + il); t = Math.min(t, r.top + it); rr = Math.max(rr, r.right - ir); bb = Math.max(bb, r.bottom - ib);
+        }
+        return R({ left: l, top: t, right: rr, bottom: bb });
+      };
+      list.push({ who: b.dataset.who || null, cls: [...sp.classList].filter((c) => /say|spk/.test(c)).join(".") || sp.tagName.toLowerCase(), box: R(r), tap: safe(tapOf, null), em: tx ? Math.round(parseFloat(getComputedStyle(tx).fontSize) * 10) / 10 : null, own: Math.round(parseFloat(getComputedStyle(sp).fontSize) * 10) / 10, icon: ic ? R(ic.getBoundingClientRect()) : null, text: ((tx && tx.textContent) || "").replace(/\s+/g, " ").trim().slice(0, 30) });
     }
     if (!same("spk", list)) emit({ k: "s19spk", list });
   };

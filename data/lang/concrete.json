@@ -14,6 +14,10 @@
      "cell": "{gender}"
     },
     {
+     "arg": "with",
+     "via": "WithFood"
+    },
+    {
      "arg": "mods",
      "each": true,
      "cell": "{gender}.{number}.{case}"
@@ -21,10 +25,6 @@
     {
      "arg": "kind",
      "cell": "{number}.{case}"
-    },
-    {
-     "arg": "with",
-     "via": "WithFood"
     },
     {
      "arg": "without",
@@ -182,16 +182,21 @@
    "src": "grammar-notes §10 (dudh wagar ji chai); whether ji agrees with the dish is open (dungri wagar ji daar, daar's gender unknown: L36)"
   },
   "WithFood": {
-   "status": "unknown",
-   "ask": [
-    "L17",
-    "L22",
-    "L23",
-    "L27"
+   "slots": [
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "{parent.gender}.{parent.number}.dir"
+    }
    ],
-   "english": "with {x}",
-   "what": "with, joining an extra to food",
-   "src": "grammar-kb feature 23"
+   "status": "draft",
+   "src": "grammar-notes §65 (12 Nov 4:48: Muke trae samosa khape, ba chunde ja ne hakro batate jo; 5:43: Muke ba chunde ja samosa khape; 11:00: Muke hakro chunde jo samoso khapeto, ne hakro batate jo)",
+   "notes": [
+    "A filling only. A side is sathe after the dish: muke maani ghee sathe khapeti (a chapati with ghee, 28:00). In chai it is waari (MixedIn)."
+   ]
   },
   "WithoutFood": {
    "status": "unknown",
@@ -909,11 +914,11 @@
     "informal": [
      {
       "lex": "pron.p1",
-      "cell": "dat"
+      "cell": "poss.she.*.obl"
      },
      {
       "arg": "container",
-      "case": "dir"
+      "case": "obl"
      },
      {
       "lex": "post.in"
@@ -925,31 +930,42 @@
       "lex": "v.want",
       "cell": "informal"
      }
+    ],
+    "polite": [
+     {
+      "lex": "pron.p1",
+      "cell": "poss.she.*.obl"
+     },
+     {
+      "arg": "container",
+      "case": "obl"
+     },
+     {
+      "lex": "post.in"
+     },
+     {
+      "arg": "thing"
+     },
+     {
+      "lex": "v.put-in",
+      "cell": "imp.polite"
+     }
     ]
    },
    "defaultVariant": "informal",
+   "only": {
+    "container.gender": [
+     "she"
+    ]
+   },
+   "onlyAsk": [
+    "new (in my cup, a he-word: munje cup me? not said)"
+   ],
    "mark": ".",
    "status": "draft",
-   "src": "grammar-notes §6 (Muke chai me ba khun khapeti: in my tea I want two sugars; khape is the informal ending the game uses); data/cook.json lines.sugar (draft)",
+   "src": "grammar-notes §65 (12 Nov 12:18-12:39: Munji chai me ba khun khape, in my chai I want two sugars; her final answer Munji chai me ba khun wijij, in my chai put two sugars, please); §6 (Muke chai me ba khun khapeti, 25 Sept)",
    "notes": [
-    "Mum's own sentence was the polite one, with khapeti after ba khun (two sugars): a she-singular ending on a count of two, unexplained until the gender of khun is settled (L34)."
-   ],
-   "exceptions": [
-    {
-     "only": {
-      "register": [
-       "polite"
-      ]
-     },
-     "status": "unknown",
-     "ask": [
-      "L34",
-      "L9"
-     ],
-     "english": "In my {container} I want {thing}",
-     "what": "the polite 'in my chai I want two sugars' (Mum said khapeti with ba khun)",
-     "src": "grammar-notes §6"
-    }
+    "munji (my) agrees with chai, a she-word (§54). Mum: 'you wouldn't say I want two sugars, you'd say put two sugars in' (11:33): the polite variant is that one (wijij, please put)."
    ]
   },
   "OnShort": {
@@ -1178,13 +1194,56 @@
    "src": "grammar-kb feature 19; Round 5 L19, L24"
   },
   "Times": {
-   "status": "unknown",
-   "ask": [
-    "L54"
+   "slots": [
+    {
+     "arg": "n",
+     "cell": "he.obl"
+    },
+    {
+     "lex": "n.times"
+    }
    ],
-   "english": "{n} times",
-   "what": "'three times' (stir it three times)",
-   "src": "data/clinic/lang.json lines.times (no Kutchi: gap Times); Round 5 L54"
+   "status": "draft",
+   "src": "grammar-notes §66 (12 Nov 15:57: hakre fare, ba fare, trae fare; 15:19: hakre fare firai, ba fare firai, trae fare firai)",
+   "notes": [
+    "hakre (not hakro) before fare. Not taano: hakre taano is 'at one time, some time' (14:01-14:44)."
+   ]
+  },
+  "BringMeTheseForX": {
+   "slots": [
+    {
+     "lex": "dem.this"
+    },
+    {
+     "lex": "pron.p1",
+     "cell": "dat"
+    },
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "post.for"
+    },
+    {
+     "lex": "v.take",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.come",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.give",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §65 (12 Nov 0:38-0:43: Hi muke chai lai khani achi de, bring me these for chai: khani achi de, take and come and give)",
+   "notes": [
+    "Said with chai only; a he-word dish takes its -e form before lai (§18, §41)."
+   ]
   },
   "Fetch": {
    "status": "unknown",
@@ -1595,7 +1654,7 @@
     }
    ]
   },
-  "BringMeTheseForX": {
+  "BringMeTheseForX2": {
    "status": "unknown",
    "ask": [
     "to record with Mum (the game line has no Kutchi yet)"

@@ -276,7 +276,7 @@ export function buildSheet() {
   const nGender = (m) => genders[m].reduce((s, g) => s + g.count, 0);
   push("# Recording sheet: everything still to record, in one place", "",
     "Built by `node build/tools/ops/recordings.mjs` (do not edit by hand; `--check` says when it is out of date). English meanings and gaps only: this sheet never holds Kutchi we have not been given. Zafar, 20 Oct: **lock the grammar first, then the vocabulary slots in.** So Mum's next sitting starts at section 1; each later section is a table to work down, most-used first.", "",
-    "**Status words:** *No Kutchi yet* = the game shows the English (grey italic; Zafar, 3 Nov: no \"to record\" sign, this sheet is the log). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet ticked in `lab/family-audio.html` (only OK takes ship). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).", "");
+    "**Status words:** *No Kutchi yet* = the game shows the English (grey italic; Zafar, 3 Nov: no \"to record\" sign, this sheet is the log). *Kutchi known, no recording* = the engine has the word, but no family voice says it yet. *Recorded, waiting for OK* = a take exists, not yet heard by Zafar in `lab/family-audio.html` (it plays in the game already: every clip is approved for the game, Zafar 12 Nov; the stores need re-recorded \"final\" clips). **How often** is the number of game lines that need it (Cook and clinic), or the days of the five-day frame that say it (story mode).", "");
 
   // 1 grammar
   const gRows = grammar.list().sort((x, y) => (x.order - y.order) || byCount(x, y));

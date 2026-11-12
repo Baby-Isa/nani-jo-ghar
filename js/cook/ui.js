@@ -1162,6 +1162,15 @@
     const raf = global.requestAnimationFrame || ((f) => setTimeout(f, 16));
     raf(() => raf(r));
   });
+  // (s19-clean-chai's finding, contract-22: "Dudh wiji chad!" twice: the helper's line waited in the speech queue, unmarked, while the
+  // help ladder's pause came and said it again; it is marked as said the moment it is queued, as Lang.speak marks a line it starts)
+  const saidNow = (l) => {
+    try {
+      if (global.NaniGuide && global.NaniGuide.markSaid && l) global.NaniGuide.markSaid(Lang.plain(l));
+    } catch (e) {
+      /* only the repeat rule's memory */
+    }
+  };
   function helperCall(by) {
     const s = stepper && stepper.current;
     if (!s || UI.naniMuted()) return;
@@ -1176,6 +1185,7 @@
       } catch (e) {
         /* only a log */
       }
+      saidNow(w);
       queued(() => drawn().then(() => (helperOn && stepper && stepper.current === s ? Lang.speak(Lang.role(w, "call")) : null))).catch(() => {});
       return;
     }
@@ -1185,6 +1195,7 @@
       /* only a log */
     }
     const line = Lang.role(copyLine(s.line), "call");
+    saidNow(line);
     queued(() =>
       drawn().then(() => {
         if (!helperOn || !stepper || stepper.current !== s) return null;
@@ -2318,6 +2329,14 @@
           });
           want = null;
           if (!here()) break;
+          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or gone after the last, drawn in this
+          // same turn, before the reveal's sound and the card's fit, which on a busy page held the old box round the tap for 0.6-0.9 s)
+          const k2 = steps.findIndex((x) => x[0] === slot);
+          const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
+          if (nx) {
+            cur = nx;
+            if (lit && lit.layer && lit.layer.__redraw) lit.layer.__redraw();
+          } else if (lit) (lit.close(), (lit = null));
           c.classList.remove(cls);
           // (shown by the child's tap: marked as a tapped-open part is, contract-39)
           const shownEl = c.querySelector(slot === "picture" ? ".wc14-pic" : slot === "text" ? ".wc14-k" : ".wc14-en");
@@ -2325,11 +2344,6 @@
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
           else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
           if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
-          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or fades after the last)
-          const k2 = steps.findIndex((x) => x[0] === slot);
-          const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
-          if (nx) cur = nx;
-          else if (lit) (lit.close(), (lit = null));
           await Cook.wait(nx ? 450 : 700);
         }
       } finally {
@@ -2637,7 +2651,17 @@
         if ($("#mission")) $("#mission").scrollTop = 0; // (from its top, the first card whole)
         // (the row from its first card)
         // (as a glide, so a redraw carries it on: never back to the order's last card)
-        if (s14) document.querySelectorAll("#mission .oc-row14").forEach((x) => x.firstElementChild && OCard().glideTo(x.firstElementChild, { home: true }));
+        // (contract-116, daar's tadka at 740x320: the row went home with its first cards ticked and the card to do now, lasan, cut at the
+        // row's edge for 2 s: the row goes home only as far as keeps the current card whole: else it leads to it, as while the order
+        // is given)
+        if (s14)
+          document.querySelectorAll("#mission .oc-row14").forEach((x) => {
+            const first = x.firstElementChild;
+            if (!first) return;
+            const cur = [...x.querySelectorAll(":scope > .oc-row[data-key]")].find((r) => !r.classList.contains("done") && !r.classList.contains("no") && r.dataset.serve !== "1");
+            const whole = !cur || cur.offsetLeft - first.offsetLeft + cur.offsetWidth <= x.clientWidth + 1;
+            OCard().glideTo(whole ? first : cur, whole ? { home: true } : { lead: true });
+          });
       }
       // CK-54's check (contract-74): a tap on the kitchen while the order was given: how long until every card was in its row,
       // and what was left over (a row still away, a big card or a copy of one), logged for the checks only
@@ -3157,7 +3181,14 @@
   };
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
   // (the orchestrator, 11 Nov: a word with no card picture shows the pantry's walnut-shelf picture, data art.sprites.shelf, before the old jars)
-  const shelfArt = (id) => (Cook.Art && Cook.Art.refUrl ? Cook.Art.refUrl(`${id}.shelf`) : null);
+  // (its "dir/../other/file" path made plain, "assets/cook/items-s17-stove/...": the same file, one URL for the card and the shelf)
+  const plainPath = (u) => {
+    if (typeof u !== "string" || !u.includes("/../")) return u;
+    let v = u;
+    for (let i = 0; i < 8 && /[^/.][^/]*\/\.\.\//.test(v); i++) v = v.replace(/[^/.][^/]*\/\.\.\//, "");
+    return v;
+  };
+  const shelfArt = (id) => (Cook.Art && Cook.Art.refUrl ? plainPath(Cook.Art.refUrl(`${id}.shelf`)) : null);
   const wcPicSrc = (id) => (Cook.shelfJars && Cook.shelfPic && Cook.shelfPic(id)) || (Cook.shelfJars && s02Jar(id)) || (!Cook.shelfJars && cardPic(id)) || (Cook.shelfPic && Cook.shelfPic(id)) || WC_PIC[id] || shelfArt(id) || (WC_ID.test(id) ? `assets/cook/items/shelf-${id}-bare-f.webp` : null);
   const wcWordId = (r) => [...(r.ids || [])].reverse().find((id) => wcPicSrc(id)) || (r.ids || []).slice(-1)[0];
   // (a row whose words name a station's own thing together, "hakro tarelo indo": that thing's card first, CK-62)
@@ -4348,14 +4379,25 @@
     }));
     mission.lastWrong = new Set(list.filter((c) => !c.ok).map((c) => c.who)); // (M.redoStart keeps these, whoever marked them)
     let done = null;
+    const oho = () => {
+      let line = null;
+      try {
+        line = Lang.say ? Lang.role(Lang.say({ fn: "Exclaim", x: "intj.oh-no" }), "exclaim") : null;
+      } catch (e) {
+        line = null;
+      }
+      if (line && line.ok !== false && Lang.hasVoice(line) && !UI.naniMuted()) return Lang.speak(line);
+      return Cook.sfx.soft();
+    };
     try {
       done = await W.play({
       host: $("#stage") || document.body,
       cards: list,
       speed: Cook.speed || 1,
       wait: (ms) => new Promise((r) => setTimeout(r, ms)), // (real time: the pop-up divides by the speed itself)
-      // (Zafar, 11 Nov night: no buzz for a wrong card; Mum's Kutchi "oho" when it is recorded, until then the soft note)
-      sound: (n) => (n === "ding" ? Cook.sfx.right() : n === "oops" ? Cook.sfx.soft() : n === "tick" && Cook.sfx.drop ? Cook.sfx.drop() : null),
+      // (Zafar, 11 Nov night: no buzz for a wrong card; SH-264, Mum's 12 Nov session: her "Oho" (intj.oh-no) as the wrong card opens,
+      // said through the engine as Nani's exclaim; the soft note only where the line has no voice yet)
+      sound: (n) => (n === "ding" ? Cook.sfx.right() : n === "oops" ? oho() : n === "tick" && Cook.sfx.drop ? Cook.sfx.drop() : null),
       talk: (el) => (global.Lifecycle && global.Lifecycle.talk && global.Lifecycle.talk.dom ? global.Lifecycle.talk.dom(el) : null),
       note,
       faceHtml: (who, src, size) => (global.Face && global.Face.html ? global.Face.html(who, size, { src }) : `<img class="njg-face-img" src="${esc(src)}" alt="">`),

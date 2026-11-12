@@ -218,7 +218,8 @@ const inSt = (st, t) => st.find((s) => t >= s.t0 && t < s.t1);
 const BAND = 0.3;       // js/shared/shelf.js Shelf.BAND: the bottom 270 of the 1600x900 design is the shelf band
 
 // ---- 115: the main thing as big as the height allows; the shelf's items at one height (SH-245, CK-77) ----
-export const MAIN_ROOM = 0.7;      // the main thing's height at least this share of the room above the band (chai's hob: 0.75, 0.86)
+export const MAIN_ROOM = 0.6;      // the main thing's height at least this share of the room above the band (Zafar, 12 Nov: the floor is 60%;
+                                   // chai's hob, the reference, is 65% at 1280x665; under 60% is flagged for a look)
 export const MAIN_WIDE = 0.85;     // ... unless its width already takes this share of the play area (a wide thing is width-bound)
 // the one set laid side by side at the main thing's height, judged as one width: sekelo's (corn's) grill and its trays (js/cook/grill-kit.js)
 export const GRILL_SET = { main: /^gk-grill\b/, part: /^gk-(grill|tray)\b/ };
@@ -242,7 +243,7 @@ export const SIZE_AT_MS = 3000;    // judged this long into each station (laid o
 // a work surface the shelf's things go into, not a thing sized to the height (Zafar, 11 Nov: "yes" to the bowl as a work surface)
 export const NOT_MAIN = /njg-tray|knob|badge|face|nana|nani|spoon|ladle|turner|velan|knife|tong|spatula|whisk|cat\b|eg-cat|bk-bowl|bk-jug/i; // (s19-clean-a, s19-clean-b's note: baking's jug is a work tool, as its bowl is)
 Object.assign(S19B_CHECKS, {
-  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM} of the room above the band (chai's hob: 0.75 at 1280x665, 0.86 at 740x320), unless its width (sekelo's grill with its trays laid beside it at its height, one set, by key: no other things) already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Zafar's accepted sizes (11 Nov morning: "Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change)") are a thing's size from step to step, judged by contract-114 (ACCEPTED_SIZES); no station's main thing or shelf is let off here for them. Once per station.` },
+  "contract-115": { item: "item-size", title: "the main thing as big as the height allows; the shelf's items at one height", how: `Cook flows, ${SIZE_AT_MS / 1000} s into each station, from the kitchen's pictures as drawn (s19it): the main thing (the tallest of the pictures above the shelf band at least half the biggest one's area: the hob, pot, board or grill) must stand at least ${MAIN_ROOM * 100}% of the room above the band (Zafar, 12 Nov: the floor is 60%; chai's hob, the reference, is 65% at 1280x665; under it is flagged for a look), unless its width (sekelo's grill with its trays laid beside it at its height, one set, by key: no other things) already takes ${MAIN_WIDE} of the play area (SH-245, Zafar 9 Nov: 'maximize the vertical height of these stoves'). Each shelf item with a word stands at chai's height for its size class (data/cook.json words' size L, M or S; chai's L jars measured at each of the four sizes, M 0.91 and S 0.84 of it), no more than ${SHELF_TOL * 100}% under (chai's own jars sit within 2%; CK-77: eggs' bowl a speck on an empty band, 86% of chai's M). Zafar's accepted sizes (11 Nov morning: "Maani's board, tawa and plate sizes and samosa's close-up fold: fine as they are (a smooth tweened change)") are a thing's size from step to step, judged by contract-114 (ACCEPTED_SIZES); no station's main thing or shelf is let off here for them. Once per station.` },
 });
 export function check115(r, tl, add, { root = "." } = {}) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19it").length) return;
@@ -266,7 +267,7 @@ export function check115(r, tl, add, { root = "." } = {}) {
       const set = GRILL_SET.main.test(main.key) ? above.filter((x) => x === main || (GRILL_SET.part.test(x.key) && area(x) >= 0.25 * big && ov(x, main) >= 0.6)) : [main];
       const ux = [Math.min(...set.map((x) => x.box[0])), Math.max(...set.map((x) => x.box[2]))];
       const h = main.box[3] - main.box[1], w = ux[1] - ux[0];
-      if (h < MAIN_ROOM * room && w < MAIN_WIDE * W) add("contract-115", t, `${s.key}: the main thing ${main.key} stands ${Math.round(h)} px, ${Math.round((100 * h) / room)}% of the ${Math.round(room)} px above the shelf band (at least ${MAIN_ROOM * 100}%: as big as the height allows; it is ${Math.round((100 * w) / W)}% of the width)`);
+      if (h < MAIN_ROOM * room && w < MAIN_WIDE * W) add("contract-115", t, `${s.key}: the main thing ${main.key} stands ${Math.round(h)} px, ${Math.round((100 * h) / room)}% of the ${Math.round(room)} px above the shelf band (under the ${MAIN_ROOM * 100}% floor, flagged for a look: as big as the height allows; it is ${Math.round((100 * w) / W)}% of the width)`);
     }
     const shelf = list.filter((x) => x.word && (x.box[1] + x.box[3]) / 2 > bandTop - 0.05 * H);
     const ref = CHAI_L[r.size];
@@ -346,9 +347,11 @@ export function check73(r, tl, add) {
   const said = new Set();
   for (const { e } of heldSamples(tl, "s19spk", 300, tEnd)) {
     for (const x of e.list || []) {
-      const w = x.box[2] - x.box[0], h = x.box[3] - x.box[1];
+      // (s19-clean-a6, CHAI-104: the tap is the button grown by its positioned ::before or ::after, the probe's tap box)
+      const tb = x.tap || x.box;
+      const w = tb[2] - tb[0], h = tb[3] - tb[1];
       if (/wp-say/.test(x.cls || "")) { if (!said.has("line")) { said.add("line"); add("contract-73", e.t, `a speaker button (${x.cls}) in the speech bubble "${x.text}": no speaker button in any speech bubble (SH-153, Zafar 1 Nov: 'remove the speaker buttons')`); } continue; }
-      if (Math.min(w, h) < SPK_TAP && !said.has("tap")) { said.add("tap"); add("contract-73", e.t, `the speech bubble "${x.text}" has its speaker (${x.cls || "?"}) ${Math.round(w)}x${Math.round(h)} px, under the 48 px tap`); }
+      if (Math.min(w, h) < SPK_TAP && !said.has("tap")) { said.add("tap"); add("contract-73", e.t, `the speech bubble "${x.text}" has its speaker (${x.cls || "?"}) ${Math.round(w)}x${Math.round(h)} px${x.tap ? " with its ::before" : ""}, under the 48 px tap`); }
     }
   }
 }
@@ -412,10 +415,16 @@ const calls = (v) => lines(v).filter((l) => l.role === "call" && (l.text || "").
 // did not light just before) and each new current card on the order card (the first card not ticked), in a station
 export const CALL_WITHIN = 6000;
 export const CALL_BEFORE = 2000;   // a call may come just before its light (the call opens the step; the light follows)
+export const LIT_LAG_MS = 700;     // the s19lit sample's lag behind the frame-timed light it samples, at most
 export function screenSteps(tl) {
   const st = stationsOf(tl);
   const out = [];
   let lastThing = null;
+  // (s19-clean-a6: the s19lit sample comes up to half a second after the light under load; the S14 hook's "lit", read every animation
+  // frame, times it: the same hole in a "lit" sample up to LIT_LAG_MS before is when the step's light came)
+  const fast = ev(tl, "lit").filter((e) => (e.holes || []).length);
+  const sameHole = (a, b) => Math.abs(a[0] - b[0]) <= 3 && Math.abs(a[1] - b[1]) <= 3 && Math.abs(a[2] - b[2]) <= 3 && Math.abs(a[3] - b[3]) <= 3;
+  const asBox = (h) => (Array.isArray(h) ? h : [h.l, h.t, h.r, h.b]);
   for (const e of ev(tl, "s19lit")) {
     const th = (e.things || [])[0];
     // (a light on a card is the help pointing at the order card's next item, contract-90's, not a step of the kitchen)
@@ -423,7 +432,9 @@ export function screenSteps(tl) {
     const m = midOf(th.box);
     if (lastThing && (lastThing.id === th.id || dist(m, lastThing.m) < 30)) { lastThing.m = m; continue; }
     lastThing = { id: th.id, m };
-    out.push({ t: e.t, why: `the light on ${th.id}` });
+    const h0 = (e.holes || [])[0];
+    const f = h0 ? fast.filter((x) => x.t <= e.t && x.t >= e.t - LIT_LAG_MS && x.holes.some((h) => sameHole(asBox(h), asBox(h0)))).shift() : null;
+    out.push({ t: f ? f.t : e.t, why: `the light on ${th.id}` });
   }
   let cur = null;
   for (const e of ev(tl, "s19pad")) {
@@ -442,7 +453,8 @@ export function check36(r, tl, segs, v, add) {
   const steps = screenSteps(tl);
   const cs = calls(v);
   const skips = life(tl, "step-call").filter((n) => /^skip/.test(n.by || ""));
-  const used = new Set();
+  const helps = life(tl, "help");
+  const used = new Set(), usedSkip = new Set();
   // SH-172 (contract-89, Zafar 30 Oct: "that instruction should be said out loud, only at the same time as the order hint is shown ...
   // when she expands her card to help you"): a step whose item Nani's helper card names while it is closed is called as her card opens,
   // never before; if it does not open before the next step (the child made the move first), no call is due. s19-clean-a: 36 had asked
@@ -456,7 +468,10 @@ export function check36(r, tl, segs, v, add) {
     if (said) { used.add(said); return; }
     // (s19-clean-a, s19-clean-b's note: a card step the order line itself brings, Nani saying the item as its card is revealed, baking's
     // amounts and the pantry's list: that line, voiced, is the step's call; contract-89 forbids a second one)
-    const ord = s.card ? lines(v).find((l) => !used.has(l) && l.role !== "item" && l.role !== "count" && l.role !== "laps" && l.role !== "countdown" && (l.text || "").trim() && l.plays && l.plays.length && l.t0 >= s.t - CALL_BEFORE && l.t0 <= s.t + 1500) : null;
+    // (s19-clean-a6, the a6 after run, baking at every level: a light the idle help brings comes with her line said again, the order's
+    // own step line (role order, s19-games-2): that line is the step's call, as on a card step)
+    const helped = !s.card && helps.some((h) => (h.at != null ? h.at : h.t) >= s.t - 1500 && (h.at != null ? h.at : h.t) <= s.t + 300);
+    const ord = s.card || helped ? lines(v).find((l) => !used.has(l) && l.role !== "item" && l.role !== "count" && l.role !== "laps" && l.role !== "countdown" && (l.text || "").trim() && l.plays && l.plays.length && l.t0 >= s.t - CALL_BEFORE && l.t0 <= s.t + 1500) : null;
     if (ord) { used.add(ord); return; }
     const h0 = helperAt(s.t);
     // (a step the kit's light shows is called with its light, as contract-89 lets a control's call be: only a card step waits on her card)
@@ -468,7 +483,11 @@ export function check36(r, tl, segs, v, add) {
       if (atOpen) { used.add(atOpen); return; }
     }
     // (the game's own skip, logged as the step opened: no voiced line for it (a recording to make), Nani muted)
-    if (skips.some((n) => n.t >= s.t - 1000 && n.t <= s.t + 3000)) return;
+    // (s19-clean-a6, chai's report: the skip is logged with the call it stands for, so it may come as early as a call may: CALL_BEFORE;
+    // each skip stands for one step, and one logged before the step before this one is that step's)
+    const prevT = i > 0 ? steps[i - 1].t : -Infinity;
+    const sk = skips.find((n) => !usedSkip.has(n) && n.t >= s.t - CALL_BEFORE && n.t <= s.t + 3000 && (n.t >= s.t || n.t > prevT));
+    if (sk) { usedSkip.add(sk); return; }
     add("contract-36", s.t, `a step opened on screen (${s.why}) and Nani did not call it (no call line from ${CALL_BEFORE / 1000} s before to ${Math.round((until - s.t) / 100) / 10} s after, no skip logged)`);
   });
 }

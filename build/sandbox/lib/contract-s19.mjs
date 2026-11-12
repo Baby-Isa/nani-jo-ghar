@@ -77,7 +77,7 @@ function held(list, i, tEnd) { const n = list[i + 1]; return (n ? n.t : tEnd) - 
 
 export const S19_CHECKS = {
   "contract-100": { item: "kit-card", title: "chai's 6 Nov card and type on every order card", how: "Cook flows, in a station (the stage samples): every s19card sample (lib/contract-s19.mjs S19_HOOK: the side panel's order cards and the order pop-up) must show the 6 Nov type (<html class=\"njg-lora\">) and no old card piece: an old item (.oc-item that is not the 6 Nov row, .oc-items14), a count box (.oc-box), a top strip (.oc-strip), the old skewer or group box (.oc-skewer, .oc-group). One is a break, once per piece per page (SH-227, SH-241, Zafar 8 Nov: 'the relic of the old order card'; the 6 Nov card was on only for an all-chai order, ui.js applyType)." },
-  "contract-101": { item: "nani-box", title: "Nani's box with its drop-down, her line on one line where it fits", how: "Cook flows: in each station that opens a step (life step-open), Nani's box (#guide) on screen must be the kit's s14 box (.ng-s14) and its drop-down (.ng-arrow) must show at least once before the station ends; a station without it is a break (SH-149; Zafar 8 Nov, maani and chaat: 'Nani only has a drop down', 'the missing drop-down'). Her line (.ng-line) on two or more lines while the same words at the floor size (the larger of 14 px and its --fit-min) fit one line of its box, held 300 ms, is a break too (SH-240: 'it could have easily fit on one line'); a grey to-record English line is not judged (it is going away: Zafar, 6 Nov, SH-224)." },
+  "contract-101": { item: "nani-box", title: "Nani's box with its drop-down, her line on one line where it fits", how: "Cook flows: in each station that opens a step (life step-open), Nani's box (#guide) on screen must be the kit's s14 box (.ng-s14) and its drop-down (.ng-arrow) must show at least once before the station ends; a station without it is a break (SH-149; Zafar 8 Nov, maani and chaat: 'Nani only has a drop down', 'the missing drop-down'). Her line (.ng-line) on two or more lines while the same words at the floor size (the larger of 14 px and its --fit-min) fit one line of its box, held 300 ms, is a break too (SH-240: 'it could have easily fit on one line'); a grey to-record English line is not judged (it is going away: Zafar, 6 Nov, SH-224). Her line set in anything but chai's type (Lora 500, the 6 Nov type), held 300 ms, is a break too (SH-240, s19-clean-a6)." },
   "contract-102": { item: "kit-light", title: "the kit's light only: no game's own ghost finger or glow", how: "Cook flows, in a station: a ghost finger the game plays itself (Lifecycle ghost from Cook's S.ghost, which logs where it points: the mechanics' roll, stir, knead, fold and maani's tap ghosts) is a break, once per step name; the kit's light brings its own finger (Onboard). A glowing picture (njgTest.cook.glowing()) whose middle is outside every light box on screen, held 300 ms, is the game's own glow and a break (a kit piece's own glow, kit-*, the pan's heat ring at its window, is the kit's) (Fable's maani flaw 3: a gold ring round the tawa while the light is on the dough; s18 cause 7: mechanics keep their own ghost fingers; MAA-20 'just one finger')." },
   "contract-103": { item: "no-buttons", title: "no tick, next or X button while a station plays", how: "Cook flows, in a station: a tick, next or close button on screen (#done-btn, #go-btn, #samosa-next, .njg-done, .njg-next, [data-go], or a button reading ✓, →, × or labelled done, next or close; not the end screen, the order pop-up, the grown-ups' ? pop-up or the cog) is a break, once per button per page (SH-238, Zafar 8 Nov: 'no ticks in any of the games anymore ... you can't have an X button'). The flow still has to reach its end (the sandbox's own check)." },
   "contract-104": { item: "card-pic", title: "every item card has the item's own picture", how: "Cook flows: every 6 Nov item card on screen (.wc14 in the side panel or the order pop-up) must show a picture that loaded (an <img> with a source and a natural width, or a background image; a picture the card hides at L3, the lesson's eye in its place, only needs its file), and never the shelf's crate, heap, pile, sack or basket (its file name). A blank picture (still not in after 600 ms: a card drawn again reloads its pictures) or a crate is a break, once per word per page (SH-242, Zafar 8 Nov: 'it's a crate of onions but it should be one onion'; SEK-24; Fable's eggs flaw 2, the blank card)." },
@@ -108,6 +108,7 @@ export function check100(r, tl, add) {
 }
 
 // 101
+export const NANI_TYPE = { family: /^Lora$/i, weight: "500", name: "Lora 500" }; // chai's: :root.njg-lora body.njg-s14 #guide.ng-s14 .ng-line
 export function check101(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
   const st = stations(tl);
@@ -125,6 +126,15 @@ export function check101(r, tl, add) {
     if (!g.some((e) => e.arrow)) add("contract-101", s.t0, `Nani's box in ${s.key.split("|").pop()} never showed its drop-down (.ng-arrow) while the station played`);
   }
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  // (s19-clean-a6, SH-240: her line in chai's type in every game: Lora 500, css/shared/order-card.css's 6 Nov type; a sample from before
+  // the probe read the type, no ff, is not judged)
+  for (let i = 0; i < gs.length; i++) {
+    const e = gs[i];
+    if (!e.shown || !e.ff || e.rec || !e.text || !inStation(st, e.t) || held(gs, i, tEnd) < HOLD_MS) continue;
+    if (NANI_TYPE.family.test(e.ff) && String(e.fw) === NANI_TYPE.weight) continue;
+    add("contract-101", e.t, `Nani's line "${(e.text || "").slice(0, 60)}" is set in ${e.ff} ${e.fw}, not chai's ${NANI_TYPE.name} (SH-240: her line in chai's type in every game)`);
+    break;
+  }
   for (let i = 0; i < gs.length; i++) {
     const e = gs[i];
     if (!e.shown || !(e.lines > 1) || !e.fits1 || e.rec || !inStation(st, e.t)) continue;
@@ -132,6 +142,22 @@ export function check101(r, tl, add) {
     add("contract-101", e.t, `Nani's line "${(e.text || "").slice(0, 60)}" is on ${e.lines} lines though it fits one line of ${Math.round(e.room)} px at ${e.floor} px (${Math.round(e.need)} px)`);
     return;
   }
+}
+
+// (s19-clean-a6, chai's report: the kit lights a rung's thing at once, its glow and hop with it, but the light box can be painted up to
+// 1.3 s later (1920x1080 under load). A glow or hop that starts with its rung, round a thing the rung's light box then frames within
+// LATE_LIGHT_MS, is that light's, not the game's own. A glow with no rung, or one its light never frames, is still the game's.)
+export const RUNG_WITH_MS = 700;   // the glow starts this close to its rung (the coach's note and the sampler's 100 ms)
+export const LATE_LIGHT_MS = 2000; // the rung's light box painted at most this late
+// (a lifecycle note's own time is its `at`; its sample's t is when the probe read the log)
+const noteT = (n) => (n.at != null ? n.at : n.t);
+const glowStart = (glows, i, key) => { let j = i; while (j > 0 && (glows[j - 1].list || []).some((y) => y.key === key)) j--; return glows[j].t; };
+export function lateLight(glows, i, g, lits, rungs) {
+  const t0 = glowStart(glows, i, g.key);
+  const rg = rungs.find((n) => Math.abs(noteT(n) - t0) <= RUNG_WITH_MS);
+  if (!rg) return false;
+  const m = mid(box(g.box));
+  return lits.some((l) => l.t >= t0 - SAMPLE_SLACK_MS && l.t <= Math.max(t0, noteT(rg)) + LATE_LIGHT_MS && (l.holes || []).some((h) => inBox(m, box(h), 2)));
 }
 
 // 102
@@ -147,6 +173,7 @@ export function check102(r, tl, add) {
   const lits = ev(tl, "s19lit");
   const holesAt = (t) => { let cur = null; for (const e of lits) { if (e.t > t) break; cur = e; } return cur ? (cur.holes || []).map(box) : []; };
   const glows = ev(tl, "s19glow");
+  const rungs = life(tl, "rung");
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   for (let i = 0; i < glows.length; i++) {
     const e = glows[i];
@@ -156,7 +183,7 @@ export function check102(r, tl, add) {
     // (s19-checks-1, the probe fault: a glow fades for up to 600 ms after its light has gone, chai's #hint glows: the light just gone counts)
     const hs = holesAt(e.t).concat(holesAt(e.t + 600), holesAt(e.t - 600)), hs2 = holesAt(e.t + HOLD_MS);
     // (a kit piece's own glow, its texture named kit-: the pan's heat ring at its window, is the kit's, not the game's)
-    const out = (e.list || []).find((g) => { if (/^kit-/.test(g.key || "")) return false; const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)); });
+    const out = (e.list || []).find((g) => { if (/^kit-/.test(g.key || "")) return false; const m = mid(box(g.box)); return !hs.some((h) => inBox(m, h, 2)) && !hs2.some((h) => inBox(m, h, 2)) && !lateLight(glows, i, g, lits, rungs); });
     if (!out || seen.has("glow:" + out.key)) continue;
     seen.add("glow:" + out.key);
     add("contract-102", e.t, `${out.key} glows ${fmt(box(out.box))} outside the kit's light${hs.length ? ` (the light is at ${hs.map(fmt).join(" ")})` : " (no light up)"}: the game's own glow`);
@@ -269,8 +296,10 @@ export function check105(r, tl, add) {
 // 106
 export function check106(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
-  const lits = ev(tl, "s19lit");
-  if (!lits.length) return;
+  // (s19-clean-a6, the a6 before run, daar L2: the s19lit sample lagged the light's move by 570 ms under load 30; the S14 hook's "lit"
+  // is read every animation frame: both are the light's samples, so a light gone to another thing is seen when it went)
+  const lits = ev(tl, "s19lit").concat(ev(tl, "lit")).sort((a, b) => a.t - b.t);
+  if (!ev(tl, "s19lit").length) return;
   const holesAt = (t) => { let cur = null; for (const e of lits) { if (e.t > t) break; cur = e; } return cur ? (cur.holes || []).map(box) : []; };
   // (s19-taps, SH-261: a tap the miss-light driver made off the thing is not the move a light shows: contract-117 judges it stays)
   const misses = life(tl, "probe-tap").map((q) => { const m = /^(-?\d+),(-?\d+)\|/.exec(q.by || ""); return m ? { x: +m[1], y: +m[2], t: q.at || q.t } : null; }).filter(Boolean);
@@ -298,6 +327,8 @@ export function check107(r, tl, add) {
   if (!isCookFlow(r.flow)) return;
   const glows = ev(tl, "s19glow");
   const lits = ev(tl, "s19lit");
+  const rungs = life(tl, "rung");
+  const glowOn = life(tl, "glow").filter((n) => n.reason === "on");
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   const seen = new Set();
   for (const e of glows) {
@@ -321,7 +352,15 @@ export function check107(r, tl, add) {
       if (!th || th.kind !== "word" || !th.shelf || seen.has("still:" + th.id)) return;
       // (s19-checks-1, the probe fault s19-wave-d saw in chaat: the coach lights a shelf thing about 200 ms before its glow and hop,
       // and the glow is sampled every 100 ms: a hop any time from the light to HOLD_MS + 400 ms after it counts)
-      const hop = glows.some((x) => x.t >= e.t - 100 && x.t <= e.t + HOLD_MS + 400 && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
+      // (s19-clean-a6, chai's report: the light box painted late, up to LATE_LIGHT_MS after its rung: the hop that started with the rung
+      // counts, from the rung on)
+      const rg = rungs.filter((n) => noteT(n) <= e.t && noteT(n) >= e.t - LATE_LIGHT_MS).pop();
+      const from = Math.min(e.t - 100, rg ? noteT(rg) - SAMPLE_SLACK_MS : Infinity);
+      // (s19-clean-a6, the a6 after run, eggs: the game logs its glow on the thing (Lifecycle glow on <id>) with the light, and the 100 ms
+      // glow sample, heavy under load, shows the hop a second later: with that note, a hop up to LATE_LIGHT_MS after it counts)
+      const note = glowOn.find((n) => n.by === th.id && noteT(n) >= e.t - 500 && noteT(n) <= e.t + HOLD_MS);
+      const until = note ? Math.max(e.t + HOLD_MS + 400, noteT(note) + LATE_LIGHT_MS) : e.t + HOLD_MS + 400;
+      const hop = glows.some((x) => x.t >= from && x.t <= until && (x.list || []).some((y) => y.bounce && inBox(mid(box(y.box)), box(hb), 2)));
       if (hop) return;
       seen.add("still:" + th.id);
       add("contract-107", e.t, `the shelf item ${th.id} is lit ${fmt(box(hb))} without its hop`);
@@ -554,7 +593,7 @@ export function checkS19(r, tl, v, add) {
 // ---- the S19 probe: what the checks above read. A function, not a string: the page gets its source ----
 //   k: "s19card"  {cards, lora, old: [sel], pics: [{word, src, ok}]}   the side panel's order cards and the order pop-up: the 6 Nov
 //                                        type, any old card piece on screen, each item card's picture (100, 104)
-//   k: "s19guide" {shown, s14, arrow, lines, fits1, text, room, need, floor}   Nani's box (#guide), its drop-down, her line (101)
+//   k: "s19guide" {shown, s14, arrow, lines, fits1, text, room, need, floor, ff, fw}   Nani's box (#guide), its drop-down, her line and its type (101)
 //   k: "s19ghost" {step, gesture, game, at}   a ghost finger played (Lifecycle ghost); game: Cook's S.ghost (it logs where it points) (102)
 //   k: "s19glow"  {list: [{key, bounce, box}], canvas}   the glowing pictures (njgTest.cook.glowing()) and the canvas's box (102, 107)
 //   k: "s19btn"   {list: [{sel, kind, text}]}   a tick, next or close button on screen outside the end screen, pop-ups and cog (103)
@@ -638,7 +677,9 @@ function s19hook() {
       // (a grey to-record English line is going away, Zafar 6 Nov, SH-224: "I don't care about the grey grown up adult lines")
       const REC = ".rec, .cl-rec, .oc-rec, .to-record, [data-rec], .oc-rec-line";
       const rec = !!(line.closest(REC) || line.querySelector(REC));
-      Object.assign(out, { text: probe.textContent.slice(0, 80), floor, need: Math.round(need), room: Math.round(room), fits1: need <= room - 1, rec });
+      // (s19-clean-a6, SH-240: her line's type as set, to hold every game to chai's: its first family and its weight)
+      const ff = String(cs.fontFamily || "").split(",")[0].replace(/["']/g, "").trim();
+      Object.assign(out, { text: probe.textContent.slice(0, 80), floor, need: Math.round(need), room: Math.round(room), fits1: need <= room - 1, rec, ff, fw: String(cs.fontWeight) });
     }
     return out;
   };
@@ -880,9 +921,12 @@ function s19hook() {
     const modal = (el) => { if (!el || el.closest(MODAL)) return true; for (let x = el, i = 0; x && x !== document.body && i < 6; x = x.parentElement, i++) { const b = x.getBoundingClientRect(); if (b.width * b.height >= 0.4 * vA && !(g && x.contains(g.canvas))) return true; } return false; };
     const PANEL = "#side, #mission, #guide, .oc-card, .wc14, .njg-results, .njg-rq-veil, .njg-grownup";
     const items = []; // canvas things: {o, kind: face|pill|pic, id, box, order, W}
+    // (s19-clean-a6, chai's report: while the wrong-order pop-up is open (.njg-wo-open, js/shared/wrong-order.js) the kitchen is held
+    // behind its veil: no canvas face, pill or picture pair is judged; the page's own covers still are)
+    const woOpen = [...document.querySelectorAll(".njg-wo-open")].some((c) => shown(c));
     const area4 = (b) => Math.max(0, b[2] - b[0]) * Math.max(0, b[3] - b[1]);
     const inter4 = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
-    if (g) {
+    if (g && !woOpen) {
       const cr = g.canvas.getBoundingClientRect(), kx = cr.width / g.scale.gameSize.width, ky = cr.height / g.scale.gameSize.height;
       const cvA = cr.width * cr.height;
       let order = 0;
@@ -1245,7 +1289,7 @@ function s19hook() {
       const c = safe(cardsNow, null);
       if (c && !same("s19card", [c.cards > 0, c.lora, c.old, c.pics.map((p) => p.word + p.src + p.ok + p.hidden)])) emit({ k: "s19card", ...c });
       const gd = safe(guideNow, null);
-      if (gd && !same("s19guide", [gd.shown, gd.s14, gd.arrow, gd.lines, gd.fits1, gd.text, gd.rec])) emit({ k: "s19guide", ...gd });
+      if (gd && !same("s19guide", [gd.shown, gd.s14, gd.arrow, gd.lines, gd.fits1, gd.text, gd.rec, gd.ff, gd.fw])) emit({ k: "s19guide", ...gd });
       const gl = safe(glowsNow, null);
       if (gl && !same("s19glow", gl.list.map((x) => [x.key, x.bounce, x.box.map((v) => Math.round(v / 8))]))) emit({ k: "s19glow", ...gl });
       const bt = safe(buttonsNow, []);

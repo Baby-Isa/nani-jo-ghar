@@ -124,7 +124,7 @@
   "_levels": "cobs = people by level (1, 1, 2, 2: one cob each); dressings per person [min, max]; 'no' the chance of a 'not X' ask (L4). sideMs and greenMs by level are mechanic.levels."
  },
  "order": {
-  "_about": "S19 wave B (CK-67, his yes: 'first grill them all and then flavour them on the next screen ... then you can flavour different corns differently'): the order the engine says and the card shows. One cob per person (the count by level, as before: 1, 1, 2, 2); each person (the family, the asker first) asks for their own mix: one or two things at L1-L3, two or three at L4, sometimes a 'no' at L4; the frames are the old recipe's (order, and, no): no new Kutchi. The order is said as before ('Muke ba makai khape.', the number in the headline, principle 4); with two or more people each person's card heads their own 'Muke hakro makai khape.' (personHead, on the card only: silent), their rows under it; one person's card keeps the order's own head (as before, and as the kit lays it out: its face's tap area clear of the first item card, contract-83).",
+  "_about": "S19 wave B (CK-67, his yes: 'first grill them all and then flavour them on the next screen ... then you can flavour different corns differently'): the order the engine says and the card shows. One cob per person (the count by level, as before: 1, 1, 2, 2); each person (the family, the asker first) asks for their own mix: one thing at L1, two at L2, one each at L3 and L4 (two cobs), no 'no' (s19-clean-a6, the orchestrator, 12 Nov: the six bowls stay, Zafar's, and the levels table's decoys, 1-4, fit only with at most 5, 4, 3 and 2 things asked; was one or two at L1-L3, two or three at L4, sometimes a 'no' at L4: Zafar to say); the frames are the old recipe's (order, and, no): no new Kutchi. The order is said as before ('Muke ba makai khape.', the number in the headline, principle 4); with two or more people each person's card heads their own 'Muke hakro makai khape.' (personHead, on the card only: silent), their rows under it; one person's card keeps the order's own head (as before, and as the kit lays it out: its face's tap area clear of the first item card, contract-83).",
   "name": "n.corn-on-the-cob",
   "english": "Corn on the cob",
   "free": false,
@@ -171,7 +171,7 @@
          0,
          0,
          0,
-         0.6
+         0
         ]
        },
        "from": "$dress"
@@ -192,12 +192,12 @@
          2
         ],
         [
-         2,
-         2
+         1,
+         1
         ],
         [
-         2,
-         3
+         1,
+         1
         ]
        ]
       },

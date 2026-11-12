@@ -909,12 +909,119 @@ Who said what: Mum answers and Masi joins in, sometimes with her own version. Ta
 5. Is *aaye* (*muke winnu aaye*) the same word as *ai* (is)?
 6. "I saw them": *Aau iloka ke naris*?
 
+## 12 Nov 2026: Mum and Zafar, Round 6 sitting from the recording sheet (grammar first, then the kitchen games; 62 min, `sources/audio/mum-2026-11-12/voice-261112-113106.m4a`)
+
+**Which round:** the Word recording sheet of 12 Nov (`recording-sheet-2026-11-12.docx`): section 1a (the blocking grammar), the genders of Cook's nouns, counting, then section 2 game by game (chai, eggs, every kitchen game, baking, chaat). Not reached: pantry, daar, samosa, maani, sekelo, chop, corn, and sections 1b-1c. One file, recorded at a meal table with a lot of background noise; times are mm:ss in it. Whisper drops most Kutchi in the noise, so every answer below was found by hearing short windows alone (Swahili and Hindi modes) and its speaker checked by pitch (Mum about 170-230 Hz, Zafar about 110-140 Hz). **Every spelling is Claude's rough hearing until Zafar ticks it** (`build/reports/mum-2026-11-12.md`).
+
+**Who said what:** Mum answers; Zafar asks and sometimes says a form himself. Where Zafar's voice says a form (not Mum's) it is marked, and it is never Mum's evidence (non-negotiable 2).
+
+### 64. 1a-1b: he-word or she-word? (Mum says "one" with each: *hakro* or *hakri*)
+| English | What Mum said | Gender | Time |
+|---|---|---|---|
+| sugar | ***hakro khun*** ("*hakri chamchi khun*" is the she-word teaspoon) | he | 18:30, 18:49, 19:46 |
+| flour | ***hakro atto*** | he | 20:37 |
+| daal | ***hakri daar*** (one grain of daal) | she | 20:44 |
+| potato | ***hakro bataato*** (heard *bateto*) | he | 21:00 |
+| onion | ***hakri dungri*** | she | 21:07 |
+| tomato | ***hakro tomato, trae tameta*** (the English *tomato* for one: "there's a Kutchi word, I can't remember") | he; **plural *tameta*** | 17:20-17:34 |
+| chilli; chilli powder | ***hakri mirchi*** (the same word for both: "from the context") | she | 21:15, 23:54-24:11 |
+| garlic | ***hakro lasan*** ("I think on its own would be masculine") | he ⚠ | 21:33, 22:12 |
+| green peas | ***hakro matar*** | he | 22:19 |
+| ginger | ***hakro aadu*** | he | 22:25 |
+| turmeric | ***hakro hardar*** | he | 22:30 |
+| cumin seeds | ***hakro jeeru*** (heard *jeero, jeera*; "normally you say jeera, more than one") | he | 22:35-22:57 |
+| mustard seeds | ***hakri rai*** after *hakro rai* ("I've never heard anybody ever saying that") | she ⚠ | 23:06 |
+| cardamom | ***hakri elchi*** | she | 23:29 |
+| salt | ***mitho*** ("*mitho* would be male"); the game says *loon* | he | 23:36-23:47 |
+| chickpeas | ***hakro chano*** ("actually it'll be *hakro chano*"): one *chano*, more *chana* | he | 24:21 |
+| yoghurt | ***muke dai khapeti*** (a liquid has no "one"; "even if I was a man I'd still say *khapeti*") | she | 24:46 |
+| sev | ***muke sev khapeti***; no plural, "like water" | she | 25:20, 26:06 |
+| coriander | ***muke hakro dhania de*** (a bunch): "I would say *hakro*, I wouldn't say *hakri*" | he | 26:20, 27:08 |
+| mince | ***chundo*** … *khapeto* (Mum, after Zafar's question); *chunde* before *jo / ja* (§65) | he | 27:22 |
+| ghee | "no gender, neutral"; she says ***muke thoro ghee khapeto*** (I want a little ghee) | he (her rule for no gender) | 28:21, 28:45 |
+| chaat | ***muke chaat khapeto*** | he ⚠ | 29:10 |
+| samosa | ***muke samosa khapeto***; one is *samoso* in §65 | he | 29:24 |
+| mishkaki | ***hakri mishkaki khapeti*** ("like one skewer of mishkaki") | she ⚠ (the skewer's?) | 29:48 |
+| cupboard | ***kabaat jo darwajo*** (the cupboard's door) | he | 29:57 |
+| egg | ***hakro indo***, ***ba inda*** (the family often says Swahili *mayai*) | he | 30:48-30:53 |
+| black pepper | ***miryo*** (heard *miryu*), no singular, ***muke miryo khapeti***; the game says *mari* | she | 31:00-31:28 |
+| corn on the cob | *makai* is Swahili; "*hakri makai*"; Mum will look up the Kutchi | not settled | 30:10-30:35 |
+| vegetable | *boga* (Swahili, what the family says); another word, not remembered | not settled | 31:33 |
+| sekelo, mixed | not answered (*sekelo* "means roasted"; "mixed is mixed") | — | 29:32, 31:41 |
+
+**Also said:** *mithi chai* is sweet chai (with sugar): ***muke mithi chai khapeti***; ***muke mori chai khapeti*** without sugar; *kari chai* without milk (45:23-46:10). *maani ghee sathe* (a chapati with ghee) puts *ghee* after the dish with ***sathe***: ***muke maani ghee sathe khapeti*** (28:00).
+
+### 65. 1a: "with" a filling, "and one with", "in my chai", "bring me these"
+| Sheet | What Mum said | Time |
+|---|---|---|
+| Bring me these for chai | ***Hi muke chai lai khani achi de*** (*khani achi de*: take, come, give) | 0:38, 0:41 |
+| I'd like three samosas, two with mince and one with potato | ***Muke trae samosa khape, ba chunde ja ne hakro batate jo*** | 2:33, 4:29, 4:48 |
+| I'd like two samosas with mince | ***Muke ba chunde ja samosa khape*** | 5:43 |
+| I'd like one samosa with mince and one with potato | ***Muke hakro chunde jo samoso khapeto, ne hakro batate jo*** (in full: *… ne hakro batate jo samoso khapeto*) | 10:15, 11:00 |
+| In my tea I want two sugars | ***Munji chai me ba khun khape***, then as her final answer ***Munji chai me ba khun wijij*** ("in my tea put two sugars"; with spoons: *munji chai me ba chamchi khun wijij*) | 11:12, 12:21, 12:36 |
+
+- **Rule (with a filling):** the filling is the "of" word before the dish, agreeing with the dish (§47): ***chunde ja samosa*** (more than one), ***chunde jo samoso*** (one); the filling takes its *-e* form (*chundo → chunde*, *bataato → batate*, §18). "And one with potato" is ***ne hakro batate jo***, the dish left out. A **side** is ***sathe*** after the dish (*maani ghee sathe*, §64); in chai it stays ***waari*** (§6).
+- **In my chai:** ***munji*** (my, agreeing with *chai*, §54), not *muke*. Mum: "you wouldn't say I want two sugars; you'd say put two sugars in" (11:33): ***wijij*** is the "please put" form.
+- **Khape or khapeti / khapeto / khapeta (Zafar's voice, not Mum's):** after Mum's *Muke ba chunde ja samosa khape* (5:43), Zafar said ***khapeta*** and that "*khapeta* and *khapeto* is the proper way; we just informally contract it" (5:48-6:10), and proposed the game "start with the more formal" (6:14-8:16) and *khapeta* for two cups of chai (9:08-9:30); a *khapenta* "when people are involved" was also said (9:34-9:44). By pitch these are Zafar's voice (and possibly a second man's), not Mum's: **for Zafar to rule** (report, decision 1). Mum's own takes: *khape* with two samosas, ***khapeto*** with one samosa, chaat and mince, ***khapeti*** with yoghurt, sev, sweet chai and pepper; §1 has her *muke ba amba khapanta*.
+
+### 66. 1a: "{x} times"
+- ***Hakre fare, ba fare, trae fare*** (once, twice, three times) (15:57); "stir it once, twice, three times": ***hakre fare firai, bo fare firai, trae fare firai*** (15:19-15:28: *bo* here, *ba* at 15:57). *firai* is turn (§38). Mum: "it's not a direct translation" (16:05).
+- Not ***taano***: *hakre taano* is "at one time, some time" ("I'll take you some time", 14:01-14:44). *Hin fare kar dis, be fare na kara* = I'll do it this time, not again (16:24-16:43).
+
+### 67. Section 2: the kitchen games' lines
+| Game line (English) | What Mum said | Time |
+|---|---|---|
+| Make each cup the way they said | ***Mare ji chai banai*** (make everyone's chai); in full ***Mare ji chai banai, jerte iloka ke khapeti erte*** (the way they want it, that way: "it's emphasis"); ***Order pramane mare ji chai banai*** (according to the order). Zafar: "we'll stick with the simpler one" (36:02) | 34:54-36:01 |
+| Pour it into their glass | "There's no pour, just put": ***Iloka je glass me wij*** (the same for their glasses) | 36:10-36:50 |
+| Pour it up to the line | ***Liti sudhi wij*** (*liti* is line, *sudhi* is up to; heard *sudhe*) | 37:09-37:21 |
+| Put in as many spoons as they said | ***Jitli chamchi inke khapeti itli wij*** (as many spoons as he or she wants, put that many); with the thing named: ***E chai itli khun wij***, ***e chai itlo dudh wij***, *… itli elchi*, *itlo aadu*, *itlo lasan*, *itlo kesar wij* (*e chai*: he or she said; heard *iche, ichai, ichein*) | 37:34-41:06 |
+| Put the chai in the pan | ***Chai tapele me wij*** (*tapelo* becomes *tapele* before *me*) | 41:51-42:54 |
+| Put water in the pan | ***Paani tapele me wij*** (also *paani sufuri me wij*) | 44:36-44:46 |
+| Put in the next thing | "There's no word for next": ***Hane hi wij*** (now put this), ***Hane dudh wij*** | 48:18-48:35 |
+| Cook it the way they said | ***E chai erte rand*** | 51:04 |
+| Make each pan the way they said | "You don't make a pan": ***Mare randhi chad*** / ***Mare saag banai chad*** / ***Mare khenjo banai chad*** (cook all of it; make all the food) | 51:15-51:52 |
+| A lot | *ganu badhu* ("and then more *ganu badhu*: that's too much") ⚠ unclear | 50:44 |
+| Still a little more | ***Haji thorok wadhare*** (*haji* still, *thorok* a little); put in a little more: ***Haji thorok wadhare wij*** | 52:42-53:27 |
+| Thank you | ***Aabhar***, ***tojo aabhar*** (to a child), ***aabhar anjo*** (to an elder): "everybody just says thank you" | 53:33-55:20 |
+| That's good | ***Saro ai*** ("we'd say *saro ai*") ⚠ the take's first words are unclear | 55:24-55:30 |
+| Oho (a wrong order) | ***Oho*** ("like the French oh la la") | 55:35 |
+| boiled egg | ***bafelo indo*** (*bafelo* is boiled) | 46:42 |
+| turner, green pepper | no Kutchi word (*mwiko* is Swahili for the wooden spoon) | 46:50-47:36 |
+| quarter, half, three quarters, whole cup | ***pa cup, adho cup, pono cup, aakho cup*** (*pono* for a he-word like *cup*, *poni* for a she-word; *adho* heard *ardho*) | 55:58-56:15 |
+| one and a quarter, one and a half, two and a half, one and three quarters | ***sawa cup***, ***dedh cup***, ***adhi cup***, ***pona ba cup*** (a quarter to two: "for time, and for cups") | 56:16-56:42 |
+| naan | "naan is just naan" | 57:06 |
+| a pinch of salt; a handful | ***hakri chapti mitho***; ***mut*** (a handful) | 57:14-57:42 |
+| Knead | ***atto gund*** (the second time *gund* is heard; §38 I6) | 59:47 |
+| Make the bowl, in order | ***Chaat inji reet pramane banai*** (make it the way it's meant to be made: *reet* is the system, how things are done; the last word may end *-j*) ⚠ | 60:25-61:20 |
+
+**Counting (32:27-34:10):** Mum counted after Zafar: *hakro, ba, tre, char* … *igyaro, baro, tero, chodo, pandro, soro, satro, airo, ogni* (11-19) … *ekwis, bawis* (21-22), *chowis, pachis, satyavis* … 90 *nevu*, 100 *so*, 1,000 *hajar*, 100,000 *lakh*. **5 to 10 are unclear** in the noise (32:34-32:42): not entered; five (*panj*) is still unconfirmed.
+
+### Is the grammar "nailed down" now?
+**Settled in this sitting (Mum's voice):** the gender of 24 Cook nouns; tomato's plural *tameta*; "with" a filling (*chunde ja samosa*) and "and one with" (*ne hakro batate jo*); "in my chai" is *munji chai me*; "{x} times" is *hakre / ba / trae fare*; the fixed amounts of a cup; "pinch" is *chapti*; *oho*; *mori* (no sugar), *kari* (no milk), *mithi* (sweet); 12 game lines as whole sentences.
+
+**Still open:** khape against khapeti / khapeto / khapeta in the game (Zafar's ruling); salt (*mitho* or *loon*), black pepper (*miryo* or *mari*); corn and vegetable; sekelo's gender; 5-10; "a lot"; the guide lines for pantry, daar, samosa, maani and sekelo (not reached).
+
+### What this means for the engine (built through the importers, all draft)
+1. Genders in `data/lang/seed/cook.json` (each word's `_gender` note); tomato's plural; egg *indo / inda*; chickpea *chano / chana*; *tapele* (the pan before *me*); *hakre* (one, before *fare*); *wijij* (please put, in the polite cell).
+2. Rules: **WithFood** (the filling before the dish, agreeing with it), **Times**, **WantIn** (*munji chai me … khape*; polite *… wijij*), **BringMeTheseForX** (*hi muke … lai khani achi de*).
+3. Words: *fare, haji, mithi, mitho, miryo, liti, sudhi, jitli, itlo / itli, erte, pramane, reet, bafelo, chapti, pa, pono / poni, adho, sawa, dedh, adhi, pona, aabhar anjo*.
+4. Nine of Nani's guide-box lines get Mum's sentence (`data/cook.json` guide `line`), and two fixed lines (*Haji thorok wadhare.*, *Saro ai.*).
+
+### For Mum next time
+1. 5 to 10 again, slowly; is five *panj*?
+2. Corn on the cob and vegetable in Kutchi; sekelo: *hakro* or *hakri*?
+3. "A lot" (*ganu badhu*?) once more, clearly.
+4. Is one tomato *tameto*?
+5. Itli khun or itlo khun (khun is a he-word)?
+6. The guide lines not reached: pantry, daar, samosa, maani, sekelo, chop (section 2 of the 12 Nov sheet).
+
 ---
 
 ## Corrections (superseded readings in the notes above)
 
 | Recorded in the notes | Now | Source |
 |---|---|---|
+| "Tomato doesn't change" (§34 P3, Whisper's hearing) | ***tameta*** for more than one: *hakro tomato, trae tameta* (§64) | Mum, 12 Nov 17:31 |
 | *marcha* as the plural of *mirchi* (Zafar, 26 Sept afternoon; §4, §28) | *mirchi* only, no plural, for now; Zafar to confirm with Mum (§34 P4 records Mum's view) | decision 5; G25 |
 | *chindo* for mince (§24 B33, "Claude's view") | *chundo* | Zafar's corrections to A8 and Section B, 26 Sept; G24 |
 | *hakri cup* (§25 B27, also in the Cook word-changes) | *hakro cup*: cup is a he-word | Mum, 28 Sept, §29 R8; G5 |

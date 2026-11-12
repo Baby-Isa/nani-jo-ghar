@@ -951,6 +951,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!side() && still) quiet = quiet == null ? Date.now() : quiet;
         else quiet = null;
         if (quiet == null || Date.now() - quiet < (R ? R.pointAfterMoveMs() : 0) / speed()) return void setTimeout(go, 60);
+        // SH-178 (Zafar, 1 Nov: "on level two, it highlighted the whole order card, not the next item ... It should highlight just the
+        // next item in the order card"): the next item's card is brought whole into its row before it is lit, every time; the whole
+        // order card only when no item card is named, or the row cannot show it whole by the time the wait gives up
+        const it1 = itemOf();
+        if (it1 && !whole(it1) && Date.now() + 400 < until) {
+          const row = it1.closest(".oc-row14");
+          if (row && !row._auto && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(it1);
+          quiet = null;
+          return void setTimeout(go, 60);
+        }
         if (o.onLit) o.onLit();
         note("card-light", { step: o.step != null ? String(o.step) : "" });
         const first = lightOf();
@@ -1080,7 +1090,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const first = newPlayer() || !(Cook.save.coached || {})[key];
     // (o.name: the step's name in the play log and the step log, e.g. Nani's stepper's own id for that step)
     // (SH-261 at full strength: the kitchen's own help light stays through any tap until the step is done: o.glowStays)
-    return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first, glowStays: true }, o));
+    // SH-230 (the one rule, Zafar 6 Nov night: the box shrinks on a side only where it would touch another item): a station that names no
+    // neighbours gets the step's thing's (every other thing with a word on the stage), as the script's lights have; contract-92, -53 at
+    // 740x320: the pantry's help light round the milk took in the yoghurt beside it
+    const avoid = o.avoid != null ? null : () => {
+      const e = Cook.expect;
+      const th = e && (e.x != null || (e.thing && e.thing.active)) ? thingFor(e) : null;
+      return th ? neighbours(th) : null;
+    };
+    return Onboard.stuck(o.name != null ? String(o.name) : `${key}:${step}`, Object.assign({ id: `${obId(key)}/${step}`, first, glowStays: true }, o, avoid ? { avoid } : {}));
   };
 
   /*

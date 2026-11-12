@@ -303,7 +303,8 @@
    },
    "shots": [],
    "loosened": {
-    "contract-37": "s19-clean-a: corn's shelf is the dish's whole kit, six bowls at every level (his mock, 10 Nov: 'The six bowls ... are right'): it holds at least the levels table's decoys (DECOY_AT_LEAST, lib/contract-s19b.mjs); this page's named flaws (SH-256, SH-245, SH-165) are still red. Was: cook:station1:marble (corn at L1): 2 decoys on the shelf (ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1"
+    "contract-37": "s19-clean-a: corn's shelf is the dish's whole kit, six bowls at every level (his mock, 10 Nov: 'The six bowls ... are right'): it holds at least the levels table's decoys (DECOY_AT_LEAST, lib/contract-s19b.mjs); this page's named flaws (SH-256, SH-245, SH-165) are still red. Was: cook:station1:marble (corn at L1): 2 decoys on the shelf (ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1",
+    "contract-115": "Zafar, 12 Nov: the main thing's floor is 60% of the room (chai's hob is 65%); the grill here is 65%. the same run at 1280x665 (56%) stays red"
    }
   },
   "s19c2-cook-eggs-speed1@1280x665": {
@@ -382,7 +383,10 @@
      "cook:station1:marble: the order card's 1 card fills 38% of its 307 px row: 62% of the card is blank (at least 67% filled)"
     ]
    },
-   "shots": []
+   "shots": [],
+   "loosened": {
+    "contract-36": "s19-clean-a6 (chai's report, 12 Nov: a check fault): the game's skip for the chakla step is logged 1.8 s before its light, inside CALL_BEFORE, with no other step between; contract-36 had allowed only 1 s"
+   }
   },
   "s19c2-cook-maani-line-speed1@740x320": {
    "flow": "cook:maani-line#speed1",
@@ -404,7 +408,10 @@
      "mv-cooked-bajr rests at 36 px at [579,255,618,294], -62% of its 95 px at its last place [516,43,611,136] (mv-cooked-bajr): an item keeps its size from step to step"
     ]
    },
-   "shots": []
+   "shots": [],
+   "loosened": {
+    "contract-36": "s19-clean-a6 (chai's report, 12 Nov: a check fault): the game's skip for the chakla step is logged 1.8 s before its light, inside CALL_BEFORE, with no other step between; contract-36 had allowed only 1 s"
+   }
   },
   "s19c2-3c48-cook-corn-speed1@1280x665": {
    "flow": "cook:corn#speed1",
@@ -480,7 +487,8 @@
     "c10-s19over.png"
    ],
    "loosened": {
-    "contract-37": "s19-clean-a: corn's shelf is the dish's whole kit, six bowls at every level (his mock, 10 Nov: 'The six bowls ... are right'): it holds at least the levels table's decoys (DECOY_AT_LEAST, lib/contract-s19b.mjs); this page's named flaws (SH-256, SH-245, SH-165) are still red. Was: cook:station1:marble (corn at L1): 2 decoys on the shelf (ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1"
+    "contract-37": "s19-clean-a: corn's shelf is the dish's whole kit, six bowls at every level (his mock, 10 Nov: 'The six bowls ... are right'): it holds at least the levels table's decoys (DECOY_AT_LEAST, lib/contract-s19b.mjs); this page's named flaws (SH-256, SH-245, SH-165) are still red. Was: cook:station1:marble (corn at L1): 2 decoys on the shelf (ph-lili*, ph-amli*, spi-11; * not in the order), the table wants 1",
+    "contract-115": "Zafar, 12 Nov: the main thing's floor is 60% of the room (chai's hob is 65%); the grill here is 65%. the same run at 1280x665 (56%) stays red"
    }
   },
   "s19c2-3c48-cook-eggs-speed1@1280x665": {
