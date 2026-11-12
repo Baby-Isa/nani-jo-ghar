@@ -251,6 +251,8 @@ import { setTimeout } from "../life.js";
     const bowlX = (MB.at || [800])[0];
     const bowl = T(S.add.image(bowlX, bowlFoot, "bk-bowl-empty").setOrigin(0.5, 1).setDepth(D.item));
     bowl.setScale(((MB.drawn || {}).w || 380) / bowl.width);
+    // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kit's one soft shadow, down and to the right)
+    Cook.Kit.shadow(S, bowl);
     const bowlY = bowlFoot - bowl.displayHeight / 2; // (its middle: where things pour)
     // SH-258 (the eye judge, 10 Nov: no asker's face until well done): their face circle on the bowl's rim from the first frame
     // (on the bowl its upper-right rim: the jar tips in from the left, and its light never takes the face in: contract-82)
@@ -336,6 +338,9 @@ import { setTimeout } from "../life.js";
       const full = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1).setScale(k).setVisible(false);
       c.add([empty, full]);
       c.setSize(empty.displayWidth, empty.displayHeight);
+      // (SH-268: the jug's soft shadow under its glass as drawn, a container's own box being its foot, not its picture; it follows the jug)
+      c.shadow = S.contactShadow ? S.contactShadow(c, empty.getBounds()) : Cook.Kit.shadow(S, c);
+      if (c.shadow) c.shadow.njgShadow = true;
       const lines = (fill) => Object.entries(((J.lineAtFor || {})[fill]) || J.lineAt || {}).map(([u, f]) => [Number(u), f]).sort((a, b) => a[0] - b[0]);
       // a line's height from the picture's top (items.jug.lineAt, by quarter cups; a new jug's own, lineAtFor); between two, evenly
       const lineAt = (u, fill) => {
@@ -401,6 +406,7 @@ import { setTimeout } from "../life.js";
       const own = share != null && St.classFit && has(key) ? St.classFit(S, key, id, { base: band.base, ppw: ppwShelf, slotW: pitch - 12 }) : null;
       const sc = f && f.scale ? Math.max(f.scale * (share != null ? share : 1), own && own.scale ? own.scale : 0) : 0;
       img.setScale(sc || Math.min(Math.min(tall, (band.base - band.top - 30) / 1.12) / img.height, 150 / img.width));
+      Cook.Kit.shadow(S, img); // (SH-268: on the shelf and as it is lifted and tipped)
       img.home = { x, y: band.base };
       img.wordId = id;
       shelf[id] = img;
@@ -632,6 +638,7 @@ import { setTimeout } from "../life.js";
     const dy = Math.min(0, (vt + 16 + SB.top - 28) / 2 - oy0);
     const oy = oy0 + dy;
     ov.setY(oy);
+    Cook.Kit.shadow(S, ov); // (SH-268)
     const ring = T(S.add.graphics().setDepth(D.fx + 1));
     const steam = (x, y, k = 3) => {
       for (let i = 0; i < k; i++) {
@@ -646,6 +653,7 @@ import { setTimeout } from "../life.js";
     const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
+    Cook.Kit.shadow(S, naan); // (SH-268)
     // (SH-258: their face circle moves to the tray their naan bakes on, from its first frame)
     const face = faceAt ? faceAt(naan) : null;
     const tapOn = (o, name, withLight = null) => {
