@@ -970,6 +970,9 @@ export function chaiExtra(asked, extras) {
       // (the tap's sound, at the tap: CHAI-92, Zafar's pick "Now", today's soft pop; the bottle's late sound is its settle, pourInto)
       Cook.sfx.pop();
       unglow();
+      // (contract-106: the right thing tapped is the step's move begun, so its light goes now, not at the next refresh up to a quarter
+      // second later and then the pour's own wait; the next step's help starts afresh after it, as refresh does while a pan pours)
+      coachEnd();
       const look = pan.shown;
       if (id === "cook-paani") {
         pop(id, pan);
@@ -1538,6 +1541,14 @@ export function chaiExtra(asked, extras) {
       unglow();
       refresh();
     };
+    // (contract-102, chai L1 at 1920x1080: the thing's glow came a few frames before the light round it was on the screen, so for
+    // that moment it glowed alone: the glow waits two frames for the light to be drawn and a beat of its fade-in, 120 ms, as the
+    // kit's call waits for its light (Cook.Coach.control); well inside contract-107's 300 ms for a lit shelf thing's hop)
+    const whenLit = (fn) => {
+      const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(f) : (f) => setTimeout(f, 16);
+      raf(() => raf(() => setTimeout(fn, 120)));
+    };
+    let spotGlow14 = 0; // (the first-time spotlight's glow: a later on or off wins over a glow still waiting for its box)
     let rung = null;
     let rungKey = null;
     // within a step the live thing can change (the next pan's knob): the help follows the one live now (rungCur)
@@ -1730,12 +1741,26 @@ export function chaiExtra(asked, extras) {
           const m0 = moves14;
           const on = () => moves14 !== m0;
           const moving = () => busy || spoons14 > 0 || pans.some((q) => q.away);
+          // (contract-79, chai L3-L4 at 740x320: the light came while the pan's count chip still bumped, a page animation the kit's
+          // still-test does not see: the light waits for it too, then the rules' beat)
+          const countBump = () => {
+            try {
+              return !!(document.getAnimations && document.getAnimations().some((a) => a.playState === "running" && a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest(".njg-tally-chip, #count-badge, .oc-count")));
+            } catch (e) {
+              return false;
+            }
+          };
           const forStep = sid;
           const keyBefore = rungKey;
+          // (contract-79, chai L2-L4: the item's card is the one asked for as the light was set up, never the next one: following the
+          // next item, the light jumped to the next card as the child tapped the lit item in, the pan's count still bumping, and the probe
+          // saw a second card light start mid-move; a card ticked done ends the light, the kit's own rule)
+          const litId = rungCur && rungCur.id;
+          const litWho = sel ? sel.who : null;
           Cook.Coach.cardLight({
-            item: () => Cook.Coach.itemCard(rungCur && rungCur.id, sel ? sel.who : null),
+            item: () => Cook.Coach.itemCard(litId, litWho),
             quitIf: () => on() || finished || (rungKey !== forStep && rungKey !== keyBefore),
-            busy: moving,
+            busy: () => moving() || countBump(),
             endIf: () => moving() || on(),
             step: st || "",
             // CHAI-109 (Zafar, 11 Nov evening, his child's play: "the highlight on the order card to show you the third item the first
@@ -1780,6 +1805,9 @@ export function chaiExtra(asked, extras) {
         // (the orchestrator's film, 30 Oct: the pour's one box round the glass and its pan took in the other person's pan between
         // them: the box is the control alone (the glass, which pours at a tap too); its pan keeps its glow and its tap)
         if (ctl14) ctl14.close(); // (one light at a time, whatever came back in above)
+        // (contract-102, chai #hint L1: the last control's glow, the knob turned down at the green, stayed on with no light while the
+        // pour's light waited for the level's hint: the glow goes with its step; the new step's light brings its own, onLight below)
+        if (helpObj) helpGlow(null);
         // (Zafar, 30 Oct: "add a second extra to the pause between the last item being added (including its animation) and the chulo
         // bar onboarding": the control's light and its call wait until nothing moves on the stage, then a second more; the call is
         // held for the light (UI.holdCalls), so they still come together, contract-78)
@@ -1803,7 +1831,11 @@ export function chaiExtra(asked, extras) {
         // (the round-two review's finding 4, SH-178's rule: the showing is spent only once the light is up (onLight below), never as the
         // step opens: the light waits for a still stage, and a pan reaching its green meanwhile took the step, so the key was spent on
         // a light never drawn and the glass got none, now or ever)
-        const firstTime = rungCur.panPick || fullFirst ? false : againFirst || (!nx.again && gate14.first(`ctl-${nx.phase}`));
+        // (and the same rule for every control's first time, contract-78 at L3: a child who lit the first cooker in the breath before its
+        // light never saw it, yet the showing was spent, so the next pan's "Chulo bar!" came alone: the gate is asked here, spent onLight)
+        const ctlKey = `ctl-${nx.phase}`;
+        const ctlFirst = !rungCur.panPick && !fullFirst && !againFirst && !nx.again && gate14.due(ctlKey);
+        const firstTime = rungCur.panPick || fullFirst ? false : againFirst || ctlFirst;
         // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
         // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
         // the green, "Slow kar!", is timed and comes at once); after that the call alone and the same light as the stuck hint after
@@ -1818,10 +1850,14 @@ export function chaiExtra(asked, extras) {
           hintMs: hintMs14,
           current: () => rungKey === sid && !finished,
           busy: () => busy || pans.some((q) => q.away),
+          // (CHAI-58, CHAI-24, contract-70: the knob at the green is timed: its light and call come as the ring enters the green, never
+          // after the stage stills (another pan's water settling held them 1.2 s, the call 2.2 s late at L2); nothing flies to a knob)
+          still: nx.phase === "slow" ? () => true : undefined,
           noHint: nx.phase === "slow",
           onLight: (on, rungN) => {
             if (againFirst && !rungN) seen14[POUR_AGAIN14] = true;
-            helpGlow(obj);
+            if (ctlFirst && !rungN) gate14.spend(ctlKey);
+            whenLit(() => rungKey === sid && !finished && helpGlow(obj));
           },
           onHint: () => {
             hints14++; // (SH-160: the guide's hint came)
@@ -1849,7 +1885,13 @@ export function chaiExtra(asked, extras) {
       rung = trackRung(Cook.Coach.rungs("chai-tray", step, Object.assign(
         { word: cur.id, answer, study: !!(guided || (sel && sel.redo)) },
         // (the judge, 23 Oct: the finger taps the thing's body from above, never over its word chip under it)
-        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => (on ? ((firstLit14[step] = true), mark(), helpGlow(lightObj())) : helpGlow(null)) },
+        { name, target, live, fingerDown: true, item: () => (rungCur && rungCur.point ? rungCur.point() : null), avoid: cur.avoid ? cur.avoid() : null, light: (on) => {
+          const k = ++spotGlow14;
+          if (!on) return helpGlow(null);
+          firstLit14[step] = true;
+          mark();
+          whenLit(() => k === spotGlow14 && rungKey === sid && !finished && helpGlow(lightObj())); // (its glow once the box is drawn, contract-102)
+        } },
         // CHAI-32: the box at once only the first time, for the water and the tea (never the first ordered item)
         answer ? { first: false } : {},
         items
@@ -1866,8 +1908,17 @@ export function chaiExtra(asked, extras) {
                   hints14++; // (SH-160: the guide's hint came)
                   mark();
                   showCallout(cur.id);
-                  helpGlow(lightObj());
-                  if (OB14 && OB14.light) hintLit14 = OB14.light(target, { look: "glow", pass: true, live, avoid: cur.avoid ? cur.avoid() : null, quitIf: () => finished || !helpObj, note: `${STATION14}:s14-stuck` });
+                  // (the light first, its thing's glow once it is drawn: whenLit, contract-102; the light goes with the glow)
+                  let glowed = false;
+                  if (OB14 && OB14.light) hintLit14 = OB14.light(target, { look: "glow", pass: true, live, avoid: cur.avoid ? cur.avoid() : null, quitIf: () => finished || (glowed && !helpObj), note: `${STATION14}:s14-stuck` });
+                  const hl = hintLit14;
+                  const glowNow = () => {
+                    if (hintLit14 !== hl || rungKey !== sid || finished) return;
+                    helpGlow(lightObj());
+                    glowed = true;
+                  };
+                  if (hl) whenLit(glowNow);
+                  else glowNow();
                 } else {
                   hideCallout();
                   helpGlow(null);
@@ -1889,6 +1940,9 @@ export function chaiExtra(asked, extras) {
       rung = null;
       rungKey = null;
       hideCallout();
+      // (contract-102: the help's glow goes with its light; coachEnd only forgot it, so the thing kept glowing through a pour with no
+      // light up until the next quiet refresh)
+      if (helpObj && (glowing === helpObj || (helpObj.panOf && glowing === helpObj.panOf.glowRing))) unglow();
       helpObj = null;
     };
 
