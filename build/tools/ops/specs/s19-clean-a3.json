@@ -1,0 +1,62 @@
+{
+ "name": "s19-clean-a3: the shared pieces, last round: the a2 review's findings, round one's leftover shared rows, the shared check faults",
+ "why": "build/reports/s19-clean-a2-review.md (a pop-up that hangs on Home, contract-115 loosened, a stray tap hurrying the pop-up) and the shared rows still open; the fix list to zero before Zafar plays",
+ "cost": "about $30-40",
+ "port": 8914,
+ "read": [
+  "build/reports/s19-clean-a2-review.md (nine findings, all in your files; and the earlier eleven marked partly or not fixed, PAN-19 among them)",
+  "build/reports/s19-clean-a2.md (its 'still wrong' and the breaks left by owner)",
+  "docs/decisions/2026-11-10-overnight.md (the last sections)"
+ ],
+ "owns": [
+  "js/shared/**, css/shared/**",
+  "js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js and css/cook.css",
+  "data/cook.json (the only owner tonight: s19-clean-b and s19-clean-c send you their lines through the orchestrator)",
+  "build/sandbox/** (the checks, drivers and build/sandbox/data/evidence.json), build/lint/**, build/tools/review/**, build/tools/tiers/**",
+  "find.html, first.html, monsoon.html (SH-224 only)",
+  "build/reports/s19-clean-a.md"
+ ],
+ "readOnly": [
+  "js/cook/stations/** and js/cook/mechanics/**, js/cook/grill-kit.js and data/stations/*.json (s19-clean-b and s19-clean-c: an edit there goes in your report as an exact line)",
+  "assets/**, build/tools/art/**"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chop",
+  "cook:chaat",
+  "cook:fetch",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill"
+ ],
+ "tasks": [
+  {
+   "do": "The review's nine findings, most severe first: 1 (leaving mid-pop-up: Home fires no stage end, host.js:646, so the pop-up hangs and a later stage's end wakes the dead round: end it on leave, and a test), 2 (contract-115 loosened: three small hobs spread across the width now pass; make the set rule apply to sekelo's grill and trays only and keep the bad runs red), 3 (one stray tap hurries the whole pop-up: a tap hurries only the line being said, and the wrong card is never skipped silently), then 4-9; the earlier findings 4, 7, 11 partly fixed and PAN-19 not done (Nani gives the pantry order: flow.js).",
+   "accept": "each finding: a test or a frame; build/sandbox/badruns.test.mjs green (every bad run still red)"
+  },
+  {
+   "do": "Round one's leftover shared rows: SH-232, SH-152, SH-230, SH-237, SH-249, SH-60, SH-178, SH-251; SH-267's L1 pages (contract-119); contract-36 (12), -112, -72, -105, -79, -99; the five-row wrong card's small words at 740x320 (a floor on the word size, the card growing or the rows scrolling, never below the 14 px text floor).",
+   "accept": "the contract run of every kitchen flow, L1-L4 at 740x320 and 1280x665 plus chai and eggs serve-wrong (s19-clean-a3-after): every end reached, 0 page errors, breaks by check before and after, each left named with its owner"
+  },
+  {
+   "do": "Standing: browser runs under your own lock (COOK_TEST_PORT=8914, flock /tmp/njg-browser-8914.lock); --parallel 2 at most (three other builders run); commit on your branch often, never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help; shared pieces only; fix what you break, in every game you touch; keep under 1.5 GB of runs (the disk is tight); never run `git sparse-checkout disable`; a file you don't own: the exact change in your report.",
+   "accept": "build/reports/s19-clean-a3.md with a Proof section, under 900 words"
+  }
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done",
+ "branch": "s19-clean-a3 in /home/user/wt/s19-clean-a3 (made for you from the integration branch, without most of sources/); commit there, never push; the orchestrator merges",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": true,
+ "stubs": "none",
+ "report": "s19-clean-a3",
+ "publish": false,
+ "rows": []
+}
