@@ -4460,14 +4460,14 @@
    },
    "sekelo-plate": {
     "line": "C7",
-    "file": "assets/cook/items/v3/sekelo/plate-plain-t.webp",
+    "file": "assets/cook/items/v4/kit/plate-steel.webp",
     "ready": true,
     "meta": {
      "flat": [
       0.5,
       0.5,
       0.4,
-      0.37
+      0.4
      ]
     },
     "station": "mishkaki-grill",
@@ -5618,8 +5618,8 @@
      "files": [
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
-      "assets/cook/items/sekelo/*",
-      "assets/cook/items/v3/sekelo/*",
+      "assets/cook/items/v4/sekelo/*",
+      "assets/cook/items/v4/kit/grill-v2.webp",
       "assets/cook/items/mishkaki-*",
       "assets/cook/items/plate-enamel-empty-t.webp",
       "assets/cook/items/skewer-empty-t.webp",
@@ -5628,12 +5628,11 @@
       "assets/cook/items/vessel-katori-t.webp",
       "assets/cook/items-s08b/go-on/go-grill-s08b*",
       "assets/cook/items-s08b/potato/potato-cube-v3.webp",
-      "assets/cook/items-s08c/sekelo-tray/*",
-      "assets/cook/items-s08c/sekelo/*",
+      "assets/cook/items/v4/kit/tray-deep.webp",
       "assets/cook/items/served/sekelo.webp"
      ],
      "prefetch": [
-      "assets/cook/items/v3/sekelo/plate-plain-t.webp",
+      "assets/cook/items/v4/kit/plate-steel.webp",
       "assets/cook/items/veg-bataato-cubed-t.webp",
       "assets/cook/items/vessel-katori-t.webp",
       "assets/cook/items/v4/sekelo/bowl-chicken.webp",
@@ -5689,16 +5688,16 @@
      "props": [],
      "files": [
       "assets/cook/items-s08b/potato/potato-cube-v3.webp",
-      "assets/cook/items-s08c/sekelo-tray/*",
-      "assets/cook/items-s08c/sekelo/*"
+      "assets/cook/items/v4/kit/tray-deep.webp",
+      "assets/cook/items/v4/sekelo/*"
      ]
     },
     "grill": {
      "props": [],
      "files": [
       "assets/cook/items-s08b/potato/potato-cube-v3.webp",
-      "assets/cook/items-s08c/sekelo-tray/*",
-      "assets/cook/items-s08c/sekelo/*"
+      "assets/cook/items/v4/kit/tray-deep.webp",
+      "assets/cook/items/v4/sekelo/*"
      ]
     }
    }

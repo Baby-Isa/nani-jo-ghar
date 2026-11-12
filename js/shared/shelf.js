@@ -354,7 +354,7 @@
     const y0 = y - A.body[0] * k; // (where the slab picture's top row lands)
     const e = Math.min(A.end * k, w / 2);
     const es = e / k; // (the end slice in slab px)
-    // s19-artfix (Zafar, 12 Nov evening, sekelo's grill: "This doesn't look correctly cut out"): the slab is put together on a
+    // s19-artfix (Zafar, 12 Nov evening, a grill screen: "This doesn't look correctly cut out"): the slab is put together on a
     // canvas of its own, then laid on ctx with the one soft shadow, so the shadow is the picture's own outline, down and to the
     // right (SH-268). It was a rounded box filled in the stone's edge colour under the slab, its corners tighter (34 px) and its
     // sides wider (the picture's 6 px margin) than the picture's: a darker second edge up and to the left of the band's corners.
