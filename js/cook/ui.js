@@ -2329,6 +2329,14 @@
           });
           want = null;
           if (!here()) break;
+          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or gone after the last, drawn in this
+          // same turn, before the reveal's sound and the card's fit, which on a busy page held the old box round the tap for 0.6-0.9 s)
+          const k2 = steps.findIndex((x) => x[0] === slot);
+          const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
+          if (nx) {
+            cur = nx;
+            if (lit && lit.layer && lit.layer.__redraw) lit.layer.__redraw();
+          } else if (lit) (lit.close(), (lit = null));
           c.classList.remove(cls);
           // (shown by the child's tap: marked as a tapped-open part is, contract-39)
           const shownEl = c.querySelector(slot === "picture" ? ".wc14-pic" : slot === "text" ? ".wc14-k" : ".wc14-en");
@@ -2336,11 +2344,6 @@
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
           else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
           if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
-          // (the light leaves the part the moment it is shown, contract-106: on to the next part, or fades after the last)
-          const k2 = steps.findIndex((x) => x[0] === slot);
-          const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
-          if (nx) cur = nx;
-          else if (lit) (lit.close(), (lit = null));
           await Cook.wait(nx ? 450 : 700);
         }
       } finally {
