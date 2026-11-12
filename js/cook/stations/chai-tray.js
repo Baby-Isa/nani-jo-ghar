@@ -1823,7 +1823,11 @@ export function chaiExtra(asked, extras) {
         // (the round-two review's finding 4, SH-178's rule: the showing is spent only once the light is up (onLight below), never as the
         // step opens: the light waits for a still stage, and a pan reaching its green meanwhile took the step, so the key was spent on
         // a light never drawn and the glass got none, now or ever)
-        const firstTime = rungCur.panPick || fullFirst ? false : againFirst || (!nx.again && gate14.first(`ctl-${nx.phase}`));
+        // (and the same rule for every control's first time, contract-78 at L3: a child who lit the first cooker in the breath before its
+        // light never saw it, yet the showing was spent, so the next pan's "Chulo bar!" came alone: the gate is asked here, spent onLight)
+        const ctlKey = `ctl-${nx.phase}`;
+        const ctlFirst = !rungCur.panPick && !fullFirst && !againFirst && !nx.again && gate14.due(ctlKey);
+        const firstTime = rungCur.panPick || fullFirst ? false : againFirst || ctlFirst;
         // (the kitchen kit's call with its light, Cook.Coach.control: the first time the light and the call together, the call held
         // until the light shows (contract-78), after a breath only when lighting the cooker after the last thing went in (the knob at
         // the green, "Slow kar!", is timed and comes at once); after that the call alone and the same light as the stuck hint after
@@ -1844,6 +1848,7 @@ export function chaiExtra(asked, extras) {
           noHint: nx.phase === "slow",
           onLight: (on, rungN) => {
             if (againFirst && !rungN) seen14[POUR_AGAIN14] = true;
+            if (ctlFirst && !rungN) gate14.spend(ctlKey);
             helpGlow(obj);
           },
           onHint: () => {
@@ -1912,6 +1917,9 @@ export function chaiExtra(asked, extras) {
       rung = null;
       rungKey = null;
       hideCallout();
+      // (contract-102: the help's glow goes with its light; coachEnd only forgot it, so the thing kept glowing through a pour with no
+      // light up until the next quiet refresh)
+      if (helpObj && (glowing === helpObj || (helpObj.panOf && glowing === helpObj.panOf.glowRing))) unglow();
       helpObj = null;
     };
 
