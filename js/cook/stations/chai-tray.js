@@ -1541,13 +1541,11 @@ export function chaiExtra(asked, extras) {
       unglow();
       refresh();
     };
-    // (contract-102, chai L1 at 1920x1080: the thing's glow came a few frames before the light round it was on the screen, so for
-    // that moment it glowed alone: the glow waits two frames for the light to be drawn and a beat of its fade-in, 120 ms, as the
-    // kit's call waits for its light (Cook.Coach.control); well inside contract-107's 300 ms for a lit shelf thing's hop)
-    const whenLit = (fn) => {
-      const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(f) : (f) => setTimeout(f, 16);
-      raf(() => raf(() => setTimeout(fn, 120)));
-    };
+    // (the thing's glow comes with its light, in the same moment, as Zafar signed it off. s19-clean-chai tried holding the glow two
+    // frames and 120 ms for the light's box (contract-102 at 1920x1080: the glow a frame or two before the box was painted); on a
+    // loaded machine that hold ran to 0.6-2.2 s, the first water's glow came late and the focal glow fell back to Nani's pause
+    // (contract-24, -107 at L1). The glow is at once again; the frame or two is a question for the check, not a change to chai)
+    const whenLit = (fn) => fn();
     let spotGlow14 = 0; // (the first-time spotlight's glow: a later on or off wins over a glow still waiting for its box)
     let rung = null;
     let rungKey = null;
