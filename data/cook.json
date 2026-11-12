@@ -1738,6 +1738,8 @@
   },
   "chaat": {
    "name": "ph-chaat",
+   "stuckHelp": true,
+   "_stuckHelp": "SH-228 (Zafar, 8 Nov, chaat P31): the layers' free pick has chai's stuck help (js/cook/station-lib.js St.freePick, Cook.Coach.stuck)",
    "countRule": true,
    "english": "Chaat bowl",
    "price": 5,
