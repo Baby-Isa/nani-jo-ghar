@@ -951,6 +951,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!side() && still) quiet = quiet == null ? Date.now() : quiet;
         else quiet = null;
         if (quiet == null || Date.now() - quiet < (R ? R.pointAfterMoveMs() : 0) / speed()) return void setTimeout(go, 60);
+        // SH-178 (Zafar, 1 Nov: "on level two, it highlighted the whole order card, not the next item ... It should highlight just the
+        // next item in the order card"): the next item's card is brought whole into its row before it is lit, every time; the whole
+        // order card only when no item card is named, or the row cannot show it whole by the time the wait gives up
+        const it1 = itemOf();
+        if (it1 && !whole(it1) && Date.now() + 400 < until) {
+          const row = it1.closest(".oc-row14");
+          if (row && !row._auto && global.OrderCard && global.OrderCard.glideTo) global.OrderCard.glideTo(it1);
+          quiet = null;
+          return void setTimeout(go, 60);
+        }
         if (o.onLit) o.onLit();
         note("card-light", { step: o.step != null ? String(o.step) : "" });
         const first = lightOf();
