@@ -32,7 +32,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 |---|---|---|
 | Shared components (end screen, cards, onboarding, buttons, layout) | 136 | 98 |
 | Cook: pantry | 8 | 11 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 26 / 9 / 18 / 4 / 16 / 7 / 39 | 30 / 14 / 29 / 12 / 22 / 17 / 43 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 26 / 9 / 18 / 4 / 16 / 7 / 40 | 30 / 14 / 29 / 12 / 22 / 17 / 43 |
 | Clinic | 38 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
