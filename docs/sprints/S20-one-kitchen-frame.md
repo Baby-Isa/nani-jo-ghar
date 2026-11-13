@@ -25,9 +25,9 @@ In Zafar's words (13 Nov): settle chai and record exactly how it looks; move cha
 | Step | What | Status | Proof / next |
 |---|---|---|---|
 | P0 | The starting numbers; this file; the frame's notes | done | `node build/tools/review/frame-counts.mjs` (13 Nov: chai 29, eggs 12, maani 15, corn 11; flow.js names games on 31 lines) |
-| P1 | Zafar's chai decisions answered; Mum's words in as data | answers done (22-23); Mum's words with P2 | |
-| P2 | Chai settled: its three faults, SH-286 (the dish card is the order's own pop-up), Mum's words; one line per kind of change for Zafar; re-freeze on his yes | running | builder `s20-p2-chai` (Opus, high, about $25-35) |
-| P3 | The lock on the door: the checks that pass today (fast checks + 161 contract checks) become a gate, and a merge script refuses any change that fails one | waits for P2 | |
+| P1 | Zafar's chai decisions answered; Mum's words in as data | done | decisions 22-23; Mum's words merged with P2 |
+| P2 | Chai settled: its three faults, SH-286 (the dish card is the order's own pop-up), Mum's words; one line per kind of change for Zafar; re-freeze on his yes | built, merged | `build/reports/s20-p2-chai.md`; three of its faults were checks reading wrong (fixed by the orchestrator: contract-37, -119, -124); the page error fixed (Onboard.lightBack). Next: Zafar's yes to the change list and the glass's clink, then the re-freeze |
+| P3 | The lock on the door: the checks that pass today (fast checks + 161 contract checks) become a gate, and a merge script refuses any change that fails one | running | builder `s20-p3-gate` (Sonnet, high, about $20-30) |
 | P4 | The measuring tool: freeze the game at six moments and record exactly where everything sits (proven on chai as it is; one session) | done | `boxes.mjs --prove`: chai identical 3 runs x 8 pages, 4 planted faults caught, 4 min a run; reference `build/frozen/boxes/chai-tray/` |
 | P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | running | builder `s20-p5-rules` (Sonnet, high, about $30-45) |
 | P6 | Chai's 12 reference pictures. **Zafar, review point 2** | waits for P2-P5 | |
