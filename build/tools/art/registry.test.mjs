@@ -241,3 +241,28 @@ test("rename: the map carries live files, measures by value and was; njgV loads 
   assert.equal(win.njgV("assets/cook/items/other.webp"), `assets/cook/items/other.webp?v=${win.NJG_V}`);
   assert.equal(win.njgV("data:image/png;base64,xx"), "data:image/png;base64,xx");
 });
+
+test("rename: the transition guard (js/version.js) rewrites an <img>'s src only when it is a renamed file's old path", () => {
+  const set = [];
+  function Img() { this.attrs = {}; }
+  Object.defineProperty(Img.prototype, "src", { configurable: true, get() { return this.attrs.src; }, set(v) { set.push(v); this.attrs.src = v; } });
+  Img.prototype.getAttribute = function (k) { return this.attrs[k]; };
+  Img.prototype.setAttribute = function (k, v) { this.attrs[k] = v; };
+  const listeners = [];
+  const win = { HTMLImageElement: Img, addEventListener: (t, f, c) => listeners.push([t, f, c]) };
+  runInNewContext(mapText(mapData({ pieces: {} }, { renames: [{ from: "assets/cook/items/v4/kit/ladle.webp", to: "assets/art/kit/ladle.default.r1.webp" }] })), { window: win });
+  runInNewContext(readFileSync(new URL("../../../js/version.js", import.meta.url), "utf8"), { window: win });
+  const im = new Img();
+  im.src = "assets/cook/items/v4/kit/ladle.webp";
+  assert.equal(im.attrs.src, "assets/art/kit/ladle.default.r1.webp", "an old name loads the new file");
+  for (const u of ["assets/cook/items/v4/kit/other.webp", "data:image/png;base64,xx", "blob:http://h/1", "js/x.js", "http://h/assets/cook/items/v4/kit/other.webp"]) { im.src = u; assert.equal(im.attrs.src, u, `${u} is left alone`); }
+  // an <img> from HTML that failed by an old name is pointed at the new one; any other failure is left alone
+  const [type, onError, capture] = listeners[0];
+  assert.equal(type, "error"); assert.equal(capture, true);
+  const html = new Img(); html.tagName = "IMG"; html.attrs.src = "../assets/cook/items/v4/kit/ladle.webp?v=1";
+  onError({ target: html });
+  assert.equal(html.attrs.src, "../assets/art/kit/ladle.default.r1.webp?v=1");
+  const other = new Img(); other.tagName = "IMG"; other.attrs.src = "assets/cook/items/x.webp";
+  onError({ target: other });
+  assert.equal(other.attrs.src, "assets/cook/items/x.webp");
+});

@@ -27,8 +27,10 @@
     const to = A.was[m[2].replace(/\/\.\//g, "/").replace(/\/{2,}/g, "/")];
     return to ? (m[1] || "") + to + (m[3] || "") : url;
   };
-  // A picture code sets straight on an <img> (img.src = path, without njgV) follows the rename too: the src setter maps it, and an
-  // <img> written into HTML that fails to load by an old name is pointed at the new one (an error, caught on its way down)
+  // THE TRANSITION GUARD (remove with `was` in Step 3, build/reports/s19-art-rename-plan.md): a picture code sets straight on an
+  // <img> (img.src = path, without njgV; js/cook/ui.js rowPic did) follows the rename too. Only a path that is in NJG_ART.was is
+  // rewritten (njgArt), nothing else: the src setter maps it, and an <img> written into HTML that fails by an old name is pointed at
+  // its new one (an error, caught on its way down). The proper fix is njgV at the call site.
   const IMG = global.HTMLImageElement;
   const desc = IMG && Object.getOwnPropertyDescriptor(IMG.prototype, "src");
   if (desc && desc.set && !IMG.prototype._njgArt) {
