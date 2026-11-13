@@ -124,11 +124,14 @@
 .oc-card.closed { position: relative; }
 /* SH-37 / CHT-15 (judges, 19 Oct: "Muke daar khape" ran under the served stamp, which covered its full stop): a card on a stamped
    order keeps the stamp's own room at its right, so its words fit (shrink, then wrap: non-negotiable 9) beside it, never under it */
-.oc-card.oc-stamped { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
 /* PAN-01 (800x360: "Bring me these" and the tick ran under the stamp on a folded served card): the stamp's room holds on every size
    (:root: the phones' tighter card padding below no longer wins over it), and a folded card's stamp is the tick's size, centred
    in its head beside the tick (the stamp reads these, .oc-stamp below), so the headline keeps a line's room (shrink, then wrap) */
-:root .oc-card.oc-stamped:not(.oc-big):not(.oc-mini) { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
+/* Zafar, 13 Nov (decision 25): the served stamp REPLACES the tick, in the tick's place, so the card takes no more room than with the tick alone
+   (no padding reserved for the stamp): the tick's room stays, unseen, under the stamp */
+.oc-card.oc-stamped:not(.oc-big):not(.oc-mini) .oc-done-tk { display: block; visibility: hidden; }
+.oc-card.oc-stamped:not(.oc-big):not(.oc-mini) { --oc-stamp: calc(var(--oc-tick) * 1.5); --oc-stamp-t: 50%; --oc-stamp-b: auto; --oc-stamp-mt: calc(var(--oc-tick) * -0.75); }
+.oc-card.oc-stamped:not(.oc-big):not(.oc-mini) .oc-stamp { right: calc(var(--oc-pad) - var(--oc-tick) * 0.25); }
 /* One stamp (S13-B1; OrderCard.stamp; SH-54, R5, T20: "served" is a picture, never a word): a gold ring with a covered dish,
    tilted like a stamp, inside the card so nothing clips it (was Cook's #mission.stamped .oc-card::after and .m-stamp) */
 .oc-card .oc-stamp {
@@ -141,7 +144,6 @@
 .oc-card.still .oc-stamp { animation: none; }
 :root .oc-card.oc-stamped.folded:not(.oc-big):not(.oc-mini) {
   --oc-stamp: calc(var(--oc-tick) * 1.5); --oc-stamp-t: 50%; --oc-stamp-b: auto; --oc-stamp-mt: calc(var(--oc-tick) * -0.75);
-  padding-right: calc(var(--oc-tick) * 1.5 + var(--njg-s2) * 1.5);
 }
 .oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
 .oc-look svg, .oc-look img { width: 100%; height: 100%; display: block; }
@@ -644,7 +646,7 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 @media (max-height: 500px) { :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { width: calc(var(--njg-tap-drawn) * .94); } }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::after { inset: calc(-1 * (10.5cqi + max(var(--njg-card14-hair), 1.4cqi))) calc((100% - 100cqi) / 2 - var(--njg-itpad)) -7cqi; border-radius: 0 0 calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)) calc(var(--njg-card14-u14) - var(--njg-card14-u1p5)); }
 /* (the English's dots, its tap to show it, reach down to half a gap above the divider: the speaker's tap area starts there) */
-:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(var(--wc14-ink, 0px) - 3.5cqi); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 .wc14-en-dots { --it: calc(-1 * var(--njg-card14-u2)); --ix: calc(-1 * var(--njg-card14-u2)); --ib: calc(var(--wc14-ink, 0px) - 3.5cqi); }
 /* bigger pictures on the big screens (about 21% taller); the phones unchanged */
 @media (min-height: 501px) {
   :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .wc14-pic { aspect-ratio: 6 / 5; }
@@ -667,7 +669,7 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child::before { width: calc(var(--njg-c14i) * .748); height: max(var(--njg-card14-hair), calc(var(--njg-c14i) * .014)); margin-top: calc(var(--njg-c14i) * .07); }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child > .oc-spk.wc14-spk { margin: calc(var(--njg-c14i) * .07) 0 var(--njg-itpad); }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child > .oc-spk.wc14-spk::after { inset: calc(-1 * (var(--njg-c14i) * .105 + max(var(--njg-card14-hair), calc(var(--njg-c14i) * .014)))) calc((100% - 100cqi) / 2 - var(--njg-itpad)) calc(-1 * var(--njg-itpad) - var(--njg-card14-hair)); }
-:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(var(--wc14-ink, 0px) - var(--njg-c14i) * .035); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child .wc14-en-dots { --it: calc(-1 * var(--njg-card14-u2)); --ix: calc(-1 * var(--njg-card14-u2)); --ib: calc(var(--wc14-ink, 0px) - var(--njg-c14i) * .035); }
 @media (min-height: 501px) {
   :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child > .wc14-pic { height: calc(var(--njg-c14i) * 5 / 6); }
 }
@@ -741,3 +743,24 @@ body.njg-s14 #side .wc14-spk::after, body.njg-s14 #side .oc-row.oc-it14 > .oc-sp
 .njg-wo-open.njg-wo-headface .oc-card.oc-big > .oc-head { zoom: var(--wo-head, 1); width: calc(100% / var(--wo-head, 1)); max-width: calc(100% / var(--wo-head, 1)); box-sizing: border-box; contain: inline-size; }
 /* (grown, the sentence wraps inside the card's width, never widening the card past its items: contract-118's view) */
 .njg-wo-open.njg-wo-headface .oc-card.oc-big > .oc-head > .oc-headline { min-width: 0; white-space: normal; }
+
+/* SH-288 (Zafar, 13 Nov: "increase the tap targets as much as you can without changing the look"): the speaker under an item card, and Nani's
+   arrow, are a whole 48 px tap by their own box (a transparent border round the drawn disc, all above it on the card's items so the card's foot is kept: the disc is the padding box, its
+   margin takes the border back, so nothing moves); the disc's pulse and the arrow's shadow ride a ::before the size of the disc. The drawn size is what it was. */
+body.njg-s14 #side { --hit-b: max(0px, calc((var(--njg-tap) - var(--njg-tap-drawn)) / 2)); }
+@media (max-height: 500px) { body.njg-s14 #side { --hit-b: max(0px, calc((var(--njg-tap) - var(--njg-tap-drawn) * .94) / 2)); } }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { box-sizing: content-box; border: solid transparent; border-width: calc(2 * var(--hit-b)) var(--hit-b) 0; background: none; border-radius: 0; margin: calc(7cqi - 2 * var(--hit-b)) calc(-1 * var(--hit-b)) calc(7cqi - var(--njg-card14-hair)); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child > .oc-spk.wc14-spk { margin: calc(var(--njg-c14i) * .07 - 2 * var(--hit-b)) calc(-1 * var(--hit-b)) var(--njg-itpad); }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::before { display: block; content: ""; position: absolute; inset: 0; width: auto; height: auto; transform: none; border: 0; border-radius: 50%; background: var(--njg-card14-spk-bg); box-shadow: none; pointer-events: none; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk.on { animation: none; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk.on::before { animation: wc14-pulse .9s ease-out; }
+body.njg-s14 #guide.ng-s14 .ng-arrow { box-sizing: content-box; border: var(--hit-b) solid transparent; background-clip: padding-box; box-shadow: none; }
+body.njg-s14 #guide.ng-s14 .ng-tools > .ng-arrow { right: calc(-1 * var(--hit-b)); }
+body.njg-s14 #guide.ng-s14 .ng-arrow::before { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: var(--njg-card14-arrow-shadow); pointer-events: none; }
+
+/* SH-289 (the P5 headline rule, 13 Nov: chai L4 at 1280x665 set the order's headline 18.5 px, then 16.5 once the tick took its room, then 19 at
+   the end): in a chai round the sidebar's headline is ONE size at every state, the smallest it needed (0.87 of the card's size: the longest
+   chai order fits one line beside the tick), never shrunk or grown again; a narrower card wraps it instead (fit.js reads --fit-min as a length,
+   so the property is registered as one) */
+@property --fit-min { syntax: "<length>"; inherits: true; initial-value: 0px; }
+#side[data-recipe="chai"] .oc-card .oc-headline.fit-wrap, #side[data-recipe="chai"] .oc-card .oc-rec-line.fit-wrap { font-size: calc(var(--oc-h) * 0.87); --fit-min: calc(var(--oc-h) * 0.87); }

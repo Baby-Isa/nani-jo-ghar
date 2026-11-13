@@ -1012,3 +1012,4 @@ body.w6 #guide { flex: none; }
 }
 .ck-cover.off { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .ck-cover { transition-duration: 0.12s; } }
+

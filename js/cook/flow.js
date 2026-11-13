@@ -309,8 +309,49 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     for (const g of guests) await S().leaveChar(g);
     UI.hideBubble();
   }
-  async function serviceView(who, { enter } = {}) {
-    await S().setView("service");
+  /*
+   * SH-287 (Zafar, 13 Nov: "the view needs to be moved up during the order phase ... less of the island and more of the wall behind the
+   * island"): while a customer orders, the camera sits ORDER_LIFT design px higher (clamped to the picture's top). People, bubble and
+   * island all ride the camera, so the customer and the bubble stay whole; the serve's glide and every other view start from where
+   * they did (a view change puts the camera back; a resize in the service view keeps the lift).
+   */
+  const ORDER_LIFT = 150;
+  const onService = (s) => !!(s && s.bg && s.bg.texture && s.bg.texture.key === "bg-service");
+  function liftOrderView(s) {
+    const cam = s && s.cameras && s.cameras.main;
+    const v = Cook.view;
+    if (!cam || !v) return;
+    // (Cook.view is the world the camera shows: it rises with the camera, so the frame's own box (the play area) stays where it is)
+    const was = v.__lift || 0;
+    const base = v.top + was;
+    let lift = 0;
+    if (s.__orderLift && onService(s)) {
+      const f = Cook.serviceFrame ? Cook.serviceFrame(s) : { oy: base };
+      lift = Math.max(0, Math.min(ORDER_LIFT, base - f.oy));
+    }
+    cam.scrollY = base - lift;
+    v.top = base - lift;
+    v.bottom = v.bottom + was - lift;
+    v.__lift = lift;
+  }
+  /** The ordering view, lifted (or not): a resize while it stands keeps the lift; any other view (a station's) is never lifted. */
+  function orderLift(s, on) {
+    if (!s.__liftHook) {
+      s.__liftHook = true;
+      const fit = s.fitView;
+      s.fitView = function () {
+        const r = fit.apply(this, arguments);
+        liftOrderView(this);
+        return r;
+      };
+    }
+    s.__orderLift = !!on;
+    liftOrderView(s);
+  }
+  async function serviceView(who, { enter, lift } = {}) {
+    const s = S();
+    await s.setView("service");
+    orderLift(s, lift);
     S().addChar("nani");
     if (who) S().addChar(who, { enter });
     S().occluder();
@@ -476,7 +517,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       await Cook.wait(OT().arriveNani);
     } else if (!demo) {
       // CHT-07: a customer who asked before the pantry trip is still at the counter: straight to the order
-      await serviceView(who, { enter: !asked || !S().chars[who] });
+      await serviceView(who, { enter: !asked || !S().chars[who], lift: true });
       await Cook.wait(asked ? OT().arriveBack : OT().arriveEnter);
       if (!asked) {
         await firstMeeting(who);
@@ -1827,6 +1868,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     s.clearView();
     s.viewName = null;
     s.setBg("bg-service");
+    orderLift(s, true); // (SH-287: the lab's order, as a day's, is seen from higher up)
     // a dish's order as a ladder, or a few plain lines for stations with no dish
     const openCard = (what, steps) => {
       // (the S14 roll-out, for the timeline only: how many of the dish's repeating thing this order holds, by the central rules'

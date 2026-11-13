@@ -1635,6 +1635,8 @@
     // Lifecycle note "order-level"), never shown to the child
     try {
       if ($("#side")) $("#side").dataset.level = String(mission.level);
+      // (SH-289: the order headline is one size through a chai round, css/cook.css; the recipe is a marker for that rule only)
+      if ($("#side")) $("#side").dataset.recipe = ladders.some((L) => L && L.recipe === "chai") ? "chai" : "";
       if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("order-level", { step: String(mission.level), by: String(who || "") });
     } catch (e) {
       /* only a marker */
