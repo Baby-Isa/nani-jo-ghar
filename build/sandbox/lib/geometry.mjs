@@ -14,7 +14,7 @@
 //   frame-slots   the side panel, the bottom row and the play area in the same place at the same size: through one game's moments
 //                 and levels, and the same as chai's reference
 //   headline      the order headline is one size through a round, and at most two lines on a phone
-//   pill-clear    a word pop's pill keeps off what it stands by (the board, the hob, the tray, the pans): at least 6 px clear (CK-112's
+//   pill-clear    a word pop's pill (Juice.P.pop; not the tally's chip, which hangs on the hob by design) keeps off what it stands by (the board, the hob, the tray, the pans): at least 6 px clear (CK-112's
 //                 label, a hair above the board, was 4.7 px at 740x320; its fix is 10 px)
 //   panel-holds   Nani's box, the order cards and the list lie inside the side panel
 export const TOL = { overlap: 1, edge: 1, slot: 0.5, light: 0.12, tap: 48, pill: 6, phoneH: 500, headlineLines: 2, fs: 0.5 };
@@ -59,6 +59,9 @@ export const RULES = [
         const its = by(new RegExp("^" + n + "/item-"), ex.items);
         for (let i = 0; i < its.length; i++) for (let j = i + 1; j < its.length; j++) pair(its[i][0], its[i][1], its[j][0], its[j][1]);
       }
+      // the pills (word pops, the tally's chips) never over one another
+      const pl = Object.entries(ex.pills || {});
+      for (let i = 0; i < pl.length; i++) for (let j = i + 1; j < pl.length; j++) pair(pl[i][0], pl[i][1], pl[j][0], pl[j][1]);
       // Nani's box over the cards below it
       const bx = read.boxes;
       if (bx.nani) for (const [k, b] of by(/^card-\d+$/, bx)) pair("nani", bx.nani, k, b);
@@ -177,7 +180,8 @@ export const RULES = [
       if (!ex) return null;
       const out = [], b = read.boxes;
       const things = Object.entries(b).filter(([k]) => /^(board|tawa|hob|tray|pan-\d+)$/.test(k));
-      for (const [pn, p] of Object.entries(ex.pills || {})) for (const [k, t] of things) {
+      // (the word pops only: the tally chip, the count by the pan, hangs on the hob's top edge by design)
+      for (const [pn, p] of Object.entries(ex.pills || {}).filter(([k]) => /^pill-/.test(k))) for (const [k, t] of things) {
         const o = overlap(p, t);
         if (o) { out.push(`${pn} ${at(p)} lies over ${k} ${at(t)} by ${px(o.w)} x ${px(o.h)} px`); continue; }
         const g = gap(p, t);

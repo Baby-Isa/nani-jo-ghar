@@ -40,6 +40,11 @@ test("overlap: an item card laid over a card's face fails, with how far", () => 
   assert.equal(r.pass, false);
   assert.ok(failsWith(r, /card-1 \[14, 70, 46, 102\] overlaps card-1\/item-1 .* by 26 x 22 px/), r.faults[0].msg);
 });
+test("overlap: two pills over one another fail; the tally's chip is not a word pop for pill-clear", () => {
+  const r = one("overlap", (x) => { x.extra.pills["tally-1"] = [360, 6, 430, 26]; });
+  assert.ok(failsWith(r, /pill-1 .* overlaps tally-1 .* by 68 x 16 px/), JSON.stringify(r.faults));
+  assert.equal(one("pill-clear", (x) => { x.extra.pills = { "tally-1": [329, 8, 419, 40] }; x.boxes.hob = [336, 31, 472, 224]; }).pass, true);
+});
 test("overlap: Nani's face over her words, and a card's words over its face, fail", () => {
   const r = one("overlap", (x) => { x.texts["nani/word#1"] = { box: [40, 20, 100, 40], cut: false, text: "E chai" }; });
   assert.ok(failsWith(r, /nani .* overlaps nani\/word#1/));

@@ -35,11 +35,13 @@ export const PLANTS = {
     for (const sc of C.game.scene.getScenes(true)) for (const o of sc.children.list) if (o.texture && o.texture.key === "v2-tray") t = o;
     if (!t) return "no tray"; t.x += 3000; window.__plantUndo = () => { t.x -= 3000; }; return "the tray off the screen"; })()` },
   // a word pill lying on the hob (its bottom edge a few px into the hob's top): the pill moved down to the hob's top
-  "pill-touch": { at: "mid", expect: "^tray$", rule: "pill-clear", match: "lies over", js: `(() => { const C = window.Cook; let hob = null, pill = null;
-    const walk = (list) => { for (const o of list || []) { if (!o) continue; if (o.popW) pill = o; if (o.texture && /^kit-hob-/.test(o.texture.key || "") && !hob) hob = o; if (o.list) walk(o.list); } };
-    for (const sc of C.game.scene.getScenes(true)) walk(sc.children.list);
-    if (!hob || !pill) return "no hob or no pill"; const y0 = pill.y, top = hob.getBounds().y + 4 * 0; pill.y = top - 28 * (pill.scaleX || 1) + 12;
-    window.__plantUndo = () => { pill.y = y0; }; return "the word pill lowered onto the hob"; })()` },
+  "pill-touch": { at: "mid", expect: "^tray$", rule: "pill-clear", match: "lies over", js: `(() => { const C = window.Cook; const S = C.game.scene.getScenes(true)[0]; let hob = null;
+    const walk = (list) => { for (const o of list || []) { if (!o) continue; if (o.texture && /^kit-hob-/.test(o.texture.key || "") && !hob) hob = o; if (o.list) walk(o.list); } };
+    walk(S.children.list);
+    if (!hob || !window.Juice) return "no hob"; const b = hob.getBounds(); const k = 0.4;
+    // (a word pop made fully shown, its bottom 12 world px into the hob's top; taken away again)
+    const c = window.Juice.P.pop(S, { x: b.x + b.width / 2, y: b.y - 28 * k + 12 }, "hakro", { k, hold: 600000 }); c.alpha = 1; c.setPosition(b.x + b.width / 2, b.y - 28 * k + 12);
+    window.__plantUndo = () => { c.destroy(); }; return "a word pill laid on the hob"; })()` },
   // the side panel shifted 8 px into the play area
   "side-shift": { at: "mid", expect: "^side$", rule: "frame-apart", match: "side panel .* overlaps play area", js: `(() => { const s = document.querySelector("#side"); if (!s) return "no side";
     const old = s.style.transform; s.style.transform = "translateX(8px)"; window.__plantUndo = () => { s.style.transform = old; }; return "the side panel 8 px right"; })()` },
