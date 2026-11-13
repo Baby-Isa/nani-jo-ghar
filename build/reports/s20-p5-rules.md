@@ -35,4 +35,5 @@ Planted faults: 7/7 caught by their own rule (`--prove-plants`, 3.7 minutes). Th
 Chai rules 3.7, eggs 4.4, maani 3.1 (L1-L4, two sizes). Eggs/maani rule fails (tap-size, headline, text-whole, maani's slab slot) are their own rows' business.
 - After folder: the brief has no rows, so no before/after.
 - Contract (`s20-p5-rules-contract`): chai 107/110, eggs 106/110, maani 105/110; "CONTRACT FAILED: 1 breaks (contract-114 1)": maani L1 930x430, `mv-cooked-maani` 75 px against 131 px at the serve. It is the game's, not this branch's: the sandbox never loads boxes or geometry code.
-- `checks.mjs`: 14 steps ok. check-change: see its result file below.
+- `checks.mjs`: 14 steps ok (147 s). `loadcheck.mjs`: 28/32; daar, tadka, stir and baking each load 1-5 pictures outside the manifest: not this branch (no game, css or asset file differs from the base).
+- **check-change (tier 2): not finished, no result file.** push passed (1.3 min); scope failed on `sources/audio/mum-2026-11-12/voice-261112-113106.md`, which the base has (as in P4); play was stopped at 55 minutes of its flows with no result. It loads nothing this branch changed.
