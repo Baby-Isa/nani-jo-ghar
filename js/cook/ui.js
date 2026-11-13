@@ -663,6 +663,7 @@
   // done's line (the engine's Shabash, js/cook/flow.js Cook.praiseBox) holds her box from the moment it is said until the end screen
   // clears it (UI.guideClear), a new order opens or a new step opens; nothing in between puts an old step or instruction back
   let praiseLine = null;
+  let boxExclaim = false; // (SH-278: the box shows an exclamation now, "Shabash!" or "Bas!": set as each line is put in it)
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
   // which data.guide key the box shows now (the station:phase, else the station, else the default)
   const guideEntryKey = () => {
@@ -945,6 +946,7 @@
     const rawSet = g.set;
     g.set = (html, o = {}) => {
       rawSet(html, o);
+      boxExclaim = !!html && !!(guideLine && guideLine.role === "exclaim");
       if (helperEls() && helperEls().arrow) paintHelper(); // (SH-278: her arrow follows what the box shows)
       if (!mission || !mission.stripMode) return;
       // PAN-10: no step line showing: her task line (UI.stripTask), if the station set one
@@ -1021,7 +1023,9 @@
   // SH-278 (the S19 gate's eye judge, 12 Nov: "Nani's box keeps its drop-down on 'Shabash!' where chai's has none"): while her box
   // shows an exclamation (the well done's "Shabash!", a "Bas!": Lang.line's role "exclaim") there is nothing to help with: no arrow and
   // no open card, in every game, as chai's; the helper comes back with the next line that is not one
-  const exclaiming = () => !!praiseLine || !!(guideLine && guideLine.role === "exclaim");
+  // (by what the box shows: whether the line was an exclamation when it was put in the box, boxExclaim, set as it is drawn below; the
+  // line's own record can move on while the box still shows it: daar's stir "Bas!", contract-126 in s19ns-a4)
+  const exclaiming = () => !!praiseLine || boxExclaim;
   function paintHelper() {
     const e = helperEls();
     if (!e || !e.arrow) return;
@@ -5075,6 +5079,7 @@
     if (stepper) stepper.close();
     stepper = null;
     guide = guideKey = guideLine = praiseLine = null;
+    boxExclaim = false;
     if (kitTally && kitTally.destroy) kitTally.destroy();
     kitTally = null;
     mission = null;
