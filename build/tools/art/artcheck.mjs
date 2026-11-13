@@ -22,6 +22,13 @@
 //   registry (s19-artreg) the registry's own rules (build/tools/art/registry.mjs validate): a bad id or status, a missing file, a
 //            person approved by anyone but Zafar, a file current in two pieces; for a migrated game also a changed hash, unequal
 //            canvases, an incomplete stage set or a missing measure. `registry|<id>|<rule>`.
+//   exists   (s19-night-art) every assets/ path named in js, data, css, the root pages and the lab pages exists, or is a renamed file's old
+//            name on the ledger (data/art/renames.json: js/version.js loads the new name). `exists|<file> -> <path>` (was `ref`).
+//   resolves (s19-night-art) js/art-map.js is what registry.mjs --map makes (never stale, never merged by hand); every file in it exists
+//            with the registry's hash; every file under assets/art/ is one piece's current file or candidate, in exactly one entry.
+//   rawpath  (s19-night-art) a path string in code or data (js/, data/) that names a renamed file by its old name, or an assets/art/ file
+//            directly: the game should ask Cook.Art.file(id, state). `rawpath|<file>|<path>`; the known list may only shrink (the rename
+//            tool adds a rename's own hits; Step 2's id commits take them off).
 // Today's findings are build/tools/art/artcheck-known.json (art debt for the next runs): a finding not in it fails.
 //   node build/tools/art/artcheck.mjs [--write-known] [--all]
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, openSync, readSync, closeSync } from "node:fs";
@@ -29,7 +36,7 @@ import { join, dirname } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { pictures as allPictures, scanNames, loadRetired, retiredOf, allLoads } from "./artuse.mjs";
-import { load as loadRegistry, fileIndex, validate as validateRegistry } from "./registry.mjs";
+import { load as loadRegistry, fileIndex, validate as validateRegistry, loadLedger, wasOf, firstNameOf, mapStale, mapData, hashOf, rawpathFindings, staticFiles } from "./registry.mjs";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const KNOWN = join(ROOT, "build/tools/art/artcheck-known.json");
@@ -62,8 +69,11 @@ const walk = (dir, ok, out = []) => {
 };
 const IMG = /\.(png|webp|jpe?g)$/i;
 // (a sky bank is not a 1600x900 scene: assets/backgrounds/s17-sky/ keeps its skies at the source size, covered or tiled by the game)
-export const isBg = (p) => /\/bg\/|^assets\/backgrounds\/|^assets\/clinic\/rooms\//.test(p) && !/^assets\/backgrounds\/s17-sky\//.test(p) && !/@2x|thumb/.test(p);
-export const isCutout = (p) => /\/(items[\w-]*|props|room-items)\//.test(p);
+// (a renamed file is judged by its first name: data/art/renames.json)
+let FIRST = null;
+const first = (p) => { if (!FIRST) FIRST = firstNameOf(loadLedger(ROOT)); return FIRST[p] || p; };
+export const isBg = (p) => { p = first(p); return /\/bg\/|^assets\/backgrounds\/|^assets\/clinic\/rooms\//.test(p) && !/^assets\/backgrounds\/s17-sky\//.test(p) && !/@2x|thumb/.test(p); };
+export const isCutout = (p) => /\/(items[\w-]*|props|room-items)\//.test(first(p));
 // the pixel check (artpixels.py --scan --json): {path: [reasons]}; a failure to run it is itself a finding, never a silent pass
 export function pixelFindings() {
   const r = spawnSync("python3", [join(ROOT, "build/tools/art/artpixels.py"), "--scan", "--json"], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 });
@@ -82,7 +92,7 @@ export function rimFindings(paths) {
   return Object.entries(res).map(([p, share]) => ({ check: "rim", key: `rim|${p}`, text: `${p}: a pink rim, ${Math.round(share * 100)}% of its soft edge magenta-tinted (run python3 build/tools/art/edge_bleed.py ${p})` }));
 }
 // pixel and rim entries on the known list that no longer fail: the list may only shrink, so they must come off it
-export const staleKnown = (known, found) => [...known].filter((k) => /^(pixel|rim|retired|unregistered|registry)\|/.test(k) && !found.some((f) => f.key === k));
+export const staleKnown = (known, found) => [...known].filter((k) => /^(pixel|rim|retired|unregistered|registry|exists|rawpath|resolves)\|/.test(k) && !found.some((f) => f.key === k));
 // the retired check: names are scanned live (no browser); loads come from the cached load check. `loads` {pages:{id:{pictures}}} may be given (tests)
 export function retiredFindings(root = ROOT, loads = null, pics = null) {
   const retired = loadRetired(root);
@@ -101,7 +111,9 @@ export function retiredFindings(root = ROOT, loads = null, pics = null) {
 export function unregisteredFindings(root = ROOT, loads = allLoads(root), reg = loadRegistry(root)) {
   if (!reg || !reg.pieces || !Object.keys(reg.pieces).length) return [];
   const idx = fileIndex(reg), out = [], seen = new Set();
-  for (const [key, pg] of Object.entries(loads.pages)) for (const p of pg.pictures) {
+  const was = wasOf(loadLedger(root)); // (the cached traces were taken before a rename: an old name is today's file)
+  for (const [key, pg] of Object.entries(loads.pages)) for (const p0 of pg.pictures) {
+    const p = idx.has(p0) ? p0 : was[p0] || p0;
     if (idx.has(p) || seen.has(p)) continue;
     seen.add(p);
     out.push({ check: "unregistered", key: `unregistered|${p}`, text: `${p} is loaded (${String(pg.id || key)}) but not in data/art/registry.json (registry.mjs add <id> --file ${p})` });
@@ -111,6 +123,43 @@ export function unregisteredFindings(root = ROOT, loads = allLoads(root), reg = 
 export function registryFindings(root = ROOT, reg = loadRegistry(root)) {
   if (!reg || !reg.pieces) return [];
   return validateRegistry(reg, { root }).filter((x) => x.level === "error").map((x) => ({ check: "registry", key: `registry|${x.id}|${x.rule}`, text: `${x.id}: ${x.text}` }));
+}
+// the exists check: js and data (quoted paths, as the old ref check), css and the root and lab pages (any path, relative too)
+export function existsFindings(root = ROOT) {
+  const was = wasOf(loadLedger(root));
+  const refs = new Set();
+  const w = (dir, ok, o = []) => { if (!existsSync(join(root, dir))) return o; for (const f of readdirSync(join(root, dir))) { const p = `${dir}/${f}`; if (statSync(join(root, p)).isDirectory()) { if (!/^(vendor|node_modules)$/.test(f)) w(p, ok, o); } else if (ok(p)) o.push(p); } return o; };
+  for (const f of [...w("js", (x) => x.endsWith(".js") && !x.includes("/vendor/")), ...w("data", (x) => x.endsWith(".json") && !/candidates|audio-manifest|asset-list/.test(x))]) {
+    for (const m of readFileSync(join(root, f), "utf8").matchAll(/["'`](assets\/[^"'`\s$*{}]+\.(?:png|webp|jpe?g|svg))["'`]/gi)) refs.add(`${f} -> ${m[1]}`);
+  }
+  for (const f of staticFiles(root)) {
+    for (const m of readFileSync(join(root, f), "utf8").matchAll(/(?<![\w-])(assets\/[^"'`\s$*{}()<>,;\\]+\.(?:png|webp|jpe?g|svg))(?![\w-])/gi)) refs.add(`${f} -> ${m[1]}`);
+  }
+  const out = [];
+  for (const r of refs) { const p = r.split(" -> ")[1]; if (!existsSync(join(root, p)) && !(was[p] && existsSync(join(root, was[p])))) out.push({ check: "exists", key: `exists|${r}`, text: `${r.replace(" -> ", " names ")}, which does not exist (nor is it a renamed file's old name)` }); }
+  return out;
+}
+// the resolves check: the map is fresh; its files exist with the registry's hash; every file under assets/art/ is in exactly one entry
+export function resolvesFindings(root = ROOT, reg = loadRegistry(root)) {
+  const out = [];
+  if (!reg || !reg.pieces) return out;
+  const st = mapStale(root, reg);
+  if (st) out.push({ check: "resolves", key: "resolves|js/art-map.js|stale", text: st });
+  const data = mapData(reg, loadLedger(root));
+  for (const [id, states] of Object.entries(data.files)) for (const [s, f] of Object.entries(states)) {
+    if (!existsSync(join(root, f))) { out.push({ check: "resolves", key: `resolves|${id}|${s}|missing`, text: `${id} ${s}: ${f} does not exist` }); continue; }
+    const want = ((reg.pieces[id] || {}).hash || {})[s];
+    if (f.startsWith("assets/art/") && want && hashOf(join(root, f)) !== want) out.push({ check: "resolves", key: `resolves|${id}|${s}|hash`, text: `${id} ${s}: ${f} is not the registry's picture (hash ${want})` });
+  }
+  for (const [old, to] of Object.entries(data.was)) if (!existsSync(join(root, to))) out.push({ check: "resolves", key: `resolves|${old}|was`, text: `was: ${old} -> ${to}, which does not exist` });
+  const count = new Map();
+  for (const e of Object.values(reg.pieces)) for (const f of [...Object.values(e.states || {}), ...Object.values((e.candidate || {}).states || {})]) count.set(f, (count.get(f) || 0) + 1);
+  const wa = (dir, o = []) => { if (!existsSync(join(root, dir))) return o; for (const f of readdirSync(join(root, dir))) { const p = `${dir}/${f}`; if (statSync(join(root, p)).isDirectory()) wa(p, o); else if (IMG.test(p)) o.push(p); } return o; };
+  for (const p of wa("assets/art")) {
+    const n = count.get(p) || 0;
+    if (n !== 1) out.push({ check: "resolves", key: `resolves|${p}|entries`, text: `${p} is in ${n} registry entries (exactly one: registry.mjs add)` });
+  }
+  return out;
 }
 export function findings() {
   const out = [];
@@ -125,11 +174,9 @@ export function findings() {
   }
   for (const f of pixelFindings()) out.push(f);
   for (const f of rimFindings(cuts)) out.push(f);
-  const refs = new Set();
-  for (const f of [...walk("js", (x) => x.endsWith(".js") && !x.includes("/vendor/")), ...walk("data", (x) => x.endsWith(".json") && !/candidates|audio-manifest|asset-list/.test(x))]) {
-    for (const m of readFileSync(join(ROOT, f), "utf8").matchAll(/["'`](assets\/[^"'`\s$*{}]+\.(?:png|webp|jpe?g|svg))["'`]/gi)) refs.add(`${f} -> ${m[1]}`);
-  }
-  for (const r of refs) { const p = r.split(" -> ")[1]; if (!existsSync(join(ROOT, p))) out.push({ check: "ref", key: `ref|${r}`, text: `${r.replace(" -> ", " names ")}, which does not exist` }); }
+  for (const f of existsFindings()) out.push(f);
+  for (const f of resolvesFindings()) out.push(f);
+  for (const f of rawpathFindings(ROOT)) out.push(f);
   for (const f of retiredFindings()) out.push(f);
   for (const f of unregisteredFindings()) out.push(f);
   for (const f of registryFindings()) out.push(f);

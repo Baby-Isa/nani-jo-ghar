@@ -1,0 +1,4 @@
+{
+ "_about": "Every art file renamed to its registry name (s19-night-art; build/reports/s19-art-rename-plan.md), oldest first, never edited by hand: build/tools/art/registry.mjs rename appends. `registry.mjs show <old path>` answers where a file went. js/art-map.js carries the same as `was`, so an old path in code or data still loads the renamed file.",
+ "renames": []
+}

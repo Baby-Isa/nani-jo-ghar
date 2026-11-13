@@ -483,7 +483,7 @@
  "pixel|assets/ui/results/icon-bulb.webp|rim",
  "pixel|assets/ui/results/stopwatch-pb.webp|rim",
  "pixel|assets/ui/results/tick-gold-glow.webp|rim",
- "ref|data/clinic/heal/foot.json -> assets/clinic/closeups/adult/sole.webp",
+ "exists|data/clinic/heal/foot.json -> assets/clinic/closeups/adult/sole.webp",
  "retired|assets/cook/items/sekelo/rack-t.webp|named in js/cook/mechanics/grill.js",
  "retired|assets/cook/items/sekelo/stick-v.webp|named in js/cook/mechanics/grill.js",
  "retired|assets/cook/items/v3/sekelo/plate-*.webp|loaded by cook:mishkaki-grill",

@@ -47,6 +47,23 @@ RULES = {"v": 14, "grey_share": 0.03, "hole_px": 16, "rim_w": 5.0, "glass_semi":
          "smudge": 0.02, "max_side": 1600, "key_tol": 14, "key_mid": 122, "spread": 12, "flat_sd": 1.5, "coloured": 22}
 
 
+_FIRST = None
+
+
+def first_name(path):
+    """A renamed file's first name (data/art/renames.json, s19-night-art): the rules that name pictures by path keep finding them."""
+    global _FIRST
+    if _FIRST is None:
+        _FIRST = {}
+        try:
+            for r in json.load(open(os.path.join(REPO, "data/art/renames.json")))["renames"]:
+                _FIRST[r["to"]] = _FIRST.get(r["from"], r["from"])
+        except Exception:
+            pass
+    rel = os.path.relpath(os.path.abspath(path), REPO).replace(os.sep, "/")
+    return _FIRST.get(rel, path.replace(os.sep, "/"))
+
+
 def analyse(path):
     im = np.asarray(Image.open(path).convert("RGBA")).astype(np.float32)
     rgb, a = im[..., :3], im[..., 3] / 255.0
@@ -64,7 +81,7 @@ def analyse(path):
     glass = semi_mask.sum() / n_nz > RULES["glass_semi"]
     # (s19-k3: a glass jar or jug full of solid contents has little soft alpha but its walls are see-through all the same: named as
     # glass, as edge_bleed.SKIP names them; the glass rule still applies to it)
-    glass = glass or bool(re.search(r"assets/cook/items/v4/baking/(jar|jug)-[^/]*$", str(path).replace(os.sep, "/")))
+    glass = glass or bool(re.search(r"assets/cook/items/v4/baking/(jar|jug)-[^/]*$", first_name(str(path))))
     solid = op if not glass else (a >= 0.5)
     lum = rgb.mean(2)
     spread = rgb.max(2) - rgb.min(2)

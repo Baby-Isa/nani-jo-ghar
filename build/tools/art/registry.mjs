@@ -21,7 +21,8 @@
  * the standard, allowed while prototyping), needs-redo (a fault named by Zafar, the judge or the audit), retired (no file current:
  * the piece is gone from every game), parked (a parked game's art). A file's role: current, candidate, or replaced (retired).
  */
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, openSync, readSync, closeSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, openSync, readSync, closeSync, mkdirSync, renameSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { join, dirname } from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
@@ -547,7 +548,9 @@ export function validate(reg, { root = ROOT, hashes = true, use = null } = {}) {
 
 /* ---------------- the board's data ---------------- */
 export function writeBoard({ root = ROOT, reg = load(root), use, moveOut }) {
-  const per = use.pictures || {};
+  // (the traces were taken under the files' first names: a renamed file is looked up by its first name too)
+  const first = firstNameOf(loadLedger(root));
+  const per = new Proxy(use.pictures || {}, { get: (o, k) => o[k] || (first[k] ? o[first[k]] : undefined) });
   const idx = fileIndex(reg);
   const pieces = [];
   for (const [id, e] of Object.entries(reg.pieces)) {
@@ -565,10 +568,232 @@ export function writeBoard({ root = ROOT, reg = load(root), use, moveOut }) {
     for (const p of pieces) p.flaws = [...new Set(Object.values(p.st).flatMap((f) => byFile[f] || []))];
   }
   // loaded pictures the registry does not know (the unregistered check's list)
-  const unregistered = Object.entries(per).filter(([f, e]) => e.games.length && !idx.has(f)).map(([f]) => f);
+  const was = wasOf(loadLedger(root));
+  const unregistered = Object.entries(use.pictures || {}).filter(([f, e]) => e.games.length && !idx.has(f) && !idx.has(was[f])).map(([f]) => f);
   const data = { generated: use.generated, completeness: use.completeness, summary: use.summary, games: Object.fromEntries(Object.entries(use.games).map(([g, c]) => [g, { how: c.howComplete, total: c.total }])), pieces, unregistered, moveOut: moveOut ? { totals: moveOut.totals, folders: moveOut.foldersUnloadedUnnamed.slice(0, 60), namedFolders: moveOut.foldersNamedNotLoaded.slice(0, 30), videos: moveOut.videos, chatgpt: moveOut.chatgptOnMain } : null };
   writeFileSync(join(root, "lab/art-board-data.js"), `/* written by build/tools/art/registry.mjs (via artuse.mjs): do not edit */\nwindow.ART_BOARD = ${JSON.stringify(data)};\n`);
   return data;
+}
+
+/* ---------------- the renames and the map (s19-night-art; Zafar, 13 Nov, decisions 16-18; build/reports/s19-art-rename-plan.md) ----------------
+ * A piece's file is renamed to its registry name, assets/art/<namespace>/<piece>.<state>.r<rev>.<ext> (the namespace is the id's first
+ * part, rev the registry's; today's extension kept). Never a changed byte: git mv only (the hash in the registry proves it). Every rename
+ * goes on the permanent ledger data/art/renames.json; js/art-map.js (generated, never edited) carries the live pieces' files and measures
+ * and `was` (old path -> new path), which js/version.js njgV() reads, so a path still named in code or data loads the renamed file. */
+export const LEDGER_PATH = "data/art/renames.json";
+export const MAP_PATH = "js/art-map.js";
+// the kitchen games in the rename order (sekelo first, chai last), board keys -> the ids' short names
+export const RENAME_ORDER = ["mishkaki-grill", "samosa", "daar", "baking", "eggs", "maani-line", "fetch", "chaat", "corn", "chop", "chai-tray"];
+// namespaces renamed tonight: the kitchen games' own, the kitchen kit, the walnut shelf set and the serving kitchen (never char, scene,
+// shared, ui, clinic, day, house, lab, proto or story: Zafar's own approvals and other modes' art)
+const RENAME_NS = new Set(["sekelo", "samosa", "daar", "baking", "eggs", "maani", "pantry", "chaat", "corn", "chop", "chai", "kit", "shelf", "serve", "served"]);
+const SHARED_NS = new Set(["kit", "shelf", "serve", "served"]);
+// who may load or name a renamed file: Cook's pages and the lab pages (they load js/art-map.js) and the files the tool rewrites
+const OK_LOADER = /^(cook(:.*)?|page:cook\.html|lab:cook\/.*|page:lab\/.*)$/;
+const OK_NAMER = /^(js\/cook\/|data\/cook\.json$|data\/stations\/|css\/|lab\/|cook\.html$)/;
+export const targetOf = (id, state, rev, from) => {
+  const i = id.indexOf(".");
+  const ext = (from.match(/\.([a-z0-9]+)$/i) || [, "webp"])[1].toLowerCase();
+  return `assets/art/${id.slice(0, i)}/${id.slice(i + 1)}.${state}.r${rev || 1}.${ext}`;
+};
+export function loadLedger(root = ROOT) {
+  const p = join(root, LEDGER_PATH);
+  return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")) : { _about: LEDGER_ABOUT, renames: [] };
+}
+const LEDGER_ABOUT = "Every art file renamed to its registry name (s19-night-art; build/reports/s19-art-rename-plan.md), oldest first, never edited by hand: build/tools/art/registry.mjs rename appends. `registry.mjs show <old path>` answers where a file went. js/art-map.js carries the same as `was`, so an old path in code or data still loads the renamed file.";
+export function saveLedger(led, root = ROOT) {
+  const rows = led.renames.map((r) => `  ${JSON.stringify(r)}`).join(",\n");
+  writeFileSync(join(root, LEDGER_PATH), `{\n "_about": ${JSON.stringify(led._about || LEDGER_ABOUT)},\n "renames": [${rows ? `\n${rows}\n ` : ""}]\n}\n`);
+}
+// old path -> today's path (a file renamed twice resolves to its last name)
+export function wasOf(led) {
+  const m = {};
+  for (const r of led.renames || []) m[r.from] = r.to;
+  for (const k of Object.keys(m)) { let t = m[k], n = 0; while (m[t] && n++ < 20) t = m[t]; m[k] = t; }
+  return m;
+}
+// today's path -> the first name it had (the cached traces and the known lists' old keys)
+export function firstNameOf(led) {
+  const m = {};
+  for (const r of led.renames || []) m[r.to] = m[r.from] || r.from;
+  return m;
+}
+// which game's commit a piece moves in: a game's own namespace is that game; the shared kitchen pieces move with chai when chai loads
+// them (chai last: its approval carries over), else with the first game in the order that loads them, else with chai
+export function renameGameOf(id, e, use) {
+  const ns = id.split(".")[0];
+  const own = RENAME_ORDER.find((g) => shortGame(g) === ns);
+  if (own) return own;
+  const games = new Set(Object.values(e.states || {}).flatMap((f) => (use && use[f] ? use[f].games || [] : [])));
+  if (games.has("chai-tray")) return "chai-tray";
+  return RENAME_ORDER.find((g) => games.has(g)) || "chai-tray";
+}
+// the renames for one game (or all): [{id, state, from, to}] and what is left out, with why
+export function renamePlan(reg, { game = null, use = null, root = ROOT } = {}) {
+  const plan = [], skipped = [];
+  for (const [id, e] of Object.entries(reg.pieces)) {
+    const ns = id.split(".")[0];
+    const files = Object.entries(e.states || {});
+    if (!files.length) continue;
+    const why = (() => {
+      if (!RENAME_NS.has(ns)) return `namespace ${ns} (not renamed tonight)`;
+      if (e.status === "parked" || e.status === "retired") return `status ${e.status}`;
+      for (const [, f] of files) {
+        const u = use && use[f];
+        const bad = u ? (u.loadedBy || []).filter((l) => !OK_LOADER.test(l)) : [];
+        if (bad.length) return `${f} is loaded by another mode (${[...new Set(bad.map((l) => l.replace(/[@#].*$/, "")))].slice(0, 3).join(", ")})`;
+        const badN = u ? (u.namedIn || []).filter((n) => !OK_NAMER.test(n) && !/^[a-z-]+\.html$/.test(n)) : [];
+        if (badN.length) return `${f} is named by another mode (${badN.slice(0, 3).join(", ")})`;
+      }
+      return null;
+    })();
+    const g = renameGameOf(id, e, use);
+    if (game && g !== game) continue;
+    if (why) { skipped.push({ id, why, game: g }); continue; }
+    for (const [s, f] of files) {
+      const to = targetOf(id, s, e.rev, f);
+      if (f === to) continue;
+      if (!f.startsWith("assets/")) { skipped.push({ id, why: `${f} is not under assets/`, game: g }); continue; }
+      plan.push({ id, state: s, from: f, to, game: g });
+    }
+  }
+  return { plan, skipped };
+}
+// the static references the tool may rewrite: css, the root pages and the lab pages (code and data keep the old names: was answers)
+export function staticFiles(root = ROOT) {
+  const out = [];
+  const w = (d, ok) => { if (!existsSync(join(root, d))) return; for (const f of readdirSync(join(root, d))) { const p = d ? `${d}/${f}` : f; const st = statSync(join(root, p)); if (st.isDirectory()) { if (d && !/^(vendor|node_modules)$/.test(f)) w(p, ok); } else if (ok(p)) out.push(p); } };
+  w("css", (p) => p.endsWith(".css"));
+  for (const f of readdirSync(root)) if (f.endsWith(".html")) out.push(f);
+  w("lab", (p) => p.endsWith(".html"));
+  return out.sort();
+}
+const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// rewrite every exact mention of a renamed path in one text (a path is whole: nothing word-like before or after it)
+export function rewriteText(text, pairs) {
+  let out = text, n = 0;
+  for (const { from, to } of pairs) {
+    if (!out.includes(from)) continue;
+    out = out.replace(new RegExp(`(?<![\\w-]|[\\w-]\\/)${reEsc(from)}(?![\\w-]|\\.[a-z0-9])`, "g"), () => { n++; return to; });
+  }
+  return { text: out, n };
+}
+// do the renames: git mv each file (no copy, no changed byte), then the registry, the ledger, approved.json, artcheck-known.json,
+// the static references and the map. dryRun: change nothing, return what would change
+export function applyRenames(reg, plan, { root = ROOT, dryRun = false, on = today(), git = true, label = null } = {}) {
+  const changed = [];
+  if (!plan.length) return { changed, moved: 0 };
+  for (const r of plan) {
+    if (!existsSync(join(root, r.from))) throw new Error(`rename: ${r.from} does not exist`);
+    if (existsSync(join(root, r.to))) throw new Error(`rename: ${r.to} exists already`);
+  }
+  if (dryRun) {
+    const touched = staticFiles(root).filter((f) => rewriteText(readFileSync(join(root, f), "utf8"), plan).n);
+    return { changed: touched, moved: plan.length, dryRun: true };
+  }
+  const hashBefore = Object.fromEntries(plan.map((r) => [r.from, hashOf(join(root, r.from))]));
+  for (const r of plan) {
+    mkdirSync(join(root, dirname(r.to)), { recursive: true });
+    if (git) { const x = spawnSync("git", ["mv", r.from, r.to], { cwd: root, encoding: "utf8" }); if (x.status) throw new Error(`git mv ${r.from}: ${x.stderr}`); }
+    else renameSync(join(root, r.from), join(root, r.to));
+    if (hashOf(join(root, r.to)) !== hashBefore[r.from]) throw new Error(`rename: ${r.to} changed bytes`);
+  }
+  // the registry: the piece's state names its new file (the hash is the same: the bytes are)
+  const by = new Map(plan.map((r) => [r.from, r.to]));
+  for (const r of plan) { const e = reg.pieces[r.id]; if (e && e.states[r.state] === r.from) e.states[r.state] = r.to; }
+  for (const e of Object.values(reg.pieces)) {
+    if (e.candidate) for (const [s, f] of Object.entries(e.candidate.states || {})) if (by.has(f)) e.candidate.states[s] = by.get(f);
+    for (const x of e.replaced || []) if (by.has(x.file)) x.file = by.get(x.file);
+  }
+  save(reg, root);
+  // the ledger
+  const led = loadLedger(root);
+  for (const r of plan) led.renames.push({ from: r.from, to: r.to, id: r.id, state: r.state, game: r.game, on, ...(label ? { by: label } : {}) });
+  saveLedger(led, root);
+  changed.push(REG_PATH, LEDGER_PATH);
+  // approved.json: a glob that named the old file names the new one too (an exact glob is replaced; a wider glob keeps its line and the new
+  // file gets its own, with the same row)
+  const ap = join(root, "data/art/approved.json");
+  if (existsSync(ap)) {
+    const d = JSON.parse(readFileSync(ap, "utf8"));
+    let n = 0;
+    for (const r of plan) {
+      const hits = d.approved.filter((a) => globRe(a.glob).test(r.from));
+      if (!hits.length) continue;
+      const exact = hits.find((a) => a.glob === r.from);
+      if (exact) exact.glob = r.to; else d.approved.push({ glob: r.to, row: hits[0].row, was: r.from });
+      n++;
+    }
+    if (n) { writeFileSync(ap, JSON.stringify(d, null, 1) + "\n"); changed.push("data/art/approved.json"); }
+  }
+  // artcheck-known.json: the findings keyed by a file follow it; the rename's own rawpath hits go on it (Step 2 takes them off)
+  const kp = join(root, "build/tools/art/artcheck-known.json");
+  if (existsSync(kp)) {
+    const k = JSON.parse(readFileSync(kp, "utf8"));
+    const k2 = [...new Set([...k.map((x) => x.split("|").map((part) => by.get(part) || part).join("|")), ...rawpathFindings(root).map((f) => f.key)])];
+    if (JSON.stringify(k2) !== JSON.stringify(k)) { writeFileSync(kp, JSON.stringify(k2, null, 1) + "\n"); changed.push("build/tools/art/artcheck-known.json"); }
+  }
+  // the static references (css, root pages, lab pages)
+  for (const f of staticFiles(root)) {
+    const t = readFileSync(join(root, f), "utf8");
+    const r = rewriteText(t, plan);
+    if (r.n) { writeFileSync(join(root, f), r.text); changed.push(f); }
+  }
+  writeMap(reg, { root });
+  changed.push(MAP_PATH);
+  if (git) spawnSync("git", ["add", ...changed.filter((f) => existsSync(join(root, f)))], { cwd: root });
+  return { changed, moved: plan.length };
+}
+// the map the game reads (js/art-map.js): the live pieces' files by state, their measures (numbers only), and was. Small on purpose:
+// registry.json (337 KB) never ships to players
+export function mapData(reg, led = { renames: [] }) {
+  const files = {}, meta = {};
+  for (const id of Object.keys(reg.pieces).sort()) {
+    const e = reg.pieces[id];
+    if (e.status === "retired" || !Object.keys(e.states || {}).length) continue;
+    files[id] = e.states;
+    const m = {};
+    for (const [k, v] of Object.entries(e.meta || {})) if (v && "v" in v) m[k] = v.v;
+    if (Object.keys(m).length) meta[id] = m;
+  }
+  return { files, meta, was: wasOf(led) };
+}
+export const mapText = (data) => `/* generated by build/tools/art/registry.mjs --map from data/art/registry.json and data/art/renames.json: never edit it (artcheck
+ * fails when it is stale). The live pieces' files {id: {state: file}}, their measures {id: {key: value}}, and was {old path: new path}:
+ * js/version.js njgV() loads a renamed file by its old path; Cook.Art.file(id, state) and Cook.Art.meta(id) read the rest. */
+window.NJG_ART = {"files": {\n${Object.entries(data.files).map(([k, v]) => `${JSON.stringify(k)}: ${JSON.stringify(v)}`).join(",\n")}\n}, "meta": {\n${Object.entries(data.meta).map(([k, v]) => `${JSON.stringify(k)}: ${JSON.stringify(v)}`).join(",\n")}\n}, "was": {\n${Object.entries(data.was).map(([k, v]) => `${JSON.stringify(k)}: ${JSON.stringify(v)}`).join(",\n")}\n}};\n`;
+export function writeMap(reg, { root = ROOT } = {}) {
+  const t = mapText(mapData(reg, loadLedger(root)));
+  writeFileSync(join(root, MAP_PATH), t);
+  return t;
+}
+// the rawpath check's hits: code and data (js/, data/) naming a renamed file by its old path, or an assets/art/ file directly (the game
+// should ask Cook.Art.file(id, state)). [{check, key, text}]
+export function rawpathFindings(root = ROOT, led = loadLedger(root)) {
+  const was = wasOf(led);
+  if (!Object.keys(was).length) return [];
+  const out = [], seen = new Set();
+  const w = (dir, ok, o = []) => { if (!existsSync(join(root, dir))) return o; for (const f of readdirSync(join(root, dir))) { const p = `${dir}/${f}`; if (statSync(join(root, p)).isDirectory()) { if (!/^(vendor|node_modules)$/.test(f)) w(p, ok, o); } else if (ok(p)) o.push(p); } return o; };
+  const files = [...w("js", (x) => x.endsWith(".js") && x !== MAP_PATH && !x.includes("/vendor/")), ...w("data", (x) => x.endsWith(".json") && !/^data\/art\//.test(x))];
+  for (const f of files) {
+    const t = readFileSync(join(root, f), "utf8");
+    if (!t.includes("assets/")) continue;
+    for (const m of t.matchAll(/(?<![\w-])(assets\/[^"'`\s$*{}()<>,;\\]+\.(?:png|webp|jpe?g|svg))/gi)) {
+      const p = m[1];
+      if (!(was[p] || p.startsWith("assets/art/"))) continue;
+      const key = `rawpath|${f}|${p}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ check: "rawpath", key, text: `${f} names ${p}${was[p] ? ` (renamed: ${was[p]})` : ""}: ask Cook.Art.file(id, state)` });
+    }
+  }
+  return out;
+}
+// is js/art-map.js what the registry and the ledger make? (artcheck's stale check)
+export function mapStale(root = ROOT, reg = load(root)) {
+  const p = join(root, MAP_PATH);
+  if (!existsSync(p)) return "js/art-map.js is missing (node build/tools/art/registry.mjs --map)";
+  return readFileSync(p, "utf8") === mapText(mapData(reg, loadLedger(root))) ? null : "js/art-map.js is stale (node build/tools/art/registry.mjs --map; never merge it by hand)";
 }
 
 /* ---------------- the command line ---------------- */
@@ -589,7 +814,27 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     if (cmd === "add") { const r = addFile(reg, argv[1], { file: val("--file"), state: val("--state"), run: val("--run"), line: val("--line"), pick: val("--pick"), date: val("--date"), name: val("--name"), kind: val("--kind"), game: val("--game"), row: val("--row"), current: argv.includes("--current") }); save(reg); console.log(`${r.id}: ${r.state} -> ${val("--file")} (${r.role})`); }
     if (cmd === "promote") { const r = promote(reg, argv[1], { by: val("--by"), row: val("--row") }); save(reg); console.log(`${r.id}: the candidate is current (by ${val("--by")}); ${r.gone.length} old file(s) on data/art/retired.json`); }
     if (cmd === "status") { setStatus(reg, argv[1], argv[2], { by: val("--by"), row: val("--row"), note: val("--note") }); save(reg); console.log(`${argv[1]}: ${argv[2]}`); }
-    if (cmd === "show") { const id = reg.pieces[argv[1]] ? argv[1] : (fileIndex(reg).get(argv[1]) || {}).id; console.log(id ? JSON.stringify({ [id]: reg.pieces[id] }, null, 1) : `nothing called ${argv[1]}`); }
+    if (cmd === "show") {
+      // an old path answers through the ledger (where the file went, and its piece)
+      const led = loadLedger(), was = wasOf(led);
+      const q = was[argv[1]] || argv[1];
+      if (q !== argv[1]) console.log(`${argv[1]} was renamed: it is ${q} (${led.renames.filter((r) => r.from === argv[1]).map((r) => `${r.on}, ${r.game}`).join("; ")})`);
+      const id = reg.pieces[q] ? q : (fileIndex(reg).get(q) || {}).id;
+      console.log(id ? JSON.stringify({ [id]: reg.pieces[id] }, null, 1) : `nothing called ${argv[1]}`);
+    }
+    if (cmd === "rename") {
+      // registry.mjs rename [--game <board key>] [--dry-run] [--list-skipped]: one game's files to their registry names (git mv)
+      const game = val("--game") || null;
+      if (game && !RENAME_ORDER.includes(game)) throw new Error(`rename: --game is one of ${RENAME_ORDER.join(", ")}`);
+      const { plan, skipped } = renamePlan(reg, { game, use: use && use.pictures });
+      if (argv.includes("--list-skipped")) for (const s of skipped) console.log(`skip ${s.game.padEnd(15)} ${s.id.padEnd(40)} ${s.why}`);
+      const r = applyRenames(reg, plan, { dryRun: argv.includes("--dry-run"), label: game || "all" });
+      // the art board follows (its pictures by their new names)
+      if (!r.dryRun && plan.length && use) { const mo = existsSync(join(ROOT, "build/reports/art-move-out.json")) ? JSON.parse(readFileSync(join(ROOT, "build/reports/art-move-out.json"), "utf8")) : null; writeBoard({ reg, use, moveOut: mo }); spawnSync("git", ["add", "lab/art-board-data.js"], { cwd: ROOT }); r.changed.push("lab/art-board-data.js"); }
+      for (const x of plan.slice(0, argv.includes("--verbose") ? 1e9 : 12)) console.log(`${x.from} -> ${x.to}`);
+      console.log(`rename${r.dryRun ? " (dry run)" : ""}: ${r.moved} files of ${new Set(plan.map((x) => x.id)).size} pieces${game ? ` (${game})` : ""}, ${skipped.length} pieces left out; ${r.dryRun ? "would rewrite" : "rewrote"} ${r.changed.length} files${r.changed.length ? `: ${r.changed.join(", ")}` : ""}`);
+    }
+    if (argv.includes("--map")) { writeMap(reg); console.log(`${MAP_PATH} written`); }
     if (cmd === "list") {
       const sts = val("--status") ? val("--status").split(",") : null, game = val("--game");
       for (const [id, e] of Object.entries(reg.pieces)) if ((!sts || sts.includes(e.status)) && (!game || e.game === game)) console.log(`${e.status.padEnd(11)} ${id.padEnd(40)} ${e.version.padEnd(12)} ${e.row || ""} ${e.note || ""}`);

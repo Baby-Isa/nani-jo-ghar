@@ -5,8 +5,10 @@ import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { pieceOf, seed, addFile, promote, setStatus, validate, measurements, sources, fileIndex, canvasOf, load, save } from "./registry.mjs";
-import { unregisteredFindings, registryFindings } from "./artcheck.mjs";
+import { pieceOf, seed, addFile, promote, setStatus, validate, measurements, sources, fileIndex, canvasOf, load, save, targetOf, wasOf, firstNameOf, renamePlan, renameGameOf, applyRenames, rewriteText, mapData, mapText, writeMap, mapStale, rawpathFindings, loadLedger, hashOf } from "./registry.mjs";
+import { unregisteredFindings, registryFindings, existsFindings, resolvesFindings } from "./artcheck.mjs";
+import { existsSync } from "node:fs";
+import { runInNewContext } from "node:vm";
 
 // a PNG header of w x h (enough for canvasOf)
 const png = (w, h, salt = "") => { const b = Buffer.alloc(40); Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(b, 0); b.write("IHDR", 12, "ascii"); b.writeUInt32BE(w, 16); b.writeUInt32BE(h, 20); b.write(salt, 30, "ascii"); return b; };
@@ -146,4 +148,96 @@ test("registry: the cutters' line tables give each new file its run, line and pi
   assert.deepEqual([s.get("assets/cook/items/v4/sekelo/skewer-empty.webp").run, s.get("assets/cook/items/v4/sekelo/skewer-empty.webp").line], ["s19-full", "K1"]);
   assert.equal(s.get("assets/cook/items/v4/sekelo/meat-raw.webp").line, "K2"); // a loop-built line, from the table of extras
   assert.deepEqual(canvasOf(join(root, "assets/cook/bg/bg-pantry-v3-1600.webp")), [1600, 900]);
+});
+
+/* ---------------- the renames and the map (s19-night-art) ---------------- */
+test("rename: a piece's file is named by its id, state and rev, keeping its extension", () => {
+  assert.equal(targetOf("sekelo.meat", "raw", 1, "assets/cook/items/v4/sekelo/meat-raw.webp"), "assets/art/sekelo/meat.raw.r1.webp");
+  assert.equal(targetOf("kit.tray-steel", "default", 2, "assets/cook/items/x.PNG"), "assets/art/kit/tray-steel.default.r2.png");
+});
+
+test("rename: the ledger's was follows a file renamed twice; firstNameOf goes back to its first name", () => {
+  const led = { renames: [{ from: "assets/a.webp", to: "assets/art/x/a.default.r1.webp" }, { from: "assets/art/x/a.default.r1.webp", to: "assets/art/x/a.default.r2.webp" }] };
+  assert.equal(wasOf(led)["assets/a.webp"], "assets/art/x/a.default.r2.webp");
+  assert.equal(firstNameOf(led)["assets/art/x/a.default.r2.webp"], "assets/a.webp");
+});
+
+test("rename: the plan takes one game's kitchen pieces and leaves out people, scenes and what another mode loads or names", () => {
+  const { root, pics, use } = fixture();
+  const { reg } = seed({ root, use, pics, reg: { pieces: {} } });
+  const u = Object.fromEntries(Object.entries(use).map(([p, e]) => [p, { ...e, loadedBy: e.games.map((g) => `cook:${g}`), namedIn: [] }]));
+  u["assets/cook/items/skewer-empty-t.webp"].loadedBy.push("first"); // the first launch loads it: another mode
+  const { plan, skipped } = renamePlan(reg, { game: "mishkaki-grill", use: u, root });
+  assert.ok(plan.some((r) => r.from === "assets/cook/items/v4/sekelo/meat-raw.webp" && r.to === "assets/art/sekelo/meat.raw.r1.webp"));
+  assert.ok(skipped.some((s) => /another mode \(first\)/.test(s.why)));
+  assert.ok(!plan.some((r) => /characters|bg\//.test(r.from)));
+  const all = renamePlan(reg, { use: u, root });
+  assert.ok(all.skipped.some((s) => s.id === "char.nani.talk" && /namespace char/.test(s.why)));
+  assert.ok(all.skipped.some((s) => s.id.startsWith("scene.") && /namespace scene/.test(s.why)));
+  // a shared kitchen piece moves with chai when chai loads it, else with the first game in the order
+  assert.equal(renameGameOf("kit.pot", { states: { default: "p" } }, { p: { games: ["daar", "chai-tray"] } }), "chai-tray");
+  assert.equal(renameGameOf("kit.pot", { states: { default: "p" } }, { p: { games: ["eggs", "daar"] } }), "daar");
+});
+
+test("rename: static references are rewritten whole, never inside a longer name", () => {
+  const pairs = [{ from: "assets/cook/items/a.webp", to: "assets/art/kit/a.default.r1.webp" }];
+  assert.equal(rewriteText('url(../assets/cook/items/a.webp) "assets/cook/items/a.webp?v=1"', pairs).text, 'url(../assets/art/kit/a.default.r1.webp) "assets/art/kit/a.default.r1.webp?v=1"');
+  assert.equal(rewriteText("assets/cook/items/a.webp.bak xassets/cook/items/a.webp assets/cook/items/a.webpx", pairs).n, 0);
+});
+
+test("rename: git-free apply moves the bytes unchanged and rewrites the registry, ledger, approved list, known list, pages and map", () => {
+  const { root, pics, use } = fixture();
+  const { reg } = seed({ root, use, pics, reg: { pieces: {} } });
+  const w = (p, t) => { mkdirSync(join(root, p, ".."), { recursive: true }); writeFileSync(join(root, p), t); };
+  w("data/art/approved.json", JSON.stringify({ approved: [{ glob: "assets/cook/items/v4/sekelo/meat-*.webp", row: "chai" }, { glob: "assets/cook/items/v4/sekelo/meat-raw.webp", row: "x" }] }));
+  w("build/tools/art/artcheck-known.json", JSON.stringify(["pixel|assets/cook/items/v4/sekelo/meat-raw.webp|grey"]));
+  w("css/cook.css", ".a{background:url(../assets/cook/items/v4/sekelo/meat-raw.webp)}");
+  w("js/cook/stations/grill.js", 'const F = "assets/cook/items/v4/sekelo/meat-raw.webp";');
+  mkdirSync(join(root, "js"), { recursive: true });
+  const h0 = hashOf(join(root, "assets/cook/items/v4/sekelo/meat-raw.webp"));
+  const { plan } = renamePlan(reg, { game: "mishkaki-grill", use: Object.fromEntries(Object.entries(use).map(([p, e]) => [p, { ...e, loadedBy: [], namedIn: [] }])), root });
+  const dry = applyRenames(reg, plan, { root, git: false, dryRun: true });
+  assert.ok(dry.dryRun && existsSync(join(root, "assets/cook/items/v4/sekelo/meat-raw.webp")));
+  applyRenames(reg, plan, { root, git: false, on: "2026-11-13" });
+  const to = "assets/art/sekelo/meat.raw.r1.webp";
+  assert.ok(!existsSync(join(root, "assets/cook/items/v4/sekelo/meat-raw.webp")) && hashOf(join(root, to)) === h0);
+  assert.equal(load(root).pieces["sekelo.meat"].states.raw, to);
+  assert.equal(load(root).pieces["sekelo.meat"].hash.raw, h0);
+  assert.equal(wasOf(loadLedger(root))["assets/cook/items/v4/sekelo/meat-raw.webp"], to);
+  const ap = JSON.parse(readFileSync(join(root, "data/art/approved.json"), "utf8")).approved.map((a) => a.glob);
+  assert.ok(ap.includes(to) && ap.includes("assets/cook/items/v4/sekelo/meat-*.webp") && !ap.includes("assets/cook/items/v4/sekelo/meat-raw.webp"));
+  const known = JSON.parse(readFileSync(join(root, "build/tools/art/artcheck-known.json"), "utf8"));
+  assert.ok(known.includes(`pixel|${to}|grey`));
+  assert.ok(known.includes("rawpath|js/cook/stations/grill.js|assets/cook/items/v4/sekelo/meat-raw.webp")); // the old name in code: Step 2's list
+  assert.match(readFileSync(join(root, "css/cook.css"), "utf8"), /url\(\.\.\/assets\/art\/sekelo\/meat\.raw\.r1\.webp\)/);
+  assert.equal(mapStale(root), null);
+  // the checks: the old name in code still exists (was), the map resolves, every assets/art file is in one entry
+  assert.deepEqual(existsFindings(root).map((f) => f.key), []);
+  assert.deepEqual(resolvesFindings(root, load(root)).map((f) => f.key), []);
+  w("assets/art/sekelo/stray.default.r1.webp", png(10, 10));
+  assert.deepEqual(resolvesFindings(root, load(root)).map((f) => f.key), ["resolves|assets/art/sekelo/stray.default.r1.webp|entries"]);
+  w("js/cook/stations/grill.js", 'const F = "assets/cook/items/v4/sekelo/gone.webp";');
+  assert.deepEqual(existsFindings(root).map((f) => f.key), ["exists|js/cook/stations/grill.js -> assets/cook/items/v4/sekelo/gone.webp"]);
+  // a stale map fails
+  writeFileSync(join(root, "js/art-map.js"), "window.NJG_ART = {};\n");
+  assert.match(mapStale(root), /stale/);
+  // the unregistered check reads the cached traces' old names through the ledger
+  const loads = { pages: { "cook:mishkaki-grill": { id: "cook:mishkaki-grill", pictures: ["assets/cook/items/v4/sekelo/meat-raw.webp"] } } };
+  assert.deepEqual(unregisteredFindings(root, loads, load(root)), []);
+});
+
+test("rename: the map carries live files, measures by value and was; njgV loads an old path's new file", () => {
+  const reg = { pieces: { "sekelo.meat": { status: "approved", states: { raw: "assets/art/sekelo/meat.raw.r1.webp" }, meta: { canvas: { v: [300, 214], from: "x" }, reach: { v: 0.2, from: "y" } } }, "kit.old": { status: "retired", states: {} } } };
+  const led = { renames: [{ from: "assets/cook/items/v4/sekelo/meat-raw.webp", to: "assets/art/sekelo/meat.raw.r1.webp" }] };
+  const d = mapData(reg, led);
+  assert.deepEqual(d.files, { "sekelo.meat": { raw: "assets/art/sekelo/meat.raw.r1.webp" } });
+  assert.deepEqual(d.meta, { "sekelo.meat": { canvas: [300, 214], reach: 0.2 } });
+  const win = {};
+  runInNewContext(mapText(d), { window: win });
+  runInNewContext(readFileSync(new URL("../../../js/version.js", import.meta.url), "utf8"), { window: win });
+  assert.equal(win.NJG_ART.was["assets/cook/items/v4/sekelo/meat-raw.webp"], "assets/art/sekelo/meat.raw.r1.webp");
+  assert.equal(win.njgV("assets/cook/items/v4/sekelo/meat-raw.webp"), `assets/art/sekelo/meat.raw.r1.webp?v=${win.NJG_V}`);
+  assert.equal(win.njgV("../assets/cook/items/v4/sekelo/meat-raw.webp?x=1"), `../assets/art/sekelo/meat.raw.r1.webp?x=1&v=${win.NJG_V}`);
+  assert.equal(win.njgV("assets/cook/items/other.webp"), `assets/cook/items/other.webp?v=${win.NJG_V}`);
+  assert.equal(win.njgV("data:image/png;base64,xx"), "data:image/png;base64,xx");
 });
