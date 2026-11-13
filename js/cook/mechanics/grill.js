@@ -1732,8 +1732,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (over > 0 && trayTop < cogBottom) x0 -= Math.max(0, Math.min(over, x0 - (left + 8)));
         // (the judge, s19-night-c-ev1, 740x320: "the cog's box sits over the tray's top-right corner in every frame": a phone has no
         // room left to move into; then the group is made just small enough that the tray ends 10 px left of the cog, centred in the
-        // room between the view's left margin and the cog, unless it already sits below the cog). 14 page px apart
-        const gapD = Math.max(10, 14 / ppw / k); // (14 page px between the tray and the cog, at any size)
+        // room between the view's left margin and the cog, unless it already sits below the cog)
+        const gapD = 6 / ppw / k; // (6 page px between the tray and the cog, at any size: the grill stays at 60% of the height, contract-115)
         const room = cogLeft - gapD - vl;
         if (x0 + M * (gW + GAP + ACROSS) + gapD > cogLeft && farY - box.far * M < cogBottom && room > 0) {
           const M2 = Math.max(120, Math.min(M, room / (gW + GAP + ACROSS)));
