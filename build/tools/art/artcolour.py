@@ -235,7 +235,7 @@ def palette_fit(cols, R=None, name=""):
     R = R or rules()
     P, kL = R["palette"], R["colour"]["kL"]
     rows, labs = wada()
-    rel = os.path.relpath(os.path.abspath(name), REPO) if name else ""
+    rel = first_name(os.path.relpath(os.path.abspath(name), REPO)) if name else ""
     g = _globbed(rel, P.get("allow", {}))
     allowed = P["allow"][g] if g else None
     mode = "people" if _globbed(rel, P.get("people", [])) else "sky" if _globbed(rel, P.get("sky", {})) \
@@ -659,7 +659,7 @@ def wood(res, name, R):
     if not W or not name:
         return None
     base = os.path.basename(name).lower()
-    if any(fnmatch.fnmatch(os.path.relpath(os.path.abspath(name), REPO), g) for g in R["light"]["skip"]):
+    if any(fnmatch.fnmatch(first_name(os.path.relpath(os.path.abspath(name), REPO)), g) for g in R["light"]["skip"]):
         return None  # people and hands: a hand on a rolling pin is skin, not wood
     toks = re.split(r"[-_.]", os.path.splitext(base)[0])
     if len(toks) > 1 and toks[-1] in W.get("state_suffixes", []):
@@ -680,7 +680,7 @@ def wood(res, name, R):
 
 
 def size_class_of(path, R):
-    rel = os.path.relpath(os.path.abspath(path), REPO)
+    rel = first_name(os.path.relpath(os.path.abspath(path), REPO))
     for pat, cls in R["sizes"]["items"].items():
         if fnmatch.fnmatch(rel, pat) or fnmatch.fnmatch(os.path.basename(path), pat):
             return cls
@@ -781,9 +781,10 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         lo_, hi_ = P["concave_arc"]
         concave = li["round"] >= P["concave_round"] and (lo_ <= li["angle"] <= hi_)
         li["concave"] = concave
-        skip = any(fnmatch.fnmatch(os.path.relpath(os.path.abspath(name), REPO), g) for g in P["skip"]) if name else False
+        skip = any(fnmatch.fnmatch(first_name(os.path.relpath(os.path.abspath(name), REPO)), g) for g in P["skip"]) if name else False
         li["skipped"] = skip
-        eye = P.get("eye_passed", {}).get(os.path.relpath(os.path.abspath(name), REPO)) if name else None
+        _r = os.path.relpath(os.path.abspath(name), REPO).replace(os.sep, "/") if name else None
+        eye = (P.get("eye_passed", {}).get(_r) or P.get("eye_passed", {}).get(first_name(_r))) if name else None
         if eye:
             li["eye_passed"] = eye
         if off_arc and not concave and not skip and not eye:  # a FAIL since 6 Nov (Zafar): on the block or in the redo pipeline
@@ -833,12 +834,29 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
     return res
 
 
+_FIRST = None
+
+
+def first_name(rel):
+    """A renamed file's first name (data/art/renames.json, s19-night-art): the rules that name pictures by path keep finding them."""
+    global _FIRST
+    if _FIRST is None:
+        _FIRST = {}
+        try:
+            for r in json.load(open(os.path.join(REPO, "data/art/renames.json")))["renames"]:
+                _FIRST[r["to"]] = _FIRST.get(r["from"], r["from"])
+        except Exception:
+            pass
+    rel = rel.replace(os.sep, "/")
+    return _FIRST.get(rel, rel)
+
+
 def pink_rim(path, R=None):
     """ART-76: the share of a cut-out's soft edge that is magenta-tinted where its piece is not, at the file's own size (a resize
     blends the rim away). None when the file has no soft edge to judge or is skipped by name (see-through glass)."""
     R = R or rules()
     P = R["rim"]
-    rel = os.path.relpath(os.path.abspath(path), REPO)
+    rel = first_name(os.path.relpath(os.path.abspath(path), REPO))
     if any(fnmatch.fnmatch(rel, g) for g in P["skip"]):
         return None
     im = Image.open(path)
@@ -870,7 +888,8 @@ def analyse(path, R=None, size_class=None):
     if res.get("cutout"):
         pr = pink_rim(path, R)
         res["info"]["rim"] = pr
-        known = os.path.relpath(os.path.abspath(path), REPO) in set(R["rim"].get("known", []))
+        _r = os.path.relpath(os.path.abspath(path), REPO).replace(os.sep, "/")
+        known = bool({_r, first_name(_r)} & set(R["rim"].get("known", [])))
         if pr and pr["fail"] and known:
             res["flag"].append("pink rim (known art debt, look-rules.json rim.known): %.0f%% of the soft edge magenta-tinted; run python3 build/tools/art/edge_bleed.py on it" % (pr["share"] * 100))
         elif pr and pr["fail"]:
@@ -1081,11 +1100,13 @@ def changed(ref=None):
     if not ref:
         mb = _git("merge-base", "HEAD", "origin/main")
         ref = mb.stdout.strip() if mb.returncode == 0 and mb.stdout.strip() and mb.stdout.strip() != head else "HEAD~1"
-    d = _git("diff", "--name-only", "--diff-filter=ACMR", ref, "--", "assets")
+    # (s19-night-art: a pure rename, R100, is the same picture under its registry name: no new picture, not measured again)
+    d = _git("diff", "--name-status", "-M", "--diff-filter=ACMR", ref, "--", "assets")
     if d.returncode != 0:
         raise SystemExit("git diff against %s failed: %s" % (ref, d.stderr.strip()))
     u = _git("ls-files", "--others", "--exclude-standard", "--", "assets")
-    rels = sorted(set(d.stdout.split() + u.stdout.split()))
+    names = [ln.split("\t")[-1] for ln in d.stdout.splitlines() if ln.strip() and ln.split("\t")[0] != "R100"]
+    rels = sorted(set(names + u.stdout.split()))
     return ref, [os.path.join(REPO, p) for p in rels if p.lower().endswith(IMG_EXT) and os.path.isfile(os.path.join(REPO, p))]
 
 

@@ -279,8 +279,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
       // S19 (Fable's daar flaws 8 and 9): the small glass bowl each chopped heap waits in, and the empty steel katori they are served in
-      ["dv5-glass", "assets/cook/items-s17-stove/t-small-glass-bowl.webp"],
-      ["dv5-katori", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp"],
+      ["dv5-glass", Cook.Art.file("shelf.small-glass-bowl", "default")],
+      ["dv5-katori", Cook.Art.file("shelf.steel-serving-bowl", "default")],
     ]
       // S19 (D1-D3): the v4 pot, empty and with oil, its six discs, the kit's ladle and the dial's icons: the stir kit's (DAAR-45)
       .concat(Cook.StirKit.art())

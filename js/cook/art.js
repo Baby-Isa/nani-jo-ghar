@@ -1058,6 +1058,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const c = get(key);
     return c ? c.toDataURL() : "";
   };
+  /*
+   * The art registry by id (s19-night-art; docs/design-language/art-registry.md). js/art-map.js (generated from
+   * data/art/registry.json) gives each live piece's file per state and its measures. A game asks Cook.Art.file("sekelo.meat", "raw")
+   * for the path (wrap it in Cook.v as any path) and Cook.Art.meta("sekelo.meat") for the numbers the picture carries (canvas, rim,
+   * reach ...). An unknown id or state gives null (and one console warning), never a wrong picture.
+   */
+  const artMap = () => global.NJG_ART || { files: {}, meta: {} };
+  const warned = new Set();
+  const warnOnce = (k, text) => { if (!warned.has(k)) { warned.add(k); if (global.console) console.warn(text); } };
+  Art.file = function (id, state) {
+    const st = artMap().files[id];
+    if (!st) return warnOnce(id, `Cook.Art.file: no piece ${id} in js/art-map.js`), null;
+    const s = state == null ? ("default" in st ? "default" : Object.keys(st).length === 1 ? Object.keys(st)[0] : null) : String(state);
+    if (s == null || !(s in st)) return warnOnce(`${id}|${state}`, `Cook.Art.file: ${id} has no state ${state} (${Object.keys(st).join(", ")})`), null;
+    return st[s];
+  };
+  /** The measures a piece's picture carries ({canvas: [w, h], rim: ..., "reach@raw": ...}), or one of them by key. */
+  Art.meta = function (id, key) {
+    const m = artMap().meta[id];
+    if (!m) return key == null ? {} : undefined;
+    return key == null ? m : m[key];
+  };
   /**
    * The picture for a word. On a worktop: its sprite in `state` ("bowl":
    * how it sits in a row) once loaded, else a prop, else a drawn bowl. In

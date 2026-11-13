@@ -275,7 +275,7 @@
   ],
   "eye_passed": {
    "_about": "Pictures whose light reading an eye passed (a multi-material piece's albedo, not its light): no light FAIL. Path: who and when.",
-   "assets/cook/items/v3/samosa/jharo.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
+   "assets/art/samosa/jharo.default.r1.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/items-s08c/steel-cup-s08c.webp": "Fable, 6 Nov (art-retrospective-2026-11-06)",
    "assets/clinic/s17-clinic-redo/tweezers-splinter-belt.webp": "Claude (orchestrator), 7 Nov: lit from the upper left by eye; the tool reads the steel's reflections",
    "assets/clinic/s17-clinic-redo/honey-jar-belt.webp": "Claude (orchestrator), 7 Nov: lit from the upper left by eye; the tool reads the lit honey as light from below",
@@ -481,7 +481,8 @@
    "labs.html",
    "js/vendor/*",
    "data/art/*",
-   "lab/art-board-data.js"
+   "lab/art-board-data.js",
+   "js/art-map.js"
   ]
  },
  "scan": {
@@ -508,12 +509,12 @@
   ],
   "known": [
    "assets/cook/items-s08b/chaat-strips/strip-onion-s08b.webp",
-   "assets/cook/items/v4/chaat/layer-dungri.webp",
-   "assets/cook/items/v4/chop/bataato-whole.webp",
-   "assets/cook/items/v4/chop/dungri-whole.webp",
-   "assets/cook/items/v4/chop/lasan-half-a.webp",
-   "assets/cook/items/v4/chop/lasan-half-b.webp",
-   "assets/cook/items/v4/chop/tameto-whole.webp"
+   "assets/art/chaat/layer-dungri.default.r1.webp",
+   "assets/art/chop/bataato.whole.r1.webp",
+   "assets/art/chop/dungri.whole.r1.webp",
+   "assets/art/chop/lasan.half-a.r1.webp",
+   "assets/art/chop/lasan.half-b.r1.webp",
+   "assets/art/chop/tameto.whole.r1.webp"
   ],
   "_known": "The pink rims on HEAD when the measure was built (s19-checks-2, 11 Nov): art debt for the art owner (edge_bleed.py, or a re-cut where the spill is thicker than its 2 px reach). Each reads as a flag, not a FAIL, until fixed; the list only shrinks (artcheck-known.json holds the same as rim| entries)."
  }

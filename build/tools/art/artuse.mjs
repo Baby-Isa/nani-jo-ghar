@@ -56,7 +56,8 @@ export const isNew = (p) => versionOf(p) === "v4";
 
 /* ---------- names ---------- */
 const SCAN_DIRS = ["js", "data", "css", "lab"];
-const SKIP = /(^|\/)(vendor|node_modules)\/|^data\/art\/|candidates|audio-manifest|asset-list|^lab\/art-board|family-audio|\.map$/;
+// (js/art-map.js is generated from the registry: it names every live file, which is no use as a reference)
+const SKIP = /(^|\/)(vendor|node_modules)\/|^data\/art\/|^js\/art-map\.js$|candidates|audio-manifest|asset-list|^lab\/art-board|family-audio|\.map$/;
 const walkText = (root, dir, out = []) => {
   if (!existsSync(join(root, dir))) return out;
   for (const f of readdirSync(join(root, dir))) {

@@ -22,10 +22,15 @@
  *   Clinic data/clinic/assets.json shared (every clinic page) + data/clinic/heal/<id>.json "assets" (that game's);
  *          a morning may load its first two patients' games (the next one is prefetched); a game page only its own
  *          game's code (js/clinic/heal/games/<id>.js) and art
+ * Renamed art (s19-night-art, data/art/renames.json): a page that loads a file by its registry name is held to the manifest by the
+ * file's first name (the manifests still name the old paths until each game asks by id); --json also writes each page's pictures'
+ * content hashes and the pictures that did not load (missing), the byte proof that a rename changed no picture
+ *   (build/tools/art/byteproof.mjs compares a before and an after file).
  * Run it under the browser lock (rule B16): checks.mjs --browser does (flock -w 1800 /tmp/njg-browser-all.lock). Port: COOK_TEST_PORT
  * + 40 (default 8852), so it never meets the sandbox's server.
  */
 import { createServer } from "node:http";
+import { createHash } from "node:crypto";
 import { existsSync, statSync, createReadStream, readFileSync } from "node:fs";
 import { join, extname, normalize } from "node:path";
 import { args, help, ROOT } from "./lib/common.mjs";
@@ -41,12 +46,17 @@ const LAT = TIME ? 30 : 0;
 const IMG = /\.(webp|png|jpe?g|svg|gif)$/i;
 const MIME = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".mjs": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml", ".mp3": "audio/mpeg", ".m4a": "audio/mp4", ".woff2": "font/woff2", ".ttf": "font/ttf", ".gif": "image/gif" };
 const json = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
+// a renamed file's first name (the ledger, data/art/renames.json): the manifests and the known lists name it so
+const FIRST = (() => { const m = {}; try { for (const r of json("data/art/renames.json").renames) m[r.to] = m[r.from] || r.from; } catch {} return m; })();
+const firstName = (u) => FIRST[u] || u;
+const sha8 = (u) => { try { return createHash("sha256").update(readFileSync(join(ROOT, u))).digest("hex").slice(0, 8); } catch { return null; } };
 
 /* ---------------- the manifests ---------------- */
 const glob = (g) => new RegExp("^" + g.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*\*/g, "\u0000").replace(/\*/g, "[^/]*").replace(/\u0000/g, ".*") + "$");
 const matcher = (list) => {
   const res = [...new Set(list.filter(Boolean))].map((g) => (g.includes("*") ? glob(g) : g));
-  return (u) => res.some((r) => (typeof r === "string" ? r === u : r.test(u)));
+  const one = (u) => res.some((r) => (typeof r === "string" ? r === u : r.test(u)));
+  return (u) => one(u) || (FIRST[u] ? one(FIRST[u]) : false);
 };
 const cook = json("data/cook.json");
 const SP = cook.art.sprites || {};
@@ -208,8 +218,9 @@ async function checkPage(pg) {
       const stray = pics.filter((u) => !allow(u) && !(pg.station && shared(u)));
       const okCode = pg.code ? pg.code(pg) : null;
       const codeStray = okCode ? [...new Set(r.reqs.map((q) => q.u).filter((u) => /^js\/clinic\/heal\/games\//.test(u)).map((u) => u.replace(/^.*\/|\.js$/g, "")).filter((g) => !okCode.includes(g)))] : [];
-      const big = [...new Map((r.oversize || []).map((x) => [x.u, x])).values()].filter((x) => !OVERSIZE_KNOWN.has(x.u));
-      results.push({ pg, pics, stray, codeStray, errs, big, oversize: r.oversize || [] });
+      const big = [...new Map((r.oversize || []).map((x) => [x.u, x])).values()].filter((x) => !OVERSIZE_KNOWN.has(x.u) && !OVERSIZE_KNOWN.has(firstName(x.u)));
+      const missing = pics.filter((u) => !existsSync(join(ROOT, u)));
+      results.push({ pg, pics, stray, codeStray, errs, big, missing, oversize: r.oversize || [] });
     }
   } catch (e) {
     results.push({ pg, error: e.message.split("\n")[0], errs });
@@ -234,6 +245,8 @@ for (const pg of pages) {
     continue;
   }
   const bad = r.stray.length || r.codeStray.length || (r.big || []).length;
+  // (a picture asked for that does not exist is reported, not failed: the byte proof, byteproof.mjs, fails on a new one)
+  for (const u of (r.missing || []).slice(0, 6)) console.log(`       missing: ${u} (no such file)`);
   for (const x of (r.big || []).slice(0, 6)) console.log(`       oversize: ${x.u} is ${x.nat} px wide, drawn at ${x.drawn} px (over 3x)`);
   if (bad) fail++;
   console.log(`${bad ? "FAIL" : "ok  "} ${pg.id.padEnd(20)} ${r.pics.length} pictures${pg.games ? ` (games ${pg.games.join(", ")})` : ""}${bad ? `: ${r.stray.length} outside the manifest${r.codeStray.length ? `, other games' code: ${r.codeStray.join(", ")}` : ""}` : ""}`);
@@ -246,6 +259,6 @@ for (const pg of pages) {
   if (r.errs.length) console.log(`       page errors: ${r.errs.slice(0, 2).join(" | ")}`);
 }
 if (a.has("write-oversize")) { (await import("node:fs")).writeFileSync(OVERSIZE_FILE, JSON.stringify([...new Set(results.flatMap((r) => (r.oversize || []).map((x) => x.u)))].sort(), null, 1) + "\n"); console.log("oversize known list written"); }
-if (a.val("json")) (await import("node:fs")).writeFileSync(a.val("json"), JSON.stringify(Object.fromEntries(results.map((r) => [r.pg.id, { pictures: r.pics || [], stray: r.stray || [], games: r.pg.games || null }])), null, 1));
+if (a.val("json")) (await import("node:fs")).writeFileSync(a.val("json"), JSON.stringify(Object.fromEntries(results.map((r) => [r.pg.id, { pictures: r.pics || [], stray: r.stray || [], games: r.pg.games || null, missing: r.missing || [], hashes: Object.fromEntries((r.pics || []).map((u) => [u, sha8(u)])), first: Object.fromEntries((r.pics || []).filter((u) => FIRST[u]).map((u) => [u, FIRST[u]])) }])), null, 1));
 if (!TIME) console.log(`\n${pages.length - fail}/${pages.length} pages load only what's on their screen${fail ? `; ${fail} FAIL` : ""}${a.has("stray") ? " (--stray: the chai station asked for samosa's board on purpose)" : ""}`);
 process.exit(fail ? 1 : 0);

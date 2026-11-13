@@ -67,7 +67,7 @@ and on `data/art/retired.json`).
    unchanged and the board shows old and new side by side.
 2. **The judge (or Zafar, for people) says yes:** `registry.mjs promote sekelo.meat --by judge`. The candidate becomes current, the
    old file goes on the piece's `replaced` list and on `data/art/retired.json`.
-3. **Every game follows:** once a game asks by id (`Cook.Art.url("sekelo.meat", "raw")`, Sprint 20), the next load shows the new
+3. **Every game follows:** once a game asks by id (`Cook.Art.file("sekelo.meat", "raw")`, Sprint 20), the next load shows the new
    file. Until then, the retired check names every file and page still asking for the old one, so nothing is missed.
 4. **Not a drop-in?** If the new cut's states or measurements differ (four stages where there were three, a handle in a new place),
    promote warns (`metaStale`, the stage rule) and a wiring row is opened: re-pointing an id is not enough.
@@ -99,6 +99,22 @@ pages); a plain run joins them in seconds and writes the board's data. Refresh t
 | 14 `meta.json` files under `assets/` (pixels in `items-s14`, fractions in `chai-v2`) and the six JS files that copy their numbers | measurements | `meta` with `from: <folder>/meta.json#<key>` | the cutter writes fractions; the copies in `kitchen-kit.js`, `chai-tray.js`, `daar.js`, `maani-line.js`, `samosa.js`, `grill.js` and `build/check_vessel_meta.py` go |
 | `build/tools/art/artcheck-known.json` (pixel, rim faults) and the cutters' numbers (`cut-numbers.json`) | known flaws; measures | flaws show on each piece on the board; the cutter's numbers are `meta` | the known list stays (the check's ratchet, by file); new cutters write `meta` through `registry.mjs add` |
 
+## The files' names, the map and the redirect (s19-night-art; Zafar, 13 Nov, decisions 16-18)
+
+The plan: `build/reports/s19-art-rename-plan.md`. A piece's current file is named by its id, under the assets folder: `art/<namespace>/<piece>.<state>.r<rev>.<ext>`
+(`sekelo.meat` raw is `art/sekelo/meat.raw.r1.webp`); a name never changes once given (a new version is the next `r`).
+`registry.mjs rename --game <k> [--dry-run] [--list-skipped]` moves one game's files (git mv, no changed byte, the hash proves it) and
+rewrites the registry, `data/art/approved.json`, `build/tools/art/artcheck-known.json`, the static references in css, the root pages and
+the lab pages, the art board, and appends every move to the permanent ledger `data/art/renames.json` (`registry.mjs show <old path>`
+says where a file went). `js/art-map.js` is generated (`registry.mjs --map`; never edited, never merged by hand: regenerate it) and loads
+right after `js/version.js`: the live pieces' files and measures, and `was` (old path to new). `njgV()` follows `was`, so code and data
+that still name a file by its old path load the new one; `Cook.Art.file(id, state)` and `Cook.Art.meta(id[, key])` (`js/cook/art.js`)
+are how a game asks by id. Not renamed: people (`char.*`, Zafar's approval), scenes, the shared kit, ui, other modes' art and any file
+another mode loads or names (the rename tool lists them). artcheck's `exists` (every path named exists or is on the ledger), `resolves`
+(the map is fresh; its files carry the registry's hash; every file in the art folder is in one entry) and `rawpath` (old names and
+art-folder paths in code and data, the list Step 2 shrinks) keep it honest; `loadcheck.mjs --json` with `build/tools/art/byteproof.mjs`
+is the byte proof (the same pictures by content before and after).
+
 ## Sprint 20: moving the games to ids
 
 A game moves only when its art is being swapped anyway (non-negotiable 1: no sprint of pure moving). Parked games and prototypes
@@ -112,7 +128,7 @@ swap comes (it is the reference and approved).
 
 **Per game, three commits:**
 1. **Ids for exactly today's files.** The registry already holds every file the game loads. The game's code and station data ask
-   `Cook.Art.url(id, state)` and `Cook.Art.meta(id)` (in `js/cook/art.js`, which already resolves `art.sprites`); its manifest
+   `Cook.Art.file(id, state)` and `Cook.Art.meta(id)` (in `js/cook/art.js`, which already resolves `art.sprites`); its manifest
    becomes a list of ids; the game goes on `migrated` in `registry.json`, which turns its warnings into errors and starts `rawpath`.
    **The no-pixel-changed proof:** before the switch, play the game's flows at L1-L4 and the four sizes (`run.mjs --flow
    cook:<k>,cook:<k>@L2,... --sizes 740x320,930x430,1280x665,1920x1080 --run-id <k>-ids-before`), the same after the switch
@@ -142,4 +158,5 @@ leave the live site when it merges). Nothing is moved before then.
 | `node build/tools/art/registry.mjs promote <id> --by judge\|Zafar` | the candidate becomes current; the old file is retired |
 | `node build/tools/art/registry.mjs status <id> needs-redo --row ART-nn --note "..."` | mark a fault (from `/feedback`) |
 | `node build/tools/art/registry.mjs list --status needs-redo,stand-in` | the next art run's list |
-| `node build/tools/art/registry.mjs --validate`, `show <id\|file>` | the rules; one entry |
+| `node build/tools/art/registry.mjs --validate`, `show <id\|file\|old path>` | the rules; one entry (an old path through the ledger) |
+| `node build/tools/art/registry.mjs rename --game <k> [--dry-run] [--list-skipped]`, `--map` | one game's files to their registry names; the map |

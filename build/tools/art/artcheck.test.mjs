@@ -9,6 +9,9 @@ import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..", "..", "..");
+// a file renamed to its registry name (s19-night-art, data/art/renames.json) is named here by its first name: cur() gives today's
+const WAS = (() => { const m = {}; try { for (const r of JSON.parse(readFileSync(join(ROOT, "data/art/renames.json"), "utf8")).renames) m[r.from] = r.to; for (const k of Object.keys(m)) while (m[m[k]]) m[k] = m[m[k]]; } catch {} return m; })();
+const cur = (p) => WAS[p] || p;
 const KNOWN = new Set(JSON.parse(readFileSync(join(HERE, "artcheck-known.json"), "utf8")));
 const pix = (files) => { const r = spawnSync("python3", [join(HERE, "artpixels.py"), "--json", ...files], { encoding: "utf8", maxBuffer: 1 << 26 }); return JSON.parse(r.stdout); };
 
@@ -33,8 +36,8 @@ test("rim: the pink rim is red on a cut from before edge_bleed and green on it a
   const red = rimFindings([old]);
   assert.equal(red.length, 1);
   assert.match(red[0].text, /pink rim, \d+% of its soft edge .*edge_bleed\.py/);
-  assert.deepEqual(rimFindings(["assets/cook/items/v4/chaat/bataato.webp"]), [], "the same cut after edge_bleed.py");
-  const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--rim", "--json", "-", "assets/cook/items/v4/baking/jug-0.webp", old], { cwd: ROOT, encoding: "utf8" });
+  assert.deepEqual(rimFindings([cur("assets/cook/items/v4/chaat/bataato.webp")]), [], "the same cut after edge_bleed.py");
+  const r = spawnSync("python3", [join(HERE, "artcolour.py"), "--rim", "--json", "-", cur("assets/cook/items/v4/baking/jug-0.webp"), old], { cwd: ROOT, encoding: "utf8" });
   assert.deepEqual(Object.keys(JSON.parse(r.stdout)), [old], "the glass jug is skipped by name (look-rules.json rim.skip)");
   // checks.mjs's art step (artcolour.py on changed pictures): the old cut FAILs; today's known pink rims read as flags, the same list
   const a = spawnSync("python3", [join(HERE, "artcolour.py"), "--quiet", old], { cwd: ROOT, encoding: "utf8" });
@@ -348,7 +351,7 @@ test("colour and look: house share and camera height are surface checks; the cha
   assert.ok(Math.abs(s["jar-0"].info.camera.rim - 0.15) < 0.1 && Math.abs(s["jar-3"].info.camera.rim - 0.5) < 0.1, `the rim ratio is read: ${s["jar-0"].info.camera.rim}, ${s["jar-3"].info.camera.rim}`);
   assert.ok(s["jar-3"].flag.some((f) => /camera height differs/.test(f)), "a jar shot from higher on one shelf is flagged");
   const bare = ["shelf-cook-chai-bare-f", "shelf-cook-khun-bare-f"], v2 = ["shelf-elchi-jar-v2-f", "shelf-aadu-jar-v2-f", "shelf-lasan-jar-v2-f", "shelf-loon-jar-v2-f"];
-  const c = look(["--batch", "chai-shelf", ...[...bare, ...v2].map((n) => join(ROOT, `assets/cook/items/${n}.webp`))]).by;
+  const c = look(["--batch", "chai-shelf", ...[...bare, ...v2].map((n) => join(ROOT, cur(`assets/cook/items/${n}.webp`)))]).by;
   const mean = (ns) => ns.reduce((t, n) => t + c[`${n}.webp`].info.camera.rim, 0) / ns.length;
   assert.ok(mean(v2) - mean(bare) > 0.08, `the v2 jars are shot from higher than the bare jars: ${mean(v2).toFixed(2)} against ${mean(bare).toFixed(2)}`);
   assert.ok(Object.values(c).some((r) => r.flag.some((f) => /camera height differs/.test(f))), "the chai shelf flags its camera");
@@ -455,7 +458,7 @@ print(json.dumps({"t": t, "words": C.combination_words(151), "n": n, "k": len(C.
   assert.match(o.t, /ONE Wada combination/, "every block says one combination per picture");
 });
 test("light is a FAIL unless an eye passed the reading (light.eye_passed): the jharo passes, the well fails", () => {
-  const { res } = look(["--batch-by", "none", ...["assets/cook/items/v3/samosa/jharo.webp", "assets/day/s09b/well.webp"].map((p) => join(ROOT, p))]);
+  const { res } = look(["--batch-by", "none", ...[cur("assets/cook/items/v3/samosa/jharo.webp"), "assets/day/s09b/well.webp"].map((p) => join(ROOT, p))]);
   const [j, w] = res.results;
   assert.ok(!j.fail.some((f) => f.startsWith("light")) && /Fable, 6 Nov/.test(j.info.light.eye_passed), JSON.stringify(j.info.light));
   assert.ok(w.fail.some((f) => f.startsWith("light from the lower right")));
