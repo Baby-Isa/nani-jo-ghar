@@ -493,3 +493,11 @@ test("fix round (26 Oct): a still strip is flagged 'no motion captured'; frames 
   assert.deepEqual(offSlots([0, 262, 531, 790], 250), [false, false, false, false], "within 60 ms is on the clock");
   assert.equal(capMs("452 ms (slot 250: off)"), 452);
 });
+
+test("a judge line that says it is not the builder is not the builder (13 Nov)", async () => {
+  const { judgedByBuilder } = await import("./lib/judge-id.mjs");
+  assert.equal(judgedByBuilder("claude, session_x (judge subagent, not the builder s19-night-b)", "s19-night-b"), false);
+  assert.equal(judgedByBuilder("claude, session_x (independent judge, not s19-night-b)", "s19-night-b"), false);
+  assert.equal(judgedByBuilder("s19-night-b", "s19-night-b"), true);
+  assert.equal(judgedByBuilder("the builder s19-night-b itself", "s19-night-b"), true);
+});

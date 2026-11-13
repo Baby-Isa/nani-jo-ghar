@@ -1852,3 +1852,45 @@
 {"id":"SH-231","run":"br-s17-n2-wm-after-20261106-233740-gwd","verdict":"PASS","spec":"be2ea75da7a91d51910e","judge":"claude-opus-5-5 (Opus 5.5), session 05818d17-b46b-536a-ab94-2b6678bf687a","date":"2026-11-06"}
 {"id":"SH-231","run":"br-s17-n2-wm-after-20261106-233740-gwd","event":"built","date":"2026-11-06"}
 {"id":"CK-65","run":"s19-night-b-a2","verdict":"PASS","spec":"cef6e09724ffe2e67e81","judge":"expect","date":"2026-11-13"}
+{"id":"CK-102","run":"s19-night-b-a2","verdict":"FAIL","spec":"d8d805c7ee85aff17be3","judge":"Fable 5.2 (claude-fable-5-2), session_014xb3kSEqyUTbvHCABDzeLo","date":"2026-11-13"}
+{"id":"CK-104","run":"s19-night-b-a2","verdict":"FAIL","spec":"c8c437cdd6c8016e1663","judge":"Fable 5.2 (claude-fable-5-2), session_014xb3kSEqyUTbvHCABDzeLo","date":"2026-11-13"}
+{"id":"CK-105","run":"s19-night-b-a2","verdict":"FAIL","spec":"45660df7f78bde41d424","judge":"Fable 5.2 (claude-fable-5-2), session_014xb3kSEqyUTbvHCABDzeLo","date":"2026-11-13"}
+{"id":"DAAR-52","run":"s19-night-c-ev1","verdict":"PASS","spec":"9809424afbf55538f6ab","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder)","date":"2026-11-13"}
+{"id":"SAM-38","run":"s19-night-c-ev1","verdict":"PASS","spec":"0bd633bb9bc2c9f12dd1","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder)","date":"2026-11-13"}
+{"id":"CK-108","run":"s19-night-c-ev1","verdict":"PASS","spec":"caf842bb744ed6029a95","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder)","date":"2026-11-13"}
+{"id":"CK-109","run":"s19-night-c-ev1","verdict":"PASS","spec":"0f0ba77672e3af4fada0","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder)","date":"2026-11-13"}
+{"id":"SEK-29","run":"s19-night-c-ev1","verdict":"FAIL","spec":"ff8c8f5d4c921817a38a","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (independent judge, not the builder)","date":"2026-11-13"}
+{"id":"CK-107","run":"s19-night-c-ev3","verdict":"PASS","spec":"3e8f225dd24f3ff72fc2","judge":"claude-fable-5-2, session 014xb3kSEqyUTbvHCABDzeLo (independent judge, not the builder)","date":"2026-11-13"}
+{"id":"CK-112","run":"s19-night-c-ev3","verdict":"FAIL","spec":"7903776060678fd4f324","judge":"claude-fable-5-2, session 014xb3kSEqyUTbvHCABDzeLo (independent judge, not the builder)","date":"2026-11-13"}
+{"id":"PAN-19","run":"s19-night-b-a2","verdict":"FAIL","spec":"0585dddb3f86e9fcebf8","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"PAN-20","run":"s19-night-b-a2","verdict":"PASS","spec":"93bc3b73b479a1bedb55","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CHAI-101","run":"s19-night-b-a2","verdict":"PASS","spec":"cf666344dd89e29bd88f","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CHAI-19","run":"s19-night-b-a2","verdict":"PASS","spec":"bc7f676d531c78637053","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CHAI-37","run":"s19-night-b-a2","verdict":"FAIL","spec":"0af2ee59592b677f239d","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CHAI-55","run":"s19-night-b-a2","verdict":"FAIL","spec":"51fde7e14f8e2cd1403c","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-46","run":"s19-night-b-a2","verdict":"FAIL","spec":"495cb20e25957fa309db","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-75","run":"s19-night-b-a2","verdict":"PASS","spec":"181354d8c3b3f5976b5a","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-76","run":"s19-night-b-a2","verdict":"FAIL","spec":"92c5e5fab328cdce7283","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-92","run":"s19-night-b-a2","verdict":"FAIL","spec":"62f68a5c31d82f221c83","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-94","run":"s19-night-b-a2","verdict":"PASS","spec":"04de16f3a900e2c305f2","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-95","run":"s19-night-b-a2","verdict":"PASS","spec":"8503c127f1a1f6f6a2aa","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-96","run":"s19-night-b-a2","verdict":"FAIL","spec":"690ed0d2e26758e51538","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-100","run":"s19-night-b-a2","verdict":"FAIL","spec":"ec19a70ee33972580046","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"CK-101","run":"s19-night-b-a2","verdict":"PASS","spec":"43245165f45d57eca5f7","judge":"claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)","date":"2026-11-13"}
+{"id":"DAAR-39","run":"s19-night-c-ev3","verdict":"FAIL","spec":"ff6316c2423fb1cbd686","judge":"claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)","date":"2026-11-13"}
+{"id":"DAAR-51","run":"s19-night-c-ev3","verdict":"PASS","spec":"267affcffa59d84abe3f","judge":"claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)","date":"2026-11-13"}
+{"id":"SAM-35","run":"s19-night-c-ev3","verdict":"FAIL","spec":"912d6c66c2ff43b914d0","judge":"claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)","date":"2026-11-13"}
+{"id":"SAM-37","run":"s19-night-c-ev3","verdict":"FAIL","spec":"c8daa671050a33f7d23d","judge":"claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)","date":"2026-11-13"}
+{"id":"SAM-38","run":"s19-night-c-ev3","verdict":"FAIL","spec":"0bd633bb9bc2c9f12dd1","judge":"claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)","date":"2026-11-13"}
+{"id":"PAN-20","run":"s19-night-b-a2","event":"built","date":"2026-11-13"}
+{"id":"CHAI-101","run":"s19-night-b-a2","event":"built","date":"2026-11-13"}
+{"id":"CK-65","run":"s19-night-b-a2","event":"built","date":"2026-11-13"}
+{"id":"CK-75","run":"s19-night-b-a2","event":"built","date":"2026-11-13"}
+{"id":"CK-94","run":"s19-night-b-a2","event":"built","date":"2026-11-13"}
+{"id":"CK-95","run":"s19-night-b-a2","event":"built","date":"2026-11-13"}
+{"id":"CK-101","run":"s19-night-b-a2","event":"built","date":"2026-11-13"}
+{"id":"DAAR-52","run":"s19-night-c-ev1","event":"built","date":"2026-11-13"}
+{"id":"CK-108","run":"s19-night-c-ev1","event":"built","date":"2026-11-13"}
+{"id":"CK-109","run":"s19-night-c-ev1","event":"built","date":"2026-11-13"}
+{"id":"DAAR-51","run":"s19-night-c-ev3","event":"built","date":"2026-11-13"}
+{"id":"CK-107","run":"s19-night-c-ev3","event":"built","date":"2026-11-13"}

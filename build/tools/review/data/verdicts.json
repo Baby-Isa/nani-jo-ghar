@@ -607,21 +607,21 @@
   "date": "2026-10-20"
  },
  "CHAI-101": {
-  "hash": "d2ef181c1f3caae87d4b",
+  "hash": "16a70bc6123741e26d87",
   "dhash": [
-   "3e3e1e3634367074",
-   "7f3f3d262624e9cd",
-   "3a1a1b1216166d64",
-   "7e1e1f3414146b75"
+   "3b1b323616767370",
+   "3333303434e5edcd",
+   "3a1a1a1616746d64",
+   "721a111414746b75"
   ],
-  "verdict": "FAIL",
-  "line": "A, at 1280x665 the cabinet is still about a quarter of the height, the same as before (about 147 of 588 px after vs 153 of 590 before). The glasses are the same height (about 188 px) and the space above them is unchanged. Only the doors changed, from five narrow to three wide. B (1920x1080) is the same. C and D gain only a little cabinet (about 20% to 24%), short of \"camera slightly lower, more cabinet\".",
+  "verdict": "PASS",
+  "line": "A, at 1280x665 the cabinet fills about the bottom third under the glasses, three doors each clearly wider than a glass, kettle, stream and both glasses whole with little empty wall above; B (1920x1080), C (740x320) and D (930x430) show the same framing. Notes: in B the kettle's base touches the left glass's rim; Nani's line in B is very small.",
   "panel": "A",
-  "judge": "claude-opus-5-5 (Opus 5.5), session 05818d17-b46b-536a-ab94-2b6678bf687a",
-  "run": "br-s17-n2-wm-after-20261106-233740-gwd",
-  "commit": "4ce845f",
-  "png": "build/screenshots/evidence/br-s17-n2-wm-after-20261106-233740-gwd/CHAI-101.png",
-  "date": "2026-11-06"
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CHAI-101.png",
+  "date": "2026-11-13"
  },
  "CHAI-11": {
   "hash": "4b27aef7b2c627796e2f",
@@ -744,19 +744,19 @@
   "date": "2026-10-13"
  },
  "CHAI-19": {
-  "hash": "77f649c4a2784db4a1a4",
+  "hash": "7a930292ff2f608193a1",
   "dhash": [
-   "80e2aaa2e2f0d444",
-   "0028a2aaa2c2c84c"
+   "01f2eaaae2e0d851",
+   "00c0e2aae280e668"
   ],
   "verdict": "PASS",
-  "line": "A, at 844x390 every pour (paani, chai, khun x3) has its word pill centred just above the left pan, clear of the hob's top rim and of the bottle, carton or spoonful going in; B shows the same at 1366x768 (paani, chai, dudh, khun x3)",
+  "line": "A, at 844x390 no word pill sits over the hob's top rim in any of the 6 frames (frame 1: the bottle pours into the pan with no text under or over it; the only things above the hob are the small dot counters, clear of the rim); B at 1366x768 shows the word label (chai, elchi, khun) centred above the left pan, clear of the hob and of the pour. Note: at 844x390 no pan label is shown at all.",
   "panel": "A",
-  "judge": "judge",
-  "run": "ev-20261021-141514-4pn",
-  "commit": "3a402ff9",
-  "png": "build/screenshots/evidence/ev-20261021-141514-4pn/CHAI-19.png",
-  "date": "2026-10-21"
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CHAI-19.png",
+  "date": "2026-11-13"
  },
  "CHAI-20": {
   "hash": "94fdb4567465d0e7444b",
@@ -841,6 +841,21 @@
   "commit": "b60dd9e1",
   "png": "build/screenshots/evidence/ev-20261103-143901-sdj/CHAI-33.png",
   "date": "2026-11-03"
+ },
+ "CHAI-37": {
+  "hash": "d351a5a6216d631490a4",
+  "dhash": [
+   "01b0303030301a5a",
+   "1170b070b0301a1a"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 4 (107.2 s, after paani and chai): the screen is not dark and nothing marks the order card out, it looks as it does at rest; A frame 2 (88.3 s) is the same at 1920x1080. No frame shows the dim with the card lit; frames 1-3 show the first two items lit correctly. Also: hit 3 at 1920x1080 has no screenshot (timeout); the Check's sizes (971x318, 1280x665) and L2-L4 are not on the sheet; item tiles cut at the card's edges (\"ani\", \"ai\", \"du\"); A frame 5 has Nani's line box empty.",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CHAI-37.png",
+  "date": "2026-11-13"
  },
  "CHAI-40": {
   "hash": "7ceeeaef10d445e0dec4",
@@ -990,6 +1005,23 @@
   "run": "ev-20261103-171129-t61",
   "commit": "db5c297b",
   "date": "2026-11-03"
+ },
+ "CHAI-55": {
+  "hash": "e365d47fa956183f3619",
+  "dhash": [
+   "0168f97979a0f434",
+   "501a9a9b019a9bdb",
+   "013c30b838303431",
+   "01119b9293929410"
+  ],
+  "verdict": "FAIL",
+  "line": "CHAI-55-p1-L4-1280x665 js:Cook.chaiAmounts, with adh and aako both new (stages 1) the first person (nana) asks full and the second (cousin) half, the reverse of \"the first person says half, and the second person says full\"; the 740x320 capture is full, half, half; D agrees (Nana's card has no adh, the second card reads \"Muke adh chai khape.\"). The stuck hint is not shown in any panel. Flaw: C and D, Nani's line \"Paani tapele me wij.\" is cut off at the top of the screen at 740x320, and the second order card is cut at the bottom.",
+  "panel": "CHAI-55-p1-L4",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CHAI-55.png",
+  "date": "2026-11-13"
  },
  "CHAI-67": {
   "hash": "e9c45d56820e81ccacf8",
@@ -1414,6 +1446,131 @@
   "png": "build/screenshots/evidence/ev-s04-ev3/CK-09.png",
   "date": "2026-10-12"
  },
+ "CK-100": {
+  "hash": "adf1c432f248124109a0",
+  "dhash": [
+   "f43c181c5c181c1c",
+   "f41c382d2c2dace5"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 10 (740x320) the face circle sits inside the top-right corner of the mixing bowl's lit gold box, not clear of it. For the tray it holds: frame 11 beside the tray, frame 12 just left of the oven's lit box while the tray is inside, frames 13-14 beside the tray, never over a naan. Panel A (1280x665) is 16 frames in one column and too small on the sheet to read the face circle; L2-L4 not shown",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-100.png",
+  "date": "2026-11-13"
+ },
+ "CK-101": {
+  "hash": "53b1e2ce8e42dc5d7d7b",
+  "dhash": [
+   "f43c181c5c181c1c",
+   "f41c382d2c2dace5"
+  ],
+  "verdict": "PASS",
+  "line": "B, frames 11-12 (740x320) the oven is about two and a half trays wide and twice the mixing bowl, filling the height above the shelf, and the tray sits inside it with room each side; the same proportions in A frames 10-13 (1280x665). L1 only: L2-L4 are not on the sheet",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-101.png",
+  "date": "2026-11-13"
+ },
+ "CK-102": {
+  "hash": "5e03dcef97aae4446b6e",
+  "dhash": [
+   "f43c181c5c181c1c",
+   "b100000000010101",
+   "f41c382d2c2dace5",
+   "a900000000010101"
+  ],
+  "verdict": "FAIL",
+  "line": "B, at well done (frame 11, 177.7 s, \"Shabash!\") the two item cards with their ticks are gone at 1280: the box has shrunk to the one line \"Muke naan khape.\" with a tick, and D frame 12 (173.0 s) shows the same at 740; the cards keep their ticks only up to the oven (B 9-10, D 9-11). The shelf half is met: A frames 10-11 and C frames 11-12 show dai, paani and atto on the shelf with their pills through the oven and at well done. Other flaws: only L1 is shown (the Check names L1-L4); C frame 3 (56.0 s) a half-faded \"hakro naan\" card overlaps the left of the scene; C frame 13 (176.7 s) the tray looks empty at 740 where A frame 12 has the naan on it.",
+  "panel": "B",
+  "judge": "Fable 5.2 (claude-fable-5-2), session_014xb3kSEqyUTbvHCABDzeLo",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-102.png",
+  "date": "2026-11-13"
+ },
+ "CK-104": {
+  "hash": "c30b900ae816fb410002",
+  "dhash": [
+   "023135b131350c24",
+   "02313531b1350c24"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 2 (L4, 184.7 s) the six toppings sit in two rows of three (limu, loon, laal marcha / fudino ji chutney, amli ji chutney, mari) filling the bottom half of the screen, the two plates squeezed into the top third: the problem the row names, unfixed. Other flaws: A (L1) shows only the grill, its toppings shot timed out (page.screenshot timeout), so L1 is not shown; L2 and L3 not shown.",
+  "panel": "B",
+  "judge": "Fable 5.2 (claude-fable-5-2), session_014xb3kSEqyUTbvHCABDzeLo",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-104.png",
+  "date": "2026-11-13"
+ },
+ "CK-105": {
+  "hash": "5c2924484a086b1e4a89",
+  "dhash": [
+   "210a1999d1910000",
+   "8026062111919191",
+   "0109010101010000",
+   "a901210101010000"
+  ],
+  "verdict": "FAIL",
+  "line": "C, at L3 1280 (frames 6-8) the cob is second, not first: Nani's cards read amli ji chutney then hakro makai, the child's mari then hakro makai; D frames 5-8 show the same at 740. L1 is met: A and B show hakro makai first, amli ji chutney second, each tick landing in place with no swap (A 4-6, B 4-6). Other flaws: C frame 5 (81.2 s) one enlarged \"hakro makai\" card floats over the row beside an empty slot; C frames 1-4 and D frames 1-4 the order box holds two blank outline cards; no L3 frame shows a done card, so \"stays in place\" is not shown at L3; L2 and L4 not shown.",
+  "panel": "C",
+  "judge": "Fable 5.2 (claude-fable-5-2), session_014xb3kSEqyUTbvHCABDzeLo",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-105.png",
+  "date": "2026-11-13"
+ },
+ "CK-107": {
+  "hash": "216964c929e51922e882",
+  "dhash": [
+   "084a231103032060",
+   "084a231103032060",
+   "1b02111103071120",
+   "1b02111103071120"
+  ],
+  "verdict": "PASS",
+  "line": "B, chop's end screen at 1280x665 shows the grid (next) button solid black with a white icon and the replay button as the cream outlined square, no grey button; D shows the same at 740x320, both fully inside the card, nothing clipped. Notes: only L1 is on the sheet (L2-L4 not shown) and no chai panel is on the sheet to compare side by side; \"Chop these\" in the helper strip and \"two\"/\"onion\" under the review cards are the allowed English.",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session 014xb3kSEqyUTbvHCABDzeLo (independent judge, not the builder)",
+  "run": "s19-night-c-ev3",
+  "commit": "dde61868e",
+  "png": "build/screenshots/evidence/s19-night-c-ev3/CK-107.png",
+  "date": "2026-11-13"
+ },
+ "CK-108": {
+  "hash": "6fb7fd5d1f9a051892d8",
+  "dhash": [
+   "1c3434b4b4b02020"
+  ],
+  "verdict": "PASS",
+  "line": "A, at 740x320 the gold box ends well short of the screen's right edge (clear marble and the gear to its right) and the finger sits on the knife mid-board, far from the edge. Flaws off the point: none new (\"Chop these\" is grey-italic to-record English, allowed).",
+  "panel": "A",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder)",
+  "run": "s19-night-c-ev1",
+  "commit": "ea9aa81ac",
+  "png": "build/screenshots/evidence/s19-night-c-ev1/CK-108.png",
+  "date": "2026-11-13"
+ },
+ "CK-109": {
+  "hash": "9d1937d403bf1a5cb2fa",
+  "dhash": [
+   "017cb4b4b4102020",
+   "1c3434b4b0b02020"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 1 (25.8 s, 1280x665) shows the knife lit, the screen dimmed, the finger on the handle and the line \"Nindha nindha kap!\"; the voice capture has the line starting 25.38 with the rung at 25.37, before the light's moment at 25.81, and no \"Kali hakro tameto\" line anywhere; B frame 1 (27.9 s, 740x320) and its capture (line 27.29, moment 27.90) show the same. Flaws off the point: the order card's third item is cut off at the panel edge (\"fudi chu\", \"aato\") in A frames 2-4 and B frames 2-4; in A the chutney shelf pill shows a speaker with no word; in B the shelf pills run edge to edge.",
+  "panel": "A",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder)",
+  "run": "s19-night-c-ev1",
+  "commit": "ea9aa81ac",
+  "png": "build/screenshots/evidence/s19-night-c-ev1/CK-109.png",
+  "date": "2026-11-13"
+ },
  "CK-11": {
   "hash": "c5f1295289dc158d63f8",
   "dhash": [
@@ -1427,6 +1584,21 @@
   "commit": "4d8a9393",
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/CK-11.png",
   "date": "2026-10-20"
+ },
+ "CK-112": {
+  "hash": "f252a5b374c4aaeac606",
+  "dhash": [
+   "2b6b636b387c0000",
+   "2d653a6b78746008"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 2 (33.6 s, 740x320) shows the \"hakri maani\" dish card low on the worktop with its bottom a few pixels from the frame's bottom edge, not at the top beside the panel with room below (frame 1 at 27.6 s does stand at the top with room below, and A frame 2 at 1280x665 is at the top). Also in B: the \"maani\" label in frame 3 sits only a hair above the board's top edge, too close to tell clear from touching at this scale; the helper strip text in frames 3 and 5 is caught half-faded; the settings gear is half covered by the results card in frames 10-11. The empty plates read as rimmed steel plates, not flat grey discs.",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session 014xb3kSEqyUTbvHCABDzeLo (independent judge, not the builder)",
+  "run": "s19-night-c-ev3",
+  "commit": "dde61868e",
+  "png": "build/screenshots/evidence/s19-night-c-ev3/CK-112.png",
+  "date": "2026-11-13"
  },
  "CK-12": {
   "hash": "6c374bf982bcfa6c957c",
@@ -1847,6 +2019,21 @@
   "png": "build/screenshots/evidence/ev-20261020-203453-9h9/CK-44.png",
   "date": "2026-10-20"
  },
+ "CK-46": {
+  "hash": "de2f6e38f1cabb380c21",
+  "dhash": [
+   "33322636b138a080",
+   "71c9b7b1b8b88480"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 8 (740x320): Nani's clasped hands and both forearms sit in full view on the counter's edge, not covered by it, so she reads as resting on the counter, not seated behind it with her arms in her lap; A frame 8 the same at 1280x665, and Nana's crossed forearms in A/B frame 1 likewise. The point pose, Ma, cook:day1 / day6 and the Check's sizes (800x360, 844x390, 1366x768) are not on the sheet. Flaw off the point: B frame 1, the small \"hakro tarelo indo\" card covers the order card's word (only \"ndo\" shows).",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-46.png",
+  "date": "2026-11-13"
+ },
  "CK-47": {
   "hash": "22a48d7642c6e5461f76",
   "dhash": [
@@ -1902,6 +2089,104 @@
   "judge": "expect",
   "run": "s19-night-b-a2",
   "commit": "d3a8324b5",
+  "date": "2026-11-13"
+ },
+ "CK-75": {
+  "hash": "02ef35dcb7051fdfc773",
+  "dhash": [
+   "33322636b138a080",
+   "7332a6b6b1f20000",
+   "71c9b7b1b8b88480",
+   "338636b1f8a80420"
+  ],
+  "verdict": "PASS",
+  "line": "C, frame 7 (740x320, Bapaji praising over the plated egg) the kitchen scene runs from the top of the play area to the worktop at the bottom, no marble strip above it; the same in A frame 7 (1280x665), B frame 6 (1920x1080) and D frame 7 (930x430). Flaw off the row: C frame 1 (740x320) the small order card \"hakro tarelo indo\" lies over the big word card, whose text shows cut as \"ndo / fried egg\"",
+  "panel": "C",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-75.png",
+  "date": "2026-11-13"
+ },
+ "CK-76": {
+  "hash": "83ed22d6999875be03f2",
+  "dhash": [
+   "0106023131010001",
+   "0131c83101113100",
+   "8026260131613131",
+   "8126113131310000"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frame 1 (and CK-76-p1-L1-1280x665 dom:#guide at cook-done:click) the carton step still reads \"Hane indo!\" with no verb; only then \"Indo wiji chad!\" (frames 2-3) and grey-italic \"Serve (put it on the plate)!\" (frames 4-6); no line for lighting the hob and no gap report on the sheet; L2-L4 not shown",
+  "panel": "A",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-76.png",
+  "date": "2026-11-13"
+ },
+ "CK-92": {
+  "hash": "ff20b1a57fbf3205f483",
+  "dhash": [
+   "01e2eae6c2001818",
+   "81aaabe3a2969818",
+   "333a1e967078a0a0",
+   "313587957878a490"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 3 (740x320) the frying egg is about a quarter to a third of the pan's width, then frame 5 it fills its plate; the same in A frames 4-5 (1280x665) and at L3 in D frames 8-10: still small in the pan and bigger when served",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-92.png",
+  "date": "2026-11-13"
+ },
+ "CK-94": {
+  "hash": "b9ceec4ad0d63fb710ab",
+  "dhash": [
+   "01e2eae6c2001818",
+   "81aaabe3a2961818"
+  ],
+  "verdict": "PASS",
+  "line": "B, frames 1-4 (740x320) the frying pan's handle tip ends at the hob's edge with a clear strip of worktop before the tray, and the face circle sits beside the right knob; the same in A (1280x665). L1 only: L2-L4 are not on the sheet",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-94.png",
+  "date": "2026-11-13"
+ },
+ "CK-95": {
+  "hash": "673f687ea084973a98af",
+  "dhash": [
+   "0100085050030322",
+   "0101186050032222"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 1 (1280x665) atto is still on the shelf, in a gold box with its pill lit and everything else dimmed, before it moves (frame 2 it is in the hand); the same in B frames 1-2 (740x320). L1 only: L2-L4 are not on the sheet",
+  "panel": "A",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-95.png",
+  "date": "2026-11-13"
+ },
+ "CK-96": {
+  "hash": "ef2b2034de2277736d4d",
+  "dhash": [
+   "0811313131000001",
+   "a111053171310001",
+   "0011313131000001",
+   "b131053169310101"
+  ],
+  "verdict": "FAIL",
+  "line": "A, every frame (1280x665 L1) shows one full-width item card (\"hakro cup atto / one cup of flour\") under \"Muke naan khape.\", not a row of narrow cards with a third peeking; the same single wide card in B (740x320), C and D (L4). Flaws off the row: C and D frame 1 Nani's line reads \"Adhi cup wiji chad! atto\" (the item after the exclamation mark); D frames 3-6 the English under \"adhi cup atto\" wraps to three tiny lines",
+  "panel": "A",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/CK-96.png",
   "date": "2026-11-13"
  },
  "CK-TAB-01": {
@@ -5029,6 +5314,51 @@
   "png": "build/screenshots/evidence/s14-D-ev3/DAAR-36.png",
   "date": "2026-10-30"
  },
+ "DAAR-39": {
+  "hash": "53a10e001b334645406a",
+  "dhash": [
+   "01f8cdcc4c408080",
+   "7ceccc4c48408080"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frame 1 (56.7 s): the lit strip starts about a third of the way along the board and runs off its right edge to the knife, so the left third of the board is dark: it is not across the board's full width (same in B frame 1 at 740x320). One lit region and the rest darker are right. The stills cannot show the right-to-left drag, the planted cut not counted, the knife locked or the resize without jitter; only 2 of the 4 sizes are on the sheet",
+  "panel": "A",
+  "judge": "claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)",
+  "run": "s19-night-c-ev3",
+  "commit": "dde61868e",
+  "png": "build/screenshots/evidence/s19-night-c-ev3/DAAR-39.png",
+  "date": "2026-11-13"
+ },
+ "DAAR-51": {
+  "hash": "e2979fd0f2c907c9bd30",
+  "dhash": [
+   "01f8cdcc4c408080",
+   "7ceccc4c48408080"
+  ],
+  "verdict": "PASS",
+  "line": "A, frame 2 (92.0 s): the steel katori right of the hob is about the width of the daar basket above it and a little over half the pot's, and reads as a bowl, not a speck; B frames 2-5 the same proportion at 740x320. Flaws: the asker's face beside it is tiny (a speck itself) and sits left of the bowl, not on its rim; chai's glass is not on the sheet, so the \"beside chai\" eye comparison was not possible; only L1 and 2 of the 4 sizes shown",
+  "panel": "A",
+  "judge": "claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)",
+  "run": "s19-night-c-ev3",
+  "commit": "dde61868e",
+  "png": "build/screenshots/evidence/s19-night-c-ev3/DAAR-51.png",
+  "date": "2026-11-13"
+ },
+ "DAAR-52": {
+  "hash": "1b97acde8213ae2ea688",
+  "dhash": [
+   "33360eb7b1b80000",
+   "51510731f8a80410"
+  ],
+  "verdict": "PASS",
+  "line": "B, frame 19 (149.5 s, 740x320) shows one Nana face with \"Shabash!\" beside the filled bowl, small (about the bowl's half width), the katori's earlier small face gone and no big circle between hob and plate; A frame 18 (1280x665) shows the same single face by the plate. Flaws off the point: the size against chai's 150 design px is by eye only (no chai reference on the sheet); B frame 5 is a near-empty marble with only a word card.",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder)",
+  "run": "s19-night-c-ev1",
+  "commit": "ea9aa81ac",
+  "png": "build/screenshots/evidence/s19-night-c-ev1/DAAR-52.png",
+  "date": "2026-11-13"
+ },
  "DAY-01": {
   "hash": "9ab7bbf575dc7b52296f",
   "dhash": [],
@@ -5868,6 +6198,36 @@
   "png": "build/screenshots/evidence/s14-D-ev3/PAN-18.png",
   "date": "2026-10-30"
  },
+ "PAN-19": {
+  "hash": "c26d00af57a079e100b3",
+  "dhash": [
+   "3392129671a88000",
+   "314597f1b8b8c4c0"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 1 (740x320, 20.5 s): Nani is at the counter saying \"Muke dudh de.\" but a second small \"hakro dudh\" card sits on top of the order card and hides its word (only \"..dh\" shows); A frame 1 has the same small card over the big card's corner. A frames 1-3 do show Nani giving the order with one card per line, but frame 1 already has the card up, so \"Nani before the first card\" is not shown, and only L1 is on the sheet (no L2-L4).",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/PAN-19.png",
+  "date": "2026-11-13"
+ },
+ "PAN-20": {
+  "hash": "ae4d5f4d6431bc46897f",
+  "dhash": [
+   "ffff5da1adc5b19a",
+   "fed9b1b4c6c1b98b"
+  ],
+  "verdict": "PASS",
+  "line": "A, at L1 1280x665 as a new player every jar on the shelves and in the fridge (atto, loon, matar, khun, paani, dai, dudh) carries a written word pill with a speaker; B shows the same at 740x320 (khun, loon, paani, atto, mari, dudh, dai). Notes: the pills are grey under the onboarding dim in every frame (no undimmed frame on this sheet); L2-L4 and 930x430 / 1920x1080 are not on the sheet.",
+  "panel": "A",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "png": "build/screenshots/evidence/s19-night-b-a2/PAN-20.png",
+  "date": "2026-11-13"
+ },
  "PRC-01": {
   "hash": "265d9a17e69686cee224",
   "dhash": [
@@ -6398,6 +6758,53 @@
   "png": "build/screenshots/evidence/s14-D-ev2/SAM-28.png",
   "date": "2026-10-30"
  },
+ "SAM-35": {
+  "hash": "efb941cd1f9e2f032677",
+  "dhash": [
+   "33324ab5b1b80000",
+   "31832731b8a80410",
+   "33321696b1b80000",
+   "3123b7b1f8a80410"
+  ],
+  "verdict": "FAIL",
+  "line": "A, frame 1 (27.7 s): the line names the count (\"Muke ba samosa khape,\") but a finished-samosa card labelled \"ba samosa\" with its speaker button stands beside it (the same in B frame 1, 30.2 s); the row says no dish card, fillings only. At L2 (C frame 1, D frame 1, \"Muke trae samosa khape,\") there is no samosa card and the cards are fillings only (trae chunda; ba chunda, hakro matar, mirchi na). Other flaws: B frame 2 is caught mid-fade (card and bubble ghosted); the crop is #game, so the side panel's order card is not on this sheet; L3-L4 absent",
+  "panel": "A",
+  "judge": "claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)",
+  "run": "s19-night-c-ev3",
+  "commit": "dde61868e",
+  "png": "build/screenshots/evidence/s19-night-c-ev3/SAM-35.png",
+  "date": "2026-11-13"
+ },
+ "SAM-37": {
+  "hash": "b94f3cb5c5a8aefe2db1",
+  "dhash": [
+   "013cbcbc38302c2c",
+   "1c2c6cacacb0382a"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 6 (119.1 s, 740x320): the gold box wraps the whole order card in the side panel, the rest dimmed, two seconds before the fold; the row says the gold box never wraps the order card. At the fold itself the light is right: A frames 4-5 (92.1 s, 95.7 s) and B frames 7-8 (121.3 s, 127.0 s) show one box on the pastry only under \"Samosa waar!\". The matching 1280 moment (hit 3, 88.5 s) has no screenshot; L2-L4 absent",
+  "panel": "B",
+  "judge": "claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)",
+  "run": "s19-night-c-ev3",
+  "commit": "dde61868e",
+  "png": "build/screenshots/evidence/s19-night-c-ev3/SAM-37.png",
+  "date": "2026-11-13"
+ },
+ "SAM-38": {
+  "hash": "2b102dc7fdf832b66db1",
+  "dhash": [
+   "013cbcbc38302c2c",
+   "322222ac28b03828"
+  ],
+  "verdict": "FAIL",
+  "line": "B, frame 2 (72.7 s, 740x320): Nani's line is \"Bhar! Chundo.\" and the lit thing is an empty pastry strip (top right of the board), the mince in the tray unlit: the row's own complaint; the first light at 740 (hit 1) has no screenshot. A (47.8 s, 1280x665) is right: the gold box is on the chundo heap in the tray under \"Bhar! Chundo.\"; B frame 4 (78.9 s) also lights the chundo. L2-L4 absent",
+  "panel": "B",
+  "judge": "claude-fable-5-2, judge subagent session_014xb3kSEqyUTbvHCABDzeLo (not the builder s19-night-c)",
+  "run": "s19-night-c-ev3",
+  "commit": "dde61868e",
+  "png": "build/screenshots/evidence/s19-night-c-ev3/SAM-38.png",
+  "date": "2026-11-13"
+ },
  "SEK-01": {
   "hash": "962a8023e5d4eff1676e",
   "dhash": [],
@@ -6708,6 +7115,21 @@
   "commit": "9e918ca2",
   "png": "build/screenshots/evidence/s14-D-ev/SEK-23.png",
   "date": "2026-10-30"
+ },
+ "SEK-29": {
+  "hash": "f560f5ead995d3109752",
+  "dhash": [
+   "01a6b2a2d2808080",
+   "0da6a2a6a6208080"
+  ],
+  "verdict": "FAIL",
+  "line": "B, at 740x320 the cog's box sits over the tray's top-right corner in every frame (0 ms to 33151 ms), so the cog is not clear of the tray; the rest of the row is not proven either: every frame in A and B is captioned \"slot N: off\" and the frames land 1.6 to 5 s apart instead of 400 ms, so neither strip can show the turn browning over its time rather than in one frame (B 27033 ms catches the skewer edge-on mid-turn, with partly browned meat before at 23460 ms and browner meat after at 31020 ms, but nothing in between); no frame shows the order card row, the headline picture or \"gos\" in the end review; only L1 is shown, the Check names L1 to L4; B 0 ms does show the raw skewer lit at 740x320 and A 10699 ms / B 23460 ms show the light on with the meat part-cooked; B's left edge shows a card cut off with stray letters (\"i\", \"of\"), which may be the strip's crop",
+  "panel": "B",
+  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (independent judge, not the builder)",
+  "run": "s19-night-c-ev1",
+  "commit": "ea9aa81ac",
+  "png": "build/screenshots/evidence/s19-night-c-ev1/SEK-29.png",
+  "date": "2026-11-13"
  },
  "SH-01": {
   "hash": "b9e2481810b27aba279a",

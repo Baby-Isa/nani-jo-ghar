@@ -1339,3 +1339,32 @@
 {"id":"CHAI-67","run":"ev-20261104-152612-lpq","earlier":"**to fix: check** · reopened (Zafar, 3 Nov) · cause: `js/cook/ui.js:85` read the order card's fixed slots, which name half and full at every level, so it came on L1's first round; fixed: only the round's asked rows, and a round asking both (chai L4's first, CHAI-55's teach)"}
 {"id":"SH-231","run":"br-s17-n2-wm-after-20261106-233740-gwd","earlier":"**to fix: check** · the shared `WordCard.big14` (`js/shared/word-moment.js:476`), the 6 Nov look when `njg-lora` is on; shots at the four sizes beside the order's card"}
 {"id":"CHAI-101","run":"br-s17-n2-wm-after-20261106-233740-gwd","earlier":"**to fix: code** · cause: the counter is pushed down for the kettle's room (`word-moment.js:190`) and the picture has five narrow doors; fix (feasible, his question): the counter no lower than 70% of the height, glasses shrink to fit, the picture drawn 1.6x so about three doors show; no other cabinet art in the game to take, so if the crop is soft a new wide-door counter scene goes on the next art run (his screenshot: `docs/feedback/images-2026-11-06/wm-l4-phone-night.jpg`)"}
+{"id":"PAN-19","run":"s19-night-b-a2","earlier":"**to fix: check** (built: s19-clean-b, s19-round2-review, Nani comes to the counter and says her list, cards as she says them; to judge)"}
+{"id":"PAN-20","run":"s19-night-b-a2","earlier":"**to fix: check** (built: s19-clean-b, s19-clean-b-review 7, every jar its pill by the word ladder, shelf pills by zone; to judge)"}
+{"id":"CHAI-101","run":"s19-night-b-a2","earlier":"**to fix: check** · the judge (6 Nov night) failed the 70% line: laptops kept a quarter of cabinet; the line is now 65% (`js/cook/ui.js:136` lineMax), 35% cabinet at 1280x665 and 905x298, three doors; re-judge"}
+{"id":"CHAI-37","run":"s19-night-b-a2","earlier":"**to fix: check** · built 29 Oct in the live chai (s14-chai, `build/reports/s14-chai.md`); the judge, then Zafar's play"}
+{"id":"CHAI-55","run":"s19-night-b-a2","earlier":"**to fix: check** · built (s15-chai-11, decision 4): while adh or aako is new, the first person asks half, the second full; the stuck hint at L4's 13 s"}
+{"id":"CK-46","run":"s19-night-b-a2","earlier":"**to fix: code** · reopened 1 Nov: \"Check also the elbows cutting into the counter. We said they should be sitting as if on bar stools behind the countertop and so nothing rests on the counter\" (screenshot 8); placement now, the art in ART-33; shot for `/review`"}
+{"id":"CK-65","run":"s19-night-b-a2","earlier":"**to fix: code** (fails in s19-clean-b: contract-70 breaks) · cause: the green is the side's last tenth (`data/stations/corn.json:189`, lo 0.9) of a 2.6-3.2 s side (`:45-55`): 0.26-0.32 s (`corn.js:310`); fix: corn's own band longer (its settings); the shared minimum is his question"}
+{"id":"CK-75","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-76","run":"s19-night-b-a2","earlier":"**to fix: code** (fails in s19-clean-b: contract-36 x3)"}
+{"id":"CK-92","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-94","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-95","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-96","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-100","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-101","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-102","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-104","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"CK-105","run":"s19-night-b-a2","earlier":"**to fix: code**"}
+{"id":"DAAR-52","run":"s19-night-c-ev1","earlier":"**to fix: code**"}
+{"id":"SEK-29","run":"s19-night-c-ev1","earlier":"**to fix: code**"}
+{"id":"CK-108","run":"s19-night-c-ev1","earlier":"**to fix: code**"}
+{"id":"CK-109","run":"s19-night-c-ev1","earlier":"**to fix: code**"}
+{"id":"DAAR-39","run":"s19-night-c-ev3","earlier":"**to fix: code** (fails in s19-clean-c: contract-112: chop shows two lit regions)"}
+{"id":"DAAR-51","run":"s19-night-c-ev3","earlier":"**to fix: check** (built: s19-clean-c, katori 130 to 200, served bowl 166 to 256; to judge)"}
+{"id":"SAM-35","run":"s19-night-c-ev3","earlier":"**to fix: check** (built: s19-clean-c2, the engine's 'Muke ba samosa khape.', fillings' cards only; block 2's count at L3-L4 is spoken only (question for Zafar); to judge) (the count only from the language engine; a gap is reported)"}
+{"id":"SAM-37","run":"s19-night-c-ev3","earlier":"**to fix: code**"}
+{"id":"SAM-38","run":"s19-night-c-ev3","earlier":"**to fix: code**"}
+{"id":"CK-107","run":"s19-night-c-ev3","earlier":"**to fix: code**"}
+{"id":"CK-112","run":"s19-night-c-ev3","earlier":"**to fix: code**"}

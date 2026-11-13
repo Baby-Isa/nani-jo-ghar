@@ -10,6 +10,7 @@ import { sprintRows } from "./lib/sprint.mjs";
 import { rowOutcome, dhash, fingerprint, cacheHit, batches, parseVerdicts, captureLabels, passRefusal, applyVerdicts, applyGuard, sha, TEXT_KINDS, specHash, redGreen, legacyReds, changedRows } from "./lib/evidence.mjs";
 import { briefRows, briefSizes, briefSlug, briefProbes, panelKey, beforeNote, unitsOf, pairUnits, stripMotion, offSlots, capMs, SLOT_TOL } from "./lib/brief.mjs";
 import { decodePng } from "./lib/png.mjs";
+import { judgedByBuilder } from "./lib/judge-id.mjs";
 // a strip's frames -> stripMotion (lib/brief.mjs): no motion is flagged on the sheet and in the .md
 const stripMotionOf = (files) => { try { return stripMotion(files.map((f) => decodePng(readFileSync(f)))); } catch (e) { return { moving: true, note: "" }; } };
 
@@ -787,7 +788,7 @@ function collect() {
     const v = parseVerdicts(readFileSync(join(jdir, f), "utf8"), labelsOf);
     if (!v.lines.length) continue;
     if (!v.judge) { refused.push(`${f}: no "judge:" line`); continue; }
-    if (builder && v.judge.toLowerCase().includes(String(builder).toLowerCase())) { refused.push(`${f}: judged by the builder (${v.judge})`); continue; }
+    if (builder && judgedByBuilder(v.judge, builder)) { refused.push(`${f}: judged by the builder (${v.judge})`); continue; }
     for (const r of v.rejected) refused.push(`${f}: ${r.id}: ${r.why}`);
     // the one loop (lib/brief.mjs): a BEFORE CHECK (check-NN) and a before|after batch (brief-NN)
     const check = f.startsWith("check-"), pair = f.startsWith("brief-");
@@ -925,3 +926,4 @@ else {
   else printPlan(P);
   process.exit(P.errors.length || P.noSpec.length ? 1 : 0);
 }
+
