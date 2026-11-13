@@ -694,6 +694,8 @@ import { setTimeout } from "../life.js";
     Cook.Kit.shadow(S, naan); // (SH-268)
     // (SH-258: their face circle moves to the tray their naan bakes on, from its first frame)
     const face = faceAt ? faceAt(naan) : null;
+    // (CK-100: beside the tray, at its left, clear of it: never over a naan on it, nor in the light round it)
+    if (face) face.setPosition(naan.x - naan.displayWidth / 2 - face.displayWidth * 0.62, naan.y - naan.displayHeight * 0.2);
     const tapOn = (o, name, withLight = null) => {
       let open = true;
       return new Promise((resolve) => {
