@@ -24,7 +24,7 @@
  "owns": [
   "js/cook/stations/chop.js, daar.js, samosa.js, maani-line.js, mishkaki-grill.js and chaat's station file, and their data/stations/*.json",
   "js/cook/mechanics/chop.js, assemble.js, stir.js, thread.js, roll.js, fry.js, fill-fold.js, grill.js, knead.js and js/cook/grill-kit.js",
-  "build/sandbox/data/evidence.json (add your rows' specs only; the orchestrator merges by key)"
+  "your own rows' new entries in the sandbox's evidence specs (new keys only, the orchestrator merges them by key; the file is s19-night-shared's)"
  ],
  "readOnly": [
   "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, core.js, data/cook.json, build/sandbox/** (s19-night-shared)",

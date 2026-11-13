@@ -26,8 +26,7 @@
   "js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, core.js, dom.js",
   "data/cook.json (not its art sections: the art builder's)",
   "build/sandbox/** (the checks: a check fix must keep build/sandbox/badruns.test.mjs red where it should be)",
-  "js/cook/mechanics/boil.js (CHAI-113's knob)",
-  "build/sandbox/data/evidence.json (add your rows' specs only; the orchestrator merges by key)"
+  "js/cook/mechanics/boil.js (CHAI-113's knob)"
  ],
  "readOnly": [
   "js/cook/stations/**, data/stations/** (s19-night-b and -c)",

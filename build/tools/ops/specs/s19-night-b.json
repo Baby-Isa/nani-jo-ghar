@@ -24,7 +24,7 @@
  "owns": [
   "js/cook/stations/chai-tray.js, eggs.js, baking.js, corn.js and the pantry's station file(s), and their data/stations/*.json",
   "js/cook/mechanics/fetch.js, pour.js and the mechanics only these games use (name them in your report)",
-  "build/sandbox/data/evidence.json (add your rows' specs only; the orchestrator merges by key)"
+  "your own rows' new entries in the sandbox's evidence specs (new keys only, the orchestrator merges them by key; the file is s19-night-shared's)"
  ],
  "readOnly": [
   "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, core.js, data/cook.json, build/sandbox/** (s19-night-shared)",
