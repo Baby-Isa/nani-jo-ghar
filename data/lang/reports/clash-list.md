@@ -2,7 +2,7 @@
 
 Where two sources disagree the engine never chooses silently: it uses the higher-ranked source (Mum and Zafar over a game's data over the class handout; for status, the more cautious one), keeps the other as an **open question on the entry**, and lists it here. Rebuilt by `node build/lang/import_all.mjs`. Each row says what the engine uses now and what we recommend; answer "yes to all except …".
 
-## 1. Spelling, gender and form: two sources say different things (11)
+## 1. Spelling, gender and form: two sources say different things (13)
 
 1. **right (side)** (`a.right`): the spelling or the word. The engine uses "jamni" (hand: grammar-notes prose); the other source says "jamno" (data/clinic/lang.json).
 2. **use** (`v.use`): the spelling or the word. The engine uses "wapur" (hand: grammar-notes prose); the other source says "wapar" (lexicon.md §6).
@@ -14,22 +14,23 @@ Where two sources disagree the engine never chooses silently: it uses the higher
 8. **potato** (`n.potato`): the spelling or the word. The engine uses "bataato" (data/cook.json; data/content.json); the other source says "bateto" (grammar-notes §34 P1 (Whisper's hearing)).
 9. **tomato** (`n.tomato`): the spelling or the word. The engine uses "tameto" (data/cook.json; data/content.json); the other source says "tumata" (grammar-notes §34 P3 (Whisper's hearing)).
 
-### Already settled by a rule or a decision (2)
+### Already settled by a rule or a decision (4)
 
 10. **one** (`num.1`): the spelling or the word. The engine uses "hakro" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "hikdo" (data/content.json). **Settled:** the handout's hikdo for 'one' is superseded: the family says hakro / hakri by gender (grammar-notes §2; rule G5 (docs/archive/process/rules-2026-10-13.md § 8); docs/language/lexicon.md stale points).
 11. **two** (`num.2`): the spelling or the word. The engine uses "ba" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "bo" (data/content.json). **Settled:** the handout's bo for 'two' is superseded: the family says ba (voiced ber) (grammar-notes §3, §35; rule G5; docs/language/lexicon.md stale points).
+12. **salt** (`n.salt`): the spelling or the word. The engine uses "mitho" (hand: grammar-notes prose); the other source says "loon" (data/content.json). **Settled:** Mum says mitho for salt (a he-word); the content master's and the handout's loon was never said by Mum (grammar-notes §64 (12 Nov 23:36-23:48); Zafar 13 Nov, decision 22).
+13. **black pepper** (`n.black-pepper`): the spelling or the word. The engine uses "miryo" (hand: grammar-notes prose); the other source says "mari" (data/content.json). **Settled:** Mum says miryo for black pepper (a she-word, no singular); the handout's mari was never said by Mum (grammar-notes §64 (12 Nov 31:00-31:28); Zafar 13 Nov, decision 22).
 
-## 2. Two words for one thing (7)
+## 2. Two words for one thing (6)
 
 The family, or two of our sources, give more than one word for the same thing. Which one does the game use?
 
 1. **mango**: Mum's *ambo* (`n.mango`) against the class handout's *aamo* (fru-05). Recommendation: Mum's word; the handout's stays a draft.
 2. **coconut**: Mum's *nair* (`n.coconut`) against the class handout's *naariyel* (fru-09). Recommendation: Mum's word; the handout's stays a draft.
-3. **black pepper**: Mum's *miryo* (`n.black-pepper.mums-word`) against the class handout's *mari* (spi-11). Recommendation: Mum's word; the handout's stays a draft.
-4. **egg** (`n.egg`): Two words for the same thing (indo / mayai): which one does the game use?
-5. **egg** (`n.egg-2`): Two words for the same thing (indo / mayai): which one does the game use?
-6. **pot** (`n.pot`): Two words for the same thing (tapelo / sufuria): which one does the game use?
-7. **pot** (`n.pot-2`): Two words for the same thing (tapelo / sufuria): which one does the game use?
+3. **egg** (`n.egg`): Two words for the same thing (indo / mayai): which one does the game use?
+4. **egg** (`n.egg-2`): Two words for the same thing (indo / mayai): which one does the game use?
+5. **pot** (`n.pot`): Two words for the same thing (tapelo / sufuria): which one does the game use?
+6. **pot** (`n.pot-2`): Two words for the same thing (tapelo / sufuria): which one does the game use?
 
 ## 3. Status only: one source says confirmed, another draft (11)
 
@@ -81,20 +82,20 @@ Cook's own flag on a line against the status the engine finds from its words and
 7. Cook line `canyou` ("Tu muke {x} banai dinda?"): Cook does not flag it draft; the engine says draft (dinda) for "Tu muke chai banai dinda?".
 8. Cook line `need_waari` ("Muke {x} waari chai khape."): Cook flags it draft; the engine says confirmed for "Muke dudh waari chai khape.".
 9. Cook line `waari` ("{x} waari chai."): Cook flags it draft; the engine says confirmed for "dudh waari chai".
-10. Cook line `guide.pour` ("Pour it up to the line"): Cook does not flag it draft; the engine says draft (liti, sudhi, wij) for "Liti sudhi wij.".
-11. Cook line `guide.count` ("Put in as many spoons as they said"): Cook does not flag it draft; the engine says draft (jitli, chamchi, inke, khapeti, itli, wij) for "Jitli chamchi inke khapeti itli wij.".
-12. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
-13. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
-14. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-15. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-16. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
-17. Cook line `guide.chai-tray` ("Make each cup the way they said"): Cook does not flag it draft; the engine says draft (mare, ji, chai, banai) for "Mare ji chai banai.".
-18. Cook line `guide.chai-tray:water` ("Put water in the pan"): Cook does not flag it draft; the engine says draft (paani, tapele, me, wij) for "Paani tapele me wij.".
-19. Cook line `guide.chai-tray:tea` ("Put the chai in the pan"): Cook does not flag it draft; the engine says draft (chai, tapele, me, wij) for "Chai tapele me wij.".
-20. Cook line `guide.chai-tray:pour` ("Pour it into their glass"): Cook does not flag it draft; the engine says draft (iloka, je, glass, me, wij) for "Iloka je glass me wij.".
-21. Cook line `guide.default` ("Cook it the way they said"): Cook does not flag it draft; the engine says draft (e chai erte rand) for "E chai erte rand.".
-22. Cook line `guide.chai-tray:next` ("Put in the next thing"): Cook does not flag it draft; the engine says draft (hane, hi, wij) for "Hane hi wij.".
-23. Cook line `guide.assemble:next` ("Put in the next thing"): Cook does not flag it draft; the engine says draft (hane, hi, wij) for "Hane hi wij.".
+10. Cook line `sugar` ("Munji chai me {x} khape."): Cook does not flag it draft; the engine says draft (munji, chai, me, khape) for "Munji chai me ba khun khape.".
+11. Cook line `headline-give` ("Give me"): Cook does not flag it draft; the engine says draft (muke, de) for "Muke de.".
+12. Cook line `stillmore` ("Haji thorok wadhare."): Cook does not flag it draft; the engine says draft (thorok, wadhare) for "Haji thorok wadhare.".
+13. Cook line `guide-tea-pan` ("Chai tapele me wij."): Cook does not flag it draft; the engine says draft (tapele) for "Chai tapele me wij.".
+14. Cook line `guide-water-pan` ("Paani tapele me wij."): Cook does not flag it draft; the engine says draft (paani, tapele) for "Paani tapele me wij.".
+15. Cook line `headline-pantry` ("Bring me these for {x}"): Cook does not flag it draft; the engine says draft (hi, muke, chai, lai, khani, achi, de) for "Hi muke chai lai khani achi de.".
+16. Cook line `headline-give` ("Bring me these"): Cook does not flag it draft; the engine says draft (muke, de) for "Muke de.".
+17. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
+18. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+19. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+20. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+21. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+22. Cook line `guide.chai-tray:water` ("Put water in the pan"): Cook does not flag it draft; the engine says draft (paani, tapele) for "Paani tapele me wij.".
+23. Cook line `guide.chai-tray:tea` ("Put the chai in the pan"): Cook does not flag it draft; the engine says draft (tapele) for "Chai tapele me wij.".
 
 ## 6. Recordings that are not linked to any entry
 
@@ -107,18 +108,17 @@ Every other recording in `data/family-audio.json` is linked in `clips.json`. The
 - `ambo-je-mathe`: *ambo je mathe* (on the mango). Mum first said ambo je mathe (C13), then ambe je mathe without hesitating (C31, C41): the he-word in -o takes -e before a postposition (decision 30 b). Source: grammar-notes §36 C13, §41, §49. Recommendation: Follow the -e rule; this take is the hesitation.
 - `bakro-sathe`: *bakro sathe* (with the billy goat). Mum said bakro sathe, 'not bakre sathe' (C17), but later bakre jo kan (C58) and the -e rule for he-words in -o. Source: grammar-notes §36 C17, §48 C58. Recommendation: Ask Mum again (Round 5 C17): the engine says bakre sathe for now.
 
-### The recording and a game spell the word differently (Zafar to listen) (8)
+### The recording and a game spell the word differently (Zafar to listen) (7)
 
 - `khuda-fis`: *Khuda hafiz!* (goodbye). The recording is transcribed Khuda hafiz; the game and Zafar spell it khuda-fis. Source: grammar-notes §30 K3, Zafar 26 Sept. Recommendation: Keep khuda-fis; link the clip by hand once Zafar has ticked it.
 - `trae-bateta`: *trae bateta* (three potatoes). As bateto: Whisper's bateta against Cook's bataata. Source: grammar-notes §34 P1. Recommendation: As bateto.
 - `trae-bateta-b`: *trae bateta* (three potatoes). As bateto: Whisper's bateta against Cook's bataata. Source: grammar-notes §34 P1. Recommendation: As bateto.
 - `bateto`: *bateto* (potato (one)). Whisper hears bateto; Cook spells the potato bataato for Zafar to check. Source: grammar-notes §34 P1. Recommendation: Zafar to listen and choose the spelling; the engine keeps bataato.
-- `hakro-tomato-trae-tameta`: *Hakro tomato, trae tameta* (One tomato, three tomatoes.). One tomato, three tomatoes in one take; and Mum says the English tomato for one where the game has tameto. Source: grammar-notes §64 (17:31). Recommendation: Zafar to choose (spelling list 5); the plural tameta is in the engine.
+- `hakro-tomato-trae-tameta`: *Hakro tomato, trae tameta* (One tomato, three tomatoes.). One tomato, three tomatoes in one take; and Mum says the English tomato for one where the game has tameto. Source: grammar-notes §64 (17:31). Recommendation: Settled: Zafar 13 Nov (decision 22), one is tameto, with an e; the plural tameta is in the engine.
 - `muke-thoro-ghee-khapeto`: *Muke thoro ghee khapeto* (I'd like a little ghee.). thoro (a little, a he-form) where the engine has thorok and thori. Source: grammar-notes §64 (28:45). Recommendation: Zafar to confirm thoro (spelling list 12).
-- `hakri-chapti-mitho`: *Hakri chapti mitho* (a pinch of salt). A pinch of salt: mitho, Mum's word for salt, where the game says loon; no Unit rule for chapti yet. Source: grammar-notes §64, §67 (57:14). Recommendation: Decision 2 in the report (salt).
 - `chaat-inji-reet-pramane-banai`: *Chaat inji reet pramane banai* (Make the chaat the way it's meant to be made.). Make the chaat the way it's meant to be made: the last word may end -j (banaij), so not wired to 'Make the bowl, in order'. Source: grammar-notes §67 (61:15). Recommendation: Zafar to listen; then wire the chaat assemble line.
 
-### A sentence the engine has no rule for yet (31)
+### A sentence the engine has no rule for yet (32)
 
 - `toji-kursi-ain`: *Toji kursi ain.* (They're your chairs. (to a child)). 'They're your chairs': a plain statement of what a thing is, with ain; no rule yet. Source: grammar-notes §54 C73. Recommendation: Add a Be rule when Round 5's C86+ are answered.
 - `toja-amba-ain`: *Toja amba ain.* (They're your mangoes. (to a child)). As toji kursi ain. Source: grammar-notes §54 C73. Recommendation: As above.
@@ -151,6 +151,7 @@ Every other recording in `data/family-audio.json` is linked in `clips.json`. The
 - `pa-cup-adho-cup-pono-cup-aakho-cup`: *Pa cup, adho cup, pono cup, aakho cup* (a quarter cup, half a cup, three quarters of a cup, a whole cup). A list of four amounts in one take. Source: grammar-notes §67 (56:12). Recommendation: To split into four clips for baking's amounts.
 - `sawa-cup`: *Sawa cup* (one and a quarter cups). One and a quarter cups: baking has no word id for it yet. Source: grammar-notes §67 (56:27). Recommendation: Add when baking asks for it.
 - `pona-ba-cup`: *Pona ba cup* (one and three quarter cups (a quarter to two)). One and three quarter cups: baking has no word id for it yet. Source: grammar-notes §67 (56:38). Recommendation: As sawa cup.
+- `hakri-chapti-mitho`: *Hakri chapti mitho* (a pinch of salt). A pinch of salt: mitho, Mum's word for salt, the game's since decision 22 (Zafar, 13 Nov); no Unit rule for chapti yet. Source: grammar-notes §64, §67 (57:14). Recommendation: Add a Unit rule for chapti when baking's pinch needs it (CK-89).
 
 ### Something the engine cannot do yet (7)
 

@@ -366,3 +366,18 @@ test("Round 6 sheet (12 Nov): with a filling, in my chai, times, bring me these,
   assert.equal(say({ fn: "Need", who: "p1", thing: item("n.onion", { n: 1 }) }, { register: "polite" }), "muke hakri dungri khapeti", "§64 (21:07): onion is a she-word");
   assert.equal(say({ fn: "Need", who: "p1", thing: item("n.sugar", { n: 1 }) }, { register: "polite" }), "muke hakro khun khapeto", "§64 (19:46): sugar is a he-word");
 });
+
+test("Decision 22 (Zafar, 13 Nov): Mum's 12 Nov words in the game: salt mitho, black pepper miryo, tameto, the pantry headline, daar's stir line", () => {
+  const say = (m, ctx = {}) => strip(E.say(m, ctx).text);
+  // salt and black pepper by the game's own ids (spi-16, spi-11): Mum's words, never the content master's loon or the handout's mari
+  assert.equal(say(item("spi-16", { n: 1 })), "hakro mitho", "§64 (23:36): mitho, a he-word");
+  assert.equal(say({ fn: "Need", who: "p1", thing: item("spi-11") }, { register: "polite" }), "muke miryo khapeti", "§64 (31:00): miryo, a she-word");
+  assert.equal(say(item("veg-03", { n: 1 })), "hakro tameto", "decision 22: one is tameto, with an e");
+  assert.equal(say(item("veg-03", { n: 3 })), "trae tameta", "§64 (17:31)");
+  // the pantry card's headline: Mum's sentence with the dish, Muke de with none (data/cook.json meanings headline-pantry, headline-give)
+  assert.equal(say({ fn: "BringMeTheseForX", x: "cook-chai" }), "hi muke chai lai khani achi de", "§65 (0:41)");
+  assert.equal(say({ fn: "GiveMe" }), "muke de", "T1 (guide-and-card R4); §9's GiveMe, its thing left out");
+  // daar's stir line: Mum's own sentence, no "slowly" (data/cook.json meanings daar-stir-ask)
+  assert.equal(say({ fn: "StirTimes", n: 3 }), "trae fare firai", "§66 (15:19)");
+  assert.equal(say({ fn: "StirTimes", n: 1 }), "hakre fare firai", "§66 (15:19)");
+});

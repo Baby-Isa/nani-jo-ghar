@@ -156,10 +156,10 @@
    "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri elchi, 23:29)"
   },
   "spi-16": {
-   "kutchi": "loon",
+   "kutchi": "mitho",
    "english": "salt",
-   "gender": "unknown",
-   "src": "content master"
+   "gender": "he",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, 23:36-23:48: mitho; 'mitho would be male'); Zafar 13 Nov (decision 22): Mum's word, not the content master's loon"
   },
   "spi-04": {
    "kutchi": "laal marcha",
@@ -446,8 +446,7 @@
    "kutchi": "bafelo indo",
    "english": "boiled egg",
    "gender": "he",
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, bafelo indo: bafelo is boiled, 46:42): spelling to confirm by Zafar",
-   "draft": true
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, bafelo indo: bafelo is boiled, 46:42): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "ph-naan": {
    "kutchi": "naan",
@@ -460,22 +459,19 @@
    "kutchi": "pa cup",
    "english": "a quarter cup",
    "gender": "he",
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, pa cup, a quarter cup; pa cup, adho cup, pono cup, aakho cup, 55:58-56:05, 56:12): spelling to confirm by Zafar",
-   "draft": true
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, pa cup, a quarter cup; pa cup, adho cup, pono cup, aakho cup, 55:58-56:05, 56:12): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "ph-cups-1h": {
    "kutchi": "dedh cup",
    "english": "one and a half cups",
    "gender": "he",
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, dedh cup, 56:18-56:19): spelling to confirm by Zafar",
-   "draft": true
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, dedh cup, 56:18-56:19): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "ph-cups-2h": {
    "kutchi": "adhi cup",
    "english": "two and a half cups",
    "gender": "he",
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, adhi cup, 56:20-56:23): spelling to confirm by Zafar",
-   "draft": true
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, adhi cup, 56:20-56:23): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   }
  },
  "lines": {
@@ -603,11 +599,6 @@
    "record": true,
    "_about": "Nani's chop card headline at the daar station (step 4d: was typed in js/cook/stations/daar.js); to record with Mum"
   },
-  "daar-stir-ask": {
-   "e": "Stir it three times, slowly.",
-   "record": true,
-   "_about": "Nani's stir line at the daar station, one whole sentence (its count and speed vary by level); the engine stitched it from fragments, so its English shows in grey italic until Mum records it (Sprint 19, Fable's daar flaw 2; non-negotiable 2)"
-  },
   "go-fry": {
    "e": "Fry them",
    "record": true,
@@ -657,8 +648,7 @@
   "sugar": {
    "k": "Munji chai me {x} khape.",
    "en": "In my chai I want {x}.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 12:18-12:39): Munji chai me ba khun khape (in my chai I want two sugars), then as her final answer Munji chai me ba khun wijij (in my chai put two sugars, please): munji, my, agrees with chai, not muke"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 12:18-12:39): Munji chai me ba khun khape (in my chai I want two sugars), then as her final answer Munji chai me ba khun wijij (in my chai put two sugars, please): munji, my, agrees with chai, not muke; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "for": {
    "k": "{x} lai.",
@@ -779,8 +769,7 @@
   },
   "headline-give": {
    "e": "Give me",
-   "record": true,
-   "_about": "T1 (S02-B, guide-and-card.md R4): the pantry card's headline is Muke de ('give me'), the items its rows; Nani's next-item line is the card's strip. To record with Mum (Round 5); until then this grey placeholder"
+   "_about": "T1 (S02-B, guide-and-card.md R4): the pantry card's headline is Muke de ('give me'), the items its rows; Nani's next-item line is the card's strip. Zafar 13 Nov (decision 22): said by the engine's GiveMe with nothing to give (Mum's Muke chamchi de, grammar-notes §9, its thing left out), only where the trip has no dish (data/cook.json meanings headline-give; build/lang/hand/cook-map.mjs FRAMES)"
   },
   "alot": {
    "e": "A lot.",
@@ -790,64 +779,54 @@
   "good": {
    "k": "Saro ai.",
    "en": "That's good.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 55:24-55:30): 'we'd say saro ai' (saro, good, §45, with ai, is); ⚠ the take's first words are unclear; spellings to confirm by Zafar",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 55:24-55:30): 'we'd say saro ai' (saro, good, §45, with ai, is); ⚠ the take's first words are unclear; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)",
    "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
   },
   "stillmore": {
    "k": "Haji thorok wadhare.",
    "en": "Still a little more.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 53:24-53:28): haji = still, thorok = a little, wadhare = more (Mum: 'if you just want to say still a bit more'); with wij it is haji thorok wadhare wij, put in still a little more (53:12); spellings to confirm by Zafar",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 53:24-53:28): haji = still, thorok = a little, wadhare = more (Mum: 'if you just want to say still a bit more'); with wij it is haji thorok wadhare wij, put in still a little more (53:12); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)",
    "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
   },
   "guide-chai-tray": {
    "k": "Mare ji chai banai.",
    "en": "Make everyone's chai.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 35:04-35:21): mare ji chai banai, make everyone's chai; in full: mare ji chai banai, jerte iloka ke khapeti erte, the way they want it (Zafar chose the simpler one in the sitting, 36:02); spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 35:04-35:21): mare ji chai banai, make everyone's chai; in full: mare ji chai banai, jerte iloka ke khapeti erte, the way they want it (Zafar chose the simpler one in the sitting, 36:02); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "guide-glass": {
    "k": "Iloka je glass me wij.",
    "en": "Put it in their glass.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 36:29-36:50): there's no word for pour, just put: iloka je glass me wij (their glass; the same for their glasses); spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 36:29-36:50): there's no word for pour, just put: iloka je glass me wij (their glass; the same for their glasses); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "guide-line": {
    "k": "Liti sudhi wij.",
    "en": "Pour it up to the line.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:09-37:21): liti is line, sudhi (heard sudhe) is up to: put it until the line; spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:09-37:21): liti is line, sudhi (heard sudhe) is up to: put it until the line; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "guide-spoons": {
    "k": "Jitli chamchi inke khapeti itli wij.",
    "en": "Put in as many spoons as they want.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:34-38:20): jitli chamchi inke khapeti, itli wij: as many spoons as he or she wants, put that many; spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:34-38:20): jitli chamchi inke khapeti, itli wij: as many spoons as he or she wants, put that many; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "guide-tea-pan": {
    "k": "Chai tapele me wij.",
    "en": "Put the chai in the pan.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 41:45-42:54): tapelo, the pan, becomes tapele before me; spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 41:45-42:54): tapelo, the pan, becomes tapele before me; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "guide-water-pan": {
    "k": "Paani tapele me wij.",
    "en": "Put water in the pan.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 44:36-44:46): paani tapele me wij (also paani sufuri me wij, the Swahili-like word); spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 44:36-44:46): paani tapele me wij (also paani sufuri me wij, the Swahili-like word); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "guide-the-way": {
    "k": "E chai erte rand.",
    "en": "Cook it the way they said.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 51:04-51:09): e chai, he or she said; erte, that way; rand, cook; spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 51:04-51:09): e chai, he or she said; erte, that way; rand, cook; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
   "guide-now-this": {
    "k": "Hane hi wij.",
    "en": "Now put this in.",
-   "draft": true,
-   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 48:18-48:35): there is no word for next: 'you just name the item and say put this now' (hane hi wij; hane dudh wij); spellings to confirm by Zafar"
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 48:18-48:35): there is no word for next: 'you just name the item and say put this now' (hane hi wij; hane dudh wij); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   }
  },
  "grammar": {
@@ -1020,7 +999,7 @@
   "pantry": {
    "en": "Bring me these for {dish}",
    "en_plain": "Bring me these",
-   "_about": "28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
+   "_about": "28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). Mum said it on 12 Nov (grammar-notes §65, 0:38-0:43: Hi muke chai lai khani achi de); Zafar 13 Nov (decision 22): the engine says it (BringMeTheseForX, data/cook.json meanings headline-pantry) where the trip has a dish, Muke de where it has none."
   }
  },
  "stations": {

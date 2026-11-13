@@ -713,6 +713,18 @@
     "once; twice; three times (stir it three times)"
    ]
   },
+  "StirTimes": {
+   "cat": "Utt",
+   "args": {
+    "n": {
+     "type": "Num"
+    }
+   },
+   "en": "Stir it {n} times.",
+   "elicit": [
+    "Stir it three times."
+   ]
+  },
   "BringMeTheseForX": {
    "cat": "Utt",
    "args": {
@@ -1023,19 +1035,6 @@
    "elicit": [
     "I eat chapatis every day. (a man says it, a woman says it)"
    ]
-  },
-  "BringMeTheseForX2": {
-   "cat": "Utt",
-   "args": {
-    "x": {
-     "type": "NP"
-    }
-   },
-   "en": "Bring me these for {x}",
-   "elicit": [
-    "Bring me these for chai"
-   ],
-   "_sig": "[\"x\"]"
   },
   "MyXHurts": {
    "cat": "Utt",

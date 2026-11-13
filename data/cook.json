@@ -495,6 +495,13 @@
    "fn": "BringMeTheseForX",
    "x": "$x"
   },
+  "headline-give": {
+   "fn": "GiveMe"
+  },
+  "daar-stir-ask": {
+   "fn": "StirTimes",
+   "n": "$x"
+  },
   "thanks": {
    "fn": "Exclaim",
    "x": "phrase.thank-you-the-english-words-the-family-says-them"
@@ -863,9 +870,9 @@
    "free": false,
    "how": "Listen to what Nani needs, then tap each one into the basket.",
    "headline": {
-    "line": "headline-give",
+    "line": "headline-pantry",
     "line_plain": "headline-give",
-    "_was": "headline-pantry / -plain (Bring me these for {dish}); T1: Muke de"
+    "_was": "headline-give for both (T1: Muke de); Zafar 13 Nov (decision 22, Mum's 12 Nov report decision 4): Mum's Hi muke {dish} lai khani achi de where the trip has a dish, Muke de where it has none"
    },
    "lists": {
     "basics": [
