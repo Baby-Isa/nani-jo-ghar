@@ -415,6 +415,9 @@ import { setTimeout } from "../life.js";
       const chip = Cook.Kit.chip(S, id, x, band.chipY, { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true });
       chip.pillId = id;
       img.chip = chip; // (its pill is part of its light: Cook.Coach.parts)
+      // CK-102 (the S19 gate's eye judge, 12 Nov: "the shelf band is an empty strip for the whole bake"): the shelf's things and their
+      // pills stay on the band through the oven, as the band does (the move to the oven keeps what is marked band)
+      img.band = chip.band = true;
       objs.push(chip);
       pills.push(chip);
     });
@@ -497,6 +500,30 @@ import { setTimeout } from "../life.js";
       // engine can't say whole: its English in grey, never stitched from fragments (non-negotiable 2), a line for the recording sheet
       const call = Lang.role(amountLine(s), "order");
       say(call);
+      // CK-95 (the S19 gate's eye judge, 12 Nov: "atto sits on the shelf unlit, nothing dimmed, no gold box" while she says "Hakro cup
+      // atto wiji chad!"; the light came only after the jar had left the shelf): the first time, the thing she names is lit with the
+      // kit's light (the dim and the box) as she calls it, as chai's first jar; it goes as it is picked. After that the shared step's
+      // help ladder alone (the call, then the light after the level's wait)
+      const jarImg = shelf[s.id];
+      let picking = true;
+      const jarCtl =
+        jarImg && gate.first("jar")
+          ? Cook.Coach.control({
+              key: KEY,
+              note: `${KEY}:jar`,
+              target: Cook.Coach.box(jarImg, PAD, { visible: true }),
+              first: true,
+              noHint: true,
+              current: () => picking && !jarImg.lifted,
+              busy: () => busy,
+              onLight: () => S.glow(jarImg, true, { now: true }),
+            })
+          : null;
+      const jarOff = () => {
+        picking = false;
+        if (jarCtl) jarCtl.close();
+        if (jarCtl && jarImg.active) S.glow(jarImg, false);
+      };
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
         items: Object.assign({}, shelf),
@@ -509,6 +536,7 @@ import { setTimeout } from "../life.js";
         onWrong: (key) => (Cook.Coach.wrong(), z.listen(false, `took ${key} for ${s.id}`)),
         onLand: (key, obj) => S.tweens.add({ targets: obj, y: obj.home.y - 30, duration: 140, yoyo: true }),
       });
+      jarOff();
       z.listen(true, `took ${s.id}`);
       if (!ctx.guided && Lang.known(s.id)) Cook.markRight(s.id);
       const img = shelf[r.key];
@@ -637,11 +665,14 @@ import { setTimeout } from "../life.js";
     const N = ITEMS().naan || {};
     const [ox, oy0] = O.centre || [900, 360];
     const ov = T(S.add.image(ox, oy0, "bk-oven-shut").setDepth(D.item + 1));
-    ov.setScale(((O.drawn || {}).w || 560) / ov.width);
     // (s19-games-2, CHAI-89: the oven and its tray centred between the view's top and the shelf, as chai's group; never lower)
     const V = Cook.view || {};
     const vt = V.top != null ? V.top : -(V.ey || 0);
     const SB = (global.Shelf && global.Shelf.BAND) || { top: 630 };
+    // CK-101 (the S19 gate's eye judge, 12 Nov: "the oven is toy-sized", its front the mixing bowl's width and twice the tray's): the oven
+    // as wide as the settings ask (drawn.w), never taller than the room between the view's top and the shelf (O.room: its share of it)
+    const roomH = Math.max(200, (SB.top - 28 - (vt + 16)) * (O.room || 0.96));
+    ov.setScale(Math.min(((O.drawn || {}).w || 560) / ov.width, roomH / ov.height));
     const dy = Math.min(0, (vt + 16 + SB.top - 28) / 2 - oy0);
     const oy = oy0 + dy;
     ov.setY(oy);
@@ -741,9 +772,16 @@ import { setTimeout } from "../life.js";
     z.expect({ kind: "wait" });
     setBusy(true);
     // (SH-256, contract-114: in the oven within 15% of its size on the tray, where it rests again when it comes out)
-    await Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" });
+    // CK-100 (the S19 gate's eye judge, 12 Nov: "the tray goes into the oven, the face circle stays behind beside nothing"): their face
+    // goes with the tray, to beside the oven's door at the rack's height, outside the oven (never over the naan, never in the oven's
+    // lit box), and comes back with the tray
+    const faceHome = face ? { x: face.x, y: face.y } : null;
+    const faceBy = face ? { x: ox - ov.displayWidth / 2 - face.displayWidth * 0.62, y: rackY } : null;
+    await Promise.all([
+      Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" }),
+      face ? Cook.tween(S, { targets: face, x: faceBy.x, y: faceBy.y, duration: 520, ease: "Cubic.easeInOut" }) : null,
+    ]);
     await Cook.wait(200);
-    if (face) face.setVisible(false);
     ov.setTexture("bk-oven-baking");
     // (s19-games-2: the naan stays in view through the glass, its tray on the rack, the glass's glow faint over it)
     glass = T(S.add.image(ov.x, ov.y, "bk-oven-baking").setScale(ov.scaleX).setDepth(naan.depth + 0.5).setAlpha(O.glassAlpha || 0.4));
@@ -793,12 +831,16 @@ import { setTimeout } from "../life.js";
     speak(line("careful", "react"));
     steam(ox, rackY, 6);
     await Cook.wait(300);
-    await Cook.tween(S, { targets: naan, x: hx, y: hy, scale: nk, duration: 560, ease: "Cubic.easeInOut" });
+    await Promise.all([
+      Cook.tween(S, { targets: naan, x: hx, y: hy, scale: nk, duration: 560, ease: "Cubic.easeInOut" }),
+      face && face.active ? Cook.tween(S, { targets: face, x: faceHome.x, y: faceHome.y, duration: 560, ease: "Cubic.easeInOut" }) : null,
+    ]);
     steam(hx, hy - 40, 4);
     ov.setTexture("bk-oven-shut");
     UI.mission.closeItem(["ph-naan"], 0, { head: true });
     // SH-254: one face, beside the tray at its upper left (where the small circle was), the naan in plain view
     const size = 190;
+    if (face && face.active) face.setVisible(false); // (the review's face takes its place while it shows)
     const look = await Cook.Kit.review(S, { who, ok: true, x: hx - naan.displayWidth * 0.42, y: hy - naan.displayHeight / 2 - size * 0.5, size, side: "right" });
     await Cook.wait(400);
     await look.close();

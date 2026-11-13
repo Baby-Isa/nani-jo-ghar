@@ -636,7 +636,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         }
       } else {
         // a powder (chilli) or specks (pepper): fine dots all along, a powder denser and finer
-        const r0 = st.kind === "powder" ? 0.018 : 0.026;
+        // (CK-103: a dressing's own speck size, st.r, over the cob's thickness: the pepper's specks big enough to see land on the cob)
+        const r0 = st.r || (st.kind === "powder" ? 0.018 : 0.026);
         for (let i = 0; i < n; i++) {
           const x = along();
           g.fillStyle(c, st.kind === "powder" ? 0.85 : 0.95);
@@ -831,11 +832,16 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const ok = q.asked.includes(id);
       z.listen(ok, ok ? `put ${id}` : `put ${id}, not asked`);
       if (!ok) Cook.Coach.wrong(KEY); // (a wrong move brings the stuck hint at once: STD-D2-04)
-      const dot = T(S.add.circle(img.x, img.y, 20, col(id), 1).setDepth(D.fx));
+      // CK-103 (the S19 gate's eye judge, 12 Nov: "a plain black speck crosses the screen"): what flies to the cob is the bowl's own
+      // picture, a small copy of it, never a plain dot (a dot only where the picture is missing)
+      const fw = Math.max(40, Math.min(img.displayWidth * 0.6, 90));
+      const dot = S.textures.exists(img.texture.key)
+        ? T(S.add.image(img.x, img.y, img.texture.key).setDepth(D.fx).setScale(fw / Math.max(1, img.width)))
+        : T(S.add.circle(img.x, img.y, 20, col(id), 1).setDepth(D.fx));
       dropping++;
       refresh();
       try {
-        await fly(() => Cook.tween(S, { targets: dot, x: q.cob.x, y: q.cob.y, scale: 0.6, duration: mo.dropMs || 420, ease: "Cubic.easeInOut" }));
+        await fly(() => Cook.tween(S, { targets: dot, x: q.cob.x, y: q.cob.y, scale: dot.scale * 0.6, duration: mo.dropMs || 420, ease: "Cubic.easeInOut" }));
       } finally {
         dropping--;
       }
