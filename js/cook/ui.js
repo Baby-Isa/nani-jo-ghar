@@ -2245,8 +2245,10 @@
           // was placed; moving off it is no reason to bow, so a frame counts only where it covers more of a face than at take-off)
           const base = overlap14({ left: fb.left, right: fb.right, top: fb.top, bottom: fb.bottom }, fs);
           const hits = (b) => {
-            for (let i = 1; i < 20; i++) {
-              const t = i / 20;
+            // (s20-p2c: sampled every 1/80 of the flight, the card a pixel wider each side: at 1/20 the card moved up to a seventh of its way
+            // between two samples and grazed Nana's head between them, L4 at 740x320, contract-83 once the order view was lifted, SH-287)
+            for (let i = 1; i < 80; i++) {
+              const t = i / 80;
               const px = (1 - t) * (1 - t) * c0.x + 2 * (1 - t) * t * ((c0.x + c2.x) / 2 + nx * b) + t * t * c2.x;
               const py = (1 - t) * (1 - t) * c0.y + 2 * (1 - t) * t * ((c0.y + c2.y) / 2 + ny * b) + t * t * c2.y;
               // (as the morph shrinks it: one even scale to the row's card, never a stretch; the judge's check ran on a stretch, so it
@@ -2254,7 +2256,7 @@
               const k = 1 + (Math.min(tr.width / fb.width, tr.height / fb.height) - 1) * t;
               const w = fb.width * k;
               const h = fb.height * k;
-              if (overlap14({ left: px - w / 2, right: px + w / 2, top: py - h / 2, bottom: py + h / 2 }, fs) > base + 1) return true;
+              if (overlap14({ left: px - w / 2 - 1, right: px + w / 2 + 1, top: py - h / 2 - 1, bottom: py + h / 2 + 1 }, fs) > base + 1) return true;
             }
             return false;
           };
