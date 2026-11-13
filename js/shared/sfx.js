@@ -23,8 +23,8 @@
  *                                     once it has loaded)
  * THE VOICE GATE (the sound-and-juice report 3b; the family's voice is never masked): while a family voice line sounds
  * (Sfx.speaking(): the host's own Sfx.voiceBusy when it set one, else Cook.voiceBusy, else NjgVoice.busy), an effect longer than
- * 120 ms does not start (dropped, never queued: a late sound is a wrong one) unless {under: true}; a short tick plays ducked
- * (x 0.35). A recorded sound still ringing when a voice starts fades out at once, and the simmer loop is silent while a voice speaks.
+ * 120 ms does not start (dropped, never queued: a late sound is a wrong one) unless {under: true} (a child's own action: it plays
+ * ducked, x Sfx.UNDER, CHAI-113); a short tick plays ducked (x 0.35). A recorded sound still ringing when a voice starts fades out at once, and the simmer loop is silent while a voice speaks.
  *
  * Every call is safe without Web Audio (Node, old browsers): it does nothing.
  * Plain <script>: window.Sfx (and Shared.sfx); Node: require().
@@ -248,8 +248,12 @@
       return false;
     }
   };
-  // -> 0 (it does not play), else its volume factor (1, or ducked under a voice)
-  const gate = (name, opts) => (opts.under || !Sfx.speaking() ? 1 : Sfx.len(name) <= SHORT ? 0.35 : 0);
+  // CHAI-113 (Zafar, 13 Nov, decision 14: "the knob's click and the flame play under the voice, quieter"): a child's own action's sound
+  // ({under: true}: the knob turned on, the flame catching) always plays, even while a family line sounds, ducked to UNDER under it
+  // (and is never faded out by the voice's start); every other effect keeps the gate above
+  Sfx.UNDER = 0.5;
+  // -> 0 (it does not play), else its volume factor (1, ducked under a voice: a tick x 0.35, a child's own action's sound x UNDER)
+  const gate = (name, opts) => (!Sfx.speaking() ? 1 : opts.under ? Sfx.UNDER : Sfx.len(name) <= SHORT ? 0.35 : 0);
 
   Sfx.names = Object.keys(SOUNDS);
   Sfx.play = function (name, opts) {
@@ -435,7 +439,7 @@
   };
   /** Fetch and decode the named recorded sounds now (a station's start), so each plays on its moment. */
   Sfx.preload = (names) => Promise.all([].concat(names || []).map((n) => (FILES[n] ? load(FILES[n].file) : null)));
-  const gateMs = (ms, opts) => (opts.under || !Sfx.speaking() ? 1 : ms <= SHORT ? 0.35 : 0);
+  const gateMs = (ms, opts) => (!Sfx.speaking() ? 1 : opts.under ? Sfx.UNDER : ms <= SHORT ? 0.35 : 0);
   // the sounds playing now: a one-shot fades out when a voice starts; the loop goes silent while it speaks
   const live = new Set();
   let watching = null;

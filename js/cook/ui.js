@@ -3816,6 +3816,7 @@
     const parts = rows ? all.filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : allDone ? all.slice(0, 1) : c._parts(true);
     c.classList.add("speaking");
     if (face) face.classList.add("on");
+    flashSaid(c, parts);
     try {
       await readAlong(parts);
     } catch (e) {
@@ -4069,12 +4070,36 @@
     if (!(rows.some((r) => r.done) && rows.some((r) => !r.done))) return mission.line;
     return Order().speech(mission.ladders.map((L) => Object.assign({}, L, { head: null, sections: L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null, groups: s.groups.map((g) => g.filter((r) => !r.done)).filter((g) => g.length) })).filter((s) => s.groups.length) })));
   }
+  /**
+   * SH-267 on a replay (Zafar, 13 Nov, decision 15: "the dish card on replay yes"): when an order is said again from the customer's face
+   * (sayCardEl, M.sayCard) and the line names the dish ("Muke ... khape"), the dish's card flashes up as it did the first time (UI.dishFlash:
+   * level 1 only). The dish is the head row; a card with no dish of its own (chop's "Muke ba dungri khape") flashes its first thing said.
+   */
+  function flashSaid(c, parts) {
+    if (!c || !parts || !parts.length) return null;
+    const p0 = parts[0];
+    let said = "";
+    try {
+      said = Lang.plain(p0.line) || "";
+    } catch (e) {
+      /* a part with no words */
+    }
+    if (!/^\s*muke\b/i.test(said)) return null;
+    const rowOf = (p) => p.row || (p.line && p.line.row) || null;
+    const all = c._parts ? c._parts() : [];
+    const head = parts.map(rowOf).find((r) => r && r.head) || all.map(rowOf).find((r) => r && r.head);
+    if (head) return UI.dishFlash(c.dataset.who || null, head);
+    const first = parts.map((p) => rowOf(p) || ((p.line && p.line.rows) || []).find((x) => x && !x.head && !x.no)).find(Boolean);
+    return first ? UI.dishFlash(c.dataset.who || null, first) : null;
+  }
   /** The order card's own speaker: the order, read along on the card (the steps left once some are done: replayLine). */
   M.sayCard = function () {
     if (!mission || introOpen()) return;
     const btns = [...document.querySelectorAll("#mission .oc-face")]; // the face is the replay button
     btns.forEach((b) => b.classList.add("on"));
-    return readAlong(partsOf(replayLine(), sideEls))
+    const said = partsOf(replayLine(), sideEls);
+    flashSaid(document.querySelector("#mission .oc-card[data-who]") || document.querySelector("#mission .oc-card"), said);
+    return readAlong(said)
       .catch(() => {})
       .then(() => btns.forEach((b) => b.classList.remove("on")));
   };

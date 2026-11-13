@@ -450,7 +450,7 @@
     sizzleLoop: () => fxLoop("sizzle"),
     boilLoop: () => fxLoop("boil"),
     // CHAI-92 / SH-226 (Zafar's picks, 6 Nov, lab/juice.html): the recorded sounds (js/shared/sfx.js FILES), through the voice gate
-    knob: () => fx("knob"),
+    knob: (o) => fx("knob", o),
     flame: (o) => fx("flame", o),
     green: () => fx("green"),
     glass: () => fx("glass"),
