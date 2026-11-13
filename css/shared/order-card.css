@@ -749,7 +749,7 @@ body.njg-s14 #side { --hit-b: max(0px, calc((var(--njg-tap) - var(--njg-tap-draw
 @media (max-height: 500px) { body.njg-s14 #side { --hit-b: max(0px, calc((var(--njg-tap) - var(--njg-tap-drawn) * .94) / 2)); } }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk { box-sizing: content-box; border: var(--hit-b) solid transparent; background-clip: padding-box; margin: calc(7cqi - var(--hit-b)) calc(-1 * var(--hit-b)) calc(7cqi - var(--njg-card14-hair) - var(--hit-b)); }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14:only-child > .oc-spk.wc14-spk { margin: calc(var(--njg-c14i) * .07 - var(--hit-b)) calc(-1 * var(--hit-b)) calc(var(--njg-itpad) - var(--hit-b)); }
-:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::before { display: block; content: ""; position: absolute; inset: 0; width: auto; height: auto; transform: none; border-radius: 50%; background: none; box-shadow: none; pointer-events: none; }
+:root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk::before { display: block; content: ""; position: absolute; inset: 0; width: auto; height: auto; transform: none; border: 0; border-radius: 50%; background: none; box-shadow: none; pointer-events: none; }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk.on { animation: none; }
 :root.njg-lora body.njg-s14 #side .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 > .oc-spk.wc14-spk.on::before { animation: wc14-pulse .9s ease-out; }
 body.njg-s14 #guide.ng-s14 .ng-arrow { box-sizing: content-box; border: var(--hit-b) solid transparent; background-clip: padding-box; box-shadow: none; }

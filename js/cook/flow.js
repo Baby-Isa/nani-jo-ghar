@@ -316,16 +316,16 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
    * they did (a view change puts the camera back; a resize in the service view keeps the lift).
    */
   const ORDER_LIFT = 150;
+  const onService = (s) => !!(s && s.bg && s.bg.texture && s.bg.texture.key === "bg-service");
   function liftOrderView(s) {
     const cam = s && s.cameras && s.cameras.main;
     const v = Cook.view;
-    if (!cam || !v || s.viewName !== "service" || !s.__orderLift) return;
+    if (!cam || !v || !s.__orderLift || !onService(s)) return;
     const f = Cook.serviceFrame ? Cook.serviceFrame(s) : { oy: v.top };
     cam.scrollY = v.top - Math.max(0, Math.min(ORDER_LIFT, v.top - f.oy));
   }
-  async function serviceView(who, { enter, lift } = {}) {
-    const s = S();
-    await s.setView("service");
+  /** The ordering view, lifted (or not): a resize while it stands keeps the lift; any other view (a station's) is never lifted. */
+  function orderLift(s, on) {
     if (!s.__liftHook) {
       s.__liftHook = true;
       const fit = s.fitView;
@@ -335,8 +335,13 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
         return r;
       };
     }
-    s.__orderLift = !!lift;
+    s.__orderLift = !!on;
     liftOrderView(s);
+  }
+  async function serviceView(who, { enter, lift } = {}) {
+    const s = S();
+    await s.setView("service");
+    orderLift(s, lift);
     S().addChar("nani");
     if (who) S().addChar(who, { enter });
     S().occluder();
@@ -1853,6 +1858,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     s.clearView();
     s.viewName = null;
     s.setBg("bg-service");
+    orderLift(s, true); // (SH-287: the lab's order, as a day's, is seen from higher up)
     // a dish's order as a ladder, or a few plain lines for stations with no dish
     const openCard = (what, steps) => {
       // (the S14 roll-out, for the timeline only: how many of the dish's repeating thing this order holds, by the central rules'
