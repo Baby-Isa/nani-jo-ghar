@@ -130,6 +130,7 @@
   "free": false,
   "proto": true,
   "countRule": true,
+  "card": { "_about": "CK-105 (the judge, s19-night-b-a2: at L3 'the cob is second, not first'): each person's card in step order, the cob first (it is grilled first), its toppings after it in the order they were drawn (js/cook/order.js sorts a person's rows by these slots; without them it shuffled them)", "slots": [["n.corn-on-the-cob"]] },
   "price": 2,
   "stations": [
    "corn"
