@@ -158,11 +158,11 @@ import { Cook as CookNS } from "../ns.js";
     const top = z.Y(BAND.top);
     if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
     band(S, { top, base: z.Y(BAND.base), far: FAR, depth: Cook.D.bg + 1.2 });
-    board(S, z, art, lay);
+    const boardImg = board(S, z, art, lay);
     const kn = lay.knife || {};
     return {
       hop: true,
-      band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY, board: lay.hopOn || null, boardY: lay.board ? [lay.board.y - lay.board.h / 2, lay.board.y + lay.board.h / 2] : null },
+      band: { top: BAND.top, base: BAND.base, chipY: BAND.chipY, board: lay.hopOn || null, boardY: lay.board ? [lay.board.y - lay.board.h / 2, lay.board.y + lay.board.h / 2] : null, boardAt: () => (boardImg && boardImg.active ? boardImg.getBounds() : null) },
       // (S19: the game's own pictures and places; the mechanic falls back to the shared ones where these are missing)
       pieces: art.pieces,
       knifeKey: S.textures.exists(art.knife) ? art.knife : null,

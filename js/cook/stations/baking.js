@@ -267,7 +267,18 @@ import { setTimeout } from "../life.js";
       o.face = f;
       return f;
     };
-    faceAt(bowl, 1);
+    const bowlFace = faceAt(bowl, 1);
+    // CK-100 (the judge, s19-night-b-a2, 740x320: "the face circle sits inside the top-right corner of the mixing bowl's lit gold box"):
+    // beside the bowl at its upper right, clear of it by the kit's widest light margin on the page (Onboard.LIGHT, as the tray's
+    // below), so the bowl's light never takes it in (contract-82)
+    if (bowlFace) {
+      const ppwB = Math.max(0.05, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const OLb = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
+      const gapB = (OLb.max + OLb.clear + 6) / ppwB;
+      bowlFace.setPosition(bowl.x + bowl.displayWidth / 2 + bowlFace.displayWidth / 2 + gapB, bowl.y - bowl.displayHeight + bowlFace.displayHeight * 0.6);
+      // (not one of the bowl's lit parts, Cook.Coach.parts' thing.face: beside the box, never in its corner, as the tray's face)
+      bowl.face = null;
+    }
     let wet = false;
     const bowlState = (k) => {
       const key = `bk-bowl-${k}`;

@@ -677,13 +677,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     }
 
     // CK-76 (the eye judge, 10 Nov: "Hane indo!" through the carton, the pan and the plating; chai names each step): Nani's box names
-    // each step as it opens, from the engine only (R2): an egg from the bowl "Hane indo!", into the pot or pan "Indo wiji chad!", out
+    // each step as it opens, from the engine only (R2): an egg from the bowl "Indo khan!", into the pot or pan "Indo wiji chad!", out
     // of it when it is ready "(Tarelo) indo hane kadh.", the salt or the pepper "Loon / Mari wiji chad!"; a plate and the tray have no
     // Kutchi yet (v.serve, to record: its English in grey italic, on the recording sheet), never a line written here
     let stepWhat = null;
     let stepN = 0;
     const stepLineOf = (n) => {
-      if (n.what === "bowl") return Lang.line("now", Lang.phrase(["n.egg"]));
+      // (the judge, s19-night-b-a2: "the carton step still reads 'Hane indo!' with no verb"): the carton's step says its verb, take,
+      // the engine's command ("Indo khan!", take an egg: v.take and n.egg, both Mum's words)
+      if (n.what === "bowl") return Lang.say({ fn: "Command", verb: "v.take", obj: Lang.itemOf(["n.egg"]) });
       if (n.what === "vessel") return St.addLine("n.egg");
       if (n.what === "egg") return Lang.line("lift", Lang.phrase(n.key === "n.egg" ? ["a.fried", "n.egg"] : ["n.egg"]));
       if (n.what === "shaker" || (n.what === "plate" && /^spi-/.test(String(n.key)))) return St.addLine(n.key);

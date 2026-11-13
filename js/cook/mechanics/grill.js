@@ -789,11 +789,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     c.ids.pop();
     if (img) {
       img.marks.destroy();
+      if (img.blend) img.blend.destroy();
       img.destroy();
     }
   };
   /** How cooked it looks: 0 raw .. 1 done; burnt darkens it. stage (raw, part, grilled, charred) names the picture; else from marks. */
-  SK.cook = function (c, f, { burnt = false, marks = 0, stage = null } = {}) {
+  SK.cook = function (c, f, { burnt = false, marks = 0, stage = null, next = null, mix = 0 } = {}) {
     const k = Cook.clamp(f, 0, 1);
     const col = burnt ? Phaser.Display.Color.GetColor(110, 80, 70) : Phaser.Display.Color.GetColor(255, 255 - k * 55, 255 - k * 105);
     // painted pieces show their own states (raw, part once turned, grilled when every turn is done, charred), so they take a lighter
@@ -805,6 +806,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const painted = img.pieceId && SK.pieceTex(img.scene, img.pieceId, state);
       if (painted) {
         if (img.texture.key !== painted) img.setTexture(painted);
+        // SEK-29 (the judge, s19-night-c-ev1: the turn must brown the meat over its time): the next stage's picture laid over this one,
+        // fading up as the cook nears it (next, mix 0..1 from the grill's own time), so the pieces brown by degrees, never in one frame
+        const nextTex = !burnt && next && mix > 0 ? SK.pieceTex(img.scene, img.pieceId, next) : null;
+        if (nextTex && !img.blend && c.addAt && c.getIndex) {
+          img.blend = img.scene.add.image(img.x, img.y, nextTex).setOrigin(img.originX, img.originY);
+          img.blend.setName("sk-blend"); // (one piece, two of its pictures: not a picture of its own on the worktop)
+          c.addAt(img.blend, c.getIndex(img) + 1);
+        }
+        if (img.blend) {
+          if (nextTex && img.blend.texture.key !== nextTex) img.blend.setTexture(nextTex);
+          img.blend.setPosition(img.x, img.y).setScale(img.scaleX, img.scaleY).setAngle(img.angle).setFlip(img.flipX, img.flipY);
+          img.blend.setAlpha(nextTex ? Cook.clamp(mix, 0, 1) : 0).setTint(light);
+        }
         // (a piece with no charred picture: its grilled one, darker; R7 gave every v3 piece its own)
         img.setTint(burnt && !img.scene.textures.exists(`sk3-${SK.v3Name(img.pieceId)}-charred`) ? 0x8c7466 : light);
         // (a v3 piece has its own grill marks painted on)
@@ -1697,9 +1711,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const tall = (M) => M * (1 + hang) + above(M);
     const Mh = Math.min(H / (1 + hang + a), (H - ICON) / (1 + hang - 0.122), (H - FACE * 0.7) / (1 + hang + box.far));
     const Mw = (vr - vl) / (gW + GAP + ACROSS);
-    const M = Math.max(120, Math.min(Mw, Mh));
+    let M = Math.max(120, Math.min(Mw, Mh));
     let x0 = (vl + vr) / 2 - (M * (gW + GAP + ACROSS)) / 2;
-    const farY = spanTop + (H - tall(M)) / 2 + above(M);
+    let farY = spanTop + (H - tall(M)) / 2 + above(M);
     // SEK-29 (the S19 gate's eye judge, 12 Nov: "the cog clear of the tray"): where the settings cog (top right, over the play area)
     // would sit on the cooked tray's corner, the group moves left by the overlap, as far as the view's left margin allows; its size
     // is kept (the grill as big as the height allows, contract-115)
@@ -1716,6 +1730,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const trayTop = farY - box.far * M;
         const over = trayRight + 10 - cogLeft;
         if (over > 0 && trayTop < cogBottom) x0 -= Math.max(0, Math.min(over, x0 - (left + 8)));
+        // (the judge, s19-night-c-ev1, 740x320: "the cog's box sits over the tray's top-right corner in every frame": a phone has no
+        // room left to move into; then the group is made just small enough that the tray ends 10 px left of the cog, centred in the
+        // room between the view's left margin and the cog, unless it already sits below the cog)
+        const gapD = 6 / ppw / k; // (6 page px between the tray and the cog, at any size: the grill stays at 60% of the height, contract-115)
+        const room = cogLeft - gapD - vl;
+        if (x0 + M * (gW + GAP + ACROSS) + gapD > cogLeft && farY - box.far * M < cogBottom && room > 0) {
+          const M2 = Math.max(120, Math.min(M, room / (gW + GAP + ACROSS)));
+          if (M2 < M) {
+            M = M2;
+            farY = spanTop + (H - tall(M)) / 2 + above(M);
+          }
+          x0 = Math.max(left + 8, vl + (room - M * (gW + GAP + ACROSS)) / 2);
+        }
       }
     } catch (e) {
       /* where it was */
@@ -2246,7 +2273,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // the last side; a turn shows the next side, never raw to done at once
           const f = (g.phase + Math.min(1, g.v)) / (k.turns + 1);
           const stage = f >= 0.62 ? "grilled" : f >= 0.3 ? "part" : "raw";
-          SK.cook(g.sk, f, { burnt: g.burnt || g.v >= 1, marks: g.phase * 0.45 + (g.phase >= k.turns ? 0.1 : 0), stage });
+          // (the next stage fades up over the last stretch before it: raw to part over f 0.12-0.3, part to grilled over 0.44-0.62, so
+          // the side cooking browns by degrees and the turn shows only the last step of it)
+          const next = stage === "raw" ? "part" : stage === "part" ? "grilled" : null;
+          const mix = stage === "raw" ? (f - 0.12) / 0.18 : stage === "part" ? (f - 0.44) / 0.18 : 0;
+          SK.cook(g.sk, f, { burnt: g.burnt || g.v >= 1, marks: g.phase * 0.45 + (g.phase >= k.turns ? 0.1 : 0), stage, next, mix });
           if (inBand !== !!g.inBand) {
             g.inBand = inBand;
             if (inBand) Cook.sfx.click();

@@ -29420,7 +29420,7 @@
    ],
    "expect": null,
    "note": "corn: the order cards in step order, the cob first; a done card stays in its place (no swap)",
-   "max": 8
+   "max": 16
   }
  ]
 }
