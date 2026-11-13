@@ -20,3 +20,9 @@ Next: `node build/tools/review/evidence.mjs --judge --run-id s19-r2-games-ev`, t
 ## Tool failures (0): for the tool owner, never a FAIL in regressions.md
 
 none
+
+## EVIDENCE lines from the reviewers (the tool owner's list)
+
+- DAAR-39: the sheet has one still of the demo's start per size (A frame 1, B frame 1: a lit strip across the board and knife, the rest dimmed, an onion planted; the finger only in B) and two sizes of the four; no frame shows the drag right to left, the vegetable cut, the count unchanged, the knife refusing a grab, or the window resized, so the row's moving parts are not shown (other flaws seen: A frame 1 has no finger; the strip is little taller than the upright knife) (fable, independent, not the builder s19-r2-games)
+- CK-102: the well-done moment is not on the sheet (the eight stage-end captures are listed as "not on the sheet"); C frames 11-13 show the shelf keeping dudh, paani and atto through the oven and B frame 13 / D frame 13 show both cards ticked at "Dhyan rakh!", but the last frame (B14, D14) is the end review with the cards already folded away, so the cards at the praise at 1280 cannot be judged (flaw off the point: the order card's atto picture is a metal tin, the shelf's atto a glass jar) (fable, independent, not the builder s19-r2-games)
+

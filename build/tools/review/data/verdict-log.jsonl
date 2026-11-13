@@ -1894,3 +1894,17 @@
 {"id":"CK-109","run":"s19-night-c-ev1","event":"built","date":"2026-11-13"}
 {"id":"DAAR-51","run":"s19-night-c-ev3","event":"built","date":"2026-11-13"}
 {"id":"CK-107","run":"s19-night-c-ev3","event":"built","date":"2026-11-13"}
+{"id":"SAM-35","run":"s19-r2-games-ev","verdict":"FAIL","spec":"912d6c66c2ff43b914d0","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"SAM-37","run":"s19-r2-games-ev","verdict":"PASS","spec":"c8daa671050a33f7d23d","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"SAM-38","run":"s19-r2-games-ev","verdict":"PASS","spec":"0bd633bb9bc2c9f12dd1","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"CK-76","run":"s19-r2-games-ev","verdict":"PASS","spec":"92c5e5fab328cdce7283","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"CK-100","run":"s19-r2-games-ev","verdict":"PASS","spec":"40dc6b8e99e66a74d097","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"CK-105","run":"s19-r2-games-ev","verdict":"PASS","spec":"45660df7f78bde41d424","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"CK-112","run":"s19-r2-games-ev","verdict":"FAIL","spec":"7903776060678fd4f324","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"SEK-29","run":"s19-r2-games-ev","verdict":"FAIL","spec":"ff8c8f5d4c921817a38a","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"SAM-37","run":"s19-r2-games-ev","event":"built","date":"2026-11-13"}
+{"id":"SAM-38","run":"s19-r2-games-ev","event":"built","date":"2026-11-13"}
+{"id":"CK-76","run":"s19-r2-games-ev","event":"built","date":"2026-11-13"}
+{"id":"CK-105","run":"s19-r2-games-ev","event":"built","date":"2026-11-13"}
+{"id":"CK-105","run":"s19-r2-games-ev2","verdict":"PASS","spec":"8e20bb3b68c42f85761d","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
+{"id":"CK-105","run":"s19-r2-games-ev2","event":"built","date":"2026-11-13"}

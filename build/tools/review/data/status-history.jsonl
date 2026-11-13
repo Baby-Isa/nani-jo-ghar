@@ -1368,3 +1368,11 @@
 {"id":"SAM-38","run":"s19-night-c-ev3","earlier":"**to fix: code**"}
 {"id":"CK-107","run":"s19-night-c-ev3","earlier":"**to fix: code**"}
 {"id":"CK-112","run":"s19-night-c-ev3","earlier":"**to fix: code**"}
+{"id":"SAM-35","run":"s19-r2-games-ev","earlier":"**to fix: check** · reopened (evidence FAIL s19-night-c-ev3)"}
+{"id":"SEK-29","run":"s19-r2-games-ev","earlier":"**to fix: code** · reopened (evidence FAIL s19-night-c-ev1)"}
+{"id":"SAM-37","run":"s19-r2-games-ev","earlier":"**to fix: code** · reopened (evidence FAIL s19-night-c-ev3)"}
+{"id":"SAM-38","run":"s19-r2-games-ev","earlier":"**to fix: code** · reopened (evidence FAIL s19-night-c-ev3)"}
+{"id":"CK-76","run":"s19-r2-games-ev","earlier":"**to fix: code** · reopened (evidence FAIL s19-night-b-a2)"}
+{"id":"CK-105","run":"s19-r2-games-ev","earlier":"**to fix: code** · reopened (evidence FAIL s19-night-b-a2)"}
+{"id":"CK-112","run":"s19-r2-games-ev","earlier":"**to fix: code** · reopened (evidence FAIL s19-night-c-ev3)"}
+{"id":"CK-105","run":"s19-r2-games-ev2","earlier":"built (evidence PASS s19-r2-games-ev: fable, independent, not the builder s19-r2-games: A, frames 1-4 the cob card \"hakro makai\" is first and \"mari\" second, frame 5 the cob is ticked in its place, frame 6 both ticked in the same places, no swap or overlap; B the same at 740x320 [flaws: C and D at L3 stop before any card is done, so L3 shows the order only; B frame 2 the open word card pushes the order card's bottom past the panel edge])"}
