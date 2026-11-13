@@ -539,6 +539,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         const ripe = all().find((e) => !e.out && !e.lifted && e.p >= ready && P0.some((pl) => !plateFull(pl) && !!pl.q.fried === e.fried));
         if (ripe) return { obj: ripe.obj, key: ripe.fried ? "n.egg" : "ph-boiledegg", what: "egg" };
       }
+      // (s19 night, contract-117: an egg in the hand is put in first, into the vessel of the first plate whose kind still wants one: a
+      // ripe egg asked for meanwhile was lit, but a tap on it puts the egg in the hand in (lift, below), so its light went and the step
+      // stayed; an egg nobody's plate wants goes on as before)
+      if (held && held.kind === "raw") {
+        const short = (fried) =>
+          P0.filter((x) => !!x.q.fried === fried).reduce((a, x) => a + Math.max(0, plateWants(x) - x.eggs.length), 0) > all().filter((e) => !e.out && e.fried === fried).length;
+        const pl = P0.find((x) => !plateFull(x) && short(!!x.q.fried));
+        if (pl) return { obj: pl.q.fried ? pan : pot, key: pl.q.fried ? "pan" : "pot", what: "vessel" };
+      }
       for (const pl of P0) {
         if (!plateFull(pl)) {
           const want = !!pl.q.fried;
@@ -728,10 +737,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       const o = rawHeld;
       rawHeld = null;
       held = null;
+      // (s19 night, the fast child's two taps: the egg box's lift, below, was still moving the egg when its flight began, and a flight
+      // ended by S.fly's own timer (a long frame) let that lift go on writing its y after it landed, so its bob started from the bowl's
+      // height and the egg sat on the shelf, its light there, every tap missing it: one tween moves an egg at a time, the flight's)
+      S.tweens.killTweensOf(o);
       refresh();
       await flying(S.fly(o, at.x, at.y, { duration: 380, arc: 120 }));
       // (the tray went to the table while it flew: nothing is left to cook it in)
       if (finished) return o.active && o.destroy();
+      // (and it lands where the game keeps it, egg.at, whatever ended its flight)
+      S.tweens.killTweensOf(o);
+      o.setPosition(at.x, at.y);
       if (v.fried) {
         // cracked into the pan (egg-cracked), it sets as its ring fills (egg-cooked), browns if it is left (egg-overdone)
         // SH-256 (the eye judge, 10 Nov: "a whole egg in its shell sits in the pan, then is a fried egg in one step"): the egg cracks
