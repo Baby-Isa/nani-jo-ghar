@@ -388,7 +388,27 @@ export class EvidenceProbe {
   // the results tile's English gloss (.rs-en) stays by decision F14 (Zafar, 12 Oct): the lexicon check leaves it out
   async texts(sel) { return this.page.evaluate(`(${TEXTS})(${JSON.stringify([cssOf(sel), NOT_FOR_CHILD_SEL + ", .rs-en", GROWNUP_SEL])})`); }
   async measure(kind, sel, box) { return this.page.evaluate(`(${MEASURE})(${JSON.stringify([kind, Array.isArray(sel) ? sel.map(cssOf) : cssOf(sel), box ? cssOf(box) : null])})`).catch((e) => ({ error: String(e.message || e).split("\n")[0] })); }
-  async shot(clip) { return this.page.screenshot({ ...(clip ? { clip } : {}), animations: "allow", timeout: 10000 }); }
+  // (s19-r2-shared, the judges on s19-night-b-a2: "no screenshot (page.screenshot: Timeout 10000ms exceeded)" on a loaded machine, a
+  // panel lost (CHAI-37, CHAI-49, CHAI-56, CK-104, SAM-40): a shot Playwright cannot take in time is taken straight from the compositor
+  // (CDP, the filmstrips' path, and cut here); only when that fails too is the panel lost)
+  async shot(clip) {
+    try {
+      return await this.page.screenshot({ ...(clip ? { clip } : {}), animations: "allow", timeout: 10000 });
+    } catch (e) {
+      if (!/timeout/i.test(String(e && e.message))) throw e;
+      const raw = await this.surface();
+      if (!raw) throw e;
+      if (!clip) return raw;
+      const img = decodePng(raw);
+      const k = img.w / (this.page.viewportSize().width || img.w);
+      const x0 = Math.max(0, Math.round(clip.x * k)), y0 = Math.max(0, Math.round(clip.y * k));
+      const w = Math.min(img.w - x0, Math.round(clip.width * k)), h = Math.min(img.h - y0, Math.round(clip.height * k));
+      if (!(w > 0 && h > 0)) throw e;
+      const data = Buffer.alloc(w * h * 4);
+      for (let y = 0; y < h; y++) img.data.copy(data, y * w * 4, ((y0 + y) * img.w + x0) * 4, ((y0 + y) * img.w + x0 + w) * 4);
+      return encodePng({ w, h, data });
+    }
+  }
   // a filmstrip frame: straight from the compositor (CDP; optimizeForSpeed dropped: a judge saw a tiled frame), ~30-80 ms instead of Playwright's 0.5-1.8 s
   // screenshot, so a 4x100 ms strip's frames land about 100 ms apart (CK-27: a short puff fell between frames). Falls back to shot().
   async fastShot(clip) {

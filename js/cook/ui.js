@@ -3486,7 +3486,15 @@
           // DAAR-26 (s08 w6M; the judge, 20 Oct: "the L4 card at the stir shows only 'Muke daar khape.' with no stir row"): on a
           // card closed for its level the stir row stays written once it has come (she says the laps and the speed: SH-99)
           const keep = s.when === "stir" && !!s.shown && !!(mission.levelClosed || (mission.closed && mission.closed.peek));
-          items.push({ label: null, parts: flat.map((x) => cardOf(x.r, x.gi)), ordered: seq, at: s.at || 0, src: flat, keep });
+          // CK-96 (the S19 gate's eye judge, 12 Nov: baking's "three card shapes in one game, none of them chai's 2.5-card row"): the rows a
+          // station reveals one by one as she says each (baking's bake-1 .. bake-5) join one sideways row of item cards, as chai's, each card
+          // coming as she says it, never a stack of rows of one card each (a row of one card alone still fills it: contract-116)
+          const last = items[items.length - 1];
+          if (s.when && s.when !== "stir" && last && last._when && !keep) {
+            last.parts.push(...flat.map((x) => cardOf(x.r, x.gi)));
+            last.src.push(...flat);
+            last.ordered = last.ordered || seq;
+          } else items.push({ label: null, parts: flat.map((x) => cardOf(x.r, x.gi)), ordered: seq, at: s.at || 0, src: flat, keep, _when: !!s.when && s.when !== "stir" && !keep });
           rowsShown.push(...flat.map((x) => x.r));
         }
         // a dish's cards of plain things, maani's rotis and the grill's plain skewers: one sideways row of item cards, each with its

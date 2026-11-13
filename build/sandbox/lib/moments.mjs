@@ -8,7 +8,7 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { DRIVERS, FAIR_MOMENTS } from "../drivers/catalog.mjs";
 
-const LIFE = ["line:*", "line:*-*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "life:stir-lap", "life:order-pass", "life:next-pan", "life:card-light", "life:corn-screen", "life:dish-flash", "page:end", "page:start", "bubble"];
+const LIFE = ["line:*", "line:*-*", "talk:*", "step:row-*", "life:request", "life:advance", "life:stage-start", "life:stage-end", "life:results", "life:popup-fold", "life:popup-open", "life:ghost", "life:stir-lap", "life:order-pass", "life:next-pan", "life:card-light", "life:corn-screen", "life:dish-flash", "life:serve-trays", "page:end", "page:start", "bubble"];
 // (life:dish-flash: the dish card flashing up as the customer says the dish at L1, js/cook/ui.js; SH-267, on the fair path, s19-clean-a5)
 // the spec's named moments (evidence.json _moments, _at's every:<x>) that an existing signal answers; `delay` waits after it.
 // A named moment with no entry here has no driver yet: --plan refuses it (the driver lands with the spec, Fable 2)
@@ -16,7 +16,10 @@ export const ALIASES = {
   "popup-fold": { pats: ["life:popup-fold"] },
   // (the game host's Cook player names its states after the game: rec:order-view-service, rec:order-wrong-choice; a pattern without
   // "rec:" in front matches them too)
-  served: { pats: ["view-service"] },
+  // (s19-r2-shared, the judges on SAM-36, SEK-28, CK-106: "the results panel covering the tray": view-service is recorded once the end
+  // card's stopwatch is up; the served moment is the dishes landed on their trays (js/cook/serve.js note serve-trays), view-service only
+  // where a game serves no tray)
+  served: { pats: ["life:serve-trays", "view-service"] },
   "pass-me": { pats: ["visible:#passme"] },
   idle: { pats: ["rec:idle-hint", "rec:hint-glow"] },
   "after-wrong": { pats: ["rec:wrong", "slip", "wrong-choice", "wrong-tap", "wrong-extra", "wrong-slice", "wrong-stir"], delay: 1000 },

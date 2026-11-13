@@ -52,8 +52,13 @@ export async function makeSheets(browser, runDir, results, log = () => {}) {
 export const shotUrl = (file) => `${BASE}/${relative(ROOT, file)}`;
 export async function htmlToPng(page, htmlFile, html) {
   writeFileSync(htmlFile, html);
-  await page.goto(shotUrl(htmlFile), { waitUntil: "load" });
+  // (s19-r2-shared, the judge on s19ns-ev1: three sheets were a blank page reading "not found", the sheet itself never served: a sheet
+  // that is not served, or a picture on it that never loads, is an error, never a blank sheet sent to the judge)
+  const resp = await page.goto(shotUrl(htmlFile), { waitUntil: "load" });
+  if (!resp || !resp.ok()) throw new Error(`the sheet ${relative(ROOT, htmlFile)} was not served (${resp ? resp.status() : "no answer"} from ${shotUrl(htmlFile)})`);
   await page.waitForFunction(() => Array.from(document.images).every((i) => i.complete), null, { timeout: 30000 }).catch(() => {});
+  const broken = await page.evaluate(() => Array.from(document.images).filter((i) => i.complete && !i.naturalWidth).map((i) => i.getAttribute("src")));
+  if (broken.length) console.error(`SHEET PICTURES MISSING in ${relative(ROOT, htmlFile)}: ${broken.length} (${broken.slice(0, 3).join(", ")})`);
   const png = htmlFile.replace(/\.html$/, ".png");
   await page.screenshot({ path: png, fullPage: true });
   return png;

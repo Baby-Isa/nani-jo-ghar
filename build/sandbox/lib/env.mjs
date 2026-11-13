@@ -63,6 +63,9 @@ export function startServer(extraRoots = {}) {
       let p = decodeURIComponent(new URL(req.url, BASE).pathname);
       let base = GAME_ROOT;
       for (const [prefix, dir] of Object.entries(roots)) if (p.startsWith(prefix)) { base = dir; p = "/" + p.slice(prefix.length); break; }
+      // (s19-r2-shared, the judge on s19ns-ev1: every sheet a blank "not found": with NJG_GAME_ROOT the run's own pictures, written under
+      // THIS checkout's build/screenshots/, were asked of the frozen game copy. A run's outputs are always this checkout's)
+      if (base === GAME_ROOT && GAME_ROOT !== ROOT && p.startsWith("/build/screenshots/")) base = ROOT;
       let f = normalize(join(base, p));
       if (!f.startsWith(base)) { res.writeHead(403); return res.end(); }
       if (existsSync(f) && statSync(f).isDirectory()) f = join(f, "index.html");
