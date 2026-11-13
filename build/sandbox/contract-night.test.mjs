@@ -86,3 +86,10 @@ test("contract-128 (SH-273): dots or an empty picture box on the flashing card i
   assert.equal(run(R, [sample(0, { flash: 1, fbits: { dots: 0, emptyPic: true } }), sample(800, {})])[0].id, "contract-128");
   assert.equal(run(R, [sample(0, { flash: 1, fbits: { dots: 0, emptyPic: false } }), sample(800, {})]).length, 0);
 });
+
+test("contract-124: the sounds are read from the child's tap when the want sample comes late (load); none at all is still a break", () => {
+  const wants = [c(1000, "want", { key: "knob-on-nana" }), c(3400, "want", { key: "pan-ma" }), c(9000, "want", { key: "end" })];
+  const tap = c(2200, "input", { x: 1, y: 1 });
+  assert.equal(run(R, [wants[0], tap, play(2210, "sfx/knob"), play(2390, "sfx/flame"), wants[1], wants[2]]).length, 0);
+  assert.equal(run(R, [wants[0], tap, wants[1], wants[2]])[0].id, "contract-124");
+});

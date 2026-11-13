@@ -31,6 +31,7 @@ function check124(r, tl, add) {
   const wants = ev(tl, "want");
   const plays = tl.filter((e) => e.type === "play" && /^sfx\/(knob|flame)$/.test(e.url || ""));
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  const inputs = ev(tl, "input");
   for (let i = 0; i < wants.length; i++) {
     const w = wants[i];
     if (!/^knob-on-/.test(String(w.key || ""))) continue;
@@ -38,7 +39,11 @@ function check124(r, tl, add) {
     if (!nx || nx.t + KNOB_AFTER_MS > tEnd) continue;
     // (the same want sampled again is one turn: skip to the change)
     if (wants[i + 1] && wants[i + 1].key === w.key) continue;
-    const near = plays.filter((p) => p.t >= nx.t - KNOB_BEFORE_MS && p.t <= nx.t + KNOB_AFTER_MS).map((p) => p.url);
+    // (from the child's tap that turned it, when the want sample came late after it: s19ns-a4's chai L4 at 740x320 under load, 1.2 s)
+    const first = wants.slice(0, i + 1).reverse().find((x, k, a) => !a[k + 1] || a[k + 1].key !== w.key) || w;
+    const tap = inputs.filter((x) => x.t >= first.t - 50 && x.t <= nx.t).pop();
+    const from = Math.min(nx.t - KNOB_BEFORE_MS, tap ? tap.t - 100 : Infinity);
+    const near = plays.filter((p) => p.t >= from && p.t <= nx.t + KNOB_AFTER_MS).map((p) => p.url);
     const miss = ["sfx/knob", "sfx/flame"].filter((u) => !near.includes(u));
     if (!miss.length) continue;
     add("contract-124", nx.t, `the knob (${w.key}) turned on and ${miss.join(" and ")} never played: the child's tap is silent (they play under a voice, quieter)`);
