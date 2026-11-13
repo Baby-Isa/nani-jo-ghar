@@ -84,7 +84,7 @@ test("light: whole round its target and centred passes; shifted, partial or empt
 test("tap-size: a target under 48 px either way fails; one off the screen is not judged", () => {
   const r = one("tap-size", (x) => { x.extra.taps["canvas:jar#2"] = [338, 241, 363, 295]; });
   assert.equal(r.pass, false);
-  assert.ok(failsWith(r, /canvas:jar#2 is 25 x 54 px .* under 48 px by 23/));
+  assert.ok(failsWith(r, /canvas:jar is 25 x 54 px .* under 48 px by 23/));
   const r2 = one("tap-size", (x) => { x.extra.taps["canvas:far#3"] = [900, 10, 910, 20]; });
   assert.equal(r2.pass, true);
 });

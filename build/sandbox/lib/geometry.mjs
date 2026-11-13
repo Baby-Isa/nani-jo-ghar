@@ -91,7 +91,13 @@ export const RULES = [
       for (const k of ["canvas", "stage", "side", "list", "bottom-row", "hob", "tray", "shelf-first", "shelf-last", "nani", "nani/face", "end-card", "pop", "board", "tawa"]) chk(k, b[k]);
       for (const [k, v] of Object.entries(b)) if (/^(pan|light|glow)-\d+$/.test(k)) chk(k, v);
       for (const [k, v] of Object.entries(ex.pills || {})) chk(k, v);
-      for (const [k, v] of Object.entries(ex.faces || {})) chk(k + " face", v);
+      // (a card's face in the order list is seen only inside the list: a card scrolled below it is not on screen, nor a fault)
+      for (const [k, v] of Object.entries(ex.faces || {})) {
+        const lst = /^card-/.test(k) ? b.list : null;
+        let vis = v;
+        if (lst) { vis = [Math.max(v[0], lst[0]), Math.max(v[1], lst[1]), Math.min(v[2], lst[2]), Math.min(v[3], lst[3])]; if (vis[2] <= vis[0] || vis[3] <= vis[1]) continue; }
+        chk(k + " face", vis);
+      }
       return out;
     },
   },
@@ -141,7 +147,7 @@ export const RULES = [
       for (const [k, t] of Object.entries(ex.taps)) {
         if (t[2] <= 0 || t[0] >= W || t[3] <= 0 || t[1] >= H) continue; // not on the screen: nothing to tap
         const w = t[2] - t[0], h = t[3] - t[1];
-        if (w < TOL.tap || h < TOL.tap) out.push(`${k} is ${px(w)} x ${px(h)} px at ${at(t)}: under ${TOL.tap} px by ${px(Math.max(TOL.tap - w, TOL.tap - h, 0))}`);
+        if (w < TOL.tap - 0.5 || h < TOL.tap - 0.5) out.push(`${k.replace(/#\d+$/, "")} is ${px(w)} x ${px(h)} px at ${at(t)}: under ${TOL.tap} px by ${px(Math.max(TOL.tap - w, TOL.tap - h, 0))}`);
       }
       return out;
     },
@@ -271,10 +277,17 @@ export function formatRules(res, { max = 8 } = {}) {
   const lines = [];
   for (const r of res) {
     lines.push(`${r.pass === null ? "skip" : r.pass ? "pass" : "FAIL"} ${r.id}${r.pass === null ? ": no extra reads in this run (play again)" : r.pass ? ` (${r.judged} reads)` : `: ${r.faults.length} fault${r.faults.length > 1 ? "s" : ""} in ${r.judged} reads`}`);
-    const seen = new Set();
+    // (the same fault in several reads, only its box moving, is one line with how many reads it came in)
+    const groups = new Map();
+    for (const f of r.faults) {
+      const k = f.msg.replace(/ at \[[^\]]*\]/g, "").replace(/\[[^\]]*\]/g, "[]").replace(/#\d+/g, "");
+      const g = groups.get(k) || { first: f, n: 0, wheres: new Set() };
+      g.n++; g.wheres.add(f.where);
+      groups.set(k, g);
+    }
     let n = 0;
-    for (const f of r.faults) { const t = `${f.where}: ${f.msg}`; if (seen.has(t)) continue; seen.add(t); if (n++ < max) lines.push(`    ${t}`); }
-    if (seen.size > max) lines.push(`    ... and ${seen.size - max} more`);
+    for (const g of groups.values()) if (n++ < max) lines.push(`    ${g.first.where}: ${g.first.msg}${g.n > 1 ? `  (${g.n} reads: ${[...g.wheres].slice(0, 4).join("; ")}${g.wheres.size > 4 ? "; ..." : ""})` : ""}`);
+    if (groups.size > max) lines.push(`    ... and ${groups.size - max} more kinds`);
   }
   return lines.join("\n");
 }
