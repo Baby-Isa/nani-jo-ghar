@@ -577,7 +577,9 @@ async function sheets(dirArg) {
     const kind = probes.length ? probes[0].kind : "layout";
     // panels: at most four, A-D; a row with more than four probes gets one panel per probe (SH-10, CLN-118: each station or
     // game its own), up to twelve, A-L, over as many sheets as it takes at six or fewer to a sheet; text for the .md
-    const panels = [], texts = [], extra = [], cap = probes.length > 4 ? Math.min(12, probes.length) : 4;
+    // (s19-r2-shared, the judges on SH-278 and CHAI-55's second probe: "6 probes left off the sheet": the cap counted probes, so a
+    // probe with two captures at two sizes pushed the next probe's panel off; every panel goes on, up to twelve, over as many sheets)
+    const panels = [], texts = [], extra = [], cap = 12;
     const fileOf = (p, f) => join(p.dir || join(SANDBOX, p.sandboxRun || "", "evidence"), f);
     const dprOf = (p) => (/(^|_)x2(_|$)/.test(p.variant || "") ? 2 : 1);
     const addPanel = (pl) => { if (panels.length < cap) { pl.letter = "ABCDEFGHIJKL"[panels.length]; panels.push(pl); } else extra.push(pl); };

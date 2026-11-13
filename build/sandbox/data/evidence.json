@@ -20612,7 +20612,7 @@
  "CHAI-37": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
+   "path": "hint",
    "level": [
     1,
     4
@@ -20629,7 +20629,7 @@
     "shot"
    ],
    "expect": null,
-   "note": "a new player, after the first two items (water, tea): the dim with the order card (its next item's card) lit for a moment, shot 300 ms after the kit's card light came (the judge on s19-night-b-a2: the every:onboard shots missed it); the Check's 971x318 is no sandbox size: 740x320, the phone layout's lower edge (Zafar, 27 Oct), and 1280x665; L1 and L4",
+   "note": "a new player, after the first two items (water, tea): the dim with the order card (its next item's card) lit for a moment, shot 300 ms after the kit's card light came. On the #hint path, a child who pauses: the light waits for a still moment and goes as the child moves on, so a player tapping at once (fair at 3x, speed1) never sees it (the judge on s19-night-b-a2: the every:onboard shots missed it). The Check's 971x318 is no sandbox size: 740x320 (Zafar, 27 Oct) and 1280x665; L1 and L4",
    "delay": 300,
    "max": 3
   }
@@ -29298,14 +29298,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:placed",
+   "at": "every:step",
    "after": null,
    "capture": [
     "crop:#side"
    ],
    "expect": null,
-   "note": "baking's item cards: chai's row of narrow cards, the third peeking, one shape at every size",
-   "max": 6
+   "note": "baking's item cards as each instruction opens a step: one sideways row of narrow cards as chai's, each card coming as she says it, never a stack of one-card rows (a lone first card fills its row: contract-116, Zafar 11 Nov); one shape at every size",
+   "max": 10
   }
  ],
  "CK-100": [
