@@ -1698,8 +1698,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const Mh = Math.min(H / (1 + hang + a), (H - ICON) / (1 + hang - 0.122), (H - FACE * 0.7) / (1 + hang + box.far));
     const Mw = (vr - vl) / (gW + GAP + ACROSS);
     const M = Math.max(120, Math.min(Mw, Mh));
-    const x0 = (vl + vr) / 2 - (M * (gW + GAP + ACROSS)) / 2;
+    let x0 = (vl + vr) / 2 - (M * (gW + GAP + ACROSS)) / 2;
     const farY = spanTop + (H - tall(M)) / 2 + above(M);
+    // SEK-29 (the S19 gate's eye judge, 12 Nov: "the cog clear of the tray"): where the settings cog (top right, over the play area)
+    // would sit on the cooked tray's corner, the group moves left by the overlap, as far as the view's left margin allows; its size
+    // is kept (the grill as big as the height allows, contract-115)
+    try {
+      const UI = Cook.UI;
+      const cog = global.document && document.querySelector("#side-cog, [data-njg-zone=cog]");
+      const cr = cog && cog.getBoundingClientRect ? cog.getBoundingClientRect() : null;
+      if (cr && cr.width > 0 && UI && UI.worldToScreen) {
+        const p0 = UI.worldToScreen(0, 0);
+        const ppw = UI.worldToScreen(1, 0).x - p0.x || 1;
+        const cogLeft = dX((cr.left - p0.x) / ppw);
+        const cogBottom = d((cr.bottom - p0.y) / ppw);
+        const trayRight = x0 + M * (gW + GAP + ACROSS);
+        const trayTop = farY - box.far * M;
+        const over = trayRight + 10 - cogLeft;
+        if (over > 0 && trayTop < cogBottom) x0 -= Math.max(0, Math.min(over, x0 - (left + 8)));
+      }
+    } catch (e) {
+      /* where it was */
+    }
     // (the tray no taller than the grill beside it: the grill is the screen's main thing, as big as the height allows, contract-115;
     // the skewer's tip still on the tray's far rim, its handle a few px past the near rim's middle, on the rim's outer edge)
     const tray = { w: box.w * M, h: Math.min(box.h, gH * 0.99) * M, far: box.far * M };
