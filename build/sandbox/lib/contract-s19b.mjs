@@ -387,6 +387,7 @@ export function check72(r, tl, add) {
 }
 
 // ---- 74 (rewritten): a tap during the order lands the whole order at once, from the page itself ----
+export const LESSON_HELD_MS = 12000; // (a tap this long before the big card lesson starts was held for it: SH-213)
 export function check74(r, tl, segs, add) {
   if (!isCookFlow(r.flow) || /#replay/.test(r.flow || "")) return;
   const ord = ev(tl, "s19ord");
@@ -398,7 +399,11 @@ export function check74(r, tl, segs, add) {
   const misses = life(tl, "probe-tap").map((q) => { const m = /^(-?\d+),(-?\d+)\|/.exec(q.by || ""); return m ? { x: +m[1], y: +m[2], t: q.at || q.t } : null; }).filter(Boolean);
   const probe = (e) => misses.some((q) => Math.abs(q.x - e.x) <= 2 && Math.abs(q.y - e.y) <= 2 && Math.abs(q.t - e.t) < 1500);
   const lessonExp = (e) => /wc14-lesson/.test((e.exp && e.exp.cook && e.exp.cook.selector) || "");
-  const tap = ev(tl, "input").find((e) => e.play !== false && !e.lesson && !lessonExp(e) && !probe(e) && ordering(at(e.t)) && at(e.t).rows > 0);
+  // (SH-213, contract-98, s19-night-shared: while the big card lesson is due, its card popped hidden and its sentence still said, a tap is
+  // held for the lesson, never a skip: "the pop-up stays up until it is done". A tap the lesson follows within LESSON_HELD_MS is that)
+  const lessons = life(tl, "reveal-lesson").filter((n) => n.step === "card" && /^shown/.test(n.by || "")).map((n) => n.at || n.t);
+  const held = (e) => lessons.some((t) => t >= e.t && t - e.t <= LESSON_HELD_MS);
+  const tap = ev(tl, "input").find((e) => e.play !== false && !e.lesson && !lessonExp(e) && !probe(e) && !held(e) && ordering(at(e.t)) && at(e.t).rows > 0);
   if (!tap) return;
   const after = at(tap.t + 1000);
   if (ordering(after)) add("contract-74", tap.t, `a tap during the order and 1 s later ${[after.pop ? `${after.pop} big card` : "", after.fly ? `${after.fly} card in flight` : "", after.away ? `${after.away} card${after.away > 1 ? "s" : ""} not yet in its row` : ""].filter(Boolean).join(", ")}: the tap lands the whole order at once`);

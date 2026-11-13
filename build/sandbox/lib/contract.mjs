@@ -77,6 +77,7 @@ import { CHAI_CHECKS, CHAI_ROW, helpStageRe } from "./contract-chai.mjs";
 import { S17_CHECKS, checkS17 } from "./contract-s17.mjs";
 // contracts 100 and up: the shared pieces present (s19-checks, Sprint 19 part 1), in a file of their own
 import { S19_CHECKS, checkS19 } from "./contract-s19.mjs";
+import { NIGHT_CHECKS, checkNight } from "./contract-night.mjs"; // (s19-night-shared: contract-124 to 127, CHAI-113, SH-274, SH-278, SH-272)
 import { WO_CHECKS, checkWO } from "./contract-wo.mjs"; // (s19-clean-a: contract-118, the wrong-order pop-up and the redo)
 import { SHADE_CHECKS, LESSON_CHECKS, BAND_CHECKS, checkShade } from "./contract-shade.mjs"; // (s19-clean-a4: contract-120, SH-268 every worktop object's shadow)
 import { SCREEN_CHECKS, check112, check113, judgedByGame, judgedMd, judgedLine } from "./contract-screen.mjs";
@@ -135,6 +136,7 @@ export const CHECKS = {
   ...S17_CHECKS,
   ...S19_CHECKS,
   ...WO_CHECKS,
+  ...NIGHT_CHECKS,
   ...SHADE_CHECKS,
   ...LESSON_CHECKS,
   ...BAND_CHECKS,
@@ -1605,6 +1607,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   checkS17(r, tl, v, add);
   checkS19(r, tl, v, add);
   checkWO(r, tl, v, add);
+  checkNight(r, tl, v, add);
   checkShade(r, tl, v, add);
   check109few(r, tl, add); // (s19-checks-2: one or two shelf items, judged too)
   check96(r, tl, add);
@@ -1735,7 +1738,7 @@ export function report(results, opts = {}) {
 Object.assign(CHECKS, {
   "contract-72": { item: "row-glide", title: "the order row glides, never jumps", how: "Every s19row sample (lib/contract-s19b-hook.mjs: the order row's scroll as drawn, every animation frame it changes, with the frame before it): a glide is a run of changes frame after frame; a change of more than a card's width done in one ordinary frame (60 ms or less after the frame before: a jump; SH-152's measure, 'the row's scroll never moves more than a card width in one frame'), or a glide of more than 2.5 card widths that does not end at the first card, is a break, once per page (SH-152, Zafar 28 Oct: 'instead of the recipe card items jumping over, have them smoothly move to the side'). Rewritten from the screen, s19-checks-2: it read the game's own row-glide note." },
   "contract-73": { item: "bubble-speaker", title: "no speaker button in a speech bubble; a conversation's speaker a full tap", how: "Every s19spk sample held 300 ms (lib/contract-s19b-hook.mjs: each speech bubble's speaker as drawn): a Cook line's speaker (.wp-say) in a speech bubble is a break (SH-153 as Zafar replaced it, 1 Nov: 'remove the speaker buttons' from speech bubbles, every game); a conversation bubble's own speaker (.cv-spk: the conversations' one speaker, docs/game-design/modes/conversations.md) under the 48 px tap is a break. Once each per page. Rewritten from the speaker's own box, s19-checks-2: it read the game's bubble-spk note, which judged SH-153's 28 Oct rule (a bigger icon) after 1 Nov had replaced it." },
-  "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Cook flows: the first real tap in the play area while the order is given (the s19ord sample: a big card, a card in flight or a card not yet in its row): 1 s later no big card, no card in flight and every card in its row, and the station's stage starting within 1 s of the tap. Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game'). Rewritten from the page itself, s19-checks-2: it read the game's own order-skip note." },
+  "contract-74": { item: "order-skip", title: "a tap lands the whole order at once", how: "Cook flows: the first real tap in the play area while the order is given (the s19ord sample: a big card, a card in flight or a card not yet in its row): 1 s later no big card, no card in flight and every card in its row, and the station's stage starting within 1 s of the tap. Either missing is a break (CK-54, Zafar 28 Oct: 'a way to click on the kitchen during the order and skip the slow ordering into playing the game'). Rewritten from the page itself, s19-checks-2: it read the game's own order-skip note. A tap the big card lesson (SH-213) starts within 12 s of is held for it, never judged as a skip (s19-night-shared: the pop-up stays up until the lesson is done, contract-98)." },
 });
 Object.assign(CHECKS, SCREEN_CHECKS, S19B_CHECKS);
 const lifeNotes = (tl, what) => tl.filter((e) => e.type === "c" && e.k === "life" && e.what === what);

@@ -529,8 +529,43 @@
       el.style.paddingLeft = `${Math.round(Math.max(0, r.left) + gap)}px`;
       el.style.paddingRight = `${Math.round(Math.max(0, W - r.right) + gap)}px`;
     };
-    place();
-    root.addEventListener("resize", place);
+    // SH-272 (the S19 gate's eye judge, 12 Nov: "the top of Nani's hijab pokes out above it ... chai's panel covers both people
+    // cleanly"): a card that would leave a head half behind it (its top edge across a face: the host's NjgFaceBoxes, Cook's people on
+    // the play area) grows, from its middle, until its top is clear above every such head, as far as the screen allows; a head wholly
+    // above or below the card, or beside it, is left as it is
+    const cover = () => {
+      const c = el.querySelector(".rs-card");
+      if (!c || !c.isConnected) return;
+      let heads = [];
+      try {
+        heads = typeof root.NjgFaceBoxes === "function" ? root.NjgFaceBoxes() || [] : [];
+      } catch (e) {
+        heads = [];
+      }
+      if (!heads.length) return;
+      const top = c.offsetTop, h = c.offsetHeight, left = c.offsetLeft, right = left + c.offsetWidth;
+      const H = root.innerHeight || 0;
+      const room = 8;
+      let need = 0;
+      heads.forEach((b) => {
+        if (b.right <= left || b.left >= right) return; // beside the card
+        if (b.bottom <= top || b.top >= top) return; // wholly above it, or its top already under the card
+        need = Math.max(need, top - b.top + room);
+      });
+      if (!need) return;
+      const gap = (root.getComputedStyle && parseFloat(root.getComputedStyle(el).paddingTop)) || 8;
+      // (it only grows: a page that is shorter keeps the height that covers, never a jump down and up again)
+      c.style.minHeight = `${Math.round(Math.min(H - gap * 2, h + need * 2))}px`;
+    };
+    // (and it keeps looking while it is up: the badges' pop-in and the words' fit change its height after it opens, s19ns-a4)
+    const coverT = root.setInterval ? root.setInterval(() => (el.isConnected ? cover() : root.clearInterval(coverT)), 300) : 0;
+    const placeAll = () => {
+      place();
+      cover();
+    };
+    placeAll();
+    setTimeout(() => el.isConnected && cover(), 350); // (once its page's words are fitted)
+    root.addEventListener("resize", placeAll);
     // a page can hide what must not show behind the pop-up (Cook: the old menu card; design system 10): it marks it
     // data-njg-results-hide (css/shared/results.css), and the html carries njg-results-open while an end screen is up
     document.documentElement.classList.add("njg-results-open");
@@ -550,7 +585,8 @@
     };
     const close = () => {
       if (!el.isConnected) return;
-      root.removeEventListener("resize", place);
+      root.removeEventListener("resize", placeAll);
+      if (coverT) root.clearInterval(coverT);
       el.classList.add("leaving");
       setTimeout(() => el.remove(), reduced() ? 0 : 220);
       if (current && current.el === el) current = null;
@@ -569,6 +605,7 @@
       // non-negotiable 9: a long word (e.g. "thermometer") shrinks to fit its tile, then wraps; never clipped
       fitPage(to);
       if (n === 3) fitSteps(to);
+      cover(); // (SH-272: a shorter page, the words after the badges, still covers the people: contract-127 in s19ns-a4)
       const r1 = card.getBoundingClientRect(), h1 = r1.height, w1 = r1.width;
       // SH-75: a page may also take its own width (the steps list): the card eases to it
       if (!reduced() && card.animate && (Math.abs(h1 - h0) > 2 || Math.abs(w1 - w0) > 2)) card.animate([{ height: `${h0}px`, width: `${w0}px` }, { height: `${h1}px`, width: `${w1}px` }], { duration: 280, easing: "cubic-bezier(.3,.7,.2,1)" });

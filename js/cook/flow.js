@@ -1589,7 +1589,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       <div class="btn-row pic-row">
         ${picBtn("sum-menu", "home", "Menu")}
         ${picBtn("sum-shop", "shop", "Nani's shop")}
-        ${last ? picBtn("sum-finale", "feast", "The Eid feast!", "primary") : picBtn("sum-next", "play", "Next day", "primary")}
+        ${last ? picBtn("sum-finale", "feast", "The birthday feast!", "primary") : picBtn("sum-next", "play", "Next day", "primary")}
       </div>`);
     grownUps(p, `<h3>${free ? UI.esc(day.title) : `Day ${day.id}: ${UI.esc(day.title)}`}</h3><p>Who your child cooked for today and the pocket money each order earned, dropped into the coin jar one by one (beside it: today's coins; under it: everything in the jar). Each order's badges and words were shown when it was served.</p>`);
     $("#sum-shop").addEventListener("click", showShop);
@@ -1715,14 +1715,16 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
 
   function showFinale() {
     Cook.sfx.fanfare();
+    // LNG-22 (Zafar, 31 Oct, his yes to question 6: "the Eid lines become the birthday"; celebrations out, no religious set pieces): the
+    // finale is the family's birthday feast. Its line is still to record with Mum: the English in grey italic until then (non-negotiable 2)
     const p = UI.panel(`
-      <h1 class="njg-ph" data-rec>Eid Mubarak!</h1>
+      <h1 class="njg-ph" data-rec>Happy birthday!</h1>
       <div class="finale-row">
         <img src="${Cook.v("assets/cook/characters/nana-happy.webp")}" alt="Nana"><img class="fin-nani" src="${Cook.v("assets/cook/characters/nani-happy-v3.webp")}" alt="Nani"><img src="${Cook.v("assets/cook/characters/ma-happy.webp")}" alt="Ma"><img src="${Cook.v("assets/cook/characters/cousin-happy.webp")}" alt="Ali">
       </div>
       <div class="patch" title="A new patch for Nani's quilt"></div>
       <div class="btn-row pic-row">${picBtn("fin-menu", "home", "Menu")}${picBtn("fin-shop", "shop", "Nani's shop", "primary")}</div>`);
-    grownUps(p, `<h3>The Eid feast</h3><p>The whole family ate together, and your child cooked it all: chai, maani, daar, chaat, samosa and mishkaki. A new patch for Nani's quilt. Free cooking is open: new orders every time.</p>`);
+    grownUps(p, `<h3>The birthday feast</h3><p>The whole family ate together, and your child cooked it all: chai, maani, daar, chaat, samosa and mishkaki. A new patch for Nani's quilt. Free cooking is open: new orders every time.</p>`);
     $("#fin-shop").addEventListener("click", showShop);
     $("#fin-menu").addEventListener("click", showTitle);
     Cook.expect = { kind: "click", selector: "#fin-menu" };
