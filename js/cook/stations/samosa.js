@@ -772,7 +772,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (filled >= total && (!active || active.order.length >= spoons(active))) {
           // SAM-37 (the judge, s19-night-c-ev3, 740x320: "the gold box wraps the whole order card in the side panel ... two seconds before
           // the fold"): the fill's first-time showing ends here, marked seen, before the beat that moves on, so its end-of-showing point
-          // (Cook.Coach's pointCard, on the order card) never comes between the fill and the fold; the fold's first time is its own light
+          // (Cook.Coach's pointCard, on the order card) never comes between the fill and the fold; the fold then shows its
+          // own first-time demo (its Coach.control light on the dough, below), so nothing first-time is lost
           if (gate && Cook.Coach.active && Cook.Coach.active()) Cook.Coach.stop(true);
           UI.done().then(() => fin({ done: true }));
         }
