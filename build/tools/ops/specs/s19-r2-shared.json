@@ -6,7 +6,7 @@
  "stop": "when the tasks are done, or at 09:30 UTC",
  "kind": "code",
  "browser": true,
- "live": true,
+ "live": false,
  "specsByBuilder": false,
  "stubs": "none",
  "publish": false,

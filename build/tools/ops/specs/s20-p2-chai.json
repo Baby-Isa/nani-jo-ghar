@@ -1,0 +1,61 @@
+{
+ "why": "Sprint 20 P2 (build/reports/s20-plan.md; Zafar 13 Nov, decisions 22-23): chai is the reference every game will be measured against, so it must be settled before anything moves",
+ "cost": "medium: Opus, high effort, one session (about $25-35)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done, or at the end of one session: then stop and report what is left",
+ "kind": "code",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [
+  "SH-286"
+ ],
+ "name": "s20-p2-chai: chai settled as the reference",
+ "port": 8911,
+ "report": "s20-p2-chai",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "build/reports/s20-plan.md sections 'In short', 4 (P1, P2) and 8",
+  "build/reports/frozen-diff-chai-tray-202611131035.md (382 changes on 30 pages, frozen 10 Nov at bd6cd3eb)",
+  "docs/decisions/2026-11-10-overnight.md items 20-23; build/reports/mum-2026-11-12.md 'Decisions for Zafar' and 'Spellings to confirm'"
+ ],
+ "owns": [
+  "js/cook/stations/chai-tray.js, data/stations/chai*.json",
+  "js/cook/ui.js (UI.dishFlash only, for SH-286), js/shared/word-card.js if the pop-up needs it",
+  "data/lang/lexicon.json and data/cook.json word entries, for Mum's words only",
+  "build/frozen/chai-tray/ (the re-freeze, only after the orchestrator says Zafar said yes)"
+ ],
+ "readOnly": [
+  "every other game file, js/cook/flow.js, serve.js, station-lib.js, stations.js, coach.js, kitchen-kit.js, build/sandbox/**, build/tools/** (except running them), docs/process/regressions.md, assets/**"
+ ],
+ "flows": [
+  "cook:chai-tray"
+ ],
+ "branch": "s20-p2-chai (new, in /home/user/wt/s20-p2-chai); commit there, never push",
+ "tasks": [
+  {
+   "do": "Chai's three frozen faults, each traced to its cause and fixed, or shown to be a change Zafar asked for: (a) contract-124 on cook:chai-tray#takeback: the knob turns on and its click and flame never play (CHAI-113, decision 14: they always play when the child turns a pan on, quieter under a voice); (b) contract-37 at L2-L3 (#hint, #returning, lab #child): one decoy more than the level table wants; (c) the lab:cook/chai-tray #child flows: a light stays 25 s round the child's press and is drawn as an oval (contract-106, -112). Also the 4 page errors in the frozen diff.",
+   "accept": "each one: cause (file:line), fixed or 'asked for' with the decision that asked"
+  },
+  {
+   "do": "SH-286 (Zafar, 13 Nov, decision 23): the dish card at the order's first sentence ('Muke chai khape') is the order's own item pop-up: the same place, size, look and motion as the sugar, milk and ginger cards that follow, never WordCard.flash beside the bubble (UI.dishFlash today). Level 1 only, as now. Check it in chai at L1 at 740x320 and 1280x665.",
+   "accept": "four pictures (the dish card and the first item card, at both sizes) for the orchestrator to send Zafar"
+  },
+  {
+   "do": "Mum's words as data (decision 22 and Mum's report): salt is mitho (not loon), black pepper miryo (not mari), the pantry headline Hi muke chai lai khani achi de where there is a dish (Muke de where there is none), daar's stir line drops 'slowly' (Mum's trae fare firai), tomato is tameto (one) / tameta (many), and the 18 spellings as written in the report. Through the language engine only; never a hand-written fragment; a line the engine can't say is its English in grey and a recording-sheet line.",
+   "accept": "words.mjs lint passes; the leak check if words changed"
+  },
+  {
+   "do": "Then the frozen run of chai: `node build/tools/review/frozen.mjs --diff --full --game chai-tray`. Group what differs from 10 Nov into one line per kind of change (e.g. 'Mum's 12 Nov recordings now play: 156 new sounds'), each with the decision or row that asked for it; anything that no decision asked for is a fault: fix it. Do NOT re-freeze: the orchestrator brings the list to Zafar and re-freezes on his yes.",
+   "accept": "the list, under 15 lines, in your report"
+  },
+  {
+   "do": "Standing: browser runs under your own lock and port (COOK_TEST_PORT=8911, NJG_LOCK=/tmp/njg-browser-8911.lock, flock it); at most --parallel 2 (one other builder runs); commit on your branch often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never invent Kutchi; never remove a mechanic; never touch a check, a probe, a reference picture or a row's status; fix what you break; keep under 1 GB of runs.",
+   "accept": "build/reports/s20-p2-chai.md with a Proof section, under 600 words"
+  }
+ ],
+ "proof": "four pictures to Zafar in chat, then chai's boxes (P4) and the frozen run (Sprint 20, decision 22)"
+}

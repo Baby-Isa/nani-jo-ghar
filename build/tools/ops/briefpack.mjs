@@ -213,6 +213,9 @@ export function missingEvidence(spec, evidence, known = null) {
   const ids = rowIdsIn(text, known);
   const missing = ids.filter((id) => !Object.prototype.hasOwnProperty.call(evidence || {}, id));
   if (!missing.length) return { ok: true, ids, missing, message: "" };
+  // (Sprint 20, Zafar 13 Nov, decision 22: one probe per row is retired; a spec whose "proof" names its own proof, the boxes and
+  // pictures of build/tools/review/boxes.mjs, needs no per-row evidence spec)
+  if (spec.proof) return { ok: true, ids, missing, message: "" };
   const owns = (spec.owns || []).some((o) => String(o).includes(EVIDENCE_FILE));
   if (spec.specsByBuilder === true && owns) return { ok: true, ids, missing, message: "" };
   const why = spec.specsByBuilder === true

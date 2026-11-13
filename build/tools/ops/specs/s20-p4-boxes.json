@@ -1,0 +1,50 @@
+{
+ "why": "Sprint 20 P4 (build/reports/s20-plan.md): the machine must compare exact box positions so a layout move can be proven unchanged; the frozen run compares no positions, which is why checks passed while the eye judge failed every game",
+ "cost": "high: Opus, high effort, one session, no extension (about $60-80)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "at the end of one session: if boxes are not identical three runs in a row, stop and report why (the plan does not start without this)",
+ "kind": "tools",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "name": "s20-p4-boxes: stand still, read the boxes, take the pictures",
+ "port": 8951,
+ "report": "s20-p4-boxes",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "build/reports/s20-plan.md sections 'In short', 4 (P4, P5), 7 and 9; build/reports/s20-plan-premortem.md (reasons 2 and 3)",
+  "build/sandbox/lib/keyframes.mjs, build/sandbox/lib/evidence-probe.mjs:46-58, js/cook/life.js, build/tools/review/frozen.mjs header, build/tools/review/panelcheck.mjs and pillcheck.mjs headers"
+ ],
+ "owns": [
+  "a new tool: build/tools/review/boxes.mjs (and build/sandbox/lib/boxes*.mjs, with tests beside them)",
+  "a test-only switch in js/cook/life.js or a new js/cook/test-stand.js (fixed seed, stop at a named moment); never active outside the test harness, never in a store build",
+  "build/frozen/boxes/ (the reference boxes and pictures it writes)"
+ ],
+ "readOnly": [
+  "every game file and js/cook/ui.js, flow.js (read only; if a named moment needs a hook in a game, name it in the report and the orchestrator adds it), build/sandbox/lib/contract*.mjs, docs/process/regressions.md, assets/**"
+ ],
+ "flows": ["cook:chai-tray"],
+ "branch": "s20-p4-boxes (new, in /home/user/wt/s20-p4-boxes); commit there, never push",
+ "tasks": [
+  {
+   "do": "A test-only stand-still switch: the same order every time (a fixed seed for the game's dice) and the play bot stops at six named moments: the order, the first light, mid-cook (a named state, not 'halfway'), the serve, well done, the end. Reuse keyframes.mjs's moments where they exist.",
+   "accept": "chai reaches all six moments at L1 and L4"
+  },
+  {
+   "do": "At each moment read exact boxes from the game (numbers, not pixels): the play area, the side panel, the bottom row, the main things (hob, pans, tray), the first and last shelf item, the order card and its item cards, Nani's box, any light. Write them as JSON per game, level, size and moment; compare a run with the reference and print every box that moved and by how much (exact: any change is a difference). Pixel comparison only for the order and the end. Keep a picture at each moment for Zafar's sheets and write a differences sheet (before, after, what moved).",
+   "accept": "`node build/tools/review/boxes.mjs --game chai-tray --run` and `--diff` print pass/fail with the minutes taken"
+  },
+  {
+   "do": "Prove it: chai's boxes identical three runs in a row at 740x320, 930x430, 1280x665 and 1920x1080, at L1 and L4; and four planted faults each caught (a box moved 4 px, a card over a face, a cut word, a light off its target), planted on a throwaway branch or by a test-only nudge. Print the gate's minutes.",
+   "accept": "the three identical runs and the four catches, in the report"
+  },
+  {
+   "do": "Standing: browser runs under your own lock and port (COOK_TEST_PORT=8951, NJG_LOCK=/tmp/njg-browser-8951.lock, flock it); at most --parallel 2; commit on your branch often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never change what a child sees; never touch a check, a probe, a reference picture or a row's status outside your new tool; keep under 1 GB of runs.",
+   "accept": "build/reports/s20-p4-boxes.md with a Proof section, under 600 words"
+  }
+ ]
+}
