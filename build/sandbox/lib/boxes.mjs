@@ -48,16 +48,19 @@ export const GAMES = {
     after: { light: 450 },
     moments: {
       // the order in the side panel: the pop-up folded, the station started, before its first light
-      // the order: its pop-up as it opens (the Lifecycle's "request" note), held in that breath and its card let land. (Not a quiet
-      // moment later: the order reads item by item, the bot's tap folds it, and chai draws its station and its first light in the
-      // same moment, so no still frame lies between the fold and the light)
-      order: { note: "order-pass" },
+      // the order: its card as it first stands in the side panel (held as the page changes, its pictures in and its card let land).
+      // (Not a quiet moment later: the order reads item by item, the bot's tap folds it, and chai draws its station and its first
+      // light in the same moment, so no still frame lies between the fold and the light)
+      order: { note: "dom", when: `(S) => S.life("request") && Array.from(document.querySelectorAll("#mission .oc-card")).some((c) => { const b = c.getBoundingClientRect(); if (b.height < 4 || b.width < 4) return false; for (let x = c; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden") return false; } return true; })` },
       // the first first-time light in the kitchen (its holes drawn)
       light: `(S) => { const C = window.Cook; const o = document.querySelector(".njg-onboard"); let h = []; try { h = JSON.parse((o && o.getAttribute("data-holes")) || "[]"); } catch (e) {} return !!C && C.scene && C.scene.viewName === "marble" && h.length > 0; }`,
       // mid-cook, a named state: the first pan has all it needs and its knob is asked for (the game waits for the tap)
-      mid: `(S) => { const e = window.njgTest && njgTest.cook && njgTest.cook.expectation(); return !!e && e.kind === "tap" && /^knob-on-/.test(e.key || ""); }`,
+      // (held at the first Lifecycle note once it is asked, in that breath: a first-time light or a help rung that comes later, on a
+      // timer, must not be in it one run and not the next)
+      mid: { note: "*", when: `(S) => { const e = window.njgTest && njgTest.cook && njgTest.cook.expectation(); return !!e && e.kind === "tap" && /^knob-on-/.test(e.key || ""); }` },
       // the serve: the service view with the trays on the counter
-      serve: `(S) => { const C = window.Cook; return !!C && C.scene && C.scene.viewName === "service" && S.life("serve-trays") && !document.querySelector(".njg-results"); }`,
+      // (held as the trays land, the Lifecycle's "serve-trays", in that breath)
+      serve: { note: "serve-trays" },
       // well done: Nani's box says the engine's Shabash
       praise: `(S) => { const g = document.querySelector("#guide .ng-line"); return !!g && /shabash/i.test(g.textContent || "") && !document.querySelector(".njg-results"); }`,
       // the end: the end screen's word review

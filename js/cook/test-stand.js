@@ -5,7 +5,7 @@
  * at all in a store build (window.NJG_BUILD === "store"). It changes no game file and no game state; it only holds the page's clock.
  *
  *   window.__njgStandArm = { seed, settle, sig(), moments: [{ name, when(S), note, wait(S), after }] }   set by the harness first
- *                        (note: the moment is the Lifecycle writing that note: the game is held in the same breath, its clock and
+ *                        (note: the moment is the Lifecycle writing that note ("*": any note, the first with when(S) true): the game is held in the same breath, its clock and
  *                        timers stopped, while the page's animations that end run to their end; then those that loop are paused)
  *                        (wait: while it holds, the play bot holds its tap too: the moment is coming)
  *                        (after: the least time, game ms, the condition holds before the game is held: a light that fades in)
@@ -147,8 +147,19 @@
     try { W[k] = Wrapped; } catch (e) { /* read-only */ }
   });
   var paused = { anims: [], media: [], ctx: [] };
+  // (a loop is paused at its start, so a held frame never depends on where in its loop it was: a talking face, a pulse; on release
+  // it goes on from where it was)
   function pauseAnims() {
-    try { var run = document.getAnimations().filter(function (a) { return a.playState === "running"; }); run.forEach(function (a) { a.pause(); }); paused.anims = paused.anims.concat(run); } catch (e) { /* none */ }
+    try {
+      var run = document.getAnimations().filter(function (a) { return a.playState === "running"; });
+      run.forEach(function (a) {
+        var was = a.currentTime;
+        a.pause();
+        var t = a.effect && a.effect.getComputedTiming();
+        if (t && !isFinite(t.endTime)) { a.__standWas = was; try { a.currentTime = 0; } catch (e) { /* not seekable */ } }
+      });
+      paused.anims = paused.anims.concat(run);
+    } catch (e) { /* none */ }
   }
   // hold the game: its clock, timers, frames, taps and sound; the page's animations too, unless `finish` (a moment at a note: the ones
   // that end run to their end first, tick() pauses the rest)
@@ -166,7 +177,7 @@
     if (!held) return;
     offset += realPerfNow() - heldAt;
     held = false;
-    paused.anims.forEach(function (a) { try { a.play(); } catch (e) { /* gone */ } });
+    paused.anims.forEach(function (a) { try { if (a.__standWas != null) { a.currentTime = a.__standWas; a.__standWas = null; } a.play(); } catch (e) { /* gone */ } });
     paused.media.forEach(function (m) { try { m.play().catch(function () {}); } catch (e) { /* gone */ } });
     paused.ctx.forEach(function (c) { try { c.resume(); } catch (e) { /* closed */ } });
     paused = { anims: [], media: [], ctx: [] };
@@ -203,13 +214,14 @@
     if (held) return;
     for (var i = 0; i < moments.length; i++) {
       var m = moments[i];
-      if (m.done || m.note !== e.what) continue;
+      if (m.done || !m.note || (m.note !== "*" && m.note !== e.what)) continue;
       var ok = true;
       try { ok = !m.when || !!m.when(S); } catch (x) { ok = false; }
       if (!ok) continue;
       m.done = true;
       hold(true);
       finishing = m;
+      finishing.from = realPerfNow();
       return;
     }
   };
@@ -225,10 +237,41 @@
       });
     } catch (e) { return false; }
   }
+  // a moment at "dom": checked as the page changes (a MutationObserver: after the change's own code, before any timer or frame)
+  function onDom() {
+    if (held) return;
+    for (var i = 0; i < moments.length; i++) {
+      var m = moments[i];
+      if (m.done || m.note !== "dom") continue;
+      var ok = false;
+      try { ok = !!m.when(S); } catch (x) { ok = false; }
+      if (!ok) continue;
+      m.done = true;
+      hold(true);
+      finishing = m;
+      finishing.from = realPerfNow();
+      return;
+    }
+  }
+  if (moments.some(function (m) { return m.note === "dom"; })) {
+    try { new MutationObserver(onDom).observe(document, { childList: true, subtree: true, attributes: true, characterData: true }); } catch (e) { /* no observer */ }
+  }
+  // the pictures on screen are in (a card landing at a note may still be fetching its pictures)
+  function loading() {
+    try {
+      return Array.prototype.some.call(document.images, function (im) {
+        if (im.complete) return false;
+        var r = im.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 && r.right > 0 && r.bottom > 0 && r.left < innerWidth && r.top < innerHeight;
+      });
+    } catch (e) { return false; }
+  }
   function tick() {
     realRaf(tick);
     if (finishing) {
-      if (moving()) return;
+      if (!finishing.from) finishing.from = realPerfNow();
+      // (at most 5 s: a picture that never comes is the reader's to report, not a hang)
+      if ((moving() || loading()) && realPerfNow() - finishing.from < 5000) return;
       pauseAnims();
       reached = { name: finishing.name, t: Math.round(vPerf()), at: finishing.note };
       finishing = null;
