@@ -525,12 +525,12 @@ window.NJG_ART = {"files": {
 "maani.turner": {"default":"assets/art/maani/turner.default.r1.webp"},
 "maani.velan": {"default":"assets/art/maani/velan.default.r1.webp"},
 "maani.vessel-tawa": {"default":"assets/art/maani/vessel-tawa.default.r1.webp"},
-"pantry.apple": {"default":"assets/cook/items/v4/pantry/apple.webp"},
-"pantry.dry-atto-bowl": {"default":"assets/cook/items/dry-atto-bowl-t.webp"},
-"pantry.dry-daal-bowl": {"default":"assets/cook/items/dry-daal-bowl-t.webp"},
+"pantry.apple": {"default":"assets/art/pantry/apple.default.r1.webp"},
+"pantry.dry-atto-bowl": {"default":"assets/art/pantry/dry-atto-bowl.default.r1.webp"},
+"pantry.dry-daal-bowl": {"default":"assets/art/pantry/dry-daal-bowl.default.r1.webp"},
 "pantry.milk-jug": {"default":"assets/cook/props/milk-jug.webp"},
 "pantry.orange": {"default":"assets/cook/items/v4/pantry/orange.webp"},
-"pantry.pear": {"default":"assets/cook/items/v4/pantry/pear.webp"},
+"pantry.pear": {"default":"assets/art/pantry/pear.default.r1.webp"},
 "samosa.bataato": {"default":"assets/art/samosa/bataato.default.r1.webp"},
 "samosa.board": {"default":"assets/art/samosa/board.default.r1.webp"},
 "samosa.chips": {"raw":"assets/cook/items/chips-raw-t.webp"},
@@ -1657,5 +1657,9 @@ window.NJG_ART = {"files": {
 "assets/cook/items/v3/maani/turner.webp": "assets/art/maani/turner.default.r1.webp",
 "assets/cook/items/v3/maani/velan.webp": "assets/art/maani/velan.default.r1.webp",
 "assets/cook/items/vessel-tawa-t.webp": "assets/art/maani/vessel-tawa.default.r1.webp",
-"assets/cook/serve/dish-maani.webp": "assets/art/served/maani.default.r1.webp"
+"assets/cook/serve/dish-maani.webp": "assets/art/served/maani.default.r1.webp",
+"assets/cook/items/v4/pantry/apple.webp": "assets/art/pantry/apple.default.r1.webp",
+"assets/cook/items/dry-atto-bowl-t.webp": "assets/art/pantry/dry-atto-bowl.default.r1.webp",
+"assets/cook/items/dry-daal-bowl-t.webp": "assets/art/pantry/dry-daal-bowl.default.r1.webp",
+"assets/cook/items/v4/pantry/pear.webp": "assets/art/pantry/pear.default.r1.webp"
 }};

@@ -259,6 +259,10 @@
   {"from":"assets/cook/items/v3/maani/turner.webp","to":"assets/art/maani/turner.default.r1.webp","id":"maani.turner","state":"default","game":"maani-line","on":"2026-11-13","by":"maani-line"},
   {"from":"assets/cook/items/v3/maani/velan.webp","to":"assets/art/maani/velan.default.r1.webp","id":"maani.velan","state":"default","game":"maani-line","on":"2026-11-13","by":"maani-line"},
   {"from":"assets/cook/items/vessel-tawa-t.webp","to":"assets/art/maani/vessel-tawa.default.r1.webp","id":"maani.vessel-tawa","state":"default","game":"maani-line","on":"2026-11-13","by":"maani-line"},
-  {"from":"assets/cook/serve/dish-maani.webp","to":"assets/art/served/maani.default.r1.webp","id":"served.maani","state":"default","game":"maani-line","on":"2026-11-13","by":"maani-line"}
+  {"from":"assets/cook/serve/dish-maani.webp","to":"assets/art/served/maani.default.r1.webp","id":"served.maani","state":"default","game":"maani-line","on":"2026-11-13","by":"maani-line"},
+  {"from":"assets/cook/items/v4/pantry/apple.webp","to":"assets/art/pantry/apple.default.r1.webp","id":"pantry.apple","state":"default","game":"fetch","on":"2026-11-13","by":"fetch"},
+  {"from":"assets/cook/items/dry-atto-bowl-t.webp","to":"assets/art/pantry/dry-atto-bowl.default.r1.webp","id":"pantry.dry-atto-bowl","state":"default","game":"fetch","on":"2026-11-13","by":"fetch"},
+  {"from":"assets/cook/items/dry-daal-bowl-t.webp","to":"assets/art/pantry/dry-daal-bowl.default.r1.webp","id":"pantry.dry-daal-bowl","state":"default","game":"fetch","on":"2026-11-13","by":"fetch"},
+  {"from":"assets/cook/items/v4/pantry/pear.webp","to":"assets/art/pantry/pear.default.r1.webp","id":"pantry.pear","state":"default","game":"fetch","on":"2026-11-13","by":"fetch"}
  ]
 }
