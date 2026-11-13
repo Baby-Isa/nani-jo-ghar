@@ -769,7 +769,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // a spoon taken back, carries on: fin's UI.hideDone)
         const total = blocks.reduce((a, b) => a + countOf(b), 0);
         const spoons = (x) => Object.values(wantOf(blockOf(x) || needBlock() || 1)).reduce((a, n) => a + n, 0);
-        if (filled >= total && (!active || active.order.length >= spoons(active))) UI.done().then(() => fin({ done: true }));
+        if (filled >= total && (!active || active.order.length >= spoons(active))) {
+          // SAM-37 (the judge, s19-night-c-ev3, 740x320: "the gold box wraps the whole order card in the side panel ... two seconds before
+          // the fold"): the fill's first-time showing ends here, marked seen, before the beat that moves on, so its end-of-showing point
+          // (Cook.Coach's pointCard, on the order card) never comes between the fill and the fold; the fold's first time is its own light
+          if (gate && Cook.Coach.active && Cook.Coach.active()) Cook.Coach.stop(true);
+          UI.done().then(() => fin({ done: true }));
+        }
         // T17 / SH-110: Nani calls the strip's first filling as soon as a strip is wanted ("Bhar! Chundo."), the same step
         // when that strip is tapped (so a strip tap never starts a call over the child's next tap), then each next filling
         const ord = filledOf().filter((x) => x !== active).length;
@@ -796,7 +802,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           }
         }
         const nb = mv.strip ? needBlock() : 0;
-        if (nb) callFill(kindsOf(nb)[0], mv.strip || null);
+        // SAM-38 (the judge, s19-night-c-ev3: "Nani's line is 'Bhar! Chundo.' and the lit thing is an empty pastry strip"): her line
+        // names a filling only while that filling's heap is the lit thing; a strip lit for the next samosa is called with the fill's
+        // own line alone ("Bhar!", fill it: the engine's guide line), and its filling is named once the strip is taken and the heap lit
+        if (nb && mv.strip && filled > 0) steps.to("samosa:fill", { id: `fill-${ord}-strip`, line: St.guideLine("samosa:fill"), role: "howto", glow: helpGlow(mv.strip) });
+        else if (nb) callFill(kindsOf(nb)[0], mv.strip || null);
         else steps.done();
         if (mv.strip) {
           if (glow) {
