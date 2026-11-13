@@ -704,9 +704,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     }
 
     /* ---------------- the moves ---------------- */
+    // CK-113, contract-117 (the S19 gate: "the light round n.egg went after a tap that did not do its thing"): a tap the game turns down
+    // shakes its thing and leaves the light where it is (began() only for a tap that starts a move)
     S.tappable(bowl, () => {
+      if (held && held.kind === "raw") return S.wiggle(bowl);
       began();
-      if (held && held.kind === "raw") return;
       hold({ kind: "raw" });
       rawHeld = rawEgg(bowl.x, bowl.y - 30);
       S.tweens.add({ targets: rawHeld, y: bowl.y - bowl.displayHeight / 2 - 70, duration: 260, ease: "Back.easeOut" });
@@ -756,12 +758,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       z.progress({ into: v.key });
       refresh();
     };
-    S.tappable(pot, () => (began(), putIn(vessels.pot)));
-    S.tappable(pan, () => (began(), putIn(vessels.pan)));
+    const intoTap = (v) => {
+      if (!held || held.kind !== "raw" || !rawHeld) return S.wiggle(v.img); // (CK-113: nothing in the hand to put in)
+      began();
+      return putIn(v);
+    };
+    S.tappable(pot, () => intoTap(vessels.pot));
+    S.tappable(pan, () => intoTap(vessels.pan));
 
     const lift = (egg) => {
-      began();
       if (egg.out) return;
+      began();
       // (an egg in the pot or the pan covers its middle: with a raw egg in the hand, a tap there puts it in)
       if (held && held.kind === "raw") return putIn(egg.v);
       if (egg.p < ready) {
@@ -797,8 +804,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       return n === 1 ? { x: pl.x, y: pl.y, h: d * 0.52 } : { x: pl.x, y: pl.y + (i ? 1 : -1) * d * 0.19, h: d * 0.36 };
     };
     const onPlate = async (pl) => {
+      if (!held) return; // (CK-113: an empty hand on a plate does nothing, and the light stays)
       began();
-      if (!held) return;
       if (held.kind === "shaker") {
         const id = held.id;
         const flag = id === "spi-16" ? "salt" : "pepper";
