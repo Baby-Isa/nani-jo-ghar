@@ -27934,9 +27934,12 @@
  "PAN-21": [
   {
    "flow": "cook:fetch",
-   "path": "speed1",
+   "path": "fair",
    "level": [
-    1
+    1,
+    2,
+    3,
+    4
    ],
    "sizes": [
     "740x320",
@@ -27944,14 +27947,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "every:placed",
    "after": null,
    "capture": [
-    "crop:#game"
+    "crop:#stage"
    ],
    "expect": null,
-   "max": 8,
-   "note": "PAN-21 as its row says"
+   "max": 6,
+   "note": "PAN-21: as each thing lands on the tray, any count pill (the tally, #count-badge) sits in the bottom right corner over no item, never on a shelf over its things (L1-L4)"
   }
  ],
  "ART-72": [
@@ -29162,6 +29165,262 @@
    "expect": null,
    "note": "corn L1: the same; contract-127",
    "delay": 600
+  }
+ ],
+ "CK-92": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "eggs: the fried egg in the pan about the pan's floor wide, the same size on its plate (no jump when served)",
+   "max": 10
+  }
+ ],
+ "CK-94": [
+  {
+   "flow": "cook:eggs",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "eggs at 740x320: the pan's handle tip clear of the tray; the hob's face circle beside its knob, as chai's",
+   "max": 6
+  }
+ ],
+ "CK-95": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "contract:36"
+   ],
+   "expect": null,
+   "note": "baking, a new player: the first thing Nani names (atto) lit, dimmed round and boxed, as she calls it, before it leaves the shelf",
+   "max": 3
+  }
+ ],
+ "CK-96": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "baking's item cards: chai's row of narrow cards, the third peeking, one shape at every size",
+   "max": 6
+  }
+ ],
+ "CK-100": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "baking: Dada's face circle beside the tray the whole bake: on the worktop, then beside the oven while the tray is in it, back with it; never over the naan or inside a lit box",
+   "max": 14
+  }
+ ],
+ "CK-101": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "baking: the oven about three trays wide (780 design px against the tray's 280), within the room above the shelf",
+   "max": 14
+  }
+ ],
+ "CK-102": [
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "baking: the shelf keeps its things and pills through the oven and at well done; the item cards keep their ticks",
+   "max": 14
+  },
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stage-end",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "baking at well done: the shelf with its things and pills, the item cards with their ticks"
+  }
+ ],
+ "CK-103": [
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "strip:#game:4x150"
+   ],
+   "expect": null,
+   "note": "corn: the dressing that flies to the cob is its bowl's picture, never a plain dot; the cob shows it once it lands (pepper's specks seen)",
+   "max": 6
+  }
+ ],
+ "CK-104": [
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:life:corn-screen",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "corn at 740x320: the six toppings one row in the bottom third, the plates above"
+  }
+ ],
+ "CK-105": [
+  {
+   "flow": "cook:corn",
+   "path": "speed1",
+   "level": [
+    1,
+    3
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "corn: the order cards in step order, the cob first; a done card stays in its place (no swap)",
+   "max": 8
   }
  ]
 }
