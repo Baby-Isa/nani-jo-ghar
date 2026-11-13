@@ -4,7 +4,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import vm from "node:vm";
-import { diffRead, diffPage, moveOf, pixelDiff, pixelRegion, armScript, STAND_FILE, MOMENTS, GAMES } from "./boxes.mjs";
+import { diffRead, diffPage, moveOf, pixelDiff, pixelRegion, pixelMasks, armScript, STAND_FILE, MOMENTS, GAMES } from "./boxes.mjs";
 
 const read = (boxes, texts = {}) => ({ boxes, texts, info: {} });
 
@@ -54,6 +54,9 @@ test("pixels: counted inside the region only", () => {
   assert.equal(pixelDiff(a, img(9, 10, () => 0)).n, -1);
   assert.deepEqual(pixelRegion(read({ "card-1": [10, 20, 30, 40], pop: [25, 5, 60, 30] }), "order"), [10, 5, 60, 40]);
   assert.equal(pixelRegion(read({}), "end"), null);
+  // a face circle is left out of the pixels (its box is compared), nothing else is
+  assert.deepEqual(pixelMasks(read({ "card-1/face": [7, 7, 10, 10], "pop/face-2": [0, 0, 1, 1], "card-1/item-1": [0, 0, 9, 9] })), [[7, 7, 10, 10], [0, 0, 1, 1]]);
+  assert.deepEqual(pixelDiff(a, b, null, [[8, 8, 9, 9]]), { n: 0 });
 });
 
 test("the arm names the six moments, each with its condition or its note", () => {

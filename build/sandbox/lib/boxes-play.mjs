@@ -30,6 +30,7 @@ export const PLANTS = {
     els.forEach((e) => e.setAttribute("x", (+e.getAttribute("x") + 20).toFixed(1))); window.__plantUndo = () => els.forEach((e, i) => e.setAttribute("x", old[i])); return "the light 20 px right of its target"; })()` },
 };
 
+let STAND = null; // the switch as it was when this process started (a run never mixes two versions of it)
 const STAND_Q = "(() => { const S = window.njgStand; if (!S) return null; return { reached: S.reached(), busy: S.busy(), held: S.held(), pending: S.pending() }; })()";
 
 /**
@@ -43,7 +44,7 @@ export async function playBoxes(browser, { game = "chai-tray", level = 1, size, 
   const { page, ctx, errors } = np;
   const notes = [];
   await ctx.addInitScript({ content: armScript(game, { seed, settle }) });
-  await ctx.addInitScript({ content: standSource() });
+  await ctx.addInitScript({ content: (STAND = STAND || standSource()) });
   const moments = {};
   const rec = { state: async (n) => n, note: (s) => notes.push(s), pend() {}, stop: (s) => notes.push(`stop: ${s}`) };
   let done = false;
@@ -57,13 +58,18 @@ export async function playBoxes(browser, { game = "chai-tray", level = 1, size, 
           let planted = null;
           if (plant && PLANTS[plant] && PLANTS[plant].at === m) planted = await page.evaluate(PLANTS[plant].js).catch((e) => `plant failed: ${e.message}`);
           const read = await page.evaluate(readCall(game));
+          // (the page's animations as held: what loops, what was paused where; for "why did this picture differ")
+          const anims = await page.evaluate(`document.getAnimations().map((a) => { const t = a.effect && a.effect.target; const d = t ? (t.tagName || "").toLowerCase() + (t.id ? "#" + t.id : "") + (typeof t.className === "string" && t.className ? "." + t.className.trim().split(/\\s+/).slice(0, 2).join(".") : "") : "?"; const ct = a.effect ? a.effect.getComputedTiming() : {}; return d + " " + (a.animationName || a.transitionProperty || "waapi") + " " + a.playState + " t=" + Math.round(a.currentTime || 0) + (isFinite(ct.endTime) ? "" : " loop"); })`).catch(() => []);
           const life = await page.evaluate("((window.Lifecycle && Lifecycle.log) || []).slice(-10).map((x) => x.what + (x.step != null ? ':' + x.step : ''))").catch(() => []);
           const pixel = PIXEL_MOMENTS.has(m);
+          // (a picture compared pixel for pixel: the page's compositor gets a moment after the hold, so a layer an animation just left
+          // is drawn as the still page draws it)
+          if (pixel) await sleep(250);
           const shot = `${m}.${pixel ? "png" : "jpg"}`;
           await page.screenshot({ path: join(dir, shot), animations: "allow", timeout: 15000, ...(pixel ? {} : { type: "jpeg", quality: 82 }) });
           const again = await page.evaluate(readCall(game));
           if (planted) await page.evaluate("window.__plantUndo && window.__plantUndo(); window.__plantUndo = null;").catch(() => {});
-          moments[m] = { read, life, steady: JSON.stringify(read) === JSON.stringify(again), shot, t: st.reached.t, frames: st.reached.frames, ...(planted ? { planted } : {}) };
+          moments[m] = { read, life, anims, steady: JSON.stringify(read) === JSON.stringify(again), shot, t: st.reached.t, frames: st.reached.frames, ...(planted ? { planted } : {}) };
           if (!moments[m].steady) moments[m].again = again;
         } catch (e) { notes.push(`${m}: ${String(e.message).split("\n")[0]}`); }
         await page.evaluate("window.njgStand && njgStand.go()").catch(() => {});

@@ -9,7 +9,8 @@
 //   bottom-row      the band at the foot (the stone tray or shelf: the band's tile, from its top to the view's foot)
 //   hob, tray, pan-N   the game's main things (MAIN below: texture keys per game), pans in order left to right
 //   shelf-first, shelf-last   the first and last item on the bottom row (left to right, top to bottom)
-//   card-N, card-N/face, card-N/item-K   the order cards in the side panel, their face circles and item cards
+//   card-N, card-N/face, card-N/item-K   the order cards in the side panel, their face circles and item cards (an item where it
+//                   lies in its card's row: the row's scroll taken out, kept as info)
 //   pop, pop/item-K, pop/face-K   the order's pop-up or its item pop-up (at the order), its item cards and faces
 //   end-card        the end screen's card
 //   nani, nani/face Nani's box and her face
@@ -29,6 +30,9 @@ export const MOMENTS = ["order", "light", "mid", "serve", "praise", "end"];
 // card with its item pop-up, and the end screen's card (behind them the kitchen's people breathe on the canvas, a loop whose phase no hold can fix)
 export const PIXEL_MOMENTS = new Set(["order", "end"]);
 export const PIXEL_BOX = { order: ["card-1", "pop"], end: ["end-card"] };
+/** the face circles inside a pixel region: left out of the pixel comparison (the renderer draws a circle's rim a little differently
+ *  from one run to the next, up to 8 of 255 on 32 pixels of its edge, with its box exactly the same); a face is compared by its box */
+export const pixelMasks = (read) => Object.entries((read && read.boxes) || {}).filter(([k]) => /(^|\/)face(-\d+)?$/.test(k)).map(([, b]) => b);
 /** the region a pixel moment is compared in: the union of its boxes that the read has, or null */
 export function pixelRegion(read, m) {
   const bs = (PIXEL_BOX[m] || []).map((k) => read && read.boxes && read.boxes[k]).filter(Boolean);
@@ -77,6 +81,10 @@ export const READ = `(function (opt) {
   const shown = (el) => { for (let x = el; x && x.nodeType === 1; x = x.parentElement) { const cs = getComputedStyle(x); if (cs.display === "none" || cs.visibility === "hidden" || +cs.opacity < 0.05) return false; } return true; };
   const dom = (el) => { if (!el || !shown(el)) return null; const b = el.getBoundingClientRect(); return b.width > 0.5 && b.height > 0.5 ? B(b.left, b.top, b.right, b.bottom) : null; };
   const out = { boxes: {}, texts: {}, info: {} };
+  // (an order card's item row scrolls: its glide's end depends on when the next step came, so a thing in the row is read where it lies
+  // in the row, its scroll taken out; how far each row is scrolled is kept as info, not compared)
+  const scroller = (x) => { const cs = getComputedStyle(x); return /auto|scroll/.test(cs.overflowX) || /auto|scroll/.test(cs.overflowY); };
+  const inRow = (el, b) => { if (!b) return b; let dx = 0, dy = 0; for (let x = el.parentElement; x && !(x.matches && x.matches(".oc-card, #side, body")); x = x.parentElement) if (scroller(x)) { dx += x.scrollLeft; dy += x.scrollTop; } return dx || dy ? B(b[0] + dx, b[1] + dy, b[2] + dx, b[3] + dy) : b; };
   const put = (k, b) => { if (b) out.boxes[k] = b; };
   const C = window.Cook, g = C && C.game, U = C && C.UI;
   // world -> page (the game's own conversion)
@@ -124,7 +132,8 @@ export const READ = `(function (opt) {
     const n = "card-" + (i + 1);
     put(n, dom(c));
     put(n + "/face", dom(c.querySelector(".oc-face .njg-face, .oc-face")));
-    Array.from(c.querySelectorAll(".oc-it14")).forEach((it, j) => put(n + "/item-" + (j + 1), dom(it)));
+    Array.from(c.querySelectorAll(".oc-it14")).forEach((it, j) => put(n + "/item-" + (j + 1), inRow(it, dom(it))));
+    Array.from(c.querySelectorAll("*")).filter((x) => scroller(x) && (x.scrollLeft || x.scrollTop)).forEach((x, j) => (out.info[n + "/scroll-" + (j + 1)] = [x.scrollLeft, x.scrollTop]));
   });
   // the order's pop-up: its card, its item cards and faces
   const pop = Array.from(document.querySelectorAll(".njg-rq-card, .wc14-pop")).find((c) => dom(c));
@@ -165,16 +174,18 @@ export const READ = `(function (opt) {
       if (rb.width < 0.5 || rb.height < 0.5) continue;
       const cls = (typeof el.className === "string" && el.className.trim().split(/\\s+/)[0]) || el.tagName.toLowerCase();
       const k = seen.get(cls) || 0; seen.set(cls, k + 1);
-      // cut: the words overflow a box of theirs that hides the overflow (an ellipsis, a clip), or their glyphs leave that box
+      // cut: the words overflow a box of theirs that hides the overflow (an ellipsis, a clip), or their glyphs leave that box; a row
+      // that scrolls is not a cut (a word scrolled out of view is still whole), and the walk stops there
       let cut = false;
       for (let x = el; x && x !== root.parentElement; x = x.parentElement) {
         const cs = getComputedStyle(x);
+        if (x !== el && scroller(x)) break;
         const hides = (cs.overflowX !== "visible" || cs.overflowY !== "visible");
         if (!hides) continue;
         const xb = x.getBoundingClientRect();
         if (x.scrollWidth > x.clientWidth + 1 || x.scrollHeight > x.clientHeight + 1 || rb.left < xb.left - 0.5 || rb.right > xb.right + 0.5 || rb.top < xb.top - 0.5 || rb.bottom > xb.bottom + 0.5) { cut = true; break; }
       }
-      out.texts[area + "/" + cls + "#" + (k + 1)] = { box: B(rb.left, rb.top, rb.right, rb.bottom), cut, text: s };
+      out.texts[area + "/" + cls + "#" + (k + 1)] = { box: inRow(el, B(rb.left, rb.top, rb.right, rb.bottom)), cut, text: s };
     }
   }
   return out;
@@ -237,13 +248,15 @@ export function diffPage(ref, cur) {
   return { missing, diffs };
 }
 /** pixels: how many differ between two decoded pictures ({w, h, data}) and the box round them, or a size change */
-export function pixelDiff(a, b, region = null) {
+export function pixelDiff(a, b, region = null, masks = []) {
   if (!a || !b) return { n: -1, why: "a picture is missing" };
   if (a.w !== b.w || a.h !== b.h) return { n: -1, why: `size ${a.w}x${a.h} -> ${b.w}x${b.h}` };
   let n = 0, l = Infinity, t = Infinity, r = -1, bt = -1;
   const ch = a.data.length / (a.w * a.h);
   const [x0, y0, x1, y1] = region ? [Math.max(0, Math.floor(region[0])), Math.max(0, Math.floor(region[1])), Math.min(a.w, Math.ceil(region[2])), Math.min(a.h, Math.ceil(region[3]))] : [0, 0, a.w, a.h];
+  const masked = (x, y) => masks.some((m) => x >= Math.floor(m[0]) && x < Math.ceil(m[2]) && y >= Math.floor(m[1]) && y < Math.ceil(m[3]));
   for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) {
+    if (masks.length && masked(x, y)) continue;
     const i = (y * a.w + x) * ch;
     let same = true;
     for (let c = 0; c < Math.min(ch, 3); c++) if (a.data[i + c] !== b.data[i + c]) { same = false; break; }

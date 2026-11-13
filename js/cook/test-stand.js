@@ -5,8 +5,9 @@
  * at all in a store build (window.NJG_BUILD === "store"). It changes no game file and no game state; it only holds the page's clock.
  *
  *   window.__njgStandArm = { seed, settle, sig(), moments: [{ name, when(S), note, wait(S), after }] }   set by the harness first
- *                        (note: the moment is the Lifecycle writing that note ("*": any note, the first with when(S) true): the game is held in the same breath, its clock and
- *                        timers stopped, while the page's animations that end run to their end; then those that loop are paused)
+ *                        (note: the moment is the Lifecycle writing that note ("*": any note, the first with when(S) true; "dom":
+ *                        the page changing): from that breath the game's timers wait, so no next step and no help on a timer comes,
+ *                        while the motion under way comes to rest; then the whole game is held)
  *                        (wait: while it holds, the play bot holds its tap too: the moment is coming)
  *                        (after: the least time, game ms, the condition holds before the game is held: a light that fades in)
  *   njgStand.reached()   the moment the game is standing still at ({name, t, frames}), or null
@@ -77,6 +78,7 @@
   var realRaf = W.requestAnimationFrame.bind(W);
   var realCancelRaf = W.cancelAnimationFrame.bind(W);
   var held = false;
+  var stilling = false; // a moment at a note: the game's timers wait (no next step, no help on a timer) while its motion comes to rest
   var heldAt = 0; // real performance.now() when held
   var offset = 0; // ms held so far (the game never saw them)
   var vPerf = function () { return (held ? heldAt : realPerfNow()) - offset; };
@@ -89,7 +91,7 @@
     var args = Array.prototype.slice.call(arguments, 2);
     var rec = { fn: fn, args: args, due: vPerf() + Math.max(0, +ms || 0), real: 0, id: 0 };
     var fire = function () {
-      if (held) { rec.waiting = true; return; }
+      if (held || stilling) { rec.waiting = true; return; }
       timers.delete(rec.id);
       if (typeof rec.fn === "function") rec.fn.apply(W, rec.args);
       else if (typeof rec.fn === "string") (0, eval)(rec.fn);
@@ -108,7 +110,7 @@
   // intervals: a tick that falls while held is skipped (they are samplers and pollers)
   W.setInterval = function (fn, ms) {
     var args = Array.prototype.slice.call(arguments, 2);
-    return realSetInterval(function () { if (!held && typeof fn === "function") fn.apply(W, args); }, ms);
+    return realSetInterval(function () { if (!held && !stilling && typeof fn === "function") fn.apply(W, args); }, ms);
   };
   // animation frames: the time they are given is the game's (held time taken out); held, they wait for the release
   var frames = new Map(); // id -> {cb, real}
@@ -205,7 +207,7 @@
     speaking: function () { return lines > 0; },
   };
   var moments = (ARM.moments || []).map(function (m) { return { name: m.name, note: m.note || null, when: m.when || null, wait: m.wait || null, after: m.after || 0, done: false, on: false, since: 0, last: null, same: 0 }; });
-  var finishing = null; // a moment held at its note, waiting for the page's animations that end to end
+  var finishing = null; // a moment come at its note, its motion coming to rest (stilling) before the game is held
   onLife = function (e) {
     if (!e) return;
     lifeSeen[e.what] = true;
@@ -219,9 +221,11 @@
       try { ok = !m.when || !!m.when(S); } catch (x) { ok = false; }
       if (!ok) continue;
       m.done = true;
-      hold(true);
+      stilling = true;
       finishing = m;
       finishing.from = realPerfNow();
+      m.same = 0;
+      m.last = null;
       return;
     }
   };
@@ -247,9 +251,11 @@
       try { ok = !!m.when(S); } catch (x) { ok = false; }
       if (!ok) continue;
       m.done = true;
-      hold(true);
+      stilling = true;
       finishing = m;
       finishing.from = realPerfNow();
+      m.same = 0;
+      m.last = null;
       return;
     }
   }
@@ -269,11 +275,19 @@
   function tick() {
     realRaf(tick);
     if (finishing) {
-      if (!finishing.from) finishing.from = realPerfNow();
-      // (at most 5 s: a picture that never comes is the reader's to report, not a hang)
-      if ((moving() || loading()) && realPerfNow() - finishing.from < 5000) return;
-      pauseAnims();
-      reached = { name: finishing.name, t: Math.round(vPerf()), at: finishing.note };
+      // the motion under way at the note comes to rest (a card's glide, a pan's drop, a fade; frames and tweens run on, the timers
+      // wait), and the pictures on screen are in; then the whole game is held. At most 5 s: a moment that never comes to rest is
+      // held as it is, and the reader's second read says so
+      var f = finishing;
+      var s0 = "";
+      try { s0 = sig(S); } catch (e) { s0 = "error " + e; }
+      if (moving() || loading()) { f.same = 0; f.last = null; }
+      else if (s0 === f.last) f.same++;
+      else { f.last = s0; f.same = 1; }
+      if (f.same < settle && realPerfNow() - f.from < 5000) return;
+      hold();
+      stilling = false;
+      reached = { name: f.name, t: Math.round(vPerf()), at: f.note, frames: f.same };
       finishing = null;
       return;
     }
@@ -314,6 +328,6 @@
     held: function () { return held; },
     // (why a moment was never reached: its last two different readings while its condition held, so the tool can say what moved)
     pending: function () { return moments.filter(function (m) { return !m.done; }).map(function (m) { return { name: m.name, on: m.on, same: m.same, lost: m.lost || 0, changes: m.changes || 0, prev: m.prev || null, last: m.last || null }; }); },
-    busy: function () { return held || moments.some(function (m) { if (m.done) return false; if (m.on) return true; try { return !!(m.wait && m.wait(S)); } catch (e) { return false; } }); },
+    busy: function () { return held || !!finishing || moments.some(function (m) { if (m.done) return false; if (m.on) return true; try { return !!(m.wait && m.wait(S)); } catch (e) { return false; } }); },
   };
 })();

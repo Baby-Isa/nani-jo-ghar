@@ -3,7 +3,8 @@
 // the fair play bot with the stand-still switch (js/cook/test-stand.js, injected by this tool only), held at six named moments (the
 // order, the first light, mid-cook, the serve, well done, the end); at each, exact boxes read from the game (numbers, not pixels:
 // build/sandbox/lib/boxes.mjs) and a picture kept. A run is compared with the reference box by box, exactly: any change is a
-// difference, printed with how far it moved. Pixels are compared only at the order and the end, inside their cards.
+// difference, printed with how far it moved. Pixels are compared only at the order and the end, inside their cards, faces left out
+// (a face circle's rim is drawn a little differently run to run; its box is compared exactly).
 //
 //   node build/tools/review/boxes.mjs --game chai-tray --run [--levels 1,4] [--sizes 740x320,930x430,1280x665,1920x1080]
 //        [--parallel 2] [--run-id <id>] [--plant move4|card-face|cut-word|light-off]
@@ -25,7 +26,7 @@ import { join, relative } from "node:path";
 import { spawnSync } from "node:child_process";
 import { args, ROOT, rel } from "./lib/common.mjs";
 import { decodePng } from "./lib/png.mjs";
-import { diffPage, pixelDiff, pageKey, MOMENTS, PIXEL_MOMENTS, PIXEL_BOX, pixelRegion, SIZES, LEVELS, GAMES } from "../../sandbox/lib/boxes.mjs";
+import { diffPage, pixelDiff, pageKey, MOMENTS, PIXEL_MOMENTS, PIXEL_BOX, pixelRegion, pixelMasks, SIZES, LEVELS, GAMES } from "../../sandbox/lib/boxes.mjs";
 
 const a = args();
 const HELP = readFileSync(new URL(import.meta.url), "utf8").split("\n").slice(1, 26).map((l) => l.replace(/^\/\/ ?/, "")).join("\n");
@@ -130,7 +131,7 @@ export function compare(runRootDir, refRootDir, { only = null } = {}) {
       if (!existsSync(pa) || !existsSync(pb)) { pixels.push({ moment: m, n: -1, why: "a picture is missing" }); continue; }
       const region = pixelRegion(r.moments[m].read, m);
       if (!region) { pixels.push({ moment: m, n: -1, why: `no ${PIXEL_BOX[m].join(" or ")} box to compare inside` }); continue; }
-      const res = pixelDiff(decode(pa), decode(pb), region);
+      const res = pixelDiff(decode(pa), decode(pb), region, pixelMasks(r.moments[m].read));
       if (res.n) pixels.push({ moment: m, ...res });
     }
     const bad = faults.length || missing.length || diffs.length || pixels.length;
