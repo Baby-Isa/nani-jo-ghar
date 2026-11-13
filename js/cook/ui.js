@@ -2235,7 +2235,10 @@
         // that's still fine": the flight is a curve from the pop-up's centre to the row's, its middle bowed sideways by the least that
         // keeps every frame of the shrinking card off every face and bubble: a straight line when that is clear; was: across, then up)
         const bend = (() => {
-          const fs = faces14().concat([...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0));
+          // (s20-p2c: faces and bubbles are counted apart: a bubble the card already touches at take-off made the sum's allowance, so a
+          // card could graze Nana's head inside it, contract-83, L4 at 740x320)
+          const fcs = faces14();
+          const bbs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
           const c0 = { x: fb.left + fb.width / 2, y: fb.top + fb.height / 2 };
           const c2 = { x: tr.left + tr.width / 2, y: tr.top + tr.height / 2 };
           const len = Math.hypot(c2.x - c0.x, c2.y - c0.y) || 1;
@@ -2243,10 +2246,14 @@
           const ny = (c2.x - c0.x) / len;
           // (Zafar, 4 Nov: "don't alter the quickest path trajectory unless needed": the pop-up may already sit against a head where it
           // was placed; moving off it is no reason to bow, so a frame counts only where it covers more of a face than at take-off)
-          const base = overlap14({ left: fb.left, right: fb.right, top: fb.top, bottom: fb.bottom }, fs);
-          const hits = (b) => {
-            for (let i = 1; i < 20; i++) {
-              const t = i / 20;
+          const at0 = { left: fb.left, right: fb.right, top: fb.top, bottom: fb.bottom };
+          const baseF = overlap14(at0, fcs);
+          const baseB = overlap14(at0, bbs);
+          const hits = (b, bub = true) => {
+            // (s20-p2c: sampled every 1/80 of the flight, the card a pixel wider each side: at 1/20 the card moved up to a seventh of its way
+            // between two samples and grazed Nana's head between them, L4 at 740x320, contract-83 once the order view was lifted, SH-287)
+            for (let i = 1; i < 80; i++) {
+              const t = i / 80;
               const px = (1 - t) * (1 - t) * c0.x + 2 * (1 - t) * t * ((c0.x + c2.x) / 2 + nx * b) + t * t * c2.x;
               const py = (1 - t) * (1 - t) * c0.y + 2 * (1 - t) * t * ((c0.y + c2.y) / 2 + ny * b) + t * t * c2.y;
               // (as the morph shrinks it: one even scale to the row's card, never a stretch; the judge's check ran on a stretch, so it
@@ -2254,14 +2261,18 @@
               const k = 1 + (Math.min(tr.width / fb.width, tr.height / fb.height) - 1) * t;
               const w = fb.width * k;
               const h = fb.height * k;
-              if (overlap14({ left: px - w / 2, right: px + w / 2, top: py - h / 2, bottom: py + h / 2 }, fs) > base + 1) return true;
+              const r = { left: px - w / 2 - 1, right: px + w / 2 + 1, top: py - h / 2 - 1, bottom: py + h / 2 + 1 };
+              if (overlap14(r, fcs) > baseF + 1 || (bub && overlap14(r, bbs) > baseB + 1)) return true;
             }
             return false;
           };
-          if (!hits(0)) return 0;
-          for (let b = 12; b <= len * 1.2; b += 12) {
-            if (!hits(b)) return b;
-            if (!hits(-b)) return -b;
+          // (faces and the bubble clear if a bow can; else faces alone: a face is never grazed, a bubble may be)
+          for (const bub of [true, false]) {
+            if (!hits(0, bub)) return 0;
+            for (let b = 12; b <= len * 1.2; b += 12) {
+              if (!hits(b, bub)) return b;
+              if (!hits(-b, bub)) return -b;
+            }
           }
           return 0; // (nothing clears: the straight line, the shortest time over anything)
         })();
