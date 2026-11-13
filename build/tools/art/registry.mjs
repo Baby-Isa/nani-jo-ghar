@@ -733,6 +733,10 @@ export function applyRenames(reg, plan, { root = ROOT, dryRun = false, on = toda
     const k2 = [...new Set([...k.map((x) => x.split("|").map((part) => by.get(part) || part).join("|")), ...rawpathFindings(root).map((f) => f.key)])];
     if (JSON.stringify(k2) !== JSON.stringify(k)) { writeFileSync(kp, JSON.stringify(k2, null, 1) + "\n"); changed.push("build/tools/art/artcheck-known.json"); }
   }
+  // the art checks' own path-keyed rules (look-rules.json: rim.known, eye_passed ...): an exact path follows its file (a glob keeps
+  // matching through the first name, artcolour.first_name)
+  const lr = join(root, "build/tools/art/data/look-rules.json");
+  if (existsSync(lr)) { const r = rewriteText(readFileSync(lr, "utf8"), plan); if (r.n) { writeFileSync(lr, r.text); changed.push("build/tools/art/data/look-rules.json"); } }
   // the static references (css, root pages, lab pages)
   for (const f of staticFiles(root)) {
     const t = readFileSync(join(root, f), "utf8");

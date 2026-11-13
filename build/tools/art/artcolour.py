@@ -783,7 +783,8 @@ def analyse_arrays(rgb, alpha, R=None, size_class=None, name=""):
         li["concave"] = concave
         skip = any(fnmatch.fnmatch(first_name(os.path.relpath(os.path.abspath(name), REPO)), g) for g in P["skip"]) if name else False
         li["skipped"] = skip
-        eye = P.get("eye_passed", {}).get(first_name(os.path.relpath(os.path.abspath(name), REPO))) if name else None
+        _r = os.path.relpath(os.path.abspath(name), REPO).replace(os.sep, "/") if name else None
+        eye = (P.get("eye_passed", {}).get(_r) or P.get("eye_passed", {}).get(first_name(_r))) if name else None
         if eye:
             li["eye_passed"] = eye
         if off_arc and not concave and not skip and not eye:  # a FAIL since 6 Nov (Zafar): on the block or in the redo pipeline
@@ -887,7 +888,8 @@ def analyse(path, R=None, size_class=None):
     if res.get("cutout"):
         pr = pink_rim(path, R)
         res["info"]["rim"] = pr
-        known = first_name(os.path.relpath(os.path.abspath(path), REPO)) in set(R["rim"].get("known", []))
+        _r = os.path.relpath(os.path.abspath(path), REPO).replace(os.sep, "/")
+        known = bool({_r, first_name(_r)} & set(R["rim"].get("known", [])))
         if pr and pr["fail"] and known:
             res["flag"].append("pink rim (known art debt, look-rules.json rim.known): %.0f%% of the soft edge magenta-tinted; run python3 build/tools/art/edge_bleed.py on it" % (pr["share"] * 100))
         elif pr and pr["fail"]:
