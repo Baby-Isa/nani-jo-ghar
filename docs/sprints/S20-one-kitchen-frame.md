@@ -31,7 +31,7 @@ In Zafar's words (13 Nov): settle chai and record exactly how it looks; move cha
 | P4 | The measuring tool: freeze the game at six moments and record exactly where everything sits (proven on chai as it is; one session) | done | `boxes.mjs --prove`: chai identical 3 runs x 8 pages, 4 planted faults caught, 4 min a run; reference `build/frozen/boxes/chai-tray/` |
 | P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | done | `boxes.mjs --rules`: 10 rules, 7/7 planted faults caught, SH-277 caught in eggs, CK-112 on its old code; chai fails tap-size, headline, text-whole (to fix before the reference: SH-288, SH-289) |
 | P6 | Chai's 12 reference pictures. **Zafar, review point 2** | next | chai's last fixes merged (s20-p2b-chai: SH-287, -288, -289, decision 25; all 10 rules pass on chai); waits for Zafar's yes to the change list and the glass clink, then the re-freeze (frozen run and boxes) and the 12 pictures |
-| P7 | Park the rows ("waits for the frame") | next | |
+| P7 | Park the rows ("waits for the frame") | done | 103 kitchen layout and look rows tagged "waits for the frame"; rows about Kutchi, sound, voice, a stuck game or an upset child left open (the four fix-now classes) |
 | 1 | Chai's play-area lines move out of chai into the frame, unchanged; chai asks the frame for its play area; every box proven unchanged | waits | |
 | 2 | Chai's stove, pans and tray are measured from its play area, not the screen; every box proven unchanged | waits | |
 | 3 | Eggs joins. **Zafar, review point 3** | waits | |
