@@ -1,0 +1,259 @@
+# Overnight 13 Nov: every open kitchen and shared row, by builder
+
+Zafar, 13 Nov (decision 13): fix every row that does not wait on him, Mum or art, and check each so it closes with evidence. [code] needs building; [check] is built and needs its check run and passed (or the fault found and fixed). A row that turns out to need Zafar, Mum or art: relabel it, say why.
+
+## s19-night-shared: shared pieces, the order card, onboarding, layout, art and language rows (132 rows)
+- SH-232 [code] (Shared components / Order cards): After a served card folds in play, the side panel glides so the next card sits in its planned place: "it scrolled down the left panel as if it had nev
+- SH-233 [check] (Shared components / Order cards): contract-44 still breaks a first-time light that has no finger ("a spotlight 2 s with no finger is a break"), against the rule that a tap's light has 
+- SH-234 [code] (Shared components / Order cards): The item card's picture padding never drops below 4 px on a small phone: today it is 2.6% of the row's width, which can leave a picture touching its c
+- CHAI-91 [check] (Shared components / Order cards): The hob always shows each pan's picture: no bare lit burner and no small square in its middle (Zafar, 6 Nov, chai L4, images 1 and 2: "Clearly there's
+- CHAI-92 [check] (Shared components / Order cards): A juice lab page (Zafar, 6 Nov: "I want to just easily be able to like hear and see all the juice we're adding ... if you're not sure about which soun
+- CHAI-93 [check] (Shared components / Order cards): The word moment's last drop painted, not code-drawn (Zafar, 6 Nov: "there's a little drop then that pours in last. I do like the little drop as a fun 
+- SH-222 [check] (Shared components / Order cards): The English under the order card's and the item cards' words bigger, every game, without changing the cards' size (overnight fonts review, 6 Nov: 7.9 
+- SH-227 [code] (Shared components / Order cards): The item card's typography, every game's order and item cards (Zafar, 6 Nov, on the old-vs-new card: "It needs work. It just feels clunky, messy, visu
+- SH-223 [check] (Shared components / Order cards): One font sample page to choose from, every game (Zafar, 6 Nov: "I quite like Lora ... and I quite like [Fraunces] ... a mock-up of [Lora], and a mock-
+- SH-224 [code] (Shared components / Order cards): The chosen fonts hosted in the repo, in one central place, chai first and then every game (Zafar, 6 Nov: "keep the fonts in the repo rather than loadi
+- SH-225 [code] (Shared components / Order cards): Vibration, not forgotten, at the app-store wrapper (Zafar, 6 Nov: "Vibration, I'm assuming, is that because that's like a mobile device thing that com
+- SH-226 [code] (Shared components / Order cards): Real recorded sounds from a free, high-quality library, every game (Zafar, 6 Nov: "Currently, the pouring sound for chai isn't good ... We probably ne
+- ART-45 [code] (Shared components / Order cards): Every existing picture re-run under the stricter rules, and redo runs ready for all that fail (Zafar, 6 Nov: "if the tool is as good as it needs to be
+- ART-46 [code] (Shared components / Order cards): One palette per item: all of an item's main colours from one Wada palette (Zafar, 6 Nov: "it's not just about the color, it's about the color combinat
+- ART-47 [code] (Shared components / Order cards): Light and colour fail; a batch difference fails only when you can see it (Zafar, 6 Nov: "Batch is a problem if you can tell it comes from different ba
+- ART-49 [check] (Shared components / Order cards): The juice art run, early, so he can see it in action (Zafar, 6 Nov: "prioritize the art [run] for that first ... give it to me nice and early, so I ca
+- ART-50 [check] (Shared components / Order cards): The stove run's 42 sheets cut and judged, and Zafar told what landed (Zafar, 6 Nov: "looking now at the stove [run], is that all those [478]? ... are 
+- ART-51 [check] (Shared components / Order cards): Item sizes by his compromise steps of 9% then 8% (100 / 91 / 84 of the slot) if the log rule allows it, else the best practice 8% then 7% (100 / 92 / 
+- ART-52 [code] (Shared components / Order cards): Size classes for every item, by a method Fable decides (Zafar, 6 Nov: "You just have to make sure you understand well what class size everything shoul
+- ART-53 [check] (Shared components / Order cards): Walnut wherever there's wood, not too dark on the lids (Zafar, 6 Nov: "I'm kind of enjoying the walnut theme ... it just looks a bit expensive ... it 
+- SH-213 [code] (Shared components / Order cards): The reveal lessons big enough to notice, every game (was: the zoom-in light, 5 Nov): a light on a small part of a thing first lights the whole thing, 
+- SH-214 [check] (Shared components / Order cards): Everyone who ordered is back at the end to say thank you, every Cook game (Zafar, 5 Nov: "in the wrap-up scene, back in the kitchen after the tea is s
+- SH-216 [check] (Shared components / Order cards): A grown-ups' way to see the blurred-picture lesson without replaying (Zafar, 5 Nov: "I've not actually seen the onboarding for that because I just hav
+- SH-215 [check] (Shared components / Order cards): Nani's box folds up smoothly when shut, every Cook game (Zafar, 5 Nov: "When i use the arrow on the hint card to minimise the hint card, it snaps up i
+- CHAI-86 [check] (Shared components / Order cards): The kettle higher above the glass in the word moment (Zafar, 5 Nov: "yes move the tea kettle higher to give more spacing above the glass, otherwise it
+- CHAI-87 [check] (Shared components / Order cards): A pouring sound in the word moment and at the hob that sounds like tea poured into a glass (Zafar, 5 Nov: "can we add a tea pouring sound to the word 
+- CHAI-90 [check] (Shared components / Order cards): The word moment's pouring stream seen inside the glass (Zafar, 6 Nov: "the chai pouring stream isn't visible inside the glass, it stops as it enters t
+- SH-219 [check] (Shared components / Order cards): The shelf's word pills readable on a phone, by one rule for every screen (Zafar, 6 Nov: "the text in the pills and the speaker button next to the pill
+- SH-220 [code] (Shared components / Order cards): No flashing backgrounds when a screen loads (Zafar, 6 Nov: "whenever something loads like the kitchen ordering screen or the word focus, the screen fl
+- SH-217 [check] (Shared components / Order cards): The reveal eye never touches its picture's edges, every game (Zafar, 5 Nov evening, his phone: "the eye circle just touches the top and the bottom of 
+- CHAI-88 [check] (Shared components / Order cards): In the word moment only the tea changes as a glass fills (Zafar, 5 Nov evening: "just outside the edge of the glass, you'll see kind of a black, shado
+- SH-218 [check] (Shared components / Order cards): The count pills in proportion with the shelf's pills, every game (Zafar, 5 Nov evening: "the pills that count the number of items that have gone in ..
+- CHAI-89 [code] (Shared components / Order cards): The play area centred on the worktop at every size (Zafar, 5 Nov evening: "a lot more space on top ... placed centrally, both X and Y axis, including 
+- ART-43 [check] (Shared components / Order cards): The worktop and the stone sing together, every stove game (Zafar, 5 Nov evening: "is it the perfect match for the stone left and bottom? ... they shou
+- ART-44 [code] (Shared components / Order cards): Seven shipped pictures keep a baked shadow (non-negotiable look rule: no baked shadows): the clinic's thermometer belt and three toothbrush pictures (
+- ART-42 [code] (Shared components / Order cards): Every art run gets its references from GitHub itself and downloads in one go, never asking Zafar (Zafar, 5 Nov, pack s17-pc2's run stopped: "You need 
+- ART-41 [check] (Shared components / Order cards): The side panel and the bottom panel (the shelf) fit the white marble, every game (Zafar, 5 Nov: "can you do some colour analysis and best practice and
+- SH-210 [check] (Shared components / Order cards): The side panel never resizes as a card opens or shuts, every Cook game (Zafar, 5 Nov, his video: "nani's hint card growing and hence all the menu card
+- SH-211 [check] (Shared components / Order cards): The item row never tugs back and forth, every s14 game (Zafar, 5 Nov, image 4, L4: "jerkily scrolls back and forth before then scrolling to the left t
+- SH-212 [code] (Shared components / Order cards): Every next game loads behind the current one, no wait between games (Zafar, 5 Nov: "It all loads very slowly, I'm hoping we'll optimise before launch 
+- ART-40 [check] (Shared components / Order cards): The stove games' worktop is his white marble (Zafar, 5 Nov, image 3: "Can we change this to the new background marble for the stove top down games?")
+- CHAI-84 [check] (Shared components / Order cards): Half and full plainly different, in the moment and on the cards, and plain tea for a no-milk order (Zafar, 5 Nov: "half should be a little lower than 
+- CHAI-85 [check] (Shared components / Order cards): The word moment shows before the kitchen, never after it (Zafar, 5 Nov: "the kitchen background still loads and is visible first before the word focus
+- ART-39 [check] (Shared components / Order cards): The word moment's glasses stand clean on the counter (Zafar, 4 Nov evening: "a bit of a weird shadow that stands out. It's apparent on both of the gla
+- SH-209 [check] (Shared components / Order cards): Nani's box never changes height with its arrow, every game (Zafar, 4 Nov evening: "the menu cards on the left side seem to keep jumping up and down ..
+- CHAI-83 [code] (Shared components / Order cards): The next pan is never lit while another cooks (Zafar, 4 Nov evening, L2: "even though I had tea pan 1 selected ... highlights saucepan 2. In like this
+- SH-201 [check] (Shared components / Order cards): A person's first word never silent, every game (Zafar, 3 Nov, L2: "When the second person ordered their order, the first item in their order didn't ha
+- SH-202 [check] (Shared components / Order cards): A 'no' card's picture blurs as any other, every game (Zafar, 3 Nov, his 4th image: "the order of no sugar doesn't blur the sugar as well as it's meant
+- SH-203 [check] (Shared components / Order cards): The big card's flight to its row, every game (Zafar, 3 Nov, L4: "the path that the card moves in is just very strange ... It can't turn any corners ..
+- SH-204 [check] (Shared components / Order cards): A grouped row (a skewer, a group of pills) never cut and its big card never scrolls, every game (the sandbox, 4 Nov: chaat L4's bowl card at 1280x665 
+- SH-205 [check] (Shared components / Order cards): Every legal move resets Nani's hint clock, every game, every level, every hint (Zafar, 4 Nov, L4: "as it was pouring, I got Nani's hint saying, put in
+- SH-206 [check] (Shared components / Order cards): The order row's last items ticked only when the dish is served are both whole in view, every game (Zafar, 4 Nov, L4: "the second last item was whole .
+- SH-207 [check] (Shared components / Order cards): The word ladder and the level change only between games, never in one, every game (Zafar, 4 Nov, L4: "the item card started blurring halfway through p
+- SH-208 [check] (Shared components / Order cards): The shelf's items spread so their word pills never touch where there is room, every game (Zafar, 4 Nov: "the pills are like overlapping and merging so
+- SH-189 [check] (Shared components / Order cards): "Why does it doesn't look like Nani should have a double spaced header bar? Looks much too big" (phone-1, "Chulo bar!"): Nani's box as tall as its lin
+- SH-12 [code] (Shared components / Order cards): Items with no word at higher levels: L3 dots the item words (the level table, Zafar 19 Oct, SH-110, replaces the speaker-only chip); the bulb shows ev
+- SH-13 [check] (Shared components / Order cards): Counting along is consistent: L1 written and counted aloud, L2 written, L3+ heard
+- SH-62 [check] (Shared components / Order cards): The sequence's stick ends in its tip just below the last row, even when a row wraps (SEK-17)
+- SH-171 [check] (Shared components / Order cards): "When I load up chop, before the guy even comes to give the order for chopping, it ... gives the order card for Haiku Dungri for one onion. And then w
+- SH-172 [code] (Shared components / Order cards): "I think that instruction should be said out loud, only at the same time as the order hint is shown. So when she expands her card to help you, and sho
+- SH-173 [code] (Shared components / Order cards): The end screen with nothing wrong: the words centred, not the empty wrong-words half on the left (Zafar, 30 Oct: yes to S13 question 40; amends SH-103
+- SH-175 [check] (Shared components / Order cards): "It also still takes ages to load into the game (from clicking in labs to the order starting)": a station's files asked for at once (modulepreload), t
+- SH-176 [check] (Shared components / Order cards): "The text for mukhe chai kupe on the menu order card looks small compared to all other text - can you review text sizes": the order headline and Nani'
+- SH-177 [check] (Shared components / Order cards): "The speech bubble blocks the face and body but it seems like it could easily go on the right so there's space for the card on the left": with no room
+- SH-178 [check] (Shared components / Order cards): 1 Nov: "If you are onboarded at level two for some reason, after the first two items, there's a bug. It should highlight just the next item in the ord
+- SH-180 [check] (Shared components / Order cards): "Level two, after the first order is read, it needs a nicer animation to close the first order card and open the second order card. Like it should lik
+- SH-182 [check] (Shared components / Order cards): "I didn't do any action for quite a while, so I was prompted, which is good, but I was prompted to put in sugar next. Well, it prompted me to put in s
+- SH-239 [code] (Shared components / Order cards): The order card ticks as you go and "well done" waits for the whole card, every game (Zafar, 8 Nov, maani: "the item card hasn't ticked off ... neither
+- SH-241 [code] (Shared components / Order cards): No relic of the old order card: ordered steps on the 6 Nov item cards, every game (Zafar, 8 Nov, daar: "it's got the relic of the old order card in th
+- SH-242 [code] (Shared components / Order cards): An item card shows one of the thing, every game (Zafar, 8 Nov, daar: "it's the wrong use of the onion as well it's a crate of onions but it should be 
+- SH-230 [code] (Shared components / Layout and stage): Every onboarding light leaves room round its thing: "The onboarding for items with no written words in their pills is much too tight - the highlight b
+- SH-37 [check] (Shared components / Layout and stage): Cook screens have one focal thing; UI and world look like one product; identical shelf slots; design tokens only
+- SH-53 [code] (Shared components / Layout and stage): One shared next-thing highlight in every station and every clinic tool strip: the centred glow and bounce of the item itself (the pantry's), one at a 
+- SH-60 [check] (Shared components / Layout and stage): Help (line and glow) only after the pause, for the first item too; a new player sees every word ("Start over" clears learned words; "play as new" in "
+- SH-228 [code] (Shared components / Layout and stage): The help comes, every game using chai's method: a child stuck on their turn (the game waiting for their move, nothing being said) past the level's hin
+- SH-112 [code] (Shared components / Layout and stage): "Do a review of all of these item boxes everywhere to make sure they're the right size, which is bigger": the tool strip items "too small compared to 
+- SH-138 [check] (Shared components / Layout and stage): The checks see what Zafar sees: "explain to me how this passed quality control and how it won't pass quality control again". The phone check is his ph
+- SH-139 [check] (Shared components / Layout and stage): 1 Nov again: "For level one ... at least I'm playing on laptop at the moment, the face icons next to the chai trays probably should be a little bit bi
+- SH-140 [check] (Shared components / Layout and stage): "The image icon should cut exactly halfway through ... to the middle point of the circle of the speaker icon": every face's speaker badge is centred o
+- SH-141 [code] (Shared components / Layout and stage): "The finger ... just looks like the wrong type of hand ... doesn't fit the theme": the onboarding pointer, every game; 30 Oct: "no ripples - the same 
+- SH-142 [check] (Shared components / Layout and stage): "Why does the one sugar not fit in the box ... literally out of the box"; "tomato ... the t and the o are completely off the card and the rest of it o
+- SH-143 [check] (Shared components / Layout and stage): "The eye isn't aligned with the dashed section ... not even in the same box": any reveal control sits centred in the slot it reveals (the new card dro
+- SH-144 [check] (Shared components / Layout and stage): "Why is there a little gray ghosted dot dot dot na above the black dot dot"; "the item cards ... shouldn't fade an re-appear, they should move and the
+- SH-151 [check] (Shared components / Layout and stage): "There's certain game elements across all the game modes that sit in one repository ... In that central repository, there should be the what font type
+- SH-152 [check] (Shared components / Layout and stage): "During the ordering, when the cards fly into the recipie card, instead of the recpie card items jumping over, have them smoothly move to the side lik
+- SH-154 [check] (Shared components / Layout and stage): Found 29 Oct (filming chai L4 at 930x430 for Zafar): the big pop-out card sits over Nana's face (non-negotiable: nothing over a face); and the order c
+- SH-155 [check] (Shared components / Layout and stage): "I want to easily change the big card timings during the order by changing centrally and having everything update at once": one central rules file (ti
+- SH-156 [check] (Shared components / Layout and stage): "Cog can go top right but the placement rules and what opens when you press cog ... from a central file so we can change the menu or menu rules at it 
+- SH-157 [check] (Shared components / Layout and stage): "Just like you create a speech bubbles safe zone, do the same for tapping to skip ... if you tap on the speech bubbles or the side bar": a tap in the 
+- SH-158 [code] (Shared components / Layout and stage): "If it's time sensitive like flipping the skewers or not burning the tea, pause the timer in the green section and then show them the action, but whil
+- SH-159 [check] (Shared components / Layout and stage): "If you get the word correct three times in a row the kutchi goes and it's speaker only. If you then get the word wrong, the kutchi comes back, but on
+- SH-160 [check] (Shared components / Layout and stage): "Let's put your suggestion for leveling up at the moment, but I'll want to change that later ... make it easy to change and to tweak": up a level afte
+- SH-147 [check] (Shared components / Layout and stage): The one word card (his image 1): maroon Kutchi in that font, bigger; small dark English under it; the Kutchi and English labels with lines; soft shado
+- SH-148 [check] (Shared components / Layout and stage): The order card as picture cards: on the phone a sideways row that scrolls, "going behind a shadow", no scroll bar; the next order open below, its top 
+- SH-149 [code] (Shared components / Layout and stage): The helper card: Nani's box grows in place (the order card pushed down) and shows the item's card (the default card) with no English line in normal pl
+- SH-150 [check] (Shared components / Layout and stage): The big word card pops out only while the order is given, never during cooking; where it pops (top right of the side panel, by the bubble, or the midd
+- SH-108 [check] (Shared components / Layout and stage): "Check all game modes to ensure the backgrounds are correct: if it's top-down then it should be the marble countertop" (chai L3 showed a code-drawn wo
+- SH-236 [code] (Shared components / Layout and stage): The first-time light goes the moment the child starts the move it shows, every game (Zafar, 8 Nov, maani's roll: "it's not going away the highlight bo
+- SH-237 [code] (Shared components / Layout and stage): Only things on the shelf hop when lit, every game (Zafar, 8 Nov, maani: "it should just be like ... the chai pan ... where it doesn't bounce up and do
+- SH-238 [code] (Shared components / Layout and stage): No tick button, no next button and no X (close) button in any game (Zafar, 8 Nov, maani: "why is the tick there ... there's no ticks in any of the gam
+- SH-240 [code] (Shared components / Layout and stage): Nani's line in every game as chai's: her type, one line wherever it fits (Zafar, 8 Nov, sekelo: "the auto helper hint came up and it said ... one skew
+- SH-119 [code] (Shared components / Layout and stage): One finger: "we need a consistent finger pointer across all the game modes, because I'm sure this is a different one than I've seen, and it needs to b
+- SH-244 [code] (Shared components / Layout and stage): An item's tap area reaches its pill, every game (Zafar, 9 Nov, his tester, a new player on his phone: "the hit boxes were slightly small for the items
+- SH-245 [code] (Shared components / Layout and stage): The main thing as big as the height allows, every kitchen game (Zafar, 9 Nov, daar: "For some reason, when I imagine Dar, I don't seem to recall it be
+- SH-270 [code] (Shared components / Layout and stage): Nani's box keeps her face and speaker in every state. During the chop it shows only text. Seen in chop, chaat, daar (the S19 gate's eye judge, 12 Nov:
+- SH-271 [code] (Shared components / Layout and stage): The first light never blinks off and back on while the child has not yet acted. The dim and box vanish for 200 to 300 ms, leaving the finger alone, th
+- SH-272 [code] (Shared components / Layout and stage): Nani's head never pokes above the end panel. A short end panel starts too low and leaves her hijab, or the tray and her face circle, showing. Seen in 
+- SH-273 [code] (Shared components / Layout and stage): The dish card that flashes as the customer names the dish is whole and in chai's place: picture, Kutchi word and English, beside the side panel. Seen 
+- SH-274 [code] (Shared components / Layout and stage): Only one copy of the dish card is ever on screen, and it is gone before the game starts. A second, fading copy lies over the first (eggs at 740, maani
+- SH-275 [code] (Shared components / Layout and stage): The timing window is the ring on the thing itself, filling to its green, as chai's pan. Seen as a tiny ring round the yolk (eggs), a faint small ring 
+- SH-276 [code] (Shared components / Layout and stage): During the chop, the order card keeps Nana's order headline in grey italic where a line is missing. Today chop shows "Chop these" in dark italic Engli
+- SH-277 [code] (Shared components / Layout and stage): The order headline is one size and one line in every state, shrinking only to fit, as chai's. Seen set three ways in eggs (one line, shrunk, wrapped t
+- SH-278 [code] (Shared components / Layout and stage): Nani's box has no drop-down arrow at "Shabash!" and "Bas!", as chai's. Seen in baking, samosa, maani (the S19 gate's eye judge, 12 Nov: "Nani's box ke
+- SH-279 [code] (Shared components / Layout and stage): At well done the Shabash bubble sits clear of the props and inside the frame, to the right of the face as chai's. Seen over the spoon (samosa), tiny a
+- SH-280 [code] (Shared components / Layout and stage): Moving between stages glides, as chai's items fly. Seen: a bare frame then the oven and tray in one step, the tray teleporting into and out of the ove
+- SH-281 [code] (Shared components / Layout and stage): Nothing is left behind on screen after its job: a grey disc in the empty pan and a grey blob above the plate (eggs), a thin white line on the board an
+- SH-283 [code] (Shared components / Layout and stage): The shelf holds the same items in the same order at every size. Seen in eggs (indo, dudh at 740; dudh, indo at 1280) and chaat (sev at 1280, dai at 74
+- ART-58 [code] (Art (cuts, style, backgrounds, characters)): The block generator refuses colours outside the house and mixed sheets, and points at the plan's real prompts section: "it will also seem to be listin
+- ART-18 [check] (Art (cuts, style, backgrounds, characters)): Less bobbing: the talk bob is about a third of today's (now 6 px / 1.2° every 220 ms) and slower, one shared talk animation for Cook and the clinic, e
+- ART-28 [check] (Art (cuts, style, backgrounds, characters)): "We don't need the light hanging from the ceiling we don't need the three shelves ... the gold thing ... the thing hanging from the wall ... keep it p
+- ART-29 [check] (Art (cuts, style, backgrounds, characters)): "All artworks are given to me a single paste blocks for claude in chrome will all images and things it needs uploaded to github or wherever it can acc
+- ART-30 [code] (Art (cuts, style, backgrounds, characters)): "do we have a handy list of artwork we need? Any additional artwork we need? ... now might be a good time for me just to supervise an art run": one st
+- ART-64 [check] (Art (cuts, style, backgrounds, characters)): How every kitchen game could look like chai's kitchen: "I do wonder if it should be like tea like it should be a bowl ... on like a counter it might m
+- LNG-20 [code] (Language and audio): 29 family takes are on file but linked to no word, so the game can't play them: among them *Khuda hafiz!* (the game spells it differently, so the good
+- LNG-21 [check] (Language and audio): Speaking templates are looked up in the audio manifest's `word` list, which holds no family takes: check that once Mum records *chai*, *paani* and *du
+- LNG-22 [code] (Language and audio): Celebrations out, no religious set pieces (Zafar, 31 Oct): Cook's day-6 finale ("Eid Mubarak", LNG-15) and First launch's hook become the birthday
+- SH-51 [check] (Shared components / End screen and word review): Coin-jar pocket-money screen (five fill pictures, card lands on the jar, coins drop with a ching, card rises and fades; this game's total and the jar 
+- SH-63 [code] (Shared components / Onboarding and help): The guide box vs the card: one rule and a table of every line in every Cook station and clinic stage
+- SH-135 [code] (Shared components / Onboarding and help): One look still missing after S13 (judge, 27 Oct): the door's Ha!/Na! pills (translucent cream-green, pale text) differ from the clinic's solid white h
+- SH-136 [code] (Shared components / Onboarding and help): Small looks after S13 (judge, 27 Oct): at 915x412 Nana's one-row card is so short his badge sits on its bottom border; at 915 the reflowed order chips
+- SH-137 [code] (Shared components / Onboarding and help): The clinic still has its own look on three kit pieces (final kit judge, 27 Oct): a face in a square tile with a pale wash, not the kit's white-rimmed 
+- SH-64 [check] (Shared components / Onboarding and help): The whole card is read out only while the request pop-up is up; a tap that clicks through into the game cuts the read-out at once (now the pharmacy po
+
+## s19-night-b: chai, pantry, eggs, baking, corn and the general Cook rows (67 rows)
+- PAN-04 [check] (Cook: pantry): One speech queue per station, in every station and the clinic: the count words, Nani's "next thing" line and the order never overlap (the chop's expla
+- PAN-01 [check] (Cook: pantry): **KNOWN BUG.** "Bring me these" headline clipped ("these" cut) and the growing highlighted row / gold done-outline clipped at the card edges (re-found
+- PAN-13 [check] (Cook: pantry): Pantry/chai fatigue in the story days: pantry only the first time a dish is ever made; a new station sooner
+- PAN-19 [check] (Cook: pantry): "at the beginning of the pantry game, there's no one in the kitchen giving you the order. The items just appear on the sidebar": Nani comes in and giv
+- PAN-20 [check] (Cook: pantry): "I'm playing level one of the pantry. I see no words under the items in the pantry. I don't even see any speaker buttons ... So I don't know how anybo
+- PAN-21 [code] (Cook: pantry): "Why are the counting items from the pantry appearing where they are? On top of a shelf covering items. Should they not be in the bottom right hand co
+- PAN-22 [check] (Cook: pantry): "I also had new player turned on, so I don't know why I didn't get any onboarding in terms of, you know, the darker outside screen, the lighter focus 
+- CHAI-102 [check] (Cook: chai): The dotted-word lesson always shows, on a card that is on screen: "I didn't get an onboarding for the blurred word. Although ... I did get the ... wor
+- CHAI-103 [code] (Cook: chai): The word moment's fill sound and the tea's rise start when the stream reaches the glass's bottom: "the sound of the teacup being filled up in the word
+- CHAI-104 [code] (Cook: chai): Half or full said in a headline lands its card with the headline, no gap in the row: "There was a gap. She ordered two items that she spoke went into 
+- CHAI-95 [code] (Cook: chai): The boil is heard from the first heat and grows: "there's no sound to denote the tea is cooking until it about halfway when the tea bubbling pic kicks
+- CHAI-96 [code] (Cook: chai): Every item in the tea but water and tea leaves pops up as its item card while the order is given, style teas too: "if someone orders ginger style tea,
+- CHAI-97 [code] (Cook: chai): The word moment's half glass pours with the new sound: "the full cup of tea has the correct pouring sound, but the smaller half cup of tea has the old
+- CHAI-98 [code] (Cook: chai): The word moment's drop is smaller: "can you make the physical size of the tea drop smaller, the one that falls and splashes in?" (Zafar, 6 Nov night)
+- CHAI-99 [code] (Cook: chai): Half a second more after a serve before the next pan's light: "We also need just half a second longer for once the tea's been poured, for the person t
+- CHAI-100 [code] (Cook: chai): No click as a poured pan goes back: "when the tea pan goes back on the stove, it plays a sound like a click, or like the stove lighting click. I think
+- CHAI-101 [check] (Cook: chai): The word moment shows more cabinet, with doors that read bigger than a glass: "the camera is just a little bit too high. So you only see a tiny bit of
+- CHAI-19 [code] (Cook: chai): At 844x390 no loose word pill floats over the hob's top rim (an 'elchi' pill sat there; found by the S05 judges in CHAI-18 D); 17 Oct: "the text that 
+- CHAI-02 [check] (Cook: chai): Layout: hob and tray do not overlap; the ingredient strip shows the pantry's front-on (side-on) jars, carton and bottle, while the hob, pans and tray 
+- CHAI-34 [check] (Cook: chai): "The pan I'm so fed up with the pan": the chai pan exactly top-down, from his reference (`sources/art/refs/2026-10-27-cards/pan-top-down-reference.png
+- CHAI-08 [check] (Cook: chai): v2 mock-up fixes: hob and tray about 15% bigger and lower, pans true top-down, tilted pan for the pour, real top-down glasses and liquids · 22 Oct: "c
+- CHAI-35 [check] (Cook: chai): "How has Nani's call-out card gone down in the sidebar covering up other elements ... what happened to telling me": no card falls back over the order 
+- CHAI-36 [check] (Cook: chai): "The whole screen's gone dark but nothing's highlighted and the tea isn't ready to be turned off ... way too early": the dim comes only with its lit t
+- CHAI-37 [check] (Cook: chai): "After the first two chai items are onboarded ... the dark screen and highlight should briefly move to the recipe card before turning off, so the eye 
+- CHAI-38 [check] (Cook: chai): "Remeber to use the other elements of the chai game like the actual heating animation and ring etc - just apply the new elements from this stuff to wh
+- CHAI-39 [check] (Cook: chai): "For the slide option, for now put at the end of the order": "no" items are said last, so the row only moves forward while the order is given (Mum to 
+- CHAI-42 [check] (Cook: chai): "The highlight on the menu card needs to start it's timer after the last animation action (so when the tea has finished going in ...)": the order card
+- CHAI-48 [check] (Cook: chai): Found by the orchestrator's contract run (30 Oct, s14-A-contract): in a two- or three-person chai the next person's long first line, pushed along by t
+- CHAI-49 [code] (Cook: chai): Found by the s14-tools check (contract-78) and the orchestrator's film (30 Oct): at L3-L4 a cold pan that was not the one in hand opened its knob step
+- CHAI-54 [check] (Cook: chai): "And then the other piece of feedback is that it ticked the half item card when I actually put in the full amount. So I clicked the pad once or the gl
+- CHAI-55 [check] (Cook: chai): "I know that means they can just put half, and it will tick, but they'll learn, because then we should be strategic about when we introduce half, one 
+- CHAI-56 [code] (Cook: chai): "I'm still getting in the onboarding for Chulobara, turn on the stove, even though I haven't got new player selected. I'm immediately getting that onb
+- CHAI-57 [check] (Cook: chai): "The only other thing is there's no consequence, seemingly, for undercooking or overcooking the chai ... I think if I overcook this, it just like bubb
+- CHAI-108 [check] (Cook: chai): Chai's pace with several pans at once (Zafar, 9 Nov, his tester: "I mean, I got very good at this, but my test user, even as an adult, for tea, was a 
+- CK-59 [check] (Cook: general): A second person says their own words even when the first just said them: "when one of the orders played, the second person ordering didn't say milk. W
+- CK-01 [check] (Cook: general): Levels 2–4 of every station (Cook and clinic) not yet played by Zafar; needs his pass
+- CK-45 [check] (Cook: general): In chai and the chai tray, a tap on the worktop while Nani's "Wiji chad!" (after a mistake) is said is not taken at once (contract-21: no act within 1
+- CK-46 [code] (Cook: general): "Her body is completely floating": at the Cook counter Nani's crossed forearms hover above the counter top (the back cabinet shows under both elbows);
+- CK-06 [check] (Cook: general): 1 Nov: "Also, what's the decision around the items that go into the tea? I thought we had like proper visuals for elchi in the tea and ginger in the t
+- CK-53 [check] (Cook: general): "Why is the question mark the home button and the book button ... off to the side ... overlapping the bottle ... the question mark is somehow pulsing 
+- CK-54 [check] (Cook: general): "I also need way to click on the kitchen during the order and skip the slow ordering into playing the game": a tap on the kitchen while the order is g
+- CK-55 [code] (Cook: general): The shop's "?" (#gu-btn) sits under the cog (#side-cog) at 740x320, so the sandbox's cook:title flow stops there (found by the overnight sweep, on the
+- CK-56 [check] (Cook: general): the old cook host test (retired 12 Nov by s19-clean-a: the sandbox's lab:cook/round plays the host) failed on the baseline: E17, a served card (`div.n
+- CK-57 [check] (Cook: general): "Also, in level 3, after the first order was given by the first person, Nana, when it switched to Ali for the second order, the whole kitchen screen k
+- CK-61 [check] (Cook: general): The corn stall's light leaves too little room round its target (contract-92), on the code before Sprint 18's wave 3 too
+- CK-62 [check] (Cook: general): Eggs' order card shows an empty pale picture box where the egg's picture should be (L1, 1280x665 and 740x320)
+- CK-63 [check] (Cook: general): Eggs: the pan's light round the pan (Zafar, 8 Nov: "the circle that goes around the pan it doesn't go around the pan it's half on the handle ... way t
+- CK-64 [check] (Cook: general): Eggs' order: "the order ... says I want egg and then the item says one fried egg I think the order should say ... I want two fried eggs and then ... t
+- CK-65 [code] (Cook: general): Corn's green zone longer (Zafar, 8 Nov: "corn isn't completely terrible but the timer on it is the green zone is way too short ... there must be a rul
+- CK-68 [check] (Cook: general): When the corn's spices go on (Zafar, 9 Nov: "But yeah, I don't really know at what point do you put the spices on these things? Once they're in, once 
+- CK-72 [check] (Cook: general): Baking's amounts: clear quantities first, then a little and a lot as a real choice (Zafar, 9 Nov: "what about like the put extra, like, the catchy wor
+- CK-75 [code] (Cook: general): Eggs' table scene fills the play area at the praise (the eye judge, 10 Nov: a strip of white marble above the kitchen picture at 1280x665 and 740x320)
+- CK-76 [code] (Cook: general): Nani's box names each step in eggs (the eye judge, 10 Nov: "Hane indo!" through the carton, the pan and the plating, with no verb; chai names each ste
+- CK-77 [check] (Cook: general): Eggs' carton sits on the shelf at chai's size and place, its light and pill whole above the frame's bottom (the eye judge, 10 Nov: a third of a pan's 
+- CK-92 [code] (Cook: general): Eggs: the egg in the pan is about the pan's width, not a quarter of it, and does not jump in size when served. Chai's pot fills edge to edge (the S19 
+- CK-93 [code] (Cook: general): Eggs: well done stays in the kitchen of the serve, on the worktop, with Nana's face beside the plate and a "Shabash!" bubble. Today it cuts to a diffe
+- CK-94 [code] (Cook: general): Eggs, small: the pan's handle tip does not touch the tray at 740x320; the hob has the face circle beside its knob as chai's (the S19 gate's eye judge,
+- CK-95 [code] (Cook: general): Baking: the first thing to touch is lit with the dim and box as soon as Nani calls it. Today atto sits unlit while she says "Hakro cup atto wiji chad!
+- CK-96 [code] (Cook: general): Baking: the item cards are chai's: a row of narrow cards with the third peeking, the same shape at every size, Kutchi and English level. Today two ful
+- CK-97 [code] (Cook: general): Baking: the atto card shows the shelf's own glass jar, and "adh paani" shows a half-full bottle, not the full one (the S19 gate's eye judge, 12 Nov: "
+- CK-100 [code] (Cook: general): Baking: Dada's face circle stays beside the tray the whole bake: not left on the bare worktop once the tray is in the oven, not over a naan, not insid
+- CK-101 [code] (Cook: general): Baking: the oven is as big as the tray needs, not toy-sized (its front is the size of the mixing bowl and twice the tray) (the S19 gate's eye judge, 1
+- CK-102 [code] (Cook: general): Baking: the shelf keeps its items for the whole bake, not an empty strip, and the item cards stay with their ticks at well done at 1280, not fading to
+- CK-103 [code] (Cook: general): Corn: the pepper is the real shaker or its picture flying to the cob, not a black dot, and the cob changes when it lands (the S19 gate's eye judge, 12
+- CK-104 [code] (Cook: general): Corn: at 740x320 the toppings shelf is one row in the bottom third, not two rows filling half the screen with the plate squeezed into the top third (t
+- CK-105 [code] (Cook: general): Corn: the order cards start in step order (cob first) and stay in place when one is done, scrolling the row as chai does. Today mari is first, and whe
+- CK-113 [check] (Cook: general): Every game: a tap the game turns down (its thing shakes) never takes the light away; the light the tap hid is back at once (the S19 gate's full run, 1
+
+## s19-night-c: the chop screen (chop, chaat, daar), samosa, maani, sekelo (48 rows)
+- DAAR-12 [check] (Cook: daar): Fast and slow: out, or at a later level after a word moment (was: laps and speed on the card; asked speed green, the other yellow, spill red) · told a
+- DAAR-36 [code] (Cook: daar): Daar on the s14 kit as chai has it (word card, sideways order row, pop-out turning into its row card, Nani's helper card, the lit-box light, skip zone
+- DAAR-37 [check] (Cook: daar): "Daar I meant 4 types of things to chop in the chop game - the number of total chops per play per level can go: 2, 4, 6, 8 (min 1 and max 3 chops per 
+- DAAR-38 [check] (Cook: daar): "And dont forget to end the game once all chops have been done"; "The current chop game doesn't end after the last chop is done": the chop ends the mo
+- DAAR-39 [code] (Cook: daar): "the onboarding for the chop game definitely went awry ... going up and down jerkily"; "the whole entire screen of the chop game has been highlighted,
+- DAAR-40 [check] (Cook: daar): Something is said after the order is skipped at L4: "Kali hakro dungri." 83 ms after the skip, before the game's first step (CK-60's rule in daar; cha
+- DAAR-41 [check] (Cook: daar): At L4 a dotted word shows on the order panel and its first-time lesson is never logged (after the first slice)
+- DAAR-43 [check] (Cook: daar): On a phone (740x320) daar's first-time light round the first vegetable pile covers the next pile: the light hugs the pile's tap area (`hits[id]`), whi
+- DAAR-44 [check] (Cook: daar): The chop's order card and the tadka's pop-up as chai's (Zafar, 8 Nov: "Nani's order card should be for chopping should be the correct item card and th
+- DAAR-45 [check] (Cook: daar): One stir, one look (Zafar, 8 Nov: "stir ... it's not the same as the stir in daar like it is a different speedo it's a different style different art d
+- DAAR-03 [check] (Cook: daar): Stir shows speed and laps (speed dial, laps as Kutchi word) · told again 9 Nov (his tester): "I think those were the three. Oh, and I think the stir f
+- DAAR-46 [check] (Cook: daar): The stir never stops the child; its first time better (Zafar, 9 Nov, his tester: "And maybe it stops you. Actually, is that a good idea? Maybe it stop
+- DAAR-47 [check] (Cook: daar): Things poured into daar's pot from above? (Zafar, 9 Nov: "I mean, can we have things pouring in from the top into the pan? Maybe we can, but then my w
+- DAAR-49 [check] (Cook: daar): The daar step itself, and the tadka (Zafar, 9 Nov: "Is there anything else to say about DAR? I don't remember what the current one looks like. I just 
+- DAAR-51 [check] (Cook: daar): Daar's katori, the empty steel serving bowl waiting right of the hob with the asker's face, is about 60 px at 1280x665 and reads as a speck, not a bow
+- DAAR-52 [code] (Cook: daar): Daar: one Nana face at well done, chai's size, beside the bowl. Today a big circle (about 1.6 times chai's) hangs between the hob and the plate while 
+- SEK-14 [check] (Cook: sekelo): The rack and the plate are pre-rendered pictures holding one, two, three and four real skewers (handles off the plate, straight, left to right, SEK-07
+- SEK-20 [check] (Cook: sekelo): Sekelo layout: "very visually unbalanced"; the oval plate "a lot more shiny"; "keep the barbecue style ... change the Mishkaki plate"; "Get Fable to d
+- SEK-22 [check] (Cook: sekelo): The sekelo grill on the s14 kit as chai has it (word card, sideways order row, pop-out turning into its row card, Nani's helper card, the lit-box ligh
+- SEK-25 [check] (Cook: sekelo): Four item cards per skewer, one per piece (Zafar, 8 Nov: "in the order card we have to have four items ... the items that go on each skewer even if it
+- SEK-26 [code] (Cook: sekelo): Sekelo's grill screen on the new art and as the mock (sources/art/s19-mocks2/results/A1-sekelo-2-improved.png): the new top-down grill (kit/grill-v2, 
+- SEK-27 [code] (Cook: sekelo): Sekelo's grill screen laid out as corn's (CK-67: the two the same): the threaded skewers on the stone band along the bottom, the grill in the middle o
+- SAM-30 [check] (Cook: samosa): Samosa's fry has its first time: "there was no onboarding for the samosas especially when it came to placing them into the frying pan nothing told me 
+- SAM-31 [check] (Cook: samosa): "the samosa game just needs a lot of work logically I mean the item card was a mess" (Zafar, 8 Nov)
+- SAM-34 [code] (Cook: samosa): Samosa's fry from mocks 2 and 31 (Zafar, 9 Nov: "31 looks really good, I think, for the frying. I don't know why. I don't know how it's any different 
+- SAM-35 [check] (Cook: samosa): Samosa's order: the sentence says the count ("Muke ba samosa khape" for two), and the order card holds the fillings to make, not a finished-samosa car
+- SAM-36 [check] (Cook: samosa): The served tray shows as many samosas as were ordered: "ba samosa" is two on the tray (the S19 gate's eye judge, 12 Nov: "three samosas are served for
+- SEK-28 [code] (Cook: samosa): The served plate is the skewer the child made: its pieces and count, never a fixed picture of two pepper-and-meat skewers (the S19 gate's eye judge, 1
+- SEK-29 [code] (Cook: samosa): Mishkaki: the turn browns the meat over its time, never raw to done in one frame; its lights hold until the move (none for one frame, none gone with t
+- SAM-37 [code] (Cook: samosa): Samosa: the fold's light is on the dough only. Today the gold box wraps the whole order card in the side panel while Nani says "Samosa waar!" and her 
+- SAM-38 [code] (Cook: samosa): Samosa: the first light is on the mince when Nani says the mince line. Today the lit thing is an empty pastry strip and the mince is unlit (the S19 ga
+- SAM-40 [code] (Cook: samosa): Samosa: the order card at well done keeps its item cards with ticks at both sizes (at 1280 it collapses to the headline with a faded tick), and the ho
+- MAA-19 [check] (Cook: maani): Maani on the s14 kit as chai has it (word card, sideways order row, pop-out turning into its row card, Nani's helper card, the lit-box light, skip zon
+- MAA-20 [code] (Cook: maani): The roll's demo: "we need the rolling pin to go up and down and the finger dragging it up and down and just one finger I will think to decide on what 
+- MAA-21 [check] (Cook: maani): The first rolls stop at the board's edge (Zafar, 9 Nov, his tester, a new player on his phone: "The person didn't really see or realize the fact that 
+- MAA-22 [check] (Cook: maani): "I clicked the maani to go onto the ... pan and ... as it flew onto the pan the ... dough balls briefly flashed up as highlighted so that something we
+- MAA-23 [check] (Cook: maani): Big and small taught by a word moment (Zafar, 9 Nov, maani: "Then when the level arrives where we introduce big and small, we use that as the word foc
+- MAA-25 [code] (Cook: maani): Maani: the plates are not on the shelf among the ingredients; they stay on the worktop as chai keeps its vessels, and the shelf holds the dough piles 
+- CHT-13 [code] (Cook: chaat): "Artwork for all the items that can go inside the bowl ... it doesn't really work"; "redraw the bowl so it's exactly side-on ... a horizontal strip ..
+- CHT-18 [check] (Cook: chaat): Chaat's first time with the dim and the lit box (Zafar, 8 Nov: "the onboarding for chaat ... Nani only has a drop down but the onboarding is ... there
+- CHT-19 [code] (Cook: chaat): "then immediately after I put in the potatoes I was told to put in the chillies which is incorrect I don't believe" (Zafar, 8 Nov, chaat)
+- CK-106 [code] (Cook: general): Chop: the serve shows the dish on the tray with Nana saying "Thank you!", as chai's glass. Today it is an empty tray with Nani's face circle and no bu
+- CK-107 [code] (Cook: general): Chop: the end screen's buttons are the shared black, not grey (the S19 gate's eye judge, 12 Nov: "the end screen's buttons are grey in chop and black 
+- CK-108 [code] (Cook: general): Chop, small: at 740x320 the lit box stops short of the screen's right edge and the finger does not touch it (the S19 gate's eye judge, 12 Nov: "the li
+- CK-109 [code] (Cook: general): Chaat: Nani's line for the knife is "Nindha nindha kap!" from the first frame of its light. Today the knife is lit under the old "Kali hakro tameto. N
+- CK-110 [code] (Cook: general): Chaat: the cut tomato sits inside the board, with the "hakro" chip above it and not floating over the board's middle (the S19 gate's eye judge, 12 Nov
+- CK-111 [code] (Cook: general): Daar, small: the knife's finger drags along the knife path instead of sitting still on the handle and is gone with the dim; no tiny faded garlic bowl 
+- CK-112 [code] (Cook: general): Maani, small: the dish card stands at the top beside the panel with room below it, not low near the frame's bottom edge; the "maani" label does not to
+
+## Proof
+Generated from docs/process/regressions.md at 13 Nov ~00:30 (to fix: code / to fix: check rows under Cook, Shared, Art and Language).

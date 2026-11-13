@@ -1,0 +1,55 @@
+{
+ "why": "Zafar, 13 Nov ~00:15 (decision 13): fix every open kitchen and shared row that does not wait on him, Mum or art, and check each fix so it closes with evidence, overnight on its own; a fix is not done until its check passes",
+ "cost": "high: Opus, high effort, up to about 6 hours",
+ "read": [
+  "build/reports/s19-overnight-rows.md (YOUR LIST: your section)",
+  "docs/decisions/2026-11-10-overnight.md (items 11-19)",
+  "build/reports/s19-gate-eye-rows.md (the eye judge's flaws beside chai, 12 Nov)",
+  "build/screenshots/sandbox/s19-gate-contract/contract.md (the full run's 622 breaks, 12 Nov: your games' share is your before)",
+  "docs/process/eye-judge-rubric.md (what the judge will ask)"
+ ],
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done, or at 06:30 UTC: then commit and write the report",
+ "kind": "code",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": true,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "name": "s19-night-c: the chop screen (chop, chaat, daar), samosa, maani, sekelo: their rows, overnight",
+ "port": 8931,
+ "report": "s19-night-c",
+ "owns": [
+  "js/cook/stations/chop.js, daar.js, samosa.js, maani-line.js, mishkaki-grill.js and chaat's station file, and their data/stations/*.json",
+  "js/cook/mechanics/chop.js, assemble.js, stir.js, thread.js, roll.js, fry.js, fill-fold.js, grill.js, knead.js and js/cook/grill-kit.js",
+  "build/sandbox/data/evidence.json (add your rows' specs only; the orchestrator merges by key)"
+ ],
+ "readOnly": [
+  "js/shared/**, js/cook/ui.js, coach.js, flow.js, serve.js, station-lib.js, stations.js, kitchen-kit.js, core.js, data/cook.json, build/sandbox/** (s19-night-shared)",
+  "assets/**, data/art/** (s19-night-art)",
+  "chai, eggs, baking, corn, pantry station files (s19-night-b)"
+ ],
+ "flows": [
+  "cook:chop",
+  "cook:chaat",
+  "cook:daar",
+  "cook:samosa",
+  "cook:maani-line",
+  "cook:mishkaki-grill",
+  "cook:stir",
+  "cook:assemble"
+ ],
+ "branch": "s19-night-c (new, in /home/user/wt/s19-night-c); commit there, never push; the orchestrator merges",
+ "tasks": [
+  {
+   "do": "Every row in build/reports/s19-overnight-rows.md section 's19-night-c': a [code] row: build it, then prove it; a [check] row: run its proof first; if it fails, fix it, then prove it. Proof per row: `node build/tools/review/evidence.mjs --run --rows <ID>` (write the row's probe in build/sandbox/data/evidence.json if it has none: red on the code before your fix where you can, green after); a row a contract check covers (build/tools/review/lib/regressions.mjs CONTRACT_ROWS): that check clean on its flows L1-L4 at both sizes. Then find new faults in your games with the contract run (`node build/sandbox/run.mjs --contract --flow <yours> --sizes 740x320,1280x665`), fix them, prove them; repeat until your rows are done or truly blocked.",
+   "accept": "every row DONE with its evidence sheet, or LEFT with a reason and its new label; your contract run's breaks fewer, none new"
+  },
+  {
+   "do": "Standing: browser runs under your own lock and port (COOK_TEST_PORT=8931, NJG_LOCK=/tmp/njg-browser-8931.lock, flock it); one size while building, both (740x320, 1280x665) for proof; commit on your branch often with the two trailer lines from the session's commit rule (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never invent Kutchi (a missing line shows its English in grey and goes in your report for the recording sheet); never remove a mechanic or a help (non-negotiable 1); shared pieces only (js/shared/, never restyled per game); fix what you break; keep under 1.5 GB of runs and delete your own old runs; never run `git sparse-checkout disable`; a file you don't own: the exact change in your report, never edit it. A row that turns out to need Zafar, Mum or art: relabel it in your report with why (never in the fix list: the orchestrator writes it). Pick child-facing rows first. The art builder (s19-night-art) is renaming files and moving art to registry ids in parallel: never change an art path or a picture yourself; if a fix needs new art, it is 'waiting on art'.",
+   "accept": "build/reports/s19-night-c.md with a Proof section, under 900 words: per row DONE (the evidence sheet path and before/after) or LEFT (why, its new label); the contract run of your flows L1-L4 at both sizes before and after: breaks by check, each left one named"
+  }
+ ]
+}

@@ -63,3 +63,6 @@
 14. Zafar, 13 Nov: yes to CHAI-113: the knob's click and the flame always play when the child turns a pan on, quieter while Nani speaks.
 15. Zafar, 13 Nov: yes, the dish card (SH-267) flashes again when an order is replayed from the customer's face, at level 1 only.
 16. Zafar, 13 Nov: the art registry's next step now, not game by game as art is swapped (art-registry.md's "no sprint of pure moving" is overridden): every game asks for its art by registry id, with the no-pixel-changed proof.
+17. Zafar, 13 Nov: overnight, three fixer builders (by game area) and one art builder; every kitchen game moves to asking for its art by registry name, chai last, each with the no-pixel-changed proof.
+18. Zafar, 13 Nov: the picture files are renamed to their registry names too: "ask Fable how to mitigate the risk and then incorporate those strategies, but work towards the cleanest, most efficient, long term future proof, best practice solution, even if it takes longer ... there's a lot more to come and it's better to fix it now".
+19. Zafar, 13 Nov: in the morning, if every check and the Fable review pass, publish so he can play straight away.
