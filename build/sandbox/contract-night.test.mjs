@@ -14,7 +14,7 @@ const play = (t, url) => ({ type: "play", via: "sfx", url, t });
 const R = { flow: "cook:chai-tray" };
 
 test("contract-124 to 127 are registered and the probe samples them", () => {
-  for (const n of [124, 125, 126, 127]) {
+  for (const n of [124, 125, 126, 127, 128]) {
     assert.ok(CHECKS[`contract-${n}`], `contract-${n} in CHECKS`);
     assert.ok(NIGHT_CHECKS[`contract-${n}`].how.length > 80);
   }
@@ -79,4 +79,10 @@ test("contract-74 (SH-213): a tap held for the due big card lesson is not judged
   assert.equal(run74(base)[0].id, "contract-74");
   const held = [...base, c(4000, "life", { what: "reveal-lesson", step: "card", by: "shown order-popup cook-chai picture" })].sort((a, b) => a.t - b.t);
   assert.equal(run74(held).length, 0);
+});
+
+test("contract-128 (SH-273): dots or an empty picture box on the flashing card is a break; a whole card passes", () => {
+  assert.equal(run(R, [sample(0, { flash: 1, fbits: { dots: 1, emptyPic: false } }), sample(800, {})])[0].id, "contract-128");
+  assert.equal(run(R, [sample(0, { flash: 1, fbits: { dots: 0, emptyPic: true } }), sample(800, {})])[0].id, "contract-128");
+  assert.equal(run(R, [sample(0, { flash: 1, fbits: { dots: 0, emptyPic: false } }), sample(800, {})]).length, 0);
 });

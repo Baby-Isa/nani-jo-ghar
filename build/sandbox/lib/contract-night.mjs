@@ -5,6 +5,7 @@
 //   contract-125 one-flash    one dish card on screen at a time (SH-274)
 //   contract-126 exclaim-arrow Nani's box has no drop-down while it shows "Shabash!" or "Bas!" (SH-278)
 //   contract-127 end-heads    the end screen's card never leaves a head half behind its top edge (SH-272)
+//   contract-128 flash-whole  the dish card that flashes is whole: no row of dots, no empty picture box (SH-273)
 // What it reads: the game's want samples (contract-hook "want": the move it waits for) and the sound log's plays (lib/sound.mjs:
 // "sfx/<name>" for every Sfx.play that played); the s19night samples below ({flash: n cards on screen, arrow, line, card, heads}).
 export const KNOB_BEFORE_MS = 600;  // the knob's click may start this long before the game's want moves on (its tap lands first)
@@ -20,6 +21,7 @@ export const NIGHT_CHECKS = {
   "contract-124": { item: "knob-sound", title: "a knob turned on always answers: its click and the flame", how: `Cook flows. Each knob the child turns on from off (the game's want moving on from a "knob-on-..." tap) must be heard: a play of sfx/knob and of sfx/flame in the sound log from ${KNOB_BEFORE_MS} ms before the want moves on to ${KNOB_AFTER_MS} ms after, even while a family line is sounding (they play under it, quieter: js/shared/sfx.js {under: true}). Either missing is a break, once per page (CHAI-113, Zafar 13 Nov, decision 14: "the knob's click and the flame play under the voice, quieter").` },
   "contract-125": { item: "one-flash", title: "one dish card on screen at a time", how: `Cook flows. Every s19night sample: two or more of the dish's flashing cards (.wc14-flash, js/shared/word-card.js WordCard.flash) on screen at once, held ${NIGHT_HOLD_MS} ms, is a break, once per page (SH-274, the S19 gate's eye judge, 12 Nov: "a second, full-strength 'ba maani' card sits in the top right corner ... chai shows one pop-out").` },
   "contract-126": { item: "exclaim-arrow", title: "no drop-down on Nani's \"Shabash!\" or \"Bas!\"", how: `Cook flows. Every s19night sample: Nani's box (#guide) showing an exclamation alone ("Shabash!", "Bas!") with its drop-down (.ng-arrow) on screen, held ${NIGHT_HOLD_MS} ms, is a break, once per page (SH-278, the S19 gate's eye judge, 12 Nov: "Nani's box keeps its drop-down on 'Shabash!' where chai's has none").` },
+  "contract-128": { item: "flash-whole", title: "the dish's flashing card is whole: no dots, no empty picture box", how: `Cook flows. Every s19night sample with the dish's flashing card on screen (.wc14-flash): a row of hidden-word dots showing on it (.wc14-dots), or a picture box with no picture drawn in it (.wc14-pic with no loaded image), held ${NIGHT_HOLD_MS} ms, is a break, once per page (SH-273, the S19 gate's eye judge, 12 Nov: "an empty cream box where the picture goes, a row of dots where chai's card has the English").` },
   "contract-127": { item: "end-heads", title: "the end screen's card covers the people cleanly", how: `Cook flows. Every s19night sample with the end screen's card on screen (.njg-results .rs-card, its laid-out box: no rise in it): a person's head on the play area (the page's NjgFaceBoxes) beside none of its sides, reaching above the card's top edge and more than ${HEAD_EDGE_PX} px below it, held ${NIGHT_HOLD_MS} ms, is a break, once per page (SH-272, the S19 gate's eye judge, 12 Nov: "the top of Nani's hijab pokes out above it ... chai's panel covers both people cleanly").` },
 };
 
@@ -60,6 +62,10 @@ function checkSamples(r, tl, add) {
       once.add(126);
       add("contract-126", x.t, `Nani's box shows "${(x.line || "").trim()}" with its drop-down (.ng-arrow) for ${Math.round(h)} ms: no drop-down on an exclamation`);
     }
+    if (!once.has(128) && x.flash && x.fbits && (x.fbits.dots || x.fbits.emptyPic)) {
+      once.add(128);
+      add("contract-128", x.t, `the dish's flashing card shows ${[x.fbits.dots ? `${x.fbits.dots} row${x.fbits.dots > 1 ? "s" : ""} of dots` : "", x.fbits.emptyPic ? "an empty picture box" : ""].filter(Boolean).join(" and ")} for ${Math.round(h)} ms: the card is whole`);
+    }
     if (!once.has(127) && x.card) {
       const [l, t, rr] = x.card;
       const poke = (x.heads || []).find((b) => b[2] > l && b[0] < rr && b[1] < t - HEAD_EDGE_PX && b[3] > t + HEAD_EDGE_PX);
@@ -98,7 +104,13 @@ function nighthook() {
   let last = "";
   setInterval(() => {
     try {
-      const flash = [...document.querySelectorAll(".wc14-flash")].filter(shown).length;
+      const fl = [...document.querySelectorAll(".wc14-flash")].filter(shown);
+      const flash = fl.length;
+      // (contract-128: what shows on the flashing card: its hidden-word dots, a picture box with no picture in it)
+      const fbits = flash ? {
+        dots: fl.reduce((n, f) => n + [...f.querySelectorAll(".wc14-dots")].filter(shown).length, 0),
+        emptyPic: fl.some((f) => [...f.querySelectorAll(".wc14-pic")].some((p) => shown(p) && ![...p.querySelectorAll("img")].some((im) => im.complete && im.naturalWidth > 0 && shown(im)))),
+      } : null;
       const g = document.querySelector("#guide");
       const a = g && g.querySelector(".ng-arrow");
       const arrow = !!(a && !a.hidden && shown(a));
@@ -111,7 +123,7 @@ function nighthook() {
       if (card && typeof window.NjgFaceBoxes === "function") {
         try { heads = (window.NjgFaceBoxes() || []).map((b) => [b.left, b.top, b.right, b.bottom].map(Math.round)); } catch (e) { heads = []; }
       }
-      const s = { k: "s19night", flash, arrow, line, card, heads };
+      const s = { k: "s19night", flash, fbits, arrow, line, card, heads };
       const j = JSON.stringify(s);
       if (j === last) return;
       last = j;
