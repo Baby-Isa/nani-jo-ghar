@@ -8,21 +8,25 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-87413d9b-j48fpk` (Sprint 19's integration branch; `main` is the live site, 20261108T142321Z, unchanged).
+**Handover branch:** `ccr-87413d9b-j48fpk` (the working branch; `main` is the live site, unchanged since 12 Nov 14:10, Sprint 19 not published by Zafar's choice, decision 22).
 
-**Where things stand (8 Nov, evening):** Sprint 19 is open (`docs/sprints/S19-chai-standard-everywhere.md`). Zafar said go on every
-fix that needs no decision plus the checks audit; he has **not** agreed the principles (he reviews them with the art he is running) and
-said **don't publish chai's three fixes**. New rule in CLAUDE.md: plans run back to back, no days or dates.
-- **s19-lights phase 2 paused by Zafar (9 Nov, his token budget):** its committed work sits unmerged on branch `s19-lights` (`/home/user/wt/s19-lights`, report drafted); finish and merge it when he says. **Running:** Fable's answers to his mock-up questions (`build/reports/s19-fable-mock-answers.md`) and the /feedback report for his 9 Nov note (`docs/feedback/kitchen-mocks-2026-11-09.md`; its second reader still to run). Merged: s19-checks, s19-cards, s19-lights phase 1, s19-games. Principles answered (review document §7, 9 Nov).
-- Each builder's work merges only after a look beside chai and the judge on its changed screens; nothing is published without Zafar.
+**Where things stand (13 Nov, 23:00 UK):** Sprint 20 is open: one kitchen frame for chai, eggs, maani and corn (`docs/sprints/S20-one-kitchen-frame.md`, its table holds every step's status and proof; plan `build/reports/s20-plan.md`; the frame's notes, its "owner", `docs/architecture/kitchen-frame.md`). Decisions 20-25 in `docs/decisions/2026-11-10-overnight.md`. No cost ceiling (decision 22).
+- **Done and merged:** P0 counts (`build/tools/review/frame-counts.mjs`); P2 chai settled and P2b/P2c chai's last fixes (SH-286 the dish card is the order's pop-up, Mum's 12 Nov words, SH-287 the order view higher, SH-288 48 px tap areas, SH-289 the end grid and one headline size, the stamp in the tick's place); P3 the blocking gate `build/tools/tiers/gate.mjs` + `merge.mjs` (92 blocking, 18 advisory, `gate-lists.json`), proven on the final chai (contract 0 blocking over 38 pages); P4 the box reader `boxes.mjs` (3 identical runs, planted faults caught); P5 ten geometry rules (`boxes.mjs --rules`, 10/10 on chai except pill-clear's wobble); P7 103 kitchen layout rows parked "waits for the frame".
+- **Running:** nothing. Half-hourly progress checks to Zafar by `send_later` (each schedules the next).
 
-**Next, in order:** 1. merge each builder as it reports (look beside chai, the judge); 2. launch the queued ones as slots free; At the next publish, remove `assets/ChatGPT 261110 1` and `2` from main (ART-74).
-3. hand Zafar the result and the principles list to review with his art.
+**Next, in order:**
+1. Zafar's three answers: yes to chai's change list since 10 Nov (the list is in the chat and `build/reports/s20-p2-chai.md`); the glass clink quieter under Nani's voice (CHAI-113's rule, `js/cook/core.js:456`); the slightly smaller order sentence (SH-289).
+2. On his yes: the glass clink if yes; re-take chai's references: `frozen.mjs --freeze` and `boxes.mjs` reference (`build/frozen/boxes/chai-tray/`); then the gate at zero including boxes.
+3. P6: chai's 12 pictures to Zafar (six moments at 740x320 and 1280x665; mid-cook and the serve at L4). **Review point 2: new chat after it.**
+4. Step 1: chai's play-area lines into the frame, unchanged (Opus, high, about $25-35), proven by boxes identical.
+5. Open: pill-clear's wobble (the count pill 3.8-4.3 px above the hob at L1 mid, some runs) traced before the rules block; the merge script's real refusal of a broken branch.
+
+**Open questions to Zafar:** the three in step 1.
 
 **Starting prompt for a new chat:**
 > First `git fetch origin ccr-87413d9b-j48fpk` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S19-chai-standard-everywhere.md`.
-> Carry on Sprint 19; tell me before launching anything not in the sprint file.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S20-one-kitchen-frame.md`.
+> Carry on Sprint 20 from its table; tell me before launching anything new.
 
 ## The fix list
 
