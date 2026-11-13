@@ -1888,6 +1888,22 @@
   "commit": "d3e1c0d",
   "date": "2026-10-23"
  },
+ "CK-65": {
+  "hash": "296b7a63e54985d15509",
+  "dhash": [
+   "01d2d2c2e2ca189c",
+   "0131b13031313034",
+   "01d2d2c2e2ca188c",
+   "0130313031310c24"
+  ],
+  "verdict": "PASS",
+  "line": "machine: pass (pass: the cmd's exit code (the CLI); node build/tools/review/green-check.mjs: exit 0); pass (pass: the cmd's exit code (the CLI); node build/tools/review/green-check.mjs: exit 0); pass (pass: the cmd's exit code (the CLI); node build/tools/review/green-check.mjs: exit 0)",
+  "panel": null,
+  "judge": "expect",
+  "run": "s19-night-b-a2",
+  "commit": "d3a8324b5",
+  "date": "2026-11-13"
+ },
  "CK-TAB-01": {
   "hash": "04da15a4f99ec6bd9fbe",
   "dhash": [
