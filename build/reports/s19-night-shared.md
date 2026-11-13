@@ -1,7 +1,7 @@
 # s19-night-shared: the shared pieces' rows, overnight (13 Nov)
 
-Branch `s19-night-shared` (from a9ccaa4fd, 14 commits), not pushed. Browser runs served a frozen copy of the branch (NJG_GAME_ROOT) on
-port 8911 under its own lock. The machine's load was 35 to 46 on 4 cores all night, so timed checks suffered (see Proof).
+Branch `s19-night-shared` (from a9ccaa4fd), not pushed. Runs served a frozen copy (NJG_GAME_ROOT) on port 8911, own lock. Machine load
+was 35 to 46 on 4 cores all night, so timed checks suffered (Proof).
 
 ## Done, with evidence
 
@@ -31,8 +31,8 @@ all 325 sandbox tests pass, badruns.test.mjs still red where it should be.
 - SH-271: never seen in any sample; needs the eye run's speed-1 strip.
 - SH-237: the free pick's guided glow now hops; contract-107 still 11 (stations' own glows).
 - contract-121, fetch L2-L4 740: the pantry's pop-up card sits under the canvas; the lesson moves on by itself after 1 s.
-- SH-275, -280, -281, CHAI-83, -89: stations' files. SH-220, -212: one build with the loading order. SH-224: html and fonts not mine.
-  SH-225: store wrapper. ART-*: **waiting on art / Zafar**. LNG-20, -21: **waiting on Mum**. Other [check] rows: by their checks below.
+- SH-275, -280, -281, CHAI-83, -89: stations' files. SH-220, -212: with the loading order. SH-224: not my files. SH-225: store
+  wrapper. ART-*: **waiting on art / Zafar**. LNG-20, -21: **waiting on Mum**. Other [check] rows: their checks below.
 
 ## Requests (files not mine)
 
@@ -54,5 +54,4 @@ rejudged with the final checks. Before -> after by check:
 Total 96 -> 321. The rise is the night's load: the same night, the 12 L1 pages of eggs, corn, samosa, maani, baking and chop went 64
 (s19ns-b3, base code) -> 30 (a4), the night checks 16 -> 0. Left by owner: stations' (36 calls, 37 decoys, 65 chop waves, 70, 114 item
 sizes, 120 shadows, 26 chaat's "chano", 104 pictures timing out); shared, timed at 3x speed under load (106, 117, 107, 102, 113, 116,
-18, 24, 91); 119: three first orders drawn 1.5 to 3.4 s after the line. None traced to this branch, except fetch's contract-121 now
-finding the canvas where it found the veil (the same fault, in Left).
+18, 24, 91); 119: three first orders drawn 1.5 to 3.4 s after the line. None traced to this branch, except fetch's contract-121 (Left).
