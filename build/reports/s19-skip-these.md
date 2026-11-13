@@ -22,7 +22,6 @@ What we already know is not done, so your play time goes on what we missed. Anyt
 
 ## Every game but chai: not at chai's standard yet (the eye judge beside chai, 12 Nov)
 Sprint 20's work, all on the fix list (build/reports/s19-gate-eye-rows.md):
-- **The shelf** is a floating slab, not chai's stone band (chop, chaat, daar, maani, samosa, corn: SH-269).
 - **On the chop screen** Nani's box has no face, and the order card shows "Chop these" (chop, chaat, daar: SH-270, SH-276).
 - **The first light** can blink off and back on once (chop, chaat, maani, samosa: SH-271).
 - **Timers** sit on a separate dial, not a ring on the thing (eggs, baking, chop, chaat, daar: SH-275).

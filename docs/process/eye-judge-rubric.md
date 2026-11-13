@@ -39,7 +39,7 @@ or can't tell. Last: Q38, and the merge rule's question (below).
 
 ## C. Layout and the scene
 
-- **Q16** Does the frame read as chai's: side panel left, the play area, the shelf band across the bottom third, nothing cut at
+- **Q16** Does the frame read as chai's: side panel left, the play area, the game's bottom row across the bottom third (chai's shelf for a side-on game, the shared stone tray for a top-down one: Zafar, 9 Nov, docs/game-design/modes/cook-bottom-row.md; a tray is not a flaw), nothing cut at
   740x320 or 1280x665? (code checks the shelf's base and chip lines: contract-109) (STD-E1-01, STD-E3-03) (moments: order, light, kind, mid, serve)
 - **Q17** Does anything overlap what it should not touch: shelf items against the hob, a bubble over a face or the panel, a prop
   across another? (STD-E1-05, STD-E2-06) (moments: light, kind, mid, serve, praise)
