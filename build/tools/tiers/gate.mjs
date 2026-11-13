@@ -58,6 +58,10 @@ export function finalLine(games, parts, ok, minutes) {
   return `GATE ${ok ? "PASS" : "FAIL"} ${games.join(",")}: ${parts.map((p) => `${p.id} ${p.ok ? "pass" : "FAIL"} ${p.minutes}`).join(", ")}; ${minutes} min`;
 }
 
+// (the lock is found from the flock above each child; NJG_LOCKED is not passed on: it would make checks.mjs's own lock test see a lock
+// that is not there)
+const childEnv = () => { const e = { ...process.env }; delete e.NJG_LOCKED; return e; };
+
 // ---------------------------------------------------------------- the run
 async function main() {
   const a = args();
@@ -95,7 +99,7 @@ async function main() {
     const log = join(logDir, `${p.id.replace(/[^\w.-]+/g, "_")}.log`);
     const code = await new Promise((res) => {
       const out = require_fs_stream(log);
-      const c = spawn("timeout", [String(p.timeoutMin * 60), process.execPath, ...p.argv], { cwd: ROOT, env: { ...process.env, NJG_LOCKED: "1" }, detached: true });
+      const c = spawn("timeout", [String(p.timeoutMin * 60), process.execPath, ...p.argv], { cwd: ROOT, env: childEnv(), detached: true });
       c.stdout.on("data", (d) => out.write(d)); c.stderr.on("data", (d) => out.write(d));
       c.on("exit", () => { try { process.kill(-c.pid, "SIGTERM"); } catch (e) { /* gone */ } });
       c.on("close", (n) => { out.end(); res(n); });
