@@ -602,6 +602,7 @@
       // non-negotiable 9: a long word (e.g. "thermometer") shrinks to fit its tile, then wraps; never clipped
       fitPage(to);
       if (n === 3) fitSteps(to);
+      cover(); // (SH-272: a shorter page, the words after the badges, still covers the people: contract-127 in s19ns-a4)
       const r1 = card.getBoundingClientRect(), h1 = r1.height, w1 = r1.width;
       // SH-75: a page may also take its own width (the steps list): the card eases to it
       if (!reduced() && card.animate && (Math.abs(h1 - h0) > 2 || Math.abs(w1 - w0) > 2)) card.animate([{ height: `${h0}px`, width: `${w0}px` }, { height: `${h1}px`, width: `${w1}px` }], { duration: 280, easing: "cubic-bezier(.3,.7,.2,1)" });

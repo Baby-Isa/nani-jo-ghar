@@ -664,6 +664,19 @@
   // clears it (UI.guideClear), a new order opens or a new step opens; nothing in between puts an old step or instruction back
   let praiseLine = null;
   let boxExclaim = false; // (SH-278: the box shows an exclamation now, "Shabash!" or "Bas!": set as each line is put in it)
+  // (an exclamation: the engine's role for it, or, when a station gave it a role of its own (baking's "Bas!" as a "react", s19ns-a4),
+  // the engine's own line for its key is one)
+  const isExclaim = (l) => {
+    if (!l) return false;
+    if (l.role === "exclaim") return true;
+    if (l.role !== "react" || typeof l.key !== "string" || !l.key) return false;
+    try {
+      const x = Lang.line(l.key);
+      return !!x && x.role === "exclaim";
+    } catch (e) {
+      return false;
+    }
+  };
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
   // which data.guide key the box shows now (the station:phase, else the station, else the default)
   const guideEntryKey = () => {
@@ -946,7 +959,7 @@
     const rawSet = g.set;
     g.set = (html, o = {}) => {
       rawSet(html, o);
-      boxExclaim = !!html && !!(guideLine && guideLine.role === "exclaim");
+      boxExclaim = !!html && isExclaim(guideLine);
       if (helperEls() && helperEls().arrow) paintHelper(); // (SH-278: her arrow follows what the box shows)
       if (!mission || !mission.stripMode) return;
       // PAN-10: no step line showing: her task line (UI.stripTask), if the station set one
