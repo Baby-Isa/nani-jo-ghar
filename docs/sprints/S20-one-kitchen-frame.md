@@ -28,8 +28,8 @@ In Zafar's words (13 Nov): settle chai and record exactly how it looks; move cha
 | P1 | Zafar's chai decisions answered; Mum's words in as data | answers done (22-23); Mum's words with P2 | |
 | P2 | Chai settled: its three faults, SH-286 (the dish card is the order's own pop-up), Mum's words; one line per kind of change for Zafar; re-freeze on his yes | running | builder `s20-p2-chai` (Opus, high, about $25-35) |
 | P3 | The lock on the door: the checks that pass today (fast checks + 161 contract checks) become a gate, and a merge script refuses any change that fails one | waits for P2 | |
-| P4 | The measuring tool: freeze the game at six moments and record exactly where everything sits (proven on chai as it is; one session) | running | builder `s20-p4-boxes` (Opus, high, about $60-80) |
-| P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | waits for P4 | |
+| P4 | The measuring tool: freeze the game at six moments and record exactly where everything sits (proven on chai as it is; one session) | done | `boxes.mjs --prove`: chai identical 3 runs x 8 pages, 4 planted faults caught, 4 min a run; reference `build/frozen/boxes/chai-tray/` |
+| P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | running | builder `s20-p5-rules` (Sonnet, high, about $30-45) |
 | P6 | Chai's 12 reference pictures. **Zafar, review point 2** | waits for P2-P5 | |
 | P7 | Park the rows ("waits for the frame") | with P3 | |
 | 1 | Chai's play-area lines move out of chai into the frame, unchanged; chai asks the frame for its play area; every box proven unchanged | waits | |
