@@ -1908,3 +1908,7 @@
 {"id":"CK-105","run":"s19-r2-games-ev","event":"built","date":"2026-11-13"}
 {"id":"CK-105","run":"s19-r2-games-ev2","verdict":"PASS","spec":"8e20bb3b68c42f85761d","judge":"fable, independent, not the builder s19-r2-games","date":"2026-11-13"}
 {"id":"CK-105","run":"s19-r2-games-ev2","event":"built","date":"2026-11-13"}
+{"id":"PAN-19","run":"s19-r2-shared-ev","verdict":"PASS","spec":"2113891c85b43e0a61b4","judge":"fable, independent, not the builder s19-r2-shared","date":"2026-11-13"}
+{"id":"CHAI-37","run":"s19-r2-shared-ev","verdict":"FAIL","spec":"f51700a7bbb9d7caf9ad","judge":"fable, independent, not the builder s19-r2-shared","date":"2026-11-13"}
+{"id":"CK-96","run":"s19-r2-shared-ev2","verdict":"FAIL","spec":"2a69ddc303dc32e398ab","judge":"fable, independent, not the builder s19-r2-shared","date":"2026-11-13"}
+{"id":"CHAI-37","run":"s19-r2-shared-ev3","verdict":"FAIL","spec":"6f1b6a82c24081b8bd04","judge":"fable, independent, not the builder s19-r2-shared","date":"2026-11-13"}

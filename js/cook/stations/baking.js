@@ -69,7 +69,11 @@ import { setTimeout } from "../life.js";
       const amt = amountEn("pinch") || amountEn(s.units) || "";
       return Lang.toRecord(frame.replace("{amount}", amt).replace("{thing}", Cook.english(s.id)), `baking: ${frame.replace("{amount}", amt)}`);
     }
-    const doIt = Lang.say({ fn: "DoIt", verb: "v.put-in", obj: Lang.itemOf(s.parts && s.parts.length ? s.parts : [s.id]) });
+    // (the r2 judge, 13 Nov: an amount with no number, "dedh cup" or "adhi cup" with atto, is no noun phrase the engine has a rule
+    // for (a Join); its frame then said the first piece and tacked the rest after the verb, "Adhi cup wiji chad! atto". Until Mum
+    // gives the whole sentence it is a gap: its English in grey, a line for the recording sheet, never stitched)
+    const obj = Lang.itemOf(s.parts && s.parts.length ? s.parts : [s.id]);
+    const doIt = obj.fn === "Join" ? { ok: false } : Lang.say({ fn: "DoIt", verb: "v.put-in", obj });
     if (doIt.ok !== false) return doIt;
     const amt = amountEn(s.amt === "spoon" ? "spoon" : s.units) || `${s.units / 4}`;
     return Lang.toRecord(frame.replace("{amount}", amt).replace("{thing}", Cook.english(s.id)), `baking: ${frame.replace("{amount}", amt)}`);

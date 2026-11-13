@@ -843,18 +843,20 @@
   "date": "2026-11-03"
  },
  "CHAI-37": {
-  "hash": "d351a5a6216d631490a4",
+  "hash": "9082b60d5825144d8bad",
   "dhash": [
-   "01b0303030301a5a",
-   "1170b070b0301a1a"
+   "0130707030101a0a",
+   "1110707070707a0a",
+   "0160696971a0b215",
+   "013c3030b8b07615"
   ],
   "verdict": "FAIL",
-  "line": "B, frame 4 (107.2 s, after paani and chai): the screen is not dark and nothing marks the order card out, it looks as it does at rest; A frame 2 (88.3 s) is the same at 1920x1080. No frame shows the dim with the card lit; frames 1-3 show the first two items lit correctly. Also: hit 3 at 1920x1080 has no screenshot (timeout); the Check's sizes (971x318, 1280x665) and L2-L4 are not on the sheet; item tiles cut at the card's edges (\"ani\", \"ai\", \"du\"); A frame 5 has Nani's line box empty.",
-  "panel": "B",
-  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
-  "run": "s19-night-b-a2",
-  "commit": "d3a8324b5",
-  "png": "build/screenshots/evidence/s19-night-b-a2/CHAI-37.png",
+  "line": "D, L4 at 740x320 shows no dim and no lit card at the card-light moment (aadu already ticked, plain screen); A, B and C do show it (screen dimmed, the next item's card lit gold on the order card: dudh at L1, aadu at L4 1280). The 1.2 s length cannot be read from one still",
+  "panel": "D",
+  "judge": "fable, independent, not the builder s19-r2-shared",
+  "run": "s19-r2-shared-ev3",
+  "commit": "973226bc7",
+  "png": "build/screenshots/evidence/s19-r2-shared-ev3/CHAI-37.png",
   "date": "2026-11-13"
  },
  "CHAI-40": {
@@ -2173,20 +2175,20 @@
   "date": "2026-11-13"
  },
  "CK-96": {
-  "hash": "ef2b2034de2277736d4d",
+  "hash": "843e676e185a300c60f8",
   "dhash": [
-   "0811313131000001",
-   "a111053171310001",
-   "0011313131000001",
-   "b131053169310101"
+   "0113323131000001",
+   "8001053273330001",
+   "0111333131000001",
+   "800105326b330101"
   ],
   "verdict": "FAIL",
-  "line": "A, every frame (1280x665 L1) shows one full-width item card (\"hakro cup atto / one cup of flour\") under \"Muke naan khape.\", not a row of narrow cards with a third peeking; the same single wide card in B (740x320), C and D (L4). Flaws off the row: C and D frame 1 Nani's line reads \"Adhi cup wiji chad! atto\" (the item after the exclamation mark); D frames 3-6 the English under \"adhi cup atto\" wraps to three tiny lines",
+  "line": "A, frame 1 is one full-width card and frames 2-4 are two narrow cards with a blank third space, the two shapes the row names as the problem (B1-B5, C1-C2, D1-D2 the same); only C3-C7 and D3-D7 show chai's row of narrow cards, and there the half card is the old one cut at the left, not a third peeking on the right",
   "panel": "A",
-  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
-  "run": "s19-night-b-a2",
-  "commit": "d3a8324b5",
-  "png": "build/screenshots/evidence/s19-night-b-a2/CK-96.png",
+  "judge": "fable, independent, not the builder s19-r2-shared",
+  "run": "s19-r2-shared-ev2",
+  "commit": "973226bc7",
+  "png": "build/screenshots/evidence/s19-r2-shared-ev2/CK-96.png",
   "date": "2026-11-13"
  },
  "CK-TAB-01": {
@@ -6199,18 +6201,26 @@
   "date": "2026-10-30"
  },
  "PAN-19": {
-  "hash": "c26d00af57a079e100b3",
+  "hash": "11cb8c5935189ab35bd1",
   "dhash": [
-   "3392129671a88000",
-   "314597f1b8b8c4c0"
+   "3392869631a88000",
+   "3195d7d1f838d4c0",
+   "339296b631a88000",
+   "3105d7d13878d4c0",
+   "339296b6b1a88000",
+   "310dd7913878c4c0",
+   "93928e96b1a88000",
+   "11d5d7d1f838c4c0",
+   "896c646a383c0000",
+   "0d2322796c6c1030"
   ],
-  "verdict": "FAIL",
-  "line": "B, frame 1 (740x320, 20.5 s): Nani is at the counter saying \"Muke dudh de.\" but a second small \"hakro dudh\" card sits on top of the order card and hides its word (only \"..dh\" shows); A frame 1 has the same small card over the big card's corner. A frames 1-3 do show Nani giving the order with one card per line, but frame 1 already has the card up, so \"Nani before the first card\" is not shown, and only L1 is on the sheet (no L2-L4).",
-  "panel": "B",
-  "judge": "claude-fable-5-2, session_014xb3kSEqyUTbvHCABDzeLo (judge subagent, not the builder s19-night-b)",
-  "run": "s19-night-b-a2",
-  "commit": "d3a8324b5",
-  "png": "build/screenshots/evidence/s19-night-b-a2/PAN-19.png",
+  "verdict": "PASS",
+  "line": "I, Nani is at the counter saying \"Muke atto de.\" while the order card's three slots are still empty (J the same at 740x320); A1-A2, C1-C2, E1-E3, G1-G4 and B/D/F/H at 740 show her naming each item at L1-L4 with its card coming as she says it. Flaws: B2 the chai card is cut by the left edge; at 740 the bubble's left edge sits under the big card (B1, B3, D1, F1, H1, J); some shelf labels at L2-L4 are too small to read and one seems to read \"green pepper\" (C3, E4)",
+  "panel": "I",
+  "judge": "fable, independent, not the builder s19-r2-shared",
+  "run": "s19-r2-shared-ev",
+  "commit": "973226bc7",
+  "png": "build/screenshots/evidence/s19-r2-shared-ev/PAN-19.png",
   "date": "2026-11-13"
  },
  "PAN-20": {

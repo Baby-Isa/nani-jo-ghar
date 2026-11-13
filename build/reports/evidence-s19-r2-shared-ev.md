@@ -14,3 +14,9 @@ Next: `node build/tools/review/evidence.mjs --judge --run-id s19-r2-shared-ev`, 
 ## Tool failures (0): for the tool owner, never a FAIL in regressions.md
 
 none
+
+## EVIDENCE lines from the reviewers (the tool owner's list)
+
+- CHAI-55: no panel shows the stuck hint (a half-poured glass with the light on it for the second pour); E's six onboard shots end at "Slow kar!" with the heat knob lit (E6). The who-asks half is shown: B and the Cook.chaiAmounts capture, Nana asks full, Ma "Muke adh chai khape." Flaw: C/D at 740 Nani's line "Paani tapele me wij." wraps and its second line is cut (fable, independent, not the builder s19-r2-shared)
+- CK-96: every frame in A-D shows only the lone first card (hakro cup atto / adhi cup atto), full width; no frame has a second or third card, so the row shape is not shown. Flaw: C1, C2, D1 Nani's line reads "Adhi cup wiji chad! atto" (atto after the verb) (fable, independent, not the builder s19-r2-shared)
+
