@@ -1,4 +1,4 @@
-# Step 2 for chop (build/tools/art/idcodemod.mjs, from 96fe77cd6): 0 code path strings -> Cook.Art.file, 28 settings path strings -> today's registry file; by hand: data/stations/chop.json assets/cook/items/v4/chop/; not a current piece (left): none
+# Step 2 for chop (build/tools/art/idcodemod.mjs, from a2de8c693): 0 code path strings -> Cook.Art.file, 28 settings path strings -> today's registry file; by hand: data/stations/chop.json assets/cook/items/v4/chop/; not a current piece (left): none
 # apply from the repo root: git apply build/reports/s19-night-art-step2/chop.patch (re-run the codemod instead if the station files changed since)
 --- a/data/stations/chop.json
 +++ b/data/stations/chop.json

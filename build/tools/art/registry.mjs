@@ -771,8 +771,8 @@ export function writeMap(reg, { root = ROOT } = {}) {
   writeFileSync(join(root, MAP_PATH), t);
   return t;
 }
-// the rawpath check's hits: code and data (js/, data/) naming a renamed file by its old path, or an assets/art/ file directly (the game
-// should ask Cook.Art.file(id, state)). [{check, key, text}]
+// the rawpath check's hits: code and data (js/, data/) naming a renamed file by its old path, or code naming an assets/art/ file
+// directly (the game should ask Cook.Art.file(id, state)). [{check, key, text}]
 export function rawpathFindings(root = ROOT, led = loadLedger(root)) {
   const was = wasOf(led);
   if (!Object.keys(was).length) return [];
@@ -784,7 +784,8 @@ export function rawpathFindings(root = ROOT, led = loadLedger(root)) {
     if (!t.includes("assets/")) continue;
     for (const m of t.matchAll(/(?<![\w-])(assets\/[^"'`\s$*{}()<>,;\\]+\.(?:png|webp|jpe?g|svg))/gi)) {
       const p = m[1];
-      if (!(was[p] || p.startsWith("assets/art/"))) continue;
+      // (settings, data/*.json, cannot call Cook.Art.file: naming today's registry file there is Step 2's best; code must ask by id)
+      if (!(was[p] || (p.startsWith("assets/art/") && f.startsWith("js/")))) continue;
       const key = `rawpath|${f}|${p}`;
       if (seen.has(key)) continue;
       seen.add(key);

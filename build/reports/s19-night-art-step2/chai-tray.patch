@@ -1,4 +1,4 @@
-# Step 2 for chai-tray (build/tools/art/idcodemod.mjs, from 96fe77cd6): 1 code path strings -> Cook.Art.file, 33 settings path strings -> today's registry file; by hand: js/cook/stations/chai-tray.js assets/cook/items/chai-v2/; not a current piece (left): assets/cook/items/shelf-veg-14-jar-f.webp, assets/cook/items/shelf-veg-13-jar-f.webp
+# Step 2 for chai-tray (build/tools/art/idcodemod.mjs, from a2de8c693): 1 code path strings -> Cook.Art.file, 33 settings path strings -> today's registry file; by hand: js/cook/stations/chai-tray.js assets/cook/items/chai-v2/; not a current piece (left): assets/cook/items/shelf-veg-14-jar-f.webp, assets/cook/items/shelf-veg-13-jar-f.webp
 # apply from the repo root: git apply build/reports/s19-night-art-step2/chai-tray.patch (re-run the codemod instead if the station files changed since)
 --- a/js/cook/stations/chai-tray.js
 +++ b/js/cook/stations/chai-tray.js

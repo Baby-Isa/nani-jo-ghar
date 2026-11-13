@@ -1,4 +1,4 @@
-# Step 2 for chaat (build/tools/art/idcodemod.mjs, from 96fe77cd6): 0 code path strings -> Cook.Art.file, 1 settings path strings -> today's registry file; by hand: data/stations/chaat.json assets/cook/items/v4/chaat/, data/stations/chaat.json assets/cook/items/v4/chaat/; not a current piece (left): none
+# Step 2 for chaat (build/tools/art/idcodemod.mjs, from a2de8c693): 0 code path strings -> Cook.Art.file, 1 settings path strings -> today's registry file; by hand: data/stations/chaat.json assets/cook/items/v4/chaat/, data/stations/chaat.json assets/cook/items/v4/chaat/; not a current piece (left): none
 # apply from the repo root: git apply build/reports/s19-night-art-step2/chaat.patch (re-run the codemod instead if the station files changed since)
 --- a/data/stations/chaat.json
 +++ b/data/stations/chaat.json
