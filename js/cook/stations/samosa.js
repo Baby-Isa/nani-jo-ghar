@@ -230,10 +230,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
     if (made.two && !ctx.guided && count2 <= 5) (made.nB0 === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
     steps.done();
-    // SH-239 (contract-108): every item card ticked before their well done (the fill closed each filling's card as it ended).
+    // SH-239 (contract-108): every item card ticks before their well done (each filling's card and the count's, by its word: no head, so
+    // the card is not closed whole yet).
     // SAM-40 (the S19 gate's eye judge, 12 Nov: "the order card has collapsed to its headline with a faded, barely visible tick"):
     // the dish is closed whole (the card's fold, decision 97 (3)) after the well done, so the praise shows the item cards with their
     // ticks, as chai's does
+    if (ctx.closeItem) ctx.closeItem([...new Set(kinds.concat(kinds2, ["ph-samosa"]))]);
     await serve(yz, { who, plate: fried.plate });
     if (ctx.closeItem) ctx.closeItem([], { all: true });
     yz.close();
