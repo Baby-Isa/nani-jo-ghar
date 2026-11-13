@@ -22,9 +22,9 @@ Chai, eggs, maani and corn get their play area, bottom row and worktop from one 
 |---|---|---|---|
 | P0 | The starting numbers; this file; the frame's notes | done | `node build/tools/review/frame-counts.mjs` (13 Nov: chai 29, eggs 12, maani 15, corn 11; flow.js names games on 31 lines) |
 | P1 | Zafar's chai decisions answered; Mum's words in as data | answers done (22-23); Mum's words with P2 | |
-| P2 | Chai settled: its three faults, SH-286 (the dish card is the order's own pop-up), Mum's words; one line per kind of change for Zafar; re-freeze on his yes | next | builder `s20-p2-chai` |
+| P2 | Chai settled: its three faults, SH-286 (the dish card is the order's own pop-up), Mum's words; one line per kind of change for Zafar; re-freeze on his yes | running | builder `s20-p2-chai` (Opus, high, about $25-35) |
 | P3 | The blocking gate (fast checks + the 161 clean contract checks) and the merge script | waits for P2 | |
-| P4 | Stand still, read the boxes, take the pictures (one session) | next | builder `s20-p4-boxes` |
+| P4 | Stand still, read the boxes, take the pictures (one session) | running | builder `s20-p4-boxes` (Opus, high, about $60-80) |
 | P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | waits for P4 | |
 | P6 | Chai's 12 reference pictures. **Zafar, review point 2** | waits for P2-P5 | |
 | P7 | Park the rows ("waits for the frame") | with P3 | |
