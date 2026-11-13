@@ -1,0 +1,53 @@
+# Step 2 for daar (build/tools/art/idcodemod.mjs, from 96fe77cd6): 2 code path strings -> Cook.Art.file, 16 settings path strings -> today's registry file; by hand: js/cook/stations/daar.js assets/cook/items/, js/cook/stations/daar.js assets/cook/items-s08c/; not a current piece (left): none
+# apply from the repo root: git apply build/reports/s19-night-art-step2/daar.patch (re-run the codemod instead if the station files changed since)
+--- a/js/cook/stations/daar.js
++++ b/js/cook/stations/daar.js
+@@ -279,8 +279,8 @@
+       ["dv3-trivet-plain", V3 + "daar-bowl-trivet-plain-v2.webp"],
+       ["dv3-vegbowl", V3 + "veg-bowl.webp"],
+       // S19 (Fable's daar flaws 8 and 9): the small glass bowl each chopped heap waits in, and the empty steel katori they are served in
+-      ["dv5-glass", "assets/cook/items-s17-stove/t-small-glass-bowl.webp"],
+-      ["dv5-katori", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp"],
++      ["dv5-glass", Cook.Art.file("shelf.small-glass-bowl", "default")],
++      ["dv5-katori", Cook.Art.file("shelf.steel-serving-bowl", "default")],
+     ]
+       // S19 (D1-D3): the v4 pot, empty and with oil, its six discs, the kit's ladle and the dial's icons: the stir kit's (DAAR-45)
+       .concat(Cook.StirKit.art())
+--- a/data/stations/daar.json
++++ b/data/stations/daar.json
+@@ -35,22 +35,22 @@
+  },
+  "_items": "S19 wave A (ART-69, SH-243; the art run's F4): the tadka's things as cream bowls seen from above, on the stone tray with their pills (js/cook/stations/daar.js shelf); card: the item card's picture too (js/cook/ui.js cardPic: a game's own card first), so the card shows what the child taps; file (garlic, green chilli): the tray's picture only, their cards stay one of the thing (SH-242: the chop's card is one chilli)",
+  "items": {
+-  "bowl-jeeru": {"word": "spi-02", "card": "assets/cook/items/v4/daar/jeeru.webp", "view": "T", "role": "tray"},
+-  "bowl-rai": {"word": "spi-05", "card": "assets/cook/items/v4/daar/rai.webp", "view": "T", "role": "tray"},
+-  "bowl-hardar": {"word": "spi-01", "card": "assets/cook/items/v4/daar/hardar.webp", "view": "T", "role": "tray"},
+-  "bowl-loon": {"word": "spi-16", "card": "assets/cook/items/v4/daar/loon.webp", "view": "T", "role": "tray"},
+-  "bowl-lal-marcha": {"word": "spi-04", "card": "assets/cook/items/v4/daar/lal-marcha.webp", "view": "T", "role": "tray"},
+-  "bowl-lasan": {"word": "veg-13", "file": "assets/cook/items/v4/daar/lasan.webp", "view": "T", "role": "tray"},
+-  "bowl-lila-marcha": {"word": "veg-12", "file": "assets/cook/items/v4/daar/lila-marcha.webp", "view": "T", "role": "tray"},
++  "bowl-jeeru": {"word": "spi-02", "card": "assets/art/daar/jeeru.default.r1.webp", "view": "T", "role": "tray"},
++  "bowl-rai": {"word": "spi-05", "card": "assets/art/daar/rai.default.r1.webp", "view": "T", "role": "tray"},
++  "bowl-hardar": {"word": "spi-01", "card": "assets/art/daar/hardar.default.r1.webp", "view": "T", "role": "tray"},
++  "bowl-loon": {"word": "spi-16", "card": "assets/art/daar/loon.default.r1.webp", "view": "T", "role": "tray"},
++  "bowl-lal-marcha": {"word": "spi-04", "card": "assets/art/daar/lal-marcha.default.r1.webp", "view": "T", "role": "tray"},
++  "bowl-lasan": {"word": "veg-13", "file": "assets/art/daar/lasan.default.r1.webp", "view": "T", "role": "tray"},
++  "bowl-lila-marcha": {"word": "veg-12", "file": "assets/art/daar/lila-marcha.default.r1.webp", "view": "T", "role": "tray"},
+   "bowl-elchi": {"word": "spi-10", "card": "assets/cook/items/v4/daar/elchi.webp", "view": "T", "role": "tray"},
+   "_chop": "CK-79 (the eye judge, 10 Nov: a golden onion on the card, a red one on the board): what daar's chop cuts shows on the order card as the chop game draws it (its whole pictures, data/stations/chop.json art), so card and board are one picture; role chop: never on the tray",
+-  "chop-bataato": {"word": "veg-01", "card": "assets/cook/items/v4/chop/bataato-whole.webp", "view": "T", "role": "chop"},
+-  "chop-dungri": {"word": "veg-02", "card": "assets/cook/items/v4/chop/dungri-whole.webp", "view": "T", "role": "chop"},
+-  "chop-tameto": {"word": "veg-03", "card": "assets/cook/items/v4/chop/tameto-whole.webp", "view": "T", "role": "chop"},
+-  "chop-marcha": {"word": "veg-12", "card": "assets/cook/items/v4/chop/marcha-whole.webp", "view": "T", "role": "chop"},
+-  "chop-adu": {"word": "veg-14", "card": "assets/cook/items/v4/chop/adu-whole.webp", "view": "T", "role": "chop"}
++  "chop-bataato": {"word": "veg-01", "card": "assets/art/chop/bataato.whole.r1.webp", "view": "T", "role": "chop"},
++  "chop-dungri": {"word": "veg-02", "card": "assets/art/chop/dungri.whole.r1.webp", "view": "T", "role": "chop"},
++  "chop-tameto": {"word": "veg-03", "card": "assets/art/chop/tameto.whole.r1.webp", "view": "T", "role": "chop"},
++  "chop-marcha": {"word": "veg-12", "card": "assets/art/chop/marcha.whole.r1.webp", "view": "T", "role": "chop"},
++  "chop-adu": {"word": "veg-14", "card": "assets/art/chop/adu.whole.r1.webp", "view": "T", "role": "chop"}
+  },
+- "assets": ["assets/cook/items-s17-stove/t-small-glass-bowl.webp", "assets/cook/items-s17-stove/t-steel-serving-bowl.webp", "assets/cook/items/v4/daar/*", "assets/cook/items/v4/kit/ladle.webp", "assets/cook/items/v4/chop/*"],
++ "assets": ["assets/art/shelf/small-glass-bowl.default.r1.webp", "assets/art/shelf/steel-serving-bowl.default.r1.webp", "assets/cook/items/v4/daar/*", "assets/art/kit/ladle.default.r1.webp", "assets/cook/items/v4/chop/*"],
+  "_assets": "S19 (decision 68, loadcheck): the pictures daar loads beyond data/cook.json art.assets.stations.daar: the chopped heaps' glass bowls and the serving katori; S19 wave A: the eight cream bowls on the stone tray (v4/daar) and the kit's ladle (v4/kit/ladle)",
+  "mechanic": {
+   "levels": [
