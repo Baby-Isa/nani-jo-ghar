@@ -6,7 +6,7 @@
  "stop": "at the end of one session: if boxes are not identical three runs in a row, stop and report why (the plan does not start without this)",
  "kind": "tools",
  "browser": true,
- "live": true,
+ "live": false,
  "specsByBuilder": false,
  "stubs": "none",
  "publish": false,
