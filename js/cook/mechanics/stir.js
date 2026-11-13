@@ -839,13 +839,10 @@ import { setTimeout, clearTimeout, requestAnimationFrame } from "../life.js";
       // (o.first: the game's first-time gate says this is the first stir; o.demo: the stir game, whose finger comes after a wait)
       const soon = !!(o.first || z.guided);
       let demo = null;
-      // (contract-78: the first time, its light and finger come with her call, within 200 ms of it, never after the whole line; the
-      // stir game's later reminder still waits for the call and a pause)
-      const showDemo = (delay) => {
-        if (!over && count < 1 && !demo) demo = Cook.Coach.demo(() => ({ x: cx, y: cy, r: trackR }), { gesture: "circle-stir", ms: k.ghostMs || 1400, delay, step });
-      };
-      if (Cook.Coach && Cook.Coach.demo && soon) showDemo(0);
-      else if (Cook.Coach && Cook.Coach.demo && o.demo) Promise.race([called, Cook.wait(4000)]).then(() => showDemo(5000));
+      if (Cook.Coach && Cook.Coach.demo && (soon || o.demo))
+        Promise.race([called, Cook.wait(4000)]).then(() => {
+          if (!over && count < 1) demo = Cook.Coach.demo(() => ({ x: cx, y: cy, r: trackR }), { gesture: "circle-stir", ms: k.ghostMs || 1400, delay: soon ? 200 : 5000, step });
+        });
       post();
       const finishStir = () => {
         if (over) return;
