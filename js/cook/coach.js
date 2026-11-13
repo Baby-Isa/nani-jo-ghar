@@ -695,8 +695,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       if (target && Onboard && Onboard.light && !lit) {
         lit = Onboard.light(target, { look: "glow", pass: true, live: [target], quitIf: () => !cur(), note: o.note != null ? String(o.note) : `${o.key || "kit"}:s14-stuck` });
       }
-      if (o.glow) o.glow(true);
-      glowOn = true;
+      // (contract-102, s19-r2-shared: daar L1's shelf jar glowed with no light up: the glow went on whether or not a light was made, and
+      // stayed when the light went. The thing glows only inside its light, and goes out with it)
+      if (o.glow && lit && !glowOn) {
+        const mine = lit;
+        o.glow(true);
+        glowOn = true;
+        if (mine.done && mine.done.then)
+          mine.done.then(() => {
+            if (lit !== mine) return;
+            lit = null;
+            if (glowOn && o.glow) o.glow(false);
+            glowOn = false;
+          });
+      }
       if (o.onHint) o.onHint(helper ? "helper" : "line");
     };
     const tick = () => {
