@@ -301,6 +301,25 @@
   {"from":"assets/cook/items/v4/corn/cob-over.webp","to":"assets/art/corn/cob.over.r1.webp","id":"corn.cob","state":"over","game":"corn","on":"2026-11-13","by":"corn"},
   {"from":"assets/cook/items/v4/corn/cob-raw.webp","to":"assets/art/corn/cob.raw.r1.webp","id":"corn.cob","state":"raw","game":"corn","on":"2026-11-13","by":"corn"},
   {"from":"assets/cook/items/v4/corn/cob-turned.webp","to":"assets/art/corn/cob.turned.r1.webp","id":"corn.cob","state":"turned","game":"corn","on":"2026-11-13","by":"corn"},
-  {"from":"assets/cook/serve/dish-corn.webp","to":"assets/art/served/corn.default.r1.webp","id":"served.corn","state":"default","game":"corn","on":"2026-11-13","by":"corn"}
+  {"from":"assets/cook/serve/dish-corn.webp","to":"assets/art/served/corn.default.r1.webp","id":"served.corn","state":"default","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/chop/adu-half-a.webp","to":"assets/art/chop/adu.half-a.r1.webp","id":"chop.adu","state":"half-a","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/adu-half-b.webp","to":"assets/art/chop/adu.half-b.r1.webp","id":"chop.adu","state":"half-b","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/adu-whole.webp","to":"assets/art/chop/adu.whole.r1.webp","id":"chop.adu","state":"whole","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/bataato-half-a.webp","to":"assets/art/chop/bataato.half-a.r1.webp","id":"chop.bataato","state":"half-a","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/bataato-half-b.webp","to":"assets/art/chop/bataato.half-b.r1.webp","id":"chop.bataato","state":"half-b","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/bataato-whole.webp","to":"assets/art/chop/bataato.whole.r1.webp","id":"chop.bataato","state":"whole","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/dungri-half-a.webp","to":"assets/art/chop/dungri.half-a.r1.webp","id":"chop.dungri","state":"half-a","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/dungri-half-b.webp","to":"assets/art/chop/dungri.half-b.r1.webp","id":"chop.dungri","state":"half-b","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/dungri-whole.webp","to":"assets/art/chop/dungri.whole.r1.webp","id":"chop.dungri","state":"whole","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/lasan-half-a.webp","to":"assets/art/chop/lasan.half-a.r1.webp","id":"chop.lasan","state":"half-a","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/lasan-half-b.webp","to":"assets/art/chop/lasan.half-b.r1.webp","id":"chop.lasan","state":"half-b","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/lasan-whole.webp","to":"assets/art/chop/lasan.whole.r1.webp","id":"chop.lasan","state":"whole","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/marcha-half-a.webp","to":"assets/art/chop/marcha.half-a.r1.webp","id":"chop.marcha","state":"half-a","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/marcha-half-b.webp","to":"assets/art/chop/marcha.half-b.r1.webp","id":"chop.marcha","state":"half-b","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/marcha-whole.webp","to":"assets/art/chop/marcha.whole.r1.webp","id":"chop.marcha","state":"whole","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/tameto-half-a.webp","to":"assets/art/chop/tameto.half-a.r1.webp","id":"chop.tameto","state":"half-a","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/tameto-half-b.webp","to":"assets/art/chop/tameto.half-b.r1.webp","id":"chop.tameto","state":"half-b","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/items/v4/chop/tameto-whole.webp","to":"assets/art/chop/tameto.whole.r1.webp","id":"chop.tameto","state":"whole","game":"chop","on":"2026-11-13","by":"chop"},
+  {"from":"assets/cook/serve/dish-chop.webp","to":"assets/art/served/chop.default.r1.webp","id":"served.chop","state":"default","game":"chop","on":"2026-11-13","by":"chop"}
  ]
 }
