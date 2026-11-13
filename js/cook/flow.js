@@ -495,7 +495,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     }
     // the order comes up big in the middle while it's said (each part lighting up), then flies into the sidebar
     UI.hideBubble();
-    UI.mission.open({ who, name, ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: howFor(order.dishes) });
+    UI.mission.open({ who, name, ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: howFor(order.dishes), pantry: order.dishes.every((d) => d.recipe === "pantry") });
     closedCards(Math.max(...order.dishes.map((d) => d.level || 1)), demo);
     const stop = talking(who);
     try {
@@ -1850,7 +1850,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       // s19-serve: the order's dish, for the serve at the end (each person's tray and dish), its pictures loading now
       ctx.labDish = Array.isArray(what) ? null : what;
       if (serving()) Cook.Serve.prefetch(s, Cook.Serve.plan(ctx.labDish, asker));
-      UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana" /* CK-22: no "(lab)" written for the child */, ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]) });
+      UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana" /* CK-22: no "(lab)" written for the child */, ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]), pantry: !Array.isArray(what) && !!what && what.recipe === "pantry" });
       closedCards(level);
       // CHAI-15 (decision 53, S05-C): everyone who orders comes in first, in the lab too: each person on the card walks
       // up to their own tray at the counter, then the one request pop-up shows every order

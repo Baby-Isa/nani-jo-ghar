@@ -1601,7 +1601,7 @@
   const hideWord = (id) => !!mission && !!Cook.dotItem && Cook.dotItem(id, mission.level);
   const faceUrl = (who, mood) => Cook.v(Cook.facePath(who, mood));
   UI.faceUrl = faceUrl;
-  M.open = function ({ who, name, ladders, lines, line, busy, how }) {
+  M.open = function ({ who, name, ladders, lines, line, busy, how, pantry }) {
     // (SH-200: a chai order's cards take the chai shelf's jars from the first card drawn, before the station itself starts)
     Cook.shelfJars = (ladders || []).some((L) => L && L.recipe === "chai");
     if (!ladders) ladders = [Order().fromLines(lines || [])];
@@ -1644,6 +1644,8 @@
     UI.closeHelp();
     // R4: Nani asking herself (the pantry list): one face, her line as the card's strip
     mission.stripMode = who === "nani";
+    // (SH-285: the pantry's list, as against chop's, chaat's or daar's order of Nani's own: only the pantry's flashes nothing, PAN-19)
+    mission.pantry = !!pantry;
     mission.strip = null;
     stationStrip = peekFolded = false; // a new order: no station card or peek folds her box (CK-38)
     applyStrip();
@@ -2555,7 +2557,7 @@
         // (PAN-19, the judge on s19-night-b-a2: Nani's own list, the pantry, has no dish: its headline "bring me these" is still to record,
         // so it is never said and the card read as headless, and its first thing flashed as "hakro dudh" over the big card of the same
         // word, on the order card's word at 740x320. Each of her things pops as its own big card; her list flashes nothing)
-        const headless = !(mission && mission.stripMode) && !c._parts().some((q) => q.row && q.row.head);
+        const headless = !(mission && mission.pantry) && !c._parts().some((q) => q.row && q.row.head);
         let flashed = false;
         for (const p of parts) {
           if (!live()) return;
@@ -4186,7 +4188,7 @@
     if (head) return UI.dishFlash(c.dataset.who || null, head);
     // (PAN-19: the pantry's list has no dish to flash: each of her things pops as its own big card. Only the pantry's: chop, chaat
     // and daar are Nani's own orders too, and theirs flash the first thing said, contract-119, the r2 gate 13 Nov)
-    if (mission && mission.stripMode && String(guideKey || "").split(":")[0] === "fetch") return null;
+    if (mission && mission.pantry) return null;
     const first = parts.map((p) => rowOf(p) || ((p.line && p.line.rows) || []).find((x) => x && !x.head && !x.no)).find(Boolean);
     return first ? UI.dishFlash(c.dataset.who || null, first) : null;
   }
