@@ -134,14 +134,23 @@
 .wc14 .wc14-eye svg { width: 46%; max-width: var(--njg-card14-u40); opacity: .7; }
 .wc14.wc14-hide-pic .wc14-pic:not(.wc14-peek) .wc14-eye { display: grid; }
 .wc14 .wc14-slot { position: relative; display: grid; place-items: center; max-width: 100%; min-width: 0; }
-.wc14 .wc14-dots { display: none; position: absolute; inset: calc(-1 * var(--njg-card14-u8)) calc(-1 * var(--njg-card14-u2)); border: 0; background: none; padding: 0; gap: .3em; align-items: center; justify-content: center; cursor: pointer; }
+.wc14 .wc14-dots { display: none; position: absolute; --it: calc(-1 * var(--njg-card14-u8)); --ib: calc(-1 * var(--njg-card14-u8)); --ix: calc(-1 * var(--njg-card14-u2)); border: 0; background: none; padding: 0; gap: .3em; align-items: center; justify-content: center; cursor: pointer; }
+/* SH-288 (Zafar, 13 Nov: "increase the tap targets as much as you can without changing the look"): the dots' own box is a whole tap, 48 px
+   either way, grown round the box the context set (--it, --ib, --ix: its insets, a negative one reaching out), the dots staying where they
+   were drawn (the growth is half each side) */
+.wc14 .wc14-dots {
+  top: calc(var(--it) - max(0px, var(--njg-tap) - 100% + var(--it) + var(--ib)) / 2);
+  bottom: calc(var(--ib) - max(0px, var(--njg-tap) - 100% + var(--it) + var(--ib)) / 2);
+  left: calc(var(--ix) - max(0px, var(--njg-tap) - 100% + 2 * var(--ix)) / 2);
+  right: calc(var(--ix) - max(0px, var(--njg-tap) - 100% + 2 * var(--ix)) / 2);
+}
 .wc14 .wc14-dots i { display: block; flex: none; border-radius: 50%; background: currentColor; }
 /* (the sandbox, 3 Nov: on phones the dots' tap area, which reaches past the dots, ran under the speaker below, so a tap there played the word
    instead of showing it: the dots sit above the speaker, their full tap area kept) */
 .wc14 .wc14-dots { z-index: 3; }
 .wc14 .wc14-k-dots { color: var(--njg-card14-kutchi); z-index: 2; }
 .wc14 .wc14-k-dots i { width: .5em; height: .5em; }
-.wc14 .wc14-en-dots { inset: calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u2)) calc(-1 * var(--njg-card14-u8)); color: var(--njg-card14-dots-en); gap: .38em; }
+.wc14 .wc14-en-dots { --it: calc(-1 * var(--njg-card14-u2)); --ix: calc(-1 * var(--njg-card14-u2)); --ib: calc(-1 * var(--njg-card14-u8)); color: var(--njg-card14-dots-en); gap: .38em; }
 .wc14 .wc14-en-dots i { width: .36em; height: .36em; }
 .wc14.wc14-hide-k .wc14-slot-k > .wc14-k:not(.wc14-peek), .wc14.wc14-hide-en .wc14-slot-e > .wc14-en:not(.wc14-peek) { visibility: hidden; }
 /* (Zafar, 2 Nov: a row's words all on one line: a hidden English line is never taller than one line, so it never lifts its word) */

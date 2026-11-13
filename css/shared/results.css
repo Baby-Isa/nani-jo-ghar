@@ -461,6 +461,13 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   .njg-results .rs-words.dense .rs-word .rs-en > .fit { flex: 1 1 100%; text-align: center; }
   .njg-results .rs-words.dense .rs-word .rs-rec { order: 0; padding: 0 var(--njg-s1); letter-spacing: 0; white-space: nowrap; max-width: none; line-height: 1.3; }
 }
+/* SH-289 (the P5 rules, 13 Nov: chai L4's ten words at 740x320, "hakro" cut at the words panel's foot, its English hidden): on a short phone
+   a side of ten words or more (results.js sets .many) sits in the panel whole: four rows of tiles at the tap's 48 px, a hair between them,
+   the word a step smaller (one rule for every game's review, by the count of words) */
+@media (orientation: landscape) and (max-height: 440px) {
+  .njg-results .rs-words.dense .rs-words-col.many { row-gap: 2px; --njg-end-word: 24px; }
+  .njg-results .rs-words.dense .rs-words-col.many .rs-word { padding-block: 0; }
+}
 /* SH-86: a tile too narrow for its English beside the speaker (results.js fitPage: it had to wrap there): every tile's
    English goes under its speaker, centred, with the tile's whole width, so it shrinks, then wraps between its words */
 .njg-results .rs-p2 .rs-words.gloss-under .rs-word .rs-en { flex-wrap: wrap; justify-content: center; row-gap: 0; }

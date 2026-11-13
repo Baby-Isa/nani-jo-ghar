@@ -1130,6 +1130,89 @@ export function chaiExtra(asked, extras) {
       });
       setLook(pan);
     });
+    /*
+     * SH-288 (Zafar, 13 Nov: "increase the tap targets as much as you can without changing the look"): every tap on the hob and the shelf
+     * is a whole 48 CSS px either way by an invisible hit area (nothing drawn changes). A burner's face and its knob stand side by side
+     * closer than that on a phone, so they share the room between them: they meet at the midpoint, each reaching its full 48 px outward.
+     * Every tap a scene re-arms (S.tappable) is made again, so this runs each frame and does its work when a hit area or the scale is new.
+     */
+    const TAP_PX = 48.2;
+    const hitKey = (o, k) => `${k}|${o.input && o.input.hitArea ? 1 : 0}`;
+    const growHits = () => {
+      const sc = UI.worldScale ? UI.worldScale() : 0;
+      if (!(sc > 0)) return;
+      const need = TAP_PX / sc;
+      const live = (o) => o && o.active && o.input && o.input.enabled && o.input.hitArea;
+      const done = (o, k) => o.input.hitArea.__tap === k;
+      const mark = (o, k) => { o.input.hitArea.__tap = k; };
+      const k0 = need.toFixed(2);
+      const rect = (o, cxL, cyL, left, right, up, down) => {
+        const R = Phaser.Geom.Rectangle;
+        const hit = new R(cxL - left, cyL - up, left + right, up + down);
+        o.input.hitArea = hit; // (the hit test reads it; the shape stays the rectangle's)
+        o.input.hitAreaCallback = R.Contains;
+        return hit;
+      };
+      pans.forEach((pan) => {
+        const f = pan.face, kh = pan.knobHit;
+        if (!live(f) || !live(kh)) return;
+        const key = `${k0}|${f.x},${f.y}|${kh.x},${kh.y}`;
+        if (done(f, key) && done(kh, key)) return;
+        const dx = kh.x - f.x, dy = kh.y - f.y;
+        const horiz = Math.abs(dx) >= Math.abs(dy);
+        const d = Math.abs(horiz ? dx : dy);
+        // each reaches `out` away from the other and `inn` towards it; the two meet at the midpoint (never past it)
+        const inn = Math.min(need / 2, d / 2);
+        const out = need - inn;
+        const dir = (horiz ? dx : dy) > 0 ? 1 : -1; // the knob lies this way from the face
+        const build = (o, side) => {
+          // (a face is an image: its local frame is the texture's, scaled; the knob's circle is 2r wide)
+          const sx = o.scaleX || 1, sy = o.scaleY || 1;
+          const lw = o.width != null ? o.width : (o.displayWidth || 0) / sx, lh = o.height != null ? o.height : (o.displayHeight || 0) / sy;
+          const cx = lw / 2, cy = lh / 2;
+          const toward = side * dir; // +1: the other lies this way along the axis
+          if (horiz) {
+            const l = (toward > 0 ? inn : out) / sx, r = (toward > 0 ? out : inn) / sx;
+            rect(o, cx, cy, l, r, need / 2 / sy, need / 2 / sy);
+          } else {
+            const u = (toward > 0 ? inn : out) / sy, dn = (toward > 0 ? out : inn) / sy;
+            rect(o, cx, cy, need / 2 / sx, need / 2 / sx, u, dn);
+          }
+          mark(o, key);
+        };
+        build(f, 1); // (the knob lies `dir` from the face)
+        build(kh, -1); // (the face lies the other way from the knob)
+      });
+      // the glasses' own tap on the tray (a zone: its size is its hit)
+      wells.forEach((w) => {
+        const z = w && w.hit;
+        if (!live(z) || done(z, k0)) return;
+        const side = Math.max(z.width, need);
+        z.setSize(side, side);
+        mark(z, k0);
+      });
+      // the shelf: a jar or a bottle is at least 48 across (its slot is not wider than that on the smallest phone, so the width
+      // grows by a hair into the neighbours' room; its height already reaches down to its pill)
+      Object.values(shelf).forEach((o) => {
+        if (!live(o) || o.type !== "Image" || !(o.input.hitArea instanceof Phaser.Geom.Rectangle)) return;
+        if (done(o, k0)) return;
+        const h = o.input.hitArea, sx = o.scaleX || 1;
+        const wantW = need / sx;
+        if (h.width < wantW) {
+          const cxL = h.x + h.width / 2;
+          h.x = cxL - wantW / 2;
+          h.width = wantW;
+        }
+        const wantH = need / (o.scaleY || 1);
+        if (h.height < wantH) {
+          const cyL = h.y + h.height / 2;
+          h.y = cyL - wantH / 2;
+          h.height = wantH;
+        }
+        mark(o, k0);
+      });
+    };
+    const stopHits = S.addTick(growHits);
     // (the stove's own tick, made with it above, heats the pans first; this one follows each frame: the handle, the rolling boil,
     // the gauge)
     const stopHeat = S.addTick(() => {
@@ -2309,6 +2392,7 @@ export function chaiExtra(asked, extras) {
       },
     });
     stopHeat();
+    stopHits();
     stove.end(); // (the kit's heat: its loop and steam off, nothing ticks or starts again)
     // SH-181 (P9: js/cook/coach.js C.start returns before chai's coach could be marked seen, so every returning player was "fresh"):
     // chai's first-time showing is used up once its first round ends; a returning player gets the calls alone and the stuck hints

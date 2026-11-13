@@ -1012,3 +1012,10 @@ body.w6 #guide { flex: none; }
 }
 .ck-cover.off { opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .ck-cover { transition-duration: 0.12s; } }
+
+/* SH-289 (the P5 headline rule, 13 Nov: chai L4 at 1280x665 set the order's headline 18.5 px, then 16.5 once the tick took its room, then 19 at
+   the end): in a chai round the sidebar's headline is ONE size at every state, the smallest it needed (0.87 of the card's size: the longest
+   chai order fits one line beside the tick), never shrunk or grown again; a narrower card wraps it instead (fit.js reads --fit-min as a length,
+   so the property is registered as one) */
+@property --fit-min { syntax: "<length>"; inherits: true; initial-value: 0px; }
+#side[data-recipe="chai"] .oc-card .oc-headline.fit-wrap, #side[data-recipe="chai"] .oc-card .oc-rec-line.fit-wrap { font-size: calc(var(--oc-h) * 0.87); --fit-min: calc(var(--oc-h) * 0.87); }
