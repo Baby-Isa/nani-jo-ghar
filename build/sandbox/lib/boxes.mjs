@@ -240,6 +240,8 @@ export const READ = `(function (opt) {
     Array.from(pop.querySelectorAll(".njg-face")).forEach((f, j) => { const fb = faceOf(f); if (fb) ex.faces["pop/face-" + (j + 1)] = fb; });
     Array.from(pop.querySelectorAll(".oc-it14")).forEach((it, j) => { const vb = clipTo(it, dom(it)); if (vb) ex.items["pop/item-" + (j + 1)] = vb; });
   }
+  // the stone slab of the shared tray (Shelf.P.tray: inset from the view's sides), where a game's bottom row is that and not a band's tile
+  { const sl = objs.filter((o) => o.trayBox && visible(o) && o.active !== false)[0]; if (sl && w2s) { const b = wbox(sl); if (b) ex.slab = b; } }
   // the fitted texts (the headline, Nani's line): size as set, lines as laid out, and whether its words are wider than its box
   for (const [area, root] of areas) {
     if (!root) continue;

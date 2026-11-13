@@ -195,7 +195,7 @@ export const RULES = [
 export const RULE_IDS = [...RULES.map((r) => r.id), "frame-slots"];
 
 /** the slots of a read: the side panel, the play area and the bottom row, as the frame will place them */
-export const slotsOf = (read) => { const b = (read && read.boxes) || {}; return { side: b.side || null, play: b.play || null, "bottom-row": b["bottom-row"] || null }; };
+export const slotsOf = (read) => { const b = (read && read.boxes) || {}; return { side: b.side || null, play: b.play || null, "bottom-row": b["bottom-row"] || (read && read.extra && read.extra.slab) || null }; };
 
 /**
  * judge pages -> [{id, pass, skipped, faults: [{where, msg}]}]. ref: another game's pages (chai's reference) for the frame's slots
