@@ -68,3 +68,4 @@
 19. Zafar, 13 Nov: in the morning, if every check and the Fable review pass, publish so he can play straight away.
 20. Zafar, 13 Nov morning: baking's cards keep his 11 Nov rule, a lone first card fills its row (contract-116); CK-96's "the same shape at every size" is changed to match.
 21. Zafar, 13 Nov morning: a finished card folds in every game, baking's too (his 5 Nov rule); CK-102's "the item cards stay with their ticks at well done" part is dropped.
+22. Zafar, 13 Nov afternoon, on the Sprint 20 plan (build/reports/s20-plan.md §12): yes to 1-4, 6, 8-14, and to 5 except its redo part. No cost ceiling (15: no). A mistake keeps chai's way in every game (5): the wrong pan can't be picked, but a wrong item can go in, the cup is made, and the whole cup is redone ("I just want to keep it to how Chai does it"); SH-263 is answered so. Mum's tomato is *tameto*, with an e (6). Item 7 (chai's reference) waits for his answer.

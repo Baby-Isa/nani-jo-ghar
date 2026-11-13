@@ -239,7 +239,7 @@ Every step: one move; the old code deleted in the same step; the gate green by t
 12. **The eye judge blocks once per game at the join, and is advisory otherwise?** Recommend yes.
 13. **Retire one-probe-per-row and the 264-minute tier?** Recommend yes.
 14. **If the stand-still tool is not proven in one session, we stop and come back to you?** Recommend yes.
-15. **A budget ceiling of $450?** Recommend yes.
+15. **A budget ceiling of $450?** Zafar, 13 Nov: no ceiling (decision 22).
 
 ## Proof
 
