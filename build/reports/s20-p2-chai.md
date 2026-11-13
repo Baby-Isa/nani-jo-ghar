@@ -1,9 +1,9 @@
 # s20-p2-chai: chai settled as the reference (Sprint 20 P2)
 
-Builder, Opus high, 13 Nov. Branch `s20-p2-chai` (not pushed). Not re-frozen: the list below is for Zafar.
+Builder, Opus high, 13 Nov; branch `s20-p2-chai`, not pushed, not re-frozen.
 
 ## What changed
-- **SH-286 (decision 23):** the dish card is the order's own item pop-up: one `popCard` in `js/cook/ui.js` draws the dish card and the item cards (same place, size, look, pop-in); it shrinks away as its line ends, never joins the card. L1 only. `WordCard.flash` is no longer called.
+- **SH-286 (decision 23):** the dish card is the order's own item pop-up: one `popCard` in `js/cook/ui.js` draws the dish card and the item cards (same place, size, look, pop-in); it shrinks away as its line ends. L1 only.
 - **Faults:** (a) contract-124 #takeback: a **check fault**, `build/sandbox/lib/contract-night.mjs:36-49` takes the want leaving `knob-on-nana` as a knob turn; the child took the sugar back, no knob was turned. (b) contract-37 L2-L3: a **check fault**, `contract-s19b-hook.mjs:160` (padNow) reads the first order card only, so the second person's spice counts as a decoy; the game's own note says 2 and 3 (the table). (c) the lab #child lesson: `ui.js` blurLesson asked for the next part 450 ms after lighting it, so a tap there was lost (light 25 s, contract-106); its light cut the hidden word's dots (oval, contract-112). Fixed: an early tap counts, the light holds the dots. Plus contract-36 at L4: the second pour's glass light had no call; `chai-tray.js` phase() makes it its own called step. **Page errors:** `js/shared/onboard.js:2138` (`Onboard.refused = []`, SH-257) overwrites CK-113's function at :841. Not my file: patch ready, `ob-refused.patch` in the scratchpad.
 - **Mum's words (decision 22), at their sources:** salt *mitho*, black pepper *miryo*, *tameto/tameta*; the pantry headline *Hi muke {dish} lai khani achi de* (with a dish), *Muke de* (without); daar's stir line is the engine's *Trae fare firai* (StirTimes, no "slowly"); the Round 6 spellings confirmed; baking's *pono cup* back at its source (the "re-runnable" test passes again). daar.js:1245 still shows its English until daar's owner calls `Lang.line("daar-stir-ask", …)`.
 
@@ -15,8 +15,8 @@ Builder, Opus high, 13 Nov. Branch `s20-p2-chai` (not pushed). Not re-frozen: th
 5. timed-hold gone: the knob's light now comes as the ring enters the green (CHAI-58), so the test child taps before the hold point (SH-158).
 6. chai-tray-kind-click state (lab #child L2-L4): the glass takes the pour's tap (CHAI-112, decision 6).
 7. sfx/flame-b on #mistake: the flame plays under the voice (CHAI-113, decision 14).
-8. help, card-light, chulo/bar clips, sfx/puff on 1-3 pages: timing (the hint came; a boil-over).
-9. **Not asked for:** the glass's ring (sfx/glass) dropped by the voice gate when it lands under Nani's line (Mum's longer clips). Fix is CHAI-113's {under: true}; it needs Zafar's yes and `js/cook/core.js:456` to pass options.
+8. help, card-light, chulo/bar, sfx/puff on 1-3 pages: the test child's timing.
+9. **Not asked for:** the glass's ring (sfx/glass) dropped by the voice gate when it lands under Nani's line (Mum's longer clips). Fix: CHAI-113's {under: true}, with Zafar's yes (`js/cook/core.js:456`).
 10. **Check faults, not the game:** contract-124 (#takeback), contract-37 (two people), contract-119 (it still reads the retired `.wc14-flash`, so it should read `.wc14-pop.wc14-dish`).
 11. **Page errors:** OB.refused (the patch above).
 
@@ -26,5 +26,5 @@ Before re-freeze: the onboard.js patch, contract-119/-124/-37 re-pointed, Zafar 
 ## Proof
 - SH-286 pictures (labcheck.mjs, L1, seed 7): `build/screenshots/brief/s20-p2-chai/SH-286/` 1-4.
 - After folder: none (no probe). Contract: `CONTRACT FAILED: 4 breaks (contract-119 4)`, all four explained in item 10.
-- checks.mjs: 14 steps ok. `node --test build/lang/`: 61 pass. words, leak, recordings: ok.
+- checks.mjs: 14 steps ok; `node --test build/lang/`: 61 pass.
 - Tier 2 (`check-change --brief`): did not finish. My `timeout 7000` stopped it in its frozen step. It writes no result file. Before that: push pass; scope fail (the merge base brings in other sessions' files: `sources/audio/…md`); play, 24 breaks (119 ×14, 37 ×6, 124 ×2, plus contract-99 and -112 once each at L4 740x320, which are the order card's fold and the lesson light on its picture, neither one mine); rows fail (SH-286 has no spec). It needs a re-run once the checks and the patch are in.
