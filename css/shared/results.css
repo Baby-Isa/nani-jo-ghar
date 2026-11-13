@@ -465,7 +465,8 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
    a side of ten words or more (results.js sets .many) sits in the panel whole: four rows of tiles at the tap's 48 px, a hair between them,
    the word a step smaller (one rule for every game's review, by the count of words) */
 @media (orientation: landscape) and (max-height: 440px) {
-  .njg-results .rs-words.dense .rs-words-col.many { row-gap: 2px; --njg-end-word: 24px; }
+  .njg-results .rs-words.dense .rs-words-col.many { row-gap: var(--njg-line-2); }
+  .njg-results .rs-words.dense .rs-words-col.many .rs-word b { font-size: calc(var(--njg-end-word) * 0.86); }
   .njg-results .rs-words.dense .rs-words-col.many .rs-word { padding-block: 0; }
 }
 /* SH-86: a tile too narrow for its English beside the speaker (results.js fitPage: it had to wrap there): every tile's
