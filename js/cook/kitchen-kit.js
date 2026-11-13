@@ -402,9 +402,12 @@ const serveEnv = () => {
         S.tweens.add({ targets: flameLo, alpha: st === "low" ? 0.95 : 0, duration: 360 * t + 1 });
         // CHAI-92 (Zafar's picks, 6 Nov, lab/juice.html): the gas knob's click (knob A, was the tiny "click" SH-196 found too quiet),
         // and as it turns on from off, the flame catching 180 ms later (flame B)
+        // CHAI-113 (Zafar, 13 Nov, decision 14): turned on from off, both always answer the child's tap, even while Nani is still
+        // speaking: under her voice, quieter (Sfx's {under: true}, x Sfx.UNDER)
         if (!silent) {
-          Cook.sfx.knob();
-          if (was === "off" && st !== "off") Cook.sfx.flame({ delay: 180 });
+          const on = was === "off" && st !== "off";
+          Cook.sfx.knob(on ? { under: true } : undefined);
+          if (on) Cook.sfx.flame({ delay: 180, under: true });
         }
       };
       if (state !== "off") b.set(state, true);

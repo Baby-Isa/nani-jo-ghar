@@ -393,6 +393,9 @@
    */
   W.flash = function (host, word, o = {}) {
     if (!host || !word) return { el: null, close() {} };
+    // (SH-274, the S19 gate's eye judge, 12 Nov: "a second, fading copy lies over the first": only one copy is ever on screen; one
+    // still up, or still fading out, goes at once as the next comes)
+    (host.ownerDocument || root.document).querySelectorAll(".wc14-flash").forEach((old) => old.remove());
     const c = W.big14(null, word, Object.assign({}, o.opts || {}, { cls: ["wc14-flash", o.cls || ""].filter(Boolean).join(" ") }));
     c.setAttribute("aria-hidden", "true");
     c.style.left = `${Math.round(o.x || 0)}px`;

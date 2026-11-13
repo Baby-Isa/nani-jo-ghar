@@ -110,7 +110,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const view = [Math.max(m[0], (V.left != null ? V.left : 0) + m[1]), Math.min(1600 - m[0], (V.right != null ? V.right : 1600) - m[1])];
     const top = Math.max(V.top != null ? V.top : 0, -(hs.extraMax || 320)) + (hs.top != null ? hs.top : 16);
     const bot = band.top - (hs.above != null ? hs.above : 26);
-    const gap = hs.gap || 44;
+    // (CK-94, the S19 gate's eye judge, 12 Nov: at 740x320 "the frying pan's handle tip nearly touches the tray": the gap between the
+    // handle's end and the tray at least gapPx on the page, as well as gap in design px)
+    const gap = Math.max(hs.gap || 44, (hs.gapPx || 24) / Math.max(0.05, ppw));
     const rk = hs.rk || 0.36; // a vessel's rim radius over the burners' pitch
     const pot = ITEM(POT());
     const pan = ITEM("pan");
@@ -231,8 +233,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     if (hob.img.shadow) objs.push(hob.img.shadow);
     const R = LY.r; // each vessel's rim radius
     // each burner's knob below its pan on the hob's front edge (the knob rule: two pans side by side), its flames under the pan
-    const burner = (i) => {
-      const b = Cook.Kit.burner(S, hob, i, { flameR: R });
+    // CK-94 (the S19 gate's eye judge, 12 Nov: "the hob has no face circle where chai's has one"): each burner's knob with the face of
+    // the person its eggs are for beside it, as chai's pans (the first plate asking for that kind: boiled in the pot, fried in the
+    // pan); a vessel nobody's eggs are for has its knob alone
+    const burner = (i, who) => {
+      const b = Cook.Kit.burner(S, hob, i, { flameR: R, who: who || undefined });
       [b.knob, b.knobHit, b.flameHi, b.flameLo, b.face].forEach((o) => o && objs.push(o));
       return b;
     };
@@ -242,7 +247,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
      * turned by its settings' angle (CK-74), the pan by LY.angle where its settings give none.
      */
     const vessel = (k, i, fried, art = k) => {
-      const b = burner(i);
+      const b = burner(i, (plates.find((q) => !!q.fried === fried) || {}).who);
       const it = ITEM(art);
       const body = it.body || { cx: 0.5, cy: 0.5, r: 0.45, rIn: 0.36 };
       const flip = !!it.flip;
@@ -699,9 +704,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     }
 
     /* ---------------- the moves ---------------- */
+    // CK-113, contract-117 (the S19 gate: "the light round n.egg went after a tap that did not do its thing"): a tap the game turns down
+    // shakes its thing and leaves the light where it is (began() only for a tap that starts a move)
     S.tappable(bowl, () => {
+      if (held && held.kind === "raw") return S.wiggle(bowl);
       began();
-      if (held && held.kind === "raw") return;
       hold({ kind: "raw" });
       rawHeld = rawEgg(bowl.x, bowl.y - 30);
       S.tweens.add({ targets: rawHeld, y: bowl.y - bowl.displayHeight / 2 - 70, duration: 260, ease: "Back.easeOut" });
@@ -751,12 +758,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       z.progress({ into: v.key });
       refresh();
     };
-    S.tappable(pot, () => (began(), putIn(vessels.pot)));
-    S.tappable(pan, () => (began(), putIn(vessels.pan)));
+    const intoTap = (v) => {
+      if (!held || held.kind !== "raw" || !rawHeld) return S.wiggle(v.img); // (CK-113: nothing in the hand to put in)
+      began();
+      return putIn(v);
+    };
+    S.tappable(pot, () => intoTap(vessels.pot));
+    S.tappable(pan, () => intoTap(vessels.pan));
 
     const lift = (egg) => {
-      began();
       if (egg.out) return;
+      began();
       // (an egg in the pot or the pan covers its middle: with a raw egg in the hand, a tap there puts it in)
       if (held && held.kind === "raw") return putIn(egg.v);
       if (egg.p < ready) {
@@ -792,8 +804,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       return n === 1 ? { x: pl.x, y: pl.y, h: d * 0.52 } : { x: pl.x, y: pl.y + (i ? 1 : -1) * d * 0.19, h: d * 0.36 };
     };
     const onPlate = async (pl) => {
+      if (!held) return; // (CK-113: an empty hand on a plate does nothing, and the light stays)
       began();
-      if (!held) return;
       if (held.kind === "shaker") {
         const id = held.id;
         const flag = id === "spi-16" ? "salt" : "pepper";

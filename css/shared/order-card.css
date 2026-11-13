@@ -525,6 +525,9 @@ body.njg-s14 #guide.ng-s14 .ng-face { margin-block: calc((var(--njg-face-d) - va
 .oc-card.oc-s14 { border-radius: var(--njg-card14-u16); box-shadow: var(--njg-card14-shadow-order); }
 .oc-card.oc-s14 .oc-headline { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
 .oc-card.oc-s14 .oc-headline .word { color: var(--njg-card14-kutchi); }
+/* SH-276 (the S19 gate's eye judge, 12 Nov: "'Chop these' is English in dark italic, not the grey italic of missing Kutchi"): a headline
+   still to record keeps the kit's grey italic on the s14 card too (non-negotiable 2), as every other placeholder (css/shared/app.css .ph) */
+.oc-card.oc-s14 .oc-headline.rec, .oc-card.oc-s14 .oc-headline.rec .oc-rec-line { color: var(--njg-ink-soft); font-style: italic; }
 /* SH-192 (Zafar, 1 Nov night): the space above the head row's words equals the space below them to the item cards. The head
    row is centred on the face (SH-36), so the words' extra space above and below is the same; the card's own gap under the head
    row (with the item row's shadow room) matches its padding above, so the item row takes no margin of its own. */

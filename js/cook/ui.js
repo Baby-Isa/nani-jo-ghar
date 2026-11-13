@@ -663,6 +663,20 @@
   // done's line (the engine's Shabash, js/cook/flow.js Cook.praiseBox) holds her box from the moment it is said until the end screen
   // clears it (UI.guideClear), a new order opens or a new step opens; nothing in between puts an old step or instruction back
   let praiseLine = null;
+  let boxExclaim = false; // (SH-278: the box shows an exclamation now, "Shabash!" or "Bas!": set as each line is put in it)
+  // (an exclamation: the engine's role for it, or, when a station gave it a role of its own (baking's "Bas!" as a "react", s19ns-a4),
+  // the engine's own line for its key is one)
+  const isExclaim = (l) => {
+    if (!l) return false;
+    if (l.role === "exclaim") return true;
+    if (l.role !== "react" || typeof l.key !== "string" || !l.key) return false;
+    try {
+      const x = Lang.line(l.key);
+      return !!x && x.role === "exclaim";
+    } catch (e) {
+      return false;
+    }
+  };
   UI.naniMuted = () => !!(global.NaniGuide && global.NaniGuide.muted());
   // which data.guide key the box shows now (the station:phase, else the station, else the default)
   const guideEntryKey = () => {
@@ -945,6 +959,8 @@
     const rawSet = g.set;
     g.set = (html, o = {}) => {
       rawSet(html, o);
+      boxExclaim = !!html && isExclaim(guideLine);
+      if (helperEls() && helperEls().arrow) paintHelper(); // (SH-278: her arrow follows what the box shows)
       if (!mission || !mission.stripMode) return;
       // PAN-10: no step line showing: her task line (UI.stripTask), if the station set one
       mission.strip = html ? { html, rec: !!o.rec } : mission.stripTask ? Object.assign({ task: true }, mission.stripTask) : null;
@@ -1017,13 +1033,20 @@
     }
     if (on) paintHelper();
   }
+  // SH-278 (the S19 gate's eye judge, 12 Nov: "Nani's box keeps its drop-down on 'Shabash!' where chai's has none"): while her box
+  // shows an exclamation (the well done's "Shabash!", a "Bas!": Lang.line's role "exclaim") there is nothing to help with: no arrow and
+  // no open card, in every game, as chai's; the helper comes back with the next line that is not one
+  // (by what the box shows: whether the line was an exclamation when it was put in the box, boxExclaim, set as it is drawn below; the
+  // line's own record can move on while the box still shows it: daar's stir "Bas!", contract-126 in s19ns-a4)
+  const exclaiming = () => !!praiseLine || boxExclaim;
   function paintHelper() {
     const e = helperEls();
     if (!e || !e.arrow) return;
-    e.arrow.hidden = !helperW;
-    e.g.classList.toggle("ng-open", !!(helperOn && helperW));
-    e.arrow.setAttribute("aria-expanded", helperOn && helperW ? "true" : "false");
-    const want = helperOn && helperW ? helperW : null;
+    const w0 = exclaiming() ? null : helperW;
+    e.arrow.hidden = !w0;
+    e.g.classList.toggle("ng-open", !!(helperOn && w0));
+    e.arrow.setAttribute("aria-expanded", helperOn && w0 ? "true" : "false");
+    const want = helperOn && w0 ? w0 : null;
     if (e.slot._w === want) return;
     const had = e.slot._w;
     e.slot._w = want;
@@ -1075,7 +1098,7 @@
     paintHelper();
   };
   UI.helperOpen = function (on, o = {}) {
-    if (on && !helperW) return false;
+    if (on && (!helperW || exclaiming())) return false;
     const was = helperOn;
     helperOn = !!on;
     paintHelper();
@@ -2240,6 +2263,14 @@
      * C.lessons). A tap during it is the lesson's, never the order's skip (the request's ignore); nothing is logged as a peek or help.
      */
     let lessonOn = false;
+    // (SH-213, contract-98: the lesson is due: a card popped out hidden as the order is said, and this player's first-time gate still open)
+    const lessonDue = () => {
+      const pop = big14;
+      if (only || !pop || !pop.isConnected) return false;
+      if (!["wc14-hide-pic", "wc14-hide-en", "wc14-hide-k"].some((k) => pop.classList.contains(k))) return false;
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("order") : null;
+      return !!(global.Onboard && global.Onboard.light && gate && gate.due("reveal-card", true));
+    };
     // (before: what must be over first, the line still being said when the card came with the headline: awaited only if it will run)
     const blurLesson = async (pop, r, before = null) => {
       if (only || !pop || !pop.isConnected || !live()) return;
@@ -2259,6 +2290,10 @@
       // (above the order pop-up's see-through veil, which takes every other tap as the order's skip; under the kit's light, z 950)
       c.style.pointerEvents = "auto";
       c.style.zIndex = "900";
+      // (contract-121, the pantry's L2-L3: a card inside a stacking context of its own stays under the veil whatever its z, so the veil
+      // took the lesson's taps. While the lesson runs the veil lets taps through: the kit's light keeps the dark, the card takes its own)
+      const veils = [...document.querySelectorAll(".njg-rq-veil")].map((v) => [v, v.style.pointerEvents]);
+      veils.forEach(([v]) => (v.style.pointerEvents = "none"));
       const img = c.querySelector(".wc14-pic img");
       const hasPic = !!img;
       const hasEn = !!((c.querySelector(".wc14-en") || {}).textContent || "").trim();
@@ -2333,8 +2368,11 @@
           // same turn, before the reveal's sound and the card's fit, which on a busy page held the old box round the tap for 0.6-0.9 s)
           const k2 = steps.findIndex((x) => x[0] === slot);
           const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
+          // (contract-121: the move it waits for moves with the light, in the same turn: the light on the English while the game still
+          // waited on the Kutchi just tapped was a light the tap could never answer)
           if (nx) {
             cur = nx;
+            Cook.expect = { kind: "click", selector: `.wc14-lesson ${steps[k2 + 1][1]}` };
             if (lit && lit.layer && lit.layer.__redraw) lit.layer.__redraw();
           } else if (lit) (lit.close(), (lit = null));
           c.classList.remove(cls);
@@ -2354,6 +2392,7 @@
           c.style.pointerEvents = wasPE;
           c.style.zIndex = wasZ;
         }
+        veils.forEach(([v, pe]) => (v.style.pointerEvents = pe));
         Cook.expect = prevE;
         lessonOn = false;
       }
@@ -2612,8 +2651,10 @@
           // global.Rules.skips(target), through the pop-up's zones)
           // (a part revealed mid-station, opts.only, is not the order's start: its tap is the old reveal's, no skip zones or skip note)
           zones: s14 && !!global.Rules && typeof global.Rules.skips === "function" && !only,
-          // (SH-213: a tap while the big card lesson is up is the lesson's, never a skip)
-          ignore: () => lessonOn,
+          // (SH-213: a tap while the big card lesson is up is the lesson's, never a skip; and while it is due, its card popped hidden and its
+          // sentence still being said: contract-98, a tap then skipped the order and the lesson never came. The pop-up stays up until it
+          // is done, as the rule says)
+          ignore: () => lessonOn || lessonDue(),
           // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
@@ -3816,6 +3857,7 @@
     const parts = rows ? all.filter((p, i) => i === 0 || rows.some((r) => p.row === r)) : allDone ? all.slice(0, 1) : c._parts(true);
     c.classList.add("speaking");
     if (face) face.classList.add("on");
+    flashSaid(c, parts);
     try {
       await readAlong(parts);
     } catch (e) {
@@ -3923,8 +3965,26 @@
       w.word.picture = { src: Cook.v(black ? dp.black : dp.milk), fit: "contain" };
       if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.picture = true;
     }
+    // (SH-273, the S19 gate's eye judge, 12 Nov: "an empty cream box where the picture goes": a dish whose order row has no picture of its
+    // own, baking's naan, chaat, chop's first thing, shows its item's own picture, as the shelf and the order card do; none at all: no box)
+    if (w.word && !w.word.picture) {
+      const src = wcPicSrc(dish);
+      if (src) {
+        w.word.picture = { src: Cook.v(src), fit: "contain" };
+        if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.picture = true;
+      }
+    }
     if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
     if (w.wordOpts) w.wordOpts.enShown = false;
+    // (SH-273, contract-128 in s19ns-a4: chai's glass was not in yet for the card's first 383 ms, an empty box: its picture is fetched now
+    // and the card waits for it, as it waits for the bubble, a beat at most)
+    let pre = null;
+    if (w.word && w.word.picture && w.word.picture.src && typeof Image !== "undefined") {
+      pre = new Image();
+      pre.src = w.word.picture.src;
+    }
+    const picIn = () => !pre || (pre.complete && pre.naturalWidth > 0) || !!pre._bad;
+    if (pre) pre.onerror = () => (pre._bad = true);
     // the card a little off to the side of the speaker's bubble, clear of every face and bubble (SH-267's frames, 12 Nov: with no bubble
     // drawn yet it sat in the play area's middle, over the customer's head and bubble). It waits a beat for the bubble to be drawn.
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(dish || "") });
@@ -3967,6 +4027,14 @@
       handle.f = f;
       handle.el = f && f.el;
       if (!f || !f.el) return;
+      // (SH-273: "a row of dots where chai's card has the English": the flash has no English (it is not the order card, non-negotiable
+      // 3), so it has no English row at all, never its hidden dots; and no empty picture box when the dish has no picture)
+      const enRow = f.el.querySelector(".wc14-slot-e");
+      if (enRow) enRow.remove();
+      if (!(w.word && w.word.picture)) {
+        const pb = f.el.querySelector(".wc14-pic");
+        if (pb) pb.remove();
+      }
       // (its own size, measured once drawn; then the first place clear of every face and bubble: right of the bubble, left of it, the
       // play area's top corners, its middle last)
       const cw = f.el.offsetWidth || 120;
@@ -3995,7 +4063,7 @@
     const t0 = Date.now();
     const wait = () => {
       if (handle.closed) return;
-      if (bubble() || Date.now() - t0 > 400 / sp) return show();
+      if ((bubble() && picIn()) || Date.now() - t0 > 600 / sp) return show();
       setTimeout(wait, 40);
     };
     wait();
@@ -4069,12 +4137,37 @@
     if (!(rows.some((r) => r.done) && rows.some((r) => !r.done))) return mission.line;
     return Order().speech(mission.ladders.map((L) => Object.assign({}, L, { head: null, sections: L.sections.filter((s) => !s.when || s.shown).map((s) => Object.assign({}, s, { when: null, groups: s.groups.map((g) => g.filter((r) => !r.done)).filter((g) => g.length) })).filter((s) => s.groups.length) })));
   }
+  /**
+   * SH-267 on a replay (Zafar, 13 Nov, decision 15: "the dish card on replay yes"): when an order is said again from the customer's face
+   * (sayCardEl, M.sayCard) and the line names the dish ("Muke ... khape"), the dish's card flashes up as it did the first time (UI.dishFlash:
+   * level 1 only). The dish is the head row; a card with no dish of its own (chop's "Muke ba dungri khape") flashes its first thing said.
+   */
+  function flashSaid(c, parts) {
+    if (!c || !parts || !parts.length) return null;
+    const plain = (p) => {
+      try {
+        return (p && p.line && Lang.plain(p.line)) || "";
+      } catch (e) {
+        return "";
+      }
+    };
+    const rowOf = (p) => p.row || (p.line && p.line.row) || null;
+    const all = c._parts ? c._parts() : [];
+    // (the line says the dish when it starts where the card's whole order starts: its headline, never a replay of the steps left only)
+    if (!all.length || !plain(parts[0]) || plain(parts[0]) !== plain(all[0])) return null;
+    const head = parts.map(rowOf).find((r) => r && r.head) || all.map(rowOf).find((r) => r && r.head);
+    if (head) return UI.dishFlash(c.dataset.who || null, head);
+    const first = parts.map((p) => rowOf(p) || ((p.line && p.line.rows) || []).find((x) => x && !x.head && !x.no)).find(Boolean);
+    return first ? UI.dishFlash(c.dataset.who || null, first) : null;
+  }
   /** The order card's own speaker: the order, read along on the card (the steps left once some are done: replayLine). */
   M.sayCard = function () {
     if (!mission || introOpen()) return;
     const btns = [...document.querySelectorAll("#mission .oc-face")]; // the face is the replay button
     btns.forEach((b) => b.classList.add("on"));
-    return readAlong(partsOf(replayLine(), sideEls))
+    const said = partsOf(replayLine(), sideEls);
+    flashSaid(document.querySelector("#mission .oc-card[data-who]") || document.querySelector("#mission .oc-card"), said);
+    return readAlong(said)
       .catch(() => {})
       .then(() => btns.forEach((b) => b.classList.remove("on")));
   };
@@ -5009,6 +5102,7 @@
     if (stepper) stepper.close();
     stepper = null;
     guide = guideKey = guideLine = praiseLine = null;
+    boxExclaim = false;
     if (kitTally && kitTally.destroy) kitTally.destroy();
     kitTally = null;
     mission = null;

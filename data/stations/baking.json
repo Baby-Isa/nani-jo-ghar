@@ -601,9 +601,11 @@
     360
    ],
    "drawn": {
-    "w": 560,
-    "h": 460
+    "w": 780,
+    "h": 593
    },
+   "room": 0.96,
+   "_ck101": "CK-101 (the S19 gate's eye judge, 12 Nov: 'the oven is toy-sized', 560 wide, the mixing bowl's width and twice the tray's): 780 wide, about three trays, never taller than room (its share of the height between the view's top and the shelf band); centre x 900 keeps its left edge clear of the naan's tray (x 330, 280 wide)",
    "_note": "one 840x643 canvas, top-left aligned on the cabinet frame: a swap changes only the glow or the door"
   },
   "_bgWas": "assets/cook/proto/baking/bg-counter.webp"

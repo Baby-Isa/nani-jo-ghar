@@ -5864,12 +5864,12 @@
   },
   {
    "id": 6,
-   "title": "Eid mishkaki",
+   "title": "Birthday mishkaki",
    "teach": [
     "mishkaki"
    ],
    "finale": true,
-   "gist": "It's Eid! Mishkaki on the grill, and the whole family is hungry.",
+   "gist": "It's a birthday! Mishkaki on the grill, and the whole family is hungry.",
    "orders": [
     {
      "who": "nana",

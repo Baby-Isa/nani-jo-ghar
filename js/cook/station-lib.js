@@ -1195,7 +1195,9 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
       Object.entries(items).forEach(([id, obj]) => obj && obj.active && S.tappable(obj, () => finish({ id, obj })));
       if (doneOk) UI.done({ glow: !!doneGlow }).then(() => finish({ done: true }));
       const target = next && items[next] && items[next].active ? items[next] : null;
-      if (target && (z.guided || help)) S.glow(target, true); // help: a redo's second try (decision 51)
+      // help: a redo's second try (decision 51). (SH-237, contract-107: a shelf thing lit hops, as the coach's and the hint's lights do;
+      // this guided glow lit chaat's and the pantry's shelf things still)
+      if (target && (z.guided || help)) S.glow(target, true, { bounce: !!(Cook.Coach && Cook.Coach.onShelf && Cook.Coach.onShelf(target)), now: true });
       if (target) {
         const c = S.centre(target);
         const wrongs = Object.keys(items)
