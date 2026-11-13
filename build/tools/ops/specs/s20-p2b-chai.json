@@ -1,0 +1,50 @@
+{
+ "why": "Sprint 20, before chai's reference (Zafar, 13 Nov evening, decision 24): the fixes he asked for on seeing chai's pictures and the geometry rules' first run",
+ "cost": "medium: Sonnet, high effort, one session (about $20-30)",
+ "model": "Sonnet",
+ "effort": "high",
+ "stop": "when the tasks are done, or at the end of one session: then stop and report what is left",
+ "kind": "code",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "proof": "chai's geometry rules (boxes.mjs --rules) and the box diff against build/frozen/boxes/chai-tray, plus pictures for Zafar (Sprint 20, decision 22)",
+ "name": "s20-p2b-chai: chai's last fixes before its reference",
+ "port": 8951,
+ "report": "s20-p2b-chai",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "docs/process/regressions.md rows SH-287, SH-288, SH-289; docs/decisions/2026-11-10-overnight.md items 22-24",
+  "build/reports/s20-p5-rules.md (what the rules found in chai) and build/tools/review/boxes.mjs --help"
+ ],
+ "owns": [
+  "js/cook/ui.js, js/cook/flow.js (the order's view), js/cook/stations/chai-tray.js",
+  "js/shared/order-card.js, js/shared/word-card.js, js/shared/onboard.js (hit areas only), css/shared/*.css, css/cook*.css"
+ ],
+ "readOnly": [
+  "every other game file, build/sandbox/**, build/tools/** (run them only), build/frozen/** (never re-freeze), docs/process/regressions.md, assets/**"
+ ],
+ "flows": ["cook:chai-tray"],
+ "branch": "s20-p2b-chai (new, in /home/user/wt/s20-p2b-chai); commit there, never push",
+ "tasks": [
+  {
+   "do": "SH-287 (Zafar, 13 Nov: 'the view needs to be moved up during the order phase ... less of the island and more of the wall behind the island'): the order scene's view sits higher. The customer and the bubble stay whole; nothing else in the round moves. Show it at 740x320 and 1280x665.",
+   "accept": "two pictures (before and after, phone and laptop: four in all) for the orchestrator to send Zafar"
+  },
+  {
+   "do": "SH-288 (Zafar: 'increase the tap targets as much as you can without changing the look'): every tap target at least 48 CSS px by an invisible hit area, the drawn look unchanged: the word cards' speakers, Nani's arrow, the family badges, the knobs' zones, the jars, the dots under word cards. A hit area never overlaps another target's (where two would, they share the room between them).",
+   "accept": "boxes.mjs --game chai-tray --rules: tap-size passes at the four sizes; the box diff shows no drawn box moved"
+  },
+  {
+   "do": "SH-289: at 740x320 the end review's word grid shows every card whole (today chai L4's 'hakro' card is cut at the panel's bottom). And the order headline is one size at every state in chai (the headline rule: L4 at 1280x665 sets it 18.5 / 16.5 / 19 px). Leave the three-line folded orders at the end as they are: Zafar decides the served mark first; the orchestrator will send you his answer.",
+   "accept": "text-whole and headline pass on chai except the folded orders' line count"
+  },
+  {
+   "do": "Standing: browser runs under your own lock and port (COOK_TEST_PORT=8951, NJG_LOCK=/tmp/njg-browser-8951.lock, flock it); at most --parallel 2 (another builder may run); commit on your branch often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never re-freeze the box reference or the frozen run; never touch a check, a probe or a row's status; every change to what a child sees is named in the report; keep under 1 GB of runs.",
+   "accept": "build/reports/s20-p2b-chai.md with a Proof section, under 600 words: the rules' result, the box diff (each moved box and why)"
+  }
+ ]
+}
