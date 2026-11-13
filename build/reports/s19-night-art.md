@@ -48,5 +48,5 @@ proof is the one that holds.
 | `registry.mjs --validate` | 720 pieces, 0 errors |
 | `node --test build/tools/art/*.test.mjs` | 7 rename tests pass; rim, light and refs pass again. The 3 art-block tests need `sources/art`, which this worktree lacks: they fail the same way on the base. |
 | `checks.mjs` | all green but: `leak` (clinic timed out under load, not mine), `docs` (the 3 old doc paths above) |
-| strict `shotdiff` art-after vs art-before, 1280x665 L1 and sekelo L4 | title 0 changed; the games show noise (see the tool note) |
+| strict `shotdiff` after vs before (runs art-before / art-after: 1280x665 and 740x320 L1 for the 11 games and the title, sekelo L1-L4 at both) | title: 0 changed at 1280x665, 1 at 740x320 (10 identical). The games show play-to-play noise: 740x320 has 155 changed of 394, 78 gone, 47 new; sekelo L2-L3 at 1280x665 has 26 of 59. A different order is a different screen (the tool note). Sekelo's 930x430 and 1920x1080 matrix was not run: L4 timed out at 300 s under the machine's load (load average 38 on 4 cores). |
 | Contract run | (filled at the end) |
