@@ -311,7 +311,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const p = S.track(S.add.image(x, y, "mv-thali").setDepth(D.item - 1));
       p.setScale(PLATE_D / p.width);
       p.shadow = S.contactShadow(p);
-      if (quiet) p.setAlpha(0.9);
+      // (CK-112: "the empty plates are not flat grey discs": the steel plate at full strength, as chai's vessels wait)
+      if (quiet) p.setAlpha(1);
       return p;
     };
     // M3 / Q14: one realistic pile of dough balls per kind, straight on the band (no tray); tap it and one
@@ -406,7 +407,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     /** The word pops by the action (§4: the shared kit's word pop, piece 12, Juice.P.pop), and the family clip plays. */
     const wordPop = (id, x, y) => {
       const k = Math.max(1, Kit.textFloor(S, 36)); // never under 14 px as rendered
-      global.Juice.P.pop(S, { x, y: y - 16 }, Cook.display(id), { k, depth: D.fx + 4, top: (Cook.view || {}).top || 0 });
+      // CK-112 (the S19 gate's eye judge, 12 Nov, 740x320: the "maani" label touched the board's top edge): its pill sits wholly above
+      // y (the board's top, less a gap), its bottom 8 px clear at any size; only the view's top may bring it lower
+      const top = (Cook.view || {}).top || 0;
+      const at = (w, h) => ({ x, y: Math.max(top + h / 2 + 4, y - 8 - h / 2) });
+      global.Juice.P.pop(S, at, Cook.display(id), { k, depth: D.fx + 4, top });
       Lang.popWord(id);
     };
 
