@@ -124,11 +124,14 @@
 .oc-card.closed { position: relative; }
 /* SH-37 / CHT-15 (judges, 19 Oct: "Muke daar khape" ran under the served stamp, which covered its full stop): a card on a stamped
    order keeps the stamp's own room at its right, so its words fit (shrink, then wrap: non-negotiable 9) beside it, never under it */
-.oc-card.oc-stamped { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
 /* PAN-01 (800x360: "Bring me these" and the tick ran under the stamp on a folded served card): the stamp's room holds on every size
    (:root: the phones' tighter card padding below no longer wins over it), and a folded card's stamp is the tick's size, centred
    in its head beside the tick (the stamp reads these, .oc-stamp below), so the headline keeps a line's room (shrink, then wrap) */
-:root .oc-card.oc-stamped:not(.oc-big):not(.oc-mini) { padding-right: calc(var(--njg-icon) * 1.6 + var(--njg-s2) * 1.5); }
+/* Zafar, 13 Nov (decision 25): the served stamp REPLACES the tick, in the tick's place, so the card takes no more room than with the tick alone
+   (no padding reserved for the stamp): the tick's room stays, unseen, under the stamp */
+.oc-card.oc-stamped:not(.oc-big):not(.oc-mini) .oc-done-tk { display: block; visibility: hidden; }
+.oc-card.oc-stamped:not(.oc-big):not(.oc-mini) { --oc-stamp: calc(var(--oc-tick) * 1.5); --oc-stamp-t: 50%; --oc-stamp-b: auto; --oc-stamp-mt: calc(var(--oc-tick) * -0.75); }
+.oc-card.oc-stamped:not(.oc-big):not(.oc-mini) .oc-stamp { right: calc(var(--oc-pad) - var(--oc-tick) * 0.25); }
 /* One stamp (S13-B1; OrderCard.stamp; SH-54, R5, T20: "served" is a picture, never a word): a gold ring with a covered dish,
    tilted like a stamp, inside the card so nothing clips it (was Cook's #mission.stamped .oc-card::after and .m-stamp) */
 .oc-card .oc-stamp {
@@ -141,7 +144,6 @@
 .oc-card.still .oc-stamp { animation: none; }
 :root .oc-card.oc-stamped.folded:not(.oc-big):not(.oc-mini) {
   --oc-stamp: calc(var(--oc-tick) * 1.5); --oc-stamp-t: 50%; --oc-stamp-b: auto; --oc-stamp-mt: calc(var(--oc-tick) * -0.75);
-  padding-right: calc(var(--oc-tick) * 1.5 + var(--njg-s2) * 1.5);
 }
 .oc-look { display: none; position: absolute; right: var(--njg-s1); bottom: var(--njg-s1); width: calc(var(--njg-icon) * 0.85); height: calc(var(--njg-icon) * 0.85); color: var(--njg-ink-soft); pointer-events: none; }
 .oc-look svg, .oc-look img { width: 100%; height: 100%; display: block; }
