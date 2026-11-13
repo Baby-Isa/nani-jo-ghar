@@ -29,8 +29,8 @@ In Zafar's words (13 Nov): settle chai and record exactly how it looks; move cha
 | P2 | Chai settled: its three faults, SH-286 (the dish card is the order's own pop-up), Mum's words; one line per kind of change for Zafar; re-freeze on his yes | built, merged | `build/reports/s20-p2-chai.md`; three of its faults were checks reading wrong (fixed by the orchestrator: contract-37, -119, -124); the page error fixed (Onboard.lightBack). Next: Zafar's yes to the change list and the glass's clink, then the re-freeze |
 | P3 | The lock on the door: the checks that pass today (fast checks + 161 contract checks) become a gate, and a merge script refuses any change that fails one | running | builder `s20-p3-gate` (Sonnet, high, about $20-30) |
 | P4 | The measuring tool: freeze the game at six moments and record exactly where everything sits (proven on chai as it is; one session) | done | `boxes.mjs --prove`: chai identical 3 runs x 8 pages, 4 planted faults caught, 4 min a run; reference `build/frozen/boxes/chai-tray/` |
-| P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | running | builder `s20-p5-rules` (Sonnet, high, about $30-45) |
-| P6 | Chai's 12 reference pictures. **Zafar, review point 2** | waits for P2-P5 | |
+| P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | done | `boxes.mjs --rules`: 10 rules, 7/7 planted faults caught, SH-277 caught in eggs, CK-112 on its old code; chai fails tap-size, headline, text-whole (to fix before the reference: SH-288, SH-289) |
+| P6 | Chai's 12 reference pictures. **Zafar, review point 2** | waits for chai's last fixes | builder `s20-p2b-chai` (Sonnet, high, about $20-30): SH-287 order view higher, SH-288 tap areas, SH-289 end grid and headline size; the served mark on Zafar's answer |
 | P7 | Park the rows ("waits for the frame") | with P3 | |
 | 1 | Chai's play-area lines move out of chai into the frame, unchanged; chai asks the frame for its play area; every box proven unchanged | waits | |
 | 2 | Chai's stove, pans and tray are measured from its play area, not the screen; every box proven unchanged | waits | |
