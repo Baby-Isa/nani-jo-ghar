@@ -28846,9 +28846,7 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3,
-    4
+    2
    ],
    "sizes": [
     "740x320",
@@ -28872,9 +28870,7 @@
    "path": "fair",
    "level": [
     1,
-    2,
-    3,
-    4
+    2
    ],
    "sizes": [
     "740x320",
@@ -28933,27 +28929,7 @@
     "crop:.njg-results, #results, .results"
    ],
    "expect": null,
-   "note": "chop's end screen buttons: the shared ones, as chai's"
-  },
-  {
-   "flow": "cook:chai-tray",
-   "path": "fair",
-   "level": [
-    1
-   ],
-   "sizes": [
-    "740x320",
-    "1280x665"
-   ],
-   "profile": "fresh",
-   "want": null,
-   "at": "result",
-   "after": null,
-   "capture": [
-    "crop:.njg-results, #results, .results"
-   ],
-   "expect": null,
-   "note": "chai's end screen, for the comparison"
+   "note": "chop's end screen buttons: the shared ones (the same as daar's and chai's end screens in the contract runs)"
   }
  ],
  "CK-112": [
