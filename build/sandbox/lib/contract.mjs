@@ -77,6 +77,7 @@ import { CHAI_CHECKS, CHAI_ROW, helpStageRe } from "./contract-chai.mjs";
 import { S17_CHECKS, checkS17 } from "./contract-s17.mjs";
 // contracts 100 and up: the shared pieces present (s19-checks, Sprint 19 part 1), in a file of their own
 import { S19_CHECKS, checkS19 } from "./contract-s19.mjs";
+import { NIGHT_CHECKS, checkNight } from "./contract-night.mjs"; // (s19-night-shared: contract-124 to 127, CHAI-113, SH-274, SH-278, SH-272)
 import { WO_CHECKS, checkWO } from "./contract-wo.mjs"; // (s19-clean-a: contract-118, the wrong-order pop-up and the redo)
 import { SHADE_CHECKS, LESSON_CHECKS, BAND_CHECKS, checkShade } from "./contract-shade.mjs"; // (s19-clean-a4: contract-120, SH-268 every worktop object's shadow)
 import { SCREEN_CHECKS, check112, check113, judgedByGame, judgedMd, judgedLine } from "./contract-screen.mjs";
@@ -135,6 +136,7 @@ export const CHECKS = {
   ...S17_CHECKS,
   ...S19_CHECKS,
   ...WO_CHECKS,
+  ...NIGHT_CHECKS,
   ...SHADE_CHECKS,
   ...LESSON_CHECKS,
   ...BAND_CHECKS,
@@ -1605,6 +1607,7 @@ export function analyse(r, { root = ".", retired = loadRetired(root), clip = cli
   checkS17(r, tl, v, add);
   checkS19(r, tl, v, add);
   checkWO(r, tl, v, add);
+  checkNight(r, tl, v, add);
   checkShade(r, tl, v, add);
   check109few(r, tl, add); // (s19-checks-2: one or two shelf items, judged too)
   check96(r, tl, add);

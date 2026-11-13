@@ -945,6 +945,7 @@
     const rawSet = g.set;
     g.set = (html, o = {}) => {
       rawSet(html, o);
+      if (helperEls() && helperEls().arrow) paintHelper(); // (SH-278: her arrow follows what the box shows)
       if (!mission || !mission.stripMode) return;
       // PAN-10: no step line showing: her task line (UI.stripTask), if the station set one
       mission.strip = html ? { html, rec: !!o.rec } : mission.stripTask ? Object.assign({ task: true }, mission.stripTask) : null;
@@ -1017,13 +1018,18 @@
     }
     if (on) paintHelper();
   }
+  // SH-278 (the S19 gate's eye judge, 12 Nov: "Nani's box keeps its drop-down on 'Shabash!' where chai's has none"): while her box
+  // shows an exclamation (the well done's "Shabash!", a "Bas!": Lang.line's role "exclaim") there is nothing to help with: no arrow and
+  // no open card, in every game, as chai's; the helper comes back with the next line that is not one
+  const exclaiming = () => !!praiseLine || !!(guideLine && guideLine.role === "exclaim");
   function paintHelper() {
     const e = helperEls();
     if (!e || !e.arrow) return;
-    e.arrow.hidden = !helperW;
-    e.g.classList.toggle("ng-open", !!(helperOn && helperW));
-    e.arrow.setAttribute("aria-expanded", helperOn && helperW ? "true" : "false");
-    const want = helperOn && helperW ? helperW : null;
+    const w0 = exclaiming() ? null : helperW;
+    e.arrow.hidden = !w0;
+    e.g.classList.toggle("ng-open", !!(helperOn && w0));
+    e.arrow.setAttribute("aria-expanded", helperOn && w0 ? "true" : "false");
+    const want = helperOn && w0 ? w0 : null;
     if (e.slot._w === want) return;
     const had = e.slot._w;
     e.slot._w = want;
@@ -1075,7 +1081,7 @@
     paintHelper();
   };
   UI.helperOpen = function (on, o = {}) {
-    if (on && !helperW) return false;
+    if (on && (!helperW || exclaiming())) return false;
     const was = helperOn;
     helperOn = !!on;
     paintHelper();

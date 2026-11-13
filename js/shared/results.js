@@ -529,8 +529,41 @@
       el.style.paddingLeft = `${Math.round(Math.max(0, r.left) + gap)}px`;
       el.style.paddingRight = `${Math.round(Math.max(0, W - r.right) + gap)}px`;
     };
-    place();
-    root.addEventListener("resize", place);
+    // SH-272 (the S19 gate's eye judge, 12 Nov: "the top of Nani's hijab pokes out above it ... chai's panel covers both people
+    // cleanly"): a card that would leave a head half behind it (its top edge across a face: the host's NjgFaceBoxes, Cook's people on
+    // the play area) grows, from its middle, until its top is clear above every such head, as far as the screen allows; a head wholly
+    // above or below the card, or beside it, is left as it is
+    const cover = () => {
+      const c = el.querySelector(".rs-card");
+      if (!c || !c.isConnected) return;
+      c.style.minHeight = "";
+      let heads = [];
+      try {
+        heads = typeof root.NjgFaceBoxes === "function" ? root.NjgFaceBoxes() || [] : [];
+      } catch (e) {
+        heads = [];
+      }
+      if (!heads.length) return;
+      const top = c.offsetTop, h = c.offsetHeight, left = c.offsetLeft, right = left + c.offsetWidth;
+      const H = root.innerHeight || 0;
+      const room = 8;
+      let need = 0;
+      heads.forEach((b) => {
+        if (b.right <= left || b.left >= right) return; // beside the card
+        if (b.bottom <= top || b.top >= top) return; // wholly above it, or its top already under the card
+        need = Math.max(need, top - b.top + room);
+      });
+      if (!need) return;
+      const gap = (root.getComputedStyle && parseFloat(root.getComputedStyle(el).paddingTop)) || 8;
+      c.style.minHeight = `${Math.round(Math.min(H - gap * 2, h + need * 2))}px`;
+    };
+    const placeAll = () => {
+      place();
+      cover();
+    };
+    placeAll();
+    setTimeout(() => el.isConnected && cover(), 350); // (once its page's words are fitted)
+    root.addEventListener("resize", placeAll);
     // a page can hide what must not show behind the pop-up (Cook: the old menu card; design system 10): it marks it
     // data-njg-results-hide (css/shared/results.css), and the html carries njg-results-open while an end screen is up
     document.documentElement.classList.add("njg-results-open");
@@ -550,7 +583,7 @@
     };
     const close = () => {
       if (!el.isConnected) return;
-      root.removeEventListener("resize", place);
+      root.removeEventListener("resize", placeAll);
       el.classList.add("leaving");
       setTimeout(() => el.remove(), reduced() ? 0 : 220);
       if (current && current.el === el) current = null;
