@@ -320,9 +320,19 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
   function liftOrderView(s) {
     const cam = s && s.cameras && s.cameras.main;
     const v = Cook.view;
-    if (!cam || !v || !s.__orderLift || !onService(s)) return;
-    const f = Cook.serviceFrame ? Cook.serviceFrame(s) : { oy: v.top };
-    cam.scrollY = v.top - Math.max(0, Math.min(ORDER_LIFT, v.top - f.oy));
+    if (!cam || !v) return;
+    // (Cook.view is the world the camera shows: it rises with the camera, so the frame's own box (the play area) stays where it is)
+    const was = v.__lift || 0;
+    const base = v.top + was;
+    let lift = 0;
+    if (s.__orderLift && onService(s)) {
+      const f = Cook.serviceFrame ? Cook.serviceFrame(s) : { oy: base };
+      lift = Math.max(0, Math.min(ORDER_LIFT, base - f.oy));
+    }
+    cam.scrollY = base - lift;
+    v.top = base - lift;
+    v.bottom = v.bottom + was - lift;
+    v.__lift = lift;
   }
   /** The ordering view, lifted (or not): a resize while it stands keeps the lift; any other view (a station's) is never lifted. */
   function orderLift(s, on) {
