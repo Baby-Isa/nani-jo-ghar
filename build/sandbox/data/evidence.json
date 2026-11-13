@@ -27934,9 +27934,12 @@
  "PAN-21": [
   {
    "flow": "cook:fetch",
-   "path": "speed1",
+   "path": "fair",
    "level": [
-    1
+    1,
+    2,
+    3,
+    4
    ],
    "sizes": [
     "740x320",
@@ -27944,14 +27947,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "every:placed",
    "after": null,
    "capture": [
-    "crop:#game"
+    "crop:#stage"
    ],
    "expect": null,
-   "max": 8,
-   "note": "PAN-21 as its row says"
+   "max": 6,
+   "note": "PAN-21: as each thing lands on the tray, any count pill (the tally, #count-badge) sits in the bottom right corner over no item, never on a shelf over its things (L1-L4)"
   }
  ],
  "ART-72": [

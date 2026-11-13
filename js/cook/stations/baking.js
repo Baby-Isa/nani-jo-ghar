@@ -500,30 +500,6 @@ import { setTimeout } from "../life.js";
       // engine can't say whole: its English in grey, never stitched from fragments (non-negotiable 2), a line for the recording sheet
       const call = Lang.role(amountLine(s), "order");
       say(call);
-      // CK-95 (the S19 gate's eye judge, 12 Nov: "atto sits on the shelf unlit, nothing dimmed, no gold box" while she says "Hakro cup
-      // atto wiji chad!"; the light came only after the jar had left the shelf): the first time, the thing she names is lit with the
-      // kit's light (the dim and the box) as she calls it, as chai's first jar; it goes as it is picked. After that the shared step's
-      // help ladder alone (the call, then the light after the level's wait)
-      const jarImg = shelf[s.id];
-      let picking = true;
-      const jarCtl =
-        jarImg && gate.first("jar")
-          ? Cook.Coach.control({
-              key: KEY,
-              note: `${KEY}:jar`,
-              target: Cook.Coach.box(jarImg, PAD, { visible: true }),
-              first: true,
-              noHint: true,
-              current: () => picking && !jarImg.lifted,
-              busy: () => busy,
-              onLight: () => S.glow(jarImg, true, { now: true }),
-            })
-          : null;
-      const jarOff = () => {
-        picking = false;
-        if (jarCtl) jarCtl.close();
-        if (jarCtl && jarImg.active) S.glow(jarImg, false);
-      };
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
         items: Object.assign({}, shelf),
@@ -536,7 +512,6 @@ import { setTimeout } from "../life.js";
         onWrong: (key) => (Cook.Coach.wrong(), z.listen(false, `took ${key} for ${s.id}`)),
         onLand: (key, obj) => S.tweens.add({ targets: obj, y: obj.home.y - 30, duration: 140, yoyo: true }),
       });
-      jarOff();
       z.listen(true, `took ${s.id}`);
       if (!ctx.guided && Lang.known(s.id)) Cook.markRight(s.id);
       const img = shelf[r.key];
@@ -695,7 +670,11 @@ import { setTimeout } from "../life.js";
     // (SH-258: their face circle moves to the tray their naan bakes on, from its first frame)
     const face = faceAt ? faceAt(naan) : null;
     // (CK-100: beside the tray, at its left, clear of it: never over a naan on it, nor in the light round it)
-    if (face) face.setPosition(naan.x - naan.displayWidth / 2 - face.displayWidth * 0.62, naan.y - naan.displayHeight * 0.2);
+    // (its clearance: the kit's light margin round the tray, Onboard.LIGHT at its widest, on the page: contract-82)
+    const ppwF = Math.max(0.05, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+    const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
+    const faceGap = (OL.max + OL.clear + 6) / ppwF;
+    if (face) face.setPosition(naan.x - naan.displayWidth / 2 - face.displayWidth / 2 - faceGap, naan.y - naan.displayHeight * 0.2);
     const tapOn = (o, name, withLight = null) => {
       let open = true;
       return new Promise((resolve) => {
@@ -778,7 +757,7 @@ import { setTimeout } from "../life.js";
     // goes with the tray, to beside the oven's door at the rack's height, outside the oven (never over the naan, never in the oven's
     // lit box), and comes back with the tray
     const faceHome = face ? { x: face.x, y: face.y } : null;
-    const faceBy = face ? { x: ox - ov.displayWidth / 2 - face.displayWidth * 0.62, y: rackY } : null;
+    const faceBy = face ? { x: ox - ov.displayWidth / 2 - face.displayWidth / 2 - faceGap, y: rackY } : null;
     await Promise.all([
       Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" }),
       face ? Cook.tween(S, { targets: face, x: faceBy.x, y: faceBy.y, duration: 520, ease: "Cubic.easeInOut" }) : null,
