@@ -17,11 +17,11 @@ Branch `s19-r2-games`, never pushed. The integration branch (the eggs race fix, 
 ## Proof
 
 - Evidence: `build/screenshots/evidence/s19-r2-games-ev/` (10 rows, index `build/reports/evidence-s19-r2-games-ev.md`). SEK-29 and CK-105 were re-played on the final code in `.../s19-r2-games-ev2/`.
-- Contract L1-L4, 740x320 and 1280x665: `build/screenshots/sandbox/s19-r2-games-contract/contract.md`, "CONTRACT FAILED: 84 breaks", 64 of 64 ends. The baseline had 63 on the same pages. 18 page/check pairs got better and 40 got worse. Most are timing checks that also break on other levels of the same games in the baseline (contract-24, -70, -102, -107, -111, -114, -117). Two come from this branch:
+- Contract L1-L4, 740x320 and 1280x665: `build/screenshots/sandbox/s19-r2-games-contract/contract.md`, "CONTRACT FAILED: 84 breaks", 64 of 64 ends. The baseline had 63 on the same pages. 18 page/check pairs got better and 40 got worse. Most are timing checks the baseline breaks on other levels too. Two come from this branch:
   - **contract-105** (chop and daar, 740x320): Zafar's DAAR-39 strip now spans the board, so its middle is off the vegetable.
   - **contract-115** (mishkaki, 740x320): the grill fell to 59% of the height. With the cog gap cut to 6 px, `s19-r2-games-sek/contract.md` shows "CONTRACT FAILED: 1 breaks (contract-72 1)", a check the baseline also breaks. contract-115 is gone.
 - L1 at 930x430 and 1920x1080: `s19-r2-games-contract4/contract.md`, "CONTRACT FAILED: 18 breaks", 16 of 16 ends. None of them is contract-105 or -115.
-- Checks: `node build/tools/review/checks.mjs`: 14 steps, all ok (unit 926 pass, 0 fail; recordings current); loadcheck: 27/32 as before (five pages load another game's picture: data and art, not this branch; build/reports/s19-taps.md has the same)
+- Checks: `node build/tools/review/checks.mjs`: 14 steps, all ok (unit 926 pass, 0 fail; recordings current); loadcheck 27/32, the same five fails as before (s19-taps.md)
 - check-change: not run. Its dry run plans 264 minutes. The contract runs above are its play steps.
 
 ## Rows
@@ -36,4 +36,3 @@ Branch `s19-r2-games`, never pushed. The integration branch (the eggs race fix, 
 - **CK-100 DONE** (`ev/CK-100-2.png`): the face circle sits beside the bowl, the tray and the oven, outside every box.
 - **CK-102**: the shelf part is DONE. The tray part is LEFT (shared): `serve.js` lands each dish after its tray. The card folding at well done is OrderCard's settle (Zafar, 5 Nov), which is **his call**.
 - **CK-105 DONE** (`ev2/CK-105.png`, `-2.png`): at L3 each card starts with hakro makai, and ticked cards stay in place.
-- **CK-92, CK-104, CK-46**: left as the brief says.
