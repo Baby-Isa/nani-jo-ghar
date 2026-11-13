@@ -28839,5 +28839,144 @@
    "expect": null,
    "note": "mishkaki: the meat browns over the cook's time (raw, then part, then cooked), never raw to done in one frame at the turn"
   }
+ ],
+ "SAM-36": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "the served tray holds as many samosas as were ordered ('ba samosa' is two)"
+  }
+ ],
+ "SEK-28": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "the served tray holds the skewers the child threaded and grilled (their pieces, their count), never a fixed picture of two pepper-and-meat skewers"
+  }
+ ],
+ "CK-106": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "chop's serve: the cut dish on the tray (the asker is Nani: who thanks is the row's open question)"
+  }
+ ],
+ "CK-107": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "result",
+   "after": null,
+   "capture": [
+    "crop:.njg-results, #results, .results"
+   ],
+   "expect": null,
+   "note": "chop's end screen buttons: the shared ones, as chai's"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "result",
+   "after": null,
+   "capture": [
+    "crop:.njg-results, #results, .results"
+   ],
+   "expect": null,
+   "note": "chai's end screen, for the comparison"
+  }
+ ],
+ "CK-112": [
+  {
+   "flow": "cook:maani-line",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 12,
+   "note": "maani at 740x320: the dish card at the top beside the panel, clear of the bottom edge; the maani label off the board's top edge; the plates not flat grey discs"
+  }
  ]
 }
