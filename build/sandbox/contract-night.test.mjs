@@ -70,3 +70,13 @@ test("CHAI-113: the voice gate lets a child's own action's sound ({under: true})
   assert.match(kit, /Cook\.sfx\.knob\(on \? \{ under: true \}/);
   assert.match(kit, /Cook\.sfx\.flame\(\{ delay: 180, under: true \}\)/);
 });
+
+test("contract-74 (SH-213): a tap held for the due big card lesson is not judged as a skip; a tap with no lesson after it still is", async () => {
+  const { check74 } = await import("./lib/contract-s19b.mjs");
+  const run74 = (tl) => { const out = []; check74({ flow: "cook:chai-tray@L3" }, tl, [], (id, t, msg) => out.push({ id, t, msg })); return out; };
+  const ord = (t, pop) => c(t, "s19ord", { pop, fly: 0, away: pop ? 2 : 0, rows: 3 });
+  const base = [ord(1000, 1), c(2000, "input", { x: 500, y: 300 }), ord(3500, 1), ord(9000, 0)];
+  assert.equal(run74(base)[0].id, "contract-74");
+  const held = [...base, c(4000, "life", { what: "reveal-lesson", step: "card", by: "shown order-popup cook-chai picture" })].sort((a, b) => a.t - b.t);
+  assert.equal(run74(held).length, 0);
+});

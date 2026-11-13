@@ -2246,6 +2246,14 @@
      * C.lessons). A tap during it is the lesson's, never the order's skip (the request's ignore); nothing is logged as a peek or help.
      */
     let lessonOn = false;
+    // (SH-213, contract-98: the lesson is due: a card popped out hidden as the order is said, and this player's first-time gate still open)
+    const lessonDue = () => {
+      const pop = big14;
+      if (only || !pop || !pop.isConnected) return false;
+      if (!["wc14-hide-pic", "wc14-hide-en", "wc14-hide-k"].some((k) => pop.classList.contains(k))) return false;
+      const gate = Cook.Coach && Cook.Coach.firsts ? Cook.Coach.firsts("order") : null;
+      return !!(global.Onboard && global.Onboard.light && gate && gate.due("reveal-card", true));
+    };
     // (before: what must be over first, the line still being said when the card came with the headline: awaited only if it will run)
     const blurLesson = async (pop, r, before = null) => {
       if (only || !pop || !pop.isConnected || !live()) return;
@@ -2265,6 +2273,10 @@
       // (above the order pop-up's see-through veil, which takes every other tap as the order's skip; under the kit's light, z 950)
       c.style.pointerEvents = "auto";
       c.style.zIndex = "900";
+      // (contract-121, the pantry's L2-L3: a card inside a stacking context of its own stays under the veil whatever its z, so the veil
+      // took the lesson's taps. While the lesson runs the veil lets taps through: the kit's light keeps the dark, the card takes its own)
+      const veils = [...document.querySelectorAll(".njg-rq-veil")].map((v) => [v, v.style.pointerEvents]);
+      veils.forEach(([v]) => (v.style.pointerEvents = "none"));
       const img = c.querySelector(".wc14-pic img");
       const hasPic = !!img;
       const hasEn = !!((c.querySelector(".wc14-en") || {}).textContent || "").trim();
@@ -2339,8 +2351,11 @@
           // same turn, before the reveal's sound and the card's fit, which on a busy page held the old box round the tap for 0.6-0.9 s)
           const k2 = steps.findIndex((x) => x[0] === slot);
           const nx = steps[k2 + 1] ? c.querySelector(steps[k2 + 1][1]) : null;
+          // (contract-121: the move it waits for moves with the light, in the same turn: the light on the English while the game still
+          // waited on the Kutchi just tapped was a light the tap could never answer)
           if (nx) {
             cur = nx;
+            Cook.expect = { kind: "click", selector: `.wc14-lesson ${steps[k2 + 1][1]}` };
             if (lit && lit.layer && lit.layer.__redraw) lit.layer.__redraw();
           } else if (lit) (lit.close(), (lit = null));
           c.classList.remove(cls);
@@ -2360,6 +2375,7 @@
           c.style.pointerEvents = wasPE;
           c.style.zIndex = wasZ;
         }
+        veils.forEach(([v, pe]) => (v.style.pointerEvents = pe));
         Cook.expect = prevE;
         lessonOn = false;
       }
@@ -2618,8 +2634,10 @@
           // global.Rules.skips(target), through the pop-up's zones)
           // (a part revealed mid-station, opts.only, is not the order's start: its tap is the old reveal's, no skip zones or skip note)
           zones: s14 && !!global.Rules && typeof global.Rules.skips === "function" && !only,
-          // (SH-213: a tap while the big card lesson is up is the lesson's, never a skip)
-          ignore: () => lessonOn,
+          // (SH-213: a tap while the big card lesson is up is the lesson's, never a skip; and while it is due, its card popped hidden and its
+          // sentence still being said: contract-98, a tap then skipped the order and the lesson never came. The pop-up stays up until it
+          // is done, as the rule says)
+          ignore: () => lessonOn || lessonDue(),
           // (a card in flight stops at once too: js/shared/word-card.js morph reads its mark; contract-74, within 1 s)
           onTap: () => ((tapAt = tapAt || Date.now()), (skipped = true), document.querySelectorAll(".wc14-pop").forEach((x) => (x.dataset.wcSkip = "1"))),
           onStop: () => UI.hush(),
