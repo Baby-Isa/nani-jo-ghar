@@ -300,12 +300,13 @@ export const READ = `(function (opt) {
     // the word pops (Juice.P.pop): the pill as drawn, its card 56 tall at the pop's scale, round the pop's own point
     const walkC = (list, f) => { for (const o of list || []) { if (!o) continue; if (o.popW || (o.pillW && !o.parentContainer)) f(o); if (o.list) walkC(o.list, f); } };
     if (g && g.scene) for (const sc of g.scene.getScenes(true)) walkC(sc.children && sc.children.list, (c) => {
-      if (!visible(c) || c.alpha < 0.9) return; // (a pop mid-fade is not a pill that is shown)
+      if (!visible(c) || c.alpha < 0.5) return; // (a pop all but faded out is not a pill that is shown)
       // (a word pop: its card 56 tall, as wide as popW, at its scale; the kitchen's chip, the label by a thing: pillW x pillH round its point)
       const kx = Math.abs(c.scaleX || 1), ky = Math.abs(c.scaleY || c.scaleX || 1);
       const hw = c.popW ? c.popW / 2 : (c.pillW * kx) / 2, hh = c.popW ? 28 * kx : (c.pillH * ky) / 2;
       const p = w2s(c.x - hw, c.y - hh), q = w2s(c.x + hw, c.y + hh);
       ex.pills[(c.popW ? "pill-" : "chip-") + (++pn)] = B(p[0], p[1], q[0], q[1]);
+      (ex.pillAlpha = ex.pillAlpha || {})[(c.popW ? "pill-" : "chip-") + pn] = r2(c.alpha);
     });
   }
   return out;
