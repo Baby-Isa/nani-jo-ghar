@@ -1120,10 +1120,26 @@
    * list by its foot and cut its headline at the top): a card that is cut at the top, or taller than the list, shows from its top;
    * one cut only at the foot moves up just enough.
    */
+  /*
+   * contract-113 (the s19 morning gate, pantry L2-L4 at 1280x665): a card outside the order list (the request pop-up's, which slides in
+   * from the stage's right) was brought into view with scrollIntoView, which scrolls EVERY box round it, the stage too: the stage slid
+   * ~290 px left and the shelves stayed under the side panel. A card is brought into view in its own scrolling list only, up and down.
+   */
+  function boxIntoView(card) {
+    for (let p = card.parentElement; p && p !== document.body && p.id !== "stage"; p = p.parentElement) {
+      const oy = getComputedStyle(p).overflowY;
+      if (!/(auto|scroll)/.test(oy) || p.scrollHeight <= p.clientHeight + 1) continue;
+      const lr = p.getBoundingClientRect();
+      const cr = card.getBoundingClientRect();
+      if (cr.top < lr.top || cr.height > lr.height) p.scrollTop = Math.max(0, p.scrollTop + (cr.top - lr.top) - 4);
+      else if (cr.bottom > lr.bottom) p.scrollTop += cr.bottom - lr.bottom + 4;
+      return;
+    }
+  }
   UI.cardIntoView = function (card) {
     if (!card) return;
     const list = card.closest && card.closest("#mission");
-    if (!list) return void (card.scrollIntoView && card.scrollIntoView({ block: "nearest" }));
+    if (!list) return void boxIntoView(card);
     const lr = list.getBoundingClientRect();
     const cr = card.getBoundingClientRect();
     if (cr.top < lr.top || cr.height > lr.height) list.scrollTop = Math.max(0, list.scrollTop + (cr.top - lr.top) - 4);
@@ -2536,7 +2552,10 @@
         const parts = only ? c._parts().filter(onlyRow) : c._parts();
         // (SH-267: an order with no dish of its own, chop's "Muke ba dungri khape": what its first sentence asks for is its dish, the
         // first thing that sentence says, with its count, "2 onions"; contract-119 found chop's card never flashed)
-        const headless = !c._parts().some((q) => q.row && q.row.head);
+        // (PAN-19, the judge on s19-night-b-a2: Nani's own list, the pantry, has no dish: its headline "bring me these" is still to record,
+        // so it is never said and the card read as headless, and its first thing flashed as "hakro dudh" over the big card of the same
+        // word, on the order card's word at 740x320. Each of her things pops as its own big card; her list flashes nothing)
+        const headless = !(mission && mission.stripMode) && !c._parts().some((q) => q.row && q.row.head);
         let flashed = false;
         for (const p of parts) {
           if (!live()) return;
@@ -2589,7 +2608,7 @@
               const card = slot && slot.closest(".oc-card");
               const list = $("#mission");
               if (card && list && list.contains(card)) UI.followCard(card);
-              else if (card && card.scrollIntoView) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+              else if (card) boxIntoView(card); // (contract-113: never scrollIntoView, which scrolled the stage itself)
             } else if (w) global.WordCard.pop(box, w.word, w.wordOpts);
           };
           if (!item && !folded.length && s14) {
@@ -3467,7 +3486,15 @@
           // DAAR-26 (s08 w6M; the judge, 20 Oct: "the L4 card at the stir shows only 'Muke daar khape.' with no stir row"): on a
           // card closed for its level the stir row stays written once it has come (she says the laps and the speed: SH-99)
           const keep = s.when === "stir" && !!s.shown && !!(mission.levelClosed || (mission.closed && mission.closed.peek));
-          items.push({ label: null, parts: flat.map((x) => cardOf(x.r, x.gi)), ordered: seq, at: s.at || 0, src: flat, keep });
+          // CK-96 (the S19 gate's eye judge, 12 Nov: baking's "three card shapes in one game, none of them chai's 2.5-card row"): the rows a
+          // station reveals one by one as she says each (baking's bake-1 .. bake-5) join one sideways row of item cards, as chai's, each card
+          // coming as she says it, never a stack of rows of one card each (a row of one card alone still fills it: contract-116)
+          const last = items[items.length - 1];
+          if (s.when && s.when !== "stir" && last && last._when && !keep) {
+            last.parts.push(...flat.map((x) => cardOf(x.r, x.gi)));
+            last.src.push(...flat);
+            last.ordered = last.ordered || seq;
+          } else items.push({ label: null, parts: flat.map((x) => cardOf(x.r, x.gi)), ordered: seq, at: s.at || 0, src: flat, keep, _when: !!s.when && s.when !== "stir" && !keep });
           rowsShown.push(...flat.map((x) => x.r));
         }
         // a dish's cards of plain things, maani's rotis and the grill's plain skewers: one sideways row of item cards, each with its
@@ -4157,6 +4184,7 @@
     if (!all.length || !plain(parts[0]) || plain(parts[0]) !== plain(all[0])) return null;
     const head = parts.map(rowOf).find((r) => r && r.head) || all.map(rowOf).find((r) => r && r.head);
     if (head) return UI.dishFlash(c.dataset.who || null, head);
+    if (mission && mission.stripMode) return null; // (PAN-19: Nani's own list has no dish to flash)
     const first = parts.map((p) => rowOf(p) || ((p.line && p.line.rows) || []).find((x) => x && !x.head && !x.no)).find(Boolean);
     return first ? UI.dishFlash(c.dataset.who || null, first) : null;
   }
@@ -5118,6 +5146,19 @@
   };
 
   UI.init = function () {
+    // (contract-113, the s19 morning gate: the pantry's shelves slid ~290 px under the side panel at L2-L4, 1280x665, and stayed: the stage
+    // had been scrolled by something brought into view inside it. The stage is never a scroll box (css: overflow clip); where the browser
+    // has no clip, a scroll is put back at once)
+    const noScrollStage = $("#stage");
+    if (noScrollStage && !noScrollStage.__noScroll) {
+      noScrollStage.__noScroll = true;
+      noScrollStage.addEventListener("scroll", () => {
+        if (noScrollStage.scrollLeft || noScrollStage.scrollTop) {
+          noScrollStage.scrollLeft = 0;
+          noScrollStage.scrollTop = 0;
+        }
+      });
+    }
     // Sprint 11: the word card and the conversations, there by the first order
     ["word-card", "conversations"].forEach((n) => UI.needShared(n));
     // every page element here is optional (another page, like find.html, may not have all of them)

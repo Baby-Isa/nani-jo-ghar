@@ -41,7 +41,9 @@ button { font-family: inherit; color: inherit; cursor: pointer; }
   grid-template-columns: 1fr var(--side-w);
   height: 100dvh; width: 100dvw;
 }
-#stage { position: relative; overflow: hidden; background: var(--njg-tint-edge); grid-column: 1; grid-row: 1; }
+/* (contract-113, the s19 morning gate, pantry L2-L4 at 1280x665: something brought into view scrolled the stage ~290 px, the shelves
+   slid under the side panel and stayed there: the stage clips, it is never a scroll box; ui.js puts it back on older browsers) */
+#stage { position: relative; overflow: hidden; overflow: clip; background: var(--njg-tint-edge); grid-column: 1; grid-row: 1; }
 /* explicit cells: "pass me" shares the sidebar's cell and must not push it */
 #side { grid-column: 2; grid-row: 1; }
 #game { position: absolute; inset: 0; }

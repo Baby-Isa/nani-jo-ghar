@@ -20612,23 +20612,26 @@
  "CHAI-37": [
   {
    "flow": "cook:chai-tray",
-   "path": "fair",
-   "level": 1,
+   "path": "hint",
+   "level": [
+    1,
+    4
+   ],
    "sizes": [
-    "930x430",
-    "1920x1080"
+    "740x320",
+    "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "every:life:card-light",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "note": "a new player: the first two items lit (a breathing gold glow in a lit rounded box with its word pill, the rest dimmed; no finger), then the whole order card lit for 1.2 s; then the child alone",
+   "note": "a new player, after the first two items (water, tea): the dim with the order card (its next item's card) lit for a moment, shot 300 ms after the kit's card light came. On the #hint path, a child who pauses: the light waits for a still moment and goes as the child moves on, so a player tapping at once (fair at 3x, speed1) never sees it (the judge on s19-night-b-a2: the every:onboard shots missed it). The Check's 971x318 is no sandbox size: 740x320 (Zafar, 27 Oct) and 1280x665; L1 and L4",
    "delay": 300,
-   "max": 6
+   "max": 3
   }
  ],
  "CHAI-36": [
@@ -22893,8 +22896,27 @@
     "js:Cook.chaiAmounts"
    ],
    "expect": null,
-   "note": "while adh and aako are new: the first person asks half, the second full (then random); the rule is in the data (data/cook.json chai cups.amount teach; js:Cook.chaiAmounts: each cup asked, in seat order, and the words stages)",
+   "note": "Zafar's newest word wins (CHAI-110, 11 Nov night, corrected: 'the first order has to be full, and the second order has to be half', the first L4 round): while adh and aako are new the first person asks full and the second half (then random); data/cook.json chai cups.amount teach; js:Cook.chaiAmounts: each cup asked, in seat order, and the words' stages",
    "delay": 400
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": 4,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 300,
+   "max": 8,
+   "note": "the full glass's hint (CHAI-110): after the first tap's half pour and the pan back on the stove, the light on the glass until the second tap fills it"
   }
  ],
  "LNG-23": [
@@ -27321,7 +27343,10 @@
    "flow": "cook:fetch",
    "path": "speed1",
    "level": [
-    1
+    1,
+    2,
+    3,
+    4
    ],
    "sizes": [
     "740x320",
@@ -27336,7 +27361,28 @@
    ],
    "expect": null,
    "max": 12,
-   "note": "the pantry: Nani gives the order as a customer does, each card appearing as she says it"
+   "note": "the pantry: Nani at the counter gives the order as a customer does, each card appearing as she says it; one card at a time, never a second small 'hakro ...' card over the big card or the order card's word (the judge on s19-night-b-a2, 740x320); L1-L4"
+  },
+  {
+   "flow": "cook:fetch",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "line:cook",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 0,
+   "note": "the pantry as her first line starts: Nani at the counter, before her first card pops (it comes with its word)"
   }
  ],
  "PAN-20": [
@@ -29252,14 +29298,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:placed",
+   "at": "every:step",
    "after": null,
    "capture": [
     "crop:#side"
    ],
    "expect": null,
-   "note": "baking's item cards: chai's row of narrow cards, the third peeking, one shape at every size",
-   "max": 6
+   "note": "baking's item cards as each instruction opens a step: one sideways row of narrow cards as chai's, each card coming as she says it, never a stack of one-card rows (a lone first card fills its row: contract-116, Zafar 11 Nov); one shape at every size",
+   "max": 10
   }
  ],
  "CK-100": [

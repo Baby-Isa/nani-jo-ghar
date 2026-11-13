@@ -577,7 +577,9 @@ async function sheets(dirArg) {
     const kind = probes.length ? probes[0].kind : "layout";
     // panels: at most four, A-D; a row with more than four probes gets one panel per probe (SH-10, CLN-118: each station or
     // game its own), up to twelve, A-L, over as many sheets as it takes at six or fewer to a sheet; text for the .md
-    const panels = [], texts = [], extra = [], cap = probes.length > 4 ? Math.min(12, probes.length) : 4;
+    // (s19-r2-shared, the judges on SH-278 and CHAI-55's second probe: "6 probes left off the sheet": the cap counted probes, so a
+    // probe with two captures at two sizes pushed the next probe's panel off; every panel goes on, up to twelve, over as many sheets)
+    const panels = [], texts = [], extra = [], cap = 12;
     const fileOf = (p, f) => join(p.dir || join(SANDBOX, p.sandboxRun || "", "evidence"), f);
     const dprOf = (p) => (/(^|_)x2(_|$)/.test(p.variant || "") ? 2 : 1);
     const addPanel = (pl) => { if (panels.length < cap) { pl.letter = "ABCDEFGHIJKL"[panels.length]; panels.push(pl); } else extra.push(pl); };
@@ -631,7 +633,19 @@ async function sheets(dirArg) {
       // twelve-frame strip is a sheet of its own; four panels of one image each are still one sheet)
       const groups = [];
       let cur = [], cost = 0;
+      // (s19-r2-shared, the judges on CK-100 and SAM-40, s19-night-b-a2: "16 frames in one column ... too small on the sheet to read": a
+      // frames panel taller than a sheet was drawn whole and the sheet scaled down to fit; it is cut into parts of at most a sheet's lines,
+      // each its own panel under the same letter, so every frame keeps its size)
+      const MAX_COST = 4.2;
+      const parts = [];
       for (const pl of panels) {
+        if (pl.type !== "frames" || panelCost(pl) <= MAX_COST) { parts.push(pl); continue; }
+        const per = framesPerLine(pl), lineCost = per <= 2 ? 1.2 : per === 3 ? 0.8 : 0.65;
+        const take = Math.max(per, per * Math.floor((MAX_COST - 0.25) / lineCost));
+        const m = Math.ceil(pl.frames.length / take);
+        for (let k = 0; k < m; k++) parts.push(Object.assign({}, pl, { frames: pl.frames.slice(k * take, (k + 1) * take), label: `${pl.label} · part ${k + 1} of ${m}` }));
+      }
+      for (const pl of parts) {
         const c = panelCost(pl);
         if (cur.length && (cost + c > 4.5 || cur.length >= 6)) { groups.push(cur); cur = []; cost = 0; }
         cur.push(pl); cost += c;
@@ -691,7 +705,7 @@ function sheetHtml(row, panels, shotUrl, part = "") {
     section.wide{width:1168px}
     .lab{font-size:22px;font-weight:900;margin-right:6px} .cap{font-size:13px;font-weight:700;color:#4a3a28}
     section img{display:block;margin-top:3px;max-width:100%} img.one{max-height:520px;object-fit:contain}
-    .frames{display:flex;flex-wrap:wrap;gap:6px 4px;margin-top:3px} .fr{margin:0;min-width:0;max-width:100%} .fr img{display:block;max-width:100%} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
+    .frames{display:flex;flex-wrap:wrap;gap:6px 4px;margin-top:3px} .fr{margin:0;min-width:0;max-width:calc((100% - (var(--c, 4) - 1) * 4px) / var(--c, 4))} .fr img{display:block;max-width:100%} .fr figcaption{font-size:13px;font-weight:800;text-align:center}
     .room{position:relative;margin-top:3px} .room img{width:100%} .room .box{position:absolute;border:3px solid #e0201a;box-shadow:0 0 0 2px #fff}
   </style><header><h1>${esc(row.id)}<small>${esc(row.section)}${part ? ` · ${esc(part)}` : ""}</small></h1><p><span class="k">Issue:</span> ${esc(row.issue.slice(0, 380))}</p><p><span class="k">Check:</span> ${esc(row.check.slice(0, 220))}</p></header>
   <div class="grid">${panels.map((p) => `<section class="${wide(p) ? "wide" : ""}"><span class="lab">${p.letter}</span><span class="cap">${esc(p.label)}</span>${fig(p)}</section>`).join("\n")}</div>

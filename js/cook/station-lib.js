@@ -1196,8 +1196,9 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
       if (doneOk) UI.done({ glow: !!doneGlow }).then(() => finish({ done: true }));
       const target = next && items[next] && items[next].active ? items[next] : null;
       // help: a redo's second try (decision 51). (SH-237, contract-107: a shelf thing lit hops, as the coach's and the hint's lights do;
-      // this guided glow lit chaat's and the pantry's shelf things still)
-      if (target && (z.guided || help)) S.glow(target, true, { bounce: !!(Cook.Coach && Cook.Coach.onShelf && Cook.Coach.onShelf(target)), now: true });
+      // this guided glow lit chaat's and the pantry's shelf things still). It is help, so it waits for the level's pause like every
+      // asked-for glow (no {now}: s19 morning gate, contract-24 and -102 in daar and chaat, the glow 0.5 s after the last tap)
+      if (target && (z.guided || help)) S.glow(target, true, { bounce: !!(Cook.Coach && Cook.Coach.onShelf && Cook.Coach.onShelf(target)) });
       if (target) {
         const c = S.centre(target);
         const wrongs = Object.keys(items)
