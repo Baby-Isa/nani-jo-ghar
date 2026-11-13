@@ -481,7 +481,8 @@
    "labs.html",
    "js/vendor/*",
    "data/art/*",
-   "lab/art-board-data.js"
+   "lab/art-board-data.js",
+   "js/art-map.js"
   ]
  },
  "scan": {
