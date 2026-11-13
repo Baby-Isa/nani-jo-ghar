@@ -28612,5 +28612,214 @@
    "note": "samosa L1, the worktop once the order is in: the board, the plate, the karahi and the spoon each with the kit's soft shadow down and to the right; contract-120 over the play",
    "delay": 1500
   }
+ ],
+ "CHAI-113": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "voice",
+    "contract:124"
+   ],
+   "expect": null,
+   "note": "every knob turned on from off answers: sfx/knob and sfx/flame in the sound log, even while Nani is still speaking (they play under her, quieter: Sfx {under: true}); contract-124 over the play",
+   "delay": 0
+  }
+ ],
+ "SH-274": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:dish-flash",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:125"
+   ],
+   "expect": null,
+   "note": "maani L1: one 'hakri maani' dish card on screen as the customer says it, never a second fading copy over it; contract-125 over the play",
+   "delay": 350
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:dish-flash",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:125"
+   ],
+   "expect": null,
+   "note": "eggs L1: one dish card, contract-125 over the play",
+   "delay": 350
+  }
+ ],
+ "SH-278": [
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "crop:#guide",
+    "contract:126"
+   ],
+   "expect": null,
+   "note": "baking L1: at well done Nani's box shows 'Shabash!' with no drop-down arrow, as chai's; contract-126 over the play",
+   "delay": 0
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "crop:#guide",
+    "contract:126"
+   ],
+   "expect": null,
+   "note": "samosa L1: no drop-down on 'Shabash!' or 'Bas!'; contract-126 over the play",
+   "delay": 0
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "crop:#guide",
+    "contract:126"
+   ],
+   "expect": null,
+   "note": "maani L1: no drop-down on 'Shabash!'; contract-126 over the play",
+   "delay": 0
+  }
+ ],
+ "SH-272": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:127"
+   ],
+   "expect": null,
+   "note": "eggs L1: the end screen's card covers Nani and the customer cleanly, no hijab or face circle poking above its top edge; contract-127 over the play",
+   "delay": 600
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:127"
+   ],
+   "expect": null,
+   "note": "samosa L1: the same; contract-127",
+   "delay": 600
+  },
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "results",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:127"
+   ],
+   "expect": null,
+   "note": "corn L1: the same; contract-127",
+   "delay": 600
+  }
  ]
 }
