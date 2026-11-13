@@ -28724,14 +28724,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:line:cook",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "crop:#game"
    ],
    "expect": null,
    "note": "baking: Dada's face circle beside the tray the whole bake: on the worktop, then beside the oven while the tray is in it, back with it; never over the naan or inside a lit box",
-   "max": 20
+   "max": 14
   }
  ],
  "CK-101": [
@@ -28747,14 +28747,14 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:line:cook",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "crop:#game"
    ],
    "expect": null,
    "note": "baking: the oven about three trays wide (780 design px against the tray's 280), within the room above the shelf",
-   "max": 20
+   "max": 14
   }
  ],
  "CK-102": [
@@ -28770,7 +28770,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:line:cook",
+   "at": "every:placed",
    "after": null,
    "capture": [
     "crop:#game",
@@ -28778,7 +28778,28 @@
    ],
    "expect": null,
    "note": "baking: the shelf keeps its things and pills through the oven and at well done; the item cards keep their ticks",
-   "max": 20
+   "max": 14
+  },
+  {
+   "flow": "cook:baking",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stage-end",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "crop:#side"
+   ],
+   "expect": null,
+   "note": "baking at well done: the shelf with its things and pills, the item cards with their ticks"
   }
  ],
  "CK-103": [

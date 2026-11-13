@@ -738,7 +738,16 @@ import { setTimeout } from "../life.js";
       }
       if (l && l.ok !== false && (always || !Lang.hasVoice || Lang.hasVoice(l))) say(Lang.role(l, "call"));
     };
+    // (a test log: each oven step as it opens, for the evidence probes, CK-100 to CK-102: every:life:baking-oven)
+    const ovenNote = (step) => {
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("baking-oven", { step, by: `oven:${Math.round(ov.displayWidth)} tray:${Math.round(naan.displayWidth)}` });
+      } catch (e) {
+        /* only a log */
+      }
+    };
     // 1. open the oven
+    ovenNote("open");
     expectTap(ov, null);
     call(Lang.say({ fn: "Command", verb: "v.open" }), "oven");
     await tapOn(ov, "oven");
@@ -769,6 +778,7 @@ import { setTimeout } from "../life.js";
     glass.setCrop(G[0], G[1], G[2], G[3]);
     Cook.sfx.click();
     setBusy(false);
+    ovenNote("baking");
     // 3. it bakes: the ring fills; steam from the vent
     const bakeMs = (K.bakeMs || 3600) / (Cook.speed || 1);
     const partAt = N.part || 0.4;
@@ -799,6 +809,7 @@ import { setTimeout } from "../life.js";
       offOver();
       toLook("over");
     });
+    ovenNote("ready");
     expectTap(ov, "ph-naan");
     // (contract-36: said through the step's call, so a line still to record logs its skip, as the oven's open does)
     await tapOn(ov, "oven-out", () => call(Lang.line("ready"), "oven-out", true));
@@ -818,6 +829,7 @@ import { setTimeout } from "../life.js";
     ]);
     steam(hx, hy - 40, 4);
     ov.setTexture("bk-oven-shut");
+    ovenNote("out");
     UI.mission.closeItem(["ph-naan"], 0, { head: true });
     // SH-254: one face, beside the tray at its upper left (where the small circle was), the naan in plain view
     const size = 190;
