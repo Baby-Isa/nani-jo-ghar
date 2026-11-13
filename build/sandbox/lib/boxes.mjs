@@ -271,6 +271,8 @@ export const READ = `(function (opt) {
     const cls = (typeof el.className === "string" && el.className.trim().split(/\\s+/)[0]) || "";
     ex.taps["dom:" + el.tagName.toLowerCase() + (cls ? "." + cls : "") + "#" + (++tn)] = b;
   }
+  // the tally's chip (the running count by the pan: "hakro" over the hob, js/shared/tally.js): a DOM pill
+  Array.from(document.querySelectorAll(".njg-tally-chip")).forEach((c, i) => { const b = dom(c); if (b) ex.pills["tally-" + (i + 1)] = b; });
   if (w2s) {
     let pn = 0;
     for (const o of objs) {
@@ -298,7 +300,7 @@ export const READ = `(function (opt) {
     // the word pops (Juice.P.pop): the pill as drawn, its card 56 tall at the pop's scale, round the pop's own point
     const walkC = (list, f) => { for (const o of list || []) { if (!o) continue; if (o.popW || (o.pillW && !o.parentContainer)) f(o); if (o.list) walkC(o.list, f); } };
     if (g && g.scene) for (const sc of g.scene.getScenes(true)) walkC(sc.children && sc.children.list, (c) => {
-      if (!visible(c) || c.alpha < 0.05) return;
+      if (!visible(c) || c.alpha < 0.9) return; // (a pop mid-fade is not a pill that is shown)
       // (a word pop: its card 56 tall, as wide as popW, at its scale; the kitchen's chip, the label by a thing: pillW x pillH round its point)
       const kx = Math.abs(c.scaleX || 1), ky = Math.abs(c.scaleY || c.scaleX || 1);
       const hw = c.popW ? c.popW / 2 : (c.pillW * kx) / 2, hh = c.popW ? 28 * kx : (c.pillH * ky) / 2;
