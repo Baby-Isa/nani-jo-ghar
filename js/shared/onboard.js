@@ -838,7 +838,8 @@
    * not do its thing"; Zafar 11 Nov night, SH-261: every light stays until the right move): the game turned the tap down (its thing
    * shook, S.wiggle): every light the tap hid is back at once, not MOVE.back later.
    */
-  Onboard.refused = function () {
+  // (the frozen diff, 13 Nov: "OB.refused is not a function" on every turned-down tap: SH-257's list of refused asks below took this name)
+  Onboard.lightBack = function () {
     [...liveSpots].forEach((sp) => sp.back && sp.back());
     if (active && active.back) active.back();
   };
@@ -2080,7 +2081,7 @@
       },
       /** Is it hidden now, the child doing its move? */
       isAway: () => away,
-      /** The game turned the move down (Onboard.refused): back at once */
+      /** The game turned the move down (Onboard.lightBack): back at once */
       back() {
         if (closed || !away) return;
         away = false;

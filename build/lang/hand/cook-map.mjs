@@ -61,6 +61,11 @@ export const FRAMES = {
   with: { meaning: { fn: "WithFood", x: "$x" }, sample: ["cook-dudh"] },
   and_join: { meaning: { fn: "AndKind", x: "$x" }, sample: ["cook-maani"] },
   times: { meaning: { fn: "Times", n: 3 }, sample: [null] },
+  // the pantry card's headline (Zafar, 13 Nov, decision 22): Mum's "bring me these for {dish}" where the trip has a dish, "Muke de" where not
+  "headline-pantry": { meaning: { fn: "BringMeTheseForX", x: "$x" }, sample: ["cook-chai"] },
+  "headline-give": { meaning: { fn: "GiveMe" }, sample: [null] },
+  // daar's stir line (Zafar, 13 Nov, decision 22): Mum's "trae fare firai", stir it {n} times, no "slowly" (was a line to record)
+  "daar-stir-ask": { meaning: { fn: "StirTimes", n: 3 }, sample: [null] },
   // Nani's guide box lines Mum gave on 5 Oct (Round 4 I): each is a command to a child
   "guide-add": { meaning: { fn: "DoIt", verb: "v.put-in" }, sample: [null] },
   "guide-knead": { meaning: { fn: "Command", verb: "v.knead", obj: "cook-atto" }, sample: [null] },

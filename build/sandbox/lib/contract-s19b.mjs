@@ -590,12 +590,14 @@ export function check37(r, tl, add, { root = ".", table = {} } = {}) {
     const game = gameOfStation(tl, s, st0);
     const want = decoysWanted(T, game, Math.min(4, level));
     if (want == null) continue;
-    const card = new Set(pad.cards.flatMap((c) => String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
+    // (s20-p2-chai: every person's order card where the probe has them, allCards; the first card alone on older runs)
+    const cards = (pad.allCards && pad.allCards.length ? pad.allCards : pad.cards);
+    const card = new Set(cards.flatMap((c) => String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
     // (a card names its thing by its word id where the probe has it, data-word, s19-shared-checks: a word with no Kutchi yet shows its English, grey,
     // which no lexicon form matches, chaat's mint chutney, ph-lili; its words where the probe is older)
-    const keys = new Set(pad.cards.map((c) => c.id).filter(Boolean).map(String));
-    const texts = new Set(pad.cards.map((c) => String(c.w).toLowerCase().replace(/\s+/g, " ").trim()));
-    const cardWords = pad.cards.map((c) => new Set(String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
+    const keys = new Set(cards.map((c) => c.id).filter(Boolean).map(String));
+    const texts = new Set(cards.map((c) => String(c.w).toLowerCase().replace(/\s+/g, " ").trim()));
+    const cardWords = cards.map((c) => new Set(String(c.w).toLowerCase().normalize("NFC").match(/[\p{L}][\p{L}\p{M}'’]*/gu) || []));
     const byParts = (id) => { const ns = PARTS.get(`${root}|${id}`); return !!ns && cardWords.some((cw) => ns.every((f) => [...f].some((w) => cw.has(w)))); };
     const asked = (id) => keys.has(String(id)) || texts.has(GLOSS.get(`${root}|${id}`)) || byParts(id) || [...(words.get(id) || [])].some((w) => card.has(w)) || card.has(String(id).replace(/^(cook|n|v|a)[-.]/, "").toLowerCase());
     const decoys = e.items.filter((x) => !asked(x.id));

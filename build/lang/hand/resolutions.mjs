@@ -8,5 +8,10 @@ export function apply(S) {
   S.resolve("v.put", "status", "confirmed", "rakh itself is confirmed by Mum's own sentences (thori war rakh, dhyan rakh, saani je agiya rakh); the warning in lexicon §6.1 is about rakhi chad, which stays a draft on its own form", "grammar-notes §16, §25 B16, §27 B49, §38 I18");
   S.resolve("n.skewer", "status", "confirmed", "lakri is Mum's own word (hakri lakri, char lakri, mishkaki ji lakri); data/cook.json's draft flag is about using it with gos, boga and mixed, which is a draft on the Unit rule, not on the word", "grammar-notes §25, §34 P8, §39 I28");
   S.resolve("n.kitchen", "status", "confirmed", "rasoro is Mum's own word (Aau rasore me aiya); only its -e form before a postposition is a draft, and that is the paradigm cell's status", "grammar-notes §20, §51 C61");
+  // (Zafar, 13 Nov, decision 22: Mum's 12 Nov words in the game: salt is mitho, not the content master's loon; black pepper is miryo, not
+  // the class handout's mari: build/reports/mum-2026-11-12.md "Decisions for Zafar" 2 and 3)
+  S.resolve("n.salt", "lemma", "mitho", "Mum says mitho for salt (a he-word); the content master's and the handout's loon was never said by Mum", "grammar-notes §64 (12 Nov 23:36-23:48); Zafar 13 Nov, decision 22");
+  S.resolve("n.salt", "gender", "he", "Mum: 'mitho would be male' (hakri chapti mitho is the pinch's she-form, not the salt's)", "grammar-notes §64 (12 Nov 23:36); Zafar 13 Nov, decision 22");
+  S.resolve("n.black-pepper", "lemma", "miryo", "Mum says miryo for black pepper (a she-word, no singular); the handout's mari was never said by Mum", "grammar-notes §64 (12 Nov 31:00-31:28); Zafar 13 Nov, decision 22");
   S.resolve("post.mixed-in", "status", "confirmed", "Mum said waari in the 25 Sept recording (dudh waari chai, khun waari chai, kesar waari chai); data/cook.json's draft flag is about its frame lines, which stay drafts", "grammar-notes §6");
 }

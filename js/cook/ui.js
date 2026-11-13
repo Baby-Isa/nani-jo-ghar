@@ -1982,6 +1982,189 @@
   // (the times are the shared kit's: js/shared/order-card.js OrderCard.TIMES, read when used)
   const ORDER_T = new Proxy({}, { get: (_, k) => ((global.OrderCard && global.OrderCard.TIMES) || {})[k] });
   Object.defineProperty(M, "times", { get: () => (global.OrderCard && global.OrderCard.TIMES) || null, enumerable: true });
+  // SH-154: the faces on screen (page px): every character's head in the scene (Cook.scene headBox), every face circle in the
+  // play area (DOM), each with a small margin
+  const popFaces = () => {
+    const out = [];
+    const S = Cook.scene;
+    try {
+      Object.values((S && S.chars) || {}).forEach((img) => {
+        if (!img || !img.active || img.visible === false || !S.headBox) return;
+        const hb = S.headBox(img);
+        const a = UI.worldToScreen(hb.x, hb.y);
+        const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
+        // (Zafar, 4 Nov: "draw the head area tighter to the actual head area ... half a centimeter of the head, that's fine")
+        out.push({ left: a.x - 2, top: a.y - 2, right: z.x + 2, bottom: z.y + 2 });
+      });
+    } catch (e) {
+      /* no scene */
+    }
+    // (every face circle on the page: the play area's and the side panel's, Nani's and the order card's)
+    document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
+      if (f.closest(".wc14-pop, .wc14-flyer")) return;
+      const b = f.getBoundingClientRect();
+      if (b.width > 0) out.push({ left: b.left - 2, top: b.top - 2, right: b.right + 2, bottom: b.bottom + 2 });
+    });
+    return out;
+  };
+  const popOverlap = (r, list) => list.reduce((a, b) => a + Math.max(0, Math.min(r.right, b.right) - Math.max(r.left, b.left)) * Math.max(0, Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top)), 0);
+  function popPlace(c, play, sr, wd, quiet) {
+    // CHAI-43 (Zafar, 2 Nov afternoon, his screenshot of the L4 card stretched wide: "Just keep the pop up card in its usually
+    // proportions ... make it close as possible to original size seen in level 1 as much as the space allows"; "not centred, they
+    // should be as left as the level card so less space to travel to get to the side menu. If they need to go bottom left, then just
+    // put the anchored to bottom left (with some padding) so they stay more away from the faces"). One shape at every level and
+    // size: the card as L1 draws it (width wd, fitted), scaled evenly (zoom), never above L1's size. Two places only: L1's (top left,
+    // beside the side panel) or bottom left with padding; the bigger scale clear of every face (and bubble, where it can) wins, L1's
+    // place on a tie. The place and scale are kept for the whole order, so every card of an order is the same size.
+    const faces = popFaces();
+    const bubs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
+    const pad = 10;
+    const KMIN = 0.45;
+    c.classList.remove("wc14-side", "wc14-fill");
+    c.style.zoom = "";
+    c.style.width = `${wd}px`;
+    global.WordCard.fit14(c);
+    const w0 = c.offsetWidth;
+    // (the height with the speaker's ring, which sits on the card's foot)
+    const cb = c.getBoundingClientRect();
+    const sb = c.querySelector(".wc14-spk") && c.querySelector(".wc14-spk").getBoundingClientRect();
+    const h0 = c.offsetHeight + (sb && sb.height ? Math.max(0, sb.bottom - cb.bottom) : 0);
+    const xL = sr.right + 14;
+    const yT = play.top + pad;
+    const yB = play.bottom - pad;
+    const xR = play.right - pad;
+    const rectAt = (anchor, k) => (anchor === "top" ? { left: xL, top: yT, right: xL + w0 * k, bottom: yT + h0 * k } : { left: xL, top: yB - h0 * k, right: xL + w0 * k, bottom: yB });
+    const clear = (r, withBubs) => r.right <= xR + 0.5 && r.top >= yT - 0.5 && r.bottom <= yB + 0.5 && popOverlap(r, faces) === 0 && (!withBubs || popOverlap(r, bubs) === 0);
+    // the biggest scale (to 1%) at which the card sits clear at that place; 0 where even KMIN doesn't
+    const best = (anchor, withBubs) => {
+      if (clear(rectAt(anchor, 1), withBubs)) return 1;
+      if (!clear(rectAt(anchor, KMIN), withBubs)) return 0;
+      let lo = KMIN;
+      let hi = 1;
+      while (hi - lo > 0.01) {
+        const mid = (lo + hi) / 2;
+        if (clear(rectAt(anchor, mid), withBubs)) lo = mid;
+        else hi = mid;
+      }
+      return lo;
+    };
+    let pick = popShape.mission === mission && popShape.anchor ? { anchor: popShape.anchor, k: popShape.k } : null;
+    // (contract-83, the audit at L4 1280x665, 3 Nov: the order's kept place came from before the third person had walked up, so a
+    // later card touched Nana's face: a kept place that now meets a face is measured again; the order's other cards keep theirs)
+    if (pick && pick.anchor !== "panel" && !clear(rectAt(pick.anchor, pick.k), false)) pick = null;
+    if (!pick) {
+      for (const withBubs of [true, false]) {
+        const kt = best("top", withBubs);
+        const kb = best("bottom", withBubs);
+        if (kt || kb) {
+          pick = kb > kt ? { anchor: "bottom", k: kb } : { anchor: "top", k: kt };
+          break;
+        }
+      }
+    }
+    let x;
+    let y;
+    let k;
+    if (pick) {
+      k = pick.k;
+      const r = rectAt(pick.anchor, k);
+      x = r.left;
+      y = r.top;
+    } else {
+      // (no clear place in the play area even at KMIN, a phone with three people at the counter: over the side panel, the order
+      // card the big card is about to turn into, at the panel's width; contract-76: 740x320)
+      k = Math.max(0.3, Math.min(1, (sr.width - 16) / w0, (Math.min(play.bottom, sr.bottom) - Math.max(play.top, sr.top) - 2 * pad) / h0));
+      x = sr.left + 8;
+      y = Math.max(play.top, sr.top) + pad;
+      pick = { anchor: "panel", k };
+    }
+    popShape.mission = mission;
+    popShape.anchor = pick.anchor;
+    popShape.k = k;
+    c.style.zoom = k < 0.999 ? String(Math.round(k * 1000) / 1000) : "";
+    const kz = c.style.zoom ? Number(c.style.zoom) : 1;
+    // (a zoomed element's left and top are given in its own scale)
+    Object.assign(c.style, { left: `${Math.round(x / kz)}px`, top: `${Math.round(y / kz)}px` });
+    if (quiet) return;
+    try {
+      const onFace = popOverlap({ left: x, top: y, right: x + w0 * kz, bottom: y + h0 * kz }, faces);
+      if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(onFace)), by: JSON.stringify({ at: pick.anchor, k: Math.round(kz * 1000) / 1000, w0, h0: Math.round(h0), ratio: Math.round((w0 / h0) * 1000) / 1000, x: Math.round(x), y: Math.round(y) }) });
+    } catch (e) {
+      /* only a log */
+    }
+  }
+  // SH-155: the big card's hold by the word's state (the central rules: new 1.5 s, learning 1.0 s, known 0.6 s), its line said meanwhile
+  const popHold = (r) => {
+    if (!global.Rules) return 0;
+    let rec = null;
+    try {
+      const P = Cook.core && Cook.core.progress;
+      rec = P && P.get ? P.get(wcWordId(r)) : null;
+    } catch (e) {
+      rec = null;
+    }
+    return global.Rules.hold(global.Rules.wordState(rec));
+  };
+  /**
+   * The order's item pop-up (Sprint 14, SH-150, SH-154, CHAI-43): the word said now pops out big by the side panel, in its row card's
+   * shape where that fits clear of every face, else its own, at the order's one place and scale (popShape). One function for every card
+   * an order pops (SH-286, Zafar 13 Nov, decision 23): the items said (introduceAlong) and the dish card at its first sentence
+   * (UI.dishFlash), so they come in the same place, size, look and motion. -> the card (on the page), or null
+   */
+  function popCard(w, slot, cls = "") {
+    // (one order card popped at a time: a dish card still up goes as the next card comes)
+    document.querySelectorAll(".wc14-pop.wc14-dish").forEach((x) => x.remove());
+    const side = $("#side");
+    const st = $("#stage");
+    if (!side || !st) return null;
+    const play = st.getBoundingClientRect();
+    const sr = side.getBoundingClientRect();
+    const c = global.WordCard.big14(null, w.word, Object.assign({}, w.wordOpts || {}, { cls: ["wc14-pop", cls].filter(Boolean).join(" ") }));
+    const wd = Math.round(Math.min(300, play.height * 0.6, play.width * 0.42));
+    Object.assign(c.style, { position: "fixed", left: `${sr.right + 14}px`, top: `${play.top + 10}px`, width: `${wd}px`, zIndex: "45", pointerEvents: "none", margin: "0" });
+    document.body.appendChild(c);
+    global.WordCard.fit14(c);
+    // (Zafar, 3 Nov: "the pop-up card, when it scales down to go into the left sidebar ... keeps its proportions, the height ends up
+    // being shorter than the height that is needed for the item card ... so it's one smooth transition": the big card takes its row
+    // card's own shape, so one even scale lands it on that card exactly; the picture takes the difference, never the words)
+    const sb = slot && slot.getBoundingClientRect();
+    if (sb && sb.width > 0 && sb.height > 0) {
+      c.classList.add("wc14-fitrow");
+      c.style.height = `${Math.round(wd * (sb.height / sb.width))}px`;
+    }
+    // (s19-clean-e's sekelo L2, 12 Nov: a two-line Kutchi squeezed the picture to nothing in the row's shape: the words shrink first; a
+    // card that still cannot keep its picture takes its own height, as it does where the row shape fits nowhere clear of a face)
+    const roomy = () => !global.WordCard.picRoom14 || global.WordCard.picRoom14(c);
+    if (c.classList.contains("wc14-fitrow") && !roomy()) {
+      c.classList.remove("wc14-fitrow");
+      c.style.height = "";
+      global.WordCard.fit14(c);
+    }
+    // (shorter screens: the card keeps inside the play area, its picture shorter first)
+    if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
+    // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
+    // on screen (the people's heads in the kitchen, any face circle in the play area) and the bubbles
+    // (the sandbox, 3 Nov, L4 at 740x320: the taller row-shaped card found no place clear of the faces and fell back over the side
+    // panel, on Nani's face and Nana's (contract-76, -83): where its row shape fits nowhere clear, it keeps its own shape, which does;
+    // the row shape is tried quietly, so only the place it keeps is logged)
+    if (c.classList.contains("wc14-fitrow")) {
+      const kept = { mission: popShape.mission, anchor: popShape.anchor, k: popShape.k };
+      popPlace(c, play, sr, wd, true);
+      const tight = !roomy();
+      const cr = c.getBoundingClientRect();
+      if (tight || popShape.anchor === "panel" || popOverlap({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, popFaces()) > 0) {
+        c.classList.remove("wc14-fitrow");
+        c.style.height = "";
+        if (tight) global.WordCard.fit14(c);
+        popShape.mission = null; // (placed again, its own shape)
+      } else Object.assign(popShape, kept); // (the same place again, logged)
+    }
+    popPlace(c, play, sr, wd);
+    // (a card scaled to its room with zoom (three people) fades in alone: zoom and a transform together drew its first frames
+    // about 50 px off its place, over Nana's face: contract-83, the orchestrator's film at 930x430, 30 Oct)
+    if (c.animate) c.animate(c.style.zoom ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
+    return c;
+  }
   async function introduceAlong(opts = {}) {
     const m = mission;
     let box = null;
@@ -2017,181 +2200,13 @@
     let landedAll = false;
     const pop14 = (w, slot) => {
       if (big14) big14.remove();
-      const side = $("#side");
-      const st = $("#stage");
-      if (!side || !st) return null;
-      const play = st.getBoundingClientRect();
-      const sr = side.getBoundingClientRect();
-      const c = global.WordCard.big14(null, w.word, Object.assign({}, w.wordOpts || {}, { cls: "wc14-pop" }));
-      const wd = Math.round(Math.min(300, play.height * 0.6, play.width * 0.42));
-      Object.assign(c.style, { position: "fixed", left: `${sr.right + 14}px`, top: `${play.top + 10}px`, width: `${wd}px`, zIndex: "45", pointerEvents: "none", margin: "0" });
-      document.body.appendChild(c);
-      global.WordCard.fit14(c);
-      // (Zafar, 3 Nov: "the pop-up card, when it scales down to go into the left sidebar ... keeps its proportions, the height ends up
-      // being shorter than the height that is needed for the item card ... so it's one smooth transition": the big card takes its row
-      // card's own shape, so one even scale lands it on that card exactly; the picture takes the difference, never the words)
-      const sb = slot && slot.getBoundingClientRect();
-      if (sb && sb.width > 0 && sb.height > 0) {
-        c.classList.add("wc14-fitrow");
-        c.style.height = `${Math.round(wd * (sb.height / sb.width))}px`;
-      }
-      // (s19-clean-e's sekelo L2, 12 Nov: a two-line Kutchi squeezed the picture to nothing in the row's shape: the words shrink first; a
-      // card that still cannot keep its picture takes its own height, as it does where the row shape fits nowhere clear of a face)
-      const roomy = () => !global.WordCard.picRoom14 || global.WordCard.picRoom14(c);
-      if (c.classList.contains("wc14-fitrow") && !roomy()) {
-        c.classList.remove("wc14-fitrow");
-        c.style.height = "";
-        global.WordCard.fit14(c);
-      }
-      // (shorter screens: the card keeps inside the play area, its picture shorter first)
-      if (c.offsetHeight > play.height - 20) c.classList.add("wc14-small");
-      // SH-154 (Zafar, 29 Oct): never over a face: placed in the free space beside the side panel, measured against every face
-      // on screen (the people's heads in the kitchen, any face circle in the play area) and the bubbles
-      // (the sandbox, 3 Nov, L4 at 740x320: the taller row-shaped card found no place clear of the faces and fell back over the side
-      // panel, on Nani's face and Nana's (contract-76, -83): where its row shape fits nowhere clear, it keeps its own shape, which does;
-      // the row shape is tried quietly, so only the place it keeps is logged)
-      if (c.classList.contains("wc14-fitrow")) {
-        const kept = { mission: popShape.mission, anchor: popShape.anchor, k: popShape.k };
-        placeFree14(c, play, sr, wd, true);
-        const tight = !roomy();
-        const cr = c.getBoundingClientRect();
-        if (tight || popShape.anchor === "panel" || overlap14({ left: cr.left, top: cr.top, right: cr.right, bottom: cr.bottom }, faces14()) > 0) {
-          c.classList.remove("wc14-fitrow");
-          c.style.height = "";
-          if (tight) global.WordCard.fit14(c);
-          popShape.mission = null; // (placed again, its own shape)
-        } else Object.assign(popShape, kept); // (the same place again, logged)
-      }
-      placeFree14(c, play, sr, wd);
-      // (a card scaled to its room with zoom (three people) fades in alone: zoom and a transform together drew its first frames
-      // about 50 px off its place, over Nana's face: contract-83, the orchestrator's film at 930x430, 30 Oct)
-      if (c.animate) c.animate(c.style.zoom ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "scale(0.6)" }, { opacity: 1, transform: "scale(1.04)" }, { transform: "scale(1)" }], { duration: 380 / (Cook.speed || 1), easing: "cubic-bezier(.2,.8,.2,1)" });
-      big14 = c;
+      const c = popCard(w, slot);
+      if (c) big14 = c;
       return c;
     };
-    // SH-154: the faces on screen (page px): every character's head in the scene (Cook.scene headBox), every face circle in the
-    // play area (DOM), each with a small margin
-    const faces14 = () => {
-      const out = [];
-      const S = Cook.scene;
-      try {
-        Object.values((S && S.chars) || {}).forEach((img) => {
-          if (!img || !img.active || img.visible === false || !S.headBox) return;
-          const hb = S.headBox(img);
-          const a = UI.worldToScreen(hb.x, hb.y);
-          const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
-          // (Zafar, 4 Nov: "draw the head area tighter to the actual head area ... half a centimeter of the head, that's fine")
-          out.push({ left: a.x - 2, top: a.y - 2, right: z.x + 2, bottom: z.y + 2 });
-        });
-      } catch (e) {
-        /* no scene */
-      }
-      // (every face circle on the page: the play area's and the side panel's, Nani's and the order card's)
-      document.querySelectorAll(".njg-face, .cv-face, .oc-face, .face-say").forEach((f) => {
-        if (f.closest(".wc14-pop, .wc14-flyer")) return;
-        const b = f.getBoundingClientRect();
-        if (b.width > 0) out.push({ left: b.left - 2, top: b.top - 2, right: b.right + 2, bottom: b.bottom + 2 });
-      });
-      return out;
-    };
-    const overlap14 = (r, list) => list.reduce((a, b) => a + Math.max(0, Math.min(r.right, b.right) - Math.max(r.left, b.left)) * Math.max(0, Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top)), 0);
-    function placeFree14(c, play, sr, wd, quiet) {
-      // CHAI-43 (Zafar, 2 Nov afternoon, his screenshot of the L4 card stretched wide: "Just keep the pop up card in its usually
-      // proportions ... make it close as possible to original size seen in level 1 as much as the space allows"; "not centred, they
-      // should be as left as the level card so less space to travel to get to the side menu. If they need to go bottom left, then just
-      // put the anchored to bottom left (with some padding) so they stay more away from the faces"). One shape at every level and
-      // size: the card as L1 draws it (width wd, fitted), scaled evenly (zoom), never above L1's size. Two places only: L1's (top left,
-      // beside the side panel) or bottom left with padding; the bigger scale clear of every face (and bubble, where it can) wins, L1's
-      // place on a tie. The place and scale are kept for the whole order, so every card of an order is the same size.
-      const faces = faces14();
-      const bubs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
-      const pad = 10;
-      const KMIN = 0.45;
-      c.classList.remove("wc14-side", "wc14-fill");
-      c.style.zoom = "";
-      c.style.width = `${wd}px`;
-      global.WordCard.fit14(c);
-      const w0 = c.offsetWidth;
-      // (the height with the speaker's ring, which sits on the card's foot)
-      const cb = c.getBoundingClientRect();
-      const sb = c.querySelector(".wc14-spk") && c.querySelector(".wc14-spk").getBoundingClientRect();
-      const h0 = c.offsetHeight + (sb && sb.height ? Math.max(0, sb.bottom - cb.bottom) : 0);
-      const xL = sr.right + 14;
-      const yT = play.top + pad;
-      const yB = play.bottom - pad;
-      const xR = play.right - pad;
-      const rectAt = (anchor, k) => (anchor === "top" ? { left: xL, top: yT, right: xL + w0 * k, bottom: yT + h0 * k } : { left: xL, top: yB - h0 * k, right: xL + w0 * k, bottom: yB });
-      const clear = (r, withBubs) => r.right <= xR + 0.5 && r.top >= yT - 0.5 && r.bottom <= yB + 0.5 && overlap14(r, faces) === 0 && (!withBubs || overlap14(r, bubs) === 0);
-      // the biggest scale (to 1%) at which the card sits clear at that place; 0 where even KMIN doesn't
-      const best = (anchor, withBubs) => {
-        if (clear(rectAt(anchor, 1), withBubs)) return 1;
-        if (!clear(rectAt(anchor, KMIN), withBubs)) return 0;
-        let lo = KMIN;
-        let hi = 1;
-        while (hi - lo > 0.01) {
-          const mid = (lo + hi) / 2;
-          if (clear(rectAt(anchor, mid), withBubs)) lo = mid;
-          else hi = mid;
-        }
-        return lo;
-      };
-      let pick = popShape.mission === mission && popShape.anchor ? { anchor: popShape.anchor, k: popShape.k } : null;
-      // (contract-83, the audit at L4 1280x665, 3 Nov: the order's kept place came from before the third person had walked up, so a
-      // later card touched Nana's face: a kept place that now meets a face is measured again; the order's other cards keep theirs)
-      if (pick && pick.anchor !== "panel" && !clear(rectAt(pick.anchor, pick.k), false)) pick = null;
-      if (!pick) {
-        for (const withBubs of [true, false]) {
-          const kt = best("top", withBubs);
-          const kb = best("bottom", withBubs);
-          if (kt || kb) {
-            pick = kb > kt ? { anchor: "bottom", k: kb } : { anchor: "top", k: kt };
-            break;
-          }
-        }
-      }
-      let x;
-      let y;
-      let k;
-      if (pick) {
-        k = pick.k;
-        const r = rectAt(pick.anchor, k);
-        x = r.left;
-        y = r.top;
-      } else {
-        // (no clear place in the play area even at KMIN, a phone with three people at the counter: over the side panel, the order
-        // card the big card is about to turn into, at the panel's width; contract-76: 740x320)
-        k = Math.max(0.3, Math.min(1, (sr.width - 16) / w0, (Math.min(play.bottom, sr.bottom) - Math.max(play.top, sr.top) - 2 * pad) / h0));
-        x = sr.left + 8;
-        y = Math.max(play.top, sr.top) + pad;
-        pick = { anchor: "panel", k };
-      }
-      popShape.mission = mission;
-      popShape.anchor = pick.anchor;
-      popShape.k = k;
-      c.style.zoom = k < 0.999 ? String(Math.round(k * 1000) / 1000) : "";
-      const kz = c.style.zoom ? Number(c.style.zoom) : 1;
-      // (a zoomed element's left and top are given in its own scale)
-      Object.assign(c.style, { left: `${Math.round(x / kz)}px`, top: `${Math.round(y / kz)}px` });
-      if (quiet) return;
-      try {
-        const onFace = overlap14({ left: x, top: y, right: x + w0 * kz, bottom: y + h0 * kz }, faces);
-        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("pop-face", { step: String(Math.round(onFace)), by: JSON.stringify({ at: pick.anchor, k: Math.round(kz * 1000) / 1000, w0, h0: Math.round(h0), ratio: Math.round((w0 / h0) * 1000) / 1000, x: Math.round(x), y: Math.round(y) }) });
-      } catch (e) {
-        /* only a log */
-      }
-    }
-    // SH-155: the big card's hold by the word's state (the central rules: new 1.5 s, learning 1.0 s, known 0.6 s), its line said meanwhile
-    const hold14 = (r) => {
-      if (!global.Rules) return 0;
-      let rec = null;
-      try {
-        const P = Cook.core && Cook.core.progress;
-        rec = P && P.get ? P.get(wcWordId(r)) : null;
-      } catch (e) {
-        rec = null;
-      }
-      return global.Rules.hold(global.Rules.wordState(rec));
-    };
+    const faces14 = popFaces;
+    const overlap14 = popOverlap;
+    const hold14 = popHold;
     const land = (r, who, fast) => {
       if (s14) {
         const to = rowElOf(who, r);
@@ -2342,11 +2357,21 @@
         return false;
       });
       let want = null;
+      // (contract-106, chai's lab L2 #child at 1280x665, the frozen diff 13 Nov: the light moves on to the next part the moment a part is
+      // shown, but the lesson asked for that part only after its 450 ms beat: a tap on the newly lit part in that beat was taken by
+      // nothing, and the light sat round the child's press for 25 s until a second tap. A tap on the lit part counts from the moment it
+      // is lit: kept here until its step asks for it)
+      let early = null;
+      let kick = null;
       // (the lesson's own taps: the card's peek buttons never take them, so nothing is logged as a peek or counted as help)
       const onClick = (ev) => {
         ev.stopPropagation();
         ev.preventDefault();
         if (want && want.el && want.el.contains(ev.target)) want.res(true);
+        else if (!want && cur && cur.isConnected && cur.contains(ev.target)) {
+          early = cur;
+          if (kick) kick();
+        }
       };
       c.addEventListener("click", onClick, true);
       const here = () => token === Cook.run && c.isConnected;
@@ -2355,6 +2380,12 @@
       // shrinking onto the picture (SH-213's first rule, contract-97), then moving to each part in turn
       let cur = null;
       let lit = null;
+      // (contract-112, the same page: a hidden word's dots are drawn a little wider than the word they stand for, and the light round
+      // the word's slot cut the first and last dot in half, read as an oval: the light holds the part and every dot drawn on it)
+      const withDots = (el) => {
+        const ds = [...el.querySelectorAll(".wc14-dots i")].map((d) => d.getBoundingClientRect()).filter((b) => b.width > 0 && b.height > 0);
+        return ds.length ? [el].concat(ds.map((b) => [b.left, b.top, b.width, b.height])) : el;
+      };
       try {
         await Cook.wait(200);
         for (const [slot, sel, cls] of steps) {
@@ -2363,7 +2394,7 @@
           if (!el) continue;
           cur = el;
           if (!lit) {
-            lit = Onb.light(() => (cur && cur.isConnected ? cur : null), { look: "", pad: 6, kit: true, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
+            lit = Onb.light(() => (cur && cur.isConnected ? withDots(cur) : null), { look: "", pad: 6, kit: true, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
             // (it lights a part of a card, as the reveal lessons' light did: its layer says so, js/shared/onboard.js Onboard.lesson)
             if (lit && lit.layer && lit.layer.dataset) lit.layer.dataset.light = "part";
             say("card", `shown order-popup ${c.dataset.word || ""} ${steps.map((x) => x[0]).join(",")}`);
@@ -2371,7 +2402,9 @@
           Cook.expect = { kind: "click", selector: `.wc14-lesson ${sel}` };
           // (never stuck: a part that stops being tappable for a second, its card moved or covered, is shown and the lesson goes on)
           let lost = 0;
-          await new Promise((res) => {
+          const tappedEarly = early === el;
+          early = null;
+          if (!tappedEarly) await new Promise((res) => {
             want = { el, res };
             const q = setInterval(() => {
               if (!here()) return clearInterval(q), res(false);
@@ -2400,7 +2433,9 @@
           if (Cook.sfx && Cook.sfx.reveal) Cook.sfx.reveal();
           else if (Cook.sfx && Cook.sfx.click) Cook.sfx.click();
           if (global.WordCard && global.WordCard.fit14) global.WordCard.fit14(c);
-          await Cook.wait(nx ? 450 : 700);
+          // (a tap on the part lit next ends the beat at once: its light goes with the press, contract-106)
+          await Promise.race([Cook.wait(nx ? 450 : 700), new Promise((res) => (kick = res))]);
+          kick = null;
         }
       } finally {
         if (lit) lit.close();
@@ -2562,11 +2597,13 @@
         for (const p of parts) {
           if (!live()) return;
           const r = p.row;
-          // SH-267 (Zafar, 12 Nov, level 1 only): as the customer says the dish, its card flashes up beside their bubble
-          if (r && r.head) UI.dishFlash(who, r);
+          // SH-267 (Zafar, 12 Nov, level 1 only): as the customer says the dish, its card comes up; SH-286 (decision 23): the order's
+          // own item pop-up, held with its line as an item card is, then gone (it never joins the card)
+          let dishCard = null;
+          if (r && r.head) dishCard = UI.dishFlash(who, r, { stay: true });
           else if (headless && !flashed && p === parts[0] && !only) {
             const first = r && m.away.has(r) ? r : foldedOf(p)[0];
-            if (first) UI.dishFlash(who, first);
+            if (first) dishCard = UI.dishFlash(who, first, { stay: true });
           }
           flashed = true;
           const item = r && m.away.has(r);
@@ -2647,8 +2684,9 @@
             }
           }
           if (item && live()) popRow(r);
-          // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it)
-          await Promise.all([saying || sayOk(sayPart(who, p.line)), item && s14 ? sayOk(Cook.wait(hold14(r))) : null]);
+          // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it; the dish card too)
+          await Promise.all([saying || sayOk(sayPart(who, p.line)), item && s14 ? sayOk(Cook.wait(hold14(r))) : null, dishCard ? sayOk(Cook.wait(dishCard.hold)) : null]);
+          if (dishCard) await dishCard.close(!live());
           // (SH-213: the first card popped hidden, once its sentence is said: the big card lesson)
           if (item && s14 && !skipped) await blurLesson(big14, r);
           if (item && !skipped) await land(r, who, false);
@@ -3959,19 +3997,21 @@
   };
   /**
    * SH-267 (Zafar, 12 Nov: "Yes ... only at level 1"): as a customer says the dish ("Muke ba samosa khape"), the dish's card, its count
-   * written as the engine says it, flashes up beside their bubble for about 1.5 s (WordCard.flash, the shared piece), and never joins the
-   * order card. Only at level 1: from level 2 it would give the order away. Every kitchen game's order goes through here.
+   * written as the engine says it, comes up so the child sees what it is, and never joins the order card. Only at level 1: from level 2
+   * it would give the order away. Every kitchen game's order goes through here.
+   * SH-286 (Zafar, 13 Nov, decision 23: "it should come up in the same position that the item card pops up in during the rest of the
+   * order ... so it looks visually the same, doesn't change anything, works in the same way"): it is the order's own item pop-up
+   * (popCard), in the same place, size, look and motion as the sugar, milk and ginger cards that follow, never a different card beside
+   * the bubble (was WordCard.flash). It pops in as they do; as its line ends it shrinks away where it stands (it never joins the card).
+   *   o.stay: the caller ends it (handle.close(), the order's read, after handle.hold); else it goes by itself after its hold (a replay)
+   * -> the handle {el, hold, close(now)}: close() resolves once it has gone; null when there is no card to show
    */
-  UI.dishFlash = function (who, head) {
-    if (orderLevel() !== 1 || !global.WordCard || !global.WordCard.flash || !head) return null;
-    // (on the page's own layer, fixed over the play area: the stage's own children come and go with the order pop-up and its fold, which
-    // took the card with them within 100-200 ms, contract-119)
+  UI.dishFlash = function (who, head, o = {}) {
+    if (orderLevel() !== 1 || !global.WordCard || !global.WordCard.big14 || !head || !UI.s14()) return null;
     const stage = $("#stage");
-    const host = document.body;
     // (the Fable review's finding 10, Zafar 12 Nov: "1 cup of tea, 2 samosas": the dish with its count, the engine's phrase from the
     // head row's own parts, never the whole sentence the person says; one when the order names no count. A headline with no dish of
-    // its own (the pantry's "bring me these", English still to record) flashes nothing. No written English on it: it is not the
-    // order card, non-negotiable 3)
+    // its own (the pantry's "bring me these", English still to record) shows nothing)
     // (the a2 review's finding 9: the dish is the word the card's picture is, wcWordId, never a first word that is not the dish)
     const dish = wcWordId(head);
     if (!dish || (head.rec && !(head.parts || []).length)) return null;
@@ -3982,6 +4022,8 @@
     const named = words.length > 1 && words[words.length - 1] === dish ? words : null;
     const one = Lang.countParts(1, "\u0000");
     const line = counted && head.phrase ? head.phrase : Lang.phrase(named ? [].concat(...one.map((x) => (x === "\u0000" ? named : [x]))) : Lang.countParts(1, dish));
+    // (the item cards' own card at this level: its picture, its Kutchi and, at level 1, its English, as the order's item cards show
+    // them, SH-273: "picture, Kutchi word and English")
     const w = UI.wordOf(Object.assign({}, head, { line, phrase: line, head: true }), { size: 240, written: true, head: true });
     if (!stage || !w) return null;
     // (SH-267, Zafar 12 Nov morning: "we should ensure we have the correct version of milk or no-milk tea on the image"): a dish with a
@@ -4003,10 +4045,9 @@
         if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.picture = true;
       }
     }
-    if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
-    if (w.wordOpts) w.wordOpts.enShown = false;
+    if (w.wordOpts && w.wordOpts.slots && !(w.word && w.word.picture)) w.wordOpts.slots.picture = false;
     // (SH-273, contract-128 in s19ns-a4: chai's glass was not in yet for the card's first 383 ms, an empty box: its picture is fetched now
-    // and the card waits for it, as it waits for the bubble, a beat at most)
+    // and the card waits for it, a beat at most)
     let pre = null;
     if (w.word && w.word.picture && w.word.picture.src && typeof Image !== "undefined") {
       pre = new Image();
@@ -4014,89 +4055,58 @@
     }
     const picIn = () => !pre || (pre.complete && pre.naturalWidth > 0) || !!pre._bad;
     if (pre) pre.onerror = () => (pre._bad = true);
-    // the card a little off to the side of the speaker's bubble, clear of every face and bubble (SH-267's frames, 12 Nov: with no bubble
-    // drawn yet it sat in the play area's middle, over the customer's head and bubble). It waits a beat for the bubble to be drawn.
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(dish || "") });
     const sp = Cook.speed || 1;
-    const handle = { el: null, closed: false, close() { handle.closed = true; if (handle.f) handle.f.close(); } };
-    const offEnd = global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => handle.close()) : null;
-    const boxes = () => {
-      const out = [];
-      const S = Cook.scene;
-      try {
-        Object.values((S && S.chars) || {}).forEach((img) => {
-          if (!img || !img.active || img.visible === false || !S.headBox) return;
-          const hb = S.headBox(img);
-          const a = UI.worldToScreen(hb.x, hb.y);
-          const z = UI.worldToScreen(hb.x + hb.w, hb.y + hb.h);
-          out.push({ left: a.x - 6, top: a.y - 6, right: z.x + 6, bottom: z.y + 6 });
-        });
-      } catch (e) {
-        /* no scene */
-      }
-      document.querySelectorAll(".cv-bubble, #bubble:not(.hidden), .njg-bubble, .njg-face").forEach((b) => {
-        if (b.closest("#side, .wc14")) return;
-        const r = b.getBoundingClientRect();
-        if (r.width > 4 && r.height > 4) out.push({ left: r.left - 6, top: r.top - 6, right: r.right + 6, bottom: r.bottom + 6 });
-      });
-      return out;
+    // (its hold, as an item card's: the dish word's state, the central rules; a replay's card stays at least the old 1.5 s)
+    const handle = { el: null, closed: false, hold: popHold(head), t: null };
+    let offEnd = null;
+    handle.close = (now = false) => {
+      if (handle.closed) return Promise.resolve();
+      handle.closed = true;
+      if (handle.t) clearTimeout(handle.t);
+      if (offEnd) offEnd();
+      const c = handle.el;
+      if (!c || !c.isConnected) return Promise.resolve();
+      if (now || !c.animate) return Promise.resolve(c.remove());
+      // (it goes where it stands, the way it came: shrinking as it fades; a card scaled by zoom fades alone, as it came, contract-83)
+      const an = c.animate(c.style.zoom ? [{ opacity: 1 }, { opacity: 0 }] : [{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0.6)" }], { duration: 240 / sp, easing: "cubic-bezier(.4,0,1,1)", fill: "forwards" });
+      return an.finished.catch(() => {}).then(() => c.remove());
     };
-    // (CK-91, the S19 gate's eye judge, 12 Nov: at 740x320 the card sat over the settings cog in baking, chop and chaat: the page's
-    // keep-out places, the cog among them, as the conversation bubbles keep them (js/shared/conversations.js), are never covered)
-    const keepOut = () =>
-      [...document.querySelectorAll("[data-njg-keepout], [data-njg-avoid], .side-cog, #side-cog, [data-njg-zone=cog]")]
-        .map((b) => b.getBoundingClientRect())
-        .filter((r) => r.width > 4 && r.height > 4)
-        .map((r) => ({ left: r.left - 6, top: r.top - 6, right: r.right + 6, bottom: r.bottom + 6 }));
-    const bubble = () => [...document.querySelectorAll(".cv-bubble, #bubble:not(.hidden), .njg-bubble, .cl-bubble")].find((b) => !b.closest("#side") && b.getBoundingClientRect().width > 4) || null;
+    // (the stage's end takes it away at once, never over whatever comes next)
+    offEnd = global.Lifecycle && global.Lifecycle.onStageEnd ? global.Lifecycle.onStageEnd(() => handle.close(true)) : null;
+    // (the row card's shape, which the item cards take so one even scale lands each on its row: the speaker's first item card on the
+    // order card; folded while they say their sentence (SH-171), so it is read with the fold lifted for that one measure, in the same
+    // turn, nothing drawn between; a card with no item cards: the card's own shape, as an item card takes where its row shape won't fit)
+    const slotOf = () => {
+      const all = [...document.querySelectorAll("#mission .oc-card")];
+      const own = all.filter((x) => x.dataset.who === String(who || ""));
+      for (const card of own.length ? own : all) {
+        const was = ["oc-headonly", "oc-unsaid"].filter((k) => card.classList.contains(k));
+        was.forEach((k) => card.classList.remove(k));
+        const row = card.querySelector(".oc-row.oc-it14");
+        const b = row ? row.getBoundingClientRect() : null;
+        was.forEach((k) => card.classList.add(k));
+        if (b && b.width > 0 && b.height > 0) return { getBoundingClientRect: () => b };
+      }
+      return null;
+    };
     const show = () => {
       if (handle.closed || !stage.isConnected) return;
-      const hb = stage.getBoundingClientRect();
-      const f = global.WordCard.flash(host, w.word, { x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38, ms: 1500 / sp, opts: w.wordOpts, cls: "wc14-flash-fixed" });
-      handle.f = f;
-      handle.el = f && f.el;
-      if (!f || !f.el) return;
-      // (SH-273: "a row of dots where chai's card has the English": the flash has no English (it is not the order card, non-negotiable
-      // 3), so it has no English row at all, never its hidden dots; and no empty picture box when the dish has no picture)
-      const enRow = f.el.querySelector(".wc14-slot-e");
-      if (enRow) enRow.remove();
-      if (!(w.word && w.word.picture)) {
-        const pb = f.el.querySelector(".wc14-pic");
-        if (pb) pb.remove();
-      }
-      // (its own size, measured once drawn; then the first place clear of every face and bubble: right of the bubble, left of it, the
-      // play area's top corners, its middle last)
-      const cw = f.el.offsetWidth || 120;
-      const ch = f.el.offsetHeight || 160;
-      const bb = bubble() ? bubble().getBoundingClientRect() : null;
-      const pad = 10;
-      const cands = [];
-      if (bb) {
-        cands.push({ x: bb.right + pad + cw / 2, y: bb.top + bb.height / 2 });
-        cands.push({ x: bb.left - pad - cw / 2, y: bb.top + bb.height / 2 });
-      }
-      const hard = keepOut();
-      cands.push({ x: hb.left + pad + cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.right - pad - cw / 2, y: hb.top + pad + ch / 2 });
-      // (the top right corner left of the cog, and under it)
-      hard.forEach((k) => cands.push({ x: k.left - pad - cw / 2, y: hb.top + pad + ch / 2 }, { x: hb.right - pad - cw / 2, y: k.bottom + pad + ch / 2 }));
-      cands.push({ x: hb.left + hb.width / 2, y: hb.top + hb.height * 0.38 });
-      const avoid = boxes();
-      const inside = (c) => c.x - cw / 2 >= hb.left + 2 && c.x + cw / 2 <= hb.right - 2 && c.y - ch / 2 >= hb.top + 2 && c.y + ch / 2 <= hb.bottom - 2;
-      const hits = (c) => avoid.reduce((n, r) => n + Math.max(0, Math.min(c.x + cw / 2, r.right) - Math.max(c.x - cw / 2, r.left)) * Math.max(0, Math.min(c.y + ch / 2, r.bottom) - Math.max(c.y - ch / 2, r.top)), 0);
-      const covers = (c) => hard.some((r) => Math.min(c.x + cw / 2, r.right) > Math.max(c.x - cw / 2, r.left) && Math.min(c.y + ch / 2, r.bottom) > Math.max(c.y - ch / 2, r.top));
-      const fits = cands.map((c) => ({ x: Math.max(hb.left + cw / 2 + 2, Math.min(hb.right - cw / 2 - 2, c.x)), y: Math.max(hb.top + ch / 2 + 2, Math.min(hb.bottom - ch / 2 - 2, c.y)) })).filter((c) => inside(c) && !covers(c));
-      const pick = fits.find((c) => hits(c) === 0) || fits.slice().sort((a, b2) => hits(a) - hits(b2))[0];
-      if (pick) Object.assign(f.el.style, { left: `${Math.round(pick.x)}px`, top: `${Math.round(pick.y)}px` });
+      // (an order whose first sentence is its first item, chop's "Muke ba dungri khape": its item card is already up, the same thing)
+      if (document.querySelector(".wc14-pop:not(.wc14-dish)")) return void handle.close(true);
+      const c = popCard(w, slotOf(), "wc14-dish");
+      handle.el = c;
+      if (!c) return;
+      c.dataset.dish = dish;
+      if (!o.stay) handle.t = setTimeout(() => handle.close(), Math.max(1500, handle.hold) / sp);
     };
-    // (on the page's layer: the stage's end takes it away at once, never over whatever comes next)
     const t0 = Date.now();
     const wait = () => {
       if (handle.closed) return;
-      if ((bubble() && picIn()) || Date.now() - t0 > 600 / sp) return show();
+      if (picIn() || Date.now() - t0 > 600 / sp) return show();
       setTimeout(wait, 40);
     };
     wait();
-    if (offEnd) setTimeout(() => offEnd(), 2400 / sp);
     return handle;
   };
   UI.personSpeaking = () => personTalks > 0;

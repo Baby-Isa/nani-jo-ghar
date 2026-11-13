@@ -378,8 +378,11 @@ export function chaiExtra(asked, extras) {
       return St.guideLine(key === "slow" ? "chai-tray:slow" : `chai-tray:${key}`);
     };
     let lastGist = null;
-    const phase = (key, id, pick) => {
-      const sid = key ? `${key}:${id || ""}` : null;
+    // (CHAI-110, contract-36 at L4 in the frozen diff, 13 Nov: a full glass's second pour is its own step, as the coach has it, so its
+    // light on the glass comes with Nani's call, as every control's does (Zafar, 29 Oct); it was the first pour's step still open, so
+    // the glass lit with nothing said. again: called though the same words were said a moment ago, MAA-15)
+    const phase = (key, id, pick, again = false) => {
+      const sid = key ? `${key}:${id || ""}${again ? ":again" : ""}` : null;
       if (sid === lastPhase) return;
       lastPhase = sid;
       if (!key) {
@@ -394,7 +397,7 @@ export function chaiExtra(asked, extras) {
       // hint timer after the pour as that's a correct action"): after the pour the step is picking pan 2, its line pan 2's next item;
       // the tap it waits for is the pan, not an item, so the item's rule (said only as her card opens, SH-172) missed it and the line
       // was said at once as a control's call. A pick's step is never called: its line comes with the pick's own light, after the wait
-      steps.to(key, { id: sid, line: stepLine(key, id), noCall: pick ? "pick" : null });
+      steps.to(key, { id: sid, line: stepLine(key, id), noCall: pick ? "pick" : null, again });
       if (key === lastGist) return;
       lastGist = key;
       const text = ((Cook.data.stations["chai-tray"] || {}).phases || {})[key];
@@ -2068,7 +2071,7 @@ export function chaiExtra(asked, extras) {
       if (nx && nx.slowAt && lastPhase !== "slow:") note("chai-slow", nx.slowAt.heat.toFixed(3), `${lo}/${hi}/${nx.slowAt.who}`);
       // (a control's step names no item: Nani's card lets the last item go before the call is said, contract-89; the sandbox, 3 Nov)
       if (nx && CONTROL14.has(nx.phase) && UI.helper) UI.helper(null);
-      if (nx) phase(nx.phase, nx.pid, !!(nx.e && /^pan-/.test(nx.e.key || ""))); // S02-B: nothing to do -> the box is empty (R2)
+      if (nx) phase(nx.phase, nx.pid, !!(nx.e && /^pan-/.test(nx.e.key || "")), !!(nx.again && nx.phase === "pour")); // S02-B: nothing to do -> the box is empty (R2)
       // Sprint 11: the real item's demo and the hint rungs for the step Nani has just opened (and calls)
       // (picking the next pan is its own step, so the water after it opens as a new one with its own help: the sandbox, 3 Nov, contract-24)
       // (CHAI-110: a full glass's second pour is its own step, with its own first-time light)

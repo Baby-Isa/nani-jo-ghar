@@ -42,6 +42,7 @@ const ABSTRACT = [
   ["AndKind", "Utt", { x: NP }, "and {x} (a second kind of one dish)", ["I'd like two samosas with mince, and one with potato."], { rows: ["x"] }],
   ["ButNo", "Utt", { head: NP, x: NP }, "{head}, but no {x}", ["I'd like lentils, but no onion."]],
   ["Times", "Utt", { n: { type: "Num" } }, "{n} times", ["once; twice; three times (stir it three times)"]],
+  ["StirTimes", "Utt", { n: { type: "Num" } }, "Stir it {n} times.", ["Stir it three times."]],
   ["BringMeTheseForX", "Utt", { x: NP }, "Bring me these for {x}.", ["Bring me these for chai."]],
   ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "b"] }],
   ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "rest"] }],
@@ -179,6 +180,9 @@ const CONCRETE = {
   AndKind: { status: "unknown", ask: ["L23", "L26", "L27"], english: "and {x}", what: "joining a second kind of the same dish ('and one with potato')", src: "docs/archive/feedback/cook-playtest-2026-09-29.md Q5 4; data/cook.json lines.and_join (to record)" },
   ButNo: { status: "unknown", ask: ["L19", "L24"], english: "{head}, but no {x}", what: "'but no onion' inside an order", src: "grammar-kb feature 19; Round 5 L19, L24" },
   Times: { slots: [S("n", { cell: "he.obl" }), L("n.times")], status: "draft", src: `${GN} §66 (12 Nov 15:57: hakre fare, ba fare, trae fare; 15:19: hakre fare firai, ba fare firai, trae fare firai)`, notes: ["hakre (not hakro) before fare. Not taano: hakre taano is 'at one time, some time' (14:01-14:44)."] },
+  // (Zafar, 13 Nov, decision 22: daar's stir line is Mum's own sentence, "Stir it three times", with no "slowly": build/reports/mum-2026-11-12.md
+  // "Code changes" 4)
+  StirTimes: { slots: [S("n", { cell: "he.obl" }), L("n.times"), L("v.turn", "imp.informal")], mark: ".", status: "draft", src: `${GN} §66 (12 Nov 15:19: hakre fare firai, ba fare firai, trae fare firai: stir it once, twice, three times); Zafar 13 Nov, decision 22 (the stir line drops 'slowly')`, notes: ["Mum's sentence whole: the count's -e form (hakre), fare, then the command firai."] },
   BringMeTheseForX: { slots: [L("dem.this"), L("pron.p1", "dat"), S("x", { case: "obl" }), L("post.for"), L("v.take", "conj"), L("v.come", "conj"), L("v.give", "imp.informal")], mark: ".", status: "draft", src: `${GN} §65 (12 Nov 0:38-0:43: Hi muke chai lai khani achi de, bring me these for chai: khani achi de, take and come and give)`, notes: ["Said with chai only; a he-word dish takes its -e form before lai (§18, §41)."] },
   Fetch: { status: "unknown", ask: ["L29", "N1", "N2"], english: "Bring me {things}", what: "Nani sending the child to fetch a list ('bring me flour, sugar and milk')", src: "grammar-kb feature 23; Round 5 L29" },
 

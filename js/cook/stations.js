@@ -700,10 +700,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return out; // a tainted or odd texture: its bounds
       }
     }
-    /** CK-113: the move the tap began was turned down: every light it hid is back now (Onboard.refused) */
+    /** CK-113: the move the tap began was turned down: every light it hid is back now (Onboard.lightBack) */
     refused() {
       const OB = global.Onboard;
-      if (OB && OB.refused) OB.refused();
+      if (OB && typeof OB.lightBack === "function") OB.lightBack();
     }
     wiggle(obj) {
       this.__shook = true;

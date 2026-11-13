@@ -1825,7 +1825,7 @@
   },
   {
    "clip": "mitho",
-   "lex": "n.salt.mums-word",
+   "lex": "n.salt",
    "cell": "sg.dir"
   },
   {
@@ -2861,7 +2861,7 @@
   },
   {
    "clip": "muke-miryo-khapeti",
-   "meaning": "Need(p1,Item(n.black-pepper.mums-word))|polite|"
+   "meaning": "Need(p1,Item(n.black-pepper))|polite|"
   },
   {
    "clip": "hakro-indo",

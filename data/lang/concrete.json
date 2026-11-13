@@ -1209,6 +1209,27 @@
     "hakre (not hakro) before fare. Not taano: hakre taano is 'at one time, some time' (14:01-14:44)."
    ]
   },
+  "StirTimes": {
+   "slots": [
+    {
+     "arg": "n",
+     "cell": "he.obl"
+    },
+    {
+     "lex": "n.times"
+    },
+    {
+     "lex": "v.turn",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §66 (12 Nov 15:19: hakre fare firai, ba fare firai, trae fare firai: stir it once, twice, three times); Zafar 13 Nov, decision 22 (the stir line drops 'slowly')",
+   "notes": [
+    "Mum's sentence whole: the count's -e form (hakre), fare, then the command firai."
+   ]
+  },
   "BringMeTheseForX": {
    "slots": [
     {
@@ -1653,15 +1674,6 @@
      "src": "grammar-notes §62 C97 (Aau roj maani kianto: a man; kianti: a woman)"
     }
    ]
-  },
-  "BringMeTheseForX2": {
-   "status": "unknown",
-   "ask": [
-    "to record with Mum (the game line has no Kutchi yet)"
-   ],
-   "english": "Bring me these for {x}",
-   "what": "Bring me these for {x}",
-   "src": "data/cook.json lines.headline-give: 28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). The Kutchi for this line isn't recorded yet (Mum, to record), so the card shows this English, flagged 'to record'."
   },
   "MyXHurts": {
    "status": "unknown",

@@ -170,6 +170,11 @@ function s19bhook() {
       box: R(card.getBoundingClientRect()), row: R(row.getBoundingClientRect()), away, slide,
       cards: its.map((c) => ({ w: ((c.querySelector(".wc14-k, .oc-t") || c).textContent || "").replace(/\s+/g, " ").trim().slice(0, 24), id: c.dataset.word || (c.querySelector("[data-word]") || {dataset: {}}).dataset.word || null, done: c.classList.contains("done") ? 1 : 0, box: R(c.getBoundingClientRect()), in: contentBox(c) })),
     };
+    // (s20-p2-chai, the frozen diff: contract-37 read only the first person's card, so the second person's spice counted as a decoy at
+    // L2-L3 with two people: every shown order card's item words, for contract-37 alone; contract-116 keeps reading the one card above)
+    v.allCards = [...document.querySelectorAll("#mission .oc-card, #side .oc-card")].filter((c) => shown(c) && !c.closest(".njg-results, .njg-rq-card"))
+      .flatMap((c) => [...c.querySelectorAll(".oc-row14 > .oc-it14")].filter((x) => !x.closest(".oc-away")))
+      .map((c) => ({ w: ((c.querySelector(".wc14-k, .oc-t") || c).textContent || "").replace(/\s+/g, " ").trim().slice(0, 24), id: c.dataset.word || (c.querySelector("[data-word]") || { dataset: {} }).dataset.word || null }));
     if (!same("pad", v)) emit({ k: "s19pad", ...v });
   };
 

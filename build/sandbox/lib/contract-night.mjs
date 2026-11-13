@@ -37,6 +37,9 @@ function check124(r, tl, add) {
     if (!/^knob-on-/.test(String(w.key || ""))) continue;
     const nx = wants.slice(i + 1).find((x) => x.key !== w.key);
     if (!nx || nx.t + KNOB_AFTER_MS > tEnd) continue;
+    // (s20-p2-chai, the frozen diff on #takeback: a want that goes BACK to an earlier step is a take-back, not a knob turned on: the
+    // child took the sugar back from the pan, so no knob turned and the silence is right)
+    if (wants.slice(0, i).some((x) => x.key === nx.key)) continue;
     // (the same want sampled again is one turn: skip to the change)
     if (wants[i + 1] && wants[i + 1].key === w.key) continue;
     // (from the child's tap that turned it, when the want sample came late after it: s19ns-a4's chai L4 at 740x320 under load, 1.2 s)
@@ -109,7 +112,7 @@ function nighthook() {
   let last = "";
   setInterval(() => {
     try {
-      const fl = [...document.querySelectorAll(".wc14-flash")].filter(shown);
+      const fl = [...document.querySelectorAll(".wc14-flash, .wc14-pop.wc14-dish")].filter(shown); // (SH-286: the dish card is the order's own pop-up)
       const flash = fl.length;
       // (contract-128: what shows on the flashing card: its hidden-word dots, a picture box with no picture in it)
       const fbits = flash ? {

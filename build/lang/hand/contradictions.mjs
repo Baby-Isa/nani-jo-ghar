@@ -42,7 +42,7 @@ export const REASONS = {
   "munji-chai-me-ba-chamchi-khun-wijij": { kind: "rule", why: "In my chai put two spoons of sugar: a measure (ba chamchi khun) inside WantIn; the engine says ba khun.", src: "grammar-notes §65 (12 Nov 11:12)", recommend: "None needed: the game asks for sugars, not spoons." },
   "hakre-fare-firai-ba-fare-firai-trae-fare-firai": { kind: "rule", why: "A list of three commands (stir once, twice, three times); Mum says bo fare here and ba fare at 15:57.", src: "grammar-notes §66", recommend: "None: a teaching take; Times and Command each say their part." },
   "hakre-fare-ba-fare-trae-fare": { kind: "rule", why: "A list (once, twice, three times): three Times in one take.", src: "grammar-notes §66 (15:57)", recommend: "To split into three clips if the game wants once / twice alone." },
-  "hakro-tomato-trae-tameta": { kind: "spelling", why: "One tomato, three tomatoes in one take; and Mum says the English tomato for one where the game has tameto.", src: "grammar-notes §64 (17:31)", recommend: "Zafar to choose (spelling list 5); the plural tameta is in the engine." },
+  "hakro-tomato-trae-tameta": { kind: "spelling", why: "One tomato, three tomatoes in one take; and Mum says the English tomato for one where the game has tameto.", src: "grammar-notes §64 (17:31)", recommend: "Settled: Zafar 13 Nov (decision 22), one is tameto, with an e; the plural tameta is in the engine." },
   "muke-maani-ghee-sathe-khapeti": { kind: "rule", why: "A side dish with sathe after the dish (a chapati with ghee): no rule yet (WithFood is a filling).", src: "grammar-notes §64, §65 (28:00)", recommend: "Add a WithSide meaning when a game needs it." },
   "muke-thoro-ghee-khapeto": { kind: "spelling", why: "thoro (a little, a he-form) where the engine has thorok and thori.", src: "grammar-notes §64 (28:45)", recommend: "Zafar to confirm thoro (spelling list 12)." },
   "hakri-mishkaki-khapeti": { kind: "rule", why: "hakri may be the skewer's (lakri), not mishkaki's: 'like one skewer of mishkaki'.", src: "grammar-notes §64 (29:48)", recommend: "Ask Mum; the engine keeps hakri lakri mishkaki (§25)." },
@@ -63,7 +63,7 @@ export const REASONS = {
   "pa-cup-adho-cup-pono-cup-aakho-cup": { kind: "rule", why: "A list of four amounts in one take.", src: "grammar-notes §67 (56:12)", recommend: "To split into four clips for baking's amounts." },
   "sawa-cup": { kind: "rule", why: "One and a quarter cups: baking has no word id for it yet.", src: "grammar-notes §67 (56:27)", recommend: "Add when baking asks for it." },
   "pona-ba-cup": { kind: "rule", why: "One and three quarter cups: baking has no word id for it yet.", src: "grammar-notes §67 (56:38)", recommend: "As sawa cup." },
-  "hakri-chapti-mitho": { kind: "spelling", why: "A pinch of salt: mitho, Mum's word for salt, where the game says loon; no Unit rule for chapti yet.", src: "grammar-notes §64, §67 (57:14)", recommend: "Decision 2 in the report (salt)." },
+  "hakri-chapti-mitho": { kind: "rule", why: "A pinch of salt: mitho, Mum's word for salt, the game's since decision 22 (Zafar, 13 Nov); no Unit rule for chapti yet.", src: "grammar-notes §64, §67 (57:14)", recommend: "Add a Unit rule for chapti when baking's pinch needs it (CK-89)." },
   "chaat-inji-reet-pramane-banai": { kind: "spelling", why: "Make the chaat the way it's meant to be made: the last word may end -j (banaij), so not wired to 'Make the bowl, in order'.", src: "grammar-notes §67 (61:15)", recommend: "Zafar to listen; then wire the chaat assemble line." },
 };
 

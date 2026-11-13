@@ -192,7 +192,8 @@ function wohook() {
   setInterval(() => {
     // (contract-119: the dish card's flash, SH-267: on screen or not, and where)
     try {
-      const f = [...document.querySelectorAll(".wc14-flash")].find((el) => el.classList.contains("on") && shown(el));
+      // (SH-286, decision 23: the dish card is the order's own pop-up, .wc14-pop.wc14-dish; the old flash card kept for older runs)
+      const f = [...document.querySelectorAll(".wc14-flash, .wc14-pop.wc14-dish")].find((el) => (el.classList.contains("on") || el.classList.contains("wc14-dish")) && shown(el));
       const fv = f ? JSON.stringify(R(f.getBoundingClientRect())) : "";
       if (fv !== lastFlash) { lastFlash = fv; emit({ k: "s19flash", on: !!f, box: f ? R(f.getBoundingClientRect()) : null, vw: innerWidth, vh: innerHeight }); }
     } catch (e) { /* a probe only */ }
