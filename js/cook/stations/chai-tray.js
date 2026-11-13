@@ -303,7 +303,7 @@ export function chaiExtra(asked, extras) {
      * that spice is on the shelf (decision 68)
      */
     const SPICE_PIC = {
-      "spi-10": { key: "chai-elchi-src", file: "assets/cook/props/elchi.webp", cut: [115, 107, 70, 29], w: 0.4, n: 2 },
+      "spi-10": { key: "chai-elchi-src", file: Cook.Art.file("chai.elchi", "default"), cut: [115, 107, 70, 29], w: 0.4, n: 2 },
       "veg-14": { key: "chai-ginger-src", file: `${V2}ginger-slices-t.webp`, cut: [65, 157.5, 59, 54], w: 0.3, n: 1 },
     };
     const onShelf = [].concat(...shelfIds);
