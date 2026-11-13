@@ -4184,7 +4184,9 @@
     if (!all.length || !plain(parts[0]) || plain(parts[0]) !== plain(all[0])) return null;
     const head = parts.map(rowOf).find((r) => r && r.head) || all.map(rowOf).find((r) => r && r.head);
     if (head) return UI.dishFlash(c.dataset.who || null, head);
-    if (mission && mission.stripMode) return null; // (PAN-19: Nani's own list has no dish to flash)
+    // (PAN-19: the pantry's list has no dish to flash: each of her things pops as its own big card. Only the pantry's: chop, chaat
+    // and daar are Nani's own orders too, and theirs flash the first thing said, contract-119, the r2 gate 13 Nov)
+    if (mission && mission.stripMode && String(guideKey || "").split(":")[0] === "fetch") return null;
     const first = parts.map((p) => rowOf(p) || ((p.line && p.line.rows) || []).find((x) => x && !x.head && !x.no)).find(Boolean);
     return first ? UI.dishFlash(c.dataset.who || null, first) : null;
   }

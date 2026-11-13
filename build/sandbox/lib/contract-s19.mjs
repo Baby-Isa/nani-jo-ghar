@@ -284,6 +284,10 @@ export function check105(r, tl, add) {
       // chaat: its light holds the knife, the item and the path between them, so it is off the knife's middle by design; the knife whole
       // inside it, contract-112 judges its path)
       if (/knife/i.test(id) && cover >= 0.95 && area(h) <= 12 * area(t)) return;
+      // (DAAR-39, Zafar: the chop's first time is "a small horizontal strip, maybe twice the height of the knife, running the full width
+      // along": a band across the board holding the knife and the item it cuts, whole. Its middle is the board's, not the item's, by
+      // design; the r2 gate, 13 Nov, read the item under its middle as the lit thing)
+      if (cover >= 0.95 && sceneAt(tl, e.t + HOLD_MS).list.some((x) => /knife/i.test(x.key) && area(box(x.box)) > 0 && inter(h, box(x.box)) >= 0.95 * area(box(x.box)))) return;
       const offX = Math.abs(hm.x - tm.x) / Math.max(1, t.r - t.l), offY = Math.abs(hm.y - tm.y) / Math.max(1, t.b - t.t);
       if (cover < PIC_COVER || offX > PIC_OFF || offY > PIC_OFF) {
         seen.add(id);
