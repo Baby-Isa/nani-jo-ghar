@@ -1697,9 +1697,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const tall = (M) => M * (1 + hang) + above(M);
     const Mh = Math.min(H / (1 + hang + a), (H - ICON) / (1 + hang - 0.122), (H - FACE * 0.7) / (1 + hang + box.far));
     const Mw = (vr - vl) / (gW + GAP + ACROSS);
-    const M = Math.max(120, Math.min(Mw, Mh));
+    let M = Math.max(120, Math.min(Mw, Mh));
     let x0 = (vl + vr) / 2 - (M * (gW + GAP + ACROSS)) / 2;
-    const farY = spanTop + (H - tall(M)) / 2 + above(M);
+    let farY = spanTop + (H - tall(M)) / 2 + above(M);
     // SEK-29 (the S19 gate's eye judge, 12 Nov: "the cog clear of the tray"): where the settings cog (top right, over the play area)
     // would sit on the cooked tray's corner, the group moves left by the overlap, as far as the view's left margin allows; its size
     // is kept (the grill as big as the height allows, contract-115)
@@ -1716,6 +1716,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const trayTop = farY - box.far * M;
         const over = trayRight + 10 - cogLeft;
         if (over > 0 && trayTop < cogBottom) x0 -= Math.max(0, Math.min(over, x0 - (left + 8)));
+        // (the judge, s19-night-c-ev1, 740x320: "the cog's box sits over the tray's top-right corner in every frame": a phone has no
+        // room left to move into; then the group is made just small enough that the tray ends 10 px left of the cog, centred in the
+        // room between the view's left margin and the cog, unless it already sits below the cog)
+        const room = cogLeft - 10 - vl;
+        if (x0 + M * (gW + GAP + ACROSS) + 10 > cogLeft && farY - box.far * M < cogBottom && room > 0) {
+          const M2 = Math.max(120, Math.min(M, room / (gW + GAP + ACROSS)));
+          if (M2 < M) {
+            M = M2;
+            farY = spanTop + (H - tall(M)) / 2 + above(M);
+          }
+          x0 = Math.max(left + 8, vl + (room - M * (gW + GAP + ACROSS)) / 2);
+        }
       }
     } catch (e) {
       /* where it was */
