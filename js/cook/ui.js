@@ -3948,6 +3948,15 @@
       w.word.picture = { src: Cook.v(black ? dp.black : dp.milk), fit: "contain" };
       if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.picture = true;
     }
+    // (SH-273, the S19 gate's eye judge, 12 Nov: "an empty cream box where the picture goes": a dish whose order row has no picture of its
+    // own, baking's naan, chaat, chop's first thing, shows its item's own picture, as the shelf and the order card do; none at all: no box)
+    if (w.word && !w.word.picture) {
+      const src = wcPicSrc(dish);
+      if (src) {
+        w.word.picture = { src: Cook.v(src), fit: "contain" };
+        if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.picture = true;
+      }
+    }
     if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
     if (w.wordOpts) w.wordOpts.enShown = false;
     // the card a little off to the side of the speaker's bubble, clear of every face and bubble (SH-267's frames, 12 Nov: with no bubble
@@ -3992,6 +4001,14 @@
       handle.f = f;
       handle.el = f && f.el;
       if (!f || !f.el) return;
+      // (SH-273: "a row of dots where chai's card has the English": the flash has no English (it is not the order card, non-negotiable
+      // 3), so it has no English row at all, never its hidden dots; and no empty picture box when the dish has no picture)
+      const enRow = f.el.querySelector(".wc14-slot-e");
+      if (enRow) enRow.remove();
+      if (!(w.word && w.word.picture)) {
+        const pb = f.el.querySelector(".wc14-pic");
+        if (pb) pb.remove();
+      }
       // (its own size, measured once drawn; then the first place clear of every face and bubble: right of the bubble, left of it, the
       // play area's top corners, its middle last)
       const cw = f.el.offsetWidth || 120;
