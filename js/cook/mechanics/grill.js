@@ -961,6 +961,54 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return key;
   };
 
+  /**
+   * SEK-28 (the S19 gate's eye judge, 12 Nov: "the plate is not the dish the child made ... two pepper-and-meat skewers; the child
+   * threaded and grilled one skewer of four plain meat cubes"): the skewers the child grilled, as they came off the grill (each its own
+   * pieces in its own order, cooked, or charred where it was left), side by side, a little turned, on a clear canvas: the serve lays them
+   * on the tray in place of the fixed picture. One light, upper left (SH-268): a soft shadow down and right. -> a texture key, or null.
+   */
+  SK.servedSkewers = function (S, plate) {
+    const list = (plate || []).filter((p) => p && p.pieces && p.pieces.length).slice(0, 4);
+    if (!S || !list.length) return null;
+    const W = 560;
+    const H = 380;
+    const c = cv(W, H);
+    const ctx = c.getContext("2d");
+    const stick = S.textures.get(SK.tex(S, "stick")).getSourceImage();
+    const k = 0.62; // (the stick, 640 px, about 400 across the canvas)
+    const a = -0.2; // (a little turned, tip up to the right)
+    const gap = list.length > 3 ? 70 : 84;
+    const px = -Math.sin(a);
+    const py = Math.cos(a);
+    ctx.shadowColor = "rgba(40, 24, 10, 0.28)";
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 7;
+    list.forEach((p, j) => {
+      const d = (j - (list.length - 1) / 2) * gap;
+      ctx.save();
+      ctx.translate(W / 2 + px * d, H / 2 + py * d);
+      ctx.rotate(Math.PI / 2 + a);
+      ctx.scale(k, k);
+      ctx.drawImage(stick, -STICK.w / 2, -STICK.cy);
+      p.pieces.forEach((id, i) => {
+        const painted = SK.pieceTex(S, id, p.burnt ? "charred" : "grilled");
+        const img = S.textures.get(painted || SK.tex(S, `piece:${id}`)).getSourceImage();
+        const sc = SK.pieceScale(p.pieces.length);
+        ctx.save();
+        ctx.translate(0, SK.slotY(i, p.pieces.length));
+        ctx.scale(sc, sc);
+        if (!painted) ctx.filter = p.burnt ? "brightness(0.5)" : "brightness(0.85) sepia(0.25)";
+        ctx.drawImage(img, -PIECE / 2, -PIECE / 2);
+        ctx.restore();
+      });
+      ctx.restore();
+    });
+    const key = `mk:served-skewers-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+    S.textures.addCanvas(key, c);
+    return key;
+  };
+
   /** v3 (K9): the served plate: the plate's picture of n skewers, each skewer's grilled pieces along its drawn stick. */
   function plateArt3(S, plate) {
     const P = V3.plate;
@@ -2173,8 +2221,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!g.busy && g.phase < k.turns) g.v = hold14.cap(g.v, lo, hi, "skewer");
           const inBand = g.v >= lo && g.v <= hi;
           // (four stages, K2: raw on the first side, part after a turn, cooked once every turn is done, over if left: SK.cook's charred)
-          const stage = g.phase >= k.turns ? "grilled" : g.phase > 0 ? "part" : "raw";
-          SK.cook(g.sk, (g.phase + Math.min(1, g.v)) / (k.turns + 1), { burnt: g.burnt || g.v >= 1, marks: g.phase * 0.45 + (g.phase >= k.turns ? 0.1 : 0), stage });
+          // SEK-29 (the S19 gate's eye judge, 12 Nov: "the turn goes raw to fully browned in one frame"): the pictures follow the cook's
+          // own time, the whole cook (every side) in three parts: raw, then part as the first side nears its green, then cooked through
+          // the last side; a turn shows the next side, never raw to done at once
+          const f = (g.phase + Math.min(1, g.v)) / (k.turns + 1);
+          const stage = f >= 0.62 ? "grilled" : f >= 0.3 ? "part" : "raw";
+          SK.cook(g.sk, f, { burnt: g.burnt || g.v >= 1, marks: g.phase * 0.45 + (g.phase >= k.turns ? 0.1 : 0), stage });
           if (inBand !== !!g.inBand) {
             g.inBand = inBand;
             if (inBand) Cook.sfx.click();
@@ -2339,7 +2391,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!ok && !params.lastTry && Object.keys(missing).length) return { redo: true, keep: keep.map((p) => p.pieces), missing, plate: plate.map((p) => p.pieces), count: plate.length };
         closeRows();
       }
-      return { plate: plate.map((p) => p.pieces), chips: chipsOn, art, count: plate.length };
+      // (SEK-28: what the child grilled, for the serve's tray)
+      let served = null;
+      try {
+        served = SK.servedSkewers(S, plate);
+      } catch (e) {
+        served = null;
+      }
+      return { plate: plate.map((p) => p.pieces), chips: chipsOn, art, served, count: plate.length };
     },
   });
 
