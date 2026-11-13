@@ -3,7 +3,7 @@
  "band": "tray",
  "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook-bottom-row.md). CHT-13 (Zafar, 9 Nov): chaat is top-down on the tray (was 'shelf', the side-on glass jars).",
  "bowl": {
-  "file": "assets/cook/items/v4/chaat/bowl-empty.webp",
+  "file": "assets/art/chaat/bowl.empty.r1.webp",
   "d": 560,
   "x": 800,
   "y": 318,
