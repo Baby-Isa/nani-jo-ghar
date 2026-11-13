@@ -1,0 +1,1253 @@
+{
+ "game": "chai-tray",
+ "level": 1,
+ "size": "930x430",
+ "ended": true,
+ "moments": {
+  "order": {
+   "read": {
+    "boxes": {
+     "canvas": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "stage": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "play": [
+      224.39,
+      0,
+      930,
+      429.98
+     ],
+     "side": [
+      0,
+      0,
+      224.39,
+      430
+     ],
+     "list": [
+      2.27,
+      59.44,
+      221.13,
+      272.5
+     ],
+     "card-1": [
+      5.27,
+      66.44,
+      218.13,
+      108.03
+     ],
+     "card-1/face": [
+      6.27,
+      63.23,
+      54.27,
+      111.23
+     ],
+     "nani": [
+      5.27,
+      5.27,
+      218.13,
+      55.17
+     ],
+     "nani/face": [
+      10.53,
+      6.22,
+      58.53,
+      54.22
+     ]
+    },
+    "texts": {
+     "nani/word#1": {
+      "box": [
+       63.8,
+       20.52,
+       172.08,
+       39.52
+      ],
+      "cut": false,
+      "text": "E chai erte rand"
+     },
+     "nani/ra#1": {
+      "box": [
+       172.08,
+       20.52,
+       175.59,
+       39.52
+      ],
+      "cut": false,
+      "text": "."
+     },
+     "card-1/oc-headline#1": {
+      "box": [
+       50.06,
+       77.17,
+       92.23,
+       96.17
+      ],
+      "cut": false,
+      "text": "Muke"
+     },
+     "card-1/word#1": {
+      "box": [
+       92.23,
+       77.17,
+       120.81,
+       96.17
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/oc-headline#2": {
+      "box": [
+       120.81,
+       77.17,
+       169.38,
+       96.17
+      ],
+      "cut": false,
+      "text": "khape."
+     }
+    },
+    "info": {
+     "view": null,
+     "hob": 0,
+     "tray": 0,
+     "pan": 0,
+     "shelf": []
+    }
+   },
+   "life": [
+    "cover:shown",
+    "order-count:1",
+    "order-level:1",
+    "poke",
+    "cover:lifted",
+    "ghost:conversation:pill",
+    "request",
+    "dish-flash:nana",
+    "say-start:1"
+   ],
+   "anims": [],
+   "shots": 2,
+   "pictureStill": true,
+   "steady": true,
+   "shot": "order.png",
+   "t": 8607,
+   "frames": 8
+  },
+  "light": {
+   "read": {
+    "boxes": {
+     "canvas": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "stage": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "play": [
+      224.39,
+      0,
+      930,
+      429.98
+     ],
+     "side": [
+      0,
+      0,
+      224.39,
+      430
+     ],
+     "list": [
+      2.27,
+      59.44,
+      221.13,
+      349.7
+     ],
+     "bottom-row": [
+      224.39,
+      310.91,
+      930,
+      429.98
+     ],
+     "bottom-row/ledge": [
+      224.39,
+      387.64,
+      930,
+      429.98
+     ],
+     "hob": [
+      377.1,
+      34.93,
+      563.4,
+      298.56
+     ],
+     "tray": [
+      595.15,
+      63.82,
+      793.96,
+      259
+     ],
+     "pan-1": [
+      366.61,
+      55.53,
+      536.61,
+      189.48
+     ],
+     "shelf-first": [
+      388.76,
+      322.46,
+      423.41,
+      396.51
+     ],
+     "shelf-last": [
+      722.58,
+      332.91,
+      774.03,
+      397.09
+     ],
+     "card-1": [
+      5.27,
+      66.44,
+      218.13,
+      262.42
+     ],
+     "card-1/face": [
+      6.27,
+      63.23,
+      54.27,
+      111.23
+     ],
+     "card-1/item-1": [
+      11.53,
+      107.08,
+      86.91,
+      253.53
+     ],
+     "card-1/item-2": [
+      92.17,
+      107.08,
+      167.55,
+      253.53
+     ],
+     "card-1/item-3": [
+      172.81,
+      107.08,
+      248.19,
+      253.53
+     ],
+     "card-1/item-4": [
+      253.45,
+      107.08,
+      328.83,
+      253.53
+     ],
+     "nani": [
+      5.27,
+      5.27,
+      218.13,
+      55.17
+     ],
+     "nani/face": [
+      10.53,
+      6.22,
+      58.53,
+      54.22
+     ],
+     "light-1": [
+      368.7,
+      307.1,
+      443.5,
+      429
+     ],
+     "glow-1": [
+      388.76,
+      322.46,
+      423.41,
+      396.51
+     ]
+    },
+    "texts": {
+     "nani/word#1": {
+      "box": [
+       63.8,
+       10.03,
+       104.77,
+       30.03
+      ],
+      "cut": false,
+      "text": "Paani"
+     },
+     "nani/word#2": {
+      "box": [
+       108.98,
+       10.03,
+       155.08,
+       30.03
+      ],
+      "cut": false,
+      "text": "tapele"
+     },
+     "nani/word#3": {
+      "box": [
+       63.8,
+       29.22,
+       86.91,
+       49.22
+      ],
+      "cut": false,
+      "text": "me"
+     },
+     "nani/word#4": {
+      "box": [
+       91.13,
+       29.22,
+       113.14,
+       49.22
+      ],
+      "cut": false,
+      "text": "wij"
+     },
+     "nani/ra#1": {
+      "box": [
+       113.14,
+       29.22,
+       117.02,
+       49.22
+      ],
+      "cut": false,
+      "text": "."
+     },
+     "card-1/oc-headline#1": {
+      "box": [
+       50.06,
+       77.17,
+       92.23,
+       96.17
+      ],
+      "cut": false,
+      "text": "Muke"
+     },
+     "card-1/word#1": {
+      "box": [
+       92.23,
+       77.17,
+       120.81,
+       96.17
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/oc-headline#2": {
+      "box": [
+       120.81,
+       77.17,
+       169.38,
+       96.17
+      ],
+      "cut": false,
+      "text": "khape."
+     },
+     "card-1/word#2": {
+      "box": [
+       30.48,
+       170.36,
+       67.94,
+       189.36
+      ],
+      "cut": false,
+      "text": "paani"
+     },
+     "card-1/wc-slot#1": {
+      "box": [
+       33.36,
+       188.22,
+       65.08,
+       204.22
+      ],
+      "cut": false,
+      "text": "water"
+     },
+     "card-1/word#3": {
+      "box": [
+       115.56,
+       170.36,
+       144.14,
+       189.36
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/wc-slot#2": {
+      "box": [
+       118.91,
+       188.22,
+       140.8,
+       204.22
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/word#4": {
+      "box": [
+       192.95,
+       170.36,
+       228.05,
+       189.36
+      ],
+      "cut": false,
+      "text": "dudh"
+     },
+     "card-1/wc-slot#3": {
+      "box": [
+       198.91,
+       188.22,
+       222.09,
+       204.22
+      ],
+      "cut": false,
+      "text": "milk"
+     },
+     "card-1/word#5": {
+      "box": [
+       271.28,
+       161.03,
+       311,
+       180.03
+      ],
+      "cut": false,
+      "text": "hakro"
+     },
+     "card-1/word#6": {
+      "box": [
+       273.55,
+       176.69,
+       308.72,
+       195.69
+      ],
+      "cut": false,
+      "text": "khun"
+     },
+     "card-1/wc-slot#4": {
+      "box": [
+       264.14,
+       194.55,
+       318.13,
+       210.55
+      ],
+      "cut": false,
+      "text": "one sugar"
+     }
+    },
+    "info": {
+     "view": "marble",
+     "hob": 1,
+     "tray": 1,
+     "pan": 1,
+     "shelf": [
+      "jar-cook-paani",
+      "jar-cook-dudh",
+      "jar-cook-chai",
+      "jar-cook-khun",
+      "jar-veg-13"
+     ],
+     "glow-1": "jar-cook-paani"
+    }
+   },
+   "life": [
+    "poke",
+    "decoys:1",
+    "say-end:2",
+    "band:chai-tray",
+    "step-open:1",
+    "step-call:1",
+    "step-open:1",
+    "step-call:1",
+    "rung:1",
+    "glow:on"
+   ],
+   "anims": [],
+   "steady": true,
+   "shot": "light.jpg",
+   "t": 11630,
+   "frames": 8
+  },
+  "mid": {
+   "read": {
+    "boxes": {
+     "canvas": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "stage": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "play": [
+      224.39,
+      0,
+      930,
+      429.98
+     ],
+     "side": [
+      0,
+      0,
+      224.39,
+      430
+     ],
+     "list": [
+      2.27,
+      59.44,
+      221.13,
+      349.7
+     ],
+     "bottom-row": [
+      224.39,
+      310.91,
+      930,
+      429.98
+     ],
+     "bottom-row/ledge": [
+      224.39,
+      387.64,
+      930,
+      429.98
+     ],
+     "hob": [
+      377.1,
+      34.93,
+      563.4,
+      298.56
+     ],
+     "tray": [
+      595.15,
+      63.82,
+      793.96,
+      259
+     ],
+     "pan-1": [
+      366.71,
+      80.83,
+      536.71,
+      214.79
+     ],
+     "shelf-first": [
+      388.76,
+      322.46,
+      423.41,
+      396.51
+     ],
+     "shelf-last": [
+      722.58,
+      332.91,
+      774.03,
+      397.09
+     ],
+     "card-1": [
+      5.27,
+      66.44,
+      218.13,
+      262.42
+     ],
+     "card-1/face": [
+      6.27,
+      63.23,
+      54.27,
+      111.23
+     ],
+     "card-1/item-1": [
+      11.53,
+      107.08,
+      86.91,
+      253.53
+     ],
+     "card-1/item-2": [
+      92.17,
+      107.08,
+      167.55,
+      253.53
+     ],
+     "card-1/item-3": [
+      172.81,
+      107.08,
+      248.19,
+      253.53
+     ],
+     "card-1/item-4": [
+      253.45,
+      107.08,
+      328.83,
+      253.53
+     ],
+     "nani": [
+      5.27,
+      5.27,
+      218.13,
+      55.17
+     ],
+     "nani/face": [
+      10.53,
+      6.22,
+      58.53,
+      54.22
+     ]
+    },
+    "texts": {
+     "nani/word#1": {
+      "box": [
+       63.8,
+       19.63,
+       108.08,
+       39.63
+      ],
+      "cut": false,
+      "text": "Chulo"
+     },
+     "nani/word#2": {
+      "box": [
+       112.3,
+       19.63,
+       137.06,
+       39.63
+      ],
+      "cut": false,
+      "text": "bar"
+     },
+     "nani/ra#1": {
+      "box": [
+       137.06,
+       19.63,
+       141.28,
+       39.63
+      ],
+      "cut": false,
+      "text": "!"
+     },
+     "card-1/oc-headline#1": {
+      "box": [
+       50.06,
+       77.17,
+       92.23,
+       96.17
+      ],
+      "cut": false,
+      "text": "Muke"
+     },
+     "card-1/word#1": {
+      "box": [
+       92.23,
+       77.17,
+       120.81,
+       96.17
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/oc-headline#2": {
+      "box": [
+       120.81,
+       77.17,
+       169.38,
+       96.17
+      ],
+      "cut": false,
+      "text": "khape."
+     },
+     "card-1/word#2": {
+      "box": [
+       30.48,
+       170.36,
+       67.94,
+       189.36
+      ],
+      "cut": false,
+      "text": "paani"
+     },
+     "card-1/wc-slot#1": {
+      "box": [
+       33.36,
+       188.22,
+       65.08,
+       204.22
+      ],
+      "cut": false,
+      "text": "water"
+     },
+     "card-1/word#3": {
+      "box": [
+       115.56,
+       170.36,
+       144.14,
+       189.36
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/wc-slot#2": {
+      "box": [
+       118.91,
+       188.22,
+       140.8,
+       204.22
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/word#4": {
+      "box": [
+       192.95,
+       170.36,
+       228.05,
+       189.36
+      ],
+      "cut": false,
+      "text": "dudh"
+     },
+     "card-1/wc-slot#3": {
+      "box": [
+       198.91,
+       188.22,
+       222.09,
+       204.22
+      ],
+      "cut": false,
+      "text": "milk"
+     },
+     "card-1/word#5": {
+      "box": [
+       271.28,
+       161.03,
+       311,
+       180.03
+      ],
+      "cut": false,
+      "text": "hakro"
+     },
+     "card-1/word#6": {
+      "box": [
+       273.55,
+       176.69,
+       308.72,
+       195.69
+      ],
+      "cut": false,
+      "text": "khun"
+     },
+     "card-1/wc-slot#4": {
+      "box": [
+       264.14,
+       194.55,
+       318.13,
+       210.55
+      ],
+      "cut": false,
+      "text": "one sugar"
+     }
+    },
+    "info": {
+     "view": "marble",
+     "hob": 1,
+     "tray": 1,
+     "pan": 1,
+     "shelf": [
+      "jar-cook-paani",
+      "jar-cook-dudh",
+      "jar-cook-chai",
+      "jar-cook-khun",
+      "jar-veg-13"
+     ],
+     "card-1/scroll-1": [
+      118,
+      0
+     ]
+    }
+   },
+   "life": [
+    "step-open:4",
+    "step-call:4",
+    "step-open:4",
+    "step-call:4",
+    "act",
+    "step-close:k4",
+    "step-open:5",
+    "step-call:5",
+    "say-start:6",
+    "poke"
+   ],
+   "anims": [],
+   "steady": true,
+   "shot": "mid.jpg",
+   "t": 16709,
+   "frames": 8
+  },
+  "praise": {
+   "read": {
+    "boxes": {
+     "canvas": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "stage": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "play": [
+      224.39,
+      0,
+      930,
+      429.98
+     ],
+     "side": [
+      0,
+      0,
+      224.39,
+      430
+     ],
+     "list": [
+      2.27,
+      59.44,
+      221.13,
+      275.7
+     ],
+     "bottom-row": [
+      224.39,
+      310.91,
+      930,
+      429.98
+     ],
+     "bottom-row/ledge": [
+      224.39,
+      387.64,
+      930,
+      429.98
+     ],
+     "hob": [
+      377.1,
+      34.93,
+      563.4,
+      298.56
+     ],
+     "tray": [
+      595.15,
+      63.82,
+      793.96,
+      259
+     ],
+     "pan-1": [
+      366.61,
+      55.53,
+      536.61,
+      189.48
+     ],
+     "shelf-first": [
+      388.76,
+      322.46,
+      423.41,
+      396.51
+     ],
+     "shelf-last": [
+      722.58,
+      332.91,
+      774.03,
+      397.09
+     ],
+     "card-1": [
+      5.27,
+      66.44,
+      218.13,
+      114.44
+     ],
+     "card-1/face": [
+      6.27,
+      66.44,
+      54.27,
+      114.44
+     ],
+     "nani": [
+      5.27,
+      5.27,
+      218.13,
+      55.17
+     ],
+     "nani/face": [
+      10.53,
+      6.22,
+      58.53,
+      54.22
+     ]
+    },
+    "texts": {
+     "nani/word#1": {
+      "box": [
+       63.8,
+       19.63,
+       125.8,
+       39.63
+      ],
+      "cut": false,
+      "text": "Shabash"
+     },
+     "nani/ra#1": {
+      "box": [
+       125.8,
+       19.63,
+       130.02,
+       39.63
+      ],
+      "cut": false,
+      "text": "!"
+     },
+     "card-1/oc-headline#1": {
+      "box": [
+       50.06,
+       80.38,
+       92.23,
+       99.38
+      ],
+      "cut": false,
+      "text": "Muke"
+     },
+     "card-1/word#1": {
+      "box": [
+       92.23,
+       80.38,
+       120.81,
+       99.38
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/oc-headline#2": {
+      "box": [
+       120.81,
+       80.38,
+       169.38,
+       99.38
+      ],
+      "cut": false,
+      "text": "khape."
+     }
+    },
+    "info": {
+     "view": "marble",
+     "hob": 1,
+     "tray": 1,
+     "pan": 1,
+     "shelf": [
+      "jar-cook-paani",
+      "jar-cook-dudh",
+      "jar-cook-chai",
+      "jar-cook-khun",
+      "jar-veg-13"
+     ]
+    }
+   },
+   "life": [
+    "idle-bump:pointerup",
+    "act",
+    "say-end:7",
+    "say-start:8",
+    "poke",
+    "row-home:118",
+    "say-end:8",
+    "say-start:9",
+    "stage-end",
+    "say-end:9"
+   ],
+   "anims": [],
+   "steady": true,
+   "shot": "praise.jpg",
+   "t": 23394,
+   "frames": 8
+  },
+  "serve": {
+   "read": {
+    "boxes": {
+     "canvas": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "stage": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "play": [
+      224.39,
+      -69.68,
+      930,
+      360.3
+     ],
+     "side": [
+      0,
+      0,
+      224.39,
+      430
+     ],
+     "list": [
+      2.27,
+      59.44,
+      221.13,
+      275.7
+     ],
+     "card-1": [
+      5.27,
+      66.44,
+      218.13,
+      114.44
+     ],
+     "card-1/face": [
+      6.27,
+      66.44,
+      54.27,
+      114.44
+     ],
+     "nani": [
+      5.27,
+      5.27,
+      218.13,
+      55.17
+     ],
+     "nani/face": [
+      10.53,
+      6.22,
+      58.53,
+      54.22
+     ]
+    },
+    "texts": {
+     "nani/word#1": {
+      "box": [
+       63.8,
+       19.63,
+       125.8,
+       39.63
+      ],
+      "cut": false,
+      "text": "Shabash"
+     },
+     "nani/ra#1": {
+      "box": [
+       125.8,
+       19.63,
+       130.02,
+       39.63
+      ],
+      "cut": false,
+      "text": "!"
+     },
+     "card-1/oc-headline#1": {
+      "box": [
+       50.06,
+       80.38,
+       92.23,
+       99.38
+      ],
+      "cut": false,
+      "text": "Muke"
+     },
+     "card-1/word#1": {
+      "box": [
+       92.23,
+       80.38,
+       120.81,
+       99.38
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/oc-headline#2": {
+      "box": [
+       120.81,
+       80.38,
+       169.38,
+       99.38
+      ],
+      "cut": false,
+      "text": "khape."
+     }
+    },
+    "info": {
+     "view": "service",
+     "hob": 0,
+     "tray": 0,
+     "pan": 0,
+     "shelf": []
+    }
+   },
+   "life": [
+    "row-home:118",
+    "say-end:8",
+    "say-start:9",
+    "stage-end",
+    "say-end:9",
+    "stage-start",
+    "serve-view:serving",
+    "serve-trays:1",
+    "say-start:10",
+    "say-end:10"
+   ],
+   "anims": [],
+   "steady": true,
+   "shot": "serve.jpg",
+   "t": 25040,
+   "frames": 8
+  },
+  "end": {
+   "read": {
+    "boxes": {
+     "canvas": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "stage": [
+      224.39,
+      0,
+      930,
+      430
+     ],
+     "play": [
+      224.39,
+      -69.68,
+      930,
+      360.3
+     ],
+     "side": [
+      0,
+      0,
+      224.39,
+      430
+     ],
+     "list": [
+      2.27,
+      59.44,
+      221.13,
+      276.09
+     ],
+     "card-1": [
+      5.27,
+      66.44,
+      218.13,
+      115.22
+     ],
+     "card-1/face": [
+      6.27,
+      66.83,
+      54.27,
+      114.83
+     ],
+     "end-card": [
+      232,
+      49,
+      922,
+      381
+     ],
+     "nani": [
+      5.27,
+      5.27,
+      218.13,
+      55.17
+     ],
+     "nani/face": [
+      10.53,
+      6.22,
+      58.53,
+      54.22
+     ]
+    },
+    "texts": {
+     "card-1/oc-headline#1": {
+      "box": [
+       50.06,
+       71.7,
+       92.23,
+       90.7
+      ],
+      "cut": false,
+      "text": "Muke"
+     },
+     "card-1/word#1": {
+      "box": [
+       92.23,
+       71.7,
+       120.81,
+       90.7
+      ],
+      "cut": false,
+      "text": "chai"
+     },
+     "card-1/oc-headline#2": {
+      "box": [
+       50.06,
+       89.83,
+       94.81,
+       108.83
+      ],
+      "cut": false,
+      "text": "khape."
+     }
+    },
+    "info": {
+     "view": "service",
+     "hob": 0,
+     "tray": 0,
+     "pan": 0,
+     "shelf": []
+    }
+   },
+   "life": [
+    "serve-view:serving",
+    "serve-trays:1",
+    "say-start:10",
+    "say-end:10",
+    "say-start:11",
+    "say-end:11",
+    "stage-end",
+    "results",
+    "idle-bump:pointerdown",
+    "idle-bump:pointerup"
+   ],
+   "anims": [
+    "div.njg-results rs-fade finished t=250",
+    "div.rs-card rs-rise finished t=300",
+    "div.rs-page.rs-p2 rs-slide finished t=300",
+    "div.rs-actions.rs-last rs-slide finished t=300"
+   ],
+   "shots": 2,
+   "pictureStill": true,
+   "steady": true,
+   "shot": "end.png",
+   "t": 31027,
+   "frames": 8
+  }
+ },
+ "missed": [],
+ "pending": [],
+ "errors": [],
+ "notes": [],
+ "plant": null,
+ "ms": 34570
+}
