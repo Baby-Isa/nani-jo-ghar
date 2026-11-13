@@ -3976,6 +3976,15 @@
     }
     if (w.wordOpts && w.wordOpts.slots) w.wordOpts.slots.english = false;
     if (w.wordOpts) w.wordOpts.enShown = false;
+    // (SH-273, contract-128 in s19ns-a4: chai's glass was not in yet for the card's first 383 ms, an empty box: its picture is fetched now
+    // and the card waits for it, as it waits for the bubble, a beat at most)
+    let pre = null;
+    if (w.word && w.word.picture && w.word.picture.src && typeof Image !== "undefined") {
+      pre = new Image();
+      pre.src = w.word.picture.src;
+    }
+    const picIn = () => !pre || (pre.complete && pre.naturalWidth > 0) || !!pre._bad;
+    if (pre) pre.onerror = () => (pre._bad = true);
     // the card a little off to the side of the speaker's bubble, clear of every face and bubble (SH-267's frames, 12 Nov: with no bubble
     // drawn yet it sat in the play area's middle, over the customer's head and bubble). It waits a beat for the bubble to be drawn.
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(dish || "") });
@@ -4054,7 +4063,7 @@
     const t0 = Date.now();
     const wait = () => {
       if (handle.closed) return;
-      if (bubble() || Date.now() - t0 > 400 / sp) return show();
+      if ((bubble() && picIn()) || Date.now() - t0 > 600 / sp) return show();
       setTimeout(wait, 40);
     };
     wait();

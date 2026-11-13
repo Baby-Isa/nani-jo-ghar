@@ -536,7 +536,6 @@
     const cover = () => {
       const c = el.querySelector(".rs-card");
       if (!c || !c.isConnected) return;
-      c.style.minHeight = "";
       let heads = [];
       try {
         heads = typeof root.NjgFaceBoxes === "function" ? root.NjgFaceBoxes() || [] : [];
@@ -555,8 +554,11 @@
       });
       if (!need) return;
       const gap = (root.getComputedStyle && parseFloat(root.getComputedStyle(el).paddingTop)) || 8;
+      // (it only grows: a page that is shorter keeps the height that covers, never a jump down and up again)
       c.style.minHeight = `${Math.round(Math.min(H - gap * 2, h + need * 2))}px`;
     };
+    // (and it keeps looking while it is up: the badges' pop-in and the words' fit change its height after it opens, s19ns-a4)
+    const coverT = root.setInterval ? root.setInterval(() => (el.isConnected ? cover() : root.clearInterval(coverT)), 300) : 0;
     const placeAll = () => {
       place();
       cover();
@@ -584,6 +586,7 @@
     const close = () => {
       if (!el.isConnected) return;
       root.removeEventListener("resize", placeAll);
+      if (coverT) root.clearInterval(coverT);
       el.classList.add("leaving");
       setTimeout(() => el.remove(), reduced() ? 0 : 220);
       if (current && current.el === el) current = null;
