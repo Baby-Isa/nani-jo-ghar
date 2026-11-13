@@ -27,4 +27,4 @@ Before re-freeze: the onboard.js patch, contract-119/-124/-37 re-pointed, Zafar 
 - SH-286 pictures (labcheck.mjs, L1, seed 7): `build/screenshots/brief/s20-p2-chai/SH-286/` 1-4.
 - After folder: none (no probe). Contract: `CONTRACT FAILED: 4 breaks (contract-119 4)`, all four explained in item 10.
 - checks.mjs: 14 steps ok. `node --test build/lang/`: 61 pass. words, leak, recordings: ok.
-- Tier 2: see below.
+- Tier 2 (`check-change --brief`): did not finish. My `timeout 7000` stopped it in its frozen step. It writes no result file. Before that: push pass; scope fail (the merge base brings in other sessions' files: `sources/audio/…md`); play, 24 breaks (119 ×14, 37 ×6, 124 ×2, plus contract-99 and -112 once each at L4 740x320, which are the order card's fold and the lesson light on its picture, neither one mine); rows fail (SH-286 has no spec). It needs a re-run once the checks and the patch are in.
