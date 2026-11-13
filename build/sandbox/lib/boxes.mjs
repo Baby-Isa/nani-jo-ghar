@@ -38,6 +38,8 @@ export function pixelRegion(read, m) {
   const bs = (PIXEL_BOX[m] || []).map((k) => read && read.boxes && read.boxes[k]).filter(Boolean);
   return bs.length ? [Math.min(...bs.map((b) => b[0])), Math.min(...bs.map((b) => b[1])), Math.max(...bs.map((b) => b[2])), Math.max(...bs.map((b) => b[3]))] : null;
 }
+/** a game's moments: the six, then the game's own extra ones (P5: eggs' and maani's one-off reads; never in the reference) */
+export const momentsOf = (game) => [...MOMENTS, ...Object.keys((GAMES[game] && GAMES[game].extra) || {})];
 export const SIZES = ["740x320", "930x430", "1280x665", "1920x1080"];
 export const LEVELS = [1, 4];
 
@@ -71,6 +73,28 @@ export const GAMES = {
       end: `(S) => { const c = document.querySelector(".njg-results .rs-card"); return !!c && c.dataset.step === "2" && !!c.querySelector(".rs-words"); }`,
     },
   },
+};
+
+// The two games read one-off for the geometry rules (Sprint 20 P5: SH-277 eggs' order headline, CK-112 maani's label). They have no
+// reference: `boxes.mjs --game eggs --rules` reads them and judges the rules on that read; nothing is frozen. Their moments are
+// the generic ones (the order, the first light if one comes, a state the game asks a tap in, well done, the end) and, for maani, the
+// moment its word pop ("maani") is up.
+const GENERIC = {
+  order: GAMES["chai-tray"].moments.order,
+  light: `(S) => { const o = document.querySelector(".njg-onboard"); let h = []; try { h = JSON.parse((o && o.getAttribute("data-holes")) || "[]"); } catch (e) {} return h.length > 0; }`,
+  mid: { note: "*", when: `(S) => { const e = window.njgTest && njgTest.cook && njgTest.cook.expectation(); const o = document.querySelector(".njg-onboard"); let h = []; try { h = JSON.parse((o && o.getAttribute("data-holes")) || "[]"); } catch (e2) {} return !!e && !!e.key && h.length === 0 && S.life("request"); }` },
+  serve: { note: "serve-trays" },
+  praise: GAMES["chai-tray"].moments.praise,
+  end: GAMES["chai-tray"].moments.end,
+};
+GAMES["eggs"] = { main: { tray: "^eg-tray$" }, shelf: "^jar-", after: { light: 450 }, moments: GENERIC };
+GAMES["maani-line"] = {
+  main: { board: "^mv-chakla$", tawa: "^mv-tawa" },
+  shelf: "^jar-",
+  after: { light: 450 },
+  moments: GENERIC,
+  // the word pop by an action (Juice.P.pop: the card with its speaker and the word, over the board's top): held while it is up
+  extra: { pop: { note: "*", when: `(S) => { const g = window.Cook && Cook.game; if (!g || !g.scene) return false; for (const sc of g.scene.getScenes(true)) for (const o of (sc.children && sc.children.list) || []) if (o && o.popW && o.visible !== false && o.alpha > 0.95) return true; return false; }` } },
 };
 
 // the page-side reader: (opt) => {boxes, texts, info}; opt: {main, panDepthMax, shelf} from GAMES
@@ -188,6 +212,96 @@ export const READ = `(function (opt) {
       out.texts[area + "/" + cls + "#" + (k + 1)] = { box: inRow(el, B(rb.left, rb.top, rb.right, rb.bottom)), cut, text: s };
     }
   }
+
+  // ---- what the geometry rules (lib/geometry.mjs) also need: out.extra, never compared with the reference (diffRead reads boxes and texts only)
+  const ex = (out.extra = { faces: {}, items: {}, fit: {}, taps: {}, pills: {} });
+  // (the visible part of a box: cut by every ancestor that hides what overflows it)
+  const clipTo = (el, b) => {
+    if (!b) return b;
+    let l = b[0], t = b[1], r = b[2], bt = b[3];
+    for (let x = el.parentElement; x && x !== document.body; x = x.parentElement) {
+      const cs = getComputedStyle(x);
+      if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
+      const xb = x.getBoundingClientRect();
+      l = Math.max(l, xb.left); t = Math.max(t, xb.top); r = Math.min(r, xb.right); bt = Math.min(bt, xb.bottom);
+    }
+    return r - l > 0.5 && bt - t > 0.5 ? B(l, t, r, bt) : null;
+  };
+  // the face as drawn (its picture), not the touch box round it
+  const faceOf = (root) => { if (!root) return null; const f = root.querySelector(".njg-face img, .oc-face img, .ng-face img, img"); return f ? dom(f) : null; };
+  cards.forEach((c, i) => {
+    const n = "card-" + (i + 1);
+    const fb = faceOf(c.querySelector(".oc-face"));
+    if (fb) ex.faces[n] = fb;
+    Array.from(c.querySelectorAll(".oc-it14")).forEach((it, j) => { const vb = clipTo(it, dom(it)); if (vb) ex.items[n + "/item-" + (j + 1)] = vb; });
+  });
+  if (gd) { const fb = faceOf(gd.querySelector(".ng-face")); if (fb) ex.faces.nani = fb; }
+  if (pop) {
+    Array.from(pop.querySelectorAll(".njg-face")).forEach((f, j) => { const fb = faceOf(f); if (fb) ex.faces["pop/face-" + (j + 1)] = fb; });
+    Array.from(pop.querySelectorAll(".oc-it14")).forEach((it, j) => { const vb = clipTo(it, dom(it)); if (vb) ex.items["pop/item-" + (j + 1)] = vb; });
+  }
+  // the fitted texts (the headline, Nani's line): size as set, lines as laid out, and whether its words are wider than its box
+  for (const [area, root] of areas) {
+    if (!root) continue;
+    const seen = new Map();
+    Array.from(root.querySelectorAll(".fit")).forEach((el) => {
+      if (!shown(el)) return;
+      const cls = (el.className.trim().split(/\\s+/)[0]) || el.tagName.toLowerCase();
+      const k = (seen.get(cls) || 0) + 1; seen.set(cls, k);
+      const rg = document.createRange(); rg.selectNodeContents(el);
+      const rects = Array.from(rg.getClientRects()).filter((r) => r.width > 0.5 && r.height > 0.5).sort((a, b) => a.top - b.top);
+      const fs = parseFloat(getComputedStyle(el).fontSize) || 0;
+      let lines = 0, last = -1e9;
+      for (const r of rects) { if (r.top - last > fs * 0.5) { lines++; last = r.top; } }
+      const bx = dom(el);
+      if (bx) ex.fit[area + "/" + cls + "#" + k] = { fs: r2(fs), lines, box: bx, sw: el.scrollWidth, cw: el.clientWidth, text: (el.textContent || "").replace(/\\s+/g, " ").trim() };
+    });
+  }
+  // what a tap can land on: the page's own buttons and the canvas things that take a press, each as its touch box
+  let tn = 0;
+  for (const el of document.querySelectorAll("body *")) {
+    if (!shown(el)) continue;
+    const cs = getComputedStyle(el);
+    if (cs.cursor !== "pointer" || cs.pointerEvents === "none") continue;
+    if (el.parentElement && getComputedStyle(el.parentElement).cursor === "pointer") continue;
+    const b = dom(el);
+    if (!b) continue;
+    const cls = (typeof el.className === "string" && el.className.trim().split(/\\s+/)[0]) || "";
+    ex.taps["dom:" + el.tagName.toLowerCase() + (cls ? "." + cls : "") + "#" + (++tn)] = b;
+  }
+  if (w2s) {
+    let pn = 0;
+    for (const o of objs) {
+      if (!o.input || !o.input.enabled || o.active === false || !visible(o)) continue;
+      const h = o.input.hitArea;
+      let pts = null;
+      try {
+        const m = o.getWorldTransformMatrix();
+        const dx = o.displayOriginX || 0, dy = o.displayOriginY || 0;
+        let rect = null;
+        if (h && h.width != null && h.height != null && h.x != null) rect = [h.x, h.y, h.x + h.width, h.y + h.height];
+        else if (h && h.radius != null) rect = [h.x - h.radius, h.y - h.radius, h.x + h.radius, h.y + h.radius];
+        if (rect) pts = [[rect[0], rect[1]], [rect[2], rect[1]], [rect[2], rect[3]], [rect[0], rect[3]]].map(([x, y]) => { const q = m.transformPoint(x - dx, y - dy); return w2s(q.x, q.y); });
+      } catch (e) { pts = null; }
+      let bb = null;
+      if (pts) bb = B(Math.min(...pts.map((p) => p[0])), Math.min(...pts.map((p) => p[1])), Math.max(...pts.map((p) => p[0])), Math.max(...pts.map((p) => p[1])));
+      else { bb = wbox(o); }
+      // (a shelf item's tap reaches past its picture: the slot's width down to its pill, Shelf.P.reach; the touch box is both together)
+      try {
+        const SH = window.Shelf && window.Shelf.P;
+        if (bb && o.input.njgReach && SH && SH.reachBox) { const r = SH.reachBox(o); if (r) { const p = w2s(r.left, r.top), q = w2s(r.right, r.bottom); bb = B(Math.min(bb[0], p[0]), Math.min(bb[1], p[1]), Math.max(bb[2], q[0]), Math.max(bb[3], q[1])); } }
+      } catch (e) { /* the picture's own box stands */ }
+      if (bb && bb[2] - bb[0] > 0.5) ex.taps["canvas:" + (key(o) || o.type) + "#" + (++pn)] = bb;
+    }
+    // the word pops (Juice.P.pop): the pill as drawn, its card 56 tall at the pop's scale, round the pop's own point
+    const walkC = (list, f) => { for (const o of list || []) { if (!o) continue; if (o.popW) f(o); if (o.list) walkC(o.list, f); } };
+    if (g && g.scene) for (const sc of g.scene.getScenes(true)) walkC(sc.children && sc.children.list, (c) => {
+      if (!visible(c) || c.alpha < 0.05) return;
+      const k = c.scaleX || 1, hw = c.popW / 2;
+      const p = w2s(c.x - hw, c.y - 28 * k), q = w2s(c.x + hw, c.y + 28 * k);
+      ex.pills["pill-" + (++pn)] = B(p[0], p[1], q[0], q[1]);
+    });
+  }
   return out;
 })`;
 
@@ -196,11 +310,11 @@ export function armScript(game, { seed = 7, settle = 8, only = null } = {}) {
   const G = GAMES[game];
   if (!G) throw new Error(`no box spec for game ${game} (have: ${Object.keys(GAMES).join(", ")})`);
   const opt = JSON.stringify({ main: G.main, panDepthMax: G.panDepthMax, shelf: G.shelf });
-  const ms = MOMENTS.filter((m) => !only || only.includes(m)).map((m) => {
-    const d = typeof G.moments[m] === "string" ? { when: G.moments[m] } : G.moments[m];
+  const ms = momentsOf(game).filter((m) => !only || only.includes(m)).map((m) => {
+    const d0 = G.moments[m] || (G.extra && G.extra[m]); const d = typeof d0 === "string" ? { when: d0 } : d0;
     return `{ name: ${JSON.stringify(m)}${d.note ? `, note: ${JSON.stringify(d.note)}` : ""}${d.when ? `, when: ${d.when}` : ""}, after: ${(G.after && G.after[m]) || 0}${G.wait && G.wait[m] ? `, wait: ${G.wait[m]}` : ""} }`;
   }).join(", ");
-  return `window.__njgStandArm = { seed: ${seed >>> 0}, settle: ${settle}, sig: function () { return JSON.stringify(${READ}(${opt})); }, moments: [${ms}] };`;
+  return `window.__njgStandArm = { seed: ${seed >>> 0}, settle: ${settle}, sig: function () { var r = ${READ}(${opt}); return JSON.stringify({ boxes: r.boxes, texts: r.texts, info: r.info }); }, moments: [${ms}] };`;
 }
 export const readCall = (game) => { const G = GAMES[game]; return `${READ}(${JSON.stringify({ main: G.main, panDepthMax: G.panDepthMax, shelf: G.shelf })})`; };
 export const standSource = () => readFileSync(STAND_FILE, "utf8");

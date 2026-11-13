@@ -7,7 +7,7 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { BASE, newPage, sleep } from "./env.mjs";
 import { CookPlayer } from "./cook-player.mjs";
-import { armScript, readCall, standSource, MOMENTS, PIXEL_MOMENTS } from "./boxes.mjs";
+import { armScript, readCall, standSource, momentsOf, PIXEL_MOMENTS } from "./boxes.mjs";
 
 // the planted faults: the moment each is planted at, the box it must show up in (expect, a pattern; kind: the difference's kind), and
 // the nudge (in the page, while held) -> an undo
@@ -122,7 +122,7 @@ export async function playBoxes(browser, { game = "chai-tray", level = 1, size, 
   }
   const pending = await page.evaluate("window.njgStand ? njgStand.pending() : []").catch(() => []);
   await ctx.close().catch(() => {});
-  const out = { game, level, size, ended, moments, missed: MOMENTS.filter((m) => !moments[m]), pending, errors, notes, plant, ms: Date.now() - t0 };
+  const out = { game, level, size, ended, moments, missed: momentsOf(game).filter((m) => !moments[m]), pending, errors, notes, plant, ms: Date.now() - t0 };
   writeFileSync(join(dir, "boxes.json"), JSON.stringify(out, null, 1));
   return out;
 }

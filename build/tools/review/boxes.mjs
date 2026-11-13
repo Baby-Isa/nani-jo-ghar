@@ -18,6 +18,12 @@
 //   node build/tools/review/boxes.mjs --game chai-tray --prove [--sizes ...] [--levels ...]
 //        the proof: three runs in a row, each compared with the first (identical, or the gate does not stand), then the four planted
 //        faults, each on its own page and each caught; prints the gate's minutes. Writes <first run>/proof.json.
+//   node build/tools/review/boxes.mjs --game chai-tray --rules [--levels 1,4] [--sizes ...] [--parallel 2] [--run-id <id>] [--plant <p>]
+//        [--from <run id or folder>] [--only overlap,light,...]
+//        Sprint 20 P5, the geometry rules (build/sandbox/lib/geometry.mjs): plays as --run (or reads a played run: --from) and judges ten
+//        rules on every moment and size: pass or fail per rule, each fault with what, where and by how much, and the minutes. Writes
+//        <run>/rules-<game>.json. Any game with a spec (chai-tray, eggs, maani-line) can be read one-off this way: nothing is
+//        compared with a reference or written as one. Exit 1 on a fail.
 // Browser: COOK_TEST_PORT (default 8812) under NJG_LOCK (default /tmp/njg-browser-all.lock), taken here unless a caller holds it.
 // A miss (a moment not reached, a page that did not end) is a fail; so is a moment whose boxes changed between its read and the
 // read after its picture (the game did not stand still).
@@ -27,10 +33,11 @@ import { spawnSync } from "node:child_process";
 import { args, ROOT, rel } from "./lib/common.mjs";
 import { decodePng } from "./lib/png.mjs";
 import { PLANTS } from "../../sandbox/lib/boxes-play.mjs";
+import { judge, formatRules, RULE_IDS } from "../../sandbox/lib/geometry.mjs";
 import { diffPage, pixelDiff, pageKey, MOMENTS, PIXEL_MOMENTS, PIXEL_BOX, pixelRegion, pixelMasks, SIZES, LEVELS, GAMES } from "../../sandbox/lib/boxes.mjs";
 
 const a = args();
-const HELP = readFileSync(new URL(import.meta.url), "utf8").split("\n").slice(1, 26).map((l) => l.replace(/^\/\/ ?/, "")).join("\n");
+const HELP = readFileSync(new URL(import.meta.url), "utf8").split("\n").slice(1, 33).map((l) => l.replace(/^\/\/ ?/, "")).join("\n");
 if (a.has("help") || a.has("h")) { console.log(HELP); process.exit(0); }
 const game = a.val("game", "chai-tray");
 if (!GAMES[game]) { console.error(`No box spec for ${game} (build/sandbox/lib/boxes.mjs GAMES: ${Object.keys(GAMES).join(", ")})`); process.exit(2); }
@@ -56,7 +63,7 @@ function underLock() {
   }
   return false;
 }
-const browserStep = a.has("run") || a.has("prove");
+const browserStep = a.has("run") || a.has("prove") || (a.has("rules") && !a.has("from"));
 if (browserStep && !underLock()) {
   const r = spawnSync("flock", ["-w", "3600", LOCK, process.execPath, process.argv[1], ...process.argv.slice(2)], { stdio: "inherit", cwd: ROOT, env: { ...process.env, NJG_LOCKED: "1" } });
   process.exit(r.status == null ? 1 : r.status);
@@ -243,6 +250,30 @@ if (a.has("prove")) {
   if (!res) { for (const p of own.pages) for (const f of p.faults) console.log(`  ${p.key}: ${f}`); console.log(`${fails ? "FAIL" : "pass"} ${game}: every moment reached and still (no reference to compare with)`); }
   console.log(`${fails ? "FAIL" : "pass"} the box gate, ${game}: ${mins(Date.now() - T0)} minutes (${rel(r.root)})`);
   process.exit(fails ? 1 : 0);
+} else if (a.has("rules")) {
+  const only = a.val("only") ? String(a.val("only")).split(",") : null;
+  if (only && only.some((i) => !RULE_IDS.includes(i))) { console.error(`No such rule: ${only.filter((i) => !RULE_IDS.includes(i)).join(", ")} (have: ${RULE_IDS.join(", ")})`); process.exit(2); }
+  let root;
+  if (a.has("from")) { root = runRoot(a.val("from")); if (!root || !existsSync(join(root, game))) { console.error(`No played run for ${game} at ${a.val("from")}.`); process.exit(2); } }
+  else {
+    const id = a.val("run-id", `rules-${game}-${stamp()}`);
+    const plant = a.val("plant");
+    console.log(`boxes --rules: ${game}, levels ${levels.join(",")}, sizes ${sizes.join(",")}${plant ? `, planted ${plant}` : ""}`);
+    root = (await play({ id, plant })).root;
+  }
+  const cur = loadPages(root);
+  const pages = Object.entries(cur).sort(([x], [y]) => x.localeCompare(y)).map(([key, p]) => ({ key, game, level: p.level, size: p.size, moments: p.moments, missed: p.missed, ended: p.ended }));
+  // chai's reference is the frame's standard for the slots (the frame's own gate until its reference is Zafar's)
+  const refDir = join(REF, "chai-tray");
+  const refPages = existsSync(refDir) ? (() => { const o = []; for (const n of readdirSync(refDir)) { const f = join(refDir, n, "boxes.json"); if (existsSync(f)) { const p = JSON.parse(readFileSync(f, "utf8")); o.push({ key: n, game: "chai-tray (reference)", level: p.level, size: p.size, moments: p.moments }); } } return o; })() : null;
+  const res = judge(pages, { ref: refPages, only });
+  // (a page that did not reach its end or a moment is said, not judged away)
+  for (const p of pages) { if (!p.ended) console.log(`  ${p.key}: the round did not reach its end`); if (p.missed && p.missed.length) console.log(`  ${p.key}: moments not reached: ${p.missed.join(", ")}`); }
+  console.log(formatRules(res, { max: +a.val("max", 8) }));
+  writeFileSync(join(root, `rules-${game}.json`), JSON.stringify({ game, pages: pages.map((p) => p.key), rules: res, at: new Date().toISOString() }, null, 1));
+  const failed = res.filter((r) => r.pass === false).length;
+  console.log(`${failed ? "FAIL" : "pass"} the geometry rules, ${game}: ${res.filter((r) => r.pass).length}/${res.length} pass${res.some((r) => r.pass === null) ? `, ${res.filter((r) => r.pass === null).length} skipped` : ""}, ${pages.length} pages, ${mins(Date.now() - T0)} minutes (${rel(root)})`);
+  process.exit(failed ? 1 : 0);
 } else if (a.has("diff")) {
   const root = runRoot(a.val("run-id"));
   if (!root || !existsSync(root)) { console.error("No box run yet: --run first (or --run-id <id>)."); process.exit(2); }
