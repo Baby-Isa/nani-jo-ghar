@@ -3162,7 +3162,7 @@
     return null;
   };
   const rowPic = (r) => {
-    const t = r && r.pic ? thumbOf(r.pic) : null;
+    const t = r && r.pic ? thumbOf(Cook.v(r.pic)) : null; // (the art renames: the row's picture through the rename map)
     return t ? `<img class="ck-step-pic" src="${t}" alt="" aria-hidden="true">` : "";
   };
   // SH-110: a dotted row's speaker says the row (Lang.speak, the card's one voice path: free, never a hint, never a mark on a word)

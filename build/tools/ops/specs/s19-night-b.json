@@ -13,7 +13,7 @@
  "stop": "when the tasks are done, or at 06:30 UTC: then commit and write the report",
  "kind": "code",
  "browser": true,
- "live": true,
+ "live": false,
  "specsByBuilder": true,
  "stubs": "none",
  "publish": false,
@@ -38,7 +38,7 @@
   "cook:baking",
   "cook:corn",
   "cook:fetch",
-  "cook:pantry"
+  "cook:fetch"
  ],
  "branch": "s19-night-b (new, in /home/user/wt/s19-night-b); commit there, never push; the orchestrator merges",
  "tasks": [

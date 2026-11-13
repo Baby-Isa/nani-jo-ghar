@@ -180,6 +180,18 @@ export function reportProblems(dir = "build/reports") {
   }
   return out;
 }
+// (the art renames, 13 Nov: an old picture path a doc names still answers through the ledger, data/art/renames.json; docs are not rewritten)
+let RENAMED = null;
+function renamedFrom() {
+  if (RENAMED) return RENAMED;
+  RENAMED = new Set();
+  try {
+    const j = JSON.parse(read("data/art/renames.json") || "{}");
+    const list = Array.isArray(j) ? j : j.renames || j.entries || Object.entries(j).map(([from, to]) => ({ from, to }));
+    for (const e of list) if (e && e.from) RENAMED.add(e.from);
+  } catch (e) { /* no ledger */ }
+  return RENAMED;
+}
 export function brokenPaths() {
   const files = [];
   const walk = (d) => { for (const f of readdirSync(join(ROOT, d), { withFileTypes: true })) { const p = `${d}/${f.name}`; if (f.isDirectory()) { if (f.name !== "archive") walk(p); } else if (p.endsWith(".md")) files.push(p); } };
@@ -189,7 +201,7 @@ export function brokenPaths() {
   for (const f of files) for (const m of (read(f) || "").matchAll(/`((?:docs|build|js|css|data|assets|\.claude)\/[^`\s]+?)`/g)) {
     const p = m[1].replace(/[#:].*$/, "").replace(/[),.;]+$/, "");
     if (/[<>*{}$…]|\.\.\.|^build\/screenshots\//.test(p)) continue;
-    if (!existsSync(join(ROOT, p))) out.add(`${f} -> ${p}`);
+    if (!existsSync(join(ROOT, p)) && !renamedFrom().has(p)) out.add(`${f} -> ${p}`);
   }
   return [...out].sort();
 }
