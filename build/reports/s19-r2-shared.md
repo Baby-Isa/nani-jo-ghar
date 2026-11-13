@@ -26,4 +26,5 @@ Checks: `checks.mjs` 14 steps ok; unit tests pass (evidence.test 30, help tests 
 
 ## Open
 
-contract-121 (pantry L2-L3 740, the card lesson under another layer): as on 12 Nov, not traced. check-change: see below.
+- contract-121 (pantry L2-L3 740, "the card lesson's picture under the canvas"): as on 12 Nov, not traced; likely the zoomed pop card's measured box.
+- check-change (tier 2) did not finish: its base is the merge base with origin/main, so `scope` failed on 1377 other sessions' files and `play` planned 65 pages at one at a time (about 100 min). Stopped; run by hand instead: `loadcheck.mjs` 28/32 (daar, tadka, stir, baking load another game's picture: art-step, my diff loads none), `test_cook_mount.mjs` 17 failed on the base's files too, `frozen.mjs --diff` timed out at 15 min. The orchestrator should run check-change with `--base 8d6bac9e5`.
