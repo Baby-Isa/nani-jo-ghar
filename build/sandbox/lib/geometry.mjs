@@ -14,9 +14,10 @@
 //   frame-slots   the side panel, the bottom row and the play area in the same place at the same size: through one game's moments
 //                 and levels, and the same as chai's reference
 //   headline      the order headline is one size through a round, and at most two lines on a phone
-//   pill-clear    a word pop's pill keeps off what it stands by (the board, the hob, the tray, the pans): never touching
+//   pill-clear    a word pop's pill keeps off what it stands by (the board, the hob, the tray, the pans): at least 6 px clear (CK-112's
+//                 label, a hair above the board, was 4.7 px at 740x320; its fix is 10 px)
 //   panel-holds   Nani's box, the order cards and the list lie inside the side panel
-export const TOL = { overlap: 1, edge: 1, slot: 0.5, light: 0.12, tap: 48, pill: 2, phoneH: 500, headlineLines: 2, fs: 0.5 };
+export const TOL = { overlap: 1, edge: 1, slot: 0.5, light: 0.12, tap: 48, pill: 6, phoneH: 500, headlineLines: 2, fs: 0.5 };
 
 const px = (v) => Math.round(v * 10) / 10;
 const sizeOf = (key) => { const m = /(\d+)x(\d+)/.exec(String(key)); return m ? { w: +m[1], h: +m[2] } : null; };

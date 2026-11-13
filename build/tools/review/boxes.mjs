@@ -22,7 +22,10 @@
 //        [--from <run id or folder>] [--only overlap,light,...]
 //        Sprint 20 P5, the geometry rules (build/sandbox/lib/geometry.mjs): plays as --run (or reads a played run: --from) and judges ten
 //        rules on every moment and size: pass or fail per rule, each fault with what, where and by how much, and the minutes. Writes
-//        <run>/rules-<game>.json. Any game with a spec (chai-tray, eggs, maani-line) can be read one-off this way: nothing is
+//        <run>/rules-<game>.json.
+//   node build/tools/review/boxes.mjs --game chai-tray --prove-plants [--sizes 740x320]
+//        the rules' proof: each planted fault (boxes-play.mjs PLANTS) on its own page, judged: its own rule must fail on it, with the
+//        planted fault in its message. A rule that cannot fail does not count. Re-run whenever a rule changes. Any game with a spec (chai-tray, eggs, maani-line) can be read one-off this way: nothing is
 //        compared with a reference or written as one. Exit 1 on a fail.
 // Browser: COOK_TEST_PORT (default 8812) under NJG_LOCK (default /tmp/njg-browser-all.lock), taken here unless a caller holds it.
 // A miss (a moment not reached, a page that did not end) is a fail; so is a moment whose boxes changed between its read and the
@@ -63,7 +66,7 @@ function underLock() {
   }
   return false;
 }
-const browserStep = a.has("run") || a.has("prove") || (a.has("rules") && !a.has("from"));
+const browserStep = a.has("run") || a.has("prove") || a.has("prove-plants") || (a.has("rules") && !a.has("from"));
 if (browserStep && !underLock()) {
   const r = spawnSync("flock", ["-w", "3600", LOCK, process.execPath, process.argv[1], ...process.argv.slice(2)], { stdio: "inherit", cwd: ROOT, env: { ...process.env, NJG_LOCKED: "1" } });
   process.exit(r.status == null ? 1 : r.status);
@@ -250,6 +253,24 @@ if (a.has("prove")) {
   if (!res) { for (const p of own.pages) for (const f of p.faults) console.log(`  ${p.key}: ${f}`); console.log(`${fails ? "FAIL" : "pass"} ${game}: every moment reached and still (no reference to compare with)`); }
   console.log(`${fails ? "FAIL" : "pass"} the box gate, ${game}: ${mins(Date.now() - T0)} minutes (${rel(r.root)})`);
   process.exit(fails ? 1 : 0);
+} else if (a.has("prove-plants")) {
+  const id0 = a.val("run-id", `rules-proof-${stamp()}`);
+  const rows = [];
+  for (const [plant, P] of Object.entries(PLANTS)) {
+    const r = await play({ id: `${id0}-${plant}`, plant, levels: [1], sizes: [sizes[0]], quiet: true });
+    const page = loadPages(r.root)[pageKey(1, sizes[0])];
+    const pages = [{ key: pageKey(1, sizes[0]), game, level: 1, size: sizes[0], moments: page.moments }];
+    const planted = Object.values(page.moments).map((m) => m.planted).filter(Boolean)[0] || "not planted";
+    if (!P.rule) { rows.push({ plant, rule: null, planted, caught: null }); console.log(`n/a    ${plant} (${planted}): a move of 4 px breaks no rule; the box gate's reference diff catches it (--prove)`); continue; }
+    const res = judge(pages, { ref: null, only: [P.rule] })[0];
+    const hit = res.faults.filter((f) => f.where.endsWith(` ${P.at}`) && new RegExp(P.match).test(f.msg));
+    rows.push({ plant, rule: P.rule, planted, caught: hit.length > 0, fault: hit[0] && hit[0].msg });
+    console.log(`${hit.length ? "caught" : "MISSED"} ${plant} (${planted}) by ${P.rule} at ${P.at}: ${hit.length ? hit[0].msg : `none of its ${res.faults.length} fault(s) names it${res.faults[0] ? `, e.g. ${res.faults[0].msg}` : ""}`}`);
+  }
+  const bad = rows.filter((r) => r.caught === false).length;
+  writeFileSync(join(OUT, `${id0}-proof.json`), JSON.stringify({ game, size: sizes[0], rows, at: new Date().toISOString() }, null, 1));
+  console.log(`${bad ? "FAIL" : "pass"} the rules' proof: ${rows.filter((r) => r.caught).length}/${rows.filter((r) => r.rule).length} planted faults caught by their rule, ${mins(Date.now() - T0)} minutes`);
+  process.exit(bad ? 1 : 0);
 } else if (a.has("rules")) {
   const only = a.val("only") ? String(a.val("only")).split(",") : null;
   if (only && only.some((i) => !RULE_IDS.includes(i))) { console.error(`No such rule: ${only.filter((i) => !RULE_IDS.includes(i)).join(", ")} (have: ${RULE_IDS.join(", ")})`); process.exit(2); }

@@ -13,22 +13,39 @@ import { armScript, readCall, standSource, momentsOf, PIXEL_MOMENTS } from "./bo
 // the nudge (in the page, while held) -> an undo
 export const PLANTS = {
   // a box moved 4 px: the tray, 4 CSS px to the right
-  move4: { at: "mid", expect: "^tray$", js: `(() => { const C = window.Cook, U = C.UI; const k = U.worldToScreen(1, 0).x - U.worldToScreen(0, 0).x; let t = null;
+  move4: { at: "mid", expect: "^tray$", rule: null, js: `(() => { const C = window.Cook, U = C.UI; const k = U.worldToScreen(1, 0).x - U.worldToScreen(0, 0).x; let t = null;
     for (const sc of C.game.scene.getScenes(true)) for (const o of sc.children.list) if (o.texture && o.texture.key === "v2-tray") t = o;
     if (!t) return "no tray"; const dx = 4 / k; t.x += dx; window.__plantUndo = () => { t.x -= dx; }; return "the tray moved 4 px right"; })()` },
   // a card over a face: the order card's first item card laid over the card's face circle
-  "card-face": { at: "mid", expect: "^card-1/item-1$", js: `(() => { const c = document.querySelector("#mission .oc-card"); const it = c && c.querySelector(".oc-it14"); const f = c && c.querySelector(".oc-face");
+  "card-face": { at: "mid", expect: "^card-1/item-1$", rule: "overlap", match: "card-1/item-1", js: `(() => { const c = document.querySelector("#mission .oc-card"); const it = c && c.querySelector(".oc-it14"); const f = c && c.querySelector(".oc-face");
     if (!it || !f) return "no card or face"; const a = it.getBoundingClientRect(), b = f.getBoundingClientRect(); const old = it.style.transform;
     it.style.transform = "translate(" + (b.left - a.left) + "px, " + (b.top - a.top) + "px)"; window.__plantUndo = () => { it.style.transform = old; }; return "the first item card over the order card's face"; })()` },
   // a cut word: Nani's line held to half its width, its overflow hidden (an ellipsis)
-  "cut-word": { at: "order", expect: "^nani/", kind: "cut", js: `(() => { const el = document.querySelector("#guide .ng-line") || document.querySelector("#mission .oc-card .oc-t");
+  "cut-word": { at: "order", expect: "^nani/", kind: "cut", rule: "text-whole", match: "is cut", js: `(() => { const el = document.querySelector("#guide .ng-line") || document.querySelector("#mission .oc-card .oc-t");
     if (!el) return "no words"; const w = el.getBoundingClientRect().width; const old = el.getAttribute("style");
     Object.assign(el.style, { maxWidth: Math.round(w / 2) + "px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" });
     window.__plantUndo = () => { if (old == null) el.removeAttribute("style"); else el.setAttribute("style", old); }; return "Nani's line cut to half its width"; })()` },
   // a light off its target: the drawn light (its hole, box and rings) 20 px to the right of what it lights
-  "light-off": { at: "light", expect: "^light-1", js: `(() => { const ob = Array.from(document.querySelectorAll(".njg-onboard")).find((o) => { const b = o.querySelector(".ob-box"); return b && b.style.display !== "none"; });
+  "light-off": { at: "light", expect: "^light-1", rule: "light", match: "off its target", js: `(() => { const ob = Array.from(document.querySelectorAll(".njg-onboard")).find((o) => { const b = o.querySelector(".ob-box"); return b && b.style.display !== "none"; });
     if (!ob) return "no light"; const els = Array.from(ob.querySelectorAll(".ob-hole, .ob-box, .ob-item-glow")); const old = els.map((e) => e.getAttribute("x"));
     els.forEach((e) => e.setAttribute("x", (+e.getAttribute("x") + 20).toFixed(1))); window.__plantUndo = () => els.forEach((e, i) => e.setAttribute("x", old[i])); return "the light 20 px right of its target"; })()` },
+  // ---- the geometry rules' planted faults (P5; `boxes.mjs --game chai-tray --rules --prove-plants`): each must be caught by its own rule ----
+  // a thing off the screen: the tray 3000 world px to the right
+  "off-screen": { at: "mid", expect: "^tray$", rule: "on-screen", match: "tray .* off the", js: `(() => { const C = window.Cook; let t = null;
+    for (const sc of C.game.scene.getScenes(true)) for (const o of sc.children.list) if (o.texture && o.texture.key === "v2-tray") t = o;
+    if (!t) return "no tray"; t.x += 3000; window.__plantUndo = () => { t.x -= 3000; }; return "the tray off the screen"; })()` },
+  // a word pill lying on the hob (its bottom edge a few px into the hob's top): the pill moved down to the hob's top
+  "pill-touch": { at: "mid", expect: "^tray$", rule: "pill-clear", match: "lies over", js: `(() => { const C = window.Cook; let hob = null, pill = null;
+    const walk = (list) => { for (const o of list || []) { if (!o) continue; if (o.popW) pill = o; if (o.texture && /^kit-hob-/.test(o.texture.key || "") && !hob) hob = o; if (o.list) walk(o.list); } };
+    for (const sc of C.game.scene.getScenes(true)) walk(sc.children.list);
+    if (!hob || !pill) return "no hob or no pill"; const y0 = pill.y, top = hob.getBounds().y + 4 * 0; pill.y = top - 28 * (pill.scaleX || 1) + 12;
+    window.__plantUndo = () => { pill.y = y0; }; return "the word pill lowered onto the hob"; })()` },
+  // the side panel shifted 8 px into the play area
+  "side-shift": { at: "mid", expect: "^side$", rule: "frame-apart", match: "side panel .* overlaps play area", js: `(() => { const s = document.querySelector("#side"); if (!s) return "no side";
+    const old = s.style.transform; s.style.transform = "translateX(8px)"; window.__plantUndo = () => { s.style.transform = old; }; return "the side panel 8 px right"; })()` },
+  // Nani's box wider than the panel that holds it
+  "nani-wide": { at: "order", expect: "^nani$", rule: "panel-holds", match: "nani .* not inside the side panel", js: `(() => { const g = document.querySelector("#guide"); if (!g) return "no nani";
+    const old = g.getAttribute("style"); g.style.width = (g.getBoundingClientRect().width + 60) + "px"; g.style.maxWidth = "none"; window.__plantUndo = () => { if (old == null) g.removeAttribute("style"); else g.setAttribute("style", old); }; return "Nani's box 60 px wider than the panel"; })()` },
 };
 
 let STAND = null; // the switch as it was when this process started (a run never mixes two versions of it)
