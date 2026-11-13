@@ -1,8 +1,11 @@
 # s19-night-art: the art files carry their registry names
 
-**Progress (03:15 UTC): Step 0 and Step 1 are done for every game.** 346 files of 11 kitchen games now have their registry names under
-`assets/art/` (one commit per game, sekelo first, chai last). Not one byte changed. Step 2 is not cleared yet: both fixers are still in the
-station files, so it is ready as patches only.
+**Where it stands (05:30 UTC):**
+- Step 0 and Step 1 are done for every game: 346 files of 11 kitchen games now have their registry names under `assets/art/` (one commit
+  per game, sekelo first, chai last). Not one byte changed.
+- Step 2 is done for the six games cleared at 05:20: sekelo, samosa, daar, maani, chop and chaat. Each got its own commit, after merging
+  the integration branch at ed26c119e.
+- Chai, pantry, eggs, baking and corn wait as patch files.
 
 ## What changed
 
@@ -20,9 +23,15 @@ station files, so it is ready as patches only.
   `build/reports/s19-night-art-not-renamed.md`.
 - **Transition guard:** `js/version.js` also maps an `<img>` src set without njgV, but only for an old path in `was`. It is marked to
   go with `was` in Step 3 and has its own test.
-- **Step 2:** `build/tools/art/idcodemod.mjs` is built. Its patches are in `build/reports/s19-night-art-step2/<game>.patch`, not applied:
-  10 games (pantry has nothing), each passing `git apply --check` here. Re-run the codemod after the fixers' merge rather than apply stale
-  patches.
+- **Step 2 (`build/tools/art/idcodemod.mjs`), applied for the six cleared games:**
+  - Code path strings became `Cook.Art.file(id, state)`: daar 2 (the shelf glass bowl and katori).
+  - Settings path strings became today's registry file, because JSON cannot call: sekelo 6, samosa 26, daar 16, maani 1, chop 28, chaat 1.
+  - rawpath went from 291 to 231. rawpath now accepts a registry name in settings, not in code.
+  - Left for a person: paths built from a folder and a stem (sekelo 1, daar 2, maani 1, chaat 2, chop 1).
+  - No game is on `migrated` yet. Their folder-plus-stem paths remain, and `migrated` turns their canvas warnings into errors (sekelo
+    12, chop 6, daar 4, samosa 1).
+- **Step 2 patches not applied:** baking, chai-tray, corn and eggs, in `build/reports/s19-night-art-step2/`, regenerated after the
+  merge (`git apply --check` passes). Pantry has nothing to change.
 
 ## Changes for files I don't own (apply at merge)
 
@@ -32,12 +41,13 @@ station files, so it is ready as patches only.
 | `build/tools/review/docs.mjs` brokenPaths | `if (!existsSync(join(ROOT, p)) && !WAS[p])`, with `WAS` = `from -> to` read from `data/art/renames.json` | 3 old paths in docs (chai-play feedback, regressions.md) fail `docs`; the plan says docs are not rewritten |
 | `build/tools/ops/specs/s19-night-art.json` flows | `cook:pantry` becomes `cook:fetch` | check-change stops at "Unknown game(s): cook:pantry" |
 
-## Tool note: four pages are not deterministic
+## Tool note: five pages are not deterministic
 
-On tadka, assemble, chai-tray and fetch, two load checks of the same code choose different pictures (an order's items, a jar). The
+On tadka, assemble, chai-tray, fetch and (after the merge) chop, two load checks of the same code choose different pictures (an order's items, a jar). The
 sandbox's plays also choose different orders from run to run. Seen in sekelo's marble view: a tomato order before, a meat order after.
 So a strict shotdiff of two plays shows changes even where nothing renamed is on screen (fetch: 19 changed, 0 renamed loaded). The byte
-proof is the one that holds.
+proof is the one that holds. Chop picked chilli in the Step 2 before-check and onion in three later checks, the third with its old
+settings put back. So the choice is not caused by the Step 2 change.
 
 ## Proof
 
@@ -50,3 +60,7 @@ proof is the one that holds.
 | `checks.mjs` (after the renames) | all green but: `leak` (clinic timed out under load, not mine), `docs` (the 3 old doc paths above) |
 | strict `shotdiff` after vs before (runs art-before / art-after: 1280x665 and 740x320 L1 for the 11 games and the title, sekelo L1-L4 at both) | title: 0 changed at 1280x665, 1 at 740x320 (10 identical). The games show play-to-play noise: 740x320 has 155 changed of 394, 78 gone, 47 new; sekelo L2-L3 at 1280x665 has 26 of 59. A different order is a different screen (the tool note). Sekelo's 930x430 and 1920x1080 matrix was not run: L4 timed out at 300 s under the machine's load (load average 38 on 4 cores). |
 | Contract run (`--contract`, 11 games L1, four sizes, run `s19-night-art-contract`) | 44 of 44 flows reach their end; `CONTRACT FAILED: 63 breaks` (contract-36 12, 106 5, 92 5, 114 5, 102 4, 107 4, and others). contract-6 (no retired art) has 0. The two art-shaped breaks are contract-104 on daar 740x320 (a renamed file, dungri) and baking 930x430 (a file not renamed, atta): pictures not loaded in time. s19-night-c's run before the renames has the same daar and assemble breaks under their old names, so this is load timing on a busy machine, not the rename. None of the other breaks is about pictures. |
+| Step 2 byte proof (`loadcheck.mjs --json` after the merge vs after Step 2: sekelo, samosa, daar, maani, chop, stir, tadka, assemble) | 5 identical (maani 54, sekelo 80, daar 98, stir 50, samosa 54). Chop, tadka and assemble chose different items (the tool note). 0 missing on every page. |
+| After Step 2: `artcheck.mjs`, rename tests, `--validate` | 726 findings, 726 known, 0 new (rawpath 231); 7 of 7 pass; 0 errors |
+| Tier 2 `check-change` | Not finished. The full one estimates 209 min, and the four-size contract run took the time before it. A trimmed one (sekelo, L1, 740x320, no before, no film) was started at 05:26 on the final branch; its result is in the scratchpad log `art-night/checkchange2.log`. |
+| Scope (`brief.mjs --audit e23110cc4..` before the merge) | outside the owns: the two report extras, the overnight log, `lab/art-board-data.js` (generated), `lab/sections/*.html` (the map tag, one static rewrite) |
