@@ -28612,5 +28612,347 @@
    "note": "samosa L1, the worktop once the order is in: the board, the plate, the karahi and the spoon each with the kit's soft shadow down and to the right; contract-120 over the play",
    "delay": 1500
   }
+ ],
+ "SAM-37": [
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 10,
+   "note": "samosa's first fold: one light, on the pastry being folded, never the order card in the side panel (as Nani says 'Samosa waar!')"
+  }
+ ],
+ "SAM-38": [
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "samosa's first light: on the filling Nani names ('Bhar! Bataato.' lights the bataato heap), never an empty pastry strip"
+  }
+ ],
+ "SAM-40": [
+  {
+   "flow": "cook:samosa",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "samosa's well done (the panel whose line is Shabash): the order card keeps its item cards with their ticks at both sizes; the hob clear of the side panel and the top edge"
+  }
+ ],
+ "DAAR-52": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "daar's well done (the panel whose line is Shabash): one Nana face, chai's size (150 design px), beside the bowl; the katori's small face stands down while it is up"
+  }
+ ],
+ "CK-108": [
+  {
+   "flow": "cook:chop",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 6,
+   "note": "chop's first-time knife strip at 740x320: the lit box and the finger holding the knife inside the frame, clear of its right edge"
+  }
+ ],
+ "CK-109": [
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "voice"
+   ],
+   "expect": null,
+   "max": 6,
+   "note": "chaat's chop strip: 'Nindha nindha kap!' with the knife's light from its first frame (the voice's line starts within 200 ms of the light), the finger after the dim"
+  }
+ ],
+ "CK-110": [
+  {
+   "flow": "cook:chaat",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 10,
+   "note": "chaat's chop: each cut thing's halves rest inside the board, whole, never across its edge onto the marble"
+  }
+ ],
+ "CK-111": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 6,
+   "note": "daar's knife strip: the finger draws the knife along its path and goes with the dim"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "max": 20,
+   "note": "daar from the tadka to the well done: no faded bowl beside the hob (what waits at the side is full strength); the spice bowls and pills on the shelf at full strength"
+  }
+ ],
+ "SEK-29": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "strip:#game:12x400"
+   ],
+   "expect": null,
+   "note": "mishkaki: the meat browns over the cook's time (raw, then part, then cooked), never raw to done in one frame at the turn"
+  }
+ ],
+ "SAM-36": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "the served tray holds as many samosas as were ordered ('ba samosa' is two)"
+  }
+ ],
+ "SEK-28": [
+  {
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#game",
+    "dom:#mission"
+   ],
+   "expect": null,
+   "note": "the served tray holds the skewers the child threaded and grilled (their pieces, their count), never a fixed picture of two pepper-and-meat skewers"
+  }
+ ],
+ "CK-106": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#game"
+   ],
+   "expect": null,
+   "note": "chop's serve: the cut dish on the tray (the asker is Nani: who thanks is the row's open question)"
+  }
+ ],
+ "CK-107": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "result",
+   "after": null,
+   "capture": [
+    "crop:.njg-results, #results, .results"
+   ],
+   "expect": null,
+   "note": "chop's end screen buttons: the shared ones (the same as daar's and chai's end screens in the contract runs)"
+  }
+ ],
+ "CK-112": [
+  {
+   "flow": "cook:maani-line",
+   "path": "speed1",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 12,
+   "note": "maani at 740x320: the dish card at the top beside the panel, clear of the bottom edge; the maani label off the board's top edge; the plates not flat grey discs"
+  }
  ]
 }

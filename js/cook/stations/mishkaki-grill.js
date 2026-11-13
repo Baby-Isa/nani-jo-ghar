@@ -102,13 +102,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       gz.close();
       steps.done();
       St.end();
-      if (!r || !r.redo) return r;
+      if (!r || !r.redo) {
+        serveAs(S, r);
+        return r;
+      }
       redo.wrong("sekelo");
       keep = r.keep || [];
       todo = Object.assign({}, order, { skewers: r.missing });
       // their rows open again for the ones to make again
       const ids = [].concat(...Object.keys(r.missing).map((w) => w.split("+")));
       if (Cook.UI.mission.reopen) Cook.UI.mission.reopen(ids, ctx.dishAt || 0);
+    }
+  }
+
+  /**
+   * SEK-28 (the S19 gate's eye judge, 12 Nov: "the plate is not the dish the child made"): the serve's dish for sekelo (js/cook/serve.js
+   * names its picture serve-dish-mishkaki, the fixed picture of two pepper-and-meat skewers, loaded when the order came) becomes the
+   * skewers this child grilled (the grill's r.served: their own pieces, their count), so the tray carries what they made.
+   */
+  const SERVE_KEY = "serve-dish-mishkaki";
+  function serveAs(S, r) {
+    try {
+      if (!S || !r || !r.served || !S.textures.exists(r.served)) return;
+      const src = S.textures.get(r.served).getSourceImage();
+      if (!src || !src.width) return;
+      if (S.textures.exists(SERVE_KEY)) S.textures.remove(SERVE_KEY);
+      S.textures.addCanvas(SERVE_KEY, src);
+    } catch (e) {
+      /* the serve's own picture */
     }
   }
 
@@ -123,6 +144,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     line.onGrill = () => ctx.nextStep && ctx.nextStep("Grill");
     const threading = Mech.run("thread", tz, Object.assign({ line, until, layout: { bowlsX: 170, boardX: 372 } }, order));
     const r = await Mech.run("grill", gz, Object.assign({ line, dx: 0 }, order));
+    serveAs(host.S, r);
     line.stop();
     await threading;
     host.channel("skewers").close();

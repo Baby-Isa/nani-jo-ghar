@@ -701,8 +701,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // (s19-games-2, contract-114: never under 15% smaller than on the board, though the pair may then reach its cell's edge)
           const k = Math.max(Math.min(wk * HV.k, z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h)), Math.min(wk * HV.k, wk / 1.14));
           const ox = again ? z.L(12 * again) : 0;
-          const cx = z.X(c.x) + ox;
-          const cy = z.Y(c.y) - ox * 0.6;
+          let cx = z.X(c.x) + ox;
+          let cy = z.Y(c.y) - ox * 0.6;
+          // CK-110 (the S19 gate's eye judge, 12 Nov: "a whole tomato over two slices sits across the board's bottom edge, half on the
+          // marble"): the pair rests inside the board, whole, a margin in from its edges, however big the cut thing was
+          {
+            const BD = band.board;
+            const BY = band.boardY;
+            const m = z.L(14);
+            const hw = z.L(gap) / 2 + Math.max(A.w, Bs.w) * k;
+            const hh = (Math.max(A.h, Bs.h) * k) / 2;
+            const lo = (a, v, b) => (a > b ? (a + b) / 2 : Math.min(b, Math.max(a, v)));
+            cx = lo(z.X(BD[0]) + m + hw, cx, z.X(BD[1]) - m - hw);
+            cy = lo(z.Y(BY[0]) + m + hh, cy, z.Y(BY[1]) - m - hh);
+          }
           // (half-a's middle left of the gap by its own half width, half-b's right by its own)
           to = { k, xs: [cx - z.L(gap) / 2 - (A.w * k) / 2, cx + z.L(gap) / 2 + (Bs.w * k) / 2], y: cy };
           // (where the cut pieces rest, world px: the game's well done shows them with their asker, CK-78)
@@ -1230,7 +1242,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const half = () => Math.min(z.L(900) * 0.225, Math.max(z.L(90), kb().height));
         const wait = (ms) => new Promise((r) => S.time.delayedCall(ms, r));
         const tween = (cfg) => new Promise((r) => S.tweens.add(Object.assign({}, cfg, { onComplete: r })));
-        const x0 = z.X(1440);
+        // CK-108 (the S19 gate's eye judge, 12 Nov, chop at 740x320: "the lit box runs to the very right edge of the screen and the
+        // finger touches it"): the knife's start keeps the kit's hand holding it (its 64-px box right of the fingertip, the light's pad)
+        // and the box round them inside the frame with room to spare; on a wide screen it starts where it always did
+        let x0 = z.X(1440);
+        try {
+          const ppw0 = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+          const hs0 = (global.Onboard && global.Onboard.HOTSPOT) || [25, 3];
+          const room = 64 - hs0[0] + z.L(14) * ppw0 + 24; // (the hand right of its fingertip, the light's pad, a margin: screen px)
+          const W0 = global.innerWidth || 1e4;
+          const over = UI.worldToScreen(x0 + z.L(40), 0).x + room - W0;
+          if (over > 0) x0 -= over / ppw0;
+        } catch (e) {
+          /* where it always started */
+        }
         // (the kit's finger holds the knife's handle once the light is on: the knife's lower right, its blade and tip clear: DAAR-13)
         let fpt = null;
         const hold = () => (fpt = UI.worldToScreen(knife.x + z.L(40), knife.y + z.L(20)));
@@ -1296,18 +1321,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return { x: lx, y: 0, w: W - lx, h: global.innerHeight || 1e4 };
         };
         const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: "chop", within, note: "chop:s14-strip" });
-        const finger = OB.finger ? OB.finger(() => fpt, { hold: true }) : null;
+        // CK-109 (the S19 gate's eye judge, 12 Nov: "'Nindha nindha kap!' arrives only at +1639 ms", the knife lit under the order's
+        // line): Nani's call for the knife comes with its light, from its first frame (the family's recorded "Nindha nindha kap!",
+        // lines.guide-chop, the chop step's call: contract-36, contract-78), never 1.5 s into it
+        if (z.say && Lang.line) z.say(Lang.role(Lang.line("guide-chop"), "call"), { hide }).catch(() => {});
+        const lit0 = Date.now();
+        // (and the finger after the dim, never before it: the light's fade, css/shared/onboard.css's 0.3 s)
+        hold();
+        await wait(300);
+        const finger = OB.finger && knife.active ? OB.finger(() => fpt, { hold: true }) : null;
         hold();
         // SH-253 (contract-112: "lit while the knife moved into it after the light came"): the light comes on a still scene, the knife
         // and the vegetable already in place, and stays still a beat (a second and a half of real time, whatever the test speed: the checks' second look comes at 0.95 s, later on a busy machine) before the
         // finger draws the knife along its path
-        const lit0 = Date.now();
-        await wait(420);
+        // (the beat counts from the light: CK-111, the finger rests on the handle a moment, then draws the knife)
+        await wait(120);
         while (Date.now() - lit0 < 1500 && knife.active) await wait(50);
-        // (s19-clean-e, contract-36: the strip is the chop's step on screen, the knife lit; Nani calls it as the finger draws the knife,
-        // with the family's recorded "Nindha nindha kap!" (lines.guide-chop, the line her guide box already shows): the order was said
-        // before the strip, more than the call's 2 s before the knife's light, or heard in its pop-up and not said again)
-        if (z.say && Lang.line) z.say(Lang.role(Lang.line("guide-chop"), "call"), { hide }).catch(() => {});
         let cutYet = false;
         const D_MS = 1500 / slow;
         await new Promise((resolve) =>
@@ -1332,14 +1361,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           })
         );
         if (veg.active) veg.destroy();
-        // (its slot has a whole one again)
+        await wait(350);
+        light.close();
+        if (finger) finger.stop();
+        // (its slot has a whole one again, once the light has gone: contract-112, nothing of the strip's moves while it stands, and the
+        // planted one's twin coming back to the band is not the planted one leaving the light)
         if (own && own.img && own.img.active) {
           own.img.setVisible(true).setScale(own.scale * 0.6).setAlpha(0);
           S.tweens.add({ targets: own.img, scaleX: own.scale, scaleY: own.scale, alpha: 1, duration: 220, ease: "Back.easeOut" });
         }
-        await wait(350);
-        light.close();
-        if (finger) finger.stop();
         fpt = null;
         await tween({ targets: knife, x: home.x, y: home.y, duration: 260, ease: "Sine.easeOut" });
         Cook.save.coached = Cook.save.coached || {};
