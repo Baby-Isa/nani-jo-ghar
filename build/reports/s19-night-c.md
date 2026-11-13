@@ -59,7 +59,7 @@ Branch `s19-night-c`, never pushed. The machine ran at load 25-50 all night (fou
 - **Waiting on Mum:** maani's roll call has no recorded voice (contract-36).
 
 ## Proof
-- Evidence: `build/screenshots/evidence/s19-night-c-ev1/` (index `build/reports/evidence-s19-night-c-ev1.md`, 9 rows) and `.../s19-night-c-ev3/`.
+- Evidence: `build/screenshots/evidence/s19-night-c-ev1/` (index `build/reports/evidence-s19-night-c-ev1.md`, 9 rows) and ev3 (index `build/reports/evidence-s19-night-c-ev3.md`, 13 rows, CHT-13 a tool failure).
 - Contract before: `build/screenshots/sandbox/s19-night-c-base/contract.md` ("CONTRACT FAILED: 19 breaks").
 - Four sizes after: `build/screenshots/sandbox/s19-night-c-contract/contract.md` ("CONTRACT FAILED: 139 breaks", 32 of 32 ends).
 - L2-L4 after: `build/screenshots/sandbox/s19-night-c-l24/contract.md` ("CONTRACT FAILED: 146 breaks", 47 of 48 ends).
