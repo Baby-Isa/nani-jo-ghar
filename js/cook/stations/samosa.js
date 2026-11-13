@@ -1121,7 +1121,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // SAM-37 (the S19 gate's eye judge, 12 Nov: "the gold box wraps the entire order card in the side panel" while she says "Samosa
         // waar!"): the fold's first time is its own light, on the dough alone. The first-time script is over here (its showing is this
         // light), so it ends now, marked seen: its end-of-showing point at the order card would light the card beside the dough
-        // (one thing lit at a time, decision 95)
+        // (one thing lit at a time, decision 95); the fold's own first-time demo is its light just below (Coach.control)
         if (firstFold && Cook.Coach.active && Cook.Coach.active()) Cook.Coach.stop(true);
         let foldLight = firstFold ? Cook.Coach.control({ key: "samosa", note: "samosa:fold", target: Cook.Coach.box(fimg, 6, { visible: true }), first: true, noHint: true }) : null;
         const foldLightOff = () => foldLight && (foldLight.close(), (foldLight = null));
