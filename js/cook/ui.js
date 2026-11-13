@@ -4144,16 +4144,17 @@
    */
   function flashSaid(c, parts) {
     if (!c || !parts || !parts.length) return null;
-    const p0 = parts[0];
-    let said = "";
-    try {
-      said = Lang.plain(p0.line) || "";
-    } catch (e) {
-      /* a part with no words */
-    }
-    if (!/^\s*muke\b/i.test(said)) return null;
+    const plain = (p) => {
+      try {
+        return (p && p.line && Lang.plain(p.line)) || "";
+      } catch (e) {
+        return "";
+      }
+    };
     const rowOf = (p) => p.row || (p.line && p.line.row) || null;
     const all = c._parts ? c._parts() : [];
+    // (the line says the dish when it starts where the card's whole order starts: its headline, never a replay of the steps left only)
+    if (!all.length || !plain(parts[0]) || plain(parts[0]) !== plain(all[0])) return null;
     const head = parts.map(rowOf).find((r) => r && r.head) || all.map(rowOf).find((r) => r && r.head);
     if (head) return UI.dishFlash(c.dataset.who || null, head);
     const first = parts.map((p) => rowOf(p) || ((p.line && p.line.rows) || []).find((x) => x && !x.head && !x.no)).find(Boolean);
