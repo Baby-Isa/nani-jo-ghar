@@ -1361,14 +1361,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           })
         );
         if (veg.active) veg.destroy();
-        // (its slot has a whole one again)
+        await wait(350);
+        light.close();
+        if (finger) finger.stop();
+        // (its slot has a whole one again, once the light has gone: contract-112, nothing of the strip's moves while it stands, and the
+        // planted one's twin coming back to the band is not the planted one leaving the light)
         if (own && own.img && own.img.active) {
           own.img.setVisible(true).setScale(own.scale * 0.6).setAlpha(0);
           S.tweens.add({ targets: own.img, scaleX: own.scale, scaleY: own.scale, alpha: 1, duration: 220, ease: "Back.easeOut" });
         }
-        await wait(350);
-        light.close();
-        if (finger) finger.stop();
         fpt = null;
         await tween({ targets: knife, x: home.x, y: home.y, duration: 260, ease: "Sine.easeOut" });
         Cook.save.coached = Cook.save.coached || {};
