@@ -6,7 +6,7 @@
  "stop": "when the gate's contract part is at zero on chai, or at the end of one session: then stop and report",
  "kind": "code",
  "browser": true,
- "live": true,
+ "live": false,
  "specsByBuilder": false,
  "stubs": "none",
  "publish": false,

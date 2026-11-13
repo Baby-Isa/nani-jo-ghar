@@ -27,11 +27,11 @@ In Zafar's words (13 Nov): settle chai and record exactly how it looks; move cha
 | P0 | The starting numbers; this file; the frame's notes | done | `node build/tools/review/frame-counts.mjs` (13 Nov: chai 29, eggs 12, maani 15, corn 11; flow.js names games on 31 lines) |
 | P1 | Zafar's chai decisions answered; Mum's words in as data | done | decisions 22-23; Mum's words merged with P2 |
 | P2 | Chai settled: its three faults, SH-286 (the dish card is the order's own pop-up), Mum's words; one line per kind of change for Zafar; re-freeze on his yes | built, merged | `build/reports/s20-p2-chai.md`; three of its faults were checks reading wrong (fixed by the orchestrator: contract-37, -119, -124); the page error fixed (Onboard.lightBack). Next: Zafar's yes to the change list and the glass's clink, then the re-freeze |
-| P3 | The lock on the door: the checks that pass today (fast checks + 161 contract checks) become a gate, and a merge script refuses any change that fails one | built, merged | `build/tools/tiers/gate.mjs`, `merge.mjs`, `gate-lists.json` (92 blocking, 18 advisory); the proof runs (two at zero, alone; a real refusal) wait for the final chai |
+| P3 | The lock on the door: the checks that pass today (fast checks + 161 contract checks) become a gate, and a merge script refuses any change that fails one | done | the gate on the final chai (gate-20261113T2122): checks pass, contract pass (0 blocking over 38 pages), boxes differ only by SH-289's headline until the re-take; its first run caught two real faults (contract-80, -83: s20-p2c-chai, merged). Left: the real refusal of a broken branch |
 | P4 | The measuring tool: freeze the game at six moments and record exactly where everything sits (proven on chai as it is; one session) | done | `boxes.mjs --prove`: chai identical 3 runs x 8 pages, 4 planted faults caught, 4 min a run; reference `build/frozen/boxes/chai-tray/` |
 | P5 | The geometry rules (fail first on SH-277 and CK-112, and the planted faults) | done | `boxes.mjs --rules`: 10 rules, 7/7 planted faults caught, SH-277 caught in eggs, CK-112 on its old code; chai fails tap-size, headline, text-whole (to fix before the reference: SH-288, SH-289) |
 | P6 | Chai's 12 reference pictures. **Zafar, review point 2** | next | chai's last fixes merged (s20-p2b-chai: SH-287, -288, -289, decision 25; all 10 rules pass on chai); waits for Zafar's yes to the change list and the glass clink, then the re-freeze (frozen run and boxes) and the 12 pictures |
-| P7 | Park the rows ("waits for the frame") | with P3 | |
+| P7 | Park the rows ("waits for the frame") | next | |
 | 1 | Chai's play-area lines move out of chai into the frame, unchanged; chai asks the frame for its play area; every box proven unchanged | waits | |
 | 2 | Chai's stove, pans and tray are measured from its play area, not the screen; every box proven unchanged | waits | |
 | 3 | Eggs joins. **Zafar, review point 3** | waits | |
@@ -43,3 +43,6 @@ In Zafar's words (13 Nov): settle chai and record exactly how it looks; move cha
 
 ## Proof
 Plan and its challenges: `build/reports/s20-plan.md`, `s20-plan-draft.md`, `s20-plan-premortem.md`, `s20-plan-challenges.md`; decisions 20-23 in `docs/decisions/2026-11-10-overnight.md`; starting numbers from `build/tools/review/frame-counts.mjs`.
+
+## Open
+- The geometry rule pill-clear is not steady on chai: the count pill sits 3.8-4.3 px above the hob (at least 6) at L1 mid-cook, at 740 in 3 of 8 runs and at 930 once. Trace before the rules block (by design or a fault, and why it varies).
