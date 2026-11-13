@@ -230,14 +230,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
     if (made.two && !ctx.guided && count2 <= 5) (made.nB0 === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
     steps.done();
-    // SH-239 (contract-108): every item card ticks before their well done (each filling's card and the count's, by its word: no head, so
-    // the card is not closed whole yet).
-    // SAM-40 (the S19 gate's eye judge, 12 Nov: "the order card has collapsed to its headline with a faded, barely visible tick"):
-    // the dish is closed whole (the card's fold, decision 97 (3)) after the well done, so the praise shows the item cards with their
-    // ticks, as chai's does
-    if (ctx.closeItem) ctx.closeItem([...new Set(kinds.concat(kinds2, ["ph-samosa"]))]);
-    await serve(yz, { who, plate: fried.plate });
+    // SH-239 (contract-108): the samosas are made: every card ticks before their well done at the serve. (SAM-40, the card kept whole
+    // at the praise, needs the kit's fold to wait for the well done: the dish closed whole folds the card, decision 97 (3); a station's
+    // rows closed by word left "trae chunda" open at Shabash, contract-108, so it stays as it was: the s19-night-c report)
     if (ctx.closeItem) ctx.closeItem([], { all: true });
+    await serve(yz, { who, plate: fried.plate });
     yz.close();
     St.end();
     const result = { count: made.n, fillings: made.got, fried: fried.lifted, fillings2: made.got2 || null };
