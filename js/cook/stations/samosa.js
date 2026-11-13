@@ -230,9 +230,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (nOne !== count) UI.mission.missItem("ph-samosa", ctx.dishAt || 0, { counted: true, block: made.two ? 1 : null });
     if (made.two && !ctx.guided && count2 <= 5) (made.nB0 === count2 ? Cook.markRight : Cook.markMiss)(Cook.numId(count2));
     steps.done();
-    // SH-239 (contract-108): the samosas are made: every card ticks before their well done at the serve
-    if (ctx.closeItem) ctx.closeItem([], { all: true });
+    // SH-239 (contract-108): every item card ticked before their well done (the fill closed each filling's card as it ended).
+    // SAM-40 (the S19 gate's eye judge, 12 Nov: "the order card has collapsed to its headline with a faded, barely visible tick"):
+    // the dish is closed whole (the card's fold, decision 97 (3)) after the well done, so the praise shows the item cards with their
+    // ticks, as chai's does
     await serve(yz, { who, plate: fried.plate });
+    if (ctx.closeItem) ctx.closeItem([], { all: true });
     yz.close();
     St.end();
     const result = { count: made.n, fillings: made.got, fried: fried.lifted, fillings2: made.got2 || null };
@@ -642,7 +645,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const heap = kindsOf(b).find((id) => (active.got[id] || 0) < w[id]);
         if (heap && !over && (active.order.length || needBlock())) return { heap, block: b };
       }
-      if (needBlock()) return { strip: strips.find((x) => x !== active && !x.order.length) || strips.find((x) => !x.order.length) };
+      // SAM-38 (the S19 gate's eye judge, 12 Nov: "Nani says 'Bhar! Chundo.' and the lit thing is an empty pastry strip"): the
+      // round's first move is the filling her line names: its heap is what is lit and expected; a tap on it fills the first empty
+      // strip (the r.id path takes one). A strip may still be tapped first, as before
+      const nb0 = needBlock();
+      if (nb0 && !active && !filledOf().length) {
+        const heap = kindsOf(nb0).find((id) => items[id] && items[id].active);
+        if (heap) return { heap, block: nb0 };
+      }
+      if (nb0) return { strip: strips.find((x) => x !== active && !x.order.length) || strips.find((x) => !x.order.length) };
       return { done: true };
     };
     let helping = false;
@@ -1104,7 +1115,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // CK-82 (the eye judge, 10 Nov: the fold's dim and box showed for about 100 ms, then went while the arrow stayed): the first fold's
         // light is the kit's one box (Cook.Coach.control, as chai's dial and sekelo's grill), held round the pastry until the finger
         // starts the fold
-        let foldLight = n === 0 && f === 0 && gate && Cook.Coach.control && gate.first("fold") ? Cook.Coach.control({ key: "samosa", note: "samosa:fold", target: Cook.Coach.box(fimg, 6, { visible: true }), first: true, noHint: true }) : null;
+        const firstFold = n === 0 && f === 0 && gate && Cook.Coach.control && gate.first("fold");
+        // SAM-37 (the S19 gate's eye judge, 12 Nov: "the gold box wraps the entire order card in the side panel" while she says "Samosa
+        // waar!"): the fold's first time is its own light, on the dough alone. The first-time script is over here (its showing is this
+        // light), so it ends now, marked seen: its end-of-showing point at the order card would light the card beside the dough
+        // (one thing lit at a time, decision 95)
+        if (firstFold && Cook.Coach.active && Cook.Coach.active()) Cook.Coach.stop(true);
+        let foldLight = firstFold ? Cook.Coach.control({ key: "samosa", note: "samosa:fold", target: Cook.Coach.box(fimg, 6, { visible: true }), first: true, noHint: true }) : null;
         const foldLightOff = () => foldLight && (foldLight.close(), (foldLight = null));
         await swipe(z, S, {
           from,

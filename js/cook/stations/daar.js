@@ -845,7 +845,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const items = shelf(z, S, spiceIds, level);
     Object.values(items).forEach((o) => o.setAlpha(0.6));
     const waiting = [dBowl].concat(vbowl ? [vbowl] : [], ...Object.values(piles), ...Object.values(glassOf));
-    waiting.forEach((o) => o.setAlpha(0.7));
+    // CK-111 (the S19 gate's eye judge, 12 Nov: "a tiny faded garlic bowl beside the hob"): what waits at the side (KEEP-02) is at full
+    // strength, as chai's things wait; never a faded ghost of itself
+    waiting.forEach((o) => o.setAlpha(1));
 
     // 1. the knob: the oil is hot at once, and the sizzle says so (S16: no heating ring)
     burner.knob.baseScale = 1;
@@ -978,7 +980,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     }
     steps.done();
     if (!wrong && !retry) z.listen(true, "tadka");
-    Object.values(items).forEach((o) => S.tweens.add({ targets: [o, o.chip], alpha: 0.35, duration: 300 }));
+    // CK-111 (the S19 gate's eye judge, 12 Nov: "the shelf bowls and pills at well done are faded"): the spices stay on the shelf at full
+    // strength after the tadka, as chai's shelf does (their taps are off: the step is over)
 
     // 3. the chopped vegetables, one pile at a time (D9: each row ticks as it goes in), then the daar
     waiting.forEach((o) => o !== dBowl && S.tweens.add({ targets: o, alpha: 1, duration: 200 }));
@@ -1471,10 +1474,18 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     S.steam(bowl.x, bowl.y - z.L(40), 3);
     // SH-239 (contract-108): the daar is made: every card ticks (the stir's row too) before their well done
     if (z.ctx && z.ctx.closeItem) z.ctx.closeItem([], { all: true });
-    // the review (X10 / Q1): their big round face over the bowl, no body, no pretend eating
-    const look = await Cook.Kit.review(S, { who, ok: true, x: bowl.x, y: bowl.y - z.L(SB.w), size: z.L(SB.w), k: z.L(1), side: "right" });
+    // the review (X10 / Q1): their round face beside the bowl, no body, no pretend eating. DAAR-52 (the S19 gate's eye judge, 12 Nov:
+    // "a big Nana circle hangs between the hob and the plate while the small one still sits left"): one face, chai's size for one dish
+    // (NjgServe.layout's single, 150), at the bowl's upper left over its rim (its offK, 0.74), as samosa's; the katori's small face
+    // circle stands down while it is up
+    const size = z.L(150);
+    const off = ((bowl.displayWidth || z.L(SB.w)) / 2 + size / 2) * 0.74;
+    const small = katori && katori.face;
+    if (small && small.active) small.setVisible(false);
+    const look = await Cook.Kit.review(S, { who, ok: true, x: bowl.x - off, y: bowl.y - off, size, k: z.L(1), side: "right" });
     await Cook.wait(300);
     await look.close();
+    if (small && small.active) small.setVisible(true);
     return true;
   }
 
