@@ -27,6 +27,23 @@
     const to = A.was[m[2].replace(/\/\.\//g, "/").replace(/\/{2,}/g, "/")];
     return to ? (m[1] || "") + to + (m[3] || "") : url;
   };
+  // A picture code sets straight on an <img> (img.src = path, without njgV) follows the rename too: the src setter maps it, and an
+  // <img> written into HTML that fails to load by an old name is pointed at the new one (an error, caught on its way down)
+  const IMG = global.HTMLImageElement;
+  const desc = IMG && Object.getOwnPropertyDescriptor(IMG.prototype, "src");
+  if (desc && desc.set && !IMG.prototype._njgArt) {
+    Object.defineProperty(IMG.prototype, "src", Object.assign({}, desc, { set(v) { desc.set.call(this, global.njgArt(v)); } }));
+    IMG.prototype._njgArt = true;
+  }
+  if (global.addEventListener) {
+    global.addEventListener("error", (e) => {
+      const t = e.target;
+      if (!t || t.tagName !== "IMG") return;
+      const s = t.getAttribute("src");
+      const to = global.njgArt(s);
+      if (to !== s) t.setAttribute("src", to);
+    }, true);
+  }
   /** url -> url?v=<stamp> (relative URLs only; data:, blob: and full URLs are left alone); a renamed picture's old path -> its new one. */
   global.njgV = function (url) {
     if (typeof url !== "string" || !url || /^(data:|blob:)/i.test(url)) return url;
