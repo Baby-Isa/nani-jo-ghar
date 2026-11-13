@@ -588,9 +588,9 @@
   },
   "oven": {
    "states": {
-    "shut": "assets/cook/proto/baking/oven-shut.webp",
-    "baking": "assets/cook/proto/baking/oven-baking.webp",
-    "open": "assets/cook/proto/baking/oven-open.webp"
+    "shut": "assets/art/baking/oven-shut.default.r1.webp",
+    "baking": "assets/art/baking/oven-baking.default.r1.webp",
+    "open": "assets/art/baking/oven.open.r1.webp"
    },
    "px": [
     840,
@@ -615,12 +615,12 @@
    "size": "M",
    "view": "E",
    "states": {
-    "empty": "assets/cook/items/v4/baking/bowl-empty.webp",
-    "flour1": "assets/cook/items/v4/baking/bowl-flour-1.webp",
-    "flour2": "assets/cook/items/v4/baking/bowl-flour-2.webp",
-    "flour3": "assets/cook/items/v4/baking/bowl-flour-3.webp",
-    "mixing": "assets/cook/items/v4/baking/bowl-shaggy.webp",
-    "dough": "assets/cook/items/v4/baking/bowl-shaggy.webp"
+    "empty": "assets/art/baking/bowl.empty.r1.webp",
+    "flour1": "assets/art/baking/bowl-flour.1.r1.webp",
+    "flour2": "assets/art/baking/bowl-flour.2.r1.webp",
+    "flour3": "assets/art/baking/bowl-flour.3.r1.webp",
+    "mixing": "assets/art/baking/bowl-shaggy.default.r1.webp",
+    "dough": "assets/art/baking/bowl-shaggy.default.r1.webp"
    },
    "px": [
     484,
@@ -647,12 +647,12 @@
    "size": "L",
    "view": "F",
    "states": {
-    "empty": "assets/cook/items/v4/baking/jug-0.webp",
-    "water": "assets/cook/items/v4/baking/jug-4.webp",
-    "milk": "assets/cook/items/v4/baking/jug-milk.webp",
-    "flour": "assets/cook/items/v4/baking/jug-flour.webp",
-    "yoghurt": "assets/cook/items/v4/baking/jug-yoghurt.webp",
-    "sugar": "assets/cook/items/v4/baking/jug-sugar.webp"
+    "empty": "assets/art/baking/jug.0.r1.webp",
+    "water": "assets/art/baking/jug.4.r1.webp",
+    "milk": "assets/art/baking/jug-milk.default.r1.webp",
+    "flour": "assets/art/baking/jug-flour.default.r1.webp",
+    "yoghurt": "assets/art/baking/jug-yoghurt.default.r1.webp",
+    "sugar": "assets/art/baking/jug-sugar.default.r1.webp"
    },
    "px": [
     400,
@@ -688,11 +688,11 @@
    "_lineAt": "key = quarter cups (1 = a quarter ... 10 = two and a half), value = the line's height as a fraction of the jug picture from its TOP; five evenly drawn lines, no numbers. The game reveals a full jug through a rising mask up to the line, never a proportional fill.",
    "replaces": "the drawn jug and its drawn fill",
    "emptyFor": {
-    "water": "assets/cook/items/v4/baking/jug-0.webp",
-    "milk": "assets/cook/items/v4/baking/jug-0.webp",
-    "flour": "assets/cook/items/v4/baking/jug-0.webp",
-    "yoghurt": "assets/cook/items/v4/baking/jug-0.webp",
-    "sugar": "assets/cook/items/v4/baking/jug-0.webp"
+    "water": "assets/art/baking/jug.0.r1.webp",
+    "milk": "assets/art/baking/jug.0.r1.webp",
+    "flour": "assets/art/baking/jug.0.r1.webp",
+    "yoghurt": "assets/art/baking/jug.0.r1.webp",
+    "sugar": "assets/art/baking/jug.0.r1.webp"
    },
    "lineAtFor": {
     "water": {
@@ -756,10 +756,10 @@
    "size": "M",
    "view": "F",
    "states": {
-    "raw": "assets/cook/items/v4/baking/naan-tray-raw.webp",
-    "part": "assets/cook/items/v4/baking/naan-tray-part.webp",
-    "golden": "assets/cook/items/v4/baking/naan-tray-baked.webp",
-    "over": "assets/cook/items/v4/baking/naan-tray-over.webp"
+    "raw": "assets/art/baking/naan-tray.raw.r1.webp",
+    "part": "assets/art/baking/naan-tray.part.r1.webp",
+    "golden": "assets/art/baking/naan-tray.baked.r1.webp",
+    "over": "assets/art/baking/naan-tray.over.r1.webp"
    },
    "px": [
     819,
@@ -823,13 +823,13 @@
    },
    "_pour": "liquid: poured as a column, the rest as drops; pour: the palette key of the drawn drops where items.streams has no picture",
    "files": {
-    "cook-atto": "assets/cook/items/v4/baking/jar-flour.webp",
-    "cook-paani": "assets/cook/items/shelf-cook-paani-bare-f.webp",
-    "cook-dudh": "assets/cook/items/shelf-cook-dudh-bare-f.webp",
-    "cook-khun": "assets/cook/items/v4/baking/jar-sugar.webp",
-    "spi-16": "assets/cook/items/v4/baking/jar-salt.webp",
-    "ph-dahi": "assets/cook/items/shelf-ph-dahi-bare-f.webp",
-    "ph-ghee": "assets/cook/items/shelf-ph-ghee-bare-f.webp"
+    "cook-atto": "assets/art/baking/jar-flour.default.r1.webp",
+    "cook-paani": "assets/art/baking/shelf-cook-paani-bare.default.r1.webp",
+    "cook-dudh": "assets/art/baking/shelf-cook-dudh-bare.default.r1.webp",
+    "cook-khun": "assets/art/baking/jar-sugar.default.r1.webp",
+    "spi-16": "assets/art/baking/jar-salt.default.r1.webp",
+    "ph-dahi": "assets/art/baking/shelf-ph-dahi-bare.default.r1.webp",
+    "ph-ghee": "assets/art/baking/shelf-ph-ghee-bare.default.r1.webp"
    },
    "pitch": 300,
    "heights": {
@@ -898,11 +898,11 @@
   },
   "ph-cup": {
    "item": "jug",
-   "card": "assets/cook/items/v4/baking/jug-flour.webp"
+   "card": "assets/art/baking/jug-flour.default.r1.webp"
   },
   "ph-half": {
    "item": "jug",
-   "card": "assets/cook/items/v4/baking/jug-4.webp",
+   "card": "assets/art/baking/jug.4.r1.webp",
    "note": "adh, recorded; CHAI-67's word moment names it"
   },
   "ph-quartercup": {
@@ -946,7 +946,7 @@
   ],
   "_pair": "L1's first round asks a cup of flour and half a cup of water or milk (mechanic.levels[0].plans, CK-72: the jug at every level): the two the moment shows, side by side, before it names either (STD-A3-03); the jug's other amounts: moments below",
   "vessel": {
-   "src": "assets/cook/items/shelf-cook-paani-bare-f.webp",
+   "src": "assets/art/baking/shelf-cook-paani-bare.default.r1.webp",
    "spout": [
     0.5,
     0.08
@@ -960,19 +960,19 @@
   "measures": [
    {
     "id": "ph-half",
-    "empty": "assets/cook/items/v4/baking/jug-0.webp",
-    "full": "assets/cook/items/v4/baking/jug-4.webp",
+    "empty": "assets/art/baking/jug.0.r1.webp",
+    "full": "assets/art/baking/jug.4.r1.webp",
     "lineAt": 0.7,
     "fill": 0.26,
-    "card": "assets/cook/items/v4/baking/jug-4.webp"
+    "card": "assets/art/baking/jug.4.r1.webp"
    },
    {
     "id": "ph-cup",
-    "empty": "assets/cook/items/v4/baking/jug-0.webp",
-    "full": "assets/cook/items/v4/baking/jug-4.webp",
+    "empty": "assets/art/baking/jug.0.r1.webp",
+    "full": "assets/art/baking/jug.4.r1.webp",
     "lineAt": 0.55,
     "fill": 0.45,
-    "card": "assets/cook/items/v4/baking/jug-flour.webp"
+    "card": "assets/art/baking/jug-flour.default.r1.webp"
    }
   ],
   "_measures": "each measure the jug, empty, then its full picture revealed from the bottom up to its line (water's, items.jug.lineAtFor.water: 2 quarter cups 0.70, 4 quarter cups 0.55, from the picture's top); fill, the word moment's share of the inside (the jug's inside about 0.12 to 0.90 of the picture: (0.90 - lineAt) / 0.78); placeholders until ART-38 (a vessel tilted into a side-on measure, empty, half and full)",
@@ -996,19 +996,19 @@
     "measures": [
      {
       "id": "ph-quartercup",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.77,
       "fill": 0.167,
-      "card": "assets/cook/items/v4/baking/jug-4.webp"
+      "card": "assets/art/baking/jug.4.r1.webp"
      },
      {
       "id": "ph-half",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.7,
       "fill": 0.26,
-      "card": "assets/cook/items/v4/baking/jug-4.webp"
+      "card": "assets/art/baking/jug.4.r1.webp"
      }
     ]
    },
@@ -1021,19 +1021,19 @@
     "measures": [
      {
       "id": "ph-cups-34",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.625,
       "fill": 0.353,
-      "card": "assets/cook/items/v4/baking/jug-4.webp"
+      "card": "assets/art/baking/jug.4.r1.webp"
      },
      {
       "id": "ph-cup",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.55,
       "fill": 0.45,
-      "card": "assets/cook/items/v4/baking/jug-flour.webp"
+      "card": "assets/art/baking/jug-flour.default.r1.webp"
      }
     ]
    },
@@ -1046,19 +1046,19 @@
     "measures": [
      {
       "id": "ph-cup",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.55,
       "fill": 0.45,
-      "card": "assets/cook/items/v4/baking/jug-flour.webp"
+      "card": "assets/art/baking/jug-flour.default.r1.webp"
      },
      {
       "id": "ph-cups-1h",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.41,
       "fill": 0.628,
-      "card": "assets/cook/items/v4/baking/jug-4.webp"
+      "card": "assets/art/baking/jug.4.r1.webp"
      }
     ]
    },
@@ -1071,19 +1071,19 @@
     "measures": [
      {
       "id": "ph-cups-1h",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.41,
       "fill": 0.628,
-      "card": "assets/cook/items/v4/baking/jug-4.webp"
+      "card": "assets/art/baking/jug.4.r1.webp"
      },
      {
       "id": "ph-cups-2h",
-      "empty": "assets/cook/items/v4/baking/jug-0.webp",
-      "full": "assets/cook/items/v4/baking/jug-4.webp",
+      "empty": "assets/art/baking/jug.0.r1.webp",
+      "full": "assets/art/baking/jug.4.r1.webp",
       "lineAt": 0.125,
       "fill": 0.994,
-      "card": "assets/cook/items/v4/baking/jug-4.webp"
+      "card": "assets/art/baking/jug.4.r1.webp"
      }
     ]
    }
@@ -1140,30 +1140,30 @@
  ],
  "assets": [
   "assets/cook/proto/cat-peek.webp",
-  "assets/cook/proto/baking/oven-shut.webp",
-  "assets/cook/proto/baking/oven-baking.webp",
-  "assets/cook/proto/baking/oven-open.webp",
-  "assets/cook/items/v4/baking/jug-milk.webp",
-  "assets/cook/items/v4/baking/jug-flour.webp",
-  "assets/cook/items/v4/baking/jug-yoghurt.webp",
-  "assets/cook/items/v4/baking/jug-sugar.webp",
+  "assets/art/baking/oven-shut.default.r1.webp",
+  "assets/art/baking/oven-baking.default.r1.webp",
+  "assets/art/baking/oven.open.r1.webp",
+  "assets/art/baking/jug-milk.default.r1.webp",
+  "assets/art/baking/jug-flour.default.r1.webp",
+  "assets/art/baking/jug-yoghurt.default.r1.webp",
+  "assets/art/baking/jug-sugar.default.r1.webp",
   "assets/cook/proto/baking/tray.webp",
   "assets/cook/proto/baking/naan-alone.webp",
   "assets/cook/props/dough-ball.webp",
-  "assets/cook/items/v4/baking/jar-flour.webp",
-  "assets/cook/items/shelf-cook-paani-bare-f.webp",
-  "assets/cook/items/shelf-cook-dudh-bare-f.webp",
-  "assets/cook/items/v4/baking/jar-sugar.webp",
-  "assets/cook/items/v4/baking/jar-salt.webp",
-  "assets/cook/items/shelf-ph-dahi-bare-f.webp",
-  "assets/cook/items/shelf-ph-ghee-bare-f.webp",
+  "assets/art/baking/jar-flour.default.r1.webp",
+  "assets/art/baking/shelf-cook-paani-bare.default.r1.webp",
+  "assets/art/baking/shelf-cook-dudh-bare.default.r1.webp",
+  "assets/art/baking/jar-sugar.default.r1.webp",
+  "assets/art/baking/jar-salt.default.r1.webp",
+  "assets/art/baking/shelf-ph-dahi-bare.default.r1.webp",
+  "assets/art/baking/shelf-ph-ghee-bare.default.r1.webp",
   "assets/shared/word-moment/stream-flour-s17.webp",
   "assets/shared/word-moment/stream-water-s17.webp",
   "assets/shared/word-moment/stream-milk-s17.webp",
   "assets/shared/word-moment/stream-sugar-s17.webp",
   "assets/cook/items/v4/baking/bowl-*.webp",
-  "assets/cook/items/v4/baking/jug-0.webp",
-  "assets/cook/items/v4/baking/jug-4.webp",
+  "assets/art/baking/jug.0.r1.webp",
+  "assets/art/baking/jug.4.r1.webp",
   "assets/cook/items/v4/baking/tray-*.webp",
   "assets/cook/items/v4/baking/naan-tray-*.webp",
   "assets/cook/items-s17-stove/f-chapati-flour-atta.webp",
@@ -1173,7 +1173,7 @@
   "assets/cook/items-s17-stove/f-salt-jar.webp",
   "assets/cook/items-s17-stove/f-yoghurt.webp",
   "assets/cook/items-s17-stove/f-ghee.webp",
-  "assets/cook/items/v4/daar/loon.webp"
+  "assets/art/daar/loon.default.r1.webp"
  ],
  "amountEn": {
   "1": "a quarter cup",
