@@ -290,6 +290,17 @@
   {"from":"assets/cook/items/v3/chaat/pot-potato.webp","to":"assets/art/chaat/pot-potato.default.r1.webp","id":"chaat.pot-potato","state":"default","game":"chaat","on":"2026-11-13","by":"chaat"},
   {"from":"assets/cook/items/v4/chaat/sev.webp","to":"assets/art/chaat/sev.default.r1.webp","id":"chaat.sev","state":"default","game":"chaat","on":"2026-11-13","by":"chaat"},
   {"from":"assets/cook/items/v4/chaat/tameto.webp","to":"assets/art/chaat/tameto.default.r1.webp","id":"chaat.tameto","state":"default","game":"chaat","on":"2026-11-13","by":"chaat"},
-  {"from":"assets/cook/serve/dish-chaat.webp","to":"assets/art/served/chaat.default.r1.webp","id":"served.chaat","state":"default","game":"chaat","on":"2026-11-13","by":"chaat"}
+  {"from":"assets/cook/serve/dish-chaat.webp","to":"assets/art/served/chaat.default.r1.webp","id":"served.chaat","state":"default","game":"chaat","on":"2026-11-13","by":"chaat"},
+  {"from":"assets/cook/items/v4/corn/bowl-black-pepper.webp","to":"assets/art/corn/bowl-black-pepper.default.r1.webp","id":"corn.bowl-black-pepper","state":"default","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/bowl-chilli-powder.webp","to":"assets/art/corn/bowl-chilli-powder.default.r1.webp","id":"corn.bowl-chilli-powder","state":"default","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/bowl-green-chutney.webp","to":"assets/art/corn/bowl-green-chutney.default.r1.webp","id":"corn.bowl-green-chutney","state":"default","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/bowl-lemon.webp","to":"assets/art/corn/bowl-lemon.default.r1.webp","id":"corn.bowl-lemon","state":"default","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/bowl-salt.webp","to":"assets/art/corn/bowl-salt.default.r1.webp","id":"corn.bowl-salt","state":"default","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/bowl-tamarind-chutney.webp","to":"assets/art/corn/bowl-tamarind-chutney.default.r1.webp","id":"corn.bowl-tamarind-chutney","state":"default","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/cob-done.webp","to":"assets/art/corn/cob.done.r1.webp","id":"corn.cob","state":"done","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/cob-over.webp","to":"assets/art/corn/cob.over.r1.webp","id":"corn.cob","state":"over","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/cob-raw.webp","to":"assets/art/corn/cob.raw.r1.webp","id":"corn.cob","state":"raw","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/items/v4/corn/cob-turned.webp","to":"assets/art/corn/cob.turned.r1.webp","id":"corn.cob","state":"turned","game":"corn","on":"2026-11-13","by":"corn"},
+  {"from":"assets/cook/serve/dish-corn.webp","to":"assets/art/served/corn.default.r1.webp","id":"served.corn","state":"default","game":"corn","on":"2026-11-13","by":"corn"}
  ]
 }
