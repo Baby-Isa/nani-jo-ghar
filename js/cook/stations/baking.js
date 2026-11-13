@@ -680,6 +680,8 @@ import { setTimeout } from "../life.js";
       return new Promise((resolve) => {
         S.tappable(o, () => {
           S.untap(o);
+          // (contract-106: the light goes as the child's press starts the move, as eggs' and corn's do: the kit's began)
+          if (Cook.Coach.began) Cook.Coach.began(KEY);
           resolve();
         });
         control(o, name, () => open, withLight);
