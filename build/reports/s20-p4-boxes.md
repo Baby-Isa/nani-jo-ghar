@@ -1,28 +1,30 @@
 # s20-p4-boxes: stand still, read the boxes, take the pictures (13 Nov)
 
-Branch `s20-p4-boxes`, never pushed. No game file changed; the brief has no rows, so there is no before folder.
+Branch `s20-p4-boxes`, never pushed. No game file changed.
 
 ## What changed
 
-- **`js/cook/test-stand.js`** (test only): no page loads it. `boxes.mjs` injects it, and it does nothing without the harness's arm or in a store build. It fixes the dice (a seed, started again at the round's start and at each stage), holds the page's clock, timers, frames, taps, animations and sound at a named moment, and lets them go.
-- **`build/tools/review/boxes.mjs`**, with `build/sandbox/lib/boxes.mjs`, `boxes-play.mjs` and `boxes.test.mjs` (8 tests). The fair bot plays chai at L1 and L4 at four sizes. It stops at six moments: the order, the first light, mid-cook (the knob asked), the serve, well done and the end. At each it reads exact boxes and the words (cut or not), keeps a picture and compares with `build/frozen/boxes/chai-tray/`. Pixels are compared only at the order and the end, inside their cards. The tool writes a differences sheet and prints its minutes.
+- **`js/cook/test-stand.js`** (test only, injected by `boxes.mjs`, inert unarmed or in a store build): fixed dice (reseeded at the round's and each stage's start); holds the clock, timers, frames, taps, animations and sound at a named moment.
+- **`build/tools/review/boxes.mjs`**, with `build/sandbox/lib/boxes.mjs`, `boxes-play.mjs` and `boxes.test.mjs` (8 tests). The fair bot plays chai, L1 and L4, four sizes, stopping at the order, the first light, mid-cook (the knob asked), the serve, well done and the end. At each: exact boxes, words (cut or not), a picture; compared with `build/frozen/boxes/chai-tray/`, pixels only at the order and the end inside their cards; a differences sheet; its minutes.
 - **What it took** (found by running): moments held at the game's own notes, so help on a timer never lands in one run only; item cards read in their row's coordinates (a glide ends where timing puts it); face rims left out of the pixels (anti-aliased up to 8 of 255 run to run; their boxes still exact); a still picture counts once two shots agree.
 
 ## Proof
 
-- **Three runs identical.** Chai, L1 and L4, at 740x320, 930x430, 1280x665 and 1920x1080. The command was `boxes.mjs --game chai-tray --prove --run-id p3`. Runs 2 and 3 matched run 1 on 8 of 8 pages, with 0 differences. Results: `build/screenshots/boxes/p3-r1/proof-chai-tray.json`.
+- **Three runs identical** (`--prove --run-id p3`): runs 2 and 3 matched run 1 on 8/8 pages (L1, L4 × four sizes), 0 differences (`build/screenshots/boxes/p3-r1/proof-chai-tray.json`).
 - **Four planted faults caught** (L1, 740x320), each in the box where it was planted:
   - a box moved 4 px: `mid tray left +4, right +4`;
   - a card over a face: `mid card-1/item-1` moved;
   - a cut word: `order cut nani/word#1 now cut`;
   - a light off its target: `light light-1 left +20, right +20`.
-- **The gate's minutes.** Each run takes 4.0, 3.9 and 4.0 minutes. The whole proof, plants included, takes 13.9 minutes, under the 20-minute ceiling for a game change.
+- **The gate's minutes:** 4.0, 3.9, 4.0 a run; 13.9 for the whole proof (ceiling 20).
 - **The reference.** `build/frozen/boxes/chai-tray/` (run p3-r1, 8.7 MB) is the machine's reference until Zafar approves P6's pictures.
 - **On the reference:** `--run` (gate-1) "pass the box gate, chai-tray: 4.1 minutes"; `--diff --run-id p3-r3` "pass ... 8/8 pages identical".
 - **Contract:** `build/screenshots/sandbox/s20-p4-boxes-contract/contract.md`, "CONTRACT PASSED: 0 breaks over 4 pages".
-- **Checks:** `checks.mjs` passed 13 of 14 steps. The 14th, static, flagged two `.play()` calls in test-stand.js. Animations are now held by their rate instead, and `static.mjs` reports 0 new findings. Unit tests: 924 pass; the only 2 fails were that static finding.
-- **Evidence:** `--after` has no rows, because the brief names none.
-- CHECK_CHANGE_HERE
+- **Checks:** tier 0 (`check-push`, all of `checks.mjs`) passes on 65fc48a6a (`build/reports/tiers/push-65fc48a6ac.md`). The static lint's two `.play()` finds in test-stand.js were fixed first.
+- **check-change (tier 2): not finished, no result file.** push passed. scope failed on `sources/audio/mum-2026-11-12/voice-261112-113106.md`, which the base has, not this branch. play (L1-L4 and paths, 740x320 and 930x430) finished in 45 minutes with 19 contract breaks, all on chai's own paths: contract-37 (6), -99 (4), -124 (3), -36 (2), -84, -72, -112 and -121. Stopped in the base tree's run, about an hour short. No page loads anything this branch changed, so the breaks are chai's own (P2).
+- **Evidence:** the brief has no rows, so there is no before or after.
+
+QA: tools only · builder · Auto: boxes --prove ✅, contract (L1 at 4 sizes) ✅, check-push ✅, check-change ⚠ not finished · Screens: none changed · Regressions rechecked: none named
 
 ## Hooks a game needs (named, not added)
 
