@@ -66,3 +66,5 @@
 17. Zafar, 13 Nov: overnight, three fixer builders (by game area) and one art builder; every kitchen game moves to asking for its art by registry name, chai last, each with the no-pixel-changed proof.
 18. Zafar, 13 Nov: the picture files are renamed to their registry names too: "ask Fable how to mitigate the risk and then incorporate those strategies, but work towards the cleanest, most efficient, long term future proof, best practice solution, even if it takes longer ... there's a lot more to come and it's better to fix it now".
 19. Zafar, 13 Nov: in the morning, if every check and the Fable review pass, publish so he can play straight away.
+20. Zafar, 13 Nov morning: baking's cards keep his 11 Nov rule, a lone first card fills its row (contract-116); CK-96's "the same shape at every size" is changed to match.
+21. Zafar, 13 Nov morning: a finished card folds in every game, baking's too (his 5 Nov rule); CK-102's "the item cards stay with their ticks at well done" part is dropped.
