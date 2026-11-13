@@ -21,8 +21,8 @@
  * The dice: Math.random is a fixed-seed generator (mulberry32, as the sandbox's own), started again from the seed when the round
  * starts (njgStand.reseed(), the harness, with the lab's call) and at each stage's start, so the order, the decoys and the faces are
  * the same every run. The clock: while held, Date.now and performance.now stand still, timers that fall due wait and run on release with
- * their remaining time, animation frames wait, the page's CSS and web animations are paused, sound contexts are suspended and media
- * paused. On release the clock goes on from where it stood (the time held never happened, for the game).
+ * their remaining time, animation frames wait, the page's CSS and web animations stand at rate 0, sound contexts are suspended (Cook's
+ * voice and sounds are Web Audio). On release the clock goes on from where it stood (the time held never happened, for the game).
  * A moment is reached when its condition holds, no animation that ends is still running (a fade, a slide), and the page's boxes
  * (the harness's sig(), the reader's own numbers) have been the same for `settle` animation frames in a row: then the game is held
  * in that same frame, before anything else runs.
@@ -148,15 +148,16 @@
     Wrapped.prototype = C.prototype;
     try { W[k] = Wrapped; } catch (e) { /* read-only */ }
   });
-  var paused = { anims: [], media: [], ctx: [] };
+  var paused = { anims: [], ctx: [] };
   // (a loop is paused at its start, so a held frame never depends on where in its loop it was: a talking face, a pulse; on release
   // it goes on from where it was)
   function pauseAnims() {
     try {
-      var run = document.getAnimations().filter(function (a) { return a.playState === "running"; });
+      var run = document.getAnimations().filter(function (a) { return a.playState === "running" && a.__standRate == null; });
       run.forEach(function (a) {
         var was = a.currentTime;
-        a.pause();
+        a.__standRate = a.playbackRate; // (stopped where it is by its rate: the page's own play and pause are never called)
+        a.playbackRate = 0;
         var t = a.effect && a.effect.getComputedTiming();
         if (t && !isFinite(t.endTime)) { a.__standWas = was; try { a.currentTime = 0; } catch (e) { /* not seekable */ } }
       });
@@ -170,8 +171,6 @@
     held = true;
     heldAt = realPerfNow();
     if (!finish) pauseAnims();
-    paused.media = Array.prototype.filter.call(document.querySelectorAll("audio, video"), function (m) { return !m.paused; });
-    paused.media.forEach(function (m) { try { m.pause(); } catch (e) { /* gone */ } });
     paused.ctx = contexts.filter(function (c) { return c.state === "running"; });
     paused.ctx.forEach(function (c) { try { c.suspend(); } catch (e) { /* closed */ } });
   }
@@ -179,10 +178,9 @@
     if (!held) return;
     offset += realPerfNow() - heldAt;
     held = false;
-    paused.anims.forEach(function (a) { try { if (a.__standWas != null) { a.currentTime = a.__standWas; a.__standWas = null; } a.play(); } catch (e) { /* gone */ } });
-    paused.media.forEach(function (m) { try { m.play().catch(function () {}); } catch (e) { /* gone */ } });
+    paused.anims.forEach(function (a) { try { if (a.__standWas != null) { a.currentTime = a.__standWas; a.__standWas = null; } a.playbackRate = a.__standRate == null ? 1 : a.__standRate; a.__standRate = null; } catch (e) { /* gone */ } });
     paused.ctx.forEach(function (c) { try { c.resume(); } catch (e) { /* closed */ } });
-    paused = { anims: [], media: [], ctx: [] };
+    paused = { anims: [], ctx: [] };
     var now = vPerf();
     timers.forEach(function (rec) {
       if (!rec.waiting) return;
@@ -235,7 +233,7 @@
   function moving() {
     try {
       return document.getAnimations().some(function (a) {
-        if (a.playState !== "running" || !a.effect) return false;
+        if (a.playState !== "running" || !a.effect || a.__standRate != null) return false;
         var t = a.effect.getComputedTiming();
         return isFinite(t.endTime) && t.progress != null;
       });

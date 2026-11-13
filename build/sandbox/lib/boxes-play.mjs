@@ -9,23 +9,24 @@ import { BASE, newPage, sleep } from "./env.mjs";
 import { CookPlayer } from "./cook-player.mjs";
 import { armScript, readCall, standSource, MOMENTS, PIXEL_MOMENTS } from "./boxes.mjs";
 
-// the planted faults: the moment each is planted at, and the nudge (in the page, while held) -> an undo
+// the planted faults: the moment each is planted at, the box it must show up in (expect, a pattern; kind: the difference's kind), and
+// the nudge (in the page, while held) -> an undo
 export const PLANTS = {
   // a box moved 4 px: the tray, 4 CSS px to the right
-  move4: { at: "order", js: `(() => { const C = window.Cook, U = C.UI; const k = U.worldToScreen(1, 0).x - U.worldToScreen(0, 0).x; let t = null;
+  move4: { at: "mid", expect: "^tray$", js: `(() => { const C = window.Cook, U = C.UI; const k = U.worldToScreen(1, 0).x - U.worldToScreen(0, 0).x; let t = null;
     for (const sc of C.game.scene.getScenes(true)) for (const o of sc.children.list) if (o.texture && o.texture.key === "v2-tray") t = o;
     if (!t) return "no tray"; const dx = 4 / k; t.x += dx; window.__plantUndo = () => { t.x -= dx; }; return "the tray moved 4 px right"; })()` },
   // a card over a face: the order card's first item card laid over the card's face circle
-  "card-face": { at: "order", js: `(() => { const c = document.querySelector("#mission .oc-card"); const it = c && c.querySelector(".oc-it14"); const f = c && c.querySelector(".oc-face");
+  "card-face": { at: "mid", expect: "^card-1/item-1$", js: `(() => { const c = document.querySelector("#mission .oc-card"); const it = c && c.querySelector(".oc-it14"); const f = c && c.querySelector(".oc-face");
     if (!it || !f) return "no card or face"; const a = it.getBoundingClientRect(), b = f.getBoundingClientRect(); const old = it.style.transform;
     it.style.transform = "translate(" + (b.left - a.left) + "px, " + (b.top - a.top) + "px)"; window.__plantUndo = () => { it.style.transform = old; }; return "the first item card over the order card's face"; })()` },
   // a cut word: Nani's line held to half its width, its overflow hidden (an ellipsis)
-  "cut-word": { at: "order", js: `(() => { const el = document.querySelector("#guide .ng-line") || document.querySelector("#mission .oc-card .oc-t");
+  "cut-word": { at: "order", expect: "^nani/", kind: "cut", js: `(() => { const el = document.querySelector("#guide .ng-line") || document.querySelector("#mission .oc-card .oc-t");
     if (!el) return "no words"; const w = el.getBoundingClientRect().width; const old = el.getAttribute("style");
     Object.assign(el.style, { maxWidth: Math.round(w / 2) + "px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" });
     window.__plantUndo = () => { if (old == null) el.removeAttribute("style"); else el.setAttribute("style", old); }; return "Nani's line cut to half its width"; })()` },
   // a light off its target: the drawn light (its hole, box and rings) 20 px to the right of what it lights
-  "light-off": { at: "light", js: `(() => { const ob = Array.from(document.querySelectorAll(".njg-onboard")).find((o) => { const b = o.querySelector(".ob-box"); return b && b.style.display !== "none"; });
+  "light-off": { at: "light", expect: "^light-1", js: `(() => { const ob = Array.from(document.querySelectorAll(".njg-onboard")).find((o) => { const b = o.querySelector(".ob-box"); return b && b.style.display !== "none"; });
     if (!ob) return "no light"; const els = Array.from(ob.querySelectorAll(".ob-hole, .ob-box, .ob-item-glow")); const old = els.map((e) => e.getAttribute("x"));
     els.forEach((e) => e.setAttribute("x", (+e.getAttribute("x") + 20).toFixed(1))); window.__plantUndo = () => els.forEach((e, i) => e.setAttribute("x", old[i])); return "the light 20 px right of its target"; })()` },
 };
@@ -64,12 +65,25 @@ export async function playBoxes(browser, { game = "chai-tray", level = 1, size, 
           const pixel = PIXEL_MOMENTS.has(m);
           // (a picture compared pixel for pixel: the page's compositor gets a moment after the hold, so a layer an animation just left
           // is drawn as the still page draws it)
-          if (pixel) await sleep(250);
+          // (and it is taken until two pictures in a row are the same, at most 6: the compositor sometimes leaves a faint seam for a
+          // frame, 9 of 255 on one row of 8 pixels, that the still page does not keep)
           const shot = `${m}.${pixel ? "png" : "jpg"}`;
-          await page.screenshot({ path: join(dir, shot), animations: "allow", timeout: 15000, ...(pixel ? {} : { type: "jpeg", quality: 82 }) });
+          let shots = 1, still = true;
+          if (pixel) {
+            await sleep(250);
+            let prev = await page.screenshot({ animations: "allow", timeout: 15000 });
+            still = false;
+            for (; shots < 6 && !still; shots++) {
+              await sleep(150);
+              const cur = await page.screenshot({ animations: "allow", timeout: 15000 });
+              still = cur.equals(prev);
+              prev = cur;
+            }
+            writeFileSync(join(dir, shot), prev);
+          } else await page.screenshot({ path: join(dir, shot), animations: "allow", timeout: 15000, type: "jpeg", quality: 82 });
           const again = await page.evaluate(readCall(game));
           if (planted) await page.evaluate("window.__plantUndo && window.__plantUndo(); window.__plantUndo = null;").catch(() => {});
-          moments[m] = { read, life, anims, steady: JSON.stringify(read) === JSON.stringify(again), shot, t: st.reached.t, frames: st.reached.frames, ...(planted ? { planted } : {}) };
+          moments[m] = { read, life, anims, ...(pixel ? { shots, pictureStill: still } : {}), steady: JSON.stringify(read) === JSON.stringify(again), shot, t: st.reached.t, frames: st.reached.frames, ...(planted ? { planted } : {}) };
           if (!moments[m].steady) moments[m].again = again;
         } catch (e) { notes.push(`${m}: ${String(e.message).split("\n")[0]}`); }
         await page.evaluate("window.njgStand && njgStand.go()").catch(() => {});

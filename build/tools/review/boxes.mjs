@@ -26,6 +26,7 @@ import { join, relative } from "node:path";
 import { spawnSync } from "node:child_process";
 import { args, ROOT, rel } from "./lib/common.mjs";
 import { decodePng } from "./lib/png.mjs";
+import { PLANTS } from "../../sandbox/lib/boxes-play.mjs";
 import { diffPage, pixelDiff, pageKey, MOMENTS, PIXEL_MOMENTS, PIXEL_BOX, pixelRegion, pixelMasks, SIZES, LEVELS, GAMES } from "../../sandbox/lib/boxes.mjs";
 
 const a = args();
@@ -109,11 +110,12 @@ async function play({ id, plant = null, levels: lv = levels, sizes: sz = sizes, 
 
 // ---------- comparing ----------
 /** a run against a reference (another run's folder or the frozen one): {pages: [{key, missing, diffs, pixels, faults}], fails} */
-export function compare(runRootDir, refRootDir, { only = null } = {}) {
+export function compare(runRootDir, refRootDir, { only = null, played = false } = {}) {
   const cur = loadPages(runRootDir), ref = loadPages(refRootDir);
   const pages = [];
   let fails = 0;
-  const keys = only || [...new Set([...Object.keys(cur), ...Object.keys(ref)])].sort();
+  // (played: only the pages this run played, a run of some levels or sizes against the whole reference)
+  const keys = only || (played ? Object.keys(cur).sort() : [...new Set([...Object.keys(cur), ...Object.keys(ref)])].sort());
   for (const k of keys) {
     const c = cur[k], r = ref[k];
     const faults = [];
@@ -121,6 +123,7 @@ export function compare(runRootDir, refRootDir, { only = null } = {}) {
     if (!c.ended) faults.push("the round did not reach its end");
     for (const m of c.missed || []) faults.push(`moment "${m}" never reached (the game never stood still in it)`);
     for (const [m, v] of Object.entries(c.moments || {})) if (!v.steady) faults.push(`moment "${m}": the boxes changed while it stood (read, picture, read again)`);
+    for (const [m, v] of Object.entries(c.moments || {})) if (v.pictureStill === false) faults.push(`moment "${m}": no two pictures in a row the same (${v.shots} taken)`);
     for (const e of c.errors || []) faults.push(`page error: ${e}`);
     if (!r) { faults.push("no reference for this page"); pages.push({ key: k, faults, diffs: [], missing: [], pixels: [], cur: c }); fails++; continue; }
     const { missing, diffs } = diffPage(r, c);
@@ -177,10 +180,10 @@ function sheet(res, runRootDir, refLabel) {
   return out;
 }
 
-async function diffAndPrint(runRootDir, against, label) {
+async function diffAndPrint(runRootDir, against, label, played = false) {
   const refDir = against ? runRoot(against) : REF;
   if (!existsSync(join(refDir, game))) { console.log(`No reference for ${game} yet (${rel(join(refDir, game))}): make one with --freeze --run-id <id>.`); return null; }
-  const res = compare(runRootDir, refDir);
+  const res = compare(runRootDir, refDir, { played });
   printCompare(res, label);
   const sh = sheet(res, runRootDir, against ? rel(refDir) : "the reference");
   console.log(`  differences sheet: ${rel(sh)}`);
@@ -213,9 +216,14 @@ if (a.has("prove")) {
     const res = compare(r.root, runs[0], { only: [key] });
     const p = res.pages[0];
     const what = (p.cur && Object.values(p.cur.moments).map((m) => m.planted).filter(Boolean)[0]) || "not planted";
-    const caught = p.diffs.concat(p.pixels.map((x) => ({ moment: x.moment, name: "pixels", by: `${x.n} differ` })));
-    console.log(`${caught.length ? "caught" : "MISSED"} ${plant} at ${key} (${what}): ${caught.slice(0, 4).map((d) => `${d.moment} ${d.name} ${d.by}`).join("; ")}${caught.length > 4 ? `; and ${caught.length - 4} more` : ""}`);
-    proof.plants.push({ plant, page: key, planted: what, caught: caught.length > 0, diffs: caught.slice(0, 12), minutes: +mins(r.ms) });
+    // caught: a difference in the planted thing itself, at the moment it was planted (anything else is noise, and is said)
+    const P = PLANTS[plant];
+    const all = p.diffs.concat(p.pixels.map((x) => ({ moment: x.moment, kind: "pixels", name: "pixels", by: x.n < 0 ? x.why : `${x.n} differ` })));
+    const caught = all.filter((d) => d.moment === P.at && new RegExp(P.expect).test(d.name) && (!P.kind || d.kind === P.kind));
+    const fx = (d) => `${d.moment} ${d.kind && d.kind !== "box" ? d.kind + " " : ""}${d.name} ${d.by}`;
+    const pixelOnly = all.filter((d) => d.kind === "pixels");
+    console.log(`${caught.length ? "caught" : "MISSED"} ${plant} at ${key} (${what}): ${caught.slice(0, 3).map(fx).join("; ")}${caught.length > 3 ? `; and ${caught.length - 3} more` : ""}${p.faults.length ? `; page faults: ${p.faults.join("; ")}` : ""}`);
+    proof.plants.push({ plant, page: key, planted: what, caught: caught.length > 0, diffs: caught.slice(0, 12).map(fx), alsoMoved: all.filter((d) => !caught.includes(d)).slice(0, 20).map(fx), pixels: pixelOnly.map(fx), faults: p.faults, minutes: +mins(r.ms) });
     sheet(res, r.root, `run 1 (${rel(runs[0])})`);
   }
   proof.minutes = +mins(Date.now() - T0);
@@ -229,7 +237,7 @@ if (a.has("prove")) {
   const plant = a.val("plant");
   console.log(`boxes: ${game}, levels ${levels.join(",")}, sizes ${sizes.join(",")}${plant ? `, planted ${plant}` : ""}`);
   const r = await play({ id, plant });
-  const res = await diffAndPrint(r.root, a.val("against"), `${game} against ${a.val("against") || "the reference"}`);
+  const res = await diffAndPrint(r.root, a.val("against"), `${game} against ${a.val("against") || "the reference"}`, true);
   const own = res || compare(r.root, r.root);
   const fails = res ? res.fails : own.pages.filter((p) => p.faults.length).length;
   if (!res) { for (const p of own.pages) for (const f of p.faults) console.log(`  ${p.key}: ${f}`); console.log(`${fails ? "FAIL" : "pass"} ${game}: every moment reached and still (no reference to compare with)`); }
