@@ -410,7 +410,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // CK-112 (the S19 gate's eye judge, 12 Nov, 740x320: the "maani" label touched the board's top edge): its pill sits wholly above
       // y (the board's top, less a gap), its bottom 8 px clear at any size; only the view's top may bring it lower
       const top = (Cook.view || {}).top || 0;
-      const at = (w, h) => ({ x, y: Math.max(top + h / 2 + 4, y - 8 - h / 2) });
+      // (the judge, s19-night-c-ev3: "only a hair above the board's top edge" at 740x320: 8 world px is about 3 on a phone; the gap is
+      // 10 px on the page at any size)
+      const ppw = Math.max(0.05, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const gap = Math.max(8, 10 / ppw);
+      const at = (w, h) => ({ x, y: Math.max(top + h / 2 + 4, y - gap - h / 2) });
       global.Juice.P.pop(S, at, Cook.display(id), { k, depth: D.fx + 4, top });
       Lang.popWord(id);
     };

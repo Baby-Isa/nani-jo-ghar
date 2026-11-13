@@ -1300,8 +1300,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const yc = z.Y(SY);
           const top = Math.min(yc - half() * 0.75, vb ? vb.y : yc, kbx.y);
           const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom);
-          const a = UI.worldToScreen(x1 - kHalf, top);
-          const b = UI.worldToScreen(Math.max(x0 + kHalf, kbx.right), bot);
+          // DAAR-39 (the judge, s19-night-c-ev3: "the lit strip starts about a third of the way along the board ... the left third of the
+          // board is dark"): Zafar's strip runs the board's full width: from the board's left edge (the stage's board, band.boardAt) to
+          // the knife's start beyond its right edge
+          const bd = band && typeof band.boardAt === "function" ? band.boardAt() : null;
+          const a = UI.worldToScreen(Math.min(x1 - kHalf, bd ? bd.x : Infinity), top);
+          const b = UI.worldToScreen(Math.max(x0 + kHalf, kbx.right, bd ? bd.right : -Infinity), bot);
           // (CK-83, contract-112 "2 lit regions": the kit's hand holding the knife's handle lies below and right of its fingertip; the box
           // takes it in, so the hand is never a second lit region outside it: Onboard.HOTSPOT in its 64x80 hand, at the size the page draws it)
           let r = b.x;
