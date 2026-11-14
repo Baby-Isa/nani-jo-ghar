@@ -375,9 +375,12 @@ export function chaiExtra(asked, extras) {
     const stepLine = (key, id, again = false) => {
       // s08 w2A (SH-110): the step names the thing (Nani calls it as it opens); her box dots it where the card does (hideKnown)
       if (key === "cups" && id) return St.addLine(id);
-      // (Zafar, 14 Nov: a full glass's second pour is her "akho burichad", fill it up all the way: data/cook.json guide chai-tray:pour-again)
-      if (again && ((Cook.data && Cook.data.guide) || {})[`chai-tray:${key}-again`]) return St.guideLine(`chai-tray:${key}-again`);
-      return St.guideLine(key === "slow" ? "chai-tray:slow" : `chai-tray:${key}`);
+      const gk = key === "slow" ? "chai-tray:slow" : `chai-tray:${key}`;
+      // (Zafar, 14 Nov: a full glass's second pour is her "akho burichad", fill it up all the way: the guide key's `again`,
+      // data/cook.json guide chai-tray:pour)
+      const g = ((Cook.data && Cook.data.guide) || {})[gk];
+      if (again && g && g.again) return St.guideLine(g.again);
+      return St.guideLine(gk);
     };
     let lastGist = null;
     // (CHAI-110, contract-36 at L4 in the frozen diff, 13 Nov: a full glass's second pour is its own step, as the coach has it, so its
