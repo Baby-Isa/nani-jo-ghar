@@ -1,0 +1,50 @@
+{
+ "why": "Sprint 20: Zafar's notes on chai's 12 pictures (14 Nov, decision 32): the shared light, the shelf and the tally's pills fixed in the shared kit before chai moves into the frame, so every game inherits them",
+ "cost": "medium: Opus, high effort, one session (about $30-40)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the three rows are built and chai's gate contract part is at zero, or at the end of one session: then stop and report",
+ "kind": "shared",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "proof": "build/tools/tiers/gate.mjs --game chai-tray: the contract part at zero (boxes differ where the fixes move things: the lights, the shelf, the tally); boxes.mjs --game chai-tray --rules 10/10; a contract run of eggs and baking at 740x320 and 1280x665 with no new break",
+ "name": "s20-chai-kit: the shared light, shelf and tally (Zafar's notes on chai's pictures)",
+ "port": 8953,
+ "report": "s20-chai-kit",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "docs/process/regressions.md rows SH-292, SH-293, SH-294 (Zafar's words, 14 Nov)",
+  "Zafar's pictures: /tmp/claude-0/-home-user-nani-jo-ghar/7c47c641-13d6-536e-84ac-3ab292df89d4/images/19.png (the paani light, more padding left than right), 20.png (the shelf jars at 740x320), 21.png (the tally's pills)",
+  "chai's reference pictures: /home/user/nani-jo-ghar/build/frozen/boxes/chai-tray/ (L1 and L4 at four sizes)"
+ ],
+ "owns": ["js/shared/onboard.js, js/shared/shelf.js, js/shared/tally.js, css/shared/tally.css, js/cook/kitchen-kit.js, js/cook/station-lib.js"],
+ "readOnly": ["js/cook/ui.js, js/cook/flow.js, js/cook/core.js, js/cook/stations/** (another builder owns chai's files now; ask the orchestrator if a game file must change), js/shared/order-card.js, js/shared/juice.js, css/shared/order-card.css, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
+ "flows": ["cook:chai-tray", "lab:cook/chai-tray", "cook:eggs", "cook:baking"],
+ "branch": "s20-chai-kit (new, in /home/user/wt/s20-chai-kit); commit there, never push",
+ "tasks": [
+  {
+   "do": "SH-292: a light sits centred on its thing. Onboard.litBox (js/shared/onboard.js:291) trims only the side facing a near neighbour (SH-230), so chai's paani light at L1 has more padding on the left than the right. When a side is trimmed for a neighbour, trim the opposite side to match (left with right, top with bottom), so the thing sits in the middle of its light; the neighbour still never lit. Every game's lights.",
+   "accept": "chai's lights centred within 2 px left-right and top-bottom at L1-L4, four sizes (boxes.mjs light boxes); contract-112 at zero"
+  },
+  {
+   "do": "SH-293: the shelf's items bigger on a small screen. Zafar: 'If they take up more of the vertical height of the bottom bar that would be better (and the three object groups currently separated by size with extra spacing can move together to help with width)'. In js/shared/shelf.js: the items take more of the bar's height (the size classes L, M, S keep their ratios to each other), the groups' extra gaps close so the row fits its width, the pills still whole and never touching, nothing over the bar's edge. Every shelf game (chai, eggs, baking) gets it.",
+   "accept": "at 740x320 and 930x430 the L jars clearly taller than the reference (say how much), every pill whole, the box rules 10/10 (tap-size, overlap, text-whole, on-screen); contract-115 at zero on chai, eggs and baking"
+  },
+  {
+   "do": "SH-294 (code part): the tally's pills (the count by the pan: one elchi, three milk, js/shared/tally.js and css/shared/tally.css) bigger, so a child can see what each counts: the picture in its round circle larger, the count dots larger, never over the hob's pans or the cog. The close-up pictures come later from an art run (ART-81): keep the picture source swappable in one place.",
+   "accept": "the pills visibly bigger at four sizes (say by how much), no overlap (the box rules), contract-113 at zero"
+  },
+  {
+   "do": "Prove it alone on the machine, with your own port and lock: `COOK_TEST_PORT=8953 NJG_LOCK=/tmp/njg-browser-8953.lock node build/tools/tiers/gate.mjs --game chai-tray`; then a contract run of eggs and baking: `flock -w 3600 /tmp/njg-browser-8953.lock timeout 2400 node build/sandbox/run.mjs --contract --flow cook:eggs,cook:baking --sizes 740x320,1280x665 --no-sheets --run-id s20-chai-kit-others`. Another builder (s20-chai-fix) runs its own gate on port 8952: never touch its runs. The box part will differ where your fixes move things: list each and why. Never re-freeze. Check `df -h /` before each long run (under 2 GB free: delete your own old runs first); delete your run folders when done.",
+   "accept": "chai's gate contract part PASS with minutes; eggs and baking with no new break; the box differences listed"
+  },
+  {
+   "do": "Standing: commit on your branch often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never re-freeze anything; never touch a check, a probe or a row's status; kill only processes you started, by PID; name every change to what a child sees and which games it reaches.",
+   "accept": "build/reports/s20-chai-kit.md with a Proof section, under 500 words"
+  }
+ ]
+}
