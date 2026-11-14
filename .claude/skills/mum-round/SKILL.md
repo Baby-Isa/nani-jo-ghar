@@ -1,6 +1,6 @@
 ---
 name: mum-round
-description: Process a new round of Mum's recordings into clips, the family-audio manifest and the language engine, and build the next round's question sheet. Use when Zafar uploads a folder of Mum's voice files, or asks what to ask Mum next.
+description: Process a new round of Mum's recordings into clips, the family-audio manifest and the language engine, and add the next questions to the one recording sheet (data/lang/recording-sheet.json -> docs/language/recording-sheet.docx). Use when Zafar uploads a folder of Mum's voice files, or asks what to ask Mum next.
 ---
 # /mum-round: from Mum's recordings to the engine, and the next sheet
 
