@@ -299,8 +299,16 @@ def judge(d):
         thing, T = {"kind": "word", "id": w["id"]}, U(w)
     else:
         cp = [p for p in pics if share_in(p["box"], R) >= 0.5 and "knife" not in p["id"].lower()]
-        if cp:
-            p = max(cp, key=lambda p: inter(p["box"], R) / (area(p["box"]) + area(R) - inter(p["box"], R)))
+        # (s20-b1-eggs, 14 Nov: the pot's light round its round body, its handle left out: the pot's picture is under half inside the light,
+        # so the egg cooking in it read as the lit thing and the light as far too wide for it. A light lying inside a picture and covering
+        # a good share of it lights that thing's body: the body is what it lights, as a card's part is)
+        body = [p for p in pics if share_in(R, p["box"]) >= 0.9 and area(R) >= 0.3 * area(p["box"]) and "knife" not in p["id"].lower()]
+        iou = lambda p: inter(p["box"], R) / (area(p["box"]) + area(R) - inter(p["box"], R))
+        if body and (not cp or max(iou(p) for p in body) > max(iou(p) for p in cp)):
+            p = max(body, key=iou)
+            thing, T = {"kind": "pic", "id": p["id"] + " (its body)"}, list(R)
+        elif cp:
+            p = max(cp, key=iou)
             thing, T = {"kind": "pic", "id": p["id"]}, list(p["box"])
         else:
             cc = [x for x in cards if share_in(x["box"], R) >= 0.5]
@@ -338,7 +346,8 @@ def judge(d):
         pad_set = kit.get("BOX_PAD") or 10
         margin = max(LIGHT["min"], min(LIGHT["max"], LIGHT["share"] * min(T[2] - T[0], T[3] - T[1])))
         # (an item card or order card is lit whole as its own frame, a hug: chai's next card, Zafar 30 Oct "just highlight the item card")
-        want = 0 if thing["kind"] == "card" else min(pad_set, margin)
+        # (a thing's body, its outline not its picture's box: as a card's part, the light is the body's own box, no pad asked)
+        want = 0 if thing["kind"] == "card" or str(thing.get("id", "")).endswith("(its body)") else min(pad_set, margin)
         others = [U(w) for w in words if U(w) != union(T, None) and share_in(U(w), T) < 0.5] + [f["box"] for f in faces if f["box"] not in own_faces and share_in(f["box"], T) < 0.5]
         others += [p for p in (o1.get("panels") or [])]
 
