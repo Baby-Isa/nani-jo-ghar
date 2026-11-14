@@ -272,7 +272,7 @@ export function sync(sheet, list, clips, date) {
     const cs = byQid.get(r.id) || (r.kutchi && !still ? byKutchi.get(norm(r.kutchi)) : null);
     if (cs && cs.length) {
       const c = byMum(cs);
-      Object.assign(r, { status: "recorded", date: srcDate(c) || date, clip: cs.map((y) => y.id).slice(0, 4), kutchi: r.kutchi || c.kutchi, who: r.who || (c.speaker === "mum" ? "Mum" : `${c.speaker}'s take`) });
+      Object.assign(r, { status: "recorded", date: srcDate(c) || date, clip: [...new Set(cs.map((y) => y.id))].slice(0, 4), kutchi: r.kutchi || c.kutchi, who: r.who || (c.speaker === "mum" ? "Mum" : `${c.speaker}'s take`) });
       log.recorded.push(r.id);
     } else if (keys.length && !still) {
       const slot = keys.every((k) => /^(slot|para|open):/.test(k));
