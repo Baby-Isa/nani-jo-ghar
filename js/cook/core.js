@@ -453,7 +453,8 @@
     knob: (o) => fx("knob", o),
     flame: (o) => fx("flame", o),
     green: () => fx("green"),
-    glass: () => fx("glass"),
+    // (Zafar, 13 Nov night: the glass's clink plays under Nani's voice, quieter, as the knob and the flame do: CHAI-113's rule)
+    glass: (o) => fx("glass", o),
     settle: () => fx("settle"),
     sparkle: () => fx("sparkle"),
     drop: () => fx("drop"),

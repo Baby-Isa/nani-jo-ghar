@@ -860,7 +860,7 @@ export function chaiExtra(asked, extras) {
       const w = pan.well;
       const g = w && w.glass[look];
       const P = J();
-      if (!g || !P) return Cook.sfx.glass();
+      if (!g || !P) return Cook.sfx.glass({ under: true });
       const gw = g.displayWidth || 90;
       const full = look === "full";
       // (a little right of the middle: the person's face sits over the glass's upper left, and the drop falls clear of it into the tea)
@@ -873,7 +873,7 @@ export function chaiExtra(asked, extras) {
         depth: D.fx + 2,
         onLand: () => {
           Cook.sfx.drop();
-          Cook.sfx.glass();
+          Cook.sfx.glass({ under: true }); // (the child's own pour landing: under Nani's voice, quieter, never dropped; Zafar 13 Nov)
         },
       }).then(() => {
         if (!full || !g.active) return undefined;
