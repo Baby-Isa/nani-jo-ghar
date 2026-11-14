@@ -11,7 +11,10 @@
 **What a child sees:** nothing new at any level or size. Board and tawa moved under 0.4 px at all four sizes (box diff s20m-r1 against the baseline s20m-base). The face and knob are easier to hit; how they look is unchanged.
 
 ## Proof
-GATE_LINES
+- **Gate, chai-tray:** `GATE PASS chai-tray: checks pass 2.4, contract pass 20.1, boxes:chai-tray pass 3.2; 25.8 min`. Chai's boxes are identical to its reference: the frame did not move chai.
+- **Gate, maani-line:** `GATE FAIL maani-line: checks pass 2.2, contract FAIL 12.3; 14.6 min`. One blocking break: **contract-112** at L1 1280x665. The board's roll light stays up while the child rolls, and the dough grows inside it. **It is older than this change:** the same break, the same box, on the base commit 115d900 (run `s20m-base-c112`) and twice on this branch. The light is drawn by the kit (`Onboard.began`/`ended`, `coach.js`), which this session may not edit: **orchestrator, a kit fix (the SH-236 class)**. Advisory, not failing: contract-119 x12 (the order pop's dish flash), -111 x2, -36 x4.
+- **Contract run, four sizes** (`s20-b1-maani-contract`): `CONTRACT FAILED: 9 breaks (contract-119 8, contract-112 1)`. All 8 pages reached their end, 0 page errors. contract-119 is advisory (the kit's order pop); contract-112 is the older break above.
+- **check-change:** CC_LINE
 
 - **frame-counts:** `maani-line 0` (was 15); chai-tray 0.
 - **Geometry rules** (`boxes.mjs --game maani-line --rules`, s20m-r1, 2.9 min): 8/10 pass, the same two rules failing as on the baseline (s20m-base, 2.8 min):
