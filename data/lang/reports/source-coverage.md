@@ -34,3 +34,7 @@ asaan, baghair, bakiro, chhokro, darvaja, garm, hun, jiko, khe, khuno, ko, kujh,
 
 aanya, aaya, aayn, aiyo, ayin, biyein, faine, ida, tumata, weo
 
+## a word Zafar ruled is not Kutchi (decision 27, 14 Nov: 'loon is also not a word in kutchi'; salt is Mum's mitho) (1)
+
+loon
+

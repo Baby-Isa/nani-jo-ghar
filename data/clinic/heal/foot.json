@@ -15,7 +15,7 @@
   },
   "loon": {
    "sizeClass": "S",
-   "english": "loon (the salt pot and its spoon)",
+   "english": "mitho (the salt pot and its spoon)",
    "use": "loon",
    "art": "salt-pot"
   },
@@ -65,9 +65,9 @@
   },
   "loon": {
    "id": "spi-16",
-   "kutchi": "loon",
+   "kutchi": "mitho",
    "english": "salt",
-   "audio": "assets/audio/cook-tts/loon.mp3"
+   "audio": "assets/audio/family/mum/mitho.mp3"
   },
   "hot": {
    "id": "feel-hot",
@@ -161,7 +161,7 @@
    "list": false
   },
   "2": {
-   "_note": "+ the salt count (hakro/ba/trae chamcho loon); three toe calls. Said as one list.",
+   "_note": "+ the salt count (hakro/ba/trae chamcho mitho; was loon until decision 27); three toe calls. Said as one list.",
    "salt": [
     1,
     2,

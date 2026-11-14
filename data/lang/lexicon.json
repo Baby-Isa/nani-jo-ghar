@@ -7335,6 +7335,7 @@
     "data/cook.json words.spi-16: a copy of this word",
     "data/clinic.json items.loon: the pharmacy tray's word from Cook",
     "data/clinic.json items.spi-16: the pharmacy tray's word from Cook",
+    "data/clinic/heal/foot.json words.loon: a copy of this word",
     "data/content.json words.spi-16: sindhi-cognate (class handout / content master; never confirmed by Mum)"
    ],
    "aliases": [
@@ -7342,7 +7343,7 @@
     "loon"
    ],
    "notes": [
-    "Mum's word for salt (12 Nov); the game said loon (the content master, never said by Mum) until decision 22."
+    "Mum's word for salt (12 Nov); the game said loon (the content master, never said by Mum) until decision 22. Decision 27 (Zafar, 14 Nov): loon is not a Kutchi word; it left the engine everywhere (the clinic's seed and the foot game's words say mitho, their ids kept)."
    ],
    "history": [
     {
@@ -7351,27 +7352,6 @@
      "src": "grammar-notes §64 (12 Nov 23:36-23:48); Zafar 13 Nov, decision 22"
     }
    ]
-  },
-  {
-   "id": "n.salt-2",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.invariant",
-   "lemma": "loon",
-   "gloss": "salt",
-   "glossPl": "salts",
-   "status": "draft",
-   "src": [
-    "data/clinic/heal/foot.json words.loon: no source given"
-   ],
-   "aliases": [
-    "loon"
-   ],
-   "ask": {
-    "gender": [
-     "L34"
-    ]
-   }
   },
   {
    "id": "n.samosa",

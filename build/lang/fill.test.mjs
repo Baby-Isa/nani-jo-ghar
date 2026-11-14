@@ -295,8 +295,9 @@ test("the placeholder voices' words (data/cook-tts.json) are all in the lexicon,
   const missing = new Set();
   for (const k of Object.keys(J("data/cook-tts.json").lines)) if (!k.startsWith("en|")) for (const w of k.split(" ")) if (!known.has(w)) missing.add(w);
   // daal, hikdo, dine, vatana and lal are superseded spellings (rules G4, G5, decision 32), and aanjo the dropped draft
-  // for Thank you (decision 87), kept only in the test-only voice index; aabhar is Mum's since 12 Nov (aabhar anjo, §67)
-  assert.deepEqual(Array.from(missing).sort(), ["aanjo", "daal", "dine", "hikdo", "lal", "vatana"]);
+  // for Thank you (decision 87), kept only in the test-only voice index; aabhar is Mum's since 12 Nov (aabhar anjo, §67); loon is not a
+  // Kutchi word (decision 27, Zafar 14 Nov: salt is Mum's mitho), left only in the parked pages' placeholder voice index
+  assert.deepEqual(Array.from(missing).sort(), ["aanjo", "daal", "dine", "hikdo", "lal", "loon", "vatana"]);
 });
 
 /* ---------------- the recordings ---------------- */

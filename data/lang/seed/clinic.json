@@ -409,7 +409,7 @@
    "cook": "fru-02"
   },
   "loon": {
-   "kutchi": "loon",
+   "kutchi": "mitho",
    "english": "salt",
    "placeholder": false,
    "cook": "spi-16"
@@ -503,7 +503,7 @@
    "cook": "fru-02"
   },
   "spi-16": {
-   "kutchi": "loon",
+   "kutchi": "mitho",
    "english": "salt",
    "placeholder": false,
    "cook": "spi-16"
