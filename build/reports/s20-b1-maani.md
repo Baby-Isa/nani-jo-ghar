@@ -10,7 +10,7 @@
 
 ## Proof
 - **frame-counts:** maani-line 0 (was 15); chai-tray 0.
-- **Chai's gate:** CHAI2. Chai's boxes are identical to its reference.
+- **Chai's gate:** `GATE PASS chai-tray: checks pass 2.4, contract pass 20, boxes:chai-tray pass 3.8; 26.2 min` (after the fix; the first run, before it, also passed). Chai's boxes are identical to its reference.
 - **Maani's gate:** `GATE PASS maani-line: checks pass 2.8, contract pass 11.8; 14.6 min` (0 blocking over 28 pages; advisory contract-119 x12, -36 x4). Its first run failed on **contract-112** (also on the base 115d900): the board's roll light stayed up while the child rolled. Cause: roll.js tells the light at its first move (`Cook.Coach.began`, `roll.js:276`), but the coach's script draws the roll light once the stage is calm, up to 1.5 s after the ball lands (`coach.js:285`, calmTick), so a quick child is already rolling and the new light never hears of it. Fix, in maani: a light that comes up mid-roll (press still down) is told through the same `Coach.began`, so it steps aside (SH-236) and comes back after the release if the step is open. The kit could do this itself (a light drawn during a press in its box, after `began`, starts away); not done, not my file.
 - **Four sizes** (`s20-b1-maani-contract`, before the fix): all 8 pages reached their end, 0 page errors; breaks contract-119 8 (advisory) and contract-112 1 (fixed since).
 - **Geometry rules** (`boxes.mjs --rules`, s20m-r1, 2.9 min): 8/10 pass, the same two failing as on the baseline.
