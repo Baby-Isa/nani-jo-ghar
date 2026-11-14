@@ -11,7 +11,7 @@
 //   node build/tools/tiers/gate.mjs --game chai-tray[,daar] [--sizes 740x320,1280x665] [--levels 1,2,3,4] [--skip-checks]
 //        [--no-boxes] [--dry-run]     (--game none: tier 0 only, for a change that reaches no game)
 // Browser: under NJG_LOCK (default /tmp/njg-browser-all.lock), taken here once; COOK_TEST_PORT as every browser tool.
-import { readFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, existsSync, mkdirSync, writeFileSync, statfsSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { spawnSync, spawn } from "node:child_process";
@@ -69,6 +69,14 @@ async function main() {
   if (a.has("help") || a.has("h") || !a.val("game")) { console.log(HELP); process.exit(a.has("help") || a.has("h") ? 0 : 2); }
   const LOCK = process.env.NJG_LOCK || BROWSER_LOCK;
   const dry = a.has("dry-run") || a.has("dry");
+  // (14 Nov: the session's disk allowance ran out mid-gate; the browser stalled for 20 minutes and pictures failed to load, read as
+  // the game's faults: the gate starts only with room to write its run)
+  const MIN_FREE_GB = 2;
+  try {
+    const fs0 = statfsSync(ROOT);
+    const freeGb = (fs0.bavail * fs0.bsize) / 1e9;
+    if (!dry && freeGb < MIN_FREE_GB) { console.error(`gate: only ${freeGb.toFixed(1)} GB free (at least ${MIN_FREE_GB}): delete old runs in build/screenshots/sandbox/ first`); process.exit(3); }
+  } catch (e) { /* no statfs: carry on */ }
   if (!dry && !underLock(LOCK)) { // one lock for the whole gate; its children see it held
     const r = spawnSync("flock", ["-w", "3600", LOCK, process.execPath, process.argv[1], ...process.argv.slice(2)], { stdio: "inherit", cwd: ROOT, env: { ...process.env, NJG_LOCKED: "1" } });
     process.exit(r.status == null ? 1 : r.status);
