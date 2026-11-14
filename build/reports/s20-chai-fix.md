@@ -15,6 +15,11 @@ Branch `s20-chai-fix`, not pushed. Opus, high effort.
 4. **contract-84: the check is at fault.** In the 06:58 run, the shot "with the light" has the ring outside the box at 125.5 brightness. In the passing 06:24 measure of the same box, that ring is dimmed to 98.4. So the dim was missing too, not only the fill: the whole light layer was not visible (still classed `.on`, part-way through its opacity fade). The fill is drawn in the same layer as the dim, so it is never missing while the light shows.
 5. **contract-116: the check is at fault.** In the 06:24 run, "hakro khun" was ticked by its step closing (M.closeItem). The probe only wraps tickItem, so no s19tick was logged and the check allowed only 1 s instead of its 2 s grace after a tick. The row brought "aako" whole into view 1.1 s after the close, on a page drawing one frame every 170 ms.
 
+6. **SH-295 (decision 32): fixed.** The cause was `css/shared/order-card.css:528`, where `text-wrap: balance` evened out the headline's two lines and sent "chai" down even though it fitted. The tick's hidden room is not the cause: the stamp needs that room, and it is unchanged. Now the headline breaks only where the next word does not fit.
+   - L4 served cards at 740x320 and at 1280x665: before, "Muke elchi waari / chai khapeti." and "Muke aadu waari / chai khapeti."; after, "Muke elchi waari chai / khapeti." and "Muke aadu waari chai / khapeti.". "khapeti." would end at 233 px against a line limit of 192 at 740x320, and at 309 against 298 at 1280x665, so it truly does not fit.
+   - Box rules at L4 for those two sizes: 10/10, including text-whole and overlap.
+   - Reaches: every order card on the s14 look, which is every kitchen game and the beach, town, pets, school and safari prototypes.
+
 Not fixed: none of mine. contract-72, contract-78 and contract-113 are advisory and were also in the 09:14 gate.
 
 ## Proof

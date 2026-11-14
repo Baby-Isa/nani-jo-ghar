@@ -1358,7 +1358,10 @@ export function chaiExtra(asked, extras) {
       unglow();
       // CHAI-08's flaw (the judge, 20 Oct: "loose 'hakro' pills float at the hob's top-left corner during the pour"): the pan's
       // running count goes while it is off the hob pouring, and comes back with it if it is still on the go
-      UI.hideCount();
+      // SH-294 (Zafar, 14 Nov): at a half pour (L4: the pan left half full) the pills stay up over the stove while it pours; only the
+      // pour that empties the pan (a full pour, or the second half) takes them away
+      const hid = !(halves && pan.poured + 1 < 2);
+      if (hid) UI.hideCount();
       zb.expect({ kind: "wait" });
       const w = pan.well;
       const black = !(pan.has.milk > 0);
@@ -1420,7 +1423,7 @@ export function chaiExtra(asked, extras) {
       // a click ... I think we should remove that ... It just comes at the wrong time every time"): silently; the child's own knob turns
       // and the boil-over keep their click
       if (pan.poured >= 2) setKnob(pan, "off", true);
-      if (sel === pan && pan.poured < 2 && halves) {
+      if (hid && sel === pan && pan.poured < 2 && halves) {
         if (UI.tallyAt) UI.tallyAt(tallyPt(pan), { anchor: "right" });
         if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
         if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
