@@ -6,7 +6,7 @@
  "stop": "when the tasks are done, or at the end of one session: then stop and report what is left",
  "kind": "language",
  "browser": false,
- "live": true,
+ "live": false,
  "specsByBuilder": false,
  "stubs": "none",
  "publish": false,
