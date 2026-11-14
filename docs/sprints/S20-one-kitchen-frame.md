@@ -19,6 +19,7 @@ In Zafar's words (13 Nov): settle chai and record exactly how it looks; move cha
 - At most four pictures to Zafar in chat per step, before the long checks.
 - Each passing step is merged and tagged (`s20-<step>`). A new chat at each of Zafar's review points (`/handover`).
 - Every launch states model, effort and cost; no cost ceiling (decision 22).
+- **Zafar's window (decision 33):** 13:00-20:00 UK the orchestrator runs on its own: no waiting for his picture approvals (he sees them after) or decisions (the recommended option, recorded). Outside it, pictures wait for his yes; work that needs no approval carries on.
 
 ## Steps (status · proof · next)
 
