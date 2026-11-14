@@ -86,32 +86,32 @@
      "card-1/oc-headline#1": {
       "box": [
        71,
-       107.66,
-       126.25,
-       131.66
+       109.08,
+       119.03,
+       131.08
       ],
       "cut": false,
       "text": "Muke"
      },
      "card-1/word#1": {
       "box": [
-       126.25,
-       107.66,
-       163.69,
-       131.66
+       119.03,
+       109.08,
+       151.58,
+       131.08
       ],
       "cut": false,
       "text": "chai"
      },
      "card-1/oc-headline#2": {
       "box": [
-       163.69,
-       107.66,
-       227.33,
-       131.66
+       151.58,
+       109.08,
+       218.69,
+       131.08
       ],
       "cut": false,
-      "text": "khape."
+      "text": "khapeti."
      }
     },
     "info": {
@@ -120,6 +120,72 @@
      "tray": 0,
      "pan": 0,
      "shelf": []
+    },
+    "extra": {
+     "faces": {
+      "card-1": [
+       19,
+       97.59,
+       63,
+       141.59
+      ],
+      "nani": [
+       20,
+       19.3,
+       64,
+       63.3
+      ]
+     },
+     "items": {},
+     "fit": {
+      "nani/ng-line#1": {
+       "fs": 19,
+       "lines": 1,
+       "box": [
+        74,
+        29.89,
+        220.5,
+        52.69
+       ],
+       "sw": 147,
+       "cw": 147,
+       "text": "E chai erte rand."
+      },
+      "card-1/oc-headline#1": {
+       "fs": 16.53,
+       "lines": 1,
+       "box": [
+        71,
+        110.08,
+        325.59,
+        130.73
+       ],
+       "sw": 255,
+       "cw": 255,
+       "text": "Muke chai khapeti."
+      }
+     },
+     "taps": {
+      "dom:button.rail-btn#1": [
+       1220,
+       12,
+       1268,
+       60
+      ],
+      "dom:button.njg-face-btn#2": [
+       18,
+       17.3,
+       66,
+       65.3
+      ],
+      "dom:button.njg-face-btn#3": [
+       17,
+       95.59,
+       65,
+       143.59
+      ]
+     },
+     "pills": {}
     }
    },
    "life": [
@@ -138,7 +204,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "order.png",
-   "t": 8205,
+   "t": 7491,
    "frames": 8
   },
   "light": {
@@ -331,32 +397,32 @@
      "card-1/oc-headline#1": {
       "box": [
        71,
-       107.66,
-       126.25,
-       131.66
+       109.08,
+       119.03,
+       131.08
       ],
       "cut": false,
       "text": "Muke"
      },
      "card-1/word#1": {
       "box": [
-       126.25,
-       107.66,
-       163.69,
-       131.66
+       119.03,
+       109.08,
+       151.58,
+       131.08
       ],
       "cut": false,
       "text": "chai"
      },
      "card-1/oc-headline#2": {
       "box": [
-       163.69,
-       107.66,
-       227.33,
-       131.66
+       151.58,
+       109.08,
+       218.69,
+       131.08
       ],
       "cut": false,
-      "text": "khape."
+      "text": "khapeti."
      },
      "card-1/word#2": {
       "box": [
@@ -462,12 +528,181 @@
       "jar-veg-13"
      ],
      "glow-1": "jar-cook-paani"
+    },
+    "extra": {
+     "faces": {
+      "card-1": [
+       19,
+       97.59,
+       63,
+       141.59
+      ],
+      "nani": [
+       20,
+       19.3,
+       64,
+       63.3
+      ]
+     },
+     "items": {
+      "card-1/item-1": [
+       19,
+       151.59,
+       134.44,
+       348.86
+      ],
+      "card-1/item-2": [
+       142.44,
+       151.59,
+       257.88,
+       348.86
+      ],
+      "card-1/item-3": [
+       265.88,
+       151.59,
+       325.59,
+       348.86
+      ]
+     },
+     "fit": {
+      "nani/ng-line#1": {
+       "fs": 19,
+       "lines": 1,
+       "box": [
+        74,
+        29.89,
+        250.56,
+        52.69
+       ],
+       "sw": 177,
+       "cw": 177,
+       "text": "Paani tapele me wij."
+      },
+      "card-1/oc-headline#1": {
+       "fs": 16.53,
+       "lines": 1,
+       "box": [
+        71,
+        110.08,
+        325.59,
+        130.73
+       ],
+       "sw": 255,
+       "cw": 255,
+       "text": "Muke chai khapeti."
+      }
+     },
+     "taps": {
+      "dom:button.rail-btn#1": [
+       1220,
+       12,
+       1268,
+       60
+      ],
+      "dom:button.njg-face-btn#2": [
+       18,
+       17.3,
+       66,
+       65.3
+      ],
+      "dom:button.ng-arrow#3": [
+       278.59,
+       17.3,
+       326.59,
+       65.3
+      ],
+      "dom:button.njg-face-btn#4": [
+       17,
+       95.59,
+       65,
+       143.59
+      ],
+      "dom:button.wc-spk#5": [
+       52.72,
+       294.03,
+       100.72,
+       342.03
+      ],
+      "dom:button.wc-spk#6": [
+       176.16,
+       294.03,
+       224.16,
+       342.03
+      ],
+      "dom:button.wc-spk#7": [
+       299.59,
+       294.03,
+       347.59,
+       342.03
+      ],
+      "dom:button.wc-spk#8": [
+       423.03,
+       294.03,
+       471.03,
+       342.03
+      ],
+      "canvas:s14-pan-empty#1": [
+       533.93,
+       127.97,
+       759.05,
+       305.36
+      ],
+      "canvas:nana-badge-v2round#2": [
+       611.82,
+       367.23,
+       660.02,
+       415.43
+      ],
+      "canvas:jar-cook-paani#3": [
+       536.56,
+       521.11,
+       635.84,
+       659.92
+      ],
+      "canvas:jar-cook-dudh#4": [
+       637.01,
+       522.24,
+       736.29,
+       659.92
+      ],
+      "canvas:jar-cook-chai#5": [
+       763.16,
+       531.11,
+       862.44,
+       659.92
+      ],
+      "canvas:jar-cook-khun#6": [
+       863.61,
+       530.92,
+       962.89,
+       659.92
+      ],
+      "canvas:jar-veg-13#7": [
+       989.75,
+       536.63,
+       1089.03,
+       659.92
+      ],
+      "canvas:Arc#8": [
+       679.56,
+       367.23,
+       727.76,
+       415.43
+      ],
+      "canvas:Zone#9": [
+       865.47,
+       168.28,
+       956.69,
+       259.51
+      ]
+     },
+     "pills": {}
     }
    },
    "life": [
-    "stage-start",
     "poke",
     "decoys:1",
+    "say-end:1",
     "band:chai-tray",
     "step-open:1",
     "step-call:1",
@@ -479,7 +714,7 @@
    "anims": [],
    "steady": true,
    "shot": "light.jpg",
-   "t": 10905,
+   "t": 9314,
    "frames": 8
   },
   "mid": {
@@ -640,32 +875,32 @@
      "card-1/oc-headline#1": {
       "box": [
        71,
-       107.66,
-       126.25,
-       131.66
+       109.08,
+       119.03,
+       131.08
       ],
       "cut": false,
       "text": "Muke"
      },
      "card-1/word#1": {
       "box": [
-       126.25,
-       107.66,
-       163.69,
-       131.66
+       119.03,
+       109.08,
+       151.58,
+       131.08
       ],
       "cut": false,
       "text": "chai"
      },
      "card-1/oc-headline#2": {
       "box": [
-       163.69,
-       107.66,
-       227.33,
-       131.66
+       151.58,
+       109.08,
+       218.69,
+       131.08
       ],
       "cut": false,
-      "text": "khape."
+      "text": "khapeti."
      },
      "card-1/word#2": {
       "box": [
@@ -771,9 +1006,200 @@
       "jar-veg-13"
      ],
      "card-1/scroll-1": [
-      181,
+      180,
       0
      ]
+    },
+    "extra": {
+     "faces": {
+      "card-1": [
+       19,
+       97.59,
+       63,
+       141.59
+      ],
+      "nani": [
+       20,
+       19.3,
+       64,
+       63.3
+      ]
+     },
+     "items": {
+      "card-1/item-2": [
+       19,
+       151.59,
+       77.88,
+       348.86
+      ],
+      "card-1/item-3": [
+       85.88,
+       151.59,
+       201.31,
+       348.86
+      ],
+      "card-1/item-4": [
+       209.31,
+       151.59,
+       324.75,
+       348.86
+      ]
+     },
+     "fit": {
+      "nani/ng-line#1": {
+       "fs": 19,
+       "lines": 1,
+       "box": [
+        74,
+        29.89,
+        166,
+        52.69
+       ],
+       "sw": 92,
+       "cw": 92,
+       "text": "Chulo bar!"
+      },
+      "card-1/oc-headline#1": {
+       "fs": 16.53,
+       "lines": 1,
+       "box": [
+        71,
+        110.08,
+        325.59,
+        130.73
+       ],
+       "sw": 255,
+       "cw": 255,
+       "text": "Muke chai khapeti."
+      }
+     },
+     "taps": {
+      "dom:canvas#1": [
+       345.59,
+       0,
+       1280,
+       665
+      ],
+      "dom:button.rail-btn#2": [
+       1220,
+       12,
+       1268,
+       60
+      ],
+      "dom:button.njg-face-btn#3": [
+       18,
+       17.3,
+       66,
+       65.3
+      ],
+      "dom:button.njg-face-btn#4": [
+       17,
+       95.59,
+       65,
+       143.59
+      ],
+      "dom:button.wc-spk#5": [
+       -127.28,
+       294.03,
+       -79.28,
+       342.03
+      ],
+      "dom:button.wc-spk#6": [
+       -3.84,
+       294.03,
+       44.16,
+       342.03
+      ],
+      "dom:button.wc-spk#7": [
+       119.59,
+       294.03,
+       167.59,
+       342.03
+      ],
+      "dom:button.wc-spk#8": [
+       243.03,
+       294.03,
+       291.03,
+       342.03
+      ],
+      "canvas:s14-pan-milk#1": [
+       534.06,
+       161.48,
+       759.18,
+       338.86
+      ],
+      "canvas:nana-badge-v2round#2": [
+       611.82,
+       367.23,
+       660.02,
+       415.43
+      ],
+      "canvas:jar-cook-paani#3": [
+       536.56,
+       522.79,
+       635.84,
+       659.92
+      ],
+      "canvas:jar-cook-dudh#4": [
+       637.01,
+       522.24,
+       736.29,
+       659.92
+      ],
+      "canvas:jar-cook-chai#5": [
+       763.16,
+       531.11,
+       862.44,
+       659.92
+      ],
+      "canvas:jar-cook-khun#6": [
+       863.61,
+       530.92,
+       962.89,
+       659.92
+      ],
+      "canvas:jar-veg-13#7": [
+       989.75,
+       536.63,
+       1089.03,
+       659.92
+      ],
+      "canvas:Arc#8": [
+       679.56,
+       367.23,
+       727.76,
+       415.43
+      ],
+      "canvas:Zone#9": [
+       865.47,
+       168.28,
+       956.69,
+       259.51
+      ],
+      "canvas:Zone#10": [
+       572.16,
+       54.84,
+       662.09,
+       102.84
+      ]
+     },
+     "pills": {
+      "tally-1": [
+       572.16,
+       62.84,
+       662.09,
+       94.84
+      ],
+      "pill-11": [
+       620.73,
+       24.59,
+       718.85,
+       57.3
+      ]
+     },
+     "pillAlpha": {
+      "pill-11": 1
+     }
     }
    },
    "life": [
@@ -785,13 +1211,13 @@
     "step-close:k4",
     "step-open:5",
     "step-call:5",
-    "say-start:6",
+    "say-start:4",
     "poke"
    ],
    "anims": [],
    "steady": true,
    "shot": "mid.jpg",
-   "t": 15126,
+   "t": 12159,
    "frames": 8
   },
   "praise": {
@@ -918,32 +1344,32 @@
      "card-1/oc-headline#1": {
       "box": [
        71,
-       107.66,
-       126.25,
-       131.66
+       109.08,
+       119.03,
+       131.08
       ],
       "cut": false,
       "text": "Muke"
      },
      "card-1/word#1": {
       "box": [
-       126.25,
-       107.66,
-       163.69,
-       131.66
+       119.03,
+       109.08,
+       151.58,
+       131.08
       ],
       "cut": false,
       "text": "chai"
      },
      "card-1/oc-headline#2": {
       "box": [
-       163.69,
-       107.66,
-       227.33,
-       131.66
+       151.58,
+       109.08,
+       218.69,
+       131.08
       ],
       "cut": false,
-      "text": "khape."
+      "text": "khapeti."
      }
     },
     "info": {
@@ -958,24 +1384,144 @@
       "jar-cook-khun",
       "jar-veg-13"
      ]
+    },
+    "extra": {
+     "faces": {
+      "card-1": [
+       19,
+       97.59,
+       63,
+       141.59
+      ],
+      "nani": [
+       20,
+       19.3,
+       64,
+       63.3
+      ]
+     },
+     "items": {},
+     "fit": {
+      "nani/ng-line#1": {
+       "fs": 19,
+       "lines": 1,
+       "box": [
+        74,
+        29.89,
+        152.63,
+        52.69
+       ],
+       "sw": 79,
+       "cw": 79,
+       "text": "Shabash!"
+      },
+      "card-1/oc-headline#1": {
+       "fs": 16.53,
+       "lines": 1,
+       "box": [
+        71,
+        110.08,
+        297.59,
+        130.73
+       ],
+       "sw": 227,
+       "cw": 227,
+       "text": "Muke chai khapeti."
+      }
+     },
+     "taps": {
+      "dom:button.rail-btn#1": [
+       1220,
+       12,
+       1268,
+       60
+      ],
+      "dom:button.njg-face-btn#2": [
+       18,
+       17.3,
+       66,
+       65.3
+      ],
+      "dom:div.oc-card#3": [
+       10,
+       88.59,
+       334.59,
+       150.59
+      ],
+      "canvas:s14-pan-empty#1": [
+       533.93,
+       127.97,
+       759.05,
+       305.36
+      ],
+      "canvas:nana-badge-v2round#2": [
+       611.82,
+       367.23,
+       660.02,
+       415.43
+      ],
+      "canvas:jar-cook-paani#3": [
+       536.56,
+       522.79,
+       635.84,
+       659.92
+      ],
+      "canvas:jar-cook-dudh#4": [
+       637.01,
+       522.24,
+       736.29,
+       659.92
+      ],
+      "canvas:jar-cook-chai#5": [
+       763.16,
+       531.11,
+       862.44,
+       659.92
+      ],
+      "canvas:jar-cook-khun#6": [
+       863.61,
+       530.92,
+       962.89,
+       659.92
+      ],
+      "canvas:jar-veg-13#7": [
+       989.75,
+       536.63,
+       1089.03,
+       659.92
+      ],
+      "canvas:Arc#8": [
+       679.56,
+       367.23,
+       727.76,
+       415.43
+      ],
+      "canvas:Zone#9": [
+       865.47,
+       168.28,
+       956.69,
+       259.51
+      ]
+     },
+     "pills": {}
     }
    },
    "life": [
-    "step-open:7",
     "step-call:7",
     "idle-bump:pointerup",
     "act",
-    "say-end:7",
-    "say-start:8",
+    "say-end:5",
+    "say-start:6",
     "poke",
     "row-home:181",
-    "say-end:8",
-    "say-start:9"
+    "say-end:6",
+    "say-start:7",
+    "say-end:7"
    ],
    "anims": [],
    "steady": true,
    "shot": "praise.jpg",
-   "t": 20511,
+   "t": 17341,
    "frames": 8
   },
   "serve": {
@@ -1060,32 +1606,32 @@
      "card-1/oc-headline#1": {
       "box": [
        71,
-       107.66,
-       126.25,
-       131.66
+       109.08,
+       119.03,
+       131.08
       ],
       "cut": false,
       "text": "Muke"
      },
      "card-1/word#1": {
       "box": [
-       126.25,
-       107.66,
-       163.69,
-       131.66
+       119.03,
+       109.08,
+       151.58,
+       131.08
       ],
       "cut": false,
       "text": "chai"
      },
      "card-1/oc-headline#2": {
       "box": [
-       163.69,
-       107.66,
-       227.33,
-       131.66
+       151.58,
+       109.08,
+       218.69,
+       131.08
       ],
       "cut": false,
-      "text": "khape."
+      "text": "khapeti."
      }
     },
     "info": {
@@ -1094,24 +1640,90 @@
      "tray": 0,
      "pan": 0,
      "shelf": []
+    },
+    "extra": {
+     "faces": {
+      "card-1": [
+       19,
+       97.59,
+       63,
+       141.59
+      ],
+      "nani": [
+       20,
+       19.3,
+       64,
+       63.3
+      ]
+     },
+     "items": {},
+     "fit": {
+      "nani/ng-line#1": {
+       "fs": 19,
+       "lines": 1,
+       "box": [
+        74,
+        29.89,
+        152.63,
+        52.69
+       ],
+       "sw": 79,
+       "cw": 79,
+       "text": "Shabash!"
+      },
+      "card-1/oc-headline#1": {
+       "fs": 16.53,
+       "lines": 1,
+       "box": [
+        71,
+        110.08,
+        297.59,
+        130.73
+       ],
+       "sw": 227,
+       "cw": 227,
+       "text": "Muke chai khapeti."
+      }
+     },
+     "taps": {
+      "dom:button.rail-btn#1": [
+       1220,
+       12,
+       1268,
+       60
+      ],
+      "dom:button.njg-face-btn#2": [
+       18,
+       17.3,
+       66,
+       65.3
+      ],
+      "dom:div.oc-card#3": [
+       10,
+       88.59,
+       334.59,
+       150.59
+      ]
+     },
+     "pills": {}
     }
    },
    "life": [
     "row-home:181",
-    "say-end:8",
-    "say-start:9",
-    "say-end:9",
+    "say-end:6",
+    "say-start:7",
+    "say-end:7",
     "stage-end",
     "stage-start",
     "serve-view:serving",
     "serve-trays:1",
-    "say-start:10",
-    "say-end:10"
+    "say-start:8",
+    "say-end:8"
    ],
    "anims": [],
    "steady": true,
    "shot": "serve.jpg",
-   "t": 22542,
+   "t": 19086,
    "frames": 8
   },
   "end": {
@@ -1182,32 +1794,32 @@
      "card-1/oc-headline#1": {
       "box": [
        71,
-       107.66,
-       126.25,
-       131.66
+       109.08,
+       119.03,
+       131.08
       ],
       "cut": false,
       "text": "Muke"
      },
      "card-1/word#1": {
       "box": [
-       126.25,
-       107.66,
-       163.69,
-       131.66
+       119.03,
+       109.08,
+       151.58,
+       131.08
       ],
       "cut": false,
       "text": "chai"
      },
      "card-1/oc-headline#2": {
       "box": [
-       163.69,
-       107.66,
-       227.33,
-       131.66
+       151.58,
+       109.08,
+       218.69,
+       131.08
       ],
       "cut": false,
-      "text": "khape."
+      "text": "khapeti."
      }
     },
     "info": {
@@ -1216,15 +1828,110 @@
      "tray": 0,
      "pan": 0,
      "shelf": []
+    },
+    "extra": {
+     "faces": {
+      "card-1": [
+       19,
+       97.59,
+       63,
+       141.59
+      ],
+      "nani": [
+       20,
+       19.3,
+       64,
+       63.3
+      ]
+     },
+     "items": {},
+     "fit": {
+      "card-1/oc-headline#1": {
+       "fs": 16.53,
+       "lines": 1,
+       "box": [
+        71,
+        110.08,
+        297.59,
+        130.73
+       ],
+       "sw": 227,
+       "cw": 227,
+       "text": "Muke chai khapeti."
+      }
+     },
+     "taps": {
+      "dom:button.rail-btn#1": [
+       1220,
+       12,
+       1268,
+       60
+      ],
+      "dom:button.njg-face-btn#2": [
+       18,
+       17.3,
+       66,
+       65.3
+      ],
+      "dom:div.oc-card#3": [
+       10,
+       88.59,
+       334.59,
+       150.59
+      ],
+      "dom:button.rs-word#4": [
+       471,
+       195.92,
+       691,
+       278.5
+      ],
+      "dom:button.rs-word#5": [
+       703,
+       195.92,
+       923,
+       278.5
+      ],
+      "dom:button.rs-word#6": [
+       935,
+       195.92,
+       1155,
+       278.5
+      ],
+      "dom:button.rs-word#7": [
+       471,
+       290.5,
+       691,
+       373.08
+      ],
+      "dom:button.rs-word#8": [
+       703,
+       290.5,
+       923,
+       373.08
+      ],
+      "dom:button.rs-btn#9": [
+       1039.61,
+       401.08,
+       1111.61,
+       473.08
+      ],
+      "dom:button.rs-btn#10": [
+       1123.61,
+       401.08,
+       1246,
+       473.08
+      ]
+     },
+     "pills": {}
     }
    },
    "life": [
     "serve-view:serving",
     "serve-trays:1",
-    "say-start:10",
-    "say-end:10",
-    "say-start:11",
-    "say-end:11",
+    "say-start:8",
+    "say-end:8",
+    "say-start:9",
+    "say-end:9",
     "stage-end",
     "results",
     "idle-bump:pointerdown",
@@ -1240,7 +1947,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "end.png",
-   "t": 26849,
+   "t": 22775,
    "frames": 8
   }
  },
@@ -1249,5 +1956,5 @@
  "errors": [],
  "notes": [],
  "plant": null,
- "ms": 30277
+ "ms": 25502
 }
