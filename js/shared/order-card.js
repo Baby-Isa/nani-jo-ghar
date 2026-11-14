@@ -665,6 +665,20 @@
     k.remove();
     return h;
   };
+  /**
+   * SH-291 (chai's frozen run, 14 Nov: at 740x320 the panel glided to the next card as Nana's card folded, then went back to its top
+   * within 400 ms): a host that draws its cards again into a panel that scrolls (Cook's drawCards: the box emptied, then filled) lets
+   * the browser clamp the panel's scroll to the empty box's height (0) the moment anything measures the page in between, and it stays
+   * there. OC.keepScroll(box, draw) runs the host's draw and puts the panel's scroll back where it was (as far as it now scrolls), so a
+   * redraw never moves the panel: only a follow (OC.followFold, the host's own glides) or the child does. Returns draw()'s result.
+   */
+  OC.keepScroll = function (box, draw) {
+    const sc = box && typeof getComputedStyle === "function" ? (/(auto|scroll)/.test(getComputedStyle(box).overflowY) ? box : scrollerOf(box)) : null;
+    const top0 = sc ? sc.scrollTop : 0;
+    const out = draw();
+    if (sc && sc.isConnected && Math.abs(sc.scrollTop - top0) > 0.5) sc.scrollTop = Math.min(top0, Math.max(0, sc.scrollHeight - sc.clientHeight));
+    return out;
+  };
   /** The card in progress among a panel's cards, when `card` folds (SH-232). */
   OC.inProgress = function (sc, card, opts = {}) {
     const cards = [...sc.querySelectorAll(".oc-card")].filter((c) => !c.classList.contains("oc-big") && c.getBoundingClientRect().height > 0);
@@ -756,21 +770,36 @@
     raf(step);
   };
 
-  /** Fold a finished card a beat after its last tick; a tap opens (and closes) it again. */
+  /**
+   * Fold a finished card a beat after its last tick; a tap opens (and closes) it again.
+   * SH-291 (chai's frozen run, 14 Nov: at L4 on a phone Nana's served card opened and folded again each time the child's next pan
+   * boiled over, the panel gliding after it each time): a served card folds ONCE. Once folded (st.shut), every redraw while it stays
+   * served draws it folded at once: no timer, no second fold, no second follow of the panel, whatever the host does to its timing
+   * (Cook's M.reopen cleared every card's doneAt). Only its rows opening again (not served) or the child's own tap opens it.
+   */
   function foldable(c, st, done, opts) {
     if (!done) {
       st.doneAt = 0;
       st.open = false;
       st.followed = false;
+      st.shut = false;
       return;
     }
     const now = Date.now();
+    if (st.shut && !st.open) {
+      clearTimeout(st.timer);
+      if (!st.doneAt) st.doneAt = now;
+      st.followed = true;
+      c.classList.add("foldable", "folded", "still");
+      return void tapOpens(c, st);
+    }
     const fresh = !st.doneAt;
     if (fresh) st.doneAt = now;
     const due = st.doneAt + (opts.foldAfter != null ? opts.foldAfter : FOLD_AFTER) - now;
     c.classList.add("foldable");
     if (st.open) c.classList.add("reopened");
     else if (due <= 0) {
+      st.shut = true;
       c.classList.add("folded", "still");
       // SH-232: a card seen open that folds on a host's redraw (its fold drawn at once, not on the timer) takes the panel along too,
       // once, as soon as it is on the page (the redraw puts it there)
@@ -793,10 +822,15 @@
         const r = st.home14 ? cur.querySelector(".oc-row14") : null;
         if (r && r.scrollLeft > 1 && Date.now() - t1 < OC.TIMES.homeWait) return void (st.timer = setTimeout(fold, 60));
         st.followed = true;
+        st.shut = true;
         OC.followFold(cur, () => cur.classList.add("folded"), opts);
       };
       st.timer = setTimeout(fold, due);
     }
+    tapOpens(c, st);
+  }
+  // a tap on a finished card opens it, and a second tap closes it again (the face is its replay)
+  function tapOpens(c, st) {
     c.addEventListener("click", (e) => {
       if (e.target.closest(".oc-face")) return; // the face is replay
       st.open = !st.open;

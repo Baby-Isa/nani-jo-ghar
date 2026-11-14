@@ -910,17 +910,27 @@ export function chaiExtra(asked, extras) {
      * clear of the bottle or spoon over the pan; if the count badge (on the rim's upper left, SH-39) is there, above it,
      * and where the screen's top leaves no room for that, beside it on the right.
      */
+    // (the Sprint 20 geometry rule pill-clear: a word pop wholly above the hob keeps at least 6 CSS px off its top edge at every size;
+    // 8 here, as the pop's drawn box sits a little below the box it is placed by, its soft shade)
+    const POP_CLEAR_CSS = 8;
     const popAt = (pan, W, H) => {
       const v = Cook.view || {};
       // (s08 w6B, CHAI-19: the camera's own view of the world is what shows; at 844x390 Cook.view.top sat level with the hob's
       // top and pushed the bubble back onto its rim)
       const wv = S.cameras && S.cameras.main && S.cameras.main.worldView;
+      const viewTop = wv && wv.height ? wv.y : v.top || 0;
+      // (s20-chai-fix, pill-clear: at L1 on a phone the pop over the pan sat 3.8 px above the hob at 740x320 and 4.3 px at 930x430: its
+      // 10 world px over the hob were 3-4 CSS px there, and the screen's top margin pushed it down onto them. The gap is now counted in
+      // CSS px, and where the room above the hob is short the top margin gives way, never past the view's top: the pop stays whole on
+      // screen and clear of the hob. On a laptop and a big screen nothing moves: their 10 world px are 6-9 CSS px and the room is there)
+      const clear = Math.max(10, POP_CLEAR_CSS / pxPerWorld());
+      const top = Math.max(viewTop, Math.min(viewTop + 10, hobY - clear - H - 2));
       // (the shared kit's placing, Juice.popAt: never across the hob's top edge (s08 w6B, CHAI-19), above the count badge or beside it)
       return global.Juice.popAt({ x: pan.x, y: pan.y - rimR - 16 }, W, H, {
-        top: (wv && wv.height ? wv.y : v.top || 0) + 10,
+        top,
         left: (v.left || 0) + 10,
         right: (v.right || 1600) - 10,
-        edge: { y: hobY, clear: RIM_CLEAR, above: 10 },
+        edge: { y: hobY, clear: RIM_CLEAR, above: clear },
         avoid: badgeBox(),
       });
     };
