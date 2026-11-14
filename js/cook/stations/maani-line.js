@@ -295,6 +295,23 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     // (the face and the knob take a whole 48 CSS px each by an invisible hit area, sharing the room between them; nothing drawn changes:
     // the frame's tap room, chai's SH-288 rule)
     const stopTaps = Cook.Frame.taps(S, () => (burner.face ? [[burner.face, burner.knobHit]] : [burner.knobHit]));
+    /*
+     * SH-236 (contract-112, the orchestrator 14 Nov: the board's light stayed up while the child rolled, the dough growing in it): the
+     * roll tells the light it began at its first move (js/cook/mechanics/roll.js, Cook.Coach.began), but the coach's script draws the
+     * roll's light once the stage is calm, at most 1.5 s after the ball lands (coach.js calmTick), and a roll under way is not a move it
+     * waits for, so a quick child is already rolling when the light comes, and a light drawn after the move began never hears of it. A
+     * light that comes up while the child's roll is under way (the press still down) is told now, through the same Coach.began: it steps
+     * aside, as SH-236 has it, and comes back MOVE.back after the release if the step is still open.
+     */
+    let rollLit = false;
+    const stopRollLight = S.addTick(() => {
+      const OB = global.Onboard;
+      const press = S.input && S.input.activePointer;
+      const rolling = !!(chakla && chakla.started && press && press.isDown);
+      const up = rolling && !!(OB && OB.lightsShown && OB.lightsShown() > 0);
+      if (up && !rollLit && Cook.Coach && Cook.Coach.began) Cook.Coach.began("roll");
+      rollLit = up;
+    });
     // M6 / Q15: the flat wooden turner (the family's tool: a word like "moikyo", to confirm with Mum) rests on
     // the counter right of the hob, blade down by the hob's corner, handle up and away: placed, not floating.
     // It slides under the maani to flip it, and again to lift it off. Its origin is the blade's middle.
@@ -1094,6 +1111,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     ctx.result.maaniKinds = made;
     [zb, zr, zon, zt].forEach((z) => z.close());
     stopTaps();
+    stopRollLight();
     return plated().length;
   }
 
