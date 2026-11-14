@@ -37,4 +37,4 @@ Options: `top` (the band's top; default `St.SHELF.top`), `base` (the shelf line 
 Who calls it: chai (Sprint 20 steps 1-2: `{top, base, far, draw: true}`, band `shelf`; its hob row, tray and pans are laid out from `play`, its shelf row between `bottom`'s edges). Corn (batch 1: `{top, base, far, draw: true}`, band `tray`; screen 1's grill-and-tray rectangle and the band's cobs from `play`, 8 in from its sides; screen 2 calls `next`: its bowls' row between `bottom`'s edges, its plates across the new `play` less a side share each side, `plates.side` in its settings).
 
 ## Counts (may only go down)
-`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12, maani-line 15, corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
+`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12, maani-line 15, corn 11 screen reads (14 Nov: 0 after batch 1, s20-b1-corn); flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
