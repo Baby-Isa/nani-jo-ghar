@@ -292,6 +292,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (!(UI.personSpeaking && UI.personSpeaking())) sayOrder().catch((e) => { if (!(e instanceof Cook.Abort)) throw e; });
         S.tweens.add({ targets: burner.face, scale: burner.face.baseScale * 1.1, duration: 100, yoyo: true });
       });
+    // (the face and the knob take a whole 48 CSS px each by an invisible hit area, sharing the room between them; nothing drawn changes:
+    // the frame's tap room, chai's SH-288 rule)
+    const stopTaps = Cook.Frame.taps(S, () => (burner.face ? [[burner.face, burner.knobHit]] : [burner.knobHit]));
     // M6 / Q15: the flat wooden turner (the family's tool: a word like "moikyo", to confirm with Mum) rests on
     // the counter right of the hob, blade down by the hob's corner, handle up and away: placed, not floating.
     // It slides under the maani to flip it, and again to lift it off. Its origin is the blade's middle.
@@ -1090,6 +1093,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     ctx.result.maani = plated().length;
     ctx.result.maaniKinds = made;
     [zb, zr, zon, zt].forEach((z) => z.close());
+    stopTaps();
     return plated().length;
   }
 

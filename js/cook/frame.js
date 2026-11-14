@@ -125,5 +125,73 @@ import { Cook as CookNS } from "./ns.js";
     });
     return { unit, gap, x, y, w, h, boxes };
   };
+  /*
+   * A tap's room (the rule chai built for itself, SH-288, Zafar 13 Nov: "increase the tap targets as much as you can without changing
+   * the look"; the geometry rules' tap-size: nothing that takes a tap is under 48 CSS px either way): each thing named takes a whole
+   * TAP_CSS either way by an invisible hit area, nothing drawn changes. Two things side by side (a burner's face and its knob) closer
+   * than that share the room between them: they meet at the midpoint, each reaching its full TAP_CSS outward. Run every frame (a scene
+   * re-arms its taps, S.tappable), doing its work only when a hit area, a place or the screen's scale is new.
+   *   Frame.taps(S, () => [[face, knob], thing, ...]) -> stop()      (a pair: an array of two; a thing alone: itself)
+   */
+  const TAP_CSS = 48.2;
+  Frame.TAP_CSS = TAP_CSS;
+  Frame.taps = function (S, list) {
+    const live = (o) => o && o.active && o.input && o.input.enabled && o.input.hitArea;
+    const done = (o, k) => o.input.hitArea.__tap === k;
+    const R = () => globalThis.Phaser.Geom.Rectangle;
+    // (a thing's local frame: an image's is its texture's, scaled; a shape's is its own size)
+    const local = (o) => {
+      const sx = Math.abs(o.scaleX || 1), sy = Math.abs(o.scaleY || 1);
+      const lw = o.width != null ? o.width : (o.displayWidth || 0) / sx, lh = o.height != null ? o.height : (o.displayHeight || 0) / sy;
+      return { sx, sy, cx: lw / 2, cy: lh / 2 };
+    };
+    // a rectangle round the thing's middle: left, right, up and down in sheet units
+    const rect = (o, l, r, u, d, k) => {
+      const { sx, sy, cx, cy } = local(o);
+      o.input.hitArea = new (R())(cx - l / sx, cy - u / sy, (l + r) / sx, (u + d) / sy);
+      o.input.hitAreaCallback = R().Contains;
+      o.input.hitArea.__tap = k;
+    };
+    const tick = () => {
+      const px = Frame.px();
+      if (!(px > 0) || !globalThis.Phaser) return;
+      const need = TAP_CSS / px;
+      const k0 = need.toFixed(2);
+      for (const g of (list && list()) || []) {
+        if (Array.isArray(g)) {
+          const [a, b] = g;
+          if (!live(a) || !live(b)) continue;
+          const key = `${k0}|${a.x},${a.y}|${b.x},${b.y}`;
+          if (done(a, key) && done(b, key)) continue;
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const horiz = Math.abs(dx) >= Math.abs(dy);
+          const d = Math.abs(horiz ? dx : dy);
+          const inn = Math.min(need / 2, d / 2); // towards the other: never past the midpoint
+          const out = need - inn;
+          const dir = (horiz ? dx : dy) > 0 ? 1 : -1; // b lies this way from a
+          const build = (o, toward) => {
+            // toward: +1 when the other lies the positive way along the axis
+            if (horiz) rect(o, toward > 0 ? out : inn, toward > 0 ? inn : out, need / 2, need / 2, key);
+            else rect(o, need / 2, need / 2, toward > 0 ? out : inn, toward > 0 ? inn : out, key);
+          };
+          build(a, dir);
+          build(b, -dir);
+        } else {
+          const o = g;
+          if (!live(o) || done(o, k0)) continue;
+          // (a thing already that big keeps its own hit area)
+          const { sx, sy } = local(o);
+          const h = o.input.hitArea;
+          const hw = (h.width != null ? h.width : 2 * (h.radius || 0)) * sx, hh = (h.height != null ? h.height : 2 * (h.radius || 0)) * sy;
+          if (hw >= need && hh >= need) {
+            h.__tap = k0;
+            continue;
+          }
+          rect(o, Math.max(need, hw) / 2, Math.max(need, hw) / 2, Math.max(need, hh) / 2, Math.max(need, hh) / 2, k0);
+        }
+      }
+    };
+    return S.addTick ? S.addTick(tick) : () => {};
+  };
   Cook.Frame = Frame;
 })();
