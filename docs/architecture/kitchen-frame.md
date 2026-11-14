@@ -34,5 +34,15 @@ Options: `top` (the band's top; default `St.SHELF.top`), `base` (the shelf line 
 
 Who calls it: chai (Sprint 20 steps 1-2: `{top, base, far, draw: true}`, band `shelf`; its hob row, tray and pans are laid out from `play`, its shelf row between `bottom`'s edges); eggs (Sprint 20 batch 1: the same call, band `shelf`; its hob, pot, pan and tray from `play`, inset 8 from its sides and never closer than 24 to the view's; its shelf row between `bottom`'s edges; its table a zone the size of `Cook.Frame.sheet`; no option added).
 
+## The size chain (Sprint 20 batch 1, maani)
+Play area → stations → contents. **`area.row(stations, {max, min, room})`** (also `Cook.Frame.row(play, stations, opts)`): a game names its stations left to right, each `{share, w, h}`: its share of the row's unit (equal to start, 1 each; a game may give its own, in its settings) and its footprint for one unit (a board `1 x 1`; a hob `1.15 x 1.63` of its tawa). The frame gives:
+- `unit`: the largest that fits the play area across (less the gaps) and down (less `room`, kept above the row for what appears there), at most `max` (the game's own accepted size: the chain never grows a station past it), at least `min` (a small phone's floor);
+- `gap`: between stations, the frame's, a tenth of the play area's width (`Frame.ROW_GAP`);
+- `boxes`: each station's `{x, y, w, h, size, cx, cy}` (`size`: its share of the unit), on the row's middle line; the row centred across the play area and down it by chai's measure (CHAI-89: centred with its `room`, its top at least 24 below the play area's top unless that pushes it into the bottom row's gap).
+
+The game sizes its contents from its stations' `size` (maani: the chakla, the roll's rings and the velan from the board's; the tawa, its flames, ring and hob, the turner from the tawa's). Who calls it: maani (`[{share: board}, {share: tawa, w, h: the hob per unit of tawa}]`, `max` 360, its accepted size: 11 Nov). The stove part is a game's own: maani's hob is its tawa station's footprint, not a frame part.
+
+**`Cook.Frame.taps(S, () => [[a, b], thing, ...])`** → `stop()`: a tap's room (chai's SH-288 rule, Zafar 13 Nov: "increase the tap targets as much as you can without changing the look"): each thing named takes a whole 48 CSS px either way by an invisible hit area, nothing drawn changes; a pair side by side (a burner's face and its knob) shares the room between them, meeting at the midpoint. Run each frame; works only when a hit area, a place or the scale is new. Who calls it: maani (the hob's face and knob). Chai keeps its own copy (its boxes are frozen).
+
 ## Counts (may only go down)
-`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12 (14 Nov: 0 after batch 1), maani-line 15, corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
+`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12 (14 Nov: 0 after batch 1), maani-line 15 (14 Nov: 0, batch 1), corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.

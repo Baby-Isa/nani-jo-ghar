@@ -23,6 +23,11 @@
       "tint": "#a9aab4"
      }
     },
+    "shares": {
+     "board": 1,
+     "tawa": 1
+    },
+    "_shares": "Sprint 20 (the kitchen frame's size chain, docs/architecture/kitchen-frame.md): the board and the tawa as shares of the play area, equal (MAA-24: the board the tawa's own size across); the frame gives the unit, at most the accepted 360 (Zafar, 11 Nov: the sizes fine as they are), and the gap between them",
     "ballsPerBowl": 5,
     "sizes": null,
     "rimStop": 0.92,

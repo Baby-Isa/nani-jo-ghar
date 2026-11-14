@@ -46,25 +46,26 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const IT = "assets/cook/items/";
   const V3 = IT + "v3/maani/";
   const V4 = IT + "v4/";
-  /* ---------- the grid (design px, 1600x900; the canvas is the play area), as chai v2 ---------- */
+  /* ---------- the grid (sheet units; the room is laid out in the kitchen frame's play area: docs/architecture/kitchen-frame.md) ---------- */
   const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
-  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill: the frame's view)
   /*
    * MAA-24 (Zafar, 9 Nov, mock 38: "slightly increase the size so that the round board is the same size as whatever the cooking thing";
    * the brief: "the board and tawa big"): chai's one-burner hob as tall as the worktop above the tray holds it (was 0.85), the tawa as
    * big as its glass holds it (was 150), and the chakla the tawa's own size across (its drawn diameter within 3% of the tawa's; it was
    * 470 beside a 300 tawa). The roll's sizes, start and the velan follow the board (ROLL_K), so a maani fills the board as before.
+   * Sprint 20 (the kitchen frame's size chain, Frame.row): the board and the tawa are the room's two stations, shares of its play area
+   * (equal: K.shares), the frame giving the unit, the gap between them and their places; Zafar's accepted sizes (11 Nov: "fine as they
+   * are") are the chain's largest: a tawa TAWA_D across with its hob at HOB_K, never bigger, smaller only where the play area is.
    */
-  const HOB_K = 0.89;
-  const HOB_BOTTOM = SHELF_TOP - 36; // breathing space above the tray (§10)
-  const TAWA_R = 180; // the tawa's round body
-  const CHAKLA_D = 2 * TAWA_R;
-  const ROLL_K = CHAKLA_D / 470; // the roll's design sizes were for a 470 board
-  const COL_GAP = 150; // between the chakla and the hob
+  const HOB_K = 0.89; // the hob's scale beside a TAWA_D tawa (it scales with the tawa)
+  const TAWA_D = 360; // the tawa's round body across, as Zafar accepted it: the chain's largest unit
+  const QUIET_S = 0.9; // the beat a shown thing is held before the next (a card read with no clip, the right pile's glow, a review's frown)
+  const BOARD_IN = 470; // the roll's design sizes were for a board this wide (ROLL_K: the board's own over it)
   // MAA-24 (round 2: "the plates can be a bit bigger"; his yes: brushed steel for maani): the kit's round steel plate (v4/kit/plate-steel)
   const PLATE_D = 196;
   // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
-  const PLATE_Y = SHELF_TOP + (900 - 883) + 8 + PLATE_D / 2;
+  const PLATE_Y = SHELF_TOP + global.Shelf.pad() + 8 + PLATE_D / 2;
   const PLATE_PITCH = 232;
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
@@ -82,8 +83,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const pr = alone ? PLATE_D * (THALI_FLAT - 0.02) * Math.min(1, sizeF) : PLATE_D * PLATE_MAANI * sizeF;
     return { pr, room: Math.max(0, PLATE_D * (THALI_FLAT - RIM_MARGIN) - pr) };
   };
-  const CHIP_Y = 860;
-  const PIN_W = 484 * ROLL_K; // MAA-12 (M12): a real velan is a little wider than the board: the v3 pin about 10% longer (was 440)
+  const CHIP_Y = St.SHELF.chipY;
+  const PIN_K = 484 / BOARD_IN; // MAA-12 (M12): a real velan is a little wider than the board: the v3 pin about 10% longer (was 440)
   // 30 Sept (M3, M9 / Q14): the dough piles stand straight on the band (no tray), on this line just above
   // their chips; St.shelfFit sizes them so the gap above equals the gap under the chips (no hop: a pile
   // doesn't bounce, it squashes a little as a ball comes off)
@@ -109,24 +110,6 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const TURNER = { ox: 0.19, oy: 0.73, len: 170, rest: 62 };
   // MAA-24 (round 2: "the handle of the pan ... position it to the bottom right"): the tawa turned so its handle points down to the right
   const TAWA_TURN = 40;
-  /*
-   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
-   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
-   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
-   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
-   */
-  const centreLift = (z, top0, bottom0, room = 0) => {
-    const v = Cook.view || {};
-    const k = z.k || 1;
-    const viewTop = v.top != null ? v.top : z.Y(0);
-    const spanTop = viewTop + 16 * k;
-    const spanBot = z.Y(St.SHELF.top - 28);
-    const t = z.Y(top0) - room * k;
-    const b = z.Y(bottom0);
-    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
-    lift = Math.min(lift, t - (viewTop + 40 * k));
-    return Math.round(Math.max(lift, b - spanBot));
-  };
   const ART = [
     // S19 (M1, ART-62): the run's round walnut board and its pin, both exactly from above
     ["mv-chakla", V4 + "maani/board.webp"],
@@ -148,15 +131,19 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     )
     .concat(Kit.art(1, []));
 
+  // (the frame's sheet, read as the station opens: the frame is the kitchen kit's, loaded before any station)
+  const sheetBox = () => Object.assign({}, Cook.Frame.sheet);
+  const sheetRegion = () => [Cook.Frame.sheet.x, Cook.Frame.sheet.y, Cook.Frame.sheet.w, Cook.Frame.sheet.h];
   Mech.combined("maani-line", {
     station: "maani-line",
     view: "marble",
     dataFile: "data/stations/maani-line.json",
-    // one drawing space (1:1); the roll zone owns the left column's pointer (a tap on the tawa is not a roll)
+    // one drawing space (1:1), the frame's whole sheet; the roll zone owns the board's column's pointer (a tap on the tawa is not a roll):
+    // it opens on the sheet above the bottom row and is narrowed to the board's column once the room is laid out (rollColumn, below)
     zones: [
-      { id: "bowls", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
-      { id: "roll", mech: "roll", region: [0, 0, 830, SHELF_TOP], footprint: { x: 0, y: 0, w: 830, h: SHELF_TOP } },
-      { id: "tawa", mech: "tawa", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
+      { id: "bowls", get region() { return sheetRegion(); }, get footprint() { return sheetBox(); } },
+      { id: "roll", mech: "roll", get region() { return [0, 0, Cook.Frame.sheet.w, SHELF_TOP]; }, get footprint() { return { x: 0, y: 0, w: Cook.Frame.sheet.w, h: SHELF_TOP }; } },
+      { id: "tawa", mech: "tawa", get region() { return sheetRegion(); }, get footprint() { return sheetBox(); } },
     ],
     run: (host, params) => line(host, params),
   });
@@ -170,9 +157,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const zt = host.zones.tawa;
     const zon = zr.child({ id: "rest" }); // "put it on the tawa" (the test plays from its expectation)
     const level = zb.level || 1;
-    // (MAA-24: the roll's sizes in the board's own measure, ROLL_K)
     const kRoll0 = Mech.knobs("roll", { level: zr.level });
-    const kRoll = Object.assign({}, kRoll0, { radius: kRoll0.radius * ROLL_K, startRadius: kRoll0.startRadius * ROLL_K });
     // the tawa: one, always (the burner rule); its speed from level 1's knobs, quicker per level
     const kTawa = Mech.knobs("tawa", { level: 1 });
     const kLevel = Mech.knobs("tawa", { level: zt.level });
@@ -193,6 +178,27 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const types = Object.keys(K.doughs || { "cook-maani": {} });
     const who = (ctx.order && ctx.order.who) || null;
     await St.loadArt(S, ART.concat(Cook.Kit.faceArt(who)));
+
+    /* ---------- the room in the kitchen frame: the play area, the bottom row and the size chain (Sprint 20) ---------- */
+    // the frame's floor plan: the worktop's wash (drawn past the design box: the stage fill shows more worktop above and at the sides) and
+    // the bottom band under the bottom row, the stone tray (ART-69: the heaps and plates lie on it; the band named in this game's settings,
+    // SH-248). No shelf ledge: the piles and the plates sit on the band itself
+    const F = Cook.Frame.area(S, { top: SHELF_TOP, far: FAR, draw: true });
+    F.stoneBand(S, { game: "maani-line" });
+    // the two stations, the board and the tawa on its hob, as shares of the play area (equal, unless the settings give their own): the
+    // frame gives the unit (the tawa's and the board's own across), the gap between them and their places, the row centred in the play
+    // area (CHAI-89's measure, the frame's); the hob stands HOB_K / TAWA_D of its tawa's unit, so it follows the tawa
+    const shares = Object.assign({ board: 1, tawa: 1 }, K.shares || {});
+    const hob1 = Kit.size(1, HOB_K / TAWA_D); // (the hob for one unit of its tawa)
+    const room = F.row([{ share: shares.board }, { share: shares.tawa, w: hob1.w, h: hob1.h }], { max: TAWA_D / Math.max(shares.board, shares.tawa) });
+    const [boardBox, hobBox] = room.boxes;
+    const CHAKLA_D = boardBox.size; // the chakla, the board's own unit across
+    const TAWA_R = hobBox.size / 2; // the tawa's round body
+    const HOB_K1 = (HOB_K * hobBox.size) / TAWA_D; // the hob's scale beside it
+    const ROLL_K = CHAKLA_D / BOARD_IN; // (MAA-24: the roll's sizes in the board's own measure)
+    const PIN_W = PIN_K * CHAKLA_D;
+    const TURNER_LEN = (TURNER.len * hobBox.size) / TAWA_D; // the turner beside the hob, at the hob's own scale
+    const kRoll = Object.assign({}, kRoll0, { radius: kRoll0.radius * ROLL_K, startRadius: kRoll0.startRadius * ROLL_K });
     const texOf = (t, state) => {
       const key = `mv-${state}-${t === "cook-bajrmaani" ? "bajr" : "maani"}`;
       return S.textures.exists(key) ? key : { ball: "dough-ball", raw: "chapati-raw", half: "chapati-half", cooked: "chapati-puffed", burnt: "chapati-puffed" }[state];
@@ -232,22 +238,15 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (params.order[k] > 0) want[keyOf(type, size)] = params.order[k];
     });
 
-    /* ---------- the scene: the marble's wash, the stone band (the kitchen kit's worktop, piece 4; STD-E3-03) ---------- */
-    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view). No shelf ledge: the piles
-    // and the plates sit on the band itself
-    Kit.worktop(S, { top: SHELF_TOP, far: FAR });
-    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, game: "maani-line" }); // (ART-69: the stone tray: the heaps and plates lie on it)
-
-    // two columns, centred as one block: the chakla | the hob
-    const hs = Kit.size(1, HOB_K);
-    const left = (1600 - (CHAKLA_D + COL_GAP + hs.w)) / 2;
-    const LX = left + CHAKLA_D / 2;
-    const RX = left + CHAKLA_D + COL_GAP + hs.w / 2;
-    // raised into the middle of a taller stage's worktop (the stage fill)
-    // (CHAI-89, the orchestrator 11 Nov: the board and the hob, one block, centred in the view above the band: chai's measure)
-    const hob = Kit.hob(S, { n: 1, k: HOB_K, cx: RX, bottom: HOB_BOTTOM - centreLift(zt, HOB_BOTTOM - hs.h, HOB_BOTTOM) });
+    // the board in its station's box, the hob in its own (the chakla sits on the hob's middle line: the row's)
+    const LX = boardBox.cx;
+    const RX = hobBox.cx;
+    const hob = Kit.hob(S, { n: 1, k: HOB_K1, x: hobBox.x, y: hobBox.y });
     const midY = hob.y + hob.h / 2; // the chakla sits on the hob's middle line
     const CH = { x: LX, y: midY };
+    // (the roll zone's column: the board's side of the row, up to the hob's left edge, above the bottom row)
+    const V0 = F.view();
+    Object.assign(zr.region, { x: V0.left, y: V0.top, w: hob.x - V0.left, h: F.bottom.y - V0.top });
 
     /* ---------- the chakla and its gold ring ---------- */
     // M4: the dark walnut chakla, centred by its measured round body
@@ -293,12 +292,32 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (!(UI.personSpeaking && UI.personSpeaking())) sayOrder().catch((e) => { if (!(e instanceof Cook.Abort)) throw e; });
         S.tweens.add({ targets: burner.face, scale: burner.face.baseScale * 1.1, duration: 100, yoyo: true });
       });
+    // (the face and the knob take a whole 48 CSS px each by an invisible hit area, sharing the room between them; nothing drawn changes:
+    // the frame's tap room, chai's SH-288 rule)
+    const stopTaps = Cook.Frame.taps(S, () => (burner.face ? [[burner.face, burner.knobHit]] : [burner.knobHit]));
+    /*
+     * SH-236 (contract-112, the orchestrator 14 Nov: the board's light stayed up while the child rolled, the dough growing in it): the
+     * roll tells the light it began at its first move (js/cook/mechanics/roll.js, Cook.Coach.began), but the coach's script draws the
+     * roll's light once the stage is calm, at most 1.5 s after the ball lands (coach.js calmTick), and a roll under way is not a move it
+     * waits for, so a quick child is already rolling when the light comes, and a light drawn after the move began never hears of it. A
+     * light that comes up while the child's roll is under way (the press still down) is told now, through the same Coach.began: it steps
+     * aside, as SH-236 has it, and comes back MOVE.back after the release if the step is still open.
+     */
+    let rollLit = false;
+    const stopRollLight = S.addTick(() => {
+      const OB = global.Onboard;
+      const press = S.input && S.input.activePointer;
+      const rolling = !!(chakla && chakla.started && press && press.isDown);
+      const up = rolling && !!(OB && OB.lightsShown && OB.lightsShown() > 0);
+      if (up && !rollLit && Cook.Coach && Cook.Coach.began) Cook.Coach.began("roll");
+      rollLit = up;
+    });
     // M6 / Q15: the flat wooden turner (the family's tool: a word like "moikyo", to confirm with Mum) rests on
     // the counter right of the hob, blade down by the hob's corner, handle up and away: placed, not floating.
     // It slides under the maani to flip it, and again to lift it off. Its origin is the blade's middle.
-    const turnerHome = { x: hob.x + hob.w + 40, y: hob.y + hob.h * 0.3, angle: TURNER.rest };
+    const turnerHome = { x: hob.x + hob.w + (40 * hobBox.size) / TAWA_D, y: hob.y + hob.h * 0.3, angle: TURNER.rest };
     const turner = S.track(S.add.image(turnerHome.x, turnerHome.y, "mv-turner").setOrigin(TURNER.ox, TURNER.oy).setDepth(D.item + 3).setAngle(turnerHome.angle));
-    turner.setScale(TURNER.len / turner.width);
+    turner.setScale(TURNER_LEN / turner.width);
     if (turner.preFX && S.renderer && S.renderer.type === Phaser.WEBGL) {
       turner.preFX.padding = 12;
       turner.preFX.addShadow(-2, 3, 0.06, 1, 0x000000, 4, 0.35);
@@ -409,10 +428,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const k = Math.max(1, Kit.textFloor(S, 36)); // never under 14 px as rendered
       // CK-112 (the S19 gate's eye judge, 12 Nov, 740x320: the "maani" label touched the board's top edge): its pill sits wholly above
       // y (the board's top, less a gap), its bottom 8 px clear at any size; only the view's top may bring it lower
-      const top = (Cook.view || {}).top || 0;
+      const top = F.view().top;
       // (the judge, s19-night-c-ev3: "only a hair above the board's top edge" at 740x320: 8 world px is about 3 on a phone; the gap is
       // 10 px on the page at any size)
-      const ppw = Math.max(0.05, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const ppw = Math.max(0.05, F.px); // (the screen's scale, the frame's: the gap is in CSS px)
       const gap = Math.max(8, 10 / ppw);
       const at = (w, h) => ({ x, y: Math.max(top + h / 2 + 4, y - gap - h / 2) });
       global.Juice.P.pop(S, at, Cook.display(id), { k, depth: D.fx + 4, top });
@@ -826,7 +845,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const seen = (Cook.save.seenStation = Cook.save.seenStation || {});
       const pair = ["ph-small", "ph-big"];
       const W = global.WordCard;
-      if (seen[KEY] || !pair.some((id) => (Cook.wordStage ? Cook.wordStage(id) : 1) <= 2) || !W || !W.big14 || !UI.worldToScreen) return;
+      if (seen[KEY] || !pair.some((id) => (Cook.wordStage ? Cook.wordStage(id) : 1) <= 2) || !W || !W.big14) return;
       const order = pair.map((id) => sizes.find((s) => s.id === id)).filter(Boolean);
       if (order.length < 2) return;
       // (the review's finding 8: it is marked seen once it has played, below; a round left mid-moment shows it again next time)
@@ -903,7 +922,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         dropCard();
         try {
           const c = W.big14(null, word, { all: true, cls: "wc14-moment" });
-          const at = UI.worldToScreen(CH.x, CH.y);
+          const at = F.toScreen(CH.x, CH.y); // (the card on the page over the board: the frame's answer)
           const k = at.s || (UI.worldScale ? UI.worldScale() : 1) || 1;
           const w = Math.round(Math.max(110, Math.min(240, CHAKLA_D * 0.62 * k)));
           Object.assign(c.style, { position: "fixed", zIndex: "40", pointerEvents: "none", margin: "0", width: `${w}px` });
@@ -916,7 +935,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           const spk = c.querySelector(".wc14-spk");
           if (spk && !rec) spk.classList.add("on");
           S.tweens.add({ targets: dough, alpha: 0, duration: ms(200), onComplete: () => dough.destroy() });
-          await Promise.race([rec ? Cook.wait(ms(900)) : Lang.speak(line).catch(() => {}), Cook.wait(ms(4000))]);
+          await Promise.race([rec ? Cook.wait(ms(QUIET_S * 1000)) : Lang.speak(line).catch(() => {}), Cook.wait(ms(4000))]);
           if (spk) spk.classList.remove("on");
           if (!rec) Cook.markSeen && Cook.markSeen(sz.id);
         } catch (e) {
@@ -972,7 +991,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       if (pl) {
         S.glow(pl, true, { bounce: true });
         wordPop(type, CH.x, CH.y - CHAKLA_D / 2 - 10);
-        await Cook.wait(900);
+        await Cook.wait(QUIET_S * 1000);
         S.glow(pl, false);
       }
       const d = dones[type] || Object.values(dones)[0];
@@ -1039,12 +1058,13 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           .concat(plates.flatMap((p) => [box(p), box(p.chip)]))
           .concat([box(burner.face), box(burner.knob), box(hob && hob.img)])
           .filter(Boolean);
-        const V = Cook.view || {};
-        const at = Kit.praiseSpot({ x: dd.x, y: dd.y, w: PLATE_D, h: PLATE_D }, size, { avoid, view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, 900] });
+        // (kept inside what the screen shows, the frame's view, down to the sheet's foot)
+        const V = F.view();
+        const at = Kit.praiseSpot({ x: dd.x, y: dd.y, w: PLATE_D, h: PLATE_D }, size, { avoid, view: [V.left, V.top, V.right, Math.min(V.bottom, Cook.Frame.sheet.h)] });
         if (dd.img.face) dd.img.face.setVisible(false);
         const look = await serve.review(S, { who, ok: allOk, x: at.x, y: at.y, size, side: at.side });
         if (dd.img.face) look.close = ((c) => async () => (await c(), dd.img.face.active && dd.img.face.setVisible(true)))(look.close);
-        await Cook.wait(allOk ? 300 : 900);
+        await Cook.wait(allOk ? 300 : QUIET_S * 1000);
         return [look];
       },
       oops: () => (zb.oops ? zb.oops() : null),
@@ -1090,6 +1110,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     ctx.result.maani = plated().length;
     ctx.result.maaniKinds = made;
     [zb, zr, zon, zt].forEach((z) => z.close());
+    stopTaps();
+    stopRollLight();
     return plated().length;
   }
 
