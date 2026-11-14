@@ -1,6 +1,6 @@
 # s20-recording-sheet: the one recording sheet (builder report, 14 Nov)
 
-**What changed.** Every question for Mum now lives in one source, `data/lang/recording-sheet.json` (2,179 rows; a row is never deleted or renumbered). `build/tools/lang/recording-sheet.mjs` makes `docs/language/recording-sheet.docx` (tables, grammar first, then each game; done rows grey, last) and its `.md` twin. `recordings.mjs` adds the engine's needs to the source (gaps, unknown and draft grammar cells, the day, parked words) and marks rows recorded when a clip's question id is the row's id; `mumsheet.mjs` adds the clash list's quick checks and prints the next sitting; neither writes its own sheet (so says the mum-round skill). Old sheets: `docs/archive/language/`.
+**What changed.** Every question for Mum now lives in one source, `data/lang/recording-sheet.json` (2,179 rows; a row is never deleted or renumbered). `build/tools/lang/recording-sheet.mjs` makes `docs/language/recording-sheet.docx` (tables, grammar first, then each game; done rows grey, last) and its `.md` twin. `recordings.mjs` adds the engine's needs to the source (gaps, unknown and draft grammar cells, the day, parked words) and marks rows recorded when a clip's question id is the row's id; `mumsheet.mjs` adds the clash list's quick checks and prints the next sitting; neither writes its own sheet. Old sheets: `docs/archive/language/`.
 
 ## Inventory (every sheet found, all merged)
 
