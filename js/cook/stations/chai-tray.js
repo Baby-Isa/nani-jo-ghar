@@ -82,7 +82,7 @@ export function chaiExtra(asked, extras) {
   const HANDLE_REACH = (514 - 203.8) / 158; // (s14: the empty picture's handle end over its rim radius)
   /* ---------- the grid (design px, 1600x900; the canvas is the play area) ---------- */
   const SHELF_TOP = St.SHELF.top; // §3: the scene is the top 70%, the shelf band the bottom 30% (SH-112)
-  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill: the frame's view)
   const BASE = 818; // the shelf line: every object stands on it
   const BOX = 128; // a slot's fallback box (a word without shelf art)
   // ART-51 (Zafar, 6 Nov: size classes, never true sizes): each shelf item stands at its class's share of the band's room (L 100 /
@@ -181,14 +181,17 @@ export function chaiExtra(asked, extras) {
   const rulesAt = (lv) => (RULES() ? RULES().level(lv) : { decoys: 1, lookalike: false, hintMs: 0 });
   // (the cups by level: the recipe's count is the rules' count for chai, filled in as Cook's data loads: js/cook/flow.js rulesCounts)
 
+  const sheetBox = () => Object.assign({}, Cook.Frame.sheet);
+  const sheetRegion = () => [Cook.Frame.sheet.x, Cook.Frame.sheet.y, Cook.Frame.sheet.w, Cook.Frame.sheet.h];
   Mech.combined("chai-tray", {
     station: "chai-tray",
     view: "marble",
     dataFile: "data/stations/chai-tray.json",
-    // one drawing space (1:1); the hob zone posts every expectation, the tray zone reports the glasses
+    // one drawing space (1:1), the frame's whole sheet; the hob zone posts every expectation, the tray zone reports the glasses (read as
+    // the station opens: the frame is the kitchen kit's, loaded before any station)
     zones: [
-      { id: "boil", mech: "boil", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
-      { id: "tray", mech: "pour", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } },
+      { id: "boil", mech: "boil", get region() { return sheetRegion(); }, get footprint() { return sheetBox(); } },
+      { id: "tray", mech: "pour", get region() { return sheetRegion(); }, get footprint() { return sheetBox(); } },
     ],
     run: (host, params) => station(host, params),
   });
@@ -270,6 +273,7 @@ export function chaiExtra(asked, extras) {
     const POUR_AGAIN14 = gate14.key("ctl-pour-again"); // (CHAI-110: the full glass's second-tap light, once per player; see the pour's light)
     const CONTROL_PAUSE_MS = 1000; // (Zafar, 30 Oct: a second's pause before a control's light and call, after the last move)
     const READ_AT_POUR = false; // (Zafar, 30 Oct: the pour says nothing; see the pour below)
+    const READ_AT_POUR_S = 0.9; // (were it on: the card read once the pan is over the glass, the tap's own moment quiet)
     // CK-49 (the level table): the spice row is what the cups ask for and 1, 2, 3, 3 decoys (a lookalike among them at L4,
     // sugar's lookalike counts), at most five jars (the shelf's slots narrow to fit)
     // (the salt, sugar's lookalike, is always the first decoy: the lab's #mistake tries it, CHAI-04)
@@ -429,7 +433,9 @@ export function chaiExtra(asked, extras) {
     const hobW = Cook.Kit.HOB.w[n - 1];
     const hobH0 = Cook.Kit.HOB.h[n - 1];
     // the widest scale that fits the hob and the tray (which shrinks with the hob) in the row
-    const room = 1600 - 2 * 56 - GAP;
+    // (the hob row is fitted ROW_IN inside the play area's sides)
+    const ROW_IN = 8;
+    const room = P.w - 2 * ROW_IN - GAP;
     const k0 = Math.min(HOB_K, room - TRAY_D >= hobW * HOB_K ? HOB_K : Math.max((room - TRAY_D) / hobW, room / (hobW + hobH0 * 0.78)));
     // CHAI-08 (v2 mock-up, S05-C): hob and tray about 15% bigger and lower, where the row and the stage's height allow
     // (a taller stage's extra worktop goes into size, not into empty marble under the hob)
@@ -515,7 +521,7 @@ export function chaiExtra(asked, extras) {
       const top = fy < 0.5;
       // SH-139 (Zafar, 27 Oct and again 1 Nov: "the face icons next to the chai trays probably should be a little bit bigger"): as big
       // as the burner faces (the kit's BADGE, 64), and on a small screen at least 30 px as seen, up to 90
-      const perPx = Math.max(0.01, UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1);
+      const perPx = Math.max(0.01, F.px);
       const trayH = (trayD * 754) / 768;
       // (the corner, and the glass's centre measured from it)
       const cx0 = left ? trayX : trayX + trayD;
@@ -547,13 +553,13 @@ export function chaiExtra(asked, extras) {
     };
     // (the test hook js:Cook.chaiBusy: a pour or a spoon in flight; CHAI-61's probe reads the lit pans' heat against it)
     Cook.chaiBusy = () => busy;
-    Cook.chaiPans = () => pans.map((q) => ({ who: q.who, state: q.state, heat: q.heat, lo, hi, milk: q.has.milk > 0, leaves: q.has.leaves > 0, extras: q.extras.length, spicePics: Object.keys(q.spicePics || {}).length, shown: q.shown, poured: q.poured, need: needOf(q), closed: q.closed, sugar: q.sugar, khun: q.p.khun || 0, at: UI.worldToScreen(q.x, q.y), knobAt: q.knob ? UI.worldToScreen(q.knob.x, q.knob.y) : null }));
+    Cook.chaiPans = () => pans.map((q) => ({ who: q.who, state: q.state, heat: q.heat, lo, hi, milk: q.has.milk > 0, leaves: q.has.leaves > 0, extras: q.extras.length, spicePics: Object.keys(q.spicePics || {}).length, shown: q.shown, poured: q.poured, need: needOf(q), closed: q.closed, sugar: q.sugar, khun: q.p.khun || 0, at: F.toScreen(q.x, q.y), knobAt: q.knob ? F.toScreen(q.knob.x, q.knob.y) : null }));
     // (the test hooks for the evidence probes, js:Cook.chaiAmounts and js:Cook.chaiFaces: read only)
     // CHAI-55: who asked half or full, in seat order, and the words' stages (the rule: data/cook.json chai cups.amount teach)
     Cook.chaiAmounts = { cups: people.map((p) => ({ who: p.who, amount: p.amount || null })), stages: { "ph-half": Cook.wordStage("ph-half"), "ph-full": Cook.wordStage("ph-full") } };
     // SH-139: each face's drawn size, in design px and on screen, beside the tray's
     Cook.chaiFaces = () => {
-      const px = (d) => Math.round(d * (UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) * 10) / 10;
+      const px = (d) => Math.round(d * F.px * 10) / 10;
       return {
         tray: { d: Math.round(trayD), screen: px(trayD) },
         trayFaces: wells.map((w) => ({ d: Math.round(w.face.displayWidth), screen: px(w.face.displayWidth) })),
@@ -573,8 +579,8 @@ export function chaiExtra(asked, extras) {
     // they could basically have space to spread out more and avoid overlapping": the right edge kept 190 px clear for the old tick
     // button, which chai no longer draws, so with three pans the row was squeezed short of the tray's edge. The margins are the view's
     // own edges now, 40 px in)
-    const VL = (Cook.view && Cook.view.left != null ? Cook.view.left : 0) + 40;
-    const VR = (Cook.view && Cook.view.right != null ? Cook.view.right : 1600) - 40;
+    const VL = F.bottom.x;
+    const VR = F.bottom.x + F.bottom.w;
     // SH-208 (Zafar, 4 Nov: "the pills are like overlapping ... where there's space to spread them out more ... we should try to do
     // that"; then, his screenshot: "The items should be centered between the red dotted lines (furtherest edges of in game objects on
     // both sides)"): the row is always centred on the hob-and-tray span (the pan's handle to the tray's right edge). Under that span
@@ -637,11 +643,11 @@ export function chaiExtra(asked, extras) {
     }
     // SH-219 (the pills' measure, read only): each shelf pill on screen in CSS px: its card, its word's size, whether it shows the word
     Cook.chaiPills = () => {
-      const k = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x;
+      const k = F.px;
       return Object.values(shelf).filter((o) => o && o.chip && o.chip.active).map((o) => {
         const ch = o.chip, sc = Math.abs(ch.scaleX || 1), w = (ch.cardW || CHIP.w) * sc;
         const t = (ch.parts || []).find((f) => f.type === "Text");
-        const a = UI.worldToScreen(ch.x - w / 2, ch.y - (CHIP.h / 2) * sc), z = UI.worldToScreen(ch.x + w / 2, ch.y + (CHIP.h / 2) * sc);
+        const a = F.toScreen(ch.x - w / 2, ch.y - (CHIP.h / 2) * sc), z = F.toScreen(ch.x + w / 2, ch.y + (CHIP.h / 2) * sc);
         return { id: ch.pillId, word: !!ch.showsWord, left: a.x, right: z.x, top: a.y, bottom: z.y, wordPx: t ? Math.round(25 * Math.abs(t.scaleX || 1) * sc * k * 10) / 10 : null, speakerPx: Math.round(26 * sc * k * 10) / 10 };
       }).sort((p, q) => p.left - q.left);
     };
@@ -814,7 +820,7 @@ export function chaiExtra(asked, extras) {
     // rim (844x390 L3: a bubble 12 px inside the edge, on the frame), so it goes wholly above the hob instead
     const RIM_CLEAR = 40;
     const BADGE_CSS_H = 40; // the badge's height on screen, CSS px (js/shared/tally.js, phone and laptop alike; a step smaller, 5 Nov)
-    const pxPerWorld = () => UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+    const pxPerWorld = () => F.px;
     const tallyPt = (pan) => {
       const x = pan.x - panR * 0.7;
       const y = pan.y - panR * 1.02;
@@ -830,7 +836,7 @@ export function chaiExtra(asked, extras) {
     // chai says the word)
     const pop = (id, pan, { speak = true } = {}) => {
       const k = Math.max(1, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
-      const c = global.Juice.P.pop(S, (W, H) => popAt(pan, W, H), Cook.display(id), { k, depth: D.fx + 3, top: (Cook.view || {}).top || 0, shade: SHADE });
+      const c = global.Juice.P.pop(S, (W, H) => popAt(pan, W, H), Cook.display(id), { k, depth: D.fx + 3, top: F.view().top, shade: SHADE });
       if (speak && !UI.naniMuted()) {
         Lang.popWord(id);
         saidAt[id] = Date.now();
@@ -889,11 +895,7 @@ export function chaiExtra(asked, extras) {
     };
     const panLayers = (pan) => [pan.img, pan.mix, pan.disc, pan.mixDisc].filter((o) => o && o.visible);
     /** A client rect (the DOM's px) in the station's design px. */
-    const toWorld = (sx, sy) => {
-      const o = UI.worldToScreen(0, 0);
-      const s1 = UI.worldToScreen(1, 0).x - o.x || 1;
-      return { x: (sx - o.x) / s1, y: (sy - o.y) / s1 };
-    };
+    const toWorld = (sx, sy) => F.toSheet(sx, sy);
     const badgeBox = () => {
       const el = document.querySelector("#count-badge");
       if (!el || el.classList.contains("empty") || el.classList.contains("hidden")) return null;
@@ -913,11 +915,11 @@ export function chaiExtra(asked, extras) {
     // 7.5 here, as the pop's drawn card sits a little below the box it is placed by, its soft shade: 6.9 px drawn at 740x320)
     const POP_CLEAR_CSS = 7.5;
     const popAt = (pan, W, H) => {
-      const v = Cook.view || {};
-      // (s08 w6B, CHAI-19: the camera's own view of the world is what shows; at 844x390 Cook.view.top sat level with the hob's
+      const v = F.view();
+      // (s08 w6B, CHAI-19: the camera's own view of the world is what shows; at 844x390 the view's top sat level with the hob's
       // top and pushed the bubble back onto its rim)
       const wv = S.cameras && S.cameras.main && S.cameras.main.worldView;
-      const viewTop = wv && wv.height ? wv.y : v.top || 0;
+      const viewTop = wv && wv.height ? wv.y : v.top;
       // (s20-chai-fix, pill-clear: at L1 on a phone the pop over the pan sat 3.8 px above the hob at 740x320 and 4.3 px at 930x430: its
       // 10 world px over the hob were 3-4 CSS px there, and the screen's top margin pushed it down onto them. The gap is now counted in
       // CSS px, and where the room above the hob is short the top margin gives way, never past the view's top: the pop stays whole on
@@ -925,8 +927,8 @@ export function chaiExtra(asked, extras) {
       // stays (its 10 world px are 8 CSS px drawn))
       const clear = Math.max(10, POP_CLEAR_CSS / pxPerWorld());
       const top = Math.max(viewTop, Math.min(viewTop + 10, hobY - clear - H - 2));
-      const left = (v.left || 0) + 10;
-      const right = (v.right || 1600) - 10;
+      const left = v.left + 10;
+      const right = v.right - 10;
       // (the shared kit's placing, Juice.popAt: never across the hob's top edge (s08 w6B, CHAI-19), above the count badge or beside it)
       const at = global.Juice.popAt({ x: pan.x, y: pan.y - rimR - 16 }, W, H, { top, left, right, edge: { y: hobY, clear: RIM_CLEAR, above: clear }, avoid: badgeBox() });
       // (and where even the screen's top leaves no room for it above the hob (930x430 at L1: a 30 px pop over 35 px), it sits beside the
@@ -1351,7 +1353,7 @@ export function chaiExtra(asked, extras) {
         if (said.length) {
           said.forEach((p) => (p.row.ids || []).forEach((id) => (saidAt[id] = Date.now())));
           // (as the chai starts to flow, once the pan is over the glass: the tap's own moment stays quiet)
-          Cook.wait(900).then(() => !finished && UI.readAlong(said)).catch(() => {});
+          Cook.wait(READ_AT_POUR_S * 1000).then(() => !finished && UI.readAlong(said)).catch(() => {});
         }
       }
       unglow();
@@ -1630,8 +1632,8 @@ export function chaiExtra(asked, extras) {
     };
     const toPage = (r) => {
       if (!r) return null;
-      const a = UI.worldToScreen(r.x0, r.y0);
-      const z = UI.worldToScreen(r.x1, r.y1);
+      const a = F.toScreen(r.x0, r.y0);
+      const z = F.toScreen(r.x1, r.y1);
       return [a.x, a.y, z.x - a.x, z.y - a.y];
     };
     // (the lit thing hops, js/cook/stations.js glow: its picture's top is where the hop takes it, so the margin over it holds at the
@@ -1650,7 +1652,7 @@ export function chaiExtra(asked, extras) {
       if (!o || !o.active) return null;
       const b = o.getBounds();
       const hop = (global.Onboard && global.Onboard.HOP) || 0.1;
-      return UI.worldToScreen(b.centerX, b.y - restY(o) - b.height * hop);
+      return F.toScreen(b.centerX, b.y - restY(o) - b.height * hop);
     };
     const helped = new Set(); // the asked-for words shown by help this round (study: never marked right)
     let hints14 = 0; // SH-160: how many times the guide's hint came this round (a peek or the arrow's card never counts)
@@ -1781,8 +1783,8 @@ export function chaiExtra(asked, extras) {
         //  2. the left column, under the order list and above the rail (a phone: the strip by the hob is too narrow);
         //  3. else under her box, over the list (a crowded card at L3-L4 on a phone)
         const hb = hob && hob.active ? hob.getBounds() : null;
-        const hobLeft = hb ? UI.worldToScreen(hb.x, hb.y).x : st.left + 220;
-        const shelfTop = UI.worldToScreen(0, SHELF_TOP).y;
+        const hobLeft = hb ? F.toScreen(hb.x, hb.y).x : st.left + 220;
+        const shelfTop = F.toScreen(0, F.bottom.y).y;
         const pad = 10;
         const size = (w) => ((card.style.width = `${w}px`), card.offsetHeight);
         // the widest card up to `max` that is at most `h` tall (a narrower card is shorter: its picture is 4:3); null under 100 px
@@ -2237,7 +2239,7 @@ export function chaiExtra(asked, extras) {
       // faces are the ones still at the tray, the praise card beside the last of them)
       const here = pans.filter((q) => !q.gone);
       const dishes = here.map((q) => ({ who: q.who, x: q.well.x, y: q.well.y, w: q.well.glass.empty.displayWidth }));
-      return serve.faces(S, dishes, wrongPans.filter((q) => !q.gone).map((q) => here.indexOf(q)), { left: tray.x, right: (Cook.view && Cook.view.right) || 1600 });
+      return serve.faces(S, dishes, wrongPans.filter((q) => !q.gone).map((q) => here.indexOf(q)), { left: tray.x, right: F.view().right });
     }
 
     /* ---------- the tick: check every glass against what its person said ----------
