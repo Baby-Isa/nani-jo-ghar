@@ -173,6 +173,21 @@ def judge(d):
         x0, y0, x1, y1 = [int(v * k / c) for v in f]
         lit[max(0, y0 - 1):y1 + 2, max(0, x0 - 1):x1 + 2] = False
         known[max(0, y0 - 1):y1 + 2, max(0, x0 - 1):x1 + 2] = False
+    # (chai's L3 hint at 740x320, 14 Nov: the light's gold line over a cream card is darker than the card, not brighter, so the line
+    # read as dimmed and the region came out its own width inside the light: the light's gold line, on the light's own recorded edge,
+    # is part of the light. Only where the kit's note puts the edge (lib/lightshot.mjs, the layer's holes), never a gold thing elsewhere)
+    hs = meta.get("holes") or []
+    if hs:
+        rgb = np.asarray(W.convert("RGB"), dtype=np.float32)
+        R, G, Bl = (blocks(rgb[..., i], c) for i in range(3))
+        gold = (R >= 150) & (R - Bl >= 60) & (R >= G) & (G >= Bl)
+        band = np.zeros_like(gold)
+        bw = max(1, int(round(8 * k / c)))
+        for h in hs:
+            x0, y0, x1, y1 = [int(round(v * k / c)) for v in h]
+            band[max(0, y0 - bw):y1 + bw, max(0, x0 - bw):x1 + bw] = True
+            band[y0 + bw:max(y0 + bw, y1 - bw), x0 + bw:max(x0 + bw, x1 - bw)] = False
+        lit = lit | (gold & band)
     lit = ndimage.binary_fill_holes(lit)
     known = known | lit
     dim = known & (a > DIM_A)
