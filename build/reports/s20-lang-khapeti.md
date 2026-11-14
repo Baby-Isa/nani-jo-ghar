@@ -21,7 +21,7 @@ Branch `s20-lang-khapeti`, never pushed. The brief names no fix-list row, so the
 - `checks.mjs`: 14 steps ok. The recordings step will be stale until the sheet's owner adds the lines above.
 - Contract (`s20-lang-khapeti-contract`, four sizes): every flow reached its end, 0 page errors. 4 breaks: contract-78 ×3 ("Samosa hane kadh.") and contract-109 ×1. The base has the same breaks (`s20-lang-khapeti-base-samosa`). Chai L4: one contract-78 at the second pour, also on the base.
 - Chai's order pictures (all show khapeti): `build/screenshots/labcheck/s20-lang-khapeti/740x320-mode=cook_game=chai_tray_level=1_nonav=1_seed=7_speed=3.png`, `…/740x320-…level=4…png`, `…/1280x665-…level=1…png`, `…/1280x665-…level=4…png`.
-- check-change: see below.
+- check-change (tier 2, `build/screenshots/tiers/change-05845cdbc8/logs/`): not finished. The push step failed only on the recording sheet (left stale on purpose). The scope step lists 1781 files, measured against an old base tree (1e85a893d6), not this branch. The play stage was still running after 50 minutes (44 chai and eggs flows reached their end, 0 page errors) and my timeout stopped it.
 
 ## For the orchestrator (outside this brief's files)
 - **Probes and contract-119** match the old text: contract-119's `/\bkhape\b/` (build/sandbox/lib/contract-wo.mjs) no longer sees an order line, and these probes too: SH-70, CHAI-05, MAA-02, CHT-07, SEK-01, CK-64, SH-267. Chai's frozen reference says khape.
