@@ -6,7 +6,7 @@
  "stop": "after step 2 is proven, or if a step is not green inside its share of the session: stop and report what is proven",
  "kind": "shared",
  "browser": true,
- "live": true,
+ "live": false,
  "specsByBuilder": false,
  "stubs": "none",
  "publish": false,
