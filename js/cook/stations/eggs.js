@@ -55,6 +55,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
   const col = (k) => parseInt(String((((Cook.data.stations || {})[KEY] || {}).palette || {})[k] || "").slice(1), 16);
   const RULES = () => global.Rules || (global.Tokens && global.Tokens.rules) || null;
   const shade = (S, img, o) => (Cook.GrillKit && Cook.GrillKit.shadow ? Cook.GrillKit.shadow(S, img, o) : null);
+  // SH-281 (the S19 gate's eye judge, 12 Nov: "a faint grey disc stays in the empty pan", "a grey blob above the plate"): the steam is
+  // the shared kit's painted wisps, as chai's boil (Juice.P.steam, Juice.P.puff), never flat white circles that read as grey discs
+  const JP = () => (global.Juice && global.Juice.P) || null;
+  const WISPS = ["st-1", "st-2", "st-3"];
+  const isWisp = (o) => !!(o && o.texture && /^fx-juice-st-/.test(o.texture.key));
+  /** n painted wisps rising once from (x, y), w wide, a little apart in time (the kit's puff) */
+  const puffs = (S, x, y, w, n = 2, depth = D.fx + 2) => {
+    const J = JP();
+    if (!J || !J.puff) return;
+    for (let i = 0; i < n; i++) S.time.delayedCall(i * 180, () => S.sys && S.sys.isActive() && J.puff(S, x + (i - (n - 1) / 2) * w * 0.25, y, { w, depth, name: WISPS[i % WISPS.length] }).catch(() => {}));
+  };
 
   /** Only what this round shows (decision 68): the items' states it draws, the tray, this meal's kitchen, the hob. */
   function ART(K) {
@@ -67,6 +78,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // (the boiled halves in the three looks a lift can show, E5: soft, firm, over; runny is before the green, never let out)
     BOILED_LOOKS.forEach((s) => ["a", "b"].forEach((h) => add("boiledEgg", `${s}-${h}`)));
     add("bowl");
+    // (the steam's painted wisps, the kit's: SH-281)
+    if (JP() && JP().keys) JP().keys(WISPS).forEach((kv) => out.push(kv));
     if (K.shakers) ["shakerSalt", "shakerPepper"].forEach((k) => add(k));
     // (the table, 10 Nov's art: the plate, the fried egg and the boiled halves seen at the table's own camera; the old side-on plate,
     // fried egg and egg cup they replace are no longer loaded)
@@ -200,6 +213,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const decoyIds = St.tableDecoys && pool.length ? St.tableDecoys(pool, shelfWants, level, { n: Math.max(0, (row.decoys || 0) - unasked), also: unasked, what: KEY }) : [];
     // (a stem that climbs out of items/ with "../" is a path the loader may not take as it is: resolved here)
     const decoyArt = decoyIds.map((id) => [`eg-dec-${id}`, String(Cook.Art.refUrl(`${id}.shelf`)).replace(/[^/]+\/\.\.\//, "")]);
+    // SH-283 (the S19 gate's eye judge, 12 Nov: "the shelf's two items ... swap order between sizes"): the round's random places, each
+    // decoy's place among the shelf's things and each plate's well on the tray, are drawn with the order, before the pictures load, so
+    // how long a screen takes to load never changes them (were drawn after the load, from a random stream the load's frames had used)
+    const decoyAt = decoyIds.map(() => Math.random());
+    const order = Cook.shuffle(plates.map((q, i) => i));
     await St.loadArt(S, ART(K).concat(decoyArt, ...plates.map((q) => Cook.Kit.faceArt(q.who)))).catch(() => {});
     await St.begin(S, ctx, KEY, "marble");
     const objs = [];
@@ -330,11 +348,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       shakers["spi-11"] = { id: "spi-11", c: onBand("shakerPepper", "spi-11") };
     }
     // the decoys, each in a random place among the shelf's things (a decoy never stands apart)
-    decoyIds.forEach((id) => {
+    decoyIds.forEach((id, j) => {
       if (!S.textures.exists(`eg-dec-${id}`)) return;
       const d = onBand(`dec-${id}`, id);
       things.splice(things.indexOf(d), 1);
-      things.splice(Math.floor(Math.random() * (things.length + 1)), 0, d);
+      things.splice(Math.min(things.length, Math.floor(decoyAt[j] * (things.length + 1))), 0, d);
       S.tappable(d, () => {
         began();
         if (finished) return;
@@ -406,7 +424,6 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     shade(S, tray, { dx: 8, dy: 11, alpha: 0.26, blur: 8 });
     const WELLS = tr.wells || [[0.283, 0.29], [0.717, 0.29], [0.283, 0.708], [0.717, 0.708]];
     const plateD = (tr.plate_d || 0.38) * trayD;
-    const order = Cook.shuffle(plates.map((q, i) => i));
     const perPx = Math.max(0.01, ppw);
     const P0 = plates.map((q, i) => {
       const [fx, fy] = WELLS[order.indexOf(i)];
@@ -493,12 +510,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       [a, b].forEach((o) => shade(S, o, { dx: 2, dy: 3, alpha: 0.2, blur: 3 }));
       return [a, b];
     };
-    const steamPuff = (x, y, n = 3) => {
-      for (let i = 0; i < n; i++) {
-        const s = T(S.add.circle(x + (Math.random() - 0.5) * 30, y, 10 + Math.random() * 8, col("white"), 0.55).setDepth(D.fx + 2));
-        s.fx = true; // (an effect: the lights never wait for it to end, stillStage)
-        S.tweens.add({ targets: s, y: y - 90 - Math.random() * 40, alpha: 0, scale: 2.2, duration: 1300 + i * 200, delay: i * 180, onComplete: () => s.destroy() });
-      }
+    // (an egg's green opens: a puff of the kit's painted steam over it, about the egg's width; SH-281)
+    const steamPuff = (x, y, w, n = 2) => puffs(S, x, y, w, n);
+    // (the pot's steam while it boils an egg: the kit's painted wisps on their slow loop over its water, as chai's pan, Mech.boil's
+    // steamAt; was a flat white circle now and then)
+    let potSteam = null;
+    const potSteamOn = (on) => {
+      const J = JP();
+      if (on && !potSteam && J && J.steam) potSteam = J.steam(S, vessels.pot.c.x, vessels.pot.c.y - R * 0.64, { w: R * 2.4, depth: D.fx - 2 });
+      else if (!on && potSteam) potSteam = (potSteam.stop(), null);
     };
 
     /* ---------------- the state ---------------- */
@@ -671,7 +691,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // ends while it boils, so a light never waits on it, and the call held for the light comes with it)
     function stillStage() {
       try {
-        return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && t.fx));
+        return !S.tweens.getTweens().some((tw) => tw.isPlaying() && !tw.isInfinite && !(tw.targets || []).every((t) => t && (t.fx || isWisp(t))));
       } catch (e) {
         return true;
       }
@@ -931,7 +951,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         if (e.p >= 1 && !e.full) e.full = Date.now();
         if (!was && e.p >= ready) {
           changed = true;
-          steamPuff(e.at.x, e.at.y - 20, 2);
+          steamPuff(e.at.x, e.at.y - 20, Math.max(60, e.obj.displayWidth * 1.4));
         }
         if (e.fried && !e.out) {
           toLook(e, tex("friedEgg", friedLook(e)));
@@ -940,8 +960,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         if (!e.lifted) e.ring.draw(e.obj.x, e.obj.y, 40, e.p, ready, 1);
       });
       if (changed) refresh();
-      // steam now and then over a pot that's boiling
-      if (vessels.pot.eggs.length && Math.random() < 0.02) steamPuff(vessels.pot.c.x + (Math.random() - 0.5) * 80, vessels.pot.c.y - 40, 1);
+      // steam over a pot that's boiling an egg
+      potSteamOn(!finished && vessels.pot.eggs.length > 0);
     });
 
     S.tappable(tray, () => {
@@ -990,6 +1010,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     z.expect(null);
     vessels.pot.b.set("off", true);
     vessels.pan.b.set("off", true);
+    potSteamOn(false);
 
     /* ---------------- the table: the meal in its kitchen ---------------- */
     await serve(S, ctx, z, { plates: P0, meal: K.meal || "breakfast", objs });
@@ -1021,8 +1042,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
   };
   /** The table: the meal's kitchen (its window's sky by the meal); each plate slides to its person, who swaps to happy and bounces. */
   async function serve(S, ctx, z, { plates, meal, objs }) {
-    await Cook.tween(S, { targets: objs.filter((o) => o && o.active), alpha: 0, duration: 300 });
-    objs.forEach((o) => o && o.active && o.destroy());
+    // (the hob's steam goes with it: SH-281, nothing left behind)
+    const wisps = () => S.children.list.filter((o) => o && o.active && isWisp(o));
+    await Cook.tween(S, { targets: objs.filter((o) => o && o.active).concat(wisps()), alpha: 0, duration: 300 });
+    objs.concat(wisps()).forEach((o) => o && o.active && o.destroy());
     const T = (o) => S.track(o);
     const tb = SCENE().table || {};
     const sized = (o, k, f = 1) => {
@@ -1098,10 +1121,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       Cook.sfx.pop();
       const ok = plateOk(pl);
       if (!ok) allRight = false;
-      for (let i = 0; i < 3; i++) {
-        const s = T(S.add.circle(x + (i - 1) * 30, py - 20, 12, col("white"), 0.6).setDepth(D.item + 2));
-        S.tweens.add({ targets: s, y: py - 140, alpha: 0, scale: 2.4, duration: 1500, delay: i * 220, repeat: 1, onComplete: () => s.destroy() });
-      }
+      // (the plate's steam: the kit's painted wisps, SH-281)
+      puffs(S, x, py - 20, 130, 3, D.item + 2);
       // the pose swap: happy when it's right, else they stay neutral (decision 8, 7 Nov: chai's progress display, never a frown)
       const mood = ok ? "happy" : "neutral";
       if (S.textures.exists(`${who}-${mood}`)) img.setTexture(`${who}-${mood}`);
