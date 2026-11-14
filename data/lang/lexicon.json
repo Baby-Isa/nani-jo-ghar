@@ -2397,6 +2397,16 @@
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke chaat khapeto ⚠, 29:10)"
    ],
+   "open": [
+    {
+     "q": "Is chaat a he-word? Mum said muke chaat khapeto over Zafar's voice (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 29:10"
+    }
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -4498,6 +4508,16 @@
    ],
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro lasan; Mum: 'I think on its own would be masculine', 22:12)"
+   ],
+   "open": [
+    {
+     "q": "Is lasan a he-word? Mum: 'I think on its own would be masculine' (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 21:33, 22:12"
+    }
    ]
   },
   {
@@ -6125,6 +6145,16 @@
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri mishkaki khapeti, 'like one skewer of mishkaki' (lakri, a skewer, is a she-word): ⚠ the hakri may be the skewer's, 29:48)"
    ],
+   "open": [
+    {
+     "q": "Is mishkaki a she-word, or was hakri the skewer's (lakri)? (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 29:48"
+    }
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -6262,6 +6292,16 @@
    ],
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri rai, after hakro rai; Mum: 'I've never heard anybody ever saying that', 23:08)"
+   ],
+   "open": [
+    {
+     "q": "Is rai a she-word? Mum said hakri rai after hakro rai: 'I've never heard anybody ever saying that' (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 23:06"
+    }
    ]
   },
   {

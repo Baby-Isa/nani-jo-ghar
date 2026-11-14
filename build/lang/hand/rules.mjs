@@ -307,6 +307,11 @@ export function apply(S_) {
     it.slots = it.slots.filter((x) => x !== w);
     it.slots.splice(it.slots.findIndex((x) => x.arg === "n") + 1, 0, w); // the filling comes after the number, before the dish (§65)
   }
+  // decision 27 (Zafar, 14 Nov: the orders say the agreeing khapeti / khapanti / khapeto / khapanta): the polite want agrees only with a
+  // thing whose gender Mum has confirmed; with none, or an open question on it (open[].feature gender: §64's ⚠), it keeps her plain khape and
+  // the gender goes on her list (non-negotiable 2: an ending is never guessed; the orchestrator, 14 Nov)
+  const pd = S_.lin.PredDat;
+  if (pd && pd.variants && pd.variants.polite) pd.variants.polite = pd.variants.polite.map((x) => (x.arg === "verb" ? { ...x, sure: { of: "thing", else: "informal" } } : x));
   // PossPron's owner is a person word: its possessive forms are in the pronoun entries (poss.* cells)
   // Item takes an optional pointing word? No: Point does (hi wadho chokro).
 }
