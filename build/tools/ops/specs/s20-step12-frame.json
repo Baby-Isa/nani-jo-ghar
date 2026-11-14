@@ -1,0 +1,45 @@
+{
+ "why": "Sprint 20 steps 1-2 (build/reports/s20-plan.md §5): chai's play-area lines move into the kitchen frame unchanged, then chai's room reads only its play area; every game after builds on this frame (Zafar, 13 Nov: the three layers)",
+ "cost": "medium: Opus, high effort, one session (step 1 about $35, step 2 about $45)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "after step 2 is proven, or if a step is not green inside its share of the session: stop and report what is proven",
+ "kind": "shared",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "proof": "node build/tools/review/boxes.mjs --game chai-tray --diff --run-id <yours> against chai's reference (build/frozen/boxes/chai-tray): 0 boxes moved after each step; node build/tools/review/frame-counts.mjs: chai's screen reads 0 after step 2; the gate's contract part at zero",
+ "name": "s20-step12-frame: chai into the kitchen frame (steps 1 and 2)",
+ "port": 8954,
+ "report": "s20-step12-frame",
+ "read": [
+  "docs/architecture/kitchen-frame.md (the frame's notes: read first, update last: its API section gets the first function)",
+  "build/reports/s20-plan.md §2 (the three layers) and §5 steps 1-2, docs/sprints/S20-one-kitchen-frame.md",
+  "js/cook/stations/chai-tray.js (its layout: the play area's lines near the hob, tray and pans' sums: about lines 400-520), js/cook/kitchen-kit.js (Cook.Kit.hob, St.stoneBand, the worktop wash), js/shared/shelf.js, js/shared/tally.js (Tally.room reads the hob)"
+ ],
+ "owns": ["js/cook/frame.js (new), js/cook/stations/chai-tray.js, js/cook/kitchen-kit.js, docs/architecture/kitchen-frame.md, and the one script line that loads js/cook/frame.js in index.html, cook.html, day.html, first.html, lab.html, clinic.html and lab/sections/kk-stove.html (beside kitchen-kit.js)"],
+ "readOnly": ["every other game file (js/cook/stations/* but chai-tray.js), js/cook/ui.js, js/cook/flow.js, js/shared/**, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
+ "flows": ["cook:chai-tray", "lab:cook/chai-tray"],
+ "branch": "s20-step12-frame (new, in /home/user/wt/s20-step12-frame); commit there, never push",
+ "tasks": [
+  {
+   "do": "Step 1, chai's play-area lines move, unchanged. Only the true play area: the top of the view, the gap above the bottom row, the room above the hob, the side margins (today in chai-tray.js's layout). They move AS THEY ARE into one frame function in a new js/cook/frame.js, Cook.Frame.area(S, opts) returning two boxes in the drawing sheet's units: the play area and the bottom row ({play: {x, y, w, h}, bottom: {x, y, w, h}}), with the options a game passes named in kitchen-frame.md (chai's band 'shelf'). The frame also draws the worktop wash and the bottom band (St.stoneBand), which each game calls by hand today: chai now asks the frame. Chai's hob, pan and tray sums stay in chai (its room). The old lines are deleted in the same step. Write the function in kitchen-frame.md's API section: what it returns, its options, who calls it.",
+   "accept": "boxes.mjs --diff against chai's reference: 0 boxes moved at L1 and L4, four sizes; the gate's contract part at zero; frame-counts.mjs: chai's count lower; commit 'step 1' and say its hash"
+  },
+  {
+   "do": "Step 2, chai's room reads only its box. Every remaining read of the screen or the sheet in chai-tray.js (frame-counts.mjs lists them: Cook.view, innerWidth/innerHeight, worldToScreen/screenToWorld, the sheet's 1600 or 900) is re-based on the play area the frame returns: the hob, pans, tray and their gaps as shares of the play area, never screen or sheet numbers. Where a sum needs the screen (a tap area, a word pop's place on screen), the frame offers it as an option and kitchen-frame.md says why.",
+   "accept": "frame-counts.mjs: chai-tray 0; boxes.mjs --diff: 0 boxes moved at L1 and L4, four sizes (any moved box is a stop: report it, never re-freeze); the gate's contract part at zero; box rules 10/10"
+  },
+  {
+   "do": "Prove each step with the gate alone on the machine (nothing else runs; ask the orchestrator if unsure): `COOK_TEST_PORT=8954 NJG_LOCK=/tmp/njg-browser-8954.lock node build/tools/tiers/gate.mjs --game chai-tray`. Check `df -h /` before each run (under 2 GB free: delete your own old runs first); delete your run folders when done.",
+   "accept": "two gate passes (one per step) with minutes"
+  },
+  {
+   "do": "Standing: commit on your branch often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never re-freeze anything; never touch a check, a probe or a row's status; kill only processes you started, by PID; nothing a child sees changes in these two steps.",
+   "accept": "build/reports/s20-step12-frame.md with a Proof section, under 500 words"
+  }
+ ]
+}
