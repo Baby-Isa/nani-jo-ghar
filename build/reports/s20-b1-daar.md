@@ -5,8 +5,8 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 ## What changed
 - **Daar** (`daar.js`, `daar.json`): reads only the frame. Its x's are shares of the play area's width (settings `scene.*.x`, `hob.x`: x = 48 + share × 1504, the same places); the hob's group is centred in `Cook.Frame.area(S).play` (the old `centreLift` sums deleted); the frame draws the wash and pulls the band by key; pop top, pill scale and badge floor from `Cook.Frame.view()`/`px()`; pop timings to `scene.popMs`.
 - **Chop** (`chop.js`): board centred in the frame's play area; wash and band the frame's; well done kept off the panel and cog with `Cook.Frame.toSheet`.
-- **Frame option** (`frame.js`, `kitchen-frame.md`): `Cook.Frame.lend(part) -> back()`: a host lends the game it runs part of its play area (shares). Chop gets its room from its host through the frame and the host still says only what to chop (SH-259). Daar lends `scene.chopRoom` (the whole); chop alone and chaat lend nothing; chai never lends.
-- **Outside my files:** `placement.md` gains CHAI-109/110/112 (cited by chai-tray.js since the step 1-2 merge, unplaced, so tier 0 refused every push). Drop that commit if placed otherwise.
+- **Frame option** (`frame.js`, `kitchen-frame.md`): `Cook.Frame.lend(part) -> back()`: a host lends the game it runs part of its play area (shares). Chop gets its room from its host through the frame and the host still says only what to chop (SH-259). Daar lends `scene.chopRoom` (the whole); chop alone, chaat and chai lend nothing.
+- **Outside my files:** `placement.md` gains CHAI-109/110/112 (cited by chai-tray.js, unplaced: tier 0 refused every push).
 
 ## Proof
 - **frame-counts:** daar 0 (was 8), chop 0 (was 7), chai-tray 0.
@@ -15,8 +15,7 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 - **Chaat contract:** the same breaks as base (104 ×2, 128 ×2, 111, 26 ×0-2 on both): unchanged.
 - **Geometry rules:** `boxes.mjs --game daar --rules` cannot run: "No box spec for daar" (a tools change).
 - **Contract, 4 sizes** (`s20-b1-daar-contract`): 16 pages end, 0 page errors; `CONTRACT FAILED: 8 breaks (contract-119 8)`: chop's dish-card flash at L1, advisory, on base too. Daar 0.
-- **Evidence:** the brief names no row; no before folder.
-- **check-change:** CC_LINE
+- **check-change:** stopped at my 50 min limit in its "before" part (base HEAD~1); push, scope pass; play 33.7 min: one blocking, contract-22 (call 2). Not a pass. Evidence: no rows named.
 
 ## Rows (waits for the frame, naming daar)
 | Row | Now | Proof or reason |
