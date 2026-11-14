@@ -132,6 +132,8 @@ const serveEnv = () => {
     return chip;
   }
 
+  const stoves = new Set();
+  const tallyRoom = (pt, host, o) => Kit.stoveAt(pt, host, o);
   const Kit = {
     /** the shared ring and badge colours (the heat ring's; CHT-05: the chop timer uses them too) */
     INK,
@@ -194,7 +196,12 @@ const serveEnv = () => {
       img.shadow = S.contactShadow(img);
       const burners = turn ? [{ x: x + sz.burnerX, y: y + sz.burnerY }] : HOBS[id].burners.map(([fx, fy]) => ({ x: x + fx * sz.w, y: y + fy * sz.h }));
       const left = knobs === "left" && n === 1;
-      return { img, x, y, w: sz.w, h: sz.h, k, n, wide, burners, frontY: turn ? null : y + sz.frontY, frontX: turn ? x + sz.frontX : null, knobs: left ? "left" : "front", pitch: n > 1 ? burners[1].x - burners[0].x : Infinity };
+      const hob = { img, x, y, w: sz.w, h: sz.h, k, n, wide, burners, frontY: turn ? null : y + sz.frontY, frontX: turn ? x + sz.frontX : null, knobs: left ? "left" : "front", pitch: n > 1 ? burners[1].x - burners[0].x : Infinity };
+      // (SH-294: the stoves on the page, for the tally's room over the one a count is on: Kit.stoveAt)
+      stoves.add(hob);
+      if (global.Tally && global.Tally.room !== tallyRoom) global.Tally.room = tallyRoom;
+      img.once("destroy", () => stoves.delete(hob));
+      return hob;
     },
 
     /** A person's round face art: mood neutral (a small smile), happy (it's right) or frown (it's wrong). */
@@ -624,6 +631,50 @@ const serveEnv = () => {
     img.shadow = sh;
     return sh;
   };
+
+  /*
+   * SH-294 (Zafar, 14 Nov: the counting pills "above the teapot, in fact above the whole stove ... starting from ... the closest to the
+   * teapot you're currently working on ... limited to the space directly above the entire stove"): the stove a tally point lies on, in
+   * the host's px, for the shared tally's placing (js/shared/tally.js Tally.room, Tally.row). A game puts its tally on the pan in use
+   * (UI.tallyAt, over its rim; anchor "right": the point at the rim's left, the pan to its right), so the pan is the stove's burner
+   * under that point (a pan's round body is centred on its burner: Kit.hob). The pills sit above the stove where a row fits there
+   * (bottom: the stove's top, less gap), else on the game's own line; never over the cog or past the play area's sides.
+   *   Kit.stoveAt(pt, host, {anchor, gap}) -> {at, span, view, top, bottom, avoid} | null (no stove under the point: the old way)
+   */
+  Kit.stoveAt = function (pt, host, { anchor = null, gap = 8 } = {}) {
+    const UI = Cook.UI;
+    if (!UI || !UI.worldToScreen || !host || !pt) return null;
+    const hr = host.getBoundingClientRect();
+    const toHost = (x, y) => {
+      const p = UI.worldToScreen(x, y);
+      return { x: p.x - hr.left, y: p.y - hr.top };
+    };
+    let best = null;
+    stoves.forEach((h) => {
+      if (!h.img || !h.img.active || !h.img.scene || h.img.visible === false) return;
+      const a = toHost(h.x, h.y);
+      const b = toHost(h.x + h.w, h.y + h.h);
+      const bs = h.burners.map((q) => toHost(q.x, q.y));
+      const lowest = Math.max(...bs.map((q) => q.y));
+      const w = b.x - a.x;
+      // (the point over this stove: within its width, a quarter of it either side for a rim's edge, and no lower than its burners)
+      if (pt.x < a.x - w / 4 || pt.x > b.x + w / 4 || pt.y > lowest || pt.y < a.y - (b.y - a.y)) return;
+      // the burner the point is on: anchor "right", the first one at or right of it; else the nearest
+      const right = anchor === "right" ? bs.filter((q) => q.x >= pt.x - 1).sort((p, q) => p.x - q.x)[0] : null;
+      const at = right || bs.slice().sort((p, q) => Math.abs(p.x - pt.x) - Math.abs(q.x - pt.x))[0];
+      const d = Math.abs(at.x - pt.x);
+      if (!best || d < best.d) best = { d, at: at.x, span: [a.x, b.x], top: a.y };
+    });
+    if (!best) return null;
+    const W = hr.width, H = hr.height;
+    const avoid = Array.from(document.querySelectorAll("#side-cog")).filter((e) => e.offsetParent !== null).map((e) => {
+      const r = e.getBoundingClientRect();
+      return { left: r.left - hr.left - 4, right: r.right - hr.left + 4, top: r.top - hr.top - 4, bottom: r.bottom - hr.top + 4 };
+    });
+    const vt = Math.max(0, -hr.top);
+    return { at: best.at, span: [Math.max(gap, best.span[0]), Math.min(W - gap, best.span[1])], view: [gap, W - gap], top: vt + Math.min(gap, 6), bottom: best.top - 4, avoid };
+  };
+  if (global.Tally) global.Tally.room = tallyRoom;
 
   Cook.Kit = Kit;
 })(window);
