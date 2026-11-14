@@ -342,7 +342,7 @@ def judge(d):
         others = [U(w) for w in words if U(w) != union(T, None) and share_in(U(w), T) < 0.5] + [f["box"] for f in faces if f["box"] not in own_faces and share_in(f["box"], T) < 0.5]
         others += [p for p in (o1.get("panels") or [])]
 
-        def room(side):
+        def room(side, nb_only=False):
             g = 1e9
             for q in others:
                 if side == "l" and q[2] <= T[0] + 1 and min(q[3], T[3]) > max(q[1], T[1]):
@@ -354,13 +354,18 @@ def judge(d):
                 if side == "b" and q[1] >= T[3] - 1 and min(q[2], T[2]) > max(q[0], T[0]):
                     g = min(g, q[1] - T[3])
             edge = {"l": T[0], "t": T[1], "r": vw - T[2], "b": vh - T[3]}[side] - 1
+            if nb_only:
+                return g - LIGHT.get("clear", 2)
             return min(g - LIGHT.get("clear", 2), edge)
         pads = {"l": T[0] - R[0], "t": T[1] - R[1], "r": R[2] - T[2], "b": R[3] - T[3]}
         out["pads"] = {s: round(v) for s, v in pads.items()}
         short, wide = [], []
         hop = 0.12 * (T[3] - T[1]) if thing["kind"] == "word" else 0
         for s, nm in (("l", "left"), ("t", "top"), ("r", "right"), ("b", "bottom")):
-            need = max(0.0, min(want, room(s)))
+            # (SH-292, Zafar 14 Nov: the light centred on its thing, Onboard.litBox's even option: a side trimmed for a neighbour is
+            # matched on the opposite side, so a side needs no more than its opposite's neighbour leaves; the screen's edge is not mirrored)
+            opp = {"l": "r", "r": "l", "t": "b", "b": "t"}[s]
+            need = max(0.0, min(want, room(s), room(opp, True)))
             if pads[s] < need - PAD_TOL:
                 short.append(f"{nm} {round(pads[s])} px (wants {round(need)})")
             if pads[s] > LIGHT["max"] + OVER_PAD + (hop if s == "t" else 0):

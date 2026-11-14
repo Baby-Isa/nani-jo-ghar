@@ -329,6 +329,10 @@ export function check92(r, tl, add) {
       for (const [name, room, near, edge] of sides) {
         if (room >= LIGHT_ROOM_PX || edge) continue;
         if (others.some((o) => near(o) && (name === "left" || name === "right" ? Math.min(o.b, h.b) > Math.max(o.t, h.t) : Math.min(o.r, h.r) > Math.max(o.l, h.l)))) continue;
+        // (SH-292, Zafar 14 Nov: a light sits centred on its thing, so a side trimmed for a neighbour is matched on the opposite side:
+        // a side as tight as its opposite, where the opposite has a neighbour, is the centring, not a light with no room)
+        const opp = sides.find((x) => x[0] === { left: "right", right: "left", top: "bottom", bottom: "top" }[name]);
+        if (opp && room >= opp[1] - 2 && others.some((o) => opp[2](o) && (name === "left" || name === "right" ? Math.min(o.b, h.b) > Math.max(o.t, h.t) : Math.min(o.r, h.r) > Math.max(o.l, h.l)))) continue;
         add("contract-92", e.t, `the light round ${t.id} leaves ${Math.round(room)} px on its ${name} with nothing beside it: at least ${LIGHT_ROOM_PX} px`);
         return;
       }
