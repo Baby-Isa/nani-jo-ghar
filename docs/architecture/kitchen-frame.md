@@ -28,11 +28,13 @@ Every session that touches the frame reads this first and updates it last. A bri
 
 Options: `top` (the band's top; default `St.SHELF.top`), `base` (the shelf line things stand on; a shelf band only), `draw` (draw the wash), `far`, `depth` (the band's; default `D.bg + 1.2`).
 
+**`area.next(o2)`: a game's next screen in the same round** (Sprint 20 batch 1, from corn: the grill, then the flavour). The floor plan again for that screen, read as it lays out, with `o2` over the first area's options; the wash is never drawn again. `o2.top` moves the bottom row's top for that screen where its row is taller (corn's six bowls in two rows on a phone), so its `play` is what is left above it. `o2.band: {ms}` draws the bottom band anew at the new top in the band the first area drew (the game's own: the stone tray's slab alone, its wash already under it; or the stone band and its shelf), fades it in over `ms` (default 380) and removes the old band once it is in. Returns the new area, with its own `next`. `stoneBand` now also keeps what it drew on the area (`band`, `game`) for this. A game with one screen never calls it; chai does not, so chai's boxes cannot move by it.
+
 `Cook.Frame.sheet {x, y, w, h}`: the whole sheet, for a game whose zone is the whole sheet (chai's two zones).
 
 **Why the screen's answers are the frame's:** some sums are about the screen, not the room: a size that must read the same in CSS px on every screen (the shelf's pills, the tray's faces at least 30 px, a word pop's clearance), a tap area or a light's box on the page, a word pop or the serve's faces kept whole inside what the screen shows. A game asks the frame, so no game reads the camera, the view or the window itself, and a change to how the screen is fitted is made in one place.
 
-Who calls it: chai (Sprint 20 steps 1-2: `{top, base, far, draw: true}`, band `shelf`; its hob row, tray and pans are laid out from `play`, its shelf row between `bottom`'s edges).
+Who calls it: chai (Sprint 20 steps 1-2: `{top, base, far, draw: true}`, band `shelf`; its hob row, tray and pans are laid out from `play`, its shelf row between `bottom`'s edges). Corn (batch 1: `{top, base, far, draw: true}`, band `tray`; screen 1's grill-and-tray rectangle and the band's cobs from `play`, 8 in from its sides; screen 2 calls `next`: its bowls' row between `bottom`'s edges, its plates across the new `play` less a side share each side, `plates.side` in its settings).
 
 ## Counts (may only go down)
 `node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12, maani-line 15, corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.

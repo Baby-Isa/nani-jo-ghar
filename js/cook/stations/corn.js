@@ -37,7 +37,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
   const FAR = 2000;
   /** The game's settings (data/stations/corn.json, loaded with the data: Mech.stationData). */
   const SET = () => ((Cook.data && Cook.data.settings) || {})[KEY] || {};
-  const BAND = () => (global.Shelf && global.Shelf.BAND) || { top: 630, bottom: 900, base: 818, chipY: 860, chipH: 46 };
+  /** The shared shelf's band lines (its top, the shelf line, the pill line: js/shared/shelf.js Shelf.BAND, the kit's St.SHELF). */
+  const BAND = () => St.SHELF;
 
   Mech.combined(KEY, {
     station: KEY,
@@ -79,35 +80,27 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
   }
 
   /**
-   * The band along the bottom (the kitchen kit's, one call): every thing on it is top-down, so it is the stone tray (ART-69, SH-243:
-   * St.stoneBand's tray, the shared Shelf.P.tray, where the kit has it; the stone band before that).
-   */
-  function band(S, o) {
-    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { game: KEY })) : null;
-  }
-
-  /**
    * Zafar, 11 Nov (corn's grill screen "looks really bad"; the A2 mock's two-tray set-up): the grill and the cooked tray beside it are
    * ONE tidy rectangle, the tray (the kit's brushed-steel tray, turned upright, never an oval) exactly the grill's height; a cob lifted
    * off the grill rests on the tray as it lay on the grill, upright and the same size (its tray length within the tray's well, a few
    * per cent under its grill length). The rectangle is as big as the worktop that shows allows, with padding, and centred in it as
    * chai's play group is (CHAI-89: between the view's top and the shelf, the heat rings' room above it kept; across, on the view's
    * middle). The raw cobs stay on the stone band, two by two, within 15% of their grill length (contract-114). k: the kit's layout,
-   * for its band rows. -> L in the kit's shape (grill, tray, band, ring).
+   * for its band rows. P: the kitchen frame's play area (Cook.Frame.area: Sprint 20, the room is laid out in it, never in the screen's
+   * or the sheet's numbers). -> L in the kit's shape (grill, tray, band, ring).
    */
-  function rectLayout(k, { thick, count, B, ringRoom = 92, gap = 36, deep = false }) {
+  function rectLayout(k, { thick, count, P, ringRoom = 92, gap = 36, deep = false }) {
     const G = Cook.GrillKit.ART.grill;
     const TI = Cook.GrillKit.ART.tray.inner; // (its well's inset, of its own width and height: turned upright they swap)
     // (ART-80: the deep tray stands as it is drawn, its rims cut to any shape at its width's scale (GK.deepTex): a cob lies inside its
     // rims' inner edges, about 1.6 rims in from each outer edge, its sides' share of the width; the well across inside its walls)
     const DP = Cook.GrillKit.DEEP;
-    const V = Cook.view || {};
-    const pad = 32;
-    const vl = Math.max(56, (V.left != null ? V.left : 0) + pad);
-    const vr = Math.min(1544, (V.right != null ? V.right : 1600) - pad);
-    const viewTop = V.top != null ? V.top : -(V.ey || 0);
-    const spanTop = viewTop + 16;
-    const spanBot = B.top - 28;
+    // (the rectangle and the band's cobs fitted ROW_IN inside the play area's sides, as chai's hob row; its height the play area's)
+    const ROW_IN = 8;
+    const vl = P.x + ROW_IN;
+    const vr = P.x + P.w - ROW_IN;
+    const spanTop = P.y;
+    const spanBot = P.y + P.h;
     const n2 = Math.max(2, count); // (the tray holds at least two cobs' room, so one cob never sits on a sliver)
     const across = (len) => thick * len; // a cob's width
     // (for a grill gh tall: the cob's length on the grill, on the tray, the tray's width)
@@ -265,14 +258,21 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     await St.begin(S, ctx, KEY, "marble");
     const z = Mech.zone(S, ctx, { id: KEY, level });
     const T = (o) => S.track(o);
-    // the kitchen family's scene: the marble's wash above the band, the stone band along the bottom
-    if (Cook.Kit.worktop) Cook.Kit.worktop(S, { top: B.top, far: FAR });
-    const tray = band(S, { top: B.top, base: B.base, far: FAR, depth: D.bg + 1.2 });
+    /* ---------------- the frame: the play area, the stone tray, the worktop ---------------- */
+    // (Sprint 20 batch 1: the kitchen frame's, js/cook/frame.js; corn lays its room out in the play area it returns, a screen at a time:
+    // screen 2 asks the frame again with F.next, docs/architecture/kitchen-frame.md) the marble's wash above the band, the stone band
+    // along the bottom in the band corn's settings name (the tray: every thing on it is top-down, ART-69, SH-243, SH-248)
+    let F = Cook.Frame.area(S, { top: B.top, base: B.base, far: FAR, draw: true });
+    F.stoneBand(S, { game: KEY });
 
     /* ---------------- screen 1: the grill (the grill kit's option 3) ---------------- */
     const gl = lay.grill || {};
     const deep = deepTray && S.textures.exists(GK.ART.deep.key);
-    const L = rectLayout(GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom }), { thick, count, B, ringRoom: gl.ringRoom, gap: gl.gap, deep });
+    const P1 = F.play;
+    const L = rectLayout(
+      GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom, band: { top: F.bottom.y, bottom: F.bottom.y + F.bottom.h }, view: [P1.x, P1.x + P1.w] }),
+      { thick, count, P: P1, ringRoom: gl.ringRoom, gap: gl.gap, deep }
+    );
     const kit = buildRect(S, L);
     // (a test log: which screen is up, for the evidence probes' moments, "life:corn-screen")
     const screenNote = (step) => {
@@ -289,7 +289,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const trayFaces = [...new Set(people.map((q) => q.who))].map((w, i) => {
       // (CK-80: the kit's badge size, as daar's katori and chai's hob: at least 30 CSS px as seen, at most 90 design px; it was a
       // speck at 740x320 and 1280x665)
-      const perPx = Math.max(0.01, (UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const perPx = Math.max(0.01, F.px); // (the screen's scale, the frame's)
       const fs = Math.min(90, Math.max(64, 30 / perPx));
       // (on the tray's top-left rim, its middle just above the rim, so a cob lying across the tray stays clear of it: contract-113)
       const img = T(S.add.image(L.tray.x - L.tray.w / 2 + fs * 0.3 + i * (fs + 8), L.tray.y - L.tray.h / 2 - fs * 0.2, Cook.Kit.badge(S, w)).setDisplaySize(fs, fs).setDepth(D.item + 2));
@@ -679,14 +679,17 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         // the six bowls on the band, each with its word pill (the shared shelf's pill, chai's floor): one row, or on a phone where the
         // pills at their floor can't share one row, two rows of three on a taller tray
         const lb = layBowls();
-        // the plates, one a person, across the room above the band; each one's face circle at its upper left
+        // the plates, one a person, across this screen's play area (the frame's, above its bottom row); each one's face circle at its
+        // upper left. (Sprint 20: was the sheet's x 150-1450 and its y 16; now the play area less its sides' share, plates.side)
+        const P2 = F.play;
         const n = count;
-        const view = [150, 1450];
+        const side = P2.w * (pl.side != null ? pl.side : 0.068);
+        const view = [P2.x + side, P2.x + P2.w - side];
         const gap = pl.gap || 70;
         // (the plates above the bowls, their light's margin clear of the first row: contract-92)
-        const room = lb.clear - lb.room - 16;
+        const room = lb.clear - lb.room - P2.y;
         const d = Math.min(pl.d || 400, (view[1] - view[0] - (n - 1) * gap) / n, room);
-        const y = 16 + d / 2 + (room - d) / 2;
+        const y = P2.y + d / 2 + (room - d) / 2;
         const x0 = (view[0] + view[1]) / 2 - ((n - 1) * (d + gap)) / 2;
         people.forEach((q, i) => {
           const x = x0 + i * (d + gap);
@@ -710,8 +713,13 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             const c = inTray[i];
             q.cob = c.img;
             c.img.setDepth(D.item + 0.3);
-            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it; s19-games-2, contract-114: never under 15% less)
-            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len: Math.min(d * 0.95, Math.max(d * (pl.cob || 0.84), trayLen / 1.14)), ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
+            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it; s19-games-2, contract-114: never under 15% less.
+            // Sprint 20, corn's call: where the plate is shorter than that (a phone's two rows of bowls), the cob keeps its length and
+            // reaches a little past the plate's rim, as a real cob on a small plate, up to plates.reach of the plate; was cut to 0.95 of
+            // the plate, 23-44% under its tray size at every level, 1280x665 and 740x320, in the gate of 14 Nov)
+            const keep = trayLen / 1.14;
+            const len = keep <= d * 0.95 ? Math.max(d * (pl.cob || 0.84), keep) : Math.min(keep, d * (pl.reach || 1.15));
+            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len, ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
           })
         );
         if (kit.tray && kit.tray.active) {
@@ -737,22 +745,16 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
      */
     function layBowls() {
       const Sh = global.Shelf;
-      let ppw = 1;
-      try {
-        ppw = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
-      } catch (e) {
-        ppw = 1;
-      }
+      const ppw = F.px || 1; // (the screen's scale, the frame's: the pills' floor is in CSS px)
       // (the floor: the shared shelf's pill rule, and the kitchen kit's canvas text floor, 14 CSS px on the canvas's own scale, TXT-05)
       const want = Math.max(1, Sh.pillWant(ppw), Cook.Kit && Cook.Kit.textFloor ? Cook.Kit.textFloor(S, (Sh.PILL || {}).text || 25) : 1);
       const PH = (Sh.PILL || {}).h || 46;
       const OL = (global.Onboard && global.Onboard.LIGHT) || { share: 0.12, min: 8, max: 16, clear: 2 };
       const room = (sz) => Math.max(Sh.pillGap(ppw), (Math.max(OL.min, Math.min(OL.max, OL.share * sz * ppw)) + OL.clear + 4) / ppw);
-      const V = Cook.view || {};
-      const vl = Math.max(V.left != null ? V.left : 0, -400);
-      const vr = Math.min(V.right != null ? V.right : 1600, 2000);
-      const avail = vr - vl - 2 * 30;
-      const mid = (vl + vr) / 2;
+      // (the bowls' row is the frame's bottom row: between its edges, about its middle)
+      const R = F.bottom;
+      const avail = R.w;
+      const mid = R.x + R.w / 2;
       // the bowls and pills first (their pills' own widths are measured), placed below
       ids.forEach((id) => {
         const img = T(S.add.image(mid, B.base, `cn4-${id}`).setDepth(D.item).setAlpha(0));
@@ -773,9 +775,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const gapRows = room(size);
       // (each row: the bowl, a small gap, its pill; the rows a light's margin apart; the last row's pill on the band's own pill line)
       const rowH = size + 6 + pillH;
-      const lastPill = Math.min(B.chipY, 896 - pillH / 2 - 4);
+      const lastPill = Math.min(B.chipY, R.y + R.h - 4 - pillH / 2 - 4); // (4 above the row's foot)
       const pillYs = rows.map((r, i) => lastPill - (rows.length - 1 - i) * (rowH + gapRows));
-      const top = two ? pillYs[0] - pillH / 2 - 6 - size - 18 : B.top;
+      const top = two ? pillYs[0] - pillH / 2 - 6 - size - 18 : R.y;
       rows.forEach((row, ri) => {
         let x = mid - rowW(row, size) / 2;
         row.forEach((id) => {
@@ -794,18 +796,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           S.tappable(img, () => tapBowl(img));
         });
       });
-      if (two && Sh.P && Sh.P.tray) {
-        // the taller tray for the two rows: the shared stone tray (as the kitchen kit draws it), in place of the band's
-        const view = () => {
-          const v = Cook.view || {};
-          return { left: v.left != null ? v.left : 0, right: v.right != null ? v.right : 1600, bottom: v.bottom != null ? v.bottom : 900 };
-        };
-        const t2 = Sh.P.tray(S, { top, view, depth: D.bg + 1.2 });
-        if (t2) {
-          t2.setAlpha(0);
-          S.tweens.add({ targets: t2, alpha: 1, duration: mo.screenMs || 380, onComplete: () => tray && tray.active && tray.destroy() });
-        }
-      }
+      // this screen's floor plan, the frame's (its option for a game's next screen, F.next): where the two rows need a taller tray,
+      // the bottom row's top moves up to them and the band is drawn anew there, faded in over the first screen's; the play area left
+      // above it is the plates'
+      F = F.next(two ? { top, band: { ms: mo.screenMs || 380 } } : {});
       // (the first row's top, and the widest light margin's room above it, for the plates)
       return { top, clear: pillYs[0] - pillH / 2 - 6 - size, room: (OL.max + OL.clear + 4) / ppw };
     }
@@ -946,8 +940,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           const cobB = q.cob && q.cob.active ? q.cob.getBounds() : null;
           const avoid = plates.filter((p) => p !== plates[i]).map((p) => p.getBounds()).concat(people.filter((x) => x !== q && x.face).map((x) => x.face.getBounds()));
           if (cobB) avoid.push({ x: cobB.x, y: cobB.y, right: cobB.right, bottom: cobB.bottom });
-          const V = Cook.view || {};
-          const at = Cook.Kit.praiseSpot({ x: q.at.x, y: q.at.y, w: q.at.d, h: q.at.d }, size, { avoid, view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, B.top] });
+          // (kept on what the screen shows, above this screen's bottom row: the frame's view and row)
+          const V = F.view();
+          const at = Cook.Kit.praiseSpot({ x: q.at.x, y: q.at.y, w: q.at.d, h: q.at.d }, size, { avoid, view: [V.left, V.top, V.right, F.bottom.y] });
           return [await serve.review(S, { who: q.who, ok: !wrong.length, x: at.x, y: at.y, size, side: at.side, line: praise ? undefined : false })];
         },
         oops: () => z.oops(),
