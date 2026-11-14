@@ -957,12 +957,33 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     return new Promise((res) => {
       if (!Onboard || !Onboard.light) return res(false);
       let quiet = null;
+      // (contract-79, chai's L3 #hint at 740x320, the gate of 14 Nov 15:48: the kitchen had been still for seconds, the child tapped the
+      // item in, and the next 60 ms look lit the card while the tap's own moves, Nani's box and the count chip's bump, were only just
+      // starting, too new to be seen. A still spell starts again at every touch, and once it is long enough it is looked at once more a
+      // drawn frame later, so whatever started in that same moment is seen first and the light waits for it to end)
+      let touched = 0;
+      let armed = null;
+      const onTouch = () => (touched = Date.now());
+      if (global.document && global.document.addEventListener) global.document.addEventListener("pointerdown", onTouch, true);
+      const done = (v) => {
+        if (global.document && global.document.removeEventListener) global.document.removeEventListener("pointerdown", onTouch, true);
+        res(v);
+      };
+      const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(() => global.requestAnimationFrame(f)) : (f) => setTimeout(f, 34);
       const go = () => {
-        if ((o.quitIf && o.quitIf()) || Date.now() > until) return res(false);
+        if ((o.quitIf && o.quitIf()) || Date.now() > until) return done(false);
         const still = !busy();
         if (!side() && still) quiet = quiet == null ? Date.now() : quiet;
         else quiet = null;
-        if (quiet == null || Date.now() - quiet < (R ? R.pointAfterMoveMs() : 0) / speed()) return void setTimeout(go, 60);
+        if (quiet != null && touched > quiet) quiet = touched;
+        if (quiet == null || Date.now() - quiet < (R ? R.pointAfterMoveMs() : 0) / speed()) {
+          armed = null;
+          return void setTimeout(go, 60);
+        }
+        if (armed !== quiet) {
+          armed = quiet;
+          return void raf(go);
+        }
         // SH-178 (Zafar, 1 Nov: "on level two, it highlighted the whole order card, not the next item ... It should highlight just the
         // next item in the order card"): the next item's card is brought whole into its row before it is lit, every time; the whole
         // order card only when no item card is named, or the row cannot show it whole by the time the wait gives up
@@ -1001,7 +1022,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return !it || keyOf(it) !== k0 || (it.classList && it.classList.contains("done"));
         };
         const h = Onboard.light(lit, { look: "", pad: 4, kit: true, pass: true, quitIf: () => endIf() || moved(), note: o.note, box: onItem ? cardBox : undefined });
-        h.done.then(() => res(true));
+        h.done.then(() => done(true));
       };
       go();
     });
