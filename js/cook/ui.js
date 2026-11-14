@@ -3234,7 +3234,11 @@
         c.height = Math.max(1, Math.round(im.naturalHeight * k));
         c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
         THUMBS.set(key, c.toDataURL("image/png"));
-        if (mission) renderOrder();
+        // (contract-83, chai's lab L4 at 740x320, 14 Nov: a big card's copy, 200 px and up, is never drawn on the order card, but its
+        // load redrew the whole card 10-20 ms after an item popped, in the middle of its row's glide to the item's slot; the redraw
+        // left the row unscrolled, so the card flew to the slot's place outside the panel, beside Nana's head. Only a copy the
+        // order card draws redraws it)
+        if (mission && N < 200) renderOrder();
       } catch (e) {
         /* no picture: the row keeps its words */
       }

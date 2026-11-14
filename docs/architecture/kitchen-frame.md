@@ -16,7 +16,23 @@ Every session that touches the frame reads this first and updates it last. A bri
 - "Shabash!" sits where chai has it; the wrong-order pop-up only when an order is wrong; a tap never skips a due lesson (decision 22, built in Sprint 21).
 
 ## The frame's API
-(None yet. Step 1 writes the first function here: what it returns, its options, who calls it.)
+`js/cook/frame.js` (loaded by `js/cook/kitchen-kit.js`). Sheet units throughout (the 1600 x 900 drawing sheet).
+
+**`Cook.Frame.area(S, opts)`**: the floor plan, read once as a game lays out. Returns:
+- `play {x, y, w, h}`: the worktop the game furnishes: 48 in from the sheet's sides, from 16 below the view's top to 28 above the bottom row. The game lays out inside it, from its edges and size.
+- `bottom {x, y, w, h}`: the bottom row: from the band's top to the view's foot, 40 in from the view's sides.
+- `pills`: the count pills' room over the game's main thing (50 CSS px, so the screen's), in sheet units.
+- `stoneBand(S, {game})`: the bottom band at the frame's top, shelf line and depth. The game calls it with its own key, so its settings name the band (`shelf` or `tray`): SH-248 wants the game's own code to pull it (`build/core/band.test.mjs`).
+- `wash`: the worktop's wash, drawn when `draw` is set.
+- The screen's answers, live (also on `Cook.Frame`): `px` (screen px per sheet unit), `view()` (the part of the sheet on screen, `{left, top, right, bottom}`), `toScreen(x, y)`, `toSheet(sx, sy)`.
+
+Options: `top` (the band's top; default `St.SHELF.top`), `base` (the shelf line things stand on; a shelf band only), `draw` (draw the wash), `far`, `depth` (the band's; default `D.bg + 1.2`).
+
+`Cook.Frame.sheet {x, y, w, h}`: the whole sheet, for a game whose zone is the whole sheet (chai's two zones).
+
+**Why the screen's answers are the frame's:** some sums are about the screen, not the room: a size that must read the same in CSS px on every screen (the shelf's pills, the tray's faces at least 30 px, a word pop's clearance), a tap area or a light's box on the page, a word pop or the serve's faces kept whole inside what the screen shows. A game asks the frame, so no game reads the camera, the view or the window itself, and a change to how the screen is fitted is made in one place.
+
+Who calls it: chai (Sprint 20 steps 1-2: `{top, base, far, draw: true}`, band `shelf`; its hob row, tray and pans are laid out from `play`, its shelf row between `bottom`'s edges).
 
 ## Counts (may only go down)
-`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29, eggs 12, maani-line 15, corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
+`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12, maani-line 15, corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.

@@ -1001,7 +1001,19 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           return !it || keyOf(it) !== k0 || (it.classList && it.classList.contains("done"));
         };
         const h = Onboard.light(lit, { look: "", pad: 4, kit: true, pass: true, quitIf: () => endIf() || moved(), note: o.note, box: onItem ? cardBox : undefined });
-        h.done.then(() => res(true));
+        // (contract-79, chai's L3 #hint, the gates of 14 Nov 15:48 and 18:58: the card was lit, then Nani's help came over it (one light at
+        // a time: this one waits under hers, js/shared/onboard.js draw); the child's press answered hers, and this one came back in that
+        // same moment, its item just put in and the press's own moves (her box, the count chip's bump) only starting. Its pointer has
+        // given way: a press while it waits under another light ends it, before the press does anything)
+        const layer = h.layer;
+        const onPress = () => {
+          if (layer && layer.__buried) h.close();
+        };
+        if (global.document && global.document.addEventListener) global.document.addEventListener("pointerdown", onPress, true);
+        h.done.then(() => {
+          if (global.document && global.document.removeEventListener) global.document.removeEventListener("pointerdown", onPress, true);
+          res(true);
+        });
       };
       go();
     });
