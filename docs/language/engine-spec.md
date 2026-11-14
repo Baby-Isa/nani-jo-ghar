@@ -2,7 +2,7 @@
 
 ## Sources and where things live
 
-- Known grammar: `docs/language/grammar-notes.md`; the words: `docs/language/lexicon.md`; the answered and open rounds: `docs/language/mum-questions/` (see its README); the family recordings: `data/family-audio.json`.
+- Known grammar: `docs/language/grammar-notes.md`; the words: `docs/language/lexicon.md`; every question for Mum, answered and open: the one recording sheet, `docs/language/recording-sheet.docx` from `data/lang/recording-sheet.json` (Zafar, 14 Nov; the old rounds are in `docs/archive/language/mum-questions/`); the family recordings: `data/family-audio.json`.
 - **Outside material and research: `docs/language/sources/`** (see its `README.md`): Gemini's two blueprints (AI-generated, unverified), Claude's 21-category grammar checklist, the game inventory (every sentence frame, verb, noun and English placeholder the game uses today) and the paused Round 5 plan notes. **Nothing there is evidence on its own.** Its comparison with what Mum has told us, and the real published paper (Keine, Nisar and Bhatt 2014, on defective agreement in Kutchi), are summarised in that README.
 
 ## Zafar's requirements (30 Sept)
