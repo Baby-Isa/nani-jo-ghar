@@ -20,7 +20,30 @@ GATE_LINES
 - **Evidence:** the spec names no rows (`rows: []`), so there is no before folder and no after run.
 
 ## Parked rows (every "waits for the frame" row naming maani)
-ROWS_TABLE
+Its check is the row's contract check over maani's gate run (`gate-20261114T2128-maani-line`: 14 flows, L1-L4, 740x320 and 1280x665).
+
+| Row | State now | Proof or reason |
+|---|---|---|
+| CK-112 | label and plates built; card part: **kit** | pill-clear passes at four sizes; plates at full strength. The L4 order-lesson card at 740x320 sits under Nana's bubble, bottom 10 px from the foot: the kit's order pop (`ui.js`) |
+| SH-238 | built for maani | contract-103: 0 (maani moves on by itself; `UI.done` shows no tick) |
+| SH-239 | built for maani | contract-108: 0 |
+| SH-236 | passes its check; see contract-112 below | contract-106: 0 |
+| SH-237 | built for maani | contract-107: 0 |
+| SH-254 | built for maani | contract-113: 0; overlap rule passes at praise, four sizes |
+| SH-256 | built for maani | contract-114: 0 (a lone maani fills the plate's floor) |
+| SH-272 | passes for maani | contract-127: 0 |
+| SH-274 | passes for maani | contract-125: 0 |
+| SH-278 | passes for maani | contract-126: 0 |
+| SH-248 | built | the tray in maani's settings; `F.stoneBand(S, {game})`; `band.test.mjs` passes |
+| SH-245 | settled by the chain at the accepted size | **call 2** |
+| SH-255 | pills built (Kit.fitPills); plates without pills | **call 1** (MAA-25) |
+| MAA-25 | waits | **call 1** |
+| MAA-20 | waits: kit and Zafar | the roll demo is `coach.js`; both looks on a lab page, then his pick |
+| SH-119 | waits: kit | one finger: `coach.js` and `roll.js` |
+| SH-271 | waits: kit, no check yet | the light's blink is `onboard.js` |
+| SH-279 | waits: Sprint 21's round | the Shabash bubble is the kit's serve |
+| SH-227 | waits: kit | the 6 Nov card for every game: `ui.js` |
+
 
 ## Calls for Zafar
 1. **MAA-25:** move maani's two plates off the stone tray onto the worktop as a third station right of the hob, leaving the tray to the dough heaps? **Recommend yes** (chai keeps its vessels on the worktop; the chain takes a third share).
