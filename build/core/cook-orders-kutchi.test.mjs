@@ -43,7 +43,7 @@ test("LNG-17: the join is left out, the second kind says 'ne', a single tomato i
   const L = Cook.Lang;
   const row = (parts) => ({ parts, ids: parts.filter((p) => typeof p === "string"), phrase: L.phrase(parts) });
   const head = { ids: ["cook-chai"], line: L.line("need", L.phrase(["cook-chai"])) };
-  assert.equal(L.plain(Cook.Order.sentence(head, [row(["cook-dudh"]), row([3, "cook-khun"])], { join: "with" })), "Muke chai khape, dudh, trae khun.");
+  assert.equal(L.plain(Cook.Order.sentence(head, [row(["cook-dudh"]), row([3, "cook-khun"])], { join: "with" })), "Muke chai khapeti, dudh, trae khun."); // (decision 27, Zafar 14 Nov: the order's agreeing khapeti)
   assert.equal(L.plain(L.phrase([1, "veg-03"])), "hakro tameto");
   // the plural was the engine's gap (Q14) until Mum said trae tameta (12 Nov, grammar-notes §64); the recipes' one-tomato
   // limit below stays until Zafar lifts it (Zafar, 20 Oct: "until she answers, daal and chaat ask for one tomato only")

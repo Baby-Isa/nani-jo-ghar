@@ -25,7 +25,8 @@ test("CHAI-104: the headline's amount row rides the headline part; nothing said 
         assert.ok((headPart.rows || []).includes(amt), `L4: the amount is one of the headline's rows: ${plain}`);
         assert.equal(partRows.filter((r) => r === amt).length, 1, "the amount is in one part only");
         assert.equal((plain.match(/\badh\b/gi) || []).length, 1, `adh said once: ${plain}`);
-        assert.match(plain, /^Muke adh chai khape[,.]/, `the sentence starts with the headline: ${plain}`);
+        assert.match(plain, /^Muke adh chai khapeti[,.]/, // (decision 27, Zafar 14 Nov: the order's agreeing khapeti)
+           `the sentence starts with the headline: ${plain}`);
       }
     }
   }

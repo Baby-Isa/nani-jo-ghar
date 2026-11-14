@@ -54,7 +54,8 @@ function lineNeeds(S, game) {
     for (const smp of samples) {
       const m = subst(g.meaning, smp);
       if (smp === null && JSON.stringify(g.meaning).includes('"$x"')) continue;
-      const lbl = smp ? `${label}, with ${smp}` : label;
+      // (a sample is a word id, or an Item when the count matters: decision 27's plural endings)
+      const lbl = smp ? `${label}, with ${typeof smp === "object" ? [smp.n, smp.kind].filter((x) => x != null).join(" ") : smp}` : label;
       if (["Need", "WantIn", "NotNeed"].includes(m.fn)) {
         needs.push({ label: `${lbl} (informal)`, meaning: m, ctx: { register: "informal" } });
         needs.push({ label: `${lbl} (polite)`, meaning: m, ctx: { register: "polite" } });
