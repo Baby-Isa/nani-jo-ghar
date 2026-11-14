@@ -412,16 +412,18 @@ export function chaiExtra(asked, extras) {
       Cook.save.seenStation[seenKey] = true;
     };
 
-    /* ---------- the scene: the softened marble, the shelf band ---------- */
-    // §7: soften the marble so it doesn't compete with the objects
-    // (drawn past the design box: the stage fill shows more worktop above and at the sides, Cook.view)
+    /* ---------- the frame: the play area, the shelf band, the worktop ---------- */
+    // (Sprint 20 step 1: the play area's lines and the wash and band under it are the kitchen frame's, js/cook/frame.js; chai lays its
+    // room out in the play area it returns, docs/architecture/kitchen-frame.md)
+    // §7: soften the marble so it doesn't compete with the objects (the frame's wash, drawn past the design box)
     // SH-108 reopened (Zafar, 27 Oct: "chai has the old stand in background, not the modern countertop"): a lighter wash, so the
     // painted marble reads as marble on a phone (at 0.5 it read as the old plain stand-in)
     // (Zafar, 5 Nov: the worktop and the stone "should just sing off each other": the wash in the stone's undertone, St.worktopWash)
-    Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR }); // (the kitchen kit's wash: 0.18 over the worktop at D.bg + 1)
     // ART-41 (Zafar, 5 Nov): the band in his stone, with the stone shelf the jars stand on (St.stoneBand; was the parchment fill
-    // and a grey plank line under each group; its 3 px top shade is the band's own now, SAM-29)
-    St.stoneBand(S, { top: SHELF_TOP, base: BASE, far: FAR, depth: D.bg + 1.2, game: STATION14 });
+    // and a grey plank line under each group; its 3 px top shade is the band's own now, SAM-29); chai's band is the shelf (its settings)
+    const F = Cook.Frame.area(S, { top: SHELF_TOP, base: BASE, far: FAR, draw: true });
+    F.stoneBand(S, { game: STATION14 });
+    const P = F.play;
 
     /* ---------- the hob: one burner per person ---------- */
     const hobW = Cook.Kit.HOB.w[n - 1];
@@ -431,9 +433,9 @@ export function chaiExtra(asked, extras) {
     const k0 = Math.min(HOB_K, room - TRAY_D >= hobW * HOB_K ? HOB_K : Math.max((room - TRAY_D) / hobW, room / (hobW + hobH0 * 0.78)));
     // CHAI-08 (v2 mock-up, S05-C): hob and tray about 15% bigger and lower, where the row and the stage's height allow
     // (a taller stage's extra worktop goes into size, not into empty marble under the hob)
-    const ey = (Cook.view && Cook.view.ey) || 0;
-    const SHELF_GAP = 28;
-    const k = Math.max(k0, Math.min(k0 * 1.15, room / (hobW + hobH0 * 0.78), (SHELF_TOP + ey - SHELF_GAP - 40) / hobH0));
+    // (the hob's top kept HOB_TOP below the play area's top: the height it may take is the play area's less that)
+    const HOB_TOP = 24;
+    const k = Math.max(k0, Math.min(k0 * 1.15, room / (hobW + hobH0 * 0.78), (P.h - HOB_TOP) / hobH0));
     const hobH = hobH0 * k;
     let trayD = Math.min(TRAY_D * (k / k0), hobH * 0.78);
     // Sprint 11 (turn 0): each pan's handle lies level, so a pan is sized to clear the next one's rim with its handle (a
@@ -445,20 +447,17 @@ export function chaiExtra(asked, extras) {
     const panR0 = Math.min(Math.min(PAN_R, pitch0 * 0.4) * (k / HOB_K), (pitch0 - 12) / (0.92 * (HANDLE_REACH + 1)));
     const overL = Math.max(0, panR0 * 0.92 * HANDLE_REACH + 14 - HS.burners[0][0] * hobW * k);
     const gap = GAP;
-    trayD = Math.min(trayD, Math.max(TRAY_D * 0.72, 1600 - 2 * 48 - overL - hobW * k - gap));
+    trayD = Math.min(trayD, Math.max(TRAY_D * 0.72, P.w - overL - hobW * k - gap));
     const total = overL + hobW * k + gap + trayD;
-    const hobX = Math.max(48 + overL, (1600 - total) / 2 + overL);
+    const hobX = Math.max(P.x + overL, P.x + (P.w - total) / 2 + overL);
     // (Zafar, 5 Nov evening, his laptop: "is there a reason why the stove and the tea tray and the general gameplay area is centred where
     // it is height-wise? ... a lot more space on top ... it would just feel more natural if it was centred in the space ... both X and Y
     // axis, including the gameplay area ... big enough to accommodate all the items that will or currently appear"): the play group
-    // (the hob, the tray and the room the count pills take above the hob) is centred in the worktop that shows, between the view's top
-    // and the shelf; was: low, just above the shelf, so a taller stage's extra worktop all went above it
-    const viewTop = (Cook.view && Cook.view.top != null ? Cook.view.top : -ey);
-    const ppw = (() => { try { return UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1; } catch (e) { return 1; } })();
-    const PILL_ROOM_Y = 50 / ppw; // (a count pill, 40 CSS px, and its gap above the hob's rim: js/shared/tally.js)
-    const spanTop = viewTop + 16;
-    const spanBot = SHELF_TOP - SHELF_GAP;
-    const hobY = Math.min(spanBot - hobH, Math.max(viewTop + 40, spanTop + (spanBot - spanTop - (hobH + PILL_ROOM_Y)) / 2 + PILL_ROOM_Y));
+    // (the hob, the tray and the room the count pills take above the hob) is centred in the worktop that shows, the frame's play area
+    // between the view's top and the shelf; was: low, just above the shelf, so a taller stage's extra worktop all went above it
+    const ppw = F.px; // (the screen's scale, the frame's: the shelf's pills are sized in CSS px)
+    const PILL_ROOM_Y = F.pills; // (a count pill, 40 CSS px, and its gap above the hob's rim: js/shared/tally.js, the frame's room)
+    const hobY = Math.min(P.y + P.h - hobH, Math.max(P.y + HOB_TOP, P.y + (P.h - (hobH + PILL_ROOM_Y)) / 2 + PILL_ROOM_Y));
     // the shared kitchen kit's hob: one burner per person (the burner rule)
     const kHob = Cook.Kit.hob(S, { n, x: hobX, y: hobY, k });
     const hob = kHob.img;

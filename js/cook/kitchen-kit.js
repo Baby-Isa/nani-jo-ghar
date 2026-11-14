@@ -38,6 +38,8 @@
 import { Cook as CookNS } from "./ns.js";
 import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationFrame, cancelAnimationFrame } from "./life.js";
 import { NjgServe } from "../shared/serve.js";
+// (the kitchen frame, Sprint 20: the play area and the bottom row every stove game lays out in, docs/architecture/kitchen-frame.md)
+import "./frame.js";
 
 // (the serve's needs, Cook's: the praise line said is shown in Nani's box as it is said, SH-252)
 const serveEnv = () => {
