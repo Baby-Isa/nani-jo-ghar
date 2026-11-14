@@ -178,15 +178,11 @@
    "kMax": 1,
    "rk": 0.36,
    "gap": 44,
-   "top": 16,
-   "above": 26,
    "handleMin": 26,
-   "_s19c": "S19 wave C (CK-66, SH-246, SH-247; Zafar 9 Nov): chai's hob (the kit's two-burner hob), placed by js/cook/stations/eggs.js layout(): as big as the row allows (kMax its largest scale) with the tray keeping its least width (tray.min), the group centred in the worktop that shows (Cook.view: the design box less margin[0] at each side, or the view less margin[1] where the stage shows less; above the band, with a taller stage's extra worktop up to extraMax, as chai's; top, above: its margins); rk: each vessel's rim radius over the burners' pitch; gap: hob to tray; handleMin: the least angle (degrees above the level) of the pan's handle, turned up and to the left between the two vessels, clear of the pot's rim. The knob below each pan (the knob rule: two pans at every level).",
-   "margin": [
-    56,
-    24
-   ],
-   "extraMax": 320,
+   "_s19c": "S19 wave C (CK-66, SH-246, SH-247; Zafar 9 Nov): chai's hob (the kit's two-burner hob), placed by js/cook/stations/eggs.js layout(): as big as the row allows (kMax its largest scale) with the tray keeping its least width (tray.min), the group centred in the kitchen frame's play area (Sprint 20 batch 1, Cook.Frame.area: inset in from its sides, and viewIn from the view's sides where the stage shows less of it; a taller stage's extra worktop going into size up to hMax of height, its bottom kept, as chai's; its top and the gap above the band are the frame's); rk: each vessel's rim radius over the burners' pitch; gap: hob to tray; handleMin: the least angle (degrees above the level) of the pan's handle, turned up and to the left between the two vessels, clear of the pot's rim. The knob below each pan (the knob rule: two pans at every level).",
+   "inset": 8,
+   "viewIn": 24,
+   "hMax": 906,
    "cog": 72,
    "_cog": "the tray never goes up under the grown-ups' cog in the view's top right corner: its column's height in page px"
   },

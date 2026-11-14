@@ -1,0 +1,288 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "74268de8f2ca4ad54d02b4ecdd1c87a7479d218d",
+ "dirty": false,
+ "date": "2026-11-14T22:24:24.846Z",
+ "base": "12481b25e1e1012fd6b2c5f92d69aeb31c542fb2",
+ "games": [
+  "cook:eggs"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:eggs": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-74268de8f2",
+  "before | after": "build/screenshots/tiers/change-74268de8f2/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-74268de8f2-eggs/films/cook-eggs@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-74268de8f2/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card flashed only 100 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card flashed only 89 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#mistake@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card flashed only 94 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#mistake@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs#hint@740x320 (after order-card-big)",
+   "what": "cook:station1:marble (eggs at L1): 2 decoys on the shelf (n.egg*, cook-dudh*; * not in the order), the table wants 1",
+   "blocks": true
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#hint@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card flashed only 104 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#hint@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#takeback@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card flashed only 112 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#takeback@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card flashed only 99 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-74268de8f2/logs/play.log",
+   "what": "CONTRACT FAILED: 9 breaks (contract-119 8, contract-37 1); CHECK FAILED: 16 new findings, 0 flows do not reach their end, 0 new page errors, 9 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-74268de8f2/logs/before.log",
+   "what": "CONTRACT FAILED: 8 breaks (contract-119 8); CHECK FAILED: 16 new findings, 0 flows do not reach their end, 0 new page errors, 8 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "rows",
+   "where": "build/screenshots/tiers/change-74268de8f2/logs/rows.log",
+   "what": "SH-277: no evidence spec",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "rows-judge",
+   "where": "build/screenshots/tiers/change-74268de8f2/logs/rows-judge.log",
+   "what": "No before run for brief s20-b1-eggs: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-b1-eggs.json first.",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 8,
+  "before": 8,
+  "breaksAfter": 9,
+  "breaksBefore": 8
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 2.2 min; build/reports/tiers/push-74268de8f2.md",
+   "tail": [
+    "checks ... pass (2.2 min)",
+    "check-push: PASSED in 2.2 min; build/reports/tiers/push-74268de8f2.md"
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/push.log",
+   "minutes": 2.2
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s20-b1-eggs.json 12481b25e1e1012fd6b2c5f92d69aeb31c542fb2..HEAD",
+   "status": "pass",
+   "code": 0,
+   "line": "scope: all 1 files are \"s20-b1-eggs: eggs joins the kitchen frame\"'s own",
+   "tail": [
+    "scope: all 1 files are \"s20-b1-eggs: eggs joins the kitchen frame\"'s own"
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:eggs (4 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:eggs,cook:eggs#mistake,cook:eggs#hint,cook:eggs#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-74268de8f2",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 9 breaks (contract-119 8, contract-37 1); CHECK FAILED: 16 new findings, 0 flows do not reach their end, 0 new page errors, 9 contract breaks",
+   "tail": [
+    "BREAK contract-119 cook:eggs#takeback L1 @ 740x320 [after start c04-bubble.png] 7s: the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card flashed only 112 ms beside their bubble",
+    "BREAK contract-119 cook:eggs#takeback L1 @ 930x430 [after start c04-bubble.png] 6.8s: the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card flashed only 99 ms beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): eggs 106/110",
+    "CONTRACT FAILED: 9 breaks (contract-119 8, contract-37 1)",
+    "CHECK FAILED: 16 new findings, 0 flows do not reach their end, 0 new page errors, 9 contract breaks",
+    "22:29:52 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-74268de8f2/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/play.log",
+   "minutes": 3.3
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 12481b25e1 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:eggs,cook:eggs#mistake,cook:eggs#hint,cook:eggs#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-12481b25e1-74268de8f2",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 8 breaks (contract-119 8); CHECK FAILED: 16 new findings, 0 flows do not reach their end, 0 new page errors, 8 contract breaks",
+   "tail": [
+    "BREAK contract-119 cook:eggs#takeback L1 @ 740x320 [after start c04-bubble.png] 6.9s: the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card flashed only 104 ms beside their bubble",
+    "BREAK contract-119 cook:eggs#takeback L1 @ 930x430 [after start c04-bubble.png] 7.4s: the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card flashed only 94 ms beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): eggs 106/110",
+    "CONTRACT FAILED: 8 breaks (contract-119 8)",
+    "CHECK FAILED: 16 new findings, 0 flows do not reach their end, 0 new page errors, 8 contract breaks",
+    "22:33:04 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/12481b25e1/build/screenshots/sandbox/tiers-before-12481b25e1-74268de8f2/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/before.log",
+   "minutes": 3.2
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/12481b25e1/build/screenshots/sandbox/tiers-before-12481b25e1-74268de8f2 build/screenshots/sandbox/tiers-change-74268de8f2 build/screenshots/tiers/change-74268de8f2/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 172 before|after pictures, 17 not paired; build/screenshots/tiers/change-74268de8f2/before-after/index.html",
+   "tail": [
+    "pairs: 172 before|after pictures, 17 not paired; build/screenshots/tiers/change-74268de8f2/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/pairs.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "rows",
+   "what": "the brief's rows, after (evidence.mjs --after --brief; the before was played at launch)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s20-b1-eggs.json",
+   "status": "fail",
+   "code": 2,
+   "line": "SH-277: no evidence spec",
+   "tail": [
+    "--brief build/tools/ops/specs/s20-b1-eggs.json refused: every row it names needs a probe in build/sandbox/data/evidence.json first:",
+    "SH-277: no evidence spec"
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/rows.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "rows-judge",
+   "what": "the judge's before|after batch for Fable (evidence.mjs --judge --brief)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --judge --brief build/tools/ops/specs/s20-b1-eggs.json",
+   "status": "report",
+   "code": 2,
+   "line": "No before run for brief s20-b1-eggs: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-b1-eggs.json first.",
+   "tail": [
+    "No before run for brief s20-b1-eggs: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-b1-eggs.json first."
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/rows-judge.log",
+   "minutes": 0
+  },
+  {
+   "id": "film:eggs",
+   "what": "a first-play film: cook:eggs as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:eggs",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:eggs --sizes 740x320 --no-sheets --run-id tiers-film-74268de8f2-eggs",
+   "status": "pass",
+   "code": 0,
+   "line": "22:33:38 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-74268de8f2-eggs/summary.md",
+   "tail": [
+    "gap     1x  Muke hakro tarelo indo khapeto.  [device-voice]",
+    "gap     1x  Indo wiji chad!  [device-voice]",
+    "gap     1x  Tarelo indo hane kadh.  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "22:33:38 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-74268de8f2-eggs/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-74268de8f2/logs/film_eggs.log",
+   "minutes": 0.4
+  }
+ ],
+ "minutes": 9.2,
+ "ok": false
+}
