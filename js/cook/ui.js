@@ -2237,7 +2237,10 @@
         const bend = (() => {
           // (s20-p2c: faces and bubbles are counted apart: a bubble the card already touches at take-off made the sum's allowance, so a
           // card could graze Nana's head inside it, contract-83, L4 at 740x320)
-          const fcs = faces14();
+          // (the gate of 14 Nov 15:01, lab L4 740x320, contract-83 again: the flight cleared Nana's head by the planner's pixel, and her
+          // head, bobbing as she talks, met the card on its way: the faces are kept clear by a margin, never grazed)
+          const FACE_CLEAR = 8;
+          const fcs = faces14().map((f) => ({ left: f.left - FACE_CLEAR, top: f.top - FACE_CLEAR, right: f.right + FACE_CLEAR, bottom: f.bottom + FACE_CLEAR }));
           const bbs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
           const c0 = { x: fb.left + fb.width / 2, y: fb.top + fb.height / 2 };
           const c2 = { x: tr.left + tr.width / 2, y: tr.top + tr.height / 2 };
