@@ -8,25 +8,24 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-87413d9b-j48fpk` (the working branch; `main` is the live site, unchanged since 12 Nov 14:10, Sprint 19 not published by Zafar's choice, decision 22).
+**Handover branch:** `ccr-87413d9b-j48fpk` (the working branch; `main` is the live site, unchanged since 12 Nov).
 
-**Where things stand (13 Nov, 23:00 UK):** Sprint 20 is open: one kitchen frame for chai, eggs, maani and corn (`docs/sprints/S20-one-kitchen-frame.md`, its table holds every step's status and proof; plan `build/reports/s20-plan.md`; the frame's notes, its "owner", `docs/architecture/kitchen-frame.md`). Decisions 20-25 in `docs/decisions/2026-11-10-overnight.md`. No cost ceiling (decision 22).
-- **Done and merged:** P0 counts (`build/tools/review/frame-counts.mjs`); P2 chai settled and P2b/P2c chai's last fixes (SH-286 the dish card is the order's pop-up, Mum's 12 Nov words, SH-287 the order view higher, SH-288 48 px tap areas, SH-289 the end grid and one headline size, the stamp in the tick's place); P3 the blocking gate `build/tools/tiers/gate.mjs` + `merge.mjs` (92 blocking, 18 advisory, `gate-lists.json`), proven on the final chai (contract 0 blocking over 38 pages); P4 the box reader `boxes.mjs` (3 identical runs, planted faults caught); P5 ten geometry rules (`boxes.mjs --rules`, 10/10 on chai except pill-clear's wobble); P7 103 kitchen layout rows parked "waits for the frame".
-- **Running:** nothing. Half-hourly progress checks to Zafar by `send_later` (each schedules the next).
+**Where things stand (14 Nov, 17:00 UK):** Sprint 20 (`docs/sprints/S20-one-kitchen-frame.md`, its table holds every step's status and proof). Decisions 20-33 in `docs/decisions/2026-11-10-overnight.md`; the newest: 31 (the nine other games join in two batches, each batch in parallel on cloud sessions, merged one at a time through the gate; Zafar checks after batch 1), 32 (chai's pictures approved; his notes SH-292 to SH-298, ART-81, ART-82), 33 (**13:00-20:00 UK the orchestrator runs on its own**: no waiting for picture approvals or decisions, recorded here; outside it pictures wait for his yes). His tokens reset Monday 17 Nov 10:00 UK: use them, never stop at a cost limit. Deadline (decision 28): every stove-top game by midnight Sunday 16 Nov UK.
+- **Done today:** chai's five faults and Zafar's notes fixed and merged (s20-chai-fix, s20-chai-kit: the served card folds once, the word pop off the hob, early wraps, the light centred, the shelf taller with its groups closing first, the tally 20% bigger over the selected pan only); six checks that misread chai fixed (contract-121, -112, -92, -84, -124, -116), the bad runs still red; chai's reference re-taken (P6b, frozen from gate runs 20261114T1548 and T1614); the gate refuses under 2 GB free.
+- **Running:** the frame builder `s20-step12-frame` (Opus high, about $100; worktree /home/user/wt/s20-step12-frame, port 8954): task 0 (contract-83 a card over Nana's head at lab L4 740, contract-79 the hint light's race at L3#hint 740), then step 1 (chai's play-area lines into js/cook/frame.js, Cook.Frame.area), then step 2 (chai's room reads only its play area, its screen reads to 0). Every box must stay identical to the new reference.
 
 **Next, in order:**
-1. Zafar's three answers: yes to chai's change list since 10 Nov (the list is in the chat and `build/reports/s20-p2-chai.md`); the glass clink quieter under Nani's voice (CHAI-113's rule, `js/cook/core.js:456`); the slightly smaller order sentence (SH-289).
-2. On his yes: the glass clink if yes; re-take chai's references: `frozen.mjs --freeze` and `boxes.mjs` reference (`build/frozen/boxes/chai-tray/`); then the gate at zero including boxes.
-3. P6: chai's 12 pictures to Zafar (six moments at 740x320 and 1280x665; mid-cook and the serve at L4). **Review point 2: new chat after it.**
-4. Step 1: chai's play-area lines into the frame, unchanged (Opus, high, about $25-35), proven by boxes identical.
-5. Open: pill-clear's wobble (the count pill 3.8-4.3 px above the hob at L1 mid, some runs) traced before the rules block; the merge script's real refusal of a broken branch.
+1. Merge s20-step12-frame after checking its report; run the gate alone on its own port (COOK_TEST_PORT=8960+); never push or edit code while a gate runs (the push hook's tests take port 8812; a mid-run edit mixes code).
+2. Batch 1 in parallel, one cloud session per game (create_session, each pushing only its own branch; the orchestrator merges one at a time through the gate): eggs, maani, corn, daar with chop. Each game reads only its play area (its screen-read count to 0), its rows parked "waits for the frame" settled, chai's boxes unchanged. Frame additions only in js/cook/frame.js and kitchen-frame.md, merged first.
+3. Zafar checks batch 1 (review point 3); fixes in parallel; then batch 2 (baking, sekelo, roll-tawa, samosa; chaat with chop).
+4. Guard rails, the exit test, the full gate, `/review`, publish.
 
-**Open questions to Zafar:** the three in step 1.
+**Open:** the art run for SH-296 (trays), SH-298 (people), ART-81 (tally close-ups), ART-82 (busy counter): one paste block when Zafar wants it; SH-297 waits on his end-screen re-haul; the gate's port check (checks-to-build).
 
 **Starting prompt for a new chat:**
 > First `git fetch origin ccr-87413d9b-j48fpk` and work from that branch (it holds the newest handover; `main` is the live site).
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S20-one-kitchen-frame.md`.
-> Carry on Sprint 20 from its table; tell me before launching anything new.
+> Carry on Sprint 20 from its table; decision 33's window applies (13:00-20:00 UK: run on your own).
 
 ## The fix list
 
