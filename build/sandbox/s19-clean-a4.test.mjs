@@ -57,6 +57,15 @@ test("contract-121: a part squeezed to a strip, covered, or outside the hole is 
   // (a play-area tap the light blocks while the lesson waits is the order's skip held back: not judged)
   const skip = [lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120]), { type: "c", k: "input", t: 1100, x: 354, y: 8, on: "div.njg-rq-veil", exp: { cook: { selector: ".wc14-lesson .wc14-pic" } } }, { type: "c", k: "input-blocked", t: 1150 }, end];
   assert.equal(run121(skip).length, 0, "a skip tap held back: green");
+  // (the frozen run, 14 Nov: the light moved on to the next part ~30 ms before the ask was sampled moving: a beat, not a blocked tap)
+  const beat = [lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120]), lit(1570, [[360, 150, 660, 200]]), L(1600, [370, 160, 650, 190]), end];
+  assert.equal(run121(beat).length, 0, "the light a beat ahead of the ask: green");
+  // (... but a light that leaves the part asked for and stays away for the hold is red, however it started)
+  const away = [lit(900, [[360, 10, 660, 200]]), L(1000, [370, 20, 650, 120]), lit(1100, [[360, 150, 660, 200]]), L(1800, [370, 160, 650, 190]), end];
+  assert.equal(run121(away).length, 1, "the light away from the part for 700 ms: red");
+  // (... and a light that only arrives on the part later than the hold is red too)
+  const late = [lit(900, [[700, 10, 900, 200]]), L(1000, [370, 20, 650, 120]), lit(1700, [[360, 10, 660, 200]]), end];
+  assert.equal(run121(late).length, 1, "the light reaching the part 700 ms late: red");
 });
 
 // contract-122 (the coordinator, 12 Nov: sekelo's row-shaped pop-up card with its picture squeezed to 270x0 px)

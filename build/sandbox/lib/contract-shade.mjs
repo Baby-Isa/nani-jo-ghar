@@ -66,8 +66,22 @@ export function check121(r, tl, add) {
     if (held < LESSON_HOLD_MS) continue;
     const [l, t, rr, b] = e.box;
     const cx = (l + rr) / 2, cy = (t + b) / 2;
-    const h = [...lit].reverse().find((x) => x.t <= e.t + LESSON_HOLD_MS);
-    const inHole = !h || !(h.holes || []).length || h.holes.some((q) => cx >= q[0] && cx <= q[2] && cy >= q[1] && cy <= q[3]);
+    // (the frozen run, 14 Nov: the light and the lesson's ask move in the same turn, but each is sampled on its own beat, so the light
+    // on the next part was seen up to ~30 ms before the ask moved; judged against the one light at e.t + hold, that beat read as a
+    // blocked tap. The part is blocked only when it sits outside the light's hole for the hold, unbroken, while it is asked for)
+    const endT = e.t + held;
+    const inside = (x) => !x || !(x.holes || []).length || x.holes.some((q) => cx >= q[0] && cx <= q[2] && cy >= q[1] && cy <= q[3]);
+    const marks = [[e.t, [...lit].reverse().find((x) => x.t <= e.t) || null]].concat(lit.filter((x) => x.t > e.t && x.t < endT).map((x) => [x.t, x]));
+    let h = null;
+    let inHole = true;
+    for (let j = 0; j < marks.length; j++) {
+      const until = j + 1 < marks.length ? marks[j + 1][0] : endT;
+      let k = j;
+      while (k < marks.length && !inside(marks[k][1])) k++;
+      const stop = k < marks.length ? marks[k][0] : endT;
+      if (k > j && stop - marks[j][0] >= LESSON_HOLD_MS) { h = marks[j][1]; inHole = false; break; }
+      if (until >= endT) break;
+    }
     if (rr - l < LESSON_MIN || b - t < LESSON_MIN) return add("contract-121", e.t, `the card lesson asks for ${e.sel} but it is ${Math.round(rr - l)}x${Math.round(b - t)} px [${e.box.join(",")}]: nothing a child can tap`);
     if (!e.hit) return add("contract-121", e.t, `the card lesson asks for ${e.sel} [${e.box.join(",")}] but the page's top thing at its middle is ${e.top || "?"}: the tap never reaches it`);
     if (!inHole) return add("contract-121", e.t, `the card lesson asks for ${e.sel} [${e.box.join(",")}] but its middle is outside the light's hole${h ? ` ${JSON.stringify(h.holes)}` : ""}: the light blocks the tap`);

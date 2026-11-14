@@ -304,7 +304,11 @@ export const READ = `(function (opt) {
       // (a word pop: its card 56 tall, as wide as popW, at its scale; the kitchen's chip, the label by a thing: pillW x pillH round its point)
       const kx = Math.abs(c.scaleX || 1), ky = Math.abs(c.scaleY || c.scaleX || 1);
       const hw = c.popW ? c.popW / 2 : (c.pillW * kx) / 2, hh = c.popW ? 28 * kx : (c.pillH * ky) / 2;
-      const p = w2s(c.x - hw, c.y - hh), q = w2s(c.x + hw, c.y + hh);
+      // (pill-clear's wobble, 14 Nov: a pop rises POP.rise px into place over its first 180 ms (Juice.P.pop's in-tween, alpha to 1),
+      // and a moment caught in that rise read it 4 px off the hob in some runs, at rest 18: a pop is measured where it comes to rest)
+      let cy = c.y;
+      try { for (const tw of (sc.tweens && sc.tweens.getTweensOf ? sc.tweens.getTweensOf(c) : [])) { const ds = tw.data || [], a = ds.find((d) => d.key === "alpha"), yd = ds.find((d) => d.key === "y"); if (c.popW && a && yd && a.end === 1 && typeof yd.end === "number") cy = yd.end; } } catch (e) { /* as drawn */ }
+      const p = w2s(c.x - hw, cy - hh), q = w2s(c.x + hw, cy + hh);
       ex.pills[(c.popW ? "pill-" : "chip-") + (++pn)] = B(p[0], p[1], q[0], q[1]);
       (ex.pillAlpha = ex.pillAlpha || {})[(c.popW ? "pill-" : "chip-") + pn] = r2(c.alpha);
     });
