@@ -14,7 +14,7 @@ Start with `CLAUDE.md`, then `docs/status.md` "Next chat". Open anything else on
 - `vision.md`: pitch, audience, pillars, out of scope.
 - `game-design/`: `days/` (story mode: the principles and index in `README.md`, one file per trip), `story-and-arcs.md`, `cast.md`, `progression-and-scoring.md`, `speaking.md`; `modes/` one file per mode (`cook.md`, `clinic.md`, `first-launch.md`, `conversations.md`, `story-by-the-fire.md`, `find-it.md`, stubs for the parked modes), each with its own design decisions.
 - `design-language/`: `ui-design-system.md` (shared screens and buttons), `ux-principles.md` (how the game teaches and feels), `guide-and-card.md`, `art-bible.md`, `art-pipeline.md`, `art-registry.md` (every picture, its version and status; the art board at lab/art-board.html) and `art-plans/` (the next art run: the Sprint 5 audit and its paste block, the clinic items and their views; finished packs are in `archive/art-plans/`), `tone-of-voice.md`, `audio.md`.
-- `language/`: `grammar-notes.md` (what Mum confirmed), `lexicon.md`, `grammar-kb.md`, `engine-spec.md`, `engine-design.md`, `fill-the-engine.md`, `doctor-recording-list.md`, `recording-sheet.md` (everything still to record, grammar first; generated), `mum-questions/` (the current round).
+- `language/`: `grammar-notes.md` (what Mum confirmed), `lexicon.md`, `grammar-kb.md`, `engine-spec.md`, `engine-design.md`, `fill-the-engine.md`, `recording-sheet.docx` (**the one recording sheet**, Zafar 14 Nov: every question for Mum, grammar first, then each game; made with its `.md` twin from `data/lang/recording-sheet.json`, only ever added to; never rebuilt by hand). The old rounds and sheets are in `archive/language/` and `archive/mum-questions/`.
 - `ideas.md`: the parking lot.
 
 ## How it is built

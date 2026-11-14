@@ -23,11 +23,13 @@ description: Process a new round of Mum's recordings into clips, the family-audi
 6. Report `build/reports/mum-YYYY-MM-DD.md` in the 5 Oct shape: headline grammar, new words, the scores that moved, clips (none ear-checked yet), spellings to confirm as a "yes to all except …" list for Zafar.
 7. Tell Zafar the clips wait for his ear in `lab/family-audio.html`. Every clip is `"approved": "game"` and plays in the game at once; his ear can drop a bad take (`redo`); a store build needs every clip re-recorded and `"final"` (`node build/tools/ops/storeaudio.mjs`; Zafar, 12 Nov).
 
-## The next sheet
+## The one recording sheet (Zafar, 14 Nov)
+There is **one** sheet, never a new round's file: `docs/language/recording-sheet.docx` (Word, tables: grammar first, then each game; its `.md` twin beside it), made from **`data/lang/recording-sheet.json`**, where every question is a row. It is only ever added to: a row is never deleted, renumbered or rebuilt in a new shape; an answered row stays, marked. When Zafar asks for the sheet, pull it from that source (regenerate, send the `.docx`); never rebuild it by hand.
 ```
-node build/tools/ops/mumsheet.mjs                     # counts only
-node build/tools/ops/mumsheet.mjs --out "docs/language/mum-questions/Questions for Mum (Round N).md" --docx
+node build/tools/ops/recordings.mjs        # adds what the engine needs (gap list, grammar slots, the day, parked words); moves rows on
+node build/tools/ops/mumsheet.mjs          # adds the clash list's quick checks for Mum; prints the next sitting (grammar first)
+node build/tools/lang/recording-sheet.mjs  # regenerates the .docx and .md from the source (both tools above do this too)
 ```
-Build the next question sheet from `docs/language/recording-sheet.md` (grammar first, then the vocabulary slots in; refresh it with `node build/tools/ops/recordings.mjs`).
-
-Cook first, then the clinic; quick checks from the clash list; `--max` keeps a sitting near an hour. Read it once as Mum would; then add the round to `docs/language/mum-questions/README.md`. Zafar's own calls (clash list §3-6) go to him, not Mum.
+- **A new question by hand** (Zafar's feedback, a new game line): one JSON line in the source's `rows`, in the right section, with the next id (`G-NEG-07`, `CK-CHAI-93`), the English to ask, what it is for, `"status": "to record"` and its source; then regenerate. A new game gets a new section at the end of its group. The Kutchi column only ever holds what the family said, with `who`.
+- **At the sitting** Mum says each row's ID before the line, so the item list's question ids (`qid`) are the rows' ids; after `--go`, `recordings.mjs` marks those rows recorded (date and clip ids). Mark a row `answered` (with the date and the grammar-notes section) when Mum answers a question that needs no clip, and `confirmed` when Zafar confirms a spelling.
+- `checks.mjs` ("recordings") fails while the engine has a need the sheet lacks, or the two files are out of date.
