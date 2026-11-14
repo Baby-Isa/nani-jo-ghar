@@ -8,15 +8,15 @@ The minimum for step 4c (decision 38 c). **No frequency ranking and no simulator
 | Words with no Kutchi yet (English placeholders in the game today) | 26 | 255 |
 | A form of a word we know is missing (plural, 'with the …') | 0 | 0 |
 | Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 7 | 5 |
-| We know the word but have no recording of it | 105 | 33 |
+| We know the word but have no recording of it | 106 | 33 |
 
-Lines and words checked: Cook 268, clinic 394. A recording counts here if any take exists; 48 more words have a take that is not yet heard by Zafar in `lab/family-audio.html` (every clip is approved for the game and plays now; a store build needs every clip re-recorded and marked final: Zafar, 12 Nov).
+Lines and words checked: Cook 270, clinic 394. A recording counts here if any take exists; 48 more words have a take that is not yet heard by Zafar in `lab/family-audio.html` (every clip is approved for the game and plays now; a store build needs every clip re-recorded and marked final: Zafar, 12 Nov).
 
 Gaps are listed once, however many lines need them: closing a word closes it everywhere. The words and lines that exist only in the parked modes (dress, who, snap, tidy, find, monsoon, relations) are in the lexicon as to-record entries and are not repeated here.
 
 ## Cook
 
-140 things to ask or record, from the lines and words the game uses today.
+141 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (2)
 
@@ -97,7 +97,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 7. One mixed, two mixed. (Or: "I'd like some mixed, please", said politely.) Ask: new.
    - Needed by: Cook word "mixed" (ph-mixed); Cook word "mixed" (ph-mixed), more than one.
 
-### We know the word but have no recording of it (105)
+### We know the word but have no recording of it (106)
 
 1. Please record: "paani"
    - Needed by: Cook word "water" (cook-paani).
@@ -289,25 +289,27 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
 95. Please record: "wij"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it up to the line." (cook.line.guide-line); cook line "Put in as many spoons as they want." (cook.line.guide-spoons) … (13 lines).
-96. Please record: "liti"
+96. Please record: "akho burichad"
+   - Needed by: cook line "Fill it up all the way." (cook.line.guide-fill-full); cook line "Fill it up all the way" (cook.guide.chai-tray:pour-again).
+97. Please record: "liti"
    - Needed by: cook line "Pour it up to the line." (cook.line.guide-line); cook line "Pour it up to the line" (cook.guide.pour).
-97. Please record: "sudhi"
+98. Please record: "sudhi"
    - Needed by: cook line "Pour it up to the line." (cook.line.guide-line); cook line "Pour it up to the line" (cook.guide.pour).
-98. Please record: "jitli"
+99. Please record: "jitli"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-99. Please record: "inke"
+100. Please record: "inke"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-100. Please record: "itli"
+101. Please record: "itli"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-101. Please record: "tapele"
+102. Please record: "tapele"
    - Needed by: cook line "Put the chai in the pan." (cook.line.guide-tea-pan); cook line "Put water in the pan." (cook.line.guide-water-pan); cook line "Put water in the pan" (cook.guide.chai-tray:water) … (4 lines).
-102. Please record: "paani"
+103. Please record: "paani"
    - Needed by: cook line "Put water in the pan." (cook.line.guide-water-pan); cook line "Put water in the pan" (cook.guide.chai-tray:water).
-103. Please record: "e chai erte rand"
+104. Please record: "e chai erte rand"
    - Needed by: cook line "Cook it the way they said." (cook.line.guide-the-way); cook line "Cook it the way they said" (cook.guide.default).
-104. Please record: "khani"
+105. Please record: "khani"
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-pantry), with cook-chai.
-105. Please record: "achi"
+106. Please record: "achi"
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-pantry), with cook-chai.
 
 ## The clinic

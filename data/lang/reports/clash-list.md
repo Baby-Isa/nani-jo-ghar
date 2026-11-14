@@ -96,6 +96,7 @@ Cook's own flag on a line against the status the engine finds from its words and
 21. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
 22. Cook line `guide.chai-tray:water` ("Put water in the pan"): Cook does not flag it draft; the engine says draft (paani, tapele) for "Paani tapele me wij.".
 23. Cook line `guide.chai-tray:tea` ("Put the chai in the pan"): Cook does not flag it draft; the engine says draft (tapele) for "Chai tapele me wij.".
+24. Cook line `guide.chai-tray:pour-again` ("Fill it up all the way"): Cook does not flag it draft; the engine says draft (akho burichad) for "Akho burichad.".
 
 ## 6. Recordings that are not linked to any entry
 

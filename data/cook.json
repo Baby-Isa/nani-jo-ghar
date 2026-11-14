@@ -6690,6 +6690,7 @@
   },
   "chai-tray:cups": {},
   "chai-tray:pour": {"line": "guide-glass"},
+  "chai-tray:pour-again": {"line": "guide-fill-full", "_about": "Zafar, 14 Nov: at L4 the full glass's second pour (CHAI-110's own step, js/cook/stations/chai-tray.js phase(..., again)) is Nani's 'akho burichad' (fill it up all the way); spelling to confirm by Mum. The first pour keeps chai-tray:pour"},
   "mishkaki-grill": {},
   "mishkaki-grill:thread": {},
   "mishkaki-grill:grill": {},

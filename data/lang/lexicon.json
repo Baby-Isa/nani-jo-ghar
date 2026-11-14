@@ -16753,6 +16753,26 @@
    }
   },
   {
+   "id": "phrase.fill-it-up-all-the-way",
+   "pos": "Phrase",
+   "lemma": "akho burichad",
+   "gloss": "Fill it up all the way.",
+   "forms": {
+    "-": "akho burichad"
+   },
+   "status": "draft",
+   "src": [
+    "data/cook.json lines.guide-fill-full: Zafar, 14 Nov: akho burichad (fill it up all the way); spelling to confirm by Mum. Nani's call at chai L4's second pour of a full glass (chai-tray:pour-again, CHAI-110's own step); the first pour keeps guide-glass (Iloka je glass me wij). No family clip yet"
+   ],
+   "aliases": [
+    "cook.line.guide-fill-full",
+    "cook.guide.chai-tray:pour-again"
+   ],
+   "notes": [
+    "not analysed into words yet: akho, burichad are not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
    "id": "phrase.fill-the-next-one",
    "pos": "Phrase",
    "gloss": "Fill the next one",

@@ -372,9 +372,11 @@ export function chaiExtra(asked, extras) {
      * Slow kar! -> for the chosen pan, "{item}. Wiji chad!" (a hidden item: [the next thing]) -> pour. Nothing to do
      * (waiting on the heat): the box is empty.
      */
-    const stepLine = (key, id) => {
+    const stepLine = (key, id, again = false) => {
       // s08 w2A (SH-110): the step names the thing (Nani calls it as it opens); her box dots it where the card does (hideKnown)
       if (key === "cups" && id) return St.addLine(id);
+      // (Zafar, 14 Nov: a full glass's second pour is her "akho burichad", fill it up all the way: data/cook.json guide chai-tray:pour-again)
+      if (again && ((Cook.data && Cook.data.guide) || {})[`chai-tray:${key}-again`]) return St.guideLine(`chai-tray:${key}-again`);
       return St.guideLine(key === "slow" ? "chai-tray:slow" : `chai-tray:${key}`);
     };
     let lastGist = null;
@@ -397,7 +399,7 @@ export function chaiExtra(asked, extras) {
       // hint timer after the pour as that's a correct action"): after the pour the step is picking pan 2, its line pan 2's next item;
       // the tap it waits for is the pan, not an item, so the item's rule (said only as her card opens, SH-172) missed it and the line
       // was said at once as a control's call. A pick's step is never called: its line comes with the pick's own light, after the wait
-      steps.to(key, { id: sid, line: stepLine(key, id), noCall: pick ? "pick" : null, again });
+      steps.to(key, { id: sid, line: stepLine(key, id, again), noCall: pick ? "pick" : null, again });
       if (key === lastGist) return;
       lastGist = key;
       const text = ((Cook.data.stations["chai-tray"] || {}).phases || {})[key];
