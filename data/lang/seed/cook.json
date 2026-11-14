@@ -798,6 +798,12 @@
    "en": "Put it in their glass.",
    "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 36:29-36:50): there's no word for pour, just put: iloka je glass me wij (their glass; the same for their glasses); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
   },
+  "guide-fill-full": {
+   "k": "Akho burichad.",
+   "en": "Fill it up all the way.",
+   "draft": true,
+   "src": "Zafar, 14 Nov: akho burichad (fill it up all the way); spelling to confirm by Mum. Nani's call at chai L4's second pour of a full glass (chai-tray:pour-again, CHAI-110's own step); the first pour keeps guide-glass (Iloka je glass me wij). No family clip yet"
+  },
   "guide-line": {
    "k": "Liti sudhi wij.",
    "en": "Pour it up to the line.",
@@ -948,6 +954,9 @@
   },
   "chai-tray:pour": {
    "en": "Pour it into their glass"
+  },
+  "chai-tray:pour-again": {
+   "en": "Fill it up all the way"
   },
   "mishkaki-grill": {
    "en": "Thread the skewers, then grill them"

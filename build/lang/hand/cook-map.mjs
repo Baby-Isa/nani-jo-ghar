@@ -40,7 +40,9 @@ export const CLASH_NOTES = {
  * (howareyou, fine, canyou). Each is the meaning the game is asking the engine for.
  */
 export const FRAMES = {
-  need: { meaning: { fn: "Need", who: "p1", thing: "$x" }, sample: ["cook-chai", "cook-maani", "cook-dudh", "cook-khun"] },
+  // decision 27 (Zafar, 14 Nov): the orders say the agreeing khapeti / khapanti / khapeto / khapanta (data/cook.json meanings: the polite
+  // register), so the samples hold more than one of a he-thing and a she-thing too: every ending is on Mum's sheet until it is recorded
+  need: { meaning: { fn: "Need", who: "p1", thing: "$x" }, sample: ["cook-chai", "cook-maani", "cook-dudh", "cook-khun", { fn: "Item", kind: "ph-samosa", n: 2 }, { fn: "Item", kind: "cook-maani", n: 2 }] },
   and: { meaning: { fn: "And", x: "$x" }, sample: ["cook-dudh", "cook-maani"] },
   give: { meaning: { fn: "GiveMe", x: "$x" }, sample: ["cook-khun", "cook-maani"] },
   no: { meaning: { fn: "NoItem", x: "$x" }, sample: ["cook-dudh", "veg-02"] },

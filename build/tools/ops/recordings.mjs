@@ -106,7 +106,8 @@ export function cookGame(ids, text) {
   const games = new Set();
   for (const id of ids) {
     const m = /^cook\.(?:guide|line)\.(.+)$/.exec(id);
-    if (m && STATION[m[1]]) { games.add(STATION[m[1]]); continue; }
+    const st = m && (STATION[m[1]] || STATION[m[1].split(":")[0]]);
+    if (st) { games.add(st); continue; }
     const tok = (m ? m[1] : id).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const g = Object.keys(GAME_FILES).find((k) => new RegExp(`["'\`]${tok}["'\`]`).test(gameIndex[k]));
     if (g) games.add(g);
@@ -124,7 +125,9 @@ function heard(es, w) {
     const cell = e.lemma === w ? "" : (Object.entries(e.forms || {}).find(([, f]) => ((f && f.t) || f) === w) || [])[0] || "";
     const f = cell ? e.forms[cell] : null;
     const src = [].concat(e.src || [], (f && f.src) || []).join(" | ");
-    const mum = MUMS.test(src) && !(NOT_MUMS.test(src) && !/grammar-notes/.test(src));
+    // "to confirm by Mum" or "Zafar, 14 Nov: …" is not Mum's word
+    const said = src.replace(/\b(?:by|with|for|ask|asks|to) Mum\b/g, "");
+    const mum = MUMS.test(said) && !(NOT_MUMS.test(src) && !/grammar-notes/.test(src)) && !(/Zafar, \d+ \w+:/.test(src) && !/grammar-notes|mum-20\d\d/.test(src));
     const sure = e.status === "confirmed" && (!f || typeof f === "string" || !f.status || f.status === "confirmed");
     if (mum) return { mum, sure, cell };
   }
@@ -147,7 +150,7 @@ const SKIP_OPEN = /Sources disagree|needs new art|Mum answered|answered\.|Round 
 // a grammar cell in plain words ("pres.she.sg" -> "now or every day, a she-word, one")
 const WORDS = { pres: "now or every day", fut: "will", past: "did", imp: "telling someone", conj: "joined to a helper verb", dat: "to (someone)", obl: "before in, with or on", poss: "whose", sg: "one", pl: "more than one", he: "a he-word", she: "a she-word", p1: "I", p2: "you", p2resp: "you (an elder)", p3: "he or she", polite: "said politely", informal: "everyday" };
 export const plainCell = (cell) => cell.split(".").map((t) => WORDS[t] || "").filter(Boolean).join(", ") || "its own form";
-const OPEN_SECTION = (id) => (/^a\./.test(id) ? "G-ADJ" : /^v\./.test(id) ? "G-VERB" : /^pron\./.test(id) ? "G-POS" : /^post\./.test(id) ? "G-PLACE" : /^q\./.test(id) ? "G-Q" : /^num\./.test(id) ? "G-NUM" : /^neg\./.test(id) ? "G-NEG" : /^adv\./.test(id) ? "G-JOIN" : "G-CHK");
+const OPEN_SECTION = (id, q = "") => (/he-word|she-word/.test(q) ? "G-NOUN" : /^a\./.test(id) ? "G-ADJ" : /^v\./.test(id) ? "G-VERB" : /^pron\./.test(id) ? "G-POS" : /^post\./.test(id) ? "G-PLACE" : /^q\./.test(id) ? "G-Q" : /^num\./.test(id) ? "G-NUM" : /^neg\./.test(id) ? "G-NEG" : /^adv\./.test(id) ? "G-JOIN" : "G-CHK");
 const PARA_EN = { "noun.o-he|sg.obl": "A he-word ending in -o, before in, with or on: the boy, with the boy; the mango, on the mango", "noun.o-he|pl.obl": "More than one he-word ending in -o, before in, with or on: the boys, with the boys; the mangoes, on the mangoes", "adj.o|he.pl.obl": "A describing word with more than one he-word, before in, with or on: with the big boys; in the big cups" };
 
 // every need the engine has today, each with a key: [{ key, section, en, for, status, kutchi, who, note, source }]
@@ -192,7 +195,7 @@ export function needs() {
     (e.open || []).forEach((o, i) => {
       if (!o || !o.q || SKIP_OPEN.test(o.q)) return;
       const g = (e.gloss || e.id).split(/[,(]/)[0].trim();
-      add({ key: `open:${e.id}:${i}`, section: OPEN_SECTION(e.id), en: norm(o.q).includes(norm(g)) ? o.q : `${g}: ${o.q}`, for: `the engine's ${e.id}${o.ask ? ` (asked before: ${[].concat(o.ask).join(", ")})` : ""}`, status: "to record", source: `the engine's open questions (${o.src || "lexicon"})` });
+      add({ key: `open:${e.id}:${i}`, section: OPEN_SECTION(e.id, o.q), en: norm(o.q).includes(norm(g)) ? o.q : `${g}: ${o.q}`, for: `the engine's ${e.id}${o.ask ? ` (asked before: ${[].concat(o.ask).join(", ")})` : ""}`, status: "to record", source: `the engine's open questions (${o.src || "lexicon"})` });
     });
   }
   for (const [pid, p] of Object.entries(E.data.paradigms.paradigms || {})) for (const [cell, c] of Object.entries(p.cells || {})) {

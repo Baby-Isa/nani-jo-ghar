@@ -8,5 +8,6 @@ export const NOT_LOADED = {
   "a Sindhi, Gujarati, Hindi or Swahili comparison (Claude's checks: not evidence)": "baghair kujh rahyo khuno darvaja pachhal vich khe ko jiko mgeni chhokro bakiro tapeli pherav tunjo muhinjo tuhinjo asaan paan loko lok unhan sabh garm thadho kuku nahi chha satt nav ek eto indi wiyo kapyo kape tha jun hun",
   "a word Mum or Zafar discussed and did not give as Kutchi (kept as an open question on the entry it belongs to)": "kale koso thadhu dhor kat ginje gin maanu dikra hafiz wadi bakriyu gutanyu jado moro bhajiya ni nu maa loka jamno",
   "a spelling variant of an entry, kept as an open question or a clash row (data/lang/reports/clash-list.md)": "bateta bateto bha wado vagar asan mun",
+  "a word Zafar ruled is not Kutchi (decision 27, 14 Nov: 'loon is also not a word in kutchi'; salt is Mum's mitho)": "loon",
   "a stand-in or a phrase part named in the notes, not a word of its own": "ubhi wada pate saag aakha khanje korishad kuru ni nu",
 };

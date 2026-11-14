@@ -8,8 +8,8 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 | By part of speech | Entries |
 |---|---|
-| Phrase | 536 |
-| N | 443 |
+| Phrase | 537 |
+| N | 442 |
 | V | 66 |
 | A | 51 |
 | Adv | 29 |
@@ -37,7 +37,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 | data/clinic* | 482 |
 | other | 247 |
 | parked modes | 166 |
-| data/cook.json | 125 |
+| data/cook.json | 126 |
 | lexicon.md §6 | 69 |
 | data/content.json (handout) | 65 |
 | conversations / story | 39 |
@@ -53,7 +53,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 ## Games
 
-Game lines registered: 562 (cook 124, clinic 219, and 219 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 78.
+Game lines registered: 564 (cook 126, clinic 219, and 219 in the conversations, the story and the parked modes). Placeholders the engine can already answer: 78.
 
 ## Sources loaded, and sources deliberately not
 

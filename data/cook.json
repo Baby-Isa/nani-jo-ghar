@@ -364,10 +364,12 @@
  },
  "meanings": {
   "_about": "Step 4d (decision 42): which language-engine meaning each of Cook's frame keys asks for (data/lang/abstract.json; the same map as build/lang/hand/cook-map.mjs FRAMES). \"$x\" is the thing the game fills in. The engine builds the words, their agreement and the clip plan (js/cook/words.js); a frame the engine has no rule for comes back as its gap (grey-italic English, flagged to record). Fixed lines need no row here: the engine knows them by the alias cook.line.<key>. Cook's lines, grammar and words moved to the engine's own source, data/lang/seed/cook.json (build/lang/import_cook.mjs reads them there). A fixed line said as a call (Salamun alaykum!, Shabash!) names its Exclaim / Ask here, as Cook says it; the engine knows the words by the alias.",
+  "_register": "Decision 27 (Zafar, 14 Nov): a customer's order says the formal, agreeing ending, for now, not the contraction khape: khapeti (a she-thing, one), khapanti (she, more than one), khapeto (he, one), khapanta (he, more than one), by the lexicon's gender and the count (grammar-notes §1, §31, §58; his 12 Nov sitting: 'so they learn properly'). The order frames (need, need_waari) name the engine's polite register, whose want agrees with the thing asked for; js/cook/words.js passes it to the engine as its context. A form with no family clip is the engine's audio gap (device voice in testing; docs/language/recording-sheet.md). The polite no (na, muke na khape; khun nati khape) is Mum's as she said it: the agreement is on nato / nati, khape stays (grammar-notes §11, §24 B1).",
   "need": {
    "fn": "Need",
    "who": "p1",
-   "thing": "$x"
+   "thing": "$x",
+   "register": "polite"
   },
   "and": {
    "fn": "And",
@@ -421,7 +423,8 @@
     "fn": "MixedIn",
     "head": "cook-chai",
     "x": "$x"
-   }
+   },
+   "register": "polite"
   },
   "sugar": {
    "fn": "WantIn",
@@ -6686,7 +6689,8 @@
    "line": "guide-fire"
   },
   "chai-tray:cups": {},
-  "chai-tray:pour": {"line": "guide-glass"},
+  "chai-tray:pour": {"line": "guide-glass", "again": "chai-tray:pour-again"},
+  "chai-tray:pour-again": {"line": "guide-fill-full", "_about": "Zafar, 14 Nov: at L4 the full glass's second pour (CHAI-110's own step, js/cook/stations/chai-tray.js phase(..., again)) is Nani's 'akho burichad' (fill it up all the way); spelling to confirm by Mum. The first pour keeps chai-tray:pour"},
   "mishkaki-grill": {},
   "mishkaki-grill:thread": {},
   "mishkaki-grill:grill": {},

@@ -112,7 +112,8 @@ export function check118(r, tl, add) {
   for (const n of life(tl, "wo-leave")) if (n.step === "none") out("leave", n.at || n.t, `a redo with ${n.by || "some"} order(s) made right whose game gives the shared round no leave (NjgServe.round o.leave): their glasses or dishes stay on the screen`);
 }
 
-// 119 (SH-267, Zafar 12 Nov: "Yes ... only at level 1"): as a customer says the dish (a line "Muke ... khape" starting), the dish's card
+// 119 (SH-267, Zafar 12 Nov: "Yes ... only at level 1"): as a customer says the dish (a line "Muke ... khape" starting; decision 27: or its
+// agreeing form khapeti / khapeto / khapanti / khapanta), the dish's card
 // flashes up beside their bubble at level 1, and never from level 2
 const levelOf = (flow) => +((/@L(\d)/.exec(flow || "") || [])[1] || 1);
 export function check119(r, tl, add) {
@@ -125,7 +126,7 @@ export function check119(r, tl, add) {
     if (on) add("contract-119", on.t, `the dish's card flashed up at level ${level} ${on.box ? `[${on.box.join(",")}]` : ""}: only at level 1 (from level 2 it gives the order away)`);
     return;
   }
-  const says = tl.filter((e) => e.type === "line" && /^\s*muke\b[\s\S]*\bkhape\b/i.test(e.text || ""));
+  const says = tl.filter((e) => e.type === "line" && /^\s*muke\b[\s\S]*\bkhap(e|eti|eto|anti|anta)\b/i.test(e.text || ""));
   for (const l of says) {
     if (l.t + FLASH_WITHIN_MS > tEnd) continue;
     const up = fl.findIndex((e) => e.on && e.t >= l.t - 300 && e.t <= l.t + FLASH_WITHIN_MS);

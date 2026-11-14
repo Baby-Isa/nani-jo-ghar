@@ -12,7 +12,7 @@
 
 | Section | Still to do | Of which need Mum's Kutchi | Done (kept) |
 |---|---|---|---|
-| G-NOUN · He-words and she-words; one and more than one | 51 | 38 | 76 |
+| G-NOUN · He-words and she-words; one and more than one | 54 | 41 | 76 |
 | G-VERB · Verb endings and agreement (khapeti, khapanti, khapeto, khapanta) | 23 | 17 | 13 |
 | G-TENSE · Tenses: every day, right now, yesterday, tomorrow | 103 | 89 | 10 |
 | G-NEG · Negation and the polite no | 5 | 5 | 6 |
@@ -54,13 +54,13 @@
 | PK-PEOPLE · People and clothes: who did it, dress up | 115 | 115 | 2 |
 | PK-MONSOON · The monsoon | 17 | 17 | 0 |
 | PK-MORE · Other words no game uses yet | 231 | 231 | 3 |
-| **All** | **1710** | **1573** | **466** |
+| **All** | **1713** | **1576** | **466** |
 
 ## Grammar
 
 ### G-NOUN · He-words and she-words; one and more than one
 
-Nouns: which are he-words and she-words, their plurals, and their form before "in", "with", "on". 51 to do, 76 done.
+Nouns: which are he-words and she-words, their plurals, and their form before "in", "with", "on". 54 to do, 76 done.
 
 | ID | Ask Mum (English) | What it is for | Status | Kutchi (Mum's answer) | Source |
 |---|---|---|---|---|---|
@@ -102,6 +102,9 @@ Nouns: which are he-words and she-words, their plurals, and their form before "i
 | G-NOUN-101 | glass · tray · bowl | Kitchen words: he-word or she-word?: "One …" then "two …" | Needs Mum's Kutchi: W6, W7 |  | Round 5 L49 |
 | G-NOUN-102 | jar · bottle | Kitchen words: he-word or she-word?: "One …" then "two …" | Needs Mum's Kutchi: W9 |  | Round 5 L50 |
 | G-NOUN-103 | knife · ladle · rolling pin ("one …", "two …") | The rest of Section C, from the Round 4 sheet | Needs Mum's Kutchi |  | Round 5 L51 |
+| G-NOUN-128 | garlic: Is lasan a he-word? Mum: 'I think on its own would be masculine' (⚠) | the engine's n.garlic (asked before: new) | Needs Mum's Kutchi |  | the engine's open questions (grammar-notes §64-§67, 12 Nov 21:33, 22:12) |
+| G-NOUN-129 | Is mishkaki a she-word, or was hakri the skewer's (lakri)? (⚠) | the engine's n.mishkaki (asked before: new) | Needs Mum's Kutchi |  | the engine's open questions (grammar-notes §64-§67, 12 Nov 29:48) |
+| G-NOUN-130 | mustard seeds: Is rai a she-word? Mum said hakri rai after hakro rai: 'I've never heard anybody ever saying that' (⚠) | the engine's n.mustard-seeds (asked before: new) | Needs Mum's Kutchi |  | the engine's open questions (grammar-notes §64-§67, 12 Nov 23:06) |
 | G-NOUN-46 | "chickpeas" (one): say it in a short sentence, so we hear it again | the engine's n.chickpeas (sg.dir); grammar-notes §64-§67, 12 Nov 24:21 (hakro chano: 'actually it'll be hakro chano') | To confirm: heard once, flagged: Mum to say it again | chano | the engine's lexicon (a draft) |
 | G-NOUN-47 | "chickpeas" (more than one): say it in a short sentence, so we hear it again | the engine's n.chickpeas (pl.dir); grammar-notes §64-§67, 12 Nov 24:19 | To confirm: heard once, flagged: Mum to say it again | chana | the engine's lexicon (a draft) |
 | G-NOUN-48 | "egg" (one): say it in a short sentence, so we hear it again | the engine's n.egg (sg.dir); grammar-notes §64-§67, 12 Nov 30:48 (hakro indo: a he-word) | To confirm: heard once, flagged: Mum to say it again | indo | the engine's lexicon (a draft) |
@@ -114,7 +117,7 @@ Nouns: which are he-words and she-words, their plurals, and their form before "i
 | G-NOUN-55 | "thing" (more than one): say it in a short sentence, so we hear it again | the engine's n.thing (pl.dir); grammar-notes §33 S1, §37.3 (chiju: ⚠) | To confirm: heard once, flagged: Mum to say it again | chiju | the engine's lexicon (a draft) |
 | G-NOUN-57 | A he-word ending in -o, before in, with or on: the boy, with the boy; the mango, on the mango: heard, to confirm | every noun of this pattern (grammar-notes §41, §48, §49, §51 (5 Oct: chokre, ambe, darwaje, bakre, rasore); decision 30 (b)) | To confirm |  | the engine's paradigms |
 | G-NOUN-58 | More than one he-word ending in -o, before in, with or on: the boys, with the boys; the mangoes, on the mangoes: heard, to confirm | every noun of this pattern (grammar-notes §36 C18, §41 C28 (chokra sathe ⚠: Mum wavers)) | To confirm |  | the engine's paradigms |
-| G-NOUN-127 | chaat: a he-word or a she-word? Say "I would like one chaat" once more (12 Nov: "muke chaat khapeto", said over Zafar, flagged). | the chaat order ending (decision 27); grammar-notes §64 marks chaat as a he-word, flagged | To confirm |  | orchestrator, 14 Nov; grammar-notes §64 |
+| G-NOUN-127 | chaat: a he-word or a she-word? Say "I would like one chaat" once more (12 Nov: "muke chaat khapeto", said over Zafar, flagged). | the chaat order ending (decision 27); grammar-notes §64 marks chaat as a he-word, flagged | To confirm |  | orchestrator, 14 Nov; grammar-notes §64; the engine's open questions (grammar-notes §64-§67, 12 Nov 29:10) |
 | G-NOUN-06 | One tomato, three tomatoes. | the 12 Nov sitting (1a.6) | Recorded 12 Nov (clip hakro-tomato-trae-tameta) | Hakro tomato, trae tameta | 12 Nov sitting, 1a.6 (grammar-notes §64-§67); recording sheet 12 Nov, 1a; Round 6 R6-90; recording sheet 23 Oct, 1a |
 | G-NOUN-07 | one sugar | the 12 Nov sitting (1a.7) | Recorded 12 Nov (clip hakro-khun) | Hakro khun | 12 Nov sitting, 1a.7 (grammar-notes §64-§67) |
 | G-NOUN-08 | one flour | the 12 Nov sitting (1a.7) | Recorded 12 Nov (clip hakro-atto) | Hakro atto | 12 Nov sitting, 1a.7 (grammar-notes §64-§67) |
@@ -215,9 +218,9 @@ How a verb's ending follows the thing or the person: want, need, like, can, have
 | G-VERB-21 | khobar (wait) and khabar (Toke khabar ai: you know): two words or one spelling? | the engine's v.wait | Needs Mum's Kutchi |  | the engine's open questions (grammar-notes §27 B44, §30 K13) |
 | G-VERB-23 | want to: Is aaye the same word as ai (is)? (Claude's guess from Hindi mujhe jaana hai: not evidence.) | the engine's v.want-to | Needs Mum's Kutchi |  | the engine's open questions (grammar-notes §60) |
 | G-VERB-36 | I would like two maani. (an order, said politely: more than one she-thing) | the orders end politely, agreeing with the thing (decision 27, Zafar 14 Nov): khapanti, as the maani orders will say it | Needs Mum's Kutchi |  | orchestrator, 14 Nov (decision 27); grammar-notes §1 (Mum: the formal plural is khapanti) |
-| G-VERB-02 | "Is wanted" for more than one she-thing, said alone, three times (as in "I'd like two maani") | the orders end politely, agreeing with the thing (decision 27, Zafar 14 Nov): as in "I would like two maani" (more than one she-thing). Mum gave khapanti in grammar-notes §1; no clip of it yet | Kutchi known: just record | khapanti | decision 27; grammar-notes §1 |
+| G-VERB-02 | "Is wanted" for more than one she-thing, said alone, three times (as in "I'd like two maani") | the orders end politely, agreeing with the thing (decision 27, Zafar 14 Nov): as in "I would like two maani" (more than one she-thing). Mum gave khapanti in grammar-notes §1; no clip of it yet | Kutchi known: just record | khapanti | decision 27; grammar-notes §1; engine gap list (Cook) |
 | G-VERB-03 | "Is wanted" for one he-thing, said alone, three times (as in "I'd like one mango") | the orders end politely, agreeing with the thing (decision 27, Zafar 14 Nov): as in "I would like milk" (one he-thing; Mum's khapeto is heard only inside sentences) | Kutchi known: just record | khapeto | decision 27; grammar-notes §1 |
-| G-VERB-04 | "Is wanted" for more than one he-thing, said alone, three times (as in "I'd like two mangoes") | the orders end politely, agreeing with the thing (decision 27, Zafar 14 Nov): as in "I would like two samosas" (more than one he-thing; Mum gave khapanta in §1, with mangoes; no clip yet) | Kutchi known: just record | khapanta | decision 27; grammar-notes §1 |
+| G-VERB-04 | "Is wanted" for more than one he-thing, said alone, three times (as in "I'd like two mangoes") | the orders end politely, agreeing with the thing (decision 27, Zafar 14 Nov): as in "I would like two samosas" (more than one he-thing; Mum gave khapanta in §1, with mangoes; no clip yet) | Kutchi known: just record | khapanta | decision 27; grammar-notes §1; engine gap list (Cook) |
 | G-VERB-11 | "bring" (joined to a helper verb): say it in a short sentence, so we hear it again | the engine's v.bring (conj); grammar-notes §33 S1 (khanechi dinde: ⚠) | To confirm: heard once, flagged: Mum to say it again | khanechi | the engine's lexicon (a draft) |
 | G-VERB-17 | "put (down), place; keep" (joined to a helper verb): say it in a short sentence, so we hear it again | the engine's v.put (conj); grammar-notes §38 I18 (⚠) | To confirm: heard once, flagged: Mum to say it again | rakhi | the engine's lexicon (a draft) |
 | G-VERB-22 | "want to (after a 'to do' word: muke winnu aaye)" (its own form): say it in a short sentence, so we hear it again | the engine's v.want-to (-); grammar-notes §60 C95 (s1 18:08, 20:45; s2 0:51) | To confirm: heard once, flagged: Mum to say it again | aaye | the engine's lexicon (a draft) |
@@ -838,7 +841,7 @@ The chai tray: the orders and Nani's guide lines. 44 to do, 42 done.
 | CK-CHAI-58 | he / she (to (someone)) (say the word alone, three times) | Cook line: Put in as many spoons as they want.; Cook line: Put in as many spoons as they said (2 lines) | Kutchi known: just record | inke | engine gap list (Cook) |
 | CK-CHAI-59 | that many, that much (itlo dudh, itli khun) (a she-word) (say the word alone, three times) | Cook line: Put in as many spoons as they want.; Cook line: Put in as many spoons as they said (2 lines) | Kutchi known: just record | itli | engine gap list (Cook) |
 | CK-CHAI-60 | Cook it the way they said. (say it alone, three times) | Cook line: Cook it the way they said.; Cook line: Cook it the way they said (2 lines) | Kutchi known: just record | e chai erte rand | engine gap list (Cook) |
-| CK-CHAI-01 | Fill it up all the way. (the second pour at chai level 4, to the top line) Zafar says "akho burichad": is that how you would say it, and how is it spelt? | chai level 4: the stuck child's hint for the second pour (CHAI-55); Zafar, 14 Nov | To confirm |  | Zafar, 14 Nov (spelling to confirm) |
+| CK-CHAI-01 | Fill it up all the way. (the second pour at chai level 4, to the top line) Zafar says "akho burichad": is that how you would say it, and how is it spelt? | chai level 4: the stuck child's hint for the second pour (CHAI-55); Zafar, 14 Nov | To confirm |  | Zafar, 14 Nov (spelling to confirm); engine gap list (Cook) |
 | CK-CHAI-36 | water (say the word alone, three times) | Cook: water | To confirm: the engine's spelling is not Mum's (a handout or a guess): Mum to say the word |  | engine gap list (Cook); Round 6 R6-92 |
 | CK-CHAI-37 | flour (say the word alone, three times) | Cook: flour | To confirm: the engine's spelling is not Mum's (a handout or a guess): Mum to say the word |  | engine gap list (Cook) |
 | CK-CHAI-38 | garlic (say the word alone, three times) | Cook: garlic | To confirm: the engine's spelling is not Mum's (a handout or a guess): Mum to say the word |  | engine gap list (Cook); Round 6 R6-104 |

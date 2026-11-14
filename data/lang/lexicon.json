@@ -2397,6 +2397,16 @@
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke chaat khapeto ⚠, 29:10)"
    ],
+   "open": [
+    {
+     "q": "Is chaat a he-word? Mum said muke chaat khapeto over Zafar's voice (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 29:10"
+    }
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -4498,6 +4508,16 @@
    ],
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro lasan; Mum: 'I think on its own would be masculine', 22:12)"
+   ],
+   "open": [
+    {
+     "q": "Is lasan a he-word? Mum: 'I think on its own would be masculine' (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 21:33, 22:12"
+    }
    ]
   },
   {
@@ -6125,6 +6145,16 @@
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri mishkaki khapeti, 'like one skewer of mishkaki' (lakri, a skewer, is a she-word): ⚠ the hakri may be the skewer's, 29:48)"
    ],
+   "open": [
+    {
+     "q": "Is mishkaki a she-word, or was hakri the skewer's (lakri)? (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 29:48"
+    }
+   ],
    "history": [
     {
      "date": "2026-09-26",
@@ -6262,6 +6292,16 @@
    ],
    "notes": [
     "gender: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri rai, after hakro rai; Mum: 'I've never heard anybody ever saying that', 23:08)"
+   ],
+   "open": [
+    {
+     "q": "Is rai a she-word? Mum said hakri rai after hakro rai: 'I've never heard anybody ever saying that' (⚠)",
+     "feature": "gender",
+     "ask": [
+      "new"
+     ],
+     "src": "grammar-notes §64-§67, 12 Nov 23:06"
+    }
    ]
   },
   {
@@ -7335,6 +7375,7 @@
     "data/cook.json words.spi-16: a copy of this word",
     "data/clinic.json items.loon: the pharmacy tray's word from Cook",
     "data/clinic.json items.spi-16: the pharmacy tray's word from Cook",
+    "data/clinic/heal/foot.json words.loon: a copy of this word",
     "data/content.json words.spi-16: sindhi-cognate (class handout / content master; never confirmed by Mum)"
    ],
    "aliases": [
@@ -7342,7 +7383,7 @@
     "loon"
    ],
    "notes": [
-    "Mum's word for salt (12 Nov); the game said loon (the content master, never said by Mum) until decision 22."
+    "Mum's word for salt (12 Nov); the game said loon (the content master, never said by Mum) until decision 22. Decision 27 (Zafar, 14 Nov): loon is not a Kutchi word; it left the engine everywhere (the clinic's seed and the foot game's words say mitho, their ids kept)."
    ],
    "history": [
     {
@@ -7351,27 +7392,6 @@
      "src": "grammar-notes §64 (12 Nov 23:36-23:48); Zafar 13 Nov, decision 22"
     }
    ]
-  },
-  {
-   "id": "n.salt-2",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.invariant",
-   "lemma": "loon",
-   "gloss": "salt",
-   "glossPl": "salts",
-   "status": "draft",
-   "src": [
-    "data/clinic/heal/foot.json words.loon: no source given"
-   ],
-   "aliases": [
-    "loon"
-   ],
-   "ask": {
-    "gender": [
-     "L34"
-    ]
-   }
   },
   {
    "id": "n.samosa",
@@ -16771,6 +16791,26 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "phrase.fill-it-up-all-the-way",
+   "pos": "Phrase",
+   "lemma": "akho burichad",
+   "gloss": "Fill it up all the way.",
+   "forms": {
+    "-": "akho burichad"
+   },
+   "status": "draft",
+   "src": [
+    "data/cook.json lines.guide-fill-full: Zafar, 14 Nov: akho burichad (fill it up all the way); spelling to confirm by Mum. Nani's call at chai L4's second pour of a full glass (chai-tray:pour-again, CHAI-110's own step); the first pour keeps guide-glass (Iloka je glass me wij). No family clip yet"
+   ],
+   "aliases": [
+    "cook.line.guide-fill-full",
+    "cook.guide.chai-tray:pour-again"
+   ],
+   "notes": [
+    "not analysed into words yet: akho, burichad are not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.fill-the-next-one",

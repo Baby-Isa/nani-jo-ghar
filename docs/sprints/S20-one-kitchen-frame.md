@@ -2,7 +2,7 @@
 
 **Status:** open (Zafar, 13 Nov afternoon, decisions 22-23: yes to `build/reports/s20-plan.md`, except no cost ceiling and a mistake keeps chai's way).
 **Plan:** `build/reports/s20-plan.md` (the draft, the pre-mortem and the challenges beside it). **The frame's notes, its "owner":** `docs/architecture/kitchen-frame.md`.
-**Progress to Zafar:** every half hour from 14:00 UK (a scheduled check-in posts the table below).
+**Progress to Zafar:** every half hour (from 07:30 UK on 14 Nov). **Deadline (Zafar, 14 Nov, decision 28):** every stove-top game done by midnight Sunday 16 Nov UK.
 
 ## Goal
 In Zafar's words (13 Nov): settle chai and record exactly how it looks; move chai into the three layers (its shared pieces in the shared kit; the middle "stove game" layer as a template that fixes the side panel, the bottom row and the open play area, with guidelines for placement and minimum and maximum sizes inside it; chai's own stove, pans and tray in chai's room); prove chai is unchanged in the new structure; then move eggs, maani and corn onto it, one at a time.
