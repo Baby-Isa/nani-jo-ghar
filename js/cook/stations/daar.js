@@ -55,14 +55,26 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
 
   const IT = "assets/cook/items/";
   const V3 = IT + "v3/daar/";
-  /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
-  const SHELF_TOP = St.SHELF.top; // the bottom 30% (SH-112)
-  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
-  // a scene piece's y: raised into the middle of a taller stage's worktop (Cook.lift, set per round)
+  /* ---------- the room: laid out in the kitchen frame's play area (js/cook/frame.js, docs/architecture/kitchen-frame.md) ---------- */
+  // (Sprint 20, s20-b1-daar: daar reads only its play area and bottom row from the frame, never the screen or the sheet. Across, its
+  // things stand at shares of the play area's width (the settings' scene x's: 0 its left edge, 1 its right); down, the room keeps its
+  // own grid, the band's lines below and the hob's group centred in the play area above them, CHAI-89's rule)
+  const SHELF_TOP = St.SHELF.top; // the bottom row's top (SH-112)
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill past the view)
+  // a scene piece's y: raised into the middle of a taller stage's worktop (half the worktop the view shows past the sheet: the frame's)
   let LIFT = 0;
   const sy = (z, y) => z.Y(y) - z.L(LIFT);
-  const BASE = 818;
-  const CHIP_Y = 860;
+  const BASE = St.SHELF.base; // the band's shelf line (the bottom row's: Shelf.BAND)
+  const CHIP_Y = St.SHELF.chipY; // the pills' line on the band
+  // the play area of the phase on screen (Cook.Frame.area's play box, sheet units), and a share of its width as an x
+  let PLAY = null;
+  const area = (S) => Cook.Frame.area(S, { top: SHELF_TOP });
+  const ax = (z, f) => z.X(PLAY.x + f * PLAY.w);
+  /** Half the worktop the view shows past the sheet (the lift a taller stage gives the chop phase's piles; the frame's view). */
+  const halfExtra = () => {
+    const v = Cook.Frame.view();
+    return Math.round((v.bottom - v.top - Cook.Frame.sheet.h) * 0.5);
+  };
   // SH-112 (Zafar 20 Oct): the taller band's crates and jars a quarter bigger (St.shelfFit keeps the band's top gap)
   const PITCH = 180;
   const SLOT_W = 140;
@@ -223,16 +235,15 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
    * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
    */
-  const centreLift = (z, top0, bottom0, room = 0) => {
-    const v = Cook.view || {};
-    const k = z.k || 1;
-    const viewTop = v.top != null ? v.top : z.Y(0);
-    const spanTop = viewTop + 16 * k;
-    const spanBot = z.Y(St.SHELF.top - 28);
-    const t = z.Y(top0) - room * k;
+  // (s20-b1-daar: the span is the frame's play area, P, sheet units; the group's top kept CLEAR below its top, 40 from the view's)
+  const CLEAR = 24;
+  const centreLift = (z, P, top0, bottom0, room = 0) => {
+    const spanTop = P.y;
+    const spanBot = P.y + P.h;
+    const t = z.Y(top0) - z.L(room);
     const b = z.Y(bottom0);
     let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
-    lift = Math.min(lift, t - (viewTop + 40 * k));
+    lift = Math.min(lift, t - (spanTop + CLEAR));
     return Math.round(Math.max(lift, b - spanBot));
   };
   const BOWL_D = 150; // a bowl's diameter on the tray, design px (narrower where the slots ask)
@@ -252,7 +263,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   async function station(host, p) {
     const S = host.S;
     const ctx = host.ctx;
-    LIFT = Cook.lift();
+    LIFT = halfExtra();
+    PLAY = area(S).play;
     Object.values(host.zones).forEach((z) => z.close());
     const level = Math.max(host.level || 1, Cook.roundLevel(ctx));
     const K = Mech.knobs("daar", { level });
@@ -512,9 +524,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // S19 (Fable's daar flaw 5; ART-41): the kitchen kit's worktop wash over the marble, in both phases. ART-69, SH-243 (Zafar, 9 Nov:
     // "top down items in a tray and side on items on the shelf"): daar's things are top-down (the whole vegetables, the cream bowls), so
     // its band is the shared stone tray on the worktop (St.stoneBand tray), not the side-on shelf
-    const top = z.Y(SHELF_TOP);
-    if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
-    St.stoneBand(S, { top, far: FAR, depth: D.bg + 1.2, game: "daar" });
+    // (s20-b1-daar: the frame draws the wash and pulls the band by daar's key, its settings' band)
+    const F = Cook.Frame.area(S, { top: z.Y(SHELF_TOP), far: FAR, draw: true });
+    F.stoneBand(S, { game: "daar" });
+    return F;
   }
 
   /**
@@ -523,12 +536,19 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    */
   function pop(z, S, text, x, y, { speakId = null, line = null, ms = 1500 } = {}) {
     const k = Math.max(z.k, Cook.Kit.textFloor(S, 36)); // never under 14px as rendered
-    global.Juice.P.pop(S, { x, y }, text, { k, depth: D.fx + 3, hold: ms, top: (Cook.view || {}).top || 0 });
+    // (kept inside what the screen shows: the frame's view)
+    global.Juice.P.pop(S, { x, y }, text, { k, depth: D.fx + 3, hold: ms, top: Cook.Frame.view().top || 0 });
     if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
     const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
-    return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
+    // (the word is waited for at most its hold and the settings' talk pad: never a wait on speech, non-negotiable 7)
+    return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + SC().popMs.talkPad)]) : Promise.resolve();
   }
 
+  /** The bottom row's foot, less its 4 margin (the frame's bottom box): the pills kept above it. */
+  const rowFoot = (S) => {
+    const B = area(S).bottom;
+    return B.y + B.h - 4;
+  };
   /**
    * The shelf: the shared kit's slots on one line (piece 9, js/shared/shelf.js Shelf.slots: centred on the band's free span,
    * left to right), each item by its size class (St.classFit, ART-51), a pill under each (the kit's chip, piece 10). left/right:
@@ -538,14 +558,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const L = global.Shelf.slots([ids], { span: [left, right], pitch: PITCH, groupGap: 0 });
     const pitch = L.slotW;
     // (the stone shelf the jars stand on is the band's own: St.stoneBand's base, as chai's; was a grey plank line)
-    // (CSS px per design px, for the classes' 40 CSS px floor)
-    const ppw = (() => {
-      try {
-        return (UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1) * z.L(1);
-      } catch (e) {
-        return 1;
-      }
-    })();
+    // (CSS px per design px, for the classes' 40 CSS px floor: the frame's answer)
+    const ppw = Cook.Frame.px() * z.L(1);
     const items = {};
     ids.forEach((id) => {
       const x = L.x[id];
@@ -576,7 +590,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       items[id] = img;
     });
     // SH-255: the pills at chai's size on screen (the kit's fitPills, chai's rule), not the zone's scale
-    if (Cook.Kit.fitPills) Cook.Kit.fitPills(S, Object.values(items).map((o) => o.chip), { slotW: z.L(pitch - 12), y: z.Y(CHIP_Y), bottom: z.Y(896), hit: false });
+    if (Cook.Kit.fitPills) Cook.Kit.fitPills(S, Object.values(items).map((o) => o.chip), { slotW: z.L(pitch - 12), y: z.Y(CHIP_Y), bottom: z.Y(rowFoot(S)), hit: false });
     return items;
   }
 
@@ -604,7 +618,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const piles = {}; // id -> the pile images
     let bowl = null;
     if (side === "bowl") {
-      bowl = S.track(S.add.image(z.X(C.x - 40), sy(z, C.y + 60), "dv3-vegbowl").setDepth(D.item - 1).setAlpha(0.45));
+      bowl = S.track(S.add.image(ax(z, C.x) - z.L(40), sy(z, C.y + 60), "dv3-vegbowl").setDepth(D.item - 1).setAlpha(0.45));
       bowl.setScale(z.L(230) / 484);
       bowl.shadow = S.contactShadow(bowl);
     }
@@ -612,7 +626,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const spot = (id, n) => {
       if (!rows.includes(id)) rows.push(id);
       const r = rows.indexOf(id);
-      return { x: z.X(C.x + 70 - n * (HEAP5[id] ? PILE_() * 0.95 : PILE_() * 0.72)), y: sy(z, C.y + r * C.row) };
+      return { x: ax(z, C.x) + z.L(70 - n * (HEAP5[id] ? PILE_() * 0.95 : PILE_() * 0.72)), y: sy(z, C.y + r * C.row) };
     };
     const onSlice = ({ id, ok, x, y }) => {
       if (!ok || !S.textures.exists(`dv2-chop-${id}`)) return;
@@ -648,14 +662,22 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       });
       // 29 Sept (Q7): at level 1 the count is heard as the pieces arrive ("ba dungri"), else nothing said here
       const cnt = level <= 1 && UI.tallyLine ? UI.tallyLine(n + 1, id) : null;
-      if (cnt) pop(z, S, Lang.plain(cnt), to.x - z.L(120), to.y + z.L(40), { line: cnt, ms: 900 });
+      if (cnt) pop(z, S, Lang.plain(cnt), to.x - z.L(120), to.y + z.L(40), { line: cnt, ms: SC().popMs.count });
     };
     Cook.daarPhase = "chop"; // (for build/shoot_daar_v3.py: which state is on screen)
     // the chop mechanic itself (its levels, decoys and ring); Nani says what to chop (the number always said)
     // Sprint 18 (wave 2): chop's own game (Cook.Chop.play, js/cook/stations/chop.js) at its settings for the level, graded there; daar
     // keeps the pieces flying to the side (onSlice, KEEP-02) and Nani's card (onCall, onCount). SH-259 (Zafar, 10 Nov: one chop): daar
     // tells chop only what to chop and what it hears back; the zone's scene, knife, ring, band, pieces and light are chop's own
-    const r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false });
+    // (s20-b1-daar: chop's room is the part of daar's play area daar lends it through the frame (its settings' chopRoom, shares of the
+    // play area; the whole of it, as before): chop asks the frame, never the screen, and daar never tells chop its layout, SH-259)
+    const back = Cook.Frame.lend(SC().chopRoom);
+    let r;
+    try {
+      r = await Cook.Chop.play(z, { targets: want, pool, no, level, retry, note: !retry, onSlice, onCount: (id) => nani.tick(id), onCall: (ids) => nani.call(ids), tally: false });
+    } finally {
+      back();
+    }
     const cut = r.cut;
     const wrong = r.wrong;
     // (a sliced decoy falls away: it never reaches the pot; a count short marks its row on the order card, the first try's)
@@ -678,7 +700,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // band: the hob is the kit's one-burner at 0.9, its foot 14 above the band)
     {
       const hobH = Kit.size ? Kit.size(1, 0.9).h : 658 * 0.9;
-      LIFT = centreLift(z, SHELF_TOP - 14 - hobH - 17, SHELF_TOP - 14) / (z.k || 1);
+      // (s20-b1-daar: the cook phase's play area, the frame's, as its view is now)
+      PLAY = area(S).play;
+      LIFT = centreLift(z, PLAY, SHELF_TOP - 14 - hobH - 17, SHELF_TOP - 14) / (z.k || 1);
     }
     /*
      * DAAR-42 (STD-D1-01, D1-06; kit (d)): the first time, the knob, the first pile and the daar's bowl are lit with their call
@@ -730,7 +754,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // the hob: one burner (one pot), sitting on the scene's floor line, clear of the shelf
     // (SH-247 refined, Zafar 9 Nov: "if there's multiple things taking up width, then we put the button underneath": the dial and the
     // lap card share daar's width, so its knob stays on the front edge below the pot, as it was)
-    const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: z.X(800), bottom: sy(z, SHELF_TOP - 14) });
+    const hob = Kit.hob(S, { n: 1, k: z.L(0.9), cx: ax(z, SC().hob.x), bottom: sy(z, SHELF_TOP - 14) });
     // (S19, DAAR-48: "big pot, big central, big stove": the pot as big as chai's hob holds it)
     const bodyR = z.L(165);
     const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.95 }); // X6: the flames just peek out past the pot
@@ -791,7 +815,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // right of the hob from the start, the asker's face circle (the kit's badge) on its rim
     const katori = serveKatori(z, S, who);
     if (side === "bowl" && chopped.rows.length) {
-      vbowl = S.track(S.add.image(z.X(Cc.x), sy(z, 330), "dv3-vegbowl").setDepth(D.item));
+      vbowl = S.track(S.add.image(ax(z, Cc.x), sy(z, 330), "dv3-vegbowl").setDepth(D.item));
       vbowl.setScale(z.L(230) / 484);
       vbowl.shadow = S.contactShadow(vbowl);
       hits.bowl = vbowl;
@@ -805,7 +829,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         const y = sy(z, Cc.y + r * Cc.row);
         const glass = [];
         piles[id] = Array.from({ length: n }, (_, i) => {
-          const x = z.X(Cc.x + (i - (n - 1) / 2) * GL.pitch);
+          const x = ax(z, Cc.x) + z.L((i - (n - 1) / 2) * GL.pitch);
           if (S.textures.exists("dv5-glass")) {
             const gb = S.track(S.add.image(x, y, "dv5-glass").setDepth(D.item));
             gb.setScale(z.L(GL.d) / gb.width);
@@ -822,7 +846,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         glassOf[id] = glass;
         // (its tap area is its bowls' pictures, so the tap box and the light's thing are one: contract-92 measures the tap box)
         const w = z.L(Math.max(0, n - 1) * GL.pitch + GL.d);
-        const hit = S.track(S.add.rectangle(z.X(Cc.x), y, w, z.L(GL.d), 0xffffff, 0.001).setDepth(D.item + 0.4));
+        const hit = S.track(S.add.rectangle(ax(z, Cc.x), y, w, z.L(GL.d), 0xffffff, 0.001).setDepth(D.item + 0.4));
         hit.wordId = id;
         // DAAR-43 (the phone, 740x320: the light hugged the tap box and covered the next row): its light is round its bowls' pictures, the
         // kit's lights read thing.litBounds (Cook.Coach.box, C.parts)
@@ -839,7 +863,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const PB = plainKey === "dv3-trivet-plain" ? TRIVET_PLAIN : TRIVET;
     // (the same bowl size as the review's: its round body, trivet and all)
     const PL = SC().plainBowl;
-    const dBowl = S.track(S.add.image(z.X(PL.x), sy(z, PL.y), plainKey).setOrigin(PB.cx, PB.cy).setDepth(D.item));
+    const dBowl = S.track(S.add.image(ax(z, PL.x), sy(z, PL.y), plainKey).setOrigin(PB.cx, PB.cy).setDepth(D.item));
     dBowl.setScale((z.L(PL.w) * TRIVET.r) / (PB.r * PB.w));
     dBowl.shadow = S.contactShadow(dBowl);
     const items = shelf(z, S, spiceIds, level);
@@ -945,7 +969,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         }
       }
       const drop = spiceDrop(id);
-      pop(z, S, Cook.display(id), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: id, ms: 1000 });
+      pop(z, S, Cook.display(id), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: id, ms: SC().popMs.step });
       await drop;
       z.progress({ added: id });
       if (!group.length) si++;
@@ -1095,7 +1119,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       } else {
         await into(r.id, piles[r.id] || []);
         hits[r.id].destroy();
-        pop(z, S, Cook.display(r.id), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: r.id, ms: 900 });
+        pop(z, S, Cook.display(r.id), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: r.id, ms: SC().popMs.word });
         if (ctx.closeItem) ctx.closeItem([r.id]);
         else UI.mission.closeItem([r.id], ctx.dishAt || 0);
       }
@@ -1192,7 +1216,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       const gone = [mat, mat.shadow].filter(Boolean);
       S.tweens.add({ targets: gone, alpha: 0, duration: 420, onComplete: () => gone.forEach((o) => o.active && o.destroy()) });
     }
-    pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: "cook-daal", ms: 1000 });
+    pop(z, S, Cook.display("cook-daal"), cx + bodyR + z.L(SC().pop.dx), cy + z.L(SC().pop.dy), { speakId: "cook-daal", ms: SC().popMs.step });
     await setPot("daar", 300);
     const pieces = [];
     // DAAR-31's flaw (the judge, 20 Oct: "identical toppings in identical places at all four levels"): each round turns the
@@ -1428,22 +1452,22 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
    * top-left rim, at the badge depth. -> {img, face} (img null without its picture)
    */
   function serveKatori(z, S, who) {
-    const KT = SC().katori || { x: 1250, y: 548, w: 150 };
-    const img = S.textures.exists("dv5-katori") ? S.track(S.add.image(z.X(KT.x), sy(z, KT.y), "dv5-katori").setDepth(D.item - 0.2)) : null;
+    const KT = SC().katori;
+    const img = S.textures.exists("dv5-katori") ? S.track(S.add.image(ax(z, KT.x), sy(z, KT.y), "dv5-katori").setDepth(D.item - 0.2)) : null;
     if (img) {
       img.setScale(z.L(KT.w) / img.width);
       img.shadow = S.contactShadow(img);
     }
     let face = null;
     if (who && Cook.Kit && Cook.Kit.badge) {
-      const perPx = Math.max(0.01, (UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const perPx = Math.max(0.01, Cook.Frame.px()); // (CSS px per sheet unit: the frame's answer)
       const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
       // CK-79, SH-254 (the eye judge, 10 Nov; contract-113: the face sat on the katori, then on the served bowl, at 740x320): beside
       // the dish on its left, its circle touching the rim of the larger of the empty katori and the served bowl that takes its place,
       // never over either; level with it, so the plain bowl's light above (the pour) never cuts it (contract-82 at 740x320)
       const SB = SC().serveBowl || KT;
       const r = z.L(Math.max(KT.w, SB.w || KT.w)) / 2;
-      const x = z.X(KT.x) - r - fd / 2 - z.L(4);
+      const x = ax(z, KT.x) - r - fd / 2 - z.L(4);
       const y = sy(z, KT.y);
       face = S.track(S.add.image(x, y, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
       face.setName("daar-katori-face");
@@ -1462,7 +1486,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const plain = S.textures.exists("dv3-trivet-plain") && S.textures.exists(discKey("stirred"));
     const TB = plain ? TRIVET_PLAIN : TRIVET;
     const SB = SC().serveBowl;
-    const bowl = S.track(S.add.image(z.X(SB.x), sy(z, SB.y), plain ? "dv3-trivet-plain" : "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));
+    const bowl = S.track(S.add.image(ax(z, SB.x), sy(z, SB.y), plain ? "dv3-trivet-plain" : "dv3-trivet").setDepth(D.fx - 2).setAlpha(0));
     const bs = z.L(SB.w) / TB.w;
     bowl.setScale(bs * 0.8);
     bowl.shadow = S.contactShadow(bowl);

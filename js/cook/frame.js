@@ -9,6 +9,8 @@
  *   Cook.Frame.area(S, opts) -> {play: {x, y, w, h}, bottom: {x, y, w, h}, pills, px, view(), toScreen(x, y), toSheet(sx, sy),
  *                                stoneBand(S, {game}), wash}
  *     opts: {top, base, draw, far, depth}
+ *   Cook.Frame.lend(part) -> back()   a host lends the game it runs part of its play area: part {x, y, w, h} in shares of the play
+ *                                     area (0-1); while lent, every area()'s play is that part of it; back() ends the lend (s20-b1-daar)
  *   Cook.Frame.sheet                  the drawing sheet {x, y, w, h}: a game's zone that is the whole sheet (1:1)
  *   Cook.Frame.px(), .view(), .toScreen(x, y), .toSheet(sx, sy)   the screen's answers, live (the same as an area's)
  */
@@ -25,6 +27,17 @@ import { Cook as CookNS } from "./ns.js";
   const PILL_CSS = 50; // the count pills' room over a game's main thing: a pill, 40 CSS px, and its gap (js/shared/tally.js)
   const ROW_SIDE = 40; // the bottom row's margins, in from the view's sides
   const Frame = {};
+  // the part of the play area a host lends the game it runs (shares of it), or null: the whole (s20-b1-daar; never set by chai)
+  let lent = null;
+  /** A host lends the game it runs part of its play area (shares, 0-1); -> back(), which ends the lend (call it in a finally). */
+  Frame.lend = (part) => {
+    const was = lent;
+    const ok = part && [part.x, part.y, part.w, part.h].every((n) => typeof n === "number" && isFinite(n));
+    lent = ok ? { x: part.x, y: part.y, w: part.w, h: part.h } : null;
+    return () => {
+      lent = was;
+    };
+  };
   Frame.sheet = Object.freeze({ x: 0, y: 0, w: SHEET_W, h: SHEET_H });
   /** Screen px per sheet unit, as drawn now (1 before the camera is set up). */
   Frame.px = () => {
@@ -59,9 +72,12 @@ import { Cook as CookNS } from "./ns.js";
     const spanBot = top - BAND_GAP;
     const left = (v.left != null ? v.left : 0) + ROW_SIDE;
     const right = (v.right != null ? v.right : SHEET_W) - ROW_SIDE;
+    // the worktop the game furnishes: between the side margins, from the view's top to the gap above the bottom row; a lent part of it
+    // while a host lends one (Frame.lend)
+    const whole = { x: SIDE, y: spanTop, w: SHEET_W - 2 * SIDE, h: spanBot - spanTop };
+    const play = lent ? { x: whole.x + lent.x * whole.w, y: whole.y + lent.y * whole.h, w: lent.w * whole.w, h: lent.h * whole.h } : whole;
     const out = {
-      // the worktop the game furnishes: between the side margins, from the view's top to the gap above the bottom row
-      play: { x: SIDE, y: spanTop, w: SHEET_W - 2 * SIDE, h: spanBot - spanTop },
+      play,
       // the bottom row: its band's top to the view's foot, between the row's margins (the shelf's slots or the tray's things)
       bottom: { x: left, y: top, w: right - left, h: (v.bottom != null ? v.bottom : SHEET_H) - top },
       // the count pills' room over the game's main thing, in sheet units (a shared spot: its size is the screen's, 50 CSS px)

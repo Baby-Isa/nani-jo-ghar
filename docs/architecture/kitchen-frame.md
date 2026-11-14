@@ -28,11 +28,15 @@ Every session that touches the frame reads this first and updates it last. A bri
 
 Options: `top` (the band's top; default `St.SHELF.top`), `base` (the shelf line things stand on; a shelf band only), `draw` (draw the wash), `far`, `depth` (the band's; default `D.bg + 1.2`).
 
+`Cook.Frame.lend(part) -> back()` (s20-b1-daar): a host lends the game it runs part of its play area, `part {x, y, w, h}` in shares of it (0-1); while lent, every `area()`'s `play` is that part; `back()` ends the lend (call it in a `finally`). Chai never lends, so chai's boxes are untouched.
+
 `Cook.Frame.sheet {x, y, w, h}`: the whole sheet, for a game whose zone is the whole sheet (chai's two zones).
 
 **Why the screen's answers are the frame's:** some sums are about the screen, not the room: a size that must read the same in CSS px on every screen (the shelf's pills, the tray's faces at least 30 px, a word pop's clearance), a tap area or a light's box on the page, a word pop or the serve's faces kept whole inside what the screen shows. A game asks the frame, so no game reads the camera, the view or the window itself, and a change to how the screen is fitted is made in one place.
 
 Who calls it: chai (Sprint 20 steps 1-2: `{top, base, far, draw: true}`, band `shelf`; its hob row, tray and pans are laid out from `play`, its shelf row between `bottom`'s edges).
+Daar (Sprint 20 batch 1, s20-b1-daar): `{top}` for its play area each phase (its x's are shares of `play.w` in its settings' scene, its hob's group centred in `play`), `{top, far, draw: true}` in the cook phase, band `tray`; the word pop's top, the pills' scale and the badge's floor from the frame's `view()` and `px`.
+Chop: its own frame area `{top, base, far, draw: true}`, band `tray`; the board's group centred in `play`, which is the part its **host** lends it (daar: `Cook.Frame.lend`, its settings' `chopRoom`, today the whole) or, alone and in chaat's chop-game, the whole; its well done kept off the side panel and cog with `toSheet`. The host never tells chop its layout (SH-259): the frame does.
 
 ## Counts (may only go down)
-`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12, maani-line 15, corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
+`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), daar 8 and chop 7 (14 Nov: 0 each, s20-b1-daar), eggs 12, maani-line 15, corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
