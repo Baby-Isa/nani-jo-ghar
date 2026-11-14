@@ -28,6 +28,9 @@ lesson, not a standard, retired. The dropped list (not a standard, retired, unpl
 | CHAI-10 | value | heat to the green (values.md B2) | the burner reaches the green twice as fast (STD-B2-05 cut to the window, 7 Nov) |
 | CHAI-100 | rule | STD-B4-02 | no knob click for a fire the child did not turn off |
 | CHAI-102 | rule | STD-D1-08, STD-F3-02 | a lesson lit a card redrawn under it; lesson R3 |
+| CHAI-109 | not a standard |  | chai's own lesson timing (its row); placed by s20-b1-maani (14 Nov) to clear the push check: the orchestrator confirms or re-places |
+| CHAI-110 | not a standard |  | chai's L4 half and full order (its row); placed by s20-b1-maani (14 Nov) to clear the push check: the orchestrator confirms or re-places |
+| CHAI-112 | not a standard |  | chai's pour light on the glass (its row); placed by s20-b1-maani (14 Nov) to clear the push check: the orchestrator confirms or re-places |
 | CHAI-12 | retired |  | Zafar, 29 Oct: the heat ring goes over the handle (STD-E3-04, contract-81) |
 | CHAI-13 | rule | STD-E3-02, STD-H1-05 | a code-drawn spoon replaced by a picture |
 | CHAI-14 | not a standard |  | a one-off art fix (the ginger jar); its rule is STD-E3-01 |
