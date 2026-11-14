@@ -1,0 +1,53 @@
+{
+ "why": "Zafar, 14 Nov: every recording question in one central Word document of tables, grammar first then each game mode, only ever added to, never rebuilt in a new shape",
+ "cost": "medium-high: Opus, high effort, one session (about $40-60)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done, or at the end of one session: then stop and report what is left",
+ "kind": "language",
+ "browser": false,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "proof": "the inventory table, the generated document's section and row counts, and the tools' tests (Sprint 20, decision 22)",
+ "name": "s20-recording-sheet: one recording sheet",
+ "port": 8981,
+ "report": "s20-recording-sheet",
+ "read": [
+  "Zafar's words, 14 Nov: \"every question or requirement for recording should be nicely in a table in Word document format. It should always start with grammar, broken up into different grammar style questions, and then underneath the grammar sections there should be each game mode with the questions for that game mode. And as time goes on, we should just be adding to each game mode or adding to the grammar if needed, although the grammar should be complete from now. We should know all the types of questions we need to ask to fill up the language engine. And then we need to make sure we're storing this recording sheet somewhere centrally and everyone remembers where it is. So we're just updating one document. Whenever I ask you for it, you don't need to rebuild it, you just pull it from that source.\" He also said a recent version had 'a bunch of prose bullet points under the grammar section 1 and I didn't know what to do with it'.",
+  "every existing sheet: docs/language/recording-sheet.md, 'docs/language/Recording sheet (23 Oct 2026).docx', docs/language/recording-sheet-2026-11-12.docx, docs/language/mum-questions/* (Rounds 5 and 6, .md and .docx), docs/language/doctor-recording-list.md/.docx, the 'For Mum next time' parts of docs/language/grammar-notes.md (§67) and build/reports/mum-*.md; and search docs/archive and build/reports for any other recording or question sheet",
+  "the tools that write them: build/tools/ops/recordings.mjs, mumsheet.mjs (and tests), .claude/skills/mum-round/SKILL.md, the recording-sheet steps in build/tools/review/checks.mjs; the engine's own gap list: data/lang/reports/gap-list.md and build/lang/gap-report.mjs; data/family-audio.json (what is recorded)",
+  "CLAUDE.md non-negotiable 2 (never invent Kutchi: Mum is the authority; Zafar confirms spellings)"
+ ],
+ "owns": [
+  "one source of truth: data/lang/recording-sheet.json (new): every question as a row",
+  "one generator: build/tools/lang/recording-sheet.mjs (+ test), writing docs/language/recording-sheet.docx (always that one path) and docs/language/recording-sheet.md (the same tables, for the repo and diffs)",
+  "build/tools/ops/recordings.mjs and mumsheet.mjs (+ tests) and .claude/skills/mum-round/SKILL.md: changed so they add rows to the source and regenerate, never write their own sheet",
+  "moving the old sheets to docs/archive/language/ (git mv), and docs/README.md's index line"
+ ],
+ "readOnly": [
+  "every game file, data/lang/lexicon.json (read it, don't edit), docs/language/grammar-notes.md (read; never rewrite Mum's notes), CLAUDE.md (the orchestrator adds the pointer), build/sandbox/**, assets/**"
+ ],
+ "flows": [],
+ "branch": "s20-recording-sheet (new, in /home/user/wt/s20-recording-sheet); commit there, never push",
+ "tasks": [
+  {
+   "do": "Inventory: list every recording or question sheet found (path, date, rough row count, what it covers) and merge every question in them into data/lang/recording-sheet.json, deduplicated. Each row: id (stable, e.g. G-NEG-03 or CK-CHAI-12), section, the English to ask Mum (a full natural sentence or the word), what it is for (the game moment or engine rule), status (to record / recorded with date and clip id from data/family-audio.json / confirmed spelling), the Kutchi ONLY where Mum gave it (never a guess), and source. Prose bullets become rows; nothing stays as loose prose.",
+   "accept": "the inventory table in the report, and every old sheet's questions present (or marked answered) in the source"
+  },
+  {
+   "do": "The shape, always: first GRAMMAR, split into grammar-question sections (for example: verb endings and agreement (khapeti/khapanti/khapeto/khapanta), tenses, negation and the polite no, questions, numbers and counting, amounts and measures, describing words and their agreement, possession and pronouns, joining words (and, with, then), place words (in, on), politeness and register, commands to a child, praise and comfort) - make it COMPLETE from the engine's own needs: every grammar rule or slot the engine (data/lang/reports/gap-list.md, the lexicon's paradigms) needs and does not yet have from Mum is a row. Then each game mode in order (Cook: chai, eggs, baking, corn, the pantry, chop, chaat, daar, samosa, maani, sekelo; then the clinic and its games; the farm and the day; the story and the birthday), each with its own table of the lines and words it needs. Columns in every table the same.",
+   "accept": "the document's sections and row counts in the report"
+  },
+  {
+   "do": "The generator writes docs/language/recording-sheet.docx (Word, tables, a short header saying it is the one central sheet and its date) and recording-sheet.md from the source, deterministically (the same source gives the same file). Rows already recorded stay, marked recorded, in a lighter style or a separate column, so the sheet never loses history but Mum sees what's left first. The tools and the mum-round skill now add rows to the source and regenerate; checks.mjs's recording-sheet step reads the source. Add the new rows the engine's recent changes need (decision 27's khapeti/khapanti/khapeto/khapanta forms with no clip; 'akho burichad', Zafar 14 Nov, chai L4's second pour, spelling to confirm; and whatever the current gap list shows).",
+   "accept": "`node build/tools/lang/recording-sheet.mjs` regenerates both files with no diff on a second run; the tools' tests pass; checks.mjs passes"
+  },
+  {
+   "do": "Standing: commit on your branch with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never invent Kutchi; never delete a question: answered ones stay marked answered.",
+   "accept": "build/reports/s20-recording-sheet.md with a Proof section, under 600 words"
+  }
+ ]
+}

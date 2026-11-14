@@ -22,13 +22,17 @@
  ],
  "owns": [
   "build/lang/** (the lexicon's sources), data/lang/seed/*.json, data/lang/lexicon.json (rebuilt by import_all only, never by hand)",
-  "data/cook.json and data/clinic*.json and data/clinic/** word entries only; js/core/lang/** and js/cook/words.js only if the register is chosen there",
-  "docs/language/recording-sheet.md (new lines for forms with no family clip)"
+  "data/cook.json and data/clinic*.json and data/clinic/** word entries only; js/core/lang/** and js/cook/words.js only if the register is chosen there"
  ],
  "readOnly": [
-  "every game file's layout and mechanics, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"
+  "every game file's layout and mechanics, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**",
+  "docs/language/recording-sheet.md (s20-recording-sheet owns it: list your new rows in your report)"
  ],
- "flows": ["cook:chai-tray", "cook:samosa", "cook:eggs"],
+ "flows": [
+  "cook:chai-tray",
+  "cook:samosa",
+  "cook:eggs"
+ ],
  "branch": "s20-lang-khapeti (new, in /home/user/wt/s20-lang-khapeti); commit there, never push",
  "tasks": [
   {
