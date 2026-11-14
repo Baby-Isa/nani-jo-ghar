@@ -185,7 +185,7 @@ def judge(d):
         bw = max(1, int(round(8 * k / c)))
         for h in hs:
             x0, y0, x1, y1 = [int(round(v * k / c)) for v in h]
-            band[max(0, y0 - bw):y1 + bw, max(0, x0 - bw):x1 + bw] = True
+            band[max(0, y0):y1, max(0, x0):x1] = True  # (inward from the edge only: never wider than the light's own box)
             band[y0 + bw:max(y0 + bw, y1 - bw), x0 + bw:max(x0 + bw, x1 - bw)] = False
         lit = lit | (gold & band)
     lit = ndimage.binary_fill_holes(lit)
