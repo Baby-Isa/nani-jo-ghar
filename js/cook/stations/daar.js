@@ -458,6 +458,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       return Lang.html(Lang.phrase(parts(id)), { hide: (w) => !done.has(id) && (!called.has(id) || (!cw && dot(w))), sealed: unsaid });
     };
     const rows = Object.keys(want).map((id) => ({ id, label: label(id), done: done.has(id) }));
+    // (s20-b1-daar, contract-116 at 1280x665 L2: her "don't" card closes with everything, as the order card's own "don't" rows do
+    // (UI.mission.closeItem {all}): once every thing she asked for is chopped it is done too, never left as the row's current card, cut
+    // by the row's edge after the last tick; until then it stays neutral)
+    const allDone = () => rows.every((r) => r.no || r.done);
     // a row is lower case with no full stop (the sidebar's rows: "dungri na")
     const noStop = (html) => String(html).replace(/\.((?:<\/[a-z0-9]+>)*)\s*$/i, "$1");
     no.forEach((id) => rows.push({ id, label: noStop(Lang.html(Lang.asRow(Lang.line("no", Lang.phrase([id]))), { hide: dot })), done: false, no: true }));
@@ -472,7 +476,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       headline: { html: Lang.html(chopHead), rec: !chopHead.ok },
       // SH-241, DAAR-44 (Zafar, 8 Nov: "Nani's order card should be for chopping should be the correct item card"): each row a 6 Nov
       // item card (the item's card picture, the count in Kutchi, its English by the level), the "don't" card at the row's end
-      items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: r.no ? "" : Lang.phrase(parts(r.id)).en, done: !r.no && r.done, no: !!r.no, key: r, say: () => Lang.speak(r.no ? Lang.line("no", Lang.phrase([r.id])) : Lang.phrase(parts(r.id))) }) : { label: r.label, done: r.done, no: !!r.no, key: r })) }],
+      items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: r.no ? "" : Lang.phrase(parts(r.id)).en, done: r.no ? allDone() : r.done, no: !!r.no, key: r, say: () => Lang.speak(r.no ? Lang.line("no", Lang.phrase([r.id])) : Lang.phrase(parts(r.id))) }) : { label: r.label, done: r.done, no: !!r.no, key: r })) }],
     });
     // the sidebar's own calls (order-card follow-ups): Nani's card above the order's, and the phase fold
     // (only cards you can act on stay open: Nana's daar card folds to face + headline while chopping)
