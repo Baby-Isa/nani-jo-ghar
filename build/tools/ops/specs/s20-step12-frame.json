@@ -1,12 +1,12 @@
 {
  "why": "Sprint 20 steps 1-2 (build/reports/s20-plan.md §5): chai's play-area lines move into the kitchen frame unchanged, then chai's room reads only its play area; every game after builds on this frame (Zafar, 13 Nov: the three layers)",
- "cost": "medium: Opus, high effort, one session (step 1 about $35, step 2 about $45)",
+ "cost": "medium: Opus, high effort, one session (task 0 about $20, step 1 about $35, step 2 about $45)",
  "model": "Opus",
  "effort": "high",
  "stop": "after step 2 is proven, or if a step is not green inside its share of the session: stop and report what is proven",
  "kind": "shared",
  "browser": true,
- "live": false,
+ "live": true,
  "specsByBuilder": false,
  "stubs": "none",
  "publish": false,
@@ -20,11 +20,22 @@
   "build/reports/s20-plan.md §2 (the three layers) and §5 steps 1-2, docs/sprints/S20-one-kitchen-frame.md",
   "js/cook/stations/chai-tray.js (its layout: the play area's lines near the hob, tray and pans' sums: about lines 400-520), js/cook/kitchen-kit.js (Cook.Kit.hob, St.stoneBand, the worktop wash), js/shared/shelf.js, js/shared/tally.js (Tally.room reads the hob)"
  ],
- "owns": ["js/cook/frame.js (new), js/cook/stations/chai-tray.js, js/cook/kitchen-kit.js, docs/architecture/kitchen-frame.md, and the one script line that loads js/cook/frame.js in index.html, cook.html, day.html, first.html, lab.html, clinic.html and lab/sections/kk-stove.html (beside kitchen-kit.js)"],
- "readOnly": ["every other game file (js/cook/stations/* but chai-tray.js), js/cook/ui.js, js/cook/flow.js, js/shared/**, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
- "flows": ["cook:chai-tray", "lab:cook/chai-tray"],
+ "owns": [
+  "js/cook/frame.js (new), js/cook/stations/chai-tray.js, js/cook/kitchen-kit.js, js/cook/ui.js and js/cook/coach.js (task 0 only), docs/architecture/kitchen-frame.md, and the one script line that loads js/cook/frame.js in index.html, cook.html, day.html, first.html, lab.html, clinic.html and lab/sections/kk-stove.html (beside kitchen-kit.js)"
+ ],
+ "readOnly": [
+  "every other game file (js/cook/stations/* but chai-tray.js), js/cook/flow.js, js/shared/**, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"
+ ],
+ "flows": [
+  "cook:chai-tray",
+  "lab:cook/chai-tray"
+ ],
  "branch": "s20-step12-frame (new, in /home/user/wt/s20-step12-frame); commit there, never push",
  "tasks": [
+  {
+   "do": "Task 0, before step 1: chai's gate has two intermittent blocking breaks left, and its gate must be at zero for every step. Trace each in code (file:line) from the runs' data, then fix it properly. (a) contract-83 at lab:cook/chai-tray@L4 740x320 (2 of the last 3 gates): a card sits over Nana's HEAD (the kitchen's people during the order; the stove's badges are not counted) just before the order ends: the 'dudh' pop placed at the top [238,10,344,145], then about 0.7 s later, after its word is said, a card at [249,78,337,190] over Nana (750 px squared), then the order is skipped (see /home/user/nani-jo-ghar/build/screenshots/sandbox/gate-20261114T1614-chai-tray/data/lab_cook_chai_tray@L4__740x320.json, its k:cardface, life pop-face, row-glide, say-end, order-skip events). The orchestrator's guess (the flight's bow planner, js/cook/ui.js around the 'bend' sum, now keeps 8 px clear of faces) did not hold: find which card moves there and why, and keep every card off every head. (b) contract-79 at cook:chai-tray@L3#hint 740x320 (1 of 3): the order card's light started while Nani's help box (ng-help, 500 ms) and a tally chip's bump (300 ms) ran (js/cook/coach.js C.cardLight polls stillness every 60 ms, then lights): make the light start only after a still spell, never in the same moment something starts.",
+   "accept": "contract-83 and contract-79 at zero over two gate runs (they are the gate runs of step 1 and step 2), each cause named file:line in the report"
+  },
   {
    "do": "Step 1, chai's play-area lines move, unchanged. Only the true play area: the top of the view, the gap above the bottom row, the room above the hob, the side margins (today in chai-tray.js's layout). They move AS THEY ARE into one frame function in a new js/cook/frame.js, Cook.Frame.area(S, opts) returning two boxes in the drawing sheet's units: the play area and the bottom row ({play: {x, y, w, h}, bottom: {x, y, w, h}}), with the options a game passes named in kitchen-frame.md (chai's band 'shelf'). The frame also draws the worktop wash and the bottom band (St.stoneBand), which each game calls by hand today: chai now asks the frame. Chai's hob, pan and tray sums stay in chai (its room). The old lines are deleted in the same step. Write the function in kitchen-frame.md's API section: what it returns, its options, who calls it.",
    "accept": "boxes.mjs --diff against chai's reference: 0 boxes moved at L1 and L4, four sizes; the gate's contract part at zero; frame-counts.mjs: chai's count lower; commit 'step 1' and say its hash"
