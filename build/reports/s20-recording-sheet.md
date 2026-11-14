@@ -1,6 +1,6 @@
 # s20-recording-sheet: the one recording sheet (builder report, 14 Nov)
 
-**What changed.** Every question for Mum now lives in one source, `data/lang/recording-sheet.json` (2,173 rows; a row is never deleted or renumbered). `node build/tools/lang/recording-sheet.mjs` makes `docs/language/recording-sheet.docx` (Word, landscape tables, grammar first, then each game; done rows grey, below what's left) and its `.md` twin. `recordings.mjs` adds the engine's needs to the source (gaps, unknown and draft grammar cells, the day, parked words) and marks rows recorded when a clip's question id is the row's id; `mumsheet.mjs` adds the clash list's quick checks and prints the next sitting; neither writes its own sheet (the mum-round skill says so). Old sheets: `docs/archive/language/`.
+**What changed.** Every question for Mum now lives in one source, `data/lang/recording-sheet.json` (2,176 rows; a row is never deleted or renumbered). `node build/tools/lang/recording-sheet.mjs` makes `docs/language/recording-sheet.docx` (Word, landscape tables, grammar first, then each game; done rows grey, below what's left) and its `.md` twin. `recordings.mjs` adds the engine's needs to the source (gaps, unknown and draft grammar cells, the day, parked words) and marks rows recorded when a clip's question id is the row's id; `mumsheet.mjs` adds the clash list's quick checks and prints the next sitting; neither writes its own sheet (the mum-round skill says so). Old sheets: `docs/archive/language/`.
 
 ## Inventory (every sheet found, all merged)
 
@@ -20,10 +20,10 @@
 
 ## Sections (to do / done)
 
-Grammar 398/231: G-NOUN 50/76, G-VERB 22/12, G-TENSE 103/10, G-NEG 5/6, G-Q 6/4, G-NUM 10/4, G-AMT 11/0, G-ADJ 26/28, G-POS 25/39, G-JOIN 15/13, G-PLACE 10/12, G-POL 38/4, G-CMD 12/0, G-PRAISE 5/4, G-CHK 60/19.
+Grammar 400/232: G-NOUN 51/76, G-VERB 23/13, G-TENSE 103/10, G-NEG 5/6, G-Q 6/4, G-NUM 10/4, G-AMT 11/0, G-ADJ 26/28, G-POS 25/39, G-JOIN 15/13, G-PLACE 10/12, G-POL 38/4, G-CMD 12/0, G-PRAISE 5/4, G-CHK 60/19.
 Cook 209/190: chai 44/42, eggs 6/4, baking 10/13, corn 6/1, pantry 19/2, chop 4/2, chaat 9/8, daar 16/5, samosa 9/7, maani 10/3, sekelo 13/5, every game 63/98.
 Clinic 500/9 (visit 161, heal 155, words 164/9, old man 10, doctor 10). Farm and day 92/4. Story and birthday 72/24. Parked 437/7.
-Statuses: 1,636 to record, 72 to confirm, 69 answered, 328 recorded, 68 closed. New: decision 27's khapeti/khapanti/khapeto/khapanta (G-VERB-01..04, Mum's §1 spellings: khapeti recorded alone on 12 Nov, the other three to record), "akho burichad" (CK-CHAI-01, to confirm).
+Statuses: 1,637 to record, 73 to confirm, 69 answered, 329 recorded, 68 closed. New: decision 27's khapeti/khapanti/khapeto/khapanta (G-VERB-01..05, 35, 36 with their orders: khapeti alone and "Muke dudh khapeto" already recorded, the rest to record), "akho burichad" ("Fill it up all the way", CK-CHAI-01, to confirm), and the genders the endings need (sekelo, naan, makai: G-NOUN-36..38; chaat: G-NOUN-127, to confirm).
 
 ## Proof
 
