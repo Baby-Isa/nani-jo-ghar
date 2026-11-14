@@ -303,7 +303,7 @@ export function check116(r, tl, add) {
   // (the 2 px are chai's at 1280x665: at another size the card is drawn at its own scale, so the tolerance is too)
   const H = (+(String(r.size || "").split("x")[1]) || 665);
   const tolPad = Math.max(PAD_EVEN, (PAD_EVEN * H) / 665), tolGap = Math.max(GAP_EVEN, (GAP_EVEN * H) / 665);
-  const ord = ev(tl, "s19ord"), rowsS = ev(tl, "s19row"), ticks = ev(tl, "s19tick");
+  const ord = ev(tl, "s19ord"), rowsS = ev(tl, "s19row"), ticks = ev(tl, "s19tick").concat(ev(tl, "s19close"));
   const ordering = (t) => { const o = ord.filter((x) => x.t <= t).pop(); return !!o && (o.away > 0 || o.pop > 0 || o.fly > 0); };
   for (const { e, until } of heldSamples(tl, "s19pad", PAD_HOLD_MS, tEnd)) {
     const s = inSt(st, e.t);

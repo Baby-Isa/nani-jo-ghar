@@ -45,6 +45,9 @@ function check124(r, tl, add) {
     // (from the child's tap that turned it, when the want sample came late after it: s19ns-a4's chai L4 at 740x320 under load, 1.2 s)
     const first = wants.slice(0, i + 1).reverse().find((x, k, a) => !a[k + 1] || a[k + 1].key !== w.key) || w;
     const tap = inputs.filter((x) => x.t >= first.t - 50 && x.t <= nx.t).pop();
+    // (s20-chai-fix, the gate of 14 Nov 09:14, lab L3 1280x665: the want went from knob-on-ma to knob-nana 78 ms later with no tap,
+    // the game re-pointing the child to another pan; ma's knob was turned later, by a tap, and both sounds played: no tap, no turn)
+    if (!tap) continue;
     const from = Math.min(nx.t - KNOB_BEFORE_MS, tap ? tap.t - 100 : Infinity);
     const near = plays.filter((p) => p.t >= from && p.t <= nx.t + KNOB_AFTER_MS).map((p) => p.url);
     const miss = ["sfx/knob", "sfx/flame"].filter((u) => !near.includes(u));

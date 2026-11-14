@@ -23,7 +23,9 @@ test("contract-124 to 127 are registered and the probe samples them", () => {
 });
 
 test("contract-124: a knob turned on with no click or flame is a break; both heard (under a voice) passes", () => {
-  const wants = [c(1000, "want", { key: "knob-on-nana" }), c(1100, "want", { key: "knob-on-nana" }), c(2000, "want", { key: "knob-nana" }), c(9000, "want", { key: "end" })];
+  const wants = [c(1000, "want", { key: "knob-on-nana" }), c(1100, "want", { key: "knob-on-nana" }), c(1950, "input", { x: 1, y: 1 }), c(2000, "want", { key: "knob-nana" }), c(9000, "want", { key: "end" })];
+  // (s20-chai-fix, 14 Nov: the want moving on with no tap is the game re-pointing the child, not a knob turned: not judged)
+  assert.equal(run(R, wants.filter((e) => e.k !== "input")).length, 0);
   const red = run(R, wants);
   assert.equal(red.length, 1);
   assert.equal(red[0].id, "contract-124");

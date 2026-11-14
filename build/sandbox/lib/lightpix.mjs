@@ -60,8 +60,10 @@ export function lightPix(e, page, sound, { wait = 550 } = {}) {
       // (a light zooming from its whole thing onto a part, Onboard.ZOOM: measured once it has settled, never half-way: data-zoom)
       await page.waitForFunction(() => !document.querySelector(".njg-onboard[data-zoom]"), null, { timeout: 2500 }).catch(() => {});
       // (chai's L2 #mistake at 740x320, 14 Nov: the light steps aside while the child holds, .ob-moving, opacity 0 (SH-236), its holes
-      // kept; measured then, both shots were without the light and it read as no lift: a light stepped aside or buried is not measured)
-      const HOLES = () => { const o = []; for (const l of document.querySelectorAll(".njg-onboard.on:not(.ob-empty):not(.ob-moving):not(.ob-buried)")) { try { for (const h of JSON.parse(l.dataset.holes || "[]")) o.push([Math.round(h.x), Math.round(h.y), Math.round(h.x + h.w), Math.round(h.y + h.h)]); } catch (x) { /* none */ } } return o; };
+      // kept; measured then, both shots were without the light and it read as no lift: a light stepped aside or buried is not measured;
+      // s20-chai-fix, the 06:58 frozen run: the whole layer mid-fade, still marked on, the screen round the box 125 bright against the
+      // dim's 98: a layer not fully shown is not measured either)
+      const HOLES = () => { const o = []; for (const l of document.querySelectorAll(".njg-onboard.on:not(.ob-empty):not(.ob-moving):not(.ob-buried)")) { if (+getComputedStyle(l).opacity < 0.95) continue; try { for (const h of JSON.parse(l.dataset.holes || "[]")) o.push([Math.round(h.x), Math.round(h.y), Math.round(h.x + h.w), Math.round(h.y + h.h)]); } catch (x) { /* none */ } } return o; };
       const still = await page.evaluate(`(${HOLES})()`);
       // (the light has moved on, or is closing: a closed layer keeps its holes while it fades out for 300 ms, without "on"; measured
       // then, both shots are without the light and it reads as no lift: the orchestrator, 30 Oct, contract-84 at test speed 3)

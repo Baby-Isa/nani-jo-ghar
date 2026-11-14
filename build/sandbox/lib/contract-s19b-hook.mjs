@@ -15,6 +15,7 @@
 //   k: "s19spk"  {list: [{who, box, tap, em, icon, text}]}   each speech bubble's speaker as drawn: its box, its tap (grown by a positioned ::before), its words' size, its icon (73)
 //   k: "s19ring" {id, lv, lo, hi} / {id, clear: 1}   the kit's heat ring as drawn (Cook.Kit.heatRing draw): its level and green, on
 //                                 each 0.01 or crossing (70, 77, 96)
+//   k: "s19close" {ids, n}   a step closing its rows (Cook's UI.mission.closeItem: a count row ticks then; contract-116's grace)
 //   k: "s19tick" {id, dish, un, row, got, need, done}   each tick of the order card (Cook's UI.mission.tickItem; un 1: untickItem): the
 //                                 item, the row it ticked (row 0: none open wanted it) and its count after (71, 96)
 function s19bhook() {
@@ -250,6 +251,18 @@ function s19bhook() {
       };
       w.__njg = true;
       try { M[name] = w; } catch (e) { /* not wrapped: no tick samples */ }
+    }
+    // (s20-chai-fix, 14 Nov: a count row ticks when its step closes, M.closeItem, not through tickItem: contract-116 gave the row 1 s
+    // after such a tick, not its 2 s. The close is its own sample, k "s19close", so the once-each checks (71, 96) never count it)
+    if (typeof M.closeItem === "function" && !M.closeItem.__njg) {
+      const oc = M.closeItem;
+      const wc = function (ids) {
+        const out = oc.apply(this, arguments);
+        try { emit({ k: "s19close", ids: [].concat(ids).map(String), n: Array.isArray(out) ? out.length : null }); } catch (e) { /* a probe only */ }
+        return out;
+      };
+      wc.__njg = true;
+      try { M.closeItem = wc; } catch (e) { /* not wrapped */ }
     }
   };
 
