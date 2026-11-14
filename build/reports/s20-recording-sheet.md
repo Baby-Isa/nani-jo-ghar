@@ -25,7 +25,7 @@ Statuses: 1,640 to record, 73 to confirm, 69 answered, 329 recorded, 68 closed. 
 ## Proof
 
 - The generator twice: identical md5 for both files (a test checks it byte for byte).
-- `node --test` recordings, mumsheet, recording-sheet tests: 16 pass. `checks.mjs` (after the merge): 14 steps ok, "recordings recording sheet is current: 2179 rows in 42 sections: 1713 to do (1576 need Mum's Kutchi), 466 done".
+- `node --test` recordings, mumsheet, recording-sheet tests: 16 pass. `checks.mjs` after the merge: 14 steps ok (recordings: "current, 2179 rows").
 - No rows, flows or before folder in the brief (no evidence probes). Check-change (`--base f3c8a0156`; it plays chai, data/lang reading as shared): push pass; scope fail (Open 5); play: 3 contract breaks on chai (121, 79, 112; no game file touched here); before cut short by another builder's pkill; stopped at frozen to merge; no result file.
 
 ## Open
