@@ -316,6 +316,13 @@
       const side = ["l", "r", "t", "b"].filter((k) => g[k] >= 0).sort((a, b) => g[b] - g[a])[0];
       s[side] = Math.max(0, Math.min(s[side], g[side] - c));
     });
+    // SH-292 (Zafar, 14 Nov, chai's paani at L1: "the light is not centred on the object (there's more padding to the left than the
+    // right)"): o.even (every drawn light, light.draw): a side trimmed for a neighbour trims the side opposite it to match, left with
+    // right, top with bottom, so the thing sits in the middle of its light; the neighbour is still never lit
+    if (o.even) {
+      s.l = s.r = Math.min(s.l, s.r);
+      s.t = s.b = Math.min(s.t, s.b);
+    }
     const x = u.x - s.l;
     const y = u.y - s.t;
     const w = u.w + s.l + s.r;
@@ -1012,7 +1019,8 @@
         layer.classList.toggle("ob-buried", buried);
         layer.__buried = buried;
         if (buried) rects = [];
-        let b = rects.length ? Onboard.litBox(rects, o.avoid, { pad: o.tight }) : null;
+        // (SH-292: centred on its thing: a side trimmed for a neighbour trims its opposite side too, Onboard.litBox's o.even)
+        let b = rects.length ? Onboard.litBox(rects, o.avoid, { pad: o.tight, even: true }) : null;
         // (o.round, CHAI-68's circle, removed: every light is one rounded rectangle, a pan's included, Zafar 10 Nov)
         // the box is always whole on the screen (S12 W2-A, the judge: the pantry jar's box touched the top edge at 915x412). SH-230
         // (Zafar, 6 Nov night): at the screen's edge it stops at the edge: 1 px in (was 3), so 3 of its ring's 4 px still show; a

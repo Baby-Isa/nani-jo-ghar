@@ -7,22 +7,31 @@
   max-width: 60%; pointer-events: none;
 }
 .njg-tally.empty { display: none; }
-.njg-tally-chip {
-  display: flex; align-items: center; gap: var(--njg-s1);
-  padding: var(--njg-s1) var(--njg-s3) var(--njg-s1) var(--njg-s1); border-radius: var(--njg-round);
-  background: var(--njg-card); box-shadow: var(--njg-shadow);
-  font: 800 var(--njg-t3)/1 var(--njg-font); color: var(--njg-ink); font-variant-numeric: tabular-nums;
-}
 /* (Zafar, 5 Nov evening, his phone: "the pills that count the number of items that have gone in ... seem a bit big compared with ... the
    ones on the shelf ... maybe not the same size as those pills, but at least a little bit ... proportionate": a step down, text t3 and
-   picture s5; still a step above the shelf's word pills, t4) */
-.njg-tally-pic { display: inline-grid; place-items: center; width: var(--njg-s5); height: var(--njg-s5); }
+   picture s5; still a step above the shelf's word pills, t4)
+   SH-294 (Zafar, 14 Nov: "these should be something more recognisable / bigger as in user testing nobody really used them"; then
+   10-30% bigger): every part of the pill (its picture, its count or dots, its padding) at --njg-tally-k of that step, 1.2 */
+.njg-tally { --njg-tally-k: 1.2; }
+.njg-tally-chip {
+  display: flex; align-items: center; gap: calc(var(--njg-s1) * var(--njg-tally-k));
+  padding: calc(var(--njg-s1) * var(--njg-tally-k)) calc(var(--njg-s3) * var(--njg-tally-k)) calc(var(--njg-s1) * var(--njg-tally-k)) calc(var(--njg-s1) * var(--njg-tally-k));
+  border-radius: var(--njg-round);
+  background: var(--njg-card); box-shadow: var(--njg-shadow);
+  font: 800 calc(var(--njg-t3) * var(--njg-tally-k))/1 var(--njg-font); color: var(--njg-ink); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.njg-tally-pic { display: inline-grid; place-items: center; width: calc(var(--njg-s5) * var(--njg-tally-k)); height: calc(var(--njg-s5) * var(--njg-tally-k)); }
 .njg-tally-pic img { width: 100%; height: 100%; object-fit: contain; }
 .njg-tally-chip.bump { animation: njgTallyBump .3s; }
+/* SH-294: a pill going (its pan emptied, Tally's clear): it fades as the pour starts */
+.njg-tally-chip.njg-tally-out { opacity: 0; transition: opacity .25s ease-out; }
 @keyframes njgTallyBump { 50% { transform: scale(1.2); } }
 @media (prefers-reduced-motion: reduce) { .njg-tally-chip.bump { animation: none; } }
 /* An anchored tally (js/shared/tally.js Tally.place): centred over its point, growing up from it */
 .njg-tally.at { right: auto; justify-content: center; max-width: none; transform: translate(-50%, -100%); }
+/* SH-294: laid over the stove (Tally.place with the page kit's Tally.room): the box is the pills' union (its place and size set on
+   it, no transform), each pill placed in it */
+.njg-tally.laid > .njg-tally-chip { position: absolute; }
 
 /* ---- the shelf's word pills (js/shared/shelf.js; Sprint 18, pieces 9-10): the count pills' cousins, in the same sheet ----
    Shelf.mount draws a shelf in its host's box: each thing on the base line, its pill under it. A pill is `speaker word` while the

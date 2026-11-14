@@ -271,7 +271,9 @@ import "../shared/shelf.js"; // window.Shelf, the shared kit's shelf (a classic 
       const [t, b] = S$.opaqueSpan(S, key);
       pic = { ph: (b - t) * src.height, pw: src.width };
     }
-    return global.Shelf.classFit(pic, S$.sizeClass(id), { base, ppw, slotW, hop, floorCss: S$.FLOOR_CSS });
+    // (SH-293: the size classes reach the band's top with their hop and glow, Shelf.classTop: taller on every shelf)
+    const top = global.Shelf.classTop ? global.Shelf.classTop() : undefined;
+    return global.Shelf.classFit(pic, S$.sizeClass(id), { base, ppw, slotW, hop, floorCss: S$.FLOOR_CSS, itemTop: top });
   };
   S$.hideKnown = hideKnown;
 

@@ -27,8 +27,9 @@
  *                                             standing on o.base: {scale, cls, flag, k, h, hL, floored, capped}
  *                                             o: {base, ppw (CSS px per design px), slotW, hop, floorCss}
  *
- * Slots (SH-208, SH-219: Zafar 1-6 Nov): a row of groups centred on a span, widening evenly to the view's margins where
- * the pills would touch, then the groups' gaps closing to minGap, then the pills sitting close.
+ * Slots (SH-208, SH-219: Zafar 1-6 Nov; SH-293, 14 Nov): a row of groups centred on a span; short of room, the groups' gaps close
+ * first (to none), then the slots narrow; where the pills would touch, the row widens evenly to the view's margins, then the pills
+ * sit close. (minGap: no longer used, SH-293)
  *   Shelf.slots(groups, {span:[l, r], view:[l, r], pitch, groupGap, pillRoom, minGap}) -> {slotW, gapW, width, x0, mid, x: {id: x}}
  *
  * Word pills (SH-159, SH-219): `speaker word` while the word is written (the core's pill ladder: progress.pillShows), the speaker
@@ -90,6 +91,15 @@
   Shelf.pad = () => BAND.bottom - (BAND.chipY + BAND.chipH / 2);
   Shelf.itemTop = () => BAND.top + Shelf.pad();
   Shelf.hop = (h) => Math.max(6, Math.min(16, h * 0.07));
+  /*
+   * SH-293 (Zafar, 14 Nov, the reference game's jars at 740x320: "is there a way to increase the height / size of all objects so they are more visible
+   * on a small screen? If they take up more of the vertical height of the bottom bar that would be better"): the size classes' top,
+   * the highest a sized shelf thing reaches with its hop and glow, is the band's own top edge (BAND.top + ROOM_TOP), no longer the
+   * pills' gap under it (itemTop): the L height grows by that gap, M and S with it at their shares; the base line and the pills stay.
+   * (Shelf.itemTop stays the plain band rule, for the things sized by it alone: a pile, a crate)
+   */
+  Shelf.ROOM_TOP = 0;
+  Shelf.classTop = () => BAND.top + Shelf.ROOM_TOP;
   /** The band at H px tall (u: px per design px). */
   Shelf.band = function (H) {
     const u = H / (BAND.bottom - BAND.top);
@@ -180,7 +190,7 @@
   };
 
   /* ---------------- slots ---------------- */
-  Shelf.slots = function (groups, { span, view, pitch, groupGap, pillRoom = 0, minGap = 20 }) {
+  Shelf.slots = function (groups, { span, view, pitch, groupGap, pillRoom = 0 }) {
     const gs = groups.filter((g) => g && g.length);
     const [spanL, spanR] = span;
     const [VL, VR] = view || span;
@@ -188,13 +198,19 @@
     const roomW = 2 * Math.min(mid - VL, VR - mid, (spanR - spanL) / 2);
     const n = gs.reduce((a, g) => a + g.length, 0) || 1;
     const nG = Math.max(0, gs.length - 1);
+    const want = Math.max(pitch, pillRoom);
+    const fit = (room, g) => (room - nG * g) / n;
     let gapW = groupGap;
-    let slotW = Math.min(Math.max(pitch, pillRoom), (roomW - nG * gapW) / n);
+    // SH-293 (Zafar, 14 Nov: "the three object groups currently separated by size with extra spacing can move together to help with
+    // width"): where the row is short of room, the groups' extra gaps close first (down to none: the groups then stand at the slots'
+    // own spacing), and only then do the slots narrow, so the things and their pills keep their width
+    if (nG && fit(roomW, gapW) < want) gapW = Math.max(0, Math.min(groupGap, (roomW - n * want) / nG));
+    let slotW = Math.min(want, fit(roomW, gapW));
     if (slotW < pillRoom) {
+      // (the pills would touch: the row widens evenly to the view's margins, the gaps closed as far as that needs)
       const roomMid = 2 * Math.min(mid - VL, VR - mid);
-      const fit = (g) => (roomMid - nG * g) / n;
-      if (fit(gapW) < pillRoom) gapW = Math.max(minGap, Math.min(groupGap, (roomMid - n * pillRoom) / Math.max(1, nG)));
-      slotW = Math.min(pillRoom, fit(gapW));
+      if (nG && fit(roomMid, gapW) < pillRoom) gapW = Math.max(0, Math.min(gapW, (roomMid - n * pillRoom) / nG));
+      slotW = Math.min(pillRoom, fit(roomMid, gapW));
     }
     const width = n * slotW + nG * gapW;
     const x0 = mid - width / 2;
@@ -594,7 +610,7 @@
       });
       const widths = ids.map((id) => items[id].chip.offsetWidth);
       const gap = Math.max(5, B.u * 12);
-      const L = Shelf.slots(groups, { span: [pad, W - pad], view: [pad, W - pad], pitch: B.u * 172, groupGap: B.u * 44, pillRoom: Shelf.pillRoom(widths, 1, gap), minGap: B.u * 20 });
+      const L = Shelf.slots(groups, { span: [pad, W - pad], view: [pad, W - pad], pitch: B.u * 172, groupGap: B.u * 44, pillRoom: Shelf.pillRoom(widths, 1, gap) });
       const fit = Shelf.pillScale(ids.map((id, i) => ({ x: L.x[id], w: widths[i] })), { want: 1, gap, slotW: L.slotW });
       // (a pill at its floor may stand taller than the band's own: it keeps inside the band's bottom, and the line things stand on
       // keeps the band's gap above it, as on the canvas)
@@ -605,7 +621,8 @@
         const o = items[id];
         const x = L.x[id];
         const nat = o.img.naturalWidth ? { ph: o.img.naturalHeight, pw: o.img.naturalWidth } : { ph: 100, pw: 100 };
-        const f = Shelf.classFit(nat, o.cls, { base, ppw: 1, slotW: L.slotW - 8 * B.u, itemTop: B.itemTop, glow: B.glow, hop: true });
+        // (SH-293: up to the band's top with the hop and glow, as on the canvas: Shelf.classTop)
+        const f = Shelf.classFit(nat, o.cls, { base, ppw: 1, slotW: L.slotW - 8 * B.u, itemTop: Shelf.ROOM_TOP * B.u, glow: B.glow, hop: true });
         o.fit = f;
         Object.assign(o.el.style, { left: x - (nat.pw * f.scale) / 2 + "px", top: base - f.h + "px", width: nat.pw * f.scale + "px", height: f.h + "px" });
         const c = o.chip;
