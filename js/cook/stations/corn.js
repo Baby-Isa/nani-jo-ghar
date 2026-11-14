@@ -685,11 +685,20 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         const n = count;
         const side = P2.w * (pl.side != null ? pl.side : 0.068);
         const view = [P2.x + side, P2.x + P2.w - side];
-        const gap = pl.gap || 70;
         // (the plates above the bowls, their light's margin clear of the first row: contract-92)
         const room = lb.clear - lb.room - P2.y;
-        const d = Math.min(pl.d || 400, (view[1] - view[0] - (n - 1) * gap) / n, room);
-        const y = P2.y + d / 2 + (room - d) / 2;
+        // SH-254 (contract-113): with two or more plates, the well-done face beside a plate takes the kit's first spot, over the plate's
+        // upper corner (Cook.Kit.praiseSpot, measured here on a plate of 1, so its share of the plate is the kit's): the plates leave
+        // that room above them, and between them, so it never falls back onto a cob or a plate (at 740x320 the plates filled the play
+        // area's height once it was the frame's, and the face lay on the cobs' tips). One plate keeps its whole room.
+        const rs = (lay.review || {}).size || 0.55;
+        const sp = n > 1 && Cook.Kit.praiseSpot ? Cook.Kit.praiseSpot({ x: 0, y: 0, w: 1, h: 1 }, rs) : null;
+        const ka = sp ? Math.max(0, -sp.y + rs / 2 - 0.5) : 0;
+        const across = (g) => (view[1] - view[0] - (n - 1) * g) / n;
+        let d = Math.min(pl.d || 400, across(pl.gap || 70), room / (1 + ka));
+        const gap = Math.max(pl.gap || 70, ka * d + 8);
+        d = Math.min(d, across(gap));
+        const y = P2.y + ka * d + d / 2 + (room - d * (1 + ka)) / 2;
         const x0 = (view[0] + view[1]) / 2 - ((n - 1) * (d + gap)) / 2;
         people.forEach((q, i) => {
           const x = x0 + i * (d + gap);
@@ -715,13 +724,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             c.img.setDepth(D.item + 0.3);
             // (SH-256: the cob keeps its length from the tray, as long as the plate holds it; s19-games-2, contract-114: never under 15% less.
             // Sprint 20, corn's call: where the plate is shorter than that (a phone's two rows of bowls), the cob keeps its length and
-            // reaches a little past the plate's rim, as a real cob on a small plate, up to plates.reach of the plate, where it is the only
-            // plate; with two or more on a phone the well-done face beside a plate has no free spot and would lie on the cobs' tips
-            // (contract-113, SH-254), so there it stays within its plate: a call for Zafar in build/reports/s20-b1-corn.md. It was cut to
-            // 0.95 of the plate, 23-44% under its tray size at every level, 1280x665 and 740x320, in the gate of 14 Nov)
+            // reaches a little past the plate's rim, as a real cob on a small plate, up to plates.reach of the plate; was cut to 0.95 of
+            // the plate, 23-44% under its tray size at every level, 1280x665 and 740x320, in the gate of 14 Nov)
             const keep = trayLen / 1.14;
-            const reach = n === 1 ? pl.reach || 1.15 : 0.95;
-            const len = keep <= d * 0.95 ? Math.max(d * (pl.cob || 0.84), keep) : Math.min(keep, d * reach);
+            const len = keep <= d * 0.95 ? Math.max(d * (pl.cob || 0.84), keep) : Math.min(keep, d * (pl.reach || 1.15));
             return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len, ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
           })
         );
