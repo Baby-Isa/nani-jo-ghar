@@ -130,16 +130,27 @@ function oldSlots(shelfIds, { spanL, spanR, VL, VR, PITCH, GROUP_GAP, PILL_ROOM 
   return { slotW, gapW, x };
 }
 
-test("slots: centred on the span, widening, then the gaps closing (as the reference shelf)", () => {
+test("slots: centred on the span; the size groups' gaps close before the slots narrow (SH-293, Zafar 14 Nov)", () => {
+  // (Zafar, 14 Nov: "the three object groups currently separated by size with extra spacing can move together to help with width":
+  // the 6 Nov rule kept the groups' 44 px gaps while the slots narrowed; now the gaps close first, down to 0, then the slots narrow)
   const groups = [["w", "m"], ["t", "s"], ["e", "g", "c", "x", "y", "z"]];
   for (const PILL_ROOM of [100, 160, 190, 260]) for (const [spanL, spanR] of [[300, 1300], [200, 1450]]) {
     const o = oldSlots(groups, { spanL, spanR, VL: 40, VR: 1560, PITCH: 172, GROUP_GAP: 44, PILL_ROOM });
     const n = Shelf.slots(groups, { span: [spanL, spanR], view: [40, 1560], pitch: 172, groupGap: 44, pillRoom: PILL_ROOM });
-    assert.equal(n.slotW, o.slotW);
-    assert.equal(n.gapW, o.gapW);
-    assert.deepEqual(n.x, o.x);
+    const want = Math.max(172, PILL_ROOM);
     assert.ok(Math.abs((n.x.w + n.x.z) / 2 - (spanL + spanR) / 2) < 1e-6, "centred");
+    assert.ok(n.gapW >= 0 && n.gapW <= 44, "the groups' gap between 0 and its 44");
+    assert.ok(n.slotW >= o.slotW - 1e-6, "a slot never narrower than the old rule's");
+    assert.ok(n.gapW <= o.gapW + 1e-6, "the gaps never wider than the old rule's");
+    // (a slot narrower than it wants only once the groups' gaps are closed)
+    if (n.slotW < want - 1e-6) assert.ok(n.gapW < 44, "the slots narrow only after the gaps close");
+    // (in a group the slots sit side by side; between groups one gap more)
+    assert.ok(Math.abs(n.x.m - n.x.w - n.slotW) < 1e-6 && Math.abs(n.x.t - n.x.m - n.slotW - n.gapW) < 1e-6, "slots and gaps as laid out");
   }
+  // the first case, where the old rule kept the gaps: closed now, the slots at the pills' room
+  const n = Shelf.slots(groups, { span: [300, 1300], view: [40, 1560], pitch: 172, groupGap: 44, pillRoom: 100 });
+  assert.equal(n.gapW, 0);
+  assert.equal(n.slotW, 100);
 });
 
 test("pills: the floor's scale, the room a row needs, never touching, a cap where even 1 touches", () => {
