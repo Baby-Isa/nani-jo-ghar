@@ -4154,7 +4154,11 @@
   }
   function renderOrder6() {
     const box = $("#mission .m-order");
-    drawCards(box, sideEls);
+    // SH-291: the cards drawn again leave the side panel's scroll where it was (the shared card's keepScroll; a redraw emptied the box
+    // and the panel went back to its top, the next card's place after a fold lost within 400 ms)
+    const OCk = OCard();
+    if (OCk && OCk.keepScroll) OCk.keepScroll(box, () => drawCards(box, sideEls));
+    else drawCards(box, sideEls);
     // CHAI-69 (the audit, 2 Nov night): the headline is fitted the moment it is drawn, not a frame later by the watch, so no sample
     // (and no paint) ever finds it on one unwrapped line past the card's edge ("khape." 15-20 px out at 740x320 and 930x430)
     if (global.FitText && global.FitText.run) global.FitText.run(box);
@@ -4461,7 +4465,10 @@
       // before anything was threaded: M.tickPiece's unitGot)
       if (r.unitGot) r.unitGot = [];
     });
-    if (mission && mission.folds) Object.values(mission.folds).forEach((st) => ((st.open = false), (st.doneAt = 0)));
+    // SH-291 (chai's frozen run, 14 Nov: Nana's served card opened and folded again at every boil-over of the next pan, the panel
+    // jumping with it): was every card's fold state cleared here, the served cards' too, so each redrew open and folded again on its
+    // timer. A card whose rows open again is no longer finished, and the shared card resets its own state as it is drawn so
+    // (js/shared/order-card.js foldable); every other card keeps its fold
     renderOrder();
     return rows;
   };

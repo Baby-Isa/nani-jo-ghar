@@ -910,19 +910,38 @@ export function chaiExtra(asked, extras) {
      * clear of the bottle or spoon over the pan; if the count badge (on the rim's upper left, SH-39) is there, above it,
      * and where the screen's top leaves no room for that, beside it on the right.
      */
+    // (the Sprint 20 geometry rule pill-clear: a word pop wholly above the hob keeps at least 6 CSS px off its top edge at every size;
+    // 7.5 here, as the pop's drawn card sits a little below the box it is placed by, its soft shade: 6.9 px drawn at 740x320)
+    const POP_CLEAR_CSS = 7.5;
     const popAt = (pan, W, H) => {
       const v = Cook.view || {};
       // (s08 w6B, CHAI-19: the camera's own view of the world is what shows; at 844x390 Cook.view.top sat level with the hob's
       // top and pushed the bubble back onto its rim)
       const wv = S.cameras && S.cameras.main && S.cameras.main.worldView;
+      const viewTop = wv && wv.height ? wv.y : v.top || 0;
+      // (s20-chai-fix, pill-clear: at L1 on a phone the pop over the pan sat 3.8 px above the hob at 740x320 and 4.3 px at 930x430: its
+      // 10 world px over the hob were 3-4 CSS px there, and the screen's top margin pushed it down onto them. The gap is now counted in
+      // CSS px, and where the room above the hob is short the top margin gives way, never past the view's top: the pop stays whole on
+      // screen and clear of the hob. A laptop's pop on the hob's edge rises 2 px (its 10 world px were 4.7 CSS px drawn); a big screen's
+      // stays (its 10 world px are 8 CSS px drawn))
+      const clear = Math.max(10, POP_CLEAR_CSS / pxPerWorld());
+      const top = Math.max(viewTop, Math.min(viewTop + 10, hobY - clear - H - 2));
+      const left = (v.left || 0) + 10;
+      const right = (v.right || 1600) - 10;
       // (the shared kit's placing, Juice.popAt: never across the hob's top edge (s08 w6B, CHAI-19), above the count badge or beside it)
-      return global.Juice.popAt({ x: pan.x, y: pan.y - rimR - 16 }, W, H, {
-        top: (wv && wv.height ? wv.y : v.top || 0) + 10,
-        left: (v.left || 0) + 10,
-        right: (v.right || 1600) - 10,
-        edge: { y: hobY, clear: RIM_CLEAR, above: 10 },
-        avoid: badgeBox(),
-      });
+      const at = global.Juice.popAt({ x: pan.x, y: pan.y - rimR - 16 }, W, H, { top, left, right, edge: { y: hobY, clear: RIM_CLEAR, above: clear }, avoid: badgeBox() });
+      // (and where even the screen's top leaves no room for it above the hob (930x430 at L1: a 30 px pop over 35 px), it sits beside the
+      // hob, on the side with room, at the same height: clear of the hob and of the tray, whole on screen. The drawn pop: its card from
+      // 28 to 31 of its 59 below its point, its soft shade)
+      const hb = hob && hob.active ? hob.getBounds() : null;
+      if (!hb || at.y + H / 2 <= hobY - clear + 0.5 || at.y - (H * 28) / 59 >= hobY) return at;
+      const foot = at.y + (H * 31) / 59;
+      const over = (x, b) => x + W / 2 > b.x - clear && x - W / 2 < b.right + clear;
+      if (!over(at.x, hb)) return at;
+      const tb = tray && tray.active ? tray.getBounds() : null;
+      const clearOf = (x) => x - W / 2 >= left && x + W / 2 <= right && !(tb && over(x, tb) && foot > tb.y - clear);
+      const beside = [hb.right + clear + W / 2, hb.x - clear - W / 2].find(clearOf);
+      return beside == null ? at : { x: beside, y: at.y };
     };
 
     /* ---------- using the shelf: pour a bottle, or a spoonful ---------- */
@@ -1339,7 +1358,10 @@ export function chaiExtra(asked, extras) {
       unglow();
       // CHAI-08's flaw (the judge, 20 Oct: "loose 'hakro' pills float at the hob's top-left corner during the pour"): the pan's
       // running count goes while it is off the hob pouring, and comes back with it if it is still on the go
-      UI.hideCount();
+      // SH-294 (Zafar, 14 Nov): at a half pour (L4: the pan left half full) the pills stay up over the stove while it pours; only the
+      // pour that empties the pan (a full pour, or the second half) takes them away
+      const hid = !(halves && pan.poured + 1 < 2);
+      if (hid) UI.hideCount();
       zb.expect({ kind: "wait" });
       const w = pan.well;
       const black = !(pan.has.milk > 0);
@@ -1401,7 +1423,7 @@ export function chaiExtra(asked, extras) {
       // a click ... I think we should remove that ... It just comes at the wrong time every time"): silently; the child's own knob turns
       // and the boil-over keep their click
       if (pan.poured >= 2) setKnob(pan, "off", true);
-      if (sel === pan && pan.poured < 2 && halves) {
+      if (hid && sel === pan && pan.poured < 2 && halves) {
         if (UI.tallyAt) UI.tallyAt(tallyPt(pan), { anchor: "right" });
         if (pan.sugar) UI.count(pan.sugar, { speak: false, id: "cook-khun" });
         if (pan.salt) UI.count(pan.salt, { speak: false, id: "spi-16" });
