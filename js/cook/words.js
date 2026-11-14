@@ -177,7 +177,10 @@
           concat(r, sayR({ fn: "Join", parts: rest }));
           break;
         }
-        r = withSay(EN().say(engineM(m), ctx));
+        // decision 27 (Zafar, 14 Nov: the orders say the formal, agreeing khapeti / khapanti / khapeto / khapanta "so they learn
+        // properly", for now): a frame names the engine's register in its meaning (data/cook.json `meanings`: the order frames are
+        // "polite", the register whose want agrees with the thing asked for, grammar-notes §1, §31, §58); the engine picks the words
+        r = withSay(EN().say(engineM(m), m.register ? Object.assign({}, ctx, { register: m.register }) : ctx));
       }
     }
     (r.gaps || []).forEach((g) => g.kind !== "audio" && Lang.gapLog.push(Object.assign({ meaning: m.fn }, g)));
@@ -190,7 +193,8 @@
     if (m.fn === "Word") return m.id;
     if (m.fn === "Count") return Cook.numId(m.n);
     const out = {};
-    for (const k of Object.keys(m)) out[k] = k === "fn" ? m[k] : engineM(m[k]);
+    // (a frame's register is the engine's context, never an argument of the meaning: sayR passes it)
+    for (const k of Object.keys(m)) if (k !== "register") out[k] = k === "fn" ? m[k] : engineM(m[k]);
     if (out.fn === "Item") Object.keys(out).forEach((k) => out[k] === undefined && delete out[k]);
     return out;
   }

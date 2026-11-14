@@ -240,9 +240,22 @@ test("what Mum has not said stays a gap: no guess, an English placeholder 'to re
 test("an unknown noun gender takes the he-form and is reported (decision 21, Mum's rule)", () => {
   // sugar was the example until Mum gave its gender (12 Nov, §64: hakro khun); meat is still unknown
   const r = E.say({ fn: "Need", who: "p1", thing: item("ph-meat", { n: 1 }) }, { register: "polite" });
-  assert.equal(r.text, "Muke hakro gos khapeto.");
+  // ("one" still takes the he-form, decision 21; the want's ending is never guessed: it keeps the plain khape until Mum gives the
+  // gender: non-negotiable 2, the orchestrator for decision 27, 14 Nov)
+  assert.equal(r.text, "Muke hakro gos khape.");
   assert.ok(r.gaps.some((g) => g.kind === "feature" && g.lex === "n.meat"));
   assert.ok(!E.say({ fn: "Need", who: "p1", thing: item("cook-khun", { n: 1 }) }, { register: "polite" }).gaps.some((g) => g.kind === "feature"), "sugar's gender is Mum's now");
+});
+
+test("decision 27: the polite want agrees only with a gender Mum confirmed; else it keeps khape and the gender is a gap", () => {
+  const need = (kind, n) => E.say({ fn: "Need", who: "p1", thing: item(kind, n ? { n } : {}) }, { register: "polite" });
+  assert.equal(need("cook-daal").text, "Muke daar khapeti.");
+  assert.equal(need("ph-samosa", 2).text, "Muke ba samosa khapanta.");
+  for (const [kind, lex] of [["ph-sekelo", "n.sekelo"], ["ph-naan", "n.naan"], ["ph-chaat", "n.chaat"], ["veg-13", "n.garlic"]]) {
+    const r = need(kind);
+    assert.match(r.text, / khape\.$/, `${kind}: ${r.text}`);
+    assert.ok(r.ok && r.gaps.some((g) => g.kind === "feature" && g.feature === "gender" && g.lex === lex), `${kind}: the gender is on Mum's list`);
+  }
 });
 
 test("the 5 Oct words: describing words, 'of', 'be' and the two 'we's agree (decision 30)", () => {
@@ -295,8 +308,9 @@ test("the placeholder voices' words (data/cook-tts.json) are all in the lexicon,
   const missing = new Set();
   for (const k of Object.keys(J("data/cook-tts.json").lines)) if (!k.startsWith("en|")) for (const w of k.split(" ")) if (!known.has(w)) missing.add(w);
   // daal, hikdo, dine, vatana and lal are superseded spellings (rules G4, G5, decision 32), and aanjo the dropped draft
-  // for Thank you (decision 87), kept only in the test-only voice index; aabhar is Mum's since 12 Nov (aabhar anjo, §67)
-  assert.deepEqual(Array.from(missing).sort(), ["aanjo", "daal", "dine", "hikdo", "lal", "vatana"]);
+  // for Thank you (decision 87), kept only in the test-only voice index; aabhar is Mum's since 12 Nov (aabhar anjo, §67); loon is not a
+  // Kutchi word (decision 27, Zafar 14 Nov: salt is Mum's mitho), left only in the parked pages' placeholder voice index
+  assert.deepEqual(Array.from(missing).sort(), ["aanjo", "daal", "dine", "hikdo", "lal", "loon", "vatana"]);
 });
 
 /* ---------------- the recordings ---------------- */

@@ -308,8 +308,19 @@ export function linearize(L, meaning, ctx = {}) {
    * phrase's (its number); with none, a word standing alone as an argument is its own phrase: its own features,
    * one (sg) unless it says otherwise, and the case its slot gives (`alone`).
    */
-  function pushWord(id, cellTpl, scope, { alone = false } = {}) {
+  function pushWord(id, cellTpl, scope, { alone = false, sure = null } = {}) {
     const e = L.lexOf(id);
+    // a slot whose form agrees with a word whose gender Mum has not confirmed (none, or an open question on it: open[].feature "gender")
+    // takes its plain form instead (`sure`: {of: <argument>, else: <cell>}), never a guessed agreeing one (non-negotiable 2,
+    // the orchestrator for decision 27, 14 Nov), and the gender is a gap on Mum's list
+    if (sure && sure.of && sure.else) {
+      const f = scope.argFeats ? scope.argFeats(sure.of) : null;
+      const he = f && f.lex ? L.lexOf(f.lex) : null;
+      if (he && (he.pos === "N" || he.pos === "PN") && (!he.gender || (he.open || []).some((q) => q && q.feature === "gender"))) {
+        addGap({ kind: "feature", lex: he.id, feature: "gender", key: ["feature", "", he.id, "", "gender"].join("|"), what: `the gender of "${he.gloss || he.id}" is not confirmed by Mum; "${(e && e.gloss) || id}" keeps its plain form`, ask: [].concat((he.ask && he.ask.gender) || []) });
+        cellTpl = sure.else;
+      }
+    }
     const tpl = cellTpl || (e && posInfo[e.pos] && posInfo[e.pos].defaultCell) || "-";
     const own = e ? L.lexFeats(e.id) : { $def: {} };
     const ownScope = alone && !cellTpl ? { number: "sg", ...own, $def: own.$def } : mergeOwn(own, scope.own);
@@ -411,7 +422,7 @@ export function linearize(L, meaning, ctx = {}) {
       // a word with an explicit cell is part of this phrase: its {case} is the phrase's, unless the slot sets one
       const theCase = slot.case || !slot.cell ? inhCase : (scope.inh && scope.inh.case) || inhCase;
       const cellScope = { ...scope, inh: { ...(scope.inh || {}), case: theCase } };
-      return pushWord(c.id, slot.cell, cellScope, { alone: true });
+      return pushWord(c.id, slot.cell, cellScope, { alone: true, sure: slot.sure || null });
     }
     linNode(c.m, { case: inhCase });
   }

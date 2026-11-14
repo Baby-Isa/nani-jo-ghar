@@ -235,7 +235,11 @@
      },
      {
       "arg": "verb",
-      "cell": "pres.{thing.gender}.{thing.number}"
+      "cell": "pres.{thing.gender}.{thing.number}",
+      "sure": {
+       "of": "thing",
+       "else": "informal"
+      }
      }
     ]
    },

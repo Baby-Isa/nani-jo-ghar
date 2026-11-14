@@ -27,5 +27,13 @@ export function apply(S) {
   S.patch("n.pot", { forms: { "sg.obl": d6("tapele", "41:54-42:54 (chai tapele me wij: tapelo becomes tapele before me)") } }, { source: "hand: grammar-notes prose" });
   S.patch("n.egg", { gender: "he", forms: { "sg.dir": d6("indo", "30:48 (hakro indo: a he-word)"), "pl.dir": d6("inda", "30:52 (ba inda)") }, notes: ["Mum: the family often says mayai (Swahili), but the proper word is indo (30:44)."] }, { source: "hand: grammar-notes prose" });
   S.patch("n.chickpeas", { forms: { "sg.dir": d6("chano", "24:21 (hakro chano: 'actually it'll be hakro chano')"), "pl.dir": d6("chana", "24:19") } }, { source: "hand: grammar-notes prose" });
+  // §64's ⚠ genders (Mum's hedged or second answers): kept as she said them, but an open question, so an agreeing ending never
+  // rests on them (decision 27's order endings keep her plain khape for these; the orchestrator, 14 Nov: non-negotiable 2)
+  // (open: {feature: "gender"} is the engine's mark that the gender is not settled: js/core/lang/engine/linearize.js pushWord `sure`)
+  const g6 = (id, q, where) => S.patch(id, { open: [{ q, feature: "gender", ask: ["new"], src: N6(where) }] }, { source: "hand: grammar-notes prose" });
+  g6("n.chaat", "Is chaat a he-word? Mum said muke chaat khapeto over Zafar's voice (⚠)", "29:10");
+  g6("n.mishkaki", "Is mishkaki a she-word, or was hakri the skewer's (lakri)? (⚠)", "29:48");
+  g6("n.garlic", "Is lasan a he-word? Mum: 'I think on its own would be masculine' (⚠)", "21:33, 22:12");
+  g6("n.mustard-seeds", "Is rai a she-word? Mum said hakri rai after hakro rai: 'I've never heard anybody ever saying that' (⚠)", "23:06");
   S.patch("n.cupboard", { gender: "he", notes: ["A he-word: kabaat jo darwajo, the cupboard's door (Mum, 12 Nov 29:57, §64)."] }, { source: "hand: grammar-notes prose" });
 }
