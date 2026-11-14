@@ -1,0 +1,51 @@
+{
+ "why": "Sprint 20 batch 1 (decision 31, Zafar 14 Nov): maani joins the kitchen frame, in parallel with the other batch 1 games on its own cloud machine",
+ "cost": "medium: Opus, high effort, one cloud session (about $40-60)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the game reads only its play area, its parked rows are settled and its gate is at zero, or at the end of one session: then push your branch and report",
+ "kind": "shared",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "proof": "node build/tools/review/frame-counts.mjs: maani-line 0; node build/tools/tiers/gate.mjs --game maani-line (contract at zero) and --game chai-tray (chai's boxes identical to build/frozen/boxes/chai-tray: the frame did not move chai)",
+ "name": "s20-b1-maani: maani joins the kitchen frame",
+ "port": 8955,
+ "report": "s20-b1-maani",
+ "read": [
+  "CLAUDE.md, then docs/architecture/kitchen-frame.md (the frame's notes and its API: read first, add to it last), docs/sprints/S20-one-kitchen-frame.md, build/reports/s20-plan.md §2 and §5 (step 3 onward), build/reports/s20-step12-frame.md (how chai joined: the model to follow)",
+  "js/cook/stations/maani-line.js and data/stations/maani-line.json; docs/process/regressions.md rows tagged 'waits for the frame' that name maani"
+ ],
+ "owns": [
+  "js/cook/stations/maani-line.js, data/stations/maani-line.json, js/cook/frame.js and docs/architecture/kitchen-frame.md ONLY to ADD an option another game can use (never change what chai gets: chai's boxes prove it), build/reports/s20-b1-maani.md"
+ ],
+ "readOnly": [
+  "chai-tray.js and every other game's file, js/cook/ui.js, js/cook/flow.js, js/shared/** (the kit: report a kit fault, don't fix it), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md (report each row's state in your report; the orchestrator moves statuses), assets/**"
+ ],
+ "flows": [
+  "cook:maani-line",
+  "lab:cook/maani-line"
+ ],
+ "branch": "s20-b1-maani (yours, on your own cloud machine): commit often, push only to it",
+ "tasks": [
+  {
+   "do": "Maani has no heat and two stations (board and tawa): it proves the stove part is optional and builds the frame's size chain: board and tawa as shares of the play area (equal to start; a game may give its own shares), the frame setting the gap and largest fit. CK-112 must pass. Zafar's accepted sizes (11 Nov: maani's board, tawa and plate sizes as a smooth tweened change) stay. The game asks the frame for its play area and bottom row (Cook.Frame.area, see kitchen-frame.md) and lays out its room in shares of that play area, never screen or sheet numbers (Cook.view, innerWidth/innerHeight, worldToScreen/screenToWorld, 1600 or 900). The old sums are deleted in the same change. A frame option you need that is missing: add it to js/cook/frame.js and write it in kitchen-frame.md, without changing what chai gets.",
+   "accept": "frame-counts.mjs: maani-line 0; chai's gate box part identical to its reference"
+  },
+  {
+   "do": "Every open row in docs/process/regressions.md tagged 'waits for the frame' that names maani: settle it now (built, with its check passing) or say why it cannot be (it waits on art, Mum, or a Zafar call: name the call as a yes/no question with your recommendation). Never invent Kutchi; no written English for the child; the leak test (CLAUDE.md non-negotiables 2-4).",
+   "accept": "a table in the report: every row, its state now, its proof or its reason"
+  },
+  {
+   "do": "Prove it, one browser job at a time: node build/tools/tiers/gate.mjs --game maani-line and node build/tools/tiers/gate.mjs --game chai-tray (each must pass its contract part at zero; chai's box part identical); node build/tools/review/boxes.mjs --game maani-line --rules (the geometry rules on your game: report each failure and its fix or reason). Never edit code while your own gate run is playing.",
+   "accept": "the gate results with minutes; the rules result"
+  },
+  {
+   "do": "Standing: commit often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), push only to your own branch; never re-freeze anything; never touch a check, a probe, a reference or a row's status; name every change to what a child sees at every level and size.",
+   "accept": "build/reports/s20-b1-maani.md with a Proof section, under 600 words, pushed on your branch"
+  }
+ ]
+}
