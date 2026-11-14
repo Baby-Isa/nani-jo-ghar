@@ -10,13 +10,13 @@
 
 ## Proof
 - **frame-counts:** maani-line 0 (was 15); chai-tray 0.
-- **Chai's gate:** `GATE PASS chai-tray: checks pass 2.4, contract pass 20.1, boxes:chai-tray pass 3.2; 25.8 min`. Chai's boxes are identical to its reference.
-- **Maani's gate:** `GATE FAIL maani-line: checks pass 2.2, contract FAIL 12.3; 14.6 min`. One blocking break: **contract-112**, L1 at 1280x665. The board's roll light stays up while the child rolls. **It was there before this change:** the same break, in the same box, on the base 115d900, and twice on this branch. It comes from the kit's light code (`Onboard.began`/`ended`, `coach.js`; not mine to edit): a kit fix. Advisory breaks: contract-119 x12, -111 x2, -36 x4.
-- **Four sizes** (`s20-b1-maani-contract`): `CONTRACT FAILED: 9 breaks (contract-119 8, contract-112 1)`. All 8 pages reached their end with 0 page errors. contract-119 is advisory (the kit's order pop).
+- **Chai's gate:** CHAI2. Chai's boxes are identical to its reference.
+- **Maani's gate:** `GATE PASS maani-line: checks pass 2.8, contract pass 11.8; 14.6 min` (0 blocking over 28 pages; advisory contract-119 x12, -36 x4). Its first run failed on **contract-112** (also on the base 115d900): the board's roll light stayed up while the child rolled. Cause: roll.js tells the light at its first move (`Cook.Coach.began`, `roll.js:276`), but the coach's script draws the roll light once the stage is calm, up to 1.5 s after the ball lands (`coach.js:285`, calmTick), so a quick child is already rolling and the new light never hears of it. Fix, in maani: a light that comes up mid-roll (press still down) is told through the same `Coach.began`, so it steps aside (SH-236) and comes back after the release if the step is open. The kit could do this itself (a light drawn during a press in its box, after `began`, starts away); not done, not my file.
+- **Four sizes** (`s20-b1-maani-contract`, before the fix): all 8 pages reached their end, 0 page errors; breaks contract-119 8 (advisory) and contract-112 1 (fixed since).
 - **Geometry rules** (`boxes.mjs --rules`, s20m-r1, 2.9 min): 8/10 pass, the same two failing as on the baseline.
   - tap-size: 33 faults before, 9 now. The 9 left are the kit's word-card buttons (`word-card.js`).
   - frame-slots: the stone tray's slab is inset, unlike chai's full-width shelf. This is the kit's look, and the same in every tray game.
-- **check-change** (`build/reports/tiers/change-3ba4e7a1fc.md`, 21.3 min): FAILED on contract-112 alone, at #mistake 930x430. The before (base) play has the same 16 breaks, contract-112 x2 among them.
+- **check-change** (`change-3ba4e7a1fc.md`, before the fix): failed on contract-112 alone; the base had it too.
 - **Evidence:** the spec names no rows, so there is no before or after folder.
 
 ## Parked rows
@@ -25,7 +25,7 @@ Checks from maani's gate run.
 | Row | State | Proof or reason |
 |---|---|---|
 | CK-112 | label, plates built; card: kit | pill-clear passes at four sizes; the L4 lesson card at 740x320 ends 10 px from the foot (`ui.js` order pop) |
-| SH-238, -239, -236, -237, -254, -256, -272, -274, -278 | pass for maani | their contract checks at 0: -103, -108, -106 (but see contract-112), -107, -113, -114, -127, -125, -126 |
+| SH-238, -239, -236, -237, -254, -256, -272, -274, -278 | pass for maani | their contract checks at 0: -103, -108, -106, -107, -113, -114, -127, -125, -126 |
 | SH-248 | built | `band.test.mjs` passes |
 | SH-245 | chain at the accepted size | call 2 |
 | SH-255, MAA-25 | wait | call 1 |
