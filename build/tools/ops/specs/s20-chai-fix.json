@@ -1,0 +1,58 @@
+{
+ "why": "Sprint 20: chai's faults found by its re-freeze and the gate (14 Nov) are fixed before chai moves into the frame, so no game inherits them (Zafar, 14 Nov: 'They should be fixed before moving the other games so the error doesn't propagate')",
+ "cost": "medium: Opus, high effort, one session (about $30-45)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the gate's contract part is at zero on chai and the geometry rules pass 10/10, or at the end of one session: then stop and report",
+ "kind": "code",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "proof": "build/tools/tiers/gate.mjs --game chai-tray: the contract part at zero (the box part will differ where the fixes move things: the order panel and the mid-cook word pop; the orchestrator re-takes chai's reference); build/tools/review/boxes.mjs --game chai-tray --rules 10/10",
+ "name": "s20-chai-fix: chai's five faults before the frame",
+ "port": 8952,
+ "report": "s20-chai-fix",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "build/screenshots/gate/gate-20261114T0914-chai-tray/contract.log and build/screenshots/sandbox/gate-20261114T0914-chai-tray/contract.md (the gate's two blocking breaks)",
+  "build/screenshots/sandbox/frozen-diff-chai-tray-202611140658/data/cook_chai_tray@L4__740x320.json, its timeline's k:\"panel\", k:\"fold\" and life card-fold / panel-follow events (SH-291: Nana's served card folds three times at 740x320, the panel back to 0 within 400 ms of each glide)",
+  "docs/process/regressions.md rows SH-232, SH-291, CHAI-113 (Zafar's words)"
+ ],
+ "owns": ["js/cook/ui.js, js/cook/flow.js, js/cook/stations/chai-tray.js, js/shared/order-card.js, js/shared/juice.js, js/cook/core.js, css/shared/order-card.css, css/cook*.css"],
+ "readOnly": ["every other game file, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
+ "flows": ["cook:chai-tray", "lab:cook/chai-tray"],
+ "branch": "s20-chai-fix (new, in /home/user/wt/s20-chai-fix); commit there, never push",
+ "tasks": [
+  {
+   "do": "SH-291 and SH-232 (contract-99, blocking; the gate at cook:chai-tray@L4 740x320 view-service): a served card stays folded and the side panel stays where its glide put it when the focus moves to another pan. Today each focus change redraws the order (js/cook/ui.js renderOrder via M.focus) with Nana's done card open again (192 px), it folds again on the timer (js/shared/order-card.js followFold and its redraw path) and #mission's scroll goes back to 0. Find the cause in code first (file:line in the report), then fix it once in the shared order card so every game gets it. The next card in progress sits at its planned place after a fold, as SH-232 says.",
+   "accept": "contract-99 at zero at L1-L4, 740x320 and 1280x665; a served card folds exactly once per page (the run's fold events, one per person)"
+  },
+  {
+   "do": "The word pop clear of the hob (geometry rule pill-clear, build/sandbox/lib/geometry.mjs): at L1 mid-cook the word pop over the right pan (pill-11) rests 3.8 px (740x320) and 4.3 px (930x430) above the hob's top; at least 6 wanted. It is pushed against the screen's top with no room above the hob. Place it so it keeps 6 px clear at every size, never over the hob, never off screen (Juice.P.pop's at/top, or chai's own pop point), its look unchanged.",
+   "accept": "boxes.mjs --game chai-tray --rules: pill-clear passes, and all 10 rules pass at L1 and L4, four sizes"
+  },
+  {
+   "do": "CHAI-113 (contract-124, blocking; the gate at lab:cook/chai-tray@L3 1280x665 kind-timing): the knob on ma's pan turned on and neither sfx/knob nor sfx/flame played: the child's tap silent, once in 38 pages. Zafar's rule (13 Nov, decisions 14): the click and the flame always play when a pan is turned on, under a voice and quieter. Find why it can be silent (a voice gate, a race with the voice starting) and make it always play.",
+   "accept": "contract-124 at zero on every chai page, two gate runs"
+  },
+  {
+   "do": "contract-84 (blocking-class, 2 of 6 frozen runs at cook:chai-tray@L2#mistake 740x320 kind-timing): the lit box round the knob [342,175,382,215] lifts the dark knob by 0 (the soft warm fill missing, SH-164). The orchestrator already stopped measuring a light stepped aside (.ob-moving or .ob-buried, build/sandbox/lib/lightpix.mjs). Find whether the fill is really missing at that moment (a light up with no fill) and fix it if so; if it is the check measuring a moment it should not, stop and report it to the orchestrator (never change the check).",
+   "accept": "contract-84 at zero over two gate runs, or a report naming the check's fault with its evidence"
+  },
+  {
+   "do": "contract-116 (blocking-class, 1 of 4 runs at lab:cook/chai-tray@L4#child 740x320 kind-timing): the current order card 'aako' [174,105,250,252] is cut by its row [10,103,213,255]: the row must glide the current card whole into view. Fix it in the shared order card if that is where it lives.",
+   "accept": "contract-116 at zero over two gate runs"
+  },
+  {
+   "do": "Prove it with the gate itself, alone on the machine: `COOK_TEST_PORT=8952 NJG_LOCK=/tmp/njg-browser-8952.lock node build/tools/tiers/gate.mjs --game chai-tray`, twice (the faults above are intermittent). The box part will differ where the fixes move things: list each box that moved and why. Never re-freeze. Keep under 1 GB of runs; delete your own run folders in build/screenshots/sandbox/ when done (the session's disk ran out on 14 Nov).",
+   "accept": "the gate's contract part PASS twice, with minutes; the box differences listed"
+  },
+  {
+   "do": "Standing: commit on your branch often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never re-freeze anything; never touch a check, a probe or a row's status; name every change to what a child sees, at every level and size it reaches; anything shared (order card, juice) is a change to every game: say which.",
+   "accept": "build/reports/s20-chai-fix.md with a Proof section, under 500 words"
+  }
+ ]
+}
