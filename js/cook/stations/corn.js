@@ -715,10 +715,13 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             c.img.setDepth(D.item + 0.3);
             // (SH-256: the cob keeps its length from the tray, as long as the plate holds it; s19-games-2, contract-114: never under 15% less.
             // Sprint 20, corn's call: where the plate is shorter than that (a phone's two rows of bowls), the cob keeps its length and
-            // reaches a little past the plate's rim, as a real cob on a small plate, up to plates.reach of the plate; was cut to 0.95 of
-            // the plate, 23-44% under its tray size at every level, 1280x665 and 740x320, in the gate of 14 Nov)
+            // reaches a little past the plate's rim, as a real cob on a small plate, up to plates.reach of the plate, where it is the only
+            // plate; with two or more on a phone the well-done face beside a plate has no free spot and would lie on the cobs' tips
+            // (contract-113, SH-254), so there it stays within its plate: a call for Zafar in build/reports/s20-b1-corn.md. It was cut to
+            // 0.95 of the plate, 23-44% under its tray size at every level, 1280x665 and 740x320, in the gate of 14 Nov)
             const keep = trayLen / 1.14;
-            const len = keep <= d * 0.95 ? Math.max(d * (pl.cob || 0.84), keep) : Math.min(keep, d * (pl.reach || 1.15));
+            const reach = n === 1 ? pl.reach || 1.15 : 0.95;
+            const len = keep <= d * 0.95 ? Math.max(d * (pl.cob || 0.84), keep) : Math.min(keep, d * reach);
             return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len, ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
           })
         );
