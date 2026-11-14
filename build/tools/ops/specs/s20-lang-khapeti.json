@@ -1,0 +1,47 @@
+{
+ "why": "Zafar, 14 Nov (decision 27): the orders say the formal agreeing endings (khapeti / khapanti / khapeto / khapanta), and loon leaves the language engine; both before chai's reference is taken",
+ "cost": "medium: Opus, high effort, one session (about $20-30)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when the tasks are done, or at the end of one session: then stop and report what is left",
+ "kind": "language",
+ "browser": true,
+ "live": true,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [],
+ "proof": "the language tests, words lint and leak check; every kitchen order line printed before and after; chai's pictures of the order (Sprint 20, decision 22)",
+ "name": "s20-lang-khapeti: formal order endings; no loon",
+ "port": 8951,
+ "report": "s20-lang-khapeti",
+ "read": [
+  "docs/decisions/2026-11-10-overnight.md items 22-27; docs/language/grammar-notes.md §1 (the khape endings) and §31-§32",
+  "build/reports/mum-2026-11-12.md 'Decisions for Zafar' item 1; build/reports/language-engine-map.html (how the engine works)",
+  "CLAUDE.md non-negotiable 2 (never invent Kutchi; every line built by the engine)"
+ ],
+ "owns": [
+  "build/lang/** (the lexicon's sources), data/lang/seed/*.json, data/lang/lexicon.json (rebuilt by import_all only, never by hand)",
+  "data/cook.json and data/clinic*.json and data/clinic/** word entries only; js/core/lang/** and js/cook/words.js only if the register is chosen there",
+  "docs/language/recording-sheet.md (new lines for forms with no family clip)"
+ ],
+ "readOnly": [
+  "every game file's layout and mechanics, build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"
+ ],
+ "flows": ["cook:chai-tray", "cook:samosa", "cook:eggs"],
+ "branch": "s20-lang-khapeti (new, in /home/user/wt/s20-lang-khapeti); commit there, never push",
+ "tasks": [
+  {
+   "do": "The orders say the formal agreeing ending everywhere a customer asks for something, for now (decision 27): khapeti (she-word, one), khapanti (she-word, more than one), khapeto (he-word, one), khapanta (he-word, more than one), agreeing with the thing asked for by the lexicon's gender and the count. Through the engine's own register or agreement (the engine already says khapeti/khapeto in the polite register: find it and make it the orders' default); never hand-written fragments. Where a form has no family clip, it is said by the engine's existing rule for unrecorded forms (device voice in testing) and gets a line on the recording sheet. 'na khape' (the polite no) stays as Mum said it unless the engine's agreement rule clearly covers it: report which.",
+   "accept": "every kitchen game's order lines printed before and after in the report (a table), each after line from the engine"
+  },
+  {
+   "do": "loon leaves the language engine (decision 27: 'loon is also not a word in kutchi'): salt is mitho everywhere, including the clinic's seed (data/lang/seed/clinic.json 'loon' entries), data/clinic.json items.loon and the foot game's words.loon (js/clinic/heal/foot.json or wherever it lives). Keep ids stable where code reads them; only the Kutchi word, its forms and its audio key change. Rebuild the lexicon with import_all. No 'loon' left as a Kutchi word anywhere (grep).",
+   "accept": "`grep -rn \"loon\"` over data/ and build/lang/ shows no Kutchi loon (ids or notes saying it was removed are fine)"
+  },
+  {
+   "do": "Prove: `node --test build/lang/`, `node build/lint/words.mjs`, the leak check, `node build/tools/review/checks.mjs`; and chai's order at L1 and L4 at 740x320 and 1280x665 (labcheck or boxes.mjs pictures) showing the new sentence. Standing: browser runs under your own lock and port (COOK_TEST_PORT=8951, NJG_LOCK=/tmp/njg-browser-8951.lock); commit on your branch with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), never push; never invent Kutchi; never touch a check, a probe, a reference or a row's status.",
+   "accept": "build/reports/s20-lang-khapeti.md with a Proof section, under 600 words, and the four order pictures' paths"
+  }
+ ]
+}
