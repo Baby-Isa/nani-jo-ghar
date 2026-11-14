@@ -2397,7 +2397,13 @@
       // the word's slot cut the first and last dot in half, read as an oval: the light holds the part and every dot drawn on it)
       const withDots = (el) => {
         const ds = [...el.querySelectorAll(".wc14-dots i")].map((d) => d.getBoundingClientRect()).filter((b) => b.width > 0 && b.height > 0);
-        return ds.length ? [el].concat(ds.map((b) => [b.left, b.top, b.width, b.height])) : el;
+        if (!ds.length) return el;
+        // (the frozen run, 14 Nov, contract-121: given the part and its dots as separate boxes the light held only the dots, under the
+        // word, so the part asked for sat outside the hole and a tap on it was blocked: one box round the part and every dot)
+        const all = [el.getBoundingClientRect()].concat(ds);
+        const l = Math.min(...all.map((b) => b.left)), t = Math.min(...all.map((b) => b.top));
+        const r = Math.max(...all.map((b) => b.right)), btm = Math.max(...all.map((b) => b.bottom));
+        return [[l, t, r - l, btm - t]];
       };
       try {
         await Cook.wait(200);
