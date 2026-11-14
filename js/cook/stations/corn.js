@@ -773,10 +773,14 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       if (two) size = Math.max(size, Math.min(bw.size || 150, 48 / ppw));
       const pillH = PH * want;
       const gapRows = room(size);
-      // (each row: the bowl, a small gap, its pill; the rows a light's margin apart; the last row's pill on the band's own pill line)
+      // (each row: the bowl, a small gap, its pill; the rows a light's margin apart. The last row is the band's own and stands as chai's
+      // shelf does: its pills' middles on the band's pill line, kept 4 above the bottom row's foot, its bowls' feet on the shelf line,
+      // contract-109's chai lines; was each bowl 6 over its own pill, with the pill 8 above the foot, so at 740x320, where the pills'
+      // floor makes them tall, the band's row stood 7 px over chai's line)
       const rowH = size + 6 + pillH;
-      const lastPill = Math.min(B.chipY, R.y + R.h - 4 - pillH / 2 - 4); // (4 above the row's foot)
+      const lastPill = Math.min(B.chipY, R.y + R.h - 4 - pillH / 2);
       const pillYs = rows.map((r, i) => lastPill - (rows.length - 1 - i) * (rowH + gapRows));
+      const footOf = (ri) => (ri === rows.length - 1 ? B.base : pillYs[ri] - pillH / 2 - 6);
       const top = two ? pillYs[0] - pillH / 2 - 6 - size - 18 : R.y;
       rows.forEach((row, ri) => {
         let x = mid - rowW(row, size) / 2;
@@ -785,7 +789,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           const cx = x + w / 2;
           x += w + room(size);
           const img = bowls[id];
-          img.setPosition(cx, pillYs[ri] - pillH / 2 - 6 - size / 2);
+          img.setPosition(cx, footOf(ri) - size / 2);
           img.setScale(size / Math.max(img.width, img.height));
           GK.shadow(S, img, { dx: 5, dy: 7, alpha: 0.24, blur: 5 });
           const c = img.chip;
@@ -801,7 +805,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       // above it is the plates'
       F = F.next(two ? { top, band: { ms: mo.screenMs || 380 } } : {});
       // (the first row's top, and the widest light margin's room above it, for the plates)
-      return { top, clear: pillYs[0] - pillH / 2 - 6 - size, room: (OL.max + OL.clear + 4) / ppw };
+      return { top, clear: footOf(0) - size, room: (OL.max + OL.clear + 4) / ppw };
     }
 
     // what goes on: named as it goes on, their row ticks; a second tap takes it back until they have it (non-negotiable 7)
