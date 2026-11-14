@@ -305,7 +305,7 @@ export const READ = `(function (opt) {
       const kx = Math.abs(c.scaleX || 1), ky = Math.abs(c.scaleY || c.scaleX || 1);
       const hw = c.popW ? c.popW / 2 : (c.pillW * kx) / 2, hh = c.popW ? 28 * kx : (c.pillH * ky) / 2;
       // (pill-clear's wobble, 14 Nov: a pop rises POP.rise px into place over its first 180 ms (Juice.P.pop's in-tween, alpha to 1),
-      // and a moment caught in that rise read it 4 px off the hob in some runs, at rest 18: a pop is measured where it comes to rest)
+      // and a moment caught in that rise read it 4 px off the hob in some runs: a pop is measured where it comes to rest)
       let cy = c.y;
       try { for (const tw of (sc.tweens && sc.tweens.getTweensOf ? sc.tweens.getTweensOf(c) : [])) { const ds = tw.data || [], a = ds.find((d) => d.key === "alpha"), yd = ds.find((d) => d.key === "y"); if (c.popW && a && yd && a.end === 1 && typeof yd.end === "number") cy = yd.end; } } catch (e) { /* as drawn */ }
       const p = w2s(c.x - hw, cy - hh), q = w2s(c.x + hw, cy + hh);
