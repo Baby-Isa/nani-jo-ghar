@@ -69,6 +69,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   const PLATE_PITCH = 232;
   // MAA-26: each plate's served picture (made as it stands at the end, Cook.Serve.plated) is this many px across; the last round's go
   const SERVED_W = 512;
+  const SERVED_TILT = 0.56; // its height for its width: a round plate seen from the side the served pictures are (served/maani: 0.58)
   const servedTex = [];
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
@@ -1041,14 +1042,16 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (!d || !d.img || !d.img.active || !on.length) return;
         const pw = Math.abs(d.img.displayWidth);
         const u = SERVED_W / pw;
-        const H = Math.round(Math.abs(d.img.displayHeight) * u);
+        const H0 = Math.abs(d.img.displayHeight) * u; // (the plate from above, as on the station)
+        const H = Math.round(H0 * SERVED_TILT);
         const key = `mv-served-${type}-${Cook.run}`;
         if (S.textures.exists(key)) S.textures.remove(key);
         const cv = S.textures.createCanvas(key, SERVED_W, H);
         const g = cv.getContext();
         // (each picture by its own frame: a sheet's frame, never the whole sheet)
         const draw = (o, x, y, w, h) => g.drawImage(o.frame.source.image, o.frame.cutX, o.frame.cutY, o.frame.cutWidth, o.frame.cutHeight, x, y, w, h);
-        draw(d.img, 0, 0, SERVED_W, H);
+        g.scale(1, SERVED_TILT); // (on the tray the plate is seen from the family's side, as the served pictures are)
+        draw(d.img, 0, 0, SERVED_W, H0);
         const clamp = (v) => Math.max(4, Math.min(16, v)); // (Kit.shadow's reach, in design px)
         on.forEach((it) => {
           const sp = it.sprite;
@@ -1061,7 +1064,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           g.shadowOffsetX = clamp(side * 0.025) * u;
           g.shadowOffsetY = clamp(side * 0.034) * u;
           g.shadowBlur = clamp(side * 0.03) * u;
-          g.translate((sp.x - d.img.x) * u + SERVED_W / 2, (sp.y - d.img.y) * u + H / 2);
+          g.translate((sp.x - d.img.x) * u + SERVED_W / 2, (sp.y - d.img.y) * u + H0 / 2);
           g.rotate(sp.rotation);
           draw(sp, -w * sp.originX, -h * sp.originY, w, h);
           g.restore();
