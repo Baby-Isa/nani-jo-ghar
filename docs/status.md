@@ -10,38 +10,23 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Handover branch:** `ccr-7da5e9f0-04g4xm` (the working branch; `main` is the live site, unchanged since 12 Nov).
 
-**Where things stand (15 Nov, 00:10 UK):** Sprint 20 (`docs/sprints/S20-one-kitchen-frame.md`, its table holds every step). Decisions 20-34 in `docs/decisions/2026-11-10-overnight.md`; the newest: 31 (the other nine games join in two batches, each batch in parallel on cloud sessions, merged one at a time through the gate; Zafar checks after batch 1), 34 (his review of chai's new pictures and eggs). His tokens reset Monday 17 Nov 10:00 UK: use them, never stop at a cost limit. Deadline (decision 28): every stove-top game by midnight Sunday 16 Nov UK.
+**Where things stand (15 Nov, 13:15 UK):** Sprint 20 (`docs/sprints/S20-one-kitchen-frame.md`). Overnight run (decision 38) done: `build/reports/overnight-2026-11-15.md` is the morning report. All ten stove-top games are on the kitchen frame and merged (chai, eggs, maani, corn, daar+chop, baking, sekelo, roll-tawa, samosa, chaat). The shared kit fixes (SH-304 to SH-311, CK-97) are in every game. Chai's box reference re-taken on the final merge (chai-ref-1300). Decisions 35-41 in `docs/decisions/2026-11-10-overnight.md` (39-41: calls taken while Zafar was away). His tokens reset Monday 17 Nov 10:00 UK; deadline (decision 28) every stove-top game by midnight Sunday 16 Nov UK.
 
-**Progress checks:** every 30 minutes by `send_later` (each schedules the next, same text), with **% completion per game** on the agreed scale: joined the frame 25, parked rows settled 20, own gate passed with chai unmoved 25, merged 15, Zafar's yes to its pictures 15. Last table (00:05): chai 85, eggs 80, maani 80, corn 55, daar+chop 55, batch 2 (baking, sekelo/mishkaki-grill, roll-tawa, samosa, chaat) 0; overall about 49%.
+**Progress (% per game, frame 25 / rows 20 / gate 25 / merged 15 / his yes 15):** chai 85, eggs 85, maani 85, corn 85, daar+chop 85, baking 80, sekelo 80, chaat 70, roll-tawa 65, samosa 65. No game has the eye judge's PASS yet; every re-look found fewer faults.
 
-**Done (14 Nov):** chai's faults and Zafar's notes fixed (s20-chai-fix, s20-chai-kit); six checks that misread chai fixed; chai re-frozen (P6b, pictures sent; his yes pending in words but decision 34 says "fine"); steps 1-2 (s20-step12-frame: `js/cook/frame.js`, `Cook.Frame.area`; chai 0 screen reads, boxes identical); batch 1: **eggs merged**, **maani merged** (each 0 screen reads, own gate pass, chai unmoved); SH-300 (Nani's box empty during the order: `data/cook.json` guide.default removed); the light judge reads a light on a thing's body (eggs' pot).
-
-**Running (15 Nov 00:10):**
-- Cloud sessions (tag `nani-jo-ghar:s20-batch1`; check with `list_sessions children:true`, read a finished one's last message with `list_events kinds:["assistant"]`): corn `session_014xb3kQxujfSnNf3DU59oP2` (branch s20-b1-corn), daar+chop `session_014xb3kT3gHJyDcvMb7d7Xap` (s20-b1-daar), fixes `session_014xb3kNvnvoYuX1vPojpyes` (s20-b1-fixes: SH-301 Nani's circles, SH-277 one-size headline, SH-303 one kitchen scene, SH-302 held egg). eggs and maani sessions are finished.
-- Here: the gate on chai+eggs+maani (`COOK_TEST_PORT=8964`, log in the scratchpad `gate-b1-3.log`); chai's box part will differ only where SH-300 emptied Nani's box during the order: if so, re-take chai's box reference from that gate's box run (`boxes.mjs --game chai-tray --freeze --run-id <gate id>-chai-tray`).
-
-**Zafar's answers to action next (decision 35, 15 Nov ~02:50; he asked to record them and action them after compacting):**
-- Yes: merge s20-bubble (the bubble keeps clear of the order's pop-up card) once its before/after sheet is checked and its gate has contract-129 at zero; then send him the sheet.
-- Yes: the order view's lift (SH-287) only as far as the pop-up card's bottom-left place stays clear of heads (a builder: js/cook/flow.js serviceView/orderLift and ui.js popPlace's measure; proof: contract-129 and -83 at zero, chai L4 740x320's card bottom left as on live).
-- Yes: daar's "don't" card ticks once the rest of its person's card is done (contract-116); daar's spice order said once, in its pop-up only (contract-22). Send to daar's session (`session_014xb3kT3gHJyDcvMb7d7Xap`) or a new one.
-- Waiting: corn's three calls need screenshots for him: (5) two rows of three bowls at 740x320, (6) raw cobs on the band without pills, (7) at 740x320 with two people the cob a third smaller on its plate. Take them with `boxes.mjs --game corn --run` (or the contract run's captures) and send them.
-- Running at 02:50: the fixes session `session_014xb3kNvnvoYuX1vPojpyes` (s20-b1-fixes: SH-301, SH-277, SH-303, SH-302) and the bubble session `session_014xb3kPkLAsNPZ4sqBjMWWD` (s20-bubble). Merged on the working branch: chai, eggs, maani, corn, daar+chop (all 0 screen reads). The batch 1 gate (02:39): 61 contract-129 (the card over the bubble, SH-304) + daar's 2; chai's boxes differ only by SH-300's empty Nani box (re-take chai's box reference after the bubble and fixes merges). Batch 2's briefs are written (build/tools/ops/specs/s20-b2-*.json), to launch after his check of batch 1.
+**How the night ran (reuse it):** each game's own cloud session (Opus, high) builds a round and pushes its branch with its own gate and chai's; the orchestrator merges, gates here, makes `sidebyside.mjs <game> --level <n> --sizes 740x320,1280x665` and hands `judge-batch.md` to the `judge` agent on Fable; agreed flaws become rows and the next round. Roll-tawa has no sidebyside (a hand-made batch from `run.mjs` frames). The strips' light "blink" is the probe hiding the light (a tool artefact). Sessions (all idle, reusable by send_message): kit `session_014xb3kPXU1ZwuZKQdeJiGXz`, lift `session_014xb3kSmcu5drivCH858Go9`, eggs `session_014xb3kNpUBrDQcZjCABMFwd`, maani `session_014xb3kNryFaA5kFoV7DbcqP`, corn `session_014xb3kREaZNp7f4QahD1N9K`, daar+chop `session_014xb3kT3gHJyDcvMb7d7Xap`, baking `session_014xb3kQz9uEMbLVbTEPKQfq`, sekelo `session_014xb3kQWcgyXw4vkREFrZhD`, roll-tawa `session_014xb3kQK6evGY6nK97efARm`, samosa `session_014xb3kSejQkoZB4C2g2WHxe`, chaat `session_014xb3kT51A6pmG6FLu3TcY1`.
 
 **Next, in order:**
-1. Merge each finished branch (`git fetch origin s20-b1-<x>`, `git merge --no-ff origin/s20-b1-<x>`; overnight-log.md conflicts: keep both lines; placement.md: CHAI-109/-110/-112 stay "not a standard", confirmed), then a gate on the merged games here, alone, on its own port; push only between gates (the push hook's tests take port 8812 and 3 min of CPU).
-2. After the fixes branch: re-take chai's box reference (Nani's circles move) and send Zafar the changed pictures.
-3. Batch 1's pictures to Zafar (eggs sent 14 Nov night; maani, corn, daar+chop next), his check (review point 3), fixes in parallel.
-4. Batch 2 in parallel on cloud sessions (specs to write as `build/tools/ops/specs/s20-b1-*.json`: baking, sekelo (mishkaki-grill), roll-tawa, samosa, chaat with chop).
-5. Guard rails, the exit test, the full gate, `/review`, publish.
+1. Zafar's look at the morning report and his answers to its seven questions (`docs/questions.md`).
+2. Fable's last look at the games merged after it last judged them (eggs, maani, corn, daar, chop, baking, sekelo, roll-tawa, samosa, chaat); flaws to each game's session.
+3. A full gate on all ten here, alone, then step 6 (guard rails), step 7 (the exit test), step 8 (`/review`, publish).
 
-**Rules learnt today:** never edit code or push while a gate plays (it serves files live; the push hook's tests use 8812); one gate at a time on this machine; the gate refuses under 2 GB free (delete old runs in build/screenshots/sandbox/); kill only by PID; cloud sessions push only their own branch.
-
-**Open:** SH-299 (a card's flight lands 26 px past the panel, order card's stale fold.want14); the art run (trays SH-296, people SH-298, tally close-ups ART-81, busy counter ART-82, and the kitchen and order art rethink after all kitchen games, decision 34); SH-297 his end-screen re-haul; the gate's port check (checks-to-build).
+**Rules learnt:** never edit code or push while a gate plays; one browser job at a time; a Monitor watch dies at 30 min (use background Bash for long chains); merge conflicts on overnight-log.md and kitchen-frame.md's counts line: keep both.
 
 **Starting prompt for a new chat:**
 > First `git fetch origin ccr-7da5e9f0-04g4xm` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S20-one-kitchen-frame.md`.
-> Carry on Sprint 20 from its table.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S20-one-kitchen-frame.md`; nothing else until a task needs it.
+> Carry on Sprint 20 from its table; tell me before launching anything new.
 
 ## The fix list
 
@@ -49,9 +34,9 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 156 | 98 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 163 | 98 |
 | Cook: pantry | 9 | 11 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 26 / 9 / 18 / 4 / 14 / 7 / 40 | 30 / 14 / 29 / 12 / 24 / 17 / 45 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 26 / 12 / 31 / 7 / 21 / 7 / 66 | 30 / 14 / 29 / 12 / 24 / 17 / 45 |
 | Clinic | 38 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
