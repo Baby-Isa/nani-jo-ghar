@@ -23,7 +23,7 @@ const ctl = (...l) => l.flatMap(([text, t]) => (/chulo/i.test(text) ? knobOn(t +
 
 test("the new checks are in the contract table with their rows", () => {
   for (const k of Object.keys(S14_CHECKS)) { assert.ok(CHECKS[k], k); assert.ok(S14_CHECKS[k].how.length > 60); }
-  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-84", "contract-85", "contract-86", "contract-87", "contract-88", "contract-89", "contract-92", "contract-93", "contract-94", "contract-95"]);
+  assert.deepEqual(Object.keys(S14_CHECKS), ["contract-78", "contract-79", "contract-80", "contract-81", "contract-82", "contract-83", "contract-129", "contract-84", "contract-85", "contract-86", "contract-87", "contract-88", "contract-89", "contract-92", "contract-93", "contract-94", "contract-95"]);
   const rows = Object.keys(CONTRACT_ROWS).filter((k) => /^contract-(78|79|8\d|9[2345])\b/.test(k));
   assert.equal(rows.length, 16, "each check names the fix-list rows it guards");
 });
@@ -317,4 +317,15 @@ test("contract-80: the serve's announced glide is not a jump, a jump after it st
   assert.equal(hits.length, 1, "a jump after the glide is still caught");
   check80({ flow: "cook:chai-tray" }, [fit(0, 0), fit(600, -80)], (c, t, m) => hits.push(m));
   assert.equal(hits.length, 2, "a move with no glide announced is a jump");
+});
+
+// contract-129 (Zafar, 15 Nov: "The card going over the speech bubble is the red flag that should definitely be caught")
+import { check129 } from "./lib/contract-s14.mjs";
+test("contract-129: the order's pop-up card over a speech bubble, held 300 ms, is red; a pass across it, or clear, is green", () => {
+  const run = (tl) => { const out = []; check129(tl, (id, t, m) => out.push(id)); return out; };
+  const cb = (t, over) => ({ type: "c", k: "cardbubble", t, over, card: [238, 10, 344, 145], bubble: [290, 90, 520, 130] });
+  const end = { type: "c", k: "x", t: 5000 };
+  assert.deepEqual(run([cb(1000, 900), cb(2000, 0), end]), ["contract-129"], "over the bubble for a second: red");
+  assert.deepEqual(run([cb(1000, 900), cb(1200, 0), end]), [], "crossing it for 200 ms: green");
+  assert.deepEqual(run([cb(1000, 0), end]), [], "clear: green");
 });

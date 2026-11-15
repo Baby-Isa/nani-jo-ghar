@@ -41,6 +41,7 @@ export const S14_CHECKS = {
   "contract-81": { item: "over-gauge", title: "no picture over a gauge", how: "Every gaugeover event (the S14 probe: the heat ring found by its arc round the gauge's centre in the Phaser display list, then every picture drawn above it that sits on it, tools and effects left out): any picture of the thing the gauge is on (the pan's handle) drawn above the ring is a break, named with its key and depth against the ring's (CHAI-46: \"part of the handle looks like it covers the loading circle\")." },
   "contract-82": { item: "edge-on-face", title: "no lit box edge across a face", how: "Every lit event with the faces on screen then (the games' own face boxes, njgTest.faces(); B2): a face circle (or head) that a lit box covers partly, more than 3% and less than 97% of its area, has the box's edge across it; a face whole inside the box, or clear of it, is fine (CHAI-47: \"the highlight box on the chai tray should go under the face circle so the face circle sits on top and doesn't get a line over the face\")." },
   "contract-83": { item: "card-on-face", title: "no card over a face", how: "Every cardface event (the S14 probe: the big card (.wc14-pop) and every card in flight (.wc14-flyer) against every person's face box from njgTest.faces(): a head in the kitchen, a face circle in the page; the round badges on a hob or tray left out, whatever the game's own check says): any overlap is a break, with whose face (SH-154, CHAI-43: nothing is drawn over a face)." },
+  "contract-129": { item: "card-on-bubble", title: "the order's pop-up card never over a speech bubble", how: "Cook flows: every cardbubble sample (lib/contract-hook-s14.mjs: the order's resting pop-up card, .wc14-pop, against every speech bubble, .cv-bubble) with any overlap held 300 ms is a break, once a page (Zafar, 15 Nov: \"The card going over the speech bubble is the red flag that should definitely be caught\"; SH-304: at chai L4 740x320 the elchi card hid 'Muke elchi')." },
   "contract-84": { item: "light-clear", title: "the lit box is clear against the dim", how: "Every lightpix measure (lib/lightpix.mjs: a beat after a light comes up the sandbox takes the screen with the light and without it, and measures each lit box: the mean brightness inside it, 8 px in from its edge, with the light and under it): on a dark thing (under it, below 110 of 255) the light must lift the inside by at least 12 of 255, the soft warm fill. A lit black burner that looks as black as it did is a break (SH-164: \"the highlight on the burner isn't clear enough because the burner is black ... it might need lightening inside the highlight box\")." },
   "contract-85": { item: "replay", title: "a round played again is whole", how: "The replay driver (a lab.html round, then Play again: build/sandbox/flows/labs.mjs, mode replay) records each round's textures (k replay): after Play again no picture of the first round is missing, nothing is drawn as the missing-picture texture, the station's worktop is the painted marble (spr:bg:marble), and the fx textures are loaded. Any of them missing is a break (SH-161: the replay lost its pictures and drew the worktop in code)." },
   "contract-86": { item: "bubble-clear", title: "a bubble keeps off a side panel", how: "Every keepout event (the S14 probe: each speech bubble against every [data-njg-keepout] panel and the side panel (#side, .njg-side, .cl-side)): a bubble that reaches more than 8 px into a panel while the play area has room for it beside the panel (the play area's right edge less the panel's is at least the bubble's width) is a break (SH-166: \"why does the speech bubble go over the left panel even though there is space to right?\")." },
@@ -188,6 +189,20 @@ export function check82(tl, add) {
         }
       }
     }
+  }
+}
+
+// 129 (Zafar, 15 Nov): the order's pop-up card never over a speech bubble, held 300 ms (a card arriving or leaving across it is not)
+export const CARD_BUBBLE_HOLD_MS = 300;
+export function check129(tl, add) {
+  const s = ev(tl, "cardbubble");
+  const tEnd = tl.length ? tl[tl.length - 1].t : 0;
+  for (let i = 0; i < s.length; i++) {
+    const e = s[i];
+    if (!(e.over > 0)) continue;
+    const until = s[i + 1] ? s[i + 1].t : tEnd;
+    if (until - e.t < CARD_BUBBLE_HOLD_MS) continue;
+    return add("contract-129", e.t, `the order's pop-up card (${(e.card || []).map(Math.round).join(",")}) sits over a speech bubble (${(e.bubble || []).map(Math.round).join(",")}): ${e.over} px squared, the bubble's words hidden`);
   }
 }
 

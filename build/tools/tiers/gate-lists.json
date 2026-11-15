@@ -92,7 +92,8 @@
   "contract-125": "one-flash",
   "contract-126": "exclaim-arrow",
   "contract-127": "end-heads",
-  "contract-128": "flash-whole"
+  "contract-128": "flash-whole",
+  "contract-129": "card-on-bubble"
  },
  "advisory": {
   "contract-114": "no-snap: broke 12 time(s) in the s19-r2-gate run (games: corn, samosa); e.g. cn4-done rests at 222 px at [705,300,930,374], -23% of its 289 px at its last place [1122,133,1168,422] (cn4-d",

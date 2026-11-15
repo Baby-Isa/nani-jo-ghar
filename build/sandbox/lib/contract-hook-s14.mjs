@@ -231,6 +231,13 @@ function s14hook() {
       for (const c of cards) for (const f of faces) { if (f.kind === "badge") continue; const o = over(c, f.box); if (o > 0) { ov += o; who.push(f.who || f.kind); } }
       if (!same("cardface", [Math.round(ov / 20), who.join()])) emit({ k: "cardface", over: Math.round(ov), who: [...new Set(who)].join(","), card: cards[0] });
     } else last.cardface = null;
+    // (contract-129, Zafar 15 Nov: "The card going over the speech bubble is the red flag that should definitely be caught"): the
+    // order's resting pop-up card (.wc14-pop, not a card in flight) against every speech bubble on screen
+    const pops = [...document.querySelectorAll(".wc14-pop")].filter(shown).map((e) => R(e.getBoundingClientRect()));
+    const bubs = pops.length ? [...document.querySelectorAll(".cv-bubble")].filter(shown).map((e) => R(e.getBoundingClientRect())) : [];
+    let ovB = 0;
+    for (const c of pops) for (const b of bubs) ovB += over(c, b);
+    if (!same("cardbubble", [Math.round(ovB / 20)])) emit({ k: "cardbubble", over: Math.round(ovB), card: pops[0] || null, bubble: bubs[0] || null });
     // bubbles against the panels
     const bubbles = [...document.querySelectorAll(".cv-bubble")].filter(shown).map((e) => R(e.getBoundingClientRect()));
     if (bubbles.length) {
