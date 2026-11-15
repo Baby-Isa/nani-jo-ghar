@@ -32,6 +32,15 @@ Files: `baking.js`, `baking.json`, `kitchen-frame.md` (a line; no frame option a
 3. **SH-280 is a crossfade with the face gliding.** Other option: fade out, then fade in.
 4. **The oven's middle is always the play area's middle.** ("never below y 360" dropped: bites only on a view cropped 100+ units at the top).
 
+## Round 2 (the orchestrator, decision 38: the eye judge in Zafar's place)
+- **CK-133:** one face circle, beside what it owns and riding with it: the bowl, the dough to the tray, the tray, into the oven and out. It is its thing's own part (`thing.face`, lit whole by the kit's `thingBox`).
+- **CK-135** (replaces call 3): the jug slides away; the dough lifts out of the bowl, crosses to the tray and spreads into the raw naan; the bowl slides off as the oven slides in. Nothing fades between scenes.
+- **CK-134:** the glass jug's shadow is only an oval at its foot (the box-sized one showed through the glass), hidden while it pours.
+- **CK-136:** the oven keeps its light's margin under the screen's top. A lifted jar's pill stays; only its tap is off.
+- **SH-275** (decision 39): the kit's heat ring (chai's) round the naan on the oven's window, its green from 0.8, going on to its over colour as the naan browns. It keeps chai's first-time hold (`St.firstHold`, contract-77).
+- **A child sees:** the face sits right by its thing and travels with it; the dough becomes naan on the tray; the oven slides in; a big ring round the naan; a clean jug; the oven a little shorter at 740x320.
+- **Proof:** baking's gate `GATE PASS baking: checks pass 2.4, contract pass 7.7; 10.1 min` (0 blocking over 18 pages; advisory -119 x2, -53 x2). Chai: R2CHAI. Side-by-side: R2SBS.
+
 ## Proof
 - **Baking's gate:** the base FAILED, 8.2 min, 16 blocking. After: `GATE PASS baking: checks pass 2.3, contract pass 7.6; 9.9 min`, 0 blocking over 18 pages; **Final, after merging the working branch: `GATE PASS baking: checks pass 2.4, contract pass 7.6; 9.9 min`**, 0 blocking over 18 pages.
 - **Chai's gate, final:** `GATE PASS chai-tray: checks pass 2.4, contract pass 21.1, boxes:chai-tray pass 3.3; 26.9 min`, 0 blocking over 38 pages, **boxes identical**. (An earlier run had 3 light-timing flakes, -79, -8 and -112; the same pages replayed at 0 on the base and here.)
