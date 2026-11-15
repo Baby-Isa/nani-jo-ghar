@@ -1,0 +1,354 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "d264ad5c21b26637faf916c1b1d93d82d7f5a598",
+ "dirty": true,
+ "date": "2026-11-15T06:52:08.106Z",
+ "base": "4b7fba3fd44896aeea967c9a32490ae3f20cc909",
+ "games": [
+  "cook:corn"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:corn": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-d264ad5c21",
+  "before | after": "build/screenshots/tiers/change-d264ad5c21/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-d264ad5c21-corn/films/cook-corn@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-d264ad5c21/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:corn",
+   "check": "contract-129",
+   "where": "cook:corn@740x320 (after start)",
+   "what": "the order's pop-up card (238,10,386,310) sits over a speech bubble (366,91,620,135): 837 px squared, the bubble's words hidden (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card flashed only 94 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-129",
+   "where": "cook:corn#mistake@740x320 (after start)",
+   "what": "the order's pop-up card (239,10,388,309) sits over a speech bubble (366,91,620,135): 933 px squared, the bubble's words hidden (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#mistake@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-129",
+   "where": "cook:corn#mistake@930x430 (after start)",
+   "what": "the order's pop-up card (239,10,441,419) sits over a speech bubble (439,135,746,182): 80 px squared, the bubble's words hidden (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#mistake@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-129",
+   "where": "cook:corn#hint@740x320 (after start)",
+   "what": "the order's pop-up card (239,10,388,309) sits over a speech bubble (366,91,620,135): 933 px squared, the bubble's words hidden (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#hint@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-109",
+   "where": "cook:corn#hint@740x320 (hint-nani-says)",
+   "what": "the shelf item ph-amli stands -10 px off chai's base line (296 px at 740x320): one line for every shelf (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-129",
+   "where": "cook:corn#hint@930x430 (order-card-big)",
+   "what": "the order's pop-up card (239,10,441,419) sits over a speech bubble (439,135,746,182): 80 px squared, the bubble's words hidden (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#hint@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card flashed only 108 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-83",
+   "where": "cook:corn#takeback@740x320 (order-card-big)",
+   "what": "a card (37,94,122,264) sits over nana: 47 px squared",
+   "blocks": true
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-129",
+   "where": "cook:corn#takeback@740x320 (after start)",
+   "what": "the order's pop-up card (239,10,388,309) sits over a speech bubble (366,91,620,135): 933 px squared, the bubble's words hidden (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#takeback@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-129",
+   "where": "cook:corn#takeback@930x430 (after start)",
+   "what": "the order's pop-up card (239,10,441,419) sits over a speech bubble (439,135,746,182): 80 px squared, the bubble's words hidden (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#takeback@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card flashed only 97 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "scope",
+   "where": "build/screenshots/tiers/change-d264ad5c21/logs/scope.log",
+   "what": "build/reports/s20-corn-upright-sheet.py",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-d264ad5c21/logs/play.log",
+   "what": "CONTRACT FAILED: 17 breaks (contract-129 7, contract-119 8, contract-109 1, contract-83 1); CHECK FAILED: 67 new findings, 0 flows do not reach their end, 0 new page errors, 17 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-d264ad5c21/logs/before.log",
+   "what": "CONTRACT FAILED: 17 breaks (contract-129 7, contract-119 8, contract-83 1, contract-109 1); CHECK FAILED: 67 new findings, 0 flows do not reach their end, 0 new page errors, 17 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "rows",
+   "where": "build/screenshots/tiers/change-d264ad5c21/logs/rows.log",
+   "what": "CK-119: no evidence spec",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "rows-judge",
+   "where": "build/screenshots/tiers/change-d264ad5c21/logs/rows-judge.log",
+   "what": "No before run for brief s20-corn-upright: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-corn-upright.json first.",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 8,
+  "before": 8,
+  "breaksAfter": 17,
+  "breaksBefore": 17
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 2.5 min; build/reports/tiers/push-d264ad5c21.md",
+   "tail": [
+    "checks ... pass (2.5 min)",
+    "check-push: PASSED in 2.5 min; build/reports/tiers/push-d264ad5c21.md"
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/push.log",
+   "minutes": 2.5
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s20-corn-upright.json 4b7fba3fd44896aeea967c9a32490ae3f20cc909..HEAD",
+   "status": "fail",
+   "code": 1,
+   "line": "build/reports/s20-corn-upright-sheet.py",
+   "tail": [
+    "scope: 1 file(s) outside \"s20-corn-upright: corn's bowls aligned and the chopped upright cob\"'s owns (requests, not edits):",
+    "build/reports/s20-corn-upright-sheet.py"
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:corn (4 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:corn,cook:corn#mistake,cook:corn#hint,cook:corn#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-d264ad5c21",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 17 breaks (contract-129 7, contract-119 8, contract-109 1, contract-83 1); CHECK FAILED: 67 new findings, 0 flows do not reach their end, 0 new page errors, 17 contract breaks",
+   "tail": [
+    "BREAK contract-129 cook:corn#takeback L1 @ 930x430 [after start c04-bubble.png] 7.3s: the order's pop-up card (239,10,441,419) sits over a speech bubble (439,135,746,182): 80 px squared, the bubble's words hidden",
+    "BREAK contract-119 cook:corn#takeback L1 @ 930x430 [after start c04-bubble.png] 7.1s: the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card flashed only 97 ms beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): corn 106/111",
+    "CONTRACT FAILED: 17 breaks (contract-129 7, contract-119 8, contract-109 1, contract-83 1)",
+    "CHECK FAILED: 67 new findings, 0 flows do not reach their end, 0 new page errors, 17 contract breaks",
+    "06:59:42 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-d264ad5c21/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/play.log",
+   "minutes": 5.1
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 4b7fba3fd4 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:corn,cook:corn#mistake,cook:corn#hint,cook:corn#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-4b7fba3fd4-d264ad5c21",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 17 breaks (contract-129 7, contract-119 8, contract-83 1, contract-109 1); CHECK FAILED: 67 new findings, 0 flows do not reach their end, 0 new page errors, 17 contract breaks",
+   "tail": [
+    "BREAK contract-129 cook:corn#takeback L1 @ 930x430 [after start c04-bubble.png] 7.8s: the order's pop-up card (239,10,441,419) sits over a speech bubble (439,135,746,182): 80 px squared, the bubble's words hidden",
+    "BREAK contract-119 cook:corn#takeback L1 @ 930x430 [after start c04-bubble.png] 7.6s: the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card flashed only 100 ms beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): corn 106/111",
+    "CONTRACT FAILED: 17 breaks (contract-129 7, contract-119 8, contract-83 1, contract-109 1)",
+    "CHECK FAILED: 67 new findings, 0 flows do not reach their end, 0 new page errors, 17 contract breaks",
+    "07:04:37 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/4b7fba3fd4/build/screenshots/sandbox/tiers-before-4b7fba3fd4-d264ad5c21/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/before.log",
+   "minutes": 4.9
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/4b7fba3fd4/build/screenshots/sandbox/tiers-before-4b7fba3fd4-d264ad5c21 build/screenshots/sandbox/tiers-change-d264ad5c21 build/screenshots/tiers/change-d264ad5c21/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 205 before|after pictures, 11 not paired; build/screenshots/tiers/change-d264ad5c21/before-after/index.html",
+   "tail": [
+    "pairs: 205 before|after pictures, 11 not paired; build/screenshots/tiers/change-d264ad5c21/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/pairs.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "rows",
+   "what": "the brief's rows, after (evidence.mjs --after --brief; the before was played at launch)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s20-corn-upright.json",
+   "status": "fail",
+   "code": 2,
+   "line": "CK-119: no evidence spec",
+   "tail": [
+    "--brief build/tools/ops/specs/s20-corn-upright.json refused: every row it names needs a probe in build/sandbox/data/evidence.json first:",
+    "CK-117: no evidence spec",
+    "CK-118: no evidence spec",
+    "CK-119: no evidence spec"
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/rows.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "rows-judge",
+   "what": "the judge's before|after batch for Fable (evidence.mjs --judge --brief)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --judge --brief build/tools/ops/specs/s20-corn-upright.json",
+   "status": "report",
+   "code": 2,
+   "line": "No before run for brief s20-corn-upright: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-corn-upright.json first.",
+   "tail": [
+    "No before run for brief s20-corn-upright: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-corn-upright.json first."
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/rows-judge.log",
+   "minutes": 0
+  },
+  {
+   "id": "film:corn",
+   "what": "a first-play film: cook:corn as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:corn",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:corn --sizes 740x320 --no-sheets --run-id tiers-film-d264ad5c21-corn",
+   "status": "pass",
+   "code": 0,
+   "line": "07:05:23 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-d264ad5c21-corn/summary.md",
+   "tail": [
+    "gap     1x  Muke hakro makai khape,  [device-voice]",
+    "gap     1x  Makai hane kadh.  [device-voice]",
+    "gap     1x  tamarind chutney  [silent]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "07:05:23 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-d264ad5c21-corn/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-d264ad5c21/logs/film_corn.log",
+   "minutes": 0.6
+  }
+ ],
+ "minutes": 13.3,
+ "ok": false
+}
