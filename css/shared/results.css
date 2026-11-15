@@ -469,6 +469,17 @@ html[data-ff="phone"] .rs-badge { padding: var(--njg-s2); gap: var(--njg-s1); }
   .njg-results .rs-words.dense .rs-words-col.many .rs-word b { font-size: calc(var(--njg-end-word) * 0.86); }
   .njg-results .rs-words.dense .rs-words-col.many .rs-word { padding-block: 0; }
 }
+/* SH-309 (the Fable eye judge for Zafar, decision 38, maani L4 740x320: six words, so not .dense, and the tiles mixed 'ba [speaker] two' in
+   a row with 'nindhi / speaker / small' stacked): on a short phone every review's tiles are one layout, chai's: the Kutchi over its
+   English, the speaker a badge on the tile's top-right corner, whatever the count of words (the dense side's rules above, for all) */
+@media (orientation: landscape) and (max-height: 440px) {
+  .njg-results .rs-words:not(.dense) .rs-words-col { padding: 0 var(--njg-s2); }
+  .njg-results .rs-p2 .rs-words:not(.dense) .rs-word { flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: center; column-gap: var(--njg-s1); row-gap: 0; line-height: 1.15; padding-left: var(--njg-s1); padding-right: var(--njg-s1); }
+  .njg-results .rs-words:not(.dense) .rs-word b { flex: 0 0 100%; }
+  .njg-results .rs-p2 .rs-words:not(.dense) .rs-word .rs-en { gap: var(--njg-s1); flex-wrap: nowrap; }
+  .njg-results .rs-words:not(.dense) .rs-word .rs-say { position: absolute; top: calc(var(--njg-s2) * -1); right: calc(var(--njg-s3) * -1); box-shadow: var(--njg-shadow); width: calc(var(--njg-icon) * 0.8); height: calc(var(--njg-icon) * 0.8); padding: 0; }
+  .njg-results .rs-p2 .rs-words:not(.dense) .rs-word .rs-en > .fit { flex: 1 1 100%; text-align: center; }
+}
 /* SH-86: a tile too narrow for its English beside the speaker (results.js fitPage: it had to wrap there): every tile's
    English goes under its speaker, centred, with the tile's whole width, so it shrinks, then wraps between its words */
 .njg-results .rs-p2 .rs-words.gloss-under .rs-word .rs-en { flex-wrap: wrap; justify-content: center; row-gap: 0; }

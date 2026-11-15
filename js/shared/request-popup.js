@@ -473,17 +473,44 @@
     b.style.top = "0px";
     delete b.dataset.njgPlace;
     // (a narrower wrap set by an earlier placement goes first: measured at its own width each time)
-    if (b.dataset.njgNarrow) {
+    if (b.dataset.njgNarrow || b.dataset.njgGrow) {
       b.style.maxWidth = "";
       delete b.dataset.njgNarrow;
+      delete b.dataset.njgGrow;
     }
-    let bw = b.offsetWidth;
-    let bh = b.offsetHeight;
     const W = lr.width;
     const H = lr.height;
     const hx = r.left - lr.left;
     const hy = r.top - lr.top;
     const cx = hx + r.width / 2;
+    // (Zafar, 29 Oct: "Why does the speech bubble go over the left panel even though there is space to right? It shouldn't overlap
+    // the panel almost ever": a page's side panels, marked data-njg-keepout, are out of bounds: the bubble shifts along beside
+    // them, its tail still at the head; only a bubble wider than the room left may cross one)
+    let x0 = M;
+    let x1 = W - M;
+    if (typeof document !== "undefined" && document.querySelectorAll)
+      document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
+        const q = k.getBoundingClientRect();
+        if (!q.width || !q.height) return;
+        if (q.right - lr.left <= hx + r.width / 2) x0 = Math.max(x0, q.right - lr.left + M);
+        else if (q.left - lr.left >= hx + r.width / 2) x1 = Math.min(x1, q.left - lr.left - M);
+      });
+    // SH-306 (Zafar, 15 Nov: "The order speech bubble wraps on l4 egg on your screenshots but it shouldn't"): the order's bubble (one
+    // that keeps clear of the order's pop-up card, o.clear, or is told it is one, o.grow) says its sentence on one line wherever that line fits the room: it grows
+    // past the kit's wrap width (css/shared/conversations.css .cv-bubble max-width, 460) up to the play area inside its side panels.
+    // eggs L4 at 1280x665: 'Muke ba tarela inda khapanta.' is 479 px on one line and wrapped at 460. A sentence wider than the room
+    // still wraps at the kit's width; beside the card (below) its width, never the card, gives way first
+    if ((o.grow || (o.clear || []).length) && x1 - x0 > 0) {
+      b.dataset.njgGrow = String(Math.floor(x1 - x0));
+      b.style.maxWidth = ownWidth(b);
+      // (wider than the room on one line: back to the kit's own wrap width, as before)
+      if (b.scrollWidth > b.clientWidth + 1 || b.offsetWidth >= Math.floor(x1 - x0)) {
+        b.style.maxWidth = "";
+        delete b.dataset.njgGrow;
+      }
+    }
+    let bw = b.offsetWidth;
+    let bh = b.offsetHeight;
     const face = o.face != null ? !!o.face : !!(head.dataset && head.dataset.njgFace != null);
     if (face) {
       // anything a game marks data-njg-avoid (the fever's sweat drop or snowflake by her head) sends the bubble to her
@@ -505,18 +532,7 @@
       if (sd) return sd;
     }
     let side = fitsAbove || !fitsBelow ? "above" : "below";
-    // (Zafar, 29 Oct: "Why does the speech bubble go over the left panel even though there is space to right? It shouldn't overlap
-    // the panel almost ever": a page's side panels, marked data-njg-keepout, are out of bounds: the bubble shifts along beside
-    // them, its tail still at the head; only a bubble wider than the room left may cross one)
-    let x0 = M;
-    let x1 = W - M;
-    if (typeof document !== "undefined" && document.querySelectorAll)
-      document.querySelectorAll("[data-njg-keepout]").forEach((k) => {
-        const q = k.getBoundingClientRect();
-        if (!q.width || !q.height) return;
-        if (q.right - lr.left <= hx + r.width / 2) x0 = Math.max(x0, q.right - lr.left + M);
-        else if (q.left - lr.left >= hx + r.width / 2) x1 = Math.min(x1, q.left - lr.left - M);
-      });
+    // (the room beside the side panels, x0 to x1, is worked out above)
     if (x1 - x0 < bw) {
       x0 = M;
       x1 = W - M;
@@ -552,7 +568,7 @@
       }
       // (no narrower wrap clears it, or the taller bubble no longer fits above: back to its own width)
       if (!fitsAbove || hits(y)) {
-        b.style.maxWidth = "";
+        b.style.maxWidth = ownWidth(b);
         delete b.dataset.njgNarrow;
         bw = b.offsetWidth;
         bh = b.offsetHeight;
@@ -685,6 +701,9 @@
     return side;
   }
 
+  // (SH-306: the width a bubble goes back to after a narrower wrap: the room an order's bubble grew to, else the kit's own)
+  const ownWidth = (b) => (b.dataset.njgGrow ? `${b.dataset.njgGrow}px` : "");
+
   /** CLN-127: beside a painted head, the tail out of the near side at her cheek; null when neither side has room. */
   function placeByFace(b, g, avoid) {
     const { hx, hy, w, h, bw, bh, W, H, M, lr } = g;
@@ -732,7 +751,7 @@
         b.dataset.njgNarrow = "1";
         const r2 = placeByFace(b, Object.assign({}, g, { bw: b.offsetWidth, bh: b.offsetHeight, narrowed: true, strict: true, rightOnly: true }), avoid);
         if (r2) return r2;
-        b.style.maxWidth = "";
+        b.style.maxWidth = ownWidth(b);
         delete b.dataset.njgNarrow;
         b.dataset.njgPlace = "face-right";
       }
@@ -752,7 +771,7 @@
         const r2 = placeByFace(b, Object.assign({}, g, { bw: b.offsetWidth, bh: b.offsetHeight, narrowed: true, strict: true }), avoid);
         if (r2) return r2;
       }
-      b.style.maxWidth = "";
+      b.style.maxWidth = ownWidth(b);
       delete b.dataset.njgNarrow;
       b.dataset.njgPlace = "face-right";
     }
