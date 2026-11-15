@@ -1,5 +1,5 @@
 {
- "_about": "Data for the combined station js/cook/stations/roll-tawa.js (lab-only proof). `station` is its name and goal line (merged into data.stations); `mechanic.levels` are its difficulty levels: here, which level each zone's mechanic runs at (tawa level 2 = two tawas). `band` (SH-248): the bottom row's band, the stone tray, as maani's: the spare dough and the plate lie on it (Sprint 20 batch 2: the room in the kitchen frame, js/cook/stations/roll-tawa.js).",
+ "_about": "Data for the combined station js/cook/stations/roll-tawa.js (lab-only proof). `station` is its name and goal line (merged into data.stations); `mechanic.levels` are its difficulty levels: here, which level each zone's mechanic runs at (tawa level 2 = two tawas). `band` (SH-248): the bottom row's band, the stone tray, as maani's: the spare dough and the plate lie on it (Sprint 20 batch 2: the room in the kitchen frame, js/cook/stations/roll-tawa.js). `onboard` (RT-02): the first-time script the kit's coach plays (data.onboard['roll-tawa'], put there by the station's code when the data names none).",
  "band": "tray",
  "station": {
   "name": "Roll and cook",
@@ -39,5 +39,20 @@
     }
    }
   ]
- }
+ },
+ "onboard": [
+  {
+   "do": "roll",
+   "when": "roll",
+   "what": "roll the ball up and down until the maani fills the ring (RT-02, Fable 15 Nov: the kit's first-time light, dim and one gold box, as chai's; maani-line's roll step)"
+  },
+  {
+   "do": "tap",
+   "when": {
+    "kind": "tap",
+    "key": "^more$"
+   },
+   "what": "the next dough ball on the tray"
+  }
+ ]
 }
