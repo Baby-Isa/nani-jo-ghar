@@ -19,13 +19,11 @@ Branch `s20-b2-chaat`, from `f794015`, with `ccr-7da5e9f0` merged again before t
   - contract-104 ×8 and -128 ×8: the dish card "hakro chaat" has no picture (SH-273: no art; the kit's `ui.js`).
   - contract-74 ×1: a tap during the layer order lands the whole order.
   - The base has all three: a base gate at 740 and a base replay at 1280.
-  - Advisory breaks fall on the same pixels as on the base.
 - **Gate chai-tray** (`gate-20261115T0606-chai-tray`, 24.7 min): PASS. Contract 0 over 38 pages; boxes identical.
-- **Geometry rules:** there is no box spec for chaat.
+- **Geometry rules:** no box spec for chaat. **Evidence:** no rows, so no BEFORE folder.
 - **Contract at four sizes** (`cook:chaat,lab:cook/assemble`): 8/8 pages reach their end, 0 page errors.
   - Breaks: contract-104 ×8, -128 ×8 (above), -26 ×3 (no "chano" clip), -111 ×2. The last two are advisory and on the base.
   - The brief's `lab:cook/chaat` names no lab and sat on a blank page until it timed out.
-- **Evidence:** the brief has no rows, so there is no BEFORE folder.
 - **check-change** (`--base origin/ccr-7da5e9f0-04g4xm`, `build/reports/tiers/change-6531e5599c.md`, 67 min): FAILED, nothing from this change:
   - contract: 47 after against 46 before; the extra is advisory contract-120, which the base gate also had.
   - scope names `assemble.js`, which the brief grants.
@@ -45,7 +43,7 @@ Branch `s20-b2-chaat`, from `f794015`, with `ccr-7da5e9f0` merged again before t
 
 ## Calls taken while Zafar was away
 - **The bowl's place:** exactly the old place, the play area's middle lowered by 1.6% of the bowl's width. Other option: centred, about 9 units higher.
-- **The tray's span:** the old span as shares of the play area. Other option: the bottom row's edges, which spreads the tray wider on wide screens.
+- **The tray's span:** the old span as shares of the play area. Other option: the bottom row's edges (wider on wide screens).
 
 ## Calls for Zafar
 1. Let a recipe step name the room it lends (`"room"` in `data/cook.json`, lent by `recipes.js`)? **Yes, once a recipe needs one.** None does today.
