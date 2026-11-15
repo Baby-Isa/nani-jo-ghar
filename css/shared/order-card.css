@@ -536,6 +536,9 @@ body.njg-s14 #guide.ng-s14 .ng-face {
   margin-left: calc(var(--njg-line) + var(--ng-oc-pad) - var(--njg-card-pad) + max(calc((var(--njg-face-d) - var(--njg-face-tap)) / 2), calc(-1 * var(--njg-card-pad))));
 }
 body.njg-s14 #guide.ng-s14 .ng-face .njg-face { box-shadow: 0 0 0 var(--njg-line) var(--njg-edge); }
+/* (the card head's gap between face and words, s2, on a phone too: the kit's phone guide tightens it to s1 for its tools, R5, but
+   the side panel's box has only the arrow beside her line) */
+body.njg-s14 #guide.ng-s14 { column-gap: var(--njg-s2); }
 
 .oc-card.oc-s14 { border-radius: var(--njg-card14-u16); box-shadow: var(--njg-card14-shadow-order); }
 /* SH-295 (Zafar, 14 Nov, decision 32: "the lines that wrap look like they wrap too early (seems like there's space to write 'chai' on the
