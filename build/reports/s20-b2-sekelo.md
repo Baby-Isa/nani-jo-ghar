@@ -32,3 +32,4 @@ BEFORE not played at launch (no rows). The base's gate: `contract FAIL 17.3` (26
 - **Four sizes:** 8/8 pages end; 0 breaks.
 - **Geometry rules:** no box spec for mishkaki-grill (`boxes.mjs`).
 - **check-change:** `PASSED in 19.5 min`, `build/reports/tiers/change-ded1bef559.md`.
+- **Round 2:** `GATE PASS mishkaki-grill: checks pass 2, contract pass 12; 14 min` (gate-20261115T1049; advisory contract-111 x3, -72 x1). `GATE FAIL chai-tray: checks pass 2.2, contract FAIL 20.6, boxes:chai-tray pass 3.4; 26.2 min` (gate-20261115T1103): boxes identical, one block: contract-112 at `lab:cook/chai-tray@L4` 740x320 (the aadu light). It fails 3 runs in 3 on `origin/ccr-7da5e9f0-04g4xm` without my commits too, so it is not sekelo's.
