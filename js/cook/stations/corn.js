@@ -81,19 +81,25 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
 
   /**
    * Zafar, 11 Nov (corn's grill screen "looks really bad"; the A2 mock's two-tray set-up): the grill and the cooked tray beside it are
-   * ONE tidy rectangle, the tray (the kit's brushed-steel tray, turned upright, never an oval) exactly the grill's height; a cob lifted
-   * off the grill rests on the tray as it lay on the grill, upright and the same size (its tray length within the tray's well, a few
-   * per cent under its grill length). The rectangle is as big as the worktop that shows allows, with padding, and centred in it as
-   * chai's play group is (CHAI-89: between the view's top and the shelf, the heat rings' room above it kept; across, on the view's
-   * middle). The raw cobs stay on the stone band, two by two, within 15% of their grill length (contract-114). k: the kit's layout,
-   * for its band rows. P: the kitchen frame's play area (Cook.Frame.area: Sprint 20, the room is laid out in it, never in the screen's
-   * or the sheet's numbers). -> L in the kit's shape (grill, tray, band, ring).
+   * ONE tidy rectangle, the tray (the kit's deep tray, never an oval) exactly the grill's height. The rectangle is as big as the worktop
+   * that shows allows, with padding, and centred in it as chai's play group is (CHAI-89: between the view's top and the shelf, the heat
+   * rings' room above it kept; across, on the view's middle).
+   * CK-117 (Zafar, 15 Nov, decision 37, his yes to the mock-ups: "shorter and fatter and chopped at the ends ... rotate them to stand
+   * vertically and have 4 in a row ... then they don't have to change orientation when they go onto the barbecue or when they go onto
+   * the tray or the plate"): the cob is the chopped cob, standing upright everywhere (one rotation the whole way). Its sizes come from
+   * the room each place gives, never a per-size number: on the band four stand in a row, as tall as the band allows (R, the frame's
+   * bottom row); on the grill it stands on the coal bed a little bigger, as big as its place across the bed and the rims allow, and
+   * never more than BAND_K over its band size, so it grows with no snap (SH-256, contract-114: within 15% from rest to rest); in the
+   * cooked tray it keeps its grill size where the well allows, standing side by side (two by two when there are more than two, never one
+   * over another). thick: the cob's width over its length. P: the kitchen frame's play area (Cook.Frame.area). -> L (grill, tray,
+   * band, ring), each place's cob length its own: L.band.len, L.grill.cob, L.tray.len.
    */
-  function rectLayout(k, { thick, count, P, ringRoom = 92, gap = 36, deep = false }) {
+  const BAND_K = 1.13; // (a cob at most this much over its size at its last place: contract-114's 15%, with room to spare)
+  const BAND_FILL = 0.84; // (a standing cob's length, of the stone tray's inner height: the rest its margin above and below)
+  function rectLayout({ thick, count, P, R, ringRoom = 92, gap = 36, deep = false }) {
     const G = Cook.GrillKit.ART.grill;
     const TI = Cook.GrillKit.ART.tray.inner; // (its well's inset, of its own width and height: turned upright they swap)
-    // (ART-80: the deep tray stands as it is drawn, its rims cut to any shape at its width's scale (GK.deepTex): a cob lies inside its
-    // rims' inner edges, about 1.6 rims in from each outer edge, its sides' share of the width; the well across inside its walls)
+    // (ART-80: the deep tray stands as it is drawn, its rims cut to any shape at its width's scale (GK.deepTex): its well inside them)
     const DP = Cook.GrillKit.DEEP;
     // (the rectangle and the band's cobs fitted ROW_IN inside the play area's sides, as chai's hob row; its height the play area's)
     const ROW_IN = 8;
@@ -101,27 +107,38 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const vr = P.x + P.w - ROW_IN;
     const spanTop = P.y;
     const spanBot = P.y + P.h;
-    const n2 = Math.max(2, count); // (the tray holds at least two cobs' room, so one cob never sits on a sliver)
     const across = (len) => thick * len; // a cob's width
-    // (for a grill gh tall: the cob's length on the grill, on the tray, the tray's width)
+    // the band: four standing in a row, as tall as the band allows (its height less a margin above and below), evenly spaced across
+    // it (each in the middle of its quarter), never wider than a quarter
+    const blen = Math.min(R.h * BAND_FILL, (R.w * 0.9) / 4 / (thick * 1.6));
+    const bstep = R.w / 4;
+    const bmid = R.x + R.w / 2;
+    const by = R.y + R.h / 2;
+    // the tray: side by side, in rows of two when there are more than two
+    const cols = Math.max(1, Math.min(2, Math.max(2, count)));
+    const rows = count > 2 ? 2 : 1;
+    // (for a grill gh tall: the cob's length on the grill and in the tray, the tray's width, the grill's)
     const sizes = (gh) => {
-      const glen = (G.near - G.far) * gh;
+      const gw = (gh * G.w) / G.h;
+      const rims = (G.near - G.far) * gh;
+      const place = ((G.bed[1] - G.bed[0]) * gw) / 4; // (each of the bed's four places, across)
+      const glen = Math.min(rims * 0.9, blen * BAND_K, (place * 0.8) / thick);
       if (deep) {
-        // (the tray's width sets its rims and the rims the cob's room: a few rounds, as the two depend on each other)
+        // (the tray's width sets its rims: its well inside them, a few per cent clear)
+        const well = (tw) => gh - 2 * 2 * DP.far * tw;
         let tlen = glen;
         let tw = 0;
         for (let i = 0; i < 6; i++) {
           const cw0 = across(tlen);
-          tw = (n2 * cw0 + (n2 + 1) * cw0 * 0.25) / (1 - 2 * DP.inX);
-          tlen = Math.min(glen, (gh - 2 * 2 * DP.far * tw) * 0.97);
+          tw = (cols * cw0 + (cols + 1) * cw0 * 0.25) / (1 - 2 * DP.inX);
+          tlen = Math.min(glen, (well(tw) / rows) * 0.94);
         }
-        return { glen, tlen, cw: across(tlen), tw, gw: (gh * G.w) / G.h };
+        return { glen, tlen, cw: across(tlen), tw, gw };
       }
-      const tlen = Math.min(glen, gh * (1 - 2 * TI[0]) * 0.97);
+      const tlen = Math.min(glen, ((gh * (1 - 2 * TI[0])) / rows) * 0.94);
       const cw = across(tlen);
-      const inner = n2 * cw + (n2 + 1) * cw * 0.25;
-      const tw = inner / (1 - 2 * TI[1]);
-      return { glen, tlen, cw, tw, gw: (gh * G.w) / G.h };
+      const tw = (cols * cw + (cols + 1) * cw * 0.25) / (1 - 2 * TI[1]);
+      return { glen, tlen, cw, tw, gw };
     };
     // as big as the height and the width allow
     let gh = spanBot - spanTop - ringRoom;
@@ -147,10 +164,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       far,
       near,
       len: near - far,
+      cob: z.glen, // (a cob standing on the bed, its length)
       at: (i, m = 4) => ({ x: bed0 + ((bed1 - bed0) / Math.max(1, m)) * (i + 0.5), y: (far + near) / 2 }),
     };
     const tx = left + z.gw + gap + z.tw / 2;
     const step = z.cw * 1.25;
+    const vstep = z.tlen * 1.06;
     const tray = {
       x: tx,
       y: gy,
@@ -159,16 +178,21 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       len: z.tlen,
       up: true,
       deep,
-      // (count cobs side by side, upright, centred in the well)
-      at: (i) => ({ x: tx + (i - (count - 1) / 2) * step, y: gy }),
+      // (standing side by side, centred in the well; two by two when there are more than two, a row's middle a cob's length apart)
+      at: (i) => {
+        const inRow = rows > 1 ? Math.min(cols, count - Math.floor(i / cols) * cols) : count;
+        const c = i % cols;
+        const r = Math.floor(i / cols);
+        return { x: tx + (c - (inRow - 1) / 2) * step, y: gy + (rows > 1 ? (r - 0.5) * vstep : 0) };
+      },
     };
-    // the band: the kit's two rows, each cob within 15% of its grill length (contract-114)
-    const blen = Math.max(k.band.len, grill.len / 1.14);
-    const mid = (vl + vr) / 2;
-    const bcol = Math.min((vr - vl) * 0.25, blen / 2 + 70);
-    const row0 = k.band.at(0).y;
-    const row1 = k.band.at(2).y;
-    return { grill, tray, band: { len: blen, at: (i) => ({ x: mid + (i % 2 ? 1 : -1) * bcol, y: i < 2 ? row0 : row1 }) }, ring: (p) => ({ x: p.x, y: far - 46, r: 34 }) };
+    return {
+      grill,
+      tray,
+      band: { len: blen, at: (i) => ({ x: bmid + (i - 1.5) * bstep, y: by }) },
+      // (the kit's heat ring just above a standing cob's top end)
+      ring: (p) => ({ x: p.x, y: p.y - z.glen / 2 - 34 - 10, r: 34 }),
+    };
   }
   /** The grill and its tray, the tray turned upright to the grill's height, each with the kit's soft shadow. */
   function buildRect(S, L) {
@@ -263,16 +287,23 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // screen 2 asks the frame again with F.next, docs/architecture/kitchen-frame.md) the marble's wash above the band, the stone band
     // along the bottom in the band corn's settings name (the tray: every thing on it is top-down, ART-69, SH-243, SH-248)
     let F = Cook.Frame.area(S, { top: B.top, base: B.base, far: FAR, draw: true });
-    F.stoneBand(S, { game: KEY });
+    let band = F.stoneBand(S, { game: KEY });
+    // the stone tray's drawn inner edge (its slab, Shelf.trayBox, less its lip and bevel), design px; the frame's bottom row where no
+    // slab is drawn. What stands on the band stands inside it (CK-104, CK-117: measured from the tray, never the screen)
+    const slab = (b, R) => {
+      const t = b && b.trayBox;
+      if (!t) return { x: R.x, y: R.y, w: R.w, h: R.h };
+      const sx = Math.max(t.lip, t.r * 0.4);
+      const top = Math.max(t.lip, t.h * 0.035);
+      const foot = Math.max(t.lip, t.h * 0.045);
+      return { x: t.x + sx, y: t.y + top, w: t.w - 2 * sx, h: t.h - top - foot };
+    };
 
     /* ---------------- screen 1: the grill (the grill kit's option 3) ---------------- */
     const gl = lay.grill || {};
     const deep = deepTray && S.textures.exists(GK.ART.deep.key);
     const P1 = F.play;
-    const L = rectLayout(
-      GK.layout({ thick, n: 4, trayW: gl.trayW, bandLen: gl.bandLen, ringRoom: gl.ringRoom, band: { top: F.bottom.y, bottom: F.bottom.y + F.bottom.h }, view: [P1.x, P1.x + P1.w] }),
-      { thick, count, P: P1, ringRoom: gl.ringRoom, gap: gl.gap, deep }
-    );
+    const L = rectLayout({ thick, count, P: P1, R: slab(band, F.bottom), ringRoom: gl.ringRoom, gap: gl.gap, deep });
     const kit = buildRect(S, L);
     // (a test log: which screen is up, for the evidence probes' moments, "life:corn-screen")
     const screenNote = (step) => {
@@ -302,7 +333,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const raw = [0, 1, 2, 3].map((i) => {
       const at = L.band.at(i);
       const img = T(S.add.image(at.x, at.y, tex.raw).setDepth(D.item));
-      GK.lay(img, { x: at.x, y: at.y, len: bandLen });
+      GK.lay(img, { x: at.x, y: at.y, len: bandLen, up: true }); // (CK-117: standing, as it stands everywhere)
       // (no word of its own on the band: a cob is the dish, not a word, so it has no pill, opt3s; the shelf line's rule, contract-109,
       // is for the band's words standing in a row with their pills, which the six bowls of screen 2 are)
       GK.shadow(S, img, { dx: 6, dy: 8, alpha: 0.26, blur: 5 });
@@ -320,6 +351,44 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // the tray allows; three or four keep the kit's two by two. The plate then keeps that length (cobLen below)
     // (Zafar, 11 Nov: on the tray beside the grill a cob rests upright as it lay on the grill, the same size: L.tray.len, L.tray.at)
     const trayLen = L.tray.len;
+    // (CK-117: a cob standing on a plate dd across, as long as the plate holds it: its corners within plates.cob of the plate's width)
+    const plateCob = (dd) => (dd * (pl.cob || 0.9)) / Math.sqrt(1 + thick * thick);
+    /*
+     * CK-118: how far in over a plate's upper corner the well-done face may come, as the box (a share of the plate) the kit's spot is
+     * measured on (Cook.Kit.praiseSpot: its circle at that box's upper corner): the smallest box whose face stays FACE_CLEAR of a cob
+     * standing on the plate, its length share of the plate, and covers at most FACE_PLATE of the round plate (contract-113 lets a face
+     * over a dish cover 15% of it), on a plate of 1. 1 (the plate's own square, as before) where nothing smaller will do.
+     */
+    const FACE_CLEAR = 0.025;
+    const FACE_PLATE = 0.1;
+    const faceIn = (share) => {
+      const rs = (lay.review || {}).size || 0.55;
+      const r = rs / 2;
+      const cl = share / 2;
+      const cw = (share * thick) / 2;
+      // (the share of the plate's disc, radius 0.5, that the face's circle covers: a grid over the face)
+      const covers = (fx, fy) => {
+        let both = 0;
+        const N = 40;
+        for (let i = 0; i < N; i++)
+          for (let j = 0; j < N; j++) {
+            const x = fx - r + ((i + 0.5) * 2 * r) / N;
+            const y = fy - r + ((j + 0.5) * 2 * r) / N;
+            if ((x - fx) ** 2 + (y - fy) ** 2 <= r * r && x * x + y * y <= 0.25) both++;
+          }
+        return (both * ((2 * r) / N) ** 2) / (Math.PI * 0.25);
+      };
+      const ok = (k) => {
+        const p = Cook.Kit.praiseSpot ? Cook.Kit.praiseSpot({ x: 0, y: 0, w: k, h: k }, rs) : null;
+        if (!p) return false;
+        // (clear of the cob's box, its middle on the plate's)
+        const dx = Math.max(0, Math.abs(p.x) - cw);
+        const dy = Math.max(0, Math.abs(p.y) - cl);
+        return Math.hypot(dx, dy) >= r + FACE_CLEAR && covers(p.x, p.y) <= FACE_PLATE;
+      };
+      for (let k = 0.3; k < 1; k += 0.02) if (ok(k)) return k;
+      return 1;
+    };
     const trayAt = (k) => L.tray.at(k);
     const cobs = []; // on the grill
     const inTray = []; // done, lying in the tray
@@ -489,7 +558,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         Cook.sfx.pop();
         z.progress({ cob: slot });
         refresh();
-        fly(() => GK.move(S, img, { x: at.x, y: at.y, len: L.grill.len, up: true, ms: mo.bandMs || 520 })).then(() => {
+        fly(() => GK.move(S, img, { x: at.x, y: at.y, len: L.grill.cob, up: true, ms: mo.bandMs || 520 })).then(() => {
           c.state = "cook";
           c.t0 = Date.now();
           if (Cook.sfx.sizzle) Cook.sfx.sizzle(0.5);
@@ -561,7 +630,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         // (CK-80: left past its green on its second side, the cob is over: the fourth stage)
         if (c.state === "lift" && c.side === 1 && c.p >= 1 && c.img.texture.key !== tex.over && S.textures.exists(tex.over)) c.img.setTexture(tex.over);
         if (c.state !== "cook") return;
-        if (Math.random() < (sm.chance || 0.03)) smoke(c.img.x, c.at.y - L.grill.len * 0.2);
+        if (Math.random() < (sm.chance || 0.03)) smoke(c.img.x, c.at.y - L.grill.cob * 0.2);
         if (c.side === 1 && c.p >= greenLo * 0.5 && c.img.texture.key !== tex.done && S.textures.exists(tex.done)) c.img.setTexture(tex.done);
         if (c.p >= greenLo) {
           c.state = c.side === 0 ? "turn" : "lift";
@@ -583,9 +652,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const len = cob.displayWidth;
       const th = cob.displayHeight;
       const st = dressStyle[id] || { kind: "specks", n: 30 };
-      // (the kernels: the cob's length less its stem end, about two thirds of its thickness across)
-      const x0 = -len * 0.4;
-      const x1 = len * 0.46;
+      // (the kernels: CK-117, the chopped cob is kernels end to end, its cut ends rounded: its length less its rounded ends, about two
+      // thirds of its thickness across. In the cob's own frame, so on the standing cob it runs up its length)
+      const x0 = -len * 0.42;
+      const x1 = len * 0.42;
       const hy = th * 0.3;
       let seed = (id.length * 131 + people.indexOf(q) * 977 + id.charCodeAt(id.length - 1)) >>> 0;
       const rnd = () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296;
@@ -611,9 +681,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           g.fillStyle(col("lemonShine"), 0.8);
           g.fillEllipse(x, across(x) * 0.7, th * (0.4 + rnd() * 0.3), th * (0.08 + rnd() * 0.05));
         }
-        const r = th * 0.62;
-        const wx = x1 - len * 0.1;
-        const wy = -th * 0.15;
+        // (the wedge inside the cob's outline: its flat side across the cob, at the top end of the standing cob)
+        const r = th * 0.4;
+        const wx = x1 - r * 0.9;
+        const wy = -th * 0.05;
         g.fillStyle(col("lemonRind"), 1);
         g.slice(wx, wy, r, 0, Math.PI, false).fillPath();
         g.fillStyle(c, 1);
@@ -691,13 +762,27 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         // upper corner (Cook.Kit.praiseSpot, measured here on a plate of 1, so its share of the plate is the kit's): the plates leave
         // that room above them, and between them, so it never falls back onto a cob or a plate (at 740x320 the plates filled the play
         // area's height once it was the frame's, and the face lay on the cobs' tips). One plate keeps its whole room.
+        // CK-118 (Zafar, 15 Nov, decision 36: "having them chopped like this and vertical means they'll take up a lot more space on the
+        // plate, so wouldn't need to shrink too much"): the standing cob leaves the plate's upper corners bare, so the face comes in over
+        // the corner (faceIn: the kit's spot measured on a box faceIn of the plate) as far as stays clear of the cob and covers little of
+        // the plate, and the plates grow back by the room it gives
         const rs = (lay.review || {}).size || 0.55;
-        const sp = n > 1 && Cook.Kit.praiseSpot ? Cook.Kit.praiseSpot({ x: 0, y: 0, w: 1, h: 1 }, rs) : null;
-        const ka = sp ? Math.max(0, -sp.y + rs / 2 - 0.5) : 0;
         const across = (g) => (view[1] - view[0] - (n - 1) * g) / n;
-        let d = Math.min(pl.d || 400, across(pl.gap || 70), room / (1 + ka));
-        const gap = Math.max(pl.gap || 70, ka * d + 8);
-        d = Math.min(d, across(gap));
+        // (the cob's share of a plate d across: as long as the plate holds it, never more than BAND_K over its tray size; the face's
+        // room depends on it and the plate's size on the face's room: a few rounds settle both)
+        const cobShare = (dd) => Math.min(plateCob(dd), trayLen * BAND_K) / dd;
+        let kIn = 1;
+        let ka = 0;
+        let d = 0;
+        let gap = pl.gap || 70;
+        for (let i = 0; i < 5; i++) {
+          kIn = n > 1 ? faceIn(cobShare(d || pl.d || 400)) : 1;
+          const sp = n > 1 && Cook.Kit.praiseSpot ? Cook.Kit.praiseSpot({ x: 0, y: 0, w: kIn, h: kIn }, rs) : null;
+          ka = sp ? Math.max(0, -sp.y + rs / 2 - 0.5) : 0;
+          d = Math.min(pl.d || 400, across(pl.gap || 70), room / (1 + ka));
+          gap = Math.max(pl.gap || 70, ka * d + 8);
+          d = Math.min(d, across(gap));
+        }
         const y = P2.y + ka * d + d / 2 + (room - d * (1 + ka)) / 2;
         const x0 = (view[0] + view[1]) / 2 - ((n - 1) * (d + gap)) / 2;
         people.forEach((q, i) => {
@@ -712,7 +797,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           const face = T(S.add.image(x - fo, y - fo, Cook.Kit.badge(S, q.who)).setDisplaySize(fs, fs).setDepth(D.item + 2).setAlpha(0));
           plate.face = face; // (the light hugs the plate and its face circle: Cook.Coach.parts)
           q.face = face;
-          q.at = { x, y, d };
+          q.at = { x, y, d, k: kIn };
           plates.push(plate);
           S.tweens.add({ targets: [plate, face], alpha: 1, duration: mo.screenMs || 380 });
         });
@@ -722,13 +807,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             const c = inTray[i];
             q.cob = c.img;
             c.img.setDepth(D.item + 0.3);
-            // (SH-256: the cob keeps its length from the tray, as long as the plate holds it; s19-games-2, contract-114: never under 15% less.
-            // Sprint 20, corn's call: where the plate is shorter than that (a phone's two rows of bowls), the cob keeps its length and
-            // reaches a little past the plate's rim, as a real cob on a small plate, up to plates.reach of the plate; was cut to 0.95 of
-            // the plate, 23-44% under its tray size at every level, 1280x665 and 740x320, in the gate of 14 Nov)
-            const keep = trayLen / 1.14;
-            const len = keep <= d * 0.95 ? Math.max(d * (pl.cob || 0.84), keep) : Math.min(keep, d * (pl.reach || 1.15));
-            return GK.move(S, c.img, { x: q.at.x + d * 0.02, y: q.at.y + d * 0.02, len, ms: mo.plateMs || 520 }).then(() => Cook.tween(S, { targets: c.img, angle: pl.angle != null ? pl.angle : -10, duration: 160 }));
+            // CK-117, CK-118 (Zafar, 15 Nov, decision 37: the plates "with an upright cob filling the plate, nothing past the rim"): it
+            // stands upright on its plate as it stood on the band, the grill and the tray (one rotation the whole way), as big as the
+            // plate holds it (its corners inside the plate's rim: plates.cob of the plate), and never more than 14% over its tray size,
+            // so it grows with no snap (SH-256, contract-114)
+            const len = Math.min(plateCob(d), trayLen * BAND_K);
+            return GK.move(S, c.img, { x: q.at.x, y: q.at.y, len, up: true, ms: mo.plateMs || 520 });
           })
         );
         if (kit.tray && kit.tray.active) {
@@ -782,39 +866,87 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       if (two) size = Math.max(size, Math.min(bw.size || 150, 48 / ppw));
       const pillH = PH * want;
       const gapRows = room(size);
-      // (each row: the bowl, a small gap, its pill; the rows a light's margin apart. The last row is the band's own and stands as chai's
-      // shelf does: its pills' middles on the band's pill line, kept 4 above the bottom row's foot, its bowls' feet on the shelf line,
-      // contract-109's chai lines; was each bowl 6 over its own pill, with the pill 8 above the foot, so at 740x320, where the pills'
-      // floor makes them tall, the band's row stood 7 px over chai's line)
-      const rowH = size + 6 + pillH;
-      const lastPill = Math.min(B.chipY, R.y + R.h - 4 - pillH / 2);
-      const pillYs = rows.map((r, i) => lastPill - (rows.length - 1 - i) * (rowH + gapRows));
-      const footOf = (ri) => (ri === rows.length - 1 ? B.base : pillYs[ri] - pillH / 2 - 6);
-      const top = two ? pillYs[0] - pillH / 2 - 6 - size - 18 : R.y;
-      rows.forEach((row, ri) => {
-        let x = mid - rowW(row, size) / 2;
-        row.forEach((id) => {
-          const w = slotOf(id, size);
-          const cx = x + w / 2;
-          x += w + room(size);
-          const img = bowls[id];
-          img.setPosition(cx, footOf(ri) - size / 2);
-          img.setScale(size / Math.max(img.width, img.height));
-          GK.shadow(S, img, { dx: 5, dy: 7, alpha: 0.24, blur: 5 });
-          const c = img.chip;
-          c.k = want;
-          c.setScale(want).setPosition(cx, pillYs[ri]);
-          if (c.hit) c.hit(w + room(size) - 2);
-          S.tweens.add({ targets: [img, c], alpha: 1, duration: mo.screenMs || 380 });
-          S.tappable(img, () => tapBowl(img));
+      // CK-104 (Zafar, 15 Nov: "the two rows don't fit properly and don't line up nicely. All the pills and all the bowls need to be
+      // fitting well within the stone tray and be aligned properly ... The pills go over the edge. The spacing between the two rows is
+      // too big"): two rows stand inside the stone tray's drawn inner edge (its slab, less its lip and bevel), a pill gap clear all round,
+      // the rows centred in it and lined up column by column (each column's bowl and pill on one vertical line, as wide as its wider
+      // pill), a light's margin between the rows (never more than a pill's height); the tray is as tall as the two rows need, so the
+      // play area above it is the plates'. One row stands as before, on chai's shelf and pill lines (contract-109)
+      let top = R.y;
+      const pos = {}; // (id -> {x, foot, chip})
+      if (two) {
+        const Vw = F.view();
+        const m = Sh.pillGap(ppw);
+        // (a pill's drawn height at the floor's scale: its face, not its nominal box, PILL.h, which is taller than what is drawn)
+        const pillD = Math.max(
+          ...ids.map((id) => {
+            const c = bowls[id].chip;
+            c.setScale(want);
+            const b = c.getBounds();
+            return b && b.height > 1 ? b.height : pillH;
+          })
+        );
+        const rowD = size + 6 + pillD;
+        const gapD = Math.min(gapRows, pillD);
+        const block = 2 * rowD + gapD;
+        // (the slab for a top: Shelf.trayBox, the kit's stone tray; its inner edge as slab() reads it)
+        const innerAt = (t) => slab({ trayBox: Sh.trayBox({ left: Vw.left, right: Vw.right, top: t, bottom: Vw.bottom }) }, R);
+        // (the top that gives the slab's inner edge room for the block and a pill gap above and below it)
+        top = Vw.bottom - block - 2 * m;
+        for (let i = 0; i < 4; i++) {
+          const inn = innerAt(top);
+          top -= block + 2 * m - inn.h;
+        }
+        const inn = innerAt(top);
+        const cols = rows[0].map((id, c) => Math.max(...rows.map((r) => (r[c] ? slotOf(r[c], size) : 0))));
+        const gapC = Math.max(Sh.pillGap(ppw), Math.min(room(size), (inn.w - 2 * m - cols.reduce((a, w) => a + w, 0)) / Math.max(1, cols.length - 1)));
+        const W = cols.reduce((a, w) => a + w, 0) + gapC * (cols.length - 1);
+        const midX = inn.x + inn.w / 2;
+        const y0 = inn.y + (inn.h - block) / 2; // (the first row's bowls' top)
+        let x = midX - W / 2;
+        const cx = cols.map((w) => {
+          const c = x + w / 2;
+          x += w + gapC;
+          return c;
         });
+        rows.forEach((row, ri) =>
+          row.forEach((id, c) => {
+            const foot = y0 + ri * (rowD + gapD) + size;
+            pos[id] = { x: cx[c], foot, chip: foot + 6 + pillD / 2, w: cols[c] + gapC };
+          })
+        );
+      } else {
+        // (one row: the band's own, as chai's shelf: its pills' middles on the band's pill line, kept 4 above the bottom row's foot, its
+        // bowls' feet on the shelf line, contract-109's chai lines)
+        const chip = Math.min(B.chipY, R.y + R.h - 4 - pillH / 2);
+        let x = mid - rowW(ids, size) / 2;
+        ids.forEach((id) => {
+          const w = slotOf(id, size);
+          pos[id] = { x: x + w / 2, foot: B.base, chip, w: w + room(size) };
+          x += w + room(size);
+        });
+      }
+      ids.forEach((id) => {
+        const at = pos[id];
+        const img = bowls[id];
+        img.setPosition(at.x, at.foot - size / 2);
+        img.setScale(size / Math.max(img.width, img.height));
+        GK.shadow(S, img, { dx: 5, dy: 7, alpha: 0.24, blur: 5 });
+        const c = img.chip;
+        c.k = want;
+        c.setScale(want).setPosition(at.x, at.chip);
+        if (c.hit) c.hit(at.w - 2);
+        S.tweens.add({ targets: [img, c], alpha: 1, duration: mo.screenMs || 380 });
+        S.tappable(img, () => tapBowl(img));
       });
+      const firstTop = Math.min(...ids.map((id) => pos[id].foot)) - size;
       // this screen's floor plan, the frame's (its option for a game's next screen, F.next): where the two rows need a taller tray,
       // the bottom row's top moves up to them and the band is drawn anew there, faded in over the first screen's; the play area left
       // above it is the plates'
       F = F.next(two ? { top, band: { ms: mo.screenMs || 380 } } : {});
+      if (two && F.band) band = F.band;
       // (the first row's top, and the widest light margin's room above it, for the plates)
-      return { top, clear: footOf(0) - size, room: (OL.max + OL.clear + 4) / ppw };
+      return { top, clear: firstTop, room: (OL.max + OL.clear + 4) / ppw };
     }
 
     // what goes on: named as it goes on, their row ticks; a second tap takes it back until they have it (non-negotiable 7)
@@ -955,7 +1087,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           if (cobB) avoid.push({ x: cobB.x, y: cobB.y, right: cobB.right, bottom: cobB.bottom });
           // (kept on what the screen shows, above this screen's bottom row: the frame's view and row)
           const V = F.view();
-          const at = Cook.Kit.praiseSpot({ x: q.at.x, y: q.at.y, w: q.at.d, h: q.at.d }, size, { avoid, view: [V.left, V.top, V.right, F.bottom.y] });
+          const at = Cook.Kit.praiseSpot({ x: q.at.x, y: q.at.y, w: q.at.d * q.at.k, h: q.at.d * q.at.k }, size, { avoid, view: [V.left, V.top, V.right, F.bottom.y] });
           return [await serve.review(S, { who: q.who, ok: !wrong.length, x: at.x, y: at.y, size, side: at.side, line: praise ? undefined : false })];
         },
         oops: () => z.oops(),

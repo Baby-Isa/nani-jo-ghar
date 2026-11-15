@@ -307,10 +307,8 @@
     "d": 400,
     "gap": 70,
     "face": 0.3,
-    "cob": 0.84,
-    "reach": 1.15,
+    "cob": 0.9,
     "side": 0.068,
-    "angle": -10,
     "dim": 0.75
    },
    "bowls": {
@@ -367,15 +365,15 @@
    "size": "L",
    "view": "T",
    "states": {
-    "raw": "assets/art/corn/cob.raw.r1.webp",
-    "turned": "assets/art/corn/cob.turned.r1.webp",
-    "done": "assets/art/corn/cob.done.r1.webp",
-    "over": "assets/art/corn/cob.over.r1.webp"
+    "raw": "assets/art/corn/cob.raw.chopped.r1.webp",
+    "turned": "assets/art/corn/cob.turned.chopped.r1.webp",
+    "done": "assets/art/corn/cob.done.chopped.r1.webp",
+    "over": "assets/art/corn/cob.over.chopped.r1.webp"
    },
    "word": "n.corn-on-the-cob",
-   "card": "assets/art/corn/cob.done.r1.webp",
-   "thick": 0.18,
-   "_note": "the full run's K4: raw, turned (one side grilled: the picture after the turn), done; one canvas each, lying (its length the picture's width)"
+   "card": "assets/art/corn/cob.card.upright.r1.webp",
+   "thick": 0.4,
+   "_note": "the full run's K4: raw, turned (one side grilled: the picture after the turn), done, over; one canvas each, lying (its length the picture's width; the game stands it upright). CK-117, CK-119 (Zafar, 15 Nov, decision 37): the chopped cob, its thick middle cut by script from the K4 cobs (build/reports/s20-corn-upright-cut.py: the stem and the tip cut off, the ends rounded, about 2.5:1, thick its width over its length); the card picture the done one standing (cob.card.upright). The whole cobs stay on disk"
   },
   "dressings": {
    "size": "S",
@@ -422,7 +420,7 @@
  "vocab": {
   "n.corn-on-the-cob": {
    "item": "cob",
-   "card": "assets/art/corn/cob.done.r1.webp"
+   "card": "assets/art/corn/cob.card.upright.r1.webp"
   },
   "fru-02": {
    "item": "dressings",
@@ -483,10 +481,11 @@
   "assets/art/kit/tray-steel.default.r1.webp",
   "assets/art/kit/tray-deep.default.r1.webp",
   "assets/art/kit/plate-cream.default.r1.webp",
-  "assets/art/corn/cob.raw.r1.webp",
-  "assets/art/corn/cob.turned.r1.webp",
-  "assets/art/corn/cob.done.r1.webp",
-  "assets/art/corn/cob.over.r1.webp",
+  "assets/art/corn/cob.raw.chopped.r1.webp",
+  "assets/art/corn/cob.turned.chopped.r1.webp",
+  "assets/art/corn/cob.done.chopped.r1.webp",
+  "assets/art/corn/cob.over.chopped.r1.webp",
+  "assets/art/corn/cob.card.upright.r1.webp",
   "assets/art/corn/bowl-lemon.default.r1.webp",
   "assets/art/corn/bowl-salt.default.r1.webp",
   "assets/art/corn/bowl-chilli-powder.default.r1.webp",
