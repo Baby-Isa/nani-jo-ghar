@@ -47,7 +47,7 @@ Files: `baking.js`, `baking.json`, `kitchen-frame.md` (a line; no frame option a
 - **The light frames the thing alone:** the face sits inside its thing's corner (the bowl's upper right, the tray's upper left, as chai's on the tray), so the light holds it whole without growing (contract-82). In the oven it moves out from the corner until it is clear of the bake ring.
 - **The kit's light only:** no `S.glow` (the orange flood) on the bowl, the tray, the oven or a lifted jar.
 - **Left, advisory:** contract-113 at L3 740x320 (the face in the tray's corner covers 20% of the tray picture's rim). Moving it off the picture would let the light's edge cut it (contract-82, blocking).
-- **Proof:** R3PROOF
+- **Proof:** baking `gate-20261115T1219-baking`: `GATE PASS baking: checks pass 2.5, contract pass 8.1; 10.6 min`, 0 blocking over 18 pages; advisory 15: contract-113 x7 (above), -36 x2, -119 x2, -53 x2, and one each of -111 (a tap at a lifted yoghurt jar's left edge picks nothing, L1#mistake 740) and -78 ("Tayar ai." without its light once, L2#mistake 740). Chai `gate-20261115T1230-chai-tray`: FAIL 27.6 min. Its contract-112 (L4 740) is the working branch's own (replayed on 41eae54 alone). Its boxes were 0/8 against the old reference because the kit's part 2 changed them; the working branch re-took the reference (`f8eea9d`). After merging that: `pass chai-tray against the reference: 8/8 pages identical` (3.3 min). frame-counts: baking 0.
 
 ## Proof
 - **Baking's gate:** the base FAILED, 8.2 min, 16 blocking. After: `GATE PASS baking: checks pass 2.3, contract pass 7.6; 9.9 min`, 0 blocking over 18 pages; **Final, after merging the working branch: `GATE PASS baking: checks pass 2.4, contract pass 7.6; 9.9 min`**, 0 blocking over 18 pages.
