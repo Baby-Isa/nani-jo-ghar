@@ -1,0 +1,333 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "687ff588546a1c6f421b55c205eec939396f506a",
+ "dirty": false,
+ "date": "2026-11-15T07:55:30.323Z",
+ "base": "950faed8898c140e13d81cf55193384433f869d2",
+ "games": [
+  "cook:maani-line"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:maani-line": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-687ff58854",
+  "before | after": "build/screenshots/tiers/change-687ff58854/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-687ff58854-maani-line/films/cook-maani-line@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-687ff58854/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card flashed only 103 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#mistake@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapanti.\") at level 1 and its card flashed only 110 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#mistake@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line#hint@740x320 (hint-nani-says)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@50@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#hint@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card flashed only 109 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line#hint@930x430 (hint-nani-says)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@50@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#hint@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#returning@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapanti.\") at level 1 and its card flashed only 99 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#returning@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#takeback@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke ba bajr ji maani khapanti.\") at level 1 and its card flashed only 99 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#takeback@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke ba bajr ji maani khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "lab:cook/maani-line@740x320 (after maani-line-start)",
+   "what": "the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "lab:cook/maani-line@930x430 (after maani-line-start)",
+   "what": "the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "scope",
+   "where": "build/screenshots/tiers/change-687ff58854/logs/scope.log",
+   "what": "docs/process/regressions.md",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-687ff58854/logs/play.log",
+   "what": "CONTRACT FAILED: 14 breaks (contract-119 12, contract-36 2); CHECK FAILED: 77 new findings, 0 flows do not reach their end, 0 new page errors, 14 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-687ff58854/logs/before.log",
+   "what": "CONTRACT FAILED: 14 breaks (contract-119 12, contract-36 2); CHECK FAILED: 77 new findings, 0 flows do not reach their end, 0 new page errors, 14 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "rows",
+   "where": "build/screenshots/tiers/change-687ff58854/logs/rows.log",
+   "what": "MAA-27: no evidence spec",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "rows-judge",
+   "where": "build/screenshots/tiers/change-687ff58854/logs/rows-judge.log",
+   "what": "No before run for brief s20-maani-fable: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-maani-fable.json first.",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 12,
+  "before": 12,
+  "breaksAfter": 14,
+  "breaksBefore": 14
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: passed on 687ff58854 already (2026-11-15T06:51:22.853Z); nothing to run",
+   "tail": [
+    "check-push: passed on 687ff58854 already (2026-11-15T06:51:22.853Z); nothing to run"
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/push.log",
+   "minutes": 0
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s20-maani-fable.json 950faed8898c140e13d81cf55193384433f869d2..HEAD",
+   "status": "fail",
+   "code": 1,
+   "line": "docs/process/regressions.md",
+   "tail": [
+    "scope: 3 file(s) outside \"s20-maani-fable: maani's faults from the Fable eye judge\"'s owns (requests, not edits):",
+    "build/reports/s20-b1-daar.md",
+    "build/tools/review/lib/regressions.mjs",
+    "docs/process/regressions.md"
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:maani-line (6 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:maani-line,cook:maani-line#mistake,cook:maani-line#hint,cook:maani-line#returning,cook:maani-line#takeback,lab:cook/maani-line' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-687ff58854",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 14 breaks (contract-119 12, contract-36 2); CHECK FAILED: 77 new findings, 0 flows do not reach their end, 0 new page errors, 14 contract breaks",
+   "tail": [
+    "BREAK contract-119 lab:cook/maani-line L1 @ 740x320 [after maani-line-start c04-bubble.png] 6.8s: the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+    "BREAK contract-119 lab:cook/maani-line L1 @ 930x430 [after maani-line-start c04-bubble.png] 6.9s: the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): maani 106/111",
+    "CONTRACT FAILED: 14 breaks (contract-119 12, contract-36 2)",
+    "CHECK FAILED: 77 new findings, 0 flows do not reach their end, 0 new page errors, 14 contract breaks",
+    "08:04:04 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-687ff58854/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/play.log",
+   "minutes": 8.6
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 950faed889 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:maani-line,cook:maani-line#mistake,cook:maani-line#hint,cook:maani-line#returning,cook:maani-line#takeback,lab:cook/maani-line' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-950faed889-687ff58854",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 14 breaks (contract-119 12, contract-36 2); CHECK FAILED: 77 new findings, 0 flows do not reach their end, 0 new page errors, 14 contract breaks",
+   "tail": [
+    "BREAK contract-119 lab:cook/maani-line L1 @ 740x320 [after maani-line-start c04-bubble.png] 6.9s: the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+    "BREAK contract-119 lab:cook/maani-line L1 @ 930x430 [after maani-line-start c04-bubble.png] 6.8s: the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): maani 106/111",
+    "CONTRACT FAILED: 14 breaks (contract-119 12, contract-36 2)",
+    "CHECK FAILED: 77 new findings, 0 flows do not reach their end, 0 new page errors, 14 contract breaks",
+    "08:12:34 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/950faed889/build/screenshots/sandbox/tiers-before-950faed889-687ff58854/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/before.log",
+   "minutes": 8.5
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/950faed889/build/screenshots/sandbox/tiers-before-950faed889-687ff58854 build/screenshots/sandbox/tiers-change-687ff58854 build/screenshots/tiers/change-687ff58854/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 312 before|after pictures, 14 not paired; build/screenshots/tiers/change-687ff58854/before-after/index.html",
+   "tail": [
+    "pairs: 312 before|after pictures, 14 not paired; build/screenshots/tiers/change-687ff58854/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/pairs.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "rows",
+   "what": "the brief's rows, after (evidence.mjs --after --brief; the before was played at launch)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --after --brief build/tools/ops/specs/s20-maani-fable.json",
+   "status": "fail",
+   "code": 2,
+   "line": "MAA-27: no evidence spec",
+   "tail": [
+    "--brief build/tools/ops/specs/s20-maani-fable.json refused: every row it names needs a probe in build/sandbox/data/evidence.json first:",
+    "MAA-26: no evidence spec",
+    "MAA-27: no evidence spec"
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/rows.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "rows-judge",
+   "what": "the judge's before|after batch for Fable (evidence.mjs --judge --brief)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --judge --brief build/tools/ops/specs/s20-maani-fable.json",
+   "status": "report",
+   "code": 2,
+   "line": "No before run for brief s20-maani-fable: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-maani-fable.json first.",
+   "tail": [
+    "No before run for brief s20-maani-fable: node build/tools/review/evidence.mjs --before --brief build/tools/ops/specs/s20-maani-fable.json first."
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/rows-judge.log",
+   "minutes": 0
+  },
+  {
+   "id": "film:maani-line",
+   "what": "a first-play film: cook:maani-line as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:maani-line",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:maani-line --sizes 740x320 --no-sheets --run-id tiers-film-687ff58854-maani-line",
+   "status": "pass",
+   "code": 0,
+   "line": "08:13:28 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-687ff58854-maani-line/summary.md",
+   "tail": [
+    "08:13:28 sound: 6 lines heard, 4 with no family clip (the recording gap list), 8 played files that are not an approved family clip",
+    "gap     1x  Muke hakri bajr ji maani khapeti,  [device-voice]",
+    "gap     1x  millet chapati  [silent]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "08:13:28 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-687ff58854-maani-line/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-687ff58854/logs/film_maani-line.log",
+   "minutes": 0.7
+  }
+ ],
+ "minutes": 18,
+ "ok": false
+}
