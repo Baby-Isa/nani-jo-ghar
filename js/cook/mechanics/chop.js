@@ -1258,6 +1258,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         // (the kit's finger holds the knife's handle once the light is on: the knife's lower right, its blade and tip clear: DAAR-13)
         let fpt = null;
+        let fpt0 = null;
         const hold = () => (fpt = UI.worldToScreen(knife.x + z.L(40), knife.y + z.L(20)));
         // the planted vegetable (one she asked for) comes up into the strip; it is cut, never counted
         // (S19, CK-71: on the hop it is the thing's own slot item, hopping straight up from the band, never from off the board)
@@ -1308,14 +1309,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const b = UI.worldToScreen(Math.max(x0 + kHalf, kbx.right, bd ? bd.right : -Infinity), bot);
           // (CK-83, contract-112 "2 lit regions": the kit's hand holding the knife's handle lies below and right of its fingertip; the box
           // takes it in, so the hand is never a second lit region outside it: Onboard.HOTSPOT in its 64x80 hand, at the size the page draws it)
+          // (DAAR-39, contract-112 x2 at 740x320 in the s20-b1-daar gate, daar L4 and chop L2: the box's right edge followed the finger
+          // point as the drag began, read from the game's state, while the page still showed the knife and the hand at the start (the
+          // canvas and the finger drawn a frame later): on a busy machine the picture caught the box ending at the knife, the hand outside
+          // it. The box is the whole move's from its first frame: the hand where it starts, the knife's start point fpt0, as well as now)
           let r = b.x;
           let d = b.y;
           if (fpt) {
             const fe = global.document && document.querySelector(".ob-finger:not(.ob-circle)");
             const k = fe && fe.offsetWidth ? fe.offsetWidth / 64 : 1;
             const hs = (OB && OB.HOTSPOT) || [25, 3];
-            r = Math.max(r, fpt.x + (64 - hs[0]) * k);
-            d = Math.max(d, fpt.y + (80 - hs[1]) * k);
+            [fpt, fpt0].forEach((p) => {
+              if (!p) return;
+              r = Math.max(r, p.x + (64 - hs[0]) * k);
+              d = Math.max(d, p.y + (80 - hs[1]) * k);
+            });
           }
           return [[a.x, a.y, r - a.x, d - a.y]];
         };
@@ -1324,6 +1332,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const W = global.innerWidth || 1e4;
           return { x: lx, y: 0, w: W - lx, h: global.innerHeight || 1e4 };
         };
+        // (the finger's point at the knife's start: the box holds the hand there for the whole move, DAAR-39)
+        hold();
+        fpt0 = fpt ? { x: fpt.x, y: fpt.y } : null;
         const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: "chop", within, note: "chop:s14-strip" });
         // CK-109 (the S19 gate's eye judge, 12 Nov: "'Nindha nindha kap!' arrives only at +1639 ms", the knife lit under the order's
         // line): Nani's call for the knife comes with its light, from its first frame (the family's recorded "Nindha nindha kap!",
