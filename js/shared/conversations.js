@@ -1247,10 +1247,69 @@
         return [];
       }
     };
+    // SH-304 (Zafar, 15 Nov: "The card going over the speech bubble is the red flag ... The card logic was working perfectly at chai"):
+    // the order's pop-up card (.wc14-pop, js/cook/ui.js popCard) keeps its place, size, path and timing, and is often placed before
+    // its line's bubble shows; so the bubble keeps clear of it, as close by its speaker as it can (along its row, or its words wrapped
+    // narrower, by the one placement), never over a face and never off screen. The card counts where it rests: its pop-in scale undone,
+    // and a card flying to its row where it rested before it left. Every card a bubble has met is kept clear for that bubble's life,
+    // so it moves at most once as a card lands and never back and forth through an order's cards.
+    const CARD_GAP = 4;
+    const cardsMet = new Map();
+    const restOf = (el) => {
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) return null;
+      let [x0, y0, x1, y1] = [r.left, r.top, r.right, r.bottom];
+      // (the speaker's ring sits on the card's foot)
+      el.querySelectorAll(".wc14-spk").forEach((s) => {
+        const q = s.getBoundingClientRect();
+        if (q.width && q.height) [x0, y0, x1, y1] = [Math.min(x0, q.left), Math.min(y0, q.top), Math.max(x1, q.right), Math.max(y1, q.bottom)];
+      });
+      const tf = root.getComputedStyle ? root.getComputedStyle(el).transform : "none";
+      if (tf && tf !== "none") {
+        const m = /^matrix\(([^)]+)\)$/.exec(tf);
+        const v = m ? m[1].split(",").map(Number) : null;
+        // (moved, not only scaled: a card in flight; its resting place is the one met before it left)
+        if (!v || !(v[0] > 0) || !(v[3] > 0) || Math.abs(v[4]) > 0.5 || Math.abs(v[5]) > 0.5) return null;
+        // (popping in: scaled about its centre; at rest it is its own size)
+        const cx = (r.left + r.right) / 2;
+        const cy = (r.top + r.bottom) / 2;
+        [x0, x1] = [cx + (x0 - cx) / v[0], cx + (x1 - cx) / v[0]];
+        [y0, y1] = [cy + (y0 - cy) / v[3], cy + (y1 - cy) / v[3]];
+      }
+      return { left: x0 - CARD_GAP, top: y0 - CARD_GAP, width: x1 - x0 + 2 * CARD_GAP, height: y1 - y0 + 2 * CARD_GAP };
+    };
+    const cardsNow = () => {
+      doc.querySelectorAll(".wc14-pop").forEach((el) => {
+        const r = restOf(el);
+        if (r) cardsMet.set(el, r);
+      });
+      return [...cardsMet.values()];
+    };
+    const asBox = (q) => ({ isConnected: true, getBoundingClientRect: () => Object.assign({ right: q.left + q.width, bottom: q.top + q.height }, q) });
+    // (how much of the faces it must not cover the bubble covers where it was just put)
+    const onFaces = (faces) => {
+      const r = b.getBoundingClientRect();
+      return faces.reduce((n, el) => {
+        const q = el.getBoundingClientRect();
+        return n + Math.max(0, Math.min(r.right, q.right) - Math.max(r.left, q.left)) * Math.max(0, Math.min(r.bottom, q.bottom) - Math.max(r.top, q.top));
+      }, 0);
+    };
     const L = root.Lifecycle;
+    const put = (a) => {
+      const faces = avoidOf();
+      const cards = cardsNow().map(asBox);
+      if (!cards.length) return L.bubble.place(b, a, layer, { avoid: faces });
+      const sd = L.bubble.place(b, a, layer, { avoid: faces.concat(cards), reach: true });
+      // (a face before the card: kept clear of the card only where that covers no more of a face than the bubble did without it)
+      if (!sd || !faces.length) return sd;
+      const f1 = onFaces(faces);
+      if (!f1) return sd;
+      const sd0 = L.bubble.place(b, a, layer, { avoid: faces });
+      return onFaces(faces) < f1 ? sd0 : L.bubble.place(b, a, layer, { avoid: faces.concat(cards), reach: true });
+    };
     const place = () => {
       const a = headOf();
-      if (a && L && L.bubble && L.bubble.place(b, a, layer, { avoid: avoidOf() })) {
+      if (a && L && L.bubble && put(a)) {
         b.classList.remove("cv-top");
         return true;
       }
@@ -1265,7 +1324,9 @@
       const r = a && (a.getBoundingClientRect ? a.getBoundingClientRect() : a);
       return r ? `${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.width)},${Math.round(r.height)}` : "-";
     };
-    const keyNow = (a) => `${box(a)},${b.offsetWidth},${b.offsetHeight},${root.innerWidth},${root.innerHeight},${doc.querySelectorAll("[data-njg-avoid]").length}`;
+    // (a card landing, or moving to rest, places it again: SH-304)
+    const cardsKey = () => cardsNow().map((q) => [q.left, q.top, q.width, q.height].map(Math.round).join(",")).join(";");
+    const keyNow = (a) => `${box(a)},${b.offsetWidth},${b.offsetHeight},${root.innerWidth},${root.innerHeight},${doc.querySelectorAll("[data-njg-avoid]").length},${cardsKey()}`;
     place();
     let last = keyNow(headOf());
     const raf = (f) => (root.requestAnimationFrame ? root.requestAnimationFrame(f) : setTimeout(f, 16));
