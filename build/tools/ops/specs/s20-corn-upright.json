@@ -1,0 +1,56 @@
+{
+ "why": "Sprint 20 step 4, decisions 36-37 (Zafar, 15 Nov): corn's bowls fitted and aligned in two rows on a phone (CK-104); the cob chopped (shorter, fatter, cut ends) and upright everywhere: band, grill, tray, plate (CK-117); kept big on its plate (CK-118); upright in the item cards and the pop-up card (CK-119). His yes to the mock-ups build/reports/s20-corn-upright/A-D.png",
+ "cost": "medium: Opus, high effort, one cloud session (about $20-35)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when CK-104 and CK-117-119 are built, corn's gate is at zero and chai is unmoved, or at the end of one session: then push your branch and report",
+ "kind": "code",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": ["CK-104", "CK-117", "CK-118", "CK-119"],
+ "proof": "node build/tools/tiers/gate.mjs --game corn (contract at zero) and --game chai-tray (chai's play area unmoved: its boxes differ only in Nani's box, SH-301, already known); node build/tools/review/frame-counts.mjs: corn 0; a script-made before/after sheet (before: the working branch; after: yours) of corn L1 740x320 band, L3 740x320 flavour screen with two plates, L4 1280x665 mid-grill with a cob in the tray, and the item card and pop-up card at 740x320",
+ "name": "s20-corn-upright: corn's bowls aligned and the chopped upright cob",
+ "port": 8958,
+ "report": "s20-corn-upright",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "docs/decisions/2026-11-10-overnight.md decisions 36 and 37",
+  "docs/process/regressions.md rows CK-104, CK-117, CK-118, CK-119 (Zafar's words)",
+  "build/reports/s20-corn-upright/A.png, B.png, C.png, D.png (the mock-ups he said yes to: four cobs standing in a row on the band; one on the grill and one in the tray, the same way up; four in the tray two by two, side by side, no stacking; the plates with an upright cob filling the plate, nothing past the rim) and build/reports/s20-corn-calls/1.png (the bowls today: pills over the tray's edge, rows not lined up, too big a gap)",
+  "js/cook/stations/corn.js (layBowls, the plates block near SH-254, the cob's lay on band, grill and tray), js/cook/grill-kit.js (GK.layout, GK.lay: the grill already lays a cob upright; L.tray.at), data/stations/corn.json (items.cob.states, card pictures, vocab card)",
+  "build/reports/s20-b1-corn.md (corn's join and its calls)"
+ ],
+ "owns": ["js/cook/stations/corn.js, data/stations/corn.json, assets/art/corn/ ONLY to ADD cut versions of the existing cob art (the chopped cob: cob.<state>.chopped.r1.webp and an upright card picture, cut and rotated by script from cob.<state>.r1.webp, never new drawing; non-negotiable 8), js/cook/grill-kit.js ONLY to ADD an option (sekelo and others unchanged), build/reports/s20-corn-upright.md, build/reports/s20-corn-upright-before-after.png"],
+ "readOnly": ["chai-tray.js and every other game's file, js/cook/ui.js, js/cook/flow.js, js/shared/** (the kit: report a kit fault, don't fix it), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md (report each row's state in your report; the orchestrator moves statuses), every other asset"],
+ "flows": ["cook:corn", "cook:corn@L2", "cook:corn@L3", "cook:corn@L4", "lab:cook/corn"],
+ "branch": "s20-corn-upright (yours, on your own cloud machine, from the working branch ccr-7da5e9f0-04g4xm): commit often, push only to it",
+ "tasks": [
+  {
+   "do": "CK-104: at 740x320 (and every size where the six bowls take two rows) every bowl and every word pill sits well inside the stone tray's inner edge (a margin at least the pills' gap), the two rows centred in the tray and lined up column by column (each column's bowl and pill centres on one vertical line, the second row's three centred under the first's), the gap between the rows no more than a pill's height. One row where six fit, as today. Measure from the tray's drawn inner edge, not the screen.",
+   "accept": "corn L1-L4 at 740x320 and 930x430: no bowl or pill outside the tray's inner edge less its margin; column centres within 1 px; rows' gap within a pill's height; the before/after sheet shows it"
+  },
+  {
+   "do": "CK-117: the cob chopped, cut by script from the existing cob art (raw, turned, done, over): the stem and the tapered tip cut off (keep about the middle 45% of its length), the cut ends slightly rounded, so it reads shorter and fatter (about 2.6:1 long to wide, as the mock-ups). It stands upright everywhere and never turns as it moves: on the band four in a row, standing, evenly spaced and centred in the band (no word pills, decision 36), on the grill upright as today, in the cooked tray standing side by side (two by two when four; never one over another), on the plate upright. Sizes from the room each place gives (the band's height, the grill's, the tray's well, the plate), never a per-size number. The dressings drawn on a cob (the chutney zigzag, powders, lemon) follow the upright chopped shape.",
+   "accept": "corn L1-L4, four sizes: the cob's angle the same on band, grill, tray and plate (one rotation the whole way); no cob over another; every cob inside its band, grill, tray or plate; dressings inside the cob's outline; the cob grows and shrinks between places with no snap (SH-256)"
+  },
+  {
+   "do": "CK-118: with the cob upright inside its plate, let the plates grow back as far as the well-done face's room allows (the face over the plate's upper corner, clear of the cob, contract-113): on a phone with two people the cob's drawn area on its plate is no smaller than today's and as big as the room allows.",
+   "accept": "corn L3-L4 at 740x320: the cob's drawn area on its plate no smaller than today's (state both numbers); the face clear of the cob; contract-113 at zero"
+  },
+  {
+   "do": "CK-119: corn's item card and the order's pop-up card show the chopped cob upright (a cut, rotated card picture in data/stations/corn.json items.cob.card and vocab n.corn-on-the-cob.card), filling the picture's height as the other cards' pictures do, never clipped.",
+   "accept": "the item card and pop-up at the four sizes: the cob upright, filling the picture's height, whole"
+  },
+  {
+   "do": "Prove it with the gate, alone on the machine: `COOK_TEST_PORT=8958 NJG_LOCK=/tmp/njg-browser-8958.lock node build/tools/tiers/gate.mjs --game corn`, then `--game chai-tray`. Make the before/after sheet by script (the proof line's frames). Delete your own run folders when done.",
+   "accept": "corn's gate contract part PASS with minutes; chai's boxes differ only in Nani's box; the sheet pushed"
+  },
+  {
+   "do": "Standing: commit often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), push only to your own branch; never re-freeze anything; never touch a check, a probe, a reference or a row's status; name every change to what a child sees at every level and size.",
+   "accept": "build/reports/s20-corn-upright.md with a Proof section, under 500 words, pushed on your branch"
+  }
+ ]
+}
