@@ -1,6 +1,6 @@
 # s20-corn-upright: the chopped cob standing, the bowls aligned (15 Nov)
 
-Decisions 36-38. Files: `corn.js`, `corn.json`, corn's cut pictures (`s20-corn-upright-cut.py`, `-served.py`, registered by `registry.mjs`), `flow.js` (corn's served dish only, `servePlanOf`).
+Decisions 36-38. Files: `corn.js`, `corn.json`, corn's cut pictures (two scripts, `registry.mjs`), `flow.js` (corn's served dish only).
 
 ## What a child sees
 | Where | Round 1 (merged, 6d21559) | Round 2 (CK-127-132) |
@@ -14,16 +14,17 @@ Decisions 36-38. Files: `corn.js`, `corn.json`, corn's cut pictures (`s20-corn-u
 | Serve | | one tray per asker, their face on it, the cob standing on its plate |
 | Turn call | | a cob's turn or lift stops Nani's reminder for the next cob, so its call comes with its light |
 
+## Round 3 (CK-137)
+'Shabash!' at the last plate's other corner, its card to the right, clear of the plate before; the grill and tray below or left of the settings cog (the larger of the two); each asker's served cob as cooked, with their own toppings (drawn by corn as the round ends, the plate's own painter); the plated cob at its tray size; a timed turn or lift lit with every call; the tray's faces clear of the cob's foot.
+
 ## Calls taken (recommended option)
 1. Nani's drop-down mid-cook (CK-132): the kit clears it only while a control's call is said (`ui.js`, SH-172); it returns after (0.3-1.6 s, measured). Left to the kit.
 2. The served picture is composed by script from the cream plate and the chopped cob (no new drawing), squashed to the serving view's angle.
 3. The ring passes outside the light's box (the row: "clear of the light's edge"); inside it, contract-112 failed.
 
 ## Rows (statuses are the orchestrator's)
-CK-127 to CK-131 built; CK-132 built except the drop-down (call 1). Not mine: contract-83, a side-panel card over Nana's face (the base has it).
+CK-127 to CK-131 built; CK-132 and CK-137 built except the drop-down (call 1) and 'hakro makai' on one line (the kit's card). Not mine: contract-83, a side-panel card over Nana.
 
 ## Proof
-- **Corn's gate** (gate-20261115T0925-corn, after merging 41eae54): checks pass 2.4 min; contract FAIL 6.6 min, 4 blocking, all contract-83 (a side-panel card over Nana: the kit's or the lift's, left as the orchestrator said). Advisory: -119 ×8, -78 ×4, -37 ×2; -109, -112, -113, -114 and -129 are 0.
-- **Chai's gate** (gate-20261115T0934-chai-tray): checks pass 2.6 min; boxes **pass** 3.5 min (identical); contract FAIL 22.5 min, 1 blocking: contract-112 on chai's own aadu card at L4 740x320 (no chai file changed).
-- **Side by side:** `build/screenshots/sidebyside/corn-L3-round2/` (judge-batch.md; 5 contract breaks listed: -78 2, -117 2, -37 1, as the round-1 run had).
-- Round 1's proof: this report at commit 1e6a041.
+- **Round 3:** corn's gate (gate-20261115T1131-corn): contract 8.3 min, 2 blocking, both contract-83 (the kit's, left); advisory -119 ×8, -37 ×2, -70 ×2 (new: in the hint path the turn call comes just after the ring's green, now that each timed call waits for its light), -78 ×1 (was 4). Its checks caught four colour literals, fixed in 3b7d155; `checks.mjs` now: all 14 pass. Chai's gate: CHAI3. Side by side: `build/screenshots/sidebyside/corn-L3-round3/`.
+- Rounds 1-2: this report at 1e6a041 and 0a2bd3b.
