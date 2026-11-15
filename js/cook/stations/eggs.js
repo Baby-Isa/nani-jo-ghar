@@ -274,6 +274,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       if (sh) sh.setFlipX(flip);
       // S19 (CK-63, SH-230; Zafar, 8 Nov: "it's half on the handle ... off-centered"): its light is on its round body alone, centred on
       // the burner, the handle left out (the kit's lights read thing.litBounds: Cook.Coach.box, C.parts)
+      // (CK-124, tried 15 Nov: its light taking in its handle could not be drawn whole where the pot reaches past the view, 1280x665 at
+      // L3, and the light judge, contract-112, failed it there: the round body stays, as CK-63; the report names it)
       img.litBounds = () => ({ x: img.x - R, y: img.y - R, right: img.x + R, bottom: img.y + R });
       return { key: k, k, img, b, c: { x: b.x, y: b.y }, r: body.rIn * img.displayWidth, eggs: [], fried, on: false };
     };
@@ -491,8 +493,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     };
     // (s19-games-2, contract-114: a fried egg keeps its size from the pan to the plate within 15%, one egg on a plate or two: its size in
     // the pan is the plate's (FRIED.pan of the plate's width, one on a plate FRIED.one, two FRIED.two), never the pan's own)
-    const FRIED = { pan: 0.62, one: 0.68, two: 0.58 };
-    const friedW = () => Math.min(vessels.pan.r * (ITEM("friedEgg").inPan || 0.95), plateD * FRIED.pan);
+    // CK-122 (the Fable eye judge standing in for Zafar, 15 Nov: "L4 mid-cook: the fried egg about a sixth of the pan's width, 14 px at
+    // 740x320"; chai's pots fill edge to edge): in the pan the egg's size is the pan's, inPan of its floor's radius (data/stations/eggs.json:
+    // more than half its floor's width at every size, as the vessel is drawn), never the plate's; lifted, it glides in place to its size
+    // in the hand, FRIED.hand of the plate's width, within contract-114's 15% of its size on a plate (one egg FRIED.one, two FRIED.two).
+    // (contract-114 compares an item's rests at different places: the pan and the hand are one place, the hand and the plate two)
+    // (the orchestrator for Zafar, decision 38, 15 Nov: bigger plates so the egg keeps its size from pan to plate (contract-114, SH-256);
+    // where the tray can't hold plates that big, 740x320, the egg glides at least 400 ms): the plates as big as the tray's wells allow
+    // (scene.tray.plate_d), the egg filling its plate; in the pan the larger of half the pan's floor (CK-122) and its hand size, so where
+    // the plates are big enough it never changes size from pan to plate)
+    const FRIED = { hand: 0.75, one: 0.8, two: 0.7 };
+    const friedW = () => Math.max(vessels.pan.r * (ITEM("friedEgg").inPan || 1.02), plateD * FRIED.hand);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
     // a boiled egg on a plate: its two halves side by side (E5's boiled-<look>-a, -b), h tall
     // (s19-games-2, E5: the halves show how long it boiled, read from its ring as it was lifted: soft in the green's first half, firm
@@ -512,6 +523,29 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const steamPuff = (x, y, w, n = 2) => puffs(S, x, y, w, n);
     // (the pot's steam while it boils an egg: the kit's painted wisps on their slow loop over its water, as chai's pan, Mech.boil's
     // steamAt; was a flat white circle now and then)
+    /*
+     * CK-123 (the Fable eye judge standing in for Zafar, 15 Nov, decision 38: "a whole egg sits in a dry steel pot over a flame"; chai's
+     * pot shows its water and the boil): the pot's water, drawn in code by the kitchen's shared liquid surface (St.shade: the see-through
+     * water over the steel, its sheen and meniscus, and its rolling boil, the code pan's), never new art. It fills as the first egg goes
+     * in and stays; it boils while an egg cooks in it, rising to a full boil as the egg nears its green, and settles once none is in.
+     */
+    const water = { g: null, a: 0, boil: 0 };
+    const potWater = () => {
+      const v = vessels.pot;
+      if (!water.g) {
+        if (!St.shade) return;
+        water.g = T(S.add.graphics().setDepth(D.item + 0.2));
+        S.tweens.add({ targets: water, a: 1, duration: 360 / (Cook.speed || 1) });
+      }
+      const eggsIn = v.eggs.filter((e) => e.obj && !e.out && !e.lifted);
+      const want = eggsIn.length ? 0.45 + 0.55 * Math.min(1, Math.max(...eggsIn.map((e) => e.p)) / ready) : 0;
+      water.boil += (want - water.boil) * 0.08;
+      const g = water.g.clear();
+      g.setAlpha(water.a);
+      // (its surface just inside the pot's wall: the floor's edge, a little out, as the painted water of chai's pan sits)
+      const rr = v.r * 1.08;
+      St.shade(g, { x: v.c.x, y: v.c.y, rx: rr, ry: rr }, St.WATER, water.boil > 0.02 ? water.boil : 0);
+    };
     let potSteam = null;
     const potSteamOn = (on) => {
       const J = JP();
@@ -554,7 +588,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // (s19-clean-e, contract-70: an egg is a timed window, as chai's heat and corn's turn: one that has reached its green is the next thing
       // to do before a plate's salt or pepper or another egg is begun, so Nani's "(Tarelo) indo hane kadh." comes as its green opens; was
       // the first plate's seasoning first, and the second plate's egg went green with no call)
-      if (!held) {
+      // CK-126 (contract-70 at the child's pace: an egg's green came while a shaker was still going to its plate, and the next egg was
+      // asked for first): a shaker in the hand or on its way never holds back an egg's green
+      if (!held || held.kind === "shaker") {
         const ripe = all().find((e) => !e.out && !e.lifted && e.p >= ready && P0.some((pl) => !plateFull(pl) && !!pl.q.fried === e.fried));
         if (ripe) return { obj: ripe.obj, key: ripe.fried ? "n.egg" : "ph-boiledegg", what: "egg" };
       }
@@ -594,6 +630,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     /* ---------------- the lights (the kitchen kit's: Cook.Coach) ---------------- */
     // a thing's box on the page, for the kit's light; a plate's is its round body with its own face (never a neighbour's face)
     const plateOf = (o) => P0.find((pl) => pl.hit === o);
+    // (every face circle on the stage: each plate's in its corner of the tray, each burner's by its knob; CK-124)
+    const faces = () => P0.map((pl) => pl.face).concat([vessels.pot.b.face, vessels.pan.b.face]).filter((f) => f && f.active && f.visible);
     const plateBox = (o) => {
       const pl = plateOf(o);
       const r = pl ? (plateD / 2) * 0.96 : 0; // (the rim, inside the picture's edge)
@@ -602,16 +640,31 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       const b = pl ? { x: Math.min(pl.x - r, f.x), y: Math.min(pl.y - r, f.y), right: Math.max(pl.x + r, f.right), bottom: Math.max(pl.y + r, f.bottom) } : typeof o.litBounds === "function" ? o.litBounds() : o.getBounds();
       // (contract-82: the box stops short of another plate's face beside it, the light's pad and a gap clear: the pad is page px,
       // Onboard.BOX_PAD, so on a phone it is more world px)
+      // CK-124 (the Fable eye judge standing in for Zafar, 15 Nov: "740x320: the plate's box takes in Nana's face"): every face circle
+      // that is not the thing's own, the plates' and the burners' by their knobs, for a plate and a vessel alike; a face that reaches
+      // into the box trims the one side that loses least of it
       const clear = Math.max(16, (((global.Onboard && global.Onboard.BOX_PAD) || 10) + 6) / perPx);
-      if (pl)
-        P0.filter((q) => q !== pl).forEach((q) => {
-          const g = q.face.getBounds();
-          const across = g.right > b.x && g.x < b.right;
-          const beside = g.bottom > b.y && g.y < b.bottom;
-          if (across && g.y > pl.y) b.bottom = Math.min(b.bottom, g.y - clear);
-          else if (across && g.bottom < pl.y) b.y = Math.max(b.y, g.bottom + clear);
-          else if (beside && g.x > pl.x) b.right = Math.min(b.right, g.x - clear);
-          else if (beside && g.right < pl.x) b.x = Math.max(b.x, g.right + clear);
+      // (the tray's light is the tray with its plates and their faces: its own)
+      const own = pl ? [pl.face] : o === tray ? P0.map((q) => q.face) : [];
+      // (a vessel's light is its round body, as before: the burner faces by its knobs are left as they were, CK-124 for the plates)
+      if (!pl && o !== tray) return b;
+      faces()
+        .filter((f) => !own.includes(f))
+        .forEach((f) => {
+          const g = f.getBounds();
+          if (!(g.right + clear > b.x && g.x - clear < b.right && g.bottom + clear > b.y && g.y - clear < b.bottom)) return;
+          const cut = [
+            ["bottom", Math.min(b.bottom, g.y - clear)],
+            ["y", Math.max(b.y, g.bottom + clear)],
+            ["right", Math.min(b.right, g.x - clear)],
+            ["x", Math.max(b.x, g.right + clear)],
+          ]
+            .map(([k, v]) => {
+              const n = Object.assign({}, b, { [k]: v });
+              return { k, v, area: Math.max(0, n.right - n.x) * Math.max(0, n.bottom - n.y) };
+            })
+            .sort((p, q) => q.area - p.area)[0];
+          b[cut.k] = cut.v;
         });
       return b;
     };
@@ -661,8 +714,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       let first = false;
       const target = lightOf(n.obj);
       if (n.what === "vessel") {
-        if (gate.first("next-pan"))
+        if (gate.first("next-pan")) {
           nextV = Cook.Coach.nextLight({ now: true, target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }), quitIf: () => finished || ctlKey !== key, who: n.obj === pot ? "pot" : "pan", note: NOTE });
+          // (CK-126, contract-36 at the child's pace: its call was said 4 ms before its light reached the screen, so it read as the step
+          // before's: the call waits two frames and a beat for the light, as the kit's first-time control holds it, Coach.control)
+          if (UI.holdCalls) {
+            const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(f) : (f) => setTimeout(f, 16);
+            UI.holdCalls(new Promise((r) => raf(() => raf(() => setTimeout(r, 90)))));
+          }
+        }
       // (contract-78: lifting the fried egg from the pan is its own control, as the boiled egg's from the pot is: each lit the first
       // time it comes up, with its own call, "Tarelo indo hane kadh." / "Indo hane kadh.")
       } else first = gate.first(n.what === "egg" ? `ctl-egg:${n.key}` : `ctl-${n.what}`);
@@ -713,19 +773,35 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     };
     const stepFor = (n) => {
       if (!n.obj) return; // (waiting for an egg to cook: the step stays as it was)
+      // CK-125 (the Fable eye judge standing in for Zafar, 15 Nov: "'Indo wiji chad!' dropped for 'Indo khan!' while the egg still flies"):
+      // a step is done when its move has landed, as chai's: while an egg (or a shaker) is still in flight her box keeps its line; the
+      // landing's refresh names the next step; only an egg's green, a timed window, is called as it opens (contract-70)
+      if (busy > 0 && n.what !== "egg") return;
       const what = n.what === "shaker" || (n.what === "plate" && /^spi-/.test(String(n.key))) ? `season:${n.key}` : n.what === "egg" ? `egg:${idOf(n.obj)}` : `${n.what}:${n.key}`;
       if (what === stepWhat) return;
       stepWhat = what;
       const line = stepLineOf(n);
-      if (line) kitHelps(steps.to("eggs:eggs", { id: `eggs-${++stepN}`, line }));
+      // CK-126 (contract-70, the child's pace: the second boiled egg's green came with no call, its step's "Indo hane kadh." skipped as
+      // said a moment ago): each egg's take-out is its own timed window, its call said as its green opens even in the same words as the
+      // last egg's (St.steps' again, MAA-15: maani's second Firai)
+      if (line) kitHelps(steps.to("eggs:eggs", { id: `eggs-${++stepN}`, line, again: n.what === "egg" }));
     };
 
     function refresh() {
       if (finished) return;
       const n = nextThing();
+      // (a test log: what the game asks next, the eggs' fills and who holds what, for the contract's timed windows)
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("eggs-next", { step: n.what, by: `${held ? held.kind : "-"} busy:${busy} ${all().map((e) => `${e.fried ? "f" : "b"}${Math.round(e.p * 100)}${e.lifted ? "L" : ""}${e.out ? "O" : ""}`).join(",")}` });
+      } catch (e) {
+        /* only a log */
+      }
       coach(n);
       stepFor(n);
-      if (n.obj) {
+      // (CK-126, contract-70/-78 at a child's pace: an egg's green that opens while another egg flies in waits for its light, which waits
+      // for the landing; what the game asks for next is said then too, never a lift asked for before its light and call can come)
+      if (n.obj && n.what === "egg" && busy > 0) z.expect({ kind: "wait" });
+      else if (n.obj) {
         const c = S.centre(n.obj);
         // (contract-70: lifting a cooked egg is the timed window's control, as samosa's "lift": its call is said as the green opens, never
         // held for Nani's helper card as an item's is, SH-172)
@@ -767,8 +843,17 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // ended by S.fly's own timer (a long frame) let that lift go on writing its y after it landed, so its bob started from the bowl's
       // height and the egg sat on the shelf, its light there, every tap missing it: one tween moves an egg at a time, the flight's)
       S.tweens.killTweensOf(o);
-      refresh();
-      await flying(S.fly(o, at.x, at.y, { duration: 380, arc: 120, scale: o.potScale })); // (SH-302: back to its pot size as it flies in)
+      // (CK-125: the flight counts from here, so this refresh moves the light on but her box keeps "Indo wiji chad!" until it lands)
+      // (contract-106: the flight starts before the refresh, so a light it brings, the other egg's green, waits for the stage to be still
+      // as the kit's control does (SH-253), never over the pot the child has just pressed while this egg still flies in)
+      busy++;
+      try {
+        const flight = S.fly(o, at.x, at.y, { duration: 380, arc: 120, scale: o.potScale }); // (SH-302: back to its pot size as it flies in)
+        refresh();
+        await flight;
+      } finally {
+        busy--;
+      }
       // (the tray went to the table while it flew: nothing is left to cook it in)
       if (finished) return o.active && o.destroy();
       // (and it lands where the game keeps it, egg.at, whatever ended its flight)
@@ -793,6 +878,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         S.tweens.add({ targets: o, y: at.y - 6, duration: 420, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
       }
       egg.ring = Cook.Kit.heatRing(S, { depth: D.fx + 1, width: 6 });
+      egg.ringR = (v.fried ? friedW() * 0.5 : egg.obj.displayWidth * 0.56) + 4;
       look(v);
       egg.t0 = Date.now();
       // the egg itself is the tap target once it's cooked
@@ -814,6 +900,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // (an egg in the pot or the pan covers its middle: with a raw egg in the hand, a tap there puts it in)
       if (held && held.kind === "raw") return putIn(egg.v);
       if (egg.p < ready) {
+        // (CK-122: the eggs fill their vessel and overlap; a tap on an unripe egg lying over a ripe one in the same vessel is the ripe
+        // one's: the child tapped what they saw lit, never a wrong move that brings the help at once, contract-24)
+        const near = egg.v.eggs.find((x) => x !== egg && x.obj && !x.out && !x.lifted && x.p >= ready && Math.hypot(x.obj.x - egg.obj.x, x.obj.y - egg.obj.y) < (x.obj.displayWidth + egg.obj.displayWidth) / 2);
+        if (near) return lift(near);
         S.wiggle(egg.obj);
         return wrong();
       }
@@ -824,8 +914,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       egg.lifted = true;
       if (!egg.fried) egg.boiled = boiledLook(egg);
       egg.base = egg.obj.scale;
-      // (picked up it grows a little, within SH-256's 15%, contract-114: it rests in the hand at the size it then keeps on the plate)
-      S.tweens.add({ targets: egg.obj, scale: egg.base * 1.1, duration: 160 });
+      // (picked up it grows a little, within SH-256's 15%, contract-114: it rests in the hand at the size it then keeps on the plate; a fried
+      // egg, pan-sized, glides to its hand size, CK-122)
+      const inHand = egg.fried ? (plateD * FRIED.hand) / Math.max(1, egg.obj.width) : egg.base * 1.1;
+      S.tweens.add({ targets: egg.obj, scale: inHand, duration: egg.fried && Math.abs(inHand / egg.base - 1) > 0.02 ? 420 : 160, ease: "Sine.easeInOut" });
       Cook.sfx.pop();
     };
 
@@ -836,13 +928,21 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         pl.ticked = true;
         Cook.sfx.right();
       }
+      closePlate(pl);
+    };
+    // CK-121 (the Fable eye judge standing in for Zafar, 15 Nov: "at well done the first order still open with its cards and no tick; at
+    // 1280x665 the third order off the panel"): a person's plate done (its eggs and the salt and pepper as asked), their whole card closes
+    // and folds with its tick, as chai's closePan, so by well done every row is folded, ticked and in view
+    const closePlate = (pl) => {
+      if (pl.closed || !plateFull(pl) || !seasonDone(pl) || !pl.eggs.every((e) => e.fried === !!pl.q.fried)) return;
+      pl.closed = true;
+      UI.mission.closeItem([], 0, { all: true, for: pl.q.who });
     };
     // where the i-th of n eggs sits on a plate, and its size
     const eggOnPlate = (pl, i, n, fried) => {
       const d = plateD;
       // (s19-clean-e2, contract-114: where the pan holds it smaller than the plate's share, the pan's own size wins: the egg keeps its size)
-      const cap = friedW() * 1.02;
-      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: Math.min(d * FRIED.one, cap) } : { x: pl.x + (i ? 1 : -1) * d * 0.2, y: pl.y + (i ? 1 : -1) * d * 0.08, w: Math.min(d * FRIED.two, cap) };
+      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * FRIED.one } : { x: pl.x + (i ? 1 : -1) * d * 0.15, y: pl.y + (i ? 1 : -1) * d * 0.1, w: d * FRIED.two };
       return n === 1 ? { x: pl.x, y: pl.y, h: d * 0.52 } : { x: pl.x, y: pl.y + (i ? 1 : -1) * d * 0.19, h: d * 0.36 };
     };
     const onPlate = async (pl) => {
@@ -873,12 +973,14 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         if (asked) {
           UI.mission.closeItem([id], 0, { for: pl.q.who });
           if (!guided && Lang.known(id)) Cook.markRight(id);
+          closePlate(pl);
         } else wrong();
         await Cook.tween(S, { targets: sh, x: shakers[id].x, y: shakers[id].y, angle: 0, duration: 260 });
         sh.destroy();
         sh0.setAlpha(1);
         busy--;
-        held = null;
+        // (an egg lifted while the shaker was on its way stays in the hand: CK-126 lets its green come first)
+        if (held && held.kind === "shaker") held = null;
         return refresh();
       }
       if (held.kind !== "cooked") return;
@@ -942,7 +1044,20 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     });
 
     // the rings: each cooking egg's fill on the kit's heat ring (its sage green from `ready`); a fried egg sets as it fills
+    // CK-126 (contract-78 at the child's pace: an egg's green came while the grown-ups' "?" pop-up was open, where the kit's light steps
+    // back (Onboard's light.draw) but its call went on, 239 and 610 ms before the light): while that pop-up is open the eggs wait on the
+    // heat, their clocks held, so the green, its call and its light come together once it shuts (a grown-up reading never costs an egg)
+    let lastTick = Date.now();
     z.tick(() => {
+      const now = Date.now();
+      const dt = now - lastTick;
+      lastTick = now;
+      if (UI.helpOpen && UI.helpOpen()) {
+        cooking().forEach((e) => {
+          if (e.t0) e.t0 += dt;
+          if (e.full) e.full += dt;
+        });
+      }
       let changed = false;
       cooking().forEach((e) => {
         if (!e.obj || !e.ring) return;
@@ -954,17 +1069,22 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         if (e.p >= 1 && !e.full) e.full = Date.now();
         if (!was && e.p >= ready) {
           changed = true;
+          // (CK-122: a ripe egg comes up over the others in its vessel, whole to the eye and to the finger)
+          if (e.obj && !e.lifted) e.obj.setDepth(e.obj.depth + 0.05);
           steamPuff(e.at.x, e.at.y - 20, Math.max(60, e.obj.displayWidth * 1.4));
         }
         if (e.fried && !e.out) {
           toLook(e, tex("friedEgg", friedLook(e)));
           if (e.fade && e.fade.active) e.fade.setPosition(e.obj.x, e.obj.y);
         }
-        if (!e.lifted) e.ring.draw(e.obj.x, e.obj.y, 40, e.p, ready, 1);
+        // (CK-122: the ring round the egg as it is drawn now, the egg filling its vessel: SH-275, the window on the thing itself)
+        if (!e.lifted) e.ring.draw(e.obj.x, e.obj.y, Math.max(40, e.ringR || 0), e.p, ready, 1);
       });
       if (changed) refresh();
       // steam over a pot that's boiling an egg
       potSteamOn(!finished && vessels.pot.eggs.length > 0);
+      // (CK-123: its water from the first egg's going in, boiling while one cooks)
+      if (water.g || vessels.pot.eggs.some((e) => e.obj)) potWater();
     });
 
     S.tappable(tray, () => {

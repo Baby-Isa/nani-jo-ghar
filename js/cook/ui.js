@@ -710,6 +710,31 @@
     guideKey = null;
     if (stepper && stepper.current) stepper.close();
     if (guide) showPraise();
+    // SH-308 (the Fable eye judge for Zafar, decision 38: eggs L4 and maani L4 left a person's row open with no tick at well done, eggs'
+    // third row off the panel at 1280x665): the well done closes the whole order in every game, as chai's counter does (js/cook/flow.js
+    // cardsDone): every row left ticks and every person's card folds, so the folded cards sit together in the panel. A game that serves
+    // through the kit's review faces (Cook.Kit.serve) reached the well done without it. Done twice (chai's counter), nothing moves
+    try {
+      M.ladders().forEach((L) => M.closeItem([], L.dish || 0, { all: true }));
+    } catch (e) {
+      /* no order card: nothing to tick */
+    }
+    // (the Fable re-judge of maani L4 at 1280x665, 15 Nov: the review closed Nana's card under a second before the well done, so the
+    // well done caught it holding its ticks, half folded, its headline not yet ticked): a card finished a while ago and still holding
+    // folds now, so the well done shows every card folded with its tick. A card closed this moment (chai's counter, cardsDone) keeps
+    // its own hold, glide home and fold (Zafar, 4 Nov evening)
+    const folds = mission && mission.folds;
+    if (folds) {
+      const now = Date.now();
+      let any = false;
+      Object.values(folds).forEach((st) => {
+        if (!st || !st.doneAt || st.shut || st.open || now - st.doneAt < 250) return;
+        clearTimeout(st.timer);
+        st.doneAt = 1;
+        any = true;
+      });
+      if (any) renderOrder();
+    }
   };
   function restoreGuide() {
     if (!guide) return;
@@ -2241,6 +2266,15 @@
         if (fast || !big || !to) return Promise.resolve(done());
         // (the S14 roll-out, contract-83: a row card that sits against a face circle, the asker's on a short card at the phone size, takes
         // its word at once: the big card never flies over a face, even its last frames)
+        // (SH-305: the row's list brought to where the flight will find it first, as WordCard.morph does before it flies, so its landing
+        // is planned where it lands: a list scrolled after the plan moved the row card under a face circle the plan never saw)
+        const lst = to.closest && to.closest("#mission, .oc-list, [data-njg-scroll]");
+        if (lst) {
+          const lr0 = lst.getBoundingClientRect();
+          const tr0 = to.getBoundingClientRect();
+          if (tr0.bottom > lr0.bottom) lst.scrollTop += tr0.bottom - lr0.bottom + 4;
+          else if (tr0.top < lr0.top) lst.scrollTop -= lr0.top - tr0.top + 4;
+        }
         const tr = to.getBoundingClientRect();
         // (a dish's own card, not a people order: chai's people cards keep their morph as they were)
         if (!m.wordRows && faces14().some((f) => Math.min(tr.right, f.right) - Math.max(tr.left, f.left) > 0 && Math.min(tr.bottom, f.bottom) - Math.max(tr.top, f.top) > 0)) return Promise.resolve(done());
@@ -2257,7 +2291,20 @@
           // (the gate of 14 Nov 15:01, lab L4 740x320, contract-83 again: the flight cleared Nana's head by the planner's pixel, and her
           // head, bobbing as she talks, met the card on its way: the faces are kept clear by a margin, never grazed)
           const FACE_CLEAR = 8;
-          const fcs = faces14().map((f) => ({ left: f.left - FACE_CLEAR, top: f.top - FACE_CLEAR, right: f.right + FACE_CLEAR, bottom: f.bottom + FACE_CLEAR }));
+          // SH-305 (the s20-bubble gate, 15 Nov: corn at 740x320, the card's last frames, still a little bigger than its row card and coming
+          // in from above, grazed the order card's face circle 2 px above that row card's top, 13-46 px squared): a face nearer the row card
+          // than the margin keeps only the room the row card itself leaves it (less a pixel), so the landing place never counts as a hit and
+          // the bow is chosen so the card comes in clear of it. With the full margin there, every bow "hit" at its end and the card flew
+          // straight over the face's corner
+          const gapTo = (f) => Math.max(f.left - tr.right, tr.left - f.right, f.top - tr.bottom, tr.top - f.bottom);
+          // (and a face button counts as its circle, never its tap area, as the face check reads it (njgTest.cook.faces): the order card's
+          // face button reaches 4 px into its first item card, so every landing there "hit" it and no bow was ever tried)
+          const raw = faces14();
+          const inside = (g, f) => g !== f && g.left >= f.left && g.right <= f.right && g.top >= f.top && g.bottom <= f.bottom && g.right - g.left < f.right - f.left;
+          const fcs = raw.filter((f) => !raw.some((g) => inside(g, f))).map((f) => {
+            const m = Math.max(0, Math.min(FACE_CLEAR, gapTo(f) - 1));
+            return { left: f.left - m, top: f.top - m, right: f.right + m, bottom: f.bottom + m };
+          });
           const bbs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
           const c0 = { x: fb.left + fb.width / 2, y: fb.top + fb.height / 2 };
           const c2 = { x: tr.left + tr.width / 2, y: tr.top + tr.height / 2 };
@@ -2267,7 +2314,9 @@
           // (Zafar, 4 Nov: "don't alter the quickest path trajectory unless needed": the pop-up may already sit against a head where it
           // was placed; moving off it is no reason to bow, so a frame counts only where it covers more of a face than at take-off)
           const at0 = { left: fb.left, right: fb.right, top: fb.top, bottom: fb.bottom };
-          const baseF = overlap14(at0, fcs);
+          // (SH-305: each face against its own take-off overlap: a card leaving Nana's head in the kitchen covered less of the faces in
+          // all at its landing even as it grazed the order card's face circle, so the graze never counted; corn at 740x320, 13 px squared)
+          const baseF = fcs.map((f) => overlap14(at0, [f]));
           const baseB = overlap14(at0, bbs);
           const hits = (b, bub = true) => {
             // (s20-p2c: sampled every 1/80 of the flight, the card a pixel wider each side: at 1/20 the card moved up to a seventh of its way
@@ -2282,7 +2331,7 @@
               const w = fb.width * k;
               const h = fb.height * k;
               const r = { left: px - w / 2 - 1, right: px + w / 2 + 1, top: py - h / 2 - 1, bottom: py + h / 2 + 1 };
-              if (overlap14(r, fcs) > baseF + 1 || (bub && overlap14(r, bbs) > baseB + 1)) return true;
+              if (fcs.some((f, j) => overlap14(r, [f]) > baseF[j] + 1) || (bub && overlap14(r, bbs) > baseB + 1)) return true;
             }
             return false;
           };
