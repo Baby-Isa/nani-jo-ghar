@@ -1286,26 +1286,10 @@
       return [...cardsMet.values()];
     };
     const asBox = (q) => ({ isConnected: true, getBoundingClientRect: () => Object.assign({ right: q.left + q.width, bottom: q.top + q.height }, q) });
-    // (how much of the faces it must not cover the bubble covers where it was just put)
-    const onFaces = (faces) => {
-      const r = b.getBoundingClientRect();
-      return faces.reduce((n, el) => {
-        const q = el.getBoundingClientRect();
-        return n + Math.max(0, Math.min(r.right, q.right) - Math.max(r.left, q.left)) * Math.max(0, Math.min(r.bottom, q.bottom) - Math.max(r.top, q.top));
-      }, 0);
-    };
     const L = root.Lifecycle;
     const put = (a) => {
-      const faces = avoidOf();
       const cards = cardsNow().map(asBox);
-      if (!cards.length) return L.bubble.place(b, a, layer, { avoid: faces });
-      const sd = L.bubble.place(b, a, layer, { avoid: faces.concat(cards), reach: true });
-      // (a face before the card: kept clear of the card only where that covers no more of a face than the bubble did without it)
-      if (!sd || !faces.length) return sd;
-      const f1 = onFaces(faces);
-      if (!f1) return sd;
-      const sd0 = L.bubble.place(b, a, layer, { avoid: faces });
-      return onFaces(faces) < f1 ? sd0 : L.bubble.place(b, a, layer, { avoid: faces.concat(cards), reach: true });
+      return L.bubble.place(b, a, layer, cards.length ? { avoid: avoidOf(), clear: cards } : { avoid: avoidOf() });
     };
     const place = () => {
       const a = headOf();

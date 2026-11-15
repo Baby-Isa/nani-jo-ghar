@@ -14,10 +14,10 @@
  *                                   bubble goes, every onStageEnd hook runs
  *   Lifecycle.results(R, opts)      (3)+(5) the end screen: stageEnd("end"), then R.show(opts) (js/shared/results.js
  *                                   steps the badges in one, two, three)
- *   Lifecycle.bubble.place(b, head, layer, {avoid, reach})   (4) one bubble placement for every mode: above the speaker's head,
+ *   Lifecycle.bubble.place(b, head, layer, {avoid, clear})   (4) one bubble placement for every mode: above the speaker's head,
  *                                   below it when there's no room above; sets data-njg-place and --njg-tail-x (the tail,
- *                                   css/shared/order-card.css); reach (SH-304): it may slide along its row clear of what it
- *                                   avoids as far as its tail still points into the head's middle
+ *                                   css/shared/order-card.css); clear (SH-304): boxes it slides along its row to keep clear of,
+ *                                   on the same side, as far as its tail still points into the head's middle
  *   Lifecycle.talk                  one talk animation for every mode (ART-13, Z10): about a third of the old bob, slower.
  *                                   talk.phaser(scene, img, {dir}) -> stop()   talk.dom(el) -> stop()   talk.SPEC
  *   Lifecycle.voice                 THE ONE VOICE LAYER (SH-66): every player registers here (the core's js/core/voice.js
@@ -614,63 +614,68 @@
       }
     }
     // SH-304 (Zafar, 15 Nov: "The card going over the speech bubble is the red flag ... The card logic was working perfectly at chai"):
-    // a bubble still over a box it keeps clear of (o.reach: the order's pop-up card, given in avoid by Conversations.bubble) slides
-    // along its row to the box's side, its tail still pointing into its speaker's head (anywhere in the head's middle, not only at
-    // its centre), its words wrapped narrower if they must; the least move wins; never onto a face (avoid), never off the layer or
-    // over a side panel. Nothing found, it stays where it was
-    if (o.reach && hits(y) && (o.avoid || []).length) {
+    // a bubble placed (by the steps above, its faces first) over a box it keeps clear of (o.clear: the order's pop-up card, given by
+    // Conversations.bubble) slides along its row to the box's side, on the same side of the head, its tail still pointing into its
+    // speaker's head (anywhere in the head's middle, not only at its centre), its words wrapped narrower if they must; the least move
+    // wins. Never onto a face (avoid), never off the layer or over a side panel, never to the head's other side (below the head is on
+    // the face). Nothing found, it stays where it was
+    const clearBoxes = (o.clear || []).map((el) => (el && el.getBoundingClientRect ? el.getBoundingClientRect() : null)).filter((q) => q && q.width && q.height);
+    const onClear = (xx, yy) =>
+      clearBoxes.some((q) => {
+        const qx = q.left - lr.left;
+        const qy = q.top - lr.top;
+        return !(xx >= qx + q.width || xx + bw <= qx || yy >= qy + q.height || yy + bh <= qy);
+      });
+    if (clearBoxes.length && onClear(x, y)) {
       const keep = { x, y, side, bw, bh, mw: b.style.maxWidth, nar: b.dataset.njgNarrow };
-      const boxes = (o.avoid || []).map((el) => (el && el.getBoundingClientRect ? el.getBoundingClientRect() : null)).filter((q) => q && q.width && q.height);
-      const h0 = hx + r.width * 0.2;
-      const h1 = hx + r.width * 0.8;
-      const w0 = bw;
-      let best = null;
-      for (const nw of [w0, 0.8, 0.65, 0.5].map((kk) => (kk > 1 ? kk : Math.round(w0 * kk))).filter((v, i) => i === 0 || v >= 110)) {
-        if (nw !== w0) {
+      const setW = (nw) => {
+        if (nw == null) {
+          b.style.maxWidth = keep.mw;
+          if (keep.nar) b.dataset.njgNarrow = keep.nar;
+          else delete b.dataset.njgNarrow;
+        } else {
           b.style.maxWidth = `${nw}px`;
           b.dataset.njgNarrow = "1";
-        } else {
-          b.style.maxWidth = keep.mw;
-          if (keep.nar) b.dataset.njgNarrow = keep.nar;
-          else delete b.dataset.njgNarrow;
         }
+      };
+      const h0 = hx + r.width * 0.2;
+      const h1 = hx + r.width * 0.8;
+      const w0 = keep.bw;
+      let best = null;
+      for (const nw of [null, 0.8, 0.65, 0.5].map((kk) => (kk == null ? null : Math.round(w0 * kk))).filter((v) => v == null || v >= 110)) {
+        setW(nw);
         bw = b.offsetWidth;
         bh = b.offsetHeight;
-        above = hy - gap - bh;
-        for (const sd of ["above", "below"]) {
-          if (sd === "above" ? above < M : below + bh > H - M) continue;
-          const yy = Math.max(M, Math.min(H - bh - M, sd === "above" ? above : below));
-          for (const q of boxes) {
-            const qx0 = q.left - lr.left;
-            const qx1 = qx0 + q.width;
-            for (const xx of [qx1 + 2, qx0 - 2 - bw]) {
-              if (xx < x0 || xx + bw > x1) continue;
-              // (its tail, kept 27 px from its start and 21 from its end, must still point into the head)
-              if (Math.max(xx + 27, h0) > Math.min(xx + bw - 21, h1)) continue;
-              x = xx;
-              if (hits(yy)) continue;
-              const cost = Math.abs(xx - keep.x) + (sd === keep.side ? 0 : 1000) + (nw === w0 ? 0 : 60);
-              if (!best || cost < best.cost) best = { cost, x: xx, y: yy, side: sd, nw, bw, bh };
-            }
+        const ab = hy - gap - bh;
+        if (side === "above" ? ab < M : below + bh > H - M) continue;
+        const yy = Math.max(M, Math.min(H - bh - M, side === "above" ? ab : below));
+        for (const q of clearBoxes) {
+          const qx0 = q.left - lr.left;
+          const qx1 = qx0 + q.width;
+          for (const xx of [qx1 + 2, qx0 - 2 - bw]) {
+            if (xx < x0 || xx + bw > x1) continue;
+            // (its tail, kept 27 px from its start and 21 from its end, must still point into the head)
+            if (Math.max(xx + 27, h0) > Math.min(xx + bw - 21, h1)) continue;
+            x = xx;
+            if (hits(yy) || onClear(xx, yy)) continue;
+            const cost = Math.abs(xx - keep.x);
+            if (!best || cost < best.cost) best = { cost, x: xx, y: yy, nw, bw, bh };
           }
         }
-        if (best && best.nw === nw) break; // (the widest wrap that clears it)
+        if (best) break; // (the widest wrap that clears it)
       }
-      if (best) {
-        if (best.nw !== w0) {
-          b.style.maxWidth = `${best.nw}px`;
-          b.dataset.njgNarrow = "1";
-        } else {
-          b.style.maxWidth = keep.mw;
-          if (keep.nar) b.dataset.njgNarrow = keep.nar;
-          else delete b.dataset.njgNarrow;
-        }
-        ({ x, y, side, bw, bh } = best);
-      } else {
-        b.style.maxWidth = keep.mw;
-        if (keep.nar) b.dataset.njgNarrow = keep.nar;
-        else delete b.dataset.njgNarrow;
-        ({ x, y, side, bw, bh } = keep);
+      setW(best ? best.nw : null);
+      ({ x, y, bw, bh } = best || keep);
+      // (no slide keeps its tail on the head: the card fills the column over it, chai L4 at 740x320: beside the head instead, its
+      // bottom at the head's top and its tail out of its near side at the head, the placement it takes with no room above; its right
+      // first, clear of every face and the card, wrapped narrower to the room there if it must. Nothing clear: it stays)
+      if (!best && side === "above") {
+        const marked = typeof document !== "undefined" && document.querySelectorAll ? [...document.querySelectorAll("[data-njg-avoid]")] : [];
+        const sd = placeByFace(b, { hx, hy, w: r.width, h: r.height, bw, bh, W, H, M, lr, m: Math.max(3, Math.round(r.width * 0.15)), eye: 0.1 }, (o.avoid || []).concat(marked, o.clear));
+        if (sd) return sd;
+        setW(null);
+        bw = keep.bw;
+        bh = keep.bh;
       }
     }
     b.style.left = `${Math.round(x)}px`;
