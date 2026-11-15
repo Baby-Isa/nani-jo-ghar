@@ -1268,6 +1268,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (c.hit) c.hit(slotW);
       });
       SK.pillsOneSize(ids.map((id) => out[id].chip), slotW);
+      // (the row's word size, sheet px, for the word pop: SK.pop)
+      const t0 = ids.map((id) => out[id].chip).find((c) => c && c.showsWord && c.parts && c.parts[2]);
+      SK.pillText = (((SH.PILL || {}).text || 25) * (t0 ? t0.parts[2].scaleX || 1 : 1)) * z.k * fit.k;
     }
     return out;
   };
@@ -1323,7 +1326,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // inside the view by Juice.popAt; never under 14 px as rendered, Cook.Kit.textFloor). Sekelo says the word (its voice).
   SK.pop = function (S, z, id, x, y, { speak = true, avoid = [] } = {}) {
     const v = Cook.Frame.view(); // (the part of the sheet on screen: the frame's answer)
-    const k = Math.max(z.k, Cook.Kit.textFloor(S, 36));
+    // (round 3, the Fable eye judge for Zafar, 15 Nov: "at 740x320 the bowl pills one size with the floating pill": its word the size of
+    // the shelf's pills' words, the row's one scale, SK.pillText (the pill's 25 px word at its scale, in the pop's 36 px), never under the
+    // kit's floor)
+    const k = Math.max(SK.pillText ? SK.pillText / 36 : z.k, Cook.Kit.textFloor(S, 36));
     // SEK-32 (the Fable eye judge for Zafar, 15 Nov: "the floating 'tameto' pill ... touches the board" at 740x320): where it would touch
     // a thing on the worktop (avoid: world boxes {x, y, right, bottom}, the board and the tray), it goes to that thing's nearer side, on
     // the same line, in clear marble
