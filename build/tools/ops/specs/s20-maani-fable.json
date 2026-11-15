@@ -1,0 +1,59 @@
+{
+ "why": "Sprint 20 step 4, decision 38 (Zafar away overnight; the Fable eye judge stands in for him): maani L4 beside chai (build/screenshots/sidebyside/maani-line-L4-20261115-0604/judge-batch.verdicts.md); the orchestrator agrees on MAA-26 and MAA-27 (the shared faults go to s20-kit-fix)",
+ "cost": "medium: Opus, high effort, one cloud session (about $15-25)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when MAA-26 and MAA-27 are built with their checks passing and maani's gate at zero, chai unmoved, or at the end of one session: then push your branch and report",
+ "kind": "code",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": [
+  "MAA-26",
+  "MAA-27"
+ ],
+ "proof": "node build/tools/tiers/gate.mjs --game maani-line and --game chai-tray (contract at zero; chai's boxes identical); node build/tools/review/sidebyside.mjs maani-line --level 4 --sizes 740x320,1280x665 (the pictures for the judge: never judge them yourself)",
+ "name": "s20-maani-fable: maani's faults from the Fable eye judge",
+ "port": 8961,
+ "report": "s20-maani-fable",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "docs/decisions/2026-11-10-overnight.md decisions 34-38",
+  "docs/process/regressions.md rows MAA-26, MAA-27",
+  "build/screenshots/sidebyside/maani-line-L4-20261115-0604/judge-batch.verdicts.md and its pictures (not in git: regenerate with sidebyside.mjs maani-line --level 4 if missing)",
+  "build/reports/s20-b1-maani.md"
+ ],
+ "owns": [
+  "js/cook/stations/maani-line.js (and maani's own station files named in your report), data/stations/maani-line.json, build/reports/s20-maani-fable.md"
+ ],
+ "readOnly": [
+  "chai-tray.js and every other game's file, js/cook/ui.js, js/cook/flow.js, js/shared/** (the kit: a fault there goes in your report, the kit session fixes it), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"
+ ],
+ "flows": [
+  "cook:maani",
+  "cook:maani@L2",
+  "cook:maani@L3",
+  "cook:maani@L4"
+ ],
+ "branch": "s20-maani-fable (yours, on your own cloud machine, from the working branch ccr-7da5e9f0-04g4xm): commit often, push only to it",
+ "tasks": [
+  {
+   "do": "MAA-26: every plate cooked reaches the serve, each as cooked: at L4 two plates are cooked (the big plain maani, the two small bajr maani); today one plate of pale maani is served and the dark bajr ones are missing. Find the cause (file:line): the serve's tray count, the plate's picture. Chai's glasses each reach their tray: match it.",
+   "accept": "maani L1-L4, four sizes, at the serve: one served plate per cooked plate, each showing its own maani (bajr dark)"
+  },
+  {
+   "do": "MAA-27: the plates' face circles chai's size (740x320 mid-cook: about half chai's tray face circle), from the kit's face size, never per size.",
+   "accept": "maani L1-L4, four sizes: the plate's face circle within 10% of chai's tray face circle at the same size"
+  },
+  {
+   "do": "Prove it: the proof line's runs, one browser job at a time, port 8961. Make the sidebyside pictures for the orchestrator's judge (don't judge them). Delete your own run folders when done.",
+   "accept": "each gate's contract part PASS with minutes; the sidebyside folder named in the report"
+  },
+  {
+   "do": "Standing: commit often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), push only to your own branch; never re-freeze anything; never touch a check, a probe, a reference or a row's status; name every change to what a child sees at every level and size.",
+   "accept": "build/reports/s20-maani-fable.md with a Proof section, under 400 words, pushed on your branch"
+  }
+ ]
+}
