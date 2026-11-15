@@ -468,7 +468,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // its tools while she's the asker (no second face)
     const stepLine = St.guideLine("daar:chop");
     const data = () => ({
-      person: { id: "nani", face: UI.faceUrl("nani"), name: "Nani" },
+      // DAAR-57 (the Fable eye judge for Zafar, decision 38: "Nani's box keeps her face and speaker in the chop step, as chai's in every
+      // state"): her face stays in her box (her box's speaker says her line again), so her chop card carries none (one face per person,
+      // contract-20); each of its item cards keeps its own speaker
+      person: { id: "nani", face: null, name: "Nani" },
       strip: { html: stepLine.ok === false ? Lang.plain(stepLine) : Lang.html(stepLine), rec: stepLine.ok === false },
       headline: { html: Lang.html(chopHead), rec: !chopHead.ok },
       // SH-241, DAAR-44 (Zafar, 8 Nov: "Nani's order card should be for chopping should be the correct item card"): each row a 6 Nov
@@ -486,7 +489,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const opts = { say: Object.keys(want).length ? () => line() && Lang.speak(line()) : null, closed: cardAt === "hidden" };
     M.addCard("daar-chop", data(), opts);
     M.closeCards(true);
-    if (UI.guideStrip) UI.guideStrip(true);
     return {
       rows,
       // DAAR-34: she calls these now: their rows are written (before she says them, so every number said is written)
@@ -515,7 +517,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       close() {
         M.removeCard("daar-chop");
         M.closeCards(false);
-        if (UI.guideStrip) UI.guideStrip(false);
       },
     };
   }
@@ -662,6 +663,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
           img.setScale(s1);
         }
         img.setDepth(D.item - 0.5 + n * 0.001);
+        // DAAR-60 (contract-120, SH-268: one light, upper left): the heap on the worktop casts the kit's soft shadow, as it rests
+        if (!bowl && Cook.Kit && Cook.Kit.shadow) Cook.Kit.shadow(S, img);
         S.puff(to.x, to.y, 0xfff6e0, z.L(22));
         if (bowl) {
           bowl.setAlpha(1);
