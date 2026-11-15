@@ -348,14 +348,26 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     const cr = canvas.getBoundingClientRect();
     const k = UI.worldScale(); // page px per world px
     if (!(k > 0)) return Infinity;
-    let most = Infinity;
+    const heads = [];
     Object.values(s.chars || {}).forEach((img) => {
       if (!img || !img.active || img.visible === false) return;
       const hb = s.headBox(img);
-      // (a person walking up is measured at their spot; the head with popPlace's 2 px margin; page px with the view unlifted)
+      // (a person walking up is measured at their spot)
       const dx = img.__toX != null && img.x > img.__toX ? img.__toX - img.x : 0;
-      const left = cr.left + (hb.x + dx - v.left) * k - 2;
-      const right = cr.left + (hb.x + dx + hb.w - v.left) * k + 2;
+      heads.push({ x: hb.x + dx, y: hb.y, w: hb.w, h: hb.h });
+    });
+    // (the people the order will bring, not at the counter yet: measured at their spots)
+    (s.__orderPeople || []).forEach((p) => {
+      const img = (s.chars || {})[p.who];
+      if (img && img.active) return;
+      const hb = headSoon(s, p.who, p.x);
+      if (hb) heads.push(hb);
+    });
+    let most = Infinity;
+    heads.forEach((hb) => {
+      // (the head with popPlace's 2 px margin; page px with the view unlifted)
+      const left = cr.left + (hb.x - v.left) * k - 2;
+      const right = cr.left + (hb.x + hb.w - v.left) * k + 2;
       const top = cr.top + (hb.y - base) * k - 2;
       const bottom = cr.top + (hb.y + hb.h - base) * k + 2;
       if (right <= room.left || left >= room.right || top >= room.bottom) return;
@@ -363,8 +375,19 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     });
     return most;
   }
+  /** A person's head (world px) as addChar would stand them at x: their picture made, measured and gone; null with no picture. */
+  function headSoon(s, who, x) {
+    const c = Cook.CHARS[who];
+    const key = who === "nani" ? "nani-neutral" : `${who}-neutral`;
+    if (!c || !s.add || !s.textures.exists(key)) return null;
+    const img = s.add.image(x != null ? x : c.x, c.top, key).setOrigin(0.5, 0).setScale(c.scale).setVisible(false);
+    img.baseY = c.top;
+    const hb = s.headBox(img);
+    img.destroy();
+    return hb;
+  }
   /** The ordering view, lifted (or not): a resize while it stands keeps the lift; any other view (a station's) is never lifted. */
-  function orderLift(s, on) {
+  function orderLift(s, on, people) {
     if (!s.__liftHook) {
       s.__liftHook = true;
       const fit = s.fitView;
@@ -383,6 +406,8 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       };
     }
     s.__orderLift = !!on;
+    // (who the order will bring to the counter, [{who, x}], when it is known before they come: the lab's order card)
+    s.__orderPeople = on && people ? people : [];
     liftOrderView(s);
   }
   async function serviceView(who, { enter, lift } = {}) {
@@ -1041,8 +1066,10 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
    */
   function servePlanOf(dish, who) {
     if (dish && dish.recipe === "corn" && Array.isArray(dish.plates) && dish.plates.length) {
-      const name = Cook.Serve.cfg().dishes["corn-upright"] ? "corn-upright" : "corn";
-      return dish.plates.map((q) => ({ who: q.who || who, dish: name, n: 1 }));
+      // (CK-137, round 3: each asker's own cob as it was served, with their toppings: the dish corn drew as their round ended)
+      const D = Cook.Serve.cfg().dishes;
+      const base = D["corn-upright"] ? "corn-upright" : "corn";
+      return dish.plates.map((q) => ({ who: q.who || who, dish: q.who && D[`corn-${q.who}`] ? `corn-${q.who}` : base, n: 1 }));
     }
     return Cook.Serve.plan(dish, who);
   }
@@ -1910,7 +1937,11 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     // wider side panel, set before the kitchen is first drawn, never after, so the scene is fitted once)
     // (the greeting's lines and clips asked for now, beside the station's files, never after them: Zafar, 30 Oct, the slow start)
     if (global.Conversations && global.Conversations.load) global.Conversations.load().catch(() => {});
+    // (decision 35, the orchestrator, 15 Nov: the station's code loads beside its pictures, before the kitchen is drawn, so the kitchen's
+    // first picture and the order card that names its people come in one go: the lift is measured with them, never set and then dropped)
+    const station = Cook.Mech && Cook.Mech.need && !key.startsWith("recipe:") ? Cook.Mech.need(key).catch(() => {}) : null;
     await preLook([key.replace(/^recipe:/, "")]);
+    if (station) await station;
     const order = { who: "nana", dishes: [] };
     const ctx = makeCtx(order, { lab: true, guided });
     const s = S();
@@ -1956,12 +1987,15 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       if (came.length) s.occluder(); // the counter's front, over them (as at a day's service)
       // (Zafar, 29 Oct: two people stand middle and right, the left free for the cards: the central rules' scene.counterSpots)
       const spotOf = (i) => (global.Rules && global.Rules.counterSpot ? global.Rules.counterSpot(i, came.length) : came.length === 1 ? 1 : i);
+      const spotX = (i) => (spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined);
+      // (decision 35: the order view's lift measured with the people at the spots they will walk to, before anyone comes in)
+      orderLift(s, true, came.map((w, i) => ({ who: w, x: spotX(i) })));
       // CHAI-67: the word moment, the first time an order asks half or full; CHAI-78 (Zafar, 4 Nov: "it should start with the word
       // focus and then go to the kitchen scene where the order begins"): before anyone comes in; then the people, then the order
       ctx.intro = (UI.wordMoment ? UI.wordMoment(UI.wordMomentIds(ctx.ladders)) : Promise.resolve())
         .catch(() => {})
         .then(() => {
-          came.forEach((w, i) => s.addChar(w, { enter: true, x: spots.length ? spots[Math.min(spots.length - 1, spotOf(i))] : undefined }));
+          came.forEach((w, i) => s.addChar(w, { enter: true, x: spotX(i) }));
           return came.length ? Cook.wait(1100) : null;
         })
         // the order big in the middle first; the station starts when it has flown into the sidebar (station-lib begin)
@@ -2041,10 +2075,12 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     if (S()) {
       S().clearView();
       S().viewName = null;
-      S().setBg("bg-service");
-      // (s20-p2c: inside the game host the title is never seen: the round is asked for at once, so this first picture is the order's
-      // own, lifted as it, never a frame at one height and then the lift (contract-80, lab.html))
-      if (Cook.hosted) orderLift(S(), true);
+      // (s20-p2c: inside the game host the title is never seen: the round is asked for at once, so the first picture is the order's own,
+      // never a frame at one height and then the lift (contract-80, lab.html). Decision 35, s20-lift: the order's lift depends on who it
+      // brings to the counter, so the host draws no kitchen here: the round's own first picture (runLab) is the first one, at its lift)
+      // (the scene starts on the kitchen, unlifted: the host shows Phaser's empty picture instead, under its start cover)
+      S().setBg(Cook.hosted ? "__DEFAULT" : "bg-service");
+      if (Cook.hosted && S().bg) S().bg.setVisible(false); // (no picture at all, not an empty one stretched: contract-11)
     }
     const days = Cook.data.days;
     const nextDay = Math.min(Cook.save.day, days.length);

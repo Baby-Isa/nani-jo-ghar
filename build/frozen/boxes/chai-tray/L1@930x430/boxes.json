@@ -171,7 +171,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "order.png",
-   "t": 7645,
+   "t": 7693,
    "frames": 8
   },
   "light": {
@@ -433,26 +433,6 @@
      },
      "card-1/word#4": {
       "box": [
-       192.95,
-       170.36,
-       228.05,
-       189.36
-      ],
-      "cut": false,
-      "text": "dudh"
-     },
-     "card-1/wc-slot#3": {
-      "box": [
-       198.91,
-       188.22,
-       222.09,
-       204.22
-      ],
-      "cut": false,
-      "text": "milk"
-     },
-     "card-1/word#5": {
-      "box": [
        271.28,
        161.03,
        311,
@@ -461,7 +441,7 @@
       "cut": false,
       "text": "hakro"
      },
-     "card-1/word#6": {
+     "card-1/word#5": {
       "box": [
        273.55,
        176.69,
@@ -471,7 +451,7 @@
       "cut": false,
       "text": "khun"
      },
-     "card-1/wc-slot#4": {
+     "card-1/wc-slot#3": {
       "box": [
        264.14,
        194.55,
@@ -597,12 +577,6 @@
        248.92
       ],
       "dom:button.wc-spk#7": [
-       186.61,
-       201.16,
-       234.38,
-       248.92
-      ],
-      "dom:button.wc-spk#8": [
        267.25,
        201.16,
        315.02,
@@ -681,7 +655,7 @@
    "anims": [],
    "steady": true,
    "shot": "light.jpg",
-   "t": 9847,
+   "t": 9869,
    "frames": 8
   },
   "mid": {
@@ -1163,13 +1137,13 @@
     "step-close:k4",
     "step-open:5",
     "step-call:5",
-    "say-start:5",
+    "say-start:4",
     "poke"
    ],
    "anims": [],
    "steady": true,
    "shot": "mid.jpg",
-   "t": 13957,
+   "t": 13481,
    "frames": 8
   },
   "praise": {
@@ -1459,21 +1433,21 @@
     }
    },
    "life": [
+    "step-open:7",
     "step-call:7",
     "idle-bump:pointerup",
     "act",
-    "say-end:6",
-    "say-start:7",
+    "say-end:5",
+    "say-start:6",
     "poke",
     "row-home:118",
-    "say-end:7",
-    "say-start:8",
-    "say-end:8"
+    "say-end:6",
+    "say-start:7"
    ],
    "anims": [],
    "steady": true,
    "shot": "praise.jpg",
-   "t": 19448,
+   "t": 18905,
    "frames": 8
   },
   "serve": {
@@ -1662,20 +1636,20 @@
    },
    "life": [
     "row-home:118",
+    "say-end:6",
+    "say-start:7",
     "say-end:7",
-    "say-start:8",
-    "say-end:8",
     "stage-end",
     "stage-start",
     "serve-view:serving",
     "serve-trays:1",
-    "say-start:9",
-    "say-end:9"
+    "say-start:8",
+    "say-end:8"
    ],
    "anims": [],
    "steady": true,
    "shot": "serve.jpg",
-   "t": 21294,
+   "t": 20996,
    "frames": 8
   },
   "end": {
@@ -1832,34 +1806,34 @@
        114.44
       ],
       "dom:button.rs-word#4": [
-       262,
-       119.22,
-       466.66,
+       266,
+       122.19,
+       468,
        175
       ],
       "dom:button.rs-word#5": [
-       474.66,
-       119.22,
-       679.33,
+       476,
+       122.19,
+       678,
        175
       ],
       "dom:button.rs-word#6": [
-       687.33,
-       119.22,
-       892,
+       686,
+       122.19,
+       888,
        175
       ],
       "dom:button.rs-word#7": [
-       262,
+       266,
        183,
-       466.66,
-       238.78
+       468,
+       235.81
       ],
       "dom:button.rs-word#8": [
-       474.66,
+       476,
        183,
-       679.33,
-       238.78
+       678,
+       235.81
       ],
       "dom:button.rs-btn#9": [
        734,
@@ -1880,10 +1854,10 @@
    "life": [
     "serve-view:serving",
     "serve-trays:1",
+    "say-start:8",
+    "say-end:8",
     "say-start:9",
     "say-end:9",
-    "say-start:10",
-    "say-end:10",
     "stage-end",
     "results",
     "idle-bump:pointerdown",
@@ -1899,7 +1873,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "end.png",
-   "t": 25816,
+   "t": 25494,
    "frames": 8
   }
  },
@@ -1908,5 +1882,5 @@
  "errors": [],
  "notes": [],
  "plant": null,
- "ms": 28207
+ "ms": 27997
 }

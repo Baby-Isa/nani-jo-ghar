@@ -79,6 +79,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (!UI.step || !St.guideLine) return;
         UI.step(Lang.role(St.guideLine("mishkaki-grill:thread"), "howto"), { quiet: true, noCall: "order-said", hide: St.hideKnown ? St.hideKnown(ctx) : undefined });
       };
+      /*
+       * Round 3 (the Fable eye judge for Zafar, 15 Nov: at 740x320 "the four tameto cards never show whole: a row of empty slots is cut by
+       * the panel's foot"): the side panel glides to the skewer being threaded, its row of piece cards whole in view, as each piece goes
+       * on and each new skewer starts: the kit's own glide (UI.followCard) on the first unit row not yet made (.oc-items14, js/shared/
+       * order-card.js items14). After the card's redraw.
+       */
+      const followRow = () =>
+        setTimeout(() => {
+          try {
+            const row = [...document.querySelectorAll("#mission .oc-items14")].find((x) => !x.classList.contains("done") && x.querySelector(".oc-fit14"));
+            if (row && UI.followCard) UI.followCard(row);
+          } catch (e) {
+            /* the panel as it is */
+          }
+        }, 80);
       const plainTick = (sk) => {
         if (!ctx.tickPiece) return;
         const one = sk.ids.length > 0 && sk.ids.every((p) => p === sk.ids[0]);
@@ -87,6 +102,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (sk.plain && sk.plain !== kind) ctx.tickPiece(sk.plain, 0);
         sk.plain = kind;
         if (kind) ctx.tickPiece(kind, sk.ids.length);
+        followRow();
       };
       // Sekelo v2 (§15): the board and its upright skewer on the left of the scene, the rack on the right,
       // the prep bowls on the shelf band below (the chai v2 grid). Sprint 20 batch 2 (s20-b2-sekelo): the board and the tray are the
@@ -179,6 +195,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // SEK-22 (Zafar, 30 Oct: the light "should include the whole skewer ... fairly tight"): the skewer is the thing the undo step
         // names (the kit's light hugs the picture whose wordId is the step's key: the whole skewer, handle to tip, with its pieces)
         sk.wordId = "undo";
+        followRow();
       };
       hit = S.track(S.add.zone(z.X(BOARD.x), z.Y(SKY - 40), z.L(170), z.L(560)).setDepth(D.fx + 3));
       fresh();

@@ -7,7 +7,7 @@ BEFORE not played at launch (no rows). The base's gate: `contract FAIL 17.3` (26
 - **Grill screen:** unchanged (the same sums on `F.row`).
 - **Dish card:** "hakro sekelo" has its picture. **Stuck:** the grill gets Nani's helper card and the kit's light; the threading's bowl glow goes out under the "?" pop-up.
 
-## Calls taken while Zafar was away (the other option in brackets)
+## Calls taken while Zafar was away
 1. The thread and grill mechanics treated as sekelo's own (only the station file). 2. Each screen reads the area afresh, since `St.begin` clears the stage (`area.next`). 3. `gapUnit` (the frame's tenth: the tray parted, the grill 3% smaller). 4. The dish card is the served plate (one skewer: needs art). 5. The stuck light on the first skewer (the needed one: the leak test). 6. SEK-31: the face steps down to 96 at 740x320 (the 150 face over the coals). 7. SEK-32: the bowls back on the band only at well done (all through the grill: SEK-08's one job).
 
 ## Rows ('waits for the frame', naming sekelo; no status moved)
@@ -22,14 +22,18 @@ BEFORE not played at launch (no rows). The base's gate: `contract FAIL 17.3` (26
 ## Round 2 (Fable on sekelo L3, decision 38): SEK-30 to SEK-32
 - **SEK-30:** the engine says one sentence, "Muke sekelo khape, hakri lakri mixed." (`order.js:316-353`); the rows after the headline are bare because the join is its gap (LNG-17). The kit's reading (`ui.js`) puts each part in its own bubble, as chai's. These are the deciding words, so they stay. Gap logged as **CK-SEKELO-19**.
 - **SEK-31:** well done uses the kit's one-dish face size (150; at 740x320 it steps down through the kit's sizes to 96). The face sits at the tray's top edge and "Shabash!" over bare marble, never the coals.
-- **SEK-32:** the bowls come back onto the band at well done; the word pop moves beside the board in clear marble; the served picture is cut to its skewers; the pill row is one size; the thread tray keeps clear of the cog. **For Zafar:** is "sekelo" in English "barbecue"? (The lexicon and seed say "sekelo"; language data, not mine.) I recommend yes.
-- **Pictures:** `build/screenshots/sidebyside/mishkaki-grill-L3-20261115-1041/`. The tool counts only a light after the station starts. Sekelo's L3 lights are the order card's lessons (before it) and the grill's, which wait for a still stage that a child-pace player beats. On the 1280x665 page none came.
+- **SEK-32:** the bowls come back onto the band at well done; the word pop moves beside the board in clear marble; the served picture is cut to its skewers; the pill row is one size; the thread tray keeps clear of the cog. **For Zafar:** is "sekelo" in English "barbecue"? (language data: recommend yes)
+- **Pictures:** `build/screenshots/sidebyside/mishkaki-grill-L3-20261115-1041/`. The tool's light needs one after the station starts: sekelo's L3 lights come before it (the card's lessons) or wait for a still stage a child-pace player beats.
+
+## Round 3
+- **The panel:** at each piece and each new skewer it glides to the skewer being threaded (the kit's `UI.followCard` on the first unfinished `.oc-items14` row); at 740x320 that row is whole. Showing only the current skewer's slots at the order is the kit's order drawing (`ui.js` ~3655), more than one line, so I left it.
+- **The word pop** takes the shelf pills' word size (the row's one scale), never under the kit's floor.
 
 ## Proof
 - **frame-counts:** mishkaki-grill 0 (was 2); chai-tray 0.
-- **Sekelo's gate:** `GATE PASS mishkaki-grill: checks pass 2.6, contract pass 16; 18.6 min`: 0 blocking over 28 pages, advisory contract-120 x1.
-- **Chai's gate:** `GATE PASS chai-tray: checks pass 2.5, contract pass 22.6, boxes:chai-tray pass 3.6; 28.6 min`, boxes identical.
+- **Round 1:** sekelo `GATE PASS` 18.6 min (0 blocking, 28 pages); chai `GATE PASS` 28.6 min, boxes identical.
 - **Four sizes:** 8/8 pages end; 0 breaks.
 - **Geometry rules:** no box spec for mishkaki-grill (`boxes.mjs`).
 - **check-change:** `PASSED in 19.5 min`, `build/reports/tiers/change-ded1bef559.md`.
-- **Round 2:** `GATE PASS mishkaki-grill: checks pass 2, contract pass 12; 14 min` (gate-20261115T1049; advisory contract-111 x3, -72 x1). `GATE FAIL chai-tray: checks pass 2.2, contract FAIL 20.6, boxes:chai-tray pass 3.4; 26.2 min` (gate-20261115T1103): boxes identical, one block: contract-112 at `lab:cook/chai-tray@L4` 740x320 (the aadu light). It fails 3 runs in 3 on `origin/ccr-7da5e9f0-04g4xm` without my commits too, so it is not sekelo's.
+- **Round 2:** `GATE PASS mishkaki-grill: checks pass 2, contract pass 12; 14 min` (gate-20261115T1049; advisory contract-111 x3, -72 x1). `GATE FAIL chai-tray: checks pass 2.2, contract FAIL 20.6, boxes:chai-tray pass 3.4; 26.2 min` (gate-20261115T1103): boxes identical, one block: contract-112 at `lab:cook/chai-tray@L4` 740x320 (the aadu light). It fails 3 in 3 on the working branch without my commits: not sekelo's.
+- **Round 3:** `GATE PASS mishkaki-grill: checks pass 2.1, contract pass 11.1; 13.2 min` (gate-20261115T1217, 0 breaks).

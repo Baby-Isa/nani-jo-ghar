@@ -171,7 +171,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "order.png",
-   "t": 7686,
+   "t": 7595,
    "frames": 8
   },
   "light": {
@@ -433,26 +433,6 @@
      },
      "card-1/word#4": {
       "box": [
-       364.75,
-       266.48,
-       411.19,
-       290.48
-      ],
-      "cut": false,
-      "text": "dudh"
-     },
-     "card-1/wc-slot#3": {
-      "box": [
-       376.38,
-       291.41,
-       399.56,
-       307.41
-      ],
-      "cut": false,
-      "text": "milk"
-     },
-     "card-1/word#5": {
-      "box": [
        485.09,
        264.98,
        537.64,
@@ -461,7 +441,7 @@
       "cut": false,
       "text": "hakro"
      },
-     "card-1/word#6": {
+     "card-1/word#5": {
       "box": [
        542.69,
        264.98,
@@ -471,7 +451,7 @@
       "cut": false,
       "text": "khun"
      },
-     "card-1/wc-slot#4": {
+     "card-1/wc-slot#3": {
       "box": [
        510.16,
        289.91,
@@ -597,12 +577,6 @@
        371.36
       ],
       "dom:button.wc-spk#7": [
-       363.97,
-       323.36,
-       411.97,
-       371.36
-      ],
-      "dom:button.wc-spk#8": [
        513.16,
        323.36,
        561.16,
@@ -622,7 +596,7 @@
       ],
       "canvas:jar-cook-paani#3": [
        718.61,
-       834,
+       832.3,
        879.04,
        1071.16
       ],
@@ -681,7 +655,7 @@
    "anims": [],
    "steady": true,
    "shot": "light.jpg",
-   "t": 9365,
+   "t": 9473,
    "frames": 8
   },
   "mid": {
@@ -1156,21 +1130,11 @@
        107.67,
        987.78,
        146.06
-      ],
-      "pill-11": [
-       854.62,
-       45.86,
-       1013.17,
-       98.71
       ]
-     },
-     "pillAlpha": {
-      "pill-11": 1
      }
     }
    },
    "life": [
-    "poke",
     "step-open:4",
     "step-call:4",
     "step-open:4",
@@ -1179,12 +1143,13 @@
     "step-close:k4",
     "step-open:5",
     "step-call:5",
-    "say-start:4"
+    "say-start:4",
+    "poke"
    ],
    "anims": [],
    "steady": true,
    "shot": "mid.jpg",
-   "t": 12158,
+   "t": 12738,
    "frames": 8
   },
   "praise": {
@@ -1474,6 +1439,7 @@
     }
    },
    "life": [
+    "step-open:7",
     "step-call:7",
     "idle-bump:pointerup",
     "act",
@@ -1482,13 +1448,12 @@
     "poke",
     "row-home:220",
     "say-end:6",
-    "say-start:7",
-    "say-end:7"
+    "say-start:7"
    ],
    "anims": [],
    "steady": true,
    "shot": "praise.jpg",
-   "t": 17181,
+   "t": 17496,
    "frames": 8
   },
   "serve": {
@@ -1690,7 +1655,7 @@
    "anims": [],
    "steady": true,
    "shot": "serve.jpg",
-   "t": 18964,
+   "t": 19483,
    "frames": 8
   },
   "end": {
@@ -1914,7 +1879,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "end.png",
-   "t": 22560,
+   "t": 23648,
    "frames": 8
   }
  },
@@ -1923,5 +1888,5 @@
  "errors": [],
  "notes": [],
  "plant": null,
- "ms": 25848
+ "ms": 26855
 }
