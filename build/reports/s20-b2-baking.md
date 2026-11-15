@@ -35,8 +35,8 @@ Files: `baking.js`, `baking.json`, `kitchen-frame.md` (a "who calls it" line; no
 
 ## Proof
 - **Baking's gate** before (untouched base): FAIL, 8.2 min, 16 blocking (contract-104 and -128 x8 each). After: **`GATE PASS baking: checks pass 2.3, contract pass 7.6; 9.9 min`**, 0 blocking over 18 pages; advisory contract-36 x1, -119 x2, -53 x2.
-- **Chai's gate:** CHAI
+- **Chai's gate** (`gate-…-chai-tray`, 27.4 min): checks pass 2.3 min; **boxes identical, 3.3 min**; contract FAIL 21.9 min, 3 blocking (contract-79 at L3#hint 1280; -8 and -112 at #returning 740), all light timing. The same 4 pages replayed: **0 breaks on the base and 0 on this branch**, so they are flakes, not the frame. Chai never runs baking's code; the one shared thing changed, the naan's card, chai doesn't show.
 - **Geometry rules:** cannot run. "No box spec for baking" (`boxes.mjs` knows chai-tray, eggs and maani-line only; read-only for me).
-- **Four sizes:** FOUR
+- **Four sizes** (`s20-b2-baking-contract`): **8/8 pages reach their end, 0 page errors**; `CONTRACT FAILED: 4 breaks (contract-11 2, contract-109 2)`, all at 1920x1080 and all on the base too (`s20b2-base-1920`: the same plus -104/-128, now fixed). contract-11: the kit's word-moment counter picture is low-res (assets). contract-109: the probe reads each jar's canvas bottom, while baking stands its opaque foot on the line (`St.opaqueSpan`); a `litBounds` on shelf things would fix it, but it also tightens their light boxes, so it needs its own gated change (next round).
 - **check-change:** CC
 - **checks.mjs:** pass (unit 1014 pass, 0 fail).

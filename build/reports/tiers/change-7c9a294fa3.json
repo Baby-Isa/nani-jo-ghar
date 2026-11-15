@@ -1,0 +1,199 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "7c9a294fa3ffc4f8fef927182c39ba704022e6b1",
+ "dirty": false,
+ "date": "2026-11-15T06:49:17.989Z",
+ "base": "dfd56dec3bd9ef0a3e73d789534ac3c83785550b",
+ "games": [
+  "cook:baking"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:baking": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [
+  "the brief names no fix-list row: no probes to play"
+ ],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-7c9a294fa3",
+  "before | after": "build/screenshots/tiers/change-7c9a294fa3/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-7c9a294fa3-baking/films/cook-baking@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-7c9a294fa3/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking#hint@740x320 (hint-nani-says)",
+   "what": "the help's light is 4.0 times the size of cook-atto: it should hug it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-119",
+   "where": "cook:baking#hint@740x320 (view-marble)",
+   "what": "the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-119",
+   "where": "cook:baking#hint@930x430 (hint-nani-says)",
+   "what": "the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-7c9a294fa3/logs/play.log",
+   "what": "CONTRACT FAILED: 3 breaks (contract-53 1, contract-119 2); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-7c9a294fa3/logs/before.log",
+   "what": "CONTRACT FAILED: 3 breaks (contract-53 1, contract-119 2); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 8,
+  "before": 8,
+  "breaksAfter": 3,
+  "breaksBefore": 3
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 2.4 min; build/reports/tiers/push-7c9a294fa3.md",
+   "tail": [
+    "checks ... pass (2.4 min)",
+    "check-push: PASSED in 2.4 min; build/reports/tiers/push-7c9a294fa3.md"
+   ],
+   "log": "build/screenshots/tiers/change-7c9a294fa3/logs/push.log",
+   "minutes": 2.4
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s20-b2-baking.json dfd56dec3bd9ef0a3e73d789534ac3c83785550b..HEAD",
+   "status": "pass",
+   "code": 0,
+   "line": "scope: all 1 files are \"s20-b2-baking: baking joins the kitchen frame\"'s own",
+   "tail": [
+    "scope: all 1 files are \"s20-b2-baking: baking joins the kitchen frame\"'s own"
+   ],
+   "log": "build/screenshots/tiers/change-7c9a294fa3/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:baking (4 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:baking,cook:baking#mistake,cook:baking#hint,cook:baking#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-7c9a294fa3",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 3 breaks (contract-53 1, contract-119 2); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+   "tail": [
+    "BREAK contract-119 cook:baking#hint L1 @ 740x320 [view-marble 04-view-marble.png] 18s: the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+    "BREAK contract-119 cook:baking#hint L1 @ 930x430 [hint-nani-says 05-hint-nani-says.png] 17.9s: the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): baking 104/111",
+    "CONTRACT FAILED: 3 breaks (contract-53 1, contract-119 2)",
+    "CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+    "06:57:25 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-7c9a294fa3/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-7c9a294fa3/logs/play.log",
+   "minutes": 5.8
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit dfd56dec3b (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:baking,cook:baking#mistake,cook:baking#hint,cook:baking#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-dfd56dec3b-7c9a294fa3",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 3 breaks (contract-53 1, contract-119 2); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+   "tail": [
+    "BREAK contract-119 cook:baking#hint L1 @ 740x320 [hint-nani-says 05-hint-nani-says.png] 18.1s: the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+    "BREAK contract-119 cook:baking#hint L1 @ 930x430 [hint-nani-says 05-hint-nani-says.png] 18.7s: the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): baking 104/111",
+    "CONTRACT FAILED: 3 breaks (contract-53 1, contract-119 2)",
+    "CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+    "07:03:06 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/dfd56dec3b/build/screenshots/sandbox/tiers-before-dfd56dec3b-7c9a294fa3/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-7c9a294fa3/logs/before.log",
+   "minutes": 5.7
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/dfd56dec3b/build/screenshots/sandbox/tiers-before-dfd56dec3b-7c9a294fa3 build/screenshots/sandbox/tiers-change-7c9a294fa3 build/screenshots/tiers/change-7c9a294fa3/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 198 before|after pictures, 6 not paired; build/screenshots/tiers/change-7c9a294fa3/before-after/index.html",
+   "tail": [
+    "pairs: 198 before|after pictures, 6 not paired; build/screenshots/tiers/change-7c9a294fa3/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-7c9a294fa3/logs/pairs.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "film:baking",
+   "what": "a first-play film: cook:baking as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:baking",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:baking --sizes 740x320 --no-sheets --run-id tiers-film-7c9a294fa3-baking",
+   "status": "pass",
+   "code": 0,
+   "line": "07:03:51 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-7c9a294fa3-baking/summary.md",
+   "tail": [
+    "gap     1x  Hane naan!  [device-voice]",
+    "gap     1x  Naan wiji chad!  [device-voice]",
+    "gap     1x  Dhyan rakh!  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "07:03:51 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-7c9a294fa3-baking/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-7c9a294fa3/logs/film_baking.log",
+   "minutes": 0.7
+  }
+ ],
+ "minutes": 14.6,
+ "ok": true
+}
