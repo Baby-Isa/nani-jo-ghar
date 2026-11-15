@@ -523,6 +523,19 @@ body.njg-s14 #guide.ng-s14 { row-gap: 0; }
    stays for the guide box elsewhere) */
 body.njg-s14 #guide.ng-s14 { --njg-guide-face: var(--njg-face); }
 body.njg-s14 #guide.ng-s14 .ng-face { margin-block: calc((var(--njg-face-d) - var(--njg-face-tap)) / 2); }
+/* SH-301 (Zafar, 15 Nov: "Nani's face circle and speaker circle seem not to be the same size and/or alignment with the faces and speakers in
+   the order cards but they should be (keep order card faces, move Nani's)"): her face is the order card's face in every game: its ring (the
+   card's 1 px edge, not a 2 px white one that drew her circle 2 px wider), and its place: the circle as far in from her box's left and top as
+   a card's from the card's (the card's edge line, its padding, a phone's 0.75 padding under 370 px high, its face's pull to the edge), and her
+   line as far from her circle as a card's headline from its face. Her box keeps its size; the speaker badge rides on the circle, as the card's */
+body.njg-s14 #guide.ng-s14 { --ng-oc-pad: var(--njg-card-pad); }
+@media (max-height: 370px) { html[data-ff="phone"] body.njg-s14 #guide.ng-s14 { --ng-oc-pad: calc(var(--njg-card-pad) * 0.75); } }
+body.njg-s14 #guide.ng-s14 .ng-face {
+  align-self: start;
+  margin: calc(var(--njg-line) + var(--ng-oc-pad) - var(--njg-card-pad) + (var(--njg-face-d) - var(--njg-face-tap)) / 2) calc((var(--njg-face-d) - var(--njg-face-tap)) / 2) calc((var(--njg-face-d) - var(--njg-face-tap)) / 2);
+  margin-left: calc(var(--njg-line) + var(--ng-oc-pad) - var(--njg-card-pad) + max(calc((var(--njg-face-d) - var(--njg-face-tap)) / 2), calc(-1 * var(--njg-card-pad))));
+}
+body.njg-s14 #guide.ng-s14 .ng-face .njg-face { box-shadow: 0 0 0 var(--njg-line) var(--njg-edge); }
 
 .oc-card.oc-s14 { border-radius: var(--njg-card14-u16); box-shadow: var(--njg-card14-shadow-order); }
 /* SH-295 (Zafar, 14 Nov, decision 32: "the lines that wrap look like they wrap too early (seems like there's space to write 'chai' on the
