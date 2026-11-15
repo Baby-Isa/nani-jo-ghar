@@ -274,21 +274,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       if (sh) sh.setFlipX(flip);
       // S19 (CK-63, SH-230; Zafar, 8 Nov: "it's half on the handle ... off-centered"): its light is on its round body alone, centred on
       // the burner, the handle left out (the kit's lights read thing.litBounds: Cook.Coach.box, C.parts)
-      // CK-124 (the Fable eye judge standing in for Zafar, 15 Nov: "the pot's square box crops its handle and sits on the face row"; the
-      // kit refuses a game's own round light, SH-257): its body and its whole handle, the handle's end from its settings' reach and angle
-      // (as layout() places it), so the light frames the one thing whole; plateBox below keeps it short of every face circle
-      const hd = (() => {
-        const a = ((img.angle || 0) * Math.PI) / 180;
-        const [bx, by] = flip ? [-1, 0] : [0, 1];
-        return [bx * Math.cos(a) - by * Math.sin(a), bx * Math.sin(a) + by * Math.cos(a)];
-      })();
-      const reach = it.reach || 2;
-      const hw = ((it.handleW || 0.14) / 2) * R + 4;
-      img.litBounds = () => {
-        const ex = img.x + hd[0] * reach * R;
-        const ey = img.y + hd[1] * reach * R;
-        return { x: Math.min(img.x - R, ex - hw), y: Math.min(img.y - R, ey - hw), right: Math.max(img.x + R, ex + hw), bottom: Math.max(img.y + R, ey + hw) };
-      };
+      // (CK-124, tried 15 Nov: its light taking in its handle could not be drawn whole where the pot reaches past the view, 1280x665 at
+      // L3, and the light judge, contract-112, failed it there: the round body stays, as CK-63; the report names it)
+      img.litBounds = () => ({ x: img.x - R, y: img.y - R, right: img.x + R, bottom: img.y + R });
       return { key: k, k, img, b, c: { x: b.x, y: b.y }, r: body.rIn * img.displayWidth, eggs: [], fried, on: false };
     };
     const vessels = { pot: vessel("pot", 0, false, POT()), pan: vessel("pan", 1, true) };
@@ -654,6 +642,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       const clear = Math.max(16, (((global.Onboard && global.Onboard.BOX_PAD) || 10) + 6) / perPx);
       // (the tray's light is the tray with its plates and their faces: its own)
       const own = pl ? [pl.face] : o === tray ? P0.map((q) => q.face) : [];
+      // (a vessel's light is its round body, as before: the burner faces by its knobs are left as they were, CK-124 for the plates)
+      if (!pl && o !== tray) return b;
       faces()
         .filter((f) => !own.includes(f))
         .forEach((f) => {
@@ -847,10 +837,13 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // height and the egg sat on the shelf, its light there, every tap missing it: one tween moves an egg at a time, the flight's)
       S.tweens.killTweensOf(o);
       // (CK-125: the flight counts from here, so this refresh moves the light on but her box keeps "Indo wiji chad!" until it lands)
+      // (contract-106: the flight starts before the refresh, so a light it brings, the other egg's green, waits for the stage to be still
+      // as the kit's control does (SH-253), never over the pot the child has just pressed while this egg still flies in)
       busy++;
       try {
+        const flight = S.fly(o, at.x, at.y, { duration: 380, arc: 120, scale: o.potScale }); // (SH-302: back to its pot size as it flies in)
         refresh();
-        await S.fly(o, at.x, at.y, { duration: 380, arc: 120, scale: o.potScale }); // (SH-302: back to its pot size as it flies in)
+        await flight;
       } finally {
         busy--;
       }
