@@ -15,7 +15,7 @@ All ten stove-top games are on the kitchen frame and merged. % on the agreed sca
 | Baking | 80 | its fixes hold; round 3 merged (glides, kit light) | a last look |
 | Sekelo | 80 | its fixes hold; round 3 merged (panel glides) | a last look |
 | Roll-tawa | 65 | furthest behind; round 2 merged | a last look; art (ART-84) |
-| Samosa | 65 | round 2 merged (arrow gone, browning) | a last look |
+| Samosa | 65 | round 2 merged (arrow gone, the waiting pastry whole, no 'Tar!' mid-lift); its gate and chai's pass | a last look |
 | Chaat | 70 | round 2 merged (the bowl is the dish) | Nana's line during chop (kit) |
 
 No game has Fable's PASS yet; every re-look found fewer faults. The shared kit fixes are in every game: the order bubble on one line, no clipped side-panel card, the card's landing clear of faces, rows folded at well done, one end-tile layout, one word size per row, no panel gold under a light, cards showing the shelf's own container.
