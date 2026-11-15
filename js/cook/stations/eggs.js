@@ -798,7 +798,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       }
       coach(n);
       stepFor(n);
-      if (n.obj) {
+      // (CK-126, contract-70/-78 at a child's pace: an egg's green that opens while another egg flies in waits for its light, which waits
+      // for the landing; what the game asks for next is said then too, never a lift asked for before its light and call can come)
+      if (n.obj && n.what === "egg" && busy > 0) z.expect({ kind: "wait" });
+      else if (n.obj) {
         const c = S.centre(n.obj);
         // (contract-70: lifting a cooked egg is the timed window's control, as samosa's "lift": its call is said as the green opens, never
         // held for Nani's helper card as an item's is, SH-172)
