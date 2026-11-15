@@ -1322,8 +1322,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // and only then the light, round the three of them
         let vegIn;
         if (own) {
-          // (the Fable eye judge for Zafar, decision 38, chop L1: "the bottom tray bare through the light and the first move"): the slot
-          // keeps its whole one; its twin rises from it into the strip
+          // (the Fable eye judge's "the bottom tray bare through the light", decision 38: kept so: the slot's one is the one that rises;
+          // a twin left in the slot read to contract-112 as one thing moving 150-350 px inside the light)
+          own.img.setVisible(false);
           veg.setScale(own.scale);
           // (SH-256, contract-114: the same size up in the strip as in its slot, within HOP_GROW)
           const up = Math.min(Math.max(own.scale, vs), own.scale * HOP_GROW);
@@ -1432,6 +1433,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         await wait(350);
         light.close();
         if (finger) finger.stop();
+        // (its slot has a whole one again, once the light has gone: contract-112, nothing of the strip's moves while it stands, and the
+        // planted one's twin coming back to the band is not the planted one leaving the light)
+        if (own && own.img && own.img.active) {
+          own.img.setVisible(true).setScale(own.scale * 0.6).setAlpha(0);
+          S.tweens.add({ targets: own.img, scaleX: own.scale, scaleY: own.scale, alpha: 1, duration: 220, ease: "Back.easeOut" });
+        }
         fpt = null;
         await tween({ targets: knife, x: home.x, y: home.y, duration: 260, ease: "Sine.easeOut" });
         Cook.save.coached = Cook.save.coached || {};
