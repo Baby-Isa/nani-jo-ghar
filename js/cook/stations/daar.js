@@ -385,7 +385,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const reopenVeg = () => {
       if (!Lc) return;
       Cook.Order.rows(Lc, { all: true }).forEach((r) => {
-        if (r.head || r.no || !r.ids.some((id) => id in want)) return;
+        // (decision 35 (3): a "don't" card opens again with the things it stands beside, and ticks again once they are all in)
+        if (r.head || !r.ids.some((id) => (r.no ? no.includes(id) : id in want))) return;
         r.done = false;
         r.got = 0;
       });
@@ -393,7 +394,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     };
     if (phases.cook) UI.gist(phases.cook);
     const kz = Mech.zone(S, ctx, { id: "cook", level });
-    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps, gate, who, reopenVeg });
+    const cooked = await cook(kz, { spiceIds, tadka, flat, laps, speed: p.speed || null, level, K, chopped, retry: false, side, redo, steps, gate, who, reopenVeg, no });
     if (peek) UI.mission.closeCards(false);
     steps.done();
     await serve(kz, { who, pot: cooked.pot, katori: cooked.katori });
@@ -608,6 +609,13 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     });
   }
 
+  /**
+   * Decision 35 (3) (Zafar, 15 Nov ~02:50; contract-116: after the chop, "dungri na" was left the order row's current card, cut by
+   * its edge, as the kit's row skips a "don't" card): the order card's "don't" cards tick once the rest of the card is done (the
+   * chopped things after the chop, the piles once they are all in the pot), through the kit's own tick (UI.mission.tickItem {no}), and
+   * open again with them (reopenVeg).
+   */
+  const tickNo = (no, ctx) => [].concat(no || []).forEach((id) => UI.mission.tickItem(id, ctx.dishAt || 0, { no: true }));
   /* ---------- 1: the swipe chop (D1, Q4), the pieces to the side (D4) ---------- */
   async function chop(z, { want, kinds, no, pool, level, retry, nani, side }) {
     const S = z.S;
@@ -686,13 +694,15 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     Cook.daarPhase = "chopped";
     if (ctx.closeItem) ctx.closeItem(kinds);
     else UI.mission.closeItem(kinds, ctx.dishAt || 0);
+    // decision 35 (3) (Zafar, 15 Nov; contract-116): her "don't" card ticks once the rest of its card is done, here the chopped things
+    tickNo(no, ctx);
     z.expect({ kind: "wait" });
     await Cook.wait(700);
     return { got: r.got, cut, wrong, rows: rows.filter((id) => r.got[id]) };
   }
 
   /* ---------- 2: tadka and stir in the v3 pot on the kit hob (one burner, one pot) ---------- */
-  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps, gate, who, reopenVeg = () => {} }) {
+  async function cook(z, { spiceIds, tadka, flat, laps, speed, level, K, chopped, retry, side, redo, steps, gate, who, reopenVeg = () => {}, no = [] }) {
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
@@ -914,7 +924,10 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       if (!tadkaLine) return null;
       const first = series.length ? series[0][0] : flat[0];
       if (Cook.roundLevel(ctx) <= 1) return spiceStep(first, again);
-      // (from level 2 she says the order once, whole, at the start: the counting rule; the step opens quietly once she has said it)
+      // decision 35 (4) (Zafar, 15 Nov ~02:50; contract-22): from level 2 the spice order is said once, in its pop-up only (the tadka's
+      // request pop-up, ctx.nextStep("tadka")); the step opens quietly (noCall "order-said"). Was: said whole again here after the knob, so
+      // a replay from the card's face a second later said it a third time. A redo (again) still says it, with its help
+      if (!again) return spiceStep(first, again);
       return Promise.race([z.say(tadkaLine, { hide }).catch(() => {}), Cook.wait(7000)]).then(() => spiceStep(first, again));
     };
     const order = [];
@@ -1130,6 +1143,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       if (left.length) kitHelps(steps.to("daar:veg", { id: `veg-${left[0]}` }));
     }
     Cook.daarPhase = "veg-in";
+    if (Object.keys(hits).length) tickNo(no, ctx); // (decision 35 (3): every pile is in: her "don't" card ticks with them)
     // the daar: its bowl on the trivet tips into the pot, over the tadka. DAAR-10 (D4): only the bowl lifts (the art run's
     // split pictures, else the one picture split here); the mat left behind fades once it's poured (DAAR-33, decision 13)
     lead("cook-daar", dBowl);
