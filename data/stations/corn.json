@@ -287,6 +287,12 @@
    "kit": "js/cook/grill-kit.js (kit/grill, kit/tray-steel)",
    "places": 4
   },
+  "served": {
+   "file": "assets/art/corn/served.upright.r1.webp",
+   "size": "plate",
+   "at": 0.5,
+   "_note": "CK-127 (round 2, the eye judge for Zafar, decision 38): the dish each asker gets on their own tray in the serving kitchen: the chopped cob standing on its plate, composed by script from the cream plate and the done chopped cob (build/reports/s20-corn-upright-served.py); the serve's dish 'corn-upright' (js/cook/serve.js dishes, overridable by data), registered by corn.js"
+  },
   "plate": {
    "file": "assets/art/kit/plate-cream.default.r1.webp",
    "_note": "his yes (10 Nov): cream plates for corn"
@@ -301,7 +307,8 @@
     "_tray": "ART-80 (Zafar, 12 Nov: 'the trays look much nicer there. They look deeper and more realistic. We should be copying those trays'): the cooked tray beside the grill is the mock's deep tray (kit/tray-deep, js/cook/grill-kit.js GK.deepTex); 'steel' puts back the flat brushed tray (kit/tray-steel), turned upright",
     "trayW": 360,
     "bandLen": 360,
-    "ringRoom": 92
+    "ringRoom": 0,
+    "_ringRoom": "CK-130 (round 2): the heat rings go round the cobs on the grill and the face circles stand in the tray's well, so no room is kept above the grill for them (was 92)"
    },
    "plates": {
     "d": 400,
@@ -316,7 +323,7 @@
     "lift": 6
    },
    "ring": {
-    "r": 34
+    "_note": "CK-130 (round 2): the kit's heat ring round the standing cob on the grill, its size from the cob and its place (corn.js rectLayout ringR), inside the cob's light"
    },
    "review": {
     "size": 0.55
@@ -486,6 +493,7 @@
   "assets/art/corn/cob.done.chopped.r1.webp",
   "assets/art/corn/cob.over.chopped.r1.webp",
   "assets/art/corn/cob.card.upright.r1.webp",
+  "assets/art/corn/served.upright.r1.webp",
   "assets/art/corn/bowl-lemon.default.r1.webp",
   "assets/art/corn/bowl-salt.default.r1.webp",
   "assets/art/corn/bowl-chilli-powder.default.r1.webp",
