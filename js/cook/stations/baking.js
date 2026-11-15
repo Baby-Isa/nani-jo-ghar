@@ -44,6 +44,7 @@ import { setTimeout } from "../life.js";
   /** A canvas thing's page box (the kit's, Cook.Coach.box), PAD out from its picture (contract-92). */
   const PAD = 6;
   const FADE_MS = 320;
+  const FAR = 2000; // (the worktop and the band reach this far past the sheet's sides on a wide screen: the frame's far)
 
   Mech.combined(KEY, {
     station: KEY,
@@ -225,14 +226,24 @@ import { setTimeout } from "../life.js";
      * "shelf", data/stations/baking.json), the mixing bowl stands on the marble worktop above it, never on a jar (was the settings' own
      * counter picture, scene.bg, with the jars on its cupboard doors)
      */
-    const [W, H] = sc.stage || [1600, 900];
+    /*
+     * Sprint 20 batch 2 (s20-b2-baking; docs/architecture/kitchen-frame.md): the floor plan is the kitchen frame's (Cook.Frame.area): the
+     * worktop's wash and the shelf band drawn by it (baking's band, its settings' "shelf", pulled by its key: SH-248), the room laid out
+     * in shares of its play area (the settings' scene.room), the screen's answers (its scale, its foot) asked of it; no screen or sheet
+     * number of its own
+     */
     const band = Object.assign({ top: 630, base: 818, chipY: 860 }, (global.Shelf && global.Shelf.BAND) || {});
+    const F = Cook.Frame.area(S, { top: band.top, base: band.base, far: FAR, draw: true });
+    const P = F.play;
+    const ROOM = sc.room || {};
+    const across = (share, dflt) => P.x + P.w * (share != null ? share : dflt);
     // (the worktop and the band stay through the oven, as chai's: marked so the move to the oven keeps them)
-    [T(Cook.Kit.worktop(S, { top: band.top, far: 2000 })), T(St.stoneBand(S, { top: band.top, base: band.base, far: 2000, depth: D.bg + 1.2, game: KEY }))].forEach((o) => o && (o.band = true));
-    const bg = sc.bg && has("bk-bg") ? T(S.add.image(W / 2, H / 2, "bk-bg").setDepth(D.bg + 2).setDisplaySize(W, H)) : null;
+    [F.wash, F.stoneBand(S, { game: KEY })].forEach((o) => o && (T(o), (o.band = true)));
+    const SHEET = Cook.Frame.sheet;
+    const bg = sc.bg && has("bk-bg") ? T(S.add.image(SHEET.w / 2, SHEET.h / 2, "bk-bg").setDepth(D.bg + 2).setDisplaySize(SHEET.w, SHEET.h)) : null;
     // the cat (Simba) peeks over the shelf band's top edge (right), breathing; behind the band, so only his head shows
     const edgeY = band.top;
-    const cat = has("bk-cat") ? T(S.add.image(1480, edgeY + 16, "bk-cat").setOrigin(0.5, 1).setDepth(D.bg + 1.1)) : null;
+    const cat = has("bk-cat") ? T(S.add.image(across(ROOM.cat, 0.952), edgeY + 16, "bk-cat").setOrigin(0.5, 1).setDepth(D.bg + 1.1)) : null;
     if (cat) {
       cat.setScale(170 / cat.width);
       S.tweens.add({ targets: cat, y: edgeY + 10, duration: 1400, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
@@ -243,18 +254,16 @@ import { setTimeout } from "../life.js";
     const MB = I.mixBowl || {};
     const FLOUR = MB.flour || "cook-atto";
     const LIQUID_IDS = new Set(MB.wet || CT.liquid || []);
-    // (s19-games-2, CHAI-89, Zafar 11 Nov: the play group centred between the view's top and the shelf, as chai's: the bowl with the room
-    // a jar tips in above it, MB.pourRoom; never lower than its old place on the worktop's front)
-    const V = Cook.view || {};
-    const vt = V.top != null ? V.top : -(V.ey || 0);
-    const spanTop = vt + 16;
-    const spanBot = band.top - 28;
+    // (s19-games-2, CHAI-89, Zafar 11 Nov: the play group centred in the frame's play area, as chai's: the bowl with the room a jar tips
+    // in above it, MB.pourRoom; never lower than its old place on the worktop's front, 24 above the bottom row)
+    const spanTop = P.y;
+    const spanBot = P.y + P.h;
     const bowlH = (() => {
       const t = has("bk-bowl-empty") ? S.textures.get("bk-bowl-empty").getSourceImage() : null;
       return t ? (t.height * ((MB.drawn || {}).w || 380)) / Math.max(1, t.width) : 200;
     })();
-    const bowlFoot = MB.foot || Math.min(band.top - 24, spanBot - Math.max(0, (spanBot - spanTop - (bowlH + (MB.pourRoom || 220))) / 2));
-    const bowlX = (MB.at || [800])[0];
+    const bowlFoot = MB.foot || Math.min(F.bottom.y - 24, spanBot - Math.max(0, (spanBot - spanTop - (bowlH + (MB.pourRoom || 220))) / 2));
+    const bowlX = across(ROOM.bowl, 0.5);
     const bowl = T(S.add.image(bowlX, bowlFoot, "bk-bowl-empty").setOrigin(0.5, 1).setDepth(D.item));
     bowl.setScale(((MB.drawn || {}).w || 380) / bowl.width);
     // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kit's one soft shadow, down and to the right)
@@ -264,7 +273,7 @@ import { setTimeout } from "../life.js";
     // (on the bowl its upper-right rim: the jar tips in from the left, and its light never takes the face in: contract-82)
     const faceAt = (o, side = -1) => {
       if (!Cook.Kit.badge) return null;
-      const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const perPx = Math.max(0.01, F.px || 1);
       const fd = Math.min(90, Math.max(64, 30 / perPx));
       const f = T(S.add.image(o.x + side * o.displayWidth * 0.42, o.y - o.displayHeight * (o.originY || 0.5) + fd * 0.4, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge));
       f.setName("baking-face");
@@ -276,7 +285,7 @@ import { setTimeout } from "../life.js";
     // beside the bowl at its upper right, clear of it by the kit's widest light margin on the page (Onboard.LIGHT, as the tray's
     // below), so the bowl's light never takes it in (contract-82)
     if (bowlFace) {
-      const ppwB = Math.max(0.05, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const ppwB = Math.max(0.05, F.px || 1);
       const OLb = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
       const gapB = (OLb.max + OLb.clear + 6) / ppwB;
       bowlFace.setPosition(bowl.x + bowl.displayWidth / 2 + bowlFace.displayWidth / 2 + gapB, bowl.y - bowl.displayHeight + bowlFace.displayHeight * 0.6);
@@ -346,7 +355,7 @@ import { setTimeout } from "../life.js";
     if (hasJug) {
       const J = I.jug || {};
       // (its base level with the bowl's foot, wherever the bowl stands: CHAI-89)
-      const jx = (J.at || [470])[0];
+      const jx = across(ROOM.jug, 0.28);
       const jy = bowlFoot;
       const c = T(S.add.container(jx, jy).setDepth(D.item + 0.5));
       const empty = S.add.image(0, 0, "bk-jug-empty").setOrigin(0.5, 1);
@@ -397,18 +406,14 @@ import { setTimeout } from "../life.js";
     const shelf = {};
     const n = onShelf.length;
     const PILL_SLOT = 200;
-    // (the row across the narrowest play area, x 150-1450: eight things at L4 each keep a slot their picture and pill fit in, contract-111)
-    const pitch = Math.min(CT.pitch || 300, 1300 / Math.max(1, n));
+    // (the row across its share of the play area, ROOM.row (x 150-1450): eight things at L4 each keep a slot their picture and pill fit
+    // in, contract-111)
+    const pitch = Math.min(CT.pitch || 300, (P.w * (ROOM.row || 0.864)) / Math.max(1, n));
     const pills = [];
     // CK-84, ART-52 (Zafar, 6 Nov: size classes for every item): each thing by its size class, as chai's jars (St.classFit: the band's
     // room with the hop kept, the class's share, the floor on screen; never wider than its slot), its picture's clear foot on the shelf's
     // line (the opaque bottom, St.opaqueSpan, as chai's); its tap area reaches down its slot to its pill (S.tappable, Shelf.P.reach)
-    let ppwShelf = 1;
-    try {
-      ppwShelf = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
-    } catch (e) {
-      ppwShelf = 1;
-    }
+    const ppwShelf = F.px || 1;
     onShelf.forEach((id, i) => {
       const x = bowlX + (i - (n - 1) / 2) * pitch;
       const key = `bk-${id}`;
@@ -438,11 +443,12 @@ import { setTimeout } from "../life.js";
     });
     const fitPills = () => {
       if (!SH || !SH.pillScale || !pills.length || !pills[0].faceW) return;
-      const ppw = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+      const ppw = Math.max(0.01, F.px || 1);
       const row = pills.filter((c) => c.active).sort((a, b) => a.x - b.x);
       const { k, cap } = SH.pillScale(row.map((c) => ({ x: c.x, w: c.faceW(c.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW: PILL_SLOT });
       const ph = ((SH.PILL || {}).h || 46) * k;
-      const y = Math.min(band.chipY, 896 - ph / 2);
+      // (whole above the view's foot, the frame's bottom row, 4 clear)
+      const y = Math.min(band.chipY, F.bottom.y + F.bottom.h - 4 - ph / 2);
       row.forEach((c) => {
         if (c.capW !== cap && c.face) c.face(c.showsWord, cap);
         c.k = k;
@@ -638,7 +644,7 @@ import { setTimeout } from "../life.js";
     const keep = (o) => o && o.active && o !== bg && o !== cat && !o.band;
     await Cook.tween(S, { targets: objs.filter(keep), alpha: 0, duration: 300 });
     objs.filter(keep).forEach((o) => o.destroy());
-    await oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b), faceAt });
+    await oven(S, z, { F, who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b), faceAt });
     if (!ctx.guided) {
       Cook.save.coached = Cook.save.coached || {};
       Cook.save.coached[KEY] = true;
@@ -650,22 +656,22 @@ import { setTimeout } from "../life.js";
   }
 
   /** The oven: its shut, baking and open pictures (one canvas: a swap changes only the door or the glow), the naan on its tray. */
-  async function oven(S, z, { who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt }) {
+  async function oven(S, z, { F: F1, who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt }) {
     const O = (SET().scene || {}).oven || {};
     const N = ITEMS().naan || {};
-    const [ox, oy0] = O.centre || [900, 360];
-    const ov = T(S.add.image(ox, oy0, "bk-oven-shut").setDepth(D.item + 1));
-    // (s19-games-2, CHAI-89: the oven and its tray centred between the view's top and the shelf, as chai's group; never lower)
-    const V = Cook.view || {};
-    const vt = V.top != null ? V.top : -(V.ey || 0);
-    const SB = (global.Shelf && global.Shelf.BAND) || { top: 630 };
+    // (Sprint 20 batch 2: the oven is the round's next screen, the frame's area.next: the same bottom row, its band kept; the play area
+    // read again as it lays out)
+    const F = F1.next();
+    const P = F.play;
+    const ROOM = (SET().scene || {}).room || {};
+    // (s19-games-2, CHAI-89: the oven and its tray centred down the play area, as chai's group; across at its share, ROOM.oven)
+    const ox = P.x + P.w * (ROOM.oven != null ? ROOM.oven : 0.566);
+    const oy = P.y + P.h / 2;
+    const ov = T(S.add.image(ox, oy, "bk-oven-shut").setDepth(D.item + 1));
     // CK-101 (the S19 gate's eye judge, 12 Nov: "the oven is toy-sized", its front the mixing bowl's width and twice the tray's): the oven
-    // as wide as the settings ask (drawn.w), never taller than the room between the view's top and the shelf (O.room: its share of it)
-    const roomH = Math.max(200, (SB.top - 28 - (vt + 16)) * (O.room || 0.96));
+    // as wide as the settings ask (drawn.w), never taller than the play area's height (O.room: its share of it)
+    const roomH = Math.max(200, P.h * (O.room || 0.96));
     ov.setScale(Math.min(((O.drawn || {}).w || 560) / ov.width, roomH / ov.height));
-    const dy = Math.min(0, (vt + 16 + SB.top - 28) / 2 - oy0);
-    const oy = oy0 + dy;
-    ov.setY(oy);
     Cook.Kit.shadow(S, ov); // (SH-268)
     const ring = T(S.add.graphics().setDepth(D.fx + 1));
     const steam = (x, y, k = 3) => {
@@ -676,8 +682,8 @@ import { setTimeout } from "../life.js";
       }
     };
     // the naan on its tray (the worktop, left of the oven, above the band), raw (B3: the tray of raw naan, then baked)
-    const hx = (N.at || [330])[0];
-    const hy = (N.at || [330, 640])[1] + dy;
+    const hx = P.x + P.w * (ROOM.tray != null ? ROOM.tray : 0.1875);
+    const hy = oy + ((N.drawn || {}).w || 260) * (N.below != null ? N.below : 0.57);
     const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
@@ -686,7 +692,7 @@ import { setTimeout } from "../life.js";
     const face = faceAt ? faceAt(naan) : null;
     // (CK-100: beside the tray, at its left, clear of it: never over a naan on it, nor in the light round it)
     // (its clearance: the kit's light margin round the tray, Onboard.LIGHT at its widest, on the page: contract-82)
-    const ppwF = Math.max(0.05, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+    const ppwF = Math.max(0.05, F.px || 1);
     const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
     const faceGap = (OL.max + OL.clear + 6) / ppwF;
     if (face) face.setPosition(naan.x - naan.displayWidth / 2 - face.displayWidth / 2 - faceGap, naan.y - naan.displayHeight * 0.2);
