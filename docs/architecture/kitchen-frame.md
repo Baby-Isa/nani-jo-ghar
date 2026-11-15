@@ -14,6 +14,9 @@ Every session that touches the frame reads this first and updates it last. A bri
 - A mistake keeps chai's way in every game: the wrong pan can't be picked; a wrong item can go in, the cup is made, the whole cup is redone (decision 22).
 - The dish card at the order's first sentence is the order's own item pop-up, same place, look and motion (decision 23, SH-286).
 - "Shabash!" sits where chai has it; the wrong-order pop-up only when an order is wrong; a tap never skips a due lesson (decision 22, built in Sprint 21).
+- Nani's box in the side panel takes the order card's face: its size, ring and inset from the box's corner, her line where the card's headline starts (SH-301, Zafar 15 Nov; `css/shared/order-card.css`, every game).
+- The order card's headline is one size in every state, in every game (SH-277; the kit's `#side` rule, was chai's alone).
+- Well done is in the serve's own kitchen, chai's way: the kit's review faces over the dishes and the "Shabash!" card (`Cook.Kit.serve().faces` or `.review`), never a scene of its own (SH-303, Zafar 15 Nov; eggs' table and cat removed; maani already so).
 
 ## The frame's API
 `js/cook/frame.js` (loaded by `js/cook/kitchen-kit.js`). Sheet units throughout (the 1600 x 900 drawing sheet).
