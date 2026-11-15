@@ -696,9 +696,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // bottom: the nearest free cell in the first strip with one)
         const half = cells.length / 2;
         const strips = [cells.slice(half), cells.slice(0, half)].map((st) => st.filter((c) => pool.includes(c)));
+        // (DAAR-54, round 5: a cell with an empty cell on each side first, so the pairs keep apart; then the nearest free one)
+        const lone = (st, c) => {
+          const i = st.indexOf(c);
+          return [st[i - 1], st[i + 1]].every((n) => !n || n.used <= least);
+        };
         for (const st of strips) {
           const free = st.filter((c) => c.used === least);
-          if (free.length) return free.sort((p, q) => Math.abs(p.x - x) - Math.abs(q.x - x))[0];
+          if (!free.length) continue;
+          const apart = free.filter((c) => lone(st, c));
+          return (apart.length ? apart : free).sort((p, q) => Math.abs(p.x - x) - Math.abs(q.x - x))[0];
         }
         return pool[0];
       };
@@ -723,7 +730,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const kSide = Math.min(kMax, z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h));
           const kStack = Math.min(kMax, z.L(c.w * 0.9) / Math.max(A.w, Bs.w), z.L(c.h * 0.92 - gap) / (A.h + Bs.h));
           const stack = kStack > kSide * 1.05;
-          const k = Math.max(stack ? kStack : kSide, kMin);
+          // (DAAR-54, round 5: "the second and third garlic halves overlap": at contract-114's floor a pair was wider than its cell and
+          // reached into the next; a pair now always fits its cell, the floor kept only where it fits too; contract-114 is advisory)
+          const kFit = stack ? kStack : kSide;
+          const k = Math.min(Math.max(kFit, kMin), Math.max(kFit, stack ? Math.min(z.L(c.w * 0.9) / Math.max(A.w, Bs.w), z.L(c.h * 0.92 - gap) / (A.h + Bs.h)) : Math.min(z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h))));
           const ox = again ? z.L(12 * again) : 0;
           let cx = z.X(c.x) + ox;
           let cy = z.Y(c.y) - ox * 0.6;
@@ -1315,6 +1325,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // and only then the light, round the three of them
         let vegIn;
         if (own) {
+          // (the Fable eye judge's "the bottom tray bare through the light", decision 38: kept so: the slot's one is the one that rises;
+          // a twin left in the slot read to contract-112 as one thing moving 150-350 px inside the light)
           own.img.setVisible(false);
           veg.setScale(own.scale);
           // (SH-256, contract-114: the same size up in the strip as in its slot, within HOP_GROW)
@@ -1518,6 +1530,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // (the hop: what is still up drops back into its slot; an emptied slot fills)
       if (HOP)
         slots.forEach((s) => {
+          // (the Fable eye judge for Zafar, decision 38, chop L1: "a whole garlic left in the bottom tray with its pill while the row is
+          // ticked, reads as undone"): when the board is done, a kind chopped as many times as asked has gone from the tray, its pill too
+          if (done && want[s.id] && (cut[s.id] || 0) >= want[s.id]) {
+            s.refill = 0;
+            s.hop = null;
+            [s.img, s.chip].forEach((o) => o && o.active && S.tweens.add({ targets: o, alpha: 0, duration: 260 }));
+            s.gone = true;
+            return;
+          }
           if (s.refill > 0) {
             s.refill = 0;
             s.img = sit(s);

@@ -228,11 +228,14 @@ import { Cook as CookNS } from "../ns.js";
     const s = await settings();
     const d = Cook.Recipes[KEY].make("nani", { level });
     d.who = "nani"; // (her order on her own card: the lab's openCard reads who)
+    d.thanks = "asker"; // (DAAR-61: no guest comes for her own order: she thanks for it herself at the serve, flow.js kitchenEnd)
     // CK-48: the knife (and S19, the board and the pieces) load while her order is read, never on a bare board
     const lv1 = knobs(level);
     const art = pictures(s, Object.keys(d.chops || {}), !(lv1.hop && lv1.hop.decoys === 0));
     // (CK-78: her face for the well done on the board, the kit's review, loaded with the rest)
-    const knife = St.loadArt(S, art.load.concat(Cook.Kit && Cook.Kit.faceArt ? Cook.Kit.faceArt(d.who || "nani") : [])).catch(() => {});
+    // (DAAR-61: the steel katori the round's pieces are served in, the kitchen kit's shelf picture, decision 38's call)
+    const katori = Cook.Art && Cook.Art.file ? [["chop-katori", Cook.Art.file("shelf.steel-serving-bowl", "default")]] : [];
+    const knife = St.loadArt(S, art.load.concat(katori, Cook.Kit && Cook.Kit.faceArt ? Cook.Kit.faceArt(d.who || "nani") : [])).catch(() => {});
     L.card(d, (s.recipe && s.recipe.steps) || ["Chop"]);
     await knife;
     const pool = ((s.recipe || {}).lists || {}).thrown || [];
@@ -358,7 +361,60 @@ import { Cook as CookNS } from "../ns.js";
     }
     ctx.result.chopped = got;
     if (ctx.closeItem) ctx.closeItem([], { all: true });
+    servedBowl(S, d.who || "nani", got, art);
     return got;
+  }
+
+  /**
+   * DAAR-61 (the Fable eye judge for Zafar, decision 38; the orchestrator's call: "chop's own serve shows the chopped pieces in a bowl on a
+   * tray centred under its asker, no new art"): a picture of the round's bowl, the kitchen kit's steel katori with the round's cut halves
+   * in it, seen from the family's side as the served pictures are, handed to the serve (Cook.Serve.plated, as maani's plates), so the
+   * kitchen's end puts it on the asker's tray. Chop on its own only: daar and chaat serve their own dish.
+   */
+  const SERVED_W = 512;
+  const SERVED_TILT = 0.56; // (a round bowl seen from the family's side, as maani's served plate)
+  let servedKey = null;
+  function servedBowl(S, who, got, art) {
+    if (!Cook.Serve || !Cook.Serve.plated || !S.textures || !S.textures.createCanvas || !S.textures.exists("chop-katori")) return;
+    if (servedKey && S.textures.exists(servedKey)) S.textures.remove(servedKey);
+    servedKey = `chop-served-${Cook.run}`;
+    if (S.textures.exists(servedKey)) S.textures.remove(servedKey);
+    const W = SERVED_W;
+    const cv = S.textures.createCanvas(servedKey, W, Math.round(W * SERVED_TILT));
+    const g = cv.getContext();
+    const img = (k) => S.textures.get(k).getSourceImage();
+    g.save();
+    g.scale(1, SERVED_TILT);
+    g.drawImage(img("chop-katori"), 0, 0, W, W);
+    const halves = [];
+    Object.keys(got || {}).forEach((id) => {
+      const p = (art.pieces || {})[id];
+      for (let i = 0; p && i < (got[id] || 0); i++) [p.a, p.b].forEach((k) => S.textures.exists(k) && halves.push(k));
+    });
+    const n = halves.length;
+    const R = W * 0.24; // (inside the katori's inner wall)
+    const size = W * Math.min(0.32, 0.8 / Math.sqrt(Math.max(1, n)));
+    halves.forEach((k, i) => {
+      const im = img(k);
+      const a = i * 2.39996; // (the golden angle: spread evenly, never in a row)
+      const r = n > 1 ? R * Math.sqrt((i + 0.5) / n) : 0;
+      const sc = size / Math.max(im.width, im.height);
+      g.save();
+      g.translate(W / 2 + Math.cos(a) * r, W / 2 + Math.sin(a) * r);
+      g.rotate(a);
+      // (the kit's one soft shadow, down and to the right, in its shade token: SH-268, Cook.Kit.shadow)
+      const TK = global.Tokens;
+      const rgb = TK && TK.rgb && TK.rgb("shade-rgb") ? TK.rgb("shade-rgb") : null;
+      if (rgb) g.shadowColor = `rgba(${rgb}, 0.26)`;
+      g.shadowOffsetX = 6;
+      g.shadowOffsetY = 8;
+      g.shadowBlur = 6;
+      g.drawImage(im, (-im.width * sc) / 2, (-im.height * sc) / 2, im.width * sc, im.height * sc);
+      g.restore();
+    });
+    g.restore();
+    cv.refresh();
+    Cook.Serve.plated(KEY, who, [{ kind: "bowl", key: servedKey, at: 0.5 }]);
   }
 
   /*

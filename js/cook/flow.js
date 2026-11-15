@@ -303,6 +303,13 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     praiseBox();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
     else S().setMood("nani", "happy");
+    // DAAR-61 (decision 38, the orchestrator's call: chop's own serve): a dish its asker thanks for herself (the order's thanks: "asker",
+    // chop's: Nani's own order, so no guest comes) gets her "Thank you!" over it where it is recorded (decision 87, a loan word), else
+    // nothing more (her Shabash was said)
+    if (dish && dish.thanks === "asker" && !guests.length && who && Cook.CHARS[who]) {
+      const ty = Lang.line("thanks");
+      if (Lang.hasVoice && Lang.hasVoice(ty)) await S().talk(who, ty, { after: "happy" });
+    }
     for (const g of guests) await S().talk(g, Lang.line("thanks"), { after: "happy" });
     for (const g of guests) await S().talk(g, Lang.line("bye"));
     UI.hideBubble();
