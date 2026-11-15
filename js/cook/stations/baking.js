@@ -641,10 +641,15 @@ import { setTimeout } from "../life.js";
     await Cook.wait(400);
 
     /* ---------------- the oven (the same camera) ---------------- */
+    // SH-280 (the S19 gate's eye judge, 12 Nov: "a bare frame then the oven and tray in one step"): the bowl's things fade out as the
+    // oven and its tray fade in, in one move (no empty worktop between), and the asker's face glides from the bowl to the tray
     const keep = (o) => o && o.active && o !== bg && o !== cat && !o.band;
-    await Cook.tween(S, { targets: objs.filter(keep), alpha: 0, duration: 300 });
-    objs.filter(keep).forEach((o) => o.destroy());
-    await oven(S, z, { F, who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b), faceAt });
+    const leaving = objs.filter(keep);
+    const leave = async (ms) => {
+      await Cook.tween(S, { targets: leaving.filter((o) => o.active), alpha: 0, duration: ms });
+      leaving.forEach((o) => o.active && o.destroy());
+    };
+    await oven(S, z, { F, who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b), faceAt, leave, faceWas: bowlFace });
     if (!ctx.guided) {
       Cook.save.coached = Cook.save.coached || {};
       Cook.save.coached[KEY] = true;
@@ -656,7 +661,7 @@ import { setTimeout } from "../life.js";
   }
 
   /** The oven: its shut, baking and open pictures (one canvas: a swap changes only the door or the glow), the naan on its tray. */
-  async function oven(S, z, { F: F1, who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt }) {
+  async function oven(S, z, { F: F1, who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt, leave, faceWas }) {
     const O = (SET().scene || {}).oven || {};
     const N = ITEMS().naan || {};
     // (Sprint 20 batch 2: the oven is the round's next screen, the frame's area.next: the same bottom row, its band kept; the play area
@@ -696,6 +701,22 @@ import { setTimeout } from "../life.js";
     const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
     const faceGap = (OL.max + OL.clear + 6) / ppwF;
     if (face) face.setPosition(naan.x - naan.displayWidth / 2 - face.displayWidth / 2 - faceGap, naan.y - naan.displayHeight * 0.2);
+    // SH-280: in, as the bowl's things go (300 ms, as their fade was); one face, gliding from beside the bowl to beside the tray
+    {
+      const MS = 300;
+      const comes = [ov, naan];
+      comes.forEach((o) => o.setAlpha(0));
+      const glide = [];
+      if (face && faceWas && faceWas.active) {
+        const to = { x: face.x, y: face.y };
+        face.setPosition(faceWas.x, faceWas.y);
+        faceWas.destroy();
+        glide.push(Cook.tween(S, { targets: face, x: to.x, y: to.y, duration: MS + 220, ease: "Cubic.easeInOut" }));
+      }
+      setBusy(true);
+      await Promise.all([leave ? leave(MS) : null, Cook.tween(S, { targets: comes, alpha: 1, duration: MS })].concat(glide));
+      setBusy(false);
+    }
     const tapOn = (o, name, withLight = null) => {
       let open = true;
       return new Promise((resolve) => {

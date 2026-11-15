@@ -777,6 +777,8 @@
    "view": "F",
    "word": "ph-naan",
    "file": "assets/cook/proto/baking/naan-alone.webp",
+   "card": "assets/cook/proto/baking/naan-alone.webp",
+   "_card": "s20-b2-baking (contract-104, -128; SH-242: one of the thing): the order card's naan, as vocab.ph-naan.card says (the kit reads a game's items[].card): one naan alone, this prototype picture, the only single naan drawn (the served plate shows two, the tray three)",
    "px": [
     300,
     144
