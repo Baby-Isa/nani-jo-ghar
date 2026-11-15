@@ -454,7 +454,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
 
     /* ---------------- an egg ---------------- */
     const sized = (o, w) => o.setScale(w / Math.max(1, o.width));
-    const rawEgg = (x, y) => sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * (ITEM("egg").inPot || 0.62));
+    const rawEgg = (x, y) => {
+      const o = sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * (ITEM("egg").inPot || 0.62));
+      o.potScale = o.scale; // (its size in the pot, which it keeps there and, lifted cooked, within 10%: SH-302's hand size flies back to it)
+      return o;
+    };
     // SH-256 (the eye judge, 10 Nov: "the egg snaps from whole to fried"; the art's new egg-part, K7): cracked, then half set (egg-part),
     // then set, each look fading into the next; set a little before its ring's green, so its first-time light comes on the egg as it
     // will stay (nothing changes inside a light as it comes: contract-112); overdone if it is left past its full ring
@@ -737,7 +741,12 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       began();
       hold({ kind: "raw" });
       rawHeld = rawEgg(bowl.x, bowl.y - 30);
-      S.tweens.add({ targets: rawHeld, y: bowl.y - bowl.displayHeight / 2 - 70, duration: 260, ease: "Back.easeOut" });
+      // SH-302 (Zafar, 15 Nov: "initially I think the egg that is picked up is too small"): in the hand it grows to inHand times its pot
+      // size (data/stations/eggs.json; contract-114's ceiling) as it rises, its foot clear of the bowl; it goes back to its pot size as it
+      // flies in (putIn)
+      const handS = rawHeld.scale * (ITEM("egg").inHand || 1);
+      const handY = bowl.y - bowl.displayHeight / 2 - (rawHeld.displayHeight * (ITEM("egg").inHand || 1)) / 2 - 18;
+      S.tweens.add({ targets: rawHeld, y: Math.min(bowl.y - bowl.displayHeight / 2 - 70, handY), scale: handS, duration: 260, ease: "Back.easeOut" });
       Cook.sfx.pop();
       z.progress({ took: "n.egg" });
     });
@@ -759,7 +768,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // height and the egg sat on the shelf, its light there, every tap missing it: one tween moves an egg at a time, the flight's)
       S.tweens.killTweensOf(o);
       refresh();
-      await flying(S.fly(o, at.x, at.y, { duration: 380, arc: 120 }));
+      await flying(S.fly(o, at.x, at.y, { duration: 380, arc: 120, scale: o.potScale })); // (SH-302: back to its pot size as it flies in)
       // (the tray went to the table while it flew: nothing is left to cook it in)
       if (finished) return o.active && o.destroy();
       // (and it lands where the game keeps it, egg.at, whatever ended its flight)
