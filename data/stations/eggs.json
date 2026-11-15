@@ -335,8 +335,8 @@
    ],
    "word": "n.egg",
    "inPot": 1.04,
-   "inHand": 1.12,
-   "_ck122": "CK-122 (the Fable eye judge standing in for Zafar, 15 Nov, decision 38: the egg fills its vessel as chai's pots are filled): inPot 0.7 to 1.04, the whole egg more than half the pot's floor width at every size (its size from the vessel, never per size); inHand 1.12 keeps the hand within contract-114's 15% of the pot",
+   "inHand": 1.06,
+   "_ck122": "CK-122 (the Fable eye judge standing in for Zafar, 15 Nov, decision 38: the egg fills its vessel as chai's pots are filled): inPot 0.7 to 1.04, the whole egg more than half the pot's floor width at every size (its size from the vessel, never per size); inHand 1.06 (1.12 was -16% at 740x320, small-egg rounding) keeps the hand within contract-114's 15% of the pot",
    "_sh302": "SH-302 (Zafar, 15 Nov: 'initially I think the egg that is picked up is too small'): the whole egg a little larger everywhere (inPot 0.62 to 0.7; it still sits inside its heat ring) and, lifted from the bowl, inHand times that in the hand, rising clear of the bowl, gliding back to its pot size as it flies in: 1.29 times its old size in the hand. inHand stays within contract-114's 15% between its rests (in the hand, in the pot, lifted cooked at 1.1)",
    "_note": "a whole egg lifted from the bowl (brown, as the bowl's), whole in the pot: inPot its width over the pot's floor radius. s19-games-2 (11 Nov): the k2 run's E5 whole egg (v4 egg-whole, 265 x 205) replaces the 100 px prototype, here and on its card",
    "card": "assets/art/eggs/egg.whole.r1.webp"
