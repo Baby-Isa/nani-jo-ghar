@@ -328,7 +328,7 @@
     const atEnd = () => list.classList.toggle("oc-at-end", list.scrollLeft + list.clientWidth >= list.scrollWidth - 4);
     // SH-307 (the batch 1 pictures, 15 Nov; non-negotiable 6, no clipped words): a row at rest never shows an item card cut by its
     // edge (daar L4 stir: at the row's end a sliver of the card before, 'ae chi'; maani L4: the third card cut at the right). Once the
-    // row has stood still a moment, a card partly outside the row's edge fades wholly out of view (a waiting slot, oc-away, has no words
+    // row has stood still a moment, a card partly outside the row's edge keeps only its empty frame, its picture, words and speaker faded out (a waiting slot, oc-away, has no words
     // to cut and stays as it is: the half gap the order's giving shows, Zafar 2 Nov); as the row moves again every card shows, and the
     // row's own glide brings the next card whole into view (SH-232, settleRow)
     let restT = 0;
