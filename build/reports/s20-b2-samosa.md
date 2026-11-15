@@ -37,3 +37,5 @@ contract-112 breaks on the fold's help light, at random (1 run in 3 on the base 
 - **Chai gate:** `GATE PASS chai-tray: checks pass 2.2, contract pass 21.4, boxes:chai-tray pass 3.3; 26.9 min` (0 blocking over 38 pages; boxes identical).
 - **Geometry rules:** cannot run: "No box spec for samosa" (`boxes.mjs`, read-only).
 - **checks.mjs:** 14 steps ok (unit 1014 pass).
+- **Four sizes** (s20-b2-samosa-contract): 8/8 pages end, 0 page errors; `CONTRACT FAILED: 10 breaks (contract-78 6, contract-111 2, contract-109 2)`. contract-109 is at 1920x1080 only (a heap 5 px above chai's line). The base f794015 has it too: the heaps stand on their canvas's foot, not their opaque foot. Not changed here: it would move every heap at every size.
+- **Evidence:** the spec names no rows, so there is no before or after folder.
