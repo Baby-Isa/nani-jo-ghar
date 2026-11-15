@@ -892,7 +892,8 @@ import { setTimeout } from "../life.js";
     const ringR = inW / 2 + 20;
     await Promise.all([
       Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" }),
-      FACE ? Cook.tween(S, { targets: FACE, gap: Math.max(0, ringR + 14 - inW / 2), duration: 520, ease: "Cubic.easeInOut" }) : null,
+      // (clear of the ring's outer edge: its radius, half its track, 12, and a little air)
+      FACE ? Cook.tween(S, { targets: FACE, gap: Math.max(0, ringR - inW / 2 + 12 + FACE.f.displayWidth * 0.12 + 8), duration: 520, ease: "Cubic.easeInOut" }) : null,
     ]);
     await Cook.wait(200);
     ov.setTexture("bk-oven-baking");
