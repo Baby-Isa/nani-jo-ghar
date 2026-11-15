@@ -1468,6 +1468,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // nothing fries), and on again. T17: Chulo bar!, then Tar!
     const cx = at.x;
     const cy = at.y;
+    // S20: the spoon slides in UNDER the samosa (below it, above the oil), then the samosa rides on it
+    // SAM-34 (Zafar, 9 Nov, round 2: "I do like the ... utensil you use for the samosas ... it rests on a cloth ... keep that ... I like that
+    // style of like wood and metal"; B3-3): the slotted spoon rests on its folded cloth between the hob and the plate (fryLayout), from the
+    // first frame (SH-280, s20-b2-samosa: drawn with the hob and the plate as the view comes up, never popping in after the knob's tap); it goes from there under each golden samosa, carries it to the plate and comes back to its cloth. One size throughout
+    // (contract-114), its bowl about a samosa across, as the jharo's was
+    const SPM = META.spoon;
+    const spoonH = z.L(FL.spoonH);
+    const spoonK = spoonH / SPM.h;
+    const rest = { x: z.X(FL.spoonX) + (SPM.bx - 0.5) * SPM.w * spoonK, y: at.y - spoonH / 2 + SPM.by * spoonH };
+    const clothImg = S.textures.exists("sv4-cloth") ? S.track(S.add.image(z.X(FL.spoonX), at.y - spoonH / 2 + spoonH * 0.7, "sv4-cloth").setDepth(D.item - 1.5)) : null;
+    if (clothImg) {
+      clothImg.setScale((SPM.w * spoonK * 1.02) / clothImg.width);
+      clothImg.shadow = S.contactShadow(clothImg);
+    }
+    const jharo = S.track(S.add.image(rest.x, rest.y, spoonTex(S)).setOrigin(SPM.bx, SPM.by).setDepth(D.item - 1).setScale(spoonK));
+    jharo.handAction = false;
+    // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kit's soft shadow while it rests on its cloth; none while it is in the
+    // oil or in the air, sh.lifted)
+    Cook.Kit.shadow(S, jharo);
     if (ready) await ready; // (CK-48: drawn as the view came up; the play starts once St.begin is done)
     /*
      * SAM-30 (Zafar, 8 Nov: "nothing told me or showed me how to place them into the frying pan"; contract-78: from L2 the knob's, the
@@ -1638,25 +1657,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const cur = frying.filter((f) => !f.out).sort((a, b) => b.level - a.level)[0];
       if (cur) z.gauge({ level: cur.level, lo, hi });
     });
-    // S20: the spoon slides in UNDER the samosa (below it, above the oil), then the samosa rides on it
-    // SAM-34 (Zafar, 9 Nov, round 2: "I do like the ... utensil you use for the samosas ... it rests on a cloth ... keep that ... I like that
-    // style of like wood and metal"; B3-3): the slotted spoon rests on its folded cloth between the hob and the plate (fryLayout), from the
-    // first frame; it goes from there under each golden samosa, carries it to the plate and comes back to its cloth. One size throughout
-    // (contract-114), its bowl about a samosa across, as the jharo's was
-    const SPM = META.spoon;
-    const spoonH = z.L(FL.spoonH);
-    const spoonK = spoonH / SPM.h;
-    const rest = { x: z.X(FL.spoonX) + (SPM.bx - 0.5) * SPM.w * spoonK, y: at.y - spoonH / 2 + SPM.by * spoonH };
-    const clothImg = S.textures.exists("sv4-cloth") ? S.track(S.add.image(z.X(FL.spoonX), at.y - spoonH / 2 + spoonH * 0.7, "sv4-cloth").setDepth(D.item - 1.5)) : null;
-    if (clothImg) {
-      clothImg.setScale((SPM.w * spoonK * 1.02) / clothImg.width);
-      clothImg.shadow = S.contactShadow(clothImg);
-    }
-    const jharo = S.track(S.add.image(rest.x, rest.y, spoonTex(S)).setOrigin(SPM.bx, SPM.by).setDepth(D.item - 1).setScale(spoonK));
-    jharo.handAction = false;
-    // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kit's soft shadow while it rests on its cloth; none while it is in the
-    // oil or in the air, sh.lifted)
-    Cook.Kit.shadow(S, jharo);
     const SPOON_A = -25; // (in use, its handle down to the right, towards its cloth)
     const spoonHome = () => {
       S.tweens.killTweensOf(jharo);
