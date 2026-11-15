@@ -327,12 +327,41 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     let lift = 0;
     if (s.__orderLift && onService(s)) {
       const f = Cook.serviceFrame ? Cook.serviceFrame(s) : { oy: base };
-      lift = Math.max(0, Math.min(ORDER_LIFT, base - f.oy));
+      lift = Math.max(0, Math.min(ORDER_LIFT, base - f.oy, clearLift(s, base)));
     }
     cam.scrollY = base - lift;
     v.top = base - lift;
     v.bottom = v.bottom + was - lift;
     v.__lift = lift;
+  }
+  /*
+   * Decision 35 (Zafar, 15 Nov ~02:50, on SH-304: the lift had moved Nana's head into the card's bottom-left place, so the card went
+   * top left, over the bubble): the order view lifts only as far as the order's pop-up card's bottom-left place (UI.popRoom) stays
+   * clear of heads. The largest lift, in design px, at which no head of the people at the counter (where they stand, or the spot
+   * they are walking up to) comes down into that place; a head already in it allows none. Infinity with nobody in its column.
+   */
+  function clearLift(s, base) {
+    const room = UI.popRoom && UI.popRoom();
+    const canvas = document.querySelector("#game canvas");
+    const v = Cook.view;
+    if (!room || !canvas || !v || !s.headBox) return Infinity;
+    const cr = canvas.getBoundingClientRect();
+    const k = UI.worldScale(); // page px per world px
+    if (!(k > 0)) return Infinity;
+    let most = Infinity;
+    Object.values(s.chars || {}).forEach((img) => {
+      if (!img || !img.active || img.visible === false) return;
+      const hb = s.headBox(img);
+      // (a person walking up is measured at their spot; the head with popPlace's 2 px margin; page px with the view unlifted)
+      const dx = img.__toX != null && img.x > img.__toX ? img.__toX - img.x : 0;
+      const left = cr.left + (hb.x + dx - v.left) * k - 2;
+      const right = cr.left + (hb.x + dx + hb.w - v.left) * k + 2;
+      const top = cr.top + (hb.y - base) * k - 2;
+      const bottom = cr.top + (hb.y + hb.h - base) * k + 2;
+      if (right <= room.left || left >= room.right || top >= room.bottom) return;
+      most = Math.min(most, Math.max(0, (room.top - bottom) / k));
+    });
+    return most;
   }
   /** The ordering view, lifted (or not): a resize while it stands keeps the lift; any other view (a station's) is never lifted. */
   function orderLift(s, on) {
@@ -343,6 +372,14 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
         const r = fit.apply(this, arguments);
         liftOrderView(this);
         return r;
+      };
+      // (decision 35: a person who comes to the counter while the order view stands is measured at once, at the spot they walk to)
+      const add = s.addChar;
+      s.addChar = function (who, o) {
+        const img = add.apply(this, arguments);
+        if (img && o && o.enter) img.__toX = o.x != null ? o.x : Cook.CHARS[who] ? Cook.CHARS[who].x : img.x;
+        if (this.__orderLift) liftOrderView(this);
+        return img;
       };
     }
     s.__orderLift = !!on;
