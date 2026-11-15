@@ -93,13 +93,6 @@ import { Cook as CookNS } from "../ns.js";
     if (brd) load.push([brd, A.board.file]);
     return { load, pieces, knife, blade: (A.knife || {}).blade || null, board: brd };
   }
-  /**
-   * The band along the bottom (the kitchen kit's, one call): every thing on it is top-down, so it is the stone tray (ART-69, SH-243:
-   * St.stoneBand's tray, the shared Shelf.P.tray, where the kit has it; the stone band before that).
-   */
-  function band(S, o) {
-    return St.stoneBand ? St.stoneBand(S, Object.assign({}, o, { game: KEY })) : null;
-  }
   /** The walnut board above the band (ART-37): centred at layout.board, its height h, its width from the picture; its soft shadow. */
   function board(S, z, art, lay) {
     if (!art.board || !S.textures.exists(art.board)) return null;
@@ -129,7 +122,11 @@ import { Cook as CookNS } from "../ns.js";
    */
   const ASK = ["targets", "pool", "no", "only", "level", "retry", "note", "tick", "tally", "onSlice", "onCount", "onCall", "onRounds", "exactDecoys"];
   const refused = [];
-  /** Chop's own scene in zone z: the worktop wash, the stone band, the walnut board; its pictures loaded. -> the mechanic's look params. */
+  /**
+   * Chop's own scene in zone z: the worktop wash, the stone band, the walnut board; its pictures loaded. -> the mechanic's look params.
+   * Its room is the frame's play area (Sprint 20: never the screen): the part of it its host lends it (Cook.Frame.lend: daar's chop),
+   * else the whole of it (its own tile, chaat's chop-game). The host never tells chop its layout (SH-259); the frame does.
+   */
   async function stage(z, s, ids, level) {
     const S = z.S;
     const lv1 = knobs(level);
@@ -139,11 +136,12 @@ import { Cook as CookNS } from "../ns.js";
     // (s19-games-2, CHAI-89, Zafar 11 Nov: the play group centred between the view's top and the shelf, as chai's: where the stage shows
     // worktop above the design box, the board and everything placed by it (its knife, the countdown ring, the hop's peak) move up by
     // the same amount, never down)
+    // (s20-b1-daar: the play area is the frame's, or the part of it the host lends chop: the board's group centred in it)
+    const F = Cook.Frame.area(S, { top: z.Y(BAND.top), base: z.Y(BAND.base), far: FAR, draw: true });
+    const P = F.play;
     const lay = Object.assign({}, lay0);
     if (lay0.board) {
-      const V = Cook.view || {};
-      const vt = V.top != null ? V.top : -(V.ey || 0);
-      const dy = Math.min(0, (vt + 16 + BAND.top - 28) / 2 - lay0.board.y);
+      const dy = Math.min(0, P.y + P.h / 2 - lay0.board.y);
       if (dy) {
         lay.board = Object.assign({}, lay0.board, { y: lay0.board.y + dy });
         lay.knife = Object.assign({}, lay0.knife || {}, { y: ((lay0.knife || {}).y != null ? lay0.knife.y : 330) + dy });
@@ -155,9 +153,9 @@ import { Cook as CookNS } from "../ns.js";
     // S19 (CK-71, ART-37: the board above the band): the kitchen kit's worktop wash and chai's stone band with its shelf, where the
     // whole things sit with their pills and hop from (the hop: the mechanic's params.hop); the walnut board above it, as big as
     // the room allows, never full-bleed (its place: the settings' layout)
-    const top = z.Y(BAND.top);
-    if (Cook.Kit && Cook.Kit.worktop) Cook.Kit.worktop(S, { top, far: FAR });
-    band(S, { top, base: z.Y(BAND.base), far: FAR, depth: Cook.D.bg + 1.2 });
+    // (s20-b1-daar: the frame drew the wash above; it pulls the band by chop's key, its settings' band: every thing on it is top-down,
+    // so it is the stone tray, ART-69, SH-243)
+    F.stoneBand(S, { game: KEY });
     const boardImg = board(S, z, art, lay);
     const kn = lay.knife || {};
     return {
@@ -271,16 +269,16 @@ import { Cook as CookNS } from "../ns.js";
       const cuts = z.cuts || [];
       if (all && cuts.length && Cook.Kit && Cook.Kit.review) {
         const u = cuts.reduce((a, c) => ({ x: Math.min(a.x, c.x), y: Math.min(a.y, c.y), right: Math.max(a.right, c.right), bottom: Math.max(a.bottom, c.bottom) }));
-        const V = Cook.view || {};
+        // (s20-b1-daar: what the screen shows and where the page's side panel and cog lie on the sheet are the frame's answers)
+        const Fr = Cook.Frame;
+        const V = Fr.view();
         const size = z.L(150);
         // (s19-clean-e, CK-78, contract-113 at 740x320 L4: the face fitted the view, but its "Shabash!" card beside it, on its left, ran under
         // the side panel, which lies over the canvas's left: the view's left is where the panel ends, less the card's room on that side)
-        let vl = V.left != null ? V.left : 0;
+        let vl = V.left;
         try {
           const side = global.document && document.querySelector("#side");
-          const p0 = UI.worldToScreen(0, 0);
-          const ppw = UI.worldToScreen(1, 0).x - p0.x || 1;
-          if (side) vl = Math.max(vl, (side.getBoundingClientRect().right - p0.x) / ppw + 8);
+          if (side) vl = Math.max(vl, Fr.toSheet(side.getBoundingClientRect().right, 0).x + 8);
         } catch (e) {
           /* the view as it is */
         }
@@ -296,16 +294,16 @@ import { Cook as CookNS } from "../ns.js";
           const cog = global.document && document.querySelector("#side-cog, [data-njg-zone=cog]");
           const cr = cog && cog.getBoundingClientRect ? cog.getBoundingClientRect() : null;
           if (cr && cr.width > 0) {
-            const p0 = UI.worldToScreen(0, 0);
-            const ppw = UI.worldToScreen(1, 0).x - p0.x || 1;
-            keep.push({ x: (cr.left - p0.x) / ppw - z.L(200), y: (cr.top - p0.y) / ppw, right: (cr.right - p0.x) / ppw, bottom: (cr.bottom - p0.y) / ppw + z.L(20) });
+            const a = Fr.toSheet(cr.left, cr.top);
+            const b = Fr.toSheet(cr.right, cr.bottom);
+            keep.push({ x: a.x - z.L(200), y: a.y, right: b.x, bottom: b.y + z.L(20) });
           }
         } catch (e) {
           /* the cut pieces alone */
         }
         const dish = { x: (u.x + u.right) / 2, y: (u.y + u.bottom) / 2, w: u.right - u.x, h: u.bottom - u.y };
-        const vt = V.top != null ? V.top : 0;
-        const vr = V.right != null ? V.right : 1600;
+        const vt = V.top;
+        const vr = V.right;
         const room = z.L(200); // (the praise card beside the face: "Shabash!" at the kit's size, its gap)
         const r = size / 2;
         const fits = (q, v) => q.x - r >= v[0] && q.y - r >= v[1] && q.x + r <= v[2] && q.y + r <= v[3] && !keep.some((a) => q.x + r > a.x && q.x - r < a.right && q.y + r > a.y && q.y - r < a.bottom);

@@ -92,6 +92,9 @@ lesson, not a standard, retired. The dropped list (not a standard, retired, unpl
 | CHAI-85 | rule | STD-B1-01, STD-F4-05 | the kitchen never seen before the word moment (its cover is F4's); covered while it loads |
 | CHAI-86 | rule | STD-02-04, STD-G1-06 | also a value: stream gap, word moment room (values.md E4); a fix that put the kettle off the top on phones; lesson R2 |
 | CHAI-87 | rule | STD-B4-01, STD-E5-03, STD-G2-07, STD-H2-05 | a pour heard (the word moment's sound is also E5's); a sound asked for quiet; lesson R6 |
+| CHAI-109 | rule | STD-D1-07 | the order card's third item's light stays about half a second longer (11 Nov play-test); placed by s20-b1-daar to unblock tier 0, the standard's owner to confirm |
+| CHAI-110 | rule | STD-D1-01 | L4's half then full glass: the full glass's second tap lit its first time (11 Nov play-test); placed by s20-b1-daar, to confirm |
+| CHAI-112 | rule | STD-D1-01, STD-D1-02 | the pour's light: the kit's box on the glass, a returning player's after its hint time (11 Nov play-test); placed by s20-b1-daar, to confirm |
 | CHAI-91 | rule | STD-E3-04, STD-F4-06 | also a value: picture retries (values.md F4); a dropped picture retried |
 | CHAI-92 | rule | STD-B4-01, STD-E5-03, STD-F5-03, STD-H2-05 | the juice: every effect and sound by his picks; also a value: short pour (values.md E5); the juice lab page; sounds by name |
 | CHAI-95 | rule | STD-B4-03 | the boil heard growing; also a value: boil loudness (values.md E5) |

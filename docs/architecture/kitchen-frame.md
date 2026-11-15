@@ -28,11 +28,15 @@ Every session that touches the frame reads this first and updates it last. A bri
 
 Options: `top` (the band's top; default `St.SHELF.top`), `base` (the shelf line things stand on; a shelf band only), `draw` (draw the wash), `far`, `depth` (the band's; default `D.bg + 1.2`).
 
+`Cook.Frame.lend(part) -> back()` (s20-b1-daar): a host lends the game it runs part of its play area, `part {x, y, w, h}` in shares of it (0-1); while lent, every `area()`'s `play` is that part; `back()` ends the lend (call it in a `finally`). Chai never lends, so chai's boxes are untouched.
+
 `Cook.Frame.sheet {x, y, w, h}`: the whole sheet, for a game whose zone is the whole sheet (chai's two zones).
 
 **Why the screen's answers are the frame's:** some sums are about the screen, not the room: a size that must read the same in CSS px on every screen (the shelf's pills, the tray's faces at least 30 px, a word pop's clearance), a tap area or a light's box on the page, a word pop or the serve's faces kept whole inside what the screen shows. A game asks the frame, so no game reads the camera, the view or the window itself, and a change to how the screen is fitted is made in one place.
 
 Who calls it: chai (Sprint 20 steps 1-2: `{top, base, far, draw: true}`, band `shelf`; its hob row, tray and pans are laid out from `play`, its shelf row between `bottom`'s edges); eggs (Sprint 20 batch 1: the same call, band `shelf`; its hob, pot, pan and tray from `play`, inset 8 from its sides and never closer than 24 to the view's; its shelf row between `bottom`'s edges; its table a zone the size of `Cook.Frame.sheet`; no option added).
+Daar (Sprint 20 batch 1, s20-b1-daar): `{top}` for its play area each phase (its x's are shares of `play.w` in its settings' scene, its hob's group centred in `play`), `{top, far, draw: true}` in the cook phase, band `tray`; the word pop's top, the pills' scale and the badge's floor from the frame's `view()` and `px`.
+Chop: its own frame area `{top, base, far, draw: true}`, band `tray`; the board's group centred in `play`, which is the part its **host** lends it (daar: `Cook.Frame.lend`, its settings' `chopRoom`, today the whole) or, alone and in chaat's chop-game, the whole; its well done kept off the side panel and cog with `toSheet`. The host never tells chop its layout (SH-259): the frame does.
 
 ## The size chain (Sprint 20 batch 1, maani)
 Play area → stations → contents. **`area.row(stations, {max, min, room})`** (also `Cook.Frame.row(play, stations, opts)`): a game names its stations left to right, each `{share, w, h}`: its share of the row's unit (equal to start, 1 each; a game may give its own, in its settings) and its footprint for one unit (a board `1 x 1`; a hob `1.15 x 1.63` of its tawa). The frame gives:
@@ -45,4 +49,4 @@ The game sizes its contents from its stations' `size` (maani: the chakla, the ro
 **`Cook.Frame.taps(S, () => [[a, b], thing, ...])`** → `stop()`: a tap's room (chai's SH-288 rule, Zafar 13 Nov: "increase the tap targets as much as you can without changing the look"): each thing named takes a whole 48 CSS px either way by an invisible hit area, nothing drawn changes; a pair side by side (a burner's face and its knob) shares the room between them, meeting at the midpoint. Run each frame; works only when a hit area, a place or the scale is new. Who calls it: maani (the hob's face and knob). Chai keeps its own copy (its boxes are frozen).
 
 ## Counts (may only go down)
-`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), eggs 12 (14 Nov: 0 after batch 1), maani-line 15 (14 Nov: 0, batch 1), corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
+`node build/tools/review/frame-counts.mjs`. 13 Nov: chai-tray 29 (14 Nov: 24 after step 1, 0 after step 2), daar 8 and chop 7 (14 Nov: 0 each, s20-b1-daar), eggs 12 (14 Nov: 0 after batch 1), maani-line 15 (14 Nov: 0, batch 1), corn 11 screen reads; flow.js 31, serve.js 5, ui.js 6, station-lib.js 3, stations.js 3 lines naming a game.
