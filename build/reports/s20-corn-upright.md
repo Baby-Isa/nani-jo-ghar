@@ -23,7 +23,7 @@ Decisions 36-38. Files: `corn.js`, `corn.json`, corn's cut pictures (`s20-corn-u
 CK-127 to CK-131 built; CK-132 built except the drop-down (call 1). Not mine: contract-83, a side-panel card over Nana's face (the base has it).
 
 ## Proof
-- **Corn's gate** (round 2, final code): checks pass 3.3 min; contract FAIL 6.8 min, 2 blocking: contract-83 ×1 (kit) and contract-109 ×1 (hint, 740x320: 66af686's skip never fires because the probe sees only the bottom row; told the orchestrator). Advisory: -119 ×8, -37 ×2, -78 ×1; -112, -113, -114 and -129 are 0.
-- **Chai's gate:** CHAI_LINE
-- **Side by side:** SBS_LINE
+- **Corn's gate** (gate-20261115T0925-corn, after merging 41eae54): checks pass 2.4 min; contract FAIL 6.6 min, 4 blocking, all contract-83 (a side-panel card over Nana: the kit's or the lift's, left as the orchestrator said). Advisory: -119 ×8, -78 ×4, -37 ×2; -109, -112, -113, -114 and -129 are 0.
+- **Chai's gate** (gate-20261115T0934-chai-tray): checks pass 2.6 min; boxes **pass** 3.5 min (identical); contract FAIL 22.5 min, 1 blocking: contract-112 on chai's own aadu card at L4 740x320 (no chai file changed).
+- **Side by side:** `build/screenshots/sidebyside/corn-L3-round2/` (judge-batch.md; 5 contract breaks listed: -78 2, -117 2, -37 1, as the round-1 run had).
 - Round 1's proof: this report at commit 1e6a041.
