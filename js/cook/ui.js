@@ -710,6 +710,15 @@
     guideKey = null;
     if (stepper && stepper.current) stepper.close();
     if (guide) showPraise();
+    // SH-308 (the Fable eye judge for Zafar, decision 38: eggs L4 and maani L4 left a person's row open with no tick at well done, eggs'
+    // third row off the panel at 1280x665): the well done closes the whole order in every game, as chai's counter does (js/cook/flow.js
+    // cardsDone): every row left ticks and every person's card folds, so the folded cards sit together in the panel. A game that serves
+    // through the kit's review faces (Cook.Kit.serve) reached the well done without it. Done twice (chai's counter), nothing moves
+    try {
+      M.ladders().forEach((L) => M.closeItem([], L.dish || 0, { all: true }));
+    } catch (e) {
+      /* no order card: nothing to tick */
+    }
   };
   function restoreGuide() {
     if (!guide) return;
