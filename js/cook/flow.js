@@ -1066,8 +1066,10 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
    */
   function servePlanOf(dish, who) {
     if (dish && dish.recipe === "corn" && Array.isArray(dish.plates) && dish.plates.length) {
-      const name = Cook.Serve.cfg().dishes["corn-upright"] ? "corn-upright" : "corn";
-      return dish.plates.map((q) => ({ who: q.who || who, dish: name, n: 1 }));
+      // (CK-137, round 3: each asker's own cob as it was served, with their toppings: the dish corn drew as their round ended)
+      const D = Cook.Serve.cfg().dishes;
+      const base = D["corn-upright"] ? "corn-upright" : "corn";
+      return dish.plates.map((q) => ({ who: q.who || who, dish: q.who && D[`corn-${q.who}`] ? `corn-${q.who}` : base, n: 1 }));
     }
     return Cook.Serve.plan(dish, who);
   }
