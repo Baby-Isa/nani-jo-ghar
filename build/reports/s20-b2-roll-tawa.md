@@ -28,6 +28,16 @@ Roll-tawa (the lab's two-zone proof) reads only its play area, as maani does: `C
 - **No box spec for roll-tawa** (`boxes.mjs`), so `--rules` cannot run.
 - **Advisory, mechanics' or kit's:** -120 (no kit shadow), -114 (`tawa.js` plate shrinks the chapati), -113 (the pill under the side cog), -119.
 
+## Round 2 (RT-01 to RT-04, Fable standing in for Zafar, decision 38)
+| Row | State | Proof or reason |
+|---|---|---|
+| RT-01 | built | the count's pill over the board (`UI.tallyAt`), never the corner; contract-113: 0 (was 14) at four sizes, L1 and L2 (`rt-r2c`) |
+| RT-02 | built | `onboard` in roll-tawa's settings, put in `data.onboard` by its code: the kit's dim and gold box on the board; lights 12 judged, 0 failing (`rt-r2c`) |
+| RT-03 | built | the lab's order is a maani dish: pop-out "char maani"; the card's row is the engine's maani sentence. Its words ("Muke maani khapeti.") are maani's, against Nana's bubble "Muke char maani khapanti." (the open khapanti/khapeti question for Mum) |
+| RT-04 | built, except the sleeve's square end | each tawa's body on its burner (the picture moved by its body's measured offset), Nani's box per step on maani's step keys ("Roll it round.", "Take a dough ball.", "Firai!"), Nana's face beside the plate, the turner raised so the sleeve ends above the tray. The square end is the hand rig's (`hands.js`; art ART-84) |
+
+**Kit faults found (not my files):** `Tally.place`'s keep-inside reads an empty badge's box as (0,0) and pushes it one stage-width right; `UI.onViewFit` did not re-place the tally when the side panel opened. Roll-tawa works round both.
+
 ## Proof
 The BEFORE evidence was not played at launch. The spec names no rows, so there is no before or after folder.
 - **frame-counts:** roll-tawa 4 -> 0; chai-tray 0.
