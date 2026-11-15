@@ -616,9 +616,15 @@ export function check109few(r, tl, add) {
   if (!isCookFlow(r.flow) || !ev(tl, "s19shelf").length || /^cook:fetch\b|^lab:cook\/fetch\b/.test(r.flow || "")) return;
   const line = CHAI_LINE[r.size];
   const tEnd = r.t0 && r.ms ? r.t0 + r.ms : tl.length ? tl[tl.length - 1].t : 0;
+  // (a shelf laid in two rows, corn's six bowls on a short phone, has no single base line to keep: Zafar, 15 Nov, decision 36:
+  // "two rows of three", fitted inside the stone tray and lined up; a page whose shelf ever shows feet more than 20 px apart is skipped)
+  const twoRows = ev(tl, "s19shelf").some((e) => { const f = (e.items || []).filter((x) => !x.rot).map((x) => x.foot); return f.length >= 3 && Math.max(...f) - Math.min(...f) > 20; });
+  if (twoRows) return;
   for (const { e } of heldSamples(tl, "s19shelf", 300, tEnd)) {
     const it = (e.items || []).filter((x) => !x.rot);
     if (!it.length || it.length >= 3) continue;
+    // (the shelf's band holds only its bottom row; a second row of worded things with pills standing above it is the two-row shelf)
+    if (line && sceneAt(tl, e.t).list.filter((x) => x.pill && x.word && !it.some((i) => i.id === x.word) && x.pill[1] < line.chip - 30 && x.pill[1] > line.chip - 140).length >= 2) continue;
     if (line) {
       const off = it.find((x) => Math.abs(x.foot - line.foot) > 4);
       if (off) { add("contract-109", e.t, `the shelf item ${off.id} stands ${Math.round(off.foot - line.foot)} px off chai's base line (${line.foot} px at ${r.size}): one line for every shelf`); return; }

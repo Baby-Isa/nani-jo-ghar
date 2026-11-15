@@ -67,6 +67,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
   // 29 Sept (X7): the plate's top keeps the band's top gap (the gap under the chips) plus a hop (St.shelfFit's rule)
   const PLATE_Y = SHELF_TOP + global.Shelf.pad() + 8 + PLATE_D / 2;
   const PLATE_PITCH = 232;
+  // MAA-26: each plate's served picture (made as it stands at the end, Cook.Serve.plated) is this many px across; the last round's go
+  const SERVED_W = 512;
+  const SERVED_TILT = 0.56; // its height for its width: a round plate seen from the side the served pictures are (served/maani: 0.58)
+  const servedTex = [];
   const FAN = [[-17, 9], [17, 3], [-2, -15], [20, -17], [-20, -13]]; // where each maani lands on its plate: fanned, so you can count them
   // MAA-10 (M5, decision 56): a maani sits on the thali's FLAT inner area, never its curled rim. Measured on
   // maani-v2/thali.webp: the flat floor is a circle 0.42 of the picture's width across from its centre.
@@ -363,9 +367,19 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // (Fable's maani flaw 1, STD-E1-05: whose plate it is, from the first frame: the asker's face on its rim, as chai's pans carry
       // theirs; the plate's light, if any, takes it in: Cook.Coach.parts reads img.face)
       if (who && Kit.badge) {
-        const F = Math.round(PLATE_D * 0.3);
-        // (on the rim's corner, clear of a lone maani filling the floor: SH-256, contract-113)
-        img.face = S.track(S.add.image(x + PLATE_D * 0.4, PLATE_Y - PLATE_D * 0.4, Kit.badge(S, who)).setDisplaySize(F, F).setDepth(D.item + 0.5));
+        /*
+         * MAA-27 (the Fable eye judge standing in for Zafar, 15 Nov: "740x320 mid-cook: about half chai's"): the face circle is chai's
+         * tray face's size, by chai's own rule (CHAI-65, SH-139): the kit's face (Kit.BADGE, the burner faces), on a small screen at least
+         * 30 px as seen, up to 90. On the plate's rim at its outer side (the first of two on the left, else the right: chai's faces
+         * sit in their tray's outer corners), 4 px clear of a lone maani filling the floor (SH-256, contract-113); raised along the rim
+         * as far as 45 degrees while the whole circle stays on the stone tray (its top 4 px under the band's top). SH-183: at the
+         * badge depth, over the maani.
+         */
+        const fd = Math.round(Math.min(90, Math.max(Kit.BADGE || 64, 30 / Math.max(0.01, F.px))));
+        const fr = onPlate(1, true).pr + 4 + fd / 2; // (the face's middle from the plate's)
+        const up = Math.asin(Math.max(0, Math.min(Math.SQRT1_2, (PLATE_Y - fd / 2 - (SHELF_TOP + 4)) / fr)));
+        const side = order.length > 1 && i === 0 ? -1 : 1;
+        img.face = S.track(S.add.image(x + side * fr * Math.cos(up), PLATE_Y - fr * Math.sin(up), Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge != null ? D.badge : D.item + 2.5));
       }
       dones[type] = { x, y: PLATE_Y, img, n: 0 };
     });
@@ -1010,6 +1024,57 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       S.sparkle(d.x, d.y);
       if (ctx.tickCard) ctx.tickCard(key);
     };
+    /*
+     * MAA-26 (the Fable eye judge standing in for Zafar, 15 Nov, L4: two plates cooked, one plate of pale maani served, the dark bajr
+     * ones missing): every plate cooked reaches the serve, each as cooked. A picture of each kind's plate as it stands at the end (the
+     * steel plate, its maani each in its own look, size, place and turn, with the kit's one soft shadow down and to the right, SH-268),
+     * handed to the serve (Cook.Serve.plated): it puts one plate per plate cooked on the asker's tray, as chai's glasses each reach theirs.
+     */
+    const servePlates = () => {
+      if (!Cook.Serve || !Cook.Serve.plated || !S.textures || !S.textures.createCanvas) return;
+      servedTex.splice(0).forEach((k) => S.textures.exists(k) && S.textures.remove(k));
+      const out = [];
+      order.forEach((type) => {
+        const d = dones[type];
+        const on = plated()
+          .filter((it) => it.type === type && it.sprite && it.sprite.active)
+          .sort((a, b) => a.sprite.depth - b.sprite.depth);
+        if (!d || !d.img || !d.img.active || !on.length) return;
+        const pw = Math.abs(d.img.displayWidth);
+        const u = SERVED_W / pw;
+        const H0 = Math.abs(d.img.displayHeight) * u; // (the plate from above, as on the station)
+        const H = Math.round(H0 * SERVED_TILT);
+        const key = `mv-served-${type}-${Cook.run}`;
+        if (S.textures.exists(key)) S.textures.remove(key);
+        const cv = S.textures.createCanvas(key, SERVED_W, H);
+        const g = cv.getContext();
+        // (each picture by its own frame: a sheet's frame, never the whole sheet)
+        const draw = (o, x, y, w, h) => g.drawImage(o.frame.source.image, o.frame.cutX, o.frame.cutY, o.frame.cutWidth, o.frame.cutHeight, x, y, w, h);
+        g.scale(1, SERVED_TILT); // (on the tray the plate is seen from the family's side, as the served pictures are)
+        draw(d.img, 0, 0, SERVED_W, H0);
+        const clamp = (v) => Math.max(4, Math.min(16, v)); // (Kit.shadow's reach, in design px)
+        on.forEach((it) => {
+          const sp = it.sprite;
+          const w = Math.abs(sp.displayWidth) * u;
+          const h = Math.abs(sp.displayHeight) * u;
+          const side = Math.min(w, h) / u;
+          g.save();
+          g.globalAlpha = sp.alpha;
+          g.shadowColor = "rgba(0, 0, 0, 0.26)";
+          g.shadowOffsetX = clamp(side * 0.025) * u;
+          g.shadowOffsetY = clamp(side * 0.034) * u;
+          g.shadowBlur = clamp(side * 0.03) * u;
+          g.translate((sp.x - d.img.x) * u + SERVED_W / 2, (sp.y - d.img.y) * u + H0 / 2);
+          g.rotate(sp.rotation);
+          draw(sp, -w * sp.originX, -h * sp.originY, w, h);
+          g.restore();
+        });
+        cv.refresh();
+        servedTex.push(key);
+        out.push({ kind: type, key, at: 0.5 });
+      });
+      Cook.Serve.plated("maani", who, out);
+    };
     await serve.round({
       items: kinds,
       done: async () => {
@@ -1105,6 +1170,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     });
     await extrasGo;
     tally();
+    servePlates();
     Cook.undoAt = null;
     plates.forEach((b) => S.untap(b));
     ctx.result.maani = plated().length;

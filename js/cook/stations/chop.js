@@ -310,7 +310,28 @@ import { Cook as CookNS } from "../ns.js";
         // (the face clear of the cut pieces, its card inside the play area on whichever side it goes: a left card first, then a right one)
         const tries = [[vl + room, vt, vr, z.Y(BAND.top)], [vl, vt, vr - room, z.Y(BAND.top)]].map((v) => [v, Cook.Kit.praiseSpot(dish, size, { avoid: keep, view: v })]);
         const ok = tries.find(([v, q]) => fits(q, v) && (q.side === "left" ? q.x - r - room >= vl : q.x + r + room <= vr));
-        const at = ok ? ok[1] : Cook.Kit.praiseSpot(dish, size, { avoid: keep, view: [vl, vt, vr, z.Y(BAND.top)] });
+        // DAAR-62 (the Fable eye judge for Zafar, decision 38, chop L1 1280x665: "her circle on a garlic half, the bubble hanging off the
+        // board"): as chai's at its tray's corner, her face and its "Shabash!" card sit inside a corner of the board, clear of every cut
+        // piece and the knife: top left (the card to its right), top right, bottom left, bottom right, the first whose face and card cover
+        // nothing; else the face beside the pieces as before
+        const brd = (S.children.list || []).find((o) => o.active && o.visible !== false && o.texture && o.texture.key === "chop4-board");
+        let corner = null;
+        if (brd) {
+          const B = brd.getBounds();
+          const m = z.L(18);
+          const cardH = z.L(36);
+          const covers = (x0, y0, x1, y1) => keep.some((a2) => x1 > a2.x && x0 < a2.right && y1 > a2.y && y0 < a2.bottom);
+          const inB = (x0, y0, x1, y1) => x0 >= B.x && y0 >= B.y && x1 <= B.right && y1 <= B.bottom;
+          corner = [
+            [B.x + m + r, B.y + m + r, "right"],
+            [B.right - m - r, B.y + m + r, "left"],
+            [B.x + m + r, B.bottom - m - r, "right"],
+            [B.right - m - r, B.bottom - m - r, "left"],
+          ]
+            .map(([x, y, side]) => ({ x, y, side, c: side === "right" ? [x + r, y - cardH, x + r + room, y + cardH] : [x - r - room, y - cardH, x - r, y + cardH] }))
+            .find((q) => inB(...q.c) && !covers(q.x - r, q.y - r, q.x + r, q.y + r) && !covers(...q.c) && q.c[0] >= vl && q.c[2] <= vr);
+        }
+        const at = corner || (ok ? ok[1] : Cook.Kit.praiseSpot(dish, size, { avoid: keep, view: [vl, vt, vr, z.Y(BAND.top)] }));
         const look = await Cook.Kit.review(S, { who: d.who || "nani", ok: true, x: at.x, y: at.y, size, k: z.L(1), side: at.side });
         await Cook.wait(400);
         if (look && look.close) await look.close();
