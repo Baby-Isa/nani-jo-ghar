@@ -25,6 +25,10 @@ BEFORE not played at launch (no rows). The base's gate: `contract FAIL 17.3` (26
 - **SEK-32:** the bowls come back onto the band at well done; the word pop moves beside the board in clear marble; the served picture is cut to its skewers; the pill row is one size; the thread tray keeps clear of the cog. **For Zafar:** is "sekelo" in English "barbecue"? (language data: recommend yes)
 - **Pictures:** `build/screenshots/sidebyside/mishkaki-grill-L3-20261115-1041/`. The tool's light needs one after the station starts: sekelo's L3 lights come before it (the card's lessons) or wait for a still stage a child-pace player beats.
 
+## Round 3
+- **The panel:** at each piece and each new skewer it glides to the skewer being threaded (the kit's `UI.followCard` on the first unfinished `.oc-items14` row); at 740x320 that row is whole. Showing only the current skewer's slots at the order is the kit's order drawing (`ui.js` ~3655), more than one line, so I left it.
+- **The word pop** takes the shelf pills' word size (the row's one scale), never under the kit's floor.
+
 ## Proof
 - **frame-counts:** mishkaki-grill 0 (was 2); chai-tray 0.
 - **Round 1:** sekelo `GATE PASS` 18.6 min (0 blocking, 28 pages); chai `GATE PASS` 28.6 min, boxes identical.
@@ -32,3 +36,4 @@ BEFORE not played at launch (no rows). The base's gate: `contract FAIL 17.3` (26
 - **Geometry rules:** no box spec for mishkaki-grill (`boxes.mjs`).
 - **check-change:** `PASSED in 19.5 min`, `build/reports/tiers/change-ded1bef559.md`.
 - **Round 2:** `GATE PASS mishkaki-grill: checks pass 2, contract pass 12; 14 min` (gate-20261115T1049; advisory contract-111 x3, -72 x1). `GATE FAIL chai-tray: checks pass 2.2, contract FAIL 20.6, boxes:chai-tray pass 3.4; 26.2 min` (gate-20261115T1103): boxes identical, one block: contract-112 at `lab:cook/chai-tray@L4` 740x320 (the aadu light). It fails 3 in 3 on the working branch without my commits: not sekelo's.
+- **Round 3:** `GATE PASS mishkaki-grill: checks pass 2.1, contract pass 11.1; 13.2 min` (gate-20261115T1217, 0 breaks).
