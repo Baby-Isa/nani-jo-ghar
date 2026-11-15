@@ -29,4 +29,16 @@ No row in `regressions.md` names roll-tawa (0 'waits for the frame' rows; the br
 - Advisory, mechanics' or kit's: contract-120 (`tawa.js`/`roll.js` sprites without the kit shadow), -114 (`tawa.js` plate shrinks the chapati), -113 (the tally's pill under the side cog), -119 (the dish card at L1).
 
 ## Proof
-PROOF_PLACEHOLDER
+The BEFORE evidence was not played at launch: the spec names no rows (`evidence.mjs --after`: "names no fix-list row"), so there is no before or after folder.
+- **frame-counts:** roll-tawa 4 -> 0; chai-tray 0.
+- **Gates (after merging the working branch, 891f97e):** `GATE PASS roll-tawa: checks pass 2.4, contract pass 0.7; 3.1 min` (0 blocking over 2 pages: the gate plays roll-tawa at L1; advisory 22: -119 x2, -120 x6, -113 x6, -114 x8, as the base's 22). `GATE PASS chai-tray: checks pass 2.4, contract pass 22.1, boxes:chai-tray pass 3.3; 27.9 min` (0 blocking over 38 pages; chai's boxes identical).
+- **Geometry rules:** not run: `boxes.mjs --game roll-tawa --rules` exits "No box spec for roll-tawa" (`build/sandbox/lib/boxes.mjs` GAMES: chai-tray, eggs, maani-line; not my file).
+- **Four sizes** (`s20-b2-roll-tawa-contract2`, cook:roll-tawa): all 4 pages reach their end, 0 page errors; `CONTRACT FAILED: 42 breaks (contract-119 4, contract-120 10, contract-113 12, contract-114 16)`, all advisory, the base's kinds. My L2/L3 runs (`rt-a1`, `rt-a2`): the same plus contract-112 at the pop-up (above).
+- **lab:cook/roll-tawa:** no stage played at 740x320 or 930x430 (871 s each, "no end screen"); roll-tawa is not a lab-host game (`build/sandbox/flows/labs.mjs` COOK_GAMES, no `labs.html` tile). Not checked on the base. The brief's flow list should drop it.
+- **check-change** (`build/reports/tiers/change-891f97eae6.md`): FAILED on scope alone: the four files the merge brought (the orchestrator's 566e5f7: decision 38, SH-306/307), none of mine; play 21 advisory breaks after vs 22 before; film pass.
+- **checks.mjs:** 14 steps pass.
+
+QA: roll-tawa L1-L3 · reviewer: builder (machine checks only; the judge has not seen it) · commit: see branch head
+Auto: checks.mjs ✅ · gate roll-tawa ✅ · gate chai-tray ✅ · contract four sizes ✅ (advisory only) · rules ❌ no spec
+Checklist: LAY ✅ (stations centred, inside the view) · CMP ✅ (kit hob, tray, wash) · TXT/LNG/AUD unchanged · ART: kit pictures only
+Regressions rechecked: none name roll-tawa
