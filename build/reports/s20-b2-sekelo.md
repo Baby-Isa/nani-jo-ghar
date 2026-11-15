@@ -28,6 +28,7 @@ BEFORE not played at launch (no rows). The base's gate: `contract FAIL 17.3` (26
 ## Round 3
 - **The panel:** at each piece and each new skewer it glides to the skewer being threaded (the kit's `UI.followCard` on the first unfinished `.oc-items14` row); at 740x320 that row is whole. Showing only the current skewer's slots at the order is the kit's order drawing (`ui.js` ~3655), more than one line, so I left it.
 - **The word pop** takes the shelf pills' word size (the row's one scale), never under the kit's floor.
+- **Open:** sekelo's rows do not fold at well done after the merged SH-308 (`sidebyside/mishkaki-grill-L3-20261115-1257`, 740x320: the ticked rows and a row of empty slots stay; chai's fold). Not fixed: stopped at the 13:15 deadline.
 
 ## Proof
 - **frame-counts:** mishkaki-grill 0 (was 2); chai-tray 0.
