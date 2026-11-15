@@ -893,6 +893,10 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // (an egg in the pot or the pan covers its middle: with a raw egg in the hand, a tap there puts it in)
       if (held && held.kind === "raw") return putIn(egg.v);
       if (egg.p < ready) {
+        // (CK-122: the eggs fill their vessel and overlap; a tap on an unripe egg lying over a ripe one in the same vessel is the ripe
+        // one's: the child tapped what they saw lit, never a wrong move that brings the help at once, contract-24)
+        const near = egg.v.eggs.find((x) => x !== egg && x.obj && !x.out && !x.lifted && x.p >= ready && Math.hypot(x.obj.x - egg.obj.x, x.obj.y - egg.obj.y) < (x.obj.displayWidth + egg.obj.displayWidth) / 2);
+        if (near) return lift(near);
         S.wiggle(egg.obj);
         return wrong();
       }
@@ -1058,6 +1062,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         if (e.p >= 1 && !e.full) e.full = Date.now();
         if (!was && e.p >= ready) {
           changed = true;
+          // (CK-122: a ripe egg comes up over the others in its vessel, whole to the eye and to the finger)
+          if (e.obj && !e.lifted) e.obj.setDepth(e.obj.depth + 0.05);
           steamPuff(e.at.x, e.at.y - 20, Math.max(60, e.obj.displayWidth * 1.4));
         }
         if (e.fried && !e.out) {
