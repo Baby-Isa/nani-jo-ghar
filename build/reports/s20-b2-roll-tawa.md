@@ -1,6 +1,6 @@
 # s20-b2-roll-tawa: roll-tawa joins the kitchen frame (15 Nov)
 
-Files: `roll-tawa.js`, `roll-tawa.json` (`band`, `onboard`), `kitchen-frame.md`. No frame option added.
+Files: `roll-tawa.js`, `roll-tawa.json`, `kitchen-frame.md`. No frame option added.
 
 ## What changed
 **Round 1.** Roll-tawa reads only its play area, as maani does. The board and the hob are `area.row`'s stations, and each zone is fitted to its station. The sheet regions, footprints and wood crop are deleted.
