@@ -1,51 +1,60 @@
 # s20-b2-roll-tawa: roll-tawa joins the kitchen frame (15 Nov)
 
-Files: `roll-tawa.js`, `roll-tawa.json` (`band: "tray"`), `kitchen-frame.md`. No frame option added; `frame.js` untouched.
+Files: `roll-tawa.js`, `roll-tawa.json` (`band`, `onboard`), `kitchen-frame.md`. No frame option added.
 
 ## What changed
-Roll-tawa (the lab's two-zone proof) reads only its play area, as maani does: `Cook.Frame.area({top, far, draw})` and the stone tray. The board and the hob are `area.row`'s two stations, with equal shares and `max` 363 (the tawa's old size). Each mechanic's zone is fitted to its station: its design px times the station's unit. Each zone owns the pointer on its side of the gap. Deleted: the sheet regions, both footprints, the fixed spots and the wood backdrop crop. The roll and tawa mechanics are untouched.
+**Round 1.** Roll-tawa reads only its play area, as maani does. The board and the hob are `area.row`'s stations, and each zone is fitted to its station. The sheet regions, footprints and wood crop are deleted.
+
+**Round 2 (Fable for Zafar, decision 38).**
+- **RT-01:** the count's pill sits over the board, not under the gear.
+- **RT-02:** a first-time script in roll-tawa's settings, so the kit's dim light and gold box show the roll.
+- **RT-03:** the lab's order is a maani dish: the item card "char maani" and the engine's sentence.
+- **RT-04:**
+  - each tawa's body centred on its burner;
+  - Nani's box one step at a time, on maani's step keys;
+  - Nana's face beside the plate;
+  - the turner raised off the tray.
 
 ## What a child sees (every level, every size)
-- Marble worktop and wash, as maani; the left half's wood panel is gone.
-- The board and the hob sit side by side, centred in the worktop. The tawa is never bigger than before. The board matches the tawa: at most 363, was 409. Both shrink on phones.
-- L1: a one-burner hob with lit flames. L2-L3 (tawa level 2): a two-burner hob with two full-size tawas (they were 0.7).
-- The spare dough, the rolled maani waiting and the plate lie on the stone tray.
-- The turner rests beside the hob. With two burners on a phone, it lies on the tray instead.
+- Marble worktop and the stone tray, as in maani.
+- The board and the hob are centred; on phones they shrink. L2-L3 has two burners with two full-size tawas.
+- Each tawa sits on its flames.
+- The order pops out as "char maani". Nani says one step at a time: "Roll it round.", "Take a dough ball.", "Firai!".
+- The first roll is lit with a dim and a gold box.
+- The pill sits over the board.
 
 ## Calls taken while Zafar was away
-1. The board on marble, no wood panel. Other: a wood panel behind the board.
-2. The knob is drawn but does not turn (the old painted hob's didn't either). Other: maani's working knob, which would be a mechanic change.
+1. The board on marble, no wood panel. Other: a wood panel behind it.
+2. The knob is drawn but does not turn. Other: maani's working knob (a mechanic change).
 3. Two full-size tawas. Other: the old 0.7.
+4. Nani's step lines are maani's (`maani-line:*`). Other: roll-tawa keys, which need new data rows.
 
 ## Rows
 | Row | State | Proof or reason |
 |---|---|---|
-| (none) | no row names roll-tawa | `grep -i roll-tawa docs/process/regressions.md`: 0 |
+| RT-01 | built | contract-113: 0 (was 14) at four sizes, L1-L2 (`rt-r2c`) |
+| RT-02 | built | lights: 12 judged, 0 failing (`rt-r2c`) |
+| RT-03 | built | pop-out "char maani"; the row is maani's engine sentence, "Muke maani khapeti.", against Nana's bubble "Muke char maani khapanti." (the khapanti/khapeti question for Mum) |
+| RT-04 | built, except the sleeve's square end | that end is the hand rig's (`hands.js`, ART-84) |
 
 ## For the orchestrator (not my files)
-- **contract-112 (blocking), the lab's order pop-up at L2+ on phones:** the light around the eye-covered picture reads "not one box" (81% lit; 930x430: "corners too round"). It fires before the station opens. The base f794015 breaks the same (`rt-base-l2`). It is the kit's (`ui.js` word pop, `.wp-eye`). The gate plays only L1, so it passes.
-- **`lab:cook/roll-tawa` played no stage** (871 s each at 740x320 and 930x430). Roll-tawa is not a lab-host game (`labs.mjs` COOK_GAMES). Not checked on the base. Drop it from the flow list.
-- **No box spec for roll-tawa** (`boxes.mjs`), so `--rules` cannot run.
-- **Advisory, mechanics' or kit's:** -120 (no kit shadow), -114 (`tawa.js` plate shrinks the chapati), -113 (the pill under the side cog), -119.
-
-## Round 2 (RT-01 to RT-04, Fable standing in for Zafar, decision 38)
-| Row | State | Proof or reason |
-|---|---|---|
-| RT-01 | built | the count's pill over the board (`UI.tallyAt`), never the corner; contract-113: 0 (was 14) at four sizes, L1 and L2 (`rt-r2c`) |
-| RT-02 | built | `onboard` in roll-tawa's settings, put in `data.onboard` by its code: the kit's dim and gold box on the board; lights 12 judged, 0 failing (`rt-r2c`) |
-| RT-03 | built | the lab's order is a maani dish: pop-out "char maani"; the card's row is the engine's maani sentence. Its words ("Muke maani khapeti.") are maani's, against Nana's bubble "Muke char maani khapanti." (the open khapanti/khapeti question for Mum) |
-| RT-04 | built, except the sleeve's square end | each tawa's body on its burner (the picture moved by its body's measured offset), Nani's box per step on maani's step keys ("Roll it round.", "Take a dough ball.", "Firai!"), Nana's face beside the plate, the turner raised so the sleeve ends above the tray. The square end is the hand rig's (`hands.js`; art ART-84) |
-
-**Kit faults found (not my files):** `Tally.place`'s keep-inside reads an empty badge's box as (0,0) and pushes it one stage-width right; `UI.onViewFit` did not re-place the tally when the side panel opened. Roll-tawa works round both.
+- **Chai's gate fails on the base, not on my change:** 24ac6d5 alone gives the same contract-112 (`lab:cook/chai-tray@L4@740x320`, aadu's light 48 px short) and boxes 0/8 identical. My files never load in chai.
+- **Kit faults:**
+  - `Tally.place` pushes an empty badge one stage-width right.
+  - `UI.onViewFit` did not re-place the tally.
+  - Roll-tawa works round both.
+- **Flows:** `lab:cook/roll-tawa` cannot play: roll-tawa is not a lab-host game.
+- **Rules:** there is no box spec for roll-tawa, so `boxes.mjs --rules` cannot run.
+- **Advisory breaks**, the mechanics' or the kit's: -120, -114, -119.
 
 ## Proof
-The BEFORE evidence was not played at launch. The spec names no rows, so there is no before or after folder.
+There was no BEFORE evidence: the spec names no rows.
 - **frame-counts:** roll-tawa 4 -> 0; chai-tray 0.
-- **Gates, after the merge (891f97e):**
-  - `GATE PASS roll-tawa: checks pass 2.4, contract pass 0.7; 3.1 min`: 0 blocking over 2 pages; advisory 22, the base's 22.
-  - `GATE PASS chai-tray: checks pass 2.4, contract pass 22.1, boxes:chai-tray pass 3.3; 27.9 min`: 0 blocking over 38 pages; chai's boxes are identical.
-- **Four sizes** (`s20-b2-roll-tawa-contract2`): 4 of 4 pages reach their end, 0 page errors; `CONTRACT FAILED: 42 breaks (contract-119 4, contract-120 10, contract-113 12, contract-114 16)`, all advisory.
-- **check-change** (`build/reports/tiers/change-891f97eae6.md`): failed on scope alone, the merge's four files (566e5f7). Play: 21 advisory breaks after, 22 before. Film: pass.
-- **checks.mjs:** 14 steps pass.
-
-QA: roll-tawa L1-L3 · machine checks only, not yet judged · LAY ✅ CMP ✅ (kit hob, tray, wash) · TXT/LNG/AUD unchanged · rules: no spec
+- **Gates after merging 24ac6d5:**
+  - `GATE PASS roll-tawa: checks pass 2.4, contract pass 0.7; 3.2 min`: 0 blocking; advisory 15 (was 22).
+  - `GATE FAIL chai-tray: checks pass 2.8, contract FAIL 22.4, boxes:chai-tray FAIL 3.7; 28.9 min`: the base's own faults (above).
+- **Earlier, after merging 891f97e:** `GATE PASS chai-tray ... 27.9 min`, with its boxes identical.
+- **Four sizes** (`rt-r2c`, cook:roll-tawa L1 and L2): 8 of 8 pages end, 0 page errors; 52 advisory breaks (-114 28, -120 20, -119 4), 0 blocking.
+- **Fable's run after** (`rt-pics-after`, 740x320 and 1280x665): both end, 0 page errors.
+- **check-change** (`change-891f97eae6`, round 1): scope only (the merge's files).
+- **checks.mjs:** pass.
