@@ -331,7 +331,10 @@
    },
    "bowl": "brass"
   },
-  "ph-chaat": {},
+  "ph-chaat": {
+   "card": "assets/art/served/chaat.default.r1.webp",
+   "_card": "s20-b2-chaat (decision 38, the orchestrator's call 2, as sekelo's dish card; contract-104, -128, SH-273): the dish card shows the served chaat bowl"
+  },
   "ph-samosa": {
    "card": "assets/cook/items/samosa-fried-golden-t.webp"
   },

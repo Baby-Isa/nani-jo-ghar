@@ -1159,14 +1159,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * The worktop and the shelf band (§3, §7, ART-41): the kitchen kit's wash over the marble (Cook.Kit.worktop) and its stone band
    * (St.stoneBand; no shelf strip: sekelo's bowls are top-down, Zafar, 29 Sept). full (s08 w3B, SEK-20): the grill's screen has
    * no shelf (one job per phase, SEK-08): the wash all the way down, so the cooked rack never straddles the band's edge.
-   * Drawn past the design box (the stage fill shows more worktop above and at the sides, Cook.view).
+   * Drawn past the design box (the stage fill shows more worktop above and at the sides). Sprint 20 batch 2 (s20-b2-sekelo): the
+   * kitchen frame's (Cook.Frame.area: its wash and its band, js/cook/frame.js); SK.frame is the same floor plan, nothing drawn, for a
+   * screen that lays out before it draws. -> the frame's area (play, bottom and the screen's answers)
    */
+  SK.FAR = 2000;
+  SK.frame = ({ full = false } = {}) => Cook.Frame.area(null, { top: full ? Cook.Frame.sheet.h : V2.SHELF_TOP, far: SK.FAR });
   SK.band = function (S, z, { full = false } = {}) {
-    const FAR = 2000;
-    if (full) return Cook.Kit.worktop(S, { top: 900, far: FAR });
-    Cook.Kit.worktop(S, { top: V2.SHELF_TOP, far: FAR });
+    const F = Cook.Frame.area(S, { top: full ? Cook.Frame.sheet.h : V2.SHELF_TOP, far: SK.FAR, draw: true });
     // (SH-248: the bottom element is the game's settings' band, data/stations/mishkaki-grill.json "tray")
-    return Cook.Stations.stoneBand(S, { top: V2.SHELF_TOP, far: FAR, depth: D.bg + 1.2, game: "mishkaki-grill" });
+    if (!full) F.stoneBand(S, { game: "mishkaki-grill" });
+    return F;
   };
   /**
    * The shelf: identical slots (one bowl size), grouped by kind with a small gap (meat | vegetables),
@@ -1182,9 +1185,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   SK.goLeft = function (S, label = "") {
     try {
       const b = document.querySelector("#go-btn");
-      const cv = S && S.game && S.game.canvas;
-      const v = Cook.view;
-      if (!b || !b.parentNode || !cv || !v || !v.s || !v.w) return null;
+      if (!b || !b.parentNode) return null;
       const c = b.cloneNode(true);
       c.removeAttribute("id");
       c.classList.remove("hidden", "glow");
@@ -1204,21 +1205,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       im.style.width = "calc(var(--njg-go-pic) * 1.6)"; // the picture at its widest (buttons.css max-width)
       b.parentNode.appendChild(c);
       const r = c.getBoundingClientRect();
-      const cr = cv.getBoundingClientRect();
       c.remove();
-      if (!r.width || !cr.width) return null;
-      return v.left + (r.left - cr.left) / (cr.width / v.w) / v.s;
+      if (!r.width) return null;
+      // (its left edge on the sheet: the frame's answer, Cook.Frame.toSheet)
+      return Cook.Frame.toSheet(r.left, r.top).x;
     } catch (e) {
       return null;
     }
   };
-  SK.shelf = function (S, z, groups, { level = 1, go = null } = {}) {
+  SK.shelf = function (S, z, groups, { level = 1, go = null, F = SK.frame() } = {}) {
     // (SH-112: the bigger bins narrow to fit a long row clear of the tick)
     // s08 w8A: and clear of the go-on button where it is wider than V2.RIGHT (a short phone: it covered a bin)
     const goX = go != null ? SK.goLeft(S, go) : null;
-    const right = Math.min(1600 - V2.RIGHT, goX != null ? goX - 24 : Infinity);
-    // (the shared kit's slots, Shelf.slots: one pitch per bowl, the row centred in [0, right] with 40 px kept at each end)
-    const { slotW, x } = global.Shelf.slots(groups, { span: [40, right - 40], pitch: V2.PITCH, groupGap: V2.GROUP_GAP });
+    // (Sprint 20 batch 2: the shared kit's slots, Shelf.slots: one pitch per bowl, the row centred between the frame's bottom row's
+    // edges, as chai's shelf, keeping V2.RIGHT clear at its right end for the go-on button and 40 px short of that button)
+    const B = F.bottom;
+    const right = Math.min(B.x + B.w - V2.RIGHT, goX != null ? goX - 64 : Infinity);
+    const { slotW, x } = global.Shelf.slots(groups, { span: [B.x, right], pitch: V2.PITCH, groupGap: V2.GROUP_GAP });
     const out = {};
     groups.forEach((group) => group.forEach((id) => (out[id] = SK.bowl(S, z, id, x[id], level, Math.min(V2.BOWL_W, slotW - 20)))));
     // SH-255 (the eye judge beside chai, 10 Nov: the pills at 740x320 a third of chai's): the row's pills at one scale, as large as
@@ -1226,15 +1229,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const SH = global.Shelf;
     const ids = [].concat(...groups).filter((id) => out[id] && out[id].chip && out[id].chip.faceW);
     if (SH && SH.pillScale && SH.pillWant && SH.pillGap && ids.length) {
-      let wts = 1;
-      try {
-        wts = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
-      } catch (e) {
-        /* no view yet: as drawn */
-      }
-      const ppw = wts * z.k;
+      // (the screen's px per sheet unit: the frame's answer)
+      const ppw = F.px * z.k;
       const fit = SH.pillScale(ids.map((id) => ({ x: x[id], w: out[id].chip.faceW(out[id].chip.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW });
-      const y = Math.min(V2.CHIP.y, 896 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
+      // (kept 4 above the bottom row's foot)
+      const y = Math.min(V2.CHIP.y, B.y + B.h - 4 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
       ids.forEach((id) => {
         const c = out[id].chip;
         if (c.face && c.capW !== fit.cap) c.face(c.showsWord, fit.cap);
@@ -1275,7 +1274,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   // (the shared kit's word pop, Juice.P.pop: the card, the speaker and the word rise into place, hold and fade; placed over (x, y)
   // inside the view by Juice.popAt; never under 14 px as rendered, Cook.Kit.textFloor). Sekelo says the word (its voice).
   SK.pop = function (S, z, id, x, y, { speak = true } = {}) {
-    const v = Cook.view || {};
+    const v = Cook.Frame.view(); // (the part of the sheet on screen: the frame's answer)
     const k = Math.max(z.k, Cook.Kit.textFloor(S, 36));
     const c = global.Juice.P.pop(S, (W, H) => global.Juice.popAt({ x, y }, W, H, { top: v.top || 0 }), Cook.display(id), { k, depth: D.fx + 3, top: v.top || 0 });
     if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.popWord(id);
@@ -1409,7 +1408,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   SK.rackLong = function (S, z, { x, y, k, wide }) {
     const R = V3.rack;
-    const tr = R.tray || [6 / 900, 713 / 900];
+    const tr = R.tray || [TRAY_RIM, 713 / 900];
     const s = z.L(k);
     const cx = z.X(x);
     const cy = z.Y(y);
@@ -1497,10 +1496,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   SK.trayFace = function (S, z, img, who, { corner = "right" } = {}) {
     if (!img || !who || !Cook.Kit || !Cook.Kit.badge) return null;
-    const UI = Cook.UI;
     const R = V3.rack;
     const tr = R.tray || [0, 1];
-    const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+    const perPx = Math.max(0.01, Cook.Frame.px()); // (the screen's scale: the frame's answer)
     const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
     const box = img.rackBox || { x: img.x, y: img.y, w: R.w * Math.abs(img.scaleX), h: R.h * Math.abs(img.scaleY) };
     const w = box.w;
@@ -1626,16 +1624,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * (V3.rack), so two trays a small gap apart stand 1.808 canvases from the top tray's rim to the lower tray's foot, the lower
    * tray's handles hanging 0.2 of a canvas below; the grill picture is V3.grill.w x h. -> LAYOUT3's shape, design px, no lift.
    */
-  const TRAY_STACK = 0.993 - 6 / 900 + 0.03 + 0.792; // canvases from the top tray's rim to the lower tray's foot
-  const layout3 = (z, long = false) => {
-    const v = Cook.view || {};
-    const k = z.k || 1;
-    const d = (wy) => (wy - z.Y(0)) / k;
-    const dX = (wx) => (wx - z.X(0)) / k;
-    const top = v.top != null ? d(v.top) : 0;
-    const bot = v.bottom != null ? d(v.bottom) : 900;
-    const left = v.left != null ? Math.max(-200, dX(v.left)) : 0;
-    const right = v.right != null ? Math.min(1800, dX(v.right)) : 1600;
+  const TRAY_RIM = 6 / 900; // the tray picture's body starts this far down its canvas (measured on the art)
+  const TRAY_STACK = 0.993 - TRAY_RIM + 0.03 + 0.792; // canvases from the top tray's rim to the lower tray's foot
+  // (Sprint 20 batch 2: this screen has no band: the frame's play area F, down to its bottom row's foot, less 40 of PAD at each side)
+  const layout3 = (F, long = false) => {
+    const top = F.play.y - 16;
+    const bot = F.bottom.y + F.bottom.h;
+    const left = F.play.x - 48;
+    const right = F.play.x + F.play.w + 48;
     const PAD = 56;
     const R = V3.rack;
     const gAsp = V3.grill.w / V3.grill.h;
@@ -1650,7 +1646,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const y0 = (top + bot) / 2 - (G * (1 + below)) / 2;
     const bamboo = (R.sticks[1][0][2] - R.sticks[1][0][1]) * Hc;
     const trayX = x0 + (G * trayW) / 2;
-    const rawY = y0 - (6 / 900) * Hc + Hc / 2;
+    const rawY = y0 - TRAY_RIM * Hc + Hc / 2;
     const cookedY = rawY + (0.993 + 0.03) * Hc;
     const gx = x0 + G * (trayW + gapX) + (G * gAsp) / 2;
     const gy = y0 + G / 2;
@@ -1679,53 +1675,48 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * rings' icons need a little room above the grill and the handles hang below it: the group (icons to handles) is what is centred.
    * -> LAYOUT3's shape (design px, no lift), with tray (the cooked tray's box) and band (the raw places).
    */
-  const layout5 = (z, S) => {
-    const v = Cook.view || {};
-    const k = z.k || 1;
-    const d = (wy) => (wy - z.Y(0)) / k;
-    const dX = (wx) => (wx - z.X(0)) / k;
-    const top = v.top != null ? d(v.top) : 0;
-    const left = v.left != null ? Math.max(-200, dX(v.left)) : 0;
-    const right = v.right != null ? Math.min(1800, dX(v.right)) : 1600;
-    const BT = V2.SHELF_TOP;
-    const BB = 900;
+  const layout5 = (z, S, F) => {
+    // (Sprint 20 batch 2, s20-b2-sekelo: laid out in the kitchen frame's play area and bottom row, js/cook/frame.js; the grill and the
+    // tray are the frame's row of two stations, F.row, a skewer's length M its unit; never the screen's or the sheet's numbers)
+    const P0 = F.play;
+    const BT = F.bottom.y;
+    const BB = F.bottom.y + F.bottom.h;
     const GK = Cook.GrillKit;
     const G = GK.ART.grill;
-    const PAD = 32;
+    const ROW_IN = 8; // (the group kept this far inside the play area's sides, as corn's)
     const FACE = 90; // (the tray's face circle, at most 90 design px, sits over its top-left corner, its middle above the rim: SK.trayFace)
-    const vl = Math.max(56, left + PAD);
-    const vr = Math.min(1544, right - PAD);
-    const spanTop = top + 16;
-    const spanBot = BT - 28;
+    const P = { x: P0.x + ROW_IN, y: P0.y, w: P0.w - 2 * ROW_IN, h: P0.h };
+    const vl = P.x;
+    const vr = P.x + P.w;
+    const spanTop = P.y;
+    const H = P.h;
     const gH = 1 / (G.near - G.far); // the grill's height per unit of M
     const gW = (gH * G.w) / G.h;
     const ACROSS = 1.2; // the cooked tray's width per M: four skewers upright in its well, the mock's tray's own shape about
     const box = SK.deepBox(1, ACROSS, S); // (per unit of M)
     const GAP = 0.08;
     const hang = (SK.stickEnd(S) - V3.HANDLE) / (V3.HANDLE - V3.TIP); // the handle below the near rim, per M
-    const ICON = 56; // (the ring's icon over its top: 32 + its 22 radius, design px; the ring's top is 0.122 M under the far rim)
-    const H = spanBot - spanTop;
-    const a = Math.max(G.far * gH, box.far);
-    // (above the far rims: the grill's top, the rings' icons, the face circle's top over the tray's rim)
-    const above = (M) => Math.max(a * M, ICON - 0.122 * M, FACE * 0.7 + box.far * M);
-    const tall = (M) => M * (1 + hang) + above(M);
-    const Mh = Math.min(H / (1 + hang + a), (H - ICON) / (1 + hang - 0.122), (H - FACE * 0.7) / (1 + hang + box.far));
-    const Mw = (vr - vl) / (gW + GAP + ACROSS);
-    let M = Math.max(120, Math.min(Mw, Mh));
-    let x0 = (vl + vr) / 2 - (M * (gW + GAP + ACROSS)) / 2;
-    let farY = spanTop + (H - tall(M)) / 2 + above(M);
+    // (above the far rims: the face circle's top over the tray's rim, FACE * 0.7 + its rim; it is always more than the grill's top or
+    // the rings' icons, 56 design px less 0.122 M: the row's room; below them a skewer, M, and its handle)
+    const room = FACE * 0.7;
+    const down = 1 + hang + box.far;
+    const stations = [{ w: gW, h: down }, { w: ACROSS, h: down }];
+    const rowAt = (max) => Cook.Frame.row(P, stations, { room, gapUnit: GAP, min: 120, max });
+    let R = rowAt();
+    let M = R.unit;
+    let x0 = R.x;
+    let farY = R.y + box.far * M;
     // SEK-29 (the S19 gate's eye judge, 12 Nov: "the cog clear of the tray"): where the settings cog (top right, over the play area)
     // would sit on the cooked tray's corner, the group moves left by the overlap, as far as the view's left margin allows; its size
     // is kept (the grill as big as the height allows, contract-115)
     try {
-      const UI = Cook.UI;
       const cog = global.document && document.querySelector("#side-cog, [data-njg-zone=cog]");
       const cr = cog && cog.getBoundingClientRect ? cog.getBoundingClientRect() : null;
-      if (cr && cr.width > 0 && UI && UI.worldToScreen) {
-        const p0 = UI.worldToScreen(0, 0);
-        const ppw = UI.worldToScreen(1, 0).x - p0.x || 1;
-        const cogLeft = dX((cr.left - p0.x) / ppw);
-        const cogBottom = d((cr.bottom - p0.y) / ppw);
+      if (cr && cr.width > 0) {
+        const c = F.toSheet(cr.left, cr.bottom);
+        const cogLeft = c.x;
+        const cogBottom = c.y;
+        const left = F.view().left;
         const trayRight = x0 + M * (gW + GAP + ACROSS);
         const trayTop = farY - box.far * M;
         const over = trayRight + 10 - cogLeft;
@@ -1733,15 +1724,16 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (the judge, s19-night-c-ev1, 740x320: "the cog's box sits over the tray's top-right corner in every frame": a phone has no
         // room left to move into; then the group is made just small enough that the tray ends 10 px left of the cog, centred in the
         // room between the view's left margin and the cog, unless it already sits below the cog)
-        const gapD = 6 / ppw / k; // (6 page px between the tray and the cog, at any size: the grill stays at 60% of the height, contract-115)
-        const room = cogLeft - gapD - vl;
-        if (x0 + M * (gW + GAP + ACROSS) + gapD > cogLeft && farY - box.far * M < cogBottom && room > 0) {
-          const M2 = Math.max(120, Math.min(M, room / (gW + GAP + ACROSS)));
+        const gapD = 6 / F.px; // (6 page px between the tray and the cog, at any size: the grill stays at 60% of the height, contract-115)
+        const free = cogLeft - gapD - vl;
+        if (x0 + M * (gW + GAP + ACROSS) + gapD > cogLeft && farY - box.far * M < cogBottom && free > 0) {
+          const M2 = Math.max(120, Math.min(M, free / (gW + GAP + ACROSS)));
           if (M2 < M) {
-            M = M2;
-            farY = spanTop + (H - tall(M)) / 2 + above(M);
+            R = rowAt(M2);
+            M = R.unit;
+            farY = R.y + box.far * M;
           }
-          x0 = Math.max(left + 8, vl + (room - M * (gW + GAP + ACROSS)) / 2);
+          x0 = Math.max(left + 8, vl + (free - M * (gW + GAP + ACROSS)) / 2);
         }
       }
     } catch (e) {
@@ -1753,7 +1745,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const gx = x0 + (gW * M) / 2;
     const gy = farY - G.far * gH * M + (gH * M) / 2;
     const bk = M / 262; // (the ring's sizes were for a 262 skewer)
-    // the band: two rows, two places each, about the view's middle; a skewer there within 15% of its grill length (contract-114)
+    // the band: two rows, two places each, about the play area's middle; a skewer there within 15% of its grill length (contract-114)
     const bh = BB - BT;
     const rowY = (r) => BT + bh * (r ? 0.69 : 0.31);
     const blen = M * 0.88;
@@ -1775,7 +1767,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("grill", {
     station: "grill",
     view: "marble",
-    footprint: { x: 0, y: 0, w: 1600, h: 900 },
+    footprint: Cook.Frame.sheet,
     async run(z, params) {
       const S = z.S;
       const ctx = z.ctx;
@@ -1786,8 +1778,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const dx = params.dx != null ? params.dx : 0;
       const X = (x) => z.X(x + dx);
       // the scene is raised into the middle of a taller stage's worktop (the stage fill); the band keeps z
-      // (S19: the v3 screen is laid out in the view itself, layout3, so it takes no lift)
-      let LIFT = Cook.lift();
+      // (S19: the v3 screen is laid out in the view itself, layout3, so it takes no lift; Sprint 20 batch 2: the old screen's lift, half
+      // the worktop the frame's play area shows above the sheet's top, F.play.y less its 16 in from the view's top)
+      const F0 = SK.frame();
+      let LIFT = Math.round(Math.max(0, 16 - F0.play.y) * 0.5);
       const Y = (y) => z.Y(y) - LIFT;
       const L = (v) => z.L(v);
       const [lo, hi] = k.band;
@@ -1826,12 +1820,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const GKA = Cook.GrillKit && Cook.GrillKit.ART;
       // (finding 8: the grill alone decides it; a tray that did not load is SK.rackDeep's fallback, never the retired rack)
       const deep = v3 && !!GKA && S.textures.exists(GKA.grill.key);
-      const LAY = deep ? layout5(z, S) : v3 ? layout3(z, false) : LAYOUT2;
+      // (Sprint 20 batch 2: laid out in the kitchen frame's play area, SK.frame; the frame draws the wash and the band, SK.band)
+      const LAY = deep ? layout5(z, S, F0) : v3 ? layout3(SK.frame({ full: true }), false) : LAYOUT2;
       if (v3) LIFT = 0;
       const { RACK, GRILL, PLATE, RING } = LAY;
       // (SEK-27: the stone band along the bottom again, its skewers lying on it, as corn's)
-      SK.band(S, z, { full: v3 && !!PLATE.rack && !LAY.band });
-      const quiet = SK.shelf(S, z, shelfIds, { level: z.level });
+      const full = v3 && !!PLATE.rack && !LAY.band;
+      SK.band(S, z, { full });
+      const quiet = SK.shelf(S, z, shelfIds, { level: z.level, F: F0 });
       Object.values(quiet).forEach((b) => {
         // SEK-08 (S05-C3): one job per phase: the grill screen shows the grill alone; the bowls you threaded from (and
         // their word chips) leave with the threading (the S05 judges read the dimmed bowls as a second job)
@@ -2340,9 +2336,33 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (line.blocked && line.blocked() && !rack.includes(null)) return rack.find(Boolean);
         return null;
       };
+      /*
+       * SH-228 (contract-91, the base's L3 #hint at 740x320 and 1280x665: 15 s stuck on the grill screen's tap with no help): the kit's
+       * stuck help (Cook.Coach.stuck, chai's method, as the threading's) while the grill waits for a skewer to be put on: after the
+       * level's wait, Nani's helper card with the kit's light round a skewer on the band. The first one lying there, whichever it is: the
+       * skewers are the child's own, and the review judges them (the light never picks the one the order still needs: the leak test).
+       */
+      let stk = null;
+      let stkFor = null;
+      const stuckOn = (r) => {
+        if (r === stkFor) return;
+        stkFor = r;
+        if (stk) stk.close();
+        stk = null;
+        if (!r || !Cook.Coach || !Cook.Coach.stuck) return;
+        stk = Cook.Coach.stuck({
+          key: "mishkaki-grill",
+          level: Math.max(1, Cook.roundLevel(ctx) || 1),
+          target: [0, 1, 2, 3, 4, 5].map((i) => () => (r.sk && r.sk.active && r.sk.visible !== false ? Cook.Coach.parts(r.sk)[i] || null : null)),
+          current: () => !finished && stkFor === r && rack.includes(r),
+          onHint: () => Cook.onHelp && Cook.onHelp("hint"),
+        });
+      };
       const expectNext = (next) => {
         // a ring nearing its green asks first (the test waits for the green itself)
         const ready = grilling.filter((g) => !g.busy && g.v >= lo - 0.15).sort((a, b) => b.v - a.v)[0];
+        const onBand = next && spots.includes(null) && !ready ? rack.find((r) => r && r.settled && r.sk && r.sk.hit) || null : null;
+        stuckOn(onBand);
         if (ready) {
           z.gauge({ level: ready.v, lo, hi });
           return z.expect({ kind: "timing", x: spotX(ready.spot), y: Y(GRILL.skewerY + RING.dy), key: ready.phase >= k.turns ? "lift" : "turn" });
@@ -2368,6 +2388,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       await done;
       finished = true;
+      stuckOn(null);
       stop();
       if (fstep.key) fstep.done();
       embers.remove();
