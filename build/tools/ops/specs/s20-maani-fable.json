@@ -32,10 +32,10 @@
   "chai-tray.js and every other game's file, js/cook/ui.js, js/cook/flow.js, js/shared/** (the kit: a fault there goes in your report, the kit session fixes it), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"
  ],
  "flows": [
-  "cook:maani",
-  "cook:maani@L2",
-  "cook:maani@L3",
-  "cook:maani@L4"
+  "cook:maani-line",
+  "cook:maani-line@L2",
+  "cook:maani-line@L3",
+  "cook:maani-line@L4"
  ],
  "branch": "s20-maani-fable (yours, on your own cloud machine, from the working branch ccr-7da5e9f0-04g4xm): commit often, push only to it",
  "tasks": [
