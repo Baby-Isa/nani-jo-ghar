@@ -765,6 +765,18 @@
   function row14(row) {
     if (!row.isConnected || !row.offsetParent) return;
     const cards = [...row.querySelectorAll(":scope > .wc14-it")];
+    // SH-310 (the Fable eye judge for Zafar, decision 38, maani L4 740x320 at well done: 'ba nindhi maani' larger than 'hakri wadhi
+    // maani'): one Kutchi size per row too, the smallest the fit gave, as chai's; its dots follow
+    const kk = cards.map((c) => c.querySelector(".wc14-slot-k > .wc14-k")).filter((e) => e && e.offsetParent);
+    const kSizes = kk.map((e) => parseFloat(root.getComputedStyle(e).fontSize) || 0).filter((x) => x > 0);
+    const kMin = kSizes.length ? Math.min(...kSizes) : 0;
+    if (kMin)
+      kk.forEach((e) => {
+        if (parseFloat(root.getComputedStyle(e).fontSize) <= kMin + 0.05) return;
+        e.style.fontSize = `${kMin}px`;
+        const d = e.parentNode && e.parentNode.querySelector(".wc14-dots");
+        if (d) d.style.fontSize = `${kMin}px`;
+      });
     // (a) one English size per row
     const ens = cards.map((c) => c.querySelector(".wc14-slot-e > .wc14-en")).filter((e) => e && e.offsetParent && !e.classList.contains("none"));
     const sizes = ens.map((e) => parseFloat(root.getComputedStyle(e).fontSize) || 0).filter((x) => x > 0);

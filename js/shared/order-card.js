@@ -326,7 +326,52 @@
     const parts = it.parts.map((p, i) => ({ p, i })).sort((a, b) => rank(a.p) - rank(b.p) || a.i - b.i).map((x) => x.p);
     parts.forEach((p) => list.appendChild(row14(p, opts)));
     const atEnd = () => list.classList.toggle("oc-at-end", list.scrollLeft + list.clientWidth >= list.scrollWidth - 4);
+    // SH-307 (the batch 1 pictures, 15 Nov; non-negotiable 6, no clipped words): a row at rest never shows an item card cut by its
+    // edge (daar L4 stir: at the row's end a sliver of the card before, 'ae chi'; maani L4: the third card cut at the right). Once the
+    // row has stood still a moment, a card partly outside the row's edge keeps only its empty frame, its picture, words and speaker faded out (a waiting slot, oc-away, has no words
+    // to cut and stays as it is: the half gap the order's giving shows, Zafar 2 Nov); as the row moves again every card shows, and the
+    // row's own glide brings the next card whole into view (SH-232, settleRow)
+    let restT = 0;
+    const cutNow = () => {
+      restT = 0;
+      if (!list.isConnected) return;
+      const b = list.getBoundingClientRect();
+      if (!b.width) return;
+      const rows = [...list.querySelectorAll(":scope > .oc-row")];
+      // (cards still sliding to their places, the redraw's FLIP: judged where they stop)
+      if (rows.some((r) => r.getAnimations && r.getAnimations().some((x) => x.playState === "running"))) return rest(120);
+      // (the orchestrator, 15 Nov, sekelo L3: the side panel's own foot cut a row through its speakers, at 740x320 and 1280x665: a card
+      // partly past the panel's top or foot, the list it scrolls in, counts as cut too; the panel scrolling shows every card again)
+      const pane = list.closest("#mission, .oc-list, [data-njg-scroll]");
+      const p = pane ? pane.getBoundingClientRect() : null;
+      if (pane && !pane._cut14) {
+        pane._cut14 = true;
+        pane.addEventListener(
+          "scroll",
+          () => {
+            pane.querySelectorAll(".oc-row14 > .oc-row.oc-cut14").forEach((r) => r.classList.remove("oc-cut14"));
+            pane.querySelectorAll(".oc-row14").forEach((l) => l._rest14 && l._rest14());
+          },
+          { passive: true }
+        );
+      }
+      rows.forEach((r) => {
+        const a = r.getBoundingClientRect();
+        const across = a.right > b.left + 1 && a.left < b.right - 1 && (a.left < b.left - 1 || a.right > b.right + 1);
+        const down = !!p && p.height > 0 && a.bottom > p.top + 1 && a.top < p.bottom - 1 && (a.top < p.top - 1 || a.bottom > p.bottom + 1);
+        const cut = !!a.width && !r.classList.contains("oc-away") && (across || down);
+        if (r.classList.contains("oc-cut14") !== cut) r.classList.toggle("oc-cut14", cut);
+      });
+    };
+    const rest = (ms = 160) => {
+      if (restT) clearTimeout(restT);
+      restT = setTimeout(cutNow, ms);
+    };
+    list._rest14 = rest;
     list.addEventListener("scroll", () => {
+      // (moving: every card shows; at rest again, a cut one goes)
+      list.querySelectorAll(":scope > .oc-row.oc-cut14").forEach((r) => r.classList.remove("oc-cut14"));
+      rest();
       atEnd();
       // a child's own scroll: kept until the next tick (OC.settle14)
       if (!list._auto && opts.fold) {
@@ -348,6 +393,11 @@
       list.addEventListener("wheel", kid, { passive: true });
     }
     if (root.requestAnimationFrame) root.requestAnimationFrame(atEnd);
+    // (and drawn, resized or refitted: a card's size can change under a still row, WordCard.fit14)
+    if (root.ResizeObserver) new root.ResizeObserver(() => rest()).observe(list);
+    // (a card landing or ticked, a waiting slot said: its class changes with the row still)
+    if (root.MutationObserver) new root.MutationObserver(() => rest()).observe(list, { attributes: true, subtree: true, attributeFilter: ["class"] });
+    rest(300);
     // (a block's own count and dish over its row, it.title14: samosa's second kind, "ba samosa"; the host's words, written as given)
     if (it.title14) {
       const t = el("div", "oc-block14");

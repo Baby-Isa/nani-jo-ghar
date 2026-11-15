@@ -61,3 +61,18 @@ Branch `s20-b2-chaat`, from `f794015`; `ccr-7da5e9f0` merged again at `41eae54` 
 ## Calls for Zafar
 1. Let a recipe step name the room it lends (`"room"` in `data/cook.json`, lent by `recipes.js`)? **Yes, once a recipe needs one.** None does today.
 2. Make a chaat dish-card picture in the next art run? **Yes.** It clears contract-104 and -128.
+
+## Round 2: CHT-20 to CHT-22 (decision 38, the Fable eye judge)
+| Row | Now | How, or why not |
+|---|---|---|
+| CHT-20 | built | Each layer lies a little narrower than the one beneath (`layers.ring` 0.13, `ringMin` 0.4), so every layer shows round the ones on top: chano at the rim at well done. The bowl as built is handed to the serve (`Cook.Serve.plated`, maani's way) as a picture: its side below the rim, at a bowl's size, so the tray shows what the child made. |
+| CHT-21 | partly | Nani's face and speaker stay in her box. Chop's mechanic gains `boxFace` (her chop card has no face of its own; her box isn't emptied), passed only by `chop-game`, so daar and the Chop tile are unchanged. Nana's line during the chop: **kit**. `ui.js` hides every order card while a station's own card is up (`held`, DAAR-44), so it needs a `ui.js` option, e.g. `addCard(..., {keepOrder})`. |
+| CHT-22 | partly | The spoonful is never under 46 CSS px (`motion.spoonCss`). The tray's bowls are a seventh bigger where there is room (`bowlD` 172, `pitch` 200); at 740 the tray's height still caps them. **Chop's own** (it looks the same in daar and chop alone, so it can't be a chaat-only option): the cut light under the cog at 740, the "hakro" pill over the cut potato, the dim flash at the tameto turn, and the potato on board and tray at once. "The bowl's pill moving on with Nani's line" wasn't clear enough to act on. |
+
+- **Gates:**
+  - `gate-20261115T1039-chaat` PASS: 9.5 min, 0 blocking over 18 pages.
+  - `gate-20261115T1049-daar+chop` PASS: 19.6 min, 0 blocking over 56 pages.
+  - `gate-20261115T1108-chai-tray` boxes identical; contract-112 ×1 (L4 740, the lift's, left as asked).
+- **Tier 0** passes. **Pictures:** `build/screenshots/sidebyside/chaat-L1-20261115-1134/` (before: `chaat-L1-before-r2/`). The served bowl's food reads a little pale at the tray's size.
+- **Calls taken:** the layer ring (other option: holes cut in each later layer); the served picture's tilt 0.66 with a side wall (other option: maani's flat 0.56, which read as a plate).
+

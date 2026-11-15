@@ -106,7 +106,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   Mech.define("chop", {
     station: "chop",
     view: "wood",
-    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null, hop = false, pieces = null, knifeAt = null, peak = null, halves: halfK = null, shadows = null }, k0) {
+    async run(z, { targets = {}, pool = [], only, no = [], tick = false, knifeKey = null, blade = null, onSlice = null, onCount = null, onCall = null, tally = true, timer = null, knobs = null, onRounds = null, firstLight = true, retry: retryRun = false, stepOpen = false, exactDecoys = false, band = null, hop = false, pieces = null, knifeAt = null, peak = null, halves: halfK = null, shadows = null, boxFace = false }, k0) {
       // the caller's knobs for this level (the game's settings file) over the mechanic's own (data.mechanics.chop)
       const k = knobs ? Mech.merge(Object.assign({}, k0), knobs) : k0;
       // S19 (CK-71): the hop, the chop game's own (its numbers: data/stations/chop.json levels[].knobs.hop)
@@ -153,7 +153,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const rowOf = (id) => ({ id, label: Lang.html(Lang.phrase(Lang.countParts(want[id], id)), { hide: dot }), done: false });
         const rows = Object.keys(want).map(rowOf);
         const data = () => ({
-          person: { id: "nani", face: UI.faceUrl ? UI.faceUrl("nani") : "", name: "Nani" },
+          // (CHT-21, boxFace: chaat's chop-game passes it: her face stays in her box, as daar's chop card has it since DAAR-57, so this
+          // card carries none: one face per person, contract-20; every other caller keeps the card's face as before)
+          person: { id: "nani", face: boxFace ? null : UI.faceUrl ? UI.faceUrl("nani") : "", name: "Nani" },
           headline: { html: Lang.html(head), rec: !head.ok },
           // SH-241: each row a 6 Nov item card (the item's card picture, the count in Kutchi, its English by the level)
           items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: Lang.phrase(Lang.countParts(want[r.id], r.id)).en, done: r.done, key: r, say: () => Lang.speak(Lang.phrase(Lang.countParts(want[r.id], r.id))) }) : { label: r.label, done: r.done, key: r })) }],
@@ -167,8 +169,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         try {
           M.addCard("chop-nani", data(), cardOpts);
-          // R4 (contract-20: one face per person): while she asks on her own card, her box keeps only its tools, as in daar's
-          if (UI.guideStrip) UI.guideStrip(true);
+          // R4 (contract-20: one face per person): while she asks on her own card, her box keeps only its tools (CHT-21: with boxFace
+          // the card has no face, so her box keeps hers)
+          if (!boxFace && UI.guideStrip) UI.guideStrip(true);
           own = {
             tickAll() {
               rows.forEach((r) => (r.done = true));
@@ -176,7 +179,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             },
             close: () => {
               M.removeCard("chop-nani");
-              if (UI.guideStrip) UI.guideStrip(false);
+              if (!boxFace && UI.guideStrip) UI.guideStrip(false);
             },
           };
         } catch (e) {
