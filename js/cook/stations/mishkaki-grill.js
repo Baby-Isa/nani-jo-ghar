@@ -33,14 +33,23 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const Mech = Cook.Mech;
   const St = Cook.Stations;
 
+  function juggleZones() {
+    const SH = Cook.Frame.sheet;
+    const tw = Math.round(SH.w * JUGGLE_THREAD);
+    return [
+      { id: "thread", mech: "thread", region: [0, 0, tw, SH.h], footprint: { x: 0, y: 0, w: tw, h: SH.h }, backdrop: "bg:wood", out: "skewers" },
+      { id: "grill", mech: "grill", region: [tw, 0, SH.w - tw, SH.h], footprint: { x: tw, y: 0, w: SH.w - tw, h: SH.h }, in: "skewers" },
+    ];
+  }
+  const JUGGLE_THREAD = 0.29375; // the threading's share of the sheet's width in the juggle (470 of its width)
+
   Mech.combined("mishkaki-grill", {
     station: "mishkaki-grill",
     view: "marble",
     dataFile: "data/stations/mishkaki-grill.json",
-    zones: [
-      { id: "thread", mech: "thread", region: [0, 0, 470, 900], footprint: { x: 0, y: 0, w: 470, h: 900 }, backdrop: "bg:wood", out: "skewers" },
-      { id: "grill", mech: "grill", region: [470, 0, 1130, 900], footprint: { x: 470, y: 0, w: 1130, h: 900 }, in: "skewers" },
-    ],
+    // (the juggle's two zones, level 4 when its settings turn it on: the threading's share of the sheet's width on the left, the grill's
+    // the rest; Sprint 20 batch 2: in shares of the frame's sheet, Cook.Frame.sheet, never its numbers)
+    zones: juggleZones(),
     async run(host, p) {
       // two different mixes (design system 12, level 4): both patterns, one skewer of each
       const order = { skewers: p.skewers || {}, pattern: p.pattern2 ? [p.pattern || [], p.pattern2] : p.pattern || [], who: p.who };
