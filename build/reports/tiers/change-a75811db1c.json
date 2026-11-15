@@ -1,0 +1,248 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "a75811db1c23f956f86979f7b923a1633693e51c",
+ "dirty": false,
+ "date": "2026-11-15T07:05:49.882Z",
+ "base": "1cc630134fa2c2dbe8075fa43ee21f0a9b2c2e02",
+ "games": [
+  "cook:samosa"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:samosa": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [
+  "the brief names no fix-list row: no probes to play"
+ ],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-a75811db1c",
+  "before | after": "build/screenshots/tiers/change-a75811db1c/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-a75811db1c-samosa/films/cook-samosa@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-a75811db1c/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa@740x320 (view-service)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa@930x430 (kind-swipe)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (536, 362) picks word veg-12 (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa#hint@740x320 (view-service)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-92",
+   "where": "cook:samosa#hint@740x320 (hint-nani-says)",
+   "what": "the light round veg-01 covers its neighbour veg-02: it should stop short of it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-92",
+   "where": "cook:samosa#hint@930x430 (hint-nani-says)",
+   "what": "the light round veg-01 covers its neighbour ph-dhana: it should stop short of it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa#hint@930x430 (kind-tap)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (537, 362) picks word ph-dhana (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#returning@740x320 (hint-nani-says)",
+   "what": "a step opened on screen (the light on ph-keema) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-36",
+   "where": "cook:samosa#returning@930x430 (hint-nani-says)",
+   "what": "a step opened on screen (the light on ph-keema) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": true
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@740x320 (samosa-view-service)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@930x430 (samosa-view-service)",
+   "what": "the call \"Samosa hane kadh.\" starts and no light comes with it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-a75811db1c/logs/play.log",
+   "what": "CONTRACT FAILED: 10 breaks (contract-78 4, contract-111 2, contract-92 2, contract-36 2); CHECK FAILED: 68 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-a75811db1c/logs/before.log",
+   "what": "CONTRACT FAILED: 9 breaks (contract-78 5, contract-92 2, contract-36 2); CHECK FAILED: 68 new findings, 0 flows do not reach their end, 0 new page errors, 9 contract breaks",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 12,
+  "before": 12,
+  "breaksAfter": 10,
+  "breaksBefore": 9
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 2.2 min; build/reports/tiers/push-a75811db1c.md",
+   "tail": [
+    "checks ... pass (2.2 min)",
+    "check-push: PASSED in 2.2 min; build/reports/tiers/push-a75811db1c.md"
+   ],
+   "log": "build/screenshots/tiers/change-a75811db1c/logs/push.log",
+   "minutes": 2.2
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s20-b2-samosa.json 1cc630134fa2c2dbe8075fa43ee21f0a9b2c2e02..HEAD",
+   "status": "pass",
+   "code": 0,
+   "line": "scope: all 1 files are \"s20-b2-samosa: samosa joins the kitchen frame\"'s own",
+   "tail": [
+    "scope: all 1 files are \"s20-b2-samosa: samosa joins the kitchen frame\"'s own"
+   ],
+   "log": "build/screenshots/tiers/change-a75811db1c/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:samosa (6 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:samosa,cook:samosa#mistake,cook:samosa#hint,cook:samosa#returning,cook:samosa#takeback,lab:cook/samosa' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-a75811db1c",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 10 breaks (contract-78 4, contract-111 2, contract-92 2, contract-36 2); CHECK FAILED: 68 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+   "tail": [
+    "BREAK contract-78 lab:cook/samosa L1 @ 740x320 [samosa-view-service 08-samosa-view-service.png] 24.3s: the call \"Samosa hane kadh.\" starts and no light comes with it",
+    "BREAK contract-78 lab:cook/samosa L1 @ 930x430 [samosa-view-service 08-samosa-view-service.png] 25.8s: the call \"Samosa hane kadh.\" starts and no light comes with it",
+    "judged per game (contract.md lists each check not judged and why): samosa 107/111",
+    "CONTRACT FAILED: 10 breaks (contract-78 4, contract-111 2, contract-92 2, contract-36 2)",
+    "CHECK FAILED: 68 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+    "07:16:24 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-a75811db1c/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-a75811db1c/logs/play.log",
+   "minutes": 8.3
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 1cc630134f (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:samosa,cook:samosa#mistake,cook:samosa#hint,cook:samosa#returning,cook:samosa#takeback,lab:cook/samosa' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-1cc630134f-a75811db1c",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 9 breaks (contract-78 5, contract-92 2, contract-36 2); CHECK FAILED: 68 new findings, 0 flows do not reach their end, 0 new page errors, 9 contract breaks",
+   "tail": [
+    "BREAK contract-78 lab:cook/samosa L1 @ 740x320 [samosa-view-service 08-samosa-view-service.png] 24.8s: the call \"Samosa hane kadh.\" starts and no light comes with it",
+    "BREAK contract-78 lab:cook/samosa L1 @ 930x430 [samosa-view-service 08-samosa-view-service.png] 25.3s: the call \"Samosa hane kadh.\" starts and no light comes with it",
+    "judged per game (contract.md lists each check not judged and why): samosa 107/111",
+    "CONTRACT FAILED: 9 breaks (contract-78 5, contract-92 2, contract-36 2)",
+    "CHECK FAILED: 68 new findings, 0 flows do not reach their end, 0 new page errors, 9 contract breaks",
+    "07:24:40 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/1cc630134f/build/screenshots/sandbox/tiers-before-1cc630134f-a75811db1c/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-a75811db1c/logs/before.log",
+   "minutes": 8.3
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/1cc630134f/build/screenshots/sandbox/tiers-before-1cc630134f-a75811db1c build/screenshots/sandbox/tiers-change-a75811db1c build/screenshots/tiers/change-a75811db1c/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 304 before|after pictures, 43 not paired; build/screenshots/tiers/change-a75811db1c/before-after/index.html",
+   "tail": [
+    "pairs: 304 before|after pictures, 43 not paired; build/screenshots/tiers/change-a75811db1c/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-a75811db1c/logs/pairs.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "film:samosa",
+   "what": "a first-play film: cook:samosa as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:samosa",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:samosa --sizes 740x320 --no-sheets --run-id tiers-film-a75811db1c-samosa",
+   "status": "pass",
+   "code": 0,
+   "line": "07:25:55 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-a75811db1c-samosa/summary.md",
+   "tail": [
+    "gap     1x  Samosa waar!  [device-voice]",
+    "gap     1x  Tar!  [device-voice]",
+    "gap     1x  Samosa hane kadh.  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "07:25:55 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-a75811db1c-samosa/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-a75811db1c/logs/film_samosa.log",
+   "minutes": 1.1
+  }
+ ],
+ "minutes": 20.1,
+ "ok": false
+}
