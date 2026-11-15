@@ -305,7 +305,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   function shelf(z, S, ids, level, F) {
     // the row laid out by the shared kit's shelf (Shelf.slots, module map piece 9): one group across grid.shelfSpan (shares of the
     // play area's width, clear of the tick, bottom right), centred, each slot the pitch or less
-    const span = GRID.shelfSpan.map((f) => ax(F.play, f));
+    // (SAM-46: centred in the bottom row, its edges the frame's: the span kept clear of the old tick, gone with SH-238, left them off-centre)
+    const span = GRID.shelfSpan.map((f) => F.bottom.x + f * F.bottom.w);
     const { slotW: pitch, x: at } = global.Shelf.slots([ids], { span, pitch: PITCH, groupGap: 0 });
     const items = {};
     ids.forEach((id) => {
@@ -441,6 +442,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     plateFace(z, S, plate, who);
     const items = shelf(z0, S, ids, level, F);
     const P0 = { x: BX, y: BOARD.y + 6 };
+    // (a word pop's middle kept this far in from the board's edges, design px: half a two-word pop and the rim; SAM-46)
+    const POP_IN = { x: 170, y: 70 };
     const folds = Math.max(3, Math.min(4, St.knobInt(k.folds != null ? k.folds : 3)));
     const tile = S.textures.exists("sv3-pastry") ? S.textures.get("sv3-pastry").getSourceImage() : null;
     const under = S.textures.exists("sv4-under") ? S.textures.get("sv4-under").getSourceImage() : null;
@@ -926,7 +929,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // with it ("ba chunda") and say the word alone; L4 the word
         const lvl = level || z.level;
         const cnt = lvl <= 3 && UI.tallyLine ? UI.tallyLine(sheet.got[id], id) : null;
-        pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), pa.x, pa.y - z.L(110), cnt && lvl <= 1 ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
+        // (SAM-46: the pop kept on the board, inside its rim, never over its corner: a top row strip's pop sat half off the board)
+        const bb = board.getBounds();
+        const popX = Cook.clamp(pa.x, bb.x + z.L(POP_IN.x), bb.right - z.L(POP_IN.x));
+        const popY = Math.max(pa.y - z.L(110), bb.y + z.L(POP_IN.y));
+        pop(z, S, cnt ? Lang.plain(cnt) : Cook.display(id), popX, popY, cnt && lvl <= 1 ? { line: cnt, ms: 1200 } : { speakId: id, ms: 1200 });
         const mound = await into;
         if (mound && mound.active) mound.tapReady = true;
         z.progress({ filled: id, n: sheet.got[id] });
@@ -1048,7 +1055,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const foldKey = "sv3-foldcv";
     if (S.textures.exists(foldKey)) S.textures.remove(foldKey);
     const cv = S.textures.createCanvas(foldKey, proto.canvas.width, proto.canvas.height);
-    const fimg = S.track(S.add.image(z.X(P0.x), z.Y(P0.y), foldKey).setDepth(D.item + 0.5).setScale(FULL).setVisible(false));
+    /*
+     * SAM-43 (the Fable eye judge for Zafar, 15 Nov: "today a thumbnail with a dot of mince hanging over the board's lower edge"): the
+     * board's room inside its rim (0.92 x 0.86 of it) holds the close-up at full size above and the waiting strips below it, whole, at the
+     * size they were filled (lay.q), never over the rim; the two together centred down the board. Two waiting fit side by side; three or
+     * more (L3, L4) overlap left to right, each one's filling corner (its bottom left) showing. -> {fy: the close-up's middle, wy: the
+     * waiting row's middle, q: their size}
+     */
+    const FOLD_GAP = 36; // (the close-up's light and its pad clear of the waiting row)
+    const foldRoom = (() => {
+      const innerH = BOARD.h * 0.86;
+      const wq = lay.q;
+      const wh = STRIP_H * wq;
+      const block = Math.min(innerH, STRIP_H + FOLD_GAP + wh);
+      const top = BOARD.y - innerH / 2 + (innerH - block) / 2;
+      return { fy: top + STRIP_H / 2, wy: top + STRIP_H + FOLD_GAP + wh / 2, q: wq, w: LU * STRIP_H * wq, across: BOARD.w * 0.92 };
+    })();
+    const FOLD_AT = { x: P0.x, y: foldRoom.fy };
+    const fimg = S.track(S.add.image(z.X(FOLD_AT.x), z.Y(FOLD_AT.y), foldKey).setDepth(D.item + 0.5).setScale(FULL).setVisible(false));
     fimg.litBounds = pastryBody;
     // (SH-268: the pastry lies flat on the board: the board's shadow is its shadow, never one of its own on the board, contract-120)
     fimg.shadow = board.shadow; // (the strip being folded: its light hugs the pastry, SH-230, contract-105)
@@ -1061,6 +1085,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const dt = gdt();
       if (!live) return;
       if (live.arrowTo != null) live.arrow += Cook.clamp(live.arrowTo - live.arrow, -dt / 220, dt / 220);
+      // SAM-42 (the Fable eye judge for Zafar, 15 Nov, rubric Q1: chai's one look): while a light is up on the fold (its first time, or
+      // the stuck help), no arrow is drawn inside it: the kit's finger shows the drag instead; with no light, the arrow is the help (SAM-21)
+      const OBk = global.Onboard;
+      const litNow = !!(OBk && OBk.lightsShown && OBk.lightsShown() > 0) && !live.dragging;
+      if (litNow) {
+        live.arrow = 0;
+        if (!live.finger && live.from && Cook.Coach && Cook.Coach.demo) live.finger = Cook.Coach.demo(() => (live && live.from ? { from: live.from, to: live.to } : null), { gesture: "drag", step: "samosa:fold" });
+      } else if (live.finger) {
+        live.finger.stop();
+        live.finger = null;
+      }
       // CK-82, SH-257 (the eye judge, 10 Nov: "an orange glow instead" of the kit's light): the fold's light is the kit's one box (the
       // swipe's Cook.Coach.lit); the pastry draws no glow of its own (its arrow, the way to swipe, stays: SAM-21's help)
       live.P.draw({ t: live.t, glow: null, arrow: live.arrow, blobs: live.blobs }, cv.getContext());
@@ -1079,9 +1114,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const park = (waiting) => {
       const n = waiting.length;
       if (!n) return;
-      const q = Math.min(0.36, (((BOARD.w * 0.9) / n) * 0.88) / SW_FULL);
-      const pitch = Math.min((BOARD.w * 0.9) / n, SW_FULL * q * 1.12);
-      const rowY = BOARD.y + BOARD.h / 2 - BOARD.h * 0.04 - (STRIP_H * q) / 2;
+      // (SAM-43: at the size they were filled, whole and inside the rim: side by side where they fit, else overlapping, each one's filling
+      // showing: the next one lies over the last's right end)
+      const q = foldRoom.q;
+      const pitch = n * foldRoom.w + (n - 1) * 8 <= foldRoom.across ? foldRoom.w + 8 : (foldRoom.across - foldRoom.w) / Math.max(1, n - 1);
+      const rowY = foldRoom.wy;
       waiting.forEach((y, i) => {
         const tx = z.X(BX + (i - (n - 1) / 2) * pitch);
         const ty = z.Y(rowY);
@@ -1093,14 +1130,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           S.tweens.add({ targets: b, x: p.x, y: p.y, displayWidth: b.displayWidth * k, displayHeight: b.displayHeight * k, alpha: 1, duration: 340, ease: "Cubic.easeInOut" });
         });
         S.tweens.add({ targets: y, x: tx, y: ty, scale: sc, alpha: 1, duration: 340, ease: "Cubic.easeInOut" });
+        // (each over the one before it, its filling with it)
+        y.setDepth(D.item + i * 0.01);
+        y.blobs.forEach((bl, j) => bl.setDepth(D.item + 0.2 + i * 0.01 + j * 0.001));
       });
     };
     for (const x of toFold) {
       const kind = blockOf(x);
       // the others wait along the board's foot while this one comes to the middle of the board, full size, its filling with it
       park(toFold.filter((y) => y !== x && y.active && !onPlate.includes(y)));
-      const tx = z.X(P0.x);
-      const ty = z.Y(P0.y);
+      const tx = z.X(FOLD_AT.x);
+      const ty = z.Y(FOLD_AT.y);
       const bk = x.blobs.map((o) => o.wordId);
       const bs = mounds({ x: tx, y: ty, scaleX: FULL }, bk.length);
       x.blobs.forEach((bl) => {
@@ -1126,6 +1166,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       for (let f = 0; f < P.N; f++) {
         const sw = P.swipe();
         const from = u2w(x, sw.from);
+        live.from = from;
+        live.to = u2w(x, sw.to);
         const to = u2w(x, sw.to);
         live.lit = true;
         live.arrowTo = 1;
@@ -1148,11 +1190,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           minLen: k.minLen || 0.45,
           onDrag: () => {
             foldLightOff();
+            live.dragging = true;
+            if (live.finger) (live.finger.stop(), (live.finger = null));
             live.lit = false;
             live.arrowTo = 0;
             live.arrow = 0;
           },
           onCancel: () => {
+            live.dragging = false;
             live.lit = true;
             live.arrowTo = 1;
             live.arrow = 1;
@@ -1160,6 +1205,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           draw: (t) => (live.t = t),
         });
         foldLightOff();
+        live.dragging = false;
         P.commit();
         live.t = 0;
         if (f === 0) {
@@ -1184,6 +1230,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       live.t = 0;
       P.draw({}, cv.getContext());
       cv.refresh();
+      if (live.finger) live.finger.stop();
       live = null;
       n++;
       if (kind === 2) nB++;
@@ -1413,7 +1460,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const reachK = KM0.cx / KM0.r; // (the picture's reach left of the body's middle, handles too, in body radii)
     const hob = Kit.hob(S, { n: 1, knobs: "left", k: z.L(FL.k), cx: z.X(FL.cx), bottom: z.Y(HOB_FOOT) });
     const at = hob.burners[0];
-    const bodyR = z.L(Math.min(FL.hobH * (FRY.karahi || 0.46), ((at.x - hob.x) / z.L(1) - hob.w * 0.045 / z.L(1) - (Kit.KNOB || 76) - 24) / reachK));
+    // (SAM-46, the Fable eye judge for Zafar, 15 Nov: "its handle inside the hob's edge": the right handle, (1 - cx) / r body radii out, kept
+    // inside the hob's rim as the left one keeps off the knob's column)
+    const reachR = (1 - KM0.cx) / KM0.r;
+    const bodyR = z.L(Math.min(FL.hobH * (FRY.karahi || 0.46), ((at.x - hob.x) / z.L(1) - hob.w * 0.045 / z.L(1) - (Kit.KNOB || 76) - 24) / reachK, ((hob.x + hob.w - at.x) / z.L(1) - (hob.w * 0.045) / z.L(1)) / reachR));
     // the flames peek out past the karahi's body (flame-high's ring: 1.2 x flameR)
     // (SH-258: the asker's face beside the knob from the first frame, as chai's hob carries it: the kit's burner badge)
     const burner = Kit.burner(S, hob, 0, { flameR: bodyR * 0.9, who: who || undefined, reach: bodyR * reachK });
@@ -1678,6 +1728,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       );
     const PLATE_SC = z.L(plateSpots(n, PX, PY, plate.flatHalf, 0.84)[0].w) / 370;
     const liftLine = Lang.hasLine("lift") ? Lang.line("lift", Lang.phrase(["ph-samosa"])) : null;
+    // SAM-44 (the Fable eye judge for Zafar, 15 Nov: "'Samosa hane kadh.' flips back to 'Tar!' and forward again while the spoon carries
+    // it"): once every samosa is in the oil and the lifting has begun, the step stays the lift until the last is out; Nani's line changes
+    // once per step. A fresh one for a burnt one, or the fire off, is a new step as before
+    let lifting = false;
     await new Promise((resolveAll) => {
       post = () => {
         const waiting = raw.filter((r) => !r.gone);
@@ -1695,7 +1749,12 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (cur && cur.level >= lo && liftLine) {
           lead("ctl-lift", cur.a, () => !cur.out && cur.level >= lo);
           steps.to("samosa:lift", { id: `lift-${frying.indexOf(cur)}`, line: liftLine, again: true });
+          lifting = true;
+        } else if (lifting && !waiting.length) {
+          // (between two lifts, every samosa in the oil: the lift is still the step; its light waits for the next golden one)
+          if (ctlStep === "ctl-lift") lead(null);
         } else {
+          lifting = false;
           if (waiting.length && eachOn !== false) {
             const next = waiting[0];
             if (eachOn == null) eachOn = !!(gate && gate.first("ctl-fry"));
@@ -1720,8 +1779,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           S.untap(im);
           S.tweens.killTweensOf(im);
           const [sx, sy] = SPOTS[slot++ % SPOTS.length];
-          // the empty thalis leave the band (the plate slides over it at serving)
-          if (raw.every((r) => r.gone)) trays.forEach((t) => S.tweens.add({ targets: [t, t.shadow].filter(Boolean), alpha: 0, duration: 500, delay: 400 }));
+          // (SAM-45, the Fable eye judge for Zafar, 15 Nov: "the stone tray keeps its things as chai's shelf (today a blank slab for the second
+          // half)": the empty thalis stay on the band to the end, as chai's jars stay on its shelf; they left it once the last went in)
           const tx = cx + sx * oilR;
           const ty = cy + sy * oilR;
           Cook.sfx.whoosh();
@@ -1758,8 +1817,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
                 S.untap(im);
                 S.untap(b);
                 S.tweens.add({ targets: [im, b], alpha: 0, duration: 360, onComplete: () => (im.destroy(), b.destroy()) });
-                const tr = trays.find((t) => t.alpha < 0.5) || trays[0];
-                S.tweens.add({ targets: [tr, tr.shadow].filter(Boolean), alpha: 1, duration: 300 });
+                const tr = trays.find((t) => !raw.some((r) => !r.gone && Math.abs(r.x - t.x) < 2)) || trays[0];
                 const fresh = S.track(S.add.image(tr.x, tr.y - z.L(4), "sv2-fry-0").setScale(FS * 0.92).setDepth(D.item + 0.1));
                 fresh.baseScale = fresh.scale;
                 fresh.handAction = false;
@@ -1854,7 +1912,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const off = (pr + size / 2) * 0.74;
     const small = plate.img.face;
     if (small) small.setVisible(false);
-    const look = await Cook.Kit.review(S, { who, ok: true, x: plate.img.x - off, y: plate.img.y - off, size, k: z.L(1), side: "left" });
+    // (SAM-45, the Fable eye judge for Zafar, 15 Nov: "'Shabash!' over clear space beside the face, not over the slotted spoon": the praise
+    // card to the face's right, over the plate's rim, as chai's beside its tray; it was to the left, over the spoon's head)
+    const look = await Cook.Kit.review(S, { who, ok: true, x: plate.img.x - off, y: plate.img.y - off, size, k: z.L(1), side: "right" });
     await Cook.wait(300);
     await look.close();
     if (small && small.active) small.setVisible(true);

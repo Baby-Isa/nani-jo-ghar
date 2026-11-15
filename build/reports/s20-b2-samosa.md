@@ -2,40 +2,26 @@
 
 Files: `samosa.js`, `samosa.json`, `kitchen-frame.md`. No frame option added. BEFORE evidence: not played at launch.
 
-## What changed
-- **Samosa reads only the frame:** its wash and tray band; x positions as shares of `play.w`, unmoved; board and hob centred in `play` (CHAI-89); `bottom`, `view()` and `px` for the pills, word pop and sizes. The old view sums are deleted.
-- **The fold's close-up** is the board's middle on the same screen, so its room is the play area's. The fry is its own view, so it gets a fresh area, not `next`.
-- **SH-280 (part):** the slotted spoon and its cloth are drawn with the hob and plate as the fry comes up. Before, they popped in after the knob's tap.
+## Round 1 (merged, ca95c57)
+Samosa reads only the frame (frame-counts 12 → 0): x positions as shares of `play.w`, board and hob centred in `play`, `bottom`/`view()`/`px` for the screen's sums. The spoon is drawn with the hob (SH-280 part). The frame-waiting rows: SH-239, -241, -53, -238, -236, CK-82, SH-272, -278 at 0 on their checks; SH-245, -248 built; SAM-40, SH-271, -284, -277 wait on the kit; SH-279 on Sprint 21. contract-112's fold fault: fixed in the check (685cae1).
 
-**What a child sees:** the spoon is there from the fry's first frame, every level and size; nothing else moves.
-
-## Rows ('waits for the frame', naming samosa)
-| Row | State | Proof or reason |
+## Round 2: the Fable eye judge's rows (decision 38)
+| Row | Now | Proof |
 |---|---|---|
-| SH-239, SH-241, SH-53, SH-238 | check passing | contract-108, -100, -8, -103: 0 |
-| SH-236, CK-82 | check passing | contract-106, -105, -82: 0 |
-| SH-245, SH-248 | built | contract-115 0, -123 0; band.test passes |
-| SH-272, SH-278 | check passing | contract-127, -126: 0 |
-| SH-256 | 0 blocking | contract-114: 0 on the last gate (x2 advisory once, a mound read as swapped) |
-| SH-258 | built (S19) | no check |
-| SH-280 | spoon built | strips already fade; the blank frame is `St.begin`'s (kit) |
-| SAM-34 | layout built (S19) | the eye beside mock 2: the judge's, not mine |
-| SAM-40 | waits: kit | the dish closed whole folds the card (`ui.js`) |
-| SH-271, SH-284 | waits: kit | the coach's dim (`coach.js`, `onboard.js`) |
-| SH-277 | kit | the `#side` rule |
-| SH-279 | waits: Sprint 21 | the kit's serve and its Shabash spot |
+| SAM-42 | built | while a light is up on the fold, no arrow; the kit's drag finger (gate data: `ob-finger`, drag, 0.8 s after the fold's light). With no light, the arrow stays (SAM-21) |
+| SAM-43 | built | the close-up in the board's upper part; the waiting strips whole at their filled size along its foot, inside the rim, 36 below the close-up |
+| SAM-44 | line built; browning already so | the step stays the lift between lifts once all are in the oil ("Tar!" no longer comes back). A probe of the textures: raw → part → cooked over about 9 s, fully cooked at the lift |
+| SAM-45 | built | praise card to the face's right (as chai's), over the plate's rim; the empty thalis stay on the tray |
+| SAM-46 | 3 of 4 built | word pop kept on the board; heaps centred in the bottom row; the karahi's handles inside the hob. **Not done:** the pastry's own shadow: SH-268 and contract-120 say the board's shadow is its shadow |
+
+**What a child sees (L1-L4, every size):** the fold shows a finger, not an arrow, while lit; the pastry waiting is whole beside the one being folded; "Tar!" no longer returns mid-lift; the tray keeps its thalis; the "Shabash!" card is right of the face; the karahi is a little smaller (its right handle inside the hob); the fillings sit centred on the tray.
 
 ## Calls taken while Zafar was away
-None.
-
-## For the orchestrator: a check fault (not mine to fix)
-contract-112 breaks at random on the fold's help light (1 run in 3 on base f794015, same box), though the light hugs the pastry. The screen scan (`contract-s19.mjs:840`) reads the fold canvas's `getBounds()`, not `litBounds` (as `:762` does), and `lightjudge.py:307` breaks the equal tie towards the whole picture. Fix: read `litBounds` there, or let the body win a tie.
+1. **SAM-43, three or more waiting (L3, L4):** they overlap left to right at their filled size, each one's filling showing. Other option: a row of smaller strips, each whole.
+2. **SAM-43, "true size":** the size they were filled at (about half the close-up). Full size cannot fit beside the close-up on the board.
+3. **SAM-46, the pastry's shadow:** left as SH-268 has it. Question for Zafar: give the pastry its own shadow on the board, against SH-268? Recommend no.
 
 ## Proof
-- **frame-counts:** samosa 0 (was 12), chai-tray 0.
-- **Samosa gate**, after merging 41eae54 (gate-20261115T0855-samosa): checks pass 2.3 min; contract FAIL 13.6 min, 1 blocking: the fault above (L2#mistake, 1280). Advisory 16.
-- **Chai gate**, after the merge (gate-20261115T0911-chai-tray): checks pass 2.5, contract FAIL 21.7 (1 blocking), **boxes pass 3.5 (identical)**; 27.7 min. The break is contract-112 on the side panel's order card (aadu, lab L4 at 740x320). Not samosa's: before the merge chai passed (21.4 min, 0 blocking over 38 pages).
-- **Geometry rules:** cannot run: "No box spec for samosa" (`boxes.mjs`, read-only).
-- **Four sizes** (s20-b2-samosa-contract): 8/8 pages end, 0 page errors; `CONTRACT FAILED: 10 breaks (contract-78 6, contract-111 2, contract-109 2)`. contract-109 is at 1920x1080 only: a heap 5 px above chai's line, also on the base f794015.
-- **check-change** (`--base 5a52815`, `build/reports/tiers/change-a75811db1c.md`): FAILED, 84 min. Play 18 breaks, base 19. Blocking: -78 x4 and -70 x1, which come and go (base -78 x7); -112; mount and chai's frozen sound (as on base, s20-b1-corn); vessel-meta (a missing chaat picture).
-- **Evidence:** the spec names no rows, so there is no before or after folder. **checks.mjs:** 14 steps ok.
+- **frame-counts:** samosa 0, chai-tray 0. **checks.mjs:** 14 steps ok (unit 1014 pass).
+- **Samosa gate** (gate-20261115T1152-samosa, round 2 before the gap change): `GATE PASS samosa: checks pass 2.6, contract pass 14; 16.6 min` (0 blocking over 28 pages; advisory 25).
+- **Side by side:** `build/screenshots/sidebyside/samosa-L1-20261115-1147/` (L1, 740x320 and 1280x665; contract-78 x2, as before).
