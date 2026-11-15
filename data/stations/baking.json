@@ -574,10 +574,15 @@
   "_levels": "The plans themselves (which container, how much, its engine parts) stay in mechanic.levels[].plans, as the station reads them."
  },
  "scene": {
-  "stage": [
-   1600,
-   900
-  ],
+  "room": {
+   "_about": "Sprint 20 batch 2 (s20-b2-baking): the room in shares of the kitchen frame play area (Cook.Frame.area: play.x + play.w * share), never sheet or screen numbers; the places they keep are the old ones (bowl 800, jug 470, tray 330, oven 900, cat 1480; the shelf row 1300 wide at most)",
+   "bowl": 0.5,
+   "jug": 0.280585,
+   "tray": 0.1875,
+   "oven": 0.566489,
+   "cat": 0.952128,
+   "row": 0.864362
+  },
   "view": "E side-on counter; the oven is its own close-up",
   "worktopEdgeY": 470,
   "_bg": "S19 (s19-wave-e2; CK-84, SH-255): the scene is the kitchen kit's marble worktop and its stone shelf band (St.stoneBand, band 'shelf'), as chai's; the old counter picture (bg, kept here as _bgWas) is no longer drawn. BK cut at crop_y 146 so the worktop's front edge lands at y 469.8 (wanted 470). BK is a kept best try: its tiles and marble lean peach (run log).",
@@ -596,17 +601,14 @@
     840,
     639
    ],
-   "centre": [
-    900,
-    360
-   ],
    "drawn": {
     "w": 780,
     "h": 593
    },
    "room": 0.96,
-   "_ck101": "CK-101 (the S19 gate's eye judge, 12 Nov: 'the oven is toy-sized', 560 wide, the mixing bowl's width and twice the tray's): 780 wide, about three trays, never taller than room (its share of the height between the view's top and the shelf band); centre x 900 keeps its left edge clear of the naan's tray (x 330, 280 wide)",
-   "_note": "one 840x643 canvas, top-left aligned on the cabinet frame: a swap changes only the glow or the door"
+   "_ck101": "CK-101 (the S19 gate's eye judge, 12 Nov: 'the oven is toy-sized', 560 wide, the mixing bowl's width and twice the tray's): 780 wide, about three trays, never taller than room (its share of the height between the view's top and the shelf band); its middle at room.oven (x 900) keeps its left edge clear of the naan's tray (x 330, 280 wide)",
+   "_note": "one 840x643 canvas, top-left aligned on the cabinet frame: a swap changes only the glow or the door",
+   "_centre": "s20-b2-baking: its middle across at room.oven of the play area, down at the play area's middle (CHAI-89; the frame's area.next for this second screen)"
   },
   "_bgWas": "assets/cook/proto/baking/bg-counter.webp"
  },
@@ -629,10 +631,6 @@
    "drawn": {
     "w": 400
    },
-   "at": [
-    800,
-    520
-   ],
    "replaces": "assets/cook/proto/bake-bowl.webp and the drawn mound",
    "_note": "S19 (s19-wave-e2): the side-on glass bowl (B1 #108, B1f #109, cut by build/tools/art/s19_cut.py) standing on the worktop, its foot just above the shelf band (foot: the band's top less 24 by default): empty, then the flour at a quarter, a half, three quarters as the flour goes in (flour: its id), the shaggy dough once anything wet is in (wet); the dough is the shaggy bowl too until a dough ball is drawn in this bowl (the mini run's B1-2 ball is a different bowl). Was proto/baking/bowl-f-*.",
    "flour": "cook-atto",
@@ -665,11 +663,7 @@
    "drawn": {
     "w": 260
    },
-   "at": [
-    470,
-    600
-   ],
-   "_at": "the jug's base (origin bottom centre), level with the bowl's foot",
+   "_at": "the jug's base (origin bottom centre), level with the bowl's foot; across at scene.room.jug of the play area",
    "partialAlpha": true,
    "fillFor": {
     "cook-paani": "water",
@@ -770,21 +764,21 @@
    "drawn": {
     "w": 280
    },
-   "at": [
-    330,
-    520
-   ],
    "_note": "on its tray, registered with the tray: in the oven by the ring's progress; the tray alone is items.tray",
    "replaces": "assets/cook/proto/bake-naan.webp",
    "_v4": "S19 (s19-wave-e2): the naan on its tray raw and baked, on the worktop left of the oven, above the band. s19-games-2 (11 Nov; ART-73, the k2 run's B3a and B3b): four stages, raw, part-baked, baked and overdone (naan-tray-*; the trays came about 90% of their panel, so drawn.w sets the size in code). In the oven it shows through the door's glass on the rack, raw, part-baked as its ring passes part, baked at the ring's green; left in the oven overMs (mechanic.overMs, else bakeMs) past it, overdone: a look, never a verdict (as the fried egg's)",
    "part": 0.4,
-   "_part": "the ring's share at which the naan in the oven turns part-baked (it is baked at the ring's green, 0.8)"
+   "_part": "the ring's share at which the naan in the oven turns part-baked (it is baked at the ring's green, 0.8)",
+   "below": 0.571429,
+   "_below": "s20-b2-baking: on the worktop left of the oven (scene.room.tray of the play area across), its middle below the oven's by this share of its own drawn width (160 at 280: where it was)"
   },
   "naanOut": {
    "size": "M",
    "view": "F",
    "word": "ph-naan",
    "file": "assets/cook/proto/baking/naan-alone.webp",
+   "card": "assets/cook/proto/baking/naan-alone.webp",
+   "_card": "s20-b2-baking (contract-104, -128; SH-242: one of the thing): the order card's naan, as vocab.ph-naan.card says (the kit reads a game's items[].card): one naan alone, this prototype picture, the only single naan drawn (the served plate shows two, the tray three)",
    "px": [
     300,
     144
@@ -1122,7 +1116,7 @@
   {
    "id": "ph-cups-34",
    "english": "three quarters of a cup",
-   "kind": "Mum said 'pono cup', 12 Nov (Round 6, grammar-notes \u00a764-\u00a767): the lexicon has pono (num.three-quarters, draft) but the seed has no ph-cups-34 word yet, so its round is still skipped; the language owner adds ph-cups-34 'pono cup' to data/lang/seed/cook.json (s19-clean-e2: was 'not in the lexicon yet')",
+   "kind": "Mum said 'pono cup', 12 Nov (Round 6, grammar-notes §64-§67): the lexicon has pono (num.three-quarters, draft) but the seed has no ph-cups-34 word yet, so its round is still skipped; the language owner adds ph-cups-34 'pono cup' to data/lang/seed/cook.json (s19-clean-e2: was 'not in the lexicon yet')",
    "sheet": "three quarters of a cup (new, CK-72)"
   },
   {
