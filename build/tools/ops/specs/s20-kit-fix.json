@@ -1,0 +1,51 @@
+{
+ "why": "Sprint 20 step 4, decision 38 (Zafar, 15 Nov): the shared kit's faults found on the batch 1 pictures, fixed once for every game: SH-306 the order's speech bubble wraps (eggs L4) though it shouldn't; SH-307 side-panel item cards cut by the panel's edge with clipped words (daar L4 stir, maani L4 mid); SH-305 the pop-up card's landing grazes a side-panel face circle (corn#mistake 740x320, contract-83)",
+ "cost": "medium: Opus, high effort, one cloud session (about $20-35)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when SH-305, SH-306 and SH-307 are built with their checks passing on every batch 1 game and chai unmoved apart from the fixes, or at the end of one session: then push your branch and report",
+ "kind": "shared",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": ["SH-305", "SH-306", "SH-307"],
+ "proof": "node build/tools/tiers/gate.mjs --game chai-tray, then eggs, maani-line, corn, daar,chop (contract at zero; chai's boxes differ only where a fix moves a thing: list each); a script-made before/after sheet (before: the working branch; after: yours) of eggs L4 1280x665 and 740x320 at the order, daar L4 740x320 and 1280x665 mid-stir, maani L4 740x320 mid, corn#mistake 740x320 at the card's landing",
+ "name": "s20-kit-fix: the order bubble on one line, no cut side-panel cards, the card's landing clear of faces",
+ "port": 8959,
+ "report": "s20-kit-fix",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "docs/decisions/2026-11-10-overnight.md decisions 35 and 38",
+  "docs/process/regressions.md rows SH-304 (the bubble fix just merged: build/reports/s20-bubble.md), SH-305, SH-306, SH-307",
+  "build/reports/s20-b1-pictures/2-eggs.png (eggs L4 1280x665 light: the order bubble on two lines), 3-maani.png (L4 740x320 mid: the third card cut at the panel's right), 4-daar-chop.png (daar L4 stir: cards cut at the panel's left, 'ae chi', 'ho') (gitignored: regenerate with run.mjs --flow cook:eggs@L4,cook:daar@L4,cook:maani-line@L4 if missing)",
+  "js/shared/conversations.js and js/shared/request-popup.js (the bubble and the pop-up card), js/shared/order-card.js and css/shared/order-card.css (the side panel's rows), js/cook/ui.js (popPlace, renderOrder)"
+ ],
+ "owns": ["js/shared/conversations.js, js/shared/request-popup.js, js/shared/order-card.js, css/shared/order-card.css, css/shared/conversations.css, js/cook/ui.js (renderOrder and the card's landing only; popPlace's measure belongs to the s20-lift session: do not change it), build/reports/s20-kit-fix.md, build/reports/s20-kit-fix-before-after.png"],
+ "readOnly": ["every game's station file, js/cook/flow.js (orderLift, serviceView: the s20-lift session's), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
+ "flows": ["cook:chai-tray@L4", "cook:eggs@L4", "cook:maani-line@L4", "cook:daar@L4", "cook:corn#mistake"],
+ "branch": "s20-kit-fix (yours, on your own cloud machine, from the working branch ccr-7da5e9f0-04g4xm): commit often, push only to it",
+ "tasks": [
+  {
+   "do": "SH-306: the order's speech bubble says its sentence on one line wherever the sentence fits the room beside the pop-up card; the bubble grows to its sentence's width (up to the room), never wraps where chai's would not. Find why eggs L4 1280x665 wraps 'Muke ba tarela inda khapanta.' (file:line: the bubble's max width, the SH-304 slide, or the card's place). The card's place, size, path and timing unchanged; the bubble still clear of the card (contract-129 at zero).",
+   "accept": "eggs L1-L4, chai, maani, corn, daar at the four sizes: the order bubble's text on one line whenever its one-line width fits the room beside the card; contract-129 at zero"
+  },
+  {
+   "do": "SH-307: the side panel's order row never rests with an item card cut by the panel's edge and its words clipped (non-negotiable 6). Today at daar L4 stir and maani L4 mid the row shows a card partly outside the panel. Find the cause (the row's glide, its scroll at rest, the card widths): at rest every card in view is whole; a card that does not fit is wholly out of view (the row glides to bring the next one whole into view, SH-232).",
+   "accept": "every batch 1 game L1-L4, four sizes: no item card in the side panel partly outside the panel's inner edge at rest; contract-116 and contract-99 at zero"
+  },
+  {
+   "do": "SH-305: the order's pop-up card, flying into its row in the side panel, never passes over a person's face circle there (contract-83: corn#mistake 740x320, a 36 px² graze as the card lands, 3 of 6 pages). Find the cause and fix it once in the kit.",
+   "accept": "contract-83 at zero on corn L1-L4 and #mistake at 740x320 and 1280x665, two runs, and on every other batch 1 game"
+  },
+  {
+   "do": "Prove it with the gate, one game at a time, alone on the machine (COOK_TEST_PORT=8959 NJG_LOCK=/tmp/njg-browser-8959.lock node build/tools/tiers/gate.mjs --game <g>): chai-tray, eggs, maani-line, corn, then daar,chop. Make the before/after sheet by script. Delete your own run folders when done.",
+   "accept": "each gate's contract part PASS with minutes; chai's box differences listed with why; the sheet pushed"
+  },
+  {
+   "do": "Standing: commit often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), push only to your own branch; never re-freeze anything; never touch a check, a probe, a reference or a row's status; anything shared is a change to every game: say which and what a child sees.",
+   "accept": "build/reports/s20-kit-fix.md with a Proof section, under 500 words, pushed on your branch"
+  }
+ ]
+}

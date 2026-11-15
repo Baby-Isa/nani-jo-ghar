@@ -10,12 +10,7 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 
 ## Proof
 - **frame-counts:** daar 0 (was 8), chop 0 (was 7), chai-tray 0.
-- **Gate daar+chop:** checks pass 2.1 min; contract FAIL 18 min, 2 blocking, **both on the untouched base too** (same run there, 20.7 min): contract-22, contract-116 (calls 1-2). Chop: 0 blocking.
-- **Gate chai-tray:** **boxes pass, identical, 3.7 min**; contract 20.5 min, 1 blocking (contract-79, #hint 1280): a flake, the flow alone passed twice here and once on base.
-- **Chaat contract:** the same breaks as base: unchanged.
-- **Geometry rules:** cannot run: no box spec for daar.
-- **Contract, 4 sizes:** 16 pages end, 0 page errors; 8 breaks, all contract-119 (chop, advisory, on base too). Daar 0.
-- **check-change:** stopped at my 50 min limit (play: one blocking, contract-22). Not a pass.
+- **Round 1 gates:** chai's boxes identical; chaat's contract as base; daar's contract-22 and -116 on base too (round 2). Geometry rules: no box spec for daar. check-change: stopped at my limit, not a pass.
 
 ## Rows (waits for the frame, naming daar)
 | Row | Now | Proof or reason |
@@ -24,14 +19,18 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 | SH-248 | built | band by key; band.test, contract-123 pass |
 | SH-227, -241, -239, -242, -53, -236, -238 | check passing on daar | contract-100, 108, 104, 8, 106, 103 pass L1-L4 |
 | SH-245, CK-79 | check passing | contract-115: 0 on daar |
-| SH-249, SH-253 | passing, flaky | contract-112 flaked once on base (DAAR-39's strip) |
-| DAAR-36 | daar at zero (round 2) | chop's 129, 112 left |
-| DAAR-39, CK-111, SH-275 | cannot here | the chop mechanic (`mechanics/chop.js`), ART-66 |
+| SH-249, SH-253 | check passing | contract-112 0 (round 3) |
+| DAAR-36, DAAR-39 | built, gate at zero | gate-20261115T0535-daar+chop |
+| CK-111, SH-275 | cannot here | the chop mechanic (`mechanics/chop.js`), ART-66 |
 | SH-270, SH-281, SH-255 | cannot here | kit, or the judge's pictures; no check |
 
 ## Round 2: decision 35 (Zafar, 15 Nov ~02:50), on ccr-7da5e9f0 merged
-- **(3) contract-116:** daar's "don't" card ticks once the rest of its card is done (after the chop; again once every pile is in; it opens again with them), through the kit's own `UI.mission.tickItem(id, dish, {no: true})`.
+- **(3) contract-116:** daar's "don't" card ticks once the rest of its card is done (after the chop, again once every pile is in), by the kit's `tickItem {no}`.
 - **(4) contract-22:** from L2 the spice order is said once, in its pop-up only; the step opens quietly. A redo still says it with its help.
-- **Gate daar+chop** (`gate-20261115T0330-daar+chop`): checks pass 2.4 min; **contract-116 0, contract-22 0**. Still blocking: contract-129 ×28, all chop's (SH-304: the pop-up card over the bubble; its fix waits on s20-bubble), and contract-112 ×2 (the chop strip's finger, DAAR-39).
-- **Gate chai-tray** (`gate-20261115T0353-chai-tray`): boxes differ in Nani's box only (160 of 160: SH-301 from s20-b1-fixes, listed in its report); play area unmoved. Contract: contract-129 ×2 (SH-304), contract-99 ×1 (lab L4 1280); neither from daar.
-- **DAAR-36:** daar's own breaks at zero; the row's remaining breaks are chop's contract-129 and contract-112, not daar's code.
+- Gates `gate-20261115T0330-daar+chop` (contract-116 0, -22 0) and `gate-20261115T0353-chai-tray` (Nani's box only): superseded by round 3's.
+
+## Round 3: DAAR-39, contract-112
+- **Cause:** `js/cook/mechanics/chop.js` swipeBox (the first-time strip's light): its right edge followed the finger point as the drag began, read from the game's state, while the page still showed the knife and hand at the start; a busy machine's picture caught the hand outside the box.
+- **Fix:** the box holds the hand where the move starts (`fpt0`) for the whole move. Proof: chop L2 + daar L4 at 740x320, two runs, contract-112 0 (5 lights judged, 0 failing, each).
+- **Gates, with s20-bubble and chai's re-taken reference merged (9ccf8b6):** `gate-20261115T0535-daar+chop` **PASS** (checks 2.4 min, contract 0 blocking over 56 pages, 19.1 min; advisory 27); `gate-20261115T0556-chai-tray` **PASS** (contract 0 blocking over 38 pages, 21 min; boxes identical, 3.4 min).
+- Tier 0 refused pushes on a sprint-file path that is not in git (`build/reports/s20-corn-calls/`): reworded.
