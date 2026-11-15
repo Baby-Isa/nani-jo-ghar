@@ -91,6 +91,8 @@ import { setTimeout } from "../life.js";
     Object.entries((sc.oven || {}).states || {}).forEach(([k, f]) => list.push([`bk-oven-${k}`, f]));
     // (s19-games-2, ART-73: the naan's four stages, raw, part-baked, baked and overdone, each a look of its tray)
     ["raw", "part", "golden", "over"].forEach((k) => list.push([`bk-naan-${k}`, ((I.naan || {}).states || {})[k]]));
+    // (CK-135: the dough ball that goes from the bowl to the tray and becomes the naan)
+    list.push(["bk-dough", (I.dough || {}).file]);
     onShelf.forEach((id) => list.push([`bk-${id}`, ((I.containers || {}).files || {})[id]]));
     plan.forEach((s) => list.push([`bk-stream-${s.id}`, ((I.streams || {}).files || {})[s.id]]));
     if (jug) {
@@ -148,6 +150,9 @@ import { setTimeout } from "../life.js";
     };
     /** The control o (a container to tip, the bowl, the oven, the naan) lit as the kit lights one: the first time with its call,
      *  after that only as the stuck hint after the level's wait from the last action (STD-D1-06, D2-01). */
+    // (CK-133: a thing that carries the asker's face is lit whole with it, the kit's whole-thing box, Cook.Coach.thingBox: its picture and
+    // its face; anything else by its picture, as before)
+    const litOf = (o) => (o && o.face && Cook.Coach.thingBox ? Cook.Coach.thingBox(o) : Cook.Coach.box(o, PAD, { visible: true }));
     const control = (o, name, current, withLight = null, { lightOnly = false } = {}) => {
       unlight();
       ctlObj = o;
@@ -174,7 +179,7 @@ import { setTimeout } from "../life.js";
           }
         },
         note: `${KEY}:${name}`,
-        target: Cook.Coach.box(o, PAD, { visible: true }),
+        target: litOf(o),
         first,
         noHint: true,
         current,
@@ -199,7 +204,7 @@ import { setTimeout } from "../life.js";
         ? Cook.Coach.stuck({
             key: KEY,
             level,
-            target: Cook.Coach.box(o, PAD, { visible: true }),
+            target: litOf(o),
             hintMs: () => hintMs() || 7000,
             current,
             busy: () => busy,
@@ -269,29 +274,64 @@ import { setTimeout } from "../life.js";
     // (SH-268, Zafar 12 Nov: one upper-left light everywhere: the kit's one soft shadow, down and to the right)
     Cook.Kit.shadow(S, bowl);
     const bowlY = bowlFoot - bowl.displayHeight / 2; // (its middle: where things pour)
-    // SH-258 (the eye judge, 10 Nov: no asker's face until well done): their face circle on the bowl's rim from the first frame
-    // (on the bowl its upper-right rim: the jar tips in from the left, and its light never takes the face in: contract-82)
-    const faceAt = (o, side = -1) => {
+    /*
+     * SH-258, CK-133 (the eye judge standing in for Zafar, decision 38, 15 Nov: "it floats by the bowl, jumps to the oven door, then the
+     * tray"): one face circle, the asker's, from the first frame, sitting just beside what it owns and riding with it: the bowl, the dough
+     * as it goes to the tray, the tray, into the oven and out again. It is its thing's own part (thing.face, Cook.Coach.parts): lit whole
+     * with it, so no light's edge ever crosses it (contract-82; was kept a light's margin away, so it floated). Its size: 30 CSS px at
+     * least (the frame's scale).
+     *   FACE.give(thing, side, ms)   the face goes to beside thing (side 1: its right, -1: its left), gliding over ms to where thing is
+     *                                as it moves; then it follows it
+     */
+    const FACE = (() => {
       if (!Cook.Kit.badge) return null;
-      const perPx = Math.max(0.01, F.px || 1);
-      const fd = Math.min(90, Math.max(64, 30 / perPx));
-      const f = T(S.add.image(o.x + side * o.displayWidth * 0.42, o.y - o.displayHeight * (o.originY || 0.5) + fd * 0.4, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge));
+      const fd = Math.min(90, Math.max(64, 30 / Math.max(0.01, F.px || 1)));
+      const f = T(S.add.image(0, 0, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge));
       f.setName("baking-face");
-      o.face = f;
-      return f;
-    };
-    const bowlFace = faceAt(bowl, 1);
-    // CK-100 (the judge, s19-night-b-a2, 740x320: "the face circle sits inside the top-right corner of the mixing bowl's lit gold box"):
-    // beside the bowl at its upper right, clear of it by the kit's widest light margin on the page (Onboard.LIGHT, as the tray's
-    // below), so the bowl's light never takes it in (contract-82)
-    if (bowlFace) {
-      const ppwB = Math.max(0.05, F.px || 1);
-      const OLb = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
-      const gapB = (OLb.max + OLb.clear + 6) / ppwB;
-      bowlFace.setPosition(bowl.x + bowl.displayWidth / 2 + bowlFace.displayWidth / 2 + gapB, bowl.y - bowl.displayHeight + bowlFace.displayHeight * 0.6);
-      // (not one of the bowl's lit parts, Cook.Coach.parts' thing.face: beside the box, never in its corner, as the tray's face)
-      bowl.face = null;
-    }
+      const me = { f, owner: null, side: 1, held: false, gap: 0 };
+      // (beside it, touching its edge, level with its top part: a bowl's rim, a tray's front)
+      me.seat = (o = me.owner, side = me.side) => {
+        const b = o.getBounds();
+        // (gap: kept further out where something is drawn round its thing, the bake ring round the naan in the oven)
+        return { x: side > 0 ? b.right + fd * 0.4 + me.gap : b.x - fd * 0.4 - me.gap, y: b.y + Math.min(b.height / 2, fd * 0.62) };
+      };
+      me.give = async (o, side, ms = 0) => {
+        if (me.owner && me.owner.face === f) me.owner.face = null;
+        me.owner = o;
+        me.side = side;
+        o.face = f;
+        if (!ms) {
+          const p = me.seat();
+          f.setPosition(p.x, p.y);
+          return;
+        }
+        me.held = true;
+        const from = { x: f.x, y: f.y };
+        const k = { t: 0 };
+        await Cook.tween(S, {
+          targets: k,
+          t: 1,
+          duration: ms,
+          ease: "Cubic.easeInOut",
+          onUpdate: () => {
+            if (!f.active || !o.active) return;
+            const p = me.seat();
+            f.setPosition(from.x + (p.x - from.x) * k.t, from.y + (p.y - from.y) * k.t);
+          },
+        });
+        me.held = false;
+      };
+      const follow = () => {
+        if (!f.active || me.held || !me.owner || !me.owner.active) return;
+        const p = me.seat();
+        f.setPosition(p.x, p.y);
+      };
+      S.events.on("update", follow);
+      f.once("destroy", () => S.events.off("update", follow));
+      return me;
+    })();
+    // (on the bowl's right: the jars and the jug tip in from its left)
+    if (FACE) FACE.give(bowl, 1);
     let wet = false;
     const bowlState = (k) => {
       const key = `bk-bowl-${k}`;
@@ -365,7 +405,11 @@ import { setTimeout } from "../life.js";
       c.add([empty, full]);
       c.setSize(empty.displayWidth, empty.displayHeight);
       // (SH-268: the jug's soft shadow under its glass as drawn, a container's own box being its foot, not its picture; it follows the jug)
-      c.shadow = S.contactShadow ? S.contactShadow(c, empty.getBounds()) : Cook.Kit.shadow(S, c);
+      // CK-134 (decision 38, 15 Nov: "a grey blurred block inside it even empty"): a box-sized shadow behind clear glass shows through
+      // it, so the glass jug's shadow is its foot's alone, a low soft oval where it stands, hidden while it is lifted to pour
+      const eb = empty.getBounds();
+      const footBox = { centerX: eb.centerX, centerY: eb.bottom - eb.height * 0.03, width: eb.width * 0.86, height: eb.height * 0.1 };
+      c.shadow = S.contactShadow ? S.contactShadow(c, footBox) : Cook.Kit.shadow(S, c);
       if (c.shadow) c.shadow.njgShadow = true;
       const lines = (fill) => Object.entries(((J.lineAtFor || {})[fill]) || J.lineAt || {}).map(([u, f]) => [Number(u), f]).sort((a, b) => a[0] - b[0]);
       // a line's height from the picture's top (items.jug.lineAt, by quarter cups; a new jug's own, lineAtFor); between two, evenly
@@ -538,13 +582,14 @@ import { setTimeout } from "../life.js";
       const img = shelf[r.key];
       const into = jugStep ? jug.mouth() : { x: bowlX, y: bowlY - 60 };
       // lift it over the target (its pill stays on the shelf: while it is up, the thing's light is the thing alone, contract-105)
-      // (and the pill itself fades while its thing is up, as chop's band does, SH-255: the word stays with the thing at rest in its slot;
-      // contract-111 read a lifted jar's slot as a shelf item that took no tap)
+      // (its pill takes no tap while its thing is up: contract-111 read a lifted jar's slot as a shelf item that took no tap; CK-136: it
+      // no longer fades)
       const pill = img.chip;
       img.chip = null;
+      // CK-136 (decision 38, 15 Nov: "the 'paani' pill faded while its bottle is there"): the pill stays as it is while its thing is up
+      // (the thing is on screen, so its word is too); only its tap is off, so a tap in the slot never says the word for a lifted thing
       const pillShow = (on) => {
         if (!pill || !pill.active) return;
-        S.tweens.add({ targets: pill, alpha: on ? 1 : 0, duration: 160 });
         if (pill.input) pill.input.enabled = on;
       };
       pillShow(false);
@@ -606,6 +651,7 @@ import { setTimeout } from "../life.js";
       pillShow(true);
       if (jugStep) {
         // the jug tips into the bowl by itself
+        if (jug.c.shadow) jug.c.shadow.lifted = true;
         await Cook.tween(S, { targets: jug.c, x: bowlX - 170, y: bowlY - 60, angle: 70, duration: 420 });
         await pourOnce({ x: jug.c.x, y: jug.c.y, angle: 70, displayHeight: jug.h }, { x: bowlX, y: bowlY - 40 }, s.id, true);
         jug.units = 0;
@@ -613,6 +659,7 @@ import { setTimeout } from "../life.js";
         // (the flour in the bowl by how much went in: two cups and more fill it to three quarters)
         bowlTo(s, Math.min(1, need / 8));
         await Cook.tween(S, { targets: jug.c, x: jug.x, y: jug.y, angle: 0, duration: 380 });
+        if (jug.c.shadow) jug.c.shadow.lifted = false;
       }
       busy = false;
       await Cook.wait(250);
@@ -640,16 +687,15 @@ import { setTimeout } from "../life.js";
     Cook.sfx.pop();
     await Cook.wait(400);
 
-    /* ---------------- the oven (the same camera) ---------------- */
-    // SH-280 (the S19 gate's eye judge, 12 Nov: "a bare frame then the oven and tray in one step"): the bowl's things fade out as the
-    // oven and its tray fade in, in one move (no empty worktop between), and the asker's face glides from the bowl to the tray
-    const keep = (o) => o && o.active && o !== bg && o !== cat && !o.band;
-    const leaving = objs.filter(keep);
-    const leave = async (ms) => {
-      await Cook.tween(S, { targets: leaving.filter((o) => o.active), alpha: 0, duration: ms });
-      leaving.forEach((o) => o.active && o.destroy());
-    };
-    await oven(S, z, { F, who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b), faceAt, leave, faceWas: bowlFace });
+    /* ---------------- the oven (the same camera, the same worktop) ---------------- */
+    // SH-280, CK-135 (the eye judge, decision 38, 15 Nov: the dough visibly becomes naan, things go to the oven in place, no two-scene
+    // cross-fade): oven() moves the bowl's things off and the oven in; what is left of the mixing (the salt, the drops) goes with them
+    const keep = (o) => o && o.active && o !== bg && o !== cat && !o.band && o !== bowl && !(jug && o === jug.c) && !(FACE && o === FACE.f);
+    const rest = objs.filter(keep);
+    // (SH-158, contract-77: the bake ring's first-time hold, chai's: a new player's first ring waits in the middle of its green until the
+    // child taps the oven; never a returning player's)
+    const hold = St.firstHold ? St.firstHold(ctx, `${KEY}:oven`) : null;
+    await oven(S, z, { F, who, K, T, control, unlight, expectTap, speak, say, setBusy: (b) => (busy = b), FACE, bowl, jug, rest, has, hold });
     if (!ctx.guided) {
       Cook.save.coached = Cook.save.coached || {};
       Cook.save.coached[KEY] = true;
@@ -661,7 +707,7 @@ import { setTimeout } from "../life.js";
   }
 
   /** The oven: its shut, baking and open pictures (one canvas: a swap changes only the door or the glow), the naan on its tray. */
-  async function oven(S, z, { F: F1, who, K, T, control, unlight, expectTap, speak, say, setBusy, faceAt, leave, faceWas }) {
+  async function oven(S, z, { F: F1, who, K, T, control, unlight, expectTap, speak, say, setBusy, FACE, bowl, jug, rest, has, hold }) {
     const O = (SET().scene || {}).oven || {};
     const N = ITEMS().naan || {};
     // (Sprint 20 batch 2: the oven is the round's next screen, the frame's area.next: the same bottom row, its band kept; the play area
@@ -674,11 +720,18 @@ import { setTimeout } from "../life.js";
     const oy = P.y + P.h / 2;
     const ov = T(S.add.image(ox, oy, "bk-oven-shut").setDepth(D.item + 1));
     // CK-101 (the S19 gate's eye judge, 12 Nov: "the oven is toy-sized", its front the mixing bowl's width and twice the tray's): the oven
-    // as wide as the settings ask (drawn.w), never taller than the play area's height (O.room: its share of it)
-    const roomH = Math.max(200, P.h * (O.room || 0.96));
+    // as wide as the settings ask (drawn.w), never taller than the play area's height (O.room: its share of it). CK-136 (decision 38,
+    // 15 Nov, 740x320: its light ran off the screen's top): nor so tall that its light, the kit's widest margin on the page round its
+    // box, would leave the view: the room it keeps above it, the same below (centred)
+    const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
+    const lightIn = (OL.max + OL.clear + 4) / Math.max(0.05, F.px || 1) + PAD;
+    const above = Math.max(0, lightIn - (P.y - F.view().top));
+    const roomH = Math.max(200, Math.min(P.h * (O.room || 0.96), P.h - 2 * above));
     ov.setScale(Math.min(((O.drawn || {}).w || 560) / ov.width, roomH / ov.height));
     Cook.Kit.shadow(S, ov); // (SH-268)
-    const ring = T(S.add.graphics().setDepth(D.fx + 1));
+    // SH-275 (decision 39, Zafar's yes, 15 Nov): the bake's window is the kit's heat ring, chai's own (Cook.Kit.heatRing: its track, the
+    // green band, the gold fill, the knob), round the naan on the oven's window, filling to its green; none on the pour
+    const heat = Cook.Kit.heatRing(S, { depth: D.fx + 1 });
     const steam = (x, y, k = 3) => {
       for (let i = 0; i < k; i++) {
         const s = T(S.add.circle(x + (Math.random() - 0.5) * 120, y, 14 + Math.random() * 10, col("steam"), 0.55).setDepth(D.fx + 2));
@@ -693,30 +746,54 @@ import { setTimeout } from "../life.js";
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
     Cook.Kit.shadow(S, naan); // (SH-268)
-    // (SH-258: their face circle moves to the tray their naan bakes on, from its first frame)
-    const face = faceAt ? faceAt(naan) : null;
-    // (CK-100: beside the tray, at its left, clear of it: never over a naan on it, nor in the light round it)
-    // (its clearance: the kit's light margin round the tray, Onboard.LIGHT at its widest, on the page: contract-82)
-    const ppwF = Math.max(0.05, F.px || 1);
-    const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
-    const faceGap = (OL.max + OL.clear + 6) / ppwF;
-    if (face) face.setPosition(naan.x - naan.displayWidth / 2 - face.displayWidth / 2 - faceGap, naan.y - naan.displayHeight * 0.2);
-    // SH-280: in, as the bowl's things go (300 ms, as their fade was); one face, gliding from beside the bowl to beside the tray
-    {
-      const MS = 300;
-      const comes = [ov, naan];
-      comes.forEach((o) => o.setAlpha(0));
-      const glide = [];
-      if (face && faceWas && faceWas.active) {
-        const to = { x: face.x, y: face.y };
-        face.setPosition(faceWas.x, faceWas.y);
-        faceWas.destroy();
-        glide.push(Cook.tween(S, { targets: face, x: to.x, y: to.y, duration: MS + 220, ease: "Cubic.easeInOut" }));
-      }
-      setBusy(true);
-      await Promise.all([leave ? leave(MS) : null, Cook.tween(S, { targets: comes, alpha: 1, duration: MS })].concat(glide));
-      setBusy(false);
+    /*
+     * CK-135, SH-280 (decision 38, 15 Nov: "the dough visibly becomes naan and things go to the oven in place, no two-scene cross-fade"),
+     * on the same worktop, each thing moving, nothing faded into another scene: the jug slides away left; the dough lifts out of the bowl
+     * (the bowl empty behind it) and goes to the tray's place, the face riding with it; there it flattens and spreads into the raw naan
+     * on its tray; the bowl slides off right as the oven slides in from the right into its place.
+     */
+    const V0 = F.view();
+    const homeX = ox;
+    ov.setX(V0.right + ov.displayWidth / 2 + 24);
+    naan.setAlpha(0);
+    setBusy(true);
+    (rest || []).forEach((o) => o.active && o.destroy());
+    if (jug && jug.c && jug.c.active) {
+      if (jug.c.shadow) jug.c.shadow.lifted = true;
+      await Cook.tween(S, { targets: jug.c, x: V0.left - jug.w, duration: 380, ease: "Cubic.easeIn" });
+      jug.c.destroy();
     }
+    const DG = ITEMS().dough || {};
+    const ball = has("bk-dough") ? T(S.add.image(bowl.x, bowl.y - bowl.displayHeight * 0.5, "bk-dough").setDepth(D.item + 3)) : null;
+    if (ball) {
+      const bk = ((DG.drawn || {}).w || 170) / ball.width;
+      ball.setScale(bk * 0.85);
+      Cook.Kit.shadow(S, ball);
+      if (has("bk-bowl-empty")) bowl.setTexture("bk-bowl-empty");
+      // out of the bowl and up, the face going to it as it lifts
+      await Promise.all([
+        Cook.tween(S, { targets: ball, y: bowl.y - bowl.displayHeight - ball.displayHeight * 0.4, scale: bk, duration: 380, ease: "Cubic.easeOut" }),
+        FACE ? FACE.give(ball, 1, 380) : null,
+      ]);
+      // across to the tray's place, landing where the naan will lie
+      await Cook.tween(S, { targets: ball, x: hx, y: hy, duration: 560, ease: "Sine.easeInOut" });
+      // it flattens and spreads: the raw naan on its tray comes up under it as the ball goes flat and wide
+      await Promise.all([
+        Cook.tween(S, { targets: ball, scaleY: bk * 0.3, scaleX: bk * 1.5, alpha: 0, duration: 420, ease: "Cubic.easeIn" }),
+        Cook.tween(S, { targets: naan, alpha: 1, duration: 420, delay: 80 }),
+        FACE ? FACE.give(naan, -1, 420) : null,
+      ]);
+      ball.destroy();
+    } else {
+      await Promise.all([Cook.tween(S, { targets: naan, alpha: 1, duration: 300 }), FACE ? FACE.give(naan, -1, 300) : null]);
+    }
+    // the bowl slides off right as the oven comes in from the right
+    await Promise.all([
+      Cook.tween(S, { targets: bowl, x: V0.right + bowl.displayWidth, duration: 520, ease: "Cubic.easeIn" }),
+      Cook.tween(S, { targets: ov, x: homeX, duration: 640, delay: 120, ease: "Cubic.easeOut" }),
+    ]);
+    bowl.destroy();
+    setBusy(false);
     const tapOn = (o, name, withLight = null) => {
       let open = true;
       return new Promise((resolve) => {
@@ -809,11 +886,13 @@ import { setTimeout } from "../life.js";
     // CK-100 (the S19 gate's eye judge, 12 Nov: "the tray goes into the oven, the face circle stays behind beside nothing"): their face
     // goes with the tray, to beside the oven's door at the rack's height, outside the oven (never over the naan, never in the oven's
     // lit box), and comes back with the tray
-    const faceHome = face ? { x: face.x, y: face.y } : null;
-    const faceBy = face ? { x: ox - ov.displayWidth / 2 - face.displayWidth / 2 - faceGap, y: rackY } : null;
+    // CK-133 (decision 38): the face rides with the tray into the oven and out (it follows the naan, FACE), kept just outside the bake
+    // ring there
+    const inW = naan.displayWidth * 0.88;
+    const ringR = inW / 2 + 20;
     await Promise.all([
       Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" }),
-      face ? Cook.tween(S, { targets: face, x: faceBy.x, y: faceBy.y, duration: 520, ease: "Cubic.easeInOut" }) : null,
+      FACE ? Cook.tween(S, { targets: FACE, gap: Math.max(0, ringR + 14 - inW / 2), duration: 520, ease: "Cubic.easeInOut" }) : null,
     ]);
     await Cook.wait(200);
     ov.setTexture("bk-oven-baking");
@@ -827,15 +906,13 @@ import { setTimeout } from "../life.js";
     const bakeMs = (K.bakeMs || 3600) / (Cook.speed || 1);
     const partAt = N.part || 0.4;
     const t0 = Date.now();
-    const rx = ox + ov.displayWidth / 2 - 70;
-    const ry = oy - ov.displayHeight / 2 + 40;
+    // (the green from 0.8 of the bake: its ready; past the band's end the kit's ring turns to its over colour as the naan browns)
+    const GREEN = [0.8, 1];
+    const ringAt = (q) => heat.draw(naan.x, naan.y, ringR, q, GREEN[0], GREEN[1]);
     await new Promise((resolve) => {
       const off = z.tick(() => {
         const q = Math.min(1, (Date.now() - t0) / bakeMs);
-        ring.clear();
-        ring.lineStyle(10, col("ring"), 0.95).beginPath().arc(rx, ry, 34, 0, Math.PI * 2).strokePath();
-        ring.lineStyle(10, col("ringBand"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2 + 0.8 * Math.PI * 2, (3 * Math.PI) / 2).strokePath();
-        ring.lineStyle(6, q >= 0.8 ? col("ringDone") : col("ringFill"), 1).beginPath().arc(rx, ry, 34, -Math.PI / 2, -Math.PI / 2 + q * Math.PI * 2).strokePath();
+        ringAt(Math.min(q, GREEN[0]));
         if (Math.random() < 0.04) steam(ox, oy - ov.displayHeight / 2, 1);
         if (q >= partAt) toLook(q >= 0.8 ? "golden" : "part");
         if (q >= 0.8) {
@@ -848,18 +925,25 @@ import { setTimeout } from "../life.js";
     // the oven overMs past its green, the naan browns (overdone: a look, never a verdict, as the fried egg's; ART-73)
     const overMs = (K.overMs || K.bakeMs || 3600) / (Cook.speed || 1);
     const tReady = Date.now();
+    // (the ring goes on filling through the green, over its end as the naan browns)
+    let browned = false;
     const offOver = z.tick(() => {
-      if (Date.now() - tReady < overMs) return;
-      offOver();
+      const u = (Date.now() - tReady) / overMs;
+      let v = Math.min(GREEN[1] + 0.06, GREEN[0] + (GREEN[1] - GREEN[0]) * u);
+      if (hold) v = hold.cap(v, GREEN[0], GREEN[1], `${KEY}:oven`);
+      ringAt(v);
+      if (v < GREEN[1] || browned) return;
+      browned = true;
       toLook("over");
     });
     ovenNote("ready");
     expectTap(ov, "ph-naan");
     // (contract-36: said through the step's call, so a line still to record logs its skip, as the oven's open does)
     await tapOn(ov, "oven-out", () => call(Lang.line("ready"), "oven-out", true));
+    if (hold) hold.end(`${KEY}:oven`);
     offOver();
     z.expect({ kind: "wait" });
-    ring.clear();
+    heat.clear();
     ov.setTexture("bk-oven-open");
     if (glass) glass.destroy();
     endLook();
@@ -869,7 +953,7 @@ import { setTimeout } from "../life.js";
     await Cook.wait(300);
     await Promise.all([
       Cook.tween(S, { targets: naan, x: hx, y: hy, scale: nk, duration: 560, ease: "Cubic.easeInOut" }),
-      face && face.active ? Cook.tween(S, { targets: face, x: faceHome.x, y: faceHome.y, duration: 560, ease: "Cubic.easeInOut" }) : null,
+      FACE ? Cook.tween(S, { targets: FACE, gap: 0, duration: 560, ease: "Cubic.easeInOut" }) : null,
     ]);
     steam(hx, hy - 40, 4);
     ov.setTexture("bk-oven-shut");
@@ -877,11 +961,13 @@ import { setTimeout } from "../life.js";
     UI.mission.closeItem(["ph-naan"], 0, { head: true });
     // SH-254: one face, beside the tray at its upper left (where the small circle was), the naan in plain view
     const size = 190;
-    if (face && face.active) face.setVisible(false); // (the review's face takes its place while it shows)
+    const face = FACE && FACE.f.active ? FACE.f : null;
+    if (face) face.setVisible(false); // (the review's face takes its place while it shows)
     const look = await Cook.Kit.review(S, { who, ok: true, x: hx - naan.displayWidth * 0.42, y: hy - naan.displayHeight / 2 - size * 0.5, size, side: "right" });
     await Cook.wait(400);
     await look.close();
     if (face && face.active) face.setVisible(true);
+    heat.destroy();
   }
 
   /** The words a round asks for (its plan's parts), for the word moment's due check. */
