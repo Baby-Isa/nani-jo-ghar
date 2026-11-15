@@ -19,7 +19,7 @@ Files: eggs.js, eggs.json (and a test note, `eggs-next`). No row status changed.
 - contract-70/-78 at the child's pace, now and then: the call is still queued when the test child acts first. That needs the kit's call queue.
 
 ## Proof
-- **Eggs gate** `gate-20261115T0908-eggs` (with 41eae54): PASS, 9 min. Checks 2.4; contract 6.6: 0 blocking over 18 pages, 17 advisory. (Its run before found contract-24, overlapping eggs: a tap over a ripe egg now lifts it.)
+- **Eggs gate** `gate-20261115T0908-eggs` (with 41eae54): PASS, 9 min. Checks 2.4; contract 6.6: 0 blocking over 18 pages, 17 advisory. (an earlier run hit contract-24: a tap on overlapping eggs now lifts the ripe one)
 - **Chai gate** `gate-20261115T0718-chai-tray`: PASS, 24.9 min; boxes identical. With 41eae54 (`T0918`): boxes identical, but 1 blocking from the base (contract-112, chai's aadu light, lab L4 740).
 - **Child's pace** `eggs-fable-speed1-b`: -70 1, -78 0, -83 0, -114 0.
 - **Four sizes** `s20-eggs-fable-contract`: 20/20 pages reach their end. 0 blocking; 27 advisory (-119 8, -78 6, -37 5, -70 4, -114 4).
