@@ -74,6 +74,27 @@ import { Cook as CookNS } from "./ns.js";
     },
   };
   const ISLAND = 611; // the family's line (stations.js occluder: the counter's front from design y 611 down)
+  /*
+   * MAA-26 (the Fable eye judge standing in for Zafar, 15 Nov, maani L4: "two plates cooked, the plain big one and the two small bajr
+   * ones; one plate of pale maani served"): a station that plates its own dish hands the serve its plates as cooked (Cook.Serve.plated:
+   * each a picture it made of the plate as it stands), and that person's dish of that recipe is served as those plates, one per plate
+   * cooked, as chai's glasses each reach their tray. Only for the round it was cooked in (Cook.run), and once: then it goes.
+   */
+  const cooked = []; // [{recipe, who, run, plates: [{name, key, at}]}]
+  function plated(recipe, who, plates) {
+    for (let i = cooked.length - 1; i >= 0; i--) if (cooked[i].recipe === recipe && cooked[i].who === who) cooked.splice(i, 1);
+    if (plates && plates.length) cooked.push({ recipe, who, run: Cook.run, plates: plates.map((p) => Object.assign({}, p, { name: `${recipe}@${p.kind || p.key}` })) });
+  }
+  const own = {}; // dish name -> its plate's picture (a texture its station made)
+  function asCooked(list) {
+    return list.flatMap((e) => {
+      const i = cooked.findIndex((c) => c.recipe === e.dish && (c.who == null || c.who === e.who) && c.run === Cook.run);
+      if (i < 0) return [e];
+      const [c] = cooked.splice(i, 1);
+      c.plates.forEach((p) => (own[p.name] = p));
+      return c.plates.map((p) => ({ who: e.who, dish: p.name, n: 1 }));
+    });
+  }
 
   let urlMode = null;
   try {
@@ -114,6 +135,9 @@ import { Cook as CookNS } from "./ns.js";
   const key = (name) => `serve-${name}`;
   const dishOf = (name) => {
     const c = cfg();
+    // (MAA-26: a plate as cooked: its station's own picture, a plate's size class, centred on the floor's middle)
+    const p = own[name];
+    if (p) return { key: p.key, file: null, share: c.sizes.plate, h: 140, at: p.at != null ? p.at : 0.5 };
     const d = c.dishes[name];
     if (d) return { key: key(`dish-${name}`), file: d.file, share: c.sizes[d.size] || null, h: d.h || 140, at: d.at != null ? d.at : 0.96 };
     // a dish the serve has no picture of yet (the pantry's basket): today's served picture (art.s02 served-dishes), its base on the floor
@@ -149,7 +173,7 @@ import { Cook as CookNS } from "./ns.js";
     if (c.mode === "two") list.push([key("ks"), c.serve]);
     showable(p).forEach((e) => {
       const d = dishOf(e.dish);
-      list.push([d.key, d.file]);
+      if (d.file) list.push([d.key, d.file]);
     });
     // (the faces only at the serve: a station loads its own while it plays, through its loader, never raced here)
     const own = faces ? [...new Set(showable(p).map((e) => e.who))].flatMap((w) => (Cook.Kit && Cook.Kit.faceArt ? Cook.Kit.faceArt(w).slice(0, 1) : [])) : [];
@@ -343,7 +367,7 @@ import { Cook as CookNS } from "./ns.js";
    * dish lands on its person's tray, one after another with a soft pop. Resolves when the last has landed.
    */
   async function serve(S, p) {
-    const list = showable(p);
+    const list = showable(asCooked(p || []));
     if (!S || !list.length) return false;
     hook(S);
     const loadCap = Cook.Stations && Cook.Stations.capLoad ? Cook.Stations.capLoad : (x) => x;
@@ -385,6 +409,7 @@ import { Cook as CookNS } from "./ns.js";
     on: () => !!cfg().on,
     cfg,
     plan,
+    plated,
     prefetch,
     serve,
     glide,
