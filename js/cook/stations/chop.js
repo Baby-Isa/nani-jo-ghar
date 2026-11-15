@@ -358,10 +358,6 @@ import { Cook as CookNS } from "../ns.js";
     }
     ctx.result.chopped = got;
     if (ctx.closeItem) ctx.closeItem([], { all: true });
-    // DAAR-61 (the Fable eye judge for Zafar, decision 38, chop L1: "the tray is empty ... a bowl shows only later"): the round's dish
-    // is served, as a recipe's serve step serves it (recipes.js serve: ctx.served), so the serve puts the chopped bowl on the tray
-    // (serve.js dishes.chop). Only the game on its own: daar and chaat serve their own dish
-    if (Array.isArray(ctx.served) && !ctx.served.some((x) => x && x.recipe === KEY)) ctx.served.push({ recipe: KEY, count: 1 });
     return got;
   }
 
