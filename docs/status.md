@@ -8,7 +8,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-7da5e9f0-04g4xm` (`main` is the live site, unchanged since 12 Nov).
+**Handover branch:** `ccr-2c4bd3c9-mncohx` (`main` is the live site, unchanged since 12 Nov). 15 Nov afternoon: decision 42's four changes proposed to Zafar in this chat, his yes awaited.
 
 **Where things stand (15 Nov, 14:20 UK):** Sprint 20 (`docs/sprints/S20-one-kitchen-frame.md`). Overnight run (decision 38) done: `build/reports/overnight-2026-11-15.md` is the morning report. All ten stove-top games are on the kitchen frame and merged (chai, eggs, maani, corn, daar+chop, baking, sekelo, roll-tawa, samosa, chaat). The shared kit fixes (SH-304 to SH-311, CK-97) are in every game. Chai's box reference re-taken on the final merge (chai-ref-1300); chai's final gate (13:03) PASS, boxes identical. Open: sekelo's rows don't fold at well done (SH-308 misses it). Decisions 35-41 in `docs/decisions/2026-11-10-overnight.md` (39-41: calls taken while Zafar was away). His tokens reset Monday 17 Nov 10:00 UK; deadline (decision 28) every stove-top game by midnight Sunday 16 Nov UK.
 
@@ -26,7 +26,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 **Rules learnt:** never edit code or push while a gate plays; one browser job at a time; a Monitor watch dies at 30 min (use background Bash for long chains); merge conflicts on overnight-log.md and kitchen-frame.md's counts line: keep both.
 
 **Starting prompt for a new chat:**
-> First `git fetch origin ccr-7da5e9f0-04g4xm` and work from that branch (it holds the newest handover; `main` is the live site).
+> First `git fetch origin ccr-2c4bd3c9-mncohx` and work from that branch (it holds the newest handover; `main` is the live site).
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S20-one-kitchen-frame.md`; nothing else until a task needs it.
 > Carry on Sprint 20 from "Next, in order": decision 42's four changes first, then Fable's last look at all ten games. Tell me before launching anything new.
 
