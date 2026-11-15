@@ -1,6 +1,6 @@
 # s20-b2-samosa: samosa joins the kitchen frame (15 Nov)
 
-Files: `samosa.js`, `samosa.json`, `kitchen-frame.md` (who calls it, counts). No frame option added. The BEFORE evidence was not played at launch (the spec names no rows).
+Files: `samosa.js`, `samosa.json`, `kitchen-frame.md`. No frame option added. BEFORE evidence: not played at launch.
 
 ## What changed
 - **Samosa reads only the frame.** The frame draws the wash and pulls the stone tray by samosa's key. The x positions (board, plate, the heaps' span, the thalis) are shares of the play area's width, at the same places as before. The board's group and the hob's row are centred in `play` (CHAI-89, as daar does). The pills' foot comes from `bottom`, the word pop's top from `view()` and sizes from `px`. The zone is the frame's sheet, and the timings moved to its settings. The old view sums are deleted.
@@ -16,7 +16,7 @@ Files: `samosa.js`, `samosa.json`, `kitchen-frame.md` (who calls it, counts). No
 | SH-236, CK-82 | check passing | contract-106, -105, -82: 0 (fold light: the kit's box; face upper-left at well done; knob box from its picture) |
 | SH-245, SH-248 | built | contract-115 0, -123 0; band.test passes |
 | SH-272, SH-278 | check passing | contract-127, -126: 0 |
-| SH-256 | 0 blocking | contract-114 x2 advisory (a mound on the fold strip read as swapped; fill-and-fold code not changed here) |
+| SH-256 | 0 blocking | contract-114: 0 on the last gate (x2 advisory once, a mound read as swapped) |
 | SH-258 | built (S19) | the face on both plates and by the knob; no check |
 | SH-280 | spoon built | the spare strips already fade (240 ms); the blank frame between views is `St.begin`'s fade (kit) |
 | SAM-34 | layout built (S19) | the eye beside mock 2: the judge's, not mine |
@@ -33,9 +33,9 @@ contract-112 breaks on the fold's help light, at random (1 run in 3 on the base 
 
 ## Proof
 - **frame-counts:** samosa 0 (was 12), chai-tray 0.
-- **Samosa gate** (gate-20261115T0618-samosa): checks pass 2.2 min; contract FAIL 12.7 min, 2 blocking, both the fault above (contract-112, L3 at 1280 and L3#hint at 740), over 28 pages. Advisory: -111 x13, -37 x4, -78 x4, -36 x4, -92 x2, -114 x2. The first gate, before the spoon fix: the same fault, 13.3 min.
-- **Chai gate:** `GATE PASS chai-tray: checks pass 2.2, contract pass 21.4, boxes:chai-tray pass 3.3; 26.9 min` (0 blocking over 38 pages; boxes identical).
+- **Samosa gate**, after merging 41eae54 (gate-20261115T0855-samosa): checks pass 2.3 min; contract FAIL 13.6 min, 1 blocking: the fault above (L2#mistake, 1280). Advisory: -78 x7, -37 x4, -92 x2, -36 x2, -111 x1. The two earlier runs failed on that fault alone (13.3, 12.7 min).
+- **Chai gate**, after the merge (gate-20261115T0911-chai-tray): checks pass 2.5, contract FAIL 21.7 (1 blocking), **boxes pass 3.5 (identical)**; 27.7 min. The break is contract-112 on the side panel's order card (aadu, lab L4 at 740x320). It is not from samosa: chai reads none of its files, and before the merge chai's gate passed (21.4 min, 0 blocking over 38 pages).
 - **Geometry rules:** cannot run: "No box spec for samosa" (`boxes.mjs`, read-only).
-- **checks.mjs:** 14 steps ok (unit 1014 pass).
-- **Four sizes** (s20-b2-samosa-contract): 8/8 pages end, 0 page errors; `CONTRACT FAILED: 10 breaks (contract-78 6, contract-111 2, contract-109 2)`. contract-109 is at 1920x1080 only (a heap 5 px above chai's line). The base f794015 has it too: the heaps stand on their canvas's foot, not their opaque foot. Not changed here: it would move every heap at every size.
-- **Evidence:** the spec names no rows, so there is no before or after folder.
+- **Four sizes** (s20-b2-samosa-contract): 8/8 pages end, 0 page errors; `CONTRACT FAILED: 10 breaks (contract-78 6, contract-111 2, contract-109 2)`. contract-109 is at 1920x1080 only: a heap 5 px above chai's line, also on the base f794015. Left alone: the fix moves every heap at every size.
+- **check-change** (`--base 5a52815`, `build/reports/tiers/change-a75811db1c.md`): FAILED, 84 min. Play 18 breaks, base 19. Blocking: contract-78 x4 and -70 x1, which come and go (the base had -78 x7); -112, the fault above; mount and chai's frozen sound, which fail the same way on base trees (s20-b1-corn); vessel-meta, a missing chaat picture.
+- **Evidence:** the spec names no rows, so there is no before or after folder. **checks.mjs:** 14 steps ok.
