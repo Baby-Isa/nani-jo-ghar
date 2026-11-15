@@ -42,6 +42,13 @@ Files: `baking.js`, `baking.json`, `kitchen-frame.md` (a line; no frame option a
 - **A child sees:** the face sits right by its thing and travels with it; the dough becomes naan on the tray; the oven slides in; a big ring round the naan; a clean jug; the oven a little shorter at 740x320.
 - **Proof:** baking's gate on the final code `GATE PASS baking: checks pass 2.4, contract pass 7.6; 10 min` (0 blocking over 18 pages; advisory -119 x2, -53 x2, -120 x1). Chai's gate `GATE PASS chai-tray: checks pass 2.3, contract pass 21.8, boxes:chai-tray pass 3.4; 27.6 min` (0 blocking over 38 pages, boxes identical; it ran before a one-number change to the face's gap in baking's oven, code chai never runs). frame-counts: baking 0, chai-tray 0. Side-by-side for the judge: `build/screenshots/sidebyside/baking-L3-20261115-0936/`. Its run lists 3 advisory contract-36 at a child's pace; the base run had 2. Two are on the bowl's light, which comes in the same ms as "Hane naan!" (the probe pairs that call with another step). The gate at normal pace shows none.
 
+## Round 3 (decision 38: the eye judge's re-look)
+- **Changes glide in place, about 300 ms:** the oven opens, bakes and shuts by a fade in place (`swap`); the bowl's pictures too; the dough gathers into its ball as the bowl empties; the jug fades as it slides away.
+- **The light frames the thing alone:** the face sits inside its thing's corner (the bowl's upper right, the tray's upper left, as chai's on the tray), so the light holds it whole without growing (contract-82). In the oven it moves out from the corner until it is clear of the bake ring.
+- **The kit's light only:** no `S.glow` (the orange flood) on the bowl, the tray, the oven or a lifted jar.
+- **Left, advisory:** contract-113 at L3 740x320 (the face in the tray's corner covers 20% of the tray picture's rim). Moving it off the picture would let the light's edge cut it (contract-82, blocking).
+- **Proof:** R3PROOF
+
 ## Proof
 - **Baking's gate:** the base FAILED, 8.2 min, 16 blocking. After: `GATE PASS baking: checks pass 2.3, contract pass 7.6; 9.9 min`, 0 blocking over 18 pages; **Final, after merging the working branch: `GATE PASS baking: checks pass 2.4, contract pass 7.6; 9.9 min`**, 0 blocking over 18 pages.
 - **Chai's gate, final:** `GATE PASS chai-tray: checks pass 2.4, contract pass 21.1, boxes:chai-tray pass 3.3; 26.9 min`, 0 blocking over 38 pages, **boxes identical**. (An earlier run had 3 light-timing flakes, -79, -8 and -112; the same pages replayed at 0 on the base and here.)
