@@ -1,6 +1,6 @@
 # s20-b2-chaat: chaat joins the kitchen frame
 
-Branch `s20-b2-chaat`, from `f794015`, with `ccr-7da5e9f0` merged again before the gates. Nothing a child sees moves at any level or size.
+Branch `s20-b2-chaat`, from `f794015`; `ccr-7da5e9f0` merged again at `41eae54` (chop round 4) before the final gates. Nothing a child sees moves at any level or size.
 
 ## What changed
 - **Chaat's layout code** lives in its mechanic, `js/cook/mechanics/assemble.js` (only chaat uses it), and its settings, `data/stations/chaat.json`. It now reads only the frame:
@@ -28,6 +28,13 @@ Branch `s20-b2-chaat`, from `f794015`, with `ccr-7da5e9f0` merged again before t
   - contract: 47 after against 46 before; the extra is advisory contract-120, which the base gate also had.
   - scope names `assemble.js`, which the brief grants.
   - The chai frozen sound, chai's mount and the missing `pot-chana.webp` don't touch chaat's code.
+
+## Final gates, after merging `41eae54`
+- **Gate chaat** (`gate-20261115T0842-chaat`, 9.3 min): checks pass. The contract has 16 blocking breaks, all contract-104 and -128 (the dish card); contract-74 did not recur.
+- **Chaat's chop step:** no breaks. The advisory breaks are all in the bowl step.
+- **Gate chai-tray** (`gate-20261115T0855-chai-tray`, 25.5 min): boxes identical. contract-112 ×1 (L4 740, the light round "aadu"); s20-lift logs the same failure from its merged change, and chai never loads chaat's files.
+- **Four sizes:** 8 of 8 pages end, 0 page errors, the same 21 breaks.
+- **The dish card:** chaat can't fix it from its own files the way baking did. The kit reads `items[].card` only from the combined stations' settings (`index.js`), and chaat isn't one; there is also no picture. So it needs art plus a `words["ph-chaat"].card` entry in `data/cook.json`.
 
 ## Rows (waits for the frame, naming chaat)
 | Row | Now | Proof or reason |
