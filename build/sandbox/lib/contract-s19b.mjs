@@ -680,7 +680,9 @@ export function check77(r, tl, add) {
   if (!runs.length) return;
   const inputs = ev(tl, "input").map((e) => e.t);
   const tapAfter = (t) => inputs.find((x) => x >= t);
-  const returning = /#returning/.test(r.flow || "");
+  // (s20-b1-maani, 15 Nov: #takeback sets every coach seen, build/sandbox/flows/cook.mjs, as the other checks' NOT_NEW reads it: a
+  // coached player's heat never holds, SH-158: judged as a returning player, not a new one)
+  const returning = /#(returning|takeback)\b/.test(r.flow || "") || ["returning", "seen", "numbers-known"].includes(String(r.profile || ""));
   const mid = (x) => x.lo + (x.hi - x.lo) * 0.5;
   if (!returning) {
     const run = runs[0];
