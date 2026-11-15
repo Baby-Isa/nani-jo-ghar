@@ -2,35 +2,32 @@
 
 Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or size.
 
-## What changed
-- **Daar** (`daar.js`, `daar.json`): reads only the frame. Its x's are shares of the play area's width (the same places); the hob's group is centred in `Cook.Frame.area(S).play` (the old `centreLift` sums deleted); the frame draws the wash and pulls the band by key; screen sizes from `Cook.Frame.view()`/`px()`.
-- **Chop** (`chop.js`): board centred in the frame's play area; wash and band the frame's; well done kept off the panel and cog with `Cook.Frame.toSheet`.
-- **Frame option** (`frame.js`, `kitchen-frame.md`): `Cook.Frame.lend(part) -> back()`: a host lends the game it runs part of its play area (shares). Chop gets its room from its host through the frame and the host still says only what to chop (SH-259). Daar lends `scene.chopRoom` (the whole); chop alone, chaat and chai lend nothing.
-- **Outside my files:** `placement.md` gains CHAI-109/110/112 (cited by chai-tray.js, unplaced: tier 0 refused every push).
+## Round 1: the frame
+- Daar and chop read only the kitchen frame (frame-counts 8 and 7 -> 0): daar's x's are shares of the play area, its hob's group centred in it; chop's board centred in it. New option `Cook.Frame.lend(part)`: a host lends the game it runs part of its play area (daar lends chop its whole one; SH-259). Chai's boxes identical; chaat's contract as base.
+- Rows built: SH-259, SH-248. Checks passing on daar: SH-227, -241, -239, -242, -53, -236, -238 (contract-100, 108, 104, 8, 106, 103), SH-245 and CK-79 (contract-115), SH-249 and -253 (contract-112). Not here: CK-111, SH-275 (chop mechanic, art), SH-270, -281, -255 (kit).
+- Outside my files: `placement.md` gains CHAI-109/110/112; the sprint file's corn-calls path reworded (tier 0 refused every push).
+
+## Rounds 2-3 (decision 35; DAAR-39)
+- Daar's "don't" card ticks once the rest of its card is done (contract-116); the spice order said once, in its pop-up (contract-22).
+- Chop's first-time light keeps the hand's starting place for the whole move (`mechanics/chop.js` swipeBox: it shrank a frame before the page showed the knife moving; contract-112).
+- `gate-20261115T0535-daar+chop` PASS (0 blocking over 56 pages), `gate-20261115T0556-chai-tray` PASS (boxes identical).
+
+## Round 4: decision 38 (the Fable eye judge for Zafar), DAAR-54 to -63
+| Row | Now | How, or why not |
+|---|---|---|
+| 54 | partly | cut pieces rest in the board's top strip first (the hops rise through the bottom one); a hop crossing the board's edge is the hop itself; daar's side heaps kept (KEEP-02) |
+| 55 | not the game | the blink is contract-112's own probe hiding the light for its under-picture (`build/sandbox/lib/lightshot.mjs` HIDE); the light's state never changes (traced). The strips should leave out the probe's hidden window |
+| 56 | call | the finger draws the knife at +1.5 s (still beat kept for contract-112's pictures); the 2 s strip ends first. Recommend: the strip runs 3.5 s for a cut |
+| 57 | built | daar's chop card carries no face; Nani's face stays in her box |
+| 58 | partly | a taken item's pill goes at once (no grey pill); the chilli's size is its size group (art) |
+| 59 | kit | "laal marcha" shrinks to its pill's cap (Shelf.P.chip, kit rule SH-219) |
+| 60 | built | heaps get the kit's shadow; contract-98 and -120 0 on daar L1, L4 and chop #speed1, both sizes |
+| 61 | art and kit | no `assets/cook/serve/dish-chop.webp`; chop's asker is Nani, so the kit's end has no guest to thank |
+| 62 | built | well done in a board corner clear of the pieces and knife |
+| 63 | built | the cut light takes in the whole board and the knife's path |
 
 ## Proof
-- **frame-counts:** daar 0 (was 8), chop 0 (was 7), chai-tray 0.
-- **Round 1 gates:** chai's boxes identical; chaat's contract as base; daar's contract-22 and -116 on base too (round 2). Geometry rules: no box spec for daar. check-change: stopped at my limit, not a pass.
-
-## Rows (waits for the frame, naming daar)
-| Row | Now | Proof or reason |
-|---|---|---|
-| SH-259 | built | chop's room via the frame; daar passes only what to chop |
-| SH-248 | built | band by key; band.test, contract-123 pass |
-| SH-227, -241, -239, -242, -53, -236, -238 | check passing on daar | contract-100, 108, 104, 8, 106, 103 pass L1-L4 |
-| SH-245, CK-79 | check passing | contract-115: 0 on daar |
-| SH-249, SH-253 | check passing | contract-112 0 (round 3) |
-| DAAR-36, DAAR-39 | built, gate at zero | gate-20261115T0535-daar+chop |
-| CK-111, SH-275 | cannot here | the chop mechanic (`mechanics/chop.js`), ART-66 |
-| SH-270, SH-281, SH-255 | cannot here | kit, or the judge's pictures; no check |
-
-## Round 2: decision 35 (Zafar, 15 Nov ~02:50), on ccr-7da5e9f0 merged
-- **(3) contract-116:** daar's "don't" card ticks once the rest of its card is done (after the chop, again once every pile is in), by the kit's `tickItem {no}`.
-- **(4) contract-22:** from L2 the spice order is said once, in its pop-up only; the step opens quietly. A redo still says it with its help.
-- Gates `gate-20261115T0330-daar+chop` (contract-116 0, -22 0) and `gate-20261115T0353-chai-tray` (Nani's box only): superseded by round 3's.
-
-## Round 3: DAAR-39, contract-112
-- **Cause:** `js/cook/mechanics/chop.js` swipeBox (the first-time strip's light): its right edge followed the finger point as the drag began, read from the game's state, while the page still showed the knife and hand at the start; a busy machine's picture caught the hand outside the box.
-- **Fix:** the box holds the hand where the move starts (`fpt0`) for the whole move. Proof: chop L2 + daar L4 at 740x320, two runs, contract-112 0 (5 lights judged, 0 failing, each).
-- **Gates, with s20-bubble and chai's re-taken reference merged (9ccf8b6):** `gate-20261115T0535-daar+chop` **PASS** (checks 2.4 min, contract 0 blocking over 56 pages, 19.1 min; advisory 27); `gate-20261115T0556-chai-tray` **PASS** (contract 0 blocking over 38 pages, 21 min; boxes identical, 3.4 min).
-- Tier 0 refused pushes on a sprint-file path that is not in git (`build/reports/s20-corn-calls/`): reworded.
+- frame-counts: daar 0, chop 0, chai-tray 0.
+- Round 4 contract at a child's pace (`r4-speed1`: daar L1 and L4, chop L1 #speed1, 740x320 and 1280x665): 6 pages end, 0 page errors; contract-98 0, contract-120 0; left: contract-36 x1, contract-119 x1 (advisory).
+- Pictures for the judge: `build/screenshots/sidebyside/daar-L4-s20b1-r4/`, `build/screenshots/sidebyside/chop-L1-s20b1-r4/`.
+GATES_R4
