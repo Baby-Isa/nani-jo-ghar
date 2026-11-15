@@ -20,7 +20,19 @@ Files: `mishkaki-grill.js`, `mishkaki-grill.json`, the thread and grill mechanic
 5. The stuck light goes on the first skewer, not the one the order still needs: the leak test (the other option: the needed one).
 
 ## Rows ('waits for the frame', naming sekelo)
-ROWS
+Every check below is at 0 in gate-20261115T0704 (28 pages, L1-L4, 740x320 and 1280x665). I moved no row's status.
+
+| Row | State | Proof or reason |
+|---|---|---|
+| SH-245, CK-86 | built | contract-115: 0 (it was 8 in S19); eye beside the mock: the judge |
+| SEK-26 | built | contract-114, -115: 0; eye beside the mock: the judge |
+| SEK-27, SH-248 | built | contract-123: 0 (band, grill, one cooked tray on the right) |
+| SH-236, SH-238, SH-239 | pass for sekelo | contract-106, -103, -108: 0 |
+| SH-227, SH-241 | pass for sekelo | contract-100: 0 (the card is the kit's, `ui.js`) |
+| SH-53, SH-158 | pass for sekelo | contract-8, -77: 0 |
+| SEK-28 | built (S19, `serveAs`) | its own check is still to build |
+| SEK-29 | lights pass | contract-117: 0. The order row's jump (contract-72, advisory, 2 in my first gate) is the kit's (`ui.js`). Browning and the cog: eye |
+| CK-81 | built | contract-113: 0; the ring at 740x320: eye |
 
 ## Proof
 PROOF
