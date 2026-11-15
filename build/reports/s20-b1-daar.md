@@ -12,22 +12,23 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 - Chop's first-time light keeps the hand's starting place for the whole move (`mechanics/chop.js` swipeBox: it shrank a frame before the page showed the knife moving; contract-112).
 - `gate-20261115T0535-daar+chop` PASS (0 blocking over 56 pages), `gate-20261115T0556-chai-tray` PASS (boxes identical).
 
-## Round 4: decision 38 (the Fable eye judge for Zafar), DAAR-54 to -63
+## Rounds 4-5: decision 38 (the Fable eye judge for Zafar), DAAR-54 to -66
 | Row | Now | How, or why not |
 |---|---|---|
-| 54 | partly | cut pieces rest in the board's top strip first (the hops rise through the bottom one); a hop crossing the board's edge is the hop itself; daar's side heaps kept (KEEP-02) |
-| 55 | not the game | the blink is contract-112's own probe hiding the light for its under-picture (`build/sandbox/lib/lightshot.mjs` HIDE); the light's state never changes (traced). The strips should leave out the probe's hidden window |
-| 56 | call | the finger draws the knife at +1.5 s (still beat kept for contract-112's pictures); the 2 s strip ends first. Recommend: the strip runs 3.5 s for a cut |
-| 57 | built | daar's chop card carries no face; Nani's face stays in her box |
-| 58 | partly | a taken item's pill goes at once (no grey pill); the chilli's size is its size group (art) |
-| 59 | kit | "laal marcha" shrinks to its pill's cap (Shelf.P.chip, kit rule SH-219) |
-| 60 | built | heaps get the kit's shadow; contract-98 and -120 0 on daar L1, L4 and chop #speed1, both sizes |
-| 61 | art and kit | no `assets/cook/serve/dish-chop.webp`; chop's asker is Nani, so the kit's end has no guest to thank |
-| 62 | built | well done in a board corner clear of the pieces and knife |
-| 63 | built | the cut light takes in the whole board and the knife's path |
+| 54 | built, one call | daar's cut pieces stay on the board while chopping (its heaps wait at the side from the pot's step, KEEP-02); a long thing's halves lie one above the other where that fits; top strip first. Call: L2-L4 keep 2-3 things up at once (the level table; Zafar's 9 Nov "one at a time" was L1's) |
+| 55 | not the game | the light check's own probe hides the light for its under-picture (`lightshot.mjs`); the strips should leave that window out |
+| 56 | call | the finger draws the knife at +1.5 s (contract-112's still beat); recommend a 3.5 s strip for a cut |
+| 57, 62, 63 | built | Nani's face stays in her box; chop's well done in a clear board corner; the cut light takes in the whole board |
+| 58 | built | pills go with their items at once; the slots centred on the band the child sees; an empty slot is its item up in a hop |
+| 59, 64 | kit | the pill cap (SH-219); the order bubble shows the part being read (the kit's read-along), not daar's |
+| 60 | built | the kit's shadows; contract-98, -120 0 at #speed1 |
+| 61 | art and kit | no `dish-chop.webp`; with Nani asking, the kit's end has no guest |
+| 65 | built | the knife starts clear of the settings gear, so the light ends before it |
+| 66 | built, one call | the hob step fades in together (0.32 s) before its first light; the katori's face is chai's tray badge size (64) |
 
 ## Proof
 - frame-counts: daar 0, chop 0, chai-tray 0.
-- Round 4 contract at a child's pace (`r4-speed1`: daar L1 and L4, chop L1 #speed1, 740x320 and 1280x665): 6 pages end, 0 page errors; contract-98 0, contract-120 0; left: contract-36 x1, contract-119 x1 (advisory).
-- Pictures for the judge: `build/screenshots/sidebyside/daar-L4-s20b1-r4/`, `build/screenshots/sidebyside/chop-L1-s20b1-r4/`.
-- `gate-20261115T0718-daar+chop` **PASS** (checks 2.3 min; contract 0 blocking over 56 pages, 21.4 min; advisory 28: 119 x11, 65 x7, 36 x4, 37 x3, 113 x2, 72 x1). `gate-20261115T0742-chai-tray` **PASS** (contract 0 blocking over 38 pages, 21.7 min; boxes identical, 3.6 min).
+- Pictures for the judge: `build/screenshots/sidebyside/daar-L4-s20b1-r5/`.
+- `gate-20261115T1141-daar+chop` **PASS** (checks 3 min; contract 0 blocking over 56 pages, 21.8 min; advisory 40). The run before it (1037) had one contract-22 on daar #returning 740 (a face replay's second part, the round-2 pattern); that flow alone passed twice at both sizes.
+- `gate-20261115T1100-chai-tray`: **boxes identical** (3.6 min); contract 2 blocking, neither from daar: contract-112 on lab chai L4 740x320 (the order card's light 4 px short of aadu's card) is on the merged branch without this round too (e19ff5d, run alone: same break), contract-102 on chai L2 740 passed twice alone.
+- Chaat contract (740x320, 1280x665): contract-26 and -111 only, as before.

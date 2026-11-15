@@ -439,6 +439,12 @@ html[data-rotate] :is(.njg-rq-card, .njg-rq-card .njg-rq-body) { overflow: visib
 /* a person reading their card out (Cook's read-along): their card's edge and face in the gold */
 .oc-card.speaking:not(.oc-big) { border-color: var(--oc-gold); box-shadow: 0 0 0 var(--njg-line) var(--oc-gold), var(--oc-shadow); }
 .oc-card.speaking .oc-face .njg-face { box-shadow: 0 0 0 var(--njg-s1) var(--njg-gold); }
+/* SH-311 (the Fable eye judge for Zafar, decision 38, baking L3: 'Muke naan khape.' outlined in gold under the dim of a first-time light
+   elsewhere): one lit thing at a time (decision 95): while a first-time light is on (the kit's .njg-onboard layer), the side panel's own
+   gold marks wait: the speaking card's outline and ring, and a row her line names (oc-throb) */
+:root:has(.njg-onboard.on:not(.ob-empty):not(.ob-buried)) #side .oc-card.speaking:not(.oc-big) { border-color: var(--oc-edge); box-shadow: var(--oc-shadow); }
+:root:has(.njg-onboard.on:not(.ob-empty):not(.ob-buried)) #side .oc-card.speaking .oc-face .njg-face { box-shadow: 0 0 0 var(--njg-line) var(--oc-edge); }
+:root:has(.njg-onboard.on:not(.ob-empty):not(.ob-buried)) #side .oc-card .oc-throb { animation: none !important; box-shadow: none; }
 
 /* decision 84: the to-record flag is a hidden tag (see above) */
 .oc-card .oc-rec, .oc-card .oc-strip .oc-rec { display: none !important; }

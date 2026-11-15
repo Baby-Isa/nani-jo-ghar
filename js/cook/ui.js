@@ -719,6 +719,22 @@
     } catch (e) {
       /* no order card: nothing to tick */
     }
+    // (the Fable re-judge of maani L4 at 1280x665, 15 Nov: the review closed Nana's card under a second before the well done, so the
+    // well done caught it holding its ticks, half folded, its headline not yet ticked): a card finished a while ago and still holding
+    // folds now, so the well done shows every card folded with its tick. A card closed this moment (chai's counter, cardsDone) keeps
+    // its own hold, glide home and fold (Zafar, 4 Nov evening)
+    const folds = mission && mission.folds;
+    if (folds) {
+      const now = Date.now();
+      let any = false;
+      Object.values(folds).forEach((st) => {
+        if (!st || !st.doneAt || st.shut || st.open || now - st.doneAt < 250) return;
+        clearTimeout(st.timer);
+        st.doneAt = 1;
+        any = true;
+      });
+      if (any) renderOrder();
+    }
   };
   function restoreGuide() {
     if (!guide) return;
@@ -3351,9 +3367,23 @@
   };
   // (the coordinator, 10 Nov: a game's own items[].card wins over the word's own card: corn's lemon card showed the catalogue's old
   // fruit while corn draws its own lemon bowl; the card shows what the child taps)
+  // CK-97, decision 41 (15 Nov): an item card shows the shelf's own picture where the shelf holds one thing (a jar, a tub, a bottle:
+  // chai's shelfJars way): a game's shelf containers, its settings' items.containers.files (baking: the atto card was the catalogue's
+  // steel tin while its shelf stands a glass jar). Where a shelf shows many of a thing (a crate, a heap: SH-242), it lists no container
+  // and the card keeps its single catalogue picture. The order's own games first, as cardOfIds
+  const containerPic = (id) => {
+    const sets = (Cook.data && Cook.data.settings) || {};
+    const own = new Set(((mission && mission.ladders) || []).flatMap((L) => (L && L.recipe ? [L.recipe] : [])).flatMap((r) => [r].concat((((Cook.data.recipes || {})[r] || {}).run || []).map((x) => x && x.do).filter(Boolean))));
+    const games = Object.keys(sets).filter((g) => own.has(g));
+    for (const g of games) {
+      const f = ((((sets[g] || {}).items || {}).containers || {}).files || {})[id];
+      if (typeof f === "string" && f) return f;
+    }
+    return null;
+  };
   const cardPic = (id) => {
     const it = Cook.item ? Cook.item(id) : null;
-    return cardOfIds([id]) || (it && typeof it.card === "string" && it.card) || null;
+    return cardOfIds([id]) || containerPic(id) || (it && typeof it.card === "string" && it.card) || null;
   };
   // (s02Jar only for the station whose shelf takes them, chai's: Cook.shelfJars, set as it starts; another shelf, the tadka's, draws its own)
   // (the orchestrator, 11 Nov: a word with no card picture shows the pantry's walnut-shelf picture, data art.sprites.shelf, before the old jars)

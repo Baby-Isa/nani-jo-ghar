@@ -91,8 +91,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
   const V4ON = { heap: `${IT}v4/daar/chop-heap-onion.webp`, piece: (i) => `${IT}v4/daar/chop-piece-onion-${i}.webp` };
   const pileUrl = (id) => (id === "veg-02" ? V4ON.heap : HEAP5[id] ? `${V3}chop-heap-${HEAP5[id]}.webp` : IT + CHOPPED[id]);
   const pieceUrl = (id) => (id === "veg-02" ? V4ON.piece(1) : `${V3}chop-piece-${HEAP5[id]}.webp`);
-  // (the onion's flying piece varies, one of its six; the others have one)
-  const pieceKey = (id, n = 0) => (id === "veg-02" && n % 6 ? `dv3-piece-${id}-${(n % 6) + 1}` : `dv3-piece-${id}`);
   /*
    * The v3 pot (D1 art, build/cut_cook_v3.py): nine states on one registered canvas, 430 x 348. Measured from
    * the art (assets/cook/items/v3/daar/meta.json; build/check_vessel_meta.py re-fits them): the round body's
@@ -299,7 +297,6 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
       .concat(spiceIds.map((id) => [`dv2-shelf-${id}`, bowlUrl(id) || shelfUrl(id)]))
       .concat(vegAll.map((id) => [`dv2-chop-${id}`, pileUrl(id)]))
       .concat(vegAll.filter((id) => HEAP5[id]).map((id) => [`dv3-piece-${id}`, pieceUrl(id)]))
-      .concat(vegAll.includes("veg-02") ? [2, 3, 4, 5, 6].map((i) => [`dv3-piece-veg-02-${i}`, V4ON.piece(i)]) : [])
       .concat([...new Set(vegAll.concat(spiceIds))].filter((id) => DS1[id]).map((id) => [ds1Key(id), `${S8C}daar-in/in-${DS1[id]}-s08c.webp`]))
       .concat(Cook.Kit ? Cook.Kit.faceArt(who) : [])
       .concat(Cook.Kit ? Cook.Kit.art(1, []) : [])
@@ -622,58 +619,19 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const S = z.S;
     const ctx = z.ctx;
     // (SH-259: the scene is chop's own, drawn by Cook.Chop.play: the worktop, its stone band and its board)
-    const C = SC().side.counter;
-    const rows = []; // the vegetables in the order their first piece arrived (one row each)
-    const piles = {}; // id -> the pile images
-    let bowl = null;
-    if (side === "bowl") {
-      bowl = S.track(S.add.image(ax(z, C.x) - z.L(40), sy(z, C.y + 60), "dv3-vegbowl").setDepth(D.item - 1).setAlpha(0.45));
-      bowl.setScale(z.L(230) / 484);
-      bowl.shadow = S.contactShadow(bowl);
-    }
-    /** Where piece n of vegetable id sits: its row, right to left from the counter's right edge. */
-    const spot = (id, n) => {
-      if (!rows.includes(id)) rows.push(id);
-      const r = rows.indexOf(id);
-      return { x: ax(z, C.x) + z.L(70 - n * (HEAP5[id] ? PILE_() * 0.95 : PILE_() * 0.72)), y: sy(z, C.y + r * C.row) };
-    };
+    const rows = []; // the vegetables in the order their first piece was cut (one row each)
+    // DAAR-54 (the Fable eye judge for Zafar, decision 38, round 5: "two chopped piles lie on the marble against the timer disc ... every
+    // piece on the board"): while chopping, what is cut stays on the board as chop's own halves; the chopped things wait at the side
+    // once the pot comes (KEEP-02: their glass bowls beside the hob, added in one row at a time). Was: each piece flew to a heap on
+    // the marble left of the board (D4)
+    const cutN = {};
     const onSlice = ({ id, ok, x, y }) => {
-      if (!ok || !S.textures.exists(`dv2-chop-${id}`)) return;
+      if (!ok) return;
       if (!rows.includes(id)) rows.push(id);
-      const list = (piles[id] = piles[id] || []);
-      const n = list.length;
-      // (R5) one chopped piece flies off the knife and lands as its heap
-      const pk = S.textures.exists(pieceKey(id, n)) ? pieceKey(id, n) : `dv3-piece-${id}`;
-      const piece = S.textures.exists(pk) && !bowl;
-      const img = S.track(S.add.image(x, y, piece ? pk : `dv2-chop-${id}`).setDepth(D.item + 1));
-      const heapW = S.textures.get(`dv2-chop-${id}`).getSourceImage().width;
-      const sc = z.L(heapSize(id)) / Math.max(img.width, img.height);
-      img.setScale(piece ? z.L(PILE_() * 0.45) / img.width : sc * 1.5);
-      list.push(img);
-      const to = bowl ? { x: bowl.x + z.L((n % 3) * 30 - 30), y: bowl.y + z.L(Math.floor(n / 3) * 24 - 20) } : spot(id, n);
-      // (contract-114: the piece grows to its heap's size on the way, so it lands at the size it rests at: its longer side the heap's)
-      const heapSrc = S.textures.get(`dv2-chop-${id}`).getSourceImage();
-      const s1 = z.L(heapSize(id)) / heapW;
-      const pieceTo = piece ? (s1 * Math.max(heapSrc.width, heapSrc.height)) / Math.max(1, img.width, img.height) : sc;
-      S.fly(img, to.x, to.y, { scale: bowl ? sc * 0.5 : pieceTo, duration: 460, arc: z.L(90) }).then(() => {
-        if (!img.active) return;
-        if (piece) {
-          // (SH-256: the piece becomes its heap without a snap: the heap's picture at the same longer side)
-          img.setTexture(`dv2-chop-${id}`);
-          img.setScale(s1);
-        }
-        img.setDepth(D.item - 0.5 + n * 0.001);
-        // DAAR-60 (contract-120, SH-268: one light, upper left): the heap on the worktop casts the kit's soft shadow, as it rests
-        if (!bowl && Cook.Kit && Cook.Kit.shadow) Cook.Kit.shadow(S, img);
-        S.puff(to.x, to.y, 0xfff6e0, z.L(22));
-        if (bowl) {
-          bowl.setAlpha(1);
-          img.destroy();
-        }
-      });
-      // 29 Sept (Q7): at level 1 the count is heard as the pieces arrive ("ba dungri"), else nothing said here
+      const n = (cutN[id] = (cutN[id] || 0) + 1) - 1;
+      // 29 Sept (Q7): at level 1 the count is heard as the pieces are cut ("ba dungri"), its pop where the cut was; else nothing said here
       const cnt = level <= 1 && UI.tallyLine ? UI.tallyLine(n + 1, id) : null;
-      if (cnt) pop(z, S, Lang.plain(cnt), to.x - z.L(120), to.y + z.L(40), { line: cnt, ms: SC().popMs.count });
+      if (cnt) pop(z, S, Lang.plain(cnt), x, y - z.L(80), { line: cnt, ms: SC().popMs.count });
     };
     Cook.daarPhase = "chop"; // (for build/shoot_daar_v3.py: which state is on screen)
     // the chop mechanic itself (its levels, decoys and ring); Nani says what to chop (the number always said)
@@ -709,6 +667,7 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
+    const before = new Set(S.children.list); // (DAAR-66: what this step draws comes in together, below)
     // (CHAI-89, the orchestrator 11 Nov: the hob with its pot, the stir's flag 17 px over the hob's top, centred in the view above the
     // band: the hob is the kit's one-burner at 0.9, its foot 14 above the band)
     {
@@ -885,6 +844,14 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // CK-111 (the S19 gate's eye judge, 12 Nov: "a tiny faded garlic bowl beside the hob"): what waits at the side (KEEP-02) is at full
     // strength, as chai's things wait; never a faded ghost of itself
     waiting.forEach((o) => o.setAlpha(1));
+    // DAAR-66 (the Fable eye judge for Zafar, decision 38, round 5: "the hob step appears from nothing: bare marble, then the whole scene
+    // in one frame"): the step's worktop, band, hob, pot, bowls and tray come in together, a short fade, before its first light
+    {
+      const fresh = S.children.list.filter((o) => !before.has(o) && o.active && o.visible !== false && typeof o.setAlpha === "function");
+      const was = fresh.map((o) => o.alpha);
+      fresh.forEach((o) => o.setAlpha(0));
+      await Promise.all(fresh.map((o, i) => Cook.tween(S, { targets: o, alpha: was[i], duration: 320, ease: "Sine.easeOut" })));
+    }
 
     // 1. the knob: the oil is hot at once, and the sizzle says so (S16: no heating ring)
     burner.knob.baseScale = 1;

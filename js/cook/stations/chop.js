@@ -120,7 +120,7 @@ import { Cook as CookNS } from "../ns.js";
    * chop and what it wants to hear back (ASK); its zone's scene, its board, band, knife, ring, pieces, light and numbers are chop's
    * own (its settings file), drawn here. Anything else a caller passes is refused with a warning (Cook.Chop.refused).
    */
-  const ASK = ["targets", "pool", "no", "only", "level", "retry", "note", "tick", "tally", "onSlice", "onCount", "onCall", "onRounds", "exactDecoys"];
+  const ASK = ["targets", "pool", "no", "only", "level", "retry", "note", "tick", "tally", "onSlice", "onCount", "onCall", "onRounds", "exactDecoys", "boxFace"];
   const refused = [];
   /**
    * Chop's own scene in zone z: the worktop wash, the stone band, the walnut board; its pictures loaded. -> the mechanic's look params.
@@ -372,7 +372,9 @@ import { Cook as CookNS } from "../ns.js";
     view: "marble", // (SH-259, Zafar 10 Nov: one chop: chaat's chop is chop's own game, its marble, band and board, as the Chop tile)
     knobs: KEY,
     async run(z, p) {
-      return (await play(z, Object.assign({ note: !p.retry, exactDecoys: true }, p, { level: p.level || z.level }))).cut;
+      // CHT-21 (the Fable eye judge for Zafar, decision 38, chaat L1: "Nani's face and speaker stay in her box in the chop step, as
+      // daar's now do, DAAR-57"): boxFace, Nani's own chop card with no face of its own, her box keeping hers (only this step passes it)
+      return (await play(z, Object.assign({ note: !p.retry, exactDecoys: true, boxFace: true }, p, { level: p.level || z.level }))).cut;
     },
   });
 
