@@ -89,23 +89,26 @@
   }
  },
  "grid": {
+  "_x": "s20-b2-samosa (Sprint 20, the kitchen frame): every x here (board.x, plate.x, shelfSpan, fry.trayX) is a share of the frame's play area's width (0 its left edge, 1 its right: js/cook/frame.js Cook.Frame.area play), was design px on the 1600 grid (the same places: x = 48 + share x 1504); the y's and sizes stay the room's own grid, the board's and the hob's groups centred in the play area (CHAI-89); fry.trayX: the middle of the raw ones' thalis on the band",
+  "ms": {"mood": 1600, "talkPad": 900, "tapDemo": 900},
+  "_ms": "the game's own timings (ms): mood, Nani's happy look as a spoonful goes in (ART-10); talkPad, the most the word pop waits past its hold for its word to be said (never a wait on speech); tapDemo, the one finger's tap demo, kept for a later step",
   "_about": "Where samosa's things sit, in the 1600x900 design box (chai v2's grid; the band is the bottom 30%, St.SHELF). heapY, chipY, pitch, heapW, shelfSpan: the heaps on the band and their pills, the row centred in the span (clear of the tick, bottom right; the shared kit's Shelf.slots) (SH-112: a quarter bigger, centred between the band's top gap and the chips). board: the house board (S6; board.webp is 1397 x 847, so h = w x 847 / 1397), bigger for six strips (SAM-25, P43) and its foot above the band. plate: where the folded ones wait (S10). strips: six at every level (SAM-25); stripH: a strip's height at full size; ppu: the fold's canvas px per strip height. fry (S17, S19, Q9): the wide hob's scale and middle, the karahi's body radius (237: at 270 its rim ran over the knob; SH-112: 5% smaller), the plate right of the hob, the raw ones' thalis on the band. oil: a samosa's size in the oil and where they float (degrees round the middle, r a fraction of the oil's radius), by how many fry (the first whose upTo holds; SAM-14: a spot plus half its size stays within 0.8 of the oil).",
   "heapY": 742,
   "chipY": 860,
   "pitch": 182,
   "heapW": 160,
   "shelfSpan": [
-   30,
-   1380
+   -0.011968,
+   0.885638
   ],
   "board": {
-   "x": 640,
+   "x": 0.393617,
    "y": 322,
    "w": 985,
    "h": 597.2
   },
   "plate": {
-   "x": 1390,
+   "x": 0.892287,
    "y": 400,
    "d": 320
   },
@@ -121,6 +124,7 @@
    "trayY": 744,
    "trayD": 180,
    "trayPitch": 210,
+  "trayX": 0.5,
    "_sam34": "SAM-34 (Zafar, 9 Nov: 'a button to turn on the fryer ... off to the left-hand side, so that the frying pan can remain bigger'; decision 2026-11-09-tiers-flash-merge #5: 'one hob in chai's proportions'; round 2's B3-3, sources/art/s19-mocks2/results/B3-samosa-3-fry.png): chai's one-burner hob with its knob and face on the left (the kit's knobs 'left', SH-247), the spoon on its cloth beside it, then the plate, one row centred in the view above the band. hobH: the hob's height at most (design px; less where the row must fit the view's width); karahi: the karahi's body radius as a share of the hob's height; spoon, plate: their heights as shares of the hob's; gap: between the three.",
    "hobH": 560,
    "karahi": 0.46,

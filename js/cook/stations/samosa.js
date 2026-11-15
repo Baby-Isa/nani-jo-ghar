@@ -72,28 +72,31 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const heapUrl = (id) => (ART && ART.heaps[id]) || null;
   /*
    * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
-   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
-   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
-   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred in the
+   * frame's play area P (Cook.Frame.area's play: 16 below the view's top to 28 above the bottom row), its top never nearer the play
+   * area's top than CLEAR unless that would push it into the bottom row's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
+   * (s20-b2-samosa: the span is the frame's play area, as daar's; was the view's top and the shelf's line read here)
    */
-  const centreLift = (z, top0, bottom0, room = 0) => {
-    const v = Cook.view || {};
-    const k = z.k || 1;
-    const viewTop = v.top != null ? v.top : z.Y(0);
-    const spanTop = viewTop + 16 * k;
-    const spanBot = z.Y(St.SHELF.top - 28);
-    const t = z.Y(top0) - room * k;
+  const CLEAR = 24;
+  const centreLift = (z, P, top0, bottom0, room = 0) => {
+    const spanTop = P.y;
+    const spanBot = P.y + P.h;
+    const t = z.Y(top0) - z.L(room);
     const b = z.Y(bottom0);
     let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
-    lift = Math.min(lift, t - (viewTop + 40 * k));
+    lift = Math.min(lift, t - (spanTop + CLEAR));
     return Math.round(Math.max(lift, b - spanBot));
   };
+  // a share of the play area's width as an x (the settings' x's: 0 its left edge, 1 its right; s20-b2-samosa, as daar's)
+  const ax = (P, f) => P.x + f * P.w;
+  // the game's own timings (ms), its settings' (grid.ms)
+  const MS = (k) => GRID.ms[k];
 
   // a samosa in the oil (design px wide) and where they float, by how many fry (grid.oil)
   const OIL = (n) => GRID.oil.find((o) => o.upTo == null || n <= o.upTo);
-  /* ---------- the grid (design px, 1600x900), chai v2's ---------- */
-  const SHELF_TOP = St.SHELF.top; // the bottom 30% (SH-112)
-  const FAR = 2000; // backgrounds reach past the design box (the stage fill: Cook.view)
+  /* ---------- the grid (design px; its x's are shares of the frame's play area), chai v2's ---------- */
+  const SHELF_TOP = St.SHELF.top; // the bottom row's top (SH-112)
+  const FAR = 2000; // backgrounds reach past the design box (the stage fill past the view)
 
   /** A frame's length in ms, for a tick (the scene's ticks get no dt). */
   const clock = () => {
@@ -153,7 +156,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     station: "samosa",
     view: "marble",
     dataFile: "data/stations/samosa.json",
-    zones: [{ id: "samosa", mech: "fill", region: [0, 0, 1600, 900], footprint: { x: 0, y: 0, w: 1600, h: 900 } }],
+    // one drawing space (1:1), the frame's whole sheet (read as the station opens: the frame is the kitchen kit's, loaded before it)
+    zones: [{ id: "samosa", mech: "fill", get region() { return [Cook.Frame.sheet.x, Cook.Frame.sheet.y, Cook.Frame.sheet.w, Cook.Frame.sheet.h]; }, get footprint() { return Object.assign({}, Cook.Frame.sheet); } }],
     run: (host, params) => station(host, params),
   });
 
@@ -275,11 +279,15 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (M && M.closeCards) M.closeCards(on);
   }
   /* ---------- the flat pieces every job shares ---------- */
-  /** The worktop and the band: the kitchen kit's wash and stone band (module map piece 4, ART-41; was samosa's own copy). */
+  /**
+   * The floor plan (the kitchen frame, Cook.Frame.area: its play area and bottom row), with the worktop's wash and the band drawn
+   * under them. -> the area (s20-b2-samosa: the frame draws the wash and pulls the band by samosa's key; was the kit's two by hand)
+   */
   function backdrop(S) {
-    Cook.Kit.worktop(S, { top: SHELF_TOP, far: FAR });
+    const F = Cook.Frame.area(S, { top: SHELF_TOP, far: FAR, draw: true });
     // (SH-248: the bottom element is the game's settings' band, "tray": the heaps lie top-down on the stone tray)
-    St.stoneBand(S, { top: SHELF_TOP, far: FAR, depth: D.bg + 1.2, game: "samosa" });
+    F.stoneBand(S, { game: "samosa" });
+    return F;
   }
 
   /**
@@ -287,17 +295,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * rising into place at (x, y), held ms) and the family clip. Was samosa's own copy of chai's.
    */
   function pop(z, S, text, x, y, { speakId = null, line = null, ms = 1700 } = {}) {
-    global.Juice.P.pop(S, { x, y: y - z.L(18) }, text, { k: Math.max(z.k, Cook.Kit.textFloor(S, 36)), depth: D.fx + 3, top: (Cook.view || {}).top || 0, hold: ms });
+    global.Juice.P.pop(S, { x, y: y - z.L(18) }, text, { k: Math.max(z.k, Cook.Kit.textFloor(S, 36)), depth: D.fx + 3, top: Cook.Frame.view().top || 0, hold: ms });
     if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
     const talk = speakId ? Lang.popWord(speakId) : line ? Lang.speak(line, { kind: "count" }) : null;
-    return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + 900)]) : Promise.resolve();
+    return talk ? Promise.race([Promise.resolve(talk).catch(() => {}), Cook.wait(ms + MS("talkPad"))]) : Promise.resolve();
   }
 
   /** The shelf: the fillings as top-down heaps on the band, no bowls (S2 / Q2), a chip under each (§4). */
-  function shelf(z, S, ids, level) {
-    // the row laid out by the shared kit's shelf (Shelf.slots, module map piece 9): one group across grid.shelfSpan (clear of the
-    // tick, bottom right), centred, each slot the pitch or less
-    const { slotW: pitch, x: at } = global.Shelf.slots([ids], { span: GRID.shelfSpan, pitch: PITCH, groupGap: 0 });
+  function shelf(z, S, ids, level, F) {
+    // the row laid out by the shared kit's shelf (Shelf.slots, module map piece 9): one group across grid.shelfSpan (shares of the
+    // play area's width, clear of the tick, bottom right), centred, each slot the pitch or less
+    const span = GRID.shelfSpan.map((f) => ax(F.play, f));
+    const { slotW: pitch, x: at } = global.Shelf.slots([ids], { span, pitch: PITCH, groupGap: 0 });
     const items = {};
     ids.forEach((id) => {
       const x = at[id];
@@ -337,15 +346,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const SH = global.Shelf;
     const row = ids.filter((id) => items[id] && items[id].chip && items[id].chip.faceW);
     if (SH && SH.pillScale && SH.pillWant && SH.pillGap && row.length) {
-      let wts = 1;
-      try {
-        wts = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
-      } catch (e) {
-        /* no view yet: as drawn */
-      }
-      const ppw = wts * z.k;
+      // (screen px per sheet unit: the frame's answer, 1 before the view is set)
+      const ppw = F.px * z.k;
       const fit = SH.pillScale(row.map((id) => ({ x: at[id], w: items[id].chip.faceW(items[id].chip.showsWord) })), { want: SH.pillWant(ppw), gap: SH.pillGap(ppw), slotW: pitch });
-      const y = Math.min(CHIP_Y, 896 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
+      // (the pills kept 4 above the bottom row's foot, the view's)
+      const y = Math.min(CHIP_Y, F.bottom.y + F.bottom.h - 4 - (((SH.PILL || {}).h || 46) * fit.k) / 2);
       row.forEach((id) => {
         const c = items[id].chip;
         if (c.face && c.capW !== fit.cap) c.face(c.showsWord, fit.cap);
@@ -394,7 +399,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   function plateFace(z, S, img, who) {
     if (!img || !who || !Cook.Kit || !Cook.Kit.badge) return null;
-    const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+    const perPx = Math.max(0.01, Cook.Frame.px()); // (CSS px per sheet unit: the frame's answer)
     const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
     const r = img.displayWidth / 2;
     const face = S.track(S.add.image(img.x - r * 0.72, img.y - r * 0.72, Cook.Kit.badge(S, who)).setDisplaySize(fd, fd).setDepth(D.badge).setAlpha(1));
@@ -418,21 +423,24 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // the scene pieces are raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
     // (CHAI-89, the orchestrator 11 Nov: the board, centred in the view above the band: chai's measure)
     const z0 = z;
-    z = Cook.liftZone(z0, centreLift(z0, BOARD.y - BOARD.h / 2, BOARD.y + BOARD.h / 2));
+    // the floor plan: the board's group centred in the frame's play area, its x's shares of its width (s20-b2-samosa)
+    const F = backdrop(z0.S);
+    z = Cook.liftZone(z0, centreLift(z0, F.play, BOARD.y - BOARD.h / 2, BOARD.y + BOARD.h / 2));
     const S = z.S;
     const ctx = z.ctx;
     const dish = ctx.dishAt || 0;
     const k = Mech.knobs("fold", { level });
-    backdrop(S);
+    const BX = ax(F.play, BOARD.x); // the board's middle (the fold's close-up is its middle)
+    const PLX = ax(F.play, PLATE.x); // the plate's
     // the house board (S6), bigger (P43: "increase the size of the chopping board")
-    const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), "sv3-board").setDepth(D.item - 2));
+    const board = S.track(S.add.image(z.X(BX), z.Y(BOARD.y), "sv3-board").setDepth(D.item - 2));
     board.setDisplaySize(z.L(BOARD.w), z.L(BOARD.h));
     board.shadow = S.contactShadow(board);
     // the plate the folded samosas wait on (right of the board; S10: on its flat middle)
-    const plate = plateAt(z, S, PLATE.x, PLATE.y, PLATE.d);
+    const plate = plateAt(z, S, PLX, PLATE.y, PLATE.d);
     plateFace(z, S, plate, who);
-    const items = shelf(z0, S, ids, level);
-    const P0 = { x: BOARD.x, y: BOARD.y + 6 };
+    const items = shelf(z0, S, ids, level, F);
+    const P0 = { x: BX, y: BOARD.y + 6 };
     const folds = Math.max(3, Math.min(4, St.knobInt(k.folds != null ? k.folds : 3)));
     const tile = S.textures.exists("sv3-pastry") ? S.textures.get("sv3-pastry").getSourceImage() : null;
     const under = S.textures.exists("sv4-under") ? S.textures.get("sv4-under").getSourceImage() : null;
@@ -512,7 +520,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     async function spoon(sheet, id, { quiet = false, fast = false } = {}) {
       const obj = items[id];
       const key = S.textures.exists(`sv3-heap-${id}`) ? `sv3-heap-${id}` : S.tex(`layer:${id}`);
-      const from = obj ? { x: obj.x, y: obj.y - obj.displayHeight * 0.2 } : { x: z.X(800), y: z.Y(700) };
+      const from = obj ? { x: obj.x, y: obj.y - obj.displayHeight * 0.2 } : { x: z.X(ax(F.play, 0.5)), y: z0.Y(HEAP_Y) };
       if (obj && !fast) S.tweens.add({ targets: obj, scale: obj.baseScale * 1.08, duration: 90, yoyo: true });
       const b = S.track(S.add.image(from.x, from.y, key).setDepth(D.fx));
       // 30 Sept: ONE little mound per filling, side by side, so every filling that went in shows; another spoon of the
@@ -602,7 +610,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const r = Math.floor(i / lay.cols);
       const m = r < lay.rows - 1 ? lay.cols : STRIPS - lay.cols * (lay.rows - 1);
       const c = i - r * lay.cols;
-      const st = pastry(BOARD.x + (c - (m - 1) / 2) * cw, P0.y + (r - (lay.rows - 1) / 2) * ch, lay.q);
+      const st = pastry(BX + (c - (m - 1) / 2) * cw, P0.y + (r - (lay.rows - 1) / 2) * ch, lay.q);
       // s08 w6M (CK-48; the judge, 20 Oct: "the board washed out with only one of six pastry sheets drawn, the other five pop
       // in"): the six strips are drawn whole with the board, in the same frame, so they come up together with the view
       st.slot = i;
@@ -910,7 +918,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const id = r.id;
         sheet.got[id] = (sheet.got[id] || 0) + 1;
         sheet.order.push(id);
-        if (UI.naniMood) UI.naniMood("happy", 1600); // ART-10: something went in (progress, never a verdict; the card waits for the tick)
+        if (UI.naniMood) UI.naniMood("happy", MS("mood")); // ART-10: something went in (progress, never a verdict; the card waits for the tick)
         const into = spoon(sheet, id);
         const pa = fillAt(sheet);
         // 29 Sept (Q7): at level 1 the count is heard as you add ("ba chundo"), else the word. SAM-04 (s08 w8A; the level
@@ -1075,7 +1083,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const pitch = Math.min((BOARD.w * 0.9) / n, SW_FULL * q * 1.12);
       const rowY = BOARD.y + BOARD.h / 2 - BOARD.h * 0.04 - (STRIP_H * q) / 2;
       waiting.forEach((y, i) => {
-        const tx = z.X(BOARD.x + (i - (n - 1) / 2) * pitch);
+        const tx = z.X(BX + (i - (n - 1) / 2) * pitch);
         const ty = z.Y(rowY);
         const sc = FULL * q;
         const to = { x: tx, y: ty, scaleX: sc };
@@ -1201,7 +1209,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       await Cook.wait(160);
       onPlate.push(x);
       // onto the plate's flat middle (S10): the plate shows how many (never a count to aim for)
-      const spots = plateSpots(onPlate.length, PLATE.x, PLATE.y, plate.flatHalf, 0.87);
+      const spots = plateSpots(onPlate.length, PLX, PLATE.y, plate.flatHalf, 0.87);
       await Promise.all(
         onPlate.map((o, i) => {
           const sp = spots[i];
@@ -1310,13 +1318,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    * SAM-34 (Zafar, 9 Nov: "a button to turn on the fryer ... off to the left-hand side, so that the frying pan can remain bigger"; the
    * decision of 9 Nov, tiers-flash-merge #5: "one hob in chai's proportions"; round 2's pick, B3-3: the spoon on its cloth between the hob
    * and the plate): the fry's row, design px: chai's one-burner hob turned a quarter (its knob and face on the left), the spoon standing on
-   * its cloth, then the plate, centred in the view (the view's sides, 32 px in, inside 56-1544 as corn's grill), the hob as tall as
-   * grid.fry.hobH allows, less where the row must fit the view's width. -> {k, hobH, hobW, cx, spoonX, spoonH, px, pd}
+   * its cloth, then the plate, centred in the frame's play area (8 in from its sides, and 32 in from the view's where it shows less),
+   * the hob as tall as grid.fry.hobH allows, less where the row must fit across. -> {k, hobH, hobW, cx, spoonX, spoonH, px, pd}
    */
-  function fryLayout() {
-    const V = Cook.view || {};
-    const vl = Math.max(56, (V.left != null ? V.left : 0) + 32);
-    const vr = Math.min(1544, (V.right != null ? V.right : 1600) - 32);
+  function fryLayout(F) {
+    const P = F.play;
+    const V = F.view();
+    const vl = Math.max(P.x + 8, V.left + 32);
+    const vr = Math.min(P.x + P.w - 8, V.right - 32);
     const HB = (Cook.Kit && Cook.Kit.HOB && Cook.Kit.HOB.sets && Cook.Kit.HOB.sets[1]) || { w: 465, h: 658 };
     const across = HB.h / HB.w; // (turned a quarter: its width over its height)
     const sp = META.spoon || { w: 273, h: 700 };
@@ -1384,8 +1393,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   async function fry(z, { n, level, redo, steps, ready = null, who = null }) {
     const z0 = z;
     // (CHAI-89, the orchestrator 11 Nov: the wide hob with its karahi and the plate on its line, centred in the view above the band)
-    const FL = fryLayout();
-    z = Cook.liftZone(z0, centreLift(z0, SHELF_TOP - 16 - FL.hobH, SHELF_TOP - 16));
+    const F = backdrop(z0.S);
+    const FL = fryLayout(F);
+    const HOB_FOOT = F.bottom.y - 16; // the hob stands 16 above the bottom row
+    z = Cook.liftZone(z0, centreLift(z0, F.play, HOB_FOOT - FL.hobH, HOB_FOOT));
     const S = z.S;
     const ctx = z.ctx;
     const Kit = Cook.Kit;
@@ -1394,14 +1405,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // SH-158, the S14 roll-out (SAM-28; the central rules' timed.firstTimeHold): a new player's first fry holds in the golden
     // band until a samosa is lifted (js/cook/station-lib.js St.firstHold)
     const hold14 = St.firstHold(z.ctx, "fry:lift");
-    backdrop(S);
     // S19 / Q9: the wide hob (one big landscape burner) and the karahi 1.5x its old size, the plate to its
     // right on the burner's line; the folded samosas wait on thalis on the band
     // SAM-34: chai's one-burner hob with the knob (and the asker's face) on its left (the kit's knob rule, SH-247), so the karahi is as
     // big as the hob's height allows; its body never nearer the knob's column than the kit's gap (the karahi's handles reach 1.23 of it)
     const KM0 = META.karahi;
     const reachK = KM0.cx / KM0.r; // (the picture's reach left of the body's middle, handles too, in body radii)
-    const hob = Kit.hob(S, { n: 1, knobs: "left", k: z.L(FL.k), cx: z.X(FL.cx), bottom: z.Y(SHELF_TOP - 16) });
+    const hob = Kit.hob(S, { n: 1, knobs: "left", k: z.L(FL.k), cx: z.X(FL.cx), bottom: z.Y(HOB_FOOT) });
     const at = hob.burners[0];
     const bodyR = z.L(Math.min(FL.hobH * (FRY.karahi || 0.46), ((at.x - hob.x) / z.L(1) - hob.w * 0.045 / z.L(1) - (Kit.KNOB || 76) - 24) / reachK));
     // the flames peek out past the karahi's body (flame-high's ring: 1.2 x flameR)
@@ -1411,7 +1421,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // pad is more world px: the face stands that much higher, its gap the pad and a little more)
     if (hob.knobs === "left" && burner.face && burner.knob) {
       try {
-        const ppw = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+        const ppw = F.px;
         const pad = (((global.Onboard && global.Onboard.BOX_PAD) || 10) + 4) / ppw;
         const gap = burner.knob.y - (Kit.KNOB || 76) / 2 - (burner.face.y + burner.face.displayHeight / 2);
         if (gap < pad) burner.face.y -= pad - gap;
@@ -1439,7 +1449,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     const raw = [];
     const trays = [];
     for (let i = 0; i < n; i++) {
-      const x = 800 + (i - (n - 1) / 2) * FRY.trayPitch;
+      const x = ax(F.play, FRY.trayX) + (i - (n - 1) / 2) * FRY.trayPitch;
       const t = S.track(S.add.image(z.X(x), z0.Y(FRY.trayY), "sv2-thali").setDepth(D.item - 1));
       t.setScale(z.L(FRY.trayD) / t.width);
       t.shadow = S.contactShadow(t);
@@ -1493,7 +1503,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         return { from: p, to: p };
       };
       // (the shared Onboard.gesture plays "tap" as a press held in place: its "tap" is s19-clean-a2's line in the s19-clean-d report)
-      return Cook.Coach.demo(at, { gesture: "tap", ms: 900, delay: 300, step });
+      return Cook.Coach.demo(at, { gesture: "tap", ms: MS("tapDemo"), delay: 300, step });
     };
     let ctl = null;
     let ctlStep = null;
