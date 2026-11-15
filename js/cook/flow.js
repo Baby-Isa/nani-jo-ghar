@@ -298,7 +298,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     guests.forEach((w, i) => S().addChar(w, { x: xAt(i) }));
     if (guests.length) S().occluder();
     // s19-serve (Zafar, 11 Nov): the glide down to the island, a tray under each person who ordered, their dish landing on it
-    if (serving()) await Cook.Serve.serve(S(), Cook.Serve.plan(dish, who || "nana"));
+    if (serving()) await Cook.Serve.serve(S(), servePlanOf(dish, who || "nana"));
     cardsDone();
     praiseBox();
     if (!praised()) await S().talk("nani", shabash(), { after: "happy", ms: 900 });
@@ -541,7 +541,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     const cardsIn = UI.cardPicsReady ? UI.cardPicsReady(ladders, 3000).catch(() => 0) : Promise.resolve(0);
     cardsIn.then(() => run0 === Cook.run && Cook.prefetchDishes(recipes));
     // s19-serve: the serve's tray, dishes and faces load with them
-    if (serving()) cardsIn.then(() => run0 === Cook.run && Cook.Serve.prefetch(S(), order.dishes.flatMap((d) => Cook.Serve.plan(d, who))));
+    if (serving()) cardsIn.then(() => run0 === Cook.run && Cook.Serve.prefetch(S(), order.dishes.flatMap((d) => servePlanOf(d, who))));
     UI.hideGist(); // SH-59: no "?" pulse carried into the greeting (a conversation) or the new order
     // CHAI-67, CHAI-78 (Zafar, 4 Nov): the word moment first, before the customer comes in and the order begins
     if (UI.wordMoment) await UI.wordMoment(UI.wordMomentIds(ctx.ladders));
@@ -1033,6 +1033,19 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
   }
   // s19-serve: the serving kitchen (js/cook/serve.js) in use: no trays painted, one tray per person, put down by the serve
   const serving = () => !!(Cook.Serve && Cook.Serve.on());
+  /*
+   * s20-corn-upright round 2 (CK-127, the eye judge for Zafar, decision 38: "one dish per asker, each on its own tray under its
+   * person, the chopped cob standing as everywhere else"; chai serves each person their own): corn's order is one plate per person, so
+   * each asker gets their own tray with their own cob, its picture the serve's "corn-upright" dish once corn has named it
+   * (js/cook/stations/corn.js serveDish); every other dish is the serve's own plan.
+   */
+  function servePlanOf(dish, who) {
+    if (dish && dish.recipe === "corn" && Array.isArray(dish.plates) && dish.plates.length) {
+      const name = Cook.Serve.cfg().dishes["corn-upright"] ? "corn-upright" : "corn";
+      return dish.plates.map((q) => ({ who: q.who || who, dish: name, n: 1 }));
+    }
+    return Cook.Serve.plan(dish, who);
+  }
   /** An order's served dishes as one entry per person's dish (the chai tray's cups each to their person's tray). */
   function servePlan(ctx, who) {
     const out = [];
@@ -1928,7 +1941,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       order.who = asker;
       // s19-serve: the order's dish, for the serve at the end (each person's tray and dish), its pictures loading now
       ctx.labDish = Array.isArray(what) ? null : what;
-      if (serving()) Cook.Serve.prefetch(s, Cook.Serve.plan(ctx.labDish, asker));
+      if (serving()) Cook.Serve.prefetch(s, servePlanOf(ctx.labDish, asker));
       UI.mission.open({ who: asker, name: asker === "nani" ? "Nani" : "Nana" /* CK-22: no "(lab)" written for the child */, ladders: ctx.ladders, line: ctx.orderLine, busy: Cook.save.mode === "busy", how: Array.isArray(what) ? null : howFor([what]), pantry: !Array.isArray(what) && !!what && what.recipe === "pantry" });
       closedCards(level);
       // CHAI-15 (decision 53, S05-C): everyone who orders comes in first, in the lab too: each person on the card walks
