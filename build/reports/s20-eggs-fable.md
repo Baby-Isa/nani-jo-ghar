@@ -1,22 +1,30 @@
 # s20-eggs-fable: eggs' faults from the Fable eye judge (15 Nov, decision 38)
 
-Branch `s20-eggs-fable` from `ccr-7da5e9f0-04g4xm`. Files: `js/cook/stations/eggs.js`, `data/stations/eggs.json`. No row's status changed.
+Branch `s20-eggs-fable` (from `ccr-7da5e9f0-04g4xm`, merged again before the gates). Files: `js/cook/stations/eggs.js`, `data/stations/eggs.json`. No row's status changed.
 
-## What changed (what a child sees, L1-L4, every size)
-- **CK-121:** a person's whole card folds with its tick as their plate is done (eggs, salt and pepper as asked), as chai's `closePan`. At well done every row is folded, ticked and in the panel (L4 1280x665: all three; chai leaves its third open).
-- **CK-122:** the egg's size comes from its vessel. Fried: 0.6 of the pan's floor width (was capped by the plate: a sixth of the pan at 740x320). Lifted, it glides in place (260 ms) to its hand size, 0.63 of a plate, within 15% of its plate size. Boiled: whole egg 1.04 of the pot's floor radius (was 0.7), so it also grows in the hand (1.12 of that). The heat ring sits round the bigger egg.
-- **CK-123:** water in the pot from the first egg's landing: the kitchen's shared surface (`St.shade`, St.WATER, see-through over the steel). It boils from the egg's going in to a full roll at its green, and settles when the pot is empty. No new art.
-- **CK-124:** a vessel's light takes in its whole handle (reach and angle from its settings). Every light (plate, pot, pan) stops short of each face circle that isn't its own: the plates' and the burner faces'. The tray keeps its plates' faces.
-- **CK-125:** Nani's box keeps a step's line while its egg or shaker is still flying. The landing names the next step. Only an egg's green interrupts, because it is a timed call.
-- **CK-126:** each egg's "(Tarelo) indo hane kadh." is said at its own green. The second boiled egg's call had been skipped as "said a moment ago" (`again`, maani's MAA-15).
+## What a child sees (L1-L4, every size)
+- **CK-121:** each person's card folds with its tick as their plate is done, as chai's `closePan`. At well done every row is folded, ticked and in the panel.
+- **CK-122:** the fried egg is 0.6 of the pan's floor (was a sixth at 740x320); lifted, it glides to its hand size, near its plate size. The boiled egg is 1.04 of the pot's floor radius (was 0.7); the hand egg grows with it. The heat ring is round the bigger egg.
+- **CK-123:** water in the pot from the first egg's landing (the kit's `St.shade`, no new art), boiling up to its green.
+- **CK-124 (half):** a plate's light stops short of every other face, the burner faces too. **Not built:** the pot's light with its handle. At 1280x665 L3 the pot reaches past the view and contract-112 (blocking) failed, so the vessels keep their round-body box (CK-63).
+- **CK-125:** Nani's line holds while its egg or shaker flies; an egg's green alone interrupts.
+- **CK-126:** each egg's take-out call at its own green (it was skipped as "said a moment ago"); a shaker on its way never holds a green back.
 
 ## Calls taken while Zafar was away
-1. **The eggs wait under the grown-ups' "?" pop-up.** contract-78 at the child's pace: the kit buries the light under that pop-up (`js/shared/onboard.js:1017`) but `Coach.control` still lets its call go (`js/cook/coach.js`, `light(0)` then `let_go`). Eggs now hold their cooking clocks while it is open, so the green, its call and its light come together. Chai doesn't do this. A kit fix (hold the call while the light is buried) would cover every game.
-2. **The fried egg shrinks a little as it is lifted.** This keeps contract-114 with a pan-filling egg on plates 0.38 of the tray.
+1. The eggs' cooking waits while the grown-ups' "?" pop-up is open. The kit buries the light there (`js/shared/onboard.js:1017`) but lets the call go (`js/cook/coach.js` C.control). A kit fix would cover every game.
+2. The fried egg shrinks a little as it's lifted. At a child's pace contract-114 is zero. At the test speed the plate tap comes inside 300 ms, so there's no rest in the hand: -23% (advisory). Zafar's call, on pictures: bigger plates (b1-eggs Call 2), or the change accepted as a glide.
+3. A test note, `eggs-next`.
 
 ## For the kit session
-- **CK-120 is the kit's.** `css/shared/order-card.css:92` (`.foldable .oc-done-tk {display:block}`) keeps the tick's room (unseen) on the card being worked on. Other cards get the full width. 'Muke hakro bafelo indo khapeto.' needs the tick's room more than its card has, so it wraps on the open card and when folded. Chai's 'Muke elchi waari chai khapeti.' wraps folded in the same way (well done, both sizes). Eggs can't change it: the words are the engine's and the size is the kit's (`:787`, SH-277).
-- The first card's item cards are cut at the panel's edge (L4 1280 mid-cook): SH-307.
+- **CK-120 is the kit's:** `css/shared/order-card.css:92` keeps the unseen tick's room on the open card. 'Muke hakro bafelo indo khapeto.' doesn't fit beside it. Chai's folded heads wrap the same way.
+- contract-83, a word card 4 px² over Nana's panel face (L3/L4 740x320): SH-305.
+- contract-70/-78 at the child's pace, now and then: a call still queued (behind a 2.1 s line, or held for its light) when the test child acts first. Needs the call queue.
 
 ## Proof
-(filled in below)
+- **Eggs gate** `gate-20261115T0712-eggs`: FAIL, 8.9 min. Checks pass 2.4. Contract 6.5: 1 blocking (contract-83, kit SH-305); 17 advisory.
+- **Chai gate** (`--skip-checks`): PASS, 24.9 min. Contract 21.6 (0 blocking over 38 pages), boxes identical 3.3.
+- **Child's pace** `eggs-fable-speed1-b` (L1, L4 at 740x320 and 1280x665): contract-70 1, -78 0, -83 0, -114 0; contract-119 2 (kit).
+- **Four sizes** `s20-eggs-fable-contract`: 20/20 pages reach their end, 0 page errors. 27 advisory breaks, 0 blocking: contract-119 8, -78 6, -37 5, -70 4, -114 4.
+- **Sidebyside for the judge:** `build/screenshots/sidebyside/eggs-L4-20261115-0757/`.
+- **Evidence:** CK-120 to CK-126 have no evidence spec, so there is no before or after folder.
+- **checks.mjs:** pass. **check-change:** CHECKCHANGE
