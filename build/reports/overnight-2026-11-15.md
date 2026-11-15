@@ -11,7 +11,7 @@ All ten stove-top games are on the kitchen frame and merged. % on the agreed sca
 | Eggs | 85 | fails: two eggs served as one, eggs heaped in a pot, lights over faces | round 2 merged untested by Fable |
 | Maani | 85 | fails only on kit items now fixed (row at well done) | a last look |
 | Corn | 85 | your design holds; round 3 merged | a last look |
-| Daar + chop | 85 | round 5 merged (pieces on the board, gear, hob fade) | a last look; chop's own serve |
+| Daar + chop | 85 | round 5 merged (pieces on the board, gear, hob fade, chop's serve in the steel katori) | a last look; Nani's face in chop alone (kit: ui.js stripMode) |
 | Baking | 80 | its fixes hold; round 3 merged (glides, kit light) | a last look |
 | Sekelo | 80 | its fixes hold; round 3 merged (panel glides) | a last look |
 | Roll-tawa | 65 | furthest behind; round 2 merged | a last look; art (ART-84) |
