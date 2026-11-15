@@ -2,7 +2,7 @@
 
 ## What changed
 - **MAA-26, cause:** `js/cook/serve.js` `plan()` served maani as one dish, and so does `flow.js` `servePlan()`. One pale picture came out; the bajr plate never did.
-- **Fix:** at its end, maani draws each plate as it stands (each maani's look, size, place and turn). It hands them to the serve (`Cook.Serve.plated`, new), which puts one plate per cooked plate on the asker's tray.
+- **Fix:** at its end, maani draws each plate as it stands. It hands them to the serve (`Cook.Serve.plated`, new), which puts one plate per cooked plate on the asker's tray.
 - **MAA-27:** the plate's face circle uses chai's rule (`chai-tray.js:535`), on the plate's outer rim, clear of the maani.
 
 **What a child sees:**
