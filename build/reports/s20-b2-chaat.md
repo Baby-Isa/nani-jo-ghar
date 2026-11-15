@@ -36,6 +36,12 @@ Branch `s20-b2-chaat`, from `f794015`; `ccr-7da5e9f0` merged again at `41eae54` 
 - **Four sizes:** 8 of 8 pages end, 0 page errors, the same 21 breaks.
 - **The dish card:** chaat can't fix it from its own files the way baking did. The kit reads `items[].card` only from the combined stations' settings (`index.js`), and chaat isn't one; there is also no picture. So it needs art plus a `words["ph-chaat"].card` entry in `data/cook.json`.
 
+## Call 2 taken (the orchestrator, decision 38)
+- The "hakro chaat" dish card now shows the served chaat bowl. That is one entry in `data/cook.json`: `words["ph-chaat"].card` = `assets/art/served/chaat.default.r1.webp`.
+- **Gate chaat** (`gate-20261115T0927-chaat`, 6.6 min): **PASS**, 0 blocking breaks over 18 pages. Checks passed at 147 s.
+- **For a child:** the dish card that flashes as Nana names the dish shows a chaat bowl, where it showed an empty box, at every level and size.
+- **lab:cook/chaat** is dropped from the flows.
+
 ## Rows (waits for the frame, naming chaat)
 | Row | Now | Proof or reason |
 |---|---|---|
