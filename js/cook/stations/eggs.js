@@ -596,7 +596,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // (s19-clean-e, contract-70: an egg is a timed window, as chai's heat and corn's turn: one that has reached its green is the next thing
       // to do before a plate's salt or pepper or another egg is begun, so Nani's "(Tarelo) indo hane kadh." comes as its green opens; was
       // the first plate's seasoning first, and the second plate's egg went green with no call)
-      if (!held) {
+      // CK-126 (contract-70 at the child's pace: an egg's green came while a shaker was still going to its plate, and the next egg was
+      // asked for first): a shaker in the hand or on its way never holds back an egg's green
+      if (!held || held.kind === "shaker") {
         const ripe = all().find((e) => !e.out && !e.lifted && e.p >= ready && P0.some((pl) => !plateFull(pl) && !!pl.q.fried === e.fried));
         if (ripe) return { obj: ripe.obj, key: ripe.fried ? "n.egg" : "ph-boiledegg", what: "egg" };
       }
@@ -718,8 +720,15 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       let first = false;
       const target = lightOf(n.obj);
       if (n.what === "vessel") {
-        if (gate.first("next-pan"))
+        if (gate.first("next-pan")) {
           nextV = Cook.Coach.nextLight({ now: true, target: Cook.Coach.box(n.obj, 0, { bounds: plateBox }), quitIf: () => finished || ctlKey !== key, who: n.obj === pot ? "pot" : "pan", note: NOTE });
+          // (CK-126, contract-36 at the child's pace: its call was said 4 ms before its light reached the screen, so it read as the step
+          // before's: the call waits two frames and a beat for the light, as the kit's first-time control holds it, Coach.control)
+          if (UI.holdCalls) {
+            const raf = global.requestAnimationFrame ? (f) => global.requestAnimationFrame(f) : (f) => setTimeout(f, 16);
+            UI.holdCalls(new Promise((r) => raf(() => raf(() => setTimeout(r, 90)))));
+          }
+        }
       // (contract-78: lifting the fried egg from the pan is its own control, as the boiled egg's from the pot is: each lit the first
       // time it comes up, with its own call, "Tarelo indo hane kadh." / "Indo hane kadh.")
       } else first = gate.first(n.what === "egg" ? `ctl-egg:${n.key}` : `ctl-${n.what}`);
@@ -787,6 +796,12 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     function refresh() {
       if (finished) return;
       const n = nextThing();
+      // (a test log: what the game asks next, the eggs' fills and who holds what, for the contract's timed windows)
+      try {
+        if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("eggs-next", { step: n.what, by: `${held ? held.kind : "-"} busy:${busy} ${all().map((e) => `${e.fried ? "f" : "b"}${Math.round(e.p * 100)}${e.lifted ? "L" : ""}${e.out ? "O" : ""}`).join(",")}` });
+      } catch (e) {
+        /* only a log */
+      }
       coach(n);
       stepFor(n);
       if (n.obj) {
@@ -960,7 +975,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
         sh.destroy();
         sh0.setAlpha(1);
         busy--;
-        held = null;
+        // (an egg lifted while the shaker was on its way stays in the hand: CK-126 lets its green come first)
+        if (held && held.kind === "shaker") held = null;
         return refresh();
       }
       if (held.kind !== "cooked") return;
