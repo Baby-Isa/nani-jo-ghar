@@ -1,0 +1,336 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "891f97eae6c99ab49199f545e1389961da387abd",
+ "dirty": true,
+ "date": "2026-11-15T06:40:42.592Z",
+ "base": "a4de366f628cebcf1538da7c977a56e7695d2cdc",
+ "games": [
+  "cook:roll-tawa"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:roll-tawa": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [
+  "the brief names no fix-list row: no probes to play"
+ ],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-891f97eae6",
+  "before | after": "build/screenshots/tiers/change-891f97eae6/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-891f97eae6-roll-tawa/films/cook-roll-tawa@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-891f97eae6/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-119",
+   "where": "cook:roll-tawa@740x320 (after start)",
+   "what": "the customer said the dish (\"Muke char maani khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@740x320 (help-open)",
+   "what": "dough-ball stands on the worktop (107x106 at 336,743, depth 30) with no soft shadow of its own (SH-268: one light, upper left) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@740x320 (kind-click)",
+   "what": "chapati-burnt stands on the worktop (172x169 at 1059,719, depth 32) with no soft shadow of its own (SH-268: one light, upper left) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@740x320 (kind-click)",
+   "what": "chapati-puffed stands on the worktop (177x174 at 1061,703, depth 32) with no soft shadow of its own (SH-268: one light, upper left) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-113",
+   "where": "cook:roll-tawa@740x320 (after kind-roll)",
+   "what": "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (44% of it, at [624,8,732,46]): nothing covers a face, a pill or a card's words (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-113",
+   "where": "cook:roll-tawa@740x320 (after kind-tap)",
+   "what": "the word pill ba is under the page's button#side-cog.rail-btn.side-cog (62% of it, at [655,8,732,46]): nothing covers a face, a pill or a card's words (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-113",
+   "where": "cook:roll-tawa@740x320 (after kind-tap)",
+   "what": "the word pill trae is under the page's button#side-cog.rail-btn.side-cog (52% of it, at [640,8,732,46]): nothing covers a face, a pill or a card's words (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@740x320 (help-open)",
+   "what": "chapati-burnt rests at 52 px at [538,235,594,289], -28% of its 73 px at its last place [528,58,601,129] (chapati-burnt): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@740x320 (kind-click)",
+   "what": "chapati-puffed rests at 52 px at [538,229,595,285], -31% of its 75 px at its last place [527,56,602,129] (chapati-puffed): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@740x320 (kind-click)",
+   "what": "chapati-puffed rests at 52 px at [538,224,593,279], -31% of its 75 px at its last place [527,56,602,129] (chapati-puffed): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@740x320 (after kind-tap)",
+   "what": "chapati-puffed rests at 52 px at [535,219,591,274], -29% of its 73 px at its last place [528,57,601,128] (chapati-puffed): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-119",
+   "where": "cook:roll-tawa@930x430 (after start)",
+   "what": "the customer said the dish (\"Muke char maani khapanti.\") at level 1 and its card flashed only 118 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@930x430 (help-open)",
+   "what": "dough-ball stands on the worktop (107x106 at 336,743, depth 30) with no soft shadow of its own (SH-268: one light, upper left) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@930x430 (help-open)",
+   "what": "chapati-puffed stands on the worktop (172x169 at 1059,719, depth 32) with no soft shadow of its own (SH-268: one light, upper left) (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-113",
+   "where": "cook:roll-tawa@930x430 (after kind-roll)",
+   "what": "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (44% of it, at [814,8,922,46]): nothing covers a face, a pill or a card's words (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-113",
+   "where": "cook:roll-tawa@930x430 (after kind-tap)",
+   "what": "the word pill ba is under the page's button#side-cog.rail-btn.side-cog (62% of it, at [845,8,922,46]): nothing covers a face, a pill or a card's words (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-113",
+   "where": "cook:roll-tawa@930x430 (after kind-tap)",
+   "what": "the word pill trae is under the page's button#side-cog.rail-btn.side-cog (52% of it, at [830,8,922,46]): nothing covers a face, a pill or a card's words (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@930x430 (help-open)",
+   "what": "chapati-puffed rests at 72 px at [654,313,730,388], -31% of its 103 px at its last place [638,72,741,173] (chapati-puffed): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@930x430 (kind-click)",
+   "what": "chapati-puffed rests at 72 px at [647,302,731,385], -30% of its 102 px at its last place [639,72,741,172] (chapati-puffed): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@930x430 (kind-click)",
+   "what": "chapati-puffed rests at 72 px at [650,299,725,374], -29% of its 100 px at its last place [640,73,740,171] (chapati-puffed): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@930x430 (after kind-tap)",
+   "what": "chapati-puffed rests at 72 px at [648,288,732,371], -29% of its 100 px at its last place [640,73,740,171] (chapati-puffed): an item keeps its size from step to step (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "scope",
+   "where": "build/screenshots/tiers/change-891f97eae6/logs/scope.log",
+   "what": "docs/process/regressions.md",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-891f97eae6/logs/play.log",
+   "what": "CONTRACT FAILED: 21 breaks (contract-119 2, contract-120 5, contract-113 6, contract-114 8); CHECK FAILED: 8 new findings, 0 flows do not reach their end, 0 new page errors, 21 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-891f97eae6/logs/before.log",
+   "what": "CONTRACT FAILED: 22 breaks (contract-119 2, contract-120 6, contract-113 6, contract-114 8); CHECK FAILED: 8 new findings, 0 flows do not reach their end, 0 new page errors, 22 contract breaks",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 2,
+  "before": 2,
+  "breaksAfter": 21,
+  "breaksBefore": 22
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 3.2 min; build/reports/tiers/push-891f97eae6.md",
+   "tail": [
+    "checks ... pass (3.2 min)",
+    "check-push: PASSED in 3.2 min; build/reports/tiers/push-891f97eae6.md"
+   ],
+   "log": "build/screenshots/tiers/change-891f97eae6/logs/push.log",
+   "minutes": 3.2
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s20-b2-roll-tawa.json a4de366f628cebcf1538da7c977a56e7695d2cdc..HEAD",
+   "status": "fail",
+   "code": 1,
+   "line": "docs/process/regressions.md",
+   "tail": [
+    "scope: 4 file(s) outside \"s20-b2-roll-tawa: roll-tawa joins the kitchen frame\"'s owns (requests, not edits):",
+    "build/tools/ops/specs/s20-kit-fix.context.md",
+    "build/tools/ops/specs/s20-kit-fix.json",
+    "docs/decisions/2026-11-10-overnight.md",
+    "docs/process/regressions.md"
+   ],
+   "log": "build/screenshots/tiers/change-891f97eae6/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:roll-tawa (1 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:roll-tawa --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-891f97eae6",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 21 breaks (contract-119 2, contract-120 5, contract-113 6, contract-114 8); CHECK FAILED: 8 new findings, 0 flows do not reach their end, 0 new page errors, 21 contract breaks",
+   "tail": [
+    "BREAK contract-114 cook:roll-tawa L1 @ 930x430 [kind-click 09-kind-click.png] 28.7s: chapati-puffed rests at 72 px at [650,299,725,374], -29% of its 100 px at its last place [640,73,740,171] (chapati-puffed): an item keeps its size from step to step",
+    "BREAK contract-114 cook:roll-tawa L1 @ 930x430 [after kind-tap c11-stage.png] 33.3s: chapati-puffed rests at 72 px at [648,288,732,371], -29% of its 100 px at its last place [640,73,740,171] (chapati-puffed): an item keeps its size from step to step",
+    "judged per game (contract.md lists each check not judged and why): roll-tawa 96/111",
+    "CONTRACT FAILED: 21 breaks (contract-119 2, contract-120 5, contract-113 6, contract-114 8)",
+    "CHECK FAILED: 8 new findings, 0 flows do not reach their end, 0 new page errors, 21 contract breaks",
+    "06:45:16 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-891f97eae6/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-891f97eae6/logs/play.log",
+   "minutes": 1.3
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit a4de366f62 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:roll-tawa --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-a4de366f62-891f97eae6",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 22 breaks (contract-119 2, contract-120 6, contract-113 6, contract-114 8); CHECK FAILED: 8 new findings, 0 flows do not reach their end, 0 new page errors, 22 contract breaks",
+   "tail": [
+    "BREAK contract-114 cook:roll-tawa L1 @ 930x430 [kind-click 09-kind-click.png] 26.7s: chapati-puffed rests at 72 px at [647,296,729,377], -30% of its 102 px at its last place [639,72,741,172] (chapati-puffed): an item keeps its size from step to step",
+    "BREAK contract-114 cook:roll-tawa L1 @ 930x430 [after kind-tap c09-stage.png] 30.7s: chapati-puffed rests at 72 px at [648,288,732,371], -29% of its 100 px at its last place [640,73,740,171] (chapati-puffed): an item keeps its size from step to step",
+    "judged per game (contract.md lists each check not judged and why): roll-tawa 96/111",
+    "CONTRACT FAILED: 22 breaks (contract-119 2, contract-120 6, contract-113 6, contract-114 8)",
+    "CHECK FAILED: 8 new findings, 0 flows do not reach their end, 0 new page errors, 22 contract breaks",
+    "06:46:34 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/a4de366f62/build/screenshots/sandbox/tiers-before-a4de366f62-891f97eae6/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-891f97eae6/logs/before.log",
+   "minutes": 1.3
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/a4de366f62/build/screenshots/sandbox/tiers-before-a4de366f62-891f97eae6 build/screenshots/sandbox/tiers-change-891f97eae6 build/screenshots/tiers/change-891f97eae6/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 42 before|after pictures, 11 not paired; build/screenshots/tiers/change-891f97eae6/before-after/index.html",
+   "tail": [
+    "pairs: 42 before|after pictures, 11 not paired; build/screenshots/tiers/change-891f97eae6/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-891f97eae6/logs/pairs.log",
+   "minutes": 0
+  },
+  {
+   "id": "film:roll-tawa",
+   "what": "a first-play film: cook:roll-tawa as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:roll-tawa",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:roll-tawa --sizes 740x320 --no-sheets --run-id tiers-film-891f97eae6-roll-tawa",
+   "status": "pass",
+   "code": 0,
+   "line": "06:47:12 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-891f97eae6-roll-tawa/summary.md",
+   "tail": [
+    "06:47:12 cook:roll-tawa @ 740x320: end reached | 12 states, 5 distinct findings, 0 page errors, 37 s",
+    "06:47:12 findings: 5 (text-small 3, covers-play-area 1, tap-small 1)",
+    "06:47:12 sound: 5 lines heard, 2 with no family clip (the recording gap list), 6 played files that are not an approved family clip",
+    "gap     1x  Muke char maani khapanti.  [device-voice]",
+    "gap     1x  char maani  [device-voice]",
+    "06:47:12 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-891f97eae6-roll-tawa/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-891f97eae6/logs/film_roll-tawa.log",
+   "minutes": 0.6
+  }
+ ],
+ "minutes": 6.5,
+ "ok": false
+}
