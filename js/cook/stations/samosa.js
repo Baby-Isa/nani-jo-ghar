@@ -1062,7 +1062,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
      * more (L3, L4) overlap left to right, each one's filling corner (its bottom left) showing. -> {fy: the close-up's middle, wy: the
      * waiting row's middle, q: their size}
      */
-    const FOLD_GAP = 16;
+    const FOLD_GAP = 36; // (the close-up's light and its pad clear of the waiting row)
     const foldRoom = (() => {
       const innerH = BOARD.h * 0.86;
       const wq = lay.q;
