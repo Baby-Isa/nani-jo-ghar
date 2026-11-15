@@ -90,8 +90,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
    * the room each place gives, never a per-size number: on the band four stand in a row, as tall as the band allows (R, the frame's
    * bottom row); on the grill it stands on the coal bed a little bigger, as big as its place across the bed and the rims allow, and
    * never more than BAND_K over its band size, so it grows with no snap (SH-256, contract-114: within 15% from rest to rest); in the
-   * cooked tray it keeps its grill size where the well allows, standing side by side (two by two when there are more than two, never one
-   * over another). thick: the cob's width over its length. P: the kitchen frame's play area (Cook.Frame.area). -> L (grill, tray,
+   * cooked tray it grows by as much again where the well allows (so on its plate it can fill the plate, Zafar's mock-up), standing side
+   * by side (two by two when there are more than two, never one over another). thick: the cob's width over its length. P: the kitchen frame's play area (Cook.Frame.area). -> L (grill, tray,
    * band, ring), each place's cob length its own: L.band.len, L.grill.cob, L.tray.len.
    */
   const BAND_K = 1.13; // (a cob at most this much over its size at its last place: contract-114's 15%, with room to spare)
@@ -126,16 +126,16 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       if (deep) {
         // (the tray's width sets its rims: its well inside them, a few per cent clear)
         const well = (tw) => gh - 2 * 2 * DP.far * tw;
-        let tlen = glen;
+        let tlen = glen * BAND_K;
         let tw = 0;
         for (let i = 0; i < 6; i++) {
           const cw0 = across(tlen);
           tw = (cols * cw0 + (cols + 1) * cw0 * 0.25) / (1 - 2 * DP.inX);
-          tlen = Math.min(glen, (well(tw) / rows) * 0.94);
+          tlen = Math.min(glen * BAND_K, (well(tw) / rows) * 0.94);
         }
         return { glen, tlen, cw: across(tlen), tw, gw };
       }
-      const tlen = Math.min(glen, ((gh * (1 - 2 * TI[0])) / rows) * 0.94);
+      const tlen = Math.min(glen * BAND_K, ((gh * (1 - 2 * TI[0])) / rows) * 0.94);
       const cw = across(tlen);
       const tw = (cols * cw + (cols + 1) * cw * 0.25) / (1 - 2 * TI[1]);
       return { glen, tlen, cw, tw, gw };
@@ -844,11 +844,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const PH = (Sh.PILL || {}).h || 46;
       const OL = (global.Onboard && global.Onboard.LIGHT) || { share: 0.12, min: 8, max: 16, clear: 2 };
       const room = (sz) => Math.max(Sh.pillGap(ppw), (Math.max(OL.min, Math.min(OL.max, OL.share * sz * ppw)) + OL.clear + 4) / ppw);
-      // (the bowls' row is the frame's bottom row: between its edges, about its middle)
+      // (the bowls' row is the frame's bottom row: they stand inside its stone tray's inner edge, a pill gap clear all round)
       const R = F.bottom;
-      const avail = R.w;
       const mid = R.x + R.w / 2;
-      // the bowls and pills first (their pills' own widths are measured), placed below
+      const Vw = F.view();
+      const m = Sh.pillGap(ppw);
+      // (the slab for a top: Shelf.trayBox, the kit's stone tray; its inner edge as slab() reads it)
+      const innerAt = (t) => slab({ trayBox: Sh.trayBox({ left: Vw.left, right: Vw.right, top: t, bottom: Vw.bottom }) }, R);
+      const in0 = innerAt(R.y);
+      // the bowls and pills first (their pills' own widths and drawn heights are measured), placed below
       ids.forEach((id) => {
         const img = T(S.add.image(mid, B.base, `cn4-${id}`).setDepth(D.item).setAlpha(0));
         img.wordId = id;
@@ -858,74 +862,62 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       });
       const pw = (id) => bowls[id].chip.faceW(bowls[id].chip.showsWord) * want;
       const slotOf = (id, sz) => Math.max(pw(id), sz + 14);
-      const rowW = (row, sz) => row.reduce((a, id) => a + slotOf(id, sz), 0) + room(sz) * (row.length - 1);
+      // (a pill's drawn height at the floor's scale: its face, not its nominal box, PILL.h, which is taller than what is drawn)
+      const pillD = Math.max(
+        ...ids.map((id) => {
+          const c = bowls[id].chip;
+          c.setScale(want);
+          const bb = c.getBounds();
+          return bb && bb.height > 1 ? bb.height : PH * want;
+        })
+      );
+      // (a row at its narrowest: its slots a pill gap apart, never closer: the shared shelf's pill rule)
+      const rowMin = (row, sz) => row.reduce((a, id) => a + slotOf(id, sz), 0) + Sh.pillGap(ppw) * (row.length - 1);
+      const fitsOne = (sz) => rowMin(ids, sz) <= in0.w - 2 * m && sz + 6 + pillD <= in0.h - 2 * m;
       let size = bw.size || 150;
-      while (size > 120 && rowW(ids, size) > avail) size -= 10;
-      const two = rowW(ids, size) > avail;
+      while (size > 120 && !fitsOne(size)) size -= 10;
+      const two = !fitsOne(size);
       const rows = two ? [ids.slice(0, Math.ceil(ids.length / 2)), ids.slice(Math.ceil(ids.length / 2))] : [ids];
       if (two) size = Math.max(size, Math.min(bw.size || 150, 48 / ppw));
-      const pillH = PH * want;
       const gapRows = room(size);
-      // CK-104 (Zafar, 15 Nov: "the two rows don't fit properly and don't line up nicely. All the pills and all the bowls need to be
-      // fitting well within the stone tray and be aligned properly ... The pills go over the edge. The spacing between the two rows is
-      // too big"): two rows stand inside the stone tray's drawn inner edge (its slab, less its lip and bevel), a pill gap clear all round,
-      // the rows centred in it and lined up column by column (each column's bowl and pill on one vertical line, as wide as its wider
-      // pill), a light's margin between the rows (never more than a pill's height); the tray is as tall as the two rows need, so the
-      // play area above it is the plates'. One row stands as before, on chai's shelf and pill lines (contract-109)
+      /*
+       * CK-104 (Zafar, 15 Nov: "the two rows don't fit properly and don't line up nicely. All the pills and all the bowls need to be
+       * fitting well within the stone tray and be aligned properly ... The pills go over the edge. The spacing between the two rows is
+       * too big"): the bowls and their pills stand inside the stone tray's drawn inner edge (its slab, less its lip and bevel), a pill
+       * gap clear all round, centred in it. One row where the six fit so (as before, on one shelf line and one pill line, contract-109);
+       * else two rows of three, lined up column by column (each column's bowl and pill on one vertical line, as wide as its wider
+       * slot), a light's margin between the rows (never more than a pill's drawn height), the tray as tall as the two rows need, so the
+       * play area above it is the plates'
+       */
+      const rowD = size + 6 + pillD;
+      const gapD = Math.min(gapRows, pillD);
+      const block = rows.length * rowD + (rows.length - 1) * gapD;
       let top = R.y;
-      const pos = {}; // (id -> {x, foot, chip})
       if (two) {
-        const Vw = F.view();
-        const m = Sh.pillGap(ppw);
-        // (a pill's drawn height at the floor's scale: its face, not its nominal box, PILL.h, which is taller than what is drawn)
-        const pillD = Math.max(
-          ...ids.map((id) => {
-            const c = bowls[id].chip;
-            c.setScale(want);
-            const b = c.getBounds();
-            return b && b.height > 1 ? b.height : pillH;
-          })
-        );
-        const rowD = size + 6 + pillD;
-        const gapD = Math.min(gapRows, pillD);
-        const block = 2 * rowD + gapD;
-        // (the slab for a top: Shelf.trayBox, the kit's stone tray; its inner edge as slab() reads it)
-        const innerAt = (t) => slab({ trayBox: Sh.trayBox({ left: Vw.left, right: Vw.right, top: t, bottom: Vw.bottom }) }, R);
         // (the top that gives the slab's inner edge room for the block and a pill gap above and below it)
         top = Vw.bottom - block - 2 * m;
-        for (let i = 0; i < 4; i++) {
-          const inn = innerAt(top);
-          top -= block + 2 * m - inn.h;
-        }
-        const inn = innerAt(top);
-        const cols = rows[0].map((id, c) => Math.max(...rows.map((r) => (r[c] ? slotOf(r[c], size) : 0))));
-        const gapC = Math.max(Sh.pillGap(ppw), Math.min(room(size), (inn.w - 2 * m - cols.reduce((a, w) => a + w, 0)) / Math.max(1, cols.length - 1)));
-        const W = cols.reduce((a, w) => a + w, 0) + gapC * (cols.length - 1);
-        const midX = inn.x + inn.w / 2;
-        const y0 = inn.y + (inn.h - block) / 2; // (the first row's bowls' top)
-        let x = midX - W / 2;
-        const cx = cols.map((w) => {
-          const c = x + w / 2;
-          x += w + gapC;
-          return c;
-        });
-        rows.forEach((row, ri) =>
-          row.forEach((id, c) => {
-            const foot = y0 + ri * (rowD + gapD) + size;
-            pos[id] = { x: cx[c], foot, chip: foot + 6 + pillD / 2, w: cols[c] + gapC };
-          })
-        );
-      } else {
-        // (one row: the band's own, as chai's shelf: its pills' middles on the band's pill line, kept 4 above the bottom row's foot, its
-        // bowls' feet on the shelf line, contract-109's chai lines)
-        const chip = Math.min(B.chipY, R.y + R.h - 4 - pillH / 2);
-        let x = mid - rowW(ids, size) / 2;
-        ids.forEach((id) => {
-          const w = slotOf(id, size);
-          pos[id] = { x: x + w / 2, foot: B.base, chip, w: w + room(size) };
-          x += w + room(size);
-        });
+        for (let i = 0; i < 4; i++) top -= block + 2 * m - innerAt(top).h;
       }
+      const inn = innerAt(top);
+      const cols = rows[0].map((id, c) => Math.max(...rows.map((r) => (r[c] ? slotOf(r[c], size) : 0))));
+      const sum = cols.reduce((a, w) => a + w, 0);
+      // (the slots a light's margin apart where the tray has the room, never under a pill gap)
+      const gapC = Math.max(Sh.pillGap(ppw), Math.min(room(size), (inn.w - 2 * m - sum) / Math.max(1, cols.length - 1)));
+      const W = sum + gapC * (cols.length - 1);
+      const y0 = inn.y + (inn.h - block) / 2; // (the first row's bowls' top)
+      let x = inn.x + inn.w / 2 - W / 2;
+      const cx = cols.map((w) => {
+        const c = x + w / 2;
+        x += w + gapC;
+        return c;
+      });
+      const pos = {}; // (id -> {x, foot, chip, w})
+      rows.forEach((row, ri) =>
+        row.forEach((id, c) => {
+          const foot = y0 + ri * (rowD + gapD) + size;
+          pos[id] = { x: cx[c], foot, chip: foot + 6 + pillD / 2, w: cols[c] + gapC };
+        })
+      );
       ids.forEach((id) => {
         const at = pos[id];
         const img = bowls[id];
