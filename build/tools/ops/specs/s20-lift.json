@@ -1,0 +1,47 @@
+{
+ "why": "Sprint 20 step 4, decision 35 (Zafar, 15 Nov ~02:50): yes to the order view's lift (SH-287: more wall, less island during the order) only as far as the order's pop-up card's bottom-left place stays clear of heads; on a phone it lifts less, and chai's card sits where it was live",
+ "cost": "medium: Opus, high effort, one cloud session (about $15-30)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when contract-129 and contract-83 are at zero on every batch 1 game and chai's card at L4 740x320 sits bottom left as on live, or at the end of one session: then push your branch and report",
+ "kind": "code",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": ["SH-287", "SH-304"],
+ "proof": "node build/tools/tiers/gate.mjs --game chai-tray, then --game eggs, --game corn (contract-129 and contract-83 at zero; chai's box part differs only where the lift moves the order view: list each box); before/after sheet: live (origin/main) vs after, chai L4 740x320, eggs L1 740x320 and 1280x665",
+ "name": "s20-lift: the order view lifts only as far as the card's bottom-left place stays clear",
+ "port": 8957,
+ "report": "s20-lift",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "docs/decisions/2026-11-10-overnight.md decision 35",
+  "docs/process/regressions.md rows SH-287 and SH-304 (Zafar's words and the trace: the lift moved the people down the frame, so Nana's head now fills the card's bottom-left place: live bottom 61%, now top 55%)",
+  "js/cook/flow.js orderLift and serviceView; js/cook/ui.js popPlace (the card's place: top left or bottom left, the bigger scale clear of faces and bubbles)",
+  "build/reports/s20-bubble-before-after.png on origin/s20-bubble (the bubble fix this builds on)"
+ ],
+ "owns": ["js/cook/flow.js (orderLift, serviceView only), js/cook/ui.js (popPlace's measure only), build/reports/s20-lift.md, build/reports/s20-lift-before-after.png"],
+ "readOnly": ["every game's station file, js/shared/** (the bubble fix is s20-bubble's), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
+ "flows": ["cook:chai-tray@L4", "cook:eggs", "cook:corn", "cook:maani"],
+ "branch": "s20-lift (yours, on your own cloud machine; start from origin/s20-bubble, then `git merge origin/ccr-7da5e9f0-04g4xm`, the working branch; keep both lines on overnight-log.md conflicts): commit often, push only to it",
+ "tasks": [
+  {
+   "do": "Measure first: for each game and size (740x320, 930x430, 1280x665, 1920x1080), the order view's lift today (orderLift) and the lift at which the card's bottom-left place (popPlace's bigger scale) is clear of every head. Report the table (file:line of where each number comes from).",
+   "accept": "the table in the report, per game and size: today's lift, the largest clear lift"
+  },
+  {
+   "do": "Cap the lift: orderLift takes the largest lift that keeps the card's bottom-left place clear of heads at this size (measured from the scene's people, not a per-game or per-size number), never more than today's. On a phone it lifts less; on a big screen it may keep today's. Nothing else about the order view, the card's size, path or timing changes.",
+   "accept": "chai L4 740x320: the card sits bottom left (as on live, origin/main); contract-129 and contract-83 at zero at L1-L4, four sizes, on chai, eggs, maani, corn"
+  },
+  {
+   "do": "Prove it with the gate, one game at a time, alone on the machine: `COOK_TEST_PORT=8957 NJG_LOCK=/tmp/njg-browser-8957.lock node build/tools/tiers/gate.mjs --game chai-tray`, then eggs, maani, corn. Chai's box part will differ only in the order view: list each moved box and why. Never re-freeze. Make the before/after sheet (live vs after: chai L4 740x320, eggs L1 740x320 and 1280x665, corn L1 740x320) by script. Delete your own run folders when done.",
+   "accept": "each gate's contract part PASS with minutes; the box differences listed; the sheet pushed"
+  },
+  {
+   "do": "Standing: commit often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), push only to your own branch; never re-freeze anything; never touch a check, a probe, a reference or a row's status; name every change to what a child sees at every level and size.",
+   "accept": "build/reports/s20-lift.md with a Proof section, under 500 words, pushed on your branch"
+  }
+ ]
+}
