@@ -2466,7 +2466,10 @@
           if (!el) continue;
           cur = el;
           if (!lit) {
-            lit = Onb.light(() => (cur && cur.isConnected ? withDots(cur) : null), { look: "", pad: 6, kit: true, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
+            // (contract-112, s20-lift: the card is scaled evenly to its room (zoom), so the light's pad scales with it: at L4 on a phone (61%)
+            // a full 6 px reached 5 px past the card's sides, and the light round its picture read as a light round the whole card)
+            const kz = Number(c.style.zoom) || 1;
+            lit = Onb.light(() => (cur && cur.isConnected ? withDots(cur) : null), { look: "", pad: Math.max(3, Math.round(6 * kz)), kit: true, stay: true, zoomFrom: c, note: "order:s14-reveal-card" });
             // (it lights a part of a card, as the reveal lessons' light did: its layer says so, js/shared/onboard.js Onboard.lesson)
             if (lit && lit.layer && lit.layer.dataset) lit.layer.dataset.light = "part";
             say("card", `shown order-popup ${c.dataset.word || ""} ${steps.map((x) => x[0]).join(",")}`);
