@@ -2078,6 +2078,7 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
       // brings to the counter, so the host draws no kitchen here: the round's own first picture (runLab) is the first one, at its lift)
       // (the scene starts on the kitchen, unlifted: the host shows Phaser's empty picture instead, under its start cover)
       S().setBg(Cook.hosted ? "__DEFAULT" : "bg-service");
+      if (Cook.hosted && S().bg) S().bg.setVisible(false); // (no picture at all, not an empty one stretched: contract-11)
     }
     const days = Cook.data.days;
     const nextDay = Math.min(Cook.save.day, days.length);
