@@ -402,7 +402,10 @@ import { Cook as CookNS } from "../ns.js";
       g.save();
       g.translate(W / 2 + Math.cos(a) * r, W / 2 + Math.sin(a) * r);
       g.rotate(a);
-      g.shadowColor = "rgba(0, 0, 0, 0.26)"; // (the kit's one soft shadow, down and to the right: SH-268)
+      // (the kit's one soft shadow, down and to the right, in its shade token: SH-268, Cook.Kit.shadow)
+      const TK = global.Tokens;
+      const rgb = TK && TK.rgb && TK.rgb("shade-rgb") ? TK.rgb("shade-rgb") : null;
+      if (rgb) g.shadowColor = `rgba(${rgb}, 0.26)`;
       g.shadowOffsetX = 6;
       g.shadowOffsetY = 8;
       g.shadowBlur = 6;
