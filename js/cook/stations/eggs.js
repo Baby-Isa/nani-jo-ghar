@@ -9,8 +9,8 @@
  *   2. Each egg's ring fills; in the green it glows: tap it, it lifts. Tap a plate: it lands (a boiled egg halved).
  *      Each egg ticks its own card as it lands; a plate takes the number asked, an extra egg doesn't land (Zafar, 1 Nov).
  *   3. From L3 the salt and pepper shakers (Zafar's two new words): tap one, then a plate; the row ticks.
- *   4. Tap the tray: it goes to the table (the meal's kitchen): each plate slides to its person, who swaps to their happy pose
- *      and bounces, with steam; one that isn't what they asked for stays neutral (decision 8: never a frown).
+ *   4. Tap the tray: well done in this kitchen, chai's way (SH-303, Zafar 15 Nov): each person's big face over their plate, happy
+ *      when it is what they asked, a gentle frown when not; "Shabash!" beside the praise face on a right serve.
  * S19 wave C (CK-66, SH-246, SH-247, ART-67; Zafar 9-10 Nov): chai's scene, built from our pieces. Chai's two-burner hob from the
  * kitchen kit (Cook.Kit.hob) with each burner's knob below its pan (the knob rule: two pans side by side, at every level); the boiled
  * eggs in chai's own top-down pan (its handle to the left, as chai's), the fried eggs in the brushed-steel pan (his steel pick, the v4
@@ -38,8 +38,6 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
   const KEY = "eggs";
   const NOTE = `${KEY}:s14-light`;
   const FAR = 2000; // backgrounds reach past the play area (the stage fill: the frame's view)
-  const CAT_BREATH_S = 0.9; // (the cat's slow breath at the table)
-  const END_REST_S = 0.9; // (a rest after the table's praise, before the end screen)
 
   // the settings file (data/stations/eggs.json, carried by zone.js as Cook.data.settings.eggs)
   const SET = () => ((Cook.data && Cook.data.settings) || {})[KEY] || {};
@@ -81,12 +79,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // (the steam's painted wisps, the kit's: SH-281)
     if (JP() && JP().keys) JP().keys(WISPS).forEach((kv) => out.push(kv));
     if (K.shakers) ["shakerSalt", "shakerPepper"].forEach((k) => add(k));
-    // (the table, 10 Nov's art: the plate, the fried egg and the boiled halves seen at the table's own camera; the old side-on plate,
-    // fried egg and egg cup they replace are no longer loaded)
-    ["plateTable", "friedTable", "boiledTable", "cat"].forEach((k) => add(k));
+    // (SH-303: the table's room, its plate, eggs and cat are no longer loaded: well done is in this kitchen, as chai's)
     const sc = SCENE();
-    const bg = (sc.bg || {})[K.meal || "breakfast"];
-    if (bg) out.push([`eg-bg-${K.meal || "breakfast"}`, bg]);
     if (sc.tray) out.push(["eg-tray", sc.tray.file], ["eg-trayplate", sc.tray.plate]);
     return out.concat(Cook.Kit.art(2, []));
   }
@@ -460,7 +454,11 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
 
     /* ---------------- an egg ---------------- */
     const sized = (o, w) => o.setScale(w / Math.max(1, o.width));
-    const rawEgg = (x, y) => sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * (ITEM("egg").inPot || 0.62));
+    const rawEgg = (x, y) => {
+      const o = sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * (ITEM("egg").inPot || 0.62));
+      o.potScale = o.scale; // (its size in the pot, kept there and, lifted cooked, within 10%: SH-302's hand size glides back to it)
+      return o;
+    };
     // SH-256 (the eye judge, 10 Nov: "the egg snaps from whole to fried"; the art's new egg-part, K7): cracked, then half set (egg-part),
     // then set, each look fading into the next; set a little before its ring's green, so its first-time light comes on the egg as it
     // will stay (nothing changes inside a light as it comes: contract-112); overdone if it is left past its full ring
@@ -743,7 +741,12 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       began();
       hold({ kind: "raw" });
       rawHeld = rawEgg(bowl.x, bowl.y - 30);
-      S.tweens.add({ targets: rawHeld, y: bowl.y - bowl.displayHeight / 2 - 70, duration: 260, ease: "Back.easeOut" });
+      // SH-302 (Zafar, 15 Nov: "initially I think the egg that is picked up is too small"): the egg a little larger everywhere (inPot), and
+      // in the hand inHand times its pot size (data/stations/eggs.json; within contract-114's 15% between its rests) as it rises, its foot
+      // clear of the bowl; it goes back to its pot size as it flies in (putIn)
+      const handS = rawHeld.scale * (ITEM("egg").inHand || 1);
+      const handY = bowl.y - bowl.displayHeight / 2 - (rawHeld.displayHeight * (ITEM("egg").inHand || 1)) / 2 - 18;
+      S.tweens.add({ targets: rawHeld, y: Math.min(bowl.y - bowl.displayHeight / 2 - 70, handY), scale: handS, duration: 260, ease: "Back.easeOut" });
       Cook.sfx.pop();
       z.progress({ took: "n.egg" });
     });
@@ -765,7 +768,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // height and the egg sat on the shelf, its light there, every tap missing it: one tween moves an egg at a time, the flight's)
       S.tweens.killTweensOf(o);
       refresh();
-      await flying(S.fly(o, at.x, at.y, { duration: 380, arc: 120 }));
+      await flying(S.fly(o, at.x, at.y, { duration: 380, arc: 120, scale: o.potScale })); // (SH-302: back to its pot size as it flies in)
       // (the tray went to the table while it flew: nothing is left to cook it in)
       if (finished) return o.active && o.destroy();
       // (and it lands where the game keeps it, egg.at, whatever ended its flight)
@@ -1012,8 +1015,8 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     vessels.pan.b.set("off", true);
     potSteamOn(false);
 
-    /* ---------------- the table: the meal in its kitchen ---------------- */
-    await serve(S, ctx, z, { plates: P0, meal: K.meal || "breakfast", objs });
+    /* ---------------- the serve: in this kitchen, chai's way (SH-303) ---------------- */
+    await serve(S, ctx, { plates: P0, tray, plateD });
     if (!guided) {
       Cook.save.coached = Cook.save.coached || {};
       Cook.save.coached[KEY] = true;
@@ -1040,149 +1043,66 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     }
     return st;
   };
-  /** The table: the meal's kitchen (its window's sky by the meal); each plate slides to its person, who swaps to happy and bounces. */
-  async function serve(S, ctx, z, { plates, meal, objs }) {
-    // (the hob's steam goes with it: SH-281, nothing left behind)
+  /*
+   * The serve (SH-303, Zafar 15 Nov: "you're using two different kitchen scenes for the delivery, use just one (same as chai)"; CK-93):
+   * well done stays in the serve's kitchen, chai's way: the tray and its plates where they were made, each person's big face over their
+   * plate's rim (the kit's review faces, NjgServe.faces: happy when it is what they asked, a gentle frown when it is not), and on a right
+   * serve the "Shabash!" card beside the praise face as it is said (Nani's box reads it, SH-252). The cut to the table with the cat is gone.
+   * A wrong plate brings the wrong-order pop-up through the kitchen's serve round (SH-264 to SH-266): its card in the middle with the
+   * wrong rows red and crossed. Its check marks the rows the plate got wrong (UI.mission.serveWrong; the red ends with the round,
+   * UI.mission.redoEnd): the egg cards for the wrong kind or count, the salt or pepper row for a seasoning not as asked; a seasoning nobody
+   * asked for has no row of its own: the pop-up draws a row for it (serveWrong's unasked); only with nothing to name does the person's first
+   * said row take it. No redo: the eggs are out of the pans (the kit's way without a tracker: the pop-up, then the round ends).
+   */
+  async function serve(S, ctx, { plates, tray, plateD }) {
+    // (the hob's steam goes: SH-281, nothing left steaming over a served round; the kitchen itself stays, as chai's)
     const wisps = () => S.children.list.filter((o) => o && o.active && isWisp(o));
-    await Cook.tween(S, { targets: objs.filter((o) => o && o.active).concat(wisps()), alpha: 0, duration: 300 });
-    objs.concat(wisps()).forEach((o) => o && o.active && o.destroy());
-    const T = (o) => S.track(o);
-    const tb = SCENE().table || {};
-    const sized = (o, k, f = 1) => {
-      const d = ITEM(k).drawn || {};
-      if (d.w) o.setScale((d.w * f) / Math.max(1, o.width));
-      else if (d.h) o.setScale((d.h * f) / Math.max(1, o.height));
-      return o;
-    };
-    // the meal's kitchen, covering the stage in proportion, its island's back edge where the people stand (scene.bgIsland)
-    if (S.textures.exists(`eg-bg-${meal}`)) {
-      // CK-75 (the eye judge, 10 Nov: a strip of marble above the kitchen at 740x320 and 1280x665; chai's praise fills the play area):
-      // the picture covers the whole view the stage shows (the frame's view, wider or taller than the sheet), its island's line kept
-      // where the people stand: as large as the view's width asks, and as the room above and below the island line asks (the table is
-      // a zone the size of the whole sheet, Cook.Frame.sheet, as chai's two zones)
-      const { left: vl, right: vr, top: vt, bottom: vb } = Cook.Frame.view();
-      const SH0 = Cook.Frame.sheet;
-      const bg = T(S.add.image((vl + vr) / 2, SH0.y, `eg-bg-${meal}`).setOrigin(0.5, 0).setDepth(D.bg + 2));
-      const isl = (SCENE().bgIsland || {}).wanted || 705;
-      const f = (isl - SH0.y) / SH0.h; // (the island line's share of the picture's height)
-      const W0 = Math.max(1, bg.width);
-      const H0 = Math.max(1, bg.height);
-      const k = Math.max(SH0.w / W0, SH0.h / H0, (vr - vl + 4) / W0, (isl - vt + 2) / (f * H0), (vb - isl + 2) / ((1 - f) * H0));
-      bg.setScale(k);
-      bg.y = isl - f * H0 * k;
-    }
-    const cat = tb.cat || { x: 120, y: 706, h: 190 };
-    const catImg = T(S.add.image(cat.x, cat.y, tex("cat")).setOrigin(0.5, 1).setDepth(D.bg + 3));
-    catImg.setScale(cat.h / Math.max(1, catImg.height));
-    S.tweens.add({ targets: catImg, scaleY: catImg.scaleY * 1.03, duration: CAT_BREATH_S * 1000, yoyo: true, repeat: -1, ease: "Sine.easeInOut" });
-    // the people at their places, behind the island
-    const n = plates.length;
-    const seats = (tb.seats || {})[String(n)] || plates.map((q, i) => 400 + (i * 800) / Math.max(1, n - 1));
-    const people = plates.map((pl, i) => {
-      const who = pl.q.who;
-      const full = S.textures.exists(`${who}-neutral`);
-      const img = T(S.add.image(seats[i], tb.standY || 708, full ? `${who}-neutral` : Cook.Kit.badge(S, who)).setOrigin(0.5, 1).setDepth(D.item - 2));
-      img.setScale((full ? tb.personH || 470 : 220) / img.height);
-      return { pl, img, who };
-    });
-    await Cook.wait(400);
+    await Cook.tween(S, { targets: wisps(), alpha: 0, duration: 300 });
+    wisps().forEach((o) => o.active && o.destroy());
     // (is this plate what its person asked for: the kind and count of eggs, and the salt and pepper as asked)
     const kindsOk = (pl) => pl.eggs.length === (pl.q.n || 1) && pl.eggs.every((e) => e.fried === !!pl.q.fried);
     const seasonOk = (pl) => (pl.q.salt === "yes") === !!pl.salt && (pl.q.pepper === "yes") === !!pl.pepper;
     const plateOk = (pl) => kindsOk(pl) && seasonOk(pl);
-    // each plate slides in to its person; they swap to happy and bounce; steam rises
-    let allRight = true;
-    const slideIn = async ({ pl, img, who }) => {
-      const x = img.x;
-      const plate = T(S.add.container(x, tb.plateFrom || 1050).setDepth(D.item + 1));
-      // the table's plate (10 Nov's art, ART-72's run): its camera a little higher than the table's (its ellipse about 0.40 of its width
-      // against the trays' 0.2), so it is squashed to the table here (scene.table.squash), and each egg on it at the same squash
-      const sq = tb.squash || 0.6;
-      const squash = (o) => o.setScale(o.scaleX, o.scaleY * sq);
-      const pImg = squash(sized(S.add.image(0, 0, tex("plateTable")), "plateTable"));
-      plate.add(pImg);
-      const ew = (ITEM("friedTable").drawn || {}).w || 150;
-      pl.eggs.forEach((e, j) => {
-        const dx = (j - (pl.eggs.length - 1) / 2) * ew * 0.62;
-        const k = pl.eggs.length > 1 ? 0.75 : 1;
-        const key = e.fried ? "friedTable" : "boiledTable";
-        plate.add(squash(sized(S.add.image(dx, -pImg.displayHeight * 0.06, tex(key)), key, k)));
-      });
-      if (pl.salt || pl.pepper) {
-        const dg = S.add.graphics();
-        if (pl.salt) dg.fillStyle(col("white"), 0.95);
-        for (let i = 0; i < 10 && pl.salt; i++) dg.fillCircle((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 24, 2.2);
-        if (pl.pepper) dg.fillStyle(col("ink"), 0.9);
-        for (let i = 0; i < 10 && pl.pepper; i++) dg.fillCircle((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 24, 2.2);
-        plate.add(dg);
-      }
-      const py = tb.plateY || 752;
-      await Cook.tween(S, { targets: plate, y: py, duration: 520, ease: "Cubic.easeOut" });
-      Cook.sfx.pop();
-      const ok = plateOk(pl);
-      if (!ok) allRight = false;
-      // (the plate's steam: the kit's painted wisps, SH-281)
-      puffs(S, x, py - 20, 130, 3, D.item + 2);
-      // the pose swap: happy when it's right, else they stay neutral (decision 8, 7 Nov: chai's progress display, never a frown)
-      const mood = ok ? "happy" : "neutral";
-      if (S.textures.exists(`${who}-${mood}`)) img.setTexture(`${who}-${mood}`);
-      if (ok) {
-        Cook.sfx.right();
-        await Cook.tween(S, { targets: img, y: img.y - 26, duration: 170, yoyo: true, repeat: 1, ease: "Sine.easeOut" });
-      } else Cook.sfx.soft();
-      await Cook.wait(250);
-    };
     // a person's rows on the order card (their section of the order's ladder)
     const rowsOf = (who) => {
       const L = (ctx.ladders || []).find((l) => l && (l.sections || []).some((x) => x.for === who));
       const sec = L && L.sections.find((x) => x.for === who);
       return sec ? [].concat(...sec.groups).filter((r) => r && !r.head && Array.isArray(r.ids)) : [];
     };
-    /*
-     * SH-264 to SH-266 (Zafar's child play-test, 11 Nov evening; the orchestrator, 12 Nov: eggs serves through the shared round as chai
-     * does): the plates through the kitchen's serve round (Cook.Kit.serve().round), so a wrong plate brings the wrong-order pop-up, its
-     * card in the middle with the wrong rows red and crossed. Its check marks the rows the plate got wrong (UI.mission.serveWrong; the red
-     * ends with the round, UI.mission.redoEnd): the
-     * egg cards for the wrong kind or count, the salt or pepper row for a seasoning not as asked; a seasoning nobody asked for has no row
-     * of its own: the pop-up draws a row for it (serveWrong's unasked); only with nothing to name does the person's first said row take it. No redo:
-     * the plates are on the table and the cooking is gone (the kit's way without a tracker: the pop-up, then the round ends); the faces
-     * were the plates' own (the pose swap as each lands), so the round's review shows none.
-     */
-    const K = Cook.Kit && Cook.Kit.serve ? Cook.Kit.serve() : null;
-    if (K && K.round) {
-      await K.round({
-        items: people,
-        done: async () => {
-          for (const p of people) await slideIn(p);
-        },
-        check: (p) => {
-          const pl = p.pl;
-          const ok = plateOk(pl);
-          if (ok) return { ok };
-          const want = [];
-          if (!kindsOk(pl)) want.push(...kindIds(!!pl.q.fried));
-          if ((pl.q.salt === "yes") !== !!pl.salt) want.push("spi-16");
-          if ((pl.q.pepper === "yes") !== !!pl.pepper) want.push("spi-11");
-          const rows = rowsOf(p.who);
-          let bad = rows.filter((r) => r.ids.some((id) => want.includes(id)));
-          // (the round-two review's finding 5, s19-clean-a2's line: a salt or pepper nobody asked for has no row: the pop-up draws one
-          // for it and crosses that, never a row made right (UI.mission.serveWrong's unasked); the red ends with the round, M.redoEnd)
-          const unasked = want.filter((id) => !rows.some((r) => r.ids.includes(id)));
-          if (!bad.length && !unasked.length) bad = rows.filter((r) => !r.unsaid).slice(0, 1).concat(rows).slice(0, 1);
-          if (UI.mission.serveWrong && (bad.length || unasked.length)) UI.mission.serveWrong(bad.map((r) => r.ids[0]), ctx.dishAt || 0, { for: p.who, unasked }); // (the d review's finding 4: its dish, never 0)
-          return { ok, rows: bad.length ? bad : null };
-        },
-        review: async () => [],
-        recast: async () => {},
-      });
-    } else for (const p of people) await slideIn(p);
+    const K = Cook.Kit.serve(); // (the kitchen's serve: NjgServe.for(Cook), its well done shown in Nani's box, SH-252)
+    await K.round({
+      items: plates,
+      done: async () => {},
+      check: (pl) => {
+        const ok = plateOk(pl);
+        if (ok) return { ok };
+        const want = [];
+        if (!kindsOk(pl)) want.push(...kindIds(!!pl.q.fried));
+        if ((pl.q.salt === "yes") !== !!pl.salt) want.push("spi-16");
+        if ((pl.q.pepper === "yes") !== !!pl.pepper) want.push("spi-11");
+        const rows = rowsOf(pl.q.who);
+        let bad = rows.filter((r) => r.ids.some((id) => want.includes(id)));
+        const unasked = want.filter((id) => !rows.some((r) => r.ids.includes(id)));
+        if (!bad.length && !unasked.length) bad = rows.filter((r) => !r.unsaid).slice(0, 1).concat(rows).slice(0, 1);
+        if (UI.mission.serveWrong && (bad.length || unasked.length)) UI.mission.serveWrong(bad.map((r) => r.ids[0]), ctx.dishAt || 0, { for: pl.q.who, unasked }); // (its dish, never 0)
+        return { ok, rows: bad.length ? bad : null };
+      },
+      onRight: (pl) => S.sparkle && S.sparkle(pl.x, pl.y),
+      // the review (29 Sept, X10 / Q1): each person's big face over their plate's rim, standing in for its corner face (one face per
+      // person, CK-07), the praise card beside the last of them (or the leftmost where it would run off the view: NjgServe.layout)
+      review: (wrong) => {
+        plates.forEach((pl) => pl.face && pl.face.setVisible(false));
+        const dishes = plates.map((pl) => ({ who: pl.q.who, x: pl.x, y: pl.y, w: plateD }));
+        return K.faces(S, dishes, wrong.map((pl) => plates.indexOf(pl)), { left: tray.x, right: Cook.Frame.view().right });
+      },
+      recast: async () => {},
+      afterReview: () => plates.forEach((pl) => pl.face && pl.face.active && pl.face.setVisible(true)),
+      who: (pl) => pl.q.who,
+    });
     UI.mission.closeItem([], 0, { all: true });
     if (St.helperWatch) St.helperWatch(ctx, null);
     if (UI.helper) UI.helper(null);
-    // (SH-252: her box reads the engine's Shabash as it is said, until the end screen)
-    if (allRight && Cook.praiseBox) Cook.praiseBox();
-    if (allRight) await Promise.race([UI.voice(Lang.line("welldone")).catch(() => {}), Cook.wait(2400)]);
-    await Cook.wait(END_REST_S * 1000);
+    await Cook.wait(500);
   }
 
   Mech.lab(KEY, {
