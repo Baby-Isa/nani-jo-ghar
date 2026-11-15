@@ -53,8 +53,7 @@ There was no BEFORE evidence: the spec names no rows.
 - **Gates after merging 24ac6d5:**
   - `GATE PASS roll-tawa: checks pass 2.4, contract pass 0.7; 3.2 min`: 0 blocking; advisory 15 (was 22).
   - `GATE FAIL chai-tray: checks pass 2.8, contract FAIL 22.4, boxes:chai-tray FAIL 3.7; 28.9 min`: the base's own faults (above).
-- **Earlier, after merging 891f97e:** `GATE PASS chai-tray ... 27.9 min`, with its boxes identical.
+- **Earlier (891f97e):** chai's gate passed, boxes identical.
 - **Four sizes** (`rt-r2c`, cook:roll-tawa L1 and L2): 8 of 8 pages end, 0 page errors; 52 advisory breaks (-114 28, -120 20, -119 4), 0 blocking.
 - **Fable's run after** (`rt-pics-after`, 740x320 and 1280x665): both end, 0 page errors.
-- **check-change** (`change-891f97eae6`, round 1): scope only (the merge's files).
 - **checks.mjs:** pass.
