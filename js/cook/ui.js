@@ -2019,6 +2019,25 @@
     return out;
   };
   const popOverlap = (r, list) => list.reduce((a, b) => a + Math.max(0, Math.min(r.right, b.right) - Math.max(r.left, b.left)) * Math.max(0, Math.min(r.bottom, b.bottom) - Math.max(r.top, b.top)), 0);
+  // the card's width as L1 draws it (popCard) and the room it is placed in (popPlace): beside the side panel, inside the play area
+  const popWidth = (play) => Math.round(Math.min(300, play.height * 0.6, play.width * 0.42));
+  const popRoomOf = (play, sr) => ({ xL: sr.right + 14, yT: play.top + 10, yB: play.bottom - 10, xR: play.right - 10 });
+  /**
+   * Decision 35 (Zafar, 15 Nov ~02:50; SH-287, SH-304): the order view's lift goes only as far as the card's bottom-left place stays
+   * clear of heads. That place in page px, for flow.js liftOrderView: the card's column at its full size (popCard's width), from the
+   * play area's top pad to its foot (the lift is set before the order's cards exist, and a card may take the play area's whole height:
+   * at a phone every card is taller than it). null with no stage.
+   */
+  UI.popRoom = function () {
+    const side = $("#side");
+    const st = $("#stage");
+    if (!side || !st) return null;
+    const play = st.getBoundingClientRect();
+    const sr = side.getBoundingClientRect();
+    if (!(play.width > 0 && play.height > 0)) return null;
+    const r = popRoomOf(play, sr);
+    return { left: r.xL, right: r.xL + popWidth(play), top: r.yT, bottom: r.yB };
+  };
   function popPlace(c, play, sr, wd, quiet) {
     // CHAI-43 (Zafar, 2 Nov afternoon, his screenshot of the L4 card stretched wide: "Just keep the pop up card in its usually
     // proportions ... make it close as possible to original size seen in level 1 as much as the space allows"; "not centred, they
@@ -2031,6 +2050,7 @@
     const bubs = [...document.querySelectorAll(".cv-bubble")].map((b) => b.getBoundingClientRect()).filter((b) => b.width > 0);
     const pad = 10;
     const KMIN = 0.45;
+    const room = popRoomOf(play, sr);
     c.classList.remove("wc14-side", "wc14-fill");
     c.style.zoom = "";
     c.style.width = `${wd}px`;
@@ -2040,10 +2060,7 @@
     const cb = c.getBoundingClientRect();
     const sb = c.querySelector(".wc14-spk") && c.querySelector(".wc14-spk").getBoundingClientRect();
     const h0 = c.offsetHeight + (sb && sb.height ? Math.max(0, sb.bottom - cb.bottom) : 0);
-    const xL = sr.right + 14;
-    const yT = play.top + pad;
-    const yB = play.bottom - pad;
-    const xR = play.right - pad;
+    const { xL, yT, yB, xR } = room;
     const rectAt = (anchor, k) => (anchor === "top" ? { left: xL, top: yT, right: xL + w0 * k, bottom: yT + h0 * k } : { left: xL, top: yB - h0 * k, right: xL + w0 * k, bottom: yB });
     const clear = (r, withBubs) => r.right <= xR + 0.5 && r.top >= yT - 0.5 && r.bottom <= yB + 0.5 && popOverlap(r, faces) === 0 && (!withBubs || popOverlap(r, bubs) === 0);
     // the biggest scale (to 1%) at which the card sits clear at that place; 0 where even KMIN doesn't
@@ -2131,7 +2148,7 @@
     const play = st.getBoundingClientRect();
     const sr = side.getBoundingClientRect();
     const c = global.WordCard.big14(null, w.word, Object.assign({}, w.wordOpts || {}, { cls: ["wc14-pop", cls].filter(Boolean).join(" ") }));
-    const wd = Math.round(Math.min(300, play.height * 0.6, play.width * 0.42));
+    const wd = popWidth(play);
     Object.assign(c.style, { position: "fixed", left: `${sr.right + 14}px`, top: `${play.top + 10}px`, width: `${wd}px`, zIndex: "45", pointerEvents: "none", margin: "0" });
     document.body.appendChild(c);
     global.WordCard.fit14(c);
