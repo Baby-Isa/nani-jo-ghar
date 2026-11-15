@@ -2564,8 +2564,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
    */
   function praiseAt(S, { tray, grill, skewers, F }) {
     try {
-      const size = (Cook.Kit.serve().layout([{ x: 0, y: 0, w: 1 }])[0] || {}).size || 150;
-      const r = size / 2;
+      // (the kit's one-dish size, else its smaller sizes down to its floor for several dishes, NjgServe.layout min, chai's faces with
+      // several glasses: a phone has less room round the tray; never under 30 CSS px)
+      const S0 = (Cook.Kit.serve().layout([{ x: 0, y: 0, w: 1 }])[0] || {}).size || 150;
+      const floor = Math.max(96, 30 / Math.max(0.01, F.px));
+      const sizes = [S0, S0 * 0.87, S0 * 0.73, floor].filter((v, i, a) => v >= floor && a.indexOf(v) === i);
       const T = global.Tokens;
       const t = S.add.text(0, 0, Cook.Lang.plain(Cook.Lang.line("welldone")).trim(), { fontFamily: T && T.font ? T.font("word", "Nunito, sans-serif") : "Nunito, sans-serif", fontSize: "34px", fontStyle: "800" });
       const cw = t.width + 44; // (the kit's LOOK.cardPad)
@@ -2583,21 +2586,26 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const vb = { x: V.left + 6, y: V.top + 6, right: V.right - 6, bottom: F.bottom.y - 4 };
       const hit = (a, b) => b && a.x < b.right && a.right > b.x && a.y < b.bottom && a.bottom > b.y;
       const inside = (a) => a.x >= vb.x && a.y >= vb.y && a.right <= vb.right && a.bottom <= vb.bottom;
-      const below = Math.max(tb.bottom, ...sk.map((b) => b.bottom), gb ? gb.bottom : -Infinity);
-      const spots = [
-        { x: tb.right - r * 0.3, y: tb.y - r * 0.3, side: "right" },
-        { x: tb.x + r, y: tb.y - r - 6, side: "right" },
-        { x: tb.x + r * 0.2, y: below + r + 6, side: "left" },
-        { x: tb.right - r, y: below + r + 6, side: "right" },
-      ];
-      const ok = (q) => {
-        const face = { x: q.x - r, y: q.y - r, right: q.x + r, bottom: q.y + r };
-        const cx = q.x + (q.side === "right" ? 1 : -1) * (r + gap + cw / 2);
-        const card = { x: cx - cw / 2, y: q.y - ch / 2, right: cx + cw / 2, bottom: q.y + ch / 2 };
-        return inside(face) && inside(card) && !hit(face, gb) && !sk.some((b) => hit(face, b)) && !hit(card, gb) && !hit(card, tb) && !sk.some((b) => hit(card, b));
-      };
-      const q = spots.find(ok);
-      return q ? { x: q.x, y: q.y, side: q.side, size, k: 1 } : null;
+      // (under the tray's body and the grill's: the handles hang lower, but only under the skewers, which the face keeps clear of)
+      const below = Math.max(tb.bottom, gb ? gb.bottom : -Infinity);
+      for (const size of sizes) {
+        const r = size / 2;
+        const spots = [
+          { x: tb.right - r * 0.3, y: tb.y - r * 0.3, side: "right" },
+          { x: tb.x + r, y: tb.y - r - 6, side: "right" },
+          { x: tb.x - r * 0.2, y: below + r + 4, side: "left" },
+          { x: tb.right - r * 0.8, y: below + r + 4, side: "right" },
+        ];
+        const ok = (q) => {
+          const face = { x: q.x - r, y: q.y - r, right: q.x + r, bottom: q.y + r };
+          const cx = q.x + (q.side === "right" ? 1 : -1) * (r + gap + cw / 2);
+          const card = { x: cx - cw / 2, y: q.y - ch / 2, right: cx + cw / 2, bottom: q.y + ch / 2 };
+          return inside(face) && inside(card) && !hit(face, gb) && !sk.some((b) => hit(face, b)) && !hit(card, gb) && !hit(card, tb) && !sk.some((b) => hit(card, b));
+        };
+        const q = spots.find(ok);
+        if (q) return { x: q.x, y: q.y, side: q.side, size, k: 1 };
+      }
+      return null;
     } catch (e) {
       return null;
     }
