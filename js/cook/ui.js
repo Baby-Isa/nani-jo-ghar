@@ -719,6 +719,22 @@
     } catch (e) {
       /* no order card: nothing to tick */
     }
+    // (the Fable re-judge of maani L4 at 1280x665, 15 Nov: the review closed Nana's card under a second before the well done, so the
+    // well done caught it holding its ticks, half folded, its headline not yet ticked): a card finished a while ago and still holding
+    // folds now, so the well done shows every card folded with its tick. A card closed this moment (chai's counter, cardsDone) keeps
+    // its own hold, glide home and fold (Zafar, 4 Nov evening)
+    const folds = mission && mission.folds;
+    if (folds) {
+      const now = Date.now();
+      let any = false;
+      Object.values(folds).forEach((st) => {
+        if (!st || !st.doneAt || st.shut || st.open || now - st.doneAt < 250) return;
+        clearTimeout(st.timer);
+        st.doneAt = 1;
+        any = true;
+      });
+      if (any) renderOrder();
+    }
   };
   function restoreGuide() {
     if (!guide) return;
