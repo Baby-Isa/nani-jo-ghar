@@ -173,7 +173,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const bed0 = gx - z.gw / 2 + G.bed[0] * z.gw;
     const bed1 = gx - z.gw / 2 + G.bed[1] * z.gw;
     // (CK-130: the places across the coal bed are as many as the grill holds at once, so each cob's ring round it has its room)
-    const m = Math.max(2, Math.min(4, onGrill));
+    const m = Math.max(1, Math.min(4, onGrill));
     const grill = {
       x: gx,
       y: gy,
@@ -187,9 +187,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       at: (i, mm = m) => ({ x: bed0 + ((bed1 - bed0) / Math.max(1, mm)) * (i + 0.5), y: (far + near) / 2 }),
     };
     // CK-130 (round 2, the eye judge for Zafar, decision 38: "the timer ring round the cob on the grill, clear of the light's edge and
-    // big enough to read, as chai's ring round its pan"): the kit's heat ring round the standing cob, its ends inside the ring with a
-    // little air, as chai's rides its pan's rim; never wider than its place across the bed, nor taller than the rims allow
-    const ringR = Math.min(z.glen * 0.58, ((bed1 - bed0) / m) * 0.47, ((near - far) / 2) * 0.98);
+    // big enough to read, as chai's ring round its pan"): the kit's heat ring round the standing cob, as chai's rides its pan's rim;
+    // never wider than its place across the bed, nor taller than the rims allow (its size: ring(p, pad) below)
+    const ringMax = Math.min(((bed1 - bed0) / m) * 0.48, ((near - far) / 2) * 0.98);
     const tx = left + z.gw + gap + z.tw / 2;
     const step = z.cw * 1.25;
     // (the well's top edge inside the tray's rim, design px: the deep tray's rims are a share of its width, the steel one's its height)
@@ -217,7 +217,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       grill,
       tray,
       band: { len: blen, at: (i) => ({ x: bmid + (i - 1.5) * bstep, y: by }) },
-      ring: (p) => ({ x: p.x, y: p.y, r: ringR }),
+      // (round the cob clear of its light: the light's box is the cob and pad round it, so the ring passes outside the box's corners,
+      // never across its edge; pad: the light's pad in design px, the screen's)
+      ring: (p, pad = 0) => ({ x: p.x, y: p.y, r: Math.min(ringMax, Math.hypot((thick * z.glen) / 2 + pad, z.glen / 2 + pad) + 14) }),
     };
   }
   /** The grill and its tray, the tray turned upright to the grill's height, each with the kit's soft shadow. */
@@ -346,14 +348,17 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     // glass from the first frame): whose cobs these are, from the first frame, as chai's glasses: each person's face circle at the
     // cooked tray's upper left, over its rim's edge only, in a row along its top; they go as the cobs go to their own plates
     // CK-132 (round 2, the eye judge: "the cooking tray's face circles not specks on one corner"): each person's face circle stands in
-    // the tray's well over the place their cob will stand (person i's cob is the i-th lifted: L.tray.at(i)), between the rim and the
-    // cob's top, as big as that room and the place's width allow, at least the kit's badge floor (30 CSS px as seen)
+    // the tray's well at the place their cob will stand (person i's cob is the i-th lifted: L.tray.at(i)), below it, between the cob's
+    // foot and the rim, as a name in front of it (above it, the screen's corner holds the settings cog: contract-113), as big as that
+    // room and the place's width allow, at least the kit's badge floor (30 CSS px as seen)
     const trayFaces = people.map((q, i) => {
       const perPx = Math.max(0.01, F.px); // (the screen's scale, the frame's)
       const at = L.tray.at(i);
-      const room = at.y - L.tray.len / 2 - L.tray.inTop;
+      const inBot = 2 * L.tray.y - L.tray.inTop; // (the well's foot: the tray's rims are the same top and bottom)
+      const foot = at.y + L.tray.len / 2;
+      const room = inBot - foot;
       const fs = Math.max(30 / perPx, Math.min(L.tray.step * 0.85, room * 0.8, 120));
-      const fy = L.tray.inTop + Math.max(fs / 2 + 4, (room - fs) / 2 + fs / 2);
+      const fy = inBot - Math.max(fs / 2 + 4, (room - fs) / 2 + fs / 2);
       const img = T(S.add.image(at.x, fy, Cook.Kit.badge(S, q.who)).setDisplaySize(fs, fs).setDepth(D.item + 2));
       img.setName("corn-tray-face");
       return img;
@@ -402,6 +407,11 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       }
     };
     const onBand = () => raw.filter((o) => o.active && o.onBand !== false);
+    // (a light's pad round its thing, design px at this screen's scale: the kit's widest, Onboard.LIGHT)
+    const lightPad = () => {
+      const OL = (global.Onboard && global.Onboard.LIGHT) || { max: 16, clear: 2 };
+      return (OL.max + OL.clear + 2) / Math.max(0.01, F.px || 1);
+    };
     // (Nani is saying a line now: her box's talking state)
     const guideTalking = () => {
       const g = global.document && global.document.getElementById("guide");
@@ -549,7 +559,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         if (lit === img) glow(null);
         const used = cobs.map((c) => c.slot);
         // (the places fill from the grill's middle out, as many places as the grill holds at once: CK-130)
-        const order = { 2: [0, 1], 3: [1, 0, 2], 4: [1, 2, 0, 3] }[L.grill.places] || [0, 1, 2, 3];
+        const order = { 1: [0], 2: [0, 1], 3: [1, 0, 2], 4: [1, 2, 0, 3] }[L.grill.places] || [0, 1, 2, 3];
         const slot = order.find((k) => !used.includes(k));
         const at = L.grill.at(slot);
         const c = { img, n: made++, slot, at, side: 0, p: 0, t0: 0, state: "fly", ring: Cook.Kit.heatRing(S, { depth: D.fx + 1 }) };
@@ -561,13 +571,6 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         fly(() => GK.move(S, img, { x: at.x, y: at.y, len: L.grill.cob, up: true, ms: mo.bandMs || 520 })).then(() => {
           c.state = "cook";
           c.t0 = Date.now();
-          // (CK-130: its ring round it is part of it: the light round the cob takes the ring in)
-          img.litParts = () => {
-            if (!cobs.includes(c)) return [];
-            const r = L.ring(c.at);
-            const w = r.r + 12;
-            return [{ x: r.x - w, y: r.y - w, right: r.x + w, bottom: r.y + w }];
-          };
           if (Cook.sfx.sizzle) Cook.sfx.sizzle(0.5);
           S.tappable(img, () => tapCob(c));
           acted();
@@ -632,7 +635,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         c.p = hold14.cap(raw, greenLo, 1, "corn");
         if (c.p < raw) c.t0 = Date.now() - c.p * span; // (held: its clock waits with it)
         // the kit's heat ring over the cob's top end (one heat language): gold up to the sage band; ready from the green's start
-        const r = L.ring(c.at);
+        const r = L.ring(c.at, lightPad());
         c.ring.draw(r.x, r.y, r.r, c.p, greenLo, 1);
         // (CK-80: left past its green on its second side, the cob is over: the fourth stage)
         if (c.state === "lift" && c.side === 1 && c.p >= 1 && c.img.texture.key !== tex.over && S.textures.exists(tex.over)) c.img.setTexture(tex.over);
