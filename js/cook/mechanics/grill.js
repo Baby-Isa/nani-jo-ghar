@@ -2336,9 +2336,33 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (line.blocked && line.blocked() && !rack.includes(null)) return rack.find(Boolean);
         return null;
       };
+      /*
+       * SH-228 (contract-91, the base's L3 #hint at 740x320 and 1280x665: 15 s stuck on the grill screen's tap with no help): the kit's
+       * stuck help (Cook.Coach.stuck, chai's method, as the threading's) while the grill waits for a skewer to be put on: after the
+       * level's wait, Nani's helper card with the kit's light round a skewer on the band. The first one lying there, whichever it is: the
+       * skewers are the child's own, and the review judges them (the light never picks the one the order still needs: the leak test).
+       */
+      let stk = null;
+      let stkFor = null;
+      const stuckOn = (r) => {
+        if (r === stkFor) return;
+        stkFor = r;
+        if (stk) stk.close();
+        stk = null;
+        if (!r || !Cook.Coach || !Cook.Coach.stuck) return;
+        stk = Cook.Coach.stuck({
+          key: "mishkaki-grill",
+          level: Math.max(1, Cook.roundLevel(ctx) || 1),
+          target: [0, 1, 2, 3, 4, 5].map((i) => () => (r.sk && r.sk.active && r.sk.visible !== false ? Cook.Coach.parts(r.sk)[i] || null : null)),
+          current: () => !finished && stkFor === r && rack.includes(r),
+          onHint: () => Cook.onHelp && Cook.onHelp("hint"),
+        });
+      };
       const expectNext = (next) => {
         // a ring nearing its green asks first (the test waits for the green itself)
         const ready = grilling.filter((g) => !g.busy && g.v >= lo - 0.15).sort((a, b) => b.v - a.v)[0];
+        const onBand = next && spots.includes(null) && !ready ? rack.find((r) => r && r.settled && r.sk && r.sk.hit) || null : null;
+        stuckOn(onBand);
         if (ready) {
           z.gauge({ level: ready.v, lo, hi });
           return z.expect({ kind: "timing", x: spotX(ready.spot), y: Y(GRILL.skewerY + RING.dy), key: ready.phase >= k.turns ? "lift" : "turn" });
@@ -2364,6 +2388,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
 
       await done;
       finished = true;
+      stuckOn(null);
       stop();
       if (fstep.key) fstep.done();
       embers.remove();
