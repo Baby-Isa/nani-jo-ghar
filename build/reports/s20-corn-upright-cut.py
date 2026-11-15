@@ -33,11 +33,19 @@ def chop(im):
     return img.crop(img.getbbox())
 
 
+# CK-129 (round 2, the eye judge: the cob "about 2.2:1 raw, 2.7:1 cooked"): every state one shape, ONE canvas (the K4 cobs differ a
+# few per cent in thickness), so the cob keeps its aspect in every place and state
+SHAPE = (350, 140)
 for st in ["raw", "turned", "done", "over"]:
-    c = chop(Image.open(SRC.format(st)).convert("RGBA"))
+    c = chop(Image.open(SRC.format(st)).convert("RGBA")).resize(SHAPE, Image.LANCZOS)
     c.save(f"assets/art/corn/cob.{st}.chopped.r1.webp", lossless=False, quality=90, method=6)
     print(st, c.size, round(c.size[0] / c.size[1], 2))
-# the card picture: the done cob upright (turned a quarter anticlockwise: its right end up, as the game stands it, GK.lay up)
-card = chop(Image.open(SRC.format("done")).convert("RGBA")).rotate(90, expand=True)
+# the card picture: the done cob upright (turned a quarter anticlockwise: its right end up, as the game stands it, GK.lay up),
+# CK-128 (round 2: "the short fat cob whole with air round it, as chai's jar in its card"): standing in a canvas of the jar's shape
+# (0.8 wide to its height) with 8% air above and below it
+up = chop(Image.open(SRC.format("done")).convert("RGBA")).resize(SHAPE, Image.LANCZOS).rotate(90, expand=True)
+H = round(up.height / 0.84)
+card = Image.new("RGBA", (round(H * 0.8), H), (0, 0, 0, 0))
+card.alpha_composite(up, ((card.width - up.width) // 2, (H - up.height) // 2))
 card.save("assets/art/corn/cob.card.upright.r1.webp", lossless=False, quality=90, method=6)
 print("card", card.size)
