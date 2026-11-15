@@ -8,9 +8,9 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-87413d9b-j48fpk` (the working branch; `main` is the live site, unchanged since 12 Nov).
+**Handover branch:** `ccr-7da5e9f0-04g4xm` (the working branch; `main` is the live site, unchanged since 12 Nov).
 
-**Where things stand (15 Nov, 00:10 UK):** Sprint 20 (`docs/sprints/S20-one-kitchen-frame.md`, its table holds every step). Decisions 20-34 in `docs/decisions/2026-11-10-overnight.md`; the newest: 31 (the other nine games join in two batches, each batch in parallel on cloud sessions, merged one at a time through the gate; Zafar checks after batch 1), 33 (**13:00-20:00 UK the orchestrator runs on its own**: no waiting for picture approvals or decisions, recorded in the decisions file; outside it pictures wait for his yes, other work carries on), 34 (his review of chai's new pictures and eggs). His tokens reset Monday 17 Nov 10:00 UK: use them, never stop at a cost limit. Deadline (decision 28): every stove-top game by midnight Sunday 16 Nov UK.
+**Where things stand (15 Nov, 00:10 UK):** Sprint 20 (`docs/sprints/S20-one-kitchen-frame.md`, its table holds every step). Decisions 20-34 in `docs/decisions/2026-11-10-overnight.md`; the newest: 31 (the other nine games join in two batches, each batch in parallel on cloud sessions, merged one at a time through the gate; Zafar checks after batch 1), 34 (his review of chai's new pictures and eggs). His tokens reset Monday 17 Nov 10:00 UK: use them, never stop at a cost limit. Deadline (decision 28): every stove-top game by midnight Sunday 16 Nov UK.
 
 **Progress checks:** every 30 minutes by `send_later` (each schedules the next, same text), with **% completion per game** on the agreed scale: joined the frame 25, parked rows settled 20, own gate passed with chai unmoved 25, merged 15, Zafar's yes to its pictures 15. Last table (00:05): chai 85, eggs 80, maani 80, corn 55, daar+chop 55, batch 2 (baking, sekelo/mishkaki-grill, roll-tawa, samosa, chaat) 0; overall about 49%.
 
@@ -29,7 +29,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 **Next, in order:**
 1. Merge each finished branch (`git fetch origin s20-b1-<x>`, `git merge --no-ff origin/s20-b1-<x>`; overnight-log.md conflicts: keep both lines; placement.md: CHAI-109/-110/-112 stay "not a standard", confirmed), then a gate on the merged games here, alone, on its own port; push only between gates (the push hook's tests take port 8812 and 3 min of CPU).
-2. After the fixes branch: re-take chai's box reference (Nani's circles move) and send Zafar the changed pictures (before 13:00 or after 20:00 they wait for his yes).
+2. After the fixes branch: re-take chai's box reference (Nani's circles move) and send Zafar the changed pictures.
 3. Batch 1's pictures to Zafar (eggs sent 14 Nov night; maani, corn, daar+chop next), his check (review point 3), fixes in parallel.
 4. Batch 2 in parallel on cloud sessions (specs to write as `build/tools/ops/specs/s20-b1-*.json`: baking, sekelo (mishkaki-grill), roll-tawa, samosa, chaat with chop).
 5. Guard rails, the exit test, the full gate, `/review`, publish.
@@ -39,9 +39,9 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 **Open:** SH-299 (a card's flight lands 26 px past the panel, order card's stale fold.want14); the art run (trays SH-296, people SH-298, tally close-ups ART-81, busy counter ART-82, and the kitchen and order art rethink after all kitchen games, decision 34); SH-297 his end-screen re-haul; the gate's port check (checks-to-build).
 
 **Starting prompt for a new chat:**
-> First `git fetch origin ccr-87413d9b-j48fpk` and work from that branch (it holds the newest handover; `main` is the live site).
+> First `git fetch origin ccr-7da5e9f0-04g4xm` and work from that branch (it holds the newest handover; `main` is the live site).
 > Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S20-one-kitchen-frame.md`.
-> Carry on Sprint 20 from its table; decision 33's window applies (13:00-20:00 UK: run on your own).
+> Carry on Sprint 20 from its table.
 
 ## The fix list
 

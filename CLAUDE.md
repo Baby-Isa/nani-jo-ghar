@@ -6,7 +6,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 
 ## Working agreement
 
-- Discuss first: propose, wait for an explicit go, act. Approval for one thing isn't approval for the next. Never launch with a question to him open; an agreed overnight run goes ahead.
+- Discuss first: propose, wait for an explicit go, act. Approval for one thing isn't approval for the next. Never launch with a question to him open. **"Run overnight" (Zafar, 15 Nov):** run on your own until he's back: take the recommended option on any decision and log it; pictures he sees after; half-hourly progress with % per game; stop only at his review points.
 - Work in sprints (`/sprint`): one playable goal, a budget; `/review` and publish at the end. Steer new work into a sprint.
 - **Plans run back to back (Zafar, 8 Nov):** no days, dates or times in a plan; each step starts the moment the builder limit and its order allow (parallel when independent, in sequence when one needs another). Work pauses only at a review point agreed with Zafar; a time appears only for a deadline he sets.
 - Decisions: a numbered list with recommendations, answerable "yes to all except …".
