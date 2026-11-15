@@ -384,7 +384,17 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // (S19 wave B fix round: the band's slots across the whole view where it shows more than the narrowest play area, a phone,
         // so the pills reach their floor without touching; never narrower than x 150-1450)
         const V = Cook.view || {};
-        const SPAN = [Math.min(150, Math.max(-200, (V.left != null ? V.left : 150) + 40)), Math.max(1450, Math.min(1800, (V.right != null ? V.right : 1450) - 40))];
+        // DAAR-58 (the Fable eye judge for Zafar, decision 38, daar at 1280x665: "the left third of the tray is empty mid-chop"): the view's
+        // left lies under the side panel; the slots are centred on the band the child sees, from the panel's right edge
+        let seenL = V.left != null ? V.left : 150;
+        try {
+          const side = global.document && document.querySelector("#side");
+          const sr = side && side.getBoundingClientRect ? side.getBoundingClientRect() : null;
+          if (sr && sr.width > 0 && Cook.Frame && Cook.Frame.toSheet) seenL = Math.max(seenL, Cook.Frame.toSheet(sr.right, 0).x);
+        } catch (e) {
+          /* the view as it is */
+        }
+        const SPAN = [Math.min(150, Math.max(-200, seenL + 40)), Math.max(1450, Math.min(1800, (V.right != null ? V.right : 1450) - 40))];
         const SL = global.Shelf.slots([kinds], { span: SPAN, pitch: Math.max(180, Math.min(size + 40, (SPAN[1] - SPAN[0]) / kinds.length)), groupGap: 0 });
         hopPx = Math.min(size, SL.slotW - 24);
         /*
@@ -699,10 +709,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (cells) {
           const c = cellFor((b.centerX - z.X(0)) / z.k);
           const again = c.used++;
-          const gap = Math.min(HV.part, c.w * 0.08);
+          const gap = Math.min(HV.part, c.w * 0.1);
           // (the pair fits its cell: across, the two halves and their gap; down, the taller half; never bigger than the cut)
           // (s19-games-2, contract-114: never under 15% smaller than on the board, though the pair may then reach its cell's edge)
-          const k = Math.max(Math.min(wk * HV.k, z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h)), Math.min(wk * HV.k, wk / 1.14));
+          // DAAR-54 (the Fable eye judge for Zafar, decision 38: "the chilli half off the board's left edge and over a pile, two onion
+          // halves touch"): a long thing's halves side by side were wider than their cell at contract-114's floor; they lie one above the
+          // other where that fits the cell better (a chilli, a long potato)
+          const kMax = wk * HV.k;
+          const kMin = Math.min(kMax, wk / 1.14);
+          const kSide = Math.min(kMax, z.L(c.w * 0.9 - gap) / (A.w + Bs.w), z.L(c.h * 0.92) / Math.max(A.h, Bs.h));
+          const kStack = Math.min(kMax, z.L(c.w * 0.9) / Math.max(A.w, Bs.w), z.L(c.h * 0.92 - gap) / (A.h + Bs.h));
+          const stack = kStack > kSide * 1.05;
+          const k = Math.max(stack ? kStack : kSide, kMin);
           const ox = again ? z.L(12 * again) : 0;
           let cx = z.X(c.x) + ox;
           let cy = z.Y(c.y) - ox * 0.6;
@@ -712,16 +730,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             const BD = band.board;
             const BY = band.boardY;
             const m = z.L(14);
-            const hw = z.L(gap) / 2 + Math.max(A.w, Bs.w) * k;
-            const hh = (Math.max(A.h, Bs.h) * k) / 2;
+            const hw = stack ? (Math.max(A.w, Bs.w) * k) / 2 : z.L(gap) / 2 + Math.max(A.w, Bs.w) * k;
+            const hh = stack ? z.L(gap) / 2 + Math.max(A.h, Bs.h) * k : (Math.max(A.h, Bs.h) * k) / 2;
             const lo = (a, v, b) => (a > b ? (a + b) / 2 : Math.min(b, Math.max(a, v)));
             cx = lo(z.X(BD[0]) + m + hw, cx, z.X(BD[1]) - m - hw);
             cy = lo(z.Y(BY[0]) + m + hh, cy, z.Y(BY[1]) - m - hh);
           }
           // (half-a's middle left of the gap by its own half width, half-b's right by its own)
-          to = { k, xs: [cx - z.L(gap) / 2 - (A.w * k) / 2, cx + z.L(gap) / 2 + (Bs.w * k) / 2], y: cy };
+          to = stack
+            ? { k, xs: [cx, cx], ys: [cy - z.L(gap) / 2 - (A.h * k) / 2, cy + z.L(gap) / 2 + (Bs.h * k) / 2] }
+            : { k, xs: [cx - z.L(gap) / 2 - (A.w * k) / 2, cx + z.L(gap) / 2 + (Bs.w * k) / 2], ys: [cy, cy] };
           // (where the cut pieces rest, world px: the game's well done shows them with their asker, CK-78)
-          (z.cuts = z.cuts || []).push({ x: to.xs[0] - (A.w * k) / 2, y: cy - (Math.max(A.h, Bs.h) * k) / 2, right: to.xs[1] + (Bs.w * k) / 2, bottom: cy + (Math.max(A.h, Bs.h) * k) / 2 });
+          const pw = stack ? Math.max(A.w, Bs.w) * k : to.xs[1] + (Bs.w * k) / 2 - (to.xs[0] - (A.w * k) / 2);
+          const ph = stack ? to.ys[1] + (Bs.h * k) / 2 - (to.ys[0] - (A.h * k) / 2) : Math.max(A.h, Bs.h) * k;
+          (z.cuts = z.cuts || []).push({ x: cx - pw / 2, y: cy - ph / 2, right: cx + pw / 2, bottom: cy + ph / 2 });
         }
         [P.a, P.b].forEach((key, side) => {
           const d = side ? 1 : -1;
@@ -730,7 +752,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const off = (w * wk * HV.k) / 2 + z.L(HV.part) / 2;
           // (it parts along the cut first, then goes to its place)
           S.tweens.add({ targets: half, x: b.centerX + d * off * 0.45, angle: d * HV.tilt * 0.5, duration: 140, ease: "Quad.easeOut" });
-          if (to) S.tweens.add({ targets: half, x: to.xs[side], y: to.y, scaleX: to.k, scaleY: to.k, angle: d * HV.tilt * 0.4, delay: 170, duration: 360, ease: "Cubic.easeOut" });
+          if (to) S.tweens.add({ targets: half, x: to.xs[side], y: to.ys[side], scaleX: to.k, scaleY: to.k, angle: d * HV.tilt * 0.4, delay: 170, duration: 360, ease: "Cubic.easeOut" });
           else S.tweens.add({ targets: half, x: b.centerX + d * off, y: b.centerY, scaleX: wk * HV.k, scaleY: wk * HV.k, angle: d * HV.tilt, delay: 160, duration: 300, ease: "Bounce.easeOut" });
           shadeOf(half, "half");
         });
@@ -1256,6 +1278,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const W0 = global.innerWidth || 1e4;
           const over = UI.worldToScreen(x0 + z.L(40), 0).x + room - W0;
           if (over > 0) x0 -= over / ppw0;
+          // DAAR-65 (the Fable eye judge for Zafar, decision 38, daar and chaat at 740x320: "the settings gear cuts the chop light's
+          // top-right corner"): where the gear lies beside the board's height, the knife starts left of it, so the light's box (the board,
+          // the knife and the hand holding it) ends a margin short of the gear
+          const cog = global.document && document.querySelector("#side-cog, [data-njg-zone=cog]");
+          const cr = cog && cog.getBoundingClientRect ? cog.getBoundingClientRect() : null;
+          const bdb = band && typeof band.boardAt === "function" ? band.boardAt() : null;
+          if (cr && cr.width > 0 && bdb) {
+            const t = UI.worldToScreen(0, bdb.y).y;
+            const bt = UI.worldToScreen(0, bdb.bottom).y;
+            if (cr.bottom > t - 8 && cr.top < bt) {
+              const over2 = UI.worldToScreen(x0 + z.L(40), 0).x + room - 24 + 6 - cr.left;
+              if (over2 > 0) x0 -= over2 / ppw0;
+            }
+          }
         } catch (e) {
           /* where it always started */
         }
