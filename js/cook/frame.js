@@ -7,8 +7,10 @@
  * It never names a game.
  *
  *   Cook.Frame.area(S, opts) -> {play: {x, y, w, h}, bottom: {x, y, w, h}, pills, px, view(), toScreen(x, y), toSheet(sx, sy),
- *                                stoneBand(S, {game}), wash, row(stations, {max, min, room})}
+ *                                stoneBand(S, {game}), wash, row(stations, {max, min, room}), next(o2)}
  *     opts: {top, base, draw, far, depth}
+ *     next(o2): a game's next screen in the same round (corn's flavour after its grill): the area again, o2.top its bottom row's
+ *               top, o2.band {ms} the band drawn anew there
  *   Cook.Frame.row(play, stations, {max, min, room})   the size chain: stations as shares of the play area (an area's row())
  *   Cook.Frame.lend(part) -> back()   a host lends the game it runs part of its play area: part {x, y, w, h} in shares of the play
  *                                     area (0-1); while lent, every area()'s play is that part of it; back() ends the lend (s20-b1-daar)
@@ -94,11 +96,42 @@ import { Cook as CookNS } from "./ns.js";
     // the bottom band under the bottom row, at the frame's top, its shelf line and depth: the game pulls it by its own key, so its
     // settings name which band it is, the shelf or the stone tray (SH-248, Zafar 10 Nov: "in their actual code, so it pulls the shared
     // element"; build/core/band.test.mjs); a game passes nothing else
-    out.stoneBand = (S2, b = {}) => St.stoneBand(S2, { top, base: o.base, far: o.far, depth: o.depth != null ? o.depth : Cook.D.bg + 1.2, game: b.game || null });
+    out.stoneBand = (S2, b = {}) => {
+      out.game = b.game || null;
+      out.band = St.stoneBand(S2, { top, base: o.base, far: o.far, depth: o.depth != null ? o.depth : Cook.D.bg + 1.2, game: b.game || null });
+      return out.band;
+    };
     // the worktop's wash, drawn here (each game drew it by hand)
     if (o.draw && S) out.wash = Cook.Kit.worktop(S, { top, far: o.far });
     // the size chain's middle link (Sprint 20 batch 1, maani): the game's stations side by side in its play area (Frame.row)
     out.row = (stations, r = {}) => Frame.row(out.play, stations, r);
+    /*
+     * The next screen of the same round (Sprint 20 batch 1, from corn: the grill, then the flavour; any game with a second screen in
+     * one round): the floor plan again for that screen, read as it lays out, with o2 over this area's options. o2.top moves the bottom
+     * row's top for that screen (a taller row: corn's six bowls in two rows on a phone), so its play area is what is left above it.
+     * The worktop's wash is never drawn again. o2.band ({ms}): the bottom band drawn anew at the new top, in the band this area drew
+     * (its game's: the stone tray's slab alone, its wash already under it; or the stone band and its shelf), faded in over ms
+     * (default 380), the old band going once the new one is in. Returns the new area, with its own next.
+     */
+    out.next = (o2 = {}) => {
+      const n = Frame.area(S, Object.assign({}, o, o2, { draw: false }));
+      n.game = out.game;
+      n.band = out.band;
+      const nt = n.bottom.y;
+      if (o2.band && S && nt !== top) {
+        const ms = o2.band.ms || 380;
+        const old = out.band;
+        const depth = o.depth != null ? o.depth : Cook.D.bg + 1.2;
+        const SH = globalThis.Shelf;
+        const tray = !!(n.game && St.bandOf && St.bandOf(n.game) === "tray" && SH && SH.P && SH.P.tray && SH.trayInk && SH.trayInk());
+        n.band = tray ? SH.P.tray(S, { top: nt, view: Frame.view, depth }) : St.stoneBand(S, { top: nt, base: o2.base != null ? o2.base : o.base, far: o.far, depth, game: n.game });
+        if (n.band && n.band.setAlpha) {
+          n.band.setAlpha(0);
+          S.tweens.add({ targets: n.band, alpha: 1, duration: ms, onComplete: () => old && old.active && old.destroy() });
+        }
+      }
+      return n;
+    };
     return out;
   };
   /*
