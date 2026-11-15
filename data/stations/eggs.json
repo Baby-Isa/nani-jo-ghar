@@ -193,7 +193,8 @@
    "h": 754,
    "reuse": true,
    "plate": "assets/art/kit/plate-cream.default.r1.webp",
-   "plate_d": 0.38,
+   "plate_d": 0.4,
+  "_plate_d": "decision 38 (the orchestrator for Zafar, 15 Nov): the plates as big as the wells allow (0.38 to 0.4: at 0.41 the top and bottom plates touch), so the fried egg keeps its size from pan to plate (contract-114)",
    "min": 420,
    "max": 520,
    "wells": [
@@ -357,8 +358,8 @@
     "a.fried",
     "n.egg"
    ],
-   "inPan": 1.2,
-   "_ck122": "CK-122 (15 Nov): inPan, the fried egg's width over the pan's floor radius, is its size in the pan (0.6 of the floor's width; was capped by the plate's share, a sixth of the pan at 740x320); lifted, it glides to 0.63 of a plate's width in the hand, within 15% of its plate size (contract-114)",
+   "inPan": 1.02,
+   "_ck122": "CK-122 (15 Nov): inPan, the fried egg's least width over the pan's floor radius (just over half the floor's width; was capped by the plate's share, a sixth of the pan at 740x320); in the pan it is the larger of that and its hand size, 0.75 of a plate (on a plate 0.8, two 0.7), so where the plates are big enough it keeps one size; at 740x320 it glides 420 ms to its hand size as it is lifted",
    "_note": "S19 wave C: cracked into the pan (egg-cracked), half set (egg-part, SH-256), set just before its ring reaches the green (egg-cooked), overdone if it is left past its full ring for mechanic overMs (egg-overdone: a look, never a verdict); inPan its width over the pan's floor radius; on a plate it keeps its look",
    "card": "assets/art/eggs/egg.cooked.r1.webp"
   },

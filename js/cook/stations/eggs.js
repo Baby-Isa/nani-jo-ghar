@@ -498,8 +498,12 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // more than half its floor's width at every size, as the vessel is drawn), never the plate's; lifted, it glides in place to its size
     // in the hand, FRIED.hand of the plate's width, within contract-114's 15% of its size on a plate (one egg FRIED.one, two FRIED.two).
     // (contract-114 compares an item's rests at different places: the pan and the hand are one place, the hand and the plate two)
-    const FRIED = { hand: 0.63, one: 0.68, two: 0.58 };
-    const friedW = () => vessels.pan.r * (ITEM("friedEgg").inPan || 1.2);
+    // (the orchestrator for Zafar, decision 38, 15 Nov: bigger plates so the egg keeps its size from pan to plate (contract-114, SH-256);
+    // where the tray can't hold plates that big, 740x320, the egg glides at least 400 ms): the plates as big as the tray's wells allow
+    // (scene.tray.plate_d), the egg filling its plate; in the pan the larger of half the pan's floor (CK-122) and its hand size, so where
+    // the plates are big enough it never changes size from pan to plate)
+    const FRIED = { hand: 0.75, one: 0.8, two: 0.7 };
+    const friedW = () => Math.max(vessels.pan.r * (ITEM("friedEgg").inPan || 1.02), plateD * FRIED.hand);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
     // a boiled egg on a plate: its two halves side by side (E5's boiled-<look>-a, -b), h tall
     // (s19-games-2, E5: the halves show how long it boiled, read from its ring as it was lifted: soft in the green's first half, firm
@@ -910,7 +914,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // (picked up it grows a little, within SH-256's 15%, contract-114: it rests in the hand at the size it then keeps on the plate; a fried
       // egg, pan-sized, glides to its hand size, CK-122)
       const inHand = egg.fried ? (plateD * FRIED.hand) / Math.max(1, egg.obj.width) : egg.base * 1.1;
-      S.tweens.add({ targets: egg.obj, scale: inHand, duration: egg.fried ? 260 : 160, ease: "Sine.easeOut" });
+      S.tweens.add({ targets: egg.obj, scale: inHand, duration: egg.fried && Math.abs(inHand / egg.base - 1) > 0.02 ? 420 : 160, ease: "Sine.easeInOut" });
       Cook.sfx.pop();
     };
 
@@ -935,7 +939,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const eggOnPlate = (pl, i, n, fried) => {
       const d = plateD;
       // (s19-clean-e2, contract-114: where the pan holds it smaller than the plate's share, the pan's own size wins: the egg keeps its size)
-      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * FRIED.one } : { x: pl.x + (i ? 1 : -1) * d * 0.2, y: pl.y + (i ? 1 : -1) * d * 0.08, w: d * FRIED.two };
+      if (fried) return n === 1 ? { x: pl.x, y: pl.y, w: d * FRIED.one } : { x: pl.x + (i ? 1 : -1) * d * 0.15, y: pl.y + (i ? 1 : -1) * d * 0.1, w: d * FRIED.two };
       return n === 1 ? { x: pl.x, y: pl.y, h: d * 0.52 } : { x: pl.x, y: pl.y + (i ? 1 : -1) * d * 0.19, h: d * 0.36 };
     };
     const onPlate = async (pl) => {
