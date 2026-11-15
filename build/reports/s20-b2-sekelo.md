@@ -5,11 +5,11 @@ Files: the station, its settings, the thread and grill mechanics (call 1), `fram
 ## What a child sees
 - **Thread screen:** the board and the tray are the frame's row of two (`F.row`), centred across the play area. They sit about 40-60 sheet units further left at every size; up and down is unchanged.
 - **Bowls:** they sit between the bottom row's edges, as chai's shelf does. At 740, 930 and 1280 they shift with the wider view; at 1920x1080 nothing moves.
-- **Grill screen:** unchanged. The same sums now run as `F.row([grill, tray], {room 63, gapUnit 0.08, min 120})`; the group can sit at most 24 lower where its height is not what limits it.
+- **Grill screen:** unchanged. Same sums, now `F.row`; at most 24 lower where height is not the limit.
 - **Dish card:** "hakro sekelo" now shows the served sekelo, at every level and size.
 - **Grill, stuck:** after the level's wait, Nani's helper card and the kit's light on the first skewer on the band.
 - **Thread, stuck:** the bowl's glow goes out while the grown-ups' "?" pop-up hides its light.
-- **Frame option `gapUnit`:** the gap as a share of the unit, so the grill and its tray stay one rectangle (CK-86). Chai and maani are unchanged.
+- **Frame option `gapUnit`:** the gap as a share of the unit, so the grill and its tray stay one rectangle (CK-86).
 
 ## Calls taken while Zafar was away
 1. I treated the thread and grill mechanics as sekelo's own, since only sekelo runs them and its layout lives there. Other option: only the station file.
