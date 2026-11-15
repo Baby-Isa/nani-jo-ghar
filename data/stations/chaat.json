@@ -17,8 +17,8 @@
   "warm": 1.22
  },
  "tray": {
-  "pitch": 180,
-  "bowlD": 150,
+  "pitch": 200,
+  "bowlD": 172,
   "gap": 14,
   "top": 14,
   "span": [
@@ -70,7 +70,10 @@
    "a": 0.35
   },
   "land": 0.4,
-  "from": 0.35
+  "from": 0.35,
+  "ring": 0.13,
+  "ringMin": 0.4,
+  "_ring": "CHT-20 (the Fable eye judge for Zafar, decision 38, chaat L1: every layer added stays visible): each layer lies this share of its width narrower than the one beneath it (ring a layer under it), never under ringMin of its width, so each layer shows round the edge of those on top"
  },
  "heap": {
   "r": 0.5,
@@ -84,6 +87,7 @@
  },
  "motion": {
   "spoonW": 84,
+  "spoonCss": 46,
   "dropPx": 40,
   "backMs": 380,
   "dropMs": 170,
@@ -120,5 +124,18 @@
  "assets": [
   "assets/cook/items/v4/chaat/*"
  ],
- "_assets": "S19 (decision 68, loadcheck): every picture chaat loads beyond data/cook.json art.assets.stations: the serving bowl, the F3 bowls on the tray and the layer pictures (CHT-13, s19-chaat-td)"
+ "_assets": "S19 (decision 68, loadcheck): every picture chaat loads beyond data/cook.json art.assets.stations: the serving bowl, the F3 bowls on the tray and the layer pictures (CHT-13, s19-chaat-td)",
+ "served": {
+  "w": 512,
+  "share": 0.672,
+  "tilt": 0.6,
+  "shadow": {
+   "x": 8,
+   "y": 11,
+   "blur": 12,
+   "a": 0.26
+  },
+  "_about": "CHT-20 (decision 38: the bowl the child built is the dish served, as chai's glass): the picture of the built bowl chaat hands the serve (Cook.Serve.plated, js/cook/serve.js): its width in px (w), the bowl's share of it (share: the serve draws a handed dish at a plate's size class, 0.58 of the tray; a bowl's class is 0.39, so the bowl lies in 0.39/0.58 of the picture), its height for its width as the family sees it on the tray (tilt; maani's plates 0.56) and the kit's one soft shadow down and to the right (SH-268), px of the picture"
+ },
+ "_tray22": "CHT-22 (the Fable eye judge for Zafar, decision 38, 740x320: 'the stone tray reading full as chai's shelf'): the bowls on the tray about a seventh bigger (bowlD 150 -> 172, pitch 180 -> 200), still narrower where the slots or the tray's height ask; the spoonful never under spoonCss CSS px (motion.spoonCss)"
 }

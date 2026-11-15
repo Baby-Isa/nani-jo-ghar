@@ -310,8 +310,13 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
     const parts = [dish, food];
     const layers = []; // {id, cv, grow, at: {x, y} (canvas px, where its spoonful landed)}
 
-    /** One layer's own picture (N x N canvas px, the food's circle at its middle). full: it is the first thing in the bowl. */
-    function layerCanvas(id, seed, full) {
+    /**
+     * One layer's own picture (N x N canvas px, the food's circle at its middle). full: it is the first thing in the bowl. at: how many
+     * layers lie under it. CHT-20 (the Fable eye judge for Zafar, decision 38, chaat L1: "every layer added stays visible ... no
+     * chickpeas though chano is ticked"): each layer lies a little narrower than the one beneath (the settings' layers.ring a layer,
+     * never under ringMin of its width), so every layer in shows round the edge of the ones on top of it, the first at the bowl's rim.
+     */
+    function layerCanvas(id, seed, full, at = 0) {
       const cv = document.createElement("canvas");
       cv.width = N;
       cv.height = N;
@@ -328,9 +333,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const fd = top ? null : foodOf(id);
       if (top) {
         // the topping's own picture: about the food's width, turned any way, a little off the middle
-        const k = ((L.k + (rnd() - 0.5) * L.kJitter) * 2 * R0) / Math.max(top.width, top.height);
+        const ring = Math.max(L.ringMin != null ? L.ringMin : 1, 1 - (L.ring || 0) * at);
+        const k = ((L.k + (rnd() - 0.5) * L.kJitter) * ring * 2 * R0) / Math.max(top.width, top.height);
         g.save();
-        g.translate(m + (rnd() - 0.5) * 2 * L.spread * R0, m + (rnd() - 0.5) * 2 * L.spread * R0);
+        g.translate(m + (rnd() - 0.5) * 2 * L.spread * ring * R0, m + (rnd() - 0.5) * 2 * L.spread * ring * R0);
         g.rotate(rnd() * Math.PI * 2);
         shade();
         g.drawImage(top, (-top.width * k) / 2, (-top.height * k) / 2, top.width * k, top.height * k);
@@ -435,7 +441,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       },
       /** A topping goes in: its layer grows in from where it landed over the settings' fillMs (CK-83: never a snap). */
       add(id, ms = MOTION.fillMs) {
-        const L = { id, cv: layerCanvas(id, Math.floor(Math.random() * 1e9), !layers.length), grow: 0, at: nextAt || { x: m, y: m } };
+        const L = { id, cv: layerCanvas(id, Math.floor(Math.random() * 1e9), !layers.length, layers.length), grow: 0, at: nextAt || { x: m, y: m } };
         nextAt = null;
         layers.push(L);
         return tween(0, 1, ms, "Sine.easeOut", (v) => {
@@ -467,6 +473,39 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       },
       /** The picture you tap to take the top layer back (the bowl). */
       hit: dish,
+      /**
+       * CHT-20 (the Fable eye judge for Zafar, decision 38: "the served bowl is that bowl ... chai serves the glass the child made"): a
+       * picture of the bowl as it stands, its layers as built, for the serve's tray (Cook.Serve.plated, as maani's plates, MAA-26). The
+       * settings' served: the picture's width (w, px), the bowl's share of it (share: the serve draws a dish it is handed at a plate's
+       * size class, so the bowl keeps its own class by lying in that share), its tilt (seen from the family's side, as the served
+       * pictures are) and the kit's one soft shadow down and to the right (SH-268). -> its texture key, or null.
+       */
+      served(key) {
+        const SV = (SET && SET.served) || null;
+        if (!SV || !src || !S.textures || !S.textures.createCanvas) return null;
+        const W = SV.w;
+        const bw = W * SV.share; // the bowl's width in the picture
+        const sc = bw / d; // picture px per world px
+        const bh = h * sc;
+        const H = Math.ceil(bh * SV.tilt + 2 * SV.shadow.blur + SV.shadow.y);
+        if (S.textures.exists(key)) S.textures.remove(key);
+        const cv = S.textures.createCanvas(key, W, H);
+        const g = cv.getContext();
+        g.save();
+        g.translate(W / 2, H / 2);
+        g.scale(1, SV.tilt);
+        g.shadowColor = `rgba(0, 0, 0, ${SV.shadow.a})`;
+        g.shadowOffsetX = SV.shadow.x;
+        g.shadowOffsetY = SV.shadow.y / SV.tilt;
+        g.shadowBlur = SV.shadow.blur;
+        g.drawImage(src, -bw / 2, -bh / 2, bw, bh);
+        g.shadowColor = "rgba(0, 0, 0, 0)";
+        const fw = (N / u) * sc; // the food's canvas, where it lies in the bowl
+        g.drawImage(tex.getSourceImage(), (fx - x) * sc - fw / 2, (fy - y) * sc - fw / 2, fw, fw);
+        g.restore();
+        cv.refresh();
+        return key;
+      },
       /** Everything out (a gentle "not quite": the bowl comes back empty). */
       async empty() {
         if (!layers.length) return;
@@ -725,12 +764,15 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (wrong && exclude.includes(wrong)) UI.mission.missItem(wrong, dishNo(), { no: true });
         else if (m.expected) UI.mission.missItem(m.expected, dishNo(), { did: wrong || null });
       };
+      // CHT-22 (the Fable eye judge for Zafar, decision 38, chaat at 740x320: "the flying piece a readable picture, not a speck"): the
+      // spoonful is the settings' spoonW, never under spoonCss CSS px on the screen (the frame's px)
+      const spoonSize = () => Math.max(z.L(M.spoonW), (M.spoonCss || 0) / Math.max(0.01, Cook.Frame.px()));
       /** A spoonful flies from the serving bowl (world point p) back to its bowl on the tray. */
       async function spoonBack(id, p) {
         const obj = items[id];
         const key = spoonKey(S, id);
         if (!obj || !key) return;
-        const spoon = S.track(S.add.image(p.x, p.y, key).setDepth(D.fx).setDisplaySize(z.L(M.spoonW), z.L(M.spoonW)));
+        const spoon = S.track(S.add.image(p.x, p.y, key).setDepth(D.fx).setDisplaySize(spoonSize(), spoonSize()));
         await S.fly(spoon, obj.x, obj.y, { duration: M.backMs, arc: z.L(70) });
         spoon.destroy();
       }
@@ -791,7 +833,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         // a spoonful: a soft-edged round of the food in its bowl, seen from above as the bowl is
         const key = spoonKey(S, id);
         const spoon = key
-          ? S.track(S.add.image(obj.x, obj.y, key).setDepth(D.fx).setDisplaySize(z.L(M.spoonW), z.L(M.spoonW)))
+          ? S.track(S.add.image(obj.x, obj.y, key).setDepth(D.fx).setDisplaySize(spoonSize(), spoonSize()))
           : S.track(S.add.image(obj.x, obj.y - z.L(60), S.tex(`layer:${id}`)).setDepth(D.fx).setScale(0.25 * z.k));
         const p = bowl.surfaceAt();
         // up and over, then down onto the food (a little smaller as it settles: the camera is above)
@@ -1089,6 +1131,11 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         unfold();
       }
       ctx.result.layers = got.slice();
+      // CHT-20: the bowl the child built is the dish served (Cook.Serve.plated: the serve puts this picture on their tray, as chai's glass)
+      if (got.length && Cook.Serve && Cook.Serve.plated) {
+        const key = bowl.served(`ct-served-${Cook.run}`);
+        if (key) Cook.Serve.plated("chaat", who, [{ kind: "bowl", key, at: 0.5 }]);
+      }
       z.skill(tries === 1 && !firstWrong ? 100 : Math.max(55, 100 - 20 * Math.max(1, tries - 1)), "assemble");
       await Cook.wait(M.endMs);
       return got;
