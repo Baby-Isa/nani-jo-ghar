@@ -772,8 +772,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     /** A 2D canvas as the few graphics calls paintDressing makes (colours as 0xRRGGBB ints, alphas 0-1). */
     const canvasPen = (ctx) => {
       const css = (c) => `#${(c >>> 0).toString(16).padStart(6, "0").slice(-6)}`;
-      let fill = ["#000", 1];
-      let line = [1, "#000", 1];
+      let fill = [css(0), 1];
+      let line = [1, css(0), 1];
       const filled = (f) => {
         ctx.globalAlpha = fill[1];
         ctx.fillStyle = fill[0];
@@ -832,12 +832,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
         ctx.save();
         ctx.translate(pad + W / 2, pad + PH / 2);
         ctx.rotate(-Math.PI / 2);
-        ctx.shadowColor = "rgba(60, 35, 20, 0.32)";
+        const sh = col("shadow"); // (the kit's one light, upper left: the palette's shadow, see-through)
+        ctx.shadowColor = `rgba(${(sh >> 16) & 255}, ${(sh >> 8) & 255}, ${sh & 255}, 0.32)`;
         ctx.shadowBlur = 12;
         ctx.shadowOffsetX = 7;
         ctx.shadowOffsetY = 9;
         ctx.drawImage(src, -len / 2, -th / 2, len, th);
-        ctx.shadowColor = "rgba(0, 0, 0, 0)";
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
         const pen = canvasPen(ctx);
         q.dressed.forEach((id) => paintDressing(pen, q, id, len, th));
         ctx.restore();
