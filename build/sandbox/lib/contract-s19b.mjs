@@ -623,6 +623,8 @@ export function check109few(r, tl, add) {
   for (const { e } of heldSamples(tl, "s19shelf", 300, tEnd)) {
     const it = (e.items || []).filter((x) => !x.rot);
     if (!it.length || it.length >= 3) continue;
+    // (the shelf's band holds only its bottom row; a second row of worded things with pills standing above it is the two-row shelf)
+    if (line && sceneAt(tl, e.t).list.filter((x) => x.pill && x.word && !it.some((i) => i.id === x.word) && x.pill[1] < line.chip - 30 && x.pill[1] > line.chip - 140).length >= 2) continue;
     if (line) {
       const off = it.find((x) => Math.abs(x.foot - line.foot) > 4);
       if (off) { add("contract-109", e.t, `the shelf item ${off.id} stands ${Math.round(off.foot - line.foot)} px off chai's base line (${line.foot} px at ${r.size}): one line for every shelf`); return; }
