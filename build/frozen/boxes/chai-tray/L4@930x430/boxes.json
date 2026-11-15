@@ -251,7 +251,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "order.png",
-   "t": 16462,
+   "t": 16665,
    "frames": 8
   },
   "light": {
@@ -627,16 +627,6 @@
      },
      "card-1/word#5": {
       "box": [
-       193.91,
-       172.8,
-       227.09,
-       191.8
-      ],
-      "cut": false,
-      "text": "elchi"
-     },
-     "card-1/word#6": {
-      "box": [
        273.59,
        172.8,
        308.69,
@@ -645,7 +635,7 @@
       "cut": false,
       "text": "dudh"
      },
-     "card-1/word#7": {
+     "card-1/word#6": {
       "box": [
        357.83,
        163.47,
@@ -655,7 +645,7 @@
       "cut": false,
       "text": "trae"
      },
-     "card-1/word#8": {
+     "card-1/word#7": {
       "box": [
        354.19,
        179.13,
@@ -714,76 +704,6 @@
       ],
       "cut": false,
       "text": "khapeti."
-     },
-     "card-2/word#3": {
-      "box": [
-       30.48,
-       365.77,
-       67.94,
-       384.77
-      ],
-      "cut": false,
-      "text": "paani"
-     },
-     "card-2/word#4": {
-      "box": [
-       115.56,
-       365.77,
-       144.14,
-       384.77
-      ],
-      "cut": false,
-      "text": "chai"
-     },
-     "card-2/word#5": {
-      "box": [
-       183.03,
-       364.27,
-       198.95,
-       383.27
-      ],
-      "cut": false,
-      "text": "ba"
-     },
-     "card-2/word#6": {
-      "box": [
-       202.78,
-       364.27,
-       237.95,
-       383.27
-      ],
-      "cut": false,
-      "text": "khun"
-     },
-     "card-2/wc-kt#1": {
-      "box": [
-       278.58,
-       365.77,
-       303.7,
-       384.77
-      ],
-      "cut": false,
-      "text": "adh"
-     },
-     "card-2/word#7": {
-      "box": [
-       343.98,
-       365.77,
-       379.08,
-       384.77
-      ],
-      "cut": false,
-      "text": "dudh"
-     },
-     "card-2/wc-kt#2": {
-      "box": [
-       379.08,
-       365.77,
-       399.56,
-       384.77
-      ],
-      "cut": false,
-      "text": "na"
      },
      "card-3/oc-headline#1": {
       "box": [
@@ -857,16 +777,6 @@
      },
      "card-3/word#5": {
       "box": [
-       194.17,
-       560.66,
-       226.81,
-       579.66
-      ],
-      "cut": false,
-      "text": "aadu"
-     },
-     "card-3/word#6": {
-      "box": [
        273.59,
        562.16,
        308.69,
@@ -875,7 +785,7 @@
       "cut": false,
       "text": "dudh"
      },
-     "card-3/word#7": {
+     "card-3/word#6": {
       "box": [
        351.92,
        552.83,
@@ -885,7 +795,7 @@
       "cut": false,
       "text": "hakro"
      },
-     "card-3/word#8": {
+     "card-3/word#7": {
       "box": [
        354.19,
        568.48,
@@ -1094,192 +1004,108 @@
        221.59
       ],
       "dom:button.wc-spk#9": [
-       186.61,
-       202.61,
-       234.38,
-       250.38
-      ],
-      "dom:button.wc14-dots#10": [
-       182.83,
-       173.61,
-       238.17,
-       221.59
-      ],
-      "dom:button.wc-spk#11": [
        267.25,
        202.61,
        315.02,
        250.38
       ],
-      "dom:button.wc14-dots#12": [
+      "dom:button.wc14-dots#10": [
        267.14,
        173.61,
        315.14,
        221.59
       ],
-      "dom:button.wc-spk#13": [
+      "dom:button.wc-spk#11": [
        347.89,
        202.61,
        395.66,
        250.38
       ],
-      "dom:button.wc14-dots#14": [
+      "dom:button.wc14-dots#12": [
        339.22,
        181.44,
        404.33,
        229.42
       ],
-      "dom:button.wc-spk#15": [
+      "dom:button.wc-spk#13": [
        428.53,
        202.61,
        476.3,
        250.38
       ],
-      "dom:button.wc14-dots#16": [
+      "dom:button.wc14-dots#14": [
        424.41,
        173.61,
        480.42,
        221.59
       ],
-      "dom:button.njg-face-btn#17": [
+      "dom:button.njg-face-btn#15": [
        6.27,
        266.47,
        54.27,
        314.47
       ],
-      "dom:button.wc-spk#18": [
-       25.33,
-       388.73,
-       73.09,
-       436.5
-      ],
-      "dom:button.wc14-dots#19": [
-       25.22,
-       367.08,
-       73.22,
-       415.06
-      ],
-      "dom:button.wc-spk#20": [
-       105.97,
-       388.73,
-       153.73,
-       436.5
-      ],
-      "dom:button.wc14-dots#21": [
-       105.86,
-       367.08,
-       153.84,
-       415.06
-      ],
-      "dom:button.wc-spk#22": [
-       186.61,
-       388.73,
-       234.38,
-       436.5
-      ],
-      "dom:button.wc14-dots#23": [
-       178.73,
-       367.08,
-       242.25,
-       415.06
-      ],
-      "dom:button.wc-spk#24": [
-       267.25,
-       388.73,
-       315.02,
-       436.5
-      ],
-      "dom:button.wc14-dots#25": [
-       267.14,
-       367.08,
-       315.14,
-       415.06
-      ],
-      "dom:button.wc-spk#26": [
-       347.89,
-       388.73,
-       395.66,
-       436.5
-      ],
-      "dom:button.wc14-dots#27": [
-       347.78,
-       367.08,
-       395.78,
-       415.06
-      ],
-      "dom:button.njg-face-btn#28": [
+      "dom:button.njg-face-btn#16": [
        6.27,
        453.81,
        54.27,
        501.81
       ],
-      "dom:button.wc-spk#29": [
+      "dom:button.wc-spk#17": [
        25.33,
        592.95,
        73.09,
        640.72
       ],
-      "dom:button.wc14-dots#30": [
+      "dom:button.wc14-dots#18": [
        25.22,
        563.47,
        73.22,
        611.45
       ],
-      "dom:button.wc-spk#31": [
+      "dom:button.wc-spk#19": [
        105.97,
        592.95,
        153.73,
        640.72
       ],
-      "dom:button.wc14-dots#32": [
+      "dom:button.wc14-dots#20": [
        105.86,
        563.47,
        153.84,
        611.45
       ],
-      "dom:button.wc-spk#33": [
-       186.61,
-       592.95,
-       234.38,
-       640.72
-      ],
-      "dom:button.wc14-dots#34": [
-       186.5,
-       563.47,
-       234.48,
-       611.45
-      ],
-      "dom:button.wc-spk#35": [
+      "dom:button.wc-spk#21": [
        267.25,
        592.95,
        315.02,
        640.72
       ],
-      "dom:button.wc14-dots#36": [
+      "dom:button.wc14-dots#22": [
        267.14,
        563.47,
        315.14,
        611.45
       ],
-      "dom:button.wc-spk#37": [
+      "dom:button.wc-spk#23": [
        347.89,
        592.95,
        395.66,
        640.72
       ],
-      "dom:button.wc14-dots#38": [
+      "dom:button.wc14-dots#24": [
        343.47,
        571.3,
        400.08,
        619.28
       ],
-      "dom:button.wc-spk#39": [
+      "dom:button.wc-spk#25": [
        428.53,
        592.95,
        476.3,
        640.72
       ],
-      "dom:button.wc14-dots#40": [
+      "dom:button.wc14-dots#26": [
        428.42,
        563.47,
        476.42,
@@ -1436,7 +1262,7 @@
    "anims": [],
    "steady": true,
    "shot": "light.jpg",
-   "t": 24597,
+   "t": 25833,
    "frames": 8
   },
   "mid": {
@@ -2597,12 +2423,12 @@
     }
    },
    "life": [
-    "act",
-    "idle-bump:touchstart",
     "step-open:5",
     "idle-bump:pointerup",
     "poke",
+    "idle-bump:pointerdown",
     "act",
+    "idle-bump:touchstart",
     "step-close:k5",
     "step-open:6",
     "step-call:6",
@@ -2611,7 +2437,7 @@
    "anims": [],
    "steady": true,
    "shot": "mid.jpg",
-   "t": 34752,
+   "t": 37628,
    "frames": 8
   },
   "praise": {
@@ -3188,13 +3014,13 @@
     "pill:cook-khun",
     "pill:veg-14",
     "row-home:279",
-    "say-start:12",
-    "say-end:12"
+    "say-end:10",
+    "say-start:11"
    ],
    "anims": [],
    "steady": true,
    "shot": "praise.jpg",
-   "t": 81355,
+   "t": 73324,
    "frames": 8
   },
   "serve": {
@@ -3566,21 +3392,21 @@
     }
    },
    "life": [
-    "row-home:279",
-    "say-start:12",
-    "say-end:12",
+    "say-end:10",
+    "say-start:11",
+    "say-end:11",
     "level-up:1",
     "stage-end",
     "stage-start",
     "serve-view:serving",
     "serve-trays:3",
-    "say-start:13",
-    "say-end:13"
+    "say-start:12",
+    "say-end:12"
    ],
    "anims": [],
    "steady": true,
    "shot": "serve.jpg",
-   "t": 85020,
+   "t": 77287,
    "frames": 8
   },
   "end": {
@@ -3999,10 +3825,10 @@
    "life": [
     "serve-view:serving",
     "serve-trays:3",
+    "say-start:12",
+    "say-end:12",
     "say-start:13",
     "say-end:13",
-    "say-start:14",
-    "say-end:14",
     "stage-end",
     "results",
     "idle-bump:pointerdown",
@@ -4018,7 +3844,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "end.png",
-   "t": 96444,
+   "t": 89872,
    "frames": 8
   }
  },
@@ -4027,5 +3853,5 @@
  "errors": [],
  "notes": [],
  "plant": null,
- "ms": 99883
+ "ms": 93673
 }

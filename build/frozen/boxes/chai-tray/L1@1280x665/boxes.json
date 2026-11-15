@@ -171,7 +171,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "order.png",
-   "t": 7691,
+   "t": 7696,
    "frames": 8
   },
   "light": {
@@ -433,26 +433,6 @@
      },
      "card-1/word#4": {
       "box": [
-       304.7,
-       245.23,
-       342.48,
-       265.23
-      ],
-      "cut": false,
-      "text": "dudh"
-     },
-     "card-1/wc-slot#3": {
-      "box": [
-       312,
-       265.52,
-       335.19,
-       281.52
-      ],
-      "cut": false,
-      "text": "milk"
-     },
-     "card-1/word#5": {
-      "box": [
        404.66,
        243.73,
        447.42,
@@ -461,7 +441,7 @@
       "cut": false,
       "text": "hakro"
      },
-     "card-1/word#6": {
+     "card-1/word#5": {
       "box": [
        451.53,
        243.73,
@@ -471,7 +451,7 @@
       "cut": false,
       "text": "khun"
      },
-     "card-1/wc-slot#4": {
+     "card-1/wc-slot#3": {
       "box": [
        420.03,
        264.02,
@@ -597,12 +577,6 @@
        342.03
       ],
       "dom:button.wc-spk#7": [
-       299.59,
-       294.03,
-       347.59,
-       342.03
-      ],
-      "dom:button.wc-spk#8": [
        423.03,
        294.03,
        471.03,
@@ -681,7 +655,7 @@
    "anims": [],
    "steady": true,
    "shot": "light.jpg",
-   "t": 9470,
+   "t": 9637,
    "frames": 8
   },
   "mid": {
@@ -973,7 +947,7 @@
       "jar-veg-13"
      ],
      "card-1/scroll-1": [
-      181,
+      180,
       0
      ]
     },
@@ -996,19 +970,19 @@
       "card-1/item-2": [
        19,
        151.59,
-       76.88,
+       77.88,
        348.86
       ],
       "card-1/item-3": [
-       84.88,
+       85.88,
        151.59,
-       200.31,
+       201.31,
        348.86
       ],
       "card-1/item-4": [
-       208.31,
+       209.31,
        151.59,
-       323.75,
+       324.75,
        348.86
       ]
      },
@@ -1066,27 +1040,27 @@
        143.59
       ],
       "dom:button.wc-spk#5": [
-       -128.28,
+       -127.28,
        294.03,
-       -80.28,
+       -79.28,
        342.03
       ],
       "dom:button.wc-spk#6": [
-       -4.84,
+       -3.84,
        294.03,
-       43.16,
+       44.16,
        342.03
       ],
       "dom:button.wc-spk#7": [
-       118.59,
+       119.59,
        294.03,
-       166.59,
+       167.59,
        342.03
       ],
       "dom:button.wc-spk#8": [
-       242.03,
+       243.03,
        294.03,
-       290.03,
+       291.03,
        342.03
       ],
       "canvas:s14-pan-milk#1": [
@@ -1184,7 +1158,7 @@
    "anims": [],
    "steady": true,
    "shot": "mid.jpg",
-   "t": 12196,
+   "t": 12233,
    "frames": 8
   },
   "praise": {
@@ -1474,6 +1448,7 @@
     }
    },
    "life": [
+    "step-open:7",
     "step-call:7",
     "idle-bump:pointerup",
     "act",
@@ -1482,13 +1457,12 @@
     "poke",
     "row-home:181",
     "say-end:6",
-    "say-start:7",
-    "say-end:7"
+    "say-start:7"
    ],
    "anims": [],
    "steady": true,
    "shot": "praise.jpg",
-   "t": 17230,
+   "t": 17039,
    "frames": 8
   },
   "serve": {
@@ -1690,7 +1664,7 @@
    "anims": [],
    "steady": true,
    "shot": "serve.jpg",
-   "t": 18943,
+   "t": 18915,
    "frames": 8
   },
   "end": {
@@ -1914,7 +1888,7 @@
    "pictureStill": true,
    "steady": true,
    "shot": "end.png",
-   "t": 22662,
+   "t": 22702,
    "frames": 8
   }
  },
@@ -1923,5 +1897,5 @@
  "errors": [],
  "notes": [],
  "plant": null,
- "ms": 25461
+ "ms": 25209
 }
