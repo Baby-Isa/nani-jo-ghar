@@ -2073,10 +2073,11 @@ import "./serve.js"; // s19-serve: the serving kitchen (two views, a tray per pe
     if (S()) {
       S().clearView();
       S().viewName = null;
-      S().setBg("bg-service");
-      // (s20-p2c: inside the game host the title is never seen: the round is asked for at once, so this first picture is the order's
-      // own, lifted as it, never a frame at one height and then the lift (contract-80, lab.html))
-      if (Cook.hosted) orderLift(S(), true);
+      // (s20-p2c: inside the game host the title is never seen: the round is asked for at once, so the first picture is the order's own,
+      // never a frame at one height and then the lift (contract-80, lab.html). Decision 35, s20-lift: the order's lift depends on who it
+      // brings to the counter, so the host draws no kitchen here: the round's own first picture (runLab) is the first one, at its lift)
+      // (the scene starts on the kitchen, unlifted: the host shows Phaser's empty picture instead, under its start cover)
+      S().setBg(Cook.hosted ? "__DEFAULT" : "bg-service");
     }
     const days = Cook.data.days;
     const nextDay = Math.min(Cook.save.day, days.length);
