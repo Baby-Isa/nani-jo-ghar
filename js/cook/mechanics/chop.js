@@ -545,8 +545,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const ch = s.chip;
           if (ch && ch.active) {
             const home = !!(s.img && s.img.active && s.img.visible !== false && !s.hop && !(s.refill > 0));
-            const a = ch.alpha + ((home ? 1 : 0) - ch.alpha) * Math.min(1, dt * 12);
-            ch.setAlpha(Math.abs(a - (home ? 1 : 0)) < 0.02 ? (home ? 1 : 0) : a);
+            // (DAAR-58, the Fable eye judge for Zafar, decision 38: "a greyed pill left with no item while another's pill is gone": a
+            // taken item is shown one way, its pill gone with it at once, never a half-faded grey pill caught between)
+            ch.setAlpha(home ? 1 : 0);
           }
           if (s.refill > 0) {
             s.refill -= dt;
@@ -677,9 +678,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const open = cells.filter((c) => !underFace(c));
         const pool = open.length ? open : cells;
         const least = Math.min(...pool.map((c) => c.used));
-        // (the bottom strip first, then the top: the nearest free cell in the first strip with one)
+        // (DAAR-54, the Fable eye judge for Zafar, decision 38: "a whole potato on the cut onion halves", "a whole tomato on its own
+        // slices": the hops rise from the band through the board's bottom strip, so the cut pieces rest in the top strip first, then the
+        // bottom: the nearest free cell in the first strip with one)
         const half = cells.length / 2;
-        const strips = [cells.slice(0, half), cells.slice(half)].map((st) => st.filter((c) => pool.includes(c)));
+        const strips = [cells.slice(half), cells.slice(0, half)].map((st) => st.filter((c) => pool.includes(c)));
         for (const st of strips) {
           const free = st.filter((c) => c.used === least);
           if (free.length) return free.sort((p, q) => Math.abs(p.x - x) - Math.abs(q.x - x))[0];
@@ -1258,6 +1261,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         }
         // (the kit's finger holds the knife's handle once the light is on: the knife's lower right, its blade and tip clear: DAAR-13)
         let fpt = null;
+        let fpt0 = null;
         const hold = () => (fpt = UI.worldToScreen(knife.x + z.L(40), knife.y + z.L(20)));
         // the planted vegetable (one she asked for) comes up into the strip; it is cut, never counted
         // (S19, CK-71: on the hop it is the thing's own slot item, hopping straight up from the band, never from off the board)
@@ -1298,8 +1302,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!knife.active) return null;
           const kbx = kb();
           const yc = z.Y(SY);
-          const top = Math.min(yc - half() * 0.75, vb ? vb.y : yc, kbx.y);
-          const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom);
+          // DAAR-63 (the Fable eye judge for Zafar, decision 38, chop L1: "a band through the board with its edges outside"; STD-E2-08a):
+          // the box takes in the whole board, top to bottom, as well as the knife and its path
+          const bd0 = band && typeof band.boardAt === "function" ? band.boardAt() : null;
+          const top = Math.min(yc - half() * 0.75, vb ? vb.y : yc, kbx.y, bd0 ? bd0.y : Infinity);
+          const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom, bd0 ? bd0.bottom : -Infinity);
           // DAAR-39 (the judge, s19-night-c-ev3: "the lit strip starts about a third of the way along the board ... the left third of the
           // board is dark"): Zafar's strip runs the board's full width: from the board's left edge (the stage's board, band.boardAt) to
           // the knife's start beyond its right edge
@@ -1308,14 +1315,21 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const b = UI.worldToScreen(Math.max(x0 + kHalf, kbx.right, bd ? bd.right : -Infinity), bot);
           // (CK-83, contract-112 "2 lit regions": the kit's hand holding the knife's handle lies below and right of its fingertip; the box
           // takes it in, so the hand is never a second lit region outside it: Onboard.HOTSPOT in its 64x80 hand, at the size the page draws it)
+          // (DAAR-39, contract-112 x2 at 740x320 in the s20-b1-daar gate, daar L4 and chop L2: the box's right edge followed the finger
+          // point as the drag began, read from the game's state, while the page still showed the knife and the hand at the start (the
+          // canvas and the finger drawn a frame later): on a busy machine the picture caught the box ending at the knife, the hand outside
+          // it. The box is the whole move's from its first frame: the hand where it starts, the knife's start point fpt0, as well as now)
           let r = b.x;
           let d = b.y;
           if (fpt) {
             const fe = global.document && document.querySelector(".ob-finger:not(.ob-circle)");
             const k = fe && fe.offsetWidth ? fe.offsetWidth / 64 : 1;
             const hs = (OB && OB.HOTSPOT) || [25, 3];
-            r = Math.max(r, fpt.x + (64 - hs[0]) * k);
-            d = Math.max(d, fpt.y + (80 - hs[1]) * k);
+            [fpt, fpt0].forEach((p) => {
+              if (!p) return;
+              r = Math.max(r, p.x + (64 - hs[0]) * k);
+              d = Math.max(d, p.y + (80 - hs[1]) * k);
+            });
           }
           return [[a.x, a.y, r - a.x, d - a.y]];
         };
@@ -1324,6 +1338,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const W = global.innerWidth || 1e4;
           return { x: lx, y: 0, w: W - lx, h: global.innerHeight || 1e4 };
         };
+        // (the finger's point at the knife's start: the box holds the hand there for the whole move, DAAR-39)
+        hold();
+        fpt0 = fpt ? { x: fpt.x, y: fpt.y } : null;
         const light = OB.light(swipeBox, { live: [], pad: z.L(14) * ((UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x) || 1), variant: "swipe", game: "chop", within, note: "chop:s14-strip" });
         // CK-109 (the S19 gate's eye judge, 12 Nov: "'Nindha nindha kap!' arrives only at +1639 ms", the knife lit under the order's
         // line): Nani's call for the knife comes with its light, from its first frame (the family's recorded "Nindha nindha kap!",

@@ -203,12 +203,18 @@
   }
  },
  "items": {
-  "_about": "S19 (contract-104, SH-242): the item card of a mixed skewer ('ba lakri mixed') had no picture: its card is the grilled mixed skewer (the kit's item card reads a station's items.*.card by its words, js/cook/ui.js cardOfIds). Existing art (assets/cook/items/skewer-mixed-grilled-t.png, a v1 cut on artcheck's known list); an ART row asks for the s08c skewer.",
+  "_about": "S19 (contract-104, SH-242): the item card of a mixed skewer ('ba lakri mixed') had no picture: its card is the grilled mixed skewer (the kit's item card reads a station's items.*.card by its words, js/cook/ui.js cardOfIds). Existing art (assets/cook/items/skewer-mixed-grilled-t.png, a v1 cut on artcheck's known list); an ART row asks for the s08c skewer. s20-b2-sekelo (contract-104, -128 on every sekelo page of the base: the dish card 'hakro sekelo' had no picture): the dish's own card, the served sekelo the serve shows (served.sekelo@v2, already in this game's assets).",
   "mixedSkewer": {
    "word": [
     "ph-mixed"
    ],
    "card": "assets/art/sekelo/skewer-mixed.grilled.r1.png"
+  },
+  "dish": {
+   "word": [
+    "ph-sekelo"
+   ],
+   "card": "assets/art/served/sekelo@v2.default.r1.webp"
   }
  },
  "assets": [

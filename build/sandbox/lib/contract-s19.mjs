@@ -873,7 +873,10 @@ function s19hook() {
           if (!o.getBounds) continue;
           const key = o.texture && o.texture.key;
           if (!key || /^__/.test(key) || !o.frame || typeof o.setTexture !== "function") continue; // (a picture: maani's heaps set their own .type)
-          const b = safe(() => o.getBounds());
+          // (a picture that names its lit body, litBounds, is measured by it, as the hole reader above does: samosa's fold canvas,
+          // s20-b2-samosa, 15 Nov: its getBounds took in the canvas's empty margin and the light read as missing it 1 run in 3)
+          const lb = typeof o.litBounds === "function" ? safe(() => o.litBounds()) : null;
+          const b = lb && lb.right != null ? { x: lb.x, y: lb.y, right: lb.right, bottom: lb.bottom } : safe(() => o.getBounds());
           if (!b) continue;
           const [l, t] = P(b.x, b.y), [r, bt] = P(b.right, b.bottom);
           if (r - l < 2 || bt - t < 2) continue;
