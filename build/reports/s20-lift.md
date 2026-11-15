@@ -1,10 +1,12 @@
 # s20-lift: the order view lifts only as far as the card's bottom-left place stays clear
 
-Decision 35 item 2 (Zafar, 15 Nov ~02:50), rows SH-287 and SH-304. Branch `s20-lift` (origin/s20-bubble + the working branch). No row's status changed; nothing re-frozen.
+Decision 35 item 2 (Zafar, 15 Nov ~02:50), rows SH-287 and SH-304. No row's status changed; nothing re-frozen.
 
 **What changed:** `js/cook/flow.js` `clearLift` caps the order view's lift (150 design px, `flow.js:318`) at the largest one where no head reaches the card's bottom-left place. The place is `ui.js` `UI.popRoom`, popPlace's own measure: the card's full-width column, play top to foot. People are measured where they stand or walk to, and again as each arrives. The card's size, place rule, path and timing are untouched.
 
-**What a child sees:** where someone sits in the card's column, no lift, and the card is back bottom left at live's size. That is Nana at the counter's left in three-person orders (chai L4, eggs L3-L4), and Nani in a day's order. Everywhere else, today's lift and card. New: in a three-person lab order the kitchen drops 150 design px as the people walk in. The lab lifts (`flow.js:1908`) before its order names them; the fix is outside this brief's files.
+**What a child sees:** where someone sits in the card's column, no lift, and the card is back bottom left at live's size. That is Nana at the counter's left in three-person orders (chai L4, eggs L3-L4), and Nani in a day's order. Everywhere else, today's lift and card.
+
+**Follow-up (decision 38):** a lab's kitchen first shows at its final lift: the station's code loads with its pictures, and the order card hands the lift its people at their spots. The host draws no kitchen before its order. The reveal light's pad scales with the card (contract-112).
 
 ## Proof
 
@@ -45,10 +47,20 @@ BEFORE evidence was not played at launch (cloud machine); the sheet's before is 
 | break | why |
 |---|---|
 | chai contract-112, lab L4 740 | the reveal light is 5 px wider than the 61% card, 87% inside; the judge's 90% "part" rule reads a whole-card light; passes pre-change (card top) |
-| chai boxes | Nani's box only (SH-301); no order-view box moved |
+| chai boxes (first gate) | Nani's box only (SH-301); no order-view box moved |
 | corn contract-83, -114; chai -79; eggs -37 | the base run has the same kinds; corn's lift and card unchanged |
 | contract-11 (1920), contract-102 (930) | -11 the same pre-change; -102 passes on a rerun |
 | check-change scope / rows / mount | overnight-log line (asked); no evidence spec for SH-287, SH-304; host mount finds no Cook global |
 | frozen: chai L4 #child 740 misses "dudh" | the page whose card moved; not traced: **open, may be mine** |
 
-**Open:** the frozen "dudh", contract-112, the lab's step, corn's contract-83, evidence specs for SH-287 and SH-304.
+**4. Follow-up** (commits 944d29c, 2e62ef2, 3ed6d30 on the merge 0c4387b):
+
+| run | result |
+|---|---|
+| lab order view, cook.html and lab.html, chai and eggs L1 and L4 740x320 | first kitchen frame at its final lift (150 one person, 0 three); no later change |
+| contract, lab chai L4, lab chai L1, lab eggs L4, 740x320 (`s20-lift-112c`) | contract-112 0, contract-80 0, contract-11 0; advisory 37, 70, 113 (eggs' station) |
+| gate chai-tray (`gate-20261115T1159-chai-tray`) | FAIL 29.4 min: contract 23.4 (contract-129 0, contract-83 0, contract-112 0; blocking contract-79 x1, chai L3 #hint 740, the base run had 2), boxes 3.5 |
+| gate eggs (`gate-20261115T1228-eggs`) | PASS 9.8 min (contract-129 0, contract-83 0) |
+| chai boxes, 0c4387b vs follow-up | the same 114 differences (the orders' words, L1 and L4): the merged base's, none from the follow-up |
+
+**Open:** the frozen "dudh", contract-79 (older), corn's contract-83, chai's box reference against the merged base, evidence specs for SH-287 and SH-304.
