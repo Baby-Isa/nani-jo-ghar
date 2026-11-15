@@ -26,7 +26,7 @@ A game that teaches young children Kutchi through play at Nani's house, voiced o
 3. **No written English for the child,** except under Nani's lines at the door, on the order card at L1, the helper card (28-29 Oct) and a supported word card, tapped. Spoken English: story mode only, rare and simple. Grown-ups' English: only the "?" pop-up and the end-of-round review.
 4. **The Kutchi leak test** once words are past support: no winning by reading, matching, eliminating, patterns or waiting. Right picks while supported move a word's ladder (29 Oct, sprint file).
 5. **Done means an independent picture:** the `judge` agent, never the builder, passes the changed screens, flaws first.
-6. **The same shared screens and buttons in every mode** (`js/shared/`, never restyled per mode); **no clipped or ellipsised text** (headlines shrink, then wrap).
+6. **The same shared screens and buttons in every mode** (`js/shared/`, never restyled per mode); **no clipped or ellipsised text** (headlines shrink, then wrap; a card half past a scrolling row's edge is fine, Zafar 15 Nov).
 7. **Nothing makes a child feel bad:** show progress, not verdicts; never make them wait for speech; they can undo until the step moves on (Zafar, 22 Oct).
 8. **Art is made in ChatGPT runs that Zafar supervises** (decision 77): Claude plans and writes one paste block, he runs it and approves what lands, Claude judges, cuts and wires. No image-API art without his say-so.
 9. **The family is Khoja Shia Ithna'asheri Muslim** (internal only; never named in anything public): halal only, no Hindu religious markers, modest clothing; never sweets, lollies or biscuits as rewards (mithai at a celebration is fine).

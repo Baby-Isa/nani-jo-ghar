@@ -69,6 +69,7 @@
 })(typeof self !== "undefined" ? self : typeof globalThis !== "undefined" ? globalThis : this, function (root) {
   "use strict";
   const W = {};
+  let watchPage = () => {}; // (set below, once the page's own listeners are defined)
 
   /** The slots by stage (a copy of data/progress.json support[stage]'s; progress.support wins when given). */
   W.SLOTS = {
@@ -691,6 +692,8 @@
     const ks = new Set(all(".wc14 .wc14-k")), ens = new Set(all(".wc14 .wc14-en"));
     rows.forEach((row) => row.querySelectorAll(".wc14 .wc14-k").forEach((e) => ks.add(e)));
     rows.forEach((row) => row.querySelectorAll(".wc14 .wc14-en").forEach((e) => ens.add(e)));
+    // (only a page with cards on it keeps the resize and font listeners: a late fit after a mode has left finds none, SH-314)
+    if (ks.size || ens.size || rows.length) watchPage();
     ks.forEach((e) => fitOne14(e, 11, 2));
     ens.forEach((e) => fitOne14(e, 10, 1));
     rows.forEach(row14);
@@ -962,14 +965,31 @@
       if (shell) shell.remove();
     }
   };
-  if (root.addEventListener) {
+  // (the page's resize and font listeners, put on when cards are first fitted; SH-314: W.release takes them off as a mode leaves the
+  // page, js/cook/mount.js unmount, and the next fit puts them back)
+  let pageOff = null;
+  watchPage = () => {
+    if (pageOff || !root.addEventListener) return;
     let rz = 0;
-    root.addEventListener("resize", () => {
+    const onResize = () => {
       cancelAnimationFrame(rz);
       rz = requestAnimationFrame(() => W.fit14());
-    });
+    };
+    root.addEventListener("resize", onResize);
     // (a face that arrives after the cards are drawn changes every word's width: fit again; css/shared/fonts.css swaps)
-    if (doc && doc.fonts && doc.fonts.addEventListener) doc.fonts.addEventListener("loadingdone", () => W.fit14());
-  }
+    const onFonts = () => W.fit14();
+    const fonts = doc && doc.fonts && doc.fonts.addEventListener ? doc.fonts : null;
+    if (fonts) fonts.addEventListener("loadingdone", onFonts);
+    pageOff = () => {
+      cancelAnimationFrame(rz);
+      root.removeEventListener("resize", onResize);
+      if (fonts) fonts.removeEventListener("loadingdone", onFonts);
+    };
+  };
+  W.release = function () {
+    if (pageOff) pageOff();
+    pageOff = null;
+  };
+  watchPage();
   return W;
 });

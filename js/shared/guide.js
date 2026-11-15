@@ -133,8 +133,19 @@
       noted[k] = clock.t;
       logHelp("idle-bump", { step: k });
     };
+    const move = (e) => e.buttons && bump(e); // a drag or a stir is doing something
     ["pointerdown", "pointerup", "keydown", "wheel", "touchstart"].forEach((ev) => d.addEventListener(ev, bump, true));
-    d.addEventListener("pointermove", (e) => e.buttons && bump(e), true); // a drag or a stir is doing something
+    d.addEventListener("pointermove", move, true);
+    clock.off = () => {
+      ["pointerdown", "pointerup", "keydown", "wheel", "touchstart"].forEach((ev) => d.removeEventListener(ev, bump, true));
+      d.removeEventListener("pointermove", move, true);
+    };
+  };
+  /** SH-314: the page's listeners go (a mode leaving the page: js/cook/mount.js unmount); the next G.watch puts them back. */
+  G.release = function () {
+    if (clock.off) clock.off();
+    clock.off = null;
+    clock.on = false;
   };
   // (a legitimate action that has ENDED, St.acted: the end of a pour or a spoonful; logged for the help-comes check, contract-91)
   G.poke = () => {

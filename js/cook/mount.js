@@ -74,6 +74,15 @@ export function unmount() {
     Cook.halt();
   } finally {
     endLife();
+    // SH-314 (Zafar, 15 Nov: the mount leak fixed, not explained away): the shared kits' page-wide listeners, the device voice's
+    // safety timers and the sound effects' audio context go with Cook; each comes back the next time a game needs it
+    [W.NjgVoice && W.NjgVoice.stop, W.NaniGuide && W.NaniGuide.release, W.Onboard && W.Onboard.release, W.WordCard && W.WordCard.release, W.Sfx && W.Sfx.release].forEach((f) => {
+      try {
+        if (f) f();
+      } catch (e) {
+        /* one kit's own */
+      }
+    });
     if (me.side && W.Frame && W.Frame.unwatchSide) W.Frame.unwatchSide(me.side);
     me.nodes.forEach((n) => n.remove());
     BODY_CLASSES.forEach((c) => doc.body.classList.remove(c));

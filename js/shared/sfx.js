@@ -463,6 +463,23 @@
   Sfx.hush = function () {
     live.forEach((h) => (h.loop ? duckLoop(h, true) : !h.under && h.stop(0.03)));
   };
+  /** SH-314: a mode leaving the page (js/cook/mount.js unmount): every sound stops and the audio context closes; the next sound opens
+   *  a new one (the recorded sounds stay decoded: they are not the context's). */
+  Sfx.release = function () {
+    live.forEach((h) => {
+      try {
+        h.stop(0);
+      } catch (e) {
+        /* already stopped */
+      }
+    });
+    live.clear();
+    if (watching) root.clearInterval(watching);
+    watching = null;
+    const c = ctx;
+    ctx = null;
+    if (c && c.close) c.close().catch(() => {});
+  };
   function startBuf(buf, vol, meta) {
     const c = ac();
     if (!c || !buf) return null;

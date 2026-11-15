@@ -774,10 +774,18 @@
         }
       });
     };
-    root.addEventListener("pointerdown", each("down"), true);
-    root.addEventListener("pointermove", each("move"), true);
-    root.addEventListener("pointerup", each("up"), true);
-    root.addEventListener("pointercancel", each("up"), true);
+    const on = [["pointerdown", each("down")], ["pointermove", each("move")], ["pointerup", each("up")], ["pointercancel", each("up")]];
+    on.forEach(([k, f]) => root.addEventListener(k, f, true));
+    pressOff = () => on.forEach(([k, f]) => root.removeEventListener(k, f, true));
+  };
+  let pressOff = null;
+  /** SH-314: the page's press listeners go (a mode leaving the page: js/cook/mount.js unmount); the next light puts them back. */
+  Onboard.release = function () {
+    if (pressOff) pressOff();
+    pressOff = null;
+    pressOn = false;
+    pressHooks.clear();
+    Object.assign(pressNow, { down: false });
   };
   /** SH-261: a tap the light keeps from the page (in the dark round it) is still the child doing something: the shared idle clock
    * hears it (SH-60: the help's wait restarts on every action), as it would any tap; the light stays and its ladder runs on. */

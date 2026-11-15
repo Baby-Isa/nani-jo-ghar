@@ -494,9 +494,14 @@ body.njg-s14 #guide.ng-s14 .ng-mute { display: none; }
 body.njg-s14 #guide.ng-s14 .ng-tools { grid-area: tools; display: flex; align-items: center; }
 body.njg-s14 #guide.ng-s14 .ng-line { font-family: var(--njg-card14-font); font-weight: 700; color: var(--njg-card14-text); text-wrap: balance; }
 body.njg-s14 #guide.ng-s14 .ng-line .word { color: var(--njg-card14-kutchi); }
-/* (Zafar, 5 Nov, his video: Nani's box stepping 2 px as her line went from one line to two: on the s14 look her line always has two
-   lines' room, centred, so her box keeps one height through every step) */
-body.njg-s14 #guide.ng-s14 .ng-say { justify-content: center; font-size: var(--sb-h, var(--njg-side-h)); line-height: 1.2; min-height: calc(2lh + var(--njg-px)); }
+/* (Zafar, 5 Nov, his video: Nani's box stepping 2 px as her line went from one line to two: on the s14 look her box always has her
+   line's two lines' room, so it keeps one height through every step: the box's own minimum, 2 x 1.2 x her line's size, the 1 px and
+   its padding.) SH-312 (Zafar, 15 Nov, chai at 'Dudh wiji chad!': "change the text centering to be centered, if it's only one line,
+   to be centered on the round face, same as the item card. And if it's two lines, then ... center it in the middle of the box"): her
+   line sits centred on her face's row (the row is her face's height for one line, so the line is level with her face, as Nana's
+   headline on his card); two lines make the row the box's height, so they sit centred in the box. The rows start at the top. */
+body.njg-s14 #guide.ng-s14 { min-height: calc(2 * var(--njg-card-pad) + 2.4 * var(--sb-h, var(--njg-side-h)) + var(--njg-px)); align-content: start; }
+body.njg-s14 #guide.ng-s14 .ng-say { justify-content: center; font-size: var(--sb-h, var(--njg-side-h)); line-height: 1.2; align-self: center; }
 /* (non-negotiable 2: a line still to record keeps the grey italic on the s14 look; the judge, 29 Oct) */
 body.njg-s14 #guide.ng-s14 .ng-say.rec .ng-line, body.njg-s14 #guide.ng-s14 .ng-line .rec { color: var(--njg-ink-soft); font-style: italic; }
 .njg-guide .ng-arrow { display: none; }
@@ -563,15 +568,19 @@ body.njg-s14 #guide.ng-s14 { column-gap: var(--njg-s2); }
    the next item card, almost like it can't decide or it has two competing instructions": it had two: mandatory snapping pulled the row
    back onto a card's edge after every glide the code makes to a place between edges (a slot whole with the one before at the left, the
    last card whole); the code alone places the row now, OrderCard.glideTo and settle14) */
+/* SH-313 (Zafar, 15 Nov, chai at 'Dudh wiji chad!', the speaker on Nana's face circled: "It looks like it's clipping into the item card,
+   which needs fixing ... make sure it doesn't overlap in a way that doesn't make the item card too much bigger than it has to"): the
+   face's speaker badge sits on the circle's lower-left edge (SH-140) and hangs below it by its radius (at least s4/2), its 2 px ring,
+   less 0.1464 of the circle; the item row starts that far below the head, plus 2 px, never closer. Only a small face grows its card
+   (a phone: about 4 px); on a laptop the card's own gap already clears it. */
+.oc-card.oc-s14 { --oc-badge-room: calc(max(var(--njg-face) * 0.19, var(--njg-s4) / 2) + 2 * var(--njg-line-2) - var(--njg-face) * 0.1464 - var(--njg-card14-u2)); }
+:root .oc-card.oc-s14:not(.oc-big) .oc-items:has(> .oc-items14) { margin-top: max(var(--njg-card-gap), var(--oc-badge-room)); }
+/* (a tight card's and a phone's own floor, s1: lines 362 and 470, the badge's room above it) */
+:root .oc-card.oc-s14.oc-tight:not(.oc-big) .oc-items:has(> .oc-items14), html[data-ff="phone"] .oc-card.oc-s14:not(.oc-big) .oc-items:has(> .oc-items14) { margin-top: max(var(--njg-s1), var(--oc-badge-room)); }
 .oc-card.oc-s14 .oc-row14 { container-type: inline-size; position: relative; display: flex; flex-direction: row !important; flex-wrap: nowrap !important; column-gap: var(--njg-s2) !important; gap: var(--njg-s2); margin-top: 0; align-items: stretch; overflow-x: auto; overflow-y: hidden; scroll-snap-type: none; scrollbar-width: none; padding: var(--njg-card14-u2) var(--njg-card14-u2) var(--njg-card14-u4); -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); mask-image: linear-gradient(to right, black calc(100% - var(--njg-card14-u34)), transparent); }
 .oc-card.oc-s14 .oc-row14::-webkit-scrollbar { display: none; }
 .oc-card.oc-s14 .oc-row14.oc-at-end { -webkit-mask-image: none; mask-image: none; }
-/* SH-307 (the batch 1 pictures, 15 Nov; non-negotiable 6): at rest, an item card cut by its row's edge shows no words or picture, never a
-   sliver with clipped words; they show again as the row moves (js/shared/order-card.js items14, cutNow) */
-/* (its frame stays, an empty card in its place as a waiting slot is, so the row's gaps are the row's: contract-116; what is in it goes,
-   at once: a fade is a move, and the order card's light waits for the panel to be still, contract-79) */
-.oc-card.oc-s14 .oc-row14 > .oc-row.oc-cut14 { pointer-events: none; }
-.oc-card.oc-s14 .oc-row14 > .oc-row.oc-cut14 > *, .oc-card.oc-s14 .oc-row14 > .oc-row.oc-cut14::before, .oc-card.oc-s14 .oc-row14 > .oc-row.oc-cut14::after { opacity: 0 !important; transition: none !important; }
+/* (SH-307 reversed, Zafar 15 Nov: an item card cut by its row's edge keeps everything in it; js/shared/order-card.js items14) */
 /* (the row is the container: a card is 1/2.3 of it, so its padding, 6% of the card, is 2.6cqi of the row; SH-234, Zafar 7 Nov:
    never under 4 px, so a picture never touches its card's edge on a small phone: values.md "item padding floor") */
 .oc-card.oc-s14 .oc-row14 > .oc-row.oc-it14 { flex: 0 0 calc((100% - 2 * var(--njg-s2)) / 2.3) !important; min-width: 0 !important; max-width: none; scroll-snap-align: start; display: grid; min-height: 0; padding: max(calc(var(--njg-px) * 4), 2.6cqi); gap: 0; border-radius: var(--njg-card14-u14); background: var(--njg-card14-card); border: var(--njg-card14-u1p5) solid transparent; box-shadow: var(--njg-card14-shadow-it); align-items: stretch; }

@@ -380,10 +380,21 @@ export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, volume = 1
   watchCancel(S);
   return voicesIn(S).then(() => speakNow(S, text, { rate, voice, volume, wait }));
 }
+// (SH-314: a line still being spoken; stopAll lets each go at once, and a line let go of clears its own safety timers, so a stop leaves
+// no timer running: Cook's mount test)
+const speaking = new Set();
 function speakNow(S, text, { rate, voice, volume, wait }) {
   return new Promise((resolve) => {
     let done = false;
-    const fin = (v) => !done && ((done = true), resolve(v));
+    const timers = [];
+    const fin = (v) => {
+      if (done) return;
+      done = true;
+      timers.forEach((t) => clearTimeout(t));
+      speaking.delete(fin);
+      resolve(v);
+    };
+    speaking.add(fin);
     const go = () => {
       try {
         const vs = (S.getVoices && S.getVoices()) || [];
@@ -400,8 +411,8 @@ function speakNow(S, text, { rate, voice, volume, wait }) {
         u.onend = u.onerror = () => fin(true);
         S.speak(u);
         // (no voice installed at all: let go of it almost at once, so a test browser is not held up)
-        setTimeout(() => !started && fin(false), vs.length ? 900 : 250);
-        setTimeout(() => fin(true), 1500 + 300 * String(text).length);
+        timers.push(setTimeout(() => !started && fin(false), vs.length ? 900 : 250));
+        timers.push(setTimeout(() => fin(true), 1500 + 300 * String(text).length));
       } catch (e) {
         fin(false);
       }
@@ -664,6 +675,7 @@ export function speakDevice(text, { rate = DEVICE_RATE, volume = 1, lang = "k", 
 export function stopAll() {
   liveClips.forEach((h) => h.cut());
   liveClips.clear();
+  [...speaking].forEach((fin) => fin(false));
   try {
     if (globalThis.speechSynthesis) watchCancel(globalThis.speechSynthesis).cancel();
   } catch (e) {

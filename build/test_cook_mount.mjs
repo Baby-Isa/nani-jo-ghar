@@ -8,7 +8,8 @@
  *   - canvases, Cook's screen (#app, #overlay, #coach), the element's children, new <body> children
  *   - Cook's lifetime (js/cook/life.js open()) empty; audio contexts closed; <body> classes as before
  *   - no page errors
- * And: no Cook global (window.Cook, window.njgTest?.cook) on the host page; no iframe.
+ * And: no iframe. The Cook global (window.Cook, window.njgTest?.cook) is noted, not failed, until the app-store wrap (SH-314b).
+ * A listener left behind is named with where it was added (SH-314).
  *   COOK_TEST_PORT=8818 flock -w 1800 /tmp/njg-browser-all.lock timeout 600 node build/test_cook_mount.mjs [--times 5] [--station fetch]
  */
 import { BASE, startServer, launch, newPage, sleep } from "./sandbox/lib/env.mjs";
@@ -26,7 +27,7 @@ const check = (ok, what) => {
 // counts what the page has running, from the first script on (before any page code)
 const PROBE = () => {
   const W = window;
-  const live = { listeners: new Map(), timers: new Map(), intervals: new Map(), frames: new Set(), audio: [] };
+  const live = { listeners: new Map(), timers: new Map(), intervals: new Map(), frames: new Set(), audio: [], at: new WeakMap() };
   const key = (t) => (t === W ? "window" : t === W.document ? "document" : t === (W.document && W.document.body) ? "body" : t === W.visualViewport ? "visualViewport" : null);
   const add = EventTarget.prototype.addEventListener;
   const rem = EventTarget.prototype.removeEventListener;
@@ -39,6 +40,7 @@ const PROBE = () => {
       if (!set.has(fn)) {
         set.add(fn);
         live.listeners.set(id, set);
+        live.at.set(fn, where()); // (where it was added: a failure names it)
         if (o && o.once) {
           const self = this;
           add.call(self, type, () => set.delete(fn), { once: true, capture: cap(o) });
@@ -91,16 +93,19 @@ const PROBE = () => {
     snapshot(since) {
       const listeners = {};
       live.listeners.forEach((set, id) => set.size && (listeners[id] = set.size));
+      const listenersAt = {};
+      live.listeners.forEach((set, id) => set.size && (listenersAt[id] = [...set].map((f) => live.at.get(f) || "?")));
       const pend = (m) => [...m.values()].filter((t) => t.n > since);
       return {
         listeners,
+        listenersAt,
         timers: pend(live.timers),
         intervals: pend(live.intervals),
         frames: live.frames.size,
         audioOpen: live.audio.filter((c) => c.state !== "closed").length,
         canvases: document.querySelectorAll("canvas").length,
         iframes: document.querySelectorAll("iframe").length,
-        body: [...document.body.children].map((n) => n.tagName + (n.id ? "#" + n.id : "")).filter((t) => t !== "SCRIPT"),
+        body: [...document.body.children].map((n) => n.tagName + (n.id ? "#" + n.id : "") + (n.tagName === "SECTION" && n.className ? "." + String(n.className).split(" ")[0] : "")).filter((t) => t !== "SCRIPT"),
         bodyClass: document.body.className,
         cookScreen: ["app", "overlay", "coach", "side", "stage"].filter((id) => document.getElementById(id)).length,
         globals: [..."Cook" in window ? ["Cook"] : [], ...["cook", "loading"].filter((k) => window.njgTest && k in window.njgTest).map((k) => `njgTest.${k}`)],
@@ -128,7 +133,8 @@ try {
   const since = await page.evaluate(() => __probe.mark());
   const base = await page.evaluate((s) => __probe.snapshot(s), since);
   console.log(`baseline: ${Object.keys(base.listeners).length} page listener kinds, ${base.canvases} canvases, body: ${base.body.join(" ")}`);
-  check(base.globals.length === 0, `no Cook global once Cook's modules have loaded (${base.globals.join(", ") || "none"})`);
+  // (SH-314b, Zafar 15 Nov: the Cook global stays until the app-store wrap; noted here, never a failure)
+  console.log(`  note no Cook global once Cook's modules have loaded (${base.globals.join(", ") || "none"}): SH-314b, until the app-store wrap`);
 
   const sameListeners = (a, b) => {
     const out = [];
@@ -170,6 +176,8 @@ try {
     const left = await page.evaluate(() => __cookMount.running());
     const diff = sameListeners(base.listeners, after.listeners);
     check(diff.length === 0, `listeners on the page as before${diff.length ? ": " + diff.join("; ") : ""}`);
+    // (each one left, where it was added: its newest)
+    diff.forEach((d) => { const id = d.split(":")[0]; const at = (after.listenersAt[id] || []).slice(-1)[0]; if (at) console.log(`         ${id} added at ${at}`); });
     check(after.timers.length === 0, `no timers left${after.timers.length ? ": " + JSON.stringify(after.timers.slice(0, 4)) : ""}`);
     check(after.intervals.length === 0, `no intervals left${after.intervals.length ? ": " + JSON.stringify(after.intervals.slice(0, 4)) : ""}`);
     check(after.frames <= base.frames, `no animation frames left (${after.frames})`);
@@ -178,7 +186,8 @@ try {
     check(after.body.join(" ") === base.body.join(" "), `<body> as before${after.body.join(" ") !== base.body.join(" ") ? ": " + after.body.join(" ") : ""}`);
     check(after.bodyClass === base.bodyClass, `<body> classes as before ("${after.bodyClass}")`);
     check(after.audioOpen === 0, `no audio context left open (${after.audioOpen})`);
-    check(after.globals.length === 0 && after.iframes === 0, `no Cook global, no iframe (${after.globals.join(", ") || "none"})`);
+    check(after.iframes === 0, `no iframe`);
+    if (after.globals.length) console.log(`  note the Cook global stays (${after.globals.join(", ")}): SH-314b, until the app-store wrap`);
   }
   const errs = [...new Set(errors)].filter((e) => !/favicon/.test(e));
   check(errs.length === 0, `no page errors ${errs.length ? JSON.stringify(errs.slice(0, 3)) : ""}`);
