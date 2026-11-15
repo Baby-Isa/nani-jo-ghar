@@ -112,7 +112,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
    */
   const BAND_K = 1.13; // (a cob at most this much over its size at its last place: contract-114's 15%, with room to spare)
   const BAND_FILL = 0.84; // (a standing cob's length, of the stone tray's inner height: the rest its margin above and below)
-  function rectLayout({ thick, count, P, R, ringRoom = 92, gap = 36, deep = false, onGrill = 4 }) {
+  function rectLayout({ thick, count, P, R, ringRoom = 92, gap = 36, deep = false, onGrill = 4, keepOut = null }) {
     const G = Cook.GrillKit.ART.grill;
     const TI = Cook.GrillKit.ART.tray.inner; // (its well's inset, of its own width and height: turned upright they swap)
     // (ART-80: the deep tray stands as it is drawn, its rims cut to any shape at its width's scale (GK.deepTex): its well inside them)
@@ -156,17 +156,30 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const tw = (cols * cw + (cols + 1) * cw * 0.25) / (1 - 2 * TI[1]);
       return { glen, tlen, cw, tw, gw };
     };
-    // as big as the height and the width allow
-    let gh = spanBot - spanTop - ringRoom;
-    for (let i = 0; i < 40; i++) {
-      const z = sizes(gh);
-      if (z.gw + gap + z.tw <= vr - vl) break;
-      gh *= 0.98;
+    // as big as the height and the width allow, between top and the band, l and r
+    const fit = (top, l, r) => {
+      let h = spanBot - top - ringRoom;
+      for (let i = 0; i < 40; i++) {
+        const q = sizes(h);
+        if (q.gw + gap + q.tw <= r - l) break;
+        h *= 0.98;
+      }
+      const q = sizes(h);
+      const tot = q.gw + gap + q.tw;
+      const lf = (l + r) / 2 - tot / 2;
+      const y = top + (spanBot - top - (h + ringRoom)) / 2 + ringRoom + h / 2;
+      return { gh: h, z: q, total: tot, left: lf, gy: y };
+    };
+    // CK-137 (round 3, the eye judge for Zafar: "the steel tray clear of the settings button at 740x320"): where the rectangle would lie
+    // under the settings cog (keepOut, the page's own button in sheet units, a gap round it), it stands below the cog or ends left of
+    // it, whichever keeps the grill bigger
+    let best = fit(spanTop, vl, vr);
+    const under = (f) => keepOut && f.left + f.total > keepOut.x && f.left < keepOut.right && f.gy - f.gh / 2 < keepOut.bottom && f.gy + f.gh / 2 > keepOut.y;
+    if (under(best)) {
+      const tries = [fit(Math.max(spanTop, keepOut.bottom), vl, vr), fit(spanTop, vl, Math.min(vr, keepOut.x))].filter((f) => !under(f));
+      if (tries.length) best = tries.reduce((a, b) => (b.gh > a.gh ? b : a));
     }
-    const z = sizes(gh);
-    const total = z.gw + gap + z.tw;
-    const left = (vl + vr) / 2 - total / 2;
-    const gy = spanTop + (spanBot - spanTop - (gh + ringRoom)) / 2 + ringRoom + gh / 2;
+    const { gh, z, total, left, gy } = best;
     const gx = left + z.gw / 2;
     const far = gy - gh / 2 + G.far * gh;
     const near = gy - gh / 2 + G.near * gh;
@@ -333,7 +346,21 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
     const deep = deepTray && S.textures.exists(GK.ART.deep.key);
     const P1 = F.play;
     const places = Math.min(4, K.slots || 3);
-    const L = rectLayout({ thick, count, P: P1, R: slab(band, F.bottom), ringRoom: gl.ringRoom, gap: gl.gap, deep, onGrill: Math.min(count, places) });
+    // (the settings cog, the page's own button over the corner of the screen: its box in sheet units with a light's gap round it)
+    const cogBox = (() => {
+      try {
+        const el = global.document && global.document.getElementById("side-cog");
+        const r = el && el.getBoundingClientRect();
+        if (!r || !r.width) return null;
+        const a = F.toSheet(r.left, r.top);
+        const b = F.toSheet(r.right, r.bottom);
+        const g = 10 / Math.max(0.01, F.px || 1);
+        return { x: a.x - g, y: a.y - g, right: b.x + g, bottom: b.y + g };
+      } catch (e) {
+        return null;
+      }
+    })();
+    const L = rectLayout({ thick, count, P: P1, R: slab(band, F.bottom), ringRoom: gl.ringRoom, gap: gl.gap, deep, onGrill: Math.min(count, places), keepOut: cogBox });
     const kit = buildRect(S, L);
     // (a test log: which screen is up, for the evidence probes' moments, "life:corn-screen")
     const screenNote = (step) => {
@@ -357,8 +384,9 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const inBot = 2 * L.tray.y - L.tray.inTop; // (the well's foot: the tray's rims are the same top and bottom)
       const foot = at.y + L.tray.len / 2;
       const room = inBot - foot;
-      const fs = Math.max(30 / perPx, Math.min(L.tray.step * 0.85, room * 0.8, 120));
-      const fy = inBot - Math.max(fs / 2 + 4, (room - fs) / 2 + fs / 2);
+      // (CK-137, round 3: "the cooked cob's foot clear of Nana's face circle in the tray": a gap of at least a tenth of the face)
+      const fs = Math.max(30 / perPx, Math.min(L.tray.step * 0.85, room * 0.72, 120));
+      const fy = Math.max(foot + fs * 0.6, inBot - Math.max(fs / 2 + 4, (room - fs) / 2 + fs / 2));
       const img = T(S.add.image(at.x, fy, Cook.Kit.badge(S, q.who)).setDisplaySize(fs, fs).setDepth(D.item + 2));
       img.setName("corn-tray-face");
       return img;
@@ -486,7 +514,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       // first time either (CHAI-32: never the first ordered item)
       const OB = global.Onboard;
       const hides = !!(n.word && OB && OB.hintHides && OB.hintHides({ answer: true, stage: Cook.wordStage ? Cook.wordStage(n.word) : null, study: guided }));
-      const first = n.word ? false : gate.first(n.step);
+      // (CK-137, round 3, contract-78: a cob's turn and lift are timed windows, called each time a cob is ready: their light comes with
+      // every call, as chai's knob at its green; any other step's light comes with its call the first time only)
+      const timed = n.step === "turn" || n.step === "lift";
+      const first = n.word ? false : timed || gate.first(n.step);
       // S19 (CK-61, SH-230): the light round the thing whole, with its pill, its face circle and its hop's room (the kit's parts, part
       // by part, so the light's one rule leaves its room round their union: contract-92)
       const target = [0, 1, 2, 3, 4, 5].map((i) => () => (n.o.active && n.o.visible ? Cook.Coach.parts(n.o)[i] || null : null));
@@ -664,8 +695,15 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       const cob = q.cob;
       const g = T(S.add.graphics().setDepth(cob.depth + 0.1 + Object.keys(q.drops).length * 0.01).setAlpha(0));
       g.setPosition(cob.x, cob.y).setRotation(cob.rotation);
-      const len = cob.displayWidth;
-      const th = cob.displayHeight;
+      paintDressing(g, q, id, cob.displayWidth, cob.displayHeight);
+      S.tweens.add({ targets: g, alpha: 1, duration: mo.dropInMs || 260 });
+      return g;
+    };
+    /**
+     * A dressing painted on a cob len long and th thick, in the cob's own frame (its length along x), on g: a Phaser graphics, or
+     * canvasPen's 2D-canvas stand-in (CK-137: the served dish carries the same marks as the plate, the same seed).
+     */
+    const paintDressing = (g, q, id, len, th) => {
       const st = dressStyle[id] || { kind: "specks", n: 30 };
       // (the kernels: CK-117, the chopped cob is kernels end to end, its cut ends rounded: its length less its rounded ends, about two
       // thirds of its thickness across. In the cob's own frame, so on the standing cob it runs up its length)
@@ -730,9 +768,85 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           g.fillCircle(x, across(x), Math.max(1.2, th * (r0 + rnd() * 0.014)));
         }
       }
-      S.tweens.add({ targets: g, alpha: 1, duration: mo.dropInMs || 260 });
-      return g;
     };
+    /** A 2D canvas as the few graphics calls paintDressing makes (colours as 0xRRGGBB ints, alphas 0-1). */
+    const canvasPen = (ctx) => {
+      const css = (c) => `#${(c >>> 0).toString(16).padStart(6, "0").slice(-6)}`;
+      let fill = ["#000", 1];
+      let line = [1, "#000", 1];
+      const filled = (f) => {
+        ctx.globalAlpha = fill[1];
+        ctx.fillStyle = fill[0];
+        f();
+        ctx.globalAlpha = 1;
+      };
+      const pen = {
+        fillStyle: (c, a = 1) => ((fill = [css(c), a]), pen),
+        lineStyle: (w, c, a = 1) => ((line = [w, css(c), a]), pen),
+        strokePoints: (pts) => {
+          ctx.beginPath();
+          pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+          ctx.globalAlpha = line[2];
+          ctx.lineWidth = line[0];
+          ctx.strokeStyle = line[1];
+          ctx.lineJoin = "round";
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+          return pen;
+        },
+        fillEllipse: (x, y, w, h) => (filled(() => (ctx.beginPath(), ctx.ellipse(x, y, w / 2, h / 2, 0, 0, Math.PI * 2), ctx.fill())), pen),
+        fillRect: (x, y, w, h) => (filled(() => ctx.fillRect(x, y, w, h)), pen),
+        fillCircle: (x, y, r) => (filled(() => (ctx.beginPath(), ctx.arc(x, y, r, 0, Math.PI * 2), ctx.fill())), pen),
+        slice: (x, y, r, a0, a1, acw) => ({ fillPath: () => (filled(() => (ctx.beginPath(), ctx.moveTo(x, y), ctx.arc(x, y, r, a0, a1, !!acw), ctx.closePath(), ctx.fill())), pen) }),
+        lineBetween: (x1, y1, x2, y2) => pen.strokePoints([{ x: x1, y: y1 }, { x: x2, y: y2 }]),
+      };
+      return pen;
+    };
+    /*
+     * CK-137 (round 3, the eye judge for Zafar: "the served cob as cooked (char and that person's toppings), not plain yellow and the
+     * same on both plates"): each person's served dish is drawn here as their round ends, as the serving kitchen's dish
+     * "corn-<who>" (js/cook/serve.js reads its dishes from data; flow.js servePlanOf names it): the cream plate at the serving view's
+     * angle, as the scene.served picture, and on it that person's own cob (done or over) standing, with the marks of what they had,
+     * painted as on their plate (paintDressing, the same seed).
+     */
+    function servedDishes() {
+      const sv = sc.served || {};
+      const data = Cook.data;
+      if (!sv.file || !data || !S.textures.exists("cn4-plate")) return;
+      const dishes = (((data.art = data.art || {}).serve = data.art.serve || {}).dishes = data.art.serve.dishes || {});
+      const W = 560;
+      const PH = Math.round(W * (sv.squash || 0.62));
+      const pad = 12;
+      const plate = S.textures.get("cn4-plate").getSourceImage();
+      people.forEach((q) => {
+        if (!q.cob || !q.cob.texture || !q.who) return;
+        const src = S.textures.get(q.cob.texture.key).getSourceImage();
+        if (!src || !src.width) return;
+        const cv = global.document.createElement("canvas");
+        cv.width = W + 2 * pad;
+        cv.height = PH + 2 * pad;
+        const ctx = cv.getContext("2d");
+        ctx.drawImage(plate, pad, pad, W, PH);
+        const len = PH * 0.8;
+        const th = (len * src.height) / src.width;
+        ctx.save();
+        ctx.translate(pad + W / 2, pad + PH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.shadowColor = "rgba(60, 35, 20, 0.32)";
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetX = 7;
+        ctx.shadowOffsetY = 9;
+        ctx.drawImage(src, -len / 2, -th / 2, len, th);
+        ctx.shadowColor = "rgba(0, 0, 0, 0)";
+        const pen = canvasPen(ctx);
+        q.dressed.forEach((id) => paintDressing(pen, q, id, len, th));
+        ctx.restore();
+        const key = `serve-dish-corn-${q.who}`; // (the serve's own key for the dish "corn-<who>": js/cook/serve.js dishOf)
+        if (S.textures.exists(key)) S.textures.remove(key);
+        S.textures.addCanvas(key, cv);
+        dishes[`corn-${q.who}`] = { file: sv.file, size: sv.size || "plate", at: sv.at != null ? sv.at : 0.5 };
+      });
+    }
     const takeOff = (q, id) => {
       q.dressed.splice(q.dressed.indexOf(id), 1);
       const g = q.drops[id];
@@ -808,7 +922,8 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
             // stands upright on its plate as it stood on the band, the grill and the tray (one rotation the whole way), as big as the
             // plate holds it (its corners inside the plate's rim: plates.cob of the plate), and never more than 14% over its tray size,
             // so it grows with no snap (SH-256, contract-114)
-            const len = Math.min(plateCob(d), trayLen * BAND_K);
+            // (CK-137, round 3: "the plated cob the same drawing as everywhere else": it keeps its tray size, as long as the plate holds it)
+            const len = Math.min(plateCob(d), trayLen);
             return GK.move(S, c.img, { x: q.at.x, y: q.at.y, len, up: true, ms: mo.plateMs || 520 });
           })
         );
@@ -1081,7 +1196,10 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
           const last = i === people.length - 1;
           const praise = last && !wrong.length && people.every((x, j) => j >= i || x.right);
           q.right = !wrong.length;
-          return [await serve.review(S, { who: q.who, ok: !wrong.length, x: q.face.x, y: q.face.y, size, side: "left", line: praise ? undefined : false })];
+          // (CK-137, round 3: "'Shabash!' clear of Nana's plate, his cob and the girl's face": the praise's face comes up at the plate's
+          // other upper corner, its card to its right, past the plate's rim and away from the plates before it)
+          const fx = praise ? 2 * q.at.x - q.face.x : q.face.x;
+          return [await serve.review(S, { who: q.who, ok: !wrong.length, x: fx, y: q.face.y, size, side: praise ? "right" : "left", line: praise ? undefined : false })];
         },
         oops: () => z.oops(),
         recast: async (item, rows) => {
@@ -1115,6 +1233,7 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       Cook.sfx.pop();
       await Cook.wait(mo.endHoldMs || 500);
     }
+    servedDishes();
     screen = 3;
     active = people.length;
     if (UI.mission.focus) UI.mission.focus(null);
