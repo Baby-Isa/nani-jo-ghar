@@ -340,9 +340,26 @@
       const rows = [...list.querySelectorAll(":scope > .oc-row")];
       // (cards still sliding to their places, the redraw's FLIP: judged where they stop)
       if (rows.some((r) => r.getAnimations && r.getAnimations().some((x) => x.playState === "running"))) return rest(120);
+      // (the orchestrator, 15 Nov, sekelo L3: the side panel's own foot cut a row through its speakers, at 740x320 and 1280x665: a card
+      // partly past the panel's top or foot, the list it scrolls in, counts as cut too; the panel scrolling shows every card again)
+      const pane = list.closest("#mission, .oc-list, [data-njg-scroll]");
+      const p = pane ? pane.getBoundingClientRect() : null;
+      if (pane && !pane._cut14) {
+        pane._cut14 = true;
+        pane.addEventListener(
+          "scroll",
+          () => {
+            pane.querySelectorAll(".oc-row14 > .oc-row.oc-cut14").forEach((r) => r.classList.remove("oc-cut14"));
+            pane.querySelectorAll(".oc-row14").forEach((l) => l._rest14 && l._rest14());
+          },
+          { passive: true }
+        );
+      }
       rows.forEach((r) => {
         const a = r.getBoundingClientRect();
-        const cut = !!a.width && !r.classList.contains("oc-away") && a.right > b.left + 1 && a.left < b.right - 1 && (a.left < b.left - 1 || a.right > b.right + 1);
+        const across = a.right > b.left + 1 && a.left < b.right - 1 && (a.left < b.left - 1 || a.right > b.right + 1);
+        const down = !!p && p.height > 0 && a.bottom > p.top + 1 && a.top < p.bottom - 1 && (a.top < p.top - 1 || a.bottom > p.bottom + 1);
+        const cut = !!a.width && !r.classList.contains("oc-away") && (across || down);
         if (r.classList.contains("oc-cut14") !== cut) r.classList.toggle("oc-cut14", cut);
       });
     };
