@@ -47,29 +47,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   const St = Cook.Stations;
   const Mech = Cook.Mech;
 
-  /*
-   * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
-   * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred between
-   * the view's top (16 px in) and the shelf band (28 px above it), never nearer the view's top than 40 px unless that would push
-   * it into the band's gap. -> the lift in world px (a raise; Cook.liftZone's unit)
-   */
-  const centreLift = (z, top0, bottom0, room = 0) => {
-    const v = Cook.view || {};
-    const k = z.k || 1;
-    const viewTop = v.top != null ? v.top : z.Y(0);
-    const spanTop = viewTop + 16 * k;
-    const spanBot = z.Y(St.SHELF.top - 28);
-    const t = z.Y(top0) - room * k;
-    const b = z.Y(bottom0);
-    let lift = t - (spanTop + (spanBot - spanTop - (b - t)) / 2);
-    lift = Math.min(lift, t - (viewTop + 40 * k));
-    return Math.round(Math.max(lift, b - spanBot));
-  };
-
   Mech.define("thread", {
     station: "thread",
     view: "marble",
-    footprint: { x: 0, y: 0, w: 1600, h: 900 },
+    footprint: Cook.Frame.sheet,
     async run(z, params) {
       const S = z.S;
       const ctx = z.ctx;
@@ -108,15 +89,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         if (kind) ctx.tickPiece(kind, sk.ids.length);
       };
       // Sekelo v2 (§15): the board and its upright skewer on the left of the scene, the rack on the right,
-      // the prep bowls on the shelf band below (the chai v2 grid)
-      const BOARD = { x: 560, y: 346, w: 250, h: 586 };
-      // the scene is raised into the middle of a taller stage's worktop (the stage fill); the shelf band keeps z0
-      const z0 = z;
-      // (CHAI-89, the orchestrator 11 Nov: the board with its skewer and the tray, centred in the view above the band: chai's measure)
-      z = Cook.liftZone(z0, centreLift(z0, BOARD.y - BOARD.h / 2, BOARD.y + BOARD.h / 2));
-      const SKY = 352; // the skewer's centre on the board
+      // the prep bowls on the shelf band below (the chai v2 grid). Sprint 20 batch 2 (s20-b2-sekelo): the board and the tray are the
+      // kitchen frame's row of two stations in its play area (F.row: centred across it, and down it by chai's measure, CHAI-89), the
+      // board at its accepted size (BOARD_H tall, the row's max), never the screen's or the sheet's numbers
+      const BOARD_H = 586; // the board's height (its accepted size: the play area's height on a 16:9 screen)
+      const SKY_ON = 6; // the skewer's centre below the board's
       const SKS = 0.84; // the skewer on the board
-      const RACK = { x: 1090, y: SKY, s: 0.6 }; // the rack sized to its skewers (followup, 29 Sept); v3: the picture's centre
+      const RACK_S = 0.6; // the old rack's scale (its picture sized to its skewers, followup 29 Sept)
       const slots = (handoff && handoff.max) || 4;
       const full = () => handoff && handoff.max && doneRow.length >= handoff.max;
 
@@ -137,17 +116,30 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const spare = Cook.shuffle(pieceIds.filter((id) => !needed.includes(id))).concat(k.decoyPool || []);
       const ids = needed.concat(St.tableDecoys(spare, needed, Cook.roundLevel(ctx), { what: "bowls" }));
       await SK.loadArt(S, ids);
-      SK.band(S, z0);
+      const F = SK.band(S, z);
+      const z0 = z;
       const meatIds = ids.filter((id) => SK.cls(id) === "meat");
       const groups = [Cook.shuffle(meatIds), Cook.shuffle(ids.filter((id) => !meatIds.includes(id)))].filter((g) => g.length);
       // (the chips: the word until it is used right, then the speaker alone: Cook.chipWord, Zafar, 20 Oct)
-      const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)), go: handoff ? handoff.label || "" : null });
+      const bowls = SK.shelf(S, z0, groups, { level: Math.max(z.level || 1, Cook.roundLevel(ctx)), go: handoff ? handoff.label || "" : null, F });
       /*
        * SEK-26, ART-79 (Zafar, 12 Nov night: "that's old artwork for the board that the skewers sit on"): the walnut board (the chop's,
        * sk4-board, the walnut rule) stood the long way, at its own shape (the old oak board was drawn 2.3 times its width: BOARD.h tall),
        * turned a quarter to the left so its lit edge stays on the light's side.
        */
       const walnut = S.textures.exists("sk4-board");
+      // (the stations: the board, as it stands, and the deep tray, its rims a skewer's length apart; per unit of the board's height)
+      const bamboo = (SK.V3.HANDLE - SK.V3.TIP) * SKS;
+      const GKA = Cook.GrillKit && Cook.GrillKit.ART;
+      // (ART-80: the mock's deep tray where it loaded, its rims measured on it: SK.deepBox)
+      const deep = GKA ? SK.deepBox(bamboo, 1.1, S) : null;
+      const bsrc = walnut ? S.textures.get("sk4-board").getSourceImage() : null;
+      const boardW0 = bsrc && bsrc.width ? (BOARD_H * bsrc.height) / bsrc.width : 250; // (turned a quarter: its height is its width)
+      const trayW0 = deep ? deep.w : 1.1 * bamboo;
+      const R = F.row([{ w: boardW0 / BOARD_H, h: 1 }, { w: trayW0 / BOARD_H, h: (deep ? deep.h : bamboo) / BOARD_H }], { max: BOARD_H });
+      const BOARD = { x: R.boxes[0].cx, y: R.boxes[0].cy, w: boardW0, h: BOARD_H };
+      const SKY = BOARD.y + SKY_ON; // the skewer's centre on the board
+      const RACK = { x: R.boxes[1].cx, y: SKY, s: RACK_S }; // v3: the picture's centre
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), walnut ? "sk4-board" : S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (walnut) board.setAngle(-90).setScale(z.L(BOARD.h) / board.width);
       else if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
@@ -156,10 +148,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       board.shadow = S.contactShadow(board, { centerX: z.X(BOARD.x), centerY: z.Y(BOARD.y), width: z.L(boardW), height: z.L(BOARD.h) });
       // (S19, contract-114: a skewer keeps its size from the board to the tray: the tray is drawn at the board's skewer's size)
       // SEK-26: the deep tray (the grill's: SK.rackDeep), its rims a skewer's length apart, level with the board's skewer
-      const bamboo = (SK.V3.HANDLE - SK.V3.TIP) * SKS;
-      const GKA = Cook.GrillKit && Cook.GrillKit.ART;
-      // (ART-80: the mock's deep tray where it loaded, its rims measured on it: SK.deepBox)
-      const deep = GKA ? SK.deepBox(bamboo, 1.1, S) : null;
       const rack = SK.rack(S, z, { x: RACK.x, y: deep ? SKY + ((SK.V3.TIP + SK.V3.HANDLE) / 2) * SKS + deep.h / 2 - deep.far - bamboo / 2 : RACK.y, slots, s: RACK.s, bamboo, deep });
       // S19 (Fable's sekelo flaw 2): the tray the skewers go to carries the asker's face from its first frame, as chai's tray does
       if (rack.v3 && handoff) SK.trayFace(S, z, rack.img, params.who || (ctx.order && ctx.order.who) || "nana");
@@ -259,10 +247,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           glow: (on) => {
             if (lit === on || !target.active) return;
             lit = on;
-            S.glow(target, on, { bounce: true, now: true });
-            // (its glow goes with its light too, however the light goes: contract-102)
+            // (contract-102, the s20-b2-sekelo gate, L2 #mistake at 740x320: the kit's light steps back while the grown-ups' "?" pop-up
+            // is open, Onboard's draw, and the bowl glowed on with no light up: the bowl glows only while its light is shown, its box()
+            // drawn, and goes out with it, however the light goes)
             const h = on && stk && stk.lit ? stk.lit() : null;
-            if (h && h.done) h.done.then(() => lit && stkKey === key && ((lit = false), target.active && S.glow(target, false)));
+            let showing = false;
+            const sync = () => {
+              const want = lit && stkKey === key && target.active && !!(h && h.box && h.box());
+              if (want === showing) return;
+              showing = want;
+              if (target.active) S.glow(target, want, want ? { bounce: true, now: true } : undefined);
+            };
+            if (!on) {
+              if (target.glowSync) target.glowSync();
+              target.glowSync = null;
+              if (target.active) S.glow(target, false);
+              return;
+            }
+            // (a timer, not a scene tick: the scene's ticks stop while the grown-ups' pop-up pauses the game, and that is when it goes)
+            const iv = setInterval(sync, 80);
+            target.glowSync = () => clearInterval(iv);
+            sync();
+            if (h && h.done) h.done.then(() => lit && stkKey === key && ((lit = false), target.glowSync && target.glowSync(), (target.glowSync = null), target.active && S.glow(target, false)));
           },
           onHint: () => Cook.onHelp && Cook.onHelp("hint"),
         });

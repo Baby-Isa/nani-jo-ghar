@@ -142,7 +142,8 @@ import { Cook as CookNS } from "./ns.js";
    * between stations (a share of the play area's width), and each station's box. The row is centred across the play area and down
    * it (CHAI-89, Zafar 5 Nov: centred in the worktop that shows, the room kept above it for what appears there, never nearer the play
    * area's top than TOP_KEEP unless that would push it into the bottom row's gap). Stations stand on the row's middle line.
-   *   Frame.row(play, [{share, w, h}], {max, min, room}) -> {unit, gap, x, y, w, h, boxes: [{x, y, w, h, size, cx, cy}]}
+   *   Frame.row(play, [{share, w, h}], {max, min, room, gapUnit}) -> {unit, gap, x, y, w, h, boxes: [{x, y, w, h, size, cx, cy}]}
+   *     gapUnit: the gap as a share of the unit (a group that stands together), in place of the frame's tenth of the play area
    *     size: the station's own unit (share x unit), cx/cy its box's middle
    */
   const ROW_GAP = 0.1; // the gap between stations: a tenth of the play area's width
@@ -150,14 +151,18 @@ import { Cook as CookNS } from "./ns.js";
   Frame.ROW_GAP = ROW_GAP;
   Frame.row = function (P, stations, r = {}) {
     const list = (stations || []).map((s) => ({ share: s.share != null ? s.share : 1, w: s.w != null ? s.w : 1, h: s.h != null ? s.h : 1 }));
-    const gap = list.length > 1 ? ROW_GAP * P.w : 0;
+    // (gapUnit, s20-b2-sekelo: a game whose stations stand together as one group, sekelo's grill and its tray, names its gap as a share
+    // of the unit, so the gap grows and shrinks with them; without it, the frame's tenth of the play area's width)
+    const byUnit = r.gapUnit != null && list.length > 1;
+    let gap = list.length > 1 && !byUnit ? ROW_GAP * P.w : 0;
     const room = r.room || 0;
     const across = list.reduce((a, s) => a + s.share * s.w, 0) || 1;
     const down = Math.max(...list.map((s) => s.share * s.h), 0) || 1;
     // the largest unit the play area takes, across (less the gaps) and down (less the room kept above), at most max, at least min
-    let unit = Math.min((P.w - gap * (list.length - 1)) / across, (P.h - room) / down);
+    let unit = Math.min(byUnit ? P.w / (across + r.gapUnit * (list.length - 1)) : (P.w - gap * (list.length - 1)) / across, (P.h - room) / down);
     if (r.max != null) unit = Math.min(unit, r.max);
     if (r.min != null) unit = Math.max(unit, r.min);
+    if (byUnit) gap = r.gapUnit * unit;
     const w = across * unit + gap * (list.length - 1);
     const h = down * unit;
     const x = P.x + (P.w - w) / 2;
