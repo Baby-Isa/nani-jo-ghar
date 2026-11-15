@@ -23,11 +23,11 @@ def frame(run, page, size, name):
 
 # (moment, page, size, before run, before frame, after run, after frame)
 ROWS = [
-    ("L1 740x320: the raw cobs on the band (the first one lit)", "cook-corn", "740x320", "s20-corn-upright-base", "kind-tap", "s20-corn-upright-contract", "kind-tap"),
-    ("L3 740x320: the flavour screen, two plates and the six bowls", "cook-corn-l3", "740x320", "s20-corn-upright-base", "c08-stage", "s20-corn-upright-contract", "c08-stage"),
-    ("L4 1280x665: mid-grill, a cob in the tray (2 s after the lift's light)", "cook-corn@L4", "1280x665", "s20-corn-upright-kfbase", "strip-04-light", "s20-corn-upright-kf", "strip-03-light"),
-    ("740x320: the order's pop-up card", "cook-corn", "740x320", "s20-corn-upright-base", "order-card-big", "s20-corn-upright-contract", "order-card-big"),
-    ("740x320: the item card in the side panel", "cook-corn", "740x320", "s20-corn-upright-base", "order-card-in-sidebar", "s20-corn-upright-contract", "order-card-in-sidebar"),
+    ("L1 740x320: the raw cobs on the band (the first one lit)", "cook-corn", "740x320", "s20-corn-upright-base", "kind-tap", "s20-corn-upright-final", "kind-tap"),
+    ("L3 740x320: the flavour screen, two plates and the six bowls", "cook-corn-l3", "740x320", "s20-corn-upright-base", "c08-stage", "s20-corn-upright-final", "c08-stage"),
+    ("L4 1280x665: mid-grill, a cob in the tray (2 s after the lift's light)", "cook-corn@L4", "1280x665", "s20-corn-upright-kfbase", "strip-04-light", "s20-corn-upright-kf2", "strip-03-light"),
+    ("740x320: the order's pop-up card", "cook-corn", "740x320", "s20-corn-upright-base", "order-card-big", "s20-corn-upright-final", "order-card-big"),
+    ("740x320: the item card in the side panel", "cook-corn", "740x320", "s20-corn-upright-base", "order-card-in-sidebar", "s20-corn-upright-final", "order-card-in-sidebar"),
 ]
 
 try:
