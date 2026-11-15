@@ -30,4 +30,4 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 - frame-counts: daar 0, chop 0, chai-tray 0.
 - Round 4 contract at a child's pace (`r4-speed1`: daar L1 and L4, chop L1 #speed1, 740x320 and 1280x665): 6 pages end, 0 page errors; contract-98 0, contract-120 0; left: contract-36 x1, contract-119 x1 (advisory).
 - Pictures for the judge: `build/screenshots/sidebyside/daar-L4-s20b1-r4/`, `build/screenshots/sidebyside/chop-L1-s20b1-r4/`.
-GATES_R4
+- `gate-20261115T0718-daar+chop` **PASS** (checks 2.3 min; contract 0 blocking over 56 pages, 21.4 min; advisory 28: 119 x11, 65 x7, 36 x4, 37 x3, 113 x2, 72 x1). `gate-20261115T0742-chai-tray` **PASS** (contract 0 blocking over 38 pages, 21.7 min; boxes identical, 3.6 min).
