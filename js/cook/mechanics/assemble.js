@@ -487,17 +487,26 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         const bw = W * SV.share; // the bowl's width in the picture
         const sc = bw / d; // picture px per world px
         const bh = h * sc;
-        const H = Math.ceil(bh * SV.tilt + 2 * SV.shadow.blur + SV.shadow.y);
+        const wall = bh * (SV.wall || 0); // (its side, below the rim as seen from the family's side: the picture's own height)
+        const H = Math.ceil(bh * SV.tilt + wall + 2 * SV.shadow.blur + SV.shadow.y);
         if (S.textures.exists(key)) S.textures.remove(key);
         const cv = S.textures.createCanvas(key, W, H);
         const g = cv.getContext();
         g.save();
-        g.translate(W / 2, H / 2);
+        g.translate(W / 2, (H - wall) / 2);
         g.scale(1, SV.tilt);
         g.shadowColor = `rgba(0, 0, 0, ${SV.shadow.a})`;
         g.shadowOffsetX = SV.shadow.x;
         g.shadowOffsetY = SV.shadow.y / SV.tilt;
         g.shadowBlur = SV.shadow.blur;
+        // (the bowl's side: its picture again, a shade darker, stacked down to its foot, then the rim and the food over it)
+        if (wall > 0) {
+          const steps = Math.max(2, Math.ceil(wall / 3));
+          g.filter = `brightness(${SV.wallShade || 0.82})`;
+          for (let i = steps; i >= 1; i--) g.drawImage(src, -bw / 2, -bh / 2 + (wall / SV.tilt) * (i / steps), bw, bh);
+          g.filter = "none";
+          g.shadowColor = "rgba(0, 0, 0, 0)";
+        }
         g.drawImage(src, -bw / 2, -bh / 2, bw, bh);
         g.shadowColor = "rgba(0, 0, 0, 0)";
         const fw = (N / u) * sc; // the food's canvas, where it lies in the bowl

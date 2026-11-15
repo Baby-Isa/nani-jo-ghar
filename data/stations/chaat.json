@@ -127,15 +127,17 @@
  "_assets": "S19 (decision 68, loadcheck): every picture chaat loads beyond data/cook.json art.assets.stations: the serving bowl, the F3 bowls on the tray and the layer pictures (CHT-13, s19-chaat-td)",
  "served": {
   "w": 512,
-  "share": 0.672,
-  "tilt": 0.6,
+  "share": 0.74,
+  "tilt": 0.66,
   "shadow": {
    "x": 8,
    "y": 11,
    "blur": 12,
    "a": 0.26
   },
-  "_about": "CHT-20 (decision 38: the bowl the child built is the dish served, as chai's glass): the picture of the built bowl chaat hands the serve (Cook.Serve.plated, js/cook/serve.js): its width in px (w), the bowl's share of it (share: the serve draws a handed dish at a plate's size class, 0.58 of the tray; a bowl's class is 0.39, so the bowl lies in 0.39/0.58 of the picture), its height for its width as the family sees it on the tray (tilt; maani's plates 0.56) and the kit's one soft shadow down and to the right (SH-268), px of the picture"
+  "_about": "CHT-20 (decision 38: the bowl the child built is the dish served, as chai's glass): the picture of the built bowl chaat hands the serve (Cook.Serve.plated, js/cook/serve.js): its width in px (w), the bowl's share of it (share: the serve draws a handed dish at a plate's size class, 0.58 of the tray; a bowl's class is 0.39, so the bowl lies in 0.39/0.58 of the picture), its height for its width as the family sees it on the tray (tilt; maani's plates 0.56) and the kit's one soft shadow down and to the right (SH-268), px of the picture; its side below the rim (wall, a share of the bowl's width; wallShade its darkness), so it reads as a bowl, not a plate; share 0.74 (a little over the bowl class, as the bowl's served picture reads beside a plate)",
+  "wall": 0.13,
+  "wallShade": 0.8
  },
  "_tray22": "CHT-22 (the Fable eye judge for Zafar, decision 38, 740x320: 'the stone tray reading full as chai's shelf'): the bowls on the tray about a seventh bigger (bowlD 150 -> 172, pitch 180 -> 200), still narrower where the slots or the tray's height ask; the spoonful never under spoonCss CSS px (motion.spoonCss)"
 }
