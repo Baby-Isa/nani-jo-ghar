@@ -456,7 +456,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     const sized = (o, w) => o.setScale(w / Math.max(1, o.width));
     const rawEgg = (x, y) => {
       const o = sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * (ITEM("egg").inPot || 0.62));
-      o.potScale = o.scale; // (its size in the pot, which it keeps there and, lifted cooked, within 10%: SH-302's hand size flies back to it)
+      o.potScale = o.scale; // (its size in the pot, kept there and, lifted cooked, within 10%: SH-302's hand size glides back to it)
       return o;
     };
     // SH-256 (the eye judge, 10 Nov: "the egg snaps from whole to fried"; the art's new egg-part, K7): cracked, then half set (egg-part),
@@ -741,9 +741,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       began();
       hold({ kind: "raw" });
       rawHeld = rawEgg(bowl.x, bowl.y - 30);
-      // SH-302 (Zafar, 15 Nov: "initially I think the egg that is picked up is too small"): in the hand it grows to inHand times its pot
-      // size (data/stations/eggs.json; contract-114's ceiling) as it rises, its foot clear of the bowl; it goes back to its pot size as it
-      // flies in (putIn)
+      // SH-302 (Zafar, 15 Nov: "initially I think the egg that is picked up is too small"): the egg a little larger everywhere (inPot), and
+      // in the hand inHand times its pot size (data/stations/eggs.json; within contract-114's 15% between its rests) as it rises, its foot
+      // clear of the bowl; it goes back to its pot size as it flies in (putIn)
       const handS = rawHeld.scale * (ITEM("egg").inHand || 1);
       const handY = bowl.y - bowl.displayHeight / 2 - (rawHeld.displayHeight * (ITEM("egg").inHand || 1)) / 2 - 18;
       S.tweens.add({ targets: rawHeld, y: Math.min(bowl.y - bowl.displayHeight / 2 - 70, handY), scale: handS, duration: 260, ease: "Back.easeOut" });

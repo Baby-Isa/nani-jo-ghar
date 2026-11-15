@@ -333,9 +333,9 @@
     205
    ],
    "word": "n.egg",
-   "inPot": 0.62,
-   "inHand": 1.24,
-   "_sh302": "SH-302 (Zafar, 15 Nov: 'initially I think the egg that is picked up is too small'): lifted from the bowl it grows to inHand times its pot size, rising clear of the bowl, and shrinks back to its pot size as it flies in. 1.24 is contract-114's ceiling: lifted cooked it rests at 1.1 times its pot size, which must stay within 15% of its rest in the hand",
+   "inPot": 0.7,
+   "inHand": 1.14,
+   "_sh302": "SH-302 (Zafar, 15 Nov: 'initially I think the egg that is picked up is too small'): the whole egg a little larger everywhere (inPot 0.62 to 0.7; it still sits inside its heat ring) and, lifted from the bowl, inHand times that in the hand, rising clear of the bowl, gliding back to its pot size as it flies in: 1.29 times its old size in the hand. inHand stays within contract-114's 15% between its rests (in the hand, in the pot, lifted cooked at 1.1)",
    "_note": "a whole egg lifted from the bowl (brown, as the bowl's), whole in the pot: inPot its width over the pot's floor radius. s19-games-2 (11 Nov): the k2 run's E5 whole egg (v4 egg-whole, 265 x 205) replaces the 100 px prototype, here and on its card",
    "card": "assets/art/eggs/egg.whole.r1.webp"
   },
