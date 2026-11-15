@@ -23,5 +23,6 @@ Samosa reads only the frame (frame-counts 12 → 0): x positions as shares of `p
 
 ## Proof
 - **frame-counts:** samosa 0, chai-tray 0. **checks.mjs:** 14 steps ok (unit 1014 pass).
-- **Samosa gate** (gate-20261115T1152-samosa, round 2 before the gap change): `GATE PASS samosa: checks pass 2.6, contract pass 14; 16.6 min` (0 blocking over 28 pages; advisory 25).
+- **Samosa gate**, final code (gate-20261115T1217-samosa): `GATE PASS samosa: checks pass 2.9, contract pass 13.6; 16.5 min` (0 blocking over 28 pages; advisory 16). Before the gap change: gate-20261115T1152-samosa, PASS, 16.6 min.
+- **Chai gate** on f8eea9d's reference (gate-20261115T1304-chai-tray): `GATE PASS chai-tray: checks pass 2.4, contract pass 22.4, boxes:chai-tray pass 3.4; 28.3 min` (0 blocking over 38 pages; **boxes identical**). The run before it (gate-20261115T1233) failed on the old reference: the kit's SH-307/309 changes, which f8eea9d re-took.
 - **Side by side:** `build/screenshots/sidebyside/samosa-L1-20261115-1147/` (L1, 740x320 and 1280x665; contract-78 x2, as before).
