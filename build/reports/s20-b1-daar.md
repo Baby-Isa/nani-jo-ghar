@@ -20,7 +20,7 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 | SH-227, -241, -239, -242, -53, -236, -238 | check passing on daar | contract-100, 108, 104, 8, 106, 103 pass L1-L4 |
 | SH-245, CK-79 | check passing | contract-115: 0 on daar |
 | SH-249, SH-253 | check passing | contract-112 0 (round 3) |
-| DAAR-36, DAAR-39 | daar at zero (rounds 2-3) | chop's 129 left (s20-bubble) |
+| DAAR-36, DAAR-39 | built, gate at zero | gate-20261115T0535-daar+chop |
 | CK-111, SH-275 | cannot here | the chop mechanic (`mechanics/chop.js`), ART-66 |
 | SH-270, SH-281, SH-255 | cannot here | kit, or the judge's pictures; no check |
 
@@ -32,6 +32,5 @@ Branch `s20-b1-daar` (from 115d900). Nothing a child sees moves, at any level or
 ## Round 3: DAAR-39, contract-112
 - **Cause:** `js/cook/mechanics/chop.js` swipeBox (the first-time strip's light): its right edge followed the finger point as the drag began, read from the game's state, while the page still showed the knife and hand at the start; a busy machine's picture caught the hand outside the box.
 - **Fix:** the box holds the hand where the move starts (`fpt0`) for the whole move. Proof: chop L2 + daar L4 at 740x320, two runs, contract-112 0 (5 lights judged, 0 failing, each).
-- **Gate daar+chop** (`gate-20261115T0442-daar+chop`, 21.4 min): checks pass; contract-112 0, -116 0, -22 0; only contract-129 ×28 (chop, SH-304).
-- **Gate chai-tray** (`gate-20261115T0504-chai-tray`, 25 min): boxes 160 differences, all Nani's box (SH-301); contract-129 ×3 only.
+- **Gates, with s20-bubble and chai's re-taken reference merged (9ccf8b6):** `gate-20261115T0535-daar+chop` **PASS** (checks 2.4 min, contract 0 blocking over 56 pages, 19.1 min; advisory 27); `gate-20261115T0556-chai-tray` **PASS** (contract 0 blocking over 38 pages, 21 min; boxes identical, 3.4 min).
 - Tier 0 refused pushes on a sprint-file path that is not in git (`build/reports/s20-corn-calls/`): reworded.
