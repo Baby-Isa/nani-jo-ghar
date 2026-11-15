@@ -304,7 +304,8 @@
   },
   "ph-sekelo": {
    "kutchi": "sekelo",
-   "english": "sekelo",
+   "english": "barbecue",
+   "_english": "Zafar 15 Nov, decision 42 (5): the end review's English for sekelo is barbecue (the engine's id follows it: n.barbecue)",
    "gender": "unknown",
    "draft": true,
    "src": "Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"

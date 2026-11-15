@@ -317,6 +317,11 @@
   const hasCount = (m) => !!m && typeof m === "object" && (Array.isArray(m) ? m.some(hasCount) : m.fn === "Count" || ((m.fn === "Item" || m.fn === "Unit") && m.n != null) || Object.keys(m).some((k) => k !== "fn" && hasCount(m[k])));
   Lang.uncounted = (line) => {
     if (!line) return line;
+    // (decision 42 (1): one sentence of several lines is built again whole, then cut; a part of it is that part of the new sentence)
+    if (line.clauseOf) {
+      const u = Lang.clauses(line.clauseOf.map(Lang.uncounted));
+      return Object.assign(line.clauseAt != null ? (u.parts || [])[line.clauseAt] || u : u, line.key ? { key: line.key } : {});
+    }
     if (line.parts && line.parts.length) return Object.assign(Lang.join(line.parts.map(Lang.uncounted)), line.key ? { key: line.key } : {});
     if (!line.m || !hasCount(line.m)) return line;
     return Object.assign(Lang.say(stripCounts(line.m)), line.key ? { key: line.key } : {});
@@ -380,6 +385,35 @@
     );
     return Lang.join(out);
   };
+  /**
+   * Decision 42 (1) (Zafar, 15 Nov: "Kali hakro tameto, ne hakro bataato.": a sentence doesn't normally begin with ne): engine
+   * lines said as ONE sentence, joined by a comma, by the engine's Clauses rule (one mark, at the end). The read-along keeps its
+   * parts: each part is the engine's own words for that line, cut from the whole sentence at its commas (so a part is
+   * "Kali hakro tameto," never a sentence of its own), spoken from that line's own clips. A line that is not one meaning
+   * (already a join) can't go into the sentence: the old join, unchanged.
+   */
+  Lang.clauses = (lines) => {
+    const ls = (lines || []).filter(Boolean);
+    if (ls.length < 2) return ls[0] || null;
+    if (ls.some((l) => !l.m || (l.parts && l.parts.length))) return Lang.join(ls);
+    const w = Lang.say({ fn: "Clauses", parts: ls.map((l) => l.m) });
+    const cut = [[]];
+    w.segs.forEach((s) => {
+      cut[cut.length - 1].push(s);
+      if (s.lang == null && /^,\s*$/.test(s.t)) cut.push([]);
+    });
+    if (cut.length !== ls.length) return Object.assign(w, { clauseOf: ls });
+    const ens = ls.map((l, i) => {
+      const e = String(l.en || "").replace(/[.!?]+$/, "").trim();
+      return (i ? e.charAt(0).toLowerCase() + e.slice(1) : e) + (i < ls.length - 1 ? "," : (/[.!?]$/.exec(w.en || "") || ["."])[0]);
+    });
+    const parts = cut.map((segs, i) => {
+      let s = segs;
+      while (s.length && s[0].lang == null && !String(s[0].t).trim()) s = s.slice(1);
+      return Object.assign({}, ls[i], { segs: s, en: ens[i], clauseOf: ls, clauseAt: i });
+    });
+    return Object.assign(w, { parts, clauseOf: ls });
+  };
   /** THE ONE ADAPTER LEFT (see the header): engine-built lines one after the other. */
   Lang.join = (lines) => {
     const segs = [];
@@ -390,11 +424,13 @@
       plan.push(...(l.plan || []));
     });
     // the English (the bulb's): each line a sentence of its own, as the Kutchi is ("Chana. Wiji chad!" -> "Chickpeas. Put it in!")
-    const enOf = (l) => {
+    // (decision 42 (1): a part of one sentence, Lang.clauses, keeps its comma and its small letter)
+    const enOf = (l, i) => {
       const e = String(l.en || "").trim();
       if (!e || lines.length < 2) return e;
+      if (l.clauseOf && l.clauseAt > 0) return e;
       const mark = (/[.!?]$/.exec(Lang.plain(l).trim()) || [""])[0];
-      return e.charAt(0).toUpperCase() + e.slice(1) + (mark && !/[.!?]$/.test(e) ? mark : "");
+      return e.charAt(0).toUpperCase() + e.slice(1) + (mark && !/[.!?,]$/.test(e) ? mark : "");
     };
     return { segs, en: lines.map(enOf).filter(Boolean).join(" "), parts: lines, plan, ok: lines.every((l) => l.ok !== false) };
   };

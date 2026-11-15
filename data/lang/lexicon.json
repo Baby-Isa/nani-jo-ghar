@@ -1365,6 +1365,30 @@
    }
   },
   {
+   "id": "n.barbecue",
+   "pos": "N",
+   "gender": null,
+   "paradigm": "noun.o-he",
+   "lemma": "sekelo",
+   "gloss": "barbecue",
+   "glossPl": "barbecues",
+   "status": "draft",
+   "src": [
+    "data/cook.json words.ph-sekelo: Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"
+   ],
+   "aliases": [
+    "ph-sekelo"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   },
+   "notes": [
+    "english: Zafar 15 Nov, decision 42 (5): the end review's English for sekelo is barbecue (the engine's id follows it: n.barbecue)"
+   ]
+  },
+  {
    "id": "n.basket",
    "pos": "N",
    "gender": null,
@@ -2478,8 +2502,10 @@
    ],
    "notes": [
     "one / more than one: maani (never maanu)",
-    "count: Mum 28 Sept (Round 3 P6, C5; docs/language/grammar-notes.md §34): hakri maani, ba maani, no change"
-   ]
+    "count: Mum 28 Sept (Round 3 P6, C5; docs/language/grammar-notes.md §34): hakri maani, ba maani, no change",
+    "The want agrees with maani as one at any count: char maani khapeti (Zafar 15 Nov, decision 42 (2); grammar-notes §1)."
+   ],
+   "agreeNumber": "sg"
   },
   {
    "id": "n.chat",
@@ -6014,13 +6040,17 @@
    "aliases": [
     "cook-bajrmaani"
    ],
+   "notes": [
+    "The want agrees with maani as one at any count: char maani khapeti (Zafar 15 Nov, decision 42 (2); grammar-notes §1)."
+   ],
    "history": [
     {
      "date": "2026-09-26",
      "change": "was bajr jo maani (Zafar 24 Sept draft)",
      "src": "data/cook.json words.cook-bajrmaani: Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B11): ji, not jo, because maani is a she-word"
     }
-   ]
+   ],
+   "agreeNumber": "sg"
   },
   {
    "id": "n.mince",
@@ -7614,27 +7644,6 @@
    ],
    "ask": {
     "word": [
-     "new"
-    ]
-   }
-  },
-  {
-   "id": "n.sekelo",
-   "pos": "N",
-   "gender": null,
-   "paradigm": "noun.o-he",
-   "lemma": "sekelo",
-   "gloss": "sekelo",
-   "glossPl": "sekelos",
-   "status": "draft",
-   "src": [
-    "data/cook.json words.ph-sekelo: Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"
-   ],
-   "aliases": [
-    "ph-sekelo"
-   ],
-   "ask": {
-    "gender": [
      "new"
     ]
    }
@@ -16149,8 +16158,7 @@
     "data/cook.json lines.guide-the-way: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 51:04-51:09): e chai, he or she said; erte, that way; rand, cook; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
    ],
    "aliases": [
-    "cook.line.guide-the-way",
-    "cook.guide.default"
+    "cook.line.guide-the-way"
    ],
    "notes": [
     "not analysed into words yet: rand is not in the lexicon (build/lang/phrases.mjs)"

@@ -1,6 +1,6 @@
 # Nani jo Ghar: the recording sheet
 
-**The one central recording sheet** (Zafar, 14 Nov): every question for Mum and everything still to record, in one place. Updated 14 November 2026.
+**The one central recording sheet** (Zafar, 14 Nov): every question for Mum and everything still to record, in one place. Updated 15 November 2026.
 
 **Grammar first**, a table for each kind of question, **then each game**, a table each. In every table the rows still to do come first (needs Mum's Kutchi, then Kutchi known: just record, then to confirm); the rows that are done stay below them, in grey in the Word copy, so nothing is ever lost.
 
@@ -32,11 +32,11 @@
 | CK-BAKE · Baking | 10 | 5 | 13 |
 | CK-CORN · The corn stall | 6 | 3 | 1 |
 | CK-PANTRY · The pantry | 19 | 10 | 2 |
-| CK-CHOP · Chop | 4 | 3 | 2 |
+| CK-CHOP · Chop | 5 | 3 | 2 |
 | CK-CHAAT · Chaat | 9 | 9 | 8 |
 | CK-DAAR · Daar | 16 | 16 | 5 |
-| CK-SAMOSA · Samosa | 9 | 6 | 7 |
-| CK-MAANI · Maani | 10 | 8 | 3 |
+| CK-SAMOSA · Samosa | 10 | 6 | 7 |
+| CK-MAANI · Maani | 11 | 8 | 3 |
 | CK-SEKELO · Sekelo (the grill) | 14 | 11 | 5 |
 | CK-ALL · Every kitchen game | 63 | 29 | 98 |
 | CL-VISIT · The doctor at every visit | 161 | 161 | 0 |
@@ -54,7 +54,7 @@
 | PK-PEOPLE · People and clothes: who did it, dress up | 115 | 115 | 2 |
 | PK-MONSOON · The monsoon | 17 | 17 | 0 |
 | PK-MORE · Other words no game uses yet | 231 | 231 | 3 |
-| **All** | **1714** | **1577** | **466** |
+| **All** | **1717** | **1577** | **466** |
 
 ## Grammar
 
@@ -984,13 +984,14 @@ Nani's list from the pantry; pass me. 19 to do, 2 done.
 
 ### CK-CHOP · Chop
 
-Chopping what was asked. 4 to do, 2 done.
+Chopping what was asked. 5 to do, 2 done.
 
 | ID | Ask Mum (English) | What it is for | Status | Kutchi (Mum's answer) | Source |
 |---|---|---|---|---|---|
 | CK-CHOP-01 | Chop these | Cook line: Chop these | Needs Mum's Kutchi: not reached on 12 Nov |  | recording sheet 12 Nov, Chop; engine gap list (Cook); Round 6 R6-22; recording sheet 23 Oct, 2 |
 | CK-CHOP-03 | Chop what they said. | Nani tells the child what to do | Needs Mum's Kutchi |  | Round 5 N15; Round 4 N15 |
 | CK-CHOP-04 | Chop two onions. · Now chop the tomato. · Chop only one chilli. | Nani tells the child what to do | Needs Mum's Kutchi |  | Round 5 L56 |
+| CK-CHOP-07 | Only one tomato, and one potato. (one sentence: the chop's call) | decision 42 (1): the chop's call is one sentence joined by a comma, not two (a sentence doesn't normally begin with ne); record it whole, as one sentence | Kutchi known: just record | Kali hakro tameto, ne hakro bataato. (Zafar (decision 42)) | decision 42 (Zafar, 15 Nov); the orchestrator, 15 Nov |
 | CK-CHOP-02 | cut (say the word alone, three times) | Cook line: Chop it small!; Cook line: Chop what they said (3 lines) | To confirm: a draft spelling of Mum's word: Mum to say it again | kap | engine gap list (Cook) |
 | CK-CHOP-05 | chop | Kitchen talk: Cooking words | Recorded 5 Oct (clip nindha-nindha-kap) | nindha nindha kap | Round 4 I10; Round 3 I10; Combined I10 |
 | CK-CHOP-06 | rolling pin · board | Kitchen talk: More kitchen things | Recorded 5 Oct (clip welan) | welan | Round 4 I31; Round 3 I31; Combined I31 |
@@ -1049,7 +1050,7 @@ The tadka, the stir and the daar. 16 to do, 5 done.
 
 ### CK-SAMOSA · Samosa
 
-Fill, fold and fry. 9 to do, 7 done.
+Fill, fold and fry. 10 to do, 7 done.
 
 | ID | Ask Mum (English) | What it is for | Status | Kutchi (Mum's answer) | Source |
 |---|---|---|---|---|---|
@@ -1061,6 +1062,7 @@ Fill, fold and fry. 9 to do, 7 done.
 | CK-SAMOSA-09 | samosa pastry (the strips you fill) | The rest of Section C, from the Round 4 sheet | Needs Mum's Kutchi |  | Round 5 W4; Round 4 W4 |
 | CK-SAMOSA-03 | leave, finish (the helper in wiji chad, chadi de) (joined to a helper verb) (say the word alone, three times) | Cook line: Leave the {x}. | Kutchi known: just record | chadi | engine gap list (Cook) |
 | CK-SAMOSA-04 | fold (say the word alone, three times) | Cook line: Fold the samosa!; Cook line: Fold the samosa (3 lines) | Kutchi known: just record | waar | engine gap list (Cook) |
+| CK-SAMOSA-17 | Fill it, with mince. · Fill it, with potato. (Nani's step line as the child fills a samosa strip) | decision 42 (3): Zafar's 'Bhar, chundo sathe'; the engine says the word before sathe in its -e form, as in chokre sathe: 'Bhar, chunde sathe.' / 'Bhar, bataate sathe.' Hear which Mum says (chunde or chundo), and record both lines whole | Kutchi known: just record | Bhar, chunde sathe. · Bhar, bataate sathe. (the engine (to confirm)) | decision 42 (Zafar, 15 Nov); the orchestrator, 15 Nov |
 | CK-SAMOSA-05 | fry (say the word alone, three times) | Cook line: Fry it!; Cook line: Fry them, then lift them out (3 lines) | To confirm: a draft spelling of Mum's word: Mum to say it again | tar | engine gap list (Cook) |
 | CK-SAMOSA-10 | fry | Kitchen talk: Cooking words | Recorded 5 Oct (clip tarelo-kari-chad) | tarelo kari chad | Round 4 I14; Round 3 I14; Combined I14; recording sheet 23 Oct, 2 |
 | CK-SAMOSA-11 | fold | Kitchen talk: Cooking words | Answered 5 Oct: answered, 5 Oct: `grammar-notes.md` §38 |  | Round 4 I15; Round 3 I15; Combined I15; recording sheet 23 Oct, 2 |
@@ -1072,7 +1074,7 @@ Fill, fold and fry. 9 to do, 7 done.
 
 ### CK-MAANI · Maani
 
-Which maani and how many; knead, roll and the tawa. 10 to do, 3 done.
+Which maani and how many; knead, roll and the tawa. 11 to do, 3 done.
 
 | ID | Ask Mum (English) | What it is for | Status | Kutchi (Mum's answer) | Source |
 |---|---|---|---|---|---|
@@ -1086,6 +1088,7 @@ Which maani and how many; knead, roll and the tawa. 10 to do, 3 done.
 | CK-MAANI-12 | a thick millet flatbread (or do we only say *bajr ji maani*?) | the yes / no list (5 Oct), Part 2: a guess to test (the guess itself is not Mum's, so it is not kept) | Needs Mum's Kutchi |  | yes / no list (5 Oct) Part 2 #29 |
 | CK-MAANI-06 | millet (say the word alone, three times) | Cook: millet chapati (2 lines) | Kutchi known: just record | bajr | engine gap list (Cook); Round 6 R6-100 |
 | CK-MAANI-07 | big (say the word alone, three times) | Cook: big | Kutchi known: just record | wadho | engine gap list (Cook); Round 6 R6-124 |
+| CK-MAANI-14 | I would like four chapatis. (an order, said politely) | decision 42 (2): Zafar, maani's want is khapeti at any count (Mum's first take in §1: muke bha maani khape ti), never khapanti; record the whole order | Kutchi known: just record | Muke char maani khapeti. (Zafar (decision 42)) | decision 42 (Zafar, 15 Nov); the orchestrator, 15 Nov |
 | CK-MAANI-10 | thin (a maani) · just right | Kitchen talk: Cooking words | Recorded 5 Oct (clip jhini-maani-banai +2) | jhini maani banai · jadi maani banai · barabar | Round 4 I21; Round 3 I21; Combined I21 |
 | CK-MAANI-11 | the tawa | Kitchen talk: More kitchen things | Recorded 5 Oct (clip tawa) | tawa | Round 4 I30; Round 3 I30; Combined I30 |
 | CK-MAANI-13 | millet | Cook: millet chapati | Closed 14 Nov: on the 23 Oct sheet; the engine no longer lists it (answered, recorded, or no longer in the game) |  | recording sheet 23 Oct, 2 |

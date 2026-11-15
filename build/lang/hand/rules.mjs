@@ -44,6 +44,7 @@ const ABSTRACT = [
   ["Times", "Utt", { n: { type: "Num" } }, "{n} times", ["once; twice; three times (stir it three times)"]],
   ["StirTimes", "Utt", { n: { type: "Num" } }, "Stir it {n} times.", ["Stir it three times."]],
   ["BringMeTheseForX", "Utt", { x: NP }, "Bring me these for {x}.", ["Bring me these for chai."]],
+  ["Clauses", "Utt", { parts: { type: "Utt", list: true } }, "{parts}", ["Only two onions, and one tomato."]],
   ["FirstThen", "Utt", { a: NP, b: NP }, "First {a}, and then {b}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "b"] }],
   ["NeedFirstThen", "Utt", { a: NP, rest: NP }, "I'd like {a} first, and then {rest}.", ["I'd like lentils first, and then a chapati."], { rows: ["a", "rest"] }],
   ["OnShort", "PP", { x: NP }, "on {x} (the short way)", ["on the big mango (the everyday way)"]],
@@ -175,6 +176,9 @@ const CONCRETE = {
   Place: { slots: [S("anchor", { case: "obl" }), L("link.place"), S("rel")], status: "confirmed", src: `${GN} §15 (cup kabaat je andar, table je niche, darwaje je puthiya: the place belongs to the thing), §18, §49 (Nani je ambe je mathe; Nana je cup je andar)` },
   Lift: { slots: [S("x"), L("adv.now-in-steps"), L("v.take-out", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B15 (inke hane kadh: lift it out now); data/cook.json lines.lift names the thing where Mum said inke (it): Claude's extension, to check`, notes: ["hever kadh is the urgent one (§29 R6, §37.6); hane kadh is the gentle one in a sequence of steps (Cook keeps hane kadh)."] },
   Leave: { slots: [S("x"), L("v.leave", "conj"), L("v.give", "imp.informal")], mark: ".", status: "draft", src: `${GN} §25 B16 (inke chadi de: leave it be); data/cook.json lines.leave names the thing where Mum said inke (it): Claude's extension, to check` },
+  // decision 42 (Zafar, 15 Nov: "Kali hakro tameto, ne hakro bataato.": one sentence joined by a comma, since a sentence doesn't normally
+  // begin with ne): short lines said one after the other as one sentence; each keeps its own words, only the last mark is said
+  Clauses: { slots: [S("parts", { list: { between: [P(",")] } })], mark: ".", status: "confirmed", src: `Zafar 15 Nov, decision 42 (1); ${GN} §6 (ne before each item of a list), §7 (pela X, ne poi Y: one sentence with a comma)` },
   FirstThen: { slots: [L("adv.first"), S("a"), P(","), L("phrase.and-then"), S("b")], mark: ".", status: "draft", src: `${GN} §7 (Muke pela daar khape, ne poi maani: pela X, ne poi Y); pela is a draft in data/cook.json`, notes: ["Three steps (pela X, ne poi Y, ne poi Z) are not Mum's own sentence: only two steps were said."] },
   NeedFirstThen: { slots: [L("pron.p1", "dat"), L("adv.first"), S("a"), L("v.want", "informal"), P(","), L("phrase.and-then"), S("rest")], mark: ".", status: "draft", src: `${GN} §7 (Muke pela daar khape, ne poi maani: Mum's own sentence); pela is a draft in data/cook.json` },
   AndKind: { status: "unknown", ask: ["L23", "L26", "L27"], english: "and {x}", what: "joining a second kind of the same dish ('and one with potato')", src: "docs/archive/feedback/cook-playtest-2026-09-29.md Q5 4; data/cook.json lines.and_join (to record)" },
@@ -312,6 +316,11 @@ export function apply(S_) {
   // the gender goes on her list (non-negotiable 2: an ending is never guessed; the orchestrator, 14 Nov)
   const pd = S_.lin.PredDat;
   if (pd && pd.variants && pd.variants.polite) pd.variants.polite = pd.variants.polite.map((x) => (x.arg === "verb" ? { ...x, sure: { of: "thing", else: "informal" } } : x));
+  // decision 42 (Zafar, 15 Nov: maani's want is khapeti, also with a number: "char maani khapeti"; Mum's first take, grammar-notes §1:
+  // muke bha maani khape ti): a thing whose word says the want agrees as one (the lexicon's agreeNumber) is said so at any count
+  if (pd && pd.variants && pd.variants.polite)
+    pd.variants.polite = pd.variants.polite.map((x) => (x.arg === "verb" ? { ...x, cell: String(x.cell).replace("{thing.number}", "{thing.agreeNumber|thing.number}") } : x));
+  if (it && it.feats) it.feats.agreeNumber = "{kind.agreeNumber}";
   // PossPron's owner is a person word: its possessive forms are in the pronoun entries (poss.* cells)
   // Item takes an optional pointing word? No: Point does (hi wadho chokro).
 }

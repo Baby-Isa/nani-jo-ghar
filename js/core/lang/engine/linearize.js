@@ -139,7 +139,7 @@ export function createLinearizer(data) {
     if (!e) return f;
     f.lex = e.id;
     if (e.pos === "N" || e.pos === "PN") (f.person = "p3"), (f.number = "sg");
-    for (const k of ["number", "person", "clusivity"]) if (e[k] != null) f[k] = e[k];
+    for (const k of ["number", "person", "clusivity", "agreeNumber"]) if (e[k] != null) f[k] = e[k];
     if ("gender" in e || e.pos === "N" || e.pos === "PN") {
       if (e.gender) f.gender = e.gender;
       else if (genderDefault) (f.gender = genderDefault), (f.$def.gender = [e.id]);

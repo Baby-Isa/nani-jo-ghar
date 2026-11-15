@@ -788,7 +788,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (gate && Cook.Coach.active && Cook.Coach.active()) Cook.Coach.stop(true);
           UI.done().then(() => fin({ done: true }));
         }
-        // T17 / SH-110: Nani calls the strip's first filling as soon as a strip is wanted ("Bhar! Chundo."), the same step
+        // T17 / SH-110: Nani calls the strip's first filling as soon as a strip is wanted ("Bhar, chunde sathe.": decision 42 (3),
+        // Zafar 15 Nov, the engine's fill and its "with", one sentence by Lang.clauses), the same step
         // when that strip is tapped (so a strip tap never starts a call over the child's next tap), then each next filling
         const ord = filledOf().filter((x) => x !== active).length;
         // SH-60 (s08 w6J: at L2 her help line "Bhar! Chundo." came with nothing lit): the step's help lights the thing to tap
@@ -796,7 +797,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const helpGlow = (o) => (o ? (on) => litGlow(o, on, { bounce: true, now: true }) : null);
         // (s19-clean-e2, contract-117/-36: the strip's step and its first heap's step are two steps, so the heap's help lights the heap;
         // with one id the heap's step stayed the strip's and its help lit the strip while the game waited on the heap)
-        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}${at && strips.includes(at) ? "-strip" : ""}`, line: Lang.join([St.guideLine("samosa:fill"), Lang.bare(Lang.phrase([heap]))]), role: "howto", glow: helpGlow(at) });
+        const callFill = (heap, at) => steps.to("samosa:fill", { id: `fill-${ord}-${heap}${at && strips.includes(at) ? "-strip" : ""}`, line: Lang.clauses([St.guideLine("samosa:fill"), Lang.say({ fn: "With", x: Lang.phrase([heap]).m })]), role: "howto", glow: helpGlow(at) });
         if (mv.heap) {
           const o = items[mv.heap];
           if (o && o.active) {

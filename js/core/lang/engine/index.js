@@ -85,6 +85,12 @@ export function createEngine({ data, audio = [], voice = null, path = null, phra
     const abs = functions[v.fn];
     if (!abs || !abs.en) return v.fn;
     if (v.fn === "Times" && Number(v.n) === 1) return "once";
+    // decision 42 (1): lines said as one sentence read as one in English too ("Only one tomato, and one potato."): each part's
+    // own mark dropped, the next part lower case, one full stop
+    if (v.fn === "Clauses") {
+      const ps = [].concat(v.parts || []).map((p) => String(enOf(p)).replace(/[.!?]+$/, "").trim()).filter(Boolean);
+      return ps.map((p, i) => (i ? p.charAt(0).toLowerCase() + p.slice(1) : p.charAt(0).toUpperCase() + p.slice(1))).join(", ") + (ps.length ? "." : "");
+    }
     const num = v.number || (v.n != null && Number(v.n) !== 1 ? "pl" : null);
     // the grown-ups' English (the bulb, SH-52): "put it in!", never "put in it !"
     return abs.en

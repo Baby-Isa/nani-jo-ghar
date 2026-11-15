@@ -35,5 +35,9 @@ export function apply(S) {
   g6("n.mishkaki", "Is mishkaki a she-word, or was hakri the skewer's (lakri)? (⚠)", "29:48");
   g6("n.garlic", "Is lasan a he-word? Mum: 'I think on its own would be masculine' (⚠)", "21:33, 22:12");
   g6("n.mustard-seeds", "Is rai a she-word? Mum said hakri rai after hakro rai: 'I've never heard anybody ever saying that' (⚠)", "23:06");
+  // decision 42 (Zafar, 15 Nov): maani's want is khapeti at any count (char maani khapeti, never khapanti: Mum's first take, §1, muke bha
+  // maani khape ti; maani has no plural, §45); the end review's English for sekelo is barbecue (data/lang/seed/cook.json ph-sekelo; its id follows the English: n.barbecue)
+  const d42 = "Zafar 15 Nov, decision 42";
+  for (const id of ["n.chapati", "n.millet-chapati"]) S.patch(id, { agreeNumber: "sg", notes: [`The want agrees with maani as one at any count: char maani khapeti (${d42} (2); ${GN} §1).`] }, { source: d42 });
   S.patch("n.cupboard", { gender: "he", notes: ["A he-word: kabaat jo darwajo, the cupboard's door (Mum, 12 Nov 29:57, §64)."] }, { source: "hand: grammar-notes prose" });
 }

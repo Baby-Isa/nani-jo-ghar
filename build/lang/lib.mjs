@@ -167,7 +167,7 @@ export class Store {
     if (e0.status) this.claim(id, "status", e0.status, source, rank);
     if (statusDefault && !e0.status) e0.status = statusDefault;
     // plain fields: first writer wins for descriptive text; lists are unioned
-    for (const k of ["gloss", "glossPl", "paradigm", "en", "say", "ref", "person", "number", "clusivity", "value", "lemma"]) {
+    for (const k of ["gloss", "glossPl", "paradigm", "en", "say", "ref", "person", "number", "clusivity", "agreeNumber", "value", "lemma"]) {
       if (e0[k] != null && e[k] == null) e[k] = e0[k];
     }
     if ("gender" in e0 && !("gender" in e)) e.gender = e0.gender;

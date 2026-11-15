@@ -1449,14 +1449,14 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         demoing = false;
         stripNote("end");
       }
-      // "Kali ba dungri. Ne hakro tameto.": the number is always said
+      // "Kali ba dungri, ne hakro tameto.": the number is always said; the things to chop are one sentence joined by a comma
+      // (decision 42 (1), Zafar 15 Nov: a sentence doesn't normally begin with ne; the engine's Clauses, Lang.clauses)
       // DAAR-36 (s18-chop): a "no" thing is said last, after the things to chop ("Kali ba dungri. Lasan na.")
-      const orderLine = (tg, first) =>
-        Lang.join(
-          tg
-            .map((id, j) => Lang.line(j === 0 ? (first ? "only" : "now") : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id))))
-            .concat(first ? no.filter((id) => !want[id]).map((id) => Lang.line("no", Lang.phrase([id]))) : [])
-        );
+      const orderLine = (tg, first) => {
+        const one = Lang.clauses(tg.map((id, j) => Lang.line(j === 0 ? (first ? "only" : "now") : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id)))));
+        const nos = first ? no.filter((id) => !want[id]).map((id) => Lang.line("no", Lang.phrase([id]))) : [];
+        return Lang.join((one && one.clauseOf && one.parts ? one.parts : [one]).filter(Boolean).concat(nos));
+      };
       for (const r of rounds) {
         if (r.i === 0) {
           phase = r;

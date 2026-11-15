@@ -251,7 +251,7 @@ test("decision 27: the polite want agrees only with a gender Mum confirmed; else
   const need = (kind, n) => E.say({ fn: "Need", who: "p1", thing: item(kind, n ? { n } : {}) }, { register: "polite" });
   assert.equal(need("cook-daal").text, "Muke daar khapeti.");
   assert.equal(need("ph-samosa", 2).text, "Muke ba samosa khapanta.");
-  for (const [kind, lex] of [["ph-sekelo", "n.sekelo"], ["ph-naan", "n.naan"], ["ph-chaat", "n.chaat"], ["veg-13", "n.garlic"]]) {
+  for (const [kind, lex] of [["ph-sekelo", "n.barbecue"], ["ph-naan", "n.naan"], ["ph-chaat", "n.chaat"], ["veg-13", "n.garlic"]]) {
     const r = need(kind);
     assert.match(r.text, / khape\.$/, `${kind}: ${r.text}`);
     assert.ok(r.ok && r.gaps.some((g) => g.kind === "feature" && g.feature === "gender" && g.lex === lex), `${kind}: the gender is on Mum's list`);

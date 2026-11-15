@@ -737,6 +737,19 @@
     "Bring me these for chai."
    ]
   },
+  "Clauses": {
+   "cat": "Utt",
+   "args": {
+    "parts": {
+     "type": "Utt",
+     "list": true
+    }
+   },
+   "en": "{parts}",
+   "elicit": [
+    "Only two onions, and one tomato."
+   ]
+  },
   "FirstThen": {
    "cat": "Utt",
    "args": {

@@ -481,7 +481,8 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     // (the replay says only what she has called so far: DAAR-34)
     const line = () => {
       const kinds = Object.keys(want).filter((id) => called.has(id));
-      return kinds.length ? Lang.join(kinds.map((id, j) => Lang.line(j === 0 ? "only" : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id))))) : null;
+      // (decision 42 (1): one sentence joined by a comma, as the chop says it)
+      return kinds.length ? Lang.clauses(kinds.map((id, j) => Lang.line(j === 0 ? "only" : Lang.frames().any, Lang.phrase(Lang.countParts(want[id], id))))) : null;
     };
     const opts = { say: Object.keys(want).length ? () => line() && Lang.speak(line()) : null, closed: cardAt === "hidden" };
     M.addCard("daar-chop", data(), opts);

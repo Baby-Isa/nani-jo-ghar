@@ -6,7 +6,8 @@
     "gender": "{kind.gender}",
     "number": "{n.number|$number|sg}",
     "person": "p3",
-    "lex": "{kind.lex}"
+    "lex": "{kind.lex}",
+    "agreeNumber": "{kind.agreeNumber}"
    },
    "slots": [
     {
@@ -235,7 +236,7 @@
      },
      {
       "arg": "verb",
-      "cell": "pres.{thing.gender}.{thing.number}",
+      "cell": "pres.{thing.gender}.{thing.agreeNumber|thing.number}",
       "sure": {
        "of": "thing",
        "else": "informal"
@@ -1120,6 +1121,23 @@
    "mark": ".",
    "status": "draft",
    "src": "grammar-notes §25 B16 (inke chadi de: leave it be); data/cook.json lines.leave names the thing where Mum said inke (it): Claude's extension, to check"
+  },
+  "Clauses": {
+   "slots": [
+    {
+     "arg": "parts",
+     "list": {
+      "between": [
+       {
+        "punct": ","
+       }
+      ]
+     }
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "Zafar 15 Nov, decision 42 (1); grammar-notes §6 (ne before each item of a list), §7 (pela X, ne poi Y: one sentence with a comma)"
   },
   "FirstThen": {
    "slots": [
