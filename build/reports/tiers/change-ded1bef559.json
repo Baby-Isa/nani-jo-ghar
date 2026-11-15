@@ -1,0 +1,178 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "ded1bef559c907172dcab31964bfe16bb41c845c",
+ "dirty": false,
+ "date": "2026-11-15T07:27:08.091Z",
+ "base": "40352897ae055ae88ad1921902492dfbdf7deb3c",
+ "games": [
+  "cook:mishkaki-grill"
+ ],
+ "gamesWhy": "the brief's flows",
+ "rows": [],
+ "levels": {
+  "cook:mishkaki-grill": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [
+  "the brief names no fix-list row: no probes to play"
+ ],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-ded1bef559",
+  "before | after": "build/screenshots/tiers/change-ded1bef559/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-ded1bef559-mishkaki-grill/films/cook-mishkaki-grill@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-ded1bef559/logs"
+ },
+ "failures": [
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-ded1bef559/logs/play.log",
+   "what": "CONTRACT PASSED: 0 breaks over 12 pages; CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-ded1bef559/logs/before.log",
+   "what": "CONTRACT PASSED: 0 breaks over 12 pages; CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 12,
+  "before": 12,
+  "breaksAfter": 0,
+  "breaksBefore": 0
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 2.5 min; build/reports/tiers/push-ded1bef559.md",
+   "tail": [
+    "checks ... pass (2.5 min)",
+    "check-push: PASSED in 2.5 min; build/reports/tiers/push-ded1bef559.md"
+   ],
+   "log": "build/screenshots/tiers/change-ded1bef559/logs/push.log",
+   "minutes": 2.5
+  },
+  {
+   "id": "scope",
+   "what": "the builder's files inside its owns (brief.mjs --audit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/ops/brief.mjs --audit build/tools/ops/specs/s20-b2-sekelo.json 40352897ae055ae88ad1921902492dfbdf7deb3c..HEAD",
+   "status": "pass",
+   "code": 0,
+   "line": "scope: all 1 files are \"s20-b2-sekelo: sekelo joins the kitchen frame\"'s own",
+   "tail": [
+    "scope: all 1 files are \"s20-b2-sekelo: sekelo joins the kitchen frame\"'s own"
+   ],
+   "log": "build/screenshots/tiers/change-ded1bef559/logs/scope.log",
+   "minutes": 0
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:mishkaki-grill (6 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:mishkaki-grill,cook:mishkaki-grill#mistake,cook:mishkaki-grill#hint,cook:mishkaki-grill#returning,cook:mishkaki-grill#takeback,lab:cook/mishkaki-grill' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-ded1bef559",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT PASSED: 0 breaks over 12 pages; CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+   "tail": [
+    "not in the baseline yet: lab:cook/mishkaki-grill@930x430",
+    "5 fixed (run --update-baseline to shrink the baseline)",
+    "judged per game (contract.md lists each check not judged and why): sekelo 105/111",
+    "CONTRACT PASSED: 0 breaks over 12 pages",
+    "CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+    "07:37:42 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-ded1bef559/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-ded1bef559/logs/play.log",
+   "minutes": 8.1
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 40352897ae (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:mishkaki-grill,cook:mishkaki-grill#mistake,cook:mishkaki-grill#hint,cook:mishkaki-grill#returning,cook:mishkaki-grill#takeback,lab:cook/mishkaki-grill' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-40352897ae-ded1bef559",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT PASSED: 0 breaks over 12 pages; CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+   "tail": [
+    "not in the baseline yet: lab:cook/mishkaki-grill@930x430",
+    "5 fixed (run --update-baseline to shrink the baseline)",
+    "judged per game (contract.md lists each check not judged and why): sekelo 105/111",
+    "CONTRACT PASSED: 0 breaks over 12 pages",
+    "CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 0 contract breaks",
+    "07:45:53 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/40352897ae/build/screenshots/sandbox/tiers-before-40352897ae-ded1bef559/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-ded1bef559/logs/before.log",
+   "minutes": 8.2
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/40352897ae/build/screenshots/sandbox/tiers-before-40352897ae-ded1bef559 build/screenshots/sandbox/tiers-change-ded1bef559 build/screenshots/tiers/change-ded1bef559/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 303 before|after pictures, 35 not paired; build/screenshots/tiers/change-ded1bef559/before-after/index.html",
+   "tail": [
+    "pairs: 303 before|after pictures, 35 not paired; build/screenshots/tiers/change-ded1bef559/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-ded1bef559/logs/pairs.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "film:mishkaki-grill",
+   "what": "a first-play film: cook:mishkaki-grill as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:mishkaki-grill",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow cook:mishkaki-grill --sizes 740x320 --no-sheets --run-id tiers-film-ded1bef559-mishkaki-grill",
+   "status": "pass",
+   "code": 0,
+   "line": "07:46:36 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-ded1bef559-mishkaki-grill/summary.md",
+   "tail": [
+    "07:46:36 findings: 9 (text-small 6, covers-play-area 1, tap-small 1, canvas-text-small 1)",
+    "07:46:36 sound: 7 lines heard, 3 with no family clip (the recording gap list), 7 played files that are not an approved family clip",
+    "gap     1x  Muke sekelo khape,  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "gap     1x  Khuda-fis!  [device-voice]",
+    "07:46:36 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-ded1bef559-mishkaki-grill/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-ded1bef559/logs/film_mishkaki-grill.log",
+   "minutes": 0.6
+  }
+ ],
+ "minutes": 19.5,
+ "ok": true
+}
