@@ -247,10 +247,28 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           glow: (on) => {
             if (lit === on || !target.active) return;
             lit = on;
-            S.glow(target, on, { bounce: true, now: true });
-            // (its glow goes with its light too, however the light goes: contract-102)
+            // (contract-102, the s20-b2-sekelo gate, L2 #mistake at 740x320: the kit's light steps back while the grown-ups' "?" pop-up
+            // is open, Onboard's draw, and the bowl glowed on with no light up: the bowl glows only while its light is shown, its box()
+            // drawn, and goes out with it, however the light goes)
             const h = on && stk && stk.lit ? stk.lit() : null;
-            if (h && h.done) h.done.then(() => lit && stkKey === key && ((lit = false), target.active && S.glow(target, false)));
+            let showing = false;
+            const sync = () => {
+              const want = lit && stkKey === key && target.active && !!(h && h.box && h.box());
+              if (want === showing) return;
+              showing = want;
+              if (target.active) S.glow(target, want, want ? { bounce: true, now: true } : undefined);
+            };
+            if (!on) {
+              if (target.glowSync) target.glowSync();
+              target.glowSync = null;
+              if (target.active) S.glow(target, false);
+              return;
+            }
+            // (a timer, not a scene tick: the scene's ticks stop while the grown-ups' pop-up pauses the game, and that is when it goes)
+            const iv = setInterval(sync, 80);
+            target.glowSync = () => clearInterval(iv);
+            sync();
+            if (h && h.done) h.done.then(() => lit && stkKey === key && ((lit = false), target.glowSync && target.glowSync(), (target.glowSync = null), target.active && S.glow(target, false)));
           },
           onHint: () => Cook.onHelp && Cook.onHelp("hint"),
         });
