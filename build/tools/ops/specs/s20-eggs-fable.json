@@ -1,0 +1,40 @@
+{
+ "why": "Sprint 20 step 4, decision 38 (Zafar away overnight; the Fable eye judge stands in for him): eggs L4 beside chai failed at four moments (build/screenshots/sidebyside/eggs-L4-20261115-0556/judge-batch.verdicts.md); the orchestrator agrees on these rows",
+ "cost": "medium: Opus, high effort, one cloud session (about $25-40)",
+ "model": "Opus",
+ "effort": "high",
+ "stop": "when CK-120 to CK-126 are built with their checks passing and eggs' gate at zero, chai unmoved, or at the end of one session: then push your branch and report",
+ "kind": "code",
+ "browser": true,
+ "live": false,
+ "specsByBuilder": false,
+ "stubs": "none",
+ "publish": false,
+ "rows": ["CK-120", "CK-121", "CK-122", "CK-123", "CK-124", "CK-125", "CK-126"],
+ "proof": "node build/tools/tiers/gate.mjs --game eggs and --game chai-tray (contract at zero; chai's boxes identical); the child's pace: COOK_TEST_PORT=8960 node build/sandbox/run.mjs --contract --flow cook:eggs#speed1,cook:eggs@L4#speed1 --sizes 740x320,1280x665 --no-sheets (contract-70, -78, -83, -114 at zero); node build/tools/review/sidebyside.mjs eggs --level 4 --sizes 740x320,1280x665 (the pictures for the judge: never judge them yourself)",
+ "name": "s20-eggs-fable: eggs' faults from the Fable eye judge",
+ "port": 8960,
+ "report": "s20-eggs-fable",
+ "read": [
+  "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
+  "docs/decisions/2026-11-10-overnight.md decisions 34-38",
+  "docs/process/regressions.md rows CK-120 to CK-126",
+  "build/screenshots/sidebyside/eggs-L4-20261115-0556/judge-batch.verdicts.md and its pictures (not in git: regenerate with sidebyside.mjs eggs --level 4 if missing)",
+  "build/reports/s20-b1-eggs.md and build/reports/s20-b1-fixes.md (how eggs joined the frame and its last fixes)"
+ ],
+ "owns": ["js/cook/stations/eggs.js, data/stations/eggs.json, build/reports/s20-eggs-fable.md"],
+ "readOnly": ["chai-tray.js and every other game's file, js/cook/ui.js, js/cook/flow.js, js/shared/** (the kit: a fault there goes in your report, the kit session fixes it), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
+ "flows": ["cook:eggs", "cook:eggs@L2", "cook:eggs@L3", "cook:eggs@L4", "lab:cook/eggs"],
+ "branch": "s20-eggs-fable (yours, on your own cloud machine, from the working branch ccr-7da5e9f0-04g4xm): commit often, push only to it",
+ "tasks": [
+  {"do": "CK-120: a person's card head on one line where it fits, as chai's. Find why 'Muke hakro bafelo indo khapeto.' wraps at L4 1280x665 while the same length fits below it (the drop-down's room on the first row, a width reserved, the one-size headline SH-277). If the cause is in the kit, report it (file:line) and fix only eggs' side.", "accept": "eggs L1-L4, four sizes: a card head on one line whenever its one-line width fits its card"},
+  {"do": "CK-121: at well done every person's row is folded and ticked and in view, as chai's (L4: the first order still open, no tick; at 1280x665 the third off the panel).", "accept": "eggs L1-L4, four sizes, at well done: every row folded, ticked, inside the panel"},
+  {"do": "CK-122: the egg fills its vessel as chai's pots are filled: the fried egg at least half the pan's inner width, the boiled eggs filling the pot (sizes from the vessel, never per size), the egg in hand and on the plate keeping contract-114's 15%.", "accept": "eggs L1-L4, four sizes, mid-cook: the egg's drawn width at least half its vessel's inner width; contract-114 at zero"},
+  {"do": "CK-123: the boiled egg's pot shows water from the moment the egg goes in and its boil while it cooks, drawn in code as chai's pot draws its water and boil (reuse the kit's or chai's drawing where it is shared; never new art).", "accept": "eggs L2-L4 (boiled), four sizes: water in the pot, the boil while cooking, in the pictures"},
+  {"do": "CK-124: each first-time light frames its one thing whole and never takes in a face circle; the pot's light takes in its handle (or is round, following the pot, as chai's).", "accept": "eggs L1-L4, four sizes: contract-92 and -105 at zero; no light box over a face circle"},
+  {"do": "CK-125: Nani's box holds each step's line until that step is done (never drops 'Indo wiji chad!' while the egg still flies).", "accept": "eggs L1-L4: Nani's line changes only when its step is done (the run's timeline)"},
+  {"do": "CK-126: at a child's pace (#speed1): the take-out call as the heat enters its green, not before or late (contract-70); the light within 200 ms of its call (contract-78); no card over Nana's face (contract-83); the brown egg keeps its size from shelf to pan (contract-114).", "accept": "contract-70, -78, -83, -114 at zero on eggs L1 and L4 #speed1 at 740x320 and 1280x665"},
+  {"do": "Prove it: the proof line's runs, one browser job at a time, port 8960. Make the sidebyside pictures for the orchestrator's judge (don't judge them). Delete your own run folders when done.", "accept": "each gate's contract part PASS with minutes; the sidebyside folder named in the report"},
+  {"do": "Standing: commit often with the two trailer lines (Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> and the Claude-Session line), push only to your own branch; never re-freeze anything; never touch a check, a probe, a reference or a row's status; name every change to what a child sees at every level and size.", "accept": "build/reports/s20-eggs-fable.md with a Proof section, under 500 words, pushed on your branch"}
+ ]
+}

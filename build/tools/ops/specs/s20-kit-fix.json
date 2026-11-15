@@ -19,12 +19,12 @@
   "docs/sprints/S20-one-kitchen-frame.md and docs/architecture/kitchen-frame.md (read first)",
   "docs/decisions/2026-11-10-overnight.md decisions 35 and 38",
   "docs/process/regressions.md rows SH-304 (the bubble fix just merged: build/reports/s20-bubble.md), SH-305, SH-306, SH-307",
-  "build/reports/s20-b1-pictures/2-eggs.png (eggs L4 1280x665 light: the order bubble on two lines), 3-maani.png (L4 740x320 mid: the third card cut at the panel's right), 4-daar-chop.png (daar L4 stir: cards cut at the panel's left, 'ae chi', 'ho') (gitignored: regenerate with run.mjs --flow cook:eggs@L4,cook:daar@L4,cook:maani@L4 if missing)",
+  "build/reports/s20-b1-pictures/2-eggs.png (eggs L4 1280x665 light: the order bubble on two lines), 3-maani.png (L4 740x320 mid: the third card cut at the panel's right), 4-daar-chop.png (daar L4 stir: cards cut at the panel's left, 'ae chi', 'ho') (gitignored: regenerate with run.mjs --flow cook:eggs@L4,cook:daar@L4,cook:maani-line@L4 if missing)",
   "js/shared/conversations.js and js/shared/request-popup.js (the bubble and the pop-up card), js/shared/order-card.js and css/shared/order-card.css (the side panel's rows), js/cook/ui.js (popPlace, renderOrder)"
  ],
  "owns": ["js/shared/conversations.js, js/shared/request-popup.js, js/shared/order-card.js, css/shared/order-card.css, css/shared/conversations.css, js/cook/ui.js (renderOrder and the card's landing only; popPlace's measure belongs to the s20-lift session: do not change it), build/reports/s20-kit-fix.md, build/reports/s20-kit-fix-before-after.png"],
  "readOnly": ["every game's station file, js/cook/flow.js (orderLift, serviceView: the s20-lift session's), build/sandbox/**, build/tools/** (run them only), build/frozen/**, docs/process/regressions.md, assets/**"],
- "flows": ["cook:chai-tray@L4", "cook:eggs@L4", "cook:maani@L4", "cook:daar@L4", "cook:corn#mistake"],
+ "flows": ["cook:chai-tray@L4", "cook:eggs@L4", "cook:maani-line@L4", "cook:daar@L4", "cook:corn#mistake"],
  "branch": "s20-kit-fix (yours, on your own cloud machine, from the working branch ccr-7da5e9f0-04g4xm): commit often, push only to it",
  "tasks": [
   {
