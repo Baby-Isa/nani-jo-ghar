@@ -5152,6 +5152,7 @@
       "milk-jug"
      ],
      "files": [
+      "assets/art/chai/elchi.default.r1.webp",
       "assets/cook/items/chai-station/*",
       "assets/cook/items/chai-v2/*",
       "assets/cook/items-s14/chai-pan/pan-*-s14.webp",
@@ -5401,6 +5402,7 @@
      "uses": ["chop", "tadka", "stir"],
      "props": [],
      "files": [
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/chai-station/*",
@@ -5497,6 +5499,7 @@
     "tadka": {
      "props": [],
      "files": [
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
       "assets/cook/items/*-bowl-t.webp",
@@ -5520,6 +5523,7 @@
     "stir": {
      "props": [],
      "files": [
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
       "assets/cook/items/veg-*-whole-t.webp",
       "assets/cook/items/shelf-*-bare-f.webp",
       "assets/cook/items/shelf-veg-1*-jar-f.webp",
@@ -5543,6 +5547,9 @@
      "_about": "s19-serve2 (loadcheck): the order card's flour picture (cook-atto's shelf picture, art.sprites.shelf); the rest of baking's pictures are its own settings' (data/stations/baking.json assets)",
      "props": [],
      "files": [
+      "assets/shared/word-moment/counter-wm-s17.webp",
+      "assets/cook/bg/bg-cook-worktop-t-v1.webp",
+      "assets/shared/juice/td-*.webp",
       "assets/cook/items-s17-stove/f-chapati-flour-atta.webp"
      ]
     },
