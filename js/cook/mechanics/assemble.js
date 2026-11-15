@@ -259,15 +259,18 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
    * each time (a layer said twice never looks twice the same), a soft shadow under its pieces; a topping without one (the base, sev)
    * is its tray bowl's food stamped: the first thing in the bowl covers the floor, anything after it lies in a few loose heaps, so the
    * layer beneath shows between and at the edges. A layer grows in from where its spoonful landed (alpha and size together).
-   * z: the lifted zone (the scene's); returns the bowl's handle.
+   * z: the station's zone, P: the frame's play area (sheet units); returns the bowl's handle.
    */
-  function serveBowl(z, S) {
+  function serveBowl(z, S, P) {
     const B = BOWL;
     const src = pic("ct-serve");
-    const d = z.L(B.d); // the bowl's drawn width, world px
+    // (Sprint 20, s20-b2-chaat: the bowl in shares of the frame's play area P: its width a share of the area's, its middle at its
+    // shares across and down, lowered by its own share of its width; the same place as the old lifted grid where the view ends at the
+    // sheet's foot)
+    const d = z.L(B.d * P.w); // the bowl's drawn width, world px
     const h = src ? (d * src.height) / src.width : d;
-    const x = z.X(B.x);
-    const y = z.Y(B.y);
+    const x = z.X(P.x + B.x * P.w);
+    const y = z.Y(P.y + B.y * P.h) + B.low * d;
     // the food's circle: its centre (the opening's, measured on the picture) and radius, world px
     const fx = x + (B.cx - 0.5) * d;
     const fy = y + (B.cy - 0.5) * h;
@@ -566,14 +569,18 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       );
       scene = S;
 
-      /* ---------- the scene: the kitchen kit's worktop wash and stone tray (kit a, as daar's and maani's) ---------- */
-      Cook.Kit.worktop(S, { top: z.Y(SHELF_TOP) });
-      // (SH-248, CHT-13: the bottom element is the game's settings' band, data/stations/chaat.json "tray": the bowls lie on it from above)
-      St.stoneBand(S, { top: z.Y(SHELF_TOP), depth: D.bg + 1.2, game: "chaat" });
+      /* ---------- the scene: the kitchen frame's floor plan, its worktop wash and stone tray (as daar's and maani's) ---------- */
+      // (Sprint 20, s20-b2-chaat: chaat reads only the frame (js/cook/frame.js, docs/architecture/kitchen-frame.md): its play area and
+      // bottom row; the frame draws the wash and pulls the band by chaat's key. SH-248, CHT-13: the bottom element is the game's
+      // settings' band, data/stations/chaat.json "tray": the bowls lie on it from above)
+      const F = Cook.Frame.area(S, { top: z.Y(SHELF_TOP), draw: true });
+      F.stoneBand(S, { game: "chaat" });
+      const P = F.play;
+      // the bottom row's foot, less its 4 margin: the pills kept above it (the frame's bottom box)
+      const rowFoot = F.bottom.y + F.bottom.h - 4;
 
-      /* ---------- the serving bowl, from above ---------- */
-      // raised into the middle of a taller stage's worktop (the stage fill)
-      const bowl = serveBowl(Cook.liftZone(z), S);
+      /* ---------- the serving bowl, from above: in the middle of the play area that shows (the stage fill) ---------- */
+      const bowl = serveBowl(z, S, P);
       /*
        * SH-258 (the eye judge beside chai, 10 Nov: no face circle by the bowl until well done): the asker's face circle (the kit's badge,
        * Cook.Kit.badge) on the bowl's upper-left rim from the first frame, as chai's Nana is on the glass: the badge size (64 design px,
@@ -582,7 +589,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       const bowlFace = (() => {
         if (!Cook.Kit || !Cook.Kit.badge) return null;
         const b = bowl.box;
-        const perPx = Math.max(0.01, (UI && UI.worldToScreen ? UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x : 1) || 1);
+        const perPx = Math.max(0.01, Cook.Frame.px()); // (the screen's answer: the frame's)
         const fd = Math.min(z.L(90), Math.max(z.L(64), 30 / perPx));
         const a = (225 * Math.PI) / 180; // (the rim's upper left, its middle on the rim's outer edge)
         const rr = b.w / 2;
@@ -599,14 +606,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       // .pillScale the pills' size: at least the floor on screen, never touching)
       const Shelf = global.Shelf;
       const PL = Shelf.PILL;
-      const wts = (() => {
-        try {
-          return UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
-        } catch (e) {
-          return 1;
-        }
-      })();
-      const ppw = wts * z.k; // CSS px per design px of the tray
+      const ppw = Cook.Frame.px() * z.k; // CSS px per design px of the tray (the frame's answer)
       const gap = Shelf.pillGap(ppw);
       // SH-255: the pills at chai's size on screen (the kit's floor, Cook.Kit.fitPills's: the shelf's want and the canvas text floor)
       const want = Math.max(Shelf.pillWant(ppw), Cook.Kit.textFloor ? Cook.Kit.textFloor(S, PL.text) / Math.max(0.01, z.k) : 1);
@@ -624,7 +624,9 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         chips[id].pillId = id;
       });
       const pillRoom = Shelf.pillRoom(ids.map((id) => chips[id].faceW(chips[id].showsWord)), want, gap);
-      const lay = Shelf.slots([ids], { span: TRAY.span, view: TRAY.span, pitch: TRAY.pitch, groupGap: 0, pillRoom });
+      // (the row's span: shares of the play area's width, the settings' tray.span, so the row reads the frame and never the sheet)
+      const span = TRAY.span.map((f) => P.x + f * P.w);
+      const lay = Shelf.slots([ids], { span, view: span, pitch: TRAY.pitch, groupGap: 0, pillRoom });
       fitPills();
       const items = {};
       ids.forEach((id) => (items[id] = slot(id, lay.x[id])));
@@ -641,7 +643,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           narrow.forEach((id) => chips[id].face(false, Infinity));
           fit = Shelf.pillScale(row(), { want, gap, slotW: lay.slotW });
         }
-        const y = Math.min(TRAY.chipY, 896 - (PL.h / 2) * fit.k);
+        const y = Math.min(St.SHELF.chipY, rowFoot - (PL.h / 2) * fit.k); // (the band's pill line, kept above the row's foot)
         ids.forEach((id) => {
           const c = chips[id];
           c.k = fit.k;
@@ -657,8 +659,8 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           .filter((c) => c && c.active)
           .map((c) => {
             const sc = Math.abs(c.scaleX || 1);
-            const a = UI.worldToScreen(c.x - (c.cardW * sc) / 2, c.y - (PL.h * sc) / 2);
-            const b = UI.worldToScreen(c.x + (c.cardW * sc) / 2, c.y + (PL.h * sc) / 2);
+            const a = Cook.Frame.toScreen(c.x - (c.cardW * sc) / 2, c.y - (PL.h * sc) / 2);
+            const b = Cook.Frame.toScreen(c.x + (c.cardW * sc) / 2, c.y + (PL.h * sc) / 2);
             return { id: c.pillId, word: !!c.showsWord, left: a.x, right: b.x, top: a.y, bottom: b.y };
           })
           .sort((p, q) => p.left - q.left);
@@ -669,7 +671,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
         if (S.textures.exists(key)) {
           const src = S.textures.get(key).getSourceImage();
           const foot = chips[id].pillTop - TRAY.gap;
-          const dd = Math.max(40, Math.min(TRAY.bowlD, lay.slotW - 22, foot - SHELF_TOP - TRAY.top));
+          const dd = Math.max(40, Math.min(TRAY.bowlD, lay.slotW - 22, foot - F.bottom.y - TRAY.top));
           const sc = z.L(dd / Math.max(src.width, src.height));
           img = S.track(S.add.image(z.X(x), z.Y(foot - (src.height * dd) / Math.max(src.width, src.height) / 2), key).setScale(sc).setDepth(D.item + 1));
           img.baseScale = sc;
@@ -690,7 +692,7 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
       /* ---------- the word pop (§4): beside the bowl, with the family clip (the shared kit's, Juice.P.pop: piece 12) ---------- */
       const pop = (id, x, y) => {
         // never under 14px as rendered (the kitchen kit's floor: the canvas is shown smaller than its game size on a phone)
-        global.Juice.P.pop(S, { x, y }, Cook.display(id), { k: Math.max(z.k, Cook.Kit.textFloor(S, 36)), depth: D.fx + 3, top: (Cook.view || {}).top || 0 });
+        global.Juice.P.pop(S, { x, y }, Cook.display(id), { k: Math.max(z.k, Cook.Kit.textFloor(S, 36)), depth: D.fx + 3, top: Cook.Frame.view().top || 0 }); // (kept inside what the screen shows: the frame's view)
         if (UI.naniMuted && UI.naniMuted()) return Promise.resolve();
         // a clip that never ends (no audio on this device) never holds the station up
         const talk = Lang.popWord(id);
@@ -915,10 +917,10 @@ import { NjgServe } from "../../shared/serve.js"; // the kitchen kit's serving (
           const b = bowl.box;
           if (bowlFace) bowlFace.setVisible(false);
           const size = z.L(M.reviewD);
-          const V = Cook.view || {};
+          const V = Cook.Frame.view(); // (what the screen shows, down to the bottom row's top: the frame's)
           const q = popAt();
           const avoid = [{ x: q.x - z.L(130), y: q.y - z.L(60), right: q.x + z.L(130), bottom: q.y + z.L(60) }];
-          const at = Cook.Kit.praiseSpot({ x: b.x, y: b.y, w: b.w, h: b.h }, size, { avoid, view: [V.left != null ? V.left : 0, V.top != null ? V.top : 0, V.right != null ? V.right : 1600, z.Y(SHELF_TOP)] });
+          const at = Cook.Kit.praiseSpot({ x: b.x, y: b.y, w: b.w, h: b.h }, size, { avoid, view: [V.left, V.top, V.right, F.bottom.y] });
           const look = await Cook.Kit.review(S, { who, ok, x: at.x, y: at.y, size, k: z.L(1), side: at.side });
           const close = look.close;
           look.close = async () => {
