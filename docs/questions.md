@@ -30,3 +30,5 @@ Only what is still open. An answer goes straight into the doc, row or check it c
 ### Business
 26. **Commercial model:** open (decision 7). The landing page needs it first.
 27. **Landing page:** whose voices and faces appear first. Hannah's granddad can share it across a community with deep Kutch roots; the trailer is planned "Planet Zoo style" (in-game footage, slow camera, gentle music, no narrator), built in code from the game.
+- (15 Nov overnight, Fable on chaat, CHT) Nani's line before the chop says two sentences, 'Kali hakro tameto. Ne hakro bataato.': is the second a whole sentence in Kutchi, or should she say it as one ('Kali hakro tameto ne hakro bataato.')? Mum to confirm; nothing changed.
+- (15 Nov overnight, Fable on sekelo) Sekelo's side panel shows the same whole tomato on every tomato card (one per skewer): keep (each card is that skewer's tomato), or show the skewer pattern on the card?
