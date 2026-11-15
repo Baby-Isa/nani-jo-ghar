@@ -545,8 +545,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           const ch = s.chip;
           if (ch && ch.active) {
             const home = !!(s.img && s.img.active && s.img.visible !== false && !s.hop && !(s.refill > 0));
-            const a = ch.alpha + ((home ? 1 : 0) - ch.alpha) * Math.min(1, dt * 12);
-            ch.setAlpha(Math.abs(a - (home ? 1 : 0)) < 0.02 ? (home ? 1 : 0) : a);
+            // (DAAR-58, the Fable eye judge for Zafar, decision 38: "a greyed pill left with no item while another's pill is gone": a
+            // taken item is shown one way, its pill gone with it at once, never a half-faded grey pill caught between)
+            ch.setAlpha(home ? 1 : 0);
           }
           if (s.refill > 0) {
             s.refill -= dt;
@@ -677,9 +678,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         const open = cells.filter((c) => !underFace(c));
         const pool = open.length ? open : cells;
         const least = Math.min(...pool.map((c) => c.used));
-        // (the bottom strip first, then the top: the nearest free cell in the first strip with one)
+        // (DAAR-54, the Fable eye judge for Zafar, decision 38: "a whole potato on the cut onion halves", "a whole tomato on its own
+        // slices": the hops rise from the band through the board's bottom strip, so the cut pieces rest in the top strip first, then the
+        // bottom: the nearest free cell in the first strip with one)
         const half = cells.length / 2;
-        const strips = [cells.slice(0, half), cells.slice(half)].map((st) => st.filter((c) => pool.includes(c)));
+        const strips = [cells.slice(half), cells.slice(0, half)].map((st) => st.filter((c) => pool.includes(c)));
         for (const st of strips) {
           const free = st.filter((c) => c.used === least);
           if (free.length) return free.sort((p, q) => Math.abs(p.x - x) - Math.abs(q.x - x))[0];
@@ -1299,8 +1302,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           if (!knife.active) return null;
           const kbx = kb();
           const yc = z.Y(SY);
-          const top = Math.min(yc - half() * 0.75, vb ? vb.y : yc, kbx.y);
-          const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom);
+          // DAAR-63 (the Fable eye judge for Zafar, decision 38, chop L1: "a band through the board with its edges outside"; STD-E2-08a):
+          // the box takes in the whole board, top to bottom, as well as the knife and its path
+          const bd0 = band && typeof band.boardAt === "function" ? band.boardAt() : null;
+          const top = Math.min(yc - half() * 0.75, vb ? vb.y : yc, kbx.y, bd0 ? bd0.y : Infinity);
+          const bot = Math.max(yc + half() * 0.75, vb ? vb.bottom : yc, kbx.bottom, bd0 ? bd0.bottom : -Infinity);
           // DAAR-39 (the judge, s19-night-c-ev3: "the lit strip starts about a third of the way along the board ... the left third of the
           // board is dark"): Zafar's strip runs the board's full width: from the board's left edge (the stage's board, band.boardAt) to
           // the knife's start beyond its right edge
