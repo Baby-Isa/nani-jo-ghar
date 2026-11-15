@@ -289,10 +289,21 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       v.on = on;
       v.b.set(on ? "high" : "off");
     };
+    /*
+     * Round 2 (the Fable eye judge for Zafar, 15 Nov: "eggs heaped in one pot with their timer rings crossing"): each egg its own place
+     * and a ring that reads. A vessel lays out as many eggs as the round asks of it (kOf): one in the middle; two side by side; three or
+     * more round a circle, each egg sized so the rings never cross (LAYOUT: the circle's radius and the egg's widest, over the floor's
+     * radius). An egg beyond them (an extra the child puts in) sits in the middle.
+     */
+    const kOf = (fried) => plates.filter((q) => !!q.fried === fried).reduce((a, q) => a + (q.n || 1), 0);
+    const LAYOUT = { 1: [0, 9], 2: [0.52, 0.8], 3: [0.56, 0.74], 4: [0.6, 0.64] };
+    const layoutOf = (fried) => LAYOUT[Math.min(4, Math.max(1, kOf(fried)))];
     const slotAt = (v, i) => {
-      if (i === 0) return { x: v.c.x, y: v.c.y };
-      const a = ((i - 1) / Math.max(1, room - 1)) * Math.PI * 2 - Math.PI / 2;
-      return { x: v.c.x + Math.cos(a) * v.r * 0.62, y: v.c.y + Math.sin(a) * v.r * 0.62 };
+      const k = kOf(v.fried);
+      if (k <= 1 || i >= k) return { x: v.c.x, y: v.c.y };
+      const a = (k === 2 ? Math.PI : -Math.PI / 2) + (i / k) * Math.PI * 2;
+      const d = layoutOf(v.fried)[0] * v.r;
+      return { x: v.c.x + Math.cos(a) * d, y: v.c.y + Math.sin(a) * d };
     };
 
     /* ---------------- the band: the bowl of eggs and the shakers on the stone tray, each with its pill ---------------- */
@@ -457,7 +468,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     /* ---------------- an egg ---------------- */
     const sized = (o, w) => o.setScale(w / Math.max(1, o.width));
     const rawEgg = (x, y) => {
-      const o = sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * (ITEM("egg").inPot || 0.62));
+      const o = sized(T(S.add.image(x, y, tex("egg", "brown")).setDepth(D.fx)), vessels.pot.r * Math.min(ITEM("egg").inPot || 0.62, layoutOf(false)[1]));
       o.potScale = o.scale; // (its size in the pot, kept there and, lifted cooked, within 10%: SH-302's hand size glides back to it)
       return o;
     };
@@ -503,7 +514,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     // (scene.tray.plate_d), the egg filling its plate; in the pan the larger of half the pan's floor (CK-122) and its hand size, so where
     // the plates are big enough it never changes size from pan to plate)
     const FRIED = { hand: 0.75, one: 0.8, two: 0.7 };
-    const friedW = () => Math.max(vessels.pan.r * (ITEM("friedEgg").inPan || 1.02), plateD * FRIED.hand);
+    const friedW = () => Math.min(Math.max(vessels.pan.r * (ITEM("friedEgg").inPan || 1.02), plateD * FRIED.hand), vessels.pan.r * layoutOf(true)[1]);
     const friedEgg = (x, y, w) => sized(T(S.add.image(x, y, tex("friedEgg", "cracked")).setDepth(D.item + 0.4)), w);
     // a boiled egg on a plate: its two halves side by side (E5's boiled-<look>-a, -b), h tall
     // (s19-games-2, E5: the halves show how long it boiled, read from its ring as it was lifted: soft in the green's first half, firm
@@ -637,7 +648,9 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       const r = pl ? (plateD / 2) * 0.96 : 0; // (the rim, inside the picture's edge)
       const f = pl ? pl.face.getBounds() : null;
       // (a pan or the pot: its round body alone, thing.litBounds, CK-63)
-      const b = pl ? { x: Math.min(pl.x - r, f.x), y: Math.min(pl.y - r, f.y), right: Math.max(pl.x + r, f.right), bottom: Math.max(pl.y + r, f.bottom) } : typeof o.litBounds === "function" ? o.litBounds() : o.getBounds();
+      // (round 2, the Fable eye judge for Zafar, 15 Nov: "the plate light has Nana's face circle inside": one target, faces outside: the
+      // plate's round body alone, every face circle kept out below, its own too)
+      const b = pl ? { x: pl.x - r, y: pl.y - r, right: pl.x + r, bottom: pl.y + r } : typeof o.litBounds === "function" ? o.litBounds() : o.getBounds();
       // (contract-82: the box stops short of another plate's face beside it, the light's pad and a gap clear: the pad is page px,
       // Onboard.BOX_PAD, so on a phone it is more world px)
       // CK-124 (the Fable eye judge standing in for Zafar, 15 Nov: "740x320: the plate's box takes in Nana's face"): every face circle
@@ -645,7 +658,7 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
       // into the box trims the one side that loses least of it
       const clear = Math.max(16, (((global.Onboard && global.Onboard.BOX_PAD) || 10) + 6) / perPx);
       // (the tray's light is the tray with its plates and their faces: its own)
-      const own = pl ? [pl.face] : o === tray ? P0.map((q) => q.face) : [];
+      const own = o === tray ? P0.map((q) => q.face) : [];
       // (a vessel's light is its round body, as before: the burner faces by its knobs are left as they were, CK-124 for the plates)
       if (!pl && o !== tray) return b;
       faces()
@@ -1134,6 +1147,49 @@ import "../grill-kit.js"; // (the kit's soft shadow: Cook.GrillKit.shadow)
     vessels.pot.b.set("off", true);
     vessels.pan.b.set("off", true);
     potSteamOn(false);
+
+    /*
+     * Round 2 (the Fable eye judge for Zafar, 15 Nov: "two eggs served as one: the boy's 'ba bafelo inda' tray shows two halves, the same
+     * as Nana's one egg"): each person's plate reaches the table as it was made, maani's way (MAA-26, Cook.Serve.plated): a picture of the
+     * plate with its eggs, each in its own look, size and place, seen from the family's side, with the kit's one soft shadow
+     */
+    const servePlates = () => {
+      if (!Cook.Serve || !Cook.Serve.plated || !S.textures || !S.textures.createCanvas) return;
+      const SW = 512;
+      const TILT = 0.56;
+      const frame = (o, g, x, y, w, h) => g.drawImage(o.frame.source.image, o.frame.cutX, o.frame.cutY, o.frame.cutWidth, o.frame.cutHeight, x, y, w, h);
+      P0.forEach((pl) => {
+        const on = pl.eggs.flatMap((e) => e.look || []).filter((o) => o && o.active);
+        if (!pl.hit.active || !on.length) return;
+        const u = SW / Math.max(1, pl.hit.displayWidth);
+        const H0 = pl.hit.displayHeight * u;
+        const key = `eg-served-${pl.q.who}-${Cook.run}`;
+        if (S.textures.exists(key)) S.textures.remove(key);
+        const cv = S.textures.createCanvas(key, SW, Math.round(H0 * TILT));
+        const g = cv.getContext();
+        g.scale(1, TILT);
+        frame(pl.hit, g, 0, 0, SW, H0);
+        on.forEach((o) => {
+          const w = o.displayWidth * u;
+          const h = o.displayHeight * u;
+          g.save();
+          g.shadowColor = (global.Tokens && global.Tokens.css("contact")) || "black"; // (the kit's contact shadow, --njg-contact)
+          g.shadowOffsetX = 6;
+          g.shadowOffsetY = 8;
+          g.shadowBlur = 8;
+          g.translate((o.x - pl.hit.x) * u + SW / 2, (o.y - pl.hit.y) * u + H0 / 2);
+          frame(o, g, -w * o.originX, -h * o.originY, w, h);
+          g.restore();
+        });
+        cv.refresh();
+        Cook.Serve.plated(KEY, pl.q.who, [{ kind: "plate", key, at: 0.5 }]);
+      });
+    };
+    try {
+      servePlates();
+    } catch (e) {
+      /* the table shows the dish's own picture then */
+    }
 
     /* ---------------- the serve: in this kitchen, chai's way (SH-303) ---------------- */
     await serve(S, ctx, { plates: P0, tray, plateD });
