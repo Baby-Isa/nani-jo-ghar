@@ -26,3 +26,10 @@ Files: eggs.js, eggs.json. No row status changed.
 - **Sidebyside for the judge:** `build/screenshots/sidebyside/eggs-L4-20261115-1031/` (final code; contract-70 x2) (not in git; remake: `sidebyside.mjs eggs --level 4 --sizes 740x320,1280x665`).
 - **Evidence:** no specs for these rows, so no before/after. **checks.mjs:** pass.
 - **check-change:** cut by my timeout (chai frozen: no change); fails outside my files (corn.js scope, SH-277 spec).
+
+## Round 2 (Fable's re-look, decision 38)
+- **(1) built:** each plate reaches the table as made (`Cook.Serve.plated`, maani's way): two boiled eggs show four halves.
+- **(2) built:** a vessel lays out the eggs the round asks: one in the middle, two side by side, three or more round a circle, each sized so rings don't cross. With two or more, a boiled egg is 0.64-0.8 of the floor's radius, under CK-122's half width: readable rings come first.
+- **(3) half:** a plate's light is the plate alone; any face reaching in trims one side. The tray's serve light (the tray with its corner faces) is unchanged.
+- **(4), (5) not built** (out of time): Nani's line against the pepper step; the fried egg's flight and the pepper jar crossing Nana's face at 740.
+- **Proof:** eggs gate `gate-20261115T1218-eggs` PASS, 6.7 min (0 blocking, 22 advisory); tier 0 passed in the push hook. Chai `gate-20261115T1224-chai-tray` FAIL, 27.2 min: contract-112 on chai's aadu light (from 41eae54, as before), and boxes 0/8 identical, every difference in the order card's rows and words (the kit's card work on the working branch; this branch touches no chai or kit file). Pictures: `build/screenshots/sidebyside/eggs-L4-20261115-1252/` (contract-70 x2, -78 x1 listed first).
