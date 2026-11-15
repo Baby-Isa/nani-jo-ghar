@@ -1289,7 +1289,10 @@
     const L = root.Lifecycle;
     const put = (a) => {
       const cards = cardsNow().map(asBox);
-      return L.bubble.place(b, a, layer, cards.length ? { avoid: avoidOf(), clear: cards } : { avoid: avoidOf() });
+      // (SH-306: a bubble said while an order's card is up, even one still popping in or flying, is the order's: it says its
+      // sentence on one line where the room allows, from its first frame)
+      const grow = cards.length > 0 || !!doc.querySelector(".wc14-pop");
+      return L.bubble.place(b, a, layer, cards.length ? { avoid: avoidOf(), clear: cards, grow } : { avoid: avoidOf(), grow });
     };
     const place = () => {
       const a = headOf();
