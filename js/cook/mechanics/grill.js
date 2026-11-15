@@ -1018,8 +1018,34 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       });
       ctx.restore();
     });
+    // SEK-32 (the Fable eye judge for Zafar, 15 Nov: "the served skewers big enough to read on their tray, today about a quarter of its
+    // width"): the picture cut to what is drawn (its shadow's soft edge kept), so the skewers fill the plate's share of the serve's tray
+    let out = c;
+    try {
+      const px = ctx.getImageData(0, 0, W, H).data;
+      let x0 = W, y0 = H, x1 = -1, y1 = -1;
+      for (let y = 0; y < H; y++)
+        for (let x = 0; x < W; x++)
+          if (px[(y * W + x) * 4 + 3] > 8) {
+            if (x < x0) x0 = x;
+            if (x > x1) x1 = x;
+            if (y < y0) y0 = y;
+            if (y > y1) y1 = y;
+          }
+      if (x1 > x0 && y1 > y0) {
+        const m = 6;
+        x0 = Math.max(0, x0 - m);
+        y0 = Math.max(0, y0 - m);
+        x1 = Math.min(W - 1, x1 + m);
+        y1 = Math.min(H - 1, y1 + m);
+        out = cv(x1 - x0 + 1, y1 - y0 + 1);
+        out.getContext("2d").drawImage(c, x0, y0, x1 - x0 + 1, y1 - y0 + 1, 0, 0, x1 - x0 + 1, y1 - y0 + 1);
+      }
+    } catch (e) {
+      out = c;
+    }
     const key = `mk:served-skewers-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
-    S.textures.addCanvas(key, c);
+    S.textures.addCanvas(key, out);
     return key;
   };
 
@@ -1241,8 +1267,30 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         c.setPosition(z.X(x[id]), z.Y(y)).setScale(z.k * fit.k);
         if (c.hit) c.hit(slotW);
       });
+      SK.pillsOneSize(ids.map((id) => out[id].chip), slotW);
     }
     return out;
+  };
+  /*
+   * SEK-32 (the Fable eye judge for Zafar, 15 Nov: "the 'bataato' pill one size with its row"): the kit's pill shrinks a word longer than
+   * its slot's cap on its own (Shelf.P.chip's face), so the longest word read smaller than its row. Every word in the row takes the
+   * smallest of their scales, each pill re-centred on its card (the speaker, the word, its speaker's tap area): one size along the row.
+   */
+  SK.pillsOneSize = function (chips, slotW) {
+    const words = chips.filter((c) => c && c.showsWord && c.parts && c.parts[2] && c.parts[2].setScale);
+    if (words.length < 2) return;
+    const s = Math.min(...words.map((c) => c.parts[2].scaleX || 1));
+    words.forEach((c) => {
+      const [, icon, t] = c.parts;
+      if (Math.abs((t.scaleX || 1) - s) < 0.001) return;
+      const cw0 = 30 + t.displayWidth;
+      t.setScale(s);
+      const d = (cw0 - (30 + t.displayWidth)) / 2;
+      t.x += d;
+      icon.x += d;
+      if (c.spk) c.spk.x += d;
+      if (c.hit) c.hit(slotW);
+    });
   };
   SK.bowl = function (S, z, id, x, level, bw = V2.BOWL_W) {
     const key = `sk2-bowl-${id}`;
@@ -1273,10 +1321,22 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
   /** The word pop (§4: learning happens during the action): `🔊 word` rises by the action, the clip plays. */
   // (the shared kit's word pop, Juice.P.pop: the card, the speaker and the word rise into place, hold and fade; placed over (x, y)
   // inside the view by Juice.popAt; never under 14 px as rendered, Cook.Kit.textFloor). Sekelo says the word (its voice).
-  SK.pop = function (S, z, id, x, y, { speak = true } = {}) {
+  SK.pop = function (S, z, id, x, y, { speak = true, avoid = [] } = {}) {
     const v = Cook.Frame.view(); // (the part of the sheet on screen: the frame's answer)
     const k = Math.max(z.k, Cook.Kit.textFloor(S, 36));
-    const c = global.Juice.P.pop(S, (W, H) => global.Juice.popAt({ x, y }, W, H, { top: v.top || 0 }), Cook.display(id), { k, depth: D.fx + 3, top: v.top || 0 });
+    // SEK-32 (the Fable eye judge for Zafar, 15 Nov: "the floating 'tameto' pill ... touches the board" at 740x320): where it would touch
+    // a thing on the worktop (avoid: world boxes {x, y, right, bottom}, the board and the tray), it goes to that thing's nearer side, on
+    // the same line, in clear marble
+    const place = (W, H) => {
+      const at = global.Juice.popAt({ x, y }, W, H, { top: v.top || 0 });
+      const g = 8;
+      const hit = (cx, cy) => avoid.some((b) => b && cx - W / 2 < b.right + g && cx + W / 2 > b.x - g && cy - H / 2 < b.bottom + g && cy + H / 2 > b.y - g);
+      if (!avoid.length || !hit(at.x, at.y)) return at;
+      const xs = avoid.filter(Boolean).flatMap((b) => [b.right + g + W / 2, b.x - g - W / 2]).sort((a, b) => Math.abs(a - x) - Math.abs(b - x));
+      const q = xs.find((cx) => cx - W / 2 >= v.left && cx + W / 2 <= v.right && !hit(cx, at.y));
+      return q != null ? { x: q, y: at.y } : at;
+    };
+    const c = global.Juice.P.pop(S, place, Cook.display(id), { k, depth: D.fx + 3, top: v.top || 0 });
     if (speak && !(UI.naniMuted && UI.naniMuted())) Lang.popWord(id);
     return c;
   };
@@ -2455,10 +2515,29 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // skewers are served on, as chai's grows beside its glass: the tray's small face circle stands down while the big one is up, the
         // big one just right of the cooked tray, level with it, its praise to the right over the grill (empty by now); the skewers stay
         // in sight (was: over the raw rack)
+        // SEK-32 (the Fable eye judge for Zafar, 15 Nov: "the bottom tray keeps its things at well done as chai's shelf does, today a bare
+        // stone slab"): the bowls the child threaded from come back onto the band as the grill's job ends (SEK-08's one job per phase:
+        // they left with the threading; the grill's job is over now)
+        if (LAY.band)
+          Object.values(quiet).forEach((b) =>
+            [b, b.chip, b.shadow].forEach((o) => {
+              if (!o || !o.active) return;
+              const a = o.alpha;
+              o.setAlpha(0).setVisible(true);
+              S.tweens.add({ targets: o, alpha: a || 1, duration: 300 });
+            })
+          );
         const trayFace = plateArt && plateArt.img && plateArt.img.face;
         // (SEK-27: the cooked tray is on the right now: the big face just left of it, over the empty grill, its praise to the left)
         const onRight = !!LAY.band;
-        const faceAt = plateArt && plateArt.rack ? { x: plateArt.img.x + (onRight ? -1 : 1) * (plateArt.img.displayWidth / 2 + L(FACE_SIZE * 0.42)), y: plateArt.img.y, side: onRight ? "left" : "right", size: FACE_SIZE, hide: trayFace } : null;
+        // SEK-31 (the Fable eye judge for Zafar, decision 38, 15 Nov: the face about twice chai's, "Shabash!" over the coals): on the band
+        // screen, the kit's face size at the tray's edge and its praise card over bare marble (praiseAt); the old place where none fits
+        const spot = onRight && plateArt && plateArt.rack ? praiseAt(S, { tray: plateArt.img, grill: grillImg, skewers: plate.map((p) => p.sprite).filter(Boolean), F: F0 }) : null;
+        const faceAt = spot
+          ? Object.assign(spot, { hide: trayFace })
+          : plateArt && plateArt.rack
+            ? { x: plateArt.img.x + (onRight ? -1 : 1) * (plateArt.img.displayWidth / 2 + L(FACE_SIZE * 0.42)), y: plateArt.img.y, side: onRight ? "left" : "right", size: FACE_SIZE, hide: trayFace }
+            : null;
         await taste(S, z, { who: params.taste.who, ok, plateImg, plateArt, plateD, skewers: (ok ? plate : off).map((p) => p.sprite || null), X, Y, L, PLATE, keepAll: !ok && keep.length > 0, faceAt });
         if (!ok && !params.lastTry && Object.keys(missing).length) return { redo: true, keep: keep.map((p) => p.pieces), missing, plate: plate.map((p) => p.pieces), count: plate.length };
         closeRows();
@@ -2473,6 +2552,56 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       return { plate: plate.map((p) => p.pieces), chips: chipsOn, art, served, count: plate.length };
     },
   });
+
+  /*
+   * SEK-31 (the Fable eye judge standing in for Zafar, decision 38, 15 Nov: "the praise face circle the kit's size (today about twice
+   * chai's) at its owner's tray edge, the 'Shabash!' bubble over bare marble, never over the coals"): well done's place on the band screen.
+   * The face is the kit's one-dish size (NjgServe.layout, chai's single glass), its praise card the kit's (js/shared/serve.js: the line's
+   * width and its pad, LOOK.gap from the face); the places tried in turn: the tray's top right corner, its card to the right (chai's: the
+   * face over the rim's corner); above the tray, card right; under the tray's lower left corner, card left under the grill; under its
+   * lower right, card right. The first whose face and card are inside what the screen shows above the bottom row, the face clear of
+   * the grill and the skewers, the card clear of the grill, the tray and the skewers. -> {x, y, side, size} (world px), or null.
+   */
+  function praiseAt(S, { tray, grill, skewers, F }) {
+    try {
+      const size = (Cook.Kit.serve().layout([{ x: 0, y: 0, w: 1 }])[0] || {}).size || 150;
+      const r = size / 2;
+      const T = global.Tokens;
+      const t = S.add.text(0, 0, Cook.Lang.plain(Cook.Lang.line("welldone")).trim(), { fontFamily: T && T.font ? T.font("word", "Nunito, sans-serif") : "Nunito, sans-serif", fontSize: "34px", fontStyle: "800" });
+      const cw = t.width + 44; // (the kit's LOOK.cardPad)
+      t.destroy();
+      const ch = 58; // (LOOK.cardH)
+      const gap = 18; // (LOOK.gap)
+      const box = (o) => {
+        const b = o.getBounds();
+        return { x: b.x, y: b.y, right: b.right, bottom: b.bottom };
+      };
+      const tb = box(tray);
+      const gb = grill && grill.active ? box(grill) : null;
+      const sk = skewers.filter((o) => o && o.active).map(box);
+      const V = F.view();
+      const vb = { x: V.left + 6, y: V.top + 6, right: V.right - 6, bottom: F.bottom.y - 4 };
+      const hit = (a, b) => b && a.x < b.right && a.right > b.x && a.y < b.bottom && a.bottom > b.y;
+      const inside = (a) => a.x >= vb.x && a.y >= vb.y && a.right <= vb.right && a.bottom <= vb.bottom;
+      const below = Math.max(tb.bottom, ...sk.map((b) => b.bottom), gb ? gb.bottom : -Infinity);
+      const spots = [
+        { x: tb.right - r * 0.3, y: tb.y - r * 0.3, side: "right" },
+        { x: tb.x + r, y: tb.y - r - 6, side: "right" },
+        { x: tb.x + r * 0.2, y: below + r + 6, side: "left" },
+        { x: tb.right - r, y: below + r + 6, side: "right" },
+      ];
+      const ok = (q) => {
+        const face = { x: q.x - r, y: q.y - r, right: q.x + r, bottom: q.y + r };
+        const cx = q.x + (q.side === "right" ? 1 : -1) * (r + gap + cw / 2);
+        const card = { x: cx - cw / 2, y: q.y - ch / 2, right: cx + cw / 2, bottom: q.y + ch / 2 };
+        return inside(face) && inside(card) && !hit(face, gb) && !sk.some((b) => hit(face, b)) && !hit(card, gb) && !hit(card, tb) && !sk.some((b) => hit(card, b));
+      };
+      const q = spots.find(ok);
+      return q ? { x: q.x, y: q.y, side: q.side, size, k: 1 } : null;
+    } catch (e) {
+      return null;
+    }
+  }
 
   /**
    * The review (29 Sept, X10 / Q1: Cook.Kit.review, one way in every station): their big round face

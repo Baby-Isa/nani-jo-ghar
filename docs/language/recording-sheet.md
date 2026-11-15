@@ -37,7 +37,7 @@
 | CK-DAAR · Daar | 16 | 16 | 5 |
 | CK-SAMOSA · Samosa | 9 | 6 | 7 |
 | CK-MAANI · Maani | 10 | 8 | 3 |
-| CK-SEKELO · Sekelo (the grill) | 13 | 10 | 5 |
+| CK-SEKELO · Sekelo (the grill) | 14 | 11 | 5 |
 | CK-ALL · Every kitchen game | 63 | 29 | 98 |
 | CL-VISIT · The doctor at every visit | 161 | 161 | 0 |
 | CL-HEAL · The heal games | 155 | 155 | 0 |
@@ -54,7 +54,7 @@
 | PK-PEOPLE · People and clothes: who did it, dress up | 115 | 115 | 2 |
 | PK-MONSOON · The monsoon | 17 | 17 | 0 |
 | PK-MORE · Other words no game uses yet | 231 | 231 | 3 |
-| **All** | **1713** | **1576** | **466** |
+| **All** | **1714** | **1577** | **466** |
 
 ## Grammar
 
@@ -1092,7 +1092,7 @@ Which maani and how many; knead, roll and the tawa. 10 to do, 3 done.
 
 ### CK-SEKELO · Sekelo (the grill)
 
-The skewers: thread and grill. 13 to do, 5 done.
+The skewers: thread and grill. 14 to do, 5 done.
 
 | ID | Ask Mum (English) | What it is for | Status | Kutchi (Mum's answer) | Source |
 |---|---|---|---|---|---|
@@ -1106,6 +1106,7 @@ The skewers: thread and grill. 13 to do, 5 done.
 | CK-SEKELO-11 | Natural? And how do you say "with" for food: "chai with milk"? (The game says: Muke sekelo khape.) | Our guesses: say "yes", or say it your way | Needs Mum's Kutchi |  | Round 6 R6-145 |
 | CK-SEKELO-12 | the grilled skewers, as you'd order them ("I'd like the …") | Quick re-takes and checks | Needs Mum's Kutchi |  | Round 5 L1 |
 | CK-SEKELO-13 | Put the pieces on the skewer. · Now grill them. | Nani tells the child what to do | Needs Mum's Kutchi |  | Round 5 N21; Round 4 N21 |
+| CK-SEKELO-19 | I want sekelo: one mixed skewer. (And: two meat skewers and one tomato skewer.) The whole order in one sentence, the dish and then its skewers | Cook: sekelo's order, one full sentence (SEK-30: the game says 'Muke sekelo khape, hakri lakri mixed.' and the bubble shows 'hakri lakri mixed.' on its own, a phrase with no verb; the engine has no recorded way to join the skewers to the dish: AndKind/WithFood, LNG-17) | Needs Mum's Kutchi |  | SEK-30, s20-b2-sekelo, 15 Nov |
 | CK-SEKELO-07 | chips (say the word alone, three times) | Cook: chips (2 lines) | To confirm: the engine's spelling is not Mum's (a handout or a guess): Mum to say the word |  | engine gap list (Cook) |
 | CK-SEKELO-08 | sekelo (say the word alone, three times) | Cook: sekelo | To confirm: a draft spelling of Mum's word: Mum to say it again | sekelo | engine gap list (Cook); Round 6 R6-119 |
 | CK-SEKELO-09 | chicken (say the word alone, three times) | Cook: chicken | To confirm: the engine's spelling is not Mum's (a handout or a guess): Mum to say the word |  | engine gap list (Cook) |

@@ -137,9 +137,25 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       const boardW0 = bsrc && bsrc.width ? (BOARD_H * bsrc.height) / bsrc.width : 250; // (turned a quarter: its height is its width)
       const trayW0 = deep ? deep.w : 1.1 * bamboo;
       const R = F.row([{ w: boardW0 / BOARD_H, h: 1 }, { w: trayW0 / BOARD_H, h: (deep ? deep.h : bamboo) / BOARD_H }], { max: BOARD_H });
-      const BOARD = { x: R.boxes[0].cx, y: R.boxes[0].cy, w: boardW0, h: BOARD_H };
+      // SEK-32 (the Fable eye judge for Zafar, 15 Nov: "the steel tray clear of the settings button at 740x320"): where the cog (top right,
+      // over the play area) would reach the tray or its face circle (64-90 design px past its top right corner, SK.trayFace), the pair
+      // moves left by the overlap and 12 more, as far as the play area's left edge allows (as the grill screen's group does, SEK-29)
+      let shiftX = 0;
+      try {
+        const cog = global.document && document.querySelector("#side-cog, [data-njg-zone=cog]");
+        const cr = cog && cog.getBoundingClientRect ? cog.getBoundingClientRect() : null;
+        if (cr && cr.width > 0) {
+          const c = F.toSheet(cr.left, cr.bottom);
+          const fd = Math.min(90, Math.max(64, 30 / Math.max(0.01, F.px)));
+          const right = R.boxes[1].x + R.boxes[1].w + fd * 0.7 + 12;
+          if (right > c.x && R.y < c.y) shiftX = -Math.min(right - c.x, Math.max(0, R.x - F.play.x));
+        }
+      } catch (e) {
+        shiftX = 0;
+      }
+      const BOARD = { x: R.boxes[0].cx + shiftX, y: R.boxes[0].cy, w: boardW0, h: BOARD_H };
       const SKY = BOARD.y + SKY_ON; // the skewer's centre on the board
-      const RACK = { x: R.boxes[1].cx, y: SKY, s: RACK_S }; // v3: the picture's centre
+      const RACK = { x: R.boxes[1].cx + shiftX, y: SKY, s: RACK_S }; // v3: the picture's centre
       const board = S.track(S.add.image(z.X(BOARD.x), z.Y(BOARD.y), walnut ? "sk4-board" : S.textures.exists("sk2-board") ? "sk2-board" : SK.tex(S, "board")).setDepth(D.item - 2));
       if (walnut) board.setAngle(-90).setScale(z.L(BOARD.h) / board.width);
       else if (S.textures.exists("sk2-board")) board.setAngle(90).setDisplaySize(z.L(BOARD.h), z.L(BOARD.w));
@@ -319,7 +335,9 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // the word pops by the skewer as the piece settles, and the family clip plays
         // SEK-10 (S1, decision 41): the count-along (each piece's word said) is level 1 only; later the word just pops
         // (SEK-16, S05-C3: the word rises over the bowl the piece came from, with its own bowl, never loose on the marble)
-        SK.pop(S, z, id, from.x, from.y - (from.displayHeight || z.L(120)) * 0.7, { speak: Cook.roundLevel(ctx) <= 1 });
+        // (SEK-32: clear of the board and the tray, in the marble)
+        const boxOf = (o) => (o && o.active && o.getBounds ? o.getBounds() : null);
+        SK.pop(S, z, id, from.x, from.y - (from.displayHeight || z.L(120)) * 0.7, { speak: Cook.roundLevel(ctx) <= 1, avoid: [boxOf(board), boxOf(rack && rack.img)].filter(Boolean) });
         // SEK-13 (S5): a mixed skewer's piece rows tick as each piece goes on, while it follows a mix still to make
         const pj = pats.findIndex((x, j) => !madePat[j] && x.length === n && sk.ids.every((p, q) => p === x[q]));
         sk.ticked = sk.ticked || [];
