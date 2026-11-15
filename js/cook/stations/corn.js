@@ -890,7 +890,11 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
        * play area above it is the plates'
        */
       const rowD = size + 6 + pillD;
-      const gapD = Math.min(gapRows, pillD);
+      // (between the rows: a lit bowl's hop and its light's pad, Coach.parts and Onboard.LIGHT, so the light round a second-row bowl
+      // stops short of the pill above it (contract-92); a pill's drawn height at most where the light allows it, CK-104)
+      const hop = Math.max(8, Math.min(48, size * ((global.Onboard && global.Onboard.HOP) || 0.1)));
+      const pad = (Math.max(OL.min, Math.min(OL.max, OL.share * size * ppw)) + OL.clear + 2) / ppw;
+      const gapD = Math.max(Math.min(gapRows, pillD), hop + pad);
       const block = rows.length * rowD + (rows.length - 1) * gapD;
       let top = R.y;
       if (two) {
@@ -904,7 +908,12 @@ import "../grill-kit.js"; // the one grill kit (S19 wave B): Cook.GrillKit
       // (the slots a light's margin apart where the tray has the room, never under a pill gap)
       const gapC = Math.max(Sh.pillGap(ppw), Math.min(room(size), (inn.w - 2 * m - sum) / Math.max(1, cols.length - 1)));
       const W = sum + gapC * (cols.length - 1);
-      const y0 = inn.y + (inn.h - block) / 2; // (the first row's bowls' top)
+      let y0 = inn.y + (inn.h - block) / 2; // (the first row's bowls' top)
+      // (contract-112: a bowl's light, round its pill, stays whole on the screen: where the bottom row's light would reach the screen's
+      // foot with the row away from it, the row stands that much higher, as far as the tray's inner edge allows)
+      const lightPad = (OL.max + OL.clear + 4 + 6) / ppw;
+      const below = Vw.bottom - (y0 + block);
+      if (below * ppw > 18 && below < lightPad) y0 -= Math.min(lightPad - below, Math.max(0, y0 - (inn.y + m)));
       let x = inn.x + inn.w / 2 - W / 2;
       const cx = cols.map((w) => {
         const c = x + w / 2;
