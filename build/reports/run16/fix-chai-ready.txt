@@ -1,0 +1,7 @@
+# run16 fix-chai: rows ready for the prove session (each red on the code before its fix, green on 48003532; no game file changed on this branch)
+# Run each under the browser lock on a port of your own, e.g. COOK_TEST_PORT=88xx flock -w 3600 /tmp/njg-browser-all.lock <command>
+MAA-28   node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665   (exit 0 green; red: --root <worktree of 7ff346ad> --paths hint,mistake)
+CHAI-100 node build/tools/review/chaisound.mjs --rows CHAI-100   (exit 0 green; red: --root <worktree of 8aaefe1e> --levels 2,3,4)
+CHAI-113 node build/tools/review/chaisound.mjs --rows CHAI-113   (exit 0 green; red: --root <worktree of a9ccaa4f> --levels 1)
+CHAI-99  node --test build/tools/review/chai-next-pan.test.mjs    (no browser; red: NJG_TEST_ROOT=<worktree of 8aaefe1e>)
+CHAI-107 node build/tools/review/chaisound.mjs --rows CHAI-107 --paths mistake,speed1 --levels 1,2,3,4 --sizes 740x320   (exit 0 green; red: --root <worktree of 16b827eb>)

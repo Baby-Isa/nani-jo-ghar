@@ -24040,33 +24040,46 @@
  },
  "CHAI-99": [
   {
-   "flow": "cook:chai-tray",
+   "flow": "repo",
    "path": "fair",
-   "level": [
-    1,
-    2,
-    3,
-    4
-   ],
+   "level": 1,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:next-pan",
+   "at": "now",
    "after": null,
    "capture": [
-    "shot",
-    "voice"
+    "cmd:node build/tools/review/unit.mjs build/tools/review/chai-next-pan.test.mjs"
    ],
-   "expect": null,
-   "note": "the next pan's light comes at least 0.8 s after the pour ends; the drop, twinkle and sound seen first"
+   "expect": [
+    "pass"
+   ],
+   "note": "the next pan's light waits at least 0.8 s after the first pour's end: the wait the code sets (no sandbox player stays on the poured pan, so the light is never played; red on 8aaefe1e: 300 ms; run16 fix-chai)"
   }
  ],
- "CHAI-100": {
-  "human": "no knob click or flame as a poured pan's fire goes off; the child's own knob turns still click (L1-L4)"
- },
+ "CHAI-100": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/chaisound.mjs --rows CHAI-100"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chai L1-L4 at a child's pace, 740x320 and 1280x665: every knob sound comes within 0.6 s of the child's tap or with a pan boiling over; the fire going off after the last pour is silent (red on 8aaefe1e; run16 fix-chai)"
+  }
+ ],
  "SH-230": [
   {
    "flow": "cook:chai-tray",
@@ -24961,18 +24974,17 @@
    "sizes": [
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node build/tools/review/frozen.mjs --diff --quick"
+    "cmd:node build/tools/review/chaisound.mjs --rows CHAI-107 --paths mistake,speed1 --levels 1,2,3,4 --sizes 740x320"
    ],
    "expect": [
     "pass"
    ],
-   "note": "the last glass's ring heard before the praise (sfx/glass on every page of the frozen diff)",
-   "delay": 0
+   "note": "chai L1-L4 (#mistake and a child's pace) at 740x320: every glass ring asked for (Cook.sfx.glass) is heard, its file within 0.4 s, the last one's too before the praise (red on 16b827eb: L1 and L2 #speed1; run16 fix-chai)"
   }
  ],
  "SAM-31": [
@@ -29061,29 +29073,23 @@
  ],
  "CHAI-113": [
   {
-   "flow": "cook:chai-tray",
+   "flow": "repo",
    "path": "fair",
-   "level": [
-    1,
-    2,
-    3,
-    4
-   ],
+   "level": 1,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "results",
+   "at": "now",
    "after": null,
    "capture": [
-    "voice",
-    "contract:124"
+    "cmd:node build/tools/review/chaisound.mjs --rows CHAI-113"
    ],
-   "expect": null,
-   "note": "every knob turned on from off answers: sfx/knob and sfx/flame in the sound log, even while Nani is still speaking (they play under her, quieter: Sfx {under: true}); contract-124 over the play",
-   "delay": 0
+   "expect": [
+    "pass"
+   ],
+   "note": "chai L1-L4 at a child's pace, 740x320 and 1280x665: every knob turned on from off plays the knob's file within 0.4 s and the flame's within 0.9 s, even while Nani speaks (red on a9ccaa4f at L1; run16 fix-chai)"
   }
  ],
  "SH-274": [
@@ -33912,6 +33918,27 @@
     "pass"
    ],
    "note": "every usable family take (data/family-audio.json, approved game) is linked in the clip index (data/lang/clips.json) or marked unused"
+  }
+ ],
+ "MAA-28": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "maani L4, five plays at 740x320 and 1280x665: no item card's word or picture ever changes, and from the well done each place in a person's row shows the card it showed then or nothing (folded): never another (red on 7ff346ad: #hint 1280x665, #mistake 740x320; run16 fix-chai)"
   }
  ]
 }
