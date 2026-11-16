@@ -1,0 +1,186 @@
+{
+ "run": "po-t1",
+ "created": "2026-11-16T06:57:58.509Z",
+ "commit": "cd420622",
+ "builder": null,
+ "rows": {
+  "SH-281": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-t1/SH-281.png",
+   "sheets": [
+    "build/screenshots/evidence/po-t1/SH-281.png",
+    "build/screenshots/evidence/po-t1/SH-281-2.png",
+    "build/screenshots/evidence/po-t1/SH-281-3.png",
+    "build/screenshots/evidence/po-t1/SH-281-4.png"
+   ],
+   "md": "build/screenshots/evidence/po-t1/SH-281.md",
+   "panels": [
+    "A: cook:eggs L1 1280x665 [p-seen] · crop:#stage at every placed (7)",
+    "B: cook:chop L1 1280x665 [p-seen] · crop:#stage at every placed (4)",
+    "C: cook:daar L1 1280x665 [p-seen] · crop:#stage at every placed (8)"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "54f0de380c41e386dbd4",
+    "dhash": [
+     "01e2eae6e2004060",
+     "01f8cccc7c408080",
+     "01f8cccc7c408080"
+    ]
+   },
+   "probes": 3,
+   "reached": 3,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|crop:#stage",
+     "label": "cook:eggs L1 1280x665 [p-seen] · crop:#stage at every placed (7)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-eggs-1280x665-p-seen/sh-281-p1-l1-1280x665-h1-c1-crop.png",
+       "cap": "1 · 14.0 s",
+       "moment": "cook-done:click",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-eggs-1280x665-p-seen/sh-281-p1-l1-1280x665-h2-c1-crop.png",
+       "cap": "2 · 20.7 s",
+       "moment": "cook-done:tap",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-eggs-1280x665-p-seen/sh-281-p1-l1-1280x665-h3-c1-crop.png",
+       "cap": "3 · 23.6 s",
+       "moment": "cook-done:tap",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-eggs-1280x665-p-seen/sh-281-p1-l1-1280x665-h4-c1-crop.png",
+       "cap": "4 · 26.7 s",
+       "moment": "cook-done:tap",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-eggs-1280x665-p-seen/sh-281-p1-l1-1280x665-h5-c1-crop.png",
+       "cap": "5 · 29.1 s",
+       "moment": "cook-done:tap",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-eggs-1280x665-p-seen/sh-281-p1-l1-1280x665-h6-c1-crop.png",
+       "cap": "6 · 31.7 s",
+       "moment": "cook-done:tap",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-eggs-1280x665-p-seen/sh-281-p1-l1-1280x665-h7-c1-crop.png",
+       "cap": "7 · 38.6 s",
+       "moment": "cook-done:click",
+       "n": 7
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|crop:#stage",
+     "label": "cook:chop L1 1280x665 [p-seen] · crop:#stage at every placed (4)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-chop-1280x665-p-seen/sh-281-p2-l1-1280x665-h1-c1-crop.png",
+       "cap": "1 · 7.3 s",
+       "moment": "cook-done:click",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-chop-1280x665-p-seen/sh-281-p2-l1-1280x665-h2-c1-crop.png",
+       "cap": "2 · 15.3 s",
+       "moment": "cook-done:slice",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-chop-1280x665-p-seen/sh-281-p2-l1-1280x665-h3-c1-crop.png",
+       "cap": "3 · 17.6 s",
+       "moment": "cook-done:slice",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-chop-1280x665-p-seen/sh-281-p2-l1-1280x665-h4-c1-crop.png",
+       "cap": "4 · 26.5 s",
+       "moment": "cook-done:click",
+       "n": 4
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|1280x665|crop:#stage",
+     "label": "cook:daar L1 1280x665 [p-seen] · crop:#stage at every placed (8)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h1-c1-crop.png",
+       "cap": "1 · 13.5 s",
+       "moment": "cook-done:click",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h2-c1-crop.png",
+       "cap": "2 · 20.7 s",
+       "moment": "cook-done:slice",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h3-c1-crop.png",
+       "cap": "3 · 24.6 s",
+       "moment": "cook-done:click",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h4-c1-crop.png",
+       "cap": "4 · 27.6 s",
+       "moment": "cook-done:tap",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h5-c1-crop.png",
+       "cap": "5 · 29.6 s",
+       "moment": "cook-done:tap",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h6-c1-crop.png",
+       "cap": "6 · 31.1 s",
+       "moment": "cook-done:tap",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h7-c1-crop.png",
+       "cap": "7 · 32.9 s",
+       "moment": "cook-done:tap",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-t1/evidence/cook-daar-1280x665-p-seen/sh-281-p3-l1-1280x665-h8-c1-crop.png",
+       "cap": "8 · 34.5 s",
+       "moment": "cook-done:tap",
+       "n": 8
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -383,15 +383,15 @@
   "kind": "Look",
   "game": "chop",
   "status": "open",
-  "probe": "evidence.json SH-281 (eye: eggs every stage-start, chop every placed, 1280x665)",
-  "red": "not shown: the judge (po-b1 batch-02) saw no leftover in these moments; the empty pan after the serve and daar were not shot",
+  "probe": "evidence.json SH-281 (eye: crop of #stage at every placed: eggs L1, chop L1, daar L1, 1280x665)",
+  "red": "needs the judge (build/screenshots/evidence/po-t1/judge/batch-01.md); the first aim missed the empty pan (judge EVIDENCE on po-b1)",
   "green": "",
-  "judge": "EVIDENCE (judge session: the probe misses the moments)",
+  "judge": "needs-eye (po-t1/judge/batch-01.md)",
   "files": [
    "js/cook/mechanics/chop.js",
    "js/cook/stations/eggs.js"
   ],
-  "note": "Sort: eggs' steam leftovers fixed in code; chop's white line and cut halves and daar's torn scrap unchanged in code but not seen here; the probe needs the empty pan after the serve and daar's board."
+  "note": "Re-aimed at every move: eggs' empty pan after the lift shows no grey disc in po-t1 (sort: fixed, eggs.js:56); chop's board and daar's scrap are on the same sheet for the judge."
  },
  {
   "row": "SH-299",

@@ -30514,15 +30514,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:stage-start",
+   "at": "every:placed",
    "after": null,
    "capture": [
-    "shot"
+    "crop:#stage"
    ],
    "expect": null,
-   "max": 4,
+   "max": 8,
    "delay": 600,
-   "note": "eggs L1: nothing left behind after its job: no grey disc in the empty pan, no grey blob above the plate"
+   "note": "eggs L1, after each move (the empty pan once the egg is lifted among them): no grey disc left in the empty pan, no grey blob above the plate"
   },
   {
    "flow": "cook:chop",
@@ -30544,6 +30544,27 @@
    "max": 6,
    "delay": 400,
    "note": "chop L1: no thin white line left on the board, no overlapping cut halves"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 8,
+   "delay": 400,
+   "note": "daar L1: no torn white scrap left on the board or in the pot after its job"
   }
  ],
  "SH-286": [
