@@ -44,12 +44,14 @@ for (const name of BUILDERS) {
   if (only && !only.includes(name)) continue;
   const ref = `origin/run16/${name}`;
   let sha; try { sha = git("rev-parse", ref).trim(); } catch { console.log(`${name}: no branch yet`); continue; }
-  const ready = show(ref, `build/reports/run16/${name}-ready.txt`);
-  if (!ready) { console.log(`${name}: no ready list yet (${sha.slice(0, 7)})`); continue; }
+  const results = (() => { try { return JSON.parse(show(ref, `build/reports/run16/${name}.json`) || "[]"); } catch { return []; } })();
+  // the ready list; until one is posted, the results' built and proven rows (the orchestrator, 06:20)
+  let ready = show(ref, `build/reports/run16/${name}-ready.txt`);
+  if (!ready) ready = results.filter((r) => /^(built|proven)$/.test(r.status) && r.game !== undefined).map((r) => `${r.row} (${r.status}, from the results file)`).join("\n");
+  if (!ready) { console.log(`${name}: nothing built yet (${sha.slice(0, 7)})`); continue; }
   const key = createHash("sha1").update(ready).digest("hex").slice(0, 10);
   const rows = [...new Set(ready.match(/\b[A-Z]{2,5}-\d{1,4}\b/g) || [])];
   const done = state[name] || {};
-  const results = (() => { try { return JSON.parse(show(ref, `build/reports/run16/${name}.json`) || "[]"); } catch { return []; } })();
   // rows already settled on an earlier commit with the same ready list and same results entry are not re-run
   const todo = rows.filter((r) => { const d = done[r]; const res = results.find((x) => x.row === r); return !d || d.readyKey !== key || d.resHash !== hash(res); });
   if (!todo.length) { console.log(`${name}: ready list unchanged (${rows.length} rows, ${sha.slice(0, 7)})`); continue; }
@@ -64,8 +66,8 @@ for (const name of BUILDERS) {
   const spec = readJson(join(wt, "build/sandbox/data/evidence.json"), {});
   // classify each row's check
   const plan = todo.map((row) => {
-    const res = results.find((x) => x.row === row) || {};
-    const probes = String(res.probe || "").split(/[,;\s]+/).filter(Boolean);
+    const res = results.filter((x) => x.row === row && /^(built|proven)$/.test(x.status)).pop() || results.find((x) => x.row === row) || {};
+    const probes = String(res.probe || "").split(/[,;\s()]+/).map((t) => t.replace(/^[^\w.\/-]+|[^\w.\/-]+$/g, "")).filter(Boolean);
     const tests = probes.filter((p) => /\.(m?js|cjs)$/.test(p) && existsSync(join(wt, p)));
     const specRows = probes.filter((p) => !/\.(m?js|cjs)$/.test(p) && spec[p]);
     if (!tests.length && !specRows.length && spec[row]) specRows.push(row);
