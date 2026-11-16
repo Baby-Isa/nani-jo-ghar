@@ -194,7 +194,7 @@ function renamedFrom() {
 }
 export function brokenPaths() {
   const files = [];
-  const walk = (d) => { for (const f of readdirSync(join(ROOT, d), { withFileTypes: true })) { const p = `${d}/${f.name}`; if (f.isDirectory()) { if (f.name !== "archive") walk(p); } else if (p.endsWith(".md")) files.push(p); } };
+  const walk = (d) => { for (const f of readdirSync(join(ROOT, d), { withFileTypes: true })) { const p = `${d}/${f.name}`; if (f.isDirectory()) { if (f.name !== "archive" && f.name !== "next-repo") walk(p); /* next-repo: drafts for the new repository, naming its files */ } else if (p.endsWith(".md")) files.push(p); } };
   walk("docs"); files.push("CLAUDE.md");
   if (existsSync(join(ROOT, ".claude/skills"))) for (const s of readdirSync(join(ROOT, ".claude/skills"))) if (existsSync(join(ROOT, `.claude/skills/${s}/SKILL.md`))) files.push(`.claude/skills/${s}/SKILL.md`);
   const out = new Set();
