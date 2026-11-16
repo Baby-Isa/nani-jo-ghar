@@ -29731,12 +29731,12 @@
    "at": "every:line:cook",
    "after": null,
    "capture": [
-    "crop:#game"
+    "shot"
    ],
    "expect": null,
    "max": 20,
    "delay": 0,
-   "note": "for the eye: the plates' face circles one size (the girl's as Nana's, over each plate's upper corner); the cooking tray's face circles each at its cob's place, not specks on one corner; 'fudino ji chutney' and 'amli ji chutney' pills a pill's gap apart at 740x320"
+   "note": "for the eye, the whole screen (Nani's box and the order cards in the side panel with the play area): Nani's drop-down mid-cook on the grill frames; the plates' face circles one size (the girl's as Nana's, over each plate's upper corner); the cooking tray's face circles each at its cob's place, not specks on one corner; 'fudino ji chutney' and 'amli ji chutney' pills a pill's gap apart at 740x320"
   }
  ],
  "CK-93": [
