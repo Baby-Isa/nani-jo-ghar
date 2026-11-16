@@ -11,7 +11,8 @@
   "files": [
    "labs.html"
   ],
-  "note": "fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today."
+  "note": "fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today.",
+  "hand": true
  },
  {
   "row": "SH-221",
@@ -25,7 +26,8 @@
   "files": [
    "js/shared/buttons.js"
   ],
-  "note": "the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back."
+  "note": "the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back.",
+  "hand": true
  },
  {
   "row": "SH-314",
@@ -41,7 +43,8 @@
    "js/cook/ui.js",
    "js/shared/sfx.js"
   ],
-  "note": "270f39f fixed most of the leak but a timing-dependent one remains: a word card fitted after unmount re-adds its resize listener and section, and an audio context can stay open; needs fix-kit (shared files)."
+  "note": "270f39f fixed most of the leak but a timing-dependent one remains: a word card fitted after unmount re-adds its resize listener and section, and an audio context can stay open; needs fix-kit (shared files).",
+  "hand": true
  },
  {
   "row": "SH-224",
@@ -55,7 +58,8 @@
   "files": [
    "cook.html"
   ],
-  "note": "partly built (chai and the tokens host Lora): cook.html and the other pages still load Google fonts; the row waits for the roll-out."
+  "note": "partly built (chai and the tokens host Lora): cook.html and the other pages still load Google fonts; the row waits for the roll-out.",
+  "hand": true
  },
  {
   "row": "SH-151",
@@ -69,7 +73,8 @@
   "files": [
    "build/lint/static.mjs"
   ],
-  "note": "the kit reads the type roles, but the other modes still name faces and colours outside the tokens; the lint passes only because it warns until the roll-out."
+  "note": "the kit reads the type roles, but the other modes still name faces and colours outside the tokens; the lint passes only because it warns until the roll-out.",
+  "hand": true
  },
  {
   "row": "SH-226",
@@ -83,6 +88,7 @@
   "files": [
    "js/shared/sfx.js"
   ],
-  "note": "chai part built and green; the row is to fix: code for every other game (waits for the frame)."
+  "note": "chai part built and green; the row is to fix: code for every other game (waits for the frame).",
+  "hand": true
  }
 ]
