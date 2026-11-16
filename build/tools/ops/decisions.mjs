@@ -93,7 +93,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     writeFileSync(FIX, r.fix);
     console.log(`decisions: ${r.done.length} rows written from ${name}${r.done.length ? ": " + r.done.join(", ") : ""}`);
   } else {
-    const bad = stale(files, fix);
+    // a decided row closed to the archive (built, retired) still carries its decision: the check reads both files (run 16, 16 Nov)
+    const ARCHIVE = join(ROOT, "docs", "archive", "regressions-done.md");
+    const bad = stale(files, fix + "\n" + (existsSync(ARCHIVE) ? readFileSync(ARCHIVE, "utf8") : ""));
     console.log(bad.length ? `decisions: ${bad.length} answered but not on the fix list\n` + bad.map((b) => "  " + b).join("\n") : `decisions: ${files.length} files, every answer on its rows`);
     process.exit(bad.length ? 1 : 0);
   }

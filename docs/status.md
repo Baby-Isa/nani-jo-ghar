@@ -8,27 +8,32 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
-**Handover branch:** `ccr-2c4bd3c9-mncohx` (`main` is the live site, unchanged since 12 Nov). 15 Nov afternoon: decision 42's four changes proposed to Zafar in this chat, his yes awaited.
+**Handover branch:** `ccr-2c4bd3c9-mncohx`. `main` is the live site, published 16 Nov 05:47 UK (version 20261116T054700Z). Run 16's proven fixes are merged on the branch, not on main.
 
-**Where things stand (15 Nov, 14:20 UK):** Sprint 20 (`docs/sprints/S20-one-kitchen-frame.md`). Overnight run (decision 38) done: `build/reports/overnight-2026-11-15.md` is the morning report. All ten stove-top games are on the kitchen frame and merged (chai, eggs, maani, corn, daar+chop, baking, sekelo, roll-tawa, samosa, chaat). The shared kit fixes (SH-304 to SH-311, CK-97) are in every game. Chai's box reference re-taken on the final merge (chai-ref-1300); chai's final gate (13:03) PASS, boxes identical. Open: sekelo's rows don't fold at well done (SH-308 misses it). Decisions 35-41 in `docs/decisions/2026-11-10-overnight.md` (39-41: calls taken while Zafar was away). His tokens reset Monday 17 Nov 10:00 UK; deadline (decision 28) every stove-top game by midnight Sunday 16 Nov UK.
-
-**Progress (% per game, frame 25 / rows 20 / gate 25 / merged 15 / his yes 15):** chai 85, eggs 85, maani 85, corn 85, daar+chop 85, baking 80, sekelo 80, chaat 70, roll-tawa 65, samosa 65. No game has the eye judge's PASS yet; every re-look found fewer faults.
-
-**How the night ran (reuse it):** each game's own cloud session (Opus, high) builds a round and pushes its branch with its own gate and chai's; the orchestrator merges, gates here, makes `sidebyside.mjs <game> --level <n> --sizes 740x320,1280x665` and hands `judge-batch.md` to the `judge` agent on Fable; agreed flaws become rows and the next round. Roll-tawa has no sidebyside (a hand-made batch from `run.mjs` frames). The strips' light "blink" is the probe hiding the light (a tool artefact). Sessions (all idle, reusable by send_message): kit `session_014xb3kPXU1ZwuZKQdeJiGXz`, lift `session_014xb3kSmcu5drivCH858Go9`, eggs `session_014xb3kNpUBrDQcZjCABMFwd`, maani `session_014xb3kNryFaA5kFoV7DbcqP`, corn `session_014xb3kREaZNp7f4QahD1N9K`, daar+chop `session_014xb3kT3gHJyDcvMb7d7Xap`, baking `session_014xb3kQz9uEMbLVbTEPKQfq`, sekelo `session_014xb3kQWcgyXw4vkREFrZhD`, roll-tawa `session_014xb3kQK6evGY6nK97efARm`, samosa `session_014xb3kSejQkoZB4C2g2WHxe`, chaat `session_014xb3kT51A6pmG6FLu3TcY1`.
-
-**Zafar's answers (decision 42, 15 Nov ~14:15), to action first:** chaat's chop line one sentence with a comma ('Kali hakro tameto, ne hakro bataato.': the engine's join, no new Kutchi); maani's verb 'khapeti' in the bubble too (the engine's choice for this order); samosa's step line 'Bhar, chundo sathe' from the language engine (bhar, chundo and the sathe frame are recorded: build it there, never by hand; if it can't, log the gap on the recording sheet); sekelo's English 'barbecue' in the end review; keep sekelo's tomato cards, the read-along bubble and the pastry's one-light shadow; the art waits until he has played.
+**Where things stand (16 Nov, 09:30 UK):** Sprint 20. Run 16 (decisions 44-45: ten cloud sessions, 05:20-09:00) is done. Its report is `build/reports/run16-2026-11-16.md`; read that first.
+- **The fix list:** 96 rows closed (91 proven red-then-green or by the Fable judge's pass; 5 overridden by his later decisions, quoted). Every live row now carries a kind (Logic, Look, Teaching, Kutchi, Art, Check, HisCall or Parked). Fable's look at the ten published games became rows LOOK-01 to LOOK-13.
+- **The look:** every game is "SHIP? no" beside chai. Three flaws run across them: the first-time light blinks, there is no thank-you at the serve, and stone trays sit empty.
+- **For next time:** 72 rows have checks written but never played (out of browser time). Their specs are in `build/sandbox/data/evidence.json`; the results are in `build/reports/run16/`.
 
 **Next, in order:**
-1. Decision 42's four changes (chaat comma, maani khapeti, samosa's line, sekelo's 'barbecue'): one session, Opus high, about $10-20; the language checks and each game's gate.
-2. Fable's last look at the games merged after it last judged them (all ten); flaws to each game's session. Open: sekelo's rows don't fold at well done (SH-308 misses it); Nani's face in chop alone (ui.js:1648 stripMode, the kit); Nana's line during chaat's chop (a ui.js keepOrder option).
-3. Zafar plays the games and gives feedback (decision 42's 7); then a full gate on all ten here, step 6 (guard rails), step 7 (the exit test), step 8 (`/review`, publish).
+1. Zafar answers the report's 11 questions (section 5).
+2. Zafar plays the published game and the branch (labs.html).
+3. One fix round on LOOK-01 to LOOK-13 and the 58 rows that are still true, Cook first.
+4. Play the 72 unplayed checks (`evidence.mjs --run --rows ...`).
+5. Then the sprint's steps 6-8 (guard rails, exit test, `/review`, publish).
 
-**Rules learnt:** never edit code or push while a gate plays; one browser job at a time; a Monitor watch dies at 30 min (use background Bash for long chains); merge conflicts on overnight-log.md and kitchen-frame.md's counts line: keep both.
+**Rules learnt:**
+- Never edit code or push while a gate plays.
+- One browser job at a time per machine.
+- Keep a tracked background job running, or this machine is reclaimed when idle.
+- Check `df /` before long runs: old publish runs filled the disk (15 GB) and crashed the browser.
+- Don't wrap check-change or frozen.mjs in flock; they take the lock themselves.
+- Merge `build/sandbox/data/evidence.json` key by key (scratch tool in this chat: merge-ev.py).
 
 **Starting prompt for a new chat:**
 > First `git fetch origin ccr-2c4bd3c9-mncohx` and work from that branch (it holds the newest handover; `main` is the live site).
-> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `docs/sprints/S20-one-kitchen-frame.md`; nothing else until a task needs it.
-> Carry on Sprint 20 from "Next, in order": decision 42's four changes first, then Fable's last look at all ten games. Tell me before launching anything new.
+> Read `CLAUDE.md`, then `docs/status.md` "Next chat" only, then `build/reports/run16-2026-11-16.md`; nothing else until a task needs it.
+> Take Zafar's answers to the run 16 questions, then plan the fix round on the LOOK rows and the open Cook rows. Tell me before launching anything new.
 
 ## The fix list
 
@@ -36,14 +41,14 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 
 | Area | Open or reopened | Built, not re-played by Zafar |
 |---|---|---|
-| Shared components (end screen, cards, onboarding, buttons, layout) | 163 | 98 |
-| Cook: pantry | 9 | 11 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 26 / 12 / 31 / 7 / 21 / 7 / 66 | 30 / 14 / 29 / 12 / 24 / 17 / 45 |
+| Shared components (end screen, cards, onboarding, buttons, layout) | 146 | 98 |
+| Cook: pantry | 8 | 11 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 19 / 8 / 15 / 7 / 15 / 3 / 43 | 30 / 14 / 29 / 12 / 24 / 17 / 45 |
 | Clinic | 38 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |
 | Art | 24 | 10 |
-| Language and audio | 13 | 7 |
+| Language and audio | 12 | 7 |
 
 ---
 
