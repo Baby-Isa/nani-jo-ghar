@@ -310,14 +310,14 @@
   "kind": "Look",
   "game": "samosa",
   "status": "open",
-  "probe": "evidence.json SH-279 (eye: shots at served, samosa L1 two sizes, maani L1 and chaat L1 at 740x320)",
-  "red": "needs the judge (po-e1/judge/batch-01.md)",
+  "probe": "evidence.json SH-279 (eye: crop of #stage at every line:cook, samosa L1 two sizes, maani L1 and chaat L1 at 740x320; the 'Shabash!' panels are the well done)",
+  "red": "needs the judge (build/screenshots/evidence/po-q1/judge/batch-01.md); the first two aims (served, then every bubble) missed the well done (the judge's EVIDENCE on po-e1)",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "needs-eye (po-q1/judge/batch-01.md)",
   "files": [
    "js/cook/kitchen-kit.js"
   ],
-  "note": "No SH-279 change in code (sort); the Shabash bubble's place at well done is judged on the panels."
+  "note": "No SH-279 change in code (sort). At well done the 'Shabash!' is a chip beside the praise face on the play area (seen in chop, po-p1 panel C), which these panels catch as Nani says it."
  },
  {
   "row": "SH-284",
