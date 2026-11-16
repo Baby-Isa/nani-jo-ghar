@@ -9,6 +9,7 @@ Branch `run16/fix-stove`, cut from 48003532. Results: `build/reports/run16/fix-s
 - **A tool fault makes the stove games' contract runs look worse than they are.** Evidence pages played with profile "seen" reach the contracts with no profile (`build/sandbox/run.mjs:275`), so the new-player checks judge a returning player as new. Most contract-98 breaks and some contract-78 breaks on seen pages are this. It's a one-line fix for the orchestrator; no builder owns build/sandbox.
 - **Eggs' served plate shows one egg for a two-egg order** (L2-L4, the serving kitchen). This is new and needs fix-kit (`js/cook/serve.js:156`), probably with art too. Not fixed.
 - **check-change's chai frozen step did not pass: it ran out of time.** It played 19 flows, saw 24 pages differ, and hit its 35-minute limit while replaying them to confirm, with my proof runs sharing the browser. So no chai difference is confirmed. My diff from base is only `js/cook/stations/baking.js`, which chai never runs. Prove should run `frozen.mjs --diff` alone, with nothing else on the browser.
+- **check-change exited 1 on two steps, neither baking's.** One is the frozen timeout above. The other is Cook's mount test, which plays chai only and fails the same way on base: run by hand on 48003532 and on this branch, both give 2 failures (a window resize listener and a `<body>` node left behind). On check-change's own run it failed once, with an audio context left open. The leak bot passed.
 - **contract-70 still breaks in eggs L2-L4 on base** (no take-out call by 0.90 of the ring). That's CK-126, which is built and so belongs to probes-built. Left alone.
 
 ## Proven (a check red before the fix, green after)
@@ -41,7 +42,7 @@ All three were fixed before the run (49369e3 and 5b5d0b5; 677d1a0). Their status
 - **CK-137 stays open** because of the judge's FAIL: "hakro makai" wraps at 740x320.
   - The cause is in the shared word card (`css/shared/word-card.css:115`): `.wc14-k` uses `text-wrap: balance` and never shrinks before it wraps.
   - The fix reaches chai's frozen item cards, so it's Zafar's call. The orchestrator agreed: no kit change in this run.
-  - Its red check is CK-137 p4, `lines:#side .oc-it14 .wc14-k<=1` on corn L1-L4 at 740x320 (run `stove-ck137-wrap-base`).
+  - Its red check is CK-137 p4, `lines:#side .oc-it14 .wc14-k<=1` on corn L1-L4 at 740x320 (run `stove-ck137-wrap-base`: red at L1-L4).
 - **CK-81, CK-102, CK-103:** eye sheets only. Their code says built (sekelo's well done, baking's shelf, corn's dressing picture).
 - **Judge batches** (committed with their sheets):
   - CK-137 and CK-132: `build/screenshots/evidence/stove-corn-eggs-final/judge/batch-01.md` and `batch-02.md`.
