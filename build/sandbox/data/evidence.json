@@ -29863,15 +29863,14 @@
    "at": "every:life:popup-open",
    "after": null,
    "capture": [
-    "dom:#guide .ng-say",
     "crop:#guide"
    ],
    "expect": [
-    "!textMatches:[A-Za-z]"
+    "count:#guide .ng-say=0"
    ],
    "max": 4,
    "delay": 300,
-   "note": "chai L1: while the order is given (each pop-up card of the order) Nani's box says nothing (no guide.default 'e chai erte rand'); her face stays"
+   "note": "chai L1: while the order is given (each pop-up card of the order) Nani's box shows no line (no guide.default 'e chai erte rand'): her text area empty, her face stays"
   },
   {
    "flow": "cook:eggs",
@@ -29887,15 +29886,14 @@
    "at": "every:life:popup-open",
    "after": null,
    "capture": [
-    "dom:#guide .ng-say",
     "crop:#guide"
    ],
    "expect": [
-    "!textMatches:[A-Za-z]"
+    "count:#guide .ng-say=0"
    ],
    "max": 4,
    "delay": 300,
-   "note": "eggs L1: the same, no words in Nani's box during the order"
+   "note": "eggs L1: the same, no line in Nani's box during the order"
   }
  ],
  "CK-115": [
@@ -30615,6 +30613,53 @@
    "max": 4,
    "delay": 150,
    "note": "eggs: the egg picked up from the box is bigger in the hand (beside the pan)"
+  }
+ ],
+ "SH-224": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_fonts_local.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no shipped page, script or style loads a font from Google (fonts.googleapis.com / fonts.gstatic.com): the faces come from assets/fonts/ through the tokens, chai first then every game"
+  }
+ ],
+ "SH-229": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "shop",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noFinding:covered",
+    "noFinding:text-clipped"
+   ],
+   "delay": 500,
+   "note": "Nani's shop: the tick button never over the lower row's cards or their prices (1280x665), never over the '?' button, and the '?' not clipped at the panel's right edge (740x320)"
   }
  ]
 }
