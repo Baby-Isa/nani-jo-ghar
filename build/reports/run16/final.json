@@ -1,0 +1,3326 @@
+{
+ "SH-232": {
+  "state": "built",
+  "why": "fix-kit: built, not yet proven: Built 7 Nov (OC.followFold) with its own contract check; the row's evidence spec is still a human one.",
+  "src": "fix-kit",
+  "kind": "Look"
+ },
+ "SH-233": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "SH-234": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-91": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-91",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CHAI-92": {
+  "state": "cannot-probe",
+  "why": "probes-built: only Zafar can judge it: Zafar plays every sound and sees every visual on the juice lab page, alone and over a chai screenshot",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "CHAI-93": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-93",
+  "src": "probes-built",
+  "kind": "Art"
+ },
+ "SH-222": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-222",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-227": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-227; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: co",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-223": {
+  "state": "cannot-probe",
+  "why": "probes-built: only Zafar can judge it: Zafar plays chai in Lora and Fraunces, then the roll-out before/after per game: the type feels elegant, not too bold",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-224": {
+  "state": "open",
+  "why": "probes-open: still true: Still true: nine pages and a script still load Google Fonts; the faces should come only from assets/fonts/ through the tokens.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-226": {
+  "state": "open",
+  "why": "probes-open: still true: Not probed: chai's recorded picks are in; each other game needs its own researched picks first (the per-game rule, build/test_shared_sfx_files.mjs, is added with them), so there is nothing to che",
+  "src": "probes-open",
+  "kind": "Logic"
+ },
+ "SH-213": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-213",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "SH-214": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-214",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-216": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-216",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "SH-215": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-215",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-86": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-86",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-87": {
+  "state": "cannot-probe",
+  "why": "probes-built: only Zafar can judge it: Zafar hears the pour into a glass (pour A) on the lab page and in chai L1-L4: does it sound like tea poured into a glass",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CHAI-90": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-90",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-219": {
+  "state": "cannot-probe",
+  "why": "probes-built: pillcheck.mjs exits 1 on head while every size it prints passes (740x320 L1 5 pills 12.1 px; L2-L3 0 pills, the ladder hides them for a seen player): a tool fault for its owner",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-220": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-217": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-217",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-88": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-88",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-218": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-218",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-89": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, L1 1280x665: the hob-and-tray group sits mid-worktop, about 115 px left of the handle and 110 px right of the tray, about 38 px above it once the pill's room is taken off and 36 px below it to the ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SH-210": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-211": {
+  "state": "cannot-probe",
+  "why": "probes-open: Needs a per-frame log of the row's scroll through the whole order (his case: the item just before a half or whole card).",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-212": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "CHAI-84": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-84",
+  "src": "probes-built",
+  "kind": "Art"
+ },
+ "CHAI-85": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SH-209": {
+  "state": "cannot-probe",
+  "why": "probes-built: the row is the box height with and without its arrow; contract-101 does not measure that (judge audit FAIL) and no driver opens and shuts the arrow",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-83": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SH-201": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SH-202": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-203": {
+  "state": "open",
+  "why": "probes-built: still true: built per its status, but the check fails on today's head: machine: SH-203-p1-L4-1280x665: pass: 1 contract breaks",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-204": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-205": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-206": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-207": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-208": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-189": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-70": {
+  "state": "overridden",
+  "why": "The orders use the formal, agreeing endings for now, not the contraction khape: khapeti (she, one), khapanti (she, more than one), khapeto (he, one), khapanta (he, more than one) ... (his 12 Nov sitting: \"so they learn p",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "SH-12": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-13": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-171": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-171",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-172": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-173": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-175": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "SH-176": {
+  "state": "overridden",
+  "why": "Zafar, 14 Nov: yes to the one-size, slightly smaller order sentence (SH-289). (docs/decisions/2026-11-10-overnight.md #27)",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-177": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-177; red not replayed; the fix is in history (lat; green 99e87f8d8 run r16pb-last: machine: pass ",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-178": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-180": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-180",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-182": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-182",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "SH-239": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SH-241": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-242": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-230": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-37": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-90": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "SH-91": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-106": {
+  "state": "overridden",
+  "why": "go to the next scene buttons as well I think we should just cut them all out ... the next button is just horrible (docs/feedback/kitchen-play-2026-11-08.md P11)",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-53": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-60": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): panel A's strip starts at rec:view-pantry (65.0 s), 11 s after the help it is meant to catch (voice timeline: step-open 44.44, help ",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "SH-228": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-228",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "SH-117": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-138": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "SH-139": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-139",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-140": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-140",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-141": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-142": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-142",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-143": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-143",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-144": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-144",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-151": {
+  "state": "open",
+  "why": "probes-built: still true: the kit reads the type roles, but the other modes still name faces and colours outside the tokens; the lint passes only because it warns until the roll-out.",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "SH-152": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-152",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-154": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-154",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-155": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-155; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "SH-156": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-156",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-157": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-157",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-158": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-159": {
+  "state": "proven",
+  "why": "judge PASS (Fable): C, the seeded three-right player's shelf pills are the speaker only (paani, dudh, chai, khun; aadu, a word not yet earned, keeps its Kutchi), and D after one miss on paani shows \"paani\" written again ",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "SH-160": {
+  "state": "proven",
+  "why": "judge PASS (Fable): node build/test_shared_rules.mjs, exit 0 with test 8 ok (\"SH-160 level-up: 3 rounds in a row with the hint at most once; a worse round restarts; never down; a grown-up's pick never counts\") and tests ",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "SH-147": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-147",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-148": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-148",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-149": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-149",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-150": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-150",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-108": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-108",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-236": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-236",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "SH-237": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-238": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SH-240": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-243": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-119": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-119",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-244": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SH-245": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-245",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-246": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-247": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-270": {
+  "state": "open",
+  "why": "probes-open: still true: Still true in chop: while Nani speaks her box is text only (UI.guideStrip folds it to its tools, css guide.css:88 hides the face); the kit fix is fix-kit's (same cause as DAAR-57).",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-271": {
+  "state": "open",
+  "why": "probes-open: still true: No fix in code and no blink on head; docs/status.md (15 Nov) says the strips' blink was the probe hiding the light (a tool artefact), so this may not be real: the strips in po-j1/SH-271.png are f",
+  "src": "probes-open",
+  "kind": "Logic"
+ },
+ "SH-272": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-273": {
+  "state": "proven",
+  "why": "probes-open: check evidence.json SH-273 (contract-128 over baking, chop, chaat L1); red 009c5dd3^ (runtime as before the fix, to; green 009c5dd3, 3487176e (13 Nov) and today's ",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-274": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-275": {
+  "state": "open",
+  "why": "probes-open: still true: Eggs now ring the pan itself; chop, chaat and daar still use a stopwatch disc beside the board.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-276": {
+  "state": "open",
+  "why": "probes-open: still true: Still true for chaat and daar (chop alone now shows 'Chop these' in grey italic, as the row wants); related to CHT-21/DAAR-57's keepOrder fix (fix-kit).",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-277": {
+  "state": "open",
+  "why": "probes-open: still true: Sort calls it built (cfc2469 made the headline one size), but the row also asks for one line: eggs' headline still wraps to two lines at 740x320.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-278": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-279": {
+  "state": "open",
+  "why": "probes-open: still true: Still true in samosa (and checked in maani and chaat on the same sheet); the earlier aims at served and every bubble missed the well done.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-280": {
+  "state": "open",
+  "why": "probes-open: still true: Still true in baking (sort's 62646b0 fix is not seen at stage-start); chaat and samosa not yet shot.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-281": {
+  "state": "open",
+  "why": "probes-open: still true: No leftover seen on head: eggs' pan after the serve is clean (po-t1 frames 5-6), and chop's board and daar show none in the frames caught. Still open until a sheet catches each job's end (chop's ",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-282": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-283": {
+  "state": "open",
+  "why": "probes-open: still true: Still true in chaat (eggs matches in this round, fixed by eggs.js:210).",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-284": {
+  "state": "open",
+  "why": "probes-open: still true: Still true; samosa's own SAM-47 is the same fault, with fix-samosa (a kit fix in onboard.js or guide.css would close both).",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-285": {
+  "state": "open",
+  "why": "probes-built: still true: Nani own order does flash its first card, but for about 100 ms, not as it is said: the SH-267 flash fault (fix-kit owns it)",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-286": {
+  "state": "built",
+  "why": "probes-open: built, not yet proven: Sort: built (the dish through popCard, the item cards' pop-up); the eye sees it matching in place, size and look.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-287": {
+  "state": "open",
+  "why": "probes-open: still true: Sort calls it built (orderLift, capped by decision 35 so the card's bottom-left place stays clear of heads), but the judge sees no lift; chai is frozen, so the next step is a question for Zafar: ",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-288": {
+  "state": "open",
+  "why": "probes-open: still true: The speakers, arrow and dots got 48 px hit areas (db494cae), but the order card's tappable word is still far under 48 px; chai is frozen, so a fix there is a question for Zafar.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-289": {
+  "state": "built",
+  "why": "probes-open: built, not yet proven: Fixed in code by db494cae (13 Nov); the check needs a 'want' that seeds a ten-word L4 round before it can show red.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-290": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-290; red not replayed; the fix is in history (lat; green be49c8a4c run r16pb-fix: machine: pass (",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "SH-291": {
+  "state": "built",
+  "why": "probes-open: built, not yet proven: Fixed in code by 827f8aa1 (a served card folds once, the panel keeps its scroll); the probe needs a per-fold count (life:card-fold is logged once per page) to show red, so it is not pr",
+  "src": "probes-open",
+  "kind": "Logic"
+ },
+ "SH-292": {
+  "state": "proven",
+  "why": "fix-kit: check node --test build/sandbox/run16-fixkit.test.mjs (SH-292: Onboard.litBox centred within 2 px with a neighbour each side; light.draw asks for it); red 49f28f8a^: NJG_TREE=<worktree of 49f28f8; green 49f28f8a",
+  "src": "fix-kit",
+  "kind": "Look"
+ },
+ "SH-293": {
+  "state": "question",
+  "why": "+10% is built (shelf.js:95/:204, station-lib.js:274); the rest is his call: does Zafar want a taller bottom row (bigger shelf items, smaller hob)?",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "SH-294": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-295": {
+  "state": "built",
+  "why": "probes-open: built, not yet proven: Sort: built (text-wrap: wrap, was balance); the served cards no longer wrap early at three sizes.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-296": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-297": {
+  "state": "question",
+  "why": "Zafar's call: does he re-haul the end screen to item cards (then the speaker spread is moot) or keep the tiles and fix their speakers? Note SH-309 since put the badge on each card's corner.",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "SH-298": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-299": {
+  "state": "question",
+  "why": "fix-kit: Cause read in code: settleRow's redraw branch prefers the card's stale fold.want14 (an earlier tick's glide) over the row's live glide (glideWant), pulling the row back while an item card flies in. The fix (live",
+  "src": "fix-kit",
+  "kind": "Look"
+ },
+ "SH-300": {
+  "state": "proven",
+  "why": "probes-open: check evidence.json SH-300 (count:#guide .ng-say=0 at every life:popup-open; chai L1 and eggs L1, 740x320); red today's head with 42de17a1 reverted (dat; green 42de17a1 (SH-300: guide.default removed)",
+  "src": "probes-open",
+  "kind": "Logic"
+ },
+ "SH-301": {
+  "state": "proven",
+  "why": "probes-open: check evidence.json SH-301 (centredOn:#guide .ng-face .njg-face,#mission .oc-card .oc-face .njg-face at order-card-in-sidebar, chai L1 at 740x320, 930x430, 1280x665, 1920x1080; plus the eye zoom); red 642f1e",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-302": {
+  "state": "open",
+  "why": "probes-open: still true: Sort calls it built (eggs.json _sh302), but the egg in the hand still reads small at L4; Zafar said he reviews it when he plays.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-303": {
+  "state": "built",
+  "why": "probes-open: built, not yet proven: Fixed in code by 677d1a0; the well done itself is in eggs' cook view (po-t1/SH-281.png frame 6: the 'Shabash!' chip by Nana's face on the tray).",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-304": {
+  "state": "proven",
+  "why": "probes-open: check evidence.json SH-304 (contract-129 over chai L1+L4, eggs L1, maani L1, 740x320); red c00da13^ (the runtime js, css, data and ; green c00da13 + 6cd7247 (15 Nov, decision 35) ",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-305": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-305; red not replayed; the fix is in history (lat; green be49c8a4c run r16pb-fix: machine: pass (",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-306": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-306",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-307": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-307",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-308": {
+  "state": "proven",
+  "why": "judge PASS (Fable): D, eggs L4 at 740x320 shows all three rows folded, each with its gold tick, all inside the panel under \"Shabash!\"; L the same for maani L4 (Nana's one row folded and ticked), B and J the same at L1. N",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "SH-309": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-309",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-310": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): neither panel shows an order row with item cards. A (1280x665) and B (740x320) are the #side column at life:stage-end holding only N",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "PAN-06": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "PAN-04": {
+  "state": "open",
+  "why": "probes-built: still true: Cook is one voice at a time; the clinic send-off count overlaps (clinic is parked, so the clinic part is Parked)",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "PAN-01": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "PAN-13": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "PAN-10": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "PAN-19": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "PAN-21": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "PAN-22": {
+  "state": "proven",
+  "why": "probes-built: check evidence PAN-22; red not replayed; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "PAN-23": {
+  "state": "cannot-probe",
+  "why": "probes-open: The bubble under the big card is not reproduced at any pantry bubble today or before SH-304's fix; the moment the 13 Nov judge saw is unknown, so po-m1/PAN-23.png goes to a judge to close or keep.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "CHAI-102": {
+  "state": "cannot-probe",
+  "why": "probes-built: only Zafar can judge it: the dotted-word lesson lights a dotted word on screen at every level, after the order has landed",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "CHAI-103": {
+  "state": "built",
+  "why": "fix-chai: built, not yet proven: Built in 85091500 (the word moment's pour sound and the tea's rise wait for the stream's run-down (word-moment.js:398-413)); the row still read 'to fix: code'. Not proven here: a how-it-s",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHAI-104": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CHAI-95": {
+  "state": "built",
+  "why": "fix-chai: built, not yet proven: Built in eccb37f8 (the simmer one seamless 12 s loop (simmer-b, looped 0.1-12.1 s), louder with the heat); the row still read 'to fix: code'. Not proven here: a how-it-sounds or how-it-lo",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHAI-96": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CHAI-97": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CHAI-98": {
+  "state": "built",
+  "why": "fix-chai: built, not yet proven: Built in b93fc29d (the word moment's drop 5.5% of the glass (was 11%), its splash with it (word-moment.js:446-451)); the row still read 'to fix: code'. Not proven here: a how-it-sounds or",
+  "src": "fix-chai",
+  "kind": "Look"
+ },
+ "CHAI-99": {
+  "state": "proven",
+  "why": "fix-chai: check node --test build/tools/review/chai-next-pan.test.mjs; red 8aaefe1e (before d1d4cc80): NJG_TEST_ROO; green 48003532: pass, 800 ms (the kit's Onboar",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHAI-100": {
+  "state": "proven",
+  "why": "fix-chai: check node build/tools/review/chaisound.mjs --rows CHAI-100 (chai L1-L4 #speed1, 740x320 and 1280x665; hook build/tools/review/lib/chai-sound-hook.js); red 8aaefe1e (the code before d1d4cc80, s17-; green 480035",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHAI-19": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-02": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-34": {
+  "state": "open",
+  "why": "judge FAIL: G, at L4 1920x1080 the pan is back on its burner still full of black chai (839 ms, 1140 ms) after Nana's glass has filled, and only then turns empty (1683 ms); H at L4 930x430 shows the same and worse: lifted",
+  "src": "judge",
+  "kind": "Art"
+ },
+ "CHAI-08": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, L1 1366x768: the pan is seen from straight above and centred on its burner, the glass from straight above with even rings and centred in its well; C (same size) shows the pan flat, not tilted, move",
+  "src": "judge",
+  "kind": "Art"
+ },
+ "CHAI-35": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, L1 1920x1080 at the hint: the helper card (paani, its picture and speaker) sits inside Nani's box at the top of the sidebar and the order card below it is whole and uncovered; B shows the same at 7",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CHAI-36": {
+  "state": "proven",
+  "why": "judge PASS (Fable): C, L1 1920x1080 at the turn-down call: the screen is not dimmed at all, the heat ring is drawn round the pan and the knob is ringed gold; D the same at 930x430; A and B (the \"Chulo bar!\" call) are not",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CHAI-37": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CHAI-38": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, L1 930x430 the real chai's heat ring (green zone, white marker), simmer to froth and steam, the knob going off and the pan settling are all there, with the new word cards under the jars; not shown:",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CHAI-39": {
+  "state": "open",
+  "why": "judge FAIL: A, the film itself shows the \"no\" item said last (\"aadu, hakro khun, dudh na\"; J the same with \"trae khun, aako, dudh na\") and the row's cards only stepping forward, but A's and B's own contract-72 captures e",
+  "src": "judge",
+  "kind": "Kutchi"
+ },
+ "CHAI-42": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the film never shows the order card lit: the probe plays straight on (A 69 ms the chai jar is lit, 300 ms the spoon is in the pan wi",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CHAI-48": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, L3 1280x665, frame 4 (27.0 s): the girl's long first line \"Muke elchi waari chai khapeti,\" is wrapped to two lines above her own head at the right, clear of Nana's face (it ends at the edge of his ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CHAI-49": {
+  "state": "open",
+  "why": "judge FAIL: B, L4 930x430 at speed 1: the contract-78 capture reads \"the call 'Chulo bar!' starts and the light comes 58760 ms later\" (and 'Slow kar!' 46742 ms later), so the call is still said with nothing lit; at 1280x",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CHAI-54": {
+  "state": "cannot-probe",
+  "why": "probes-built: the probe reads js:Cook.chaiPans, which the page no longer sets (a hook gone with the chai rewrite): the spec needs a new read; sheets of the pans are in the run for the eye",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CHAI-55": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CHAI-56": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the film starts after the knob was tapped (voice log: tap 0.17 s after step 5 opens, flame on at 17.22 s), so A 0 ms already has the",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CHAI-57": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no capture shows a tap before the green at all (no early/shake event in any Cook.chaiBoil log, no \"heat runs on\", no Nani \"no\" line ",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CHAI-108": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "DAAR-02": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "DAAR-26": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "DAAR-12": {
+  "state": "open",
+  "why": "judge FAIL: A, at L1 the speedo dial (tortoise, hare, spill) stands beside the pan with its slow band green, the other yellow and the spill red, needle live; the same dial with the same coloured bands is in B and E (L2) ",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "DAAR-36": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, L4 at 1280x665 fresh: chop order \"hakri dungri\" + \"trae mirchi\" (4 pieces) with 4 decoys on the tray (aadu, lasan, tameto, bataato), then the tadka with the sideways order row (chopped cards ticked",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "DAAR-37": {
+  "state": "cannot-probe",
+  "why": "probes-built: the row asks ten seeds per level of chop kinds and totals; my probe read js:Cook.chopPlan, which does not exist (judge audit FAIL); needs a hook or a node test over the level table",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "DAAR-38": {
+  "state": "cannot-probe",
+  "why": "probes-built: tool failure: DAAR-38-p1-L1-740x320: strip:#stage:4x250 at life:chop-done (hit 1): the filmstrip of \"#stage\" did not change over 4 frames (250 ms apart)",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "DAAR-39": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, L1 1280x665 a lit band about twice the knife's height runs across the board's full width with the rest of the screen darker, the finger holds the knife at the right (0 to 1273 ms, steady, no bounce",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "DAAR-40": {
+  "state": "proven",
+  "why": "probes-built: check evidence DAAR-40; red 64cff18f5~1 (worktree, today checks), ru; green 6d12df4e3 run r16pb-newcook: contract-95",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "DAAR-41": {
+  "state": "cannot-probe",
+  "why": "judge audit: the check does not test the row: Marked proven with no red: the result says 'not replayed'. The check is a whole contract run of daar L4 passing, which does not name the row's fault (a dotted word on the ord",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "DAAR-43": {
+  "state": "proven",
+  "why": "probes-built: check evidence DAAR-43; red not replayed; the fix is in history (lat; green 6d12df4e3 run r16pb-cook: machine: pass ",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "DAAR-44": {
+  "state": "proven",
+  "why": "probes-built: check evidence DAAR-44; red not replayed; the fix is in history (lat; green 6d12df4e3 run r16pb-cook: machine: count",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "DAAR-45": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, the stir game at L1 and C daar's stir at L1 (and B, D at L4) show the same black speed dial with the rabbit, the same pot of daar on the same hob with the flag, the same ladle and the same \"1 hakro",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "DAAR-03": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, daar's stir at 930x430 shows the speed dial and a large \"1\" over the Kutchi word \"hakro\" on a card beside the pot, readable at a glance, with one gold mark under the hob; the same card in B (daar L",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "DAAR-46": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): neither film stirs past the count or stops short of it: A (stir, asked four) counts 1 to 4 and the pan is done at 3200 ms, B (daar, ",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "DAAR-47": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, at L1 the daar goes in from its own bowl tipped at the pot's rim (stream at 251-749 ms, the pot filling yellow), nothing falling from above, chai's way; B shows the same at L4; L2 and L3 not shown.",
+  "src": "judge",
+  "kind": "HisCall"
+ },
+ "DAAR-48": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "DAAR-49": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "DAAR-50": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "DAAR-53": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "DAAR-54": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no panel shows the state the row is about, a cut item's pieces on the board beside another item (daar's \"slice\" frames A2 and B2 sho",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "DAAR-55": {
+  "state": "proven",
+  "why": "fix-daar: proven twice (pass x2 (run directly)) Both of the row checks, run directly, pass twice: node --test build/tools/review/run16/framebuf-hide.test.mjs (1 test, 0 fail, twice) and chop-strip.mjs --row DAAR-55 --flo",
+  "src": "prove",
+  "kind": "Check"
+ },
+ "DAAR-56": {
+  "state": "proven",
+  "why": "fix-daar: proven twice (pass x2) evidence spec DAAR-56 (chop-strip.mjs --row DAAR-56, chop@1 and daar@4 at 1280x665, daar@4 at 740x320): machine PASS in runs prove2-daar-cfb0867-r1 and -r2. The builder's own note stands:",
+  "src": "prove",
+  "kind": "Look"
+ },
+ "DAAR-57": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, daar L1's three chop-step frames each keep Nani's face and speaker in her box (\"Nindha nindha kap!\", \"Kali hakri dungri.\", \"Bas!\") and the order card's \"Chop these.\" head has no face; B the same at",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "DAAR-58": {
+  "state": "proven",
+  "why": "probes-built: check evidence DAAR-58; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "DAAR-59": {
+  "state": "proven",
+  "why": "fix-daar: proven twice (pass x2) evidence spec DAAR-59 (daar-pills.mjs L2-L3 at 1280x665, L2 at 740x320): machine PASS twice. Only the rows with room: the crowded rows (L4, L3 on a phone) are the builder's question DAAR-",
+  "src": "prove",
+  "kind": "Look"
+ },
+ "DAAR-60": {
+  "state": "proven",
+  "why": "fix-daar: proven twice (pass x2) evidence spec DAAR-60 (contract-98 and contract-120 over daar L1 and L4 #speed1, 740x320 and 1280x665, a new player): 0 contract breaks on all pages, twice.",
+  "src": "prove",
+  "kind": "Look"
+ },
+ "DAAR-61": {
+  "state": "open",
+  "why": "judge FAIL: A, chop L1's serve has the dish in a bowl on a tray under Nani but no thank-you bubble anywhere; B at L4 the end card (timer 8, 39s) already covers the counter at the serve, so no tray, dish or thank-you is v",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "DAAR-62": {
+  "state": "open",
+  "why": "judge FAIL: C, chop L4 at 740x320: the \"Shabash!\" bubble sits wholly off the board, on the marble to its left against the side panel, and Nani's face circle straddles the board's left edge and covers half of the round wh",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "DAAR-63": {
+  "state": "proven",
+  "why": "probes-built: check evidence DAAR-63; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "DAAR-64": {
+  "state": "question",
+  "why": "Question for Zafar: daar's order is one engine sentence and the kit's read-along shows the part being read (as chai's); should the bubble show the whole sentence at once instead, in every game?",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "DAAR-65": {
+  "state": "proven",
+  "why": "probes-built: check evidence DAAR-65; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: no",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "DAAR-66": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): all six panels (A-F) are the chopping-board step (board, knife, tray of vegetables, \"Kali hakri dungri\" / \"Kali trae mirchi\" bubble)",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SEK-14": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SEK-18": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "SEK-20": {
+  "state": "duplicate",
+  "why": "duplicate of SEK-27",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SEK-22": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, frame 3 (L4, \"Firai!\") the lit box runs from the skewer's tip to the end of its handle, holds all four threaded pieces, is only a little wider than the pieces and touches none of the three skewers ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SEK-24": {
+  "state": "open",
+  "why": "fix-stove: still true: needs fix-kit and art (sort: ui.js:3348 only stops the crate; the item card should show the skewer the row asks for).",
+  "src": "fix-stove",
+  "kind": "Art"
+ },
+ "SEK-25": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, at L3 1280x665 the order \"hakri lakri mishkaki\" carries four separate piece cards, each \"gos\", each with its own tick (the headline names the dish, the cards name the piece); not shown: L1, L2, L4,",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "SEK-26": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frame 2 (45.6 s) at L1 1280x665 shows the top-down coal grill, the skewer spanning its full depth with the wooden handle at the bottom edge and the metal tip at the top edge, a deep-walled steel tr",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SEK-27": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SAM-30": {
+  "state": "open",
+  "why": "judge FAIL: J, at L2 1280x665 the lift has no dim and no lit box (the screen is fully lit, only the rings round the three samosas), and K at L3 is the same; I (L1) and L (L4) do show the dim and the box on a samosa in th",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "SAM-31": {
+  "state": "proven",
+  "why": "probes-built: check evidence SAM-31; red not replayed (fix before 8 Nov s19 sweep; green 6d12df4e3 run r16pb-cook: count:#mission",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SAM-21": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SAM-32": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SAM-33": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SAM-34": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frame 4 (55.9 s) at L1 1280x665 shows the fryer knob off to the left of the hob with the karahi filling it, the wood-and-metal slotted spoon resting on its folded cloth, the plate alone with a tiss",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SAM-35": {
+  "state": "proven",
+  "why": "fix-samosa: check node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level <1-4> (the count word from the game's own lexicon); red f6e0127 (the live site's tree, 12 Nov), ; green 6228a48 at L1, L2, L3 a",
+  "src": "fix-samosa",
+  "kind": "Logic"
+ },
+ "SAM-36": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, at L1 1280x665 the order reads \"Muke ba samosa khapanta.\" and the served tray holds two samosas (D the same at 740x320); F and H at L2 hold three for \"trae samosa\"; not shown: L3 and L4.",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "SEK-28": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SEK-29": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SEK-30": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "SEK-31": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no praise face circle and no \"Shabash!\" bubble in any of A-D; the probe's stage-end is before well done (headline still \"Grill them.",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SEK-32": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the sheet is two 740x320 shots at a stage-end before well done (no \"Shabash!\", headline \"Grill them.\"); it shows no 'tameto' pill, n",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SAM-39": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "SAM-40": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "SAM-41": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "SAM-42": {
+  "state": "proven",
+  "why": "probes-built: check evidence SAM-42; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "SAM-43": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frame 2 at L1 shows the five waiting pastry strips whole at the same size as the working strip (the one with the potato on it), all inside the board's rim, no thumbnail; B frame 2 the same at L4. O",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SAM-44": {
+  "state": "proven",
+  "why": "fix-samosa: proven twice (pass x2) node build/probes/samosa-rt.mjs --row SAM-44 --secs 150 (samosa L1, 1280x665, child pace): PASS SAM-44 twice (518 and 723 samples).",
+  "src": "prove",
+  "kind": "Logic"
+ },
+ "SAM-45": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no praise face and no \"Shabash!\" bubble in A or B (headline a faded \"Tar!\"), so the bubble's place beside the face, away from the sl",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SAM-46": {
+  "state": "question",
+  "why": "fix-samosa: Three parts proven (the word pop on the board, the heaps centred in the bottom row with their pills, the karahi inside its hob). The fourth, the pastry's own contact shadow, is a question: SH-268 and contract",
+  "src": "fix-samosa",
+  "kind": "Look"
+ },
+ "SAM-47": {
+  "state": "question",
+  "why": "fix-samosa: Half built: samosa's fill now runs its own staged first-time script (the filling's first spoon lit once, the next strip once, the folds), so the same light never comes twice. The other half (Nani's box not di",
+  "src": "fix-samosa",
+  "kind": "Teaching"
+ },
+ "MAA-15": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "MAA-16": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "MAA-14": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "MAA-19": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the sheet has only the order row at L3 and L4, 1280x665 (A, B); it does not show the tawa flip's first-time hold in the green, the p",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "MAA-20": {
+  "state": "question",
+  "why": "fix-chai: Built (2267ee0d: the pin rides under the kit's one finger). What is left is his: question, the roll demo's look: (a, recommended) the one finger as built; (b) a pulsing circle; both are on the kit lab page (his",
+  "src": "fix-chai",
+  "kind": "Teaching"
+ },
+ "MAA-21": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no roll is filmed: in the 8 s of A (L1) and B (L2) the dough stays a ball on the lit board while the ghost repeats (voice log: the r",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "MAA-22": {
+  "state": "cannot-probe",
+  "why": "probes-built: the strip of #game at exp:tawa-on did not change over 16 frames at L3 and L4 (a filmstrip of a still screen: the moment comes before the motion, or the motion is on the canvas the strip misses); the spec ne",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "MAA-23": {
+  "state": "proven",
+  "why": "judge PASS (Fable): C, at L2 1280x665 frame 3 shows the \"nindhi maani\" card and frame 4 the \"wadhi maani\" card on the rolling board (a gold ring round the board behind it), once in the run, and frame 10 shows the size ri",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "MAA-24": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "MAA-25": {
+  "state": "open",
+  "why": "probes-open: still true: Still true (maani-line.js:330-339 lays the plates on the shelf band); contract-109 and -115 do not see it, so the eye check stands.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "MAA-26": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, L4's serve has two plates on the tray under Dada, the left one dark (bajr), the right one pale, with his thank-you bubble; A at L1 also two plates. The plates are very small at 740x320; the size th",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "MAA-27": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, maani's two plate face circles at 740x320 are the same size as chai's tray face circles in C at the same size (about nine tenths to equal by eye); B the same at L4. Other three sizes and L2-L3 not ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "MAA-28": {
+  "state": "proven",
+  "why": "fix-chai: check node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665 (hook build/tools/review/lib/maa28-hook.js); red 7ff346ad (the code before 49369e32, SH-3; green 480035",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHT-13": {
+  "state": "open",
+  "why": "judge FAIL: F, at L2 1280x665 the served chaat is an opaque cream bowl from above filled with one even pale-green topping, so the items do not each read in the bowl (H the same at 740x320); A to D never reach the bowl (t",
+  "src": "judge",
+  "kind": "Art"
+ },
+ "CHT-04": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CHT-18": {
+  "state": "open",
+  "why": "judge FAIL: B, at L1 740x320 there is no dim and no lit box, only an orange glow round the chano pot; C and D (L2) the same glow with no dim, and E, F, G, H (L3, L4) show no dim, no box and no glow at all; only A (L1 128",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CHT-19": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CHT-20": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): A-D show no bowl at all: the stage-end shots are one word card (chano, bataato) on blank marble with the order's slots still empty a",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CHT-21": {
+  "state": "open",
+  "why": "fix-daar: bounced by the prover: On fix-daar alone (cfb0867) the check is red both times: count:#mission .oc-card>=2 finds 1 visible at chaat L4 kind-slice, 740x320 and 1280x665. In a throwaway tree of cfb0867 plus fix-k",
+  "src": "prove",
+  "kind": "Look"
+ },
+ "CHT-22": {
+  "state": "open",
+  "why": "probes-open: still true: The cog part is fixed (DAAR-65) and green on head. The other parts are chop's own (the daar builder's) and need strips aimed at chop's cut and the tameto turn.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "CK-59": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): both voice captures (CK-59-p1-L2-1280x665 and -740x320) show \"dudh,\" spoken once only (9.67 and 9.55, mum/dudh.mp3) inside one runni",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CK-58": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "CK-01": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "CK-45": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CK-46": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-06": {
+  "state": "cannot-probe",
+  "why": "probes-built: the probe reads js:Cook.chaiPans, which the page no longer sets (a hook gone with the chai rewrite): the spec needs a new read; sheets of the pans are in the run for the eye",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-53": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-53; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-54": {
+  "state": "open",
+  "why": "judge FAIL: A, the 1920x1080 run's contract-74 capture reports two breaks: 1 s after the tap during the order there is still 1 big card and 4 cards not yet in their row, and the station started 5550 ms after the tap (the",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CK-55": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-56": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "CK-57": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-61": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-61; red not replayed; the fix is in history (lat; green 6d12df4e3 run r16pb-cook: machine: pass ",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-62": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-62; red not replayed; the fix is in history (lat; green 6d12df4e3 run r16pb-cook: machine: count",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-63": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-63; red not replayed; the fix is in history (lat; green 6d12df4e3 run r16pb-cook: machine: pass ",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-64": {
+  "state": "proven",
+  "why": "judge PASS (Fable): C, L4 at 1280x665 the headline reads \"Muke ba tarela inda khapanta.\" (the count is in the headline) with two separate \"tarelo indo\" cards (the second cut by the scrolling row, confirmed in the text ca",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CK-66": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CK-67": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CK-68": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "CK-69": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CK-70": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "CK-71": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CK-72": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, L4 baking teaches \"pa cup\" (a quarter cup) and \"adh\" (half) as word cards and the order reads \"adhi cup atto\"; A at L1 \"adh\", \"cup\" and \"hakro cup atto\"; the text captures hold no a-little or a-lot",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CK-77": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, at 1280x665 the egg carton stands on the shelf line at the milk carton's size beside it, its gold light and its \"indo\" pill whole above the frame's bottom; the same in D (1920x1080), F (740x320), H",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-92": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-93": {
+  "state": "proven",
+  "why": "fix-stove: proven twice (pass x2) evidence spec CK-93 (eggs L1-L4, both sizes, every line through the praise: no cat, no plate table): machine PASS twice.",
+  "src": "prove",
+  "kind": "Logic"
+ },
+ "CK-96": {
+  "state": "open",
+  "why": "fix-stove: still true: needs fix-kit: baking's item-card row shape is the kit's (ui.js:3638).",
+  "src": "fix-stove",
+  "kind": "Look"
+ },
+ "CK-97": {
+  "state": "open",
+  "why": "probes-open: still true: Left: 'adh paani' should show a half-full bottle, which needs a picture of one (an art run), not code.",
+  "src": "probes-open",
+  "kind": "Art"
+ },
+ "CK-98": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CK-99": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CK-100": {
+  "state": "open",
+  "why": "judge FAIL: A, frame 11 (64.3 s, L1 1280x665) Dada's face circle sits inside the lit box's top-left corner, on the tray's own corner and touching the first naan, and frame 12 (66.2 s) still has it on the tray's corner, n",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-102": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the sheets show L1 only (740x320 and 1280x665); the Check names L1, L2, L3 and L4 and there is no L2, L3 or L4 panel. What is shown ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-103": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the Check names corn at L1, L2, L3 and L4 at both sizes, but the sheets hold L1 only (A-L); the 12 L2 strips are listed as \"not on t",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-104": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frame 2 at 740x320 L1 shows six bowls in two rows of three inside the stone tray, each column's bowls and pills on one line, the rows' gap smaller than a pill's height, no pill over the edge; B fra",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-106": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CK-110": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-111": {
+  "state": "built",
+  "why": "fix-daar: built, not yet proven: Its first part is DAAR-56 (the finger drags instead of sitting still); the faded garlic bowl and the faded shelf at well done are already full strength in code (daar.js 'CK-111' comments)",
+  "src": "fix-daar",
+  "kind": "Look"
+ },
+ "CK-112": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-113": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-113; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CK-114": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-114; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CK-115": {
+  "state": "open",
+  "why": "probes-open: still true: Still true: at L3 and L4 the second corn order's card runs past the side panel's bottom edge at 740x320.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "CK-116": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the row's line (the amount-with-no-number cup line for atto, \"adhi cup\"/\"dedh cup\") is not in any capture: all four dom:#guide captu",
+  "src": "judge",
+  "kind": "Kutchi"
+ },
+ "CK-117": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the cooked tray and the plate never hold a cob in any frame (the tray is empty in all six), so \"side by side, two by two when four, ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-118": {
+  "state": "proven",
+  "why": "judge PASS (Fable): C, corn L4 at 740x320 with two people: each plate holds an upright, chopped cob that fills the plate's height and sits inside its rim, the owner's face circle at the tray's bottom-left corner clear of",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-119": {
+  "state": "cannot-probe",
+  "why": "probes-built: tool failure: CK-119-p1-L1-1280x665: crop:.njg-rq-card at only:.njg-rq-card (hit 1): \".njg-rq-card\" is not on screen at only:.njg-rq-card \u00b7 CK-119-p1-L1-740x320: crop:.njg-rq-card at only:.njg-rq-card (hit ",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-120": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, at L4 1280x665 both card heads sit on one line (\"Muke ba tarela inda khapanta.\" and \"Muke ba bafelo inda khapanta.\"); D at 740x320 both wrap the same way to two lines in the narrower card, where on",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-121": {
+  "state": "proven",
+  "why": "fix-kit: check evidence CK-121 (cook:eggs L1-L4, 740x320 and 1280x665, at served: every person card done and folded, inside #mission); red not re-run (the fix predates this run): ; green 48003532: run fk-eggs-l4 (eggs L4",
+  "src": "fix-kit",
+  "kind": "Look"
+ },
+ "CK-122": {
+  "state": "open",
+  "why": "judge FAIL: B, frame 3 at L4 740x320 the fried egg is about a third of the pan's inner width, a small dot in the middle of the pan, not filling it; A frame 3 at L1 is larger but still under half. No pot with an egg (boil",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-123": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, at L2 751 ms the boiled egg sits in blue water in the pot over a lit flame (dry at 501 ms as the egg lands, water a frame later); C shows the water's ring changing between frames while it cooks, bu",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-124": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-124; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-125": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): both panels crop #side only, so the stage (egg in flight, the boil) is never shown and \"the step is done\" cannot be read against the",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CK-126": {
+  "state": "open",
+  "why": "probes-built: still true: built per its status, but the check fails on today's head: machine: CK-126-p1-L2-740x320: pass: 1 contract breaks; CK-126-p1-L3-740x320: pass: 2 contract breaks",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CK-127": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, L4 serve at 740x320 shows two trays, each with one plate and its own face badge (Bapa's under Bapa, the boy's under the boy), the cob standing upright on each plate, both orders ticked; A shows L1'",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-128": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, at 740x320 the corn card shows the whole upright cob inside its picture box with clear air above, below and at both sides (no yellow bar, nothing touching the box edges); A shows the same at 1280x6",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-129": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, L1 frames 1-4 show the same short fat cob raw on the shelf, on the grill and cooked in the tray (each about 2.3-2.6:1 by eye), and B shows the same at L4; not shown: the cob on the plate (the row's",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-130": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frames 2 and 3 show the ring centred on the cob's body, about the grill's full height across, drawn whole and not touching or cut by the gold box (which sits inside it); B frames 2-3 show the same ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-131": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-131; red not replayed; the fix is in history (lat; green c4edbfdc5 run r16pb-newcook: machine: pa",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CK-132": {
+  "state": "proven",
+  "why": "fix-stove: proven twice (machine part pass x2; eye part with the judge) evidence spec CK-132 p1 (corn L1-L4, both sizes: the drop-down arrow on screen >= 3000 ms): 8 of 8 PASS in both runs (6.3-10.4 s). The plates faces ",
+  "src": "prove",
+  "kind": "Look"
+ },
+ "CK-133": {
+  "state": "proven",
+  "why": "judge PASS (Fable): B, L4 frames 1-4 show Bapa's face on the bowl's top-right rim through all four pours, never moving; A shows it on the bowl's rim (frames 1-2) and then on the naan tray once the dough is the naan (fram",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-134": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frame 1 (L1, 20.7 s) the empty jug is clear glass with only faint measure marks and no grey block inside; frames 3 and 4 show a white flour fill drawn from the base, higher in 4 than in 3. B shows ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-135": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no strip covers the change from the bowl to the oven at either level: A, B and E-H are pours into the bowl, C opens with the oven an",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-136": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frame 4 (L1, 740x320) shows the oven's light box whole with its gold border visible on all four sides below the screen's top edge and clear of the settings button; frames 1, 3 and 4 show the paani ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-137": {
+  "state": "open",
+  "why": "judge FAIL: B, at 740x320 L2 the order card's 'hakro makai' name wraps onto two lines ('hakro' / 'makai') beside the one-line 'miryo' (same in D at L4; A and C also wrap it at 740x320), so the row's \"'hakro makai' card n",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "RT-01": {
+  "state": "proven",
+  "why": "fix-samosa: proven twice (pass x2) samosa-rt.mjs --row RT-01 --size 740x320 --secs 150 (roll-tawa L1): PASS twice.",
+  "src": "prove",
+  "kind": "Look"
+ },
+ "RT-02": {
+  "state": "proven",
+  "why": "fix-samosa: proven twice (pass x2) samosa-rt.mjs --row RT-02 --size 740x320 --secs 150 (roll-tawa L1): PASS twice.",
+  "src": "prove",
+  "kind": "Teaching"
+ },
+ "RT-03": {
+  "state": "proven",
+  "why": "fix-samosa: check evidence.json RT-03: node build/probes/samosa-rt.mjs --row RT-03 --size 740x320; red 4c3a230^: FAIL, the order card's row 'Na; green 48003532 (fixed by 4c3a230) and c5565d1:",
+  "src": "fix-samosa",
+  "kind": "Logic"
+ },
+ "RT-04": {
+  "state": "built",
+  "why": "fix-samosa: built, not yet proven: Built in 4c3a230; its tawa part proven by machine (red on 4c3a230^, green on 48003532). Not proven: the turner's sleeve cut square in mid-air is the hand rig's (js/cook/hands.js, ART-84",
+  "src": "fix-samosa",
+  "kind": "Look"
+ },
+ "SH-311": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-311",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-312": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-312",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-313": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-313",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-314": {
+  "state": "open",
+  "why": "probes-built: still true: 270f39f fixed most of the leak but a timing-dependent one remains: a word card fitted after unmount re-adds its resize listener and section, and an audio context can stay open; needs fix-kit (sh",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-314b": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "SH-315": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-315; red not replayed; the fix is in history (lat; green be49c8a4c run r16pb-fix: machine: pass (",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "SH-51": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "SH-63": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-135": {
+  "state": "open",
+  "why": "probes-open: still true: Cook's part is still true; the door's pills and the clinic's lit tool are parked modes, and EASY-08's gold box is Zafar's call.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-136": {
+  "state": "open",
+  "why": "probes-open: still true: Needs a seeded one-item order for Nana at a 915x412-like size; the sandbox has no 915x412 entry (it maps to 844x390).",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-64": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CHAI-31": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-31",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-58": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the film starts after the boil: A shows the left pan already off the heat ring and being poured into the glasses (499 to 3783 ms), n",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CHAI-60": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "CHAI-61": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no panel shows an add to another pan while a pan boils: every add in A, B, C and D goes into the first pan, the second pan stays emp",
+  "src": "judge",
+  "kind": "Logic"
+ },
+ "CHAI-62": {
+  "state": "cannot-probe",
+  "why": "probes-built: the strip of #side at phase:slow did not change over 8 frames at L2 and L3: the moment does not reach the motion the row is about; the spec needs a new moment",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CHAI-74": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-75": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CHAI-76": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CHAI-77": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CHAI-78": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CHAI-79": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-80": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-81": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CHAI-82": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-63": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CHAI-64": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-64",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-65": {
+  "state": "proven",
+  "why": "judge PASS (Fable): A, frame 3 at L2 1280x665 shows Dada's face on the tray's top-left corner for the top-left glass and the boy's face on the top-right corner for the top-right glass, both clear of the glasses; B frames",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CHAI-66": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-66",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-67": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "CHAI-68": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "CHAI-107": {
+  "state": "proven",
+  "why": "fix-chai: check node build/tools/review/chaisound.mjs --rows CHAI-107 --paths mistake,speed1 --levels 1,2,3,4 --sizes 740x320; red 16b827eb (the code before 0187d4d5): RED; green 48003532: GREEN on 8 of 8 (L1-L4, #mista",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHAI-109": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-109",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHAI-110": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): the one frame (A, exp:pour-nana) is before any pour: Nana's full order first and \"Muke adh chai khapeti\" second, all glasses empty a",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CHAI-111": {
+  "state": "open",
+  "why": "fix-chai: still true: Not reproduced: a returning player idle at the water step gets the stuck hint (the water's glow) 7 s after the last tap at 740x320 and 1280x665 on base. His play was the second round in the same pag",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHAI-112": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-112",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "CHAI-113": {
+  "state": "proven",
+  "why": "fix-chai: check node build/tools/review/chaisound.mjs --rows CHAI-113 (chai L1-L4 #speed1, 740x320 and 1280x665); red a9ccaa4f (the code before b6497cb5): RED; green 48003532: GREEN on 8 of 8 (L1-L4) and 6 ",
+  "src": "fix-chai",
+  "kind": "Logic"
+ },
+ "CHAI-114": {
+  "state": "question",
+  "why": "fix-chai: Chai is frozen and Nani's box is the kit's (js/shared, fix-kit's): fitting her L4 line whole at 740x320 changes chai's look. Question: unfreeze chai's Nani box for this one fix (recommended), or wait for the fr",
+  "src": "fix-chai",
+  "kind": "Look"
+ },
+ "SH-122": {
+  "state": "question",
+  "why": "probes-open: Question for Zafar: the zooms need a design first (research not started; the S12 idea was a match-cut into lined-up close-up art). Which way should a zoom go, so a check can be written for it?",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-183": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-183; red not replayed; the fix is in history (lat; green 99e87f8d8 run r16pb-last: machine: pass ",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-185": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-185",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-186": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-186",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-187": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-187; red not replayed; the fix is in history (lat; green 99e87f8d8 run r16pb-last: machine: pass ",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-188": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-188",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-191": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-191",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-193": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-193",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-194": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-194",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-195": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-196": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "SH-235": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-248": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "SH-249": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-250": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-251": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "SH-252": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-252",
+  "src": "probes-built",
+  "kind": "Kutchi"
+ },
+ "SH-253": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-254": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-255": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-256": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-256",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-257": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "CK-81": {
+  "state": "open",
+  "why": "judge FAIL: A, at 1280x665 the turn frame (A3, 44.8 s) shows the skewer in a pale ring with its turn badge on an undimmed screen, no kit light, while 740x320 (C5) and 930x430 (D5) dim the screen and light the ring gold; ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-82": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-83": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): A1-A2 show Nani's box in the chop stage with her face and one sentence (\"Kali hakro bataato.\") and nothing under the settings gear, ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-84": {
+  "state": "open",
+  "why": "judge FAIL: A, frame 3 (and B4) the atto and khun jars on the shelf are the same white-filled jar with the same wooden lid, told apart only by their pills; also no frame shows the bowl lit (the light in A2, B2, B3 is on ",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SH-258": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-259": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CK-85": {
+  "state": "open",
+  "why": "judge FAIL: E, frame 6 (33.6 s) the chano card still shows a jar of chickpeas where the tray shows the bowl (same at F5, G6, H6); A frame 3 (41.4 s) the third onboard, bataato, has no dim and no gold box, and B, C, D rea",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "SH-260": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-261": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-261; red not replayed; the fix is in history (lat; green be49c8a4c run r16pb-fix: machine: pass (",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "SH-262": {
+  "state": "question",
+  "why": "Question for Zafar: make the word pill's speaker clearer for a young child (a bigger speaker, or a first-time light on it once)?",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "SH-263": {
+  "state": "overridden",
+  "why": "A mistake keeps chai's way in every game (5): the wrong pan can't be picked, but a wrong item can go in, the cup is made, and the whole cup is redone (\"I just want to keep it to how Chai does it\"); SH-263 is answered so.",
+  "src": "sort",
+  "kind": "HisCall"
+ },
+ "SH-264": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-264",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "SH-265": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-265",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-266": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-266",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-267": {
+  "state": "open",
+  "why": "judge FAIL: E, at L2 1280x665 a big card with the garlic picture, the words \"trae lasan\" and a speaker button is up beside the customer's bubble \"Muke trae lasan khape.\" (3.5 s), and the same in F at 740x320 (4.0 s); the",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "SH-268": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-86": {
+  "state": "cannot-probe",
+  "why": "judge: not shown: The sheet does not show the row's state (a probe fault, not the fix): no panel shows a cob or a skewer resting on the tray, so \"the same size and way round on the tray as on the grill\" cannot be read (D",
+  "src": "judge",
+  "kind": "Look"
+ },
+ "CK-87": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CK-88": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-78": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CK-79": {
+  "state": "cannot-probe",
+  "why": "probes-built: chop L1 at 740x320 never reaches view-marble (chop has no marble view), 6 of 8 probes reached; the row is to fix: code, partly built (daar contract-115 and the chop phase left)",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CK-80": {
+  "state": "open",
+  "why": "judge FAIL: A, frames 1-2 the lit cob in the tray has its gold box but no makai pill, and no cob carries a pill at any size (C, E, G the same); no hakro pill appears in the grill scene. Met: B, D, F, H the hakro makai ca",
+  "src": "judge",
+  "kind": "Teaching"
+ },
+ "CK-89": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CK-90": {
+  "state": "proven",
+  "why": "probes-built: check evidence CK-90; red not shown: on 231080600~1 contract-117 a; green 6d12df4e3 run r16pb-newcook: contract-11",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CK-91": {
+  "state": "cannot-probe",
+  "why": "probes-built: red shown for the row reason; the green cannot be seen until the flash stays (SH-267, fix-kit); re-run evidence.mjs --run --rows CK-91 after that fix",
+  "src": "probes-built",
+  "kind": "Look"
+ },
+ "CHT-16": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CHT-17": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "SH-225": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "ART-45": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-46": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-47": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-48": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-49": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-50": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-50",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-51": {
+  "state": "cannot-probe",
+  "why": "probes-built: the row is item sizes 100/91/84 of the slot and a 40 CSS px floor: an eye crop cannot measure it (judge audit FAIL); needs the art size tool (artcolour size) run on the shelf boxes",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-52": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-52",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-53": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-54": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "ART-56": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-57": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-43": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-43",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-44": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-42": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-41": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-41",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-40": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-40",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-39": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "SH-14": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-62": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "SH-229": {
+  "state": "open",
+  "why": "probes-open: still true: Green on head with no fix found; worth a look at po-g1/SH-229.png before closing.",
+  "src": "probes-open",
+  "kind": "Look"
+ },
+ "SH-112": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "ART-84": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-316": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-316 (cmd: node build/check_stamps.mjs labs.html); red 934f5fa~1 (worktree): node build/check_s; green 5847536 (today head 48003532 code): STAM",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "SH-317": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-317",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-83": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-220": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CLN-221": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CLN-222": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "CLN-82": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CLN-87": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-216": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CLN-217": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CLN-218": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CLN-38": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "CLN-65": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-106": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-107": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-119": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "CLN-137": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-150": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-156": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CLN-158": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "CLN-163": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-172": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "CLN-175": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-179": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-180": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-219": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-186": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-192": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-193": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-196": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-35": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CLN-43": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "CLN-52": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CLN-57": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CLN-99": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CLN-205": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CLN-206": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CLN-206",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "CLN-207": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "CLN-210": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "CLN-211": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "CLN-213": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "BOOK-05": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "DAY-02": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "DAY-03": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Logic"
+ },
+ "RIDE-11": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "LAB-08": {
+  "state": "proven",
+  "why": "probes-open: check build/test_labs_importmap.mjs (evidence.json LAB-08: cmd node build/test_labs_importmap.mjs, expect pass; green in run po-g1); red 934f5fa^ (2 of 3 fail: labs.html has no ; green 934f5fa (the SH-316 co",
+  "src": "probes-open",
+  "kind": "Check"
+ },
+ "MOD-10": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "FARM-01": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Teaching"
+ },
+ "ART-59": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-58": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-10": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-11": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-12": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "ART-20": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "ART-22": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-23": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "ART-18": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "ART-28": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-28",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-29": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-30": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-32": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-61": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-62": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-63": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-64": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-65": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-66": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-67": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-68": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-69": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-70": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-71": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "LNG-01": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-04": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-06": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-08": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-10": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-11": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-12": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-15": {
+  "state": "overridden",
+  "why": "6 (the Eid lines become the birthday) (Zafar's yes, 31 Oct; build/reports/game-settings-map-2026-10-31.md:229)",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-20": {
+  "state": "open",
+  "why": "probes-open: still true: Still true and grown: 63 orphan ids today (the row said 29); a take that should stay unplayed needs 'unused': true with why.",
+  "src": "probes-open",
+  "kind": "Check"
+ },
+ "LNG-21": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "LNG-22": {
+  "state": "open",
+  "why": "probes-open: still true: Cook's day-6 finale is already the birthday; the first launch's hook is not. The birthday line must come from the engine and family recordings: if it is not recorded, it is a recording-sheet gap,",
+  "src": "probes-open",
+  "kind": "Kutchi"
+ },
+ "LNG-23": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "LNG-24": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Kutchi"
+ },
+ "SH-137": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Parked"
+ },
+ "PRC-10": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "PRC-11": {
+  "state": "open",
+  "why": "probes-open: still true: Still true: the check-in skill posts one line, not the plan as a table with done, still to do and % complete.",
+  "src": "probes-open",
+  "kind": "Check"
+ },
+ "PRC-06": {
+  "state": "open",
+  "why": "probes-built: still true: built per its status, but the check fails on today's head: machine: PRC-06-p1-repo: pass: node build/tools/review/evidence.mjs --plan --all: exit 1",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "PRC-12": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "PRC-13": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "PRC-14": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "PRC-15": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "PRC-16": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "SH-221": {
+  "state": "proven",
+  "why": "probes-built: check evidence SH-221 (cmd: node build/test_shared_sfx_calls.mjs); red mutation in a worktree of 5847536: js/sh; green 5847536: node build/test_shared_sfx_call",
+  "src": "probes-built",
+  "kind": "Logic"
+ },
+ "SH-19": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-19",
+  "src": "probes-built",
+  "kind": "Teaching"
+ },
+ "BOOK-10": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Look"
+ },
+ "ART-37": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-38": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-26": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-27": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-33": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-34": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-35": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-36": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-60": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-72": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-73": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-74": {
+  "state": "proven",
+  "why": "probes-open: check build/test_no_upload_folders.mjs [ref] (evidence.json ART-74: cmd node build/test_no_upload_folders.mjs, expect pass); red e2f548e5^ (assets/ChatGPT 261110 1) and ; green e2f548e5 and b95ad596 (the fol",
+  "src": "probes-open",
+  "kind": "Check"
+ },
+ "ART-75": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-76": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Check"
+ },
+ "ART-77": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-78": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-78",
+  "src": "probes-built",
+  "kind": "Art"
+ },
+ "ART-79": {
+  "state": "cannot-probe",
+  "why": "probes-built: not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-79",
+  "src": "probes-built",
+  "kind": "Check"
+ },
+ "ART-80": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-81": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "ART-82": {
+  "state": null,
+  "why": "",
+  "src": "sort",
+  "kind": "Art"
+ },
+ "KIT-PILL-PAD": {
+  "state": "open",
+  "why": "fix-daar: still true: needs fix-kit: Cook.Kit.chip defaults every pill to a fixed 128 card (a long word shrinks in it: samosa, maani-line and the grill pass fixed widths too) and draws with pad 52 while Shelf.faceW measu",
+  "src": "fix-daar",
+  "kind": "Check"
+ },
+ "NEW-run16-eggs-served-count": {
+  "state": "open",
+  "why": "fix-stove: still true: needs fix-kit (js/cook/serve.js:156, plan: eggs serve n 1 per plate, one picture of one egg): at L2-L4 a person who asked for two eggs ('Muke ba tarela inda khapanta.') gets a plate with one fried ",
+  "src": "fix-stove",
+  "kind": "Logic"
+ },
+ "DAAR-59b": {
+  "state": "question",
+  "why": "fix-daar: Question for Zafar (DAAR-59's remainder): with eight spice pills (L4, and L3 on a phone) a row has no room for 'laal marcha' at its neighbours' size. Which: (1, recommended) every word in that row one smaller s",
+  "src": "fix-daar",
+  "kind": "HisCall"
+ },
+ "NEW-run16-stove-profile": {
+  "state": "open",
+  "why": "fix-stove: still true: needs orchestrator (no builder owns build/sandbox): an evidence page played with profile 'seen' is passed to the contracts with no profile (run.mjs builds r without ev.profile), so contract-78, -98",
+  "src": "fix-stove",
+  "kind": "Check"
+ },
+ "NEW-run16-corn-decoys": {
+  "state": "question",
+  "why": "fix-stove: Question for Zafar: corn always has its six dressing bowls on the band, so the bowls no one asked for are its decoys, and at L3-L4 (three or four asked) there are only one or two, under the rules' 3 and 4. Sho",
+  "src": "fix-stove",
+  "kind": "HisCall"
+ },
+ "NEW-run16-eggs-decoys": {
+  "state": "open",
+  "why": "fix-stove: still true: Not fixed (found late): eggs.js:205 counts an unasked shaker as a decoy only when no plate asks for it, but contract-37 reads the order card's rows, so the two counts disagree when a plate asks sal",
+  "src": "fix-stove",
+  "kind": "Logic"
+ },
+ "NEW-run16-baking-36": {
+  "state": "built",
+  "why": "fix-stove: built, not yet proven: A new finding, no row: an amount still to record has no family clip, so its step's line is now logged as the call skipped (a recording to make), as baking's oven call already logs its ow",
+  "src": "fix-stove",
+  "kind": "Logic"
+ }
+}
