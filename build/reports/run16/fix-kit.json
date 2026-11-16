@@ -60,7 +60,7 @@
   "row": "CHT-21",
   "kind": "Look",
   "game": "chaat",
-  "status": "open",
+  "status": "built",
   "probe": "none of its own yet: the kit option only",
   "red": "",
   "green": "",
@@ -68,7 +68,7 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "note": "needs fix-daar: the kit's M.addCard(key, data, {keepOrder}) is in (the order's cards stay in view beside a station card added with it); js/cook/mechanics/chop.js (which fix-daar is editing) should pass keepOrder: !!boxFace on its M.addCard('chop-nani', ...) so Nana's 'Muke chaat khape.' stays during chaat's chop. Nani's face in her box during chaat's chop is already right."
+  "note": "Kit part: M.addCard(key, data, {keepOrder}) in js/cook/ui.js (the order's cards stay in view beside a station card added with it). fix-daar wired chaat's caller (js/cook/mechanics/chop.js) and reports CHT-21 built on top of it: merge fix-kit first. Nani's face in her box during chaat's chop was already right."
  },
  {
   "row": "CK-121",
@@ -179,5 +179,19 @@
   "judge": "machine",
   "files": [],
   "note": "Sekelo's cards fold at well done on this branch; no kit change made for it. fix-stove owns the row; its corn CK-132 drop-down probe fails here only because its trace counts the arrow coming back (it stays on screen at opacity 1 all 9 s, and a trace can't see visibility)."
+ },
+ {
+  "row": "NEW-run16-eggs-served-count",
+  "kind": "Art",
+  "game": "eggs",
+  "status": "open",
+  "probe": "fix-stove's picture (ev-stove-sh308-base, eggs L4 06-view-service)",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/serve.js"
+  ],
+  "note": "Not taken: the serve's plan draws n copies of a dish picture, and eggs' pictures are a whole plate with one egg, so n = 2 would show two plates; two eggs on one plate needs a picture (an art run) or eggs.js's own plated picture to draw the count. Left for the orchestrator."
  }
 ]

@@ -12,7 +12,7 @@ The kit's rows (js/shared, js/cook core). Branch run16/fix-kit, from 48003532. R
 - **Chai's frozen diff** (frozen-diff-chai-tray-202611160600): 11 changes on 10 pages, every one also in the frozen diffs made
   before this branch (16 Nov 02:07 and 15 Nov): the panel-follow note, sfx/cook-right, card-light at L4 1280x665, dudh.mp3 at
   L4#child. Chai is not changed by this branch: SH-267's new hold and replay match skip chai on purpose.
-- **CHT-21 is not finished:** the kit option is in, but its caller (js/cook/mechanics/chop.js) is fix-daar's file this run.
+- **CHT-21 depends on two branches:** the kit option is here; fix-daar wired its caller (mechanics/chop.js). Merge fix-kit first.
 - **CK-132's drop-down probe (fix-stove's) fails on this branch**, but its trace shows the arrow on screen at opacity 1 for the whole
   9 s; the probe counts it coming back (traceRepeats >= 2) and a trace cannot see `visibility: hidden`. That probe needs a look by
   fix-stove; no kit change made.
@@ -28,7 +28,7 @@ The kit's rows (js/shared, js/cook core). Branch run16/fix-kit, from 48003532. R
   orders keep her face and speaker in the box and her card has none (as daar's). Machine PASS at L1-L4, two sizes.
 - **SH-314** (Cook leaves nothing behind): red in check-change's mount step (a SECTION.wc on body, a resize listener a late font fit
   put back); green three runs in a row (5 mounts each, all clean).
-- **CHT-21** (kit part): M.addCard(key, data, {keepOrder}).
+- **CHT-21** (kit part): M.addCard(key, data, {keepOrder}); fix-daar passes it from chaat's chop.
 
 ## Proven (already fixed on the base)
 
