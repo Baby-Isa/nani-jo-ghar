@@ -1,33 +1,2011 @@
 [
  {
-  "row": "SH-316",
+  "row": "CHAI-91",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-91",
+  "files": [
+   "js/cook/station-lib.js",
+   "data/stations/chai-tray.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-92",
   "kind": "Check",
   "game": "other",
-  "status": "proven",
-  "probe": "evidence SH-316 (cmd: node build/check_stamps.mjs labs.html)",
-  "red": "934f5fa~1 (worktree): node build/check_stamps.mjs labs.html -> exit 1, UNSTAMPED /js/core/progress.js and /js/core/wallet.js",
-  "green": "5847536 (today head 48003532 code): STAMP CHECK PASSED, 24 requests, 0 unstamped",
+  "probe": "evidence CHAI-92",
+  "files": [
+   "lab/juice.html",
+   "js/shared/sfx.js",
+   "js/shared/juice.js"
+  ],
+  "status": "cannot-probe",
+  "judge": "human",
+  "note": "only Zafar can judge it: Zafar plays every sound and sees every visual on the juice lab page, alone and over a chai screenshot"
+ },
+ {
+  "row": "CHAI-93",
+  "kind": "Art",
+  "game": "chai",
+  "probe": "evidence CHAI-93",
+  "files": [
+   "js/shared/word-moment.js",
+   "js/shared/juice.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-222",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-222",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/order-card.css",
+   "css/shared/word-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-227",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-227",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/flow.js",
+   "css/shared/order-card.css",
+   "js/shared/word-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-223",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-223",
+  "files": [
+   "css/shared/tokens.css",
+   "css/shared/fonts.css"
+  ],
+  "status": "cannot-probe",
+  "judge": "human",
+  "note": "only Zafar can judge it: Zafar plays chai in Lora and Fraunces, then the roll-out before/after per game: the type feels elegant, not too bold"
+ },
+ {
+  "row": "SH-224",
+  "kind": "Logic",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence SH-224 (cmd: grep -c fonts.googleapis.com cook.html, expect !pass)",
+  "red": "5847536+: grep finds 1 Google Fonts link in cook.html (also clinic, day, dress, index, lab, snap, tidy, who.html)",
+  "green": "not green",
   "judge": "machine",
   "files": [
-   "labs.html"
+   "cook.html"
   ],
-  "note": "fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today.",
+  "note": "partly built (chai and the tokens host Lora): cook.html and the other pages still load Google fonts; the row waits for the roll-out.",
   "hand": true
  },
  {
-  "row": "SH-221",
+  "row": "SH-226",
   "kind": "Logic",
   "game": "other",
-  "status": "proven",
-  "probe": "evidence SH-221 (cmd: node build/test_shared_sfx_calls.mjs)",
-  "red": "mutation in a worktree of 5847536: js/shared/buttons.js Sfx.play(\"tap\") put back to Sfx.tap() -> not ok 2, Sfx.tap is not a method sfx.js has (the fix predates the repo history, 8 Nov)",
-  "green": "5847536: node build/test_shared_sfx_calls.mjs pass 3 fail 0",
+  "status": "open",
+  "probe": "evidence SH-226 (cmd: node build/test_shared_sfx_files.mjs)",
+  "red": "none shown (the chai part was built 6 Nov in 4022e001c)",
+  "green": "5847536: test_shared_sfx_files pass (chai sounds sourced and licensed)",
   "judge": "machine",
   "files": [
-   "js/shared/buttons.js"
+   "js/shared/sfx.js"
   ],
-  "note": "the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back.",
+  "note": "chai part built and green; the row is to fix: code for every other game (waits for the frame).",
   "hand": true
+ },
+ {
+  "row": "ART-50",
+  "kind": "Check",
+  "game": "chai",
+  "probe": "evidence ART-50",
+  "files": [
+   "data/cook.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-51",
+  "kind": "Check",
+  "game": "chai",
+  "probe": "evidence ART-51",
+  "files": [
+   "js/cook/station-lib.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-52",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence ART-52",
+  "files": [
+   "js/cook/station-lib.js",
+   "build/tools/review/sizecheck.mjs"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-213",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-213",
+  "files": [
+   "js/cook/ui.js",
+   "js/shared/onboard.js",
+   "js/cook/flow.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-214",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-214",
+  "files": [
+   "js/cook/flow.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-216",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence SH-216",
+  "files": [
+   "js/cook/flow.js",
+   "labs.html"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-215",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-215",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-86",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-86",
+  "files": [
+   "js/shared/word-moment.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-87",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-87",
+  "files": [
+   "js/shared/sfx.js"
+  ],
+  "status": "cannot-probe",
+  "judge": "human",
+  "note": "only Zafar can judge it: Zafar hears the pour into a glass (pour A) on the lab page and in chai L1-L4: does it sound like tea poured into a glass"
+ },
+ {
+  "row": "CHAI-90",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-90",
+  "files": [
+   "js/shared/word-moment.js",
+   "css/shared/word-moment.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-219",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-219",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/cook/kitchen-kit.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-217",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-217",
+  "files": [
+   "css/shared/word-card.css",
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-88",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-88",
+  "files": [
+   "js/shared/word-moment.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-218",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-218",
+  "files": [
+   "css/shared/tally.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-89",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-89",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/cook/frame.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-43",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence ART-43",
+  "files": [
+   "js/cook/kitchen-kit.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-41",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence ART-41",
+  "files": [
+   "css/cook-side-v2.css",
+   "js/cook/kitchen-kit.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-40",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence ART-40",
+  "files": [
+   "data/cook.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-84",
+  "kind": "Art",
+  "game": "chai",
+  "probe": "evidence CHAI-84",
+  "files": [
+   "js/cook/ui.js",
+   "build/tools/art/teacards.py"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-209",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-209",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-203",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-203",
+  "files": [
+   "js/cook/ui.js",
+   "js/shared/request-popup.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-171",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-171",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-177",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-177",
+  "files": [
+   "js/shared/conversations.js",
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-180",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-180",
+  "files": [
+   "js/cook/ui.js",
+   "js/shared/order-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-182",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-182",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-60",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-60",
+  "files": [
+   "js/shared/buttons.js",
+   "js/cook/coach.js",
+   "js/shared/onboard.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-228",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-228",
+  "files": [
+   "js/cook/coach.js",
+   "js/cook/station-lib.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-139",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-139",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/cook/stations/maani-line.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-140",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-140",
+  "files": [
+   "css/shared/face.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-142",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-142",
+  "files": [
+   "js/shared/word-card.js",
+   "css/shared/word-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-143",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-143",
+  "files": [
+   "js/shared/word-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-144",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-144",
+  "files": [
+   "js/shared/word-card.js",
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-151",
+  "kind": "Check",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence SH-151 (cmd: node build/lint/static.mjs)",
+  "red": "5847536: static lint 0 new findings but 490 known token findings and 221 font face names outside the tokens in 37 files of the other games (warn only)",
+  "green": "not green: the lint only warns",
+  "judge": "machine",
+  "files": [
+   "build/lint/static.mjs"
+  ],
+  "note": "the kit reads the type roles, but the other modes still name faces and colours outside the tokens; the lint passes only because it warns until the roll-out.",
+  "hand": true
+ },
+ {
+  "row": "SH-152",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-152",
+  "files": [
+   "js/shared/order-card.js",
+   "js/cook/ui.js",
+   "build/sandbox/lib/contract.mjs"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-154",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-154",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/order-card.css",
+   "build/sandbox/lib/contract-s14.mjs"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-155",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence SH-155",
+  "files": [
+   "data/rules.json",
+   "js/shared/rules.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-156",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-156",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/order-card.css",
+   "css/cook.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-157",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-157",
+  "files": [
+   "js/cook/ui.js",
+   "js/shared/request-popup.js",
+   "build/sandbox/lib/cook-player.mjs"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-159",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-159",
+  "files": [
+   "js/shared/shelf.js",
+   "js/cook/station-lib.js",
+   "js/core/progress.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-160",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-160",
+  "files": [
+   "js/cook/flow.js",
+   "js/cook/station-lib.js",
+   "data/rules.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-147",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-147",
+  "files": [
+   "js/shared/word-card.js",
+   "css/shared/word-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-148",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-148",
+  "files": [
+   "js/shared/order-card.js",
+   "css/shared/order-card.css",
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-149",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-149",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/station-lib.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-150",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-150",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-108",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-108",
+  "files": [
+   "js/cook/stations.js",
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-236",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-236",
+  "files": [
+   "js/shared/onboard.js",
+   "js/cook/coach.js",
+   "js/cook/mechanics/stir.js",
+   "js/cook/stations/samosa.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-119",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-119",
+  "files": [
+   "js/shared/onboard.js",
+   "js/cook/mechanics/roll.js",
+   "js/cook/stations/maani-line.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-245",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-245",
+  "files": [
+   "js/cook/kitchen-kit.js",
+   "js/cook/stations/maani-line.js",
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-285",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-285",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/flow.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-290",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence SH-290",
+  "files": [
+   "js/cook/ui.js",
+   "build/sandbox/lib/contract-shade.mjs"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-293",
+  "kind": "HisCall",
+  "game": "kit",
+  "probe": "evidence SH-293",
+  "files": [
+   "js/shared/shelf.js",
+   "js/cook/station-lib.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-305",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-305",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-306",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-306",
+  "files": [
+   "js/shared/request-popup.js",
+   "js/shared/conversations.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-307",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-307",
+  "files": [
+   "js/shared/order-card.js",
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-308",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-308",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/mechanics/grill.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-309",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-309",
+  "files": [
+   "css/shared/results.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-310",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-310",
+  "files": [
+   "js/shared/word-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "PAN-04",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence PAN-04",
+  "files": [
+   "js/core/voice.js",
+   "js/cook/flow.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "PAN-22",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence PAN-22",
+  "files": [
+   "js/cook/mechanics/fetch.js",
+   "js/cook/coach.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-102",
+  "kind": "Teaching",
+  "game": "chai",
+  "probe": "evidence CHAI-102",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/shared/onboard.js",
+   "js/cook/station-lib.js"
+  ],
+  "status": "cannot-probe",
+  "judge": "human",
+  "note": "only Zafar can judge it: the dotted-word lesson lights a dotted word on screen at every level, after the order has landed"
+ },
+ {
+  "row": "CHAI-34",
+  "kind": "Art",
+  "game": "chai",
+  "probe": "evidence CHAI-34",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "data/stations/chai-tray.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-08",
+  "kind": "Art",
+  "game": "chai",
+  "probe": "evidence CHAI-08",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "data/stations/chai-tray.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-35",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-35",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/shared/onboard.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-36",
+  "kind": "Teaching",
+  "game": "chai",
+  "probe": "evidence CHAI-36",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/shared/onboard.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-38",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-38",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-39",
+  "kind": "Kutchi",
+  "game": "chai",
+  "probe": "evidence CHAI-39",
+  "files": [
+   "js/cook/order.js",
+   "data/cook.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-42",
+  "kind": "Teaching",
+  "game": "chai",
+  "probe": "evidence CHAI-42",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-48",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence CHAI-48",
+  "files": [
+   "js/shared/request-popup.js",
+   "js/cook/ui.js",
+   "js/cook/stations.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-49",
+  "kind": "Teaching",
+  "game": "chai",
+  "probe": "evidence CHAI-49",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-54",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-54",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-56",
+  "kind": "Teaching",
+  "game": "chai",
+  "probe": "evidence CHAI-56",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "build/sandbox/lib/contract-s14.mjs"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-57",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-57",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/cook/mechanics/boil.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-12",
+  "kind": "Teaching",
+  "game": "daar",
+  "probe": "evidence DAAR-12",
+  "files": [
+   "js/cook/stations/daar.js",
+   "js/cook/mechanics/stir.js",
+   "data/stations/daar.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-36",
+  "kind": "Logic",
+  "game": "daar",
+  "probe": "evidence DAAR-36",
+  "files": [
+   "js/cook/stations/daar.js",
+   "js/cook/stations/chop.js",
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-37",
+  "kind": "Logic",
+  "game": "daar",
+  "probe": "evidence DAAR-37",
+  "files": [
+   "js/cook/stations/chop.js",
+   "data/stations/chop.json",
+   "assets/art/chop/lasan.whole.r1.webp"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-38",
+  "kind": "Logic",
+  "game": "daar",
+  "probe": "evidence DAAR-38",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-39",
+  "kind": "Teaching",
+  "game": "daar",
+  "probe": "evidence DAAR-39",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-40",
+  "kind": "Logic",
+  "game": "daar",
+  "probe": "evidence DAAR-40",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/stations/daar.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-41",
+  "kind": "Teaching",
+  "game": "daar",
+  "probe": "evidence DAAR-41",
+  "files": [
+   "js/cook/stations/daar.js",
+   "js/cook/coach.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-43",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-43",
+  "files": [
+   "js/cook/stations/daar.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-44",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-44",
+  "files": [
+   "js/cook/stations/daar.js",
+   "js/cook/ui.js",
+   "js/shared/order-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-45",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-45",
+  "files": [
+   "js/cook/mechanics/stir.js",
+   "js/cook/stations/daar.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-03",
+  "kind": "Teaching",
+  "game": "daar",
+  "probe": "evidence DAAR-03",
+  "files": [
+   "js/cook/mechanics/stir.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-46",
+  "kind": "Teaching",
+  "game": "daar",
+  "probe": "evidence DAAR-46",
+  "files": [
+   "js/cook/mechanics/stir.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-47",
+  "kind": "HisCall",
+  "game": "daar",
+  "probe": "evidence DAAR-47",
+  "files": [
+   "js/cook/stations/daar.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-54",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-54",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-57",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-57",
+  "files": [
+   "js/cook/stations/daar.js",
+   "js/cook/stations/chop.js",
+   "js/cook/mechanics/chop.js",
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-58",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-58",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-61",
+  "kind": "Logic",
+  "game": "chop",
+  "probe": "evidence DAAR-61",
+  "files": [
+   "js/cook/stations/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-62",
+  "kind": "Look",
+  "game": "chop",
+  "probe": "evidence DAAR-62",
+  "files": [
+   "js/cook/stations/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-63",
+  "kind": "Teaching",
+  "game": "chop",
+  "probe": "evidence DAAR-63",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-65",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-65",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "DAAR-66",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence DAAR-66",
+  "files": [
+   "js/cook/stations/daar.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SEK-22",
+  "kind": "Look",
+  "game": "sekelo",
+  "probe": "evidence SEK-22",
+  "files": [
+   "js/cook/mechanics/thread.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SEK-25",
+  "kind": "Logic",
+  "game": "sekelo",
+  "probe": "evidence SEK-25",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/order.js",
+   "js/cook/mechanics/thread.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SEK-26",
+  "kind": "Look",
+  "game": "sekelo",
+  "probe": "evidence SEK-26",
+  "files": [
+   "js/cook/mechanics/grill.js",
+   "js/cook/mechanics/thread.js",
+   "js/cook/grill-kit.js",
+   "data/stations/mishkaki-grill.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SAM-30",
+  "kind": "Teaching",
+  "game": "samosa",
+  "probe": "evidence SAM-30",
+  "files": [
+   "js/cook/stations/samosa.js",
+   "js/cook/coach.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SAM-31",
+  "kind": "Logic",
+  "game": "samosa",
+  "probe": "evidence SAM-31",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SAM-34",
+  "kind": "Look",
+  "game": "samosa",
+  "probe": "evidence SAM-34",
+  "files": [
+   "js/cook/stations/samosa.js",
+   "data/stations/samosa.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SAM-36",
+  "kind": "Logic",
+  "game": "samosa",
+  "probe": "evidence SAM-36",
+  "files": [
+   "js/cook/serve.js",
+   "js/cook/flow.js",
+   "data/cook.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SEK-31",
+  "kind": "Look",
+  "game": "sekelo",
+  "probe": "evidence SEK-31",
+  "files": [
+   "js/cook/mechanics/grill.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SEK-32",
+  "kind": "Look",
+  "game": "sekelo",
+  "probe": "evidence SEK-32",
+  "files": [
+   "js/cook/mechanics/grill.js",
+   "js/cook/mechanics/thread.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SAM-42",
+  "kind": "Teaching",
+  "game": "samosa",
+  "probe": "evidence SAM-42",
+  "files": [
+   "js/cook/stations/samosa.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SAM-43",
+  "kind": "Look",
+  "game": "samosa",
+  "probe": "evidence SAM-43",
+  "files": [
+   "js/cook/stations/samosa.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SAM-45",
+  "kind": "Look",
+  "game": "samosa",
+  "probe": "evidence SAM-45",
+  "files": [
+   "js/cook/stations/samosa.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "MAA-19",
+  "kind": "Teaching",
+  "game": "maani-line",
+  "probe": "evidence MAA-19",
+  "files": [
+   "js/cook/stations/maani-line.js",
+   "js/cook/coach.js",
+   "data/cook.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "MAA-21",
+  "kind": "Logic",
+  "game": "maani-line",
+  "probe": "evidence MAA-21",
+  "files": [
+   "js/cook/mechanics/roll.js",
+   "js/cook/stations/maani-line.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "MAA-22",
+  "kind": "Logic",
+  "game": "maani-line",
+  "probe": "evidence MAA-22",
+  "files": [
+   "js/cook/stations/maani-line.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "MAA-23",
+  "kind": "Teaching",
+  "game": "maani-line",
+  "probe": "evidence MAA-23",
+  "files": [
+   "js/cook/stations/maani-line.js",
+   "js/shared/word-moment.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "MAA-26",
+  "kind": "Logic",
+  "game": "maani-line",
+  "probe": "evidence MAA-26",
+  "files": [
+   "js/cook/stations/maani-line.js",
+   "js/shared/serve.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "MAA-27",
+  "kind": "Look",
+  "game": "maani-line",
+  "probe": "evidence MAA-27",
+  "files": [
+   "js/cook/stations/maani-line.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHT-13",
+  "kind": "Art",
+  "game": "chaat",
+  "probe": "evidence CHT-13",
+  "files": [
+   "js/cook/mechanics/assemble.js",
+   "assets/art/chaat/"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHT-18",
+  "kind": "Teaching",
+  "game": "chaat",
+  "probe": "evidence CHT-18",
+  "files": [
+   "js/cook/mechanics/assemble.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHT-20",
+  "kind": "Logic",
+  "game": "chaat",
+  "probe": "evidence CHT-20",
+  "files": [
+   "js/cook/mechanics/assemble.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-59",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence CK-59",
+  "files": [
+   "js/cook/words.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-06",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CK-06",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-53",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence CK-53",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/dom.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-54",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence CK-54",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-61",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-61",
+  "files": [
+   "js/cook/stations/corn.js",
+   "js/cook/coach.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-62",
+  "kind": "Look",
+  "game": "eggs",
+  "probe": "evidence CK-62",
+  "files": [
+   "js/cook/ui.js",
+   "data/stations/eggs.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-63",
+  "kind": "Look",
+  "game": "eggs",
+  "probe": "evidence CK-63",
+  "files": [
+   "js/cook/stations/eggs.js",
+   "js/cook/coach.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-64",
+  "kind": "Logic",
+  "game": "eggs",
+  "probe": "evidence CK-64",
+  "files": [
+   "data/cook.json",
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-72",
+  "kind": "Teaching",
+  "game": "baking",
+  "probe": "evidence CK-72",
+  "files": [
+   "js/cook/stations/baking.js",
+   "data/stations/baking.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-77",
+  "kind": "Look",
+  "game": "eggs",
+  "probe": "evidence CK-77",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-104",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-104",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-113",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence CK-113",
+  "files": [
+   "js/cook/stations.js",
+   "js/shared/onboard.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-114",
+  "kind": "Logic",
+  "game": "eggs",
+  "probe": "evidence CK-114",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-116",
+  "kind": "Kutchi",
+  "game": "baking",
+  "probe": "evidence CK-116",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-117",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-117",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-118",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-118",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-119",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-119",
+  "files": [
+   "js/cook/stations/corn.js",
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-120",
+  "kind": "Look",
+  "game": "eggs",
+  "probe": "evidence CK-120",
+  "files": [
+   "js/cook/ui.js",
+   "js/shared/fit.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-122",
+  "kind": "Look",
+  "game": "eggs",
+  "probe": "evidence CK-122",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-123",
+  "kind": "Look",
+  "game": "eggs",
+  "probe": "evidence CK-123",
+  "files": [
+   "js/cook/stations/eggs.js",
+   "data/stations/eggs.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-124",
+  "kind": "Look",
+  "game": "eggs",
+  "probe": "evidence CK-124",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-125",
+  "kind": "Logic",
+  "game": "eggs",
+  "probe": "evidence CK-125",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-126",
+  "kind": "Logic",
+  "game": "eggs",
+  "probe": "evidence CK-126",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-127",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-127",
+  "files": [
+   "js/cook/flow.js",
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-128",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-128",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-129",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-129",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-130",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-130",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-131",
+  "kind": "Logic",
+  "game": "corn",
+  "probe": "evidence CK-131",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-133",
+  "kind": "Look",
+  "game": "baking",
+  "probe": "evidence CK-133",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-134",
+  "kind": "Look",
+  "game": "baking",
+  "probe": "evidence CK-134",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-135",
+  "kind": "Look",
+  "game": "baking",
+  "probe": "evidence CK-135",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-136",
+  "kind": "Look",
+  "game": "baking",
+  "probe": "evidence CK-136",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-311",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-311",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-312",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-312",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-313",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-313",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
  },
  {
   "row": "SH-314",
@@ -47,48 +2025,577 @@
   "hand": true
  },
  {
-  "row": "SH-224",
-  "kind": "Logic",
-  "game": "other",
-  "status": "open",
-  "probe": "evidence SH-224 (cmd: grep -c fonts.googleapis.com cook.html, expect !pass)",
-  "red": "5847536+: grep finds 1 Google Fonts link in cook.html (also clinic, day, dress, index, lab, snap, tidy, who.html)",
-  "green": "not green",
-  "judge": "machine",
+  "row": "SH-315",
+  "kind": "Check",
+  "game": "eggs",
+  "probe": "evidence SH-315",
   "files": [
-   "cook.html"
+   "data/stations/eggs.json"
   ],
-  "note": "partly built (chai and the tokens host Lora): cook.html and the other pages still load Google fonts; the row waits for the roll-out.",
-  "hand": true
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
  },
  {
-  "row": "SH-151",
+  "row": "SH-316",
   "kind": "Check",
   "game": "other",
-  "status": "open",
-  "probe": "evidence SH-151 (cmd: node build/lint/static.mjs)",
-  "red": "5847536: static lint 0 new findings but 490 known token findings and 221 font face names outside the tokens in 37 files of the other games (warn only)",
-  "green": "not green: the lint only warns",
+  "status": "proven",
+  "probe": "evidence SH-316 (cmd: node build/check_stamps.mjs labs.html)",
+  "red": "934f5fa~1 (worktree): node build/check_stamps.mjs labs.html -> exit 1, UNSTAMPED /js/core/progress.js and /js/core/wallet.js",
+  "green": "5847536 (today head 48003532 code): STAMP CHECK PASSED, 24 requests, 0 unstamped",
   "judge": "machine",
   "files": [
-   "build/lint/static.mjs"
+   "labs.html"
   ],
-  "note": "the kit reads the type roles, but the other modes still name faces and colours outside the tokens; the lint passes only because it warns until the roll-out.",
+  "note": "fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today.",
   "hand": true
  },
  {
-  "row": "SH-226",
+  "row": "SH-317",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence SH-317",
+  "files": [
+   "js/shared/fade-guard.js",
+   "js/shared/app.js",
+   "css/shared/app.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CLN-206",
+  "kind": "Logic",
+  "game": "clinic",
+  "probe": "evidence CLN-206",
+  "files": [
+   "js/clinic/heal/games/eye.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-28",
+  "kind": "Check",
+  "game": "chai",
+  "probe": "evidence ART-28",
+  "files": [
+   "build/reports/s14-chai.md"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "PRC-06",
+  "kind": "Check",
+  "game": "other",
+  "probe": "evidence PRC-06",
+  "files": [
+   "build/sandbox/data/evidence.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-31",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-31",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-58",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-58",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "data/stations/chai-tray.json",
+   "js/cook/mechanics/boil.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-61",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-61",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "js/cook/mechanics/boil.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-62",
+  "kind": "Logic",
+  "game": "chai",
+  "probe": "evidence CHAI-62",
+  "files": [
+   "js/shared/order-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-64",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-64",
+  "files": [
+   "js/cook/mechanics/pour.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-65",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-65",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-66",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-66",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-109",
+  "kind": "Look",
+  "game": "chai",
+  "probe": "evidence CHAI-109",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-110",
+  "kind": "Teaching",
+  "game": "chai",
+  "probe": "evidence CHAI-110",
+  "files": [
+   "js/cook/stations/chai-tray.js",
+   "data/cook.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CHAI-112",
+  "kind": "Teaching",
+  "game": "chai",
+  "probe": "evidence CHAI-112",
+  "files": [
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-221",
   "kind": "Logic",
   "game": "other",
-  "status": "open",
-  "probe": "evidence SH-226 (cmd: node build/test_shared_sfx_files.mjs)",
-  "red": "none shown (the chai part was built 6 Nov in 4022e001c)",
-  "green": "5847536: test_shared_sfx_files pass (chai sounds sourced and licensed)",
+  "status": "proven",
+  "probe": "evidence SH-221 (cmd: node build/test_shared_sfx_calls.mjs)",
+  "red": "mutation in a worktree of 5847536: js/shared/buttons.js Sfx.play(\"tap\") put back to Sfx.tap() -> not ok 2, Sfx.tap is not a method sfx.js has (the fix predates the repo history, 8 Nov)",
+  "green": "5847536: node build/test_shared_sfx_calls.mjs pass 3 fail 0",
   "judge": "machine",
   "files": [
-   "js/shared/sfx.js"
+   "js/shared/buttons.js"
   ],
-  "note": "chai part built and green; the row is to fix: code for every other game (waits for the frame).",
+  "note": "the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back.",
   "hand": true
+ },
+ {
+  "row": "SH-122",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-122",
+  "files": [
+   "js/shared/frame.js",
+   "js/cook/flow.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-19",
+  "kind": "Teaching",
+  "game": "day",
+  "probe": "evidence SH-19",
+  "files": [
+   "js/day/door.js",
+   "js/day/day.js",
+   "js/day/book-play.js",
+   "js/clinic/heal/games/eye.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-183",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-183",
+  "files": [
+   "js/cook/stations.js",
+   "js/cook/stations/chai-tray.js",
+   "js/cook/stations/eggs.js",
+   "js/cook/stations/maani-line.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-185",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-185",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/tokens.css",
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-186",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-186",
+  "files": [
+   "js/shared/conversations.js",
+   "css/shared/conversations.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-187",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-187",
+  "files": [
+   "js/shared/conversations.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-188",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-188",
+  "files": [
+   "css/shared/conversations.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-191",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-191",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/order-card.css",
+   "js/shared/order-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-193",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-193",
+  "files": [
+   "js/shared/order-card.js",
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-194",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-194",
+  "files": [
+   "js/shared/order-card.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-252",
+  "kind": "Kutchi",
+  "game": "kit",
+  "probe": "evidence SH-252",
+  "files": [
+   "js/cook/flow.js",
+   "js/cook/ui.js",
+   "js/cook/kitchen-kit.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-256",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-256",
+  "files": [
+   "js/cook/stations/samosa.js",
+   "js/cook/stations/eggs.js",
+   "js/cook/stations/baking.js",
+   "js/cook/stations/maani-line.js",
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-83",
+  "kind": "Look",
+  "game": "chaat",
+  "probe": "evidence CK-83",
+  "files": [
+   "js/cook/mechanics/chop.js",
+   "js/cook/mechanics/assemble.js",
+   "data/stations/chaat.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-84",
+  "kind": "Look",
+  "game": "baking",
+  "probe": "evidence CK-84",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-85",
+  "kind": "Look",
+  "game": "chaat",
+  "probe": "evidence CK-85",
+  "files": [
+   "data/stations/chaat.json"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-261",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-261",
+  "files": [
+   "js/shared/onboard.js",
+   "js/cook/stations.js",
+   "js/cook/coach.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-264",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence SH-264",
+  "files": [
+   "js/shared/wrong-order.js",
+   "js/cook/stations/chai-tray.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-265",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-265",
+  "files": [
+   "js/shared/wrong-order.js",
+   "js/shared/serve.js",
+   "js/cook/ui.js",
+   "css/shared/order-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-266",
+  "kind": "Logic",
+  "game": "kit",
+  "probe": "evidence SH-266",
+  "files": [
+   "js/shared/wrong-order.js",
+   "js/shared/serve.js",
+   "js/cook/kitchen-kit.js",
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "SH-267",
+  "kind": "Teaching",
+  "game": "kit",
+  "probe": "evidence SH-267",
+  "files": [
+   "js/cook/ui.js",
+   "js/shared/word-card.js",
+   "css/shared/word-card.css"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-86",
+  "kind": "Look",
+  "game": "corn",
+  "probe": "evidence CK-86",
+  "files": [
+   "js/cook/mechanics/grill.js",
+   "js/cook/stations/corn.js",
+   "js/cook/stations/mishkaki-grill.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-79",
+  "kind": "Look",
+  "game": "daar",
+  "probe": "evidence CK-79",
+  "files": [
+   "js/cook/stations/daar.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-80",
+  "kind": "Teaching",
+  "game": "corn",
+  "probe": "evidence CK-80",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-90",
+  "kind": "Logic",
+  "game": "corn",
+  "probe": "evidence CK-90",
+  "files": [
+   "js/cook/stations/corn.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "CK-91",
+  "kind": "Look",
+  "game": "kit",
+  "probe": "evidence CK-91",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-78",
+  "kind": "Art",
+  "game": "kit",
+  "probe": "evidence ART-78",
+  "files": [
+   "assets/cook/items/v4/kit/tray-stone.webp"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
+ },
+ {
+  "row": "ART-79",
+  "kind": "Check",
+  "game": "kit",
+  "probe": "evidence ART-79",
+  "files": [
+   "build/tools/art/artuse.mjs"
+  ],
+  "status": "built",
+  "judge": "machine",
+  "note": "queued: its spec is in the run that is playing now"
  }
 ]
