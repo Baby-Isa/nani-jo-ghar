@@ -53,7 +53,7 @@ const browser = await launch();
 const res = [];
 try {
   for (const level of levels) for (const size of sizes) {
-    const page = await newPage(browser, size);
+    const { page } = await newPage(browser, size);
     const rec = { note() {}, pend() {}, async state() {}, stop(m) { throw new Error(m); } };
     await page.goto(`${BASE}/cook.html?speed=3`, { waitUntil: "load" });
     await page.evaluate(() => localStorage.clear());
