@@ -550,12 +550,55 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
     return B.y + B.h - 4;
   };
   /**
+   * DAAR-59: the room (design px) the row's widest word pill takes at the row's scale, with the gap the kit keeps between pills
+   * (Kit.fitPills' measure: Shelf.pillWant, the kit's text floor, Shelf.pillGap), each pill measured as the kit draws it.
+   */
+  // (the kit's chip measures a face with the shelf's 48 px pad but draws its word in a card 52 px wider than the word (Kit.chip's pad):
+  // a card the measured face's width shrank every word by 4 px; its own face's card is 4 px wider, needs fix-kit to make them one)
+  const PAD_FIX = 4;
+  function pillRoomOf(z, S, ids) {
+    const Sh = global.Shelf;
+    if (!Sh || !Sh.pillWant || !Cook.Kit || !Cook.Kit.chip) return null;
+    let ppw = 1;
+    try {
+      ppw = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+    } catch (e) {
+      ppw = 1;
+    }
+    const P = Sh.PILL || { text: 25 };
+    const want = Math.max(Sh.pillWant(ppw), Cook.Kit.textFloor ? Cook.Kit.textFloor(S, P.text) : 1);
+    let widest = 0;
+    const faces = {};
+    const room = {};
+    ids.forEach((id) => {
+      const word = Cook.chipWord(id, z.ctx);
+      if (!word) return;
+      const c = Cook.Kit.chip(S, id, -9999, -9999, { word, w: null }); // (w null: its own face's width; the kit's default is a fixed 128)
+      faces[id] = c.faceW(c.showsWord);
+      widest = Math.max(widest, faces[id]);
+      c.destroy();
+    });
+    const gap = Sh.pillGap(ppw);
+    room.faces = faces;
+    // (does the row keep its scale with each pill its own face? every neighbouring pair fits side by side, Shelf.pillScale's own rule)
+    room.fits = (xs) => xs.every((x, i) => i === 0 || z.L(x.at - xs[i - 1].at) - gap >= (want * ((faces[x.id] || 0) + (faces[xs[i - 1].id] || 0))) / 2 - 0.5);
+    room.px = widest ? ((widest + PAD_FIX) * want + gap) / z.L(1) + 12 : 0; // (+12: the slot's margin the pills are fitted in, fitPills' slotW)
+    return room;
+  }
+  /**
    * The shelf: the shared kit's slots on one line (piece 9, js/shared/shelf.js Shelf.slots: centred on the band's free span,
    * left to right), each item by its size class (St.classFit, ART-51), a pill under each (the kit's chip, piece 10). left/right:
    * the band's free span. (Was daar's own copy of the slot sums and the old fit.)
    */
   function shelf(z, S, ids, level, { left = 40, right = 1410 } = {}) {
-    const L = global.Shelf.slots([ids], { span: [left, right], pitch: PITCH, groupGap: 0 });
+    // DAAR-59 (the Fable eye judge for Zafar, decision 38: "'laal marcha' about a third its neighbours' size"; SH-219, one scale for the
+    // row): each slot room enough for the widest pill at the row's scale (Shelf.slots pillRoom: the row widens evenly to the view's
+    // margins where it must), so no long word is capped narrower than its slot and shrunk alone; the pitch stays even (DAAR-58)
+    // (where the row has no room for that, L4's eight bowls on a phone, its pills stay as they were, a fixed card: one smaller word
+    // or every word smaller is Zafar's call, run16's question)
+    const room = pillRoomOf(z, S, ids);
+    const L = global.Shelf.slots([ids], { span: [left, right], pitch: PITCH, groupGap: 0, pillRoom: room ? room.px : 0 });
+    const ownFace = !!room && room.fits(ids.map((id) => ({ id, at: L.x[id] })));
     const pitch = L.slotW;
     // (the stone shelf the jars stand on is the band's own: St.stoneBand's base, as chai's; was a grey plank line)
     // (CSS px per design px, for the classes' 40 CSS px floor: the frame's answer)
@@ -584,9 +627,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.8), height: z.L(16) });
       } else img = S.ingredient(id, z.X(x), z.Y(BASE - 56), { w: z.L(110), h: z.L(100), label: false, depth: D.item + 1 });
       img.wordId = id;
-      // DAAR-59 (the Fable eye judge for Zafar, decision 38: "'laal marcha' about a third its neighbours' size"): each pill as wide as its
-      // own face, as chai's (SH-219: one scale for the row, Kit.fitPills below); a fixed width shrank a long word's text inside it
-      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: Cook.chipWord(id, z.ctx) });
+      // DAAR-59 (the Fable eye judge for Zafar, decision 38: "'laal marcha' about a third its neighbours' size"): where the row has room,
+      // each pill as wide as its own face (w null; the kit's default is a fixed 128 card, which shrank a long word's text inside it)
+      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), Object.assign({ word: Cook.chipWord(id, z.ctx) }, ownFace && room.faces[id] ? { w: room.faces[id] + PAD_FIX } : { w: Math.min(128, pitch - 12) }));
       chip.setScale(z.k);
       img.chip = chip;
       items[id] = img;

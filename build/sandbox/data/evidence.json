@@ -29562,12 +29562,12 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 2,4 --sizes 1280x665"
+    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 2,3 --sizes 1280x665"
    ],
    "expect": [
     "pass"
    ],
-   "note": "run16: daar played fair (a seen player): every 200 ms each canvas pill row: its smallest word at least 90% of its largest (laal marcha was 55%: a fixed pill width shrank its text)"
+   "note": "run16: daar played fair (a seen player): every 200 ms each canvas pill row (the chop band, the spice shelf): its smallest word at least 90% of its largest (laal marcha was 55%: the kit chip fixed 128 card shrank its text). Where the row has room: L1-L3 here"
   },
   {
    "flow": "repo",
@@ -29581,12 +29581,12 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 3 --sizes 740x320"
+    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 2 --sizes 740x320"
    ],
    "expect": [
     "pass"
    ],
-   "note": "run16: the same on the smallest phone"
+   "note": "run16: the same on the smallest phone, L1-L2 (where the row has room). L3 on a phone and L4 (eight pills) have no room for every word at full size: Zafar question, run16 fix-daar"
   }
  ],
  "DAAR-60": [

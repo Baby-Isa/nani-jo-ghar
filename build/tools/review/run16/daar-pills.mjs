@@ -31,7 +31,7 @@ const SAMPLER = () => {
         const t = c.parts.find((p) => p.type === "Text");
         const m = c.getWorldTransformMatrix();
         const sc = Math.hypot(m.a, m.b);
-        return { word: t ? t.text : "", y: Math.round(m.ty * css), px: t ? 25 * Math.abs(t.scaleX) * sc * css : null };
+        return { word: t ? t.text : "", y: Math.round(m.ty * css), px: t ? 25 * Math.abs(t.scaleX) * sc * css : null, dbg: `x${Math.round(m.tx)} cap${Math.round(c.capW)} card${Math.round(c.cardW)} face${Math.round(c.faceW(true))} k${sc.toFixed(2)}` };
       }).filter((p) => p.px);
       // rows: pills within 12 css px of each other's height
       const rows = [];
@@ -41,7 +41,7 @@ const SAMPLER = () => {
         const lo = r.reduce((a, b) => (b.px < a.px ? b : a)), hi = r.reduce((a, b) => (b.px > a.px ? b : a));
         const ratio = lo.px / hi.px;
         W.__pills.n++;
-        if (!W.__pills.worst || ratio < W.__pills.worst.ratio) W.__pills.worst = { ratio: Math.round(ratio * 100) / 100, small: `${lo.word} ${lo.px.toFixed(1)}px`, big: `${hi.word} ${hi.px.toFixed(1)}px`, row: r.map((p) => `${p.word}:${p.px.toFixed(1)}`).join(" "), phase: W.Cook.daarPhase || "" };
+        if (!W.__pills.worst || ratio < W.__pills.worst.ratio) W.__pills.worst = { ratio: Math.round(ratio * 100) / 100, small: `${lo.word} ${lo.px.toFixed(1)}px`, big: `${hi.word} ${hi.px.toFixed(1)}px`, row: r.map((p) => `${p.word}:${p.px.toFixed(1)}`).join(" "), dbg: r.map((p) => `${p.word}[${p.dbg}]`).join(" "), phase: W.Cook.daarPhase || "" };
       }
     } catch (e) { W.__pills.err = String(e); }
   };

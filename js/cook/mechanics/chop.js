@@ -345,16 +345,56 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
        * kind's place on the band, to the same height as before. Off without it (chaat's wood board, the Chop tile's marble).
        */
       const shelfAt = {};
+      // DAAR-59: the room (design px) the band's widest word pill takes at the row's scale, with the kit's gap between pills
+      // (Kit.fitPills' own measure: Shelf.pillWant, the kit's text floor, Shelf.pillGap)
+      // (the kit's chip measures a face with the shelf's 48 px pad but draws its word in a card 52 px wider than the word (Kit.chip's pad):
+      // a card the measured face's width shrank every word by 4 px; its own face's card is 4 px wider, needs fix-kit to make them one)
+      const PAD_FIX = 4;
+      function bandPillRoom(ids) {
+        const Sh = global.Shelf;
+        if (!Sh || !Sh.pillWant || !Cook.Kit || !Cook.Kit.chip) return null;
+        let ppw = 1;
+        try {
+          ppw = UI.worldToScreen(1, 0).x - UI.worldToScreen(0, 0).x || 1;
+        } catch (e) {
+          ppw = 1;
+        }
+        const want = Math.max(Sh.pillWant(ppw), Cook.Kit.textFloor ? Cook.Kit.textFloor(S, (Sh.PILL || { text: 25 }).text) : 1);
+        let widest = 0;
+        const faces = {};
+        const room = {};
+        ids.forEach((id) => {
+          const word = Cook.chipWord ? Cook.chipWord(id, ctx) : true;
+          if (!word) return;
+          const c = Cook.Kit.chip(S, id, -9999, -9999, { word, w: null }); // (w null: its own face's width; the kit's default is a fixed 128)
+          faces[id] = c.faceW(c.showsWord);
+          widest = Math.max(widest, faces[id]);
+          c.destroy();
+        });
+        const gap = Sh.pillGap(ppw);
+        room.faces = faces;
+        // (does the row keep its scale with each pill its own face? every neighbouring pair fits side by side, Shelf.pillScale's own rule)
+        room.fits = (xs) => xs.every((x, i) => i === 0 || z.L(x.at - xs[i - 1].at) - gap >= (want * ((faces[x.id] || 0) + (faces[xs[i - 1].id] || 0))) / 2 - 0.5);
+        room.px = widest ? ((widest + PAD_FIX) * want + gap) / z.L(1) + 12 : 0; // (+12: the slot's margin the pills are fitted in, fitPills' slotW)
+        return room;
+      }
       if (band && !HOP) {
         const kinds = Cook.shuffle([...new Set(rounds.flatMap((r) => r.kinds))]);
-        const SL = global.Shelf && global.Shelf.slots ? global.Shelf.slots([kinds], { span: [150, 1450], pitch: 180, groupGap: 0 }) : null;
+        // DAAR-59 (the Fable eye judge for Zafar, decision 38, daar L4: "'laal marcha' about a third its neighbours' size"; SH-219's pill
+        // rule, one scale for the row): each slot room for the row's widest pill where the band has it (Shelf.slots pillRoom), and then
+        // each pill as wide as its own face (was a fixed 128 card, so a long word shrank inside it)
+        const room = bandPillRoom(kinds);
+        const SL = global.Shelf && global.Shelf.slots ? global.Shelf.slots([kinds], { span: [150, 1450], pitch: 180, groupGap: 0, pillRoom: room ? room.px : 0 }) : null;
+        // (where the band has no room for it, its pills stay as they were, a fixed card: one smaller word or every word smaller is
+        // Zafar's call, run16's question)
+        const ownFace = !!SL && !!room && room.fits(kinds.map((id) => ({ id, at: SL.x[id] })));
         kinds.forEach((id, i) => {
           const x = SL ? SL.x[id] : 150 + ((i + 0.5) * 1300) / kinds.length;
           const key = texFor(id);
           const img = S.track(S.add.image(z.X(x), z.Y(band.base), key).setOrigin(0.5, 1).setDepth(D.item));
           img.setScale(S.fitScale(key, z.L(Math.min(130, (SL ? SL.slotW : 160) - 30)), z.L(band.h || 130)));
           if (S.contactShadow) img.shadow = S.contactShadow(img, { centerX: img.x, centerY: z.Y(band.base - 4), width: img.displayWidth * 0.8, height: z.L(16) });
-          const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(x), z.Y(band.chipY), { word: Cook.chipWord ? Cook.chipWord(id, ctx) : true, w: 128 }) : null;
+          const chip = Cook.Kit && Cook.Kit.chip ? Cook.Kit.chip(S, id, z.X(x), z.Y(band.chipY), Object.assign({ word: Cook.chipWord ? Cook.chipWord(id, ctx) : true }, ownFace && room.faces[id] ? { w: room.faces[id] + PAD_FIX } : { w: 128 })) : null;
           if (chip && chip.setScale) chip.setScale(z.k);
           shelfAt[id] = { x, y: band.base - (img.displayHeight / z.k) / 2, img, chip };
         });
