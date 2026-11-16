@@ -1459,5 +1459,101 @@
   "reason": "A, frame 11 (64.3 s, L1 1280x665) Dada's face circle sits inside the lit box's top-left corner, on the tray's own corner and touching the first naan, and frame 12 (66.2 s) still has it on the tray's corner, not beside it; B frames 11-12 (740x320) show it clear beside the tray and both frame 13s show it beside the tray in the oven, so only the laptop size fails; L2-L4 have no pictures (contract text only) and the returning jar crossing the jug is not captured",
   "panel": "tiers-green-1cac7a8962/CK-100.png panel A",
   "file": "build/reports/run16/judge/fix-stove/tiers-green-1cac7a8962/batch-01.verdicts.md"
+ },
+ {
+  "row": "SH-310",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): neither panel shows an order row with item cards. A (1280x665) and B (740x320) are the #side column at life:stage-end holding only Nani's \"Shabash!\" bubble and Nana's order line \"Muke maani khapeti.\" with a tick; the item cards the row names ('ba nindhi maani' beside 'hakri wadhi maani') are not in the crop, so their word size and level across a row cannot be compared. The .md has no text capture or expect result measuring the cards' font sizes either. Needs a crop of the item-card row itself (maani L4 740x320 at well done, the row's own state), then the other kitchen games, levels and sizes. No flaws seen in what is shown: no clipping, overlap or English.",
+  "panel": "r16pb-fix/SH-310.png",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-01.verdicts.md"
+ },
+ {
+  "row": "SH-308",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "PASS",
+  "status": "proven",
+  "judge": "PASS",
+  "reason": "D, eggs L4 at 740x320 shows all three rows folded, each with its gold tick, all inside the panel under \"Shabash!\"; L the same for maani L4 (Nana's one row folded and ticked), B and J the same at L1. Not shown: sekelo at well done (E-H are caught at a stage-end with no \"Shabash!\", the headline still \"Grill them.\"/\"Firai!\", Nana's row open with its cards and at L4 running off the panel's bottom: re-probe sekelo at its real well done before trusting \"every game\"); the other kitchen games; L2-L3; the three larger sizes, including the 1280x665 the row names for eggs",
+  "panel": "r16pb-fix/SH-308.png panel D",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-02.verdicts.md"
+ },
+ {
+  "row": "DAAR-62",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "FAIL",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "C, chop L4 at 740x320: the \"Shabash!\" bubble sits wholly off the board, on the marble to its left against the side panel, and Nani's face circle straddles the board's left edge and covers half of the round white dish beside it (D the same, closer). A/B at L1 are fine: face on the bottom-left corner, bubble on bare wood, clear of the onion halves. 1280x665, the size the row names, is not shown",
+  "panel": "r16pb-fix/DAAR-62.png panel C",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-02.verdicts.md"
+ },
+ {
+  "row": "SEK-31",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): no praise face circle and no \"Shabash!\" bubble in any of A-D; the probe's stage-end is before well done (headline still \"Grill them.\"/\"Firai!\", in A and C the skewer still on the coals), so the face's size and place and the bubble's place cannot be judged; one size only",
+  "panel": "r16pb-fix/SEK-31.png",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-02.verdicts.md"
+ },
+ {
+  "row": "SEK-32",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): the sheet is two 740x320 shots at a stage-end before well done (no \"Shabash!\", headline \"Grill them.\"); it shows no 'tameto' pill, no 'bataato' pill and no end review, and the bottom tray at well done is not shown (A: a bare slab while the skewer is still on the grill). Seen only: A, the steel tray just clear of the settings button; B, three skewers on the bottom tray at L4, each still only about a quarter of the tray's width",
+  "panel": "r16pb-fix/SEK-32.png",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-02.verdicts.md"
+ },
+ {
+  "row": "SAM-45",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): no praise face and no \"Shabash!\" bubble in A or B (headline a faded \"Tar!\"), so the bubble's place beside the face, away from the slotted spoon, is not shown. The tray half is met in what is shown: A two samosas on thalis, B six. Flaw off the point: B, the side panel's order row is open with \"trae samosa\" printed twice and its cards fading out at the panel's bottom. One size only",
+  "panel": "r16pb-fix/SAM-45.png",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-02.verdicts.md"
+ },
+ {
+  "row": "CHT-20",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): A-D show no bowl at all: the stage-end shots are one word card (chano, bataato) on blank marble with the order's slots still empty and the headline \"Make the bowl, in order.\", so the built bowl's layers at well done are not shown and the served bowls in E and F (E chickpeas only; F chickpeas with a pink centre, no sev or chutney seen) have nothing to be matched against. One size only",
+  "panel": "r16pb-fix/CHT-20.png",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-02.verdicts.md"
+ },
+ {
+  "row": "CK-118",
+  "branch": "run16/probes-built",
+  "kind": "eye",
+  "commit": "99e87f8",
+  "verdict": "PASS",
+  "status": "proven",
+  "judge": "PASS",
+  "reason": "C, corn L4 at 740x320 with two people: each plate holds an upright, chopped cob that fills the plate's height and sits inside its rim, the owner's face circle at the tray's bottom-left corner clear of the cob; A the same for Nana's plate at L3. Not shown: any measure against today's cob area (no before picture). Flaws: A, the second person's tray is empty at L3 though her row is ticked; B and D, the stage crops are washed out and show no trays or cobs",
+  "panel": "r16pb-fix/CK-118.png panel C",
+  "file": "build/reports/run16/judge/probes-built/r16pb-fix/batch-02.verdicts.md"
  }
 ]

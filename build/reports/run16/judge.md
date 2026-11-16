@@ -6,18 +6,18 @@ verdict files, one per batch, are under `build/reports/run16/judge/<branch>/<run
 ## Flaws first
 
 1. **Builders' eye rows: 0 pass of 7 judged.** Only fix-kit (one batch) and fix-stove (five) pushed judge batches. fix-daar, fix-samosa and fix-chai pushed none, so their needs-eye rows are unjudged (see the end).
-2. **Built rows that are not fixed** (the picture shows the fault): CHAI-34, CHAI-39, CHAI-49, CHT-13, CHT-18, CK-54, CK-80, CK-81, CK-84, CK-85, CK-100, CK-122, CK-137, DAAR-12, DAAR-61, SAM-30, SH-267.
-3. **Rows that cannot close on their sheets** (the sheet does not show the row's state: a probe fault, never a pass): CHAI-42, CHAI-56, CHAI-57, CHAI-58, CHAI-61, CHAI-110, CK-59, CK-83, CK-86, CK-102, CK-103, CK-116, CK-117, CK-125, CK-132, CK-135, DAAR-46, DAAR-54, DAAR-66, MAA-19, MAA-21, SH-60.
+2. **Built rows that are not fixed** (the picture shows the fault): CHAI-34, CHAI-39, CHAI-49, CHT-13, CHT-18, CK-54, CK-80, CK-81, CK-84, CK-85, CK-100, CK-122, CK-137, DAAR-12, DAAR-61, DAAR-62, SAM-30, SH-267.
+3. **Rows that cannot close on their sheets** (the sheet does not show the row's state: a probe fault, never a pass): CHAI-42, CHAI-56, CHAI-57, CHAI-58, CHAI-61, CHAI-110, CHT-20, CK-59, CK-83, CK-86, CK-102, CK-103, CK-116, CK-117, CK-125, CK-132, CK-135, DAAR-46, DAAR-54, DAAR-66, MAA-19, MAA-21, SAM-45, SEK-31, SEK-32, SH-60, SH-310.
 4. **Open rows whose new check is not red yet** (probes-open; the before picture does not show the problem): CHT-22, SH-136, SH-211, SH-281, SH-286, SH-295, SH-299, SH-301, SH-303.
 5. **Checks that test something other than the row** (the 10% audit): ART-51, CHAI-58, CHAI-89, DAAR-37, DAAR-41, SH-122, SH-209, SH-226, SH-275.
 6. **Proven with no red:** seven machine rows on probes-built are marked proven with no red shown (DAAR-41, DAAR-43, DAAR-44, SAM-31, CK-61, CK-62, CK-63). By the brief they are built.
-7. **Most passes rest on fewer levels or sizes than the row's Check names.** From 08:10 I told the judge agent to pass on what is shown unless the missing state is the row's own; each line says what is not shown. Before that, two rows that looked met at L1 (CK-102, CK-103) were held back for missing L2-L4.
+7. **Most passes rest on fewer levels or sizes than the row's Check names.** From 08:10 UK I told the judge agent to pass on what is shown unless the missing state is the row's own; each line says what is not shown. Before that, two rows that looked met at L1 (CK-102, CK-103) were held back for missing L2-L4.
 
 ## Counts
 
 | what | judged | pass | fail (fault shown) | not shown |
 |---|---|---|---|---|
-| Built rows by eye (probes-built, the builders) | 76 | 37 | 17 | 22 |
+| Built rows by eye (probes-built, the builders) | 84 | 39 | 18 | 27 |
 | Open rows' before pictures (probes-open) | 19 | 10 red for the row's reason | 0 | 9 |
 | Audit of the probes sessions' checks | 34 | 25 | 9 | |
 
@@ -37,6 +37,7 @@ before picture PASS means the check is red for the row's reason (the row stays o
 - **CK-72** (probes-built): B, L4 baking teaches "pa cup" (a quarter cup) and "adh" (half) as word cards and the order reads "adhi cup atto"; A at L1 "adh", "cup" and "hakro cup atto"; the text captures hold no a-little or a-lot line. Flaws: B2 the "pa... [r16pb-newsh/CK-72.png panel B]
 - **CK-77** (probes-built): B, at 1280x665 the egg carton stands on the shelf line at the milk carton's size beside it, its gold light and its "indo" pill whole above the frame's bottom; the same in D (1920x1080), F (740x320), H (930x430) and the... [r16pb-cook/CK-77.png panel B]
 - **CK-104** (probes-built): A, frame 2 at 740x320 L1 shows six bowls in two rows of three inside the stone tray, each column's bowls and pills on one line, the rows' gap smaller than a pill's height, no pill over the edge; B frame 2 (L4) the same; note:... [r16pb-cook/CK-104.png panel A]
+- **CK-118** (probes-built): C, corn L4 at 740x320 with two people: each plate holds an upright, chopped cob that fills the plate's height and sits inside its rim, the owner's face circle at the tray's bottom-left corner clear of the cob; A the same for... [r16pb-fix/CK-118.png panel C]
 - **CK-120** (probes-built): B, at L4 1280x665 both card heads sit on one line ("Muke ba tarela inda khapanta." and "Muke ba bafelo inda khapanta."); D at 740x320 both wrap the same way to two lines in the narrower card, where one line does not fit. L1-L3... [r16pb-newcook/CK-120.png panel B]
 - **CK-123** (probes-built): B, at L2 751 ms the boiled egg sits in blue water in the pot over a lit flame (dry at 501 ms as the egg lands, water a frame later); C shows the water's ring changing between frames while it cooks, bubbles not legible at... [r16pb-newcook/CK-123.png panel B]
 - **CK-127** (probes-built): B, L4 serve at 740x320 shows two trays, each with one plate and its own face badge (Bapa's under Bapa, the boy's under the boy), the cob standing upright on each plate, both orders ticked; A shows L1's single asker with one... [r16pb-newcook/CK-127.png panel B]
@@ -63,6 +64,7 @@ before picture PASS means the check is red for the row's reason (the row stays o
 - **SEK-26** (probes-built): A, frame 2 (45.6 s) at L1 1280x665 shows the top-down coal grill, the skewer spanning its full depth with the wooden handle at the bottom edge and the metal tip at the top edge, a deep-walled steel tray beside it; frame 1... [r16pb-cook/SEK-26.png panel A]
 - **SH-159** (probes-built): C, the seeded three-right player's shelf pills are the speaker only (paani, dudh, chai, khun; aadu, a word not yet earned, keeps its Kutchi), and D after one miss on paani shows "paani" written again while the others stay... [r16pb-newcook/SH-159.png panel C]
 - **SH-160** (probes-built): node build/test_shared_rules.mjs, exit 0 with test 8 ok ("SH-160 level-up: 3 rounds in a row with the hint at most once; a worse round restarts; never down; a grown-up's pick never counts") and tests 1 and 10 ok (the numbers... [r16pb-newcook/SH-160.png]
+- **SH-308** (probes-built): D, eggs L4 at 740x320 shows all three rows folded, each with its gold tick, all inside the panel under "Shabash!"; L the same for maani L4 (Nana's one row folded and ticked), B and J the same at L1. Not shown: sekelo at well... [r16pb-fix/SH-308.png panel D]
 
 ## Built rows that fail (status open)
 
@@ -81,6 +83,7 @@ before picture PASS means the check is red for the row's reason (the row stays o
 - **CK-137** (fix-stove): B, at 740x320 L2 the order card's 'hakro makai' name wraps onto two lines ('hakro' / 'makai') beside the one-line 'miryo' (same in D at L4; A and C also wrap it at 740x320), so the row's "'hakro makai' card names on one line... [stove-corn-eggs-final/CK-137.png panel B]
 - **DAAR-12** (probes-built): A, at L1 the speedo dial (tortoise, hare, spill) stands beside the pan with its slow band green, the other yellow and the spill red, needle live; the same dial with the same coloured bands is in B and E (L2) and in C and F... [r16pb-cook/DAAR-12.png panel A]
 - **DAAR-61** (probes-built): A, chop L1's serve has the dish in a bowl on a tray under Nani but no thank-you bubble anywhere; B at L4 the end card (timer 8, 39s) already covers the counter at the serve, so no tray, dish or thank-you is visible. Flaw off... [r16pb-newcook/DAAR-61.png panel A]
+- **DAAR-62** (probes-built): C, chop L4 at 740x320: the "Shabash!" bubble sits wholly off the board, on the marble to its left against the side panel, and Nani's face circle straddles the board's left edge and covers half of the round white dish beside it... [r16pb-fix/DAAR-62.png panel C]
 - **SAM-30** (probes-built): J, at L2 1280x665 the lift has no dim and no lit box (the screen is fully lit, only the rings round the three samosas), and K at L3 is the same; I (L1) and L (L4) do show the dim and the box on a samosa in the pan. A to H show... [r16pb-cook/SAM-30.png panel J]
 - **SH-267** (fix-kit): E, at L2 1280x665 a big card with the garlic picture, the words "trae lasan" and a speaker button is up beside the customer's bubble "Muke trae lasan khape." (3.5 s), and the same in F at 740x320 (4.0 s); the row says never at... [tiers-green-0725e61000/SH-267.png panel E]
 
@@ -92,6 +95,7 @@ before picture PASS means the check is red for the row's reason (the row stays o
 - **CHAI-58** (probes-built): the film starts after the boil: A shows the left pan already off the heat ring and being poured into the glasses (499 to 3783 ms), no frame has the heat ring's green or red, and the text has no measured green length; flaw... [r16pb-newsh/CHAI-58.png]
 - **CHAI-61** (probes-built): no panel shows an add to another pan while a pan boils: every add in A, B, C and D goes into the first pan, the second pan stays empty, and the first pan's ring only appears in B's last two frames (999, 1273 ms) with nothing... [r16pb-cook/CHAI-61.png]
 - **CHAI-110** (probes-built): the one frame (A, exp:pour-nana) is before any pour: Nana's full order first and "Muke adh chai khapeti" second, all glasses empty and unlit; the row's state, the glass lit after the full glass's first tap (pan back on the... [r16pb-newsh/CHAI-110.png]
+- **CHT-20** (probes-built): A-D show no bowl at all: the stage-end shots are one word card (chano, bataato) on blank marble with the order's slots still empty and the headline "Make the bowl, in order.", so the built bowl's layers at well done are not... [r16pb-fix/CHT-20.png]
 - **CK-59** (probes-built): both voice captures (CK-59-p1-L2-1280x665 and -740x320) show "dudh," spoken once only (9.67 and 9.55, mum/dudh.mp3) inside one running order "Muke chai khapeti, / dudh, / trae khun."; the probe's "two say-starts" are say-start... [r16pb-cook/CK-59.png]
 - **CK-83** (probes-built): A1-A2 show Nani's box in the chop stage with her face and one sentence ("Kali hakro bataato.") and nothing under the settings gear, but the sheet has no frame of the bowl filling (A4 is the empty bowl only), no chop light at... [r16pb-newsh/CK-83.png]
 - **CK-86** (probes-built): no panel shows a cob or a skewer resting on the tray, so "the same size and way round on the tray as on the grill" cannot be read (D4 catches the cob mid-flight only; A and B never reach the skewer on the tray); the mock is... [r16pb-cook/CK-86.png]
@@ -107,7 +111,11 @@ before picture PASS means the check is red for the row's reason (the row stays o
 - **DAAR-66** (probes-built): all six panels (A-F) are the chopping-board step (board, knife, tray of vegetables, "Kali hakri dungri" / "Kali trae mirchi" bubble); none shows the hob step coming in nor the face circle beside its bowl at the hob, and only... [r16pb-newcook/DAAR-66.png]
 - **MAA-19** (probes-built): the sheet has only the order row at L3 and L4, 1280x665 (A, B); it does not show the tawa flip's first-time hold in the green, the pop-out turning into its row card, the lit-box light, the skip zones, the word card, L1 and L2... [r16pb-newsh/MAA-19.png]
 - **MAA-21** (probes-built): no roll is filmed: in the 8 s of A (L1) and B (L2) the dough stays a ball on the lit board while the ghost repeats (voice log: the roll's drag starts at 30.0 s, the film ends at 24.5 s), so no frame shows a flat-out roll... [r16pb-newsh/MAA-21.png]
+- **SAM-45** (probes-built): no praise face and no "Shabash!" bubble in A or B (headline a faded "Tar!"), so the bubble's place beside the face, away from the slotted spoon, is not shown. The tray half is met in what is shown: A two samosas on thalis, B... [r16pb-fix/SAM-45.png]
+- **SEK-31** (probes-built): no praise face circle and no "Shabash!" bubble in any of A-D; the probe's stage-end is before well done (headline still "Grill them."/"Firai!", in A and C the skewer still on the coals), so the face's size and place and the... [r16pb-fix/SEK-31.png]
+- **SEK-32** (probes-built): the sheet is two 740x320 shots at a stage-end before well done (no "Shabash!", headline "Grill them."); it shows no 'tameto' pill, no 'bataato' pill and no end review, and the bottom tray at well done is not shown (A: a bare... [r16pb-fix/SEK-32.png]
 - **SH-60** (probes-built): panel A's strip starts at rec:view-pantry (65.0 s), 11 s after the help it is meant to catch (voice timeline: step-open 44.44, help 54.02, glow 54.05, line 54.05), so the daar jar is already glowing in every frame from 0 ms to... [r16pb-newcook/SH-60.png]
+- **SH-310** (probes-built): neither panel shows an order row with item cards. A (1280x665) and B (740x320) are the #side column at life:stage-end holding only Nani's "Shabash!" bubble and Nana's order line "Muke maani khapeti." with a tick; the item... [r16pb-fix/SH-310.png]
 
 ## Open rows: the before pictures (probes-open)
 
