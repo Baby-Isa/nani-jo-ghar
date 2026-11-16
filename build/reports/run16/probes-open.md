@@ -4,7 +4,7 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 
 ## Flaws first
 
-- **Five probes missed their moment the first time** (SH-275, SH-279, SH-286, SH-295, SH-299, SH-303: the judge's EVIDENCE verdicts). They are re-aimed (runs po-o1, po-p1, po-q1, po-r1) and waiting for the judge. Until it rules, those rows are not red.
+- **Five probes missed their moment the first time** (SH-275, SH-279, SH-286, SH-295, SH-299, SH-303: the judge's EVIDENCE verdicts). They are re-aimed (runs po-o1, po-p1, po-q1, po-r1, po-t1) and waiting for the judge. Until it rules, those rows are not red.
 - **SH-291, SH-289 and CHAI-114 are green on head but have no red.** SH-291's contract-99 stays green even with 827f8aa1's order-card and ui parts reverted. SH-289's fault needs a ten-word round, and the 'want' seed did not get one. CHAI-114's fix commit was not found.
 - **PAN-23 is not reproduced.** It is green on head and also on the runtime before SH-304's fix.
 - **SH-271 is not reproduced either.** The dim holds 1.5 to 3.5 s at every first light, and contract-117 has 0 breaks. docs/status.md (15 Nov) calls the strips' blink a probe artefact.
@@ -23,6 +23,7 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 | SH-224 | kit | build/test_fonts_local.mjs | nine pages and a script load Google Fonts |
 | PRC-11 | other | grep on the check-in skill | no plan table |
 | LNG-22 | other | build/test_no_religious_set_pieces.mjs | the first launch still plays its Eid scene |
+| LNG-20 | other | build/test_family_takes_linked.mjs | 63 usable take ids (76 takes) linked to no word, 'Khuda hafiz!' among them |
 | SH-283 | chaat | eye (judge FAIL) | the shelf differs between sizes, same seed |
 | SH-284 | samosa | eye (judge FAIL) | Nani's box under the dim while she speaks |
 | SH-287 | chai | eye (judge FAIL) | no lift in the order view |
@@ -55,7 +56,7 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 - **CHT-22:** the cog part is green (DAAR-65). The dim flash and the potato on the board and tray are chop's own.
 - **CK-97:** the half-full bottle needs art.
 - **SH-279:** the judge's batch po-q1.
-- **SH-281:** the probe misses the empty pan.
+- **SH-281:** re-aimed at every move (po-t1). Eggs' empty pan is clean; chop and daar are for the judge.
 - **SH-299, SH-211:** re-aimed strips, for the judge.
 - **SH-136:** needs a one-row Nana card at a 915-like size.
 - **SH-229:** green, no fix found.
@@ -75,5 +76,6 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 - `build/test_fonts_local.mjs` (SH-224)
 - `build/test_no_upload_folders.mjs` (ART-74)
 - `build/test_no_religious_set_pieces.mjs` (LNG-22)
+- `build/test_family_takes_linked.mjs` (LNG-20)
 
 None of them is in checks.mjs's unit list, so a red one never blocks a push.

@@ -198,7 +198,7 @@
   "game": "chai",
   "status": "built",
   "probe": "evidence.json SH-289 (noFinding:text-clipped, noClip:.njg-results at results-words; chai L4 740x320)",
-  "red": "not shown: green at db494cae^ too (run po-red-289) because that round had 8 words; the fault needs a ten-word round (the .many layout), which the probe cannot yet seed",
+  "red": "not shown: green at db494cae^ too (run po-red-289, an 8-word round); a seeded three-person round with ginger, cardamom and sugar (want) found no match in two 13-minute chunks at db494cae^ (run po-red-289c, stopped)",
   "green": "48003532, run po-a1: PASS",
   "judge": "machine",
   "files": [
