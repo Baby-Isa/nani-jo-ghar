@@ -166,31 +166,31 @@
   "row": "SH-273",
   "kind": "Look",
   "game": "baking",
-  "status": "built",
+  "status": "proven",
   "probe": "evidence.json SH-273 (contract-128 over baking, chop, chaat L1)",
-  "red": "not run here (sort: built; probes-built/prove's row)",
-  "green": "48003532, run po-a1: contract-128 0 breaks in baking (2 sizes), chop (2 sizes), chaat",
+  "red": "009c5dd3^ (runtime as before the fix, today's tools), run po-red-273: all 5 pages FAIL, the dish's flashing card shows a row of dots and an empty picture box for 551-692 ms",
+  "green": "009c5dd3, 3487176e (13 Nov) and today's head 48003532, run po-a1: 0 breaks on all 5 pages",
   "judge": "machine",
   "files": [
    "js/cook/ui.js",
-   "data/cook.json"
+   "js/shared/results.js"
   ],
-  "note": "Fixed by 009c5dd3 and 3487176e (13 Nov: no dots, no empty picture box) and 27f7078 (chaat's bowl); green on head."
+  "note": "Fixed by 009c5dd3 (no English row, no empty picture box; a dish with no picture shows its item's) and 3487176e (the card waits for its picture)."
  },
  {
   "row": "SH-304",
   "kind": "Look",
   "game": "chai",
-  "status": "built",
+  "status": "proven",
   "probe": "evidence.json SH-304 (contract-129 over chai L1+L4, eggs L1, maani L1, 740x320)",
-  "red": "not run here (sort: built)",
-  "green": "48003532, run po-a1: contract-129 0 breaks on every page",
+  "red": "c00da13^ (the runtime js, css, data and pages as before SH-304's first commit, today's tools), run po-red-304: chai L1, chai L4 and eggs FAIL, the order's pop-up card over a speech bubble (2335-4652 px squared)",
+  "green": "c00da13 + 6cd7247 (15 Nov, decision 35) and today's head 48003532, run po-a1: 0 breaks on every page",
   "judge": "machine",
   "files": [
    "js/shared/request-popup.js",
    "js/shared/conversations.js"
   ],
-  "note": "Fixed by c00da13 and 6cd7247 (15 Nov, decision 35: the bubble keeps clear of the pop-up card); green on head."
+  "note": "Fixed by c00da13 and 6cd7247: the bubble keeps clear of the order's pop-up card; red before, green on head."
  },
  {
   "row": "SH-289",
@@ -198,28 +198,27 @@
   "game": "chai",
   "status": "built",
   "probe": "evidence.json SH-289 (noFinding:text-clipped, noClip:.njg-results at results-words; chai L4 740x320)",
-  "red": "not run here (sort: built)",
-  "green": "48003532, run po-a1: PASS, every word card of the end review whole",
+  "red": "not shown: green at db494cae^ too (run po-red-289) because that round had 8 words; the fault needs a ten-word round (the .many layout), which the probe cannot yet seed",
+  "green": "48003532, run po-a1: PASS",
   "judge": "machine",
   "files": [
    "css/shared/results.css"
   ],
-  "note": "Fixed by db494cae (13 Nov: the ten-word side tightens on a short phone); green on head."
+  "note": "Fixed in code by db494cae (13 Nov); the check needs a 'want' that seeds a ten-word L4 round before it can show red."
  },
  {
   "row": "PAN-23",
   "kind": "Look",
   "game": "other",
-  "status": "built",
-  "probe": "evidence.json PAN-23 (noOverlap:.cv-bubble,.wc14-pop at every bubble; pantry L1-L4, 740x320)",
-  "red": "not shown: green on head",
-  "green": "48003532, run po-e1: PASS at L1-L4, 3 bubbles each, Nani's bubble clear of the big card",
-  "judge": "machine",
+  "status": "cannot-probe",
+  "probe": "evidence.json PAN-23 (noOverlap:.cv-bubble,.wc14-pop at every bubble, contract-129; pantry L1-L4, 740x320)",
+  "red": "not reproduced: green on head (runs po-e1, po-m1) and also at c00da13^ (run po-red-304)",
+  "green": "48003532: PASS at every bubble, L1-L4",
+  "judge": "needs-eye",
   "files": [
-   "js/shared/request-popup.js",
-   "js/shared/conversations.js"
+   "js/shared/request-popup.js"
   ],
-  "note": "Green on head; most likely fixed by SH-304's c00da13/6cd7247 (the speech bubble keeps clear of the order's pop-up card, every game); a red needs that commit reverted (prove)."
+  "note": "The bubble under the big card is not reproduced at any pantry bubble today or before SH-304's fix; the moment the 13 Nov judge saw is unknown, so po-m1/PAN-23.png goes to a judge to close or keep."
  },
  {
   "row": "SH-271",
@@ -520,5 +519,73 @@
    "data/story/first-launch.json"
   ],
   "note": "Cook's day-6 finale is already the birthday; the first launch's hook is not. The birthday line must come from the engine and family recordings: if it is not recorded, it is a recording-sheet gap, not hand-written Kutchi."
+ },
+ {
+  "row": "SH-211",
+  "kind": "Look",
+  "game": "chai",
+  "status": "open",
+  "probe": "evidence.json SH-211 (eye: an 8-frame strip of #mission at every popup-fold, chai L4, 740x320 and 1280x665)",
+  "red": "needs the judge (build/screenshots/evidence/po-l1/judge/batch-01.md)",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/shared/order-card.js"
+  ],
+  "note": "Not reproduced in code reading (sort); a machine check needs a per-frame scroll log of the row, which the probe cannot read yet, so the strips go to the judge."
+ },
+ {
+  "row": "SH-136",
+  "kind": "Look",
+  "game": "chai",
+  "status": "open",
+  "probe": "evidence.json SH-136 (eye: zoom2 of #mission at every order-card-in-sidebar, chai L1, 930x430)",
+  "red": "needs the judge (po-l1/judge/batch-01.md)",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "note": "Cook's parts only (Nana's one-row card, the chips' speaker); the reveal eye at 915 is a fit choice for Zafar, the eye-test card is the parked clinic."
+ },
+ {
+  "row": "SH-135",
+  "kind": "Look",
+  "game": "kit",
+  "status": "open",
+  "probe": "evidence.json SH-135 (eye: Cook's title at 740x320 and 1280x665)",
+  "red": "needs the judge (po-m1/judge/batch-01.md)",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "css/shared/buttons.css"
+  ],
+  "note": "Cook's part only (its three buttons washed out); the door's pills and the clinic's lit tool are parked modes, and EASY-08's gold box is Zafar's call."
+ },
+ {
+  "row": "SH-122",
+  "kind": "Look",
+  "game": "kit",
+  "status": "question",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "",
+  "files": [],
+  "note": "Question for Zafar: the zooms need a design first (research not started; the S12 idea was a match-cut into lined-up close-up art). Which way should a zoom go, so a check can be written for it?"
+ },
+ {
+  "row": "SH-226",
+  "kind": "Logic",
+  "game": "kit",
+  "status": "open",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "",
+  "files": [
+   "js/shared/sfx.js"
+  ],
+  "note": "Not probed: chai's recorded picks are in; each other game needs its own researched picks first (the per-game rule, build/test_shared_sfx_files.mjs, is added with them), so there is nothing to check red yet."
  }
 ]

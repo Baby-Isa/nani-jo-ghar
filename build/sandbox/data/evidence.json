@@ -29945,14 +29945,16 @@
    "at": "every:bubble",
    "after": null,
    "capture": [
-    "shot"
+    "shot",
+    "contract:129"
    ],
    "expect": [
-    "noOverlap:.cv-bubble,.wc14-pop"
+    "noOverlap:.cv-bubble,.wc14-pop",
+    "contract-129"
    ],
    "max": 6,
    "delay": 250,
-   "note": "pantry at 740x320: at each of Nani's bubbles her bubble is clear of the big card, never its left edge under it"
+   "note": "pantry at 740x320: at each of Nani's bubbles her bubble is clear of the big card, never its left edge under it (and contract-129 over the play: the pop-up card never over a speech bubble)"
   }
  ],
  "CK-93": [
@@ -30752,7 +30754,7 @@
     "shot"
    ],
    "expect": null,
-   "delay": 500,
+   "delay": 2500,
    "note": "Cook's title: its three buttons the kit's solid look, not washed out (the door's Ha!/Na! and the clinic's lit tool are the parked modes' part)"
   }
  ],
