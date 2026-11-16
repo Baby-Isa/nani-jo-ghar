@@ -8,9 +8,9 @@
    "js/cook/station-lib.js",
    "data/stations/chai-tray.json"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-91"
  },
  {
   "row": "CHAI-92",
@@ -35,9 +35,9 @@
    "js/shared/word-moment.js",
    "js/shared/juice.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-93"
  },
  {
   "row": "SH-222",
@@ -49,9 +49,9 @@
    "css/shared/order-card.css",
    "css/shared/word-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-222"
  },
  {
   "row": "SH-227",
@@ -123,9 +123,9 @@
   "files": [
    "data/cook.json"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-50"
  },
  {
   "row": "ART-51",
@@ -150,9 +150,9 @@
    "js/cook/station-lib.js",
    "build/tools/review/sizecheck.mjs"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-52"
  },
  {
   "row": "SH-213",
@@ -164,9 +164,9 @@
    "js/shared/onboard.js",
    "js/cook/flow.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-213"
  },
  {
   "row": "SH-214",
@@ -176,9 +176,9 @@
   "files": [
    "js/cook/flow.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-214"
  },
  {
   "row": "SH-216",
@@ -189,9 +189,9 @@
    "js/cook/flow.js",
    "labs.html"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-216"
  },
  {
   "row": "SH-215",
@@ -202,9 +202,9 @@
    "js/cook/ui.js",
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-215"
  },
  {
   "row": "CHAI-86",
@@ -214,9 +214,9 @@
   "files": [
    "js/shared/word-moment.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-86"
  },
  {
   "row": "CHAI-87",
@@ -239,9 +239,9 @@
    "js/shared/word-moment.js",
    "css/shared/word-moment.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-90",
   "judgeAudit": "judge (run16/judge): PASS: A strip of the word moment at chai L4, 930x430, over the pour: the row's own size and moment (the stream inside the glass to the tea)."
  },
  {
@@ -253,9 +253,10 @@
    "js/cook/stations/chai-tray.js",
    "js/cook/kitchen-kit.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "pillcheck.mjs exits 1 on head while every size it prints passes (740x320 L1 5 pills 12.1 px; L2-L3 0 pills, the ladder hides them for a seen player): a tool fault for its owner",
+  "hand": true
  },
  {
   "row": "SH-217",
@@ -266,9 +267,9 @@
    "css/shared/word-card.css",
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-217"
  },
  {
   "row": "CHAI-88",
@@ -278,9 +279,9 @@
   "files": [
    "js/shared/word-moment.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-88"
  },
  {
   "row": "SH-218",
@@ -290,9 +291,9 @@
   "files": [
    "css/shared/tally.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-218"
  },
  {
   "row": "CHAI-89",
@@ -318,9 +319,9 @@
   "files": [
    "js/cook/kitchen-kit.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-43"
  },
  {
   "row": "ART-41",
@@ -331,9 +332,9 @@
    "css/cook-side-v2.css",
    "js/cook/kitchen-kit.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-41"
  },
  {
   "row": "ART-40",
@@ -343,9 +344,9 @@
   "files": [
    "data/cook.json"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-40"
  },
  {
   "row": "CHAI-84",
@@ -356,9 +357,9 @@
    "js/cook/ui.js",
    "build/tools/art/teacards.py"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-84"
  },
  {
   "row": "SH-209",
@@ -397,9 +398,9 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-171"
  },
  {
   "row": "SH-177",
@@ -410,9 +411,9 @@
    "js/shared/conversations.js",
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-177"
  },
  {
   "row": "SH-180",
@@ -423,9 +424,9 @@
    "js/cook/ui.js",
    "js/shared/order-card.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-180"
  },
  {
   "row": "SH-182",
@@ -435,9 +436,9 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-182"
  },
  {
   "row": "SH-60",
@@ -463,9 +464,9 @@
    "js/cook/coach.js",
    "js/cook/station-lib.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-228"
  },
  {
   "row": "SH-139",
@@ -476,9 +477,9 @@
    "js/cook/stations/chai-tray.js",
    "js/cook/stations/maani-line.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-139"
  },
  {
   "row": "SH-140",
@@ -488,9 +489,9 @@
   "files": [
    "css/shared/face.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-140",
   "judgeAudit": "judge (run16/judge): PASS: A 2x close-up of the faces and their speaker badges at both sizes shows whether the badge cuts halfway. Chai only (the row says every face), and by eye where centredOn could decide it."
  },
  {
@@ -502,9 +503,9 @@
    "js/shared/word-card.js",
    "css/shared/word-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-142"
  },
  {
   "row": "SH-143",
@@ -514,9 +515,9 @@
   "files": [
    "js/shared/word-card.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-143"
  },
  {
   "row": "SH-144",
@@ -527,9 +528,9 @@
    "js/shared/word-card.js",
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-144"
  },
  {
   "row": "SH-151",
@@ -556,9 +557,9 @@
    "js/cook/ui.js",
    "build/sandbox/lib/contract.mjs"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-152"
  },
  {
   "row": "SH-154",
@@ -570,9 +571,9 @@
    "css/shared/order-card.css",
    "build/sandbox/lib/contract-s14.mjs"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-154"
  },
  {
   "row": "SH-155",
@@ -599,9 +600,9 @@
    "css/shared/order-card.css",
    "css/cook.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-156"
  },
  {
   "row": "SH-157",
@@ -613,9 +614,9 @@
    "js/shared/request-popup.js",
    "build/sandbox/lib/cook-player.mjs"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-157"
  },
  {
   "row": "SH-159",
@@ -656,9 +657,9 @@
    "js/shared/word-card.js",
    "css/shared/word-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-147"
  },
  {
   "row": "SH-148",
@@ -670,9 +671,9 @@
    "css/shared/order-card.css",
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-148"
  },
  {
   "row": "SH-149",
@@ -683,9 +684,9 @@
    "js/cook/ui.js",
    "js/cook/station-lib.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-149"
  },
  {
   "row": "SH-150",
@@ -695,9 +696,9 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-150"
  },
  {
   "row": "SH-108",
@@ -708,9 +709,9 @@
    "js/cook/stations.js",
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-108"
  },
  {
   "row": "SH-236",
@@ -723,9 +724,9 @@
    "js/cook/mechanics/stir.js",
    "js/cook/stations/samosa.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-236"
  },
  {
   "row": "SH-119",
@@ -737,9 +738,9 @@
    "js/cook/mechanics/roll.js",
    "js/cook/stations/maani-line.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-119"
  },
  {
   "row": "SH-245",
@@ -751,9 +752,9 @@
    "js/cook/stations/maani-line.js",
    "js/cook/mechanics/chop.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-245"
  },
  {
   "row": "SH-285",
@@ -764,9 +765,12 @@
    "js/cook/ui.js",
    "js/cook/flow.js"
   ],
-  "status": "built",
+  "status": "open",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "Nani own order does flash its first card, but for about 100 ms, not as it is said: the SH-267 flash fault (fix-kit owns it)",
+  "hand": true,
+  "red": "6d12df4e3 run r16pb-fix: contract-119 in chop L1 (1280x665 and 740x320): \"Muke ba dungri khapanti.\" said and its card flashed only 93-102 ms beside the bubble",
+  "green": "not green"
  },
  {
   "row": "SH-290",
@@ -777,9 +781,11 @@
    "js/cook/ui.js",
    "build/sandbox/lib/contract-shade.mjs"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "be49c8a4c run r16pb-fix: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: b6436a998 2026-11-14 Chai's two frozen runs on the SH-290 code (14 Nov), their breaks traced to the checks)"
  },
  {
   "row": "SH-293",
@@ -790,9 +796,9 @@
    "js/shared/shelf.js",
    "js/cook/station-lib.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-293"
  },
  {
   "row": "SH-305",
@@ -802,9 +808,11 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "be49c8a4c run r16pb-fix: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: f4207a5e6 2026-11-15 SH-305 to SH-310 built (s20-kit-fix merged))"
  },
  {
   "row": "SH-306",
@@ -815,9 +823,9 @@
    "js/shared/request-popup.js",
    "js/shared/conversations.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-306"
  },
  {
   "row": "SH-307",
@@ -828,9 +836,9 @@
    "js/shared/order-card.js",
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-307",
   "judgeAudit": "judge (run16/judge): PASS: The side panel after each placing in chai, daar and maani, the three games the row names, to see no item card empties. Phone size only and the first three placings, so a card emptying later in a long order is not seen."
  },
  {
@@ -843,8 +851,9 @@
    "js/cook/mechanics/grill.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "be49c8a4c run r16pb-fix: sheets 6/6 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "SH-309",
@@ -854,9 +863,9 @@
   "files": [
    "css/shared/results.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-309",
   "judgeAudit": "judge (run16/judge): PASS: The end screen's word cards in maani (the row's own case) and eggs, cropped at the results, show the speaker badge's place and the one layout. Two games, by eye."
  },
  {
@@ -868,9 +877,10 @@
    "js/shared/word-card.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The row's own case: maani L4 at well done, a 2x close-up of the order rows at the four sizes. Maani only, by eye."
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own case: maani L4 at well done, a 2x close-up of the order rows at the four sizes. Maani only, by eye.",
+  "green": "be49c8a4c run r16pb-fix: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "PAN-04",
@@ -1152,7 +1162,7 @@
   ],
   "status": "cannot-probe",
   "judge": "machine",
-  "note": "tool failure: DAAR-38-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, life:request, life:popup-open, life:dish-flash, life:pop-face, life:order-pass, life:card-fold, talk:nani, line:cook, life:say-start, bubble, rec:start, cook:"
+  "note": "tool failure: DAAR-38-p1-L1-740x320: strip:#stage:4x250 at life:chop-done (hit 1): the filmstrip of \"#stage\" did not change over 4 frames (250 ms apart)"
  },
  {
   "row": "DAAR-39",
@@ -1351,9 +1361,10 @@
   "files": [
    "js/cook/stations/chop.js"
   ],
-  "status": "cannot-probe",
-  "judge": "machine",
-  "note": "tool failure: DAAR-62-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, life:request, life:popup-open, life:dish-flash, life:pop-face, life:order-pass, life:card-fold, talk:nani, line:cook, life:say-start, bubble, rec:start, cook:"
+  "status": "built",
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "be49c8a4c run r16pb-fix: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "DAAR-63",
@@ -1513,9 +1524,10 @@
   "files": [
    "js/cook/mechanics/grill.js"
   ],
-  "status": "cannot-probe",
-  "judge": "machine",
-  "note": "tool failure: SEK-31-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, talk:nana, line:cook, life:request, life:dish-flash, life:say-start, life:popup-open, life:pop-face, bubble, cook:click, only:.njg-rq-ca"
+  "status": "built",
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "be49c8a4c run r16pb-fix: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "SEK-32",
@@ -1526,9 +1538,10 @@
    "js/cook/mechanics/grill.js",
    "js/cook/mechanics/thread.js"
   ],
-  "status": "cannot-probe",
-  "judge": "machine",
-  "note": "tool failure: SEK-32-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, talk:nana, line:cook, life:request, life:dish-flash, life:say-start, life:popup-open, life:pop-face, bubble, cook:click, only:.njg-rq-ca"
+  "status": "built",
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "be49c8a4c run r16pb-fix: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "SAM-42",
@@ -1565,9 +1578,10 @@
   "files": [
    "js/cook/stations/samosa.js"
   ],
-  "status": "cannot-probe",
-  "judge": "machine",
-  "note": "tool failure: SAM-45-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, talk:nana, line:cook, life:request, life:dish-flash, life:pop-face, life:say-start, life:popup-open, cook:click, only:.njg-rq-card, bubb"
+  "status": "built",
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "be49c8a4c run r16pb-fix: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "MAA-19",
@@ -1692,9 +1706,10 @@
   "files": [
    "js/cook/mechanics/assemble.js"
   ],
-  "status": "cannot-probe",
-  "judge": "machine",
-  "note": "tool failure: CHT-20-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, life:request, life:popup-open, talk:nana, line:cook, life:dish-flash, life:pop-face, life:say-start, cook:click, only:.njg-rq-card, bubb"
+  "status": "built",
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "be49c8a4c run r16pb-fix: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "CK-59",
@@ -1921,9 +1936,10 @@
   "files": [
    "js/cook/stations/corn.js"
   ],
-  "status": "cannot-probe",
-  "judge": "machine",
-  "note": "tool failure: CK-118-p1-L3-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-level, life:poke, rec:start, life:ghost, life:request, life:order-pass, life:card-fold, life:popup-open, talk:nana, line:cook, life:say-start, life:pop-face, bubble, cook:click, only:.njg-rq-card"
+  "status": "built",
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "be49c8a4c run r16pb-fix: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-fix/judge/"
  },
  {
   "row": "CK-119",
@@ -1936,7 +1952,7 @@
   ],
   "status": "cannot-probe",
   "judge": "machine",
-  "note": "tool failure: CK-119-p1-L1-1280x665: crop:.njg-rq-card at life:request (hit 1): \".njg-rq-card\" is not on screen at life:request · CK-119-p1-L1-740x320: crop:.njg-rq-card at life:request (hit 1): \".njg-rq-card\" is not on screen at life:request",
+  "note": "tool failure: CK-119-p1-L1-1280x665: crop:.njg-rq-card at only:.njg-rq-card (hit 1): \".njg-rq-card\" is not on screen at only:.njg-rq-card · CK-119-p1-L1-740x320: crop:.njg-rq-card at only:.njg-rq-card (hit 1): \".njg-rq-card\" is not on screen at only:.njg-rq-card",
   "judgeAudit": "judge (run16/judge): PASS: Both pictures the row names (the pop-up card and the item card), at the four sizes."
  },
  {
@@ -2151,9 +2167,9 @@
   "files": [
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-311",
   "judgeAudit": "judge (run16/judge): PASS: The whole screen at each first-time light in baking, the row's own case, shows whether the headline is outlined in gold under the dim. Baking L1 at the phone size only."
  },
  {
@@ -2164,9 +2180,9 @@
   "files": [
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-312"
  },
  {
   "row": "SH-313",
@@ -2176,9 +2192,9 @@
   "files": [
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-313"
  },
  {
   "row": "SH-314",
@@ -2205,9 +2221,11 @@
   "files": [
    "data/stations/eggs.json"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "be49c8a4c run r16pb-fix: machine: pass (node build/tools/review/loadcheck.mjs --only cook:eggs: exit 0)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 934f5fafe 2026-11-16 Publish check's three blocks: eggs' steam on its picture list (SH-315), the labs page's i)"
  },
  {
   "row": "SH-316",
@@ -2235,9 +2253,9 @@
    "js/shared/app.js",
    "css/shared/app.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-317"
  },
  {
   "row": "CLN-206",
@@ -2247,9 +2265,9 @@
   "files": [
    "js/clinic/heal/games/eye.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CLN-206"
  },
  {
   "row": "ART-28",
@@ -2259,9 +2277,9 @@
   "files": [
    "build/reports/s14-chai.md"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-28"
  },
  {
   "row": "PRC-06",
@@ -2285,9 +2303,9 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-31"
  },
  {
   "row": "CHAI-58",
@@ -2342,9 +2360,9 @@
   "files": [
    "js/cook/mechanics/pour.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-64"
  },
  {
   "row": "CHAI-65",
@@ -2368,9 +2386,9 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-66"
  },
  {
   "row": "CHAI-109",
@@ -2380,9 +2398,9 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-109"
  },
  {
   "row": "CHAI-110",
@@ -2407,9 +2425,9 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-112"
  },
  {
   "row": "SH-221",
@@ -2453,9 +2471,9 @@
    "js/day/book-play.js",
    "js/clinic/heal/games/eye.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-19"
  },
  {
   "row": "SH-183",
@@ -2468,9 +2486,9 @@
    "js/cook/stations/eggs.js",
    "js/cook/stations/maani-line.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-183"
  },
  {
   "row": "SH-185",
@@ -2482,9 +2500,9 @@
    "css/shared/tokens.css",
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-185"
  },
  {
   "row": "SH-186",
@@ -2495,9 +2513,9 @@
    "js/shared/conversations.js",
    "css/shared/conversations.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-186"
  },
  {
   "row": "SH-187",
@@ -2507,9 +2525,9 @@
   "files": [
    "js/shared/conversations.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-187"
  },
  {
   "row": "SH-188",
@@ -2519,9 +2537,9 @@
   "files": [
    "css/shared/conversations.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-188"
  },
  {
   "row": "SH-191",
@@ -2533,9 +2551,9 @@
    "css/shared/order-card.css",
    "js/shared/order-card.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-191"
  },
  {
   "row": "SH-193",
@@ -2546,9 +2564,9 @@
    "js/shared/order-card.js",
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-193"
  },
  {
   "row": "SH-194",
@@ -2558,9 +2576,9 @@
   "files": [
    "js/shared/order-card.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-194"
  },
  {
   "row": "SH-252",
@@ -2572,9 +2590,9 @@
    "js/cook/ui.js",
    "js/cook/kitchen-kit.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-252"
  },
  {
   "row": "SH-256",
@@ -2588,9 +2606,9 @@
    "js/cook/stations/maani-line.js",
    "js/cook/stations/corn.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-256"
  },
  {
   "row": "CK-83",
@@ -2646,9 +2664,11 @@
    "js/cook/stations.js",
    "js/cook/coach.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "be49c8a4c run r16pb-fix: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: cfc2e16f4 2026-11-12 s19-clean-a2: the stuck-help test follows SH-261's help-again rule (the Fable review's fi)"
  },
  {
   "row": "SH-264",
@@ -2659,9 +2679,9 @@
    "js/shared/wrong-order.js",
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-264"
  },
  {
   "row": "SH-265",
@@ -2674,9 +2694,9 @@
    "js/cook/ui.js",
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-265"
  },
  {
   "row": "SH-266",
@@ -2689,9 +2709,9 @@
    "js/cook/kitchen-kit.js",
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-266"
  },
  {
   "row": "SH-267",
@@ -2703,9 +2723,9 @@
    "js/shared/word-card.js",
    "css/shared/word-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-267"
  },
  {
   "row": "CK-86",
@@ -2760,9 +2780,10 @@
   ],
   "status": "proven",
   "judge": "machine",
-  "note": "the machine check passes on today's head",
-  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
-  "red": "not shown: on 231080600~1 contract-117 at corn L4 740x320 passed on both the fair and the mistake path (no driver makes the refused tap while a topping flies)"
+  "note": "green on head on the mistake path; the check could not show the old fault, so the proof rests on green plus the fix commits 231080600 and 1f8400855",
+  "green": "6d12df4e3 run r16pb-newcook: contract-117 0 breaks, corn L1 and L4 mistake path, 740x320 and 1280x665",
+  "red": "not shown: on 231080600~1 contract-117 at corn L4 740x320 passed on the fair and the mistake path (no driver makes the refused tap while a topping flies)",
+  "hand": true
  },
  {
   "row": "CK-91",
@@ -2774,7 +2795,10 @@
   ],
   "status": "cannot-probe",
   "judge": "machine",
-  "note": "tool failure: CK-91-p1-L1-1280x665: the moment \"visible:.wc14-flash.on\" never came; moments seen: page:start, life:cover, rec:start, line:cook, life:say-start, life:say-end, life:order-level, life:poke, life:ghost, talk:nana, life:request, life:dish-flash, life:popup-open, life:pop-face, bubble, cook:click, only:"
+  "note": "red shown for the row reason; the green cannot be seen until the flash stays (SH-267, fix-kit); re-run evidence.mjs --run --rows CK-91 after that fix",
+  "hand": true,
+  "red": "1f8400855~1 (worktree, today checks): baking L1 740x320, noOverlap:.wc14-flash,#side-cog FAIL: the hakro naan card over the cog (red-ck91b panel B)",
+  "green": "not observable on head: at life:dish-flash +300 ms the .wc14-flash card is already gone in baking, chop and chaat L1 (it flashes about 100 ms, contract-119 / SH-267)"
  },
  {
   "row": "ART-78",
@@ -2784,9 +2808,9 @@
   "files": [
    "assets/cook/items/v4/kit/tray-stone.webp"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-78"
  },
  {
   "row": "ART-79",
@@ -2796,8 +2820,8 @@
   "files": [
    "build/tools/art/artuse.mjs"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows ART-79"
  }
 ]
