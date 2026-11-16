@@ -1,0 +1,16 @@
+[
+ {
+  "row": "SH-308",
+  "kind": "Logic",
+  "game": "other",
+  "status": "proven",
+  "probe": "evidence SH-308 (sekelo, eggs, corn, baking L1-L4 at 740x320 and 1280x665, at life:results: count:#mission .oc-card:not(.folded)=0, inside:#mission .oc-card,#side)",
+  "red": "49369e3^ (7ff346a, the commit before SH-308's fix, in a worktree with today's tools and specs): evidence.mjs --run --rows SH-308 --run-id stove-sh308-pre: sekelo L2 740x320 FAIL (a person's card still open at well done, 1 visible)",
+  "green": "48003532 (base, fix 49369e3 + 5b5d0b5): evidence.mjs --run --rows SH-308 --run-id stove-sh308-base: 32 of 32 pages PASS (machine)",
+  "judge": "machine",
+  "files": [
+   "build/sandbox/data/evidence.json"
+  ],
+  "note": "Already fixed before the run by 49369e3 (UI.guidePraise closes every row) and 5b5d0b5; the stove games' share (sekelo, eggs, corn, baking) checked at every level on a phone and a laptop. The key SH-308 is shared: probes-built may also write it; this spec covers the stove games only."
+ }
+]

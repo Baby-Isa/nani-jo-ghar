@@ -303,9 +303,16 @@ import { setTimeout } from "../life.js";
       // (round 3, decision 38: "the lit box swells to take in Bapa's face circle: the light frames the thing alone": the face sits in its
       // thing's own corner, inside its picture's box, as chai's faces sit on the tray's corners, so the thing's light holds it whole
       // without growing, contract-82; its upper right on the bowl, the upper left on the tray)
+      // CK-100 (run 16, contract-113 at 740x320, L1-L4: "nana's face sits over bk-naan-raw, 20% of it"): on a phone the face's floor (30
+      // CSS px) is over a quarter of the tray's width, so in its corner it lies over the first naan; there it sits just outside the
+      // tray's corner instead, beside it at its top (its thing's own part still, lit with it). me.out(o): the face is too big for o's
+      // corner (more than FIT of its width as it is first laid down: decided once, so the face never jumps as the tray shrinks into the oven)
+      me.FIT = 0.26;
+      me.out = (o) => !!(o && o.faceOut);
       me.seat = (o = me.owner, side = me.side) => {
         const b = o.getBounds();
         // (gap: moved out from the corner where something is drawn round its thing, the bake ring round the naan in the oven)
+        if (me.out(o)) return { x: side > 0 ? b.right + fd * 0.5 + 2 + me.gap : b.x - fd * 0.5 - 2 - me.gap, y: b.y + fd * 0.5 };
         return { x: side > 0 ? b.right - fd * 0.5 + me.gap : b.x + fd * 0.5 - me.gap, y: b.y + fd * 0.5 };
       };
       me.give = async (o, side, ms = 0) => {
@@ -758,6 +765,8 @@ import { setTimeout } from "../life.js";
     const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
+    // (CK-100: the tray's naans fill its corners: a face too big for its corner sits beside it, FACE.out)
+    naan.faceOut = !!FACE && FACE.f.displayWidth > naan.displayWidth * FACE.FIT;
     Cook.Kit.shadow(S, naan); // (SH-268)
     /*
      * CK-135, SH-280 (decision 38, 15 Nov: "the dough visibly becomes naan and things go to the oven in place, no two-scene cross-fade"),
@@ -911,7 +920,9 @@ import { setTimeout } from "../life.js";
       const fd = FACE.f.displayWidth;
       const R = ringR + 12 + fd / 2 + 4;
       const cy = -inH / 2 + fd / 2;
-      return Math.max(0, Math.sqrt(Math.max(0, R * R - cy * cy)) - inW / 2 + fd / 2);
+      // (the face's own offset from the naan's middle: in its corner, or beside the tray where it is too big for it, CK-100)
+      const at = FACE.out(naan) ? inW / 2 + fd / 2 + 2 : inW / 2 - fd / 2;
+      return Math.max(0, Math.sqrt(Math.max(0, R * R - cy * cy)) - at);
     };
     await Promise.all([
       Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" }),

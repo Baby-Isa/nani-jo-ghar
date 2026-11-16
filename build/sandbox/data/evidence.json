@@ -29329,6 +29329,32 @@
    "expect": null,
    "note": "baking: Dada's face circle beside the tray the whole bake: on the worktop, then beside the oven while the tray is in it, back with it; never over the naan or inside a lit box",
    "max": 14
+  },
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:113"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "delay": 0,
+   "note": "baking at every level, a phone and a laptop: Dada's face circle never over the naan on its tray (contract-113 over the play: on the code before run 16 'nana's face sits over bk-naan-raw (20% of it)' at 740x320, L1-L4)"
   }
  ],
  "CK-101": [
@@ -29678,16 +29704,16 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:turn",
+   "at": "life:corn-screen",
    "after": null,
    "capture": [
-    "crop:#guide"
+    "trace:#guide .ng-arrow:9000"
    ],
    "expect": [
-    "count:#guide .ng-arrow>=1"
+    "traceRepeats:#guide .ng-arrow>=2"
    ],
    "delay": 0,
-   "note": "corn mid-cook (a cob ready to turn on the grill): Nani's box keeps its drop-down, as chai's"
+   "note": "corn's grill screen, mid-cook: Nani's drop-down is there, as chai's, coming back after each control call (it steps aside only while a call such as 'Firai!' is said, the kit's SH-172 rule in every game): over 9 s of the cook it shows at least twice"
   },
   {
    "flow": "cook:corn",
