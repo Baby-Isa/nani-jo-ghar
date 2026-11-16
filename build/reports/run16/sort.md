@@ -4,10 +4,11 @@ Every live row of the fix list has one entry in `build/reports/run16/sort.json` 
 
 ## Flaws first
 
-- **A fast pass.** Thirteen sorters did the list in about three minutes each. "codeChecked" means the sorter found the fix (or its absence) in the named file, not that the game was played: no browser was used. Treat every "built" as "needs proof", never as done.
+- **Two passes, no browser.** The first pass was fast; a second, slower look then re-read the 153 riskiest verdicts (every row marked built against the fix list's own label, every overridden and duplicate) and changed 21 of them, mostly built back to open (listed below). The 394 other rows had the first pass only: an error rate near one in seven on the re-read rows says some of those are wrong too.
+- **What the first pass means.** Thirteen sorters did the list in about three minutes each. "codeChecked" means the sorter found the fix (or its absence) in the named file, not that the game was played: no browser was used. Treat every "built" as "needs proof", never as done.
 - **Rows marked built though the fix list does not say built** are listed below. The sorter found fix code (file and line in each note). A builder should not skip one on this file's word alone: probes-built should prove them first, and a red probe sends the row back to open.
 - **Art, clinic, language and process rows** were sorted mostly from the row's own text (codeChecked false on most): little there has code to read.
-- **Three "overridden" verdicts rest on thin quotes** and want the orchestrator's eye before the row is closed: SEK-14 ("I'll leave that to your discretion"), CK-68 (his words are quoted only in the fix list's own row CK-67), DAAR-47 ("I'm erring towards leaving it out").
+- **Three "overridden" verdicts rest on thinner quotes** and want the orchestrator's eye before the row is closed: SEK-14 ("I'll leave that to your discretion", his words, 9 Nov), CK-68 and SH-196 (his words are quoted from the fix list's own rows, CK-67 and SH-213, not a decisions file).
 - **Chai is frozen:** the notes on CHAI-37, -49, -58, -83, -89, -95, -98, -103, -108 say a fix would change chai's look or timing; those are his call before anyone builds.
 - Rows with status "open" and `parked: true` are the parked ones (clinic, the day, before the stores); the brief has no "parked" status, so the kind or the note carries it.
 
