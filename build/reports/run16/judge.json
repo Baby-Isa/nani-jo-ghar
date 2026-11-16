@@ -169,5 +169,25 @@
   "verdict": "PASS",
   "reason": "The side panel after each placing in chai, daar and maani, the three games the row names, to see no item card empties. Phone size only and the first three placings, so a card emptying later in a long order is not seen.",
   "panel": "spec: crop:#side at every:placed, max 3"
+ },
+ {
+  "row": "LAB-08",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "a4d3a78",
+  "verdict": "PASS",
+  "status": "proven",
+  "reason": "The node test asks the row's two things (labs.html carries the core import map with every entry stamped; gen_labs.mjs writes it), red on the commit before 934f5fa for that reason and green after.",
+  "panel": "results: red 934f5fa^ (2 of 3 fail), green 934f5fa and 4800353"
+ },
+ {
+  "row": "SH-303",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "a4d3a78",
+  "verdict": "PASS",
+  "status": "built",
+  "reason": "The whole screen at the serve in eggs L4 (the row's own case) and baking L1 shows which kitchen scene the delivery uses. One moment only: if the well done comes on a later screen than the serve, that second scene is not pictured.",
+  "panel": "spec: shot at served, cook:eggs L4 and cook:baking L1, 740x320"
  }
 ]
