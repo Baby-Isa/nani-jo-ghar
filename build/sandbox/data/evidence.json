@@ -30096,5 +30096,469 @@
    ],
    "note": "maani: the shelf holds only the dough piles, at one even pitch with pills (the plates stay on the worktop): contract-109 (one base line, pills on one line) and contract-115 (the shelf's items one height)"
   }
+ ],
+ "LAB-08": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/test_labs_importmap.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "labs.html carries the core import map (every entry ?v= stamped) and build/gen_labs.mjs writes it"
+  }
+ ],
+ "CHT-22": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noOverlap:.njg-onboard .ob-box,#side-cog"
+   ],
+   "max": 8,
+   "delay": 300,
+   "note": "chaat at 740x320, a new player: every first light's gold box clear of the settings cog (the cut light under the cog)"
+  }
+ ],
+ "CK-97": [
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:104"
+   ],
+   "expect": [
+    "contract-104"
+   ],
+   "note": "baking L1-L4: every item card shows its shelf item's own picture (atto the shelf's glass jar; 'adh paani' a half-full bottle, not the full one): contract-104 over the play"
+  }
+ ],
+ "SH-303": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-service",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.cv-line>=1"
+   ],
+   "delay": 800,
+   "note": "eggs L4: well done in the serve's kitchen (chai's scene) with a Shabash bubble, never the dining table with the cat"
+  },
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "view-service",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "count:.cv-line>=1"
+   ],
+   "delay": 800,
+   "note": "baking L1: the same: one kitchen scene for the delivery and well done, a Shabash bubble"
+  }
+ ],
+ "SH-284": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "crop:#guide"
+   ],
+   "expect": null,
+   "max": 6,
+   "delay": 400,
+   "note": "samosa L1/L2, a new player: at each first-time showing (fill, fold) Nani's box is lit, not under the dim, while she says the line it holds (eye; SAM-47 is samosa's own row with the builder)"
+  }
+ ],
+ "SH-283": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "seed": 7,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "eggs L1, the same round (seed 7) at both sizes: the shelf holds the same items in the same order (eye: the two panels side by side)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "seed": 7,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "chaat L1, seed 7 at both sizes: the same shelf items in the same order (sev and dai not swapped by size)"
+  }
+ ],
+ "PRC-11": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -niE 'progress table|% complete' .claude/skills/checkin/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the check-in skill posts the plan as a table (each step, done in the last half hour, still to do, % complete): its SKILL.md names that table"
+  }
+ ],
+ "SH-275": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "eggs L1: the timing window is the ring on the pan itself, filling to its green as chai's pan, not a tiny ring round the yolk"
+  },
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-timing",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 1500,
+   "note": "baking L1: the ring on the oven (and the pour), filling to its green as chai's, not a faint small ring on the oven's corner"
+  }
+ ],
+ "SH-280": [
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x200"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "baking L1: moving between stages glides as chai's items fly: never a bare frame then the oven and tray in one step, never the tray teleporting into or out of the oven"
+  }
+ ],
+ "SH-281": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 600,
+   "note": "eggs L1: nothing left behind after its job: no grey disc in the empty pan, no grey blob above the plate"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 6,
+   "delay": 400,
+   "note": "chop L1: no thin white line left on the board, no overlapping cut halves"
+  }
+ ],
+ "SH-286": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-open",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 3,
+   "delay": 350,
+   "note": "chai L1: as the customer says 'Muke chai khape' the chai card pops up in the same place, size and look as the sugar, milk and ginger cards that follow (compare the first panel with the next)"
+  }
+ ],
+ "SH-287": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "chai: during the order the view sits higher: less of the island, more of the wall behind it"
+  }
+ ],
+ "SH-295": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "max": 3,
+   "delay": 400,
+   "note": "chai L4: an order card's line wraps only when the next word does not fit ('Muke elchi waari / chai khapeti.' wraps too early: room for 'chai' on the first line)"
+  }
+ ],
+ "SH-299": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-fold",
+   "after": null,
+   "capture": [
+    "strip:#side:4x150"
+   ],
+   "expect": null,
+   "max": 3,
+   "note": "chai L4 740x320: each item card's flight lands in its slot inside the side panel, never about 26 px past its edge"
+  }
+ ],
+ "SH-301": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "chai L1, four sizes: Nani's face circle and speaker circle the same size and alignment as the order cards' faces and speakers"
+  }
+ ],
+ "SH-302": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 150,
+   "note": "eggs: the egg picked up from the box is bigger in the hand (beside the pan)"
+  }
  ]
 }
