@@ -1,5 +1,17 @@
 [
  {
+  "row": "KIT-PILL-PAD",
+  "kind": "Look",
+  "game": "kit",
+  "status": "open",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": ["js/cook/kitchen-kit.js", "js/shared/shelf.js"],
+  "note": "Not fixed (fix-daar's note, after the 07:45 cut-off): Cook.Kit.chip gives every pill a fixed 128 card by default and draws it with a 52 pad, while Shelf.faceW measures with 48, so a long word shrinks inside a pill measured for less; this was DAAR-59's cause, and daar and chop work round it locally (samosa, maani-line and the grill pass their own fixed widths). One kit fix (draw with the pad it measures with, the card from the word's own width) touches chai's shelf pills, so it needs chai's frozen boxes checked (frozen.mjs --diff) before it lands."
+ },
+ {
   "row": "SH-267",
   "kind": "Teaching",
   "game": "kit",
@@ -11,7 +23,7 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "note": "The dish card was shut at once by the order's first item card (eggs, corn: the rows the headline says pop on its first word; chop: its first thing's card), and a replay's headline ('Muke naan khape.') never matched the card's ('Muke naan khape,'); now the dish card holds for its hold, then the item cards follow, chop's first item card is its dish card, and the replay matches without stops. Chai (frozen) keeps its old timing; kari/mori chai still wait on Mum's recordings."
+  "note": "The dish card was shut at once by the order's first item card (eggs, corn: the rows the headline says pop on its first word; chop: its first thing's card), and a replay's headline ('Muke naan khape.') never matched the card's ('Muke naan khape,'); now the dish card holds for its hold, then the item cards follow, chop's first item card is its dish card, and the replay matches without stops. Chai (frozen) keeps its old timing; kari/mori chai still wait on Mum's recordings. BUILT, NOT PROVEN at L2-L4: the judge FAILed it (chop L2: a big 'trae lasan' card beside 'Muke trae lasan khape.'). Cause: from L2 the order's own item pop-ups (SH-150, SH-213, every level) still come up as each thing is said, and in chop, eggs and corn the first sentence names the thing itself, so its item card shows the dish; the base does the same (not this branch's change). The check now sees it: contract-119's L2 half counts any big order pop-up while the dish's sentence is said (run fk-119-l2, 740x320: red in chop@L2 'hakro tameto', eggs@L2 'bafelo indo', corn@L2 'hakro makai'; unit test in build/sandbox/contract-wo.test.mjs). QUESTION for Zafar: from L2, should the item card of the thing the first sentence names stay down (only that one, as the dish card does), or do the order's item pop-ups stay at every level as now?"
  },
  {
   "row": "SH-292",

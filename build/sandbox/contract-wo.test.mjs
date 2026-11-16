@@ -86,6 +86,10 @@ test("contract-119 (SH-267): the dish's card flashes up as the customer says it 
   assert.equal(run("cook:samosa", [say(1000), flash(1300, true), flash(1350, false), end]).length, 1, "a blink is not a flash");
   assert.equal(run("cook:samosa@L2", [say(1000), flash(1300, true), flash(1900, false), end]).length, 1, "never at L2");
   assert.deepEqual(run("cook:samosa@L3", [say(1000), end]), [], "L3: none, right");
+  // (run 16: chop L2's first sentence brings its first thing's own big item card, the dish shown by another class)
+  const pop = (t, on) => c(t, "s19pop", { on, text: on ? "trae lasan" : null, box: on ? [500, 100, 640, 260] : null });
+  assert.equal(run("cook:chop@L2", [say(1000), pop(1200, true), pop(2400, false), end]).length, 1, "red: L2, a big card as the dish is said");
+  assert.deepEqual(run("cook:chop@L2", [say(1000), pop(5000, true), pop(6000, false), end]), [], "a card for a later line is not the dish's");
 });
 
 test("contract-119: the card easing in (its box changing) is one flash, held to the sample it is gone", () => {

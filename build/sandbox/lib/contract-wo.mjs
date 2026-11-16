@@ -31,7 +31,7 @@ const fmt = (b) => `[${[b.l, b.t, b.r, b.b].map(Math.round).join(",")}]`;
 function held(list, i, tEnd) { const n = list[i + 1]; return (n ? n.t : tEnd) - list[i].t; }
 
 export const WO_CHECKS = {
-  "contract-119": { item: "dish-flash", title: "the dish's card flashes up as the customer says it, at level 1 only", how: `Cook flows. At level 1, each line a customer starts saying the dish with ("Muke ... khape", the sound log) must bring the dish's card (.wc14-flash, js/shared/word-card.js WordCard.flash through js/cook/ui.js UI.dishFlash) on screen within ${FLASH_WITHIN_MS} ms, held at least ${FLASH_HOLD_MS} ms (its 1.5 s at the test speed); none is a break, once per page. From level 2 any such card on screen is a break: it would give the order away (SH-267, Zafar 12 Nov: "Yes ... only at level 1").` },
+  "contract-119": { item: "dish-flash", title: "the dish's card flashes up as the customer says it, at level 1 only", how: `Cook flows. At level 1, each line a customer starts saying the dish with ("Muke ... khape", the sound log) must bring the dish's card (.wc14-flash, js/shared/word-card.js WordCard.flash through js/cook/ui.js UI.dishFlash) on screen within ${FLASH_WITHIN_MS} ms, held at least ${FLASH_HOLD_MS} ms (its 1.5 s at the test speed); none is a break, once per page. From level 2 any such card on screen is a break: it would give the order away (SH-267, Zafar 12 Nov: "Yes ... only at level 1"); and from level 2 any big order pop-up (.wc14-pop, the dish's or an item's) up while that sentence is said, to the next line's start, is a break too (run 16, the judge on chop L2: its first sentence's own item card showed the dish).` },
   "contract-118": { item: "wrong-order", title: "a wrong order: its card in the middle, only the wrong order redone", how: `Cook flows. A wrong order served (the serve-wrong driver's look-alike put in and kept: a Lifecycle probe-wrong note) must bring the wrong-order pop-up (js/shared/wrong-order.js) within ${WO_POP_MS / 1000} s: its card in the middle; none is a break. Every s19wo sample (lib/contract-wo.mjs WO_HOOK: the pop-up's card, its items, the asker's face, the side panel's people cards in order, the people's faces on the play area) held ${WO_HOLD_MS} ms with the wrong card open: its middle within ${WO_MIDDLE * 100}% of the pop-up's middle, the card and every item inside the screen (${WO_EDGE_PX} px), the asker's face at least ${WO_FACE_K} times the side panel's face circle, at the card's top beside the order sentence, with no second face on the left (SH-264, Zafar 12 Nov morning), and the sentence at least ${WO_HEAD_K} times the side panel's headline; its smallest word at least ${WO_TEXT_PX} px as drawn (s19-clean-a3: the card's floor; a card past it lays its rows in two columns, takes the whole screen, then scrolls its rows, judged by its own box); before it closes an item marked wrong with its cross (.njg-wo-bad and .njg-wo-mark.bad). Every order it names right (a wo-card note, ok, phase line) is seen as its single line in the middle, ticked, held ${WO_LINE_MS} ms before it floats away (s19-clean-a2). After the redo starts (the wo-redo note: the people kept and the one being worked on), the first sample ${WO_GLIDE_MS} ms on: the side panel's people cards only the kept ones, the one being worked on first, and no face of a person served right on the play area; a redo with orders made right whose game gives the shared round no leave (wo-leave none: their glasses or dishes stay) is a break too. Once per kind per page (SH-264, SH-265, SH-266, Zafar 11 Nov evening, his child play-test: "the order card for the incorrect one probably needs to come up in the middle of the screen ... All the items should be visible in one view ... it should be red, and there should be a little cross instead of a tick"; "they don't put the one you're working on at the top"; "The correct ones disappear ... and you're just left with the person that got it wrong").` },
 };
 
@@ -121,12 +121,22 @@ export function check119(r, tl, add) {
   const fl = ev(tl, "s19flash");
   const tEnd = tl.length ? tl[tl.length - 1].t : 0;
   const level = levelOf(r.flow);
+  const says = tl.filter((e) => e.type === "line" && /^\s*muke\b[\s\S]*\bkhap(e|eti|eto|anti|anta)\b/i.test(e.text || ""));
   if (level >= 2) {
     const on = fl.find((e) => e.on);
-    if (on) add("contract-119", on.t, `the dish's card flashed up at level ${level} ${on.box ? `[${on.box.join(",")}]` : ""}: only at level 1 (from level 2 it gives the order away)`);
+    if (on) return void add("contract-119", on.t, `the dish's card flashed up at level ${level} ${on.box ? `[${on.box.join(",")}]` : ""}: only at level 1 (from level 2 it gives the order away)`);
+    // (run 16, the judge on fix-kit's chop L2: "a big card with the garlic picture, the words 'trae lasan' ... beside the customer's bubble
+    // 'Muke trae lasan khape.'": any big order pop-up up while the sentence that names the dish is said shows the dish, whatever its
+    // class; the dish card's own class alone missed chop's, whose first sentence is its first thing's item card)
+    const pops = ev(tl, "s19pop");
+    for (const l of says) {
+      // (while that sentence is said: to the next line's start, so the next item's own card, chai's "dudh", is not counted)
+      const next = tl.find((e) => e.type === "line" && e.t > l.t);
+      const p = pops.find((e) => e.on && e.text && e.t >= l.t - 300 && e.t <= Math.min(l.t + FLASH_WITHIN_MS, next ? next.t - 50 : Infinity));
+      if (p) return void add("contract-119", p.t, `a big card [${(p.box || []).join(",")}]${p.text ? ` ("${p.text}")` : ""} is up as the customer says the dish ("${(l.text || "").trim().slice(0, 40)}") at level ${level}: from level 2 no card shows the dish (it gives the order away)`);
+    }
     return;
   }
-  const says = tl.filter((e) => e.type === "line" && /^\s*muke\b[\s\S]*\bkhap(e|eti|eto|anti|anta)\b/i.test(e.text || ""));
   for (const l of says) {
     if (l.t + FLASH_WITHIN_MS > tEnd) continue;
     const up = fl.findIndex((e) => e.on && e.t >= l.t - 300 && e.t <= l.t + FLASH_WITHIN_MS);
@@ -190,6 +200,7 @@ function wohook() {
   };
   let last = "";
   let lastFlash = "";
+  let lastPop = "";
   setInterval(() => {
     // (contract-119: the dish card's flash, SH-267: on screen or not, and where)
     try {
@@ -197,6 +208,10 @@ function wohook() {
       const f = [...document.querySelectorAll(".wc14-flash, .wc14-pop.wc14-dish")].find((el) => (el.classList.contains("on") || el.classList.contains("wc14-dish")) && shown(el));
       const fv = f ? JSON.stringify(R(f.getBoundingClientRect())) : "";
       if (fv !== lastFlash) { lastFlash = fv; emit({ k: "s19flash", on: !!f, box: f ? R(f.getBoundingClientRect()) : null, vw: innerWidth, vh: innerHeight }); }
+      // (run 16: any big order pop-up, the dish card or an item card, for the from-level-2 half of contract-119)
+      const pp = [...document.querySelectorAll(".wc14-pop")].find((el) => shown(el));
+      const pv = pp ? (pp.querySelector(".wc14-k") || pp).textContent.trim().slice(0, 30) : "";
+      if (pv !== lastPop) { lastPop = pv; emit({ k: "s19pop", on: !!pp, text: pv || null, box: pp ? R(pp.getBoundingClientRect()) : null }); }
     } catch (e) { /* a probe only */ }
     try {
       const L = window.Lifecycle && window.Lifecycle.log;

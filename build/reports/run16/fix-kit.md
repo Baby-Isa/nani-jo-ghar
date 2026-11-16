@@ -4,6 +4,14 @@ The kit's rows (js/shared, js/cook core). Branch run16/fix-kit, from 48003532. R
 
 ## Flaws first
 
+- **SH-267 is built, not proven, at L2-L4.** The judge FAILed it: in chop at L2 a big "trae lasan" card stands beside "Muke trae
+  lasan khape.". It is not the dish card (that is L1 only) but the order's own item pop-up, which comes up at every level as each
+  thing is said; in chop, eggs and corn the first sentence names the thing itself, so its card shows the dish. The base does the
+  same. contract-119 now sees it (its L2 half counts any big pop-up while the dish's sentence is said; run fk-119-l2: red in chop,
+  eggs and corn at L2; chai's next-line "dudh" card is not counted). Question 5 below.
+- **KIT-PILL-PAD (open, not started):** Cook.Kit.chip draws a fixed 128 card with a 52 pad while Shelf.faceW measures with 48
+  (DAAR-59's cause); the fix reaches chai's shelf pills, so it needs a frozen check first.
+
 - **check-change 0725e61 "FAILED", for reasons not this branch's:** two contract breaks the base run happened not to show,
   contract-37 in eggs#hint at 930x430 (decoys on the shelf, eggs.js's) and contract-113 in baking#hint at 740x320 (Nana's face over
   the naan). My own base run (fk-119-base) shows the same contract-113 in plain baking, so both are flaky and older. Its frozen step
@@ -45,6 +53,8 @@ The kit's rows (js/shared, js/cook core). Branch run16/fix-kit, from 48003532. R
 2. **SH-284:** keeping Nani's box out of the first-time showing's dim while she speaks also changes chai's showings. May it?
 3. **SH-267 in chai:** when a chai order's first sentence says one of its rows (adh, elchi), that row's card still replaces the
    dish card at once; the other games now hold the dish card first. Should chai's do the same?
+5. **SH-267 from level 2:** the order's item pop-ups come up at every level as each thing is said. When the first sentence names
+   the thing itself (chop, eggs, corn), should that one card stay down from level 2, as the dish card does, or stay as now?
 4. **SH-276 in daar:** keeping Nana's card in view during daar's chop reverses DAAR-44 ("one order card in the panel"). Which wins?
 
 ## Not done
