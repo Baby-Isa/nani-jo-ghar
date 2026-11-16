@@ -29468,5 +29468,48 @@
    "note": "corn: the order cards in step order, the cob first; a done card stays in its place (no swap)",
    "max": 16
   }
- ]
+ ],
+ "SAM-47": {
+  "needsDecision": "SAM-47's first half is the kit's rule, not samosa's: a control's or a staged step's call waits for its light (CHAI-40, contract-78), so Nani's box is under the dim while she says it in every kitchen game, chai too (run 16: chai-tray L1, 'Slow kar!' under the knob's light, build/probes/samosa-rt.mjs --row chai). Lift Nani's box out of the dim while she speaks, in every game (a kit change that changes frozen chai's look)? Recommend yes, in the kit, once chai may change.",
+  "probes": [
+   {
+    "flow": "repo",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1280x665"
+    ],
+    "profile": "fresh",
+    "want": null,
+    "at": "now",
+    "after": null,
+    "capture": [
+     "cmd:node build/probes/samosa-rt.mjs --row SAM-47b --secs 150"
+    ],
+    "expect": [
+     "pass"
+    ],
+    "note": "samosa L1 at a child's pace (speed 1, the child player), first-time help on: no tap's light comes again on the same thing (the heap lit once, not again for each next spoon: 'one onboard shot, not the same light twice')"
+   },
+   {
+    "flow": "repo",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1280x665"
+    ],
+    "profile": "fresh",
+    "want": null,
+    "at": "now",
+    "after": null,
+    "capture": [
+     "cmd:node build/probes/samosa-rt.mjs --row SAM-47a --secs 150"
+    ],
+    "expect": [
+     "pass"
+    ],
+    "note": "the same play: Nani's box never under a light's dim while she speaks (the kit's rule: red until the question above is answered and the kit changes)"
+   }
+  ]
+ }
 }

@@ -70,6 +70,20 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     ({ stripH: STRIP_H, ppu: PPU, strips: STRIPS } = s.grid);
   }
   const heapUrl = (id) => (ART && ART.heaps[id]) || null;
+  // SAM-47 (the Fable judge, 15 Nov: "one onboard shot, not the same light twice (two onboards 3 s apart, nothing changed)"): the fill
+  // and fold's first-time script is this game's own (data/stations/samosa.json `onboard`), staged on the moves' moments: the filling's
+  // first spoon lit once (the old script lit the heap again for each next spoon), the next strip once, the first samosa's three folds.
+  // The coach reads data.onboard by the station's key, so it is put there once the settings have loaded (it takes the place of the old
+  // unstaged one), as roll-tawa's (RT-02)
+  const putScript = () => {
+    const d = Cook.data;
+    const mine = d && d.settings && d.settings.samosa && d.settings.samosa.onboard;
+    if (!mine) return false;
+    d.onboard = d.onboard || {};
+    d.onboard.samosa = mine;
+    return true;
+  };
+  if (!putScript() && Cook.onLoad) Cook.onLoad.push(async () => putScript());
   /*
    * CHAI-89's rule (Zafar, 5 Nov; the orchestrator, 11 Nov: every game, chai's measure in js/cook/stations/chai-tray.js): the play
    * group (top0..bottom0, design px as laid out with no lift, `room` design px kept above it for what appears there) centred in the
@@ -184,6 +198,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     // decoys are the table's count besides it, where the fillings left allow; a pool that runs out says so, room:n)
     const ids = Cook.shuffle([...new Set(pool.concat(kinds, count2 ? kinds2 : [], exclude))]);
     if (Cook.Coach) Cook.Coach.stop(false); // not "seen": the fill's own begin shows it (data.onboard.samosa)
+    putScript();
     // the art loads while the order card is up (a slow phone mustn't meet an empty scene; warm() has started it already)
     const art = BASE_ART()
       .concat(ids.filter(heapUrl).map((id) => [`sv3-heap-${id}`, heapUrl(id)]))

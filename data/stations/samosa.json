@@ -179,5 +179,6 @@
   "assets/art/kit/slotted-spoon-cloth.default.r1.webp",
   "assets/art/kit/cloth.default.r1.webp"
  ],
- "_assets": "S19 (s19-wave-e2; decision 68, loadcheck): the v4 fry stages and the sheet's underside (art.fry, art.under), beyond data/cook.json art.assets.stations S19 (s19-games-1, loadcheck): the mince's item card picture (ph-keema's card, data/cook.json's f-mince). S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served samosa), until s19-serve2's kitchen dishes take its place."
+ "_assets": "S19 (s19-wave-e2; decision 68, loadcheck): the v4 fry stages and the sheet's underside (art.fry, art.under), beyond data/cook.json art.assets.stations S19 (s19-games-1, loadcheck): the mince's item card picture (ph-keema's card, data/cook.json's f-mince). S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served samosa), until s19-serve2's kitchen dishes take its place.",
+  "onboard": [{"do": "tap", "when": {"kind": "tap", "key": "^(?!strip$)"}, "what": "the first spoon of the filling Nani names, lit once (SAM-47, the Fable judge, 15 Nov: 'one onboard shot, not the same light twice'): the next spoons of it go unlit"}, {"do": "tap", "when": {"kind": "tap", "key": "^strip$"}, "what": "the next pastry strip (SAM-25: any of the six), once"}, {"do": "swipe", "when": "swipe", "what": "fold the strip over the filling"}, {"do": "swipe", "when": "swipe", "what": "fold it again"}, {"do": "swipe", "when": "swipe", "what": "the last fold: it's sealed"}]
 }
