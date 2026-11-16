@@ -1,0 +1,260 @@
+[
+ {
+  "row": "SH-308",
+  "kind": "Logic",
+  "game": "mishkaki",
+  "status": "proven",
+  "probe": "evidence SH-308 (sekelo, eggs, corn, baking L1-L4 at 740x320 and 1280x665, at life:results: count:#mission .oc-card:not(.folded)=0, inside:#mission .oc-card,#side)",
+  "red": "49369e3^ (7ff346a, the commit before SH-308's fix, in a worktree with today's tools and specs): evidence.mjs --run --rows SH-308 --run-id stove-sh308-pre: sekelo L2 740x320 FAIL (a person's card still open at well done, 1 visible)",
+  "green": "48003532 (base, fix 49369e3 + 5b5d0b5): evidence.mjs --run --rows SH-308 --run-id stove-sh308-base: 32 of 32 pages PASS (machine)",
+  "judge": "machine",
+  "files": [
+   "build/sandbox/data/evidence.json"
+  ],
+  "note": "Already fixed before the run by 49369e3 (UI.guidePraise closes every row) and 5b5d0b5; the stove games' share (sekelo, eggs, corn, baking) checked at every level on a phone and a laptop. The key SH-308 is shared: probes-built may also write it; this spec covers the stove games only."
+ },
+ {
+  "row": "CK-137",
+  "kind": "Look",
+  "game": "corn",
+  "status": "open",
+  "probe": "evidence CK-137 p1 (corn L1-L4 740x320 at exp:turn: canvas:gk-tray and gk-grill clear of #side-cog, contract-113), p2 (corn L1-L4 1280x665: contract-78, 'Makai hane kadh.' with its light), p3 (eye: the praise and serve frames, L3 #speed1); p4 (corn L1-L4 740x320 at order-card-in-sidebar: lines:#side .oc-it14 .wc14-k<=1, each item card's name on one line)",
+  "red": "d56dac1^ (5c27551, the commit before CK-137's round-3 fix, today's tools and specs): evidence.mjs --run --rows CK-137 --run-id stove-ck137-pre: noOverlap:canvas:gk-tray,#side-cog FAIL at L1-L4 740x320 (the tray under the cog), contract-78 FAIL at L4 1280x665; p4 on base: --run-id stove-ck137-wrap-base: L1-L4 740x320 all FAIL (an item card's name on two lines)",
+  "green": "machine parts (tray and grill clear of the cog, contract-113, contract-78): base PASS. p4 (the wrap): not fixed",
+  "judge": "FAIL (the judge: 'hakro makai' still wraps at 740x320); CK-132's and CK-137's other eye parts in the batches of run stove-corn-eggs-final",
+  "files": [
+   "build/sandbox/data/evidence.json"
+  ],
+  "note": "Open. The cause is in the shared word card (word-card.css:115, .wc14-k, text-wrap: balance, no shrink before the wrap); the fix reaches chai's frozen item cards, so it's Zafar's call. The rest of the row was fixed before the run by s20-corn-upright round 3 (d56dac1): its machine parts are red on d56dac1^ and green on base."
+ },
+ {
+  "row": "CK-93",
+  "kind": "Logic",
+  "game": "eggs",
+  "status": "proven",
+  "probe": "evidence CK-93 (eggs L1-L4, 740x320 and 1280x665, at every line said through the praise: count:canvas:eg-cat=0, count:canvas:eg-plateTable=0)",
+  "red": "677d1a0^ (cfc2469, the commit before SH-303/CK-93's fix, today's tools and specs): evidence.mjs --run --rows CK-93 --run-id stove-ck93-pre: 8 of 8 pages FAIL (the table room's cat and its table plates on screen at the well done)",
+  "green": "48003532 (base; fix 677d1a0): --run-id stove-ck93-base: 8 of 8 pages PASS",
+  "judge": "machine",
+  "files": [
+   "build/sandbox/data/evidence.json"
+  ],
+  "note": "Already fixed before the run by 677d1a0 (eggs' well done stays in the serve's kitchen, chai's way); the row's status was never updated."
+ },
+ {
+  "row": "SH-303",
+  "kind": "Logic",
+  "game": "eggs",
+  "status": "proven",
+  "probe": "evidence CK-93 (the same probe: eggs is the game the row names first)",
+  "red": "677d1a0^: --run-id stove-ck93-pre, 8 of 8 FAIL",
+  "green": "48003532: --run-id stove-ck93-base, 8 of 8 PASS",
+  "judge": "machine",
+  "files": [],
+  "note": "Eggs' share proven through CK-93's probe (eggs had the only separate praise room among the stove games; corn, baking and sekelo praise on their own play screen and serve in the shared kitchen). 'Every game': the other kitchen games are their owners' to confirm."
+ },
+ {
+  "row": "CK-132",
+  "kind": "Look",
+  "game": "corn",
+  "status": "built",
+  "probe": "evidence CK-132 p1 (corn L1-L4, 740x320 and 1280x665, from the grill screen: trace of #guide .ng-arrow over 9 s, lastsMs>=3000), p2 (eye: the plates' faces and the pills, L3 #speed1)",
+  "red": "none for the drop-down part: green both on 88db779^ (790eb5c, before round 2: --run-id stove-ck132-pre2, the arrow shown at every sample) and on base (--run-id stove-ck132-base2). The arrow steps aside only while a control's call ('Firai!', 'Makai hane kadh.') is said, the kit's SH-172 rule in every game, then comes back (trace, --run-id stove-base-ck100); the judge's frame was such a moment",
+  "green": "48003532 (base; faces and pills: 88db779 + b5157f2, s20-corn-upright round 2)",
+  "judge": "needs-eye",
+  "files": [
+   "build/sandbox/data/evidence.json"
+  ],
+  "note": "Fixed before the run by s20-corn-upright round 2 (88db779: one face size on the plates, the tray's faces at each place, the bowls' columns spread); the eye parts (faces one size, tray faces at their cob's place, the chutney pills a pill's gap apart at 740x320) go to the judge in the batch from run stove-corn-eggs-final. Its eye probe now captures the whole screen (shot), so Nani's box and the order cards are in the judge's frames (the judge couldn't see her box in crop:#game); it needs a rerun for the judge."
+ },
+ {
+  "row": "NEW-run16-stove-profile",
+  "kind": "Check",
+  "game": "other",
+  "status": "open",
+  "probe": "build/sandbox/run.mjs:275 (the page record r has no profile)",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "build/sandbox/run.mjs"
+  ],
+  "note": "needs orchestrator (no builder owns build/sandbox): an evidence page played with profile 'seen' is passed to the contracts with no profile (run.mjs builds r without ev.profile), so contract-78, -98 and the other new-player checks (contract-s14.mjs:67, contract-s17.mjs:24, contract-s19b.mjs:691) judge a returning player as new: 18 contract-98 and 4 contract-78 breaks on the stove games' seen pages in run ev-stove-sh308-base are this. One line: add ...(ev && ev.profile ? { profile: ev.profile } : {}) to r."
+ },
+ {
+  "row": "NEW-run16-eggs-served-count",
+  "kind": "Logic",
+  "game": "eggs",
+  "status": "open",
+  "probe": "build/screenshots/sandbox/ev-stove-sh308-base/cook-eggs-l4/1280x665--p-seen/06-view-service.png",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/serve.js"
+  ],
+  "note": "needs fix-kit (js/cook/serve.js:156, plan: eggs serve n 1 per plate, one picture of one egg): at L2-L4 a person who asked for two eggs ('Muke ba tarela inda khapanta.') gets a plate with one fried egg, or one boiled egg's halves, in the serving kitchen; as corn draws each person's own served dish (CK-137), the served plate should show what was made. Probably needs a two-egg dish picture (art) or the eggs drawn on the plate; a new row for the orchestrator."
+ },
+ {
+  "row": "CK-126",
+  "kind": "Logic",
+  "game": "eggs",
+  "status": "open",
+  "probe": "run ev-stove-sh308-base contract.md (eggs L2-L4, fair path, seen profile)",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [],
+  "note": "Left to probes-built (its status says built). Observation only: on base contract-70 still breaks on eggs L2, L3 and L4 (740x320 and 1280x665): 'the heat ring entered its green (0.72-1) and no call was said by 0.90' at test speed 3; the contract-78 breaks beside it on those pages are the profile fault above."
+ },
+ {
+  "row": "NEW-run16-corn-decoys",
+  "kind": "HisCall",
+  "game": "corn",
+  "status": "question",
+  "probe": "run ev-stove-sh308-base contract.md: contract-37 corn L3 (2 decoys, the table wants 3) and L4 (1 decoy, wants 4)",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "data/stations/corn.json"
+  ],
+  "note": "Question for Zafar: corn always has its six dressing bowls on the band, so the bowls no one asked for are its decoys, and at L3-L4 (three or four asked) there are only one or two, under the rules' 3 and 4. Should corn add bowls at L3-L4 (two rows already at 740x320), or is its six-bowl band exempt from the decoy table? Recommended: exempt, with contract-37 told so."
+ },
+ {
+  "row": "NEW-run16-eggs-decoys",
+  "kind": "Logic",
+  "game": "eggs",
+  "status": "open",
+  "probe": "run ev-stove-sh308-base contract.md: contract-37 eggs L3 740x320 (5 not asked, the table wants 3), L4 1280x665 (3, wants 4), L4 740x320 (5, wants 4)",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "note": "Not fixed (found late): eggs.js:205 counts an unasked shaker as a decoy only when no plate asks for it, but contract-37 reads the order card's rows, so the two counts disagree when a plate asks salt or pepper and the card does not show it at that level. Needs a look at which is right before a fix."
+ },
+ {
+  "row": "CK-100",
+  "kind": "Look",
+  "game": "baking",
+  "status": "built",
+  "probe": "evidence CK-100 p2 (baking L1-L4, 740x320 and 1280x665, over the play: contract-113 and contract-82, expect pass); p1 the eye frames (every placed, #speed1)",
+  "red": "48003532 (base, worktree): evidence.mjs --run --rows CK-100 --run-id stove-base-ck100b: contract-113 FAIL at L2, L3, L4 740x320 ('nana's face sits over bk-naan-golden (19% of it)'); L1 740x320 in run ev-stove-sh308-base ('over bk-naan-raw (20%)')",
+  "green": "1cac7a8 (the face beside the tray on a phone, the tray's light taking it in): evidence.mjs --run --rows CK-100 --run-id stove-ck100-after2: 8 of 8 PASS (contract-113 and contract-82 0 at L1-L4, 740x320 and 1280x665); the first step alone (99f15d6): --run-id stove-ck100-after 8 of 8",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/stations/baking.js",
+   "build/sandbox/data/evidence.json"
+  ],
+  "note": "On a phone the face's floor (30 CSS px) is over a quarter of the tray's width, so in its corner it covered the first naan: there it now sits just outside the tray's upper corner (decided once as the tray is laid down, so it never jumps as the tray shrinks into the oven), the bake ring's gap measured from there, and the tray's light takes it in; on a laptop nothing changes. Judge: the look at 740x320 (the light a face wider than the tray alone). check-change (1cac7a8, build/reports/tiers/change-1cac7a8962.md): exit 1 on two steps that are not baking's: frozen ran out of its 35 min while re-playing 24 chai pages to confirm (nothing confirmed; my diff is baking.js only), and mount fails the same way on base (a window resize listener and a body node left: run on 48003532 by hand, 2 failed, as on this branch). Contract breaks 11 on base, 4 after, none new; the leak bot ok."
+ },
+ {
+  "row": "NEW-run16-baking-36",
+  "kind": "Logic",
+  "game": "baking",
+  "status": "built",
+  "probe": "check-change's contract run (cook:baking L1-L4 at 740x320 and 930x430, contract-36), before (base) and after",
+  "red": "run ev-stove-sh308-base contract.md: contract-36 cook:baking@L4 1280x665: 'a step opened on screen (the order card's next card \"dedh cup paani\") and Nani did not call it (no call line ..., no skip logged)'",
+  "green": "1cac7a8: see build/reports/tiers/change-<commit>.md",
+  "judge": "machine",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "note": "A new finding, no row: an amount still to record has no family clip, so its step's line is now logged as the call skipped (a recording to make), as baking's oven call already logs its own; the line itself is unchanged (its English in grey)."
+ },
+ {
+  "row": "CK-81",
+  "kind": "Look",
+  "game": "mishkaki",
+  "status": "built",
+  "probe": "evidence CK-81 (eye: sekelo #speed1 first-time lights and well done, four sizes)",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [],
+  "note": "Sheets for the judge from run stove-eye-final; no code change (sort: no CK-81 work found in mishkaki-grill.js; sekelo's well done lives in js/cook/mechanics/grill.js)."
+ },
+ {
+  "row": "CK-102",
+  "kind": "Look",
+  "game": "baking",
+  "status": "built",
+  "probe": "evidence CK-102 (eye: the shelf through the bake and at well done)",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [],
+  "note": "The shelf keeps dudh, paani and atto through the oven at 740x320 (run stove-ck100-after, CK-100 sheet B frames 11-13); the judge's sheets from run stove-eye-final."
+ },
+ {
+  "row": "CK-103",
+  "kind": "Look",
+  "game": "corn",
+  "status": "built",
+  "probe": "evidence CK-103 (eye: a strip as each dressing flies to the cob)",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [],
+  "note": "corn.js:1091 flies the bowl's own picture; sheets for the judge from run stove-eye-final."
+ },
+ {
+  "row": "CK-96",
+  "kind": "Look",
+  "game": "baking",
+  "status": "open",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "needs fix-kit: baking's item-card row shape is the kit's (ui.js:3638)."
+ },
+ {
+  "row": "CK-97",
+  "kind": "Art",
+  "game": "baking",
+  "status": "open",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "needs fix-kit and art: 'adh paani' as a half-full bottle needs a half-full bottle picture; the card's picture is chosen in ui.js:3373."
+ },
+ {
+  "row": "SEK-24",
+  "kind": "Art",
+  "game": "mishkaki",
+  "status": "open",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "needs fix-kit and art (sort: ui.js:3348 only stops the crate; the item card should show the skewer the row asks for)."
+ },
+ {
+  "row": "CK-115",
+  "kind": "Look",
+  "game": "corn",
+  "status": "open",
+  "probe": "evidence CK-115 (corn L1-L4 740x320 at exp:turn: inside:#mission .oc-card,#side)",
+  "red": "48003532 (base): evidence.mjs --run --rows CK-115 --run-id stove-ck115-base: L3 and L4 FAIL (1 of 2 cards outside the side panel: the girl's card cut at its foot while Nana's open card with its two item cards fills the panel); L1-L2 PASS (one person)",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/shared/order-card.js",
+   "js/cook/ui.js"
+  ],
+  "note": "needs fix-kit (the side panel's layout and scroll; corn only fills it). The check is red on base for the row's own reason and ready for the fix. A question may sit under it: CLAUDE.md lets a scrolling row cut a card, so whether the panel must fit both cards whole at 740x320 (fold the one not being worked on, or shrink) is Zafar's call if the kit can't fit them."
+ }
+]

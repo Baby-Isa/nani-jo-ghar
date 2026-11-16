@@ -151,7 +151,19 @@ import { setTimeout } from "../life.js";
     /** The control o (a container to tip, the bowl, the oven, the naan) lit as the kit lights one: the first time with its call,
      *  after that only as the stuck hint after the level's wait from the last action (STD-D1-06, D2-01). */
     // (round 3: the light frames the thing alone, its picture; the asker's face sits inside it, FACE.seat)
-    const litOf = (o) => Cook.Coach.box(o, PAD, { visible: true });
+    // (CK-100: where the face is too big for the tray's corner and sits beside it, FACE.out, the light takes it in with the tray, so it
+    // is never left in the dim beside its own lit thing: the face is the thing's own part, Cook.Coach.parts)
+    const litOf = (o) => {
+      const box = Cook.Coach.box(o, PAD, { visible: true });
+      if (!(FACE && FACE.out(o))) return box;
+      const fbox = Cook.Coach.box(FACE.f, 2, { visible: true });
+      return () => {
+        const r = box();
+        if (!r) return null;
+        const f = o.face === FACE.f ? fbox() : null;
+        return f ? [r, f] : [r];
+      };
+    };
     const control = (o, name, current, withLight = null, { lightOnly = false } = {}) => {
       unlight();
       ctlObj = o;
@@ -303,9 +315,16 @@ import { setTimeout } from "../life.js";
       // (round 3, decision 38: "the lit box swells to take in Bapa's face circle: the light frames the thing alone": the face sits in its
       // thing's own corner, inside its picture's box, as chai's faces sit on the tray's corners, so the thing's light holds it whole
       // without growing, contract-82; its upper right on the bowl, the upper left on the tray)
+      // CK-100 (run 16, contract-113 at 740x320, L1-L4: "nana's face sits over bk-naan-raw, 20% of it"): on a phone the face's floor (30
+      // CSS px) is over a quarter of the tray's width, so in its corner it lies over the first naan; there it sits just outside the
+      // tray's corner instead, beside it at its top (its thing's own part still, lit with it). me.out(o): the face is too big for o's
+      // corner (more than FIT of its width as it is first laid down: decided once, so the face never jumps as the tray shrinks into the oven)
+      me.FIT = 0.26;
+      me.out = (o) => !!(o && o.faceOut);
       me.seat = (o = me.owner, side = me.side) => {
         const b = o.getBounds();
         // (gap: moved out from the corner where something is drawn round its thing, the bake ring round the naan in the oven)
+        if (me.out(o)) return { x: side > 0 ? b.right + fd * 0.5 + 2 + me.gap : b.x - fd * 0.5 - 2 - me.gap, y: b.y + fd * 0.5 };
         return { x: side > 0 ? b.right - fd * 0.5 + me.gap : b.x + fd * 0.5 - me.gap, y: b.y + fd * 0.5 };
       };
       me.give = async (o, side, ms = 0) => {
@@ -577,6 +596,15 @@ import { setTimeout } from "../life.js";
       // paani wiji chad!"); an amount still to record (a quarter, three quarters, one and a half, two and a half) makes a sentence the
       // engine can't say whole: its English in grey, never stitched from fragments (non-negotiable 2), a line for the recording sheet
       const call = Lang.role(amountLine(s), "order");
+      // (run 16, contract-36 at L4: "dedh cup paani", an amount still to record, opened its step with no voiced line and no skip: a
+      // line with no family clip is logged as the step's call skipped, a recording to make, as the oven's call logs its own)
+      if (call && (call.ok === false || (Lang.planOf && !Lang.planOf(call).some((c) => c.file)))) {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${s.id}`, by: "skip-novoice" });
+        } catch (e) {
+          /* only a log */
+        }
+      }
       say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({
@@ -758,6 +786,8 @@ import { setTimeout } from "../life.js";
     const naan = T(S.add.image(hx, hy, "bk-naan-raw").setDepth(D.item + 2));
     const nk = ((N.drawn || {}).w || 260) / naan.width;
     naan.setScale(nk);
+    // (CK-100: the tray's naans fill its corners: a face too big for its corner sits beside it, FACE.out)
+    naan.faceOut = !!FACE && FACE.f.displayWidth > naan.displayWidth * FACE.FIT;
     Cook.Kit.shadow(S, naan); // (SH-268)
     /*
      * CK-135, SH-280 (decision 38, 15 Nov: "the dough visibly becomes naan and things go to the oven in place, no two-scene cross-fade"),
@@ -911,7 +941,9 @@ import { setTimeout } from "../life.js";
       const fd = FACE.f.displayWidth;
       const R = ringR + 12 + fd / 2 + 4;
       const cy = -inH / 2 + fd / 2;
-      return Math.max(0, Math.sqrt(Math.max(0, R * R - cy * cy)) - inW / 2 + fd / 2);
+      // (the face's own offset from the naan's middle: in its corner, or beside the tray where it is too big for it, CK-100)
+      const at = FACE.out(naan) ? inW / 2 + fd / 2 + 2 : inW / 2 - fd / 2;
+      return Math.max(0, Math.sqrt(Math.max(0, R * R - cy * cy)) - at);
     };
     await Promise.all([
       Cook.tween(S, { targets: naan, x: ox, y: rackY, scale: nk * 0.88, duration: 520, ease: "Cubic.easeInOut" }),
