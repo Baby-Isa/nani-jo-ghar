@@ -1,0 +1,2 @@
+judge: Fable, run16 judge session
+CK-100 | FAIL: A, frame 11 (64.3 s, L1 1280x665) Dada's face circle sits inside the lit box's top-left corner, on the tray's own corner and touching the first naan, and frame 12 (66.2 s) still has it on the tray's corner, not beside it; B frames 11-12 (740x320) show it clear beside the tray and both frame 13s show it beside the tray in the oven, so only the laptop size fails; L2-L4 have no pictures (contract text only) and the returning jar crossing the jug is not captured
