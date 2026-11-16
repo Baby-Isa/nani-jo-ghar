@@ -34,9 +34,9 @@
       const cs = getComputedStyle(e);
       return r.width > 4 && cs.display !== "none" && cs.visibility !== "hidden" && +cs.opacity > 0.1;
     });
-  // the child watches the first showing: the player's touches are held back for HOLD_MS from the roll step's start, once (a player
-  // that touches at once cuts the showing short, and its own roll moves the pin too)
-  const HOLD_MS = 4000;
+  // the child watches the first showing: the player's touches are held back for HOLD_MS from the first finger, once (a player that
+  // touches at once cuts the showing short, and its own roll moves the pin too)
+  const HOLD_MS = 2500;
   let touched = false, cur = null, n = 0, holdUntil = 0, held = false;
   ["pointerdown", "pointerup", "pointermove", "touchstart", "touchmove", "touchend", "mousedown", "mousemove", "mouseup", "click"].forEach((t) =>
     window.addEventListener(t, (ev) => {
@@ -58,19 +58,15 @@
     }
     cur = null;
   }
-  // the roll step: the game's expectation (njgTest.cook.expectation(), what the players read) is a roll; the hold starts there, once
-  const rolling = () => {
-    try {
-      const T = window.njgTest;
-      const e = T && T.cook && T.cook.expectation ? T.cook.expectation() : null;
-      return !!(e && (e.kind === "roll" || /"roll"/.test(JSON.stringify(e))));
-    } catch (err) { return false; }
-  };
+
   setInterval(() => {
-    if (!held && rolling()) { held = true; holdUntil = Date.now() + HOLD_MS; say(`MAA-20 note: the roll step, the player held ${HOLD_MS} ms`); }
     const fs = fingers();
     if (!fs.length) return end();
-    if (!cur) { cur = { fm: new Map(), pm: new Map(), k: 0 }; touched = false; }
+    if (!cur) {
+      cur = { fm: new Map(), pm: new Map(), k: 0 };
+      touched = false;
+      if (!held) { held = true; holdUntil = Date.now() + HOLD_MS; }
+    }
     if (touched) return; // (the child's own roll moves the pin too: a touch ends a showing, the next starts after it)
     for (const e of fs) {
       if (!cur.fm.has(e)) cur.fm.set(e, []);

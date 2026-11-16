@@ -48,6 +48,18 @@
   "note": "A code test, not a play: the light only comes for a new player still on the poured pan, and no sandbox player stays (it picks the next pan at once, so the game rightly gives none; tried with the player held 3 s: it had already switched pans)."
  },
  {
+  "row": "MAA-20",
+  "kind": "Teaching",
+  "game": "maani",
+  "status": "question",
+  "probe": "node build/tools/review/maa20.mjs (cook:maani-line, a new player, 740x320 and 1280x665; hook build/tools/review/lib/maa20-hook.js)",
+  "red": "not shown: on cc963d61 (before 2267ee0d, s19-lights phase 1) the sandbox never showed a moving demo finger (one still finger for about 30 s), so the old pin could not be measured",
+  "green": "48003532: the pin travels with the finger in every showing (maa20-base-c: 2 of 2 pages, 37 showings, finger 65-128 px, pin 214-220 world px; a later run: 1280x665 green with 20 showings, 740x320 saw no showing); flaky, so not on the ready list",
+  "judge": "needs-eye: the lab pair lab/sections/kit-lights.html?state=roll-finger and ?state=roll-circle",
+  "files": [],
+  "note": "Built (2267ee0d: the pin rides under the kit's one finger). What is left is his: question, the roll demo's look: (a, recommended) the one finger as built; (b) a pulsing circle; both are on the kit lab page (his 8 Nov: 'we could try both and see what look comes out better')."
+ },
+ {
   "row": "MAA-25",
   "kind": "Look",
   "game": "maani",

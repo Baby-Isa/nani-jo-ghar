@@ -6,7 +6,7 @@ Branch `run16/fix-chai`, cut from 48003532. No game file changed: every row belo
 
 - **CHAI-99's proof reads the code, not a play.** The next pan's light only comes for a new player who stays on the poured pan. No sandbox player stays: it picks the next pan at once, so the game rightly gives no light. Holding the player 3 s didn't help either, because it had already switched pans. So `chai-next-pan.test.mjs` reads the wait the code sets.
 - **MAA-28 reproduces on old code in 2 of 8 plays only:** `#hint` 1280x665 and `#mistake` 740x320. Fast play and child-pace play stayed green there. Its green covers 10 plays on base, those two included.
-- **MAA-20:** see its section below for the final state of the old-code run.
+- **MAA-20's check is flaky and has no red.** Base was green on 3 of 4 pages; one 740x320 run saw no demo. The old code never showed a moving demo finger in the sandbox, so its pin couldn't be measured. It is not on the ready list.
 - **No check-change run.** The branch changes no runtime file (`git diff --stat 48003532` touches only `build/`), so before and after are the same game. It would have cost about 47 minutes of browser time.
 - **CHAI-111 is not reproduced.** The sandbox has no 736x750 size, and Zafar played at that size after resizing mid-session.
 
@@ -37,11 +37,15 @@ These are sound or look rows, for Zafar's ear or a judge's eye:
 
 ## Questions for Zafar
 
-1. **MAA-25:** where do maani's plates go once they're off the stone tray?
+1. **MAA-20:** the roll demo's look. The pin now rides under the finger (2267ee0d).
+   - (a) The one finger, as built. Recommended.
+   - (b) A pulsing circle.
+   - Both are on the kit lab page (`lab/sections/kit-lights.html?state=roll-finger`, `?state=roll-circle`).
+2. **MAA-25:** where do maani's plates go once they're off the stone tray?
    - (a) A round tray left of the board, as chai's glasses sit on theirs. Recommended.
    - (b) Below the hob, right of the board.
    - (c) Stay on the band, at the heaps' pitch, with pills.
-2. **CHAI-114:** chai is frozen, and Nani's box is the kit's. Unfreeze it for this one fix (recommended), or wait for the frame?
+3. **CHAI-114:** chai is frozen, and Nani's box is the kit's. Unfreeze it for this one fix (recommended), or wait for the frame?
 
 ## Tools added
 
