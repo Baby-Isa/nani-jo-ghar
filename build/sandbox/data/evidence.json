@@ -29474,6 +29474,9 @@
    "flow": "cook:chai-tray",
    "path": "fair",
    "level": [
+    1,
+    2,
+    3,
     4
    ],
    "sizes": [
@@ -29491,7 +29494,7 @@
    ],
    "max": 20,
    "delay": 250,
-   "note": "chai L4 at 740x320: every line in Nani's box (among them 'Paani tapele me wij.') fits whole in its text area, never a second line cut off"
+   "note": "chai L1-L4 at 740x320: every line in Nani's box (among them 'Paani tapele me wij.') fits whole in its text area, never a second line cut off"
   }
  ],
  "SH-270": [
@@ -30051,16 +30054,17 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "page:end",
+   "at": "every:onboard",
    "after": null,
    "capture": [
-    "contract:117",
-    "contract:106"
+    "trace:.njg-onboard .ob-shade:1500",
+    "strip:#stage:6x150"
    ],
    "expect": [
-    "contract-117"
+    "lastsMs:.njg-onboard .ob-shade>=1000"
    ],
-   "note": "chop L1 fresh: the first light never drops (dim and box gone 200-300 ms) before the child acts (contract-117)"
+   "max": 4,
+   "note": "chop L1, a new player: each first light's dim holds at least 1 s from when it comes (the bot's move comes later), never off for 200-300 ms and back while the child has not acted"
   },
   {
    "flow": "cook:maani-line",
@@ -30074,15 +30078,17 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "page:end",
+   "at": "every:onboard",
    "after": null,
    "capture": [
-    "contract:117"
+    "trace:.njg-onboard .ob-shade:1500",
+    "strip:#stage:6x150"
    ],
    "expect": [
-    "contract-117"
+    "lastsMs:.njg-onboard .ob-shade>=1000"
    ],
-   "note": "maani L1 fresh: the same (contract-117)"
+   "max": 4,
+   "note": "maani L1, a new player: the same, the dim and box never blink off before the child acts"
   },
   {
    "flow": "cook:samosa",
@@ -30095,15 +30101,17 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "page:end",
+   "at": "every:onboard",
    "after": null,
    "capture": [
-    "contract:117"
+    "trace:.njg-onboard .ob-shade:1500",
+    "strip:#stage:6x150"
    ],
    "expect": [
-    "contract-117"
+    "lastsMs:.njg-onboard .ob-shade>=1000"
    ],
-   "note": "samosa L1 fresh: the dim never on and off three times in 2 s (contract-117)"
+   "max": 4,
+   "note": "samosa L1, a new player: the dim never on and off three times in 2 s"
   }
  ],
  "MAA-25": [
@@ -30111,7 +30119,8 @@
    "flow": "cook:maani-line",
    "path": "fair",
    "level": [
-    1
+    1,
+    4
    ],
    "sizes": [
     "740x320",
@@ -30119,17 +30128,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "page:end",
+   "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
-    "contract:109",
-    "contract:115"
+    "shot"
    ],
-   "expect": [
-    "contract-109",
-    "contract-115"
-   ],
-   "note": "maani: the shelf holds only the dough piles, at one even pitch with pills (the plates stay on the worktop): contract-109 (one base line, pills on one line) and contract-115 (the shelf's items one height)"
+   "expect": null,
+   "delay": 500,
+   "note": "maani: the plates are not on the shelf among the dough piles; they stay on the worktop as chai keeps its vessels; the shelf holds the dough piles at one even pitch, each with its pill"
   }
  ],
  "LAB-08": [
@@ -30660,6 +30666,27 @@
    ],
    "delay": 500,
    "note": "Nani's shop: the tick button never over the lower row's cards or their prices (1280x665), never over the '?' button, and the '?' not clipped at the panel's right edge (740x320)"
+  }
+ ],
+ "ART-74": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_no_upload_folders.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no raw ChatGPT upload folder (assets/ChatGPT 261110 1, 261110 2 ...) in the tree the publish puts on main; every image kept under sources/art/"
   }
  ]
 }
