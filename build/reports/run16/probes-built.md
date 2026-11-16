@@ -9,40 +9,40 @@ The 202 rows whose status says built under "to fix", proved on today's head (the
 - **Built rows that are not fixed (open, 20).** The check or the judge shows the fault on today's head:
 - **SH-224** (other, Logic): partly built (chai and the tokens host Lora): cook.html and the other pages still load Google fonts; the row waits for the roll-out.
 - **SH-226** (other, Logic): chai part built and green; the row is to fix: code for every other game (waits for the frame).
-- **SH-203** (kit, Look): built per its status, but the check fails on today's head: machine: SH-203-p1-L4-1280x665: pass: 1 contract breaks
+- **SH-203** (kit, Look): built per its status, but on head the order card flying to its row covers Nana face: contract-83 at chai L4 1280x665 view-marble, a card (453,283,587,513) over nana, 6101 px squared
 - **SH-151** (other, Check): the kit reads the type roles, but the other modes still name faces and colours outside the tokens; the lint passes only because it warns until the roll-out.
 - **SH-285** (kit, Logic): Nani own order does flash its first card, but for about 100 ms, not as it is said: the SH-267 flash fault (fix-kit owns it)
 - **PAN-04** (kit, Logic): Cook is one voice at a time; the clinic send-off count overlaps (clinic is parked, so the clinic part is Parked)
-- **CHAI-34** (chai, Art): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **CHAI-39** (chai, Kutchi): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **CHAI-49** (chai, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **DAAR-12** (daar, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **SAM-30** (samosa, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **CHT-13** (chaat, Art): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **CHT-18** (chaat, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **CK-54** (kit, Logic): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **CK-126** (eggs, Logic): built per its status, but the check fails on today's head: machine: CK-126-p1-L2-740x320: pass: 1 contract breaks; CK-126-p1-L3-740x320: pass: 2 contract breaks
+- **CHAI-34** (chai, Art): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: G, at L4 1920x1080 the pan is back on its burner still full of black chai (839 ms, 1140 ms) after Nana's glass has filled, and only then turns empty (1683 ms); H at L4 930x430 shows the same and worse: lifted (335 ms), back on the burner full (952, 1438 ms), lifted over th]
+- **CHAI-39** (chai, Kutchi): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: A, the film itself shows the "no" item said last ("aadu, hakro khun, dudh na"; J the same with "trae khun, aako, dudh na") and the row's cards only stepping forward, but A's and B's own contract-72 captures each report a break (L2 1280x665: "the order row glided 304 px at ]
+- **CHAI-49** (chai, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: B, L4 930x430 at speed 1: the contract-78 capture reads "the call 'Chulo bar!' starts and the light comes 58760 ms later" (and 'Slow kar!' 46742 ms later), so the call is still said with nothing lit; at 1280x665 the capture reads "'Slow kar!' starts and no light comes with]
+- **DAAR-12** (daar, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: A, at L1 the speedo dial (tortoise, hare, spill) stands beside the pan with its slow band green, the other yellow and the spill red, needle live; the same dial with the same coloured bands is in B and E (L2) and in C and F (L3), so a speed is still shown as asked before L4]
+- **SAM-30** (samosa, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: J, at L2 1280x665 the lift has no dim and no lit box (the screen is fully lit, only the rings round the three samosas), and K at L3 is the same; I (L1) and L (L4) do show the dim and the box on a samosa in the pan. A to H show the dim and the box on the first samosa in the]
+- **CHT-13** (chaat, Art): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: F, at L2 1280x665 the served chaat is an opaque cream bowl from above filled with one even pale-green topping, so the items do not each read in the bowl (H the same at 740x320); A to D never reach the bowl (they show the chopping board with a tomato), and L3, L4, 930x430 a]
+- **CHT-18** (chaat, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: B, at L1 740x320 there is no dim and no lit box, only an orange glow round the chano pot; C and D (L2) the same glow with no dim, and E, F, G, H (L3, L4) show no dim, no box and no glow at all; only A (L1 1280x665) shows the dim with the lit box on the first topping. No pa]
+- **CK-54** (kit, Logic): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: A, the 1920x1080 run's contract-74 capture reports two breaks: 1 s after the tap during the order there is still 1 big card and 4 cards not yet in their row, and the station started 5550 ms after the tap (the row asks within 1 s); panels A-D only show the station afterward]
+- **CK-126** (eggs, Logic): built per its status, but eggs at a child pace (#speed1, 740x320) still breaks: contract-70 no turn-off call as the heat enters its green (L2, L3), contract-78 Tarelo indo hane kadh. said 1701 ms before its light
 - **SH-314** (other, Logic): 270f39f fixed most of the leak but a timing-dependent one remains: a word card fitted after unmount re-adds its resize listener and section, and an audio context can stay open; needs fix-kit (shared files).
 - **PRC-06** (other, Check): built per its status, but the check fails on today's head: machine: PRC-06-p1-repo: pass: node build/tools/review/evidence.mjs --plan --all: exit 1
 - **SH-122** (kit, Look): to fix: code, research and propose (not built); my still was the wrong check (judge audit FAIL): it needs a strip across a zoom hand-over
-- **CK-85** (chaat, Look): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **CK-80** (corn, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook)
-- **Weak red.** Most proven rows are green on head with the fix commit cited, not replayed red. The repo was shallow (history from 8 Nov); I deepened it, but a red replay costs browser time. Replayed red→green: DAAR-40 (contract-95, 64cff18f5~1) and CK-91 (the flash card over the cog, 1f8400855~1); by script, SH-316 (934f5fa~1) and SH-221 (the old call put back). CK-90's red did not show on its old commit on either the fair or the mistake path: no driver makes the refused tap while a topping flies. Its green is real, but the check cannot tell before from after.
+- **CK-85** (chaat, Look): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: E, frame 6 (33.6 s) the chano card still shows a jar of chickpeas where the tray shows the bowl (same at F5, G6, H6); A frame 3 (41.4 s) the third onboard, bataato, has no dim and no gold box, and B, C, D reach only two onboards (board, then chano) so no light is shown for]
+- **CK-80** (corn, Teaching): built per its status, but the judge sees the fault on today's head (run r16pb-cook) [judge (run16/judge): FAIL: A, frames 1-2 the lit cob in the tray has its gold box but no makai pill, and no cob carries a pill at any size (C, E, G the same); no hakro pill appears in the grill scene. Met: B, D, F, H the hakro makai card is in the order panel from the first onboard (D2 opens it larg]
+- **Weak red.** Most proven rows are green on head with the fix commit cited, not replayed red. The repo was shallow (history from 8 Nov); I deepened it, but a red replay costs browser time. Replayed red→green: DAAR-40 (contract-95, 64cff18f5~1); by script, SH-316 (934f5fa~1) and SH-221 (the old call put back). CK-91 is red on 1f8400855~1 (the flash card over the cog), but on head the flash lasts about 100 ms, so its green cannot be seen until SH-267 is fixed. CK-90's red did not show on its old commit on either the fair or the mistake path: no driver makes the refused tap while a topping flies. Its green is real, but the check cannot tell before from after.
 - **Checks I found testing the wrong thing and rewrote:** CK-91 (contract-119 passed before the fix; now noOverlap of .wc14-flash and #side-cog), DAAR-40 (the cmd failed on any contract break; now contract-95 alone), CK-90 and CK-113 (fair play never makes a refused tap; now the mistake path), SAM-31 (asked for 2 cards at L1, but L1 orders one filling), SH-224 (now red while cook.html loads a Google font). The judge's audit failed ART-51, DAAR-37, SH-209 and SH-122; those are cannot-probe (or open) with the reason.
 - **Browser time.** ~1.6-2 pages a minute on 4 cores. The new shared and chai eye specs did not all play; they are cannot-probe with their spec ready (`evidence.mjs --run --rows <id>`).
 
 ## Proven (40)
 
 - **SH-227** (kit, Look): the machine check passes on today's head
-- **CHAI-89** (chai, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
+- **CHAI-89** (chai, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, L1 1280x665: the hob-and-tray group sits mid-worktop, about 115 px left of the handle and 110 px right of the tray, about 38 px above it once the pill's room is taken off and 36 px below it to the shelf; the "chai" label and "hakro" pill stay inside the room above the h]
 - **SH-155** (kit, Check): the machine check passes on today's head
 - **SH-290** (kit, Check): the machine check passes on today's head
 - **SH-305** (kit, Logic): the machine check passes on today's head
 - **PAN-22** (kit, Teaching): the machine check passes on today's head
-- **CHAI-08** (chai, Art): eye row passed by the independent judge on today's head (run r16pb-cook)
-- **CHAI-35** (chai, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
-- **CHAI-36** (chai, Teaching): eye row passed by the independent judge on today's head (run r16pb-cook)
-- **CHAI-48** (kit, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
+- **CHAI-08** (chai, Art): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, L1 1366x768: the pan is seen from straight above and centred on its burner, the glass from straight above with even rings and centred in its well; C (same size) shows the pan flat, not tilted, moved above the glass and emptying (full at 0 ms, empty at 512 ms) while the ]
+- **CHAI-35** (chai, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, L1 1920x1080 at the hint: the helper card (paani, its picture and speaker) sits inside Nani's box at the top of the sidebar and the order card below it is whole and uncovered; B shows the same at 740x320, the helper as one row in Nani's box, nothing over the order card ]
+- **CHAI-36** (chai, Teaching): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: C, L1 1920x1080 at the turn-down call: the screen is not dimmed at all, the heat ring is drawn round the pan and the knob is ringed gold; D the same at 930x430; A and B (the "Chulo bar!" call) are not dimmed either, so no frame is dark with nothing lit. The sheet holds no ]
+- **CHAI-48** (kit, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, L3 1280x665, frame 4 (27.0 s): the girl's long first line "Muke elchi waari chai khapeti," is wrapped to two lines above her own head at the right, clear of Nana's face (it ends at the edge of his cap, not over his head); B frame 4 (28.7 s) shows the same wrap at 740x32]
 - **DAAR-40** (daar, Logic): fixed by 64cff18f5 (the chop opens its own step as its board starts); red then green on contract-95 alone
 - **DAAR-41** (daar, Teaching): the machine check passes on today's head
 - **DAAR-43** (daar, Look): the machine check passes on today's head
@@ -50,26 +50,26 @@ The 202 rows whose status says built under "to fix", proved on today's head (the
 - **DAAR-58** (daar, Look): the machine check passes on today's head
 - **DAAR-63** (chop, Teaching): the machine check passes on today's head
 - **DAAR-65** (daar, Look): the machine check passes on today's head
-- **SEK-25** (sekelo, Logic): eye row passed by the independent judge on today's head (run r16pb-cook)
-- **SEK-26** (sekelo, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
+- **SEK-25** (sekelo, Logic): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: B, at L3 1280x665 the order "hakri lakri mishkaki" carries four separate piece cards, each "gos", each with its own tick (the headline names the dish, the cards name the piece); not shown: L1, L2, L4, the cards of "ba lakri mixed" (below the fold of the scrolling card) and]
+- **SEK-26** (sekelo, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, frame 2 (45.6 s) at L1 1280x665 shows the top-down coal grill, the skewer spanning its full depth with the wooden handle at the bottom edge and the metal tip at the top edge, a deep-walled steel tray beside it; frame 1 shows the new thin metal skewer with the wooden han]
 - **SAM-31** (samosa, Logic): the row reason holds (no old box); the spec asked >=2 cards at L1, but L1 orders one filling, so it now asks >=1 there (sheet SAM-31.png panels B, D)
-- **SAM-34** (samosa, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
-- **SAM-36** (samosa, Logic): eye row passed by the independent judge on today's head (run r16pb-cook)
+- **SAM-34** (samosa, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, frame 4 (55.9 s) at L1 1280x665 shows the fryer knob off to the left of the hob with the karahi filling it, the wood-and-metal slotted spoon resting on its folded cloth, the plate alone with a tissue and no serving tray, the samosas waiting on the bottom tray; frame 7 s]
+- **SAM-36** (samosa, Logic): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: B, at L1 1280x665 the order reads "Muke ba samosa khapanta." and the served tray holds two samosas (D the same at 740x320); F and H at L2 hold three for "trae samosa"; not shown: L3 and L4.]
 - **SAM-42** (samosa, Teaching): the machine check passes on today's head
-- **MAA-23** (maani-line, Teaching): eye row passed by the independent judge on today's head (run r16pb-cook)
+- **MAA-23** (maani-line, Teaching): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: C, at L2 1280x665 frame 3 shows the "nindhi maani" card and frame 4 the "wadhi maani" card on the rolling board (a gold ring round the board behind it), once in the run, and frame 10 shows the size rings on the board for the next roll; A and B (L1) show no ring and no less]
 - **CK-53** (kit, Look): the machine check passes on today's head
 - **CK-61** (corn, Look): the machine check passes on today's head
 - **CK-62** (eggs, Look): the machine check passes on today's head
 - **CK-63** (eggs, Look): the machine check passes on today's head
-- **CK-77** (eggs, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
-- **CK-104** (corn, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
+- **CK-77** (eggs, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: B, at 1280x665 the egg carton stands on the shelf line at the milk carton's size beside it, its gold light and its "indo" pill whole above the frame's bottom; the same in D (1920x1080), F (740x320), H (930x430) and the first-light frames I1, J1, K1, L1 (the light's bottom ]
+- **CK-104** (corn, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, frame 2 at 740x320 L1 shows six bowls in two rows of three inside the stone tray, each column's bowls and pills on one line, the rows' gap smaller than a pill's height, no pill over the edge; B frame 2 (L4) the same; note: the widest pill ("fudino ji chutney", bottom le]
 - **CK-113** (kit, Logic): the machine check passes on today's head
 - **CK-114** (eggs, Logic): the machine check passes on today's head
 - **CK-124** (eggs, Look): the machine check passes on today's head
 - **CK-131** (corn, Logic): the machine check passes on today's head
 - **SH-315** (eggs, Check): the machine check passes on today's head
 - **SH-316** (other, Check): fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today.
-- **CHAI-65** (chai, Look): eye row passed by the independent judge on today's head (run r16pb-cook)
+- **CHAI-65** (chai, Look): eye row passed by the independent judge on today's head (run r16pb-cook) [judge (run16/judge): PASS: A, frame 3 at L2 1280x665 shows Dada's face on the tray's top-left corner for the top-left glass and the boy's face on the top-right corner for the top-right glass, both clear of the glasses; B frames 3-5 the same at 740x320; note: only L2 (the two top glasses) at two size]
 - **SH-221** (other, Logic): the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back.
 - **SH-261** (kit, Teaching): the machine check passes on today's head
 - **CK-90** (corn, Logic): green on head on the mistake path; the check could not show the old fault, so the proof rests on green plus the fix commits 231080600 and 1f8400855

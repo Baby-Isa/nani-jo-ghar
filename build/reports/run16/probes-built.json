@@ -386,7 +386,7 @@
   ],
   "status": "open",
   "judge": "machine",
-  "note": "built per its status, but the check fails on today's head: machine: SH-203-p1-L4-1280x665: pass: 1 contract breaks",
+  "note": "built per its status, but on head the order card flying to its row covers Nana face: contract-83 at chai L4 1280x665 view-marble, a card (453,283,587,513) over nana, 6101 px squared",
   "red": "c4edbfdc5 run r16pb-newcook: machine: SH-203-p1-L4-1280x665: pass: 1 contract breaks",
   "green": "not green"
  },
@@ -2034,7 +2034,7 @@
   ],
   "status": "open",
   "judge": "machine",
-  "note": "built per its status, but the check fails on today's head: machine: CK-126-p1-L2-740x320: pass: 1 contract breaks; CK-126-p1-L3-740x320: pass: 2 contract breaks",
+  "note": "built per its status, but eggs at a child pace (#speed1, 740x320) still breaks: contract-70 no turn-off call as the heat enters its green (L2, L3), contract-78 Tarelo indo hane kadh. said 1701 ms before its light",
   "judgeAudit": "judge (run16/judge): PASS: The four contract rules the row names (70, 78, 83, 114) on eggs L1-L4 at both sizes. The path is 'fair': confirm it plays at the child's pace (#speed1) the row is about.",
   "red": "c4edbfdc5 run r16pb-newcook: machine: CK-126-p1-L2-740x320: pass: 1 contract breaks; CK-126-p1-L3-740x320: pass: 2 contract breaks",
   "green": "not green"
