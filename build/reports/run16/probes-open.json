@@ -240,13 +240,13 @@
   "game": "maani-line",
   "status": "open",
   "probe": "evidence.json MAA-25 (eye: shots at order-card-in-sidebar, maani L1+L4, 740x320 and 1280x665)",
-  "red": "contract-109 and contract-115 were green on head (run po-a1) and do not see plates on the shelf; eye batch build/screenshots/evidence/po-j1/judge/batch-01.md",
+  "red": "48003532, run po-j1, judge FAIL (run16/judge, po-j1 panel A): the two serving plates sit inside the shelf tray beside the dough piles, no pills, at a wider pitch; the same in B, C, D",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-j1/MAA-25.png panel A)",
   "files": [
    "js/cook/stations/maani-line.js"
   ],
-  "note": "Sort reads it still true in code (maani-line.js:330-339 lays the plates on the shelf band)."
+  "note": "Still true (maani-line.js:330-339 lays the plates on the shelf band); contract-109 and -115 do not see it, so the eye check stands."
  },
  {
   "row": "CHT-22",
@@ -526,14 +526,14 @@
   "kind": "Look",
   "game": "chai",
   "status": "open",
-  "probe": "evidence.json SH-211 (eye: an 8-frame strip of #mission at every popup-fold, chai L4, 740x320 and 1280x665)",
-  "red": "needs the judge (build/screenshots/evidence/po-l1/judge/batch-01.md)",
+  "probe": "evidence.json SH-211 (eye: an 8-frame strip of #mission at every popup-open, chai L4, two sizes)",
+  "red": "needs the judge (build/screenshots/evidence/po-r1/judge/batch-01.md); the first aim (popup-fold) showed the row at rest (judge EVIDENCE)",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "needs-eye (po-r1/judge/batch-01.md)",
   "files": [
    "js/shared/order-card.js"
   ],
-  "note": "Not reproduced in code reading (sort); a machine check needs a per-frame scroll log of the row, which the probe cannot read yet, so the strips go to the judge."
+  "note": "Not reproduced in code reading (sort); a machine check needs a per-frame scroll log of the row."
  },
  {
   "row": "SH-136",
@@ -541,13 +541,13 @@
   "game": "chai",
   "status": "open",
   "probe": "evidence.json SH-136 (eye: zoom2 of #mission at every order-card-in-sidebar, chai L1, 930x430)",
-  "red": "needs the judge (po-l1/judge/batch-01.md)",
+  "red": "not shown: the judge (po-l1) finds no state that tells broken from fixed: no one-row card for Nana at that size, and 930x430 is not the 915x412 he saw",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "EVIDENCE (judge session: the probe misses the state)",
   "files": [
    "css/shared/order-card.css"
   ],
-  "note": "Cook's parts only (Nana's one-row card, the chips' speaker); the reveal eye at 915 is a fit choice for Zafar, the eye-test card is the parked clinic."
+  "note": "Needs a seeded one-item order for Nana at a 915x412-like size; the sandbox has no 915x412 entry (it maps to 844x390)."
  },
  {
   "row": "SH-135",
@@ -555,13 +555,13 @@
   "game": "kit",
   "status": "open",
   "probe": "evidence.json SH-135 (eye: Cook's title at 740x320 and 1280x665)",
-  "red": "needs the judge (po-m1/judge/batch-01.md)",
+  "red": "48003532, run po-m1, judge FAIL (po-m1 panel A): Cook's three title buttons are not one look: play is solid dark, the book and basket are near-white tiles with a hairline border, washed out beside it",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-m1/SH-135.png panel A)",
   "files": [
    "css/shared/buttons.css"
   ],
-  "note": "Cook's part only (its three buttons washed out); the door's pills and the clinic's lit tool are parked modes, and EASY-08's gold box is Zafar's call."
+  "note": "Cook's part is still true; the door's pills and the clinic's lit tool are parked modes, and EASY-08's gold box is Zafar's call."
  },
  {
   "row": "SH-122",
@@ -588,5 +588,21 @@
    "js/shared/sfx.js"
   ],
   "note": "Not probed: chai's recorded picks are in; each other game needs its own researched picks first (the per-game rule, build/test_shared_sfx_files.mjs, is added with them), so there is nothing to check red yet."
+ },
+ {
+  "row": "LNG-20",
+  "kind": "Check",
+  "game": "other",
+  "status": "open",
+  "probe": "build/test_family_takes_linked.mjs (evidence.json LNG-20: cmd, expect pass)",
+  "red": "48003532: exit 1, 63 usable take ids (76 takes) linked to no word or meaning: among them khuda-fis ('Khuda hafiz!'), the potato takes (bateto, trae-bateta) and the 'one X, two Xs' pairs",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "data/family-audio.json",
+   "data/lang/clips.json",
+   "build/lang/import_all.mjs"
+  ],
+  "note": "Still true and grown: 63 orphan ids today (the row said 29); a take that should stay unplayed needs 'unused': true with why."
  }
 ]
