@@ -76,40 +76,40 @@
   "commit": "5d05688f35",
   "row": "DAAR-57",
   "status": "unproven",
-  "why": "evidence DAAR-57 (chop L1-L4, 740x320 and 1280x665): machine PASS, PASS; check-change on 5d05688: running since 08:21 (chop L1, --rows DAAR-57, --no-film: cut down to fit before 08:45); the builder own change-0725e61000 (FAILED: frozen chai, mount, contract-113 baking, contract-37 eggs) predates SH-314 and does not cover this head (my tool first took it by mistake)",
-  "at": "2026-11-16 08:25 UTC"
+  "why": "evidence DAAR-57 (chop L1-L4, 740x320 and 1280x665): machine PASS, PASS; check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
  },
  {
   "branch": "run16/fix-kit",
   "commit": "5d05688f35",
   "row": "CK-121",
   "status": "unproven",
-  "why": "evidence CK-121 (eggs L1-L4): machine PASS, PASS (fixed on the base: cb34df93, 49369e32); check-change on 5d05688: running since 08:21 (chop L1, --rows DAAR-57, --no-film: cut down to fit before 08:45); the builder own change-0725e61000 (FAILED: frozen chai, mount, contract-113 baking, contract-37 eggs) predates SH-314 and does not cover this head (my tool first took it by mistake)",
-  "at": "2026-11-16 08:25 UTC"
+  "why": "evidence CK-121 (eggs L1-L4): machine PASS, PASS (fixed on the base: cb34df93, 49369e32); check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
  },
  {
   "branch": "run16/fix-kit",
   "commit": "5d05688f35",
   "row": "SH-314",
   "status": "unproven",
-  "why": "node build/test_cook_mount.mjs: pass, pass (28 s each); check-change on 5d05688: running since 08:21 (chop L1, --rows DAAR-57, --no-film: cut down to fit before 08:45); the builder own change-0725e61000 (FAILED: frozen chai, mount, contract-113 baking, contract-37 eggs) predates SH-314 and does not cover this head (my tool first took it by mistake)",
-  "at": "2026-11-16 08:25 UTC"
+  "why": "node build/test_cook_mount.mjs: pass, pass (28 s each); check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
  },
  {
   "branch": "run16/fix-kit",
   "commit": "5d05688f35",
   "row": "SH-292",
   "status": "unproven",
-  "why": "node --test build/sandbox/run16-fixkit.test.mjs: pass, pass; check-change on 5d05688: running since 08:21 (chop L1, --rows DAAR-57, --no-film: cut down to fit before 08:45); the builder own change-0725e61000 (FAILED: frozen chai, mount, contract-113 baking, contract-37 eggs) predates SH-314 and does not cover this head (my tool first took it by mistake)",
-  "at": "2026-11-16 08:25 UTC"
+  "why": "node --test build/sandbox/run16-fixkit.test.mjs: pass, pass; check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
  },
  {
   "branch": "run16/fix-kit",
   "commit": "5d05688f35",
   "row": "SH-267",
   "status": "unproven",
-  "why": "FLAKY: evidence SH-267 run 1 every machine expect PASS (contract-119), run 2 at least one expect FAIL; the run-2 sheet was lost when my tool removed the worktree (a fault of prove-round.mjs, now fixed), so the failing page is not named. At 3332fbe both runs had 0 contract-119 breaks on all 14 pages. Needs a third run on 5d05688; check-change on 5d05688: running since 08:21 (chop L1, --rows DAAR-57, --no-film: cut down to fit before 08:45); the builder own change-0725e61000 (FAILED: frozen chai, mount, contract-113 baking, contract-37 eggs) predates SH-314 and does not cover this head (my tool first took it by mistake)",
-  "at": "2026-11-16 08:25 UTC"
+  "why": "FLAKY: evidence SH-267 run 1 every machine expect PASS (contract-119), run 2 at least one expect FAIL; the run-2 sheet was lost when my tool removed the worktree (a fault of prove-round.mjs, now fixed), so the failing page is not named. At 3332fbe both runs had 0 contract-119 breaks on all 14 pages. Needs a third run on 5d05688; check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
  },
  {
   "branch": "run16/fix-kit",

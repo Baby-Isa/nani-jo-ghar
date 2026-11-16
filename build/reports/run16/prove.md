@@ -5,7 +5,7 @@
 ## Flaws first
 1. **SH-267 (fix-kit 5d05688) is flaky:** evidence run 1 had every machine expect PASS, run 2 had at least one expect FAIL. My tool removed the worktree at the end of the round, so the run-2 sheet that names the failing page is lost (fixed in prove-round.mjs: worktrees are now kept). At 3332fbe, both runs had 0 contract-119 breaks on all 14 pages. It needs a third run on the head before it merges.
 2. **fix-kit's own check-change (change-0725e61000) FAILED** on 4 blockers: chai's frozen diff, Cook's mount test (COOK-16 leaked listeners), contract-113 in baking#hint (Nana's face over the golden naan), contract-37 in eggs#hint L1 (2 decoys, the table wants 1). SH-314 (after it) targets the mount test; the others are not shown fixed. Its report predates SH-314, so it does not cover the head. My tool first took it for the head (07:33-08:20 round, all rows "bounced"), and I corrected that by hand (rule fixed: an own report stands in only when no game file changed after it).
-3. **check-change on fix-kit's head:** running since 08:21 (chop L1, --rows DAAR-57, --no-film); result filled in at 08:40.
+3. **check-change on fix-kit's head:** started 08:21 (chop L1, --rows DAAR-57, --no-film), not finished by 08:45: push PASS (5.1 min); play chop L1 at 740x320 and 930x430: 0 contract breaks over 10 pages (the base: 10, all contract-119), 0 page errors, every flow reaches its end; 38 new non-blocking findings (base 48). The rows-green, frozen (chai), mount and leak steps were still running at 08:45, so it gives no exit code. The orchestrator's check-change on the merged branch is the one to read.
 4. **SH-232 (fix-kit)** has no real check: its listed "test" `build/sandbox/lib/contract-s17.mjs` is a library, and `node --test` passes it trivially. It left fix-kit's ready list later.
 5. **SH-270 (fix-kit)** has no check on the branch: its spec is probes-open's evidence SH-270, not merged there.
 6. **CHAI-100's chaisound.mjs** exits 0 while it prints "22 played files that are not an approved family clip; 9 lines with no family clip". Its exit does not count those.
@@ -14,11 +14,11 @@
 ## By branch (prove.json has the full why per row)
 | branch @ commit | row | checks twice | check-change | status |
 |---|---|---|---|---|
-| fix-kit @ 5d05688 | DAAR-57 | evidence PASS, PASS | running | unproven |
-| | CK-121 | evidence PASS, PASS (fixed on the base) | running | unproven |
-| | SH-314 | test_cook_mount.mjs pass, pass | running | unproven |
-| | SH-292 | node --test pass, pass | running | unproven |
-| | SH-267 | evidence PASS, FAIL (flaky) | running | unproven |
+| fix-kit @ 5d05688 | DAAR-57 | evidence PASS, PASS | partial: push PASS, chop L1 0 contract breaks (base 10); frozen/mount/leak unfinished | unproven |
+| | CK-121 | evidence PASS, PASS (fixed on the base) | partial: push PASS, chop L1 0 contract breaks (base 10); frozen/mount/leak unfinished | unproven |
+| | SH-314 | test_cook_mount.mjs pass, pass | partial: push PASS, chop L1 0 contract breaks (base 10); frozen/mount/leak unfinished | unproven |
+| | SH-292 | node --test pass, pass | partial: push PASS, chop L1 0 contract breaks (base 10); frozen/mount/leak unfinished | unproven |
+| | SH-267 | evidence PASS, FAIL (flaky) | partial: push PASS, chop L1 0 contract breaks (base 10); frozen/mount/leak unfinished | unproven |
 | | SH-270 | no check on the branch | - | unproven |
 | fix-chai @ 6be737a | MAA-28 | maa28.mjs pass, pass | not run: the branch changes no game file | unproven (time) |
 | | CHAI-99 | node --test pass, pass | not run (same) | unproven (time) |
