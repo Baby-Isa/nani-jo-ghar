@@ -2,7 +2,7 @@
 
 The 202 rows whose status says built under "to fix", proved on today's head (the branch base 48003532 plus spec changes only: no game code touched).
 
-**Counts:** cannot-probe 99 · proven 64 · open 23 · built 16. Cook rows: 116, of them proven 54, open 15.
+**Counts:** cannot-probe 96 · proven 67 · open 23 · built 16. Cook rows: 116, of them proven 54, open 15.
 
 ## Flaws first
 
@@ -34,10 +34,11 @@ The 202 rows whose status says built under "to fix", proved on today's head (the
 - **Checks I found testing the wrong thing and rewrote:** CK-91 (contract-119 passed before the fix; now noOverlap of .wc14-flash and #side-cog), DAAR-40 (the cmd failed on any contract break; now contract-95 alone), CK-90 and CK-113 (fair play never makes a refused tap; now the mistake path), SAM-31 (asked for 2 cards at L1, but L1 orders one filling), SH-224 (now red while cook.html loads a Google font). The judge's audit failed ART-51, DAAR-37, SH-209 and SH-122; those are cannot-probe (or open) with the reason.
 - **Browser time.** ~1.6-2 pages a minute on 4 cores. The new shared and chai eye specs did not all play; they are cannot-probe with their spec ready (`evidence.mjs --run --rows <id>`).
 
-## Proven (64)
+## Proven (67)
 
 - **SH-227** (kit, Look): the machine check passes on today's head
 - **CHAI-89** (chai, Look): eye row passed by the independent judge on today's head
+- **SH-177** (kit, Look): the machine check passes on today's head
 - **SH-155** (kit, Check): the machine check passes on today's head
 - **SH-159** (kit, Teaching): eye row passed by the independent judge on today's head
 - **SH-160** (kit, Teaching): eye row passed by the independent judge on today's head
@@ -98,6 +99,8 @@ The 202 rows whose status says built under "to fix", proved on today's head (the
 - **SH-316** (other, Check): fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today.
 - **CHAI-65** (chai, Look): eye row passed by the independent judge on today's head
 - **SH-221** (other, Logic): the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back.
+- **SH-183** (kit, Look): the machine check passes on today's head
+- **SH-187** (kit, Look): the machine check passes on today's head
 - **SH-261** (kit, Teaching): the machine check passes on today's head
 - **CK-90** (corn, Logic): green on head on the mistake path; the check could not show the old fault, so the proof rests on green plus the fix commits 231080600 and 1f8400855
 
@@ -107,7 +110,7 @@ Batches: build/screenshots/evidence/r16pb-cook/judge/, r16pb-newcook/judge/, r16
 
 SH-308, SH-310, CHAI-42, CHAI-56, DAAR-46, DAAR-62, SEK-31, SEK-32, SAM-45, MAA-19, MAA-21, CHT-20, CK-118, CHAI-58, CHAI-110, CK-83
 
-## Cannot-probe (99)
+## Cannot-probe (96)
 
 - **CHAI-91** (chai, Logic): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-91
 - **CHAI-92** (other, Check): only Zafar can judge it: Zafar plays every sound and sees every visual on the juice lab page, alone and over a chai screenshot
@@ -134,7 +137,6 @@ SH-308, SH-310, CHAI-42, CHAI-56, DAAR-46, DAAR-62, SEK-31, SEK-32, SAM-45, MAA-
 - **CHAI-84** (chai, Art): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-84
 - **SH-209** (kit, Look): the row is the box height with and without its arrow; contract-101 does not measure that (judge audit FAIL) and no driver opens and shuts the arrow
 - **SH-171** (kit, Logic): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-171
-- **SH-177** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-177
 - **SH-180** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-180
 - **SH-182** (kit, Teaching): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-182
 - **SH-60** (kit, Teaching): the sheet did not show the row's state (a probe fault, judged NOT SHOWN); the spec needs a better moment or capture
@@ -189,10 +191,8 @@ SH-308, SH-310, CHAI-42, CHAI-56, DAAR-46, DAAR-62, SEK-31, SEK-32, SAM-45, MAA-
 - **CHAI-109** (chai, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-109
 - **CHAI-112** (chai, Teaching): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows CHAI-112
 - **SH-19** (day, Teaching): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-19
-- **SH-183** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-183
 - **SH-185** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-185
 - **SH-186** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-186
-- **SH-187** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-187
 - **SH-188** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-188
 - **SH-191** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-191
 - **SH-193** (kit, Look): not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-193

@@ -411,9 +411,11 @@
    "js/shared/conversations.js",
    "js/cook/ui.js"
   ],
-  "status": "cannot-probe",
+  "status": "proven",
   "judge": "machine",
-  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-177"
+  "note": "the machine check passes on today's head",
+  "green": "99e87f8d8 run r16pb-last: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 1203e7c1f 2026-11-02 Chai fixes, part 3: sizes through the --njg-px token (the shared CSS's px rule); CHAI-59 )"
  },
  {
   "row": "SH-180",
@@ -2513,9 +2515,11 @@
    "js/cook/stations/eggs.js",
    "js/cook/stations/maani-line.js"
   ],
-  "status": "cannot-probe",
+  "status": "proven",
   "judge": "machine",
-  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-183"
+  "note": "the machine check passes on today's head",
+  "green": "99e87f8d8 run r16pb-last: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 1203e7c1f 2026-11-02 Chai fixes, part 3: sizes through the --njg-px token (the shared CSS's px rule); CHAI-59 )"
  },
  {
   "row": "SH-185",
@@ -2552,9 +2556,11 @@
   "files": [
    "js/shared/conversations.js"
   ],
-  "status": "cannot-probe",
+  "status": "proven",
   "judge": "machine",
-  "note": "not played in this run (the browser time ran out before its page); the spec is ready: evidence.mjs --run --rows SH-187"
+  "note": "the machine check passes on today's head",
+  "green": "99e87f8d8 run r16pb-last: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 1203e7c1f 2026-11-02 Chai fixes, part 3: sizes through the --njg-px token (the shared CSS's px rule); CHAI-59 )"
  },
  {
   "row": "SH-188",
