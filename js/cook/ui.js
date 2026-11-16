@@ -2691,10 +2691,15 @@
           // SH-267 (Zafar, 12 Nov, level 1 only): as the customer says the dish, its card comes up; SH-286 (decision 23): the order's
           // own item pop-up, held with its line as an item card is, then gone (it never joins the card)
           let dishCard = null;
+          let dishSame = null;
           if (r && r.head) dishCard = UI.dishFlash(who, r, { stay: true });
           else if (headless && !flashed && p === parts[0] && !only) {
             const first = r && m.away.has(r) ? r : foldedOf(p)[0];
-            if (first) dishCard = UI.dishFlash(who, first, { stay: true });
+            // (SH-267, run 16: chop's "Muke ba dungri khape": its dish is its first thing, and that thing's own item card, "ba dungri",
+            // pops as the line starts: that card is the dish's card, held and landed as an item card is. A second card of the same
+            // words before it was shut at once by the item card (contract-119: 86 ms), or would show the same card twice)
+            if (first && s14 && orderLevel() === 1) dishSame = first;
+            else if (first) dishCard = UI.dishFlash(who, first, { stay: true });
           }
           flashed = true;
           const item = r && m.away.has(r);
@@ -2731,7 +2736,12 @@
             const w = UI.wordOf(x, { size: 240, written: true });
             if (w && s14) {
               const slot = rowElOf(who, x);
-              pop14(w, slot);
+              const popped = pop14(w, slot);
+              if (popped && x === dishSame) {
+                popped.classList.add("wc14-dish");
+                popped.dataset.dish = wcWordId(x) || "";
+                if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(popped.dataset.dish) });
+              }
               if (slot && OCard() && OCard().glideTo) OCard().glideTo(slot, { lead: true });
               // (SH-169, SH-191: the speaker's card whole in view, from its top when it has to move, so a folded card above it is
               // whole or wholly out of view, never cut)
@@ -2752,6 +2762,17 @@
             if (!(e instanceof Cook.Abort)) throw e;
           });
           let saying = null;
+          // (SH-267, run 16: the dish's card first, held as an item card is, then the order's own item cards after it, one card at a
+          // time: the first item card took its place at once, so eggs' dish card was gone before it was seen, corn's in 114 ms and
+          // chop's "ba dungri" in 86 ms, contract-119)
+          const dishFirst = async () => {
+            if (!dishCard) return;
+            await dishCard.up;
+            if (!dishCard.el || dishCard.closed) return;
+            const left = dishCard.hold - (Date.now() - dishCard.at) * (Cook.speed || 1);
+            if (left > 0) await sayOk(Cook.wait(left));
+            await dishCard.close(!live());
+          };
           if (folded.length) {
             // CHAI-96 (Zafar's yes, 6 Nov night: "the order card needs to open and it needs to go in while they order"): the card is
             // open (above); the headline begins, and as its first word is heard each folded row's card pops, is held as milk's is
@@ -2762,6 +2783,10 @@
             // (a headline with no voice, or one the voice can't start, is shown: its card pops after a beat all the same)
             await Promise.race([heard, saying, sayOk(Cook.wait(ORDER_T.headCap))]);
             if (off) off();
+            // (SH-267, run 16: the dish's card first, held as an item card is, then the rows the headline says pop after it, one card at
+            // a time; the first of them took its place at once, so eggs' dish card was gone before it was seen and corn's in 114 ms,
+            // contract-119)
+            await dishFirst();
             for (const x of folded) {
               if (!live()) break;
               popRow(x);
@@ -2773,6 +2798,11 @@
               await land(x, who, false);
               if (box) box.innerHTML = "";
             }
+          }
+          if (item && live() && dishCard) {
+            // (the line goes on meanwhile: the dish card's hold is inside the item card's own wait below)
+            saying = saying || sayOk(sayPart(who, p.line));
+            await dishFirst();
           }
           if (item && live()) popRow(r);
           // (s14: the big card stays at least its hold, the line said meanwhile; never waits for the voice past it; the dish card too)
@@ -4167,11 +4197,15 @@
     if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("dish-flash", { step: String(who || ""), by: String(dish || "") });
     const sp = Cook.speed || 1;
     // (its hold, as an item card's: the dish word's state, the central rules; a replay's card stays at least the old 1.5 s)
-    const handle = { el: null, closed: false, hold: popHold(head), t: null };
+    const handle = { el: null, closed: false, hold: popHold(head), t: null, at: 0 };
+    // (SH-267, run 16: up resolves once the card is on screen, or will not be: the order's next item card waits on it, below)
+    let upRes = null;
+    handle.up = new Promise((res) => (upRes = res));
     let offEnd = null;
     handle.close = (now = false) => {
       if (handle.closed) return Promise.resolve();
       handle.closed = true;
+      upRes();
       if (handle.t) clearTimeout(handle.t);
       if (offEnd) offEnd();
       const c = handle.el;
@@ -4200,11 +4234,13 @@
       return null;
     };
     const show = () => {
-      if (handle.closed || !stage.isConnected) return;
+      if (handle.closed || !stage.isConnected) return void upRes();
       // (an order whose first sentence is its first item, chop's "Muke ba dungri khape": its item card is already up, the same thing)
       if (document.querySelector(".wc14-pop:not(.wc14-dish)")) return void handle.close(true);
       const c = popCard(w, slotOf(), "wc14-dish");
       handle.el = c;
+      handle.at = Date.now();
+      upRes();
       if (!c) return;
       c.dataset.dish = dish;
       if (!o.stay) handle.t = setTimeout(() => handle.close(), Math.max(1500, handle.hold) / sp);
@@ -4306,7 +4342,10 @@
     const rowOf = (p) => p.row || (p.line && p.line.row) || null;
     const all = c._parts ? c._parts() : [];
     // (the line says the dish when it starts where the card's whole order starts: its headline, never a replay of the steps left only)
-    if (!all.length || !plain(parts[0]) || plain(parts[0]) !== plain(all[0])) return null;
+    // (SH-267, run 16: a replay with every step done says the headline alone, "Muke naan khape.", where the card's own first part ends
+    // in a comma, "Muke naan khape,": the same words, so they are compared without their stops; contract-119 in baking#hint)
+    const words = (p) => plain(p).replace(/[.,!?;:\u2026]+/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
+    if (!all.length || !words(parts[0]) || words(parts[0]) !== words(all[0])) return null;
     const head = parts.map(rowOf).find((r) => r && r.head) || all.map(rowOf).find((r) => r && r.head);
     if (head) return UI.dishFlash(c.dataset.who || null, head);
     // (PAN-19: the pantry's list has no dish to flash: each of her things pops as its own big card. Only the pantry's: chop, chaat
