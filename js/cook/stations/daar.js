@@ -584,7 +584,9 @@ import { NjgPour } from "../../shared/pour.js"; // SH-117: the shared pour (the 
         img.shadow = S.contactShadow(img, { centerX: z.X(x), centerY: z.Y(BASE - 3), width: z.L(w * 0.8), height: z.L(16) });
       } else img = S.ingredient(id, z.X(x), z.Y(BASE - 56), { w: z.L(110), h: z.L(100), label: false, depth: D.item + 1 });
       img.wordId = id;
-      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: Cook.chipWord(id, z.ctx), w: Math.min(128, pitch - 12) });
+      // DAAR-59 (the Fable eye judge for Zafar, decision 38: "'laal marcha' about a third its neighbours' size"): each pill as wide as its
+      // own face, as chai's (SH-219: one scale for the row, Kit.fitPills below); a fixed width shrank a long word's text inside it
+      const chip = Cook.Kit.chip(S, id, z.X(x), z.Y(CHIP_Y), { word: Cook.chipWord(id, z.ctx) });
       chip.setScale(z.k);
       img.chip = chip;
       items[id] = img;
