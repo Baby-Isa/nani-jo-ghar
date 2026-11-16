@@ -2769,8 +2769,11 @@
           // (SH-267, run 16: the dish's card first, held as an item card is, then the order's own item cards after it, one card at a
           // time: the first item card took its place at once, so eggs' dish card was gone before it was seen, corn's in 114 ms and
           // chop's "ba dungri" in 86 ms, contract-119)
+          // (chai is frozen, run 16: its order keeps its own timing, the first row its headline says taking the dish card's place as
+          // before; whether chai's dish card should hold too is Zafar's call)
+          const chaiOnly = !!(mission && mission.ladders && mission.ladders.length && mission.ladders.every((L) => L && L.recipe === "chai"));
           const dishFirst = async () => {
-            if (!dishCard) return;
+            if (!dishCard || chaiOnly) return;
             await dishCard.up;
             if (!dishCard.el || dishCard.closed) return;
             const left = dishCard.hold - (Date.now() - dishCard.at) * (Cook.speed || 1);
@@ -2803,7 +2806,7 @@
               if (box) box.innerHTML = "";
             }
           }
-          if (item && live() && dishCard) {
+          if (item && live() && dishCard && !chaiOnly) {
             // (the line goes on meanwhile: the dish card's hold is inside the item card's own wait below)
             saying = saying || sayOk(sayPart(who, p.line));
             await dishFirst();
@@ -4352,7 +4355,9 @@
     // (the line says the dish when it starts where the card's whole order starts: its headline, never a replay of the steps left only)
     // (SH-267, run 16: a replay with every step done says the headline alone, "Muke naan khape.", where the card's own first part ends
     // in a comma, "Muke naan khape,": the same words, so they are compared without their stops; contract-119 in baking#hint)
-    const words = (p) => plain(p).replace(/[.,!?;:\u2026]+/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
+    // (chai is frozen, run 16: its replay keeps the exact match it had)
+    const chai = !!(mission && mission.ladders && mission.ladders.length && mission.ladders.every((L) => L && L.recipe === "chai"));
+    const words = (p) => (chai ? plain(p) : plain(p).replace(/[.,!?;:\u2026]+/g, " ").replace(/\s+/g, " ").trim().toLowerCase());
     if (!all.length || !words(parts[0]) || words(parts[0]) !== words(all[0])) return null;
     const head = parts.map(rowOf).find((r) => r && r.head) || all.map(rowOf).find((r) => r && r.head);
     if (head) return UI.dishFlash(c.dataset.who || null, head);
