@@ -23,7 +23,20 @@ Branch `run16/fix-samosa`, cut from 48003532. One probe for all my rows: `build/
 | RT-03 | proven | 4c3a230^: "Nana" over the whole sentence | 48003532 (4c3a230), this branch |
 | RT-04 | built (tawa proven) | 4c3a230^: the tawa's body 52 px off its burner | 48003532 (4c3a230), this branch |
 
-## The one code change
+## From Fable's 07:00 look at the published samosa (the orchestrator's message)
+
+- **The white arrow before the fold's first light (SAM-42):** the first fold's arrow now waits for its light, at most 1.5 s, so with no light it is still the help. Red on 48003532 (instrumented with one read-only line, the arrow as drawn): the arrow fully drawn at 36.3 s, the light at 36.6 s. Green: pending at hand-back time (see the results file).
+- **Nana's praise face over the skimmer (SAM-45):** the face moves right until it clears the spoon (12 px gap), never past the plate's middle. Probe `--row SAM-45`. Proof pending at hand-back time.
+- **The "hakro chundo" pill over the board's corner (SAM-46):** inside the board on base at 740x320 and 1280x665. 930x430 and 1920x1080 were queued.
+- **No "Thank you!" at the serve:** not samosa's. The lab round ends on samosa's own well done; a counter serve's thanks are flow.js's (fix-kit). No row opened.
+- **Two empty, unlabelled dishes on the fry tray to well done:** that is SAM-45's own fix (the Fable judge, 15 Nov: "the stone tray keeps its things as chai's shelf"). The two looks disagree, so it is a **question**: keep the empty thalis to the end, or take them away once their samosas are in the oil?
+- **SAM-35** (the order's sentence names the count; the card holds the fillings, never a samosa): holds at L1-L4 on the head (probe `--row SAM-35`). Its fix is inside the 15 Nov squashed history (8dc8381), so no single commit to cite. A red run on the live site's 12 Nov tree (f6e0127) was queued.
+
+## check-change
+
+`check-change.mjs --base 48003532 --games samosa --rows SAM-47`, on c5565d1 (before the 07:00 fixes): push pass; play 15 contract breaks against the base's 21 (contract-78 4 against 9); pairs, rows, film pass. One break is new: contract-105 at L4 930x430 in the fry (a light round a raw samosa measured against its thali). The fry's script is untouched (data/cook.json `fry`), so I read it as a timing near-miss, not my change. **Not run:** the frozen chai diff, the mount test and the leak bot. My own 1-hour limit stopped the run during the frozen diff. Samosa's files never load in chai. The prove session's check-change is the full one.
+
+## The code changes
 
 SAM-47 (b): samosa's fill and fold first-time script now lives in `data/stations/samosa.json` (`onboard`), staged on the moves. `js/cook/stations/samosa.js` puts it in `Cook.data.onboard.samosa`, as roll-tawa does. The old unstaged script in `data/cook.json` (fix-kit's file) is no longer read by samosa, so fix-kit may drop it.
 

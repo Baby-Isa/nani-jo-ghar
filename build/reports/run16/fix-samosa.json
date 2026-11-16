@@ -33,7 +33,7 @@
   "status": "question",
   "probe": "evidence.json SAM-46 (needsDecision + node build/probes/samosa-rt.mjs --row SAM-46 --pace fair --speed 2 --size 740x320)",
   "red": "b6bc317^ at 740x320: FAIL, the shelf's heaps centred at 703 against the row's 800; the pop 'hakro chundo' [140,-34] past the board's corner [147,-37]; the karahi [254..893] past its hob [80..872]",
-  "green": "48003532 (fixed by b6bc317) and c5565d1, 740x320 and 1280x665: PASS",
+  "green": "48003532 (fixed by b6bc317) and c5565d1, 740x320 and 1280x665: PASS; 6228a48, 930x430 and 1920x1080: PASS",
   "judge": "machine",
   "files": [],
   "note": "Three parts proven (the word pop on the board, the heaps centred in the bottom row with their pills, the karahi inside its hob). The fourth, the pastry's own contact shadow, is a question: SH-268 and contract-120 make the board's shadow its shadow; give the pastry its own? Recommend no."
@@ -85,5 +85,41 @@
   "judge": "needs-eye",
   "files": [],
   "note": "Built in 4c3a230; its tawa part proven by machine (red on 4c3a230^, green on 48003532). Not proven: the turner's sleeve cut square in mid-air is the hand rig's (js/cook/hands.js, ART-84: needs fix-kit, or art); the face circle beside the plate and Nani's box one step at a time are for the eye (the check-change pictures)."
+ },
+ {
+  "row": "SAM-42",
+  "kind": "Teaching",
+  "game": "samosa",
+  "status": "built",
+  "probe": "node build/probes/samosa-rt.mjs --row SAM-42 --secs 170 (reads samosa.js's fimg.__arrow, the arrow as drawn)",
+  "red": "48003532 with the one read-only line added (scratchpad tree), child pace L1 1280x665: FAIL, the fold's arrow drawn whole at 36.3 s before its first-time light at 36.6 s",
+  "green": "pending: the re-run on the head (the arrow read moved to the value drawn) was blocked by the shell's failing safety check at 07:45",
+  "judge": "needs-eye",
+  "files": ["js/cook/stations/samosa.js"],
+  "note": "Fable's 07:00 look at the published samosa: 'a white arrow flashes for one frame before the fold's first-time light'. The first fold's arrow now waits for its light (at most 1.5 s, so with no light it is still SAM-21's help). The first probe runs read the arrow before the lit frame's zeroing and so showed 0.45 inside the light on both trees; the read is now the value drawn."
+ },
+ {
+  "row": "SAM-45",
+  "kind": "Look",
+  "game": "samosa",
+  "status": "question",
+  "probe": "node build/probes/samosa-rt.mjs --row SAM-45",
+  "red": "pending (the base run with the SAM-45 check was queued when the shell's safety check began failing)",
+  "green": "pending",
+  "judge": "needs-eye",
+  "files": ["js/cook/stations/samosa.js"],
+  "note": "Fable's 07:00 look: 'Nana's praise face covers the skimmer'. The face at the plate's upper left lands on the slotted spoon, which stands between the hob and the plate; it now moves right until it clears the spoon by 12 px, never past the plate's middle (built, unproven). Question from the same look: 'two empty, unlabelled dishes stay on the fry tray to well done' is SAM-45's own 15 Nov fix (the stone tray keeps its things, as chai's shelf). Keep the empty thalis to the end, or take them away once their samosas are in the oil?"
+ },
+ {
+  "row": "SAM-35",
+  "kind": "Logic",
+  "game": "samosa",
+  "status": "built",
+  "probe": "node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level <1-4> (the count word from the game's own lexicon)",
+  "red": "none found: the fix is inside the 15 Nov squashed history (8dc8381); a run on the live site's 12 Nov tree (f6e0127) was queued but blocked",
+  "green": "6228a48 at L1, L2, L3 and L4, 1280x665: PASS (L1 'Muke ba samosa khapanta.' with the item card 'ba chunda', no samosa card)",
+  "judge": "machine",
+  "files": [],
+  "note": "Zafar's two strikes (12 Nov night): the sentence says the count and the card holds the fillings. Both hold at every level today; with no red on record it stays built for the prove session."
  }
 ]

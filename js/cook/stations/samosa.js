@@ -1109,7 +1109,6 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // light": the first fold's arrow waits for its light, never longer than holdArrow, so with no light the arrow is still the help)
       if (litNow) live.holdArrow = 0;
       else if (live.holdArrow && Date.now() < live.holdArrow) live.arrow = 0;
-      fimg.__arrow = live.arrow; // (read-only, for the probes: how much of the arrow is drawn)
       if (litNow) {
         live.arrow = 0;
         if (!live.finger && live.from && Cook.Coach && Cook.Coach.demo) live.finger = Cook.Coach.demo(() => (live && live.from ? { from: live.from, to: live.to } : null), { gesture: "drag", step: "samosa:fold" });
@@ -1119,6 +1118,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       }
       // CK-82, SH-257 (the eye judge, 10 Nov: "an orange glow instead" of the kit's light): the fold's light is the kit's one box (the
       // swipe's Cook.Coach.lit); the pastry draws no glow of its own (its arrow, the way to swipe, stays: SAM-21's help)
+      fimg.__arrow = live.arrow; // (read-only, for the probes: how much of the arrow is drawn this frame)
       live.P.draw({ t: live.t, glow: null, arrow: live.arrow, blobs: live.blobs }, cv.getContext());
       cv.refresh();
     });
