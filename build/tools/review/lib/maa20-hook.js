@@ -8,26 +8,24 @@
   if (window.__maa20) return;
   window.__maa20 = true;
   const say = (s) => { try { console.error(s); } catch (e) { /* none */ } };
-  const pin = () => {
+  // every rolling pin picture on screen ("mv-velan": the one resting beside the board and the one the roll rides), by world y
+  const pins = () => {
     const G = window.Cook && window.Cook.game;
     const scenes = (G && G.scene && G.scene.scenes) || [];
+    const out = [];
     const walk = (list) => {
       for (const o of list || []) {
         if (!o) continue;
-        if (o.texture && o.texture.key === "mv-velan" && o.active !== false && o.visible !== false) return o;
-        if (o.list) { const f = walk(o.list); if (f) return f; }
+        if (o.texture && o.texture.key === "mv-velan" && o.active !== false && o.visible !== false && o.alpha !== 0) out.push(o);
+        if (o.list) walk(o.list);
       }
-      return null;
     };
-    for (const sc of scenes) {
-      const f = sc && sc.children && walk(sc.children.list);
-      if (f) {
-        const m = f.getWorldTransformMatrix ? f.getWorldTransformMatrix() : null;
-        const cam = sc.cameras && sc.cameras.main;
-        return (m ? m.ty : f.y) * ((cam && cam.zoom) || 1);
-      }
-    }
-    return null;
+    for (const sc of scenes) if (sc && sc.children) walk(sc.children.list);
+    return out.map((f) => {
+      const m = f.getWorldTransformMatrix ? f.getWorldTransformMatrix() : null;
+      const cam = f.scene && f.scene.cameras && f.scene.cameras.main;
+      return { o: f, y: (m ? m.ty : f.y) * ((cam && cam.zoom) || 1) };
+    });
   };
   const finger = () => {
     const el = [...document.querySelectorAll(".ob-finger, .co-finger")].find((e) => {
@@ -37,9 +35,9 @@
     });
     return el ? el.getBoundingClientRect().top : null;
   };
-  // the child watches the first showing: the player's touches are held back for HOLD_MS from the demo's first finger, once (a player
+  // the child watches the first showing: the player's touches are held back for HOLD_MS from the roll step's start, once (a player
   // that touches at once cuts the showing short, and its own roll moves the pin too)
-  const HOLD_MS = 2500;
+  const HOLD_MS = 4000;
   let touched = false, cur = null, n = 0, holdUntil = 0, held = false;
   ["pointerdown", "pointerup", "pointermove", "touchstart", "touchmove", "touchend", "mousedown", "mousemove", "mouseup", "click"].forEach((t) =>
     window.addEventListener(t, (ev) => {
@@ -48,28 +46,36 @@
         if (ev.cancelable) ev.preventDefault();
         return;
       }
-      if (t === "pointerdown" || t === "touchstart") touched = true;
+      if (t === "pointerdown" || t === "touchstart") { touched = true; end(); }
     }, { capture: true, passive: false }));
-  const end = () => {
+  function end() {
     if (cur && cur.k >= 4) {
       n++;
       const span = (a) => (a.length ? Math.round(Math.max(...a) - Math.min(...a)) : 0);
-      say(`MAA-20 demo ${n}: finger ${span(cur.f)} px, pin ${span(cur.p)} px (${cur.k} samples${cur.p.length ? "" : ", no pin found"})`);
+      const spans = [...cur.pm.values()].map(span);
+      say(`MAA-20 demo ${n}: finger ${span(cur.f)} px, pin ${spans.length ? Math.max(...spans) : 0} px (${cur.k} samples, ${spans.length} pin picture(s)${spans.length ? "" : ", no pin found"})`);
     }
     cur = null;
+  }
+  // the roll step: the game's expectation (njgTest.cook.expectation(), what the players read) is a roll; the hold starts there, once
+  const rolling = () => {
+    try {
+      const T = window.njgTest;
+      const e = T && T.cook && T.cook.expectation ? T.cook.expectation() : null;
+      return !!(e && e.kind === "roll");
+    } catch (err) { return false; }
   };
   setInterval(() => {
+    if (!held && rolling()) { held = true; holdUntil = Date.now() + HOLD_MS; }
     const fy = finger();
     if (fy == null) return end();
-    if (!cur) {
-      cur = { f: [], p: [], k: 0 };
-      touched = false;
-      if (!held) { held = true; holdUntil = Date.now() + HOLD_MS; }
-    }
-    if (touched) return; // (the child's own roll moves the pin too: only the demo's own frames count)
-    const py = pin();
+    if (!cur) { cur = { f: [], pm: new Map(), k: 0 }; touched = false; }
+    if (touched) return; // (the child's own roll moves the pin too: a touch ends a showing, the next starts after it)
     cur.f.push(fy);
-    if (py != null) cur.p.push(py);
+    for (const q of pins()) {
+      if (!cur.pm.has(q.o)) cur.pm.set(q.o, []);
+      cur.pm.get(q.o).push(q.y);
+    }
     cur.k++;
   }, 50);
 })();

@@ -4,7 +4,7 @@
 //   CHAI-113 every knob turned on from off (a Cook.sfx.flame call) is heard: the knob's file (sfx/file:knob-a) starts within 0.4 s
 //            and the flame's (sfx/file:flame-b) within 0.9 s, even while Nani speaks
 //   CHAI-100 no knob sound the child did not make: every Cook.sfx.knob call comes within 0.6 s of a tap (the fire going off after
-//            the last pour is silent; the fair path has no boil-over)
+//            the last pour is silent), or with a pan boiling over (its click kept by the row)
 //   CHAI-97  each word moment's pours play the recorded pour file, never the made-up synthesized pour (a cold load: a fresh page)
 //   CHAI-99  the next pan's light (the life event "next-pan") comes at least 0.8 s after the first pour's end (its last frame); the
 //            hook holds the player's touches 3 s after that pour, as a child taking it in (a player that moves on at once gets no
@@ -58,7 +58,9 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
     else console.log(`-     CHAI-113 ${page}: no knob turned on`);
   }
   if (rows.includes("CHAI-100")) {
-    const stray = knobCalls.filter((t) => !near(taps, t - 600, t + 20));
+    // (a pan boiling over turns its knob down with a click: the game's own, kept by the row; life "chai-boil" over)
+    const overs = tl.filter((e) => e.k === "life" && e.what === "chai-boil" && /over/.test(e.reason || "")).map((e) => e.at || e.t);
+    const stray = knobCalls.filter((t) => !near(taps, t - 600, t + 20) && !near(overs, t - 300, t + 300));
     say("CHAI-100", page, !stray.length, `${knobCalls.length} knob sound(s) asked, ${stray.length} with no tap in the 0.6 s before${stray.length ? ` (${stray.map((t) => ((t - d.t0) / 1000).toFixed(1) + " s").join(", ")} in)` : ""}`);
   }
   if (rows.includes("CHAI-97")) {
