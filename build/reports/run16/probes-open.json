@@ -496,16 +496,16 @@
   "row": "CHAI-114",
   "kind": "Look",
   "game": "chai",
-  "status": "built",
+  "status": "cannot-probe",
   "probe": "evidence.json CHAI-114 (noClip:#guide .ng-say at every line:cook; chai L1-L4, 740x320)",
-  "red": "not shown: green on head (the first probe's noClip:#guide failed only on the face button's hit area, a probe fault, so it was narrowed to the line's own box)",
-  "green": "48003532, run po-j1: PASS at L1-L4 (9-17 of Nani's lines each, 'Paani tapele me wij.' among them at L4), every line whole",
+  "red": "not reproduced: green on head (run po-j1) and on 13 Nov evening's runtime 0576eb72 (runs po-red-114, po-red-114b: Nani's line whole and inside her box at L1-L4, 8-16 lines each, also with inside:#guide .ng-say in #guide)",
+  "green": "48003532, run po-j1: PASS at L1-L4",
   "judge": "machine",
   "files": [
    "js/cook/ui.js",
    "css/shared/guide.css"
   ],
-  "note": "Green on head at L1-L4 with 'Paani tapele me wij.' said at L4: the line fits whole. The fix commit is not identified (Nani's box has kept two lines' room since 5 Nov; 270f39f8 re-centred it), so a red needs the 13 Nov runtime (prove)."
+  "note": "The cut second line the 13 Nov judge saw does not come back on today's code or on the code of that evening; no fix commit names it. Worth a look on a real phone before closing."
  },
  {
   "row": "LNG-22",

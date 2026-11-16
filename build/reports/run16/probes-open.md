@@ -4,16 +4,16 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 
 - **Where the runs played:** on today's head (48003532) on this VM, port 8871.
 - **Eye rows:** their judge batches are committed under `build/screenshots/evidence/po-*/judge/`, and the judge session has ruled on most of them.
-- **Counts:** 26 open (21 red on head), 6 proven, 6 built, 3 cannot-probe, 1 question.
+- **Counts:** 26 open (21 red on head), 6 proven, 5 built, 4 cannot-probe, 1 question.
 
 ## Flaws first
 
-- **SH-291, SH-289 and CHAI-114 are green on head but have no red.**
+- **SH-291 and SH-289 are green on head but have no red.**
   - SH-291: contract-99 stays green even with 827f8aa1's order-card and ui parts reverted, so it cannot see the refold.
   - SH-289: the fault needs a ten-word chai round. A seeded three-person round (want) found no match in two 13-minute chunks.
-  - CHAI-114: the fix commit is not found.
-- **PAN-23, SH-299 and SH-211 are cannot-probe.**
+- **PAN-23, CHAI-114, SH-299 and SH-211 are cannot-probe.**
   - PAN-23: not reproduced on head or before SH-304's fix.
+  - CHAI-114: not reproduced on head or on 13 Nov evening's runtime (0576eb72), at L1-L4.
   - SH-299 and SH-211: they need a card's last landing frame or a per-frame scroll log, and no capture reads either yet.
 - **SH-271 and SH-229 are not reproduced on head (machine green), and no fix was found for either.**
   - SH-271: docs/status.md (15 Nov) calls the strips' blink a probe artefact.
@@ -60,7 +60,6 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 
 - **SH-291:** fixed by 827f8aa1.
 - **SH-289:** fixed by db494cae.
-- **CHAI-114:** green at L1-L4.
 - **SH-303:** fixed by 677d1a0; the delivery is chai's scene.
 - **SH-286:** the judge sees place, size and look match.
 - **SH-295:** the judge sees no early wrap.
