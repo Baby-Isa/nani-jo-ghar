@@ -1,0 +1,1416 @@
+{
+ "run": "r16pb-fix",
+ "created": "2026-11-16T08:15:19.876Z",
+ "commit": "be49c8a4c",
+ "builder": "probes-built",
+ "rows": {
+  "SH-224": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-224.md",
+   "panels": [],
+   "tool": [],
+   "expect": "FAIL",
+   "expectLine": "machine: SH-224-p1-repo: !pass: not (grep -c fonts.googleapis.com cook.html: exit 0)",
+   "fp": {
+    "hash": "0c93e307ea2b990a8ad4",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-226": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-226.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (node build/test_shared_sfx_files.mjs: exit 0)",
+   "fp": {
+    "hash": "851ec52450fdf5b74612",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-219": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-219.md",
+   "panels": [],
+   "tool": [],
+   "expect": "FAIL",
+   "expectLine": "machine: SH-219-p1-repo: pass: node build/tools/review/pillcheck.mjs: exit 1",
+   "fp": {
+    "hash": "1930d218fe99740475c5",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-151": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-151.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (node build/lint/static.mjs: exit 0)",
+   "fp": {
+    "hash": "7163cdeb04813517f624",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-285": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-285.md",
+   "panels": [],
+   "tool": [],
+   "expect": "FAIL",
+   "expectLine": "machine: SH-285-p1-L1-1280x665: pass: 1 contract breaks; SH-285-p1-L1-740x320: pass: 1 contract breaks",
+   "fp": {
+    "hash": "b3157e5ffd55e4889f40",
+    "dhash": []
+   },
+   "probes": 10,
+   "reached": 10,
+   "frames": []
+  },
+  "SH-290": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-290.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+   "fp": {
+    "hash": "886a1501969236665896",
+    "dhash": []
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": []
+  },
+  "SH-305": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-305.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+   "fp": {
+    "hash": "478c6dae6192c19c9f5e",
+    "dhash": []
+   },
+   "probes": 6,
+   "reached": 6,
+   "frames": []
+  },
+  "SH-308": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/r16pb-fix/SH-308.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/SH-308.png",
+    "build/screenshots/evidence/r16pb-fix/SH-308-2.png",
+    "build/screenshots/evidence/r16pb-fix/SH-308-3.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-308.md",
+   "panels": [
+    "A: cook:eggs L1 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+    "B: cook:eggs L1 740x320 [p-seen] · crop:#side at life:stage-end",
+    "C: cook:eggs@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+    "D: cook:eggs@L4 L4 740x320 [p-seen] · crop:#side at life:stage-end",
+    "E: cook:mishkaki-grill L1 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+    "F: cook:mishkaki-grill L1 740x320 [p-seen] · crop:#side at life:stage-end",
+    "G: cook:mishkaki-grill@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+    "H: cook:mishkaki-grill@L4 L4 740x320 [p-seen] · crop:#side at life:stage-end",
+    "I: cook:maani-line L1 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+    "J: cook:maani-line L1 740x320 [p-seen] · crop:#side at life:stage-end",
+    "K: cook:maani-line@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+    "L: cook:maani-line@L4 L4 740x320 [p-seen] · crop:#side at life:stage-end"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "fe9db0c44049c5da2634",
+    "dhash": [
+     "1f62693064080c28",
+     "01010b0100010000",
+     "1f622d3c651b1b28",
+     "01010b0303030000",
+     "05323aba3280b030",
+     "21010b242d242400",
+     "0532b2b2328034b0",
+     "212aaaaaaaaaaa32",
+     "1f622930640c0c28",
+     "0101130100010000",
+     "1f62293064080c28",
+     "0101130001000000"
+    ]
+   },
+   "probes": 6,
+   "reached": 6,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|room:crop:#side",
+     "label": "cook:eggs L1 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 241,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-eggs-740x320-p-seen/sh-308-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|crop:#side",
+     "label": "cook:eggs L1 740x320 [p-seen] · crop:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-eggs-740x320-p-seen/sh-308-p1-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|room:crop:#side",
+     "label": "cook:eggs@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 241,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-eggs-l4-740x320-p-seen/sh-308-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|crop:#side",
+     "label": "cook:eggs@L4 L4 740x320 [p-seen] · crop:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-eggs-l4-740x320-p-seen/sh-308-p1-l4-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|room:crop:#side",
+     "label": "cook:mishkaki-grill L1 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 241,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-740x320-p-seen/sh-308-p2-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|crop:#side",
+     "label": "cook:mishkaki-grill L1 740x320 [p-seen] · crop:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-740x320-p-seen/sh-308-p2-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L4|740x320|room:crop:#side",
+     "label": "cook:mishkaki-grill@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 241,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-l4-740x320-p-seen/sh-308-p2-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L4|740x320|crop:#side",
+     "label": "cook:mishkaki-grill@L4 L4 740x320 [p-seen] · crop:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-l4-740x320-p-seen/sh-308-p2-l4-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|room:crop:#side",
+     "label": "cook:maani-line L1 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 241,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-maani-line-740x320-p-seen/sh-308-p3-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|crop:#side",
+     "label": "cook:maani-line L1 740x320 [p-seen] · crop:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-maani-line-740x320-p-seen/sh-308-p3-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L4|740x320|room:crop:#side",
+     "label": "cook:maani-line@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #side outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 241,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-maani-line-l4-740x320-p-seen/sh-308-p3-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L4|740x320|crop:#side",
+     "label": "cook:maani-line@L4 L4 740x320 [p-seen] · crop:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-maani-line-l4-740x320-p-seen/sh-308-p3-l4-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SH-310": {
+   "kind": "detail",
+   "png": "build/screenshots/evidence/r16pb-fix/SH-310.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/SH-310.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-310.md",
+   "panels": [
+    "A: cook:maani-line@L4 L4 1280x665 [p-seen_x2] · zoom2:#side at life:stage-end",
+    "B: cook:maani-line@L4 L4 740x320 [p-seen_x2] · zoom2:#side at life:stage-end"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "f8f3cc0ab1cfb41a2840",
+    "dhash": [
+     "8113010101000001",
+     "0101110001000001"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L4|1280x665|zoom2:#side",
+     "label": "cook:maani-line@L4 L4 1280x665 [p-seen_x2] · zoom2:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": true,
+     "dpr": 2,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-maani-line-l4-1280x665-p-seen-x2/sh-310-p1-l4-1280x665-h1-c1-zoom2.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|zoom2:#side",
+     "label": "cook:maani-line@L4 L4 740x320 [p-seen_x2] · zoom2:#side at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": true,
+     "dpr": 2,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-maani-line-l4-740x320-p-seen-x2/sh-310-p1-l4-740x320-h1-c1-zoom2.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "DAAR-38": {
+   "kind": "motion",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/DAAR-38.md",
+   "panels": [
+    "A: cook:chop@L4 L4 740x320 [p-seen] · strip:#stage:4x250 at life:chop-done · NO MOTION CAPTURED"
+   ],
+   "tool": [
+    "DAAR-38-p1-L1-740x320: strip:#stage:4x250 at life:chop-done (hit 1): the filmstrip of \"#stage\" did not change over 4 frames (250 ms apart)"
+   ],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "db16a29284a045f30d56",
+    "dhash": [
+     "7cf8fc7c7860b094"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L4|740x320|strip:#stage:4x250",
+     "label": "cook:chop@L4 L4 740x320 [p-seen] · strip:#stage:4x250 at life:chop-done · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "life:chop-done",
+     "ms": [
+      0,
+      250,
+      599,
+      982
+     ],
+     "motion": {
+      "moving": false,
+      "share": 1.58,
+      "mean": 0.68,
+      "note": "no motion captured (1.58 % of the crop changed, mean 0.68): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-l4-740x320-p-seen/daar-38-p1-l4-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-l4-740x320-p-seen/daar-38-p1-l4-740x320-h1-c1-strip-f02.png",
+       "cap": "250 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-l4-740x320-p-seen/daar-38-p1-l4-740x320-h1-c1-strip-f03.png",
+       "cap": "599 ms (slot 500: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-l4-740x320-p-seen/daar-38-p1-l4-740x320-h1-c1-strip-f04.png",
+       "cap": "982 ms (slot 750: off)"
+      }
+     ]
+    }
+   ]
+  },
+  "DAAR-62": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/r16pb-fix/DAAR-62.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/DAAR-62.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/DAAR-62.md",
+   "panels": [
+    "A: cook:chop L1 740x320 [p-seen] · life:chop-done: the screen, #stage outlined",
+    "B: cook:chop L1 740x320 [p-seen] · crop:#stage at life:chop-done",
+    "C: cook:chop@L4 L4 740x320 [p-seen] · life:chop-done: the screen, #stage outlined",
+    "D: cook:chop@L4 L4 740x320 [p-seen] · crop:#stage at life:chop-done"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "6a018106f8b03fddc9f2",
+    "dhash": [
+     "1c147c1c1c183030",
+     "7d687c7c58608080",
+     "1c387c1c1c18282a",
+     "7df8fc7c7860b0a4"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|room:crop:#stage",
+     "label": "cook:chop L1 740x320 [p-seen] · life:chop-done: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:chop-done",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-740x320-p-seen/daar-62-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|crop:#stage",
+     "label": "cook:chop L1 740x320 [p-seen] · crop:#stage at life:chop-done",
+     "type": "img",
+     "moment": "life:chop-done",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-740x320-p-seen/daar-62-p1-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|room:crop:#stage",
+     "label": "cook:chop@L4 L4 740x320 [p-seen] · life:chop-done: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:chop-done",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-l4-740x320-p-seen/daar-62-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|crop:#stage",
+     "label": "cook:chop@L4 L4 740x320 [p-seen] · crop:#stage at life:chop-done",
+     "type": "img",
+     "moment": "life:chop-done",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chop-l4-740x320-p-seen/daar-62-p1-l4-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SEK-31": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/r16pb-fix/SEK-31.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/SEK-31.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/SEK-31.md",
+   "panels": [
+    "A: cook:mishkaki-grill L1 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+    "B: cook:mishkaki-grill L1 740x320 [p-seen] · crop:#stage at life:stage-end",
+    "C: cook:mishkaki-grill@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+    "D: cook:mishkaki-grill@L4 L4 740x320 [p-seen] · crop:#stage at life:stage-end"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "1b40a79c408cc296257f",
+    "dhash": [
+     "05323aba3280b030",
+     "098686a6a400e080",
+     "0532b2b2328034b0",
+     "098686a6a400c8e8"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|room:crop:#stage",
+     "label": "cook:mishkaki-grill L1 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-740x320-p-seen/sek-31-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|crop:#stage",
+     "label": "cook:mishkaki-grill L1 740x320 [p-seen] · crop:#stage at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-740x320-p-seen/sek-31-p1-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|room:crop:#stage",
+     "label": "cook:mishkaki-grill@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-l4-740x320-p-seen/sek-31-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|crop:#stage",
+     "label": "cook:mishkaki-grill@L4 L4 740x320 [p-seen] · crop:#stage at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-l4-740x320-p-seen/sek-31-p1-l4-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SEK-32": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/r16pb-fix/SEK-32.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/SEK-32.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/SEK-32.md",
+   "panels": [
+    "A: cook:mishkaki-grill L1 740x320 [p-seen] · shot at life:stage-end",
+    "B: cook:mishkaki-grill@L4 L4 740x320 [p-seen] · shot at life:stage-end"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "0f3f86825fa198ca3539",
+    "dhash": [
+     "05323aba3280b030",
+     "0532b2b2328034b0"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:mishkaki-grill L1 740x320 [p-seen] · shot at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-740x320-p-seen/sek-32-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|shot",
+     "label": "cook:mishkaki-grill@L4 L4 740x320 [p-seen] · shot at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-mishkaki-grill-l4-740x320-p-seen/sek-32-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SAM-45": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/r16pb-fix/SAM-45.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/SAM-45.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/SAM-45.md",
+   "panels": [
+    "A: cook:samosa L1 740x320 [p-seen] · shot at life:stage-end",
+    "B: cook:samosa@L4 L4 740x320 [p-seen] · shot at life:stage-end"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "0f960f12bcd13e3a9f97",
+    "dhash": [
+     "312868a0b0b03c3c",
+     "3128282030303c36"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:samosa L1 740x320 [p-seen] · shot at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-samosa-740x320-p-seen/sam-45-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|shot",
+     "label": "cook:samosa@L4 L4 740x320 [p-seen] · shot at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-samosa-l4-740x320-p-seen/sam-45-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "CHT-20": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/r16pb-fix/CHT-20.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/CHT-20.png",
+    "build/screenshots/evidence/r16pb-fix/CHT-20-2.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/CHT-20.md",
+   "panels": [
+    "A: cook:chaat L1 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+    "B: cook:chaat L1 740x320 [p-seen] · crop:#stage at life:stage-end",
+    "C: cook:chaat@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+    "D: cook:chaat@L4 L4 740x320 [p-seen] · crop:#stage at life:stage-end",
+    "E: cook:chaat L1 740x320 [p-seen] · shot at life:serve-trays",
+    "F: cook:chaat@L4 L4 740x320 [p-seen] · shot at life:serve-trays"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "7cff3ef81fce3725286a",
+    "dhash": [
+     "0120306060702020",
+     "81c1c0c080808080",
+     "0920306060602020",
+     "8181c08080a08080",
+     "1962693064080c28",
+     "1f66693c6c080828"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|room:crop:#stage",
+     "label": "cook:chaat L1 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-740x320-p-seen/cht-20-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|crop:#stage",
+     "label": "cook:chaat L1 740x320 [p-seen] · crop:#stage at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-740x320-p-seen/cht-20-p1-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|room:crop:#stage",
+     "label": "cook:chaat@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-l4-740x320-p-seen/cht-20-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|crop:#stage",
+     "label": "cook:chaat@L4 L4 740x320 [p-seen] · crop:#stage at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-l4-740x320-p-seen/cht-20-p1-l4-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|shot",
+     "label": "cook:chaat L1 740x320 [p-seen] · shot at life:serve-trays",
+     "type": "img",
+     "moment": "life:serve-trays",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-740x320-p-seen/cht-20-p2-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L4|740x320|shot",
+     "label": "cook:chaat@L4 L4 740x320 [p-seen] · shot at life:serve-trays",
+     "type": "img",
+     "moment": "life:serve-trays",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-l4-740x320-p-seen/cht-20-p2-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "CK-118": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/r16pb-fix/CK-118.png",
+   "sheets": [
+    "build/screenshots/evidence/r16pb-fix/CK-118.png"
+   ],
+   "md": "build/screenshots/evidence/r16pb-fix/CK-118.md",
+   "panels": [
+    "A: cook:corn@L3 L3 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+    "B: cook:corn@L3 L3 740x320 [p-seen] · crop:#stage at life:stage-end",
+    "C: cook:corn@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+    "D: cook:corn@L4 L4 740x320 [p-seen] · crop:#stage at life:stage-end"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "30a732ed6489226f9973",
+    "dhash": [
+     "1f626a72660a0e28",
+     "212296d2ec2c0000",
+     "1f626a72660a0c28",
+     "212396d2ec2c0000"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L3|740x320|room:crop:#stage",
+     "label": "cook:corn@L3 L3 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-l3-740x320-p-seen/ck-118-p1-l3-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L3|740x320|crop:#stage",
+     "label": "cook:corn@L3 L3 740x320 [p-seen] · crop:#stage at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-l3-740x320-p-seen/ck-118-p1-l3-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|room:crop:#stage",
+     "label": "cook:corn@L4 L4 740x320 [p-seen] · life:stage-end: the screen, #stage outlined",
+     "type": "room",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-l4-740x320-p-seen/ck-118-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|crop:#stage",
+     "label": "cook:corn@L4 L4 740x320 [p-seen] · crop:#stage at life:stage-end",
+     "type": "img",
+     "moment": "life:stage-end",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-l4-740x320-p-seen/ck-118-p1-l4-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "CK-119": {
+   "kind": "layout",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/CK-119.md",
+   "panels": [
+    "A: cook:corn L1 1280x665 [p-seen] · order-card-in-sidebar: the screen, #side outlined",
+    "B: cook:corn L1 1280x665 [p-seen] · crop:#side at rec:order-card-in-sidebar",
+    "C: cook:corn L1 740x320 [p-seen] · order-card-in-sidebar: the screen, #side outlined",
+    "D: cook:corn L1 740x320 [p-seen] · crop:#side at rec:order-card-in-sidebar"
+   ],
+   "tool": [
+    "CK-119-p1-L1-1280x665: crop:.njg-rq-card at only:.njg-rq-card (hit 1): \".njg-rq-card\" is not on screen at only:.njg-rq-card",
+    "CK-119-p1-L1-740x320: crop:.njg-rq-card at only:.njg-rq-card (hit 1): \".njg-rq-card\" is not on screen at only:.njg-rq-card"
+   ],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "ed5628871e5fc3f6f994",
+    "dhash": [
+     "0131b07038002424",
+     "012999d991000000",
+     "013070b030301010",
+     "0101099191919100"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p2|L1|1280x665|room:crop:#side",
+     "label": "cook:corn L1 1280x665 [p-seen] · order-card-in-sidebar: the screen, #side outlined",
+     "type": "room",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 362,
+      "height": 665
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-1280x665-p-seen/ck-119-p2-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|crop:#side",
+     "label": "cook:corn L1 1280x665 [p-seen] · crop:#side at rec:order-card-in-sidebar",
+     "type": "img",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-1280x665-p-seen/ck-119-p2-l1-1280x665-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|room:crop:#side",
+     "label": "cook:corn L1 740x320 [p-seen] · order-card-in-sidebar: the screen, #side outlined",
+     "type": "room",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 241,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-740x320-p-seen/ck-119-p2-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|crop:#side",
+     "label": "cook:corn L1 740x320 [p-seen] · crop:#side at rec:order-card-in-sidebar",
+     "type": "img",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-corn-740x320-p-seen/ck-119-p2-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SH-314": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-314.md",
+   "panels": [],
+   "tool": [],
+   "expect": "FAIL",
+   "expectLine": "machine: SH-314-p1-repo: pass: node build/test_cook_mount.mjs: exit 1",
+   "fp": {
+    "hash": "9aeaf4c9b15e7930000f",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-315": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-315.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (node build/tools/review/loadcheck.mjs --only cook:eggs: exit 0)",
+   "fp": {
+    "hash": "9f4898f29f038bc9d2dd",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-316": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-316.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (node build/check_stamps.mjs labs.html: exit 0)",
+   "fp": {
+    "hash": "f35324d38be19194f561",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-221": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-221.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (node build/test_shared_sfx_calls.mjs: exit 0)",
+   "fp": {
+    "hash": "d726ae1bfa1c3dc3fb28",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-261": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/SH-261.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+   "fp": {
+    "hash": "a306fc38928c145e9ce6",
+    "dhash": []
+   },
+   "probes": 8,
+   "reached": 8,
+   "frames": []
+  },
+  "CK-91": {
+   "kind": "layout",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/r16pb-fix/CK-91.md",
+   "panels": [
+    "A: cook:baking L1 1280x665 [p-fresh] · life:dish-flash: the screen, #game outlined",
+    "B: cook:baking L1 1280x665 [p-fresh] · crop:#game at life:dish-flash",
+    "C: cook:baking L1 740x320 [p-fresh] · life:dish-flash: the screen, #game outlined",
+    "D: cook:baking L1 740x320 [p-fresh] · crop:#game at life:dish-flash",
+    "E: cook:chaat L1 1280x665 [p-fresh] · life:dish-flash: the screen, #game outlined",
+    "F: cook:chaat L1 1280x665 [p-fresh] · crop:#game at life:dish-flash",
+    "G: cook:chaat L1 740x320 [p-fresh] · life:dish-flash: the screen, #game outlined",
+    "H: cook:chaat L1 740x320 [p-fresh] · crop:#game at life:dish-flash"
+   ],
+   "tool": [
+    "CK-91-p2-L1-1280x665: crop:#game at life:dish-flash (hit 1): the crop of \"#game\" is one flat colour (covered or blank)",
+    "CK-91-p2-L1-740x320: crop:#game at life:dish-flash (hit 1): the crop of \"#game\" is one flat colour (covered or blank)"
+   ],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "73a99a995a3f0fde6629",
+    "dhash": [
+     "0100000000000000",
+     "7091932eb6b1a818",
+     "4a5d19036b387400",
+     "35d15b0f37b9a800",
+     "0100000000000000",
+     "b091b3bab6b1a818",
+     "4a5d1d0b6b387000",
+     "35d1d54777515800"
+    ]
+   },
+   "probes": 6,
+   "reached": 6,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|room:crop:#game",
+     "label": "cook:baking L1 1280x665 [p-fresh] · life:dish-flash: the screen, #game outlined",
+     "type": "room",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 329,
+      "y": 0,
+      "width": 951,
+      "height": 665
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-baking-1280x665-p-fresh/ck-91-p1-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|1280x665|crop:#game",
+     "label": "cook:baking L1 1280x665 [p-fresh] · crop:#game at life:dish-flash",
+     "type": "img",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-baking-1280x665-p-fresh/ck-91-p1-l1-1280x665-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|room:crop:#game",
+     "label": "cook:baking L1 740x320 [p-fresh] · life:dish-flash: the screen, #game outlined",
+     "type": "room",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-baking-740x320-p-fresh/ck-91-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|crop:#game",
+     "label": "cook:baking L1 740x320 [p-fresh] · crop:#game at life:dish-flash",
+     "type": "img",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-baking-740x320-p-fresh/ck-91-p1-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|1280x665|room:crop:#game",
+     "label": "cook:chaat L1 1280x665 [p-fresh] · life:dish-flash: the screen, #game outlined",
+     "type": "room",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 329,
+      "y": 0,
+      "width": 951,
+      "height": 665
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-1280x665-p-fresh/ck-91-p3-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|1280x665|crop:#game",
+     "label": "cook:chaat L1 1280x665 [p-fresh] · crop:#game at life:dish-flash",
+     "type": "img",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-1280x665-p-fresh/ck-91-p3-l1-1280x665-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|room:crop:#game",
+     "label": "cook:chaat L1 740x320 [p-fresh] · life:dish-flash: the screen, #game outlined",
+     "type": "room",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 208,
+      "y": 0,
+      "width": 532,
+      "height": 320
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-740x320-p-fresh/ck-91-p3-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|crop:#game",
+     "label": "cook:chaat L1 740x320 [p-fresh] · crop:#game at life:dish-flash",
+     "type": "img",
+     "moment": "life:dish-flash",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-r16pb-fix/evidence/cook-chaat-740x320-p-fresh/ck-91-p3-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  }
+ }
+}
