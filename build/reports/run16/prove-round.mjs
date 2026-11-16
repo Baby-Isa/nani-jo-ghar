@@ -95,7 +95,13 @@ for (const name of only || BUILDERS) {
     cmdRes[c.join(" ")] = [1, 2].map(() => (isTest ? run(c[0], c.slice(1)) : run("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", ...c])).code);
   }
   let change = { code: null, md: null };
-  if (!NOCHANGE) {
+  // the builder's own check-change report on the branch stands in (orchestrator, 07:11): the newest one whose commit is in the branch
+  const own = ownChange(ref);
+  if (own && !NOCHANGE) {
+    change = { code: own.ok ? 0 : 1, md: own.md, own: own.file };
+    writeFileSync(join(LOGS, `${name}-${sha.slice(0, 7)}-change.md`), own.md);
+    L(`check-change: the branch's own ${own.file} (${own.ok ? "passed / no new break" : "failed"}; covers ${own.commit})`);
+  } else if (!NOCHANGE) {
     const games = [...new Set(plan.map((p) => p.res.game).map((g) => (g in GAME ? GAME[g] : g)).filter((g) => g && VALID.has(g)))];
     const a = ["build/tools/tiers/check-change.mjs", "--base", BASE];
     if (games.length) a.push("--games", games.join(","));
@@ -133,7 +139,7 @@ for (const name of only || BUILDERS) {
       why.push(`${s}: ${verdicts.join(", ")}${v[0] && v[0].expectLine ? ` (${String(v[0].expectLine).slice(0, 120)})` : ""}`);
     }
     const changeOk = NOCHANGE ? null : change.code === 0;
-    if (!NOCHANGE) why.push(`check-change exit ${change.code}`);
+    if (!NOCHANGE) why.push(change.own ? `check-change (the builder's ${change.own}): ${change.code === 0 ? "pass" : "FAIL"}` : `check-change exit ${change.code}`);
     let status;
     if (passes[0] && passes[1]) status = changeOk === false ? "bounced" : "ready";
     else if (passes[0] || passes[1]) status = "unproven";
@@ -147,12 +153,12 @@ for (const name of only || BUILDERS) {
     record(name, sha, p.row, status, why.join("; "));
     (state[name] ||= {})[p.row] = { readyKey: key, resHash: hash(p.res), sha, status };
   }
-  writeFileSync(statePath, JSON.stringify(state, null, 1) + "\n");
-  writeFileSync(provePath, JSON.stringify(prove, null, 1) + "\n");
+  saveState();
+  saveProve();
   if (!process.env.PROVE_KEEP_WT) try { execFileSync("git", ["worktree", "remove", "--force", wt], { cwd: ROOT, stdio: "ignore" }); } catch {}
 }
-writeFileSync(statePath, JSON.stringify(state, null, 1) + "\n");
-writeFileSync(provePath, JSON.stringify(prove, null, 1) + "\n");
+saveState();
+saveProve();
 
 // "node x.mjs --a b (comment); node --test y.test.mjs" -> [["node","x.mjs","--a","b"],["node","--test","y.test.mjs"]]
 function commandsOf(text) {
@@ -164,6 +170,32 @@ function commandsOf(text) {
   }
   return out;
 }
+function ownChange(ref) {
+  let files = [];
+  try { files = git("ls-tree", "--name-only", `${ref}:build/reports/tiers/`).split("\n").filter((f) => /^change-[0-9a-f]+\.md$/.test(f)); } catch { return null; }
+  const cands = [];
+  for (const f of files) {
+    const c = f.slice(7, -3);
+    // only a report made on this run's work: its commit is in the branch and is not the base or before it
+    try { git("merge-base", "--is-ancestor", c, BASE); continue; } catch {}
+    let t = 0;
+    try { git("merge-base", "--is-ancestor", c, ref); t = Number(git("log", "-1", "--format=%ct", c).trim()); } catch { continue; }
+    cands.push({ f, c, t });
+  }
+  if (!cands.length) return null;
+  cands.sort((a, b) => b.t - a.t);
+  const { f, c } = cands[0];
+  const md = show(ref, `build/reports/tiers/${f}`) || "";
+  const fail = /check-change: FAILED|\*\*FAILED\*\*|FAILED in/i.test(md) && !/no new break/i.test(md);
+  return { file: f, commit: c, md, ok: !fail };
+}
+// two rounds may run at once (one per branch group): merge with what is on disk, mine win for my branch+row
+function saveProve() {
+  const disk = readJson(provePath, []);
+  const mine = new Set(prove.map((p) => `${p.branch} ${p.row}`));
+  writeFileSync(provePath, JSON.stringify([...disk.filter((p) => !mine.has(`${p.branch} ${p.row}`)), ...prove], null, 1) + "\n");
+}
+function saveState() { const disk = readJson(statePath, {}); for (const [b, rows] of Object.entries(state)) disk[b] = { ...(disk[b] || {}), ...rows }; writeFileSync(statePath, JSON.stringify(disk, null, 1) + "\n"); }
 function hash(o) { return createHash("sha1").update(JSON.stringify(o || {})).digest("hex").slice(0, 10); }
 function record(branch, commit, row, status, why) {
   for (let i = prove.length - 1; i >= 0; i--) if (prove[i].branch === `run16/${branch}` && prove[i].row === row) prove.splice(i, 1);
