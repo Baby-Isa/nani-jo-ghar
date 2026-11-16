@@ -35,6 +35,13 @@
           "bottom shelf"
         ],
         "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "the red tin"
+        ],
+        "status": "planned"
       }
     ],
     "tertiary": [
@@ -67,7 +74,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "The reference of fetch and serve; each dish's trip fetches its things (cook.json recipes.pantry.forDish). Zafar's 30 Oct notes call it weak (PAN-19 to 22)."
   },
   {
@@ -177,7 +205,43 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Signed off 7 Nov as the family's reference; the word moment (half, full) at L4."
   },
   {
@@ -270,7 +334,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab prototype (1 Nov), not judged; tarelo and mari are drafts; boiled egg to record (R6-19)."
   },
   {
@@ -350,7 +435,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Live L1-L4; big and small at L4 in the she-forms."
   },
   {
@@ -396,7 +502,18 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab-only proof on maani's words; data/stations/roll-tawa.json names no words of its own. Thin: fold into maani's levels."
   },
   {
@@ -476,7 +593,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab prototype on the grill kit (CK-67); a sekelo redress for the farm day; Nani stands in for Hannah Mami."
   },
   {
@@ -557,7 +695,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Live L1-L4; the vegetables and jeeru, rai are first met here (no earlier meeting)."
   },
   {
@@ -616,7 +775,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Its own game since Sprint 18; daar and chaat use it, so its words are theirs."
   },
   {
@@ -685,7 +860,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Live L1-L4; 'no' asks from L2."
   },
   {
@@ -780,7 +976,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab prototype (1 Nov); the only game about how much; the amounts beyond half and full wait for Mum (R6-135)."
   },
   {
@@ -859,7 +1076,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Live L1-L4; green pepper stays English until recorded."
   },
   {
@@ -939,7 +1177,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Live; SAM-35: the headline says the count."
   },
   {
@@ -1010,7 +1269,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Describing-word ladder L1-L5; family words are a proposed rung (master map R7)."
   },
   {
@@ -1112,7 +1392,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
     "notes": "D1-D3 built; the body-chart prototype (2 Nov, where.js) widens it to 20+ parts; every named part must be treatable."
   },
   {
@@ -1179,7 +1475,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Belt faster from L3, never a timer."
   },
   {
@@ -1281,7 +1593,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Numbers decide most live heal games (master map R7); the hand splinter is the 2 Nov prototype."
   },
   {
@@ -1387,7 +1720,33 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "The blocked nose is the 2 Nov prototype (the ear game's twin); the eye test's yes/no is the only speaking with real takes today."
   },
   {
@@ -1485,7 +1844,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Fever keeps the doctor naming the effect to L3 (decision 91); drinks prototype 2 Nov."
   },
   {
@@ -1551,7 +1931,23 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "An apple, never a lolly; feelings are 'sad' or 'scared', always resolved gently (Zafar, 14 Oct)."
   },
   {
@@ -1608,7 +2004,18 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
     "notes": "Parked per H32; their level 3 is level 2 heard only (decision 97)."
   },
   {
@@ -1648,6 +2055,14 @@
           "tissue"
         ],
         "status": "suggested"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "my",
+          "his (my head hurts)"
+        ],
+        "status": "suggested"
       }
     ],
     "tertiary": [
@@ -1681,7 +2096,23 @@
         "status": "suggested"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "What happened",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Suggested: the master map finds the health half of feelings short; the patient's 'why' line picks the cure."
   },
   {
@@ -1786,7 +2217,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab prototype (2 Nov); first of the day at home (places, then positions, then verbs)."
   },
   {
@@ -1885,7 +2337,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab prototype (2 Nov); two of the same thing in different places, so the place word decides."
   },
   {
@@ -1993,7 +2466,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Lab prototype (2 Nov); from L2 two of each, so on or off decides."
   },
   {
@@ -2074,7 +2563,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab prototype (2 Nov); the only time game; from L2 the bedside clocks frost, so the heard hour decides."
   },
   {
@@ -2160,7 +2670,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Lab prototype (2 Nov) on the do-it engine; jobs called in any order, so the verb decides, not the routine."
   },
   {
@@ -2237,7 +2763,18 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Lab prototype (2 Nov); the rebuild of Dress up's Big Ma's sewing table."
   },
   {
@@ -2314,7 +2851,18 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "What happened",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Lab prototype (2 Nov); always two faults, the said one decides."
   },
   {
@@ -2399,7 +2947,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
     "notes": "Lab prototype (2 Nov); Dress up's 'the fitting' rebuilt."
   },
   {
@@ -2419,7 +2983,7 @@
           "stars",
           "rainbow"
         ],
-        "status": "actual"
+        "status": "suggested"
       }
     ],
     "secondary": [
@@ -2473,8 +3037,24 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
-    "notes": "A beat, not a test: the weather picks nothing here; Pack the bag is where it decides."
+    "grammar": [
+      {
+        "pattern": "What will happen",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "A beat, not a test, today: the weather words are in data/day.json but decide nothing. Suggested: Nani says the sky before the curtain opens and the child picks its card, so the weather word decides."
   },
   {
     "name": "The evening book",
@@ -2568,7 +3148,38 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "What happened",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Reviews whatever the day log holds; the only place with past forms (we saw, we went)."
   },
   {
@@ -2678,7 +3289,38 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Engine and lab live, not yet wired into pages; woven round every mode."
   },
   {
@@ -2747,7 +3389,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Its hook still says Eid; to be reworded for the birthday (Zafar, 31 Oct)."
   },
   {
@@ -2825,7 +3488,23 @@
         "status": "suggested"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Suggested: the mind verbs (know, remember, find) have no game; answered by voice (research-mechanics), so no tap-matching leak."
   },
   {
@@ -2900,7 +3579,23 @@
         "status": "suggested"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Suggested: no game where the describing word is the move (master map Part 6); 'behind the screen' from Table 1, speaking in a closed set of 2-3."
   },
   {
@@ -2941,6 +3636,13 @@
           "bed"
         ],
         "status": "suggested"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "what did we do first?"
+        ],
+        "status": "suggested"
       }
     ],
     "tertiary": [
@@ -2964,7 +3666,18 @@
         "status": "suggested"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Suggested as an evening-book page: time words (now, later, before, after) are short in every map."
   },
   {
@@ -3005,6 +3718,14 @@
           "on the shelf"
         ],
         "status": "suggested"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "broken",
+          "new"
+        ],
+        "status": "suggested"
       }
     ],
     "tertiary": [
@@ -3039,7 +3760,23 @@
         "status": "suggested"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Suggested: the clean-up's planned later visit (Ali's room) made a game; toys have no primary home, and push and hold are missing top-40 verbs."
   },
   {
@@ -3158,7 +3895,43 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Built on its own engine (25 Sept), next onto the shared core; the shops use it."
   },
   {
@@ -3235,6 +4008,14 @@
           "spade"
         ],
         "status": "planned"
+      },
+      {
+        "group": "Sports and games",
+        "examples": [
+          "ball",
+          "bat (a sport's bag)"
+        ],
+        "status": "planned"
       }
     ],
     "verbs": [
@@ -3251,7 +4032,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "A reskin of the pantry fetch; the weather sets the kind, the Kutchi picks which and how many."
   },
   {
@@ -3304,6 +4106,16 @@
           "slow down"
         ],
         "status": "actual"
+      },
+      {
+        "group": "Places in town",
+        "examples": [
+          "school",
+          "park",
+          "shop",
+          "station"
+        ],
+        "status": "suggested"
       }
     ],
     "tertiary": [
@@ -3339,7 +4151,13 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Built (Sprint 9); the farm road is data; the sea, jeep and boat roads reuse it."
   },
   {
@@ -3388,7 +4206,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "An engine: its nouns come from each stage (feed, animals home, the picnic, the shopping)."
   },
   {
@@ -3444,8 +4283,111 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "How much",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "An engine (Cook's count generalised); eggs, cobs, shells, coins."
+  },
+  {
+    "name": "Meet the host",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "designed",
+    "usp": "Greet the elder",
+    "fun": "Nani greets first",
+    "primary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "salaam",
+          "how are you?",
+          "I'm fine",
+          "khuda-fis"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "you (aai",
+          "the elder form)"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Hannah Mami",
+          "Masi"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "fine",
+          "tired"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "come with me"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "say",
+        "status": "planned"
+      },
+      {
+        "verb": "come",
+        "status": "planned"
+      },
+      {
+        "verb": "ask",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "The Meet stage of every trip (farm, beach, safari) on Conversations; the child answers with the elder form."
   },
   {
     "name": "Pass the balloon",
@@ -3511,7 +4453,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Party lab prototype (2 Nov); from L2 the two sisters swap seats, so mum or aunt decides."
   },
   {
@@ -3592,7 +4550,18 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Party prototype (2 Nov); all six fixes always there, so the feeling word picks."
   },
   {
@@ -3682,7 +4651,18 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Party prototype (2 Nov) on the do-it engine; the only home for moving-yourself verbs."
   },
   {
@@ -3760,7 +4740,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Party prototype (2 Nov) on word tiles; the birthday stays though celebrations are out."
   },
   {
@@ -3829,7 +4830,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Party prototype (2 Nov); any toy can go to anyone, so the owner decides."
   },
   {
@@ -3893,7 +4910,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Comes later; Snap's engine is a rebuild (master map G)."
   },
   {
@@ -3964,7 +5002,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "What happened",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Second party visit, on Who did it?'s engine; the clue must be heard, not seen."
   },
   {
@@ -4030,7 +5089,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
     "notes": "School day lab prototype (2 Nov); later how many and whose decide."
   },
   {
@@ -4127,7 +5207,23 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "School day prototype (2 Nov); no letters or numbers on the board; shapes wait on Mum."
   },
   {
@@ -4218,7 +5314,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Town prototype (2 Nov); Zafar's harder level says 'I want a book', not 'the library'."
   },
   {
@@ -4272,6 +5384,14 @@
           "how many?"
         ],
         "status": "actual"
+      },
+      {
+        "group": "Money and shopping",
+        "examples": [
+          "how much?",
+          "paisa"
+        ],
+        "status": "suggested"
       }
     ],
     "tertiary": [
@@ -4298,7 +5418,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Town prototype (2 Nov); the child serves, later orders."
   },
   {
@@ -4358,7 +5499,23 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Town prototype (2 Nov); two of the same side by side."
   },
   {
@@ -4428,7 +5585,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Town prototype (2 Nov); coins carry no digits; to 20, then 100 as levels rise (Zafar, 1 Nov)."
   },
   {
@@ -4490,7 +5663,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Zafar's first-person maze (19 Oct); 'this side, that side' before left and right (Mum, idea 11)."
   },
   {
@@ -4550,7 +5739,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
     "notes": "Designed for the shops day; people along the lanes say which way it went."
   },
   {
@@ -4628,7 +5833,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Sewing prototype (2 Nov); also the shops' third trip; seeds the sewing day."
   },
   {
@@ -4700,7 +5921,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Farm prototype (1 Nov); hens and goats both want food, so the word picks."
   },
   {
@@ -4781,7 +6018,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
     "notes": "Farm prototype (1 Nov); peeking under any hen is free."
   },
   {
@@ -4855,7 +6113,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Farm prototype (data/farm/photo.json); its photos feed the evening book."
   },
   {
@@ -4928,7 +6207,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Farm prototype (1 Nov); planned later: call the animal over (speaking)."
   },
   {
@@ -4994,7 +6294,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Farm prototype, second visit; more on the tree than asked."
   },
   {
@@ -5068,7 +6384,23 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Farm prototype, second visit; the only plants game."
   },
   {
@@ -5160,7 +6492,23 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Pets prototype (2 Nov); Hannah Mami's centre, 'not a vet' (Zafar)."
   },
   {
@@ -5226,7 +6574,18 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Pets prototype (2 Nov); one line, same size, all happy, so only the name picks."
   },
   {
@@ -5314,7 +6673,28 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He, she, they, I",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Safari prototype (2 Nov); three of a kind doing different things from L2."
   },
   {
@@ -5390,7 +6770,23 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Safari prototype (2 Nov); body and describing words on animals."
   },
   {
@@ -5449,7 +6845,18 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
     "notes": "In the safari's first sketch (find-it or put-it-in-its-place); not designed further."
   },
   {
@@ -5515,7 +6922,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Beach prototype (2 Nov); needs Mum's beach words."
   },
   {
@@ -5596,7 +7024,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Beach prototype (2 Nov); the tower's height shows the amount."
   },
   {
@@ -5642,17 +7091,17 @@
           "how many"
         ],
         "status": "planned"
-      }
-    ],
-    "tertiary": [
+      },
       {
         "group": "Money and shopping",
         "examples": [
-          "pay"
+          "how much?",
+          "coins"
         ],
-        "status": "planned"
+        "status": "suggested"
       }
     ],
+    "tertiary": [],
     "verbs": [
       {
         "verb": "want",
@@ -5663,7 +7112,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
     "notes": "Beach prototype (2 Nov); Cook reskins (corn, cassava chips, coconut)."
   },
   {
@@ -5738,7 +7208,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Beach prototype (2 Nov); every spot outlined, never just the right one."
   },
   {
@@ -5756,16 +7242,17 @@
           "quickly"
         ],
         "status": "planned"
-      },
-      {
-        "group": "Time and days",
-        "examples": [
-          "now"
-        ],
-        "status": "planned"
       }
     ],
     "secondary": [
+      {
+        "group": "Time and days",
+        "examples": [
+          "now",
+          "let go"
+        ],
+        "status": "planned"
+      },
       {
         "group": "Weather and nature",
         "examples": [
@@ -5800,7 +7287,18 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Only if it earns its place as a game (Zafar, 19 Oct)."
   },
   {
@@ -5867,7 +7365,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
     "notes": "Boat-day prototype (2 Nov) on the window ride."
   },
   {
@@ -5942,7 +7456,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Boat-day prototype (2 Nov); weak as its own game (research), so one stage of the boat day."
   },
   {
@@ -6032,7 +7562,38 @@
         "status": "actual"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Greybox; to fold into pick it up and the clean-up (Zafar, 31 Oct: yes, after the list of which go where)."
   },
   {
@@ -6126,7 +7687,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
     "notes": "Greybox; the sewing prototypes are its rebuild."
   },
   {
@@ -6203,7 +7785,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "What happened",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
     "notes": "Greybox; 'who did it?' (kere karein) is not confirmed: don't use (conversations §4)."
   },
   {
@@ -6285,7 +7888,28 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "What will happen",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
     "notes": "Greybox; the proposed monsoon day."
   },
   {
@@ -6344,7 +7968,23 @@
         "status": "planned"
       }
     ],
-    "grammar": [],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "primary",
+        "status": "planned"
+      }
+    ],
     "notes": "Greybox (the still orchard); its engine returns at the farm, the party and the safari."
   }
 ]
