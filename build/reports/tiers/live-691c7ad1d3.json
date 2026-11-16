@@ -1,0 +1,153 @@
+{
+ "tier": "live",
+ "tierNo": "4",
+ "name": "check-live",
+ "commit": "691c7ad1d3ee668921b045b8180584e487442557",
+ "dirty": true,
+ "date": "2026-11-16T05:49:30.337Z",
+ "base": null,
+ "games": [
+  "house",
+  "cook:chai-tray",
+  "cook:daar",
+  "clinic:heal-eye",
+  "day:door"
+ ],
+ "site": "https://baby-isa.github.io/nani-jo-ghar",
+ "notes": [],
+ "artefacts": {
+  "strips": [],
+  "logs": "build/screenshots/tiers/live-691c7ad1d3/logs"
+ },
+ "failures": [
+  {
+   "game": "house",
+   "check": "live:house",
+   "where": "build/screenshots/tiers/live-691c7ad1d3/logs/live_house.log",
+   "what": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/index.html",
+   "blocks": true
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "live:chai-tray",
+   "where": "build/screenshots/tiers/live-691c7ad1d3/logs/live_chai-tray.log",
+   "what": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=chai-tray&level=1&nonav=1",
+   "blocks": true
+  },
+  {
+   "game": "cook:daar",
+   "check": "live:daar",
+   "where": "build/screenshots/tiers/live-691c7ad1d3/logs/live_daar.log",
+   "what": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=daar&level=1&nonav=1",
+   "blocks": true
+  },
+  {
+   "game": "clinic:heal-eye",
+   "check": "live:eye",
+   "where": "build/screenshots/tiers/live-691c7ad1d3/logs/live_eye.log",
+   "what": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/clinic.html?stage=heal&game=eye&level=1&nonav=1",
+   "blocks": true
+  },
+  {
+   "game": "day:door",
+   "check": "live:door",
+   "where": "build/screenshots/tiers/live-691c7ad1d3/logs/live_door.log",
+   "what": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/day.html",
+   "blocks": true
+  }
+ ],
+ "steps": [
+  {
+   "id": "live:house",
+   "what": "house's first minute on the live site at 740x320",
+   "game": "house",
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/tiers/film.mjs --url https://baby-isa.github.io/nani-jo-ghar/index.html --size 740x320 --seconds 60 --every 5 --play --out build/screenshots/tiers/live-691c7ad1d3/house",
+   "status": "fail",
+   "code": 1,
+   "line": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/index.html",
+   "tail": [
+    "film: https://baby-isa.github.io/nani-jo-ghar/index.html at 740x320, 60 s, DID NOT LOAD, 1 page error(s)",
+    "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/index.html"
+   ],
+   "log": "build/screenshots/tiers/live-691c7ad1d3/logs/live_house.log",
+   "minutes": 0
+  },
+  {
+   "id": "live:chai-tray",
+   "what": "cook:chai-tray's first minute on the live site at 740x320",
+   "game": "cook:chai-tray",
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/tiers/film.mjs --url 'https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=chai-tray&level=1&nonav=1' --size 740x320 --seconds 60 --every 5 --play --out build/screenshots/tiers/live-691c7ad1d3/chai-tray",
+   "status": "fail",
+   "code": 1,
+   "line": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=chai-tray&level=1&nonav=1",
+   "tail": [
+    "film: https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=chai-tray&level=1&nonav=1 at 740x320, 60 s, DID NOT LOAD, 1 page error(s)",
+    "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=chai-tray&level=1&nonav=1"
+   ],
+   "log": "build/screenshots/tiers/live-691c7ad1d3/logs/live_chai-tray.log",
+   "minutes": 0
+  },
+  {
+   "id": "live:daar",
+   "what": "cook:daar's first minute on the live site at 740x320",
+   "game": "cook:daar",
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/tiers/film.mjs --url 'https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=daar&level=1&nonav=1' --size 740x320 --seconds 60 --every 5 --play --out build/screenshots/tiers/live-691c7ad1d3/daar",
+   "status": "fail",
+   "code": 1,
+   "line": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=daar&level=1&nonav=1",
+   "tail": [
+    "film: https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=daar&level=1&nonav=1 at 740x320, 60 s, DID NOT LOAD, 1 page error(s)",
+    "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/lab.html?mode=cook&game=daar&level=1&nonav=1"
+   ],
+   "log": "build/screenshots/tiers/live-691c7ad1d3/logs/live_daar.log",
+   "minutes": 0
+  },
+  {
+   "id": "live:eye",
+   "what": "clinic:heal-eye's first minute on the live site at 740x320",
+   "game": "clinic:heal-eye",
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/tiers/film.mjs --url 'https://baby-isa.github.io/nani-jo-ghar/clinic.html?stage=heal&game=eye&level=1&nonav=1' --size 740x320 --seconds 60 --every 5 --play --out build/screenshots/tiers/live-691c7ad1d3/eye",
+   "status": "fail",
+   "code": 1,
+   "line": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/clinic.html?stage=heal&game=eye&level=1&nonav=1",
+   "tail": [
+    "film: https://baby-isa.github.io/nani-jo-ghar/clinic.html?stage=heal&game=eye&level=1&nonav=1 at 740x320, 60 s, DID NOT LOAD, 1 page error(s)",
+    "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/clinic.html?stage=heal&game=eye&level=1&nonav=1"
+   ],
+   "log": "build/screenshots/tiers/live-691c7ad1d3/logs/live_eye.log",
+   "minutes": 0
+  },
+  {
+   "id": "live:door",
+   "what": "day:door's first minute on the live site at 740x320",
+   "game": "day:door",
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/tiers/film.mjs --url https://baby-isa.github.io/nani-jo-ghar/day.html --size 740x320 --seconds 60 --every 5 --play --out build/screenshots/tiers/live-691c7ad1d3/door",
+   "status": "fail",
+   "code": 1,
+   "line": "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/day.html",
+   "tail": [
+    "film: https://baby-isa.github.io/nani-jo-ghar/day.html at 740x320, 60 s, DID NOT LOAD, 1 page error(s)",
+    "load: page.goto: net::ERR_NAME_NOT_RESOLVED at https://baby-isa.github.io/nani-jo-ghar/day.html"
+   ],
+   "log": "build/screenshots/tiers/live-691c7ad1d3/logs/live_door.log",
+   "minutes": 0
+  }
+ ],
+ "minutes": 0.1,
+ "ok": false
+}
