@@ -1,0 +1,119 @@
+[
+ {
+  "row": "ART-51",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "FAIL",
+  "reason": "The row's words are numbers (100/91/84 of the slot, never under 40 CSS px); the check is one crop of the shelf with no expect, and an eye cannot tell 91% from 92% or a 42 px item from a 39 px one. It needs a measured size per class.",
+  "panel": "spec: crop:#stage at view-marble, expect null"
+ },
+ {
+  "row": "CHAI-90",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "PASS",
+  "reason": "A strip of the word moment at chai L4, 930x430, over the pour: the row's own size and moment (the stream inside the glass to the tea).",
+  "panel": "spec: strip:.cook-wm:6x200 at visible:.cook-wm"
+ },
+ {
+  "row": "CK-119",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "PASS",
+  "reason": "Both pictures the row names (the pop-up card and the item card), at the four sizes.",
+  "panel": "spec: crop:.njg-rq-card at request; crop:#side at order-card-in-sidebar"
+ },
+ {
+  "row": "CK-130",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "PASS",
+  "reason": "The grill with the cob on it after each placing, L1 and L4, tests the ring round the cob. Narrower than the row (two sizes of four, no chai ring beside it to compare shares).",
+  "panel": "spec: crop:#stage at every:placed"
+ },
+ {
+  "row": "DAAR-37",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "FAIL",
+  "reason": "The check reads js:Cook.chopPlan, which exists nowhere in the code, so the kinds and totals are never captured; what is left is one picture of the board at the start, one seed per level, where the row asks ten seeds and 1-3 chops per kind.",
+  "panel": "spec: js:Cook.chopPlan (no such value) + crop:#stage at stage-start"
+ },
+ {
+  "row": "DAAR-66",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "PASS",
+  "reason": "A 4-frame strip from each step's start (360 ms, covering the 0.4 s of bare marble the row names) with the hob in frame for the face circle. Risk: only the first 3 steps are taken, so the hob step may not be among them.",
+  "panel": "spec: strip:#stage:4x120 at every:step, max 3"
+ },
+ {
+  "row": "SH-140",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "PASS",
+  "reason": "A 2x close-up of the faces and their speaker badges at both sizes shows whether the badge cuts halfway. Chai only (the row says every face), and by eye where centredOn could decide it.",
+  "panel": "spec: zoom2:#side at order-card-in-sidebar"
+ },
+ {
+  "row": "SH-209",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "FAIL",
+  "reason": "The expect is contract-101, which checks that Nani's box is the kit's box, shows its drop-down and sets her line in chai's type on one line; it never measures the box's height with and without the arrow, which is the row. The helper is also never opened, and only chai plays where the row says every game.",
+  "panel": "spec: contract:101 expect pass (build/sandbox/lib/contract-s19.mjs:80)"
+ },
+ {
+  "row": "SH-226",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "FAIL",
+  "reason": "The test passes when chai's sound files have a source and licence; the row is real recorded sounds in every game and its own status says the other games are still to do. A green here would close a row that is still open.",
+  "panel": "spec: cmd:node build/test_shared_sfx_files.mjs expect pass"
+ },
+ {
+  "row": "SH-310",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "5847536",
+  "verdict": "PASS",
+  "reason": "The row's own case: maani L4 at well done, a 2x close-up of the order rows at the four sizes. Maani only, by eye.",
+  "panel": "spec: zoom2:#side at exp:done"
+ },
+ {
+  "row": "CK-115",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "f84c824",
+  "verdict": "PASS",
+  "reason": "Corn at 740x320, L1-L4, at every order card landing in the panel: the card not clipped and inside the panel, which is the row's words.",
+  "panel": "spec: noClip:#mission .oc-card; inside:#mission .oc-card in #side"
+ },
+ {
+  "row": "SH-275",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "f84c824",
+  "verdict": "FAIL",
+  "reason": "The row names three sightings; the check shows eggs and baking only. The separate pie or stopwatch disc beside the board in chop, chaat and daar is not probed, so the row could go green with it still there.",
+  "panel": "spec: shot at kind-timing, cook:eggs and cook:baking only"
+ },
+ {
+  "row": "SH-288",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "f84c824",
+  "verdict": "PASS",
+  "reason": "The layout lint's tap-small finding on chai at the four sizes is the row's own check. Taken at the order card only, so the knobs (the stove view) are not on screen at that moment.",
+  "panel": "spec: noFinding:tap-small at order-card-in-sidebar"
+ }
+]
