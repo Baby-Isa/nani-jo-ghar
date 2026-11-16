@@ -64,9 +64,11 @@
    "css/shared/order-card.css",
    "js/shared/word-card.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: count:html.njg-lora>=1 (1 visible); count:#side .oc-it14>=1 (2 visible); count:html.njg-lora>=1 (1 visible)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 9a4928b1d 2026-11-12 s19-clean-a: the order row's current card glides whole into view once the row's own glide)"
  },
  {
   "row": "SH-223",
@@ -381,9 +383,11 @@
    "js/cook/ui.js",
    "js/shared/request-popup.js"
   ],
-  "status": "built",
+  "status": "open",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "built per its status, but the check fails on today's head: machine: SH-203-p1-L4-1280x665: pass: 1 contract breaks",
+  "red": "c4edbfdc5 run r16pb-newcook: machine: SH-203-p1-L4-1280x665: pass: 1 contract breaks",
+  "green": "not green"
  },
  {
   "row": "SH-171",
@@ -446,8 +450,9 @@
    "js/shared/onboard.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "SH-228",
@@ -578,9 +583,11 @@
    "data/rules.json",
    "js/shared/rules.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks; node build/test_shared_rules.mjs: exit 0); pass (0 contract breaks; node build/test_shared_rules.mjs: exit 0)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: d6817e2c0 2026-10-29 S14 s14-rules: evidence specs for SH-155, SH-159, SH-160 (the rules' unit tests as their )"
  },
  {
   "row": "SH-156",
@@ -621,8 +628,9 @@
    "js/core/progress.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 3/3 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "SH-160",
@@ -635,8 +643,9 @@
    "data/rules.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "SH-147",
@@ -888,9 +897,11 @@
    "js/cook/mechanics/fetch.js",
    "js/cook/coach.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed"
  },
  {
   "row": "CHAI-102",
@@ -1139,9 +1150,9 @@
   "files": [
    "js/cook/mechanics/chop.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: DAAR-38-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, life:request, life:popup-open, life:dish-flash, life:pop-face, life:order-pass, life:card-fold, talk:nani, line:cook, life:say-start, bubble, rec:start, cook:"
  },
  {
   "row": "DAAR-39",
@@ -1168,9 +1179,9 @@
   ],
   "status": "proven",
   "judge": "machine",
-  "note": "fixed by 64cff18f5 (the chop opens its own step as its board starts); the spec is now contract-95 alone (the cmd fails on any break), replayed in the next batch",
-  "green": "6d12df4e3 run r16pb-cook: the same cmd exit 0 (daar L4 and L2, 0 breaks)",
-  "red": "64cff18f5~1 (worktree, today checks): run.mjs --contract cook:daar@L4,@L2 exit 1; BREAK contract-95 daar L4: \"Hane trae mirchi!\" said 7742 ms after the order was skipped, before the first step",
+  "note": "fixed by 64cff18f5 (the chop opens its own step as its board starts); red then green on contract-95 alone",
+  "green": "6d12df4e3 run r16pb-newcook: contract-95 0 breaks at daar L2 and L4",
+  "red": "64cff18f5~1 (worktree, today checks), run red-daar40b: contract-95 alone FAIL on daar L4 1280x665 fresh (\"Hane trae mirchi!\" 7742 ms after the skip in the first replay)",
   "hand": true
  },
  {
@@ -1270,8 +1281,9 @@
    "js/cook/stations/daar.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "DAAR-54",
@@ -1282,8 +1294,9 @@
    "js/cook/mechanics/chop.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "DAAR-57",
@@ -1297,9 +1310,10 @@
    "js/cook/ui.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The side panel at every step of daar shows whether Nani's face and speaker stay in her box through the chop step. Phone size only, first steps only."
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "judgeAudit": "judge (run16/judge): PASS: The side panel at every step of daar shows whether Nani's face and speaker stay in her box through the chop step. Phone size only, first steps only.",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "DAAR-58",
@@ -1309,9 +1323,11 @@
   "files": [
    "js/cook/mechanics/chop.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 97c7d8659 2026-11-15 Round 5 (decision 38): DAAR-54 daar's cut pieces stay on the board while chopping (the he)"
  },
  {
   "row": "DAAR-61",
@@ -1322,9 +1338,10 @@
    "js/cook/stations/chop.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The whole screen at chop's serve, L1 and L4, shows the dish, the tray's place and the thank-you the row names. Phone size only, where the row says four sizes."
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "judgeAudit": "judge (run16/judge): PASS: The whole screen at chop's serve, L1 and L4, shows the dish, the tray's place and the thank-you the row names. Phone size only, where the row says four sizes.",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "DAAR-62",
@@ -1334,9 +1351,9 @@
   "files": [
    "js/cook/stations/chop.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: DAAR-62-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, life:request, life:popup-open, life:dish-flash, life:pop-face, life:order-pass, life:card-fold, talk:nani, line:cook, life:say-start, bubble, rec:start, cook:"
  },
  {
   "row": "DAAR-63",
@@ -1346,9 +1363,11 @@
   "files": [
    "js/cook/mechanics/chop.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 193fa1ca8 2026-11-15 Round 4 (decision 38, the Fable eye judge for Zafar): DAAR-57 Nani's face stays in her bo)"
  },
  {
   "row": "DAAR-65",
@@ -1358,9 +1377,11 @@
   "files": [
    "js/cook/mechanics/chop.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: noOverlap:.ob-box,#side-cog (no overlap); noOverlap:.ob-box,#side-cog (no overlap (3 moments)); noOverlap:.ob-box,#side-cog (no overlap (2 moments))",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 97c7d8659 2026-11-15 Round 5 (decision 38): DAAR-54 daar's cut pieces stay on the board while chopping (the he)"
  },
  {
   "row": "DAAR-66",
@@ -1371,9 +1392,10 @@
    "js/cook/stations/daar.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: A 4-frame strip from each step's start (360 ms, covering the 0.4 s of bare marble the row names) with the hob in frame for the face circle. Risk: only the first 3 steps are taken, so the hob step may not be among them."
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "judgeAudit": "judge (run16/judge): PASS: A 4-frame strip from each step's start (360 ms, covering the 0.4 s of bare marble the row names) with the hob in frame for the face circle. Risk: only the first 3 steps are taken, so the hob step may not be among them.",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "SEK-22",
@@ -1491,9 +1513,9 @@
   "files": [
    "js/cook/mechanics/grill.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: SEK-31-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, talk:nana, line:cook, life:request, life:dish-flash, life:say-start, life:popup-open, life:pop-face, bubble, cook:click, only:.njg-rq-ca"
  },
  {
   "row": "SEK-32",
@@ -1504,9 +1526,9 @@
    "js/cook/mechanics/grill.js",
    "js/cook/mechanics/thread.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: SEK-32-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, talk:nana, line:cook, life:request, life:dish-flash, life:say-start, life:popup-open, life:pop-face, bubble, cook:click, only:.njg-rq-ca"
  },
  {
   "row": "SAM-42",
@@ -1516,9 +1538,11 @@
   "files": [
    "js/cook/stations/samosa.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 0fd3c3573 2026-11-15 Merge s20-b2-samosa round 2 final (SAM-42 to SAM-46; gates samosa and chai pass, chai's b)"
  },
  {
   "row": "SAM-43",
@@ -1529,8 +1553,9 @@
    "js/cook/stations/samosa.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "SAM-45",
@@ -1540,9 +1565,9 @@
   "files": [
    "js/cook/stations/samosa.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: SAM-45-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, talk:nana, line:cook, life:request, life:dish-flash, life:pop-face, life:say-start, life:popup-open, cook:click, only:.njg-rq-card, bubb"
  },
  {
   "row": "MAA-19",
@@ -1613,8 +1638,9 @@
    "js/shared/serve.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "MAA-27",
@@ -1625,8 +1651,9 @@
    "js/cook/stations/maani-line.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 3/3 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CHT-13",
@@ -1665,9 +1692,9 @@
   "files": [
    "js/cook/mechanics/assemble.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: CHT-20-p1-L1-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, life:request, life:popup-open, talk:nana, line:cook, life:dish-flash, life:pop-face, life:say-start, cook:click, only:.njg-rq-card, bubb"
  },
  {
   "row": "CK-59",
@@ -1706,10 +1733,12 @@
    "js/cook/ui.js",
    "js/cook/dom.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The row's own check (no sidebar button outside the sidebar, contract-54) over a whole play of chai, daar and eggs at both sizes. Three stations, where the row says every one."
+  "note": "the machine check passes on today's head",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own check (no sidebar button outside the sidebar, contract-54) over a whole play of chai, daar and eggs at both sizes. Three stations, where the row says every one.",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 8e1d8dd27 2026-10-28 CK-53: the cog menu's shadow is the kit's token)"
  },
  {
   "row": "CK-54",
@@ -1837,9 +1866,11 @@
    "js/cook/stations.js",
    "js/shared/onboard.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 5241136f1 2026-11-16 run16 probes-built: CK-90 and CK-113 played on the mistake path (fair play passes even be)"
  },
  {
   "row": "CK-114",
@@ -1849,10 +1880,12 @@
   "files": [
    "js/cook/stations/eggs.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The row's own check: eggs L1-L4 at both sizes reaches its end with contract-117 clean."
+  "note": "the machine check passes on today's head",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own check: eggs L1-L4 at both sizes reaches its end with contract-117 clean.",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 362e8ef3e 2026-11-13 CK-114 under contract-117)"
  },
  {
   "row": "CK-116",
@@ -1863,8 +1896,9 @@
    "js/cook/stations/baking.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-117",
@@ -1875,8 +1909,9 @@
    "js/cook/stations/corn.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-118",
@@ -1886,9 +1921,9 @@
   "files": [
    "js/cook/stations/corn.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: CK-118-p1-L3-740x320: the moment \"exp:done\" never came; moments seen: page:start, life:cover, life:order-level, life:poke, rec:start, life:ghost, life:request, life:order-pass, life:card-fold, life:popup-open, talk:nana, line:cook, life:say-start, life:pop-face, bubble, cook:click, only:.njg-rq-card"
  },
  {
   "row": "CK-119",
@@ -1899,9 +1934,9 @@
    "js/cook/stations/corn.js",
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
+  "note": "tool failure: CK-119-p1-L1-1280x665: crop:.njg-rq-card at life:request (hit 1): \".njg-rq-card\" is not on screen at life:request · CK-119-p1-L1-740x320: crop:.njg-rq-card at life:request (hit 1): \".njg-rq-card\" is not on screen at life:request",
   "judgeAudit": "judge (run16/judge): PASS: Both pictures the row names (the pop-up card and the item card), at the four sizes."
  },
  {
@@ -1914,9 +1949,10 @@
    "js/shared/fit.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The row's own case (eggs L4, 1280x665) with the side panel pictured and its text read. By eye: a lines: expect on the card heads could decide it."
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own case (eggs L4, 1280x665) with the side panel pictured and its text read. By eye: a lines: expect on the card heads could decide it.",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-122",
@@ -1927,8 +1963,9 @@
    "js/cook/stations/eggs.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-123",
@@ -1940,8 +1977,9 @@
    "data/stations/eggs.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-124",
@@ -1951,9 +1989,11 @@
   "files": [
    "js/cook/stations/eggs.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: f40c0f690 2026-11-15 Eggs CK-124: the vessels' light back to the round body (the handle could not be lit whole)"
  },
  {
   "row": "CK-125",
@@ -1964,8 +2004,9 @@
    "js/cook/stations/eggs.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-126",
@@ -1975,10 +2016,12 @@
   "files": [
    "js/cook/stations/eggs.js"
   ],
-  "status": "built",
+  "status": "open",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The four contract rules the row names (70, 78, 83, 114) on eggs L1-L4 at both sizes. The path is 'fair': confirm it plays at the child's pace (#speed1) the row is about."
+  "note": "built per its status, but the check fails on today's head: machine: CK-126-p1-L2-740x320: pass: 1 contract breaks; CK-126-p1-L3-740x320: pass: 2 contract breaks",
+  "judgeAudit": "judge (run16/judge): PASS: The four contract rules the row names (70, 78, 83, 114) on eggs L1-L4 at both sizes. The path is 'fair': confirm it plays at the child's pace (#speed1) the row is about.",
+  "red": "c4edbfdc5 run r16pb-newcook: machine: CK-126-p1-L2-740x320: pass: 1 contract breaks; CK-126-p1-L3-740x320: pass: 2 contract breaks",
+  "green": "not green"
  },
  {
   "row": "CK-127",
@@ -1990,8 +2033,9 @@
    "js/cook/stations/corn.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-128",
@@ -2002,8 +2046,9 @@
    "js/cook/stations/corn.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-129",
@@ -2014,8 +2059,9 @@
    "js/cook/stations/corn.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-130",
@@ -2026,9 +2072,10 @@
    "js/cook/stations/corn.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now",
-  "judgeAudit": "judge (run16/judge): PASS: The grill with the cob on it after each placing, L1 and L4, tests the ring round the cob. Narrower than the row (two sizes of four, no chai ring beside it to compare shares)."
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "judgeAudit": "judge (run16/judge): PASS: The grill with the cob on it after each placing, L1 and L4, tests the ring round the cob. Narrower than the row (two sizes of four, no chai ring beside it to compare shares).",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-131",
@@ -2038,9 +2085,11 @@
   "files": [
    "js/cook/stations/corn.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 88db779a1 2026-11-15 s20-corn-upright round 2 (decision 38, the eye judge for Zafar): CK-127 one tray per aske)"
  },
  {
   "row": "CK-133",
@@ -2051,8 +2100,9 @@
    "js/cook/stations/baking.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-134",
@@ -2063,8 +2113,9 @@
    "js/cook/stations/baking.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-135",
@@ -2075,8 +2126,9 @@
    "js/cook/stations/baking.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "CK-136",
@@ -2087,8 +2139,9 @@
    "js/cook/stations/baking.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "c4edbfdc5 run r16pb-newcook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-newcook/judge/"
  },
  {
   "row": "SH-311",
@@ -2218,9 +2271,11 @@
   "files": [
    "build/sandbox/data/evidence.json"
   ],
-  "status": "built",
+  "status": "open",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "built per its status, but the check fails on today's head: machine: PRC-06-p1-repo: pass: node build/tools/review/evidence.mjs --plan --all: exit 1",
+  "red": "c4edbfdc5 run r16pb-newcook: machine: PRC-06-p1-repo: pass: node build/tools/review/evidence.mjs --plan --all: exit 1",
+  "green": "not green"
  },
  {
   "row": "CHAI-31",
@@ -2703,9 +2758,11 @@
   "files": [
    "js/cook/stations/corn.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "c4edbfdc5 run r16pb-newcook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not shown: on 231080600~1 contract-117 at corn L4 740x320 passed on both the fair and the mistake path (no driver makes the refused tap while a topping flies)"
  },
  {
   "row": "CK-91",
@@ -2715,9 +2772,9 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "tool failure: CK-91-p1-L1-1280x665: the moment \"visible:.wc14-flash.on\" never came; moments seen: page:start, life:cover, rec:start, line:cook, life:say-start, life:say-end, life:order-level, life:poke, life:ghost, talk:nana, life:request, life:dish-flash, life:popup-open, life:pop-face, bubble, cook:click, only:"
  },
  {
   "row": "ART-78",

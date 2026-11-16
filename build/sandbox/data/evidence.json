@@ -29500,14 +29500,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:chop-done",
    "after": null,
    "capture": [
     "strip:#stage:4x250"
    ],
    "expect": null,
    "note": "the chop ends the moment the last wanted chop is done: the well done within 1 s of the last slice",
-   "delay": 0
+   "delay": 400
   }
  ],
  "DAAR-47": [
@@ -29667,7 +29667,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:chop-done",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -29807,7 +29807,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -29830,7 +29830,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "shot"
@@ -29905,7 +29905,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "shot"
@@ -29994,7 +29994,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -30257,7 +30257,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "crop:#stage"
@@ -30278,7 +30278,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "only:.njg-rq-card",
    "after": null,
    "capture": [
     "crop:.njg-rq-card"
@@ -30714,7 +30714,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "visible:.wc14-flash.on",
+   "at": "life:dish-flash",
    "after": null,
    "capture": [
     "crop:#game"
@@ -30723,7 +30723,7 @@
     "noOverlap:.wc14-flash,#side-cog"
    ],
    "note": "baking L1: the dish card that flashes as the customer names the dish never covers the settings cog",
-   "delay": 200
+   "delay": 300
   },
   {
    "flow": "cook:chop",
@@ -30735,7 +30735,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "visible:.wc14-flash.on",
+   "at": "life:dish-flash",
    "after": null,
    "capture": [
     "crop:#game"
@@ -30744,7 +30744,7 @@
     "noOverlap:.wc14-flash,#side-cog"
    ],
    "note": "chop L1: the dish card that flashes as the customer names the dish never covers the settings cog",
-   "delay": 200
+   "delay": 300
   },
   {
    "flow": "cook:chaat",
@@ -30756,7 +30756,7 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "visible:.wc14-flash.on",
+   "at": "life:dish-flash",
    "after": null,
    "capture": [
     "crop:#game"
@@ -30765,7 +30765,7 @@
     "noOverlap:.wc14-flash,#side-cog"
    ],
    "note": "chaat L1: the dish card that flashes as the customer names the dish never covers the settings cog",
-   "delay": 200
+   "delay": 300
   }
  ],
  "SH-285": [
@@ -31110,7 +31110,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "crop:#side"
@@ -31131,7 +31131,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "crop:#side"
@@ -31152,7 +31152,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "crop:#side"
@@ -31212,7 +31212,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "zoom2:#side"
