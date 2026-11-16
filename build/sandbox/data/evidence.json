@@ -29468,5 +29468,151 @@
    "note": "corn: the order cards in step order, the cob first; a done card stays in its place (no swap)",
    "max": 16
   }
+ ],
+ "DAAR-55": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/tools/review/run16/framebuf-hide.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: a check fault, not the game: the sandbox pixel checks (lightshot.mjs under.jpg, lightpix.mjs) hide every dim layer for a screenshot (the finger not); a screencast frame delivered during the hide reached the side-by-side strips as the light going off (+1350 to +1520 ms, the finger left on the knife). framebuf.mjs hideFor opens the hidden window before the hide"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/chop-strip.mjs --row DAAR-55 --flow chop@1,daar@4 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: the game own light, frame by frame (rAF) from 3 s before the strip to its end: no dark gap over 40 ms (green on the base and on the 15 Nov code: the gap was never the game)"
+  }
+ ],
+ "DAAR-56": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/chop-strip.mjs --row DAAR-56 --flow chop@1,daar@4 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: chop first-time strip, a new player at a child pace: the finger travels the knife path right to left, rests at most 500 ms on the handle before it moves, a third of its path drawn by 2 s after the light (the side-by-side strip, 0.5 s before to 2 s after)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/chop-strip.mjs --row DAAR-56 --flow daar@4 --sizes 740x320"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: the same on the smallest phone"
+  }
+ ],
+ "DAAR-59": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 2,4 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: daar played fair (a seen player): every 200 ms each canvas pill row: its smallest word at least 90% of its largest (laal marcha was 55%: a fixed pill width shrank its text)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 3 --sizes 740x320"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: the same on the smallest phone"
+  }
+ ],
+ "DAAR-60": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:98",
+    "contract:120"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: contract-98 (the first hidden pop-up card comes big to the middle) and contract-120 (each worktop thing its soft shadow) at zero over daar L1 and L4 at a child pace, a new player; contract-120 red on 193fa1c^ (dv2-chop-veg-02 with no shadow, L4 740x320), green from 193fa1c"
+  }
  ]
 }
