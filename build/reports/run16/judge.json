@@ -357,5 +357,143 @@
   "reason": "The check does not show the row's problem, so it is not a red check: no panel shows the row's problem or its words met. A and B (eggs, \"timed-hold\") landed after the hold: in A the egg is already on the plate with the order ticked and both pans empty, in B the egg is leaving the pan edge with a pale spiky halo round the pan; neither shows a timing ring at all (not the tiny yolk ring, not a ring on the pan). C and D (baking oven) show a grey ring with a green arc and a white marker sitting on the oven door over the naan, about the height of the window, not the \"faint small ring on the oven corner\" the row names, so the before does not show the oven problem; the pour is not shot, and chop, chaat, daar and L2-L4 are not on the sheet. Flaws off the point: D, the three shelf labels (paani, ghee, atto) are blank pills with only the speaker icon at 740x320, where C shows the words; D, the oven ring sits right of the window's centre and is fainter than in C.",
   "panel": "po-g1/SH-275.png",
   "file": "build/reports/run16/judge/probes-open/po-g1/batch-01.verdicts.md"
+ },
+ {
+  "row": "SH-122",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "reason": "The row is the picture changing as a zoom hands over to the zoomed-in game; the check is one still of chai's worktop, which cannot show a change over time. It needs a strip across the hand-over.",
+  "panel": "spec: shot at view-marble, chai L4 1280x665"
+ },
+ {
+  "row": "CHAI-58",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "reason": "The row is the boil's green lasting 2 s at L4 at a child's pace; the check is a crop of the first-time help at L1, which tests something else. (The spec is the base's, not written this run; probes-built has it queued as the row's proof.)",
+  "panel": "spec: crop:#game at every:onboard, chai L1"
+ },
+ {
+  "row": "CHAI-89",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "reason": "The row is the play area centred on the worktop (the space above and below within 10%); the check crops the play area itself, so the worktop round it, the thing to compare, is not in the picture, and nothing is measured. (The base's spec, queued as the row's proof.)",
+  "panel": "spec: crop:#game at every:onboard, chai L1"
+ },
+ {
+  "row": "SH-309",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "PASS",
+  "status": "built",
+  "reason": "The end screen's word cards in maani (the row's own case) and eggs, cropped at the results, show the speaker badge's place and the one layout. Two games, by eye.",
+  "panel": "spec: crop:.njg-results at results-words"
+ },
+ {
+  "row": "DAAR-57",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "PASS",
+  "status": "built",
+  "reason": "The side panel at every step of daar shows whether Nani's face and speaker stay in her box through the chop step. Phone size only, first steps only.",
+  "panel": "spec: crop:#side at every:step, daar L1 and L4"
+ },
+ {
+  "row": "CK-53",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "PASS",
+  "status": "built",
+  "reason": "The row's own check (no sidebar button outside the sidebar, contract-54) over a whole play of chai, daar and eggs at both sizes. Three stations, where the row says every one.",
+  "panel": "spec: contract:54 expect pass"
+ },
+ {
+  "row": "CK-114",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "PASS",
+  "status": "built",
+  "reason": "The row's own check: eggs L1-L4 at both sizes reaches its end with contract-117 clean.",
+  "panel": "spec: contract:117 at results, expect pass"
+ },
+ {
+  "row": "CK-126",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "PASS",
+  "status": "built",
+  "reason": "The four contract rules the row names (70, 78, 83, 114) on eggs L1-L4 at both sizes. The path is 'fair': confirm it plays at the child's pace (#speed1) the row is about.",
+  "panel": "spec: contract:70,78,83,114 at results, expect pass"
+ },
+ {
+  "row": "SH-311",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "86c9bb1",
+  "verdict": "PASS",
+  "status": "built",
+  "reason": "The whole screen at each first-time light in baking, the row's own case, shows whether the headline is outlined in gold under the dim. Baking L1 at the phone size only.",
+  "panel": "spec: shot at every:onboard, baking L1 740x320"
+ },
+ {
+  "row": "MAA-25",
+  "branch": "run16/probes-open",
+  "kind": "eye-before",
+  "commit": "0c82734",
+  "verdict": "PASS",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "The check is red for the row's reason: A, the two serving plates still sit inside the shelf tray beside the two dough piles (not on the worktop), with no pills under them and at a wider pitch than the piles, which are bunched left of centre with their pills; the same in B (L1 740x320), C (L4 1280x665) and D (L4 740x320). L2 and L3 are not on the sheet.",
+  "panel": "po-j1/MAA-25.png panel A",
+  "file": "build/reports/run16/judge/probes-open/po-j1/batch-01.verdicts.md"
+ },
+ {
+  "row": "SH-136",
+  "branch": "run16/probes-open",
+  "kind": "eye-before",
+  "commit": "0c82734",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The check does not show the row's problem, so it is not a red check: the one panel (A, chai L1 930x430, order card in the sidebar) shows none of the row's three problems in a state that can tell broken from fixed: (1) Nana's speaker badge sits at his face's lower-left inside the card's white header, clear of every border, so the \"badge on the bottom border\" is not seen; (2) the word cards carry a speaker and no reveal eye, but at L1 their English (water, chai) is already printed under each word, so there is nothing for an eye to reveal: needs a level where the English is hidden; (3) the eye test's word card at 1280 is not photographed at all, and the kitsheets the Check names (face-circle, word-card) are not in the sheet. Off the point: the third card is cut at the right edge (a scrolling row, allowed); English under the words is the L1 order card (allowed).",
+  "panel": "po-l1/SH-136.png",
+  "file": "build/reports/run16/judge/probes-open/po-l1/batch-01.verdicts.md"
+ },
+ {
+  "row": "SH-211",
+  "branch": "run16/probes-open",
+  "kind": "eye-before",
+  "commit": "0c82734",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The check does not show the row's problem, so it is not a red check: the strips do not show the order being given. A (1280x665, marked NO MOTION CAPTURED) and B (740x320) are each 8 identical frames of the already-built order rows at rest (paani, chai, third card cut at the row edge) taken at life:popup-fold, after the item cards have landed; no frame shows a card arriving or the row scrolling to receive it, so neither a back-and-forth tug nor a clean one-way scroll is visible. Every frame after the first is captioned off its slot (A 377-3510 ms, B 482-5069 ms against 120 ms slots), so the sampling is too coarse to catch a jerk even if one happened, and no per-frame scroll log is in the .md. The strip must be anchored to each item card landing during the order (the item just before a half or whole card is his case), on-slot, with the row's scrollLeft per frame. Off the row's point: no flaws seen in the cards themselves (text unclipped, bubbles by their speakers, no English); the cut third card is the scrolling row.",
+  "panel": "po-l1/SH-211.png",
+  "file": "build/reports/run16/judge/probes-open/po-l1/batch-02.verdicts.md"
+ },
+ {
+  "row": "SH-135",
+  "branch": "run16/probes-open",
+  "kind": "eye-before",
+  "commit": "0c82734",
+  "verdict": "PASS",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "The check is red for the row's reason: A, Cook's three title buttons are not one look: play is a solid dark fill, but the book and basket buttons are near-white tiles with a hairline border on the cream card, washed out beside it (same in B at 740x320). Only the Cook part of the row is on the sheet: the door's Ha!/Na! pills, the clinic's ha/na and the clinic's lit tool in the gold help box are not shown, and there is no kit sheet (the Check's \"kitsheet buttons and glow\"), so those two parts cannot be judged from this sheet. Off the row's point: in A the whole title card and its level numbers are small for a 1280x665 screen (the card fills about a third of the height; B fills the screen well).",
+  "panel": "po-m1/SH-135.png panel A",
+  "file": "build/reports/run16/judge/probes-open/po-m1/batch-01.verdicts.md"
  }
 ]
