@@ -1079,5 +1079,25 @@
   "reason": "The sheet does not show the row's state (a probe fault, not the fix): both voice captures (CK-59-p1-L2-1280x665 and -740x320) show \"dudh,\" spoken once only (9.67 and 9.55, mum/dudh.mp3) inside one running order \"Muke chai khapeti, / dudh, / trae khun.\"; the probe's \"two say-starts\" are say-start 1 and 2 of that one order, not two people each saying dudh. No line names who speaks (every line is \"cook:\"), the second person's order is not in the shown lines (348 / 366 later lines left out), there is no expect result, and only chai-tray L2 is captured where the Check names every Cook game with two people ordering at L1, L2, L3 and L4.",
   "panel": "r16pb-cook/CK-59.png",
   "file": "build/reports/run16/judge/probes-built/r16pb-cook/batch-08.verdicts.md"
+ },
+ {
+  "row": "DAAR-41",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "c4edbfd",
+  "verdict": "FAIL",
+  "status": "built",
+  "reason": "Marked proven with no red: the result says 'not replayed'. The check is a whole contract run of daar L4 passing, which does not name the row's fault (a dotted word on the order panel whose lesson is never logged), so green today does not show the fault was ever caught. The same holds for six more machine rows marked proven with no red shown: DAAR-43, DAAR-44, SAM-31, CK-61, CK-62, CK-63 (not sampled one by one). By the brief these are built, not proven.",
+  "panel": "results: red 'not replayed', green 6d12df4 (cmd: run.mjs --contract --flow cook:daar@L4)"
+ },
+ {
+  "row": "SH-301",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "8c919b9",
+  "verdict": "PASS",
+  "status": "proven",
+  "reason": "The alignment half is measured and shown red before the fix (Nani's face 4.3 and 5.6 px off the order cards' face line at the two phone sizes) and 0.0 px after. The row's other half is not measured: the two circles' equal size, and the speaker circle at all; the eye judge saw no mismatch on chai.",
+  "panel": "results: red 642f1efd^ (run po-red-301), green 642f1efd and 48003532 (run po-w1); spec: centredOn Nani's face, the order card's face"
  }
 ]
