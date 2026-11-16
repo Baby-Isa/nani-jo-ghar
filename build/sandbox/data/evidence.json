@@ -27654,26 +27654,61 @@
  ],
  "SAM-35": [
   {
-   "flow": "cook:samosa",
-   "path": "speed1",
-   "level": [
-    1,
-    2
-   ],
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:line:cook",
+   "at": "now",
    "after": null,
    "capture": [
-    "crop:#game"
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level 1 --secs 60"
    ],
-   "expect": null,
-   "max": 10,
-   "note": "samosa's order line says the count; the order card holds the fillings, no finished-samosa card"
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L1: the order's sentence names the count (a number word of the game's lexicon) and no item card is a finished samosa"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level 2 --secs 60"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L2: the order's sentence names the count (a number word of the game's lexicon) and no item card is a finished samosa"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level 3 --secs 60"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L3: the order's sentence names the count (a number word of the game's lexicon) and no item card is a finished samosa"
   }
  ],
  "ART-78": [
@@ -29965,30 +30000,23 @@
  ],
  "SAM-42": [
   {
-   "flow": "cook:samosa",
+   "flow": "repo",
    "path": "fair",
-   "level": [
-    1,
-    4
-   ],
+   "level": 1,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "now",
    "after": null,
    "capture": [
-    "contract:102",
-    "crop:#stage"
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-42 --secs 170"
    ],
    "expect": [
     "pass"
    ],
-   "note": "samosa's fold light: the dim, one gold box, the kit's finger; no white arrow (contract-102 kit-light plus the eye)",
-   "delay": 0,
-   "max": 3
+   "note": "samosa L1 at a child's pace, first-time help on: no arrow drawn on the pastry before the first fold's light comes, nor inside it (Fable, 16 Nov: 'a white arrow flashes for one frame before the fold's first-time light')"
   }
  ],
  "SAM-43": [
@@ -30017,25 +30045,23 @@
  ],
  "SAM-45": [
   {
-   "flow": "cook:samosa",
+   "flow": "repo",
    "path": "fair",
-   "level": [
-    1,
-    4
-   ],
+   "level": 1,
    "sizes": [
-    "740x320"
+    "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
-   "at": "life:stage-end",
+   "at": "now",
    "after": null,
    "capture": [
-    "shot"
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-45 --secs 170"
    ],
-   "expect": null,
-   "note": "samosa's well done: Shabash over clear space beside the face; the stone tray keeps its things",
-   "delay": 600
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L1 at a child's pace: at the well done the praise face's box shares under 5% of itself with the slotted spoon's box (Fable, 16 Nov: 'Nana's praise face covers the skimmer')"
   }
  ],
  "MAA-26": [
@@ -33939,6 +33965,178 @@
     "pass"
    ],
    "note": "maani L4, five plays at 740x320 and 1280x665: no item card's word or picture ever changes, and from the well done each place in a person's row shows the card it showed then or nothing (folded): never another (red on 7ff346ad: #hint 1280x665, #mistake 740x320; run16 fix-chai)"
+  }
+ ],
+ "SAM-47": {
+  "needsDecision": "SAM-47's first half is the kit's rule, not samosa's: a control's or a staged step's call waits for its light (CHAI-40, contract-78), so Nani's box is under the dim while she says it in every kitchen game, chai too (run 16: chai-tray L1, 'Slow kar!' under the knob's light, build/probes/samosa-rt.mjs --row chai). Lift Nani's box out of the dim while she speaks, in every game (a kit change that changes frozen chai's look)? Recommend yes, in the kit, once chai may change.",
+  "probes": [
+   {
+    "flow": "repo",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1280x665"
+    ],
+    "profile": "fresh",
+    "want": null,
+    "at": "now",
+    "after": null,
+    "capture": [
+     "cmd:node build/probes/samosa-rt.mjs --row SAM-47b --secs 150"
+    ],
+    "expect": [
+     "pass"
+    ],
+    "note": "samosa L1 at a child's pace (speed 1, the child player), first-time help on: no tap's light comes again on the same thing (the heap lit once, not again for each next spoon: 'one onboard shot, not the same light twice')"
+   },
+   {
+    "flow": "repo",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "1280x665"
+    ],
+    "profile": "fresh",
+    "want": null,
+    "at": "now",
+    "after": null,
+    "capture": [
+     "cmd:node build/probes/samosa-rt.mjs --row SAM-47a --secs 150"
+    ],
+    "expect": [
+     "pass"
+    ],
+    "note": "the same play: Nani's box never under a light's dim while she speaks (the kit's rule: red until the question above is answered and the kit changes)"
+   }
+  ]
+ },
+ "SAM-44": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-44 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L1 at a child's pace (speed 1, the child player): the leading samosa in the oil is never paler than its ring says (golden from the green's start), and in the fry Nani's line never goes back from 'Samosa hane kadh.' to 'Tar!' with no samosa left to put in"
+  }
+ ],
+ "RT-01": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-01 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1 at a child's pace, 740x320: no word pill, count badge or tally under the settings cog at any sample (100 ms), as contract-113 measures it"
+  }
+ ],
+ "RT-02": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-02 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1 at a child's pace, first-time help on: the kit's light (the dim and its box) is up while the roll is the step"
+  }
+ ],
+ "RT-03": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-03 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1: the order card's row is the order's own, holding the item card ('char maani'), never 'Nana' over the whole sentence"
+  }
+ ],
+ "SAM-46": {
+  "needsDecision": "SAM-46's fourth part, the pastry's own contact shadow on the board: SH-268 and contract-120 say the board's shadow is its shadow (s20-b2-samosa asked this). Give the pastry its own shadow, against SH-268? Recommend no.",
+  "probes": [
+   {
+    "flow": "repo",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "740x320"
+    ],
+    "profile": "fresh",
+    "want": null,
+    "at": "now",
+    "after": null,
+    "capture": [
+     "cmd:node build/probes/samosa-rt.mjs --row SAM-46 --pace fair --speed 2 --size 740x320 --secs 120"
+    ],
+    "expect": [
+     "pass"
+    ],
+    "note": "samosa L1 at 740x320: the fill's word pop ('hakro chundo') whole on the board; the shelf's heaps centred in the bottom row (2% of its width); the karahi, handles and all, inside its hob"
+   }
+  ]
+ },
+ "RT-04": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-04 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1 at a child's pace, 740x320: the tawa's round body centred on its burner (3% of the hob's width) and inside the hob's edges, as drawn (sampled after each frame). The turner's sleeve (hands.js, ART-84), the face beside the plate and Nani's box one step at a time are the eye's"
   }
  ]
 }

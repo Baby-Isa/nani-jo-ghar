@@ -1,0 +1,15 @@
+fix-samosa: rows ready for the prove session (branch run16/fix-samosa). Each runs as an evidence spec (build/sandbox/data/evidence.json) or directly:
+  node build/probes/samosa-rt.mjs --row <ROW> [args]
+
+SAM-44   --secs 150                                   (child pace, samosa L1 1280x665)
+SAM-46   --pace fair --speed 2 --size 740x320 --secs 120   (also 930x430, 1280x665, 1920x1080)
+SAM-47b  --secs 150                                   (SAM-47's built half; SAM-47a stays red: a question)
+SAM-35   --pace fair --speed 2 --level 1..4 --secs 60
+SAM-42   --secs 170                                   (proven: red 48003532 instrumented, green b7b5d31)
+SAM-45   --secs 170                                   (built; 5% overlap remains by the probe: needs the eye)
+RT-01    --size 740x320 --secs 150
+RT-02    --size 740x320 --secs 150
+RT-03    --size 740x320 --secs 150
+RT-04    --size 740x320 --secs 150                    (the tawa part)
+
+Games for check-change: samosa (roll-tawa unchanged).

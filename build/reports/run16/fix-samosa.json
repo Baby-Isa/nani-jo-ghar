@@ -1,0 +1,129 @@
+[
+ {
+  "row": "SAM-47",
+  "kind": "Teaching",
+  "game": "samosa",
+  "status": "question",
+  "probe": "evidence.json SAM-47 (needsDecision + two cmd probes: node build/probes/samosa-rt.mjs --row SAM-47b; node build/probes/samosa-rt.mjs --row SAM-47a)",
+  "red": "48003532: node build/probes/samosa-rt.mjs --row SAM-47b (child pace, L1, 1280x665) FAIL: the mince heap lit again at 24.6, 27.6 and 36.8 s for each next spoon; node build/probes/samosa-rt.mjs --row SAM-47a FAIL: Nani's box under the dim at 24.6 s while she speaks",
+  "green": "04ab4f7 (and c5565d1+): SAM-47b PASS (the heap lit once at 20.6 s, the strip once, the fold once); SAM-47a still FAIL (37.6 s 'Samosa waar!' under the fold's light)",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/stations/samosa.js",
+   "data/stations/samosa.json"
+  ],
+  "note": "Half built: samosa's fill now runs its own staged first-time script (the filling's first spoon lit once, the next strip once, the folds), so the same light never comes twice. The other half (Nani's box not dimmed while she speaks) is the kit's rule, chai the same ('Slow kar!' under the knob's light, probe --row chai): question for Zafar, whether to lift Nani's box out of the dim in every game, a kit change that alters frozen chai; it is SH-284's too (needs fix-kit). data/cook.json's old onboard.samosa is now unused by samosa (fix-kit may drop it)."
+ },
+ {
+  "row": "SAM-44",
+  "kind": "Logic",
+  "game": "samosa",
+  "status": "proven",
+  "probe": "evidence.json SAM-44: node build/probes/samosa-rt.mjs --row SAM-44 --secs 150",
+  "red": "b6bc317^ (pre round 2), child pace L1 1280x665: FAIL, 103.0 s Nani's line back to 'Tar!' after 'Samosa hane kadh.' with no samosa left to put in",
+  "green": "48003532 (fixed by b6bc317, s20-b2-samosa round 2) and c5565d1: PASS",
+  "judge": "machine",
+  "files": [],
+  "note": "The line half was the bug and is fixed. The colour half was never red on any commit tried: the samosa in the oil goes raw, light, golden as its ring fills (the probe reads the pictures and their blend each frame; the art's mean colour raw 243,217,161, part 243,191,88, cooked 243,165,34), so the judge's 'raw cream in the oil' frame was not reproduced."
+ },
+ {
+  "row": "SAM-46",
+  "kind": "Look",
+  "game": "samosa",
+  "status": "question",
+  "probe": "evidence.json SAM-46 (needsDecision + node build/probes/samosa-rt.mjs --row SAM-46 --pace fair --speed 2 --size 740x320)",
+  "red": "b6bc317^ at 740x320: FAIL, the shelf's heaps centred at 703 against the row's 800; the pop 'hakro chundo' [140,-34] past the board's corner [147,-37]; the karahi [254..893] past its hob [80..872]",
+  "green": "48003532 (fixed by b6bc317) and c5565d1, 740x320 and 1280x665: PASS; 6228a48, 930x430 and 1920x1080: PASS",
+  "judge": "machine",
+  "files": [],
+  "note": "Three parts proven (the word pop on the board, the heaps centred in the bottom row with their pills, the karahi inside its hob). The fourth, the pastry's own contact shadow, is a question: SH-268 and contract-120 make the board's shadow its shadow; give the pastry its own? Recommend no."
+ },
+ {
+  "row": "RT-01",
+  "kind": "Look",
+  "game": "roll-tawa",
+  "status": "proven",
+  "probe": "evidence.json RT-01: node build/probes/samosa-rt.mjs --row RT-01 --size 740x320",
+  "red": "4c3a230^ (pre round 2), child pace L1 740x320: FAIL, the count's pill 'hakro'/'ba' under the settings cog in 171 samples (34.1 to 60 s)",
+  "green": "48003532 (fixed by 4c3a230, s20-b2-roll-tawa round 2) and c5565d1: PASS (0 samples, read just after each frame is drawn)",
+  "judge": "machine",
+  "files": [],
+  "note": "The count's pill sits over the board. The probe reads the page after each drawn frame (a read between frames once saw the pill one step before roll-tawa's tick moved it, never drawn)."
+ },
+ {
+  "row": "RT-02",
+  "kind": "Teaching",
+  "game": "roll-tawa",
+  "status": "proven",
+  "probe": "evidence.json RT-02: node build/probes/samosa-rt.mjs --row RT-02 --size 740x320",
+  "red": "4c3a230^, child pace L1 740x320: FAIL, no first-time light while the roll was the step",
+  "green": "48003532 (fixed by 4c3a230) and c5565d1: PASS, the kit's dim and box round the board at 19-20 s",
+  "judge": "machine",
+  "files": [],
+  "note": "Is it chai's look (the gold box, full brightness of the board, the finger)? The probe proves the kit's light is up on the roll; the look is the kit's own."
+ },
+ {
+  "row": "RT-03",
+  "kind": "Logic",
+  "game": "roll-tawa",
+  "status": "proven",
+  "probe": "evidence.json RT-03: node build/probes/samosa-rt.mjs --row RT-03 --size 740x320",
+  "red": "4c3a230^: FAIL, the order card's row 'Nana' over the whole sentence as its item ('Muke ba maani khapanti I'd like two chapatis.')",
+  "green": "48003532 (fixed by 4c3a230) and c5565d1: PASS, the card 'Muke maani khapeti.' with the item card 'char maani'",
+  "judge": "machine",
+  "files": [],
+  "note": "The card is the order's own with the item card. Its sentence is the maani dish's engine sentence ('Muke maani khapeti.', no count), not the row's 'Muke char maani khapanti.': khapeti/khapanti is already Mum's question (s20-b2-roll-tawa); whether the maani dish's sentence says the count is the language engine's (fix-kit), as SAM-35 asked for samosa."
+ },
+ {
+  "row": "RT-04",
+  "kind": "Look",
+  "game": "roll-tawa",
+  "status": "built",
+  "probe": "evidence.json RT-04: node build/probes/samosa-rt.mjs --row RT-04 --size 740x320",
+  "red": "4c3a230^, child pace L1 740x320: FAIL, the tawa's body at (1006, 212), 52 px from its burner",
+  "green": "48003532 (fixed by 4c3a230) and c5565d1: PASS, the body on the burner (1022, 277) and inside the hob",
+  "judge": "needs-eye",
+  "files": [],
+  "note": "Built in 4c3a230; its tawa part proven by machine (red on 4c3a230^, green on 48003532). Not proven: the turner's sleeve cut square in mid-air is the hand rig's (js/cook/hands.js, ART-84: needs fix-kit, or art); the face circle beside the plate and Nani's box one step at a time are for the eye (the check-change pictures)."
+ },
+ {
+  "row": "SAM-42",
+  "kind": "Teaching",
+  "game": "samosa",
+  "status": "proven",
+  "probe": "node build/probes/samosa-rt.mjs --row SAM-42 --secs 170 (reads samosa.js's fimg.__arrow, the arrow as drawn)",
+  "red": "48003532 with one read-only line added (the arrow as drawn, fimg.__arrow; scratchpad tree), child pace L1 1280x665: FAIL, the arrow drawn whole at 36.8 s, the light at 37.1 s",
+  "green": "b7b5d31 (the fix in 6228a48), child pace L1 1280x665: PASS, no arrow drawn before or inside the first fold's light",
+  "judge": "machine",
+  "files": [
+   "js/cook/stations/samosa.js"
+  ],
+  "note": "Fable's 07:00 look at the published samosa: 'a white arrow flashes for one frame before the fold's first-time light'. The first fold's arrow now waits for its light (at most 1.5 s, so with no light it is still SAM-21's help). The first probe runs read the arrow before the lit frame's zeroing and so showed 0.45 inside the light on both trees; the read is now the value drawn."
+ },
+ {
+  "row": "SAM-45",
+  "kind": "Look",
+  "game": "samosa",
+  "status": "built",
+  "probe": "node build/probes/samosa-rt.mjs --row SAM-45",
+  "red": "48003532, child pace L1 1280x665: FAIL, the praise face [1032,-117,170,170] over the slotted spoon's box [890,-77,231,539], 40% of the face",
+  "green": "b7b5d31: still FAIL by the probe's measure: 5% of the face over the spoon's box (the face stops at the plate's middle; the spoon's box takes in its clear corners). Needs the eye",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/stations/samosa.js"
+  ],
+  "note": "Fable's 07:00 look: 'Nana's praise face covers the skimmer'. The face at the plate's upper left lands on the slotted spoon, which stands between the hob and the plate; it now moves right until it clears the spoon by 12 px, never past the plate's middle (built: from 40% to 5% of the face over the spoon's box; the eye decides). Question from the same look: 'two empty, unlabelled dishes stay on the fry tray to well done' is SAM-45's own 15 Nov fix (the stone tray keeps its things, as chai's shelf). Keep the empty thalis to the end, or take them away once their samosas are in the oil?"
+ },
+ {
+  "row": "SAM-35",
+  "kind": "Logic",
+  "game": "samosa",
+  "status": "proven",
+  "probe": "node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level <1-4> (the count word from the game's own lexicon)",
+  "red": "f6e0127 (the live site's tree, 12 Nov), fair L1 1280x665: FAIL, a finished-samosa item card on the order card ('Ba samosa two samosas | trae chunda three minces')",
+  "green": "6228a48 at L1, L2, L3 and L4: PASS. Fixed inside the 15 Nov squashed history (8dc8381), so no single commit to cite",
+  "judge": "machine",
+  "files": [],
+  "note": "Zafar's two strikes (12 Nov night): the sentence says the count and the card holds the fillings, not a finished samosa. Red on the 12 Nov tree, green at every level today."
+ }
+]
