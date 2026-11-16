@@ -29511,5 +29511,89 @@
     "note": "the same play: Nani's box never under a light's dim while she speaks (the kit's rule: red until the question above is answered and the kit changes)"
    }
   ]
- }
+ },
+ "SAM-44": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-44 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L1 at a child's pace (speed 1, the child player): the leading samosa in the oil is never paler than its ring says (golden from the green's start), and in the fry Nani's line never goes back from 'Samosa hane kadh.' to 'Tar!' with no samosa left to put in"
+  }
+ ],
+ "RT-01": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-01 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1 at a child's pace, 740x320: no word pill, count badge or tally under the settings cog at any sample (100 ms), as contract-113 measures it"
+  }
+ ],
+ "RT-02": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-02 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1 at a child's pace, first-time help on: the kit's light (the dim and its box) is up while the roll is the step"
+  }
+ ],
+ "RT-03": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-03 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1: the order card's row is the order's own, holding the item card ('char maani'), never 'Nana' over the whole sentence"
+  }
+ ]
 }
