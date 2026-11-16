@@ -30150,7 +30150,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30174,7 +30174,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30198,7 +30198,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30226,7 +30226,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30754,7 +30754,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30777,7 +30777,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30798,7 +30798,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30819,7 +30819,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30842,7 +30842,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30863,7 +30863,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30884,7 +30884,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -30908,7 +30908,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -31536,12 +31536,12 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node build/lint/static.mjs"
+    "cmd:grep -c fonts.googleapis.com cook.html"
    ],
    "expect": [
-    "pass"
+    "!pass"
    ],
-   "note": "no font face outside the tokens in the kit (the roll-out to other games is still to do)",
+   "note": "cook.html loads no Google font (the fonts hosted in the repo): grep finds none (exit 1)",
    "delay": 0
   }
  ],
@@ -31967,7 +31967,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,
@@ -31991,7 +31991,7 @@
     "740x320",
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "results",
    "after": null,

@@ -1,0 +1,88 @@
+[
+ {
+  "row": "SH-316",
+  "kind": "Check",
+  "game": "other",
+  "status": "proven",
+  "probe": "evidence SH-316 (cmd: node build/check_stamps.mjs labs.html)",
+  "red": "934f5fa~1 (worktree): node build/check_stamps.mjs labs.html -> exit 1, UNSTAMPED /js/core/progress.js and /js/core/wallet.js",
+  "green": "5847536 (today head 48003532 code): STAMP CHECK PASSED, 24 requests, 0 unstamped",
+  "judge": "machine",
+  "files": [
+   "labs.html"
+  ],
+  "note": "fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today."
+ },
+ {
+  "row": "SH-221",
+  "kind": "Logic",
+  "game": "other",
+  "status": "proven",
+  "probe": "evidence SH-221 (cmd: node build/test_shared_sfx_calls.mjs)",
+  "red": "mutation in a worktree of 5847536: js/shared/buttons.js Sfx.play(\"tap\") put back to Sfx.tap() -> not ok 2, Sfx.tap is not a method sfx.js has (the fix predates the repo history, 8 Nov)",
+  "green": "5847536: node build/test_shared_sfx_calls.mjs pass 3 fail 0",
+  "judge": "machine",
+  "files": [
+   "js/shared/buttons.js"
+  ],
+  "note": "the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back."
+ },
+ {
+  "row": "SH-314",
+  "kind": "Logic",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence SH-314 (cmd: node build/test_cook_mount.mjs)",
+  "red": "270f39f~1 (worktree, today test copied in): cook mount: 12 failed (onboard press listeners, an audio context left)",
+  "green": "not green: on 5847536 the test failed 2 of 3 runs under load (window resize listener added by word-card.js watchPage via W.fit14 from js/cook/ui.js:251 left behind, a SECTION.wc left in <body>, 2 audio contexts open); 1 run clean",
+  "judge": "machine",
+  "files": [
+   "js/shared/word-card.js",
+   "js/cook/ui.js",
+   "js/shared/sfx.js"
+  ],
+  "note": "270f39f fixed most of the leak but a timing-dependent one remains: a word card fitted after unmount re-adds its resize listener and section, and an audio context can stay open; needs fix-kit (shared files)."
+ },
+ {
+  "row": "SH-224",
+  "kind": "Logic",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence SH-224 (cmd: grep -c fonts.googleapis.com cook.html, expect !pass)",
+  "red": "5847536+: grep finds 1 Google Fonts link in cook.html (also clinic, day, dress, index, lab, snap, tidy, who.html)",
+  "green": "not green",
+  "judge": "machine",
+  "files": [
+   "cook.html"
+  ],
+  "note": "partly built (chai and the tokens host Lora): cook.html and the other pages still load Google fonts; the row waits for the roll-out."
+ },
+ {
+  "row": "SH-151",
+  "kind": "Check",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence SH-151 (cmd: node build/lint/static.mjs)",
+  "red": "5847536: static lint 0 new findings but 490 known token findings and 221 font face names outside the tokens in 37 files of the other games (warn only)",
+  "green": "not green: the lint only warns",
+  "judge": "machine",
+  "files": [
+   "build/lint/static.mjs"
+  ],
+  "note": "the kit reads the type roles, but the other modes still name faces and colours outside the tokens; the lint passes only because it warns until the roll-out."
+ },
+ {
+  "row": "SH-226",
+  "kind": "Logic",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence SH-226 (cmd: node build/test_shared_sfx_files.mjs)",
+  "red": "none shown (the chai part was built 6 Nov in 4022e001c)",
+  "green": "5847536: test_shared_sfx_files pass (chai sounds sourced and licensed)",
+  "judge": "machine",
+  "files": [
+   "js/shared/sfx.js"
+  ],
+  "note": "chai part built and green; the row is to fix: code for every other game (waits for the frame)."
+ }
+]
