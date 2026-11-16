@@ -27586,14 +27586,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
    "note": "corn: the cob on the tray as on the grill, the tray beside the grill (whole screen)",
-   "delay": 600
+   "delay": 400
   },
   {
    "flow": "cook:mishkaki-grill",
@@ -27607,14 +27607,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "exp:done",
+   "at": "life:stage-end",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
    "note": "sekelo: the skewers on the tray as on the grill",
-   "delay": 600
+   "delay": 400
   }
  ],
  "SEK-26": [

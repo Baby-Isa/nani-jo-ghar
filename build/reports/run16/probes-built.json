@@ -2717,9 +2717,9 @@
    "js/cook/stations/corn.js",
    "js/cook/stations/mishkaki-grill.js"
   ],
-  "status": "built",
-  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel shows a cob or a skewer resting on the tray, so \"the same size and way round on the tray as on the grill\" cannot be read (D4 catches the cob mid-flight only; A and B never reach the skewer on the tray); the mock is not on the sheet for the \"beside the mock\" eye check; only 1280x665 and 740x320 at L1 are shot, not the fo",
-  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "status": "cannot-probe",
+  "judge": "machine",
+  "note": "the re-capture waited on exp:done, which corn and sekelo never reach (well done is life:stage-end); the spec is now fixed to life:stage-end but there was no browser time left to replay it",
   "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
   "hand": true
  },
