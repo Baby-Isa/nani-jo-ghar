@@ -30126,7 +30126,7 @@
  "CK-113": [
   {
    "flow": "cook:samosa",
-   "path": "fair",
+   "path": "mistake",
    "level": [
     1,
     4
@@ -30145,12 +30145,12 @@
    "expect": [
     "pass"
    ],
-   "note": "a turned-down tap never takes the light away (contract-117 light-stays)",
+   "note": "a turned-down tap never takes the light away (contract-117 light-stays) (the mistake path: refused taps are the row's cause; fair play never makes one)",
    "delay": 0
   },
   {
    "flow": "cook:eggs",
-   "path": "fair",
+   "path": "mistake",
    "level": [
     1,
     4
@@ -30169,12 +30169,12 @@
    "expect": [
     "pass"
    ],
-   "note": "eggs",
+   "note": "eggs (the mistake path: refused taps are the row's cause; fair play never makes one)",
    "delay": 0
   },
   {
    "flow": "cook:mishkaki-grill",
-   "path": "fair",
+   "path": "mistake",
    "level": [
     1,
     4
@@ -30193,7 +30193,7 @@
    "expect": [
     "pass"
    ],
-   "note": "sekelo",
+   "note": "sekelo (the mistake path: refused taps are the row's cause; fair play never makes one)",
    "delay": 0
   }
  ],
@@ -30713,11 +30713,9 @@
  "CK-90": [
   {
    "flow": "cook:corn",
-   "path": "fair",
+   "path": "mistake",
    "level": [
     1,
-    2,
-    3,
     4
    ],
    "sizes": [
@@ -30734,7 +30732,7 @@
    "expect": [
     "pass"
    ],
-   "note": "corn: contract-117 light-stays",
+   "note": "corn: contract-117 light-stays (the mistake path: refused taps are the row's cause; fair play never makes one)",
    "delay": 0
   }
  ],
