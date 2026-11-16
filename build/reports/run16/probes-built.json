@@ -94,7 +94,8 @@
    "cook.html"
   ],
   "note": "partly built (chai and the tokens host Lora): cook.html and the other pages still load Google fonts; the row waits for the roll-out.",
-  "hand": true
+  "hand": true,
+  "judgeAudit": "judge (run16/judge): PASS: The check fails while cook.html loads a Google font, which is the row (fonts hosted in the repo); it is red today and the row is rightly left open. It reads cook.html only: the other pages the note lists would still pass it."
  },
  {
   "row": "SH-226",
@@ -109,7 +110,8 @@
    "js/shared/sfx.js"
   ],
   "note": "chai part built and green; the row is to fix: code for every other game (waits for the frame).",
-  "hand": true
+  "hand": true,
+  "judgeAudit": "judge (run16/judge): FAIL: The test passes when chai's sound files have a source and licence; the row is real recorded sounds in every game and its own status says the other games are still to do. A green here would close a row that is still open."
  },
  {
   "row": "ART-50",
@@ -131,9 +133,11 @@
   "files": [
    "js/cook/station-lib.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the row is item sizes 100/91/84 of the slot and a 40 CSS px floor: an eye crop cannot measure it (judge audit FAIL); needs the art size tool (artcolour size) run on the shelf boxes",
+  "judgeAudit": "judge (run16/judge): FAIL: The row's words are numbers (100/91/84 of the slot, never under 40 CSS px); the check is one crop of the shelf with no expect, and an eye cannot tell 91% from 92% or a 42 px item from a 39 px one. It needs a measured size per class.",
+  "hand": true
  },
  {
   "row": "ART-52",
@@ -235,7 +239,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: A strip of the word moment at chai L4, 930x430, over the pour: the row's own size and moment (the stream inside the glass to the tea)."
  },
  {
   "row": "SH-219",
@@ -296,10 +301,12 @@
    "js/cook/stations/chai-tray.js",
    "js/cook/frame.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, L1 1280x665: the hob-and-tray group sits mid-worktop, about 115 px left of the handle and 110 px right of the tray, about 38 px above it once the pill's room is taken off and 36 px below it to the shelf; the \"chai\" label and \"hakro\" pill stay inside the room above the hob, nothing crosses the group. B (740x320) is centred across (about 75 / 72 px) but tight down: the \"hakro\" pill touches the ho",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "judgeAudit": "judge (run16/judge): FAIL: The row is the play area centred on the worktop (the space above and below within 10%); the check crops the play area itself, so the worktop round it, the thing to compare, is not in the picture, and nothing is measured. (The base's spec, queued as the row's proof.)",
+  "hand": true
  },
  {
   "row": "ART-43",
@@ -359,9 +366,11 @@
   "files": [
    "css/shared/order-card.css"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the row is the box height with and without its arrow; contract-101 does not measure that (judge audit FAIL) and no driver opens and shuts the arrow",
+  "judgeAudit": "judge (run16/judge): FAIL: The expect is contract-101, which checks that Nani's box is the kit's box, shows its drop-down and sets her line in chai's type on one line; it never measures the box's height with and without the arrow, which is the row. The helper is also never opened, and only chai plays where the row says every game.",
+  "hand": true
  },
  {
   "row": "SH-203",
@@ -476,7 +485,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: A 2x close-up of the faces and their speaker badges at both sizes shows whether the badge cuts halfway. Chai only (the row says every face), and by eye where centredOn could decide it."
  },
  {
   "row": "SH-142",
@@ -811,7 +821,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The side panel after each placing in chai, daar and maani, the three games the row names, to see no item card empties. Phone size only and the first three placings, so a card emptying later in a long order is not seen."
  },
  {
   "row": "SH-308",
@@ -836,7 +847,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The end screen's word cards in maani (the row's own case) and eggs, cropped at the results, show the speaker badge's place and the one layout. Two games, by eye."
  },
  {
   "row": "SH-310",
@@ -848,7 +860,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own case: maani L4 at well done, a 2x close-up of the order rows at the four sizes. Maani only, by eye."
  },
  {
   "row": "PAN-04",
@@ -902,10 +915,11 @@
    "js/cook/stations/chai-tray.js",
    "data/stations/chai-tray.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: G, at L4 1920x1080 the pan is back on its burner still full of black chai (839 ms, 1140 ms) after Nana's glass has filled, and only then turns empty (1683 ms); H at L4 930x430 shows the same and worse: lifted (335 ms), back on the burner full (952, 1438 ms), lifted over the same glass a second time half-empty (2015 ms), so the pan does not empty in step with the glass at L4. The pan art itself is ",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "CHAI-08",
@@ -916,10 +930,11 @@
    "js/cook/stations/chai-tray.js",
    "data/stations/chai-tray.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, L1 1366x768: the pan is seen from straight above and centred on its burner, the glass from straight above with even rings and centred in its well; C (same size) shows the pan flat, not tilted, moved above the glass and emptying (full at 0 ms, empty at 512 ms) while the glass fills, then back on the burner at 812 ms; D and E show the same at L4 with every glass centred in its well. The hob and t",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-35",
@@ -930,10 +945,11 @@
    "js/cook/stations/chai-tray.js",
    "js/shared/onboard.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, L1 1920x1080 at the hint: the helper card (paani, its picture and speaker) sits inside Nani's box at the top of the sidebar and the order card below it is whole and uncovered; B shows the same at 740x320, the helper as one row in Nani's box, nothing over the order card or the play area. Shown at 1920x1080 and 740x320, L1 only; the Check's 971x318, 1280x665 and L2-L4 are not on the sheet.",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-36",
@@ -944,10 +960,11 @@
    "js/cook/stations/chai-tray.js",
    "js/shared/onboard.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: C, L1 1920x1080 at the turn-down call: the screen is not dimmed at all, the heat ring is drawn round the pan and the knob is ringed gold; D the same at 930x430; A and B (the \"Chulo bar!\" call) are not dimmed either, so no frame is dark with nothing lit. The sheet holds no dim frame at all, so it does not show the dim arriving with its target; shown at 1920x1080 and 930x430, L1 only, not the Check'",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-38",
@@ -958,9 +975,10 @@
    "js/cook/stations/chai-tray.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): both panels are the end-of-round badges screen (A at L1, B at L4, 930x430); no frame shows the heat, the heat ring, a pan state or the pour, nor the new cards, helper card or onboarding in play, so the row's point cannot be seen. Needs frames mid-heat with the ring and at the pour.",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-39",
@@ -971,10 +989,11 @@
    "js/cook/order.js",
    "data/cook.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 12/12 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: A, the film itself shows the \"no\" item said last (\"aadu, hakro khun, dudh na\"; J the same with \"trae khun, aako, dudh na\") and the row's cards only stepping forward, but A's and B's own contract-72 captures each report a break (L2 1280x665: \"the order row glided 304 px at once, more than 2.5 cards\"; L2 1920x1080: 369 px at once), so the Check's contract-72 is not at zero at two of the twelve pages",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "CHAI-42",
@@ -985,9 +1004,10 @@
    "js/cook/stations/chai-tray.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): A and B start at the tea's step and the tea never goes in (the pan holds only water for all 6 s, the chai jar stays lit on the shelf, 0 cards in flight, 0 row moves), so no frame shows the last move ending or the order card's light after it; only the dim and the jar's lit box blinking off and on (A 1806, 2991 ms; B 800, 1800 ms)",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-48",
@@ -999,10 +1019,11 @@
    "js/cook/ui.js",
    "js/cook/stations.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, L3 1280x665, frame 4 (27.0 s): the girl's long first line \"Muke elchi waari chai khapeti,\" is wrapped to two lines above her own head at the right, clear of Nana's face (it ends at the edge of his cap, not over his head); B frame 4 (28.7 s) shows the same wrap at 740x320 with clear air over Nana; the contract-52 captures read 0 breaks at both sizes. Off the row's point: in B frames 7-8 her \"Tha",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-49",
@@ -1012,10 +1033,11 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: B, L4 930x430 at speed 1: the contract-78 capture reads \"the call 'Chulo bar!' starts and the light comes 58760 ms later\" (and 'Slow kar!' 46742 ms later), so the call is still said with nothing lit; at 1280x665 the capture reads \"'Slow kar!' starts and no light comes with it\". Neither panel shows a knob lit in its box with the call: both show \"Slow kar!\" in Nani's box with only a pan's glow.",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "CHAI-54",
@@ -1040,9 +1062,10 @@
    "build/sandbox/lib/contract-s14.mjs"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): all four panels are a new player (p-fresh); no panel is a returning player, none shows the \"Chulo bar!\" call, and there is no timeline for the 7/9/11/13 s wait, so the row's state (a returning player hears the call alone, the knob lit only after the wait) is not on the sheet. The new-player half is not shown either: no frame has",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-57",
@@ -1053,10 +1076,12 @@
    "js/cook/stations/chai-tray.js",
    "js/cook/mechanics/boil.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 6/6 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "cannot-probe",
+  "judge": "machine",
+  "note": "the row needs a tap before the green, in the green and in the red on each pan: no driver plays chai early or lets a pot boil over (turn-early-late is sekelo only); a chai turn-early-late driver is needed",
+  "green": "6d12df4e3 run r16pb-cook: sheets 6/6 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "judgeAudit": "judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no capture shows a tap before the green at all (no early/shake event in any Cook.chaiBoil log, no \"heat runs on\", no Nani \"no\" line in a voice timeline), and L1 and L4 are not probed (only L2 and L3); what is there: green turn-downs for both pans in the four results logs (e.g. CHAI-57-p1-L2-1280x665: nana green 0.71, cousin gree",
+  "hand": true
  },
  {
   "row": "DAAR-12",
@@ -1068,10 +1093,11 @@
    "js/cook/mechanics/stir.js",
    "data/stations/daar.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 6/6 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: A, at L1 the speedo dial (tortoise, hare, spill) stands beside the pan with its slow band green, the other yellow and the spill red, needle live; the same dial with the same coloured bands is in B and E (L2) and in C and F (L3), so a speed is still shown as asked before L4. Only the card is cleared (laps only, \"1 hakro\"; the #mission captures at L1-L3 carry no speed word). Also: the L4 word moment",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "DAAR-36",
@@ -1084,9 +1110,10 @@
    "js/cook/mechanics/chop.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 5/5 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel shows the tadka's first-time hold, the stir, the things that go in before the chopped items (the Y of X+Y), L1's decoy (B and C: the tray is still empty) or a returning player or replay; shown and fine: A, the L2 order on the kit (big card beside the side panel, off Nana's face, turning into its row card, \"dungri na\" la",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 5/5 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "DAAR-37",
@@ -1098,9 +1125,11 @@
    "data/stations/chop.json",
    "assets/art/chop/lasan.whole.r1.webp"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the row asks ten seeds per level of chop kinds and totals; my probe read js:Cook.chopPlan, which does not exist (judge audit FAIL); needs a hook or a node test over the level table",
+  "judgeAudit": "judge (run16/judge): FAIL: The check reads js:Cook.chopPlan, which exists nowhere in the code, so the kinds and totals are never captured; what is left is one picture of the board at the start, one seed per level, where the row asks ten seeds and 1-3 chops per kind.",
+  "hand": true
  },
  {
   "row": "DAAR-38",
@@ -1123,9 +1152,10 @@
    "js/cook/mechanics/chop.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): the sheet has one still of the demo's start per size and no film strip: A frame 1 (1280x665) shows one lit box across the board's full width, about twice the knife's height (which is the whole board), the rest darker, a finger on the knife at the right and one onion on the board; the drag right to left, the cut, the cut not bein",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "DAAR-40",
@@ -1198,9 +1228,10 @@
    "js/cook/stations/daar.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 1/1 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): the sheet shows only daar's stir (A, L1 1280x665) and a crop of the sidebar (B: the order card, no dial or pot); there is no frame of the stir game to set beside it and no L2-L4, so the same dial, pot, art and zoom cannot be compared.",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 1/1 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "DAAR-03",
@@ -1211,9 +1242,10 @@
    "js/cook/mechanics/stir.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel at 930x430 (the size the Check names for the count at a glance) and none of daar itself; the sheet has only the stir game at 1366x768, L1 and L2, where B and D show a large \"1 hakro\" card beside the pot and one gold mark under the hob. Shoot daar and stir at 930x430 mid-stir with two or more laps done.",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "DAAR-46",
@@ -1224,9 +1256,10 @@
    "js/cook/mechanics/stir.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel shows the stir at all; A and B are daar's first-time lights on the knife, the hob knob, the garlic and the turmeric (21.6 s to 47.9 s), none during a stir, none past the count, none of a redo, none of the light going as the stir starts.",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "DAAR-47",
@@ -1265,7 +1298,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The side panel at every step of daar shows whether Nani's face and speaker stay in her box through the chop step. Phone size only, first steps only."
  },
  {
   "row": "DAAR-58",
@@ -1289,7 +1323,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The whole screen at chop's serve, L1 and L4, shows the dish, the tray's place and the thank-you the row names. Phone size only, where the row says four sizes."
  },
  {
   "row": "DAAR-62",
@@ -1337,7 +1372,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: A 4-frame strip from each step's start (360 ms, covering the 0.4 s of bare marble the row names) with the hob in frame for the face circle. Risk: only the first 3 steps are taken, so the hob step may not be among them."
  },
  {
   "row": "SEK-22",
@@ -1348,9 +1384,10 @@
    "js/cook/mechanics/thread.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 5/5 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel shows the light on the skewer during threading: B and C light the tameto bowl on the tray (the skewer is bare, unlit), D and E have no light at all, A is the order film; nothing to measure the box against the handle, tip or threaded items at any level",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 5/5 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "SEK-25",
@@ -1362,10 +1399,11 @@
    "js/cook/order.js",
    "js/cook/mechanics/thread.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 1/1 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: B, at L3 1280x665 the order \"hakri lakri mishkaki\" carries four separate piece cards, each \"gos\", each with its own tick (the headline names the dish, the cards name the piece); not shown: L1, L2, L4, the cards of \"ba lakri mixed\" (below the fold of the scrolling card) and a tick landing mid-build.",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 1/1 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "SEK-26",
@@ -1378,10 +1416,11 @@
    "js/cook/grill-kit.js",
    "data/stations/mishkaki-grill.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, frame 2 (45.6 s) at L1 1280x665 shows the top-down coal grill, the skewer spanning its full depth with the wooden handle at the bottom edge and the metal tip at the top edge, a deep-walled steel tray beside it; frame 1 shows the new thin metal skewer with the wooden handle on the board; not shown: the mock beside it, L2 to L4, 930x430 and 1920x1080, and at 740x320 (B frame 3) the skewer is caug",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "SAM-30",
@@ -1392,10 +1431,11 @@
    "js/cook/stations/samosa.js",
    "js/cook/coach.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 12/12 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: J, at L2 1280x665 the lift has no dim and no lit box (the screen is fully lit, only the rings round the three samosas), and K at L3 is the same; I (L1) and L (L4) do show the dim and the box on a samosa in the pan. A to H show the dim and the box on the first samosa in the rail at every level and both sizes, but the pan is never lit with it.",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "SAM-31",
@@ -1421,10 +1461,11 @@
    "js/cook/stations/samosa.js",
    "data/stations/samosa.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, frame 4 (55.9 s) at L1 1280x665 shows the fryer knob off to the left of the hob with the karahi filling it, the wood-and-metal slotted spoon resting on its folded cloth, the plate alone with a tissue and no serving tray, the samosas waiting on the bottom tray; frame 7 shows the samosas frying in rings; not shown: mock 2 beside it, L2 to L4, 930x430 and 1920x1080.",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "SAM-36",
@@ -1436,10 +1477,11 @@
    "js/cook/flow.js",
    "data/cook.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: B, at L1 1280x665 the order reads \"Muke ba samosa khapanta.\" and the served tray holds two samosas (D the same at 740x320); F and H at L2 hold three for \"trae samosa\"; not shown: L3 and L4.",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "SEK-31",
@@ -1513,9 +1555,10 @@
    "data/cook.json"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 9/9 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): rotis 4 at L3 and 5 at L4 cannot be counted (no L3 panel; D and E's order row cuts after two cards, \"ba wadhi bajr ji maani\" and \"hakri nindhi bajr ji maani\"), and no returning player or replay is shown; shown and met: A, the L2 order on the kit with 3 rotis and the first roti's big card popping with the headline (88 ms); B and ",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 9/9 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "MAA-21",
@@ -1527,9 +1570,10 @@
    "js/cook/stations/maani-line.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): A and B end before the roll starts (the dough ball stays its first size under the pin for all 12 frames; the log's roll runs 23.8-28.5 s, the film 18.3-21 s), so no frame shows the roll stopping at the rim, no tear, or the tap with no finger; only L1 filmed, not L2-L4; the sound log names no juice sound (sfx/flip while rolling, ",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "MAA-22",
@@ -1553,10 +1597,11 @@
    "js/cook/stations/maani-line.js",
    "js/shared/word-moment.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: C, at L2 1280x665 frame 3 shows the \"nindhi maani\" card and frame 4 the \"wadhi maani\" card on the rolling board (a gold ring round the board behind it), once in the run, and frame 10 shows the size rings on the board for the next roll; A and B (L1) show no ring and no lesson; D, E, F, G, H repeat it at 740x320, L3 and L4; not shown: the maani being rolled out to each ring (no frame lands on it) an",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "MAA-26",
@@ -1592,10 +1637,11 @@
    "js/cook/mechanics/assemble.js",
    "assets/art/chaat/"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: F, at L2 1280x665 the served chaat is an opaque cream bowl from above filled with one even pale-green topping, so the items do not each read in the bowl (H the same at 740x320); A to D never reach the bowl (they show the chopping board with a tomato), and L3, L4, 930x430 and 1920x1080 are not shown.",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "CHT-18",
@@ -1605,10 +1651,11 @@
   "files": [
    "js/cook/mechanics/assemble.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: B, at L1 740x320 there is no dim and no lit box, only an orange glow round the chano pot; C and D (L2) the same glow with no dim, and E, F, G, H (L3, L4) show no dim, no box and no glow at all; only A (L1 1280x665) shows the dim with the lit box on the first topping. No panel shows a second topping lit.",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "CHT-20",
@@ -1630,10 +1677,12 @@
   "files": [
    "js/cook/words.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "cannot-probe",
+  "judge": "machine",
+  "note": "the row needs two people ordering the same thing (the second still says it); the voice capture had one order with dudh once; needs a want {order, people} seed with a shared item",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "judgeAudit": "judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): both voice captures (CK-59-p1-L2-1280x665 and -740x320) show \"dudh,\" spoken once only (9.67 and 9.55, mum/dudh.mp3) inside one running order \"Muke chai khapeti, / dudh, / trae khun.\"; the probe's \"two say-starts\" are say-start 1 and 2 of that one order, not two people each saying dudh. No line names who speaks (every line is \"co",
+  "hand": true
  },
  {
   "row": "CK-06",
@@ -1659,7 +1708,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own check (no sidebar button outside the sidebar, contract-54) over a whole play of chai, daar and eggs at both sizes. Three stations, where the row says every one."
  },
  {
   "row": "CK-54",
@@ -1669,10 +1719,11 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: A, the 1920x1080 run's contract-74 capture reports two breaks: 1 s after the tap during the order there is still 1 big card and 4 cards not yet in their row, and the station started 5550 ms after the tap (the row asks within 1 s); panels A-D only show the station afterwards, and 930x430 (C, D) reports 0 breaks; only chai L1 is on the sheet, not every station at L1-L4",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "CK-61",
@@ -1729,9 +1780,10 @@
    "js/cook/ui.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel shows an order of more than one egg, so \"two fried eggs, two cards\" is never on the sheet (every order in B, D, F, H, J, L is one egg: headline \"Muke hakro tarelo/bafelo indo khapeto\", one card, no number on it, which fits the row as far as it goes); the four L4 panels are listed as not on the sheet; the probe needs a t",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CK-72",
@@ -1743,9 +1795,10 @@
    "data/stations/baking.json"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): all eight panels crop #game only, so the order card's rows and Nani's lines, where an amount is named, are not shown, and there is no text capture or voice timeline of the lines; what is visible fits the row (the word moment is adh and cup at L1-L4 in A-H, the jug fills to a line, no \"a little\" or \"a lot\" anywhere in the game ar",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CK-77",
@@ -1755,10 +1808,11 @@
   "files": [
    "js/cook/stations/eggs.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: B, at 1280x665 the egg carton stands on the shelf line at the milk carton's size beside it, its gold light and its \"indo\" pill whole above the frame's bottom; the same in D (1920x1080), F (740x320), H (930x430) and the first-light frames I1, J1, K1, L1 (the light's bottom edge is only a few px above the frame at 930x430 and 740x320, tight but not cut); note for the eye: the two-item row sits left ",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CK-104",
@@ -1768,10 +1822,11 @@
   "files": [
    "js/cook/stations/corn.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, frame 2 at 740x320 L1 shows six bowls in two rows of three inside the stone tray, each column's bowls and pills on one line, the rows' gap smaller than a pill's height, no pill over the edge; B frame 2 (L4) the same; note: the widest pill (\"fudino ji chutney\", bottom left) has only a thin margin to the tray's left inner edge; 930x430 and L2, L3 are not on the sheet",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CK-113",
@@ -1796,7 +1851,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own check: eggs L1-L4 at both sizes reaches its end with contract-117 clean."
  },
  {
   "row": "CK-116",
@@ -1845,7 +1901,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: Both pictures the row names (the pop-up card and the item card), at the four sizes."
  },
  {
   "row": "CK-120",
@@ -1858,7 +1915,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The row's own case (eggs L4, 1280x665) with the side panel pictured and its text read. By eye: a lines: expect on the card heads could decide it."
  },
  {
   "row": "CK-122",
@@ -1919,7 +1977,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The four contract rules the row names (70, 78, 83, 114) on eggs L1-L4 at both sizes. The path is 'fair': confirm it plays at the child's pace (#speed1) the row is about."
  },
  {
   "row": "CK-127",
@@ -1968,7 +2027,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The grill with the cob on it after each placing, L1 and L4, tests the ring round the cob. Narrower than the row (two sizes of four, no chai ring beside it to compare shares)."
  },
  {
   "row": "CK-131",
@@ -2040,7 +2100,8 @@
   ],
   "status": "built",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "queued: its spec is in the run that is playing now",
+  "judgeAudit": "judge (run16/judge): PASS: The whole screen at each first-time light in baking, the row's own case, shows whether the headline is outlined in gold under the dim. Baking L1 at the phone size only."
  },
  {
   "row": "SH-312",
@@ -2108,7 +2169,8 @@
    "labs.html"
   ],
   "note": "fixed by 934f5fa (the labs page carries the import map); red on the commit before, green today.",
-  "hand": true
+  "hand": true,
+  "judgeAudit": "judge (run16/judge): PASS: The row's own check (check_stamps.mjs on labs.html), red on the commit before the fix for the row's reason (progress.js and wallet.js unstamped), green today."
  },
  {
   "row": "SH-317",
@@ -2183,9 +2245,10 @@
    "js/cook/mechanics/boil.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): the sheet is chai L1 (A, B), not L4, and has no measure of the green's length at speed 1; the row needs L4 at 1280x665 and the timed green (2 s) in a text capture",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-61",
@@ -2196,10 +2259,12 @@
    "js/cook/stations/chai-tray.js",
    "js/cook/mechanics/boil.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "cannot-probe",
+  "judge": "machine",
+  "note": "the row needs an add to a second pan while the first boils; the fair driver adds pan by pan, so the moment never comes; needs a driver",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "judgeAudit": "judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel shows an add to another pan while a pan boils: every add in A, B, C and D goes into the first pan, the second pan stays empty, and the first pan's ring only appears in B's last two frames (999, 1273 ms) with nothing being added; D is marked NO MOTION CAPTURED, L4 is not filmed, and the text has no boil-clock readings",
+  "hand": true
  },
  {
   "row": "CHAI-62",
@@ -2234,10 +2299,11 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "proven",
+  "judge": "judge (run16/judge): PASS: A, frame 3 at L2 1280x665 shows Dada's face on the tray's top-left corner for the top-left glass and the boy's face on the top-right corner for the top-right glass, both clear of the glasses; B frames 3-5 the same at 740x320; note: only L2 (the two top glasses) at two sizes is on the sheet, the bottom-left and bottom-right corners (L3, L4) and 1920x1080, 930x430 are not shown",
+  "note": "eye row passed by the independent judge on today's head (run r16pb-cook)",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-66",
@@ -2273,9 +2339,10 @@
    "data/cook.json"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no frame shows the glass's light after the first half pour with the pan back on the stove, and the crop (#game) leaves out the order card so order 1 full / order 2 half cannot be read; A stops at the boil knob's light (frame 5, 81.8 s), B's last frame (7, 146.8 s) is mid-pour with no light on a glass; A1/B1 do show no light on a",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CHAI-112",
@@ -2302,7 +2369,8 @@
    "js/shared/buttons.js"
   ],
   "note": "the shared buttons call the one tap sound sfx.js has; the check names the old call when it comes back.",
-  "hand": true
+  "hand": true,
+  "judgeAudit": "judge (run16/judge): PASS: The row's own test (every Sfx call in the shared kit exists); red is a put-back of the old Sfx.tap() call, failing on that call by name, since the fix predates the history."
  },
  {
   "row": "SH-122",
@@ -2313,9 +2381,11 @@
    "js/shared/frame.js",
    "js/cook/flow.js"
   ],
-  "status": "built",
+  "status": "open",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "to fix: code, research and propose (not built); my still was the wrong check (judge audit FAIL): it needs a strip across a zoom hand-over",
+  "judgeAudit": "judge (run16/judge): FAIL: The row is the picture changing as a zoom hands over to the zoomed-in game; the check is one still of chai's worktop, which cannot show a change over time. It needs a strip across the hand-over.",
+  "hand": true
  },
  {
   "row": "SH-19",
@@ -2478,9 +2548,10 @@
    "data/stations/chaat.json"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): the crop (#game) leaves out Nani's box in the chop stage, there is no sequence of the bowl filling and no end review, so four of the row's five parts are not shown; the one part shown is met (A frame 1 and B frame 1: the chop light on the board with the vegetable resting on it, inside the game area, nothing under the gear); flaw",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CK-84",
@@ -2491,9 +2562,10 @@
    "js/cook/stations/baking.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): the sheet is L1, which has no khun jar on the shelf, and the crop (#game) leaves out the order card, so \"never on the khun jar\", \"rows whole at 740x320\", \"atto and khun told apart by picture\" and \"the headline lit with the bowl\" are not shown; the one part shown is close to met (A frame 3: the gold light is on the mixing bowl al",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CK-85",
@@ -2503,10 +2575,11 @@
   "files": [
    "data/stations/chaat.json"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: E, frame 6 (33.6 s) the chano card still shows a jar of chickpeas where the tray shows the bowl (same at F5, G6, H6); A frame 3 (41.4 s) the third onboard, bataato, has no dim and no gold box, and B, C, D reach only two onboards (board, then chano) so no light is shown for the second and third items; no panel shows an item's card lit (crops are #game only). Met: scatters are crisp top-down pieces ",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "SH-261",
@@ -2590,9 +2663,10 @@
    "js/cook/stations/mishkaki-grill.js"
   ],
   "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "judge": "needs-eye: judge (run16/judge): FAIL: The sheet does not show the row's state (a probe fault, not the fix): no panel shows a cob or a skewer resting on the tray, so \"the same size and way round on the tray as on the grill\" cannot be read (D4 catches the cob mid-flight only; A and B never reach the skewer on the tray); the mock is not on the sheet for the \"beside the mock\" eye check; only 1280x665 and 740x320 at L1 are shot, not the fo",
+  "note": "the first sheet did not show the row's state (a probe fault); re-captured in run r16pb-newsh",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/",
+  "hand": true
  },
  {
   "row": "CK-79",
@@ -2615,10 +2689,11 @@
   "files": [
    "js/cook/stations/corn.js"
   ],
-  "status": "built",
-  "judge": "needs-eye",
-  "note": "eye row: the sheet waits for the judge session",
-  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
+  "status": "open",
+  "judge": "judge (run16/judge): FAIL: A, frames 1-2 the lit cob in the tray has its gold box but no makai pill, and no cob carries a pill at any size (C, E, G the same); no hakro pill appears in the grill scene. Met: B, D, F, H the hakro makai card is in the order panel from the first onboard (D2 opens it large); A, C, E, G Nana's face circle is on the grill scene. Not shown: a lit seasoning bowl, so \"the ring doesn't cover its pill\" ",
+  "note": "built per its status, but the judge sees the fault on today's head (run r16pb-cook)",
+  "green": "not green",
+  "hand": true
  },
  {
   "row": "CK-90",
