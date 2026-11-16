@@ -24420,23 +24420,26 @@
  ],
  "DAAR-40": [
   {
-   "flow": "repo",
+   "flow": "cook:daar",
    "path": "fair",
-   "level": 4,
+   "level": [
+    2,
+    4
+   ],
    "sizes": [
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "now",
+   "at": "results",
    "after": null,
    "capture": [
-    "cmd:node build/sandbox/run.mjs --contract --flow cook:daar@L4,cook:daar@L2 --sizes 1280x665"
+    "contract:95"
    ],
    "expect": [
     "pass"
    ],
-   "note": "contract-95 on daar: nothing said after the order is skipped until the first step",
+   "note": "contract-95 on daar alone: nothing said after the order is skipped until the first step (the old cmd probe failed on any contract break)",
    "delay": 0
   }
  ],
