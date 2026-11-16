@@ -194,13 +194,13 @@
   "row": "SH-295",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "a4d3a78",
+  "commit": "cd42062",
   "verdict": "FAIL",
   "status": "cannot-probe",
   "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: the sheet does not show the row's state: no served card (no tick or stamp) in either panel, and no early wrap. A (1280x665) has \"Muke elchi waari chai khapeti.\" on one line; B (740x320) breaks \"Muke elchi waari chai / khapeti.\" where \"khapeti.\" would not fit the card's width, so the break is a must-wrap. Only unserved chai cards at two of four sizes, no other game. The probe needs a served card with its tick or stamp at the size where \"chai\" drops to line two.",
-  "panel": "po-b1/SH-295.png",
-  "file": "build/reports/run16/judge/probes-open/po-b1/batch-01.verdicts.md"
+  "reason": "The check does not show the row's problem, so it is not a red check: the sheet does not show the row's fault or its full scope. No panel has the break Zafar named (\"Muke elchi waari / chai khapeti.\"): A (1280x665), C (740x320) and D (930x430) all break as \"Muke elchi/aadu waari chai / khapeti.\" with \"chai\" already on the first line, and \"khapeti.\" does not look to fit in the room left before the stamp (A is the tightest call, about 10 px short by eye; C and D clearly short); B (1920x1080) is one line. So the probe does not see the problem on chai's served cards at results, and it cannot be a PASS either: the Check says every game at four sizes and the sheet has chai only, at one state (served cards with the stamp, dimmed under the results layer), with no measured wrap-rule result in the text file (no expect results, no text capture). Needed: the state where Zafar saw chai drop to line two (his 14 Nov reference pictures; possibly the card with the tick, or a narrower card), the other games' order cards, and the auto wrap-rule output. Off the row's point: no clipping, overlap or English seen in the cards; C and D show a sliver of another card cut at the top of the crop (crop edge, not a game flaw).",
+  "panel": "po-o1/SH-295.png",
+  "file": "build/reports/run16/judge/probes-open/po-o1/batch-01.verdicts.md"
  },
  {
   "row": "SH-301",
@@ -254,13 +254,13 @@
   "row": "SH-286",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "a4d3a78",
+  "commit": "cd42062",
   "verdict": "FAIL",
   "status": "cannot-probe",
   "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: A and B both show only the chai dish card (one popup-open reached per size); no sugar, milk or ginger item card is photographed to compare place, size, look or motion against, and there is no motion strip. What is shown: the dish card stands at the stage's left edge beside the customer's bubble at both sizes.",
-  "panel": "po-b1/SH-286.png",
-  "file": "build/reports/run16/judge/probes-open/po-b1/batch-02.verdicts.md"
+  "reason": "The check does not show the row's problem, so it is not a red check: the row's problem is not on the sheet and its motion half cannot be compared. Place, size and look already match: the dish card in A (210 ms) sits in the same top-left box as the sugar card in D (400 and 600 ms), and in B (200 ms) as the milk card in G; no panel shows a different card beside the bubble. But no strip catches an item card's pop-in at the phase A catches the dish card's (A 0 ms shows the dish card slightly over-size, settling by 210 ms; D jumps from no card at 200 ms to a settled sugar card at 400 ms; D 0 ms is a smaller milk card on a wider scene, a different moment), and C and F (labelled pop-face) show the dish card itself with NO MOTION CAPTURED. Needs the first item card's entry sampled from its own 0 ms beside the dish card's, at both sizes",
+  "panel": "po-o1/SH-286.png",
+  "file": "build/reports/run16/judge/probes-open/po-o1/batch-02.verdicts.md"
  },
  {
   "row": "SH-287",
@@ -302,37 +302,37 @@
   "row": "SH-299",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "a4d3a78",
+  "commit": "cd42062",
   "verdict": "FAIL",
   "status": "cannot-probe",
   "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: A (chai L4 740x320, #side strip at popup-fold) shows no item card in flight and no landing in any of its four frames: the order row sits at home (paani, chai, a cut elchi card) throughout, aadu's card and its slot are never in view, so the card's last frame against its slot's row cannot be read. The strip is cropped to #side, so a landing 26 px past the panel's edge would fall outside the crop (only two unidentifiable dark slivers show at the right edge of frames 3-4). Three of four frames landed off their slots (502, 1108, 1820 ms for 150, 300, 450). The probe needs a strip timed at the card's flight end, with a crop wider than the panel.",
-  "panel": "po-b1/SH-299.png",
-  "file": "build/reports/run16/judge/probes-open/po-b1/batch-03.verdicts.md"
+  "reason": "The check does not show the row's problem, so it is not a red check: A never shows an item card in flight or landing: frames 0 and 329 ms are bare marble, 1138-4621 ms are the cooking view after the order, the side panel is only a sliver at the left edge, and every frame after 0 ms landed off its slot (100-500: off). Aadu's card and its slot row are not in any frame",
+  "panel": "po-o1/SH-299.png",
+  "file": "build/reports/run16/judge/probes-open/po-o1/batch-02.verdicts.md"
  },
  {
   "row": "SH-279",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "a4d3a78",
-  "verdict": "FAIL",
-  "status": "cannot-probe",
-  "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: no panel shows a Shabash bubble at all; in A, B, C and D the stopwatch reward card (20 / 17 / 17 / 11, with the arrow button) covers the whole stage and the scene behind is dimmed, so the bubble's place against the spoon, the tray corner, the frame edge and Nana's face cannot be seen in samosa, maani or chaat. The shot at life:serve-trays lands after the well done picture has been covered; it needs to be taken before the reward card opens.",
-  "panel": "po-e1/SH-279.png",
-  "file": "build/reports/run16/judge/probes-open/po-e1/batch-01.verdicts.md"
+  "commit": "cd42062",
+  "verdict": "PASS",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "The check is red for the row's reason: A, frame 17 (41.9 s, samosa 1280) the praise face sits on the head of the slotted spoon and the 'Shabash!' chip lies on the plate's top edge, not clear of the props; B frame 17 (43.3 s, samosa 740) the same, face over the spoon head, chip tiny on the plate's corner and close to the gear button; C frame 8 (31.9 s, maani 740) the chip is tiny, LEFT of the face and sits on the tray over the dough piles (not at the right edge in this shot, but not right of the face nor clear of the tray); D frame 9 (23.9 s, chaat 740) the chip is tiny and left of Nana's face, not chai's size nor to its right. Off the row's point: B frame 18 (45.9 s) Nana is cut by the right edge of the frame at 740 in the serving scene.",
+  "panel": "po-q1/SH-279.png panel A",
+  "file": "build/reports/run16/judge/probes-open/po-q1/batch-01.verdicts.md"
  },
  {
   "row": "SH-303",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "a4d3a78",
+  "commit": "cd42062",
   "verdict": "FAIL",
   "status": "cannot-probe",
   "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: the sheet has no pair to compare; A (eggs L4, 740) shows one moment only (the family behind the marble worktop, three egg trays, Nani's box reading Shabash!, a Khuda-fis! bubble) with neither the delivery beside it nor chai's kitchen as the reference, and no dining table or cat in it, so the \"two scenes\" problem is not shown; B (baking L1) is hidden behind the stopwatch reward card. Needs the serve and the well done of the same round side by side, plus chai's, at L1 and L4.",
-  "panel": "po-e1/SH-303.png",
-  "file": "build/reports/run16/judge/probes-open/po-e1/batch-01.verdicts.md"
+  "reason": "The check does not show the row's problem, so it is not a red check: the well done is not in any frame. A (eggs L4) shows the delivery up to \"Thank you!\" at 1801 ms in the same kitchen-counter scene as chai's B, with no dining table or cat, but the strip ends before the well done, the moment the row names; C (baking L1) goes from the delivery in that kitchen straight to the results card. Needs frames running through eggs' well done. Flaw off the point: B 1801 ms, the \"Thank you\" bubble runs under the settings cog and its end is cut off",
+  "panel": "po-o1/SH-303.png",
+  "file": "build/reports/run16/judge/probes-open/po-o1/batch-02.verdicts.md"
  },
  {
   "row": "CK-93",
@@ -350,13 +350,13 @@
   "row": "SH-275",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "a4d3a78",
-  "verdict": "FAIL",
-  "status": "cannot-probe",
-  "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: no panel shows the row's problem or its words met. A and B (eggs, \"timed-hold\") landed after the hold: in A the egg is already on the plate with the order ticked and both pans empty, in B the egg is leaving the pan edge with a pale spiky halo round the pan; neither shows a timing ring at all (not the tiny yolk ring, not a ring on the pan). C and D (baking oven) show a grey ring with a green arc and a white marker sitting on the oven door over the naan, about the height of the window, not the \"faint small ring on the oven corner\" the row names, so the before does not show the oven problem; the pour is not shot, and chop, chaat, daar and L2-L4 are not on the sheet. Flaws off the point: D, the three shelf labels (paani, ghee, atto) are blank pills with only the speaker icon at 740x320, where C shows the words; D, the oven ring sits right of the window's centre and is fainter than in C.",
-  "panel": "po-g1/SH-275.png",
-  "file": "build/reports/run16/judge/probes-open/po-g1/batch-01.verdicts.md"
+  "commit": "cd42062",
+  "verdict": "PASS",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "The check is red for the row's reason: C, chop L1 1280x665 frames 1-3 show the timing window as a separate small stopwatch disc (flat green pie, 7.2 s and 13.6 s; empty at 15.8 s) off the board's top-left corner, not a ring on the onion or the board filling to its green as chai's pan; the same separate disc is in D frames 1-4 (chop 740x320), E frame 1 (chaat 740x320, beside the potato board) and F frames 1-2 (daar 740x320, beside the onion board); A and B (eggs, dimmed under the lift ask) show no pan-sized ring filling to green, only a small square highlight round the egg inside the pan; baking (oven ring, pour) and L2-L4 are not on the sheet",
+  "panel": "po-p1/SH-275.png panel C",
+  "file": "build/reports/run16/judge/probes-open/po-p1/batch-01.verdicts.md"
  },
  {
   "row": "SH-122",
@@ -476,13 +476,13 @@
   "row": "SH-211",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "0c82734",
+  "commit": "cd42062",
   "verdict": "FAIL",
   "status": "cannot-probe",
   "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: the strips do not show the order being given. A (1280x665, marked NO MOTION CAPTURED) and B (740x320) are each 8 identical frames of the already-built order rows at rest (paani, chai, third card cut at the row edge) taken at life:popup-fold, after the item cards have landed; no frame shows a card arriving or the row scrolling to receive it, so neither a back-and-forth tug nor a clean one-way scroll is visible. Every frame after the first is captioned off its slot (A 377-3510 ms, B 482-5069 ms against 120 ms slots), so the sampling is too coarse to catch a jerk even if one happened, and no per-frame scroll log is in the .md. The strip must be anchored to each item card landing during the order (the item just before a half or whole card is his case), on-slot, with the row's scrollLeft per frame. Off the row's point: no flaws seen in the cards themselves (text unclipped, bubbles by their speakers, no English); the cut third card is the scrolling row.",
-  "panel": "po-l1/SH-211.png",
-  "file": "build/reports/run16/judge/probes-open/po-l1/batch-02.verdicts.md"
+  "reason": "The check does not show the row's problem, so it is not a red check: A and B show only the first card (elchi) popping up and landing in slot 3 of an empty row, reached 1x; the row itself does not scroll in any frame, so neither a tug nor a clean one-way scroll is shown. Missing: the item just before a half or whole card (his case), the later cards when the row must scroll left to receive one, and the per-frame scroll log the Check names (the .md has none). Also 2 of 8 frames in A and 6 of 8 in B landed off their slots (up to 450 ms gaps), too coarse to catch a jerk.",
+  "panel": "po-r1/SH-211.png",
+  "file": "build/reports/run16/judge/probes-open/po-r1/batch-01.verdicts.md"
  },
  {
   "row": "SH-135",
@@ -515,5 +515,41 @@
   "status": "open",
   "reason": "The node test counts family takes linked to no word, the row's own fault, and is red on the base naming the row's examples (the goodbye, the potato takes, the pairs).",
   "panel": "results: red 48003532, exit 1, 63 orphan take ids"
+ },
+ {
+  "row": "SH-267",
+  "branch": "run16/fix-kit",
+  "kind": "eye",
+  "commit": "a5c725c",
+  "verdict": "FAIL",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "E, at L2 1280x665 a big card with the garlic picture, the words \"trae lasan\" and a speaker button is up beside the customer's bubble \"Muke trae lasan khape.\" (3.5 s), and the same in F at 740x320 (4.0 s); the row says never at L2-L4 (the card gives the order away) and the probe's own words are \"no dish card at all from level 2\". contract-119 reports 0 breaks on these two pages, so the check does not see the card the picture shows. L1 is met where shown: A and B (chai, both sizes) show the milk-chai glass with \"hakri chai\" beside \"Muke chai khapeti,\"; C and D (chop) show \"ba lasan\" beside \"Muke ba lasan khape.\" and the card gone by the second bubble. Other flaws: C, D, E, F the card's picture is one garlic bulb while its words say two (ba) or three (trae), so the count is in the words only; A, B the English under the card reads \"one chai\", not the row's \"one cup of tea\", and is plain grey, not clearly italic; A, B the left column under the order line is a flat empty grey block; E the second frame (42.3 s) is captioned as a bubble but shows no bubble; eggs, corn and baking (probes p4-p7) have no panel on either sheet, only a contract line, so \"every kitchen game\" is shown for chai and chop alone.",
+  "panel": "tiers-green-0725e61000/SH-267.png panel E",
+  "file": "build/reports/run16/judge/fix-kit/tiers-green-0725e61000/batch-01.verdicts.md"
+ },
+ {
+  "row": "CK-137",
+  "branch": "run16/fix-stove",
+  "kind": "eye",
+  "commit": "d5ba9ed",
+  "verdict": "FAIL",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "B, at 740x320 L2 the order card's 'hakro makai' name wraps onto two lines ('hakro' / 'makai') beside the one-line 'miryo' (same in D at L4; A and C also wrap it at 740x320), so the row's \"'hakro makai' card names on one line beside one-line names at 740x320\" is not met. Other clauses as shown: tray clear of the settings cog in A-D (met); 'Makai hane kadh.' with the lit cob in E-H at 1280x665 (met); served cobs charred with each person's toppings and the same drawing on plate and tray in I frames 7-11 (met); 'Shabash!' clear of Nana's plate, his cob and the girl's face in I frame 9 (met at 1280x665), but in J frame 10 (740x320) the 'Shabash!' pill is squeezed between the girl's face circle and the settings cog with no visible gap either side and is very small; cob's foot clear of Nana's face circle in I frames 5-6 (small gap, met at 1280x665), but in J frames 6-7 (740x320) the tray cob's foot sits on the top of the face circles with no visible gap. Tool note: the Check names four sizes, the sheets show only 740x320 and 1280x665 (no 930x430, no 1920x1080).",
+  "panel": "stove-corn-eggs-final/CK-137.png panel B",
+  "file": "build/reports/run16/judge/fix-stove/stove-corn-eggs-final/batch-01.verdicts.md"
+ },
+ {
+  "row": "CK-132",
+  "branch": "run16/fix-stove",
+  "kind": "eye",
+  "commit": "d5ba9ed",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): no panel shows Nani's box or its drop-down on the grill screen: every grill frame (A2-A6, B3-B7) is taken at a line:cook moment and shows the grill, tray and counter with no Nani's box anywhere, so the drop-down part rests only on the DOM traces (CK-132-p1-L1..L4, arrow opacity 1 for 6.6-9.7 s), which do not show it drawn; the eye panels are also L3 only at 1280x665 and 740x320, not L1-L4 at four sizes (930x430 and 1920x1080 absent). Needs a grill-screen frame between lines with the box in view. The other three parts do read as met where shown: A7-A9 and B8-B10 plates' face circles one size, each on its plate's upper rim; A2-A6 and B3-B7 cooking tray's two face circles readable, one under each cob's place; B8-B10 'fudino ji chutney' and 'amli ji chutney' pills well over a pill's height apart. Flaws off the point: A10-A11 and B11-B12 the serving trays' face circles are specks on each tray's corner; B10 the 'Shabash!' bubble is tiny and sits against the settings gear; B8 a small miryo bowl hangs mid-counter between mitho and laal marcha (may be mid-flight); A1 the frame is caught mid-fade with the 'hakro makai' label wider than its card and running up to the speech bubble.",
+  "panel": "stove-corn-eggs-final/CK-132.png",
+  "file": "build/reports/run16/judge/fix-stove/stove-corn-eggs-final/batch-02.verdicts.md"
  }
 ]
