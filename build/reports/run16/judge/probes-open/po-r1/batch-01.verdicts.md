@@ -1,0 +1,2 @@
+judge: Fable, run16 judge session
+SH-211 | EVIDENCE: A and B show only the first card (elchi) popping up and landing in slot 3 of an empty row, reached 1x; the row itself does not scroll in any frame, so neither a tug nor a clean one-way scroll is shown. Missing: the item just before a half or whole card (his case), the later cards when the row must scroll left to receive one, and the per-frame scroll log the Check names (the .md has none). Also 2 of 8 frames in A and 6 of 8 in B landed off their slots (up to 450 ms gaps), too coarse to catch a jerk.
