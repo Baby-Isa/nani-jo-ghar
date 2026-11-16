@@ -27668,26 +27668,61 @@
  ],
  "SAM-35": [
   {
-   "flow": "cook:samosa",
-   "path": "speed1",
-   "level": [
-    1,
-    2
-   ],
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:line:cook",
+   "at": "now",
    "after": null,
    "capture": [
-    "crop:#game"
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level 1 --secs 60"
    ],
-   "expect": null,
-   "max": 10,
-   "note": "samosa's order line says the count; the order card holds the fillings, no finished-samosa card"
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L1: the order's sentence names the count (a number word of the game's lexicon) and no item card is a finished samosa"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level 2 --secs 60"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L2: the order's sentence names the count (a number word of the game's lexicon) and no item card is a finished samosa"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level 3 --secs 60"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L3: the order's sentence names the count (a number word of the game's lexicon) and no item card is a finished samosa"
   }
  ],
  "ART-78": [
@@ -29639,6 +29674,48 @@
     "pass"
    ],
    "note": "roll-tawa L1 at a child's pace, 740x320: the tawa's round body centred on its burner (3% of the hob's width) and inside the hob's edges, as drawn (sampled after each frame). The turner's sleeve (hands.js, ART-84), the face beside the plate and Nani's box one step at a time are the eye's"
+  }
+ ],
+ "SAM-42": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-42 --secs 170"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L1 at a child's pace, first-time help on: no arrow drawn on the pastry before the first fold's light comes, nor inside it (Fable, 16 Nov: 'a white arrow flashes for one frame before the fold's first-time light')"
+  }
+ ],
+ "SAM-45": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row SAM-45 --secs 170"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "samosa L1 at a child's pace: at the well done the praise face's box shares under 5% of itself with the slotted spoon's box (Fable, 16 Nov: 'Nana's praise face covers the skimmer')"
   }
  ]
 }

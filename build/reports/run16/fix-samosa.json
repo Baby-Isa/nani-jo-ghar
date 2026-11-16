@@ -90,36 +90,40 @@
   "row": "SAM-42",
   "kind": "Teaching",
   "game": "samosa",
-  "status": "built",
+  "status": "proven",
   "probe": "node build/probes/samosa-rt.mjs --row SAM-42 --secs 170 (reads samosa.js's fimg.__arrow, the arrow as drawn)",
-  "red": "48003532 with the one read-only line added (scratchpad tree), child pace L1 1280x665: FAIL, the fold's arrow drawn whole at 36.3 s before its first-time light at 36.6 s",
-  "green": "pending: the re-run on the head (the arrow read moved to the value drawn) was blocked by the shell's failing safety check at 07:45",
-  "judge": "needs-eye",
-  "files": ["js/cook/stations/samosa.js"],
+  "red": "48003532 with one read-only line added (the arrow as drawn, fimg.__arrow; scratchpad tree), child pace L1 1280x665: FAIL, the arrow drawn whole at 36.8 s, the light at 37.1 s",
+  "green": "b7b5d31 (the fix in 6228a48), child pace L1 1280x665: PASS, no arrow drawn before or inside the first fold's light",
+  "judge": "machine",
+  "files": [
+   "js/cook/stations/samosa.js"
+  ],
   "note": "Fable's 07:00 look at the published samosa: 'a white arrow flashes for one frame before the fold's first-time light'. The first fold's arrow now waits for its light (at most 1.5 s, so with no light it is still SAM-21's help). The first probe runs read the arrow before the lit frame's zeroing and so showed 0.45 inside the light on both trees; the read is now the value drawn."
  },
  {
   "row": "SAM-45",
   "kind": "Look",
   "game": "samosa",
-  "status": "question",
+  "status": "built",
   "probe": "node build/probes/samosa-rt.mjs --row SAM-45",
-  "red": "pending (the base run with the SAM-45 check was queued when the shell's safety check began failing)",
-  "green": "pending",
+  "red": "48003532, child pace L1 1280x665: FAIL, the praise face [1032,-117,170,170] over the slotted spoon's box [890,-77,231,539], 40% of the face",
+  "green": "b7b5d31: still FAIL by the probe's measure: 5% of the face over the spoon's box (the face stops at the plate's middle; the spoon's box takes in its clear corners). Needs the eye",
   "judge": "needs-eye",
-  "files": ["js/cook/stations/samosa.js"],
-  "note": "Fable's 07:00 look: 'Nana's praise face covers the skimmer'. The face at the plate's upper left lands on the slotted spoon, which stands between the hob and the plate; it now moves right until it clears the spoon by 12 px, never past the plate's middle (built, unproven). Question from the same look: 'two empty, unlabelled dishes stay on the fry tray to well done' is SAM-45's own 15 Nov fix (the stone tray keeps its things, as chai's shelf). Keep the empty thalis to the end, or take them away once their samosas are in the oil?"
+  "files": [
+   "js/cook/stations/samosa.js"
+  ],
+  "note": "Fable's 07:00 look: 'Nana's praise face covers the skimmer'. The face at the plate's upper left lands on the slotted spoon, which stands between the hob and the plate; it now moves right until it clears the spoon by 12 px, never past the plate's middle (built: from 40% to 5% of the face over the spoon's box; the eye decides). Question from the same look: 'two empty, unlabelled dishes stay on the fry tray to well done' is SAM-45's own 15 Nov fix (the stone tray keeps its things, as chai's shelf). Keep the empty thalis to the end, or take them away once their samosas are in the oil?"
  },
  {
   "row": "SAM-35",
   "kind": "Logic",
   "game": "samosa",
-  "status": "built",
+  "status": "proven",
   "probe": "node build/probes/samosa-rt.mjs --row SAM-35 --pace fair --speed 2 --level <1-4> (the count word from the game's own lexicon)",
-  "red": "none found: the fix is inside the 15 Nov squashed history (8dc8381); a run on the live site's 12 Nov tree (f6e0127) was queued but blocked",
-  "green": "6228a48 at L1, L2, L3 and L4, 1280x665: PASS (L1 'Muke ba samosa khapanta.' with the item card 'ba chunda', no samosa card)",
+  "red": "f6e0127 (the live site's tree, 12 Nov), fair L1 1280x665: FAIL, a finished-samosa item card on the order card ('Ba samosa two samosas | trae chunda three minces')",
+  "green": "6228a48 at L1, L2, L3 and L4: PASS. Fixed inside the 15 Nov squashed history (8dc8381), so no single commit to cite",
   "judge": "machine",
   "files": [],
-  "note": "Zafar's two strikes (12 Nov night): the sentence says the count and the card holds the fillings. Both hold at every level today; with no red on record it stays built for the prove session."
+  "note": "Zafar's two strikes (12 Nov night): the sentence says the count and the card holds the fillings, not a finished samosa. Red on the 12 Nov tree, green at every level today."
  }
 ]
