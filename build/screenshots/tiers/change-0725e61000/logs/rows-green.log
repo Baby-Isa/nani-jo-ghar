@@ -1,0 +1,107 @@
+evidence plan: 2 rows: 2 with a spec (0 Zafar's ear or feel, 0 need a decision, 0 with spec errors), 21 pages, 22 page probes, 0 script probes
+
+warnings (34)
+  SH-10: 7 probes (the design says 1-3)
+  SH-53: 4 probes (the design says 1-3)
+  SH-19: 5 probes (the design says 1-3)
+  SH-63: 4 probes (the design says 1-3)
+  SH-68: 5 probes (the design says 1-3)
+  CK-27: 4 probes (the design says 1-3)
+  CLN-82: 5 probes (the design says 1-3)
+  CLN-45: 5 probes (the design says 1-3)
+  CLN-65: 4 probes (the design says 1-3)
+  CLN-118: 10 probes (the design says 1-3)
+  ART-08: 4 probes (the design says 1-3)
+  CLN-135: 4 probes (the design says 1-3)
+  CLN-150: 4 probes (the design says 1-3)
+  SH-110: 5 probes (the design says 1-3)
+  SH-112: 5 probes (the design says 1-3)
+  SH-113: 5 probes (the design says 1-3)
+  CK-48: 5 probes (the design says 1-3)
+  FX-01: 4 probes (the design says 1-3)
+  MOD-10: 6 probes (the design says 1-3)
+  RIDE-03: 4 probes (the design says 1-3)
+  ... and 14 more
+
+pages (21):
+  cook:chop @ 740x320 [p-fresh]: DAAR-57 every placed; SH-267 life:dish-flash
+  cook:chop @ 1280x665 [p-fresh]: DAAR-57 every placed
+  cook:chop@L2 @ 740x320 [p-fresh]: DAAR-57 every placed
+  cook:chop@L2 @ 1280x665 [p-fresh]: DAAR-57 every placed
+  cook:chop@L3 @ 740x320 [p-fresh]: DAAR-57 every placed
+  cook:chop@L3 @ 1280x665 [p-fresh]: DAAR-57 every placed
+  cook:chop@L4 @ 740x320 [p-fresh]: DAAR-57 every placed
+  cook:chop@L4 @ 1280x665 [p-fresh]: DAAR-57 every placed
+  cook:chai-tray @ 740x320 [p-fresh]: SH-267 life:dish-flash
+  cook:chai-tray @ 1280x665 [p-fresh]: SH-267 life:dish-flash
+  cook:chop#speed1 @ 740x320 [p-fresh]: SH-267 every bubble
+  cook:chop#speed1 @ 1280x665 [p-fresh]: SH-267 every bubble
+  cook:chop@L2#speed1 @ 740x320 [p-fresh]: SH-267 every bubble
+  cook:chop@L2#speed1 @ 1280x665 [p-fresh]: SH-267 every bubble
+  cook:eggs @ 740x320 [p-fresh]: SH-267 life:dish-flash
+  cook:eggs @ 930x430 [p-fresh]: SH-267 life:dish-flash
+  cook:corn @ 740x320 [p-fresh]: SH-267 life:dish-flash
+  cook:corn @ 930x430 [p-fresh]: SH-267 life:dish-flash
+  cook:baking#hint @ 740x320 [p-fresh]: SH-267 life:dish-flash
+  cook:baking#hint @ 930x430 [p-fresh]: SH-267 life:dish-flash
+  cook:chop @ 930x430 [p-fresh]: SH-267 life:dish-flash
+
+about 8 min of browser time at 3 pages at once. Run: node build/tools/review/evidence.mjs --run --rows SH-267,DAAR-57
+06:33:02 chunk 1: under the caller's lock
+06:33:02 run ev-tiers-green-0725e61000: 21 pages (0 done already), 3 at a time, port 8831, 13 min budget
+06:33:30 cook:chop#speed1 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 27 s | evidence: 1/1 probes reached their moment
+06:33:30 cook:chop#speed1 @ 740x320 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 28 s | evidence: 1/1 probes reached their moment
+06:33:58 cook:chop@L2#speed1 @ 740x320 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 56 s | evidence: 1/1 probes reached their moment
+06:34:20 cook:chop@L2#speed1 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 50 s | evidence: 1/1 probes reached their moment
+06:34:29 cook:baking#hint @ 740x320 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 59 s | evidence: 1/1 probes reached their moment
+06:34:55 cook:chop@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 35 s | evidence: 1/1 probes reached their moment
+06:34:59 cook:baking#hint @ 930x430 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 61 s | evidence: 1/1 probes reached their moment
+06:35:03 cook:chop@L2 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 34 s | evidence: 1/1 probes reached their moment
+06:35:32 cook:eggs @ 740x320 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 29 s | evidence: 1/1 probes reached their moment
+06:35:50 cook:chop@L4 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 51 s | evidence: 1/1 probes reached their moment
+06:35:58 cook:chop@L4 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 63 s | evidence: 1/1 probes reached their moment
+06:36:02 cook:eggs @ 930x430 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 30 s | evidence: 1/1 probes reached their moment
+06:36:22 cook:corn @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 32 s | evidence: 1/1 probes reached their moment
+06:36:23 cook:chop @ 740x320 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 20 s | evidence: 2/2 probes reached their moment
+06:36:32 cook:corn @ 930x430 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 33 s | evidence: 1/1 probes reached their moment
+06:36:42 cook:chop @ 930x430 (p-fresh): end reached | 9 states, 5 distinct findings, 0 page errors, 20 s | evidence: 1/1 probes reached their moment
+06:36:44 cook:chop @ 1280x665 (p-fresh): end reached | 9 states, 3 distinct findings, 0 page errors, 21 s | evidence: 1/1 probes reached their moment
+06:37:15 cook:chop@L3 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 43 s | evidence: 1/1 probes reached their moment
+06:37:21 cook:chai-tray @ 740x320 (p-fresh): end reached | 11 states, 10 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+06:37:21 cook:chop@L3 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 39 s | evidence: 1/1 probes reached their moment
+06:37:44 cook:chai-tray @ 1280x665 (p-fresh): end reached | 11 states, 5 distinct findings, 0 page errors, 29 s | evidence: 1/1 probes reached their moment
+06:37:46 lights: 21 judged on their pictures, 0 failing (lib/lightjudge.py)
+
+06:37:47 findings: 132 (text-small 59, tap-small 35, covers-play-area 18, covered 15, canvas-text-small 5)
+06:37:47 sound: 43 lines heard, 29 with no family clip (the recording gap list), 37 played files that are not an approved family clip
+  gap    21x  Thank you!  [device-voice]
+  gap    13x  Nindha nindha kap!  [device-voice]
+  gap     8x  Khuda-fis!  [device-voice]
+  gap     5x  Muke ba dungri khapanti.  [device-voice]
+  gap     5x  Muke hakro tameto khapeto.  [device-voice]
+  gap     4x  Muke trae lasan khape.  [device-voice]
+  gap     4x  Muke naan khape.  [device-voice]
+  gap     4x  Hakro cup atto wiji chad!  [device-voice]
+  gap     3x  ba dungri  [silent]
+  gap     2x  Muke trae mirchi khapanti.  [device-voice]
+  gap     2x  Muke hakri dungri khapeti.  [device-voice]
+  gap     2x  Muke chai khapeti,  [device-voice]
+  gap     2x  paani  [device-voice]
+  gap     2x  Iloka je glass me wij.  [device-voice]
+  gap     2x  Muke ba lasan khape.  [device-voice]
+  gap     2x  hakro lasan  [device-voice]
+  gap     2x  ba lasan  [silent]
+  gap     2x  Muke hakro tarelo indo khapeto.  [device-voice]
+  gap     2x  Indo wiji chad!  [device-voice]
+  gap     2x  Tarelo indo hane kadh.  [device-voice]
+  gap     2x  Muke hakro makai khape,  [device-voice]
+  gap     2x  tamarind chutney  [silent]
+  gap     2x  Wiji chad!  [device-voice]
+  gap     2x  Adh dudh wiji chad!  [device-voice]
+  gap     2x  Hane naan!  [device-voice]
+  ... 4 more in /home/user/nani-jo-ghar/build/screenshots/sandbox/ev-tiers-green-0725e61000/sound.json
+06:37:47 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/ev-tiers-green-0725e61000/summary.md
+DAAR-57: machine PASS -> build/screenshots/evidence/tiers-green-0725e61000/DAAR-57.png
+SH-267: 6 panels, 14 text -> build/screenshots/evidence/tiers-green-0725e61000/SH-267.png
+
+2 rows: 1 for a reviewer, 1 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-tiers-green-0725e61000.md

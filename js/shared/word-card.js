@@ -693,7 +693,10 @@
     rows.forEach((row) => row.querySelectorAll(".wc14 .wc14-k").forEach((e) => ks.add(e)));
     rows.forEach((row) => row.querySelectorAll(".wc14 .wc14-en").forEach((e) => ens.add(e)));
     // (only a page with cards on it keeps the resize and font listeners: a late fit after a mode has left finds none, SH-314)
-    if (ks.size || ens.size || rows.length) watchPage();
+    // (and only for cards on the page: a late fit of a card already taken off with its mode, a timer's or a frame's after unmount, put
+    // the listeners back with nothing left to fit, SH-314's timing-dependent leftover)
+    const onPage = (e) => !!(e && e.isConnected);
+    if ([...ks].some(onPage) || [...ens].some(onPage) || rows.some(onPage)) watchPage();
     ks.forEach((e) => fitOne14(e, 11, 2));
     ens.forEach((e) => fitOne14(e, 10, 1));
     rows.forEach(row14);

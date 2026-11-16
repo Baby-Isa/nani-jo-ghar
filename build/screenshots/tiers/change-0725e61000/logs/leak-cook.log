@@ -1,0 +1,19 @@
+save: learned (NJG_LEAK_SAVE)
+  leak 'tick': 0/1374 = 0.0%
+  leak 'cards L1': 0/19 = 0.0%
+  leak 'cards L2': 0/20 = 0.0%
+  leak 'cards L3': 0/74 = 0.0%
+  leak 'cards L4': 0/127 = 0.0%
+  leak 'pantry unlabelled L1': 0.60/12 = 5.0%  (last shelf 6 jars, 0 labelled, needs 3 (stages 3,3,3))
+  leak 'pantry labelled L1': 0.60/12 = 5.0%  (last shelf 6 jars, 0 labelled, needs 3 (stages 3,3,3))
+  leak 'pantry letters L1': 0.60/12 = 5.0%  (last shelf 6 jars, 0 labelled, needs 3 (stages 3,3,3))
+  leak 'pantry unlabelled L2': 0.00/12 = 0.0%  (last shelf 18 jars, 0 labelled, needs 4 (stages 3,3,3,3))
+  leak 'pantry labelled L2': 0.00/12 = 0.0%  (last shelf 18 jars, 0 labelled, needs 4 (stages 3,3,3,3))
+  leak 'pantry letters L2': 0.00/12 = 0.0%  (last shelf 18 jars, 0 labelled, needs 4 (stages 3,3,3,3))
+  leak 'pantry unlabelled L3': 0.00/12 = 0.0%  (last shelf 19 jars, 0 labelled, needs 5 (stages 3,3,3,3,3))
+  leak 'pantry labelled L3': 0.00/12 = 0.0%  (last shelf 19 jars, 0 labelled, needs 5 (stages 3,3,3,3,3))
+  leak 'pantry letters L3': 0.00/12 = 0.0%  (last shelf 19 jars, 0 labelled, needs 5 (stages 3,3,3,3,3))
+  leak 'pantry unlabelled L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))
+  leak 'pantry labelled L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))
+  leak 'pantry letters L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))
+leak_cook: ok

@@ -1,0 +1,328 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "0725e61000638645fec801696a21f4c8d4187e45",
+ "dirty": false,
+ "date": "2026-11-16T05:57:41.037Z",
+ "base": "48003532181dd0cc7da01b2b4182a722f7a3959d",
+ "games": [
+  "cook:chop",
+  "cook:eggs",
+  "cook:corn",
+  "cook:baking"
+ ],
+ "gamesWhy": "--games",
+ "rows": [
+  "SH-267",
+  "DAAR-57"
+ ],
+ "levels": {
+  "cook:chop": [
+   1
+  ],
+  "cook:eggs": [
+   1
+  ],
+  "cook:corn": [
+   1
+  ],
+  "cook:baking": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-0725e61000",
+  "before | after": "build/screenshots/tiers/change-0725e61000/before-after/index.html",
+  "the judge's batch": "build/screenshots/evidence/tiers-green-0725e61000/judge/",
+  "logs": "build/screenshots/tiers/change-0725e61000/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs#hint@930x430 (after order-card-big)",
+   "what": "cook:station1:marble (eggs at L1): 2 decoys on the shelf (n.egg*, cook-dudh*; * not in the order), the table wants 1",
+   "blocks": true
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-53",
+   "where": "cook:baking#hint@740x320 (hint-nani-says)",
+   "what": "the help's light is 4.0 times the size of cook-atto: it should hug it (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-113",
+   "where": "cook:baking#hint@740x320 (after kind-tap)",
+   "what": "nana's face sits over bk-naan-golden (19% of it, at [285,145,314,174]): nothing covers a face, a pill or a card's words",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-0725e61000/logs/play.log",
+   "what": "CONTRACT FAILED: 3 breaks (contract-37 1, contract-53 1, contract-113 1); CHECK FAILED: 201 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-0725e61000/logs/before.log",
+   "what": "CONTRACT FAILED: 29 breaks (contract-119 28, contract-53 1); CHECK FAILED: 211 new findings, 0 flows do not reach their end, 0 new page errors, 29 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "frozen",
+   "where": "build/screenshots/tiers/change-0725e61000/logs/frozen.log",
+   "what": "playing 19 flows at 1280x665, 740x320 (run frozen-diff-chai-tray-202611160637) ...",
+   "blocks": true
+  },
+  {
+   "game": null,
+   "check": "mount",
+   "where": "build/screenshots/tiers/change-0725e61000/logs/mount.log",
+   "what": "FAIL listeners on the page as before: window|resize|false: 2 -> 3; FAIL <body> as before: DIV#lab-app DIV DIV#njg-rotate SECTION.wc",
+   "blocks": true
+  }
+ ],
+ "pages": {
+  "after": 34,
+  "before": 34,
+  "breaksAfter": 3,
+  "breaksBefore": 29
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 2 min; build/reports/tiers/push-0725e61000.md",
+   "tail": [
+    "checks ... pass (2 min)",
+    "check-push: PASSED in 2 min; build/reports/tiers/push-0725e61000.md"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/push.log",
+   "minutes": 2
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:chop, cook:eggs, cook:corn, cook:baking (17 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop,cook:eggs,cook:eggs#mistake,cook:eggs#hint,cook:eggs#takeback,cook:corn,cook:corn#mistake,cook:corn#hint,cook:corn#takeback,cook:baking,cook:baking#mistake,cook:baking#hint,cook:baking#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-0725e61000",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 3 breaks (contract-37 1, contract-53 1, contract-113 1); CHECK FAILED: 201 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+   "tail": [
+    "BREAK contract-53 cook:baking#hint L1 @ 740x320 [hint-nani-says 05-hint-nani-says.png] 25.5s: the help's light is 4.0 times the size of cook-atto: it should hug it",
+    "BREAK contract-113 cook:baking#hint L1 @ 740x320 [after kind-tap c08-s19over.png] 43.5s: nana's face sits over bk-naan-golden (19% of it, at [285,145,314,174]): nothing covers a face, a pill or a card's words",
+    "judged per game (contract.md lists each check not judged and why): chop 102/111, eggs 107/111, corn 106/111, baking 105/111",
+    "CONTRACT FAILED: 3 breaks (contract-37 1, contract-53 1, contract-113 1)",
+    "CHECK FAILED: 201 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks",
+    "06:16:05 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-0725e61000/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/play.log",
+   "minutes": 16.4
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 4800353218 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop,cook:eggs,cook:eggs#mistake,cook:eggs#hint,cook:eggs#takeback,cook:corn,cook:corn#mistake,cook:corn#hint,cook:corn#takeback,cook:baking,cook:baking#mistake,cook:baking#hint,cook:baking#takeback' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-4800353218-0725e61000",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 29 breaks (contract-119 28, contract-53 1); CHECK FAILED: 211 new findings, 0 flows do not reach their end, 0 new page errors, 29 contract breaks",
+   "tail": [
+    "BREAK contract-119 cook:baking#hint L1 @ 740x320 [view-marble 04-view-marble.png] 17.5s: the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+    "BREAK contract-119 cook:baking#hint L1 @ 930x430 [hint-nani-says 05-hint-nani-says.png] 18s: the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): chop 102/111, eggs 107/111, corn 106/111, baking 105/111",
+    "CONTRACT FAILED: 29 breaks (contract-119 28, contract-53 1)",
+    "CHECK FAILED: 211 new findings, 0 flows do not reach their end, 0 new page errors, 29 contract breaks",
+    "06:32:37 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/4800353218/build/screenshots/sandbox/tiers-before-4800353218-0725e61000/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/before.log",
+   "minutes": 16.5
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/4800353218/build/screenshots/sandbox/tiers-before-4800353218-0725e61000 build/screenshots/sandbox/tiers-change-0725e61000 build/screenshots/tiers/change-0725e61000/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 651 before|after pictures, 201 not paired; build/screenshots/tiers/change-0725e61000/before-after/index.html",
+   "tail": [
+    "pairs: 651 before|after pictures, 201 not paired; build/screenshots/tiers/change-0725e61000/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/pairs.log",
+   "minutes": 0.2
+  },
+  {
+   "id": "rows-red",
+   "what": "the rows' probes on the base commit (red): SH-267, DAAR-57",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --run --rows SH-267 --run-id tiers-red-4800353218-0725e61000",
+   "status": "pass",
+   "code": 0,
+   "line": "0 rows: 0 for a reviewer, 0 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-tiers-red-4800353218-0725e61000.md",
+   "tail": [
+    "CLN-144, CLN-145, CLN-146, CLN-147, CLN-148, CLN-149, SH-83, SH-84, SH-87, CLN-153, CK-38, CK-39, CK-40, CK-41, CK-43, CLN-152, SH-88, CLN-151, CK-36, CK-37, MOD-04, MOD-03, CK-44, ART-21, CLN-150, DAAR-26, DAAR-27, DAAR-29, DAAR-30, DAAR-31, DAAR-32, DAAR-33, DAAR-34, DAAR-35, SH-117, SH-98, SH-99, SH-107, SH-91, SH-97, SH-102, SH-103, SH-104, SH-105, SH-106, SH-108, SH-109, SH-110, SH-111, SH-112, SH-113, SH-115, SH-116, CHAI-22, CHAI-24, CHAI-25, CHAI-26, SEK-18, SEK-19, SEK-20, SEK-21, SAM-21, SAM-22, SAM-24, SAM-25, MAA-15, MAA-17, CHT-12, CHT-13, CHT-14, CHT-15, CK-47, CK-48, CLN-159, CLN-162, CLN-163, CLN-164, CLN-165, CLN-166, CLN-167, CLN-168, CLN-170, CLN-172, CLN-173, CLN-174, CLN-176, CLN-177, CLN-178, CLN-179, CLN-181, GIRL-01, DRILL-01, FX-01, CLN-182, CLN-183, CLN-184, CLN-187, CLN-188, CLN-189, CLN-190, CLN-191, CLN-194, CLN-195, CLN-196, MOD-10, LNG-16, CLN-198, LNG-17, CLN-185, ART-23, CLN-154, CLN-155, CLN-156, CLN-157, CLN-158, SH-92, SH-93, SH-86, SH-89, RIDE-01, RIDE-02, RIDE-03, RIDE-04, RIDE-05, RIDE-06, BOOK-01, BOOK-02, BOOK-03, BOOK-04, BOOK-05, BOOK-06, BOOK-07, BOOK-08, DOOR-01, DOOR-02, DOOR-03, DOOR-04, DAY-01, DAY-02, RIDE-07, BOOK-09, DAY-03, LAB-01, LAB-02, LAB-03, LAB-04, EASY-03, EASY-10, EASY-08, SH-118, SH-119, SH-120, CHAI-32, CK-51, CK-50, DOOR-05, DOOR-06, DOOR-07, DOOR-08, RIDE-08, RIDE-09, RIDE-10, LAB-06, LAB-07, LNG-18, SH-124, SH-125, SH-126, LNG-19, SH-123, CLN-199, CLN-200, CLN-201, CLN-202, CLN-203, CLN-204, SH-127, SH-128, BOOK-10, BOOK-11, BOOK-12, BOOK-13, BOOK-14, ART-24, ART-25, ART-27, SH-132, SH-133, SH-129, SH-130, SH-134, SH-147, SH-142, SH-148, SH-152, SH-150, SH-144, SH-153, SH-149, CHAI-35, CHAI-37, CHAI-36, CK-54, CHAI-34, CHAI-38, SH-154, SH-156, SH-157, SH-158, CHAI-39, SH-155, SH-159, SH-160, SH-167, SH-168, SH-161, SH-162, SH-163, SH-164, SH-165, SH-166, CHAI-40, CHAI-42, CHAI-43, CHAI-44, CHAI-45, CHAI-46, CHAI-47, CHAI-48, CHAI-49, CLN-207, CLN-208, CLN-209, CLN-210, CLN-211, CLN-212, CLN-213, CLN-214, CLN-215, CLN-205, SH-137, PAN-18, MAA-19, SEK-22, SAM-28, CHT-17, DAAR-36, SH-169, SH-170, SEK-23, SH-171, SH-172, CHAI-50, SH-139, SH-180, SH-178, SH-182, CHAI-33, CK-57, CHAI-54, CHAI-55, LNG-23, SH-181, CHAI-56, CHAI-57, ART-32, ART-31, SH-174, SH-175, SH-179, SH-141, SH-143, SH-145, SH-146, CHAI-51, CHAI-52, CHAI-61, CHAI-62, CHAI-67, CHAI-68, CHAI-69, SH-197, SH-198, SH-184, SH-189, SH-190, SH-191, SH-192, SH-195, SH-196, ART-35, ART-36, SH-199, SH-200, SH-201, SH-202, SH-203, CHAI-70, CHAI-71, CHAI-72, CHAI-73, CHAI-74, CHAI-75, CHAI-77, CHAI-99, SH-230, CHAI-98, CHAI-101, SH-231, CHAI-96, CK-59, SH-234, CHAI-105, CHAI-106, ART-37, DAAR-40, DAAR-41, ART-38, SAM-29, DAAR-42, SH-227, SH-240, SH-241, DAAR-44, SH-238, SH-239, SH-242, SEK-24, CK-62, SH-235, CHAI-107, SAM-31, SEK-25, CK-64, DAAR-45, CK-63, CK-61, DAAR-43, CK-65, SH-228, SH-236, SH-237, MAA-22, MAA-21, MAA-20, SAM-30, CHT-18, CHT-19, CK-71, SH-247, SH-244, DAAR-50, SH-245, CK-67, ART-69, SH-243, SH-220, CK-66, SH-246, ART-67, MAA-24, SH-252, SH-249, SH-250, SH-253, SH-254, SH-255, SH-256, SH-257, CK-75, CK-76, CK-77, CK-78, CK-79, CK-80, SH-259, CK-81, CK-85, PAN-19, PAN-20, CK-83, CK-84, ART-52, CHAI-108, CK-72, DAAR-46, DAAR-51, MAA-23, CK-86, SEK-26, SAM-35, ART-78, ART-79, SH-264, SH-265, SH-266, CHAI-110, CK-46, CK-55, CK-82, DAAR-39, SAM-34, PAN-21, ART-72, CHAI-58, CHAI-60, CHAI-65, CHAI-83, CHAI-89, CHAI-111, SH-173, SH-248, SH-251, SH-258, SH-260, SH-267, SH-213, SEK-27, ART-80, CK-89, SH-268, SAM-37, SAM-38, SAM-40, DAAR-52, CK-108, CK-109, CK-110, CK-111, SEK-29, SAM-36, SEK-28, CK-106, CK-107, CK-112, CHAI-113, SH-274, SH-278, SH-272, CK-92, CK-94, CK-95, CK-96, CK-100, CK-101, CK-102, CK-103, CK-104, CK-105",
+    "pages (0):",
+    "about 0 min of browser time at 3 pages at once. Run: node build/tools/review/evidence.mjs --run --rows SH-267",
+    "0 rows: 0 for a reviewer, 0 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-tiers-red-4800353218-0725e61000.md"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/rows-red.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "rows-green",
+   "what": "the rows' probes on this commit (green): SH-267, DAAR-57",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --run --rows SH-267,DAAR-57 --run-id tiers-green-0725e61000",
+   "status": "pass",
+   "code": 0,
+   "line": "2 rows: 1 for a reviewer, 1 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-tiers-green-0725e61000.md",
+   "tail": [
+    "gap     2x  Hane naan!  [device-voice]",
+    "... 4 more in /home/user/nani-jo-ghar/build/screenshots/sandbox/ev-tiers-green-0725e61000/sound.json",
+    "06:37:47 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/ev-tiers-green-0725e61000/summary.md",
+    "DAAR-57: machine PASS -> build/screenshots/evidence/tiers-green-0725e61000/DAAR-57.png",
+    "SH-267: 6 panels, 14 text -> build/screenshots/evidence/tiers-green-0725e61000/SH-267.png",
+    "2 rows: 1 for a reviewer, 1 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-tiers-green-0725e61000.md"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/rows-green.log",
+   "minutes": 4.9
+  },
+  {
+   "id": "rows-judge",
+   "what": "the judge's batch for Fable (evidence.mjs --judge)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/evidence.mjs --judge --run-id tiers-green-0725e61000",
+   "status": "pass",
+   "code": 0,
+   "line": "One reviewer call per batch file (Fable; Opus when Fable is at its limit; never the builder). Then: node build/tools/review/evidence.mjs --collect --run-id tiers-green-0725e61000",
+   "tail": [
+    "judge tiers-green-0725e61000: 1 rows for a reviewer in 1 batches; 0 kept their cached verdict; 1 decided by expect (cached); 0 tool failures (not judged: build/reports/evidence-tiers-green-0725e61000.md)",
+    "build/screenshots/evidence/tiers-green-0725e61000/judge/batch-01.md",
+    "One reviewer call per batch file (Fable; Opus when Fable is at its limit; never the builder). Then: node build/tools/review/evidence.mjs --collect --run-id tiers-green-0725e61000"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/rows-judge.log",
+   "minutes": 0
+  },
+  {
+   "id": "frozen",
+   "what": "chai against its frozen run (frozen.mjs --diff)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/frozen.mjs --diff",
+   "status": "fail",
+   "code": null,
+   "line": "playing 19 flows at 1280x665, 740x320 (run frozen-diff-chai-tray-202611160637) ...",
+   "tail": [
+    "playing 19 flows at 1280x665, 740x320 (run frozen-diff-chai-tray-202611160637) ..."
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/frozen.log",
+   "minutes": 4.9
+  },
+  {
+   "id": "mount",
+   "what": "Cook's mount test (COOK-16: leaked listeners)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/test_cook_mount.mjs",
+   "status": "fail",
+   "code": 1,
+   "line": "FAIL listeners on the page as before: window|resize|false: 2 -> 3; FAIL <body> as before: DIV#lab-app DIV DIV#njg-rotate SECTION.wc",
+   "tail": [
+    "ok   <body> classes as before (\"\")",
+    "ok   no audio context left open (0)",
+    "ok   no iframe",
+    "note the Cook global stays (Cook): SH-314b, until the app-store wrap",
+    "ok   no page errors",
+    "cook mount: 2 failed"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/mount.log",
+   "minutes": 0.5
+  },
+  {
+   "id": "leak-cook",
+   "what": "Cook's Kutchi leak bot (a browser; non-negotiable 4)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/leak.mjs cook",
+   "status": "pass",
+   "code": 0,
+   "line": "leak_cook: ok",
+   "tail": [
+    "leak 'pantry labelled L3': 0.00/12 = 0.0%  (last shelf 19 jars, 0 labelled, needs 5 (stages 3,3,3,3,3))",
+    "leak 'pantry letters L3': 0.00/12 = 0.0%  (last shelf 19 jars, 0 labelled, needs 5 (stages 3,3,3,3,3))",
+    "leak 'pantry unlabelled L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))",
+    "leak 'pantry labelled L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))",
+    "leak 'pantry letters L4': 0.00/12 = 0.0%  (last shelf 17 jars, 0 labelled, needs 6 (stages 3,3,3,3,3,3))",
+    "leak_cook: ok"
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/leak-cook.log",
+   "minutes": 4.2
+  },
+  {
+   "id": "rows-to-recheck",
+   "what": "the fix-list rows of the flows the change reaches (touched.mjs | regress.mjs)",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/review/touched.mjs --base 48003532181dd0cc7da01b2b4182a722f7a3959d --json | node build/tools/review/regress.mjs --stdin",
+   "status": "pass",
+   "code": 0,
+   "line": "883 distinct rows to recheck.",
+   "tail": [
+    "eep a baked shadow (non-negotiable look rule: no baked shadows): the cli",
+    "ART-42  reopened auto: artcheck.test.mjs; eye: the next Every art run gets its references from GitHub itself and downloads in one go, never asking Zafar",
+    "... and 233 more",
+    "checked by the contract run on every flow (--check fails on a break): contract-120 worktop-shadow: DAAR-60; contract-114 no-snap: CK-126; contract-70 slow-at-green: CK-126; contract-121 lesson-tappable: SH-290; contract-99 panel-follow: SH-232, SH-291; contract-129 card-on-bubble: SH-304; contract-112 light-picture: SH-290, SH-292; contract-115 item-size: SH-293; contract-124 knob-sound: CHAI-113; contract-125 one-flash: SH-274; contract-126 exclaim-arrow: SH-278; contract-127 end-heads: SH-272; contract-128 flash-whole: SH-273; contract-100 kit-card: SH-227, SH-241; contract-101 nani-box: SH-240; contract-102 kit-light: SH-119; contract-103 no-buttons: SH-238; contract-104 card-pic: SH-242, SEK-24; contract-105 light-whole: CK-63, CK-124; contract-106 light-goes: SH-236; contract-107 hop-shelf: SH-237; contract-108 praise-last: SH-239; contract-109 shelf-line: SH-243; contract-110 knob-side: SH-247; contract-111 item-reach: SH-244; contract-117 light-stays: SH-261, CK-90, CK-113, CK-114; contract-118 wrong-order: SH-264, SH-265, SH-266; contract-119 dish-flash: SH-267, CK-91, SH-273, SH-285; contract-96 boil-reopen: CHAI-105; contract-98 lesson-shown: DAAR-41, DAAR-60; contract-44 one-finger: SH-233; contract-92 light-room: SH-230, CK-61, DAAR-43, CK-124; contract-93 own-words: CK-59; contract-94 wm-card: SH-231; contract-95 skip-silent: CK-60, DAAR-40; contract-72 row-glide: SH-152, CHAI-39; contract-75 skip-zone: SH-157; contract-76 pop-face: SH-154; contract-77 timed-hold: SH-158; contract-78 call-light: CHAI-40, CHAI-49, CHAI-52, CK-126; contract-79 card-light: CHAI-42, SH-178; contract-80 no-jump: CHAI-45; contract-81 over-gauge: CHAI-46; contract-82 edge-on-face: CHAI-47; contract-83 card-on-face: SH-154, CHAI-43, SH-203, SH-305, CK-126; contract-90 card-light: CHAI-37, CHAI-77, CHAI-106; contract-84 light-clear: SH-164; contract-85 replay: SH-161; contract-86 bubble-clear: SH-166; contract-87 one-light: CHAI-50; contract-88 item-said: SH-171; contract-89 helper-call: SH-172, CHAI-40; contract-91 help-comes: SH-228, CLN-221, RIDE-11; contract-1 popup: SH-64, CHT-10, CHAI-15, CK-29; contract-2 moves-on: SH-40, CLN-92, CLN-110; contract-3 voice: SH-66; contract-4 bubble: SH-68, CLN-86, CLN-146, SH-177; contract-5 badges: SH-67; contract-6 old-art: DAAR-13, ART-17, ART-13, CK-52; contract-7 one-voice: PAN-04; contract-8 highlight: SH-53, SH-79, CK-34, CLN-143, CLN-144, CLN-145, CK-41; contract-9 closed-card: CLN-114; contract-10 your-turn: SH-71; contract-11 background: PAN-14, ART-05, ART-59, ART-60; contract-12 greyed: SH-23; contract-13 stale-ui: CLN-06; contract-14 talk: ART-18; contract-15 words-whole: SH-73, CLN-153, SH-170; contract-16 english: LNG-01, PAN-10, SH-85, MOD-09, MOD-10, CK-42, LNG-15, SH-92; contract-17 voice-src: LNG-06, LNG-14; contract-18 card-rows: SH-10, SEK-13, DAAR-19, DAAR-23, CLN-131, CLN-141; contract-19 counting: DAAR-18, DAAR-24, SH-92; contract-20 one-face: CLN-85, CLN-139, CLN-149, DAAR-25, CK-40; contract-21 input-live: CLN-152, CK-43, CK-45, DAAR-42; contract-22 once-whole: PAN-04, PAN-16, CHAI-21; contract-23 item-word: SH-94; contract-24 help-ladder: SH-60, SH-95; contract-26 opening: LNG-16; contract-30 written: SH-99; contract-31 free-replay: SH-102; contract-32 divider: SH-103; contract-33 headline-size: SH-107; contract-34 go-arrow: SH-106; contract-35 card-ladder: SH-110, SAM-26, MAA-18; contract-36 step-call: SH-110, SEK-18, SH-133; contract-37 decoys: CK-49, SH-132; contract-50 one-tick: SAM-24, SAM-27; contract-51 inside-card: SH-142, SH-138, SH-170, CHAI-69; contract-52 bubble-clear: CK-18, SH-145, SH-138, CHAI-48, SH-177; contract-53 one-in-light: CHAI-33, SH-138; contract-54 rail-in-side: CK-53, SH-138",
+    "883 distinct rows to recheck."
+   ],
+   "log": "build/screenshots/tiers/change-0725e61000/logs/rows-to-recheck.log",
+   "minutes": 0
+  }
+ ],
+ "minutes": 49.7,
+ "ok": false
+}

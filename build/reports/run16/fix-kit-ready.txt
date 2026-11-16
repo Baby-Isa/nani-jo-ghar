@@ -1,0 +1,9 @@
+run16/fix-kit: rows ready for the prove session (checks in build/reports/run16/fix-kit.json)
+SH-267  evidence.mjs --run --rows SH-267 (contract:119 expect pass on eggs, corn, baking#hint, chop L1 at 740x320 and 930x430; plus the older probes)
+DAAR-57 evidence.mjs --run --rows DAAR-57 (cook:chop L1-L4, 740x320 and 1280x665)
+SH-270  probes-open's evidence SH-270 (chop L1, chaat L1) once merged; same fix as DAAR-57
+SH-314  COOK_TEST_PORT=88xx flock -w 1800 /tmp/njg-browser-all.lock timeout 600 node build/test_cook_mount.mjs (three times)
+SH-292  node --test build/sandbox/run16-fixkit.test.mjs
+CK-121  evidence.mjs --run --rows CK-121 (already fixed on the base: cb34df93, 49369e32)
+check-change: node build/tools/tiers/check-change.mjs --base 48003532 --games chop,eggs,corn,baking --levels 1 --rows SH-267,DAAR-57
+  (do not wrap it in flock /tmp/njg-browser-all.lock yourself: its frozen step takes that lock and waits forever)
