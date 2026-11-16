@@ -29768,5 +29768,33 @@
    "note": "eggs' well done stays in the serve's kitchen, chai's way (SH-303, CK-93): at every line Nani or a customer says, through the praise, no cut to the table room with its cat (eg-cat) or its table plate (eg-plateTable), at any level or size",
    "max": 20
   }
+ ],
+ "CK-115": [
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "exp:turn",
+   "after": null,
+   "capture": [
+    "crop:#side",
+    "dom:#mission"
+   ],
+   "expect": [
+    "inside:#mission .oc-card,#side"
+   ],
+   "delay": 0,
+   "note": "corn at 740x320 mid-cook: every person's order card whole inside the side panel, the second never cut at the panel's bottom edge"
+  }
  ]
 }

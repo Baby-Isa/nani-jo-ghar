@@ -2,7 +2,7 @@
  {
   "row": "SH-308",
   "kind": "Logic",
-  "game": "other",
+  "game": "mishkaki",
   "status": "proven",
   "probe": "evidence SH-308 (sekelo, eggs, corn, baking L1-L4 at 740x320 and 1280x665, at life:results: count:#mission .oc-card:not(.folded)=0, inside:#mission .oc-card,#side)",
   "red": "49369e3^ (7ff346a, the commit before SH-308's fix, in a worktree with today's tools and specs): evidence.mjs --run --rows SH-308 --run-id stove-sh308-pre: sekelo L2 740x320 FAIL (a person's card still open at well done, 1 visible)",
@@ -142,7 +142,7 @@
   "status": "built",
   "probe": "evidence CK-100 p2 (baking L1-L4, 740x320 and 1280x665, over the play: contract-113 and contract-82, expect pass); p1 the eye frames (every placed, #speed1)",
   "red": "48003532 (base, worktree): evidence.mjs --run --rows CK-100 --run-id stove-base-ck100b: contract-113 FAIL at L2, L3, L4 740x320 ('nana's face sits over bk-naan-golden (19% of it)'); L1 740x320 in run ev-stove-sh308-base ('over bk-naan-raw (20%)')",
-  "green": "99f15d6 (face beside the tray): --run-id stove-ck100-after 8 of 8 PASS; 2b1d517/1cac7a8 (the tray's light takes the face in): --run-id stove-ck100-after2",
+  "green": "1cac7a8 (the face beside the tray on a phone, the tray's light taking it in): evidence.mjs --run --rows CK-100 --run-id stove-ck100-after2: 8 of 8 PASS (contract-113 and contract-82 0 at L1-L4, 740x320 and 1280x665); the first step alone (99f15d6): --run-id stove-ck100-after 8 of 8",
   "judge": "needs-eye",
   "files": [
    "js/cook/stations/baking.js",
