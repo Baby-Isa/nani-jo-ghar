@@ -1,0 +1,118 @@
+[
+ {
+  "row": "DAAR-55",
+  "kind": "Check",
+  "game": "chop",
+  "status": "built",
+  "probe": "evidence.json DAAR-55: node --test build/tools/review/run16/framebuf-hide.test.mjs; node build/tools/review/run16/chop-strip.mjs --row DAAR-55",
+  "red": "da9432c: node --test build/tools/review/run16/framebuf-hide.test.mjs fails ('a frame drawn while the light was hidden reached the strips', kept at +207 ms) on the base's framebuf/lightshot/lightpix",
+  "green": "0bf3551: the same test passes (framebuf.mjs hideFor opens the hidden window before the hide; lightshot.mjs and lightpix.mjs use it)",
+  "judge": "machine",
+  "files": [
+   "build/sandbox/lib/framebuf.mjs",
+   "build/sandbox/lib/lightshot.mjs",
+   "build/sandbox/lib/lightpix.mjs",
+   "build/tools/review/run16/framebuf-hide.test.mjs",
+   "build/tools/review/run16/chop-strip.mjs"
+  ],
+  "note": "Not the game: the sandbox's own light-picture check hides every dim layer (not the finger) for its under.jpg screenshot about +1.3 to +2 s after a light comes, and the frames the browser delivered during that hide reached the side-by-side strips because the hidden window was recorded only afterwards; the game's own light is continuous at 60 fps on the base and on the 15 Nov code (chop-strip.mjs: no gap over 40 ms, chop L1 and daar L4, 1280x665 and 740x320)."
+ },
+ {
+  "row": "DAAR-56",
+  "kind": "Look",
+  "game": "chop",
+  "status": "built",
+  "probe": "evidence.json DAAR-56: node build/tools/review/run16/chop-strip.mjs --row DAAR-56 --flow chop@1,daar@4 --sizes 1280x665 (and daar@4 740x320)",
+  "red": "48003532: NJG_GAME_ROOT=<base worktree> chop-strip.mjs --row DAAR-56 --flow chop@1,daar@4 --sizes 1280x665,740x320 -> RED 4/4 (finger still on the handle 1357-1560 ms, 15-33% of its path drawn by 2 s after the light)",
+  "green": "7d9c86e: the same -> GREEN 4/4 (still 301-431 ms, 36-56% drawn by 2 s; travel 114-441 px right to left)",
+  "judge": "machine",
+  "files": [
+   "js/cook/mechanics/chop.js",
+   "build/tools/review/run16/chop-strip.mjs"
+  ],
+  "note": "The strip keeps its 1.5 s still scene (SH-253, contract-112) but the finger now comes to the handle 250 ms before the drag instead of at +0.3 s, and the drag eases out so it shows at once; margins are thin at 740x320 (431 ms against a 500 ms limit), so prove should run it twice as planned."
+ },
+ {
+  "row": "DAAR-59",
+  "kind": "Look",
+  "game": "daar",
+  "status": "built",
+  "probe": "evidence.json DAAR-59: node build/tools/review/run16/daar-pills.mjs --levels 2,3 --sizes 1280x665; --levels 2 --sizes 740x320",
+  "red": "48003532: NJG_GAME_ROOT=<base worktree> daar-pills.mjs --levels 1,2,3,4 --sizes 1280x665,740x320 -> RED 6/8 ('laal marcha' 55% of its row at L2-L4, both sizes)",
+  "green": "8fef796: the same -> L1-L3 1280x665 and L1-L2 740x320 green at ratio 1.0 (every word 14.6 / 14.2 px); L3 740x320 and L4 stay as the base (0.55, 0.69 at L4 1280x665): see the DAAR-59b question",
+  "judge": "machine",
+  "files": [
+   "js/cook/stations/daar.js",
+   "js/cook/mechanics/chop.js",
+   "build/tools/review/run16/daar-pills.mjs"
+  ],
+  "note": "The pills were the kit chip's fixed 128 card (Cook.Kit.chip's default w), in chop's band and daar's spice shelf: a long word shrank inside it; where the row has room each pill now gets its own face's card and the slots widen for the widest pill."
+ },
+ {
+  "row": "DAAR-59b",
+  "kind": "HisCall",
+  "game": "daar",
+  "status": "question",
+  "probe": "daar-pills.mjs --levels 3,4 --sizes 740x320 (and L4 1280x665)",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [],
+  "note": "Question for Zafar (DAAR-59's remainder): with eight spice pills (L4, and L3 on a phone) a row has no room for 'laal marcha' at its neighbours' size. Which: (1, recommended) every word in that row one smaller size (SEK-32's rule for sekelo: about 70% at L4 1280x665, 55% on a phone); (2) leave 'laal marcha' alone smaller, as today; (3) two rows of spices at L4."
+ },
+ {
+  "row": "DAAR-60",
+  "kind": "Look",
+  "game": "daar",
+  "status": "proven",
+  "probe": "evidence.json DAAR-60: contract-98 and contract-120 over cook:daar L1 and L4 #speed1, 740x320 and 1280x665, a new player",
+  "red": "193fa1c^ (the commit the row was filed on): NJG_GAME_ROOT=<193fa1c^ worktree> run.mjs --contract --flow cook:daar@L1#speed1,cook:daar@L4#speed1 --sizes 740x320 -> contract-120 x1 (dv2-chop-veg-02 on the worktop with no shadow, L4)",
+  "green": "48003532 (the base): run.mjs --contract --flow cook:daar@L1#speed1,cook:daar@L4#speed1 --sizes 740x320,1280x665 -> 0 breaks over 4 pages (contract-98 judged: the card lesson shown after 2-3 hidden pop-up cards at L4; contract-120 judged over 41-120 shade samples); fixed by 193fa1c (DAAR-60 the chopped heaps' soft shadow)",
+  "judge": "machine",
+  "files": [],
+  "note": "contract-98's half was already green on 193fa1c^ too (the big card lesson came at L4 740x320), so only the shadow half could be shown red."
+ },
+ {
+  "row": "CK-111",
+  "kind": "Look",
+  "game": "daar",
+  "status": "built",
+  "probe": "the finger: DAAR-56's (chop-strip.mjs --row DAAR-56); the stray bowl and the shelf at well done: needs-eye",
+  "red": "48003532: DAAR-56's red (the finger still 1.4-1.6 s on the handle)",
+  "green": "7d9c86e: DAAR-56's green",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "note": "Its first part is DAAR-56 (the finger drags instead of sitting still); the faded garlic bowl and the faded shelf at well done are already full strength in code (daar.js 'CK-111' comments), not re-judged here."
+ },
+ {
+  "row": "KIT-PILL-PAD",
+  "kind": "Check",
+  "game": "other",
+  "status": "open",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/cook/kitchen-kit.js",
+   "js/shared/shelf.js"
+  ],
+  "note": "needs fix-kit: Cook.Kit.chip defaults every pill to a fixed 128 card (a long word shrinks in it: samosa, maani-line and the grill pass fixed widths too) and draws with pad 52 while Shelf.faceW measures with PILL.pad 48, so a card of its measured face shrinks every word by 4 px; daar and chop work round both (PAD_FIX) until the kit makes them one."
+ },
+ {
+  "row": "CHT-21",
+  "kind": "Look",
+  "game": "chaat",
+  "status": "built",
+  "probe": "evidence.json CHT-21: cook:chaat@L4 at kind-slice, 740x320 and 1280x665: count:#mission .oc-card>=2 (the order card beside Nani chop card)",
+  "red": "48003532 (NJG_GAME_ROOT=<base worktree> evidence.mjs --run --rows CHT-21 --run-id cht21-red): L4 FAIL at both sizes (1 card: Chop these alone; Muke chaat khape. gone)",
+  "green": "10c6345 + run16/fix-kit js/cook/ui.js in a scratch tree (evidence.mjs --run --rows CHT-21 --run-id cht21-green): L4 PASS at both sizes (2 cards: Nani chop card and Nana Muke chaat khape.)",
+  "judge": "machine",
+  "files": [
+   "js/cook/mechanics/chop.js"
+  ],
+  "note": "Proven with fix-kit ui.js (its keepOrder option); merge after fix-kit. Nani face already stays in her box (boxFace, s20-b2-chaat). Daar chop keeps its one-card panel (DAAR-44)."
+ }
+]

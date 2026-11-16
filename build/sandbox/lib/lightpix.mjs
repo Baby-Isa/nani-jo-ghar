@@ -5,7 +5,7 @@
 // darker than DARK_BELOW of 255) the light must lift the inside by at least LIGHT_LIFT: the soft warm fill. A lit black burner that
 // looks as black as it did is a lit box nobody can see. (The dimmed screen round the box is measured too, for the sheet's words.)
 import { decodePng } from "../../tools/review/lib/png.mjs";
-import { withScreen, hidWindow } from "./framebuf.mjs";
+import { withScreen, hideFor } from "./framebuf.mjs";
 
 export const DARK_BELOW = 110;        // of 255: what is under the box is a dark thing
 export const LIGHT_LIFT = 12;         // of 255: the light lifts a dark thing's inside by at least this (set from chai on 30 Oct, see s14-tools.md)
@@ -74,13 +74,14 @@ export function lightPix(e, page, sound, { wait = 550 } = {}) {
       await withScreen(page, async () => {
         const lit = decodePng(await page.screenshot({ animations: "allow", timeout: 5000 }));
         if (JSON.stringify(await page.evaluate(`(${HOLES})()`)) !== JSON.stringify(e.holes)) return;   // (it closed while the shot was taken)
-        const from = Date.now();
-        await page.evaluate(() => document.querySelectorAll(".njg-onboard").forEach((l) => { l.dataset.njgWas = l.style.visibility || ""; l.style.visibility = "hidden"; }));
+        // (DAAR-55: the hidden window open from before the hide, framebuf.mjs hideFor: a frame drawn meanwhile never reaches a strip)
         let under = null;
-        try { under = decodePng(await page.screenshot({ animations: "allow", timeout: 5000 })); } finally {
-          await page.evaluate(() => document.querySelectorAll(".njg-onboard").forEach((l) => { l.style.visibility = l.dataset.njgWas || ""; delete l.dataset.njgWas; })).catch(() => {});
-          hidWindow(page, from, Date.now());
-        }
+        await hideFor(page, async () => {
+          await page.evaluate(() => document.querySelectorAll(".njg-onboard").forEach((l) => { l.dataset.njgWas = l.style.visibility || ""; l.style.visibility = "hidden"; }));
+          try { under = decodePng(await page.screenshot({ animations: "allow", timeout: 5000 })); } finally {
+            await page.evaluate(() => document.querySelectorAll(".njg-onboard").forEach((l) => { l.style.visibility = l.dataset.njgWas || ""; delete l.dataset.njgWas; })).catch(() => {});
+          }
+        });
         sound.push({ type: "c", k: "lightpix", t: Date.now(), at: e.t, page: e.page, holes: measureLight(lit, under, e.holes, vw) });
       });
     } catch (x) { /* the page went away: a measure only */ }

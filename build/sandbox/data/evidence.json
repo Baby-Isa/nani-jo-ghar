@@ -34138,5 +34138,177 @@
    ],
    "note": "roll-tawa L1 at a child's pace, 740x320: the tawa's round body centred on its burner (3% of the hob's width) and inside the hob's edges, as drawn (sampled after each frame). The turner's sleeve (hands.js, ART-84), the face beside the plate and Nani's box one step at a time are the eye's"
   }
+ ],
+ "DAAR-55": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node --test build/tools/review/run16/framebuf-hide.test.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: a check fault, not the game: the sandbox pixel checks (lightshot.mjs under.jpg, lightpix.mjs) hide every dim layer for a screenshot (the finger not); a screencast frame delivered during the hide reached the side-by-side strips as the light going off (+1350 to +1520 ms, the finger left on the knife). framebuf.mjs hideFor opens the hidden window before the hide"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/chop-strip.mjs --row DAAR-55 --flow chop@1,daar@4 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: the game own light, frame by frame (rAF) from 3 s before the strip to its end: no dark gap over 40 ms (green on the base and on the 15 Nov code: the gap was never the game)"
+  }
+ ],
+ "DAAR-56": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/chop-strip.mjs --row DAAR-56 --flow chop@1,daar@4 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: chop first-time strip, a new player at a child pace: the finger travels the knife path right to left, rests at most 500 ms on the handle before it moves, a third of its path drawn by 2 s after the light (the side-by-side strip, 0.5 s before to 2 s after)"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/chop-strip.mjs --row DAAR-56 --flow daar@4 --sizes 740x320"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: the same on the smallest phone"
+  }
+ ],
+ "DAAR-59": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 2,3 --sizes 1280x665"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: daar played fair (a seen player): every 200 ms each canvas pill row (the chop band, the spice shelf): its smallest word at least 90% of its largest (laal marcha was 55%: the kit chip fixed 128 card shrank its text). Where the row has room: L1-L3 here"
+  },
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/tools/review/run16/daar-pills.mjs --levels 2 --sizes 740x320"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: the same on the smallest phone, L1-L2 (where the row has room). L3 on a phone and L4 (eight pills) have no room for every word at full size: Zafar question, run16 fix-daar"
+  }
+ ],
+ "DAAR-60": [
+  {
+   "flow": "cook:daar",
+   "path": "speed1",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:98",
+    "contract:120"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "run16: contract-98 (the first hidden pop-up card comes big to the middle) and contract-120 (each worktop thing its soft shadow) at zero over daar L1 and L4 at a child pace, a new player; contract-120 red on 193fa1c^ (dv2-chop-veg-02 with no shadow, L4 740x320), green from 193fa1c"
+  }
+ ],
+ "CHT-21": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-slice",
+   "after": null,
+   "capture": [
+    "crop:#side",
+    "dom:#mission"
+   ],
+   "expect": [
+    "count:#mission .oc-card>=2"
+   ],
+   "delay": 600,
+   "note": "run16: chaat chop step: the order card (Nana, Muke chaat khape.) stays in view in the side panel beside Nani chop card (the kit keepOrder, run16 fix-kit ui.js; chop.js passes it for chaat chop-game, boxFace); Nani face in her box (boxFace, s20-b2-chaat). Was: one card, the order hidden until the bowl step (L4: at L1 for a seen player the order card was already in view at the first slice on the base; the L1 740x320 page never reached kind-slice)"
+  }
  ]
 }
