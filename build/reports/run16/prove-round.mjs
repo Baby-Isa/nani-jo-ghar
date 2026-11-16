@@ -68,7 +68,8 @@ for (const name of BUILDERS) {
   const plan = todo.map((row) => {
     const res = results.filter((x) => x.row === row && /^(built|proven)$/.test(x.status)).pop() || results.find((x) => x.row === row) || {};
     const probes = String(res.probe || "").split(/[,;\s()]+/).map((t) => t.replace(/^[^\w.\/-]+|[^\w.\/-]+$/g, "")).filter(Boolean);
-    const tests = probes.filter((p) => /\.(m?js|cjs)$/.test(p) && existsSync(join(wt, p)));
+    // a test file only: *.test.mjs or a file that imports node:test (a library like contract-s17.mjs passes node --test trivially)
+    const tests = probes.filter((p) => /\.(m?js|cjs)$/.test(p) && existsSync(join(wt, p)) && (/\.test\.(m?js|cjs)$/.test(p) || /node:test/.test(readFileSync(join(wt, p), "utf8"))));
     const specRows = probes.filter((p) => !/\.(m?js|cjs)$/.test(p) && spec[p]);
     if (!tests.length && !specRows.length && spec[row]) specRows.push(row);
     return { row, res, tests, specRows };
@@ -104,7 +105,18 @@ for (const name of BUILDERS) {
     for (const t of p.tests) { testRes[t].forEach((c, i) => { if (c !== 0) passes[i] = false; }); why.push(`${t}: ${testRes[t].map((c) => (c === 0 ? "pass" : `fail(${c})`)).join(", ")}`); }
     for (const s of p.specRows) {
       const v = [1, 2].map((n) => ev[n]?.index?.rows?.[s]);
-      const verdicts = v.map((x) => (!x ? "missing" : x.tool && x.tool.length ? "tool failure" : x.expect || (x.reached < x.probes ? "not reached" : "eye")));
+      const verdicts = v.map((x) => {
+        if (!x) return "missing";
+        if (x.tool && x.tool.length) return "tool failure";
+        if (x.expect) return x.expect;
+        if (x.reached < x.probes) return "not reached";
+        // mixed: some probes carry an expect, the rest are eye panels: all expects pass -> a machine pass (eye panels to the judge)
+        let md = ""; try { md = readFileSync(join(wt, x.md), "utf8"); } catch {}
+        const ex = md.match(/- expect [^\n]*?: (PASS|FAIL|undecided)/g) || [];
+        if (ex.length && ex.every((e) => /: PASS$/.test(e))) return "PASS";
+        if (ex.some((e) => /: FAIL$/.test(e))) return "FAIL";
+        return "eye";
+      });
       verdicts.forEach((x, i) => { if (x !== "PASS" && x !== "eye") passes[i] = false; });
       if (verdicts.every((x) => x === "eye")) machine = false;
       why.push(`${s}: ${verdicts.join(", ")}${v[0] && v[0].expectLine ? ` (${String(v[0].expectLine).slice(0, 120)})` : ""}`);
