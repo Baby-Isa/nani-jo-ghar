@@ -29620,7 +29620,6 @@
    "flow": "cook:chaat",
    "path": "fair",
    "level": [
-    1,
     4
    ],
    "sizes": [
@@ -29639,7 +29638,7 @@
     "count:#mission .oc-card>=2"
    ],
    "delay": 600,
-   "note": "run16: chaat chop step: the order card (Nana, Muke chaat khape.) stays in view in the side panel beside Nani chop card (the kit keepOrder, run16 fix-kit ui.js; chop.js passes it for chaat chop-game, boxFace); Nani face in her box (boxFace, s20-b2-chaat). Was: one card, the order hidden until the bowl step"
+   "note": "run16: chaat chop step: the order card (Nana, Muke chaat khape.) stays in view in the side panel beside Nani chop card (the kit keepOrder, run16 fix-kit ui.js; chop.js passes it for chaat chop-game, boxFace); Nani face in her box (boxFace, s20-b2-chaat). Was: one card, the order hidden until the bowl step (L4: at L1 for a seen player the order card was already in view at the first slice on the base; the L1 740x320 page never reached kind-slice)"
   }
  ]
 }
