@@ -1,2 +1,65 @@
 # fix-kit at 5d05688f3528b898ce1b0c338e4fae8ddeb23f00 (2026-11-16 07:33 UTC)
 ready list dc15bb9d8a: SH-267, DAAR-57, SH-270, SH-314, SH-292, CK-121
+
+$ node build/tools/review/evidence.mjs --run --rows SH-267,DAAR-57,CK-121 --run-id prove-fix-kit-5d05688-1  (exit 0, 1474s)
+20 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 76 s | evidence: 1/1 probes reached their moment
+07:42:05 cook:baking#hint @ 930x430 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 84 s | evidence: 1/1 probes reached their moment
+07:42:12 cook:chop@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 55 s | evidence: 1/1 probes reached their moment
+07:42:44 cook:chop@L2 @ 1280x665 (p-fresh): end reached | 10 states, 6 distinct findings, 0 page errors, 71 s | evidence: 1/1 probes reached their moment
+07:43:28 cook:eggs @ 740x320 (p-fresh): end reached | 10 states, 10 distinct findings, 0 page errors, 44 s | evidence: 2/2 probes reached their moment
+07:44:01 cook:chop@L4 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 116 s | evidence: 1/1 probes reached their moment
+07:44:08 cook:eggs @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 40 s | evidence: 1/1 probes reached their moment
+07:44:11 cook:chop@L4 @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 119 s | evidence: 1/1 probes reached their moment
+07:44:45 cook:eggs @ 930x430 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 44 s | evidence: 1/1 probes reached their moment
+07:45:06 cook:eggs@L2 @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 55 s | evidence: 1/1 probes reached their moment
+07:45:13 cook:eggs@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 64 s | evidence: 1/1 probes reached their moment
+07:46:15 cook:eggs@L3 @ 1280x665 (p-fresh): end reached | 10 states, 6 distinct findings, 0 page errors, 69 s | evidence: 1/1 probes reached their moment
+07:46:33 cook:eggs@L3 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 108 s | evidence: 1/1 probes reached their moment
+07:47:25 cook:corn @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 52 s | evidence: 1/1 probes reached their moment
+07:47:56 cook:eggs@L4 @ 740x320 (p-fresh): end reached | 10 states, 11 distinct findings, 0 page errors, 163 s | evidence: 1/1 probes reached their moment
+07:47:59 cook:eggs@L4 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 104 s | evidence: 1/1 probes reached their moment
+07:48:29 cook:corn @ 930x430 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 64 s | evidence: 1/1 probes reached their moment
+07:48:43 cook:chop @ 1280x665 (p-fresh): end reached | 9 states, 4 distinct findings, 0 page errors, 44 s | evidence: 1/1 probes reached their moment
+07:48:45 cook:chop @ 740x320 (p-fresh): end reached | 10 states, 7 distinct findings, 0 page errors, 49 s | evidence: 2/2 probes reached their moment
+07:49:06 cook:chop @ 930x430 (p-fresh): end reached | 10 states, 7 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+07:49:44 cook:chop@L3 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 61 s | evidence: 1/1 probes reached their moment
+07:49:57 cook:chai-tray @ 740x320 (p-fresh): end reached | 11 states, 10 distinct findings, 0 page errors, 51 s | evidence: 1/1 probes reached their moment
+07:49:58 cook:chop@L3 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 73 s | evidence: 1/1 probes reached their moment
+07:50:17 cook:chai-tray @ 1280x665 (p-fresh): end reached | 11 states, 5 distinct findings, 0 page errors, 33 s | evidence: 1/1 probes reached their moment
+07:50:20 lights: 32 judged on their pictures, 0 failing (lib/lightjudge.py)
+
+07:50:21 findings: 201 (text-small 74, tap-small 72, covered 24, covers-play-area 22, canvas-text-small 8, canvas-text-covered 1)
+07:50:21 sound: 56 lines heard, 35 with no family clip (the recording gap list), 45 played files that are not an approved family clip
+  gap    28x  Thank you!  [device-voice]
+  gap    18x  Indo wiji chad!  [device-voice]
+  gap    17x  Tarelo indo hane kadh.  [device-voice]
+  gap    15x  Khuda-fis!  [device-voice]
+  gap    13x  Nindha nindha kap!  [device-voice]
+  gap     8x  Indo khan!  [device-voice]
+  gap     7x  Muke hakro tarelo indo khapeto.  [device-voice]
+  gap     7x  Indo hane kadh.  [device-voice]
+  gap     6x  Muke hakro tameto khapeto.  [device-voice]
+  gap     5x  Muke ba dungri khapanti.  [device-voice]
+  gap     5x  Hane trae lasan!  [device-voice]
+  gap     4x  Muke trae lasan khape.  [device-voice]
+  gap     4x  miryo.  [device-voice]
+  gap     4x  Muke naan khape.  [device-voice]
+  gap     4x  Hakro cup atto wiji chad!  [device-voice]
+  gap     3x  ba dungri  [silent]
+  gap     2x  Muke trae mirchi khapanti.  [device-voice]
+  gap     2x  Muke hakri dungri khapeti.  [device-voice]
+  gap     2x  Muke hakro bafelo indo khapeto.  [device-voice]
+  gap     2x  Muke ba tarela inda khapanta,  [device-voice]
+  gap     2x  Muke chai khapeti,  [device-voice]
+  gap     2x  paani  [device-voice]
+  gap     2x  Iloka je glass me wij.  [device-voice]
+  gap     2x  Muke ba lasan khape.  [device-voice]
+  gap     2x  ba lasan  [silent]
+  ... 10 more in /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-5d05688/build/screenshots/sandbox/ev-prove-fix-kit-5d05688-1/sound.json
+07:50:21 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-5d05688/build/screenshots/sandbox/ev-prove-fix-kit-5d05688-1/summary.md
+DAAR-57: machine PASS -> build/screenshots/evidence/prove-fix-kit-5d05688-1/DAAR-57.png
+CK-121: machine PASS -> build/screenshots/evidence/prove-fix-kit-5d05688-1/CK-121.png
+SH-267: 6 panels, 14 text -> build/screenshots/evidence/prove-fix-kit-5d05688-1/SH-267.png
+
+3 rows: 1 for a reviewer, 2 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-prove-fix-kit-5d05688-1.md
+

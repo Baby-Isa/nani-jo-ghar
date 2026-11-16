@@ -118,3 +118,37 @@ green      cook:maani-line@L4 @ 740x320
     MAA-28 rows at the well done: nana[k3,k2,k1]
 MAA-28 green
 
+
+$ flock -w 3600 /tmp/njg-browser-all.lock node build/tools/review/chaisound.mjs --rows CHAI-100  (exit 0, 1096s)
+07:50:21 run chaisound-20261116T075021: 8 pages (0 done already), 2 at a time, port 8872
+07:51:22 cook:chai-tray#speed1 @ 1280x665: end reached | 12 states, 5 distinct findings, 0 page errors, 60 s
+07:51:30 cook:chai-tray#speed1 @ 740x320: end reached | 12 states, 10 distinct findings, 0 page errors, 68 s
+07:53:19 cook:chai-tray@L2#speed1 @ 1280x665: end reached | 12 states, 7 distinct findings, 0 page errors, 110 s
+07:53:38 cook:chai-tray@L2#speed1 @ 740x320: end reached | 12 states, 14 distinct findings, 0 page errors, 137 s
+07:55:01 cook:chai-tray@L3#speed1 @ 1280x665: end reached | 12 states, 11 distinct findings, 0 page errors, 82 s
+07:55:16 cook:chai-tray@L3#speed1 @ 740x320: end reached | 12 states, 17 distinct findings, 0 page errors, 117 s
+07:57:29 cook:chai-tray@L4#speed1 @ 1280x665: end reached | 12 states, 9 distinct findings, 0 page errors, 133 s
+07:57:57 cook:chai-tray@L4#speed1 @ 740x320: end reached | 12 states, 17 distinct findings, 0 page errors, 176 s
+
+07:57:58 findings: 70 (tap-small 27, text-small 18, covered 13, covers-play-area 8, canvas-text-small 4)
+07:57:58 sound: 18 lines heard, 9 with no family clip (the recording gap list), 22 played files that are not an approved family clip
+  gap    15x  Iloka je glass me wij.  [device-voice]
+  gap     8x  Thank you!  [device-voice]
+  gap     8x  Khuda-fis!  [device-voice]
+  gap     6x  Muke elchi waari chai khapeti,  [device-voice]
+  gap     5x  paani  [device-voice]
+  gap     4x  Akho burichad.  [device-voice]
+  gap     2x  Muke chai khapeti,  [device-voice]
+  gap     2x  Khun wiji chad!  [device-voice]
+  gap     1x  Elchi wiji chad!  [device-voice]
+07:57:58 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-chai-6be737a/build/screenshots/sandbox/chaisound-20261116T075021/summary.md
+green CHAI-100 cook:chai-tray#speed1 @ 1280x665: 2 knob sound(s) asked, 0 with no tap in the 0.6 s before
+green CHAI-100 cook:chai-tray#speed1 @ 740x320: 2 knob sound(s) asked, 0 with no tap in the 0.6 s before
+green CHAI-100 cook:chai-tray@L2#speed1 @ 1280x665: 4 knob sound(s) asked, 0 with no tap in the 0.6 s before
+green CHAI-100 cook:chai-tray@L2#speed1 @ 740x320: 4 knob sound(s) asked, 0 with no tap in the 0.6 s before
+green CHAI-100 cook:chai-tray@L3#speed1 @ 1280x665: 6 knob sound(s) asked, 0 with no tap in the 0.6 s before
+green CHAI-100 cook:chai-tray@L3#speed1 @ 740x320: 4 knob sound(s) asked, 0 with no tap in the 0.6 s before
+green CHAI-100 cook:chai-tray@L4#speed1 @ 1280x665: 6 knob sound(s) asked, 0 with no tap in the 0.6 s before
+green CHAI-100 cook:chai-tray@L4#speed1 @ 740x320: 6 knob sound(s) asked, 0 with no tap in the 0.6 s before
+CHAI-100: green on 8
+

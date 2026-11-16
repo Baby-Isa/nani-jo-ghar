@@ -1,1 +1,74 @@
-[]
+[
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "MAA-28",
+  "status": "unproven",
+  "why": "node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665: pass (794 s), pass (651 s); check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "CHAI-99",
+  "status": "unproven",
+  "why": "node --test build/tools/review/chai-next-pan.test.mjs: pass, pass (fresh worktree, 07:12); check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "CHAI-100",
+  "status": "unproven",
+  "why": "node build/tools/review/chaisound.mjs --rows CHAI-100: pass (1096 s); the second run not made (time); chaisound also printed 22 played files that are not an approved family clip and 9 lines with no family clip, which its exit does not count; check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "CHAI-113",
+  "status": "unproven",
+  "why": "node build/tools/review/chaisound.mjs --rows CHAI-113: not run (time); check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "SAM-44",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-01",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-02",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-03",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-04",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ }
+]
