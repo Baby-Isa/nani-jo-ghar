@@ -1,0 +1,229 @@
+{
+ "tier": "change",
+ "tierNo": "2",
+ "name": "check-change",
+ "commit": "48003532181dd0cc7da01b2b4182a722f7a3959d",
+ "dirty": false,
+ "date": "2026-11-16T05:23:34.604Z",
+ "base": "48003532181dd0cc7da01b2b4182a722f7a3959d",
+ "games": [
+  "cook:chop"
+ ],
+ "gamesWhy": "--games",
+ "rows": [],
+ "levels": {
+  "cook:chop": [
+   1
+  ]
+ },
+ "sizes": [
+  "740x320",
+  "930x430"
+ ],
+ "notes": [],
+ "artefacts": {
+  "the play": "build/screenshots/sandbox/tiers-change-4800353218",
+  "before | after": "build/screenshots/tiers/change-4800353218/before-after/index.html",
+  "first-play films": [
+   "build/screenshots/sandbox/tiers-film-4800353218-chop/films/cook-chop-speed1@740x320.webm"
+  ],
+  "logs": "build/screenshots/tiers/change-4800353218/logs"
+ },
+ "failures": [
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop@740x320 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop@930x430 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card flashed only 112 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#mistake@740x320 (start)",
+   "what": "the customer said the dish (\"Muke ba lasan khape.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#mistake@930x430 (start)",
+   "what": "the customer said the dish (\"Muke ba lasan khape.\") at level 1 and its card flashed only 115 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#hint@740x320 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card flashed only 120 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#hint@930x430 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#takeback@740x320 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card flashed only 97 ms beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#takeback@930x430 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "lab:cook/chop@740x320 (start)",
+   "what": "the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "lab:cook/chop@930x430 (start)",
+   "what": "the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble (the base has it too)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "play",
+   "where": "build/screenshots/tiers/change-4800353218/logs/play.log",
+   "what": "CONTRACT FAILED: 10 breaks (contract-119 10); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "before",
+   "where": "build/screenshots/tiers/change-4800353218/logs/before.log",
+   "what": "CONTRACT FAILED: 10 breaks (contract-119 10); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+   "blocks": false
+  }
+ ],
+ "pages": {
+  "after": 10,
+  "before": 10,
+  "breaksAfter": 10,
+  "breaksBefore": 10
+ },
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 4.6 min; build/reports/tiers/push-4800353218.md",
+   "tail": [
+    "checks ... pass (4.6 min)",
+    "check-push: PASSED in 4.6 min; build/reports/tiers/push-4800353218.md"
+   ],
+   "log": "build/screenshots/tiers/change-4800353218/logs/push.log",
+   "minutes": 4.6
+  },
+  {
+   "id": "play",
+   "what": "the robot plays cook:chop (5 flows: L1, paths) at 740x320, 930x430 with the contract rules",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-change-4800353218",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 10 breaks (contract-119 10); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+   "tail": [
+    "BREAK contract-119 lab:cook/chop L1 @ 740x320 [start c05-bubble.png] 1.9s: the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble",
+    "BREAK contract-119 lab:cook/chop L1 @ 930x430 [start c04-bubble.png] 1.7s: the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): chop 102/111",
+    "CONTRACT FAILED: 10 breaks (contract-119 10)",
+    "CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+    "05:31:23 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-4800353218/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-4800353218/logs/play.log",
+   "minutes": 3.2
+  },
+  {
+   "id": "before",
+   "what": "the same flows on the base commit 4800353218 (its own tree and sandbox)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chop,cook:chop#mistake,cook:chop#hint,cook:chop#takeback,lab:cook/chop' --sizes 740x320,930x430 --check --no-sheets --run-id tiers-before-4800353218-4800353218",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 10 breaks (contract-119 10); CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+   "tail": [
+    "BREAK contract-119 lab:cook/chop L1 @ 740x320 [start c04-bubble.png] 1.9s: the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble",
+    "BREAK contract-119 lab:cook/chop L1 @ 930x430 [start c04-bubble.png] 1.8s: the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble",
+    "judged per game (contract.md lists each check not judged and why): chop 102/111",
+    "CONTRACT FAILED: 10 breaks (contract-119 10)",
+    "CHECK FAILED: 48 new findings, 0 flows do not reach their end, 0 new page errors, 10 contract breaks",
+    "05:34:33 summary: /home/user/nani-jo-ghar/build/screenshots/tiers/trees/4800353218/build/screenshots/sandbox/tiers-before-4800353218-4800353218/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-4800353218/logs/before.log",
+   "minutes": 3.2
+  },
+  {
+   "id": "pairs",
+   "what": "before | after pictures, made by script from the two runs",
+   "game": null,
+   "blocks": false,
+   "browser": false,
+   "fix": null,
+   "command": "python3 build/tools/tiers/pairs.py /home/user/nani-jo-ghar/build/screenshots/tiers/trees/4800353218/build/screenshots/sandbox/tiers-before-4800353218-4800353218 build/screenshots/sandbox/tiers-change-4800353218 build/screenshots/tiers/change-4800353218/before-after",
+   "status": "pass",
+   "code": 0,
+   "line": "pairs: 214 before|after pictures, 39 not paired; build/screenshots/tiers/change-4800353218/before-after/index.html",
+   "tail": [
+    "pairs: 214 before|after pictures, 39 not paired; build/screenshots/tiers/change-4800353218/before-after/index.html"
+   ],
+   "log": "build/screenshots/tiers/change-4800353218/logs/pairs.log",
+   "minutes": 0.1
+  },
+  {
+   "id": "film:chop",
+   "what": "a first-play film: cook:chop#speed1 as a new player at 740x320, for the orchestrator to look at",
+   "game": "cook:chop",
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'cook:chop#speed1' --sizes 740x320 --no-sheets --run-id tiers-film-4800353218-chop",
+   "status": "pass",
+   "code": 0,
+   "line": "05:35:04 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-4800353218-chop/summary.md",
+   "tail": [
+    "gap     1x  Nindha nindha kap!  [device-voice]",
+    "gap     1x  hakro lasan  [device-voice]",
+    "gap     1x  ba lasan  [silent]",
+    "gap     1x  Bas!  [device-voice]",
+    "gap     1x  Thank you!  [device-voice]",
+    "05:35:04 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-film-4800353218-chop/summary.md"
+   ],
+   "log": "build/screenshots/tiers/change-4800353218/logs/film_chop.log",
+   "minutes": 0.4
+  }
+ ],
+ "minutes": 11.5,
+ "ok": true
+}

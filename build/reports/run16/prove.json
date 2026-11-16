@@ -1,0 +1,122 @@
+[
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "MAA-28",
+  "status": "unproven",
+  "why": "node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665: pass (794 s), pass (651 s); check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "CHAI-99",
+  "status": "unproven",
+  "why": "node --test build/tools/review/chai-next-pan.test.mjs: pass, pass (fresh worktree, 07:12); check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "CHAI-100",
+  "status": "unproven",
+  "why": "node build/tools/review/chaisound.mjs --rows CHAI-100: pass (1096 s); the second run not made (time); chaisound also printed 22 played files that are not an approved family clip and 9 lines with no family clip, which its exit does not count; check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-chai",
+  "commit": "6be737ae6f",
+  "row": "CHAI-113",
+  "status": "unproven",
+  "why": "node build/tools/review/chaisound.mjs --rows CHAI-113: not run (time); check-change not run: stopped at 07:58 to give fix-kit the one browser; the branch changes no game file (git diff 48003532..6be737ae -- js css data *.html is empty), so check-change would play the base game",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "SAM-44",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-01",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-02",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-03",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-samosa",
+  "commit": "6228a482",
+  "row": "RT-04",
+  "status": "unproven",
+  "why": "not reached: one browser on this VM; fix-kit and fix-chai took it until 08:45 (its probes: node build/probes/samosa-rt.mjs --row <row>)",
+  "at": "2026-11-16 08:00 UTC"
+ },
+ {
+  "branch": "run16/fix-kit",
+  "commit": "5d05688f35",
+  "row": "DAAR-57",
+  "status": "unproven",
+  "why": "evidence DAAR-57 (chop L1-L4, 740x320 and 1280x665): machine PASS, PASS; check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
+ },
+ {
+  "branch": "run16/fix-kit",
+  "commit": "5d05688f35",
+  "row": "CK-121",
+  "status": "unproven",
+  "why": "evidence CK-121 (eggs L1-L4): machine PASS, PASS (fixed on the base: cb34df93, 49369e32); check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
+ },
+ {
+  "branch": "run16/fix-kit",
+  "commit": "5d05688f35",
+  "row": "SH-314",
+  "status": "unproven",
+  "why": "node build/test_cook_mount.mjs: pass, pass (28 s each); check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
+ },
+ {
+  "branch": "run16/fix-kit",
+  "commit": "5d05688f35",
+  "row": "SH-292",
+  "status": "unproven",
+  "why": "node --test build/sandbox/run16-fixkit.test.mjs: pass, pass; check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
+ },
+ {
+  "branch": "run16/fix-kit",
+  "commit": "5d05688f35",
+  "row": "SH-267",
+  "status": "unproven",
+  "why": "FLAKY: evidence SH-267 run 1 every machine expect PASS (contract-119), run 2 at least one expect FAIL; the run-2 sheet was lost when my tool removed the worktree (a fault of prove-round.mjs, now fixed), so the failing page is not named. At 3332fbe both runs had 0 contract-119 breaks on all 14 pages. Needs a third run on 5d05688; check-change on 5d05688 (chop L1, --rows DAAR-57, --no-film, started 08:21): push PASS; play 0 contract breaks over 10 pages (base: 10 contract-119); 0 page errors; frozen, mount and leak steps unfinished at 08:45, so no exit code",
+  "at": "2026-11-16 08:42 UTC"
+ },
+ {
+  "branch": "run16/fix-kit",
+  "commit": "5d05688f35",
+  "row": "SH-270",
+  "status": "unproven",
+  "why": "no check on this branch: its probe is probes-open evidence SH-270 (not merged here); DAAR-57 (same kit cause) passes twice",
+  "at": "2026-11-16 08:25 UTC"
+ }
+]

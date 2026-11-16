@@ -1,0 +1,204 @@
+# fix-kit at 3332fbe78680a3c70146348cc4b1ede48550a6f6 (2026-11-16 06:21 UTC)
+ready list f11d8ba229: SH-267, SH-292, DAAR-57, SH-270, CHT-21, CK-121, SH-232
+
+$ node build/tools/review/evidence.mjs --run --rows SH-267,DAAR-57,CK-121 --run-id prove-fix-kit-3332fbe-1  (exit 0, 552s)
+02 cook:baking#hint @ 740x320 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 65 s | evidence: 1/1 probes reached their moment
+06:25:49 cook:baking#hint @ 930x430 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 77 s | evidence: 1/1 probes reached their moment
+06:25:55 cook:chop@L2 @ 740x320 (p-fresh): end reached | 10 states, 14 distinct findings, 0 page errors, 61 s | evidence: 1/1 probes reached their moment
+06:26:31 cook:chop@L2 @ 1280x665 (p-fresh): end reached | 9 states, 5 distinct findings, 0 page errors, 89 s | evidence: 1/1 probes reached their moment
+06:27:16 cook:eggs @ 740x320 (p-fresh): end reached | 10 states, 10 distinct findings, 0 page errors, 45 s | evidence: 2/2 probes reached their moment
+06:27:38 cook:chop@L4 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 104 s | evidence: 1/1 probes reached their moment
+06:27:42 cook:chop@L4 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 113 s | evidence: 1/1 probes reached their moment
+06:28:05 cook:eggs @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 49 s | evidence: 1/1 probes reached their moment
+06:28:26 cook:eggs @ 930x430 (p-fresh): end reached | 10 states, 10 distinct findings, 0 page errors, 48 s | evidence: 1/1 probes reached their moment
+06:28:48 cook:eggs@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 66 s | evidence: 1/1 probes reached their moment
+06:28:57 cook:eggs@L2 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 52 s | evidence: 1/1 probes reached their moment
+06:29:49 cook:eggs@L3 @ 1280x665 (p-fresh): end reached | 10 states, 6 distinct findings, 0 page errors, 61 s | evidence: 1/1 probes reached their moment
+06:29:58 cook:eggs@L3 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 92 s | evidence: 1/1 probes reached their moment
+06:30:33 cook:corn @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 35 s | evidence: 1/1 probes reached their moment
+06:30:47 cook:eggs@L4 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 59 s | evidence: 1/1 probes reached their moment
+06:30:50 cook:eggs@L4 @ 740x320 (p-fresh): end reached | 10 states, 11 distinct findings, 0 page errors, 112 s | evidence: 1/1 probes reached their moment
+06:31:09 cook:corn @ 930x430 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 36 s | evidence: 1/1 probes reached their moment
+06:31:13 cook:chop @ 740x320 (p-fresh): end reached | 10 states, 7 distinct findings, 0 page errors, 26 s | evidence: 2/2 probes reached their moment
+06:31:15 cook:chop @ 1280x665 (p-fresh): end reached | 9 states, 3 distinct findings, 0 page errors, 25 s | evidence: 1/1 probes reached their moment
+06:31:30 cook:chop @ 930x430 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 22 s | evidence: 1/1 probes reached their moment
+06:31:53 cook:chop@L3 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 40 s | evidence: 1/1 probes reached their moment
+06:31:55 cook:chop@L3 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 40 s | evidence: 1/1 probes reached their moment
+06:32:08 cook:chai-tray @ 740x320 (p-fresh): end reached | 11 states, 10 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+06:32:22 cook:chai-tray @ 1280x665 (p-fresh): end reached | 11 states, 5 distinct findings, 0 page errors, 29 s | evidence: 1/1 probes reached their moment
+06:32:24 lights: 32 judged on their pictures, 0 failing (lib/lightjudge.py)
+
+06:32:25 findings: 195 (text-small 72, tap-small 68, covered 24, covers-play-area 23, canvas-text-small 8)
+06:32:25 sound: 54 lines heard, 35 with no family clip (the recording gap list), 43 played files that are not an approved family clip
+  gap    28x  Thank you!  [device-voice]
+  gap    15x  Khuda-fis!  [device-voice]
+  gap    14x  Indo wiji chad!  [device-voice]
+  gap    14x  Tarelo indo hane kadh.  [device-voice]
+  gap    13x  Nindha nindha kap!  [device-voice]
+  gap     8x  Indo khan!  [device-voice]
+  gap     7x  Muke hakro tameto khapeto.  [device-voice]
+  gap     7x  Muke hakro tarelo indo khapeto.  [device-voice]
+  gap     6x  Indo hane kadh.  [device-voice]
+  gap     5x  Muke ba dungri khapanti.  [device-voice]
+  gap     4x  Muke trae lasan khape.  [device-voice]
+  gap     4x  Kali trae lasan.  [device-voice]
+  gap     4x  Muke naan khape.  [device-voice]
+  gap     4x  Hakro cup atto wiji chad!  [device-voice]
+  gap     3x  ba dungri  [silent]
+  gap     2x  Muke trae mirchi khapanti.  [device-voice]
+  gap     2x  Muke hakri dungri khapeti.  [device-voice]
+  gap     2x  Muke hakro bafelo indo khapeto.  [device-voice]
+  gap     2x  miryo.  [device-voice]
+  gap     2x  Muke ba tarela inda khapanta,  [device-voice]
+  gap     2x  Muke chai khapeti,  [device-voice]
+  gap     2x  paani  [device-voice]
+  gap     2x  Iloka je glass me wij.  [device-voice]
+  gap     2x  Muke ba lasan khape.  [device-voice]
+  gap     2x  ba lasan  [silent]
+  ... 10 more in /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-3332fbe/build/screenshots/sandbox/ev-prove-fix-kit-3332fbe-1/sound.json
+06:32:25 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-3332fbe/build/screenshots/sandbox/ev-prove-fix-kit-3332fbe-1/summary.md
+DAAR-57: machine PASS -> build/screenshots/evidence/prove-fix-kit-3332fbe-1/DAAR-57.png
+CK-121: machine PASS -> build/screenshots/evidence/prove-fix-kit-3332fbe-1/CK-121.png
+SH-267: 6 panels, 14 text -> build/screenshots/evidence/prove-fix-kit-3332fbe-1/SH-267.png
+
+3 rows: 1 for a reviewer, 2 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-prove-fix-kit-3332fbe-1.md
+
+
+$ node build/tools/review/evidence.mjs --run --rows SH-267,DAAR-57,CK-121 --run-id prove-fix-kit-3332fbe-2  (exit 0, 441s)
+ok:baking#hint @ 740x320 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 60 s | evidence: 1/1 probes reached their moment
+06:34:31 cook:chop@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 36 s | evidence: 1/1 probes reached their moment
+06:34:35 cook:baking#hint @ 930x430 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 61 s | evidence: 1/1 probes reached their moment
+06:34:39 cook:chop@L2 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 34 s | evidence: 1/1 probes reached their moment
+06:35:10 cook:eggs @ 740x320 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 30 s | evidence: 2/2 probes reached their moment
+06:35:30 cook:chop@L4 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 59 s | evidence: 1/1 probes reached their moment
+06:35:30 cook:chop@L4 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 55 s | evidence: 1/1 probes reached their moment
+06:35:38 cook:eggs @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 29 s | evidence: 1/1 probes reached their moment
+06:36:04 cook:eggs @ 930x430 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 34 s | evidence: 1/1 probes reached their moment
+06:36:18 cook:eggs@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 48 s | evidence: 1/1 probes reached their moment
+06:36:18 cook:eggs@L2 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 40 s | evidence: 1/1 probes reached their moment
+06:37:07 cook:eggs@L3 @ 1280x665 (p-fresh): end reached | 10 states, 6 distinct findings, 0 page errors, 49 s | evidence: 1/1 probes reached their moment
+06:37:16 cook:eggs@L3 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 72 s | evidence: 1/1 probes reached their moment
+06:37:51 cook:corn @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 35 s | evidence: 1/1 probes reached their moment
+06:38:02 cook:eggs@L4 @ 740x320 (p-fresh): end reached | 10 states, 11 distinct findings, 0 page errors, 103 s | evidence: 1/1 probes reached their moment
+06:38:04 cook:eggs@L4 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 56 s | evidence: 1/1 probes reached their moment
+06:38:28 cook:chop @ 740x320 (p-fresh): end reached | 10 states, 7 distinct findings, 0 page errors, 26 s | evidence: 2/2 probes reached their moment
+06:38:28 cook:corn @ 930x430 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+06:38:30 cook:chop @ 1280x665 (p-fresh): end reached | 9 states, 3 distinct findings, 0 page errors, 26 s | evidence: 1/1 probes reached their moment
+06:38:50 cook:chop @ 930x430 (p-fresh): end reached | 9 states, 5 distinct findings, 0 page errors, 22 s | evidence: 1/1 probes reached their moment
+06:39:13 cook:chop@L3 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 43 s | evidence: 1/1 probes reached their moment
+06:39:14 cook:chop@L3 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 46 s | evidence: 1/1 probes reached their moment
+06:39:28 cook:chai-tray @ 740x320 (p-fresh): end reached | 11 states, 10 distinct findings, 0 page errors, 38 s | evidence: 1/1 probes reached their moment
+06:39:42 cook:chai-tray @ 1280x665 (p-fresh): end reached | 11 states, 5 distinct findings, 0 page errors, 29 s | evidence: 1/1 probes reached their moment
+06:39:45 lights: 36 judged on their pictures, 0 failing (lib/lightjudge.py)
+
+06:39:46 findings: 189 (text-small 72, tap-small 61, covers-play-area 24, covered 24, canvas-text-small 8)
+06:39:46 sound: 51 lines heard, 36 with no family clip (the recording gap list), 44 played files that are not an approved family clip
+  gap    28x  Thank you!  [device-voice]
+  gap    18x  Tarelo indo hane kadh.  [device-voice]
+  gap    15x  Khuda-fis!  [device-voice]
+  gap    13x  Nindha nindha kap!  [device-voice]
+  gap    13x  Indo wiji chad!  [device-voice]
+  gap     7x  Muke hakro tarelo indo khapeto.  [device-voice]
+  gap     5x  Muke ba dungri khapanti.  [device-voice]
+  gap     5x  Muke hakro tameto khapeto.  [device-voice]
+  gap     5x  Indo hane kadh.  [device-voice]
+  gap     4x  Muke trae lasan khape.  [device-voice]
+  gap     4x  Indo khan!  [device-voice]
+  gap     4x  Muke naan khape.  [device-voice]
+  gap     4x  Hakro cup atto wiji chad!  [device-voice]
+  gap     3x  ba dungri  [silent]
+  gap     3x  Hane trae lasan!  [device-voice]
+  gap     2x  Muke trae mirchi khapanti.  [device-voice]
+  gap     2x  Muke hakri dungri khapeti.  [device-voice]
+  gap     2x  Muke hakro bafelo indo khapeto.  [device-voice]
+  gap     2x  miryo.  [device-voice]
+  gap     2x  Muke ba tarela inda khapanta,  [device-voice]
+  gap     2x  Muke chai khapeti,  [device-voice]
+  gap     2x  paani  [device-voice]
+  gap     2x  Iloka je glass me wij.  [device-voice]
+  gap     2x  Muke ba lasan khape.  [device-voice]
+  gap     2x  hakro lasan  [device-voice]
+  ... 11 more in /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-3332fbe/build/screenshots/sandbox/ev-prove-fix-kit-3332fbe-2/sound.json
+06:39:46 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-3332fbe/build/screenshots/sandbox/ev-prove-fix-kit-3332fbe-2/summary.md
+DAAR-57: machine PASS -> build/screenshots/evidence/prove-fix-kit-3332fbe-2/DAAR-57.png
+CK-121: machine PASS -> build/screenshots/evidence/prove-fix-kit-3332fbe-2/CK-121.png
+SH-267: 6 panels, 14 text -> build/screenshots/evidence/prove-fix-kit-3332fbe-2/SH-267.png
+
+3 rows: 1 for a reviewer, 2 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-prove-fix-kit-3332fbe-2.md
+
+
+$ node --test build/sandbox/run16-fixkit.test.mjs  (exit 0, 0s)
+TAP version 13
+# Subtest: SH-292: the light sits centred on its thing when a neighbour trims one side
+ok 1 - SH-292: the light sits centred on its thing when a neighbour trims one side
+  ---
+  duration_ms: 4.668776
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 50.18295
+
+
+$ node --test build/sandbox/run16-fixkit.test.mjs  (exit 0, 0s)
+TAP version 13
+# Subtest: SH-292: the light sits centred on its thing when a neighbour trims one side
+ok 1 - SH-292: the light sits centred on its thing when a neighbour trims one side
+  ---
+  duration_ms: 5.762445
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 60.534135
+
+
+$ node --test build/sandbox/lib/contract-s17.mjs  (exit 0, 0s)
+TAP version 13
+# Subtest: build/sandbox/lib/contract-s17.mjs
+ok 1 - build/sandbox/lib/contract-s17.mjs
+  ---
+  duration_ms: 30.291601
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 38.061331
+
+
+$ node --test build/sandbox/lib/contract-s17.mjs  (exit 0, 0s)
+TAP version 13
+# Subtest: build/sandbox/lib/contract-s17.mjs
+ok 1 - build/sandbox/lib/contract-s17.mjs
+  ---
+  duration_ms: 30.50448
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 38.614736
+

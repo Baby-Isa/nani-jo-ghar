@@ -1,0 +1,321 @@
+# fix-kit at 5d05688f3528b898ce1b0c338e4fae8ddeb23f00 (2026-11-16 07:33 UTC)
+ready list dc15bb9d8a: SH-267, DAAR-57, SH-270, SH-314, SH-292, CK-121
+
+$ node build/tools/review/evidence.mjs --run --rows SH-267,DAAR-57,CK-121 --run-id prove-fix-kit-5d05688-1  (exit 0, 1474s)
+20 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 76 s | evidence: 1/1 probes reached their moment
+07:42:05 cook:baking#hint @ 930x430 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 84 s | evidence: 1/1 probes reached their moment
+07:42:12 cook:chop@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 55 s | evidence: 1/1 probes reached their moment
+07:42:44 cook:chop@L2 @ 1280x665 (p-fresh): end reached | 10 states, 6 distinct findings, 0 page errors, 71 s | evidence: 1/1 probes reached their moment
+07:43:28 cook:eggs @ 740x320 (p-fresh): end reached | 10 states, 10 distinct findings, 0 page errors, 44 s | evidence: 2/2 probes reached their moment
+07:44:01 cook:chop@L4 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 116 s | evidence: 1/1 probes reached their moment
+07:44:08 cook:eggs @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 40 s | evidence: 1/1 probes reached their moment
+07:44:11 cook:chop@L4 @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 119 s | evidence: 1/1 probes reached their moment
+07:44:45 cook:eggs @ 930x430 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 44 s | evidence: 1/1 probes reached their moment
+07:45:06 cook:eggs@L2 @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 55 s | evidence: 1/1 probes reached their moment
+07:45:13 cook:eggs@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 64 s | evidence: 1/1 probes reached their moment
+07:46:15 cook:eggs@L3 @ 1280x665 (p-fresh): end reached | 10 states, 6 distinct findings, 0 page errors, 69 s | evidence: 1/1 probes reached their moment
+07:46:33 cook:eggs@L3 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 108 s | evidence: 1/1 probes reached their moment
+07:47:25 cook:corn @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 52 s | evidence: 1/1 probes reached their moment
+07:47:56 cook:eggs@L4 @ 740x320 (p-fresh): end reached | 10 states, 11 distinct findings, 0 page errors, 163 s | evidence: 1/1 probes reached their moment
+07:47:59 cook:eggs@L4 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 104 s | evidence: 1/1 probes reached their moment
+07:48:29 cook:corn @ 930x430 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 64 s | evidence: 1/1 probes reached their moment
+07:48:43 cook:chop @ 1280x665 (p-fresh): end reached | 9 states, 4 distinct findings, 0 page errors, 44 s | evidence: 1/1 probes reached their moment
+07:48:45 cook:chop @ 740x320 (p-fresh): end reached | 10 states, 7 distinct findings, 0 page errors, 49 s | evidence: 2/2 probes reached their moment
+07:49:06 cook:chop @ 930x430 (p-fresh): end reached | 10 states, 7 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+07:49:44 cook:chop@L3 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 61 s | evidence: 1/1 probes reached their moment
+07:49:57 cook:chai-tray @ 740x320 (p-fresh): end reached | 11 states, 10 distinct findings, 0 page errors, 51 s | evidence: 1/1 probes reached their moment
+07:49:58 cook:chop@L3 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 73 s | evidence: 1/1 probes reached their moment
+07:50:17 cook:chai-tray @ 1280x665 (p-fresh): end reached | 11 states, 5 distinct findings, 0 page errors, 33 s | evidence: 1/1 probes reached their moment
+07:50:20 lights: 32 judged on their pictures, 0 failing (lib/lightjudge.py)
+
+07:50:21 findings: 201 (text-small 74, tap-small 72, covered 24, covers-play-area 22, canvas-text-small 8, canvas-text-covered 1)
+07:50:21 sound: 56 lines heard, 35 with no family clip (the recording gap list), 45 played files that are not an approved family clip
+  gap    28x  Thank you!  [device-voice]
+  gap    18x  Indo wiji chad!  [device-voice]
+  gap    17x  Tarelo indo hane kadh.  [device-voice]
+  gap    15x  Khuda-fis!  [device-voice]
+  gap    13x  Nindha nindha kap!  [device-voice]
+  gap     8x  Indo khan!  [device-voice]
+  gap     7x  Muke hakro tarelo indo khapeto.  [device-voice]
+  gap     7x  Indo hane kadh.  [device-voice]
+  gap     6x  Muke hakro tameto khapeto.  [device-voice]
+  gap     5x  Muke ba dungri khapanti.  [device-voice]
+  gap     5x  Hane trae lasan!  [device-voice]
+  gap     4x  Muke trae lasan khape.  [device-voice]
+  gap     4x  miryo.  [device-voice]
+  gap     4x  Muke naan khape.  [device-voice]
+  gap     4x  Hakro cup atto wiji chad!  [device-voice]
+  gap     3x  ba dungri  [silent]
+  gap     2x  Muke trae mirchi khapanti.  [device-voice]
+  gap     2x  Muke hakri dungri khapeti.  [device-voice]
+  gap     2x  Muke hakro bafelo indo khapeto.  [device-voice]
+  gap     2x  Muke ba tarela inda khapanta,  [device-voice]
+  gap     2x  Muke chai khapeti,  [device-voice]
+  gap     2x  paani  [device-voice]
+  gap     2x  Iloka je glass me wij.  [device-voice]
+  gap     2x  Muke ba lasan khape.  [device-voice]
+  gap     2x  ba lasan  [silent]
+  ... 10 more in /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-5d05688/build/screenshots/sandbox/ev-prove-fix-kit-5d05688-1/sound.json
+07:50:21 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-5d05688/build/screenshots/sandbox/ev-prove-fix-kit-5d05688-1/summary.md
+DAAR-57: machine PASS -> build/screenshots/evidence/prove-fix-kit-5d05688-1/DAAR-57.png
+CK-121: machine PASS -> build/screenshots/evidence/prove-fix-kit-5d05688-1/CK-121.png
+SH-267: 6 panels, 14 text -> build/screenshots/evidence/prove-fix-kit-5d05688-1/SH-267.png
+
+3 rows: 1 for a reviewer, 2 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-prove-fix-kit-5d05688-1.md
+
+
+$ node build/tools/review/evidence.mjs --run --rows SH-267,DAAR-57,CK-121 --run-id prove-fix-kit-5d05688-2  (exit 0, 548s)
+08:00:11 cook:baking#hint @ 740x320 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 88 s | evidence: 1/1 probes reached their moment
+08:00:46 cook:baking#hint @ 930x430 (p-fresh): end reached | 12 states, 7 distinct findings, 0 page errors, 90 s | evidence: 1/1 probes reached their moment
+08:00:59 cook:chop@L2 @ 740x320 (p-fresh): end reached | 10 states, 14 distinct findings, 0 page errors, 72 s | evidence: 1/1 probes reached their moment
+08:01:09 cook:chop@L2 @ 1280x665 (p-fresh): end reached | 9 states, 5 distinct findings, 0 page errors, 58 s | evidence: 1/1 probes reached their moment
+08:01:55 cook:eggs @ 740x320 (p-fresh): end reached | 10 states, 10 distinct findings, 0 page errors, 45 s | evidence: 2/2 probes reached their moment
+08:02:30 cook:chop@L4 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 104 s | evidence: 1/1 probes reached their moment
+08:02:31 cook:eggs @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+08:02:44 cook:chop@L4 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 105 s | evidence: 1/1 probes reached their moment
+08:03:12 cook:eggs @ 930x430 (p-fresh): end reached | 10 states, 8 distinct findings, 0 page errors, 41 s | evidence: 1/1 probes reached their moment
+08:03:30 cook:eggs@L2 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 59 s | evidence: 1/1 probes reached their moment
+08:03:33 cook:eggs@L2 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 49 s | evidence: 1/1 probes reached their moment
+08:04:21 cook:eggs@L3 @ 1280x665 (p-fresh): end reached | 10 states, 6 distinct findings, 0 page errors, 51 s | evidence: 1/1 probes reached their moment
+08:04:28 cook:eggs@L3 @ 740x320 (p-fresh): end reached | 10 states, 12 distinct findings, 0 page errors, 76 s | evidence: 1/1 probes reached their moment
+08:05:03 cook:corn @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 35 s | evidence: 1/1 probes reached their moment
+08:05:17 cook:eggs@L4 @ 1280x665 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 56 s | evidence: 1/1 probes reached their moment
+08:05:18 cook:eggs@L4 @ 740x320 (p-fresh): end reached | 10 states, 11 distinct findings, 0 page errors, 105 s | evidence: 1/1 probes reached their moment
+08:05:39 cook:chop @ 740x320 (p-fresh): end reached | 9 states, 5 distinct findings, 0 page errors, 22 s | evidence: 2/2 probes reached their moment
+08:05:40 cook:corn @ 930x430 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+08:05:44 cook:chop @ 1280x665 (p-fresh): end reached | 10 states, 4 distinct findings, 0 page errors, 26 s | evidence: 1/1 probes reached their moment
+08:06:02 cook:chop @ 930x430 (p-fresh): end reached | 10 states, 5 distinct findings, 0 page errors, 23 s | evidence: 1/1 probes reached their moment
+08:06:34 cook:chop@L3 @ 1280x665 (p-fresh): end reached | 10 states, 3 distinct findings, 0 page errors, 50 s | evidence: 1/1 probes reached their moment
+08:06:34 cook:chop@L3 @ 740x320 (p-fresh): end reached | 10 states, 9 distinct findings, 0 page errors, 54 s | evidence: 1/1 probes reached their moment
+08:06:39 cook:chai-tray @ 740x320 (p-fresh): end reached | 11 states, 10 distinct findings, 0 page errors, 37 s | evidence: 1/1 probes reached their moment
+08:07:02 cook:chai-tray @ 1280x665 (p-fresh): end reached | 11 states, 5 distinct findings, 0 page errors, 29 s | evidence: 1/1 probes reached their moment
+08:07:05 lights: 35 judged on their pictures, 0 failing (lib/lightjudge.py)
+
+08:07:06 findings: 192 (text-small 72, tap-small 64, covers-play-area 24, covered 24, canvas-text-small 8)
+08:07:06 sound: 58 lines heard, 38 with no family clip (the recording gap list), 44 played files that are not an approved family clip
+  gap    28x  Thank you!  [device-voice]
+  gap    17x  Tarelo indo hane kadh.  [device-voice]
+  gap    15x  Khuda-fis!  [device-voice]
+  gap    13x  Nindha nindha kap!  [device-voice]
+  gap    13x  Indo wiji chad!  [device-voice]
+  gap     7x  Muke hakro tarelo indo khapeto.  [device-voice]
+  gap     6x  Muke hakro tameto khapeto.  [device-voice]
+  gap     6x  Indo khan!  [device-voice]
+  gap     6x  Indo hane kadh.  [device-voice]
+  gap     5x  Muke ba dungri khapanti.  [device-voice]
+  gap     4x  Muke trae lasan khape.  [device-voice]
+  gap     4x  Hane trae lasan!  [device-voice]
+  gap     4x  Hakro cup atto wiji chad!  [device-voice]
+  gap     3x  ba dungri  [silent]
+  gap     2x  Muke trae mirchi khapanti.  [device-voice]
+  gap     2x  Muke hakri dungri khapeti.  [device-voice]
+  gap     2x  Muke hakro bafelo indo khapeto.  [device-voice]
+  gap     2x  miryo.  [device-voice]
+  gap     2x  Muke ba tarela inda khapanta,  [device-voice]
+  gap     2x  Muke chai khapeti,  [device-voice]
+  gap     2x  paani  [device-voice]
+  gap     2x  Iloka je glass me wij.  [device-voice]
+  gap     2x  Muke ba lasan khape.  [device-voice]
+  gap     2x  hakro lasan  [device-voice]
+  gap     2x  ba lasan  [silent]
+  ... 13 more in /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-5d05688/build/screenshots/sandbox/ev-prove-fix-kit-5d05688-2/sound.json
+08:07:06 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-kit-5d05688/build/screenshots/sandbox/ev-prove-fix-kit-5d05688-2/summary.md
+DAAR-57: machine PASS -> build/screenshots/evidence/prove-fix-kit-5d05688-2/DAAR-57.png
+CK-121: machine PASS -> build/screenshots/evidence/prove-fix-kit-5d05688-2/CK-121.png
+SH-267: 6 panels, 14 text -> build/screenshots/evidence/prove-fix-kit-5d05688-2/SH-267.png
+
+3 rows: 1 for a reviewer, 2 machine-decided, 0 tool failures, 0 Zafar's, 0 need a decision. Index: build/reports/evidence-prove-fix-kit-5d05688-2.md
+
+
+$ flock -w 3600 /tmp/njg-browser-all.lock node build/test_cook_mount.mjs  (exit 0, 28s)
+baseline: 10 page listener kinds, 0 canvases, body: DIV#lab-app DIV#njg-rotate
+  note no Cook global once Cook's modules have loaded (Cook): SH-314b, until the app-store wrap
+mount 1
+  ok   mounted in 196 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":10,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 361 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 2
+  ok   mounted in 118 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":9,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 364 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 3
+  ok   mounted in 107 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 388 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 4
+  ok   mounted in 100 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 344 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 5
+  ok   mounted in 106 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 392 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+  ok   no page errors 
+cook mount: 5 mounts, all clean
+
+
+$ flock -w 3600 /tmp/njg-browser-all.lock node build/test_cook_mount.mjs  (exit 0, 28s)
+baseline: 10 page listener kinds, 0 canvases, body: DIV#lab-app DIV DIV#njg-rotate
+  note no Cook global once Cook's modules have loaded (Cook): SH-314b, until the app-store wrap
+mount 1
+  ok   mounted in 209 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":10,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 349 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 2
+  ok   mounted in 129 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":9,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 438 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 3
+  ok   mounted in 109 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 397 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 4
+  ok   mounted in 103 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 350 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 5
+  ok   mounted in 112 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 383 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+  ok   no page errors 
+cook mount: 5 mounts, all clean
+
+
+$ node --test build/sandbox/run16-fixkit.test.mjs  (exit 0, 0s)
+TAP version 13
+# Subtest: SH-292: the light sits centred on its thing when a neighbour trims one side
+ok 1 - SH-292: the light sits centred on its thing when a neighbour trims one side
+  ---
+  duration_ms: 6.72
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 58.036731
+
+
+$ node --test build/sandbox/run16-fixkit.test.mjs  (exit 0, 0s)
+TAP version 13
+# Subtest: SH-292: the light sits centred on its thing when a neighbour trims one side
+ok 1 - SH-292: the light sits centred on its thing when a neighbour trims one side
+  ---
+  duration_ms: 5.346575
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 61.45563
+
+check-change: the branch's own change-0725e61000.md (failed; covers 0725e61000)
