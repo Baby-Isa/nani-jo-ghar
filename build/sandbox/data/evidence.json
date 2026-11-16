@@ -29595,5 +29595,50 @@
    ],
    "note": "roll-tawa L1: the order card's row is the order's own, holding the item card ('char maani'), never 'Nana' over the whole sentence"
   }
+ ],
+ "SAM-46": {
+  "needsDecision": "SAM-46's fourth part, the pastry's own contact shadow on the board: SH-268 and contract-120 say the board's shadow is its shadow (s20-b2-samosa asked this). Give the pastry its own shadow, against SH-268? Recommend no.",
+  "probes": [
+   {
+    "flow": "repo",
+    "path": "fair",
+    "level": 1,
+    "sizes": [
+     "740x320"
+    ],
+    "profile": "fresh",
+    "want": null,
+    "at": "now",
+    "after": null,
+    "capture": [
+     "cmd:node build/probes/samosa-rt.mjs --row SAM-46 --pace fair --speed 2 --size 740x320 --secs 120"
+    ],
+    "expect": [
+     "pass"
+    ],
+    "note": "samosa L1 at 740x320: the fill's word pop ('hakro chundo') whole on the board; the shelf's heaps centred in the bottom row (2% of its width); the karahi, handles and all, inside its hob"
+   }
+  ]
+ },
+ "RT-04": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/probes/samosa-rt.mjs --row RT-04 --size 740x320 --secs 150"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "roll-tawa L1 at a child's pace, 740x320: the tawa's round body centred on its burner (3% of the hob's width) and inside the hob's edges, as drawn (sampled after each frame). The turner's sleeve (hands.js, ART-84), the face beside the plate and Nani's box one step at a time are the eye's"
+  }
  ]
 }

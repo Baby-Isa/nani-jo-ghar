@@ -13,7 +13,7 @@ const argv = process.argv.slice(2);
 const val = (k, d) => { const i = argv.indexOf(`--${k}`); return i >= 0 ? argv[i + 1] : d; };
 const row = val("row", "SAM-47");
 const ROWS = {
-  "SAM-44": { game: "samosa" }, "SAM-47": { game: "samosa" }, "SAM-47a": { game: "samosa" }, "SAM-47b": { game: "samosa" }, "chai": { game: "chai-tray" },
+  "SAM-44": { game: "samosa" }, "SAM-46": { game: "samosa" }, "SAM-47": { game: "samosa" }, "SAM-47a": { game: "samosa" }, "SAM-47b": { game: "samosa" }, "chai": { game: "chai-tray" },
   "RT-01": { game: "roll-tawa" }, "RT-02": { game: "roll-tawa" }, "RT-03": { game: "roll-tawa" }, "RT-04": { game: "roll-tawa" },
 };
 if (!ROWS[row]) { console.error(`unknown row ${row}`); process.exit(2); }
@@ -27,8 +27,9 @@ const pace = val("pace", "child");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const rec = { state: async () => {}, pend: () => {}, note: () => {}, shot: async () => {} };
 
-// one sample of the page (all boxes in page px)
-const SAMPLE = () => {
+// one sample of the page (all boxes in page px), read in an animation frame queued after the game's own: what was last drawn, never a
+// state between two frames that is changed before it is drawn
+const SAMPLE = (game) => {
   const box = (el) => { if (!el) return null; const r = el.getBoundingClientRect(); return r.width && r.height ? [r.x, r.y, r.width, r.height].map(Math.round) : null; };
   const ls = [...document.querySelectorAll(".njg-onboard.on")].filter((l) => !l.classList.contains("ob-empty") && !l.classList.contains("ob-buried") && +getComputedStyle(l).opacity > 0.05);
   const holes = ls.flatMap((l) => { try { return JSON.parse(l.dataset.holes || "[]"); } catch (e) { return []; } }).map((x) => [x.x, x.y, x.w, x.h].map(Math.round));
@@ -59,7 +60,22 @@ const SAMPLE = () => {
   }
   const txt = (sel) => [...document.querySelectorAll(sel)].filter(shown).map((e) => (e.innerText || "").replace(/\s+/g, " ").trim()).filter(Boolean);
   const things = S && S.children ? S.children.list.filter((o) => o.texture && o.visible && o.alpha > 0.05 && /tawa|hob|burner|plate|serving|turner|face/i.test(o.texture.key)).map((o) => { const b = o.getBounds(); return { k: o.texture.key, b: [b.x, b.y, b.width, b.height].map(Math.round) }; }) : [];
+  // SAM-46: the board, the karahi, the hob and the filling heaps (world px), the word pops (canvas text) and the bottom row
+  const geo = [];
+  const texts = [];
+  let bottom = null;
+  if (game === "samosa" && S && S.children) {
+    const walk = (list) => list.forEach((o) => {
+      if (!o.visible || o.alpha <= 0.05) return;
+      if (o.type === "Text" && o.text) { const b = o.getBounds(); texts.push({ t: o.text, b: [b.x, b.y, b.width, b.height].map(Math.round) }); }
+      else if (o.texture && /board|karahi|hob|heap/i.test(o.texture.key)) { const b = o.getBounds(); geo.push({ k: o.texture.key, b: [b.x, b.y, b.width, b.height].map(Math.round) }); }
+      if (o.list) walk(o.list);
+    });
+    walk(S.children.list);
+    try { const A = C.Frame.area(S); bottom = A && A.bottom ? [A.bottom.x, A.bottom.y, A.bottom.w, A.bottom.h].map(Math.round) : null; } catch (e) { /* no frame yet */ }
+  }
   return {
+    geo, texts, bottom,
     under, card: txt("#mission .oc-card"), cardItems: txt("#mission .oc-card .wc14"), pop: txt(".njg-rq-card"), things,
     layers: ls.length, holes, guide: box(g), line: line ? line.textContent.trim() : null, speaking,
     fry, ek: e ? `${e.kind}:${e.key || ""}` : null, gauge, gear: box(gear), view: C && S ? S.viewName : null,
@@ -89,7 +105,7 @@ try {
   }
   const t0 = Date.now();
   let on = true;
-  const sampler = (async () => { while (on) { const s = await page.evaluate(SAMPLE).catch(() => null); if (s) samples.push({ t: Date.now() - t0, ...s }); await sleep(100); } })();
+  const sampler = (async () => { while (on) { const s = await page.evaluate(`new Promise((r) => requestAnimationFrame(() => r((${SAMPLE.toString()})(${JSON.stringify(game)}))))`).catch(() => null); if (s) samples.push({ t: Date.now() - t0, ...s }); await sleep(100); } })();
   const P = pace === "child" ? new ChildPlayer(page, rec, { speed }) : new CookPlayer(page, rec, { mode: "fair", speed });
   P.helped = true;
   const st = () => page.evaluate("window.njgTest ? String(njgTest.state()) : 'loading'").catch(() => "loading");
@@ -158,6 +174,61 @@ const checks = {
     if (!s) return void faults.push("no order card seen");
     if (!samples.some((x) => (x.cardItems || []).some((t) => /maani/i.test(t)))) faults.push(`the order card has no item card for the maani: '${s.card.join(" | ")}'`);
     if (s.card.some((t) => /^Nana\b/.test(t))) faults.push(`the order card's row is a name: '${s.card.join(" | ")}'`);
+  },
+  // SAM-46 (three of its four: the pastry's own shadow is a question against SH-268): (a) the fill's word pop ('hakro chundo') whole on
+  // the board, never over its corner; (b) the shelf's heaps centred in the bottom row (their group's middle within 2% of the row's
+  // width of its middle); (c) the karahi, handles and all, inside its hob
+  "SAM-46": () => {
+    const inBox = (a, b, tol = 2) => a[0] >= b[0] - tol && a[1] >= b[1] - tol && a[0] + a[2] <= b[0] + b[2] + tol && a[1] + a[3] <= b[1] + b[3] + tol;
+    const hit = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+    let popSeen = 0, shelfSeen = 0, potSeen = 0;
+    const bad = {};
+    const once = (k, m) => { if (!bad[k]) { bad[k] = 1; faults.push(m); } };
+    for (const x of samples) {
+      const board = (x.geo || []).find((g) => g.k === "sv3-board");
+      if (board && /^tap:/.test(x.ek || "") || (board && x.line && /^Bhar/.test(x.line))) for (const t of x.texts || []) {
+        if (!hit(t.b, board.b) || /^Shabash/.test(t.t)) continue;
+        popSeen++;
+        if (!inBox(t.b, board.b)) { once("pop", `${(x.t / 1000).toFixed(1)} s: the pop '${t.t}' [${t.b}] past the board's edge [${board.b}]`); }
+      }
+      const heaps = (x.geo || []).filter((g) => /^sv3-heap-/.test(g.k) && x.bottom && g.b[1] + g.b[3] / 2 > x.bottom[1]);
+      if (heaps.length >= 2 && /^tap:/.test(x.ek || "")) {
+        shelfSeen++;
+        const mid = (Math.min(...heaps.map((g) => g.b[0])) + Math.max(...heaps.map((g) => g.b[0] + g.b[2]))) / 2, row = x.bottom[0] + x.bottom[2] / 2;
+        if (Math.abs(mid - row) > 0.02 * x.bottom[2]) { once("shelf", `${(x.t / 1000).toFixed(1)} s: the shelf's heaps centred at ${Math.round(mid)}, the bottom row's middle ${Math.round(row)}`); }
+      }
+      const pot = (x.geo || []).find((g) => g.k === "sv3-karahi"), hob = (x.geo || []).find((g) => /^kit-hob/.test(g.k));
+      if (pot && hob) {
+        potSeen++;
+        if (!inBox(pot.b, hob.b)) { once("pot", `${(x.t / 1000).toFixed(1)} s: the karahi [${pot.b}] past its hob [${hob.b}]`); }
+      }
+    }
+    if (!popSeen) faults.push("no word pop seen on the board");
+    if (!shelfSeen) faults.push("no shelf seen");
+    if (!potSeen) faults.push("no karahi on its hob seen");
+  },
+  // RT-04 (its tawa part; the turner's sleeve is the hand rig's, js/cook/hands.js, and the face and Nani's box are the judge's): each
+  // tawa's round body centred on a burner of its hob (within 3% of the hob's width) and inside the hob's edges. The body's middle is
+  // (0.398, 0.552) of the tawa's picture and its radius 0.355 of the picture's width (roll-tawa.js TAWA_BODY, TAWA_IN); the burners are
+  // the kit's (js/cook/kitchen-kit.js HOBS: shares of each hob picture)
+  "RT-04": () => {
+    const BURNERS = { 1: [[0.4944, 0.3805]], 2: [[0.251, 0.4025], [0.7445, 0.4025]], 3: [[0.1596, 0.3725], [0.4993, 0.3728], [0.8389, 0.3725]], 4: [[0.1413, 0.4542], [0.3807, 0.4543], [0.6202, 0.4544], [0.8597, 0.4544]] };
+    let seen = 0;
+    for (const x of samples) {
+      const hob = (x.things || []).find((g) => /^kit-hob-\d/.test(g.k));
+      const tawas = (x.things || []).filter((g) => /tawa/i.test(g.k) && !/maani/i.test(g.k));
+      if (!hob || !tawas.length || !(x.ek || "").startsWith("roll:")) continue;
+      const n = +hob.k.match(/^kit-hob-(\d)/)[1];
+      const bs = (BURNERS[n] || []).map(([u, v]) => [hob.b[0] + u * hob.b[2], hob.b[1] + v * hob.b[3]]);
+      for (const t of tawas) {
+        const cx = t.b[0] + 0.398 * t.b[2], cy = t.b[1] + 0.552 * t.b[3], r = 0.355 * t.b[2];
+        const d = Math.min(...bs.map(([bx, by]) => Math.hypot(bx - cx, by - cy)));
+        seen++;
+        if (d > 0.03 * hob.b[2]) return void faults.push(`${(x.t / 1000).toFixed(1)} s: the tawa's body at (${Math.round(cx)}, ${Math.round(cy)}), ${Math.round(d)} px from its burner (hob [${hob.b}])`);
+        if (cx - r < hob.b[0] - 2 || cx + r > hob.b[0] + hob.b[2] + 2) return void faults.push(`${(x.t / 1000).toFixed(1)} s: the tawa's body (${Math.round(cx - r)} to ${Math.round(cx + r)}) past the hob's edges (${hob.b[0]} to ${hob.b[0] + hob.b[2]})`);
+      }
+    }
+    if (!seen) faults.push("no tawa on its hob seen while the roll was the step");
   },
   // SAM-47: (a) while Nani says the line in her box, her box is never under a first-time light's dim; (b) no light comes twice on the
   // same box with nothing done between (two onboards 3 s apart, nothing changed)
