@@ -218,13 +218,13 @@
   "row": "SH-281",
   "branch": "run16/probes-open",
   "kind": "eye-before",
-  "commit": "a4d3a78",
+  "commit": "4b5b59f",
   "verdict": "FAIL",
   "status": "cannot-probe",
   "judge": "EVIDENCE",
-  "reason": "The check does not show the row's problem, so it is not a red check: no panel shows the row's states. A has only the stage start (pans not yet used, 10.8 s) and the serve view at the island (28.2 s, egg on its plate, no blob seen); the empty pan after the serve is never photographed. B (chop, 4 frames) shows no white line and no overlapping halves at this crop (frame 3: four halves apart), daar is not photographed, and only 1280x665 L1 is shot against a check of every kitchen game L1-L4 at two sizes. Off the point: B frame 2, a whole onion sits across the board's bottom edge, half on and half off.",
-  "panel": "po-b1/SH-281.png",
-  "file": "build/reports/run16/judge/probes-open/po-b1/batch-02.verdicts.md"
+  "reason": "The check does not show the row's problem, so it is not a red check: no panel shows any of the row's leftovers, and the sheet is too thin to pass it. A (eggs L1 1280x665) frames 5-6 show the pan after the serve with no grey disc visible and nothing grey above the plate; B (chop) frames 2-3 show the halves side by side, not overlapping, and no white line on the board; C (daar) frame 1 shows the board with clean corners and frames 3-8 show no white scrap in the pot. But each frame is the 1280 stage shrunk to about 575 px, so a faint disc or a thin line could be lost, and only L1 at 1280x665 was shot: the Check names L1-L4 at 740x320 and 1280x665. The probe needs 1:1 crops of the empty pan, the plate, the board and the board's corner after each job, at both sizes and all four levels. Off the row's point: C frame 7 has a half-faded \"dungri\" chip floating beside the hob with no bowl under it (possibly caught mid-fade); C frame 2 is an empty stage with only the mirchi word card (English \"chilli\" under it, allowed only if the card was tapped).",
+  "panel": "po-t1/SH-281.png",
+  "file": "build/reports/run16/judge/probes-open/po-t1/batch-01.verdicts.md"
  },
  {
   "row": "SH-283",
