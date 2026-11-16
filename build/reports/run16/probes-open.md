@@ -17,7 +17,7 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
   - SH-299 and SH-211: they need a card's last landing frame or a per-frame scroll log, and no capture reads either yet.
 - **SH-271 and SH-229 are not reproduced on head (machine green), and no fix was found for either.**
   - SH-271: docs/status.md (15 Nov) calls the strips' blink a probe artefact.
-- **Several probes missed their moment at first** (the judge's EVIDENCE verdicts): SH-275, SH-279, SH-281, SH-286, SH-295, SH-299, SH-303, SH-211, SH-136. Most are re-aimed and since ruled; SH-281's re-aim (po-t1) still waits for the judge.
+- **Several probes missed their moment at first** (the judge's EVIDENCE verdicts): SH-275, SH-279, SH-281, SH-286, SH-295, SH-299, SH-303, SH-211, SH-136. Most are re-aimed and since ruled; SH-281's re-aim (po-t1) was too thin for the judge to pass.
 - **How an old commit was made red:** its runtime (js, css, data, the pages) was checked out into the main tree for one run, then restored. A worktree is 3.6 GB, and five of them filled the disk once at 05:54 (cleared at once). One stopped run killed its own restore. I restored by hand and checked that the tree matches head.
 - **Machine checks that are rough proxies:**
   - SH-288 flags the order card's tappable word (16-21 px tall), not the speakers the row lists, which now have 48 px hit areas.
@@ -66,9 +66,9 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 
 ## Open, not yet red
 
-- **CHT-22:** the cog part is green (DAAR-65). Left: the dim flash, the potato on the board and tray at once, the flying piece; these are chop's own.
+- **CHT-22:** the cog part is green (DAAR-65). The rest is chop's own, and the po-v1 strips miss it (judge EVIDENCE).
 - **CK-97:** the half-full bottle needs art.
-- **SH-281:** po-t1, for the judge.
+- **SH-281:** no leftover seen on head (po-t1). The judge calls the sheet too thin to pass.
 - **SH-271:** machine green, not reproduced.
 - **SH-229:** machine green, no fix found.
 - **SH-136:** needs a one-row Nana card at a 915-like size.

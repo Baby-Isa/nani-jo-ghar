@@ -256,12 +256,12 @@
   "probe": "evidence.json CHT-22 (noOverlap:.njg-onboard .ob-box,#side-cog at every onboard, chaat and chop L1 740x320 fresh; and an eye strip of #stage at every placed, chaat L1 740x320)",
   "red": "the cog part is green on head (run po-g1: every first light clear of the cog in chaat and chop), fixed by DAAR-65",
   "green": "48003532, run po-g1: PASS",
-  "judge": "machine for the cog part; needs-eye for the rest (build/screenshots/evidence/po-v1/judge/batch-01.md)",
+  "judge": "machine for the cog part (green); EVIDENCE for the rest (judge session, po-v1: the strips never catch the cut potato with its pill, the tameto turn or the flying piece)",
   "files": [
    "js/cook/mechanics/chop.js",
    "js/cook/mechanics/assemble.js"
   ],
-  "note": "The cog part is fixed (DAAR-65) and green on head; the rest (the 'hakro' pill on the cut potato, the dim flash at the tameto turn, the flying piece, the potato on board and tray at once) is on the po-v1 strips for the judge; those are chop's own, the daar builder's."
+  "note": "The cog part is fixed (DAAR-65) and green on head. The other parts are chop's own (the daar builder's) and need strips aimed at chop's cut and the tameto turn."
  },
  {
   "row": "CK-97",
@@ -386,12 +386,12 @@
   "probe": "evidence.json SH-281 (eye: crop of #stage at every placed: eggs L1, chop L1, daar L1, 1280x665)",
   "red": "needs the judge (build/screenshots/evidence/po-t1/judge/batch-01.md); the first aim missed the empty pan (judge EVIDENCE on po-b1)",
   "green": "",
-  "judge": "needs-eye (po-t1/judge/batch-01.md)",
+  "judge": "EVIDENCE (judge session, po-t1: no leftover seen, the sheet too thin to pass)",
   "files": [
    "js/cook/mechanics/chop.js",
    "js/cook/stations/eggs.js"
   ],
-  "note": "Re-aimed at every move: eggs' empty pan after the lift shows no grey disc in po-t1 (sort: fixed, eggs.js:56); chop's board and daar's scrap are on the same sheet for the judge."
+  "note": "No leftover seen on head: eggs' pan after the serve is clean (po-t1 frames 5-6), and chop's board and daar show none in the frames caught. Still open until a sheet catches each job's end (chop's last cut, daar's scrap) at both sizes."
  },
  {
   "row": "SH-299",
@@ -457,7 +457,7 @@
   "probe": "evidence.json SH-301 (centredOn:#guide .ng-face .njg-face,#mission .oc-card .oc-face .njg-face at order-card-in-sidebar, chai L1 at 740x320, 930x430, 1280x665, 1920x1080; plus the eye zoom)",
   "red": "642f1efd^ (the runtime before the fix, today's tools), run po-red-301: FAIL at 740x320 and 930x430, Nani's face 4.3 and 5.6 px off the order cards' face line",
   "green": "642f1efd (15 Nov) and today's head 48003532, run po-w1: PASS at all four sizes, 0.0 px across",
-  "judge": "machine (alignment); the judge's eye (po-b1) saw no mismatch",
+  "judge": "machine (alignment, judge audit PASS at 8c919b9); the equal size within 1 px and the speaker circle are not measured",
   "files": [
    "css/shared/order-card.css"
   ],
