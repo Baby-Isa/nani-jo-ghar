@@ -224,16 +224,16 @@
  {
   "row": "SH-271",
   "kind": "Logic",
-  "game": "chop",
+  "game": "kit",
   "status": "open",
-  "probe": "evidence.json SH-271 (lastsMs on the dim at every onboard; chop, maani, samosa L1, fresh)",
-  "red": "pending (run po-j1)",
+  "probe": "evidence.json SH-271 (lastsMs:.njg-onboard .ob-shade>=1000 at every onboard with a trace and a strip; chop, maani at two sizes, samosa; L1 fresh)",
+  "red": "not shown on head: the dim held 1.5-3.5 s at every first light (run po-j1) and contract-117 had 0 breaks (run po-a1)",
   "green": "",
-  "judge": "machine",
+  "judge": "needs-eye",
   "files": [
    "js/shared/onboard.js"
   ],
-  "note": "contract-117 was green on head (run po-a1) and cannot see a 200-300 ms blink, so the probe was rewritten to time the dim itself."
+  "note": "No fix in code and no blink on head; docs/status.md (15 Nov) says the strips' blink was the probe hiding the light (a tool artefact), so this may not be real: the strips in po-j1/SH-271.png are for the judge."
  },
  {
   "row": "MAA-25",
@@ -241,13 +241,13 @@
   "game": "maani-line",
   "status": "open",
   "probe": "evidence.json MAA-25 (eye: shots at order-card-in-sidebar, maani L1+L4, 740x320 and 1280x665)",
-  "red": "contract-109 and contract-115 were green on head (run po-a1): they do not see plates on the shelf, so this row is eye-judged",
+  "red": "contract-109 and contract-115 were green on head (run po-a1) and do not see plates on the shelf; eye batch build/screenshots/evidence/po-j1/judge/batch-01.md",
   "green": "",
   "judge": "needs-eye",
   "files": [
    "js/cook/stations/maani-line.js"
   ],
-  "note": "Sort reads it still true in code (maani-line.js:330-339 lays the plates on the shelf band); the judge batch is in run po-j1."
+  "note": "Sort reads it still true in code (maani-line.js:330-339 lays the plates on the shelf band)."
  },
  {
   "row": "CHT-22",
@@ -491,5 +491,34 @@
    "js/cook/flow.js"
   ],
   "note": "Green on head with no fix found; worth a look at po-g1/SH-229.png before closing."
+ },
+ {
+  "row": "CHAI-114",
+  "kind": "Look",
+  "game": "chai",
+  "status": "built",
+  "probe": "evidence.json CHAI-114 (noClip:#guide .ng-say at every line:cook; chai L1-L4, 740x320)",
+  "red": "not shown: green on head (the first probe's noClip:#guide failed only on the face button's hit area, a probe fault, so it was narrowed to the line's own box)",
+  "green": "48003532, run po-j1: PASS at L1-L4 (9-17 of Nani's lines each, 'Paani tapele me wij.' among them at L4), every line whole",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/guide.css"
+  ],
+  "note": "Green on head; most likely fixed by 270f39f8 (15 Nov, SH-312: Nani's one-line hint fitted, its floor 14.5 px); a red needs that commit reverted (prove)."
+ },
+ {
+  "row": "LNG-22",
+  "kind": "Kutchi",
+  "game": "other",
+  "status": "open",
+  "probe": "build/test_no_religious_set_pieces.mjs (evidence.json LNG-22: cmd, expect pass)",
+  "red": "48003532: exit 1, the first launch still plays scene 'eid' with the line 'Tomorrow is Eid!' / 'Saware Eid ai.' (data/story/first-launch.json:38, :115)",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "data/story/first-launch.json"
+  ],
+  "note": "Cook's day-6 finale is already the birthday; the first launch's hook is not. The birthday line must come from the engine and family recordings: if it is not recorded, it is a recording-sheet gap, not hand-written Kutchi."
  }
 ]

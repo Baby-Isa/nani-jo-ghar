@@ -30688,5 +30688,95 @@
    ],
    "note": "no raw ChatGPT upload folder (assets/ChatGPT 261110 1, 261110 2 ...) in the tree the publish puts on main; every image kept under sources/art/"
   }
+ ],
+ "LNG-22": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_no_religious_set_pieces.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no Eid scene or line the game plays: the first launch's hook (data/story/first-launch.json) and Cook's day-6 finale (data/cook.json) are the birthday"
+  }
+ ],
+ "SH-211": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-fold",
+   "after": null,
+   "capture": [
+    "strip:#mission:8x120"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "chai L4, while the order is given: as each item card lands, the order row scrolls one way to receive it, never jerking left and right first (the item just before a half or whole card is his case)"
+  }
+ ],
+ "SH-135": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "title",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 500,
+   "note": "Cook's title: its three buttons the kit's solid look, not washed out (the door's Ha!/Na! and the clinic's lit tool are the parked modes' part)"
+  }
+ ],
+ "SH-136": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "max": 3,
+   "delay": 400,
+   "note": "chai L1 at the 915x412-like 930x430: Nana's one-row card tall enough that his badge sits clear of its bottom border; the reflowed chips carry their speaker (the reveal eye is a fit choice for Zafar)"
+  }
  ]
 }
