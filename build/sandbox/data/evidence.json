@@ -29994,15 +29994,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:line:cook",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "max": 12,
-   "delay": 300,
-   "note": "samosa L1, every speech bubble (the well done's 'Shabash!' among them): the Shabash bubble inside the frame, right of the face as chai's, clear of the slotted spoon"
+   "max": 20,
+   "delay": 400,
+   "note": "samosa L1, at each of Nani's lines (the panel whose line is 'Shabash!' is the well done): the 'Shabash!' chip beside the praise face sits inside the frame, right of the face as chai's, clear of the slotted spoon"
   },
   {
    "flow": "cook:maani-line",
@@ -30015,15 +30015,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:line:cook",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "max": 12,
-   "delay": 300,
-   "note": "maani L1 at 740: the Shabash bubble well inside the frame, off the tray's corner"
+   "max": 20,
+   "delay": 400,
+   "note": "maani L1 at 740 (the 'Shabash!' panel): the chip well inside the frame, off the tray's corner"
   },
   {
    "flow": "cook:chaat",
@@ -30036,15 +30036,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:bubble",
+   "at": "every:line:cook",
    "after": null,
    "capture": [
     "crop:#stage"
    ],
    "expect": null,
-   "max": 12,
-   "delay": 300,
-   "note": "chaat L1: the Shabash bubble chai's size, right of Nana's face"
+   "max": 20,
+   "delay": 400,
+   "note": "chaat L1 (the 'Shabash!' panel): the chip chai's size, right of Nana's face"
   }
  ],
  "SH-271": [

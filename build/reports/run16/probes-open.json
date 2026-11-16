@@ -352,17 +352,17 @@
  {
   "row": "SH-275",
   "kind": "Look",
-  "game": "eggs",
+  "game": "chop",
   "status": "open",
-  "probe": "evidence.json SH-275 (eye: shots at life:timed-hold in eggs, life:baking-oven in baking, L1 two sizes)",
-  "red": "needs the judge (po-g1/judge/batch-01.md)",
+  "probe": "evidence.json SH-275 (eye: eggs at exp:lift two sizes; chop L1 two sizes, chaat L1 and daar L1 at every placed)",
+  "red": "48003532, run po-p1, panel C (for the judge, po-p1/judge/batch-01.md): chop L1 at 1280x665 shows the timing window as a separate stopwatch disc left of the board, not on the onion or board",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "needs-eye (po-p1/judge/batch-01.md)",
   "files": [
-   "js/cook/stations/eggs.js",
-   "js/cook/stations/baking.js"
+   "js/cook/mechanics/chop.js",
+   "js/cook/stations/daar.js"
   ],
-  "note": "Sort: eggs and baking now ring the thing itself; chop, chaat and daar unchanged."
+  "note": "Eggs now ring the pan itself (panels A, B); chop's (and chaat's and daar's) timing window is still a stopwatch disc beside the board. The judge's audit asked for chop, chaat and daar: now in."
  },
  {
   "row": "SH-280",
@@ -505,7 +505,7 @@
    "js/cook/ui.js",
    "css/shared/guide.css"
   ],
-  "note": "Green on head; most likely fixed by 270f39f8 (15 Nov, SH-312: Nani's one-line hint fitted, its floor 14.5 px); a red needs that commit reverted (prove)."
+  "note": "Green on head at L1-L4 with 'Paani tapele me wij.' said at L4: the line fits whole. The fix commit is not identified (Nani's box has kept two lines' room since 5 Nov; 270f39f8 re-centred it), so a red needs the 13 Nov runtime (prove)."
  },
  {
   "row": "LNG-22",
