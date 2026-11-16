@@ -12,7 +12,7 @@
 // Saved per light under <run>/lights/<flow>@<size>/NN/: before.jpg, with.jpg, under.jpg, light.json (and verdict.json, mark.jpg).
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
-import { withScreen, hidWindow } from "./framebuf.mjs";
+import { withScreen, hideFor } from "./framebuf.mjs";
 
 export const LIT_MS = 520;       // the kit's layer fades in over 300 ms (css/shared/onboard.css): the light is whole by then
 export const MOVE_MS = 950;      // a thing that is still arriving at this point was moving into the light when it came
@@ -103,12 +103,14 @@ export class LightShot {
       if (!up2 || !sameLight(up2, L.holes)) withJpg2 = null;
       // the same moment with every painted layer over the play area hidden (the kit's light, or any other dim: an element painting
       // over 30% of the game's canvas, or a hole drawn with a wide shadow), so what darkened the screen is measured, whoever drew it
-      const from = Date.now();
-      const n = await page.evaluate(HIDE).catch(() => 0);
-      try { under = await page.screenshot({ type: "jpeg", quality: 90, animations: "allow", timeout: 5000 }); } catch (e) { under = null; } finally {
-        await page.evaluate(SHOW).catch(() => {});
-        hidWindow(page, from, Date.now());
-      }
+      // (DAAR-55: the hidden window open from before the hide, framebuf.mjs hideFor: a frame drawn meanwhile never reaches a strip)
+      let n = 0;
+      await hideFor(page, async () => {
+        n = await page.evaluate(HIDE).catch(() => 0);
+        try { under = await page.screenshot({ type: "jpeg", quality: 90, animations: "allow", timeout: 5000 }); } catch (e) { under = null; } finally {
+          await page.evaluate(SHOW).catch(() => {});
+        }
+      });
       L.hidden = n;
       // (the light went, or the view changed, while the screen below was taken: the two pictures are not one moment)
       const up3 = await page.evaluate(UP).catch(() => null);

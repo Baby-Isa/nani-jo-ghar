@@ -23,7 +23,21 @@ export function hidWindow(page, from, to) {
   while (w.length > 40) w.shift();
   HIDES.set(page, w);
 }
-export const hiddenAt = (page, t) => (HIDES.get(page) || []).some(([a, b]) => t >= a - 30 && t <= b + 140);
+export const hiddenAt = (page, t) => (HIDES.get(page) || []).some(([a, b]) => t >= a - 30 && t <= (b == null ? Infinity : b + 140));
+/**
+ * DAAR-55 (run16; the Fable eye judge, daar L4 beside chai: "the chop light goes off and comes back about +1350 to +1520 ms, the finger
+ * left on the knife between"): a pixel check hides the light around fn (its screenshot of what is under it). The window is open from
+ * before the hide, so a frame the browser draws and delivers WHILE it is hidden is dropped as it arrives (it was recorded only once the
+ * light was shown again: the frames drawn meanwhile had already reached the strips); closed when fn ends.
+ */
+export async function hideFor(page, fn) {
+  const w = HIDES.get(page) || [];
+  const win = [Date.now(), null];
+  w.push(win);
+  while (w.length > 40) w.shift();
+  HIDES.set(page, w);
+  try { return await fn(); } finally { win[1] = Date.now(); }
+}
 
 export class FrameBuffer {
   constructor(page, { keepMs = KEEP_MS, quality = 80 } = {}) {
