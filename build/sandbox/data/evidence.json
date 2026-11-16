@@ -28472,6 +28472,94 @@
    "note": "chop L2: no dish card at all from level 2 (it would give the order away)",
    "delay": 0,
    "max": 2
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:dish-flash",
+   "after": null,
+   "capture": [
+    "contract:119"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "eggs L1: the dish card ('hakro bafelo indo', 'one boiled egg') held as the customer says it, then the egg's own item card (run 16: the item card took its place at once, never seen)"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:dish-flash",
+   "after": null,
+   "capture": [
+    "contract:119"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "corn L1: the dish card ('hakro makai') held, then the chutney cards (run 16: gone in 114 ms)"
+  },
+  {
+   "flow": "cook:baking",
+   "path": "hint",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:dish-flash",
+   "after": null,
+   "capture": [
+    "contract:119"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "baking L1, the hint player: the order said again from the card's face ('Muke naan khape.', its stop not the card's comma) flashes the dish card too (run 16: never flashed)"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "life:dish-flash",
+   "after": null,
+   "capture": [
+    "contract:119"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "chop L1: the first thing's own item card ('ba dungri') is the dish card, held and landed (run 16: a second card of the same words shut in 86 ms)"
   }
  ],
  "SH-213": [
@@ -29467,6 +29555,68 @@
    "expect": null,
    "note": "corn: the order cards in step order, the cob first; a done card stays in its place (no swap)",
    "max": 16
+  }
+ ],
+ "DAAR-57": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#guide .ng-face>=1",
+    "count:#mission .oc-card[data-who=nani] .oc-face=0"
+   ],
+   "note": "chop on its own (Nani's own order, 'Muke ba dungri khape'): at every chop her face and speaker are in her box, and her order card beside 'Chop these' has no face of its own (one face per person); was: her box stripped (ui.js mission.stripMode for any Nani-asked order), her face on the card",
+   "max": 2
+  }
+ ],
+ "CK-121": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "count:#mission .oc-card[data-who]:not(.done)=0",
+    "count:#mission .oc-card[data-who]:not(.folded)=0",
+    "inside:#mission .oc-card[data-who],#mission"
+   ],
+   "note": "eggs at well done: every person's card in the side panel closed (folded) and ticked (done), all inside the panel, as chai's"
   }
  ]
 }

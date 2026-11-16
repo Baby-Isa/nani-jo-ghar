@@ -1670,7 +1670,11 @@
     if ($("#btn-help")) $("#btn-help").classList.remove("fresh");
     UI.closeHelp();
     // R4: Nani asking herself (the pantry list): one face, her line as the card's strip
-    mission.stripMode = who === "nani";
+    // DAAR-57, CHT-21 (the Fable eye judge for Zafar, decision 38: "Nani's box keeps her face and speaker in the chop step, as chai's in
+    // every state"): only the pantry's list is her card's strip. Her own orders, chop's "Muke ba dungri khape", keep her face and speaker
+    // in her box, as daar's chop card does, and her order card carries no face of its own (one face per person, contract-20)
+    mission.stripMode = who === "nani" && !!pantry;
+    mission.ownBox = who === "nani" && !pantry;
     // (SH-285: the pantry's list, as against chop's, chaat's or daar's order of Nani's own: only the pantry's flashes nothing, PAN-19)
     mission.pantry = !!pantry;
     mission.strip = null;
@@ -3150,7 +3154,8 @@
     try {
       await request({ reason: "cook:station-order", target: () => (mine && mine.isConnected ? mine : $("#guide") || $("#mission")), lead: ORDER_T.lead, hold: ORDER_T.holdStation, wait: (ms) => Cook.wait(ms), onStop: () => UI.hush(), read }, draw);
     } finally {
-      if (own) UI.guideStrip(!!mine && mine.isConnected);
+      // (DAAR-57: her card in the sidebar with no face of its own: her box keeps hers)
+      if (own) UI.guideStrip(!!mine && mine.isConnected && !!mine.querySelector(".oc-face"));
       if (mine) mine.style.visibility = "";
       stopReading();
       if (Cook.expect && Cook.expect.intro) Cook.expect = prevExpect && !prevExpect.intro ? prevExpect : null;
@@ -3743,7 +3748,7 @@
       const H = L.head;
       const rowsDone = !!OCard() && items.length > 0 && OCard().shape({ items }).items.every((it) => it.done);
       const done = rowsDone && (!H || !!H.rec || !(H.ids || []).length || !!H.done);
-      cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: person(mission.who), headline, items, done, strip: mission.stripMode && L === mission.ladders[0] ? mission.strip : null } });
+      cards.push({ key: `${L.dish || 0}:${mission.who}`, who: mission.who, L, rows: rowsShown, own: true, data: { person: mission.ownBox ? Object.assign(person(mission.who), { face: null }) : person(mission.who), headline, items, done, strip: mission.stripMode && L === mission.ladders[0] ? mission.strip : null } });
     });
     peekCard = false;
     // the next step of an ordered job (a light grey band): only in the first ordered list still open
@@ -3829,7 +3834,9 @@
     });
     // (Fable's daar flaw 6, DAAR-44: one order card in the panel: while a station's own card asks, Nani's chop card, the order's cards wait
     // unseen, and come back as it goes)
-    const held = !big && (mission.extra || []).length > 0;
+    // (CHT-21: a station's card added with keepOrder, chaat's chop card while Nana's "Muke chaat khape." stays above the cards, leaves
+    // the order's cards in view; every other station's card holds them as before)
+    const held = !big && (mission.extra || []).some((x) => !x.keepOrder);
     const closed = mission.closed || null;
     writtenCard = big; // SH-110: the pop-up writes the order (the sidebar's card may dot it)
     let cards;
@@ -4037,12 +4044,13 @@
   /**
    * A station's own person card in the sidebar, above the order's (Nani's chop card, design system 13):
    * data is the shared order card's ({person, headline, items}); calling it again with the same key
-   * redraws it (ticks). opts.closed: folded like M.closeCards. M.removeCard(key) takes it away.
+   * redraws it (ticks). opts.closed: folded like M.closeCards. opts.keepOrder (CHT-21): the order's cards stay in view beside it
+   * (else they wait unseen while it is up, DAAR-44). M.removeCard(key) takes it away.
    */
   M.addCard = function (key, data, opts = {}) {
     if (!mission) return;
     const list = (mission.extra = (mission.extra || []).filter((x) => x.key !== key));
-    list.push({ key, data, closed: !!opts.closed, say: opts.say || null });
+    list.push({ key, data, closed: !!opts.closed, say: opts.say || null, keepOrder: !!opts.keepOrder });
     renderOrder();
   };
   M.removeCard = function (key) {
