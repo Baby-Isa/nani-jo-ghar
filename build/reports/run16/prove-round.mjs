@@ -155,7 +155,8 @@ for (const name of only || BUILDERS) {
   }
   saveState();
   saveProve();
-  if (!process.env.PROVE_KEEP_WT) try { execFileSync("git", ["worktree", "remove", "--force", wt], { cwd: ROOT, stdio: "ignore" }); } catch {}
+  // keep the worktree: its evidence sheets are the proof of a flaky or failing row (run 16 lost SH-267's run-2 sheet this way)
+  if (process.env.PROVE_DROP_WT) try { execFileSync("git", ["worktree", "remove", "--force", wt], { cwd: ROOT, stdio: "ignore" }); } catch {}
 }
 saveState();
 saveProve();
@@ -185,6 +186,8 @@ function ownChange(ref) {
   if (!cands.length) return null;
   cands.sort((a, b) => b.t - a.t);
   const { f, c } = cands[0];
+  // it stands in only for the commit it covers: no game file may change after it (run 16: a pre-SH-314 report was taken for the head)
+  try { if (git("diff", "--name-only", c, ref, "--", "js", "css", "data", "index.html").trim()) return null; } catch { return null; }
   const md = show(ref, `build/reports/tiers/${f}`) || "";
   const fail = /check-change: FAILED|\*\*FAILED\*\*|FAILED in/i.test(md) && !/no new break/i.test(md);
   return { file: f, commit: c, md, ok: !fail };

@@ -1,1 +1,40 @@
-{}
+{
+ "fix-kit": {
+  "SH-267": {
+   "readyKey": "dc15bb9d8a",
+   "resHash": "0986bff3cc",
+   "sha": "5d05688f3528b898ce1b0c338e4fae8ddeb23f00",
+   "status": "unproven"
+  },
+  "DAAR-57": {
+   "readyKey": "dc15bb9d8a",
+   "resHash": "9351c255f3",
+   "sha": "5d05688f3528b898ce1b0c338e4fae8ddeb23f00",
+   "status": "bounced"
+  },
+  "SH-270": {
+   "readyKey": "dc15bb9d8a",
+   "resHash": "c4a77061fa",
+   "sha": "5d05688f3528b898ce1b0c338e4fae8ddeb23f00",
+   "status": "bounced"
+  },
+  "SH-314": {
+   "readyKey": "dc15bb9d8a",
+   "resHash": "71eb2e7975",
+   "sha": "5d05688f3528b898ce1b0c338e4fae8ddeb23f00",
+   "status": "bounced"
+  },
+  "SH-292": {
+   "readyKey": "dc15bb9d8a",
+   "resHash": "e627dfc7a6",
+   "sha": "5d05688f3528b898ce1b0c338e4fae8ddeb23f00",
+   "status": "bounced"
+  },
+  "CK-121": {
+   "readyKey": "dc15bb9d8a",
+   "resHash": "2d445a015a",
+   "sha": "5d05688f3528b898ce1b0c338e4fae8ddeb23f00",
+   "status": "bounced"
+  }
+ }
+}
