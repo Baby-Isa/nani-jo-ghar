@@ -253,15 +253,15 @@
   "kind": "Look",
   "game": "chaat",
   "status": "open",
-  "probe": "evidence.json CHT-22 (noOverlap:.njg-onboard .ob-box,#side-cog at every onboard; chaat L1 and chop L1, 740x320, fresh)",
+  "probe": "evidence.json CHT-22 (noOverlap:.njg-onboard .ob-box,#side-cog at every onboard, chaat and chop L1 740x320 fresh; and an eye strip of #stage at every placed, chaat L1 740x320)",
   "red": "the cog part is green on head (run po-g1: every first light clear of the cog in chaat and chop), fixed by DAAR-65",
   "green": "48003532, run po-g1: PASS",
-  "judge": "machine",
+  "judge": "machine for the cog part; needs-eye for the rest (build/screenshots/evidence/po-v1/judge/batch-01.md)",
   "files": [
    "js/cook/mechanics/chop.js",
    "js/cook/mechanics/assemble.js"
   ],
-  "note": "The cog part is fixed; left open: the dim flash at the tameto turn, the potato on board and tray at once, the flying piece a readable picture (chop's own, the daar builder)."
+  "note": "The cog part is fixed (DAAR-65) and green on head; the rest (the 'hakro' pill on the cut potato, the dim flash at the tameto turn, the flying piece, the potato on board and tray at once) is on the po-v1 strips for the judge; those are chop's own, the daar builder's."
  },
  {
   "row": "CK-97",

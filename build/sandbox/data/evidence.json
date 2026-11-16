@@ -30210,6 +30210,26 @@
    "max": 8,
    "delay": 300,
    "note": "chop L1 at 740x320 (chaat's chop step is chop's own code): the cut light's box clear of the cog"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "strip:#stage:3x150"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "chaat at 740x320, each move: the 'hakro' pill clear of the cut potato; no one-frame dim flash at the tameto turn; the flying piece a readable picture, not a speck; the potato never on the board and the tray at once"
   }
  ],
  "CK-97": [
