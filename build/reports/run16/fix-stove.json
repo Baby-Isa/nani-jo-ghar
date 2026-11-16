@@ -17,15 +17,15 @@
   "row": "CK-137",
   "kind": "Look",
   "game": "corn",
-  "status": "built",
-  "probe": "evidence CK-137 p1 (corn L1-L4 740x320 at exp:turn: canvas:gk-tray and gk-grill clear of #side-cog, contract-113), p2 (corn L1-L4 1280x665: contract-78, 'Makai hane kadh.' with its light), p3 (eye: the praise and serve frames, L3 #speed1)",
-  "red": "d56dac1^ (5c27551, the commit before CK-137's round-3 fix, today's tools and specs): evidence.mjs --run --rows CK-137 --run-id stove-ck137-pre: noOverlap:canvas:gk-tray,#side-cog FAIL at L1-L4 740x320 (the tray under the cog), contract-78 FAIL at L4 1280x665",
-  "green": "48003532 (base; fix d56dac1 + 3b7d155, s20-corn-upright round 3): --run-id stove-corn-base: all machine expects PASS (tray and grill clear of the cog at L1-L4, contract-113 0, contract-78 0)",
-  "judge": "needs-eye",
+  "status": "open",
+  "probe": "evidence CK-137 p1 (corn L1-L4 740x320 at exp:turn: canvas:gk-tray and gk-grill clear of #side-cog, contract-113), p2 (corn L1-L4 1280x665: contract-78, 'Makai hane kadh.' with its light), p3 (eye: the praise and serve frames, L3 #speed1); p4 (corn L1-L4 740x320 at order-card-in-sidebar: lines:#side .oc-it14 .wc14-k<=1, each item card's name on one line)",
+  "red": "d56dac1^ (5c27551, the commit before CK-137's round-3 fix, today's tools and specs): evidence.mjs --run --rows CK-137 --run-id stove-ck137-pre: noOverlap:canvas:gk-tray,#side-cog FAIL at L1-L4 740x320 (the tray under the cog), contract-78 FAIL at L4 1280x665; p4 on base: --run-id stove-ck137-wrap-base (in /home/user/wt-base)",
+  "green": "machine parts (tray and grill clear of the cog, contract-113, contract-78): base PASS. p4 (the wrap): not fixed",
+  "judge": "FAIL (the judge: 'hakro makai' still wraps at 740x320); CK-132's and CK-137's other eye parts in the batches of run stove-corn-eggs-final",
   "files": [
    "build/sandbox/data/evidence.json"
   ],
-  "note": "Fixed before the run by s20-corn-upright round 3 (d56dac1); the row's status was never updated. Machine parts proven; the eye parts (served cob as cooked with toppings on both trays, 'Shabash!' clear, the plated cob the same drawing, the cob's foot clear of Nana's face, card names) go to the judge in the batch from run stove-corn-eggs-final."
+  "note": "Open. The cause is in the shared word card (word-card.css:115, .wc14-k, text-wrap: balance, no shrink before the wrap); the fix reaches chai's frozen item cards, so it's Zafar's call. The rest of the row was fixed before the run by s20-corn-upright round 3 (d56dac1): its machine parts are red on d56dac1^ and green on base."
  },
  {
   "row": "CK-93",
@@ -65,7 +65,7 @@
   "files": [
    "build/sandbox/data/evidence.json"
   ],
-  "note": "Fixed before the run by s20-corn-upright round 2 (88db779: one face size on the plates, the tray's faces at each place, the bowls' columns spread); the eye parts (faces one size, tray faces at their cob's place, the chutney pills a pill's gap apart at 740x320) go to the judge in the batch from run stove-corn-eggs-final."
+  "note": "Fixed before the run by s20-corn-upright round 2 (88db779: one face size on the plates, the tray's faces at each place, the bowls' columns spread); the eye parts (faces one size, tray faces at their cob's place, the chutney pills a pill's gap apart at 740x320) go to the judge in the batch from run stove-corn-eggs-final. Its eye probe now captures the whole screen (shot), so Nani's box and the order cards are in the judge's frames (the judge couldn't see her box in crop:#game); it needs a rerun for the judge."
  },
  {
   "row": "NEW-run16-stove-profile",

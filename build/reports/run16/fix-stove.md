@@ -35,9 +35,12 @@ All three were fixed before the run (49369e3 and 5b5d0b5; 677d1a0). Their status
 
 ## Built before the run, machine parts proven, eye parts to the judge
 
-- **CK-137:** red on d56dac1^: the steel tray under the settings cog at L1-L4 740x320, and contract-78 at L4 1280x665. Green on base. Still for the eye: the served cob as cooked on both trays, 'Shabash!' clear, the plated cob the same drawing, the cob's foot clear of the face, the card names.
+- **CK-137 (open, see the questions below):** red on d56dac1^: the steel tray under the settings cog at L1-L4 740x320, and contract-78 at L4 1280x665. Green on base. Still for the eye: the served cob as cooked on both trays, 'Shabash!' clear, the plated cob the same drawing, the cob's foot clear of the face, the card names.
 - **CK-132:** see the flaws above; the faces and pills are for the eye. The judge couldn't see Nani's box in the grill frames, so the eye probe now captures the whole screen ("shot") in place of crop:#game. It needs a rerun for the judge.
-- **CK-137's card-name wrap** (the judge's FAIL: "hakro makai" wraps at 740x320) is the shared word card's layout, not corn's: `css/shared/word-card.css:115`, `.wc14-k` with `text-wrap: balance` and no shrink before the wrap. It needs fix-kit, and the frozen chai diff, since every game's item cards change. A red check for it, CK-137 p4 (`lines:#side .oc-it14 .wc14-k<=1`, corn L1-L4 at 740x320), is being added to evidence.json.
+- **CK-137 stays open** because of the judge's FAIL: "hakro makai" wraps at 740x320.
+  - The cause is in the shared word card (`css/shared/word-card.css:115`): `.wc14-k` uses `text-wrap: balance` and never shrinks before it wraps.
+  - The fix reaches chai's frozen item cards, so it's Zafar's call. The orchestrator agreed: no kit change in this run.
+  - Its red check is CK-137 p4, `lines:#side .oc-it14 .wc14-k<=1` on corn L1-L4 at 740x320 (run `stove-ck137-wrap-base`).
 - **CK-81, CK-102, CK-103:** eye sheets only. Their code says built (sekelo's well done, baking's shelf, corn's dressing picture).
 - **Judge batches** (committed with their sheets):
   - CK-137 and CK-132: `build/screenshots/evidence/stove-corn-eggs-final/judge/batch-01.md` and `batch-02.md`.
