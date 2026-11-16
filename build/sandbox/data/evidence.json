@@ -4390,6 +4390,27 @@
  ],
  "DAAR-03": [
   {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "daar's stir at 930x430: the lap count readable at a glance",
+   "delay": 0
+  },
+  {
    "flow": "cook:stir",
    "path": "fair",
    "level": [
@@ -4397,18 +4418,18 @@
     2
    ],
    "sizes": [
-    "1366x768"
+    "930x430"
    ],
    "profile": "seen",
    "want": null,
    "at": "stir-mid",
    "after": null,
    "capture": [
-    "crop:#stage",
-    "dom:#mission"
+    "shot"
    ],
    "expect": null,
-   "note": "the stir shows speed (dial) and laps as a Kutchi word"
+   "note": "stir at 930x430",
+   "delay": 0
   }
  ],
  "DAAR-04": [
@@ -20754,13 +20775,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "results-badges",
+   "at": "kind-timing",
    "after": null,
    "capture": [
-    "shot"
+    "strip:#game:8x300"
    ],
    "expect": null,
-   "note": "the rest of chai kept: heat, heat ring, boil, levels, ticks and the end"
+   "note": "chai's heat and its ring at the timed step, with the new cards and Nani's box in the same frame (re-capture: was the badges screen)",
+   "delay": 0
   }
  ],
  "SH-154": [
@@ -21443,22 +21465,20 @@
  "CHAI-42": [
   {
    "flow": "cook:chai-tray",
-   "path": "speed1",
+   "path": "fair",
    "level": 1,
    "sizes": [
-    "930x430",
-    "1920x1080"
+    "930x430"
    ],
    "profile": "fresh",
    "want": null,
    "at": "exp:cook-chai",
    "after": null,
    "capture": [
-    "strip:body:30x200",
-    "contract:79"
+    "strip:body:40x300"
    ],
    "expect": null,
-   "note": "a new player, filmed from the tea's step: the tea goes in, its spoon lands, the order row glides; only then, after a quiet spell, the order card is lit once (1.2 s); a child who has already picked the next thing gets no light",
+   "note": "a new player: the order card's light waits until the tea has gone in and nothing moves (12 s from the tea step)",
    "delay": 0
   }
  ],
@@ -22170,115 +22190,49 @@
  "MAA-19": [
   {
    "flow": "cook:maani-line",
-   "path": "order-whole",
-   "level": 2,
-   "sizes": [
-    "930x430"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "life:request",
-   "after": null,
-   "capture": [
-    "strip:body:60x200",
-    "contract:52",
-    "contract:83"
-   ],
-   "expect": null,
-   "note": "maani's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
-   "delay": 0
-  },
-  {
-   "flow": "cook:maani-line",
    "path": "fair",
    "level": [
-    1,
+    3,
     4
    ],
    "sizes": [
-    "740x320",
-    "1920x1080"
+    "1280x665"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
-   "at": "view-marble",
+   "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
-    "shot",
-    "contract:53",
-    "contract:84"
+    "zoom2:#side",
+    "dom:#side"
    ],
    "expect": null,
-   "note": "maani for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; rotis 2, 3, 4, 5 by level; the tawa flip's first-time hold (L4: the station at play; no first-time help from L3, the rulebook)",
-   "delay": 1500
-  },
-  {
-   "flow": "cook:maani-line",
-   "path": "fair",
-   "level": [
-    1,
-    2
-   ],
-   "sizes": [
-    "1280x665",
-    "740x320"
-   ],
-   "profile": "fresh",
-   "want": null,
-   "at": "exp:tawa-1",
-   "after": null,
-   "capture": [
-    "strip:#game:8x250",
-    "contract:105"
-   ],
-   "expect": null,
-   "note": "maani's flip, its first time as a new player: in the green, the dim and the lit box round the maani on the tawa (the coach's staged step; the hold keeps it in the green)"
+   "note": "maani L3 and L4: the order row whole (4 and 5 rotis countable)",
+   "delay": 0
   }
  ],
  "SEK-22": [
   {
    "flow": "cook:mishkaki-grill",
-   "path": "order-whole",
-   "level": 2,
-   "sizes": [
-    "930x430"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "life:request",
-   "after": null,
-   "capture": [
-    "strip:body:60x200",
-    "contract:52",
-    "contract:83"
-   ],
-   "expect": null,
-   "note": "the sekelo grill's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
-   "delay": 0
-  },
-  {
-   "flow": "cook:mishkaki-grill",
    "path": "fair",
    "level": [
     1,
     4
    ],
    "sizes": [
-    "740x320",
-    "1920x1080"
+    "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "view-marble",
+   "at": "every:onboard",
    "after": null,
    "capture": [
-    "shot",
-    "contract:53",
-    "contract:84"
+    "shot"
    ],
    "expect": null,
-   "note": "the sekelo grill for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; skewers 1, 2, 3, 4 by level; the turn's first-time hold; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
-   "delay": 1500
+   "note": "sekelo threading: the light round the skewer and its threaded items, clear of the others",
+   "delay": 0,
+   "max": 4
   }
  ],
  "SAM-28": [
@@ -22376,47 +22330,25 @@
  "DAAR-36": [
   {
    "flow": "cook:daar",
-   "path": "order-whole",
-   "level": 2,
-   "sizes": [
-    "930x430"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "life:request",
-   "after": null,
-   "capture": [
-    "strip:body:60x200",
-    "contract:52",
-    "contract:83"
-   ],
-   "expect": null,
-   "note": "daar's order filmed whole at L2 on the s14 kit as chai has it: each word's big card pops beside the side panel (never over a face), then turns into its row card in the sideways order row; 'no' items said last; the bubble off faces and the side panel",
-   "delay": 0
-  },
-  {
-   "flow": "cook:daar",
    "path": "fair",
    "level": [
     1,
     4
    ],
    "sizes": [
-    "740x320",
-    "1920x1080"
+    "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "life:stage-start",
+   "at": "every:step",
    "after": null,
    "capture": [
-    "shot",
-    "contract:53",
-    "contract:84"
+    "shot"
    ],
    "expect": null,
-   "note": "daar for a new player at L1 and L4: the lit-box light (warm fill, gold glow) hugging one thing, no finger; chopped + added first written X+Y on its card (1+2, 2+2, 3+3, 4+4); decoys 1, 2, 3, 4; the tadka's first-time hold; the help light hugs its item (contract-53) (L4: the station at play; no first-time help from L3, the rulebook)",
-   "delay": 2500
+   "note": "daar on the kit: every step's whole screen (chop, tadka's hold, stir; the decoy on the tray)",
+   "delay": 0,
+   "max": 6
   }
  ],
  "SH-169": [
@@ -22971,23 +22903,22 @@
    "path": "fair",
    "level": [
     1,
-    3
+    4
    ],
    "sizes": [
-    "740x320",
     "1280x665"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
-   "at": "every:onboard",
+   "at": "kind-timing",
    "after": null,
    "capture": [
-    "shot"
+    "voice",
+    "strip:body:10x1000"
    ],
    "expect": null,
-   "note": "a new player: the knob lit with Chulo bar! once (the first pot); never again for the second pot",
-   "delay": 300,
-   "max": 8
+   "note": "a returning player: 'Chulo bar!' with nothing lit, then the lit knob after the level's wait (10 s filmed)",
+   "delay": 0
   }
  ],
  "CHAI-57": [
@@ -25113,32 +25044,34 @@
    "flow": "cook:eggs",
    "path": "fair",
    "level": [
-    1,
-    2,
     3,
     4
    ],
    "sizes": [
-    "740x320",
-    "1280x665"
+    "1280x665",
+    "740x320"
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-marble",
+   "at": "order-card-in-sidebar",
    "after": null,
    "capture": [
-    "crop:#side"
+    "zoom2:#side",
+    "dom:#side"
    ],
    "expect": null,
-   "note": "each person's headline says their count ('Muke ba tarela inda khape'); one card per egg ('tarelo indo', 'boiled egg'), no number on a card",
+   "note": "eggs L3-L4 (orders of more than one egg): the headline says the count, one card per egg",
    "delay": 0
   }
  ],
  "DAAR-45": [
   {
-   "flow": "cook:daar",
+   "flow": "cook:stir",
    "path": "fair",
-   "level": 1,
+   "level": [
+    1,
+    4
+   ],
    "sizes": [
     "1280x665"
    ],
@@ -25147,10 +25080,31 @@
    "at": "stir-mid",
    "after": null,
    "capture": [
-    "crop:#side"
+    "shot"
    ],
    "expect": null,
-   "note": "daar's own stir today (its dial) | waits: One stir in the kitchen kit for daar and the stir game (out of scope for s19-cards: the next builder)",
+   "note": "stir: dial, pot, art and zoom",
+   "delay": 0
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "note": "daar's stir: the same dial, pot, art and zoom",
    "delay": 0
   }
  ],
@@ -25636,22 +25590,23 @@
    "flow": "cook:maani-line",
    "path": "fair",
    "level": [
-    1
+    1,
+    2
    ],
    "sizes": [
-    "1280x665",
-    "740x320"
+    "1280x665"
    ],
    "profile": "fresh",
    "want": null,
    "at": "kind-roll",
    "after": null,
    "capture": [
-    "strip:#game:12x250",
+    "strip:#game:32x250",
     "voice"
    ],
    "expect": null,
-   "note": "maani at L1 (before big and small, MAA-23) as a new player, MAA-21's 9 Nov version: the roll stops hard just inside the chakla's rim (0.92 of it), no gold ring drawn, never a tear; the juice sound at the stop; then the light asks for the tap on the maani with no finger (the test player rolls to the stop: the gauge reads the way to it)"
+   "note": "the first rolls filmed 8 s through the roll: stop at the board's rim, no tear",
+   "delay": 0
   }
  ],
  "MAA-20": [
@@ -27414,47 +27369,49 @@
  "CK-83": [
   {
    "flow": "cook:chaat",
-   "path": "speed1",
+   "path": "fair",
    "level": [
-    1
+    1,
+    4
    ],
    "sizes": [
-    "740x320",
-    "1280x665"
+    "740x320"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
-   "at": "every:onboard",
+   "at": "every:step",
    "after": null,
    "capture": [
-    "crop:#game"
+    "shot"
    ],
    "expect": null,
-   "max": 8,
-   "note": "chaat: the chop light only once the vegetable is still; the light on the potato itself"
+   "note": "chaat: Nani's box in the chop stage (face, one step), the bowl filling step by step, the chop light (whole screen)",
+   "delay": 0,
+   "max": 4
   }
  ],
  "CK-84": [
   {
    "flow": "cook:baking",
-   "path": "speed1",
+   "path": "fair",
    "level": [
-    1
+    3,
+    4
    ],
    "sizes": [
-    "740x320",
-    "1280x665"
+    "740x320"
    ],
    "profile": "fresh",
    "want": null,
    "at": "every:onboard",
    "after": null,
    "capture": [
-    "crop:#game"
+    "shot"
    ],
    "expect": null,
-   "max": 8,
-   "note": "baking: the light round the atto jar no bigger than the jar and its pill; the oven's dim"
+   "note": "baking L3-L4 (khun on the shelf): the bowl never on the khun jar, its light on the bowl only, the order rows whole at 740x320",
+   "delay": 0,
+   "max": 4
   }
  ],
  "ART-52": [
@@ -27507,50 +27464,64 @@
  "CK-72": [
   {
    "flow": "cook:baking",
-   "path": "speed1",
+   "path": "fair",
    "level": [
     1,
-    2,
-    3,
     4
    ],
    "sizes": [
-    "740x320",
     "1280x665"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
    "at": "every:line:cook",
    "after": null,
    "capture": [
-    "crop:#game"
+    "shot",
+    "dom:#side"
    ],
    "expect": null,
-   "max": 16,
-   "note": "baking: fixed amounts only (a quarter, a half, three quarters, full, one and a half, two, two and a half); no 'a little' or 'a lot' anywhere"
+   "note": "baking: the amounts said and shown on the order card and Nani's box (whole screen and the side's text)",
+   "delay": 0,
+   "max": 4
   }
  ],
  "DAAR-46": [
   {
-   "flow": "cook:daar",
-   "path": "speed1",
-   "level": [
-    1
-   ],
+   "flow": "cook:stir",
+   "path": "fair",
+   "level": 1,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "stir-mid",
    "after": null,
    "capture": [
-    "crop:#game"
+    "strip:body:10x400"
    ],
    "expect": null,
-   "max": 8,
-   "note": "daar's stir: the shared stir, ending when the child stops, a mark per lap"
+   "note": "the stir's first time: its light gone as the stir starts; stirring goes on",
+   "delay": 0
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "stir-mid",
+   "after": null,
+   "capture": [
+    "strip:body:10x400"
+   ],
+   "expect": null,
+   "note": "daar's stir first time",
+   "delay": 0
   }
  ],
  "DAAR-51": [
@@ -27604,46 +27575,46 @@
  ],
  "CK-86": [
   {
-   "flow": "cook:mishkaki-grill",
-   "path": "speed1",
+   "flow": "cook:corn",
+   "path": "fair",
    "level": [
-    1
+    1,
+    4
    ],
    "sizes": [
-    "740x320",
     "1280x665"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
-   "at": "every:onboard",
+   "at": "exp:done",
    "after": null,
    "capture": [
-    "crop:#game"
+    "shot"
    ],
    "expect": null,
-   "max": 8,
-   "note": "sekelo's grill screen as the mock: two trays stacked left, each about half the grill's width, together its height; one centred rectangle"
+   "note": "corn: the cob on the tray as on the grill, the tray beside the grill (whole screen)",
+   "delay": 600
   },
   {
-   "flow": "cook:corn",
-   "path": "speed1",
+   "flow": "cook:mishkaki-grill",
+   "path": "fair",
    "level": [
-    1
+    1,
+    4
    ],
    "sizes": [
-    "740x320",
     "1280x665"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
-   "at": "every:onboard",
+   "at": "exp:done",
    "after": null,
    "capture": [
-    "crop:#game"
+    "shot"
    ],
    "expect": null,
-   "max": 8,
-   "note": "corn's grill and the steel tray beside it, the same height, one centred rectangle"
+   "note": "sekelo: the skewers on the tray as on the grill",
+   "delay": 600
   }
  ],
  "SEK-26": [
@@ -27845,24 +27816,22 @@
  "CHAI-110": [
   {
    "flow": "cook:chai-tray",
-   "path": "speed1",
-   "level": [
-    4
-   ],
+   "path": "fair",
+   "level": 4,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
    "want": null,
-   "at": "every:onboard",
+   "at": "exp:pour",
    "after": null,
    "capture": [
-    "crop:#game"
+    "shot"
    ],
    "expect": null,
-   "max": 10,
-   "note": "chai's first L4 round: order 1 full (no light before the first tap; the glass lit after the half pour until the second tap), order 2 half"
+   "note": "L4 new player: the first order half; after the full glass's first tap the light on the glass until the second (whole screen with the order card)",
+   "delay": 0,
+   "max": 4
   }
  ],
  "CK-46": [
@@ -27937,12 +27906,9 @@
  "DAAR-39": [
   {
    "flow": "cook:daar",
-   "path": "speed1",
-   "level": [
-    1
-   ],
+   "path": "fair",
+   "level": 1,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
    "profile": "fresh",
@@ -27950,11 +27916,12 @@
    "at": "every:onboard",
    "after": null,
    "capture": [
-    "crop:#game"
+    "strip:body:10x250"
    ],
    "expect": null,
-   "max": 8,
-   "note": "daar's chop swipe: one lit region"
+   "note": "daar's chop first-time help filmed: the knife's strip lit, the finger dragging the knife",
+   "delay": 0,
+   "max": 2
   }
  ],
  "SAM-34": [
@@ -28033,23 +28000,20 @@
   {
    "flow": "cook:chai-tray",
    "path": "speed1",
-   "level": [
-    1
-   ],
+   "level": 4,
    "sizes": [
-    "740x320",
     "1280x665"
    ],
-   "profile": "fresh",
+   "profile": "seen",
    "want": null,
-   "at": "every:onboard",
+   "at": "kind-timing",
    "after": null,
    "capture": [
-    "crop:#game"
+    "strip:#game:16x250"
    ],
    "expect": null,
-   "max": 8,
-   "note": "CHAI-58 as its row says"
+   "note": "L4 at a child's pace: the boil's green, filmed 4 s from the timed step (about 2 s green)",
+   "delay": 0
   }
  ],
  "CHAI-60": [
