@@ -13,7 +13,7 @@ const argv = process.argv.slice(2);
 const val = (k, d) => { const i = argv.indexOf(`--${k}`); return i >= 0 ? argv[i + 1] : d; };
 const row = val("row", "SAM-47");
 const ROWS = {
-  "SAM-44": { game: "samosa" }, "SAM-35": { game: "samosa" }, "SAM-46": { game: "samosa" }, "SAM-47": { game: "samosa" }, "SAM-47a": { game: "samosa" }, "SAM-47b": { game: "samosa" }, "chai": { game: "chai-tray" },
+  "SAM-44": { game: "samosa" }, "SAM-45": { game: "samosa" }, "SAM-42": { game: "samosa" }, "SAM-35": { game: "samosa" }, "SAM-46": { game: "samosa" }, "SAM-47": { game: "samosa" }, "SAM-47a": { game: "samosa" }, "SAM-47b": { game: "samosa" }, "chai": { game: "chai-tray" },
   "RT-01": { game: "roll-tawa" }, "RT-02": { game: "roll-tawa" }, "RT-03": { game: "roll-tawa" }, "RT-04": { game: "roll-tawa" },
 };
 if (!ROWS[row]) { console.error(`unknown row ${row}`); process.exit(2); }
@@ -68,7 +68,7 @@ const SAMPLE = (game) => {
     const walk = (list) => list.forEach((o) => {
       if (!o.visible || o.alpha <= 0.05) return;
       if (o.type === "Text" && o.text) { const b = o.getBounds(); texts.push({ t: o.text, b: [b.x, b.y, b.width, b.height].map(Math.round) }); }
-      else if (o.texture && /board|karahi|hob|heap/i.test(o.texture.key)) { const b = o.getBounds(); geo.push({ k: o.texture.key, b: [b.x, b.y, b.width, b.height].map(Math.round) }); }
+      else if (o.texture && /board|karahi|hob|heap|spoon|badge|face/i.test(o.texture.key)) { const b = o.getBounds(); geo.push({ k: o.texture.key, b: [b.x, b.y, b.width, b.height].map(Math.round) }); }
       if (o.list) walk(o.list);
     });
     walk(S.children.list);
@@ -77,8 +77,11 @@ const SAMPLE = (game) => {
   // SAM-35: the language's number words, from the game's own lexicon (never written here: non-negotiable 2)
   let nums = [];
   try { if (C && C.numId && C.display) nums = Array.from({ length: 12 }, (_, i) => String(C.display(C.numId(i + 1)) || "").toLowerCase()).filter(Boolean); } catch (e) { /* not loaded */ }
+  // SAM-42: the fold's arrow as drawn (samosa.js keeps it on the fold's picture, __arrow: 0 none, 1 whole)
+  const foldPic = S && S.children ? S.children.list.find((o) => o.texture && o.texture.key === "sv3-foldcv" && o.visible) : null;
+  const arrow = foldPic && foldPic.__arrow != null ? +foldPic.__arrow.toFixed(2) : null;
   return {
-    geo, texts, bottom, nums,
+    geo, texts, bottom, nums, arrow,
     under, card: txt("#mission .oc-card"), cardItems: txt("#mission .oc-card .wc14"), pop: txt(".njg-rq-card"), things,
     layers: ls.length, holes, guide: box(g), line: line ? line.textContent.trim() : null, speaking,
     fry, ek: e ? `${e.kind}:${e.key || ""}` : null, gauge, gear: box(gear), view: C && S ? S.viewName : null,
@@ -178,6 +181,22 @@ const checks = {
     if (!samples.some((x) => (x.cardItems || []).some((t) => /maani/i.test(t)))) faults.push(`the order card has no item card for the maani: '${s.card.join(" | ")}'`);
     if (s.card.some((t) => /^Nana\b/.test(t))) faults.push(`the order card's row is a name: '${s.card.join(" | ")}'`);
   },
+  // SAM-45 (Fable's look at the published game, 16 Nov: "Nana's praise face covers the skimmer"): at the well done the big face (the review's,
+  // its picture the widest face on the stage) keeps off the slotted spoon (their boxes share under 5% of the face's)
+  "SAM-45": () => {
+    let seen = 0;
+    for (const x of samples) {
+      if (!(x.texts || []).some((t) => /^Shabash/.test(t.t))) continue;
+      const spoon = (x.geo || []).find((g) => /^sv4-spoon/.test(g.k));
+      const faces = (x.geo || []).filter((g) => /badge|face/i.test(g.k)).sort((a, b) => b.b[2] - a.b[2]);
+      if (!spoon || !faces.length) continue;
+      const f = faces[0].b, sp = spoon.b;
+      const ix = Math.max(0, Math.min(f[0] + f[2], sp[0] + sp[2]) - Math.max(f[0], sp[0])), iy = Math.max(0, Math.min(f[1] + f[3], sp[1] + sp[3]) - Math.max(f[1], sp[1]));
+      seen++;
+      if ((ix * iy) / (f[2] * f[3]) > 0.05) return void faults.push(`${(x.t / 1000).toFixed(1)} s: the praise face [${f}] over the slotted spoon [${sp}] (${Math.round((100 * ix * iy) / (f[2] * f[3]))}% of the face)`);
+    }
+    if (!seen) faults.push("no well done with its face and the spoon seen");
+  },
   // SAM-46 (three of its four: the pastry's own shadow is a question against SH-268): (a) the fill's word pop ('hakro chundo') whole on
   // the board, never over its corner; (b) the shelf's heaps centred in the bottom row (their group's middle within 2% of the row's
   // width of its middle); (c) the karahi, handles and all, inside its hob
@@ -243,6 +262,18 @@ const checks = {
     const sentence = s.card[0].replace(items, "").trim().toLowerCase();
     if (!s.nums.some((n) => sentence.split(/[^a-z\u00c0-\u024f']+/).includes(n))) faults.push(`the order's sentence '${sentence}' names no count`);
     if (s.cardItems.some((t) => /samosa/i.test(t))) faults.push(`a finished-samosa item card on the order card: '${items}'`);
+  },
+  // SAM-42: while the first fold's first-time light is still to come, no arrow is drawn on the pastry (Fable's look, 16 Nov: "a white
+  // arrow flashes for one frame before the fold's first-time light"); once lit, none inside the light
+  "SAM-42": () => {
+    const fold = samples.filter((x) => x.arrow != null);
+    if (!fold.length) return void faults.push("no fold seen (or the game does not report its arrow)");
+    const firstLit = fold.findIndex((x) => x.layers > 0);
+    if (firstLit < 0) return void faults.push("the first fold had no first-time light");
+    const early = fold.slice(0, firstLit).find((x) => x.arrow > 0.02);
+    if (early) faults.push(`${(early.t / 1000).toFixed(1)} s: the fold's arrow drawn (${early.arrow}) before its first-time light (lit at ${(fold[firstLit].t / 1000).toFixed(1)} s)`);
+    const inside = fold.find((x) => x.layers > 0 && x.arrow > 0.02);
+    if (inside) faults.push(`${(inside.t / 1000).toFixed(1)} s: the fold's arrow drawn (${inside.arrow}) inside its light`);
   },
   // SAM-47: (a) while Nani says the line in her box, her box is never under a first-time light's dim; (b) no light comes twice on the
   // same box with nothing done between (two onboards 3 s apart, nothing changed)

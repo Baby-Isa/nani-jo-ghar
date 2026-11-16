@@ -1105,6 +1105,11 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
       // the stuck help), no arrow is drawn inside it: the kit's finger shows the drag instead; with no light, the arrow is the help (SAM-21)
       const OBk = global.Onboard;
       const litNow = !!(OBk && OBk.lightsShown && OBk.lightsShown() > 0) && !live.dragging;
+      // (SAM-42, Fable's look at the published game, 16 Nov 07:00: "a white arrow flashes for one frame before the fold's first-time
+      // light": the first fold's arrow waits for its light, never longer than holdArrow, so with no light the arrow is still the help)
+      if (litNow) live.holdArrow = 0;
+      else if (live.holdArrow && Date.now() < live.holdArrow) live.arrow = 0;
+      fimg.__arrow = live.arrow; // (read-only, for the probes: how much of the arrow is drawn)
       if (litNow) {
         live.arrow = 0;
         if (!live.finger && live.from && Cook.Coach && Cook.Coach.demo) live.finger = Cook.Coach.demo(() => (live && live.from ? { from: live.from, to: live.to } : null), { gesture: "drag", step: "samosa:fold" });
@@ -1197,6 +1202,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // light), so it ends now, marked seen: its end-of-showing point at the order card would light the card beside the dough
         // (one thing lit at a time, decision 95); the fold's own first-time demo is its light just below (Coach.control)
         if (firstFold && Cook.Coach.active && Cook.Coach.active()) Cook.Coach.stop(true);
+        if (firstFold) live.holdArrow = Date.now() + 1500 / (Cook.speed || 1);
         let foldLight = firstFold ? Cook.Coach.control({ key: "samosa", note: "samosa:fold", target: Cook.Coach.box(fimg, 6, { visible: true }), first: true, noHint: true }) : null;
         const foldLightOff = () => foldLight && (foldLight.close(), (foldLight = null));
         await swipe(z, S, {
@@ -1907,7 +1913,7 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     steps.done();
     shimmer.destroy();
     await Cook.wait(300);
-    return { lifted: lifted.map((l) => l.verdict), bad, plate: { img: plate, items: lifted.flatMap((l) => [l.im, l.b]) } };
+    return { lifted: lifted.map((l) => l.verdict), bad, plate: { img: plate, items: lifted.flatMap((l) => [l.im, l.b]), spoon: jharo } };
   }
 
   /* ---------- serve and taste (§14a) ---------- */
@@ -1930,7 +1936,13 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
     if (small) small.setVisible(false);
     // (SAM-45, the Fable eye judge for Zafar, 15 Nov: "'Shabash!' over clear space beside the face, not over the slotted spoon": the praise
     // card to the face's right, over the plate's rim, as chai's beside its tray; it was to the left, over the spoon's head)
-    const look = await Cook.Kit.review(S, { who, ok: true, x: plate.img.x - off, y: plate.img.y - off, size, k: z.L(1), side: "right" });
+    // (SAM-45, Fable's look at the published game, 16 Nov 07:00: "Nana's praise face covers the skimmer": the slotted spoon stands between
+    // the hob and the plate, under the plate's upper left; the face moves right until it clears the spoon, a gap beside it, its middle
+    // never past the plate's)
+    let fx = plate.img.x - off;
+    const spoon = plate.spoon;
+    if (spoon && spoon.active && spoon.visible) fx = Math.min(plate.img.x, Math.max(fx, spoon.getBounds().right + z.L(12) + size / 2));
+    const look = await Cook.Kit.review(S, { who, ok: true, x: fx, y: plate.img.y - off, size, k: z.L(1), side: "right" });
     await Cook.wait(300);
     await look.close();
     if (small && small.active) small.setVisible(true);
