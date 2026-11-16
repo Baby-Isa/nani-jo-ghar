@@ -30747,16 +30747,16 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "results",
+   "at": "visible:.wc14-flash.on",
    "after": null,
    "capture": [
-    "contract:119"
+    "crop:#game"
    ],
    "expect": [
-    "pass"
+    "noOverlap:.wc14-flash,#side-cog"
    ],
-   "note": "the dish card that flashes never covers the cog (contract-119)",
-   "delay": 0
+   "note": "baking L1: the dish card that flashes as the customer names the dish never covers the settings cog",
+   "delay": 200
   },
   {
    "flow": "cook:chop",
@@ -30768,16 +30768,16 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "results",
+   "at": "visible:.wc14-flash.on",
    "after": null,
    "capture": [
-    "contract:119"
+    "crop:#game"
    ],
    "expect": [
-    "pass"
+    "noOverlap:.wc14-flash,#side-cog"
    ],
-   "note": "chop",
-   "delay": 0
+   "note": "chop L1: the dish card that flashes as the customer names the dish never covers the settings cog",
+   "delay": 200
   },
   {
    "flow": "cook:chaat",
@@ -30789,16 +30789,16 @@
    ],
    "profile": "fresh",
    "want": null,
-   "at": "results",
+   "at": "visible:.wc14-flash.on",
    "after": null,
    "capture": [
-    "contract:119"
+    "crop:#game"
    ],
    "expect": [
-    "pass"
+    "noOverlap:.wc14-flash,#side-cog"
    ],
-   "note": "chaat",
-   "delay": 0
+   "note": "chaat L1: the dish card that flashes as the customer names the dish never covers the settings cog",
+   "delay": 200
   }
  ],
  "SH-285": [
