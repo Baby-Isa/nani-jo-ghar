@@ -1099,5 +1099,53 @@
   "status": "proven",
   "reason": "The alignment half is measured and shown red before the fix (Nani's face 4.3 and 5.6 px off the order cards' face line at the two phone sizes) and 0.0 px after. The row's other half is not measured: the two circles' equal size, and the speaker circle at all; the eye judge saw no mismatch on chai.",
   "panel": "results: red 642f1efd^ (run po-red-301), green 642f1efd and 48003532 (run po-w1); spec: centredOn Nani's face, the order card's face"
+ },
+ {
+  "row": "CK-102",
+  "branch": "run16/fix-stove",
+  "kind": "eye",
+  "commit": "ac408f5",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): the sheets show L1 only (740x320 and 1280x665); the Check names L1, L2, L3 and L4 and there is no L2, L3 or L4 panel. What is shown at L1 meets the row: A11-A13 and C11-C13 keep dudh, paani and atto on the shelf through the oven, F and J keep all three at stage-end, H and L show the order folded to one line \"Muke naan khape.\" with its tick and no ghost card or blank box. Tool note: the full-screen panels E, G, I, K at stage-end show the Nani and Nana kitchen scene while the #game crops F and J of the same moment show the oven and shelf, so the screen and its crop are not the same instant.",
+  "panel": "stove-eye-final/CK-102.png",
+  "file": "build/reports/run16/judge/fix-stove/stove-eye-final/batch-01.verdicts.md"
+ },
+ {
+  "row": "CK-81",
+  "branch": "run16/fix-stove",
+  "kind": "eye",
+  "commit": "ac408f5",
+  "verdict": "FAIL",
+  "status": "open",
+  "judge": "FAIL",
+  "reason": "A, at 1280x665 the turn frame (A3, 44.8 s) shows the skewer in a pale ring with its turn badge on an undimmed screen, no kit light, while 740x320 (C5) and 930x430 (D5) dim the screen and light the ring gold; B at 1920x1080 has no turn frame at all (3 onboards: gos, bowls, skewer card). Also: at well done the skewer sits on the tray's left rim with its handle hanging off the bottom edge and its tip over the top edge, not whole on the tray (E5, F5, G5, H5); the one Nana face is above the tray at 1280, 1920 and 740 (E5, F5, G5) but below it beside the skewer handle at 930 (H5); L2, L3 and L4 are not shown. Met: one Nana face only at well done (E5, F5, G5, H5); the served skewer whole on the wooden tray with the small face at the corner clear of it (E6, F7, G7, H7); skewer and ring readable at 740x320 (C3-C5, G4).",
+  "panel": "stove-eye-final/CK-81.png panel A",
+  "file": "build/reports/run16/judge/fix-stove/stove-eye-final/batch-01.verdicts.md"
+ },
+ {
+  "row": "CK-103",
+  "branch": "run16/fix-stove",
+  "kind": "eye",
+  "commit": "ac408f5",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The sheet does not show the row's state (a probe fault, not the fix): the Check names corn at L1, L2, L3 and L4 at both sizes, but the sheets hold L1 only (A-L); the 12 L2 strips are listed as \"not on the sheet\" and no L3 or L4 probe was run at all. What L1 does show: E (1280x665) frame 0 ms has a small pepper-bowl picture sitting on the cob, not a plain dot, and by 687 ms the cob carries black pepper specks it did not have before; K (740x320) shows the same (bowl picture on the cob at 0 ms, specks from 245 ms). Tool faults to fix with the re-shoot: E and K are both stamped NO MOTION CAPTURED although their frames differ, and neither strip catches the bowl in flight from the tray (frame 0 is already at the cob), so \"flying to the cob\" is not shown at either size. Flaws seen, off the L-coverage point: K 0 ms, at 740x320 the flying bowl is only a few pixels wide and reads close to a dark dot; E 687 ms, Nani's face vanishes from the plate for a frame and comes back on the other side at 840 ms; L, the \"Shabash!\" bubble is very small at 740x320.",
+  "panel": "stove-eye-final/CK-103.png",
+  "file": "build/reports/run16/judge/fix-stove/stove-eye-final/batch-02.verdicts.md"
+ },
+ {
+  "row": "CHT-22",
+  "branch": "run16/probes-open",
+  "kind": "eye-before",
+  "commit": "8c919b9",
+  "verdict": "FAIL",
+  "status": "cannot-probe",
+  "judge": "EVIDENCE",
+  "reason": "The check does not show the row's problem, so it is not a red check: the sheet never shows four of the row's six states, so the row's problem is neither seen nor seen fixed. Missing: (1) the 'hakro' pill beside a cut potato (C shows only a whole potato, no pill on the board, no cut pieces); (2) the tameto turn and its dim (the strips are chano D, bataato E, fudino ji chutney F; tameto is never tapped and no frame anywhere is dimmed); (3) the flying piece in flight (D jumps from an empty bowl at 0 ms to chickpeas already in the bowl at 210 ms; E is NO MOTION CAPTURED; F starts with the chutney already on) and the bowl's pill against Nani's line (no line or voice timeline in the text file); (4) chai's shelf to compare the stone tray with. Also not shot: L2-L4 and 1280x665, which the Check names. What the sheet does show: A frame 1 (10.0 s) and B frame 1 (5.3 s) have the first light's gold box ending a few px left of the settings cog, not touching it (tight, but clear); C has the potato on the board at 0 and 151 ms and on the tray only at 301 ms with the board empty, never both in a captured frame (150 ms steps could miss an overlap frame). Flaws off the point: A frame 1 and B frame 1, the pointing hand sits across the gold box's right edge and over the knife; C frame 3, the potato lands on the tray whole (uncut) under a 'bataato' pill, alone on an otherwise empty slab; D-F, the tray's four bowls sit small with wide gaps on the slab; F frame 3, the 'Shabash!' bubble is very small. Not flaws: grey-italic 'Chop these.' (to record), English under words on the L1 order card, the cut 'fudino chutney' card in the scrolling order row (A frame 3), English on the end-of-round review (G).",
+  "panel": "po-v1/CHT-22.png",
+  "file": "build/reports/run16/judge/probes-open/po-v1/batch-01.verdicts.md"
  }
 ]
