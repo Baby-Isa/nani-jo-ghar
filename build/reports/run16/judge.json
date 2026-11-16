@@ -115,5 +115,59 @@
   "verdict": "PASS",
   "reason": "The layout lint's tap-small finding on chai at the four sizes is the row's own check. Taken at the order card only, so the knobs (the stove view) are not on screen at that moment.",
   "panel": "spec: noFinding:tap-small at order-card-in-sidebar"
+ },
+ {
+  "row": "SH-316",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "3fc26e6",
+  "verdict": "PASS",
+  "reason": "The row's own check (check_stamps.mjs on labs.html), red on the commit before the fix for the row's reason (progress.js and wallet.js unstamped), green today.",
+  "panel": "results: red 934f5fa~1, green 5847536"
+ },
+ {
+  "row": "SH-221",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "3fc26e6",
+  "verdict": "PASS",
+  "reason": "The row's own test (every Sfx call in the shared kit exists); red is a put-back of the old Sfx.tap() call, failing on that call by name, since the fix predates the history.",
+  "panel": "results: red by mutation of js/shared/buttons.js, green 5847536"
+ },
+ {
+  "row": "SH-224",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "3fc26e6",
+  "verdict": "PASS",
+  "reason": "The check fails while cook.html loads a Google font, which is the row (fonts hosted in the repo); it is red today and the row is rightly left open. It reads cook.html only: the other pages the note lists would still pass it.",
+  "panel": "spec: cmd:grep -c fonts.googleapis.com cook.html, expect !pass"
+ },
+ {
+  "row": "DAAR-61",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "3fc26e6",
+  "verdict": "PASS",
+  "reason": "The whole screen at chop's serve, L1 and L4, shows the dish, the tray's place and the thank-you the row names. Phone size only, where the row says four sizes.",
+  "panel": "spec: shot at served, 740x320"
+ },
+ {
+  "row": "CK-120",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "3fc26e6",
+  "verdict": "PASS",
+  "reason": "The row's own case (eggs L4, 1280x665) with the side panel pictured and its text read. By eye: a lines: expect on the card heads could decide it.",
+  "panel": "spec: crop:#side + dom:#side at order-card-in-sidebar"
+ },
+ {
+  "row": "SH-307",
+  "branch": "run16/probes-built",
+  "kind": "audit",
+  "commit": "3fc26e6",
+  "verdict": "PASS",
+  "reason": "The side panel after each placing in chai, daar and maani, the three games the row names, to see no item card empties. Phone size only and the first three placings, so a card emptying later in a long order is not seen.",
+  "panel": "spec: crop:#side at every:placed, max 3"
  }
 ]
