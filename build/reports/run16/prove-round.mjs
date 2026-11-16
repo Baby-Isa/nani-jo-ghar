@@ -40,8 +40,8 @@ const judgeRef = "origin/run16/judge";
 const judge = (() => { try { return JSON.parse(show(judgeRef, "build/reports/run16/judge.json") || "[]"); } catch { return []; } })();
 const judgeOf = (row, branch) => judge.filter((j) => j.row === row && (!j.branch || String(j.branch).includes(branch))).pop();
 
-for (const name of BUILDERS) {
-  if (only && !only.includes(name)) continue;
+for (const name of only || BUILDERS) {
+  try { git("fetch", "-q", "origin", `refs/heads/run16/${name}:refs/remotes/origin/run16/${name}`); } catch {}
   const ref = `origin/run16/${name}`;
   let sha; try { sha = git("rev-parse", ref).trim(); } catch { console.log(`${name}: no branch yet`); continue; }
   const results = (() => { try { return JSON.parse(show(ref, `build/reports/run16/${name}.json`) || "[]"); } catch { return []; } })();
@@ -67,12 +67,15 @@ for (const name of BUILDERS) {
   // classify each row's check
   const plan = todo.map((row) => {
     const res = results.filter((x) => x.row === row && /^(built|proven)$/.test(x.status)).pop() || results.find((x) => x.row === row) || {};
+    const readyLine = (ready.split("\n").find((l) => new RegExp(`^\\s*${row}\\b`).test(l)) || "").replace(new RegExp(`^\\s*${row}\\s*`), "");
+    const cmds = commandsOf(readyLine).length ? commandsOf(readyLine) : commandsOf(String(res.probe || ""));
+    if (cmds.length) return { row, res, tests: [], specRows: [], cmds };
     const probes = String(res.probe || "").split(/[,;\s()]+/).map((t) => t.replace(/^[^\w.\/-]+|[^\w.\/-]+$/g, "")).filter(Boolean);
     // a test file only: *.test.mjs or a file that imports node:test (a library like contract-s17.mjs passes node --test trivially)
     const tests = probes.filter((p) => /\.(m?js|cjs)$/.test(p) && existsSync(join(wt, p)) && (/\.test\.(m?js|cjs)$/.test(p) || /node:test/.test(readFileSync(join(wt, p), "utf8"))));
     const specRows = probes.filter((p) => !/\.(m?js|cjs)$/.test(p) && spec[p]);
     if (!tests.length && !specRows.length && spec[row]) specRows.push(row);
-    return { row, res, tests, specRows };
+    return { row, res, tests, specRows, cmds: [] };
   });
   const evRows = [...new Set(plan.flatMap((p) => p.specRows))];
   const ev = [];
@@ -85,12 +88,19 @@ for (const name of BUILDERS) {
   }
   const testRes = {};
   for (const p of plan) for (const t of p.tests) testRes[t] = [1, 2].map(() => run("node", ["--test", t]).code);
+  const cmdRes = {};
+  for (const p of plan) for (const c of p.cmds) {
+    if (cmdRes[c.join(" ")]) continue;
+    const isTest = c[1] === "--test";
+    cmdRes[c.join(" ")] = [1, 2].map(() => (isTest ? run(c[0], c.slice(1)) : run("flock", ["-w", "3600", "/tmp/njg-browser-all.lock", ...c])).code);
+  }
   let change = { code: null, md: null };
   if (!NOCHANGE) {
     const games = [...new Set(plan.map((p) => p.res.game).map((g) => (g in GAME ? GAME[g] : g)).filter((g) => g && VALID.has(g)))];
     const a = ["build/tools/tiers/check-change.mjs", "--base", BASE];
     if (games.length) a.push("--games", games.join(","));
     if (evRows.length) a.push("--rows", evRows.join(","));
+    if (process.env.PROVE_CHANGE_ARGS) a.push(...process.env.PROVE_CHANGE_ARGS.split(" ").filter(Boolean));
     const r = run("node", a);
     const short = git("rev-parse", "--short=10", sha).trim();
     const md = join(wt, `build/reports/tiers/change-${short}.md`);
@@ -101,7 +111,8 @@ for (const name of BUILDERS) {
   for (const p of plan) {
     const why = [];
     let passes = [true, true], machine = true;
-    if (!p.tests.length && !p.specRows.length) { record(name, sha, p.row, "bounced", `no runnable check: probe "${p.res.probe || ""}" is neither an evidence spec on the branch nor a test file`); (state[name] ||= {})[p.row] = { readyKey: key, resHash: hash(p.res), sha, status: "bounced" }; continue; }
+    for (const c of p.cmds) { const k = c.join(" "); cmdRes[k].forEach((x, i) => { if (x !== 0) passes[i] = false; }); why.push(`${k.slice(0, 90)}: ${cmdRes[k].map((x) => (x === 0 ? "pass" : `fail(${x})`)).join(", ")}`); }
+    if (!p.tests.length && !p.specRows.length && !p.cmds.length) { record(name, sha, p.row, "bounced", `no runnable check: probe "${p.res.probe || ""}" is neither an evidence spec on the branch nor a test file`); (state[name] ||= {})[p.row] = { readyKey: key, resHash: hash(p.res), sha, status: "bounced" }; continue; }
     for (const t of p.tests) { testRes[t].forEach((c, i) => { if (c !== 0) passes[i] = false; }); why.push(`${t}: ${testRes[t].map((c) => (c === 0 ? "pass" : `fail(${c})`)).join(", ")}`); }
     for (const s of p.specRows) {
       const v = [1, 2].map((n) => ev[n]?.index?.rows?.[s]);
@@ -143,6 +154,16 @@ for (const name of BUILDERS) {
 writeFileSync(statePath, JSON.stringify(state, null, 1) + "\n");
 writeFileSync(provePath, JSON.stringify(prove, null, 1) + "\n");
 
+// "node x.mjs --a b (comment); node --test y.test.mjs" -> [["node","x.mjs","--a","b"],["node","--test","y.test.mjs"]]
+function commandsOf(text) {
+  const out = [];
+  for (const m of String(text).matchAll(/\bnode\s+((?:--test\s+)?[\w./-]+\.m?js)((?:\s+--?[\w-]+(?:\s+(?![-(])[^\s;()]+)?)*)/g)) {
+    const a = ["node", ...m[1].split(/\s+/), ...m[2].trim().split(/\s+/).filter(Boolean)];
+    if (a.some((x) => x.includes("<"))) continue;
+    out.push(a);
+  }
+  return out;
+}
 function hash(o) { return createHash("sha1").update(JSON.stringify(o || {})).digest("hex").slice(0, 10); }
 function record(branch, commit, row, status, why) {
   for (let i = prove.length - 1; i >= 0; i--) if (prove[i].branch === `run16/${branch}` && prove[i].row === row) prove.splice(i, 1);
