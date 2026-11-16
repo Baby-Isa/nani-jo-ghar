@@ -1,45 +1,142 @@
 [
-  { "row": "SH-267", "kind": "Teaching", "game": "kit", "status": "built",
-    "probe": "evidence SH-267 (contract:119, expect pass: eggs, corn, baking#hint, chop at L1, 740x320 and 930x430)",
-    "red": "48003532: run.mjs --flow cook:baking,cook:baking#hint,cook:eggs,cook:corn --sizes 740x320 --contract (run fk-119-base): contract-119 3 breaks (eggs never flashed, corn 114 ms, baking#hint's replay never flashed)",
-    "green": "ceb0af0e+: the same flows plus chop, chop#hint, chop@L2, chaat, daar, roll-tawa, chai-tray at 740x320 and 930x430 (run fk-119-after2): 0 contract-119 breaks",
-    "judge": "machine",
-    "files": ["js/cook/ui.js"],
-    "note": "The dish card was shut at once by the order's first item card (eggs, corn: the rows the headline says pop on its first word; chop: its first thing's card), and a replay's headline ('Muke naan khape.') never matched the card's ('Muke naan khape,'); now the dish card holds for its hold, then the item cards follow, chop's first item card is its dish card, and the replay matches without stops. Chai (frozen) keeps its old timing; kari/mori chai still wait on Mum's recordings." },
-  { "row": "SH-292", "kind": "Look", "game": "kit", "status": "proven",
-    "probe": "node --test build/sandbox/run16-fixkit.test.mjs (SH-292: Onboard.litBox centred within 2 px with a neighbour each side; light.draw asks for it)",
-    "red": "49f28f8a^: NJG_TREE=<worktree of 49f28f8a^> node --test build/sandbox/run16-fixkit.test.mjs -> fail: 'a neighbour close on the left: left 3 px, right 9.6 px'",
-    "green": "49f28f8a (s20-chai-kit: the light centred, SH-292), and 48003532: pass",
-    "judge": "machine",
-    "files": ["js/shared/onboard.js", "build/sandbox/run16-fixkit.test.mjs"],
-    "note": "Already fixed by 49f28f8a (Onboard.litBox o.even, used by every drawn light); this run adds the unit check, red before that commit and green after." },
-  { "row": "DAAR-57", "kind": "Look", "game": "chop", "status": "built",
-    "probe": "evidence DAAR-57 (cook:chop L1-L4, 740x320 and 1280x665, every:placed: count:#guide .ng-face>=1, count:#mission .oc-card[data-who=nani] .oc-face=0)",
-    "red": "48003532: chop L1 1280x665 screenshot: Nani's box text only, her face on the order card beside 'Chop these' (ui.js mission.stripMode = who === 'nani'); spec run in check-change's before",
-    "green": "f79ff145: her face and speaker in her box, the card faceless (screenshot, and check-change's after)",
-    "judge": "needs-eye",
-    "files": ["js/cook/ui.js"],
-    "note": "Only the pantry's list strips Nani's box now; her own orders (chop, chaat's chop through UI.mission) keep her face and speaker in her box and her order card carries no face, as daar's chop card; askLine's pop-up gives her face back after folding into a faceless card." },
-  { "row": "SH-270", "kind": "Look", "game": "kit", "status": "built",
-    "probe": "evidence DAAR-57 (the same kit cause for chop; chaat 930x430 run fk-119-after2 05-kind-slice shows her face and speaker in her box)",
-    "red": "48003532: chop's box text only (see DAAR-57)", "green": "f79ff145",
-    "judge": "needs-eye", "files": ["js/cook/ui.js"],
-    "note": "One kit fix with DAAR-57: the box was stripped (UI.guideStrip via mission.stripMode) for any Nani-asked order; daar was already right (DAAR-57 built), chaat's chop passes boxFace." },
-  { "row": "CHT-21", "kind": "Look", "game": "chaat", "status": "built",
-    "probe": "none of its own yet: the kit option only",
-    "red": "", "green": "",
-    "judge": "needs-eye", "files": ["js/cook/ui.js"],
-    "note": "needs fix-daar: the kit's M.addCard(key, data, {keepOrder}) is in (the order's cards stay in view beside a station card added with it); js/cook/mechanics/chop.js (which fix-daar is editing) should pass keepOrder: !!boxFace on its M.addCard('chop-nani', ...) so Nana's 'Muke chaat khape.' stays during chaat's chop. Nani's face in her box during chaat's chop is already right." },
-  { "row": "CK-121", "kind": "Look", "game": "eggs", "status": "proven",
-    "probe": "evidence CK-121 (cook:eggs L1-L4, 740x320 and 1280x665, at served: every person card done and folded, inside #mission)",
-    "red": "not re-run (the fix predates this run): cb34df93 (15 Nov, 'Eggs: CK-121 to CK-126 ... each person's card closes at their plate's end') and 49369e32 (SH-308: the well done closes every row and folds every card)",
-    "green": "48003532: run fk-eggs-l4 (eggs L4, 1280x665 and 740x320) 08-view-service: every row folded and ticked, all three in the panel",
-    "judge": "needs-eye", "files": [],
-    "note": "Already fixed on the base by cb34df93 and 49369e32; the spec is new for the prove session." },
-  { "row": "SH-232", "kind": "Look", "game": "kit", "status": "built",
-    "probe": "contract-99 (panel-follow, build/sandbox/lib/contract-s17.mjs) over every cook flow's play",
-    "red": "not shown: the fix (63c880ce, 7 Nov, OC.followFold) predates contract-99 (36597fe6, 7 Nov)",
-    "green": "48003532 and this branch: 0 contract-99 breaks in runs fk-119-after2 (10 cook flows, 2 sizes) and fk-eggs-l4",
-    "judge": "machine", "files": ["js/shared/order-card.js"],
-    "note": "Built 7 Nov (OC.followFold) with its own contract check; the row's evidence spec is still a human one." }
+ {
+  "row": "SH-267",
+  "kind": "Teaching",
+  "game": "kit",
+  "status": "built",
+  "probe": "evidence SH-267 (contract:119, expect pass: eggs, corn, baking#hint, chop at L1, 740x320 and 930x430)",
+  "red": "48003532: run.mjs --flow cook:baking,cook:baking#hint,cook:eggs,cook:corn --sizes 740x320 --contract (run fk-119-base): contract-119 3 breaks (eggs never flashed, corn 114 ms, baking#hint's replay never flashed)",
+  "green": "ceb0af0e+: the same flows plus chop, chop#hint, chop@L2, chaat, daar, roll-tawa, chai-tray at 740x320 and 930x430 (run fk-119-after2): 0 contract-119 breaks",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "The dish card was shut at once by the order's first item card (eggs, corn: the rows the headline says pop on its first word; chop: its first thing's card), and a replay's headline ('Muke naan khape.') never matched the card's ('Muke naan khape,'); now the dish card holds for its hold, then the item cards follow, chop's first item card is its dish card, and the replay matches without stops. Chai (frozen) keeps its old timing; kari/mori chai still wait on Mum's recordings."
+ },
+ {
+  "row": "SH-292",
+  "kind": "Look",
+  "game": "kit",
+  "status": "proven",
+  "probe": "node --test build/sandbox/run16-fixkit.test.mjs (SH-292: Onboard.litBox centred within 2 px with a neighbour each side; light.draw asks for it)",
+  "red": "49f28f8a^: NJG_TREE=<worktree of 49f28f8a^> node --test build/sandbox/run16-fixkit.test.mjs -> fail: 'a neighbour close on the left: left 3 px, right 9.6 px'",
+  "green": "49f28f8a (s20-chai-kit: the light centred, SH-292), and 48003532: pass",
+  "judge": "machine",
+  "files": [
+   "js/shared/onboard.js",
+   "build/sandbox/run16-fixkit.test.mjs"
+  ],
+  "note": "Already fixed by 49f28f8a (Onboard.litBox o.even, used by every drawn light); this run adds the unit check, red before that commit and green after."
+ },
+ {
+  "row": "DAAR-57",
+  "kind": "Look",
+  "game": "chop",
+  "status": "built",
+  "probe": "evidence DAAR-57 (cook:chop L1-L4, 740x320 and 1280x665, every:placed: count:#guide .ng-face>=1, count:#mission .oc-card[data-who=nani] .oc-face=0)",
+  "red": "48003532: chop L1 1280x665 screenshot: Nani's box text only, her face on the order card beside 'Chop these' (ui.js mission.stripMode = who === 'nani'); spec run in check-change's before",
+  "green": "f79ff145: her face and speaker in her box, the card faceless (screenshot, and check-change's after)",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "Only the pantry's list strips Nani's box now; her own orders (chop, chaat's chop through UI.mission) keep her face and speaker in her box and her order card carries no face, as daar's chop card; askLine's pop-up gives her face back after folding into a faceless card."
+ },
+ {
+  "row": "SH-270",
+  "kind": "Look",
+  "game": "kit",
+  "status": "built",
+  "probe": "evidence DAAR-57 (the same kit cause for chop; chaat 930x430 run fk-119-after2 05-kind-slice shows her face and speaker in her box)",
+  "red": "48003532: chop's box text only (see DAAR-57)",
+  "green": "f79ff145",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "One kit fix with DAAR-57: the box was stripped (UI.guideStrip via mission.stripMode) for any Nani-asked order; daar was already right (DAAR-57 built), chaat's chop passes boxFace."
+ },
+ {
+  "row": "CHT-21",
+  "kind": "Look",
+  "game": "chaat",
+  "status": "built",
+  "probe": "none of its own yet: the kit option only",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "needs fix-daar: the kit's M.addCard(key, data, {keepOrder}) is in (the order's cards stay in view beside a station card added with it); js/cook/mechanics/chop.js (which fix-daar is editing) should pass keepOrder: !!boxFace on its M.addCard('chop-nani', ...) so Nana's 'Muke chaat khape.' stays during chaat's chop. Nani's face in her box during chaat's chop is already right."
+ },
+ {
+  "row": "CK-121",
+  "kind": "Look",
+  "game": "eggs",
+  "status": "proven",
+  "probe": "evidence CK-121 (cook:eggs L1-L4, 740x320 and 1280x665, at served: every person card done and folded, inside #mission)",
+  "red": "not re-run (the fix predates this run): cb34df93 (15 Nov, 'Eggs: CK-121 to CK-126 ... each person's card closes at their plate's end') and 49369e32 (SH-308: the well done closes every row and folds every card)",
+  "green": "48003532: run fk-eggs-l4 (eggs L4, 1280x665 and 740x320) 08-view-service: every row folded and ticked, all three in the panel",
+  "judge": "needs-eye",
+  "files": [],
+  "note": "Already fixed on the base by cb34df93 and 49369e32; the spec is new for the prove session."
+ },
+ {
+  "row": "SH-232",
+  "kind": "Look",
+  "game": "kit",
+  "status": "built",
+  "probe": "contract-99 (panel-follow, build/sandbox/lib/contract-s17.mjs) over every cook flow's play",
+  "red": "not shown: the fix (63c880ce, 7 Nov, OC.followFold) predates contract-99 (36597fe6, 7 Nov)",
+  "green": "48003532 and this branch: 0 contract-99 breaks in runs fk-119-after2 (10 cook flows, 2 sizes) and fk-eggs-l4",
+  "judge": "machine",
+  "files": [
+   "js/shared/order-card.js"
+  ],
+  "note": "Built 7 Nov (OC.followFold) with its own contract check; the row's evidence spec is still a human one."
+ },
+ {
+  "row": "SH-299",
+  "kind": "Look",
+  "game": "kit",
+  "status": "question",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/shared/order-card.js"
+  ],
+  "note": "Cause read in code: settleRow's redraw branch prefers the card's stale fold.want14 (an earlier tick's glide) over the row's live glide (glideWant), pulling the row back while an item card flies in. The fix (live glide first) changes chai's row glides, and chai is frozen this run: may the kit fix change chai's row motion too (it was found in chai L4 740x320)?"
+ },
+ {
+  "row": "SH-284",
+  "kind": "Look",
+  "game": "kit",
+  "status": "question",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/shared/onboard.js",
+   "js/cook/ui.js"
+  ],
+  "note": "Lifting Nani's box above the first-time showing's dim while she speaks is one kit change, but it also changes chai's first-time showings, and chai is frozen this run: may it change chai too?"
+ },
+ {
+  "row": "SH-267",
+  "kind": "Teaching",
+  "game": "chai",
+  "status": "question",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "Chai (frozen) keeps its old order timing: when a chai headline says a row of its own (adh, elchi), that row's card still replaces the dish card at once, where the other games now hold the dish card first. Should chai's do the same?"
+ }
 ]
