@@ -160,7 +160,10 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
           // SH-241: each row a 6 Nov item card (the item's card picture, the count in Kutchi, its English by the level)
           items: [{ label: null, parts: rows.map((r) => (UI.itemPart ? UI.itemPart(r.id, { html: r.label, en: Lang.phrase(Lang.countParts(want[r.id], r.id)).en, done: r.done, key: r, say: () => Lang.speak(Lang.phrase(Lang.countParts(want[r.id], r.id))) }) : { label: r.label, done: r.done, key: r })) }],
         });
-        const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden" };
+        // CHT-21 (the Fable eye judge for Zafar, decision 38, chaat L1: "Nana's 'Muke chaat khape.' is gone until the bowl step"): in
+        // chaat's chop-game (boxFace) the order's cards stay in view beside her chop card, the kit's keepOrder (run16 fix-kit's ui.js);
+        // daar's chop keeps its one-card panel (DAAR-44)
+        const cardOpts = { closed: !!Cook.cardState && Cook.cardState(lv) === "hidden", keepOrder: !!boxFace };
         // (chaat top-down's builder, 11 Nov: "hakro" missing from the end review: her card is gone by the end, and the review read only
         // the order card's words): the words her card taught, in the forms she said them, for the end review (flow.js reviewWords)
         if (ctx) {

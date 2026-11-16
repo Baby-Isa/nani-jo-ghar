@@ -29614,5 +29614,32 @@
    ],
    "note": "run16: contract-98 (the first hidden pop-up card comes big to the middle) and contract-120 (each worktop thing its soft shadow) at zero over daar L1 and L4 at a child pace, a new player; contract-120 red on 193fa1c^ (dv2-chop-veg-02 with no shadow, L4 740x320), green from 193fa1c"
   }
+ ],
+ "CHT-21": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "kind-slice",
+   "after": null,
+   "capture": [
+    "crop:#side",
+    "dom:#mission"
+   ],
+   "expect": [
+    "count:#mission .oc-card>=2"
+   ],
+   "delay": 600,
+   "note": "run16: chaat chop step: the order card (Nana, Muke chaat khape.) stays in view in the side panel beside Nani chop card (the kit keepOrder, run16 fix-kit ui.js; chop.js passes it for chaat chop-game, boxFace); Nani face in her box (boxFace, s20-b2-chaat). Was: one card, the order hidden until the bowl step"
+  }
  ]
 }
