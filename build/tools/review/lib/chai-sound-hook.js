@@ -6,6 +6,7 @@
 //   {type:"mark", k:"tap"}           the child's pointer or touch down
 //   {type:"mark", k:"knob-call"}     Cook.sfx.knob asked for (o: its options)
 //   {type:"mark", k:"flame-call"}    Cook.sfx.flame asked for: a knob turned on from off (js/cook/kitchen-kit.js burner set)
+//   {type:"mark", k:"glass-call"}    Cook.sfx.glass asked for: a glass holds what was asked (its ring, CHAI-107)
 //   {type:"mark", k:"pour"}          a pour into a glass starts (Cook.chaiPour set)
 //   {type:"mark", k:"pour-end", at}  it ends (Cook.chaiPour cleared); after the first, the player's touches are held 3 s
 //   {type:"mark", k:"held"}          a touch held back in that time
@@ -46,9 +47,10 @@
     if (!C) return;
     const fx = C.sfx;
     if (fx && !fx.__chaiHook && typeof fx.knob === "function" && typeof fx.flame === "function") {
-      const k = fx.knob, f = fx.flame;
+      const k = fx.knob, f = fx.flame, gl = fx.glass;
       fx.knob = function (o) { mark("knob-call", { o: o || null }); return k.apply(this, arguments); };
       fx.flame = function (o) { mark("flame-call", { o: o || null }); return f.apply(this, arguments); };
+      if (typeof gl === "function") fx.glass = function (o) { mark("glass-call", { o: o || null }); return gl.apply(this, arguments); };
       fx.__chaiHook = true;
     }
     if (!C.__chaiPourHook) {

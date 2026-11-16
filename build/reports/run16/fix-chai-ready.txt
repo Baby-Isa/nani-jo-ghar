@@ -4,3 +4,4 @@ MAA-28   node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,sp
 CHAI-100 node build/tools/review/chaisound.mjs --rows CHAI-100   (exit 0 green; red: --root <worktree of 8aaefe1e> --levels 2,3,4)
 CHAI-113 node build/tools/review/chaisound.mjs --rows CHAI-113   (exit 0 green; red: --root <worktree of a9ccaa4f> --levels 1)
 CHAI-99  node --test build/tools/review/chai-next-pan.test.mjs    (no browser; red: NJG_TEST_ROOT=<worktree of 8aaefe1e>)
+CHAI-107 node build/tools/review/chaisound.mjs --rows CHAI-107 --paths mistake,speed1 --levels 1,2,3,4 --sizes 740x320   (exit 0 green; red: --root <worktree of 16b827eb>)

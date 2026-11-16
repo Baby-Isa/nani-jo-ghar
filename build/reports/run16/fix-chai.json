@@ -48,6 +48,18 @@
   "note": "A code test, not a play: the light only comes for a new player still on the poured pan, and no sandbox player stays (it picks the next pan at once, so the game rightly gives none; tried with the player held 3 s: it had already switched pans)."
  },
  {
+  "row": "CHAI-107",
+  "kind": "Logic",
+  "game": "chai-tray",
+  "status": "proven",
+  "probe": "node build/tools/review/chaisound.mjs --rows CHAI-107 --paths mistake,speed1 --levels 1,2,3,4 --sizes 740x320",
+  "red": "16b827eb (the code before 0187d4d5): RED on 2 of 8 pages: cook:chai-tray#speed1 and @L2#speed1 at 740x320, the last glass ring asked and never played (sfx/file:glass-c) as the praise came",
+  "green": "48003532: GREEN on 8 of 8 (L1-L4, #mistake and #speed1, 740x320): every ring asked is heard",
+  "judge": "machine",
+  "files": [],
+  "note": "Built in 0187d4d5 (js/shared/serve.js: the praise waits 0.5 s for the last ring, every game); the row still read to fix: code."
+ },
+ {
   "row": "MAA-20",
   "kind": "Teaching",
   "game": "maani",

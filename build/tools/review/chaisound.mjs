@@ -5,6 +5,7 @@
 //            and the flame's (sfx/file:flame-b) within 0.9 s, even while Nani speaks
 //   CHAI-100 no knob sound the child did not make: every Cook.sfx.knob call comes within 0.6 s of a tap (the fire going off after
 //            the last pour is silent), or with a pan boiling over (its click kept by the row)
+//   CHAI-107 every glass's ring asked for is heard (its file starts within 0.4 s), the last one's too, before the praise
 //   CHAI-97  each word moment's pours play the recorded pour file, never the made-up synthesized pour (a cold load: a fresh page)
 //   CHAI-99  the next pan's light (the life event "next-pan") comes at least 0.8 s after the first pour's end (its last frame); the
 //            hook holds the player's touches 3 s after that pour, as a child taking it in (a player that moves on at once gets no
@@ -62,6 +63,14 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
     const overs = tl.filter((e) => e.k === "life" && e.what === "chai-boil" && /over/.test(e.reason || "")).map((e) => e.at || e.t);
     const stray = knobCalls.filter((t) => !near(taps, t - 600, t + 20) && !near(overs, t - 300, t + 300));
     say("CHAI-100", page, !stray.length, `${knobCalls.length} knob sound(s) asked, ${stray.length} with no tap in the 0.6 s before${stray.length ? ` (${stray.map((t) => ((t - d.t0) / 1000).toFixed(1) + " s").join(", ")} in)` : ""}`);
+  }
+  if (rows.includes("CHAI-107")) {
+    // every glass's ring asked for (Cook.sfx.glass) is heard: its file (sfx/file:glass-c) starts within 0.4 s, the last glass's too,
+    // though the praise (a family voice, which mutes a long effect) follows it
+    const asks = marks("glass-call"), rings = plays("glass-c");
+    const miss = asks.filter((t) => !near(rings, t - 50, t + 400));
+    if (asks.length) say("CHAI-107", page, !miss.length, `${asks.length} glass ring(s) asked, ${miss.length} not heard${miss.length ? ` (${miss.map((t) => ((t - d.t0) / 1000).toFixed(1) + " s").join(", ")} in)` : ""}`);
+    else console.log(`-     CHAI-107 ${page}: no glass ring asked`);
   }
   if (rows.includes("CHAI-97")) {
     // each word moment (life "word-moment"), 15 s from its start: its pours are the recorded pour file, never the made-up synthesized

@@ -25040,18 +25040,17 @@
    "sizes": [
     "1280x665"
    ],
-   "profile": "seen",
+   "profile": "fresh",
    "want": null,
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node build/tools/review/frozen.mjs --diff --quick"
+    "cmd:node build/tools/review/chaisound.mjs --rows CHAI-107 --paths mistake,speed1 --levels 1,2,3,4 --sizes 740x320"
    ],
    "expect": [
     "pass"
    ],
-   "note": "the last glass's ring heard before the praise (sfx/glass on every page of the frozen diff)",
-   "delay": 0
+   "note": "chai L1-L4 (#mistake and a child's pace) at 740x320: every glass ring asked for (Cook.sfx.glass) is heard, its file within 0.4 s, the last one's too before the praise (red on 16b827eb: L1 and L2 #speed1; run16 fix-chai)"
   }
  ],
  "SAM-31": [

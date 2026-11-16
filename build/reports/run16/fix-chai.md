@@ -18,10 +18,11 @@ Branch `run16/fix-chai`, cut from 48003532. No game file changed: every row belo
 | CHAI-100 | 8aaefe1e: a click after each last pour, 6/6 pages | 8/8 and 6/6 | `node build/tools/review/chaisound.mjs --rows CHAI-100` |
 | CHAI-113 | a9ccaa4f: at L1 the flame never sounded while Nani spoke | 8/8 and 6/6 | `node build/tools/review/chaisound.mjs --rows CHAI-113` |
 | CHAI-99 | 8aaefe1e: 300 ms | 800 ms | `node --test build/tools/review/chai-next-pan.test.mjs` |
+| CHAI-107 | 16b827eb: the last glass's ring never played at L1 and L2, child pace | 8/8 | `node build/tools/review/chaisound.mjs --rows CHAI-107 --paths mistake,speed1 --levels 1,2,3,4 --sizes 740x320` |
 
 MAA-28's finding: no item card ever changes its word or picture, on old code or new. What Fable saw was the row's places re-sorting at the well done. The SH-308 fold, already in base, ends it.
 
-CHAI-99, CHAI-100 and CHAI-113 were fixed in d1d4cc80 and b6497cb5, but their rows still read "to fix: code".
+CHAI-99, CHAI-100, CHAI-107 and CHAI-113 were fixed in d1d4cc80, 0187d4d5 and b6497cb5, but their rows still read "to fix: code".
 
 ## Built, not proven here
 
