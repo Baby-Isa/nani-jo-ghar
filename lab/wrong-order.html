@@ -10,7 +10,7 @@
      face big, ticks the right ones as each is said and crosses the wrong one, then shrinks back into the side panel, and the panel
      keeps only that person's card. The words are the order-card lab's (data/cook.json's); nothing is spoken here. Try it at 740x320,
      930x430, 1280x665 and 1920x1080. -->
-<link rel="stylesheet" href="../css/shared/kit.css?v=20261110T002839Z">
+<link rel="stylesheet" href="../css/shared/kit.css?v=20261116T054700Z">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
@@ -30,9 +30,9 @@
 <div class="app">
   <div class="side" id="side"></div>
   <div class="stage" id="stage">
-    <div class="glass" data-who="nana" style="left: 22%"><img src="../assets/cook/characters/nana-badge.webp" alt=""></div>
-    <div class="glass" data-who="ma" style="left: 45%"><img src="../assets/cook/characters/ma-badge.webp" alt=""></div>
-    <div class="glass" data-who="cousin" style="left: 68%"><img src="../assets/cook/characters/cousin-badge.webp" alt=""></div>
+    <div class="glass" data-who="nana" style="left: 22%"><img src="../assets/cook/characters/nana-badge.webp?v=20261116T054700Z" alt=""></div>
+    <div class="glass" data-who="ma" style="left: 45%"><img src="../assets/cook/characters/ma-badge.webp?v=20261116T054700Z" alt=""></div>
+    <div class="glass" data-who="cousin" style="left: 68%"><img src="../assets/cook/characters/cousin-badge.webp?v=20261116T054700Z" alt=""></div>
     <div class="bar">
       <button data-play="ma">Ma's wrong</button>
       <button data-play="ma,cousin">Two wrong</button>
@@ -41,10 +41,10 @@
     </div>
   </div>
 </div>
-<script src="../js/shared/fit.js?v=20261110T002839Z"></script>
-<script src="../js/shared/face.js?v=20261110T002839Z"></script>
-<script src="../js/shared/sfx.js?v=20261110T002839Z"></script>
-<script src="../js/shared/order-card.js?v=20261110T002839Z"></script>
+<script src="../js/shared/fit.js?v=20261116T054700Z"></script>
+<script src="../js/shared/face.js?v=20261116T054700Z"></script>
+<script src="../js/shared/sfx.js?v=20261116T054700Z"></script>
+<script src="../js/shared/order-card.js?v=20261116T054700Z"></script>
 <script type="module">
   import { NjgWrongOrder } from "../js/shared/wrong-order.js";
   import { createEngine } from "../js/core/lang/engine/index.js";

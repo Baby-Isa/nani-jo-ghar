@@ -1,0 +1,3280 @@
+{
+ "tier": "publish",
+ "tierNo": "3b",
+ "name": "check-publish",
+ "commit": "48003532181dd0cc7da01b2b4182a722f7a3959d",
+ "dirty": false,
+ "date": "2026-11-16T04:03:03.715Z",
+ "base": "8b4beca7b32f243b4def9ff0a05c53a21f5f7c2a",
+ "games": [
+  "house",
+  "first",
+  "cook:title",
+  "cook:fetch",
+  "cook:chai-tray",
+  "cook:maani-line",
+  "cook:mishkaki-grill",
+  "cook:daar",
+  "cook:chop",
+  "cook:tadka",
+  "cook:stir",
+  "cook:assemble",
+  "cook:samosa",
+  "cook:eggs",
+  "cook:baking",
+  "cook:corn",
+  "cook:chai",
+  "cook:chaat",
+  "cook:roll-tawa",
+  "cook:maani"
+ ],
+ "gamesWhy": "--games",
+ "sprint": null,
+ "notes": [],
+ "artefacts": {
+  "known-fails list": "build/reports/tiers/known-fails-4800353218.md",
+  "logs": "build/screenshots/tiers/publish-4800353218/logs"
+ },
+ "failures": [
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-view-service)",
+   "what": "the word card for cook-chai (stage 1) shows its English \"chai\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for cook-chai (stage 1) shows its English \"chai\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for cook-dudh (stage 1) shows its English \"milk\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for cook-khun (stage 1) shows its English \"sugar\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for spi-10 (stage 1) shows its English \"cardamom\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after chai-round-view-service)",
+   "what": "the word card for cook-dudh (stage 2) shows its English \"milk\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after chai-round-order-card-big)",
+   "what": "the order card's row for cook-paani (stage 1) shows its English \"water\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-3",
+   "where": "cook:fetch#mistake@1280x665 (after help-open)",
+   "what": "\"hakri chai\" (assets/audio/family/mum/shabash-rc.mp3, 0.74 s) started 1125 ms after 1551 ms past the end of cook:station1:pantry (into cook:between1:pantry); it stopped by stop",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-92",
+   "where": "cook:fetch#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "the light round cook-daal leaves 4 px on its top with nothing beside it: at least 6 px",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "cook:fetch@L2#mistake@1280x665 (view-service)",
+   "what": "the shelf item ph-keema: a tap at its picture's left edge (986, 598) picks word veg-01 (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-112",
+   "where": "cook:fetch@L2#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "light 4 [508,410,624,534]: veg-03 [521,421,612,531] (its picture, pill and face) is not inside the light with its pad: bottom 3 px (wants 10) (picture: build/screenshots/sandbox/tiers-publish-48003532",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-92",
+   "where": "cook:fetch@L3#hint@1280x665 (hint-glow)",
+   "what": "the light round cook-dudh covers its neighbour ph-keema: it should stop short of it",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item cook-daal: a tap at its foot (840, 467) picks nothing; a tap at its picture's left edge (812, 426) picks nothing; a tap at its picture's right edge (868, 426) picks nothing; a tap at it",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item cook-dudh: a tap at its foot (1125, 467) picks nothing; a tap at its picture's left edge (1097, 426) picks nothing; a tap at its picture's right edge (1152, 426) picks nothing; a tap at",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item cook-paani: a tap at its foot (703, 467) picks nothing; a tap at its picture's left edge (683, 426) picks nothing; a tap at its picture's right edge (723, 426) picks nothing; a tap at i",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item ph-dahi: a tap at its foot (1213, 467) picks nothing; a tap at its picture's left edge (1170, 432) picks nothing; a tap at its picture's right edge (1257, 432) picks nothing; a tap at i",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item spi-02: a tap at its foot (429, 589) picks nothing; a tap at its picture's left edge (400, 556) picks nothing; a tap at its picture's right edge (458, 556) picks nothing; a tap at its p",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-22",
+   "where": "cook:chai-tray@L3#hint@1280x665 (hint-glow)",
+   "what": "cook:station1:marble: \"Aadu wiji chad!\" said twice, 1860 ms apart (a line is said once; again only after 10 s idle)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-72",
+   "where": "cook:chai-tray@L3#returning@1280x665 (kind-timing)",
+   "what": "the order row jumped 123 px in one frame (181 to 304), more than a card (115 px): it glides, never jumps",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-96",
+   "where": "cook:chai-tray@L3#returning@1280x665 (kind-timing)",
+   "what": "a pot boiled over and its card is scrolled 53 px along, not back at the first item within 1500 ms",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-72",
+   "where": "lab:cook/chai-tray@L4@1280x665 (chai-tray-kind-timing)",
+   "what": "the order row glided 370 px at once, more than 2.5 cards (115 px each)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#mistake@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line#hint@1280x665 (hint-nani-says)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@75@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#hint@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line@L3#hint@1280x665 (hint-glow)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@75@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#returning@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#takeback@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba bajr ji maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "lab:cook/maani-line@1280x665 (after maani-line-start)",
+   "what": "the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-120",
+   "where": "lab:cook/maani-line@L4@1280x665 (maani-line-view-service)",
+   "what": "mv-ball-bajr stands on the worktop (105x103 at 398,726, depth 33) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-96",
+   "where": "lab:cook/maani-line@L4@1280x665 (maani-line-view-service)",
+   "what": "a pot boiled over and emptied, and 1 card stayed ticked for 1500 ms (its rows open again)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item ph-meat: a tap at its foot (477, 617) picks nothing; a tap just above its pill (477, 626) picks nothing; a tap at its picture's left edge (432, 571) picks nothing; a tap at its picture'",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item veg-12: a tap at its foot (589, 617) picks nothing; a tap just above its pill (589, 626) picks nothing; a tap at its picture's left edge (544, 571) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item veg-02: a tap at its foot (701, 617) picks nothing; a tap just above its pill (701, 626) picks nothing; a tap at its picture's left edge (656, 571) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item veg-03: a tap at its foot (813, 617) picks nothing; a tap just above its pill (813, 626) picks nothing; a tap at its picture's left edge (768, 571) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item n.corn-on-the-cob: a tap at its foot (926, 617) picks nothing; a tap just above its pill (926, 626) picks nothing; a tap at its picture's left edge (880, 571) picks nothing; a tap at it",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item n.chicken: a tap at its foot (1038, 617) picks nothing; a tap just above its pill (1038, 626) picks nothing; a tap at its picture's left edge (993, 571) picks nothing; a tap at its pict",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "cook:daar@L3@1280x665 (kind-tap)",
+   "what": "wave 2's first throw came 478 ms after wave 1's last (its spacing 200 ms): a gap of 278 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item veg-13: a tap at its foot (419, 616) picks nothing; a tap just above its pill (419, 626) picks nothing; a tap at its picture's left edge (380, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-02: a tap at its foot (519, 616) picks nothing; a tap just above its pill (519, 626) picks nothing; a tap at its picture's left edge (480, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-04: a tap at its foot (619, 616) picks nothing; a tap just above its pill (619, 626) picks nothing; a tap at its picture's left edge (580, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-01: a tap at its foot (719, 616) picks nothing; a tap just above its pill (719, 626) picks nothing; a tap at its picture's left edge (680, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-16: a tap at its foot (819, 616) picks nothing; a tap just above its pill (819, 626) picks nothing; a tap at its picture's left edge (781, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-10: a tap at its foot (919, 616) picks nothing; a tap just above its pill (919, 626) picks nothing; a tap at its picture's left edge (880, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item veg-12: a tap at its foot (1019, 616) picks nothing; a tap just above its pill (1019, 626) picks nothing; a tap at its picture's left edge (980, 577) picks nothing; a tap at its picture",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-05: a tap at its foot (1119, 616) picks nothing; a tap just above its pill (1119, 626) picks nothing; a tap at its picture's left edge (1080, 577) picks nothing; a tap at its pictur",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "cook:daar@L2#mistake@1280x665 (kind-tap)",
+   "what": "wave 2's first throw came 708 ms after wave 1's last (its spacing 400 ms): a gap of 308 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-37",
+   "where": "cook:daar@L3#hint@1280x665 (hint-nani-says)",
+   "what": "cook:station4:marble (daar at L3): 2 decoys on the shelf (spi-02, spi-10*, spi-01*, veg-12, veg-13, spi-05; * not in the order), the table wants at least 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "cook:daar@L3#hint@1280x665 (kind-tap)",
+   "what": "wave 3's first throw came 694 ms after wave 2's last (its spacing 495 ms): a gap of 199 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "lab:cook/daar@L2@1280x665 (daar-kind-tap)",
+   "what": "wave 2's first throw came 613 ms after wave 1's last (its spacing 400 ms): a gap of 213 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-66",
+   "where": "lab:cook/daar@L2@1280x665 (daar-stir-mid)",
+   "what": "lap 1: no number asked for within 250 ms of the lap",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "lab:cook/daar@L3@1280x665 (daar-kind-tap)",
+   "what": "wave 3's first throw came 520 ms after wave 2's last (its spacing 300 ms): a gap of 220 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "lab:cook/daar@L4@1280x665 (daar-kind-tap)",
+   "what": "wave 3's first throw came 383 ms after wave 2's last (its spacing 162 ms): a gap of 221 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L3@1280x665 (view-service)",
+   "what": "wave 3's first throw came 629 ms after wave 2's last (its spacing 300 ms): a gap of 329 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L4@1280x665 (view-service)",
+   "what": "wave 2's first throw came 372 ms after wave 1's last (its spacing 192 ms): a gap of 180 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L4@1280x665 (view-service)",
+   "what": "wave 3's first throw came 591 ms after wave 2's last (its spacing 200 ms): a gap of 391 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L4@1280x665 (view-service)",
+   "what": "wave 4's first throw came 992 ms after wave 3's last (its spacing 448 ms): a gap of 544 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#mistake@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba lasan khape.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L2#mistake@1280x665 (view-service)",
+   "what": "wave 2's first throw came 567 ms after wave 1's last (its spacing 400 ms): a gap of 167 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#hint@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L3#hint@1280x665 (view-service)",
+   "what": "wave 2's first throw came 455 ms after wave 1's last (its spacing 281 ms): a gap of 174 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L3#hint@1280x665 (view-service)",
+   "what": "wave 3's first throw came 581 ms after wave 2's last (its spacing 254 ms): a gap of 327 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#takeback@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card flashed only 104 ms beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "lab:cook/chop@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L2@1280x665 (chop-view-service)",
+   "what": "wave 2's first throw came 574 ms after wave 1's last (its spacing 400 ms): a gap of 174 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L3@1280x665 (chop-view-service)",
+   "what": "wave 2's first throw came 683 ms after wave 1's last (its spacing 234 ms): a gap of 449 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L3@1280x665 (chop-view-service)",
+   "what": "wave 3's first throw came 627 ms after wave 2's last (its spacing 261 ms): a gap of 366 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L4@1280x665 (chop-view-service)",
+   "what": "wave 4's first throw came 479 ms after wave 3's last (its spacing 233 ms): a gap of 246 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka@1280x665 (order-card-in-sidebar)",
+   "what": "a step opened on screen (the light on spi-01) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@1280x665 (order-card-in-sidebar)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-16*, veg-13*, spi-01, spi-05*, spi-02*, veg-12; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@1280x665 (after kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka@L2@1280x665 (view-hob)",
+   "what": "a step opened on screen (the light on veg-12) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L2@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L2): 4 decoys on the shelf (veg-12, veg-13*, spi-16*, spi-05*, spi-02, spi-01*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L2@1280x665 (after kind-tap)",
+   "what": "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (40% of it, at [1164,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L2@1280x665 (after kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L3@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L3): 6 decoys on the shelf (spi-05*, spi-10*, spi-04*, spi-16*, spi-02, veg-13*, veg-12, spi-01*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L3@1280x665 (after kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L4@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L4): 6 decoys on the shelf (spi-16*, spi-05*, veg-13, spi-10*, veg-12*, spi-02*, spi-04*, spi-01; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L4@1280x665 (after kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "a step opened on screen (the light on spi-05) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka#mistake@1280x665 (view-service)",
+   "what": "a step opened on screen (the light on spr:tadka-pan.top) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-01*, spi-05, spi-16*, veg-12*, spi-02*, veg-13; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka#mistake@1280x665 (after wrong-tap)",
+   "what": "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (40% of it, at [1164,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka#mistake@1280x665 (after wrong-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka@L2#mistake@1280x665 (view-hob)",
+   "what": "a step opened on screen (the light on veg-12) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L2#mistake@1280x665 (after kind-click)",
+   "what": "cook:station1:hob (tadka at L2): 4 decoys on the shelf (veg-13*, veg-12, spi-01*, spi-05, spi-02*, spi-16*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L2#mistake@1280x665 (after wrong-tap)",
+   "what": "the word pill hakrohakrohakro is under the page's button#side-cog.rail-btn.side-cog (13% of it, at [932,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka#hint@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-02*, veg-12, spi-05*, spi-16*, veg-13*, spi-01; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-74",
+   "where": "cook:tadka#hint@1280x665 (after order-card-big)",
+   "what": "a tap during the order and 1 s later 1 big card, 2 cards not yet in its row: the tap lands the whole order at once",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-95",
+   "where": "cook:tadka#hint@1280x665 (after order-card-big)",
+   "what": "\"Pela mirchi.\" was said 483 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka#hint@1280x665 (after kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L3#hint@1280x665 (after kind-click)",
+   "what": "cook:station1:hob (tadka at L3): 6 decoys on the shelf (spi-16, spi-01, spi-05*, spi-10*, veg-13*, veg-12*, spi-04*, spi-02*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L3#hint@1280x665 (after kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka#takeback@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-16*, spi-05*, veg-13*, spi-02, veg-12, spi-01*; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-74",
+   "where": "cook:tadka#takeback@1280x665 (after order-card-big)",
+   "what": "a tap during the order and 1 s later 1 big card, 2 cards not yet in its row: the tap lands the whole order at once",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-95",
+   "where": "cook:tadka#takeback@1280x665 (after order-card-big)",
+   "what": "\"Pela jeeru.\" was said 749 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@1280x665 (tadka-order-card-in-sidebar)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-16*, veg-12*, spi-02, veg-13*, spi-05, spi-01*; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@L2@1280x665 (tadka-view-hob)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L2): 4 decoys on the shelf (spi-05*, veg-13*, spi-02*, spi-16, spi-01*, veg-12; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@L2@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@L3@1280x665 (tadka-view-hob)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L3): 6 decoys on the shelf (spi-01, spi-05*, veg-12, veg-13*, spi-02*, spi-16*, spi-10*, spi-04*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@L3@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@L4@1280x665 (tadka-view-hob)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L4): 6 decoys on the shelf (veg-12, spi-10*, spi-16*, spi-05*, spi-02*, spi-01*, veg-13, spi-04*; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@L4@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "the call \"Char!\" starts and the light comes 1059 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "the call \"jaldi\" starts and the light comes 745 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "\"Char!\" was said 464 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-112",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "light 1 [732,162,890,324]: dv4-c-daar [735,164,888,317] (its picture, pill and face) is not inside the light with its pad: left 3 px (wants 10), top 2 px (wants 10), right 2 px (wants 10) (picture: bu",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L3@1280x665 (after kind-click)",
+   "what": "the call \"Ba!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L3@1280x665 (after kind-click)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L3@1280x665 (after kind-click)",
+   "what": "\"Ba!\" was said 456 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and the light comes 869 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "the call \"aste thi\" starts and the light comes 762 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 531 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-112",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "light 4 [732,162,890,330]: dv4-c-daar [735,164,888,317] (its picture, pill and face) is not inside the light with its pad: left 3 px (wants 10), top 2 px (wants 10), right 2 px (wants 10) (picture: bu",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "the call \"aste thi\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 580 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "the call \"Ba!\" starts and the light comes 919 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "\"Ba!\" was said 670 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-112",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "light 1 [732,162,890,320]: dv4-c-daar [735,164,888,317] (its picture, pill and face) is not inside the light with its pad: left 3 px (wants 10), top 2 px (wants 10), right 2 px (wants 10), bottom 3 px",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and the light comes 1088 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "the call \"jaldi\" starts and the light comes 954 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 506 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir#hint@1280x665 (after order-card-big)",
+   "what": "the call \"Trae!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir#hint@1280x665 (after order-card-big)",
+   "what": "\"Trae!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir#hint@1280x665 (after order-card-big)",
+   "what": "\"Trae!\" was said 344 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "the call \"aste thi\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 768 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir#takeback@1280x665 (order-card-in-sidebar)",
+   "what": "\"Trae!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir#takeback@1280x665 (order-card-in-sidebar)",
+   "what": "\"Trae!\" was said 706 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@1280x665 (after stir-order-card-big)",
+   "what": "the call \"Char!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@1280x665 (stir-order-card-in-sidebar)",
+   "what": "the call \"jaldi\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@1280x665 (after stir-order-card-big)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@1280x665 (after stir-order-card-big)",
+   "what": "\"Char!\" was said 490 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@L2@1280x665 (after stir-kind-click)",
+   "what": "the call \"Ba!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@L2@1280x665 (after stir-kind-click)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@L2@1280x665 (after stir-kind-click)",
+   "what": "\"Ba!\" was said 334 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@L3@1280x665 (after stir-kind-click)",
+   "what": "the call \"Trae!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@L3@1280x665 (after stir-kind-click)",
+   "what": "\"Trae!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@L3@1280x665 (after stir-kind-click)",
+   "what": "\"Trae!\" was said 405 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@L4@1280x665 (stir-view-marble)",
+   "what": "the call \"Ba!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@L4@1280x665 (stir-view-marble)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@L4@1280x665 (stir-view-marble)",
+   "what": "\"Ba!\" was said 625 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L2@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L2): 1 decoy on the shelf (veg-01, ph-chana, veg-03, ph-sev, ph-dahi, ph-dhana*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L3@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L3): 2 decoys on the shelf (veg-03, ph-lili, veg-12*, ph-dhana*, ph-chana, veg-02, ph-dahi, veg-01; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L4@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L4): 3 decoys on the shelf (ph-dhana, ph-amli, ph-chana, ph-dahi*, ph-lili*, ph-sev, veg-02*, veg-01, veg-03; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L2#mistake@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L2): 1 decoy on the shelf (ph-sev, veg-01, ph-dahi*, ph-chana, veg-12, ph-dhana; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L3#hint@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L3): 2 decoys on the shelf (veg-12, veg-02*, ph-lili, ph-dhana*, ph-amli, veg-01, ph-chana, ph-sev; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "lab:cook/assemble@L2@1280x665 (assemble-view-marble)",
+   "what": "host:cook/assemble|cook:station1:marble (assemble at L2): 1 decoy on the shelf (ph-amli, ph-chana, ph-dahi*, veg-01, veg-12, veg-03; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "lab:cook/assemble@L3@1280x665 (assemble-view-marble)",
+   "what": "host:cook/assemble|cook:station1:marble (assemble at L3): 2 decoys on the shelf (ph-amli, ph-sev, veg-12, ph-chana, ph-dhana*, veg-02, veg-01, veg-03*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "lab:cook/assemble@L4@1280x665 (assemble-view-marble)",
+   "what": "host:cook/assemble|cook:station1:marble (assemble at L4): 3 decoys on the shelf (ph-sev, veg-02, ph-amli*, veg-12, veg-01, veg-03, ph-lili, ph-dahi*, ph-dhana*, ph-chana; * not in the order), the tabl",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-115",
+   "where": "lab:cook/assemble@L4@1280x665 (assemble-kind-tap)",
+   "what": "host:cook/assemble|cook:station1:marble: the shelf item ph-sev (ct-bowl-ph-sev, class M) stands 77 px, 86% of chai's M height at 1280x665 (90 px): one height per size class, within 10%",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa@L3@1280x665 (kind-timing)",
+   "what": "the call \"Samosa hane kadh.\" starts and the light comes 254 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa@L4@1280x665 (view-marble)",
+   "what": "cook:station1:marble (samosa at L4): 3 decoys on the shelf (ph-dhana, veg-10*, ph-keema, veg-02*, veg-01, veg-12*; * not in the order), the table wants at least 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa@L2#mistake@1280x665 (kind-swipe)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (870, 575) picks word ph-keema (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-92",
+   "where": "cook:samosa#hint@1280x665 (hint-nani-says)",
+   "what": "the light round veg-01 covers its neighbour veg-10: it should stop short of it",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa#hint@1280x665 (kind-tap)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (817, 575) picks word veg-10 (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa@L3#hint@1280x665 (kind-swipe)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (817, 575) picks word veg-12 (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@1280x665 (kind-swipe)",
+   "what": "sv3-heap-ph-keema at [500,137,541,178] is swapped in one frame for sv3-heap-ph-keema at [744,539,776,572] (465 px away, 42 to 33 px): no glide, no fade",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@1280x665 (samosa-kind-timing)",
+   "what": "the call \"Chulo bar!\" starts and the light comes 285 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@L2@1280x665 (samosa-kind-timing)",
+   "what": "the call \"Chulo bar!\" starts and the light comes 296 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "lab:cook/samosa@L4@1280x665 (samosa-view-marble)",
+   "what": "host:cook/samosa|cook:station1:marble (samosa at L4): 3 decoys on the shelf (veg-01, ph-dhana*, veg-10*, veg-12, ph-keema, veg-02*; * not in the order), the table wants at least 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "lab:cook/samosa@L4@1280x665 (samosa-kind-tap)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (604, 575) picks word ph-dhana (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card flashed only 103 ms beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs@L2@1280x665 (after kind-click)",
+   "what": "cook:station1:marble (eggs at L2): 3 decoys on the shelf (n.egg*, cook-atto*, cook-dudh*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L2@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs@L4@1280x665 (after kind-click)",
+   "what": "cook:station1:marble (eggs at L4): 5 decoys on the shelf (n.egg, spi-16*, spi-11*, cook-khun*, cook-chai*, cook-dudh*; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L4@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-89",
+   "where": "cook:eggs@L4@1280x665 (view-service)",
+   "what": "\"Miryo wiji chad!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-114",
+   "where": "cook:eggs@L4@1280x665 (view-service)",
+   "what": "eg-friedEgg-cooked rests at 80 px at [1104,140,1183,220], +84% of its 44 px at its last place [772,154,815,197] (eg-friedEgg-cooked): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#mistake@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card flashed only 103 ms beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L2#mistake@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#hint@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L3#hint@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#takeback@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-78",
+   "where": "cook:baking@L3@1280x665 (view-service)",
+   "what": "the call \"Tayar ai.\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@L4@1280x665 (view-service)",
+   "what": "a step opened on screen (the order card's next card \"dedh cup paani\") and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-119",
+   "where": "cook:baking#hint@1280x665 (hint-nani-says)",
+   "what": "the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@L3#hint@1280x665 (hint-glow)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@L3#hint@1280x665 (view-service)",
+   "what": "a step opened on screen (the light on bk-bowl-mixing) and Nani did not call it (no call line from 2 s before to 3.5 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-78",
+   "where": "cook:corn@L4@1280x665 (help-open)",
+   "what": "the call \"Makai hane kadh.\" starts and the light comes 2039 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#mistake@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#hint@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-70",
+   "where": "cook:corn@L3#hint@1280x665 (hint-nani-says)",
+   "what": "the heat ring entered its green (0.556-1) and no call was said by 0.74 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#takeback@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai",
+   "check": "contract-79",
+   "where": "cook:chai#hint@1280x665 (hint-nani-says)",
+   "what": "the order card's light starts 36 ms after the last move ended (the rules ask 166.66666666666666 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai",
+   "check": "contract-72",
+   "where": "cook:chai#returning@1280x665 (kind-timing)",
+   "what": "the order row jumped 130 px in one frame (0 to 130), more than a card (115 px): it glides, never jumps",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L2@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L2@1280x665 (kind-tap)",
+   "what": "cook:station2:marble (chaat at L2): 1 decoy on the shelf (veg-02*, ph-amli, ph-chana, veg-01, ph-sev, veg-12; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L3@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L3@1280x665 (help-open)",
+   "what": "cook:station2:marble (chaat at L3): 2 decoys on the shelf (ph-lili*, ph-chana, veg-02, ph-amli*, ph-sev, ph-dhana, veg-01, veg-12; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L4@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L4@1280x665 (help-open)",
+   "what": "cook:station2:marble (chaat at L4): 3 decoys on the shelf (ph-amli*, ph-chana, veg-12, ph-lili, veg-01, ph-sev, ph-dhana*, veg-03*, veg-02; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat#mistake@1280x665 (kind-tap)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-120",
+   "where": "cook:chaat#mistake@1280x665 (view-service)",
+   "what": "ct-warm stands on the worktop (683x683 at 800,201, depth 29.6) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L2#mistake@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L2#mistake@1280x665 (kind-tap)",
+   "what": "cook:station2:marble (chaat at L2): 1 decoy on the shelf (ph-sev, veg-02*, veg-01, ph-lili, veg-12; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-120",
+   "where": "cook:chaat@L2#mistake@1280x665 (view-service)",
+   "what": "ct-warm stands on the worktop (683x683 at 800,201, depth 29.6) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat#hint@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L3#hint@1280x665 (hint-nani-says)",
+   "what": "cook:station2:marble (chaat at L3): 2 decoys on the shelf (veg-02, ph-dahi*, ph-sev, veg-01, veg-03, ph-lili*, ph-chana, veg-12; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-119",
+   "where": "cook:roll-tawa@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke char maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@1280x665 (kind-tap)",
+   "what": "dough-ball stands on the worktop (98x97 at 351,743, depth 30) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@1280x665 (help-open)",
+   "what": "chapati-burnt stands on the worktop (179x176 at 1035,719, depth 32) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@1280x665 (after kind-timing)",
+   "what": "chapati-puffed stands on the worktop (189x187 at 1049,671, depth 32) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (help-open)",
+   "what": "chapati-burnt rests at 95 px at [898,509,1003,611], -29% of its 133 px at its last place [887,169,1019,299] (chapati-burnt): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (kind-timing)",
+   "what": "chapati-burnt rests at 95 px at [905,503,1002,598], -29% of its 133 px at its last place [887,169,1019,299] (chapati-burnt): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (kind-click)",
+   "what": "chapati-burnt rests at 95 px at [902,494,998,589], -29% of its 133 px at its last place [887,169,1019,299] (chapati-burnt): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (after kind-timing)",
+   "what": "chapati-puffed rests at 95 px at [903,477,1014,587], -29% of its 133 px at its last place [887,169,1019,299] (chapati-puffed): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani",
+   "check": "contract-119",
+   "where": "cook:maani@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "changed",
+   "where": "build/screenshots/tiers/publish-4800353218/logs/changed.log",
+   "what": "CONTRACT FAILED: 220 breaks (contract-39 7, contract-3 1, contract-92 3, contract-111 24, contract-112 4, contract-22 1, contract-72 3, contract-96 2, contract-119 22, contract-36 10, contract-120 6, contract-65 17, contract-37 31, contract-66 1, contract-113 14, contract-74 2, contract-95 15, contract-78 23, contract-89 14, contract-115 1, contract-114 6, contract-70 5, contract-79 1, contract-26 7); CHECK FAILED: 357 new findings, 0 flows do not reach their end, 0 new page errors, 220 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "frozen",
+   "where": "build/screenshots/tiers/publish-4800353218/logs/frozen.log",
+   "what": "re-playing 21 page(s) that changed, to confirm ...",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "check-sprint",
+   "what": "none since the last publish; published on his word: Yes, do 1-3 then publish (Zafar, 15 Nov, decision 43); the Cook games only, force publish on any further error (Zafar, 16 Nov, decision 44)",
+   "blocks": false
+  }
+ ],
+ "knownFails": [
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-view-service)",
+   "what": "the word card for cook-chai (stage 1) shows its English \"chai\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for cook-chai (stage 1) shows its English \"chai\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for cook-dudh (stage 1) shows its English \"milk\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for cook-khun (stage 1) shows its English \"sugar\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after pantry-round-order-card-big)",
+   "what": "the order card's row for spi-10 (stage 1) shows its English \"cardamom\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after chai-round-view-service)",
+   "what": "the word card for cook-dudh (stage 2) shows its English \"milk\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "first",
+   "check": "contract-39",
+   "where": "first@1280x665 (after chai-round-order-card-big)",
+   "what": "the order card's row for cook-paani (stage 1) shows its English \"water\" without the child tapping it open",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-3",
+   "where": "cook:fetch#mistake@1280x665 (after help-open)",
+   "what": "\"hakri chai\" (assets/audio/family/mum/shabash-rc.mp3, 0.74 s) started 1125 ms after 1551 ms past the end of cook:station1:pantry (into cook:between1:pantry); it stopped by stop",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-92",
+   "where": "cook:fetch#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "the light round cook-daal leaves 4 px on its top with nothing beside it: at least 6 px",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "cook:fetch@L2#mistake@1280x665 (view-service)",
+   "what": "the shelf item ph-keema: a tap at its picture's left edge (986, 598) picks word veg-01 (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-112",
+   "where": "cook:fetch@L2#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "light 4 [508,410,624,534]: veg-03 [521,421,612,531] (its picture, pill and face) is not inside the light with its pad: bottom 3 px (wants 10) (picture: build/screenshots/sandbox/tiers-publish-48003532",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-92",
+   "where": "cook:fetch@L3#hint@1280x665 (hint-glow)",
+   "what": "the light round cook-dudh covers its neighbour ph-keema: it should stop short of it",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item cook-daal: a tap at its foot (840, 467) picks nothing; a tap at its picture's left edge (812, 426) picks nothing; a tap at its picture's right edge (868, 426) picks nothing; a tap at it",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item cook-dudh: a tap at its foot (1125, 467) picks nothing; a tap at its picture's left edge (1097, 426) picks nothing; a tap at its picture's right edge (1152, 426) picks nothing; a tap at",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item cook-paani: a tap at its foot (703, 467) picks nothing; a tap at its picture's left edge (683, 426) picks nothing; a tap at its picture's right edge (723, 426) picks nothing; a tap at i",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item ph-dahi: a tap at its foot (1213, 467) picks nothing; a tap at its picture's left edge (1170, 432) picks nothing; a tap at its picture's right edge (1257, 432) picks nothing; a tap at i",
+   "blocks": false
+  },
+  {
+   "game": "cook:fetch",
+   "check": "contract-111",
+   "where": "lab:cook/fetch@1280x665 (after fetch-order-card-big)",
+   "what": "the shelf item spi-02: a tap at its foot (429, 589) picks nothing; a tap at its picture's left edge (400, 556) picks nothing; a tap at its picture's right edge (458, 556) picks nothing; a tap at its p",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-22",
+   "where": "cook:chai-tray@L3#hint@1280x665 (hint-glow)",
+   "what": "cook:station1:marble: \"Aadu wiji chad!\" said twice, 1860 ms apart (a line is said once; again only after 10 s idle)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-72",
+   "where": "cook:chai-tray@L3#returning@1280x665 (kind-timing)",
+   "what": "the order row jumped 123 px in one frame (181 to 304), more than a card (115 px): it glides, never jumps",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-96",
+   "where": "cook:chai-tray@L3#returning@1280x665 (kind-timing)",
+   "what": "a pot boiled over and its card is scrolled 53 px along, not back at the first item within 1500 ms",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai-tray",
+   "check": "contract-72",
+   "where": "lab:cook/chai-tray@L4@1280x665 (chai-tray-kind-timing)",
+   "what": "the order row glided 370 px at once, more than 2.5 cards (115 px each)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#mistake@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line#hint@1280x665 (hint-nani-says)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@75@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#hint@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakri bajr ji maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-36",
+   "where": "cook:maani-line@L3#hint@1280x665 (hint-glow)",
+   "what": "a step opened on screen (the light on njg-tray@1504x260@75@art) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#returning@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "cook:maani-line#takeback@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba bajr ji maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-119",
+   "where": "lab:cook/maani-line@1280x665 (after maani-line-start)",
+   "what": "the customer said the dish (\"Muke hakri maani khapeti,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-120",
+   "where": "lab:cook/maani-line@L4@1280x665 (maani-line-view-service)",
+   "what": "mv-ball-bajr stands on the worktop (105x103 at 398,726, depth 33) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani-line",
+   "check": "contract-96",
+   "where": "lab:cook/maani-line@L4@1280x665 (maani-line-view-service)",
+   "what": "a pot boiled over and emptied, and 1 card stayed ticked for 1500 ms (its rows open again)",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item ph-meat: a tap at its foot (477, 617) picks nothing; a tap just above its pill (477, 626) picks nothing; a tap at its picture's left edge (432, 571) picks nothing; a tap at its picture'",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item veg-12: a tap at its foot (589, 617) picks nothing; a tap just above its pill (589, 626) picks nothing; a tap at its picture's left edge (544, 571) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item veg-02: a tap at its foot (701, 617) picks nothing; a tap just above its pill (701, 626) picks nothing; a tap at its picture's left edge (656, 571) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item veg-03: a tap at its foot (813, 617) picks nothing; a tap just above its pill (813, 626) picks nothing; a tap at its picture's left edge (768, 571) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item n.corn-on-the-cob: a tap at its foot (926, 617) picks nothing; a tap just above its pill (926, 626) picks nothing; a tap at its picture's left edge (880, 571) picks nothing; a tap at it",
+   "blocks": false
+  },
+  {
+   "game": "cook:mishkaki-grill",
+   "check": "contract-111",
+   "where": "lab:cook/mishkaki-grill@L3@1280x665 (mishkaki-grill-view-marble)",
+   "what": "the shelf item n.chicken: a tap at its foot (1038, 617) picks nothing; a tap just above its pill (1038, 626) picks nothing; a tap at its picture's left edge (993, 571) picks nothing; a tap at its pict",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "cook:daar@L3@1280x665 (kind-tap)",
+   "what": "wave 2's first throw came 478 ms after wave 1's last (its spacing 200 ms): a gap of 278 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item veg-13: a tap at its foot (419, 616) picks nothing; a tap just above its pill (419, 626) picks nothing; a tap at its picture's left edge (380, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-02: a tap at its foot (519, 616) picks nothing; a tap just above its pill (519, 626) picks nothing; a tap at its picture's left edge (480, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-04: a tap at its foot (619, 616) picks nothing; a tap just above its pill (619, 626) picks nothing; a tap at its picture's left edge (580, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-01: a tap at its foot (719, 616) picks nothing; a tap just above its pill (719, 626) picks nothing; a tap at its picture's left edge (680, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-16: a tap at its foot (819, 616) picks nothing; a tap just above its pill (819, 626) picks nothing; a tap at its picture's left edge (781, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-10: a tap at its foot (919, 616) picks nothing; a tap just above its pill (919, 626) picks nothing; a tap at its picture's left edge (880, 577) picks nothing; a tap at its picture's",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item veg-12: a tap at its foot (1019, 616) picks nothing; a tap just above its pill (1019, 626) picks nothing; a tap at its picture's left edge (980, 577) picks nothing; a tap at its picture",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-111",
+   "where": "cook:daar@L4@1280x665 (help-open)",
+   "what": "the shelf item spi-05: a tap at its foot (1119, 616) picks nothing; a tap just above its pill (1119, 626) picks nothing; a tap at its picture's left edge (1080, 577) picks nothing; a tap at its pictur",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "cook:daar@L2#mistake@1280x665 (kind-tap)",
+   "what": "wave 2's first throw came 708 ms after wave 1's last (its spacing 400 ms): a gap of 308 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-37",
+   "where": "cook:daar@L3#hint@1280x665 (hint-nani-says)",
+   "what": "cook:station4:marble (daar at L3): 2 decoys on the shelf (spi-02, spi-10*, spi-01*, veg-12, veg-13, spi-05; * not in the order), the table wants at least 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "cook:daar@L3#hint@1280x665 (kind-tap)",
+   "what": "wave 3's first throw came 694 ms after wave 2's last (its spacing 495 ms): a gap of 199 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "lab:cook/daar@L2@1280x665 (daar-kind-tap)",
+   "what": "wave 2's first throw came 613 ms after wave 1's last (its spacing 400 ms): a gap of 213 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-66",
+   "where": "lab:cook/daar@L2@1280x665 (daar-stir-mid)",
+   "what": "lap 1: no number asked for within 250 ms of the lap",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "lab:cook/daar@L3@1280x665 (daar-kind-tap)",
+   "what": "wave 3's first throw came 520 ms after wave 2's last (its spacing 300 ms): a gap of 220 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:daar",
+   "check": "contract-65",
+   "where": "lab:cook/daar@L4@1280x665 (daar-kind-tap)",
+   "what": "wave 3's first throw came 383 ms after wave 2's last (its spacing 162 ms): a gap of 221 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L3@1280x665 (view-service)",
+   "what": "wave 3's first throw came 629 ms after wave 2's last (its spacing 300 ms): a gap of 329 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L4@1280x665 (view-service)",
+   "what": "wave 2's first throw came 372 ms after wave 1's last (its spacing 192 ms): a gap of 180 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L4@1280x665 (view-service)",
+   "what": "wave 3's first throw came 591 ms after wave 2's last (its spacing 200 ms): a gap of 391 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L4@1280x665 (view-service)",
+   "what": "wave 4's first throw came 992 ms after wave 3's last (its spacing 448 ms): a gap of 544 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#mistake@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba lasan khape.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L2#mistake@1280x665 (view-service)",
+   "what": "wave 2's first throw came 567 ms after wave 1's last (its spacing 400 ms): a gap of 167 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#hint@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L3#hint@1280x665 (view-service)",
+   "what": "wave 2's first throw came 455 ms after wave 1's last (its spacing 281 ms): a gap of 174 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "cook:chop@L3#hint@1280x665 (view-service)",
+   "what": "wave 3's first throw came 581 ms after wave 2's last (its spacing 254 ms): a gap of 327 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "cook:chop#takeback@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba dungri khapanti.\") at level 1 and its card flashed only 104 ms beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-119",
+   "where": "lab:cook/chop@1280x665 (start)",
+   "what": "the customer said the dish (\"Muke ba mirchi khapanti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L2@1280x665 (chop-view-service)",
+   "what": "wave 2's first throw came 574 ms after wave 1's last (its spacing 400 ms): a gap of 174 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L3@1280x665 (chop-view-service)",
+   "what": "wave 2's first throw came 683 ms after wave 1's last (its spacing 234 ms): a gap of 449 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L3@1280x665 (chop-view-service)",
+   "what": "wave 3's first throw came 627 ms after wave 2's last (its spacing 261 ms): a gap of 366 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chop",
+   "check": "contract-65",
+   "where": "lab:cook/chop@L4@1280x665 (chop-view-service)",
+   "what": "wave 4's first throw came 479 ms after wave 3's last (its spacing 233 ms): a gap of 246 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka@1280x665 (order-card-in-sidebar)",
+   "what": "a step opened on screen (the light on spi-01) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@1280x665 (order-card-in-sidebar)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-16*, veg-13*, spi-01, spi-05*, spi-02*, veg-12; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@1280x665 (after kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka@L2@1280x665 (view-hob)",
+   "what": "a step opened on screen (the light on veg-12) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L2@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L2): 4 decoys on the shelf (veg-12, veg-13*, spi-16*, spi-05*, spi-02, spi-01*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L2@1280x665 (after kind-tap)",
+   "what": "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (40% of it, at [1164,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L2@1280x665 (after kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L3@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L3): 6 decoys on the shelf (spi-05*, spi-10*, spi-04*, spi-16*, spi-02, veg-13*, veg-12, spi-01*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L3@1280x665 (after kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L4@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L4): 6 decoys on the shelf (spi-16*, spi-05*, veg-13, spi-10*, veg-12*, spi-02*, spi-04*, spi-01; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L4@1280x665 (after kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "a step opened on screen (the light on spi-05) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka#mistake@1280x665 (view-service)",
+   "what": "a step opened on screen (the light on spr:tadka-pan.top) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-01*, spi-05, spi-16*, veg-12*, spi-02*, veg-13; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka#mistake@1280x665 (after wrong-tap)",
+   "what": "the word pill hakro is under the page's button#side-cog.rail-btn.side-cog (40% of it, at [1164,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka#mistake@1280x665 (after wrong-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-36",
+   "where": "cook:tadka@L2#mistake@1280x665 (view-hob)",
+   "what": "a step opened on screen (the light on veg-12) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L2#mistake@1280x665 (after kind-click)",
+   "what": "cook:station1:hob (tadka at L2): 4 decoys on the shelf (veg-13*, veg-12, spi-01*, spi-05, spi-02*, spi-16*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L2#mistake@1280x665 (after wrong-tap)",
+   "what": "the word pill hakrohakrohakro is under the page's button#side-cog.rail-btn.side-cog (13% of it, at [932,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka#hint@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-02*, veg-12, spi-05*, spi-16*, veg-13*, spi-01; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-74",
+   "where": "cook:tadka#hint@1280x665 (after order-card-big)",
+   "what": "a tap during the order and 1 s later 1 big card, 2 cards not yet in its row: the tap lands the whole order at once",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-95",
+   "where": "cook:tadka#hint@1280x665 (after order-card-big)",
+   "what": "\"Pela mirchi.\" was said 483 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka#hint@1280x665 (after kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka@L3#hint@1280x665 (after kind-click)",
+   "what": "cook:station1:hob (tadka at L3): 6 decoys on the shelf (spi-16, spi-01, spi-05*, spi-10*, veg-13*, veg-12*, spi-04*, spi-02*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "cook:tadka@L3#hint@1280x665 (after kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "cook:tadka#takeback@1280x665 (view-hob)",
+   "what": "cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-16*, spi-05*, veg-13*, spi-02, veg-12, spi-01*; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-74",
+   "where": "cook:tadka#takeback@1280x665 (after order-card-big)",
+   "what": "a tap during the order and 1 s later 1 big card, 2 cards not yet in its row: the tap lands the whole order at once",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-95",
+   "where": "cook:tadka#takeback@1280x665 (after order-card-big)",
+   "what": "\"Pela jeeru.\" was said 749 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@1280x665 (tadka-order-card-in-sidebar)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L1): 4 decoys on the shelf (spi-16*, veg-12*, spi-02, veg-13*, spi-05, spi-01*; * not in the order), the table wants 1",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@L2@1280x665 (tadka-view-hob)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L2): 4 decoys on the shelf (spi-05*, veg-13*, spi-02*, spi-16, spi-01*, veg-12; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@L2@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill hakrohakro is under the page's button#side-cog.rail-btn.side-cog (19% of it, at [1048,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@L3@1280x665 (tadka-view-hob)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L3): 6 decoys on the shelf (spi-01, spi-05*, veg-12, veg-13*, spi-02*, spi-16*, spi-10*, spi-04*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@L3@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-37",
+   "where": "lab:cook/tadka@L4@1280x665 (tadka-view-hob)",
+   "what": "host:cook/tadka|cook:station1:hob (tadka at L4): 6 decoys on the shelf (veg-12, spi-10*, spi-16*, spi-05*, spi-02*, spi-01*, veg-13, spi-04*; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:tadka",
+   "check": "contract-113",
+   "where": "lab:cook/tadka@L4@1280x665 (after tadka-kind-tap)",
+   "what": "the word pill ●● is under the page's button#side-cog.rail-btn.side-cog (28% of it, at [1121,8,1272,46]): nothing covers a face, a pill or a card's words",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "the call \"Char!\" starts and the light comes 1059 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "the call \"jaldi\" starts and the light comes 745 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "\"Char!\" was said 464 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-112",
+   "where": "cook:stir@1280x665 (order-card-in-sidebar)",
+   "what": "light 1 [732,162,890,324]: dv4-c-daar [735,164,888,317] (its picture, pill and face) is not inside the light with its pad: left 3 px (wants 10), top 2 px (wants 10), right 2 px (wants 10) (picture: bu",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L3@1280x665 (after kind-click)",
+   "what": "the call \"Ba!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L3@1280x665 (after kind-click)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L3@1280x665 (after kind-click)",
+   "what": "\"Ba!\" was said 456 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and the light comes 869 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "the call \"aste thi\" starts and the light comes 762 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 531 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-112",
+   "where": "cook:stir@L2@1280x665 (view-marble)",
+   "what": "light 4 [732,162,890,330]: dv4-c-daar [735,164,888,317] (its picture, pill and face) is not inside the light with its pad: left 3 px (wants 10), top 2 px (wants 10), right 2 px (wants 10) (picture: bu",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "the call \"aste thi\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L4@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 580 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "the call \"Ba!\" starts and the light comes 919 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "\"Ba!\" was said 670 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-112",
+   "where": "cook:stir#mistake@1280x665 (order-card-in-sidebar)",
+   "what": "light 1 [732,162,890,320]: dv4-c-daar [735,164,888,317] (its picture, pill and face) is not inside the light with its pad: left 3 px (wants 10), top 2 px (wants 10), right 2 px (wants 10), bottom 3 px",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and the light comes 1088 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "the call \"jaldi\" starts and the light comes 954 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L2#mistake@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 506 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir#hint@1280x665 (after order-card-big)",
+   "what": "the call \"Trae!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir#hint@1280x665 (after order-card-big)",
+   "what": "\"Trae!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir#hint@1280x665 (after order-card-big)",
+   "what": "\"Trae!\" was said 344 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "the call \"Char!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "the call \"aste thi\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir@L3#hint@1280x665 (view-marble)",
+   "what": "\"Char!\" was said 768 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "cook:stir#takeback@1280x665 (order-card-in-sidebar)",
+   "what": "\"Trae!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "cook:stir#takeback@1280x665 (order-card-in-sidebar)",
+   "what": "\"Trae!\" was said 706 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@1280x665 (after stir-order-card-big)",
+   "what": "the call \"Char!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@1280x665 (stir-order-card-in-sidebar)",
+   "what": "the call \"jaldi\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@1280x665 (after stir-order-card-big)",
+   "what": "\"Char!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@1280x665 (after stir-order-card-big)",
+   "what": "\"Char!\" was said 490 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@L2@1280x665 (after stir-kind-click)",
+   "what": "the call \"Ba!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@L2@1280x665 (after stir-kind-click)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@L2@1280x665 (after stir-kind-click)",
+   "what": "\"Ba!\" was said 334 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@L3@1280x665 (after stir-kind-click)",
+   "what": "the call \"Trae!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@L3@1280x665 (after stir-kind-click)",
+   "what": "\"Trae!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@L3@1280x665 (after stir-kind-click)",
+   "what": "\"Trae!\" was said 405 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-78",
+   "where": "lab:cook/stir@L4@1280x665 (stir-view-marble)",
+   "what": "the call \"Ba!\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-89",
+   "where": "lab:cook/stir@L4@1280x665 (stir-view-marble)",
+   "what": "\"Ba!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:stir",
+   "check": "contract-95",
+   "where": "lab:cook/stir@L4@1280x665 (stir-view-marble)",
+   "what": "\"Ba!\" was said 625 ms after the order was skipped, before the game's first step",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L2@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L2): 1 decoy on the shelf (veg-01, ph-chana, veg-03, ph-sev, ph-dahi, ph-dhana*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L3@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L3): 2 decoys on the shelf (veg-03, ph-lili, veg-12*, ph-dhana*, ph-chana, veg-02, ph-dahi, veg-01; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L4@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L4): 3 decoys on the shelf (ph-dhana, ph-amli, ph-chana, ph-dahi*, ph-lili*, ph-sev, veg-02*, veg-01, veg-03; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L2#mistake@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L2): 1 decoy on the shelf (ph-sev, veg-01, ph-dahi*, ph-chana, veg-12, ph-dhana; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "cook:assemble@L3#hint@1280x665 (view-marble)",
+   "what": "cook:station1:marble (assemble at L3): 2 decoys on the shelf (veg-12, veg-02*, ph-lili, ph-dhana*, ph-amli, veg-01, ph-chana, ph-sev; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "lab:cook/assemble@L2@1280x665 (assemble-view-marble)",
+   "what": "host:cook/assemble|cook:station1:marble (assemble at L2): 1 decoy on the shelf (ph-amli, ph-chana, ph-dahi*, veg-01, veg-12, veg-03; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "lab:cook/assemble@L3@1280x665 (assemble-view-marble)",
+   "what": "host:cook/assemble|cook:station1:marble (assemble at L3): 2 decoys on the shelf (ph-amli, ph-sev, veg-12, ph-chana, ph-dhana*, veg-02, veg-01, veg-03*; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-37",
+   "where": "lab:cook/assemble@L4@1280x665 (assemble-view-marble)",
+   "what": "host:cook/assemble|cook:station1:marble (assemble at L4): 3 decoys on the shelf (ph-sev, veg-02, ph-amli*, veg-12, veg-01, veg-03, ph-lili, ph-dahi*, ph-dhana*, ph-chana; * not in the order), the tabl",
+   "blocks": false
+  },
+  {
+   "game": "cook:assemble",
+   "check": "contract-115",
+   "where": "lab:cook/assemble@L4@1280x665 (assemble-kind-tap)",
+   "what": "host:cook/assemble|cook:station1:marble: the shelf item ph-sev (ct-bowl-ph-sev, class M) stands 77 px, 86% of chai's M height at 1280x665 (90 px): one height per size class, within 10%",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "cook:samosa@L3@1280x665 (kind-timing)",
+   "what": "the call \"Samosa hane kadh.\" starts and the light comes 254 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "cook:samosa@L4@1280x665 (view-marble)",
+   "what": "cook:station1:marble (samosa at L4): 3 decoys on the shelf (ph-dhana, veg-10*, ph-keema, veg-02*, veg-01, veg-12*; * not in the order), the table wants at least 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa@L2#mistake@1280x665 (kind-swipe)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (870, 575) picks word ph-keema (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-92",
+   "where": "cook:samosa#hint@1280x665 (hint-nani-says)",
+   "what": "the light round veg-01 covers its neighbour veg-10: it should stop short of it",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa#hint@1280x665 (kind-tap)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (817, 575) picks word veg-10 (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "cook:samosa@L3#hint@1280x665 (kind-swipe)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (817, 575) picks word veg-12 (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-114",
+   "where": "cook:samosa#takeback@1280x665 (kind-swipe)",
+   "what": "sv3-heap-ph-keema at [500,137,541,178] is swapped in one frame for sv3-heap-ph-keema at [744,539,776,572] (465 px away, 42 to 33 px): no glide, no fade",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@1280x665 (samosa-kind-timing)",
+   "what": "the call \"Chulo bar!\" starts and the light comes 285 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-78",
+   "where": "lab:cook/samosa@L2@1280x665 (samosa-kind-timing)",
+   "what": "the call \"Chulo bar!\" starts and the light comes 296 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-37",
+   "where": "lab:cook/samosa@L4@1280x665 (samosa-view-marble)",
+   "what": "host:cook/samosa|cook:station1:marble (samosa at L4): 3 decoys on the shelf (veg-01, ph-dhana*, veg-10*, veg-12, ph-keema, veg-02*; * not in the order), the table wants at least 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:samosa",
+   "check": "contract-111",
+   "where": "lab:cook/samosa@L4@1280x665 (samosa-kind-tap)",
+   "what": "the shelf item veg-01: a tap at its picture's right edge (604, 575) picks word ph-dhana (the item takes its picture, its slot down to its pill and the pill but its speaker)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card flashed only 103 ms beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs@L2@1280x665 (after kind-click)",
+   "what": "cook:station1:marble (eggs at L2): 3 decoys on the shelf (n.egg*, cook-atto*, cook-dudh*; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L2@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-37",
+   "where": "cook:eggs@L4@1280x665 (after kind-click)",
+   "what": "cook:station1:marble (eggs at L4): 5 decoys on the shelf (n.egg, spi-16*, spi-11*, cook-khun*, cook-chai*, cook-dudh*; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L4@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-89",
+   "where": "cook:eggs@L4@1280x665 (view-service)",
+   "what": "\"Miryo wiji chad!\" was said while Nani's helper card named the item and was closed: the item said before her card shows it",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-114",
+   "where": "cook:eggs@L4@1280x665 (view-service)",
+   "what": "eg-friedEgg-cooked rests at 80 px at [1104,140,1183,220], +84% of its 44 px at its last place [772,154,815,197] (eg-friedEgg-cooked): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#mistake@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro tarelo indo khapeto.\") at level 1 and its card flashed only 103 ms beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L2#mistake@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#hint@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-70",
+   "where": "cook:eggs@L3#hint@1280x665 (view-service)",
+   "what": "the heat ring entered its green (0.72-1) and no call was said by 0.90 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:eggs",
+   "check": "contract-119",
+   "where": "cook:eggs#takeback@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro bafelo indo khapeto.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-78",
+   "where": "cook:baking@L3@1280x665 (view-service)",
+   "what": "the call \"Tayar ai.\" starts and no light comes with it",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@L4@1280x665 (view-service)",
+   "what": "a step opened on screen (the order card's next card \"dedh cup paani\") and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-119",
+   "where": "cook:baking#hint@1280x665 (hint-nani-says)",
+   "what": "the customer said the dish (\"Muke naan khape.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@L3#hint@1280x665 (hint-glow)",
+   "what": "a step opened on screen (the light on cook-atto) and Nani did not call it (no call line from 2 s before to 6 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:baking",
+   "check": "contract-36",
+   "where": "cook:baking@L3#hint@1280x665 (view-service)",
+   "what": "a step opened on screen (the light on bk-bowl-mixing) and Nani did not call it (no call line from 2 s before to 3.5 s after, no skip logged)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-78",
+   "where": "cook:corn@L4@1280x665 (help-open)",
+   "what": "the call \"Makai hane kadh.\" starts and the light comes 2039 ms later (more than 200 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#mistake@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#hint@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-70",
+   "where": "cook:corn@L3#hint@1280x665 (hint-nani-says)",
+   "what": "the heat ring entered its green (0.556-1) and no call was said by 0.74 (the turn-off call as the bar enters the green; 0.06 a speed, at speed 3)",
+   "blocks": false
+  },
+  {
+   "game": "cook:corn",
+   "check": "contract-119",
+   "where": "cook:corn#takeback@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke hakro makai khape,\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai",
+   "check": "contract-79",
+   "where": "cook:chai#hint@1280x665 (hint-nani-says)",
+   "what": "the order card's light starts 36 ms after the last move ended (the rules ask 166.66666666666666 ms)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chai",
+   "check": "contract-72",
+   "where": "cook:chai#returning@1280x665 (kind-timing)",
+   "what": "the order row jumped 130 px in one frame (0 to 130), more than a card (115 px): it glides, never jumps",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L2@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L2@1280x665 (kind-tap)",
+   "what": "cook:station2:marble (chaat at L2): 1 decoy on the shelf (veg-02*, ph-amli, ph-chana, veg-01, ph-sev, veg-12; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L3@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L3@1280x665 (help-open)",
+   "what": "cook:station2:marble (chaat at L3): 2 decoys on the shelf (ph-lili*, ph-chana, veg-02, ph-amli*, ph-sev, ph-dhana, veg-01, veg-12; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L4@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L4@1280x665 (help-open)",
+   "what": "cook:station2:marble (chaat at L4): 3 decoys on the shelf (ph-amli*, ph-chana, veg-12, ph-lili, veg-01, ph-sev, ph-dhana*, veg-03*, veg-02; * not in the order), the table wants 4",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat#mistake@1280x665 (kind-tap)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-120",
+   "where": "cook:chaat#mistake@1280x665 (view-service)",
+   "what": "ct-warm stands on the worktop (683x683 at 800,201, depth 29.6) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat@L2#mistake@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L2#mistake@1280x665 (kind-tap)",
+   "what": "cook:station2:marble (chaat at L2): 1 decoy on the shelf (ph-sev, veg-02*, veg-01, ph-lili, veg-12; * not in the order), the table wants 2",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-120",
+   "where": "cook:chaat@L2#mistake@1280x665 (view-service)",
+   "what": "ct-warm stands on the worktop (683x683 at 800,201, depth 29.6) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-26",
+   "where": "cook:chaat#hint@1280x665 (after kind-slice)",
+   "what": "the opening line \"Pela chano.\" was not heard whole: chano had no sound (no clip played and the device voice did not say it)",
+   "blocks": false
+  },
+  {
+   "game": "cook:chaat",
+   "check": "contract-37",
+   "where": "cook:chaat@L3#hint@1280x665 (hint-nani-says)",
+   "what": "cook:station2:marble (chaat at L3): 2 decoys on the shelf (veg-02, ph-dahi*, ph-sev, veg-01, veg-03, ph-lili*, ph-chana, veg-12; * not in the order), the table wants 3",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-119",
+   "where": "cook:roll-tawa@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke char maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@1280x665 (kind-tap)",
+   "what": "dough-ball stands on the worktop (98x97 at 351,743, depth 30) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@1280x665 (help-open)",
+   "what": "chapati-burnt stands on the worktop (179x176 at 1035,719, depth 32) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-120",
+   "where": "cook:roll-tawa@1280x665 (after kind-timing)",
+   "what": "chapati-puffed stands on the worktop (189x187 at 1049,671, depth 32) with no soft shadow of its own (SH-268: one light, upper left)",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (help-open)",
+   "what": "chapati-burnt rests at 95 px at [898,509,1003,611], -29% of its 133 px at its last place [887,169,1019,299] (chapati-burnt): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (kind-timing)",
+   "what": "chapati-burnt rests at 95 px at [905,503,1002,598], -29% of its 133 px at its last place [887,169,1019,299] (chapati-burnt): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (kind-click)",
+   "what": "chapati-burnt rests at 95 px at [902,494,998,589], -29% of its 133 px at its last place [887,169,1019,299] (chapati-burnt): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:roll-tawa",
+   "check": "contract-114",
+   "where": "cook:roll-tawa@1280x665 (after kind-timing)",
+   "what": "chapati-puffed rests at 95 px at [903,477,1014,587], -29% of its 133 px at its last place [887,169,1019,299] (chapati-puffed): an item keeps its size from step to step",
+   "blocks": false
+  },
+  {
+   "game": "cook:maani",
+   "check": "contract-119",
+   "where": "cook:maani@1280x665 (after start)",
+   "what": "the customer said the dish (\"Muke ba maani khapeti.\") at level 1 and its card never flashed up beside their bubble",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "changed",
+   "where": "build/screenshots/tiers/publish-4800353218/logs/changed.log",
+   "what": "CONTRACT FAILED: 220 breaks (contract-39 7, contract-3 1, contract-92 3, contract-111 24, contract-112 4, contract-22 1, contract-72 3, contract-96 2, contract-119 22, contract-36 10, contract-120 6, contract-65 17, contract-37 31, contract-66 1, contract-113 14, contract-74 2, contract-95 15, contract-78 23, contract-89 14, contract-115 1, contract-114 6, contract-70 5, contract-79 1, contract-26 7); CHECK FAILED: 357 new findings, 0 flows do not reach their end, 0 new page errors, 220 contract breaks",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "frozen",
+   "where": "build/screenshots/tiers/publish-4800353218/logs/frozen.log",
+   "what": "re-playing 21 page(s) that changed, to confirm ...",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "check-sprint",
+   "what": "none since the last publish; published on his word: Yes, do 1-3 then publish (Zafar, 15 Nov, decision 43); the Cook games only, force publish on any further error (Zafar, 16 Nov, decision 44)",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "fix list",
+   "what": "422 open rows to fix: SH-232, SH-233, SH-234, CHAI-91, CHAI-92, CHAI-93, SH-222, SH-227, SH-223, SH-224, SH-225, SH-226, ART-45, ART-46, ART-47, ART-49, ART-50, ART-51, ART-52, ART-53, SH-213, SH-214, SH-216, SH-215, CHAI-86, CHAI-87, CHAI-90, SH-219, SH-220, SH-217, CHAI-88, SH-218, CHAI-89, ART-43, ART-44, ART-42, ART-41, SH-210, SH-211, SH-212, ART-40, CHAI-84, CHAI-85, ART-39, SH-209, CHAI-83, SH-201, SH-202, SH-203, SH-204, SH-205, SH-206, SH-207, SH-208, SH-189, SH-12, SH-13, SH-62, SH-171, SH-172, SH-173, SH-175, SH-176, SH-177, SH-180, SH-182, SH-239, SH-241, SH-242, SH-230, SH-37, SH-53, SH-60, SH-228, SH-112, SH-138, SH-139, SH-140, SH-141, SH-142, SH-143, SH-144, SH-151, SH-152, SH-154, SH-155, SH-156, SH-157, SH-158, SH-159, SH-160, SH-147, SH-148, SH-149, SH-150, SH-108, SH-236, SH-237, SH-238, SH-240, SH-119, SH-244, SH-245, SH-270, SH-271, SH-272, SH-273, SH-274, SH-275, SH-276, SH-277, SH-278, SH-279, SH-280, SH-281, SH-283, SH-284, SH-285, SH-286, SH-287, SH-288, SH-289, SH-290, SH-291, SH-292, SH-293, SH-295, SH-299, SH-300, SH-301, SH-302, SH-303, SH-305, SH-306, SH-307, SH-308, SH-309, SH-310, PAN-04, PAN-13, PAN-19, PAN-21, PAN-22, PAN-23, CHAI-102, CHAI-103, CHAI-104, CHAI-95, CHAI-96, CHAI-97, CHAI-98, CHAI-99, CHAI-100, CHAI-19, CHAI-02, CHAI-34, CHAI-08, CHAI-35, CHAI-36, CHAI-38, CHAI-39, CHAI-42, CHAI-48, CHAI-49, CHAI-54, CHAI-55, CHAI-56, CHAI-57, CHAI-108, DAAR-36, DAAR-38, DAAR-39, DAAR-40, DAAR-41, DAAR-43, DAAR-44, DAAR-45, DAAR-03, DAAR-46, DAAR-47, DAAR-54, DAAR-55, DAAR-56, DAAR-57, DAAR-58, DAAR-59, DAAR-60, DAAR-61, DAAR-62, DAAR-63, DAAR-64, DAAR-65, DAAR-66, SEK-14, SEK-20, SEK-22, SEK-25, SEK-26, SEK-27, SAM-30, SAM-31, SAM-34, SAM-36, SEK-28, SEK-31, SEK-32, SAM-40, SAM-42, SAM-43, SAM-44, SAM-45, SAM-46, SAM-47, MAA-19, MAA-20, MAA-21, MAA-22, MAA-23, MAA-25, MAA-26, MAA-27, MAA-28, CHT-13, CHT-18, CHT-19, CHT-20, CHT-21, CHT-22, CK-59, CK-01, CK-45, CK-46, CK-06, CK-53, CK-54, CK-55, CK-56, CK-57, CK-61, CK-62, CK-63, CK-64, CK-68, CK-77, CK-92, CK-93, CK-96, CK-97, CK-100, CK-102, CK-103, CK-104, CK-106, CK-110, CK-111, CK-113, CK-114, CK-115, CK-116, CK-117, CK-118, CK-119, CK-120, CK-121, CK-122, CK-123, CK-124, CK-125, CK-126, CK-127, CK-128, CK-129, CK-130, CK-131, CK-132, CK-133, CK-134, CK-135, CK-136, CK-137, RT-01, RT-02, RT-03, RT-04, SH-311, SH-312, SH-313, SH-314, SH-315, SH-316, SH-317, CLN-220, CLN-221, CLN-222, CLN-82, CLN-216, CLN-217, CLN-218, CLN-156, CLN-35, CLN-52, CLN-57, CLN-99, CLN-205, CLN-206, CLN-207, CLN-210, CLN-211, CLN-213, BOOK-05, DAY-02, RIDE-11, LAB-08, FARM-01, ART-58, ART-18, ART-28, ART-29, ART-30, ART-64, LNG-20, LNG-22, SH-51, SH-63, SH-135, SH-136, SH-137, SH-64, PRC-10, PRC-11, PRC-06, PRC-12, PRC-13, PRC-14, PRC-15, PRC-16, CHAI-31, CHAI-58, CHAI-60, CHAI-61, CHAI-62, CHAI-74, CHAI-75, CHAI-76, CHAI-77, CHAI-78, CHAI-79, CHAI-80, CHAI-81, CHAI-82, CHAI-63, CHAI-64, CHAI-65, CHAI-66, CHAI-67, CHAI-68, CHAI-107, CHAI-109, CHAI-110, CHAI-111, CHAI-112, CHAI-113, CHAI-114, SH-221, SH-122, SH-19, SH-183, SH-185, SH-186, SH-187, SH-188, SH-191, SH-193, SH-194, SH-195, SH-196, SH-235, SH-248, SH-249, SH-250, SH-251, SH-252, SH-253, SH-254, SH-255, SH-256, SH-257, CK-81, CK-82, CK-83, CK-84, SH-258, SH-259, CK-85, SH-260, SH-261, SH-264, SH-265, SH-266, SH-267, SH-268, CK-86, CK-87, CK-88, CK-78, CK-79, CK-80, CK-89, CK-90, CK-91, BOOK-10, CHT-17, ART-27, ART-34, ART-35, ART-72, ART-74, ART-76, ART-77, ART-78, ART-79, ART-80",
+   "blocks": false
+  },
+  {
+   "game": null,
+   "check": "fix list",
+   "what": "110 rows waiting on Mum, art or Zafar: ART-48, ART-56, ART-57, SH-70, SH-14, SH-178, SH-90, SH-91, SH-106, SH-117, SH-243, SH-246, SH-247, SH-282, SH-294, SH-296, SH-297, SH-298, SH-304, PAN-06, PAN-01, PAN-10, CHAI-37, DAAR-02, DAAR-26, DAAR-37, DAAR-48, DAAR-49, DAAR-50, DAAR-53, SEK-18, SAM-21, SAM-32, SAM-33, SAM-35, SEK-29, SAM-39, SAM-41, MAA-15, MAA-16, MAA-24, CHT-04, CK-TAB-01, CK-66, CK-67, CK-69, CK-70, CK-71, CK-98, CK-99, CK-112, CLN-87, CLN-38, CLN-65, CLN-106, CLN-107, CLN-119, CLN-137, CLN-150, CLN-163, CLN-175, CLN-179, CLN-180, CLN-219, CLN-186, CLN-192, CLN-193, CLN-196, CLN-43, MOD-10, ART-59, ART-10, ART-11, ART-12, ART-20, ART-22, ART-23, ART-32, ART-61, ART-62, ART-63, ART-65, ART-66, ART-67, ART-68, ART-69, ART-70, ART-71, LNG-01, LNG-04, LNG-06, LNG-08, LNG-10, LNG-11, LNG-12, LNG-15, LNG-21, LNG-23, LNG-24, SH-262, ART-37, ART-38, CHT-16, ART-26, ART-33, ART-36, ART-73, ART-75, ART-81, ART-82",
+   "blocks": false
+  }
+ ],
+ "steps": [
+  {
+   "id": "push",
+   "what": "tier 0 first (reused when it passed on this commit)",
+   "game": null,
+   "blocks": true,
+   "browser": false,
+   "fix": null,
+   "command": "node build/tools/tiers/check-push.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "check-push: PASSED in 2.7 min; build/reports/tiers/push-4800353218.md",
+   "tail": [
+    "checks ... pass (2.7 min)",
+    "check-push: PASSED in 2.7 min; build/reports/tiers/push-4800353218.md"
+   ],
+   "log": "build/screenshots/tiers/publish-4800353218/logs/push.log",
+   "minutes": 2.7
+  },
+  {
+   "id": "changed",
+   "what": "every changed game (20) at 1280x665 to its end (194 flows)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/sandbox/run.mjs --flow 'house,first,cook:title,cook:fetch,cook:fetch@L2,cook:fetch@L3,cook:fetch@L4,cook:fetch#mistake,cook:fetch@L2#mistake,cook:fetch#hint,cook:fetch@L3#hint,cook:fetch#returning,cook:fetch#takeback,lab:cook/fetch,lab:cook/fetch@L2,lab:cook/fetch@L3,lab:cook/fetch@L4,cook:chai-tray,cook:chai-tray@L3,cook:chai-tray@L2,cook:chai-tray@L4,cook:chai-tray#mistake,cook:chai-tray@L2#mistake,cook:chai-tray#hint,cook:chai-tray@L3#hint,cook:chai-tray#returning,cook:chai-tray@L3#returning,cook:chai-tray#takeback,lab:cook/chai-tray,lab:cook/chai-tray@L2,lab:cook/chai-tray@L3,lab:cook/chai-tray@L4,lab:cook/chai-tray#child,lab:cook/chai-tray@L2#child,lab:cook/chai-tray@L3#child,lab:cook/chai-tray@L4#child,cook:maani-line,cook:maani-line@L2,cook:maani-line@L3,cook:maani-line@L4,cook:maani-line#mistake,cook:maani-line@L2#mistake,cook:maani-line#hint,cook:maani-line@L3#hint,cook:maani-line#returning,cook:maani-line#takeback,lab:cook/maani-line,lab:cook/maani-line@L2,lab:cook/maani-line@L3,lab:cook/maani-line@L4,cook:mishkaki-grill,cook:mishkaki-grill@L2,cook:mishkaki-grill@L3,cook:mishkaki-grill@L4,cook:mishkaki-grill#mistake,cook:mishkaki-grill@L2#mistake,cook:mishkaki-grill#hint,cook:mishkaki-grill@L3#hint,cook:mishkaki-grill#returning,cook:mishkaki-grill#takeback,lab:cook/mishkaki-grill,lab:cook/mishkaki-grill@L2,lab:cook/mishkaki-grill@L3,lab:cook/mishkaki-grill@L4,cook:daar,cook:daar@L2,cook:daar@L3,cook:daar@L4,cook:daar#mistake,cook:daar@L2#mistake,cook:daar#hint,cook:daar@L3#hint,cook:daar#returning,cook:daar#takeback,lab:cook/daar,lab:cook/daar@L2,lab:cook/daar@L3,lab:cook/daar@L4,cook:chop,cook:chop@L3,cook:chop@L2,cook:chop@L4,cook:chop#mistake,cook:chop@L2#mistake,cook:chop#hint,cook:chop@L3#hint,cook:chop#takeback,lab:cook/chop,lab:cook/chop@L2,lab:cook/chop@L3,lab:cook/chop@L4,cook:tadka,cook:tadka@L2,cook:tadka@L3,cook:tadka@L4,cook:tadka#mistake,cook:tadka@L2#mistake,cook:tadka#hint,cook:tadka@L3#hint,cook:tadka#takeback,lab:cook/tadka,lab:cook/tadka@L2,lab:cook/tadka@L3,lab:cook/tadka@L4,cook:stir,cook:stir@L3,cook:stir@L2,cook:stir@L4,cook:stir#mistake,cook:stir@L2#mistake,cook:stir#hint,cook:stir@L3#hint,cook:stir#takeback,lab:cook/stir,lab:cook/stir@L2,lab:cook/stir@L3,lab:cook/stir@L4,cook:assemble,cook:assemble@L2,cook:assemble@L3,cook:assemble@L4,cook:assemble#mistake,cook:assemble@L2#mistake,cook:assemble#hint,cook:assemble@L3#hint,cook:assemble#returning,cook:assemble#takeback,lab:cook/assemble,lab:cook/assemble@L2,lab:cook/assemble@L3,lab:cook/assemble@L4,cook:samosa,cook:samosa@L2,cook:samosa@L3,cook:samosa@L4,cook:samosa#mistake,cook:samosa@L2#mistake,cook:samosa#hint,cook:samosa@L3#hint,cook:samosa#returning,cook:samosa#takeback,lab:cook/samosa,lab:cook/samosa@L2,lab:cook/samosa@L3,lab:cook/samosa@L4,cook:eggs,cook:eggs@L2,cook:eggs@L3,cook:eggs@L4,cook:eggs#mistake,cook:eggs@L2#mistake,cook:eggs#hint,cook:eggs@L3#hint,cook:eggs#takeback,cook:baking,cook:baking@L2,cook:baking@L3,cook:baking@L4,cook:baking#mistake,cook:baking@L2#mistake,cook:baking#hint,cook:baking@L3#hint,cook:baking#takeback,cook:corn,cook:corn@L2,cook:corn@L3,cook:corn@L4,cook:corn#mistake,cook:corn@L2#mistake,cook:corn#hint,cook:corn@L3#hint,cook:corn#takeback,cook:chai,cook:chai@L2,cook:chai@L3,cook:chai@L4,cook:chai#mistake,cook:chai@L2#mistake,cook:chai#hint,cook:chai@L3#hint,cook:chai#returning,cook:chai@L3#returning,cook:chai#takeback,cook:chaat,cook:chaat@L2,cook:chaat@L3,cook:chaat@L4,cook:chaat#mistake,cook:chaat@L2#mistake,cook:chaat#hint,cook:chaat@L3#hint,cook:chaat#takeback,cook:roll-tawa,cook:maani' --sizes 1280x665 --check --parallel 3 --no-sheets --run-id tiers-publish-4800353218",
+   "status": "report",
+   "code": 1,
+   "line": "CONTRACT FAILED: 220 breaks (contract-39 7, contract-3 1, contract-92 3, contract-111 24, contract-112 4, contract-22 1, contract-72 3, contract-96 2, contract-119 22, contract-36 10, contract-120 6, contract-65 17, contract-37 31, contract-66 1, contract-113 14, contract-74 2, contract-95 15, contract-78 23, contract-89 14, contract-115 1, contract-114 6, contract-70 5, contract-79 1, contract-26 7); CHECK FAILED: 357 new findings, 0 flows do not reach their end, 0 new page errors, 220 contract breaks",
+   "tail": [
+    "BREAK contract-65 cook:chop@L2#mistake L2 @ 1280x665 [view-service 07-view-service.png] 19.7s: wave 2's first throw came 567 ms after wave 1's last (its spacing 400 ms): a gap of 167 ms between the waves (at most 167, 0.5 s at the test speed 3)",
+    "... and 160 more in contract.md",
+    "judged per game (contract.md lists each check not judged and why): house 47/111, first 70/111, title 75/111, pantry 104/111, chai 109/111, maani 106/111, sekelo 105/111, daar 106/111, chop 103/111, tadka 104/111, stir 104/111, chaat 104/111, samosa 107/111, eggs 107/111, baking 105/111, corn 106/111, roll-tawa 103/111",
+    "CONTRACT FAILED: 220 breaks (contract-39 7, contract-3 1, contract-92 3, contract-111 24, contract-112 4, contract-22 1, contract-72 3, contract-96 2, contract-119 22, contract-36 10, contract-120 6, contract-65 17, contract-37 31, contract-66 1, contract-113 14, contract-74 2, contract-95 15, contract-78 23, contract-89 14, contract-115 1, contract-114 6, contract-70 5, contract-79 1, contract-26 7)",
+    "CHECK FAILED: 357 new findings, 0 flows do not reach their end, 0 new page errors, 220 contract breaks",
+    "05:06:10 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-publish-4800353218/summary.md"
+   ],
+   "log": "build/screenshots/tiers/publish-4800353218/logs/changed.log",
+   "minutes": 60.4
+  },
+  {
+   "id": "checks-full",
+   "what": "checks.mjs --full: every fast check, the browser's load check, the parked modes' leak bots",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/checks.mjs --full",
+   "status": "pass",
+   "code": 0,
+   "line": "checks: 15 steps in 248 s (all at once; the longest: leak 248 s, unit 215 s, art 141 s)",
+   "tail": [
+    "ok   fixlist every open row is labelled",
+    "ok   decisions decisions: 5 files, every answer on its rows",
+    "ok   art    232 picture(s): 202 pass, 30 flag, 0 exception, 0 fail; 15 batch(es), 5 with an odd one out",
+    "ok   size   ok: live site 433 MB in 6121 files (limit 800 MB; excluded: sources, build)",
+    "ok   load   32/32 pages load only what's on their screen",
+    "checks: 15 steps in 248 s (all at once; the longest: leak 248 s, unit 215 s, art 141 s)"
+   ],
+   "log": "build/screenshots/tiers/publish-4800353218/logs/checks-full.log",
+   "minutes": 4.1
+  },
+  {
+   "id": "frozen",
+   "what": "chai against its frozen run (frozen.mjs --diff)",
+   "game": null,
+   "blocks": false,
+   "browser": true,
+   "fix": null,
+   "command": "node build/tools/review/frozen.mjs --diff",
+   "status": "report",
+   "code": 124,
+   "line": "re-playing 21 page(s) that changed, to confirm ...",
+   "tail": [
+    "playing 19 flows at 1280x665, 740x320 (run frozen-diff-chai-tray-202611160510) ...",
+    "re-playing 21 page(s) that changed, to confirm ..."
+   ],
+   "log": "build/screenshots/tiers/publish-4800353218/logs/frozen.log",
+   "minutes": 35
+  },
+  {
+   "id": "stamps",
+   "what": "every file a page asks for carries the version stamp (build/check_stamps.mjs, B7)",
+   "game": null,
+   "blocks": true,
+   "browser": true,
+   "fix": null,
+   "command": "node build/check_stamps.mjs",
+   "status": "pass",
+   "code": 0,
+   "line": "STAMP CHECK PASSED: every request of the live pages stamped (910 requests; 0 known in the parked modes' own code)",
+   "tail": [
+    "find.html: 62 requests, 0 unstamped",
+    "dress.html: 45 requests, 0 unstamped",
+    "tidy.html: 38 requests, 0 unstamped",
+    "who.html: 28 requests, 0 unstamped",
+    "monsoon.html: 34 requests, 0 unstamped",
+    "STAMP CHECK PASSED: every request of the live pages stamped (910 requests; 0 known in the parked modes' own code)"
+   ],
+   "log": "build/screenshots/tiers/publish-4800353218/logs/stamps.log",
+   "minutes": 1.6
+  }
+ ],
+ "minutes": 103.9,
+ "ok": true
+}
