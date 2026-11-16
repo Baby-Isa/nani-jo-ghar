@@ -60,12 +60,14 @@ try {
       const u = new URL(r.url());
       if (u.origin === BASE && /^\/(js|css|data|assets)\//.test(u.pathname)) reqs.push(u.pathname + u.search);
     });
-    await page.goto(`${BASE}/${url}`, { waitUntil: "load" }).catch(() => {});
+    await page.goto(`${BASE}/${url}`, { waitUntil: "load", timeout: 60000 }).catch(() => {});
     await sleep(2500);
     if (how === "station") {
       // a Cook station: its Phaser scene loads its art through the stamp
-      await page.evaluate(() => window.njgTest?.cook && njgTest.cook.lab && njgTest.cook.lab("chai-tray", true, { level: 1 })).catch(() => {});
-      await sleep(4000);
+      // (16 Nov: lab() resolves only when the round ends, so awaiting it hung the check past its tier timeout: start it, never wait on it)
+      await page.evaluate(() => { if (window.njgTest?.cook && njgTest.cook.lab) Promise.resolve(njgTest.cook.lab("chai-tray", true, { level: 1 })).catch(() => {}); }).catch(() => {});
+      await page.waitForLoadState("networkidle", { timeout: 30000 }).catch(() => {}); // the station's Phaser scene loads all its art
+      await sleep(8000);
     }
     const miss = [...new Set(reqs.filter((u) => !u.includes(`v=${STAMP}`)))];
     total += reqs.length;

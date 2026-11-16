@@ -78,7 +78,7 @@
       "tiers": { "sprint": { "when": "^(js/shared/|css/shared/|js/cook/)" } } },
     { "id": "word-card-taps", "what": "the word card's reveal buttons are 44 px taps (build/check_word_card_taps.mjs, EASY-11)", "argv": ["build/check_word_card_taps.mjs"], "browser": true, "minutes": 1,
       "tiers": { "change": { "when": "word-card" }, "sprint": { "when": "always" } } },
-    { "id": "stamps", "what": "every file a page asks for carries the version stamp (build/check_stamps.mjs, B7)", "argv": ["build/check_stamps.mjs"], "browser": true, "minutes": 6,
+    { "id": "stamps", "what": "every file a page asks for carries the version stamp (build/check_stamps.mjs, B7)", "argv": ["build/check_stamps.mjs"], "browser": true, "minutes": 3,
       "tiers": { "publish": { "when": "always" } } },
     { "id": "heal-a", "what": "the heal games on the real host (build/test_clinic_heal_a.py)", "cmd": "python3", "argv": ["build/test_clinic_heal_a.py", "--levels", "1", "--sizes", "laptop"], "browser": true, "minutes": 8, "blocks": false,
       "fix": "FIX in the audit (section 9): times out on the heal host's mount; reports until the host is looked at",
