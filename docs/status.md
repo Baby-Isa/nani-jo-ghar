@@ -16,6 +16,7 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 - **For next time:** 72 rows have checks written but never played (out of browser time). Their specs are in `build/sandbox/data/evidence.json`; the results are in `build/reports/run16/`.
 
 **Next, in order:**
+0. Chai's frozen comparison on the work branch (`frozen.mjs --diff`; it did not finish in run 16). If chai changed, `git revert -m 1 dee4428d` (the shared-kit merge) and re-run.
 1. Zafar answers the report's 11 questions (section 5).
 2. Zafar plays the published game and the branch (labs.html).
 3. One fix round on LOOK-01 to LOOK-13 and the 58 rows that are still true, Cook first.
@@ -43,7 +44,7 @@ Open rows are in `docs/process/regressions.md`; built ones in `docs/archive/regr
 |---|---|---|
 | Shared components (end screen, cards, onboarding, buttons, layout) | 146 | 98 |
 | Cook: pantry | 8 | 11 |
-| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 19 / 8 / 15 / 7 / 15 / 3 / 43 | 30 / 14 / 29 / 12 / 24 / 17 / 45 |
+| Cook: chai / maani / daar / chaat / samosa / sekelo / general | 19 / 8 / 15 / 6 / 15 / 3 / 43 | 30 / 14 / 29 / 12 / 24 / 17 / 45 |
 | Clinic | 38 | 168 |
 | First launch and shell | 0 | 2 |
 | Other modes | 1 | 10 |

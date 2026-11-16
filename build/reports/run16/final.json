@@ -1506,9 +1506,9 @@
   "kind": "Logic"
  },
  "CHT-21": {
-  "state": "open",
-  "why": "fix-daar: bounced by the prover: On fix-daar alone (cfb0867) the check is red both times: count:#mission .oc-card>=2 finds 1 visible at chaat L4 kind-slice, 740x320 and 1280x665. In a throwaway tree of cfb0867 plus fix-k",
-  "src": "prove",
+  "state": "proven",
+  "why": "red twice without the kit fix; PASS on the merged branch",
+  "src": "orchestrator",
   "kind": "Look"
  },
  "CHT-22": {
