@@ -281,15 +281,15 @@
   "row": "CK-93",
   "kind": "Logic",
   "game": "eggs",
-  "status": "built",
+  "status": "open",
   "probe": "evidence.json CK-93 (eye: shots at served, eggs L1+L4, 740x320 and 1280x665)",
-  "red": "not run (the table with the cat is no longer loaded)",
+  "red": "48003532, run po-e1, judge FAIL (po-e1 batch-01, panel C): at L4 with Nani's box reading 'Shabash!' the stage has no Shabash bubble, only 'Khuda-fis!', and Nana stands half-figure in the family row, not a face beside the plate; L1 hidden by the reward card",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-e1/CK-93.png panel C)",
   "files": [
    "js/cook/stations/eggs.js"
   ],
-  "note": "Fixed in code by 677d1a0 (15 Nov, SH-303/CK-93: well done at the tray in the serve's kitchen); judge batch build/screenshots/evidence/po-e1/judge/batch-01.md."
+  "note": "The cat room is gone (677d1a0), but the well done still lacks Nana's face beside the plate with a 'Shabash!' bubble."
  },
  {
   "row": "SH-303",
@@ -325,29 +325,29 @@
   "game": "samosa",
   "status": "open",
   "probe": "evidence.json SH-284 (eye: shot and #guide crop at every onboard, samosa L1+L2, two sizes, fresh)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-02, panel B): Nani's box under the dim while it holds her line at the first-time showings ('Bhar, bataate sathe.', 'Samosa waar!', 'Tar!', 'Samosa hane kadh.'), the same in D, F and H",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-b1/SH-284.png panel B)",
   "files": [
    "js/shared/onboard.js",
    "css/shared/guide.css"
   ],
-  "note": "No code spares Nani's box from the first-time dim (sort); samosa's own row SAM-47 is with fix-samosa."
+  "note": "Still true; samosa's own SAM-47 is the same fault, with fix-samosa (a kit fix in onboard.js or guide.css would close both)."
  },
  {
   "row": "SH-283",
   "kind": "Look",
   "game": "chaat",
   "status": "open",
-  "probe": "evidence.json SH-283 (eye: eggs L1 and chaat L1 with seed 7 at 740x320 and 1280x665)",
-  "red": "needs the judge (po-b1/judge)",
+  "probe": "evidence.json SH-283 (eye: eggs L1 and chaat L1, seed 7, at 740x320 and 1280x665)",
+  "red": "48003532, run po-b1, judge FAIL (run16/judge, po-b1 batch-02, panel C): chaat at 1280x665 has an empty shelf (the potato already on the board) while 740x320, same seed and moment, has bataato on the shelf",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-b1/SH-283.png panel C)",
   "files": [
-   "js/cook/stations/eggs.js",
-   "js/cook/mechanics/assemble.js"
+   "js/cook/mechanics/assemble.js",
+   "js/cook/mechanics/chop.js"
   ],
-  "note": "Eggs fixed in code (eggs.js:210, random places drawn before the art); chaat unconfirmed."
+  "note": "Still true in chaat (eggs matches in this round, fixed by eggs.js:210)."
  },
  {
   "row": "SH-275",
@@ -370,13 +370,13 @@
   "game": "baking",
   "status": "open",
   "probe": "evidence.json SH-280 (eye: strip of #stage at every stage-start, baking L1 1280x665)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-03, panel A): at stage-start a bare worktop, then 200 ms later the jug, bowl, shelf and cat all in at full strength in one step, no glide; the oven stage fades as a whole and the serve replaces it",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-b1/SH-280.png panel A)",
   "files": [
    "js/cook/stations/baking.js"
   ],
-  "note": "Sort: baking's glide fixed (62646b0), chaat's tomato jump not."
+  "note": "Still true in baking (sort's 62646b0 fix is not seen at stage-start); chaat and samosa not yet shot."
  },
  {
   "row": "SH-281",
@@ -384,13 +384,14 @@
   "game": "chop",
   "status": "open",
   "probe": "evidence.json SH-281 (eye: eggs every stage-start, chop every placed, 1280x665)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "not shown: the judge (po-b1 batch-02) saw no leftover in these moments; the empty pan after the serve and daar were not shot",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "EVIDENCE (judge session: the probe misses the moments)",
   "files": [
-   "js/cook/mechanics/chop.js"
+   "js/cook/mechanics/chop.js",
+   "js/cook/stations/eggs.js"
   ],
-  "note": "Sort: eggs' steam leftovers fixed; chop's white line and cut halves not."
+  "note": "Sort: eggs' steam leftovers fixed in code; chop's white line and cut halves and daar's torn scrap unchanged in code but not seen here; the probe needs the empty pan after the serve and daar's board."
  },
  {
   "row": "SH-299",
@@ -424,15 +425,15 @@
   "row": "SH-287",
   "kind": "Look",
   "game": "chai",
-  "status": "built",
-  "probe": "evidence.json SH-287 (eye: shots at request, chai L1+L4, two sizes)",
-  "red": "needs the judge (po-b1/judge)",
+  "status": "open",
+  "probe": "evidence.json SH-287 (eye: shots at request, chai L1+L4, 740x320 and 1280x665)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-02, panel A): the order view is the framing Zafar commented on, the island fills the stage's bottom band and cuts the customer at the chest, no more wall above; the same at L4",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-b1/SH-287.png panel A)",
   "files": [
    "js/cook/flow.js"
   ],
-  "note": "Sort: built (orderLift, decision 35)."
+  "note": "Sort calls it built (orderLift, capped by decision 35 so the card's bottom-left place stays clear of heads), but the judge sees no lift; chai is frozen, so the next step is a question for Zafar: how far may the lift go under decision 35's cap?"
  },
  {
   "row": "SH-295",
@@ -454,28 +455,28 @@
   "game": "chai",
   "status": "built",
   "probe": "evidence.json SH-301 (eye: zoom2 of #side at order-card-in-sidebar, chai L1, four sizes)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "not shown: the judge (po-b1 batch-01) sees no mismatch by eye and needs box numbers to prove 1 px",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "EVIDENCE (judge session: a numeric face and speaker box probe is needed)",
   "files": [
    "css/shared/order-card.css"
   ],
-  "note": "Fixed in code by 642f1efd (15 Nov: Nani's face is the order card's face, ring and inset)."
+  "note": "Fixed in code by 642f1efd (15 Nov); proving it within 1 px needs the face and speaker boxes as numbers (hook:cook.faces gives the face circles; no expect compares two boxes yet)."
  },
  {
   "row": "SH-302",
   "kind": "Look",
   "game": "eggs",
-  "status": "built",
+  "status": "open",
   "probe": "evidence.json SH-302 (eye: shots at every placed, eggs L1+L4, 1280x665)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-02, panel B frame 2): at L4 the held egg is small, narrower than its box and about a quarter of the pan's width; at L1 a little larger, under half the pan",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "FAIL (judge session, po-b1/SH-302.png panel B)",
   "files": [
    "js/cook/stations/eggs.js",
    "data/stations/eggs.json"
   ],
-  "note": "Sort: built (eggs.json _sh302, the egg larger in hand); Zafar reviews it when he plays."
+  "note": "Sort calls it built (eggs.json _sh302), but the egg in the hand still reads small at L4; Zafar said he reviews it when he plays."
  },
  {
   "row": "SH-229",

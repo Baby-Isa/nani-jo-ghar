@@ -1,0 +1,876 @@
+{
+ "run": "po-o1",
+ "created": "2026-11-16T06:40:15.459Z",
+ "commit": "0c827344",
+ "builder": null,
+ "rows": {
+  "SH-275": {
+   "kind": "layout",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/po-o1/SH-275.md",
+   "panels": [
+    "A: cook:eggs L1 1280x665 [p-seen] · shot at exp:lift",
+    "B: cook:eggs L1 740x320 [p-seen] · shot at exp:lift"
+   ],
+   "tool": [
+    "SH-275-p2-L1-740x320: the moment \"phase:pour\" never came; moments seen: page:start, life:cover, rec:start, line:cook, life:say-start, life:say-end, life:order-level, life:poke, life:ghost, talk:nana, life:request, life:dish-flash, life:popup-open, life:pop-face, cook:click, only:.njg-rq-card, bubble, life:stage-start, life:decoys, life:band, life:popup-fold, rec:order-card-big, rec:order-card-in-sidebar, cook-done:click, rec:view-marble, rec:kind-tap, cook:tap, exp:cook-atto, cook-done:tap, life:idle-bump, life:act, life:rung, life:step-close, exp:cook-paani, life:baking-oven, life:step-call, exp:ph-naan, life:stage-end, life:serve-view, life:serve-trays +10",
+    "SH-275-p3-L1-1280x665: the moment \"life:chop-strip\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, life:request, life:popup-open, life:dish-flash, life:pop-face, life:order-pass, life:card-fold, talk:nani, line:cook, life:say-start, bubble, rec:start, cook:click, only:.njg-rq-card, life:say-end, life:stage-start, life:step-open, life:band, life:decoys, life:step-call, life:chop-throw, life:chop-hop, rec:order-card-big, life:popup-fold, rec:order-card-in-sidebar, cook-done:click, life:helper-open, rec:kind-slice, cook:slice, exp:veg-02, life:idle-bump, life:act, cook-done:slice, life:step-close, life:stage-end, life:chop-done +12",
+    "SH-275-p3-L1-740x320: the moment \"life:chop-strip\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, life:request, life:popup-open, life:dish-flash, life:pop-face, life:order-pass, life:card-fold, talk:nani, line:cook, life:say-start, bubble, rec:start, cook:click, only:.njg-rq-card, life:say-end, life:stage-start, life:step-open, life:band, life:decoys, life:step-call, life:chop-throw, life:chop-hop, life:popup-fold, rec:order-card-big, life:helper-open, rec:order-card-in-sidebar, cook-done:click, rec:view-marble, life:step-close, life:stage-end, rec:kind-slice, cook:slice, exp:veg-02, life:idle-bump, life:act, cook-done:slice +13",
+    "SH-275-p4-L1-740x320: the moment \"life:chop-strip\" never came; moments seen: page:start, life:cover, life:order-count, life:order-level, life:poke, rec:start, life:ghost, talk:nana, line:cook, life:request, life:dish-flash, life:pop-face, life:say-start, life:popup-open, cook:click, only:.njg-rq-card, bubble, life:say-end, life:stage-start, life:step-open, rec:order-card-big, life:band, life:decoys, life:step-call, life:chop-throw, life:chop-hop, life:popup-fold, rec:order-card-in-sidebar, cook-done:click, life:helper-open, rec:view-marble, life:step-close, rec:kind-slice, cook:slice, exp:veg-01, life:idle-bump, life:act, cook-done:slice, life:stage-end, rec:kind-tap +17"
+   ],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "03b2ec07cf29ddd03abf",
+    "dhash": [
+     "017175f6f0003030",
+     "313037b3b2b23010"
+    ]
+   },
+   "probes": 6,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|shot",
+     "label": "cook:eggs L1 1280x665 [p-seen] · shot at exp:lift",
+     "type": "img",
+     "moment": "exp:lift",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-eggs-1280x665-p-seen/sh-275-p1-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:eggs L1 740x320 [p-seen] · shot at exp:lift",
+     "type": "img",
+     "moment": "exp:lift",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-eggs-740x320-p-seen/sh-275-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SH-279": {
+   "kind": "motion",
+   "png": "build/screenshots/evidence/po-o1/SH-279.png",
+   "sheets": [
+    "build/screenshots/evidence/po-o1/SH-279.png",
+    "build/screenshots/evidence/po-o1/SH-279-2.png"
+   ],
+   "md": "build/screenshots/evidence/po-o1/SH-279.md",
+   "panels": [
+    "A: cook:samosa L1 1280x665 [p-seen] · strip:#stage:4x600 at life:serve-view",
+    "B: cook:samosa L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+    "C: cook:maani-line L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+    "D: cook:chaat L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "47e47648d40d0b6dbaad",
+    "dhash": [
+     "333697d1a8303080",
+     "3396d1e8ec303080",
+     "3396d1e8ec303880",
+     "3396d1e8ec383880"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|strip:#stage:4x600",
+     "label": "cook:samosa L1 1280x665 [p-seen] · strip:#stage:4x600 at life:serve-view",
+     "type": "frames",
+     "moment": "life:serve-view",
+     "ms": [
+      0,
+      600,
+      1200,
+      1800
+     ],
+     "motion": {
+      "moving": true,
+      "share": 94.23,
+      "mean": 70.73,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h1-c1-strip-f02.png",
+       "cap": "600 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h1-c1-strip-f03.png",
+       "cap": "1200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h1-c1-strip-f04.png",
+       "cap": "1800 ms"
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|strip:#stage:4x600",
+     "label": "cook:samosa L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+     "type": "frames",
+     "moment": "life:serve-view",
+     "ms": [
+      0,
+      600,
+      1200,
+      1801
+     ],
+     "motion": {
+      "moving": true,
+      "share": 92.36,
+      "mean": 72.56,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h1-c1-strip-f02.png",
+       "cap": "600 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h1-c1-strip-f03.png",
+       "cap": "1200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h1-c1-strip-f04.png",
+       "cap": "1801 ms"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|strip:#stage:4x600",
+     "label": "cook:maani-line L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+     "type": "frames",
+     "moment": "life:serve-view",
+     "ms": [
+      0,
+      600,
+      1200,
+      1801
+     ],
+     "motion": {
+      "moving": true,
+      "share": 92.36,
+      "mean": 72.38,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h1-c1-strip-f02.png",
+       "cap": "600 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h1-c1-strip-f03.png",
+       "cap": "1200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h1-c1-strip-f04.png",
+       "cap": "1801 ms"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:4x600",
+     "label": "cook:chaat L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+     "type": "frames",
+     "moment": "life:serve-view",
+     "ms": [
+      0,
+      600,
+      1200,
+      1800
+     ],
+     "motion": {
+      "moving": true,
+      "share": 92.35,
+      "mean": 72.11,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h1-c1-strip-f02.png",
+       "cap": "600 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h1-c1-strip-f03.png",
+       "cap": "1200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h1-c1-strip-f04.png",
+       "cap": "1800 ms"
+      }
+     ]
+    }
+   ]
+  },
+  "SH-286": {
+   "kind": "motion",
+   "png": "build/screenshots/evidence/po-o1/SH-286.png",
+   "sheets": [
+    "build/screenshots/evidence/po-o1/SH-286.png",
+    "build/screenshots/evidence/po-o1/SH-286-2.png",
+    "build/screenshots/evidence/po-o1/SH-286-3.png",
+    "build/screenshots/evidence/po-o1/SH-286-4.png",
+    "build/screenshots/evidence/po-o1/SH-286-5.png"
+   ],
+   "md": "build/screenshots/evidence/po-o1/SH-286.md",
+   "panels": [
+    "A: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:dish-flash",
+    "B: cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:dish-flash",
+    "C: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face · NO MOTION CAPTURED",
+    "D: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face",
+    "E: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face",
+    "F: cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:pop-face · NO MOTION CAPTURED",
+    "G: cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:pop-face"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "aee6f4e95ad6974a73da",
+    "dhash": [
+     "9095939a36b1b808",
+     "353139aeb7b0a820",
+     "9095939a16b1a808",
+     "60b5b3a6b6b1a808",
+     "0100000000000000",
+     "15d1d98e97f038c0",
+     "3551d956f3b0b8c0"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|strip:#stage:4x200",
+     "label": "cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:dish-flash",
+     "type": "frames",
+     "moment": "life:dish-flash",
+     "ms": [
+      0,
+      210,
+      490,
+      681
+     ],
+     "motion": {
+      "moving": true,
+      "share": 7.87,
+      "mean": 4.84,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p1-l1-1280x665-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p1-l1-1280x665-h1-c1-strip-f02.png",
+       "cap": "210 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p1-l1-1280x665-h1-c1-strip-f03.png",
+       "cap": "490 ms (slot 400: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p1-l1-1280x665-h1-c1-strip-f04.png",
+       "cap": "681 ms (slot 600: off)"
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|strip:#stage:4x200",
+     "label": "cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:dish-flash",
+     "type": "frames",
+     "moment": "life:dish-flash",
+     "ms": [
+      0,
+      200,
+      400,
+      605
+     ],
+     "motion": {
+      "moving": true,
+      "share": 24.95,
+      "mean": 17.04,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p1-l1-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p1-l1-740x320-h1-c1-strip-f02.png",
+       "cap": "200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p1-l1-740x320-h1-c1-strip-f03.png",
+       "cap": "400 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p1-l1-740x320-h1-c1-strip-f04.png",
+       "cap": "605 ms"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|strip:#stage:4x200",
+     "label": "cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "life:pop-face",
+     "ms": [
+      0,
+      270,
+      422,
+      622
+     ],
+     "motion": {
+      "moving": false,
+      "share": 1.36,
+      "mean": 0.85,
+      "note": "no motion captured (1.36 % of the crop changed, mean 0.85): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h1-c1-strip-f02.png",
+       "cap": "270 ms (slot 200: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h1-c1-strip-f03.png",
+       "cap": "422 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h1-c1-strip-f04.png",
+       "cap": "622 ms"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|strip:#stage:4x200",
+     "label": "cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face",
+     "type": "frames",
+     "moment": "life:pop-face",
+     "ms": [
+      0,
+      200,
+      400,
+      600
+     ],
+     "motion": {
+      "moving": true,
+      "share": 19.3,
+      "mean": 11.03,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h2-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h2-c1-strip-f02.png",
+       "cap": "200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h2-c1-strip-f03.png",
+       "cap": "400 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h2-c1-strip-f04.png",
+       "cap": "600 ms"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|strip:#stage:4x200",
+     "label": "cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face",
+     "type": "frames",
+     "moment": "life:pop-face",
+     "ms": [
+      0,
+      200,
+      650,
+      875
+     ],
+     "motion": {
+      "moving": true,
+      "share": 45.88,
+      "mean": 39.52,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h3-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h3-c1-strip-f02.png",
+       "cap": "200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h3-c1-strip-f03.png",
+       "cap": "650 ms (slot 400: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-1280x665-p-seen/sh-286-p2-l1-1280x665-h3-c1-strip-f04.png",
+       "cap": "875 ms (slot 600: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|strip:#stage:4x200",
+     "label": "cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:pop-face · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "life:pop-face",
+     "ms": [
+      0,
+      200,
+      417,
+      659
+     ],
+     "motion": {
+      "moving": false,
+      "share": 1.45,
+      "mean": 0.86,
+      "note": "no motion captured (1.45 % of the crop changed, mean 0.86): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h1-c1-strip-f02.png",
+       "cap": "200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h1-c1-strip-f03.png",
+       "cap": "417 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h1-c1-strip-f04.png",
+       "cap": "659 ms"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|strip:#stage:4x200",
+     "label": "cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:pop-face",
+     "type": "frames",
+     "moment": "life:pop-face",
+     "ms": [
+      0,
+      200,
+      399,
+      600
+     ],
+     "motion": {
+      "moving": true,
+      "share": 79.46,
+      "mean": 39.81,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h2-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h2-c1-strip-f02.png",
+       "cap": "200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h2-c1-strip-f03.png",
+       "cap": "399 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-740x320-p-seen/sh-286-p2-l1-740x320-h2-c1-strip-f04.png",
+       "cap": "600 ms"
+      }
+     ]
+    }
+   ]
+  },
+  "SH-295": {
+   "kind": "detail",
+   "png": "build/screenshots/evidence/po-o1/SH-295.png",
+   "sheets": [
+    "build/screenshots/evidence/po-o1/SH-295.png"
+   ],
+   "md": "build/screenshots/evidence/po-o1/SH-295.md",
+   "panels": [
+    "A: cook:chai-tray@L4 L4 1280x665 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results",
+    "B: cook:chai-tray@L4 L4 1920x1080 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results",
+    "C: cook:chai-tray@L4 L4 740x320 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results",
+    "D: cook:chai-tray@L4 L4 930x430 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "6a25cc44bca157d766aa",
+    "dhash": [
+     "8581810301010101",
+     "1505150000000000",
+     "018b218989830000",
+     "53c1c10181010000"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L4|1280x665|zoom2:#mission",
+     "label": "cook:chai-tray@L4 L4 1280x665 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results",
+     "type": "img",
+     "moment": "life:results",
+     "zoom": true,
+     "dpr": 2,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-1280x665-p-seen-w-elchi-waari-x2/sh-295-p1-l4-1280x665-h1-c1-zoom2.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|1920x1080|zoom2:#mission",
+     "label": "cook:chai-tray@L4 L4 1920x1080 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results",
+     "type": "img",
+     "moment": "life:results",
+     "zoom": true,
+     "dpr": 2,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-1920x1080-p-seen-w-elchi-waari-x2/sh-295-p1-l4-1920x1080-h1-c1-zoom2.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|zoom2:#mission",
+     "label": "cook:chai-tray@L4 L4 740x320 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results",
+     "type": "img",
+     "moment": "life:results",
+     "zoom": true,
+     "dpr": 2,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen-w-elchi-waari-x2/sh-295-p1-l4-740x320-h1-c1-zoom2.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|930x430|zoom2:#mission",
+     "label": "cook:chai-tray@L4 L4 930x430 [p-seen_w--elchi-waari-_x2] · zoom2:#mission at life:results",
+     "type": "img",
+     "moment": "life:results",
+     "zoom": true,
+     "dpr": 2,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-930x430-p-seen-w-elchi-waari-x2/sh-295-p1-l4-930x430-h1-c1-zoom2.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SH-299": {
+   "kind": "motion",
+   "png": "build/screenshots/evidence/po-o1/SH-299.png",
+   "sheets": [
+    "build/screenshots/evidence/po-o1/SH-299.png"
+   ],
+   "md": "build/screenshots/evidence/po-o1/SH-299.md",
+   "panels": [
+    "A: cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#game:6x100 at life:popup-fold"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "20096ed4fd5b7f0aeb9f",
+    "dhash": [
+     "0101000000000000"
+    ]
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": [
+    {
+     "key": "p1|L4|740x320|strip:#game:6x100",
+     "label": "cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#game:6x100 at life:popup-fold",
+     "type": "frames",
+     "moment": "life:popup-fold",
+     "ms": [
+      0,
+      329,
+      1138,
+      2777,
+      3774,
+      4621
+     ],
+     "motion": {
+      "moving": true,
+      "share": 64.16,
+      "mean": 70.99,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-299-p1-l4-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-299-p1-l4-740x320-h1-c1-strip-f02.png",
+       "cap": "329 ms (slot 100: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-299-p1-l4-740x320-h1-c1-strip-f03.png",
+       "cap": "1138 ms (slot 200: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-299-p1-l4-740x320-h1-c1-strip-f04.png",
+       "cap": "2777 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-299-p1-l4-740x320-h1-c1-strip-f05.png",
+       "cap": "3774 ms (slot 400: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-299-p1-l4-740x320-h1-c1-strip-f06.png",
+       "cap": "4621 ms (slot 500: off)"
+      }
+     ]
+    }
+   ]
+  },
+  "SH-303": {
+   "kind": "motion",
+   "png": "build/screenshots/evidence/po-o1/SH-303.png",
+   "sheets": [
+    "build/screenshots/evidence/po-o1/SH-303.png",
+    "build/screenshots/evidence/po-o1/SH-303-2.png"
+   ],
+   "md": "build/screenshots/evidence/po-o1/SH-303.md",
+   "panels": [
+    "A: cook:eggs@L4 L4 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+    "B: cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+    "C: cook:baking L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "07e5a44df55bfb7ccb79",
+    "dhash": [
+     "3387dbdacb2d2d80",
+     "318e9dd8c8252d00",
+     "218297d1e8103030"
+    ]
+   },
+   "probes": 3,
+   "reached": 3,
+   "frames": [
+    {
+     "key": "p1|L4|740x320|strip:#stage:4x600",
+     "label": "cook:eggs@L4 L4 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+     "type": "frames",
+     "moment": "life:serve-view",
+     "ms": [
+      0,
+      600,
+      1201,
+      1801
+     ],
+     "motion": {
+      "moving": true,
+      "share": 17.77,
+      "mean": 9.08,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-eggs-l4-740x320-p-seen/sh-303-p1-l4-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-eggs-l4-740x320-p-seen/sh-303-p1-l4-740x320-h1-c1-strip-f02.png",
+       "cap": "600 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-eggs-l4-740x320-p-seen/sh-303-p1-l4-740x320-h1-c1-strip-f03.png",
+       "cap": "1201 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-eggs-l4-740x320-p-seen/sh-303-p1-l4-740x320-h1-c1-strip-f04.png",
+       "cap": "1801 ms"
+      }
+     ]
+    },
+    {
+     "key": "p2|L4|740x320|strip:#stage:4x600",
+     "label": "cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+     "type": "frames",
+     "moment": "life:serve-view",
+     "ms": [
+      0,
+      600,
+      1200,
+      1801
+     ],
+     "motion": {
+      "moving": true,
+      "share": 55.99,
+      "mean": 38.92,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-303-p2-l4-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-303-p2-l4-740x320-h1-c1-strip-f02.png",
+       "cap": "600 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-303-p2-l4-740x320-h1-c1-strip-f03.png",
+       "cap": "1200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-303-p2-l4-740x320-h1-c1-strip-f04.png",
+       "cap": "1801 ms"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:4x600",
+     "label": "cook:baking L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view",
+     "type": "frames",
+     "moment": "life:serve-view",
+     "ms": [
+      0,
+      599,
+      1200,
+      1801
+     ],
+     "motion": {
+      "moving": true,
+      "share": 98.46,
+      "mean": 63.17,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-baking-740x320-p-seen/sh-303-p3-l1-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-baking-740x320-p-seen/sh-303-p3-l1-740x320-h1-c1-strip-f02.png",
+       "cap": "599 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-baking-740x320-p-seen/sh-303-p3-l1-740x320-h1-c1-strip-f03.png",
+       "cap": "1200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-o1/evidence/cook-baking-740x320-p-seen/sh-303-p3-l1-740x320-h1-c1-strip-f04.png",
+       "cap": "1801 ms"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

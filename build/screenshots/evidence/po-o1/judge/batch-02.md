@@ -1,0 +1,42 @@
+# Evidence batch-02 (motion, 4 rows) · run po-o1
+
+You are the reviewer for Nani jo Ghar's evidence loop (decision 82). You are not the session that built these changes.
+
+For each row: read its sheet (PNG, if it has one: its panels are labelled A-D, or up to A-L over two sheets for a row with more probes: read both; the labels repeated below) and its text file (.md: the panels in words, the voice timeline, text captures, expect results). Judge against the row's own words (Zafar's feedback), nothing else. Words the engine marks loan:en (thank you, mixed, cup, film) are Kutchi (decision 87): never flag them as English. A line shown as grey-italic English with the hidden to-record tag is allowed (decision 84): it is not an English leak and not a missing clip; only its absence from Mum's list is a gap.
+1. Flaws first: anything wrong in the panels (clipping, overlap, English for the child, a bubble away from its speaker, old art), even off the row's point.
+2. Then one line in build/screenshots/evidence/po-o1/judge/batch-02.verdicts.md:
+   `ID | PASS: <panel>, <what that panel shows that proves it>` e.g. `CLN-100 | PASS: A, L3 wrap crosses the kneecap, 6 turns`
+   `ID | FAIL: <panel>, <what is wrong>`
+   `ID | EVIDENCE: <what the sheet is missing>` only when the sheet does not show the row's state at all (it goes to the tool owner, never to the list as a FAIL).
+   A PASS that names no panel is refused. A text-only row (Sheet: (text only)) names its text capture instead, by its label in the .md: `SH-45 | PASS: SH-45-p1-L1-1280x665 dom, the line reads ...` (or `PASS: text, ...`); a script capture by the command printed after its `####` heading: `LNG-04 | PASS: grep -n -i "ph-turner" data/lang/reports/gap-list.md, the placeholder is on Mum's list`. Sound quality and feel are not yours: say so in a FAIL only when the row is about what you can read (which clip, when, in what order).
+3. First line of the verdict file: `judge: <your model and session>`.
+
+## SH-286 [open] Shared components > Layout and stage
+- Issue: The dish card at the order's first sentence is the order's own item pop-up: as the customer says "Muke chai khape", the chai card pops up in the same place, size, look and motion as the sugar, milk and ginger cards that follow, never a different card beside the bubble (Zafar, 13 Nov: "it should come up in the same position that the item card pops up in during the rest of the order ... that position, placement, look, feel, style of the pop-up card ... should be what is used for when they give the first sentence order, so it looks visually the same, doesn't change anything, works in the same way")
+- Check: auto: chai at L1, 740x320 and 1280x665 (the dish card's box and motion against the first item card's)
+- Sheet: /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-286.png and /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-286-2.png and /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-286-3.png and /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-286-4.png and /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-286-5.png
+- Text: /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-286.md
+- Panel A: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:dish-flash
+- Panel B: cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:dish-flash
+- Panel C: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face · NO MOTION CAPTURED
+- Panel D: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face
+- Panel E: cook:chai-tray L1 1280x665 [p-seen] · strip:#stage:4x200 at life:pop-face
+- Panel F: cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:pop-face · NO MOTION CAPTURED
+- Panel G: cook:chai-tray L1 740x320 [p-seen] · strip:#stage:4x200 at life:pop-face
+
+## SH-299 [open] Shared components > Layout and stage
+- Issue: An item card's flight lands in its slot inside the side panel: at chai L4 740x320 aadu's card lands about 26 px past the panel's edge, because a redraw's timer pulls the order row back home mid-order (found by s20-step12-frame, 14 Nov: js/shared/order-card.js:545 and 577-600, a stale fold.want14). It never reaches a face. Every game with the order row
+- Check: auto: a flight-lands check (the card's last frame inside its slot's row), every game at L1-L4, 740x320 and 1280x665
+- Sheet: /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-299.png
+- Text: /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-299.md
+- Panel A: cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#game:6x100 at life:popup-fold
+
+## SH-303 [open] Shared components > Layout and stage
+- Issue: One kitchen scene for the delivery and well done, as chai's: "you're using two different kitchen scenes for the delivery, use just one (same as chai) and I'll figure out kitchen artwork and ordering artwork later" (eggs' well done at the dining table with the cat goes; the kitchen and order art are rethought after all the kitchen games). Every game
+- Check: auto: the well done and serve in chai's kitchen scene, every game at L1 and L4
+- Sheet: /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-303.png and /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-303-2.png
+- Text: /home/user/nani-jo-ghar/build/screenshots/evidence/po-o1/SH-303.md
+- Panel A: cook:eggs@L4 L4 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view
+- Panel B: cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view
+- Panel C: cook:baking L1 740x320 [p-seen] · strip:#stage:4x600 at life:serve-view
+

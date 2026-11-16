@@ -29994,14 +29994,15 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "every:bubble",
    "after": null,
    "capture": [
-    "shot"
+    "crop:#stage"
    ],
    "expect": null,
-   "delay": 1200,
-   "note": "samosa L1 well done: the Shabash bubble inside the frame, right of the face as chai's, clear of the slotted spoon"
+   "max": 12,
+   "delay": 300,
+   "note": "samosa L1, every speech bubble (the well done's 'Shabash!' among them): the Shabash bubble inside the frame, right of the face as chai's, clear of the slotted spoon"
   },
   {
    "flow": "cook:maani-line",
@@ -30014,13 +30015,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "every:bubble",
    "after": null,
    "capture": [
-    "shot"
+    "crop:#stage"
    ],
    "expect": null,
-   "delay": 1200,
+   "max": 12,
+   "delay": 300,
    "note": "maani L1 at 740: the Shabash bubble well inside the frame, off the tray's corner"
   },
   {
@@ -30034,13 +30036,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "every:bubble",
    "after": null,
    "capture": [
-    "shot"
+    "crop:#stage"
    ],
    "expect": null,
-   "delay": 1200,
+   "max": 12,
+   "delay": 300,
    "note": "chaat L1: the Shabash bubble chai's size, right of Nana's face"
   }
  ],
@@ -30247,14 +30250,34 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "life:serve-view",
    "after": null,
    "capture": [
-    "shot"
+    "strip:#stage:4x600"
    ],
    "expect": null,
-   "delay": 900,
-   "note": "eggs L4: the delivery and well done in chai's one kitchen scene"
+   "delay": 0,
+   "note": "eggs L4: the delivery and the well done of the same round, one kitchen scene throughout (no cut to the dining table with the cat)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:serve-view",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x600"
+   ],
+   "expect": null,
+   "delay": 0,
+   "note": "chai L4, the reference: chai's delivery and well done scene"
   },
   {
    "flow": "cook:baking",
@@ -30267,14 +30290,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "served",
+   "at": "life:serve-view",
    "after": null,
    "capture": [
-    "shot"
+    "strip:#stage:4x600"
    ],
    "expect": null,
-   "delay": 900,
-   "note": "baking L1: the same, one kitchen scene for the delivery and well done"
+   "delay": 0,
+   "note": "baking L1: the same one kitchen scene for the delivery and well done"
   }
  ],
  "SH-284": [
@@ -30383,17 +30406,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "life:timed-hold",
+   "at": "exp:lift",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "delay": 1200,
-   "note": "eggs L1, while the egg boils to its time: the timing window is the ring on the pan itself, filling to its green as chai's pan, not a tiny ring round the yolk"
+   "delay": 700,
+   "note": "eggs L1, the egg boiling to its time (the lift is asked): the timing window is the ring on the pan itself, filling to its green as chai's pan, not a tiny ring round the yolk"
   },
   {
-   "flow": "cook:baking",
+   "flow": "cook:chop",
    "path": "fair",
    "level": [
     1
@@ -30404,14 +30427,57 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "life:baking-oven",
+   "at": "every:placed",
    "after": null,
    "capture": [
-    "shot"
+    "crop:#stage"
    ],
    "expect": null,
-   "delay": 1500,
-   "note": "baking L1, the naan in the oven: the ring on the oven, filling to its green as chai's, not a faint small ring on the oven's corner"
+   "max": 4,
+   "delay": 300,
+   "note": "chop L1: any timing window on the thing being cut or the board, never a separate flat pie or stopwatch disc beside the board"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 300,
+   "note": "chaat L1, its chop: the same, no stopwatch disc beside the board"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 300,
+   "note": "daar L1, its chop: the same, no stopwatch disc beside the board"
   }
  ],
  "SH-280": [
@@ -30493,15 +30559,36 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "every:life:popup-open",
+   "at": "life:dish-flash",
    "after": null,
    "capture": [
-    "shot"
+    "strip:#stage:4x200"
    ],
    "expect": null,
-   "max": 3,
-   "delay": 350,
-   "note": "chai L1: as the customer says 'Muke chai khape' the chai card pops up in the same place, size and look as the sugar, milk and ginger cards that follow (compare the first panel with the next)"
+   "delay": 0,
+   "note": "chai L1: the dish card as the customer says 'Muke chai khape' (its place, size and motion)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:pop-face",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x200"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 0,
+   "note": "chai L1: the item cards that follow (sugar, milk, ginger), to compare with the dish card: the same place, size, look and motion"
   }
  ],
  "SH-287": [
@@ -30537,19 +30624,22 @@
    ],
    "sizes": [
     "740x320",
-    "1280x665"
+    "930x430",
+    "1280x665",
+    "1920x1080"
    ],
    "profile": "seen",
-   "want": null,
-   "at": "every:order-card-in-sidebar",
+   "want": [
+    "/elchi waari/"
+   ],
+   "at": "results",
    "after": null,
    "capture": [
     "zoom2:#mission"
    ],
    "expect": null,
-   "max": 3,
-   "delay": 400,
-   "note": "chai L4: an order card's line wraps only when the next word does not fit ('Muke elchi waari / chai khapeti.' wraps too early: room for 'chai' on the first line)"
+   "delay": 300,
+   "note": "chai L4 with a cardamom order, the served cards (tick or stamp) in the side panel: a line breaks only where the next word does not fit ('Muke elchi waari / chai khapeti.' with room for 'chai' on the first line is the fault)"
   }
  ],
  "SH-299": [
@@ -30567,11 +30657,11 @@
    "at": "every:life:popup-fold",
    "after": null,
    "capture": [
-    "strip:#side:4x150"
+    "strip:#game:6x100"
    ],
    "expect": null,
-   "max": 3,
-   "note": "chai L4 740x320: each item card's flight lands in its slot inside the side panel, never about 26 px past its edge"
+   "max": 4,
+   "note": "chai L4 740x320, the whole game frame: each item card's flight lands in its slot inside the side panel, never about 26 px past its edge"
   }
  ],
  "SH-301": [
