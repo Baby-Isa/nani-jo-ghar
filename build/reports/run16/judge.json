@@ -495,5 +495,25 @@
   "reason": "The check is red for the row's reason: A, Cook's three title buttons are not one look: play is a solid dark fill, but the book and basket buttons are near-white tiles with a hairline border on the cream card, washed out beside it (same in B at 740x320). Only the Cook part of the row is on the sheet: the door's Ha!/Na! pills, the clinic's ha/na and the clinic's lit tool in the gold help box are not shown, and there is no kit sheet (the Check's \"kitsheet buttons and glow\"), so those two parts cannot be judged from this sheet. Off the row's point: in A the whole title card and its level numbers are small for a 1280x665 screen (the card fills about a third of the height; B fills the screen well).",
   "panel": "po-m1/SH-135.png panel A",
   "file": "build/reports/run16/judge/probes-open/po-m1/batch-01.verdicts.md"
+ },
+ {
+  "row": "SH-284",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "cd42062",
+  "verdict": "PASS",
+  "status": "open",
+  "reason": "The whole screen and Nani's box at every first-time showing in samosa, the row's own case, at both sizes; the eye judge saw the box dimmed (po-b1 panel B), so it is red for the row's reason.",
+  "panel": "spec: shot + crop:#guide at every:onboard, samosa L1 and L2"
+ },
+ {
+  "row": "LNG-20",
+  "branch": "run16/probes-open",
+  "kind": "audit",
+  "commit": "cd42062",
+  "verdict": "PASS",
+  "status": "open",
+  "reason": "The node test counts family takes linked to no word, the row's own fault, and is red on the base naming the row's examples (the goodbye, the potato takes, the pairs).",
+  "panel": "results: red 48003532, exit 1, 63 orphan take ids"
  }
 ]
