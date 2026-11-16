@@ -4,7 +4,7 @@
   "kind": "Check",
   "game": "other",
   "status": "proven",
-  "probe": "build/test_labs_importmap.mjs (evidence.json LAB-08: cmd node --test build/test_labs_importmap.mjs, expect pass)",
+  "probe": "build/test_labs_importmap.mjs (evidence.json LAB-08: cmd node build/test_labs_importmap.mjs, expect pass; green in run po-g1)",
   "red": "934f5fa^ (2 of 3 fail: labs.html has no core import map; gen_labs.mjs never writes one), node --test in a worktree",
   "green": "934f5fa (the SH-316 commit) and today's head 4800353: 3 of 3 pass",
   "judge": "machine",
