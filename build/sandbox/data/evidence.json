@@ -24204,30 +24204,9 @@
    "note": "maani's board lit whole (the round board with the dough on it), centred, the margin all round; and the dough pile with its pill"
   }
  ],
- "CHAI-97": [
-  {
-   "flow": "cook:chai-tray",
-   "path": "fair",
-   "level": 4,
-   "sizes": [
-    "740x320",
-    "1280x665"
-   ],
-   "profile": "fresh",
-   "want": [
-    "ph-half",
-    "ph-full"
-   ],
-   "at": "visible:.wm",
-   "after": null,
-   "capture": [
-    "voice",
-    "strip:.wm:6x400"
-   ],
-   "expect": null,
-   "note": "the word moment on a cold load (a fresh page, an order asking half and full while the words are new): both pours, half then full, play the recorded pour (sfx/file:pour-a), never the made-up one; machine verdict: NJG_INIT=build/tools/review/lib/chai-sound-hook.js on the run, then node build/tools/review/chaisound.mjs --rows CHAI-97 --from-run <its sandbox run> (run16 fix-chai)"
-  }
- ],
+ "CHAI-97": {
+  "human": "both word-moment pours (half and full) play the new pour sound on a cold load (L4)"
+ },
  "CHAI-98": [
   {
    "flow": "cook:chai-tray",

@@ -1,38 +1,122 @@
 [
-  {
-    "row": "MAA-28", "kind": "Logic", "game": "maani", "status": "proven",
-    "probe": "node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665 (hook build/tools/review/lib/maa28-hook.js)",
-    "red": "7ff346ad (the code before 49369e32, SH-308): --root <worktree of 7ff346ad> --paths fair,mistake,hint,takeback: RED on 2 of 8 pages, cook:maani-line@L4#hint 1280x665 and @L4#mistake 740x320: at the well done Nana's row re-sorts and the place that showed 'hakri nindhi bajr ji maani' shows 'ba wadhi bajr ji maani', the next 'hakri nindhi maani' (Fable's picture); speed1 and fair green there",
-    "green": "48003532 (base; fixed by 49369e32 and 5b5d0b56, SH-308: the card folds at well done): GREEN on 10 of 10 pages, those two plays included",
-    "judge": "machine",
-    "files": [],
-    "note": "Real, but not as a card change: no item card's word or picture ever changed (checked on every page, old and new); the row's places re-sorted at the well done, so a place showed another card. Since SH-308 the card folds first and no place changes."
-  },
-  {
-    "row": "CHAI-100", "kind": "Logic", "game": "chai-tray", "status": "proven",
-    "probe": "node build/tools/review/chaisound.mjs --rows CHAI-100 (chai L1-L4 #speed1, 740x320 and 1280x665; hook build/tools/review/lib/chai-sound-hook.js)",
-    "red": "8aaefe1e (the code before d1d4cc80, s17-n1): --root <worktree> --levels 2,3,4: RED on 6 of 6 pages: a knob click after each last pour with no tap (e.g. L2 1280x665 at 46.1 s and 82.1 s)",
-    "green": "48003532: GREEN on 8 of 8 (L1-L4) and 6 of 6 (L2-L4 with the player held after the first pour); a pan boiling over keeps its click, as the row says",
-    "judge": "machine",
-    "files": [],
-    "note": "Built in d1d4cc80 (the fire goes off silently after the last pour); the row's status still read 'to fix: code'."
-  },
-  {
-    "row": "CHAI-113", "kind": "Logic", "game": "chai-tray", "status": "proven",
-    "probe": "node build/tools/review/chaisound.mjs --rows CHAI-113 (chai L1-L4 #speed1, 740x320 and 1280x665)",
-    "red": "a9ccaa4f (the code before b6497cb5): RED at L1 740x320 and 1280x665: the knob turned on while Nani spoke, its flame (sfx/file:flame-b) never played",
-    "green": "48003532: GREEN on 8 of 8 (L1-L4) and 6 of 6: every knob turned on from off plays the knob's and the flame's files",
-    "judge": "machine",
-    "files": [],
-    "note": "Built in b6497cb5 (the knob and flame play under Nani's voice, quieter); the row's status still read 'to fix: code'. How it sounds stays his ear."
-  },
-  {
-    "row": "CHAI-99", "kind": "Logic", "game": "chai-tray", "status": "proven",
-    "probe": "node --test build/tools/review/chai-next-pan.test.mjs",
-    "red": "8aaefe1e (before d1d4cc80): NJG_TEST_ROOT=<worktree> node --test build/tools/review/chai-next-pan.test.mjs: fail, 'the next pan's light 300 ms after the pour (chai's own timer in nextPanSoon)'",
-    "green": "48003532: pass, 800 ms (the kit's Onboard.WAIT.nextVessel through Cook.Coach.nextLight)",
-    "judge": "machine",
-    "files": [],
-    "note": "A code test, not a play: the light only comes for a new player still on the poured pan, and no sandbox player stays (it picks the next pan at once, so the game rightly gives none; tried with the player held 3 s: it had already switched pans)."
-  }
+ {
+  "row": "MAA-28",
+  "kind": "Logic",
+  "game": "maani",
+  "status": "proven",
+  "probe": "node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665 (hook build/tools/review/lib/maa28-hook.js)",
+  "red": "7ff346ad (the code before 49369e32, SH-308): --root <worktree of 7ff346ad> --paths fair,mistake,hint,takeback: RED on 2 of 8 pages, cook:maani-line@L4#hint 1280x665 and @L4#mistake 740x320: at the well done Nana's row re-sorts and the place that showed 'hakri nindhi bajr ji maani' shows 'ba wadhi bajr ji maani', the next 'hakri nindhi maani' (Fable's picture); speed1 and fair green there",
+  "green": "48003532 (base; fixed by 49369e32 and 5b5d0b56, SH-308: the card folds at well done): GREEN on 10 of 10 pages, those two plays included",
+  "judge": "machine",
+  "files": [],
+  "note": "Real, but not as a card change: no item card's word or picture ever changed (checked on every page, old and new); the row's places re-sorted at the well done, so a place showed another card. Since SH-308 the card folds first and no place changes."
+ },
+ {
+  "row": "CHAI-100",
+  "kind": "Logic",
+  "game": "chai-tray",
+  "status": "proven",
+  "probe": "node build/tools/review/chaisound.mjs --rows CHAI-100 (chai L1-L4 #speed1, 740x320 and 1280x665; hook build/tools/review/lib/chai-sound-hook.js)",
+  "red": "8aaefe1e (the code before d1d4cc80, s17-n1): --root <worktree> --levels 2,3,4: RED on 6 of 6 pages: a knob click after each last pour with no tap (e.g. L2 1280x665 at 46.1 s and 82.1 s)",
+  "green": "48003532: GREEN on 8 of 8 (L1-L4) and 6 of 6 (L2-L4 with the player held after the first pour); a pan boiling over keeps its click, as the row says",
+  "judge": "machine",
+  "files": [],
+  "note": "Built in d1d4cc80 (the fire goes off silently after the last pour); the row's status still read 'to fix: code'."
+ },
+ {
+  "row": "CHAI-113",
+  "kind": "Logic",
+  "game": "chai-tray",
+  "status": "proven",
+  "probe": "node build/tools/review/chaisound.mjs --rows CHAI-113 (chai L1-L4 #speed1, 740x320 and 1280x665)",
+  "red": "a9ccaa4f (the code before b6497cb5): RED at L1 740x320 and 1280x665: the knob turned on while Nani spoke, its flame (sfx/file:flame-b) never played",
+  "green": "48003532: GREEN on 8 of 8 (L1-L4) and 6 of 6: every knob turned on from off plays the knob's and the flame's files",
+  "judge": "machine",
+  "files": [],
+  "note": "Built in b6497cb5 (the knob and flame play under Nani's voice, quieter); the row's status still read 'to fix: code'. How it sounds stays his ear."
+ },
+ {
+  "row": "CHAI-99",
+  "kind": "Logic",
+  "game": "chai-tray",
+  "status": "proven",
+  "probe": "node --test build/tools/review/chai-next-pan.test.mjs",
+  "red": "8aaefe1e (before d1d4cc80): NJG_TEST_ROOT=<worktree> node --test build/tools/review/chai-next-pan.test.mjs: fail, 'the next pan's light 300 ms after the pour (chai's own timer in nextPanSoon)'",
+  "green": "48003532: pass, 800 ms (the kit's Onboard.WAIT.nextVessel through Cook.Coach.nextLight)",
+  "judge": "machine",
+  "files": [],
+  "note": "A code test, not a play: the light only comes for a new player still on the poured pan, and no sandbox player stays (it picks the next pan at once, so the game rightly gives none; tried with the player held 3 s: it had already switched pans)."
+ },
+ {
+  "row": "MAA-25",
+  "kind": "Look",
+  "game": "maani",
+  "status": "question",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "",
+  "files": [],
+  "note": "Still true (maani-line.js:330-360 lays the two plates on the stone tray band beside the dough heaps). Question for Zafar: where on the worktop do maani's plates go once off the tray: (a, recommended) a round tray left of the board, as chai's glasses sit on theirs; (b) below the hob, right of the board; (c) keep them on the tray band but at the heaps' pitch, with pills? (it changes MAA-24's mock-38 layout he picked)."
+ },
+ {
+  "row": "CHAI-111",
+  "kind": "Logic",
+  "game": "chai-tray",
+  "status": "open",
+  "probe": "node build/sandbox/run.mjs --flow cook:chai-tray#returning --sizes 740x320,1280x665 (the run's life events: rung chai-tray:s14-stuck, glow cook-paani)",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [],
+  "note": "Not reproduced: a returning player idle at the water step gets the stuck hint (the water's glow) 7 s after the last tap at 740x320 and 1280x665 on base. His play was the second round in the same page after a resize to 736x750 (taller than wide), a size the sandbox has no entry for (build/sandbox/lib/env.mjs SIZES); next probe: that size, resized mid-session, second play."
+ },
+ {
+  "row": "CHAI-114",
+  "kind": "Look",
+  "game": "chai-tray",
+  "status": "question",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "",
+  "files": [],
+  "note": "Chai is frozen and Nani's box is the kit's (js/shared, fix-kit's): fitting her L4 line whole at 740x320 changes chai's look. Question: unfreeze chai's Nani box for this one fix (recommended), or wait for the frame?"
+ },
+ {
+  "row": "CHAI-95",
+  "kind": "Logic",
+  "game": "chai",
+  "status": "built",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "ear: his listen (evidence spec is human)",
+  "files": [],
+  "note": "Built in eccb37f8 (the simmer one seamless 12 s loop (simmer-b, looped 0.1-12.1 s), louder with the heat); the row still read 'to fix: code'. Not proven here: a how-it-sounds or how-it-looks row."
+ },
+ {
+  "row": "CHAI-98",
+  "kind": "Look",
+  "game": "chai",
+  "status": "built",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "needs-eye: evidence spec CHAI-98 (strip .wm) needs an order asking half and full (its want) to reach the moment",
+  "files": [],
+  "note": "Built in b93fc29d (the word moment's drop 5.5% of the glass (was 11%), its splash with it (word-moment.js:446-451)); the row still read 'to fix: code'. Not proven here: a how-it-sounds or how-it-looks row."
+ },
+ {
+  "row": "CHAI-103",
+  "kind": "Logic",
+  "game": "chai",
+  "status": "built",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "ear and eye: his listen (evidence spec is human)",
+  "files": [],
+  "note": "Built in 85091500 (the word moment's pour sound and the tea's rise wait for the stream's run-down (word-moment.js:398-413)); the row still read 'to fix: code'. Not proven here: a how-it-sounds or how-it-looks row."
+ }
 ]

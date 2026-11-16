@@ -27,14 +27,13 @@
       return { o: f, y: (m ? m.ty : f.y) * ((cam && cam.zoom) || 1) };
     });
   };
-  const finger = () => {
-    const el = [...document.querySelectorAll(".ob-finger, .co-finger")].find((e) => {
+  // every finger shown (the kit's .ob-finger, an older .co-finger): a page can hold a still one beside the moving one
+  const fingers = () =>
+    [...document.querySelectorAll(".ob-finger, .co-finger")].filter((e) => {
       const r = e.getBoundingClientRect();
       const cs = getComputedStyle(e);
       return r.width > 4 && cs.display !== "none" && cs.visibility !== "hidden" && +cs.opacity > 0.1;
     });
-    return el ? el.getBoundingClientRect().top : null;
-  };
   // the child watches the first showing: the player's touches are held back for HOLD_MS from the roll step's start, once (a player
   // that touches at once cuts the showing short, and its own roll moves the pin too)
   const HOLD_MS = 4000;
@@ -49,11 +48,13 @@
       if (t === "pointerdown" || t === "touchstart") { touched = true; end(); }
     }, { capture: true, passive: false }));
   function end() {
+    if (cur && cur.k > 0 && cur.k < 4) say(`MAA-20 note: a finger for ${cur.k} sample(s) only`);
     if (cur && cur.k >= 4) {
       n++;
       const span = (a) => (a.length ? Math.round(Math.max(...a) - Math.min(...a)) : 0);
       const spans = [...cur.pm.values()].map(span);
-      say(`MAA-20 demo ${n}: finger ${span(cur.f)} px, pin ${spans.length ? Math.max(...spans) : 0} px (${cur.k} samples, ${spans.length} pin picture(s)${spans.length ? "" : ", no pin found"})`);
+      const fsp = [...cur.fm.values()].map(span);
+      say(`MAA-20 demo ${n}: finger ${fsp.length ? Math.max(...fsp) : 0} px, pin ${spans.length ? Math.max(...spans) : 0} px (${cur.k} samples, ${spans.length} pin picture(s)${spans.length ? "" : ", no pin found"})`);
     }
     cur = null;
   }
@@ -62,16 +63,19 @@
     try {
       const T = window.njgTest;
       const e = T && T.cook && T.cook.expectation ? T.cook.expectation() : null;
-      return !!(e && e.kind === "roll");
+      return !!(e && (e.kind === "roll" || /"roll"/.test(JSON.stringify(e))));
     } catch (err) { return false; }
   };
   setInterval(() => {
-    if (!held && rolling()) { held = true; holdUntil = Date.now() + HOLD_MS; }
-    const fy = finger();
-    if (fy == null) return end();
-    if (!cur) { cur = { f: [], pm: new Map(), k: 0 }; touched = false; }
+    if (!held && rolling()) { held = true; holdUntil = Date.now() + HOLD_MS; say(`MAA-20 note: the roll step, the player held ${HOLD_MS} ms`); }
+    const fs = fingers();
+    if (!fs.length) return end();
+    if (!cur) { cur = { fm: new Map(), pm: new Map(), k: 0 }; touched = false; }
     if (touched) return; // (the child's own roll moves the pin too: a touch ends a showing, the next starts after it)
-    cur.f.push(fy);
+    for (const e of fs) {
+      if (!cur.fm.has(e)) cur.fm.set(e, []);
+      cur.fm.get(e).push(e.getBoundingClientRect().top);
+    }
     for (const q of pins()) {
       if (!cur.pm.has(q.o)) cur.pm.set(q.o, []);
       cur.pm.get(q.o).push(q.y);
