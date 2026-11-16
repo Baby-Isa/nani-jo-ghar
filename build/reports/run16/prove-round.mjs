@@ -102,7 +102,7 @@ for (const name of only || BUILDERS) {
     writeFileSync(join(LOGS, `${name}-${sha.slice(0, 7)}-change.md`), own.md);
     L(`check-change: the branch's own ${own.file} (${own.ok ? "passed / no new break" : "failed"}; covers ${own.commit})`);
   } else if (!NOCHANGE) {
-    const games = [...new Set(plan.map((p) => p.res.game).map((g) => (g in GAME ? GAME[g] : g)).filter((g) => g && VALID.has(g)))];
+    const games = process.env.PROVE_GAMES ? process.env.PROVE_GAMES.split(",") : [...new Set(plan.map((p) => p.res.game).map((g) => (g in GAME ? GAME[g] : g)).filter((g) => g && VALID.has(g)))];
     const a = ["build/tools/tiers/check-change.mjs", "--base", BASE];
     if (games.length) a.push("--games", games.join(","));
     if (evRows.length) a.push("--rows", evRows.join(","));

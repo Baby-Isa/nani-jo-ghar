@@ -1,2 +1,120 @@
 # fix-chai at 6be737ae1aab619571ddcb5ef5f5ce6c92a3d72c (2026-11-16 07:15 UTC)
 ready list f354e12d99: MAA-28, CHAI-100, CHAI-113, CHAI-99
+
+$ flock -w 3600 /tmp/njg-browser-all.lock node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665  (exit 0, 794s)
+07:22:38 run maa28-20261116T072238: 10 pages (0 done already), 2 at a time, port 8872
+07:24:24 cook:maani-line@L4#speed1 @ 1280x665: end reached | 13 states, 5 distinct findings, 2 page errors, 106 s
+07:24:37 cook:maani-line@L4#speed1 @ 740x320: end reached | 13 states, 14 distinct findings, 2 page errors, 118 s
+07:25:46 cook:maani-line@L4#hint @ 1280x665: end reached | 14 states, 5 distinct findings, 2 page errors, 70 s
+07:25:48 cook:maani-line@L4#hint @ 740x320: end reached | 14 states, 16 distinct findings, 2 page errors, 84 s
+07:26:41 cook:maani-line@L4 @ 1280x665: end reached | 13 states, 5 distinct findings, 2 page errors, 53 s
+07:26:54 cook:maani-line@L4 @ 740x320: end reached | 13 states, 14 distinct findings, 2 page errors, 67 s
+07:27:47 cook:maani-line@L4#mistake @ 1280x665: end reached | 14 states, 5 distinct findings, 2 page errors, 54 s
+07:27:48 cook:maani-line@L4#mistake @ 740x320: end reached | 14 states, 14 distinct findings, 2 page errors, 67 s
+07:28:39 cook:maani-line@L4#takeback @ 1280x665: end reached | 13 states, 3 distinct findings, 2 page errors, 51 s
+07:28:50 cook:maani-line@L4#takeback @ 740x320: end reached | 13 states, 11 distinct findings, 2 page errors, 62 s
+
+07:28:51 findings: 92 (tap-small 32, text-small 26, covers-play-area 10, canvas-text-small 10, covered 10, tap-offscreen 4)
+07:28:51 sound: 16 lines heard, 10 with no family clip (the recording gap list), 10 played files that are not an approved family clip
+  gap    10x  wadhi maani  [device-voice]
+  gap    10x  Thank you!  [device-voice]
+  gap    10x  Khuda-fis!  [device-voice]
+  gap     4x  Muke hakri nindhi bajr ji maani khapeti,  [device-voice]
+  gap     3x  hakri wadhi maani,  [device-voice]
+  gap     2x  Muke ba wadhi bajr ji maani khapeti,  [device-voice]
+  gap     2x  Muke hakri nindhi maani khapeti,  [device-voice]
+  gap     2x  ba wadhi bajr ji maani.  [device-voice]
+  gap     2x  Muke ba nindhi maani khapeti,  [device-voice]
+  gap     2x  Muke ba nindhi bajr ji maani khapeti,  [device-voice]
+07:28:51 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-chai-6be737a/build/screenshots/sandbox/maa28-20261116T072238/summary.md
+green      cook:maani-line@L4#hint @ 1280x665
+    MAA-28 seen well done at 1280x665: 750 samples, 4 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k2,k3]
+green      cook:maani-line@L4#hint @ 740x320
+    MAA-28 seen well done at 740x320: 766 samples, 4 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k4,k2,k3]
+green      cook:maani-line@L4#mistake @ 1280x665
+    MAA-28 seen well done at 1280x665: 565 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k3,k1,k2]
+green      cook:maani-line@L4#mistake @ 740x320
+    MAA-28 seen well done at 740x320: 661 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k3,k1,k2]
+green      cook:maani-line@L4#speed1 @ 1280x665
+    MAA-28 seen well done at 1280x665: 1142 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k2,k1,k3]
+green      cook:maani-line@L4#speed1 @ 740x320
+    MAA-28 seen well done at 740x320: 1157 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k1,k3,k2]
+green      cook:maani-line@L4#takeback @ 1280x665
+    MAA-28 seen well done at 1280x665: 532 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k1,k3,k2]
+green      cook:maani-line@L4#takeback @ 740x320
+    MAA-28 seen well done at 740x320: 607 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k3,k2,k1]
+green      cook:maani-line@L4 @ 1280x665
+    MAA-28 seen well done at 1280x665: 557 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k2,k1,k3]
+green      cook:maani-line@L4 @ 740x320
+    MAA-28 seen well done at 740x320: 662 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k2,k1]
+MAA-28 green
+
+
+$ flock -w 3600 /tmp/njg-browser-all.lock node build/tools/review/maa28.mjs --paths fair,mistake,hint,takeback,speed1 --sizes 740x320,1280x665  (exit 0, 651s)
+07:32:50 run maa28-20261116T073249: 10 pages (0 done already), 2 at a time, port 8872
+07:34:44 cook:maani-line@L4#speed1 @ 1280x665: end reached | 13 states, 5 distinct findings, 2 page errors, 114 s
+07:34:57 cook:maani-line@L4#speed1 @ 740x320: end reached | 13 states, 14 distinct findings, 2 page errors, 127 s
+07:36:13 cook:maani-line@L4#hint @ 1280x665: end reached | 14 states, 5 distinct findings, 2 page errors, 76 s
+07:36:16 cook:maani-line@L4#hint @ 740x320: end reached | 14 states, 16 distinct findings, 2 page errors, 92 s
+07:37:13 cook:maani-line@L4 @ 1280x665: end reached | 13 states, 5 distinct findings, 2 page errors, 58 s
+07:37:26 cook:maani-line@L4 @ 740x320: end reached | 13 states, 14 distinct findings, 2 page errors, 72 s
+07:38:30 cook:maani-line@L4#mistake @ 1280x665: end reached | 14 states, 5 distinct findings, 2 page errors, 64 s
+07:38:38 cook:maani-line@L4#mistake @ 740x320: end reached | 14 states, 14 distinct findings, 2 page errors, 85 s
+07:39:35 cook:maani-line@L4#takeback @ 1280x665: end reached | 13 states, 3 distinct findings, 2 page errors, 56 s
+07:39:41 cook:maani-line@L4#takeback @ 740x320: end reached | 13 states, 11 distinct findings, 2 page errors, 71 s
+
+07:39:42 findings: 92 (tap-small 32, text-small 26, covers-play-area 10, canvas-text-small 10, covered 10, tap-offscreen 4)
+07:39:42 sound: 16 lines heard, 10 with no family clip (the recording gap list), 10 played files that are not an approved family clip
+  gap    10x  wadhi maani  [device-voice]
+  gap    10x  Thank you!  [device-voice]
+  gap    10x  Khuda-fis!  [device-voice]
+  gap     4x  Muke hakri nindhi bajr ji maani khapeti,  [device-voice]
+  gap     3x  hakri wadhi maani,  [device-voice]
+  gap     2x  Muke ba wadhi bajr ji maani khapeti,  [device-voice]
+  gap     2x  Muke hakri nindhi maani khapeti,  [device-voice]
+  gap     2x  ba wadhi bajr ji maani.  [device-voice]
+  gap     2x  Muke ba nindhi maani khapeti,  [device-voice]
+  gap     2x  Muke ba nindhi bajr ji maani khapeti,  [device-voice]
+07:39:42 summary: /tmp/claude-0/-home-user-nani-jo-ghar/19c4bf5a-5dcd-5534-942f-c5fecea30fea/scratchpad/wt/fix-chai-6be737a/build/screenshots/sandbox/maa28-20261116T073249/summary.md
+green      cook:maani-line@L4#hint @ 1280x665
+    MAA-28 seen well done at 1280x665: 746 samples, 4 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k2,k3,k1]
+green      cook:maani-line@L4#hint @ 740x320
+    MAA-28 seen well done at 740x320: 709 samples, 4 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k4,k2,k3]
+green      cook:maani-line@L4#mistake @ 1280x665
+    MAA-28 seen well done at 1280x665: 612 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k1,k2,k3]
+green      cook:maani-line@L4#mistake @ 740x320
+    MAA-28 seen well done at 740x320: 640 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k1,k2,k3]
+green      cook:maani-line@L4#speed1 @ 1280x665
+    MAA-28 seen well done at 1280x665: 1124 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k2,k1,k3]
+green      cook:maani-line@L4#speed1 @ 740x320
+    MAA-28 seen well done at 740x320: 1121 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k1,k3,k2]
+green      cook:maani-line@L4#takeback @ 1280x665
+    MAA-28 seen well done at 1280x665: 542 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k3,k2,k1]
+green      cook:maani-line@L4#takeback @ 740x320
+    MAA-28 seen well done at 740x320: 578 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k1,k3,k2]
+green      cook:maani-line@L4 @ 1280x665
+    MAA-28 seen well done at 1280x665: 576 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k2,k1,k3]
+green      cook:maani-line@L4 @ 740x320
+    MAA-28 seen well done at 740x320: 638 samples, 3 cards, 0 fail(s)
+    MAA-28 rows at the well done: nana[k3,k2,k1]
+MAA-28 green
+
