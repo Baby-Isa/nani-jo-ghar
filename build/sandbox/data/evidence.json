@@ -29687,6 +29687,31 @@
    "max": 20,
    "delay": 0,
    "note": "for the eye: the served cob as cooked (char, that person's toppings) on both trays, the same drawing as on the plate; 'Shabash!' clear of Nana's plate, his cob and the girl's face; the cooked cob's foot clear of Nana's face circle in the tray (the panel whose line is Shabash is the praise frame)"
+  },
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "lines:#side .oc-it14 .wc14-k<=1"
+   ],
+   "delay": 0,
+   "note": "corn at 740x320: each item card's name in the side panel on one line ('hakro makai' beside 'miryo'), never wrapped to two"
   }
  ],
  "CK-132": [
