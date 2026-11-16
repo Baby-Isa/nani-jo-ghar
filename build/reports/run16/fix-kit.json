@@ -34,7 +34,7 @@
   "game": "chop",
   "status": "built",
   "probe": "evidence DAAR-57 (cook:chop L1-L4, 740x320 and 1280x665, every:placed: count:#guide .ng-face>=1, count:#mission .oc-card[data-who=nani] .oc-face=0)",
-  "red": "48003532: chop L1 1280x665 screenshot: Nani's box text only, her face on the order card beside 'Chop these' (ui.js mission.stripMode = who === 'nani'); spec run in check-change's before",
+  "red": "48003532: NJG_GAME_ROOT=<base tree> evidence.mjs --run --rows DAAR-57 --run-id fk-daar57-base: machine FAIL on all 8 pages (count:#guide .ng-face 0 visible; Nani's card shows its face)",
   "green": "f79ff145: check-change 0725e61 rows-green: DAAR-57 PASS by machine at L1-L4, 740x320 and 1280x665 (count:#guide .ng-face>=1; no face on Nani's card); the base's own screenshot shows her box text only",
   "judge": "machine",
   "files": [
@@ -60,7 +60,7 @@
   "row": "CHT-21",
   "kind": "Look",
   "game": "chaat",
-  "status": "built",
+  "status": "open",
   "probe": "none of its own yet: the kit option only",
   "red": "",
   "green": "",
@@ -146,12 +146,38 @@
   "status": "built",
   "probe": "evidence SH-314 (cmd: node build/test_cook_mount.mjs)",
   "red": "0725e61 (check-change's mount step): FAIL window resize listener 2 -> 3 (added at word-card.js watchPage < fit14 < ui.js:251 applyType's late font fit) and a SECTION.wc left on <body>; probes-built found it red on the base too",
-  "green": "a5c725c6: see the mount runs in the md",
+  "green": "a5c725c6: node build/test_cook_mount.mjs three runs in a row: 'cook mount: 5 mounts, all clean' each",
   "judge": "machine",
   "files": [
    "js/cook/mount.js",
    "js/shared/word-card.js"
   ],
   "note": "The order's pop-up word cards (popCard) sit on <body>; one still up when Cook unmounted lived on, and the fonts' late fit found it and put the resize listener back. Unmount now removes Cook's word cards from <body>, and a fit only re-arms the page listeners for cards still on the page."
+ },
+ {
+  "row": "SH-276",
+  "kind": "Look",
+  "game": "chaat",
+  "status": "open",
+  "probe": "probes-open's evidence SH-276",
+  "red": "",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "needs fix-daar: the kit's M.addCard(..., {keepOrder}) keeps Nana's card in view; chaat's caller is js/cook/mechanics/chop.js (fix-daar's). For daar it would reverse DAAR-44's one card in the panel: question for Zafar, which wins in daar?"
+ },
+ {
+  "row": "SH-308",
+  "kind": "Logic",
+  "game": "sekelo",
+  "status": "built",
+  "probe": "fix-stove's evidence SH-308 (cook:mishkaki-grill L1-L4, 740x320 and 1280x665, at life:results)",
+  "red": "not run on the base here",
+  "green": "run16/fix-kit f7fa3dea: machine PASS on all 8 pages (run fk-stove-probe)",
+  "judge": "machine",
+  "files": [],
+  "note": "Sekelo's cards fold at well done on this branch; no kit change made for it. fix-stove owns the row; its corn CK-132 drop-down probe fails here only because its trace counts the arrow coming back (it stays on screen at opacity 1 all 9 s, and a trace can't see visibility)."
  }
 ]
