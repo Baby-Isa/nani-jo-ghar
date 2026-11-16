@@ -8,6 +8,7 @@ Branch `run16/fix-stove`, cut from 48003532. Results: `build/reports/run16/fix-s
 - **CK-132's drop-down part could not be shown red.** The arrow is there over the whole grill screen, both on base and on the commit before corn's round 2. It steps aside only while a control's call is said, which is the kit's rule (SH-172) in every game. The judge's frame was probably such a moment. The faces and pills parts are for the eye.
 - **A tool fault makes the stove games' contract runs look worse than they are.** Evidence pages played with profile "seen" reach the contracts with no profile (`build/sandbox/run.mjs:275`), so the new-player checks judge a returning player as new. Most contract-98 breaks and some contract-78 breaks on seen pages are this. It's a one-line fix for the orchestrator; no builder owns build/sandbox.
 - **Eggs' served plate shows one egg for a two-egg order** (L2-L4, the serving kitchen). This is new and needs fix-kit (`js/cook/serve.js:156`), probably with art too. Not fixed.
+- **check-change's chai frozen step did not pass: it ran out of time.** It played 19 flows, saw 24 pages differ, and hit its 35-minute limit while replaying them to confirm, with my proof runs sharing the browser. So no chai difference is confirmed. My diff from base is only `js/cook/stations/baking.js`, which chai never runs. Prove should run `frozen.mjs --diff` alone, with nothing else on the browser.
 - **contract-70 still breaks in eggs L2-L4 on base** (no take-out call by 0.90 of the ring). That's CK-126, which is built and so belongs to probes-built. Left alone.
 
 ## Proven (a check red before the fix, green after)
@@ -24,7 +25,7 @@ All three were fixed before the run (49369e3 and 5b5d0b5; 677d1a0). Their status
 
 - **CK-100** (`js/cook/stations/baking.js`): Dada's face no longer covers the raw naan at 740x320.
   - Red on base: contract-113 at L2-L4 740x320, "nana's face sits over bk-naan-golden (19%)". Run `stove-base-ck100b`; the L1 break is in run `ev-stove-sh308-base`.
-  - Green after: 8 of 8 (run `stove-ck100-after`). The light change is re-run in `stove-ck100-after2`, adding contract-82.
+  - Green after: 8 of 8, first on the face move alone (run `stove-ck100-after`), then with the light change and contract-82 added (run `stove-ck100-after2`).
 - **Baking contract-36 at L4** (no row, a new finding): an amount still to record ("dedh cup paani") opened its step with no call and no skip logged. The step now logs its call skipped, as the oven's call does. check-change's contract run is its before and after.
 - **check-change** (`--base 48003532 --games baking --rows CK-100`, commit 1cac7a8), baking's 9 flows at 740x320 and 930x430:
   - Before (base): 11 contract breaks: contract-113 x4 (the face over the naan), contract-111, contract-53 x2, contract-78 x2, contract-119 x2.
