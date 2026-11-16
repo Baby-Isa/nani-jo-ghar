@@ -151,7 +151,19 @@ import { setTimeout } from "../life.js";
     /** The control o (a container to tip, the bowl, the oven, the naan) lit as the kit lights one: the first time with its call,
      *  after that only as the stuck hint after the level's wait from the last action (STD-D1-06, D2-01). */
     // (round 3: the light frames the thing alone, its picture; the asker's face sits inside it, FACE.seat)
-    const litOf = (o) => Cook.Coach.box(o, PAD, { visible: true });
+    // (CK-100: where the face is too big for the tray's corner and sits beside it, FACE.out, the light takes it in with the tray, so it
+    // is never left in the dim beside its own lit thing: the face is the thing's own part, Cook.Coach.parts)
+    const litOf = (o) => {
+      const box = Cook.Coach.box(o, PAD, { visible: true });
+      if (!(FACE && FACE.out(o))) return box;
+      const fbox = Cook.Coach.box(FACE.f, 2, { visible: true });
+      return () => {
+        const r = box();
+        if (!r) return null;
+        const f = o.face === FACE.f ? fbox() : null;
+        return f ? [r, f] : [r];
+      };
+    };
     const control = (o, name, current, withLight = null, { lightOnly = false } = {}) => {
       unlight();
       ctlObj = o;
