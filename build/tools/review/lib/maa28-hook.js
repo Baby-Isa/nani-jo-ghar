@@ -9,7 +9,8 @@
 (() => {
   if (window.__maa28) return;
   window.__maa28 = true;
-  const say = (s) => { try { console.error(s); } catch (e) { /* none */ } };
+  // (the sandbox keeps 200 characters of a console line: long lines go in pieces)
+  const say = (s) => { try { for (let i = 0; i < s.length; i += 190) console.error((i ? "MAA-28 ... " : "") + s.slice(i, i + 190)); } catch (e) { /* none */ } };
   // a picture is told by what it shows, not its address (the kit swaps a file's URL for a data URL of the same picture): the mean
   // colour of its opaque pixels (dark millet maani against pale wheat), null while it loads
   const cv = document.createElement("canvas");
@@ -56,7 +57,7 @@
   };
   const seenSig = new Map();
   const failed = new Set();
-  let praiseAt = 0, judged = false, samples = 0, base = null, baseAt = 0, baseWhy = "", last = {};
+  let praiseAt = 0, judged = false, samples = 0, base = null, atPraise = null, baseAt = 0, baseWhy = "", last = {};
   // the serve: the kitchen glides down to the service view (js/cook/serve.js, Lifecycle "serve-view" serving), the review's faces
   // and their Shabash come next (Fable's "well done" frame, sidebyside's praise moment, is that Shabash)
   const served = () => {
@@ -97,7 +98,10 @@
     if (praiseAt && !judged && Date.now() - praiseAt > 1500) {
       judged = true;
       Object.entries(open).forEach(([who, list]) => fail("open " + who, `MAA-28 FAIL open ${who}: 1.5 s after the well done the row still shows ${list.length} card(s): ${list.map((c) => c.s).join(" ; ")} (${innerWidth}x${innerHeight})`));
+      const rows = (o) => Object.entries(o || {}).map(([w, l]) => `${w}[${l.map((c) => c.k.split("/")[1]).join(",")}]`).join(" ") || "none";
       say(`MAA-28 seen well done at ${innerWidth}x${innerHeight}: ${samples} samples, ${seenSig.size} cards, ${failed.size} fail(s)`);
+      say(`MAA-28 rows at ${baseWhy}: ${rows(base)}`.slice(0, 190));
+      say(`MAA-28 rows at the well done: ${rows(atPraise)}`.slice(0, 190));
     }
   };
   setInterval(sample, 80);
@@ -107,7 +111,7 @@
     if (!UI || typeof UI.guidePraise !== "function" || UI.guidePraise.__maa28) return;
     const f = UI.guidePraise;
     UI.guidePraise = function () {
-      if (!praiseAt) { sample(); if (!base) { base = last; baseAt = Date.now(); baseWhy = "the well done"; } praiseAt = Date.now(); }
+      if (!praiseAt) { sample(); atPraise = last; if (!base) { base = last; baseAt = Date.now(); baseWhy = "the well done"; } praiseAt = Date.now(); }
       return f.apply(this, arguments);
     };
     UI.guidePraise.__maa28 = true;

@@ -6,7 +6,9 @@
 //   CHAI-100 no knob sound the child did not make: every Cook.sfx.knob call comes within 0.6 s of a tap (the fire going off after
 //            the last pour is silent; the fair path has no boil-over)
 //   CHAI-97  each word moment's pours play the recorded pour file, never the made-up synthesized pour (a cold load: a fresh page)
-//   CHAI-99  the next pan's light (the life event "next-pan") comes at least 0.8 s after the first pour's end (its last frame)
+//   CHAI-99  the next pan's light (the life event "next-pan") comes at least 0.8 s after the first pour's end (its last frame); the
+//            hook holds the player's touches 3 s after that pour, as a child taking it in (a player that moves on at once gets no
+//            light, rightly). Only where there is a next pan (L2-L4) and the light is still first-time
 // Exit 0 green, 1 red, 2 nothing to judge.
 //   node build/tools/review/chaisound.mjs [--levels 1,2,3,4] [--sizes 740x320,1280x665] [--rows CHAI-99,CHAI-100,CHAI-113] [--paths speed1]
 //                                         [--run-id id] [--root <tree>] [--from-run id]
@@ -44,11 +46,11 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
   const d = JSON.parse(readFileSync(join(dir, f), "utf8"));
   const page = `${d.flow} @ ${d.size}${d.complete ? "" : " (stopped)"}`;
   const tl = (d.timeline || []).filter((e) => e.page === "cook.html" || /cook/.test(e.page || ""));
-  const marks = (k) => tl.filter((e) => e.type === "mark" && e.k === k).map((e) => e.t);
+  const marks = (k) => tl.filter((e) => e.k === "chai-mark" && e.m === k).map((e) => e.t);
   const plays = (stem) => tl.filter((e) => e.type === "play" && e.via === "sfx" && e.url === `sfx/file:${stem}`).map((e) => e.t);
   const taps = marks("tap"), knobCalls = marks("knob-call"), flameCalls = marks("flame-call"), pours = marks("pour");
   const knobPlays = plays("knob-a"), flamePlays = plays("flame-b");
-  if (!tl.some((e) => e.type === "mark")) { console.log(`NO HOOK ${page}`); continue; }
+  if (!tl.some((e) => e.k === "chai-mark")) { console.log(`NO HOOK ${page}`); continue; }
   const near = (list, a, b) => list.some((t) => t >= a && t <= b);
   if (rows.includes("CHAI-113")) {
     const miss = flameCalls.filter((t) => !near(knobPlays, t - 50, t + 400) || !near(flamePlays, t - 50, t + 900));
@@ -73,7 +75,7 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
   }
   if (rows.includes("CHAI-99")) {
     // the first pour's end: its last frame before a 400 ms gap; the next pan's light: the first "next-pan" life event after it
-    const ends = pours.filter((t, i) => !(pours[i + 1] && pours[i + 1] - t < 400));
+    const ends = tl.filter((e) => e.k === "chai-mark" && e.m === "pour-end").map((e) => e.at);
     const life = tl.filter((e) => e.k === "life" && /next-pan/.test(JSON.stringify(e))).map((e) => e.at || e.t);
     const end0 = ends[0];
     const lit = end0 != null ? life.find((t) => t > end0 - 200) : null;
