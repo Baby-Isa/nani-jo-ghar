@@ -74,6 +74,10 @@ export function unmount() {
     Cook.halt();
   } finally {
     endLife();
+    // SH-314 (run 16: the mount test's leftover SECTION.wc): the order's pop-up cards (the item and dish cards, UI's popCard, the
+    // flashes) sit on <body> beside Cook's screen; one still up as Cook leaves went on living, and a late fit (the fonts' load) found it
+    // and put the word cards' resize listener back. They go with Cook, before the kits let their listeners go
+    doc.querySelectorAll("body > .wc").forEach((n) => n.remove());
     // SH-314 (Zafar, 15 Nov: the mount leak fixed, not explained away): the shared kits' page-wide listeners, the device voice's
     // safety timers and the sound effects' audio context go with Cook; each comes back the next time a game needs it
     [W.NjgVoice && W.NjgVoice.stop, W.NaniGuide && W.NaniGuide.release, W.Onboard && W.Onboard.release, W.WordCard && W.WordCard.release, W.Sfx && W.Sfx.release].forEach((f) => {

@@ -1,0 +1,226 @@
+05:59:41 run tiers-change-0725e61000: 34 pages (0 done already), 1 at a time, port 8831
+05:59:59 lab:cook/chop @ 740x320: end reached | 9 states, 3 distinct findings, 0 page errors, 17 s
+06:00:16 lab:cook/chop @ 930x430: end reached | 7 states, 3 distinct findings, 0 page errors, 17 s
+06:00:32 cook:chop#hint @ 740x320: end reached | 10 states, 5 distinct findings, 0 page errors, 15 s
+06:00:47 cook:chop#hint @ 930x430: end reached | 10 states, 5 distinct findings, 0 page errors, 15 s
+06:01:11 cook:eggs#hint @ 740x320: end reached | 10 states, 8 distinct findings, 0 page errors, 24 s
+06:01:38 cook:eggs#hint @ 930x430: end reached | 10 states, 8 distinct findings, 0 page errors, 27 s
+06:02:21 cook:corn#hint @ 740x320: end reached | 12 states, 11 distinct findings, 0 page errors, 43 s
+06:03:03 cook:corn#hint @ 930x430: end reached | 12 states, 11 distinct findings, 0 page errors, 42 s
+06:03:54 cook:baking#hint @ 740x320: end reached | 12 states, 7 distinct findings, 0 page errors, 52 s
+06:04:47 cook:baking#hint @ 930x430: end reached | 12 states, 7 distinct findings, 0 page errors, 53 s
+06:05:06 cook:chop#mistake @ 740x320: end reached | 10 states, 5 distinct findings, 0 page errors, 18 s
+06:05:25 cook:chop#mistake @ 930x430: end reached | 9 states, 5 distinct findings, 0 page errors, 19 s
+06:05:45 cook:chop#takeback @ 740x320: end reached | 10 states, 7 distinct findings, 0 page errors, 21 s
+06:06:06 cook:chop#takeback @ 930x430: end reached | 10 states, 7 distinct findings, 0 page errors, 20 s
+06:06:30 cook:eggs @ 740x320: end reached | 10 states, 8 distinct findings, 0 page errors, 24 s
+06:06:55 cook:eggs @ 930x430: end reached | 10 states, 8 distinct findings, 0 page errors, 25 s
+06:07:18 cook:eggs#mistake @ 740x320: end reached | 10 states, 8 distinct findings, 0 page errors, 23 s
+06:07:42 cook:eggs#mistake @ 930x430: end reached | 10 states, 8 distinct findings, 0 page errors, 24 s
+06:08:06 cook:eggs#takeback @ 740x320: end reached | 10 states, 8 distinct findings, 0 page errors, 24 s
+06:08:30 cook:eggs#takeback @ 930x430: end reached | 10 states, 8 distinct findings, 0 page errors, 24 s
+06:08:59 cook:corn @ 740x320: end reached | 11 states, 10 distinct findings, 0 page errors, 29 s
+06:09:28 cook:corn @ 930x430: end reached | 11 states, 9 distinct findings, 0 page errors, 30 s
+06:10:02 cook:corn#mistake @ 740x320: end reached | 12 states, 10 distinct findings, 0 page errors, 34 s
+06:10:35 cook:corn#mistake @ 930x430: end reached | 12 states, 9 distinct findings, 0 page errors, 33 s
+06:11:06 cook:corn#takeback @ 740x320: end reached | 13 states, 10 distinct findings, 0 page errors, 31 s
+06:11:37 cook:corn#takeback @ 930x430: end reached | 13 states, 9 distinct findings, 0 page errors, 31 s
+06:12:16 cook:baking @ 740x320: end reached | 11 states, 7 distinct findings, 0 page errors, 38 s
+06:12:54 cook:baking @ 930x430: end reached | 11 states, 7 distinct findings, 0 page errors, 39 s
+06:13:34 cook:baking#mistake @ 740x320: end reached | 12 states, 7 distinct findings, 0 page errors, 40 s
+06:14:16 cook:baking#mistake @ 930x430: end reached | 12 states, 7 distinct findings, 0 page errors, 41 s
+06:14:54 cook:baking#takeback @ 740x320: end reached | 11 states, 7 distinct findings, 0 page errors, 38 s
+06:15:32 cook:baking#takeback @ 930x430: end reached | 11 states, 7 distinct findings, 0 page errors, 38 s
+06:15:47 cook:chop @ 740x320: end reached | 10 states, 5 distinct findings, 0 page errors, 15 s
+06:16:03 cook:chop @ 930x430: end reached | 10 states, 5 distinct findings, 0 page errors, 15 s
+06:16:04 lights: 27 judged on their pictures, 0 failing (lib/lightjudge.py)
+
+06:16:05 findings: 249 (text-small 164, tap-small 42, covers-play-area 24, canvas-text-small 16, tap-offscreen 3)
+06:16:05 sound: 42 lines heard, 32 with no family clip (the recording gap list), 33 played files that are not an approved family clip
+  gap    34x  Thank you!  [device-voice]
+  gap    24x  Khuda-fis!  [device-voice]
+  gap    10x  Muke hakro makai khape,  [device-voice]
+  gap    10x  Muke naan khape.  [device-voice]
+  gap    10x  Hakro cup atto wiji chad!  [device-voice]
+  gap     8x  Nindha nindha kap!  [device-voice]
+  gap     8x  Indo wiji chad!  [device-voice]
+  gap     8x  Wiji chad!  [device-voice]
+  gap     8x  Hane naan!  [device-voice]
+  gap     8x  Naan wiji chad!  [device-voice]
+  gap     8x  Dhyan rakh!  [device-voice]
+  gap     7x  Tayar ai.  [device-voice]
+  gap     6x  Muke ba dungri khapanti.  [device-voice]
+  gap     6x  ba dungri  [silent]
+  gap     5x  Makai hane kadh.  [device-voice]
+  gap     4x  Muke hakro tarelo indo khapeto.  [device-voice]
+  gap     4x  Muke hakro bafelo indo khapeto.  [device-voice]
+  gap     4x  Adh paani wiji chad!  [device-voice]
+  gap     4x  Adh dudh wiji chad!  [device-voice]
+  gap     3x  Tarelo indo hane kadh.  [device-voice]
+  gap     2x  Muke ba lasan khape.  [device-voice]
+  gap     2x  hakro lasan  [device-voice]
+  gap     2x  ba lasan  [silent]
+  gap     2x  Muke ba mirchi khapanti.  [device-voice]
+  gap     2x  ba mirchi  [silent]
+  ... 7 more in /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-0725e61000/sound.json
+NEW text-small       cook:chop @ 740x320 [start, order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop @ 740x320 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two onions"
+NEW tap-small        cook:chop @ 740x320 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 66x16px  "ba dungri"
+NEW text-small       cook:chop @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop @ 930x430 [start, order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop @ 930x430 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two onions"
+NEW tap-small        cook:chop @ 930x430 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 66x16px  "ba dungri"
+NEW text-small       cook:chop @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#mistake @ 740x320 [start, order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#mistake @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two garlics"
+NEW tap-small        cook:chop#mistake @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 55x16px  "ba lasan"
+NEW text-small       cook:chop#mistake @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#mistake @ 930x430 [start, order-card-big, order-card-in-sidebar, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#mistake @ 930x430 [order-card-big, order-card-in-sidebar, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two garlics"
+NEW tap-small        cook:chop#mistake @ 930x430 [order-card-big, order-card-in-sidebar, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 55x16px  "ba lasan"
+NEW text-small       cook:chop#mistake @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#hint @ 740x320 [start, order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#hint @ 740x320 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two onions"
+NEW tap-small        cook:chop#hint @ 740x320 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 66x16px  "ba dungri"
+NEW text-small       cook:chop#hint @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#hint @ 930x430 [start, order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#hint @ 930x430 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two onions"
+NEW tap-small        cook:chop#hint @ 930x430 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 66x16px  "ba dungri"
+NEW text-small       cook:chop#hint @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#takeback @ 740x320 [start, order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#takeback @ 740x320 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two onions"
+NEW tap-small        cook:chop#takeback @ 740x320 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 66x16px  "ba dungri"
+NEW text-small       cook:chop#takeback @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#takeback @ 930x430 [start, order-card-big, order-card-in-sidebar, view-marble, kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       cook:chop#takeback @ 930x430 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two onions"
+NEW tap-small        cook:chop#takeback @ 930x430 [order-card-in-sidebar, view-marble, kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 66x16px  "ba dungri"
+NEW text-small       cook:chop#takeback @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       lab:cook/chop @ 740x320 [chop-start, chop-order-card-big, chop-order-card-in-sidebar, chop-view-marble, chop-kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       lab:cook/chop @ 740x320 [chop-order-card-in-sidebar, chop-view-marble, chop-kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two chillis"
+NEW tap-small        lab:cook/chop @ 740x320 [chop-order-card-in-sidebar, chop-view-marble, chop-kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 65x16px  "ba mirchi"
+NEW text-small       lab:cook/chop @ 930x430 [chop-start, chop-view-marble, chop-kind-slice] div.direct.oc-card > div.oc-head > div.oc-headline.rec > span.fit.fit-wrap: 12.6px  "Chop these"
+NEW text-small       lab:cook/chop @ 930x430 [chop-start, chop-view-marble, chop-kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "two chillis"
+NEW tap-small        lab:cook/chop @ 930x430 [chop-start, chop-view-marble, chop-kind-slice] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 65x16px  "ba mirchi"
+NEW text-small       cook:eggs @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.m-order > div.direct.oc-card > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.direct.oc-card > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "fried egg"
+NEW tap-small        cook:eggs @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 75x16px  "tarelo indo"
+NEW text-small       cook:eggs @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.m-order > div.direct.foldable > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs @ 930x430 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.m-order > div.direct.oc-card > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs @ 930x430 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.direct.oc-card > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs @ 930x430 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "fried egg"
+NEW tap-small        cook:eggs @ 930x430 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 75x16px  "tarelo indo"
+NEW text-small       cook:eggs @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.m-order > div.direct.foldable > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#mistake @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.m-order > div.direct.oc-card > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs#mistake @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.direct.oc-card > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#mistake @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "fried egg"
+NEW tap-small        cook:eggs#mistake @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 75x16px  "tarelo indo"
+NEW text-small       cook:eggs#mistake @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.m-order > div.direct.foldable > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs#mistake @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#mistake @ 930x430 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.m-order > div.direct.oc-card > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs#mistake @ 930x430 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.direct.oc-card > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#mistake @ 930x430 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "fried egg"
+NEW tap-small        cook:eggs#mistake @ 930x430 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 75x16px  "tarelo indo"
+NEW text-small       cook:eggs#mistake @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.m-order > div.direct.foldable > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro tarelo indo khapeto"
+NEW text-small       cook:eggs#mistake @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#hint @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.m-order > div.direct.oc-card > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro bafelo indo khapeto"
+NEW text-small       cook:eggs#hint @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.direct.oc-card > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#hint @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "boiled egg"
+NEW tap-small        cook:eggs#hint @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 76x16px  "bafelo indo"
+NEW text-small       cook:eggs#hint @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.m-order > div.direct.foldable > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro bafelo indo khapeto"
+NEW text-small       cook:eggs#hint @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#hint @ 930x430 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.m-order > div.direct.oc-card > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro bafelo indo khapeto"
+NEW text-small       cook:eggs#hint @ 930x430 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.direct.oc-card > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#hint @ 930x430 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "boiled egg"
+NEW tap-small        cook:eggs#hint @ 930x430 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 76x16px  "bafelo indo"
+NEW text-small       cook:eggs#hint @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.m-order > div.direct.foldable > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro bafelo indo khapeto"
+NEW text-small       cook:eggs#hint @ 930x430 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#takeback @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.m-order > div.direct.oc-card > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro bafelo indo khapeto"
+NEW text-small       cook:eggs#takeback @ 740x320 [order-card-big, order-card-in-sidebar, view-marble, kind-tap] div.direct.oc-card > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+NEW text-small       cook:eggs#takeback @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.english.wc-en: 12.0px  "boiled egg"
+NEW tap-small        cook:eggs#takeback @ 740x320 [order-card-in-sidebar, view-marble, kind-tap] div.oc-at-end.oc-parts > div.oc-part.oc-row > div > p.oc-t.wc-k: 76x16px  "bafelo indo"
+NEW text-small       cook:eggs#takeback @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.m-order > div.direct.foldable > div.oc-head > div.fit.fit-wrap: 12.6px  "Muke hakro bafelo indo khapeto"
+NEW text-small       cook:eggs#takeback @ 740x320 [view-service, kind-click, results-badges, results-words, result] div.direct.foldable > div.oc-head > div.fit.fit-wrap > span.word: 12.6px  "hakro"
+... and 121 more new findings
+moved covers-play-area cook:chop @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:chop @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:chop#mistake @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:chop#mistake @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:chop#hint @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:chop#hint @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:chop#takeback @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved tap-small        cook:chop#takeback @ 740x320 div.ng-help-in > section.ng-helper-card.wc > div > button.wc-spk (known in another flow; not a failure)
+moved tap-small        cook:chop#takeback @ 740x320 div > div > div > p.wc-k.wc-slot (known in another flow; not a failure)
+moved covers-play-area cook:chop#takeback @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved tap-small        cook:chop#takeback @ 930x430 div.ng-help-in > section.ng-helper-card.wc > div > button.wc-spk (known in another flow; not a failure)
+moved tap-small        cook:chop#takeback @ 930x430 div > div > div > p.wc-k.wc-slot (known in another flow; not a failure)
+moved covers-play-area cook:eggs @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs @ 740x320 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:eggs @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs @ 930x430 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:eggs#mistake @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs#mistake @ 740x320 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:eggs#mistake @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs#mistake @ 930x430 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:eggs#hint @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs#hint @ 740x320 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:eggs#hint @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs#hint @ 930x430 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:eggs#takeback @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs#takeback @ 740x320 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:eggs#takeback @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved canvas-text-small cook:eggs#takeback @ 930x430 canvas > Text[25px 600] (known in another flow; not a failure)
+moved covers-play-area cook:corn @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:corn @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:corn#mistake @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:corn#mistake @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:corn#hint @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved tap-small        cook:corn#hint @ 740x320 div.ng-help-in > section.ng-helper-card.wc > div > button.wc-spk (known in another flow; not a failure)
+moved tap-small        cook:corn#hint @ 740x320 div > div > div > p.wc-k.wc-slot (known in another flow; not a failure)
+moved covers-play-area cook:corn#hint @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved tap-small        cook:corn#hint @ 930x430 div.ng-help-in > section.ng-helper-card.wc > div > button.wc-spk (known in another flow; not a failure)
+moved tap-small        cook:corn#hint @ 930x430 div > div > div > p.wc-k.wc-slot (known in another flow; not a failure)
+moved covers-play-area cook:corn#takeback @ 740x320 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+moved covers-play-area cook:corn#takeback @ 930x430 main#stage > div.njg-rq-along.njg-rq-open (known in another flow; not a failure)
+not in the baseline yet: cook:chop#mistake@740x320
+not in the baseline yet: cook:chop#mistake@930x430
+not in the baseline yet: cook:chop#hint@740x320
+not in the baseline yet: cook:chop#hint@930x430
+not in the baseline yet: cook:chop#takeback@740x320
+not in the baseline yet: cook:chop#takeback@930x430
+not in the baseline yet: lab:cook/chop@740x320
+not in the baseline yet: lab:cook/chop@930x430
+not in the baseline yet: cook:eggs@740x320
+not in the baseline yet: cook:eggs@930x430
+not in the baseline yet: cook:eggs#mistake@740x320
+not in the baseline yet: cook:eggs#mistake@930x430
+not in the baseline yet: cook:eggs#hint@740x320
+not in the baseline yet: cook:eggs#hint@930x430
+not in the baseline yet: cook:eggs#takeback@740x320
+not in the baseline yet: cook:eggs#takeback@930x430
+not in the baseline yet: cook:corn@740x320
+not in the baseline yet: cook:corn@930x430
+not in the baseline yet: cook:corn#mistake@740x320
+not in the baseline yet: cook:corn#mistake@930x430
+not in the baseline yet: cook:corn#hint@740x320
+not in the baseline yet: cook:corn#hint@930x430
+not in the baseline yet: cook:corn#takeback@740x320
+not in the baseline yet: cook:corn#takeback@930x430
+not in the baseline yet: cook:baking@740x320
+not in the baseline yet: cook:baking@930x430
+not in the baseline yet: cook:baking#mistake@740x320
+not in the baseline yet: cook:baking#mistake@930x430
+not in the baseline yet: cook:baking#hint@740x320
+not in the baseline yet: cook:baking#hint@930x430
+not in the baseline yet: cook:baking#takeback@740x320
+not in the baseline yet: cook:baking#takeback@930x430
+9 fixed (run --update-baseline to shrink the baseline)
+BREAK contract-37 cook:eggs#hint L1 @ 930x430 [after order-card-big c06-popup.png] 8.9s: cook:station1:marble (eggs at L1): 2 decoys on the shelf (n.egg*, cook-dudh*; * not in the order), the table wants 1
+BREAK contract-53 cook:baking#hint L1 @ 740x320 [hint-nani-says 05-hint-nani-says.png] 25.5s: the help's light is 4.0 times the size of cook-atto: it should hug it
+BREAK contract-113 cook:baking#hint L1 @ 740x320 [after kind-tap c08-s19over.png] 43.5s: nana's face sits over bk-naan-golden (19% of it, at [285,145,314,174]): nothing covers a face, a pill or a card's words
+judged per game (contract.md lists each check not judged and why): chop 102/111, eggs 107/111, corn 106/111, baking 105/111
+CONTRACT FAILED: 3 breaks (contract-37 1, contract-53 1, contract-113 1)
+CHECK FAILED: 201 new findings, 0 flows do not reach their end, 0 new page errors, 3 contract breaks
+06:16:05 summary: /home/user/nani-jo-ghar/build/screenshots/sandbox/tiers-change-0725e61000/summary.md

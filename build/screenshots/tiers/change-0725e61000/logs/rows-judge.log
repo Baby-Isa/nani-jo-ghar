@@ -1,0 +1,4 @@
+judge tiers-green-0725e61000: 1 rows for a reviewer in 1 batches; 0 kept their cached verdict; 1 decided by expect (cached); 0 tool failures (not judged: build/reports/evidence-tiers-green-0725e61000.md)
+  build/screenshots/evidence/tiers-green-0725e61000/judge/batch-01.md
+
+One reviewer call per batch file (Fable; Opus when Fable is at its limit; never the builder). Then: node build/tools/review/evidence.mjs --collect --run-id tiers-green-0725e61000

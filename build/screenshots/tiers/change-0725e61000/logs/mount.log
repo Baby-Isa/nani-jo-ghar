@@ -1,0 +1,75 @@
+baseline: 10 page listener kinds, 0 canvases, body: DIV#lab-app DIV DIV#njg-rotate
+  note no Cook global once Cook's modules have loaded (Cook): SH-314b, until the app-store wrap
+mount 1
+  ok   mounted in 264 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":10,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 312 ms)
+  FAIL listeners on the page as before: window|resize|false: 2 -> 3
+         window|resize|false added at watchPage (js/shared/word-card.js:981:10) < W.fit14 (js/shared/word-card.js:699:77) < js/cook/ui.js:251:69
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  FAIL <body> as before: DIV#lab-app DIV DIV#njg-rotate SECTION.wc
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 2
+  ok   mounted in 101 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":9,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 323 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 3
+  ok   mounted in 103 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":9,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 323 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 4
+  ok   mounted in 115 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 384 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+mount 5
+  ok   mounted in 106 ms: Cook's screen and one canvas; chai-tray running (view marble; Cook's lifetime held {"timers":8,"intervals":4,"frames":0,"listeners":5,"ends":6})
+  ok   the pop-up's fold was seen on this mount (lastFoldMs 402 ms)
+  ok   listeners on the page as before
+  ok   no timers left
+  ok   no intervals left
+  ok   no animation frames left (1)
+  ok   Cook's lifetime empty ({"timers":0,"intervals":0,"frames":0,"listeners":0,"ends":0})
+  ok   no canvas, no Cook screen (0 canvases, 0 of Cook's ids)
+  ok   <body> as before
+  ok   <body> classes as before ("")
+  ok   no audio context left open (0)
+  ok   no iframe
+  note the Cook global stays (Cook): SH-314b, until the app-store wrap
+  ok   no page errors 
+cook mount: 2 failed
