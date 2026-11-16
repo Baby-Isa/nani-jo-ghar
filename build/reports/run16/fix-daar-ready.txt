@@ -1,0 +1,7 @@
+# run16 fix-daar: rows ready for prove (branch run16/fix-daar). Checks are in build/sandbox/data/evidence.json and fix-daar.json.
+DAAR-55  node --test build/tools/review/run16/framebuf-hide.test.mjs   (red da9432c, green 0bf3551)
+DAAR-56  node build/tools/review/run16/chop-strip.mjs --row DAAR-56 --flow chop@1,daar@4 --sizes 1280x665,740x320   (red 48003532 via NJG_GAME_ROOT, green 7d9c86e; thin margin at 740x320)
+DAAR-59  node build/tools/review/run16/daar-pills.mjs --levels 2,3 --sizes 1280x665 ; --levels 2 --sizes 740x320   (red 48003532, green 8fef796; L3 phone and L4 are a question)
+DAAR-60  evidence.mjs --run --rows DAAR-60   (proven: red 193fa1c^, green 48003532)
+CHT-21   evidence.mjs --run --rows CHT-21 with run16/fix-kit's js/cook/ui.js (merge after fix-kit)
+CK-111   finger part = DAAR-56's check; the rest needs-eye
