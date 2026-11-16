@@ -26,6 +26,12 @@ All three were fixed before the run (49369e3 and 5b5d0b5; 677d1a0). Their status
   - Red on base: contract-113 at L2-L4 740x320, "nana's face sits over bk-naan-golden (19%)". Run `stove-base-ck100b`; the L1 break is in run `ev-stove-sh308-base`.
   - Green after: 8 of 8 (run `stove-ck100-after`). The light change is re-run in `stove-ck100-after2`, adding contract-82.
 - **Baking contract-36 at L4** (no row, a new finding): an amount still to record ("dedh cup paani") opened its step with no call and no skip logged. The step now logs its call skipped, as the oven's call does. check-change's contract run is its before and after.
+- **check-change** (`--base 48003532 --games baking --rows CK-100`, commit 1cac7a8), baking's 9 flows at 740x320 and 930x430:
+  - Before (base): 11 contract breaks: contract-113 x4 (the face over the naan), contract-111, contract-53 x2, contract-78 x2, contract-119 x2.
+  - After: 4 breaks, contract-53 x2 (the atto jar's hint light) and contract-119 x2 (the dish card's flash, SH-267, fix-kit's). Both were on base too, so nothing is new.
+  - The "120 new findings" against the lint baseline are the same on base and after.
+  - CK-100's probe: red on base, green after.
+  - Pictures: `build/screenshots/tiers/change-1cac7a8962/before-after`. The judge's batch: `build/screenshots/evidence/tiers-green-1cac7a8962/judge/batch-01.md`.
 
 ## Built before the run, machine parts proven, eye parts to the judge
 
@@ -38,7 +44,7 @@ All three were fixed before the run (49369e3 and 5b5d0b5; 677d1a0). Their status
 - **Question for Zafar:** corn's six bowls give only one or two decoys at L3-L4, under the rules' 3 and 4. Exempt corn, or add bowls? Recommended: exempt it.
 - **Eggs' decoy count against contract-37:** they disagree at L3-L4. It needs a look before any fix.
 - **Rows that need files I don't own:**
-  - CK-115 (corn's second card cut at 740x320): the side panel, fix-kit.
+  - CK-115 (corn's second card cut at 740x320): the side panel, fix-kit. Its check is written and red on base: at L3 and L4 the girl's card is cut at the panel's foot while Nana's open card fills the panel (run `stove-ck115-base`). It may be Zafar's call whether a scrolling panel may cut it.
   - CK-96 (baking's card row): `js/cook/ui.js`, fix-kit.
   - CK-97 ('adh paani' as a half-full bottle): needs art and fix-kit.
   - SEK-24 (the item card should show a skewer): needs art and fix-kit.
