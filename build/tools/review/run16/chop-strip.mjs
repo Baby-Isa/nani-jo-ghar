@@ -6,8 +6,9 @@
 // not buried, not empty) and where the kit's finger is. Two expects, each per page:
 //   DAAR-55 light-steady: from the light's first drawn frame to the knife's drag ending (the strip's "cut" plus the drag), the light
 //           never goes off: no gap of 2+ frames (> 40 ms) with no lit layer.
-//   DAAR-56 finger-drags: the finger is shown during the drag and travels the knife's path, right to left, at least 60% of the knife's
-//           own travel (it does not sit still on the handle).
+//   DAAR-56 finger-drags: the finger travels the knife's path, right to left (150 px at 1280 wide, 75 on a phone), resting on the
+//           handle at most 500 ms before it moves, and a third of its path drawn by 2 s after the light (it does not sit still on the
+//           handle: the side-by-side's strip, 0.5 s before to 2 s after the light, saw a finger held still, read as a tap).
 // Exit 1 if any page fails either expect (--row DAAR-55 or DAAR-56: that one alone).
 import { startServer, launch, newPage, BASE, sleep } from "../../../sandbox/lib/env.mjs";
 import { CookPlayer } from "../../../sandbox/lib/cook-player.mjs";
@@ -55,6 +56,7 @@ const SAMPLER = () => {
   requestAnimationFrame(tick);
 };
 
+const STILL_MS = 500;
 const results = [];
 const srv = await startServer();
 const browser = await launch();
@@ -112,7 +114,18 @@ try {
       // the finger shown after the cut too (it carries the knife through)
       r.fingerAfterCut = cut ? fx.filter((f) => f.t > cut.t).length : 0;
     }
-    r.ok56 = !!fx.length && r.fingerTravel >= 150 * (+size.split("x")[0] >= 1000 ? 1 : 0.5);
+    // (the drag seen in the light's first 2 s, as the side-by-side's strip films it: the finger rests at most STILL_MS on the handle
+    // before it moves, and by 2 s after the light it has drawn the knife a third of its path; a finger held still reads as a tap)
+    const litT = first >= 0 ? fr[first].t : null;
+    if (fx.length && litT != null) {
+      const f0 = fx[0];
+      const mv = fx.find((f) => Math.abs(f.fx - f0.fx) > 8);
+      r.fingerStillMs = Math.round((mv ? mv.t : fx[fx.length - 1].t) - f0.t);
+      const by2 = fx.filter((f) => f.t <= litT + 2000);
+      const full = f0.fx - Math.min(...fx.map((f) => f.fx));
+      r.travelBy2s = full > 0 ? Math.round(((f0.fx - Math.min(...by2.map((f) => f.fx))) / full) * 100) / 100 : 0;
+    }
+    r.ok56 = !!fx.length && r.fingerTravel >= 150 * (+size.split("x")[0] >= 1000 ? 1 : 0.5) && r.fingerStillMs <= STILL_MS && r.travelBy2s >= 0.33;
     results.push(r);
     console.log(JSON.stringify(r));
   }

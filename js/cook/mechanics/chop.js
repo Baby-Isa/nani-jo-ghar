@@ -1398,16 +1398,18 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
         // lines.guide-chop, the chop step's call: contract-36, contract-78), never 1.5 s into it
         if (z.say && Lang.line) z.say(Lang.role(Lang.line("guide-chop"), "call"), { hide }).catch(() => {});
         const lit0 = Date.now();
-        // (and the finger after the dim, never before it: the light's fade, css/shared/onboard.css's 0.3 s)
-        hold();
-        await wait(300);
-        const finger = OB.finger && knife.active ? OB.finger(() => fpt, { hold: true }) : null;
-        hold();
         // SH-253 (contract-112: "lit while the knife moved into it after the light came"): the light comes on a still scene, the knife
         // and the vegetable already in place, and stays still a beat (a second and a half of real time, whatever the test speed: the checks' second look comes at 0.95 s, later on a busy machine) before the
         // finger draws the knife along its path
-        // (the beat counts from the light: CK-111, the finger rests on the handle a moment, then draws the knife)
+        // DAAR-56 (the Fable eye judge for Zafar, decision 38, daar L4: "the finger sits still on the handle: it reads as a tap"; CK-111):
+        // the finger comes to the handle only at the end of the still beat (after the dim, never before it), rests a moment (FINGER_REST)
+        // and draws the knife at once; it was up from +0.3 s, held still on the handle for 1.2 s before the drag
+        const FINGER_REST = 250;
+        hold();
         await wait(120);
+        while (Date.now() - lit0 < 1500 - FINGER_REST && knife.active) await wait(50);
+        hold();
+        const finger = OB.finger && knife.active ? OB.finger(() => fpt, { hold: true }) : null;
         while (Date.now() - lit0 < 1500 && knife.active) await wait(50);
         let cutYet = false;
         const D_MS = 1500 / slow;
@@ -1416,7 +1418,8 @@ import { setTimeout, clearTimeout, setInterval, clearInterval, requestAnimationF
             from: 0,
             to: 1,
             duration: D_MS,
-            ease: "Sine.easeInOut",
+            // (DAAR-56: the drag shows from its first moment: eased out, never a slow start that reads as the finger still holding)
+            ease: "Sine.easeOut",
             onUpdate: (t) => {
               knife.setPosition(x0 + (x1 - x0) * t.getValue(), z.Y(SY));
               hold();
