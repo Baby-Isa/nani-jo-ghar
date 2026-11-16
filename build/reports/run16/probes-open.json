@@ -297,13 +297,13 @@
   "game": "eggs",
   "status": "built",
   "probe": "evidence.json SH-303 (eye: shots at served, eggs L4 and baking L1, 740x320)",
-  "red": "not run",
+  "red": "not shown: eggs' delivery is chai's kitchen-counter scene, no table or cat (po-o1 panels A, B); the strip ends before the well done",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "EVIDENCE (judge session: the well done moment is not in the strip)",
   "files": [
    "js/cook/stations/eggs.js"
   ],
-  "note": "Eggs fixed by 677d1a0 (one kitchen scene, chai's); judge batch po-e1/judge/batch-01.md."
+  "note": "Fixed in code by 677d1a0; the well done itself is in eggs' cook view (po-t1/SH-281.png frame 6: the 'Shabash!' chip by Nana's face on the tray)."
  },
  {
   "row": "SH-279",
@@ -311,13 +311,13 @@
   "game": "samosa",
   "status": "open",
   "probe": "evidence.json SH-279 (eye: crop of #stage at every line:cook, samosa L1 two sizes, maani L1 and chaat L1 at 740x320; the 'Shabash!' panels are the well done)",
-  "red": "needs the judge (build/screenshots/evidence/po-q1/judge/batch-01.md); the first two aims (served, then every bubble) missed the well done (the judge's EVIDENCE on po-e1)",
+  "red": "48003532, run po-q1, judge FAIL (run16/judge, po-q1 panel A frame 17): at samosa's well done the praise face sits on the slotted spoon's head and the 'Shabash!' chip lies on the plate's top edge, not clear of the props; B the same at 740x320, the chip tiny near the gear",
   "green": "",
-  "judge": "needs-eye (po-q1/judge/batch-01.md)",
+  "judge": "FAIL (judge session, po-q1/SH-279.png panel A)",
   "files": [
    "js/cook/kitchen-kit.js"
   ],
-  "note": "No SH-279 change in code (sort). At well done the 'Shabash!' is a chip beside the praise face on the play area (seen in chop, po-p1 panel C), which these panels catch as Nani says it."
+  "note": "Still true in samosa (and checked in maani and chaat on the same sheet); the earlier aims at served and every bubble missed the well done."
  },
  {
   "row": "SH-284",
@@ -355,14 +355,14 @@
   "game": "chop",
   "status": "open",
   "probe": "evidence.json SH-275 (eye: eggs at exp:lift two sizes; chop L1 two sizes, chaat L1 and daar L1 at every placed)",
-  "red": "48003532, run po-p1, panel C (for the judge, po-p1/judge/batch-01.md): chop L1 at 1280x665 shows the timing window as a separate stopwatch disc left of the board, not on the onion or board",
+  "red": "48003532, run po-p1, judge FAIL (po-p1 panel C): chop L1 shows the timing window as a separate stopwatch disc off the board's top-left corner, the same in chop 740x320, chaat and daar",
   "green": "",
-  "judge": "needs-eye (po-p1/judge/batch-01.md)",
+  "judge": "FAIL (judge session, po-p1/SH-275.png panel C)",
   "files": [
    "js/cook/mechanics/chop.js",
    "js/cook/stations/daar.js"
   ],
-  "note": "Eggs now ring the pan itself (panels A, B); chop's (and chaat's and daar's) timing window is still a stopwatch disc beside the board. The judge's audit asked for chop, chaat and daar: now in."
+  "note": "Eggs now ring the pan itself; chop, chaat and daar still use a stopwatch disc beside the board."
  },
  {
   "row": "SH-280",
@@ -397,15 +397,15 @@
   "row": "SH-299",
   "kind": "Logic",
   "game": "chai",
-  "status": "open",
+  "status": "cannot-probe",
   "probe": "evidence.json SH-299 (eye: strip of #side at every popup-fold, chai L4 740x320)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "not shown: two aims (a #side strip, then a #game strip at popup-fold) never caught a card in flight; the strip's frames land off their slots",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "EVIDENCE (judge session, po-b1 and po-o1)",
   "files": [
    "js/shared/order-card.js"
   ],
-  "note": "No SH-299 change in code (sort: fold.want14 still stale); a machine flight-lands check needs the flyer's last box, which no expect reads yet."
+  "note": "Needs the flight's last frame (the flyer's box at its landing), which no capture reads yet; sort: the stale fold.want14 is still in order-card.js."
  },
  {
   "row": "SH-286",
@@ -413,13 +413,13 @@
   "game": "chai",
   "status": "built",
   "probe": "evidence.json SH-286 (eye: shots at every popup-open, chai L1, two sizes)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "not shown: the judge (po-o1) finds the dish card in the same top-left box, size and look as the sugar and milk cards that follow (panels A, D; B, G); the motion half is not compared",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "EVIDENCE (judge session: place, size and look match; motion not compared)",
   "files": [
    "js/cook/ui.js"
   ],
-  "note": "Sort: built (the dish shows through popCard, the item cards' pop-up)."
+  "note": "Sort: built (the dish through popCard, the item cards' pop-up); the eye sees it matching in place, size and look."
  },
  {
   "row": "SH-287",
@@ -441,13 +441,13 @@
   "game": "chai",
   "status": "built",
   "probe": "evidence.json SH-295 (eye: zoom2 of #mission at order-card-in-sidebar, chai L4, two sizes)",
-  "red": "needs the judge (po-b1/judge)",
+  "red": "not shown: the judge (po-o1) sees no early wrap: at 1280x665, 930x430 and 740x320 'chai' is already on the first line ('Muke elchi waari chai / khapeti.')",
   "green": "",
-  "judge": "needs-eye",
+  "judge": "EVIDENCE (judge session: the fault is not on the sheet)",
   "files": [
    "css/shared/order-card.css"
   ],
-  "note": "Sort: built (text-wrap: wrap, was balance)."
+  "note": "Sort: built (text-wrap: wrap, was balance); the served cards no longer wrap early at three sizes."
  },
  {
   "row": "SH-301",
@@ -525,15 +525,15 @@
   "row": "SH-211",
   "kind": "Look",
   "game": "chai",
-  "status": "open",
+  "status": "cannot-probe",
   "probe": "evidence.json SH-211 (eye: an 8-frame strip of #mission at every popup-open, chai L4, two sizes)",
-  "red": "needs the judge (build/screenshots/evidence/po-r1/judge/batch-01.md); the first aim (popup-fold) showed the row at rest (judge EVIDENCE)",
+  "red": "not shown: the strips catch only the first card landing in an empty row (po-r1); the row never scrolls in them",
   "green": "",
-  "judge": "needs-eye (po-r1/judge/batch-01.md)",
+  "judge": "EVIDENCE (judge session, po-l1 and po-r1)",
   "files": [
    "js/shared/order-card.js"
   ],
-  "note": "Not reproduced in code reading (sort); a machine check needs a per-frame scroll log of the row."
+  "note": "Needs a per-frame log of the row's scroll through the whole order (his case: the item just before a half or whole card)."
  },
  {
   "row": "SH-136",
