@@ -13,7 +13,7 @@ const argv = process.argv.slice(2);
 const val = (k, d) => { const i = argv.indexOf(`--${k}`); return i >= 0 ? argv[i + 1] : d; };
 const row = val("row", "SAM-47");
 const ROWS = {
-  "SAM-44": { game: "samosa" }, "SAM-46": { game: "samosa" }, "SAM-47": { game: "samosa" }, "SAM-47a": { game: "samosa" }, "SAM-47b": { game: "samosa" }, "chai": { game: "chai-tray" },
+  "SAM-44": { game: "samosa" }, "SAM-35": { game: "samosa" }, "SAM-46": { game: "samosa" }, "SAM-47": { game: "samosa" }, "SAM-47a": { game: "samosa" }, "SAM-47b": { game: "samosa" }, "chai": { game: "chai-tray" },
   "RT-01": { game: "roll-tawa" }, "RT-02": { game: "roll-tawa" }, "RT-03": { game: "roll-tawa" }, "RT-04": { game: "roll-tawa" },
 };
 if (!ROWS[row]) { console.error(`unknown row ${row}`); process.exit(2); }
@@ -74,8 +74,11 @@ const SAMPLE = (game) => {
     walk(S.children.list);
     try { const A = C.Frame.area(S); bottom = A && A.bottom ? [A.bottom.x, A.bottom.y, A.bottom.w, A.bottom.h].map(Math.round) : null; } catch (e) { /* no frame yet */ }
   }
+  // SAM-35: the language's number words, from the game's own lexicon (never written here: non-negotiable 2)
+  let nums = [];
+  try { if (C && C.numId && C.display) nums = Array.from({ length: 12 }, (_, i) => String(C.display(C.numId(i + 1)) || "").toLowerCase()).filter(Boolean); } catch (e) { /* not loaded */ }
   return {
-    geo, texts, bottom,
+    geo, texts, bottom, nums,
     under, card: txt("#mission .oc-card"), cardItems: txt("#mission .oc-card .wc14"), pop: txt(".njg-rq-card"), things,
     layers: ls.length, holes, guide: box(g), line: line ? line.textContent.trim() : null, speaking,
     fry, ek: e ? `${e.kind}:${e.key || ""}` : null, gauge, gear: box(gear), view: C && S ? S.viewName : null,
@@ -229,6 +232,17 @@ const checks = {
       }
     }
     if (!seen) faults.push("no tawa on its hob seen while the roll was the step");
+  },
+  // SAM-35: the order card's sentence says the count (one of the lexicon's number words), and its item cards are the fillings, never a
+  // finished samosa (Zafar, 12 Nov night: "If there's two samosas being ordered, the sentence should say, I want two samosas ... the item
+  // card should be the fillings, not the finished samosa")
+  "SAM-35": () => {
+    const s = samples.find((x) => x.card && x.card.length && x.cardItems && x.cardItems.length && x.nums && x.nums.length);
+    if (!s) return void faults.push("no order card with its item cards seen");
+    const items = s.cardItems.join(" | ");
+    const sentence = s.card[0].replace(items, "").trim().toLowerCase();
+    if (!s.nums.some((n) => sentence.split(/[^a-z\u00c0-\u024f']+/).includes(n))) faults.push(`the order's sentence '${sentence}' names no count`);
+    if (s.cardItems.some((t) => /samosa/i.test(t))) faults.push(`a finished-samosa item card on the order card: '${items}'`);
   },
   // SAM-47: (a) while Nani says the line in her box, her box is never under a first-time light's dim; (b) no light comes twice on the
   // same box with nothing done between (two onboards 3 s apart, nothing changed)
