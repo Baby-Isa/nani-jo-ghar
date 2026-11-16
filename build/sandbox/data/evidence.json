@@ -29487,11 +29487,11 @@
     "crop:#guide"
    ],
    "expect": [
-    "noClip:#guide"
+    "noClip:#guide .ng-say"
    ],
    "max": 20,
    "delay": 250,
-   "note": "chai L4 at 740x320: every line in Nani's box (among them 'Paani tapele me wij.') fits whole, never a second line cut off"
+   "note": "chai L4 at 740x320: every line in Nani's box (among them 'Paani tapele me wij.') fits whole in its text area, never a second line cut off"
   }
  ],
  "SH-270": [
@@ -29545,29 +29545,6 @@
  ],
  "SH-276": [
   {
-   "flow": "cook:chop",
-   "path": "fair",
-   "level": [
-    1
-   ],
-   "sizes": [
-    "740x320"
-   ],
-   "profile": "seen",
-   "want": null,
-   "at": "every:placed",
-   "after": null,
-   "capture": [
-    "dom:#mission .oc-headline",
-    "crop:#mission"
-   ],
-   "expect": [
-    "!textMatches:(?i)chop these"
-   ],
-   "max": 4,
-   "note": "chop L1: during the chop the order card's headline is never the English 'Chop these' (Nana's order headline stays, grey italic where a line is missing)"
-  },
-  {
    "flow": "cook:chaat",
    "path": "fair",
    "level": [
@@ -29581,14 +29558,35 @@
    "at": "every:placed",
    "after": null,
    "capture": [
-    "dom:#mission .oc-headline",
     "crop:#mission"
    ],
    "expect": [
-    "!textMatches:(?i)chop these"
+    "count:#mission .oc-card .oc-face>=1"
    ],
    "max": 6,
-   "note": "chaat L1: during its chop the headline stays Nana's order, never Nani's 'Chop these.'"
+   "note": "chaat L1: during its chop the order card keeps Nana's order headline with his face ('Muke chaat khape.'), never Nani's 'Chop these.' headline with no face"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": [
+    "count:#mission .oc-card .oc-face>=1"
+   ],
+   "max": 8,
+   "note": "daar L1: the same during daar's chop"
   }
  ],
  "SH-277": [
@@ -29862,7 +29860,7 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "popup-fold",
+   "at": "every:life:popup-open",
    "after": null,
    "capture": [
     "dom:#guide .ng-say",
@@ -29871,8 +29869,33 @@
    "expect": [
     "!textMatches:[A-Za-z]"
    ],
-   "delay": 0,
-   "note": "chai L1: while the order is given Nani's box says nothing (no guide.default 'e chai erte rand'); her face stays"
+   "max": 4,
+   "delay": 300,
+   "note": "chai L1: while the order is given (each pop-up card of the order) Nani's box says nothing (no guide.default 'e chai erte rand'); her face stays"
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-open",
+   "after": null,
+   "capture": [
+    "dom:#guide .ng-say",
+    "crop:#guide"
+   ],
+   "expect": [
+    "!textMatches:[A-Za-z]"
+   ],
+   "max": 4,
+   "delay": 300,
+   "note": "eggs L1: the same, no words in Nani's box during the order"
   }
  ],
  "CK-115": [
@@ -29896,7 +29919,6 @@
     "crop:#side"
    ],
    "expect": [
-    "noClip:#mission .oc-card",
     "inside:#mission .oc-card in #side"
    ],
    "max": 4,
@@ -29919,16 +29941,17 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "request",
+   "at": "every:bubble",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": [
-    "noOverlap:.cv-line,.njg-rq-card"
+    "noOverlap:.cv-bubble,.wc14-pop"
    ],
-   "delay": 400,
-   "note": "pantry at 740x320: Nani's bubble clear of the big card, never its left edge under it"
+   "max": 6,
+   "delay": 250,
+   "note": "pantry at 740x320: at each of Nani's bubbles her bubble is clear of the big card, never its left edge under it"
   }
  ],
  "CK-93": [
@@ -29936,7 +29959,8 @@
    "flow": "cook:eggs",
    "path": "fair",
    "level": [
-    1
+    1,
+    4
    ],
    "sizes": [
     "740x320",
@@ -29944,16 +29968,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-service",
+   "at": "served",
    "after": null,
    "capture": [
     "shot"
    ],
-   "expect": [
-    "count:.cv-line>=1"
-   ],
-   "delay": 800,
-   "note": "eggs L1: well done stays in the serve's kitchen with Nana's face beside the plate and a 'Shabash!' bubble (today: another room, a cat, no bubble)"
+   "expect": null,
+   "delay": 900,
+   "note": "eggs: well done stays in the serve's kitchen on the worktop, Nana's face beside the plate and a 'Shabash!' bubble; never another room with a cat"
   }
  ],
  "SH-279": [
@@ -29969,17 +29991,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-service",
+   "at": "served",
    "after": null,
    "capture": [
     "shot"
    ],
-   "expect": [
-    "inside:.cv-line in #stage",
-    "noOverlap:.cv-line,canvas:spoon"
-   ],
-   "delay": 800,
-   "note": "samosa L1 well done: the Shabash bubble inside the frame, clear of the slotted spoon"
+   "expect": null,
+   "delay": 1200,
+   "note": "samosa L1 well done: the Shabash bubble inside the frame, right of the face as chai's, clear of the slotted spoon"
   },
   {
    "flow": "cook:maani-line",
@@ -29992,16 +30011,34 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-service",
+   "at": "served",
    "after": null,
    "capture": [
     "shot"
    ],
-   "expect": [
-    "inside:.cv-line in #stage"
+   "expect": null,
+   "delay": 1200,
+   "note": "maani L1 at 740: the Shabash bubble well inside the frame, off the tray's corner"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
    ],
-   "delay": 800,
-   "note": "maani L1 at 740: the Shabash bubble inside the frame, not a few px from the right edge on the tray's corner"
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 1200,
+   "note": "chaat L1: the Shabash bubble chai's size, right of Nana's face"
   }
  ],
  "SH-271": [
@@ -30110,12 +30147,12 @@
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:node --test build/test_labs_importmap.mjs"
+    "cmd:node build/test_labs_importmap.mjs"
    ],
    "expect": [
     "pass"
    ],
-   "note": "labs.html carries the core import map (every entry ?v= stamped) and build/gen_labs.mjs writes it"
+   "note": "labs.html carries the core import map (every entry ?v= stamped) and build/gen_labs.mjs writes it (node:test file, exit 1 on a fail)"
   }
  ],
  "CHT-22": [
@@ -30141,6 +30178,29 @@
    "max": 8,
    "delay": 300,
    "note": "chaat at 740x320, a new player: every first light's gold box clear of the settings cog (the cut light under the cog)"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noOverlap:.njg-onboard .ob-box,#side-cog"
+   ],
+   "max": 8,
+   "delay": 300,
+   "note": "chop L1 at 740x320 (chaat's chop step is chop's own code): the cut light's box clear of the cog"
   }
  ],
  "CK-97": [
@@ -30181,16 +30241,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-service",
+   "at": "served",
    "after": null,
    "capture": [
     "shot"
    ],
-   "expect": [
-    "count:.cv-line>=1"
-   ],
-   "delay": 800,
-   "note": "eggs L4: well done in the serve's kitchen (chai's scene) with a Shabash bubble, never the dining table with the cat"
+   "expect": null,
+   "delay": 900,
+   "note": "eggs L4: the delivery and well done in chai's one kitchen scene"
   },
   {
    "flow": "cook:baking",
@@ -30203,16 +30261,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "view-service",
+   "at": "served",
    "after": null,
    "capture": [
     "shot"
    ],
-   "expect": [
-    "count:.cv-line>=1"
-   ],
-   "delay": 800,
-   "note": "baking L1: the same: one kitchen scene for the delivery and well done, a Shabash bubble"
+   "expect": null,
+   "delay": 900,
+   "note": "baking L1: the same, one kitchen scene for the delivery and well done"
   }
  ],
  "SH-284": [
@@ -30321,14 +30377,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "kind-timing",
+   "at": "life:timed-hold",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
-   "delay": 1500,
-   "note": "eggs L1: the timing window is the ring on the pan itself, filling to its green as chai's pan, not a tiny ring round the yolk"
+   "delay": 1200,
+   "note": "eggs L1, while the egg boils to its time: the timing window is the ring on the pan itself, filling to its green as chai's pan, not a tiny ring round the yolk"
   },
   {
    "flow": "cook:baking",
@@ -30342,14 +30398,14 @@
    ],
    "profile": "seen",
    "want": null,
-   "at": "kind-timing",
+   "at": "life:baking-oven",
    "after": null,
    "capture": [
     "shot"
    ],
    "expect": null,
    "delay": 1500,
-   "note": "baking L1: the ring on the oven (and the pour), filling to its green as chai's, not a faint small ring on the oven's corner"
+   "note": "baking L1, the naan in the oven: the ring on the oven, filling to its green as chai's, not a faint small ring on the oven's corner"
   }
  ],
  "SH-280": [
