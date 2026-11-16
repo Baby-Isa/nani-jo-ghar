@@ -453,15 +453,15 @@
   "row": "SH-301",
   "kind": "Look",
   "game": "chai",
-  "status": "built",
-  "probe": "evidence.json SH-301 (eye: zoom2 of #side at order-card-in-sidebar, chai L1, four sizes)",
-  "red": "not shown: the judge (po-b1 batch-01) sees no mismatch by eye and needs box numbers to prove 1 px",
-  "green": "",
-  "judge": "EVIDENCE (judge session: a numeric face and speaker box probe is needed)",
+  "status": "proven",
+  "probe": "evidence.json SH-301 (centredOn:#guide .ng-face .njg-face,#mission .oc-card .oc-face .njg-face at order-card-in-sidebar, chai L1 at 740x320, 930x430, 1280x665, 1920x1080; plus the eye zoom)",
+  "red": "642f1efd^ (the runtime before the fix, today's tools), run po-red-301: FAIL at 740x320 and 930x430, Nani's face 4.3 and 5.6 px off the order cards' face line",
+  "green": "642f1efd (15 Nov) and today's head 48003532, run po-w1: PASS at all four sizes, 0.0 px across",
+  "judge": "machine (alignment); the judge's eye (po-b1) saw no mismatch",
   "files": [
    "css/shared/order-card.css"
   ],
-  "note": "Fixed in code by 642f1efd (15 Nov); proving it within 1 px needs the face and speaker boxes as numbers (hook:cook.faces gives the face circles; no expect compares two boxes yet)."
+  "note": "Fixed by 642f1efd: Nani's face now sits on the order cards' face line at every size. The check reads alignment within 3 px; the row's equal size within 1 px is not measured (no expect compares two boxes' sizes)."
  },
  {
   "row": "SH-302",

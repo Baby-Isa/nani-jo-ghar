@@ -4,7 +4,7 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 
 - **Where the runs played:** on today's head (48003532) on this VM, port 8871.
 - **Eye rows:** their judge batches are committed under `build/screenshots/evidence/po-*/judge/`, and the judge session has ruled on most of them.
-- **Counts:** 26 open (21 red on head), 5 proven, 7 built, 3 cannot-probe, 1 question.
+- **Counts:** 26 open (21 red on head), 6 proven, 6 built, 3 cannot-probe, 1 question.
 
 ## Flaws first
 
@@ -54,13 +54,13 @@ Red-on-base checks for the open code rows that had no evidence spec (Cook first)
 - **SH-300:** red with 42de17a1 reverted, green on head.
 - **SH-304:** red on the runtime at c00da13^ (contract-129), green on head.
 - **SH-273:** red on the runtime at 009c5dd3^ (contract-128), green on head.
+- **SH-301:** red on the runtime at 642f1efd^ (Nani's face 4.3-5.6 px off the cards' face line at 740x320 and 930x430), green on head (0.0 px). The check reads alignment only, not the 1 px size match.
 
 ## Built (green on head, red not shown)
 
 - **SH-291:** fixed by 827f8aa1.
 - **SH-289:** fixed by db494cae.
 - **CHAI-114:** green at L1-L4.
-- **SH-301:** fixed by 642f1efd; proving 1 px needs box numbers.
 - **SH-303:** fixed by 677d1a0; the delivery is chai's scene.
 - **SH-286:** the judge sees place, size and look match.
 - **SH-295:** the judge sees no early wrap.

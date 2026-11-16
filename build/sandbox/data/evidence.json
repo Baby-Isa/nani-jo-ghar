@@ -30728,6 +30728,31 @@
    "expect": null,
    "delay": 400,
    "note": "chai L1, four sizes: Nani's face circle and speaker circle the same size and alignment as the order cards' faces and speakers"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": [
+    "centredOn:#guide .ng-face .njg-face,#mission .oc-card .oc-face .njg-face"
+   ],
+   "delay": 400,
+   "note": "chai L1, four sizes: Nani's face circle on the order cards' face line (their centres within 3 px across): the order card's face kept, Nani's moved to it"
   }
  ],
  "SH-302": [
