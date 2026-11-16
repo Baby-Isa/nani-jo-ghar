@@ -596,6 +596,15 @@ import { setTimeout } from "../life.js";
       // paani wiji chad!"); an amount still to record (a quarter, three quarters, one and a half, two and a half) makes a sentence the
       // engine can't say whole: its English in grey, never stitched from fragments (non-negotiable 2), a line for the recording sheet
       const call = Lang.role(amountLine(s), "order");
+      // (run 16, contract-36 at L4: "dedh cup paani", an amount still to record, opened its step with no voiced line and no skip: a
+      // line with no family clip is logged as the step's call skipped, a recording to make, as the oven's call logs its own)
+      if (call && (call.ok === false || (Lang.planOf && !Lang.planOf(call).some((c) => c.file)))) {
+        try {
+          if (global.Lifecycle && global.Lifecycle.note) global.Lifecycle.note("step-call", { step: `baking:${s.id}`, by: "skip-novoice" });
+        } catch (e) {
+          /* only a log */
+        }
+      }
       say(call);
       // which one: the shared step (the help ladder's pause, then her word and the glow; a wrong one wiggles at L1)
       const r = await S.step({

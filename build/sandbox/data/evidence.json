@@ -29711,10 +29711,10 @@
     "trace:#guide .ng-arrow:9000"
    ],
    "expect": [
-    "traceRepeats:#guide .ng-arrow>=2"
+    "lastsMs:#guide .ng-arrow>=3000"
    ],
    "delay": 0,
-   "note": "corn's grill screen, mid-cook: Nani's drop-down is there, as chai's, coming back after each control call (it steps aside only while a call such as 'Firai!' is said, the kit's SH-172 rule in every game): over 9 s of the cook it shows at least twice"
+   "note": "corn's grill screen, mid-cook: Nani's drop-down is there, as chai's (it steps aside only while a control's call such as 'Firai!' is said, the kit's SH-172 rule in every game): from the grill screen's start it stays up at least 3 s, and the trace shows it over 9 s of the cook"
   },
   {
    "flow": "cook:corn",
