@@ -265,6 +265,13 @@ export function sortEntries(modes, arcs) {
 
 const ORDER = ["Cook stations", "Cook: a whole dish, every station in turn", "Cook: rounds", "Clinic: a patient and a morning", "Clinic: the healing games", "Clinic: the stages"];
 
+// SH-316: the core's import map, as build/bump_version.py writes it on every page (index.html's copy): js/core/save.js's own
+// imports (progress.js, wallet.js) get the stamp too
+function coreMap(root) {
+  const m = readFileSync(join(root, "index.html"), "utf8").match(/<script\b[^>]*type="importmap"[^>]*data-njg="core"[^>]*>[\s\S]*?<\/script>/);
+  return m ? `<!-- the core's import map (build/bump_version.py fills it): js/core/save.js's own imports get the stamp too (SH-316) -->\n${m[0]}\n` : "";
+}
+
 export async function render(root = ROOT) {
   const index = JSON.parse(readFileSync(join(root, "data/arcs/index.json"), "utf8"));
   const arcs = Object.fromEntries(index.arcs.map((a) => [a.id, JSON.parse(readFileSync(join(root, "data/arcs", `${a.id}.json`), "utf8"))]));
@@ -360,7 +367,7 @@ ${hidden.map(sub).join("\n\n")}
 
   <p class="note">Speaking moments ask for the microphone; if you say no, word pills appear instead. Nothing you say leaves the device.</p>
 </main>
-<script src="js/version.js?v=${V}"></script>
+${coreMap(root)}<script src="js/version.js?v=${V}"></script>
 <!-- S13-V: the one save is the core's (js/core/save.js, a module that becomes window.Save); this page's own script is a module after it -->
 <script type="module" src="js/core/save.js?v=${V}"></script>
 <script type="module">

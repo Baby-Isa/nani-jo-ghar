@@ -66,4 +66,11 @@
     };
     proto._njgV = true;
   }
+  // SH-317: the pages cross-fade into each other (css/shared/app.css, @view-transition). When the browser skips a fade (the page
+  // not ready to show it), its promises reject with nobody listening: a page error for nothing. The fade is only ever skipped.
+  const quiet = (e) => {
+    const t = e.viewTransition;
+    if (t) [t.ready, t.finished, t.updateCallbackDone].forEach((p) => p && p.catch(() => {}));
+  };
+  if (global.addEventListener) ["pagereveal", "pageswap"].forEach((type) => global.addEventListener(type, quiet));
 })(window);
