@@ -201,21 +201,6 @@
   "note": "corn.js:1091 flies the bowl's own picture; sheets for the judge from run stove-eye-final."
  },
  {
-  "row": "CK-115",
-  "kind": "Look",
-  "game": "corn",
-  "status": "open",
-  "probe": "",
-  "red": "",
-  "green": "",
-  "judge": "needs-eye",
-  "files": [
-   "js/shared/order-card.js",
-   "js/cook/ui.js"
-  ],
-  "note": "needs fix-kit: the side panel's scroll at 740x320 (corn L3 shows the second card's headline cut at the panel's foot while the first is worked on); CLAUDE.md lets a scrolling row cut a card, so it may be a question for Zafar."
- },
- {
   "row": "CK-96",
   "kind": "Look",
   "game": "baking",
@@ -256,5 +241,20 @@
    "js/cook/ui.js"
   ],
   "note": "needs fix-kit and art (sort: ui.js:3348 only stops the crate; the item card should show the skewer the row asks for)."
+ },
+ {
+  "row": "CK-115",
+  "kind": "Look",
+  "game": "corn",
+  "status": "open",
+  "probe": "evidence CK-115 (corn L1-L4 740x320 at exp:turn: inside:#mission .oc-card,#side)",
+  "red": "48003532 (base): evidence.mjs --run --rows CK-115 --run-id stove-ck115-base: L3 and L4 FAIL (1 of 2 cards outside the side panel: the girl's card cut at its foot while Nana's open card with its two item cards fills the panel); L1-L2 PASS (one person)",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/shared/order-card.js",
+   "js/cook/ui.js"
+  ],
+  "note": "needs fix-kit (the side panel's layout and scroll; corn only fills it). The check is red on base for the row's own reason and ready for the fix. A question may sit under it: CLAUDE.md lets a scrolling row cut a card, so whether the panel must fit both cards whole at 740x320 (fold the one not being worked on, or shrink) is Zafar's call if the kit can't fit them."
  }
 ]
