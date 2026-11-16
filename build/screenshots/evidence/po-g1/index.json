@@ -1,0 +1,366 @@
+{
+ "run": "po-g1",
+ "created": "2026-11-16T06:05:54.893Z",
+ "commit": "ab79b66b",
+ "builder": null,
+ "rows": {
+  "SH-224": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/po-g1/SH-224.md",
+   "panels": [],
+   "tool": [],
+   "expect": "FAIL",
+   "expectLine": "machine: SH-224-p1-repo: pass: node build/test_fonts_local.mjs: exit 1",
+   "fp": {
+    "hash": "c2856d375c79740aca29",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-229": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-g1/SH-229.png",
+   "sheets": [
+    "build/screenshots/evidence/po-g1/SH-229.png"
+   ],
+   "md": "build/screenshots/evidence/po-g1/SH-229.md",
+   "panels": [
+    "A: cook:title L1 1280x665 [p-seen] · shot at rec:shop",
+    "B: cook:title L1 740x320 [p-seen] · shot at rec:shop"
+   ],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: noFinding:covered (no covered); noFinding:text-clipped (no text-clipped); noFinding:covered (no covered)",
+   "fp": {
+    "hash": "b94ac2310be8cff0158e",
+    "dhash": [
+     "0317133303030303",
+     "0504555515554501"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|shot",
+     "label": "cook:title L1 1280x665 [p-seen] · shot at rec:shop",
+     "type": "img",
+     "moment": "rec:shop",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-title-1280x665-p-seen/sh-229-p1-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:title L1 740x320 [p-seen] · shot at rec:shop",
+     "type": "img",
+     "moment": "rec:shop",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-title-740x320-p-seen/sh-229-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SH-275": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-g1/SH-275.png",
+   "sheets": [
+    "build/screenshots/evidence/po-g1/SH-275.png"
+   ],
+   "md": "build/screenshots/evidence/po-g1/SH-275.md",
+   "panels": [
+    "A: cook:eggs L1 1280x665 [p-seen] · shot at life:timed-hold",
+    "B: cook:eggs L1 740x320 [p-seen] · shot at life:timed-hold",
+    "C: cook:baking L1 1280x665 [p-seen] · shot at life:baking-oven",
+    "D: cook:baking L1 740x320 [p-seen] · shot at life:baking-oven"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "04ada5b7127d5b76d23e",
+    "dhash": [
+     "0170757270003070",
+     "313033b1b2b27030",
+     "0c3cb8b898191149",
+     "1c1c3c383c293803"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|shot",
+     "label": "cook:eggs L1 1280x665 [p-seen] · shot at life:timed-hold",
+     "type": "img",
+     "moment": "life:timed-hold",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-eggs-1280x665-p-seen/sh-275-p1-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:eggs L1 740x320 [p-seen] · shot at life:timed-hold",
+     "type": "img",
+     "moment": "life:timed-hold",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-eggs-740x320-p-seen/sh-275-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|shot",
+     "label": "cook:baking L1 1280x665 [p-seen] · shot at life:baking-oven",
+     "type": "img",
+     "moment": "life:baking-oven",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-baking-1280x665-p-seen/sh-275-p2-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|shot",
+     "label": "cook:baking L1 740x320 [p-seen] · shot at life:baking-oven",
+     "type": "img",
+     "moment": "life:baking-oven",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-baking-740x320-p-seen/sh-275-p2-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "SH-300": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-g1/SH-300.png",
+   "sheets": [
+    "build/screenshots/evidence/po-g1/SH-300.png"
+   ],
+   "md": "build/screenshots/evidence/po-g1/SH-300.md",
+   "panels": [
+    "A: cook:chai-tray L1 740x320 [p-seen] · life:popup-open: the screen, #guide outlined",
+    "B: cook:chai-tray L1 740x320 [p-seen] · crop:#guide at life:popup-open",
+    "C: cook:eggs L1 740x320 [p-seen] · life:popup-open: the screen, #guide outlined",
+    "D: cook:eggs L1 740x320 [p-seen] · crop:#guide at life:popup-open"
+   ],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: count:#guide .ng-say=0 (0 visible); count:#guide .ng-say=0 (0 visible)",
+   "fp": {
+    "hash": "1d8681605e2a58eb41b3",
+    "dhash": [
+     "6a2525232b181c20",
+     "0081810101010001",
+     "4a5938ababb87400",
+     "0081810101010001"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|room:crop:#guide",
+     "label": "cook:chai-tray L1 740x320 [p-seen] · life:popup-open: the screen, #guide outlined",
+     "type": "room",
+     "moment": "life:popup-open",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 235,
+      "height": 72
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-chai-tray-740x320-p-seen/sh-300-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|crop:#guide",
+     "label": "cook:chai-tray L1 740x320 [p-seen] · crop:#guide at life:popup-open",
+     "type": "img",
+     "moment": "life:popup-open",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-chai-tray-740x320-p-seen/sh-300-p1-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|room:crop:#guide",
+     "label": "cook:eggs L1 740x320 [p-seen] · life:popup-open: the screen, #guide outlined",
+     "type": "room",
+     "moment": "life:popup-open",
+     "zoom": false,
+     "dpr": 1,
+     "box": {
+      "x": 0,
+      "y": 0,
+      "width": 235,
+      "height": 72
+     },
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-eggs-740x320-p-seen/sh-300-p2-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|crop:#guide",
+     "label": "cook:eggs L1 740x320 [p-seen] · crop:#guide at life:popup-open",
+     "type": "img",
+     "moment": "life:popup-open",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-eggs-740x320-p-seen/sh-300-p2-l1-740x320-h1-c1-crop.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "CHT-22": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-g1/CHT-22.png",
+   "sheets": [
+    "build/screenshots/evidence/po-g1/CHT-22.png"
+   ],
+   "md": "build/screenshots/evidence/po-g1/CHT-22.md",
+   "panels": [
+    "A: cook:chaat L1 740x320 [p-fresh] · shot at every onboard (3)",
+    "B: cook:chop L1 740x320 [p-fresh] · shot at every onboard (2)"
+   ],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: noOverlap:.njg-onboard .ob-box,#side-cog (no overlap (3 moments)); noOverlap:.njg-onboard .ob-box,#side-cog (no overlap (2 moments))",
+   "fp": {
+    "hash": "d8fe4bb29cadbbc33565",
+    "dhash": [
+     "0d2c1c9c9ca92020",
+     "0d2c1c9c9ca92020"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:chaat L1 740x320 [p-fresh] · shot at every onboard (3)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-chaat-740x320-p-fresh/cht-22-p1-l1-740x320-h1-c0-room.png",
+       "cap": "1 · 9.3 s",
+       "moment": "visible:.njg-onboard",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-chaat-740x320-p-fresh/cht-22-p1-l1-740x320-h2-c0-room.png",
+       "cap": "2 · 11.2 s",
+       "moment": "visible:.njg-onboard",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-chaat-740x320-p-fresh/cht-22-p1-l1-740x320-h3-c0-room.png",
+       "cap": "3 · 15.7 s",
+       "moment": "visible:.njg-onboard",
+       "n": 3
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|shot",
+     "label": "cook:chop L1 740x320 [p-fresh] · shot at every onboard (2)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-chop-740x320-p-fresh/cht-22-p2-l1-740x320-h1-c0-room.png",
+       "cap": "1 · 3.8 s",
+       "moment": "visible:.njg-onboard",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-g1/evidence/cook-chop-740x320-p-fresh/cht-22-p2-l1-740x320-h2-c0-room.png",
+       "cap": "2 · 5.6 s",
+       "moment": "visible:.njg-onboard",
+       "n": 2
+      }
+     ]
+    }
+   ]
+  },
+  "LAB-08": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/po-g1/LAB-08.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (node build/test_labs_importmap.mjs: exit 0)",
+   "fp": {
+    "hash": "44bc7ccf489865956566",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  }
+ }
+}

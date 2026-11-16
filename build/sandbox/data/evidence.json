@@ -31561,20 +31561,19 @@
    "path": "fair",
    "level": 1,
    "sizes": [
-    "1280x665"
+    "1366x768"
    ],
    "profile": "seen",
    "want": null,
    "at": "now",
    "after": null,
    "capture": [
-    "cmd:grep -c fonts.googleapis.com cook.html"
+    "cmd:node build/test_fonts_local.mjs"
    ],
    "expect": [
-    "!pass"
+    "pass"
    ],
-   "note": "cook.html loads no Google font (the fonts hosted in the repo): grep finds none (exit 1)",
-   "delay": 0
+   "note": "no shipped page, script or style loads a font from Google (fonts.googleapis.com / fonts.gstatic.com): the faces come from assets/fonts/ through the tokens, chai first then every game"
   }
  ],
  "SH-151": [
@@ -32445,5 +32444,1474 @@
  },
  "SH-223": {
   "human": "Zafar plays chai in Lora and Fraunces, then the roll-out before/after per game: the type feels elegant, not too bold"
- }
+ },
+ "CHAI-114": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#guide"
+   ],
+   "expect": [
+    "noClip:#guide .ng-say"
+   ],
+   "max": 20,
+   "delay": 250,
+   "note": "chai L1-L4 at 740x320: every line in Nani's box (among them 'Paani tapele me wij.') fits whole in its text area, never a second line cut off"
+  }
+ ],
+ "SH-270": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#guide"
+   ],
+   "expect": [
+    "count:#guide .ng-face>=1"
+   ],
+   "max": 8,
+   "delay": 200,
+   "note": "chop L1: Nani's box keeps her face circle (and speaker) while she speaks during the chop; today the box is text only (ng-strip hides .ng-face)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#guide"
+   ],
+   "expect": [
+    "count:#guide .ng-face>=1"
+   ],
+   "max": 8,
+   "delay": 200,
+   "note": "chaat L1: the same, Nani's face circle in her box at every line of hers"
+  }
+ ],
+ "SH-276": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": [
+    "count:#mission .oc-card .oc-face>=1"
+   ],
+   "max": 6,
+   "note": "chaat L1: during its chop the order card keeps Nana's order headline with his face ('Muke chaat khape.'), never Nani's 'Chop these.' headline with no face"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": [
+    "count:#mission .oc-card .oc-face>=1"
+   ],
+   "max": 8,
+   "note": "daar L1: the same during daar's chop"
+  }
+ ],
+ "SH-277": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": [
+    "lines:#mission .oc-headline<=1"
+   ],
+   "max": 10,
+   "note": "eggs at 740x320: the order headline one line in every state (shrinks to fit, never wraps to two or three)"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#mission"
+   ],
+   "expect": [
+    "lines:#mission .oc-headline<=1"
+   ],
+   "max": 10,
+   "note": "samosa at 740x320: the order headline one line"
+  }
+ ],
+ "SH-289": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "results-words",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noFinding:text-clipped",
+    "noClip:.njg-results"
+   ],
+   "delay": 600,
+   "note": "chai L4 end at 740x320: every word card of the review whole (the 'hakro' card not cut at the panel's bottom, its English shown)"
+  }
+ ],
+ "SH-291": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:99"
+   ],
+   "expect": [
+    "contract-99"
+   ],
+   "note": "chai L4: a served card folds once and the panel stays where it glided to when the focus moves to another pan (contract-99 over the play)"
+  }
+ ],
+ "SH-273": [
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:128",
+    "contract:119"
+   ],
+   "expect": [
+    "contract-128"
+   ],
+   "note": "baking L1: the dish card that flashes as the customer names the dish is whole: a picture, no row of dots (contract-128)"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:128",
+    "contract:119"
+   ],
+   "expect": [
+    "contract-128"
+   ],
+   "note": "chop L1: the same (contract-128)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:128",
+    "contract:119"
+   ],
+   "expect": [
+    "contract-128"
+   ],
+   "note": "chaat L1: the same (contract-128)"
+  }
+ ],
+ "SH-304": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:129"
+   ],
+   "expect": [
+    "contract-129"
+   ],
+   "note": "chai: the order's pop-up item card never over the speaker's speech bubble (contract-129)"
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:129"
+   ],
+   "expect": [
+    "contract-129"
+   ],
+   "note": "eggs L1: the same (contract-129)"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:129"
+   ],
+   "expect": [
+    "contract-129"
+   ],
+   "note": "maani L1: the same (contract-129)"
+  }
+ ],
+ "SH-288": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noFinding:tap-small"
+   ],
+   "delay": 300,
+   "note": "chai L1 at the four sizes: every tap target (word cards' speakers, Nani's arrow, the family badges, the knobs, the jars, the dots) at least 48 CSS px (the layout lint's tap-small)"
+  }
+ ],
+ "SH-300": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-open",
+   "after": null,
+   "capture": [
+    "crop:#guide"
+   ],
+   "expect": [
+    "count:#guide .ng-say=0"
+   ],
+   "max": 4,
+   "delay": 300,
+   "note": "chai L1: while the order is given (each pop-up card of the order) Nani's box shows no line (no guide.default 'e chai erte rand'): her text area empty, her face stays"
+  },
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-open",
+   "after": null,
+   "capture": [
+    "crop:#guide"
+   ],
+   "expect": [
+    "count:#guide .ng-say=0"
+   ],
+   "max": 4,
+   "delay": 300,
+   "note": "eggs L1: the same, no line in Nani's box during the order"
+  }
+ ],
+ "CK-115": [
+  {
+   "flow": "cook:corn",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "crop:#side"
+   ],
+   "expect": [
+    "inside:#mission .oc-card in #side"
+   ],
+   "max": 4,
+   "delay": 400,
+   "note": "corn at 740x320: every order's card (the second one too) fits whole in the side panel, never cut at its bottom edge"
+  }
+ ],
+ "PAN-23": [
+  {
+   "flow": "cook:fetch",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:bubble",
+   "after": null,
+   "capture": [
+    "shot",
+    "contract:129"
+   ],
+   "expect": [
+    "noOverlap:.cv-bubble,.wc14-pop",
+    "contract-129"
+   ],
+   "max": 6,
+   "delay": 250,
+   "note": "pantry at 740x320: at each of Nani's bubbles her bubble is clear of the big card, never its left edge under it (and contract-129 over the play: the pop-up card never over a speech bubble)"
+  }
+ ],
+ "CK-93": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "served",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 900,
+   "note": "eggs: well done stays in the serve's kitchen on the worktop, Nana's face beside the plate and a 'Shabash!' bubble; never another room with a cat"
+  }
+ ],
+ "SH-279": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 20,
+   "delay": 400,
+   "note": "samosa L1, at each of Nani's lines (the panel whose line is 'Shabash!' is the well done): the 'Shabash!' chip beside the praise face sits inside the frame, right of the face as chai's, clear of the slotted spoon"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 20,
+   "delay": 400,
+   "note": "maani L1 at 740 (the 'Shabash!' panel): the chip well inside the frame, off the tray's corner"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:line:cook",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 20,
+   "delay": 400,
+   "note": "chaat L1 (the 'Shabash!' panel): the chip chai's size, right of Nana's face"
+  }
+ ],
+ "SH-271": [
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "trace:.njg-onboard .ob-shade:1500",
+    "strip:#stage:6x150"
+   ],
+   "expect": [
+    "lastsMs:.njg-onboard .ob-shade>=1000"
+   ],
+   "max": 4,
+   "note": "chop L1, a new player: each first light's dim holds at least 1 s from when it comes (the bot's move comes later), never off for 200-300 ms and back while the child has not acted"
+  },
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "trace:.njg-onboard .ob-shade:1500",
+    "strip:#stage:6x150"
+   ],
+   "expect": [
+    "lastsMs:.njg-onboard .ob-shade>=1000"
+   ],
+   "max": 4,
+   "note": "maani L1, a new player: the same, the dim and box never blink off before the child acts"
+  },
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "trace:.njg-onboard .ob-shade:1500",
+    "strip:#stage:6x150"
+   ],
+   "expect": [
+    "lastsMs:.njg-onboard .ob-shade>=1000"
+   ],
+   "max": 4,
+   "note": "samosa L1, a new player: the dim never on and off three times in 2 s"
+  }
+ ],
+ "MAA-25": [
+  {
+   "flow": "cook:maani-line",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 500,
+   "note": "maani: the plates are not on the shelf among the dough piles; they stay on the worktop as chai keeps its vessels; the shelf holds the dough piles at one even pitch, each with its pill"
+  }
+ ],
+ "LAB-08": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_labs_importmap.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "labs.html carries the core import map (every entry ?v= stamped) and build/gen_labs.mjs writes it (node:test file, exit 1 on a fail)"
+  }
+ ],
+ "CHT-22": [
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noOverlap:.njg-onboard .ob-box,#side-cog"
+   ],
+   "max": 8,
+   "delay": 300,
+   "note": "chaat at 740x320, a new player: every first light's gold box clear of the settings cog (the cut light under the cog)"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noOverlap:.njg-onboard .ob-box,#side-cog"
+   ],
+   "max": 8,
+   "delay": 300,
+   "note": "chop L1 at 740x320 (chaat's chop step is chop's own code): the cut light's box clear of the cog"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "strip:#stage:3x150"
+   ],
+   "expect": null,
+   "max": 8,
+   "note": "chaat at 740x320, each move: the 'hakro' pill clear of the cut potato; no one-frame dim flash at the tameto turn; the flying piece a readable picture, not a speck; the potato never on the board and the tray at once"
+  }
+ ],
+ "CK-97": [
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "page:end",
+   "after": null,
+   "capture": [
+    "contract:104"
+   ],
+   "expect": [
+    "contract-104"
+   ],
+   "note": "baking L1-L4: every item card shows its shelf item's own picture (atto the shelf's glass jar; 'adh paani' a half-full bottle, not the full one): contract-104 over the play"
+  }
+ ],
+ "SH-303": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:serve-view",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x600"
+   ],
+   "expect": null,
+   "delay": 0,
+   "note": "eggs L4: the delivery and the well done of the same round, one kitchen scene throughout (no cut to the dining table with the cat)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:serve-view",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x600"
+   ],
+   "expect": null,
+   "delay": 0,
+   "note": "chai L4, the reference: chai's delivery and well done scene"
+  },
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:serve-view",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x600"
+   ],
+   "expect": null,
+   "delay": 0,
+   "note": "baking L1: the same one kitchen scene for the delivery and well done"
+  }
+ ],
+ "SH-284": [
+  {
+   "flow": "cook:samosa",
+   "path": "fair",
+   "level": [
+    1,
+    2
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "fresh",
+   "want": null,
+   "at": "every:onboard",
+   "after": null,
+   "capture": [
+    "shot",
+    "crop:#guide"
+   ],
+   "expect": null,
+   "max": 6,
+   "delay": 400,
+   "note": "samosa L1/L2, a new player: at each first-time showing (fill, fold) Nani's box is lit, not under the dim, while she says the line it holds (eye; SAM-47 is samosa's own row with the builder)"
+  }
+ ],
+ "SH-283": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "seed": 7,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "eggs L1, the same round (seed 7) at both sizes: the shelf holds the same items in the same order (eye: the two panels side by side)"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "seed": 7,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "chaat L1, seed 7 at both sizes: the same shelf items in the same order (sev and dai not swapped by size)"
+  }
+ ],
+ "PRC-11": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:grep -niE 'progress table|% complete' .claude/skills/checkin/SKILL.md"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "the check-in skill posts the plan as a table (each step, done in the last half hour, still to do, % complete): its SKILL.md names that table"
+  }
+ ],
+ "SH-275": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "exp:lift",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 700,
+   "note": "eggs L1, the egg boiling to its time (the lift is asked): the timing window is the ring on the pan itself, filling to its green as chai's pan, not a tiny ring round the yolk"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 300,
+   "note": "chop L1: any timing window on the thing being cut or the board, never a separate flat pie or stopwatch disc beside the board"
+  },
+  {
+   "flow": "cook:chaat",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 300,
+   "note": "chaat L1, its chop: the same, no stopwatch disc beside the board"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 300,
+   "note": "daar L1, its chop: the same, no stopwatch disc beside the board"
+  }
+ ],
+ "SH-280": [
+  {
+   "flow": "cook:baking",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:stage-start",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x200"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "baking L1: moving between stages glides as chai's items fly: never a bare frame then the oven and tray in one step, never the tray teleporting into or out of the oven"
+  }
+ ],
+ "SH-281": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 8,
+   "delay": 600,
+   "note": "eggs L1, after each move (the empty pan once the egg is lifted among them): no grey disc left in the empty pan, no grey blob above the plate"
+  },
+  {
+   "flow": "cook:chop",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 6,
+   "delay": 400,
+   "note": "chop L1: no thin white line left on the board, no overlapping cut halves"
+  },
+  {
+   "flow": "cook:daar",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "crop:#stage"
+   ],
+   "expect": null,
+   "max": 8,
+   "delay": 400,
+   "note": "daar L1: no torn white scrap left on the board or in the pot after its job"
+  }
+ ],
+ "SH-286": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "life:dish-flash",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x200"
+   ],
+   "expect": null,
+   "delay": 0,
+   "note": "chai L1: the dish card as the customer says 'Muke chai khape' (its place, size and motion)"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:pop-face",
+   "after": null,
+   "capture": [
+    "strip:#stage:4x200"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 0,
+   "note": "chai L1: the item cards that follow (sugar, milk, ginger), to compare with the dish card: the same place, size, look and motion"
+  }
+ ],
+ "SH-287": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "request",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "chai: during the order the view sits higher: less of the island, more of the wall behind it"
+  }
+ ],
+ "SH-295": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": [
+    "/elchi waari/"
+   ],
+   "at": "results",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "delay": 300,
+   "note": "chai L4 with a cardamom order, the served cards (tick or stamp) in the side panel: a line breaks only where the next word does not fit ('Muke elchi waari / chai khapeti.' with room for 'chai' on the first line is the fault)"
+  }
+ ],
+ "SH-299": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-fold",
+   "after": null,
+   "capture": [
+    "strip:#game:6x100"
+   ],
+   "expect": null,
+   "max": 4,
+   "note": "chai L4 740x320, the whole game frame: each item card's flight lands in its slot inside the side panel, never about 26 px past its edge"
+  }
+ ],
+ "SH-301": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": null,
+   "delay": 400,
+   "note": "chai L1, four sizes: Nani's face circle and speaker circle the same size and alignment as the order cards' faces and speakers"
+  },
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "930x430",
+    "1280x665",
+    "1920x1080"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#side"
+   ],
+   "expect": [
+    "centredOn:#guide .ng-face .njg-face,#mission .oc-card .oc-face .njg-face"
+   ],
+   "delay": 400,
+   "note": "chai L1, four sizes: Nani's face circle on the order cards' face line (their centres within 3 px across): the order card's face kept, Nani's moved to it"
+  }
+ ],
+ "SH-302": [
+  {
+   "flow": "cook:eggs",
+   "path": "fair",
+   "level": [
+    1,
+    4
+   ],
+   "sizes": [
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:placed",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "max": 4,
+   "delay": 150,
+   "note": "eggs: the egg picked up from the box is bigger in the hand (beside the pan)"
+  }
+ ],
+ "SH-229": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "shop",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": [
+    "noFinding:covered",
+    "noFinding:text-clipped"
+   ],
+   "delay": 500,
+   "note": "Nani's shop: the tick button never over the lower row's cards or their prices (1280x665), never over the '?' button, and the '?' not clipped at the panel's right edge (740x320)"
+  }
+ ],
+ "ART-74": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_no_upload_folders.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no raw ChatGPT upload folder (assets/ChatGPT 261110 1, 261110 2 ...) in the tree the publish puts on main; every image kept under sources/art/"
+  }
+ ],
+ "LNG-22": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_no_religious_set_pieces.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "no Eid scene or line the game plays: the first launch's hook (data/story/first-launch.json) and Cook's day-6 finale (data/cook.json) are the birthday"
+  }
+ ],
+ "SH-211": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    4
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:life:popup-open",
+   "after": null,
+   "capture": [
+    "strip:#mission:8x150"
+   ],
+   "expect": null,
+   "max": 5,
+   "delay": 0,
+   "note": "chai L4, while the order is given (from each item card's pop-up on): the order row scrolls one way to receive the card, never jerking left and right first (the item just before a half or whole card is his case)"
+  }
+ ],
+ "SH-135": [
+  {
+   "flow": "cook:title",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "740x320",
+    "1280x665"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "title",
+   "after": null,
+   "capture": [
+    "shot"
+   ],
+   "expect": null,
+   "delay": 2500,
+   "note": "Cook's title: its three buttons the kit's solid look, not washed out (the door's Ha!/Na! and the clinic's lit tool are the parked modes' part)"
+  }
+ ],
+ "SH-136": [
+  {
+   "flow": "cook:chai-tray",
+   "path": "fair",
+   "level": [
+    1
+   ],
+   "sizes": [
+    "930x430"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "every:order-card-in-sidebar",
+   "after": null,
+   "capture": [
+    "zoom2:#mission"
+   ],
+   "expect": null,
+   "max": 3,
+   "delay": 400,
+   "note": "chai L1 at the 915x412-like 930x430: Nana's one-row card tall enough that his badge sits clear of its bottom border; the reflowed chips carry their speaker (the reveal eye is a fit choice for Zafar)"
+  }
+ ],
+ "LNG-20": [
+  {
+   "flow": "repo",
+   "path": "fair",
+   "level": 1,
+   "sizes": [
+    "1366x768"
+   ],
+   "profile": "seen",
+   "want": null,
+   "at": "now",
+   "after": null,
+   "capture": [
+    "cmd:node build/test_family_takes_linked.mjs"
+   ],
+   "expect": [
+    "pass"
+   ],
+   "note": "every usable family take (data/family-audio.json, approved game) is linked in the clip index (data/lang/clips.json) or marked unused"
+  }
+ ]
 }

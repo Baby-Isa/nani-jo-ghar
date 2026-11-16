@@ -1,0 +1,1249 @@
+{
+ "run": "po-j1",
+ "created": "2026-11-16T06:16:16.890Z",
+ "commit": "a4d3a78e",
+ "builder": null,
+ "rows": {
+  "SH-271": {
+   "kind": "motion",
+   "png": "build/screenshots/evidence/po-j1/SH-271.png",
+   "sheets": [
+    "build/screenshots/evidence/po-j1/SH-271.png",
+    "build/screenshots/evidence/po-j1/SH-271-2.png",
+    "build/screenshots/evidence/po-j1/SH-271-3.png",
+    "build/screenshots/evidence/po-j1/SH-271-4.png",
+    "build/screenshots/evidence/po-j1/SH-271-5.png",
+    "build/screenshots/evidence/po-j1/SH-271-6.png",
+    "build/screenshots/evidence/po-j1/SH-271-7.png",
+    "build/screenshots/evidence/po-j1/SH-271-8.png",
+    "build/screenshots/evidence/po-j1/SH-271-9.png"
+   ],
+   "md": "build/screenshots/evidence/po-j1/SH-271.md",
+   "panels": [
+    "A: cook:chop L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+    "B: cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+    "C: cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+    "D: cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+    "E: cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+    "F: cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+    "G: cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+    "H: cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+    "I: cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+    "J: cook:samosa L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+    "K: cook:samosa L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+    "L: cook:samosa L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED"
+   ],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: lastsMs:.njg-onboard .ob-shade>=1000 (on screen 2636 ms); lastsMs:.njg-onboard .ob-shade>=1000 (on screen 3515 ms); lastsMs:.njg-onboard .ob-shade>=1000 (on screen 1830 ms)",
+   "fp": {
+    "hash": "99bbc64d2ece55c63479",
+    "dhash": [
+     "3dbd2d6935218080",
+     "016c6c686c0c3838",
+     "013c2c683c0cd8d8",
+     "016c6c686c0cd8d8",
+     "016c6c686c0cd8d8",
+     "0d6c6c6c6c8cd8d8",
+     "6d6c6c6c6c8cd8d8",
+     "0d6c6c6c6c8cd8d8",
+     "0d6c6c6c6c8cd8d8",
+     "f1a5a4a4a4c0b084",
+     "e1a5a4a4a4c0b084",
+     "f19ddcd8d8c09084"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|strip:#stage:6x150",
+     "label": "cook:chop L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      291,
+      642,
+      799,
+      1115,
+      1745
+     ],
+     "motion": {
+      "moving": true,
+      "share": 92.94,
+      "mean": 67.61,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chop-740x320-p-fresh/sh-271-p1-l1-740x320-h1-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chop-740x320-p-fresh/sh-271-p1-l1-740x320-h1-c2-strip-f02.png",
+       "cap": "291 ms (slot 150: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chop-740x320-p-fresh/sh-271-p1-l1-740x320-h1-c2-strip-f03.png",
+       "cap": "642 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chop-740x320-p-fresh/sh-271-p1-l1-740x320-h1-c2-strip-f04.png",
+       "cap": "799 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chop-740x320-p-fresh/sh-271-p1-l1-740x320-h1-c2-strip-f05.png",
+       "cap": "1115 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chop-740x320-p-fresh/sh-271-p1-l1-740x320-h1-c2-strip-f06.png",
+       "cap": "1745 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|strip:#stage:6x150",
+     "label": "cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      161,
+      474,
+      703,
+      1023,
+      1220
+     ],
+     "motion": {
+      "moving": true,
+      "share": 94.28,
+      "mean": 77.47,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h1-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h1-c2-strip-f02.png",
+       "cap": "161 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h1-c2-strip-f03.png",
+       "cap": "474 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h1-c2-strip-f04.png",
+       "cap": "703 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h1-c2-strip-f05.png",
+       "cap": "1023 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h1-c2-strip-f06.png",
+       "cap": "1220 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|strip:#stage:6x150",
+     "label": "cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      339,
+      537,
+      858,
+      1174,
+      1498
+     ],
+     "motion": {
+      "moving": false,
+      "share": 0.47,
+      "mean": 0.08,
+      "note": "no motion captured (0.47 % of the crop changed, mean 0.08): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h2-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h2-c2-strip-f02.png",
+       "cap": "339 ms (slot 150: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h2-c2-strip-f03.png",
+       "cap": "537 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h2-c2-strip-f04.png",
+       "cap": "858 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h2-c2-strip-f05.png",
+       "cap": "1174 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h2-c2-strip-f06.png",
+       "cap": "1498 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|strip:#stage:6x150",
+     "label": "cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      200,
+      380,
+      532,
+      933,
+      1190
+     ],
+     "motion": {
+      "moving": false,
+      "share": 2.2,
+      "mean": 1.32,
+      "note": "no motion captured (2.2 % of the crop changed, mean 1.32): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h3-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h3-c2-strip-f02.png",
+       "cap": "200 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h3-c2-strip-f03.png",
+       "cap": "380 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h3-c2-strip-f04.png",
+       "cap": "532 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h3-c2-strip-f05.png",
+       "cap": "933 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h3-c2-strip-f06.png",
+       "cap": "1190 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|1280x665|strip:#stage:6x150",
+     "label": "cook:maani-line L1 1280x665 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      188,
+      662,
+      1166,
+      1265,
+      1585
+     ],
+     "motion": {
+      "moving": true,
+      "share": 3.01,
+      "mean": 1.16,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h4-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h4-c2-strip-f02.png",
+       "cap": "188 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h4-c2-strip-f03.png",
+       "cap": "662 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h4-c2-strip-f04.png",
+       "cap": "1166 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h4-c2-strip-f05.png",
+       "cap": "1265 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-fresh/sh-271-p2-l1-1280x665-h4-c2-strip-f06.png",
+       "cap": "1585 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|strip:#stage:6x150",
+     "label": "cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      301,
+      584,
+      831,
+      976,
+      1150
+     ],
+     "motion": {
+      "moving": true,
+      "share": 92.98,
+      "mean": 74.69,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h1-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h1-c2-strip-f02.png",
+       "cap": "301 ms (slot 150: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h1-c2-strip-f03.png",
+       "cap": "584 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h1-c2-strip-f04.png",
+       "cap": "831 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h1-c2-strip-f05.png",
+       "cap": "976 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h1-c2-strip-f06.png",
+       "cap": "1150 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|strip:#stage:6x150",
+     "label": "cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      457,
+      682,
+      1279,
+      1722,
+      2540
+     ],
+     "motion": {
+      "moving": true,
+      "share": 93.38,
+      "mean": 74,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h2-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h2-c2-strip-f02.png",
+       "cap": "457 ms (slot 150: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h2-c2-strip-f03.png",
+       "cap": "682 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h2-c2-strip-f04.png",
+       "cap": "1279 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h2-c2-strip-f05.png",
+       "cap": "1722 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h2-c2-strip-f06.png",
+       "cap": "2540 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|strip:#stage:6x150",
+     "label": "cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      381,
+      739,
+      1383,
+      1911,
+      3548
+     ],
+     "motion": {
+      "moving": false,
+      "share": 2.22,
+      "mean": 1.4,
+      "note": "no motion captured (2.22 % of the crop changed, mean 1.4): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h3-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h3-c2-strip-f02.png",
+       "cap": "381 ms (slot 150: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h3-c2-strip-f03.png",
+       "cap": "739 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h3-c2-strip-f04.png",
+       "cap": "1383 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h3-c2-strip-f05.png",
+       "cap": "1911 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h3-c2-strip-f06.png",
+       "cap": "3548 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|strip:#stage:6x150",
+     "label": "cook:maani-line L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      155,
+      444,
+      770,
+      1109,
+      1348
+     ],
+     "motion": {
+      "moving": true,
+      "share": 95.77,
+      "mean": 77.83,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h4-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h4-c2-strip-f02.png",
+       "cap": "155 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h4-c2-strip-f03.png",
+       "cap": "444 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h4-c2-strip-f04.png",
+       "cap": "770 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h4-c2-strip-f05.png",
+       "cap": "1109 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-fresh/sh-271-p2-l1-740x320-h4-c2-strip-f06.png",
+       "cap": "1348 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:6x150",
+     "label": "cook:samosa L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      150,
+      300,
+      619,
+      829,
+      991
+     ],
+     "motion": {
+      "moving": true,
+      "share": 98.04,
+      "mean": 77.11,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h1-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h1-c2-strip-f02.png",
+       "cap": "150 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h1-c2-strip-f03.png",
+       "cap": "300 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h1-c2-strip-f04.png",
+       "cap": "619 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h1-c2-strip-f05.png",
+       "cap": "829 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h1-c2-strip-f06.png",
+       "cap": "991 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:6x150",
+     "label": "cook:samosa L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      152,
+      330,
+      450,
+      600,
+      750
+     ],
+     "motion": {
+      "moving": false,
+      "share": 2.27,
+      "mean": 2.16,
+      "note": "no motion captured (2.27 % of the crop changed, mean 2.16): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h2-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h2-c2-strip-f02.png",
+       "cap": "152 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h2-c2-strip-f03.png",
+       "cap": "330 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h2-c2-strip-f04.png",
+       "cap": "450 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h2-c2-strip-f05.png",
+       "cap": "600 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h2-c2-strip-f06.png",
+       "cap": "750 ms"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:6x150",
+     "label": "cook:samosa L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      153,
+      300,
+      459,
+      698,
+      823
+     ],
+     "motion": {
+      "moving": false,
+      "share": 1.08,
+      "mean": 0.62,
+      "note": "no motion captured (1.08 % of the crop changed, mean 0.62): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h3-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h3-c2-strip-f02.png",
+       "cap": "153 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h3-c2-strip-f03.png",
+       "cap": "300 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h3-c2-strip-f04.png",
+       "cap": "459 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h3-c2-strip-f05.png",
+       "cap": "698 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h3-c2-strip-f06.png",
+       "cap": "823 ms (slot 750: off)"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:6x150",
+     "label": "cook:samosa L1 740x320 [p-fresh] · strip:#stage:6x150 at visible:.njg-onboard",
+     "type": "frames",
+     "moment": "visible:.njg-onboard",
+     "ms": [
+      0,
+      207,
+      449,
+      629,
+      796,
+      976
+     ],
+     "motion": {
+      "moving": true,
+      "share": 90.5,
+      "mean": 74.06,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h4-c2-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h4-c2-strip-f02.png",
+       "cap": "207 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h4-c2-strip-f03.png",
+       "cap": "449 ms (slot 300: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h4-c2-strip-f04.png",
+       "cap": "629 ms (slot 450: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h4-c2-strip-f05.png",
+       "cap": "796 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-samosa-740x320-p-fresh/sh-271-p3-l1-740x320-h4-c2-strip-f06.png",
+       "cap": "976 ms (slot 750: off)"
+      }
+     ]
+    }
+   ]
+  },
+  "MAA-25": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-j1/MAA-25.png",
+   "sheets": [
+    "build/screenshots/evidence/po-j1/MAA-25.png"
+   ],
+   "md": "build/screenshots/evidence/po-j1/MAA-25.md",
+   "panels": [
+    "A: cook:maani-line L1 1280x665 [p-seen] · shot at rec:order-card-in-sidebar",
+    "B: cook:maani-line L1 740x320 [p-seen] · shot at rec:order-card-in-sidebar",
+    "C: cook:maani-line@L4 L4 1280x665 [p-seen] · shot at rec:order-card-in-sidebar",
+    "D: cook:maani-line@L4 L4 740x320 [p-seen] · shot at rec:order-card-in-sidebar"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "52798e6266bcd22f051e",
+    "dhash": [
+     "0134343434042424",
+     "04143434b424362e",
+     "0134343414043c2c",
+     "041434343424362e"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|shot",
+     "label": "cook:maani-line L1 1280x665 [p-seen] · shot at rec:order-card-in-sidebar",
+     "type": "img",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-1280x665-p-seen/maa-25-p1-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:maani-line L1 740x320 [p-seen] · shot at rec:order-card-in-sidebar",
+     "type": "img",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-740x320-p-seen/maa-25-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|1280x665|shot",
+     "label": "cook:maani-line@L4 L4 1280x665 [p-seen] · shot at rec:order-card-in-sidebar",
+     "type": "img",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-l4-1280x665-p-seen/maa-25-p1-l4-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|shot",
+     "label": "cook:maani-line@L4 L4 740x320 [p-seen] · shot at rec:order-card-in-sidebar",
+     "type": "img",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-maani-line-l4-740x320-p-seen/maa-25-p1-l4-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  },
+  "CHAI-114": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-j1/CHAI-114.png",
+   "sheets": [
+    "build/screenshots/evidence/po-j1/CHAI-114.png",
+    "build/screenshots/evidence/po-j1/CHAI-114-2.png",
+    "build/screenshots/evidence/po-j1/CHAI-114-3.png",
+    "build/screenshots/evidence/po-j1/CHAI-114-4.png"
+   ],
+   "md": "build/screenshots/evidence/po-j1/CHAI-114.md",
+   "panels": [
+    "A: cook:chai-tray L1 740x320 [p-seen] · crop:#guide at every line:cook (15)",
+    "B: cook:chai-tray@L2 L2 740x320 [p-seen] · crop:#guide at every line:cook (20)",
+    "C: cook:chai-tray@L3 L3 740x320 [p-seen] · crop:#guide at every line:cook (11)",
+    "D: cook:chai-tray@L4 L4 740x320 [p-seen] · crop:#guide at every line:cook (15)"
+   ],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: noClip:#guide .ng-say (1 clean (12 moments)); noClip:#guide .ng-say (1 clean (17 moments)); noClip:#guide .ng-say (1 clean (9 moments))",
+   "fp": {
+    "hash": "be6ea67a8ce53e494b32",
+    "dhash": [
+     "0081810101010001",
+     "0081810101010001",
+     "0081810101010001",
+     "0181810101010000"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|crop:#guide",
+     "label": "cook:chai-tray L1 740x320 [p-seen] · crop:#guide at every line:cook (15)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h1-c1-crop.png",
+       "cap": "1 · 10.6 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h2-c1-crop.png",
+       "cap": "2 · 12.7 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h3-c1-crop.png",
+       "cap": "3 · 14.0 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h4-c1-crop.png",
+       "cap": "4 · 22.3 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h5-c1-crop.png",
+       "cap": "5 · 24.3 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h6-c1-crop.png",
+       "cap": "6 · 25.9 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h7-c1-crop.png",
+       "cap": "7 · 29.7 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h8-c1-crop.png",
+       "cap": "8 · 30.6 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h9-c1-crop.png",
+       "cap": "9 · 32.3 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h10-c1-crop.png",
+       "cap": "10 · 33.4 s",
+       "moment": "line:cook",
+       "n": 10
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h11-c1-crop.png",
+       "cap": "11 · 36.5 s",
+       "moment": "line:cook",
+       "n": 11
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h12-c1-crop.png",
+       "cap": "12 · 38.0 s",
+       "moment": "line:cook",
+       "n": 12
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h13-c1-crop.png",
+       "cap": "13 · 39.2 s",
+       "moment": "line:cook",
+       "n": 13
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h14-c1-crop.png",
+       "cap": "14 · 42.0 s",
+       "moment": "line:cook",
+       "n": 14
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-740x320-p-seen/chai-114-p1-l1-740x320-h15-c1-crop.png",
+       "cap": "15 · 42.1 s",
+       "moment": "line:cook",
+       "n": 15
+      }
+     ]
+    },
+    {
+     "key": "p1|L2|740x320|crop:#guide",
+     "label": "cook:chai-tray@L2 L2 740x320 [p-seen] · crop:#guide at every line:cook (20)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h1-c1-crop.png",
+       "cap": "1 · 11.3 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h2-c1-crop.png",
+       "cap": "2 · 13.8 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h3-c1-crop.png",
+       "cap": "3 · 15.3 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h4-c1-crop.png",
+       "cap": "4 · 28.9 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h5-c1-crop.png",
+       "cap": "5 · 31.2 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h6-c1-crop.png",
+       "cap": "6 · 32.4 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h7-c1-crop.png",
+       "cap": "7 · 35.6 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h8-c1-crop.png",
+       "cap": "8 · 37.8 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h9-c1-crop.png",
+       "cap": "9 · 43.7 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h10-c1-crop.png",
+       "cap": "10 · 46.1 s",
+       "moment": "line:cook",
+       "n": 10
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h11-c1-crop.png",
+       "cap": "11 · 50.8 s",
+       "moment": "line:cook",
+       "n": 11
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h12-c1-crop.png",
+       "cap": "12 · 52.9 s",
+       "moment": "line:cook",
+       "n": 12
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h13-c1-crop.png",
+       "cap": "13 · 54.1 s",
+       "moment": "line:cook",
+       "n": 13
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h14-c1-crop.png",
+       "cap": "14 · 60.5 s",
+       "moment": "line:cook",
+       "n": 14
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h15-c1-crop.png",
+       "cap": "15 · 61.7 s",
+       "moment": "line:cook",
+       "n": 15
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h16-c1-crop.png",
+       "cap": "16 · 64.7 s",
+       "moment": "line:cook",
+       "n": 16
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h17-c1-crop.png",
+       "cap": "17 · 65.9 s",
+       "moment": "line:cook",
+       "n": 17
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h18-c1-crop.png",
+       "cap": "18 · 72.0 s",
+       "moment": "line:cook",
+       "n": 18
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h19-c1-crop.png",
+       "cap": "19 · 73.0 s",
+       "moment": "line:cook",
+       "n": 19
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l2-740x320-p-seen/chai-114-p1-l2-740x320-h20-c1-crop.png",
+       "cap": "20 · 74.8 s",
+       "moment": "line:cook",
+       "n": 20
+      }
+     ]
+    },
+    {
+     "key": "p1|L3|740x320|crop:#guide",
+     "label": "cook:chai-tray@L3 L3 740x320 [p-seen] · crop:#guide at every line:cook (11)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h1-c1-crop.png",
+       "cap": "1 · 13.0 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h2-c1-crop.png",
+       "cap": "2 · 16.5 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h3-c1-crop.png",
+       "cap": "3 · 39.7 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h4-c1-crop.png",
+       "cap": "4 · 42.5 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h5-c1-crop.png",
+       "cap": "5 · 59.6 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h6-c1-crop.png",
+       "cap": "6 · 60.5 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h7-c1-crop.png",
+       "cap": "7 · 70.3 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h8-c1-crop.png",
+       "cap": "8 · 71.3 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h9-c1-crop.png",
+       "cap": "9 · 72.8 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h10-c1-crop.png",
+       "cap": "10 · 76.1 s",
+       "moment": "line:cook",
+       "n": 10
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l3-740x320-p-seen/chai-114-p1-l3-740x320-h11-c1-crop.png",
+       "cap": "11 · 76.9 s",
+       "moment": "line:cook",
+       "n": 11
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|crop:#guide",
+     "label": "cook:chai-tray@L4 L4 740x320 [p-seen] · crop:#guide at every line:cook (15)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h1-c1-crop.png",
+       "cap": "1 · 8.3 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h2-c1-crop.png",
+       "cap": "2 · 9.9 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h3-c1-crop.png",
+       "cap": "3 · 19.0 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h4-c1-crop.png",
+       "cap": "4 · 22.4 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h5-c1-crop.png",
+       "cap": "5 · 46.5 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h6-c1-crop.png",
+       "cap": "6 · 59.7 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h7-c1-crop.png",
+       "cap": "7 · 71.5 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h8-c1-crop.png",
+       "cap": "8 · 72.5 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h9-c1-crop.png",
+       "cap": "9 · 74.0 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h10-c1-crop.png",
+       "cap": "10 · 88.1 s",
+       "moment": "line:cook",
+       "n": 10
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h11-c1-crop.png",
+       "cap": "11 · 89.4 s",
+       "moment": "line:cook",
+       "n": 11
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h12-c1-crop.png",
+       "cap": "12 · 91.9 s",
+       "moment": "line:cook",
+       "n": 12
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h13-c1-crop.png",
+       "cap": "13 · 93.2 s",
+       "moment": "line:cook",
+       "n": 13
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h14-c1-crop.png",
+       "cap": "14 · 97.2 s",
+       "moment": "line:cook",
+       "n": 14
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-j1/evidence/cook-chai-tray-l4-740x320-p-seen/chai-114-p1-l4-740x320-h15-c1-crop.png",
+       "cap": "15 · 98.6 s",
+       "moment": "line:cook",
+       "n": 15
+      }
+     ]
+    }
+   ]
+  },
+  "ART-74": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/po-j1/ART-74.md",
+   "panels": [],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: pass (node build/test_no_upload_folders.mjs: exit 0)",
+   "fp": {
+    "hash": "af37def58e9c7b2cb775",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  }
+ }
+}

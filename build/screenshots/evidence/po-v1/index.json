@@ -1,0 +1,268 @@
+{
+ "run": "po-v1",
+ "created": "2026-11-16T07:32:50.805Z",
+ "commit": "fdd11c4e",
+ "builder": null,
+ "rows": {
+  "CHT-22": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-v1/CHT-22.png",
+   "sheets": [
+    "build/screenshots/evidence/po-v1/CHT-22.png",
+    "build/screenshots/evidence/po-v1/CHT-22-2.png",
+    "build/screenshots/evidence/po-v1/CHT-22-3.png"
+   ],
+   "md": "build/screenshots/evidence/po-v1/CHT-22.md",
+   "panels": [
+    "A: cook:chaat L1 740x320 [p-fresh] · shot at every onboard (3)",
+    "B: cook:chop L1 740x320 [p-fresh] · shot at every onboard (2)",
+    "C: cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:click",
+    "D: cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:tap",
+    "E: cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:tap · NO MOTION CAPTURED",
+    "F: cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:tap",
+    "G: cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:click"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "1c92ad970a1faa188f2a",
+    "dhash": [
+     "0d2c1c9c9ca92020",
+     "0d2c1c9c9ca92020",
+     "7cfcec6c7c608080",
+     "113120203010a294",
+     "113121303010a294",
+     "113132303010a294",
+     "2356726221060680"
+    ]
+   },
+   "probes": 3,
+   "reached": 3,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:chaat L1 740x320 [p-fresh] · shot at every onboard (3)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-fresh/cht-22-p1-l1-740x320-h1-c0-room.png",
+       "cap": "1 · 10.0 s",
+       "moment": "visible:.njg-onboard",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-fresh/cht-22-p1-l1-740x320-h2-c0-room.png",
+       "cap": "2 · 12.6 s",
+       "moment": "visible:.njg-onboard",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-fresh/cht-22-p1-l1-740x320-h3-c0-room.png",
+       "cap": "3 · 19.0 s",
+       "moment": "visible:.njg-onboard",
+       "n": 3
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|shot",
+     "label": "cook:chop L1 740x320 [p-fresh] · shot at every onboard (2)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chop-740x320-p-fresh/cht-22-p2-l1-740x320-h1-c0-room.png",
+       "cap": "1 · 5.3 s",
+       "moment": "visible:.njg-onboard",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chop-740x320-p-fresh/cht-22-p2-l1-740x320-h2-c0-room.png",
+       "cap": "2 · 7.7 s",
+       "moment": "visible:.njg-onboard",
+       "n": 2
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:3x150",
+     "label": "cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:click",
+     "type": "frames",
+     "moment": "cook-done:click",
+     "ms": [
+      0,
+      151,
+      301
+     ],
+     "motion": {
+      "moving": true,
+      "share": 4.25,
+      "mean": 2.7,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h1-c1-strip-f02.png",
+       "cap": "151 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h1-c1-strip-f03.png",
+       "cap": "301 ms"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:3x150",
+     "label": "cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:tap",
+     "type": "frames",
+     "moment": "cook-done:tap",
+     "ms": [
+      0,
+      210,
+      405
+     ],
+     "motion": {
+      "moving": true,
+      "share": 3.85,
+      "mean": 1.75,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h3-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h3-c1-strip-f02.png",
+       "cap": "210 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h3-c1-strip-f03.png",
+       "cap": "405 ms (slot 300: off)"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:3x150",
+     "label": "cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:tap · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "cook-done:tap",
+     "ms": [
+      0,
+      152,
+      322
+     ],
+     "motion": {
+      "moving": false,
+      "share": 2.06,
+      "mean": 0.84,
+      "note": "no motion captured (2.06 % of the crop changed, mean 0.84): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h4-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h4-c1-strip-f02.png",
+       "cap": "152 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h4-c1-strip-f03.png",
+       "cap": "322 ms"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:3x150",
+     "label": "cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:tap",
+     "type": "frames",
+     "moment": "cook-done:tap",
+     "ms": [
+      0,
+      150,
+      510
+     ],
+     "motion": {
+      "moving": true,
+      "share": 4.59,
+      "mean": 2.41,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h5-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h5-c1-strip-f02.png",
+       "cap": "150 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h5-c1-strip-f03.png",
+       "cap": "510 ms (slot 300: off)"
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|strip:#stage:3x150",
+     "label": "cook:chaat L1 740x320 [p-seen] · strip:#stage:3x150 at cook-done:click",
+     "type": "frames",
+     "moment": "cook-done:click",
+     "ms": [
+      0,
+      150,
+      300
+     ],
+     "motion": {
+      "moving": true,
+      "share": 5.74,
+      "mean": 4.8,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h6-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h6-c1-strip-f02.png",
+       "cap": "150 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-v1/evidence/cook-chaat-740x320-p-seen/cht-22-p3-l1-740x320-h6-c1-strip-f03.png",
+       "cap": "300 ms"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

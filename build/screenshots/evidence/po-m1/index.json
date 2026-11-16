@@ -1,0 +1,279 @@
+{
+ "run": "po-m1",
+ "created": "2026-11-16T06:26:00.454Z",
+ "commit": "0d7c2621",
+ "builder": null,
+ "rows": {
+  "PAN-23": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-m1/PAN-23.png",
+   "sheets": [
+    "build/screenshots/evidence/po-m1/PAN-23.png",
+    "build/screenshots/evidence/po-m1/PAN-23-2.png",
+    "build/screenshots/evidence/po-m1/PAN-23-3.png",
+    "build/screenshots/evidence/po-m1/PAN-23-4.png"
+   ],
+   "md": "build/screenshots/evidence/po-m1/PAN-23.md",
+   "panels": [
+    "A: cook:fetch L1 740x320 [p-seen] · shot at every bubble (5)",
+    "B: cook:fetch@L2 L2 740x320 [p-seen] · shot at every bubble (6)",
+    "C: cook:fetch@L3 L3 740x320 [p-seen] · shot at every bubble (6)",
+    "D: cook:fetch@L4 L4 740x320 [p-seen] · shot at every bubble (6)"
+   ],
+   "tool": [],
+   "expect": "PASS",
+   "expectLine": "machine: noOverlap:.cv-bubble,.wc14-pop (no overlap (3 moments)); contract-129 (0 breaks on this page); noOverlap:.cv-bubble,.wc14-pop (no overlap (4 moments))",
+   "fp": {
+    "hash": "91f9668401473137d791",
+    "dhash": [
+     "0815737b7a6c4c20",
+     "082130626a6c0c20",
+     "4a5d7b6b6b787000",
+     "083577737a7c4c20"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:fetch L1 740x320 [p-seen] · shot at every bubble (5)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-740x320-p-seen/pan-23-p1-l1-740x320-h1-c0-room.png",
+       "cap": "1 · 2.5 s",
+       "moment": "bubble",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-740x320-p-seen/pan-23-p1-l1-740x320-h2-c0-room.png",
+       "cap": "2 · 2.9 s",
+       "moment": "bubble",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-740x320-p-seen/pan-23-p1-l1-740x320-h3-c0-room.png",
+       "cap": "3 · 3.5 s",
+       "moment": "bubble",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-740x320-p-seen/pan-23-p1-l1-740x320-h4-c0-room.png",
+       "cap": "4 · 4.3 s",
+       "moment": "bubble",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-740x320-p-seen/pan-23-p1-l1-740x320-h5-c0-room.png",
+       "cap": "5 · 16.1 s",
+       "moment": "bubble",
+       "n": 5
+      }
+     ]
+    },
+    {
+     "key": "p1|L2|740x320|shot",
+     "label": "cook:fetch@L2 L2 740x320 [p-seen] · shot at every bubble (6)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l2-740x320-p-seen/pan-23-p1-l2-740x320-h1-c0-room.png",
+       "cap": "1 · 2.4 s",
+       "moment": "bubble",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l2-740x320-p-seen/pan-23-p1-l2-740x320-h2-c0-room.png",
+       "cap": "2 · 2.8 s",
+       "moment": "bubble",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l2-740x320-p-seen/pan-23-p1-l2-740x320-h3-c0-room.png",
+       "cap": "3 · 3.4 s",
+       "moment": "bubble",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l2-740x320-p-seen/pan-23-p1-l2-740x320-h4-c0-room.png",
+       "cap": "4 · 4.4 s",
+       "moment": "bubble",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l2-740x320-p-seen/pan-23-p1-l2-740x320-h5-c0-room.png",
+       "cap": "5 · 5.3 s",
+       "moment": "bubble",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l2-740x320-p-seen/pan-23-p1-l2-740x320-h6-c0-room.png",
+       "cap": "6 · 16.7 s",
+       "moment": "bubble",
+       "n": 6
+      }
+     ]
+    },
+    {
+     "key": "p1|L3|740x320|shot",
+     "label": "cook:fetch@L3 L3 740x320 [p-seen] · shot at every bubble (6)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l3-740x320-p-seen/pan-23-p1-l3-740x320-h1-c0-room.png",
+       "cap": "1 · 2.6 s",
+       "moment": "bubble",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l3-740x320-p-seen/pan-23-p1-l3-740x320-h2-c0-room.png",
+       "cap": "2 · 3.1 s",
+       "moment": "bubble",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l3-740x320-p-seen/pan-23-p1-l3-740x320-h3-c0-room.png",
+       "cap": "3 · 3.7 s",
+       "moment": "bubble",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l3-740x320-p-seen/pan-23-p1-l3-740x320-h4-c0-room.png",
+       "cap": "4 · 4.6 s",
+       "moment": "bubble",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l3-740x320-p-seen/pan-23-p1-l3-740x320-h5-c0-room.png",
+       "cap": "5 · 5.6 s",
+       "moment": "bubble",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l3-740x320-p-seen/pan-23-p1-l3-740x320-h6-c0-room.png",
+       "cap": "6 · 18.1 s",
+       "moment": "bubble",
+       "n": 6
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|shot",
+     "label": "cook:fetch@L4 L4 740x320 [p-seen] · shot at every bubble (6)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l4-740x320-p-seen/pan-23-p1-l4-740x320-h1-c0-room.png",
+       "cap": "1 · 2.5 s",
+       "moment": "bubble",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l4-740x320-p-seen/pan-23-p1-l4-740x320-h2-c0-room.png",
+       "cap": "2 · 2.9 s",
+       "moment": "bubble",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l4-740x320-p-seen/pan-23-p1-l4-740x320-h3-c0-room.png",
+       "cap": "3 · 3.4 s",
+       "moment": "bubble",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l4-740x320-p-seen/pan-23-p1-l4-740x320-h4-c0-room.png",
+       "cap": "4 · 4.5 s",
+       "moment": "bubble",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l4-740x320-p-seen/pan-23-p1-l4-740x320-h5-c0-room.png",
+       "cap": "5 · 5.3 s",
+       "moment": "bubble",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-fetch-l4-740x320-p-seen/pan-23-p1-l4-740x320-h6-c0-room.png",
+       "cap": "6 · 18.0 s",
+       "moment": "bubble",
+       "n": 6
+      }
+     ]
+    }
+   ]
+  },
+  "SH-135": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-m1/SH-135.png",
+   "sheets": [
+    "build/screenshots/evidence/po-m1/SH-135.png"
+   ],
+   "md": "build/screenshots/evidence/po-m1/SH-135.md",
+   "panels": [
+    "A: cook:title L1 1280x665 [p-seen] · shot at rec:title",
+    "B: cook:title L1 740x320 [p-seen] · shot at rec:title"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "1d7f73d7527940c6455c",
+    "dhash": [
+     "321c0f4b43c2c090",
+     "1c07838981e16984"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|shot",
+     "label": "cook:title L1 1280x665 [p-seen] · shot at rec:title",
+     "type": "img",
+     "moment": "rec:title",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-title-1280x665-p-seen/sh-135-p1-l1-1280x665-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|shot",
+     "label": "cook:title L1 740x320 [p-seen] · shot at rec:title",
+     "type": "img",
+     "moment": "rec:title",
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-m1/evidence/cook-title-740x320-p-seen/sh-135-p1-l1-740x320-h1-c0-room.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

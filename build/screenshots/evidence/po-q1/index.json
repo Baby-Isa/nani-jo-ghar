@@ -1,0 +1,443 @@
+{
+ "run": "po-q1",
+ "created": "2026-11-16T06:45:16.259Z",
+ "commit": "16982882",
+ "builder": null,
+ "rows": {
+  "SH-279": {
+   "kind": "layout",
+   "png": "build/screenshots/evidence/po-q1/SH-279.png",
+   "sheets": [
+    "build/screenshots/evidence/po-q1/SH-279.png",
+    "build/screenshots/evidence/po-q1/SH-279-2.png",
+    "build/screenshots/evidence/po-q1/SH-279-3.png",
+    "build/screenshots/evidence/po-q1/SH-279-4.png",
+    "build/screenshots/evidence/po-q1/SH-279-5.png",
+    "build/screenshots/evidence/po-q1/SH-279-6.png",
+    "build/screenshots/evidence/po-q1/SH-279-7.png",
+    "build/screenshots/evidence/po-q1/SH-279-8.png"
+   ],
+   "md": "build/screenshots/evidence/po-q1/SH-279.md",
+   "panels": [
+    "A: cook:samosa L1 1280x665 [p-seen] · crop:#stage at every line:cook (19)",
+    "B: cook:samosa L1 740x320 [p-seen] · crop:#stage at every line:cook (19)",
+    "C: cook:maani-line L1 740x320 [p-seen] · crop:#stage at every line:cook (10)",
+    "D: cook:chaat L1 740x320 [p-seen] · crop:#stage at every line:cook (11)"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "6815e614fc1778d58ad7",
+    "dhash": [
+     "b09193aab7b1a810",
+     "7551d6c7d7d15800",
+     "353122afb7b1a800",
+     "35d1d54777515800"
+    ]
+   },
+   "probes": 4,
+   "reached": 4,
+   "frames": [
+    {
+     "key": "p1|L1|1280x665|crop:#stage",
+     "label": "cook:samosa L1 1280x665 [p-seen] · crop:#stage at every line:cook (19)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h1-c1-crop.png",
+       "cap": "1 · 8.1 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h2-c1-crop.png",
+       "cap": "2 · 9.9 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h3-c1-crop.png",
+       "cap": "3 · 11.0 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h4-c1-crop.png",
+       "cap": "4 · 16.0 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h5-c1-crop.png",
+       "cap": "5 · 16.8 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h6-c1-crop.png",
+       "cap": "6 · 17.1 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h7-c1-crop.png",
+       "cap": "7 · 17.5 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h8-c1-crop.png",
+       "cap": "8 · 18.4 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h9-c1-crop.png",
+       "cap": "9 · 19.5 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h10-c1-crop.png",
+       "cap": "10 · 26.6 s",
+       "moment": "line:cook",
+       "n": 10
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h11-c1-crop.png",
+       "cap": "11 · 32.6 s",
+       "moment": "line:cook",
+       "n": 11
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h12-c1-crop.png",
+       "cap": "12 · 34.1 s",
+       "moment": "line:cook",
+       "n": 12
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h13-c1-crop.png",
+       "cap": "13 · 35.4 s",
+       "moment": "line:cook",
+       "n": 13
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h14-c1-crop.png",
+       "cap": "14 · 37.3 s",
+       "moment": "line:cook",
+       "n": 14
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h15-c1-crop.png",
+       "cap": "15 · 39.5 s",
+       "moment": "line:cook",
+       "n": 15
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h16-c1-crop.png",
+       "cap": "16 · 40.8 s",
+       "moment": "line:cook",
+       "n": 16
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h17-c1-crop.png",
+       "cap": "17 · 41.9 s",
+       "moment": "line:cook",
+       "n": 17
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h18-c1-crop.png",
+       "cap": "18 · 44.4 s",
+       "moment": "line:cook",
+       "n": 18
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-1280x665-p-seen/sh-279-p1-l1-1280x665-h19-c1-crop.png",
+       "cap": "19 · 44.5 s",
+       "moment": "line:cook",
+       "n": 19
+      }
+     ]
+    },
+    {
+     "key": "p1|L1|740x320|crop:#stage",
+     "label": "cook:samosa L1 740x320 [p-seen] · crop:#stage at every line:cook (19)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h1-c1-crop.png",
+       "cap": "1 · 7.9 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h2-c1-crop.png",
+       "cap": "2 · 9.6 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h3-c1-crop.png",
+       "cap": "3 · 10.6 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h4-c1-crop.png",
+       "cap": "4 · 16.2 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h5-c1-crop.png",
+       "cap": "5 · 17.1 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h6-c1-crop.png",
+       "cap": "6 · 17.4 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h7-c1-crop.png",
+       "cap": "7 · 18.6 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h8-c1-crop.png",
+       "cap": "8 · 19.6 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h9-c1-crop.png",
+       "cap": "9 · 20.7 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h10-c1-crop.png",
+       "cap": "10 · 26.7 s",
+       "moment": "line:cook",
+       "n": 10
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h11-c1-crop.png",
+       "cap": "11 · 32.9 s",
+       "moment": "line:cook",
+       "n": 11
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h12-c1-crop.png",
+       "cap": "12 · 34.3 s",
+       "moment": "line:cook",
+       "n": 12
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h13-c1-crop.png",
+       "cap": "13 · 36.3 s",
+       "moment": "line:cook",
+       "n": 13
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h14-c1-crop.png",
+       "cap": "14 · 38.3 s",
+       "moment": "line:cook",
+       "n": 14
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h15-c1-crop.png",
+       "cap": "15 · 40.9 s",
+       "moment": "line:cook",
+       "n": 15
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h16-c1-crop.png",
+       "cap": "16 · 42.1 s",
+       "moment": "line:cook",
+       "n": 16
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h17-c1-crop.png",
+       "cap": "17 · 43.3 s",
+       "moment": "line:cook",
+       "n": 17
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h18-c1-crop.png",
+       "cap": "18 · 45.9 s",
+       "moment": "line:cook",
+       "n": 18
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-samosa-740x320-p-seen/sh-279-p1-l1-740x320-h19-c1-crop.png",
+       "cap": "19 · 46.2 s",
+       "moment": "line:cook",
+       "n": 19
+      }
+     ]
+    },
+    {
+     "key": "p2|L1|740x320|crop:#stage",
+     "label": "cook:maani-line L1 740x320 [p-seen] · crop:#stage at every line:cook (10)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h1-c1-crop.png",
+       "cap": "1 · 8.7 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h2-c1-crop.png",
+       "cap": "2 · 10.9 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h3-c1-crop.png",
+       "cap": "3 · 15.8 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h4-c1-crop.png",
+       "cap": "4 · 21.8 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h5-c1-crop.png",
+       "cap": "5 · 23.4 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h6-c1-crop.png",
+       "cap": "6 · 28.9 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h7-c1-crop.png",
+       "cap": "7 · 30.4 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h8-c1-crop.png",
+       "cap": "8 · 31.9 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h9-c1-crop.png",
+       "cap": "9 · 34.2 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-maani-line-740x320-p-seen/sh-279-p2-l1-740x320-h10-c1-crop.png",
+       "cap": "10 · 34.4 s",
+       "moment": "line:cook",
+       "n": 10
+      }
+     ]
+    },
+    {
+     "key": "p3|L1|740x320|crop:#stage",
+     "label": "cook:chaat L1 740x320 [p-seen] · crop:#stage at every line:cook (11)",
+     "type": "frames",
+     "moment": null,
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h1-c1-crop.png",
+       "cap": "1 · 7.8 s",
+       "moment": "line:cook",
+       "n": 1
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h2-c1-crop.png",
+       "cap": "2 · 13.2 s",
+       "moment": "line:cook",
+       "n": 2
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h3-c1-crop.png",
+       "cap": "3 · 13.9 s",
+       "moment": "line:cook",
+       "n": 3
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h4-c1-crop.png",
+       "cap": "4 · 14.8 s",
+       "moment": "line:cook",
+       "n": 4
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h5-c1-crop.png",
+       "cap": "5 · 15.7 s",
+       "moment": "line:cook",
+       "n": 5
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h6-c1-crop.png",
+       "cap": "6 · 20.2 s",
+       "moment": "line:cook",
+       "n": 6
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h7-c1-crop.png",
+       "cap": "7 · 21.2 s",
+       "moment": "line:cook",
+       "n": 7
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h8-c1-crop.png",
+       "cap": "8 · 22.8 s",
+       "moment": "line:cook",
+       "n": 8
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h9-c1-crop.png",
+       "cap": "9 · 23.9 s",
+       "moment": "line:cook",
+       "n": 9
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h10-c1-crop.png",
+       "cap": "10 · 26.6 s",
+       "moment": "line:cook",
+       "n": 10
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-q1/evidence/cook-chaat-740x320-p-seen/sh-279-p3-l1-740x320-h11-c1-crop.png",
+       "cap": "11 · 26.7 s",
+       "moment": "line:cook",
+       "n": 11
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

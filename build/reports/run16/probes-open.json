@@ -1,0 +1,608 @@
+[
+ {
+  "row": "LAB-08",
+  "kind": "Check",
+  "game": "other",
+  "status": "proven",
+  "probe": "build/test_labs_importmap.mjs (evidence.json LAB-08: cmd node build/test_labs_importmap.mjs, expect pass; green in run po-g1)",
+  "red": "934f5fa^ (2 of 3 fail: labs.html has no core import map; gen_labs.mjs never writes one), node --test in a worktree",
+  "green": "934f5fa (the SH-316 commit) and today's head 4800353: 3 of 3 pass",
+  "judge": "machine",
+  "files": [
+   "build/test_labs_importmap.mjs"
+  ],
+  "note": "Already fixed by 934f5fa (SH-316, the labs page's import map from its generator); the new node test is red before it and green after."
+ },
+ {
+  "row": "PRC-11",
+  "kind": "Check",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence.json PRC-11: cmd grep -niE 'progress table|% complete' .claude/skills/checkin/SKILL.md, expect pass",
+  "red": "48003532 (today's head): grep exit 1, the check-in skill has no plan table (run po-b1)",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   ".claude/skills/checkin/SKILL.md"
+  ],
+  "note": "Still true: the check-in skill posts one line, not the plan as a table with done, still to do and % complete."
+ },
+ {
+  "row": "SH-224",
+  "kind": "Look",
+  "game": "kit",
+  "status": "open",
+  "probe": "build/test_fonts_local.mjs (evidence.json SH-224: cmd node build/test_fonts_local.mjs, expect pass)",
+  "red": "48003532: 2 of 2 fail: clinic, cook, day, dress, index, lab, snap, tidy and who .html link fonts.googleapis.com, and js/ still loads one (run po-g1)",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "cook.html",
+   "index.html",
+   "js/cook/ui.js"
+  ],
+  "note": "Still true: nine pages and a script still load Google Fonts; the faces should come only from assets/fonts/ through the tokens."
+ },
+ {
+  "row": "ART-74",
+  "kind": "Check",
+  "game": "other",
+  "status": "proven",
+  "probe": "build/test_no_upload_folders.mjs [ref] (evidence.json ART-74: cmd node build/test_no_upload_folders.mjs, expect pass)",
+  "red": "e2f548e5^ (assets/ChatGPT 261110 1) and b95ad596^ (assets/ChatGPT 261110 2-4, 261111 1-2): exit 1, run as node build/test_no_upload_folders.mjs <ref>",
+  "green": "e2f548e5 and b95ad596 (the folders moved to sources/), today's head and origin/main: exit 0",
+  "judge": "machine",
+  "files": [
+   "build/test_no_upload_folders.mjs"
+  ],
+  "note": "Already done: both folders left assets in e2f548e5 and b95ad596 (moved under sources/art/), and main has none today."
+ },
+ {
+  "row": "SH-270",
+  "kind": "Look",
+  "game": "chop",
+  "status": "open",
+  "probe": "evidence.json SH-270 (count:#guide .ng-face>=1 at every line:cook; chop L1 740x320+1280x665, chaat L1 740x320)",
+  "red": "48003532, run po-a1 (evidence.mjs --run --rows SH-270): chop L1 FAIL at both sizes, 0 face circles in Nani's box over 8 of her lines (ng-strip hides .ng-face); chaat PASS",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/guide.css"
+  ],
+  "note": "Still true in chop: while Nani speaks her box is text only (UI.guideStrip folds it to its tools, css guide.css:88 hides the face); the kit fix is fix-kit's (same cause as DAAR-57)."
+ },
+ {
+  "row": "SH-277",
+  "kind": "Look",
+  "game": "eggs",
+  "status": "open",
+  "probe": "evidence.json SH-277 (lines:#mission .oc-headline<=1 at every placed; eggs L1+L4, samosa L1, 740x320)",
+  "red": "48003532, run po-a1: eggs L1 and L4 FAIL, the headline on 2 lines at 740x320 (7 and 10 moments); samosa PASS",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "css/shared/order-card.css",
+   "js/shared/order-card.js"
+  ],
+  "note": "Sort calls it built (cfc2469 made the headline one size), but the row also asks for one line: eggs' headline still wraps to two lines at 740x320."
+ },
+ {
+  "row": "SH-276",
+  "kind": "Look",
+  "game": "chaat",
+  "status": "open",
+  "probe": "evidence.json SH-276 (count:#mission .oc-card .oc-face>=1 at every placed; chaat L1, daar L1, 740x320)",
+  "red": "48003532, run po-e1: chaat and daar FAIL: during the chop step the card's headline is Nani's grey 'Chop these.' with no face (panels A1, B1, B3), Nana's order line and face come back only after the chop",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js",
+   "js/cook/mechanics/chop.js"
+  ],
+  "note": "Still true for chaat and daar (chop alone now shows 'Chop these' in grey italic, as the row wants); related to CHT-21/DAAR-57's keepOrder fix (fix-kit)."
+ },
+ {
+  "row": "SH-288",
+  "kind": "Look",
+  "game": "chai",
+  "status": "open",
+  "probe": "evidence.json SH-288 (noFinding:tap-small at order-card-in-sidebar; chai L1 at 740x320, 930x430, 1280x665, 1920x1080)",
+  "red": "48003532, run po-a1: FAIL at all four sizes: the order card's Kutchi word (p.oc-t.wc-k) is a tap target 37-50 x 16-21 CSS px",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "css/shared/order-card.css",
+   "css/shared/word-card.css"
+  ],
+  "note": "The speakers, arrow and dots got 48 px hit areas (db494cae), but the order card's tappable word is still far under 48 px; chai is frozen, so a fix there is a question for Zafar."
+ },
+ {
+  "row": "CK-115",
+  "kind": "Look",
+  "game": "corn",
+  "status": "open",
+  "probe": "evidence.json CK-115 (inside:#mission .oc-card in #side at every order-card-in-sidebar; corn L1-L4, 740x320)",
+  "red": "48003532, runs po-a1 and po-e1: L3 and L4 FAIL, 1 of 2 order cards outside the side panel; L1 and L2 PASS",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "js/shared/order-card.js",
+   "css/shared/order-card.css",
+   "js/cook/stations/corn.js"
+  ],
+  "note": "Still true: at L3 and L4 the second corn order's card runs past the side panel's bottom edge at 740x320."
+ },
+ {
+  "row": "SH-300",
+  "kind": "Logic",
+  "game": "chai",
+  "status": "proven",
+  "probe": "evidence.json SH-300 (count:#guide .ng-say=0 at every life:popup-open; chai L1 and eggs L1, 740x320)",
+  "red": "today's head with 42de17a1 reverted (data/cook.json guide.default back), run po-red-300: FAIL, Nani's line shown in her box during the order in chai and eggs",
+  "green": "42de17a1 (SH-300: guide.default removed) and today's head 48003532, run po-g1: PASS, no line in her box during the order",
+  "judge": "machine",
+  "files": [
+   "data/cook.json"
+  ],
+  "note": "Fixed by 42de17a1 (14 Nov night): the order shows her face only; the check is red with that commit reverted and green on head."
+ },
+ {
+  "row": "SH-291",
+  "kind": "Logic",
+  "game": "chai",
+  "status": "built",
+  "probe": "evidence.json SH-291 (contract-99 over chai L4, 740x320 and 1280x665)",
+  "red": "not shown: still green on head with 827f8aa1's order-card.js and ui.js parts reverted (run po-red-291), so contract-99 does not see the refold",
+  "green": "48003532, run po-a1: contract-99 0 breaks",
+  "judge": "machine",
+  "files": [
+   "js/shared/order-card.js",
+   "js/cook/ui.js"
+  ],
+  "note": "Fixed in code by 827f8aa1 (a served card folds once, the panel keeps its scroll); the probe needs a per-fold count (life:card-fold is logged once per page) to show red, so it is not proven."
+ },
+ {
+  "row": "SH-273",
+  "kind": "Look",
+  "game": "baking",
+  "status": "proven",
+  "probe": "evidence.json SH-273 (contract-128 over baking, chop, chaat L1)",
+  "red": "009c5dd3^ (runtime as before the fix, today's tools), run po-red-273: all 5 pages FAIL, the dish's flashing card shows a row of dots and an empty picture box for 551-692 ms",
+  "green": "009c5dd3, 3487176e (13 Nov) and today's head 48003532, run po-a1: 0 breaks on all 5 pages",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js",
+   "js/shared/results.js"
+  ],
+  "note": "Fixed by 009c5dd3 (no English row, no empty picture box; a dish with no picture shows its item's) and 3487176e (the card waits for its picture)."
+ },
+ {
+  "row": "SH-304",
+  "kind": "Look",
+  "game": "chai",
+  "status": "proven",
+  "probe": "evidence.json SH-304 (contract-129 over chai L1+L4, eggs L1, maani L1, 740x320)",
+  "red": "c00da13^ (the runtime js, css, data and pages as before SH-304's first commit, today's tools), run po-red-304: chai L1, chai L4 and eggs FAIL, the order's pop-up card over a speech bubble (2335-4652 px squared)",
+  "green": "c00da13 + 6cd7247 (15 Nov, decision 35) and today's head 48003532, run po-a1: 0 breaks on every page",
+  "judge": "machine",
+  "files": [
+   "js/shared/request-popup.js",
+   "js/shared/conversations.js"
+  ],
+  "note": "Fixed by c00da13 and 6cd7247: the bubble keeps clear of the order's pop-up card; red before, green on head."
+ },
+ {
+  "row": "SH-289",
+  "kind": "Look",
+  "game": "chai",
+  "status": "built",
+  "probe": "evidence.json SH-289 (noFinding:text-clipped, noClip:.njg-results at results-words; chai L4 740x320)",
+  "red": "not shown: green at db494cae^ too (run po-red-289, an 8-word round); a seeded three-person round with ginger, cardamom and sugar (want) found no match in two 13-minute chunks at db494cae^ (run po-red-289c, stopped)",
+  "green": "48003532, run po-a1: PASS",
+  "judge": "machine",
+  "files": [
+   "css/shared/results.css"
+  ],
+  "note": "Fixed in code by db494cae (13 Nov); the check needs a 'want' that seeds a ten-word L4 round before it can show red."
+ },
+ {
+  "row": "PAN-23",
+  "kind": "Look",
+  "game": "other",
+  "status": "cannot-probe",
+  "probe": "evidence.json PAN-23 (noOverlap:.cv-bubble,.wc14-pop at every bubble, contract-129; pantry L1-L4, 740x320)",
+  "red": "not reproduced: green on head (runs po-e1, po-m1) and also at c00da13^ (run po-red-304)",
+  "green": "48003532: PASS at every bubble, L1-L4",
+  "judge": "needs-eye",
+  "files": [
+   "js/shared/request-popup.js"
+  ],
+  "note": "The bubble under the big card is not reproduced at any pantry bubble today or before SH-304's fix; the moment the 13 Nov judge saw is unknown, so po-m1/PAN-23.png goes to a judge to close or keep."
+ },
+ {
+  "row": "SH-271",
+  "kind": "Logic",
+  "game": "kit",
+  "status": "open",
+  "probe": "evidence.json SH-271 (lastsMs:.njg-onboard .ob-shade>=1000 at every onboard with a trace and a strip; chop, maani at two sizes, samosa; L1 fresh)",
+  "red": "not shown on head: the dim held 1.5-3.5 s at every first light (run po-j1) and contract-117 had 0 breaks (run po-a1)",
+  "green": "",
+  "judge": "needs-eye",
+  "files": [
+   "js/shared/onboard.js"
+  ],
+  "note": "No fix in code and no blink on head; docs/status.md (15 Nov) says the strips' blink was the probe hiding the light (a tool artefact), so this may not be real: the strips in po-j1/SH-271.png are for the judge."
+ },
+ {
+  "row": "MAA-25",
+  "kind": "Look",
+  "game": "maani-line",
+  "status": "open",
+  "probe": "evidence.json MAA-25 (eye: shots at order-card-in-sidebar, maani L1+L4, 740x320 and 1280x665)",
+  "red": "48003532, run po-j1, judge FAIL (run16/judge, po-j1 panel A): the two serving plates sit inside the shelf tray beside the dough piles, no pills, at a wider pitch; the same in B, C, D",
+  "green": "",
+  "judge": "FAIL (judge session, po-j1/MAA-25.png panel A)",
+  "files": [
+   "js/cook/stations/maani-line.js"
+  ],
+  "note": "Still true (maani-line.js:330-339 lays the plates on the shelf band); contract-109 and -115 do not see it, so the eye check stands."
+ },
+ {
+  "row": "CHT-22",
+  "kind": "Look",
+  "game": "chaat",
+  "status": "open",
+  "probe": "evidence.json CHT-22 (noOverlap:.njg-onboard .ob-box,#side-cog at every onboard, chaat and chop L1 740x320 fresh; and an eye strip of #stage at every placed, chaat L1 740x320)",
+  "red": "the cog part is green on head (run po-g1: every first light clear of the cog in chaat and chop), fixed by DAAR-65",
+  "green": "48003532, run po-g1: PASS",
+  "judge": "machine for the cog part (green); EVIDENCE for the rest (judge session, po-v1: the strips never catch the cut potato with its pill, the tameto turn or the flying piece)",
+  "files": [
+   "js/cook/mechanics/chop.js",
+   "js/cook/mechanics/assemble.js"
+  ],
+  "note": "The cog part is fixed (DAAR-65) and green on head. The other parts are chop's own (the daar builder's) and need strips aimed at chop's cut and the tameto turn."
+ },
+ {
+  "row": "CK-97",
+  "kind": "Art",
+  "game": "baking",
+  "status": "open",
+  "probe": "evidence.json CK-97 (contract-104 over baking L1-L4, 740x320)",
+  "red": "the card-is-the-shelf's-picture part is green on head (run po-b1, contract-104 0 breaks L1-L4)",
+  "green": "48003532 for that part (cc0aebd, decision 41)",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "Left: 'adh paani' should show a half-full bottle, which needs a picture of one (an art run), not code."
+ },
+ {
+  "row": "CK-93",
+  "kind": "Logic",
+  "game": "eggs",
+  "status": "open",
+  "probe": "evidence.json CK-93 (eye: shots at served, eggs L1+L4, 740x320 and 1280x665)",
+  "red": "48003532, run po-e1, judge FAIL (po-e1 batch-01, panel C): at L4 with Nani's box reading 'Shabash!' the stage has no Shabash bubble, only 'Khuda-fis!', and Nana stands half-figure in the family row, not a face beside the plate; L1 hidden by the reward card",
+  "green": "",
+  "judge": "FAIL (judge session, po-e1/CK-93.png panel C)",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "note": "The cat room is gone (677d1a0), but the well done still lacks Nana's face beside the plate with a 'Shabash!' bubble."
+ },
+ {
+  "row": "SH-303",
+  "kind": "Look",
+  "game": "eggs",
+  "status": "built",
+  "probe": "evidence.json SH-303 (eye: shots at served, eggs L4 and baking L1, 740x320)",
+  "red": "not shown: eggs' delivery is chai's kitchen-counter scene, no table or cat (po-o1 panels A, B); the strip ends before the well done",
+  "green": "",
+  "judge": "EVIDENCE (judge session: the well done moment is not in the strip)",
+  "files": [
+   "js/cook/stations/eggs.js"
+  ],
+  "note": "Fixed in code by 677d1a0; the well done itself is in eggs' cook view (po-t1/SH-281.png frame 6: the 'Shabash!' chip by Nana's face on the tray)."
+ },
+ {
+  "row": "SH-279",
+  "kind": "Look",
+  "game": "samosa",
+  "status": "open",
+  "probe": "evidence.json SH-279 (eye: crop of #stage at every line:cook, samosa L1 two sizes, maani L1 and chaat L1 at 740x320; the 'Shabash!' panels are the well done)",
+  "red": "48003532, run po-q1, judge FAIL (run16/judge, po-q1 panel A frame 17): at samosa's well done the praise face sits on the slotted spoon's head and the 'Shabash!' chip lies on the plate's top edge, not clear of the props; B the same at 740x320, the chip tiny near the gear",
+  "green": "",
+  "judge": "FAIL (judge session, po-q1/SH-279.png panel A)",
+  "files": [
+   "js/cook/kitchen-kit.js"
+  ],
+  "note": "Still true in samosa (and checked in maani and chaat on the same sheet); the earlier aims at served and every bubble missed the well done."
+ },
+ {
+  "row": "SH-284",
+  "kind": "Look",
+  "game": "samosa",
+  "status": "open",
+  "probe": "evidence.json SH-284 (eye: shot and #guide crop at every onboard, samosa L1+L2, two sizes, fresh)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-02, panel B): Nani's box under the dim while it holds her line at the first-time showings ('Bhar, bataate sathe.', 'Samosa waar!', 'Tar!', 'Samosa hane kadh.'), the same in D, F and H",
+  "green": "",
+  "judge": "FAIL (judge session, po-b1/SH-284.png panel B)",
+  "files": [
+   "js/shared/onboard.js",
+   "css/shared/guide.css"
+  ],
+  "note": "Still true; samosa's own SAM-47 is the same fault, with fix-samosa (a kit fix in onboard.js or guide.css would close both)."
+ },
+ {
+  "row": "SH-283",
+  "kind": "Look",
+  "game": "chaat",
+  "status": "open",
+  "probe": "evidence.json SH-283 (eye: eggs L1 and chaat L1, seed 7, at 740x320 and 1280x665)",
+  "red": "48003532, run po-b1, judge FAIL (run16/judge, po-b1 batch-02, panel C): chaat at 1280x665 has an empty shelf (the potato already on the board) while 740x320, same seed and moment, has bataato on the shelf",
+  "green": "",
+  "judge": "FAIL (judge session, po-b1/SH-283.png panel C)",
+  "files": [
+   "js/cook/mechanics/assemble.js",
+   "js/cook/mechanics/chop.js"
+  ],
+  "note": "Still true in chaat (eggs matches in this round, fixed by eggs.js:210)."
+ },
+ {
+  "row": "SH-275",
+  "kind": "Look",
+  "game": "chop",
+  "status": "open",
+  "probe": "evidence.json SH-275 (eye: eggs at exp:lift two sizes; chop L1 two sizes, chaat L1 and daar L1 at every placed)",
+  "red": "48003532, run po-p1, judge FAIL (po-p1 panel C): chop L1 shows the timing window as a separate stopwatch disc off the board's top-left corner, the same in chop 740x320, chaat and daar",
+  "green": "",
+  "judge": "FAIL (judge session, po-p1/SH-275.png panel C)",
+  "files": [
+   "js/cook/mechanics/chop.js",
+   "js/cook/stations/daar.js"
+  ],
+  "note": "Eggs now ring the pan itself; chop, chaat and daar still use a stopwatch disc beside the board."
+ },
+ {
+  "row": "SH-280",
+  "kind": "Look",
+  "game": "baking",
+  "status": "open",
+  "probe": "evidence.json SH-280 (eye: strip of #stage at every stage-start, baking L1 1280x665)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-03, panel A): at stage-start a bare worktop, then 200 ms later the jug, bowl, shelf and cat all in at full strength in one step, no glide; the oven stage fades as a whole and the serve replaces it",
+  "green": "",
+  "judge": "FAIL (judge session, po-b1/SH-280.png panel A)",
+  "files": [
+   "js/cook/stations/baking.js"
+  ],
+  "note": "Still true in baking (sort's 62646b0 fix is not seen at stage-start); chaat and samosa not yet shot."
+ },
+ {
+  "row": "SH-281",
+  "kind": "Look",
+  "game": "chop",
+  "status": "open",
+  "probe": "evidence.json SH-281 (eye: crop of #stage at every placed: eggs L1, chop L1, daar L1, 1280x665)",
+  "red": "needs the judge (build/screenshots/evidence/po-t1/judge/batch-01.md); the first aim missed the empty pan (judge EVIDENCE on po-b1)",
+  "green": "",
+  "judge": "EVIDENCE (judge session, po-t1: no leftover seen, the sheet too thin to pass)",
+  "files": [
+   "js/cook/mechanics/chop.js",
+   "js/cook/stations/eggs.js"
+  ],
+  "note": "No leftover seen on head: eggs' pan after the serve is clean (po-t1 frames 5-6), and chop's board and daar show none in the frames caught. Still open until a sheet catches each job's end (chop's last cut, daar's scrap) at both sizes."
+ },
+ {
+  "row": "SH-299",
+  "kind": "Logic",
+  "game": "chai",
+  "status": "cannot-probe",
+  "probe": "evidence.json SH-299 (eye: strip of #side at every popup-fold, chai L4 740x320)",
+  "red": "not shown: two aims (a #side strip, then a #game strip at popup-fold) never caught a card in flight; the strip's frames land off their slots",
+  "green": "",
+  "judge": "EVIDENCE (judge session, po-b1 and po-o1)",
+  "files": [
+   "js/shared/order-card.js"
+  ],
+  "note": "Needs the flight's last frame (the flyer's box at its landing), which no capture reads yet; sort: the stale fold.want14 is still in order-card.js."
+ },
+ {
+  "row": "SH-286",
+  "kind": "Look",
+  "game": "chai",
+  "status": "built",
+  "probe": "evidence.json SH-286 (eye: shots at every popup-open, chai L1, two sizes)",
+  "red": "not shown: the judge (po-o1) finds the dish card in the same top-left box, size and look as the sugar and milk cards that follow (panels A, D; B, G); the motion half is not compared",
+  "green": "",
+  "judge": "EVIDENCE (judge session: place, size and look match; motion not compared)",
+  "files": [
+   "js/cook/ui.js"
+  ],
+  "note": "Sort: built (the dish through popCard, the item cards' pop-up); the eye sees it matching in place, size and look."
+ },
+ {
+  "row": "SH-287",
+  "kind": "Look",
+  "game": "chai",
+  "status": "open",
+  "probe": "evidence.json SH-287 (eye: shots at request, chai L1+L4, 740x320 and 1280x665)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-02, panel A): the order view is the framing Zafar commented on, the island fills the stage's bottom band and cuts the customer at the chest, no more wall above; the same at L4",
+  "green": "",
+  "judge": "FAIL (judge session, po-b1/SH-287.png panel A)",
+  "files": [
+   "js/cook/flow.js"
+  ],
+  "note": "Sort calls it built (orderLift, capped by decision 35 so the card's bottom-left place stays clear of heads), but the judge sees no lift; chai is frozen, so the next step is a question for Zafar: how far may the lift go under decision 35's cap?"
+ },
+ {
+  "row": "SH-295",
+  "kind": "Look",
+  "game": "chai",
+  "status": "built",
+  "probe": "evidence.json SH-295 (eye: zoom2 of #mission at order-card-in-sidebar, chai L4, two sizes)",
+  "red": "not shown: the judge (po-o1) sees no early wrap: at 1280x665, 930x430 and 740x320 'chai' is already on the first line ('Muke elchi waari chai / khapeti.')",
+  "green": "",
+  "judge": "EVIDENCE (judge session: the fault is not on the sheet)",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "note": "Sort: built (text-wrap: wrap, was balance); the served cards no longer wrap early at three sizes."
+ },
+ {
+  "row": "SH-301",
+  "kind": "Look",
+  "game": "chai",
+  "status": "proven",
+  "probe": "evidence.json SH-301 (centredOn:#guide .ng-face .njg-face,#mission .oc-card .oc-face .njg-face at order-card-in-sidebar, chai L1 at 740x320, 930x430, 1280x665, 1920x1080; plus the eye zoom)",
+  "red": "642f1efd^ (the runtime before the fix, today's tools), run po-red-301: FAIL at 740x320 and 930x430, Nani's face 4.3 and 5.6 px off the order cards' face line",
+  "green": "642f1efd (15 Nov) and today's head 48003532, run po-w1: PASS at all four sizes, 0.0 px across",
+  "judge": "machine (alignment, judge audit PASS at 8c919b9); the equal size within 1 px and the speaker circle are not measured",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "note": "Fixed by 642f1efd: Nani's face now sits on the order cards' face line at every size. The check reads alignment within 3 px; the row's equal size within 1 px is not measured (no expect compares two boxes' sizes)."
+ },
+ {
+  "row": "SH-302",
+  "kind": "Look",
+  "game": "eggs",
+  "status": "open",
+  "probe": "evidence.json SH-302 (eye: shots at every placed, eggs L1+L4, 1280x665)",
+  "red": "48003532, run po-b1, judge FAIL (po-b1 batch-02, panel B frame 2): at L4 the held egg is small, narrower than its box and about a quarter of the pan's width; at L1 a little larger, under half the pan",
+  "green": "",
+  "judge": "FAIL (judge session, po-b1/SH-302.png panel B)",
+  "files": [
+   "js/cook/stations/eggs.js",
+   "data/stations/eggs.json"
+  ],
+  "note": "Sort calls it built (eggs.json _sh302), but the egg in the hand still reads small at L4; Zafar said he reviews it when he plays."
+ },
+ {
+  "row": "SH-229",
+  "kind": "Look",
+  "game": "other",
+  "status": "open",
+  "probe": "evidence.json SH-229 (noFinding:covered, noFinding:text-clipped at shop; cook:title, 740x320 and 1280x665)",
+  "red": "not shown: green on head (run po-g1), no fix commit found (the tick may have gone with SH-238)",
+  "green": "48003532, run po-g1: PASS",
+  "judge": "machine",
+  "files": [
+   "js/cook/flow.js"
+  ],
+  "note": "Green on head with no fix found; worth a look at po-g1/SH-229.png before closing."
+ },
+ {
+  "row": "CHAI-114",
+  "kind": "Look",
+  "game": "chai",
+  "status": "cannot-probe",
+  "probe": "evidence.json CHAI-114 (noClip:#guide .ng-say at every line:cook; chai L1-L4, 740x320)",
+  "red": "not reproduced: green on head (run po-j1) and on 13 Nov evening's runtime 0576eb72 (runs po-red-114, po-red-114b: Nani's line whole and inside her box at L1-L4, 8-16 lines each, also with inside:#guide .ng-say in #guide)",
+  "green": "48003532, run po-j1: PASS at L1-L4",
+  "judge": "machine",
+  "files": [
+   "js/cook/ui.js",
+   "css/shared/guide.css"
+  ],
+  "note": "The cut second line the 13 Nov judge saw does not come back on today's code or on the code of that evening; no fix commit names it. Worth a look on a real phone before closing."
+ },
+ {
+  "row": "LNG-22",
+  "kind": "Kutchi",
+  "game": "other",
+  "status": "open",
+  "probe": "build/test_no_religious_set_pieces.mjs (evidence.json LNG-22: cmd, expect pass)",
+  "red": "48003532: exit 1, the first launch still plays scene 'eid' with the line 'Tomorrow is Eid!' / 'Saware Eid ai.' (data/story/first-launch.json:38, :115)",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "data/story/first-launch.json"
+  ],
+  "note": "Cook's day-6 finale is already the birthday; the first launch's hook is not. The birthday line must come from the engine and family recordings: if it is not recorded, it is a recording-sheet gap, not hand-written Kutchi."
+ },
+ {
+  "row": "SH-211",
+  "kind": "Look",
+  "game": "chai",
+  "status": "cannot-probe",
+  "probe": "evidence.json SH-211 (eye: an 8-frame strip of #mission at every popup-open, chai L4, two sizes)",
+  "red": "not shown: the strips catch only the first card landing in an empty row (po-r1); the row never scrolls in them",
+  "green": "",
+  "judge": "EVIDENCE (judge session, po-l1 and po-r1)",
+  "files": [
+   "js/shared/order-card.js"
+  ],
+  "note": "Needs a per-frame log of the row's scroll through the whole order (his case: the item just before a half or whole card)."
+ },
+ {
+  "row": "SH-136",
+  "kind": "Look",
+  "game": "chai",
+  "status": "open",
+  "probe": "evidence.json SH-136 (eye: zoom2 of #mission at every order-card-in-sidebar, chai L1, 930x430)",
+  "red": "not shown: the judge (po-l1) finds no state that tells broken from fixed: no one-row card for Nana at that size, and 930x430 is not the 915x412 he saw",
+  "green": "",
+  "judge": "EVIDENCE (judge session: the probe misses the state)",
+  "files": [
+   "css/shared/order-card.css"
+  ],
+  "note": "Needs a seeded one-item order for Nana at a 915x412-like size; the sandbox has no 915x412 entry (it maps to 844x390)."
+ },
+ {
+  "row": "SH-135",
+  "kind": "Look",
+  "game": "kit",
+  "status": "open",
+  "probe": "evidence.json SH-135 (eye: Cook's title at 740x320 and 1280x665)",
+  "red": "48003532, run po-m1, judge FAIL (po-m1 panel A): Cook's three title buttons are not one look: play is solid dark, the book and basket are near-white tiles with a hairline border, washed out beside it",
+  "green": "",
+  "judge": "FAIL (judge session, po-m1/SH-135.png panel A)",
+  "files": [
+   "css/shared/buttons.css"
+  ],
+  "note": "Cook's part is still true; the door's pills and the clinic's lit tool are parked modes, and EASY-08's gold box is Zafar's call."
+ },
+ {
+  "row": "SH-122",
+  "kind": "Look",
+  "game": "kit",
+  "status": "question",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "",
+  "files": [],
+  "note": "Question for Zafar: the zooms need a design first (research not started; the S12 idea was a match-cut into lined-up close-up art). Which way should a zoom go, so a check can be written for it?"
+ },
+ {
+  "row": "SH-226",
+  "kind": "Logic",
+  "game": "kit",
+  "status": "open",
+  "probe": "",
+  "red": "",
+  "green": "",
+  "judge": "",
+  "files": [
+   "js/shared/sfx.js"
+  ],
+  "note": "Not probed: chai's recorded picks are in; each other game needs its own researched picks first (the per-game rule, build/test_shared_sfx_files.mjs, is added with them), so there is nothing to check red yet."
+ },
+ {
+  "row": "LNG-20",
+  "kind": "Check",
+  "game": "other",
+  "status": "open",
+  "probe": "build/test_family_takes_linked.mjs (evidence.json LNG-20: cmd, expect pass)",
+  "red": "48003532: exit 1, 63 usable take ids (76 takes) linked to no word or meaning: among them khuda-fis ('Khuda hafiz!'), the potato takes (bateto, trae-bateta) and the 'one X, two Xs' pairs",
+  "green": "",
+  "judge": "machine",
+  "files": [
+   "data/family-audio.json",
+   "data/lang/clips.json",
+   "build/lang/import_all.mjs"
+  ],
+  "note": "Still true and grown: 63 orphan ids today (the row said 29); a take that should stay unplayed needs 'unused': true with why."
+ }
+]

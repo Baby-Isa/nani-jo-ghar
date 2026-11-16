@@ -1,0 +1,228 @@
+{
+ "run": "po-l1",
+ "created": "2026-11-16T06:19:24.186Z",
+ "commit": "a4d3a78e",
+ "builder": null,
+ "rows": {
+  "SH-211": {
+   "kind": "motion",
+   "png": "build/screenshots/evidence/po-l1/SH-211.png",
+   "sheets": [
+    "build/screenshots/evidence/po-l1/SH-211.png"
+   ],
+   "md": "build/screenshots/evidence/po-l1/SH-211.md",
+   "panels": [
+    "A: cook:chai-tray@L4 L4 1280x665 [p-seen] · strip:#mission:8x120 at life:popup-fold · NO MOTION CAPTURED",
+    "B: cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#mission:8x120 at life:popup-fold"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "d97287b2cd71617ea7de",
+    "dhash": [
+     "099b9b93099b9b9a",
+     "0049939393939309"
+    ]
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": [
+    {
+     "key": "p1|L4|1280x665|strip:#mission:8x120",
+     "label": "cook:chai-tray@L4 L4 1280x665 [p-seen] · strip:#mission:8x120 at life:popup-fold · NO MOTION CAPTURED",
+     "type": "frames",
+     "moment": "life:popup-fold",
+     "ms": [
+      0,
+      377,
+      593,
+      1878,
+      2523,
+      2953,
+      3138,
+      3510
+     ],
+     "motion": {
+      "moving": false,
+      "share": 1.22,
+      "mean": 0.43,
+      "note": "no motion captured (1.22 % of the crop changed, mean 0.43): not proof of any movement"
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f02.png",
+       "cap": "377 ms (slot 120: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f03.png",
+       "cap": "593 ms (slot 240: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f04.png",
+       "cap": "1878 ms (slot 360: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f05.png",
+       "cap": "2523 ms (slot 480: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f06.png",
+       "cap": "2953 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f07.png",
+       "cap": "3138 ms (slot 720: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-1280x665-p-seen/sh-211-p1-l4-1280x665-h1-c1-strip-f08.png",
+       "cap": "3510 ms (slot 840: off)"
+      }
+     ]
+    },
+    {
+     "key": "p1|L4|740x320|strip:#mission:8x120",
+     "label": "cook:chai-tray@L4 L4 740x320 [p-seen] · strip:#mission:8x120 at life:popup-fold",
+     "type": "frames",
+     "moment": "life:popup-fold",
+     "ms": [
+      0,
+      482,
+      2205,
+      3382,
+      3946,
+      4413,
+      4783,
+      5069
+     ],
+     "motion": {
+      "moving": true,
+      "share": 3.39,
+      "mean": 1.31,
+      "note": ""
+     },
+     "zoom": false,
+     "dpr": 1,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f01.png",
+       "cap": "0 ms"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f02.png",
+       "cap": "482 ms (slot 120: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f03.png",
+       "cap": "2205 ms (slot 240: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f04.png",
+       "cap": "3382 ms (slot 360: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f05.png",
+       "cap": "3946 ms (slot 480: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f06.png",
+       "cap": "4413 ms (slot 600: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f07.png",
+       "cap": "4783 ms (slot 720: off)"
+      },
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-l4-740x320-p-seen/sh-211-p1-l4-740x320-h1-c1-strip-f08.png",
+       "cap": "5069 ms (slot 840: off)"
+      }
+     ]
+    }
+   ]
+  },
+  "LNG-22": {
+   "kind": "text",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/po-l1/LNG-22.md",
+   "panels": [],
+   "tool": [],
+   "expect": "FAIL",
+   "expectLine": "machine: LNG-22-p1-repo: pass: node build/test_no_religious_set_pieces.mjs: exit 1",
+   "fp": {
+    "hash": "77caf64acd5fe733f6f8",
+    "dhash": []
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": []
+  },
+  "SH-135": {
+   "kind": "layout",
+   "png": null,
+   "sheets": [],
+   "md": "build/screenshots/evidence/po-l1/SH-135.md",
+   "panels": [],
+   "tool": [
+    "SH-135-p1-L1-1280x665: shot at rec:title (hit 1): the screen is one flat colour at rec:title (nothing drawn yet)",
+    "SH-135-p1-L1-740x320: shot at rec:title (hit 1): the screen is one flat colour at rec:title (nothing drawn yet)"
+   ],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "e0738f010771ffabcc32",
+    "dhash": []
+   },
+   "probes": 2,
+   "reached": 2,
+   "frames": []
+  },
+  "SH-136": {
+   "kind": "detail",
+   "png": "build/screenshots/evidence/po-l1/SH-136.png",
+   "sheets": [
+    "build/screenshots/evidence/po-l1/SH-136.png"
+   ],
+   "md": "build/screenshots/evidence/po-l1/SH-136.md",
+   "panels": [
+    "A: cook:chai-tray L1 930x430 [p-seen_x2] · zoom2:#mission at rec:order-card-in-sidebar"
+   ],
+   "tool": [],
+   "expect": null,
+   "expectLine": "",
+   "fp": {
+    "hash": "a45508da8a90c3b6c75b",
+    "dhash": [
+     "91199b939b9a0000"
+    ]
+   },
+   "probes": 1,
+   "reached": 1,
+   "frames": [
+    {
+     "key": "p1|L1|930x430|zoom2:#mission",
+     "label": "cook:chai-tray L1 930x430 [p-seen_x2] · zoom2:#mission at rec:order-card-in-sidebar",
+     "type": "img",
+     "moment": "rec:order-card-in-sidebar",
+     "zoom": true,
+     "dpr": 2,
+     "box": null,
+     "files": [
+      {
+       "src": "build/screenshots/sandbox/ev-po-l1/evidence/cook-chai-tray-930x430-p-seen-x2/sh-136-p1-l1-930x430-h1-c1-zoom2.png",
+       "cap": ""
+      }
+     ]
+    }
+   ]
+  }
+ }
+}
