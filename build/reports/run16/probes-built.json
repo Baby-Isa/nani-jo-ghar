@@ -297,8 +297,9 @@
    "js/cook/frame.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "ART-43",
@@ -858,9 +859,12 @@
    "js/core/voice.js",
    "js/cook/flow.js"
   ],
-  "status": "built",
+  "status": "open",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "Cook is one voice at a time; the clinic send-off count overlaps (clinic is parked, so the clinic part is Parked)",
+  "red": "6d12df4e3 run r16pb-cook: clinic:patient L1 contract-7: \"trae\" started while \"ba\" still sounded, 420 ms together (stage-sendoff 23.4 s)",
+  "green": "the pantry and chop probes: contract-7 0 breaks",
+  "hand": true
  },
  {
   "row": "PAN-22",
@@ -899,8 +903,9 @@
    "data/stations/chai-tray.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-08",
@@ -912,8 +917,9 @@
    "data/stations/chai-tray.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-35",
@@ -925,8 +931,9 @@
    "js/shared/onboard.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-36",
@@ -938,8 +945,9 @@
    "js/shared/onboard.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-38",
@@ -950,8 +958,9 @@
    "js/cook/stations/chai-tray.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-39",
@@ -963,8 +972,9 @@
    "data/cook.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 12/12 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-42",
@@ -975,8 +985,9 @@
    "js/cook/stations/chai-tray.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-48",
@@ -989,8 +1000,9 @@
    "js/cook/stations.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-49",
@@ -1001,8 +1013,9 @@
    "js/cook/stations/chai-tray.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-54",
@@ -1012,9 +1025,10 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the probe reads js:Cook.chaiPans, which the page no longer sets (a hook gone with the chai rewrite): the spec needs a new read; sheets of the pans are in the run for the eye",
+  "hand": true
  },
  {
   "row": "CHAI-56",
@@ -1026,8 +1040,9 @@
    "build/sandbox/lib/contract-s14.mjs"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-57",
@@ -1039,8 +1054,9 @@
    "js/cook/mechanics/boil.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 6/6 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "DAAR-12",
@@ -1053,8 +1069,9 @@
    "data/stations/daar.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 6/6 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "DAAR-36",
@@ -1067,8 +1084,9 @@
    "js/cook/mechanics/chop.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 5/5 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "DAAR-37",
@@ -1105,8 +1123,9 @@
    "js/cook/mechanics/chop.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "DAAR-40",
@@ -1117,9 +1136,12 @@
    "js/cook/ui.js",
    "js/cook/stations/daar.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "fixed by 64cff18f5 (the chop opens its own step as its board starts); the spec is now contract-95 alone (the cmd fails on any break), replayed in the next batch",
+  "green": "6d12df4e3 run r16pb-cook: the same cmd exit 0 (daar L4 and L2, 0 breaks)",
+  "red": "64cff18f5~1 (worktree, today checks): run.mjs --contract cook:daar@L4,@L2 exit 1; BREAK contract-95 daar L4: \"Hane trae mirchi!\" said 7742 ms after the order was skipped, before the first step",
+  "hand": true
  },
  {
   "row": "DAAR-41",
@@ -1130,9 +1152,11 @@
    "js/cook/stations/daar.js",
    "js/cook/coach.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "6d12df4e3 run r16pb-cook: machine: pass (node build/sandbox/run.mjs --contract --flow cook:daar@L4 --sizes 1280x665: exit 0)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 7684f2418 2026-11-08 Daar onto chop's game and the kits: its chop is Cook.Chop.play (graded there, its decoys )"
  },
  {
   "row": "DAAR-43",
@@ -1142,9 +1166,11 @@
   "files": [
    "js/cook/stations/daar.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "6d12df4e3 run r16pb-cook: machine: pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 9283ae29c 2026-11-09 Merge s19-games: faces on sekelo's trays and daar's katori from the first frame; eggs' wh)"
  },
  {
   "row": "DAAR-44",
@@ -1156,9 +1182,11 @@
    "js/cook/ui.js",
    "js/shared/order-card.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "6d12df4e3 run r16pb-cook: machine: count:#mission .oc-item:not(.oc-items14)=0 (0 visible); count:#mission .oc-card=1 (1 visible); count:#side .oc-it14>=1 (1 visible)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 40937d1c6 2026-11-08 Zafar's kitchen play, 8 Nov: the feedback report (41 points, causes in code) and the fix-)"
  },
  {
   "row": "DAAR-45",
@@ -1170,8 +1198,9 @@
    "js/cook/stations/daar.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 1/1 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "DAAR-03",
@@ -1182,8 +1211,9 @@
    "js/cook/mechanics/stir.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "DAAR-46",
@@ -1194,8 +1224,9 @@
    "js/cook/mechanics/stir.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "DAAR-47",
@@ -1317,8 +1348,9 @@
    "js/cook/mechanics/thread.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 5/5 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "SEK-25",
@@ -1331,8 +1363,9 @@
    "js/cook/mechanics/thread.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 1/1 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "SEK-26",
@@ -1346,8 +1379,9 @@
    "data/stations/mishkaki-grill.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "SAM-30",
@@ -1359,8 +1393,9 @@
    "js/cook/coach.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 12/12 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "SAM-31",
@@ -1370,9 +1405,12 @@
   "files": [
    "js/cook/ui.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the row reason holds (no old box); the spec asked >=2 cards at L1, but L1 orders one filling, so it now asks >=1 there (sheet SAM-31.png panels B, D)",
+  "red": "not replayed (fix before 8 Nov s19 sweep: contract-100, samosa on the 6 Nov cards)",
+  "green": "6d12df4e3 run r16pb-cook: count:#mission .oc-item:not(.oc-items14)=0 PASS at L1 and L3 (no old count box); 6 Nov item cards 1 at L1 (one filling ordered: ba bataata) and 3 at L3",
+  "hand": true
  },
  {
   "row": "SAM-34",
@@ -1384,8 +1422,9 @@
    "data/stations/samosa.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "SAM-36",
@@ -1398,8 +1437,9 @@
    "data/cook.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "SEK-31",
@@ -1473,8 +1513,9 @@
    "data/cook.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 9/9 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "MAA-21",
@@ -1486,8 +1527,9 @@
    "js/cook/stations/maani-line.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "MAA-22",
@@ -1497,9 +1539,10 @@
   "files": [
    "js/cook/stations/maani-line.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the strip of #game at exp:tawa-on did not change over 16 frames at L3 and L4 (a filmstrip of a still screen: the moment comes before the motion, or the motion is on the canvas the strip misses); the spec needs a later moment",
+  "hand": true
  },
  {
   "row": "MAA-23",
@@ -1511,8 +1554,9 @@
    "js/shared/word-moment.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "MAA-26",
@@ -1549,8 +1593,9 @@
    "assets/art/chaat/"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHT-18",
@@ -1561,8 +1606,9 @@
    "js/cook/mechanics/assemble.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHT-20",
@@ -1585,8 +1631,9 @@
    "js/cook/words.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-06",
@@ -1596,9 +1643,10 @@
   "files": [
    "js/cook/stations/chai-tray.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the probe reads js:Cook.chaiPans, which the page no longer sets (a hook gone with the chai rewrite): the spec needs a new read; sheets of the pans are in the run for the eye",
+  "hand": true
  },
  {
   "row": "CK-53",
@@ -1622,8 +1670,9 @@
    "js/cook/ui.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-61",
@@ -1634,9 +1683,11 @@
    "js/cook/stations/corn.js",
    "js/cook/coach.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "6d12df4e3 run r16pb-cook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 9283ae29c 2026-11-09 Merge s19-games: faces on sekelo's trays and daar's katori from the first frame; eggs' wh)"
  },
  {
   "row": "CK-62",
@@ -1647,9 +1698,11 @@
    "js/cook/ui.js",
    "data/stations/eggs.json"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "6d12df4e3 run r16pb-cook: machine: count:#side .oc-it14 .wc14-pic img>=1 (1 visible); count:#side .oc-it14 .wc14-pic img>=1 (2 visible); count:#side .oc-it14 .wc14-pic img>=1 (4 visible)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: fb86d0360 2026-11-10 Eggs' probes (CK-62 at L1-L4, CK-64 the count headline, SH-247 eggs' two knobs); a kit sh)"
  },
  {
   "row": "CK-63",
@@ -1660,9 +1713,11 @@
    "js/cook/stations/eggs.js",
    "js/cook/coach.js"
   ],
-  "status": "built",
+  "status": "proven",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the machine check passes on today's head",
+  "green": "6d12df4e3 run r16pb-cook: machine: pass (0 contract breaks); pass (0 contract breaks); pass (0 contract breaks)",
+  "red": "not replayed; the fix is in history (latest commit naming the row: 91ad5484f 2026-11-10 Merge wave C: eggs on its new art and chai's hob (the top-down pot, the v4 steel pan, the)"
  },
  {
   "row": "CK-64",
@@ -1674,8 +1729,9 @@
    "js/cook/ui.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-72",
@@ -1687,8 +1743,9 @@
    "data/stations/baking.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-77",
@@ -1699,8 +1756,9 @@
    "js/cook/stations/eggs.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-104",
@@ -1711,8 +1769,9 @@
    "js/cook/stations/corn.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-113",
@@ -2124,8 +2183,9 @@
    "js/cook/mechanics/boil.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-61",
@@ -2137,8 +2197,9 @@
    "js/cook/mechanics/boil.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-62",
@@ -2148,9 +2209,10 @@
   "files": [
    "js/shared/order-card.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "the strip of #side at phase:slow did not change over 8 frames at L2 and L3: the moment does not reach the motion the row is about; the spec needs a new moment",
+  "hand": true
  },
  {
   "row": "CHAI-64",
@@ -2173,8 +2235,9 @@
    "js/cook/stations/chai-tray.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-66",
@@ -2210,8 +2273,9 @@
    "data/cook.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CHAI-112",
@@ -2414,8 +2478,9 @@
    "data/stations/chaat.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-84",
@@ -2426,8 +2491,9 @@
    "js/cook/stations/baking.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 2/2 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-85",
@@ -2438,8 +2504,9 @@
    "data/stations/chaat.json"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 8/8 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "SH-261",
@@ -2523,8 +2590,9 @@
    "js/cook/stations/mishkaki-grill.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-79",
@@ -2534,9 +2602,10 @@
   "files": [
    "js/cook/stations/daar.js"
   ],
-  "status": "built",
+  "status": "cannot-probe",
   "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "note": "chop L1 at 740x320 never reaches view-marble (chop has no marble view), 6 of 8 probes reached; the row is to fix: code, partly built (daar contract-115 and the chop phase left)",
+  "hand": true
  },
  {
   "row": "CK-80",
@@ -2547,8 +2616,9 @@
    "js/cook/stations/corn.js"
   ],
   "status": "built",
-  "judge": "machine",
-  "note": "queued: its spec is in the run that is playing now"
+  "judge": "needs-eye",
+  "note": "eye row: the sheet waits for the judge session",
+  "green": "6d12df4e3 run r16pb-cook: sheets 4/4 probes reached; judge batch in build/screenshots/evidence/r16pb-cook/judge/"
  },
  {
   "row": "CK-90",

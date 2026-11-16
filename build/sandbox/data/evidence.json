@@ -25061,9 +25061,9 @@
    ],
    "expect": [
     "count:#mission .oc-item:not(.oc-items14)=0",
-    "count:#side .oc-it14>=2"
+    "count:#side .oc-it14>=1"
    ],
-   "note": "samosa L1: its card is 6 Nov item cards, no count box",
+   "note": "samosa L1: its card is 6 Nov item cards, no count box (L1 orders one filling: one card)",
    "delay": 0
   },
   {
