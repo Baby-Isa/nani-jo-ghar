@@ -1,0 +1,236 @@
+{
+ "_about": "The stove-top kitchen's own numbers, the same for every kitchen game.",
+ "heat": {
+  "_about": "greenRate: from the green on, the heat climbs at this share of the level's rate. overResetMs: how long a spoiled vessel shows before it starts again. holdAt: where in the green a first-time player's heat waits (share of the band). bubbleLead: the boil shows this many seconds before the green, never under bubbleMin. near: the knob is the step from this far below the green.",
+  "greenRate": 0.5,
+  "overResetMs": 1100,
+  "holdAt": 0.5,
+  "bubbleLead": 2,
+  "bubbleMin": 0.3,
+  "near": 0.14,
+  "firstTimeHold": true
+ },
+ "notYetEveryMs": 1500,
+ "lines": {
+  "_about": "Nani's lines for the kitchen's own steps, as meanings for the language engine. use: put this thing in ($item is the thing). light, turn-down: the knob.",
+  "use": {
+   "fn": "DoIt",
+   "verb": "v.put-in",
+   "obj": {
+    "fn": "Item",
+    "kind": "$item"
+   }
+  },
+  "light": {
+   "fn": "Command",
+   "verb": "v.light",
+   "obj": "n.stove"
+  },
+  "turn-down": {
+   "fn": "Exclaim",
+   "x": "cook.line.guide-slow"
+  }
+ },
+ "art": {
+  "_about": "The kitchen's own pictures, by art id. hob: by how many burners.",
+  "room": "scene.kitchen-tall",
+  "worktop": "scene.marble-white",
+  "hob": [
+   "kit.hob#1",
+   "kit.hob#2",
+   "chai.hob#3"
+  ],
+  "knobOff": "kit.knob#off",
+  "knobOn": "kit.knob#on",
+  "flameHigh": "chai.flame-high",
+  "flameLow": "chai.flame-low",
+  "servingTray": "serve.tray"
+ },
+ "layout": {
+  "_about": "The play area from above, in design px (a 1600 x 900 sheet; more worktop shows above it on a taller screen). play: the worktop the hob and serving spot are laid out in. hobK: the hob's scale. spot: the serving spot's widest, and gap: its distance from the hob. vesselR: a vessel's widest radius; rim: the rim's share of it. frontStrip: where the hob's front strip sits, by burners. pillRoom: screen px kept above the hob for the count pills. badge, knob, off: the face and knob on the front strip. band: the bottom row's band, base line and pill line; slot: a slot's width; groupGap: between groups; margin: from the view's sides. sizes: a thing's height by size class, as shares of the band's room.",
+  "play": {
+   "x": 48,
+   "top": 16,
+   "w": 1504,
+   "bottom": 602
+  },
+  "hobK": 0.79,
+  "spot": 392,
+  "gap": 72,
+  "vesselR": 112,
+  "rim": 0.92,
+  "rowIn": 8,
+  "hobTop": 24,
+  "spotOfHob": 0.78,
+  "spotMin": 0.72,
+  "grow": 1.15,
+  "frontStrip": [
+   0.8325,
+   0.8342,
+   0.7885
+  ],
+  "pillRoom": 50,
+  "badge": 64,
+  "knob": 76,
+  "off": 58,
+  "offOfPitch": 0.2,
+  "flameOfRim": 1.164,
+  "flameOfPitch": 0.46,
+  "flameSrc": 245,
+  "flameLow": 0.92,
+  "band": {
+   "top": 630,
+   "base": 818,
+   "pillY": 860,
+   "shelfY": 804,
+   "shelfH": 54,
+   "room": 171.96
+  },
+  "slot": 172,
+  "groupGap": 44,
+  "margin": 40,
+  "sizes": {
+   "L": 1,
+   "M": 0.91,
+   "S": 0.84
+  },
+  "minThingPx": 40,
+  "pill": {
+   "h": 46,
+   "font": 25,
+   "pad": 48,
+   "wantPx": 13,
+   "most": 1.5,
+   "gapPx": 5,
+   "gapMin": 12,
+   "min": 62
+  },
+  "spotUp": 8,
+  "pitchShare": 0.4,
+  "pitchGap": 12,
+  "handleGap": 14,
+  "pillFloor": 896
+ },
+ "hob": {
+  "_about": "How the hob draws the heat and the knob. ring: the ring on the vessel's rim, each layer as [width, colour, strength]; sweep: the heat so far (gold, red past the green); dot: the hand at its end. knob: its angle when off, high and low, and how long it and the flames take to change.",
+  "ring": {
+   "outer": [
+    19,
+    "#2a2522",
+    0.55
+   ],
+   "track": [
+    15,
+    "#4a3b30",
+    0.85
+   ],
+   "green": [
+    15,
+    "#7e9a76",
+    0.95
+   ],
+   "sweep": 9,
+   "gold": "#c9962e",
+   "red": "#b24a3a",
+   "dot": 13.5,
+   "dotLine": [
+    3,
+    "#2a2522",
+    0.5
+   ]
+  },
+  "knob": {
+   "off": 0,
+   "high": 90,
+   "low": 135,
+   "ms": 261,
+   "flameMs": 361,
+   "flame": 0.95
+  },
+  "wiggle": {
+   "deg": 8,
+   "ms": 70,
+   "times": 3
+  },
+  "chosen": {
+   "pool": "#ffd98a",
+   "poolA": 0.14,
+   "rings": [
+    1.06,
+    1.14,
+    1.22
+   ],
+   "ring": [
+    5,
+    "#c9962e",
+    36
+   ]
+  },
+  "stepBack": 0.88
+ },
+ "cook": {
+  "_about": "The cook scene's small numbers. pointMs: how long the thing the fire needs is pointed at. flameAfterMs: the flame's sound after the knob's click. vesselWiggle: a vessel refusing a tap. ground: the worktop's tiling and its warm wash. countPill: the count pills' place above the hob, in screen px.",
+  "pointMs": 1200,
+  "flameAfterMs": 180,
+  "vesselWiggle": {
+   "deg": 4,
+   "ms": 70
+  },
+  "ground": {
+   "far": 2000,
+   "above": 400,
+   "tile": 0.5,
+   "wash": "#f8eccd",
+   "washA": 0.18
+  },
+  "countPill": {
+   "gap": 4,
+   "step": 116,
+   "margin": 6,
+   "dotsMost": 12
+  },
+  "wordPop": {
+   "aboveHob": 10,
+   "aboveHobPx": 7.5
+  }
+ },
+ "lights": {
+  "_about": "When the cook scene's first-time lights come, in milliseconds: a control's light a moment after the last movement; a thing's card once the row has settled; the next vessel after a pour. cardMargin: px round a lit card.",
+  "controlAfterMs": 1000,
+  "cardAfterMs": 500,
+  "nextAfterMs": 800,
+  "cardMargin": 4,
+  "popVolume": 0.5
+ },
+ "steam": {
+  "_about": "Steam over a vessel at the boil, in vessel-rim radii and milliseconds: a wisp every so often, rising and fading; two puffs at a boil-over.",
+  "everyMs": 800,
+  "w": 1.49,
+  "startUp": 1.36,
+  "side": 0.24,
+  "riseIn": 0.84,
+  "inMs": 840,
+  "outMs": 1560,
+  "riseAll": 2.4,
+  "drift": 0.29,
+  "alpha": 0.85,
+  "grow": [
+   0.8,
+   1.15
+  ],
+  "puffs": [
+   [
+    -0.443,
+    -0.797,
+    0.54,
+    0.868
+   ],
+   [
+    0,
+    -0.975,
+    0.611,
+    0.992
+   ]
+  ]
+ }
+}

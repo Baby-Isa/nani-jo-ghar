@@ -1,0 +1,299 @@
+{
+ "_about": "H-taste -> the sore spots (1 Oct play-test D15e, decision 27; js/clinic/heal/games/taste.js). Pop the spots of the colour(s) said with a cotton bud dipped in a soothing ointment (never a pin), the others stay; then one named drink (a liquid poured, one thing added, stirred, given) clears the rest. Levels are data: pop (colours to pop; L3 every colour but the one said, na), each (spots of each popping colour), decoys (spots of each other colour), upMs (how long a spot stays up), maxUp (spots up at once), counts (spoons of the drink's thing, from L2). The colours are data/clinic.json's col-* words (English placeholders, to record). art: the art plan's M2 tongue, O2 spots and O3 bud swap in by file name once ready.",
+ "id": "taste",
+ "ailments": {
+  "coated-tongue": {
+   "name": "sore spots on the tongue",
+   "part": "mouth",
+   "from": 1
+  }
+ },
+ "_words": "CLN-119: the words this game teaches (its word review, from the language engine: the game reads the engine, never this list). Listed so build/tools/review/heal-marks.mjs shows them; js/clinic/heal/colour-clips.test.mjs keeps it the engine's",
+ "words": {
+  "taste-spots": {
+   "kutchi": null,
+   "english": "spots",
+   "placeholder": true
+  },
+  "col-green": {
+   "kutchi": "lilo",
+   "english": "green",
+   "from": "the engine"
+  },
+  "col-blue": {
+   "kutchi": null,
+   "english": "blue",
+   "placeholder": true
+  },
+  "col-red": {
+   "kutchi": "laal",
+   "english": "red",
+   "from": "the engine"
+  },
+  "fru-02": {
+   "kutchi": "limu",
+   "english": "lemon",
+   "from": "the engine"
+  },
+  "cook-paani": {
+   "kutchi": "paani",
+   "english": "water",
+   "from": "the engine"
+  },
+  "veg-14": {
+   "kutchi": "aadu",
+   "english": "ginger",
+   "from": "the engine"
+  },
+  "cl-honey": {
+   "kutchi": null,
+   "english": "honey",
+   "placeholder": true
+  },
+  "cook-dudh": {
+   "kutchi": "dudh",
+   "english": "milk",
+   "from": "the engine"
+  },
+  "spi-01": {
+   "kutchi": "hardar",
+   "english": "turmeric",
+   "from": "the engine"
+  },
+  "neg.not": {
+   "kutchi": "na",
+   "english": "no / not",
+   "from": "the engine"
+  },
+  "cl-chamchi": {
+   "kutchi": "chamchi",
+   "english": "teaspoon",
+   "from": "the engine"
+  },
+  "num.2": {
+   "kutchi": "ba",
+   "english": "two",
+   "from": "the engine"
+  },
+  "num.3": {
+   "kutchi": "trae",
+   "english": "three",
+   "from": "the engine"
+  },
+  "num.1": {
+   "kutchi": "hakro",
+   "english": "one",
+   "from": "the engine"
+  }
+ },
+ "levels": {
+  "1": {
+   "each": 3,
+   "upMs": 2600,
+   "maxUp": 3,
+   "_note": "one colour to pop (of three), then the drink with no count; the first play is the guided round (D13) (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
+  },
+  "2": {
+   "each": 2,
+   "upMs": 2100,
+   "maxUp": 4,
+   "counts": [
+    1,
+    2,
+    3
+   ],
+   "_note": "not the colour said (na): pop the other two (the level's one new thing, with the drink's spoon count, written) (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
+  },
+  "3": {
+   "each": 2,
+   "upMs": 2100,
+   "maxUp": 4,
+   "counts": [
+    1,
+    2,
+    3
+   ],
+   "_note": "level 2 heard only (the closed card) (Zafar's heal ladder, 13 Oct) (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
+  },
+  "4": {
+   "each": 2,
+   "upMs": 1500,
+   "maxUp": 4,
+   "counts": [
+    1,
+    2,
+    3
+   ],
+   "_note": "harder variety (level 4, Zafar 13 Oct): faster, a third decoy of each other colour; heard only (S14: the colours to pop and the decoy spots are data/rules.json heal-taste: 1+1, 2+2, 3+3, 3+4; the spoons counted from L1)"
+  }
+ },
+ "colours": {
+  "red": "#d8433f",
+  "green": "#3fa35b",
+  "blue": "#3f6fd8"
+ },
+ "holes": [
+  [
+   320,
+   215
+  ],
+  [
+   400,
+   210
+  ],
+  [
+   480,
+   215
+  ],
+  [
+   305,
+   290
+  ],
+  [
+   375,
+   280
+  ],
+  [
+   445,
+   290
+  ],
+  [
+   495,
+   300
+  ],
+  [
+   345,
+   360
+  ],
+  [
+   440,
+   365
+  ]
+ ],
+ "art": {
+  "_about": "art plan pack clinic-heal-v3 (M2, O2, O3): used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units",
+  "tongue": {
+   "src": "assets/clinic/closeups/{kind}/tongue-v2.webp",
+   "ready": true,
+   "box": [
+    -58.4,
+    -81,
+    921.6,
+    614.4
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): M2's tongue (centre 764, 650 in the source, 460 wide) on the game's tongue (centre 400, 309, 276 wide) at 0.6, so every spot's hole sits on it.",
+   "src_v1": "assets/clinic/closeups/{kind}/tongue.webp",
+   "_s02": "S02-E (RM2, the redo: tighter, plain skin): the tongue sits within a few px of v1's (bbox 525-1003, 425-952 against 535-1009, 424-923), so the box stays"
+  },
+  "spot-red": {
+   "src": "assets/clinic/heal-v3/spot-red-s03.webp",
+   "ready": true,
+   "_s03": "S03-D: s03 S6 (flat matte sore patch, clear colour; Fable passed; RO2 v2 held: its green and blue read as jelly sweets)"
+  },
+  "spot-green": {
+   "src": "assets/clinic/heal-v3/spot-green-s03.webp",
+   "ready": true,
+   "_s03": "S03-D: s03 S6 (flat matte sore patch, clear colour; Fable passed; RO2 v2 held: its green and blue read as jelly sweets)"
+  },
+  "spot-blue": {
+   "src": "assets/clinic/heal-v3/spot-blue-s03.webp",
+   "ready": true,
+   "_s03": "S03-D: s03 S6 (flat matte sore patch, clear colour; Fable passed; RO2 v2 held: its green and blue read as jelly sweets)"
+  },
+  "budOintment": {
+   "src": "assets/clinic/heal-v3/bud-ointment.webp",
+   "ready": true,
+   "size": [
+    359,
+    117
+   ],
+   "_a2": "A2 (5 Oct): O3's bud with the ointment (malam) on its right-hand swab"
+  },
+  "budClean": {
+   "_about": "s08-w5b (CLN-195; Zafar 18 Oct: 'a clean cotton bud with nothing on it ... when it hits the blob ... the colour of the blob'): the s08b clean bud, lying across its picture; tip = the right swab's middle, swab = its half length and half height (shares of the picture, measured on its alpha); the code tints that swab with the colour of the spot it last touched",
+   "src": "assets/clinic/items-s08b/cotton-bud-clean-s08b.webp",
+   "size": [
+    560,
+    63
+   ],
+   "tip": [
+    0.92,
+    0.5
+   ],
+   "swab": [
+    0.08,
+    0.42
+   ]
+  },
+  "glass": {
+   "_about": "s08 wave 7B (CLN-196, Zafar 19 Oct: yes, the metal cup; the new cup with no drop shadow, sitting on the surface): the s08c steel cup TC1 (build/tools/art/specs/s08c.cut.json tc1-steel-cup), opaque, so the drink is drawn in its mouth only (opaque; lip = the rim's thickness, a share of w). rim = the rim's ellipse (centre x, y, half axes as shares of the picture's w and h, measured on the cut's alpha: top row 3, widest at rows 83-100, the near edge at row 192); inside = the drink's surface when full and the floor's centre (y), the inner half widths there (of w; the floor's visible back edge at row 159, 107-292 wide) and the surface's height over its width (the rim's ry over rx)",
+   "src": "assets/clinic/items-s08c/steel-cup-s08c.webp",
+   "size": [
+    399,
+    560
+   ],
+   "opaque": true,
+   "lip": 0.014,
+   "rim": [
+    0.5,
+    0.175,
+    0.489,
+    0.168
+   ],
+   "inside": {
+    "full": 0.215,
+    "bottom": 0.362,
+    "top": 0.45,
+    "foot": 0.232,
+    "ratio": 0.48
+   }
+  }
+ },
+ "camera": {
+  "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
+  "wide": "front",
+  "target": [
+   400,
+   250
+  ],
+  "size": 220,
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
+ },
+ "lines": {
+  "taste-why": {
+   "e": "My tongue is sore.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "taste-goal": {
+   "e": "Let's soothe the sore spots.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "taste-notthat": {
+   "e": "Hmm, not that one.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "taste-better": {
+   "e": "My tongue feels better!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  }
+ },
+ "assets": [
+  "assets/clinic/closeups/girl/tongue-v2.webp",
+  "assets/clinic/heal-v3/spot-blue-s03.webp",
+  "assets/clinic/heal-v3/spot-green-s03.webp",
+  "assets/clinic/heal-v3/spot-red-s03.webp",
+  "assets/clinic/sheets/bud/bud-pot-belt.webp",
+  "assets/clinic/items-s08c/steel-cup-s08c.webp",
+  "assets/clinic/items-s08b/cotton-bud-clean-s08b.webp",
+  "assets/clinic/items-s08b/cotton-bud-clean-s08b-sm.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
+}

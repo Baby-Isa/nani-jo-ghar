@@ -1,0 +1,462 @@
+/*
+ * The stage: the one screen every scene draws on. It owns the Phaser canvas (pictures) and the page layers (cards and
+ * text), and it is the only file that touches Phaser's loader, so a picture reaches the screen only by its art id.
+ *
+ * Two views share the canvas, each a world measured in design px (1600 wide):
+ *   "room"    the kitchen and the people: the world's width fills the play area; `lift` frames it higher or lower
+ *   "worktop" the play area from above: a 1600 x 900 sheet anchored to the bottom, with more worktop shown above it
+ *
+ *   const stage = await createStage({ art, kit })
+ *   stage.show(view, { lift })            stage.layer(view, name) -> a layer of that view, in drawing order
+ *   stage.halo(ref) -> { key, pad, k }   a soft gold copy of a picture's outline, for stage.image
+ *   stage.picture(layer, ref, opts) -> handle      opts: { x, y, w | h | scale | rim, origin, mirror, alpha, angle, depth }
+ *   stage.box(layer, { x, y, w, h }) -> box        what a game's mechanic is handed: its own clipped corner of a layer
+ *   stage.toPage(view, x, y) -> [px, py]            for page elements placed over a picture
+ *   stage.onTap(handle | { view, x, y, w, h }, fn)  stage.onTick(fn(ms))   stage.wait(ms)   stage.clear()
+ *
+ * A handle: set(props), to(props, ms, ease) -> Promise, swap(ref), remove(), and `obj` (for the stage and the kit only).
+ */
+const DESIGN_W = 1600;
+const DESIGN_H = 900;
+
+function originOf(art, ref, mirror) {
+  const [w, h] = art.size(ref) || [1, 1];
+  let cx = art.meta(ref, "cx");
+  let cy = art.meta(ref, "cy");
+  if (cx == null || cy == null) return [0.5, 0.5];
+  if (cx <= 1 && cy <= 1) [cx, cy] = [cx * w, cy * h];
+  return [mirror ? (w - cx) / w : cx / w, cy / h];
+}
+
+const stage_measure = {};
+
+export async function createStage({ art, kit, renderer = "auto" }) {
+  const P = globalThis.Phaser;
+  const el = { page: document.getElementById("page"), side: document.getElementById("side"), nani: document.getElementById("nani"), cards: document.getElementById("cards"), play: document.getElementById("play"), over: document.getElementById("over"), cover: document.getElementById("cover") };
+  const dpr = Math.min(2, globalThis.devicePixelRatio || 1);
+  const size = () => ({ w: el.play.clientWidth, h: el.play.clientHeight });
+  let scene = null;
+  const game = await new Promise((resolve) => {
+    const g = new P.Game({
+      type: renderer === "canvas" ? P.CANVAS : P.AUTO,
+      parent: "canvas",
+      backgroundColor: kit.look.stone,
+      scale: { mode: P.Scale.NONE, width: size().w * dpr, height: size().h * dpr, zoom: 1 / dpr },
+      render: { antialias: true, roundPixels: false },
+      audio: { noAudio: true },
+      banner: false,
+      scene: {
+        create() {
+          scene = this;
+          resolve(g);
+        },
+      },
+    });
+  });
+  const views = {};
+  const ticks = new Set();
+  const taps = [];
+  let showing = null;
+
+  function makeView(name) {
+    const root = scene.add.container(0, 0).setVisible(false);
+    views[name] = { root, layers: {}, lift: 0, s: 1, top: 0 };
+  }
+  makeView("room");
+  makeView("worktop");
+
+  /** Where a view's world sits on the canvas, for the play area's size now. */
+  function place() {
+    const { w, h } = size();
+    const room = views.room;
+    room.s = w / DESIGN_W;
+    room.top = -((DESIGN_W * h) / w - DESIGN_H) - room.lift; // the world y at the top of the play area
+    const wt = views.worktop;
+    wt.s = Math.min(w / DESIGN_W, h / DESIGN_H);
+    wt.top = -Math.round(h / wt.s - DESIGN_H);
+    for (const v of Object.values(views)) v.root.setScale(v.s * dpr).setPosition(((w - DESIGN_W * v.s) / 2) * dpr, -v.top * v.s * dpr);
+  }
+  place();
+  globalThis.addEventListener("resize", () => {
+    game.scale.resize(size().w * dpr, size().h * dpr);
+    place();
+  });
+
+  scene.events.on("update", (time, delta) => ticks.forEach((fn) => fn(Math.min(100, delta))));
+
+  /** Load pictures by art ref; a ref already loaded costs nothing. */
+  function load(refs) {
+    const need = [...new Set(refs.flatMap((r) => art.frames(r)))].filter((r) => r && !scene.textures.exists(art.key(r)));
+    if (!need.length) return Promise.resolve();
+    return new Promise((resolve) => {
+      need.forEach((r) => scene.load.image(art.key(r), art.file(r)));
+      scene.load.once("complete", resolve);
+      scene.load.start();
+    });
+  }
+
+  const EASE = { in: "Sine.easeIn", out: "Sine.easeOut", inOut: "Sine.easeInOut", back: "Back.easeOut", cubicOut: "Cubic.easeOut", cubicIn: "Cubic.easeIn", cubic: "Cubic.easeInOut", quadIn: "Quad.easeIn", linear: "Linear" };
+  function tween(obj, props, ms, ease = "inOut") {
+    if (!ms) {
+      Object.assign(obj, props);
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => scene.tweens.add({ targets: obj, ...props, duration: ms, ease: EASE[ease] || ease, onComplete: resolve }));
+  }
+
+  function wrap(obj, ref, mirror) {
+    const h = {
+      obj,
+      ref,
+      set(props) {
+        for (const [k, v] of Object.entries(props)) {
+          if (k === "w") obj.setScale(v / obj.width);
+          else if (k === "h") obj.setScale(v / obj.height);
+          else if (k === "angle") obj.setAngle(v);
+          else if (k === "depth") obj.setDepth(v);
+          else if (k === "visible") obj.setVisible(v);
+          else obj[k] = v;
+        }
+        return h;
+      },
+      to: (props, ms, ease) => tween(obj, props, ms, ease),
+      /** The same thing in another picture, keeping its place and its size on screen. */
+      swap(next, { rim = null } = {}) {
+        const shown = obj.displayWidth;
+        const [keepX, keepY] = [obj.originX, obj.originY];
+        obj.setTexture(art.key(next));
+        if (rim) {
+          // placed by its rim: each picture of the set has its own rim centre and radius
+          const [ox, oy] = originOf(art, next, mirror);
+          obj.setOrigin(ox, oy).setScale(rim / rimOf(next));
+        } else obj.setOrigin(keepX, keepY).setScale(shown / obj.width);
+        h.ref = next;
+        return h;
+      },
+      remove: () => obj.destroy(),
+    };
+    return h;
+  }
+  /** A picture's rim radius in its own px, from the art list (some pieces give it as a share of the width). */
+  function rimOf(ref) {
+    const r = art.meta(ref, "r");
+    const [w] = art.size(ref) || [1];
+    return r <= 1 ? r * w : r;
+  }
+
+  function picture(layer, ref, o = {}) {
+    const obj = scene.add.image(o.x || 0, o.y || 0, art.key(ref));
+    const [ox, oy] = o.origin || (o.rim ? originOf(art, ref, o.mirror) : [0.5, 0.5]);
+    obj.setOrigin(ox, oy);
+    if (o.mirror) obj.setFlipX(true);
+    if (o.rim) obj.setScale(o.rim / rimOf(ref));
+    else if (o.w) obj.setScale(o.w / obj.width);
+    else if (o.h) obj.setScale(o.h / obj.height);
+    else if (o.scale) obj.setScale(o.scale);
+    if (o.alpha != null) obj.setAlpha(o.alpha);
+    if (o.angle) obj.setAngle(o.angle);
+    if (o.depth != null) obj.setDepth(o.depth);
+    layer.add(obj);
+    return wrap(obj, ref, !!o.mirror);
+  }
+
+  function layer(view, name) {
+    const v = views[view];
+    if (!v.layers[name]) {
+      v.layers[name] = scene.add.container(0, 0);
+      v.root.add(v.layers[name]);
+    }
+    return v.layers[name];
+  }
+
+  /**
+   * The box a mechanic is handed: a container it can fill with pictures by art id and move them about in, measured
+   * from the box's own middle. It cannot reach the scene, the loader or the screen through it.
+   */
+  function box(parent, { x, y, w, h }) {
+    const c = scene.add.container(x, y);
+    parent.add(c);
+    // clipped: nothing drawn in the box shows outside it, wherever the box is carried
+    const clip = scene.make.graphics({ add: false });
+    c.setMask(clip.createGeometryMask());
+    const follow = () => {
+      const m = c.getWorldTransformMatrix();
+      clip.clear().fillStyle(0xffffff, 1).fillRect(-w / 2, -h / 2, w, h);
+      clip.setPosition(m.tx, m.ty).setScale(m.scaleX, m.scaleY).setRotation(m.rotation);
+    };
+    follow();
+    ticks.add(follow);
+    c.once("destroy", () => (ticks.delete(follow), clip.destroy()));
+    const made = [];
+    const api = {
+      w,
+      h,
+      picture(ref, o = {}) {
+        const hd = picture(c, ref, o);
+        made.push(hd);
+        return { set: hd.set, to: hd.to, swap: hd.swap, remove: hd.remove, get ref() { return hd.ref; } };
+      },
+      wait: (ms) => wait(ms),
+      clear() {
+        made.splice(0).forEach((hd) => hd.obj.destroy());
+      },
+    };
+    // the family, not the game, moves the box itself (the carry to the serving spot)
+    const handle = {
+      obj: c,
+      set: (p) => (Object.assign(c, p), handle),
+      to: (p, ms, ease) => tween(c, p, ms, ease),
+      /** Move the whole box to another layer, keeping its place (a carried vessel passes over everything). */
+      raise(to) {
+        c.parentContainer.remove(c);
+        to.add(c);
+      },
+      remove: () => c.destroy(),
+    };
+    return { api, handle };
+  }
+
+  const wait = (ms) => new Promise((resolve) => scene.time.delayedCall(ms, resolve));
+
+  /** A picture's own outline as a soft halo: tinted copies laid in a ring, so it needs no filter. Returns { key, pad }. */
+  function halo(ref) {
+    const H = kit.look.halo;
+    const key = `halo:${art.key(ref)}`;
+    const src = scene.textures.get(art.key(ref)).getSourceImage();
+    const k = Math.min(1, kit.look.textures.halo / Math.max(src.width, src.height)); // a halo is soft: a small copy is enough
+    const [w, h] = [Math.ceil(src.width * k), Math.ceil(src.height * k)];
+    const pad = Math.ceil(H.spread * kit.look.textures.haloPad);
+    if (scene.textures.exists(key)) return { key, pad, k };
+    const one = document.createElement("canvas");
+    [one.width, one.height] = [w, h];
+    const a = one.getContext("2d");
+    a.drawImage(src, 0, 0, w, h);
+    a.globalCompositeOperation = "source-in";
+    a.fillStyle = H.color;
+    a.fillRect(0, 0, w, h);
+    const cv = scene.textures.createCanvas(key, w + 2 * pad, h + 2 * pad);
+    const c = cv.getContext();
+    c.globalAlpha = H.alpha;
+    for (let i = 0; i < H.copies; i++) {
+      const r = H.spread * H.rings[i % H.rings.length];
+      c.drawImage(one, pad + Math.cos((i * 2 * Math.PI) / H.copies) * r, pad + Math.sin((i * 2 * Math.PI) / H.copies) * r);
+    }
+    c.globalAlpha = 1;
+    cv.refresh();
+    return { key, pad, k };
+  }
+
+  /** A person's face as a round badge: the face cut to a circle on a white disc with a white rim and a hairline. */
+  function badge(ref) {
+    const key = `badge:${art.key(ref)}`;
+    if (scene.textures.exists(key)) return key;
+    const src = scene.textures.get(art.key(ref)).getSourceImage();
+    const d = kit.look.textures.badge;
+    const cv = scene.textures.createCanvas(key, d, d);
+    const c = cv.getContext();
+    const rim = kit.look.badgeRim * d;
+    c.fillStyle = "#fff";
+    c.beginPath();
+    c.arc(d / 2, d / 2, d / 2 - 1, 0, 2 * Math.PI);
+    c.fill();
+    c.save();
+    c.beginPath();
+    c.arc(d / 2, d / 2, d / 2 - rim, 0, 2 * Math.PI);
+    c.clip();
+    c.drawImage(src, rim, rim, d - 2 * rim, d - 2 * rim);
+    c.restore();
+    c.strokeStyle = kit.look.badgeLine;
+    c.lineWidth = kit.look.textures.badgeLine;
+    c.beginPath();
+    c.arc(d / 2, d / 2, d / 2 - 1, 0, 2 * Math.PI);
+    c.stroke();
+    cv.refresh();
+    return key;
+  }
+
+  /** The soft contact shadow every standing thing casts, from one light at the upper left. */
+  function shadowKey() {
+    const key = "kit:shadow";
+    if (scene.textures.exists(key)) return key;
+    const d = kit.look.textures.shadow;
+    const cv = scene.textures.createCanvas(key, d, d);
+    const c = cv.getContext();
+    const g = c.createRadialGradient(d / 2, d / 2, 0, d / 2, d / 2, d / 2);
+    const [r, gg, b] = kit.look.shadowRgb;
+    g.addColorStop(0, `rgba(${r},${gg},${b},${kit.look.shadowMid})`);
+    g.addColorStop(kit.look.textures.shadowMidAt, `rgba(${r},${gg},${b},${kit.look.shadowEdge})`);
+    g.addColorStop(1, `rgba(${r},${gg},${b},0)`);
+    c.fillStyle = g;
+    c.fillRect(0, 0, d, d);
+    cv.refresh();
+    return key;
+  }
+  /** A shadow under a footprint { x, y, w, h } (its middle and size): a touch right and down, as the light asks. */
+  function shadow(layerC, f) {
+    const obj = scene.add.image(f.x + f.w * kit.look.shadowDx, f.y + f.h * kit.look.shadowDy, shadowKey());
+    obj.setDisplaySize(f.w * kit.look.textures.shadowFit[0], f.h * kit.look.textures.shadowFit[1]);
+    layerC.add(obj);
+    return wrap(obj, null, false);
+  }
+  function image(layerC, key, o = {}) {
+    const obj = scene.add.image(o.x || 0, o.y || 0, key);
+    if (o.w) obj.setScale(o.w / obj.width);
+    layerC.add(obj);
+    return wrap(obj, null, false);
+  }
+  /** A picture repeated to fill a strip (the worktop, the band). */
+  function tiled(layerC, ref, { x, y, w, h, scale = 1 }) {
+    const obj = scene.add.tileSprite(x, y, w, h, art.key(ref)).setOrigin(0, 0);
+    obj.setTileScale(scale);
+    layerC.add(obj);
+    return wrap(obj, ref, false);
+  }
+
+  function toPage(view, x, y) {
+    const v = views[view];
+    const { w } = size();
+    return [(w - DESIGN_W * v.s) / 2 + x * v.s, (y - v.top) * v.s];
+  }
+
+  /** A tap anywhere in the play area is given to the topmost thing registered under it, at least `kit.look.minTap` px wide. */
+  function onTap(target, fn) {
+    const t = { target, fn };
+    taps.push(t);
+    return () => taps.splice(taps.indexOf(t), 1);
+  }
+  function rectOf(t) {
+    const g = t.target;
+    if (g.obj) {
+      const b = g.obj.getBounds();
+      return { x: b.x / dpr, y: b.y / dpr, w: b.width / dpr, h: b.height / dpr };
+    }
+    const [x, y] = toPage(g.view, g.x, g.y);
+    const s = views[g.view].s;
+    return { x, y, w: g.w * s, h: g.h * s };
+  }
+  el.play.addEventListener("pointerdown", (ev) => {
+    if (ev.target.closest("[data-own-taps]")) return;
+    const r = el.play.getBoundingClientRect();
+    const px = ev.clientX - r.left;
+    const py = ev.clientY - r.top;
+    const min = kit.look.minTap;
+    for (let i = taps.length - 1; i >= 0; i--) {
+      const b = rectOf(taps[i]);
+      const gx = Math.max(0, (min - b.w) / 2);
+      const gy = Math.max(0, (min - b.h) / 2);
+      if (px >= b.x - gx && px <= b.x + b.w + gx && py >= b.y - gy && py <= b.y + b.h + gy) return void taps[i].fn({ x: px, y: py });
+    }
+  });
+
+  return {
+    el,
+    art,
+    scene,
+    sheet: { w: DESIGN_W, h: DESIGN_H },
+    load,
+    picture,
+    badge,
+    shadow,
+    image,
+    halo,
+    tiled,
+    layer,
+    box,
+    tween,
+    wait,
+    toPage,
+    onTap,
+    size,
+    /** A design-px box of a view as a rectangle on the page. */
+    pageRect(view, b) {
+      const r = el.play.getBoundingClientRect();
+      const [x, y] = toPage(view, b.x, b.y);
+      const k = views[view].s;
+      return { x: r.left + x, y: r.top + y, w: b.w * k, h: b.h * k };
+    },
+    scaleOf: (view) => views[view].s,
+    topOf: (view) => views[view].top,
+    onTick(fn) {
+      ticks.add(fn);
+      return () => ticks.delete(fn);
+    },
+    /** Cut to a view. `lift` frames the room higher (more wall, less counter). */
+    show(view, { lift = 0 } = {}) {
+      if (view === "room") views.room.lift = lift;
+      place();
+      Object.entries(views).forEach(([name, v]) => v.root.setVisible(name === view));
+      showing = view;
+    },
+    showing: () => showing,
+    /** For the checks: show or hide one layer of the view now showing (the shadows, to measure what they add). */
+    layerShown(name, on) {
+      const l = showing && views[showing].layers[name];
+      if (l) l.setVisible(on);
+      return !!l;
+    },
+    canvas: () => game.canvas,
+    /** Glide the room's framing to a new lift. */
+    glide(lift, ms) {
+      const v = views.room;
+      const state = { lift: v.lift };
+      return new Promise((resolve) =>
+        scene.tweens.add({ targets: state, lift, duration: ms, ease: "Sine.easeInOut", onUpdate: () => ((v.lift = state.lift), place()), onComplete: resolve })
+      );
+    },
+    /** Empty a view: every layer, every tap on it. */
+    clear(view) {
+      const v = views[view];
+      Object.values(v.layers).forEach((l) => l.destroy());
+      v.layers = {};
+      for (let i = taps.length - 1; i >= 0; i--) if ((taps[i].target.view || taps[i].target.viewName) === view) taps.splice(i, 1);
+    },
+    graphics(layerC) {
+      const g = scene.add.graphics();
+      layerC.add(g);
+      return g;
+    },
+    /** Words drawn on the canvas, sharp at any size: made `sharp` times bigger and shown that much smaller. */
+    text(layerC, str, style, sharp = kit.look.textures.textSharp) {
+      const px = parseFloat(style.fontSize);
+      const t = scene.add.text(0, 0, str, { ...style, fontSize: `${px * sharp}px` });
+      t.setScale(1 / sharp);
+      t.width1 = t.width / sharp;
+      layerC.add(t);
+      return t;
+    },
+    container(layerC, x = 0, y = 0) {
+      const c = scene.add.container(x, y);
+      layerC.add(c);
+      return c;
+    },
+    /** How wide a word is in the word font at a size, in design px. */
+    measure(str, px) {
+      const c = (stage_measure.c = stage_measure.c || document.createElement("canvas").getContext("2d"));
+      c.font = `${kit.look.wordWeight} ${px}px ${kit.look.wordFont}`;
+      return c.measureText(str).width;
+    },
+    /** A stone curtain over the play area for a change of scene: it closes in `ms` and lifts when told. */
+    async curtain(ms) {
+      const c = document.createElement("div");
+      c.className = "curtain";
+      c.style.transitionDuration = `${ms}ms`;
+      el.play.appendChild(c);
+      void c.offsetWidth;
+      c.classList.add("on");
+      await new Promise((r) => setTimeout(r, ms));
+      return {
+        async lift() {
+          c.classList.remove("on");
+          await new Promise((r) => setTimeout(r, ms));
+          c.remove();
+        },
+      };
+    },
+    /** The stone cover over everything while pictures load; it lifts once, in one fade. */
+    async uncover() {
+      el.cover.classList.add("off");
+      await new Promise((r) => setTimeout(r, kit.look.coverFadeMs));
+      el.cover.remove();
+    },
+  };
+}

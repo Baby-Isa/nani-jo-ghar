@@ -1,0 +1,94 @@
+/*
+ * The order scene's rules, with no screen. Each person's order is said part by part: the headline, then each thing
+ * asked for, the "no" things last. Nothing of an order shows before it is said: a card lands only as its part ends.
+ * The slots are named so a game fills or leaves them: ask (the headline), items, check, question, options.
+ * Pure: the view (or a robot) says when a part has been said; a tap on the kitchen skips to the end.
+ *
+ *   orderRules({ settings, kit }) -> { start, move, leave }
+ *   moves: said | skip | repeat {who} | peek {word} | lessoned
+ *   events: person {seat} | part {seat, part} | landed {seat, items} | skipped | folded
+ */
+import { machine } from "../machine.js";
+import { atLevel } from "../round.js";
+
+const SPEAKERS = ["each", "nani"];
+
+/** The parts one person's order is said in: the headline with the things it names, then each other thing said. */
+export function partsOf(person) {
+  const said = person.items.filter((i) => i.said);
+  const head = { kind: "headline", line: person.headline, lands: said.filter((i) => i.inHeadline).map((i) => i.id) };
+  return [head].concat(said.filter((i) => !i.inHeadline).map((i) => ({ kind: "item", item: i.id, lands: [i.id] })));
+}
+
+export function orderRules({ settings, kit }) {
+  const speaker = settings.order.speaker;
+  if (!SPEAKERS.includes(speaker)) throw new Error(`order: "${speaker}" is not a way of speaking the order`);
+  if (speaker !== "each") throw new Error(`order: speaking the order as "${speaker}" is not built yet`);
+
+  const partEvent = (s, round) => {
+    const person = round.order.for[s.seat];
+    const part = partsOf(person)[s.part];
+    return { type: "part", seat: s.seat, who: person.who, spokenBy: person.spokenBy, part, last: s.part === partsOf(person).length - 1, lesson: !!s.lesson && !s.lessoned && s.lesson.seat === s.seat && s.lesson.part === s.part, dishCard: s.part === 0 && atLevel(kit.levels.dishCard, round.level) ? person.dishCard || true : null };
+  };
+  const unsaid = (person) => person.items.filter((i) => !i.said).map((i) => i.id);
+
+  const move = machine({
+    states: {
+      saying: {
+        said(s, mv, { round }) {
+          const person = round.order.for[s.seat];
+          const parts = partsOf(person);
+          const events = [];
+          const lands = parts[s.part].lands;
+          if (lands.length) events.push({ type: "landed", seat: s.seat, items: lands });
+          let next;
+          if (s.part + 1 < parts.length) next = { ...s, part: s.part + 1 };
+          else {
+            // the things on the card that are never said land as the order moves on
+            events.push({ type: "landed", seat: s.seat, items: unsaid(person), quiet: true });
+            if (s.seat + 1 >= round.order.for.length) return { state: { ...s, name: "done" }, events: events.concat({ type: "folded" }) };
+            next = { ...s, seat: s.seat + 1, part: 0 };
+            events.push({ type: "person", seat: next.seat, who: round.order.for[next.seat].who });
+          }
+          return { state: next, events: events.concat(partEvent(next, round)) };
+        },
+        skip(s, mv, { round }) {
+          // while the first-time lesson is due or up, a tap on the kitchen does not skip
+          if (s.lesson && !s.lessoned) return { state: s, events: [] };
+          return { state: { ...s, name: "done", skipped: true }, events: [{ type: "skipped" }, { type: "folded" }] };
+        },
+        // hearing a person again and a look at a hidden part are help: free, counted, never a verdict
+        repeat(s, mv) {
+          return { state: { ...s, repeats: s.repeats + 1 }, events: [{ type: "repeat", who: mv.who }] };
+        },
+        peek: (s, mv) => ({ state: { ...s, peeks: s.peeks.concat(mv.word) }, events: [] }),
+        lessoned: (s) => ({ state: { ...s, lessoned: true }, events: [] }),
+        time: (s) => ({ state: s }),
+      },
+      done: {},
+    },
+  });
+
+  return {
+    states: ["saying", "done"],
+    slots: ["ask", "items", "check", "question", "options"],
+    start(round) {
+      if (!round.order.for.length) return { name: "done" };
+      // the first-time lesson: once per child, on the first big card of an order whose cards hide a part
+      const hides = !atLevel(kit.levels.cardEnglish, round.level) || !atLevel(kit.levels.cardPicture, round.level);
+      const part = partsOf(round.order.for[0]).findIndex((x) => x.lands.length);
+      const lesson = hides && !round.met.revealCard && part >= 0 ? { seat: 0, part } : null;
+      return { name: "saying", seat: 0, part: 0, skipped: false, lesson, lessoned: false, peeks: [], repeats: 0 };
+    },
+    /** The first thing to show: the runner has no events at a scene's start, so the view asks. */
+    first: (round, s) => [{ type: "person", seat: 0, who: round.order.for[0].who }, partEvent(s, round)],
+    move,
+    leave: (round, s) => ({
+      ...round,
+      orderSkipped: !!s.skipped,
+      peeks: (round.peeks || []).concat(s.peeks || []),
+      hints: (round.hints || 0) + (s.peeks || []).length + (s.repeats || 0),
+      met: s.lessoned ? { ...round.met, revealCard: true } : round.met,
+    }),
+  };
+}

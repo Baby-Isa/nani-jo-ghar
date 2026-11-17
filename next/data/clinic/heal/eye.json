@@ -1,0 +1,679 @@
+{
+ "_about": "H-eye (1 Oct play-test D15h, decision 27; Sprint 11 s11-clinic, js/clinic/heal/games/eye.js): drops in a front close-up (only the sore eye red, the dropper over it; they close at the count by themselves, no Done), then the eye test as flash cards (Zafar, 21 Oct): the chart and its versions A/B are retired. She sits close up covering one eye (art testA); the doctor holds up one big shared word card at a time on a stand; she says her guess every 1.5 s; the child taps big haa or na, or says it (the mic); the first card is the demo, four are judged. The cards are Cook's words the family has recorded (the code's POOL; WAITING words join once recorded). After a misread the dropper hangs over her eye (CLN-62). Sides are said only in the diagnosis (D10). The older keys below (numbers, chart_nouns, levels) are the first design's notes, kept for Mum's word list; the game's levels are in its code (K).",
+ "id": "eye",
+ "ailments": {
+  "sore-eye": {
+   "english": "a sore, itchy eye"
+  }
+ },
+ "items": {
+  "drops-green": {
+   "sizeClass": "S",
+   "english": "eye drops",
+   "use": "drops",
+   "art": "drops-green"
+  },
+  "pointer": {
+   "sizeClass": "M",
+   "sizeFlag": "LONG",
+   "english": "the pointer",
+   "use": "pointer",
+   "art": "pointer"
+  },
+  "patch": {
+   "sizeClass": "S",
+   "english": "eye patch (a pirate one)",
+   "use": "patch",
+   "art": "eye-patch-pirate"
+  }
+ },
+ "numbers": [
+  {
+   "n": 1,
+   "id": "num-01",
+   "kutchi": "Hakro",
+   "english": "one"
+  },
+  {
+   "n": 2,
+   "id": "num-02",
+   "kutchi": "Ba",
+   "english": "two"
+  },
+  {
+   "n": 3,
+   "id": "num-03",
+   "kutchi": "Trae",
+   "english": "three"
+  }
+ ],
+ "words": {
+  "drop": {
+   "english": "drop",
+   "placeholder": true
+  },
+  "drops": {
+   "english": "drops",
+   "placeholder": true
+  },
+  "big": {
+   "id": "ph-big",
+   "kutchi": "wadho",
+   "english": "big"
+  },
+  "small": {
+   "id": "ph-small",
+   "kutchi": "nindho",
+   "english": "small"
+  },
+  "no": {
+   "id": "ph-no",
+   "kutchi": "na",
+   "english": "not",
+   "draft": true
+  }
+ },
+ "lines": {
+  "side-left": {
+   "who": "patient",
+   "e": "My left eye",
+   "placeholder": true
+  },
+  "side-right": {
+   "who": "patient",
+   "e": "My right eye",
+   "placeholder": true
+  },
+  "patch": {
+   "who": "doctor",
+   "e": "Cover the other eye",
+   "placeholder": true
+  },
+  "chart": {
+   "who": "doctor",
+   "e": "The chart.",
+   "placeholder": true
+  },
+  "arr": {
+   "who": "patient",
+   "e": "Arrr! A pirate!",
+   "placeholder": true
+  },
+  "squint": {
+   "who": "patient",
+   "e": "Hmmm... (squints)",
+   "placeholder": true
+  },
+  "blink": {
+   "who": "patient",
+   "e": "Ooh, cold!",
+   "placeholder": true
+  },
+  "squawk": {
+   "who": "kasuku",
+   "e": "Squawk!",
+   "placeholder": true
+  },
+  "eye-why": {
+   "e": "I can't see well.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "eye-goal": {
+   "e": "Drops first, then let's test your eyes.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "eye-better": {
+   "e": "I can see!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "intro-not-right": {
+   "e": "The eye isn't right.",
+   "who": "doctor",
+   "_frame": "the formula's first sentence, {part} isn't right (Zafar's 'aai baraba nai', not on record): the engine has no frame for it (IsA is only the positive, 'Akh barabar ai'); to record with Mum, then a meaning here",
+   "_src": "CLN-199 (s12-w2b; Zafar 22 Oct, C1): the doctor's set sentences; English placeholder, to record"
+  },
+  "intro-heal": {
+   "e": "We will heal the eye.",
+   "who": "doctor",
+   "_frame": "the formula's second sentence, we will heal {part}: no verb 'heal' and no future frame in the engine; to record",
+   "_src": "CLN-199 (s12-w2b; Zafar 22 Oct, C1): English placeholder, to record"
+  },
+  "intro-use": {
+   "e": "We'll use this medicine.",
+   "who": "doctor",
+   "_frame": "the formula's third sentence, we'll use this {tool}: v.use is known only as a bare command (wapur) and n.medicine has no Kutchi yet; to record",
+   "_src": "CLN-199 (s12-w2b; Zafar 22 Oct, C1): English placeholder, to record"
+  }
+ },
+ "intro": [
+  {
+   "line": "intro-not-right",
+   "card": "body-eye",
+   "pic": "assets/clinic/s12/eye-card-s12.webp"
+  },
+  {
+   "line": "intro-heal",
+   "card": "body-eye",
+   "pic": "assets/clinic/s12/eye-card-s12.webp"
+  },
+  {
+   "line": "intro-use",
+   "card": "n.medicine",
+   "pic": "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp"
+  }
+ ],
+ "_intro": "CLN-199 (s12-w2b; Zafar 22 Oct, C1; sprint decision 7): the doctor's start, the formula every heal game can name in its data (js/clinic/heal/host.js runIntro): the wide shot with the doctor standing beside her (no pop-up), his set sentences one by one in his bubble, the word card of the thing he names shown big as he says it (the eye; the medicine, a placeholder name for the dropper: Zafar 'call it medicine for now'), then the push-in to the close-up. A knee or an ear names its own three lines and cards here.",
+ "chart_nouns": [
+  {
+   "id": "fru-01",
+   "kutchi": "kelo",
+   "english": "banana",
+   "img": "assets/items/fruit/fru-01.png",
+   "he": true,
+   "audio": "assets/audio/word/fru-01.mp3"
+  },
+  {
+   "id": "fru-02",
+   "kutchi": "limu",
+   "english": "lemon",
+   "img": "assets/clinic/items-s08b/lemon-whole-s08b.webp",
+   "audio": "assets/audio/word/fru-02.mp3",
+   "_img": "CLN-189 (s08 w6F): the whole yellow lemon (s08b LM1), as the chart draws it (js/clinic/heal/games/eye.js PIC); never fru-02.png or the golden lemon-half that reads as an orange"
+  },
+  {
+   "id": "fru-04",
+   "kutchi": "santra",
+   "english": "orange",
+   "img": "assets/items/fruit/fru-04.png",
+   "audio": "assets/audio/word/fru-04.mp3"
+  },
+  {
+   "id": "fru-05",
+   "kutchi": "aamo",
+   "english": "mango",
+   "img": "assets/items/fruit/fru-05.png",
+   "he": true
+  },
+  {
+   "id": "fru-11",
+   "kutchi": "drakhu",
+   "english": "grapes",
+   "img": "assets/items/fruit/fru-11.png"
+  },
+  {
+   "id": "fru-08",
+   "kutchi": "safarjan",
+   "english": "apple",
+   "img": "assets/items/fruit/fru-08.png"
+  },
+  {
+   "id": "veg-01",
+   "kutchi": "bataato",
+   "english": "potato",
+   "img": "assets/items/vegetable/veg-01.png",
+   "he": true,
+   "audio": "assets/audio/cook-tts/bataato.mp3"
+  },
+  {
+   "id": "veg-02",
+   "kutchi": "dungri",
+   "english": "onion",
+   "img": "assets/items/vegetable/veg-02.png",
+   "audio": "assets/audio/cook-tts/dungri.mp3"
+  },
+  {
+   "id": "veg-03",
+   "kutchi": "tameto",
+   "english": "tomato",
+   "img": "assets/items/vegetable/veg-03.png",
+   "he": true,
+   "audio": "assets/audio/cook-tts/tameto.mp3"
+  },
+  {
+   "id": "veg-04",
+   "kutchi": "gajar",
+   "english": "carrot",
+   "img": "assets/items/vegetable/veg-04.png"
+  },
+  {
+   "id": "veg-12",
+   "kutchi": "marcha",
+   "english": "green chilli",
+   "img": "assets/items/vegetable/veg-12.png",
+   "audio": "assets/audio/cook-tts/marcha.mp3"
+  },
+  {
+   "id": "veg-14",
+   "kutchi": "aadu",
+   "english": "ginger",
+   "img": "assets/items/vegetable/veg-14.png",
+   "audio": "assets/audio/cook-tts/aadu.mp3"
+  }
+ ],
+ "levels": {
+  "1": {
+   "_note": "Drops (the count; the sore eye shows, so no side row) + three chart calls, rows of 3, 4, 5. Lines come one at a time.",
+   "drops": [
+    1,
+    2
+   ],
+   "side": false,
+   "sore_visible": true,
+   "patch": false,
+   "list": false,
+   "chart": [
+    {
+     "kind": "noun",
+     "n": 3
+    },
+    {
+     "kind": "noun",
+     "n": 4
+    },
+    {
+     "kind": "noun",
+     "n": 5
+    }
+   ]
+  },
+  "2": {
+   "_note": "+ the side, in the patient's voice (no eye looks sorer than the other); four calls. Said as one list.",
+   "drops": [
+    1,
+    2,
+    3
+   ],
+   "side": true,
+   "sore_visible": false,
+   "patch": false,
+   "list": true,
+   "chart": [
+    {
+     "kind": "noun",
+     "n": 3
+    },
+    {
+     "kind": "noun",
+     "n": 4
+    },
+    {
+     "kind": "noun",
+     "n": 5
+    },
+    {
+     "kind": "noun",
+     "n": 6
+    }
+   ]
+  },
+  "3": {
+   "_note": "+ the patch on THE OTHER eye (the only reversed side in any mode); five calls with wadho/nindho and a nar row.",
+   "drops": [
+    1,
+    2,
+    3
+   ],
+   "side": true,
+   "sore_visible": false,
+   "patch": "other",
+   "list": true,
+   "chart": [
+    {
+     "kind": "noun",
+     "n": 4
+    },
+    {
+     "kind": "size",
+     "n": 4
+    },
+    {
+     "kind": "noun",
+     "n": 5
+    },
+    {
+     "kind": "nar",
+     "n": 4
+    },
+    {
+     "kind": "noun",
+     "n": 6
+    }
+   ]
+  }
+ },
+ "camera": {
+  "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
+  "wide": "front",
+  "target": [
+   400,
+   265.6
+  ],
+  "size": 122,
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size.",
+  "_view": "s08 wave 7B: the s08c close-up (GZ2) is itself the less-close view (CLN-185: brows, forehead and hairline in view, the eyes 37% of the width), so the extra widening (HOST.view, k 0.85 for Y2) is off; kept as _view_v2",
+  "target_v2": [
+   400,
+   250
+  ],
+  "size_v2": 240,
+  "_s08c": "s08 wave 7B (CLN-163): the match cut on the s08c close-up: the eyes' midpoint, and size scaled with their spacing (240.7 units against Y2's 472: 240 x 240.7 / 472)",
+  "_view_v2": {
+   "k": 0.85,
+   "bottom": 520.9,
+   "not": "^chart"
+  }
+ },
+ "test": {
+  "_about": "Sprint 11 (s11-clinic): the chart's versions A/B are retired (version is gone); split is where her panel ends (close-up units) and the room with the card's stand begins",
+  "split": 200,
+  "_s08w6c": "CLN-188 (the judge: the board filled about a third, her photo the larger part): the split at 250 (was the middle, 392), her panel's picture 230 wide in it, the wall's picture bigger and its board centred in the rest (art.wall.box), its foot clear of the yes / no pills on the shortest screen",
+  "_s08w6n": "CLN-188 (s08 w6N; the judge: the board 'fills only the right half of the stage ... the girl's face takes the left half'): the split at 200, her picture moved left with it (her open eye and hand stay in her panel), the wall's picture bigger and its board widened (art.wall), so the board's face takes most of the play area and is bigger than her panel at every size"
+ },
+ "art": {
+  "_about": "art plan pack clinic-heal-v3: used once ready is true ({kind} = the patient's kind); box = x, y, w, h in the close-up's 800x500 units; eye = where the open eye is (the redrop)",
+  "eyesSore": {
+   "src": "assets/clinic/closeups/{kind}/eyes-s08c-sore.webp",
+   "ready": true,
+   "box": [
+    -173.5,
+    -120,
+    1110,
+    740
+   ],
+   "_note": "Y2: the sore eye on the viewer's right (the patient's left): the code mirrors it for the other side",
+   "kinds": [
+    "girl"
+   ],
+   "has2x": false,
+   "_a1": "A1 (5 Oct): Y2 at 0.81, its eyes' midpoint (769, 695 in the 1536 x 1024 source) on (400, 250), so the face leaves by the bottom too; eyes = where that puts the patient's right and left eye ([right x, left x, y]: the game's drops and dropper follow). The run framed Y1/Y2 wider than asked (redo list). The blink waits for Y3.",
+   "eyes": [
+    279.6,
+    520.3,
+    265.6
+   ],
+   "src_v1": "assets/clinic/closeups/{kind}/eyes-sore.webp",
+   "box_v1": [
+    -222.9,
+    -313,
+    1244.2,
+    829.4
+   ],
+   "eyes_v1": [
+    218,
+    582,
+    250
+   ],
+   "_s02": "S02-E (RY1-RY3, the redo: tighter framing): the v2 pupils (439, 639 and 1077, 623 in the 1536 x 1024 source) at 0.74, so the picture still fills the view below 500 (to 521, as v1's reached 516); the eyes' targets move with them (v1's box and eyes kept as *_v1)",
+   "src_v2": "assets/clinic/closeups/{kind}/eyes-v2-sore.webp",
+   "box_v2": [
+    -160.9,
+    -236.9,
+    1136.6,
+    757.8
+   ],
+   "eyes_v2": [
+    164,
+    636,
+    230
+   ],
+   "eyeR": [
+    68,
+    48
+   ],
+   "dropK": 0.8,
+   "_s08c": "s08 wave 7B (CLN-163 with CLN-185, ART-19; Zafar 20 Oct: likeness yes, keep GZ2's cropped crown): the s08c close-ups, less close: GZ2 (clear), GZ3 (her LEFT eye sore, on the viewer's right, as Y2), GZ4 (closed), edits of GZ2 on its own canvas (measured shift under 0.3 px: used as drawn), all three moved toward her sheet's face (#E39468) by ONE Lab shift (GZ2's median face skin to it), so the frames cross-fade without a flicker (7B's report). 1536 x 1024 at 0.7227 (no @2x: never above the source): box = [-173.5, -120, 1110, 740], centred on y 250 so it covers the tallest view (the 4:3 tablets: y -111 to 611) and the eyes' midpoint is on x 400 (the mirror for the patient's right); eyes = the pupils (627, 537) and (960, 530) in the source; eyeR = an eye's half width and height (svg units); dropK = the dropper's scale over these smaller eyes"
+  },
+  "eyesClosed": {
+   "src": "assets/clinic/closeups/{kind}/eyes-s08c-closed.webp",
+   "ready": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": false,
+   "_a1": "A1 (5 Oct): Y3 on Y2's canvas: the blink after each drop.",
+   "src_v1": "assets/clinic/closeups/{kind}/eyes-closed.webp",
+   "src_v2": "assets/clinic/closeups/{kind}/eyes-v2-closed.webp",
+   "_s08c": "s08 wave 7B: see eyesSore._s08c"
+  },
+  "testA": {
+   "src": "assets/clinic/closeups/{kind}/eyetest-a-v2.webp",
+   "ready": true,
+   "box": [
+    -60,
+    -75,
+    290,
+    650
+   ],
+   "eye": [
+    33,
+    203
+   ],
+   "top_src": 177,
+   "src_size": [
+    1024,
+    1536
+   ],
+   "eye_src": [
+    390,
+    657
+   ],
+   "_s12": "CLN-202 (s12-w2b; Zafar 22 Oct: 'she's very squished'): her panel widens to everything left of the doctor's own width (eye.js place/setSplit); her picture is slice-fitted, centred in the panel, and her open eye is placed from src_size and eye_src (the 1x source's size and her open eye in it)",
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): T1, mirrored in the cut so she looks at the chart (the run's picture looked away); slice-fitted into the left panel; eye = her open eye there.",
+   "src_v1": "assets/clinic/closeups/{kind}/eyetest-a.webp",
+   "eye_v1": [
+    243,
+    194
+   ],
+   "_s02": "S02-E (RT1, the redo): the open eye looks a little to our right, past us at the chart, as drawn (v1 was mirrored for its gaze; v2 isn't): her open eye (390, 657 in the 1024 x 1536 source) at the box's slice scale 0.383",
+   "_s08w6c": "CLN-188: 290 x 650 at (-30, -75), slice-fitted (scale 0.4232), the tallest close-up (4:3: y -70 to 570) covered, so her picture fills her narrower panel to its edges on every screen (no strip of the panel's ground round it); eye = her open eye there (source 390, 657)"
+  },
+  "testB": {
+   "src": "assets/clinic/closeups/{kind}/eyetest-b.webp",
+   "ready": false,
+   "box": [
+    0,
+    0,
+    380,
+    500
+   ],
+   "eye": [
+    232,
+    161
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "_a1": "A1 (5 Oct): T2 meet-fitted into the left of the scene; eye = her eye there."
+  },
+  "chartFront": {
+   "src": "assets/clinic/heal-v3/eye-chart-front.webp",
+   "ready": false,
+   "size": [
+    691,
+    1024
+   ],
+   "board": [
+    [
+     0.0781,
+     0.0547
+    ],
+    [
+     0.9276,
+     0.0547
+    ],
+    [
+     0.9276,
+     0.9492
+    ],
+    [
+     0.0781,
+     0.9492
+    ]
+   ],
+   "lines": [
+    0.3286,
+    0.4558,
+    0.5813,
+    0.6998,
+    0.8111,
+    0.9187
+   ],
+   "_a2": "A2 (5 Oct): C1; board = the white board's corners (shares of the picture: top-left, top-right, bottom-right, bottom-left), lines = its six ruled lines as shares of the board's height. The rows of pictures sit on the lines under the eye, the biggest at the top."
+  },
+  "chartTurned": {
+   "src": "assets/clinic/heal-v3/eye-chart-turned.webp",
+   "ready": false,
+   "size": [
+    507,
+    1024
+   ],
+   "board": [
+    [
+     0.1578,
+     0.123
+    ],
+    [
+     0.8915,
+     0.084
+    ],
+    [
+     0.8383,
+     0.7637
+    ],
+    [
+     0.0947,
+     0.748
+    ]
+   ],
+   "lines": [
+    0.3286,
+    0.4558,
+    0.5813,
+    0.6998,
+    0.8111,
+    0.9187
+   ],
+   "_a2": "A2 (5 Oct): C2, the same chart turned on its easel; board = its four corners, so the rows are laid on it in perspective; lines are C1's."
+  },
+  "eyes": {
+   "src": "assets/clinic/closeups/{kind}/eyes-s08c.webp",
+   "ready": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": false,
+   "_a1": "A1 (5 Oct): Y1, the clear eyes on Y2's canvas: fades in over the sore eye with each drop.",
+   "src_v1": "assets/clinic/closeups/{kind}/eyes.webp",
+   "src_v2": "assets/clinic/closeups/{kind}/eyes-v2.webp",
+   "_s08c": "s08 wave 7B: see eyesSore._s08c"
+  },
+  "wall": {
+   "_about": "s08-w5b (CLN-188; Zafar 18 Oct: 'an eye test board sitting on an optician's wall'): the s08b EC1 wall with its blank board (assets/clinic/s08b/ec1-meta.json), layout A's right panel. box = where the picture goes in the close-up's 800x500 units (from x 406, the panel's left edge, 350 wide: the wall colour carries on to the right edge, so the board clears her face circle in the corner and, on the shortest screen (800x360), its frame ends above the yes / no pills; its top cut 36 units), board = the board's white face as shares of the picture (ec1-meta board / size), fill and floor = the wall's and the skirting's own colours, round the picture on a taller screen",
+   "src": "assets/clinic/s08b/ec1-optician-wall-s08b.webp",
+   "box": [
+    167,
+    -86,
+    475,
+    713
+   ],
+   "board": [
+    0.17383,
+    0.12109,
+    0.83105,
+    0.7806
+   ],
+   "fill": "#a9b4b8",
+   "floor": "#c3b6a6",
+   "_s08w6c": "CLN-188: 404 x 606 at (297, -68) (was 350 x 525 at (406, -36)): the board 265 x 400 units, its middle at x 500, its foot at y 405 (above the pills at 800x360)",
+   "stretch": [
+    0.3,
+    0.7,
+    1.8
+   ],
+   "_s08w6h": "CLN-188 (the judge: the board a third of the play width): box x 230 (was 297) and stretch [a, b, f]: the picture's middle share 0.3-0.7 (the plain board face, the wall above it and the skirting below) drawn 1.835x as wide (js/clinic/heal/games/eye.js, a nine-slice: the frame's sides keep their size), so the board's face is 400 x 400 units, x 300-700, its frame clear of her face circle in the top right corner; the wall is clipped at the split",
+   "_s08w6n": "CLN-188 (s08 w6N): box [167, -86, 475, 713] and stretch middle x1.8: the board's face about 464 x 470 units, its frame clear of her face circle in the top right corner and its foot above the yes / no pills",
+   "_s11": "Sprint 11 (s11-clinic): the wall picture (the chart board) is no longer drawn; fill and floor, when given, colour the room behind the card stand"
+  },
+  "drop": {
+   "_about": "s08-w5b (CLN-186; Zafar 18 Oct: 'photorealistic drops, and the bottle ... isn't cut out nicely'): bottle = the re-cut bottle held nozzle down (SH-115 sheets-v3), cut off at nozzle (its nozzle's end, a share of its height: its own painted drop hidden); tool = the re-cut bottle in the strip; falling = the s08b DP3 photo drop (aspect its width over height, w its width in the close-up's units) hanging at the nozzle and falling; splash = DP3's splash on the eye (splashW wide)",
+   "bottle": "assets/clinic/sheets-v3/drop-bottle/drop-bottle-use-down-v3.webp",
+   "nozzle": 0.818,
+   "tool": "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp",
+   "falling": "assets/clinic/items-s08b/drop-falling-s08b.webp",
+   "aspect": 0.604,
+   "w": 11,
+   "splash": "assets/clinic/items-s08b/drop-splash-s08b.webp",
+   "splashW": 46,
+   "splashAspect": 2.022
+  },
+  "doctorCard": {
+   "src": "assets/clinic/s11/doctor-card-s11.webp",
+   "ready": true,
+   "has2x": true,
+   "size": [
+    316,
+    725
+   ],
+   "card": {
+    "x": 0.0949,
+    "y": 0.2193,
+    "w": 0.8101,
+    "h": 0.1972
+   },
+   "_s11": "Sprint 11 art (Zafar ran it, 22 Oct; assets/clinic/s11/s11-art.json): the doctor holding a big blank card; the eye test's word card sits in its face (card: x, y, w, h as shares of the 1x picture), in place of the drawn stand",
+   "always2x": true
+  }
+ },
+ "assets": [
+  "assets/clinic/closeups/girl/eyes-s08c-closed.webp",
+  "assets/clinic/closeups/girl/eyes-s08c-sore.webp",
+  "assets/clinic/closeups/girl/eyes-s08c.webp",
+  "assets/clinic/closeups/girl/eyetest-a-v2.webp",
+  "assets/clinic/items-v2/ginger.webp",
+  "assets/clinic/items-v2/milk-jug.webp",
+  "assets/cook/items/icon-cook-paani.webp",
+  "assets/cook/items/icon-veg-01.webp",
+  "assets/cook/items/icon-veg-02.webp",
+  "assets/cook/items/icon-veg-03.webp",
+  "assets/cook/items/icon-veg-12.webp",
+  "assets/cook/items/icon-veg-13.webp",
+  "assets/clinic/s12/lemon-whole-s12.webp",
+  "assets/clinic/items-s08b/drop-falling-s08b.webp",
+  "assets/clinic/items-s08b/drop-splash-s08b.webp",
+  "assets/clinic/sheets-v3/drop-bottle/drop-bottle-use-down-v3.webp",
+  "assets/clinic/sheets-v3/drop-bottle/drop-bottle-tool-v3.webp",
+  "assets/clinic/s11/doctor-card-s11.webp",
+  "assets/clinic/s11/doctor-card-s11@2x.webp",
+  "assets/clinic/s12/eye-card-s12.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json",
+ "chart_colours": {
+  "_about": "s08-w5b (CLN-189, the auto check build/test_shared_heal_chart.mjs, the classes of build/heal_colour.py): the colour each chart word's thing is (a lemon is yellow, never an orange's), so every picture the chart draws must be that colour; a word may allow two where the picture sits between them (a potato is tan, a red onion red-purple, garlic cream), never yellow for orange",
+  "fru-02": "yellow",
+  "veg-01": [
+   "brown",
+   "orange"
+  ],
+  "veg-02": [
+   "red",
+   "purple"
+  ],
+  "veg-03": "red",
+  "veg-12": "green",
+  "veg-13": [
+   "white",
+   "brown"
+  ],
+  "veg-14": "brown",
+  "cook-dudh": "white",
+  "cook-paani": "blue"
+ }
+}

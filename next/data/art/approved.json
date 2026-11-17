@@ -1,0 +1,409 @@
+{
+ "_about": "Art that is current and approved although it predates Sprint 19 (green, 'approved', on lab/art-board.html; counted apart from new v4 and not as old). Start: every picture chai-tray's page loaded on 12 Nov, minus the retired (Zafar: 'chai standard everywhere'). Add a line only on Zafar's word.",
+ "approved": [
+  {
+   "glob": "assets/characters/ali/cousin-blink.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/characters/ali/cousin-impatient.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/characters/ali/cousin-talk.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/characters/ma/ma-blink.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/characters/ma/ma-talk.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/characters/nana/nana-blink.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/characters/nana/nana-talk.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/cousin-face.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/cousin-happy.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/cousin-neutral.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/ma-happy.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/ma-impatient.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/ma-neutral.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nana-happy.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nana-impatient.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nana-neutral.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nani-blink-v3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nani-happy-v3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nani-neutral-v3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nani-point-front-v3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nani-point-v3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/characters/nani-talk-v3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s08c/teaspoon/teaspoon-chai-s08c.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s08c/teaspoon/teaspoon-empty-s08c.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s08c/teaspoon/teaspoon-sugar-s08c.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-black-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-boil-milky-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-black-1-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-black-2-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-black-3-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-black-4-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-black-5-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-black-6-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-milky-1-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-milky-2-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-milky-3-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-milky-4-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-milky-5-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-milky-6-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-empty-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-leaves-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-milk-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/chai-pan/pan-water-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-empty-top-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-black-1-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-black-2-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-black-3-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-black-4-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-black-5-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-black-6-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-milky-1-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-milky-2-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-milky-3-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-milky-4-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-milky-5-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s14/glass/glass-fill-milky-6-s14.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s17-stove/f-milk-carton.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s17-stove/f-sugar-jar.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s17-stove/f-tea-jar.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items-s17-stove/f-water-bottle.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/chai-station/flame-high.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/chai-station/flame-low.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/dry-chai-leaves-bowl-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/dry-khun-bowl-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/spice-elchi-bowl-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/spice-jeeru-bowl-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/spice-loon-bowl-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/spice-rai-bowl-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/chai/pan-boil-tea.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/chai/pan-foam.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/hob/hob-1.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/hob/hob-2.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/hob/hob-3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/hob/hob-4-v2.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/hob/knob-off-v2.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/v3/hob/knob-on-v2.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/veg-aadu-grated-bowl-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/veg-lasan-chopped-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/vessel-milk-jug-f.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/vessel-saucepan-t.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/items/vessel-water-jug-f.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/serve/dish-chai.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/serve/kitchen-tall.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/serve/tray.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/cook/worktop-s17/marble-white-s17.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/faces/nana.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/faces/nani.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/sk-2.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/sk-3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/sk-4.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/sk-5.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/st-1.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/st-2.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/st-3.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/td-1.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/juice/td-2.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/panel/stone-shelf-s17.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/panel/stone-tile-s17.webp",
+   "row": "Zafar's chai sign-off"
+  },
+  {
+   "glob": "assets/shared/panel/stone-tile-s17@1x.webp",
+   "row": "Zafar's chai sign-off"
+  }
+ ]
+}

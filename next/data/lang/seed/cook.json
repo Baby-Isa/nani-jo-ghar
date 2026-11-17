@@ -1,0 +1,1059 @@
+{
+ "_about": "Step 4d (decision 40, rule G27, the orchestrator's 5 Oct addition): Cook's words and lines as the language engine's own source. They used to live in data/cook.json (words: the Kutchi, English, gender, forms and voice spellings; lines; grammar; the guide box's English; the pantry headline) and data/stations/*.json (the station words, the stir line); build/lang/import_cook.mjs reads them from here, and the game reads none of it (js/cook/words.js asks the engine). Edit a word here, or better in the engine's hand/ layer, then run node build/lang/import_all.mjs. data/cook.json keeps only the item catalogue (pictures, heaps, layers) under the same ids. The parked pages (dress, find, snap, tidy, monsoon) still read this file through js/cook/lang.js, their adapter, until they move onto the engine.",
+ "words": {
+  "cook-paani": {
+   "kutchi": "paani",
+   "_gender": "Mum 28 Sept (Round 3 K10; docs/language/grammar-notes.md §31): muke paani/dudh khapeto (the he-word ending)",
+   "english": "water",
+   "gender": "he",
+   "src": "zafar-24sep"
+  },
+  "cook-chai": {
+   "kutchi": "chai",
+   "english": "tea",
+   "gender": "she",
+   "src": "zafar-24sep"
+  },
+  "cook-dudh": {
+   "kutchi": "dudh",
+   "_gender": "Mum 28 Sept (Round 3 K10; docs/language/grammar-notes.md §31): muke paani/dudh khapeto (the he-word ending)",
+   "english": "milk",
+   "gender": "he",
+   "src": "zafar-24sep"
+  },
+  "cook-khun": {
+   "kutchi": "khun",
+   "english": "sugar",
+   "gender": "he",
+   "src": "zafar-24sep",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro khun; hakri chamchi khun is the she-word teaspoon, 19:46, 18:49)"
+  },
+  "cook-atto": {
+   "kutchi": "atto",
+   "english": "flour",
+   "gender": "he",
+   "src": "zafar-24sep",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro atto, 20:37)"
+  },
+  "cook-daal": {
+   "kutchi": "daar",
+   "english": "daal",
+   "gender": "she",
+   "src_change": "was daal; Mum 25 Sept (A3 recording, docs/language/grammar-notes.md): daar ends in r",
+   "src": "zafar-24sep",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri daar, one grain of daal, 20:44)"
+  },
+  "cook-maani": {
+   "kutchi": "maani",
+   "kutchi_one": "maani",
+   "kutchi_many": "maani",
+   "_count": "Mum 28 Sept (Round 3 P6, C5; docs/language/grammar-notes.md §34): hakri maani, ba maani, no change",
+   "english": "chapati",
+   "gender": "she",
+   "src": "zafar-24sep"
+  },
+  "cook-bajrmaani": {
+   "kutchi": "bajr ji maani",
+   "english": "millet chapati",
+   "gender": "she",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B11): ji, not jo, because maani is a she-word",
+   "src_change": "was bajr jo maani (Zafar 24 Sept draft)"
+  },
+  "veg-01": {
+   "kutchi": "bataato",
+   "kutchi_one": "bataato",
+   "kutchi_many": "bataata",
+   "_count": "Mum 28 Sept (Round 3 P1; docs/language/grammar-notes.md §34): one bateto, three bateta (Whisper's spelling, kept in the game's bataato/bataata spelling for Zafar to check); a he-word in -o, -o -> -a",
+   "english": "potato",
+   "gender": "he",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro bataato; batate before jo: hakro batate jo samoso, 21:00)"
+  },
+  "veg-02": {
+   "kutchi": "dungri",
+   "kutchi_one": "dungri",
+   "kutchi_many": "dungri",
+   "_count": "Mum 28 Sept (Round 3 P2; docs/language/grammar-notes.md §34): trae dungri, no change",
+   "english": "onion",
+   "gender": "she",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri dungri, 21:07)"
+  },
+  "veg-03": {
+   "kutchi": "tameto",
+   "english": "tomato",
+   "gender": "he",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro tomato, trae tameta (Mum used the English tomato for one: 'there's a Kutchi word, I can't remember'), 17:31)"
+  },
+  "veg-12": {
+   "kutchi": "marcha",
+   "_count_mum": "Mum 28 Sept (Round 3 P4; docs/language/grammar-notes.md §34): Mum says mirchi for one and for more (trae mirchi de, 'like salt'); she thinks marcha may be Gujarati or the whole dried chilli. Contradicts Zafar's 26 Sept note: Zafar to decide. Not changed.",
+   "kutchi_one": "mirchi",
+   "english": "green chilli",
+   "note": "Zafar 26 Sept: mirchi = one chilli, marcha = plural. The game has no singular/plural switch yet (see cook-with-nani-todo: noun plurals), so marcha stays for counts; mirchi is kept for when one chilli is asked for.",
+   "gender": "she",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri mirchi; the same word for chilli powder, 21:15, 23:54)"
+  },
+  "veg-13": {
+   "kutchi": "lasan",
+   "english": "garlic",
+   "gender": "he",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro lasan; Mum: 'I think on its own would be masculine', 22:12)"
+  },
+  "veg-10": {
+   "kutchi": "matar",
+   "src_change": "was watana (fried peas); decision 61 (Zafar, 6 Oct): green peas are matar, with the R (Mum 28 Sept, Round 3 P11, grammar-notes §34; her matar-b-m clip). Earlier: was vatana; Zafar 25 Sept: no V in Kutchi, always W",
+   "english": "green peas",
+   "gender": "he",
+   "src": "Mum 28 Sept (Round 3 P11; docs/language/grammar-notes.md §34): green peas are matar; decision 61",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro matar, 22:19)"
+  },
+  "veg-14": {
+   "kutchi": "aadu",
+   "english": "ginger",
+   "gender": "he",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro aadu, 22:25)"
+  },
+  "fru-02": {
+   "kutchi": "limu",
+   "kutchi_one": "limu",
+   "kutchi_many": "limu",
+   "_count": "Mum 28 Sept (Round 3 P5; docs/language/grammar-notes.md §34): char limu, no change",
+   "english": "lemon",
+   "gender": "unknown",
+   "src": "handout"
+  },
+  "spi-01": {
+   "kutchi": "hardar",
+   "english": "turmeric",
+   "gender": "he",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro hardar, 22:30)"
+  },
+  "spi-02": {
+   "kutchi": "jeeru",
+   "english": "cumin seeds",
+   "gender": "he",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro jeeru (heard jeero, jeera), 22:38)"
+  },
+  "spi-05": {
+   "kutchi": "rai",
+   "english": "mustard seeds",
+   "gender": "she",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri rai, after hakro rai; Mum: 'I've never heard anybody ever saying that', 23:08)"
+  },
+  "spi-10": {
+   "kutchi": "elchi",
+   "english": "cardamom",
+   "gender": "she",
+   "src": "content master",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri elchi, 23:29)"
+  },
+  "spi-16": {
+   "kutchi": "mitho",
+   "english": "salt",
+   "gender": "he",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, 23:36-23:48: mitho; 'mitho would be male'); Zafar 13 Nov (decision 22): Mum's word, not the content master's loon"
+  },
+  "spi-04": {
+   "kutchi": "laal marcha",
+   "english": "red chilli powder",
+   "gender": "unknown",
+   "src": "content master"
+  },
+  "num-01": {
+   "kutchi": "hakro",
+   "english": "one",
+   "forms": {
+    "he": "hakro",
+    "she": "hakri"
+   },
+   "_forms": "\"one\" agrees with the noun's gender (words[id].gender): hakro ambo, hakri maani. A noun of unknown gender takes `kutchi` (hakro), and dishes are ordered without \"one\" (the informal frame Muke {x} khape).",
+   "src": "Mum 25 Sept (A3 recording, docs/language/grammar-notes.md); was hikdo (class handout)"
+  },
+  "num-02": {
+   "kutchi": "ba",
+   "english": "two",
+   "say": "ber",
+   "src": "Mum 25 Sept (A3 recording, docs/language/grammar-notes.md): said like the Ber of Bernstein; was bo (class handout). Screen spelling ba is Zafar's proposal, to confirm with the recording",
+   "draft": true
+  },
+  "num-03": {
+   "kutchi": "trae",
+   "english": "three",
+   "src": "handout"
+  },
+  "num-04": {
+   "kutchi": "char",
+   "english": "four",
+   "src": "handout"
+  },
+  "num-05": {
+   "kutchi": "panj",
+   "english": "five",
+   "src": "handout"
+  },
+  "ph-chana": {
+   "kutchi": "chana",
+   "english": "chickpeas",
+   "gender": "he",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B9)",
+   "src_change": "was channa (Zafar 24 Sept draft)",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakro chano: one is chano, more are chana, 24:21)"
+  },
+  "ph-dahi": {
+   "kutchi": "dai",
+   "english": "yoghurt",
+   "gender": "she",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B8): dai (a yoghurt starter culture is mervan). Was a draft from Zafar, 24 Sept",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke dai khapeti: 'even if I was a man I'd still say khapeti'; no 'one' of a liquid, 24:46)"
+  },
+  "ph-amli": {
+   "kutchi": "amli ji chutney",
+   "english": "tamarind chutney",
+   "gender": "she",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B31): amli = tamarind. She-word: it takes ji (the jo/ji rule, §18 and B11)",
+   "src_change": "was an English placeholder"
+  },
+  "ph-lili": {
+   "kutchi": "fudino ji chutney",
+   "english": "mint chutney",
+   "gender": "she",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B32): no general word for green chutney; mint chutney is fudino ji chutney, coconut chutney nair ji chutney. The game's is the bright green bowl (topping-lili-bowl-t, colour #5d9b3a), so mint",
+   "src_change": "was the English placeholder green chutney"
+  },
+  "ph-sev": {
+   "kutchi": "sev",
+   "english": "sev",
+   "gender": "she",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B29): sev, the same word",
+   "src_change": "was an English placeholder",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke sev khapeti; sev has no plural, like water, 25:20, 26:06)"
+  },
+  "ph-dhana": {
+   "kutchi": "dhania",
+   "english": "coriander",
+   "gender": "he",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B30): dhania = fresh coriander (mint is fudino)",
+   "src_change": "was an English placeholder",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke hakro dhania de (a bunch): 'I would say hakro, I wouldn't say hakri', 26:20, 27:08)"
+  },
+  "ph-keema": {
+   "kutchi": "chundo",
+   "english": "mince",
+   "gender": "he",
+   "src": "Zafar 26 Sept: chundo (Kutchi; it also means to mince, in general), correcting Mum's recording's chindo (docs/language/grammar-notes.md §26, B33). Keema is also right (alt)",
+   "alt": [
+    "keema"
+   ],
+   "src_change": "was an English placeholder (mince); first written chindo from the recording",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke chundo khapeto; chunde before jo / ja (chunde ja samosa), 27:22, 2:38-4:53)"
+  },
+  "ph-meat": {
+   "kutchi": "gos",
+   "english": "meat",
+   "gender": "unknown",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B10)",
+   "src_change": "was ghos (Zafar 24 Sept draft)"
+  },
+  "ph-pepper": {
+   "kutchi": null,
+   "english": "green pepper",
+   "gender": "unknown",
+   "src": "placeholder: no Kutchi word (Mum 26 Sept, B34: capsicum isn't a traditional ingredient; mirchi = chilli, lilo = green). Recommendation in docs/archive/language/cook-word-changes-B.md"
+  },
+  "ph-chips": {
+   "kutchi": "tarela bataata",
+   "english": "chips",
+   "gender": "unknown",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B28): tarela bataata = fried potatoes (the family also just says chips). A plural (bataato -> bataata)",
+   "src_change": "was an English placeholder"
+  },
+  "ph-ghee": {
+   "kutchi": "ghee",
+   "english": "ghee",
+   "gender": "he",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B35): ghee, the same word",
+   "src_change": "was an English placeholder",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, Mum: ghee has 'no gender, neutral'; she says muke thoro ghee khapeto, so the he-form (her rule for no gender), 28:21, 28:45)"
+  },
+  "ph-chaat": {
+   "kutchi": "chaat",
+   "english": "chaat",
+   "gender": "he",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B36): chaat is the mixture in the bowl",
+   "src_change": "was an English placeholder",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke chaat khapeto ⚠, 29:10)"
+  },
+  "ph-samosa": {
+   "kutchi": "samosa",
+   "kutchi_one": "samosa",
+   "kutchi_many": "samosa",
+   "_count": "Mum 28 Sept (Round 3 P7; docs/language/grammar-notes.md §34): no change. Zafar asked for Nani to say 'sambusa' (the family's word; clip sambusa-r3): not changed here yet",
+   "english": "samosa",
+   "gender": "he",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B37)",
+   "src_change": "was an English placeholder",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, muke samosa khapeto; one is samoso, more are samosa (hakro chunde jo samoso, ba chunde ja samosa), 29:24, 10:15)"
+  },
+  "ph-sekelo": {
+   "kutchi": "sekelo",
+   "english": "barbecue",
+   "_english": "Zafar 15 Nov, decision 42 (5): the end review's English for sekelo is barbecue (the engine's id follows it: n.barbecue)",
+   "gender": "unknown",
+   "draft": true,
+   "src": "Zafar 29 Sept play-test (K1): Muke sekelo khape; the dish word is sekelo, and mishkaki stays the meat cubes (design system 15). To confirm with Mum"
+  },
+  "ph-mishkaki": {
+   "kutchi": "mishkaki",
+   "english": "mishkaki",
+   "gender": "she",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §26, B38; use Mum's recording)",
+   "src_change": "was an English placeholder",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, hakri mishkaki khapeti, 'like one skewer of mishkaki' (lakri, a skewer, is a she-word): ⚠ the hakri may be the skewer's, 29:48)"
+  },
+  "ph-lakri": {
+   "kutchi": "lakri",
+   "kutchi_one": "lakri",
+   "kutchi_many": "lakri",
+   "_count": "Mum 28 Sept (Round 3 P8; docs/language/grammar-notes.md §34): hakri lakri, char lakri, no change",
+   "english": "skewer",
+   "gender": "she",
+   "_use": "Said before a skewer's kind in the mishkaki order (the tally's `unit`, and data/stations/mishkaki-grill.json mechanic.skewer.unit): hakri lakri gos, ba lakri boga. Mum said it with mishkaki (hakri lakri mishkaki, ba lakri mishkaki); with gos, boga and mixed it's Claude's extension, to check.",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25): lakri = a stick; one skewer is hakri lakri mishkaki, two ba lakri mishkaki. A she-word (hakri)",
+   "draft": true
+  },
+  "lnk-nepoi": {
+   "kutchi": "ne poi",
+   "english": "and then",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B12): ne poi confirmed",
+   "linker": true
+  },
+  "ph-no": {
+   "kutchi": "na",
+   "english": "no / not",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na, not nar (nar = look). The polite whole sentence is muke na khape (nato / nati agree)",
+   "src_change": "was nar (Zafar 25 Sept, phonetic)"
+  },
+  "ph-slowly": {
+   "kutchi": "aste thi",
+   "english": "slowly",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B2): aste = slow",
+   "src_change": "was aastethi (Zafar 25 Sept, phonetic)"
+  },
+  "ph-quickly": {
+   "kutchi": "jaldi",
+   "english": "quickly",
+   "say": "jal-dee",
+   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B3)"
+  },
+  "ph-kari": {
+   "kutchi": "kari",
+   "english": "black",
+   "src": "Mum, A4 (docs/language/grammar-notes.md §10): kari chai is black tea, chai with no milk. Not recorded yet. Chai is a she-word, so kari; the he-word form is probably karo (unconfirmed), not used",
+   "_use": "Only in kari chai (the Chai tray, Zafar 29 Sept): a cup ordered by its name, its card's rows say what that means (dudh na)"
+  },
+  "ph-mori": {
+   "kutchi": "mori",
+   "english": "unsweetened",
+   "src": "Mum, A4 (docs/language/grammar-notes.md §10): mori chai is chai with no sugar. Not recorded yet. Chai is a she-word, so mori; the he-word form is probably moro (unconfirmed), not used",
+   "_use": "Only in mori chai (the Chai tray, Zafar 29 Sept): a cup ordered by its name, its card's rows say what that means (khun na)"
+  },
+  "ph-half": {
+   "kutchi": "adh",
+   "english": "half",
+   "say": "udd",
+   "src": "Zafar 25 Sept, phonetic; confirmed by Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B4): adh for amounts (half a cup). A half portion is ardo / ardi (agrees with gender), not used in Cook yet"
+  },
+  "ph-full": {
+   "kutchi": "aako",
+   "english": "full",
+   "src": "Mum 26 Sept (Section B, B5; docs/language/grammar-notes.md §24) and Zafar's spelling, 26 Sept: aako, with two a's (replaces ako / aki)",
+   "src_change": "was bharelo (Zafar 25 Sept, phonetic)",
+   "_use": "aako cup = a whole cup, the one used in cooking (Zafar 26 Sept: use aako cup for recipe amounts). A filled-up cup is bharelo cup; bharelo / bhareli also means heaped (bhareli chamchi). Cup has no gender: one cup is hakri cup. The Chai tray says it on its own, like adh: Ne aako."
+  },
+  "ph-big": {
+   "kutchi": "wadho",
+   "english": "big",
+   "say": "wudd-oar",
+   "forms": {
+    "he": "wadho",
+    "she": "wadhi"
+   },
+   "say_forms": {
+    "she": "wudd-ee"
+   },
+   "_forms": "A describing word agrees with its noun: wadho for he-words, wadhi for she-words like maani (both confirmed). No V at the start of a Kutchi word: was vadho.",
+   "src": "Zafar 25 Sept, phonetic; wadho / wadhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B6)"
+  },
+  "ph-small": {
+   "kutchi": "nindho",
+   "english": "small",
+   "say": "nindh-oar",
+   "forms": {
+    "he": "nindho",
+    "she": "nindhi"
+   },
+   "say_forms": {
+    "she": "nindh-ee"
+   },
+   "_forms": "As ph-big: nindho (he-words), nindhi (she-words like maani), both confirmed.",
+   "src": "Zafar 25 Sept, phonetic; nindho / nindhi confirmed (Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B7)"
+  },
+  "lnk-pela": {
+   "kutchi": "pela",
+   "english": "first",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke pela daar khape, ne poi maani",
+   "draft": true
+  },
+  "cook-waari": {
+   "kutchi": "waari",
+   "english": "with (mixed in)",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, kesar waari chai",
+   "draft": true
+  },
+  "kin-nana": {
+   "kutchi": "Nana",
+   "english": "Nana",
+   "gender": "he",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai"
+  },
+  "kin-ma": {
+   "kutchi": "Ma",
+   "english": "Ma",
+   "gender": "she",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Ma lai pan hakro banai"
+  },
+  "name-ali": {
+   "kutchi": "Ali",
+   "english": "Ali",
+   "gender": "he",
+   "src": "a name (the cousin)"
+  },
+  "ph-pantry": {
+   "kutchi": null,
+   "english": "pantry",
+   "gender": "he",
+   "src": "placeholder",
+   "_gender": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, kabaat jo darwajo (the cupboard's door): jo, so a he-word, 29:59)"
+  },
+  "ph-boiledegg": {
+   "kutchi": "bafelo indo",
+   "english": "boiled egg",
+   "gender": "he",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, bafelo indo: bafelo is boiled, 46:42): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "ph-naan": {
+   "kutchi": "naan",
+   "english": "naan",
+   "gender": "unknown",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, 'naan is just naan', 57:06): spelling to confirm by Zafar",
+   "draft": true
+  },
+  "ph-quartercup": {
+   "kutchi": "pa cup",
+   "english": "a quarter cup",
+   "gender": "he",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, pa cup, a quarter cup; pa cup, adho cup, pono cup, aakho cup, 55:58-56:05, 56:12): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "ph-cups-1h": {
+   "kutchi": "dedh cup",
+   "english": "one and a half cups",
+   "gender": "he",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, dedh cup, 56:18-56:19): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "ph-cups-2h": {
+   "kutchi": "adhi cup",
+   "english": "two and a half cups",
+   "gender": "he",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64, adhi cup, 56:20-56:23): spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  }
+ },
+ "lines": {
+  "greet": {
+   "k": "Salamun alaykum!",
+   "en": "Peace be upon you!"
+  },
+  "greet-reply": {
+   "k": "Wa alaikum salaam!",
+   "en": "And peace be upon you too!"
+  },
+  "thanks": {
+   "k": "Aabhar aanjo!",
+   "en": "Thank you!"
+  },
+  "bye": {
+   "k": "Achija!",
+   "en": "Bye!"
+  },
+  "oops": {
+   "k": "Arre re!",
+   "en": "Oh dear!"
+  },
+  "hey": {
+   "k": "Hedo!",
+   "en": "Hey!"
+  },
+  "here": {
+   "k": "Ghan.",
+   "en": "Here you are."
+  },
+  "need": {
+   "k": "Muke {x} khape.",
+   "en": "I need {x}."
+  },
+  "and": {
+   "k": "Ne {x}.",
+   "en": "And {x}."
+  },
+  "give": {
+   "k": "Muke {x} de.",
+   "en": "Give me {x}.",
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Muke chamchi de; pass me is the same as give me. Was Muke hikdo {x} dine.",
+   "draft": true
+  },
+  "no": {
+   "k": "{x} na.",
+   "en": "No {x}.",
+   "draft": true,
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1; A4 §11): na, not nar. The shape is Mum's everyday khun na (no sugar), two words like Ne {x}. so a no row doesn't stand out by its shape; the polite whole sentence is Muke {x} na khape. Was Nar {x}."
+  },
+  "only": {
+   "k": "Kali {x}.",
+   "en": "Only {x}.",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B13): kali, the same for he- and she-words (kali amba)"
+  },
+  "enough": {
+   "k": "Bas!",
+   "en": "Enough!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B19)"
+  },
+  "more": {
+   "k": "Wadhare!",
+   "en": "More!",
+   "draft": true,
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B20): doubtful (⚠)"
+  },
+  "times": {
+   "e": "{x} times"
+  },
+  "howareyou": {
+   "k": "Tu ki aiye?",
+   "en": "How are you?",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B43; §21): to a child (the customers ask the player); to an elder it's Aai ki aayo?"
+  },
+  "fine": {
+   "k": "Aau theek ai.",
+   "en": "I'm fine, thank you.",
+   "src": "Mum 26 Sept (Section B, B43; docs/language/grammar-notes.md §27); spelling confirmed by Zafar, 26 Sept"
+  },
+  "yes": {
+   "k": "Ha!",
+   "en": "Yes!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §23): ha"
+  },
+  "nope": {
+   "k": "Na.",
+   "en": "No.",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §24, B1): na. A bare na is rude when turning something down (§11), which is why it's a wrong answer in Cook's exchanges"
+  },
+  "canyou": {
+   "k": "Tu muke {x} banai dinda?",
+   "en": "Can you make me {x}?",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B40): to a child; no word for can, the voice rises at the end. To an elder: Aai muke … banai dinda?"
+  },
+  "ofcourse": {
+   "k": "Ha!",
+   "en": "Of course!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B41)"
+  },
+  "welcome": {
+   "k": "Jara e wandho nai.",
+   "en": "You're welcome.",
+   "draft": true,
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B42): it's no trouble at all. Doubtful (⚠)"
+  },
+  "wait": {
+   "k": "Mu lai khobar!",
+   "en": "Wait for me!",
+   "draft": true,
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B44): doubtful (⚠)"
+  },
+  "welldone": {
+   "k": "Shabash!",
+   "en": "Well done!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B25)"
+  },
+  "forwho": {
+   "k": "Hi {x} lai ai.",
+   "en": "This is for {x}.",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B39; A3 §8): Hi Nana lai ai"
+  },
+  "chop-these": {
+   "e": "Chop these",
+   "record": true,
+   "_about": "Nani's chop card headline at the daar station (step 4d: was typed in js/cook/stations/daar.js); to record with Mum"
+  },
+  "go-fry": {
+   "e": "Fry them",
+   "record": true,
+   "_about": "The samosa station's button from folding to frying (step 4d: was data/stations/samosa.json phases.go); to record with Mum"
+  },
+  "go-grill": {
+   "e": "To the grill",
+   "record": true,
+   "_about": "The sekelo station's button from threading to the grill (step 4d: was data/stations/mishkaki-grill.json phases.go); to record with Mum"
+  },
+  "pocket": {
+   "e": "I'll give you pocket money for helping. Get it all right and be quick, and you get more!"
+  },
+  "then": {
+   "k": "Ne poi {x}.",
+   "en": "And then {x}.",
+   "src": "zafar-24sep-draft; ne poi confirmed by Mum 25 Sept (A3.3-A3.6 recording)"
+  },
+  "first": {
+   "k": "Pela {x}.",
+   "en": "First {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6): pela = first (Muke pela daar khape, ne poi maani). As a line of its own, a draft"
+  },
+  "need_waari": {
+   "k": "Muke {x} waari chai khape.",
+   "en": "I want chai with {x}.",
+   "draft": true,
+   "src": "29 Sept (X1): Mum's order frame Muke {x} khape with her {x} waari chai (A3.3-A3.6: dudh / khun / kesar waari chai), put together; the whole sentence is to confirm with Mum (Q5 1)"
+  },
+  "with": {
+   "e": "with {x}",
+   "record": true,
+   "src": "29 Sept (X1): the join between an order's headline and the rest (Muke ba samosa khape, with ba chundo, trae marcha). English placeholder, TO RECORD: how Mum says 'with' for food (waari? sathe?) is Q5"
+  },
+  "and_join": {
+   "e": "and {x}",
+   "record": true,
+   "src": "29 Sept (X1): the join before a second kind of the same dish (Muke ba bajr ji maani khape, and hakri maani). English placeholder, TO RECORD with Mum (Q5 4); no Ne chaining"
+  },
+  "waari": {
+   "k": "{x} waari chai.",
+   "en": "Chai with {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): dudh waari chai, khun waari chai, kesar waari chai"
+  },
+  "sugar": {
+   "k": "Munji chai me {x} khape.",
+   "en": "In my chai I want {x}.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 12:18-12:39): Munji chai me ba khun khape (in my chai I want two sugars), then as her final answer Munji chai me ba khun wijij (in my chai put two sugars, please): munji, my, agrees with chai, not muke; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "for": {
+   "k": "{x} lai.",
+   "en": "For {x}.",
+   "draft": true,
+   "src": "Mum 25 Sept (A3.3-A3.6 recording): Hi Nana lai ai (this is for Nana); lai = for"
+  },
+  "now": {
+   "k": "Hane {x}!",
+   "en": "Now {x}!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B14): hane is now in a sequence of steps (hane tameta wij), the cooking one; haver is now in general"
+  },
+  "lift": {
+   "k": "{x} hane kadh.",
+   "en": "Lift out the {x}.",
+   "draft": true,
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B15): inke hane kadh (lift it out now); the thing named in place of inke is Claude's (⚠)"
+  },
+  "leave": {
+   "k": "{x} chadi de.",
+   "en": "Leave the {x}.",
+   "draft": true,
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B16): inke chadi de (leave it be); the thing named in place of inke is Claude's (⚠). A bit longer: Thori war rakh."
+  },
+  "burning": {
+   "k": "Bareto!",
+   "en": "It's burning!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B23)"
+  },
+  "little": {
+   "k": "Thorok.",
+   "en": "A little.",
+   "draft": true,
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B21): Whisper heard torok; doubtful (⚠)"
+  },
+  "ready": {
+   "k": "Tayar ai.",
+   "en": "It's ready.",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B22)"
+  },
+  "boiling": {
+   "k": "Ukreto!",
+   "en": "It's boiling!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B24)"
+  },
+  "longer": {
+   "k": "Thori war rakh.",
+   "en": "Leave it a bit longer.",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §25, B16)"
+  },
+  "careful": {
+   "k": "Dhyan rakh!",
+   "en": "Careful!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B49): to a child"
+  },
+  "hurry": {
+   "k": "Jaldi kar!",
+   "en": "Hurry up!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B48): to a child (Jaldi karo! to an elder)"
+  },
+  "eat": {
+   "k": "Kha!",
+   "en": "Eat!",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B45)"
+  },
+  "taste": {
+   "k": "Muke chakhan lai de.",
+   "en": "Let me taste it.",
+   "src": "Mum 26 Sept (A8 and Section B recording, docs/language/grammar-notes.md §27, B46). Also Khobar, aau chakha (wait, I'll taste it)"
+  },
+  "guide-add": {
+   "k": "Wiji chad!",
+   "en": "Put it in!",
+   "src": "Mum 5 Oct (Round 4 I1-I35 1:22, docs/language/lexicon.md §6.1): wiji chad, put it in; spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (add)"
+  },
+  "guide-slow": {
+   "k": "Slow kar!",
+   "en": "Turn it down!",
+   "src": "Mum 5 Oct (Round 4 I1-I35 1:03, lexicon §6.1): slow kar, turn the flame down (English slow + kar; not aste thi kar). Nani's guide box (watch)"
+  },
+  "guide-knead": {
+   "k": "Atto gund!",
+   "en": "Knead the dough!",
+   "draft": true,
+   "src": "Mum 5 Oct (Round 4 I6, I1-I35 1:35, lexicon §6.1): atto gund; gund heard once (⚠). Nani's guide box (knead)"
+  },
+  "guide-firai": {
+   "k": "Firai!",
+   "en": "Turn it! (flip it over, stir it round)",
+   "src": "Mum 5 Oct (Round 4 I1-I35 1:59-2:20, lexicon §6.1): firai is flip and also stir; spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (flip, stir)"
+  },
+  "guide-chop": {
+   "k": "Nindha nindha kap!",
+   "en": "Chop it small!",
+   "draft": true,
+   "src": "Mum 5 Oct (Round 4 I10, I1-I35 1:51-1:56, lexicon §6.1): nindha nindha kap, cut it small (⚠). Nani's guide box (chop)"
+  },
+  "guide-fold": {
+   "k": "Samosa waar!",
+   "en": "Fold the samosa!",
+   "src": "Mum 5 Oct (Round 4 I15, I1-I35 3:13, lexicon §6.1): waar, like samosa waar. Nani's guide box (fold)"
+  },
+  "guide-fry": {
+   "k": "Tar!",
+   "en": "Fry it!",
+   "draft": true,
+   "src": "Mum 5 Oct (Round 4 I14, I1-I35 2:52, lexicon §6.1): tar (samosa tar, bhajiya tar) (⚠). Nani's guide box (fry)"
+  },
+  "guide-fill": {
+   "k": "Bhar!",
+   "en": "Fill it!",
+   "src": "Mum 5 Oct (Round 4 I16, I1-I35 3:23, lexicon §6.1): bhar, fill (paani bhari chad). Nani's guide box (fill)"
+  },
+  "guide-fire": {
+   "k": "Chulo bar!",
+   "en": "Light the stove!",
+   "src": "Mum 5 Oct (Round 4 I33, I1-I35 6:46, lexicon §6.1-6.2): chulo bar; chulo spelling confirmed by Zafar 5 Oct (decision 31). Nani's guide box (chai-tray:knob)"
+  },
+  "headline-give": {
+   "e": "Give me",
+   "_about": "T1 (S02-B, guide-and-card.md R4): the pantry card's headline is Muke de ('give me'), the items its rows; Nani's next-item line is the card's strip. Zafar 13 Nov (decision 22): said by the engine's GiveMe with nothing to give (Mum's Muke chamchi de, grammar-notes §9, its thing left out), only where the trip has no dish (data/cook.json meanings headline-give; build/lang/hand/cook-map.mjs FRAMES)"
+  },
+  "alot": {
+   "e": "A lot.",
+   "record": true,
+   "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
+  },
+  "good": {
+   "k": "Saro ai.",
+   "en": "That's good.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 55:24-55:30): 'we'd say saro ai' (saro, good, §45, with ai, is); ⚠ the take's first words are unclear; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)",
+   "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
+  },
+  "stillmore": {
+   "k": "Haji thorok wadhare.",
+   "en": "Still a little more.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 53:24-53:28): haji = still, thorok = a little, wadhare = more (Mum: 'if you just want to say still a bit more'); with wij it is haji thorok wadhare wij, put in still a little more (53:12); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)",
+   "_about": "proto-kitchen (1 Nov, Zafar's baking design: one instruction at a time): to record with Mum"
+  },
+  "guide-chai-tray": {
+   "k": "Mare ji chai banai.",
+   "en": "Make everyone's chai.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 35:04-35:21): mare ji chai banai, make everyone's chai; in full: mare ji chai banai, jerte iloka ke khapeti erte, the way they want it (Zafar chose the simpler one in the sitting, 36:02); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "guide-glass": {
+   "k": "Iloka je glass me wij.",
+   "en": "Put it in their glass.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 36:29-36:50): there's no word for pour, just put: iloka je glass me wij (their glass; the same for their glasses); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "guide-fill-full": {
+   "k": "Akho burichad.",
+   "en": "Fill it up all the way.",
+   "draft": true,
+   "src": "Zafar, 14 Nov: akho burichad (fill it up all the way); spelling to confirm by Mum. Nani's call at chai L4's second pour of a full glass (chai-tray:pour-again, CHAI-110's own step); the first pour keeps guide-glass (Iloka je glass me wij). No family clip yet"
+  },
+  "guide-line": {
+   "k": "Liti sudhi wij.",
+   "en": "Pour it up to the line.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:09-37:21): liti is line, sudhi (heard sudhe) is up to: put it until the line; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "guide-spoons": {
+   "k": "Jitli chamchi inke khapeti itli wij.",
+   "en": "Put in as many spoons as they want.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 37:34-38:20): jitli chamchi inke khapeti, itli wij: as many spoons as he or she wants, put that many; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "guide-tea-pan": {
+   "k": "Chai tapele me wij.",
+   "en": "Put the chai in the pan.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 41:45-42:54): tapelo, the pan, becomes tapele before me; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "guide-water-pan": {
+   "k": "Paani tapele me wij.",
+   "en": "Put water in the pan.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 44:36-44:46): paani tapele me wij (also paani sufuri me wij, the Swahili-like word); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "guide-the-way": {
+   "k": "E chai erte rand.",
+   "en": "Cook it the way they said.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 51:04-51:09): e chai, he or she said; erte, that way; rand, cook; spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  },
+  "guide-now-this": {
+   "k": "Hane hi wij.",
+   "en": "Now put this in.",
+   "src": "Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 48:18-48:35): there is no word for next: 'you just name the item and say put this now' (hane hi wij; hane dudh wij); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+  }
+ },
+ "grammar": {
+  "_about": "How this language builds sentences. The code only names roles (an order's first line, a list, a counted noun); the words are in `words` and the frames in `lines`. Another language (Gujarati first) swaps this block with those two. Order ladder: `order` frames start each dish, `list.next` joins things in any order, `then` (the line key) joins the next step of a sequence (\"Ne poi {x}.\", a draft from Zafar, Mum to confirm), `no` says leave-it-out rows (\"{x} na.\", Mum 26 Sept, B1: two words, like `and`, so a hidden no-row isn't given away by its shape), and `then_word` is the linker's word id: from its word stage 3 the ladder stops drawing the sequence and only the spoken linker tells you the order.",
+  "numbers": {
+   "1": "num-01",
+   "2": "num-02",
+   "3": "num-03",
+   "4": "num-04",
+   "5": "num-05"
+  },
+  "count": "{n} {x}",
+  "sep": " ",
+  "order": {
+   "first": "need",
+   "next": "and",
+   "polite": "canyou",
+   "_polite": "28 Sept (Zafar): an order's first line is short at level 1 (Muke chai khape.) and polite from level 2 (Tu muke chai banai dinda?, Mum's B40 frame; both recorded for chai)"
+  },
+  "list": {
+   "first": "{x}.",
+   "next": "and"
+  },
+  "number": "{x}!",
+  "then": "then",
+  "then_first": "first",
+  "for": "for",
+  "gender": {
+   "_about": "Words agree with a noun's gender (words[id].gender: he | she | unknown). A word with `forms` ({he, she}) takes the form for the noun it goes with: \"one\" (hakro/hakri) and describing words (wadho/wadhi). Unknown gender (most nouns until the family says) takes the word's own `kutchi`; the order frame Muke {x} khape is the informal one and never changes (docs/language/grammar-notes.md 1).",
+   "default": "unknown"
+  },
+  "no": "no",
+  "then_word": "lnk-nepoi"
+ },
+ "guide": {
+  "fetch": {
+   "en": "Bring these from the pantry"
+  },
+  "passme": {
+   "en": "Pass me that one"
+  },
+  "pour": {
+   "en": "Pour it up to the line"
+  },
+  "add": {
+   "en": "Put it in the pan"
+  },
+  "watch": {
+   "en": "Watch it; turn it down before it boils over"
+  },
+  "count": {
+   "en": "Put in as many spoons as they said"
+  },
+  "knead": {
+   "en": "Press the dough"
+  },
+  "roll": {
+   "en": "Roll the maani round"
+  },
+  "flip": {
+   "en": "Turn it over on the tawa"
+  },
+  "chop": {
+   "en": "Chop what they said"
+  },
+  "tadka": {
+   "en": "Add the spices, in order"
+  },
+  "stir": {
+   "en": "Stir it round"
+  },
+  "assemble": {
+   "en": "Make the bowl, in order"
+  },
+  "fill": {
+   "en": "Fill the samosa"
+  },
+  "fold": {
+   "en": "Fold the samosa"
+  },
+  "fry": {
+   "en": "Fry them, then lift them out"
+  },
+  "thread": {
+   "en": "Thread the skewers"
+  },
+  "grill": {
+   "en": "Grill the skewers"
+  },
+  "samosa:fill": {
+   "en": "Fill the samosa"
+  },
+  "samosa:fold": {
+   "en": "Fold the samosa"
+  },
+  "samosa:fry": {
+   "en": "Fry them, then lift them out"
+  },
+  "daar:chop": {
+   "en": "Chop what they said"
+  },
+  "daar:cook": {
+   "en": "Put it in the pan"
+  },
+  "chai-tray": {
+   "en": "Make each cup the way they said"
+  },
+  "chai-tray:water": {
+   "en": "Put water in the pan"
+  },
+  "chai-tray:tea": {
+   "en": "Put the chai in the pan"
+  },
+  "chai-tray:knob": {
+   "en": "Light the fire"
+  },
+  "chai-tray:cups": {
+   "en": "Make each pan the way they said"
+  },
+  "chai-tray:pour": {
+   "en": "Pour it into their glass"
+  },
+  "chai-tray:pour-again": {
+   "en": "Fill it up all the way"
+  },
+  "mishkaki-grill": {
+   "en": "Thread the skewers, then grill them"
+  },
+  "mishkaki-grill:thread": {
+   "en": "Thread them"
+  },
+  "mishkaki-grill:grill": {
+   "en": "Grill them"
+  },
+  "maani-line": {
+   "en": "Roll the maani, then cook it"
+  },
+  "roll-tawa": {
+   "en": "Roll the maani, then cook it"
+  },
+  "default": {
+   "en": "Cook it the way they said"
+  },
+  "chai-tray:next": {
+   "en": "Put in the next thing"
+  },
+  "maani-line:take": {
+   "en": "Take a dough ball"
+  },
+  "maani-line:roll": {
+   "en": "Roll it round"
+  },
+  "maani-line:tawa": {
+   "en": "Put it on the tawa"
+  },
+  "maani-line:off": {
+   "en": "Take it off"
+  },
+  "daar:veg": {
+   "en": "Put the vegetables in"
+  },
+  "daar:daar": {
+   "en": "Put the daar in"
+  },
+  "samosa:next": {
+   "en": "Fill the next one"
+  },
+  "assemble:next": {
+   "en": "Put in the next thing"
+  }
+ },
+ "headlines": {
+  "pantry": {
+   "en": "Bring me these for {dish}",
+   "en_plain": "Bring me these",
+   "_about": "28 Sept (Zafar): the pantry card's headline is the overall request, and every thing fetched is a row below it (Muke dudh de. leads the list, as said). Mum said it on 12 Nov (grammar-notes §65, 0:38-0:43: Hi muke chai lai khani achi de); Zafar 13 Nov (decision 22): the engine says it (BringMeTheseForX, data/cook.json meanings headline-pantry) where the trip has a dish, Muke de where it has none."
+  }
+ },
+ "stations": {
+  "chai-tray": {
+   "words": {}
+  },
+  "maani-line": {
+   "words": {
+    "ph-turner": {
+     "kutchi": null,
+     "english": "turner",
+     "gender": "unknown",
+     "src": "placeholder, TO RECORD with Mum (29 Sept play-test Q15): the flat wooden turner the family flips maani with; Zafar's word sounds like 'moikyo', unconfirmed. Not shown or spoken yet: the turner is a picture only (js/cook/stations/maani-line.js)"
+    }
+   }
+  },
+  "mishkaki-grill": {
+   "words": {
+    "ph-veg": {
+     "kutchi": "boga",
+     "english": "vegetable",
+     "gender": "unknown",
+     "src": "Mum 26 Sept (Section B, B17; docs/language/grammar-notes.md §25): boga, the family's word (from Swahili)",
+     "src_change": "was an English placeholder",
+     "_note": "a vegetable skewer (no meat)"
+    },
+    "ph-mixed": {
+     "kutchi": "mixed",
+     "english": "mixed",
+     "gender": "unknown",
+     "src": "Mum 26 Sept (Section B, B18; docs/language/grammar-notes.md §25): mixed, the English word",
+     "src_change": "was an English placeholder",
+     "_note": "a skewer of meat and vegetables, threaded in the order said"
+    }
+   }
+  },
+  "stir": {
+   "lines": {
+    "stir-now": {
+     "k": "Hane {x}!",
+     "en": "Now {x}!",
+     "src": "Mum 26 Sept (Section B, B14; docs/language/grammar-notes.md §25): hane, now in a sequence of steps"
+    }
+   }
+  }
+ }
+}

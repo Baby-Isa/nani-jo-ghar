@@ -1,0 +1,27 @@
+{
+  "_about": "The farm prototypes (proto-farm, 1 Nov 2026; Zafar's notes, build/reports/designs/prototype-notes-2026-11-01.md): the words and lines the four farm games need that the family has not recorded yet. Every one is an English placeholder (kutchi: null), to record; build/lang/import_modes.mjs turns each word into a to-record entry and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "ph-cow": { "english": "cow", "src": "Zafar's word is gai (docs/game-design/days/farm.md, to record): never shipped unconfirmed" },
+    "ph-grass": { "english": "grass" },
+    "ph-chick": { "english": "chick" },
+    "ph-sheep": { "english": "sheep" },
+    "ph-white": { "english": "white" }
+  },
+  "lines": {
+    "feed-guide": { "e": "Feed them what she asks for." },
+    "feed-head": { "e": "The animals are hungry." },
+    "eggs-guide": { "e": "Lift the hen and find her eggs." },
+    "eggs-head": { "e": "Bring me the eggs." },
+    "eggs-half": { "e": "Bring half of {x}." },
+    "eggs-all": { "e": "Bring all of {x}." },
+    "dusk-guide": { "e": "Find them and take them home." },
+    "dusk-head": { "e": "It's getting dark: time for bed!" },
+    "dusk-night": { "e": "Goodnight!" },
+    "dusk-nobody": { "e": "Nobody here!" },
+    "grow-guide": { "e": "Plant it, water it, then pick." },
+    "grow-head": { "e": "Let's grow our own food." },
+    "grow-plant": { "e": "Plant the {x}." },
+    "grow-water": { "e": "Now water it." },
+    "grow-look": { "e": "Look, it's growing!" }
+  }
+}

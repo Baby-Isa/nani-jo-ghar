@@ -1,0 +1,96 @@
+{
+  "_about": "The safari prototypes (proto-safari, 2 Nov 2026; build/reports/designs/safari.md and its critique): the words and lines Snap from the jeep and Who's hiding? need that the family has not recorded yet. Every one is an English placeholder (kutchi: null), to record; build/lang/import_modes.mjs turns each word into a to-record entry (or an alias of a word the engine already knows) and each line into an engine meaning, so the games ask the language engine for them like any other line and it answers with the grey-italic English. Nothing here is Kutchi. Re-run node build/lang/import_all.mjs after a change.",
+  "words": {
+    "ph-elephant": {
+      "english": "elephant"
+    },
+    "ph-giraffe": {
+      "english": "giraffe"
+    },
+    "ph-zebra": {
+      "english": "zebra"
+    },
+    "ph-tail": {
+      "english": "tail"
+    },
+    "ph-neck": {
+      "english": "neck"
+    },
+    "ph-stripy": {
+      "english": "stripy",
+      "pos": "A"
+    },
+    "ph-spotty": {
+      "english": "spotty",
+      "pos": "A"
+    },
+    "ph-grey": {
+      "english": "grey",
+      "pos": "A"
+    },
+    "ph-wild-animals": {
+      "english": "wild animals"
+    },
+    "ph-what-shows": {
+      "english": "what shows"
+    },
+    "ph-eating": {
+      "english": "eating",
+      "src": "the doing word as the safari asks it (that's eating); the command kha is recorded, this form is not"
+    },
+    "ph-swimming": {
+      "english": "swimming"
+    },
+    "ph-running": {
+      "english": "running",
+      "src": "the command bhaj is in the engine; the that's-running form is not"
+    },
+    "ph-what-they-do": {
+      "english": "what they do"
+    },
+    "ph-sizes": {
+      "english": "big and small"
+    }
+  },
+  "lines": {
+    "snap-guide": {
+      "e": "Take photos for Ali of the animals I say."
+    },
+    "snap-head": {
+      "e": "Look! Take photos for Ali."
+    },
+    "snap-x": {
+      "e": "Take a photo of the {x}."
+    },
+    "snap-x-v": {
+      "e": "Take a photo of the {x} that's {v}."
+    },
+    "snap-who-v": {
+      "e": "Who's {v}?"
+    },
+    "snap-is-v": {
+      "e": "That's the {x} {v}!"
+    },
+    "hide-guide": {
+      "e": "Find who Hannah Mami sees in the long grass."
+    },
+    "hide-head": {
+      "e": "Shh! Who's hiding?"
+    },
+    "hide-x": {
+      "e": "The {x} is hiding."
+    },
+    "hide-part": {
+      "e": "Find the {x}!"
+    },
+    "hide-desc": {
+      "e": "Where's the {x} one?"
+    },
+    "hide-thats": {
+      "e": "That's the {x}!"
+    },
+    "hide-out": {
+      "e": "Everybody out!"
+    }
+  }
+}

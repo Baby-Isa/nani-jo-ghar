@@ -1,0 +1,738 @@
+{
+ "_about": "Chai's settings: everything about the game that is a number, a word's id, an art id or a choice. The game's code (js/games/chai/) holds none of these. The numbers are old chai's, as played on 17 Nov 2026.",
+ "family": "kitchen",
+ "bottomRow": "shelf",
+ "words": {
+  "dish": "cook-chai",
+  "water": "cook-paani",
+  "leaves": "cook-chai",
+  "milk": "cook-dudh",
+  "sugar": "cook-khun",
+  "half": "ph-half",
+  "full": "ph-full",
+  "black": "ph-kari",
+  "unsweet": "ph-mori",
+  "spices": [
+   "spi-10",
+   "veg-14"
+  ]
+ },
+ "order": {
+  "speaker": "each",
+  "dish": "cook-chai",
+  "noLast": true,
+  "people": {
+   "first": [
+    "nana"
+   ],
+   "others": [
+    "ma",
+    "cousin"
+   ],
+   "countByLevel": [
+    1,
+    2,
+    2,
+    3
+   ],
+   "spots": {
+    "1": [
+     "middle"
+    ],
+    "2": [
+     "middle",
+     "right"
+    ],
+    "3": [
+     "left",
+     "middle",
+     "right"
+    ]
+   }
+  },
+  "usual": {
+   "nana": {
+    "milk": true,
+    "sugar": 3,
+    "spice": "spi-10"
+   },
+   "ma": {
+    "milk": false,
+    "sugar": 1,
+    "spice": "veg-14"
+   },
+   "cousin": {
+    "milk": true,
+    "sugar": 2
+   }
+  },
+  "asks": [
+   {
+    "id": "milk",
+    "kind": "yesno",
+    "byLevel": [
+     {
+      "chance": 1
+     },
+     {
+      "chance": 0.65,
+      "usualChance": 0.5
+     }
+    ]
+   },
+   {
+    "id": "sugar",
+    "kind": "count",
+    "byLevel": [
+     {
+      "range": [
+       1,
+       1
+      ],
+      "none": 0
+     },
+     {
+      "range": [
+       1,
+       3
+      ],
+      "none": 0.2,
+      "usualChance": 0.5
+     }
+    ]
+   },
+   {
+    "id": "spice",
+    "kind": "pick",
+    "byLevel": [
+     {
+      "pick": [
+       null
+      ]
+     },
+     {
+      "pick": [
+       null,
+       "spi-10",
+       "veg-14"
+      ],
+      "usualChance": 0.4
+     }
+    ]
+   },
+   {
+    "id": "named",
+    "kind": "yesno",
+    "byLevel": [
+     {
+      "chance": 0
+     },
+     {
+      "chance": 0
+     },
+     {
+      "chance": 0.5
+     }
+    ]
+   },
+   {
+    "id": "amount",
+    "kind": "pick",
+    "byLevel": [
+     null,
+     null,
+     null,
+     {
+      "pick": [
+       "ph-half",
+       "ph-full"
+      ],
+      "teach": {
+       "words": [
+        "ph-half",
+        "ph-full"
+       ],
+       "seats": [
+        "ph-full",
+        "ph-half"
+       ],
+       "newUntilStage": 2
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "serve": {
+  "mode": "auto"
+ },
+ "heat": {
+  "_about": "Each level's heat: how fast the ring fills (share of the ring a second) and where its green sits. From the green on it climbs at the kitchen's slower share.",
+  "byLevel": [
+   {
+    "rate": 0.09,
+    "lo": 0.66,
+    "hi": 0.86
+   },
+   {
+    "rate": 0.12,
+    "lo": 0.66,
+    "hi": 0.86
+   },
+   {
+    "rate": 0.12,
+    "lo": 0.7,
+    "hi": 0.84
+   },
+   {
+    "rate": 0.13,
+    "lo": 0.72,
+    "hi": 0.85
+   }
+  ]
+ },
+ "row": {
+  "_about": "The bottom row: two fixed groups, then the spices (what was asked for, with the level's decoys from the pool, shuffled). The lookalike stands beside the sugar's own jar at the levels that have one. always: the things every dish needs, asked for or not. spoon: which of the game's spoons a kind of thing travels on.",
+  "groups": [
+   [
+    "cook-paani",
+    "cook-dudh"
+   ],
+   [
+    "cook-chai",
+    "cook-khun"
+   ]
+  ],
+  "pool": [
+   "spi-10",
+   "veg-14",
+   "veg-13",
+   "spi-02",
+   "spi-05"
+  ],
+  "lookalike": "spi-16",
+  "most": 7,
+  "how": {
+   "cook-paani": "pour",
+   "cook-dudh": "pour",
+   "other": "spoon"
+  },
+  "always": [
+   "cook-paani",
+   "cook-chai"
+  ],
+  "spoon": {
+   "sugar": "sugar",
+   "lookalike": "sugar",
+   "back": "clean",
+   "other": "clean"
+  }
+ },
+ "rules": {
+  "sugarMax": 6
+ },
+ "motion": {
+  "_about": "How long things take, in milliseconds, and their shapes. row: a bottle or carton flying to the pan, tipping, pouring and coming back (the cook rules count these as one move in flight). rowShape: its arcs in design px, its tilt in degrees, and when its sound starts. spoon: a spoonful's flight and stir. take: the pan lifting over its glass, emptying (for each half) and going back. takeBackMs: a spoonful going back to its jar. carry: the pan over its glass: how much bigger it is drawn when lifted, the gap between rims as a share of the pan's, and the arc of the lift. into: where a bottle pours from (in vessel radii from the pan's middle), the stir's circle and the spoon's length (in contents radii), and the cross-fade as a thing lands. carry.swapAt, backAt: how far through the lift and the way back the pan's picture changes. carry.holdRoom: how far above its rim's middle the lifted pan's picture reaches, in rim radii; margin: design px kept clear of the view's edge.",
+  "row": {
+   "fly": 380,
+   "tip": 220,
+   "fill": 620,
+   "untip": 180,
+   "back": 320
+  },
+  "rowShape": {
+   "arc": 60,
+   "tilt": -118,
+   "sound": 170,
+   "backArc": 40
+  },
+  "spoon": {
+   "fly": 360,
+   "arc": 90,
+   "stir": 900,
+   "turns": 2
+  },
+  "take": {
+   "lift": 520,
+   "pour": 700,
+   "back": 420,
+   "end": 320
+  },
+  "takeBackMs": 610,
+  "carry": {
+   "lift": 1.07,
+   "gap": 0.12,
+   "arc": 24,
+   "flamesOutMs": 160,
+   "swapAt": 0.2,
+   "backAt": 0.6,
+   "holdRoom": 1.04,
+   "margin": 12
+  },
+  "into": {
+   "pourAt": [
+    0.55,
+    0.05
+   ],
+   "stirR": 0.45,
+   "spoonLen": 1.33,
+   "landFadeMs": 450
+  }
+ },
+ "wordMoment": {
+  "_about": "Half and full cannot be shown by a picture of a thing, so they are shown once before the kitchen, while either word is still new to the child. fills: how far each word's glass is poured. art: the scene's pictures. scene: the counter picture (the row its counter line is on, its shape, the span of it drawn across the play area, and the lowest the line may sit). vessel: the kettle (where its spout is in its picture, its width in glasses, and how far it is tipped back when not pouring). tea: where the tea's inside starts and ends in the full glass's picture.",
+  "id": "word-moment-half-full",
+  "words": [
+   "ph-half",
+   "ph-full"
+  ],
+  "newUntilStage": 2,
+  "fills": {
+   "ph-half": 0.42,
+   "ph-full": 1
+  },
+  "art": {
+   "scene": "shared.word-moment.counter-wm",
+   "empty": "shared.word-moment.glass-e2",
+   "full": "shared.word-moment.glass-wr",
+   "vessel": "shared.word-moment.kettle-tilted",
+   "stream": "shared.word-moment.stream-chai-real"
+  },
+  "scene": {
+   "baseAt": 0.707,
+   "aspect": 1.5,
+   "span": [
+    0.2019,
+    0.8006
+   ],
+   "lineMax": 0.65
+  },
+  "vessel": {
+   "spout": [
+    0.096,
+    0.74
+   ],
+   "size": 0.94,
+   "lift": 18
+  },
+  "tea": {
+   "top": 0.0309,
+   "bottom": 0.8909
+  }
+ },
+ "lines": {
+  "_about": "Nani's lines for this game's own steps, as meanings for the language engine. standing: shown before the first step. use: a thing with its own line; any other thing takes the kitchen's line. take: the ready pan into the glass; takeAgain: a full glass's second pour.",
+  "standing": {
+   "fn": "Say",
+   "x": "cook.guide.chai-tray"
+  },
+  "use": {
+   "cook-paani": {
+    "fn": "Say",
+    "x": "cook.guide.chai-tray:water"
+   },
+   "cook-chai": {
+    "fn": "Say",
+    "x": "cook.guide.chai-tray:tea"
+   }
+  },
+  "take": {
+   "fn": "Say",
+   "x": "cook.guide.chai-tray:pour"
+  },
+  "take-again": {
+   "fn": "Say",
+   "x": "cook.guide.chai-tray:pour-again"
+  }
+ },
+ "teaches": {
+  "_about": "What this game carries, as data: the single source for the word counter. id: the word's id in the language engine, or a row of the grammar ladder. role: primary (the game cannot be won without understanding it), secondary (heard and used, not deciding), tertiary (heard in passing). level: where it enters. Written from what old chai really says on 17 Nov 2026; the roles are the lead builder's reading, for Zafar to correct.",
+  "starter": false,
+  "words": [
+   {
+    "id": "n.milk",
+    "role": "primary",
+    "level": 1,
+    "why": "milk or no milk decides the cup from level 2"
+   },
+   {
+    "id": "n.sugar",
+    "role": "primary",
+    "level": 1,
+    "why": "the sugar and its number; the salt looks like it at level 4"
+   },
+   {
+    "id": "num.1",
+    "role": "primary",
+    "level": 1
+   },
+   {
+    "id": "num.2",
+    "role": "primary",
+    "level": 2
+   },
+   {
+    "id": "num.3",
+    "role": "primary",
+    "level": 2
+   },
+   {
+    "id": "neg.not",
+    "role": "primary",
+    "level": 2,
+    "why": "no milk, no sugar"
+   },
+   {
+    "id": "n.cardamom",
+    "role": "primary",
+    "level": 2
+   },
+   {
+    "id": "n.ginger",
+    "role": "primary",
+    "level": 2
+   },
+   {
+    "id": "a.black",
+    "role": "primary",
+    "level": 3,
+    "why": "black chai: no milk"
+   },
+   {
+    "id": "a.unsweetened",
+    "role": "primary",
+    "level": 3,
+    "why": "unsweetened chai: no sugar"
+   },
+   {
+    "id": "a.adh",
+    "role": "primary",
+    "level": 4
+   },
+   {
+    "id": "a.whole",
+    "role": "primary",
+    "level": 4
+   },
+   {
+    "id": "n.tea",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "n.water",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "pron.p1",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "v.want",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "post.mixed-in",
+    "role": "secondary",
+    "level": 2
+   },
+   {
+    "id": "n.pot",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "post.in",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "v.put-in",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "v.leave",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "n.stove",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "v.light",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "adv.slow",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "v.do",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "n.glass",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "pron.they",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "link.place",
+    "role": "secondary",
+    "level": 1
+   },
+   {
+    "id": "adv.all",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "gen.of",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "v.make",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "phrase.fill-it-up-all-the-way",
+    "role": "tertiary",
+    "level": 4
+   },
+   {
+    "id": "intj.well-done",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "phrase.thank-you-the-english-words-the-family-says-them",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "phrase.goodbye-khuda-hafiz",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "adv.now-urgent",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "phrase.no",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "intj.oh-no",
+    "role": "tertiary",
+    "level": 1
+   },
+   {
+    "id": "n.garlic",
+    "role": "tertiary",
+    "level": 1,
+    "why": "a decoy on the shelf"
+   },
+   {
+    "id": "n.cumin-seeds",
+    "role": "tertiary",
+    "level": 1,
+    "why": "a decoy on the shelf"
+   },
+   {
+    "id": "n.mustard-seeds",
+    "role": "tertiary",
+    "level": 1,
+    "why": "a decoy on the shelf"
+   },
+   {
+    "id": "n.salt",
+    "role": "tertiary",
+    "level": 4,
+    "why": "the decoy that looks like sugar"
+   }
+  ],
+  "patterns": [
+   {
+    "row": 4,
+    "role": "primary",
+    "level": 2,
+    "why": "two orders alike but for the no: milk, no milk"
+   },
+   {
+    "row": 6,
+    "role": "primary",
+    "level": 2,
+    "why": "one, two, three sugars"
+   },
+   {
+    "row": 19,
+    "role": "primary",
+    "level": 4,
+    "why": "half or full"
+   },
+   {
+    "row": 3,
+    "role": "secondary",
+    "level": 1,
+    "why": "I want: heard in every order"
+   },
+   {
+    "row": 1,
+    "role": "secondary",
+    "level": 1,
+    "why": "Nani's commands"
+   },
+   {
+    "row": 10,
+    "role": "tertiary",
+    "level": 1,
+    "why": "the number agrees with the thing"
+   },
+   {
+    "row": 23,
+    "role": "tertiary",
+    "level": 1,
+    "why": "put it in, with its helper verb"
+   }
+  ]
+ },
+ "art": {
+  "_about": "Chai's pictures, by art id. pan: one pan from above in six looks, placed by its rim. over: pictures laid over the pan's contents. emptying, filling: the six frames of a pour, pan and glass, milky and black. amountCard: the half glass of black tea has no picture on the art list yet, so the half glass of chai stands in for it. A ref ending \"#*\" is every state of the piece, in order (the frames).",
+  "pan": {
+   "empty": "chai.pan#empty",
+   "water": "chai.pan@s14#water",
+   "leaves": "chai.pan-leaves@s14",
+   "milk": "chai.pan-milk",
+   "boil": "chai.pan-boil-milky@s14",
+   "black": "chai.pan-black"
+  },
+  "over": {
+   "boil-tea": "chai.pan-boil-tea",
+   "foam": "chai.pan-foam"
+  },
+  "emptying": {
+   "milky": "chai.pan-empty-milky#*",
+   "black": "chai.pan-empty-black#*"
+  },
+  "filling": {
+   "milky": "chai.glass-fill-milky#*",
+   "black": "chai.glass-fill-black#*"
+  },
+  "spoon": {
+   "sugar": "chai.teaspoon-sugar",
+   "clean": "chai.teaspoon#empty",
+   "wet": "chai.teaspoon-chai"
+  },
+  "onSurface": {
+   "spi-10": "chai.elchi",
+   "veg-14": "chai.ginger-slices"
+  },
+  "served": "served.chai",
+  "dishCard": {
+   "milky": "shared.word-moment.card-full-chai",
+   "black": "shared.word-moment.card-full-tea"
+  },
+  "amountCard": {
+   "ph-half": {
+    "milky": "shared.word-moment.card-half-chai",
+    "black": "shared.word-moment.card-half-chai"
+   },
+   "ph-full": {
+    "milky": "shared.word-moment.card-full-chai",
+    "black": "shared.word-moment.card-full-tea"
+   }
+  }
+ },
+ "vessel": {
+  "_about": "The pan on its burner. reach: how far the handle's end is from the rim's centre, in rim radii (the kitchen spaces pans so a handle clears the next). rimSrc, innerSrc: the rim's and the contents' radius in the pictures' own px. box: the box the pan is drawn in, in rim radii (the handle and the picture's own shadow fit inside). shadow: its soft shadow's size and drop, in vessel radii. overlay: how much wider than the contents a boil's picture is laid. dip: the small settle when something lands.",
+  "reach": 1.9633,
+  "rimSrc": 158,
+  "innerSrc": 140,
+  "mirror": true,
+  "box": {
+   "w": 4.3,
+   "h": 3.3
+  },
+  "shadow": {
+   "dy": 0.08,
+   "size": 2.15
+  },
+  "overlay": 1.03,
+  "dip": {
+   "to": 0.982,
+   "downMs": 75,
+   "upMs": 190
+  }
+ },
+ "serving": {
+  "_about": "The serving spot: the wooden tray with a well for each glass. wells: each well's middle as shares of the tray; wellD: a well's width as a share of the tray's; aspect: the tray picture's height over its width. A resting half glass is filling frame 4, a full one frame 6. art: the tray (base) and a dish before anything is in it (empty).",
+  "art": {
+   "base": "chai.tray-4-cutout",
+   "empty": "chai.glass-empty#top"
+  },
+  "wells": [
+   [
+    0.283,
+    0.29
+   ],
+   [
+    0.717,
+    0.29
+   ],
+   [
+    0.283,
+    0.708
+   ],
+   [
+    0.717,
+    0.708
+   ]
+  ],
+  "wellD": 0.33,
+  "aspect": 0.98177,
+  "rest": {
+   "1": 4,
+   "2": 6
+  },
+  "dim": 0.42
+ },
+ "sounds": {
+  "_about": "Which of the kit's sounds this game's own moments play.",
+  "pouring": "pour-tea",
+  "ready": [
+   "knob",
+   "flame",
+   "simmer",
+   "green",
+   "glass",
+   "settle",
+   "sparkle",
+   "pour-tea",
+   "pour-short"
+  ]
+ },
+ "greeting": {
+  "_about": "The greeting slot: the person who orders first greets the child on the first meeting of the day, with the right answer and one wrong one offered alike. The lines are the kit's.",
+  "line": "salaam",
+  "right": "salaam-reply",
+  "wrong": "goodbye"
+ }
+}

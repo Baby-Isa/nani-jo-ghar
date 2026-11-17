@@ -1,0 +1,97 @@
+{
+ "_about": "The family: who they are to the child, how they are spoken to, their pictures by art id, and whose recordings are theirs. elder: the child says the respectful you. faceHappy, faceSad: the face shown when a dish is looked at (a person with one face keeps it). figure: the person at the counter (scale, and armTop: the row of the picture that rests on the counter's edge; head: the head's box in the picture's own px, for a speech bubble).",
+ "people": {
+  "nani": {
+   "name": "Nani",
+   "word": "pn.nani",
+   "gender": "she",
+   "elder": true,
+   "voice": "mum",
+   "face": "char.nani.face",
+   "figure": {
+    "neutral": "char.nani.neutral",
+    "happy": "char.nani.happy",
+    "talk": "char.nani.talk",
+    "blink": "char.nani.blink",
+    "scale": 0.9,
+    "armTop": 449.7,
+    "head": [
+     150,
+     10,
+     180,
+     170
+    ]
+   }
+  },
+  "nana": {
+   "name": "Nana",
+   "word": "kin-nana",
+   "gender": "he",
+   "elder": true,
+   "voice": "zafar",
+   "face": "char.nana.face",
+   "figure": {
+    "neutral": "char.nana.neutral",
+    "happy": "char.nana.happy",
+    "talk": "char.nana.talk",
+    "blink": "char.nana.blink",
+    "scale": 1.25,
+    "armTop": 333,
+    "head": [
+     138.8,
+     15.5,
+     141.8,
+     139
+    ]
+   }
+  },
+  "ma": {
+   "name": "Ma",
+   "word": "kin-ma",
+   "gender": "she",
+   "elder": true,
+   "voice": "mum",
+   "face": "char.ma.face",
+   "figure": {
+    "neutral": "char.ma.neutral",
+    "happy": "char.ma.happy",
+    "talk": "char.ma.talk",
+    "blink": "char.ma.blink",
+    "scale": 1.14,
+    "armTop": 326,
+    "head": [
+     71,
+     22.8,
+     187.6,
+     145.7
+    ]
+   },
+   "faceHappy": "char.ma.face-happy",
+   "faceSad": "char.ma.face-frown"
+  },
+  "cousin": {
+   "name": "Ali",
+   "word": "name-ali",
+   "gender": "he",
+   "elder": false,
+   "voice": "zafar",
+   "face": "char.ali.face",
+   "figure": {
+    "neutral": "char.ali.neutral",
+    "happy": "char.ali.happy",
+    "talk": "char.ali.talk",
+    "blink": "char.ali.blink",
+    "scale": 1.02,
+    "armTop": 296,
+    "head": [
+     12.8,
+     4.2,
+     184.8,
+     135.5
+    ]
+   },
+   "faceHappy": "char.ali.face-happy",
+   "faceSad": "char.ali.face-frown"
+  }
+ }
+}

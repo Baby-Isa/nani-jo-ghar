@@ -1,0 +1,428 @@
+{
+ "_about": "H1 The kicking knee (and the cast). docs/archive/clinic/clinic-design-v1.md Q4 H1 and the quality pass Q1-Q7; contract docs/architecture/clinic-heal-api.md. Levels are data: each row's decider (a count, a side, a path order) is drawn from the level's lists. Words: real Kutchi only from data/cook.json (same ids); everything else is an English placeholder ({\"placeholder\": true}), shown as [EN: ...] until the family gives the word. Level 1 carries two real-Kutchi counts so a blind bot stays under 10% (build/leak_clinic_heal_a.mjs).",
+ "id": "knee",
+ "part": "body-knee",
+ "words": {
+  "num-01": {
+   "kutchi": "hakro",
+   "english": "one",
+   "from": "data/cook.json"
+  },
+  "num-02": {
+   "kutchi": "ba",
+   "english": "two",
+   "say": "ber",
+   "from": "data/cook.json"
+  },
+  "num-03": {
+   "kutchi": "trae",
+   "english": "three",
+   "from": "data/cook.json"
+  },
+  "num-04": {
+   "kutchi": "char",
+   "english": "four",
+   "from": "data/cook.json"
+  },
+  "num-05": {
+   "kutchi": "panj",
+   "english": "five",
+   "from": "data/cook.json"
+  },
+  "lnk-pela": {
+   "kutchi": "pela",
+   "english": "first",
+   "from": "data/cook.json",
+   "draft": true
+  },
+  "lnk-nepoi": {
+   "kutchi": "ne poi",
+   "english": "and then",
+   "from": "data/cook.json",
+   "draft": true
+  },
+  "body-knee": {
+   "kutchi": null,
+   "english": "knee",
+   "placeholder": true
+  },
+  "body-leg": {
+   "kutchi": null,
+   "english": "leg",
+   "placeholder": true
+  },
+  "side-left": {
+   "kutchi": null,
+   "english": "my left",
+   "placeholder": true
+  },
+  "side-right": {
+   "kutchi": null,
+   "english": "my right",
+   "placeholder": true
+  },
+  "w-taps": {
+   "kutchi": null,
+   "english": "taps",
+   "placeholder": true
+  },
+  "w-turns": {
+   "kutchi": null,
+   "english": "turns",
+   "placeholder": true
+  },
+  "w-tap-knee": {
+   "kutchi": null,
+   "english": "Tap the knee",
+   "placeholder": true
+  },
+  "w-bandage": {
+   "kutchi": null,
+   "english": "Bandage",
+   "placeholder": true
+  },
+  "w-xray": {
+   "kutchi": null,
+   "english": "X-ray the leg, clonk",
+   "placeholder": true
+  },
+  "w-cast": {
+   "kutchi": null,
+   "english": "Cast",
+   "placeholder": true
+  },
+  "turns": {
+   "english": "turns",
+   "placeholder": true,
+   "src": "English placeholder (to record): the bandage's count word (heal/games/knee.js wrap row); was an id the clinic's old lookup showed as its own English, now in data so the engine holds it (step 4e)"
+  }
+ },
+ "lines": {
+  "heal-knee-kick": {
+   "voice": "doctor",
+   "k": "{what}. {n} {taps}",
+   "e": "Tap the knee {n} times"
+  },
+  "heal-knee-wrap": {
+   "voice": "doctor",
+   "k": "{what}. {n} {turns}",
+   "e": "Bandage: {n} turns"
+  },
+  "heal-knee-path": {
+   "voice": "doctor",
+   "k": "{what}. {pela} {a}, {nepoi} {b}, {nepoi} {c}",
+   "e": "Bandage: first the {a}, then the {b}, then the {c}"
+  },
+  "heal-knee-xray": {
+   "voice": "doctor",
+   "k": "{what}. {n} {taps}",
+   "e": "X-ray the leg, then clonk the bone {n} times"
+  },
+  "heal-knee-cast": {
+   "voice": "doctor",
+   "k": "{what}. {n} {turns}",
+   "e": "Cast: {n} turns"
+  },
+  "heal-knee-side": {
+   "voice": "patient",
+   "k": "{side} {part}",
+   "e": "{side} {part}"
+  },
+  "knee-why": {
+   "e": "My knee hurts.",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "knee-goal": {
+   "e": "Let's check it and bandage it.",
+   "who": "doctor",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  },
+  "knee-better": {
+   "e": "That feels better!",
+   "who": "patient",
+   "_src": "moved out of the game's code into its data so the engine holds it (step 4e, G26); English placeholder, to record"
+  }
+ },
+ "ailments": {
+  "knee-bump": {
+   "part": "body-knee",
+   "items": [
+    "hammer",
+    "bandage"
+   ],
+   "from": 1,
+   "from_level": 1,
+   "story": "a bump from the puddle"
+  },
+  "leg-break": {
+   "part": "body-leg",
+   "items": [
+    "xray",
+    "cast",
+    "crutches"
+   ],
+   "from": 2,
+   "from_level": 2,
+   "story": "a comedy break from the mango tree"
+  }
+ },
+ "levels": {
+  "1": {
+   "ailments": [
+    "knee-bump"
+   ],
+   "kicks": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "turns": [
+    4,
+    5,
+    6
+   ],
+   "side_heard": false,
+   "read": "line"
+  },
+  "2": {
+   "ailments": [
+    "knee-bump",
+    "leg-break"
+   ],
+   "kicks": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "turns": [
+    5,
+    6,
+    7,
+    8
+   ],
+   "clonks": [
+    1,
+    2,
+    3
+   ],
+   "side_heard": false,
+   "read": "list"
+  },
+  "3": {
+   "ailments": [
+    "knee-bump",
+    "leg-break"
+   ],
+   "kicks": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "paths": [
+    [
+     "body-knee",
+     "body-leg",
+     "body-knee"
+    ],
+    [
+     "body-leg",
+     "body-knee",
+     "body-leg"
+    ],
+    [
+     "body-knee",
+     "body-knee",
+     "body-leg"
+    ],
+    [
+     "body-leg",
+     "body-leg",
+     "body-knee"
+    ],
+    [
+     "body-knee",
+     "body-leg",
+     "body-leg"
+    ],
+    [
+     "body-leg",
+     "body-knee",
+     "body-knee"
+    ]
+   ],
+   "turns": [
+    5,
+    6,
+    7,
+    8
+   ],
+   "clonks": [
+    1,
+    2,
+    3
+   ],
+   "side_heard": true,
+   "read": "list"
+  },
+  "_turns": "CLN-100 (S05-D3): the turns follow Zafar's heal ladder (13 Oct): about 4-6 at L1, 5-8 at L2 and L3 (L3 is L2 heard only), 6-10 at L4. The game's own table (js/clinic/heal/games/knee.js K.turns) is what plays; these lists mirror it (they read 2-5 at every level before)."
+ },
+ "fun": "The reflex kick: the whole leg jerks, the dishes rattle, Kasuku squawks; the bone with a face goes clonk; the hop-off on crutches.",
+ "colours": {
+  "bandage": "#f4f1ea",
+  "cast": "#3f76b8"
+ },
+ "camera": {
+  "_about": "D2 (1 Oct): the wide shot the zoom starts from, chosen by the angle the close-up needs (front-on or side-on). No side-on sitting pose exists yet: 'side' uses the front pose until the art batch (art list A1).",
+  "wide": "side",
+  "target": [
+   460,
+   250
+  ],
+  "size": 140,
+  "_target": "A1 (5 Oct): the match cut. target = where the close-up draws the sore part and size = its radius, in the close-up's 800 x 500 units: the push-in ends with the patient's part (from the art's anchor) at that place and size."
+ },
+ "art": {
+  "_about": "heal-A, 2 Oct: the close-up art swaps in by file name (docs/design-language/art-plans/clinic-heal-art-plan.md § 8). The code draws the stand-in until `on` is true; the cut session sets `on` once the file exists. box = where the picture sits, in the close-up's svg units (800 x 500).",
+  "knee": {
+   "file": "assets/clinic/closeups/child/knee.webp",
+   "on": true,
+   "box": [
+    -41.8,
+    12.4,
+    1013.8,
+    675.8
+   ],
+   "scale": 1.6,
+   "split": 368.8,
+   "has2x": true,
+   "_a1": "A1 (5 Oct): K1 placed so its knee joint (730, 360 in the 1536 x 1024 source) sits on the game's knee (440, 250) at 0.66 (the knee about half the height, art plan 3.2); scale = how much bigger than the stand-in the knee is drawn (the dots, the wrap and the hammer follow it); split = the svg y where the shin starts (the kick swings K1's own shin until K2 is cut).",
+   "kinds": [
+    "girl"
+   ],
+   "wrap": {
+    "_about": "CLN-100 (9 Oct): the wrap's anchors on K1's outline, in the source picture's pixels (src). back = the thigh's underside, the crease, the shin's back (top to bottom); front = above the kneecap, the kneecap, below it. Every turn runs from one dot to the other, ending on the dots (Zafar, 9 Oct), the dots at least 60 px apart so no two overlap, and is masked to the leg; skin = the skin's left edge (the trouser cuff and its shadow are never wrapped over), top to bottom; band = the bandage's width.",
+    "src": [
+     1536,
+     1024
+    ],
+    "back": [
+     [
+      490,
+      538
+     ],
+     [
+      550,
+      566
+     ],
+     [
+      541,
+      660
+     ]
+    ],
+    "front": [
+     [
+      900,
+      248
+     ],
+     [
+      946,
+      412
+     ],
+     [
+      936,
+      600
+     ]
+    ],
+    "skin": [
+     [
+      540,
+      100
+     ],
+     [
+      528,
+      200
+     ],
+     [
+      512,
+      300
+     ],
+     [
+      498,
+      400
+     ],
+     [
+      484,
+      470
+     ],
+     [
+      474,
+      530
+     ],
+     [
+      540,
+      566
+     ],
+     [
+      540,
+      640
+     ],
+     [
+      536,
+      700
+     ],
+     [
+      560,
+      1024
+     ]
+    ],
+    "band": 82
+   }
+  },
+  "knee-kick": {
+   "file": "assets/clinic/closeups/child/knee-kick.webp",
+   "on": true,
+   "box": [
+    -41.8,
+    12.4,
+    1013.8,
+    675.8
+   ],
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true
+  },
+  "knee-bump": {
+   "file": "assets/clinic/closeups/child/knee-bump.webp",
+   "on": true,
+   "kinds": [
+    "girl"
+   ],
+   "has2x": true,
+   "why": "s07-clinic-a (I2; CLN-33, CLN-100): the knee with a bump, an edit of K1 registered onto its canvas (artcut.py s07.cut.json child-knee-bump: shift +0.3,-0.9 px), drawn in K1's place for the knee-bump ailment"
+  },
+  "band": {
+   "_about": "s08-w5b (CLN-179; Zafar 18 Oct: 'it needs to be a photorealistic bandage ... the bandages still don't go to the edge of the knee sometimes'; feedback section 6 answer: 'a drawn crepe band laid by code along each turn, its ends run past the anchors'; s08 w6I: over raised from 0.16, the run-on straight along the end tangent, so the turns below the kneecap reach the knee's front edge; overBack = the back end's, short, clear of the trouser cuff): the s08b BD1 crepe band, its seamless tile (size = w x h px), laid along each turn by js/clinic/heal/games/knee.js wrapTurn (a slice per step of the curve, turned to it); over = how far each turn runs on past its two dots, a share of its length each way (the leg's outline trims it at the knee's edge)",
+   "tile": "assets/clinic/tiles-s08b/bandage-band-s08b-tile.webp",
+   "size": [
+    1036,
+    226
+   ],
+   "over": 0.4,
+   "overBack": 0.12
+  }
+ },
+ "assets": [
+  "assets/clinic/closeups/child/knee-kick.webp",
+  "assets/clinic/closeups/child/knee.webp",
+  "assets/clinic/items-v2/bandage-roll.webp",
+  "assets/clinic/items-v2/reflex-hammer.webp",
+  "assets/clinic/closeups/child/knee-bump.webp",
+  "assets/clinic/tiles-s08b/bandage-band-s08b-tile.webp"
+ ],
+ "_assets": "Decision 68 (J11, S02-E): the pictures this game shows, loaded (warmed) when its patient is chosen (js/clinic/main.js loadGame) and held by build/tools/review/loadcheck.mjs; the clinic's shared ones are data/clinic/assets.json"
+}
