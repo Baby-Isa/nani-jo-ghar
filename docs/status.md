@@ -8,6 +8,8 @@ The orchestrator rewrites **Next chat** at every step end (`/handover`). Open qu
 
 ## Next chat
 
+**Moved on (17 Nov):** the work now lives in the new repository, `Baby-Isa/nani-jo-ghar-game` (start with its `docs/now.md`). Night 1 rebuilt chai there; it is published for Zafar to play at https://baby-isa.github.io/nani-jo-ghar/next/ (the `next/` folder on this repo's `main`, copied from the new repo at 3610149). Old chai and the other games stay live here, unchanged. This repo is now a reference to read and play.
+
 **Handover branch:** `ccr-2c4bd3c9-mncohx`. `main` is the live site, published 16 Nov 05:47 UK (version 20261116T054700Z). Run 16's proven fixes are merged on the branch, not on main.
 
 **Where things stand (16 Nov, 09:30 UK):** Sprint 20. Run 16 (decisions 44-45: ten cloud sessions, 05:20-09:00) is done. Its report is `build/reports/run16-2026-11-16.md`; read that first.
