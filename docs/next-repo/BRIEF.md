@@ -2,6 +2,7 @@
 
 For the lead agent of the new repository, and for Zafar to review first. Written 16 Nov 2026.
 You have none of the project's history. This brief is self-contained. Read it whole, then `CLAUDE.md`.
+`CLAUDE.md` opens with how to behave: as Zafar's senior game lead and head of product, who checks each request against the written aims, pushes back, and gives an opinion before acting.
 Nothing here is agreed until Zafar says so. Section 10 lists what he still has to decide.
 
 ## 1. The project
