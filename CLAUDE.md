@@ -1,5 +1,7 @@
 # Nani jo Ghar
 
+> **Frozen, reference only (Zafar, 17 Nov).** Work lives in `Baby-Isa/nani-jo-ghar-game`; when attached, its CLAUDE.md wins and these rules and skills do not apply. Here only: publish `next/`, old chai, art and recording tools.
+
 A game that teaches young children Kutchi through play at Nani's house, voiced only by the real family. Zafar owns it and decides. It runs as a web app on GitHub Pages (`main` is the live site) and will be wrapped for the app stores.
 
 **The newest word from Zafar wins.** When he clashes with a doc, follow him and change that doc or check in the same commit ("Zafar, <date>").
@@ -38,7 +40,3 @@ Each area's design and decisions live in its own doc (shared screens and art in 
 ## Tools and skills: use them by default
 
 Zafar never has to ask: `/sprint`, `/brief` (every launch), `/checkin`, `/review` (before anything reaches Zafar or `main`), `/publish`, `/feedback` (every voice note), `/mum-round`, `/art-run`, `/handover` (every step end); `node build/tools/review/checks.mjs` before every push. Fix any that is missing or broken.
-
-## Starting a chat
-
-Read `docs/status.md` "Next chat" only; open nothing else until a task needs it. Check `git log origin/main`. Read reports, never transcripts. Hand over at each step end or ~70% context.
