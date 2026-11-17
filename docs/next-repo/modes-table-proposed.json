@@ -1,0 +1,8816 @@
+[
+  {
+    "name": "The pantry",
+    "family": "cook",
+    "mode_doc": "docs/game-design/modes/cook.md",
+    "status": "built",
+    "usp": "Fetch Nani's list",
+    "fun": "Hunting the shelves",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "milk",
+          "sugar",
+          "flour",
+          "chai",
+          "daal"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "tin",
+          "jar",
+          "bottle",
+          "basket",
+          "bag"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "and (ne)",
+          "give me (muke de)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "top shelf",
+          "bottom shelf"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "the red tin"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "me (muke)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "give",
+        "status": "actual"
+      },
+      {
+        "verb": "need",
+        "status": "actual"
+      },
+      {
+        "verb": "bring",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "The reference of fetch and serve; each dish's trip fetches its things (cook.json recipes.pantry.forDish). Zafar's 30 Oct notes call it weak (PAN-19 to 22).",
+    "core_mechanic": "Fetch what is asked",
+    "kind": "mode",
+    "proposal": "L3: flour in the jar and flour in the bag, sugar in the tin and in the bottle: the container word decides. Positions and colours follow as planned."
+  },
+  {
+    "name": "Chai",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Pour to order",
+    "fun": "The boil rising",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "chai",
+          "milk",
+          "sugar",
+          "cardamom",
+          "ginger"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two",
+          "three (sugars)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "half (adh)",
+          "full (aako)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "black (kari)",
+          "unsweetened (mori)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for Nana",
+          "me"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ma",
+          "Ali"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "with (waari)",
+          "and"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "pan",
+          "cup"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "gone cold"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "pour",
+        "status": "actual"
+      },
+      {
+        "verb": "add",
+        "status": "actual"
+      },
+      {
+        "verb": "boil",
+        "status": "actual"
+      },
+      {
+        "verb": "need",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Signed off 7 Nov as the family's reference; the word moment (half, full) at L4.",
+    "core_mechanic": "Cook: pour to order",
+    "kind": "mode"
+  },
+  {
+    "name": "Eggs at breakfast",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Boil or fry",
+    "fun": "Crack and sizzle",
+    "primary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "boiled",
+          "fried",
+          "pot",
+          "frying pan"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "egg",
+          "salt",
+          "black pepper"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "boil",
+          "fry",
+          "crack",
+          "peel"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for Nana",
+          "no salt"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ma",
+          "Ali"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "breakfast",
+          "morning"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Daily routines",
+        "examples": [
+          "breakfast"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "boil",
+        "status": "actual"
+      },
+      {
+        "verb": "fry",
+        "status": "actual"
+      },
+      {
+        "verb": "crack",
+        "status": "planned"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      },
+      {
+        "verb": "peel",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab prototype (1 Nov), not judged; tarelo and mari are drafts; boiled egg to record (R6-19).",
+    "core_mechanic": "Cook: the pan",
+    "kind": "variant",
+    "proposal": "Nana wants his fried, Ali wants his boiled: two eggs, a pan and a pot, and only the doing word says which. The count stays, but stops deciding."
+  },
+  {
+    "name": "Maani",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Kind and count",
+    "fun": "Rolling and puffing",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "maani",
+          "millet maani (bajr ji maani)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two",
+          "three"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big (wadhi)",
+          "small (nindhi)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "rolling pin",
+          "tawa",
+          "turner"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "and"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "thin",
+          "thick",
+          "hot",
+          "round"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ma",
+          "cousin"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "roll",
+        "status": "actual"
+      },
+      {
+        "verb": "flip",
+        "status": "actual"
+      },
+      {
+        "verb": "knead",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Live L1-L4; big and small at L4 in the she-forms.",
+    "core_mechanic": "Cook: the pan",
+    "kind": "mode",
+    "proposal": "Takes roll-tawa as its top level: two tawas, Nana's big ones on one and Ali's small ones on the other, so who and the size decide the tawa. L3 as today: Nana wants the big one, Nani the small one."
+  },
+  {
+    "name": "Roll-tawa",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Two tawas",
+    "fun": "Juggling the tawas",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "maani"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two (tawas)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "tawa"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [],
+    "verbs": [
+      {
+        "verb": "roll",
+        "status": "actual"
+      },
+      {
+        "verb": "flip",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab-only proof on maani's words; data/stations/roll-tawa.json names no words of its own. Thin: fold into maani's levels.",
+    "core_mechanic": "Cook: the pan",
+    "kind": "variant",
+    "merged_into": "Maani",
+    "proposal": "Becomes maani's top level (two tawas); it has no words of its own."
+  },
+  {
+    "name": "The corn stall",
+    "family": "cook",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "built",
+    "usp": "Dress to order",
+    "fun": "Sizzle and squeeze",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "corn on the cob (makai)",
+          "lemon",
+          "salt",
+          "red chilli powder",
+          "mint chutney"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two cobs"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "with",
+          "no (na)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "a little",
+          "lots"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "grill",
+          "turn"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "hello at the stall"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "turn",
+        "status": "actual"
+      },
+      {
+        "verb": "add",
+        "status": "actual"
+      },
+      {
+        "verb": "squeeze",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab prototype on the grill kit (CK-67); a sekelo redress for the farm day; Nani stands in for Hannah Mami.",
+    "core_mechanic": "Cook: build in order",
+    "kind": "variant",
+    "merged_into": "The beach stalls",
+    "proposal": "The beach stalls already hold the corn stall; one food-stall game, dressed for the farm or the beach."
+  },
+  {
+    "name": "Daar",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Spices in order",
+    "fun": "Tadka crackle",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "daal",
+          "turmeric",
+          "cumin seeds",
+          "mustard seeds",
+          "garlic"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first (pela)",
+          "then (ne poi)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "chop",
+          "tadka",
+          "stir"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "slowly (aste thi)",
+          "quickly (jaldi)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "count of chops"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "a little",
+          "a lot",
+          "more",
+          "enough"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Ma",
+          "cousin"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "chop",
+        "status": "actual"
+      },
+      {
+        "verb": "add",
+        "status": "actual"
+      },
+      {
+        "verb": "stir",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Live L1-L4; the vegetables and jeeru, rai are first met here (no earlier meeting).",
+    "core_mechanic": "Cook: build in order",
+    "kind": "mode",
+    "proposal": "L4: a little chilli for Ali's bowl, a lot for Nana's: the amount word sets the pinches."
+  },
+  {
+    "name": "Chop",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Swipe the knife",
+    "fun": "Satisfying slicing",
+    "primary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "knife",
+          "peeler",
+          "grater",
+          "board",
+          "bowl"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "chop",
+          "cut",
+          "peel",
+          "grate",
+          "slice"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two to eight chops"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "onion",
+          "tomato",
+          "potato",
+          "chilli",
+          "garlic"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "small pieces",
+          "big pieces",
+          "thin"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "planned"
+      }
+    ],
+    "tertiary": [],
+    "verbs": [
+      {
+        "verb": "chop",
+        "status": "actual"
+      },
+      {
+        "verb": "cut",
+        "status": "planned"
+      },
+      {
+        "verb": "peel",
+        "status": "suggested"
+      },
+      {
+        "verb": "grate",
+        "status": "suggested"
+      },
+      {
+        "verb": "slice",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Its own game since Sprint 18; daar and chaat use it, so its words are theirs.",
+    "core_mechanic": "Cook: build in order",
+    "kind": "scene",
+    "proposal": "Three tools on the board. Nani says peel, grate or chop: the doing word picks the tool. Then 'small' or 'big pieces' sets how many swipes. The slicing stays exactly as it is."
+  },
+  {
+    "name": "Chaat",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Layers in order",
+    "fun": "Building the bowl",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "chickpeas",
+          "yoghurt (dai)",
+          "sev",
+          "tamarind chutney",
+          "coriander"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then",
+          "no"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "a little",
+          "a lot",
+          "more",
+          "none",
+          "enough"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for Nana"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ma",
+          "cousin"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "sweet",
+          "sour",
+          "spicy",
+          "crunchy"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "bowl"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "add",
+        "status": "actual"
+      },
+      {
+        "verb": "chop",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Live L1-L4; 'no' asks from L2.",
+    "core_mechanic": "Cook: build in order",
+    "kind": "variant",
+    "proposal": "L3: Ali wants a lot of sev and a little chutney, the baby wants none: the amount word decides each layer."
+  },
+  {
+    "name": "Baking",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "The amount decides",
+    "fun": "Rising pour, puffing",
+    "primary": [
+      {
+        "group": "Quantities",
+        "examples": [
+          "a little",
+          "half",
+          "full",
+          "one and a half",
+          "two and a half"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "flour",
+          "water",
+          "milk",
+          "ghee",
+          "naan"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "a quarter",
+          "one and a half"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "cup",
+          "teaspoon",
+          "oven"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "now",
+          "a bit longer"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Celebrations",
+        "examples": [
+          "the party cake"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "pour",
+        "status": "actual"
+      },
+      {
+        "verb": "knead",
+        "status": "actual"
+      },
+      {
+        "verb": "add",
+        "status": "actual"
+      },
+      {
+        "verb": "take out",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab prototype (1 Nov); the only game about how much; the amounts beyond half and full wait for Mum (R6-135).",
+    "core_mechanic": "Cook: pour to order",
+    "kind": "variant"
+  },
+  {
+    "name": "Sekelo",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Thread the pattern",
+    "fun": "Skewer patterns",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "meat (gos)",
+          "chicken (murgi)",
+          "onion",
+          "tomato",
+          "potato"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "green",
+          "yellow (peppers)"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "skewer (lakri)",
+          "grill"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "mixed"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two skewers"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "thread",
+        "status": "actual"
+      },
+      {
+        "verb": "turn",
+        "status": "actual"
+      },
+      {
+        "verb": "grill",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Live L1-L4; green pepper stays English until recorded.",
+    "core_mechanic": "Cook: build in order",
+    "kind": "variant",
+    "proposal": "L3: red and green pepper on the tray, same shape: 'red, then onion, then green'. The colour decides the pattern."
+  },
+  {
+    "name": "Samosa",
+    "family": "cook",
+    "mode_doc": "docs/game-design/families/kitchen.md",
+    "status": "built",
+    "usp": "Fill, fold, fry",
+    "fun": "Folding triangles",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "mince (chundo)",
+          "potato",
+          "peas",
+          "onion",
+          "coriander"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two samosas"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "pastry",
+          "flour",
+          "fry"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "no"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "hot",
+          "full",
+          "ready",
+          "not yet"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "Nana's",
+          "mine",
+          "for the baby"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ma"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "lift them out now"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "fill",
+        "status": "actual"
+      },
+      {
+        "verb": "fold",
+        "status": "actual"
+      },
+      {
+        "verb": "fry",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Live; SAM-35: the headline says the count.",
+    "core_mechanic": "Cook: build in order",
+    "kind": "variant",
+    "proposal": "L3: two fillings, 'Nana's without chilli, mine with': whose it is and 'without' decide the filling."
+  },
+  {
+    "name": "Clinic: the waiting room",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "built",
+    "usp": "Call the patient",
+    "fun": "Picked person rises",
+    "primary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "man",
+          "woman",
+          "boy",
+          "girl"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "old",
+          "young",
+          "tall",
+          "short"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "farmer",
+          "teacher",
+          "driver",
+          "postman",
+          "shopkeeper"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "green",
+          "blue"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "with the baby",
+          "grandad",
+          "aunty"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "bring in",
+        "status": "planned"
+      },
+      {
+        "verb": "call",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Describing-word ladder L1-L5; family words are a proposed rung (master map R7).",
+    "core_mechanic": "Who gets it?",
+    "kind": "mode",
+    "proposal": "A new rung: patients come in their work clothes. Two men wait, a farmer and a postman: 'call the farmer'. The job word decides."
+  },
+  {
+    "name": "Clinic: diagnosis and where does it hurt?",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "built",
+    "usp": "Find what hurts",
+    "fun": "Face zoom, ow",
+    "primary": [
+      {
+        "group": "Body",
+        "examples": [
+          "knee",
+          "hand",
+          "head",
+          "ear",
+          "tummy"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "left",
+          "right"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "torch",
+          "stethoscope",
+          "thermometer"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "yes (ha)",
+          "no (na)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "my",
+          "his (munjo",
+          "injo)"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "it hurts",
+          "sore",
+          "cough"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "doctor"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "does it hurt here?"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "hurt",
+        "status": "planned"
+      },
+      {
+        "verb": "look in",
+        "status": "planned"
+      },
+      {
+        "verb": "listen",
+        "status": "planned"
+      },
+      {
+        "verb": "point",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "D1-D3 built; the body-chart prototype (2 Nov, where.js) widens it to 20+ parts; every named part must be treatable.",
+    "core_mechanic": "Tap where it hurts",
+    "kind": "mode"
+  },
+  {
+    "name": "Clinic: the pharmacy belt",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "built",
+    "usp": "Belt catching",
+    "fun": "Conveyor rush",
+    "primary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "plaster",
+          "bandage",
+          "tissue",
+          "ice pack",
+          "hot-water bottle"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red bottle",
+          "blue bottle",
+          "green bottle"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to four items"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then (pela",
+          "ne poi)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "medicine",
+          "drops",
+          "syrup"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "bring",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Belt faster from L3, never a timer.",
+    "core_mechanic": "Catch it as it passes",
+    "kind": "mode"
+  },
+  {
+    "name": "Clinic heal: scrape, knee, foot, boing, hand",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "built",
+    "usp": "Treat each part",
+    "fun": "Kicks, winces, boing",
+    "primary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "blue plasters"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Body",
+        "examples": [
+          "arm",
+          "knee",
+          "foot",
+          "toe",
+          "finger"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "clean",
+          "wrap",
+          "pull out",
+          "press",
+          "blow"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "hot",
+          "cold (water)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "careful",
+          "ow"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "left",
+          "right"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "dab N times",
+          "two to five beads"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "plaster",
+          "bandage",
+          "cloth"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "clean",
+        "status": "planned"
+      },
+      {
+        "verb": "wrap",
+        "status": "planned"
+      },
+      {
+        "verb": "pull",
+        "status": "actual"
+      },
+      {
+        "verb": "count",
+        "status": "actual"
+      },
+      {
+        "verb": "press",
+        "status": "suggested"
+      },
+      {
+        "verb": "blow",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Numbers decide most live heal games (master map R7); the hand splinter is the 2 Nov prototype.",
+    "core_mechanic": "Treat it",
+    "kind": "mode",
+    "proposal": "The tray always holds every tool. The doctor says 'clean it', 'wrap it' or 'pull it out': the doing word picks the tool. The counting stays as the second beat."
+  },
+  {
+    "name": "Clinic heal: ear, nose, eye, tooth",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "built",
+    "usp": "Close-up head care",
+    "fun": "Wax pops, sneeze",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "N drops",
+          "N cleans"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "up",
+          "down",
+          "left",
+          "right (dabo",
+          "jamno)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Body",
+        "examples": [
+          "ear",
+          "nose",
+          "eye",
+          "tooth",
+          "mouth"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "yes",
+          "no (the eye test)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "bed",
+          "cup",
+          "ball",
+          "key (eye chart)"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big then small (wadho",
+          "nindho)"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "drops",
+          "tissue"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "clean",
+        "status": "planned"
+      },
+      {
+        "verb": "brush",
+        "status": "actual"
+      },
+      {
+        "verb": "fill",
+        "status": "actual"
+      },
+      {
+        "verb": "cover",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "The blocked nose is the 2 Nov prototype (the ear game's twin); the eye test's yes/no is the only speaking with real takes today.",
+    "core_mechanic": "Treat it",
+    "kind": "scene",
+    "proposal": "Ear and nose are twins, so the body word must pick the game: the patient says which hurts and the close-up opens on what the child tapped."
+  },
+  {
+    "name": "Clinic heal: drinks and fever",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "built",
+    "usp": "Make the cure",
+    "fun": "Bumps shrink, burp",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "turmeric",
+          "milk",
+          "ginger",
+          "honey",
+          "lemon"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "hot (koso)",
+          "cold",
+          "just right"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "spoons",
+          "fan N times"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "cough",
+          "sore throat",
+          "tummy"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "quickly",
+          "slowly (fan)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "blanket",
+          "fan",
+          "cool cloth",
+          "hot-water bottle"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Body",
+        "examples": [
+          "throat",
+          "tongue",
+          "tummy"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "make",
+        "status": "planned"
+      },
+      {
+        "verb": "stir",
+        "status": "actual"
+      },
+      {
+        "verb": "drink",
+        "status": "planned"
+      },
+      {
+        "verb": "fan",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Fever keeps the doctor naming the effect to L3 (decision 91); drinks prototype 2 Nov.",
+    "core_mechanic": "Treat it",
+    "kind": "scene"
+  },
+  {
+    "name": "Clinic: the send-off",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "built",
+    "usp": "Feelings after care",
+    "fun": "Apple and wave",
+    "primary": [
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "happy",
+          "sad",
+          "hot",
+          "cold",
+          "scared"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "bye",
+          "is everything okay now?"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "how do you feel?"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "apple"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "blanket"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "doctor",
+          "nurse"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "feel",
+        "status": "planned"
+      },
+      {
+        "verb": "say bye",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "An apple, never a lolly; feelings are 'sad' or 'scared', always resolved gently (Zafar, 14 Oct).",
+    "core_mechanic": "Who gets it?",
+    "kind": "scene",
+    "proposal": "The patient thanks 'the doctor' (the child) and 'the nurse' on the way out: jobs heard, nothing asked."
+  },
+  {
+    "name": "Clinic heal: tummy, hic, hair (parked)",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "parked",
+    "usp": "Waiting heal games",
+    "fun": "Hiccup sips",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "sips one to five"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Body",
+        "examples": [
+          "tummy",
+          "hair"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "shampoo",
+          "comb"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "comb",
+        "status": "actual"
+      },
+      {
+        "verb": "drink",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Parked per H32; their level 3 is level 2 heard only (decision 97).",
+    "core_mechanic": "Treat it",
+    "kind": "scene"
+  },
+  {
+    "name": "Clinic: what's wrong?",
+    "family": "clinic",
+    "mode_doc": "docs/game-design/modes/clinic.md",
+    "status": "idea",
+    "usp": "Name the illness",
+    "fun": "Coughs and sneezes",
+    "primary": [
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "cough",
+          "cold",
+          "headache",
+          "fever",
+          "better"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Body",
+        "examples": [
+          "head",
+          "throat",
+          "nose"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "medicine",
+          "tissue"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "my",
+          "his (my head hurts)"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Question words",
+        "examples": [
+          "what's wrong?"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "today",
+          "now"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "feel",
+        "status": "suggested"
+      },
+      {
+        "verb": "cough",
+        "status": "suggested"
+      },
+      {
+        "verb": "give",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "What happened",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Suggested: the master map finds the health half of feelings short; the patient's 'why' line picks the cure.",
+    "core_mechanic": "Tap where it hurts",
+    "kind": "scene"
+  },
+  {
+    "name": "Hide and seek",
+    "family": "home",
+    "mode_doc": "build/reports/designs/hide-and-seek.md",
+    "status": "built",
+    "usp": "Place words decide",
+    "fun": "The cat reveal",
+    "primary": [
+      {
+        "group": "Home and rooms",
+        "examples": [
+          "wardrobe",
+          "cupboard",
+          "bed",
+          "curtain",
+          "drawer"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "in",
+          "under",
+          "behind"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Question words",
+        "examples": [
+          "where?"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "box",
+          "basket"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "open",
+          "closed",
+          "big",
+          "small"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "cat (Simba",
+          "Zazu)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "count with me"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Daily routines",
+        "examples": [
+          "bedtime with the torch"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "look",
+        "status": "actual"
+      },
+      {
+        "verb": "close",
+        "status": "actual"
+      },
+      {
+        "verb": "open",
+        "status": "planned"
+      },
+      {
+        "verb": "find",
+        "status": "planned"
+      },
+      {
+        "verb": "hide",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov); first of the day at home (places, then positions, then verbs).",
+    "core_mechanic": "Look inside",
+    "kind": "mode"
+  },
+  {
+    "name": "Pick it up and put it back",
+    "family": "home",
+    "mode_doc": "build/reports/designs/pick-it-up-put-it-back.md",
+    "status": "built",
+    "usp": "Position decides",
+    "fun": "Nana's huge eyes",
+    "primary": [
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "on",
+          "under",
+          "in"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Home and rooms",
+        "examples": [
+          "kitchen",
+          "bedroom"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "glasses",
+          "cup",
+          "bag",
+          "table",
+          "bed"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "Nana's",
+          "my bag"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Toys and play",
+        "examples": [
+          "teddy",
+          "ball",
+          "blocks",
+          "doll"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Question words",
+        "examples": [
+          "where is it?"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "this side",
+          "that side"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "put",
+        "status": "actual"
+      },
+      {
+        "verb": "pick up",
+        "status": "planned"
+      },
+      {
+        "verb": "bring",
+        "status": "planned"
+      },
+      {
+        "verb": "take",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov); two of the same thing in different places, so the place word decides.",
+    "core_mechanic": "Put it in its place",
+    "kind": "variant",
+    "proposal": "Takes Tidy up's put-away rules as later levels; toys join the things carried between rooms."
+  },
+  {
+    "name": "Clean-up day",
+    "family": "home",
+    "mode_doc": "build/reports/designs/clean-up-day.md",
+    "status": "built",
+    "usp": "Doing words decide",
+    "fun": "Dusk, light off",
+    "primary": [
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "switch on",
+          "switch off",
+          "turn off",
+          "sweep",
+          "close"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "tap",
+          "light",
+          "soap",
+          "broom",
+          "curtains"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Home and rooms",
+        "examples": [
+          "kitchen",
+          "bathroom",
+          "bedroom",
+          "living room"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "on",
+          "off",
+          "open",
+          "closed"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "dirty",
+          "clean"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Toys and play",
+        "examples": [
+          "toy car (Ali's room)"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "Zazu"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "switch on",
+        "status": "actual"
+      },
+      {
+        "verb": "switch off",
+        "status": "actual"
+      },
+      {
+        "verb": "turn off",
+        "status": "actual"
+      },
+      {
+        "verb": "sweep",
+        "status": "actual"
+      },
+      {
+        "verb": "close",
+        "status": "actual"
+      },
+      {
+        "verb": "wipe",
+        "status": "planned"
+      },
+      {
+        "verb": "open",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov); from L2 two of each, so on or off decides.",
+    "core_mechanic": "Do what Nani says",
+    "kind": "mode",
+    "proposal": "L3: a light is on in two rooms. 'Switch off the light in the kitchen': the room decides."
+  },
+  {
+    "name": "The wake-up clock",
+    "family": "home",
+    "mode_doc": "build/reports/designs/wake-up-clock.md",
+    "status": "built",
+    "usp": "Wake on time",
+    "fun": "Pillow launches",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to twelve",
+          "eleven",
+          "twelve"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "o'clock",
+          "morning",
+          "night",
+          "not now"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ali"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Daily routines",
+        "examples": [
+          "wake up",
+          "get up",
+          "goodnight"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "Simba"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "before",
+          "after"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "wake up",
+        "status": "actual"
+      },
+      {
+        "verb": "get up",
+        "status": "actual"
+      },
+      {
+        "verb": "sleep",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov); the only time game; from L2 the bedside clocks frost, so the heard hour decides.",
+    "core_mechanic": "The clock",
+    "kind": "mode"
+  },
+  {
+    "name": "Getting ready",
+    "family": "home",
+    "mode_doc": "build/reports/designs/school-day.md",
+    "status": "built",
+    "usp": "Ali obeys Nani",
+    "fun": "Bed-hair boing",
+    "primary": [
+      {
+        "group": "Daily routines",
+        "examples": [
+          "brush teeth",
+          "comb hair",
+          "wash face",
+          "breakfast"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Body",
+        "examples": [
+          "hair",
+          "face",
+          "teeth",
+          "hands"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "now",
+          "later",
+          "first",
+          "morning",
+          "night"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Ali",
+          "the cousins"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Clothes",
+        "examples": [
+          "socks",
+          "shoes"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "breakfast"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "toothbrush",
+          "soap",
+          "flannel"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "brush",
+        "status": "actual"
+      },
+      {
+        "verb": "wash",
+        "status": "actual"
+      },
+      {
+        "verb": "eat",
+        "status": "actual"
+      },
+      {
+        "verb": "comb",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov) on the do-it engine; jobs called in any order, so the verb decides, not the routine.",
+    "core_mechanic": "Do what Nani says",
+    "kind": "variant",
+    "proposal": "L3: Nani names two jobs, 'wash your face now, eat later'. The time word says which Ali does. At night the same game runs with pyjamas and bed."
+  },
+  {
+    "name": "Sewing: make",
+    "family": "home",
+    "mode_doc": "build/reports/designs/sewing.md",
+    "status": "built",
+    "usp": "Garment word picks",
+    "fun": "Simba bats offcuts",
+    "primary": [
+      {
+        "group": "Clothes",
+        "examples": [
+          "kurta",
+          "cap",
+          "dupatta",
+          "shawl",
+          "sleeve"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "long",
+          "short"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Ali"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "buttons"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "tailor"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "make",
+        "status": "actual"
+      },
+      {
+        "verb": "cut",
+        "status": "actual"
+      },
+      {
+        "verb": "sew",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov); the rebuild of Dress up's Big Ma's sewing table.",
+    "core_mechanic": "Sewing and dressing",
+    "kind": "mode",
+    "proposal": "Big Ma is 'the tailor' in Nani's lines: heard only."
+  },
+  {
+    "name": "Sewing: mend",
+    "family": "home",
+    "mode_doc": "build/reports/designs/sewing.md",
+    "status": "built",
+    "usp": "Said fault decides",
+    "fun": "The zzip",
+    "primary": [
+      {
+        "group": "Clothes",
+        "examples": [
+          "sleeve",
+          "button",
+          "pocket",
+          "kurta"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "torn",
+          "hole"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "my"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "Simba"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "fix",
+        "status": "actual"
+      },
+      {
+        "verb": "mend",
+        "status": "planned"
+      },
+      {
+        "verb": "sew",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "What happened",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov); always two faults, the said one decides.",
+    "core_mechanic": "Sewing and dressing",
+    "kind": "scene"
+  },
+  {
+    "name": "Sewing: the fitting",
+    "family": "home",
+    "mode_doc": "build/reports/designs/sewing.md",
+    "status": "built",
+    "usp": "Trying it on",
+    "fun": "Too-long kurta",
+    "primary": [
+      {
+        "group": "Clothes",
+        "examples": [
+          "kurta",
+          "cap",
+          "dupatta"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small",
+          "just right"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "long",
+          "just right"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "rain",
+          "cold"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for Ali"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "umbrella"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "put on",
+        "status": "planned"
+      },
+      {
+        "verb": "take off",
+        "status": "planned"
+      },
+      {
+        "verb": "wear",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Lab prototype (2 Nov); Dress up's 'the fitting' rebuilt.",
+    "core_mechanic": "Sewing and dressing",
+    "kind": "scene"
+  },
+  {
+    "name": "The door",
+    "family": "home",
+    "mode_doc": "docs/game-design/days/README.md",
+    "status": "built",
+    "usp": "Sky sets plans",
+    "fun": "Nani's gestures",
+    "primary": [
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "sun",
+          "rain",
+          "clouds",
+          "stars",
+          "rainbow"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Time and days",
+        "examples": [
+          "today",
+          "tomorrow"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Places in town",
+        "examples": [
+          "market",
+          "farm",
+          "clinic"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "yes (ha)",
+          "no (na)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "cook",
+          "help"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "go",
+        "status": "actual"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      },
+      {
+        "verb": "cook",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "What will happen",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "A beat, not a test, today: the weather words are in data/day.json but decide nothing. Suggested: Nani says the sky before the curtain opens and the child picks its card, so the weather word decides.",
+    "core_mechanic": "Talk back",
+    "kind": "scene"
+  },
+  {
+    "name": "The evening book",
+    "family": "home",
+    "mode_doc": "docs/game-design/modes/story-by-the-fire.md",
+    "status": "built",
+    "usp": "Retell your day",
+    "fun": "Your own story",
+    "primary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "then",
+          "and then"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "what's this?",
+          "where is the ...?"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "first",
+          "then",
+          "after",
+          "morning",
+          "evening",
+          "today"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Transport and travel",
+        "examples": [
+          "car",
+          "bus (we went by)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Farm animals",
+        "examples": [
+          "goat",
+          "chicken",
+          "dog",
+          "bird"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "chai",
+          "milk",
+          "chapati"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "plaster",
+          "thermometer",
+          "toothbrush"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Music and art",
+        "examples": [
+          "story",
+          "picture",
+          "photo"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "see",
+        "status": "actual"
+      },
+      {
+        "verb": "use",
+        "status": "actual"
+      },
+      {
+        "verb": "go",
+        "status": "actual"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "What happened",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Reviews whatever the day log holds; the only place with past forms (we saw, we went).",
+    "core_mechanic": "Retell the day",
+    "kind": "mode",
+    "proposal": "Takes 'the day in order' as a page: two or three of today's photos, 'first... then... after'. The time word decides the order."
+  },
+  {
+    "name": "Conversations",
+    "family": "home",
+    "mode_doc": "docs/game-design/modes/conversations.md",
+    "status": "built",
+    "usp": "Reply in Kutchi",
+    "fun": "Talking back",
+    "primary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "salaam",
+          "bye (khuda-fis)",
+          "how are you?",
+          "I'm fine",
+          "thank you"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "who (ker)",
+          "what (ki)",
+          "where (kida)",
+          "how many (kitla)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nani",
+          "Nana",
+          "Ma",
+          "Big Ma",
+          "Ali"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "tu / aai",
+          "muke"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "chai",
+          "maani",
+          "daar"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "can you",
+          "will you help"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "tired",
+          "cold"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "it's raining"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "say",
+        "status": "actual"
+      },
+      {
+        "verb": "help",
+        "status": "actual"
+      },
+      {
+        "verb": "make",
+        "status": "actual"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      },
+      {
+        "verb": "come",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Engine and lab live, not yet wired into pages; woven round every mode.",
+    "core_mechanic": "Talk back",
+    "kind": "mode"
+  },
+  {
+    "name": "First launch",
+    "family": "home",
+    "mode_doc": "docs/game-design/modes/first-launch.md",
+    "status": "built",
+    "usp": "Make, then cook",
+    "fun": "Seeing yourself",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "chai",
+          "milk",
+          "sugar"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "thank you",
+          "shabash"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Celebrations",
+        "examples": [
+          "tomorrow is Eid (to reword)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nani",
+          "the guests"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "tomorrow"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "help",
+        "status": "planned"
+      },
+      {
+        "verb": "cook",
+        "status": "planned"
+      },
+      {
+        "verb": "come",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Its hook still says Eid; to be reworded for the birthday (Zafar, 31 Oct).",
+    "core_mechanic": "Talk back",
+    "kind": "scene"
+  },
+  {
+    "name": "What's missing?",
+    "family": "home",
+    "mode_doc": "",
+    "status": "idea",
+    "usp": "Spot what vanished",
+    "fun": "Simba stole one",
+    "primary": [
+      {
+        "group": "Question words",
+        "examples": [
+          "what's missing?",
+          "where did it go?"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "key",
+          "cup",
+          "spoon",
+          "glasses",
+          "bag"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "remember",
+          "forget",
+          "see",
+          "find"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "all gone",
+          "none"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "Simba"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "remember",
+        "status": "suggested"
+      },
+      {
+        "verb": "forget",
+        "status": "suggested"
+      },
+      {
+        "verb": "find",
+        "status": "suggested"
+      },
+      {
+        "verb": "see",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Suggested: the mind verbs (know, remember, find) have no game; answered by voice (research-mechanics), so no tap-matching leak.",
+    "core_mechanic": "Remember it",
+    "kind": "mode"
+  },
+  {
+    "name": "Tell Ali which one",
+    "family": "home",
+    "mode_doc": "",
+    "status": "idea",
+    "usp": "Describe, Ali picks",
+    "fun": "Ali's wrong pick",
+    "primary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "hot",
+          "cold",
+          "full",
+          "empty",
+          "wet"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small",
+          "long"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "blue"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "this",
+          "that"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "cup",
+          "towel",
+          "bag"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "tell",
+        "status": "suggested"
+      },
+      {
+        "verb": "give",
+        "status": "suggested"
+      },
+      {
+        "verb": "say",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Suggested: no game where the describing word is the move (master map Part 6); 'behind the screen' from Table 1, speaking in a closed set of 2-3.",
+    "core_mechanic": "Describe it",
+    "kind": "mode"
+  },
+  {
+    "name": "The day in order",
+    "family": "home",
+    "mode_doc": "docs/game-design/modes/story-by-the-fire.md",
+    "status": "idea",
+    "usp": "Order the day",
+    "fun": "Your photos, shuffled",
+    "primary": [
+      {
+        "group": "Time and days",
+        "examples": [
+          "morning",
+          "afternoon",
+          "evening",
+          "before",
+          "after"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then",
+          "after"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Daily routines",
+        "examples": [
+          "wake up",
+          "breakfast",
+          "bed"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "what did we do first?"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "went",
+          "saw",
+          "ate"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "remember",
+        "status": "suggested"
+      },
+      {
+        "verb": "go",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Linking",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Suggested as an evening-book page: time words (now, later, before, after) are short in every map.",
+    "core_mechanic": "Retell the day",
+    "kind": "scene",
+    "merged_into": "The evening book",
+    "proposal": "A page of the evening book, not a game of its own."
+  },
+  {
+    "name": "Ali's play room",
+    "family": "home",
+    "mode_doc": "build/reports/designs/clean-up-day.md",
+    "status": "idea",
+    "usp": "Toy verbs decide",
+    "fun": "Toys do tricks",
+    "primary": [
+      {
+        "group": "Toys and play",
+        "examples": [
+          "ball",
+          "doll",
+          "teddy",
+          "car",
+          "blocks"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "push",
+          "pull",
+          "roll",
+          "throw"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "in the box",
+          "on the shelf"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "broken",
+          "new"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "Ali's",
+          "mine"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "push",
+        "status": "suggested"
+      },
+      {
+        "verb": "pull",
+        "status": "suggested"
+      },
+      {
+        "verb": "roll",
+        "status": "suggested"
+      },
+      {
+        "verb": "throw",
+        "status": "suggested"
+      },
+      {
+        "verb": "put",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Suggested: the clean-up's planned later visit (Ali's room) made a game; toys have no primary home, and push and hold are missing top-40 verbs.",
+    "core_mechanic": "Do what Nani says",
+    "kind": "variant"
+  },
+  {
+    "name": "Find it (the errand)",
+    "family": "trips",
+    "mode_doc": "docs/game-design/modes/find-it.md",
+    "status": "built",
+    "usp": "Search the stall",
+    "fun": "Arc and plink",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "orange",
+          "lemon",
+          "mango",
+          "banana",
+          "peach"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two",
+          "three"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "in",
+          "on",
+          "under",
+          "behind"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "salaam",
+          "take one yourself (khanigin)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Big Ma"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "crate",
+          "basket",
+          "box",
+          "cushion",
+          "curtain"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "and",
+          "not (na)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "Simba",
+          "Zazu"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "give",
+        "status": "actual"
+      },
+      {
+        "verb": "need",
+        "status": "actual"
+      },
+      {
+        "verb": "take",
+        "status": "actual"
+      },
+      {
+        "verb": "find",
+        "status": "planned"
+      },
+      {
+        "verb": "put",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Built on its own engine (25 Sept), next onto the shared core; the shops use it.",
+    "core_mechanic": "Fetch what is asked",
+    "kind": "variant",
+    "proposal": "Sizes stop deciding here (picky shopping owns them); the errand stays food and count."
+  },
+  {
+    "name": "Pack the bag",
+    "family": "trips",
+    "mode_doc": "docs/game-design/modes/pack-the-bag.md",
+    "status": "designed",
+    "usp": "What today needs",
+    "fun": "Things hop in",
+    "primary": [
+      {
+        "group": "Clothes",
+        "examples": [
+          "sun hat",
+          "sandals",
+          "towel"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "rain",
+          "sun",
+          "wind",
+          "cold",
+          "hot"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "planned"
+      },
+      {
+        "group": "Sports and games",
+        "examples": [
+          "cricket",
+          "football",
+          "swimming",
+          "bat",
+          "ball"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "the big hat"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "the red one"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two bottles"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "water bottle",
+          "umbrella",
+          "bag"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "my bag",
+          "Ali's bag"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Sea and beach",
+        "examples": [
+          "bucket",
+          "spade"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "put in",
+        "status": "planned"
+      },
+      {
+        "verb": "take out",
+        "status": "planned"
+      },
+      {
+        "verb": "need",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What will happen",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "A reskin of the pantry fetch; the weather sets the kind, the Kutchi picks which and how many.",
+    "core_mechanic": "Fetch what is asked",
+    "kind": "variant",
+    "proposal": "Nani says only the weather ('it's raining today') or only the game ('Ali has cricket'): the child packs what that needs. One trip, one kind of bag, so the nine groups never arrive together."
+  },
+  {
+    "name": "The window ride",
+    "family": "trips",
+    "mode_doc": "docs/game-design/modes/window-ride.md",
+    "status": "built",
+    "usp": "Tap passing things",
+    "fun": "Rushing past",
+    "primary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "cow",
+          "goat",
+          "hen",
+          "camel",
+          "donkey"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Transport and travel",
+        "examples": [
+          "bus",
+          "car",
+          "tractor",
+          "bicycle",
+          "aeroplane"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "tree",
+          "sun",
+          "rainbow",
+          "well",
+          "windmill"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "speed up",
+          "slow down"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Places in town",
+        "examples": [
+          "school",
+          "park",
+          "shop",
+          "station"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "postman",
+          "police officer",
+          "driver",
+          "farmer"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "dog",
+          "bird",
+          "butterfly"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red door",
+          "green door"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "look",
+        "status": "actual"
+      },
+      {
+        "verb": "come",
+        "status": "actual"
+      },
+      {
+        "verb": "go",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Built (Sprint 9); the farm road is data; the sea, jeep and boat roads reuse it.",
+    "core_mechanic": "The window ride",
+    "kind": "mode",
+    "proposal": "On the town road people pass as well as things: 'the postman', on a bike beside two other riders."
+  },
+  {
+    "name": "Put it in its place",
+    "family": "trips",
+    "mode_doc": "docs/game-design/modes/put-it-in-its-place.md",
+    "status": "designed",
+    "usp": "Word picks place",
+    "fun": "Things slide home",
+    "primary": [
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "in",
+          "on",
+          "behind",
+          "next to"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "Nana's cup"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two scoops"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [],
+    "verbs": [
+      {
+        "verb": "put",
+        "status": "planned"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "An engine: its nouns come from each stage (feed, animals home, the picnic, the shopping).",
+    "core_mechanic": "Put it in its place",
+    "kind": "mode",
+    "proposal": "An engine, not a game the child sees: its words are its stages' (the picnic, home at dusk, the watering hole)."
+  },
+  {
+    "name": "Count to a heard number",
+    "family": "trips",
+    "mode_doc": "docs/game-design/modes/count-to-a-number.md",
+    "status": "designed",
+    "usp": "Number only heard",
+    "fun": "Plink into containers",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to five"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "a little",
+          "more",
+          "enough"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "two",
+          "and then one"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Money and shopping",
+        "examples": [
+          "coins"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [],
+    "verbs": [
+      {
+        "verb": "count",
+        "status": "planned"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "How much",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "An engine (Cook's count generalised); eggs, cobs, shells, coins.",
+    "core_mechanic": "Count to a heard number",
+    "kind": "mode",
+    "proposal": "An engine, not a game the child sees: its words are its stages' (the orchard, the eggs, the cake, Pay)."
+  },
+  {
+    "name": "Meet the host",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "designed",
+    "usp": "Greet the elder",
+    "fun": "Nani greets first",
+    "primary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "salaam",
+          "how are you?",
+          "I'm fine",
+          "khuda-fis"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "you (aai",
+          "the elder form)"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Hannah Mami",
+          "Masi"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "fine",
+          "tired"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "come with me"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "farmer",
+          "driver",
+          "shopkeeper"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "say",
+        "status": "planned"
+      },
+      {
+        "verb": "come",
+        "status": "planned"
+      },
+      {
+        "verb": "ask",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "The Meet stage of every trip (farm, beach, safari) on Conversations; the child answers with the elder form.",
+    "core_mechanic": "Talk back",
+    "kind": "scene",
+    "proposal": "Nani introduces the host by their work: heard only."
+  },
+  {
+    "name": "Pass the balloon",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/party-guests.md",
+    "status": "built",
+    "usp": "Family word picks",
+    "fun": "Balloon bops heads",
+    "primary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "mum",
+          "aunt (masi)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "grandfather",
+          "grandmother"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "hello",
+          "my name is",
+          "what's your name?"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "my",
+          "your",
+          "Zara's"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Toys and play",
+        "examples": [
+          "balloon"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "give",
+        "status": "actual"
+      },
+      {
+        "verb": "call",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Party lab prototype (2 Nov); from L2 the two sisters swap seats, so mum or aunt decides.",
+    "core_mechanic": "Who gets it?",
+    "kind": "variant"
+  },
+  {
+    "name": "How are you?",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/party-guests.md",
+    "status": "built",
+    "usp": "Feelings pick fixes",
+    "fun": "Gulp, flop, fan",
+    "primary": [
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "hungry",
+          "thirsty",
+          "tired",
+          "sad",
+          "hot"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "how are you?",
+          "I'm fine",
+          "thank you"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "water",
+          "samosa"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "chair",
+          "fan",
+          "shawl"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Toys and play",
+        "examples": [
+          "balloon"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "cold"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "give",
+        "status": "actual"
+      },
+      {
+        "verb": "ask",
+        "status": "planned"
+      },
+      {
+        "verb": "help",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Party prototype (2 Nov); all six fixes always there, so the feeling word picks.",
+    "core_mechanic": "Who gets it?",
+    "kind": "variant"
+  },
+  {
+    "name": "Musical statues",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/do-it-engine.md",
+    "status": "built",
+    "usp": "Body-moving verbs",
+    "fun": "Freeze and wobble",
+    "primary": [
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "sit",
+          "jump",
+          "stand up",
+          "turn round",
+          "dance"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Music and art",
+        "examples": [
+          "drum",
+          "song",
+          "music",
+          "dance"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Body",
+        "examples": [
+          "nose",
+          "head",
+          "ear (touch your)"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "stop",
+          "now"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Zara",
+          "Yusuf"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Sports and games",
+        "examples": [
+          "game",
+          "turn",
+          "race"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "sit",
+        "status": "actual"
+      },
+      {
+        "verb": "jump",
+        "status": "actual"
+      },
+      {
+        "verb": "stand",
+        "status": "actual"
+      },
+      {
+        "verb": "turn",
+        "status": "actual"
+      },
+      {
+        "verb": "dance",
+        "status": "actual"
+      },
+      {
+        "verb": "stop",
+        "status": "planned"
+      },
+      {
+        "verb": "touch",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Party prototype (2 Nov) on the do-it engine; the only home for moving-yourself verbs.",
+    "core_mechanic": "Do what Nani says",
+    "kind": "variant",
+    "proposal": "L3: Nana drums and Masi sings. 'Dance to the drum, sit for the song': the music word decides. No one is ever out."
+  },
+  {
+    "name": "The cake",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/party-gifts.md",
+    "status": "built",
+    "usp": "Candles by count",
+    "fun": "Blow-out, cream nose",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to six (candles)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for Nana",
+          "my",
+          "your"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Celebrations",
+        "examples": [
+          "cake",
+          "candle",
+          "birthday"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "baby"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "cup"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "blow",
+        "status": "actual"
+      },
+      {
+        "verb": "bring",
+        "status": "actual"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Party prototype (2 Nov) on word tiles; the birthday stays though celebrations are out.",
+    "core_mechanic": "Count to a heard number",
+    "kind": "variant"
+  },
+  {
+    "name": "The party presents",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/party-gifts.md",
+    "status": "built",
+    "usp": "Whose present?",
+    "fun": "Unwrap sounds",
+    "primary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for",
+          "mine",
+          "yours",
+          "Zara's",
+          "the baby's"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "grandfather",
+          "baby",
+          "Nana"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Toys and play",
+        "examples": [
+          "doll",
+          "ball",
+          "teddy",
+          "drum",
+          "blocks",
+          "car"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [],
+    "tertiary": [
+      {
+        "group": "Music and art",
+        "examples": [
+          "drum"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Celebrations",
+        "examples": [
+          "present"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Sports and games",
+        "examples": [
+          "bat",
+          "football"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "give",
+        "status": "actual"
+      },
+      {
+        "verb": "open",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Party prototype (2 Nov); any toy can go to anyone, so the owner decides.",
+    "core_mechanic": "Who gets it?",
+    "kind": "variant",
+    "proposal": "L1-L2: two presents are for Zara, the doll and the ball: the toy word decides. From L3 the owner decides, as today."
+  },
+  {
+    "name": "Snap the guests",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/party-guests.md",
+    "status": "designed",
+    "usp": "Photos of people",
+    "fun": "Baby grabs lens",
+    "primary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "grandfather",
+          "grandmother",
+          "aunt",
+          "baby"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Clothes",
+        "examples": [
+          "the aunt in red"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "with (the baby)"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Technology",
+        "examples": [
+          "photo"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "take a photo",
+        "status": "planned"
+      },
+      {
+        "verb": "look",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Comes later; Snap's engine is a rebuild (master map G).",
+    "core_mechanic": "Snap",
+    "kind": "variant"
+  },
+  {
+    "name": "Who ate the cake?",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/party-guests.md",
+    "status": "designed",
+    "usp": "Deduce from clues",
+    "fun": "Grown-up culprit",
+    "primary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "small",
+          "big",
+          "in red"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "who?"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "girl",
+          "boy"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "cup"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "cake"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "eat",
+        "status": "planned"
+      },
+      {
+        "verb": "take",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "What happened",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Second party visit, on Who did it?'s engine; the clue must be heard, not seen.",
+    "core_mechanic": "Work out who",
+    "kind": "variant"
+  },
+  {
+    "name": "Pack the school bag",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/school-day.md",
+    "status": "built",
+    "usp": "Toys are decoys",
+    "fun": "Simba in bag",
+    "primary": [
+      {
+        "group": "School and learning",
+        "examples": [
+          "book",
+          "pencil",
+          "crayon",
+          "lunchbox",
+          "school bag"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Toys and play",
+        "examples": [
+          "ball",
+          "teddy"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "your"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Sports and games",
+        "examples": [
+          "ball",
+          "trainers",
+          "games day"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "Simba"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "put in",
+        "status": "actual"
+      },
+      {
+        "verb": "take out",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "School day lab prototype (2 Nov); later how many and whose decide.",
+    "core_mechanic": "Fetch what is asked",
+    "kind": "variant",
+    "proposal": "The twist level: 'it's games day', so today the ball does go in. The decoy becomes the answer."
+  },
+  {
+    "name": "The blackboard",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/school-day.md",
+    "status": "built",
+    "usp": "Draw what's said",
+    "fun": "Drawings come alive",
+    "primary": [
+      {
+        "group": "Music and art",
+        "examples": [
+          "draw",
+          "colour",
+          "picture"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "School and learning",
+        "examples": [
+          "chalk",
+          "duster",
+          "pencil",
+          "crayon",
+          "paper"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to five"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "circle",
+          "square"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "green"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "goat",
+          "bird"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Transport and travel",
+        "examples": [
+          "car"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Home and rooms",
+        "examples": [
+          "house"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "draw",
+        "status": "actual"
+      },
+      {
+        "verb": "colour",
+        "status": "actual"
+      },
+      {
+        "verb": "rub out",
+        "status": "actual"
+      },
+      {
+        "verb": "ring",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "School day prototype (2 Nov); no letters or numbers on the board; shapes wait on Mum.",
+    "core_mechanic": "Draw what is said",
+    "kind": "mode",
+    "proposal": "The teacher names the tool before the drawing: 'take the crayon', 'rub it out with the duster'. The school word decides what is in the hand."
+  },
+  {
+    "name": "The town map",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/town-map.md",
+    "status": "built",
+    "usp": "Infer the place",
+    "fun": "What comes back",
+    "primary": [
+      {
+        "group": "Places in town",
+        "examples": [
+          "market",
+          "park",
+          "bakery",
+          "library",
+          "clinic"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "doctor",
+          "teacher",
+          "tailor",
+          "shopkeeper",
+          "farmer"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "I want to go",
+          "wants"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Hannah Mami",
+          "Big Ma"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "poorly"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Sports and games",
+        "examples": [
+          "cricket",
+          "football",
+          "swing"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "School and learning",
+        "examples": [
+          "book"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "bread"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "go",
+        "status": "actual"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      },
+      {
+        "verb": "read",
+        "status": "planned"
+      },
+      {
+        "verb": "play",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Town prototype (2 Nov); Zafar's harder level says 'I want a book', not 'the library'.",
+    "core_mechanic": "The town map",
+    "kind": "mode",
+    "proposal": "Zafar's inference level, with people: 'I need the doctor', 'Nana wants the tailor', 'Ali wants to play cricket'. The job or the game picks the place."
+  },
+  {
+    "name": "Serve at the fruit stall",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/shops.md",
+    "status": "built",
+    "usp": "Shopkeeper, both ways",
+    "fun": "Needle swings",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "lemon",
+          "mango",
+          "onion",
+          "banana",
+          "orange"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two",
+          "three"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Money and shopping",
+        "examples": [
+          "how much?",
+          "coin",
+          "cheap",
+          "dear",
+          "change"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "half",
+          "enough"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "how many?"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "please",
+          "I want"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "want",
+        "status": "actual"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      },
+      {
+        "verb": "weigh",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Town prototype (2 Nov); the child serves, later orders.",
+    "core_mechanic": "Count to a heard number",
+    "kind": "variant",
+    "proposal": "Each sale ends with Pay: the customer asks 'how much?', and the heard price is counted in. Pay becomes the stalls' last scene, not a game alone."
+  },
+  {
+    "name": "Nani's picky shopping",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/shops.md",
+    "status": "built",
+    "usp": "Size decides",
+    "fun": "Tiny pot monocle",
+    "primary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small",
+          "biggest",
+          "smallest"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "pot",
+          "pan",
+          "cup",
+          "glass",
+          "plate",
+          "spoon"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "new",
+          "old",
+          "clean",
+          "heavy",
+          "light"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Question words",
+        "examples": [
+          "which one?"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "not",
+          "I want"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Money and shopping",
+        "examples": [
+          "cheap",
+          "dear"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "buy",
+        "status": "actual"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Town prototype (2 Nov); two of the same side by side.",
+    "core_mechanic": "Fetch what is asked",
+    "kind": "variant",
+    "proposal": "L2: a big pot beside a big pan: the thing decides. L3: 'not the old one, the new one'. Nani's 'too dear!' is the running gag."
+  },
+  {
+    "name": "Pay",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/shops.md",
+    "status": "built",
+    "usp": "Heard price only",
+    "fun": "Coin flick count",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "ten"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "twenty",
+          "to a hundred"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Money and shopping",
+        "examples": [
+          "paisa",
+          "coins",
+          "how much?"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "just right"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "please",
+          "thank you"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "pay",
+        "status": "planned"
+      },
+      {
+        "verb": "count",
+        "status": "planned"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Town prototype (2 Nov); coins carry no digits; to 20, then 100 as levels rise (Zafar, 1 Nov).",
+    "core_mechanic": "Count to a heard number",
+    "kind": "scene",
+    "proposal": "Stays as built, but plays as the closing scene of the fruit, cloth and beach stalls."
+  },
+  {
+    "name": "The lanes",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/shops.md",
+    "status": "designed",
+    "usp": "Follow spoken directions",
+    "fun": "Wrong turn loops",
+    "primary": [
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "left",
+          "right",
+          "straight on",
+          "past the red door"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Places in town",
+        "examples": [
+          "bakery",
+          "market",
+          "school",
+          "mosque",
+          "park"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red door"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "rain"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Transport and travel",
+        "examples": [
+          "rickshaw",
+          "bike",
+          "bus"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "go",
+        "status": "planned"
+      },
+      {
+        "verb": "turn",
+        "status": "planned"
+      },
+      {
+        "verb": "stop",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Zafar's first-person maze (19 Oct); 'this side, that side' before left and right (Mum, idea 11).",
+    "core_mechanic": "Follow the directions",
+    "kind": "mode",
+    "proposal": "Nani names where to go, not just the turns: two shop fronts at a fork, 'to the bakery'. The place word decides."
+  },
+  {
+    "name": "The goat chase",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/shops.md",
+    "status": "designed",
+    "usp": "Follow the pointers",
+    "fun": "Goat steals shopping",
+    "primary": [
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "that way",
+          "past the well",
+          "behind the cart"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "goat"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "salaam"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "shopkeeper",
+          "postman",
+          "driver"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "bag"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "go",
+        "status": "planned"
+      },
+      {
+        "verb": "run",
+        "status": "planned"
+      },
+      {
+        "verb": "catch",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "What happened",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Designed for the shops day; people along the lanes say which way it went.",
+    "core_mechanic": "Follow the directions",
+    "kind": "variant",
+    "proposal": "Two people stand at each corner. 'Ask the shopkeeper': the job says whose pointing to follow."
+  },
+  {
+    "name": "Big Ma's cloth stall",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/sewing.md",
+    "status": "built",
+    "usp": "Pick the cloth",
+    "fun": "Bolt flops open",
+    "primary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "green",
+          "white",
+          "blue",
+          "yellow"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Clothes",
+        "examples": [
+          "kurta",
+          "scarf",
+          "dress",
+          "trousers"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Money and shopping",
+        "examples": [
+          "here's the money"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for Ali"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "I want",
+          "not"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "tailor"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "buy",
+        "status": "actual"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      },
+      {
+        "verb": "pay",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Sewing prototype (2 Nov); also the shops' third trip; seeds the sewing day.",
+    "core_mechanic": "Fetch what is asked",
+    "kind": "variant",
+    "proposal": "'Cloth for a scarf' or 'cloth for a kurta': the garment word picks the length Big Ma cuts."
+  },
+  {
+    "name": "Feeding time",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "built",
+    "usp": "Animal and feed",
+    "fun": "Farmyard munch",
+    "primary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "hen",
+          "goat",
+          "cow",
+          "sheep",
+          "chick"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "corn",
+          "grass",
+          "water"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two",
+          "three cobs"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "wants"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "more",
+          "a little",
+          "a lot",
+          "enough",
+          "all gone"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "small"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Plants and garden",
+        "examples": [
+          "grass",
+          "leaves"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "feed",
+        "status": "actual"
+      },
+      {
+        "verb": "want",
+        "status": "actual"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Farm prototype (1 Nov); hens and goats both want food, so the word picks.",
+    "core_mechanic": "Who gets it?",
+    "kind": "variant",
+    "proposal": "The goat wants more, the hen has had enough: the amount word says who gets the next scoop."
+  },
+  {
+    "name": "Collect the eggs",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "built",
+    "usp": "Peek under hens",
+    "fun": "Chick tumbles out",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one",
+          "two eggs"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small (hen)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "hen",
+          "chick"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Quantities",
+        "examples": [
+          "half",
+          "all"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "under"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "white",
+          "brown"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "egg"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "bring",
+        "status": "actual"
+      },
+      {
+        "verb": "lift",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Farm prototype (1 Nov); peeking under any hen is free.",
+    "core_mechanic": "Count to a heard number",
+    "kind": "variant",
+    "proposal": "Colour stops deciding; number and size are enough here."
+  },
+  {
+    "name": "The farm photo shoot",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "built",
+    "usp": "Doing word picks",
+    "fun": "Four hooves up",
+    "primary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "goat",
+          "hen",
+          "chick",
+          "cow",
+          "dog"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "eat",
+          "run",
+          "sleep",
+          "jump",
+          "drink"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two",
+          "three"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Technology",
+        "examples": [
+          "photo"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "take a photo",
+        "status": "actual"
+      },
+      {
+        "verb": "run",
+        "status": "planned"
+      },
+      {
+        "verb": "eat",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Farm prototype (data/farm/photo.json); its photos feed the evening book.",
+    "core_mechanic": "Snap",
+    "kind": "variant",
+    "proposal": "Its own USP made true: three goats, one eating, one running, one asleep. Only the doing word picks the shot."
+  },
+  {
+    "name": "Home at dusk",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "built",
+    "usp": "Animals to bed",
+    "fun": "Chick runs back",
+    "primary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "cow",
+          "hen",
+          "goat",
+          "chick"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "in (go in)"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Time and days",
+        "examples": [
+          "now",
+          "it's getting dark",
+          "goodnight"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Home and rooms",
+        "examples": [
+          "house",
+          "shed",
+          "coop"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "come",
+        "status": "actual"
+      },
+      {
+        "verb": "go in",
+        "status": "actual"
+      },
+      {
+        "verb": "call",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Farm prototype (1 Nov); planned later: call the animal over (speaking).",
+    "core_mechanic": "Put it in its place",
+    "kind": "variant"
+  },
+  {
+    "name": "Pick (the orchard)",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "built",
+    "usp": "Pick to count",
+    "fun": "Pop and bounce",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "mango",
+          "lemon",
+          "tomato",
+          "chilli"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Plants and garden",
+        "examples": [
+          "tree",
+          "branch",
+          "leaf",
+          "flower",
+          "ground"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "green"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Farm animals",
+        "examples": [
+          "goat"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "take",
+        "status": "actual"
+      },
+      {
+        "verb": "pick",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Farm prototype, second visit; more on the tree than asked.",
+    "core_mechanic": "Count to a heard number",
+    "kind": "variant",
+    "proposal": "'From the tall tree', 'the ones on the ground', 'not the flowers': the plant word says where the fruit comes from."
+  },
+  {
+    "name": "Plant and water",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/farm.md",
+    "status": "built",
+    "usp": "Plant, water, grow",
+    "fun": "The grow",
+    "primary": [
+      {
+        "group": "Plants and garden",
+        "examples": [
+          "plant",
+          "water",
+          "grow"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "sun",
+          "rain",
+          "dry",
+          "wet"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Quantities",
+        "examples": [
+          "a little",
+          "a whole can"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "lemon",
+          "tomato",
+          "chilli"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "dig",
+          "plant",
+          "water",
+          "pick"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [],
+    "verbs": [
+      {
+        "verb": "plant",
+        "status": "actual"
+      },
+      {
+        "verb": "water",
+        "status": "actual"
+      },
+      {
+        "verb": "grow",
+        "status": "actual"
+      },
+      {
+        "verb": "look",
+        "status": "actual"
+      },
+      {
+        "verb": "dig",
+        "status": "suggested"
+      },
+      {
+        "verb": "pick",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Farm prototype, second visit; the only plants game.",
+    "core_mechanic": "Do what Nani says",
+    "kind": "variant",
+    "proposal": "Before going out Nani says 'it rained in the night' or 'the sun has been out': water the beds, or don't. The weather word decides."
+  },
+  {
+    "name": "Pet hotel: look after the animals",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/adoption-centre.md",
+    "status": "built",
+    "usp": "Needs, then care",
+    "fun": "Pompom bee",
+    "primary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "dog",
+          "cat",
+          "rabbit",
+          "bee",
+          "ant"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "feed",
+          "wash",
+          "brush",
+          "put to bed"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Health and feelings",
+        "examples": [
+          "hungry",
+          "sleepy"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "cobs"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "corn"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Hannah Mami"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "feed",
+        "status": "actual"
+      },
+      {
+        "verb": "wash",
+        "status": "actual"
+      },
+      {
+        "verb": "brush",
+        "status": "actual"
+      },
+      {
+        "verb": "put to bed",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Pets prototype (2 Nov); Hannah Mami's centre, 'not a vet' (Zafar).",
+    "core_mechanic": "Do what Nani says",
+    "kind": "variant"
+  },
+  {
+    "name": "Pet hotel: going home",
+    "family": "trips",
+    "mode_doc": "build/reports/designs/adoption-centre.md",
+    "status": "built",
+    "usp": "Name picks pet",
+    "fun": "Goodbye tricks",
+    "primary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "dog",
+          "ant",
+          "rabbit",
+          "bee",
+          "cat"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "teacher",
+          "postman",
+          "farmer",
+          "driver"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "bye"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "we've come for"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "the families"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "come",
+        "status": "actual"
+      },
+      {
+        "verb": "give",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Pets prototype (2 Nov); one line, same size, all happy, so only the name picks.",
+    "core_mechanic": "Who gets it?",
+    "kind": "variant",
+    "proposal": "The owners come to collect: 'the rabbit goes home with the teacher'. Pet and owner both decide. The postman's pet is the gag."
+  },
+  {
+    "name": "Snap from the jeep",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/safari.md",
+    "status": "built",
+    "usp": "Animals doing things",
+    "fun": "Giraffe fills frame",
+    "primary": [
+      {
+        "group": "Wild animals",
+        "examples": [
+          "elephant",
+          "giraffe",
+          "zebra",
+          "lion",
+          "monkey"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "eating",
+          "swimming",
+          "running",
+          "climbing"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "baby"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Transport and travel",
+        "examples": [
+          "jeep"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Technology",
+        "examples": [
+          "photo"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "eat",
+        "status": "actual"
+      },
+      {
+        "verb": "swim",
+        "status": "actual"
+      },
+      {
+        "verb": "run",
+        "status": "actual"
+      },
+      {
+        "verb": "climb",
+        "status": "planned"
+      },
+      {
+        "verb": "take a photo",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He, she, they, I",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Safari prototype (2 Nov); three of a kind doing different things from L2.",
+    "core_mechanic": "Snap",
+    "kind": "variant"
+  },
+  {
+    "name": "Who's hiding?",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/safari.md",
+    "status": "built",
+    "usp": "Parts and patterns",
+    "fun": "Pop-up giraffe",
+    "primary": [
+      {
+        "group": "Wild animals",
+        "examples": [
+          "zebra",
+          "giraffe",
+          "elephant"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Body",
+        "examples": [
+          "ears",
+          "neck",
+          "tail"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "stripy",
+          "spotty",
+          "grey"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Question words",
+        "examples": [
+          "who's there?",
+          "where?"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Plants and garden",
+        "examples": [
+          "long grass"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "hide",
+        "status": "actual"
+      },
+      {
+        "verb": "find",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Questions",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Safari prototype (2 Nov); body and describing words on animals.",
+    "core_mechanic": "Look inside",
+    "kind": "variant"
+  },
+  {
+    "name": "The watering hole",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/safari.md",
+    "status": "idea",
+    "usp": "Who drinks where",
+    "fun": "Splashing trunks",
+    "primary": [
+      {
+        "group": "Wild animals",
+        "examples": [
+          "lion",
+          "elephant",
+          "giraffe",
+          "zebra"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "next to",
+          "in"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "drink"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "hot",
+          "sun"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "drink",
+        "status": "planned"
+      },
+      {
+        "verb": "go",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "In the safari's first sketch (find-it or put-it-in-its-place); not designed further.",
+    "core_mechanic": "Put it in its place",
+    "kind": "scene"
+  },
+  {
+    "name": "Shells",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/beach.md",
+    "status": "built",
+    "usp": "Crab under shell",
+    "fun": "Crab scuttles off",
+    "primary": [
+      {
+        "group": "Sea and beach",
+        "examples": [
+          "shell",
+          "pebble",
+          "crab"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two",
+          "three"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "white"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "not"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "bring",
+        "status": "actual"
+      },
+      {
+        "verb": "find",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Beach prototype (2 Nov); needs Mum's beach words.",
+    "core_mechanic": "Look inside",
+    "kind": "variant"
+  },
+  {
+    "name": "The sandcastle",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/beach.md",
+    "status": "built",
+    "usp": "Fill and stack",
+    "fun": "Crab's shell hat",
+    "primary": [
+      {
+        "group": "Quantities",
+        "examples": [
+          "a little",
+          "half",
+          "full"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Sea and beach",
+        "examples": [
+          "bucket",
+          "sand",
+          "tower",
+          "shell"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "first",
+          "then"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "on top",
+          "next to"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "fill",
+          "build"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "fill",
+        "status": "actual"
+      },
+      {
+        "verb": "build",
+        "status": "planned"
+      },
+      {
+        "verb": "tip",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "How much",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Beach prototype (2 Nov); the tower's height shows the amount.",
+    "core_mechanic": "Cook: pour to order",
+    "kind": "variant"
+  },
+  {
+    "name": "The beach stalls",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/beach.md",
+    "status": "built",
+    "usp": "Zoom-in food stalls",
+    "fun": "Coconut thwack",
+    "primary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "corn",
+          "chips",
+          "coconut",
+          "lemon",
+          "chilli"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Money and shopping",
+        "examples": [
+          "how much?",
+          "coin",
+          "change"
+        ],
+        "status": "suggested",
+        "moved_from": "secondary",
+        "word_status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Linking and helping words",
+        "examples": [
+          "with",
+          "without"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "how many"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "hello",
+          "please",
+          "thank you"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Jobs and helpers",
+        "examples": [
+          "shopkeeper"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "want",
+        "status": "planned"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "\"To me\" verbs",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "primary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Beach prototype (2 Nov); Cook reskins (corn, cassava chips, coconut).",
+    "core_mechanic": "Cook: build in order",
+    "kind": "scene",
+    "proposal": "Takes the corn stall. The child is the stall-keeper: 'with lemon, without chilli' dresses the corn, then 'how much?' and Pay."
+  },
+  {
+    "name": "The picnic",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/beach.md",
+    "status": "built",
+    "usp": "Whose cup where",
+    "fun": "Crab steals chip",
+    "primary": [
+      {
+        "group": "Pronouns and owners",
+        "examples": [
+          "for Ali",
+          "Nani's"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "in the middle",
+          "next to",
+          "on"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "cup",
+          "plate"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Food and drink",
+        "examples": [
+          "coconut",
+          "chips",
+          "corn"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "two"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Masi",
+          "Ali"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "put",
+        "status": "planned"
+      },
+      {
+        "verb": "give",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Beach prototype (2 Nov); every spot outlined, never just the right one.",
+    "core_mechanic": "Put it in its place",
+    "kind": "variant"
+  },
+  {
+    "name": "The kite",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/beach.md",
+    "status": "idea",
+    "usp": "Hold and release",
+    "fun": "Kite dips, soars",
+    "primary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "slowly",
+          "quickly"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Time and days",
+        "examples": [
+          "now",
+          "let go"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "wind"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Toys and play",
+        "examples": [
+          "kite"
+        ],
+        "status": "planned"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Greetings and politeness",
+        "examples": [
+          "careful"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "let go",
+        "status": "planned"
+      },
+      {
+        "verb": "hold",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Only if it earns its place as a game (Zafar, 19 Oct).",
+    "core_mechanic": "Do what Nani says",
+    "kind": "scene",
+    "merged_into": "The park",
+    "proposal": "The kite becomes one of the park's things (hold, let go), so it earns its place inside a game."
+  },
+  {
+    "name": "The ride on the water",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/boat.md",
+    "status": "built",
+    "usp": "Spot on water",
+    "fun": "Hat blows off",
+    "primary": [
+      {
+        "group": "Sea and beach",
+        "examples": [
+          "boat",
+          "ship",
+          "fish",
+          "buoy"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Transport and travel",
+        "examples": [
+          "boat",
+          "ship"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "quickly",
+          "slowly"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "bird"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "look",
+        "status": "actual"
+      },
+      {
+        "verb": "speed up",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "tertiary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Boat-day prototype (2 Nov) on the window ride.",
+    "core_mechanic": "The window ride",
+    "kind": "variant"
+  },
+  {
+    "name": "Litter fishing",
+    "family": "trips",
+    "mode_doc": "docs/game-design/days/boat.md",
+    "status": "built",
+    "usp": "Litter at sea",
+    "fun": "Shoe spits crab",
+    "primary": [
+      {
+        "group": "Household things",
+        "examples": [
+          "shoe",
+          "bottle",
+          "tin can",
+          "bag",
+          "kettle"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Sea and beach",
+        "examples": [
+          "fish",
+          "crab",
+          "turtle",
+          "seaweed"
+        ],
+        "status": "suggested",
+        "moved_from": "tertiary",
+        "word_status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "white"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Clothes",
+        "examples": [
+          "sock",
+          "sun hat"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Toys and play",
+        "examples": [
+          "ball"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "take out",
+        "status": "actual"
+      },
+      {
+        "verb": "catch",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Commands",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Boat-day prototype (2 Nov); weak as its own game (research), so one stage of the boat day.",
+    "core_mechanic": "Catch it as it passes",
+    "kind": "scene",
+    "proposal": "'Catch the tin, leave the crab': litter or sea creature decides. Stays one stage of the boat day."
+  },
+  {
+    "name": "Tidy up",
+    "family": "parked",
+    "mode_doc": "docs/game-design/modes/tidy-up.md",
+    "status": "parked",
+    "usp": "Arrange by rules",
+    "fun": "Shoe mountain",
+    "primary": [
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "top shelf",
+          "next to",
+          "in front of",
+          "on the left",
+          "in the middle"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Cooking and the kitchen",
+        "examples": [
+          "plate",
+          "cup",
+          "spoon",
+          "bowl",
+          "jug"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "spices",
+          "fruit",
+          "vegetables"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to six"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ma",
+          "Big Ma",
+          "Ali"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "blue",
+          "green"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Celebrations",
+        "examples": [
+          "the sweet box"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "put",
+        "status": "actual"
+      },
+      {
+        "verb": "leave",
+        "status": "actual"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Positions and place words",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Mine, yours, whose",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "The form before \"in\", \"with\", \"on\"",
+        "role": "tertiary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Linking",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Greybox; to fold into pick it up and the clean-up (Zafar, 31 Oct: yes, after the list of which go where).",
+    "core_mechanic": "Put it in its place",
+    "kind": "variant",
+    "merged_into": "Pick it up and put it back",
+    "proposal": "Zafar, 31 Oct: fold in. Its put-away rules become later levels."
+  },
+  {
+    "name": "Dress up",
+    "family": "parked",
+    "mode_doc": "docs/game-design/modes/dress-up.md",
+    "status": "parked",
+    "usp": "Style on request",
+    "fun": "Wrong-size fitting",
+    "primary": [
+      {
+        "group": "Clothes",
+        "examples": [
+          "kurta",
+          "dupatta",
+          "cap",
+          "socks",
+          "shawl"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "blue",
+          "yellow",
+          "pink",
+          "purple"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "it's cold",
+          "it's hot",
+          "it's raining",
+          "it's windy"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Positions and directions",
+        "examples": [
+          "left",
+          "right"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to five"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "needle",
+          "scissors",
+          "thread"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "put on",
+        "status": "planned"
+      },
+      {
+        "verb": "wear",
+        "status": "planned"
+      },
+      {
+        "verb": "sew",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "One and more than one",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Greybox; the sewing prototypes are its rebuild.",
+    "core_mechanic": "Sewing and dressing",
+    "kind": "variant",
+    "merged_into": "Sewing: the fitting",
+    "proposal": "The fitting is its rebuild."
+  },
+  {
+    "name": "Who did it?",
+    "family": "parked",
+    "mode_doc": "docs/game-design/modes/who-did-it.md",
+    "status": "parked",
+    "usp": "Deduce the culprit",
+    "fun": "The reveal",
+    "primary": [
+      {
+        "group": "Describing words",
+        "examples": [
+          "old",
+          "young",
+          "big",
+          "small",
+          "dark"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Question words",
+        "examples": [
+          "who?"
+        ],
+        "status": "planned"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Family and people",
+        "examples": [
+          "Nana",
+          "Ali"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "green"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "flour",
+          "chilli",
+          "yoghurt"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "glasses",
+          "cap"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "eat",
+        "status": "planned"
+      },
+      {
+        "verb": "take",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "What happened",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Questions",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "No, don't, without",
+        "role": "tertiary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Greybox; 'who did it?' (kere karein) is not confirmed: don't use (conversations §4).",
+    "core_mechanic": "Work out who",
+    "kind": "mode",
+    "merged_into": "Who ate the cake?",
+    "proposal": "The same game; the party version is the one planned."
+  },
+  {
+    "name": "Monsoon rush",
+    "family": "parked",
+    "mode_doc": "docs/game-design/modes/monsoon-rush.md",
+    "status": "parked",
+    "usp": "Beat the storm",
+    "fun": "Catching the leak",
+    "primary": [
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "it's raining",
+          "it's windy",
+          "thunder",
+          "the sun's out"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Household things",
+        "examples": [
+          "bucket",
+          "water pot",
+          "charpai",
+          "door",
+          "gate"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "daal",
+          "flour",
+          "chickpeas",
+          "milk"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "drips"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Pets and small animals",
+        "examples": [
+          "the cats inside"
+        ],
+        "status": "planned"
+      },
+      {
+        "group": "Time and days",
+        "examples": [
+          "now"
+        ],
+        "status": "planned"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "cover",
+        "status": "planned"
+      },
+      {
+        "verb": "catch",
+        "status": "planned"
+      },
+      {
+        "verb": "close",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "What will happen",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "Commands",
+        "role": "secondary",
+        "status": "actual"
+      },
+      {
+        "pattern": "Positions and place words",
+        "role": "secondary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "tertiary",
+        "status": "actual"
+      }
+    ],
+    "notes": "Greybox; the proposed monsoon day.",
+    "core_mechanic": "Catch it as it passes",
+    "kind": "variant"
+  },
+  {
+    "name": "Snap",
+    "family": "parked",
+    "mode_doc": "docs/game-design/modes/snap.md",
+    "status": "parked",
+    "usp": "Aim and capture",
+    "fun": "Show Nani prints",
+    "primary": [
+      {
+        "group": "Numbers and counting",
+        "examples": [
+          "one to ten (just so many)"
+        ],
+        "status": "actual"
+      },
+      {
+        "group": "Shapes and sizes",
+        "examples": [
+          "big",
+          "small"
+        ],
+        "status": "actual"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Food and drink",
+        "examples": [
+          "mango",
+          "banana",
+          "coconut",
+          "papaya"
+        ],
+        "status": "actual"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Technology",
+        "examples": [
+          "camera",
+          "photo"
+        ],
+        "status": "actual"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "take a photo",
+        "status": "planned"
+      },
+      {
+        "verb": "look",
+        "status": "planned"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "One and more than one",
+        "role": "primary",
+        "status": "actual"
+      },
+      {
+        "pattern": "He-words and she-words",
+        "role": "primary",
+        "status": "planned"
+      },
+      {
+        "pattern": "He, she, they, I",
+        "role": "primary",
+        "status": "planned"
+      }
+    ],
+    "notes": "Greybox (the still orchard); its engine returns at the farm, the party and the safari.",
+    "core_mechanic": "Snap",
+    "kind": "mode",
+    "merged_into": "The farm photo shoot",
+    "proposal": "The greybox is retired; the camera returns at the farm, the safari and the party."
+  },
+  {
+    "name": "The park",
+    "family": "trips",
+    "mode_doc": "",
+    "status": "idea",
+    "usp": "The game picks the kit",
+    "fun": "Six over the wall",
+    "primary": [
+      {
+        "group": "Sports and games",
+        "examples": [
+          "cricket",
+          "football",
+          "bat",
+          "ball",
+          "goal",
+          "race"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Actions (verbs)",
+        "examples": [
+          "kick",
+          "throw",
+          "catch",
+          "hit",
+          "run"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "secondary": [
+      {
+        "group": "Toys and play",
+        "examples": [
+          "kite",
+          "swing",
+          "slide"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Weather and nature",
+        "examples": [
+          "wind"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Describing words",
+        "examples": [
+          "fast",
+          "slow",
+          "high"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "tertiary": [
+      {
+        "group": "Places in town",
+        "examples": [
+          "park"
+        ],
+        "status": "suggested"
+      },
+      {
+        "group": "Family and people",
+        "examples": [
+          "cousin",
+          "friend"
+        ],
+        "status": "suggested"
+      }
+    ],
+    "verbs": [
+      {
+        "verb": "kick",
+        "status": "suggested"
+      },
+      {
+        "verb": "throw",
+        "status": "suggested"
+      },
+      {
+        "verb": "catch",
+        "status": "suggested"
+      },
+      {
+        "verb": "hit",
+        "status": "suggested"
+      },
+      {
+        "verb": "run",
+        "status": "suggested"
+      },
+      {
+        "verb": "hold",
+        "status": "suggested"
+      },
+      {
+        "verb": "let go",
+        "status": "suggested"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "Commands",
+        "role": "primary",
+        "status": "suggested"
+      },
+      {
+        "pattern": "Want to, have to, can, can't",
+        "role": "secondary",
+        "status": "suggested"
+      }
+    ],
+    "notes": "Suggested: a stage of the town day on the do-it engine, in the park already on the town map. It gives sports their one home, takes the kite, and brings back kick, throw and catch. Not a sports day (Zafar, 31 Oct): no scores, no losers.",
+    "core_mechanic": "Do what Nani says",
+    "kind": "variant",
+    "proposal": "'Let's play cricket': a football, a cricket ball and a bat lie on the grass, and the game word picks the kit. Then Nana calls 'throw', 'hit', 'catch'. When the wind comes: 'hold the kite... let go'."
+  }
+]

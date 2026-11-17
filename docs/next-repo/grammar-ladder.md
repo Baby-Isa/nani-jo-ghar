@@ -1,6 +1,6 @@
 # The grammar ladder: which patterns, in what order, in which game
 
-For Zafar, 16 Nov 2026. The grammar twin of the word plan: 15 patterns, in order, each with a game that makes it matter. Every Kutchi form is copied from `docs/language/grammar-notes.md` (section in brackets); nothing is invented. "Mum" in a cell means Mum has not said it yet. Sources are at the end, marked **read** or **summary**.
+For Zafar, 16 Nov 2026; second pass 17 Nov. The grammar twin of the word plan: 28 patterns, in order, each with a game that makes it matter. The first pass had 15; section 3 says what it missed and why. Every Kutchi form is copied from `docs/language/grammar-notes.md` (section in brackets); nothing is invented. "Mum" in a cell means Mum has not said it yet. Sources are at the end, marked **read** or **summary**.
 
 ## 1. How children learn grammar
 
@@ -18,76 +18,129 @@ For Zafar, 16 Nov 2026. The grammar twin of the word plan: 15 patterns, in order
 - **A ladder per pattern:** heard in passing, then it decides between two, then between three with a near miss, then the child says it (You be Nani).
 - **No rule-teaching for under-9s.** The grown-up's "?" pop-up may name the pattern.
 
-## 2. The ladder
 
-Bands follow Cambridge's children's lists and the 31 Oct forms ladder. **Bold** mode = primary home; "new" = a setting from the 31 Oct games map.
+## 2. The ladder (revised, 28 rows)
 
-| # | Pattern | Example (English / Kutchi) | Band | How a game makes it decide | Modes |
-|---|---|---|---|---|---|
-| 1 | **Commands**: to a child, then an elder | Put it in! / *wij*; Come! / *ach* (child), *acho* (elder) (§18, §21) | Pre-A1 | One thing, several possible actions: the verb picks. Later, *ach* or *acho* says whether Ali or Nana is called | **Cook**, **the clinic**, Clean-up day (new), Musical statues (new) |
-| 2 | **"To me" verbs**: want, need, like | I want chai / *Muke chai khape*; she wants / *Inke chai khapeti*; need / *Muke chai ji jaruri* (§1, §58). Like: Mum | Pre-A1 (me), A1 (the rest) | *muke / toke / inke / panke / iloka ke* is the only clue to who gets the cup | **Cook**, **Conversations**, the party (new), the shops |
-| 3 | **No, don't, without** | Don't touch / *ad na*; not this, that / *hi na, hu*; chai without milk / *dudh wagar ji chai* (§10 to §13) | Pre-A1 | Two orders alike but for *na* or *wagar ji* | **Cook**, **the clinic**, Conversations |
-| 4 | **One and more than one** | one mango, two mangoes / *hakro ambo, ba amba*; one chair / *hakri kursi* (§2, §4) | Pre-A1 | Count to the heard number; then, with no number, *ambo* or *amba* says one or the pile | **Count to a number**, **Cook**, the farm |
-| 5 | **Positions and place words**: in, on, under, with, for | on the table / *table je mathe*; in the big cup / *wadhe cup me*; with the boy / *chokre sathe*; for / *lai* (§15, §36, §41). From, to a person, near: Mum | Pre-A1 (in, on), A1 | Same thing, same furniture, every spot outlined: only the place word differs | **Put it in its place**, **Find it**, Tidy up, Hide and seek (new) |
-| 6 | **Questions**: question words; yes/no by a rising voice | what, who, where, how many, which / *kuro, ker, kida, kitla, kyo*; Do you want chai? / *Toke chai khapeti?* (§23, §58). When, why, whose: Mum | Pre-A1 (what, where), A1 | One scene, three questions: the question word decides whether to tap a person, a place or a number. Then the child asks | **Conversations**, **Find it**, Who did it?, the shops |
-| 7 | **He-words and she-words**: describing words agree | the big boy / *wadho chokro*; two big maani / *ba wadhi maani*; they are big / *chokra wadha ain* (§40) | A1 | "Take the big" (*wadho khan*, §43) with a big he-thing and a big she-thing: the ending picks. She-form: Mum | **Snap** ("the X one"), **Cook**, the shops, Dress up |
-| 8 | **Mine, yours, whose** | Nana's cup / *Nana jo cup*; Nana's maani / *Nana ji maani*; my chair / *munji kursi* (§47, §54) | A1 | Same things, different owners: the owner word decides who gets it | **Tidy up**, **Pack the bag**, the party, the clinic |
-| 9 | **He, she, they, I**: the verb ending says who | he eats / *E roj maani khaito*; she / *E … khaiti*; they / *Iloka … kenta*; I (boy / girl) / *Aau … kianto / kianti* (§62) | A1 | *e* is both he and she, so only the ending says boy or girl: Snap the right one | **Snap**, **Story by the Fire**, Conversations, the safari (new) |
-| 10 | **Want to, have to, can, can't** | I want to go / *Muke winnu aaye*; have to / *Muke winnu khapdo*; she can go / *E winni saketi*; I can't (girl) / *Aau nati winni saka* (§60, §61) | A1 | Can or can't decides who needs help; want to decides where to take them | **Conversations**, **the clinic**, the town map (new) |
-| 11 | **Linking**: and, first … then, but | daar and maani / *daar ne maani*; first daar, then maani / *Muke pela daar khape, ne poi maani* (§7). But, because: Mum | Pre-A1 (and), A1 (then), A2 (but) | Steps shown out of order: only *pela … ne poi* gives the order | **Cook**, **Story by the Fire**, Pack the bag |
-| 12 | **How much** | a little / *thorok*; more / *wadhare*; enough / *bas*; a whole cup / *aako cup* (§24, §25). A lot, all gone: Mum | A1 | Pour until Nani's word, not a line on the cup, says stop | **Cook** (pour; baking, new), the clinic, the beach |
-| 13 | **The form before "in", "with", "on"** (the oblique) | boy, with the boy / *chokro, chokre sathe*; in the kitchen / *rasore me* (§36) | A1, heard only | Never decides a move; it has no meaning of its own. The engine says it right and the child absorbs it through rows 5 and 8 | rides on **Put it in its place**, Tidy up |
-| 14 | **What happened** (past) | Nana gave me the mango / *Nana muke ambo dino*; she gave / *E … dini*; I saw you (boy / girl) / *Aau toke naryos / naris*; who ate the sweets? / *Ker mitai khai vyo?* (§20, §56, §57) | A2 | No "yesterday" in the line: done or not is in the verb alone; *dino* or *dini* says which suspect | **Who did it?**, **Story by the Fire**, the evening book |
-| 15 | **What will happen** (future) | he will come / *e achdo*; I'll do it (girl / boy) / *kar dis / kar dos* (§21, §32). You, we, they will: Mum | A2 | Lay a place only for those still to come ("has come" against "will come") | **Story by the Fire**, **the door**, Pack the bag, Monsoon rush |
+Bands follow Cambridge's children's lists, the British Council's Core Inventory and the 31 Oct forms ladder. **Bold** mode = primary home; "new" = a setting from the 31 Oct games map.
 
-**The feature the grammar KB flags: the past with an object.** In Hindi, Gujarati and Sindhi the verb switches to agree with the thing ("the mango was-eaten by me"), and one paper reports it for another Kutchi dialect. Mum's answers so far say the family's Kutchi does **not**: "gave" and "saw" follow the doer, and for "I" the speaker (§56, §57). But "he saw", "Nana saw me" and the plain "ate, made, found, cut" are unasked (KB areas 15 and 16, scored 40 and 50). Until Mum settles them, row 14 uses only gave, saw, came and *khai vyo*.
+**From:** **F** = the family's notes, in the first ladder. **F+** = in the family's notes, but left out first time. **P** = outside lists; the family's notes have only part of it. **O** = outside lists; Mum has not been asked.
 
-## 3. Coverage by the current modes
+| # | Pattern | Example (English / Kutchi) | Band | How a game makes it decide | Modes | From |
+|---|---|---|---|---|---|---|
+| 1 | **Commands** to a child | Put it in! / *wij*; Come! / *ach* (§18) | Pre-A1 | One thing, several possible actions: the verb picks | **Cook**, **the clinic**, Clean-up day (new) | F |
+| 2 | **This, that, here, there** | this, that / *hi, hu*; here, there / *hida, huda* (§13, §17) | Pre-A1 | Two of the same thing, near and far: only *hi* or *hu* says which | **Find it**, **Cook**, the shops | F+ |
+| 3 | **"To me" verbs**: want, need, like | I want chai / *Muke chai khape*; she wants / *Inke chai khapeti*; need / *Muke chai ji jaruri* (§1, §58). Like: Mum | Pre-A1 (me), A1 | *muke / toke / inke / panke* is the only clue to who gets the cup | **Cook**, **Conversations**, the party (new) | F |
+| 4 | **No, don't, without** | Don't touch / *ad na*; chai without milk / *dudh wagar ji chai* (§10, §12) | Pre-A1 | Two orders alike but for *na* or *wagar ji* | **Cook**, **the clinic** | F |
+| 5 | **Is, am, are; was** | the cup is on the table / *cup table mathe ai*; the boys are big / *chokra wadha ain*; it was on the table / *table je mathe wo* (§15, §20, §42). "Was" for she-things; "my name is": Mum | Pre-A1 (is), A1, A2 (was) | "Is" or "was": look where it is, or where it used to be | **Find it**, **Conversations**, Who did it? | F+ |
+| 6 | **One and more than one** | one mango, two mangoes / *hakro ambo, ba amba*; one chair / *hakri kursi* (§2, §4). 5 to 10, second, third: Mum | Pre-A1 | Count to the heard number; then *ambo* or *amba* alone says one or the pile | **Count to a number**, **Cook**, the farm | F |
+| 7 | **Positions and place words** | on the table / *table je mathe*; in the big cup / *wadhe cup me*; with the boy / *chokre sathe*; for / *lai* (§8, §15, §36, §41). From, to a person, near: Mum | Pre-A1 (in, on), A1 | Same thing, same furniture, every spot outlined: only the place word differs | **Put it in its place**, **Find it**, Tidy up | F |
+| 8 | **Questions** | what, who, where, how many, which / *kuro, ker, kida, kitla, kyo*; Do you want chai? / *Toke chai khapeti?* (§23, §58). Nothing moves: yes/no is the voice rising. When, why, whose: Mum | Pre-A1, A1 | One scene, three questions: the question word decides whether to tap a person, a place or a number | **Conversations**, **Find it**, Who did it? | F |
+| 9 | **A child or an elder** (respect) | Come here / *hida ach* (child), *hida acho* (elder); How are you? / *Tu ki aiye?*, *Aai ki aayo?* (§21) | A1 | Nani's form says whether she means Ali or Nana; then the child picks the form | **Conversations**, **Cook** (customers), the party | F+ |
+| 10 | **He-words and she-words** | the big boy / *wadho chokro*; two big maani / *ba wadhi maani* (§40) | A1 | "Take the big" (*wadho khan*, §43) with a big he-thing and a big she-thing: the ending picks. She-form: Mum | **Snap** ("the X one"), **Cook**, the shops | F |
+| 11 | **Mine, yours, whose** | Nana's cup / *Nana jo cup*; Nana's maani / *Nana ji maani*; my chair / *munji kursi* (§47, §54) | A1 | Same things, different owners: the owner word decides who gets it | **Tidy up**, **Pack the bag**, the party | F |
+| 12 | **There is, there isn't, I have** | none left / *ki baki nai* (§14). "There is", "I have", "have you got?": Mum | A1 | The stall has it or hasn't: go to the one that has | **the shops**, **Cook** (pantry), Pack the bag | O |
+| 13 | **Feelings and states**; "I know" | I'm fine / *Aau theek ai* (§27). Hungry, cold, tired, "it hurts", "I don't know": Mum | A1 | The guest or patient says how they feel; the child picks what helps | **the clinic**, the party | O |
+| 14 | **He, she, they, I**: the ending says who | he eats / *E roj maani khaito*; she / *E … khaiti*; they / *Iloka … kenta*; I (boy / girl) / *Aau … kianto / kianti* (§62) | A1 | *e* is both he and she: only the ending says boy or girl | **Snap**, **Story by the Fire**, the safari (new) | F |
+| 15 | **Right now** against every day | it's boiling / *ukreto*; I see you / *Aau toke narato* (§25, §57). Does "is eating" differ from "eats every day"? Mum | A1 (Cambridge: Pre-A1) | Who is doing it now, against who does it every day. Only if the forms differ | **Snap** ("Who's doing it?"), Cook | O |
+| 16 | **Want to, have to, can, can't** | I want to go / *Muke winnu aaye*; have to / *Muke winnu khapdo*; she can go / *E winni saketi* (§60, §61) | A1 | Can or can't decides who needs help | **Conversations**, **the clinic**, the town map (new) | F |
+| 17 | **Let's, let me, shall I** | let me taste / *Muke chakhan lai de* (§27). "Let's go" (*winja*, unchecked), "shall I help?": Mum | A1 | Who acts: "do it" is the child, "let me" is Nani, "let's" is both | **Cook**, **Conversations** | P |
+| 18 | **Linking**: and, or, first … then | daar and maani / *daar ne maani*; or / *ke*; first daar, then maani / *Muke pela daar khape, ne poi maani* (§7, §9). But: Mum | Pre-A1 (and), A1 | Steps shown out of order: only *pela … ne poi* gives the order | **Cook**, **Story by the Fire**, Pack the bag | F |
+| 19 | **How much** | a little / *thorok*; more / *wadhare*; enough / *bas*; a whole cup / *aako cup* (§24, §25). A lot, all gone: Mum | A1 | Pour until Nani's word, not a line on the cup, says stop | **Cook**, the clinic, the beach | F |
+| 20 | **Also, only, very, again** | one for Ma too / *Ma lai pan hakro banai*; only mangoes / *kali amba* (§8, §25). Very, again: Mum | A1 | "Only the mangoes" against "the mangoes too": what else goes in | **Pack the bag**, **Cook**, the shops | P |
+| 21 | **When and how often** | every day / *roj*; now / *hever*; yesterday / *gaykal* (§25, §33, §62). Today, tomorrow, always, never, morning, o'clock: Mum | A1 | The time word alone moves a job to now or later | **the door**, Wake-up clock (new), the evening book | P |
+| 22 | **The form before "in", "with", "on"**; *ke* on a person | boy, with the boy / *chokro, chokre sathe*; I saw Hana / *… Hana ke naris* (§36, §57) | A1, heard only | Never decides a move: no meaning of its own. The engine says it right; the child absorbs it | rides on **Put it in its place**, Tidy up | F |
+| 23 | **Helper verbs** | can you help me? / *Tu muke help kar de?*; put it in / *wiji chad* (§33, §38) | A1, heard only | Heard, not tested. Nani uses them constantly, so the engine must | rides on **Cook**, the clinic | F+ |
+| 24 | **Bigger, biggest** | the biggest / *wadho ma wadho* (§43). "Bigger than": Mum | A2 (Cambridge: A1) | Three sizes: "the biggest" against "the big one" | **Snap**, the farm, the beach | P |
+| 25 | **What happened** (past) | Nana gave me the mango / *Nana muke ambo dino*; she gave / *E … dini*; who ate the sweets? / *Ker mitai khai vyo?* (§20, §56) | A2 | No "yesterday" in the line: done or not is in the verb alone; *dino* or *dini* says which suspect | **Who did it?**, **Story by the Fire**, the evening book | F |
+| 26 | **What will happen** (future) | he will come / *e achdo*; I'll do it (girl / boy) / *kar dis / kar dos* (§21, §32). You, we, they will: Mum | A2 | Lay a place only for those still to come | **Story by the Fire**, **the door**, Pack the bag | F |
+| 27 | **Because, so, if, when** | All Mum | A2 | "If it rains, take the umbrella": the "if" half decides what is packed | **Story by the Fire**, **Pack the bag**, the door | O |
+| 28 | **"The one that …"** | as many spoons as she wants, put that many / *Jitli chamchi inke khapeti itli wij* (§67). "The one with milk", "the girl who is eating": Mum | A2 | Three girls, one eating: the describing half picks her | **Snap**, **Find it**, Cook | O |
+
+**The feature the grammar KB flags: the past with an object.** In Hindi, Gujarati and Sindhi the verb switches to agree with the thing ("the mango was-eaten by me"). Mum's answers so far say the family's Kutchi does **not**: "gave" and "saw" follow the doer (§56, §57). But "he saw", "Nana saw me" and the plain "ate, made, found, cut" are unasked. Until Mum settles them, row 25 uses only gave, saw, came and *khai vyo*.
+
+## 3. What the first ladder missed
+
+**Zafar's question (17 Nov): is this all the grammar, or only the Kutchi we have already seen?** The honest answer: the first ladder was biased. Every one of its 15 rows was something Mum had already said. Because Kutchi is never invented, a pattern with no family example got no row; it was dropped, or tucked into a cell as "Mum". Checked against four outside lists, **13 patterns were missing**:
+
+- **4 that the family's notes already had (F+)** and I left out as "just words": this and that (2), is and was (5), child or elder (9), helper verbs (23). No Mum time needed.
+- **4 half-known (P):** let's and let me (17), also and only (20), time words (21), bigger and biggest (24).
+- **5 that Mum has never been asked (O):** there is and "I have" (12), feelings and "I know" (13), right now against every day (15), because and if (27), "the one that" (28). These are the real blind spots. A child needs all five for A2; rows 12, 13 and 15 are needed early (Pre-A1 or A1 in the outside lists).
+
+**What it was checked against**
+
+| List | What it is | Rows it added |
+|---|---|---|
+| Cambridge Starters, Movers, Flyers | children's English, Pre-A1 to A2 | 2, 5, 12, 15, 17, 20, 24, 27, 28 |
+| British Council / Eaquals Core Inventory, A1 and A2 | adults' English | 12, 13, 21, 24 |
+| AQA GCSE Urdu, Foundation and Higher | a sister language, age 14 to 16 | 9, 23, 27 |
+| Edexcel GCSE Gujarati, Foundation | a sister language | 9, 20, 21 |
+
+**Looked at and left out, on purpose**
+
+| Item | Why it has no row |
+|---|---|
+| "The" and "a" | Kutchi has none (KB area 4) |
+| Counting words between number and noun | Kutchi has none: *ba amba*. Measures ("a skewer of", "two times") sit in row 19 |
+| Word order in questions | Nothing moves; it is a note in row 8 |
+| Calling out (*E chokro!*, *beta*) | Set phrases in Conversations, not a pattern (§22, §36) |
+| Echo words (*chai bai*, unchecked) and doubling (*jaldi jaldi*) | Colour for Nani's lines; never decides a move (§43) |
+| "Myself", "my own" | GCSE level. One question for Mum: is there an "own" word? (*panje* was heard once, unchecked) |
+| "Feed", "show", "wake someone" | Hindi builds these from eat, see, wake. Treat each as its own word and ask Mum one by one |
+| "Is done by" (passive), "would", "had done", "if I were" | B1 and above; not a game target |
+| "Have you ever", "was walking when" | Flyers has them, but they are English shapes. Ask only if a story needs them |
+
+**The bias runs the other way too.** The outside lists are shaped by English, so they miss what is special to Kutchi and central to it: the "to me" verbs (3), respect (9), the speaker's own gender in "I" forms (14), two words for "we" (*pa*, *asa*, §52), and helper verbs (23). Those came from Mum, not from any list.
+
+**Is it definitely complete now?** No, and it cannot be: no children's grammar of Kutchi, Sindhi or Gujarati exists to check against. What is left is one risk: a pattern that is in neither Mum's answers nor the English-shaped lists. Mum's answers so far are replies to our questions, so they share our blind spots. The fix is cheap: record Mum (or Masi) talking to a child for 20 minutes, unscripted, and list every pattern heard that has no row here.
+
+## 4. Coverage by the current modes
 
 **Have a home today (built or wired):**
-- Rows 1, 2, 3, 4, 11, 12 in **Cook** and **the clinic**, but mostly heard, not deciding: Cook's order is won on the nouns.
-- Row 6 in **Conversations**, and "where" in **Find it**.
+- Rows 1, 3, 4, 6, 18, 19 in **Cook** and **the clinic**, but mostly heard, not deciding: Cook's order is won on the nouns.
+- Row 8 in **Conversations**, and "where" in **Find it**.
 
 **Have a home that is designed or parked:**
-- Row 5: Put it in its place, Tidy up, Hide and seek.
-- Row 8: Tidy up, Pack the bag, the party.
-- Row 14: Who did it?
+- Rows 2, 5, 7, 11: Find it, Put it in its place, Tidy up, Pack the bag.
+- Rows 12, 20, 27: Pack the bag and the shops, once Mum has the words.
+- Row 13: the clinic's "where does it hurt?"; row 21: the door; row 25: Who did it?
 
 **Gaps:**
-- **Row 7 (he-words and she-words).** No game makes the ending decide. Suggestion: a "the X one" level in Snap, the shops and the farm.
-- **Row 9 (he, she, they).** No home. Suggestion: "Who's doing it?" as a Snap level; it needs about 10 verbs' present tense from Mum.
-- **Row 10 (can, want to).** Nothing designed; the town map's "I want to go" is the natural home.
-- **Row 15 (future)** and "but / because": only the evening book; fine for A2.
-- **Talking to an elder** (in rows 1 and 2): no level makes the child choose the form.
+- **Rows 10, 24, 28 (the big one, the biggest, the one that …).** No game makes the describing word decide. Suggestion: one "the X one" level in Snap, the shops and the farm carries all three.
+- **Rows 14 and 15 (he, she, they; right now).** No home. Suggestion: "Who's doing it?" as a Snap level; it needs about 10 verbs' present tense from Mum.
+- **Row 9 (respect).** Cook's customers differ by age, but no level makes the child choose the form. Suggestion: a Conversations level at the door.
+- **Rows 16 and 17 (can, want to, let's).** Nothing designed; the town map's "I want to go" and Cook's "let me" are the natural homes.
 - **Speaking.** Every pattern stops at listening until "You be Nani" exists.
 
-## 4. Recommendations
+## 5. Recommendations
 
 **To decide before more game design (yes to all except …)**
 
-1. Each game names one primary and one secondary pattern from this ladder, as it names its word groups. *Recommended: yes.*
-2. Each pattern has four rungs (heard, decides between two, near miss, child says it), tracked like a word's ladder. *Recommended: yes.*
-3. Grammar is never explained to the child; one line for the grown-up in the "?" pop-up. *Recommended: yes.*
-4. Row 13 is heard only, never tested. *Recommended: yes.*
-5. The past stays at A2 (Cambridge has it at A1; ours waits on Mum's forms). *Recommended: yes for now.*
-6. Rows 7 and 9 are levels inside Snap and the trips, not new games. *Recommended: yes.*
+I recommend yes to all eight.
 
-**For Mum to confirm (for the one recording sheet)**
+1. Each game names one primary and one secondary pattern from this ladder, as it names its word groups.
+2. Each pattern has four rungs (heard, decides between two, near miss, child says it), tracked like a word's ladder.
+3. Grammar is never explained to the child; one line for the grown-up in the "?" pop-up.
+4. Rows 22 and 23 are heard only, never tested.
+5. The past stays at A2 for now (Cambridge has it at A1; ours waits on Mum's forms).
+6. Rows 10, 14, 15, 24 and 28 are levels inside Snap and the trips, not new games.
+7. No game is designed on an **O** row until Mum has answered it.
+8. One unscripted recording of Mum or Masi with a child, before the ladder is called final.
 
-1. The present tense ("every day") of the top 10 verbs for he, she, they and I; today only eat, see and can are known.
-2. "He saw", "Nana saw me", and "I ate / made / found / cut" without the *vyo* helper: does the ending follow the doer or the thing?
-3. "I went" (boy, girl), "they went"; "you will", "we will", "they will".
-4. "Take the big one" for a she-thing; "good" for more than one.
-5. The words marked "Mum" in the table, and "like" for a he-thing.
-6. The elder form of the command verbs (32 of 35 are missing).
+**For Mum to confirm (for the one recording sheet), the blind spots first**
+
+1. The five **O** rows: "there is", "I have" (12); hungry, cold, "it hurts", "I know" (13); "she is eating" now against every day (15); because, so, if, when (27); "the one with milk" (28).
+2. The "every day" form of the top 10 verbs for he, she, they and I (row 14).
+3. The gaps in the **P** rows: "let's eat", "very", "again", today, always, never, "bigger than" (17, 20, 21, 24).
+4. The past and future: "he saw", "Nana saw me", "I ate / made / found" without the *vyo* helper; "I went"; "you, we, they will" (25, 26).
+5. The other words marked "Mum"; the elder form of the command verbs (32 of 35 are missing).
 
 **Next steps**
 
-1. Zafar answers the six decisions above.
+1. Zafar answers the eight decisions above.
 2. Add a "pattern" column to the games map, so the gaps show beside the word groups.
-3. Put the Mum list on the recording sheet, present tense first.
-4. Prototype one deciding level on a built game: Cook's order where only *na* or *muke / inke* differs (rows 2 and 3). It needs no new recordings.
-5. Then design "the X one" and "Who's doing it?" as Snap levels (rows 7 and 9).
+3. Put the Mum list on the recording sheet in the order above, and book the unscripted recording.
+4. Prototype one deciding level on a built game: Cook's order where only *na* or *muke / inke* differs (rows 3 and 4). It needs no new recordings.
+5. Then design "the X one" and "Who's doing it?" as Snap levels.
 
 ## Sources
 
@@ -101,5 +154,8 @@ Bands follow Cambridge's children's lists and the 31 Oct forms ladder. **Bold** 
 - Montrul, Bhatt and Bhatia 2012, Hindi heritage speakers lose case and agreement: https://www.jbe-platform.com/content/journals/10.1075/lab.2.2.02mon; Montrul et al. 2019: https://www.frontiersin.org/articles/10.3389/fpsyg.2019.00461/pdf (summary).
 - Narasimhan, Hindi children and the past-with-object marking: https://www.benjamins.com/catalog/tilar.9.08nar; Maitreyee et al. 2023: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10466009/ (summary).
 - Council of Europe: CEFR Companion Volume (2020), https://rm.coe.int/16809ea0d4, and the young-learner descriptors for ages 7 to 10, https://rm.coe.int/16808b1688 (**not read:** blocked here; they give "can do" lines, not grammar lists, so the bands rest on Cambridge).
-- AQA GCSE Urdu grammar list: https://www.aqa.org.uk/subjects/urdu/gcse/urdu-8648/specification/subject-content/grammar (read for the 31 Oct report). No Kutchi, Gujarati or Sindhi children's grammar list was found.
+- British Council / Eaquals *Core Inventory for General English*, A1 and A2 grammar (2018 posters): https://www.eaquals.org/wp-content/uploads/Core-Inventory-Posters-2018-update.pdf (read).
+- AQA GCSE Urdu grammar list, Foundation and Higher: https://www.aqa.org.uk/subjects/urdu/gcse/urdu-8648/specification/subject-content/grammar (read).
+- Pearson Edexcel GCSE Gujarati specification, Appendix 2, grammar list: https://qualifications.pearson.com/content/dam/pdf/GCSE/Gujarati/2018/specification-and-sample-assessment-material/specification-gcse2017-l12-gujarati-iss4.pdf (read).
+- No children's grammar list for Kutchi, Sindhi or Gujarati, and no heritage-school syllabus for Hindi or Urdu with a grammar list, was found; university Hindi-Urdu courses publish course descriptions only.
 - In the repo: `docs/language/grammar-kb.md`, `grammar-notes.md`, and the 31 Oct reports in `build/reports/` (verbs and grammar, language targets, games map).
