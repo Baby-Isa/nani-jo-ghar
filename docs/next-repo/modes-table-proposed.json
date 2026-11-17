@@ -1698,14 +1698,6 @@
     "fun": "Kicks, winces, boing",
     "primary": [
       {
-        "group": "Colours",
-        "examples": [
-          "red",
-          "blue plasters"
-        ],
-        "status": "actual"
-      },
-      {
         "group": "Body",
         "examples": [
           "arm",
@@ -1766,6 +1758,16 @@
         "examples": [
           "dab N times",
           "two to five beads"
+        ],
+        "status": "suggested",
+        "moved_from": "primary",
+        "word_status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "blue plasters"
         ],
         "status": "suggested",
         "moved_from": "primary",
@@ -4811,6 +4813,15 @@
           "Zara's"
         ],
         "status": "actual"
+      },
+      {
+        "group": "Colours",
+        "examples": [
+          "red",
+          "blue",
+          "yellow (balloons)"
+        ],
+        "status": "suggested"
       }
     ],
     "tertiary": [
@@ -4851,7 +4862,8 @@
     ],
     "notes": "Party lab prototype (2 Nov); from L2 the two sisters swap seats, so mum or aunt decides.",
     "core_mechanic": "Who gets it?",
-    "kind": "variant"
+    "kind": "variant",
+    "proposal": "L3: two balloons in the air. 'The red one to Masi, the blue one to Mum': colour and family word decide together."
   },
   {
     "name": "How are you?",
@@ -5444,7 +5456,7 @@
     ],
     "notes": "Second party visit, on Who did it?'s engine; the clue must be heard, not seen.",
     "core_mechanic": "Work out who",
-    "kind": "variant"
+    "kind": "mode"
   },
   {
     "name": "Pack the school bag",
@@ -6713,7 +6725,7 @@
     ],
     "notes": "Farm prototype (data/farm/photo.json); its photos feed the evening book.",
     "core_mechanic": "Snap",
-    "kind": "variant",
+    "kind": "mode",
     "proposal": "Its own USP made true: three goats, one eating, one running, one asleep. Only the doing word picks the shot."
   },
   {
