@@ -1,0 +1,6742 @@
+{
+ "_about": "Cook with Nani proof of concept (24 Sept 2026). Every Kutchi string here is a DRAFT. Words marked source 'zafar-24sep' were confirmed by Zafar as right for now (khun, not khand). Sentences only recombine frames already in the content master (Muke {x} khape / Ne {x} / Salamun alaykum / Wa alaikum salaam / Aabhar aanjo / Achija / Arre re / Hedo / Ghan). Cooking verbs have NO Kutchi yet: they are shown as gestures, and listed in docs/archive/language/cook-with-nani-words.md for the family. Phase A (24 Sept 2026): words with kutchi null are ENGLISH PLACEHOLDERS shown in grey italic until the family supplies the Kutchi (see docs/archive/mum-questions/Questions for Mum (Round 2 — Cooking).md). 25 Sept 2026: seven more words (ph-no, ph-slowly, ph-quickly, ph-half, ph-full, ph-big, ph-small) came from Zafar written phonetically over chat, temporary and unconfirmed (Mum to confirm). Each has `kutchi` (a readable romanised spelling, shown on screen) and `say` (Zafar's own phonetic spelling, used for the voice only, never shown). 26 Sept 2026: Mum's A8 and Section B answers (docs/language/grammar-notes.md §23-§28) replaced most English placeholders and Zafar's phonetic drafts; every change is listed in docs/archive/language/cook-word-changes-B.md.",
+ "_words": "The item catalogue (step 4d): each thing's picture (image; card: one of the thing for its order card, SH-242), drawn heap, bowl, piece and layer, and joinless, by Cook's id. Its words (Kutchi, English, gender, forms, voice spelling) are the language engine's (data/lang/; their old home is data/lang/seed/cook.json); Cook's ids are the engine's aliases.",
+ "words": {
+  "cook-paani": {
+   "size": "L",
+   "image": "water-jug"
+  },
+  "cook-chai": {
+   "size": "M",
+   "image": "tea-tin",
+   "heap": {
+    "kind": "grains",
+    "color": "#3b2415"
+   },
+   "bowl": "steel"
+  },
+  "cook-dudh": {
+   "size": "L",
+   "image": "milk-jug"
+  },
+  "cook-khun": {
+   "size": "M",
+   "heap": {
+    "kind": "crystals",
+    "color": "#f4efe4"
+   },
+   "bowl": "ceramic"
+  },
+  "cook-atto": {
+   "size": "L",
+   "image": "atto",
+   "heap": {
+    "kind": "powder",
+    "color": "#efe3c8"
+   },
+   "bowl": "steel"
+  },
+  "cook-daal": {
+   "size": "L",
+   "image": "daal-dry",
+   "heap": {
+    "kind": "balls",
+    "color": "#f0b429"
+   },
+   "bowl": "clay"
+  },
+  "cook-maani": {
+   "image": "chapati-puffed"
+  },
+  "cook-bajrmaani": {},
+  "veg-01": {
+   "card": "assets/cook/items/veg-bataato-whole-t.webp",
+   "size": "M",
+   "heap": {
+    "kind": "cubes",
+    "color": "#ecd18a"
+   },
+   "piece": {
+    "kind": "balls",
+    "color": "#c9a064"
+   },
+   "layer": {
+    "kind": "cubes",
+    "color": "#ecd18a"
+   },
+   "bowl": "steel"
+  },
+  "veg-02": {
+   "card": "assets/cook/items/veg-dungri-whole-t.webp",
+   "size": "M",
+   "image": "onion",
+   "heap": {
+    "kind": "pieces",
+    "color": "#efd3e0"
+   },
+   "piece": {
+    "kind": "pieces",
+    "color": "#efd3e0"
+   },
+   "layer": {
+    "kind": "pieces",
+    "color": "#e9c6d8"
+   },
+   "bowl": "ceramic"
+  },
+  "veg-03": {
+   "card": "assets/cook/items/veg-tameto-whole-t.webp",
+   "size": "M",
+   "image": "tomato",
+   "heap": {
+    "kind": "cubes",
+    "color": "#e0453a"
+   },
+   "piece": {
+    "kind": "pieces",
+    "color": "#e0453a"
+   },
+   "layer": {
+    "kind": "cubes",
+    "color": "#e0453a"
+   },
+   "bowl": "ceramic"
+  },
+  "veg-12": {
+   "card": "assets/cook/items/veg-marcha-whole-t.webp",
+   "size": "S",
+   "sizeFlag": "LONG",
+   "image": "chilli",
+   "heap": {
+    "kind": "pieces",
+    "color": "#4c9a35"
+   },
+   "layer": {
+    "kind": "leaves",
+    "color": "#3f8a2c"
+   },
+   "bowl": "ceramic"
+  },
+  "veg-13": {
+   "card": "assets/cook/items/veg-lasan-whole-t.webp",
+   "size": "S",
+   "image": "garlic",
+   "heap": {
+    "kind": "pieces",
+    "color": "#f1ead2"
+   },
+   "bowl": "ceramic"
+  },
+  "veg-10": {
+   "size": "S",
+   "heap": {
+    "kind": "balls",
+    "color": "#7cb342"
+   },
+   "bowl": "steel"
+  },
+  "veg-14": {
+   "card": "assets/cook/items/veg-aadu-whole-t.webp",
+   "size": "S",
+   "heap": {
+    "kind": "pieces",
+    "color": "#d9b26f"
+   },
+   "bowl": "ceramic"
+  },
+  "fru-02": {
+   "card": "assets/cook/items/veg-limu-whole-t.webp",
+   "size": "S",
+   "heap": {
+    "kind": "pieces",
+    "color": "#f3d54a"
+   },
+   "bowl": "ceramic"
+  },
+  "spi-01": {
+   "size": "S",
+   "heap": {
+    "kind": "powder",
+    "color": "#e9a313"
+   },
+   "bowl": "ceramic"
+  },
+  "spi-02": {
+   "size": "S",
+   "heap": {
+    "kind": "grains",
+    "color": "#7a5530"
+   },
+   "bowl": "ceramic"
+  },
+  "spi-05": {
+   "size": "S",
+   "heap": {
+    "kind": "dots",
+    "color": "#2a1d18"
+   },
+   "bowl": "ceramic"
+  },
+  "spi-10": {
+   "size": "S",
+   "image": "elchi",
+   "heap": {
+    "kind": "pods",
+    "color": "#9bbf6a"
+   },
+   "bowl": "ceramic"
+  },
+  "spi-16": {
+   "size": "S",
+   "heap": {
+    "kind": "crystals",
+    "color": "#ffffff",
+    "sparkle": true
+   },
+   "bowl": "ceramic"
+  },
+  "spi-04": {
+   "size": "S",
+   "heap": {
+    "kind": "powder",
+    "color": "#c7361f"
+   },
+   "bowl": "ceramic"
+  },
+  "num-01": {},
+  "num-02": {},
+  "num-03": {},
+  "num-04": {},
+  "num-05": {},
+  "ph-chana": {
+   "size": "M",
+   "heap": {
+    "kind": "balls",
+    "color": "#d9b77a"
+   },
+   "layer": {
+    "kind": "balls",
+    "color": "#d9b77a"
+   },
+   "bowl": "steel"
+  },
+  "ph-dahi": {
+   "size": "M",
+   "heap": {
+    "kind": "liquid",
+    "color": "#f8f5ee"
+   },
+   "layer": {
+    "kind": "liquid",
+    "color": "#fbf8f1"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-amli": {
+   "size": "M",
+   "heap": {
+    "kind": "liquid",
+    "color": "#6b3a1e",
+    "swirl": true
+   },
+   "layer": {
+    "kind": "liquid",
+    "color": "#6b3a1e",
+    "drizzle": true
+   },
+   "bowl": "ceramic"
+  },
+  "ph-lili": {
+   "size": "M",
+   "heap": {
+    "kind": "liquid",
+    "color": "#5d9b3a",
+    "swirl": true
+   },
+   "layer": {
+    "kind": "liquid",
+    "color": "#4f8f30",
+    "drizzle": true
+   },
+   "bowl": "ceramic"
+  },
+  "ph-sev": {
+   "size": "M",
+   "heap": {
+    "kind": "strands",
+    "color": "#e8b23a"
+   },
+   "layer": {
+    "kind": "strands",
+    "color": "#e8b23a"
+   },
+   "bowl": "brass"
+  },
+  "ph-dhana": {
+   "size": "M",
+   "heap": {
+    "kind": "leaves",
+    "color": "#4f8f3a"
+   },
+   "layer": {
+    "kind": "leaves",
+    "color": "#4f8f3a"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-keema": {
+   "size": "M",
+   "heap": {
+    "kind": "pieces",
+    "color": "#8a5238"
+   },
+   "bowl": "steel"
+  },
+  "ph-meat": {
+   "size": "M",
+   "heap": {
+    "kind": "cubes",
+    "color": "#9c4a32"
+   },
+   "piece": {
+    "kind": "cubes",
+    "color": "#9c4a32"
+   },
+   "bowl": "steel"
+  },
+  "ph-pepper": {
+   "size": "M",
+   "heap": {
+    "kind": "pieces",
+    "color": "#4f9a3a"
+   },
+   "piece": {
+    "kind": "pieces",
+    "color": "#4f9a3a"
+   },
+   "bowl": "ceramic"
+  },
+  "ph-chips": {
+   "heap": {
+    "kind": "sticks",
+    "color": "#f0c050"
+   },
+   "bowl": "steel"
+  },
+  "ph-ghee": {
+   "size": "M",
+   "heap": {
+    "kind": "liquid",
+    "color": "#f2d27a"
+   },
+   "bowl": "brass"
+  },
+  "ph-chaat": {
+   "card": "assets/art/served/chaat.default.r1.webp",
+   "_card": "s20-b2-chaat (decision 38, the orchestrator's call 2, as sekelo's dish card; contract-104, -128, SH-273): the dish card shows the served chaat bowl"
+  },
+  "ph-samosa": {
+   "card": "assets/cook/items/samosa-fried-golden-t.webp"
+  },
+  "ph-sekelo": {},
+  "ph-mishkaki": {},
+  "ph-lakri": {
+   "size": "M",
+   "sizeFlag": "LONG"
+  },
+  "lnk-nepoi": {},
+  "ph-no": {},
+  "ph-slowly": {},
+  "ph-quickly": {},
+  "ph-kari": {},
+  "ph-mori": {},
+  "ph-half": {
+   "joinless": true
+  },
+  "ph-full": {
+   "joinless": true
+  },
+  "ph-big": {},
+  "ph-small": {},
+  "lnk-pela": {},
+  "cook-waari": {},
+  "kin-nana": {},
+  "kin-ma": {},
+  "name-ali": {},
+  "ph-pantry": {}
+ },
+ "meanings": {
+  "_about": "Step 4d (decision 42): which language-engine meaning each of Cook's frame keys asks for (data/lang/abstract.json; the same map as build/lang/hand/cook-map.mjs FRAMES). \"$x\" is the thing the game fills in. The engine builds the words, their agreement and the clip plan (js/cook/words.js); a frame the engine has no rule for comes back as its gap (grey-italic English, flagged to record). Fixed lines need no row here: the engine knows them by the alias cook.line.<key>. Cook's lines, grammar and words moved to the engine's own source, data/lang/seed/cook.json (build/lang/import_cook.mjs reads them there). A fixed line said as a call (Salamun alaykum!, Shabash!) names its Exclaim / Ask here, as Cook says it; the engine knows the words by the alias.",
+  "_register": "Decision 27 (Zafar, 14 Nov): a customer's order says the formal, agreeing ending, for now, not the contraction khape: khapeti (a she-thing, one), khapanti (she, more than one), khapeto (he, one), khapanta (he, more than one), by the lexicon's gender and the count (grammar-notes §1, §31, §58; his 12 Nov sitting: 'so they learn properly'). The order frames (need, need_waari) name the engine's polite register, whose want agrees with the thing asked for; js/cook/words.js passes it to the engine as its context. A form with no family clip is the engine's audio gap (device voice in testing; docs/language/recording-sheet.md). The polite no (na, muke na khape; khun nati khape) is Mum's as she said it: the agreement is on nato / nati, khape stays (grammar-notes §11, §24 B1).",
+  "need": {
+   "fn": "Need",
+   "who": "p1",
+   "thing": "$x",
+   "register": "polite"
+  },
+  "and": {
+   "fn": "And",
+   "x": "$x"
+  },
+  "give": {
+   "fn": "GiveMe",
+   "x": "$x"
+  },
+  "no": {
+   "fn": "NoItem",
+   "x": "$x"
+  },
+  "only": {
+   "fn": "Only",
+   "x": "$x"
+  },
+  "then": {
+   "fn": "Then",
+   "x": "$x"
+  },
+  "first": {
+   "fn": "First",
+   "x": "$x"
+  },
+  "now": {
+   "fn": "Now",
+   "x": "$x"
+  },
+  "stir-now": {
+   "fn": "Now",
+   "x": "$x"
+  },
+  "for": {
+   "fn": "For",
+   "x": "$x"
+  },
+  "forwho": {
+   "fn": "ForWho",
+   "x": "$x"
+  },
+  "waari": {
+   "fn": "MixedIn",
+   "head": "cook-chai",
+   "x": "$x"
+  },
+  "need_waari": {
+   "fn": "Need",
+   "who": "p1",
+   "thing": {
+    "fn": "MixedIn",
+    "head": "cook-chai",
+    "x": "$x"
+   },
+   "register": "polite"
+  },
+  "sugar": {
+   "fn": "WantIn",
+   "container": "cook-chai",
+   "thing": "$x"
+  },
+  "lift": {
+   "fn": "Lift",
+   "x": "$x"
+  },
+  "leave": {
+   "fn": "Leave",
+   "x": "$x"
+  },
+  "canyou": {
+   "fn": "CanYouMake",
+   "who": "p2",
+   "thing": "$x"
+  },
+  "howareyou": {
+   "fn": "HowAreYou",
+   "who": "p2"
+  },
+  "fine": {
+   "fn": "ImFine"
+  },
+  "with": {
+   "fn": "WithFood",
+   "x": "$x"
+  },
+  "and_join": {
+   "fn": "AndKind",
+   "x": "$x"
+  },
+  "times": {
+   "fn": "Times",
+   "n": "$x"
+  },
+  "guide-add": {
+   "fn": "DoIt",
+   "verb": "v.put-in"
+  },
+  "guide-knead": {
+   "fn": "Command",
+   "verb": "v.knead",
+   "obj": "cook-atto"
+  },
+  "guide-firai": {
+   "fn": "Command",
+   "verb": "v.turn"
+  },
+  "guide-fold": {
+   "fn": "Command",
+   "verb": "v.fold",
+   "obj": "ph-samosa"
+  },
+  "guide-fry": {
+   "fn": "Command",
+   "verb": "v.fry"
+  },
+  "guide-fill": {
+   "fn": "Command",
+   "verb": "v.fill"
+  },
+  "guide-fire": {
+   "fn": "Command",
+   "verb": "v.light",
+   "obj": "n.stove"
+  },
+  "headline-pantry": {
+   "fn": "BringMeTheseForX",
+   "x": "$x"
+  },
+  "headline-give": {
+   "fn": "GiveMe"
+  },
+  "daar-stir-ask": {
+   "fn": "StirTimes",
+   "n": "$x"
+  },
+  "thanks": {
+   "fn": "Exclaim",
+   "x": "phrase.thank-you-the-english-words-the-family-says-them"
+  },
+  "bye": {
+   "fn": "Exclaim",
+   "x": "phrase.goodbye-khuda-hafiz"
+  },
+  "greet": {
+   "fn": "Exclaim",
+   "x": "cook.line.greet"
+  },
+  "_name": "SH-69 (S05-G): the first time a customer is met, Nani greets them by name (shown in her bubble and heard), never again: name-<customer id>, the family's own name calls (Mum 28 Sept, Round 3 K14)",
+  "name-nana": {
+   "fn": "Exclaim",
+   "x": "phrase.nana"
+  },
+  "name-cousin": {
+   "fn": "Exclaim",
+   "x": "phrase.ali"
+  },
+  "name-ma": {
+   "fn": "Exclaim",
+   "x": "pn.ma"
+  },
+  "greet-reply": {
+   "fn": "Exclaim",
+   "x": "cook.line.greet-reply"
+  },
+  "oops": {
+   "fn": "Exclaim",
+   "x": "cook.line.oops"
+  },
+  "hey": {
+   "fn": "Exclaim",
+   "x": "cook.line.hey"
+  },
+  "enough": {
+   "fn": "Exclaim",
+   "x": "cook.line.enough"
+  },
+  "more": {
+   "fn": "Exclaim",
+   "x": "cook.line.more"
+  },
+  "yes": {
+   "fn": "Exclaim",
+   "x": "cook.line.yes"
+  },
+  "ofcourse": {
+   "fn": "Exclaim",
+   "x": "cook.line.ofcourse"
+  },
+  "wait": {
+   "fn": "Exclaim",
+   "x": "cook.line.wait"
+  },
+  "welldone": {
+   "fn": "Exclaim",
+   "x": "cook.line.welldone"
+  },
+  "burning": {
+   "fn": "Exclaim",
+   "x": "cook.line.burning"
+  },
+  "boiling": {
+   "fn": "Exclaim",
+   "x": "cook.line.boiling"
+  },
+  "careful": {
+   "fn": "Exclaim",
+   "x": "cook.line.careful"
+  },
+  "hurry": {
+   "fn": "Exclaim",
+   "x": "cook.line.hurry"
+  },
+  "eat": {
+   "fn": "Exclaim",
+   "x": "cook.line.eat"
+  },
+  "guide-slow": {
+   "fn": "Exclaim",
+   "x": "cook.line.guide-slow"
+  },
+  "_not-now": "CHAI-57 (Zafar, 1 Nov; decision 5a): a tap on the knob before the green: Nani's hever na (not now), Mum's own clip (hever-na, grammar-notes §25 B16), through the engine",
+  "not-now": {
+   "fn": "Exclaim",
+   "x": "phrase.not-now"
+  },
+  "guide-chop": {
+   "fn": "Exclaim",
+   "x": "cook.line.guide-chop"
+  }
+ },
+ "verdicts": {
+  "_about": "Words shown over the action after a timing or a pour (English UI). Mechanics name them by key.",
+  "perfect": "Perfect!",
+  "good": "Good!",
+  "bad": "Oops",
+  "too-little": "Too little",
+  "too-much": "Too much!",
+  "boiled-over": "Boiled over!",
+  "too-early": "Too early",
+  "too-small": "Too small",
+  "too-thin": "Too thin!",
+  "burnt": "Burnt!",
+  "it-puffed": "It puffed!",
+  "flat": "Flat",
+  "golden": "Golden!",
+  "too-pale": "Too pale",
+  "turned": "Turned!",
+  "charred": "Charred!"
+ },
+ "exchanges": [
+  {
+   "id": "salaam",
+   "ask": "greet",
+   "answer": "greet-reply",
+   "wrong": [
+    "bye",
+    "oops"
+   ]
+  },
+  {
+   "id": "howareyou",
+   "ask": "howareyou",
+   "answer": "fine",
+   "wrong": [
+    "yes",
+    "bye"
+   ]
+  },
+  {
+   "id": "canyou",
+   "ask": "canyou",
+   "answer": "ofcourse",
+   "wrong": [
+    "nope",
+    "greet"
+   ],
+   "withDish": true
+  }
+ ],
+ "customers": {
+  "nana": {
+   "name": "Nana",
+   "word": "kin-nana",
+   "tint": "#8a5a3c",
+   "tastes": {
+    "chai": {
+     "khun": 3,
+     "dudh": true,
+     "extra": "spi-10"
+    },
+    "chaat": {
+     "no": [
+      "veg-12"
+     ],
+     "top": "ph-sev"
+    },
+    "samosa": {
+     "filling": "ph-keema",
+     "no": []
+    },
+    "mishkaki": {
+     "pattern": [
+      "ph-meat",
+      "veg-02",
+      "ph-meat",
+      "veg-03"
+     ]
+    }
+   },
+   "likes": "Chai with three sugars and elchi. Chaat with no chilli. Keema samosa."
+  },
+  "ma": {
+   "name": "Ma",
+   "word": "kin-ma",
+   "tint": "#2f7d4f",
+   "tastes": {
+    "chai": {
+     "khun": 1,
+     "dudh": false,
+     "extra": "veg-14"
+    },
+    "chaat": {
+     "no": [
+      "veg-02"
+     ]
+    },
+    "samosa": {
+     "filling": "veg-01",
+     "no": [
+      "veg-12"
+     ]
+    },
+    "mishkaki": {
+     "pattern": [
+      "ph-meat",
+      "veg-02",
+      "veg-03",
+      "ph-meat"
+     ]
+    }
+   },
+   "likes": "Chai with no milk, one sugar and ginger. Chaat with no onion. Potato samosa, no chilli."
+  },
+  "cousin": {
+   "name": "Ali",
+   "word": "name-ali",
+   "tint": "#e0772e",
+   "tastes": {
+    "chai": {
+     "khun": 2,
+     "dudh": true
+    },
+    "chaat": {
+     "extra": "ph-sev"
+    },
+    "samosa": {
+     "filling": "ph-keema"
+    },
+    "mishkaki": {
+     "pattern": [
+      "ph-meat",
+      "veg-03",
+      "ph-meat",
+      "veg-02"
+     ]
+    }
+   },
+   "likes": "Loves maani and sev. Keema samosa. Lots of meat on his mishkaki."
+  }
+ },
+ "recipes": {
+  "eggs": {
+   "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov; build/reports/designs/prototype-notes-2026-11-01.md 'Eggs at breakfast', cook-baking-eggs.md stage E1): each person at the table says how they want their egg, boiled or fried, how many, and from L3 with salt or pepper (Zafar's two new words). js/cook/stations/eggs.js. Levels: 1 = one person, one egg; 2 = two people, 1-2 eggs each; 3 = three people, salt and pepper asked for; 4 = three people, 1-2 eggs, salt or pepper or 'no salt'. Lab only (lab.notInLaunch); free: false keeps it out of the customers' orders.",
+   "name": "n.egg",
+   "english": "Eggs",
+   "free": false,
+   "proto": true,
+   "countRule": true,
+   "price": 3,
+   "stations": ["eggs"],
+   "lists": {"family": ["nana", "ma", "cousin"]},
+   "slots": {
+    "plates": {
+     "type": "people",
+     "who": "$family",
+     "count": {"byLevel": [1, 2, 3, 3]},
+     "each": {
+      "fried": {"chance": 0.5},
+      "n": {"byLevel": [{"int": [1, 1]}, {"int": [1, 2]}, {"int": [1, 1]}, {"int": [1, 2]}]},
+      "salt": {"byLevel": [{"pick": [null]}, {"pick": [null]}, {"pick": ["yes", null]}, {"pick": ["yes", "no", null]}]},
+      "pepper": {"byLevel": [{"pick": [null]}, {"pick": [null]}, {"pick": ["yes", null]}, {"pick": ["yes", null]}]}
+     }
+    }
+   },
+   "say": [
+    {"frame": "order", "x": ["n.egg"]},
+    {
+     "forEach": "$plates",
+     "for": "$it.who",
+     "say": [
+      {"_ck64": "CK-64 (Zafar, 8 Nov: 'I want two fried eggs ... two item cards ... both say fried egg ... get rid of the need for it to say one'): each person's own headline says their count (the engine's need frame: 'Muke ba tarela inda khape'); then one card per egg, no number on it, never said on its own (unsaid, saidBy head: it lands with the headline, as chai's amount); the station ticks a card as each egg lands (UI.mission.tickItem)", "if": "it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "a.fried"}, "n.egg"], "personHead": true},
+      {"if": "!it.fried", "frame": "need", "x": [{"n": "$it.n", "of": "ph-boiledegg"}], "personHead": true},
+      {"if": "it.fried", "frame": "and", "x": ["a.fried", "n.egg"], "unsaid": true, "saidBy": "head"},
+      {"if": ["it.fried", "it.n>=2"], "frame": "and", "x": ["a.fried", "n.egg"], "unsaid": true, "saidBy": "head"},
+      {"if": "!it.fried", "frame": "and", "x": ["ph-boiledegg"], "unsaid": true, "saidBy": "head"},
+      {"if": ["!it.fried", "it.n>=2"], "frame": "and", "x": ["ph-boiledegg"], "unsaid": true, "saidBy": "head"},
+      {"if": "it.salt=yes", "frame": "and", "x": ["spi-16"]},
+      {"if": "it.pepper=yes", "frame": "and", "x": ["spi-11"]},
+      {"if": "it.salt=no", "frame": "no", "x": ["spi-16"]}
+     ]
+    }
+   ],
+   "need": [],
+   "steps": ["Eggs", "Cook", "Plates", "Serve"],
+   "run": [{"do": "eggs", "plates": "$plates"}],
+   "how": "Each person says how they want their egg. Boil it in the pot or fry it in the pan, put it on their plate, then carry the tray to the table."
+  },
+  "corn": {
+   "_about": "proto-kitchen (Zafar's rapid prototype, 1 Nov; prototype-notes-2026-11-01.md 'The corn stall'): the farm's corn stall, a sekelo redress on one screen (js/cook/stations/corn.js). Someone asks for corn on the cob (makai) and what goes on it: lemon, salt, chilli powder, the chutneys, pepper; each is named as it goes on. Levels: 1 = one cob, one thing on it; 2 = one cob, two; 3 = two cobs, two; 4 = two cobs, two or three, and sometimes a 'no'. Lab only; free: false; proto: true. Hannah Mami hosts the farm; until her lines and look exist, Nani's guide box stands in (Zafar, 1 Nov).",
+   "name": "n.corn-on-the-cob",
+   "english": "Corn on the cob",
+   "free": false,
+   "proto": true,
+   "countRule": true,
+   "price": 2,
+   "stations": ["corn"],
+   "lists": {"dress": ["fru-02", "spi-16", "spi-04", "ph-lili", "ph-amli", "spi-11"]},
+   "slots": {
+    "count": {"byLevel": [1, 1, 2, 2]},
+    "no": {"type": "no", "else": {"chance": {"byLevel": [0, 0, 0, 0]}, "from": "$dress"}},
+    "dress": {"type": "items", "from": "$dress", "exclude": "no", "take": {"byLevel": [[1, 1], [2, 2], [1, 1], [1, 1]]}, "order": "any"}
+   },
+   "say": [
+    {"frame": "order", "x": [{"n": "$count", "of": "n.corn-on-the-cob"}]},
+    {"forEach": "$dress", "frame": "and", "x": ["$it"]},
+    {"forEach": "$no", "frame": "no", "x": ["$it"]}
+   ],
+   "need": [],
+   "steps": ["Grill", "Dress", "Serve"],
+   "run": [{"do": "corn", "count": "$count", "dress": "$dress", "no": "$no"}],
+   "how": "Put the corn on the grill, turn it once, take it off when it's cooked; then put on what they asked for."
+  },
+  "baking": {
+   "_about": "proto-kitchen (Zafar's baking design, 1 Nov; prototype-notes-2026-11-01.md 'Baking'): Nana asks for naan; Nani gives one instruction at a time, each its own row on the card that appears as she says it (when: bake-1 .. bake-5, js/cook/stations/baking.js UI.mission.reveal). The plan (which containers, how much) is picked from data/stations/baking.json by level and set on the order as `plan` by the lab entry, so this recipe has no slots. Lab only; free: false; proto: true (its to-record words are grey English).",
+   "name": "ph-naan",
+   "english": "Naan",
+   "free": false,
+   "proto": true,
+   "countRule": true,
+   "price": 3,
+   "stations": ["baking"],
+   "slots": {},
+   "say": [
+    {"frame": "order", "x": ["ph-naan"]},
+    {"if": "plan.0", "frame": "bare", "x": ["$plan.0.parts"], "when": "bake-1"},
+    {"if": "plan.1", "frame": "bare", "x": ["$plan.1.parts"], "when": "bake-2"},
+    {"if": "plan.2", "frame": "bare", "x": ["$plan.2.parts"], "when": "bake-3"},
+    {"if": "plan.3", "frame": "bare", "x": ["$plan.3.parts"], "when": "bake-4"},
+    {"if": "plan.4", "frame": "bare", "x": ["$plan.4.parts"], "when": "bake-5"}
+   ],
+   "need": [],
+   "steps": ["Mix", "Oven"],
+   "run": [{"do": "baking", "plan": "$plan"}],
+   "how": "Nani says one amount at a time: a cup, half a cup, two cups, a quarter. Tap it to tip it into the jug. Then bake the naan."
+  },
+  "pantry": {
+   "_about": "Wave 6 (docs/design-language/ux-principles.md 7): Nani's list from the pantry, the smallest round and the first thing a new player does. She says the first thing with Muke {x} de (give me), then Ne {x} for the rest, in any order; you tap each into the basket. Level 1 = three things from the kitchen basics, each level one more (and a fuller shelf: mechanics.fetch.levels). free: false keeps it out of customers' orders.",
+   "name": "ph-pantry",
+   "forDish": {
+    "_about": "29 Sept (Q6, Zafar): in story mode the first time each of these dishes is made that day starts with a pantry trip for its things (a second one that day doesn't; free play and the lab skip it). What each dish's trip fetches, all stocked in the pantry (shelf art), in the order Nani asks",
+    "chai": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "spi-10"
+    ],
+    "daal": [
+     "cook-daal",
+     "veg-02",
+     "veg-03",
+     "spi-01"
+    ],
+    "chaat": [
+     "veg-01",
+     "ph-chana",
+     "veg-02",
+     "ph-sev"
+    ],
+    "samosa": [
+     "ph-keema",
+     "veg-01",
+     "veg-02",
+     "cook-atto"
+    ]
+   },
+   "english": "Pantry",
+   "price": 2,
+   "stations": [
+    "fetch"
+   ],
+   "free": false,
+   "how": "Listen to what Nani needs, then tap each one into the basket.",
+   "headline": {
+    "line": "headline-pantry",
+    "line_plain": "headline-give",
+    "_was": "headline-give for both (T1: Muke de); Zafar 13 Nov (decision 22, Mum's 12 Nov report decision 4): Mum's Hi muke {dish} lai khani achi de where the trip has a dish, Muke de where it has none"
+   },
+   "lists": {
+    "basics": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "cook-atto",
+     "cook-daal"
+    ],
+    "shelf": [
+     "cook-chai",
+     "cook-dudh",
+     "cook-khun",
+     "cook-atto",
+     "cook-daal",
+     "veg-01",
+     "veg-02",
+     "veg-03",
+     "spi-10",
+     "veg-14",
+     "spi-16",
+     "spi-01"
+    ]
+   },
+   "slots": {
+    "first": {
+     "type": "items",
+     "from": {
+      "byLevel": [
+       "$basics",
+       "$shelf"
+      ]
+     },
+     "take": [
+      1,
+      1
+     ],
+     "prefer": "weak"
+    },
+    "rest": {
+     "type": "items",
+     "from": {
+      "byLevel": [
+       "$basics",
+       "$shelf"
+      ]
+     },
+     "exclude": "first",
+     "take": {
+      "rules": "fetch",
+      "add": -1,
+      "range": true,
+      "_rules": "S14 roll-out (PAN-18; Zafar, 29 Oct: 'pantry keep 3,4,5,6'): the things after the first are the pantry's count by level from the central rules (data/rules.json count.games.fetch, through js/shared/rules.js; js/cook/recipes.js Recipes.fromRules) less the first; byLevel is only the stand-in until the rules have loaded",
+      "byLevel": [
+       [
+        2,
+        2
+       ],
+       [
+        3,
+        3
+       ],
+       [
+        4,
+        4
+       ],
+       [
+        5,
+        5
+       ]
+      ]
+     },
+     "prefer": "weak",
+     "order": "any"
+    }
+   },
+   "say": [
+    {
+     "frame": "give",
+     "head": true,
+     "x": [
+      "$first"
+     ]
+    },
+    {
+     "forEach": "$rest",
+     "frame": "give",
+     "_frame": "PAN-02 (step 4d): every thing Nani asks for is its own full sentence (Muke atto de.), never the verbless Ne atto.; one sentence with a list waits for Mum's list rule (gap list: Fetch, L29)",
+     "x": [
+      "$it"
+     ]
+    }
+   ],
+   "need": [
+    "$first",
+    "$rest"
+   ],
+   "steps": [
+    "Pantry"
+   ],
+   "run": [
+    {
+     "do": "fetch",
+     "need": [
+      "$first",
+      "$rest"
+     ],
+     "askLines": false
+    },
+    {
+     "do": "serve",
+     "key": "pantry",
+     "art": "basket"
+    }
+   ]
+  },
+  "chai": {
+   "name": "cook-chai",
+   "english": "Chai",
+   "countRule": true,
+   "price": 4,
+   "stations": [
+    "pour",
+    "add",
+    "boil",
+    "count",
+    "pour"
+   ],
+   "_about": "The Chai tray (js/cook/stations/chai-tray.js): a cup for each person on the tray, each with their face. The customer orders chai at the counter; at the tray each person says how they like theirs (dudh or dudh na; Muke chai me {n} khun khape or khun na; plain, elchi waari chai or aadu waari chai; at level 4 also half or full), so those rows wait for the tray (`when`). Wave 6 levels, each adding one thing: 1 = one cup; 2 = two; 3 = three; 4 = three plus half/full. Each cup is one card with a fixed shape (`card`). Tastes are only a bias (tasteChance). Zafar 29 Sept: a cup with no milk, or with milk but no sugar, is sometimes (`named`) ordered by the chai's own name, *Muke kari chai khape.* / *Muke mori chai khape.*, as that person's card headline (`personHead`); its rows still say what the name means (dudh na / khun na).",
+   "lists": {
+    "family": [
+     "nana",
+     "ma",
+     "cousin"
+    ]
+   },
+   "slots": {
+    "cups": {
+     "type": "people",
+     "who": "$family",
+     "count": {
+      "rules": "chai-tray",
+      "byLevel": [1],
+      "_byLevel": "one cup only until the central rules have loaded (a page or test without js/shared/rules.js); in the game js/cook/stations/chai-tray.js replaces it with Rules.counts(\"chai-tray\")"
+     },
+     "tastes": "chai",
+     "each": {
+      "dudh": {
+       "_s14": "Zafar, 29 Oct (chai level rules 1): L1 has no \"no\" asks: every cup has milk (never dudh na); from L2 as before",
+       "byLevel": [
+        {
+         "chance": 1
+        },
+        {
+         "chance": 0.65,
+         "taste": "dudh",
+         "tasteChance": 0.5
+        }
+       ]
+      },
+      "khun": {
+       "_s11": "Sprint 11 (easy-to-play principle 9: chai L1 is four words, chai, dudh, khun, paani): at L1 one sugar or none (one is the bare item, so no number word), never a taste's count; Zafar, 29 Oct (chai level rules 1): at L1 always one sugar (never khun na), numbers and no-sugar from L2",
+       "byLevel": [
+        {
+         "int": [
+          1,
+          1
+         ],
+         "zero": 0
+        },
+        {
+         "int": [
+          1,
+          3
+         ],
+         "zero": 0.2,
+         "taste": "khun",
+         "tasteChance": 0.5
+        }
+       ]
+      },
+      "extra": {
+       "_s11": "Sprint 11 (principle 9): no extra spice at L1 (four words); from L2 as before",
+       "byLevel": [
+        {
+         "pick": [
+          null
+         ]
+        },
+        {
+         "pick": [
+          null,
+          "spi-10",
+          "veg-14"
+         ],
+         "taste": "extra",
+         "tasteChance": 0.4
+        }
+       ]
+      },
+      "named": {
+       "_s11": "Sprint 11 (principle 9): kari / mori chai (two more words) from L3 (Zafar, 29 Oct, chai level rules 3; was L2)",
+       "byLevel": [
+        {
+         "chance": 0
+        },
+        {
+         "chance": 0
+        },
+        {
+         "chance": 0.5
+        }
+       ]
+      },
+      "amount": {
+       "byLevel": [
+        null,
+        null,
+        null,
+        {
+         "_teach": "CHAI-55 (Zafar, 1 Nov; decision 4): while adh and aako are new to the child (word stage 1-2), the first person asks full and the second half (CHAI-110, corrected 11 Nov night: the first L4 round full, then half); the third, and everyone once the words are known, at random (js/cook/recipes.js teach)",
+         "teach": {
+          "words": [
+           "ph-half",
+           "ph-full"
+          ],
+          "seats": [
+           "ph-full",
+           "ph-half"
+          ]
+         },
+         "pick": [
+          "ph-half",
+          "ph-full"
+         ]
+        }
+       ]
+      }
+     },
+     "_count": "SH-155 (Zafar, 29 Oct): the cups by level are the central rules' count for chai-tray (data/rules.json count.games: most 3 at L4, so 1, 2, 2, 3), filled in by js/cook/stations/chai-tray.js as the data loads; half/full stays L4's (chai-tray.json halfLine), never L3"
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "cook-chai"
+     ]
+    },
+    {
+     "forEach": "$cups",
+     "for": "$it.who",
+     "say": [
+      {
+       "_ck51": "CK-51 (Zafar, 22 Oct): every item a cup needs is on its card: the water and the tea first, never said (the order says only what is asked: 'with milk and sugar'); they tick as they go in",
+       "frame": "and",
+       "x": [
+        "cook-paani"
+       ],
+       "when": "chai-tray",
+       "unsaid": true
+      },
+      {
+       "frame": "and",
+       "x": [
+        "cook-chai"
+       ],
+       "when": "chai-tray",
+       "unsaid": true
+      },
+      {
+       "if": "it.extra",
+       "frame": "need_waari",
+       "x": [
+        "$it.extra"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "_lng23": "LNG-23 (Zafar, 1 Nov: 'you say the quantity right after saying my or saying me ... muke adh chai khape'): at L4 a half cup's headline has the amount right after muke, through the engine's need frame (Muke adh chai khape: Mum's adh). Full keeps its old place (aako said last) until Mum confirms its form before chai (the engine would say aaki, unrecorded); where the amount goes with an extra or kari / mori is a question for her too (decision 7): those keep the amount said last",
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "!it.named"
+       ],
+       "frame": "need",
+       "x": [
+        "$it.amount",
+        "cook-chai"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "it.dudh",
+        "it.khun"
+       ],
+       "frame": "need",
+       "x": [
+        "$it.amount",
+        "cook-chai"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.named",
+        "!it.extra",
+        "!it.dudh"
+       ],
+       "frame": "need",
+       "x": [
+        "ph-kari",
+        "cook-chai"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.named",
+        "!it.extra",
+        "it.dudh",
+        "!it.khun"
+       ],
+       "frame": "need",
+       "x": [
+        "ph-mori",
+        "cook-chai"
+       ],
+       "personHead": true,
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.dudh",
+       "frame": "and",
+       "x": [
+        "cook-dudh"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.khun",
+       "frame": "sugar",
+       "x": [
+        {
+         "n": "$it.khun",
+         "of": "cook-khun"
+        }
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.extra",
+       "frame": "waari",
+       "x": [
+        "$it.extra"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "!it.named"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray",
+       "unsaid": true,
+       "saidBy": "head",
+       "_lng23": "LNG-23: the amount's row stays on the card (it ticks at the pour, CHAI-54) but is not said again: the headline says it",
+       "_chai104": "CHAI-104 (Zafar, 7 Nov: 'There was a gap'): saidBy head: the headline says it, so its card pops and lands with the headline, as a style tea's extra does (CHAI-96)"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "it.dudh",
+        "it.khun"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray",
+       "unsaid": true,
+       "saidBy": "head"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "!it.dudh"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "!it.extra",
+        "it.named",
+        "it.dudh",
+        "!it.khun"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": [
+        "it.amount=ph-half",
+        "it.extra"
+       ],
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "it.amount=ph-full",
+       "frame": "and",
+       "x": [
+        "$it.amount"
+       ],
+       "when": "chai-tray"
+      },
+      {
+       "if": "!it.dudh",
+       "frame": "no",
+       "x": [
+        "cook-dudh"
+       ],
+       "when": "chai-tray",
+       "_s14": "CHAI-39, SH-152 (Zafar, 29 Oct, round 4: 'no items said last for now'; data/rules.json order.noLast): every 'no' item is said after everything asked for, so the order row only moves forward while it is given"
+      },
+      {
+       "if": "!it.khun",
+       "frame": "no",
+       "x": [
+        "cook-khun"
+       ],
+       "when": "chai-tray"
+      }
+     ]
+    }
+   ],
+   "need": [],
+   "steps": [
+    "Water",
+    "Tea",
+    "Boil",
+    "Cups",
+    "Pour"
+   ],
+   "run": [
+    {
+     "do": "interrupt"
+    },
+    {
+     "do": "chai-tray",
+     "cups": "$cups",
+     "as": "tray"
+    },
+    {
+     "do": "result",
+     "key": "chai",
+     "slots": [
+      "cups"
+     ]
+    },
+    {
+     "do": "serve",
+     "key": "glass-chai",
+     "count": "$tray.served",
+     "cups": "$cups"
+    },
+    {
+     "do": "wait",
+     "ms": 600
+    }
+   ],
+   "how": "Each person says how they like their chai. Make every cup their way.",
+   "card": {
+    "_about": "Wave 6: a cup's card always has these slots, in this order (an empty slot when the chai is plain). `optional` slots show only when someone in this order has them. 29 Sept (X1, Zafar): the extra (aadu / elchi) is the top row said, since the headline names it (Muke aadu waari chai khape.), then milk, then sugar; said in this order too. CK-51 (Zafar, 22 Oct): above them the water and the tea, on the card only.",
+    "slots": [
+     [
+      "cook-paani"
+     ],
+     [
+      "cook-chai"
+     ],
+     [
+      "spi-10",
+      "veg-14"
+     ],
+     [
+      "cook-dudh"
+     ],
+     [
+      "cook-khun"
+     ],
+     [
+      "ph-half",
+      "ph-full"
+     ]
+    ],
+    "optional": [
+     5
+    ]
+   }
+  },
+  "maani": {
+   "_about": "The Maani line (data/stations/maani-line.json): which kind and how many, in Kutchi. The tally's kinds are said in a random order; the bowls always offer both doughs. Wave 6 levels, each adding one thing: 1 = one maani (which kind: listen); 2 = two, any mix; 3 = three with both kinds, (one tawa at every level: §13's burner rule); 4 = big/small (wadhi/nindhi, she-forms: maani is a she-word), a compound kind ph-big+cook-maani said 'ba wadhi maani'. One card per maani (`cards`).",
+   "name": "cook-maani",
+   "countRule": true,
+   "headFirst": true,
+   "join": "and_join",
+   "_sentence": "29 Sept (X1): the headline names the first kind with its count (Muke ba bajr ji maani khape.); a second kind follows with the join (and, to record)",
+   "english": "Maani",
+   "price": 3,
+   "stations": [
+    "roll",
+    "tawa"
+   ],
+   "slots": {
+    "maani": {
+     "byLevel": [
+      {
+       "type": "tally",
+       "kinds": [
+        "cook-maani",
+        "cook-bajrmaani"
+       ],
+       "total": {
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
+       }
+      },
+      {
+       "type": "tally",
+       "kinds": [
+        "ph-big+cook-maani",
+        "ph-small+cook-maani",
+        "ph-big+cook-bajrmaani",
+        "ph-small+cook-bajrmaani"
+       ],
+       "total": {
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
+       },
+       "max": {
+        "ph-big+cook-maani": 1,
+        "ph-small+cook-maani": 1,
+        "ph-big+cook-bajrmaani": 1,
+        "ph-small+cook-bajrmaani": 1
+       }
+      },
+      {
+       "type": "tally",
+       "kinds": [
+        "ph-big+cook-maani",
+        "ph-small+cook-maani",
+        "ph-big+cook-bajrmaani",
+        "ph-small+cook-bajrmaani"
+       ],
+       "total": {
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
+       },
+       "oneOfEach": [
+        [
+         "ph-big+cook-maani",
+         "ph-small+cook-maani"
+        ],
+        [
+         "ph-big+cook-bajrmaani",
+         "ph-small+cook-bajrmaani"
+        ]
+       ],
+       "max": {
+        "ph-big+cook-maani": 2,
+        "ph-small+cook-maani": 2,
+        "ph-big+cook-bajrmaani": 2,
+        "ph-small+cook-bajrmaani": 2
+       }
+      },
+      {
+       "type": "tally",
+       "kinds": [
+        "ph-big+cook-maani",
+        "ph-small+cook-maani",
+        "ph-big+cook-bajrmaani",
+        "ph-small+cook-bajrmaani"
+       ],
+       "total": {
+        "rules": "maani-line",
+        "byLevel": [
+         1
+        ],
+        "_rules": "S14 roll-out (MAA-19; Zafar, 29 Oct: maani 2, 3, 4, 5): the rotis by level from the central rules (count.games.maani-line, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded"
+       },
+       "max": {
+        "ph-big+cook-maani": 2,
+        "ph-small+cook-maani": 2,
+        "ph-big+cook-bajrmaani": 2,
+        "ph-small+cook-bajrmaani": 2
+       }
+      }
+     ]
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "cook-maani"
+     ]
+    },
+    {
+     "tally": "$maani",
+     "frame": "and",
+     "cards": 1
+    }
+   ],
+   "need": [
+    "cook-bajrmaani"
+   ],
+   "steps": [
+    "Roll",
+    "Tawa"
+   ],
+   "run": [
+    {
+     "do": "maani-line",
+     "order": "$maani",
+     "as": "made"
+    },
+    {
+     "do": "serve",
+     "key": "chapati-puffed",
+     "count": "$made"
+    }
+   ],
+   "how": "Listen for which maani and how many. Roll each one, then cook it on the tawa.",
+   "_levels": "s08 w2A (MAA-18, P46, Zafar 19 Oct): L1 one maani (which kind, by ear); L2 two maani, big or small (wadhi / nindhi); L3 three, sizes; L4 2-4 with sizes and the tightest flip window"
+  },
+  "daal": {
+   "name": "cook-daal",
+   "countRule": true,
+   "english": "Daal",
+   "price": 5,
+   "stations": [
+    "chop",
+    "tadka",
+    "stir"
+   ],
+   "lists": {
+    "spices": [
+     "spi-02",
+     "spi-05",
+     "veg-13",
+     "veg-12",
+     "spi-01",
+     "spi-16"
+    ],
+    "veg": [
+     "veg-02",
+     "veg-03",
+     "veg-13",
+     "veg-12",
+     "veg-01",
+     "veg-14"
+    ]
+   },
+   "slots": {
+    "tadka": {
+     "type": "items",
+     "from": "$spices",
+     "take": {
+      "rules": "daar",
+      "axis": "y",
+      "range": true,
+      "_rules": "S14 roll-out (DAAR-36; Zafar, 29 Oct: daar's chopped + added first, X+Y: 1+2, 2+2, 3+3, 4+4): the things that go in first (the tadka's spices, Y) by level from the central rules (count.games.daar.y, js/shared/rules.js Rules.part; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded",
+      "byLevel": [
+       [
+        2,
+        3
+       ]
+      ]
+     },
+     "order": "sequence"
+    },
+    "chop": {
+     "type": "split",
+     "_about": "S14 roll-out (DAAR-36; Zafar, 29 Oct, X+Y): the chopped things (X: onions, the one tomato, chillies, each a piece to chop) by level from the central rules (count.games.daar.x), shared out among the three at random within each one's room (js/cook/recipes.js split); a vegetable left at 0 is said as its 'no' (dungri na) from L2, never at L1 (CK-50 on Rules.level(1).noAsks)",
+     "total": {
+      "rules": "daar",
+      "axis": "x",
+      "byLevel": [
+       1
+      ]
+     },
+     "into": {
+      "onions": [
+       0,
+       3
+      ],
+      "tomatoes": [
+       0,
+       1
+      ],
+      "chillies": [
+       0,
+       3
+      ]
+     }
+    },
+    "onions": {
+     "value": "$chop.onions"
+    },
+    "tomatoes": {
+     "_about": "LNG-17 (19 Oct): one tomato only (hakro tameto) until Mum's plural is confirmed: data/lang/lexicon.json n.tomato pl.dir is unknown (Q14; grammar-notes §34 P3 'doesn't change' vs the -o rule's tameta), so the engine has no Kutchi for two or three and said 'tomatoes' in English. Back to 1-3 (daal) and 1-2 (chaat) once the form is in the lexicon",
+     "value": "$chop.tomatoes"
+    },
+    "chillies": {
+     "value": "$chop.chillies"
+    },
+    "laps": {
+     "int": [
+      2,
+      4
+     ]
+    },
+    "speed": {
+     "byLevel": [{"value": null}, {"value": null}, {"value": null}, {"pick": ["slow", "quick"]}],
+     "_byLevel": "DAAR-12 (Zafar, 11 Nov: daar asks no speed before L4; its word moment waits on Mum's lines): no speed at L1-L3, so neither Nani's stir line nor the card's stir row names one (js/cook/mechanics/stir.js Cook.StirKit.speedFrom, data/stations/daar.json stirSpeedFrom)",
+     "_about": "Decision 13 (P51, DAAR-32; Zafar, 17 Oct: 'she should say the speed as well, so either jaldi or aste'): a speed at every level, L1 too, said in Nani's stir line and shown on the dial and the card (was S02-B: none at level 1, and none some rounds from level 2)"
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "cook-daal"
+     ]
+    },
+    {
+     "if": "onions",
+     "frame": "and",
+     "x": [
+      {
+       "n": "$onions",
+       "of": "veg-02"
+      }
+     ]
+    },
+    {
+     "if": "!onions",
+     "frame": "no",
+     "x": [
+      "veg-02"
+     ]
+    },
+    {
+     "if": "tomatoes",
+     "frame": "and",
+     "x": [
+      {
+       "n": "$tomatoes",
+       "of": "veg-03"
+      }
+     ]
+    },
+    {
+     "if": "chillies",
+     "frame": "and",
+     "x": [
+      {
+       "n": "$chillies",
+       "of": "veg-12"
+      }
+     ]
+    },
+    {
+     "list": "$tadka",
+     "when": "tadka"
+    },
+    {
+     "frame": "bare",
+     "x": [
+      {
+       "num": "$laps"
+      },
+      {
+       "word": "$speed",
+       "map": {
+        "slow": "ph-slowly",
+        "quick": "ph-quickly"
+       }
+      }
+     ],
+     "when": "stir",
+     "pic": "assets/cook/items/v4/kit/ladle.webp",
+     "_pic": "DAAR-45 (s19-clean-c): the stir row's tool is the stir kit's own ladle (v4/kit/ladle, prefetched with daar), the one the child stirs with; the s08c kadchi did not load in time (contract-104)",
+     "_about": "T14 (DAAR-12, S02-B): the stir row on the card: the laps and the speed asked (from level 2), shown when the stir starts. pic (DAAR-19, S06 r2): the station's own ladle before the words, so the laps alone ('ba': Mum's 'Trae!' for 'stir three times', docs/language/lexicon.md) read as the stir's row, not a stray one; the stir verb is never written (the ladle is the tool, not a word) DAAR-02 (s08 w7A): the s08c kadchi, empty."
+    }
+   ],
+   "need": [
+    "cook-daal"
+   ],
+   "steps": [
+    "Chop",
+    "Tadka",
+    "Stir"
+   ],
+   "run": [
+    {
+     "do": "daar",
+     "targets": {
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes",
+      "veg-12": "$chillies"
+     },
+     "no": {
+      "if": "!onions",
+      "then": [
+       "veg-02"
+      ]
+     },
+     "pool": "$veg",
+     "tadka": "$tadka",
+     "laps": "$laps",
+     "speed": "$speed"
+    },
+    {
+     "do": "serve",
+     "key": "pot-daal",
+     "count": 1
+    }
+   ],
+   "_about": "Chop: the order names which vegetables go in (dungri, tameto, marcha: several from level 1); Nani says how many of each at the board. Level 1 chops them all in one timed round; levels 2-3 split the round with a switch (the chop mechanic's `phases`). Daar v3 (29 Sept play-test, D1-D11): one combined station, js/cook/stations/daar.js (the swipe chop again, its pieces waiting on the counter, then the tadka and the stir in one pot on the kitchen kit's hob, serve and taste); the chop, tadka and stir mechanics stay in the lab.",
+   "how": "Chop what they say, add the spices in the order Nani says, then stir."
+  },
+  "chaat": {
+   "name": "ph-chaat",
+   "stuckHelp": true,
+   "_stuckHelp": "SH-228 (Zafar, 8 Nov, chaat P31): the layers' free pick has chai's stuck help (js/cook/station-lib.js St.freePick, Cook.Coach.stuck)",
+   "countRule": true,
+   "english": "Chaat bowl",
+   "price": 5,
+   "stations": [
+    "chop",
+    "assemble"
+   ],
+   "lists": {
+    "toppings": [
+     "ph-dahi",
+     "ph-amli",
+     "ph-lili",
+     "veg-02",
+     "ph-sev",
+     "ph-dhana",
+     "veg-12",
+     "veg-03"
+    ],
+    "veg": [
+     "veg-01",
+     "veg-02",
+     "veg-03",
+     "veg-13",
+     "veg-12"
+    ]
+   },
+   "slots": {
+    "no": {
+     "type": "no",
+     "_s14": "S14 roll-out (CHT-17; the rulebook, Zafar 29 Oct: 'no' asks from L2, were L3); level 1 never has one (js/cook/recipes.js make, on Rules.level(1).noAsks)",
+     "tasteChance": {
+      "byLevel": [
+       0,
+       0.7
+      ]
+     },
+     "else": {
+      "chance": {
+       "byLevel": [
+        0,
+        1
+       ]
+      },
+      "from": [
+       "veg-02",
+       "veg-12",
+       "ph-lili",
+       "ph-sev",
+       "ph-dahi",
+       "veg-03"
+      ]
+     }
+    },
+    "base": {
+     "pick": [
+      [
+       "ph-chana",
+       "veg-01"
+      ],
+      [
+       "veg-01",
+       "ph-chana"
+      ]
+     ]
+    },
+    "seq": {
+     "type": "items",
+     "first": "$base",
+     "from": "$toppings",
+     "exclude": "no",
+     "take": {
+      "rules": "chaat",
+      "add": -2,
+      "range": true,
+      "_rules": "S14 roll-out (CHT-17; Zafar, 29 Oct: 3, 4, 5, 6 items in the bowl): the toppings after the base (chana and bataato, two) by level from the central rules (count.games.chaat, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); the recipe's fit then makes the bowl add up, a layer said twice counting twice; byLevel is only the stand-in until the rules have loaded",
+      "byLevel": [
+       [
+        1,
+        1
+       ]
+      ]
+     },
+     "tasteAdd": {
+      "byLevel": [
+       [],
+       [
+        "top"
+       ],
+       [
+        "top",
+        "extra"
+       ],
+       [
+        "top"
+       ]
+      ]
+     },
+     "shuffle": true,
+     "order": "sequence"
+    },
+    "potatoes": {
+     "int": [
+      1,
+      2
+     ]
+    },
+    "onions": {
+     "int": [
+      1,
+      2
+     ]
+    },
+    "tomatoes": {
+     "_about": "LNG-17 (19 Oct): one tomato only (hakro tameto) until Mum's plural is confirmed: data/lang/lexicon.json n.tomato pl.dir is unknown (Q14; grammar-notes §34 P3 'doesn't change' vs the -o rule's tameta), so the engine has no Kutchi for two or three and said 'tomatoes' in English. Back to 1-3 (daal) and 1-2 (chaat) once the form is in the lexicon",
+     "int": [
+      1,
+      1
+     ]
+    }
+   },
+   "fit": {
+    "_about": "S14 roll-out (CHT-17; Zafar, 29 Oct: '3, 4, 5, 6 including double portions ... so 5 could be 4 items and one of those twice'): the spoons in the bowl add up to the chaat count by level from the central rules (count.games.chaat), a layer said with its number (ba bataato, ba dungri: two spoons, js/cook/mechanics/assemble.js qty) counting twice; keep: the base (chana and bataato) always stays; twice: the chance by level that a layer said twice stays while the total is made (none at L1: one of each, no numbers). js/cook/recipes.js fitTotal",
+    "total": {
+     "rules": "chaat",
+     "byLevel": [
+      3
+     ]
+    },
+    "list": "seq",
+    "qty": {
+     "veg-01": "potatoes",
+     "veg-02": "onions",
+     "veg-03": "tomatoes"
+    },
+    "max": {
+     "veg-01": 2,
+     "veg-02": 2,
+     "veg-03": 1
+    },
+    "keep": 2,
+    "from": "$toppings",
+    "exclude": "no",
+    "twice": {
+     "byLevel": [
+      0,
+      0.4,
+      0.4,
+      0.5
+     ]
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "ph-chaat"
+     ]
+    },
+    {
+     "list": "$seq",
+     "qty": {
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
+     },
+     "_qty": "29 Sept (T1, X12): a layer that's chopped first says how many (ba bataato), as its chop does",
+     "when": "assemble",
+     "_when": "CHT-07 (decision 53, T15, S02-B): the layer order is said just before the bowl, by him from his card (js/cook/mechanics/assemble.js), not with the order at the start"
+    },
+    {
+     "forEach": "$no",
+     "frame": "no",
+     "x": [
+      "$it"
+     ]
+    }
+   ],
+   "need": [],
+   "steps": [
+    "Chop",
+    "Build"
+   ],
+   "run": [
+    {
+     "do": "chop-game",
+     "targets": {
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
+     },
+     "only": "$seq",
+     "pool": "$veg"
+    },
+    {
+     "do": "interrupt"
+    },
+    {
+     "do": "assemble",
+     "sequence": "$seq",
+     "exclude": "$no",
+     "decoyPool": "$toppings",
+     "qty": {
+      "veg-01": "$potatoes",
+      "veg-02": "$onions",
+      "veg-03": "$tomatoes"
+     }
+    },
+    {
+     "do": "serve",
+     "key": "layer",
+     "count": 1,
+     "seq": "$seq"
+    }
+   ],
+   "how": "Build the bowl in the order they say. Leave out what they say no to."
+  },
+  "samosa": {
+   "name": "ph-samosa",
+   "countRule": true,
+   "baseFirst": [
+    "kinds",
+    "kinds2"
+   ],
+   "blockHeads": false,
+   "_blockHeads": "SAM-11: the headline was written without the count (Muke samosa khape.); each block's head carried it, a finished-samosa card. SAM-35 (Zafar, 12 Nov night: 'If there's two samosas being ordered, the sentence should say, I want two samosas ... If he's ordering samosa, then the item card should be the fillings, not the finished samosa'): the headline says the count (Muke ba samosa khape., the engine's line); a block has no head card, its fillings' cards alone (js/cook/ui.js orderCards)",
+   "_baseFirst": "30 Sept (Zafar): the base filling (chundo or bataato: each block's first kind) is the first row on the card and said first; the rest stay shuffled (js/cook/order.js)",
+   "english": "Samosa",
+   "price": 5,
+   "stations": [
+    "fill",
+    "fold",
+    "fry"
+   ],
+   "slots": {
+    "no": {
+     "type": "no",
+     "tasteChance": {
+      "byLevel": [
+       0,
+       0.6
+      ]
+     },
+     "else": {
+      "chance": {
+       "byLevel": [
+        0,
+        1
+       ]
+      },
+      "from": [
+       "veg-12",
+       "veg-02",
+       "ph-dhana"
+      ]
+     },
+     "_no": "s08 w2A (SAM-26): the 'no' filling was L4's one new thing. S14 roll-out (SAM-28; the rulebook, Zafar 29 Oct: 'no' asks from L2, were L4): from level 2; level 1 never has one (js/cook/recipes.js make, on Rules.level(1).noAsks)"
+    },
+    "kinds": {
+     "type": "items",
+     "first": [
+      {
+       "taste": "filling",
+       "tasteChance": 0.6,
+       "else": {
+        "pick": [
+         "ph-keema",
+         "veg-01"
+        ]
+       }
+      }
+     ],
+     "from": "$fillings_all",
+     "exclude": "no",
+     "take": {
+      "byLevel": [
+       [
+        0,
+        0
+       ],
+       [
+        1,
+        1
+       ],
+       [
+        0,
+        1
+       ],
+       [
+        0,
+        1
+       ]
+      ]
+     },
+     "order": "any"
+    },
+    "fillings": {
+     "type": "tally",
+     "kinds": "$kinds",
+     "minFirst": 1,
+     "_minFirst": "29 Sept (S18, Zafar): every samosa has its base filling (the first kind: chundo, or bataato for veg) at least one spoon, named as a row; marcha, dhania and the rest are extras. 'Two samosas, three chillies' can't happen",
+     "total": {
+      "int": {
+       "byLevel": [
+        [
+         2,
+         3
+        ],
+        [
+         3,
+         4
+        ],
+        [
+         2,
+         3
+        ],
+        [
+         2,
+         3
+        ]
+       ]
+      }
+     }
+    },
+    "count": {
+     "rules": "samosa",
+     "kinds": [
+      1,
+      1,
+      2,
+      2
+     ],
+     "part": 1,
+     "_rules": "S14 roll-out (SAM-28; Zafar, 29 Oct: samosas 2, 3, 4, 6, six only if the fry pan fits six: its oil has six places, js/cook/stations/samosa.js OIL, and the fill board six strips): the samosas by level from the central rules (count.games.samosa, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules), one kind at L1-L2, two from L3 sharing the count (part 1: the first kind, the larger half); byLevel is only the stand-in until the rules have loaded",
+     "byLevel": [
+      1
+     ]
+    },
+    "count2": {
+     "rules": "samosa",
+     "kinds": [
+      1,
+      1,
+      2,
+      2
+     ],
+     "part": 2,
+     "_count2": "s08 w2A (SAM-26, Zafar 19 Oct): two kinds from level 3, always (was half the orders, and L4 was L3); its own block on the card; its first strip starts empty",
+     "_rules": "S14 roll-out (SAM-28; Zafar, 29 Oct: samosas 2, 3, 4, 6, six only if the fry pan fits six: its oil has six places, js/cook/stations/samosa.js OIL, and the fill board six strips): the samosas by level from the central rules (count.games.samosa, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules), one kind at L1-L2, two from L3 sharing the count (part 2: the second kind); byLevel is only the stand-in until the rules have loaded",
+     "byLevel": [
+      0
+     ]
+    },
+    "base1": {
+     "value": "$kinds.0"
+    },
+    "base2": {
+     "type": "items",
+     "from": "$bases",
+     "exclude": [
+      "base1"
+     ],
+     "take": 1,
+     "_base2": "the second kind's base is the other base (chundo or bataato) from the first kind's"
+    },
+    "kinds2": {
+     "type": "items",
+     "first": "$base2",
+     "from": "$extras",
+     "exclude": "no",
+     "take": {
+      "byLevel": [
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        0
+       ],
+       [
+        0,
+        1
+       ]
+      ]
+     },
+     "order": "any"
+    },
+    "fillings2": {
+     "type": "tally",
+     "kinds": "$kinds2",
+     "minFirst": 1,
+     "total": {
+      "int": [
+       2,
+       3
+      ]
+     }
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      {
+       "n": "$count",
+       "of": "ph-samosa",
+       "one": false
+      }
+     ]
+    },
+    {
+     "frame": "bare",
+     "block": 1,
+     "blockHead": true,
+     "silent": true,
+     "x": [
+      {
+       "n": "$count",
+       "of": "ph-samosa",
+       "one": false
+      }
+     ],
+     "_about": "SAM-11 (T16, S02-B): one block per kind of samosa, its head the count and dish (ba samosa), its fillings under it, like sekelo's skewers and maani's kinds. On the card only: the order already says it"
+    },
+    {
+     "tally": "$fillings",
+     "frame": "and",
+     "block": 1
+    },
+    {
+     "forEach": "$no",
+     "frame": "no",
+     "x": [
+      "$it"
+     ]
+    },
+    {
+     "if": "count2>0",
+     "frame": "and_join",
+     "block": 2,
+     "blockHead": true,
+     "x": [
+      {
+       "n": "$count2",
+       "of": "ph-samosa",
+       "one": false
+      }
+     ]
+    },
+    {
+     "if": "count2>0",
+     "tally": "$fillings2",
+     "frame": "and",
+     "block": 2
+    }
+   ],
+   "need": [
+    "cook-atto"
+   ],
+   "steps": [
+    "Fill",
+    "Fold",
+    "Fry"
+   ],
+   "run": [
+    {
+     "do": "samosa",
+     "fillings": "$fillings",
+     "exclude": "$no",
+     "decoyPool": "$fillings_all",
+     "count": "$count",
+     "fillings2": "$fillings2",
+     "count2": "$count2"
+    },
+    {
+     "do": "serve",
+     "key": "samosa",
+     "count": "$count"
+    }
+   ],
+   "lists": {
+    "fillings_all": [
+     "ph-keema",
+     "veg-01",
+     "veg-10",
+     "veg-02",
+     "veg-12",
+     "ph-dhana"
+    ],
+    "bases": [
+     "ph-keema",
+     "veg-01"
+    ],
+    "extras": [
+     "veg-10",
+     "veg-02",
+     "veg-12",
+     "ph-dhana"
+    ]
+   },
+   "how": "Fill them with what they say, fold them, then fry them.",
+   "_levels": "s08 w2A (SAM-26, P44, the level table): L1 one kind, one filling, 1-2 samosas; L2 a second filling; L3 two kinds (ba keema, hakro bataato), the card's items dotted; L4 the 'no' filling, card hidden, 2-3 spoons each"
+  },
+  "mishkaki": {
+   "name": "ph-sekelo",
+   "countRule": true,
+   "english": "Sekelo",
+   "_pepper": "Sidebar v2 (Zafar, 28 Sept evening): no English in the item pills. Green pepper (ph-pepper) has no Kutchi word yet (Mum 26 Sept, B34), so it's out of the skewers (lists and tastes) until it's recorded; its art stays filed",
+   "price": 6,
+   "stations": [
+    "thread",
+    "grill"
+   ],
+   "_about": "The order says how many skewers of each kind (a tally: \"ba lakri mishkaki, hakri lakri boga\": lakri, the skewer, is the tally's `unit`, a she-word, so one is hakri), and when there's a mixed one its pieces in order (Pela gos, ne poi …; SEK-19, decision 11: the raw piece is gos, the cooked all-meat skewer mishkaki): meat and the three vegetables, never the same piece twice running. Wave 6 (docs/design-language/ux-principles.md): one card per skewer, always four dots (`cards`), a mixed one naming its pieces on its dots (`cardOf`); the grill is two jobs, one at a time (thread every skewer, then \"Go to the barbecue\" and grill them; the juggle of both at once is the optional level 4); no chips on the grill (they stay in samosa + fry). Levels, each adding one thing: 1 = one skewer (meat or veg: listen); 2 = two; 3 = two or three, one may be mixed; 4 = three or four, up to two mixed, threading and grilling at once.",
+   "lists": {
+    "skewer": [
+     "ph-meat",
+     "veg-02",
+     "veg-03"
+    ],
+    "veg": [
+     "veg-02",
+     "veg-03"
+    ],
+    "_mixes": "The mixed skewers (28 Sept, design system 12): four pieces, as a skewer holds (data.mechanics.thread.pieces), meat and both vegetables, never the same piece twice running. The old generator drew three pieces (meat and two vegetables once green pepper was out), which no four-piece skewer could match",
+    "mixes": [
+     [
+      "ph-meat",
+      "veg-02",
+      "ph-meat",
+      "veg-03"
+     ],
+     [
+      "ph-meat",
+      "veg-03",
+      "ph-meat",
+      "veg-02"
+     ],
+     [
+      "ph-meat",
+      "veg-02",
+      "veg-03",
+      "ph-meat"
+     ],
+     [
+      "ph-meat",
+      "veg-03",
+      "veg-02",
+      "ph-meat"
+     ],
+     [
+      "veg-02",
+      "ph-meat",
+      "veg-03",
+      "ph-meat"
+     ],
+     [
+      "veg-03",
+      "ph-meat",
+      "veg-02",
+      "ph-meat"
+     ]
+    ]
+   },
+   "slots": {
+    "vegKind": {
+     "_about": "29 Sept (K4, Zafar): no bare boga skewers. A vegetable skewer names its vegetable (hakri lakri dungri, like hakri lakri mishkaki: data/stations/mishkaki-grill.json kinds only:<piece>); a mixed one lists its pieces in order",
+     "pick": [
+      "veg-02",
+      "veg-03"
+     ]
+    },
+    "skewers": {
+     "type": "tally",
+     "kinds": {
+      "byLevel": [
+       [
+        "ph-mishkaki",
+        "$vegKind"
+       ],
+       [
+        "ph-mishkaki",
+        "$vegKind"
+       ],
+       [
+        "ph-mishkaki",
+        "$vegKind",
+        "ph-mixed"
+       ],
+       [
+        "ph-mishkaki",
+        "$vegKind",
+        "ph-mixed"
+       ]
+      ]
+     },
+     "min": {
+      "ph-mixed": {
+       "byLevel": [
+        0,
+        0,
+        1,
+        2
+       ]
+      }
+     },
+     "_min": "29 Sept (K4): mostly mixed from level 3 (one of two or three; two of three or four at level 4). 30 Sept (sekelo session): level 3 may have two mixed (one mix, said once: ba lakri mixed), so half or more are mixed on most orders; level 4 stays at two (two different mixes are graded one of each)",
+     "total": {
+      "rules": "mishkaki-grill",
+      "_rules": "S14 roll-out (SEK-22; Zafar, 29 Oct: skewers 1, 2, 3, 4): the skewers by level from the central rules (count.games.mishkaki-grill, js/shared/rules.js; js/cook/recipes.js Recipes.fromRules); byLevel is only the stand-in until the rules have loaded",
+      "byLevel": [
+       1
+      ]
+     },
+     "max": {
+      "ph-mixed": {
+       "byLevel": [
+        0,
+        0,
+        2,
+        2
+       ]
+      }
+     }
+    },
+    "pattern": {
+     "taste": "pattern",
+     "tasteChance": 0.5,
+     "pick": "$mixes"
+    },
+    "pattern2": {
+     "_about": "Design system 12 (28 Sept): at level 4 two mixed skewers can be two different mixes, each said as its own list and drawn as its own row ('hakri lakri mixed') with its pieces",
+     "if": "skewers.ph-mixed>=2",
+     "likely": {
+      "byLevel": [
+       0,
+       0,
+       0,
+       0.5
+      ]
+     },
+     "differs": "pattern",
+     "pick": "$mixes"
+    }
+   },
+   "say": [
+    {
+     "frame": "order",
+     "x": [
+      "ph-sekelo"
+     ]
+    },
+    {
+     "tally": "$skewers",
+     "frame": "and",
+     "unit": "ph-lakri",
+     "cards": 4,
+     "pieces": {"ph-mishkaki": "ph-meat", "veg-02": "veg-02", "veg-03": "veg-03"},
+     "_pieces": "SEK-25 (Zafar, 8 Nov: 'the item card just say gos gos gos gos ... they get ticked off as you put them on'): each skewer kind's one piece, so its card row is four cards of that piece (js/cook/ui.js), ticked as each goes on (js/cook/mechanics/thread.js plainTick); a mixed skewer's pieces are its list's (cardOf)"
+    },
+    {
+     "if": "skewers.ph-mixed",
+     "list": "$pattern",
+     "cardOf": "ph-mixed"
+    },
+    {
+     "if": "pattern2",
+     "list": "$pattern2",
+     "cardOf": "ph-mixed"
+    }
+   ],
+   "need": [],
+   "steps": [
+    "Skewer",
+    "Grill"
+   ],
+   "run": [
+    {
+     "do": "mishkaki-grill",
+     "skewers": "$skewers",
+     "pattern": "$pattern",
+     "pattern2": "$pattern2",
+     "as": "grill"
+    },
+    {
+     "do": "serve",
+     "key": "mishkaki",
+     "count": "$grill.count",
+     "art": "$grill.art"
+    }
+   ],
+   "how": "Thread each skewer the way they say. Then take them to the barbecue."
+  }
+ },
+ "stations": {
+  "fetch": {
+   "name": "Pantry",
+   "verb": "Fetch",
+   "goal": "Find what the order needs and tap it into your basket."
+  },
+  "passme": {
+   "name": "Pass me",
+   "verb": "Pass me",
+   "goal": "Nani needs something! Tap the one she asks for."
+  },
+  "pour": {
+   "name": "Pour",
+   "verb": "Pour",
+   "goal": "Tap the jug: it pours up to the dashed line."
+  },
+  "add": {
+   "name": "Add",
+   "verb": "Add",
+   "goal": "Add what the order says."
+  },
+  "watch": {
+   "name": "Boil",
+   "verb": "Watch and tap",
+   "goal": "Tap the big knob when the ring reaches the green part. Don't let it boil over!"
+  },
+  "count": {
+   "name": "Count in",
+   "verb": "Count",
+   "goal": "Tap once for each spoon they asked for: it moves on by itself."
+  },
+  "knead": {
+   "name": "Knead",
+   "verb": "Knead",
+   "goal": "Press the dough until it's smooth."
+  },
+  "roll": {
+   "name": "Roll",
+   "verb": "Roll",
+   "goal": "Push the rolling pin up and down until the maani fills the circle. Make as many as they asked for."
+  },
+  "flip": {
+   "name": "Tawa",
+   "verb": "Flip",
+   "goal": "Flip when the ring reaches green, then tap again to puff it up."
+  },
+  "chop": {
+   "name": "Chop",
+   "verb": "Chop",
+   "goal": "Swipe to slice only what Nani says, as many of each as she says, before the ring runs out. Listen: she may switch!"
+  },
+  "tadka": {
+   "name": "Tadka",
+   "verb": "Tadka",
+   "goal": "Add the spices to the hot oil in the order Nani says. Be quick, or they burn!"
+  },
+  "stir": {
+   "name": "Stir",
+   "verb": "Stir",
+   "goal": "Stir round the pot as many times as Nani says, at the right speed."
+  },
+  "assemble": {
+   "name": "Chaat bowl",
+   "verb": "Assemble",
+   "goal": "Add the toppings in the order they asked: when the bowl is made, they taste it!"
+  },
+  "fill": {
+   "name": "Fill",
+   "verb": "Fill",
+   "goal": "Spoon in the fillings they asked for, as many spoons of each as they said: it moves on by itself."
+  },
+  "fold": {
+   "name": "Fold",
+   "verb": "Fold",
+   "goal": "Swipe along each dashed line to fold a samosa. Make as many as they asked for: it moves on by itself."
+  },
+  "fry": {
+   "name": "Fry",
+   "verb": "Fry",
+   "goal": "Drop in what they asked for and lift each one out when its ring is green: it moves on by itself."
+  },
+  "thread": {
+   "name": "Skewer",
+   "verb": "Thread",
+   "goal": "Tap the bowls to thread the skewers they asked for."
+  },
+  "grill": {
+   "name": "Grill",
+   "verb": "Grill",
+   "goal": "Tap a skewer on the rack. Turn it on the green twice, then lift it onto the plate."
+  }
+ },
+ "mechanics": {
+  "_about": "Difficulty as data. Each mechanic's levels: level 1 is the Phase A game exactly; each later level lists only what changes. `profiles` hold settings for one use of a mechanic (pour into a cup). Upgrades change knobs through upgrades[].knobs. Timings are fractions of a ring (0-1) and rates are ring-fills per second. A combined station's own levels can live in data/stations/<id>.json.",
+  "fetch": {
+   "_about": "Pantry v3 (29 Sept): positions measured from assets/cook/bg/bg-pantry-v3-1600.webp in the 1600x900 world (the shelves, the fridge's three levels and the long tray laid out from sources/art/pantry-v2/pantry-v3-layout-sketch.png). slots: where an item stands (x centre, y its base, w/h its box before the item's shelf size); zone shelf or fridge. fridge: the items that only ever go in the fridge (everything else goes on the shelves). tray: the row of spaces on the tray (x0/x1 its inside, y the base, w/h an item's box there, gap between spaces; front: the tray's front edge [x, y, w, h] in the picture, drawn again over what's on the tray). tally: the tally's centre in the pantry, on the fridge's steel base, clear of everything. fridgeMin: the smallest size a thing is drawn at in the fridge. levels[].shelf (PAN-06, Zafar 12 Oct): from level 2 more candidates than the 21 slots, so every slot is filled (data.pantry_decoys: words with side-on art only, no sweets; the fridge has 4 such words for its 6 slots until Mum records juice, butter, cheese, cream, eggs).",
+   "slots": [
+    {
+     "x": 143,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 378,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 612,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 847,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1082,
+     "y": 199,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 143,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 378,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 612,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 847,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1082,
+     "y": 417,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 143,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 378,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 612,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 847,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1082,
+     "y": 626,
+     "w": 200,
+     "h": 175,
+     "zone": "shelf"
+    },
+    {
+     "x": 1334,
+     "y": 202,
+     "w": 140,
+     "h": 140,
+     "zone": "fridge"
+    },
+    {
+     "x": 1486,
+     "y": 202,
+     "w": 140,
+     "h": 140,
+     "zone": "fridge"
+    },
+    {
+     "x": 1334,
+     "y": 416,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    },
+    {
+     "x": 1486,
+     "y": 416,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    },
+    {
+     "x": 1334,
+     "y": 620,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    },
+    {
+     "x": 1486,
+     "y": 620,
+     "w": 140,
+     "h": 175,
+     "zone": "fridge"
+    }
+   ],
+   "fridge": [
+    "cook-dudh",
+    "ph-juice",
+    "ph-dahi",
+    "ph-keema",
+    "ph-meat",
+    "ph-chicken",
+    "ph-fish",
+    "ph-butter",
+    "ph-cheese",
+    "ph-cream",
+    "ph-eggs"
+   ],
+   "tray": {
+    "x0": 46,
+    "x1": 1182,
+    "y": 850,
+    "w": 150,
+    "h": 150,
+    "gap": 160,
+    "front": [
+     29,
+     842,
+     1172,
+     46
+    ]
+   },
+   "tally": [
+    1406,
+    776
+   ],
+   "fridgeMin": 0.9,
+   "levels": [
+    {
+     "shelf": 8,
+     "minDecoys": 4,
+     "lookalikes": 2,
+     "flyMs": 520,
+     "passMe": 0.5
+    },
+    {
+     "shelf": 28,
+     "minDecoys": 5
+    },
+    {
+     "shelf": 28,
+     "lookalikes": 3
+    },
+    {
+     "shelf": 28,
+     "minDecoys": 7
+    }
+   ]
+  },
+  "passme": {
+   "levels": [
+    {
+     "options": 3
+    }
+   ]
+  },
+  "pour": {
+   "levels": [
+    {
+     "rate": 0.3,
+     "bandScale": 1,
+     "enoughUntilStage": 2,
+     "spillScore": 45,
+     "auto": false,
+     "instant": false,
+     "stickMs": 700,
+     "slideMs": 240,
+     "pourMs": 650,
+     "_pourMs": "Wave 6b: a tap pours one measure (to the next dashed line) in this long; the hold knobs (rate, auto, stickMs, minPour, bandScale, spillScore) are only for Cook.Pour.hold, which Cook no longer uses",
+     "minPour": 0.03,
+     "profiles": {
+      "cup": {
+       "rate": 0.28
+      },
+      "milk": {
+       "rate": 0.24
+      }
+     }
+    },
+    {
+     "rate": 0.36,
+     "bandScale": 0.8,
+     "enoughUntilStage": 1,
+     "profiles": {
+      "cup": {
+       "rate": 0.32
+      },
+      "milk": {
+       "rate": 0.27
+      }
+     }
+    },
+    {
+     "rate": 0.42,
+     "bandScale": 0.65,
+     "enoughUntilStage": 0,
+     "profiles": {
+      "cup": {
+       "rate": 0.36
+      },
+      "milk": {
+       "rate": 0.3
+      }
+     }
+    }
+   ]
+  },
+  "add": {
+   "levels": [
+    {
+     "flyMs": 380
+    }
+   ]
+  },
+  "boil": {
+   "levels": [
+    {
+     "band": [
+      0.6,
+      0.9
+     ],
+     "rate": 0.17,
+     "rise": 0.18,
+     "passMeAfterMs": 1400,
+     "overScore": 40,
+     "knobR": 56,
+     "instant": false,
+     "instantMs": 700,
+     "profiles": {
+      "tray": {
+       "band": [
+        0.66,
+        0.86
+       ],
+       "rate": 0.09,
+       "passMeAfterMs": 6000
+      }
+     }
+    },
+    {
+     "band": [
+      0.62,
+      0.9
+     ],
+     "rate": 0.19,
+     "profiles": {
+      "tray": {
+       "band": [
+        0.7,
+        0.85
+       ],
+       "rate": 0.068
+      }
+     }
+    },
+    {
+     "band": [
+      0.64,
+      0.9
+     ],
+     "rate": 0.21,
+     "profiles": {
+      "tray": {
+       "band": [
+        0.72,
+        0.84
+       ],
+       "rate": 0.052
+      }
+     }
+    }
+   ]
+  },
+  "count": {
+   "levels": [
+    {
+     "max": 6,
+     "spoonMs": 360
+    }
+   ]
+  },
+  "knead": {
+   "levels": [
+    {
+     "presses": 8,
+     "auto": false
+    },
+    {
+     "presses": 10
+    },
+    {
+     "presses": 12
+    }
+   ]
+  },
+  "roll": {
+   "levels": [
+    {
+     "radius": 170,
+     "startRadius": 60,
+     "band": [
+      0.92,
+      1.1
+     ],
+     "grow": 0.15,
+     "maxSize": 1.45,
+     "tearAt": 1.3,
+     "tornScore": 45,
+     "doneAt": 0.8,
+     "quietMs": 700,
+     "maxCount": 6
+    },
+    {
+     "band": [
+      0.94,
+      1.08
+     ],
+     "grow": 0.18,
+     "tearAt": 1.25
+    },
+    {
+     "band": [
+      0.95,
+      1.06
+     ],
+     "grow": 0.2,
+     "tearAt": 1.2
+    }
+   ]
+  },
+  "tawa": {
+   "levels": [
+    {
+     "band": [
+      0.52,
+      0.86
+     ],
+     "rate": 0.24,
+     "rate2": 0.26,
+     "speedUp": 0.08,
+     "burntScore": 40,
+     "tawas": 1,
+     "passMeAfterMs": 1500
+    },
+    {
+     "tawas": 2,
+     "band": [
+      0.54,
+      0.85
+     ],
+     "rate": 0.26,
+     "rate2": 0.28
+    },
+    {
+     "tawas": 2,
+     "band": [
+      0.55,
+      0.85
+     ],
+     "rate": 0.3,
+     "rate2": 0.32
+    }
+   ]
+  },
+  "chop": {
+   "levels": [
+    {
+     "phases": 1,
+     "slow": 0.67,
+     "knifePx": 190,
+     "every": 0.7,
+     "fasterPerStage": 0.06,
+     "fasterMax": 0.25,
+     "throwSpeed": [
+      1300,
+      1400
+     ],
+     "gravity": 1250,
+     "decoys": 3,
+     "spare": 2,
+     "size": 170,
+     "phoneSize": 230,
+     "sharp": false,
+     "timer": {
+      "x": 118,
+      "y": 124,
+      "r": 70,
+      "warn": 3
+     },
+     "lookalikes": {
+      "veg-03": [
+       "veg-02"
+      ],
+      "veg-02": [
+       "veg-13",
+       "veg-03"
+      ],
+      "veg-01": [
+       "veg-13",
+       "veg-02"
+      ],
+      "veg-12": [
+       "veg-14"
+      ],
+      "veg-13": [
+       "veg-02"
+      ]
+     },
+     "variants": {
+      "veg-02": {
+       "color": "#a3244f",
+       "near": [
+        "veg-03"
+       ],
+       "chance": 0.6
+      }
+     }
+    },
+    {
+     "phases": 2,
+     "slow": 0.76,
+     "every": 0.6,
+     "throwSpeed": [
+      1330,
+      1450
+     ],
+     "gravity": 1320
+    },
+    {
+     "phases": 3,
+     "slow": 0.86,
+     "every": 0.5,
+     "decoys": 4,
+     "spare": 1,
+     "throwSpeed": [
+      1350,
+      1500
+     ],
+     "gravity": 1400
+    }
+   ]
+  },
+  "tadka": {
+   "levels": [
+    {
+     "shelf": [
+      "spi-02",
+      "spi-05",
+      "spi-01",
+      "veg-12",
+      "spi-16",
+      "veg-13"
+     ],
+     "autoTip": false,
+     "ladder": "words",
+     "burnSec": 9,
+     "guidedBurn": 1.6,
+     "burntScore": 40
+    },
+    {
+     "ladder": "dots",
+     "burnSec": 7
+    },
+    {
+     "shelf": [
+      "spi-02",
+      "spi-05",
+      "spi-01",
+      "veg-12",
+      "spi-16",
+      "veg-13",
+      "spi-04",
+      "spi-10"
+     ],
+     "ladder": "hidden",
+     "burnSec": 5.5
+    }
+   ]
+  },
+  "stir": {
+   "levels": [
+    {
+     "speeds": true,
+     "switch": null,
+     "bands": [
+      0.12,
+      0.9,
+      2.2
+     ],
+     "dialMax": 3,
+     "speedWords": {
+      "slow": "ph-slowly",
+      "quick": "ph-quickly"
+     },
+     "potX": 515,
+     "potY": 385,
+     "potR": 290,
+     "track": 0.8,
+     "dialX": 1120,
+     "dialY": 520,
+     "dialR": 190,
+     "lap": 1,
+     "deadZone": 40,
+     "reach": 520,
+     "maxStep": 1.7,
+     "smoothS": 0.35,
+     "judgeS": 0.15,
+     "startGraceMs": 700,
+     "minJudgeMs": 500,
+     "okFrac": 0.6,
+     "correctMs": 1600,
+     "graceMs": 1500,
+     "reactGapMs": 2200,
+     "maxNudges": 2,
+     "afterCountMs": 450,
+     "spillMs": 250,
+     "spillGapMs": 700,
+     "spillCost": 20,
+     "minScore": 30,
+     "quietMs": 1800,
+     "ghostMs": 1400
+    },
+    {
+     "speeds": true
+    },
+    {
+     "speeds": true,
+     "switch": {
+      "sameChance": 0.25
+     },
+     "correctMs": 1400,
+     "graceMs": 1000
+    }
+   ]
+  },
+  "assemble": {
+   "_about": "Chaat v2 (docs/design-language/ui-design-system.md §14, §14a): level 1 has no decoys; from level 2 decoys stand on the shelf with the order's toppings (and, from level 3, the 'don't' item). A spoonful's flight to the glass is data/stations/chaat.json's (flyMs by level).",
+   "levels": [
+    {
+     "decoys": [
+      1,
+      1
+     ],
+     "decoyPick": "random"
+    },
+    {
+     "decoys": [
+      2,
+      2
+     ]
+    },
+    {
+     "decoys": [
+      3,
+      3
+     ]
+    },
+    {
+     "decoys": [
+      3,
+      3
+     ]
+    }
+   ]
+  },
+  "fill": {
+   "levels": [
+    {
+     "decoys": [
+      1,
+      1
+     ],
+     "decoyPick": "random",
+     "rowY": 780,
+     "flyMs": 340
+    },
+    {
+     "decoys": [
+      2,
+      2
+     ]
+    },
+    {
+     "decoys": [
+      3,
+      3
+     ]
+    }
+   ]
+  },
+  "fold": {
+   "levels": [
+    {
+     "folds": 3,
+     "minLen": 0.45,
+     "minDot": 0.6,
+     "maxExtra": 3
+    },
+    {
+     "minLen": 0.6,
+     "minDot": 0.75
+    }
+   ]
+  },
+  "fry": {
+   "levels": [
+    {
+     "band": [
+      0.62,
+      0.84
+     ],
+     "rate": [
+      0.13,
+      0.18
+     ],
+     "extras": [
+      1,
+      3
+     ],
+     "others": {},
+     "leave": {},
+     "leaveRate": 0.1,
+     "burnAt": 1.15,
+     "burntScore": 40,
+     "passMeAfterMs": 2500,
+     "items": {
+      "samosa": {
+       "art": "pastry:3",
+       "scale": 0.33,
+       "word": "ph-samosa"
+      },
+      "chips": {
+       "art": "layer:ph-chips",
+       "scale": 0.45,
+       "word": "ph-chips"
+      }
+     }
+    },
+    {
+     "band": [
+      0.66,
+      0.82
+     ],
+     "rate": [
+      0.15,
+      0.22
+     ],
+     "extras": [
+      1,
+      3
+     ],
+     "others": {
+      "chips": [
+       1,
+       2
+      ],
+      "samosa": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "band": [
+      0.68,
+      0.8
+     ],
+     "rate": [
+      0.17,
+      0.26
+     ],
+     "extras": [
+      2,
+      3
+     ],
+     "leave": {
+      "chips": 2,
+      "samosa": 2
+     }
+    }
+   ]
+  }
+ },
+ "art": {
+  "sizes": {
+   "_about": "Size classes (Fable's method, build/reports/size-classes-method-2026-11-06.md; classed 6 Nov, build/reports/size-classes-data-2026-11-06.md): size = L, M or S (STN = station piece, laid out by the scene), sizeFlag = LONG or W. For slot items with no row in words (shelf-only containers, tools, props, vessels). Read by St.classFit (js/cook/station-lib.js), with words[id].size first; chai's shelf uses it (6 Nov, ART-51); the other shelves keep their old numbers in sprites.shelf until their step.",
+   "ph-bajri-atto": {
+    "size": "L"
+   },
+   "ph-rice": {
+    "size": "L"
+   },
+   "ph-cocoa": {
+    "size": "M"
+   },
+   "spi-11": {
+    "size": "S"
+   },
+   "spi-09": {
+    "size": "S"
+   },
+   "ph-sprinkles": {
+    "size": "S"
+   },
+   "ph-oil": {
+    "size": "L"
+   },
+   "ph-juice": {
+    "size": "L"
+   },
+   "ph-ketchup": {
+    "size": "M"
+   },
+   "ph-honey": {
+    "size": "M"
+   },
+   "ph-rose": {
+    "size": "M"
+   },
+   "ph-chicken": {
+    "size": "M"
+   },
+   "ph-fish": {
+    "size": "M"
+   },
+   "ph-butter": {
+    "size": "M"
+   },
+   "ph-cheese": {
+    "size": "M"
+   },
+   "ph-cream": {
+    "size": "M"
+   },
+   "fru-01": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "fru-04": {
+    "size": "M"
+   },
+   "fru-05": {
+    "size": "M"
+   },
+   "fru-06": {
+    "size": "M"
+   },
+   "fru-08": {
+    "size": "M"
+   },
+   "fru-09": {
+    "size": "M"
+   },
+   "veg-04": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "ph-corn": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "ph-eggs": {
+    "size": "M",
+    "sizeFlag": "W"
+   },
+   "ph-bread": {
+    "size": "M",
+    "sizeFlag": "W"
+   },
+   "ph-biscuits": {
+    "size": "M"
+   },
+   "ph-mithai": {
+    "size": "M"
+   },
+   "ph-pastry": {
+    "size": "S"
+   },
+   "ph-crisps": {
+    "size": "M"
+   },
+   "ph-candles": {
+    "size": "S"
+   },
+   "ph-jam": {
+    "size": "M"
+   },
+   "ph-chocolate": {
+    "size": "S"
+   },
+   "glass": {
+    "size": "S"
+   },
+   "hand:knife": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "hand:ladle": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "hand:spatula": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "hand:spoon": {
+    "size": "L",
+    "sizeFlag": "LONG"
+   },
+   "stick": {
+    "size": "M",
+    "sizeFlag": "LONG"
+   },
+   "tawa": {
+    "size": "STN"
+   },
+   "vessel:pan": {
+    "size": "STN"
+   },
+   "vessel:pot": {
+    "size": "STN"
+   },
+   "vessel:tadka": {
+    "size": "STN"
+   },
+   "vessel:serving": {
+    "size": "STN"
+   },
+   "vessel:kadai": {
+    "size": "STN"
+   }
+  },
+  "chaiShelf": {
+   "_about": "Chai's shelf pictures (ART-50: Zafar, 6 Nov, \"swap the chai shelf jars in one change once cut and judged\"): the stove-400 walnut set (build/reports/stove-redo-landed-2026-11-06.md), FA01's eight as one batch and the two tea decoys, cumin and mustard, from FJ01 (the same jar, lid and light, copying FA01), so the shelf never mixes two lid families. Read by js/cook/stations/chai-tray.js (spiceJar) and by the order's word cards while chai is up (js/cook/ui.js). Each item's size is its class (words[id].size, St.classFit), not the picture's. The old two-batch pictures (shelf-*-bare-f, the s02 C5 spice jars) stay in the repo for the other stations and until Zafar has seen this.",
+   "cook-paani": "assets/cook/items-s17-stove/f-water-bottle.webp",
+   "cook-dudh": "assets/cook/items-s17-stove/f-milk-carton.webp",
+   "cook-chai": "assets/cook/items-s17-stove/f-tea-jar.webp",
+   "cook-khun": "assets/cook/items-s17-stove/f-sugar-jar.webp",
+   "spi-10": "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+   "veg-14": "assets/cook/items-s17-stove/f-ginger-jar.webp",
+   "veg-13": "assets/cook/items-s17-stove/f-garlic-jar.webp",
+   "spi-16": "assets/cook/items-s17-stove/f-salt-jar.webp",
+   "spi-02": "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+   "spi-05": "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp"
+  },
+  "_about": "Painted props to load besides the built-in ones and those named by a word's image (assets/cook/props/<name>.webp), e.g. a new dish's omelette-raw / omelette-done.",
+  "props": [
+   "dough-ball-bajr",
+   "chapati-raw-bajr",
+   "chapati-half-bajr",
+   "chapati-puffed-bajr",
+   "chapati-burnt"
+  ],
+  "sprites": {
+   "_about": "Painted item sprites (ChatGPT batch 1, build/reports/archive/chatgpt-batch-1.md), wired over the drawn Phase A art, which stays as the fallback (js/cook/art.js). items: item id (a word id, or a thing: pan, tawa, glass…) -> state -> file stem in `dir` (<stem>.png is the source, <stem>.webp what the game loads; build/sprites_webp.py makes the webp: trimmed, max `max` px, or exactly `w` px wide for a prop it replaces, `square` makes it a circle's box). A word's `bowl` is how it shows on a worktop row (the pantry keeps its props and drawn bowls: its shelves need front views), `whole` flies in the chop, `raw`/`grilled`/`charred` go on a skewer. art: a drawn Art key -> item.state (frames: bake the sprite into the drawing's canvas, at box [x, y, w, h], so every scale and crop in the code still fits). props: a painted prop (assets/cook/props) -> item.state loaded under the prop's name instead. vessels: where a vessel sprite's opening is, as fractions of the sprite [cx, cy, rx, ry] plus the depth of its inside (the liquid and the dashed lines sit in it); size scales it against the drawn one's opening; filled: the sprite already shows what's in it (the kadai's oil), so no liquid is drawn over it. bg: a worktop view -> a 1600x900 webp in assets/cook/bg (day only: the game has no evening or night yet). need: what a station or mechanic loads before it builds (only those; anything else falls back to the drawing and loads for next time). tool-chakla-t and veg-dungri-whole-t now wired (art.chakla; veg-02.whole, the daal chop). Left out on purpose (no station reads that state yet, or a design call): veg-dungri-peeled-t (no peel step, only whole -> chopped), tool-velan-t (the rolling pin is part of the two-hand grip, js/cook/hands.js), vessel-thali-t (vessel:serving already uses chaat-bowl; swapping to a flat thali needs Zafar's call on dishes other than chaat). tools: a painted tool drawn into a drawn hand (Wave 6b).",
+   "dir": "assets/cook/items/",
+   "max": 256,
+   "items": {
+    "spi-01": {
+     "bowl": "spice-hardar-bowl-t"
+    },
+    "spi-02": {
+     "bowl": "spice-jeeru-bowl-t"
+    },
+    "spi-04": {
+     "bowl": "spice-lal-marcha-bowl-t"
+    },
+    "spi-05": {
+     "bowl": "spice-rai-bowl-t"
+    },
+    "spi-10": {
+     "bowl": "spice-elchi-bowl-t"
+    },
+    "spi-16": {
+     "bowl": "spice-loon-bowl-t"
+    },
+    "cook-khun": {
+     "bowl": "dry-khun-bowl-t"
+    },
+    "cook-chai": {
+     "bowl": "dry-chai-leaves-bowl-t"
+    },
+    "cook-atto": {
+     "bowl": "dry-atto-bowl-t"
+    },
+    "cook-daal": {
+     "bowl": "dry-daal-bowl-t"
+    },
+    "ph-ghee": {
+     "bowl": "dry-ghee-bowl-t"
+    },
+    "ph-chana": {
+     "bowl": "topping-channa-bowl-t"
+    },
+    "ph-dahi": {
+     "bowl": "topping-dai-bowl-t"
+    },
+    "ph-amli": {
+     "bowl": "topping-amli-bowl-t"
+    },
+    "ph-lili": {
+     "bowl": "topping-lili-bowl-t"
+    },
+    "ph-sev": {
+     "bowl": "topping-sev-bowl-t"
+    },
+    "ph-dhana": {
+     "bowl": "topping-dhana-chopped-bowl-t"
+    },
+    "ph-keema": {
+     "bowl": "topping-keema-bowl-t"
+    },
+    "ph-chips": {
+     "bowl": "chips-golden-t",
+     "raw": "chips-raw-t"
+    },
+    "veg-01": {
+     "bowl": "veg-bataato-cubed-v2-t",
+     "whole": "veg-bataato-whole-v2-t",
+     "cubed": "veg-bataato-cubed-v2-t",
+     "raw": "assets/cook/items-s08b/potato/potato-cube-v3"
+    },
+    "veg-02": {
+     "bowl": "topping-dungri-chopped-bowl-t",
+     "whole": "veg-dungri-whole-t",
+     "raw": "mishkaki-dungri-raw-t",
+     "grilled": "mishkaki-dungri-grilled-t",
+     "charred": "mishkaki-dungri-charred-t"
+    },
+    "veg-03": {
+     "bowl": "topping-tameto-chopped-bowl-t",
+     "whole": "veg-tameto-whole-t",
+     "raw": "mishkaki-tameto-raw-t",
+     "grilled": "mishkaki-tameto-grilled-t",
+     "charred": "mishkaki-tameto-charred-t"
+    },
+    "veg-10": {
+     "bowl": "topping-vatana-bowl-t"
+    },
+    "veg-12": {
+     "bowl": "topping-marcha-chopped-bowl-t",
+     "whole": "veg-marcha-whole-t"
+    },
+    "veg-13": {
+     "bowl": "veg-lasan-chopped-t",
+     "whole": "veg-lasan-whole-t"
+    },
+    "veg-14": {
+     "bowl": "veg-aadu-grated-bowl-t",
+     "whole": "veg-aadu-whole-t"
+    },
+    "fru-02": {
+     "bowl": "veg-limu-whole-t",
+     "whole": "veg-limu-whole-t"
+    },
+    "ph-meat": {
+     "raw": "mishkaki-meat-raw-t",
+     "grilled": "mishkaki-meat-grilled-t",
+     "charred": "mishkaki-meat-charred-t"
+    },
+    "ph-mishkaki": {
+     "raw": "mishkaki-meat-raw-t",
+     "grilled": "mishkaki-meat-grilled-t",
+     "charred": "mishkaki-meat-charred-t"
+    },
+    "ph-pepper": {
+     "whole": "veg-pepper-whole-t",
+     "raw": "mishkaki-pepper-raw-t",
+     "grilled": "mishkaki-pepper-grilled-t",
+     "charred": "mishkaki-pepper-charred-t"
+    },
+    "ph-samosa": {
+     "folded": "samosa-folded-t",
+     "fried": "samosa-fried-golden-t"
+    },
+    "cook-maani": {
+     "dough": "v3/maani/dough-ball-wheat",
+     "raw": "v3/maani/maani-wheat-raw",
+     "half": "v3/maani/maani-wheat-half",
+     "done": "v3/maani/maani-wheat-cooked",
+     "burnt": "v3/maani/maani-wheat-burnt",
+     "bowl": "v3/maani/maani-wheat-cooked"
+    },
+    "cook-bajrmaani": {
+     "dough": "v3/maani/dough-ball-millet",
+     "raw": "v3/maani/maani-millet-raw",
+     "half": "v3/maani/maani-millet-half",
+     "done": "v3/maani/maani-millet-cooked",
+     "burnt": "v3/maani/maani-millet-burnt",
+     "bowl": "v3/maani/maani-millet-cooked"
+    },
+    "cook-paani": {
+     "jug": "vessel-water-jug-f"
+    },
+    "cook-dudh": {
+     "jug": "vessel-milk-jug-f"
+    },
+    "glass": {
+     "empty": "vessel-glass-chai-empty-f",
+     "full": "vessel-glass-chai-full-f"
+    },
+    "tawa": {
+     "top": {
+      "file": "vessel-tawa-t",
+      "max": 0
+     }
+    },
+    "tool-chakla": {
+     "top": {
+      "file": "tool-chakla-t",
+      "max": 0
+     }
+    },
+    "pan": {
+     "top": {
+      "file": "vessel-saucepan-t",
+      "max": 0
+     }
+    },
+    "pot": {
+     "top": {
+      "file": "vessel-pot-t",
+      "max": 0
+     }
+    },
+    "tadka-pan": {
+     "top": {
+      "file": "vessel-tadka-pan-t",
+      "max": 0
+     }
+    },
+    "chaat-bowl": {
+     "empty": {
+      "file": "chaat-bowl-empty-t",
+      "max": 0
+     }
+    },
+    "katori": {
+     "top": "vessel-katori-t"
+    },
+    "kadai": {
+     "oil": {
+      "file": "vessel-kadai-oil-t",
+      "max": 0
+     }
+    },
+    "plate": {
+     "top": "plate-enamel-empty-t"
+    },
+    "knife": {
+     "tool": {
+      "file": "tool-knife-t-v2",
+      "max": 400
+     }
+    },
+    "ladle": {
+     "tool": {
+      "file": "tool-ladle-t",
+      "max": 400
+     }
+    },
+    "spatula": {
+     "tool": {
+      "file": "tool-spatula-t",
+      "max": 400
+     }
+    },
+    "slotted-spoon": {
+     "tool": {
+      "file": "tool-slotted-spoon-t",
+      "max": 400
+     }
+    },
+    "skewer": {
+     "tool": {
+      "file": "skewer-empty-t",
+      "max": 0
+     }
+    }
+   },
+   "art": {
+    "vessel:pan": "pan.top",
+    "vessel:pot": "pot.top",
+    "vessel:tadka": "tadka-pan.top",
+    "vessel:serving": "chaat-bowl.empty",
+    "vessel:kadai": "kadai.oil",
+    "pastry:3": "ph-samosa.folded",
+    "pastry:4": "ph-samosa.fried",
+    "layer:ph-chips": "ph-chips.raw",
+    "tawa": "tawa.top",
+    "chakla": "tool-chakla.top"
+   },
+   "tools": {
+    "_about": "Wave 6b: a painted tool in a drawn hand (js/cook/art.js): a drawn Art key -> item.state. The sprite (drawn corner to corner, tip top-left) is turned upright into the hand's own canvas, so every scale and angle in the code stays the same; the skewer's bamboo stick replaces the drawn one above its wooden handle (js/cook/mechanics/grill.js). The chakla now uses batch 2's redraw (data.art.sprites.art.chakla, js/cook/art.js). Not yet: the velan (the rolling pin is drawn as part of the two-hand grip, js/cook/hands.js).",
+    "hand:knife": "knife.tool",
+    "hand:ladle": "ladle.tool",
+    "hand:spatula": "spatula.tool",
+    "hand:spoon": "slotted-spoon.tool",
+    "stick": "skewer.tool"
+   },
+   "frames": {
+    "pastry:3": [
+     60,
+     50,
+     240,
+     230
+    ],
+    "pastry:4": [
+     60,
+     50,
+     240,
+     230
+    ],
+    "layer:ph-chips": [
+     40,
+     10,
+     220,
+     180
+    ]
+   },
+   "props": {
+    "chapati-raw": "cook-maani.raw",
+    "chapati-half": "cook-maani.half",
+    "chapati-puffed": "cook-maani.done",
+    "dough-ball": "cook-maani.dough",
+    "chapati-burnt": "cook-maani.burnt",
+    "chapati-raw-bajr": "cook-bajrmaani.raw",
+    "chapati-half-bajr": "cook-bajrmaani.half",
+    "chapati-puffed-bajr": "cook-bajrmaani.done",
+    "dough-ball-bajr": "cook-bajrmaani.dough",
+    "tawa": "tawa.top",
+    "water-jug": "cook-paani.jug",
+    "milk-jug": "cook-dudh.jug",
+    "glass": "glass.empty",
+    "glass-chai": "glass.full"
+   },
+   "vessels": {
+    "pan": {
+     "rim": [
+      0.34,
+      0.575,
+      0.317,
+      0.323
+     ],
+     "depth": 0.075
+    },
+    "pot": {
+     "rim": [
+      0.497,
+      0.455,
+      0.372,
+      0.421
+     ],
+     "depth": 0.079
+    },
+    "tadka": {
+     "rim": [
+      0.391,
+      0.617,
+      0.364,
+      0.306
+     ],
+     "depth": 0.069
+    },
+    "serving": {
+     "rim": [
+      0.495,
+      0.5,
+      0.459,
+      0.464
+     ],
+     "depth": 0.026
+    },
+    "kadai": {
+     "rim": [
+      0.501,
+      0.556,
+      0.303,
+      0.374
+     ],
+     "depth": 0,
+     "size": 0.78,
+     "filled": true
+    }
+   },
+   "bg": {
+    "marble": "assets/cook/worktop-s17/marble-white-s17",
+    "hob": "assets/cook/worktop-s17/marble-white-s17",
+    "pantry": "bg-pantry-v3-1600"
+   },
+   "bgTile": {
+    "_about": "Zafar, 5 Nov: 'change this to the new background marble for the stove top down games': the white marble (pack s17-art4 MW, edges blended to tile, x2: assets/cook/worktop-s17/marble-white-s17) replaces s08c's cream tile for the marble and hob views. Was: contract-11, SH-91, ART-05 (s08 w7A; Zafar 15 Oct: 'one very large upscaled image ... stuff above and below'): the top-down worktops are s08c's seamless marble tile (WT1, assets/cook/worktop-s08c/marble-tile-s08c, x2), laid tiled by js/cook/stations.js fitBg at k design px per source px, never zoomed; the hob's plate (cut from bg-cook-hob-t-v1, x2: build/tools/art/specs/s08c-cook-post.py) lies on it at box (design px: where the -1600 picture drew it). The -1600 pictures stay on disk, unused.",
+    "marble": {
+     "k": 0.5
+    },
+    "hob": {
+     "k": 0.5,
+     "plate": "assets/cook/worktop-s08c/hob-plate-s08c",
+     "box": [
+      247.8,
+      69.4,
+      1356.2,
+      739.5
+     ]
+    }
+   },
+   "shelf": {
+    "_about": "Pantry v2 (28 Sept, docs/archive/art-prompts/chatgpt-art-prompts-pantry-jars.md): each item as a side-on container for the pantry's shelves and fridge, `<id>.shelf` -> [file stem, size], the stem under art.sprites.dir. s19-pantry (11 Nov; the art audit, build/reports/s19-art-audit.md; Zafar's 10 Nov rule: a piece used again is at the house standard): every item with a picture in the stored walnut shelf set is that picture (../items-s17-stove/f-*: one jar, one lid, one light; single vegetables, not the pine crates); the rest keep the old pantry-v2 cut (the orange, fru-04, until the art run's PS1; pear, apple, juice, cheese and the sweets and party things the pantry never shows). size is no longer read by the pantry: it stands each thing by its size class (words[id].size, else art.sizes; js/cook/mechanics/fetch.js), never its true size.",
+    "cook-atto": [
+     "../items-s17-stove/f-chapati-flour-atta",
+     1
+    ],
+    "ph-bajri-atto": [
+     "../items-s17-stove/f-millet-flour-bajri",
+     1
+    ],
+    "cook-khun": [
+     "../items-s17-stove/f-sugar-jar",
+     1
+    ],
+    "cook-chai": [
+     "../items-s17-stove/f-tea-jar",
+     1
+    ],
+    "cook-daal": [
+     "../items-s17-stove/f-red-lentils-masoor",
+     1
+    ],
+    "ph-chana": [
+     "../items-s17-stove/f-dried-chickpeas",
+     1
+    ],
+    "ph-sev": [
+     "../items-s17-stove/f-sev-crispy-noodles",
+     1
+    ],
+    "ph-rice": [
+     "../items-s17-stove/f-basmati-rice",
+     1
+    ],
+    "ph-cocoa": [
+     "../items-s17-stove/f-cocoa-powder",
+     1
+    ],
+    "spi-01": [
+     "../items-s17-stove/f-turmeric-jar",
+     0.8
+    ],
+    "spi-02": [
+     "../items-s17-stove/f-cumin-seeds-jar",
+     0.8
+    ],
+    "spi-05": [
+     "../items-s17-stove/f-mustard-seeds-jar",
+     0.8
+    ],
+    "spi-10": [
+     "../items-s17-stove/f-cardamom-jar",
+     1
+    ],
+    "spi-16": [
+     "../items-s17-stove/f-salt-jar",
+     1
+    ],
+    "spi-04": [
+     "../items-s17-stove/f-red-chilli-powder-jar",
+     0.8
+    ],
+    "spi-11": [
+     "../items-s17-stove/f-black-pepper-jar",
+     0.8
+    ],
+    "spi-09": [
+     "../items-s17-stove/f-cinnamon-sticks-jar",
+     0.8
+    ],
+    "ph-sprinkles": [
+     "shelf-ph-sprinkles-bare-f",
+     0.8
+    ],
+    "cook-dudh": [
+     "../items-s17-stove/f-milk-carton",
+     1
+    ],
+    "cook-paani": [
+     "../items-s17-stove/f-water-bottle",
+     1
+    ],
+    "ph-oil": [
+     "../items-s17-stove/f-cooking-oil",
+     1
+    ],
+    "ph-amli": [
+     "../items-s17-stove/f-tamarind-chutney",
+     1
+    ],
+    "ph-lili": [
+     "../items-s17-stove/f-green-mint-chutney",
+     1
+    ],
+    "ph-juice": [
+     "shelf-ph-juice-bare-f",
+     1
+    ],
+    "ph-ketchup": [
+     "../items-s17-stove/f-tomato-ketchup",
+     1
+    ],
+    "ph-honey": [
+     "../items-s17-stove/f-honey",
+     1
+    ],
+    "ph-rose": [
+     "../items-s17-stove/f-rose-water",
+     1
+    ],
+    "ph-dahi": [
+     "../items-s17-stove/f-yoghurt",
+     0.7
+    ],
+    "ph-keema": [
+     "../items-s17-stove/f-mince",
+     0.7
+    ],
+    "ph-meat": [
+     "../items-s17-stove/f-lamb",
+     0.7
+    ],
+    "ph-ghee": [
+     "../items-s17-stove/f-ghee",
+     0.7
+    ],
+    "ph-chicken": [
+     "../items-s17-stove/f-chicken",
+     0.7
+    ],
+    "ph-fish": [
+     "../items-s17-stove/f-fish",
+     0.7
+    ],
+    "ph-butter": [
+     "../items-s17-stove/f-butter",
+     0.7
+    ],
+    "ph-cheese": [
+     "shelf-ph-cheese-bare-f",
+     0.7
+    ],
+    "ph-cream": [
+     "../items-s17-stove/f-cream",
+     0.7
+    ],
+    "veg-01": [
+     "../items-s17-stove/f-potato",
+     0.9
+    ],
+    "veg-02": [
+     "../items-s17-stove/f-onion",
+     0.9
+    ],
+    "veg-03": [
+     "../items-s17-stove/f-tomato",
+     0.9
+    ],
+    "veg-12": [
+     "../items-s17-stove/f-green-chilli",
+     0.9
+    ],
+    "veg-13": [
+     "../items-s17-stove/f-garlic-jar",
+     1
+    ],
+    "veg-14": [
+     "../items-s17-stove/f-ginger-jar",
+     1
+    ],
+    "veg-10": [
+     "../items-s17-stove/f-peas-in-the-pod",
+     0.9
+    ],
+    "ph-pepper": [
+     "../items-s17-stove/f-green-pepper",
+     0.9
+    ],
+    "ph-dhana": [
+     "../items-s17-stove/f-coriander-bunch",
+     0.9
+    ],
+    "fru-02": [
+     "../items-s17-stove/f-lemon",
+     0.9
+    ],
+    "fru-01": [
+     "../items-s17-stove/f-banana",
+     0.9
+    ],
+    "fru-04": [
+     "v4/pantry/orange",
+     0.9
+    ],
+    "fru-05": [
+     "../items-s17-stove/f-ripe-mango",
+     0.9
+    ],
+    "fru-06": [
+     "shelf-fru-06-bare-f",
+     0.9
+    ],
+    "fru-08": [
+     "shelf-fru-08-bare-f",
+     0.9
+    ],
+    "fru-09": [
+     "../items-s17-stove/f-coconut",
+     0.9
+    ],
+    "veg-04": [
+     "../items-s17-stove/f-carrot",
+     0.9
+    ],
+    "ph-corn": [
+     "../items-s17-stove/f-corn-cob-in-husk",
+     0.9
+    ],
+    "ph-eggs": [
+     "../items-s17-stove/f-eggs-in-a-box",
+     0.85
+    ],
+    "ph-bread": [
+     "../items-s17-stove/f-bread-loaf",
+     0.85
+    ],
+    "ph-biscuits": [
+     "shelf-ph-biscuits-bare-f",
+     0.85
+    ],
+    "ph-mithai": [
+     "shelf-ph-mithai-bare-f",
+     0.85
+    ],
+    "ph-pastry": [
+     "../items-s17-stove/f-samosa-pastry-sheets",
+     0.85
+    ],
+    "ph-crisps": [
+     "shelf-ph-crisps-bare-f",
+     0.85
+    ],
+    "ph-candles": [
+     "shelf-ph-candles-bare-f",
+     0.85
+    ],
+    "ph-jam": [
+     "shelf-ph-jam-bare-f",
+     0.85
+    ],
+    "ph-chocolate": [
+     "shelf-ph-chocolate-bare-f",
+     0.85
+    ],
+    "_s02": "S02-E (C5, PA14/PAN-09): garlic, ginger, cardamom and salt use the art run's small jars with lids that differ (shelf-<name>-jar-v2-f), at a whole slot (1)"
+   },
+   "need": {
+    "fetch": [
+     "bg:pantry",
+     "cook-atto.shelf",
+     "cook-khun.shelf",
+     "cook-chai.shelf",
+     "cook-daal.shelf",
+     "ph-chana.shelf",
+     "ph-sev.shelf",
+     "spi-01.shelf",
+     "spi-02.shelf",
+     "spi-05.shelf",
+     "spi-10.shelf",
+     "spi-16.shelf",
+     "spi-04.shelf",
+     "cook-dudh.shelf",
+     "cook-paani.shelf",
+     "ph-amli.shelf",
+     "ph-lili.shelf",
+     "ph-dahi.shelf",
+     "ph-keema.shelf",
+     "ph-meat.shelf",
+     "ph-ghee.shelf",
+     "veg-01.shelf",
+     "veg-02.shelf",
+     "veg-03.shelf",
+     "veg-12.shelf",
+     "veg-13.shelf",
+     "veg-14.shelf",
+     "veg-10.shelf",
+     "ph-pepper.shelf",
+     "ph-dhana.shelf",
+     "fru-02.shelf",
+     "spi-11.shelf",
+     "spi-09.shelf",
+     "fru-01.shelf",
+     "fru-04.shelf",
+     "fru-05.shelf",
+     "veg-04.shelf"
+    ],
+    "pour": [
+     "pan.top"
+    ],
+    "watch": [
+     "pan.top"
+    ],
+    "boil": [
+     "pan.top"
+    ],
+    "count": [
+     "pan.top",
+     "cook-khun.bowl",
+     "spi-16.bowl",
+     "cook-atto.bowl"
+    ],
+    "add": [
+     "pan.top",
+     "cook-chai.bowl",
+     "spi-10.bowl",
+     "veg-14.bowl",
+     "spi-02.bowl",
+     "spi-05.bowl"
+    ],
+    "chai-tray": [
+     "bg:marble",
+     "pan.top",
+     "cook-chai.bowl",
+     "spi-02.bowl",
+     "spi-05.bowl",
+     "cook-khun.bowl",
+     "spi-16.bowl",
+     "spi-10.bowl",
+     "veg-14.bowl",
+     "veg-13.bowl"
+    ],
+    "chop": [
+     "knife.tool",
+     "veg-01.whole",
+     "veg-02.whole",
+     "veg-03.whole",
+     "veg-12.whole",
+     "veg-13.whole",
+     "veg-14.whole"
+    ],
+    "tadka": [
+     "pot.top",
+     "tadka-pan.top",
+     "spi-02.bowl",
+     "spi-05.bowl",
+     "spi-01.bowl",
+     "veg-12.bowl",
+     "spi-16.bowl",
+     "veg-13.bowl"
+    ],
+    "assemble": [],
+    "fill": [
+     "chaat-bowl.empty",
+     "ph-keema.bowl",
+     "veg-01.bowl",
+     "veg-10.bowl",
+     "veg-02.bowl",
+     "veg-12.bowl",
+     "ph-dhana.bowl"
+    ],
+    "fold": [
+     "ph-samosa.folded",
+     "plate.top"
+    ],
+    "fry": [
+     "slotted-spoon.tool",
+     "kadai.oil",
+     "ph-samosa.folded",
+     "ph-samosa.fried",
+     "ph-chips.raw"
+    ],
+    "knead": [
+     "chaat-bowl.empty"
+    ],
+    "flip": [
+     "chaat-bowl.empty",
+     "spatula.tool",
+     "tawa.top"
+    ],
+    "tawa": [
+     "chaat-bowl.empty",
+     "spatula.tool",
+     "tawa.top"
+    ],
+    "stir": [
+     "ladle.tool"
+    ],
+    "maani-line": [],
+    "thread": [
+     "skewer.tool",
+     "katori.top",
+     "ph-meat.raw",
+     "ph-pepper.raw",
+     "veg-02.raw",
+     "veg-03.raw",
+     "veg-01.raw",
+     "veg-01.cubed"
+    ],
+    "grill": [
+     "skewer.tool",
+     "ph-meat.raw",
+     "ph-pepper.raw",
+     "veg-02.raw",
+     "veg-03.raw",
+     "ph-mishkaki.grilled",
+     "ph-pepper.grilled",
+     "veg-02.grilled",
+     "veg-03.grilled",
+     "ph-mishkaki.charred",
+     "ph-pepper.charred",
+     "veg-02.charred",
+     "veg-03.charred",
+     "ph-chips.bowl"
+    ],
+    "mishkaki-grill": [
+     "bg:marble",
+     "skewer.tool",
+     "katori.top",
+     "ph-mishkaki.raw",
+     "ph-pepper.raw",
+     "veg-02.raw",
+     "veg-03.raw",
+     "veg-01.raw",
+     "veg-01.cubed"
+    ]
+   }
+  },
+  "s02": {
+   "_about": "S02-B: the art run s02's Cook pictures (build/tools/art/specs/s02.run.yaml), by the id the game asks for. Until a line lands, `ready` is false and the game keeps the current art (or a drawn stand-in). When /art-run cuts one: set `file` (the game's webp), `ready: true` and the measured `meta` (sizes, registration points, the flat inner area). Nothing else changes in code.",
+   "kitchen-trays": {
+    "line": "KG (s19-k2, ART-77: the serving kitchen's tall painting; was KT, s14 ART-28)",
+    "file": "assets/cook/serve/kitchen-tall.webp",
+    "_s19serve2": "s19-serve2 (11 Nov): KG 1448x1086 (sources/art/s19-k2/results/best/KG.png) to 2100x1575 by LANCZOS and a light unsharp mask (radius 1.2, 45%; no Real-ESRGAN here), not shifted: its island's back edge measured at y 1058.5 (core y 608.5, K1's 1058), its front lip at about 1465-1480 (design 1015-1030), so the ordering view keeps 292 px of marble and the serving view (158 down) is the island's top. KO and KS (1672x941) to 2100 wide, KO 130 px down and KS 216 (its view drawn 158 lower), each back edge on the same world line, the wall's top row carried on above, the island's bottom row below. The tray: tray-src's two ends joined (840 of its 1400 px, an 80 px blend), 480x208. meta.trays stay as the people's spots.",
+    "_s19serve": "s19-serve (11 Nov): the tall kitchen with no trays; trays and dishes are pieces placed per person (js/cook/serve.js); the stand-in from v2 until ART-77 landed (s19-serve2)",
+    "_v2": "ART-28 (Zafar's s14 run, 29 Oct): KT on K1's placement (x1.367, 126 px down, the top row carried on; Real-ESRGAN x2, 29 Oct); its island's back edge at y 1054 (K1's 1058) and the trays where K1's were, so core, occluder and trays are unchanged.",
+    "ready": true,
+    "core": [
+     250,
+     450
+    ],
+    "_core": "SH-91, CK-44 (s07-cook, 16 Oct): the kitchen's master, 2100x1350 (K1 upscaled x1.367 by Real-ESRGAN, set 126 px down so its island's back edge lands on core y 608; the 126 px of ceiling above are its top row carried on; 177 px of the island's wooden front trimmed). The 1600x900 core sits at `core` (x, y) in it; fitBg draws it 1:1 with the core on the design box, and the occluder and the trays' fronts are cut from it at the same place (stations.js serviceFrame).",
+    "meta": {
+     "trays": [
+      [
+       350,
+       662,
+       324,
+       64
+      ],
+      [
+       803,
+       662,
+       327,
+       64
+      ],
+      [
+       1258,
+       662,
+       329,
+       64
+      ]
+     ],
+     "_about": "three tray boxes in core design px [cx, cy, w, h], left to right, measured on the master's core (brown-rim mask); the island's back edge lands at y 608 as on service-v2 (the occluder crops at 611)"
+    },
+    "station": "service"
+   },
+   "served-dishes": {
+    "line": "B1",
+    "file": "assets/cook/items/served/",
+    "ready": true,
+    "meta": {
+     "_about": "recipe -> its served picture (the counter's angle, light from the left; no shadow drawn in: code adds it to the right). S04-C (build/cut_s04c.py): chaat-v2 is the side-on glass bowl at the tray's low camera, and it and pantry-basket-v2 are seated (a clear strip under the dish puts its base on the tray's floor line, y 658, mid-floor behind the front rim). h is the drawn height in design px on the tray. Sekelo (mishkaki) is the s03 redo of B1's cell 7 (no green pepper; build/gen_s03.py S1). A variant (of, when: noMilk) is the same recipe's picture for a cup with no milk (black tea, CHAI-07).",
+     "dishes": {
+      "chai": {
+       "file": "assets/cook/items/served/chai-milk.webp",
+       "w": 246,
+       "h": 300,
+       "drawH": 130
+      },
+      "chai-black": {
+       "file": "assets/cook/items/served/chai-black.webp",
+       "w": 245,
+       "h": 300,
+       "drawH": 130,
+       "of": "chai",
+       "when": "noMilk"
+      },
+      "maani": {
+       "file": "assets/cook/items/served/maani.webp",
+       "w": 300,
+       "h": 197,
+       "drawH": 124
+      },
+      "daal": {
+       "file": "assets/cook/items/served/daar-v2.webp",
+       "w": 300,
+       "h": 234,
+       "drawH": 128
+      },
+      "chaat": {
+       "file": "assets/cook/items/served/chaat-v2.webp",
+       "w": 320,
+       "h": 200,
+       "drawH": 100.0
+      },
+      "samosa": {
+       "file": "assets/cook/items/served/samosa.webp",
+       "w": 300,
+       "h": 257,
+       "drawH": 128,
+       "shows": 3
+      },
+      "samosa-one": {
+       "file": "assets/cook/items/samosa-fried-golden-t.webp",
+       "w": 256,
+       "h": 221,
+       "drawH": 88,
+       "of": "samosa",
+       "_about": "SAM-36: one fried samosa, drawn as many times as were ordered when the plate picture (shows 3) is another count"
+      },
+      "pantry": {
+       "file": "assets/cook/items/served/pantry-basket-v2.webp",
+       "w": 296,
+       "h": 293,
+       "drawH": 135.9
+      },
+      "mishkaki": {
+       "file": "assets/cook/items/served/sekelo.webp",
+       "w": 300,
+       "h": 170,
+       "drawH": 100
+      }
+     }
+    },
+    "station": "service"
+   },
+   "chai-pan-pour-milk": {
+    "line": "C1",
+    "file": "assets/cook/items/chai-v2/pan-pour-milk-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08, build/tools/art/specs/s08-cp1.cut.json): straight down, on one canvas with the tilts (431x354, registered by the spout and the handle). The origin is on the painted stream at 80% down (the stream's last fifth runs on into the glass); scale: the rim is 0.5954 of this picture's width, so x1.51 draws it the size of the pan's rim on the hob (1.84 panR, against the 2.05 panR the station sizes the picture by)",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-pour-black": {
+    "line": "C2",
+    "file": "assets/cook/items/chai-v2/pan-pour-black-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2831,
+     "lipY": 0.926,
+     "_about": "CP1 (s08): as chai-pan-pour-milk, black tea in the pan and the stream",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-0": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-0-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): the milk chai pan flat, then tipped 15, 30 and 45 degrees (chai-pan-tilt-0 .. -45), on chai-pan-pour-milk's canvas and origin, so the pour steps through them over the glass before its stream (chai-tray.js panTap). Milk chai only: a black-tea pour goes straight to chai-pan-pour-black",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-15": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-15-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): see chai-pan-tilt-0",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-30": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-30-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): see chai-pan-tilt-0",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-pan-tilt-45": {
+    "line": "CP1",
+    "file": "assets/cook/items/chai-v2/pan-tilt-45-v2.webp",
+    "ready": true,
+    "meta": {
+     "lipX": 0.2773,
+     "lipY": 0.9328,
+     "_about": "CP1 (s08): see chai-pan-tilt-0",
+     "scale": 1.51
+    },
+    "station": "chai-tray",
+    "size": [
+     431,
+     354
+    ]
+   },
+   "chai-glass-black-half": {
+    "line": "C3 / s08c GL1",
+    "file": "assets/cook/items-s08c/glass/glass-black-top-s08c.webp",
+    "ready": true,
+    "station": "chai-tray",
+    "size": [
+     480,
+     466
+    ],
+    "_about": "CHAI-08 (s08 w7A): GL1 cell 3, black tea from exactly above (the half glass: composed in js/cook/stations/chai-tray.js over the empty one)"
+   },
+   "chai-glass-black-full": {
+    "line": "C3 / s08c GL1",
+    "file": "assets/cook/items-s08c/glass/glass-black-top-s08c.webp",
+    "ready": true,
+    "station": "chai-tray",
+    "size": [
+     480,
+     466
+    ],
+    "_about": "CHAI-08 (s08 w7A): GL1 cell 3, black tea from exactly above"
+   },
+   "teaspoon": {
+    "line": "C4 / s08c TP1",
+    "file": "assets/cook/items-s08c/teaspoon/teaspoon-sugar-s08c.webp",
+    "ready": true,
+    "meta": {
+     "bowl": [
+      0.2219,
+      0.5
+     ],
+     "len": 0.9313,
+     "end": 0.9563,
+     "_about": "CHAI-13 (s08 w7A): TP1 cell 2, the spoonful of sugar (and the salt that looks like it): its bowl's centre and length, of its 480 x 139 (assets/cook/items-s08c/meta.json bowls)"
+    },
+    "station": "chai-tray, count",
+    "size": [
+     480,
+     139
+    ]
+   },
+   "sekelo-plate": {
+    "line": "C7",
+    "file": "assets/cook/items/v4/kit/plate-steel.webp",
+    "ready": true,
+    "meta": {
+     "flat": [
+      0.5,
+      0.5,
+      0.4,
+      0.4
+     ]
+    },
+    "station": "mishkaki-grill",
+    "size": [
+     780,
+     551
+    ]
+   },
+   "chaat-glass": {
+    "line": "C8",
+    "file": "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
+    "ready": true,
+    "station": "assemble",
+    "size": [
+     800,
+     311
+    ],
+    "meta": {
+     "_about": "CHT-13 (s08 w3B): the s08b art run's exactly side-on bowl (CH1, assets/s08b-cut-data.json), measured on its @2x cut the way build/check_vessel_meta.py measures bowl-side (fractions of the sprite): rim = under the rim's bright band, floor = where the thick base starts; side-on, so a level's ellipse is nearly flat (ery); inside = the silhouette less its 29 px (2x) wall at 41 heights. Was the S02-E bowl-side-v2 (C8).",
+     "bowl": {
+      "w": 800,
+      "h": 311,
+      "cx": 0.4989,
+      "rim": 0.0728,
+      "floor": 0.8701,
+      "eryRim": 0.006,
+      "eryFloor": 0.0107,
+      "floorTop": 0.8504,
+      "floorHw": 0.3572,
+      "inside": [
+       [
+        0.0314,
+        0.9671
+       ],
+       [
+        0.0314,
+        0.9671
+       ],
+       [
+        0.0314,
+        0.9671
+       ],
+       [
+        0.0329,
+        0.9648
+       ],
+       [
+        0.0352,
+        0.964
+       ],
+       [
+        0.0391,
+        0.9602
+       ],
+       [
+        0.0421,
+        0.9564
+       ],
+       [
+        0.0459,
+        0.9533
+       ],
+       [
+        0.049,
+        0.9502
+       ],
+       [
+        0.0528,
+        0.9464
+       ],
+       [
+        0.0559,
+        0.9433
+       ],
+       [
+        0.0597,
+        0.9395
+       ],
+       [
+        0.0628,
+        0.9357
+       ],
+       [
+        0.0666,
+        0.9326
+       ],
+       [
+        0.0697,
+        0.9288
+       ],
+       [
+        0.0735,
+        0.9257
+       ],
+       [
+        0.0766,
+        0.9219
+       ],
+       [
+        0.0804,
+        0.9188
+       ],
+       [
+        0.0835,
+        0.915
+       ],
+       [
+        0.0865,
+        0.9119
+       ],
+       [
+        0.0904,
+        0.9081
+       ],
+       [
+        0.0942,
+        0.9043
+       ],
+       [
+        0.0972,
+        0.9012
+       ],
+       [
+        0.1003,
+        0.8974
+       ],
+       [
+        0.1041,
+        0.8936
+       ],
+       [
+        0.1072,
+        0.8905
+       ],
+       [
+        0.111,
+        0.8867
+       ],
+       [
+        0.1149,
+        0.8836
+       ],
+       [
+        0.1179,
+        0.8798
+       ],
+       [
+        0.121,
+        0.876
+       ],
+       [
+        0.1248,
+        0.8729
+       ],
+       [
+        0.1279,
+        0.8691
+       ],
+       [
+        0.1317,
+        0.866
+       ],
+       [
+        0.1355,
+        0.8622
+       ],
+       [
+        0.1386,
+        0.8583
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ],
+       [
+        0.1417,
+        0.8553
+       ]
+      ]
+     }
+    }
+   },
+   "knife": {
+    "line": "C9",
+    "file": "assets/cook/items/tool-knife-t-v2.webp",
+    "ready": true,
+    "meta": {
+     "blade": [
+      0.02,
+      0.45,
+      0.57,
+      0.92
+     ]
+    },
+    "station": "daar",
+    "size": [
+     300,
+     63
+    ]
+   },
+   "daar-bowl": {
+    "line": "C10",
+    "file": "assets/cook/items/v3/daar/daar-bowl-plain-t.webp",
+    "ready": true,
+    "station": "daar",
+    "size": [
+     489,
+     490
+    ],
+    "_s03": "S03-D: redrawn (s03 S2, matte daar, Fable passed); on daar-bowl-trivet-plain-v2 canvas (daar.js TRIVET_PLAIN)"
+   },
+   "daar-trivet": {
+    "line": "C10",
+    "file": "assets/cook/items/v3/daar/trivet-t.webp",
+    "ready": true,
+    "station": "daar",
+    "size": [
+     360,
+     358
+    ]
+   },
+   "samosa-fold-1": {
+    "line": "C11",
+    "file": "assets/cook/items/v3/samosa/fold-v2-1.webp",
+    "ready": true,
+    "meta": {
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
+    },
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
+   },
+   "samosa-fold-2": {
+    "line": "C11",
+    "file": "assets/cook/items/v3/samosa/fold-v2-2.webp",
+    "ready": true,
+    "meta": {
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
+    },
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
+   },
+   "samosa-fold-3": {
+    "line": "C11",
+    "file": "assets/cook/items/v3/samosa/fold-v2-3.webp",
+    "ready": true,
+    "meta": {
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
+    },
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
+   },
+   "samosa-fold-4": {
+    "line": "C11",
+    "file": "assets/cook/items/v3/samosa/fold-v2-4.webp",
+    "ready": true,
+    "meta": {
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
+    },
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
+   },
+   "samosa-fold-5": {
+    "line": "C11",
+    "file": "assets/cook/items/v3/samosa/fold-v2-5.webp",
+    "ready": true,
+    "meta": {
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
+    },
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
+   },
+   "samosa-fold-6": {
+    "line": "C11",
+    "file": "assets/cook/items/v3/samosa/fold-v2-6.webp",
+    "ready": true,
+    "meta": {
+     "_about": "the six frames on one registered canvas: the strip's top and bottom lines and its left end are at the same place in each"
+    },
+    "station": "samosa",
+    "size": [
+     482,
+     149
+    ]
+   },
+   "coin-jar-empty": {
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-0.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
+   },
+   "coin-jar-quarter": {
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-1.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
+   },
+   "coin-jar-half": {
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-2.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
+   },
+   "coin-jar-three-quarter": {
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-3.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
+   },
+   "coin-jar-full": {
+    "line": "D1-slot",
+    "file": "assets/cook/items/jar/jar-slot-4.webp",
+    "ready": true,
+    "station": "summary",
+    "size": [
+     209,
+     360
+    ],
+    "meta": {
+     "slot": [
+      0.5,
+      0.07
+     ],
+     "_about": "Zafar's slot-lid jar: the coin goes in at the slot (fractions of the picture)"
+    }
+   },
+   "coin-pile": {
+    "line": "D2",
+    "file": "assets/cook/items/jar/coin-pile.webp",
+    "ready": true,
+    "station": "summary"
+   },
+   "_station": "Decision 68 (modular loading, J11): each id names the station that loads it (St.artLoad in that station; 'service' is the kitchen view's background, swapped in CookScene.preload's existing bg-service entry only once ready; 'summary' is the day's coin jar), for Session E's per-station manifests",
+   "chai-glass-black-empty": {
+    "line": "C3",
+    "file": "assets/cook/items/chai-v2/glass-black-empty.webp",
+    "ready": true,
+    "station": "chai-tray",
+    "size": [
+     213,
+     256
+    ]
+   },
+   "coin": {
+    "line": "D2",
+    "file": "assets/cook/items/jar/coin.webp",
+    "ready": true,
+    "station": "summary"
+   },
+   "ginger-root": {
+    "line": "C6",
+    "file": "assets/cook/items/chai-v2/ginger-root-t.webp",
+    "ready": true,
+    "station": "chai-tray"
+   },
+   "ginger-slices": {
+    "line": "C6",
+    "file": "assets/cook/items/chai-v2/ginger-slices-t.webp",
+    "ready": true,
+    "station": "chai-tray"
+   },
+   "spice-jar-lasan": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-lasan-jar-v2-f.webp",
+    "ready": true,
+    "word": "veg-13",
+    "station": "chai-tray, fetch"
+   },
+   "spice-jar-aadu": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-aadu-jar-v2-f.webp",
+    "ready": true,
+    "word": "veg-14",
+    "station": "chai-tray, fetch"
+   },
+   "spice-jar-elchi": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-elchi-jar-v2-f.webp",
+    "ready": true,
+    "word": "spi-10",
+    "station": "chai-tray, fetch"
+   },
+   "spice-jar-loon": {
+    "line": "C5",
+    "file": "assets/cook/items/shelf-loon-jar-v2-f.webp",
+    "ready": true,
+    "word": "spi-16",
+    "station": "chai-tray, fetch"
+   },
+   "teaspoon-empty": {
+    "line": "s08c TP1",
+    "file": "assets/cook/items-s08c/teaspoon/teaspoon-empty-s08c.webp",
+    "ready": true,
+    "meta": {
+     "bowl": [
+      0.2448,
+      0.4964
+     ],
+     "len": 0.9292,
+     "end": 0.9854,
+     "_about": "CHAI-13: TP1 cell 1, the clean spoon (another spoonful lies on it; the stir in water or black tea)"
+    },
+    "station": "chai-tray, count",
+    "size": [
+     480,
+     139
+    ]
+   },
+   "teaspoon-chai": {
+    "line": "s08c TP1",
+    "file": "assets/cook/items-s08c/teaspoon/teaspoon-chai-s08c.webp",
+    "ready": true,
+    "meta": {
+     "bowl": [
+      0.2,
+      0.4892
+     ],
+     "len": 0.9354,
+     "end": 0.9458,
+     "_about": "CHAI-13: TP1 cell 3, the spoon wet with milky chai (the stir in a pan with milk)"
+    },
+    "station": "chai-tray, count",
+    "size": [
+     480,
+     139
+    ]
+   }
+  },
+  "serve": {"mode": "tall", "_about": "the serving kitchen (js/cook/serve.js, s19-serve, Zafar 11 Nov): tall = one painting scrolled down for the serve (KG), two = the ordering and serving pictures crossfaded (KO, KS); the tray and each dish's size class are serve.js DEFAULTS (tray, sizes, dishes), any of them overridable here"},
+  "assets": {
+   "_about": "Decision 68 (J11, S02-E): what Cook loads, by screen. shared: the textures the scene preloads (the kitchen, Nani, the customers, the cousin's badge): nothing else loads at open. stations[key].props: the prop textures (assets/cook/props/<name>.webp, or the painted sprite data.art.sprites.props names) a station loads when it is chosen (Cook.Art.need, with its painted sprites data.art.sprites.need[key]); stations[key].files: the folders and files the station's own code may load (its art lists); stations[key].prefetch: the files it shows first, warmed into the browser's cache while its order is read, which build/tools/review/loadcheck.mjs holds every page to. A station that loads anything outside shared + its own entry fails the load check.",
+   "shared": {
+    "images": {
+     "bg-service": "assets/cook/bg/service.jpg",
+     "nani-neutral": "assets/cook/characters/nani-neutral-v3.webp",
+     "nani-talk": "assets/cook/characters/nani-talk-v3.webp",
+     "nani-happy": "assets/cook/characters/nani-happy-v3.webp",
+     "nani-point": "assets/cook/characters/nani-point-v3.webp",
+     "nani-point-front": "assets/cook/characters/nani-point-front-v3.webp",
+     "nani-blink": "assets/cook/characters/nani-blink-v3.webp",
+     "nana-happy": "assets/cook/characters/nana-happy.webp",
+     "nana-neutral": "assets/cook/characters/nana-neutral.webp",
+     "nana-impatient": "assets/cook/characters/nana-impatient.webp",
+     "ma-happy": "assets/cook/characters/ma-happy.webp",
+     "ma-neutral": "assets/cook/characters/ma-neutral.webp",
+     "ma-impatient": "assets/cook/characters/ma-impatient.webp",
+     "cousin-happy": "assets/cook/characters/cousin-happy.webp",
+     "cousin-neutral": "assets/cook/characters/cousin-neutral.webp",
+     "cousin-impatient": "assets/characters/ali/cousin-impatient.webp",
+     "cousin-badge": "assets/cook/characters/cousin-face.webp",
+     "nana-talk": "assets/characters/nana/nana-talk.webp",
+     "nana-blink": "assets/characters/nana/nana-blink.webp",
+     "ma-talk": "assets/characters/ma/ma-talk.webp",
+     "ma-blink": "assets/characters/ma/ma-blink.webp",
+     "cousin-talk": "assets/characters/ali/cousin-talk.webp",
+     "cousin-blink": "assets/characters/ali/cousin-blink.webp"
+    },
+    "files": [
+      "assets/cook/serve/*",
+     "assets/cook/bg/service*",
+     "assets/cook/characters/*",
+     "assets/shared/faces/*",
+     "assets/ui/**",
+     "assets/cook/bg/bg-cook-*-1600.webp",
+     "assets/cook/worktop-s08c/*",
+     "assets/cook/worktop-s17/*",
+     "assets/shared/panel/*",
+     "assets/shared/juice/bu-*.webp", "assets/cook/items/v4/kit/tray-stone*.webp", "assets/cook/items/v4/chop/*-whole.webp"
+    ],
+    "_files": "allowed on every Cook page, loaded only where shown (never preloaded): the people's faces, the shared screens' pictures, the painted worktops"
+   },
+   "stations": {
+    "fetch": {
+     "props": [],
+     "files": [
+      "assets/cook/bg/bg-pantry-v3-1600.webp",
+      "assets/cook/items/shelf-*",
+      "assets/cook/items/v4/pantry/orange.webp",
+      "assets/cook/items/served/pantry-basket-v2.webp",
+      "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
+      "assets/cook/items/vessel-milk-jug-f.webp",
+      "assets/cook/items/vessel-water-jug-f.webp",
+      "assets/cook/items-s17-stove/f-banana.webp",
+      "assets/cook/items-s17-stove/f-basmati-rice.webp",
+      "assets/cook/items-s17-stove/f-black-pepper-jar.webp",
+      "assets/cook/items-s17-stove/f-bread-loaf.webp",
+      "assets/cook/items-s17-stove/f-butter.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-carrot.webp",
+      "assets/cook/items-s17-stove/f-chapati-flour-atta.webp",
+      "assets/cook/items-s17-stove/f-chicken.webp",
+      "assets/cook/items-s17-stove/f-cinnamon-sticks-jar.webp",
+      "assets/cook/items-s17-stove/f-cocoa-powder.webp",
+      "assets/cook/items-s17-stove/f-coconut.webp",
+      "assets/cook/items-s17-stove/f-cooking-oil.webp",
+      "assets/cook/items-s17-stove/f-coriander-bunch.webp",
+      "assets/cook/items-s17-stove/f-corn-cob-in-husk.webp",
+      "assets/cook/items-s17-stove/f-cream.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-dried-chickpeas.webp",
+      "assets/cook/items-s17-stove/f-eggs-in-a-box.webp",
+      "assets/cook/items-s17-stove/f-fish.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-ghee.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-green-chilli.webp",
+      "assets/cook/items-s17-stove/f-green-mint-chutney.webp",
+      "assets/cook/items-s17-stove/f-green-pepper.webp",
+      "assets/cook/items-s17-stove/f-honey.webp",
+      "assets/cook/items-s17-stove/f-lamb.webp",
+      "assets/cook/items-s17-stove/f-lemon.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-millet-flour-bajri.webp",
+      "assets/cook/items-s17-stove/f-mince.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-onion.webp",
+      "assets/cook/items-s17-stove/f-peas-in-the-pod.webp",
+      "assets/cook/items-s17-stove/f-potato.webp",
+      "assets/cook/items-s17-stove/f-red-chilli-powder-jar.webp",
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
+      "assets/cook/items-s17-stove/f-ripe-mango.webp",
+      "assets/cook/items-s17-stove/f-rose-water.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-samosa-pastry-sheets.webp",
+      "assets/cook/items-s17-stove/f-sev-crispy-noodles.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-tamarind-chutney.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-tomato-ketchup.webp",
+      "assets/cook/items-s17-stove/f-tomato.webp",
+      "assets/cook/items-s17-stove/f-turmeric-jar.webp",
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-yoghurt.webp"
+     ],
+     "prefetch": [
+      "assets/cook/bg/bg-pantry-v3-1600.webp",
+      "assets/cook/items-s17-stove/f-chapati-flour-atta.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
+      "assets/cook/items-s17-stove/f-dried-chickpeas.webp",
+      "assets/cook/items-s17-stove/f-sev-crispy-noodles.webp",
+      "assets/cook/items-s17-stove/f-turmeric-jar.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-red-chilli-powder-jar.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-tamarind-chutney.webp",
+      "assets/cook/items-s17-stove/f-green-mint-chutney.webp",
+      "assets/cook/items-s17-stove/f-yoghurt.webp",
+      "assets/cook/items-s17-stove/f-mince.webp",
+      "assets/cook/items-s17-stove/f-lamb.webp",
+      "assets/cook/items-s17-stove/f-ghee.webp",
+      "assets/cook/items-s17-stove/f-potato.webp",
+      "assets/cook/items-s17-stove/f-onion.webp",
+      "assets/cook/items-s17-stove/f-tomato.webp",
+      "assets/cook/items-s17-stove/f-green-chilli.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-peas-in-the-pod.webp",
+      "assets/cook/items-s17-stove/f-green-pepper.webp",
+      "assets/cook/items-s17-stove/f-coriander-bunch.webp",
+      "assets/cook/items-s17-stove/f-lemon.webp",
+      "assets/cook/items-s17-stove/f-black-pepper-jar.webp",
+      "assets/cook/items-s17-stove/f-cinnamon-sticks-jar.webp",
+      "assets/cook/items-s17-stove/f-banana.webp",
+      "assets/cook/items/shelf-fru-04-bare-f.webp",
+      "assets/cook/items-s17-stove/f-ripe-mango.webp",
+      "assets/cook/items-s17-stove/f-carrot.webp"
+     ]
+    },
+    "passme": {
+     "props": [
+      "water-jug",
+      "milk-jug",
+      "chapati-puffed"
+     ],
+     "files": []
+    },
+    "chai-tray": {
+     "props": [
+      "water-jug",
+      "milk-jug"
+     ],
+     "files": [
+      "assets/art/chai/elchi.default.r1.webp",
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/chai-v2/*",
+      "assets/cook/items-s14/chai-pan/pan-*-s14.webp",
+      "assets/cook/items/v3/chai/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/*-bowl-t.webp",
+      "assets/shared/word-moment/*-s17.webp",
+      "assets/cook/bg/bg-cook-worktop-t-v1.webp",
+      "assets/cook/items/shelf-*",
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp",
+      "assets/cook/items/veg-*",
+      "assets/cook/items/vessel-milk-jug-f.webp",
+      "assets/cook/items/vessel-saucepan-t.webp",
+      "assets/cook/items/vessel-water-jug-f.webp",
+      "assets/cook/items-s14/glass/glass-empty-top-s14.webp",
+      "assets/cook/items-s14/glass/glass-fill-milky-*-s14.webp",
+      "assets/cook/items-s14/glass/glass-fill-black-*-s14.webp",
+      "assets/cook/items-s08c/teaspoon/*",
+      "assets/shared/juice/sk-*.webp",
+      "assets/shared/juice/st-*.webp",
+      "assets/shared/juice/td-*.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items-s14/chai-pan/pan-empty-s14.webp",
+      "assets/cook/items-s14/chai-pan/pan-water-s14.webp",
+      "assets/cook/items-s14/chai-pan/pan-leaves-s14.webp",
+      "assets/cook/items-s14/chai-pan/pan-milk-s14.webp",
+      "assets/cook/items-s14/chai-pan/pan-boil-milky-s14.webp",
+      "assets/cook/items-s14/chai-pan/pan-black-s14.webp",
+      "assets/cook/items-s14/glass/glass-empty-top-s14.webp",
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/chai-v2/glass-black-full.webp",
+      "assets/cook/items/chai-v2/glass-black-half.webp",
+      "assets/cook/items/chai-v2/glass-empty.webp",
+      "assets/cook/items/chai-v2/glass-full.webp",
+      "assets/cook/items/chai-v2/glass-half.webp",
+      "assets/cook/items/chai-v2/teaspoon-t.webp",
+      "assets/cook/items/chai-v2/tray-4-cutout-t.webp",
+      "assets/cook/items/dry-chai-leaves-bowl-t.webp",
+      "assets/cook/items/dry-khun-bowl-t.webp",
+      "assets/cook/items/spice-elchi-bowl-t.webp",
+      "assets/cook/items/spice-jeeru-bowl-t.webp",
+      "assets/cook/items/spice-loon-bowl-t.webp",
+      "assets/cook/items/spice-rai-bowl-t.webp",
+      "assets/cook/items/v3/chai/pan-boil-milky.webp",
+      "assets/cook/items/v3/chai/pan-boil-tea.webp",
+      "assets/cook/items/v3/chai/pan-foam.webp",
+      "assets/cook/items/v3/chai/pan-leaves.webp",
+      "assets/cook/items/v3/chai/pan-spiced.webp",
+      "assets/cook/items/v3/chai/pan-water.webp",
+      "assets/cook/items/v3/hob/hob-1.webp",
+      "assets/cook/items/v3/hob/hob-2.webp",
+      "assets/cook/items/v3/hob/hob-3.webp",
+      "assets/cook/items/v3/hob/hob-4-v2.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/veg-aadu-grated-bowl-t.webp",
+      "assets/cook/items/veg-lasan-chopped-t.webp",
+      "assets/cook/items/vessel-milk-jug-f.webp",
+      "assets/cook/items/vessel-saucepan-t.webp",
+      "assets/cook/items/vessel-water-jug-f.webp",
+      "assets/cook/items-s17-stove/f-water-bottle.webp",
+      "assets/cook/items-s17-stove/f-milk-carton.webp",
+      "assets/cook/items-s17-stove/f-tea-jar.webp",
+      "assets/cook/items-s17-stove/f-sugar-jar.webp",
+      "assets/cook/items-s17-stove/f-cardamom-jar.webp",
+      "assets/cook/items-s17-stove/f-ginger-jar.webp",
+      "assets/cook/items-s17-stove/f-garlic-jar.webp",
+      "assets/cook/items-s17-stove/f-salt-jar.webp",
+      "assets/cook/items-s17-stove/f-cumin-seeds-jar.webp",
+      "assets/cook/items-s17-stove/f-mustard-seeds-jar.webp"
+     ]
+    },
+    "pour": {
+     "props": [
+      "water-jug",
+      "milk-jug"
+     ],
+     "files": []
+    },
+    "boil": {
+     "props": [
+      "water-jug",
+      "milk-jug"
+     ],
+     "files": []
+    },
+    "watch": {
+     "props": [
+      "water-jug",
+      "milk-jug"
+     ],
+     "files": []
+    },
+    "count": {
+     "props": [
+      "water-jug",
+      "milk-jug"
+     ],
+     "files": [
+      "assets/cook/items-s08c/teaspoon/*"
+     ]
+    },
+    "add": {
+     "props": [
+      "water-jug",
+      "milk-jug"
+     ],
+     "files": []
+    },
+    "maani-line": {
+     "props": [
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ],
+     "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/v3/maani/*",
+      "assets/cook/items/maani-v2/thali.webp",
+      "assets/cook/items/vessel-tawa-t.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/maani-v2/thali.webp",
+      "assets/cook/items/v3/hob/hob-1.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/v3/maani/dough-ball-millet.webp",
+      "assets/cook/items/v3/maani/dough-ball-wheat.webp",
+      "assets/cook/items/v3/maani/dough-pile-millet.webp",
+      "assets/cook/items/v3/maani/dough-pile-wheat.webp",
+      "assets/cook/items/v3/maani/maani-millet-burnt.webp",
+      "assets/cook/items/v3/maani/maani-millet-cooked.webp",
+      "assets/cook/items/v3/maani/maani-millet-half.webp",
+      "assets/cook/items/v3/maani/maani-millet-raw.webp",
+      "assets/cook/items/v3/maani/maani-wheat-burnt.webp",
+      "assets/cook/items/v3/maani/maani-wheat-cooked.webp",
+      "assets/cook/items/v3/maani/maani-wheat-half.webp",
+      "assets/cook/items/v3/maani/maani-wheat-raw.webp",
+      "assets/cook/items/v3/maani/tawa.webp",
+      "assets/cook/items/v3/maani/turner.webp",
+      "assets/cook/items/vessel-tawa-t.webp",
+      "assets/cook/items/v4/maani/board.webp",
+      "assets/cook/items/v4/maani/dough-millet.webp",
+      "assets/cook/items/v4/maani/dough-wheat.webp",
+      "assets/cook/items/v4/maani/pin.webp"
+     ]
+    },
+    "knead": {
+     "props": [
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ],
+     "files": []
+    },
+    "roll": {
+     "props": [
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ],
+     "files": []
+    },
+    "flip": {
+     "props": [
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ],
+     "files": []
+    },
+    "tawa": {
+     "props": [
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ],
+     "files": []
+    },
+    "roll-tawa": {
+     "props": [
+      "dough-ball",
+      "chapati-raw",
+      "chapati-half",
+      "chapati-puffed",
+      "tawa",
+      "chapati-burnt",
+      "dough-ball-bajr",
+      "chapati-raw-bajr",
+      "chapati-half-bajr",
+      "chapati-puffed-bajr"
+     ],
+     "files": []
+    },
+    "daar": {
+     "uses": ["chop", "tadka", "stir"],
+     "props": [],
+     "files": [
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/v3/daar/*",
+      "assets/cook/items/v4/chop/*-whole.webp",
+      "assets/cook/items-s08b/daar-pot-top-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-plain-s08b.webp",
+      "assets/cook/items-s08b/daar-discs/disc-daal-stirred-s08b.webp",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/shelf-*",
+      "assets/cook/items/tool-knife-t-v2.webp",
+      "assets/cook/items/veg-*",
+      "assets/cook/items-s08c/kadchi/*",
+      "assets/cook/items-s08c/daar-in/*"
+     ],
+     "prefetch": [
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/shelf-spi-01-bare-f.webp",
+      "assets/cook/items/shelf-spi-02-bare-f.webp",
+      "assets/cook/items/shelf-veg-12-bare-f.webp",
+      "assets/cook/items/tool-knife-t-v2.webp",
+      "assets/cook/items/v3/daar/chop-heap-chilli.webp",
+      "assets/cook/items/v4/daar/chop-heap-onion.webp",
+      "assets/cook/items/v3/daar/chop-heap-tomato.webp",
+      "assets/cook/items/v3/daar/chop-piece-chilli.webp",
+      "assets/cook/items/v4/daar/chop-piece-onion-1.webp",
+      "assets/cook/items/v3/daar/chop-piece-tomato.webp",
+      "assets/cook/items/v3/daar/daar-bowl-trivet-plain-v2.webp",
+      "assets/cook/items/v3/daar/daar-bowl-trivet-v2.webp",
+      "assets/cook/items/v3/daar/dial-fast.webp",
+      "assets/cook/items/v3/daar/dial-slow.webp",
+      "assets/cook/items/v3/daar/dial-spill.webp",
+      "assets/cook/items/v3/daar/dial-stopped.webp",
+      "assets/cook/items/v3/daar/ladle-v3.webp",
+      "assets/cook/items/v3/daar/trivet-t.webp",
+      "assets/cook/items/v3/daar/veg-bowl.webp",
+      "assets/cook/items/v3/hob/hob-1.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/veg-aadu-chopped-t.webp",
+      "assets/cook/items/veg-aadu-whole-t.webp",
+      "assets/cook/items/veg-bataato-cubed-t.webp",
+      "assets/cook/items/veg-bataato-whole-t.webp",
+      "assets/cook/items/veg-dungri-whole-t.webp",
+      "assets/cook/items/veg-lasan-chopped-t.webp",
+      "assets/cook/items/veg-lasan-whole-t.webp",
+      "assets/cook/items/veg-marcha-whole-t.webp",
+      "assets/cook/items/veg-tameto-whole-t.webp",
+      "assets/cook/items/v4/daar/disc-daar.webp",
+      "assets/cook/items/v4/daar/disc-masala.webp",
+      "assets/cook/items/v4/daar/disc-onion-chilli.webp",
+      "assets/cook/items/v4/daar/disc-onion.webp",
+      "assets/cook/items/v4/daar/disc-seeds.webp",
+      "assets/cook/items/v4/daar/disc-tadka.webp",
+      "assets/cook/items/v4/daar/elchi.webp",
+      "assets/cook/items/v4/daar/hardar.webp",
+      "assets/cook/items/v4/daar/jeeru.webp",
+      "assets/cook/items/v4/daar/lal-marcha.webp",
+      "assets/cook/items/v4/daar/lasan.webp",
+      "assets/cook/items/v4/daar/lila-marcha.webp",
+      "assets/cook/items/v4/daar/loon.webp",
+      "assets/cook/items/v4/daar/pot-empty.webp",
+      "assets/cook/items/v4/daar/pot-oil.webp",
+      "assets/cook/items/v4/daar/rai.webp",
+      "assets/cook/items/v4/kit/ladle.webp",
+      "assets/cook/items/v4/chop/dungri-whole.webp",
+      "assets/cook/items/v4/chop/tameto-whole.webp",
+      "assets/cook/items/v4/chop/marcha-whole.webp",
+      "assets/cook/items/v4/chop/bataato-whole.webp",
+      "assets/cook/items/v4/chop/adu-whole.webp",
+      "assets/cook/items/v4/chop/lasan-whole.webp"
+     ]
+    },
+    "chop": {
+     "props": [],
+     "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/tool-knife-t-v2.webp",
+      "assets/cook/items/veg-*",
+      "assets/cook/items/shelf-veg-*-bare-f.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/tool-knife-t-v2.webp",
+      "assets/cook/items/veg-aadu-whole-t.webp",
+      "assets/cook/items/veg-bataato-whole-t.webp",
+      "assets/cook/items/veg-dungri-whole-t.webp",
+      "assets/cook/items/veg-lasan-whole-t.webp",
+      "assets/cook/items/veg-marcha-whole-t.webp",
+      "assets/cook/items/veg-tameto-whole-t.webp"
+     ]
+    },
+    "tadka": {
+     "props": [],
+     "files": [
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/*-bowl-t.webp",
+      "assets/cook/items/v4/daar/*",
+      "assets/cook/items/veg-*",
+      "assets/cook/items/vessel-pot-t.webp",
+      "assets/cook/items/vessel-tadka-pan-t.webp",
+      "assets/cook/items/shelf-veg-*-bare-f.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/spice-hardar-bowl-t.webp",
+      "assets/cook/items/spice-jeeru-bowl-t.webp",
+      "assets/cook/items/spice-loon-bowl-t.webp",
+      "assets/cook/items/spice-rai-bowl-t.webp",
+      "assets/cook/items/topping-marcha-chopped-bowl-t.webp",
+      "assets/cook/items/veg-lasan-chopped-t.webp",
+      "assets/cook/items/vessel-pot-t.webp",
+      "assets/cook/items/vessel-tadka-pan-t.webp"
+     ]
+    },
+    "stir": {
+     "props": [],
+     "files": [
+      "assets/cook/items-s17-stove/f-red-lentils-masoor.webp",
+      "assets/cook/items/veg-*-whole-t.webp",
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/tool-ladle-t.webp",
+      "assets/cook/items/v3/daar/ladle-v3.webp",
+      "assets/cook/items-s08c/kadchi/*",
+      "assets/cook/items/v4/daar/pot-*.webp",
+      "assets/cook/items/v4/daar/disc-*.webp",
+      "assets/cook/items/v4/kit/ladle.webp",
+      "assets/cook/items/v3/daar/dial-*.webp",
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/shelf-veg-*-bare-f.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/tool-ladle-t.webp",
+      "assets/cook/items/v3/daar/ladle-v3.webp"
+     ]
+    },
+    "baking": {
+     "_about": "s19-serve2 (loadcheck): the order card's flour picture (cook-atto's shelf picture, art.sprites.shelf); the rest of baking's pictures are its own settings' (data/stations/baking.json assets)",
+     "props": [],
+     "files": [
+      "assets/shared/word-moment/counter-wm-s17.webp",
+      "assets/cook/bg/bg-cook-worktop-t-v1.webp",
+      "assets/shared/juice/td-*.webp",
+      "assets/cook/items-s17-stove/f-chapati-flour-atta.webp"
+     ]
+    },
+    "assemble": {
+     "props": [],
+     "files": [
+      "assets/cook/items/veg-*-whole-t.webp",
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/v3/chaat/*",
+      "assets/cook/items-s08b/chaat-bowl-side-s08b*",
+      "assets/cook/items-s08b/chaat-strips/*",
+      "assets/cook/items/v4/chaat/*",
+      "assets/cook/items-s17-stove/f-dried-chickpeas.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/v4/chaat/bowl-empty.webp",
+      "assets/cook/items-s08b/chaat-bowl-side-s08b.webp",
+      "assets/cook/items/v3/chaat/pot-chana.webp",
+      "assets/cook/items/v3/chaat/pot-imli.webp",
+      "assets/cook/items/v3/chaat/pot-potato.webp"
+     ]
+    },
+    "fill": {
+     "props": [],
+     "files": [
+      "assets/cook/items/v3/samosa/board.webp",
+      "assets/cook/items/v3/samosa/fold-*"
+     ]
+    },
+    "fold": {
+     "props": [],
+     "files": [
+      "assets/cook/items/v3/samosa/board.webp",
+      "assets/cook/items/v3/samosa/fold-*"
+     ]
+    },
+    "fry": {
+     "props": [],
+     "files": []
+    },
+    "samosa": {
+     "props": [],
+     "files": [
+      "assets/cook/items/samosa-fried-golden-t.webp",
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/chai-station/*",
+      "assets/cook/items/samosa-v2/*",
+      "assets/cook/items/v3/hob/*",
+      "assets/cook/items/v3/samosa/*",
+      "assets/cook/items/vessel-thali-t.webp",
+      "assets/cook/items/v3/daar/chop-heap-*",
+      "assets/cook/items-s08b/go-on/go-karahi-s08b*",
+      "assets/cook/tiles-s08b/pastry-tile-s08b*",
+      "assets/cook/items-s08b/potato/potato-pile-v3.webp",
+      "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
+      "assets/cook/items/v4/samosa/plate-napkin.webp",
+      "assets/cook/items-s17-stove/f-mince.webp",
+      "assets/cook/items/served/samosa.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/chai-station/flame-high.webp",
+      "assets/cook/items/chai-station/flame-low.webp",
+      "assets/cook/items/samosa-v2/fry-0.webp",
+      "assets/cook/items/samosa-v2/fry-1.webp",
+      "assets/cook/items/samosa-v2/fry-2.webp",
+      "assets/cook/items/samosa-v2/fry-3.webp",
+      "assets/cook/items/v3/hob/hob-wide.webp",
+      "assets/cook/items/v3/hob/knob-off-v2.webp",
+      "assets/cook/items/v3/hob/knob-on-v2.webp",
+      "assets/cook/items/v3/samosa/board.webp",
+      "assets/cook/items/v3/samosa/fill-chundo.webp",
+      "assets/cook/items/v3/samosa/fill-dhania.webp",
+      "assets/cook/items/v3/samosa/fold-v2-1.webp",
+      "assets/cook/items/v3/samosa/fold-v2-2.webp",
+      "assets/cook/items/v3/samosa/fold-v2-3.webp",
+      "assets/cook/items/v3/samosa/fold-v2-4.webp",
+      "assets/cook/items/v3/samosa/fold-v2-5.webp",
+      "assets/cook/items/v3/samosa/fold-v2-6.webp",
+      "assets/cook/items/v3/samosa/jharo.webp",
+      "assets/cook/items/vessel-thali-t.webp",
+      "assets/cook/items/v4/samosa/karahi-oil-v2.webp",
+      "assets/cook/items/v4/samosa/plate-napkin.webp",
+      "assets/cook/items/v4/samosa/samosa-cooked.webp",
+      "assets/cook/items/v4/samosa/samosa-over.webp",
+      "assets/cook/items/v4/samosa/samosa-part.webp",
+      "assets/cook/items/v4/samosa/samosa-raw.webp",
+      "assets/cook/items/v4/samosa/sheet-under.webp"
+     ],
+     "_files": "the fillings reuse daar's chopped heaps (onion, chilli: whichever the order asks for)"
+    },
+    "mishkaki-grill": {
+     "props": [],
+     "files": [
+      "assets/cook/items/shelf-*-bare-f.webp",
+      "assets/cook/items/shelf-veg-1*-jar-f.webp",
+      "assets/cook/items/v4/sekelo/*",
+      "assets/cook/items/v4/kit/grill-v2.webp",
+      "assets/cook/items/mishkaki-*",
+      "assets/cook/items/plate-enamel-empty-t.webp",
+      "assets/cook/items/skewer-empty-t.webp",
+      "assets/cook/items/tool-board-t.webp",
+      "assets/cook/items/veg-*",
+      "assets/cook/items/vessel-katori-t.webp",
+      "assets/cook/items-s08b/go-on/go-grill-s08b*",
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp",
+      "assets/cook/items/v4/kit/tray-deep.webp",
+      "assets/cook/items/served/sekelo.webp"
+     ],
+     "prefetch": [
+      "assets/cook/items/v4/kit/plate-steel.webp",
+      "assets/cook/items/veg-bataato-cubed-t.webp",
+      "assets/cook/items/vessel-katori-t.webp",
+      "assets/cook/items/v4/sekelo/bowl-chicken.webp",
+      "assets/cook/items/v4/sekelo/bowl-chilli.webp",
+      "assets/cook/items/v4/sekelo/bowl-corn.webp",
+      "assets/cook/items/v4/sekelo/bowl-meat.webp",
+      "assets/cook/items/v4/sekelo/bowl-onion.webp",
+      "assets/cook/items/v4/sekelo/bowl-pepper.webp",
+      "assets/cook/items/v4/sekelo/bowl-potato.webp",
+      "assets/cook/items/v4/sekelo/bowl-tomato.webp",
+      "assets/cook/items/v4/sekelo/chicken-cooked.webp",
+      "assets/cook/items/v4/sekelo/chicken-over.webp",
+      "assets/cook/items/v4/sekelo/chicken-part.webp",
+      "assets/cook/items/v4/sekelo/chicken-raw.webp",
+      "assets/cook/items/v4/sekelo/chilli-cooked.webp",
+      "assets/cook/items/v4/sekelo/chilli-over.webp",
+      "assets/cook/items/v4/sekelo/chilli-part.webp",
+      "assets/cook/items/v4/sekelo/chilli-raw.webp",
+      "assets/cook/items/v4/sekelo/corn-cooked.webp",
+      "assets/cook/items/v4/sekelo/corn-over.webp",
+      "assets/cook/items/v4/sekelo/corn-part.webp",
+      "assets/cook/items/v4/sekelo/corn-raw.webp",
+      "assets/cook/items/v4/sekelo/meat-cooked.webp",
+      "assets/cook/items/v4/sekelo/meat-over.webp",
+      "assets/cook/items/v4/sekelo/meat-part.webp",
+      "assets/cook/items/v4/sekelo/meat-raw.webp",
+      "assets/cook/items/v4/sekelo/onion-cooked.webp",
+      "assets/cook/items/v4/sekelo/onion-over.webp",
+      "assets/cook/items/v4/sekelo/onion-part.webp",
+      "assets/cook/items/v4/sekelo/onion-raw.webp",
+      "assets/cook/items/v4/sekelo/pepper-cooked.webp",
+      "assets/cook/items/v4/sekelo/pepper-over.webp",
+      "assets/cook/items/v4/sekelo/pepper-part.webp",
+      "assets/cook/items/v4/sekelo/pepper-raw.webp",
+      "assets/cook/items/v4/sekelo/potato-cooked.webp",
+      "assets/cook/items/v4/sekelo/potato-over.webp",
+      "assets/cook/items/v4/sekelo/potato-part.webp",
+      "assets/cook/items/v4/sekelo/potato-raw.webp",
+      "assets/cook/items/v4/sekelo/skewer-empty.webp",
+      "assets/cook/items/v4/sekelo/tomato-cooked.webp",
+      "assets/cook/items/v4/sekelo/tomato-over.webp",
+      "assets/cook/items/v4/sekelo/tomato-part.webp",
+      "assets/cook/items/v4/sekelo/tomato-raw.webp",
+      "assets/cook/items/mishkaki-meat-grilled-t.webp",
+      "assets/cook/items/skewer-mixed-grilled-t.png",
+      "assets/cook/items/v4/kit/grill-v2.webp",
+      "assets/cook/items/v4/kit/tray-steel.webp",
+      "assets/cook/items/v3/samosa/board.webp"
+     ],
+     "_potato": "s08 w6F (ART-11): the potato's skewer piece is PT1's cube (veg-01.raw, a whole path: js/cook/art.js refUrl); its worktop bowl is PT1's pile (veg-bataato-cubed-v2-t), no longer the butter-yellow boiled cubes"
+    },
+    "thread": {
+     "props": [],
+     "files": [
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp",
+      "assets/cook/items/v4/kit/tray-deep.webp",
+      "assets/cook/items/v4/sekelo/*"
+     ]
+    },
+    "grill": {
+     "props": [],
+     "files": [
+      "assets/cook/items-s08b/potato/potato-cube-v3.webp",
+      "assets/cook/items/v4/kit/tray-deep.webp",
+      "assets/cook/items/v4/sekelo/*"
+     ]
+    }
+   }
+  }
+ },
+ "days": [
+  {
+   "id": 1,
+   "title": "Chai for Nana",
+   "teach": [
+    "pantry",
+    "chai"
+   ],
+   "gist": "Nani needs the chai things from the pantry. Then Nana is coming for chai!",
+   "_orders": "PAN-13 (Zafar, 21 Oct): day 1 has one pantry trip. Nani's pantry order names its dish (for: chai), so it fetches the chai things (recipes.pantry.forDish.chai) and counts as chai's trip; the next step, Nani's chai, is made with them, then Nana's.",
+   "orders": [
+    {
+     "who": "nani",
+     "dishes": [
+      "pantry"
+     ],
+     "for": "chai"
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "title": "Maani",
+   "teach": [
+    "maani"
+   ],
+   "gist": "Everyone wants maani today. Listen for which kind, and how many!",
+   "orders": [
+    {
+     "who": "cousin",
+     "dishes": [
+      "maani"
+     ]
+    },
+    {
+     "who": "ma",
+     "dishes": [
+      "chai"
+     ],
+     "level": 2
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "maani",
+      "chai"
+     ],
+     "level": {
+      "maani": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "title": "Daal for dinner",
+   "teach": [
+    "daal"
+   ],
+   "gist": "Daal for dinner. Listen to the order of the spices!",
+   "orders": [
+    {
+     "who": "ma",
+     "dishes": [
+      "daal"
+     ]
+    },
+    {
+     "who": "cousin",
+     "dishes": [
+      "daal",
+      "maani"
+     ],
+     "level": {
+      "maani": 3
+     }
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "chai"
+     ],
+     "level": 3
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "title": "Chaat bowls",
+   "teach": [
+    "chaat"
+   ],
+   "gist": "Everyone likes their chaat differently. Build each bowl in the order they say.",
+   "orders": [
+    {
+     "who": "cousin",
+     "dishes": [
+      "chaat"
+     ]
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "chaat"
+     ]
+    },
+    {
+     "who": "ma",
+     "dishes": [
+      "chaat",
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "title": "Samosa day",
+   "teach": [
+    "samosa"
+   ],
+   "gist": "Fill them, fold them, fry them. Listen for what goes inside!",
+   "orders": [
+    {
+     "who": "ma",
+     "dishes": [
+      "samosa"
+     ]
+    },
+    {
+     "who": "cousin",
+     "dishes": [
+      "samosa"
+     ]
+    },
+    {
+     "who": "nana",
+     "dishes": [
+      "samosa",
+      "chai"
+     ]
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "title": "Birthday mishkaki",
+   "teach": [
+    "mishkaki"
+   ],
+   "finale": true,
+   "gist": "It's a birthday! Mishkaki on the grill, and the whole family is hungry.",
+   "orders": [
+    {
+     "who": "nana",
+     "dishes": [
+      "mishkaki"
+     ]
+    },
+    {
+     "who": "cousin",
+     "dishes": [
+      "mishkaki",
+      "chaat"
+     ],
+     "level": {
+      "mishkaki": 2
+     }
+    },
+    {
+     "who": "ma",
+     "dishes": [
+      "samosa",
+      "chai"
+     ]
+    }
+   ]
+  }
+ ],
+ "pantry_decoys": [
+  "cook-atto",
+  "cook-daal",
+  "cook-chai",
+  "cook-dudh",
+  "cook-khun",
+  "spi-10",
+  "veg-02",
+  "veg-03",
+  "veg-13",
+  "veg-12",
+  "spi-16",
+  "veg-14",
+  "veg-01",
+  "ph-chana",
+  "ph-sev",
+  "spi-01",
+  "spi-02",
+  "spi-05",
+  "spi-04",
+  "spi-11",
+  "spi-09",
+  "ph-amli",
+  "ph-lili",
+  "ph-ghee",
+  "veg-10",
+  "ph-pepper",
+  "ph-dhana",
+  "fru-01",
+  "fru-02",
+  "fru-04",
+  "fru-05",
+  "veg-04",
+  "ph-dahi",
+  "ph-keema",
+  "ph-meat"
+ ],
+ "lookalikes": {
+  "cook-khun": [
+   "spi-16",
+   "cook-atto"
+  ],
+  "spi-16": [
+   "cook-khun",
+   "cook-atto"
+  ],
+  "cook-dudh": [
+   "cook-paani",
+   "ph-dahi"
+  ],
+  "cook-paani": [
+   "cook-dudh"
+  ],
+  "spi-02": [
+   "spi-05",
+   "cook-chai"
+  ],
+  "spi-05": [
+   "spi-02",
+   "cook-chai"
+  ],
+  "cook-chai": [
+   "spi-02",
+   "spi-05"
+  ],
+  "spi-01": [
+   "spi-04",
+   "cook-daal"
+  ],
+  "spi-04": [
+   "spi-01"
+  ],
+  "veg-02": [
+   "veg-13",
+   "veg-01"
+  ],
+  "veg-13": [
+   "veg-02",
+   "veg-14"
+  ],
+  "veg-14": [
+   "veg-13",
+   "veg-01"
+  ],
+  "ph-dahi": [
+   "cook-dudh",
+   "spi-16"
+  ],
+  "ph-amli": [
+   "ph-lili"
+  ],
+  "ph-lili": [
+   "ph-amli",
+   "ph-dhana"
+  ],
+  "ph-chana": [
+   "veg-10",
+   "cook-daal"
+  ],
+  "veg-10": [
+   "ph-chana",
+   "ph-dhana"
+  ],
+  "ph-meat": [
+   "ph-keema"
+  ],
+  "ph-keema": [
+   "ph-meat"
+  ]
+ },
+ "upgrades": [
+  {
+   "id": "basket",
+   "bonus": 2,
+   "station": "Pantry",
+   "name": "Special basket",
+   "image": "basket",
+   "special": true,
+   "effect": "Things fly into it twice as fast, and every order earns 2 extra coins.",
+   "idea": "A two-basket trolley: fetch for two orders in one trip (Busy mode).",
+   "knobs": {
+    "fetch": {
+     "flyMs": 260,
+     "special": true
+    }
+   }
+  },
+  {
+   "id": "jug",
+   "station": "Pouring",
+   "name": "Special jug",
+   "image": "water-jug",
+   "special": true,
+   "effect": "A quick pour: every tap of the jug pours at once.",
+   "idea": "A measuring jug with marked lines (a quarter, a half, full) that Nani names in Kutchi.",
+   "knobs": {
+    "pour": {
+     "auto": true,
+     "pourMs": 280,
+     "specialJug": [
+      "cook-paani"
+     ]
+    }
+   }
+  },
+  {
+   "id": "machine",
+   "station": "Boiling",
+   "name": "Chai machine",
+   "image": "chai-machine",
+   "effect": "Boils and pours the chai for you. You still add what's asked for.",
+   "idea": "A brass chai machine; a cheaper tier is a milk-watcher disc that rattles before the pan boils over.",
+   "knobs": {
+    "boil": {
+     "instant": true
+    },
+    "pour.cup": {
+     "instant": true,
+     "instantMs": 500,
+     "instantLevel": 0.82
+    }
+   }
+  },
+  {
+   "id": "mixer",
+   "hidden": true,
+   "_hidden": "Wave 6b: knead is cut from the playable stations, so this upgrade is off the shop (kept for later).",
+   "station": "Kneading",
+   "name": "Special atto bowl",
+   "image": "atto",
+   "special": true,
+   "effect": "Kneads the dough for you.",
+   "idea": "An atta-kneading machine (dough maker).",
+   "knobs": {
+    "knead": {
+     "auto": true
+    }
+   }
+  },
+  {
+   "id": "pin",
+   "station": "Rolling",
+   "name": "Special rolling pin",
+   "image": "rolling-pin-walnut",
+   "special": true,
+   "effect": "Rolls twice as fast and never goes too big.",
+   "idea": "A tapered belan, then a chapati press that makes a perfect circle in one push.",
+   "knobs": {
+    "roll": {
+     "grow": 0.3,
+     "maxSize": 1.02,
+     "special": true
+    }
+   }
+  },
+  {
+   "id": "tawa",
+   "station": "Tawa",
+   "name": "Special tawa",
+   "image": "tawa",
+   "special": true,
+   "effect": "The flip window is twice as wide.",
+   "idea": "A heavy cast-iron tawa, then a roti jali (mesh) for a guaranteed puff.",
+   "knobs": {
+    "tawa": {
+     "band": [
+      0.5,
+      0.9
+     ],
+     "special": true
+    }
+   }
+  },
+  {
+   "id": "knife",
+   "station": "Chopping",
+   "name": "Special knife",
+   "image": "knife-gold",
+   "effect": "Chop in 2 swipes instead of 4.",
+   "idea": "A sharp chef's knife, then a pull-cord vegetable chopper.",
+   "knobs": {
+    "chop": {
+     "sharp": true,
+     "special": true
+    }
+   }
+  },
+  {
+   "id": "helper",
+   "station": "Chopping",
+   "name": "Ali helps",
+   "image": "cousin-badge",
+   "effect": "Ali chops for you.",
+   "idea": "Family members as kitchen helpers with a daily wage, tycoon-style."
+  },
+  {
+   "id": "tadka",
+   "station": "Tadka",
+   "name": "Special tadka pan",
+   "image": "tadka-pan",
+   "special": true,
+   "effect": "Tips itself into the daal once the spices are in. (You still add them in the order Nani says.)",
+   "idea": "A long-handled tadka ladle that pours straight into the pot.",
+   "knobs": {
+    "tadka": {
+     "autoTip": true
+    }
+   }
+  },
+  {
+   "id": "pot",
+   "station": "Stirring",
+   "name": "Special pot",
+   "image": "pot",
+   "special": true,
+   "effect": "Small, wobbly circles count as a stir.",
+   "idea": "A long wooden ladle (doi); later a pressure cooker whose whistles you count.",
+   "knobs": {
+    "stir": {
+     "lap": 0.8,
+     "deadZone": 12,
+     "special": true
+    }
+   }
+  },
+  {
+   "id": "thali",
+   "bonus": 3,
+   "station": "Serving",
+   "name": "Special thali",
+   "image": "thali",
+   "special": true,
+   "effect": "Customers tip 3 extra coins on every order.",
+   "idea": "Brass thali and katoris: better presentation, bigger tips."
+  },
+  {
+   "id": "slotted",
+   "station": "Frying",
+   "name": "Special slotted spoon",
+   "image": "knife-gold",
+   "art": "hand:spoon",
+   "special": true,
+   "effect": "The green window for lifting fried food is twice as wide.",
+   "idea": "A jharo (slotted spoon) and a frying basket that lifts everything at once.",
+   "knobs": {
+    "fry": {
+     "band": [
+      0.5,
+      0.92
+     ],
+     "special": true
+    }
+   }
+  },
+  {
+   "id": "bigspoon",
+   "bonus": 2,
+   "bonusFor": "chaat",
+   "station": "Assembling",
+   "name": "Special serving spoon",
+   "art": "hand:spoon",
+   "special": true,
+   "effect": "Toppings fly into the bowl twice as fast, and every chaat order earns 2 extra coins.",
+   "idea": "A set of matching brass katoris and spoons for a chaat counter.",
+   "knobs": {
+    "assemble": {
+     "flyMs": 220
+    }
+   }
+  }
+ ],
+ "no_upgrade": {
+  "station": "Sugar",
+  "text": "No upgrade here: counting the spoons is the Kutchi. That's your job!"
+ },
+ "lookalike_groups": {
+  "_about": "Pass me shows three pictures from ONE group, so the answer never stands out as the odd one out (docs/archive/cook/cook-with-nani-kutchi-audit.md). Groups keep photos with photos and drawn bowls with bowls, so the picture style gives nothing away either.",
+  "groups": [
+   [
+    "cook-khun",
+    "spi-16",
+    "ph-dahi"
+   ],
+   [
+    "spi-02",
+    "spi-05",
+    "spi-01"
+   ],
+   [
+    "ph-amli",
+    "ph-ghee",
+    "spi-04"
+   ],
+   [
+    "veg-01",
+    "ph-chana",
+    "veg-10"
+   ],
+   [
+    "ph-meat",
+    "ph-keema",
+    "veg-14"
+   ],
+   [
+    "ph-sev",
+    "ph-chips",
+    "fru-02"
+   ],
+   [
+    "ph-pepper",
+    "ph-dhana",
+    "ph-lili"
+   ],
+   [
+    "veg-02",
+    "veg-13",
+    "veg-03",
+    "veg-12",
+    "spi-10"
+   ],
+   [
+    "cook-paani",
+    "cook-dudh",
+    "cook-chai",
+    "cook-atto",
+    "cook-daal"
+   ]
+  ]
+ },
+ "calm": {
+  "_help": "S08-W1 (the help ladder, SH-60 SH-95 SH-96): the help times are the central rules' hint waits (data/rules.json levels.hintS), read by every game through js/shared/tokens.js (S13-A1, SH-155); no copy here. repeatMs = a second help only after this much more idle time. hintMs below is the old per-word-stage delay of the thread and chop hints.",
+  "_about": "Wave 5 (clarity and calm): how much Nani says. quietMs: at the start of every station she says nothing for this long (no hints) so the player can work it out. hintMs: how long you can hesitate before she says the word again, by word stage 1-4 (then it glows a few seconds later). passMeChance: the chance she asks for something at a safe moment (never in the first order of a session; at most once an order at level 1). Wave 6: coachSteps = how many moves the first-time overlay shows at a station before it's gone; (the light bulb, its time and its fade-in went with the bulbs: Zafar, 6 Nov).",
+  "quietMs": 4000,
+  "hintMs": [
+   7000,
+   8000,
+   11000,
+   15000
+  ],
+  "repeatMs": 10000,
+  "passMeChance": {
+   "_off": "Zafar, 7 Nov: keep Nani's 'pass me' out for now, until we decide how to put it in (it needs its own onboarding, and comes only after a mode has been played at least 8 times). Was relaxed 0.4, busy 0.55, level1 0.2.",
+   "relaxed": 0,
+   "busy": 0,
+   "level1": 0
+  },
+  "peekMs": {
+   "_about": "SH-101 (Zafar, 17 Oct: level 3 double, and the same seconds added to the others): how long the closed card's small bulb holds the card open (the peek), by level; was a flat 3.5 s. Read by js/cook/ui.js peekMsOf; the clinic has its own table (js/clinic/kit.js Kit.PEEK_MS).",
+   "1": 7000,
+   "2": 7000,
+   "3": 7000,
+   "4": 7000
+  },
+  "coachSteps": 4,
+  "passMeAfterPlays": 2,
+  "passMeRingMs": 3000,
+  "_passMeS02": "S02-B (T19, MAA-14): passMeAfterPlays = how many orders of a dish before Nani's 'pass me' can come (never in the first plays); passMeRingMs = her ring's time (3 s) once she has asked; the game pauses while she's on screen"
+ },
+ "levelTable": {
+  "_about": "s08 wave 2A (SH-110, CK-49, SAM-26, MAA-18; Zafar, 19 Oct: yes to build/reports/research-levels-2026-10-19.md, except chai L3 two cups, no half/full): the level table, one row per level (1-4) for every Cook station, read by js/cook/station-lib.js Cook.levelRow. card: open (L1-L2, every word and number), dotted (L3: the item words dotted, frames, verbs and numbers written), hidden (L4: face + headline folded; a tap on the face replays the order, free). Replaces calm.closedFrom (3) and decision 41's 'heard, never written'. decoys: things on offer nobody asked for, by level (1, 2, 3, 3), lookalike: one of them a lookalike variant (data.lookalikes) at L4. stepCall: Nani calls each step once as it opens (the order in pieces, never help, never costs), every level. stations: a station's own row where it differs (none yet). Each station's one new thing per level is its own data (the recipes' byLevel slots, data/stations/*.json levels).",
+  "_s14": "The S14 roll-out (s14-cook, 30 Oct; SH-155, the rulebook, Zafar 29 Oct round 4): the table's card, decoys, lookalike and stepCall rows are gone: every Cook station's level row is the central rules' (data/rules.json levels, read through js/shared/rules.js Rules.level by js/cook/station-lib.js Cook.levelRow): decoys 1, 2, 3, 4 with the lookalike at L4, the order card's Kutchi always written (open at every level), each step called at every level. Only a station's own card row stays here (stations: daar's chop card, Nani's step card, DAAR-34).",
+  "stations": {
+   "daar-chop": {
+    "_about": "DAAR-34 (Zafar, 17 Oct, P54: 'those other items should be dotted, so you can see there's three items to be chopped in total but only the first one is revealed to you audibly and visually in writing'; s08 w6J): Nani's chop card in the daal is her step card, not an order: at L4 it stays dotted (the rows she has called written, the rest dotted whole), never folded to face + headline. callWritten: at L4 a row she has called is written whole (the first one revealed in writing); at L3 the item stays dotted until its row ticks (the level table).",
+    "card": [
+     "open",
+     "open",
+     "dotted",
+     "dotted"
+    ],
+    "callWritten": [
+     false,
+     false,
+     false,
+     true
+    ]
+   }
+  },
+  "_chai": "SH-155 (Zafar, 29 Oct, round 4): chai's level row moved to the central rules (data/rules.json levels: decoys 1, 2, 3, 4 with the lookalike at L4, the order card's Kutchi always written, its English dotted from L2, its picture blurred from L3; read through js/shared/rules.js). The other stations keep this table until their roll-out."
+ },
+ "timing": {
+  "_about": "Cook timers by level (design system §11): flip, boil and fry timers get about 15% quicker per level (a rate is multiplied by (1/(1 - levelSpeed))^(level - 1)). Read by the maani station v2; the other stations adopt it as they are rebuilt.",
+  "levelSpeed": 0.15
+ },
+ "lab": {
+  "_about": "Wave 6b (the quality pass, Q4 and Q9 item 6): the Station lab lists the nine kept stations (lab entry keys, in this order); every other entry (the sub-mechanics: pour, boil, count, roll, flip, thread, grill…) sits under 'Parts' for testing. Knead is cut (its file isn't loaded).",
+  "stations": [
+   "fetch",
+   "chai-tray",
+   "maani-line",
+   "mishkaki-grill",
+   "daar",
+   "chop",
+   "tadka",
+   "stir",
+   "assemble",
+   "samosa",
+   "eggs",
+   "baking",
+   "corn"
+  ],
+  "notInLaunch": [
+   "tadka",
+   "eggs",
+   "baking",
+   "corn"
+  ],
+  "_proto": "proto-kitchen (1 Nov, Zafar's rapid prototypes): eggs, baking and corn are lab-only prototypes (build/reports/proto-kitchen-2026-11-01.md); kept so they end in the kitchen like the other stations, and out of the launch until Zafar has played them.",
+  "_notInLaunch": "Decision 62 (DAAR-15, S02-B): Tadka stays in the labs (the Station lab and labs.html) but is not in the first launch: Daar replaced it. A launch build leaves out every station listed here."
+ },
+ "onboard": {
+  "_about": "Wave 6b (docs/design-language/ux-principles.md 8 and 10): the first-time onboarding script for each kept station, run by the shared kit (js/shared/onboard.js) through js/cook/coach.js. Each step is one move the overlay shows: everything dims except the next thing to do (the station's own 'what to do next', Cook.expect), a ghost hand does `do` once (tap, swipe, stir, roll, hold), the child does it, then the next. After the last step the overlay is gone at that station for good (once per profile). `what` says what the step is, for people reading this. Only the guided first time (a dish's first order; the Station lab with 'Nani helps'). Keys are the stations' own keys (Cook.Stations.begin).",
+  "fetch": [
+   {
+    "do": "tap",
+    "what": "the first thing on Nani's list, on the shelf"
+   },
+   {
+    "do": "tap",
+    "what": "the next thing"
+   },
+   {
+    "do": "tap",
+    "what": "the last thing"
+   }
+  ],
+  "chai-tray": [
+   {
+    "do": "tap",
+    "step": "water",
+    "help": "CHAI-32: the first time, the dim and the box at once round the water bottle (it glows and bounces, the finger taps it); after that, stuck 5 s: its card by Nani's box and the bottle glowing; 12 s: the dim and the box",
+    "what": "the water bottle: one tap pours water into the pan"
+   },
+   {
+    "do": "tap",
+    "step": "tea",
+    "help": "as the water: the first time the box at once round the chai jar; after that the card at 5 s, the box at 12 s",
+    "what": "the tea leaves (among look-alikes)"
+   },
+   {
+    "do": "tap",
+    "step": "knob",
+    "help": "the first time the box round the knob at once (the finger taps it); stuck, the box at 5 s, Nani's line at 15 s",
+    "what": "the big knob: the burner lights"
+   },
+   {
+    "do": "tap",
+    "step": "cups",
+    "help": "never at once (Zafar, 22 Oct); stuck 5 s: the asked-for thing's card by Nani's box and the thing glowing; 12 s: the dim and the box. Only while it is study (Nani helps, a redo, or the word still supported): it is the answer, and a word shown is not counted as known",
+    "what": "the first thing this cup's person asked for (the milk jug, the sugar bowl or an extra)"
+   },
+   {
+    "do": "tap",
+    "step": "slow",
+    "help": "the first time the box round the knob at once, while the heat is in the green; stuck, the box at 5 s",
+    "what": "the knob again in the green: the fire turns down"
+   },
+   {
+    "do": "tap",
+    "step": "pour",
+    "help": "the first time the box round the ready pan at once; stuck, the box at 5 s",
+    "what": "the ready pan: it pours into its person's glass"
+   }
+  ],
+  "maani-line": [
+   {
+    "do": "tap",
+    "when": {"kind": "tap", "key": "^dough$"},
+    "what": "the dough pile they asked for (a ball flies out)"
+   },
+   {
+    "do": "roll",
+    "when": "roll",
+    "what": "roll the ball up and down until the maani is big and round (the pin rides the finger: MAA-20; before big and small, the roll stops hard just inside the board's rim: MAA-21)"
+   },
+   {
+    "do": "tap",
+    "when": {"kind": "tap", "key": "^tawa-on$"},
+    "what": "the maani onto the tawa"
+   },
+   {
+    "do": "tap",
+    "when": {"coach": "flip"},
+    "what": "flip it on the green (the turner flips it): its first time, in the green (MAA-19, S19 staged steps)"
+   }
+  ],
+  "thread": [
+   {
+    "do": "tap",
+    "what": "a bowl: the piece slides down the skewer"
+   },
+   {
+    "do": "tap",
+    "what": "the next piece"
+   },
+   {
+    "do": "tap",
+    "what": "the next piece"
+   },
+   {
+    "do": "tap",
+    "what": "the last piece: the skewer is full"
+   }
+  ],
+  "grill": [
+   {
+    "do": "tap",
+    "what": "a skewer on the rack: onto the grill"
+   },
+   {
+    "do": "tap",
+    "what": "turn it on the green"
+   },
+   {
+    "do": "tap",
+    "what": "turn it again on the green"
+   },
+   {
+    "do": "tap",
+    "what": "lift it onto the plate on the green"
+   }
+  ],
+  "daar": [
+   {
+    "do": "swipe",
+    "what": "slice a vegetable Nani named: its pieces go to the side"
+   },
+   {
+    "do": "swipe",
+    "what": "and another, before the timer runs out"
+   }
+  ],
+  "chop": [
+   {
+    "do": "swipe",
+    "what": "slice a vegetable Nani named"
+   },
+   {
+    "do": "swipe",
+    "what": "and another"
+   }
+  ],
+  "tadka": [
+   {
+    "do": "tap",
+    "what": "the first spice she said, into the hot oil"
+   },
+   {
+    "do": "tap",
+    "what": "the next spice"
+   },
+   {
+    "do": "tap",
+    "what": "the next one (or the pan: tip it into the pot)"
+   }
+  ],
+  "stir": [
+   {
+    "do": "stir",
+    "what": "drag the ladle round the pot, counting the laps"
+   }
+  ],
+  "assemble": [
+   {
+    "do": "tap",
+    "when": {"kind": "tap"},
+    "each": true,
+    "what": "each topping they said in its turn, the bottom layer first: the dim and the lit box on each next thing, the first bowl (CHT-18, S19 staged steps)"
+   }
+  ],
+  "fill": [
+   {
+    "do": "tap",
+    "what": "a spoon of the first filling they said"
+   },
+   {
+    "do": "tap",
+    "what": "the next spoon"
+   },
+   {
+    "do": "tap",
+    "what": "the next spoon"
+   }
+  ],
+  "fry": [
+   {
+    "do": "tap",
+    "when": {"kind": "tap", "key": "^knob$"},
+    "what": "the knob: the oil heats"
+   },
+   {
+    "do": "tap",
+    "when": {"kind": "tap", "key": "^samosa$"},
+    "each": true,
+    "what": "each samosa into the oil (SAM-30, S19 staged steps)"
+   },
+   {
+    "do": "tap",
+    "when": {"coach": "lift"},
+    "what": "lift it out on the green"
+   }
+  ],
+  "samosa": [
+   {
+    "do": "tap",
+    "what": "a pastry strip (SAM-25: any of the six)"
+   },
+   {
+    "do": "tap",
+    "what": "a spoon of the first filling they said, onto that strip"
+   },
+   {
+    "do": "tap",
+    "what": "the next spoon (as many as the card says)"
+   },
+   {
+    "do": "swipe",
+    "what": "fold the strip over the filling"
+   },
+   {
+    "do": "swipe",
+    "what": "fold it again"
+   },
+   {
+    "do": "swipe",
+    "what": "the last fold: it's sealed"
+   }
+  ],
+  "daar-cook": [
+   {
+    "do": "tap",
+    "what": "the knob: the oil is hot at once, it sizzles"
+   },
+   {
+    "do": "tap",
+    "what": "the first spice Nana said, into the hot oil"
+   },
+   {
+    "do": "tap",
+    "what": "the next spice"
+   },
+   {
+    "do": "tap",
+    "what": "the chopped vegetables, one pile at a time: each row ticks as it goes in"
+   },
+   {
+    "do": "tap",
+    "what": "the daar"
+   },
+   {
+    "do": "stir",
+    "what": "drag the ladle round the pot, counting the laps (the dial shows how fast)"
+   }
+  ],
+  "_phases": {
+   "_about": "29 Sept (X11): every phase of every station, by the key its coach runs under (St.begin or St.coach). build/check_onboard.mjs fails when one has no script above, or when a station's code starts a phase this list doesn't know.",
+   "pantry": [
+    "fetch"
+   ],
+   "chai": [
+    "chai-tray"
+   ],
+   "maani": [
+    "maani-line"
+   ],
+   "daar": [
+    "daar",
+    "daar-cook"
+   ],
+   "chaat": [
+    "assemble"
+   ],
+   "samosa": [
+    "samosa",
+    "fry"
+   ],
+   "sekelo": [
+    "thread",
+    "grill"
+   ]
+  }
+ },
+ "guide": {
+  "_about": "28 Sept (Zafar): Nani's guide box at the top of the sidebar says what to do NOW, in Kutchi. Until 5 Oct none was recorded, so each showed as an English placeholder flagged 'to record' (build/reports/archive/cook-ui-28sept.md lists them). W1, 5 Oct: Mum's Round 4 answers give ten of them a `line` (guide-*: add, watch, knead, flip, stir, chop, fold, fry, fill, chai-tray:knob; build/reports/archive/w1-words.md); the rest stay flagged placeholders (pour, roll, the pantry headline and others Mum hasn't answered). Once Mum records one, give it a `line` (a key in `lines`) and the box shows and says that instead. Keys: a station (data.stations), or station:phase. While Nani says one of her own lines at a station (Hane …!, Bareto!, Jaldi kar!), the box shows that line.",
+  "fetch": {},
+  "passme": {},
+  "pour": {"line": "guide-line"},
+  "add": {
+   "line": "guide-add"
+  },
+  "watch": {
+   "line": "guide-slow"
+  },
+  "count": {"line": "guide-spoons"},
+  "knead": {
+   "line": "guide-knead"
+  },
+  "roll": {},
+  "flip": {
+   "line": "guide-firai"
+  },
+  "chop": {
+   "line": "guide-chop"
+  },
+  "tadka": {},
+  "stir": {
+   "line": "guide-firai"
+  },
+  "assemble": {},
+  "fill": {
+   "line": "guide-fill"
+  },
+  "fold": {
+   "line": "guide-fold"
+  },
+  "fry": {
+   "line": "guide-fry"
+  },
+  "thread": {},
+  "grill": {},
+  "samosa:fill": {
+   "line": "guide-fill"
+  },
+  "samosa:fold": {
+   "line": "guide-fold"
+  },
+  "samosa:fry": {
+   "line": "guide-fry"
+  },
+  "daar:chop": {
+   "line": "guide-chop"
+  },
+  "daar:cook": {
+   "line": "guide-add"
+  },
+  "chai-tray": {"line": "guide-chai-tray"},
+  "chai-tray:water": {"line": "guide-water-pan"},
+  "chai-tray:tea": {"line": "guide-tea-pan"},
+  "chai-tray:knob": {
+   "line": "guide-fire"
+  },
+  "chai-tray:cups": {},
+  "chai-tray:pour": {"line": "guide-glass", "again": "chai-tray:pour-again"},
+  "chai-tray:pour-again": {"line": "guide-fill-full", "_about": "Zafar, 14 Nov: at L4 the full glass's second pour (CHAI-110's own step, js/cook/stations/chai-tray.js phase(..., again)) is Nani's 'akho burichad' (fill it up all the way); spelling to confirm by Mum. The first pour keeps chai-tray:pour"},
+  "mishkaki-grill": {},
+  "mishkaki-grill:thread": {},
+  "mishkaki-grill:grill": {},
+  "maani-line": {},
+  "roll-tawa": {},
+  "chai-tray:slow": {
+   "line": "guide-slow"
+  },
+  "chai-tray:next": {"line": "guide-now-this"},
+  "maani-line:take": {},
+  "maani-line:roll": {},
+  "maani-line:tawa": {},
+  "maani-line:flip": {
+   "line": "guide-firai"
+  },
+  "maani-line:off": {
+   "line": "guide-firai"
+  },
+  "maani-line:fire": {
+   "line": "guide-fire"
+  },
+  "daar:fire": {
+   "line": "guide-fire"
+  },
+  "daar:veg": {},
+  "daar:daar": {},
+  "daar:stir": {
+   "line": "guide-firai"
+  },
+  "samosa:fire": {
+   "line": "guide-fire"
+  },
+  "samosa:next": {},
+  "mishkaki-grill:flip": {
+   "line": "guide-firai"
+  },
+  "assemble:next": {"line": "guide-now-this"}
+ }
+}

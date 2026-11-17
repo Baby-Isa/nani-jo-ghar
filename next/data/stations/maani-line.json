@@ -1,0 +1,65 @@
+{
+ "_about": "Data for the combined station js/cook/stations/maani-line.js: dough bowls -> chakla -> tawa on one screen. `station` is its name and goal line (merged into data.stations); `words` are merged into data.words only if missing (ph-big/ph-small are in data/cook.json: wadho/nindho, with she-forms wadhi/nindhi for maani); `mechanic.levels` are its difficulty levels (each lists only what changes). doughs: the two bowls, always both, whatever the order (tint multiplies the dough and maani art: millet dough is greyer). ballsPerBowl: always more than any order asks for, and the same in both bowls, so the bowls never show the count. sizes: null (one dashed circle, the roll knob's radius) or {wordId: radius} (two dashed circles; the order says which size). quietMs: how long a pause ends a roll (longer with two sizes, so you can roll on past the small circle). zones: which level each zone's mechanic runs at (the roll's band; the tawa's green band). v2 (29 Sept, design system §11 and §13's burner rule): ONE tawa on ONE burner at every level (the game is rolling the next maani while the one on the tawa cooks); the tawa's ring speed is data.mechanics.tawa level 1's, about 15% quicker per level (data/cook.json timing.levelSpeed). Levels, each adding one thing: 1 one maani, 2 two, 3 three with both kinds (speaker-only chips), 4 big/small. The order's own levels (how many, which kinds) are in data/cook.json recipes.maani.slots.maani.byLevel.",
+ "band": "tray",
+ "_band": "SH-248 (Zafar, 10 Nov): this game's bottom row, read by St.stoneBand(S, {game}); \"tray\" for top-down things, \"shelf\" for side-on (docs/game-design/modes/cook-bottom-row.md)",
+ "station": {
+  "name": "Maani line",
+  "verb": "Roll and cook",
+  "goal": "Tap a dough pile and roll the ball up and down until the maani is big and round, then tap it onto the tawa. Flip it on the green, lift it on the green. The order ends by itself once you've made what they asked for."
+ },
+ "assets": ["assets/cook/items/v4/maani/*", "assets/art/kit/plate-steel.default.r1.webp"],
+ "_assets": "S19 wave A (decision 68, loadcheck): the pictures maani loads beyond data/cook.json art.assets.stations: the F6 dough heaps on the stone tray and the kit's brushed-steel plate (MAA-24)",
+ "words": {
+  "ph-turner": {}
+ },
+ "mechanic": {
+  "levels": [
+   {
+    "doughs": {
+     "cook-maani": {
+      "tint": "#ffffff"
+     },
+     "cook-bajrmaani": {
+      "tint": "#a9aab4"
+     }
+    },
+    "shares": {
+     "board": 1,
+     "tawa": 1
+    },
+    "_shares": "Sprint 20 (the kitchen frame's size chain, docs/architecture/kitchen-frame.md): the board and the tawa as shares of the play area, equal (MAA-24: the board the tawa's own size across); the frame gives the unit, at most the accepted 360 (Zafar, 11 Nov: the sizes fine as they are), and the gap between them",
+    "ballsPerBowl": 5,
+    "sizes": null,
+    "rimStop": 0.92,
+    "_rimStop": "MAA-21 (Zafar, 9 Nov: 'a hard stop around the perimeter of, or maybe just inside the perimeter of the rolling board'): while there are no sizes (before MAA-23's big/small lesson), every roll stops hard at this fraction of the chakla's radius (0.92: just inside its rim), no ring drawn, never a tear; 1 is the rim itself (lab/sections/kit-lights.html rim-stop shows both; ?maaniRim=1 tries it in the game)",
+    "quietMs": 700,
+    "flipAddS": 0.75,
+    "_flipAddS": "MAA-17 (decision 12; Zafar, 17 Oct): seconds added to each side's green flip window at every level (was 1.42/1.20/0.93/0.79 s on side 1); js/cook/stations/maani-line.js slows the ring to fit",
+    "zones": {
+     "roll": {
+      "level": 1
+     },
+     "tawa": {
+      "level": 1
+     }
+    }
+   },
+   {
+    "sizes": {
+     "ph-big": 185,
+     "ph-small": 118
+    }
+   },
+   {
+    "zones": {
+     "tawa": {
+      "level": 2
+     }
+    }
+   },
+   {
+    "quietMs": 1100
+   }
+  ]
+ }
+}

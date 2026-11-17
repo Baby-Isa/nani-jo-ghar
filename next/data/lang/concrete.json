@@ -1,0 +1,2511 @@
+{
+ "_about": "How each meaning becomes Kutchi words: slots, agreement, register variants, exceptions (engine-design § 5.4). Built by build/lang/import_all.mjs.",
+ "lin": {
+  "Item": {
+   "feats": {
+    "gender": "{kind.gender}",
+    "number": "{n.number|$number|sg}",
+    "person": "p3",
+    "lex": "{kind.lex}",
+    "agreeNumber": "{kind.agreeNumber}"
+   },
+   "slots": [
+    {
+     "arg": "n",
+     "cell": "{gender}"
+    },
+    {
+     "arg": "with",
+     "via": "WithFood"
+    },
+    {
+     "arg": "mods",
+     "each": true,
+     "cell": "{gender}.{number}.{case}"
+    },
+    {
+     "arg": "kind",
+     "cell": "{number}.{case}"
+    },
+    {
+     "arg": "without",
+     "via": "WithoutFood"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §2, §4 (hakro ambo, ba amba), §40 (wadho chokro), §41 (wadhe chokre sathe)"
+  },
+  "Of": {
+   "feats": {
+    "gender": "{thing.gender}",
+    "number": "{thing.number|sg}",
+    "person": "p3",
+    "lex": "{thing.lex}"
+   },
+   "slots": [
+    {
+     "arg": "owner",
+     "case": "obl"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "{gender}.{number}.{case}"
+    },
+    {
+     "arg": "thing",
+     "case": "{case}"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §47 (agrees with the thing owned), §48 (owner takes -e), §49 (je before a postposition); decision 30 (b), (c)"
+  },
+  "With": {
+   "slots": [
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "post.with"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §36 C18, §41 C28-C29"
+  },
+  "In": {
+   "slots": [
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "post.in"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §41 C30 (wadhe cup me), §51 (rasore me)"
+  },
+  "On": {
+   "slots": [
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "link.place"
+    },
+    {
+     "lex": "post.on"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §15, §41 C31, §44 C41, §49"
+  },
+  "MixedIn": {
+   "feats": {
+    "gender": "{head.gender}",
+    "number": "{head.number|sg}",
+    "person": "p3",
+    "lex": "{head.lex}"
+   },
+   "only": {
+    "head.lex": [
+     "n.tea"
+    ]
+   },
+   "onlyAsk": [
+    "L17",
+    "L22"
+   ],
+   "slots": [
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "post.mixed-in"
+    },
+    {
+     "arg": "head",
+     "case": "{case}"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §6 (dudh waari chai: said of chai only)",
+   "exceptions": [
+    {
+     "only": {
+      "x.number": [
+       "pl"
+      ]
+     },
+     "status": "unknown",
+     "ask": [
+      "L9"
+     ],
+     "english": "{head} with {x}",
+     "what": "a counted thing in chai (not '{x} waari chai')",
+     "src": "grammar-notes §6 (two sugars is not ba khun waari chai: Muke chai me ba khun khapeti)"
+    }
+   ]
+  },
+  "Without": {
+   "feats": {
+    "gender": "{head.gender}",
+    "number": "{head.number|sg}",
+    "person": "p3",
+    "lex": "{head.lex}"
+   },
+   "only": {
+    "head.gender": [
+     "she"
+    ]
+   },
+   "onlyAsk": [
+    "L36"
+   ],
+   "slots": [
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "post.without"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "{head.gender}.{head.number}.dir"
+    },
+    {
+     "arg": "head",
+     "case": "{case}"
+    }
+   ],
+   "status": "draft",
+   "src": "grammar-notes §10 (dudh wagar ji chai); whether ji agrees with the dish is open (dungri wagar ji daar, daar's gender unknown: L36)"
+  },
+  "WithFood": {
+   "slots": [
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "{parent.gender}.{parent.number}.dir"
+    }
+   ],
+   "status": "draft",
+   "src": "grammar-notes §65 (12 Nov 4:48: Muke trae samosa khape, ba chunde ja ne hakro batate jo; 5:43: Muke ba chunde ja samosa khape; 11:00: Muke hakro chunde jo samoso khapeto, ne hakro batate jo)",
+   "notes": [
+    "A filling only. A side is sathe after the dish: muke maani ghee sathe khapeti (a chapati with ghee, 28:00). In chai it is waari (MixedIn)."
+   ]
+  },
+  "WithoutFood": {
+   "status": "unknown",
+   "ask": [
+    "L19",
+    "L24"
+   ],
+   "english": "without {x}",
+   "what": "no X, inside an order",
+   "src": "grammar-kb feature 19"
+  },
+  "PredDat": {
+   "variants": {
+    "informal": [
+     {
+      "arg": "who",
+      "case": "dat"
+     },
+     {
+      "arg": "thing",
+      "case": "dir"
+     },
+     {
+      "arg": "verb",
+      "cell": "informal"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "who",
+      "case": "dat"
+     },
+     {
+      "arg": "thing",
+      "case": "dir"
+     },
+     {
+      "arg": "verb",
+      "cell": "pres.{thing.gender}.{thing.agreeNumber|thing.number}",
+      "sure": {
+       "of": "thing",
+       "else": "informal"
+      }
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §1 (muke hakri maani khape / khapeti; muke ba amba khapanta), §31"
+  },
+  "IsA": {
+   "slots": [
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "arg": "quality",
+     "cell": "{thing.gender}.{thing.number}.dir"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "{thing.person}.{thing.number}"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §42 C33-C35 (Chokro wadho ai. Chokra wadha ain.), §44 C42"
+  },
+  "BeIn": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "arg": "place",
+     "case": "obl"
+    },
+    {
+     "lex": "post.in"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "{who.person}.{who.number}"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §51 C61-C64, §52 C68; decision 30 (d), (e)"
+  },
+  "BelongsTo": {
+   "slots": [
+    {
+     "arg": "owner",
+     "case": "obl"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "{thing.gender|he}.{thing.number|sg}.dir"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.{thing.number|sg}"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §50 C60 (Nana jo ai: an unknown thing takes the he-form); decision 30 (f)"
+  },
+  "Say": {
+   "slots": [
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "a fixed phrase said on its own (grammar-kb feature 29)"
+  },
+  "And": {
+   "slots": [
+    {
+     "lex": "conj.and"
+    },
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §6 (ne chai, ne dudh: a list takes ne before each item)"
+  },
+  "Then": {
+   "slots": [
+    {
+     "lex": "phrase.and-then"
+    },
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §7 (ne poi = and then, confirmed), §24 B12"
+  },
+  "First": {
+   "slots": [
+    {
+     "lex": "adv.first"
+    },
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §7 (Muke pela daar khape, ne poi maani); pela alone is a draft in data/cook.json"
+  },
+  "NoItem": {
+   "slots": [
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "neg.not"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §11 (khun na), §13 (laal na), §24 B1; Mum called the short form very informal (lexicon §2 doubt 1)",
+   "notes": [
+    "The polite whole sentence is NotNeed (Muke {x} nati khape). A hidden 'no' row is two words so it does not stand out by length (docs/archive/language/cook-word-changes-B.md §2)."
+   ]
+  },
+  "Only": {
+   "slots": [
+    {
+     "lex": "adv.only"
+    },
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §25 B13 (kali amba: the same for he- and she-words)"
+  },
+  "Now": {
+   "slots": [
+    {
+     "lex": "adv.now-in-steps"
+    },
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §25 B14 (hane = now in a sequence of cooking steps)",
+   "notes": [
+    "hever (now, in general) is the urgent one: hever kadh! (§29 R6, §37.6). Not used for steps."
+   ]
+  },
+  "GiveMe": {
+   "slots": [
+    {
+     "lex": "pron.p1",
+     "cell": "dat"
+    },
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "v.give",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §9 (Muke chamchi de; pass is the same as give); data/cook.json lines.give still marks it draft",
+   "notes": [
+    "Mum said Muke chamchi de (§9), so the draft flag in data/cook.json may be stale: Zafar to say (clash list)."
+   ]
+  },
+  "ForWho": {
+   "slots": [
+    {
+     "lex": "dem.this"
+    },
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "post.for"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.sg"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §8 (Hi Nana lai ai), §27 B39"
+  },
+  "For": {
+   "slots": [
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "post.for"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §8 (Hi Nana lai ai: lai = for)"
+  },
+  "CanYouMake": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "lex": "pron.p1",
+     "cell": "dat"
+    },
+    {
+     "arg": "thing"
+    },
+    {
+     "lex": "v.make",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.give",
+     "cell": "fut.{who.person}"
+    },
+    {
+     "punct": "?"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §27 B40 (Tu muke chai banai dinda? / Aai muke chai banai dinda?), §30 K7-K9, §29 R10",
+   "notes": [
+    "No word for 'can': the question is in the rising voice at the end (§27 B40). dinda and dinde: which is for an elder is open (§37.7)."
+   ]
+  },
+  "HowAreYou": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "lex": "q.how"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "{who.person}.{who.number}"
+    }
+   ],
+   "mark": "?",
+   "status": "confirmed",
+   "src": "grammar-notes §21 (Tu ki aiye? to a child; Aai ki aayo? to an elder), §27 B43"
+  },
+  "ImFine": {
+   "slots": [
+    {
+     "lex": "pron.p1",
+     "cell": "dir"
+    },
+    {
+     "lex": "a.okay",
+     "cell": "he.sg.dir"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.sg"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §27 B43, §29 R11 (Aau theek ai; spelling confirmed by Zafar 26 Sept)",
+   "notes": [
+    "Mum says ai, not aiya, here (Aau theek ai) although 'I am' elsewhere is aiya (Aau rasore me aiya, §51): a fixed phrase or a real difference? Ask Mum."
+   ]
+  },
+  "NotNeed": {
+   "variants": {
+    "polite": [
+     {
+      "lex": "pron.p1",
+      "cell": "dat"
+     },
+     {
+      "arg": "thing"
+     },
+     {
+      "lex": "neg.not",
+      "cell": "{thing.gender}"
+     },
+     {
+      "lex": "v.want",
+      "cell": "informal"
+     }
+    ],
+    "informal": [
+     {
+      "arg": "thing"
+     },
+     {
+      "lex": "neg.not",
+      "cell": "{thing.gender}"
+     },
+     {
+      "lex": "v.want",
+      "cell": "informal"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §11 (muke khun nati khape; informally khun nati khape), §24 B1 (muke nato khape: nato he, nati she)",
+   "notes": [
+    "A bare na is rude when turning something down (§11, rule G7): the polite no is the phrase na, muke na khape. Very informally just khun na (NoItem)."
+   ]
+  },
+  "Where": {
+   "slots": [
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "lex": "q.where"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.{thing.number|sg}"
+    }
+   ],
+   "mark": "?",
+   "status": "confirmed",
+   "src": "grammar-notes §30 K12 (Chamchi kida ai? Cup kida ai?: the word order is right), §23 (kida ai?)"
+  },
+  "LocatedAt": {
+   "slots": [
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "arg": "anchor",
+     "case": "obl"
+    },
+    {
+     "lex": "link.place"
+    },
+    {
+     "arg": "rel"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.{thing.number|sg}"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §15 (cup table je mathe ai), §18 (the noun doesn't change before je, -o words take -e: darwaje je puthiya), §36 C14"
+  },
+  "LocatedAtShort": {
+   "slots": [
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "arg": "anchor",
+     "case": "obl"
+    },
+    {
+     "arg": "rel"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.{thing.number|sg}"
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "grammar-notes §15 (the everyday, shorter version drops je: cup table mathe ai)"
+  },
+  "Command": {
+   "variants": {
+    "informal": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.informal"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.polite"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §38 (the bare commands to a child: atto gund, samosa waar, samosa tar, chulo bar, paani bhari chad), §12; to an elder §21 (hida acho), §27 B48 (Jaldi karo!)",
+   "notes": [
+    "A command to an elder asks for the verb's imp.polite form: only ach / acho and kar / karo are known so far (the others are a form gap asking C142-C151)."
+   ]
+  },
+  "DoIt": {
+   "variants": {
+    "informal": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "conj"
+     },
+     {
+      "lex": "v.leave",
+      "cell": "imp.informal"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "obj"
+     },
+     {
+      "arg": "verb",
+      "cell": "conj"
+     },
+     {
+      "lex": "v.leave",
+      "cell": "imp.polite"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §38 I4, I5, I11, I13, I16 (wiji chad, kadhi chad, kapi chad, bego kari chad, paani bhari chad: chad = leave it, finish it)"
+  },
+  "Dont": {
+   "variants": {
+    "informal": [
+     {
+      "arg": "obj"
+     },
+     {
+      "lex": "neg.not"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.informal"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "obj"
+     },
+     {
+      "lex": "neg.not"
+     },
+     {
+      "arg": "verb",
+      "cell": "imp.polite"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §12 (khun na wij, khun na wapur, watu na kar: with a thing, na sits between the thing and the verb)"
+  },
+  "DontVerb": {
+   "variants": {
+    "informal": [
+     {
+      "arg": "verb",
+      "cell": "imp.informal"
+     },
+     {
+      "lex": "neg.not"
+     }
+    ],
+    "polite": [
+     {
+      "arg": "verb",
+      "cell": "imp.polite"
+     },
+     {
+      "lex": "neg.not"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §12 (ad na, hal na, bol na, bhaj na: with no thing, na follows the verb; na first is the sharp warning, see DontNow)"
+  },
+  "DontNow": {
+   "slots": [
+    {
+     "lex": "neg.not"
+    },
+    {
+     "arg": "verb",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §12 (na ad is the sharp warning: it's hot, you'll burn!)"
+  },
+  "Point": {
+   "feats": {
+    "gender": "{x.gender}",
+    "number": "{x.number|sg}",
+    "person": "p3",
+    "lex": "{x.lex}"
+   },
+   "slots": [
+    {
+     "arg": "which"
+    },
+    {
+     "arg": "x",
+     "case": "{case}"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §43 C36 (hi wadho chokro, hu wadho chokro: you either point or the describing word goes with a verb), §13"
+  },
+  "PossPron": {
+   "feats": {
+    "gender": "{thing.gender}",
+    "number": "{thing.number|sg}",
+    "person": "p3",
+    "lex": "{thing.lex}"
+   },
+   "slots": [
+    {
+     "arg": "owner",
+     "cell": "poss.{thing.gender}.{thing.number}.{case}"
+    },
+    {
+     "arg": "thing",
+     "case": "{case}"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §54 C72-C78 (munjo cup, munji kursi, munja amba), §55 C79 (munje cup me, toje ambe mathe)",
+   "notes": [
+    "The ending follows the thing owned, not the owner (§54). The plural -yu on the thing is dropped when something else shows 'more than one' (hi mare munji kursi ain)."
+   ]
+  },
+  "Most": {
+   "slots": [
+    {
+     "arg": "adj",
+     "cell": "he.sg.dir"
+    },
+    {
+     "lex": "post.among"
+    },
+    {
+     "arg": "adj",
+     "cell": "he.sg.dir"
+    }
+   ],
+   "mark": ".",
+   "only": {
+    "adj.lex": [
+     "a.big",
+     "a.small"
+    ]
+   },
+   "onlyAsk": [
+    "new"
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §43 (wadho ma wadho, nindho ma nindho: the biggest, the smallest)",
+   "notes": [
+    "Heard only with the he-forms of big and small; the she-form is not said."
+   ]
+  },
+  "Unit": {
+   "feats": {
+    "gender": "{unit.gender}",
+    "number": "{n.number|sg}",
+    "person": "p3",
+    "lex": "{unit.lex}"
+   },
+   "slots": [
+    {
+     "arg": "n",
+     "cell": "{unit.gender}"
+    },
+    {
+     "arg": "unit",
+     "cell": "{number}.dir"
+    },
+    {
+     "arg": "of",
+     "case": "dir"
+    }
+   ],
+   "status": "draft",
+   "src": "grammar-notes §25 (hakri lakri mishkaki, ba lakri mishkaki), §29 R7; data/cook.json ph-lakri: with gos, boga and mixed it is Claude's extension, to check",
+   "exceptions": [
+    {
+     "only": {
+      "of.lex": [
+       "n.mishkaki"
+      ]
+     },
+     "status": "confirmed",
+     "src": "grammar-notes §25, §29 R7 (hakri lakri mishkaki: Mum said it with mishkaki)"
+    }
+   ],
+   "notes": [
+    "Another way Mum said it: mishkaki ji lakri, kebab ji lakri (a skewer of …, §39 I28). Which one the game uses: to decide."
+   ]
+  },
+  "Amt": {
+   "feats": {
+    "gender": "he",
+    "number": "sg",
+    "person": "p3"
+   },
+   "slots": [
+    {
+     "arg": "x",
+     "cell": "he.sg.dir"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §24 B4-B5 (adh, aako said on their own: Ne adh, Ne aako)"
+  },
+  "Exclaim": {
+   "slots": [
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": "!",
+   "status": "confirmed",
+   "src": "a fixed phrase said with force (grammar-kb feature 29)"
+  },
+  "Ask": {
+   "slots": [
+    {
+     "arg": "x"
+    }
+   ],
+   "mark": "?",
+   "status": "confirmed",
+   "src": "a fixed phrase said as a question (grammar-kb feature 29)"
+  },
+  "WantIn": {
+   "variants": {
+    "informal": [
+     {
+      "lex": "pron.p1",
+      "cell": "poss.she.*.obl"
+     },
+     {
+      "arg": "container",
+      "case": "obl"
+     },
+     {
+      "lex": "post.in"
+     },
+     {
+      "arg": "thing"
+     },
+     {
+      "lex": "v.want",
+      "cell": "informal"
+     }
+    ],
+    "polite": [
+     {
+      "lex": "pron.p1",
+      "cell": "poss.she.*.obl"
+     },
+     {
+      "arg": "container",
+      "case": "obl"
+     },
+     {
+      "lex": "post.in"
+     },
+     {
+      "arg": "thing"
+     },
+     {
+      "lex": "v.put-in",
+      "cell": "imp.polite"
+     }
+    ]
+   },
+   "defaultVariant": "informal",
+   "only": {
+    "container.gender": [
+     "she"
+    ]
+   },
+   "onlyAsk": [
+    "new (in my cup, a he-word: munje cup me? not said)"
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §65 (12 Nov 12:18-12:39: Munji chai me ba khun khape, in my chai I want two sugars; her final answer Munji chai me ba khun wijij, in my chai put two sugars, please); §6 (Muke chai me ba khun khapeti, 25 Sept)",
+   "notes": [
+    "munji (my) agrees with chai, a she-word (§54). Mum: 'you wouldn't say I want two sugars, you'd say put two sugars in' (11:33): the polite variant is that one (wijij, please put)."
+   ]
+  },
+  "OnShort": {
+   "slots": [
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "post.on"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §55 C79 (toje ambe mathe, toji kursi mathe: the short postposition sits straight after the noun; the fuller one adds je, §15)"
+  },
+  "Or": {
+   "feats": {
+    "gender": "{a.gender}",
+    "number": "{a.number|sg}",
+    "person": "p3",
+    "lex": "{a.lex}"
+   },
+   "slots": [
+    {
+     "arg": "a"
+    },
+    {
+     "lex": "conj.or"
+    },
+    {
+     "arg": "b"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §9 (hi ambo khan, ke hi maani khan: ke = or), §46 (wadho ke nindho?)"
+  },
+  "PutAt": {
+   "slots": [
+    {
+     "arg": "thing"
+    },
+    {
+     "arg": "anchor",
+     "case": "obl"
+    },
+    {
+     "lex": "link.place"
+    },
+    {
+     "arg": "rel"
+    },
+    {
+     "lex": "v.put",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": "!",
+   "status": "confirmed",
+   "src": "grammar-notes §16 (saani je agiya rakh: put it in front of the plate; rakh = put, place)"
+  },
+  "Call": {
+   "slots": [
+    {
+     "lex": "pron.p3",
+     "cell": "dir"
+    },
+    {
+     "arg": "x",
+     "case": "dir"
+    }
+   ],
+   "mark": "!",
+   "status": "draft",
+   "src": "grammar-notes §36 C21 (E chokro! E chokri!: calling out puts e before the word ⚠)",
+   "notes": [
+    "Names take no e: Nana! Nani! Ali! (§36 C21, §30 K14)."
+   ],
+   "exceptions": [
+    {
+     "only": {
+      "x.lex": [
+       "pn.nana",
+       "pn.nani",
+       "pn.ali"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "x",
+       "case": "dir"
+      }
+     ],
+     "status": "confirmed",
+     "src": "grammar-notes §36 C21, §30 K14 (Nana! Nani! Ali!)"
+    }
+   ]
+  },
+  "Place": {
+   "slots": [
+    {
+     "arg": "anchor",
+     "case": "obl"
+    },
+    {
+     "lex": "link.place"
+    },
+    {
+     "arg": "rel"
+    }
+   ],
+   "status": "confirmed",
+   "src": "grammar-notes §15 (cup kabaat je andar, table je niche, darwaje je puthiya: the place belongs to the thing), §18, §49 (Nani je ambe je mathe; Nana je cup je andar)"
+  },
+  "Lift": {
+   "slots": [
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "adv.now-in-steps"
+    },
+    {
+     "lex": "v.take-out",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §25 B15 (inke hane kadh: lift it out now); data/cook.json lines.lift names the thing where Mum said inke (it): Claude's extension, to check",
+   "notes": [
+    "hever kadh is the urgent one (§29 R6, §37.6); hane kadh is the gentle one in a sequence of steps (Cook keeps hane kadh)."
+   ]
+  },
+  "Leave": {
+   "slots": [
+    {
+     "arg": "x"
+    },
+    {
+     "lex": "v.leave",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.give",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §25 B16 (inke chadi de: leave it be); data/cook.json lines.leave names the thing where Mum said inke (it): Claude's extension, to check"
+  },
+  "Clauses": {
+   "slots": [
+    {
+     "arg": "parts",
+     "list": {
+      "between": [
+       {
+        "punct": ","
+       }
+      ]
+     }
+    }
+   ],
+   "mark": ".",
+   "status": "confirmed",
+   "src": "Zafar 15 Nov, decision 42 (1); grammar-notes §6 (ne before each item of a list), §7 (pela X, ne poi Y: one sentence with a comma)"
+  },
+  "FirstThen": {
+   "slots": [
+    {
+     "lex": "adv.first"
+    },
+    {
+     "arg": "a"
+    },
+    {
+     "punct": ","
+    },
+    {
+     "lex": "phrase.and-then"
+    },
+    {
+     "arg": "b"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §7 (Muke pela daar khape, ne poi maani: pela X, ne poi Y); pela is a draft in data/cook.json",
+   "notes": [
+    "Three steps (pela X, ne poi Y, ne poi Z) are not Mum's own sentence: only two steps were said."
+   ]
+  },
+  "NeedFirstThen": {
+   "slots": [
+    {
+     "lex": "pron.p1",
+     "cell": "dat"
+    },
+    {
+     "lex": "adv.first"
+    },
+    {
+     "arg": "a"
+    },
+    {
+     "lex": "v.want",
+     "cell": "informal"
+    },
+    {
+     "punct": ","
+    },
+    {
+     "lex": "phrase.and-then"
+    },
+    {
+     "arg": "rest"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §7 (Muke pela daar khape, ne poi maani: Mum's own sentence); pela is a draft in data/cook.json"
+  },
+  "AndKind": {
+   "status": "unknown",
+   "ask": [
+    "L23",
+    "L26",
+    "L27"
+   ],
+   "english": "and {x}",
+   "what": "joining a second kind of the same dish ('and one with potato')",
+   "src": "docs/archive/feedback/cook-playtest-2026-09-29.md Q5 4; data/cook.json lines.and_join (to record)"
+  },
+  "ButNo": {
+   "status": "unknown",
+   "ask": [
+    "L19",
+    "L24"
+   ],
+   "english": "{head}, but no {x}",
+   "what": "'but no onion' inside an order",
+   "src": "grammar-kb feature 19; Round 5 L19, L24"
+  },
+  "Times": {
+   "slots": [
+    {
+     "arg": "n",
+     "cell": "he.obl"
+    },
+    {
+     "lex": "n.times"
+    }
+   ],
+   "status": "draft",
+   "src": "grammar-notes §66 (12 Nov 15:57: hakre fare, ba fare, trae fare; 15:19: hakre fare firai, ba fare firai, trae fare firai)",
+   "notes": [
+    "hakre (not hakro) before fare. Not taano: hakre taano is 'at one time, some time' (14:01-14:44)."
+   ]
+  },
+  "StirTimes": {
+   "slots": [
+    {
+     "arg": "n",
+     "cell": "he.obl"
+    },
+    {
+     "lex": "n.times"
+    },
+    {
+     "lex": "v.turn",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §66 (12 Nov 15:19: hakre fare firai, ba fare firai, trae fare firai: stir it once, twice, three times); Zafar 13 Nov, decision 22 (the stir line drops 'slowly')",
+   "notes": [
+    "Mum's sentence whole: the count's -e form (hakre), fare, then the command firai."
+   ]
+  },
+  "BringMeTheseForX": {
+   "slots": [
+    {
+     "lex": "dem.this"
+    },
+    {
+     "lex": "pron.p1",
+     "cell": "dat"
+    },
+    {
+     "arg": "x",
+     "case": "obl"
+    },
+    {
+     "lex": "post.for"
+    },
+    {
+     "lex": "v.take",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.come",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.give",
+     "cell": "imp.informal"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §65 (12 Nov 0:38-0:43: Hi muke chai lai khani achi de, bring me these for chai: khani achi de, take and come and give)",
+   "notes": [
+    "Said with chai only; a he-word dish takes its -e form before lai (§18, §41)."
+   ]
+  },
+  "Fetch": {
+   "status": "unknown",
+   "ask": [
+    "L29",
+    "N1",
+    "N2"
+   ],
+   "english": "Bring me {things}",
+   "what": "Nani sending the child to fetch a list ('bring me flour, sugar and milk')",
+   "src": "grammar-kb feature 23; Round 5 L29"
+  },
+  "GaveTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "arg": "to",
+     "case": "dat"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "lex": "v.give",
+     "cell": "past.{who.person|p3}.{$g|who.gender}"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §56 C80-C84 (Nana muke ambo dino; Aau toke ambo dinos / dinis; E panke ambo dini)",
+   "notes": [
+    "The past of give follows the giver's gender (dino / dini), and for 'I' the speaker's (dinos / dinis: Zafar 26 Oct). The thing given (ambo, a he-word) does not change it (E panke ambo dini)."
+   ],
+   "exceptions": [
+    {
+     "only": {
+      "who.person": [
+       "p1"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "arg": "to",
+       "case": "dat"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "lex": "v.give",
+       "cell": "past.p1.{$g|speaker}"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §56 C81-C83"
+    }
+   ]
+  },
+  "See": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "arg": "whom",
+     "case": "dat"
+    },
+    {
+     "lex": "v.look",
+     "cell": "{$tense|past}.p1.{$g|speaker}"
+    }
+   ],
+   "only": {
+    "who.person": [
+     "p1"
+    ]
+   },
+   "onlyAsk": [
+    "new (he saw, she saw: not asked; Nana saw me was inconclusive, §57)"
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §57 C85 (Aau toke naryos / naris, narato / narati, nardos / nardis; Aau anke naryos; Aau inke naryos / naris)",
+   "notes": [
+    "The ending is the speaker's gender, not the person seen (Zafar 26 Oct, decision 1); toke to a child, anke to an elder, inke for him or her. The meaning's tense field picks past (default), pres or fut."
+   ]
+  },
+  "NeedThing": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "n.need"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §58 C86-C92 (Muke chai ji jaruri; Toke dawa ji jaruri; Anke chai ji jaruri; Iloka ke chai ji jaruri)",
+   "notes": [
+    "ji stays ji with chai, dawa and winnu (§58, §60): Claude reads it as the 'of' word agreeing with jaruri, not with the thing (a reading, not Mum's words). 'Need' is strong (Mum: 'I really need it'); the everyday ask is the want (PredDat, khapeti)."
+   ]
+  },
+  "Likes": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "lex": "v.like",
+     "cell": "pres.{thing.gender}.{thing.number|sg}"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §59 C94 (Muke chai arreti; Inke chai arreti; Iloka ke chai arreti; root arre, Zafar 26 Oct)",
+   "notes": [
+    "Like khapeti, the ending follows the thing liked (chai is a she-word), not the person (Mum: 'it's like French')."
+   ]
+  },
+  "WantTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "verb",
+     "cell": "-"
+    },
+    {
+     "lex": "v.want-to",
+     "cell": "-"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §60 C95 (Muke winnu aaye; Inke winnu aaye; Iloka ke winnu aaye; Zafar 26 Oct, decision 2)"
+  },
+  "HaveTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "verb",
+     "cell": "-"
+    },
+    {
+     "lex": "v.want",
+     "cell": "fut.he.sg"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §60 C95 (Muke winnu khapdo; Inke winnu khapdo; Iloka ke winnu khapdo: ought to, obliged, 'like a wedding because you're related'; Zafar 26 Oct, decision 2), §33 S6 (Panke randhnu khapdo)"
+  },
+  "NeedTo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dat"
+    },
+    {
+     "arg": "verb",
+     "cell": "-"
+    },
+    {
+     "lex": "gen.of",
+     "cell": "she.sg.dir"
+    },
+    {
+     "lex": "n.need"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §60 C95 (Muke winnu ji jaruri; Inke winnu ji jaruri; Zafar 26 Oct, decision 2)",
+   "notes": [
+    "Whisper hears vinan ji / winanji here: whether the 'to go' word changes before ji is for Zafar's ear (§60)."
+   ]
+  },
+  "CanDo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "arg": "verb",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.can",
+     "cell": "pres.{who.person}.{$g|who.gender}.{who.number|sg}"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §61 C96 (Aau winni sakati / sakanto; E winni saketi / saketo; Iloka winni sakanto)",
+   "exceptions": [
+    {
+     "only": {
+      "who.number": [
+       "pl"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "conj"
+      },
+      {
+       "lex": "v.can",
+       "cell": "pres.{who.person}.pl"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Iloka winni sakanto: no gender)"
+    },
+    {
+     "only": {
+      "who.person": [
+       "p1"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "conj"
+      },
+      {
+       "lex": "v.can",
+       "cell": "pres.p1.{$g|speaker}.sg"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §61 C96 (Aau winni sakati: a woman; sakanto: a man)"
+    }
+   ]
+  },
+  "CantDo": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "lex": "neg.not",
+     "cell": "{$g|speaker}"
+    },
+    {
+     "arg": "verb",
+     "cell": "conj"
+    },
+    {
+     "lex": "v.can",
+     "cell": "neg.p1.{$g|speaker}"
+    }
+   ],
+   "only": {
+    "who.person": [
+     "p1"
+    ]
+   },
+   "onlyAsk": [
+    "new (she can't, they can't: not asked)"
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §61 C96 (Zafar 26 Oct: Aau nati winni saketi, a woman; Aau nato winni sakanto, a man; Mum's takes say saka: to ask)"
+  },
+  "EveryDay": {
+   "slots": [
+    {
+     "arg": "who",
+     "case": "dir"
+    },
+    {
+     "lex": "adv.every-day"
+    },
+    {
+     "arg": "thing",
+     "case": "dir"
+    },
+    {
+     "arg": "verb",
+     "cell": "pres.{who.person}.{$g|who.gender}.sg"
+    }
+   ],
+   "mark": ".",
+   "status": "draft",
+   "src": "grammar-notes §62 C97-C103 (Aau roj maani kianto / kianti; Tu roj maani khaito / khaiti; E roj maani khaito / khaiti; Aai roj maani kianta; Pa roj maani kianta; Iloka roj maani kenta)",
+   "notes": [
+    "To a child and about him or her the ending follows that person's gender (g); for 'I' the speaker's. The elder 'you' and 'we' share kianta, as they share aayo (§51, §52). Masi says kauta for both: a noted variant, not used (Zafar 26 Oct, decision 3)."
+   ],
+   "exceptions": [
+    {
+     "only": {
+      "who.number": [
+       "pl"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "lex": "adv.every-day"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "pres.{who.person}.pl"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §62 C102-C103 (Pa roj maani kianta; Iloka roj maani kenta: the same for boys and girls)"
+    },
+    {
+     "only": {
+      "who.person": [
+       "p2resp"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "lex": "adv.every-day"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "pres.p2resp"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §62 C99 (Aai roj maani kianta: the same to Nana and Nani)"
+    },
+    {
+     "only": {
+      "who.person": [
+       "p1"
+      ]
+     },
+     "slots": [
+      {
+       "arg": "who",
+       "case": "dir"
+      },
+      {
+       "lex": "adv.every-day"
+      },
+      {
+       "arg": "thing",
+       "case": "dir"
+      },
+      {
+       "arg": "verb",
+       "cell": "pres.p1.{$g|speaker}.sg"
+      }
+     ],
+     "status": "draft",
+     "src": "grammar-notes §62 C97 (Aau roj maani kianto: a man; kianti: a woman)"
+    }
+   ]
+  },
+  "MyXHurts": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "My {x} hurts.",
+   "what": "My {x} hurts.",
+   "src": "data/clinic.json lines.cl-hurts: the clinic's own line, no Kutchi yet"
+  },
+  "TheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "The {x}.",
+   "what": "The {x}.",
+   "src": "data/clinic.json lines.cl-check: the clinic's own line, no Kutchi yet"
+  },
+  "CheckTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Check the {x}.",
+   "what": "Check the {x}.",
+   "src": "data/clinic.json lines.cl-checkfull: the clinic's own line, no Kutchi yet"
+  },
+  "NowTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Now the {x}.",
+   "what": "Now the {x}.",
+   "src": "data/clinic.json lines.cl-now: the clinic's own line, no Kutchi yet"
+  },
+  "TheXAgain": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "The {x} again.",
+   "what": "The {x} again.",
+   "src": "data/clinic.json lines.cl-again: the clinic's own line, no Kutchi yet"
+  },
+  "ListenToTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Listen to the {x}.",
+   "what": "Listen to the {x}.",
+   "src": "data/clinic.json lines.cl-listen: the clinic's own line, no Kutchi yet"
+  },
+  "LookInTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Look in the {x}.",
+   "what": "Look in the {x}.",
+   "src": "data/clinic.json lines.cl-look: the clinic's own line, no Kutchi yet"
+  },
+  "TakeTheTemperatureTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Take the temperature: the {x}.",
+   "what": "Take the temperature: the {x}.",
+   "src": "data/clinic.json lines.cl-temp: the clinic's own line, no Kutchi yet"
+  },
+  "XNoMyYHurts": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{x}? No, my {y} hurts.",
+   "what": "{x}? No, my {y} hurts.",
+   "src": "data/clinic.json lines.cl-wrong: the clinic's own line, no Kutchi yet"
+  },
+  "NoTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "No, the {x}.",
+   "what": "No, the {x}.",
+   "src": "data/clinic.json lines.cl-notool: the clinic's own line, no Kutchi yet"
+  },
+  "MyXOne": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "My {x} one.",
+   "what": "My {x} one.",
+   "src": "data/clinic.json lines.cl-side: the clinic's own line, no Kutchi yet"
+  },
+  "NotThatOneMyOtherX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Not that one. My other {x}.",
+   "what": "Not that one. My other {x}.",
+   "src": "data/clinic.json lines.cl-other: the clinic's own line, no Kutchi yet"
+  },
+  "X": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{x}.",
+   "what": "{x}.",
+   "src": "data/clinic.json lines.cl-treat: the clinic's own line, no Kutchi yet"
+  },
+  "RoundXTimes": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Round {x} times.",
+   "what": "Round {x} times.",
+   "src": "data/clinic.json lines.cl-round: the clinic's own line, no Kutchi yet"
+  },
+  "RoundTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Round the {x}.",
+   "what": "Round the {x}.",
+   "src": "data/clinic.json lines.cl-roundpath: the clinic's own line, no Kutchi yet"
+  },
+  "XDrops": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{x} drops.",
+   "what": "{x} drops.",
+   "src": "data/clinic.json lines.cl-drops: the clinic's own line, no Kutchi yet"
+  },
+  "BringMeTheX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Bring me the {x}.",
+   "what": "Bring me the {x}.",
+   "src": "data/clinic.json lines.cl-bring: the clinic's own line, no Kutchi yet"
+  },
+  "ThisIsTheXTheYPlease": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "This is the {x}. The {y}, please.",
+   "what": "This is the {x}. The {y}, please.",
+   "src": "data/clinic.json lines.cl-isthis: the clinic's own line, no Kutchi yet"
+  },
+  "IsItTheXOrTheY": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Is it the {x}, or the {y}?",
+   "what": "Is it the {x}, or the {y}?",
+   "src": "data/clinic.json lines.cl-ask: the clinic's own line, no Kutchi yet"
+  },
+  "IsItYourXOrYourY": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Is it your {x}, or your {y}?",
+   "what": "Is it your {x}, or your {y}?",
+   "src": "data/clinic.json lines.cl-yourask: the clinic's own line, no Kutchi yet"
+  },
+  "WhatSWrongWithX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "What's wrong with {x}?",
+   "what": "What's wrong with {x}?",
+   "src": "data/clinic.json lines.cl-whatwrong: the clinic's own line, no Kutchi yet"
+  },
+  "IMX": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "I'm {x}.",
+   "what": "I'm {x}.",
+   "src": "data/clinic.json lines.cl-feel: the clinic's own line, no Kutchi yet"
+  },
+  "BringInKind": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Bring in {kind}",
+   "what": "Bring in {kind}",
+   "src": "data/clinic/pipeline.json lines.pipeline.bring: data/clinic/pipeline.json"
+  },
+  "KindCome": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{kind}, come",
+   "what": "{kind}, come",
+   "src": "data/clinic/pipeline.json lines.pipeline.come: data/clinic/pipeline.json"
+  },
+  "MyPartHurts": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "My {part} hurts",
+   "what": "My {part} hurts",
+   "src": "data/clinic/pipeline.json lines.pipeline.hurts: data/clinic/pipeline.json"
+  },
+  "MySidePart": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "My {side} {part}",
+   "what": "My {side} {part}",
+   "src": "data/clinic/pipeline.json lines.pipeline.hurts-side: data/clinic/pipeline.json"
+  },
+  "ToolThePart": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{tool} the {part}",
+   "what": "{tool} the {part}",
+   "src": "data/clinic/pipeline.json lines.pipeline.check: data/clinic/pipeline.json"
+  },
+  "XGood": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{x}. Good.",
+   "what": "{x}. Good.",
+   "src": "data/clinic/pipeline.json lines.pipeline.handover-ok: data/clinic/pipeline.json"
+  },
+  "ThisIsXBringMeY": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "This is {x}. Bring me {y}",
+   "what": "This is {x}. Bring me {y}",
+   "src": "data/clinic/pipeline.json lines.pipeline.handover-no: data/clinic/pipeline.json"
+  },
+  "MyPart": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "My {part}",
+   "what": "My {part}",
+   "src": "data/clinic/pipeline.json lines.pipeline.mypart: data/clinic/pipeline.json"
+  },
+  "BringMeA": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Bring me {a}",
+   "what": "Bring me {a}",
+   "src": "data/clinic/pipeline.json lines.pipeline.bringme: data/clinic/pipeline.json"
+  },
+  "SidePart": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{side} {part}",
+   "what": "{side} {part}",
+   "src": "data/clinic/heal/ear.json lines.heal-ear-side: no source given"
+  },
+  "FirstAThenBThenC": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "First {a}, then {b}, then {c}",
+   "what": "First {a}, then {b}, then {c}",
+   "src": "data/clinic/heal/ear.json lines.heal-ear-pluck3: no source given"
+  },
+  "CleanItNTimes": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Clean it {n} times",
+   "what": "Clean it {n} times",
+   "src": "data/clinic/heal/ear.json lines.heal-ear-clean: no source given"
+  },
+  "NDrops": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{n} drops",
+   "what": "{n} drops",
+   "src": "data/clinic/heal/ear.json lines.heal-ear-drops: no source given"
+  },
+  "NDropsPlease": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "{n} drops, please",
+   "what": "{n} drops, please",
+   "src": "data/clinic/heal/ear.json lines.heal-ear-drops-patient: no source given"
+  },
+  "TapTheKneeNTimes": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Tap the knee {n} times",
+   "what": "Tap the knee {n} times",
+   "src": "data/clinic/heal/knee.json lines.heal-knee-kick: no source given"
+  },
+  "BandageNTurns": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Bandage: {n} turns",
+   "what": "Bandage: {n} turns",
+   "src": "data/clinic/heal/knee.json lines.heal-knee-wrap: no source given"
+  },
+  "BandageFirstTheAThenTheBThenTheC": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Bandage: first the {a}, then the {b}, then the {c}",
+   "what": "Bandage: first the {a}, then the {b}, then the {c}",
+   "src": "data/clinic/heal/knee.json lines.heal-knee-path: no source given"
+  },
+  "XRayTheLegThenClonkTheBoneNTimes": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "X-ray the leg, then clonk the bone {n} times",
+   "what": "X-ray the leg, then clonk the bone {n} times",
+   "src": "data/clinic/heal/knee.json lines.heal-knee-xray: no source given"
+  },
+  "CastNTurns": {
+   "status": "unknown",
+   "ask": [
+    "Round 4 Section G (the doctor's script)"
+   ],
+   "english": "Cast: {n} turns",
+   "what": "Cast: {n} turns",
+   "src": "data/clinic/heal/knee.json lines.heal-knee-cast: no source given"
+  },
+  "ForX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the dress mode's line has no Kutchi yet)"
+   ],
+   "english": "For {x}:",
+   "what": "For {x}:",
+   "src": "data/dress.json lines.dress-for: an English placeholder, to record"
+  },
+  "SewOnX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the dress mode's line has no Kutchi yet)"
+   ],
+   "english": "Sew on {x}.",
+   "what": "Sew on {x}.",
+   "src": "data/dress.json lines.dress-sew: an English placeholder, to record"
+  },
+  "OnTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the dress mode's line has no Kutchi yet)"
+   ],
+   "english": "on the {x}",
+   "what": "on the {x}",
+   "src": "data/dress.json lines.dress-on: an English placeholder, to record"
+  },
+  "TheOneWithTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "The one with the {x}.",
+   "what": "The one with the {x}.",
+   "src": "data/who.json lines.clue-holds: an English placeholder, to record"
+  },
+  "ItHadXOnItsPaws": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "It had {x} on its paws.",
+   "what": "It had {x} on its paws.",
+   "src": "data/who.json lines.clue-trace: an English placeholder, to record"
+  },
+  "ItWasTheXOne": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "It was the {x} one.",
+   "what": "It was the {x} one.",
+   "src": "data/who.json lines.clue-is: an English placeholder, to record"
+  },
+  "ItWasnTTheXOne": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "It wasn't the {x} one.",
+   "what": "It wasn't the {x} one.",
+   "src": "data/who.json lines.clue-isnt: an English placeholder, to record"
+  },
+  "XAteTheSweets": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} ate the sweets!",
+   "what": "{x} ate the sweets!",
+   "src": "data/who.json lines.recap: an English placeholder, to record"
+  },
+  "TheXOneRight": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} one? Right.",
+   "what": "The {x} one? Right.",
+   "src": "data/who.json lines.ali-echo: an English placeholder, to record"
+  },
+  "DoesYoursHaveX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "Does yours have {x}?",
+   "what": "Does yours have {x}?",
+   "src": "data/who.json lines.q-has: an English placeholder, to record"
+  },
+  "IsYoursX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the who mode's line has no Kutchi yet)"
+   ],
+   "english": "Is yours {x}?",
+   "what": "Is yours {x}?",
+   "src": "data/who.json lines.q-is: an English placeholder, to record"
+  },
+  "TakeAPhotoOfX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the snap mode's line has no Kutchi yet)"
+   ],
+   "english": "Take a photo of {x}.",
+   "what": "Take a photo of {x}.",
+   "src": "data/snap.json lines.snap-take: an English placeholder, to record"
+  },
+  "ShowMeX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the snap mode's line has no Kutchi yet)"
+   ],
+   "english": "Show me {x}.",
+   "what": "Show me {x}.",
+   "src": "data/snap.json lines.snap-show: an English placeholder, to record"
+  },
+  "ItSX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the tidy mode's line has no Kutchi yet)"
+   ],
+   "english": "It's {x}.",
+   "what": "It's {x}.",
+   "src": "data/tidy.json lines.itis: asked as none: the recast's 'what it is'"
+  },
+  "YouSaidX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the tidy mode's line has no Kutchi yet)"
+   ],
+   "english": "You said {x}.",
+   "what": "You said {x}.",
+   "src": "data/tidy.json lines.yousaid: asked as A7"
+  },
+  "BringHalfOfX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the farm mode's line has no Kutchi yet)"
+   ],
+   "english": "Bring half of {x}.",
+   "what": "Bring half of {x}.",
+   "src": "data/farm.json lines.eggs-half: an English placeholder, to record"
+  },
+  "BringAllOfX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the farm mode's line has no Kutchi yet)"
+   ],
+   "english": "Bring all of {x}.",
+   "what": "Bring all of {x}.",
+   "src": "data/farm.json lines.eggs-all: an English placeholder, to record"
+  },
+  "PlantTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the farm mode's line has no Kutchi yet)"
+   ],
+   "english": "Plant the {x}.",
+   "what": "Plant the {x}.",
+   "src": "data/farm.json lines.grow-plant: an English placeholder, to record"
+  },
+  "WhoWakesUpAtN": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{who} wakes up at {n}.",
+   "what": "{who} wakes up at {n}.",
+   "src": "data/school-proto.json lines.clock-wake: an English placeholder, to record"
+  },
+  "ItSNOClock": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "It's {n} o'clock.",
+   "what": "It's {n} o'clock.",
+   "src": "data/school-proto.json lines.clock-its: an English placeholder, to record"
+  },
+  "DrawTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Draw the {x}.",
+   "what": "Draw the {x}.",
+   "src": "data/school-proto.json lines.board-draw: an English placeholder, to record"
+  },
+  "ColourTheXY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Colour the {x}: {y}.",
+   "what": "Colour the {x}: {y}.",
+   "src": "data/school-proto.json lines.board-colour: an English placeholder, to record"
+  },
+  "PutARingRoundTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Put a ring round the {x}.",
+   "what": "Put a ring round the {x}.",
+   "src": "data/school-proto.json lines.board-ring: an English placeholder, to record"
+  },
+  "RubOutTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the school-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Rub out the {x}.",
+   "what": "Rub out the {x}.",
+   "src": "data/school-proto.json lines.board-rub: an English placeholder, to record"
+  },
+  "MyNameIsX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the party-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "My name is {x}.",
+   "what": "My name is {x}.",
+   "src": "data/party-proto.json lines.balloon-name: an English placeholder, to record"
+  },
+  "GiveTheBalloonToX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the party-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Give the balloon to {x}.",
+   "what": "Give the balloon to {x}.",
+   "src": "data/party-proto.json lines.balloon-give: an English placeholder, to record"
+  },
+  "TheXIsForY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the party-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is for {y}.",
+   "what": "The {x} is for {y}.",
+   "src": "data/party-proto.json lines.gift-for: an English placeholder, to record"
+  },
+  "IWantToGoToTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "I want to go to the {x}.",
+   "what": "I want to go to the {x}.",
+   "src": "data/town-proto.json lines.map-go: an English placeholder, to record"
+  },
+  "XWantsToGoToTheY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to go to the {y}.",
+   "what": "{x} wants to go to the {y}.",
+   "src": "data/town-proto.json lines.map-wants: an English placeholder, to record"
+  },
+  "XWantsY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants {y}.",
+   "what": "{x} wants {y}.",
+   "src": "data/town-proto.json lines.map-wants-thing: an English placeholder, to record"
+  },
+  "XFeelsPoorly": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} feels poorly.",
+   "what": "{x} feels poorly.",
+   "src": "data/town-proto.json lines.map-poorly: an English placeholder, to record"
+  },
+  "XWantsToPlay": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to play.",
+   "what": "{x} wants to play.",
+   "src": "data/town-proto.json lines.map-play: an English placeholder, to record"
+  },
+  "XWantsToRead": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x} wants to read.",
+   "what": "{x} wants to read.",
+   "src": "data/town-proto.json lines.map-read: an English placeholder, to record"
+  },
+  "XPlease": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the town-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "{x}, please.",
+   "what": "{x}, please.",
+   "src": "data/town-proto.json lines.pay-price: an English placeholder, to record"
+  },
+  "MyXIsTorn": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the sewing-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "My {x} is torn.",
+   "what": "My {x} is torn.",
+   "src": "data/sewing-proto.json lines.mend-torn: an English placeholder, to record"
+  },
+  "ThereSAHoleInMyX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the sewing-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "There's a hole in my {x}.",
+   "what": "There's a hole in my {x}.",
+   "src": "data/sewing-proto.json lines.mend-hole: an English placeholder, to record"
+  },
+  "TheXIsHungry": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the pets-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is hungry.",
+   "what": "The {x} is hungry.",
+   "src": "data/pets-proto.json lines.care-hungry: an English placeholder, to record"
+  },
+  "TheXIsSleepy": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the pets-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is sleepy.",
+   "what": "The {x} is sleepy.",
+   "src": "data/pets-proto.json lines.care-sleepy: an English placeholder, to record"
+  },
+  "WeVeComeForTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the pets-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "We've come for the {x}.",
+   "what": "We've come for the {x}.",
+   "src": "data/pets-proto.json lines.home-come: an English placeholder, to record"
+  },
+  "TakeAPhotoOfTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Take a photo of the {x}.",
+   "what": "Take a photo of the {x}.",
+   "src": "data/safari-proto.json lines.snap-x: an English placeholder, to record"
+  },
+  "TakeAPhotoOfTheXThatSV": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Take a photo of the {x} that's {v}.",
+   "what": "Take a photo of the {x} that's {v}.",
+   "src": "data/safari-proto.json lines.snap-x-v: an English placeholder, to record"
+  },
+  "WhoSV": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Who's {v}?",
+   "what": "Who's {v}?",
+   "src": "data/safari-proto.json lines.snap-who-v: an English placeholder, to record"
+  },
+  "ThatSTheXV": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "That's the {x} {v}!",
+   "what": "That's the {x} {v}!",
+   "src": "data/safari-proto.json lines.snap-is-v: an English placeholder, to record"
+  },
+  "TheXIsHiding": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "The {x} is hiding.",
+   "what": "The {x} is hiding.",
+   "src": "data/safari-proto.json lines.hide-x: an English placeholder, to record"
+  },
+  "FindTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Find the {x}!",
+   "what": "Find the {x}!",
+   "src": "data/safari-proto.json lines.hide-part: an English placeholder, to record"
+  },
+  "WhereSTheXOne": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Where's the {x} one?",
+   "what": "Where's the {x} one?",
+   "src": "data/safari-proto.json lines.hide-desc: an English placeholder, to record"
+  },
+  "ThatSTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the safari-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "That's the {x}!",
+   "what": "That's the {x}!",
+   "src": "data/safari-proto.json lines.hide-thats: an English placeholder, to record"
+  },
+  "FillTheXY": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the beach-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "Fill the {x}: {y}.",
+   "what": "Fill the {x}: {y}.",
+   "src": "data/beach-proto.json lines.sc-fill: an English placeholder, to record"
+  },
+  "AShellOnTheX": {
+   "status": "unknown",
+   "ask": [
+    "to record with Mum (the beach-proto mode's line has no Kutchi yet)"
+   ],
+   "english": "A shell on the {x}.",
+   "what": "A shell on the {x}.",
+   "src": "data/beach-proto.json lines.sc-shell: an English placeholder, to record"
+  }
+ }
+}

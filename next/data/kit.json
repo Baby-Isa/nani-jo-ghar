@@ -1,0 +1,1121 @@
+{
+ "_about": "The shared kit's numbers, the same in every mode.",
+ "levels": {
+  "_about": "What a level means everywhere, levels 1 to 4. decoys: things on offer nobody asked for. lookalike: one decoy looks like a wanted thing. hintS: seconds without a right move before help comes. cardEnglish, cardPicture: whether the order card shows them or hides them behind a tap. dishCard: the dish's own card is shown as the headline is said. wordAtTap: a thing's word is said as it goes in. countAloud, countAsWords: counting is said, and shown as number words (else dots).",
+  "decoys": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "lookalike": [
+   false,
+   false,
+   false,
+   true
+  ],
+  "hintS": [
+   7,
+   9,
+   11,
+   13
+  ],
+  "cardEnglish": [
+   true,
+   false,
+   false,
+   false
+  ],
+  "cardPicture": [
+   true,
+   true,
+   false,
+   false
+  ],
+  "wordAtTap": [
+   true,
+   true,
+   false,
+   false
+  ],
+  "countAloud": [
+   true,
+   false,
+   false,
+   false
+  ],
+  "countAsWords": [
+   true,
+   true,
+   false,
+   false
+  ],
+  "dishCard": [
+   true,
+   false,
+   false,
+   false
+  ]
+ },
+ "help": {
+  "_about": "showTheWayAt: a dish wrong this many times is shown the right way. noHelpFromStage: no stuck help for an asked-for word once the child's ladder has it at this stage.",
+  "showTheWayAt": 3,
+  "noHelpFromStage": 3
+ },
+ "words": {
+  "holdMs": {
+   "new": 1500,
+   "learning": 1000,
+   "known": 600
+  }
+ },
+ "lines": {
+  "_about": "The lines every mode says, as meanings for the language engine.",
+  "wellDone": {
+   "fn": "Exclaim",
+   "x": "intj.well-done"
+  },
+  "thanks": {
+   "fn": "Exclaim",
+   "x": "phrase.thank-you-the-english-words-the-family-says-them"
+  },
+  "goodbye": {
+   "fn": "Exclaim",
+   "x": "phrase.goodbye-khuda-hafiz"
+  },
+  "notYet": {
+   "fn": "Exclaim",
+   "x": "phrase.not-now"
+  },
+  "oho": {
+   "fn": "Exclaim",
+   "x": "intj.oh-no"
+  }
+ },
+ "wordArt": {
+  "_about": "A word's own picture, the same on the shelf, on its card and in the helper. size: the shelf's size class (L, M, S).",
+  "cook-paani": {
+   "art": "shelf.water-bottle",
+   "size": "L"
+  },
+  "cook-dudh": {
+   "art": "shelf.milk-carton",
+   "size": "L"
+  },
+  "cook-chai": {
+   "art": "shelf.tea-jar",
+   "size": "M"
+  },
+  "cook-khun": {
+   "art": "shelf.sugar-jar",
+   "size": "M"
+  },
+  "spi-10": {
+   "art": "shelf.cardamom-jar",
+   "size": "S"
+  },
+  "veg-14": {
+   "art": "shelf.ginger-jar",
+   "size": "S"
+  },
+  "veg-13": {
+   "art": "shelf.garlic-jar",
+   "size": "S"
+  },
+  "spi-16": {
+   "art": "shelf.salt-jar",
+   "size": "S"
+  },
+  "spi-02": {
+   "art": "shelf.cumin-seeds-jar",
+   "size": "S"
+  },
+  "spi-05": {
+   "art": "shelf.mustard-seeds-jar",
+   "size": "S"
+  }
+ },
+ "art": {
+  "_about": "The kit's own pictures, by art id.",
+  "panel": "shared.panel.stone-tile#1x",
+  "band": "shared.panel.stone-tile",
+  "shelf": "shared.panel.stone-shelf",
+  "steam": [
+   "shared.juice.st#1",
+   "shared.juice.st#2",
+   "shared.juice.st#3"
+  ],
+  "twinkles": [
+   "shared.juice.sk#2",
+   "shared.juice.sk#4",
+   "shared.juice.sk#5"
+  ],
+  "drop": "shared.juice.td#1",
+  "end": {
+   "stopwatch": {
+    "gold": "ui.stopwatch-pb",
+    "mid": "lab.stopwatch-good",
+    "plain": "lab.stopwatch-good"
+   },
+   "crown": "ui.icon-crown",
+   "tick": "ui.tick-gold",
+   "tickGlow": "ui.tick-gold-glow",
+   "tickGrey": "ui.tick-grey",
+   "bulbs": [
+    "ui.bulb#0",
+    "ui.bulb#1",
+    "ui.bulb#2",
+    "ui.bulb#3"
+   ],
+   "bulbIcon": "ui.icon-bulb",
+   "burst": "shared.juice.bu#3"
+  }
+ },
+ "look": {
+  "_about": "The look's numbers. vars: fed to the one style sheet (css/kit.css) as variables, so no size or colour is typed there. p is the panel's scale on a short screen (under shortBelow px high).",
+  "stone": "#dfd5cd",
+  "minTap": 48,
+  "coverFadeMs": 350,
+  "shortBelow": 500,
+  "vars": {
+   "stone": "#dfd5cd",
+   "page": "#f3e7d3",
+   "ink": "#2a2522",
+   "kutchi": "#7d2234",
+   "grey": "#6f6660",
+   "gold": "#c9962e",
+   "red": "#b24a3a",
+   "p-short": "0.66",
+   "side-min": "270px",
+   "side-vw": "27vw",
+   "side-max": "410px",
+   "side-short-min": "250px",
+   "side-short-vw": "34vw",
+   "side-short-max": "340px",
+   "pad": "10px",
+   "radius": "16px",
+   "face": "44px",
+   "face-min": "28px",
+   "nani-bg": "#e4ecdd",
+   "nani-shadow": "0 6px 16px rgba(60,70,50,.10)",
+   "nani-font": "19px",
+   "nani-font-min": "14.5px",
+   "card-bg": "#ffffff",
+   "card-border": "#e4dccf",
+   "card-shadow": "0 6px 16px rgba(80,50,20,.08)",
+   "card-pad": "8px",
+   "head-font": "16.53px",
+   "head-min": "12.6px",
+   "item-w": "115.4px",
+   "item-h": "197.3px",
+   "item-gap": "8px",
+   "item-bg": "#fffdf8",
+   "item-radius": "14px",
+   "item-shadow": "0 3px 10px rgba(80,50,20,.09)",
+   "item-font": "15.62px",
+   "item-font-min": "14.5px",
+   "item-en": "12px",
+   "speaker": "48px",
+   "well": "radial-gradient(120% 90% at 50% 35%, #fffaf1, #f1e4cd)",
+   "speaker-bg": "radial-gradient(circle at 35% 30%, #9a2c43, #7d2234 55%, #5e1726)",
+   "dash": "#e6dac7",
+   "dots": "#8f8070",
+   "pop-bg": "linear-gradient(#fffdf8, #fbf3e6)",
+   "pop-radius": "22px",
+   "pop-shadow": "0 12px 30px rgba(80,50,20,.16), 0 2px 6px rgba(80,50,20,.08)",
+   "pop-font": "45px",
+   "pop-en": "22.2px",
+   "pop-speaker": "75px",
+   "bubble-bg": "#fff8ea",
+   "bubble-border": "#d9bf95",
+   "bubble-shadow": "0 6px 18px rgba(60,35,20,.18)",
+   "bubble-ink": "#2b1810",
+   "bubble-font": "30.72px",
+   "bubble-font-short": "18px",
+   "reply-bg": "#eaf3ff",
+   "reply-border": "#8fb0d8",
+   "reply-lit": "#e0a63a",
+   "reply-lit-bg": "#f8ead0",
+   "cog-bg": "#fffaf0",
+   "dim": "rgba(30,18,10,.45)",
+   "light-edge": "rgba(201,150,46,.9)",
+   "light-fill": "rgba(255,243,214,.2)",
+   "end-dim": "rgba(42,37,34,.42)",
+   "end-bg": "#fffaf0",
+   "end-border": "#e6d5b8",
+   "end-shadow": "inset 0 -4px 0 #e0cba6, 0 2px 4px rgba(70,45,20,.08), 0 18px 48px rgba(70,45,20,.22)",
+   "tile-bg": "#faf6ef",
+   "tile-border": "#e7ded0",
+   "wrong": "#c0443c"
+  },
+  "badgeRim": 0.0417,
+  "badgeLine": "rgba(42,37,34,0.18)",
+  "shadowRgb": [
+   30,
+   18,
+   8
+  ],
+  "shadowMid": 0.4,
+  "shadowEdge": 0.18,
+  "shadowDx": 0.035,
+  "shadowDy": 0.06,
+  "wiggle": {
+   "deg": 8,
+   "ms": 70,
+   "times": 3
+  },
+  "hop": {
+   "share": 0.1,
+   "min": 8,
+   "max": 48,
+   "upMs": 300,
+   "restMs": 450
+  },
+  "glow": "#ffcf6a",
+  "dimOthers": 0.86,
+  "pillInk": "#8c2f2f",
+  "pillShade": "#28190a",
+  "pillShadeA": 0.1,
+  "wordFont": "Lora",
+  "wordWeight": "600",
+  "pop": {
+   "h": 56,
+   "font": 36,
+   "pad": 80,
+   "minPx": 14.2,
+   "inMs": 180,
+   "stayMs": 1900,
+   "outMs": 320,
+   "rise": 14,
+   "edge": 10
+  },
+  "halo": {
+   "_about": "The gold halo behind a lit thing: its colour, how far it spreads (design px), how many copies make it soft and on which rings (shares of the spread), each copy's strength, and its breathing (to this alpha, this long each way).",
+   "color": "rgb(255,176,40)",
+   "spread": 26,
+   "copies": 24,
+   "alpha": 0.2,
+   "breatheTo": 0.75,
+   "breatheMs": 520,
+   "rings": [
+    0.34,
+    0.67,
+    1
+   ]
+  },
+  "speakerMark": {
+   "_about": "The flat speaker on a pill, in design px from its left edge: the box, the cone, and its two waves.",
+   "box": [
+    5,
+    3.5
+   ],
+   "cone": [
+    11,
+    9
+   ],
+   "waves": [
+    5,
+    9.5
+   ],
+   "wave": 0.85,
+   "line": 2,
+   "pad": 8,
+   "width": 24,
+   "gap": 8
+  },
+  "textures": {
+   "_about": "The sizes of pictures the stage makes itself, in px: a face badge, a soft shadow, a halo's small copy; the badge's hairline.",
+   "badge": 192,
+   "shadow": 128,
+   "halo": 256,
+   "badgeLine": 1.5,
+   "shadowMidAt": 0.55,
+   "shadowFit": [
+    1.02,
+    0.98
+   ],
+   "haloPad": 1.2,
+   "textSharp": 3
+  }
+ },
+ "cards": {
+  "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these. lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonMargin: its light's margin; lessonMinPx: a part smaller than this is not asked for.",
+  "foldAfterMs": 1500,
+  "foldMs": 420,
+  "peekMs": 3000,
+  "dotsMin": 3,
+  "dotsMax": 6,
+  "lessonBeatMs": 450,
+  "lessonEndMs": 700,
+  "lessonMargin": 6,
+  "lessonMinPx": 8
+ },
+ "sounds": {
+  "_about": "The sound effects, by name. files: recorded sounds (loop: played round and round; cut: only its first part, in ms). synth: sounds made of notes, each [wave, from Hz, to Hz, ms, loudness, starts at ms]; noise: [ms, band Hz, sharpness, loudness, starts at ms]. under: how loud a sound the child made plays under a voice; tick: a short tick under a voice; master: the made sounds' overall loudness. simmer: the boil's loudness in dB at heat 0, at the bubbling, and at boiling over.",
+  "files": {
+   "knob": {
+    "file": "assets/shared/sfx/knob-a.mp3"
+   },
+   "flame": {
+    "file": "assets/shared/sfx/flame-b.mp3"
+   },
+   "simmer": {
+    "file": "assets/shared/sfx/simmer-b.mp3",
+    "loop": [
+     0.1,
+     12.1
+    ]
+   },
+   "green": {
+    "file": "assets/shared/sfx/ding-a.mp3"
+   },
+   "glass": {
+    "file": "assets/shared/sfx/glass-c.mp3"
+   },
+   "settle": {
+    "file": "assets/shared/sfx/settle-a.mp3"
+   },
+   "sparkle": {
+    "file": "assets/shared/sfx/sparkle-a.mp3"
+   },
+   "pour-tea": {
+    "file": "assets/shared/sfx/pour-a.mp3",
+    "loop": [
+     0,
+     5.04
+    ]
+   },
+   "pour-short": {
+    "file": "assets/shared/sfx/pour-a.mp3",
+    "cut": 900,
+    "fade": 180
+   }
+  },
+  "synth": {
+   "pop": [
+    [
+     "sine",
+     520,
+     820,
+     80,
+     0.2,
+     0
+    ]
+   ],
+   "right": [
+    [
+     "triangle",
+     784,
+     784,
+     140,
+     0.25,
+     0
+    ],
+    [
+     "triangle",
+     1175,
+     1175,
+     220,
+     0.2,
+     80
+    ]
+   ],
+   "soft": [
+    [
+     "sine",
+     330,
+     270,
+     160,
+     0.18,
+     0
+    ]
+   ],
+   "oops": [
+    [
+     "sine",
+     440,
+     420,
+     140,
+     0.14,
+     0
+    ],
+    [
+     "sine",
+     370,
+     330,
+     220,
+     0.14,
+     170
+    ]
+   ],
+   "drop": [
+    [
+     "sine",
+     1319,
+     1319,
+     70,
+     0.16,
+     0
+    ]
+   ],
+   "reveal": [
+    [
+     "triangle",
+     1480,
+     1480,
+     50,
+     0.2,
+     0
+    ]
+   ],
+   "click": [
+    [
+     "square",
+     1200,
+     1200,
+     30,
+     0.05,
+     0
+    ]
+   ],
+   "tap": [
+    [
+     "triangle",
+     660,
+     660,
+     80,
+     0.14,
+     0
+    ]
+   ],
+   "whoosh": [
+    [
+     "sine",
+     300,
+     700,
+     250,
+     0.08,
+     0
+    ]
+   ],
+   "tick": [
+    [
+     "triangle",
+     880,
+     990,
+     160,
+     0.18,
+     0
+    ]
+   ],
+   "low": [
+    [
+     "sine",
+     196,
+     150,
+     220,
+     0.2,
+     0
+    ]
+   ],
+   "gold": [
+    [
+     "triangle",
+     523.25,
+     523.25,
+     550,
+     0.26,
+     0
+    ],
+    [
+     "triangle",
+     659.25,
+     659.25,
+     550,
+     0.26,
+     100
+    ],
+    [
+     "triangle",
+     783.99,
+     783.99,
+     550,
+     0.26,
+     200
+    ],
+    [
+     "triangle",
+     1046.5,
+     1046.5,
+     550,
+     0.26,
+     300
+    ],
+    [
+     "sine",
+     2093,
+     2093,
+     900,
+     0.08,
+     420
+    ],
+    [
+     "sine",
+     1568,
+     1568,
+     900,
+     0.08,
+     460
+    ]
+   ],
+   "bing": [
+    [
+     "sine",
+     1318.5,
+     1318.5,
+     1100,
+     0.32,
+     0
+    ],
+    [
+     "sine",
+     2637,
+     2637,
+     700,
+     0.1,
+     0
+    ],
+    [
+     "sine",
+     1975.5,
+     1975.5,
+     900,
+     0.12,
+     90
+    ]
+   ],
+   "puff": [
+    [
+     "sine",
+     300,
+     800,
+     350,
+     0.2,
+     0
+    ]
+   ],
+   "shutter": [
+    [
+     "square",
+     1900,
+     1900,
+     20,
+     0.05,
+     0
+    ]
+   ]
+  },
+  "noise": {
+   "puff": [
+    [
+     300,
+     800,
+     0.8,
+     0.08,
+     0
+    ]
+   ],
+   "reveal": [
+    [
+     30,
+     2600,
+     1,
+     0.34,
+     0
+    ]
+   ],
+   "shutter": [
+    [
+     35,
+     3200,
+     0.9,
+     0.32,
+     0
+    ],
+    [
+     60,
+     1500,
+     0.8,
+     0.2,
+     90
+    ]
+   ]
+  },
+  "master": 0.5,
+  "under": 0.5,
+  "tick": 0.35,
+  "tickMs": 120,
+  "simmer": {
+   "cold": -24,
+   "bubbling": -2.5,
+   "over": 0
+  },
+  "ramp": {
+   "_about": "The sound player's own ramps, in seconds: floor: the quietest a fade reaches; attack, noiseAttack: a note's and a hiss's rise; tail: a note's stop after its end; loopFade, loopStop: a loop ending; duck, simmerDuck: how fast a loop goes under a voice.",
+   "floor": 0.0001,
+   "attack": 0.012,
+   "noiseAttack": 0.02,
+   "tail": 0.05,
+   "loopFade": 0.08,
+   "loopStop": 0.3,
+   "duck": 0.05,
+   "simmerDuck": 0.15
+  }
+ },
+ "order": {
+  "_about": "The order's timings, in milliseconds. pop: a big card appearing. fly: its flight into its slot. partGap: between parts. cardOpen: a card opening. passAfter: before the next person. fold: a card folding. holdAlong: the beat after the last part. walkIn: people arriving, then walkWait before anyone speaks. dishCardOut: the dish's own card going. bigW: the big card's widest, with its share of the play area's height and width. bigAt: the big card's corner beside the side panel. bigByPeople: the big card's place and size by how many people order (short: on a short screen, its own size and height). bigHeadGap: it never touches a head. bubbleGap: a bubble keeps this far off the big card. bubbleShift: the big card shrinks until the speaker's bubble need move aside by no more than this share of its own width.",
+  "pop": 380,
+  "fly": 650,
+  "partGap": 120,
+  "cardOpen": 260,
+  "passAfter": 450,
+  "fold": 320,
+  "holdAlong": 300,
+  "walkIn": 900,
+  "walkWait": 1100,
+  "dishCardOut": 240,
+  "bigW": 300,
+  "bigOfH": 0.6,
+  "bigOfW": 0.42,
+  "silentBase": 700,
+  "silentPerLetter": 55,
+  "silentMin": 1400,
+  "silentMax": 4200,
+  "minHoldMs": 300,
+  "bigAt": [
+   14,
+   10
+  ],
+  "bigByPeople": [
+   {
+    "place": "top",
+    "zoom": 1
+   },
+   {
+    "place": "top",
+    "zoom": 0.8
+   },
+   {
+    "place": "bottom",
+    "zoom": 0.55,
+    "short": {
+     "zoom": 0.613,
+     "h": 244
+    }
+   }
+  ],
+  "bigHeadGap": 2,
+  "bigMinZoom": 0.45,
+  "bubbleGap": 6,
+  "voiceCapMs": 6000,
+  "quietShare": 0.6,
+  "glideShow": 0.5,
+  "zoomStep": 0.01,
+  "bubbleShift": 0.065
+ },
+ "room": {
+  "_about": "The kitchen with its people, in design px. picture: where the tall painting's top-left sits. spots: where people stand, by x. counterY: the counter's back edge, which hides everything below it. lift: how much higher the order is framed, by how many people. from: where people walk in from. naniX: where Nani stands at the serve. serveGlide: how far the view glides down to the trays. tray: one serving tray per person and the dish landing on it. bubbleGap: a bubble's distance above a head. talk: a speaker's talking picture flaps (open, then shut for a time between two numbers) with a small bob. serveWait: the pause before the kitchen comes back. serveSpread: with three people they stand evenly from this far right of Nani to this far inside the right edge. tray.gapShare: a tray is at most this share of the gap between two people; tray.inside: kept this far inside the view; tray.shade: its shadow's width beside its own; tray.faceAt: the face mark's place on its rim.",
+  "picture": [
+   -250,
+   -450
+  ],
+  "spots": {
+   "left": 350,
+   "middle": 803,
+   "right": 1258
+  },
+  "counterY": 611,
+  "armY": 615,
+  "liftByPeople": [
+   150,
+   150,
+   0
+  ],
+  "from": 1860,
+  "naniX": 330,
+  "serveGlide": 158,
+  "serveGlideMs": 800,
+  "tray": {
+   "w": 400,
+   "h": 173,
+   "y": 812,
+   "fadeMs": 560,
+   "dish": 0.17,
+   "dishDrop": 70,
+   "dishMs": 340,
+   "between": 160,
+   "face": 58,
+   "gapShare": 0.86,
+   "inside": 16,
+   "shade": 1.075,
+   "faceAt": [
+    -0.42,
+    0.3
+   ],
+   "floor": 0.02,
+   "shadeAlpha": 0.65,
+   "fadeAt": 200
+  },
+  "walkOffMs": 800,
+  "fadeMs": 220,
+  "bubbleGap": 14,
+  "hop": 14,
+  "far": 4000,
+  "talk": {
+   "openMs": 150,
+   "shutMs": [
+    330,
+    470
+   ],
+   "bob": 2,
+   "turn": 0.4,
+   "bobMs": 380
+  },
+  "serveWait": 1550,
+  "cutGap": 20,
+  "serveSpread": [
+   300,
+   170
+  ],
+  "edge": 6,
+  "bubbleMin": 4,
+  "tailMin": 24,
+  "hopMs": 150,
+  "hops": 2,
+  "voiceCapMs": 4000
+ },
+ "wordMoment": {
+  "_about": "The word moment's sizes and times (ms). pitch: glasses stand this many glass-widths apart; side: the room at the sides; glassMost: a glass's most, as a share of the height; top, topMin: the room kept at the top; gap: the stream's gap above the rim and above: the kettle's height above its spout, in glasses. streamW, streamTo: the stream's width and how far down the glass it reaches. dropW, dropStop: the last drop. frame: the snap's frame, in glasses. card, cardShort: the word card's size. startMs: before the kettle comes; moveMs: the kettle moving; runMs: the stream running down; pourBaseMs + pourFullMs x the measure: a pour; tailMs: the stream ending; dropAfterMs, dropMs: the last drop; afterPourMs: the beat after a pour; lookMs: a look at both glasses; cornersMs: the corners before the shutter; shutterMs: the shutter before the card; sayAfterMs: the card before its word; holdMs: after the word; lingerMs: both cards stay; fadeMs: the scene going.",
+  "pitch": 1.9,
+  "side": 0.4,
+  "glassMost": 0.42,
+  "top": 0.04,
+  "topMin": 10,
+  "gap": 0.4,
+  "above": 0.66,
+  "streamW": 0.085,
+  "streamTo": 0.36,
+  "dropW": 0.055,
+  "dropStop": 0.6,
+  "frame": 1.0,
+  "card": [
+   277.5,
+   387.4
+  ],
+  "cardShort": [
+   153.8,
+   227.7
+  ],
+  "startMs": 300,
+  "moveMs": 800,
+  "runMs": 400,
+  "pourBaseMs": 400,
+  "pourFullMs": 3467,
+  "tailMs": 613,
+  "dropAfterMs": 213,
+  "dropMs": 560,
+  "afterPourMs": 1400,
+  "lookMs": 200,
+  "cornersMs": 1150,
+  "shutterMs": 200,
+  "sayAfterMs": 410,
+  "holdMs": 1240,
+  "lingerMs": 2200,
+  "fadeMs": 350
+ },
+ "wrongOrder": {
+  "holdMs": 900
+ },
+ "greetings": {
+  "_about": "The greeting's lines: each a meaning for the language engine, and the small picture that goes with an answer.",
+  "salaam": {
+   "meaning": {
+    "fn": "Exclaim",
+    "x": "cook.line.greet"
+   }
+  },
+  "salaam-reply": {
+   "meaning": {
+    "fn": "Exclaim",
+    "x": "cook.line.greet-reply"
+   },
+   "emoji": "🙋"
+  },
+  "goodbye": {
+   "meaning": {
+    "fn": "Exclaim",
+    "x": "phrase.goodbye-khuda-hafiz"
+   },
+   "emoji": "👋🚪"
+  }
+ },
+ "ladder": {
+  "_about": "The word ladder: a word's stage climbs one for every so many rounds it was right first time, up to the top stage. pillRun: a word picked right this many times running loses its written word on the shelf pill (a miss brings it back until the next right pick).",
+  "top": 4,
+  "rightsPerStage": 2,
+  "pillRun": 3,
+  "learningFrom": 2,
+  "knownFrom": 3
+ },
+ "light": {
+  "_about": "The light's box: a margin round the thing (a share of its smaller side, between two sizes in px) and its corner.",
+  "marginShare": 0.12,
+  "marginMin": 8,
+  "marginMax": 16,
+  "radius": 12,
+  "cornerOfHeight": 4
+ },
+ "cog": {
+  "_about": "The cog's menu, top right of the play area: what each button is for.",
+  "items": [
+   {
+    "id": "help",
+    "label": "What to do here",
+    "glyph": "?"
+   },
+   {
+    "id": "home",
+    "label": "Home",
+    "glyph": "⌂"
+   },
+   {
+    "id": "book",
+    "label": "Nani's recipe book",
+    "glyph": "▤"
+   }
+  ]
+ },
+ "greeting": {
+  "_about": "The greeting's numbers. idleMs: with no answer for this long the person says it for the child. lightAfterWrongs: the right answer is lit after this many wrong tries. rightFirst: how often the right answer is the left one. afterClipMs: the answers rise this long after the line. wrongPauseMs: before the person asks again. afterReplyMs, fadeMs: the close. silentBase, silentPerLetter: how long a line with no recording is held. passGlyph: the pass button's mark.",
+  "idleMs": 10000,
+  "lightAfterWrongs": 2,
+  "rightFirst": 0.5,
+  "afterClipMs": 90,
+  "wrongPauseMs": 900,
+  "afterReplyMs": 500,
+  "fadeMs": 260,
+  "silentBase": 500,
+  "silentPerLetter": 55,
+  "passGlyph": "✋"
+ },
+ "end": {
+  "_about": "The end screen's numbers. nearBest: a time within this many times the best keeps a dim gold watch. midShare: this share of rows right is the middle tier. shortSecs: under this a time shows as seconds and counts up. popMs: a tile's contents pop in. countSteps, countMs: the time counts up. waits: after each tile, in ms. tickSteps, tickMs, tickVolume: the rows count up, a tick on each. pageMs: the card eases to the second page. wordCols: word tiles across. tightOver, smallFrom: more words than this on a side sit tighter, then smaller. stars: where the six stars twinkle on a tile, each [left %, top %, delay s]. listKinds: the kinds of word the second page lists (things and numbers; never a connective, a 'no' or a verb).",
+  "nearBest": 1.25,
+  "midShare": 0.6,
+  "shortSecs": 100,
+  "popMs": 330,
+  "countSteps": 20,
+  "countMs": 700,
+  "waits": [
+   350,
+   350,
+   250
+  ],
+  "tickSteps": 12,
+  "tickMs": 600,
+  "tickVolume": 0.5,
+  "pageMs": 280,
+  "wordCols": 3,
+  "tightOver": 6,
+  "smallFrom": 10,
+  "stars": [
+   [
+    48,
+    -5,
+    0
+   ],
+   [
+    13,
+    13,
+    0.4
+   ],
+   [
+    85,
+    5,
+    0.8
+   ],
+   [
+    88,
+    50,
+    0.4
+   ],
+   [
+    17,
+    78,
+    0
+   ],
+   [
+    70,
+    83,
+    0.8
+   ]
+  ],
+  "listKinds": [
+   "n",
+   "num"
+  ]
+ },
+ "serving": {
+  "_about": "The serving spot's small numbers (sizes in design px unless a share). face: a person's mark on the spot (its biggest, smallest, and size in screen px), kept this far from the spot's corner (pad), slid in at most (slide) to clear its dish by (clear). settle: a dish's small settle, as scales and times. undimMs: the spot coming out of its dim. drop: the painted drop (where it starts and lands and its width, in dish-widths; its fade and fall). twinkle: the three twinkles (small and big: their span and middle in dish-widths; each one's place and size in the span; the gap between them; grow from, turn, and times). review: the big faces (size with one dish; with more, between two sizes as a share of the gap between dishes; how far from the dish; kept inside the spot; pop from, pop time; a happy face's two small hops and a sad one's shake). praise: the white card by a face (gap, text inset, height, radius, lift, font, shadow, fade). closeMs, closeTo: the faces going.",
+  "face": {
+   "most": 90,
+   "least": 64,
+   "px": 30,
+   "pad": 4,
+   "slide": 20,
+   "clear": 4
+  },
+  "settle": [
+   [
+    0.97,
+    90
+   ],
+   [
+    1.011,
+    110
+   ],
+   [
+    1,
+    120
+   ]
+  ],
+  "undimMs": 400,
+  "drop": {
+   "x": 0.28,
+   "from": 0.7,
+   "to": 0.05,
+   "w": 0.17,
+   "fadeMs": 55,
+   "fallMs": 460
+  },
+  "twinkle": {
+   "small": {
+    "span": 0.5,
+    "x": 0.18,
+    "y": 0.06
+   },
+   "big": {
+    "span": 0.88,
+    "x": 0.3,
+    "y": -0.3
+   },
+   "spots": [
+    [
+     -0.3,
+     -0.3,
+     0.7
+    ],
+    [
+     0.3,
+     -0.25,
+     0.6
+    ],
+    [
+     0.05,
+     0.3,
+     0.55
+    ]
+   ],
+   "gapMs": 150,
+   "from": 0.2,
+   "turn": 10,
+   "inMs": 234,
+   "outTo": 0.6,
+   "outMs": 286
+  },
+  "review": {
+   "one": 150,
+   "least": 96,
+   "most": 130,
+   "ofGap": 0.62,
+   "off": 0.74,
+   "inside": 6,
+   "from": 0.5,
+   "popMs": 340,
+   "hop": 0.06,
+   "hops": 2,
+   "shake": 5,
+   "stepMs": 170
+  },
+  "praise": {
+   "gap": 18,
+   "inset": 22,
+   "pad": 44,
+   "h": 58,
+   "radius": 14,
+   "lift": 29,
+   "drop": 3,
+   "font": 34,
+   "weight": "800",
+   "shade": "#28190a",
+   "shadeA": 0.12,
+   "fadeMs": 200
+  },
+  "closeMs": 260,
+  "closeTo": 0.85
+ },
+ "shelf": {
+  "_about": "The bottom row's small numbers (design px unless a share). far: how far the band runs past the sheet's sides. band: its tile's scale and strength, the line along its top, the shelf tile's scale. fit: a thing is kept this much narrower than its slot. shade: a thing's shadow (lift, width as a share, height). pillPop: a tapped pill's pop. pillRadius, pillDrop: a pill's corner and its shadow's drop. squash: a thing taken or put back squashes and springs. spoon: the spoon (its start above the thing, its handle point, its angles at rest, over the pan and tipping; the last part of its stir, where it lifts and fades; its tip and going times). popRadius, popDrop: the word pop's corner and shadow.",
+  "far": 2000,
+  "band": {
+   "tile": 0.5,
+   "alpha": 0.9,
+   "line": 3,
+   "lineA": 0.08,
+   "lineInk": "#2a1a0a",
+   "shelfTile": 0.35
+  },
+  "fit": 8,
+  "shade": {
+   "lift": 2,
+   "w": 0.8,
+   "h": 22
+  },
+  "pillPop": [
+   1.08,
+   90
+  ],
+  "pillRadius": 12,
+  "pillDrop": 2,
+  "squash": {
+   "wide": 1.06,
+   "flat": 0.94,
+   "inMs": 110,
+   "outMs": 210
+  },
+  "spoon": {
+   "above": 20,
+   "origin": [
+    0.22,
+    0.5
+   ],
+   "rest": -60,
+   "over": 28.5,
+   "tip": -70,
+   "lastPart": 0.875,
+   "liftTo": 0.7,
+   "tipMs": 120,
+   "goneMs": 130
+  },
+  "popRadius": 14,
+  "popDrop": 3
+ },
+ "lineTimes": {
+  "_about": "Small waits round Nani's lines, in ms. wellDoneAfter: the praise comes this long after the faces pop; wellDoneCap: the longest it waits for her voice; wellDoneHold: the beat after it. wrongRowCap: the longest a wrong order's row waits for its voice; wrongRowGap: between rows.",
+  "wellDoneAfter": 500,
+  "wellDoneCap": 2200,
+  "wellDoneHold": 400,
+  "wrongRowCap": 2500,
+  "wrongRowGap": 120
+ }
+}

@@ -1,0 +1,19 @@
+{
+  "_about": "How the gap reporter asks Mum for what the engine lacks (engine-design § 10; rule G11): a natural English situation, never a table. English for grown-ups only (Mum's sheet), never shown to the child. {gloss} and {glossPl} come from the lexicon entry; a rule gap uses the rule's own `elicit` sentences from abstract.json.",
+  "templates": {
+    "lexeme": "How do you say \"{gloss}\"? Please say it in a short sentence, e.g. \"bring me the {gloss}\".",
+    "form.pl": "One {gloss}, three {glossPl}.",
+    "form.obl": "With the {gloss}; in the {gloss}; on the {gloss}.",
+    "form": "Please say \"{gloss}\" in this sentence: \"{example}\".",
+    "feature.gender": "One {gloss}, two {glossPl}. (Or: \"I'd like some {gloss}, please\", said politely.)",
+    "rule": "Please say these the way you would at home:",
+    "audio": "Please record: \"{text}\""
+  },
+  "headings": {
+    "rule": "Ways of saying things the game needs",
+    "lexeme": "Words the game needs",
+    "form": "Forms of words we know",
+    "feature": "Is it a he-word or a she-word?",
+    "audio": "Words to record (we know them, but have no recording)"
+  }
+}

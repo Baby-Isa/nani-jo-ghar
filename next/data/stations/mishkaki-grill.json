@@ -1,0 +1,229 @@
+{
+ "_about": "Data for the Sekelo station (formerly the Mishkaki grill; design system §15), the combined station js/cook/stations/mishkaki-grill.js. `station`: its name, goal and one line per phase. `words` are the skewer kinds the order names (the family's words, 26 Sept: gos = meat (ph-meat), boga = vegetable, mixed; each is said after lakri, the skewer: ba lakri gos). `mechanic.skewer` is shared by the thread and grill mechanics: which piece is meat or veg (`classes`), which word names which kind of skewer (`kinds`), and how each piece is drawn on a skewer (`art`, placeholder). `mechanic.levels`: which level each zone's mechanic runs at (the grill's own levels in data/cook.json add spots and speed) and `juggle`. Wave 6 (docs/design-language/ux-principles.md 5): one job at a time: thread every skewer, press \"Go to the barbecue\", then grill them. `juggle: true` (level 4, optional, for older children) is the old two-zone screen, threading while the grill cooks. The order's shape per level (1 skewer; 2; 2-3 with a mixed one; 3-4) is the mishkaki recipe's `skewers` slot.",
+ "band": "tray",
+ "station": {
+  "name": "Sekelo",
+  "verb": "Thread, grill, plate",
+  "goal": "Thread the skewers they asked for. Then take them to the grill: turn each one, and lift it onto the plate.",
+  "phases": {
+   "thread": "Tap the bowls to thread each skewer the way they said. Then tap \"to the grill\".",
+   "grill": "Tap a skewer on the rack to grill it. Turn it on the green, then lift it onto the plate.",
+   "go": "go-grill"
+  }
+ },
+ "words": {
+  "ph-veg": {},
+  "ph-mixed": {},
+  "n.chicken": {}
+ },
+ "mechanic": {
+  "skewer": {
+   "unit": "ph-lakri",
+   "_unit": "the word said before a skewer's kind when Nani repeats it (hakri lakri gos, ba lakri boga): the same as the mishkaki recipe's tally `unit`",
+   "classes": {
+    "ph-meat": "meat",
+    "veg-02": "veg",
+    "veg-03": "veg"
+   },
+   "kinds": {
+    "ph-mishkaki": "meat",
+    "ph-veg": "veg",
+    "ph-mixed": "mixed",
+    "veg-02": "only:veg-02",
+    "veg-03": "only:veg-03"
+   },
+   "_kinds_only": "29 Sept (K4, Zafar): no bare boga skewers in an order. A vegetable skewer is one named vegetable (only:<piece>, said after lakri: hakri lakri dungri, the gos pattern) or a mixed one with its pieces in order. ph-veg stays only to name an unasked-for all-vegetable skewer.",
+   "art": {
+    "ph-pepper": {
+     "style": "pepper",
+     "color": "#4f9a3a"
+    },
+    "veg-02": {
+     "style": "onion",
+     "color": "#f1e2ec"
+    },
+    "veg-03": {
+     "style": "tomato",
+     "color": "#d8402e"
+    },
+    "ph-meat": {
+     "style": "meat",
+     "color": "#9c4a32"
+    }
+   },
+   "_pieces": "SEK-19 (decision 11; Zafar, 17-18 Oct: 'she should be saying Gos, because the raw ingredient is Gos ... When it's cooked it becomes Mishkaki'; the card 'Hakri Lakri Mishkaki'): the raw meat PIECE is ph-meat (gos: the bowl's chip, the word pop, a mixed skewer's parts); the KIND word of an all-meat skewer in the order is ph-mishkaki (hakri lakri mishkaki). Was the other way round (29 Sept, design system §15).",
+   "meatPiece": "ph-meat",
+   "bowls": {
+    "_about": "S19 (s19-games-1; the kitchen-and-items run's K9, Zafar's default 11 Nov: like every other band): each piece's raw chunks in the cream bowl seen from above (assets/cook/items/v4/sekelo/bowl-*), one bowl per piece on the stone tray. Was (30 Sept, K5, Q11) the bowl-less top-down heaps (v3/sekelo/heap-*, items-s08c/sekelo/*-heap-s08c).",
+    "ph-meat": "v4/sekelo/bowl-meat",
+    "veg-02": "v4/sekelo/bowl-onion",
+    "veg-03": "v4/sekelo/bowl-tomato",
+    "ph-pepper": "v4/sekelo/bowl-pepper",
+    "veg-01": "v4/sekelo/bowl-potato",
+    "veg-12": "v4/sekelo/bowl-chilli",
+    "n.corn-on-the-cob": "v4/sekelo/bowl-corn",
+    "n.chicken": "v4/sekelo/bowl-chicken"
+   },
+   "v3pieces": {
+    "_about": "30 Sept (K5): each piece's v3 chunk (assets/cook/items/v3/sekelo/<name>-raw|grilled|charred.webp); a piece not listed keeps its old sprite. 30 Sept (v3.1, R7): every piece has a charred chunk that keeps its own colour, and the decoy potato has its chunks s08 w7A (contract-37): s08c SK5's chilli, corn and chicken: heap, raw, grilled and charred each ({name, file}: their own folder); the chicken joins the decoy pool (Zafar, 21 Oct; data/cook.json mechanics.thread decoyPool) before Mum's murgi clip: until she records it the device says it while we test.",
+    "ph-meat": "meat",
+    "veg-02": "onion",
+    "veg-03": "tomato",
+    "ph-pepper": "pepper",
+    "veg-01": "potato",
+    "veg-12": "chilli",
+    "n.corn-on-the-cob": "corn",
+    "n.chicken": "chicken",
+    "_s19k2": "S19 (s19-games-1; the run's K2b): the chilli, the corn and the chicken are redrawn straight down in four stages too (v4pieces), so they are plain names now (were their s08c files)"
+   },
+   "v4pieces": {
+    "_about": "S19 (s19-wave-e2; K2 #98, Zafar 10 Nov: four stages for anything cooked): the five pieces redrawn straight down in four stages, cut by build/tools/art/s19_cut.py into assets/cook/items/v4/sekelo/<piece>-<stage>.webp. pieces: a v3 name -> its v4 name; states: the grill's state -> the stage drawn (raw on the first side, part after the first turn, cooked once every turn is done, over if left: SK.v3File, SK.cook). A piece not listed (the s08c decoys) keeps its v3 or own files.",
+    "dir": "assets/cook/items/v4/sekelo/",
+    "pieces": {
+     "meat": "meat",
+     "onion": "onion",
+     "tomato": "tomato",
+     "pepper": "pepper",
+     "potato": "potato",
+     "chilli": "chilli",
+     "corn": "corn",
+     "chicken": "chicken"
+    },
+    "states": {
+     "raw": "raw",
+     "part": "part",
+     "grilled": "cooked",
+     "charred": "over"
+    }
+   }
+  },
+  "levels": [
+   {
+    "zones": {
+     "thread": {
+      "level": 1
+     },
+     "grill": {
+      "level": 1
+     }
+    },
+    "juggle": false
+   },
+   {
+    "zones": {
+     "thread": {
+      "level": 1
+     },
+     "grill": {
+      "level": 1
+     }
+    }
+   },
+   {
+    "zones": {
+     "thread": {
+      "level": 1
+     },
+     "grill": {
+      "level": 2
+     }
+    }
+   },
+   {
+    "zones": {
+     "thread": {
+      "level": 2
+     },
+     "grill": {
+      "level": 3
+     }
+    },
+    "juggle": false
+   }
+  ],
+  "_juggle": "Sekelo v2 (§15): one job at a time at every level (thread, then the grill); the juggle screen is off (it had no shelf band).",
+  "_knobs": "S18 (s18-g-sekelo, 8 Nov; STD-F1-03, STD-F2-03): the thread's and the grill's numbers by level live here, in sekelo's settings file (were data/cook.json mechanics.thread and .grill, which stay only until the orchestrator deletes them; this file wins: Cook.Skewer.knobs). Each level lists only what changes from the one before.",
+  "thread": {
+   "_about": "The Mishkaki grill's board (js/cook/mechanics/thread.js): pieces per skewer (the mixed pattern is 4 long too), decoy bowls from decoyPool (a piece that fits no skewer), and how long after Nani's spoken hint the piece glows (being shown costs the ear star).",
+   "levels": [
+    {
+     "pieces": 4,
+     "decoys": 1,
+     "decoyPool": [
+      "veg-01",
+      "veg-12",
+      "n.corn-on-the-cob",
+      "n.chicken"
+     ],
+     "showAfterMs": 4000
+    },
+    {
+     "decoys": 2
+    },
+    {
+     "decoys": 3
+    },
+    {
+     "decoys": 3
+    }
+   ],
+   "_decoys": "s08 w2A (CK-49, P32): decoy bowls 1, 2, 3, 3 by the round's level, from decoyPool (only veg-01 has sekelo piece art: the rest wait on the art run); every piece bowl is out anyway, so a piece no skewer needs is a decoy too s08 w7A (contract-37; the s08c art plan decision 3): s08c SK5 drew the chilli (mirchi, veg-12) and the corn (makai, n.corn-on-the-cob) as heaps and chunks, so the pool holds three: 1, 2, 3, 3 by level, and the potato is the onion's lookalike at L4 (data.lookalikes). SK5's chicken (murgi, cut and named in data/stations/mishkaki-grill.json) joins the pool now (Zafar, 21 Oct): four in the pool, still 1, 2, 3, 3 drawn by level; until Mum records murgi it has no family clip (data/family-audio.json), so it is on the recording sheet and the device says it while we test, never in the store build."
+  },
+  "grill": {
+   "_about": "The Mishkaki grill (js/cook/mechanics/grill.js): each skewer's ring (band, rate in rings per second, rateSpread so they drift apart), turns before the lift, how many cook at once (spots), rack slots (fixed per level, never the number ordered), burntScore, and ignoreBelow (a tap this early in a ring is ignored: no accidental double taps).",
+   "levels": [
+    {
+     "band": [
+      0.6,
+      0.84
+     ],
+     "rate": 0.2,
+     "rateSpread": 0.3,
+     "turns": 2,
+     "spots": 2,
+     "rack": 4,
+     "burntScore": 40,
+     "ignoreBelow": 0.12
+    },
+    {
+     "spots": 3,
+     "rate": 0.22
+    },
+    {
+     "spots": 4,
+     "rack": 4,
+     "_rack": "30 Sept (K9, Q11): the rack is a picture of 0-4 skewers, so 4 at every level (the order is 3-4 at level 4; was 5)",
+     "rate": 0.24,
+     "band": [
+      0.62,
+      0.85
+     ]
+    }
+   ]
+  }
+ },
+ "items": {
+  "_about": "S19 (contract-104, SH-242): the item card of a mixed skewer ('ba lakri mixed') had no picture: its card is the grilled mixed skewer (the kit's item card reads a station's items.*.card by its words, js/cook/ui.js cardOfIds). Existing art (assets/cook/items/skewer-mixed-grilled-t.png, a v1 cut on artcheck's known list); an ART row asks for the s08c skewer. s20-b2-sekelo (contract-104, -128 on every sekelo page of the base: the dish card 'hakro sekelo' had no picture): the dish's own card, the served sekelo the serve shows (served.sekelo@v2, already in this game's assets).",
+  "mixedSkewer": {
+   "word": [
+    "ph-mixed"
+   ],
+   "card": "assets/art/sekelo/skewer-mixed.grilled.r1.png"
+  },
+  "dish": {
+   "word": [
+    "ph-sekelo"
+   ],
+   "card": "assets/art/served/sekelo@v2.default.r1.webp"
+  }
+ },
+ "assets": [
+  "assets/art/sekelo/skewer-mixed.grilled.r1.png",
+  "assets/cook/items/v4/sekelo/*",
+  "assets/art/served/sekelo@v2.default.r1.webp",
+  "assets/art/kit/grill.default.r1.webp",
+  "assets/art/kit/tray-deep.default.r1.webp",
+  "assets/art/samosa/board.default.r1.webp"
+ ],
+ "_assets": "S19 (decision 68, loadcheck): the mixed skewer's card picture (items.mixedSkewer), beyond data/cook.json art.assets.stations; s19-wave-e2: the v4 pieces in four stages (mechanic.skewer.v4pieces) S19 (s19-games-1, loadcheck): the served dish the shared serve shows for this game (data/cook.json's served sekelo), until s19-serve2's kitchen dishes take its place. SEK-26 (s19-clean-c2, Zafar 12 Nov night): the kit's grill v2 and steel tray (Cook.GrillKit: the trays made deep from it, never stretched) and the walnut board (the chop's), in place of the k3 wide tray, the old oak board, rack and stick."
+}
