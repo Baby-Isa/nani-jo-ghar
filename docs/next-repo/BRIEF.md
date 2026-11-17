@@ -270,6 +270,9 @@ After milestone 1 the names are swapped, so the live address serves the new repo
 
 ## 10. Decisions
 
+> **Zafar's answers before the first night (17 Nov):** (1) play it at `https://baby-isa.github.io/nani-jo-ghar/next/`, a new space in the old repository; (2) no tests made only for tonight: the normal 5-minute check script and the nightly every-button robot run, built now; (3) the order and serve scenes rebuilt now, the same as old chai, so the whole round can be played and judged ("nothing broke or changed"); (5) the recommended option is taken overnight and logged; (6) a $1,000 cost ceiling. Eggs: Nani is the speaker. Details in `OVERNIGHT.md`.
+
+
 ### Agreed (Zafar, 16-17 Nov)
 
 - A new, private repository: `Baby-Isa/nani-jo-ghar-game`.

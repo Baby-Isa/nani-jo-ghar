@@ -4,6 +4,16 @@ For the session that runs the first build in the new repository. You have not se
 
 Zafar's go, 17 Nov 2026: build until he can play the rebuilt chai. There is no hard stop.
 
+## Zafar's answers before launch (17 Nov, these win over anything below)
+
+1. **Where he plays it:** a new space in the old repository, at `https://baby-isa.github.io/nani-jo-ghar/next/`. The orchestrator copies each playable build into the old repository's `next/` folder and pushes it to the old `main`; nothing else in the old repository changes. (If that cannot work, a private claude.ai link instead, and say so.)
+2. **No tests made only for tonight.** Use exactly the checks of the new way of working: the 5-minute check script (all six steps), and the nightly robot run that presses every button in every situation (every level, every person count, early, on-time and late taps, mistakes, help, take-backs). Build both tonight; they are part of the engine, not extras.
+3. **The order and serve scenes are rebuilt now, the same as old chai** (not stand-ins), so he can play and give feedback on the whole round. "Nothing broke or changed" is the bar for the whole of chai: order, word moment, cook, serve, well done and the end screen. Chai's eight open questions are not decided tonight: today's behaviour is copied.
+4. **Recommended option taken overnight** on anything else, logged at the top of the handover.
+5. **Cost ceiling: $1,000.** Pause and report to Zafar if the total reaches it.
+
+Eggs: Nani is the speaker (confirmed).
+
 ## The two repositories
 
 | | Path | What you may do |
@@ -18,13 +28,14 @@ Old chai plays at `lab.html?mode=cook&game=chai-tray&level=1&nonav=1` on the old
 1. The new repository populated with the carry-over.
 2. The architecture page and a one-page build plan.
 3. The engine skeleton: the shared conversation scenes, the runner, the stove-top family layer, and chai's rules with no screen.
-4. Chai's middle game, playable, with real art and real family voices. The order and the serve are plain stand-ins with the automatic serve.
+4. The whole chai round, playable, rebuilt the same as old chai: order, word moment, cook, serve, well done and the end screen, with real art and real family voices.
 5. The judge's ten differences beside old chai, the reviewer's verdict, and a handover for Zafar.
 
-**The exit test** (this, not "no bugs", is tonight's bar):
-- the robot plays chai's rules cleanly at all four levels, including "nothing is taken or turned before the green";
+**The bar** (the normal checks of the new way of working, no special tests):
+- the 5-minute check script passes on chai (all six steps);
+- the nightly robot run presses every button in every situation and its report is clean, or lists exactly what fails;
 - the reviewer gives pass or fail on each of the ten coding rules;
-- chai's middle game plays from the first pick to the last pour on a phone-size screen, at level 1 at least;
+- the whole chai round plays from the order to the end screen, at all four levels, at phone and laptop size;
 - the judge has listed the ten most obvious differences from old chai.
 
 The run ends when step 9 below is done. A chai that matches old chai exactly is the next milestone, not tonight's.
@@ -53,9 +64,9 @@ Steps 1 and 2 run alongside each other. Steps 3 to 9 run in order.
 | 3 | **The plan.** `docs/architecture.md` (one page: the three layers, the scenes, the three places, the ten rules) and a one-page build plan: the files to be made, what each holds, in what order. | Lead builder | Both pages exist. No code yet. |
 | 4 | **Gate 1.** The reviewer reads both pages against `BRIEF.md` section 4. | Reviewer | Pass. A fail goes back to step 3. |
 | 5 | **The skeleton.** The runner and its list of scenes. The conversation scenes as shared modules with their slots and the two settings (who speaks; how the serve works). The family layer: hob, knob, the heat rule, shelf or tray, the cook scene's box. Art loaded by id only. Chai's rules as plain code with no screen. | Lead builder | The robot plays chai's rules at levels 1 to 4. |
-| 6 | **The check script, steps 1 to 4 and 6** (`check-script.md`): code structure, art, words and grammar, the robot, one full play. Step 5 waits for chai's look. | Lead builder | `check chai` runs and prints its tick list. |
+| 6 | **The check script, all six steps** (`check-script.md`), **and the nightly every-button robot run.** | Lead builder | `check chai` runs and prints its tick list; the nightly run plays every level, person count and timing path and writes its report. |
 | 7 | **Gate 2.** The reviewer reads the skeleton. | Reviewer | Pass or fail per rule, with file and line. Fails are fixed before step 8. |
-| 8 | **Chai's middle game.** Picking from the shelf, pouring, the boil and the green, the pour into each person's glass: as old chai plays, level 1 first, then levels 2 to 4 while time allows. Phone size (740x320) and laptop size (1280x665). Real art by id, real voices through the language engine. The order and serve are stand-ins. | Lead builder | The exit test's third line. The check script passes. |
+| 8 | **The whole chai round, the same as old chai:** the order (cards flying in, Nani's box, the side panel), the word moment, picking from the shelf, the boil and the green, the pour into each person's glass, the serve, well done and the end screen. All four levels. Phone size (740x320) and laptop size (1280x665). Real art by id, real voices through the language engine. | Lead builder | The bar above. The check script and the nightly run pass. |
 | 9 | **The judge and the final verdict.** The judge is given old and new chai at the same moments, both sizes, and one instruction: "You are Zafar. List the ten most obvious differences, worst first. Would you sign this off?" Before it counts, plant one known fault (shadows off) and confirm the judge names it in its first three lines. The reviewer gives its final verdict on the ten rules. | Judge, reviewer | Both written to the handover. |
 
 If a step fails twice, stop adding to it, write what happened, and take the simpler route. Do not patch round it.
@@ -92,7 +103,7 @@ Family voices and pictures are private. Nothing from the repository is sent to a
 
 ## Decisions overnight
 
-Zafar's answers to the six "still needed" decisions are in `BRIEF.md` section 10; if he gave none, the recommended option stands. For anything else that comes up, take the recommended or simplest option, do not widen the scope, and log it. Never decide: Kutchi wording, new art, removing a mechanic, anything in chai's eight questions about the order and serve.
+Zafar's answers to the six "still needed" decisions are in `BRIEF.md` section 10; if he gave none, the recommended option stands. For anything else that comes up, take the recommended or simplest option, do not widen the scope, and log it. Never decide: Kutchi wording, new art, removing a mechanic, anything in chai's eight questions about the order and serve (copy today's behaviour).
 
 ## Reporting every 30 minutes
 
@@ -111,7 +122,7 @@ Say plainly if a step is stuck, has failed a gate, or the cost is heading past t
 
 One message, flaws first, in this order:
 
-1. **What to play:** the link (GitHub Pages if the plan allows it on a private repository; otherwise a temporary link), which levels work, and what to look at: the feel of the picks, the pour, the boil and the green. What to ignore: the order and serve, which are stand-ins.
+1. **What to play:** the link (`https://baby-isa.github.io/nani-jo-ghar/next/`), which levels work, and what to compare with old chai: the whole round, order to end screen.
 2. **What was not reached,** in plain words.
 3. **At most four pictures:** new beside old, at the same moment.
 4. **The judge's ten differences,** with a space beside each for his own.
