@@ -53,8 +53,8 @@ Start with `docs/now.md`; open the others when needed.
 
 Three layers, one direction (`docs/architecture.md`):
 
-1. **Shared kit:** cards, lights, sounds, tray and shelf, the language engine.
-2. **Family engine:** runs the round as scenes; owns layout and timing.
+1. **Shared:** the kit (cards, lights, sounds, tray and shelf, the language engine), the conversation scenes (order, serve, thanks…) and the runner that plays a list of scenes.
+2. **Family** (first, the stove-top kitchen): the hob and heat rule, layout, the cook scene.
 3. **The game:** settings plus its own mechanic.
 
 Art by id only. Game rules run without a screen.

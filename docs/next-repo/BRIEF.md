@@ -1,9 +1,9 @@
 # Brief for the new repository: Nani jo Ghar, built properly
 
-For the lead agent of the new repository, and for Zafar to review first. Written 16 Nov 2026, revised 17 Nov.
+For the lead agent of the new repository, and for Zafar to review first. Written 16 Nov 2026, revised 17 Nov (Zafar's go). The new repository is `Baby-Isa/nani-jo-ghar-game`, private. The first night's runbook is `OVERNIGHT.md`.
 You have none of the project's history. This brief is self-contained. Read it whole, then `CLAUDE.md`.
 `CLAUDE.md` opens with how to behave: as Zafar's senior game lead and head of product, who checks each request against the written aims, pushes back and gives an opinion before acting.
-Nothing here is agreed until Zafar says so. Section 10 lists what he still has to decide.
+Section 10 says what Zafar has agreed, what is dropped, and what he still has to decide.
 
 ## 1. The project
 
@@ -50,31 +50,32 @@ The full page will be `docs/architecture.md`, one page, written at milestone 0 a
 
 ### The three layers
 
-Dependencies go one way: a game may use the family engine and the shared kit; nothing lower knows anything higher.
+Dependencies go one way: a game may use the family layer and the shared layer; nothing lower knows anything higher.
 
-1. **The shared kit (every mode).** Word card, order card, Nani's box, the first-time light and stuck help, sounds, the end screen, the language engine, and the two bottom rows: **the shelf** (side-on things stand on it) and **the tray** (top-down things lie on it). The shelf and tray draw their own shadows, word pills, spacing and face labels.
-2. **The family engine (first: the stove-top kitchen).** It runs a round as a **list of separate scenes**:
-   1. the order (who wants what; each card flies in as its phrase ends);
-   2. the check (empty at first; see "Built in from day one");
-   3. the word moment, where there is one;
-   4. the cook scene, which holds the game's own middle;
-   5. the serve and thank-you;
-   6. well done.
-
-   It owns layout at every screen size, timing, the hob and knob, and the heat rule (nothing is taken or turned before the green). A caller can pass a different list, so story mode can skip or swap a scene. The old clinic is the model: five scene files run by one pipeline (`js/clinic/stages/`, `js/clinic/pipeline.js`).
+1. **The shared layer (every mode).**
+   - **The kit:** word card, order card, Nani's box, the first-time light and stuck help, sounds, the end screen, the language engine, and the two bottom rows: **the shelf** (side-on things stand on it) and **the tray** (top-down things lie on it). The shelf and tray draw their own shadows, word pills, spacing and face labels.
+   - **The conversation scenes:** greeting, order, check, word moment, serve and thanks, well done. Each is a separate module with named slots. They belong to every mode, not to the kitchen.
+   - **The runner:** plays a list of scenes in order. A caller can pass a different list, so story mode can skip or swap a scene. The old clinic is the model: five scene files run by one pipeline (`js/clinic/stages/`, `js/clinic/pipeline.js`).
+2. **The family layer (first: the stove-top kitchen).** It holds only what is the kitchen's own: the hob, the knob and the heat rule (nothing is taken or turned before the green), the choice of tray or shelf, the layout of the play area at every screen size, and the **cook scene** that holds a game's middle.
 3. **The game.** A settings file plus its own mechanic. The mechanic draws only inside the box it is given and answers three questions: what is the next right move, is this dish right, reset this dish.
+
+A round is the runner's list, for example: order, check (empty at first), word moment, cook scene, serve and thanks, well done.
+
+**Two settings the shared scenes carry from day one:**
+- **Who speaks in the order.** Chai: each person, in their own voice ("I want…"). Eggs: Nani for everyone ("Nana wants…", "make it for Ma").
+- **How the serve works.** Automatic, as chai today; or the child chooses who gets which dish. The second replaces the automatic serve; it is never an extra step after it.
 
 ### The three places on screen
 
 - **The bottom row:** only things the child picks from. Shelf or tray, chosen in the game's settings.
 - **The play area:** where the child works.
-- **The serving spot:** inside the play area, where finished dishes sit with their face labels. Chai's glasses on their tray are this. (Where maani's plates go: decision 9.)
+- **The serving spot:** inside the play area, where finished dishes sit with their face labels. Chai's glasses on their tray are this. (Where maani's plates go: a later decision.)
 
 ### Built in from day one, for grammar
 
 From `grammar-in-play.md` section 5 (ten points; these are the ones that shape the engine). Each is cheap now and costly later.
 
-- **The order and the serve are conversation scenes** with named slots: greeting, ask, check, question, options, thanks, goodbye. A game fills a slot or leaves it empty.
+- **The conversation scenes have named slots:** greeting, ask, check, question, options, thanks, goodbye. A game fills a slot or leaves it empty.
 - **An order is data about people as well as food:** who spoke, who it is for, each person's gender, elder or child, number, and a "no" on any part.
 - **The player's own gender reaches the language engine.**
 - **A grammar ladder beside the word ladder:** a rung per pattern per child, shared across games, moved only by a move the pattern decided.
@@ -110,7 +111,7 @@ The engine shows a picture only by its id from the art list (`data/art/registry.
 - **By the robot:** if it cannot play a game's rules without a browser, rule 3 is broken.
 - **By a separate reviewer on the top model,** never the builder. It reads the code against the ten rules only and answers pass or fail per rule, with file and line. It reads at three points: after the engine skeleton, when chai matches, when maani is done. After that, every few feedback rounds.
 
-**Over-engineering to avoid:** plug-in systems, options no game needs yet, a second family engine before its family is being built, a test per line.
+**Over-engineering to avoid:** plug-in systems, options no game needs yet, a second family layer before its family is being built, a test per line.
 
 ## 5. How we work
 
@@ -208,20 +209,26 @@ The 105-rule draft (`chai-standard.md`) is not the standard. It is the lead buil
 
 **Grammar in play** (`grammar-in-play.md`): one conversation shape carries most of the grammar: greeting, order, check, questions and options, thanks. Each pattern has four rungs: heard, decides between two, near miss among three, the child says it. It lists 15 mechanics. The cooking in the middle stays the fun.
 
+**What is settled for the first games** (Zafar, 17 Nov):
+- **Chai's middle stays as it is.** Its steps are a fixed sequence a child learns quickly, so a second deciding word does not fit there. Chai already carries milk or none, the sugar count, cardamom or ginger, half or full, and the named chais.
+- **Eggs: Nani speaks the order for the people sitting there.** It carries "wants" said about someone else, "for Nana", and the owner word. The child shows understanding by cooking the right egg for the right person. Fried and boiled are **two items**, each with its own card on the normal word ladder. The person is picked by name at first; whether "him" and "her" can differ waits on Mum.
+- **Tenses: two-way only, "done" against "not yet",** never three, and with no time word in the line. From day one every round opens with "we'll make…" and closes with "you made…", heard only. Deciding comes later, in two places: who has come and who is coming (the door, the tray, the table), and Masi's phone call about the child's real day.
+
 **The games map** (`games-map-review.md`, `modes-table-proposed.json`): the 82 rows are about **24 modes**, 41 variants and 17 scenes. Six modes carry half the map, so six engines built well yield about 40 games. The review proposes eight merges (82 rows to 75) and a rebalance: where a game has a second thing that could decide, it decides at a later level, and counting and size step back there. Level 1 never changes and no mechanic is removed. Once Zafar agrees, that table is the plan for each sheet's later levels. The map works by word group today; it moves to single words as sheets are written.
 
 ## 8. The build order
 
-Steps run back to back. Each ends at a review point with Zafar.
+Steps run back to back. Each ends at a review point with Zafar. There are no dates.
 
 | # | Milestone | What is done | How it is proved | What Zafar does |
 |---|---|---|---|---|
-| 0 | **Set-up** | The new repository with only the carry-over list (section 9). The architecture page, the principles page, chai's game sheet with its "not in chai yet" list, this CLAUDE.md. The check script's steps 1 to 3 working. | The check script runs on an empty game. The reviewer passes the architecture page against this brief. | Answers section 10, group A. Plays chai once and corrects the principles by voice. Approves chai's art contact sheet. |
-| 1 | **The engine, with clean chai** | The shared kit and the stove-top engine, with chai as the first game. The middle game, item cards and side panel match old chai exactly. The order and serve are conversation scenes with their slots, behaving as today. The 105-rule inventory is walked once. | Old and new chai side by side: Zafar cannot tell them apart. The robot plays chai's rules. The reviewer passes at the skeleton and at the match. Chai's mechanic is within the size limit. | Approves the lead builder's one-page plan. Plays in short rounds. Signs off. |
-| 1b | **The two scenes** | The order scene's art and animation and the serve scene are brought to the targets on the "not in chai yet" list. | His play. The list is empty. | Feedback rounds. Signs off. |
-| 2 | **Maani** | Built new from its game sheet, on the tray, as a starter game. | The engine needed no change beyond what the sheet said in advance. The reviewer passes. | Answers group B. Picks the plates spot from a phone-size mock. Plays. Signs off. |
+| 0 | **The first night** (`OVERNIGHT.md`) | The new repository populated with the carry-over list. The fixed brief and the grammar table (28 patterns to 24 modes). The architecture page and build plan. The engine skeleton, with chai's rules played by a robot. Chai's middle game playable; the order and serve are plain stand-ins. | The exit test: the robot plays chai's rules cleanly at all four levels; the reviewer's verdict on the ten rules; the middle game plays to the end on a phone; the judge's ten differences beside old chai. No hard stop: it ends when that is done. | Plays it. Adds his feedback beside the judge's. Plays old chai and corrects the 14 principles by voice. |
+| 1 | **Clean chai** | The middle game, item cards and side panel match old chai exactly, at every level. The conversation scenes behave as today. The 105-rule inventory is walked once. | Old and new chai side by side: Zafar cannot tell them apart. The reviewer passes. Chai's mechanic is within the size limit. | Plays in short rounds. Signs off. |
+| 1b | **The two scenes** | The order scene's art and animation and the serve scene are brought to the targets on the "not in chai yet" list. | His play. The list is empty. | Answers chai's eight questions. Feedback rounds. Signs off. |
+| 1c | **The conversation proof of concept, in chai** | One deciding grammar move in chai's order, using words already recorded: two orders alike but for the "no", or for who the cup is for. One graded move a round, with the check slot. | He plays it. The robot shows it cannot be won by guessing. | Says whether the shape works before it spreads. |
+| 2 | **Maani** | Built new from its game sheet, on the tray, as a starter game. | The engine needed no change beyond what the sheet said in advance. The reviewer passes. | Picks the plates spot from a phone-size mock. Plays. Signs off. |
 | 3 | **One day (the vertical slice)** | Nani at the door gives a reason, then chai, then maani, then the evening book. Links are five-second family-voiced lines. Installed on a phone. | He plays the whole day on his phone. A child plays it. | Plays. Watches a child play. |
-| 4 | **Eggs** | The third game, on the shelf. | No engine edit at all. If so, widen. | Plays. Signs off. |
+| 4 | **Eggs** | The third game, on the shelf, with Nani as the speaker. | No engine edit at all. If so, widen. | Plays. Signs off. |
 | 5 | **Widen** | Two or three games at a time, each from its sheet, one builder per game, none touching the engine. Then the next of the six big modes, built once as an engine. | Per game, as milestone 2. | Chooses the order from the word counter. |
 
 After milestone 1 the names are swapped, so the live address serves the new repository. The old one stays read-only.
@@ -248,7 +255,7 @@ After milestone 1 the names are swapped, so the live address serves the new repo
 | The art list and its approved pieces | `data/art/`, the files it names under `assets/art/`, `docs/design-language/art-bible.md`, `art-registry.md`, the art board `lab/art-board.html` |
 | The clinic's pipeline, as the pattern | `js/clinic/pipeline.js`, `js/clinic/stages/` (to read) |
 | The routines | `.claude/skills/feedback`, `mum-round`, `art-run` (feedback rewritten to section 5) |
-| These drafts | `docs/next-repo/`: `BRIEF.md`, `CLAUDE.md`, `check-script.md`, `grammar-ladder.md`, `grammar-in-play.md`, `games-map-review.md`, `modes-table.md` and `.json`, `modes-table-proposed.json`, `review-chai-standard.md` (the principles and the "not in chai yet" list) |
+| These drafts | `docs/next-repo/`: `BRIEF.md`, `CLAUDE.md`, `OVERNIGHT.md`, `check-script.md`, `grammar-ladder.md`, `grammar-in-play.md`, `games-map-review.md`, `modes-table.md` and `.json`, `modes-table-proposed.json`, `review-chai-standard.md` (the principles and the "not in chai yet" list) |
 | Chai's inventory, used once at milestone 1 | `docs/next-repo/chai-standard.md` |
 | Settings to read for each game's sheet | `data/cook.json`, `data/stations/<game>.json` |
 
@@ -261,39 +268,51 @@ After milestone 1 the names are swapped, so the live address serves the new repo
 - the prototypes and labs, which stay playable on the old site;
 - the old `CLAUDE.md` and the process documents.
 
-## 10. Open decisions for Zafar
+## 10. Decisions
 
-Yes to all except … My recommendation is yes to each unless a line says otherwise.
+### Agreed (Zafar, 16-17 Nov)
 
-### A. Needed before chai is rebuilt
+- A new, private repository: `Baby-Isa/nani-jo-ghar-game`.
+- Chai is rebuilt first, properly, on the new structure.
+- Rebuilt chai is the standard; the 105-rule draft is not.
+- Chai's middle game stays as it is.
+- One game at a time; maani after chai.
+- The three layers, with the conversation scenes shared and stitched by a runner.
+- The serve setting: automatic, or the child chooses, replacing the automatic serve.
+- Eggs: Nani is the speaker.
+- Tenses: two-way, heard only for now.
+- One sequential check before he plays, 5 minutes at most.
+- The curriculum goal: primary, secondary and tertiary, measured by a generated counter.
+- The conversation proof of concept right after clean chai.
+- The first night runs with no hard stop, until he can play the rebuilt chai.
 
-1. **A new repository, private,** since it holds family voices and pictures. Name: `nani-jo-ghar-game` until the swap.
-2. **Chai first, rebuilt cleanly,** matching exactly except the two scenes, which are improved straight after.
-3. **Rebuilt chai is the standard,** with one page of principles and a shrinking "not in chai yet" list. The 105-rule draft is used once and left behind.
-4. **The 14 principles** (`review-chai-standard.md`): read once and correct by voice.
-5. **Chai's eight questions** (same file, "To decide now"): the dish card's flight at every level; the thank-you (when, per person or per dish, English or Kutchi, with no guest); tray shadows and their strength; the end screen. Recommended: answer by voice while playing chai.
-6. **The engine allows grammar from day one** (`grammar-in-play.md` section 5, points 1 to 8).
-7. **Art:** rebuild on today's approved art and swap by id later, not wait for new kitchen and people art.
-8. **A weekly Mum round,** starting now, with the blind-spot rows first, and one unscripted recording of Mum or Masi with a child.
+### Dropped
 
-### B. Before maani
+- The 105-rule standard and its top-20 summary.
+- A second deciding word inside chai's middle.
+- For eggs: the style badge, and a serve that tests memory.
+- Tenses as three pictures.
+- "For him" against "for her" as a deciding contrast, unless Mum shows the words differ.
+- "Copy chai, make maani, extract later": the structure comes first.
+- Planning by 82 games: it is 24 modes.
 
-9. **Maani's plates:** a serving spot in the play area beside or beneath the tawa, chosen from a phone-size mock. The bottom row holds only the dough.
-10. **Roll-tawa becomes maani's top level,** with the other seven merges (`games-map-review.md` section 2). It changes a built game, so it needs your word.
-11. **The grammar ladder's eight decisions** (`grammar-ladder.md` section 5), including: the past stays at A2 for now, and no game is designed on a row Mum has not answered.
-12. **Full-sentence "no" from level 2,** replacing the bare "no sugar" row there; level 1 keeps today's row. This changes an earlier rule of yours.
-13. **One voice for both forms in "Say it as you",** an exception to "Zafar for a boy, Mum for a girl".
-14. **The counter's starting rules and load bands** (section 7), tuned after two games.
-15. **The other ten gaps from the old draft** go to the sheet of the game that raises them (maani, corn, sekelo) or to your first play of rebuilt chai.
+### Still needed before the first night
 
-### C. Later
+Yes to all except … Each is recommended.
 
-16. **The rebalance table** as the plan for each game's later levels (`games-map-review.md` section 3).
-17. **The park** as the one new game. Recommended: not yet; decide when the counter shows the gaps by word.
-18. **Ali's play room** confirmed, and **the out groups stay out.**
-19. **The first store set:** the smallest set of games that fully covers a few word groups, chosen from the counter after milestone 3. Not every designed game.
-20. **A test with real children** after milestone 3: a few children, a week, to see what they keep.
-21. **The stitching choices** listed under milestone 3.
+1. **How you will play it.** A private repository can only be served as a web page on a paid GitHub plan. Check Settings, Pages, in the new repository. If it is refused, either upgrade, or tell the session to give you a temporary link instead.
+2. **The exit test,** in place of "without bugs": the robot plays chai's rules cleanly at all four levels; the reviewer gives its verdict on the ten rules; the middle game plays to the end on a phone; the judge lists ten differences. The first attempt will not yet match old chai.
+3. **The order and serve are plain stand-ins tonight,** with the automatic serve. Chai's eight questions about them wait for you.
+4. **The same drawing library as today** (Phaser, already in the old repository), as plain files with no build step, so the look can match and the page is served directly.
+5. **The recommended option is taken overnight** on anything else that comes up, and logged at the top of the handover.
+6. **A cost ceiling,** since there is no hard stop: the run pauses and reports at $500. The estimate is $150 to $350.
+
+### Later (not needed before the first night)
+
+- **Before clean chai is signed off:** the 14 principles, corrected by voice; chai's eight questions (`review-chai-standard.md`); rebuild on today's approved art, swapping by id later.
+- **Before maani:** the plates' serving spot; roll-tawa as maani's top level, with the other seven merges; the grammar ladder's eight decisions; full-sentence "no" from level 2; one voice for both forms in "Say it as you"; the counter's starting rules; the other ten gaps, each on its game's sheet.
+- **After that:** the rebalance table; the park (my recommendation: not yet); Ali's play room; the out groups; the first store set; a test with real children; the stitching choices.
+- **Any time, and soon:** a weekly Mum round, with the blind-spot rows first, and one unscripted recording of Mum or Masi with a child.
 
 ## 11. What not to do
 
@@ -302,7 +321,7 @@ Yes to all except … My recommendation is yes to each unless a line says otherw
 - Do not run parallel builders on the engine or the shared kit.
 - Do not add a rule, check, tool or document without replacing one, or make one from each remark.
 - Do not let a file pass its size limit, a shared file name a game, or a game hold a fix that belongs in the engine.
-- Do not change chai's behaviour during its rebuild.
+- Do not change chai's behaviour during its rebuild, or add a deciding word to its middle.
 - Do not turn the principles, or any page, back into a checklist to tick.
 - Do not design a game on a grammar row Mum has not answered.
 - Do not invent Kutchi, type it in code, or ship a voice that is not the family's.
