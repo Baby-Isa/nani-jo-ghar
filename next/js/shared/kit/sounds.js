@@ -3,24 +3,39 @@
  * sound's file or recipe is written here. A sound never masks a voice: under a voice a sound the child made plays
  * quieter, a short tick quieter still, and anything else is dropped. Nothing sounds before the child's first tap.
  *
- *   const sounds = createSounds({ kit, say })
+ *   const sounds = createSounds({ kit, say, stage })     (stage: so the sounds wait while the round is held)
  *   sounds.ready(names)     sounds.play(name, { under?, volume? })     sounds.loop(name, on)
  *   sounds.simmer(heat, k, bubbleAt)    the boil's loop: louder as the hottest vessel heats (-1: none heating)
  */
-export function createSounds({ kit, say }) {
+// One sound for the page, whatever the number of rounds: a browser allows only a few, and each round's own would pile up.
+let ctx = null;
+const buffers = new Map();
+let held = false;
+const wake = () => {
+  if (!ctx) {
+    const AC = globalThis.AudioContext || globalThis.webkitAudioContext;
+    if (AC) ctx = new AC();
+  }
+  if (ctx && ctx.state === "suspended" && !held) ctx.resume();
+};
+// (a phone's browser counts a touch as a tap only as it lifts: every kind of tap wakes the sound, every time)
+["pointerdown", "pointerup", "touchend", "click", "keydown"].forEach((t) => globalThis.addEventListener(t, wake, { capture: true, passive: true }));
+// held behind the turn card, the sound sleeps; it wakes where it was
+const holding = new WeakSet();
+function followHold(stage) {
+  if (!stage || !stage.onHold || holding.has(stage)) return;
+  holding.add(stage);
+  stage.onHold((on) => {
+    held = on;
+    if (ctx) (on ? ctx.suspend() : ctx.resume()).catch(() => {});
+  });
+}
+
+export function createSounds({ kit, say, stage }) {
   const Q = kit.sounds.ramp;
   const S = kit.sounds;
-  let ctx = null;
-  const buffers = new Map();
   const loops = new Map();
-  const wake = () => {
-    if (!ctx) {
-      const AC = globalThis.AudioContext || globalThis.webkitAudioContext;
-      if (AC) ctx = new AC();
-    }
-    if (ctx && ctx.state === "suspended") ctx.resume();
-  };
-  globalThis.addEventListener("pointerdown", wake, { capture: true });
+  followHold(stage);
 
   async function fetchBuffer(name) {
     const f = S.files[name];

@@ -42,7 +42,7 @@ export function cookLights({ stage, kit, kitchen, ui, drawn, itemRow }) {
       if (mine !== token || !drawn()) return;
       const box = boxFor(step, card ? "card" : "thing");
       if (!box) return;
-      ui.light.show(box, { hard: step.kind === "use" && !card, margin: box.margin });
+      ui.light.show(() => boxFor(step, card ? "card" : "thing"), { hard: step.kind === "use" && !card, margin: box.margin });
       if (step.kind === "use" && !card) {
         glowing = step.item;
         drawn().shelf.glow(step.item, true);
@@ -51,9 +51,8 @@ export function cookLights({ stage, kit, kitchen, ui, drawn, itemRow }) {
     },
     help(step) {
       token += 1;
-      const box = boxFor(step, "thing");
-      if (!box) return;
-      ui.light.show(box, { hard: false });
+      if (!boxFor(step, "thing")) return;
+      ui.light.show(() => boxFor(step, "thing"), { hard: false });
       if (step.kind === "use") {
         stopGlow();
         glowing = step.item;

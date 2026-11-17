@@ -8,7 +8,8 @@
  *   cards.show(seat)  cards.open(seat)  cards.fold(seat)  cards.land(seat, ids)  cards.tick(seat, id, done, cross?)
  *   cards.served(seat)  cards.reopen(seat)  cards.slot(seat, id) -> rectangle  cards.glide(seat, id)  cards.focus(seat)
  *   cards.pop(seat, id | "dish") -> the big card: { fly() -> Promise, out() -> Promise, lesson() -> Promise, el }
- *   cards.bigPlace(heads, bubble) -> where the big card sits for this order, in the play area's px (kept for the whole order)
+ *   cards.bigPlace(heads, bubble, { again? }) -> where the big card sits for this order, in the play area's px (kept for the
+ *       whole order; again: worked out afresh for a new size of the play area, and a big card showing moves there)
  */
 import { lineHtml } from "./nani-box.js";
 import { wordCardHtml, wirePeeks, revealLesson } from "./word-card.js";
@@ -66,7 +67,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
   function bigBox(card, heads = [], bubble = null) {
     if (place) return place;
     const play = stage.size();
-    const short = document.documentElement.classList.contains("short");
+    const short = document.documentElement.classList.contains("phone");
     const by = O.bigByPeople[Math.min(O.bigByPeople.length, round.order.for.length) - 1];
     const own = (short && by.short) || by;
     const w = Math.round(Math.min(O.bigW, play.h * O.bigOfH, play.w * O.bigOfW));
@@ -83,6 +84,14 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     while (zoom > O.bigMinZoom && aside(at(zoom)) > bubble.w * O.bubbleShift) zoom -= O.zoomStep;
     place = at(zoom);
     return place;
+  }
+
+  // the big cards showing now (one, or the dish's own card beside it), placed again at a new size unless already flying
+  const showing = new Set();
+  function setBig(el, b) {
+    // a zoomed card's own offsets are zoomed with it
+    Object.assign(el.style, { left: `${b.x / b.zoom}px`, top: `${b.y / b.zoom}px`, width: `${b.w}px`, height: `${b.h}px`, zoom: b.zoom });
+    el.style.setProperty("--pw", `${b.w}px`);
   }
 
   return {
@@ -137,8 +146,10 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     lineOf: (seat, id) => seats[seat].items.get(id).line,
     headOf: (seat) => seats[seat].head,
     /** The big card that pops as a thing is said, in the row card's own shape; then it flies whole into its slot. */
-    bigPlace(heads, bubble) {
+    bigPlace(heads, bubble, { again = false } = {}) {
+      if (again) place = null;
       const b = bigBox(seats[0].items.values().next().value.el, heads, bubble);
+      if (again) showing.forEach((el) => el.style.transform || setBig(el, b));
       return { x: b.x, y: b.y, w: b.w * b.zoom, h: b.h * b.zoom };
     },
     pop(seat, id, dish = null) {
@@ -148,10 +159,10 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       el.className = `pop in${src.el && src.el.classList.contains("no") ? " no" : ""}`;
       el.innerHTML = `${wordCard(src.line, src.pic, src.word)}<span class="speaker"></span>`;
       const b = bigBox(slotEl);
-      // a zoomed card's own offsets are zoomed with it
-      Object.assign(el.style, { left: `${b.x / b.zoom}px`, top: `${b.y / b.zoom}px`, width: `${b.w}px`, height: `${b.h}px`, zoom: b.zoom });
-      el.style.setProperty("--pw", `${b.w}px`);
+      setBig(el, b);
       stage.el.over.appendChild(el);
+      showing.add(el);
+      const gone = () => (showing.delete(el), el.remove());
       return {
         el,
         async fly() {
@@ -160,19 +171,19 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
           el.classList.remove("in");
           el.style.transition = `transform ${O.fly}ms cubic-bezier(.65,0,.35,1)`;
           el.style.transform = `translate(${(to.left - from.left) / b.zoom}px, ${(to.top - from.top) / b.zoom}px) scale(${to.width / from.width}, ${to.height / from.height})`;
-          await new Promise((r) => setTimeout(r, O.fly));
-          el.remove();
+          await stage.wait(O.fly);
+          gone();
         },
         async out() {
           el.classList.remove("in");
           el.classList.add("out");
           el.style.transform = "scale(.6)";
-          await new Promise((r) => setTimeout(r, O.dishCardOut));
-          el.remove();
+          await stage.wait(O.dishCardOut);
+          gone();
         },
         /** The first-time lesson: the order waits while the child taps each hidden part open. */
         lesson: () => revealLesson(el, { kit, light, sounds }),
-        remove: () => el.remove(),
+        remove: gone,
       };
     },
     clear() {

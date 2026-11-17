@@ -44,9 +44,11 @@ export async function revealLesson(card, { kit, light, sounds }) {
   card.classList.add("lesson");
   const parts = [".well", ".ku", ".en"].map((sel) => card.querySelector(sel)).filter((p) => p && p.getBoundingClientRect().height >= K.lessonMinPx);
   for (const [i, part] of parts.entries()) {
-    const r = part.getBoundingClientRect();
     part.classList.add("lit");
-    light.show({ x: r.left, y: r.top, w: r.width, h: r.height }, { hard: true, margin: K.lessonMargin });
+    light.show(() => {
+      const r = part.getBoundingClientRect();
+      return { x: r.left, y: r.top, w: r.width, h: r.height };
+    }, { hard: true, margin: K.lessonMargin });
     await new Promise((res) => part.addEventListener("click", res, { once: true, capture: true }));
     part.classList.remove("lit");
     part.classList.add("shown");

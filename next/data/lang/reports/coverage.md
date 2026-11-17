@@ -1,18 +1,18 @@
 # Coverage: what the engine holds (step 4b)
 
-Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
+Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
 
 ## Lexicon
 
-1215 entries (162 are fixed expressions made of other words).
+1243 entries (170 are fixed expressions made of other words).
 
 | By part of speech | Entries |
 |---|---|
-| Phrase | 537 |
+| Phrase | 558 |
 | N | 442 |
-| V | 66 |
-| A | 51 |
-| Adv | 29 |
+| V | 67 |
+| A | 54 |
+| Adv | 32 |
 | Post | 28 |
 | Num | 17 |
 | PN | 16 |
@@ -27,15 +27,15 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 0 warnings.
 
 | By status | Entries |
 |---|---|
-| to-record | 663 |
-| confirmed | 381 |
-| draft | 171 |
+| to-record | 656 |
+| confirmed | 417 |
+| draft | 170 |
 
 | By source (an entry can cite several) | Citations |
 |---|---|
-| grammar-notes | 520 |
+| grammar-notes | 557 |
 | data/clinic* | 482 |
-| other | 247 |
+| other | 248 |
 | parked modes | 166 |
 | data/cook.json | 126 |
 | lexicon.md §6 | 69 |

@@ -3,7 +3,7 @@
  * head and its big card pops, then flies whole into its slot on their card. Said before shown: nothing of an order
  * appears until a voice says it. A tap on the kitchen skips the rest; a tap on a face says that card again.
  */
-import { createRoom } from "../kit/people.js";
+import { createRoom, roomKey } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { atLevel } from "../round.js";
 
@@ -13,7 +13,10 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
   let big = null;
   let live = true;
   let offTap = null;
-  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  let offResize = null;
+  let saying = null; // the part being said now: its bubble's seat and words, to place them again at a new size
+  // (the stage's own clock: it stands still while the round is held behind the turn card)
+  const wait = (ms) => stage.wait(ms);
   const stage_of = (id, ladder) => ((ladder[id] || 0) >= kit.ladder.knownFrom ? "known" : (ladder[id] || 0) >= kit.ladder.learningFrom ? "learning" : "new");
 
   /** One part: its bubble and its voice start together, its card pops, is held, and flies as the voice ends. */
@@ -30,6 +33,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
     room.bubble(e.seat, html);
     const card = ui.cards.bigPlace(room.probe(), room.bubbleBox());
     room.bubble(e.seat, html, "", { ...card, gap: O.bubbleGap });
+    saying = { seat: e.seat };
     room.talk(e.seat, true);
     room.reading(true);
     const spoken = say.speak(line).then(() => room.reading(false));
@@ -66,15 +70,25 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
     if (live) send({ type: "said" });
   }
 
+  /** A new size of the play area: the big card's place is worked out again, and the bubble placed beside it. */
+  function relayout() {
+    if (!room || !saying) return;
+    room.placeBubble(null);
+    const card = ui.cards.bigPlace(room.probe(), room.bubbleBox(), { again: true });
+    room.placeBubble({ ...card, gap: O.bubbleGap });
+  }
+
   return {
     async enter(state, round) {
       live = true;
       ui.cards.seats.forEach((s, i) => (s.el.hidden = true));
-      // after a greeting the people are already at the counter
-      const here = ui.room && ui.room.round === round;
-      room = here ? ui.room : await createRoom({ stage, kit, roomArt, people, standing: round.people, lift: atLevel(kit.room.liftByPeople, round.people.length) });
-      room.round = round;
+      // after a greeting the same people are already at the counter: they stay, and never walk in again (the round is a
+      // new object after every scene, so the room is known by who stands in it)
+      const lift = atLevel(kit.room.liftByPeople, round.people.length);
+      const here = !!ui.room && ui.room.key === roomKey(round.people, lift) && stage.showing() === "room";
+      room = here ? ui.room : await createRoom({ stage, kit, roomArt, people, standing: round.people, lift });
       ui.room = room;
+      offResize = stage.onResize(relayout, "room");
       stage.uncover();
       offTap = stage.onTap({ view: "room", x: -kit.room.far, y: -kit.room.far, w: 2 * kit.room.far + stage.sheet.w, h: 2 * kit.room.far + stage.sheet.h }, () => live && send({ type: "skip" }));
       if (!here) {
@@ -109,6 +123,8 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
       live = false;
       this.ready = false;
       if (offTap) offTap();
+      if (offResize) offResize();
+      saying = null;
       if (big) big.remove();
       big = null;
       stage.el.over.querySelectorAll(".pop").forEach((el) => el.remove());

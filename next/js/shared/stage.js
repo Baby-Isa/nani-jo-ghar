@@ -13,6 +13,10 @@
  *   stage.box(layer, { x, y, w, h }) -> box        what a game's mechanic is handed: its own clipped corner of a layer
  *   stage.toPage(view, x, y) -> [px, py]            for page elements placed over a picture
  *   stage.onTap(handle | { view, x, y, w, h }, fn)  stage.onTick(fn(ms))   stage.wait(ms)   stage.clear()
+ *   stage.hold(on)   stage.onHold(fn(on)) -> off     the whole round stands still (the turn card) and goes on
+ *   stage.keepInView(view, y, px?)       world y stays in view, with px screen px above it, whatever the play area's shape
+ *   stage.onResize(fn, view?) -> off   fn() once the canvas has been laid out again for a new size of the play area;
+ *                                       a view's own are let go of when that view is cleared
  *
  * A handle: set(props), to(props, ms, ease) -> Promise, swap(ref), remove(), and `obj` (for the stage and the kit only).
  */
@@ -30,7 +34,7 @@ function originOf(art, ref, mirror) {
 
 const stage_measure = {};
 
-export async function createStage({ art, kit, renderer = "auto" }) {
+export async function createStage({ art, kit, frame, renderer = "auto" }) {
   const P = globalThis.Phaser;
   const el = { page: document.getElementById("page"), side: document.getElementById("side"), nani: document.getElementById("nani"), cards: document.getElementById("cards"), play: document.getElementById("play"), over: document.getElementById("over"), cover: document.getElementById("cover") };
   const dpr = Math.min(2, globalThis.devicePixelRatio || 1);
@@ -60,7 +64,7 @@ export async function createStage({ art, kit, renderer = "auto" }) {
 
   function makeView(name) {
     const root = scene.add.container(0, 0).setVisible(false);
-    views[name] = { root, layers: {}, lift: 0, s: 1, top: 0 };
+    views[name] = { root, layers: {}, lift: 0, s: 1, top: 0, keep: null, keepPx: 0 };
   }
   makeView("room");
   makeView("worktop");
@@ -69,17 +73,36 @@ export async function createStage({ art, kit, renderer = "auto" }) {
   function place() {
     const { w, h } = size();
     const room = views.room;
+    const R = kit.room;
+    // the world's width fills the play area; on a play area taller than the painting, the room is shown bigger instead
+    // (cropped at its sides, never past needW) so the painting still fills it from top to bottom
     room.s = w / DESIGN_W;
-    room.top = -((DESIGN_W * h) / w - DESIGN_H) - room.lift; // the world y at the top of the play area
+    if (h / room.s > R.pictureH) room.s = Math.max(room.s, Math.min(h / R.pictureH, w / R.needW));
+    // the world y at the top of the play area: framed by the lift, high enough to keep the room asked for above the
+    // heads (a bubble's), and never above the painting
+    const keep = room.keep == null ? Infinity : room.keep - room.keepPx / room.s;
+    room.top = Math.max(R.picture[1], Math.min(DESIGN_H - h / room.s - room.lift, keep));
     const wt = views.worktop;
-    wt.s = Math.min(w / DESIGN_W, h / DESIGN_H);
+    // the sheet fits the play area, anchored to the bottom; and whatever was laid out higher (for a taller screen) stays in view
+    wt.s = Math.min(w / DESIGN_W, h / (DESIGN_H - Math.min(0, wt.keep || 0)));
     wt.top = -Math.round(h / wt.s - DESIGN_H);
     for (const v of Object.values(views)) v.root.setScale(v.s * dpr).setPosition(((w - DESIGN_W * v.s) / 2) * dpr, -v.top * v.s * dpr);
   }
   place();
-  globalThis.addEventListener("resize", () => {
+  // the play area changed size (the window, a turn, the browser's bar): the canvas and both views are fitted again, and
+  // then every page element placed over a picture is placed again; nothing restarts
+  const resized = new Set();
+  const holds = new Set();
+  let held = false;
+  let paused = [];
+  let was = "";
+  frame.onResize(() => {
+    const now = `${size().w}x${size().h}`;
+    if (now === was) return;
+    was = now;
     game.scale.resize(size().w * dpr, size().h * dpr);
     place();
+    resized.forEach((r) => r.fn());
   });
 
   scene.events.on("update", (time, delta) => ticks.forEach((fn) => fn(Math.min(100, delta))));
@@ -380,6 +403,36 @@ export async function createStage({ art, kit, renderer = "auto" }) {
       ticks.add(fn);
       return () => ticks.delete(fn);
     },
+    onResize(fn, view = null) {
+      const r = { fn, view };
+      resized.add(r);
+      return () => resized.delete(r);
+    },
+    /**
+     * The round held where it is (behind the turn card) and let go again: the pictures, their moves and every
+     * stage.wait stand still, the page's own moves pause, and each listener (the voice, the sounds) holds too.
+     */
+    hold(on) {
+      if (on === held) return;
+      held = on;
+      if (on) {
+        game.pause();
+        // the turn card and the start button are what the child sees while held: they keep moving
+        const own = (a) => a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest(".turn-card, .start");
+        paused = document.getAnimations().filter((a) => a.playState === "running" && !own(a));
+        paused.forEach((a) => a.pause());
+      } else {
+        game.resume();
+        paused.forEach((a) => a.playState === "paused" && a.play());
+        paused = [];
+      }
+      holds.forEach((fn) => fn(on));
+    },
+    held: () => held,
+    onHold(fn) {
+      holds.add(fn);
+      return () => holds.delete(fn);
+    },
     /** Cut to a view. `lift` frames the room higher (more wall, less counter). */
     show(view, { lift = 0 } = {}) {
       if (view === "room") views.room.lift = lift;
@@ -395,6 +448,14 @@ export async function createStage({ art, kit, renderer = "auto" }) {
       return !!l;
     },
     canvas: () => game.canvas,
+    /**
+     * A world y kept in view, with `px` screen px above it: on the worktop, the highest its things were laid out to (kept
+     * if the play area later gets shorter); in the room, the highest head, with room above it for a bubble.
+     */
+    keepInView(view, top, px = 0) {
+      Object.assign(views[view], { keep: top, keepPx: px });
+      place();
+    },
     /** Glide the room's framing to a new lift. */
     glide(lift, ms) {
       const v = views.room;
@@ -408,7 +469,9 @@ export async function createStage({ art, kit, renderer = "auto" }) {
       const v = views[view];
       Object.values(v.layers).forEach((l) => l.destroy());
       v.layers = {};
+      Object.assign(v, { keep: null, keepPx: 0 });
       for (let i = taps.length - 1; i >= 0; i--) if ((taps[i].target.view || taps[i].target.viewName) === view) taps.splice(i, 1);
+      resized.forEach((r) => r.view === view && resized.delete(r));
     },
     graphics(layerC) {
       const g = scene.add.graphics();
@@ -443,11 +506,11 @@ export async function createStage({ art, kit, renderer = "auto" }) {
       el.play.appendChild(c);
       void c.offsetWidth;
       c.classList.add("on");
-      await new Promise((r) => setTimeout(r, ms));
+      await wait(ms);
       return {
         async lift() {
           c.classList.remove("on");
-          await new Promise((r) => setTimeout(r, ms));
+          await wait(ms);
           c.remove();
         },
       };

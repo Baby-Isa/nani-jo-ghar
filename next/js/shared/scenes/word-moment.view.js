@@ -9,7 +9,6 @@
  */
 import { wordCardHtml } from "../kit/word-card.js";
 
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const el = (tag, cls, parent) => {
   const e = document.createElement(tag);
   e.className = cls;
@@ -20,10 +19,13 @@ const run = (node, frames, ms, easing = "linear") => node.animate(frames, { dura
 
 export function wordMomentView({ stage, say, kit, settings, ui, send, wordCardArt }) {
   const K = kit.wordMoment;
+  // (the stage's own clock: it stands still while the round is held behind the turn card)
+  const wait = (ms) => stage.wait(ms);
   const W = settings.wordMoment;
   const file = (ref) => stage.art.file(ref);
   let box = null;
   let live = false;
+  let offResize = null;
 
   return {
     async enter(state) {
@@ -31,18 +33,27 @@ export function wordMomentView({ stage, say, kit, settings, ui, send, wordCardAr
       const play = stage.size();
       const n = state.words.length;
       box = el("div", "wm", stage.el.over);
+      // drawn once at the play area's size now; at a new size the whole moment is scaled to fit and centred, never redrawn
+      const pane = el("div", "wm-in", box);
+      Object.assign(pane.style, { width: `${play.w}px`, height: `${play.h}px` });
+      const fit = () => {
+        const now = stage.size();
+        const k = Math.min(now.w / play.w, now.h / play.h);
+        pane.style.transform = `translate(${(now.w - play.w * k) / 2}px, ${(now.h - play.h * k) / 2}px) scale(${k})`;
+      };
+      offResize = stage.onResize(fit);
       // the counter's line, and glasses sized so the kettle and its stream have room above them
       const lineY = play.h * W.scene.lineMax;
       const g = Math.floor(Math.min(play.w / (n * K.pitch + K.side), play.h * K.glassMost, (lineY - Math.max(K.topMin, play.h * K.top)) / (1 + K.gap + K.above)));
       const sw = play.w / (W.scene.span[1] - W.scene.span[0]);
       const sh = sw / W.scene.aspect;
-      const scene = el("img", "wm-scene", box);
+      const scene = el("img", "wm-scene", pane);
       scene.src = file(W.art.scene);
       Object.assign(scene.style, { left: `${-W.scene.span[0] * sw}px`, top: `${lineY - W.scene.baseAt * sh}px`, width: `${sw}px`, height: `${sh}px` });
       const slots = state.words.map((word, i) => {
         const cx = play.w / 2 + (i - (n - 1) / 2) * K.pitch * g;
         const cy = lineY - g / 2;
-        const glass = el("div", "wm-glass", box);
+        const glass = el("div", "wm-glass", pane);
         Object.assign(glass.style, { left: `${cx - g / 2}px`, top: `${cy - g / 2}px`, width: `${g}px`, height: `${g}px` });
         el("img", "", glass).src = file(W.art.empty);
         const tea = el("img", "wm-tea", glass);
@@ -54,10 +65,10 @@ export function wordMomentView({ stage, say, kit, settings, ui, send, wordCardAr
       const vw = g * W.vessel.size;
       const [pw, ph] = stage.art.size(W.art.vessel);
       const vh = (vw * ph) / pw;
-      const kettle = el("img", "wm-vessel", box);
+      const kettle = el("img", "wm-vessel", pane);
       kettle.src = file(W.art.vessel);
       Object.assign(kettle.style, { width: `${vw}px`, height: `${vh}px`, transformOrigin: `${W.vessel.spout[0] * 100}% ${W.vessel.spout[1] * 100}%`, transitionDuration: `${K.moveMs}ms` });
-      const stream = el("div", "wm-stream", box);
+      const stream = el("div", "wm-stream", pane);
       stream.style.backgroundImage = `url(${file(W.art.stream)})`;
       const place = (x, y, tip) => Object.assign(kettle.style, { left: `${x - W.vessel.spout[0] * vw}px`, top: `${y - W.vessel.spout[1] * vh}px`, transform: `rotate(${tip}deg)` });
       const away = () => place(play.w + vw, slots[n - 1].cy - g * (0.5 + K.gap), W.vessel.lift);
@@ -80,7 +91,7 @@ export function wordMomentView({ stage, say, kit, settings, ui, send, wordCardAr
         await run(s.tea, [{ clipPath: `inset(${W.tea.bottom * 100}% 0 0 0)` }, { clipPath: `inset(${to * 100}% 0 0 0)` }], K.pourBaseMs + K.pourFullMs * s.fill, "cubic-bezier(.3,.1,.6,1)");
         ui.sounds.loop(settings.sounds.pouring, false);
         run(stream, [{ clipPath: "inset(0 0 0 0)", opacity: 1 }, { clipPath: "inset(100% 0 0 0)", opacity: 1 }], K.tailMs);
-        const drop = el("img", "wm-drop", box);
+        const drop = el("img", "wm-drop", pane);
         drop.src = file(kit.art.drop);
         Object.assign(drop.style, { left: `${sx - (g * K.dropW) / 2}px`, top: `${sy}px`, width: `${g * K.dropW}px` });
         wait(K.dropAfterMs)
@@ -92,7 +103,7 @@ export function wordMomentView({ stage, say, kit, settings, ui, send, wordCardAr
 
       /** The snap: four corners close in round the glass, the shutter clicks, and the glass is its word card. */
       const snap = async (s) => {
-        const frame = el("div", "wm-frame", box);
+        const frame = el("div", "wm-frame", pane);
         Object.assign(frame.style, { left: `${s.cx - (g * K.frame) / 2}px`, top: `${s.cy - (g * K.frame) / 2}px`, width: `${g * K.frame}px`, height: `${g * K.frame}px` });
         frame.innerHTML = "<i></i><i></i><i></i><i></i><b></b>";
         await wait(K.cornersMs);
@@ -101,9 +112,9 @@ export function wordMomentView({ stage, say, kit, settings, ui, send, wordCardAr
         frame.classList.add("flash");
         await wait(K.shutterMs);
         const line = say.word(s.word);
-        const short = document.documentElement.classList.contains("short");
+        const short = document.documentElement.classList.contains("phone");
         const [cw, ch] = short ? K.cardShort : K.card;
-        const card = el("div", "pop in wm-card", box);
+        const card = el("div", "pop in wm-card", pane);
         card.innerHTML = `${wordCardHtml({ file, line, pic: wordCardArt(s.word), english: true, blurred: false, kit })}<div class="rule"></div><span class="speaker"></span>`;
         Object.assign(card.style, { left: `${s.cx - cw / 2}px`, top: `${s.cy - ch / 2}px`, width: `${cw}px`, height: `${ch}px` });
         card.style.setProperty("--pw", `${cw}px`);
@@ -129,6 +140,7 @@ export function wordMomentView({ stage, say, kit, settings, ui, send, wordCardAr
     leave() {
       live = false;
       ui.sounds.loop(settings.sounds.pouring, false);
+      if (offResize) offResize();
       if (box) box.remove();
       box = null;
     },

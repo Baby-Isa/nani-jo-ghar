@@ -207,30 +207,39 @@
    "ref": "p3pl",
    "person": "p3",
    "number": "pl",
-   "lemma": "iloka",
+   "lemma": "eloka",
    "gloss": "they / them (those people)",
    "forms": {
-    "dir": "iloka",
-    "obl": "iloka",
+    "dir": "eloka",
+    "obl": "eloka",
     "dat": {
-     "t": "iloka ke",
+     "t": "eloka ke",
      "status": "confirmed",
-     "src": "grammar-notes §56 C84 (E iloka ke ambo dini, s1 2:46), §58 C92, §60 C95 · spelling confirmed by Zafar 26 Oct"
+     "src": "grammar-notes §56 C84 (E iloka ke ambo dini, s1 2:46), §58 C92, §60 C95 · spelling: Zafar, 17 Nov 2026 (spelling: eloka, Mum's newest, grammar-notes §69; was iloka)"
     }
    },
    "status": "confirmed",
    "src": [
     "grammar-notes §54 C78",
-    "grammar-notes §53 (no word for 'they' needed: rasore me ain)"
+    "grammar-notes §53 (no word for 'they' needed: rasore me ain)",
+    "grammar-notes §69 (Mum writes Eloka je glass me wij, 17 Nov)",
+    "Zafar, 17 Nov 2026 (spelling: eloka, Mum's newest, grammar-notes §69; was iloka)"
    ],
    "notes": [
     "Said as one word (spelling confirmed by Zafar 5 Oct, decision 31); Mum thought it might be e + loka (§54). Masi and Mum, 24 Oct: one word (§63, sitting-1 15:40-16:00; Zafar 26 Oct, decision 4).",
-    "One word, iloka (Mum and Masi, s1 15:40; Zafar 26 Oct, decision 4): they in general, near or far. hiloka = these, huloka = those (§63)."
+    "One word, eloka (iloka until Zafar, 17 Nov; Mum and Masi, s1 15:40; Zafar 26 Oct, decision 4): they in general, near or far. hiloka = these, huloka = those (§63)."
    ],
    "open": [
     {
      "q": "How does Masi say 'all of these'? (mare)",
      "src": "grammar-notes §54, For Mum next time 10"
+    }
+   ],
+   "history": [
+    {
+     "date": "2026-11-17",
+     "change": "spelling: iloka -> eloka (Mum's newest spelling)",
+     "src": "Zafar, 17 Nov 2026 (spelling: eloka, Mum's newest, grammar-notes §69; was iloka)"
     }
    ]
   },
@@ -2649,11 +2658,20 @@
    "id": "n.children",
    "pos": "N",
    "gender": null,
+   "lemma": "bucha",
    "gloss": "children",
    "glossPl": "childrens",
-   "status": "to-record",
+   "forms": {
+    "pl.dir": {
+     "t": "bucha",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: kitla bucha ayn; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   },
+   "status": "confirmed",
    "src": [
-    "data/school-proto.json words.ph-children: an English placeholder, to record"
+    "data/school-proto.json words.ph-children: an English placeholder, to record",
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Towate kitla bucha ayn, how many kids do you have?; read by Mum, who sent only corrections: Zafar, 17 Nov)"
    ],
    "aliases": [
     "ph-children"
@@ -2662,7 +2680,20 @@
     "word": [
      "new"
     ]
-   }
+   },
+   "open": [
+    {
+     "q": "One child: the form of bucha (not said).",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: bucha; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   ],
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Towate kitla bucha ayn, how many kids do you have?; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   ]
   },
   {
    "id": "n.chilli",
@@ -4657,6 +4688,9 @@
      "L49"
     ]
    },
+   "notes": [
+    "Mum, 17 Nov: inje glass me wij (put it in his or her glass); inje follows the thing owned (Zafar, 17 Nov), so it points to a he-word, but the gender of glass stays unset until Mum says it (L49)."
+   ],
    "loan": "en"
   },
   {
@@ -4973,13 +5007,29 @@
   {
    "id": "n.head",
    "pos": "N",
-   "gender": null,
+   "gender": "he",
+   "lemma": "matho",
    "gloss": "head",
    "glossPl": "heads",
-   "status": "to-record",
+   "forms": {
+    "sg.dir": {
+     "t": "matho",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37)"
+    },
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
+   "status": "confirmed",
    "src": [
     "data/clinic.json words.body-head: placeholder",
-    "data/clinic/pipeline.json part_words.head: an English placeholder, to record (the doctor's session, Round 4 Section G)"
+    "data/clinic/pipeline.json part_words.head: an English placeholder, to record (the doctor's session, Round 4 Section G)",
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37: munjo matho dukheto, my head hurts)"
    ],
    "aliases": [
     "body-head",
@@ -4989,7 +5039,17 @@
     "word": [
      "G42"
     ]
-   }
+   },
+   "notes": [
+    "A he-word: munjo agrees with it (§54). Zafar wrote mutho; the plural is not said."
+   ],
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37: munjo matho dukheto, my head hurts)"
+    }
+   ]
   },
   {
    "id": "n.headscarf",
@@ -5474,10 +5534,11 @@
      "src": "no plural heard yet (step 4b: nothing is guessed)"
     }
    },
-   "status": "draft",
+   "status": "confirmed",
    "src": [
     "grammar-notes §30 K13 (⚠ the whole line; only Nani's version recorded)",
-    "grammar-notes §37.1"
+    "grammar-notes §37.1",
+    "grammar-notes §69 (Mum writes khabar herself: muke nai khabar, I don't know; 17 Nov 17:37, by message)"
    ],
    "ask": {
     "gender": [
@@ -10768,6 +10829,10 @@
     {
      "q": "thundo vs Dad's thadhu: Masi's tie-break.",
      "src": "grammar-notes §39 I35"
+    },
+    {
+     "q": "Mum, 17 Nov: 'Cold is thandi' (muke thandi peti). Is thandi the she-form of this word, so it is thando / thandi (not thundo)? Or another word?",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:27)"
     }
    ]
   },
@@ -10939,10 +11004,19 @@
   {
    "id": "a.happy",
    "pos": "A",
+   "lemma": "raji",
    "gloss": "happy",
-   "status": "to-record",
+   "forms": {
+    "he.sg.dir": {
+     "t": "raji",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: said by a man of himself; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   },
+   "status": "confirmed",
    "src": [
-    "data/clinic/pipeline.json feelings.happy: an English placeholder, to record (the doctor's session, Round 4 Section G)"
+    "data/clinic/pipeline.json feelings.happy: an English placeholder, to record (the doctor's session, Round 4 Section G)",
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au Raji aiya, I'm happy; read by Mum, who sent only corrections: Zafar, 17 Nov)"
    ],
    "aliases": [
     "clinic.pipeline.feeling.happy"
@@ -10951,7 +11025,14 @@
     "word": [
      "new"
     ]
-   }
+   },
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au Raji aiya, I'm happy; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   ]
   },
   {
    "id": "a.hot",
@@ -10982,10 +11063,19 @@
   {
    "id": "a.hungry",
    "pos": "A",
+   "lemma": "bukhi",
    "gloss": "hungry",
-   "status": "to-record",
+   "forms": {
+    "he.sg.dir": {
+     "t": "bukhi",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: said by a man of himself; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   },
+   "status": "confirmed",
    "src": [
-    "data/pets-proto.json words.ph-hungry: an English placeholder, to record (adoption-centre.md §1: L3 (the party needs it too))"
+    "data/pets-proto.json words.ph-hungry: an English placeholder, to record (adoption-centre.md §1: L3 (the party needs it too))",
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Au bukhi aiya, I'm (very) hungry; read by Mum, who sent only corrections: Zafar, 17 Nov)"
    ],
    "aliases": [
     "ph-hungry"
@@ -10994,7 +11084,14 @@
     "word": [
      "new"
     ]
-   }
+   },
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Au bukhi aiya, I'm (very) hungry; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   ]
   },
   {
    "id": "a.left",
@@ -11280,6 +11377,26 @@
    }
   },
   {
+   "id": "a.short-person",
+   "pos": "A",
+   "lemma": "tuki",
+   "gloss": "short (a person)",
+   "forms": {
+    "he.sg.dir": {
+     "t": "tuki",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: said by a man of himself; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tuki aiya, I'm short; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ],
+   "notes": [
+    "Not thaki (tired): Zafar wrote tukhi for tired, which Mum's thakirais corrects."
+   ]
+  },
+  {
    "id": "a.silver",
    "pos": "A",
    "gloss": "silver",
@@ -11405,6 +11522,32 @@
    ]
   },
   {
+   "id": "a.tall",
+   "pos": "A",
+   "lemma": "lambi",
+   "gloss": "tall",
+   "forms": {
+    "she.*.dir": {
+     "t": "lambi",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:36)"
+    }
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:36: au lambi aiya, I am tall)"
+   ],
+   "notes": [
+    "Mum said it of herself, a woman: kept as the she-form. Zafar wrote lumi."
+   ],
+   "open": [
+    {
+     "q": "I'm tall said by a man or a boy: the form of au lambi aiya (not said; not guessed).",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:36)"
+    }
+   ]
+  },
+  {
    "id": "a.that-much",
    "pos": "A",
    "lemma": "itlo",
@@ -11465,6 +11608,23 @@
    ],
    "notes": [
     "Spelling confirmed by Zafar 5 Oct."
+   ]
+  },
+  {
+   "id": "a.tired",
+   "pos": "A",
+   "lemma": "thaki",
+   "gloss": "tired",
+   "forms": {
+    "he.sg.dir": {
+     "t": "thaki",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: tukhi -> thaki; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+    }
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tukhi aiya, I'm tired; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
    ]
   },
   {
@@ -12333,6 +12493,29 @@
     "decision 87 (Zafar, 12 Oct): English words the family uses in Kutchi are Kutchi, marked loan: \"en\"; its source says the family uses the English word; Zafar's yes to the borrowing audit, 12 Oct"
    ],
    "loan": "en"
+  },
+  {
+   "id": "v.hurt",
+   "pos": "V",
+   "lemma": "dukheto",
+   "gloss": "hurt (munjo matho dukheto: my head hurts)",
+   "forms": {
+    "pres.he.sg": {
+     "t": "dukheto",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37 (with matho, a he-word))"
+    }
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37)"
+   ],
+   "open": [
+    {
+     "q": "It hurts with a she-word (my hand, my tummy): the form of dukheto (not said).",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37)"
+    }
+   ]
   },
   {
    "id": "v.knead",
@@ -14473,6 +14656,51 @@
    ]
   },
   {
+   "id": "adv.with-me",
+   "pos": "Adv",
+   "lemma": "muwate",
+   "gloss": "with me (muwate X ai: I have X)",
+   "forms": {
+    "-": "muwate"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Muwate ay, generic I have; Muwate X ay / ayn / nay / nayn; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ]
+  },
+  {
+   "id": "adv.with-you",
+   "pos": "Adv",
+   "lemma": "towate",
+   "gloss": "with you, a child (towate X ai: you have X)",
+   "forms": {
+    "-": "towate"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Towate x ay / nay / ayn / nayn; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ]
+  },
+  {
+   "id": "adv.with-you-awate",
+   "pos": "Adv",
+   "lemma": "awate",
+   "gloss": "with you (awate X ai)",
+   "forms": {
+    "-": "awate"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Towate / awate x ay / nay / ayn / nayn; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ],
+   "open": [
+    {
+     "q": "Which 'you' is awate: an elder (aai, anke)?",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: awate; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   ]
+  },
+  {
    "id": "adv.yesterday",
    "pos": "Adv",
    "lemma": "gaykal",
@@ -14492,14 +14720,20 @@
    "lemma": "nai",
    "gloss": "is not, there is none",
    "forms": {
-    "-": "nai"
+    "-": "nai",
+    "pl": {
+     "t": "nayn",
+     "status": "confirmed",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:27: nayn plural negative)"
+    }
    },
    "status": "confirmed",
    "src": [
     "grammar-notes §14 (ki baki nai), §19, §27 B42 (Jara e wandho nai), §33 S5 (kenjo nai)"
    ],
    "notes": [
-    "The negative of ai (is): different from na (no, don't), which goes next to a verb (§12)."
+    "The negative of ai (is): different from na (no, don't), which goes next to a verb (§12).",
+    "Mum, 17 Nov: nay is singular negative, nayn plural negative (17:26-17:27); she writes nai herself in muke nai khabar (17:37), so nai and nay are one word. Spelling for Zafar: nai / nay; nayn / nain."
    ]
   },
   {
@@ -16485,6 +16719,26 @@
    ]
   },
   {
+   "id": "phrase.dont-know",
+   "pos": "Phrase",
+   "lemma": "khabar nai",
+   "gloss": "Don't know.",
+   "parts": [
+    {
+     "lex": "n.knowledge",
+     "cell": "sg.dir"
+    },
+    {
+     "lex": "neg.is-not",
+     "cell": "-"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: khaber nai; khabar is Mum's spelling; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ]
+  },
+  {
    "id": "phrase.dont-put-sugar-in",
    "pos": "Phrase",
    "lemma": "khun na wij",
@@ -18134,6 +18388,34 @@
    }
   },
   {
+   "id": "phrase.how-many-children-do-you-have",
+   "pos": "Phrase",
+   "lemma": "towate kitla bucha ain",
+   "gloss": "How many children do you have?",
+   "parts": [
+    {
+     "lex": "adv.with-you",
+     "cell": "-"
+    },
+    {
+     "lex": "q.how-many",
+     "cell": "-"
+    },
+    {
+     "lex": "n.children",
+     "cell": "pl.dir"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.pl"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Towate kitla bucha ayn; ayn is the engine's ain; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ]
+  },
+  {
    "id": "phrase.hurry-up",
    "pos": "Phrase",
    "lemma": "jaldi kar",
@@ -18264,6 +18546,30 @@
    }
   },
   {
+   "id": "phrase.i-dont-know",
+   "pos": "Phrase",
+   "lemma": "muke nai khabar",
+   "gloss": "I don't know.",
+   "parts": [
+    {
+     "lex": "pron.p1",
+     "cell": "dat"
+    },
+    {
+     "lex": "neg.is-not",
+     "cell": "-"
+    },
+    {
+     "lex": "n.knowledge",
+     "cell": "sg.dir"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37)"
+   ]
+  },
+  {
    "id": "phrase.i-dont-know-why",
    "pos": "Phrase",
    "gloss": "I don't know why.",
@@ -18375,10 +18681,15 @@
   {
    "id": "phrase.i-feel-cold",
    "pos": "Phrase",
+   "lemma": "muke thandi peti",
    "gloss": "I feel cold.",
-   "status": "to-record",
+   "forms": {
+    "-": "muke thandi peti"
+   },
+   "status": "confirmed",
    "src": [
-    "data/clinic/pipeline.json lines.feeling-cold: data/clinic/pipeline.json feelings: English placeholder, to record"
+    "data/clinic/pipeline.json lines.feeling-cold: data/clinic/pipeline.json feelings: English placeholder, to record",
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:29: Muke thandi peti (not penti), I am feeling / finding it cold)"
    ],
    "aliases": [
     "clinic.line.feeling-cold"
@@ -18387,7 +18698,18 @@
     "word": [
      "to record"
     ]
-   }
+   },
+   "notes": [
+    "Cold is thandi, not tundi (Mum, 17:27).",
+    "not analysed into words yet: thandi, peti are not in the lexicon (build/lang/phrases.mjs)"
+   ],
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:29: Muke thandi peti (not penti), I am feeling / finding it cold)"
+    }
+   ]
   },
   {
    "id": "phrase.i-feel-happy",
@@ -18475,6 +18797,26 @@
    }
   },
   {
+   "id": "phrase.i-have-it-with-me-is",
+   "pos": "Phrase",
+   "lemma": "muwate ai",
+   "gloss": "I have it (with me is).",
+   "parts": [
+    {
+     "lex": "adv.with-me",
+     "cell": "-"
+    },
+    {
+     "lex": "cop.be",
+     "cell": "p3.sg"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Muwate ay; ay is the engine's ai; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ]
+  },
+  {
    "id": "phrase.i-saw-simba-in-the-kitchen",
    "pos": "Phrase",
    "lemma": "simba ke rasore me nares",
@@ -18542,6 +18884,28 @@
    }
   },
   {
+   "id": "phrase.im-afraid-a-woman",
+   "pos": "Phrase",
+   "lemma": "au dhirjati",
+   "gloss": "I'm afraid (as a woman says it)",
+   "forms": {
+    "-": "au dhirjati"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:31: au dhirjati, not dhirjanti)"
+   ],
+   "notes": [
+    "not analysed into words yet: au, dhirjati are not in the lexicon (build/lang/phrases.mjs)"
+   ],
+   "open": [
+    {
+     "q": "When is dhirjanti used? (Mum: 'need to think'.) And I'm afraid said by a man or a boy.",
+     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:31)"
+    }
+   ]
+  },
+  {
    "id": "phrase.im-cold",
    "pos": "Phrase",
    "gloss": "I'm cold.",
@@ -18557,6 +18921,38 @@
      "to record"
     ]
    }
+  },
+  {
+   "id": "phrase.im-cold-body",
+   "pos": "Phrase",
+   "lemma": "au thandi aiya",
+   "gloss": "I'm cold (body temperature; not normally said)",
+   "forms": {
+    "-": "au thandi aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tundi aiya; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+   ],
+   "notes": [
+    "not analysed into words yet: au, thandi are not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.im-finding-it-cold-how-is-the-temperature-for-you",
+   "pos": "Phrase",
+   "lemma": "muke thandi lage ti",
+   "gloss": "I'm finding it cold (how is the temperature for you?)",
+   "forms": {
+    "-": "muke thandi lage ti"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: mukhe tundi lage ti; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+   ],
+   "notes": [
+    "not analysed into words yet: thandi, lage, ti are not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.im-fine-and-how-are-you",
@@ -18638,6 +19034,22 @@
    ]
   },
   {
+   "id": "phrase.im-happy",
+   "pos": "Phrase",
+   "lemma": "au raji aiya",
+   "gloss": "I'm happy.",
+   "forms": {
+    "-": "au raji aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au Raji aiya; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ],
+   "notes": [
+    "not analysed into words yet: au is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
    "id": "phrase.im-hot",
    "pos": "Phrase",
    "gloss": "I'm hot.",
@@ -18657,10 +19069,15 @@
   {
    "id": "phrase.im-hungry",
    "pos": "Phrase",
+   "lemma": "muke bukh lagi ai",
    "gloss": "I'm hungry.",
-   "status": "to-record",
+   "forms": {
+    "-": "muke bukh lagi ai"
+   },
+   "status": "confirmed",
    "src": [
-    "data/party-proto.json lines.feel-hungry: an English placeholder, to record"
+    "data/party-proto.json lines.feel-hungry: an English placeholder, to record",
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Mukhe bukhlagi ai; read by Mum, who sent only corrections: Zafar, 17 Nov)"
    ],
    "aliases": [
     "party-proto.line.feel-hungry"
@@ -18669,7 +19086,17 @@
     "word": [
      "to record"
     ]
-   }
+   },
+   "notes": [
+    "not analysed into words yet: bukh, lagi are not in the lexicon (build/lang/phrases.mjs)"
+   ],
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Mukhe bukhlagi ai; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+    }
+   ]
   },
   {
    "id": "phrase.im-in-the-kitchen-a-man-or-a-woman",
@@ -18700,6 +19127,22 @@
    ]
   },
   {
+   "id": "phrase.im-not-tired-i-havent-become-tired",
+   "pos": "Phrase",
+   "lemma": "au nay thakirais",
+   "gloss": "I'm not tired (I haven't become tired).",
+   "forms": {
+    "-": "au nay thakirais"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au nay tukhirais; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+   ],
+   "notes": [
+    "not analysed into words yet: au, nay are not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
    "id": "phrase.im-sad",
    "pos": "Phrase",
    "gloss": "I'm sad.",
@@ -18715,6 +19158,38 @@
      "to record"
     ]
    }
+  },
+  {
+   "id": "phrase.im-short",
+   "pos": "Phrase",
+   "lemma": "au tuki aiya",
+   "gloss": "I'm short.",
+   "forms": {
+    "-": "au tuki aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tuki aiya; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ],
+   "notes": [
+    "not analysed into words yet: au is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.im-tall-a-woman",
+   "pos": "Phrase",
+   "lemma": "au lambi aiya",
+   "gloss": "I'm tall (as a woman says it)",
+   "forms": {
+    "-": "au lambi aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:36)"
+   ],
+   "notes": [
+    "not analysed into words yet: au is not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.im-telling-you",
@@ -18753,10 +19228,15 @@
   {
    "id": "phrase.im-tired",
    "pos": "Phrase",
+   "lemma": "au thakirai aiya",
    "gloss": "I'm tired.",
-   "status": "to-record",
+   "forms": {
+    "-": "au thakirai aiya"
+   },
+   "status": "confirmed",
    "src": [
-    "data/party-proto.json lines.feel-tired: an English placeholder, to record"
+    "data/party-proto.json lines.feel-tired: an English placeholder, to record",
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tuki-rai aiya; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
    ],
    "aliases": [
     "party-proto.line.feel-tired"
@@ -18765,7 +19245,33 @@
     "word": [
      "to record"
     ]
-   }
+   },
+   "notes": [
+    "not analysed into words yet: au, thakirai are not in the lexicon (build/lang/phrases.mjs)"
+   ],
+   "history": [
+    {
+     "date": "2026-10-05",
+     "change": "was an English placeholder, to record",
+     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tuki-rai aiya; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+    }
+   ]
+  },
+  {
+   "id": "phrase.im-tired-another-way",
+   "pos": "Phrase",
+   "lemma": "au thaki aiya",
+   "gloss": "I'm tired (another way)",
+   "forms": {
+    "-": "au thaki aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tukhi aiya; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+   ],
+   "notes": [
+    "not analysed into words yet: au is not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.im-too-cold",
@@ -18800,6 +19306,22 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "phrase.im-very-hungry",
+   "pos": "Phrase",
+   "lemma": "au bukhi aiya",
+   "gloss": "I'm very hungry.",
+   "forms": {
+    "-": "au bukhi aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Au bukhi aiya; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ],
+   "notes": [
+    "not analysed into words yet: au is not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.in-blue",
@@ -19255,6 +19777,22 @@
      "to record"
     ]
    }
+  },
+  {
+   "id": "phrase.ive-got-a-chill",
+   "pos": "Phrase",
+   "lemma": "muke thandi lagi ai",
+   "gloss": "I've got a chill.",
+   "forms": {
+    "-": "muke thandi lagi ai"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: mukhe tundi lagi ai; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+   ],
+   "notes": [
+    "not analysed into words yet: thandi, lagi are not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.jump",
@@ -20224,6 +20762,30 @@
    }
   },
   {
+   "id": "phrase.my-head-hurts",
+   "pos": "Phrase",
+   "lemma": "munjo matho dukheto",
+   "gloss": "My head hurts.",
+   "parts": [
+    {
+     "lex": "pron.p1",
+     "cell": "poss.he.sg.dir"
+    },
+    {
+     "lex": "n.head",
+     "cell": "sg.dir"
+    },
+    {
+     "lex": "v.hurt",
+     "cell": "pres.he.sg"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:37)"
+   ]
+  },
+  {
    "id": "phrase.my-knee-hurts",
    "pos": "Phrase",
    "gloss": "My knee hurts.",
@@ -20940,6 +21502,22 @@
    }
   },
   {
+   "id": "phrase.now-im-tired-ive-become-tired",
+   "pos": "Phrase",
+   "lemma": "hune au thakirai aiya",
+   "gloss": "Now I'm tired (I've become tired).",
+   "forms": {
+    "-": "hune au thakirai aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: hune au tukhiray aiya; hune or Mum's hane?; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+   ],
+   "notes": [
+    "not analysed into words yet: hune is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
    "id": "phrase.now-put-the-tomatoes-in",
    "pos": "Phrase",
    "lemma": "hane tameta wij",
@@ -21613,6 +22191,68 @@
    ]
   },
   {
+   "id": "phrase.put-it-in-his-or-her-chai",
+   "pos": "Phrase",
+   "lemma": "inji chai me wij",
+   "gloss": "Put it in his or her chai.",
+   "parts": [
+    {
+     "lex": "pron.p3",
+     "cell": "poss.she.sg.dir"
+    },
+    {
+     "lex": "n.tea",
+     "cell": "sg.dir"
+    },
+    {
+     "lex": "post.in",
+     "cell": "-"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:34: Inji chai me wij)"
+   ],
+   "notes": [
+    "The ending follows the thing owned, not the owner: inje before me with glass (a he-word), inji with chai (a she-word); one form for his and her (Zafar, 17 Nov: 'one form which is his/hers and doesn't change based on gender ... it does change depending on the word'; grammar-notes §54-§55, §69)."
+   ]
+  },
+  {
+   "id": "phrase.put-it-in-his-or-her-glass",
+   "pos": "Phrase",
+   "lemma": "inje glass me wij",
+   "gloss": "Put it in his or her glass.",
+   "parts": [
+    {
+     "lex": "pron.p3",
+     "cell": "poss.he.sg.obl"
+    },
+    {
+     "lex": "n.glass",
+     "cell": "-"
+    },
+    {
+     "lex": "post.in",
+     "cell": "-"
+    },
+    {
+     "lex": "v.put-in",
+     "cell": "imp.informal"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:34: Inje glass me wij)"
+   ],
+   "notes": [
+    "The ending follows the thing owned, not the owner: inje before me with glass (a he-word), inji with chai (a she-word); one form for his and her (Zafar, 17 Nov: 'one form which is his/hers and doesn't change based on gender ... it does change depending on the word'; grammar-notes §54-§55, §69)."
+   ]
+  },
+  {
    "id": "phrase.put-it-in-the-bowl-the-stand-in-for-pour",
    "pos": "Phrase",
    "lemma": "bakuli me wij",
@@ -21662,7 +22302,7 @@
   {
    "id": "phrase.put-it-in-their-glass",
    "pos": "Phrase",
-   "lemma": "iloka je glass me wij",
+   "lemma": "eloka je glass me wij",
    "gloss": "Put it in their glass.",
    "parts": [
     {
@@ -21688,7 +22328,7 @@
    ],
    "status": "confirmed",
    "src": [
-    "data/cook.json lines.guide-glass: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 36:29-36:50): there's no word for pour, just put: iloka je glass me wij (their glass; the same for their glasses); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written)"
+    "data/cook.json lines.guide-glass: Mum 12 Nov 2026 (Round 6 sitting, docs/language/grammar-notes.md §64-§66, sources/audio/mum-2026-11-12/voice-261112-113106.m4a 36:29-36:50): there's no word for pour, just put: iloka je glass me wij (their glass; the same for their glasses); spelling confirmed by Zafar 13 Nov (decision 22: Mum's 12 Nov spellings as written); eloka, not iloka: Zafar, 17 Nov 2026 (Mum's newest spelling, her message of 17 Nov: Eloka je glass me wij; grammar-notes §69)"
    ],
    "aliases": [
     "cook.line.guide-glass",
@@ -23218,6 +23858,22 @@
    ]
   },
   {
+   "id": "phrase.the-car-is-cold",
+   "pos": "Phrase",
+   "lemma": "gadi thandi ai",
+   "gloss": "The car is cold.",
+   "forms": {
+    "-": "gadi thandi ai"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: ghadi tundi ai; gadi is the engine's spelling; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+   ],
+   "notes": [
+    "not analysed into words yet: thandi is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
    "id": "phrase.the-chart",
    "pos": "Phrase",
    "gloss": "The chart.",
@@ -23725,6 +24381,26 @@
    ]
   },
   {
+   "id": "phrase.this-hurts",
+   "pos": "Phrase",
+   "lemma": "e dukheto",
+   "gloss": "This hurts.",
+   "parts": [
+    {
+     "lex": "pron.p3",
+     "cell": "dir"
+    },
+    {
+     "lex": "v.hurt",
+     "cell": "pres.he.sg"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: e dukheto; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ]
+  },
+  {
    "id": "phrase.this-is-for-nana",
    "pos": "Phrase",
    "lemma": "hi nana lai ai",
@@ -23911,6 +24587,19 @@
    "status": "draft",
    "src": [
     "grammar-notes §19"
+   ]
+  },
+  {
+   "id": "phrase.tired-become",
+   "pos": "Phrase",
+   "lemma": "thakirais",
+   "gloss": "tired (having become tired)",
+   "forms": {
+    "-": "thakirais"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:30: tired is thakirais, not tukirais)"
    ]
   },
   {

@@ -172,11 +172,10 @@
   }
  },
  "look": {
-  "_about": "The look's numbers. vars: fed to the one style sheet (css/kit.css) as variables, so no size or colour is typed there. p is the panel's scale on a short screen (under shortBelow px high).",
+  "_about": "The look's numbers. vars: fed to the one style sheet (css/kit.css) as variables, so no size or colour is typed there. turn-disc: the turn-your-phone card's disc; start, start-phone: the first-tap play button on a laptop and on a phone.",
   "stone": "#dfd5cd",
   "minTap": 48,
   "coverFadeMs": 350,
-  "shortBelow": 500,
   "vars": {
    "stone": "#dfd5cd",
    "page": "#f3e7d3",
@@ -185,13 +184,6 @@
    "grey": "#6f6660",
    "gold": "#c9962e",
    "red": "#b24a3a",
-   "p-short": "0.66",
-   "side-min": "270px",
-   "side-vw": "27vw",
-   "side-max": "410px",
-   "side-short-min": "250px",
-   "side-short-vw": "34vw",
-   "side-short-max": "340px",
    "pad": "10px",
    "radius": "16px",
    "face": "44px",
@@ -246,7 +238,10 @@
    "end-shadow": "inset 0 -4px 0 #e0cba6, 0 2px 4px rgba(70,45,20,.08), 0 18px 48px rgba(70,45,20,.22)",
    "tile-bg": "#faf6ef",
    "tile-border": "#e7ded0",
-   "wrong": "#c0443c"
+   "wrong": "#c0443c",
+   "turn-disc": "106px",
+   "start": "176px",
+   "start-phone": "128px"
   },
   "badgeRim": 0.0417,
   "badgeLine": "rgba(42,37,34,0.18)",
@@ -337,6 +332,85 @@
    "haloPad": 1.2,
    "textSharp": 3
   }
+ },
+ "frame": {
+  "_about": "How the page fits the screen it has, live (js/shared/frame.js). formFactors: by shape, not size: a phone's short side is under phone.shortBelow; a tablet or folding phone's is at least tablet.shortFrom and it is no wider than tablet.aspectUpTo; anything else is a laptop. scale: one number per screen, clamp(min, short side / refShort, max); it grows the side panel and the page's own buttons. side: the side panel's width, clamp(min x scale, share x width, max x scale). panel: the panel's own scale (--p) on each form factor. fit: while the panel's content would not fit, its scale steps down by step, never below minScale times its own. turnBelowWidth: an upright screen narrower than this gets the turn-your-phone card. settleMs: a turn is laid out again once it has settled. fonts, fontsWaitMs: the faces waited for before anything is drawn, at most this long.",
+  "formFactors": {
+   "phone": {
+    "shortBelow": 500
+   },
+   "tablet": {
+    "shortFrom": 600,
+    "aspectUpTo": 1.5
+   }
+  },
+  "scale": {
+   "phone": {
+    "refShort": 390,
+    "min": 1,
+    "max": 1
+   },
+   "tablet": {
+    "refShort": 700,
+    "min": 1.15,
+    "max": 1.4
+   },
+   "laptop": {
+    "refShort": 768,
+    "min": 1,
+    "max": 1
+   }
+  },
+  "side": {
+   "phone": {
+    "share": 0.34,
+    "min": 165,
+    "max": 224
+   },
+   "tablet": {
+    "share": 0.27,
+    "min": 270,
+    "max": 410
+   },
+   "laptop": {
+    "share": 0.27,
+    "min": 270,
+    "max": 410
+   }
+  },
+  "panel": {
+   "phone": 0.66,
+   "tablet": 1,
+   "laptop": 1
+  },
+  "fit": {
+   "minScale": 0.8,
+   "step": 0.05
+  },
+  "turnBelowWidth": 600,
+  "settleMs": 300,
+  "fonts": [
+   "500 20px Lora",
+   "600 20px Lora",
+   "italic 500 20px Lora",
+   "600 20px \"Nunito Sans\"",
+   "800 20px \"Nunito Sans\""
+  ],
+  "fontsWaitMs": 1500
+ },
+ "voice": {
+  "_about": "The family's voices, played through the page's sound (js/core/voice-player.js). gain: how loud, against the file. trim: the silence a recording left at either end is cut: the first and last sound are where the level passes floorShare of the clip's peak (never under floorMin), with leadS before and tailS after kept, and a clip whose sound is shorter than minS plays whole. endPadMs: a clip always ends by its length plus this, whatever the browser does. loadMs: a clip's download and decode give up after this long (it is tried again the next time). clockMs: how often a clip's own clock is looked at.",
+  "gain": 1.6,
+  "trim": {
+   "floorShare": 0.06,
+   "floorMin": 0.01,
+   "leadS": 0.04,
+   "tailS": 0.09,
+   "minS": 0.12
+  },
+  "endPadMs": 150,
+  "loadMs": 8000,
+  "clockMs": 50
  },
  "cards": {
   "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these. lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonMargin: its light's margin; lessonMinPx: a part smaller than this is not asked for.",
@@ -724,7 +798,7 @@
   "bubbleShift": 0.065
  },
  "room": {
-  "_about": "The kitchen with its people, in design px. picture: where the tall painting's top-left sits. spots: where people stand, by x. counterY: the counter's back edge, which hides everything below it. lift: how much higher the order is framed, by how many people. from: where people walk in from. naniX: where Nani stands at the serve. serveGlide: how far the view glides down to the trays. tray: one serving tray per person and the dish landing on it. bubbleGap: a bubble's distance above a head. talk: a speaker's talking picture flaps (open, then shut for a time between two numbers) with a small bob. serveWait: the pause before the kitchen comes back. serveSpread: with three people they stand evenly from this far right of Nani to this far inside the right edge. tray.gapShare: a tray is at most this share of the gap between two people; tray.inside: kept this far inside the view; tray.shade: its shadow's width beside its own; tray.faceAt: the face mark's place on its rim.",
+  "_about": "The kitchen with its people, in design px. picture: where the tall painting's top-left sits. spots: where people stand, by x. counterY: the counter's back edge, which hides everything below it. lift: how much higher the order is framed, by how many people. from: where people walk in from. naniX: where Nani stands at the serve. serveGlide: how far the view glides down to the trays. tray: one serving tray per person and the dish landing on it. bubbleGap: a bubble's distance above a head. talk: a speaker's talking picture flaps (open, then shut for a time between two numbers) with a small bob. serveWait: the pause before the kitchen comes back. serveSpread: with three people they stand evenly from this far right of Nani to this far inside the right edge. tray.gapShare: a tray is at most this share of the gap between two people; tray.inside: kept this far inside the view; tray.shade: its shadow's width beside its own; tray.faceAt: the face mark's place on its rim. pictureH: the painting's height. needW: on a play area taller than the painting allows, the room is shown bigger, cropped at its sides, never narrower than this (everyone at the counter stays in view). bubbleRoom: screen px kept above the highest head for a bubble, however short the screen (the room is framed higher for it; not at the serve, which glides down to the trays).",
   "picture": [
    -250,
    -450
@@ -792,7 +866,10 @@
   "tailMin": 24,
   "hopMs": 150,
   "hops": 2,
-  "voiceCapMs": 4000
+  "voiceCapMs": 4000,
+  "pictureH": 1575,
+  "needW": 1200,
+  "bubbleRoom": 84
  },
  "wordMoment": {
   "_about": "The word moment's sizes and times (ms). pitch: glasses stand this many glass-widths apart; side: the room at the sides; glassMost: a glass's most, as a share of the height; top, topMin: the room kept at the top; gap: the stream's gap above the rim and above: the kettle's height above its spout, in glasses. streamW, streamTo: the stream's width and how far down the glass it reaches. dropW, dropStop: the last drop. frame: the snap's frame, in glasses. card, cardShort: the word card's size. startMs: before the kettle comes; moveMs: the kettle moving; runMs: the stream running down; pourBaseMs + pourFullMs x the measure: a pour; tailMs: the stream ending; dropAfterMs, dropMs: the last drop; afterPourMs: the beat after a pour; lookMs: a look at both glasses; cornersMs: the corners before the shutter; shutterMs: the shutter before the card; sayAfterMs: the card before its word; holdMs: after the word; lingerMs: both cards stay; fadeMs: the scene going.",

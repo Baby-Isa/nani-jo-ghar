@@ -4,11 +4,15 @@
  * stays until the right move is made. A "hard" light swallows taps outside its box (the cog is above it); a soft one
  * only shows the way.
  *
- *   const light = createLight({ kit })
- *   light.show(box, { hard? })        box: a rectangle on the page, the thing itself; the margin is added here
+ *   const light = createLight({ kit, stage })
+ *   light.show(box, { hard? })        box: a rectangle on the page, the thing itself, or a function giving it now (so the
+ *                                     light follows its thing to a new place when the screen changes size); the margin is added here
  *   light.hide()      light.showing() -> boolean      light.box() -> the lit rectangle, margin included
  */
-export function createLight({ kit }) {
+const followed = new WeakSet();
+let relight = null; // the light showing now, placed again at a new size
+
+export function createLight({ kit, stage }) {
   const K = kit.light;
   const el = document.createElement("div");
   el.className = "light";
@@ -17,9 +21,19 @@ export function createLight({ kit }) {
   const dim = el.querySelector(".dim");
   const edge = el.querySelector(".edge");
   let lit = null;
+  let again = null;
+  // one follower per page, for whichever light shows now (a frame later: the things it lights are placed again first)
+  if (stage && !followed.has(stage)) {
+    followed.add(stage);
+    stage.onResize(() => requestAnimationFrame(() => relight && relight()));
+  }
 
   return {
-    show(box, { hard = false, margin = null } = {}) {
+    show(boxOf, { hard = false, margin = null } = {}) {
+      const box = typeof boxOf === "function" ? boxOf() : boxOf;
+      if (!box) return;
+      again = typeof boxOf === "function" ? () => this.show(boxOf, { hard, margin }) : null;
+      relight = again;
       const m = margin != null ? margin : Math.max(K.marginMin, Math.min(K.marginMax, Math.min(box.w, box.h) * K.marginShare));
       const W = innerWidth;
       const H = innerHeight;
@@ -37,6 +51,8 @@ export function createLight({ kit }) {
       lit = { x, y, w, h };
     },
     hide() {
+      if (relight === again) relight = null;
+      again = null;
       el.classList.remove("on", "hard");
       document.body.classList.remove("lit");
       lit = null;

@@ -321,7 +321,7 @@
   }
  },
  "lines": {
-  "_about": "Nani's lines for this game's own steps, as meanings for the language engine. standing: shown before the first step. use: a thing with its own line; any other thing takes the kitchen's line. take: the ready pan into the glass; takeAgain: a full glass's second pour.",
+  "_about": "Nani's lines for this game's own steps, as meanings for the language engine. standing: shown before the first step. use: a thing with its own line; any other thing takes the kitchen's line. take: the ready pan into the glass, by how many people ordered (one: Mum's \"his or her glass\", which follows the glass, so it is right for a man or a woman; many: \"their glass\"; Zafar, 17 Nov); takeAgain: a full glass's second pour.",
   "standing": {
    "fn": "Say",
    "x": "cook.guide.chai-tray"
@@ -337,8 +337,14 @@
    }
   },
   "take": {
-   "fn": "Say",
-   "x": "cook.guide.chai-tray:pour"
+   "one": {
+    "fn": "Say",
+    "x": "phrase.put-it-in-his-or-her-glass"
+   },
+   "many": {
+    "fn": "Say",
+    "x": "cook.guide.chai-tray:pour"
+   }
   },
   "take-again": {
    "fn": "Say",
@@ -487,12 +493,20 @@
    {
     "id": "pron.they",
     "role": "secondary",
-    "level": 1
+    "level": 2,
+    "why": "the serve's \"their glass\", said only when more than one person ordered"
+   },
+   {
+    "id": "pron.p3",
+    "role": "secondary",
+    "level": 1,
+    "why": "the serve's \"his or her glass\", said when one person ordered (Zafar, 17 Nov)"
    },
    {
     "id": "link.place",
     "role": "secondary",
-    "level": 1
+    "level": 2,
+    "why": "the serve's \"their glass\", said only when more than one person ordered"
    },
    {
     "id": "adv.all",

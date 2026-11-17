@@ -23,6 +23,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   let D = null; // what is drawn: plan, hob, shelf, serving, vessels
   let chain = Promise.resolve(); // the big moves, one after another
   let offTick = null;
+  let offResize = null;
   let lights = null;
   let level = 1;
   const heatK = () => ({ ...kitchen.heat, ...atLevel(settings.heat.byLevel, level) });
@@ -33,11 +34,15 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     return G.look(s.vessels[v].dish, { fire: f.fire, heat: f.heat, lo: k.lo, hi: k.hi, boilAt: bubbleAt(k) });
   };
 
-  /** Nani's line for a step: the game's own line for a thing where it has one, else the family's. */
+  /**
+   * Nani's line for a step: the game's own line for a thing where it has one, else the family's. A line given as
+   * { one, many } follows how many people ordered ("his or her glass" for one, "their glass" for more).
+   */
   function lineFor(step) {
     if (!step || !step.line) return null;
     if (step.line === "use") return say.line((settings.lines.use && settings.lines.use[step.item]) || fill(kitchen.lines.use, step.item));
-    return say.line(settings.lines[step.line] || kitchen.lines[step.line]);
+    const m = settings.lines[step.line] || kitchen.lines[step.line];
+    return say.line(m && m.one ? (ui.round.order.for.length > 1 ? m.many : m.one) : m);
   }
 
   function ticks(s, v) {
@@ -261,20 +266,32 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       const refs = [kitchen.art.worktop, kitchen.art.hob[n - 1], kitchen.art.knobOff, kitchen.art.knobOn, kitchen.art.flameHigh, kitchen.art.flameLow, kit.art.band, kit.art.shelf, kit.art.drop]
         .concat(kit.art.twinkles, kit.art.steam, G.artList(A), Object.values(settings.serving.art))
         .concat(row.flat().map((id) => kit.wordArt[id].art), state.vessels.flatMap((x) => [people[x.who].face, people[x.who].faceHappy, people[x.who].faceSad].filter(Boolean)));
+      // every line Nani can say in this scene, its clips decoded now rather than as each step opens
+      for (const k of Object.keys(kitchen.lines).concat(Object.keys(settings.lines))) if (k !== "use" && !k.startsWith("_")) lineFor({ line: k });
+      row.flat().forEach((item) => lineFor({ line: "use", item }));
+      say.warm(kit.lines.notYet);
       await stage.load(refs);
       stage.clear("worktop");
       stage.show("worktop");
       const view = { s: stage.scaleOf("worktop"), top: stage.topOf("worktop"), left: 0, right: stage.sheet.w };
       const ground = stage.layer("worktop", "ground");
       const gr = C.ground;
-      stage.tiled(ground, kitchen.art.worktop, { x: -gr.far, y: view.top - gr.above, w: stage.sheet.w + 2 * gr.far, h: stage.sheet.h - view.top + gr.above, scale: gr.tile });
-      stage.graphics(ground).fillStyle(parseInt(gr.wash.slice(1), 16), gr.washA).fillRect(-gr.far, view.top - gr.above, stage.sheet.w + 2 * gr.far, K.band.top - view.top + gr.above);
+      // the worktop reaches the play area's top at any size: laid again when the play area grows taller
+      const tile = stage.tiled(ground, kitchen.art.worktop, { x: -gr.far, y: 0, w: stage.sheet.w + 2 * gr.far, h: 1, scale: gr.tile });
+      const wash = stage.graphics(ground);
+      const groundTo = (top) => {
+        tile.obj.setPosition(-gr.far, top - gr.above).setSize(stage.sheet.w + 2 * gr.far, stage.sheet.h - top + gr.above);
+        wash.clear().fillStyle(parseInt(gr.wash.slice(1), 16), gr.washA).fillRect(-gr.far, top - gr.above, stage.sheet.w + 2 * gr.far, K.band.top - top + gr.above);
+      };
+      groundTo(view.top);
       const hobArt = kitchen.art.hob[n - 1];
       const [hw, hh] = stage.art.size(hobArt);
       const plan = layoutOf({ n, view, k: K, hob: { w: hw, h: hh, burners: stage.art.meta(hobArt, "burners") }, vessel: settings.vessel, spot: settings.serving });
+      // laid out for this screen; if it later gets shorter, the whole of it stays in view (the stage fits it, smaller)
+      stage.keepInView("worktop", Math.min(plan.hob.y, plan.spot.y) - K.play.top);
       const rowPlan = rowOf({ groups: row, plan, view, k: K, pillW: (id) => stage.measure(say.entry(id).kutchi, K.pill.font) + K.pill.pad });
       // the layers, back to front
-      ["ground", "shadows", "hob", "spot", "flames", "marks", "vessels", "things", "veil", "pills", "steam", "rings", "fly", "fx", "labels", "carried"].forEach((name) => stage.layer("worktop", name));
+      ["ground", "shadows", "halos", "hob", "spot", "flames", "marks", "vessels", "things", "veil", "pills", "steam", "rings", "fly", "fx", "labels", "carried"].forEach((name) => stage.layer("worktop", name));
       const who = state.vessels.map((x) => people[x.who]);
       const hob = createHob({ stage, kitchen, plan, people: who, steamArt: kit.art.steam, onKnob: (v) => send({ type: "knob", vessel: v }), onFace: (v) => send({ type: "face", vessel: v }) });
       const serving = createServing({ stage, kit, spot: plan.spot, people: who, art: settings.serving.art, dim: settings.serving.dim, s: view.s });
@@ -303,6 +320,12 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
         if (ui.nani.helperOpen()) return ui.nani.helper(null);
         ui.nani.helper(helperCard(s.step));
         ui.nani.speak();
+      });
+      // a new size of the play area: the canvas is fitted by the stage; the worktop and the count pills follow
+      offResize = stage.onResize(() => {
+        groundTo(stage.topOf("worktop"));
+        const s = peek();
+        if (s) counts(s);
       });
       // every frame: the ring and the pan follow the heat
       offTick = stage.onTick(() => {
@@ -351,6 +374,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       await chain;
       lights.clear();
       if (offTick) offTick();
+      if (offResize) offResize();
       ui.sounds.simmer(-1);
       stage.el.over.querySelectorAll(".count").forEach((e) => e.remove());
     },

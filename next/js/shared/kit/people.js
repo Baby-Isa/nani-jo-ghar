@@ -6,9 +6,13 @@
  *   const room = await createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift })
  *   room.walkIn() -> Promise      room.walkOff() -> Promise      room.talk(seat, on)      room.mood(seat, "happy" | "neutral")
  *   room.bubble(seat, html | null)      room.head(seat) -> the head's box on the page      room.figureAt(seat) -> { x, top }
- *   room.bubbleBox() -> where the bubble sits, in the play area's px
+ *   room.bubbleBox() -> where the bubble sits, in the play area's px      room.placeBubble(avoid?) places it again
+ *   room.key: who stands where (roomKey), so the next scene keeps a room with the same people instead of walking them in again
  *   room.reading(on)   the bubble's words underlined while they are said      room.nani(mood)   Nani, when she stands in (nani: true)
  */
+/** Who stands where, and how the room is framed: a scene that finds the same room already standing keeps it. */
+export const roomKey = (standing, lift, nani = false) => JSON.stringify([standing.map((p) => [p.id, p.spot]), lift, nani]);
+
 export async function createRoom({ stage, kit, roomArt, people, standing, lift, walk = true, nani = false }) {
   const R = kit.room;
   const all = nani ? [{ id: "nani" }].concat(standing) : standing;
@@ -35,10 +39,34 @@ export async function createRoom({ stage, kit, roomArt, people, standing, lift, 
     const pic = stage.picture(figures, f.neutral, { x: walk ? R.from : x, y: top, origin: [0.5, 0], scale: f.scale });
     return { id: p.id, f, x, top, pic, talking: null, mood: "neutral" };
   });
+  // however short the screen, there is room above the heads for a bubble (the serve glides down to its trays instead)
+  if (!nani) stage.keepInView("room", Math.min(...seats.map((s) => s.top + s.f.head[1] * s.f.scale)), R.bubbleRoom);
   let bubbleEl = null;
   // Nani at her own place, left of everyone: she is simply there
   const nf = people.nani.figure;
   const naniPic = nani ? stage.picture(figures, nf.neutral, { x: R.naniX, y: Math.round(R.armY - nf.armTop * nf.scale), origin: [0.5, 0], scale: nf.scale }) : null;
+
+  // the bubble's place is worked out from the speaker's head now, so it can be worked out again at a new size
+  const bubbleAt = { seat: null, avoid: null };
+  function placeBubble(seat, avoid) {
+    const el = bubbleEl;
+    Object.assign(bubbleAt, { seat, avoid });
+    const h = head(seat);
+    // (a bubble grown on a tablet is measured as it shows, and placed in its own zoomed px)
+    const z = parseFloat(getComputedStyle(el).zoom) || 1;
+    const b = el.getBoundingClientRect();
+    const half = b.width / 2;
+    const tall = b.height;
+    const play = stage.size();
+    const x = Math.max(half + R.edge, Math.min(play.w - half - R.edge, h.x + h.w / 2));
+    const top = Math.max(tall + R.bubbleMin, h.y - R.bubbleGap);
+    // beside the big card where it would cover it; its tail still points down at the speaker
+    const beside = avoid && top > avoid.y && top - tall < avoid.y + avoid.h ? Math.max(x, avoid.x + avoid.w + avoid.gap + half) : x;
+    el.style.left = `${beside / z}px`;
+    el.style.top = `${top / z}px`;
+    el.style.setProperty("--tail", `${Math.max(R.tailMin, Math.min(2 * half - R.tailMin, half + (h.x + h.w / 2 - beside))) / z}px`);
+  }
+  stage.onResize(() => bubbleEl && placeBubble(bubbleAt.seat, bubbleAt.avoid), "room");
 
   function head(seat) {
     const s = seats[seat];
@@ -51,6 +79,7 @@ export async function createRoom({ stage, kit, roomArt, people, standing, lift, 
 
   return {
     seats,
+    key: roomKey(standing, lift, nani),
     /** Everyone comes in from the right at once, with a small hop, and stands at their spot. */
     async walkIn() {
       await Promise.all(
@@ -94,22 +123,15 @@ export async function createRoom({ stage, kit, roomArt, people, standing, lift, 
       if (bubbleEl) bubbleEl.remove();
       bubbleEl = null;
       if (seat == null || html == null) return;
-      const h = head(seat);
       const el = document.createElement("div");
       el.className = `bubble ${kind}`.trim();
       el.innerHTML = kind ? html : `<span class="text">${html}</span>`;
       stage.el.over.appendChild(el);
-      const half = el.offsetWidth / 2;
-      const play = stage.size();
-      const x = Math.max(half + R.edge, Math.min(play.w - half - R.edge, h.x + h.w / 2));
-      const top = Math.max(el.offsetHeight + R.bubbleMin, h.y - R.bubbleGap);
-      // beside the big card where it would cover it; its tail still points down at the speaker
-      const beside = avoid && top > avoid.y && top - el.offsetHeight < avoid.y + avoid.h ? Math.max(x, avoid.x + avoid.w + avoid.gap + half) : x;
-      el.style.left = `${beside}px`;
-      el.style.top = `${top}px`;
-      el.style.setProperty("--tail", `${Math.max(R.tailMin, Math.min(2 * half - R.tailMin, half + (h.x + h.w / 2 - beside)))}px`);
       bubbleEl = el;
+      placeBubble(seat, avoid);
     },
+    /** The bubble placed again where it now belongs (a new size of the play area, or a big card to keep clear of). */
+    placeBubble: (avoid) => bubbleEl && placeBubble(bubbleAt.seat, avoid === undefined ? bubbleAt.avoid : avoid),
     /** Where the bubble sits now, in the play area's px. */
     bubbleBox() {
       if (!bubbleEl) return null;

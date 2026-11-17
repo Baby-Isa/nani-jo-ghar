@@ -5,11 +5,12 @@ import { createRoom } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { createEndScreen } from "../kit/end-screen.js";
 
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-
 /** Well done: one praise from Nani, in her box as she says it, with a small card by a face at the serving spot. */
-export function wellDoneView({ say, kit, ui, send }) {
+export function wellDoneView({ stage, say, kit, ui, send }) {
   const T = kit.lineTimes;
+  say.warm(kit.lines.wellDone); // (known from the round's start: its clips are decoded long before it is said)
+  // (the stage's own clock: it stands still while the round is held behind the turn card)
+  const wait = (ms) => stage.wait(ms);
   return {
     async enter(state) {
       const line = say.line(state.line);
@@ -29,6 +30,10 @@ export function wellDoneView({ say, kit, ui, send }) {
 /** The serve: everyone back where they ordered from, one tray each, each dish landing on its own; then the thanks. */
 export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt, dishArt }) {
   const R = kit.room;
+  const wait = (ms) => stage.wait(ms);
+  // the thanks and the goodbye are known from the round's start: their clips are decoded long before they are said
+  say.warm(kit.lines.thanks);
+  say.warm(kit.lines.goodbye);
   let room = null;
   let trays = [];
   async function line(e) {

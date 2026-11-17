@@ -44,9 +44,9 @@ export async function scenesWithViews(parts) {
   const A = settings.art;
   const G = game.rules;
   const picOf = (item, person) => G.cardArt(item, person.asks, A) || kit.wordArt[item.word].art;
-  const sounds = createSounds({ kit, say });
+  const sounds = createSounds({ kit, say, stage });
   document.querySelectorAll(".light").forEach((el) => el.remove());
-  const ui = { round, sounds, room: null, serving: null, light: createLight({ kit }) };
+  const ui = { round, sounds, room: null, serving: null, light: createLight({ kit, stage }) };
   createCog({ stage, kit, sounds });
   stage.el.side.style.backgroundImage = `url(${stage.art.file(kit.art.panel)})`;
   ui.nani = createNaniBox({ stage, say, kit, face: people.nani.face });

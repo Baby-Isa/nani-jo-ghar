@@ -25,6 +25,7 @@
  *
  *   const index = clipIndex(familyAudioList, { tts: cookTts.lines })
  *   const V = createVoice({ index, player })        // player: {play(url) -> Promise, stop(), synth?(text) -> Promise}
+ *       (a page passes js/core/voice-player.js's Web Audio player; with none, nothing is heard: Node, the robot)
  *   V.plan(result) -> [{ file?, text, source, tokens: [from, to] }]     a Lang result's clip plan, resolved
  *   V.say(result, { channel = "main", onWord, queue = false, ifIdle, key, ttl }) -> Promise<{ done }>   never blocks input
  *       queue: false replaces what the channel is saying (the clinic's lines); queue: true waits its turn and cuts nothing
@@ -41,82 +42,6 @@ import { norm, voicePath, phrasesOn, isPhrase, chooseClip, planClips } from "./v
 
 // the clip rules live beside this file; callers keep asking this one for them
 export * from "./voice-clips.js";
-
-/** A browser player: one <audio> at a time, and the device voice for the test path. */
-export function browserPlayer() {
-  let audio = null;
-  // PAN-11 (6 Oct): an interjection (the count word as you tap) pauses the line, plays on its own, and the line
-  // carries on where it was
-  let over = null;
-  let overDone = Promise.resolve();
-  let held = null;
-  let stopGen = 0;
-  const resumeHeld = () => {
-    const h = held;
-    held = null;
-    if (h && h === audio && h.paused && !h.ended) {
-      const p = h.play();
-      if (p && p.catch) p.catch(() => {});
-    }
-  };
-  return {
-    over(url) {
-      return (overDone = new Promise((resolve) => {
-        try {
-          if (over) over.pause();
-          if (audio && !audio.paused && !audio.ended) {
-            held = audio;
-            audio.pause();
-          }
-          const a = (over = new Audio(stamp(url)));
-          const fin = () => {
-            if (over === a) over = null;
-            resolve(true);
-          };
-          a.onended = a.onerror = fin;
-          const p = a.play();
-          if (p && p.catch) p.catch(() => fin());
-        } catch (e) {
-          resolve(false);
-        }
-      }));
-    },
-    resume: resumeHeld,
-    async play(url) {
-      // the line's next clip waits for an interjection still playing (then carries on); a stop meanwhile cancels it
-      const g = stopGen;
-      if (over) await overDone;
-      if (g !== stopGen) return false;
-      return new Promise((resolve) => {
-        try {
-          if (audio) audio.pause();
-          held = null;
-          audio = new Audio(stamp(url));
-          audio.onended = audio.onerror = () => resolve(true);
-          const p = audio.play();
-          if (p && p.catch) p.catch(() => resolve(false));
-        } catch (e) {
-          resolve(false);
-        }
-      });
-    },
-    stop() {
-      stopGen++;
-      try {
-        held = null;
-        if (over) over.pause();
-        over = null;
-        if (audio) audio.pause();
-        if (globalThis.speechSynthesis) globalThis.speechSynthesis.cancel();
-      } catch (e) {
-        /* ignore */
-      }
-    },
-    synth(text) {
-      return deviceSpeak(text);
-    },
-  };
-}
 
 /** The device voice's speed: normal (LNG-09, 17 Oct: "the weird robotic slow voice ... speed the voices up"). */
 export const DEVICE_RATE = 1;
@@ -238,7 +163,7 @@ try {
 }
 
 export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
-  const P = player || (typeof Audio !== "undefined" ? browserPlayer() : { play: async () => true, stop() {}, synth: async () => true });
+  const P = player || { play: async () => true, stop() {}, synth: async () => true };
   const thePath = () => path || voicePath();
   const thePhrases = () => (phrases == null ? phrasesOn() : !!phrases);
   const dev = () => devFlags().has("voice");

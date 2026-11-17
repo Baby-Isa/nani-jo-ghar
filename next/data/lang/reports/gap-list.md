@@ -5,18 +5,18 @@ The minimum for step 4c (decision 38 c). **No frequency ranking and no simulator
 | | Cook | Clinic |
 |---|---|---|
 | Sentences and frames the engine cannot say yet | 2 | 41 |
-| Words with no Kutchi yet (English placeholders in the game today) | 26 | 255 |
-| A form of a word we know is missing (plural, 'with the …') | 0 | 0 |
-| Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 7 | 5 |
-| We know the word but have no recording of it | 105 | 33 |
+| Words with no Kutchi yet (English placeholders in the game today) | 26 | 253 |
+| A form of a word we know is missing (plural, 'with the …') | 0 | 1 |
+| Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 5 | 5 |
+| We know the word but have no recording of it | 95 | 35 |
 
-Lines and words checked: Cook 269, clinic 394. A recording counts here if any take exists; 48 more words have a take that is not yet heard by Zafar in `lab/family-audio.html` (every clip is approved for the game and plays now; a store build needs every clip re-recorded and marked final: Zafar, 12 Nov).
+Lines and words checked: Cook 248, clinic 395. A recording counts here if any take exists; 39 more words have a take that is not yet heard by Zafar in `lab/family-audio.html` (every clip is approved for the game and plays now; a store build needs every clip re-recorded and marked final: Zafar, 12 Nov).
 
 Gaps are listed once, however many lines need them: closing a word closes it everywhere. The words and lines that exist only in the parked modes (dress, who, snap, tidy, find, monsoon, relations) are in the lexicon as to-record entries and are not repeated here.
 
 ## Cook
 
-140 things to ask or record, from the lines and words the game uses today.
+128 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (2)
 
@@ -80,7 +80,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 26. Please say, the way you would at home: "Fill the next one" Ask: new.
    - Needed by: cook line "Fill the next one" (cook.guide.samosa:next).
 
-### Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) (7)
+### Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) (5)
 
 1. One red chilli powder, two red chilli powders. (Or: "I'd like some red chilli powder, please", said politely.) Ask: L44.
    - Needed by: Cook word "red chilli powder" (spi-04); Cook word "red chilli powder" (spi-04), more than one.
@@ -88,16 +88,12 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: Cook word "meat" (ph-meat); Cook word "meat" (ph-meat), more than one.
 3. One barbecue, two barbecues. (Or: "I'd like some barbecue, please", said politely.) Ask: new.
    - Needed by: Cook word "barbecue" (ph-sekelo); Cook word "barbecue" (ph-sekelo), more than one.
-4. One naan, two naans. (Or: "I'd like some naan, please", said politely.) Ask: new.
-   - Needed by: Cook word "naan" (ph-naan); Cook word "naan" (ph-naan), more than one.
-5. One corn on the cob, two corn on the cobs. (Or: "I'd like some corn on the cob, please", said politely.) Ask: new.
-   - Needed by: Cook word "corn on the cob" (n.corn-on-the-cob); Cook word "corn on the cob" (n.corn-on-the-cob), more than one.
-6. One vegetable, two vegetables. (Or: "I'd like some vegetable, please", said politely.) Ask: L45.
+4. One vegetable, two vegetables. (Or: "I'd like some vegetable, please", said politely.) Ask: L45.
    - Needed by: Cook word "vegetable" (ph-veg); Cook word "vegetable" (ph-veg), more than one.
-7. One mixed, two mixed. (Or: "I'd like some mixed, please", said politely.) Ask: new.
+5. One mixed, two mixed. (Or: "I'd like some mixed, please", said politely.) Ask: new.
    - Needed by: Cook word "mixed" (ph-mixed); Cook word "mixed" (ph-mixed), more than one.
 
-### We know the word but have no recording of it (105)
+### We know the word but have no recording of it (95)
 
 1. Please record: "paani"
    - Needed by: Cook word "water" (cook-paani).
@@ -167,152 +163,132 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: Cook word "first" (lnk-pela); cook line "First {x}." (cook.line.first), with cook-daal.
 34. Please record: "Ma"
    - Needed by: Cook word "Ma (mother)" (kin-ma).
-35. Please record: "naan"
-   - Needed by: Cook word "naan" (ph-naan).
-36. Please record: "naan"
-   - Needed by: Cook word "naan" (ph-naan), more than one.
-37. Please record: "pa cup"
-   - Needed by: Cook word "a quarter cup" (ph-quartercup).
-38. Please record: "pa cup"
-   - Needed by: Cook word "a quarter cup" (ph-quartercup), more than one.
-39. Please record: "pono cup"
-   - Needed by: Cook word "three quarters of a cup" (ph-cups-34).
-40. Please record: "pono cup"
-   - Needed by: Cook word "three quarters of a cup" (ph-cups-34), more than one.
-41. Please record: "inda"
-   - Needed by: Cook word "egg" (n.egg), more than one.
-42. Please record: "tarelo"
-   - Needed by: Cook word "fried" (a.fried).
-43. Please record: "miryo"
-   - Needed by: Cook word "black pepper" (spi-11).
-44. Please record: "miryo"
-   - Needed by: Cook word "black pepper" (spi-11), more than one.
-45. Please record: "murgi"
+35. Please record: "murgi"
    - Needed by: Cook word "chicken" (n.chicken).
-46. Please record: "murgi"
+36. Please record: "murgi"
    - Needed by: Cook word "chicken" (n.chicken), more than one.
-47. Please record: "salamun alaykum"
+37. Please record: "salamun alaykum"
    - Needed by: cook line "Peace be upon you!" (cook.line.greet).
-48. Please record: "wa alaikum salaam"
+38. Please record: "wa alaikum salaam"
    - Needed by: cook line "And peace be upon you too!" (cook.line.greet-reply).
-49. Please record: "achija"
+39. Please record: "achija"
    - Needed by: cook line "Bye!" (cook.line.bye).
-50. Please record: "arre re"
+40. Please record: "arre re"
    - Needed by: cook line "Oh dear!" (cook.line.oops).
-51. Please record: "hedo"
+41. Please record: "hedo"
    - Needed by: cook line "Hey!" (cook.line.hey).
-52. Please record: "ghan"
+42. Please record: "ghan"
    - Needed by: cook line "Here you are." (cook.line.here).
-53. Please record: "muke"
+43. Please record: "muke"
    - Needed by: cook line "I need {x}." (cook.line.need), with cook-chai (informal); cook line "I need {x}." (cook.line.need), with cook-chai (polite); cook line "I need {x}." (cook.line.need), with cook-maani (informal) … (22 lines).
-54. Please record: "khape"
+44. Please record: "khape"
    - Needed by: cook line "I need {x}." (cook.line.need), with cook-chai (informal); cook line "I need {x}." (cook.line.need), with cook-maani (informal); cook line "I need {x}." (cook.line.need), with cook-dudh (informal) … (8 lines).
-55. Please record: "khapeto"
+45. Please record: "khapeto"
    - Needed by: cook line "I need {x}." (cook.line.need), with cook-dudh (polite); cook line "I need {x}." (cook.line.need), with cook-khun (polite).
-56. Please record: "khapanta"
+46. Please record: "khapanta"
    - Needed by: cook line "I need {x}." (cook.line.need), with 2 ph-samosa (polite).
-57. Please record: "ne"
+47. Please record: "ne"
    - Needed by: cook line "And {x}." (cook.line.and), with cook-dudh; cook line "And {x}." (cook.line.and), with cook-maani.
-58. Please record: "de"
+48. Please record: "de"
    - Needed by: cook line "Give me {x}." (cook.line.give), with cook-khun; cook line "Give me {x}." (cook.line.give), with cook-maani; cook line "Leave the {x}." (cook.line.leave), with cook-maani … (7 lines).
-59. Please record: "fare"
+49. Please record: "fare"
    - Needed by: cook line "{x} times" (cook.line.times).
-60. Please record: "tu"
+50. Please record: "tu"
    - Needed by: cook line "How are you?" (cook.line.howareyou); cook line "Can you make me {x}?" (cook.line.canyou), with cook-chai; cook line "Can you make me {x}?" (cook.line.canyou), with cook-daal.
-61. Please record: "ki"
+51. Please record: "ki"
    - Needed by: cook line "How are you?" (cook.line.howareyou).
-62. Please record: "aiye"
+52. Please record: "aiye"
    - Needed by: cook line "How are you?" (cook.line.howareyou).
-63. Please record: "aau"
+53. Please record: "aau"
    - Needed by: cook line "I'm fine, thank you." (cook.line.fine).
-64. Please record: "theek"
+54. Please record: "theek"
    - Needed by: cook line "I'm fine, thank you." (cook.line.fine).
-65. Please record: "ai"
+55. Please record: "ai"
    - Needed by: cook line "I'm fine, thank you." (cook.line.fine); cook line "This is for {x}." (cook.line.forwho), with kin-nana; cook line "It's ready." (cook.line.ready) … (4 lines).
-66. Please record: "banai"
+56. Please record: "banai"
    - Needed by: cook line "Can you make me {x}?" (cook.line.canyou), with cook-chai; cook line "Can you make me {x}?" (cook.line.canyou), with cook-daal.
-67. Please record: "dinda"
+57. Please record: "dinda"
    - Needed by: cook line "Can you make me {x}?" (cook.line.canyou), with cook-chai; cook line "Can you make me {x}?" (cook.line.canyou), with cook-daal.
-68. Please record: "jara e wandho nai"
+58. Please record: "jara e wandho nai"
    - Needed by: cook line "You're welcome." (cook.line.welcome).
-69. Please record: "mu"
+59. Please record: "mu"
    - Needed by: cook line "Wait for me!" (cook.line.wait).
-70. Please record: "lai"
+60. Please record: "lai"
    - Needed by: cook line "Wait for me!" (cook.line.wait); cook line "This is for {x}." (cook.line.forwho), with kin-nana; cook line "For {x}." (cook.line.for), with kin-nana … (5 lines).
-71. Please record: "khobar"
+61. Please record: "khobar"
    - Needed by: cook line "Wait for me!" (cook.line.wait).
-72. Please record: "munji"
+62. Please record: "munji"
    - Needed by: cook line "In my chai I want {x}." (cook.line.sugar) (informal); cook line "In my chai I want {x}." (cook.line.sugar) (polite).
-73. Please record: "wijij"
+63. Please record: "wijij"
    - Needed by: cook line "In my chai I want {x}." (cook.line.sugar) (polite).
-74. Please record: "kadh"
+64. Please record: "kadh"
    - Needed by: cook line "Lift out the {x}." (cook.line.lift), with cook-maani.
-75. Please record: "chadi"
+65. Please record: "chadi"
    - Needed by: cook line "Leave the {x}." (cook.line.leave), with cook-maani.
-76. Please record: "tayar"
+66. Please record: "tayar"
    - Needed by: cook line "It's ready." (cook.line.ready).
-77. Please record: "thori"
+67. Please record: "thori"
    - Needed by: cook line "Leave it a bit longer." (cook.line.longer).
-78. Please record: "war"
+68. Please record: "war"
    - Needed by: cook line "Leave it a bit longer." (cook.line.longer).
-79. Please record: "rakh"
+69. Please record: "rakh"
    - Needed by: cook line "Leave it a bit longer." (cook.line.longer); cook line "Careful!" (cook.line.careful).
-80. Please record: "dhyan"
+70. Please record: "dhyan"
    - Needed by: cook line "Careful!" (cook.line.careful).
-81. Please record: "chakhan"
+71. Please record: "chakhan"
    - Needed by: cook line "Let me taste it." (cook.line.taste).
-82. Please record: "wiji"
+72. Please record: "wiji"
    - Needed by: cook line "Put it in!" (cook.line.guide-add); cook line "Put it in the pan" (cook.guide.add); cook line "Put it in the pan" (cook.guide.daar:cook).
-83. Please record: "chad"
+73. Please record: "chad"
    - Needed by: cook line "Put it in!" (cook.line.guide-add); cook line "Put it in the pan" (cook.guide.add); cook line "Put it in the pan" (cook.guide.daar:cook).
-84. Please record: "kap"
+74. Please record: "kap"
    - Needed by: cook line "Chop it small!" (cook.line.guide-chop); cook line "Chop what they said" (cook.guide.chop); cook line "Chop what they said" (cook.guide.daar:chop).
-85. Please record: "waar"
+75. Please record: "waar"
    - Needed by: cook line "Fold the samosa!" (cook.line.guide-fold); cook line "Fold the samosa" (cook.guide.fold); cook line "Fold the samosa" (cook.guide.samosa:fold).
-86. Please record: "tar"
+76. Please record: "tar"
    - Needed by: cook line "Fry it!" (cook.line.guide-fry); cook line "Fry them, then lift them out" (cook.guide.fry); cook line "Fry them, then lift them out" (cook.guide.samosa:fry).
-87. Please record: "saro"
+77. Please record: "saro"
    - Needed by: cook line "That's good." (cook.line.good).
-88. Please record: "haji"
+78. Please record: "haji"
    - Needed by: cook line "Still a little more." (cook.line.stillmore).
-89. Please record: "mare"
+79. Please record: "mare"
    - Needed by: cook line "Make everyone's chai." (cook.line.guide-chai-tray); cook line "Make each cup the way they said" (cook.guide.chai-tray).
-90. Please record: "banai"
+80. Please record: "banai"
    - Needed by: cook line "Make everyone's chai." (cook.line.guide-chai-tray); cook line "Make each cup the way they said" (cook.guide.chai-tray).
-91. Please record: "iloka"
+81. Please record: "eloka"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
-92. Please record: "je"
+82. Please record: "je"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
-93. Please record: "glass"
+83. Please record: "glass"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
-94. Please record: "wij"
+84. Please record: "wij"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it up to the line." (cook.line.guide-line); cook line "Put in as many spoons as they want." (cook.line.guide-spoons) … (13 lines).
-95. Please record: "akho burichad"
+85. Please record: "akho burichad"
    - Needed by: cook line "Fill it up all the way." (cook.line.guide-fill-full); cook line "Fill it up all the way" (cook.guide.chai-tray:pour-again).
-96. Please record: "liti"
+86. Please record: "liti"
    - Needed by: cook line "Pour it up to the line." (cook.line.guide-line); cook line "Pour it up to the line" (cook.guide.pour).
-97. Please record: "sudhi"
+87. Please record: "sudhi"
    - Needed by: cook line "Pour it up to the line." (cook.line.guide-line); cook line "Pour it up to the line" (cook.guide.pour).
-98. Please record: "jitli"
+88. Please record: "jitli"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-99. Please record: "inke"
+89. Please record: "inke"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-100. Please record: "itli"
+90. Please record: "itli"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-101. Please record: "tapele"
+91. Please record: "tapele"
    - Needed by: cook line "Put the chai in the pan." (cook.line.guide-tea-pan); cook line "Put water in the pan." (cook.line.guide-water-pan); cook line "Put water in the pan" (cook.guide.chai-tray:water) … (4 lines).
-102. Please record: "paani"
+92. Please record: "paani"
    - Needed by: cook line "Put water in the pan." (cook.line.guide-water-pan); cook line "Put water in the pan" (cook.guide.chai-tray:water).
-103. Please record: "e chai erte rand"
+93. Please record: "e chai erte rand"
    - Needed by: cook line "Cook it the way they said." (cook.line.guide-the-way).
-104. Please record: "khani"
+94. Please record: "khani"
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-pantry), with cook-chai.
-105. Please record: "achi"
+95. Please record: "achi"
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-pantry), with cook-chai.
 
 ## The clinic
 
-334 things to ask or record, from the lines and words the game uses today.
+335 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (41)
 
@@ -399,518 +375,519 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 41. Please say these the way you would at home: "Cast: two turns" Ask: Round 4 Section G (the doctor's script).
    - Needed by: clinic line "Cast: {n} turns" (clinic.line.heal-knee-cast).
 
-### Words with no Kutchi yet (English placeholders in the game today) (255)
+### Words with no Kutchi yet (English placeholders in the game today) (253)
 
-1. How do you say "head"? Please say it in a short sentence, e.g. "bring me the head". Ask: G42.
-   - Needed by: Clinic word "head" (body-head).
-2. How do you say "tummy"? Please say it in a short sentence, e.g. "bring me the tummy". Ask: G43.
+1. How do you say "tummy"? Please say it in a short sentence, e.g. "bring me the tummy". Ask: G43.
    - Needed by: Clinic word "tummy" (body-tummy).
-3. How do you say "arm"? Please say it in a short sentence, e.g. "bring me the arm". Ask: G44.
+2. How do you say "arm"? Please say it in a short sentence, e.g. "bring me the arm". Ask: G44.
    - Needed by: Clinic word "arm" (body-arm).
-4. How do you say "leg"? Please say it in a short sentence, e.g. "bring me the leg". Ask: G45.
+3. How do you say "leg"? Please say it in a short sentence, e.g. "bring me the leg". Ask: G45.
    - Needed by: Clinic word "leg" (body-leg).
-5. How do you say "nose"? Please say it in a short sentence, e.g. "bring me the nose". Ask: G50.
+4. How do you say "nose"? Please say it in a short sentence, e.g. "bring me the nose". Ask: G50.
    - Needed by: Clinic word "nose" (body-nose).
-6. How do you say "mouth"? Please say it in a short sentence, e.g. "bring me the mouth". Ask: G51.
+5. How do you say "mouth"? Please say it in a short sentence, e.g. "bring me the mouth". Ask: G51.
    - Needed by: Clinic word "mouth" (body-mouth).
-7. How do you say "tooth"? Please say it in a short sentence, e.g. "bring me the tooth". Ask: G52.
+6. How do you say "tooth"? Please say it in a short sentence, e.g. "bring me the tooth". Ask: G52.
    - Needed by: Clinic word "tooth" (body-tooth).
-8. How do you say "throat"? Please say it in a short sentence, e.g. "bring me the throat". Ask: G53.
+7. How do you say "throat"? Please say it in a short sentence, e.g. "bring me the throat". Ask: G53.
    - Needed by: Clinic word "throat" (body-throat).
-9. How do you say "chest"? Please say it in a short sentence, e.g. "bring me the chest". Ask: G60.
+8. How do you say "chest"? Please say it in a short sentence, e.g. "bring me the chest". Ask: G60.
    - Needed by: Clinic word "chest" (body-chest).
-10. How do you say "neck"? Please say it in a short sentence, e.g. "bring me the neck". Ask: G54.
+9. How do you say "neck"? Please say it in a short sentence, e.g. "bring me the neck". Ask: G54.
    - Needed by: Clinic word "neck" (body-neck).
-11. How do you say "shoulder"? Please say it in a short sentence, e.g. "bring me the shoulder". Ask: G55.
+10. How do you say "shoulder"? Please say it in a short sentence, e.g. "bring me the shoulder". Ask: G55.
    - Needed by: Clinic word "shoulder" (body-shoulder).
-12. How do you say "elbow"? Please say it in a short sentence, e.g. "bring me the elbow". Ask: G56.
+11. How do you say "elbow"? Please say it in a short sentence, e.g. "bring me the elbow". Ask: G56.
    - Needed by: Clinic word "elbow" (body-elbow).
-13. How do you say "finger"? Please say it in a short sentence, e.g. "bring me the finger". Ask: G58.
+12. How do you say "finger"? Please say it in a short sentence, e.g. "bring me the finger". Ask: G58.
    - Needed by: Clinic word "finger" (body-finger).
-14. How do you say "toe"? Please say it in a short sentence, e.g. "bring me the toe". Ask: G59.
+13. How do you say "toe"? Please say it in a short sentence, e.g. "bring me the toe". Ask: G59.
    - Needed by: Clinic word "toe" (body-toe).
-15. How do you say "plaster"? Please say it in a short sentence, e.g. "bring me the plaster". Ask: G73.
+14. How do you say "plaster"? Please say it in a short sentence, e.g. "bring me the plaster". Ask: G73.
    - Needed by: Clinic word "plaster" (care-plaster); Clinic word "plaster" (clinic.item.plaster); Clinic word "plaster" (clinic.item.care-plaster) … (4 lines).
-16. How do you say "bandage"? Please say it in a short sentence, e.g. "bring me the bandage". Ask: G74.
+15. How do you say "bandage"? Please say it in a short sentence, e.g. "bring me the bandage". Ask: G74.
    - Needed by: Clinic word "bandage" (care-bandage); Clinic word "bandage" (clinic.item.bandage); Clinic word "bandage" (cl-bandage).
-17. How do you say "cool cloth"? Please say it in a short sentence, e.g. "bring me the cool cloth". Ask: G75.
+16. How do you say "cool cloth"? Please say it in a short sentence, e.g. "bring me the cool cloth". Ask: G75.
    - Needed by: Clinic word "cool cloth" (care-cloth).
-18. How do you say "ice pack"? Please say it in a short sentence, e.g. "bring me the ice pack". Ask: G76.
+17. How do you say "ice pack"? Please say it in a short sentence, e.g. "bring me the ice pack". Ask: G76.
    - Needed by: Clinic word "ice pack" (care-ice); Clinic word "ice pack" (fever-ice-pack).
-19. How do you say "hot-water bottle"? Please say it in a short sentence, e.g. "bring me the hot-water bottle". Ask: G77.
+18. How do you say "hot-water bottle"? Please say it in a short sentence, e.g. "bring me the hot-water bottle". Ask: G77.
    - Needed by: Clinic word "hot-water bottle" (care-bottle); Clinic word "hot-water bottle" (fever-bottle).
-20. How do you say "blanket"? Please say it in a short sentence, e.g. "bring me the blanket". Ask: G78.
+19. How do you say "blanket"? Please say it in a short sentence, e.g. "bring me the blanket". Ask: G78.
    - Needed by: Clinic word "blanket" (care-blanket); Clinic word "blanket" (clinic.item.blanket); Clinic word "blanket" (fever-blanket).
-21. How do you say "tissue"? Please say it in a short sentence, e.g. "bring me the tissue". Ask: G79.
+20. How do you say "tissue"? Please say it in a short sentence, e.g. "bring me the tissue". Ask: G79.
    - Needed by: Clinic word "tissue" (care-tissue); Clinic word "tissue" (clinic.item.tissue).
-22. How do you say "pillow"? Please say it in a short sentence, e.g. "bring me the pillow". Ask: G80.
+21. How do you say "pillow"? Please say it in a short sentence, e.g. "bring me the pillow". Ask: G80.
    - Needed by: Clinic word "pillow" (care-pillow).
-23. How do you say "dropper"? Please say it in a short sentence, e.g. "bring me the dropper". Ask: G116.
+22. How do you say "dropper"? Please say it in a short sentence, e.g. "bring me the dropper". Ask: G116.
    - Needed by: Clinic word "dropper" (care-drops).
-24. How do you say "stethoscope"? Please say it in a short sentence, e.g. "bring me the stethoscope". Ask: G110.
+23. How do you say "stethoscope"? Please say it in a short sentence, e.g. "bring me the stethoscope". Ask: G110.
    - Needed by: Clinic word "stethoscope" (tool-stethoscope); Clinic word "stethoscope" (clinic.item.stethoscope).
-25. How do you say "torch"? Please say it in a short sentence, e.g. "bring me the torch". Ask: G110.
+24. How do you say "torch"? Please say it in a short sentence, e.g. "bring me the torch". Ask: G110.
    - Needed by: Clinic word "torch" (tool-torch); Clinic word "torch" (clinic.item.torch); clinic line "{tool} the {part}" (clinic.line.pipeline.check).
-26. How do you say "thermometer"? Please say it in a short sentence, e.g. "bring me the thermometer". Ask: G111.
+25. How do you say "thermometer"? Please say it in a short sentence, e.g. "bring me the thermometer". Ask: G111.
    - Needed by: Clinic word "thermometer" (tool-strip); Clinic word "thermometer" (clinic.item.thermometer); Clinic word "thermometer" (clinic.item.strip).
-27. How do you say "blue"? Please say it in a short sentence, e.g. "bring me the blue". Ask: E62.
+26. How do you say "blue"? Please say it in a short sentence, e.g. "bring me the blue". Ask: E62.
    - Needed by: Clinic word "blue" (col-blue).
-28. How do you say "green bottle"? Please say it in a short sentence, e.g. "bring me the green bottle". Ask: G117.
+27. How do you say "green bottle"? Please say it in a short sentence, e.g. "bring me the green bottle". Ask: G117.
    - Needed by: Clinic word "green bottle" (med-green).
-29. How do you say "red bottle"? Please say it in a short sentence, e.g. "bring me the red bottle". Ask: G117.
+28. How do you say "red bottle"? Please say it in a short sentence, e.g. "bring me the red bottle". Ask: G117.
    - Needed by: Clinic word "red bottle" (med-red).
-30. How do you say "blue bottle"? Please say it in a short sentence, e.g. "bring me the blue bottle". Ask: G117.
+29. How do you say "blue bottle"? Please say it in a short sentence, e.g. "bring me the blue bottle". Ask: G117.
    - Needed by: Clinic word "blue bottle" (med-blue).
-31. How do you say "syrup"? Please say it in a short sentence, e.g. "bring me the syrup". Ask: new.
+30. How do you say "syrup"? Please say it in a short sentence, e.g. "bring me the syrup". Ask: new.
    - Needed by: Clinic word "syrup" (med-syrup).
-32. How do you say "honey"? Please say it in a short sentence, e.g. "bring me the honey". Ask: new.
+31. How do you say "honey"? Please say it in a short sentence, e.g. "bring me the honey". Ask: new.
    - Needed by: Clinic word "honey" (med-honey); Clinic word "honey" (clinic.item.honey); Clinic word "honey" (cl-honey).
-33. How do you say "cloth"? Please say it in a short sentence, e.g. "bring me the cloth". Ask: new.
+32. How do you say "cloth"? Please say it in a short sentence, e.g. "bring me the cloth". Ask: new.
    - Needed by: Clinic word "cloth" (clinic.item.cloth); Clinic word "cloth" (cl-cloth).
-34. How do you say "thread"? Please say it in a short sentence, e.g. "bring me the thread". Ask: new.
+33. How do you say "thread"? Please say it in a short sentence, e.g. "bring me the thread". Ask: new.
    - Needed by: Clinic word "thread" (clinic.item.thread); Clinic word "thread" (cl-thread).
-35. How do you say "needle"? Please say it in a short sentence, e.g. "bring me the needle". Ask: new.
+34. How do you say "needle"? Please say it in a short sentence, e.g. "bring me the needle". Ask: new.
    - Needed by: Clinic word "needle" (clinic.item.needle).
-36. How do you say "hammer"? Please say it in a short sentence, e.g. "bring me the hammer". Ask: new.
+35. How do you say "hammer"? Please say it in a short sentence, e.g. "bring me the hammer". Ask: new.
    - Needed by: Clinic word "hammer" (clinic.item.hammer).
-37. How do you say "X-ray"? Please say it in a short sentence, e.g. "bring me the X-ray". Ask: new.
+36. How do you say "X-ray"? Please say it in a short sentence, e.g. "bring me the X-ray". Ask: new.
    - Needed by: Clinic word "X-ray" (clinic.item.xray).
-38. How do you say "cast"? Please say it in a short sentence, e.g. "bring me the cast". Ask: new.
+37. How do you say "cast"? Please say it in a short sentence, e.g. "bring me the cast". Ask: new.
    - Needed by: Clinic word "cast" (clinic.item.cast).
-39. How do you say "crutches"? Please say it in a short sentence, e.g. "bring me the crutches". Ask: new.
+38. How do you say "crutches"? Please say it in a short sentence, e.g. "bring me the crutches". Ask: new.
    - Needed by: Clinic word "crutches" (clinic.item.crutches).
-40. How do you say "tweezers"? Please say it in a short sentence, e.g. "bring me the tweezers". Ask: new.
+39. How do you say "tweezers"? Please say it in a short sentence, e.g. "bring me the tweezers". Ask: new.
    - Needed by: Clinic word "tweezers" (clinic.item.tweezers); Clinic word "tweezers" (clinic.item.tool-tweezers).
-41. How do you say "cotton bud"? Please say it in a short sentence, e.g. "bring me the cotton bud". Ask: new.
+40. How do you say "cotton bud"? Please say it in a short sentence, e.g. "bring me the cotton bud". Ask: new.
    - Needed by: Clinic word "cotton bud" (clinic.item.cotton-bud); Clinic word "cotton bud" (cl-cotton-bud).
-42. How do you say "cotton"? Please say it in a short sentence, e.g. "bring me the cotton". Ask: new.
+41. How do you say "cotton"? Please say it in a short sentence, e.g. "bring me the cotton". Ask: new.
    - Needed by: Clinic word "cotton" (clinic.item.cotton).
-43. How do you say "bottle"? Please say it in a short sentence, e.g. "bring me the bottle". Ask: new.
+42. How do you say "bottle"? Please say it in a short sentence, e.g. "bring me the bottle". Ask: new.
    - Needed by: Clinic word "bottle" (clinic.item.bottle).
-44. How do you say "toothbrush"? Please say it in a short sentence, e.g. "bring me the toothbrush". Ask: new.
+43. How do you say "toothbrush"? Please say it in a short sentence, e.g. "bring me the toothbrush". Ask: new.
    - Needed by: Clinic word "toothbrush" (clinic.item.toothbrush).
-45. How do you say "comb"? Please say it in a short sentence, e.g. "bring me the comb". Ask: new.
+44. How do you say "comb"? Please say it in a short sentence, e.g. "bring me the comb". Ask: new.
    - Needed by: Clinic word "comb" (clinic.item.comb).
-46. How do you say "drill"? Please say it in a short sentence, e.g. "bring me the drill". Ask: new.
+45. How do you say "drill"? Please say it in a short sentence, e.g. "bring me the drill". Ask: new.
    - Needed by: Clinic word "drill" (clinic.item.drill).
-47. How do you say "filling"? Please say it in a short sentence, e.g. "bring me the filling". Ask: new.
+46. How do you say "filling"? Please say it in a short sentence, e.g. "bring me the filling". Ask: new.
    - Needed by: Clinic word "filling" (clinic.item.paste).
-48. How do you say "fan"? Please say it in a short sentence, e.g. "bring me the fan". Ask: new.
+47. How do you say "fan"? Please say it in a short sentence, e.g. "bring me the fan". Ask: new.
    - Needed by: Clinic word "fan" (clinic.item.fan).
-49. How do you say "the doctor’s syringe"? Please say it in a short sentence, e.g. "bring me the the doctor’s syringe". Ask: new.
+48. How do you say "the doctor’s syringe"? Please say it in a short sentence, e.g. "bring me the the doctor’s syringe". Ask: new.
    - Needed by: Clinic word "the doctor’s syringe" (clinic.item.syringe).
-50. How do you say "lollipop"? Please say it in a short sentence, e.g. "bring me the lollipop". Ask: new.
+49. How do you say "lollipop"? Please say it in a short sentence, e.g. "bring me the lollipop". Ask: new.
    - Needed by: Clinic word "lollipop" (clinic.item.lollipop).
-51. How do you say "pointer"? Please say it in a short sentence, e.g. "bring me the pointer". Ask: new.
+50. How do you say "pointer"? Please say it in a short sentence, e.g. "bring me the pointer". Ask: new.
    - Needed by: Clinic word "pointer" (clinic.item.pointer); Clinic word "pointer" (clinic.item.tool-pointer).
-52. How do you say "eye patch"? Please say it in a short sentence, e.g. "bring me the eye patch". Ask: new.
+51. How do you say "eye patch"? Please say it in a short sentence, e.g. "bring me the eye patch". Ask: new.
    - Needed by: Clinic word "eye patch" (clinic.item.patch); Clinic word "eye patch" (clinic.item.care-patch).
-53. How do you say "tub"? Please say it in a short sentence, e.g. "bring me the tub". Ask: new.
+52. How do you say "tub"? Please say it in a short sentence, e.g. "bring me the tub". Ask: new.
    - Needed by: Clinic word "tub" (clinic.item.tub).
-54. How do you say "spoon"? Please say it in a short sentence, e.g. "bring me the spoon". Ask: new.
+53. How do you say "spoon"? Please say it in a short sentence, e.g. "bring me the spoon". Ask: new.
    - Needed by: Clinic word "spoon" (clinic.item.spoon).
-55. How do you say "sticker"? Please say it in a short sentence, e.g. "bring me the sticker". Ask: new.
+54. How do you say "sticker"? Please say it in a short sentence, e.g. "bring me the sticker". Ask: new.
    - Needed by: Clinic word "sticker" (clinic.item.sticker).
-56. How do you say "eye drops"? Please say it in a short sentence, e.g. "bring me the eye drops". Ask: new.
+55. How do you say "eye drops"? Please say it in a short sentence, e.g. "bring me the eye drops". Ask: new.
    - Needed by: Clinic word "eye drops" (clinic.item.care-drops).
-57. How do you say "jug of hot water"? Please say it in a short sentence, e.g. "bring me the jug of hot water". Ask: new.
+56. How do you say "jug of hot water"? Please say it in a short sentence, e.g. "bring me the jug of hot water". Ask: new.
    - Needed by: Clinic word "jug of hot water" (clinic.item.jug-hot).
-58. How do you say "jug of cold water"? Please say it in a short sentence, e.g. "bring me the jug of cold water". Ask: new.
+57. How do you say "jug of cold water"? Please say it in a short sentence, e.g. "bring me the jug of cold water". Ask: new.
    - Needed by: Clinic word "jug of cold water" (clinic.item.jug-cold).
-59. How do you say "shampoo"? Please say it in a short sentence, e.g. "bring me the shampoo". Ask: new.
+58. How do you say "shampoo"? Please say it in a short sentence, e.g. "bring me the shampoo". Ask: new.
    - Needed by: Clinic word "shampoo" (clinic.item.shampoo).
-60. How do you say "jar"? Please say it in a short sentence, e.g. "bring me the jar". Ask: new.
+59. How do you say "jar"? Please say it in a short sentence, e.g. "bring me the jar". Ask: new.
    - Needed by: Clinic word "jar" (clinic.item.bug-jar).
-61. How do you say "wipe"? Please say it in a short sentence, e.g. "bring me the wipe". Ask: new.
+60. How do you say "wipe"? Please say it in a short sentence, e.g. "bring me the wipe". Ask: new.
    - Needed by: Clinic word "wipe" (cl-wipe).
-62. How do you say "beads"? Please say it in a short sentence, e.g. "bring me the beads". Ask: new.
+61. How do you say "beads"? Please say it in a short sentence, e.g. "bring me the beads". Ask: new.
    - Needed by: Clinic word "beads" (cl-beads).
-63. How do you say "dabs"? Please say it in a short sentence, e.g. "bring me the dabs". Ask: new.
+62. How do you say "dabs"? Please say it in a short sentence, e.g. "bring me the dabs". Ask: new.
    - Needed by: Clinic word "dabs" (cl-dabs).
-64. How do you say "stitches"? Please say it in a short sentence, e.g. "bring me the stitches". Ask: new.
+63. How do you say "stitches"? Please say it in a short sentence, e.g. "bring me the stitches". Ask: new.
    - Needed by: Clinic word "stitches" (cl-stitches).
-65. How do you say "wax"? Please say it in a short sentence, e.g. "bring me the wax". Ask: new.
+64. How do you say "wax"? Please say it in a short sentence, e.g. "bring me the wax". Ask: new.
    - Needed by: Clinic word "wax" (cl-wax).
-66. How do you say "jugs"? Please say it in a short sentence, e.g. "bring me the jugs". Ask: new.
+65. How do you say "jugs"? Please say it in a short sentence, e.g. "bring me the jugs". Ask: new.
    - Needed by: Clinic word "jugs" (cl-jugs).
-67. How do you say "splinters"? Please say it in a short sentence, e.g. "bring me the splinters". Ask: new.
+66. How do you say "splinters"? Please say it in a short sentence, e.g. "bring me the splinters". Ask: new.
    - Needed by: Clinic word "splinters" (cl-splinters).
-68. How do you say "big toe"? Please say it in a short sentence, e.g. "bring me the big toe". Ask: new.
+67. How do you say "big toe"? Please say it in a short sentence, e.g. "bring me the big toe". Ask: new.
    - Needed by: Clinic word "big toe" (cl-big-toe).
-69. How do you say "little toe"? Please say it in a short sentence, e.g. "bring me the little toe". Ask: new.
+68. How do you say "little toe"? Please say it in a short sentence, e.g. "bring me the little toe". Ask: new.
    - Needed by: Clinic word "little toe" (cl-little-toe).
-70. How do you say "up"? Please say it in a short sentence, e.g. "bring me the up". Ask: new.
+69. How do you say "up"? Please say it in a short sentence, e.g. "bring me the up". Ask: new.
    - Needed by: Clinic word "up" (tooth-up).
-71. How do you say "down"? Please say it in a short sentence, e.g. "bring me the down". Ask: new.
+70. How do you say "down"? Please say it in a short sentence, e.g. "bring me the down". Ask: new.
    - Needed by: Clinic word "down" (tooth-down).
-72. How do you say "brush"? Please say it in a short sentence, e.g. "bring me the brush". Ask: new.
+71. How do you say "brush"? Please say it in a short sentence, e.g. "bring me the brush". Ask: new.
    - Needed by: Clinic word "brush" (tooth-brush).
-73. Please say, the way you would at home: "drill the bad bits" Ask: new.
+72. Please say, the way you would at home: "drill the bad bits" Ask: new.
    - Needed by: Clinic word "drill the bad bits" (tooth-drill).
-74. Please say, the way you would at home: "fill it to the green" Ask: new.
+73. Please say, the way you would at home: "fill it to the green" Ask: new.
    - Needed by: Clinic word "fill it to the green" (tooth-fill).
-75. How do you say "pop"? Please say it in a short sentence, e.g. "bring me the pop". Ask: new.
+74. How do you say "pop"? Please say it in a short sentence, e.g. "bring me the pop". Ask: new.
    - Needed by: Clinic word "pop" (taste-pop).
-76. How do you say "spots"? Please say it in a short sentence, e.g. "bring me the spots". Ask: new.
+75. How do you say "spots"? Please say it in a short sentence, e.g. "bring me the spots". Ask: new.
    - Needed by: Clinic word "spots" (taste-spots).
-77. How do you say "soothing ointment"? Please say it in a short sentence, e.g. "bring me the soothing ointment". Ask: new.
+76. How do you say "soothing ointment"? Please say it in a short sentence, e.g. "bring me the soothing ointment". Ask: new.
    - Needed by: Clinic word "soothing ointment" (taste-ointment).
-78. Please say, the way you would at home: "give it" Ask: new.
+77. Please say, the way you would at home: "give it" Ask: new.
    - Needed by: Clinic word "give it" (taste-give).
-79. How do you say "the eye test"? Please say it in a short sentence, e.g. "bring me the the eye test". Ask: new.
+78. How do you say "the eye test"? Please say it in a short sentence, e.g. "bring me the the eye test". Ask: new.
    - Needed by: Clinic word "the eye test" (eye-test).
-80. Please say, the way you would at home: "take the temperature" Ask: new.
+79. Please say, the way you would at home: "take the temperature" Ask: new.
    - Needed by: Clinic word "take the temperature" (fever-temp).
-81. How do you say "window"? Please say it in a short sentence, e.g. "bring me the window". Ask: new.
+80. How do you say "window"? Please say it in a short sentence, e.g. "bring me the window". Ask: new.
    - Needed by: Clinic word "window" (fever-window).
-82. How do you say "ceiling fan"? Please say it in a short sentence, e.g. "bring me the ceiling fan". Ask: new.
+81. How do you say "ceiling fan"? Please say it in a short sentence, e.g. "bring me the ceiling fan". Ask: new.
    - Needed by: Clinic word "ceiling fan" (fever-ceiling-fan).
-83. How do you say "hand fan"? Please say it in a short sentence, e.g. "bring me the hand fan". Ask: new.
+82. How do you say "hand fan"? Please say it in a short sentence, e.g. "bring me the hand fan". Ask: new.
    - Needed by: Clinic word "hand fan" (fever-hand-fan).
-84. How do you say "heater"? Please say it in a short sentence, e.g. "bring me the heater". Ask: new.
+83. How do you say "heater"? Please say it in a short sentence, e.g. "bring me the heater". Ask: new.
    - Needed by: Clinic word "heater" (fever-heater).
-85. How do you say "open"? Please say it in a short sentence, e.g. "bring me the open". Ask: new.
+84. How do you say "open"? Please say it in a short sentence, e.g. "bring me the open". Ask: new.
    - Needed by: Clinic word "open" (fever-open).
-86. How do you say "close"? Please say it in a short sentence, e.g. "bring me the close". Ask: new.
+85. How do you say "close"? Please say it in a short sentence, e.g. "bring me the close". Ask: new.
    - Needed by: Clinic word "close" (fever-close).
-87. How do you say "switch on"? Please say it in a short sentence, e.g. "bring me the switch on". Ask: new.
+86. How do you say "switch on"? Please say it in a short sentence, e.g. "bring me the switch on". Ask: new.
    - Needed by: Clinic word "switch on" (fever-switch-on).
-88. How do you say "switch off"? Please say it in a short sentence, e.g. "bring me the switch off". Ask: new.
+87. How do you say "switch off"? Please say it in a short sentence, e.g. "bring me the switch off". Ask: new.
    - Needed by: Clinic word "switch off" (fever-switch-off).
-89. Please say, the way you would at home: "give" Ask: new.
+88. Please say, the way you would at home: "give" Ask: new.
    - Needed by: Clinic word "give" (fever-give).
-90. Please say, the way you would at home: "take back" Ask: new.
+89. Please say, the way you would at home: "take back" Ask: new.
    - Needed by: Clinic word "take back" (fever-take-away).
-91. How do you say "put on"? Please say it in a short sentence, e.g. "bring me the put on". Ask: new.
+90. How do you say "put on"? Please say it in a short sentence, e.g. "bring me the put on". Ask: new.
    - Needed by: Clinic word "put on" (fever-put-on).
-92. Please say, the way you would at home: "take off" Ask: new.
+91. Please say, the way you would at home: "take off" Ask: new.
    - Needed by: Clinic word "take off" (fever-take-off).
-93. Please say, the way you would at home: "fix it" Ask: new.
+92. Please say, the way you would at home: "fix it" Ask: new.
    - Needed by: Clinic word "fix it" (fever-fix).
-94. Please say, the way you would at home: "I'm too hot!" Ask: new.
+93. Please say, the way you would at home: "I'm too hot!" Ask: new.
    - Needed by: Clinic word "I'm too hot!" (fever-too-hot).
-95. Please say, the way you would at home: "I'm too cold!" Ask: new.
+94. Please say, the way you would at home: "I'm too cold!" Ask: new.
    - Needed by: Clinic word "I'm too cold!" (fever-too-cold).
-96. Please say, the way you would at home: "Still too hot!" Ask: new.
+95. Please say, the way you would at home: "Still too hot!" Ask: new.
    - Needed by: Clinic word "Still too hot!" (fever-still-hot).
-97. Please say, the way you would at home: "Still too cold!" Ask: new.
+96. Please say, the way you would at home: "Still too cold!" Ask: new.
    - Needed by: Clinic word "Still too cold!" (fever-still-cold).
-98. Please say, the way you would at home: "press it" Ask: new.
+97. Please say, the way you would at home: "press it" Ask: new.
    - Needed by: Clinic word "press it" (boing-press).
-99. How do you say "middle toe"? Please say it in a short sentence, e.g. "bring me the middle toe". Ask: new.
+98. How do you say "middle toe"? Please say it in a short sentence, e.g. "bring me the middle toe". Ask: new.
    - Needed by: Clinic word "middle toe" (foot-middle-toe).
-100. Please say, the way you would at home: "Ow!" Ask: new.
+99. Please say, the way you would at home: "Ow!" Ask: new.
    - Needed by: Clinic word "Ow!" (foot-ow); clinic line "Ow!" (clinic.line.tooth-ow).
-101. Please say, the way you would at home: "Take the wax out" Ask: new.
+100. Please say, the way you would at home: "Take the wax out" Ask: new.
    - Needed by: Clinic word "Take the wax out" (ear-wax-out).
-102. Please say, the way you would at home: "Which one did I say?" Ask: new.
+101. Please say, the way you would at home: "Which one did I say?" Ask: new.
    - Needed by: Clinic word "Which one did I say?" (ear-hear-q).
-103. How do you say "yellow"? Please say it in a short sentence, e.g. "bring me the yellow". Ask: new.
+102. How do you say "yellow"? Please say it in a short sentence, e.g. "bring me the yellow". Ask: new.
    - Needed by: Clinic word "yellow" (col-yellow).
-104. How do you say "lukewarm"? Please say it in a short sentence, e.g. "bring me the lukewarm". Ask: new.
+103. How do you say "lukewarm"? Please say it in a short sentence, e.g. "bring me the lukewarm". Ask: new.
    - Needed by: Clinic word "lukewarm" (feel-lukewarm).
-105. Please say, the way you would at home: "Thank you, I feel better!" Ask: to record.
+104. Please say, the way you would at home: "Thank you, I feel better!" Ask: to record.
    - Needed by: clinic line "Thank you, I feel better!" (clinic.line.thanks-better).
-106. Please say, the way you would at home: "Let's check everything." Ask: to record.
+105. Please say, the way you would at home: "Let's check everything." Ask: to record.
    - Needed by: clinic line "Let's check everything." (clinic.line.cl-all).
-107. Please say, the way you would at home: "Nothing wrong there." Ask: to record.
+106. Please say, the way you would at home: "Nothing wrong there." Ask: to record.
    - Needed by: clinic line "Nothing wrong there." (clinic.line.cl-fine).
-108. Please say, the way you would at home: "That's it!" Ask: to record.
+107. Please say, the way you would at home: "That's it!" Ask: to record.
    - Needed by: clinic line "That's it!" (clinic.line.cl-found); clinic line "That's it" (clinic.line.pipeline.thatsit).
-109. Please say, the way you would at home: "I don't feel well." Ask: to record.
+108. Please say, the way you would at home: "I don't feel well." Ask: to record.
    - Needed by: clinic line "I don't feel well." (clinic.line.cl-unwell); clinic line "I don't feel well" (clinic.line.pipeline.unwell-short).
-110. Please say, the way you would at home: "I don't know why." Ask: to record.
+109. Please say, the way you would at home: "I don't know why." Ask: to record.
    - Needed by: clinic line "I don't know why." (clinic.line.cl-dunno).
-111. Please say, the way you would at home: "Where does it hurt?" Ask: to record.
+110. Please say, the way you would at home: "Where does it hurt?" Ask: to record.
    - Needed by: clinic line "Where does it hurt?" (clinic.line.cl-where); clinic line "Where does it hurt?" (clinic.line.pipeline.where).
-112. Please say, the way you would at home: "Where?" Ask: to record.
+111. Please say, the way you would at home: "Where?" Ask: to record.
    - Needed by: clinic line "Where?" (clinic.line.cl-whereq).
-113. Please say, the way you would at home: "Ahh, this one." Ask: to record.
+112. Please say, the way you would at home: "Ahh, this one." Ask: to record.
    - Needed by: clinic line "Ahh, this one." (clinic.line.cl-this).
-114. Please say, the way you would at home: "Here?" Ask: to record.
+113. Please say, the way you would at home: "Here?" Ask: to record.
    - Needed by: clinic line "Here?" (clinic.line.cl-here).
-115. Please say, the way you would at home: "Nothing there. Where?" Ask: to record.
+114. Please say, the way you would at home: "Nothing there. Where?" Ask: to record.
    - Needed by: clinic line "Nothing there. Where?" (clinic.line.cl-nothere).
-116. Please say, the way you would at home: "Say it again?" Ask: to record.
+115. Please say, the way you would at home: "Say it again?" Ask: to record.
    - Needed by: clinic line "Say it again?" (clinic.line.cl-sayagain).
-117. Please say, the way you would at home: "That tickles!" Ask: to record.
+116. Please say, the way you would at home: "That tickles!" Ask: to record.
    - Needed by: clinic line "That tickles!" (clinic.line.cl-tickles); clinic line "That tickles!" (clinic.line.tickles).
-118. Please say, the way you would at home: "Nothing wrong there. What else?" Ask: to record.
+117. Please say, the way you would at home: "Nothing wrong there. What else?" Ask: to record.
    - Needed by: clinic line "Nothing wrong there. What else?" (clinic.line.cl-nothingwrong).
-119. Please say, the way you would at home: "That's it. Will you help me?" Ask: to record.
+118. Please say, the way you would at home: "That's it. Will you help me?" Ask: to record.
    - Needed by: clinic line "That's it. Will you help me?" (clinic.line.cl-thatsit).
-120. Please say, the way you would at home: "You first." Ask: to record.
+119. Please say, the way you would at home: "You first." Ask: to record.
    - Needed by: clinic line "You first." (clinic.line.cl-youfirst).
-121. Please say, the way you would at home: "Let me see." Ask: to record.
+120. Please say, the way you would at home: "Let me see." Ask: to record.
    - Needed by: clinic line "Let me see." (clinic.line.cl-letmesee).
-122. Please say, the way you would at home: "All better!" Ask: to record.
+121. Please say, the way you would at home: "All better!" Ask: to record.
    - Needed by: clinic line "All better!" (clinic.line.cl-allbetter).
-123. Please say, the way you would at home: "Well done, my helper." Ask: to record.
+122. Please say, the way you would at home: "Well done, my helper." Ask: to record.
    - Needed by: clinic line "Well done, my helper." (clinic.line.cl-welldone).
-124. Please say, the way you would at home: "I feel happy." Ask: to record.
+123. Please say, the way you would at home: "I feel happy." Ask: to record.
    - Needed by: clinic line "I feel happy." (clinic.line.feeling-happy).
-125. Please say, the way you would at home: "I feel sad." Ask: to record.
+124. Please say, the way you would at home: "I feel sad." Ask: to record.
    - Needed by: clinic line "I feel sad." (clinic.line.feeling-sad).
-126. Please say, the way you would at home: "I feel hot." Ask: to record.
+125. Please say, the way you would at home: "I feel hot." Ask: to record.
    - Needed by: clinic line "I feel hot." (clinic.line.feeling-hot).
-127. Please say, the way you would at home: "I feel cold." Ask: to record.
-   - Needed by: clinic line "I feel cold." (clinic.line.feeling-cold).
-128. Please say, the way you would at home: "Say bye." Ask: to record.
+126. Please say, the way you would at home: "Say bye." Ask: to record.
    - Needed by: clinic line "Say bye." (clinic.line.cue-achija); clinic line "Say bye." (clinic.line.pipeline.saybye).
-129. How do you say "phrase.thank-you"? Please say it in a short sentence, e.g. "bring me the phrase.thank-you".
+127. How do you say "phrase.thank-you"? Please say it in a short sentence, e.g. "bring me the phrase.thank-you".
    - Needed by: clinic line "Thank you!" (clinic.line.goodbye-aabhar); clinic line "Thank you!" (clinic.line.pipeline.thanks).
-130. Please say, the way you would at home: "Say thank you to the doctor." Ask: to record.
+128. Please say, the way you would at home: "Say thank you to the doctor." Ask: to record.
    - Needed by: clinic line "Say thank you to the doctor." (clinic.line.cue-aabhar).
-131. Please say, the way you would at home: "Get well soon!" Ask: new.
+129. Please say, the way you would at home: "Get well soon!" Ask: new.
    - Needed by: clinic line "Get well soon!" (clinic.line.goodbye-getwell).
-132. Please say, the way you would at home: "Say get well soon." Ask: to record.
+130. Please say, the way you would at home: "Say get well soon." Ask: to record.
    - Needed by: clinic line "Say get well soon." (clinic.line.cue-getwell).
-133. Please say, the way you would at home: "A bump." Ask: to record.
+131. Please say, the way you would at home: "A bump." Ask: to record.
    - Needed by: clinic line "A bump." (clinic.line.ailment-knee-bump).
-134. Please say, the way you would at home: "A break. Clonk!" Ask: to record.
+132. Please say, the way you would at home: "A break. Clonk!" Ask: to record.
    - Needed by: clinic line "A break. Clonk!" (clinic.line.ailment-leg-break).
-135. Please say, the way you would at home: "Something in the ear!" Ask: to record.
+133. Please say, the way you would at home: "Something in the ear!" Ask: to record.
    - Needed by: clinic line "Something in the ear!" (clinic.line.ailment-seed-in-ear).
-136. Please say, the way you would at home: "A sugar bug!" Ask: to record.
+134. Please say, the way you would at home: "A sugar bug!" Ask: to record.
    - Needed by: clinic line "A sugar bug!" (clinic.line.ailment-sugar-bug).
-137. Please say, the way you would at home: "A cracked tooth." Ask: to record.
+135. Please say, the way you would at home: "A cracked tooth." Ask: to record.
    - Needed by: clinic line "A cracked tooth." (clinic.line.ailment-cracked-tooth).
-138. Please say, the way you would at home: "Sore spots on my tongue!" Ask: to record.
+136. Please say, the way you would at home: "Sore spots on my tongue!" Ask: to record.
    - Needed by: clinic line "Sore spots on my tongue!" (clinic.line.ailment-coated-tongue).
-139. Please say, the way you would at home: "A sore eye." Ask: to record.
+137. Please say, the way you would at home: "A sore eye." Ask: to record.
    - Needed by: clinic line "A sore eye." (clinic.line.ailment-sore-eye).
-140. Please say, the way you would at home: "Sore feet!" Ask: to record.
+138. Please say, the way you would at home: "Sore feet!" Ask: to record.
    - Needed by: clinic line "Sore feet!" (clinic.line.ailment-sore-feet).
-141. Please say, the way you would at home: "A thorn!" Ask: to record.
+139. Please say, the way you would at home: "A thorn!" Ask: to record.
    - Needed by: clinic line "A thorn!" (clinic.line.ailment-thorn).
-142. Please say, the way you would at home: "A fever." Ask: to record.
+140. Please say, the way you would at home: "A fever." Ask: to record.
    - Needed by: clinic line "A fever." (clinic.line.ailment-fever).
-143. Please say, the way you would at home: "The jab before the trip." Ask: to record.
+141. Please say, the way you would at home: "The jab before the trip." Ask: to record.
    - Needed by: clinic line "The jab before the trip." (clinic.line.ailment-jab).
-144. Please say, the way you would at home: "Does it hurt here?" Ask: to record.
+142. Please say, the way you would at home: "Does it hurt here?" Ask: to record.
    - Needed by: clinic line "Does it hurt here?" (clinic.line.pipeline.here).
-145. Please say, the way you would at home: "I don't feel well. I don't know why." Ask: to record.
+143. Please say, the way you would at home: "I don't feel well. I don't know why." Ask: to record.
    - Needed by: clinic line "I don't feel well. I don't know why." (clinic.line.pipeline.unwell).
-146. Please say, the way you would at home: "To the bench" Ask: to record.
+144. Please say, the way you would at home: "To the bench" Ask: to record.
    - Needed by: clinic line "To the bench" (clinic.line.pipeline.tobench).
-147. Please say, the way you would at home: "To the counter" Ask: to record.
+145. Please say, the way you would at home: "To the counter" Ask: to record.
    - Needed by: clinic line "To the counter" (clinic.line.pipeline.tocounter).
-148. Please say, the way you would at home: "Is everything okay now?" Ask: to record.
+146. Please say, the way you would at home: "Is everything okay now?" Ask: to record.
    - Needed by: clinic line "Is everything okay now?" (clinic.line.pipeline.okay-now).
-149. Please say, the way you would at home: "What will help?" Ask: to record.
+147. Please say, the way you would at home: "What will help?" Ask: to record.
    - Needed by: clinic line "What will help?" (clinic.line.pipeline.helps).
-150. Please say, the way you would at home: "Ask them how they feel" Ask: to record.
+148. Please say, the way you would at home: "Ask them how they feel" Ask: to record.
    - Needed by: clinic line "Ask them how they feel" (clinic.line.pipeline.whisper-ask).
-151. Please say, the way you would at home: "Who's next?" Ask: to record.
+149. Please say, the way you would at home: "Who's next?" Ask: to record.
    - Needed by: clinic line "Who's next?" (clinic.line.pipeline.why-waiting).
-152. Please say, the way you would at home: "Bring me..." Ask: to record.
+150. Please say, the way you would at home: "Bring me..." Ask: to record.
    - Needed by: clinic line "Bring me..." (clinic.line.pipeline.why-pharmacy).
-153. Please say, the way you would at home: "Let's have a look" Ask: to record.
+151. Please say, the way you would at home: "Let's have a look" Ask: to record.
    - Needed by: clinic line "Let's have a look" (clinic.line.pipeline.lookhere).
-154. Please say, the way you would at home: "Bring me these" Ask: to record.
+152. Please say, the way you would at home: "Bring me these" Ask: to record.
    - Needed by: clinic line "Bring me these" (clinic.line.pipeline.bring-these).
-155. Please say, the way you would at home: "How do you feel?" Ask: to record.
+153. Please say, the way you would at home: "How do you feel?" Ask: to record.
    - Needed by: clinic line "How do you feel?" (clinic.line.pipeline.howfeel).
-156. Please say, the way you would at home: "One more thing" Ask: to record.
+154. Please say, the way you would at home: "One more thing" Ask: to record.
    - Needed by: clinic line "One more thing" (clinic.line.pipeline.onemore).
-157. Please say, the way you would at home: "Found it" Ask: to record.
+155. Please say, the way you would at home: "Found it" Ask: to record.
    - Needed by: clinic line "Found it" (clinic.line.pipeline.found).
-158. Please say, the way you would at home: "Next" Ask: to record.
+156. Please say, the way you would at home: "Next" Ask: to record.
    - Needed by: clinic line "Next" (clinic.line.pipeline.next).
-159. Please say, the way you would at home: "Done" Ask: to record.
+157. Please say, the way you would at home: "Done" Ask: to record.
    - Needed by: clinic line "Done" (clinic.line.pipeline.done).
-160. Please say, the way you would at home: "Next patient" Ask: to record.
+158. Please say, the way you would at home: "Next patient" Ask: to record.
    - Needed by: clinic line "Next patient" (clinic.line.pipeline.nextpatient).
-161. Please say, the way you would at home: "Close the clinic" Ask: to record.
+159. Please say, the way you would at home: "Close the clinic" Ask: to record.
    - Needed by: clinic line "Close the clinic" (clinic.line.pipeline.close).
-162. Please say, the way you would at home: "Look at" Ask: to record.
+160. Please say, the way you would at home: "Look at" Ask: to record.
    - Needed by: clinic line "Look at" (clinic.line.pipeline.do-hand).
-163. Please say, the way you would at home: "Look in" Ask: to record.
+161. Please say, the way you would at home: "Look in" Ask: to record.
    - Needed by: clinic line "Look in" (clinic.line.pipeline.do-torch).
-164. Please say, the way you would at home: "Listen to" Ask: to record.
+162. Please say, the way you would at home: "Listen to" Ask: to record.
    - Needed by: clinic line "Listen to" (clinic.line.pipeline.do-stethoscope).
-165. Please say, the way you would at home: "The temperature:" Ask: to record.
+163. Please say, the way you would at home: "The temperature:" Ask: to record.
    - Needed by: clinic line "The temperature:" (clinic.line.pipeline.do-thermometer).
-166. Please say, the way you would at home: "Look at: your hand." Ask: to record.
+164. Please say, the way you would at home: "Look at: your hand." Ask: to record.
    - Needed by: clinic line "Look at: your hand." (clinic.line.pipeline.cue-tool-hand).
-167. Please say, the way you would at home: "Look in: the torch." Ask: to record.
+165. Please say, the way you would at home: "Look in: the torch." Ask: to record.
    - Needed by: clinic line "Look in: the torch." (clinic.line.pipeline.cue-tool-torch).
-168. Please say, the way you would at home: "Listen: the stethoscope." Ask: to record.
+166. Please say, the way you would at home: "Listen: the stethoscope." Ask: to record.
    - Needed by: clinic line "Listen: the stethoscope." (clinic.line.pipeline.cue-tool-stethoscope).
-169. Please say, the way you would at home: "The temperature: the thermometer." Ask: to record.
+167. Please say, the way you would at home: "The temperature: the thermometer." Ask: to record.
    - Needed by: clinic line "The temperature: the thermometer." (clinic.line.pipeline.cue-tool-thermometer).
-170. Please say, the way you would at home: "empty" Ask: to record.
+168. Please say, the way you would at home: "empty" Ask: to record.
    - Needed by: clinic line "empty" (clinic.line.pipeline.w-empty).
-171. Please say, the way you would at home: "that" Ask: to record.
+169. Please say, the way you would at home: "that" Ask: to record.
    - Needed by: clinic line "that" (clinic.line.pipeline.w-that).
-172. Please say, the way you would at home: "Say it" Ask: to record.
+170. Please say, the way you would at home: "Say it" Ask: to record.
    - Needed by: clinic line "Say it" (clinic.line.pipeline.cap-sayit).
-173. Please say, the way you would at home: "Ask them" Ask: to record.
+171. Please say, the way you would at home: "Ask them" Ask: to record.
    - Needed by: clinic line "Ask them" (clinic.line.pipeline.cap-askthem).
-174. Please say, the way you would at home: "Call them in" Ask: to record.
+172. Please say, the way you would at home: "Call them in" Ask: to record.
    - Needed by: clinic line "Call them in" (clinic.line.pipeline.cap-callthem).
-175. Please say, the way you would at home: "Bring them in" Ask: to record.
+173. Please say, the way you would at home: "Bring them in" Ask: to record.
    - Needed by: clinic line "Bring them in" (clinic.line.pipeline.bring-them-in).
-176. Please say, the way you would at home: "Ask where it hurts" Ask: to record.
+174. Please say, the way you would at home: "Ask where it hurts" Ask: to record.
    - Needed by: clinic line "Ask where it hurts" (clinic.line.pipeline.ask-where).
-177. Please say, the way you would at home: "Find where it hurts" Ask: to record.
+175. Please say, the way you would at home: "Find where it hurts" Ask: to record.
    - Needed by: clinic line "Find where it hurts" (clinic.line.pipeline.find-where).
-178. Please say, the way you would at home: "Check her over" Ask: to record.
+176. Please say, the way you would at home: "Check her over" Ask: to record.
    - Needed by: clinic line "Check her over" (clinic.line.pipeline.check-over).
-179. Please say, the way you would at home: "Use your hand" Ask: to record.
+177. Please say, the way you would at home: "Use your hand" Ask: to record.
    - Needed by: clinic line "Use your hand" (clinic.line.pipeline.use-hand).
-180. Please say, the way you would at home: "Use the torch" Ask: to record.
+178. Please say, the way you would at home: "Use the torch" Ask: to record.
    - Needed by: clinic line "Use the torch" (clinic.line.pipeline.use-torch).
-181. Please say, the way you would at home: "Use the stethoscope" Ask: to record.
+179. Please say, the way you would at home: "Use the stethoscope" Ask: to record.
    - Needed by: clinic line "Use the stethoscope" (clinic.line.pipeline.use-stethoscope).
-182. Please say, the way you would at home: "Use the thermometer" Ask: to record.
+180. Please say, the way you would at home: "Use the thermometer" Ask: to record.
    - Needed by: clinic line "Use the thermometer" (clinic.line.pipeline.use-thermometer).
-183. Please say, the way you would at home: "Pick how she feels" Ask: to record.
+181. Please say, the way you would at home: "Pick how she feels" Ask: to record.
    - Needed by: clinic line "Pick how she feels" (clinic.line.pipeline.pick-feel).
-184. Please say, the way you would at home: "Time for the jab" Ask: new.
+182. Please say, the way you would at home: "Time for the jab" Ask: new.
    - Needed by: clinic line "Time for the jab" (clinic.line.boing-jab-goal).
-185. Please say, the way you would at home: "Time for my jab." Ask: new.
+183. Please say, the way you would at home: "Time for my jab." Ask: new.
    - Needed by: clinic line "Time for my jab." (clinic.line.boing-why).
-186. Please say, the way you would at home: "I'll do it. You count!" Ask: new.
+184. Please say, the way you would at home: "I'll do it. You count!" Ask: new.
    - Needed by: clinic line "I'll do it. You count!" (clinic.line.boing-goal).
-187. Please say, the way you would at home: "Cold!" Ask: new.
+185. Please say, the way you would at home: "Cold!" Ask: new.
    - Needed by: clinic line "Cold!" (clinic.line.cold).
-188. Please say, the way you would at home: "Oop!" Ask: new.
+186. Please say, the way you would at home: "Oop!" Ask: new.
    - Needed by: clinic line "Oop!" (clinic.line.oop).
-189. Please say, the way you would at home: "A bow, like a shoelace!" Ask: new.
+187. Please say, the way you would at home: "A bow, like a shoelace!" Ask: new.
    - Needed by: clinic line "A bow, like a shoelace!" (clinic.line.bow).
-190. Please say, the way you would at home: "Look at that!" Ask: new.
+188. Please say, the way you would at home: "Look at that!" Ask: new.
    - Needed by: clinic line "Look at that!" (clinic.line.look).
-191. Please say, the way you would at home: "I fell over and scraped my arm." Ask: new.
+189. Please say, the way you would at home: "I fell over and scraped my arm." Ask: new.
    - Needed by: clinic line "I fell over and scraped my arm." (clinic.line.cut-why).
-192. Please say, the way you would at home: "Let's clean it and put plasters on." Ask: new.
+190. Please say, the way you would at home: "Let's clean it and put plasters on." Ask: new.
    - Needed by: clinic line "Let's clean it and put plasters on." (clinic.line.cut-goal).
-193. Please say, the way you would at home: "I'm telling you" Ask: new.
+191. Please say, the way you would at home: "I'm telling you" Ask: new.
    - Needed by: clinic line "I'm telling you" (clinic.line.ear-tell).
-194. Please say, the way you would at home: "Did you hear?" Ask: new.
+192. Please say, the way you would at home: "Did you hear?" Ask: new.
    - Needed by: clinic line "Did you hear?" (clinic.line.ear-didhear).
-195. Please say, the way you would at home: "You told me…" Ask: new.
+193. Please say, the way you would at home: "You told me…" Ask: new.
    - Needed by: clinic line "You told me…" (clinic.line.ear-youtold).
-196. Please say, the way you would at home: "A few more drops" Ask: new.
+194. Please say, the way you would at home: "A few more drops" Ask: new.
    - Needed by: clinic line "A few more drops" (clinic.line.ear-more-drops).
-197. Please say, the way you would at home: "My ear feels blocked." Ask: new.
+195. Please say, the way you would at home: "My ear feels blocked." Ask: new.
    - Needed by: clinic line "My ear feels blocked." (clinic.line.ear-why).
-198. Please say, the way you would at home: "Let's clean it." Ask: new.
+196. Please say, the way you would at home: "Let's clean it." Ask: new.
    - Needed by: clinic line "Let's clean it." (clinic.line.ear-goal).
-199. Please say, the way you would at home: "I can hear again!" Ask: new.
+197. Please say, the way you would at home: "I can hear again!" Ask: new.
    - Needed by: clinic line "I can hear again!" (clinic.line.ear-better).
-200. Please say, the way you would at home: "My left eye" Ask: new.
+198. Please say, the way you would at home: "My left eye" Ask: new.
    - Needed by: clinic line "My left eye" (clinic.line.side-left).
-201. Please say, the way you would at home: "My right eye" Ask: new.
+199. Please say, the way you would at home: "My right eye" Ask: new.
    - Needed by: clinic line "My right eye" (clinic.line.side-right).
-202. Please say, the way you would at home: "Cover the other eye" Ask: new.
+200. Please say, the way you would at home: "Cover the other eye" Ask: new.
    - Needed by: clinic line "Cover the other eye" (clinic.line.patch).
-203. Please say, the way you would at home: "The chart." Ask: new.
+201. Please say, the way you would at home: "The chart." Ask: new.
    - Needed by: clinic line "The chart." (clinic.line.chart).
-204. Please say, the way you would at home: "Arrr! A pirate!" Ask: new.
+202. Please say, the way you would at home: "Arrr! A pirate!" Ask: new.
    - Needed by: clinic line "Arrr! A pirate!" (clinic.line.arr).
-205. Please say, the way you would at home: "Hmmm... (squints)" Ask: new.
+203. Please say, the way you would at home: "Hmmm... (squints)" Ask: new.
    - Needed by: clinic line "Hmmm... (squints)" (clinic.line.squint).
-206. Please say, the way you would at home: "Ooh, cold!" Ask: new.
+204. Please say, the way you would at home: "Ooh, cold!" Ask: new.
    - Needed by: clinic line "Ooh, cold!" (clinic.line.blink).
-207. Please say, the way you would at home: "Squawk!" Ask: new.
+205. Please say, the way you would at home: "Squawk!" Ask: new.
    - Needed by: clinic line "Squawk!" (clinic.line.squawk).
-208. Please say, the way you would at home: "I can't see well." Ask: new.
+206. Please say, the way you would at home: "I can't see well." Ask: new.
    - Needed by: clinic line "I can't see well." (clinic.line.eye-why).
-209. Please say, the way you would at home: "Drops first, then let's test your eyes." Ask: new.
+207. Please say, the way you would at home: "Drops first, then let's test your eyes." Ask: new.
    - Needed by: clinic line "Drops first, then let's test your eyes." (clinic.line.eye-goal).
-210. Please say, the way you would at home: "I can see!" Ask: new.
+208. Please say, the way you would at home: "I can see!" Ask: new.
    - Needed by: clinic line "I can see!" (clinic.line.eye-better).
-211. Please say, the way you would at home: "The eye isn't right." Ask: new.
+209. Please say, the way you would at home: "The eye isn't right." Ask: new.
    - Needed by: clinic line "The eye isn't right." (clinic.line.intro-not-right).
-212. Please say, the way you would at home: "We will heal the eye." Ask: new.
+210. Please say, the way you would at home: "We will heal the eye." Ask: new.
    - Needed by: clinic line "We will heal the eye." (clinic.line.intro-heal).
-213. Please say, the way you would at home: "We'll use this medicine." Ask: new.
+211. Please say, the way you would at home: "We'll use this medicine." Ask: new.
    - Needed by: clinic line "We'll use this medicine." (clinic.line.intro-use).
-214. Please say, the way you would at home: "I feel hot... no, cold!" Ask: new.
+212. Please say, the way you would at home: "I feel hot... no, cold!" Ask: new.
    - Needed by: clinic line "I feel hot... no, cold!" (clinic.line.fever-why).
-215. Please say, the way you would at home: "Let's get you just right." Ask: new.
+213. Please say, the way you would at home: "Let's get you just right." Ask: new.
    - Needed by: clinic line "Let's get you just right." (clinic.line.fever-goal).
-216. Please say, the way you would at home: "Ahhh..." Ask: new.
+214. Please say, the way you would at home: "Ahhh..." Ask: new.
    - Needed by: clinic line "Ahhh..." (clinic.line.ahh).
-217. Please say, the way you would at home: "Brrr!" Ask: new.
+215. Please say, the way you would at home: "Brrr!" Ask: new.
    - Needed by: clinic line "Brrr!" (clinic.line.brr).
-218. Please say, the way you would at home: "Hee hee! That tickles!" Ask: new.
+216. Please say, the way you would at home: "Hee hee! That tickles!" Ask: new.
    - Needed by: clinic line "Hee hee! That tickles!" (clinic.line.tickle); clinic line "Hee hee! That tickles!" (clinic.line.giggle).
-219. Please say, the way you would at home: "Ow! There's a thorn!" Ask: new.
+217. Please say, the way you would at home: "Ow! There's a thorn!" Ask: new.
    - Needed by: clinic line "Ow! There's a thorn!" (clinic.line.ow).
-220. Please say, the way you would at home: "Phew!" Ask: new.
+218. Please say, the way you would at home: "Phew!" Ask: new.
    - Needed by: clinic line "Phew!" (clinic.line.phew).
-221. Please say, the way you would at home: "My left" Ask: new.
+219. Please say, the way you would at home: "My left" Ask: new.
    - Needed by: clinic line "My left" (clinic.line.side-left).
-222. Please say, the way you would at home: "My right" Ask: new.
+220. Please say, the way you would at home: "My right" Ask: new.
    - Needed by: clinic line "My right" (clinic.line.side-right).
-223. Please say, the way you would at home: "Ow, something's in my foot!" Ask: new.
+221. Please say, the way you would at home: "Ow, something's in my foot!" Ask: new.
    - Needed by: clinic line "Ow, something's in my foot!" (clinic.line.foot-why).
-224. Please say, the way you would at home: "Let's take the splinters out." Ask: new.
+222. Please say, the way you would at home: "Let's take the splinters out." Ask: new.
    - Needed by: clinic line "Let's take the splinters out." (clinic.line.foot-goal).
-225. Please say, the way you would at home: "Itchy, itchy! Something's in my hair!" Ask: new.
+223. Please say, the way you would at home: "Itchy, itchy! Something's in my hair!" Ask: new.
    - Needed by: clinic line "Itchy, itchy! Something's in my hair!" (clinic.line.itchy).
-226. Please say, the way you would at home: "Boing! In you go!" Ask: new.
+224. Please say, the way you would at home: "Boing! In you go!" Ask: new.
    - Needed by: clinic line "Boing! In you go!" (clinic.line.boing).
-227. Please say, the way you would at home: "Bubbles! Hee hee!" Ask: new.
+225. Please say, the way you would at home: "Bubbles! Hee hee!" Ask: new.
    - Needed by: clinic line "Bubbles! Hee hee!" (clinic.line.bubbles).
-228. Please say, the way you would at home: "Bye bye, beetle!" Ask: new.
+226. Please say, the way you would at home: "Bye bye, beetle!" Ask: new.
    - Needed by: clinic line "Bye bye, beetle!" (clinic.line.wave).
-229. Please say, the way you would at home: "Hic!" Ask: new.
+227. Please say, the way you would at home: "Hic!" Ask: new.
    - Needed by: clinic line "Hic!" (clinic.line.hic).
-230. Please say, the way you would at home: "Glug!" Ask: new.
+228. Please say, the way you would at home: "Glug!" Ask: new.
    - Needed by: clinic line "Glug!" (clinic.line.glug).
-231. Please say, the way you would at home: "Slurrrp... it's empty!" Ask: new.
+229. Please say, the way you would at home: "Slurrrp... it's empty!" Ask: new.
    - Needed by: clinic line "Slurrrp... it's empty!" (clinic.line.slurp).
-232. Please say, the way you would at home: "Oops! Splash!" Ask: new.
+230. Please say, the way you would at home: "Oops! Splash!" Ask: new.
    - Needed by: clinic line "Oops! Splash!" (clinic.line.splash).
-233. Please say, the way you would at home: "Mmmph! (cheeks full)" Ask: new.
+231. Please say, the way you would at home: "Mmmph! (cheeks full)" Ask: new.
    - Needed by: clinic line "Mmmph! (cheeks full)" (clinic.line.mmph).
-234. Please say, the way you would at home: "Boo!" Ask: new.
+232. Please say, the way you would at home: "Boo!" Ask: new.
    - Needed by: clinic line "Boo!" (clinic.line.boo).
-235. Please say, the way you would at home: "Eeek!" Ask: new.
+233. Please say, the way you would at home: "Eeek!" Ask: new.
    - Needed by: clinic line "Eeek!" (clinic.line.eek).
-236. Please say, the way you would at home: "Ha ha ha! All gone!" Ask: new.
+234. Please say, the way you would at home: "Ha ha ha! All gone!" Ask: new.
    - Needed by: clinic line "Ha ha ha! All gone!" (clinic.line.laugh).
-237. Please say, the way you would at home: "...hic! Still there!" Ask: new.
+235. Please say, the way you would at home: "...hic! Still there!" Ask: new.
    - Needed by: clinic line "...hic! Still there!" (clinic.line.back).
-238. Please say, the way you would at home: "My knee hurts." Ask: new.
+236. Please say, the way you would at home: "My knee hurts." Ask: new.
    - Needed by: clinic line "My knee hurts." (clinic.line.knee-why).
-239. Please say, the way you would at home: "Let's check it and bandage it." Ask: new.
+237. Please say, the way you would at home: "Let's check it and bandage it." Ask: new.
    - Needed by: clinic line "Let's check it and bandage it." (clinic.line.knee-goal).
-240. Please say, the way you would at home: "That feels better!" Ask: new.
+238. Please say, the way you would at home: "That feels better!" Ask: new.
    - Needed by: clinic line "That feels better!" (clinic.line.knee-better).
-241. Please say, the way you would at home: "My tongue is sore." Ask: new.
+239. Please say, the way you would at home: "My tongue is sore." Ask: new.
    - Needed by: clinic line "My tongue is sore." (clinic.line.taste-why).
-242. Please say, the way you would at home: "Let's soothe the sore spots." Ask: new.
+240. Please say, the way you would at home: "Let's soothe the sore spots." Ask: new.
    - Needed by: clinic line "Let's soothe the sore spots." (clinic.line.taste-goal).
-243. Please say, the way you would at home: "Hmm, not that one." Ask: new.
+241. Please say, the way you would at home: "Hmm, not that one." Ask: new.
    - Needed by: clinic line "Hmm, not that one." (clinic.line.taste-notthat).
-244. Please say, the way you would at home: "My tongue feels better!" Ask: new.
+242. Please say, the way you would at home: "My tongue feels better!" Ask: new.
    - Needed by: clinic line "My tongue feels better!" (clinic.line.taste-better).
-245. Please say, the way you would at home: "My tooth hurts." Ask: new.
+243. Please say, the way you would at home: "My tooth hurts." Ask: new.
    - Needed by: clinic line "My tooth hurts." (clinic.line.tooth-why).
-246. Please say, the way you would at home: "Let's brush, fix it and fill it." Ask: new.
+244. Please say, the way you would at home: "Let's brush, fix it and fill it." Ask: new.
    - Needed by: clinic line "Let's brush, fix it and fill it." (clinic.line.tooth-goal).
-247. Please say, the way you would at home: "It doesn't hurt now!" Ask: new.
+245. Please say, the way you would at home: "It doesn't hurt now!" Ask: new.
    - Needed by: clinic line "It doesn't hurt now!" (clinic.line.tooth-better).
-248. Please say, the way you would at home: "Ow! A chip!" Ask: new.
+246. Please say, the way you would at home: "Ow! A chip!" Ask: new.
    - Needed by: clinic line "Ow! A chip!" (clinic.line.tooth-chip).
-249. Please say, the way you would at home: "Too much!" Ask: new.
+247. Please say, the way you would at home: "Too much!" Ask: new.
    - Needed by: clinic line "Too much!" (clinic.line.tooth-toomuch).
-250. Please say, the way you would at home: "Burp!" Ask: new.
+248. Please say, the way you would at home: "Burp!" Ask: new.
    - Needed by: clinic line "Burp!" (clinic.line.burp).
-251. Please say, the way you would at home: "Ooh, my tummy! Too many sweets!" Ask: new.
+249. Please say, the way you would at home: "Ooh, my tummy! Too many sweets!" Ask: new.
    - Needed by: clinic line "Ooh, my tummy! Too many sweets!" (clinic.line.gurgle).
-252. Please say, the way you would at home: "Glug glug... ahh!" Ask: new.
+250. Please say, the way you would at home: "Glug glug... ahh!" Ask: new.
    - Needed by: clinic line "Glug glug... ahh!" (clinic.line.tummy-glug).
-253. Please say, the way you would at home: "Whoops! It's spilling!" Ask: new.
+251. Please say, the way you would at home: "Whoops! It's spilling!" Ask: new.
    - Needed by: clinic line "Whoops! It's spilling!" (clinic.line.tummy-splash).
-254. Please say, the way you would at home: "Ahhh, that's warm..." Ask: new.
+252. Please say, the way you would at home: "Ahhh, that's warm..." Ask: new.
    - Needed by: clinic line "Ahhh, that's warm..." (clinic.line.tummy-ahh).
-255. Please say, the way you would at home: "Much better!" Ask: new.
+253. Please say, the way you would at home: "Much better!" Ask: new.
    - Needed by: clinic line "Much better!" (clinic.line.better).
+
+### A form of a word we know is missing (plural, 'with the …') (1)
+
+1. One head, three heads. Ask: new.
+   - Needed by: Clinic word "head" (body-head), more than one.
 
 ### Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) (5)
 
@@ -925,73 +902,77 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 5. One medicine, two medicines. (Or: "I'd like some medicine, please", said politely.) Ask: new.
    - Needed by: Clinic word "medicine" (boing-medicine); Clinic word "medicine" (boing-medicine), more than one.
 
-### We know the word but have no recording of it (33)
+### We know the word but have no recording of it (35)
 
-1. Please record: "hath"
-   - Needed by: Clinic word "hand" (body-hand); Clinic word "hand" (tool-hand); Clinic word "hand" (clinic.item.tool-hand).
+1. Please record: "matho"
+   - Needed by: Clinic word "head" (body-head).
 2. Please record: "hath"
+   - Needed by: Clinic word "hand" (body-hand); Clinic word "hand" (tool-hand); Clinic word "hand" (clinic.item.tool-hand).
+3. Please record: "hath"
    - Needed by: Clinic word "hand" (body-hand), more than one; Clinic word "hand" (tool-hand), more than one; Clinic word "hand" (clinic.item.tool-hand), more than one.
-3. Please record: "pag"
-   - Needed by: Clinic word "foot" (body-foot).
 4. Please record: "pag"
+   - Needed by: Clinic word "foot" (body-foot).
+5. Please record: "pag"
    - Needed by: Clinic word "foot" (body-foot), more than one.
-5. Please record: "akh"
+6. Please record: "akh"
    - Needed by: Clinic word "eye" (body-eye).
-6. Please record: "akhyu"
+7. Please record: "akhyu"
    - Needed by: Clinic word "eye" (body-eye), more than one.
-7. Please record: "gutan"
-   - Needed by: Clinic word "knee" (body-knee).
 8. Please record: "gutan"
+   - Needed by: Clinic word "knee" (body-knee).
+9. Please record: "gutan"
    - Needed by: Clinic word "knee" (body-knee), more than one.
-9. Please record: "dabo"
+10. Please record: "dabo"
    - Needed by: Clinic word "left" (side-left); Clinic word "left" (cl-dabo); Clinic word "left" (tooth-left).
-10. Please record: "jamni"
+11. Please record: "jamni"
    - Needed by: Clinic word "right (side)" (side-right); Clinic word "right (side)" (cl-jamno); Clinic word "right (side)" (tooth-right).
-11. Please record: "lilo"
+12. Please record: "lilo"
    - Needed by: Clinic word "green" (col-green); Clinic word "green" (green).
-12. Please record: "chando"
-   - Needed by: Clinic word "drops (not sprinkle)" (clinic.item.drops); Clinic word "drops (not sprinkle)" (cl-drops).
 13. Please record: "chando"
+   - Needed by: Clinic word "drops (not sprinkle)" (clinic.item.drops); Clinic word "drops (not sprinkle)" (cl-drops).
+14. Please record: "chando"
    - Needed by: Clinic word "drops (not sprinkle)" (clinic.item.drops), more than one; Clinic word "drops (not sprinkle)" (cl-drops), more than one.
-14. Please record: "arre re"
+15. Please record: "arre re"
    - Needed by: Clinic word "oh dear!" (cl-arre).
-15. Please record: "achija"
+16. Please record: "achija"
    - Needed by: Clinic word "Bye!" (cl-achija); clinic line "Good! (bye)" (clinic.line.goodbye-achija).
-16. Please record: "hedo"
+17. Please record: "hedo"
    - Needed by: Clinic word "Hey!" (cl-hedo).
-17. Please record: "safarjan"
-   - Needed by: Clinic word "apple" (cl-apple).
 18. Please record: "safarjan"
+   - Needed by: Clinic word "apple" (cl-apple).
+19. Please record: "safarjan"
    - Needed by: Clinic word "apple" (cl-apple), more than one.
-19. Please record: "banai"
+20. Please record: "banai"
    - Needed by: Clinic word "make" (cl-make).
-20. Please record: "waaro"
+21. Please record: "waaro"
    - Needed by: Clinic word "with" (cl-waaro).
-21. Please record: "dawa"
-   - Needed by: Clinic word "medicine" (boing-medicine).
 22. Please record: "dawa"
+   - Needed by: Clinic word "medicine" (boing-medicine).
+23. Please record: "dawa"
    - Needed by: Clinic word "medicine" (boing-medicine), more than one.
-23. Please record: "kuro"
+24. Please record: "kuro"
    - Needed by: clinic line "What's this?" (clinic.line.cl-whatsthis).
-24. Please record: "ai"
+25. Please record: "ai"
    - Needed by: clinic line "What's this?" (clinic.line.cl-whatsthis).
-25. Please record: "pela"
+26. Please record: "pela"
    - Needed by: clinic line "First {x}" (clinic.line.lang.first), with cook-maani; clinic line "First {a}, and then {b}" (clinic.line.pipeline.bring2); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder) … (4 lines).
-26. Please record: "ne poi"
+27. Please record: "ne poi"
    - Needed by: clinic line "And then {x}" (clinic.line.lang.then), with cook-maani; clinic line "First {a}, and then {b}" (clinic.line.pipeline.bring2); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder) … (4 lines).
-27. Please record: "ne"
+28. Please record: "ne"
    - Needed by: clinic line "and {x}" (clinic.line.lang.and), with cook-maani.
-28. Please record: "fare"
+29. Please record: "fare"
    - Needed by: clinic line "{x} times" (clinic.line.lang.times).
-29. Please record: "daar"
+30. Please record: "muke thandi peti"
+   - Needed by: clinic line "I feel cold." (clinic.line.feeling-cold).
+31. Please record: "daar"
    - Needed by: clinic line "First {a}, and then {b}" (clinic.line.pipeline.bring2); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder); clinic line "First {a}, then {b}" (clinic.line.heal-ear-pluck2).
-30. Please record: "salamun alaykum"
+32. Please record: "salamun alaykum"
    - Needed by: clinic line "Peace be with you (hello)" (clinic.line.pipeline.salaam).
-31. Please record: "wa alaikum salaam"
+33. Please record: "wa alaikum salaam"
    - Needed by: clinic line "And peace be with you" (clinic.line.pipeline.salaam-back).
-32. Please record: "muke"
+34. Please record: "muke"
    - Needed by: clinic line "I need {a}" (clinic.line.pipeline.need1) (informal); clinic line "I need {a}" (clinic.line.pipeline.need1) (polite); clinic line "I need {a}, and {rest}" (clinic.line.pipeline.needN) (informal) … (5 lines).
-33. Please record: "khape"
+35. Please record: "khape"
    - Needed by: clinic line "I need {a}" (clinic.line.pipeline.need1) (informal); clinic line "I need {a}, and {rest}" (clinic.line.pipeline.needN) (informal); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder).
 
 ## Placeholders in a game's data that the engine can already say
@@ -1107,15 +1088,6 @@ A game file still shows an English placeholder (`kutchi: null`) for something th
 - no OK recording of "kari"
 - no OK recording of "mori"
 - no OK recording of "waari"
-- no OK recording of "dedh cup"
-- no OK recording of "dedh cup"
-- no OK recording of "adhi cup"
-- no OK recording of "adhi cup"
-- no OK recording of "makai"
-- no OK recording of "makai"
-- no OK recording of "indo"
-- no OK recording of "bafelo indo"
-- no OK recording of "bafelo inda"
 - no OK recording of "khapeti"
 - no OK recording of "ba"
 - no OK recording of "trae"

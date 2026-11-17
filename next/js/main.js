@@ -5,6 +5,7 @@
 import { createArt } from "./shared/art.js";
 import { createSay } from "./shared/say.js";
 import { createStage } from "./shared/stage.js";
+import { createFrame } from "./shared/frame.js";
 import { createRunner } from "./shared/runner.js";
 import { newRound } from "./shared/round.js";
 import { loadProgress, saveRound } from "./shared/progress.js";
@@ -22,14 +23,17 @@ async function start() {
 
   const root = document.documentElement;
   for (const [name, value] of Object.entries(kit.look.vars)) root.style.setProperty(`--${name}`, value);
-  const fit = () => root.classList.toggle("short", innerHeight < kit.look.shortBelow);
-  fit();
-  addEventListener("resize", fit);
+  const frame = createFrame({ kit });
 
   const art = createArt(registry, { build: globalThis.NJG_BUILD === "store" ? "store" : "test" });
-  const say = await createSay({});
-  const stage = await createStage({ art, kit, renderer: ask.get("draw") || "auto" });
+  const say = await createSay({ voice: kit.voice });
+  const stage = await createStage({ art, kit, frame, renderer: ask.get("draw") || "auto" });
   const progress = loadProgress(ask.get("player") || "child");
+  // upright, the whole round waits where it is behind the turn card (pictures, moves, voice, sounds) and goes on when turned
+  stage.onHold((on) => say.hold(on));
+  frame.onResize(() => stage.hold(frame.upright()));
+  // nothing is drawn or said before the fonts are in, the phone is on its side, and (on a phone) the first tap is made
+  await frame.ready();
 
   let offTick = null;
   async function play() {
@@ -46,9 +50,10 @@ async function start() {
         if (ended.choice === "again") play();
       },
     });
-    globalThis.njg = { run, stage, say, scenes }; // for the checks, which play the page as a child would and read where it is
+    globalThis.njg = { run, stage, say, scenes, frame }; // for the checks, which play the page as a child would and read where it is
     if (offTick) offTick();
-    offTick = stage.onTick((ms) => run.send({ type: "time", ms }));
+    // (behind the turn card the stage is held, so no time passes and nothing boils over)
+    offTick = stage.onTick((ms) => !stage.held() && run.send({ type: "time", ms }));
     run.start();
   }
   await play();

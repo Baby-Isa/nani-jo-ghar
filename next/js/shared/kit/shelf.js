@@ -14,6 +14,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
   const L = kit.look;
   const ground = stage.layer("worktop", "ground");
   const shadows = stage.layer("worktop", "shadows");
+  const halos = stage.layer("worktop", "halos"); // apart from the shadows, so a check that hides them leaves the glow
   const things = stage.layer("worktop", "things");
   const pills = stage.layer("worktop", "pills");
   const fly = stage.layer("worktop", "fly");
@@ -211,7 +212,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       const H = stage.halo(wordArt[id].art);
       const [pw] = stage.art.size(wordArt[id].art);
       const kk = it.w / pw / H.k; // the halo's small copy, drawn at the thing's size
-      it.halo = stage.image(shadows, H.key, { x: it.slot.x, y: b.base - it.h / 2 });
+      it.halo = stage.image(halos, H.key, { x: it.slot.x, y: b.base - it.h / 2 });
       it.halo.obj.setScale(kk);
       stage.scene.tweens.add({ targets: it.halo.obj, alpha: L.halo.breatheTo, duration: L.halo.breatheMs, yoyo: true, repeat: -1 });
       const up = Math.max(L.hop.min, Math.min(L.hop.max, it.h * L.hop.share));

@@ -7,10 +7,12 @@ import { createRoom } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { atLevel } from "../round.js";
 
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-
 export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
   const K = kit.greeting;
+  // (the stage's own clock: it stands still while the round is held behind the turn card)
+  const wait = (ms) => stage.wait(ms);
+  // the greeting's lines are few and known from the round's start: their clips are decoded long before they are said
+  Object.values(kit.greetings).forEach((g) => g && g.meaning && say.warm(g.meaning));
   let room = null;
   let bubble = null;
   let row = null;
@@ -33,7 +35,6 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
     async enter(state, round) {
       live = true;
       room = await createRoom({ stage, kit, roomArt, people, standing: round.people, lift: atLevel(kit.room.liftByPeople, round.people.length) });
-      room.round = round;
       ui.room = room;
       ui.cards.seats.forEach((s) => (s.el.hidden = true));
       stage.uncover();

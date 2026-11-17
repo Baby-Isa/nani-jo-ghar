@@ -5,9 +5,8 @@
  *
  *   showWrongOrder({ stage, say, kit, sounds, cards, seat, check }) -> Promise (resolves when it has been shown)
  */
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-
 export async function showWrongOrder({ stage, say, kit, sounds, cards, seat, check }) {
+  const wait = (ms) => stage.wait(ms); // (stands still while the round is held)
   const veil = document.createElement("div");
   veil.className = "veil";
   veil.dataset.ownTaps = "1";
