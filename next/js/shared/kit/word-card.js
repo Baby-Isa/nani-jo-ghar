@@ -31,6 +31,8 @@ export function wordCardHtml({ file, line, pic, english, blurred, kit, rule = tr
 
 export function wireSpeaker(card, { say, line }) {
   const spk = card.querySelector(".speaker");
+  // (a speaker's tap is its own: the play area must not read it as "a tap on the room", which skips the order)
+  spk.setAttribute("data-own-taps", "");
   let turn = 0;
   let saying = false;
   const sayIt = async () => {
