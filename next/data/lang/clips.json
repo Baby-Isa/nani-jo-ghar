@@ -811,27 +811,39 @@
   },
   {
    "clip": "alaikum-salaam",
-   "meaning": "Say(phrase.hello-back-the-way-mum-said-it-no-wa)"
+   "meaning": "Say(phrase.hello-back-and-peace-be-upon-you)"
   },
   {
    "clip": "alaikum-salaam",
-   "meaning": "Exclaim(phrase.hello-back-the-way-mum-said-it-no-wa)"
+   "meaning": "Exclaim(phrase.hello-back-and-peace-be-upon-you)"
   },
   {
    "clip": "alaikum-salaam",
-   "meaning": "Ask(phrase.hello-back-the-way-mum-said-it-no-wa)"
+   "meaning": "Ask(phrase.hello-back-and-peace-be-upon-you)"
   },
   {
    "clip": "alaikum-salaam-b",
-   "meaning": "Say(phrase.hello-back-the-way-mum-said-it-no-wa)"
+   "meaning": "Say(phrase.hello-back-and-peace-be-upon-you)"
   },
   {
    "clip": "alaikum-salaam-b",
-   "meaning": "Exclaim(phrase.hello-back-the-way-mum-said-it-no-wa)"
+   "meaning": "Exclaim(phrase.hello-back-and-peace-be-upon-you)"
   },
   {
    "clip": "alaikum-salaam-b",
-   "meaning": "Ask(phrase.hello-back-the-way-mum-said-it-no-wa)"
+   "meaning": "Ask(phrase.hello-back-and-peace-be-upon-you)"
+  },
+  {
+   "clip": "khuda-fis",
+   "meaning": "Say(phrase.goodbye-khuda-hafiz)"
+  },
+  {
+   "clip": "khuda-fis",
+   "meaning": "Exclaim(phrase.goodbye-khuda-hafiz)"
+  },
+  {
+   "clip": "khuda-fis",
+   "meaning": "Ask(phrase.goodbye-khuda-hafiz)"
   },
   {
    "clip": "ki-aiye",

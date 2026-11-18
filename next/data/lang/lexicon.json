@@ -17586,19 +17586,34 @@
   {
    "id": "phrase.goodbye-khuda-hafiz",
    "pos": "Phrase",
-   "lemma": "khuda-fis",
+   "lemma": "khuda hafiz",
    "gloss": "goodbye (khuda hafiz)",
    "forms": {
-    "-": "khuda-fis"
+    "-": "khuda hafiz"
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §30 K3 (Khuda hafiz!; Zafar's spelling khuda-fis)",
-    "grammar-notes Zafar 26 Sept (goodbye: khuda-fis)",
+    "grammar-notes §30 K3 (Khuda hafiz!)",
+    "Zafar, 18 Nov 2026 (spelled Khuda hafiz, as Mum's recording; was khuda-fis, Zafar 26 Sept)",
     "data/conversations/lines.json lines.khudafis: §10a.2; grammar notes 'Zafar, 26 Sept (Conversations decisions)'; Mum 28 Sept (Round 3 K3; docs/language/grammar-notes.md §30) [family]"
    ],
    "aliases": [
     "conversation.line.khudafis"
+   ],
+   "notes": [
+    "not analysed into words yet: khuda, hafiz are not in the lexicon (build/lang/phrases.mjs)"
+   ],
+   "history": [
+    {
+     "date": "2026-11-18",
+     "change": "lemma: khuda-fis respelled khuda hafiz: the goodbye is spelled as Mum's recording says it (her take khuda-fis); the same goodbye as the games' khuda-fis",
+     "src": "grammar-notes §30 K3; Zafar 18 Nov 2026"
+    },
+    {
+     "date": "2026-11-18",
+     "change": "form:-: khuda-fis respelled khuda hafiz: the goodbye is spelled as Mum's recording says it (her take khuda-fis); the same goodbye as the games' khuda-fis",
+     "src": "grammar-notes §30 K3; Zafar 18 Nov 2026"
+    }
    ]
   },
   {
@@ -17941,14 +17956,15 @@
   {
    "id": "phrase.hello-back-and-peace-be-upon-you",
    "pos": "Phrase",
-   "lemma": "wa alaikum salaam",
+   "lemma": "alaikum salaam",
    "gloss": "hello back (and peace be upon you)",
    "forms": {
-    "-": "wa alaikum salaam"
+    "-": "alaikum salaam"
    },
-   "status": "draft",
+   "status": "confirmed",
    "src": [
-    "grammar-notes §30 K2 (⚠ no 'wa' heard at the start)",
+    "grammar-notes §30 K2 (Alaikum salaam!: no 'wa', as Mum said it)",
+    "Zafar, 18 Nov 2026 (the reply is Alaikum salaam, no Wa, as Mum's recording)",
     "docs/game-design/modes/conversations.md §10a.2",
     "data/cook.json lines.greet-reply: no source given",
     "data/conversations/lines.json lines.salaam-reply: hd; §10a.2 [decided]",
@@ -17962,33 +17978,24 @@
     "content.snt-02"
    ],
    "notes": [
-    "not analysed into words yet: wa is not in the lexicon (build/lang/phrases.mjs)"
-   ],
-   "open": [
-    {
-     "q": "Is it Wa alaikum salaam or Alaikum salaam? Mum said Alaikum salaam on tape (K2); the sheet and the game have Wa alaikum salaam.",
-     "ask": [
-      "L4"
-     ],
-     "src": "grammar-notes §30 K2"
-    }
-   ]
-  },
-  {
-   "id": "phrase.hello-back-the-way-mum-said-it-no-wa",
-   "pos": "Phrase",
-   "lemma": "alaikum salaam",
-   "gloss": "hello back (the way Mum said it: no 'wa')",
-   "forms": {
-    "-": "alaikum salaam"
-   },
-   "status": "draft",
-   "src": [
-    "grammar-notes §30 K2 (Alaikum salaam!: ⚠ no wa heard at the start)"
-   ],
-   "notes": [
-    "Mum's recorded words; the sheet and the game have Wa alaikum salaam (see that entry).",
     "not analysed into words yet: alaikum, salaam are not in the lexicon (build/lang/phrases.mjs)"
+   ],
+   "history": [
+    {
+     "date": "2026-11-18",
+     "change": "lemma: wa alaikum salaam respelled alaikum salaam: the reply is Alaikum salaam, no Wa, as Mum said it on her take (alaikum-salaam); the games' data and the handout had Wa",
+     "src": "grammar-notes §30 K2; Zafar 18 Nov 2026"
+    },
+    {
+     "date": "2026-11-18",
+     "change": "status: wa alaikum salaam respelled alaikum salaam: the reply is Alaikum salaam, no Wa, as Mum said it on her take (alaikum-salaam); the games' data and the handout had Wa",
+     "src": "grammar-notes §30 K2; Zafar 18 Nov 2026"
+    },
+    {
+     "date": "2026-11-18",
+     "change": "form:-: wa alaikum salaam respelled alaikum salaam: the reply is Alaikum salaam, no Wa, as Mum said it on her take (alaikum-salaam); the games' data and the handout had Wa",
+     "src": "grammar-notes §30 K2; Zafar 18 Nov 2026"
+    }
    ]
   },
   {

@@ -16,7 +16,8 @@
  *   reset() -> dish                                                 this pan starts again
  *   asAsked(ctx) -> dish                                            the dish as asked, shown after three wrong tries
  *   look(dish, heat) -> what the pan looks like     glass(dish, art, rest), pourFrames, glassFrame -> the glass's pictures
- *   cardArt, wordMomentArt, spoonArt, artList -> which of the game's pictures a card, a spoon or the loader needs
+ *   cardArt, wordMomentArt, spoonArt -> which of the game's pictures a card or a spoon shows
+ *   artList(art, asks) -> { draw, then }   this order's pictures: what a vessel is drawn with, then what its moves show
  *   served(dish, ctx), needs(dish, ctx), ticks(dish, ctx), counts(dish)
  */
 
@@ -61,7 +62,9 @@ export function card(ask, { words }) {
   if (ask.spice) items.push(row("spice", ask.spice, item(ask.spice)));
   if (ask.milk) items.push(row("milk", w.milk, item(w.milk)));
   if (ask.sugar > 0) items.push(row("sugar", w.sugar, item(w.sugar, { n: ask.sugar }), { n: ask.sugar }));
-  if (ask.amount) items.push(row("amount", ask.amount, { fn: "Amt", x: ask.amount }));
+  // (half or full is seen only as the glass is poured, so it comes last, before the pour: Zafar, 18 Nov; its card ticks
+  // as the dish is served)
+  if (ask.amount) items.push(row("amount", ask.amount, { fn: "Amt", x: ask.amount }, { atServe: true }));
   if (!ask.milk) items.push(row("no-milk", w.milk, { fn: "NoItem", x: item(w.milk) }, { no: true }));
   if (ask.sugar === 0) items.push(row("no-sugar", w.sugar, { fn: "NoItem", x: item(w.sugar) }, { no: true }));
   return { headline, items, dishCard: { fn: "Item", kind: w.dish, n: 1 } };
@@ -237,8 +240,17 @@ export const glassFrame = (art, set, n) => `${art.filling[set].replace("#*", "")
 /** The spoon a thing travels on, by what kind of thing it is. */
 export const spoonArt = (kind, settings) => settings.art.spoon[settings.row.spoon[kind] || settings.row.spoon.other];
 
-/** Every picture the game needs before its scene is drawn. */
-export const artList = (art) => [].concat(Object.values(art.pan), Object.values(art.over), Object.values(art.emptying), Object.values(art.filling), Object.values(art.spoon));
+/**
+ * This order's pictures: the empty pan its vessels are drawn with, then the rest, the pours of the teas asked for first
+ * (a pan made without its milk pours black, so both teas' pours come, the one asked for ahead).
+ */
+export function artList(art, asks) {
+  const teas = [...new Set(asks.map((a) => (a.milk ? "milky" : "black")).concat("milky", "black"))];
+  return {
+    draw: [art.pan.empty],
+    then: [].concat(Object.values(art.pan), Object.values(art.over), Object.values(art.spoon), teas.flatMap((t) => [art.emptying[t], art.filling[t]])),
+  };
+}
 
 /** A word-moment card's picture: the word shown as a glass of chai. */
 export const wordMomentArt = (word, art) => art.amountCard[word].milky;

@@ -1,7 +1,7 @@
 /*
  * The small conversation scenes' drawing: well done, the serve with its thanks, and the end. Each draws what its rules say and tells the runner when a line has been said or a card shown.
  */
-import { createRoom } from "../kit/people.js";
+import { createRoom, roomRefs } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { createEndScreen } from "../kit/end-screen.js";
 
@@ -11,15 +11,19 @@ export function wellDoneView({ stage, say, kit, ui, send }) {
   say.warm(kit.lines.wellDone); // (known from the round's start: its clips are decoded long before it is said)
   // (the stage's own clock: it stands still while the round is held behind the turn card)
   const wait = (ms) => stage.wait(ms);
+  async function praise(meaning) {
+    const line = say.line(meaning);
+    await wait(T.wellDoneAfter);
+    if (ui.serving) ui.serving.praise(line.text);
+    ui.cards.seats.forEach((s, i) => (ui.cards.served(i), ui.cards.fold(i)));
+    await Promise.race([ui.nani.line(line, { speak: true }), wait(T.wellDoneCap)]);
+    await wait(T.wellDoneHold);
+    send({ type: "said" });
+  }
   return {
-    async enter(state) {
-      const line = say.line(state.line);
-      await wait(T.wellDoneAfter);
-      if (ui.serving) ui.serving.praise(line.text);
-      ui.cards.seats.forEach((s, i) => (ui.cards.served(i), ui.cards.fold(i)));
-      await Promise.race([ui.nani.line(line, { speak: true }), wait(T.wellDoneCap)]);
-      await wait(T.wellDoneHold);
-      send({ type: "said" });
+    // (nothing new to draw: the kitchen stays as the cooking left it, and the praise comes as the scene opens)
+    on(events) {
+      for (const e of events) if (e.type === "praise") praise(e.line);
     },
     async leave() {
       if (ui.serving) await ui.serving.closeReview();
@@ -82,16 +86,17 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
     send({ type: "landed" });
   }
   return {
+    pictures: (round) => roomRefs({ roomArt, people, standing: round.people, nani: true }).concat(trayArt, dishArt),
     async enter(state, round) {
       // a beat with nothing happening, then the cooking view fades out and the kitchen fades in
-      await Promise.all([wait(R.serveWait), stage.load([trayArt, dishArt])]);
+      await wait(R.serveWait);
       const curtain = await stage.curtain(R.fadeMs);
       await wait(R.cutGap);
       // everyone is back where they ordered from; three people spread out to the right of Nani
       const n = round.people.length;
       const spread = (i) => R.naniX + R.serveSpread[0] + ((stage.sheet.w - R.serveSpread[1] - R.naniX - R.serveSpread[0]) * i) / (n - 1);
       const standing = n > 2 ? round.people.map((p, i) => ({ ...p, spot: spread(i) })) : round.people;
-      room = await createRoom({ stage, kit, roomArt, people, standing, lift: 0, walk: false, nani: true, speech: "line" });
+      room = createRoom({ stage, kit, roomArt, people, standing, lift: 0, walk: false, nani: true, speech: "line" });
       ui.room = room;
       // the heads with the speech strip above them, down to the foot of the widest tray's shadow, stay whole at any size, on a
       // resize too; where that cannot fit at the painting's full width the trays stay whole and the people stand lower (the room's)
@@ -116,9 +121,6 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
       offResize = stage.onResize(layTrays, "room");
       await wait(R.serveGlideMs - R.tray.fadeAt);
       room.nani("happy");
-      this.ready = true;
-      (this.pending || []).forEach((e) => this.handle(e));
-      this.pending = null;
     },
     /** For the checks: the heads, and each tray with its person's face label. */
     probe() {
@@ -126,15 +128,14 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
       const B = (kind, id, x, y, w, h, more) => ({ kind, id, ...stage.pageRect("room", { x: x - w / 2, y: y - h / 2, w, h }), ...more });
       return room.probe().concat(trays.flatMap((t, i) => [B("tray", i, t.x, R.tray.y, t.w, t.h, { stands: true }), B("label", i, t.faceAt.x, t.faceAt.y, R.tray.face, R.tray.face, { on: "tray" })]));
     },
-    handle(e) {
-      if (e.type === "land") land(e.seat);
-      else if (e.type === "line") line(e);
-    },
+    // (each dish lands on its own, as the rules say: the first as the serve opens, with Nani and the trays in place)
     on(events) {
-      for (const e of events) this.ready ? this.handle(e) : (this.pending = (this.pending || []).concat(e));
+      for (const e of events) {
+        if (e.type === "land") land(e.seat);
+        else if (e.type === "line") line(e);
+      }
     },
     async leave() {
-      this.ready = false;
       if (offResize) offResize();
       room.bubble(null);
       await room.walkOff();
@@ -146,6 +147,7 @@ export function serveView({ stage, say, kit, people, ui, send, roomArt, trayArt,
 export function endView({ stage, say, kit, ui, send, endArt }) {
   let screen = null;
   return {
+    pictures: () => Object.values(endArt).flatMap((v) => (typeof v === "string" ? v : Object.values(v))),
     enter(state, round) {
       say.stop();
       ui.nani.line(null);

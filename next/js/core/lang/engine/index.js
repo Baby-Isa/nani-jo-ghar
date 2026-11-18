@@ -2,8 +2,7 @@
  * The language engine (step 4a; engine-design § 6, the API every mode will call). Game code asks for a MEANING;
  * the engine returns the sentence as tokens, display text and segments, the order card's rows and a clip plan,
  * or gaps saying exactly what it can't say yet. It contains no Kutchi and no grammar: both are data
- * (data/lang/, docs/language/engine-spec.md § Data). Not wired to any page yet: js/core/lang/index.js (the seam)
- * still answers every caller; steps 4d and 4e move Cook and the clinic onto this engine.
+ * (data/lang/, docs/language/engine-spec.md § Data). The game reaches it only through js/shared/say.js.
  *
  *   const Lang = createEngine({ data, audio, voice })   // data: {params, lexicon, paradigms, abstract, concrete, clips}
  *   Lang.say(meaning, ctx) -> Result       Lang.rows(meaning, ctx) -> [Row]     Lang.check(meaning, ctx) -> {ok, gaps}
@@ -11,7 +10,7 @@
  *   await loadEngine({ base, audio })      loads data/lang/*.json (and the recordings) once
  *
  * CTX: { register: "informal"|"polite", addressee: {elder}, speaker: {id, gender}, voice: "mum"|"zafar",
- *        path: "store"|"test", phrases: bool }   (path and phrases default to voice.js's settings)
+ *        path: "store"|"test", phrases: bool }   (path: voice-clips.js's voicePath; phrases, Mum's whole takes: on)
  *
  * RESULT: { ok, text, en, tokens, segments, rows, clipPlan, drafts, gaps, key, trace }
  *   ok      false when any word, form or rule is missing (gaps of kind lexeme, form, rule); audio and feature gaps

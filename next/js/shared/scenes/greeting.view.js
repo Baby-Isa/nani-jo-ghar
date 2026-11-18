@@ -3,7 +3,7 @@
  * again and a button to pass; the child's two answers rise along the bottom, each with its own button to hear it.
  * A right answer flies up to the bubble and the person is pleased; a wrong one only shakes.
  */
-import { createRoom } from "../kit/people.js";
+import { createRoom, roomRefs } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { atLevel } from "../round.js";
 
@@ -32,9 +32,10 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
   }
 
   return {
+    pictures: (round) => roomRefs({ roomArt, people, standing: round.people }),
     async enter(state, round) {
       live = true;
-      room = await createRoom({ stage, kit, roomArt, people, standing: round.people, lift: atLevel(kit.room.liftByPeople, round.people.length) });
+      room = createRoom({ stage, kit, roomArt, people, standing: round.people, lift: atLevel(kit.room.liftByPeople, round.people.length) });
       ui.room = room;
       ui.cards.seats.forEach((s) => (s.el.hidden = true));
       stage.uncover();
@@ -61,12 +62,12 @@ export function greetingView({ stage, say, kit, people, ui, send, roomArt }) {
         row.appendChild(wrap);
       }
       stage.el.over.appendChild(row);
-      await ask(state);
     },
     on(events, state) {
       for (const e of events) {
         const b = row && row.querySelector(`[data-choice="${e.choice}"]`);
-        if (e.type === "wrong-answer" && b) {
+        if (e.type === "ask") ask(state);
+        else if (e.type === "wrong-answer" && b) {
           b.classList.remove("shake");
           void b.offsetWidth;
           b.classList.add("shake");

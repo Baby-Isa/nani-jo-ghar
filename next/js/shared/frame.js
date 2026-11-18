@@ -19,7 +19,12 @@
  *   frame.upright() -> boolean    the turn card is up: the round waits behind it
  *   frame.ready() -> Promise      the fonts are in, the phone is on its side, and the first tap (if one is needed) is made
  *   frame.now -> { ff, scale, w, h, sideW }
+ *   setLook(kit)                  the kit's colours and sizes (look.vars) as the style sheet's variables, on any page
  */
+export function setLook(kit, root = document.documentElement) {
+  for (const [name, value] of Object.entries(kit.look.vars)) root.style.setProperty(`--${name}`, value);
+}
+
 /**
  * Where an element sits inside a box, in that box's own CSS px. On a tablet or folding phone the side panel is zoomed (--s):
  * the page's measure of a box is then in zoomed px while scrollTop, clientHeight and the style sheet's sizes are not, so every

@@ -9,7 +9,10 @@
  *   shelf.back(id, from, spoonRef) -> Promise         shelf.wiggle(id)   shelf.glow(id, on)   shelf.dimOthers(id | null)
  *   shelf.pop(id, at)       the thing's word pops over the vessel as it goes in
  *   shelf.boxOf(id) -> { x, y, w, h } in design px (the thing with its pill), for a light
+ *   shelfRefs({ kit, ids }) -> the pictures it draws with, for a scene to name (ids: every thing its row may hold)
  */
+export const shelfRefs = ({ kit, ids }) => [kit.art.band, kit.art.shelf].concat(ids.map((id) => kit.wordArt[id].art));
+
 export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onItem, onPill }) {
   const L = kit.look;
   const ground = stage.layer("worktop", "ground");

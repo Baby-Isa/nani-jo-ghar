@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nani jo Ghar: labs</title>
+<link rel="stylesheet" href="css/kit.css">
+<!--
+  The labs: one page for grown-ups to start a round exactly as wanted, in place of typing the game's link by hand.
+  It only builds the link (index.html?game=&level=&seed=&player=) and, for a new player who knows the words, that
+  player's saved record (js/shared/progress.js); the game itself decides everything else. Its games: data/labs.json.
+-->
+<style>
+  /* a page that scrolls, unlike the game's; its colours and sizes are the kit's (set from data/kit.json as it opens) */
+  html, body { height: auto; min-height: 100%; overflow: auto; user-select: auto; }
+  main { box-sizing: border-box; max-width: 860px; margin: 0 auto; padding: 16px; display: grid; gap: 12px; grid-template-columns: 1fr; }
+  header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  h1 { margin: 0; font: 600 24px/1.2 var(--font-word); color: var(--kutchi); }
+  header p, .as { margin: 0; color: var(--grey); font-size: 15px; }
+  .as b { color: var(--ink); }
+  .box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 12px; display: grid; gap: 10px; align-content: start; }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .row > b { width: 52px; flex: none; }
+  .seg { display: flex; flex-wrap: wrap; gap: 6px; }
+  .seg button, .seed input, .seed button {
+    box-sizing: border-box; min-width: var(--tap); min-height: var(--tap); padding: 0 14px; border-radius: 12px;
+    border: 1px solid var(--card-border); background: var(--item-bg); color: var(--ink); font: inherit; font-size: 17px; font-weight: 600; line-height: 1;
+  }
+  .seg button[aria-pressed="true"], .seed button[aria-pressed="true"] { background: var(--kutchi); border-color: var(--kutchi); color: #fff; }
+  .seed { display: flex; gap: 6px; flex: 1; min-width: 0; }
+  .seed input { flex: 1; min-width: 0; width: 120px; font-weight: 500; user-select: text; }
+  .seed input::placeholder { color: var(--grey); }
+  .switch { display: flex; align-items: center; gap: 12px; min-height: var(--tap); cursor: pointer; }
+  .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .switch i { flex: none; width: 52px; height: 30px; border-radius: 15px; background: var(--dash); position: relative; transition: background 160ms; }
+  .switch i::after { content: ""; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: var(--card-shadow); transition: transform 160ms; }
+  .switch input:checked + i { background: var(--gold); }
+  .switch input:checked + i::after { transform: translateX(22px); }
+  .switch input:focus-visible + i { outline: 3px solid var(--kutchi); outline-offset: 2px; }
+  .switch input:disabled ~ * { opacity: 0.45; }
+  .switch:has(input:disabled) { cursor: default; }
+  .switch span { display: grid; gap: 2px; }
+  .switch small { color: var(--grey); font-size: 14px; line-height: 1.3; }
+  .go { min-height: 56px; border: 0; border-radius: 14px; background: var(--speaker-bg); color: #fff; font: inherit; font-size: 20px; font-weight: 700; line-height: 1; }
+  .link { margin: 0; font: 13px/1.3 ui-monospace, monospace; color: var(--grey); overflow-wrap: anywhere; user-select: text; }
+  /* side by side wherever there is the width, so a phone on its side sees it all at once */
+  @media (min-width: 640px) {
+    main { grid-template-columns: 1fr 1fr; }
+    header { grid-column: 1 / -1; }
+  }
+  @media (max-height: 420px) {
+    main { padding: 8px 16px; gap: 8px; }
+    .box { padding: 8px 12px; gap: 6px; }
+    .switch small { font-size: 13px; }
+    .go { min-height: var(--tap); }
+  }
+</style>
+</head>
+<body>
+<main hidden>
+  <header><h1>Labs</h1><p>For grown-ups: start any game, at any level, as anyone.</p></header>
+  <section class="box">
+    <div class="row"><b>Game</b><div class="seg" id="games"></div></div>
+    <div class="row"><b>Level</b><div class="seg" id="levels"></div></div>
+    <div class="row"><b>Seed</b><div class="seed"><input id="seed" type="text" inputmode="numeric" autocomplete="off" placeholder="random" aria-label="Seed"><button id="random" type="button">Random</button></div></div>
+    <p class="as" id="as" role="status"></p>
+  </section>
+  <section class="box">
+    <label class="switch"><input type="checkbox" id="fresh"><i aria-hidden="true"></i><span><b>New player</b><small>A fresh player each time: every first-time light, lesson and greeting shows. Off: the child's own player.</small></span></label>
+    <label class="switch"><input type="checkbox" id="known"><i aria-hidden="true"></i><span><b>Words known</b><small>With New player: the fresh player already knows the game's words, so the help for them is off.</small></span></label>
+    <button class="go" id="go" type="button">Play</button>
+    <p class="link" id="link"></p>
+  </section>
+</main>
+<script type="module">
+  import { setLook } from "./js/shared/frame.js";
+  import { levelsOf } from "./js/shared/round.js";
+  import { loadProgress, knowing, storeProgress, progressKey, OWN_PLAYER } from "./js/shared/progress.js";
+  import { loadJSON as json } from "./js/core/env.js";
+
+  // the start of every player this page makes, so it can find its own again and clear the last one
+  const LAB_PLAYER = "lab-";
+  const [labs, kit] = await Promise.all([json("data/labs.json"), json("data/kit.json")]);
+  setLook(kit);
+  const levels = [...Array(levelsOf(kit)).keys()].map((i) => i + 1);
+
+  // this page's last choices, for this grown-up only (a private window simply starts afresh)
+  const MINE = "njg-labs";
+  const remembered = (() => {
+    try {
+      return JSON.parse(localStorage.getItem(MINE)) || {};
+    } catch (e) {
+      return {};
+    }
+  })();
+  const pick = { game: labs.games[0].id, level: 1, seed: "", fresh: true, known: false, ...remembered };
+  if (!labs.games.some((g) => g.id === pick.game)) pick.game = labs.games[0].id;
+  if (!levels.includes(pick.level)) pick.level = 1;
+
+  const $ = (id) => document.getElementById(id);
+  function segment(el, list, choose, label) {
+    for (const v of list) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = label(v);
+      b.addEventListener("click", () => (choose(v), show()));
+      el.appendChild(b);
+    }
+  }
+  segment($("games"), labs.games, (g) => (pick.game = g.id), (g) => g.name);
+  segment($("levels"), levels, (n) => (pick.level = n), String);
+  // only digits are kept, where they are typed; anything else is simply not taken
+  $("seed").addEventListener("input", (e) => {
+    const box = e.target;
+    const digits = box.value.replace(/\D/g, "");
+    if (digits !== box.value) {
+      const at = Math.max(0, (box.selectionStart || 0) - (box.value.length - digits.length));
+      box.value = digits;
+      box.setSelectionRange(at, at);
+    }
+    pick.seed = digits;
+    show();
+  });
+  $("random").addEventListener("click", () => ((pick.seed = ""), ($("seed").value = ""), show()));
+  $("fresh").addEventListener("change", (e) => ((pick.fresh = e.target.checked), show()));
+  $("known").addEventListener("change", (e) => ((pick.known = e.target.checked), show()));
+
+  // a real child's record is never made up: the words are known only for a new player
+  const knownNow = () => pick.fresh && pick.known;
+  /** The game's link for these choices; a seed left empty is drawn by the game, a new one each round. */
+  const linkFor = (player) => `index.html?${new URLSearchParams({ game: pick.game, level: pick.level, ...(pick.seed ? { seed: pick.seed } : {}), ...(player !== OWN_PLAYER ? { player } : {}) })}`;
+
+  function show() {
+    [...$("games").children].forEach((b, i) => b.setAttribute("aria-pressed", String(labs.games[i].id === pick.game)));
+    [...$("levels").children].forEach((b, i) => b.setAttribute("aria-pressed", String(levels[i] === pick.level)));
+    $("random").setAttribute("aria-pressed", String(!pick.seed));
+    $("fresh").checked = pick.fresh;
+    $("known").disabled = !pick.fresh;
+    $("known").checked = knownNow();
+    $("as").innerHTML = `Playing as: <b>${pick.fresh ? (knownNow() ? "a new player who knows the words" : "a new player") : "the child's own player"}</b>`;
+    $("link").textContent = decodeURIComponent(linkFor(pick.fresh ? `${LAB_PLAYER}(new)` : OWN_PLAYER));
+    try {
+      localStorage.setItem(MINE, JSON.stringify(pick));
+    } catch (e) {
+      /* remembered for this visit only */
+    }
+  }
+  $("seed").value = pick.seed;
+  show();
+  document.querySelector("main").hidden = false;
+
+  $("go").addEventListener("click", async () => {
+    let player = OWN_PLAYER;
+    if (pick.fresh) {
+      // one new player at a time: the last one's record goes as the next is made
+      try {
+        Object.keys(localStorage).filter((k) => k.startsWith(progressKey(LAB_PLAYER))).forEach((k) => localStorage.removeItem(k));
+      } catch (e) {
+        /* nothing kept to clear */
+      }
+      player = `${LAB_PLAYER}${Date.now().toString(36)}`;
+      if (pick.known) storeProgress(knowing(loadProgress(player), await json(`data/games/${pick.game}.json`), kit.ladder));
+    }
+    location.href = linkFor(player);
+  });
+</script>
+</body>
+</html>

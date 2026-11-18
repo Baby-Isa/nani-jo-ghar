@@ -28,7 +28,7 @@ export function kitchenScenes({ game, settings, kitchen, kit, views = () => null
 /** The same list with a screen: the kit's cards and sounds are made once for the round and shared by its scenes. */
 export async function scenesWithViews(parts) {
   const { game, settings, kitchen, kit, stage, say, people, round } = parts;
-  const [{ createNaniBox }, { createCards }, { createSounds }, { showWrongOrder }, { orderView }, conv, { cookView }, { createLight }, { createCog }, { greetingView }, { wordMomentView }] = await Promise.all([
+  const [{ createNaniBox }, { createCards }, { createSounds }, { showWrongOrder }, { orderView }, conv, { cookView }, { createLight }, { createCog }, { greetingView }, { wordMomentView }, { pourMoment }] = await Promise.all([
     import("../shared/kit/nani-box.js"),
     import("../shared/kit/order-card.js"),
     import("../shared/kit/sounds.js"),
@@ -40,6 +40,7 @@ export async function scenesWithViews(parts) {
     import("../shared/kit/cog.js"),
     import("../shared/scenes/greeting.view.js"),
     import("../shared/scenes/word-moment.view.js"),
+    import("./pour-moment.js"),
   ]);
   const A = settings.art;
   const G = game.rules;
@@ -56,7 +57,7 @@ export async function scenesWithViews(parts) {
   // a view may look at the state only while its own scene is the one being played
   const peekFor = (id) => () => (parts.tree().scene === id ? parts.tree().state : null);
   const make = {
-    "word-moment": (v) => wordMomentView({ ...v, wordCardArt: (word) => G.wordMomentArt(word, A) }),
+    "word-moment": (v) => wordMomentView({ ...v, words: settings.wordMoment.words, wordCardArt: (word) => G.wordMomentArt(word, A), act: pourMoment({ ...v, kitchen }) }),
     greeting: (v) => greetingView(v),
     order: (v) => orderView(v),
     cook: (v, rules) => cookView({ ...v, ctxOf: rules.ctxOf }),

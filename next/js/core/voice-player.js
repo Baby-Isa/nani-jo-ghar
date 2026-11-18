@@ -110,11 +110,7 @@ export function webAudioPlayer({ settings, synth = null }) {
     const c = current;
     current = null;
     if (c) c.finish(false);
-    try {
-      if (globalThis.speechSynthesis) globalThis.speechSynthesis.cancel();
-    } catch (e) {
-      /* no device voice */
-    }
+    // (a device word stops itself: its line is no longer alive, js/core/voice.js deviceSpeak's due)
   }
 
   /** Held: the sound sleeps and the clip's own clock stands still; let go, both go on from where they were. */

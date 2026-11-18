@@ -5,30 +5,36 @@
 import { createArt } from "./shared/art.js";
 import { createSay } from "./shared/say.js";
 import { createStage } from "./shared/stage.js";
-import { createFrame } from "./shared/frame.js";
+import { createFrame, setLook } from "./shared/frame.js";
 import { createRunner } from "./shared/runner.js";
-import { newRound } from "./shared/round.js";
-import { loadProgress, saveRound } from "./shared/progress.js";
+import { newRound, levelsOf } from "./shared/round.js";
+import { loadProgress, saveRound, OWN_PLAYER } from "./shared/progress.js";
+import { loadJSON as json } from "./core/env.js";
 
 const ask = new URLSearchParams(location.search);
-const json = (path) => fetch(path).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`could not load ${path}`))));
+/** Something broke: said plainly over the page, never a silent stop. */
+function stopped(e) {
+  const box = document.createElement("pre");
+  box.className = "stopped";
+  box.textContent = String(e.message);
+  document.body.appendChild(box);
+}
 
 async function start() {
   const id = ask.get("game");
-  const level = Math.max(1, Math.min(4, Number(ask.get("level")) || 1));
   if (!id || !/^[a-z-]+$/.test(id)) throw new Error("which game? add ?game= to the address");
   const [settings, kit, people, registry] = await Promise.all([json(`data/games/${id}.json`), json("data/kit.json"), json("data/people.json"), json("data/art/registry.json")]);
   const family = settings.family;
   const [familySettings, { game }, familyCode] = await Promise.all([json(`data/${family}.json`), import(`./games/${id}/index.js`), import(`./${family}/index.js`)]);
 
-  const root = document.documentElement;
-  for (const [name, value] of Object.entries(kit.look.vars)) root.style.setProperty(`--${name}`, value);
+  const level = Math.max(1, Math.min(levelsOf(kit), Number(ask.get("level")) || 1));
+  setLook(kit);
   const frame = createFrame({ kit });
 
   const art = createArt(registry, { build: globalThis.NJG_BUILD === "store" ? "store" : "test" });
   const say = await createSay({ voice: kit.voice });
   const stage = await createStage({ art, kit, frame, renderer: ask.get("draw") || "auto" });
-  const progress = loadProgress(ask.get("player") || "child");
+  const progress = loadProgress(ask.get("player") || OWN_PLAYER);
   // upright, the whole round waits where it is behind the turn card (pictures, moves, voice, sounds) and goes on when turned
   stage.onHold((on) => say.hold(on));
   frame.onResize(() => stage.hold(frame.upright()));
@@ -45,6 +51,8 @@ async function start() {
     run = createRunner({
       scenes,
       round,
+      load: (ids) => stage.load(ids),
+      onError: stopped,
       onEnd(ended) {
         saveRound(progress, ended, kit.ladder);
         if (ended.choice === "again") play();
@@ -60,6 +68,6 @@ async function start() {
 }
 
 start().catch((e) => {
-  document.body.insertAdjacentHTML("beforeend", `<pre style="position:fixed;inset:auto 8px 8px 8px;z-index:9999;background:#fff;padding:8px;white-space:pre-wrap">${String(e.message).replace(/</g, "&lt;")}</pre>`);
+  stopped(e);
   throw e;
 });

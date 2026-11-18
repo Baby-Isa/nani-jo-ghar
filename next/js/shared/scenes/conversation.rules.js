@@ -23,6 +23,7 @@ export function wordMomentRules({ settings }) {
       const due = wm.words.every((w) => asked.has(w)) && wm.words.some((w) => (round.ladder[w] || 0) <= wm.newUntilStage);
       return due ? { name: "showing", words: wm.words, id: wm.id } : { name: "done" };
     },
+    first: () => [{ type: "pour" }],
     move,
     leave: (round, s) => (s.id ? { ...round, met: { ...round.met, [s.id]: true } } : round),
   };
@@ -31,7 +32,7 @@ export function wordMomentRules({ settings }) {
 /** Well done: one praise from Nani, once every person's whole card is right. */
 export function wellDoneRules({ kit }) {
   const move = machine({ states: { praising: { said: (s) => ({ state: { ...s, name: "done" } }), time: (s) => ({ state: s }) }, done: {} } });
-  return { states: ["praising", "done"], slots: ["praise"], start: () => ({ name: "praising", line: kit.lines.wellDone }), move };
+  return { states: ["praising", "done"], slots: ["praise"], start: () => ({ name: "praising", line: kit.lines.wellDone }), first: (round, s) => [{ type: "praise", line: s.line }], move };
 }
 
 /** The serve: each dish goes to its asker, then each person thanks and says goodbye. */

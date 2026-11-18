@@ -2,7 +2,7 @@
 
 Where two sources disagree the engine never chooses silently: it uses the higher-ranked source (Mum and Zafar over a game's data over the class handout; for status, the more cautious one), keeps the other as an **open question on the entry**, and lists it here. Rebuilt by `node build/lang/import_all.mjs`. Each row says what the engine uses now and what we recommend; answer "yes to all except …".
 
-## 1. Spelling, gender and form: two sources say different things (13)
+## 1. Spelling, gender and form: two sources say different things (17)
 
 1. **right (side)** (`a.right`): the spelling or the word. The engine uses "jamni" (hand: grammar-notes prose); the other source says "jamno" (data/clinic/lang.json).
 2. **use** (`v.use`): the spelling or the word. The engine uses "wapur" (hand: grammar-notes prose); the other source says "wapar" (lexicon.md §6).
@@ -14,12 +14,16 @@ Where two sources disagree the engine never chooses silently: it uses the higher
 8. **potato** (`n.potato`): the spelling or the word. The engine uses "bataato" (data/cook.json; data/content.json); the other source says "bateto" (grammar-notes §34 P1 (Whisper's hearing)).
 9. **tomato** (`n.tomato`): the spelling or the word. The engine uses "tameto" (data/cook.json; data/content.json); the other source says "tumata" (grammar-notes §34 P3 (Whisper's hearing)).
 
-### Already settled by a rule or a decision (4)
+### Already settled by a rule or a decision (8)
 
 10. **one** (`num.1`): the spelling or the word. The engine uses "hakro" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "hikdo" (data/content.json). **Settled:** the handout's hikdo for 'one' is superseded: the family says hakro / hakri by gender (grammar-notes §2; rule G5 (docs/archive/process/rules-2026-10-13.md § 8); docs/language/lexicon.md stale points).
 11. **two** (`num.2`): the spelling or the word. The engine uses "ba" (4a seed (grammar-notes, cited per entry); data/cook.json); the other source says "bo" (data/content.json). **Settled:** the handout's bo for 'two' is superseded: the family says ba (voiced ber) (grammar-notes §3, §35; rule G5; docs/language/lexicon.md stale points).
-12. **salt** (`n.salt`): the spelling or the word. The engine uses "mitho" (hand: grammar-notes prose); the other source says "loon" (data/content.json). **Settled:** Mum says mitho for salt (a he-word); the content master's and the handout's loon was never said by Mum (grammar-notes §64 (12 Nov 23:36-23:48); Zafar 13 Nov, decision 22).
-13. **black pepper** (`n.black-pepper`): the spelling or the word. The engine uses "miryo" (hand: grammar-notes prose); the other source says "mari" (data/content.json). **Settled:** Mum says miryo for black pepper (a she-word, no singular); the handout's mari was never said by Mum (grammar-notes §64 (12 Nov 31:00-31:28); Zafar 13 Nov, decision 22).
+12. **hello back (and peace be upon you)** (`phrase.hello-back-and-peace-be-upon-you`): the spelling or the word. The engine uses "alaikum salaam" (hand: grammar-notes prose); the other source says "wa alaikum salaam" (data/cook.json; data/content.json). **Settled:** wa alaikum salaam respelled alaikum salaam: the reply is Alaikum salaam, no Wa, as Mum said it on her take (alaikum-salaam); the games' data and the handout had Wa (grammar-notes §30 K2; Zafar 18 Nov 2026).
+13. **hello back (and peace be upon you)** (`phrase.hello-back-and-peace-be-upon-you`): the form. The engine uses "alaikum salaam" (hand: grammar-notes prose); the other source says "wa alaikum salaam" (data/cook.json; data/content.json). **Settled:** wa alaikum salaam respelled alaikum salaam: the reply is Alaikum salaam, no Wa, as Mum said it on her take (alaikum-salaam); the games' data and the handout had Wa (grammar-notes §30 K2; Zafar 18 Nov 2026).
+14. **goodbye (khuda hafiz)** (`phrase.goodbye-khuda-hafiz`): the spelling or the word. The engine uses "khuda hafiz" (hand: grammar-notes prose); the other source says "khuda-fis" (data/cook.json). **Settled:** khuda-fis respelled khuda hafiz: the goodbye is spelled as Mum's recording says it (her take khuda-fis); the same goodbye as the games' khuda-fis (grammar-notes §30 K3; Zafar 18 Nov 2026).
+15. **goodbye (khuda hafiz)** (`phrase.goodbye-khuda-hafiz`): the form. The engine uses "khuda hafiz" (hand: grammar-notes prose); the other source says "khuda-fis" (data/cook.json). **Settled:** khuda-fis respelled khuda hafiz: the goodbye is spelled as Mum's recording says it (her take khuda-fis); the same goodbye as the games' khuda-fis (grammar-notes §30 K3; Zafar 18 Nov 2026).
+16. **salt** (`n.salt`): the spelling or the word. The engine uses "mitho" (hand: grammar-notes prose); the other source says "loon" (data/content.json). **Settled:** Mum says mitho for salt (a he-word); the content master's and the handout's loon was never said by Mum (grammar-notes §64 (12 Nov 23:36-23:48); Zafar 13 Nov, decision 22).
+17. **black pepper** (`n.black-pepper`): the spelling or the word. The engine uses "miryo" (hand: grammar-notes prose); the other source says "mari" (data/content.json). **Settled:** Mum says miryo for black pepper (a she-word, no singular); the handout's mari was never said by Mum (grammar-notes §64 (12 Nov 31:00-31:28); Zafar 13 Nov, decision 22).
 
 ## 2. Two words for one thing (6)
 
@@ -32,7 +36,7 @@ The family, or two of our sources, give more than one word for the same thing. W
 5. **pot** (`n.pot`): Two words for the same thing (tapelo / sufuria): which one does the game use?
 6. **pot** (`n.pot-2`): Two words for the same thing (tapelo / sufuria): which one does the game use?
 
-## 3. Status only: one source says confirmed, another draft (11)
+## 3. Status only: one source says confirmed, another draft (12)
 
 The more cautious status is used (a draft shows flagged until Zafar ticks it). These are mostly a game's draft flag that has not caught up with a later answer from Mum, or the reverse.
 
@@ -43,10 +47,11 @@ The more cautious status is used (a draft shows flagged until Zafar ticks it). T
 5. **half (of an amount: adh cup)** (`a.adh`): the engine uses draft (data/clinic/heal/hic.json); the other source says confirmed (hand: grammar-notes prose; data/cook.json).
 6. **put (down), place; keep** (`v.put`): the engine uses confirmed (hand: grammar-notes prose); the other source says draft (lexicon.md §6). **Settled:** rakh itself is confirmed by Mum's own sentences (thori war rakh, dhyan rakh, saani je agiya rakh); the warning in lexicon §6.1 is about rakhi chad, which stays a draft on its own form (grammar-notes §16, §25 B16, §27 B49, §38 I18).
 7. **skewer (a stick)** (`n.skewer`): the engine uses confirmed (hand: grammar-notes prose; lexicon.md §6); the other source says draft (data/cook.json). **Settled:** lakri is Mum's own word (hakri lakri, char lakri, mishkaki ji lakri); data/cook.json's draft flag is about using it with gos, boga and mixed, which is a draft on the Unit rule, not on the word (grammar-notes §25, §34 P8, §39 I28).
-8. **do you know who I am?** (`phrase.do-you-know-who-i-am`): the engine uses draft (hand: grammar-notes prose); the other source says confirmed (data/cook.json).
-9. **you're welcome (it's no trouble at all)** (`phrase.youre-welcome-its-no-trouble-at-all`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
-10. **will you help me cook?** (`phrase.will-you-help-me-cook`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
-11. **mmm, lovely chai! well done, dear.** (`phrase.mmm-lovely-chai-well-done-dear`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
+8. **hello back (and peace be upon you)** (`phrase.hello-back-and-peace-be-upon-you`): the engine uses confirmed (hand: grammar-notes prose); the other source says draft (data/cook.json). **Settled:** wa alaikum salaam respelled alaikum salaam: the reply is Alaikum salaam, no Wa, as Mum said it on her take (alaikum-salaam); the games' data and the handout had Wa (grammar-notes §30 K2; Zafar 18 Nov 2026).
+9. **do you know who I am?** (`phrase.do-you-know-who-i-am`): the engine uses draft (hand: grammar-notes prose); the other source says confirmed (data/cook.json).
+10. **you're welcome (it's no trouble at all)** (`phrase.youre-welcome-its-no-trouble-at-all`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
+11. **will you help me cook?** (`phrase.will-you-help-me-cook`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
+12. **mmm, lovely chai! well done, dear.** (`phrase.mmm-lovely-chai-well-done-dear`): the engine uses draft (hand: grammar-notes prose; data/cook.json); the other source says confirmed (data/cook.json).
 
 ## 4. The game's data and a decision or an answer disagree
 
@@ -60,7 +65,7 @@ The more cautious status is used (a draft shows flagged until Zafar ticks it). T
 | Right (side) | The clinic says jamno; Mum has said only jamni (with baju, a she-word); jamno is the he-form by the pattern, not heard. | Ask Mum for jamno (Round 5 C-series left/right). |
 | Yes | The clinic spells yes haa; Mum's A8.1 is ha (re-transcribed haa). | Zafar to check the spelling against the clip. |
 | Thank you | Cook and the clinic still say Aabhar aanjo (class handout); the family says the English 'thank you' (Zafar 26 Sept, rule G6). | Follow the rule: replace it in step 4d / 4e. |
-| Goodbye | Cook and the clinic still say Achija (class handout); Zafar's decision is khuda-fis (26 Sept, G6). | Follow the rule. |
+| Goodbye | Cook and the clinic still say Achija (class handout); Zafar's decision is Khuda hafiz (26 Sept, G6; spelled as Mum's recording, Zafar 18 Nov). | Follow the rule. |
 | Hedo / Ghan | Hedo ('Hey!'/'Here!') and Ghan ('Here you are') are class-handout words never confirmed by Mum (G21). | Ask Mum, or drop them. |
 | The sugar sentence | Mum said Muke chai me ba khun khapeti (a she-singular ending on a count of two); the rule for plural counts gives khapanta. | Ask Mum (Round 5 L34, L9). |
 | Aau theek ai | Mum says ai (not aiya) after aau when she says 'I'm fine'; elsewhere 'I am' is aiya. | Ask Mum whether it is a fixed phrase. |
@@ -73,30 +78,29 @@ The more cautious status is used (a draft shows flagged until Zafar ticks it). T
 
 Cook's own flag on a line against the status the engine finds from its words and rule (the engine marks a line draft when any word, form or rule in it is a draft).
 
-1. Cook line `greet-reply` ("Wa alaikum salaam!"): Cook does not flag it draft; the engine says draft (wa alaikum salaam) for "Wa alaikum salaam!".
-2. Cook line `bye` ("Achija!"): Cook does not flag it draft; the engine says draft (achija) for "Achija!".
-3. Cook line `oops` ("Arre re!"): Cook does not flag it draft; the engine says draft (arre re) for "Arre re!".
-4. Cook line `hey` ("Hedo!"): Cook does not flag it draft; the engine says draft (hedo) for "Hedo!".
-5. Cook line `here` ("Ghan."): Cook does not flag it draft; the engine says draft (ghan) for "Ghan.".
-6. Cook line `times` ("{x} times"): Cook does not flag it draft; the engine says draft (trae, fare) for "Trae fare".
-7. Cook line `canyou` ("Tu muke {x} banai dinda?"): Cook does not flag it draft; the engine says draft (dinda) for "Tu muke chai banai dinda?".
-8. Cook line `need_waari` ("Muke {x} waari chai khape."): Cook flags it draft; the engine says confirmed for "Muke dudh waari chai khape.".
-9. Cook line `waari` ("{x} waari chai."): Cook flags it draft; the engine says confirmed for "dudh waari chai".
-10. Cook line `sugar` ("Munji chai me {x} khape."): Cook does not flag it draft; the engine says draft (munji, chai, me, khape) for "Munji chai me ba khun khape.".
-11. Cook line `headline-give` ("Give me"): Cook does not flag it draft; the engine says draft (muke, de) for "Muke de.".
-12. Cook line `stillmore` ("Haji thorok wadhare."): Cook does not flag it draft; the engine says draft (thorok, wadhare) for "Haji thorok wadhare.".
-13. Cook line `guide-tea-pan` ("Chai tapele me wij."): Cook does not flag it draft; the engine says draft (tapele) for "Chai tapele me wij.".
-14. Cook line `guide-water-pan` ("Paani tapele me wij."): Cook does not flag it draft; the engine says draft (paani, tapele) for "Paani tapele me wij.".
-15. Cook line `headline-pantry` ("Bring me these for {x}"): Cook does not flag it draft; the engine says draft (hi, muke, chai, lai, khani, achi, de) for "Hi muke chai lai khani achi de.".
-16. Cook line `headline-give` ("Bring me these"): Cook does not flag it draft; the engine says draft (muke, de) for "Muke de.".
-17. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
-18. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
-19. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-20. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
-21. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
-22. Cook line `guide.chai-tray:water` ("Put water in the pan"): Cook does not flag it draft; the engine says draft (paani, tapele) for "Paani tapele me wij.".
-23. Cook line `guide.chai-tray:tea` ("Put the chai in the pan"): Cook does not flag it draft; the engine says draft (tapele) for "Chai tapele me wij.".
-24. Cook line `guide.chai-tray:pour-again` ("Fill it up all the way"): Cook does not flag it draft; the engine says draft (akho burichad) for "Akho burichad.".
+1. Cook line `bye` ("Achija!"): Cook does not flag it draft; the engine says draft (achija) for "Achija!".
+2. Cook line `oops` ("Arre re!"): Cook does not flag it draft; the engine says draft (arre re) for "Arre re!".
+3. Cook line `hey` ("Hedo!"): Cook does not flag it draft; the engine says draft (hedo) for "Hedo!".
+4. Cook line `here` ("Ghan."): Cook does not flag it draft; the engine says draft (ghan) for "Ghan.".
+5. Cook line `times` ("{x} times"): Cook does not flag it draft; the engine says draft (trae, fare) for "Trae fare".
+6. Cook line `canyou` ("Tu muke {x} banai dinda?"): Cook does not flag it draft; the engine says draft (dinda) for "Tu muke chai banai dinda?".
+7. Cook line `need_waari` ("Muke {x} waari chai khape."): Cook flags it draft; the engine says confirmed for "Muke dudh waari chai khape.".
+8. Cook line `waari` ("{x} waari chai."): Cook flags it draft; the engine says confirmed for "dudh waari chai".
+9. Cook line `sugar` ("Munji chai me {x} khape."): Cook does not flag it draft; the engine says draft (munji, chai, me, khape) for "Munji chai me ba khun khape.".
+10. Cook line `headline-give` ("Give me"): Cook does not flag it draft; the engine says draft (muke, de) for "Muke de.".
+11. Cook line `stillmore` ("Haji thorok wadhare."): Cook does not flag it draft; the engine says draft (thorok, wadhare) for "Haji thorok wadhare.".
+12. Cook line `guide-tea-pan` ("Chai tapele me wij."): Cook does not flag it draft; the engine says draft (tapele) for "Chai tapele me wij.".
+13. Cook line `guide-water-pan` ("Paani tapele me wij."): Cook does not flag it draft; the engine says draft (paani, tapele) for "Paani tapele me wij.".
+14. Cook line `headline-pantry` ("Bring me these for {x}"): Cook does not flag it draft; the engine says draft (hi, muke, chai, lai, khani, achi, de) for "Hi muke chai lai khani achi de.".
+15. Cook line `headline-give` ("Bring me these"): Cook does not flag it draft; the engine says draft (muke, de) for "Muke de.".
+16. Cook line `guide.knead` ("Press the dough"): Cook does not flag it draft; the engine says draft (atto, gund) for "Atto gund!".
+17. Cook line `guide.chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+18. Cook line `guide.fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+19. Cook line `guide.samosa:fry` ("Fry them, then lift them out"): Cook does not flag it draft; the engine says draft (tar) for "Tar!".
+20. Cook line `guide.daar:chop` ("Chop what they said"): Cook does not flag it draft; the engine says draft (nindha, nindha, kap) for "Nindha nindha kap!".
+21. Cook line `guide.chai-tray:water` ("Put water in the pan"): Cook does not flag it draft; the engine says draft (paani, tapele) for "Paani tapele me wij.".
+22. Cook line `guide.chai-tray:tea` ("Put the chai in the pan"): Cook does not flag it draft; the engine says draft (tapele) for "Chai tapele me wij.".
+23. Cook line `guide.chai-tray:pour-again` ("Fill it up all the way"): Cook does not flag it draft; the engine says draft (akho burichad) for "Akho burichad.".
 
 ## 6. Recordings that are not linked to any entry
 
@@ -109,9 +113,8 @@ Every other recording in `data/family-audio.json` is linked in `clips.json`. The
 - `ambo-je-mathe`: *ambo je mathe* (on the mango). Mum first said ambo je mathe (C13), then ambe je mathe without hesitating (C31, C41): the he-word in -o takes -e before a postposition (decision 30 b). Source: grammar-notes §36 C13, §41, §49. Recommendation: Follow the -e rule; this take is the hesitation.
 - `bakro-sathe`: *bakro sathe* (with the billy goat). Mum said bakro sathe, 'not bakre sathe' (C17), but later bakre jo kan (C58) and the -e rule for he-words in -o. Source: grammar-notes §36 C17, §48 C58. Recommendation: Ask Mum again (Round 5 C17): the engine says bakre sathe for now.
 
-### The recording and a game spell the word differently (Zafar to listen) (7)
+### The recording and a game spell the word differently (Zafar to listen) (6)
 
-- `khuda-fis`: *Khuda hafiz!* (goodbye). The recording is transcribed Khuda hafiz; the game and Zafar spell it khuda-fis. Source: grammar-notes §30 K3, Zafar 26 Sept. Recommendation: Keep khuda-fis; link the clip by hand once Zafar has ticked it.
 - `trae-bateta`: *trae bateta* (three potatoes). As bateto: Whisper's bateta against Cook's bataata. Source: grammar-notes §34 P1. Recommendation: As bateto.
 - `trae-bateta-b`: *trae bateta* (three potatoes). As bateto: Whisper's bateta against Cook's bataata. Source: grammar-notes §34 P1. Recommendation: As bateto.
 - `bateto`: *bateto* (potato (one)). Whisper hears bateto; Cook spells the potato bataato for Zafar to check. Source: grammar-notes §34 P1. Recommendation: Zafar to listen and choose the spelling; the engine keeps bataato.

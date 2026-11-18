@@ -1,15 +1,15 @@
 /*
  * Where the cook scene's light goes. An action is lit only the first time this player meets it; after that Nani's
- * voice alone, and the same light comes back only as stuck help. This file turns a step into the box to light; the
- * light itself is the kit's. The first thing a person asked for is never lit on the shelf (that would be the
- * answer): its card in their order is lit instead.
+ * voice alone, and the same light comes back only as stuck help. When it comes is the cook rules' (the step's moment);
+ * this file turns a step into the box to light, and the light itself is the kit's. The first thing a person asked for
+ * is never lit on the shelf (that would be the answer): its card in their order is lit instead, briefly.
  *
- *   const lights = cookLights({ stage, kit, kitchen, ui, drawn })     drawn: () => { shelf, hob, serving, plan }
- *   lights.first(step, key)      a first-time light for this step, after the kitchen has been still a moment
+ *   const lights = cookLights({ stage, kitchen, ui, drawn, itemRow })     drawn: () => { shelf, hob, serving, plan }
+ *   lights.first(step, key)      the first-time light for this step, now (a card's moment comes once the order list has stopped)
  *   lights.help(step)            the stuck light: soft, with the thing's glow
  *   lights.clear()
  */
-export function cookLights({ stage, kit, kitchen, ui, drawn, itemRow }) {
+export function cookLights({ stage, kitchen, ui, drawn, itemRow }) {
   const L = kitchen.lights;
   let token = 0;
   let glowing = null;
@@ -33,21 +33,20 @@ export function cookLights({ stage, kit, kitchen, ui, drawn, itemRow }) {
   };
 
   return {
-    async first(step, key) {
+    first(step, key) {
       const mine = ++token;
       const card = key === "card";
-      // a control's light comes a breath after the last movement ends; a timed one comes at once
-      const wait = card ? L.cardAfterMs : step.kind === "knob" && step.line === "turn-down" ? 0 : step.kind === "use" ? 0 : step.kind === "choose" ? L.nextAfterMs : L.controlAfterMs;
-      if (wait) await stage.wait(wait);
-      if (mine !== token || !drawn()) return;
-      const box = boxFor(step, card ? "card" : "thing");
+      const where = card ? "card" : "thing";
+      const box = boxFor(step, where);
       if (!box) return;
-      ui.light.show(() => boxFor(step, card ? "card" : "thing"), { hard: step.kind === "use" && !card, margin: box.margin });
+      ui.light.show(() => boxFor(step, where), { hard: step.kind === "use" && !card, margin: box.margin });
       if (step.kind === "use" && !card) {
         glowing = step.item;
         drawn().shelf.glow(step.item, true);
       }
       ui.sounds.play("pop", { volume: L.popVolume });
+      // the card is only pointed at, so the eye knows where to look: a brief light, then it goes
+      if (card) stage.wait(L.cardLitMs).then(() => mine === token && ui.light.hide());
     },
     help(step) {
       token += 1;

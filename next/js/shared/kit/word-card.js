@@ -4,7 +4,10 @@
  * picture blurred behind an eye; one tap shows either for a moment (a peek, which never counts against the child).
  * The first time a child meets a card with a hidden part, a short lesson lights each part in turn for a tap.
  *
- *   wordCardHtml({ file, line, pic, english, blurred }) -> the card's inside
+ *   wordCardHtml({ file, line, pic, english, blurred, kit, rule = true }) -> the card's inside: its picture, its words,
+ *       the divider over its speaker (rule) and the speaker
+ *   wireSpeaker(card, { say, line }) -> sayIt()  a tap on its speaker says the word, the speaker lit while it is said; a
+ *       tap while it is said starts it again (never queued behind itself); sayIt says it as a tap would
  *   wirePeeks(card, { kit, onPeek })            onPeek("english" | "picture")
  *   revealLesson(card, { kit, light, sounds }) -> Promise      resolves when every part has been tapped open
  */
@@ -13,14 +16,33 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const EYE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const dots = (n) => "<i></i>".repeat(n);
 
-export function wordCardHtml({ file, line, pic, english, blurred, kit }) {
+export function wordCardHtml({ file, line, pic, english, blurred, kit, rule = true }) {
   const K = kit.cards;
   const letters = String(line.en || "").replace(/\s/g, "").length;
   const nEn = Math.max(K.dotsMin, Math.min(K.dotsMax, letters - 1));
   const nKu = Math.max(K.dotsMin, Math.min(K.dotsMax, line.text.replace(/\s/g, "").length - 1));
   return `<div class="well${blurred ? " blur" : ""}"><img src="${file(pic)}" alt=""><button class="eye" aria-label="Look">${EYE}</button></div>
     <div class="ku"><span class="w">${esc(line.text)}</span><span class="kdots">${dots(nKu)}</span></div>
-    <div class="en${english ? "" : " dots"}"><span class="w">${esc(line.en)}</span><button class="d" aria-label="Show">${dots(nEn)}</button></div>`;
+    <div class="en${english ? "" : " dots"}"><span class="w">${esc(line.en)}</span><button class="d" aria-label="Show">${dots(nEn)}</button></div>${rule ? `<div class="rule"></div>` : ""}<button class="speaker" aria-label="Say it"></button>`;
+}
+
+export function wireSpeaker(card, { say, line }) {
+  const spk = card.querySelector(".speaker");
+  let turn = 0;
+  let saying = false;
+  const sayIt = async () => {
+    const mine = ++turn;
+    spk.classList.add("on");
+    // (its own word again replaces itself; anything else said now is not cut short, the word waits its turn)
+    const done = say.speak(line, { queue: !saying });
+    saying = true;
+    await done;
+    if (mine !== turn) return;
+    saying = false;
+    spk.classList.remove("on");
+  };
+  spk.addEventListener("click", (ev) => (ev.stopPropagation(), sayIt()));
+  return sayIt;
 }
 
 /** One tap opens a hidden part in its own place for a moment; then it hides again. */

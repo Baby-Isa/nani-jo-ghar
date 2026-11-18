@@ -2,9 +2,9 @@
 
 Every word in bold or italic in `grammar-notes.md`, `lexicon.md` and the 5 Oct report that is not a form of some entry. Re-run `node build/lang/import_all.mjs` after adding Mum's next answers to the notes and the hand files: a word she gave that nobody loaded shows up under **to review**. Words are grouped by why they are not loaded (never a silent skip).
 
-## To review (89)
+## To review (91)
 
-aakho, aanjo, airo, ardho, areti, ay, ayn, ayo, badhu, baro, batate, bawis, bhai, bukhlagi, chodo, chowis, corrections, dh, dhirjanti, dhirjo, ekwis, ganu, ghadi, hai, hajar, hana, hin, ichai, iche, ichein, igyaro, iloka, j, jeera, jeero, jerte, kara, kauta, kayanta, khaber, khapenta, khapeta, lage, lakh, lokai, lugeti, lumi, mari, miryu, muhammad, mujhe, mukhe, mut, mwiko, nain, naryo, nevu, ogni, order, pachis, pandro, penti, randhi, samoso, satro, satyavis, so, soro, sudhe, sufuri, taano, tero, thak, thando, thirji, thoro, tre, tukhi, tukhirais, tukhiray, tukirais, tundi, vinnan, warati, wate, wikal, winanji, yaareti, zafar
+aakho, aanjo, airo, ardho, areti, ay, ayn, ayo, badhu, baro, batate, bawis, bhai, bukhlagi, chodo, chowis, corrections, dh, dhirjanti, dhirjo, ekwis, fis, ganu, ghadi, hai, hajar, hana, hin, ichai, iche, ichein, igyaro, iloka, j, jeera, jeero, jerte, kara, kauta, kayanta, khaber, khapenta, khapeta, lage, lakh, lokai, lugeti, lumi, mari, miryu, muhammad, mujhe, mukhe, mut, mwiko, nain, naryo, nevu, ogni, order, pachis, pandro, penti, randhi, samoso, satro, satyavis, so, soro, sudhe, sufuri, taano, tero, thak, thando, thirji, thoro, tre, tukhi, tukhirais, tukhiray, tukirais, tundi, vinnan, wa, warati, wate, wikal, winanji, yaareti, zafar
 
 ## a spelling variant of an entry, kept as an open question or a clash row (data/lang/reports/clash-list.md) (7)
 
@@ -18,9 +18,9 @@ a, an, and, answered, are, be, boiling, burning, can, clear, colour, confirmed, 
 
 aastethi, aki, ako, arse, barr, ber, bernstein, channa, chindo, daal, dee, ghos, hikdo, jal, khand, narr, nindh, oar, teh, thandu, udd, vadhi, vadho, vatana, wudd
 
-## a word Mum or Zafar discussed and did not give as Kutchi (kept as an open question on the entry it belongs to) (17)
+## a word Mum or Zafar discussed and did not give as Kutchi (kept as an open question on the entry it belongs to) (16)
 
-bakriyu, dikra, gin, ginje, gutanyu, hafiz, jado, jamno, kale, kat, koso, loka, maa, maanu, moro, thadhu, wadi
+bakriyu, dikra, gin, ginje, gutanyu, jado, jamno, kale, kat, koso, loka, maa, maanu, moro, thadhu, wadi
 
 ## a stand-in or a phrase part named in the notes, not a word of its own (9)
 

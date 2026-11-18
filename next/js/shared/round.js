@@ -4,6 +4,7 @@
  * Everything here is pure: chance comes from the round's seed, so the same seed gives the same round.
  *
  *   chanceFrom(holder) -> () => number in [0, 1)        holder: { seed, drawn }; each draw moves `drawn` on
+ *   levelsOf(kit) -> how many levels there are       atLevel(list, level) -> a level's entry
  *   newRound({ game, settings, people, level, seed, player, ladder, met, today, best, earned, card }) -> round      today: the day, as text (a greeting is due on the day's first meeting)
  *       settings.order: who orders and what each can ask for, by level (the game's settings file)
  *       people: the family, by id (data/people.json)
@@ -20,6 +21,9 @@ export function chanceFrom(holder) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+/** How many levels there are: the kit's one count (check step 1 holds every by-level list to it). */
+export const levelsOf = (kit) => kit.levels.count;
 
 /** A level's entry in a by-level list: the last entry stands for every later level. */
 export const atLevel = (list, level) => (Array.isArray(list) && list.length ? list[Math.min(level, list.length) - 1] : undefined);

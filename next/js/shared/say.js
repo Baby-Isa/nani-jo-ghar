@@ -3,33 +3,49 @@
  * for here as a meaning and comes back as a line; nothing else in the game imports the engine or types a Kutchi word.
  * A line the engine cannot build comes back with its English placeholder (shown grey italic) and is logged as a gap.
  *
- *   const say = await createSay({ voice?, player?, path?, phrases?, child? })
+ *   const say = await createSay({ voice?, player?, path?, child? })
  *       voice: data/kit.json `voice`; in a page with sound, the family's clips play through the Web Audio player with it
  *   say.line(meaning, { register?, voice?, elder?, row? }) -> Line
- *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word? }], plan, gaps, key, meaning }
+ *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word?, guess? }], plan, gaps, key, meaning }
+ *       guess: the word's form is a guess (a defaulted gender), so no recording of a longer stretch may say it
  *       row: true gives the line as a card's row: lower case, no final mark
  *   say.word(id, cell?) -> Line (one word)        say.entry(id) -> { kutchi, english, gender, status } | null
- *   say.speak(line, { queue?, ifIdle?, key?, ttl?, onPiece?, onHeard? }) -> Promise<{ done }>     never holds up a tap
+ *   say.speak(line, { queue?, ifIdle?, onPiece?, onHeard? }) -> Promise<{ done }>     never holds up a tap
  *       onPiece: a piece is next; onHeard: a piece is really heard (its clip started, or the device voice began)
  *   say.stop()      say.busy()      say.gaps() -> every gap met so far      say.path
  *   say.hold(on)    the voice pauses where it is (the round held behind the turn card) and goes on from there
  *   say.warm(meaning)   a line's clips fetched and decoded now, for a line said later
+ *   norm(text)   a recording's text as it is matched (for the checks, which read the recordings list themselves)
  */
 import { loadEngine } from "../core/lang/index.js";
-import { createVoice, voicePath, deviceSpeak } from "../core/voice.js";
+import { createVoice, deviceSpeak } from "../core/voice.js";
+import { voicePath } from "../core/voice-clips.js";
+
+export { norm } from "../core/voice-clips.js";
 import { webAudioPlayer } from "../core/voice-player.js";
 
 /** A word's English for a card: the gloss without its note in brackets. */
 const englishOf = (entry) => String(entry.gloss || "").replace(/\s*\(.*?\)/g, "").trim();
 
-const CHANNEL = "round"; // one queue for every line of a round: one voice at a time
-
-export async function createSay({ voice: settings = null, player = null, path = null, phrases = null, child = {}, load = null } = {}) {
-  const engine = await loadEngine({ path, phrases, load });
+export async function createSay({ voice: settings = null, player = null, path = null, child = {}, load = null } = {}) {
+  const engine = await loadEngine({ path, load });
   const thePath = path || voicePath();
   const sound = typeof globalThis.AudioContext !== "undefined" || typeof globalThis.webkitAudioContext !== "undefined";
-  const P = player || (settings && sound ? webAudioPlayer({ settings, synth: (text, o) => deviceSpeak(text, o) }) : null);
-  const voice = createVoice({ index: null, player: P, path: thePath, phrases });
+  const P = player || (settings && sound ? webAudioPlayer({ settings, synth: (text, o) => deviceSpeak(text, { ...o, times: settings.device }) }) : null);
+  // the pause between two words stands still while the round is held, as the voice itself does
+  let held = false;
+  const holding = new Set();
+  const wait = (ms) =>
+    new Promise((done) => {
+      let left = ms;
+      let t0 = 0;
+      let timer = 0;
+      const go = () => ((t0 = Date.now()), (timer = setTimeout(() => (holding.delete(on), done()), left)));
+      const on = (h) => (h ? (clearTimeout(timer), (left -= Date.now() - t0)) : go());
+      holding.add(on);
+      if (!held) go();
+    });
+  const voice = createVoice({ player: P, path: thePath, gapMs: (settings && settings.wordGapMs) || 0, wait });
   const met = new Map(); // gap key -> gap
 
   const note = (gaps) => gaps.forEach((g) => met.has(g.key || g.what) || met.set(g.key || g.what, g));
@@ -56,6 +72,10 @@ export async function createSay({ voice: settings = null, player = null, path = 
       });
       text = pieces.map((p) => p.t).join("");
     }
+    // each word piece, in order, marked where its form is a guess
+    const guessed = result.tokens.filter((tk) => !tk.punct).map((tk) => !!tk.defaulted);
+    let w = 0;
+    pieces = pieces.map((p) => (p.kind && guessed[w++] ? { ...p, guess: true } : p));
     const plan = result.clipPlan.map((c) => {
       if (c.file || c.lang === "e") return c;
       const tk = result.tokens[c.tokens[0]];
@@ -84,15 +104,20 @@ export async function createSay({ voice: settings = null, player = null, path = 
       if (!e) return null;
       return { id: e.id, kutchi: engine.word(id).text, english: englishOf(e), gender: e.gender || null, status: e.status };
     },
-    speak(line, { queue = true, ifIdle = false, key = null, ttl = null, onPiece = null, onHeard = null } = {}) {
-      return voice.say({ clipPlan: line.plan }, { channel: CHANNEL, queue, ifIdle, key, ttl, onWord: onPiece ? (tokens, item) => onPiece(item) : undefined, onStart: onHeard ? (tokens, item) => onHeard(item) : undefined });
+    speak(line, { queue = true, ifIdle = false, onPiece = null, onHeard = null } = {}) {
+      return voice.say({ clipPlan: line.plan }, { queue, ifIdle, onWord: onPiece ? (tokens, item) => onPiece(item) : undefined, onStart: onHeard ? (tokens, item) => onHeard(item) : undefined });
     },
-    stop: () => voice.stop(CHANNEL),
-    hold: (on) => P && P.hold && P.hold(on),
+    stop: () => voice.stop(),
+    hold(on) {
+      if (held === !!on) return;
+      held = !!on;
+      holding.forEach((f) => f(held));
+      if (P && P.hold) P.hold(held);
+    },
     warm(meaning, opts = {}) {
       if (meaning) lineOf(engine.say(meaning, contextOf(opts)), meaning, opts);
     },
-    busy: () => voice.busy(CHANNEL),
+    busy: () => voice.busy(),
     gaps: () => [...met.values()],
   };
 }

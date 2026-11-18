@@ -4,11 +4,11 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
 
 ## Lexicon
 
-1257 entries (171 are fixed expressions made of other words).
+1256 entries (171 are fixed expressions made of other words).
 
 | By part of speech | Entries |
 |---|---|
-| Phrase | 568 |
+| Phrase | 567 |
 | N | 444 |
 | V | 67 |
 | A | 55 |
@@ -28,14 +28,14 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
 | By status | Entries |
 |---|---|
 | to-record | 656 |
-| confirmed | 431 |
-| draft | 170 |
+| confirmed | 432 |
+| draft | 168 |
 
 | By source (an entry can cite several) | Citations |
 |---|---|
-| grammar-notes | 573 |
+| grammar-notes | 571 |
 | data/clinic* | 482 |
-| other | 248 |
+| other | 250 |
 | parked modes | 166 |
 | data/cook.json | 126 |
 | lexicon.md §6 | 69 |
@@ -49,7 +49,7 @@ Built by `node build/lang/import_all.mjs`. The data check: 0 errors, 1 warnings.
 
 ## Recordings
 
-568 distinct recordings in data/family-audio.json (546 with a file). 742 rows in clips.json: 186 word forms, 291 fixed phrases, 265 sentences the rules build. 63 recordings are not linked (clash list § 6).
+568 distinct recordings in data/family-audio.json (546 with a file). 745 rows in clips.json: 186 word forms, 294 fixed phrases, 265 sentences the rules build. 62 recordings are not linked (clash list § 6).
 
 ## Games
 

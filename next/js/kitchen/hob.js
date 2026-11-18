@@ -5,8 +5,14 @@
  *   const hob = createHob({ stage, kitchen, plan, people, onKnob, onFace })
  *   hob.fire(v, "off" | "high" | "low")      hob.ring(v, heat | null, k)      hob.wiggleKnob(v)
  *   hob.steam(v, on)      hob.puffs(v)      hob.chosen(v | null)      hob.stepBack()      hob.knobBox(v) / hob.vesselBox(v)
+ *   hobRefs({ kitchen, steamArt, people }) -> { draw, then }: the pictures it draws with, and the steam it shows later
  */
 const hex = (c) => parseInt(c.slice(1), 16);
+
+export const hobRefs = ({ kitchen, steamArt, people }) => {
+  const A = kitchen.art;
+  return { draw: [A.hob[people.length - 1], A.knobOff, A.knobOn, A.flameHigh, A.flameLow].concat(people.map((p) => p.face)), then: steamArt };
+};
 
 export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFace }) {
   const k = kitchen.layout;

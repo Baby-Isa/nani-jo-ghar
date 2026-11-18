@@ -12,7 +12,7 @@
  * question to settle it; a clip row whose recording doesn't exist or doesn't say the form it is indexed for.
  */
 import { createLinearizer } from "./linearize.js";
-import { norm } from "../../voice.js";
+import { norm } from "../../voice-clips.js";
 
 export function validate(data, { audio = null } = {}) {
   const errors = [];

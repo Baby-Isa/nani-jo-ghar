@@ -14,13 +14,16 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, seat, che
   const copy = s.el.cloneNode(true);
   copy.classList.remove("folded", "served");
   copy.querySelector(".ocard-body").style.height = "auto";
-  copy.querySelectorAll(".icard").forEach((c) => c.classList.remove("done", "cross", "waiting"));
+  // its cards in the order asked, each said in turn
+  const row = copy.querySelector(".orow");
+  row.replaceChildren(...cards.askedOf(seat).map((c) => c.cloneNode(true)));
+  const els = [...row.children];
+  els.forEach((c) => c.classList.remove("done", "cross", "waiting"));
   veil.appendChild(copy);
   stage.el.over.appendChild(veil);
   sounds.play("oops");
   await say.speak(say.line(kit.lines.oho));
   await say.speak(s.head);
-  const els = [...copy.querySelectorAll(".icard")];
   for (const [n, it] of s.person.items.entries()) {
     const right = check.byRow[it.id] !== false;
     els[n].classList.add(right ? "done" : "cross");

@@ -4,12 +4,13 @@
  * quieter, a short tick quieter still, and anything else is dropped. Nothing sounds before the child's first tap.
  *
  *   const sounds = createSounds({ kit, say, stage })     (stage: so the sounds wait while the round is held)
- *   sounds.ready(names)     sounds.play(name, { under?, volume? })     sounds.loop(name, on)
+ *   sounds.ready(names) -> Promise (in)     sounds.play(name, { under?, volume? })     sounds.loop(name, on)
  *   sounds.simmer(heat, k, bubbleAt)    the boil's loop: louder as the hottest vessel heats (-1: none heating)
  */
 // One sound for the page, whatever the number of rounds: a browser allows only a few, and each round's own would pile up.
 let ctx = null;
 const buffers = new Map();
+const loading = new Map(); // file -> its fetch, so one asked for twice is fetched once
 let held = false;
 const wake = () => {
   if (!ctx) {
@@ -37,16 +38,20 @@ export function createSounds({ kit, say, stage }) {
   const loops = new Map();
   followHold(stage);
 
-  async function fetchBuffer(name) {
+  /** A file fetched and decoded once; resolves when it is in (or has failed: it is tried again the next time). */
+  function fetchBuffer(name) {
     const f = S.files[name];
-    if (!ctx || !f || buffers.has(f.file)) return;
-    buffers.set(f.file, null);
-    try {
-      const data = await (await fetch(f.file)).arrayBuffer();
-      buffers.set(f.file, await ctx.decodeAudioData(data));
-    } catch (e) {
-      buffers.delete(f.file);
-    }
+    if (!ctx || !f) return Promise.resolve();
+    if (!loading.has(f.file))
+      loading.set(
+        f.file,
+        fetch(f.file)
+          .then((r) => r.arrayBuffer())
+          .then((data) => ctx.decodeAudioData(data))
+          .then((buf) => buffers.set(f.file, buf))
+          .catch(() => loading.delete(f.file))
+      );
+    return loading.get(f.file);
   }
 
   /** How loud a sound may be right now: full when nobody is speaking; under a voice only the child's own sounds and ticks. */
@@ -120,7 +125,7 @@ export function createSounds({ kit, say, stage }) {
   return {
     ready(names) {
       wake();
-      names.forEach(fetchBuffer);
+      return Promise.all(names.map(fetchBuffer));
     },
     play(name, { under = false, volume = 1 } = {}) {
       if (!ctx || ctx.state !== "running") return;

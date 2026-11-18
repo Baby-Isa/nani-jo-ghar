@@ -4,13 +4,14 @@
  * serving spot, Nani's box, order cards, sounds) and this family's hob; it owns none of them and decides nothing.
  */
 import { atLevel } from "../shared/round.js";
-import { createShelf } from "../shared/kit/shelf.js";
-import { createServing } from "../shared/kit/serving.js";
-import { createHob } from "./hob.js";
+import { createShelf, shelfRefs } from "../shared/kit/shelf.js";
+import { createServing, servingRefs } from "../shared/kit/serving.js";
+import { createHob, hobRefs } from "./hob.js";
 import { layoutOf, rowOf } from "./layout.js";
 import { bubbleAt } from "./heat.rules.js";
 import { carry } from "./carry.js";
 import { cookLights } from "./cook.lights.js";
+import { rowMayHold } from "./cook.rules.js";
 import { createCountPills } from "./count-pills.js";
 
 const fill = (meaning, item) => JSON.parse(JSON.stringify(meaning).replace(/\$item/g, item));
@@ -25,9 +26,9 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   let chain = Promise.resolve(); // the big moves, one after another
   let offTick = null;
   let offResize = null;
-  let lights = null;
   let level = 1;
   const pills = createCountPills({ stage, say, kit, kitchen, onTap: (item) => send({ type: "count", item }) });
+  const lights = cookLights({ stage, kitchen, ui, drawn: () => D, itemRow: (v, item) => itemRow(v, item) });
   const heatK = () => ({ ...kitchen.heat, ...atLevel(settings.heat.byLevel, level) });
 
   const lookOf = (s, v) => {
@@ -41,6 +42,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
    * { one, many } follows how many people ordered ("his or her glass" for one, "their glass" for more).
    */
   function lineFor(step) {
+    if (step && step.kind === "choose") return lineFor(step.then);
     if (!step || !step.line) return null;
     if (step.line === "use") return say.line((settings.lines.use && settings.lines.use[step.item]) || fill(kitchen.lines.use, step.item));
     const m = settings.lines[step.line] || kitchen.lines[step.line];
@@ -58,20 +60,17 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     pills.show({ plan: D.plan, v: s.chosen, list: G.counts(s.vessels[s.chosen].dish), asWords: atLevel(kit.levels.countAsWords, level) });
   }
 
-  function onStep(s, first = null) {
+  /** A step opens: Nani's line shows (a pick shows what comes then); its light and call come at its moment (open). */
+  function onStep(s) {
     const step = s.step;
     const line = lineFor(step);
     ui.nani.helper(null);
     lights.clear();
-    if (step && first) lights.first(step, first);
-    if (!step) return; // her line stays until the next step opens: the box is never empty between steps
-    if (step.kind === "wait" || !line) return;
-    // a control's line is said as its step opens; a thing's line waits for the helper card
-    ui.nani.line(line, { speak: step.kind !== "use", arrow: step.kind === "use" });
+    if (!step || step.kind === "wait" || !line) return; // her line stays until the next step opens: never an empty box
+    ui.nani.line(line, { arrow: step.kind === "use" });
     D.shelf.dimOthers(step.kind === "use" && settings.row.always.includes(step.item) ? step.item : null);
-    if (step.kind === "use") ui.cards.glide(step.vessel, itemRow(s, step.vessel, step.item));
   }
-  const itemRow = (s, v, item) => (ui.round.order.for[v].items.find((i) => i.word === item && !i.no) || {}).id;
+  const itemRow = (v, item) => (ui.round.order.for[v].items.find((i) => i.word === item && !i.no) || {}).id;
 
   function helperCard(step) {
     const e = say.entry(step.item);
@@ -159,7 +158,12 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       say.speak(ui.cards.headOf(e.vessel));
     },
     step(e, s) {
-      onStep(s, e.first || null);
+      onStep(s);
+    },
+    // the step's moment: its first-time light and Nani's call, together
+    open(e) {
+      if (e.first) lights.first(e.step, e.first);
+      if (e.step.spoken) ui.nani.speak();
     },
     help(e, s) {
       const step = s.step;
@@ -244,18 +248,27 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   };
 
   return {
-    async enter(state, round) {
+    /**
+     * This round's pictures, as each piece names its own: what the kitchen is drawn with, so it opens as soon as those are
+     * in, and then what its moves bring in, loading while the child starts (a move whose picture is still coming waits for it).
+     */
+    pictures(round) {
+      const who = round.order.for.map((p) => people[p.who]);
+      const own = G.artList(A, round.order.for.map((p) => p.asks));
+      // (the row's decoys are drawn only as the scene starts, so any thing it may hold may be one)
+      const ids = rowMayHold(settings, kit, round.level);
+      const hob = hobRefs({ kitchen, steamArt: kit.art.steam, people: who });
+      const spot = servingRefs({ kit, art: settings.serving.art, people: who });
+      return { draw: [kitchen.art.worktop].concat(hob.draw, shelfRefs({ kit, ids }), spot.draw, own.draw), then: hob.then.concat(spot.then, own.then) };
+    },
+    enter(state, round) {
       level = round.level;
       const n = state.vessels.length;
       const row = state.row;
-      const refs = [kitchen.art.worktop, kitchen.art.hob[n - 1], kitchen.art.knobOff, kitchen.art.knobOn, kitchen.art.flameHigh, kitchen.art.flameLow, kit.art.band, kit.art.shelf, kit.art.drop]
-        .concat(kit.art.twinkles, kit.art.steam, G.artList(A), Object.values(settings.serving.art))
-        .concat(row.flat().map((id) => kit.wordArt[id].art), state.vessels.flatMap((x) => [people[x.who].face, people[x.who].faceHappy, people[x.who].faceSad].filter(Boolean)));
       // every line Nani can say in this scene, its clips decoded now rather than as each step opens
       for (const k of Object.keys(kitchen.lines).concat(Object.keys(settings.lines))) if (k !== "use" && !k.startsWith("_")) lineFor({ line: k });
       row.flat().forEach((item) => lineFor({ line: "use", item }));
       say.warm(kit.lines.notYet);
-      await stage.load(refs);
       stage.clear("worktop");
       stage.show("worktop");
       const view = { s: stage.scaleOf("worktop"), top: stage.topOf("worktop"), left: 0, right: stage.sheet.w };
@@ -294,14 +307,13 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       });
       D = { plan, hob, shelf, serving, vessels };
       ui.serving = serving;
-      lights = cookLights({ stage, kit, kitchen, ui, drawn: () => D, itemRow: (v, item) => itemRow(null, v, item) });
       hob.chosen(state.chosen);
       ui.cards.landAll();
       ui.cards.seats.forEach((x, i) => ui.cards.show(i));
       ui.cards.seats.forEach((x, i) => ui.cards.open(i));
       ui.cards.focus(state.chosen);
       ui.sounds.ready(settings.sounds.ready);
-      onStep(state, state.firstNow);
+      onStep(state);
       ui.nani.onArrow(() => {
         const s = peek();
         if (!s || !s.step || s.step.kind !== "use") return;
@@ -318,7 +330,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       // every frame: the ring and the pan follow the heat
       offTick = stage.onTick(() => {
         const s = peek();
-        if (!s || !s.vessels || !D) return;
+        if (!s || !s.vessels) return;
         const k = heatK();
         let hottest = -1;
         s.vessels.forEach((x, v) => {

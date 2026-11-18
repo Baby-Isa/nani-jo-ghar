@@ -3,7 +3,8 @@
  * One kitchen for the order, the serve and the thanks. A scene holds up to three people, each able to be handed a
  * thing, called or thanked. The counter's front hides everything below its edge, so people lean on it.
  *
- *   const room = await createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift, speech? })
+ *   roomRefs({ roomArt, people, standing, nani? }) -> the pictures a room needs: its scene names them, to be loaded first
+ *   const room = createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift, speech? })
  *       speech: the kind of bubble its scene shows ("greet", the tallest, or "line"), for the strip kept above the heads
  *   room.walkIn() -> Promise      room.walkOff() -> Promise      room.talk(seat, on)      room.mood(seat, "happy" | "neutral")
  *   room.bubble(seat, html | null)      room.head(seat) -> the head's box on the page      room.figureAt(seat) -> { x, top }
@@ -16,11 +17,12 @@
 /** Who stands where, and how the room is framed: a scene that finds the same room already standing keeps it. */
 export const roomKey = (standing, lift, nani = false) => JSON.stringify([standing.map((p) => [p.id, p.spot]), lift, nani]);
 
-export async function createRoom({ stage, kit, roomArt, people, standing, lift, walk = true, nani = false, speech = "greet" }) {
+/** The room's pictures: the painting and every pose of each person standing in it (Nani too, when she stands in). */
+export const roomRefs = ({ roomArt, people, standing, nani = false }) =>
+  [roomArt].concat((nani ? [{ id: "nani" }].concat(standing) : standing).flatMap((p) => Object.values(people[p.id].figure).filter((v) => typeof v === "string")));
+
+export function createRoom({ stage, kit, roomArt, people, standing, lift, walk = true, nani = false, speech = "greet" }) {
   const R = kit.room;
-  const all = nani ? [{ id: "nani" }].concat(standing) : standing;
-  const refs = [roomArt].concat(all.flatMap((p) => Object.values(people[p.id].figure).filter((v) => typeof v === "string")));
-  await stage.load(refs);
   stage.clear("room");
   stage.show("room", { lift });
   const back = stage.layer("room", "back");

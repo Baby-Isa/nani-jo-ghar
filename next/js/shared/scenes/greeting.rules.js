@@ -6,7 +6,7 @@
  *
  *   greetingRules({ settings, kit }) -> { start, move, leave }
  *   moves: answer {choice} | hear {what} | skip | time {ms}
- *   events: answered | wrong-answer {light} | modelled | hear
+ *   events: ask (as the scene opens) | answered | wrong-answer {light} | modelled | hear
  */
 import { machine } from "../machine.js";
 
@@ -41,6 +41,8 @@ export function greetingRules({ settings, kit }) {
       // the very first greeting a child meets shows the right answer lit from the start
       return { name: "asking", who: round.people[0].id, line: g.line, options, right: g.right, wrongs: 0, idle: 0, lit: !round.met.greeted };
     },
+    // the person asks as the scene opens, and from then on the child's wait is counted
+    first: () => [{ type: "ask" }],
     move,
     leave: (round, s) => (s.who ? { ...round, met: { ...round.met, greeted: true, greetedOn: round.today || null } } : round),
   };

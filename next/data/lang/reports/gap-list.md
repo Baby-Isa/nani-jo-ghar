@@ -8,15 +8,15 @@ The minimum for step 4c (decision 38 c). **No frequency ranking and no simulator
 | Words with no Kutchi yet (English placeholders in the game today) | 26 | 253 |
 | A form of a word we know is missing (plural, 'with the …') | 0 | 1 |
 | Is it a he-word or a she-word? (the engine used the he-form, Mum's rule, and flags it) | 5 | 5 |
-| We know the word but have no recording of it | 95 | 35 |
+| We know the word but have no recording of it | 90 | 32 |
 
-Lines and words checked: Cook 248, clinic 395. A recording counts here if any take exists; 39 more words have a take that is not yet heard by Zafar in `lab/family-audio.html` (every clip is approved for the game and plays now; a store build needs every clip re-recorded and marked final: Zafar, 12 Nov).
+Lines and words checked: Cook 248, clinic 395. A recording counts here if any take exists; 40 more words have a take that is not yet heard by Zafar in `lab/family-audio.html` (every clip is approved for the game and plays now; a store build needs every clip re-recorded and marked final: Zafar, 12 Nov).
 
 Gaps are listed once, however many lines need them: closing a word closes it everywhere. The words and lines that exist only in the parked modes (dress, who, snap, tidy, find, monsoon, relations) are in the lexicon as to-record entries and are not repeated here.
 
 ## Cook
 
-128 things to ask or record, from the lines and words the game uses today.
+123 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (2)
 
@@ -93,7 +93,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 5. One mixed, two mixed. (Or: "I'd like some mixed, please", said politely.) Ask: new.
    - Needed by: Cook word "mixed" (ph-mixed); Cook word "mixed" (ph-mixed), more than one.
 
-### We know the word but have no recording of it (95)
+### We know the word but have no recording of it (90)
 
 1. Please record: "paani"
    - Needed by: Cook word "water" (cook-paani).
@@ -155,140 +155,130 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: Cook word "barbecue" (ph-sekelo).
 30. Please record: "sekela"
    - Needed by: Cook word "barbecue" (ph-sekelo), more than one.
-31. Please record: "ne poi"
-   - Needed by: Cook word "and then" (lnk-nepoi); cook line "And then {x}." (cook.line.then), with cook-maani; cook line "And then {x}." (cook.line.then), with veg-01.
-32. Please record: "wadho"
+31. Please record: "wadho"
    - Needed by: Cook word "big" (ph-big).
-33. Please record: "pela"
+32. Please record: "pela"
    - Needed by: Cook word "first" (lnk-pela); cook line "First {x}." (cook.line.first), with cook-daal.
-34. Please record: "Ma"
+33. Please record: "Ma"
    - Needed by: Cook word "Ma (mother)" (kin-ma).
-35. Please record: "murgi"
+34. Please record: "murgi"
    - Needed by: Cook word "chicken" (n.chicken).
-36. Please record: "murgi"
+35. Please record: "murgi"
    - Needed by: Cook word "chicken" (n.chicken), more than one.
-37. Please record: "salamun alaykum"
-   - Needed by: cook line "Peace be upon you!" (cook.line.greet).
-38. Please record: "wa alaikum salaam"
-   - Needed by: cook line "And peace be upon you too!" (cook.line.greet-reply).
-39. Please record: "achija"
+36. Please record: "achija"
    - Needed by: cook line "Bye!" (cook.line.bye).
-40. Please record: "arre re"
+37. Please record: "arre re"
    - Needed by: cook line "Oh dear!" (cook.line.oops).
-41. Please record: "hedo"
+38. Please record: "hedo"
    - Needed by: cook line "Hey!" (cook.line.hey).
-42. Please record: "ghan"
+39. Please record: "ghan"
    - Needed by: cook line "Here you are." (cook.line.here).
-43. Please record: "muke"
+40. Please record: "muke"
    - Needed by: cook line "I need {x}." (cook.line.need), with cook-chai (informal); cook line "I need {x}." (cook.line.need), with cook-chai (polite); cook line "I need {x}." (cook.line.need), with cook-maani (informal) … (22 lines).
-44. Please record: "khape"
+41. Please record: "khape"
    - Needed by: cook line "I need {x}." (cook.line.need), with cook-chai (informal); cook line "I need {x}." (cook.line.need), with cook-maani (informal); cook line "I need {x}." (cook.line.need), with cook-dudh (informal) … (8 lines).
-45. Please record: "khapeto"
+42. Please record: "khapeto"
    - Needed by: cook line "I need {x}." (cook.line.need), with cook-dudh (polite); cook line "I need {x}." (cook.line.need), with cook-khun (polite).
-46. Please record: "khapanta"
+43. Please record: "khapanta"
    - Needed by: cook line "I need {x}." (cook.line.need), with 2 ph-samosa (polite).
-47. Please record: "ne"
+44. Please record: "ne"
    - Needed by: cook line "And {x}." (cook.line.and), with cook-dudh; cook line "And {x}." (cook.line.and), with cook-maani.
-48. Please record: "de"
+45. Please record: "de"
    - Needed by: cook line "Give me {x}." (cook.line.give), with cook-khun; cook line "Give me {x}." (cook.line.give), with cook-maani; cook line "Leave the {x}." (cook.line.leave), with cook-maani … (7 lines).
-49. Please record: "fare"
+46. Please record: "fare"
    - Needed by: cook line "{x} times" (cook.line.times).
-50. Please record: "tu"
+47. Please record: "tu"
    - Needed by: cook line "How are you?" (cook.line.howareyou); cook line "Can you make me {x}?" (cook.line.canyou), with cook-chai; cook line "Can you make me {x}?" (cook.line.canyou), with cook-daal.
-51. Please record: "ki"
+48. Please record: "ki"
    - Needed by: cook line "How are you?" (cook.line.howareyou).
-52. Please record: "aiye"
+49. Please record: "aiye"
    - Needed by: cook line "How are you?" (cook.line.howareyou).
-53. Please record: "aau"
+50. Please record: "aau"
    - Needed by: cook line "I'm fine, thank you." (cook.line.fine).
-54. Please record: "theek"
+51. Please record: "theek"
    - Needed by: cook line "I'm fine, thank you." (cook.line.fine).
-55. Please record: "ai"
+52. Please record: "ai"
    - Needed by: cook line "I'm fine, thank you." (cook.line.fine); cook line "This is for {x}." (cook.line.forwho), with kin-nana; cook line "It's ready." (cook.line.ready) … (4 lines).
-56. Please record: "banai"
+53. Please record: "banai"
    - Needed by: cook line "Can you make me {x}?" (cook.line.canyou), with cook-chai; cook line "Can you make me {x}?" (cook.line.canyou), with cook-daal.
-57. Please record: "dinda"
+54. Please record: "dinda"
    - Needed by: cook line "Can you make me {x}?" (cook.line.canyou), with cook-chai; cook line "Can you make me {x}?" (cook.line.canyou), with cook-daal.
-58. Please record: "jara e wandho nai"
-   - Needed by: cook line "You're welcome." (cook.line.welcome).
-59. Please record: "mu"
+55. Please record: "mu"
    - Needed by: cook line "Wait for me!" (cook.line.wait).
-60. Please record: "lai"
+56. Please record: "lai"
    - Needed by: cook line "Wait for me!" (cook.line.wait); cook line "This is for {x}." (cook.line.forwho), with kin-nana; cook line "For {x}." (cook.line.for), with kin-nana … (5 lines).
-61. Please record: "khobar"
+57. Please record: "khobar"
    - Needed by: cook line "Wait for me!" (cook.line.wait).
-62. Please record: "munji"
+58. Please record: "munji"
    - Needed by: cook line "In my chai I want {x}." (cook.line.sugar) (informal); cook line "In my chai I want {x}." (cook.line.sugar) (polite).
-63. Please record: "wijij"
+59. Please record: "wijij"
    - Needed by: cook line "In my chai I want {x}." (cook.line.sugar) (polite).
-64. Please record: "kadh"
+60. Please record: "kadh"
    - Needed by: cook line "Lift out the {x}." (cook.line.lift), with cook-maani.
-65. Please record: "chadi"
+61. Please record: "chadi"
    - Needed by: cook line "Leave the {x}." (cook.line.leave), with cook-maani.
-66. Please record: "tayar"
+62. Please record: "tayar"
    - Needed by: cook line "It's ready." (cook.line.ready).
-67. Please record: "thori"
+63. Please record: "thori"
    - Needed by: cook line "Leave it a bit longer." (cook.line.longer).
-68. Please record: "war"
+64. Please record: "war"
    - Needed by: cook line "Leave it a bit longer." (cook.line.longer).
-69. Please record: "rakh"
+65. Please record: "rakh"
    - Needed by: cook line "Leave it a bit longer." (cook.line.longer); cook line "Careful!" (cook.line.careful).
-70. Please record: "dhyan"
+66. Please record: "dhyan"
    - Needed by: cook line "Careful!" (cook.line.careful).
-71. Please record: "chakhan"
+67. Please record: "chakhan"
    - Needed by: cook line "Let me taste it." (cook.line.taste).
-72. Please record: "wiji"
+68. Please record: "wiji"
    - Needed by: cook line "Put it in!" (cook.line.guide-add); cook line "Put it in the pan" (cook.guide.add); cook line "Put it in the pan" (cook.guide.daar:cook).
-73. Please record: "chad"
+69. Please record: "chad"
    - Needed by: cook line "Put it in!" (cook.line.guide-add); cook line "Put it in the pan" (cook.guide.add); cook line "Put it in the pan" (cook.guide.daar:cook).
-74. Please record: "kap"
+70. Please record: "kap"
    - Needed by: cook line "Chop it small!" (cook.line.guide-chop); cook line "Chop what they said" (cook.guide.chop); cook line "Chop what they said" (cook.guide.daar:chop).
-75. Please record: "waar"
+71. Please record: "waar"
    - Needed by: cook line "Fold the samosa!" (cook.line.guide-fold); cook line "Fold the samosa" (cook.guide.fold); cook line "Fold the samosa" (cook.guide.samosa:fold).
-76. Please record: "tar"
+72. Please record: "tar"
    - Needed by: cook line "Fry it!" (cook.line.guide-fry); cook line "Fry them, then lift them out" (cook.guide.fry); cook line "Fry them, then lift them out" (cook.guide.samosa:fry).
-77. Please record: "saro"
+73. Please record: "saro"
    - Needed by: cook line "That's good." (cook.line.good).
-78. Please record: "haji"
+74. Please record: "haji"
    - Needed by: cook line "Still a little more." (cook.line.stillmore).
-79. Please record: "mare"
+75. Please record: "mare"
    - Needed by: cook line "Make everyone's chai." (cook.line.guide-chai-tray); cook line "Make each cup the way they said" (cook.guide.chai-tray).
-80. Please record: "banai"
+76. Please record: "banai"
    - Needed by: cook line "Make everyone's chai." (cook.line.guide-chai-tray); cook line "Make each cup the way they said" (cook.guide.chai-tray).
-81. Please record: "eloka"
+77. Please record: "eloka"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
-82. Please record: "je"
+78. Please record: "je"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
-83. Please record: "glass"
+79. Please record: "glass"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it into their glass" (cook.guide.chai-tray:pour).
-84. Please record: "wij"
+80. Please record: "wij"
    - Needed by: cook line "Put it in their glass." (cook.line.guide-glass); cook line "Pour it up to the line." (cook.line.guide-line); cook line "Put in as many spoons as they want." (cook.line.guide-spoons) … (13 lines).
-85. Please record: "akho burichad"
+81. Please record: "akho burichad"
    - Needed by: cook line "Fill it up all the way." (cook.line.guide-fill-full); cook line "Fill it up all the way" (cook.guide.chai-tray:pour-again).
-86. Please record: "liti"
+82. Please record: "liti"
    - Needed by: cook line "Pour it up to the line." (cook.line.guide-line); cook line "Pour it up to the line" (cook.guide.pour).
-87. Please record: "sudhi"
+83. Please record: "sudhi"
    - Needed by: cook line "Pour it up to the line." (cook.line.guide-line); cook line "Pour it up to the line" (cook.guide.pour).
-88. Please record: "jitli"
+84. Please record: "jitli"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-89. Please record: "inke"
+85. Please record: "inke"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-90. Please record: "itli"
+86. Please record: "itli"
    - Needed by: cook line "Put in as many spoons as they want." (cook.line.guide-spoons); cook line "Put in as many spoons as they said" (cook.guide.count).
-91. Please record: "tapele"
+87. Please record: "tapele"
    - Needed by: cook line "Put the chai in the pan." (cook.line.guide-tea-pan); cook line "Put water in the pan." (cook.line.guide-water-pan); cook line "Put water in the pan" (cook.guide.chai-tray:water) … (4 lines).
-92. Please record: "paani"
+88. Please record: "paani"
    - Needed by: cook line "Put water in the pan." (cook.line.guide-water-pan); cook line "Put water in the pan" (cook.guide.chai-tray:water).
-93. Please record: "e chai erte rand"
-   - Needed by: cook line "Cook it the way they said." (cook.line.guide-the-way).
-94. Please record: "khani"
+89. Please record: "khani"
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-pantry), with cook-chai.
-95. Please record: "achi"
+90. Please record: "achi"
    - Needed by: cook line "Bring me these for {x}" (cook.line.headline-pantry), with cook-chai.
 
 ## The clinic
 
-335 things to ask or record, from the lines and words the game uses today.
+332 things to ask or record, from the lines and words the game uses today.
 
 ### Sentences and frames the engine cannot say yet (41)
 
@@ -902,7 +892,7 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
 5. One medicine, two medicines. (Or: "I'd like some medicine, please", said politely.) Ask: new.
    - Needed by: Clinic word "medicine" (boing-medicine); Clinic word "medicine" (boing-medicine), more than one.
 
-### We know the word but have no recording of it (35)
+### We know the word but have no recording of it (32)
 
 1. Please record: "matho"
    - Needed by: Clinic word "head" (body-head).
@@ -956,23 +946,17 @@ Gaps are listed once, however many lines need them: closing a word closes it eve
    - Needed by: clinic line "What's this?" (clinic.line.cl-whatsthis).
 26. Please record: "pela"
    - Needed by: clinic line "First {x}" (clinic.line.lang.first), with cook-maani; clinic line "First {a}, and then {b}" (clinic.line.pipeline.bring2); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder) … (4 lines).
-27. Please record: "ne poi"
-   - Needed by: clinic line "And then {x}" (clinic.line.lang.then), with cook-maani; clinic line "First {a}, and then {b}" (clinic.line.pipeline.bring2); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder) … (4 lines).
-28. Please record: "ne"
+27. Please record: "ne"
    - Needed by: clinic line "and {x}" (clinic.line.lang.and), with cook-maani.
-29. Please record: "fare"
+28. Please record: "fare"
    - Needed by: clinic line "{x} times" (clinic.line.lang.times).
-30. Please record: "muke thandi peti"
+29. Please record: "muke thandi peti"
    - Needed by: clinic line "I feel cold." (clinic.line.feeling-cold).
-31. Please record: "daar"
+30. Please record: "daar"
    - Needed by: clinic line "First {a}, and then {b}" (clinic.line.pipeline.bring2); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder); clinic line "First {a}, then {b}" (clinic.line.heal-ear-pluck2).
-32. Please record: "salamun alaykum"
-   - Needed by: clinic line "Peace be with you (hello)" (clinic.line.pipeline.salaam).
-33. Please record: "wa alaikum salaam"
-   - Needed by: clinic line "And peace be with you" (clinic.line.pipeline.salaam-back).
-34. Please record: "muke"
+31. Please record: "muke"
    - Needed by: clinic line "I need {a}" (clinic.line.pipeline.need1) (informal); clinic line "I need {a}" (clinic.line.pipeline.need1) (polite); clinic line "I need {a}, and {rest}" (clinic.line.pipeline.needN) (informal) … (5 lines).
-35. Please record: "khape"
+32. Please record: "khape"
    - Needed by: clinic line "I need {a}" (clinic.line.pipeline.need1) (informal); clinic line "I need {a}, and {rest}" (clinic.line.pipeline.needN) (informal); clinic line "I need {a} first, and then {rest}" (clinic.line.pipeline.needOrder).
 
 ## Placeholders in a game's data that the engine can already say
@@ -1099,6 +1083,7 @@ A game file still shows an English placeholder (`kutchi: null`) for something th
 - no OK recording of "firai"
 - no OK recording of "chulo"
 - no OK recording of "bar"
+- no OK recording of "e chai erte rand"
 - no OK recording of "kan"
 - no OK recording of "kan"
 - no OK recording of "garam"

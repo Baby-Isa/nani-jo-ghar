@@ -3,21 +3,21 @@
  * head and its big card pops, then flies whole into its slot on their card. Said before shown: nothing of an order
  * appears until a voice says it. A tap on the kitchen skips the rest; a tap on a face says that card again.
  */
-import { createRoom, roomKey } from "../kit/people.js";
+import { createRoom, roomKey, roomRefs } from "../kit/people.js";
 import { lineHtml } from "../kit/nani-box.js";
 import { atLevel } from "../round.js";
+import { wordStage } from "../progress.js";
 
 export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf }) {
   const O = kit.order;
   let room = null;
   let big = null;
-  let live = true;
+  let live = true; // (a part still being said when the order is skipped, or closed, stops where it is)
   let offTap = null;
   let offResize = null;
   let saying = null; // the part being said now: its bubble's seat and words, to place them again at a new size
   // (the stage's own clock: it stands still while the round is held behind the turn card)
   const wait = (ms) => stage.wait(ms);
-  const stage_of = (id, ladder) => ((ladder[id] || 0) >= kit.ladder.knownFrom ? "known" : (ladder[id] || 0) >= kit.ladder.learningFrom ? "learning" : "new");
 
   /**
    * One part: its bubble and its voice start together; its card pops as the line's first word is really heard (or when the
@@ -54,13 +54,14 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
     let dishCard = null;
     if (e.dishCard) dishCard = ui.cards.pop(e.seat, null, { line: say.line(person.dishCard, { row: true }), pic: picOf("dish", person) });
     const landing = part.lands[0];
-    if (landing && !head) ui.cards.glide(e.seat, landing);
     if (landing) {
       if (head) ui.cards.open(e.seat);
+      // (a headline that names a thing lands it as an item's line does: the place before what lands at the row's left)
+      ui.cards.lead(e.seat, part.lands);
       big = ui.cards.pop(e.seat, landing);
     }
     const word = landing ? person.items.find((i) => i.id === landing).word : person.items[0].word;
-    await Promise.all([wait(kit.words.holdMs[stage_of(word, round.ladder)]), said]);
+    await Promise.all([wait(kit.words.holdMs[wordStage(round.ladder, word, kit.ladder)]), said]);
     room.talk(e.seat, false);
     if (!live) return;
     if (dishCard) dishCard.out();
@@ -92,14 +93,15 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
   }
 
   return {
+    /** The room and every picture its cards will show, all of it before the first card pops. */
+    pictures: (round) => roomRefs({ roomArt, people, standing: round.people }).concat(round.order.for.flatMap((p) => p.items.map((i) => picOf(i, p)).concat(picOf("dish", p), people[p.who].face))),
     async enter(state, round) {
-      live = true;
       ui.cards.seats.forEach((s, i) => (s.el.hidden = true));
       // after a greeting the same people are already at the counter: they stay, and never walk in again (the round is a
       // new object after every scene, so the room is known by who stands in it)
       const lift = atLevel(kit.room.liftByPeople, round.people.length);
       const here = !!ui.room && ui.room.key === roomKey(round.people, lift) && stage.showing() === "room";
-      room = here ? ui.room : await createRoom({ stage, kit, roomArt, people, standing: round.people, lift });
+      room = here ? ui.room : createRoom({ stage, kit, roomArt, people, standing: round.people, lift });
       ui.room = room;
       offResize = stage.onResize(relayout, "room");
       stage.uncover();
@@ -108,18 +110,9 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
         await room.walkIn();
         await wait(O.walkWait - O.walkIn);
       }
-      // skipped while the people were still walking in: nothing of the order is shown after that
-      if (!live) return void (this.pending = null);
-      this.ready = true;
-      if (this.pending) this.on(this.pending, state, round);
-      this.pending = null;
     },
+    // (nothing of the order is said until the room is drawn: a skip while the people walk in ends it before it is heard)
     on(events, state, round) {
-      if (events.some((e) => e.type === "skipped")) {
-        live = false;
-        say.stop();
-      }
-      if (!this.ready) return void (this.pending = (this.pending || []).concat(events));
       for (const e of events) {
         if (e.type === "part") sayPart(e, round);
         else if (e.type === "landed") ui.cards.land(e.seat, e.items);
@@ -134,7 +127,6 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
     probe: () => (room ? room.probe() : []),
     async leave() {
       live = false;
-      this.ready = false;
       if (offTap) offTap();
       if (offResize) offResize();
       saying = null;

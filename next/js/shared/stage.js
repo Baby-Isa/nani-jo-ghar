@@ -7,6 +7,7 @@
  *   "worktop" the play area from above: a 1600 x 900 sheet anchored to the bottom, with more worktop shown above it
  *
  *   const stage = await createStage({ art, kit })
+ *   stage.load(refs) -> Promise          pictures by art id, for the canvas and the page
  *   stage.show(view, { lift })            stage.layer(view, name) -> a layer of that view, in drawing order
  *   stage.halo(ref) -> { key, pad, k }   a soft gold copy of a picture's outline, for stage.image
  *   stage.picture(layer, ref, opts) -> handle      opts: { x, y, w | h | scale | rim, origin, mirror, alpha, angle, depth }
@@ -24,6 +25,7 @@
  * A handle: set(props), to(props, ms, ease) -> Promise, swap(ref), remove(), and `obj` (for the stage and the kit only).
  */
 import { createOutlines } from "./outline.js";
+import { createMadePictures } from "./made-pictures.js";
 
 const DESIGN_W = 1600;
 const DESIGN_H = 900;
@@ -53,7 +55,12 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       scale: { mode: P.Scale.NONE, width: size().w * dpr, height: size().h * dpr, zoom: 1 / dpr },
       render: { antialias: true, roundPixels: false },
       audio: { noAudio: true },
+      // loaded as page images, so a picture the loader has brought in shows at once on a card or in the page too
+      loader: { imageLoadType: "HTMLImageElement" },
       banner: false,
+      // the round's clock is the real time between frames: a smoothed one runs ahead or behind after a slow frame, and every
+      // wait and moment would drift from what the child sees
+      fps: { smoothStep: false },
       scene: {
         create() {
           scene = this;
@@ -63,6 +70,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     });
   });
   const outlines = createOutlines({ scene, art, kit });
+  const made = createMadePictures({ scene, art, kit, outlines, wrap });
   const views = {};
   const ticks = new Set();
   const taps = [];
@@ -119,15 +127,34 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
 
   scene.events.on("update", (time, delta) => ticks.forEach((fn) => fn(Math.min(100, delta))));
 
-  /** Load pictures by art ref; a ref already loaded costs nothing. */
+  /**
+   * Load pictures by art ref, for the canvas and the page alike. What is already in costs nothing and returns at once;
+   * each picture is waited for on its own, so loads asked for side by side never hold each other up. A picture that has
+   * not come within kit.timings.pictureWaitMs is given up on: the scene goes on, and the picture shows as Phaser's stand-in,
+   * as one that failed to load does.
+   */
+  const coming = new Map();
   function load(refs) {
     const need = [...new Set(refs.flatMap((r) => art.frames(r)))].filter((r) => r && !scene.textures.exists(art.key(r)));
     if (!need.length) return Promise.resolve();
-    return new Promise((resolve) => {
-      need.forEach((r) => scene.load.image(art.key(r), art.file(r)));
-      scene.load.once("complete", resolve);
-      scene.load.start();
+    const each = need.map((r) => {
+      const key = art.key(r);
+      if (!coming.has(key)) {
+        const came = new Promise((resolve) => {
+          const done = () => (scene.load.off(`filecomplete-image-${key}`, done), scene.load.off("loaderror", failed), coming.delete(key), resolve());
+          const failed = (file) => file.key === key && done();
+          scene.load.once(`filecomplete-image-${key}`, done);
+          scene.load.on("loaderror", failed);
+          scene.load.image(key, art.file(r));
+        });
+        coming.set(key, came);
+      }
+      return coming.get(key);
     });
+    scene.load.start(); // (while the loader runs, a picture added to it is taken in the same run)
+    let timer = 0;
+    const giveUp = new Promise((resolve) => (timer = setTimeout(resolve, kit.timings.pictureWaitMs)));
+    return Promise.race([Promise.all(each), giveUp]).finally(() => clearTimeout(timer));
   }
 
   const EASE = { in: "Sine.easeIn", out: "Sine.easeOut", inOut: "Sine.easeInOut", back: "Back.easeOut", cubicOut: "Cubic.easeOut", cubicIn: "Cubic.easeIn", cubic: "Cubic.easeInOut", quadIn: "Quad.easeIn", linear: "Linear" };
@@ -139,17 +166,40 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     return new Promise((resolve) => scene.tweens.add({ targets: obj, ...props, duration: ms, ease: EASE[ease] || ease, onComplete: resolve }));
   }
 
-  function wrap(obj, ref, mirror) {
+  const isIn = (ref) => art.frames(ref).every((r) => scene.textures.exists(art.key(r)));
+  /**
+   * A picture's handle. A picture the round has not loaded yet (a later scene's, on a slow line) is hidden until it is in
+   * and then shown at the size it has been given by then, so a move never shows Phaser's stand-in for one still coming.
+   *   size: what its size was given by ("w", "h", or null for a scale), kept when its picture changes
+   */
+  function wrap(obj, ref, mirror, size = null) {
+    const st = { size, shown: true, waiting: false, turn: 0 };
+    /**
+     * Do `apply` once `next` is in: now, or when it comes (a later change wins over one still waiting). Until then a new
+     * picture is hidden, and a changing one keeps showing the picture it had.
+     */
+    function whenIn(next, apply, { hide = false } = {}) {
+      const turn = ++st.turn;
+      if (isIn(next)) return apply();
+      st.waiting = hide;
+      if (hide) obj.setVisible(false);
+      load([next]).then(() => {
+        if (!obj.active || turn !== st.turn) return;
+        st.waiting = false;
+        apply();
+        obj.setVisible(st.shown);
+      });
+    }
     const h = {
       obj,
       ref,
       set(props) {
         for (const [k, v] of Object.entries(props)) {
-          if (k === "w") obj.setScale(v / obj.width);
-          else if (k === "h") obj.setScale(v / obj.height);
+          if (k === "w") (obj.setScale(v / obj.width), (st.size = "w"));
+          else if (k === "h") (obj.setScale(v / obj.height), (st.size = "h"));
           else if (k === "angle") obj.setAngle(v);
           else if (k === "depth") obj.setDepth(v);
-          else if (k === "visible") obj.setVisible(v);
+          else if (k === "visible") (obj.setVisible(v && !st.waiting), (st.shown = v));
           else obj[k] = v;
         }
         return h;
@@ -157,19 +207,27 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       to: (props, ms, ease) => tween(obj, props, ms, ease),
       /** The same thing in another picture, keeping its place and its size on screen. */
       swap(next, { rim = null } = {}) {
-        const shown = obj.displayWidth;
-        const [keepX, keepY] = [obj.originX, obj.originY];
-        obj.setTexture(art.key(next));
-        if (rim) {
-          // placed by its rim: each picture of the set has its own rim centre and radius
-          const [ox, oy] = originOf(art, next, mirror);
-          obj.setOrigin(ox, oy).setScale(rim / rimOf(next));
-        } else obj.setOrigin(keepX, keepY).setScale(shown / obj.width);
         h.ref = next;
+        whenIn(next, () => {
+          const shown = obj.displayWidth;
+          const [keepX, keepY] = [obj.originX, obj.originY];
+          obj.setTexture(art.key(next));
+          if (rim) {
+            // placed by its rim: each picture of the set has its own rim centre and radius
+            const [ox, oy] = originOf(art, next, mirror);
+            obj.setOrigin(ox, oy).setScale(rim / rimOf(next));
+          } else obj.setOrigin(keepX, keepY).setScale(shown / obj.width);
+        });
         return h;
       },
       remove: () => obj.destroy(),
     };
+    // made before its picture came: it takes it as it comes, at the size it has by then (a made picture has no ref)
+    if (ref && !isIn(ref))
+      whenIn(ref, () => {
+        const [w, hh, k] = [obj.displayWidth, obj.displayHeight, obj.scaleX];
+        obj.setTexture(art.key(ref)).setScale(st.size === "w" ? w / obj.width : st.size === "h" ? hh / obj.height : k);
+      }, { hide: true });
     return h;
   }
   /** A picture's rim radius in its own px, from the art list (some pieces give it as a share of the width). */
@@ -192,7 +250,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     if (o.angle) obj.setAngle(o.angle);
     if (o.depth != null) obj.setDepth(o.depth);
     layer.add(obj);
-    return wrap(obj, ref, !!o.mirror);
+    return wrap(obj, ref, !!o.mirror, o.rim ? null : o.w ? "w" : o.h ? "h" : null);
   }
 
   function layer(view, name) {
@@ -253,107 +311,6 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
 
   const wait = (ms) => new Promise((resolve) => scene.time.delayedCall(ms, resolve));
 
-  /** A picture's own outline as a soft halo: tinted copies laid in a ring, so it needs no filter. Returns { key, pad }. */
-  function halo(ref) {
-    const H = kit.look.halo;
-    const key = `halo:${art.key(ref)}`;
-    const src = scene.textures.get(art.key(ref)).getSourceImage();
-    const k = Math.min(1, kit.look.textures.halo / Math.max(src.width, src.height)); // a halo is soft: a small copy is enough
-    const [w, h] = [Math.ceil(src.width * k), Math.ceil(src.height * k)];
-    const pad = Math.ceil(H.spread * kit.look.textures.haloPad);
-    if (scene.textures.exists(key)) return { key, pad, k };
-    const one = document.createElement("canvas");
-    [one.width, one.height] = [w, h];
-    const a = one.getContext("2d");
-    a.drawImage(src, 0, 0, w, h);
-    a.globalCompositeOperation = "source-in";
-    a.fillStyle = H.color;
-    a.fillRect(0, 0, w, h);
-    const cv = scene.textures.createCanvas(key, w + 2 * pad, h + 2 * pad);
-    const c = cv.getContext();
-    c.globalAlpha = H.alpha;
-    for (let i = 0; i < H.copies; i++) {
-      const r = H.spread * H.rings[i % H.rings.length];
-      c.drawImage(one, pad + Math.cos((i * 2 * Math.PI) / H.copies) * r, pad + Math.sin((i * 2 * Math.PI) / H.copies) * r);
-    }
-    c.globalAlpha = 1;
-    cv.refresh();
-    return { key, pad, k };
-  }
-
-  /** A person's face as a round badge: the face cut to a circle on a white disc with a white rim and a hairline. */
-  function badge(ref) {
-    const key = `badge:${art.key(ref)}`;
-    if (scene.textures.exists(key)) return key;
-    const src = scene.textures.get(art.key(ref)).getSourceImage();
-    const d = kit.look.textures.badge;
-    const cv = scene.textures.createCanvas(key, d, d);
-    const c = cv.getContext();
-    const rim = kit.look.badgeRim * d;
-    c.fillStyle = "#fff";
-    c.beginPath();
-    c.arc(d / 2, d / 2, d / 2 - 1, 0, 2 * Math.PI);
-    c.fill();
-    c.save();
-    c.beginPath();
-    c.arc(d / 2, d / 2, d / 2 - rim, 0, 2 * Math.PI);
-    c.clip();
-    c.drawImage(src, rim, rim, d - 2 * rim, d - 2 * rim);
-    c.restore();
-    c.strokeStyle = kit.look.badgeLine;
-    c.lineWidth = kit.look.textures.badgeLine;
-    c.beginPath();
-    c.arc(d / 2, d / 2, d / 2 - 1, 0, 2 * Math.PI);
-    c.stroke();
-    cv.refresh();
-    return key;
-  }
-
-  /** The soft contact shadow every standing thing casts, from one light at the upper left. */
-  function shadowKey() {
-    const key = "kit:shadow";
-    if (scene.textures.exists(key)) return key;
-    const d = kit.look.textures.shadow;
-    const cv = scene.textures.createCanvas(key, d, d);
-    const c = cv.getContext();
-    const g = c.createRadialGradient(d / 2, d / 2, 0, d / 2, d / 2, d / 2);
-    const [r, gg, b] = kit.look.shadowRgb;
-    g.addColorStop(0, `rgba(${r},${gg},${b},${kit.look.shadowMid})`);
-    g.addColorStop(kit.look.textures.shadowMidAt, `rgba(${r},${gg},${b},${kit.look.shadowEdge})`);
-    g.addColorStop(1, `rgba(${r},${gg},${b},0)`);
-    c.fillStyle = g;
-    c.fillRect(0, 0, d, d);
-    cv.refresh();
-    return key;
-  }
-  /**
-   * A flat thing's soft shadow in its own shape (the hob, the serving tray), from the standing things' light: placed as the
-   * picture is, { x, y } its top-left and w its width, moved right and down by look.boxShadow's shares of its shorter side.
-   */
-  function shapeShadow(layerC, ref, { x, y, w }) {
-    const B = kit.look.boxShadow;
-    const { key, pad, w: tw } = outlines.shadowKey(ref);
-    const [pw, ph] = art.size(ref);
-    const k = w / tw;
-    const m = Math.min(w, (w * ph) / pw);
-    const obj = scene.add.image(x - pad * k + B.dx * m, y - pad * k + B.dy * m, key).setOrigin(0, 0).setScale(k);
-    layerC.add(obj);
-    return wrap(obj, null, false);
-  }
-  /** A picture's shape in one colour, placed as the picture is (its top-left, its width): a dimming that follows its edges. */
-  function silhouette(layerC, ref, colour, { x, y, w, alpha = 1 }) {
-    const { key, w: tw } = outlines.shapeKey(ref, colour);
-    const obj = scene.add.image(x, y, key).setOrigin(0, 0).setScale(w / tw).setAlpha(alpha);
-    layerC.add(obj);
-    return wrap(obj, null, false);
-  }
-  /** A shadow under a footprint { x, y, w, h } (its middle and size): a touch right and down, as the light asks. */
-  function shadow(layerC, f) {
-    const obj = scene.add.image(f.x + f.w * kit.look.shadowDx, f.y + f.h * kit.look.shadowDy, shadowKey());
-    obj.setDisplaySize(f.w * kit.look.textures.shadowFit[0], f.h * kit.look.textures.shadowFit[1]);
-    layerC.add(obj);
-    return wrap(obj, null, false);
-  }
   function image(layerC, key, o = {}) {
     const obj = scene.add.image(o.x || 0, o.y || 0, key);
     if (o.w) obj.setScale(o.w / obj.width);
@@ -411,13 +368,13 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     sheet: { w: DESIGN_W, h: DESIGN_H },
     load,
     picture,
-    badge,
+    badge: made.badge,
     solid: (ref) => outlines.solid(ref),
-    shapeShadow,
-    silhouette,
-    shadow,
+    shapeShadow: made.shapeShadow,
+    silhouette: made.silhouette,
+    shadow: made.shadow,
     image,
-    halo,
+    halo: made.halo,
     tiled,
     layer,
     box,

@@ -10,7 +10,13 @@
  *   serving.settle(i)   serving.undim()   serving.drop(i) -> Promise   serving.twinkle(i, big?) -> Promise
  *   serving.review(checks) -> Promise   the big faces: happy with a hop, or sad with a small shake of the head
  *   serving.praise(text) / serving.closeReview() -> Promise     serving.dishBox(i) / serving.dishMiddle(i)
+ *   servingRefs({ kit, art, people }) -> { draw, then }: its dishes and labels, then its drop, twinkles and the review's faces
  */
+export const servingRefs = ({ kit, art, people }) => ({
+  draw: Object.values(art).concat(people.map((p) => p.face)),
+  then: [kit.art.drop].concat(kit.art.twinkles, people.flatMap((p) => [p.faceHappy, p.faceSad].filter(Boolean))),
+});
+
 export function createServing({ stage, kit, spot, people, art, dim, s }) {
   const L = kit.look;
   const shadows = stage.layer("worktop", "shadows");

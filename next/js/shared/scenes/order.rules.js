@@ -13,11 +13,19 @@ import { atLevel } from "../round.js";
 
 const SPEAKERS = ["each", "nani"];
 
-/** The parts one person's order is said in: the headline with the things it names, then each other thing said. */
+/**
+ * The parts one person's order is said in: the headline with the things it names, then each other thing said. A thing
+ * the headline names that ticks only as its dish is served (a measure, half or full) lands with the last part, at the row's
+ * end, so the row only ever moves forward as the order is said (Zafar, 18 Nov).
+ */
 export function partsOf(person) {
   const said = person.items.filter((i) => i.said);
-  const head = { kind: "headline", line: person.headline, lands: said.filter((i) => i.inHeadline).map((i) => i.id) };
-  return [head].concat(said.filter((i) => !i.inHeadline).map((i) => ({ kind: "item", item: i.id, lands: [i.id] })));
+  const late = said.filter((i) => i.inHeadline && i.atServe).map((i) => i.id);
+  const head = { kind: "headline", line: person.headline, lands: said.filter((i) => i.inHeadline && !i.atServe).map((i) => i.id) };
+  const parts = [head].concat(said.filter((i) => !i.inHeadline).map((i) => ({ kind: "item", item: i.id, lands: [i.id] })));
+  const last = parts[parts.length - 1];
+  parts[parts.length - 1] = { ...last, lands: last.lands.concat(late) };
+  return parts;
 }
 
 export function orderRules({ settings, kit }) {
