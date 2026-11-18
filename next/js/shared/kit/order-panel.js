@@ -27,9 +27,6 @@ export function panelOf(host, { kit }) {
 
 function createPanel(host, kit) {
   const P = kit.panel;
-  // the panel's longest move, which others wait out by its one number: never shorter than its parts
-  const parts = parseFloat(kit.look.vars["fold-ms"]) + P.quietMs + P.glideMs;
-  if (P.settleMs < parts) throw new Error(`kit.json panel.settleMs (${P.settleMs}) is shorter than the panel's own move (${parts} ms)`);
   const side = host.closest("#side") || host.parentElement;
   let current = null;
   let busyUntil = 0;

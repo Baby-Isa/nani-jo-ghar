@@ -4,13 +4,13 @@
  * play area lets it be but never taller than its share of the play area's height (Zafar's red box), and smaller still
  * until it touches no head. Everything inside it is sized from its width (--pw), so it scales as one picture.
  *
- *   const big = createBigCard({ stage, kit, round, panel, wordCard, light, sounds })
+ *   const big = createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds })
  *   big.place(slotEl, heads?, bubble?, { again? }) -> { x, y, w, h }   in the play area's px (again: afresh, at a new size)
  *   big.pop(src, slotEl) -> { el, fly(), out(), lesson(), remove() }   src: { el?, line, pic, word }
  */
-import { revealLesson } from "./word-card.js";
+import { revealLesson, wireSpeaker } from "./word-card.js";
 
-export function createBigCard({ stage, kit, round, panel, wordCard, light, sounds }) {
+export function createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds }) {
   const O = kit.order;
   let kept = null;
   // the big cards showing now (one, or the dish's own card beside it), placed again at a new size unless already flying
@@ -65,6 +65,8 @@ export function createBigCard({ stage, kit, round, panel, wordCard, light, sound
     const el = document.createElement("div");
     el.className = `pop big in${src.el && src.el.classList.contains("no") ? " no" : ""}`;
     el.innerHTML = wordCard(src.line, src.pic, src.word, { rule: false });
+    // (its speaker says its word, as every word card's does)
+    wireSpeaker(el, { say, line: src.line });
     setBig(el, place(slotEl));
     stage.el.over.appendChild(el);
     showing.add(el);

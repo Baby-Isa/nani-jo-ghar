@@ -122,9 +122,10 @@ button { padding: 0; cursor: pointer; }
 /* while the panel's sizes step down (--fit under 1: Nani's helper open on a short phone) the pictures flatten first, so the card
    being cooked for still shows whole with its words and speakers; a narrower card would wrap its words and grow instead */
 :root.phone #side:not([data-fit="1"]) .icard > .well { aspect-ratio: auto; height: calc(100cqi / var(--item-pic-phone-k) * var(--fit) * var(--fit)); }
-.icard > .ku { grid-row: 3; align-self: end; margin-top: var(--item-ku-gap); font-size: clamp(var(--item-font-min), var(--item-ku), max(var(--item-font-min), calc(var(--item-ku-max) * var(--p)))); }
-.icard > .en { grid-row: 4; align-self: start; margin-top: var(--item-en-gap); font-size: clamp(var(--item-en), var(--item-en-cq), max(var(--item-en), calc(var(--item-en-max) * var(--p)))); }
-.icard > .rule { grid-row: 6; width: var(--item-rule-w); height: max(1px, var(--item-rule-h)); margin-top: var(--item-step); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
+/* the words spaced by their letters' ink (js/shared/kit/word-card.js inkGaps): until measured, by their boxes */
+.icard > .ku { grid-row: 3; align-self: end; margin-top: var(--ku-ink, var(--item-ku-gap)); font-size: clamp(var(--item-font-min), var(--item-ku), max(var(--item-font-min), calc(var(--item-ku-max) * var(--p)))); }
+.icard > .en { grid-row: 4; align-self: start; margin-top: var(--en-ink, var(--item-en-gap)); font-size: clamp(var(--item-en), var(--item-en-cq), max(var(--item-en), calc(var(--item-en-max) * var(--p)))); }
+.icard > .rule { grid-row: 6; width: var(--item-rule-w); height: max(1px, var(--item-rule-h)); margin-top: var(--rule-ink, var(--item-step)); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
 /* the speaker drawn as the standard's (smaller on a phone), its own box a full tap: a clear border round the disc, taken back by
    its margins so nothing moves */
 .icard > .speaker { --d: max(var(--speaker-min), calc(var(--tap) * var(--p))); --b: max(0px, (var(--tap) - var(--d)) / 2); grid-row: 7; align-self: end; box-sizing: content-box; width: var(--d); height: var(--d); border: var(--b) solid transparent; background-clip: padding-box; margin: calc(var(--item-step) - var(--b)) calc(-1 * var(--b)) calc(var(--item-step) - 1px - var(--b)); }
@@ -186,7 +187,9 @@ button { padding: 0; cursor: pointer; }
 .pop.lesson .ku.shown .w, .pop.lesson .en.shown .w { visibility: visible; }
 .pop.lesson .ku.shown .kdots, .pop.lesson .en.shown .d { display: none; }
 .pop.lesson .lit { cursor: pointer; }
-.pop.lesson .speaker { pointer-events: none; }
+/* a big card's speaker says its word (the card itself takes no tap), except in the lesson */
+.pop .speaker { pointer-events: auto !important; }
+.pop.lesson .speaker { pointer-events: none !important; }
 .speaker { position: relative; flex: none; width: var(--speaker); height: var(--speaker); border-radius: 50%; border: 0; background: var(--speaker-bg); margin-top: auto; margin-bottom: 6px; }
 
 /* the big card that pops as a thing is said */
@@ -285,14 +288,8 @@ button { padding: 0; cursor: pointer; }
 .wm.out { opacity: 0; }
 .wm-in { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .wm-in > * { position: absolute; }
-.wm-scene { max-width: none; }
-.wm-glass img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.wm-vessel { transition-property: left, top, transform; }
-.wm-stream { background-size: 100% 100%; opacity: 0; }
-.wm-rim { object-fit: contain; clip-path: var(--wm-rim); pointer-events: none; }
-.wm-drop { opacity: 0; }
 /* the frame: a phone camera's viewfinder, four thin white rounded corners closing in round the glass, then its flash fades */
-.wm-frame i { position: absolute; width: var(--wm-corner); height: var(--wm-corner); border: 0 solid #fff; filter: drop-shadow(0 0 var(--wm-corner-line) var(--wm-corner-shade)); transition: transform var(--wm-corner-ms) var(--wm-corner-ease); }
+.wm-frame i { position: absolute; width: var(--wm-cs); height: var(--wm-cs); border: 0 solid #fff; filter: drop-shadow(0 0 var(--wm-corner-line) var(--wm-corner-shade)); transition: transform var(--wm-corner-ms) var(--wm-corner-ease); }
 .wm-frame i:nth-child(1) { left: 0; top: 0; border-width: var(--wm-corner-line) 0 0 var(--wm-corner-line); border-top-left-radius: var(--wm-corner-radius); transform: translate(calc(-1 * var(--wm-corner-from)), calc(-1 * var(--wm-corner-from))); }
 .wm-frame i:nth-child(2) { right: 0; top: 0; border-width: var(--wm-corner-line) var(--wm-corner-line) 0 0; border-top-right-radius: var(--wm-corner-radius); transform: translate(var(--wm-corner-from), calc(-1 * var(--wm-corner-from))); }
 .wm-frame i:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 var(--wm-corner-line) var(--wm-corner-line); border-bottom-left-radius: var(--wm-corner-radius); transform: translate(calc(-1 * var(--wm-corner-from)), var(--wm-corner-from)); }
@@ -308,7 +305,7 @@ button { padding: 0; cursor: pointer; }
 .pop.wm-card .ku { margin-top: calc(var(--pw) * var(--wm-ku-gap)); line-height: var(--wm-ku-line); }
 .pop.wm-card .en { margin-top: calc(var(--pw) * var(--wm-en-gap)); font-size: max(var(--item-en), calc(var(--pw) * var(--pop-en-of-w))); }
 .pop.wm-card .rule { flex: none; width: calc(var(--pw) * var(--wm-rule-w)); height: var(--wm-rule-h); margin-top: calc(var(--pw) * var(--wm-gap)); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
-.pop.wm-card .speaker { width: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); height: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); margin: calc(var(--pw) * var(--wm-gap)) 0; box-shadow: none; pointer-events: auto !important; cursor: pointer; }
+.pop.wm-card .speaker { width: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); height: max(var(--tap), calc(var(--pw) * var(--pop-spk-of-w))); margin: calc(var(--pw) * var(--wm-gap)) 0; box-shadow: none; cursor: pointer; }
 /* a speaker lit while its word is said */
 .speaker.on { animation: speaker-on var(--speaker-pulse-ms) ease-out infinite; }
 @keyframes speaker-on { from { box-shadow: 0 0 0 0 var(--speaker-pulse); } to { box-shadow: 0 0 0 var(--speaker-pulse-r) transparent; } }

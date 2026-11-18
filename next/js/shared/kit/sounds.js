@@ -5,6 +5,7 @@
  *
  *   const sounds = createSounds({ kit, say, stage })     (stage: so the sounds wait while the round is held)
  *   sounds.ready(names) -> Promise (in)     sounds.play(name, { under?, volume? })     sounds.loop(name, on)
+ *   sounds.rise(name, k)    a loop's pitch rising as a thing fills (k from 0 to 1)
  *   sounds.simmer(heat, k, bubbleAt)    the boil's loop: louder as the hottest vessel heats (-1: none heating)
  */
 // One sound for the page, whatever the number of rounds: a browser allows only a few, and each round's own would pile up.
@@ -155,6 +156,16 @@ export function createSounds({ kit, say, stage }) {
       if (!on) return stopLoop(name);
       const l = loops.get(name) || startLoop(name);
       if (l) l.g.gain.setTargetAtTime(say.busy() ? Q.floor : 1, ctx.currentTime, Q.duck);
+    },
+    /**
+     * A loop's pitch rising as a thing fills, its playback a little slower at the start and a little faster at the end
+     * (kit.json sounds.rise), so a glass is heard filling and the water still sounds like water.
+     */
+    rise(name, k) {
+      const l = loops.get(name);
+      if (!l) return;
+      const [from, to] = S.rise;
+      l.src.playbackRate.setTargetAtTime(from + (to - from) * Math.max(0, Math.min(1, k)), ctx.currentTime, Q.duck);
     },
     /** The boil rises in loudness only, evenly in dB, with no join heard; it is silent under a voice. */
     simmer(heat, k, bubbling) {

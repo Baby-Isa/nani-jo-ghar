@@ -6,7 +6,8 @@
  *
  *   pourMoment({ stage, kit, kitchen, settings, ui }) -> the word moment's act:
  *     act.pictures() -> refs     act.draw({ pane, area, words, wait, frames }) -> { slots, play() -> Promise, stop() }
- *     slots: [{ word, cx, cy, size, base, hide() }]  base: the glass's size before the counter's room shrank it
+ *     slots: [{ word, cx, cy, w, h, cardW, hide() }]  w, h: the glass as drawn in its box; cardW: its word card's width
+ *   It styles its own things (the glass, the kettle, the stream, its last drop, the lip): the kit knows none of them.
  */
 const el = (tag, cls, parent) => {
   const e = document.createElement(tag);
@@ -29,11 +30,18 @@ export function pourMoment({ stage, kit, kitchen, settings, ui }) {
       const n = words.length;
       // the counter's line, and glasses sized so the kettle and its stream have room above them
       const lineY = area.h * W.scene.lineMax;
+      // (the card's width from the glass's size before the counter's room shrank it, 1.25 of it, never wider than its share
+      // of the room: old word-moment.js:520)
       const base = Math.min(area.w / (n * K.pitch + K.side), area.h * K.glassMost);
+      const cardW = Math.min(K.cardOfGlass * base, area.w / n - K.cardRoom);
+      // the glass as drawn in its square box (contained: its own shape, centred)
+      const [ew, eh] = stage.art.size(W.art.empty);
+      const fill = (img) => (Object.assign(img.style, { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }), img);
       const g = Math.floor(Math.min(base, (lineY - Math.max(K.topMin, area.h * K.top)) / (1 + K.gap + K.above)));
       const sw = area.w / (W.scene.span[1] - W.scene.span[0]);
       const sh = sw / W.scene.aspect;
       const scene = el("img", "wm-scene", pane);
+      scene.style.maxWidth = "none";
       scene.src = file(W.art.scene);
       Object.assign(scene.style, { left: `${-W.scene.span[0] * sw}px`, top: `${lineY - W.scene.baseAt * sh}px`, width: `${sw}px`, height: `${sh}px` });
       const boxOf = (cx, cy, size) => ({ left: `${cx - size / 2}px`, top: `${cy - size / 2}px`, width: `${size}px`, height: `${size}px` });
@@ -42,25 +50,28 @@ export function pourMoment({ stage, kit, kitchen, settings, ui }) {
         const cy = lineY - g / 2;
         const glass = el("div", "wm-glass", pane);
         Object.assign(glass.style, boxOf(cx, cy, g));
-        el("img", "", glass).src = file(W.art.empty);
+        const empty = el("img", "", glass);
+        empty.src = file(W.art.empty);
         const tea = el("img", "wm-tea", glass);
         tea.src = file(W.art.full);
+        [empty, tea].forEach(fill);
         // the tea's surface at a level (0 to 1 of the inside), in the pane's px: the full picture shows below it
         const at = (lv) => W.tea.bottom - lv * (W.tea.bottom - W.tea.top);
         const level = (lv) => (tea.style.clipPath = `inset(${at(lv) * 100}% 0 0 0)`);
         level(0);
-        return { word, cx, cy, size: g, base, glass, level, surface: (lv) => cy - g / 2 + g * at(lv), fill: W.fills[word] };
+        return { word, cx, cy, w: g * Math.min(1, ew / eh), h: g * Math.min(1, eh / ew), cardW, glass, level, surface: (lv) => cy - g / 2 + g * at(lv), fill: W.fills[word] };
       });
       // drawn in this order: the stream, then its last drop, under each glass's own lip (laid back over them, so the
       // stream goes into the glass: old word-moment.js:283-293) and under the kettle (it leaves from inside the spout)
       const stream = el("div", "wm-stream", pane);
-      stream.style.backgroundImage = `url(${file(W.art.stream)})`;
+      Object.assign(stream.style, { backgroundImage: `url(${file(W.art.stream)})`, backgroundSize: "100% 100%", opacity: 0 });
       const drop = el("img", "wm-drop", pane);
       drop.src = file(kit.art.drop);
+      drop.style.opacity = 0;
       for (const s of slots) {
         s.rim = el("img", "wm-rim", pane);
         s.rim.src = file(W.art.empty);
-        Object.assign(s.rim.style, boxOf(s.cx, s.cy, g));
+        Object.assign(s.rim.style, boxOf(s.cx, s.cy, g), { objectFit: "contain", clipPath: K.rimClip, pointerEvents: "none" });
         s.hide = () => (s.glass.style.visibility = s.rim.style.visibility = "hidden");
       }
       // the kettle: off to the right, tipped back; its spout is the point it is placed and turned by
@@ -69,7 +80,7 @@ export function pourMoment({ stage, kit, kitchen, settings, ui }) {
       const vh = (vw * ph) / pw;
       const kettle = el("img", "wm-vessel", pane);
       kettle.src = file(W.art.vessel);
-      Object.assign(kettle.style, { width: `${vw}px`, height: `${vh}px`, transformOrigin: `${W.vessel.spout[0] * 100}% ${W.vessel.spout[1] * 100}%`, transitionDuration: `${K.moveMs}ms, ${K.moveMs}ms, ${K.tipMs}ms`, transitionTimingFunction: K.moveEase });
+      Object.assign(kettle.style, { width: `${vw}px`, height: `${vh}px`, transformOrigin: `${W.vessel.spout[0] * 100}% ${W.vessel.spout[1] * 100}%`, transitionProperty: "left, top, transform", transitionDuration: `${K.moveMs}ms, ${K.moveMs}ms, ${K.tipMs}ms`, transitionTimingFunction: K.moveEase });
       const place = (x, y, tip) => Object.assign(kettle.style, { left: `${x - W.vessel.spout[0] * vw}px`, top: `${y - W.vessel.spout[1] * vh}px`, transform: `rotate(${tip}deg)` });
       const away = () => place(area.w + vw, slots[n - 1].cy - g * (0.5 + K.gap), W.vessel.lift);
       away();
@@ -108,6 +119,7 @@ export function pourMoment({ stage, kit, kitchen, settings, ui }) {
         let tipped = false;
         await frames(rise, (u) => {
           s.level(lv(u));
+          ui.sounds.rise(settings.sounds.pouring, u);
           const surf = s.surface(lv(u));
           // the end: the share of tailMs gone
           const e = u <= endAt ? 0 : Math.min(1, ((u - endAt) * rise) / K.tailMs);

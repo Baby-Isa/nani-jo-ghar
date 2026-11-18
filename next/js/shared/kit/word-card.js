@@ -8,6 +8,9 @@
  *       the divider over its speaker (rule) and the speaker
  *   wireSpeaker(card, { say, line }) -> sayIt()  a tap on its speaker says the word, the speaker lit while it is said; a
  *       tap while it is said starts it again (never queued behind itself); sayIt says it as a tap would
+ *   inkGaps(card, share)   the row card's words spaced by their letters' own ink, not their boxes: the picture to the top
+ *       of the Kutchi's letters, the Kutchi's lowest ink to the English's highest, the English's lowest to the divider, each the
+ *       same gap (share x the card's width); measured on the English's letters even while they show as dots, so a peek moves nothing
  *   wirePeeks(card, { kit, onPeek })            onPeek("english" | "picture")
  *   revealLesson(card, { kit, light, sounds }) -> Promise      resolves when every part has been tapped open
  */
@@ -43,6 +46,27 @@ export function wireSpeaker(card, { say, line }) {
   };
   spk.addEventListener("click", (ev) => (ev.stopPropagation(), sayIt()));
   return sayIt;
+}
+
+let pen = null;
+/** A word's ink against its own block (its line boxes): how far in from its top its letters reach, and from its bottom (px). */
+function inkOf(el) {
+  pen = pen || document.createElement("canvas").getContext("2d");
+  const cs = getComputedStyle(el);
+  pen.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  const face = pen.measureText("Hg");
+  const half = (parseFloat(cs.lineHeight) - face.fontBoundingBoxAscent - face.fontBoundingBoxDescent) / 2;
+  const m = pen.measureText(el.querySelector(".w").textContent);
+  return { top: half + face.fontBoundingBoxAscent - m.actualBoundingBoxAscent, bottom: half + face.fontBoundingBoxDescent - m.actualBoundingBoxDescent };
+}
+
+export function inkGaps(card, share) {
+  const gap = share * card.clientWidth;
+  const ku = inkOf(card.querySelector(".ku"));
+  const en = inkOf(card.querySelector(".en"));
+  card.style.setProperty("--ku-ink", `${gap - ku.top}px`);
+  card.style.setProperty("--en-ink", `${gap - ku.bottom - en.top}px`);
+  card.style.setProperty("--rule-ink", `${gap - en.bottom}px`);
 }
 
 /** One tap opens a hidden part in its own place for a moment; then it hides again. */

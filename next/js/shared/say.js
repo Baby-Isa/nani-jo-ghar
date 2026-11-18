@@ -3,7 +3,8 @@
  * for here as a meaning and comes back as a line; nothing else in the game imports the engine or types a Kutchi word.
  * A line the engine cannot build comes back with its English placeholder (shown grey italic) and is logged as a gap.
  *
- *   const say = await createSay({ voice?, player?, path?, child? })
+ *   const say = await createSay({ voice?, player?, path?, child?, wait? })
+ *       wait(ms): the round's clock (the stage's, which stands still while the round is held), for the pause between words
  *       voice: data/kit.json `voice`; in a page with sound, the family's clips play through the Web Audio player with it
  *   say.line(meaning, { register?, voice?, elder?, row? }) -> Line
  *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word?, guess? }], plan, gaps, key, meaning }
@@ -27,24 +28,11 @@ import { webAudioPlayer } from "../core/voice-player.js";
 /** A word's English for a card: the gloss without its note in brackets. */
 const englishOf = (entry) => String(entry.gloss || "").replace(/\s*\(.*?\)/g, "").trim();
 
-export async function createSay({ voice: settings = null, player = null, path = null, child = {}, load = null } = {}) {
+export async function createSay({ voice: settings = null, player = null, path = null, child = {}, load = null, wait = undefined } = {}) {
   const engine = await loadEngine({ path, load });
   const thePath = path || voicePath();
   const sound = typeof globalThis.AudioContext !== "undefined" || typeof globalThis.webkitAudioContext !== "undefined";
   const P = player || (settings && sound ? webAudioPlayer({ settings, synth: (text, o) => deviceSpeak(text, { ...o, times: settings.device }) }) : null);
-  // the pause between two words stands still while the round is held, as the voice itself does
-  let held = false;
-  const holding = new Set();
-  const wait = (ms) =>
-    new Promise((done) => {
-      let left = ms;
-      let t0 = 0;
-      let timer = 0;
-      const go = () => ((t0 = Date.now()), (timer = setTimeout(() => (holding.delete(on), done()), left)));
-      const on = (h) => (h ? (clearTimeout(timer), (left -= Date.now() - t0)) : go());
-      holding.add(on);
-      if (!held) go();
-    });
   const voice = createVoice({ player: P, path: thePath, gapMs: (settings && settings.wordGapMs) || 0, wait });
   const met = new Map(); // gap key -> gap
 
@@ -108,12 +96,7 @@ export async function createSay({ voice: settings = null, player = null, path = 
       return voice.say({ clipPlan: line.plan }, { queue, ifIdle, onWord: onPiece ? (tokens, item) => onPiece(item) : undefined, onStart: onHeard ? (tokens, item) => onHeard(item) : undefined });
     },
     stop: () => voice.stop(),
-    hold(on) {
-      if (held === !!on) return;
-      held = !!on;
-      holding.forEach((f) => f(held));
-      if (P && P.hold) P.hold(held);
-    },
+    hold: (on) => P && P.hold && P.hold(on),
     warm(meaning, opts = {}) {
       if (meaning) lineOf(engine.say(meaning, contextOf(opts)), meaning, opts);
     },

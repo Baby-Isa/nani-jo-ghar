@@ -23,7 +23,7 @@ export function wordMomentRules({ settings }) {
       const due = wm.words.every((w) => asked.has(w)) && wm.words.some((w) => (round.ladder[w] || 0) <= wm.newUntilStage);
       return due ? { name: "showing", words: wm.words, id: wm.id } : { name: "done" };
     },
-    first: () => [{ type: "pour" }],
+    first: () => [{ type: "show" }],
     move,
     leave: (round, s) => (s.id ? { ...round, met: { ...round.met, [s.id]: true } } : round),
   };

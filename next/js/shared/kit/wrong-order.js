@@ -10,25 +10,19 @@ export async function showWrongOrder({ stage, say, kit, sounds, cards, seat, che
   const veil = document.createElement("div");
   veil.className = "veil";
   veil.dataset.ownTaps = "1";
-  const s = cards.seats[seat];
-  const copy = s.el.cloneNode(true);
-  copy.classList.remove("folded", "served");
-  copy.querySelector(".ocard-body").style.height = "auto";
-  // its cards in the order asked, each said in turn
-  const row = copy.querySelector(".orow");
-  row.replaceChildren(...cards.askedOf(seat).map((c) => c.cloneNode(true)));
-  const els = [...row.children];
-  els.forEach((c) => c.classList.remove("done", "cross", "waiting"));
-  veil.appendChild(copy);
+  // the card, open, its rows in the order asked, each said in turn
+  const copy = cards.copy(seat);
+  copy.el.querySelector(".ocard-body").style.height = "auto";
+  veil.appendChild(copy.el);
   stage.el.over.appendChild(veil);
   sounds.play("oops");
   await say.speak(say.line(kit.lines.oho));
-  await say.speak(s.head);
-  for (const [n, it] of s.person.items.entries()) {
-    const right = check.byRow[it.id] !== false;
-    els[n].classList.add(right ? "done" : "cross");
+  await say.speak(cards.headOf(seat));
+  for (const row of copy.rows) {
+    const right = check.byRow[row.id] !== false;
+    row.el.classList.add(right ? "done" : "cross");
     if (right) sounds.play("drop");
-    await Promise.race([say.speak(s.items.get(it.id).line), wait(kit.lineTimes.wrongRowCap)]);
+    await Promise.race([say.speak(row.line), wait(kit.lineTimes.wrongRowCap)]);
     await wait(kit.lineTimes.wrongRowGap);
   }
   await wait(kit.wrongOrder.holdMs);

@@ -32,8 +32,8 @@ async function start() {
   const frame = createFrame({ kit });
 
   const art = createArt(registry, { build: globalThis.NJG_BUILD === "store" ? "store" : "test" });
-  const say = await createSay({ voice: kit.voice });
   const stage = await createStage({ art, kit, frame, renderer: ask.get("draw") || "auto" });
+  const say = await createSay({ voice: kit.voice, wait: stage.wait });
   const progress = loadProgress(ask.get("player") || OWN_PLAYER);
   // upright, the whole round waits where it is behind the turn card (pictures, moves, voice, sounds) and goes on when turned
   stage.onHold((on) => say.hold(on));

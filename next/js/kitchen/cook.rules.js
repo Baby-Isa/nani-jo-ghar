@@ -8,6 +8,7 @@
  *   rowMayHold(settings, kit, level) -> every thing the row may hold (its pictures are named before the row is drawn)
  *   moves while cooking: item {id} | knob {vessel} | vessel {vessel} | face {vessel} | count {item} | time {ms}
  *   then: reviewed (the dishes have been looked at) and, for a wrong dish, understood (it is made again)
+ *   state.vessels[v].ticked: that person's ticked rows in the order they were ticked (the order card's row)
  *   events: step {step} as a step opens (Nani's line shows) | open {step, first?} at the step's moment: once what moves
  *   in the kitchen has ended and a breath has gone (step.wait), its first-time light (first) and its call (step.spoken)
  *
@@ -150,6 +151,24 @@ export function cookRules({ game, settings, kitchen, kit }) {
     return { ...s, moment: null, help: acted(s.help), lit: first && !s.lit.includes(first) ? s.lit.concat(first) : s.lit };
   }
 
+  /**
+   * Each person's ticked rows in the order they were ticked, kept after every move (the order card's row shows its ticked
+   * cards so, and the robot plays the row's rule on the same list): a row ticked now joins the end, an unticked one leaves.
+   */
+  const ticking = (s) => ({
+    ...s,
+    vessels: s.vessels.map((x, v) => {
+      const t = G.ticks(x.dish, ctxOf(s, v));
+      const kept = x.ticked.filter((id) => t[id]);
+      const now = Object.keys(t).filter((id) => t[id] && !kept.includes(id));
+      return kept.length === x.ticked.length && !now.length ? x : { ...x, ticked: kept.concat(now) };
+    }),
+  });
+  const move = (s, mv, c) => {
+    const out = play(s, mv, c);
+    return { ...out, state: ticking(out.state) };
+  };
+
   const setVessel = (s, v, patch) => ({ ...s, vessels: s.vessels.map((x, i) => (i === v ? { ...x, ...patch } : x)) });
 
   function choose(s, v, events) {
@@ -181,7 +200,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
     return { state: next, events };
   }
 
-  const move = machine({
+  const play = machine({
     states: {
       cooking: {
         item(s, mv) {
@@ -337,7 +356,7 @@ export function cookRules({ game, settings, kitchen, kit }) {
         row: rowFor(round, chance),
         lit: [],
         metLit: round.met.lit || [],
-        vessels: round.order.for.map((p) => ({ who: p.who, ask: p.asks, fire: newFire(), dish: G.newDish(), tries: 0, missed: [] })),
+        vessels: round.order.for.map((p) => ({ who: p.who, ask: p.asks, fire: newFire(), dish: G.newDish(), tries: 0, missed: [], ticked: [] })),
         help: newHelp(),
         step: null,
         moment: null,

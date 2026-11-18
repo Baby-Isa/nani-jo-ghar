@@ -6,13 +6,15 @@
  * is ./order-row.js (its rule: ./row.rules.js); the big card is ./big-card.js.
  *
  *   const cards = createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds })
- *   cards.show(seat)  cards.open(seat)  cards.fold(seat)  cards.land(seat, ids)  cards.tick(seat, id, done, cross?)
- *   cards.served(seat)  cards.reopen(seat)  cards.slot(seat, id) -> rectangle  cards.focus(seat)
+ *   cards.show(seat)  cards.open(seat)  cards.fold(seat)  cards.focus(seat)  cards.slot(seat, id) -> rectangle
+ *   cards.land(seat, ids)  cards.landAll()  cards.ticks(seat, ids)  the rules' ticked rows, in the order ticked
+ *   cards.served(seat)  cards.reopen(seat)  cards.lineOf(seat, id)  cards.headOf(seat)
  *   cards.lead(seat, ids)  the order: the row glides so these cards land whole, the place before them at the left
  *   cards.pop(seat, id | null, dish?) -> the big card: { fly() -> Promise, out() -> Promise, lesson() -> Promise, el }
  *   cards.bigPlace(heads, bubble, { again? }) -> where the big card sits for this order, in the play area's px (kept for the
  *       whole order; again: worked out afresh for a new size of the play area, and a big card showing moves there)
- *   cards.askedOf(seat) -> its item cards' elements in the order asked
+ *   cards.copy(seat) -> { el, rows: [{ id, el, line }] }   a copy of the card, open, nothing ticked, its item cards in the
+ *       order asked (the wrong-order card shows it)
  */
 import { lineHtml } from "./nani-box.js";
 import { wordCardHtml, wirePeeks, wireSpeaker } from "./word-card.js";
@@ -33,7 +35,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
   const showPicture = atLevel(kit.levels.cardPicture, round.level);
   /** One word card's inside. The level hides the English; it hides the picture only of a word the child has earned. */
   const wordCard = (line, pic, word, o = {}) => wordCardHtml({ file: stage.art.file, line, pic, kit, english: showEnglish, blurred: !showPicture && !!round.earned[word], ...o });
-  const big = createBigCard({ stage, kit, round, panel, wordCard, light, sounds });
+  const big = createBigCard({ stage, say, kit, round, panel, wordCard, light, sounds });
 
   const seats = round.order.for.map((p, seat) => {
     const el = document.createElement("div");
@@ -50,20 +52,21 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       const line = say.line(it.meaning, { row: true });
       const c = document.createElement("div");
       c.className = `icard waiting${it.no ? " no" : ""}`;
+      // a card that ticks only as the dish is served: a "no", or one the game says so of (a measure, seen only as it is poured)
+      const atServe = !!(it.no || it.atServe);
       c.dataset.item = it.id;
-      if (it.no || it.atServe) c.dataset.serve = "1";
+      if (atServe) c.dataset.serve = "1";
       c.innerHTML = `${wordCard(line, picOf(it, p), it.word)}<span class="tick"></span>`;
       wireSpeaker(c, { say, line });
       wirePeeks(c, { kit, onPeek: (what) => onPeek(it.word, what) });
       rowEl.appendChild(c);
-      // a card that ticks only as the dish is served: a "no", or one the game says so of (a measure, seen only as it is poured)
-      items.set(it.id, { el: c, line, pic: picOf(it, p), word: it.word, id: it.id, no: !!it.no, atServe: c.dataset.serve === "1" });
+      items.set(it.id, { el: c, line, pic: picOf(it, p), word: it.word, id: it.id, no: !!it.no, atServe });
     }
     host.appendChild(el);
     panel.track(el);
     return { el, items, head, person: p, row: createRow({ stage, kit, el: rowEl, items, panel }) };
   });
-  const firstCard = () => seats[0].items.values().next().value.el;
+  const firstCard = (s) => s.items.values().next().value.el;
 
   /** A card opens to its row's own height (a row is as tall as its tallest item card) and folds to its top line. */
   const setOpen = (seat, open) => seats[seat].el.classList.toggle("folded", !open);
@@ -80,7 +83,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     focus: (seat) => panel.focus(seat == null ? null : seats[seat].el),
     land: (seat, ids) => seats[seat].row.land(ids),
     landAll: () => seats.forEach((s) => s.row.landAll()),
-    tick: (seat, id, done, cross = false) => seats[seat].row.tick(id, done, cross),
+    ticks: (seat, ids) => seats[seat].row.ticks(ids),
     lead: (seat, ids) => seats[seat].row.lead(ids),
     served(seat) {
       seats[seat].row.served();
@@ -94,15 +97,19 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     slot: (seat, id) => seats[seat].items.get(id).el.getBoundingClientRect(),
     lineOf: (seat, id) => seats[seat].items.get(id).line,
     headOf: (seat) => seats[seat].head,
-    askedOf: (seat) => [...seats[seat].items.values()].map((it) => it.el),
-    bigPlace(heads, bubble, { again = false } = {}) {
-      const b = big.place(firstCard(), heads, bubble, { again });
-      return { x: b.x, y: b.y, w: b.w, h: b.h };
+    copy(seat) {
+      const el = seats[seat].el.cloneNode(true);
+      el.classList.remove("folded", "served");
+      const rows = [...seats[seat].items.values()].map((it) => ({ id: it.id, line: it.line, el: it.el.cloneNode(true) }));
+      rows.forEach((r) => r.el.classList.remove("done", "cross", "waiting"));
+      el.querySelector(".orow").replaceChildren(...rows.map((r) => r.el));
+      return { el, rows };
     },
-    /** The big card that pops as a thing is said (or the dish's own card beside it), then flies into its slot. */
+    bigPlace: (heads, bubble, { again = false } = {}) => big.place(firstCard(seats[0]), heads, bubble, { again }),
+    /** The big card that pops as a thing is said (or the dish's own card beside it, in the person's first slot), then flies into its slot. */
     pop(seat, id, dish = null) {
       const src = dish || seats[seat].items.get(id);
-      return big.pop(src, dish ? seats[seat].items.values().next().value.el : src.el);
+      return big.pop(src, dish ? firstCard(seats[seat]) : src.el);
     },
     clear() {
       panel.reset();
