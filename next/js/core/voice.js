@@ -27,7 +27,8 @@
  *   const V = createVoice({ index, player })        // player: {play(url) -> Promise, stop(), synth?(text) -> Promise}
  *       (a page passes js/core/voice-player.js's Web Audio player; with none, nothing is heard: Node, the robot)
  *   V.plan(result) -> [{ file?, text, source, tokens: [from, to] }]     a Lang result's clip plan, resolved
- *   V.say(result, { channel = "main", onWord, queue = false, ifIdle, key, ttl }) -> Promise<{ done }>   never blocks input
+ *   V.say(result, { channel = "main", onWord, onStart, queue = false, ifIdle, key, ttl }) -> Promise<{ done }>   never blocks input
+ *       onWord(tokens, item): a piece is next; onStart(tokens, item): it is really heard (its clip started, or the device voice)
  *       queue: false replaces what the channel is saying (the clinic's lines); queue: true waits its turn and cuts nothing
  *       (Cook's one speech queue, PAN-04); ifIdle: said only when the channel is silent and empty (an item word on a tap,
  *       SH-94); key: a waiting line with the same key is dropped for this newer one (the newest count is said); ttl: ms
@@ -106,16 +107,16 @@ async function voicesIn(S) {
 }
 // voice: a voice, a function that picks one once the voices are in, "default" (the device's own), or null (Gujarati, Hindi,
 // Indian English, else the first); volume: 0-1 (a whisper)
-export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, volume = 1, wait = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+export function deviceSpeak(text, { rate = DEVICE_RATE, voice = null, volume = 1, onStart = null, wait = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
   const S = globalThis.speechSynthesis;
   if (!S || !globalThis.SpeechSynthesisUtterance) return Promise.resolve(false);
   watchCancel(S);
-  return voicesIn(S).then(() => speakNow(S, text, { rate, voice, volume, wait }));
+  return voicesIn(S).then(() => speakNow(S, text, { rate, voice, volume, onStart, wait }));
 }
 // (SH-314: a line still being spoken; stopAll lets each go at once, and a line let go of clears its own safety timers, so a stop leaves
 // no timer running: Cook's mount test)
 const speaking = new Set();
-function speakNow(S, text, { rate, voice, volume, wait }) {
+function speakNow(S, text, { rate, voice, volume, onStart, wait }) {
   return new Promise((resolve) => {
     let done = false;
     const timers = [];
@@ -137,7 +138,14 @@ function speakNow(S, text, { rate, voice, volume, wait }) {
         u.rate = rate;
         if (volume != null && volume !== 1) u.volume = volume;
         let started = false;
-        u.onstart = () => (started = true);
+        u.onstart = () => {
+          started = true;
+          try {
+            if (onStart) onStart();
+          } catch (e) {
+            /* the caller's problem */
+          }
+        };
         // it ends when the browser says so (so the next piece never starts under it); a voice that never starts (none
         // installed) or never ends is let go of
         u.onend = u.onerror = () => fin(true);
@@ -180,7 +188,7 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
   V.phrases = thePhrases;
   V.deviceSpeak = deviceSpeak;
 
-  async function playItems(items, c, entry, onWord) {
+  async function playItems(items, c, entry, onWord, onStart) {
     const alive = () => !entry.cancelled && entry.gen === c.gen;
     for (const it of items) {
       if (!alive()) return false;
@@ -199,8 +207,9 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
           /* ignore */
         }
       }
-      if (it.file && (it.source === "family-ok" || thePath() === "test")) await P.play(it.file);
-      else if (it.source === "device" && thePath() === "test" && P.synth) await P.synth(it.text);
+      const heard = onStart ? { onStart: () => onStart(it.tokens, it) } : undefined;
+      if (it.file && (it.source === "family-ok" || thePath() === "test")) await P.play(it.file, heard);
+      else if (it.source === "device" && thePath() === "test" && P.synth) await P.synth(it.text, heard);
       if (gapMs && items.length > 1) await new Promise((r) => setTimeout(r, gapMs));
     }
     return alive();
@@ -239,7 +248,7 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
    *   ifIdle true: said only when nothing is saying or waiting on the channel, else dropped ({done: false, skipped: true}).
    *   key: a waiting line with the same key is dropped for this one (the newest count); ttl: ms it may wait for its turn.
    */
-  V.say = function (result, { channel = "main", onWord, queue = false, over = false, ifIdle = false, key = null, ttl = null } = {}) {
+  V.say = function (result, { channel = "main", onWord, onStart, queue = false, over = false, ifIdle = false, key = null, ttl = null } = {}) {
     if (over) return sayOver(V.plan(result), onWord).then((done) => ({ done }));
     const c = chan(channel);
     if (ifIdle && c.live > 0) return Promise.resolve({ done: false, skipped: true });
@@ -260,7 +269,7 @@ export function createVoice({ index, player, path, phrases, gapMs = 40 } = {}) {
       .then(async () => {
         if (entry.cancelled || entry.gen !== c.gen || (entry.until != null && Date.now() > entry.until)) return { done: false };
         entry.started = true;
-        return { done: await playItems(items, c, entry, onWord) };
+        return { done: await playItems(items, c, entry, onWord, onStart) };
       })
       .finally(() => {
         c.live = Math.max(0, c.live - 1);

@@ -20,6 +20,20 @@
  *   frame.ready() -> Promise      the fonts are in, the phone is on its side, and the first tap (if one is needed) is made
  *   frame.now -> { ff, scale, w, h, sideW }
  */
+/**
+ * Where an element sits inside a box, in that box's own CSS px. On a tablet or folding phone the side panel is zoomed (--s):
+ * the page's measure of a box is then in zoomed px while scrollTop, clientHeight and the style sheet's sizes are not, so every
+ * measure of the panel goes through here, at every size.
+ *   boxIn(el, box) -> { top, bottom, height }    top and bottom from the box's content top (its scroll counted)
+ */
+export function boxIn(el, box) {
+  const b = box.getBoundingClientRect();
+  const z = box.offsetHeight > 0 ? b.height / box.offsetHeight : 1;
+  const r = el.getBoundingClientRect();
+  const from = box.scrollTop || 0;
+  return { top: (r.top - b.top) / z + from, bottom: (r.bottom - b.top) / z + from, height: r.height / z };
+}
+
 export function createFrame({ kit }) {
   const F = kit.frame;
   const root = document.documentElement;
@@ -63,15 +77,20 @@ export function createFrame({ kit }) {
     if (!side || !frame.now) return;
     fitting = true;
     const base = F.panel[frame.now.ff];
-    const tallest = () => Math.max(0, ...[...cards.children].filter((c) => !c.hidden).map((c) => c.offsetHeight));
-    const over = () => side.scrollHeight > side.clientHeight + 1 || tallest() > cards.clientHeight + 1;
+    // a card's words and buttons must fit above the list's soft foot (its own empty foot may lie in the fade); the room the
+    // list keeps below its last card (--room) is not part of the fade
+    const inner = (c) => Math.max(0, ...[c.querySelector(".ocard-top"), ...(c.classList.contains("folded") ? [] : c.querySelectorAll(".icard"))].filter(Boolean).map((el) => boxIn(el, cards).bottom - boxIn(c, cards).top));
+    const view = () => cards.clientHeight - (parseFloat(getComputedStyle(cards).paddingBottom) - (parseFloat(cards.style.getPropertyValue("--room")) || 0));
+    const tallest = () => Math.max(0, ...[...cards.children].filter((c) => !c.hidden).map(inner));
+    const over = () => side.scrollHeight > side.clientHeight + 1 || tallest() > view() + 1;
     let f = 1;
-    side.style.setProperty("--p", String(base));
+    // (the item cards are sized by the row's width, not by --p: their pictures flatten by the same step, --fit; the style sheet's)
+    const step = (k) => (side.style.setProperty("--p", String(base * k)), side.style.setProperty("--fit", String(k)), (side.dataset.fit = String(k)));
+    step(1);
     while (side.clientHeight > 0 && over() && f > F.fit.minScale + 1e-6) {
       f = Math.max(F.fit.minScale, Math.round((f - F.fit.step) * 100) / 100);
-      side.style.setProperty("--p", String(base * f));
+      step(f);
     }
-    side.dataset.fit = String(f);
     mo.takeRecords(); // (the fit's own writes are not a change to answer)
     fitting = false;
   }

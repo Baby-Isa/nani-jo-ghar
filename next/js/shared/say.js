@@ -9,7 +9,8 @@
  *       Line: { ok, text, en, pieces: [{ t, kind: "k"|"e"|null, word? }], plan, gaps, key, meaning }
  *       row: true gives the line as a card's row: lower case, no final mark
  *   say.word(id, cell?) -> Line (one word)        say.entry(id) -> { kutchi, english, gender, status } | null
- *   say.speak(line, { queue?, ifIdle?, key?, ttl?, onPiece? }) -> Promise<{ done }>     never holds up a tap
+ *   say.speak(line, { queue?, ifIdle?, key?, ttl?, onPiece?, onHeard? }) -> Promise<{ done }>     never holds up a tap
+ *       onPiece: a piece is next; onHeard: a piece is really heard (its clip started, or the device voice began)
  *   say.stop()      say.busy()      say.gaps() -> every gap met so far      say.path
  *   say.hold(on)    the voice pauses where it is (the round held behind the turn card) and goes on from there
  *   say.warm(meaning)   a line's clips fetched and decoded now, for a line said later
@@ -27,7 +28,7 @@ export async function createSay({ voice: settings = null, player = null, path = 
   const engine = await loadEngine({ path, phrases, load });
   const thePath = path || voicePath();
   const sound = typeof globalThis.AudioContext !== "undefined" || typeof globalThis.webkitAudioContext !== "undefined";
-  const P = player || (settings && sound ? webAudioPlayer({ settings, synth: (text) => deviceSpeak(text) }) : null);
+  const P = player || (settings && sound ? webAudioPlayer({ settings, synth: (text, o) => deviceSpeak(text, o) }) : null);
   const voice = createVoice({ index: null, player: P, path: thePath, phrases });
   const met = new Map(); // gap key -> gap
 
@@ -83,8 +84,8 @@ export async function createSay({ voice: settings = null, player = null, path = 
       if (!e) return null;
       return { id: e.id, kutchi: engine.word(id).text, english: englishOf(e), gender: e.gender || null, status: e.status };
     },
-    speak(line, { queue = true, ifIdle = false, key = null, ttl = null, onPiece = null } = {}) {
-      return voice.say({ clipPlan: line.plan }, { channel: CHANNEL, queue, ifIdle, key, ttl, onWord: onPiece ? (tokens, item) => onPiece(item) : undefined });
+    speak(line, { queue = true, ifIdle = false, key = null, ttl = null, onPiece = null, onHeard = null } = {}) {
+      return voice.say({ clipPlan: line.plan }, { channel: CHANNEL, queue, ifIdle, key, ttl, onWord: onPiece ? (tokens, item) => onPiece(item) : undefined, onStart: onHeard ? (tokens, item) => onHeard(item) : undefined });
     },
     stop: () => voice.stop(CHANNEL),
     hold: (on) => P && P.hold && P.hold(on),

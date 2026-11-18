@@ -36,14 +36,22 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
   for (const slot of row.slots) {
     const wa = wordArt[slot.id];
     const [pw, ph] = stage.art.size(wa.art);
-    let h = Math.max(b.room * k.sizes[wa.size], k.minThingPx / s);
+    // the thing as drawn (not its picture's empty margin) is its size class's share of the band's room, and stands on the shelf
+    // by its lowest solid row, as the standard's do
+    const solid = stage.solid(wa.art);
+    const drawn = Math.max(0.01, solid.bottom - solid.top());
+    let h = Math.max(b.room * k.sizes[wa.size], k.minThingPx / s) / drawn;
     let w = (h * pw) / ph;
     if (w > row.slotW - Z.fit) [w, h] = [row.slotW - Z.fit, ((row.slotW - Z.fit) * ph) / pw];
     const shade = stage.shadow(shadows, { x: slot.x, y: b.base - Z.shade.lift, w: w * Z.shade.w, h: Z.shade.h });
-    const pic = stage.picture(things, wa.art, { x: slot.x, y: b.base, origin: [1 / 2, 1], h });
+    const pic = stage.picture(things, wa.art, { x: slot.x, y: b.base, origin: [1 / 2, solid.bottom], h });
+    // its picture's top and middle, in design px (the picture runs a little below the shelf line, by its empty margin)
+    const top = b.base - h * solid.bottom;
+    const mid = top + h / 2;
+    const drawnTop = top + h * solid.top();
     const entry = say.entry(slot.id);
     const pill = makePill(slot, entry ? entry.kutchi : "", pillShows(slot.id));
-    items.set(slot.id, { slot, pic, shade, pill, w, h, busy: false });
+    items.set(slot.id, { slot, pic, shade, pill, w, h, top, mid, drawnTop, busy: false });
     stage.onTap({ obj: pic.obj }, () => onItem(slot.id));
     stage.onTap({ view: "worktop", x: slot.x - pill.w / 2, y: row.pillY - pill.h / 2, w: pill.w, h: pill.h }, () => {
       stage.tween(pill.c, { scale: row.pillScale * Z.pillPop[0] }, Z.pillPop[1]).then(() => stage.tween(pill.c, { scale: row.pillScale }, Z.pillPop[1]));
@@ -106,7 +114,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       const it = items.get(id);
       it.pic.set({ visible: false });
       it.shade.set({ visible: false });
-      const copy = stage.picture(fly, wordArt[id].art, { x: it.slot.x, y: b.base - it.h / 2, h: it.h });
+      const copy = stage.picture(fly, wordArt[id].art, { x: it.slot.x, y: it.mid, h: it.h });
       await arcTo(copy, to, t.fly, t.arc);
       const tip = copy.to({ angle: t.tilt }, t.tip, "out");
       wait(t.sound).then(() => onTip && onTip());
@@ -114,7 +122,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       if (onFill) onFill(t.fill);
       await wait(t.fill);
       await copy.to({ angle: 0 }, t.untip);
-      await arcTo(copy, { x: it.slot.x, y: b.base - it.h / 2 }, t.back, t.backArc);
+      await arcTo(copy, { x: it.slot.x, y: it.mid }, t.back, t.backArc);
       copy.remove();
       it.pic.set({ visible: true });
       it.shade.set({ visible: true });
@@ -126,7 +134,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     /** A spoonful from a jar: a teaspoon flies to the vessel and stirs; the thing lands as the stir ends. */
     async spoon(id, to, spoonRef, t, { onLand, len } = {}) {
       const it = items.get(id);
-      const sp = stage.picture(fly, spoonRef, { x: it.slot.x, y: b.base - it.h / 2 - Z.spoon.above, w: len, origin: Z.spoon.origin, angle: Z.spoon.rest });
+      const sp = stage.picture(fly, spoonRef, { x: it.slot.x, y: it.mid - Z.spoon.above, w: len, origin: Z.spoon.origin, angle: Z.spoon.rest });
       await arcTo(sp, { x: to.x, y: to.y - to.r }, t.fly, t.arc);
       // the stir: the bowl goes round the middle, then lifts away
       const st = { a: 0 };
@@ -153,7 +161,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
     async back(id, from, spoonRef, t, len) {
       const it = items.get(id);
       const sp = stage.picture(fly, spoonRef, { x: from.x, y: from.y, w: len, origin: Z.spoon.origin, angle: Z.spoon.rest });
-      await arcTo(sp, { x: it.slot.x, y: b.base - it.h / 2 }, t.fly, t.arc);
+      await arcTo(sp, { x: it.slot.x, y: it.mid }, t.fly, t.arc);
       await sp.to({ angle: Z.spoon.tip }, Z.spoon.tipMs);
       await wait(Z.spoon.goneMs);
       sp.remove();
@@ -163,7 +171,9 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       const P = L.pop;
       const entry = say.entry(id);
       const kPop = Math.max(1, P.minPx / (P.font * s));
-      const c = stage.container(stage.layer("worktop", "labels"), at.x, at.y + P.rise);
+      // whole on screen, whatever the pan's place: never above the play area's top
+      const y = Math.max(at.y, stage.topOf("worktop") + P.edge + P.h * kPop);
+      const c = stage.container(stage.layer("worktop", "labels"), at.x, y + P.rise);
       const text = stage.text(c, entry ? entry.kutchi : "", { fontFamily: L.wordFont, fontStyle: L.wordWeight, fontSize: `${P.font}px`, color: L.pillInk });
       const w = text.width1 + P.pad;
       const g = stage.graphics(c);
@@ -175,12 +185,11 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       c.bringToTop(text);
       text.setOrigin(0, 1 / 2).setPosition(-w / 2 + (L.speakerMark.pad + L.speakerMark.width + L.speakerMark.gap) * kM, iy - 1);
       c.setScale(kPop);
-      // whole on screen, whatever the pan's place
       const half = (w * kPop) / 2;
       c.x = Math.max(half + P.edge, Math.min(stage.sheet.w - half - P.edge, at.x));
       c.alpha = 0;
-      stage.tween(c, { alpha: 1, y: at.y }, P.inMs, "back");
-      stage.wait(P.stayMs).then(() => stage.tween(c, { alpha: 0, y: at.y - P.rise }, P.outMs)).then(() => c.destroy());
+      stage.tween(c, { alpha: 1, y }, P.inMs, "back");
+      stage.wait(P.stayMs).then(() => stage.tween(c, { alpha: 0, y: y - P.rise }, P.outMs)).then(() => c.destroy());
     },
     /** A refused tap: the thing rocks and ends straight. No sound, no cross. */
     async wiggle(id) {
@@ -212,7 +221,7 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       const H = stage.halo(wordArt[id].art);
       const [pw] = stage.art.size(wordArt[id].art);
       const kk = it.w / pw / H.k; // the halo's small copy, drawn at the thing's size
-      it.halo = stage.image(halos, H.key, { x: it.slot.x, y: b.base - it.h / 2 });
+      it.halo = stage.image(halos, H.key, { x: it.slot.x, y: it.mid });
       it.halo.obj.setScale(kk);
       stage.scene.tweens.add({ targets: it.halo.obj, alpha: L.halo.breatheTo, duration: L.halo.breatheMs, yoyo: true, repeat: -1 });
       const up = Math.max(L.hop.min, Math.min(L.hop.max, it.h * L.hop.share));
@@ -225,18 +234,19 @@ export function createShelf({ stage, say, kit, k, row, wordArt, pillShows, onIte
       const it = items.get(id);
       const w = Math.max(it.w, it.pill.w);
       const hopRoom = Math.max(L.hop.min, Math.min(L.hop.max, it.h * L.hop.share));
-      const y0 = b.base - it.h - hopRoom;
+      const y0 = it.top - hopRoom;
       return { x: it.slot.x - w / 2, y: y0, w, h: row.pillY + it.pill.h / 2 + 2 - y0 };
     },
+    /** The thing as drawn, standing on the shelf line (its picture's empty margins left out). */
     picBox(id) {
       const it = items.get(id);
-      return { x: it.slot.x - it.w / 2, y: b.base - it.h, w: it.w, h: it.h };
+      return { x: it.slot.x - it.w / 2, y: it.drawnTop, w: it.w, h: b.base - it.drawnTop };
     },
     pillBox(id) {
       const it = items.get(id);
       return { x: it.slot.x - it.pill.w / 2, y: row.pillY - it.pill.h / 2, w: it.pill.w, h: it.pill.h };
     },
-    middleOf: (id) => ({ x: items.get(id).slot.x, y: b.base - items.get(id).h / 2 }),
+    middleOf: (id) => ({ x: items.get(id).slot.x, y: items.get(id).mid }),
     ids: () => [...items.keys()],
   };
 }

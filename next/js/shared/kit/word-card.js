@@ -38,18 +38,48 @@ export function wirePeeks(card, { kit, onPeek }) {
   en.querySelector(".d").addEventListener("click", peek(en, "english"));
 }
 
+/**
+ * A tap on a part, however small it is drawn: anywhere in a full tap's square round its middle (a phone's big card is small,
+ * and the light's dim round the part would swallow a tap that just misses it). Resolves true when tapped, false as soon as
+ * the card is gone (the round moved on mid-lesson); the page's listener goes with it either way.
+ */
+function tapOn(part, min, everyMs) {
+  return new Promise((res) => {
+    const end = (tapped) => {
+      document.removeEventListener("click", on, true);
+      clearInterval(gone);
+      res(tapped);
+    };
+    const on = (ev) => {
+      if (!part.isConnected) return end(false);
+      const r = part.getBoundingClientRect();
+      const [w, h] = [Math.max(r.width, min), Math.max(r.height, min)];
+      const [cx, cy] = [r.left + r.width / 2, r.top + r.height / 2];
+      if (Math.abs(ev.clientX - cx) > w / 2 || Math.abs(ev.clientY - cy) > h / 2) return;
+      ev.stopPropagation();
+      end(true);
+    };
+    document.addEventListener("click", on, true);
+    const gone = setInterval(() => !part.isConnected && end(false), everyMs);
+  });
+}
+
 /** The lesson on a big card: everything hidden, then each part lit in turn; a tap on the lit part shows it. */
 export async function revealLesson(card, { kit, light, sounds }) {
   const K = kit.cards;
   card.classList.add("lesson");
   const parts = [".well", ".ku", ".en"].map((sel) => card.querySelector(sel)).filter((p) => p && p.getBoundingClientRect().height >= K.lessonMinPx);
+  const boxOf = (el) => () => {
+    const r = el.getBoundingClientRect();
+    return { x: r.left, y: r.top, w: r.width, h: r.height };
+  };
+  // one light the whole lesson: first round the whole card, then gliding onto each part in turn (the standard's)
+  light.show(boxOf(card), { hard: true, margin: K.lessonMargin });
+  await wait(K.lessonCardMs);
   for (const [i, part] of parts.entries()) {
     part.classList.add("lit");
-    light.show(() => {
-      const r = part.getBoundingClientRect();
-      return { x: r.left, y: r.top, w: r.width, h: r.height };
-    }, { hard: true, margin: K.lessonMargin });
-    await new Promise((res) => part.addEventListener("click", res, { once: true, capture: true }));
+    light.show(boxOf(part), { hard: true, margin: K.lessonMargin, from: light.box(), ms: K.lessonMoveMs });
+    if (!(await tapOn(part, kit.look.minTap, K.lessonBeatMs))) break; // (the card went away: its light goes too)
     part.classList.remove("lit");
     part.classList.add("shown");
     sounds.play("reveal");

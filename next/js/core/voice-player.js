@@ -12,7 +12,8 @@
  * A word with no recording is read by the device voice (the test path only), which the voice module provides.
  *
  *   const P = webAudioPlayer({ settings, synth })
- *   P.play(url) -> Promise<played>   P.stop()   P.load(url) -> Promise<buffer | null>   P.hold(on)   P.synth(text) -> Promise
+ *   P.play(url, { onStart? }) -> Promise<played>   onStart: the clip has really started (loaded, decoded, the sound awake)
+ *   P.stop()   P.load(url) -> Promise<buffer | null>   P.hold(on)   P.synth(text) -> Promise
  */
 import { stamp } from "./env.js";
 
@@ -29,6 +30,7 @@ export function webAudioPlayer({ settings, synth = null }) {
   let current = null; // { src, finish }
   let gen = 0; // counts the stops: a clip still loading when stopped never starts
   let held = false;
+  const hearing = new Set(); // clips playing that have not been heard yet: asked again when the sound wakes or the hold lifts
 
   /** Woken on every tap: a phone's browser allows sound only from a tap, and may suspend it again later. */
   function wake() {
@@ -125,9 +127,10 @@ export function webAudioPlayer({ settings, synth = null }) {
     } catch (e) {
       /* no sound on this device */
     }
+    if (!on) hearing.forEach((f) => f());
   }
 
-  async function play(url) {
+  async function play(url, { onStart = null } = {}) {
     const g = gen;
     const buf = await new Promise((resolve) => {
       const go = () => resolve(null);
@@ -147,11 +150,27 @@ export function webAudioPlayer({ settings, synth = null }) {
       src.connect(gain).connect(ctx.destination);
       let done = false;
       let left = span.dur * 1000 + V.endPadMs;
+      // heard only with the sound awake: before a tap a phone keeps it asleep, and held it is asleep on purpose; a clip that
+      // starts asleep is heard from the moment the sound wakes, if it is still playing then
+      let heard = false;
+      const hear = () => {
+        if (heard || done || !onStart || held || ctx.state !== "running") return;
+        heard = true;
+        ctx.removeEventListener("statechange", hear);
+        hearing.delete(hear);
+        try {
+          onStart();
+        } catch (e) {
+          /* the caller's problem */
+        }
+      };
       const me = {
         src,
         finish(played) {
           if (done) return;
           done = true;
+          if (onStart) ctx.removeEventListener("statechange", hear);
+          hearing.delete(hear);
           clearInterval(clock);
           if (current === me) current = null;
           try {
@@ -171,7 +190,12 @@ export function webAudioPlayer({ settings, synth = null }) {
       try {
         src.start(0, span.at, span.dur);
       } catch (e) {
-        me.finish(false);
+        return me.finish(false);
+      }
+      if (onStart) {
+        ctx.addEventListener("statechange", hear);
+        hearing.add(hear);
+        hear();
       }
     });
   }

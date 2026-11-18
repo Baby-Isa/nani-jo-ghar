@@ -23,7 +23,7 @@ export function createHob({ stage, kitchen, plan, people, steamArt, onKnob, onFa
   const air = stage.layer("worktop", "steam");
   const ST = kitchen.steam;
   let wispN = 0;
-  stage.shadow(shadows, { x: plan.hob.x + plan.hob.w / 2, y: plan.hob.y + plan.hob.h / 2, w: plan.hob.w, h: plan.hob.h });
+  stage.shapeShadow(shadows, A.hob[plan.n - 1], { x: plan.hob.x, y: plan.hob.y, w: plan.hob.w });
   const hobPic = stage.picture(base, A.hob[plan.n - 1], { x: plan.hob.x, y: plan.hob.y, origin: [0, 0], w: plan.hob.w });
   const flameScale = plan.flame / k.flameSrc;
 

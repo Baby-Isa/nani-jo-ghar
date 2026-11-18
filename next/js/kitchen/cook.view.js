@@ -11,6 +11,7 @@ import { layoutOf, rowOf } from "./layout.js";
 import { bubbleAt } from "./heat.rules.js";
 import { carry } from "./carry.js";
 import { cookLights } from "./cook.lights.js";
+import { createCountPills } from "./count-pills.js";
 
 const fill = (meaning, item) => JSON.parse(JSON.stringify(meaning).replace(/\$item/g, item));
 
@@ -26,6 +27,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
   let offResize = null;
   let lights = null;
   let level = 1;
+  const pills = createCountPills({ stage, say, kit, kitchen, onTap: (item) => send({ type: "count", item }) });
   const heatK = () => ({ ...kitchen.heat, ...atLevel(settings.heat.byLevel, level) });
 
   const lookOf = (s, v) => {
@@ -50,27 +52,10 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
     for (const [id, done] of Object.entries(t)) ui.cards.tick(v, id, done);
   }
 
-  /** The count pills above the stove: what the child has counted into the chosen vessel. Never a digit. */
+  /** The count pills above the stove, for the chosen vessel while it is being made. */
   function counts(s) {
-    stage.el.over.querySelectorAll(".count").forEach((e) => e.remove());
-    if (s.name !== "cooking") return;
-    const v = s.chosen;
-    const list = G.counts(s.vessels[v].dish);
-    const asWords = atLevel(kit.levels.countAsWords, level);
-    const [px, py] = stage.toPage("worktop", D.plan.vessels[v].x, D.plan.hob.y);
-    list.forEach((c, n) => {
-      const el = document.createElement("div");
-      el.className = "count bump";
-      el.dataset.ownTaps = "1";
-      el.dataset.item = c.item;
-      const word = asWords ? say.line({ fn: "Item", kind: c.item, n: c.n }, { row: true }).pieces[0].t : "●".repeat(Math.min(C.countPill.dotsMost, c.n));
-      el.innerHTML = `<img src="${stage.art.file(kit.wordArt[c.item].art)}" alt=""><span>${word}</span>`;
-      el.addEventListener("pointerdown", () => send({ type: "count", item: c.item }));
-      stage.el.over.appendChild(el);
-      // its foot just above the hob; on a short screen it stays whole and overlaps the hob's edge instead
-      el.style.left = `${px + (n ? (n % 2 ? 1 : -1) * Math.ceil(n / 2) * C.countPill.step : 0)}px`;
-      el.style.top = `${Math.max(py - C.countPill.gap, C.countPill.margin + el.offsetHeight)}px`;
-    });
+    if (s.name !== "cooking") return pills.clear();
+    pills.show({ plan: D.plan, v: s.chosen, list: G.counts(s.vessels[s.chosen].dish), asWords: atLevel(kit.levels.countAsWords, level) });
   }
 
   function onStep(s, first = null) {
@@ -101,7 +86,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       ticks(s, v);
       counts(s);
       lights.clear();
-      D.shelf.pop(e.item, { x: at.x, y: D.plan.hob.y - Math.max(C.wordPop.aboveHob, C.wordPop.aboveHobPx / stage.scaleOf("worktop")) });
+      D.shelf.pop(e.item, pills.popAt(D.plan, v, e.item));
       if (atLevel(kit.levels.wordAtTap, level)) say.speak(say.word(e.item), { ifIdle: true });
       const look = lookOf(s, v);
       const pan = D.vessels[v].pan;
@@ -286,7 +271,10 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       groundTo(view.top);
       const hobArt = kitchen.art.hob[n - 1];
       const [hw, hh] = stage.art.size(hobArt);
-      const plan = layoutOf({ n, view, k: K, hob: { w: hw, h: hh, burners: stage.art.meta(hobArt, "burners") }, vessel: settings.vessel, spot: settings.serving });
+      // the word pop's height on screen (it is never drawn under its least size), its gap above the hob and its margin at the top
+      const PP = kit.look.pop;
+      const popRoom = PP.h * Math.max(view.s, PP.minPx / PP.font) + kitchen.cook.wordPop.aboveHobPx + kitchen.cook.countPill.margin;
+      const plan = layoutOf({ n, view, k: K, hob: { w: hw, h: hh, burners: stage.art.meta(hobArt, "burners") }, vessel: settings.vessel, spot: settings.serving, popRoom });
       // laid out for this screen; if it later gets shorter, the whole of it stays in view (the stage fits it, smaller)
       stage.keepInView("worktop", Math.min(plan.hob.y, plan.spot.y) - K.play.top);
       const rowPlan = rowOf({ groups: row, plan, view, k: K, pillW: (id) => stage.measure(say.entry(id).kutchi, K.pill.font) + K.pill.pad });
@@ -376,7 +364,7 @@ export function cookView({ stage, say, kit, kitchen, settings, game, people, ui,
       if (offTick) offTick();
       if (offResize) offResize();
       ui.sounds.simmer(-1);
-      stage.el.over.querySelectorAll(".count").forEach((e) => e.remove());
+      pills.clear();
     },
   };
 }

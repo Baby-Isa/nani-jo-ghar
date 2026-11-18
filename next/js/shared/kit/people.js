@@ -3,17 +3,20 @@
  * One kitchen for the order, the serve and the thanks. A scene holds up to three people, each able to be handed a
  * thing, called or thanked. The counter's front hides everything below its edge, so people lean on it.
  *
- *   const room = await createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift })
+ *   const room = await createRoom({ stage, kit, roomArt, people, standing: [{ id, spot }], lift, speech? })
+ *       speech: the kind of bubble its scene shows ("greet", the tallest, or "line"), for the strip kept above the heads
  *   room.walkIn() -> Promise      room.walkOff() -> Promise      room.talk(seat, on)      room.mood(seat, "happy" | "neutral")
  *   room.bubble(seat, html | null)      room.head(seat) -> the head's box on the page      room.figureAt(seat) -> { x, top }
  *   room.bubbleBox() -> where the bubble sits, in the play area's px      room.placeBubble(avoid?) places it again
+ *   room.headsTop: the top of the highest head's outline, in world px      room.strip() -> its px
+ *   room.fit() after a new frame: the people stand lower for the strip where they must, and across the slice of the room shown
  *   room.key: who stands where (roomKey), so the next scene keeps a room with the same people instead of walking them in again
  *   room.reading(on)   the bubble's words underlined while they are said      room.nani(mood)   Nani, when she stands in (nani: true)
  */
 /** Who stands where, and how the room is framed: a scene that finds the same room already standing keeps it. */
 export const roomKey = (standing, lift, nani = false) => JSON.stringify([standing.map((p) => [p.id, p.spot]), lift, nani]);
 
-export async function createRoom({ stage, kit, roomArt, people, standing, lift, walk = true, nani = false }) {
+export async function createRoom({ stage, kit, roomArt, people, standing, lift, walk = true, nani = false, speech = "greet" }) {
   const R = kit.room;
   const all = nani ? [{ id: "nani" }].concat(standing) : standing;
   const refs = [roomArt].concat(all.flatMap((p) => Object.values(people[p.id].figure).filter((v) => typeof v === "string")));
@@ -32,22 +35,77 @@ export async function createRoom({ stage, kit, roomArt, people, standing, lift, 
   const [rw, rh] = stage.art.size(roomArt);
   counter.obj.setCrop(0, R.counterY - py, rw, rh - (R.counterY - py));
 
+  /**
+   * Where a figure stands across the room as the screen shows it: the places are planned across the whole painting (1600 wide),
+   * so on a screen that shows a narrower slice of it (a tall one, zoomed in) they are spread across that slice instead, and
+   * each head is kept whole inside it with a margin (R.sideKeep screen px), at every size and with any number of people.
+   */
+  function xIn(f, plan) {
+    const v = stage.visibleX("room");
+    const m = R.sideKeep / stage.scaleOf("room");
+    const x = v.left + (plan / stage.sheet.w) * (v.right - v.left);
+    const [w] = stage.art.size(f.neutral);
+    const [hx, , hw] = f.head;
+    const [l, r] = [(hx - w / 2) * f.scale, (hx + hw - w / 2) * f.scale]; // the head's sides from the figure's middle
+    return Math.max(v.left + m - l, Math.min(v.right - m - r, x));
+  }
   const seats = standing.map((p) => {
     const f = people[p.id].figure;
-    const x = typeof p.spot === "number" ? p.spot : R.spots[p.spot];
-    const top = Math.round(R.armY - f.armTop * f.scale);
-    const pic = stage.picture(figures, f.neutral, { x: walk ? R.from : x, y: top, origin: [0.5, 0], scale: f.scale });
-    return { id: p.id, f, x, top, pic, talking: null, mood: "neutral" };
+    const plan = typeof p.spot === "number" ? p.spot : R.spots[p.spot];
+    const top0 = Math.round(R.armY - f.armTop * f.scale);
+    const pic = stage.picture(figures, f.neutral, { x: walk ? R.from : xIn(f, plan), y: top0, origin: [0.5, 0], scale: f.scale });
+    return { id: p.id, f, plan, x: xIn(f, plan), top0, top: top0, pic, talking: null, mood: "neutral", walking: walk };
   });
-  // however short the screen, there is room above the heads for a bubble (the serve glides down to its trays instead)
-  if (!nani) stage.keepInView("room", Math.min(...seats.map((s) => s.top + s.f.head[1] * s.f.scale)), R.bubbleRoom);
-  let bubbleEl = null;
+  // the top of a figure's own outline over its head (a cap included), in world px: the highest of the pictures it may show
+  const crownAt = (f, top) => {
+    const [w, ph] = stage.art.size(f.neutral);
+    const [hx, , hw] = f.head;
+    return top + Math.min(...[f.neutral, f.talk, f.happy].filter(Boolean).map((ref) => stage.solid(ref).top(hx / w, (hx + hw) / w))) * ph * f.scale;
+  };
   // Nani at her own place, left of everyone: she is simply there
   const nf = people.nani.figure;
-  const naniPic = nani ? stage.picture(figures, nf.neutral, { x: R.naniX, y: Math.round(R.armY - nf.armTop * nf.scale), origin: [0.5, 0], scale: nf.scale }) : null;
+  const nani0 = Math.round(R.armY - nf.armTop * nf.scale);
+  let naniX = xIn(nf, R.naniX);
+  const naniPic = nani ? stage.picture(figures, nf.neutral, { x: naniX, y: nani0, origin: [0.5, 0], scale: nf.scale }) : null;
+  const everyone = () => seats.map((x) => ({ f: x.f, x: x.x, top: x.top })).concat(naniPic ? [{ f: nf, x: naniX, top: nani0 + drop }] : []);
+  // the highest head in the room, in world px, as the people stand on the counter (Nani's too when she stands in)
+  const headsTop = Math.min(...seats.map((x) => crownAt(x.f, x.top0)).concat(nani ? [crownAt(nf, nani0)] : []));
+
+  /**
+   * The speech strip (Zafar, 18 Nov): above the highest head there is always room for one bubble (this scene's kind's height,
+   * data/kit.json room.speech, at the screen's scale) and its gap, and a margin at the top. The room is framed for it; where the
+   * frame cannot give it (the serve keeps its trays in view too), the people stand lower and the counter covers more of them.
+   */
+  const ffNow = () => ["phone", "tablet", "laptop"].find((c) => document.documentElement.classList.contains(c)) || "laptop";
+  const zoom = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--s")) || 1;
+  const bubbleH = () => R.speech[speech][ffNow()] * zoom();
+  const strip = () => bubbleH() + R.bubbleGap + R.bubbleMin;
+  let drop = 0; // world px the people stand lower than on the counter, for the strip
+  function fit() {
+    const s = stage.scaleOf("room");
+    drop = Math.max(0, stage.topOf("room") + strip() / s - (headsTop - R.talk.bob));
+    seats.forEach((x) => {
+      x.top = x.top0 + drop;
+      x.x = xIn(x.f, x.plan);
+      if (!x.talking) x.pic.set({ y: x.top });
+      if (!x.walking) x.pic.set({ x: x.x });
+    });
+    naniX = xIn(nf, R.naniX);
+    if (naniPic) naniPic.set({ y: nani0 + drop, x: naniX });
+  }
+  if (!nani) stage.keepInView("room", headsTop, strip());
+  fit();
+  let bubbleEl = null;
+
+  // the strip's foot on the page: the top of the highest head's outline (at the top of a speaker's bob), less the gap
+  const stripFoot = () => Math.min(...everyone().map((x) => stage.toPage("room", 0, crownAt(x.f, x.top) - R.talk.bob)[1])) - R.bubbleGap;
 
   // the bubble's place is worked out from the speaker's head now, so it can be worked out again at a new size
   const bubbleAt = { seat: null, avoid: null };
+  /**
+   * One place for a bubble: in the strip, above its speaker, centred over their head and kept inside the play area, its tail
+   * pointing down at the head (still at the head where the bubble was kept in or moved aside of the big card).
+   */
   function placeBubble(seat, avoid) {
     const el = bubbleEl;
     Object.assign(bubbleAt, { seat, avoid });
@@ -56,43 +114,54 @@ export async function createRoom({ stage, kit, roomArt, people, standing, lift, 
     const z = parseFloat(getComputedStyle(el).zoom) || 1;
     const b = el.getBoundingClientRect();
     const half = b.width / 2;
-    const tall = b.height;
     const play = stage.size();
-    const x = Math.max(half + R.edge, Math.min(play.w - half - R.edge, h.x + h.w / 2));
-    const top = Math.max(tall + R.bubbleMin, h.y - R.bubbleGap);
-    // beside the big card where it would cover it; its tail still points down at the speaker
-    const beside = avoid && top > avoid.y && top - tall < avoid.y + avoid.h ? Math.max(x, avoid.x + avoid.w + avoid.gap + half) : x;
-    el.style.left = `${beside / z}px`;
-    el.style.top = `${top / z}px`;
-    el.style.setProperty("--tail", `${Math.max(R.tailMin, Math.min(2 * half - R.tailMin, half + (h.x + h.w / 2 - beside))) / z}px`);
+    const cx = h.x + h.w / 2;
+    const bottom = stripFoot();
+    let x = Math.max(half + R.edge, Math.min(play.w - half - R.edge, cx));
+    // beside the big card where it would cover it
+    if (avoid && bottom > avoid.y && bottom - b.height < avoid.y + avoid.h) x = Math.max(x, avoid.x + avoid.w + avoid.gap + half);
+    el.style.left = `${x / z}px`;
+    el.style.top = `${bottom / z}px`;
+    el.style.setProperty("--tail", `${Math.max(R.tailMin, Math.min(2 * half - R.tailMin, half + (cx - x))) / z}px`);
   }
-  stage.onResize(() => bubbleEl && placeBubble(bubbleAt.seat, bubbleAt.avoid), "room");
+  stage.onResize(() => (fit(), bubbleEl && placeBubble(bubbleAt.seat, bubbleAt.avoid)), "room");
 
-  function head(seat) {
-    const s = seats[seat];
-    const [w] = stage.art.size(s.f.neutral);
-    const [hx, hy, hw, hh] = s.f.head;
+  // a figure's head box on the page: from the top of its outline (its cap) down to its head's foot
+  function headAt(f, cx, top) {
+    const [w] = stage.art.size(f.neutral);
+    const [hx, hy, hw, hh] = f.head;
     const k = stage.scaleOf("room");
-    const [x, y] = stage.toPage("room", s.x - (w / 2) * s.f.scale + hx * s.f.scale, s.top + hy * s.f.scale);
-    return { x, y, w: hw * s.f.scale * k, h: hh * s.f.scale * k };
+    const [x, y] = stage.toPage("room", cx - (w / 2) * f.scale + hx * f.scale, top + hy * f.scale);
+    const crown = stage.toPage("room", 0, crownAt(f, top))[1];
+    return { x, y: Math.min(y, crown), w: hw * f.scale * k, h: y + hh * f.scale * k - Math.min(y, crown) };
   }
+  const head = (seat) => headAt(seats[seat].f, seats[seat].x, seats[seat].top);
 
   return {
     seats,
+    headsTop,
+    strip,
+    fit,
     key: roomKey(standing, lift, nani),
     /** Everyone comes in from the right at once, with a small hop, and stands at their spot. */
     async walkIn() {
       await Promise.all(
         seats.map((s) => {
           stage.scene.tweens.add({ targets: s.pic.obj, y: s.top - R.hop, duration: R.hopMs, yoyo: true, repeat: R.hops });
-          return s.pic.to({ x: s.x }, kit.order.walkIn, "cubicOut");
+          return s.pic.to({ x: s.x }, kit.order.walkIn, "cubicOut").then(() => ((s.walking = false), s.pic.set({ x: s.x })));
         })
       );
     },
     async walkOff() {
-      for (const s of seats) await s.pic.to({ x: R.from }, R.walkOffMs, "cubicIn");
+      for (const s of seats) {
+        s.walking = true;
+        await s.pic.to({ x: R.from }, R.walkOffMs, "cubicIn");
+      }
     },
-    /** While a person speaks, their talking picture flaps against their resting one, with a small bob. */
+    /**
+     * While a person speaks, their talking picture flaps against their resting (neutral) one, with a small bob, as the standard
+     * does: never against their happy one, whose raised hand would flap up and down. After the line they keep their mood.
+     */
     talk(seat, on) {
       const s = seats[seat];
       if (s.talking) s.talking.forEach((t) => t.remove());
@@ -104,7 +173,7 @@ export async function createRoom({ stage, kit, roomArt, people, standing, lift, 
       const flap = { remove: () => (flap.timer && flap.timer.remove(), (flap.gone = true)) };
       const step = (open) => {
         if (flap.gone) return;
-        s.pic.swap(open ? s.f.talk : s.f[s.mood]);
+        s.pic.swap(open ? s.f.talk : s.f.neutral);
         flap.timer = stage.scene.time.delayedCall(open ? T.openMs : T.shutMs[0] + Math.random() * (T.shutMs[1] - T.shutMs[0]), () => step(!open));
       };
       step(true);
@@ -138,13 +207,14 @@ export async function createRoom({ stage, kit, roomArt, people, standing, lift, 
       const [b, o] = [bubbleEl.getBoundingClientRect(), stage.el.play.getBoundingClientRect()];
       return { x: b.left - o.left, y: b.top - o.top, w: b.width, h: b.height };
     },
-    /** For the checks: where each person's head is on the page. */
+    /** For the checks: where each person's head is on the page (from the top of its outline), and the speech strip. */
     probe() {
       const r = stage.el.play.getBoundingClientRect();
-      return seats.map((s, i) => {
-        const h = head(i);
-        return { kind: "head", id: s.id, x: r.left + h.x, y: r.top + h.y, w: h.w, h: h.h };
-      });
+      const heads = seats.map((s, i) => ({ id: s.id, ...head(i) })).concat(naniPic ? [{ id: "nani", ...headAt(nf, naniX, nani0 + drop) }] : []);
+      const foot = stripFoot();
+      return heads
+        .map((h) => ({ kind: "head", id: h.id, x: r.left + h.x, y: r.top + h.y, w: h.w, h: h.h }))
+        .concat({ kind: "strip", id: 0, x: r.left, y: r.top + foot - bubbleH(), w: r.width, h: bubbleH() });
     },
     figureAt: (seat) => ({ x: seats[seat].x, top: seats[seat].top }),
   };

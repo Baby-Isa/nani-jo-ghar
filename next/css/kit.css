@@ -31,7 +31,11 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--page);
 /* faces: the same round face everywhere; where it is a button, the small face sits in a full-size tap */
 .facebtn { --f: max(var(--face-min), calc(var(--face) * var(--p))); position: relative; z-index: 1; flex: none; width: 48px; height: 48px; display: grid; place-items: center; border: 0; background: none; margin: calc((var(--f) - 48px) / 2); margin-left: max(calc((var(--f) - 48px) / 2), -4px); }
 .face { position: relative; flex: none; width: max(var(--face-min), calc(var(--face) * var(--p))); height: max(var(--face-min), calc(var(--face) * var(--p))); border-radius: 50%; background: #f1e6d4 center / cover; box-shadow: 0 0 0 1px var(--card-border); }
-.face .badge { position: absolute; left: -2px; bottom: -3px; width: 16.7px; height: 16.7px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 2px #fff; }
+/* the speaker badge on a face: the standard's place, a fifth smaller (Zafar, 18 Nov); the face's own button is the full tap. A face in
+   a row sits a little high so the face and its badge together are centred in the row; on Nani's box the badge's ring is the box's green */
+.face .badge { position: absolute; left: var(--badge-x); bottom: calc(-1 * var(--badge-hang)); width: var(--badge); height: var(--badge); border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 var(--badge-ring) #fff; }
+.nani-box .face .badge { box-shadow: 0 0 0 var(--badge-ring) var(--nani-bg); }
+.ocard-top .facebtn, .nani-row .facebtn { translate: 0 calc(-1 * var(--badge-hang) / 2); }
 /* the one speaker mark: a speaker with two waves */
 :root { --speaker-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath fill='black' d='M11 5 6 9H2v6h4l5 4z'/%3E%3Cpath d='M15.5 8.5a5 5 0 0 1 0 7M18.6 5.4a9.5 9.5 0 0 1 0 13.2'/%3E%3C/svg%3E"); }
 .face .badge::after, .speaker::after { content: ""; position: absolute; inset: 20%; background: #fff; -webkit-mask: var(--speaker-mark) center / contain no-repeat; mask: var(--speaker-mark) center / contain no-repeat; }
@@ -43,56 +47,95 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--page);
 button { padding: 0; cursor: pointer; }
 
 /* Nani's box */
-.nani-box { background: var(--nani-bg); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--nani-shadow); padding: calc(8px * var(--p)); }
-.nani-row { display: flex; align-items: center; gap: calc(8px * var(--p)); min-height: calc(46.6px * var(--p) + 4px * (1 - var(--p)) * 9); }
-.nani-line { flex: 1; font: 500 max(var(--nani-font-min), calc(var(--nani-font) * var(--p) + 3.46px * (1 - var(--p)) * 2.94)) / 1.2 var(--font-word); text-wrap: balance; }
+/* the standard's box: always two lines' room, so it keeps one height as her line changes; her face at its top; one line sits
+   level with her face, two fill the box (her line's size: --nani-font on a laptop, lifted towards --nani-font-lift as the panel shrinks) */
+.nani-box { --nf: max(var(--nani-font-min), calc(var(--nani-font) * var(--p) + var(--nani-font-lift) * (1 - var(--p)))); background: var(--nani-bg); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--nani-shadow); padding: calc(var(--nani-pad) * var(--p)); }
+.nani-row { display: flex; align-items: flex-start; gap: calc(var(--nani-gap) * var(--p)); min-height: calc(var(--nani-lines) * var(--nani-lh) * var(--nf) + var(--nani-hair)); }
+.nani-line { flex: 1; min-width: 0; min-height: max(var(--face-min), calc(var(--face) * var(--p))); display: flex; flex-direction: column; justify-content: center; font: 500 var(--nf) / var(--nani-lh) var(--font-word); }
+.nani-line .t { text-wrap: wrap; }
 .nani-line .k { color: var(--kutchi); }
 .nani-line .gap, .gap { color: var(--grey); font-style: italic; }
-.nani-line.saying { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 5px; }
-.chevron { flex: none; width: max(30px, calc(48px * var(--p))); height: max(30px, calc(48px * var(--p))); border-radius: 50%; border: 0; background: rgba(255, 255, 255, .75); position: relative; transition: transform 350ms; }
+.nani-line.saying .t { text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 3px; text-underline-offset: 5px; }
+.chevron { align-self: center; flex: none; width: max(30px, calc(48px * var(--p))); height: max(30px, calc(48px * var(--p))); border-radius: 50%; border: 0; background: rgba(255, 255, 255, .75); position: relative; transition: transform 350ms; }
 .chevron::after { content: ""; position: absolute; left: 50%; top: 44%; width: 22%; height: 22%; border: solid var(--ink); border-width: 0 2.6px 2.6px 0; transform: translate(-50%, -50%) rotate(45deg); }
 .chevron.open { transform: rotate(180deg); }
 .chevron[hidden] { display: none; }
-.helper { overflow: hidden; height: 0; transition: height 450ms cubic-bezier(.3, .7, .2, 1); }
-.helper.open { height: calc(62.1px * var(--p) + 6.4px + 4px * (1 - var(--p))); }
-.helper-card { margin-top: 6.4px; display: flex; align-items: center; gap: 8px; background: var(--pop-bg); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--pop-shadow); padding: 4px; }
-.helper-card .well { width: 24%; aspect-ratio: 4 / 3; }
-.helper-card .words { flex: 1; }
-.helper-card .ku { font: 600 calc(23.1px * var(--p) + 0px) var(--font-word); color: var(--kutchi); }
-.helper-card .en { font: 600 16px "Nunito Sans"; color: var(--grey); }
+/* her helper opens to its card's own height (grid rows 0fr to 1fr) and shows the whole card: its clip keeps room round the
+   card for the card's shadow, so no corner is cut hard */
+.helper { --room: calc(var(--helper-room) * var(--p)); display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--helper-open-ms) cubic-bezier(.3, .7, .2, 1); }
+.helper.open { grid-template-rows: 1fr; }
+.helper:not(.open) { transition-duration: var(--helper-shut-ms); transition-timing-function: cubic-bezier(.45, 0, .25, 1); }
+.helper-in { min-height: 0; min-width: 0; overflow: hidden; margin: 0 calc(-1 * var(--room)) calc(-1 * var(--room)); padding: 0 var(--room) var(--room); }
+/* shut, nothing of it shows (its shadow's room would show a sliver of the card): hidden once it has folded */
+.helper:not(.open) .helper-in { visibility: hidden; transition: visibility 0s var(--helper-shut-ms); }
+/* the helper card: the picture a short strip at the left, the Kutchi above its English in the middle, the speaker at the right */
+.helper-card { margin-top: calc(var(--helper-top) * var(--p)); container-type: inline-size; display: grid; grid-template-columns: var(--helper-pic) minmax(0, 1fr) auto; align-items: center; column-gap: var(--helper-gap); background: var(--pop-bg); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--helper-shadow); padding: var(--helper-pad); }
+.helper-card .well { width: 100%; aspect-ratio: var(--item-pic-phone); border-radius: calc(var(--helper-pic-radius) * var(--p)); }
+/* on a phone, the standard's flatter strip: the helper takes as little of the short panel as old chai's did */
+:root.phone .helper-card { padding: var(--helper-pad-phone); column-gap: var(--helper-gap-phone); }
+:root.phone .helper-card .well { aspect-ratio: var(--helper-pic-phone); }
+.helper-card .hwords { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: var(--helper-words-gap); }
+.helper-card .ku { margin: 0; text-align: left; font-size: clamp(max(var(--item-font-min), calc(var(--helper-ku-min) * var(--p))), var(--helper-ku), calc(var(--helper-ku-max) * var(--p))); line-height: 1.08; }
+.helper-card .en { margin: 0; text-align: left; font-size: clamp(max(var(--item-en), calc(var(--helper-en-min) * var(--p))), var(--helper-en), calc(var(--helper-en-max) * var(--p))); }
+/* its speaker drawn as the standard's (never under its least size), its tap the full size round it (.speaker::before) */
+.helper-card .speaker { margin: 0 calc(var(--helper-spk-edge) * var(--p)) 0 0; width: clamp(max(var(--speaker-min), calc(var(--tap) * var(--p))), var(--helper-spk), max(var(--speaker-min), calc(var(--helper-spk-max) * var(--p)))); height: auto; aspect-ratio: 1; box-shadow: var(--helper-spk-ring); }
 
 /* order cards */
-#cards { margin-top: 7px; }
-:root.phone #cards { margin-top: 2px; }
-#cards { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: calc(10px * var(--p)); scrollbar-width: none; scroll-behavior: smooth; }
-.ocard { flex: none; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--card-shadow); padding: calc(var(--card-pad) * var(--p) * 0.75 + var(--card-pad) * 0.25 * (var(--p) - 0.66) / 0.34); }
+#cards { margin-top: var(--cards-top); }
+:root.phone #cards { margin-top: var(--cards-top-phone); }
+#cards { flex: 1; min-height: 0; overflow-y: auto; overflow-anchor: none; display: flex; flex-direction: column; gap: calc(var(--cards-gap) * var(--p)); scrollbar-width: none; }
+/* the list's soft foot (the standard's): a card running off the panel's foot fades rather than being cut hard; the list keeps
+   that much room below its last card, and more (--room, js/shared/kit/order-panel.js) where it must rest at a card's top */
+#cards { --fade: calc(var(--panel-fade) * var(--p)); padding-bottom: calc(var(--fade) + var(--room, 0px)); -webkit-mask-image: linear-gradient(black calc(100% - var(--fade)), transparent); mask-image: linear-gradient(black calc(100% - var(--fade)), transparent); }
+/* folded, a card is as tall as its top line and padding, never under a tap's height, its line in the middle */
+.ocard { flex: none; box-sizing: border-box; min-height: var(--tap); display: flex; flex-direction: column; justify-content: center; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: calc(var(--radius) * var(--p)); box-shadow: var(--card-shadow); padding: calc(var(--card-pad) * var(--p) * 0.75 + var(--card-pad) * 0.25 * (var(--p) - 0.66) / 0.34); }
 .ocard[hidden] { display: none; }
-.ocard-top { display: flex; align-items: center; gap: calc(8px * var(--p)); min-height: max(40px, calc(44px * var(--p))); }
-.ocard-top .head { flex: 1; font: 600 max(var(--head-min), calc(var(--head-font) * var(--p) + 1.7px * (1 - var(--p)) / 0.34)) / 1.25 var(--font-word); }
+.ocard-top { display: flex; align-items: center; gap: calc(var(--head-gap) * var(--p)); }
+.ocard-top .head { flex: 1; font: 600 max(var(--head-min), calc(var(--head-font) * var(--p) + var(--head-lift) * (1 - var(--p)))) / var(--head-lh) var(--font-word); }
 .ocard-top .head .k.item { color: var(--kutchi); }
-.ocard-top .tick, .icard .tick { flex: none; width: calc(20px * var(--p) + 2.8px * (1 - var(--p)) / 0.34 * 0 + 0px); height: calc(20px * var(--p)); min-width: 16px; min-height: 16px; border-radius: 50%; background: var(--gold); position: relative; transform: scale(0); transition: transform 250ms; }
-.tick::after { content: ""; position: absolute; left: 34%; top: 20%; width: 26%; height: 46%; border: solid #fff; border-width: 0 2.4px 2.4px 0; transform: rotate(40deg); }
-.ocard-top .tick { display: none; }
+/* the gold tick: a gold disc in a white ring, its tick drawn in the middle (a mask, so the tick is always centred) */
+:root { --tick-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.6 10.4 8.6 13.3 14.4 7.2' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); --cross-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6.8 6.8 13.2 13.2M13.2 6.8 6.8 13.2' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E"); --no-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8.6' fill='none' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M6.2 17.8L17.8 6.2' stroke='black' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.tick { position: relative; flex: none; display: block; width: calc(var(--tick) * var(--p)); height: calc(var(--tick) * var(--p)); border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 calc(var(--tick-ring) * var(--p)) #fff; transform: scale(0); transition: transform 250ms; }
+.tick::after { content: ""; position: absolute; inset: 0; background: #fff; -webkit-mask: var(--tick-mark) center / 100% 100% no-repeat; mask: var(--tick-mark) center / 100% 100% no-repeat; }
+/* the folded card's tick: the standard's own size, not the item card's */
+.ocard-top .tick { display: none; width: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); height: max(var(--fold-tick-min), calc(var(--fold-tick) * var(--p))); }
 .ocard.served .ocard-top .tick { display: block; transform: scale(1); animation: tick-in 250ms; }
 @keyframes tick-in { from { scale: 0; } }
-.ocard-body { overflow: hidden; height: calc(var(--item-h) + 9px); transition: height 320ms cubic-bezier(.4, 0, .2, 1), opacity 300ms; }
-.ocard.folded .ocard-body { height: 0; opacity: 0; }
-.orow { display: flex; gap: var(--item-gap); overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; padding: 2px 1px 6px; }
-:root.phone .orow { gap: 5.3px; }
-.icard { position: relative; flex: none; box-sizing: border-box; width: var(--item-w); height: var(--item-h); background: var(--item-bg); border-radius: var(--item-radius); box-shadow: var(--item-shadow); padding: 7.9px 7.9px 0; display: flex; flex-direction: column; align-items: center; border: 1px solid transparent; }
-:root.phone .icard { width: 76.4px; height: auto; min-height: 131.6px; border-radius: 9.24px; padding: 5.24px 5.24px 0; }
+/* a card opens to its row's own height and folds to nothing (grid rows 0fr to 1fr: no height to measure, none to go stale) */
+/* (its row's padding sits inside .ocard-in, which folds to nothing; the times are data/kit.json's, and the panel waits them out) */
+.ocard-body { display: grid; grid-template-rows: 1fr; overflow: hidden; transition: grid-template-rows var(--fold-ms) var(--fold-ease), opacity var(--fold-fade-ms); }
+.ocard.folded .ocard-body { grid-template-rows: 0fr; opacity: 0; }
+.ocard-in { min-height: 0; overflow: hidden; }
+/* the row of item cards: two and a half show (a card is a share of the row, so the cards keep the standard's measures at every
+   width); every card in a row is as tall as the tallest, so the line over each speaker is at one height across the row */
+/* its edges fade while there is more to swipe that way (--fade-l, --fade-r: 0 at the row's end, 1 with a card's worth left; js) */
+.orow { --rf: calc(var(--row-fade) * var(--p)); -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / calc(1 - var(--fade-l, 0))), black var(--rf), black calc(100% - var(--rf)), rgb(0 0 0 / calc(1 - var(--fade-r, 0)))); mask-image: linear-gradient(to right, rgb(0 0 0 / calc(1 - var(--fade-l, 0))), black var(--rf), black calc(100% - var(--rf)), rgb(0 0 0 / calc(1 - var(--fade-r, 0)))); }
+.orow { --gap: calc(var(--item-row-gap) * var(--p)); display: flex; align-items: stretch; gap: var(--gap); overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-behavior: smooth; padding: calc(var(--item-row-edge) * var(--p)) calc(var(--item-row-edge) * var(--p)) calc(var(--item-row-foot) * var(--p)); container-type: inline-size; }
+.icard { --pad: max(var(--item-pad-min), var(--item-pad)); position: relative; flex: 0 0 calc((100% - 2 * var(--gap)) / var(--item-share)); min-width: 0; box-sizing: border-box; container-type: inline-size; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto auto 1fr auto auto; justify-items: center; background: var(--item-bg); border-radius: calc(var(--item-radius) * var(--p)); box-shadow: var(--item-shadow); padding: var(--pad) var(--pad) 0; border: 1px solid transparent; isolation: isolate; }
+.icard > * { grid-column: 1; }
+.icard > .well { grid-row: 1; width: 100%; aspect-ratio: var(--item-pic); border-radius: calc(var(--item-radius) * var(--p)); }
+:root.phone .icard > .well { aspect-ratio: var(--item-pic-phone); }
+/* while the panel's sizes step down (--fit under 1: Nani's helper open on a short phone) the pictures flatten first, so the card
+   being cooked for still shows whole with its words and speakers; a narrower card would wrap its words and grow instead */
+:root.phone #side:not([data-fit="1"]) .icard > .well { aspect-ratio: auto; height: calc(100cqi / var(--item-pic-phone-k) * var(--fit) * var(--fit)); }
+.icard > .ku { grid-row: 3; align-self: end; margin-top: var(--item-ku-gap); font-size: clamp(var(--item-font-min), var(--item-ku), max(var(--item-font-min), calc(var(--item-ku-max) * var(--p)))); }
+.icard > .en { grid-row: 4; align-self: start; margin-top: var(--item-en-gap); font-size: clamp(var(--item-en), var(--item-en-cq), max(var(--item-en), calc(var(--item-en-max) * var(--p)))); }
+.icard > .rule { grid-row: 6; width: var(--item-rule-w); height: max(1px, var(--item-rule-h)); margin-top: var(--item-step); background: linear-gradient(to right, transparent, var(--item-rule) 18%, var(--item-rule) 82%, transparent); }
+/* the speaker drawn as the standard's (smaller on a phone), its own box a full tap: a clear border round the disc, taken back by
+   its margins so nothing moves */
+.icard > .speaker { --d: max(var(--speaker-min), calc(var(--tap) * var(--p))); --b: max(0px, (var(--tap) - var(--d)) / 2); grid-row: 7; align-self: end; box-sizing: content-box; width: var(--d); height: var(--d); border: var(--b) solid transparent; background-clip: padding-box; margin: calc(var(--item-step) - var(--b)) calc(-1 * var(--b)) calc(var(--item-step) - 1px - var(--b)); }
+:root.phone .icard > .speaker { --d: calc(max(var(--speaker-min), calc(var(--tap) * var(--p))) * var(--speaker-phone)); }
 .icard.waiting { background: transparent; box-shadow: none; border: 1px dashed var(--dash); opacity: .55; }
 .icard.waiting > * { visibility: hidden; }
-.icard.done { border-color: rgba(201, 150, 46, .55); }
-.icard .tick { position: absolute; right: -4px; top: -4px; width: 22px; height: 22px; }
-:root.phone .icard .tick { width: 14.5px; height: 14.5px; }
-.icard.done .tick { transform: scale(1); }
-.icard.cross .tick { transform: scale(1); background: var(--wrong); }
+.icard.done { border-color: var(--done-edge); }
+/* the tick inside the card's corner, its white ring round it, never cut by the row */
+.icard > .tick { position: absolute; right: calc(var(--tick-inset) * var(--p)); top: calc(var(--tick-inset) * var(--p)); z-index: 3; }
+.icard.done > .tick { transform: scale(1); }
+.icard.cross > .tick { transform: scale(1); background: var(--wrong); }
+.icard.cross > .tick::after { -webkit-mask-image: var(--cross-mark); mask-image: var(--cross-mark); }
 .well { position: relative; width: 100%; aspect-ratio: 6 / 5; border-radius: var(--item-radius); background: var(--well); flex: none; }
-:root.phone .icard .well { aspect-ratio: 4 / 3; border-radius: 9.24px; }
 .well img { position: absolute; inset: 2%; width: 96%; height: 96%; object-fit: contain; filter: drop-shadow(0 6px 8px rgba(80, 50, 20, .18)); }
 .ku { font: 600 var(--item-font) / 1.08 var(--font-word); color: var(--kutchi); text-align: center; margin-top: 5px; }
-:root.phone .icard .ku { font-size: var(--item-font-min); }
 .en { font: 600 var(--item-en) / 1.1 "Nunito Sans"; color: var(--grey); text-align: center; margin-top: 3px; }
 /* a card's support: dotted English, a blurred picture behind an eye; a tap opens either for a moment */
 .ku, .en { position: relative; }
@@ -103,6 +146,9 @@ button { padding: 0; cursor: pointer; }
 .en .d i { width: .36em; height: .36em; border-radius: 50%; background: var(--dots); }
 .en .d::before { content: ""; position: absolute; left: 50%; top: 50%; width: max(48px, 100%); height: 48px; translate: -50% -50%; }
 .en.dots .w { visibility: hidden; }
+/* a hidden English is never taller than one line, so a long one never lifts its word or grows its card (the standard's) */
+.en.dots:not(.peek) { max-width: 100%; }
+.en.dots:not(.peek) .w { display: block; white-space: nowrap; overflow: hidden; }
 .en.dots .d { display: flex; }
 .en.dots.peek .w { visibility: visible; }
 .en.dots.peek .d { display: none; }
@@ -114,11 +160,15 @@ button { padding: 0; cursor: pointer; }
 .well.blur .eye { display: grid; }
 .well.blur.peek img { filter: drop-shadow(0 6px 8px rgba(80, 50, 20, .18)); scale: 1; }
 .well.blur.peek .eye { display: none; }
-/* a thing asked for as "no": a dashed card, its picture greyed, a small no-entry sign */
-.icard.no:not(.waiting) { background: none; box-shadow: none; border: 1px dashed #c8b79c; }
-.icard.no .well img, .pop.no .well img { opacity: .5; filter: grayscale(1); }
-.icard.no::before { content: ""; position: absolute; right: 6px; top: 6px; width: 17px; height: 17px; box-sizing: border-box; border-radius: 50%; border: 2.5px solid #b0554a; background: linear-gradient(#b0554a, #b0554a) center / 60% 2.5px no-repeat #fff; z-index: 1; }
-.icard.no.waiting::before { display: none; }
+/* a thing asked for as "no": a dashed card, its picture greyed, the standard's dark circle-and-slash in a white disc in its corner */
+.icard.no:not(.waiting) { background: none; box-shadow: none; border: 1px dashed var(--no-edge); }
+.icard.no .well img, .pop.no .well img { opacity: .5; filter: grayscale(.7); }
+.icard.no::after, .icard.no::before { content: ""; position: absolute; right: calc(var(--no-inset) * var(--p)); top: calc(var(--no-inset) * var(--p)); z-index: 2; width: calc(var(--no-sign) * var(--p)); height: calc(var(--no-sign) * var(--p)); border-radius: 50%; }
+.icard.no::after { background: #fff; box-shadow: 0 0 0 calc(var(--tick-ring) * var(--p)) #fff; }
+.icard.no::before, .pop.no::before { z-index: 3; background: var(--kutchi); -webkit-mask: var(--no-mark) center / 100% 100% no-repeat; mask: var(--no-mark) center / 100% 100% no-repeat; }
+.pop.no::after, .pop.no::before { content: ""; position: absolute; right: calc(var(--pw) * var(--big-no-inset)); top: calc(var(--pw) * var(--big-no-inset)); z-index: 2; width: calc(var(--pw) * var(--big-no)); height: calc(var(--pw) * var(--big-no)); border-radius: 50%; }
+.pop.no::after { background: #fff; }
+.icard.no.waiting::after, .icard.no.done::after, .icard.no.waiting::before, .icard.no.done::before { display: none; }
 /* the first-time lesson on a big card: every part hidden, each lit in turn for a tap */
 .pop.lesson { pointer-events: auto !important; z-index: 900; }
 .pop.lesson .well { overflow: hidden; }
@@ -131,27 +181,36 @@ button { padding: 0; cursor: pointer; }
 .pop.lesson .ku.shown .w, .pop.lesson .en.shown .w { visibility: visible; }
 .pop.lesson .ku.shown .kdots, .pop.lesson .en.shown .d { display: none; }
 .pop.lesson .lit { cursor: pointer; }
-.icard .rule { width: 73px; max-width: 80%; height: 1.36px; margin-top: 5px; background: linear-gradient(to right, transparent, #dccbae 18%, #dccbae 82%, transparent); }
+.pop.lesson .speaker { pointer-events: none; }
 .speaker { position: relative; flex: none; width: var(--speaker); height: var(--speaker); border-radius: 50%; border: 0; background: var(--speaker-bg); margin-top: auto; margin-bottom: 6px; }
-:root.phone .icard .speaker { width: calc(var(--speaker) * var(--p)); height: calc(var(--speaker) * var(--p)); margin-bottom: 4px; }
 
 /* the big card that pops as a thing is said */
-.pop { position: absolute; box-sizing: border-box; background: var(--pop-bg); border-radius: var(--pop-radius); box-shadow: var(--pop-shadow); padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 7.2px; pointer-events: none !important; transform-origin: top left; z-index: 45; }
+.pop { position: absolute; box-sizing: border-box; background: var(--pop-bg); border-radius: var(--pop-radius); box-shadow: var(--pop-shadow); padding: var(--pop-pad); display: flex; flex-direction: column; align-items: center; gap: var(--pop-gap); pointer-events: none !important; transform-origin: top left; z-index: 45; }
 .pop .well { flex: 1; min-height: 0; aspect-ratio: auto; }
-.pop .ku { font-size: calc(var(--pw) * 0.15); line-height: 1.12; margin: 0; white-space: nowrap; }
-.pop .en { font-size: calc(var(--pw) * 0.074); margin: 0; }
-.pop .speaker { width: calc(var(--pw) * 0.25); height: calc(var(--pw) * 0.25); margin: 4px 0 6px; box-shadow: 0 0 0 6px #fff7ea, 0 0 0 7.5px #e9dcc6, 0 10px 22px rgba(125, 34, 52, .32); }
+.pop .ku { font-size: calc(var(--pw) * var(--pop-ku-of-w)); line-height: 1.12; margin: 0; white-space: nowrap; }
+.pop .en { font-size: calc(var(--pw) * var(--pop-en-of-w)); margin: 0; }
+.pop .speaker { width: calc(var(--pw) * var(--pop-spk-of-w)); height: calc(var(--pw) * var(--pop-spk-of-w)); margin: var(--pop-spk-margin); box-shadow: var(--pop-spk-ring); }
+/* the order's big card: everything in it sized from its width, so a smaller card is the same card scaled; it grows from its
+   own middle, flies with one even scale centre to centre, and the order's own card fades where it stands */
+.pop.big { transform-origin: 50% 50%; padding: calc(var(--pw) * var(--big-pad)); gap: calc(var(--pw) * var(--big-gap)); border-radius: calc(var(--pw) * var(--big-radius)); }
+.pop.big .well { border-radius: calc(var(--pw) * var(--big-pic-radius)); }
+.pop.big .ku { font-size: max(var(--item-font-min), calc(var(--pw) * var(--big-ku))); white-space: normal; text-wrap: balance; }
+.pop.big .en { font-size: max(var(--item-en), calc(var(--pw) * var(--big-en))); }
+.pop.big .speaker { width: calc(var(--pw) * var(--big-spk)); height: calc(var(--pw) * var(--big-spk)); margin: calc(var(--pw) * var(--big-spk-top)) 0 calc(var(--pw) * var(--big-spk-foot)); box-shadow: 0 0 0 calc(var(--pw) * var(--big-ring)) var(--ring), 0 0 0 calc(var(--pw) * var(--big-ring-edge)) var(--ring-edge), 0 calc(var(--pw) * var(--big-spk-drop)) calc(var(--pw) * var(--big-spk-blur)) var(--spk-shadow); }
+/* its eye, over a hidden picture, a third of the picture's width (the standard's), never past the picture */
+.pop.big .well .eye { width: var(--big-eye); min-width: var(--tap); height: auto; aspect-ratio: var(--big-eye-shape); max-height: calc(100% - 2 * var(--big-eye-room)); }
+.pop.big .well .eye svg { width: var(--big-eye-icon); max-width: var(--big-eye-icon-max); height: auto; opacity: .7; }
 .pop.in { animation: pop-in 380ms cubic-bezier(.2, .8, .2, 1); }
-.pop.out { transition: transform 240ms cubic-bezier(.4, 0, 1, 1), opacity 240ms; opacity: 0; }
+.pop.out { transition: opacity 240ms ease-in; opacity: 0; }
 @keyframes pop-in { from { opacity: 0; scale: .6; } 70% { scale: 1.04; } to { opacity: 1; scale: 1; } }
 
 /* speech bubbles */
 .bubble { animation: fade 180ms ease-out; }
-.bubble { position: absolute; isolation: isolate; background: var(--bubble-bg); border: 2px solid var(--bubble-border); border-radius: 22px; box-shadow: var(--bubble-shadow); color: var(--bubble-ink); padding: 12px 14px 12px 12px; font: 600 var(--bubble-font) / 1.15 var(--font-word); white-space: nowrap; transform: translate(-50%, -100%); pointer-events: none !important; }
+.bubble { position: absolute; isolation: isolate; background: var(--bubble-bg); border: var(--bubble-line) solid var(--bubble-border); border-radius: 22px; box-shadow: var(--bubble-shadow); color: var(--bubble-ink); padding: 12px 14px 12px 12px; font: 600 var(--bubble-font) / 1.15 var(--font-word); white-space: nowrap; transform: translate(-50%, -100%); pointer-events: none !important; }
 :root.phone .bubble { font-size: var(--bubble-font-short); padding: 8px 12px; }
-/* the tail: under the bubble's words and buttons, over its own background (the bubble is its own stacking context), so it
-   never covers a word, an underline or a button at any size */
-.bubble::after { content: ""; position: absolute; z-index: -1; left: var(--tail, 50%); bottom: -11px; width: 18px; height: 18px; background: var(--bubble-bg); border: solid var(--bubble-border); border-width: 0 2px 2px 0; transform: translateX(-50%) rotate(45deg); }
+/* the one tail, always pointing down at the speaker: under the bubble's words and buttons, over its own background (the bubble is
+   its own stacking context), so it never covers a word, an underline or a button; kept in from the rounded ends (room.tailMin) */
+.bubble::after { content: ""; position: absolute; z-index: -1; left: var(--tail, 50%); bottom: var(--tail-out); width: calc(2 * var(--tail-half)); height: calc(2 * var(--tail-half)); background: var(--bubble-bg); border: solid var(--bubble-border); border-width: 0 var(--bubble-line) var(--bubble-line) 0; transform: translateX(-50%) rotate(45deg); }
 .bubble .k.item, .bubble.warm .k { color: var(--red); }
 .bubble .text { text-decoration: underline 3px transparent; text-underline-offset: 5px; transition: text-decoration-color 150ms; }
 .bubble.reading .text { text-decoration-color: var(--gold); }
@@ -159,16 +218,15 @@ button { padding: 0; cursor: pointer; }
 .curtain.on { opacity: 1; }
 
 /* count pills above the stove, the cog */
-.count { position: absolute; height: 38.4px; box-sizing: border-box; display: flex; align-items: center; gap: 6px; padding: 4.8px 14.4px 4.8px 4.8px; background: #fff; border-radius: 999px; box-shadow: 0 2px 8px rgba(40, 25, 10, .1); font: 800 20.4px "Nunito Sans"; color: var(--ink); transform: translate(-50%, -100%); white-space: nowrap; }
-.count img { width: 28.8px; height: 28.8px; border-radius: 50%; object-fit: cover; background: #f1e6d4; }
+.count { position: absolute; height: var(--count-h); box-sizing: border-box; display: flex; align-items: center; gap: var(--count-gap); padding: var(--count-pad); background: #fff; border-radius: 999px; box-shadow: var(--count-shadow); font: 800 var(--count-font) "Nunito Sans"; color: var(--ink); transform: translate(-50%, -100%); white-space: nowrap; }
+.count img { width: var(--count-img); height: var(--count-img); border-radius: 50%; object-fit: cover; background: #f1e6d4; }
 .count.bump { animation: bump 300ms; }
 @keyframes bump { 50% { scale: 1.2; } }
 .cog-rail { position: absolute; right: 12px; top: 12px; z-index: 960; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 :root.phone .cog-rail { right: 8px; top: 8px; }
 .cog, .cog-menu button { width: 48px; height: 48px; border: 0; border-radius: 12px; background: var(--cog-bg); box-shadow: 0 2px 8px rgba(40, 25, 10, .10); color: var(--ink); font: 700 24px "Nunito Sans"; display: grid; place-items: center; }
 .cog svg { width: 26.4px; height: 26.4px; }
-.cog { position: relative; }
-body.lit .cog::after { content: ""; position: absolute; inset: 0; border-radius: 12px; background: var(--dim); }
+.cog { position: relative; } /* above the light's dim and never greyed: the grown-ups' menu stays usable */
 .cog-menu { display: none; flex-direction: column; gap: 8px; padding: 6px; border-radius: 14px; background: rgba(255, 250, 240, .9); }
 .cog-menu.open { display: flex; }
 
@@ -242,7 +300,8 @@ body.lit .cog::after { content: ""; position: absolute; inset: 0; border-radius:
 .pop.wm-card .speaker { margin-top: auto; }
 
 /* the end screen */
-.end { position: fixed; inset: 0; z-index: 970; background: var(--end-dim); display: flex; align-items: center; justify-content: center; animation: fade 250ms ease-out; --pic: 200px; }
+/* the visible page's height, not the window's: a phone's bar hides the window's foot, so a card centred in it would run under the bar */
+.end { position: fixed; left: 0; top: 0; width: 100%; height: var(--page-h, 100dvh); z-index: 970; background: linear-gradient(var(--end-dim), var(--end-dim)), var(--end-ground); display: flex; align-items: center; justify-content: center; animation: fade 250ms ease-out; --pic: 200px; }
 :root.phone .end { --pic: 104px; }
 @keyframes fade { from { opacity: 0; } }
 .end-card { box-sizing: border-box; width: min(1000px, calc(100vw - 24px)); background: var(--end-bg); border: 2px solid var(--end-border); border-radius: 12px; box-shadow: var(--end-shadow); padding: 24px; display: flex; flex-direction: column; gap: 24px; overflow: hidden; animation: rise 300ms cubic-bezier(.2, .9, .3, 1); }

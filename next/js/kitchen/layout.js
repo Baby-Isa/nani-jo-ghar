@@ -6,14 +6,21 @@
  *       view: { s, top }  the worktop view's scale and its top edge in design px
  *       k: data/kitchen.json layout       hob: { w, h, burners: [{x, y}] } of the hob picture for n burners
  *       vessel: { reach }                 spot: { wells, wellD, aspect }  (the game's settings)
+ *       popRoom: screen px the word pop needs above the hob
  *   rowOf({ groups, plan, view, k, widthOf, sizeOf }) -> [{ id, x, group }] with slotW and the pills' scale
  */
-export function layoutOf({ n, view, k, hob, vessel, spot }) {
+export function layoutOf({ n, view, k, hob, vessel, spot, popRoom = 0 }) {
   const P = { x: k.play.x, y: view.top + k.play.top, w: k.play.w };
   P.h = k.play.bottom - P.y;
   const room = P.w - 2 * k.rowIn - k.gap;
   const k0 = room - k.spot >= hob.w * k.hobK ? k.hobK : Math.min(k.hobK, Math.max((room - k.spot) / hob.w, room / (hob.w + hob.h * k.spotOfHob)));
-  const kk = Math.max(k0, Math.min(k0 * k.grow, room / (hob.w + hob.h * k.spotOfHob), (P.h - k.hobTop) / hob.h));
+  // the hob is the standard's size where the play area allows; the word that pops over a vessel as a thing goes in must sit
+  // whole above it, so on a short screen its room comes first (popRoom: its height on screen, with its gaps); the count pills
+  // stand above the hob where there is room for them too, else they overlap its top edge, as the standard's do
+  const pillRoom = k.pillRoom / view.s;
+  const topRoom = Math.max(k.hobTop, pillRoom);
+  const popTop = Math.max(k.hobTop, popRoom / view.s);
+  const kk = Math.min(Math.max(k0, Math.min(k0 * k.grow, room / (hob.w + hob.h * k.spotOfHob))), (P.h - popTop) / hob.h);
   const hobW = hob.w * kk;
   const hobH = hob.h * kk;
   let spotD = Math.min(k.spot * (kk / k0), hobH * k.spotOfHob);
@@ -24,8 +31,7 @@ export function layoutOf({ n, view, k, hob, vessel, spot }) {
   spotD = Math.min(spotD, Math.max(k.spot * k.spotMin, P.w - overL - hobW - k.gap));
   const total = overL + hobW + k.gap + spotD;
   const hobX = Math.max(P.x + overL, P.x + (P.w - total) / 2 + overL);
-  const pillRoom = k.pillRoom / view.s;
-  const hobY = Math.min(P.y + P.h - hobH, Math.max(P.y + k.hobTop, P.y + (P.h - (hobH + pillRoom)) / 2 + pillRoom));
+  const hobY = Math.min(P.y + P.h - hobH, Math.max(P.y + popTop, P.y + topRoom, P.y + (P.h - (hobH + pillRoom)) / 2 + pillRoom));
   const spotX = hobX + hobW + k.gap;
   const spotY = hobY + (hobH - spotD) / 2 - k.spotUp;
   const frontY = hobY + k.frontStrip[n - 1] * hobH;

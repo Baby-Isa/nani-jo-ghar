@@ -172,7 +172,7 @@
   }
  },
  "look": {
-  "_about": "The look's numbers. vars: fed to the one style sheet (css/kit.css) as variables, so no size or colour is typed there. turn-disc: the turn-your-phone card's disc; start, start-phone: the first-tap play button on a laptop and on a phone.",
+  "_about": "The look's numbers. vars: fed to the one style sheet (css/kit.css) as variables, so no size or colour is typed there. turn-disc: the turn-your-phone card's disc; start, start-phone: the first-tap play button on a laptop and on a phone. item-*: the order row's item card, a share of its row (cqi: of the row for its padding, of the card inside it), as the standard measured; tick, no-sign: its corner marks; helper-*: Nani's helper card; big-*: the big card's insides, as shares of its width; tap: a full tap; panel-fade: the order list's soft foot; speaker-min, speaker-phone: a speaker's least drawn size, and its share on a phone. end-ground: the plain ground under the end card's dim, so nothing of the round shows round the card (the standard's end). wordFont, wordWeight: the words drawn in the play area (the shelf's pills, a word's pop): drawn sharp, so a step heavier than the standard's 600, which its blurrier drawing showed this heavy (measured side by side, 18 Nov). solidAlpha: a pixel this opaque (of 255) is part of a picture's own outline (stage.solid). The order panel's vars: nani-* her box (two lines' room and a hairline, nani-hair, as the standard's, nani-font-lift her line's size as the panel shrinks), cards-* the list, head-* a card's top line, fold-* a card folding and its tick, helper-*-ms her helper sliding, row-fade the row's edge fade; pop-* the word moment's card; count-* the count pills; tail-* the bubble's tail. badge-*: the speaker badge on a face (13.4 px, a fifth under the standard's 16.7, Zafar 18 Nov), its place and ring; bubble-line: the bubble's edge.",
   "stone": "#dfd5cd",
   "minTap": 48,
   "coverFadeMs": 350,
@@ -198,15 +198,12 @@
    "card-pad": "8px",
    "head-font": "16.53px",
    "head-min": "12.6px",
-   "item-w": "115.4px",
-   "item-h": "197.3px",
-   "item-gap": "8px",
    "item-bg": "#fffdf8",
    "item-radius": "14px",
    "item-shadow": "0 3px 10px rgba(80,50,20,.09)",
    "item-font": "15.62px",
    "item-font-min": "14.5px",
-   "item-en": "12px",
+   "item-en": "14px",
    "speaker": "48px",
    "well": "radial-gradient(120% 90% at 50% 35%, #fffaf1, #f1e4cd)",
    "speaker-bg": "radial-gradient(circle at 35% 30%, #9a2c43, #7d2234 55%, #5e1726)",
@@ -215,6 +212,76 @@
    "pop-bg": "linear-gradient(#fffdf8, #fbf3e6)",
    "pop-radius": "22px",
    "pop-shadow": "0 12px 30px rgba(80,50,20,.16), 0 2px 6px rgba(80,50,20,.08)",
+   "helper-shadow": "0 4px 10px rgba(80,50,20,.12), 0 1px 3px rgba(80,50,20,.08)",
+   "tap": "48px",
+   "panel-fade": "22px",
+   "speaker-min": "30px",
+   "speaker-phone": "0.94",
+   "item-share": "2.5",
+   "item-row-gap": "8px",
+   "item-row-edge": "2px",
+   "item-row-foot": "6px",
+   "item-pad": "2.6cqi",
+   "item-pad-min": "4px",
+   "item-pic": "6 / 5",
+   "item-pic-phone": "4 / 3",
+   "item-ku": "16cqi",
+   "item-ku-max": "32px",
+   "item-ku-gap": "4cqi",
+   "item-en-cq": "10cqi",
+   "item-en-max": "19px",
+   "item-en-gap": "3.5cqi",
+   "item-step": "7cqi",
+   "item-rule-w": "74.8cqi",
+   "item-rule-h": "1.4cqi",
+   "item-rule": "#dccbae",
+   "tick": "22px",
+   "tick-ring": "2px",
+   "tick-inset": "6px",
+   "done-edge": "rgba(201,150,46,.55)",
+   "no-sign": "26px",
+   "no-inset": "5px",
+   "no-edge": "#c8b79c",
+   "helper-room": "12px",
+   "helper-top": "8px",
+   "helper-pic": "24%",
+   "helper-pad": "1.4cqi",
+   "helper-gap": "2.5cqi",
+   "helper-words-gap": "1cqi",
+   "helper-pic-radius": "12px",
+   "helper-ku-min": "18px",
+   "helper-ku": "7.5cqi",
+   "helper-ku-max": "34px",
+   "helper-en-min": "13px",
+   "helper-en": "4.6cqi",
+   "helper-en-max": "20px",
+   "helper-spk": "13cqi",
+   "helper-spk-max": "60px",
+   "helper-spk-edge": "5px",
+   "helper-spk-ring": "0 0 0 4px #fff7ea, 0 0 0 5px #e9dcc6, 0 6px 14px rgba(125,34,52,.28)",
+   "ring": "#fff7ea",
+   "ring-edge": "#e9dcc6",
+   "spk-shadow": "rgba(125,34,52,.32)",
+   "big-pad": "0.05",
+   "big-gap": "0.024",
+   "big-radius": "0.075",
+   "big-pic-radius": "0.047",
+   "big-ku": "0.15",
+   "big-en": "0.074",
+   "big-spk": "0.25",
+   "big-spk-top": "0.013",
+   "big-spk-foot": "0.02",
+   "big-ring": "0.02",
+   "big-ring-edge": "0.025",
+   "big-spk-drop": "0.033",
+   "big-spk-blur": "0.073",
+   "big-no": "0.13",
+   "big-no-inset": "0.05",
+   "big-eye": "34%",
+   "big-eye-shape": "1.6",
+   "big-eye-room": "8px",
+   "big-eye-icon": "46%",
+   "big-eye-icon-max": "40px",
    "pop-font": "45px",
    "pop-en": "22.2px",
    "pop-speaker": "75px",
@@ -233,6 +300,7 @@
    "light-edge": "rgba(201,150,46,.9)",
    "light-fill": "rgba(255,243,214,.2)",
    "end-dim": "rgba(42,37,34,.42)",
+   "end-ground": "#f2e6cf",
    "end-bg": "#fffaf0",
    "end-border": "#e6d5b8",
    "end-shadow": "inset 0 -4px 0 #e0cba6, 0 2px 4px rgba(70,45,20,.08), 0 18px 48px rgba(70,45,20,.22)",
@@ -241,7 +309,51 @@
    "wrong": "#c0443c",
    "turn-disc": "106px",
    "start": "176px",
-   "start-phone": "128px"
+   "start-phone": "128px",
+   "nani-pad": "8px",
+   "nani-gap": "8px",
+   "nani-font-lift": "10.17px",
+   "nani-lines": "2",
+   "nani-lh": "1.2",
+   "cards-top": "7px",
+   "cards-top-phone": "6px",
+   "cards-gap": "10px",
+   "head-gap": "8px",
+   "head-lift": "5px",
+   "head-lh": "1.25",
+   "fold-tick": "20px",
+   "fold-tick-min": "16px",
+   "fold-ms": "320ms",
+   "fold-ease": "cubic-bezier(.4,0,.2,1)",
+   "fold-fade-ms": "300ms",
+   "helper-open-ms": "450ms",
+   "helper-shut-ms": "500ms",
+   "row-fade": "34px",
+   "pop-pad": "15px",
+   "pop-gap": "7.2px",
+   "pop-ku-of-w": "0.15",
+   "pop-en-of-w": "0.074",
+   "pop-spk-of-w": "0.25",
+   "pop-spk-margin": "4px 0 6px",
+   "pop-spk-ring": "0 0 0 6px #fff7ea, 0 0 0 7.5px #e9dcc6, 0 10px 22px rgba(125,34,52,.32)",
+   "count-h": "38.4px",
+   "count-gap": "6px",
+   "count-pad": "4.8px 14.4px 4.8px 4.8px",
+   "count-shadow": "0 2px 8px rgba(40,25,10,.1)",
+   "count-font": "20.4px",
+   "count-img": "28.8px",
+   "helper-pic-phone": "3 / 2",
+   "helper-pad-phone": "4px",
+   "helper-gap-phone": "8px",
+   "item-pic-phone-k": "1.3333",
+   "tail-out": "-11px",
+   "tail-half": "9px",
+   "nani-hair": "1px",
+   "badge": "13.4px",
+   "badge-x": "-2px",
+   "badge-hang": "3px",
+   "badge-ring": "2px",
+   "bubble-line": "2px"
   },
   "badgeRim": 0.0417,
   "badgeLine": "rgba(42,37,34,0.18)",
@@ -272,7 +384,7 @@
   "pillShade": "#28190a",
   "pillShadeA": 0.1,
   "wordFont": "Lora",
-  "wordWeight": "600",
+  "wordWeight": "700",
   "pop": {
    "h": 56,
    "font": 36,
@@ -319,7 +431,7 @@
    "gap": 8
   },
   "textures": {
-   "_about": "The sizes of pictures the stage makes itself, in px: a face badge, a soft shadow, a halo's small copy; the badge's hairline.",
+   "_about": "The sizes of pictures the stage makes itself, in px: a face badge, a soft shadow, a halo's small copy; the badge's hairline; solid: the small copy a picture's solid outline is read from; outline: the working copy a flat thing's own-shape shadow and dimming are drawn from.",
    "badge": 192,
    "shadow": 128,
    "halo": 256,
@@ -330,7 +442,18 @@
     0.98
    ],
    "haloPad": 1.2,
-   "textSharp": 3
+   "textSharp": 3,
+   "solid": 256,
+   "outline": 256
+  },
+  "solidAlpha": 60,
+  "boxShadow": {
+   "_about": "The soft shadow of a flat thing on the worktop (the hob, the serving tray), in its own shape (its picture blurred), from the same light as the standing things' shadows: moved right and down by dx, dy and blurred by blur, all shares of the thing's shorter side; alpha: its strength; padOfBlur: the room kept round it for the blur, in blurs.",
+   "dx": 0.035,
+   "dy": 0.05,
+   "blur": 0.06,
+   "alpha": 0.38,
+   "padOfBlur": 2
   }
  },
  "frame": {
@@ -413,7 +536,7 @@
   "clockMs": 50
  },
  "cards": {
-  "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these. lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonMargin: its light's margin; lessonMinPx: a part smaller than this is not asked for.",
+  "_about": "The order cards' timings, in milliseconds. foldAfterMs: a served card holds its ticks this long, then folds. peekMs: how long a tapped-open part stays open. dotsMin, dotsMax: a hidden word's dots, one fewer than its letters, between these. lessonBeatMs, lessonEndMs: the first-time lesson's beat after each part and after the last; lessonCardMs: its light round the whole card first, then gliding to each part in lessonMoveMs; lessonMargin: its light's margin; lessonMinPx: a part smaller than this is not asked for.",
   "foldAfterMs": 1500,
   "foldMs": 420,
   "peekMs": 3000,
@@ -422,6 +545,8 @@
   "lessonBeatMs": 450,
   "lessonEndMs": 700,
   "lessonMargin": 6,
+  "lessonCardMs": 700,
+  "lessonMoveMs": 380,
   "lessonMinPx": 8
  },
  "sounds": {
@@ -747,19 +872,21 @@
   }
  },
  "order": {
-  "_about": "The order's timings, in milliseconds. pop: a big card appearing. fly: its flight into its slot. partGap: between parts. cardOpen: a card opening. passAfter: before the next person. fold: a card folding. holdAlong: the beat after the last part. walkIn: people arriving, then walkWait before anyone speaks. dishCardOut: the dish's own card going. bigW: the big card's widest, with its share of the play area's height and width. bigAt: the big card's corner beside the side panel. bigByPeople: the big card's place and size by how many people order (short: on a short screen, its own size and height). bigHeadGap: it never touches a head. bubbleGap: a bubble keeps this far off the big card. bubbleShift: the big card shrinks until the speaker's bubble need move aside by no more than this share of its own width.",
+  "_about": "The order's timings, in milliseconds. pop: a big card appearing. fly: its flight into its slot, flyEase its easing (one even scale, centre to centre). partGap: between parts. cardOpen: a card opening. passAfter: before the next person. holdAlong: the beat after the last part. walkIn: people arriving, then walkWait before anyone speaks. dishCardOut: the dish's own card fading where it stands. bigW: the big card's widest, with its width's share of the play area's width (bigOfW) and height (bigWOfH); bigMaxOfH: never taller than this share of the play area's height (Zafar, 17 Nov, his red box), its width from the row card's shape (bigShape, height over width, if the row card cannot be measured). bigAt: the big card's corner beside the side panel. bigByPeople: the big card's place and size by how many people order. bigHeadGap: it never touches a head. bubbleGap: a bubble keeps this far off the big card. bubbleShift: the big card shrinks until the speaker's bubble need move aside by no more than this share of its own width. focusPeek: a person's card brought into the panel's view shows at least this much of its top, the list scrolled no further. rowFadeRun: an order card's row fades at an edge while there is more to swipe that way, fully once this many px are left (its width: look.vars row-fade).",
   "pop": 380,
   "fly": 650,
+  "flyEase": "cubic-bezier(.45,.05,.2,1)",
   "partGap": 120,
   "cardOpen": 260,
   "passAfter": 450,
-  "fold": 320,
   "holdAlong": 300,
   "walkIn": 900,
   "walkWait": 1100,
   "dishCardOut": 240,
   "bigW": 300,
-  "bigOfH": 0.6,
+  "bigWOfH": 0.6,
+  "bigMaxOfH": 0.667,
+  "bigShape": 1.75,
   "bigOfW": 0.42,
   "silentBase": 700,
   "silentPerLetter": 55,
@@ -781,11 +908,7 @@
    },
    {
     "place": "bottom",
-    "zoom": 0.55,
-    "short": {
-     "zoom": 0.613,
-     "h": 244
-    }
+    "zoom": 0.55
    }
   ],
   "bigHeadGap": 2,
@@ -794,11 +917,21 @@
   "voiceCapMs": 6000,
   "quietShare": 0.6,
   "glideShow": 0.5,
+  "focusPeek": 26,
   "zoomStep": 0.01,
-  "bubbleShift": 0.065
+  "bubbleShift": 0.065,
+  "rowFadeRun": 40
+ },
+ "panel": {
+  "_about": "The side panel's list of order cards (js/shared/kit/order-panel.js). It rests at its top or this many px above a card's top (edge, and at least edgeKeep px less than the gap between cards, so the card above is wholly out of view); it is measured once nothing in it has moved for quietMs and every card's fold and the helper's slide have ended (their times are look.vars fold-ms, helper-open-ms, helper-shut-ms), then glides there in glideMs. A big card waits for it at most stillCapMs before it flies.",
+  "edge": 4,
+  "quietMs": 60,
+  "glideMs": 320,
+  "stillCapMs": 1500,
+  "edgeKeep": 1
  },
  "room": {
-  "_about": "The kitchen with its people, in design px. picture: where the tall painting's top-left sits. spots: where people stand, by x. counterY: the counter's back edge, which hides everything below it. lift: how much higher the order is framed, by how many people. from: where people walk in from. naniX: where Nani stands at the serve. serveGlide: how far the view glides down to the trays. tray: one serving tray per person and the dish landing on it. bubbleGap: a bubble's distance above a head. talk: a speaker's talking picture flaps (open, then shut for a time between two numbers) with a small bob. serveWait: the pause before the kitchen comes back. serveSpread: with three people they stand evenly from this far right of Nani to this far inside the right edge. tray.gapShare: a tray is at most this share of the gap between two people; tray.inside: kept this far inside the view; tray.shade: its shadow's width beside its own; tray.faceAt: the face mark's place on its rim. pictureH: the painting's height. needW: on a play area taller than the painting allows, the room is shown bigger, cropped at its sides, never narrower than this (everyone at the counter stays in view). bubbleRoom: screen px kept above the highest head for a bubble, however short the screen (the room is framed higher for it; not at the serve, which glides down to the trays).",
+  "_about": "The kitchen with its people, in design px. picture: where the tall painting's top-left sits. spots: where people stand, by x. counterY: the counter's back edge, which hides everything below it. lift: how much higher the order is framed, by how many people. from: where people walk in from. naniX: where Nani stands at the serve. serveGlide: how far the view glides down to the trays. tray: one serving tray per person and the dish landing on it. bubbleGap: the gap between a bubble and the top of the highest head's outline (its tail in that gap); talk: a speaker's talking picture flaps (open, then shut for a time between two numbers) with a small bob; at the thanks, afterMs: the beat a person rests in their happy pose, the bubble gone, before the next line. serveWait: the pause before the kitchen comes back. serveSpread: with three people they stand evenly from this far right of Nani to this far inside the right edge. tray.gapShare: a tray is at most this share of the gap between two people; tray.inside: kept this far inside the view; tray.shade: its shadow's width beside its own; tray.faceAt: the face mark's place on its rim; tray.keepBelow: the serve keeps this much below the trays' shadows in view. pictureH, pictureW: the painting's height and width (a room shown smaller to keep the serve's heads and trays whole never shows past its sides). needW: on a play area taller than the painting allows, the room is shown bigger, cropped at its sides, never narrower than this (everyone at the counter stays in view). speech: the speech strip every scene with people keeps above the highest head (Zafar, 18 Nov): one bubble's height, by kind (greet: the door's and the order's room, the tallest; line: the serve's) and form factor, in CSS px at the screen's scale, with bubbleGap below it and bubbleMin above; a bubble always sits in it over its speaker, and where the frame cannot give it the people stand lower. tailMin: the tail stays this far in from the bubble's ends, clear of its rounded corners, so no corner of it shows. sideKeep: screen px every head, and at the serve every tray, keeps inside the slice of the room the screen shows (people are spread across that slice).",
   "picture": [
    -250,
    -450
@@ -838,7 +971,8 @@
    ],
    "floor": 0.02,
    "shadeAlpha": 0.65,
-   "fadeAt": 200
+   "fadeAt": 200,
+   "keepBelow": 10
   },
   "walkOffMs": 800,
   "fadeMs": 220,
@@ -853,7 +987,8 @@
    ],
    "bob": 2,
    "turn": 0.4,
-   "bobMs": 380
+   "bobMs": 380,
+   "afterMs": 450
   },
   "serveWait": 1550,
   "cutGap": 20,
@@ -863,13 +998,26 @@
   ],
   "edge": 6,
   "bubbleMin": 4,
-  "tailMin": 24,
+  "tailMin": 36,
   "hopMs": 150,
   "hops": 2,
   "voiceCapMs": 4000,
   "pictureH": 1575,
+  "pictureW": 2100,
   "needW": 1200,
-  "bubbleRoom": 84
+  "speech": {
+   "greet": {
+    "phone": 72,
+    "tablet": 76,
+    "laptop": 76
+   },
+   "line": {
+    "phone": 41,
+    "tablet": 64,
+    "laptop": 64
+   }
+  },
+  "sideKeep": 10
  },
  "wordMoment": {
   "_about": "The word moment's sizes and times (ms). pitch: glasses stand this many glass-widths apart; side: the room at the sides; glassMost: a glass's most, as a share of the height; top, topMin: the room kept at the top; gap: the stream's gap above the rim and above: the kettle's height above its spout, in glasses. streamW, streamTo: the stream's width and how far down the glass it reaches. dropW, dropStop: the last drop. frame: the snap's frame, in glasses. card, cardShort: the word card's size. startMs: before the kettle comes; moveMs: the kettle moving; runMs: the stream running down; pourBaseMs + pourFullMs x the measure: a pour; tailMs: the stream ending; dropAfterMs, dropMs: the last drop; afterPourMs: the beat after a pour; lookMs: a look at both glasses; cornersMs: the corners before the shutter; shutterMs: the shutter before the card; sayAfterMs: the card before its word; holdMs: after the word; lingerMs: both cards stay; fadeMs: the scene going.",
@@ -945,12 +1093,13 @@
   "knownFrom": 3
  },
  "light": {
-  "_about": "The light's box: a margin round the thing (a share of its smaller side, between two sizes in px) and its corner.",
+  "_about": "The light's box: a margin round the thing (a share of its smaller side, between two sizes in px) and its corner. followMs: after anything on the page moves, the light follows its thing this long.",
   "marginShare": 0.12,
   "marginMin": 8,
   "marginMax": 16,
   "radius": 12,
-  "cornerOfHeight": 4
+  "cornerOfHeight": 4,
+  "followMs": 600
  },
  "cog": {
   "_about": "The cog's menu, top right of the play area: what each button is for.",
@@ -1043,7 +1192,7 @@
   ]
  },
  "serving": {
-  "_about": "The serving spot's small numbers (sizes in design px unless a share). face: a person's mark on the spot (its biggest, smallest, and size in screen px), kept this far from the spot's corner (pad), slid in at most (slide) to clear its dish by (clear). settle: a dish's small settle, as scales and times. undimMs: the spot coming out of its dim. drop: the painted drop (where it starts and lands and its width, in dish-widths; its fade and fall). twinkle: the three twinkles (small and big: their span and middle in dish-widths; each one's place and size in the span; the gap between them; grow from, turn, and times). review: the big faces (size with one dish; with more, between two sizes as a share of the gap between dishes; how far from the dish; kept inside the spot; pop from, pop time; a happy face's two small hops and a sad one's shake). praise: the white card by a face (gap, text inset, height, radius, lift, font, shadow, fade). closeMs, closeTo: the faces going.",
+  "_about": "The serving spot's small numbers (sizes in design px unless a share). face: a person's mark on the spot (its biggest, smallest, and size in screen px), kept this far from the spot's corner (pad), slid in at most (slide) to clear its dish by (clear). settle: a dish's small settle, as scales and times. undimMs: the spot coming out of its dim. drop: the painted drop (where it starts and lands and its width, in dish-widths; its fade and fall). twinkle: the three twinkles (small and big: their span and middle in dish-widths; each one's place and size in the span; the gap between them; grow from, turn, and times). review: the big faces (size with one dish; with more, between two sizes as a share of the gap between dishes; how far from the dish; kept inside the spot; pop from, pop time; a happy face's two small hops and a sad one's shake). praise: the white card by a face (gap, text inset, height, radius, lift, font, shadow, fade). closeMs, closeTo: the faces going. veil: the colour the tray is dimmed in while the cooking goes on (the game's dim says how much).",
   "face": {
    "most": 90,
    "least": 64,
@@ -1139,7 +1288,8 @@
    "fadeMs": 200
   },
   "closeMs": 260,
-  "closeTo": 0.85
+  "closeTo": 0.85,
+  "veil": "#f4ecdf"
  },
  "shelf": {
   "_about": "The bottom row's small numbers (design px unless a share). far: how far the band runs past the sheet's sides. band: its tile's scale and strength, the line along its top, the shelf tile's scale. fit: a thing is kept this much narrower than its slot. shade: a thing's shadow (lift, width as a share, height). pillPop: a tapped pill's pop. pillRadius, pillDrop: a pill's corner and its shadow's drop. squash: a thing taken or put back squashes and springs. spoon: the spoon (its start above the thing, its handle point, its angles at rest, over the pan and tipping; the last part of its stir, where it lifts and fades; its tip and going times). popRadius, popDrop: the word pop's corner and shadow.",

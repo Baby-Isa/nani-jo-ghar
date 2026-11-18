@@ -10,16 +10,21 @@
  *   stage.show(view, { lift })            stage.layer(view, name) -> a layer of that view, in drawing order
  *   stage.halo(ref) -> { key, pad, k }   a soft gold copy of a picture's outline, for stage.image
  *   stage.picture(layer, ref, opts) -> handle      opts: { x, y, w | h | scale | rim, origin, mirror, alpha, angle, depth }
+ *   stage.solid(ref)   stage.shapeShadow(layer, ref, { x, y, w })   stage.silhouette(layer, ref, colour, { x, y, w, alpha })
+ *                                       a picture's own outline (js/shared/outline.js)
  *   stage.box(layer, { x, y, w, h }) -> box        what a game's mechanic is handed: its own clipped corner of a layer
- *   stage.toPage(view, x, y) -> [px, py]            for page elements placed over a picture
+ *   stage.toPage(view, x, y) -> [px, py]            for page elements placed over a picture      stage.visibleX(view) -> { left, right }
  *   stage.onTap(handle | { view, x, y, w, h }, fn)  stage.onTick(fn(ms))   stage.wait(ms)   stage.clear()
  *   stage.hold(on)   stage.onHold(fn(on)) -> off     the whole round stands still (the turn card) and goes on
- *   stage.keepInView(view, y, px?)       world y stays in view, with px screen px above it, whatever the play area's shape
+ *   stage.keepInView(view, y, px?, bottom?)   world y stays in view, with px screen px above it, whatever the play area's
+ *                                       shape; in the room, down to world y `bottom` too (shown smaller where it must be)
  *   stage.onResize(fn, view?) -> off   fn() once the canvas has been laid out again for a new size of the play area;
  *                                       a view's own are let go of when that view is cleared
  *
  * A handle: set(props), to(props, ms, ease) -> Promise, swap(ref), remove(), and `obj` (for the stage and the kit only).
  */
+import { createOutlines } from "./outline.js";
+
 const DESIGN_W = 1600;
 const DESIGN_H = 900;
 
@@ -57,6 +62,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       },
     });
   });
+  const outlines = createOutlines({ scene, art, kit });
   const views = {};
   const ticks = new Set();
   const taps = [];
@@ -64,7 +70,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
 
   function makeView(name) {
     const root = scene.add.container(0, 0).setVisible(false);
-    views[name] = { root, layers: {}, lift: 0, s: 1, top: 0, keep: null, keepPx: 0 };
+    views[name] = { root, layers: {}, lift: 0, s: 1, top: 0, keep: null, keepPx: 0, keepBottom: null };
   }
   makeView("room");
   makeView("worktop");
@@ -78,10 +84,16 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     // (cropped at its sides, never past needW) so the painting still fills it from top to bottom
     room.s = w / DESIGN_W;
     if (h / room.s > R.pictureH) room.s = Math.max(room.s, Math.min(h / R.pictureH, w / R.needW));
+    // a span that must show whole (the serve: the heads with a bubble's room above them, down to the trays): on a play area
+    // too short for it at that scale the room is shown smaller, more of the painting's sides showing, never past its width
+    if (room.keepBottom != null && room.keep != null) room.s = Math.min(room.s, Math.max(w / R.pictureW, (h - room.keepPx) / (room.keepBottom - room.keep)));
     // the world y at the top of the play area: framed by the lift, high enough to keep the room asked for above the
     // heads (a bubble's), and never above the painting
     const keep = room.keep == null ? Infinity : room.keep - room.keepPx / room.s;
     room.top = Math.max(R.picture[1], Math.min(DESIGN_H - h / room.s - room.lift, keep));
+    // (down to the bottom asked for; where even that does not fit, the frame gives up the strip above the heads, never the heads,
+    // and the room's people stand lower to keep it: js/shared/kit/people.js)
+    if (room.keepBottom != null) room.top = Math.min(room.keep, Math.max(room.top, room.keepBottom - h / room.s));
     const wt = views.worktop;
     // the sheet fits the play area, anchored to the bottom; and whatever was laid out higher (for a taller screen) stays in view
     wt.s = Math.min(w / DESIGN_W, h / (DESIGN_H - Math.min(0, wt.keep || 0)));
@@ -314,6 +326,27 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     cv.refresh();
     return key;
   }
+  /**
+   * A flat thing's soft shadow in its own shape (the hob, the serving tray), from the standing things' light: placed as the
+   * picture is, { x, y } its top-left and w its width, moved right and down by look.boxShadow's shares of its shorter side.
+   */
+  function shapeShadow(layerC, ref, { x, y, w }) {
+    const B = kit.look.boxShadow;
+    const { key, pad, w: tw } = outlines.shadowKey(ref);
+    const [pw, ph] = art.size(ref);
+    const k = w / tw;
+    const m = Math.min(w, (w * ph) / pw);
+    const obj = scene.add.image(x - pad * k + B.dx * m, y - pad * k + B.dy * m, key).setOrigin(0, 0).setScale(k);
+    layerC.add(obj);
+    return wrap(obj, null, false);
+  }
+  /** A picture's shape in one colour, placed as the picture is (its top-left, its width): a dimming that follows its edges. */
+  function silhouette(layerC, ref, colour, { x, y, w, alpha = 1 }) {
+    const { key, w: tw } = outlines.shapeKey(ref, colour);
+    const obj = scene.add.image(x, y, key).setOrigin(0, 0).setScale(w / tw).setAlpha(alpha);
+    layerC.add(obj);
+    return wrap(obj, null, false);
+  }
   /** A shadow under a footprint { x, y, w, h } (its middle and size): a touch right and down, as the light asks. */
   function shadow(layerC, f) {
     const obj = scene.add.image(f.x + f.w * kit.look.shadowDx, f.y + f.h * kit.look.shadowDy, shadowKey());
@@ -379,6 +412,9 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
     load,
     picture,
     badge,
+    solid: (ref) => outlines.solid(ref),
+    shapeShadow,
+    silhouette,
     shadow,
     image,
     halo,
@@ -398,6 +434,11 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       return { x: r.left + x, y: r.top + y, w: b.w * k, h: b.h * k };
     },
     scaleOf: (view) => views[view].s,
+    /** The slice of a view's world the play area shows across, in design px. */
+    visibleX(view) {
+      const half = size().w / views[view].s / 2;
+      return { left: DESIGN_W / 2 - half, right: DESIGN_W / 2 + half };
+    },
     topOf: (view) => views[view].top,
     onTick(fn) {
       ticks.add(fn);
@@ -452,8 +493,8 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
      * A world y kept in view, with `px` screen px above it: on the worktop, the highest its things were laid out to (kept
      * if the play area later gets shorter); in the room, the highest head, with room above it for a bubble.
      */
-    keepInView(view, top, px = 0) {
-      Object.assign(views[view], { keep: top, keepPx: px });
+    keepInView(view, top, px = 0, bottom = null) {
+      Object.assign(views[view], { keep: top, keepPx: px, keepBottom: bottom });
       place();
     },
     /** Glide the room's framing to a new lift. */
@@ -469,7 +510,7 @@ export async function createStage({ art, kit, frame, renderer = "auto" }) {
       const v = views[view];
       Object.values(v.layers).forEach((l) => l.destroy());
       v.layers = {};
-      Object.assign(v, { keep: null, keepPx: 0 });
+      Object.assign(v, { keep: null, keepPx: 0, keepBottom: null });
       for (let i = taps.length - 1; i >= 0; i--) if ((taps[i].target.view || taps[i].target.viewName) === view) taps.splice(i, 1);
       resized.forEach((r) => r.view === view && resized.delete(r));
     },

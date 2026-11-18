@@ -19,7 +19,10 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
   const wait = (ms) => stage.wait(ms);
   const stage_of = (id, ladder) => ((ladder[id] || 0) >= kit.ladder.knownFrom ? "known" : (ladder[id] || 0) >= kit.ladder.learningFrom ? "learning" : "new");
 
-  /** One part: its bubble and its voice start together, its card pops, is held, and flies as the voice ends. */
+  /**
+   * One part: its bubble and its voice start together; its card pops as the line's first word is really heard (or when the
+   * line ends unheard, a line with no voice at once), is held for its word's time and the line together, and flies as both are over.
+   */
   async function sayPart(e, round) {
     const person = round.order.for[e.seat];
     const part = e.part;
@@ -31,12 +34,23 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
     ui.cards.focus(e.seat);
     // the bubble where it would sit; the big card sized to leave it room; then the bubble beside the card
     room.bubble(e.seat, html);
-    const card = ui.cards.bigPlace(room.probe(), room.bubbleBox());
+    const card = ui.cards.bigPlace(room.probe().filter((p) => p.kind === "head"), room.bubbleBox());
     room.bubble(e.seat, html, "", { ...card, gap: O.bubbleGap });
     saying = { seat: e.seat };
     room.talk(e.seat, true);
     room.reading(true);
-    const spoken = say.speak(line).then(() => room.reading(false));
+    let wasHeard = false;
+    let heardIt = null;
+    const heard = new Promise((res) => (heardIt = res));
+    // heard: a clip of the line really started (never a clip that failed to load, a piece with no voice, a sound asleep)
+    const spoken = say.speak(line, { onHeard: () => ((wasHeard = true), heardIt()) }).then(() => room.reading(false));
+    // a line no voice says is still given its time to be read, so a silent order is never hurried
+    const quiet = Math.max(O.silentMin, Math.min(O.silentMax, O.silentBase + O.silentPerLetter * line.text.length)) * O.quietShare;
+    const readTime = wait(quiet);
+    const said = Promise.race([spoken.then(() => (wasHeard ? null : readTime)), wait(quiet + O.voiceCapMs)]);
+    // (a clip still loading is waited for as long as the player itself waits for it: the card never pops before the word)
+    await Promise.race([heard, spoken, wait(kit.voice.loadMs)]);
+    if (!live) return;
     let dishCard = null;
     if (e.dishCard) dishCard = ui.cards.pop(e.seat, null, { line: say.line(person.dishCard, { row: true }), pic: picOf("dish", person) });
     const landing = part.lands[0];
@@ -46,8 +60,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
       big = ui.cards.pop(e.seat, landing);
     }
     const word = landing ? person.items.find((i) => i.id === landing).word : person.items[0].word;
-    const quiet = Math.max(O.silentMin, Math.min(O.silentMax, O.silentBase + O.silentPerLetter * line.text.length)) * O.quietShare;
-    await Promise.all([wait(kit.words.holdMs[stage_of(word, round.ladder)]), Promise.race([spoken, wait(quiet + O.voiceCapMs)])]);
+    await Promise.all([wait(kit.words.holdMs[stage_of(word, round.ladder)]), said]);
     room.talk(e.seat, false);
     if (!live) return;
     if (dishCard) dishCard.out();
@@ -55,8 +68,8 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
       // the first card with a hidden part: the order waits while the child taps each part open
       if (e.lesson) {
         await big.lesson();
-        send({ type: "lessoned" });
         if (!live) return;
+        send({ type: "lessoned" });
       }
       await big.fly();
       big = null;
@@ -74,7 +87,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
   function relayout() {
     if (!room || !saying) return;
     room.placeBubble(null);
-    const card = ui.cards.bigPlace(room.probe(), room.bubbleBox(), { again: true });
+    const card = ui.cards.bigPlace(room.probe().filter((p) => p.kind === "head"), room.bubbleBox(), { again: true });
     room.placeBubble({ ...card, gap: O.bubbleGap });
   }
 
@@ -127,7 +140,7 @@ export function orderView({ stage, say, kit, people, ui, send, roomArt, picOf })
       saying = null;
       if (big) big.remove();
       big = null;
-      stage.el.over.querySelectorAll(".pop").forEach((el) => el.remove());
+      document.querySelectorAll("#over .pop, body > .pop").forEach((el) => el.remove());
       room.bubble(null);
       ui.cards.landAll();
       await wait(O.holdAlong);

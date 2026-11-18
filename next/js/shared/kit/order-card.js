@@ -14,10 +14,14 @@
 import { lineHtml } from "./nani-box.js";
 import { wordCardHtml, wirePeeks, revealLesson } from "./word-card.js";
 import { atLevel } from "../round.js";
+import { panelOf } from "./order-panel.js";
 
 export function createCards({ stage, say, kit, round, people, picOf, onFace, onPeek, light, sounds }) {
   const host = stage.el.cards;
   host.innerHTML = "";
+  // the list's one scroll rule lives in the panel: these cards only say what changed
+  const panel = panelOf(host, { kit });
+  panel.reset();
   const showEnglish = atLevel(kit.levels.cardEnglish, round.level);
   const O = kit.order;
   const itemWords = new Set(round.order.for.flatMap((p) => p.items.map((i) => say.entry(i.word).id)));
@@ -31,7 +35,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     el.className = "ocard folded";
     el.hidden = true;
     const head = say.line(p.headline.meaning, { register: p.headline.register });
-    el.innerHTML = `<div class="ocard-top"><button class="facebtn"><span class="face"><span class="badge"></span></span></button><div class="head">${lineHtml(head, itemWords)}</div><span class="tick"></span></div><div class="ocard-body"><div class="orow"></div></div>`;
+    el.innerHTML = `<div class="ocard-top"><button class="facebtn"><span class="face"><span class="badge"></span></span></button><div class="head">${lineHtml(head, itemWords)}</div><span class="tick"></span></div><div class="ocard-body"><div class="ocard-in"><div class="orow"></div></div></div>`;
     el.querySelector(".face").style.backgroundImage = `url(${stage.art.file(people[p.who].face)})`;
     el.querySelector(".facebtn").addEventListener("click", (ev) => (ev.stopPropagation(), onFace(seat)));
     el.querySelector(".ocard-top").addEventListener("click", () => el.classList.contains("served") && toggle(seat));
@@ -48,49 +52,81 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       items.set(it.id, { el: c, line, pic: picOf(it, p), word: it.word });
     }
     host.appendChild(el);
+    panel.track(el);
+    edgeFade(row);
     return { el, body: el.querySelector(".ocard-body"), row, items, head, person: p };
   });
 
-  /** A card opens to its row's own height: a row is as tall as its tallest item card. */
-  const setOpen = (seat, open) => {
-    const s = seats[seat];
-    s.el.classList.toggle("folded", !open);
-    s.body.style.height = open ? `${s.row.offsetHeight}px` : "0px";
-  };
+  /**
+   * The row's edges fade only while there is more to swipe that way: the fade's strength follows what is left that way (full
+   * once rowFadeRun px are left), so it comes and goes smoothly as the row moves and is gone at either end.
+   */
+  function edgeFade(row) {
+    const set = () => {
+      const left = row.scrollLeft;
+      const right = row.scrollWidth - row.clientWidth - left;
+      row.style.setProperty("--fade-l", `${Math.max(0, Math.min(1, left / O.rowFadeRun))}`);
+      row.style.setProperty("--fade-r", `${Math.max(0, Math.min(1, right / O.rowFadeRun))}`);
+    };
+    row.addEventListener("scroll", set, { passive: true });
+    panel.watchRow(row, set);
+    set();
+  }
+
+  /** A card opens to its row's own height (a row is as tall as its tallest item card) and folds to its top line. */
+  const setOpen = (seat, open) => seats[seat].el.classList.toggle("folded", !open);
   const toggle = (seat) => setOpen(seat, seats[seat].el.classList.contains("folded"));
 
   /**
-   * The big card's place: beside the side panel, at the top or the foot by how many people order, in the row card's
-   * shape, as big as the play area lets it be, and smaller still until it touches no head. Kept for the whole order.
+   * The row card's shape, height over width, read with its card open for that one measure (a folded card's row has no height
+   * of its own yet) in the same turn, nothing drawn between.
+   */
+  function shapeOf(card) {
+    const body = card.closest(".ocard-body");
+    const was = body ? body.style.cssText : "";
+    if (body) Object.assign(body.style, { transition: "none", gridTemplateRows: "1fr" });
+    const r = card.getBoundingClientRect();
+    if (body) {
+      // back as it was with no move drawn: the fold is laid out again before its own transition returns
+      body.style.gridTemplateRows = "";
+      void body.offsetHeight;
+      body.style.cssText = was;
+    }
+    return r.width > 0 && r.height > 0 ? r.height / r.width : O.bigShape;
+  }
+
+  /**
+   * The big card's place: beside the side panel, at the top or the foot by how many people order, in the row card's shape
+   * (so one even scale lands it on its slot), as wide as the play area lets it be but never taller than its share of the
+   * play area's height (Zafar's red box), and smaller still until it touches no head. Kept for the whole order.
    */
   let place = null;
   function bigBox(card, heads = [], bubble = null) {
     if (place) return place;
     const play = stage.size();
-    const short = document.documentElement.classList.contains("phone");
     const by = O.bigByPeople[Math.min(O.bigByPeople.length, round.order.for.length) - 1];
-    const own = (short && by.short) || by;
-    const w = Math.round(Math.min(O.bigW, play.h * O.bigOfH, play.w * O.bigOfW));
-    const r = card.getBoundingClientRect();
-    const h = own.h || (w * r.height) / r.width;
+    const shape = shapeOf(card);
+    // its size for this many people, then never taller than its share of the play area's height, its width from its shape
+    const w0 = Math.min(O.bigW, play.w * O.bigOfW, play.h * O.bigWOfH) * by.zoom;
+    const w = Math.min(w0, (play.h * O.bigMaxOfH) / shape);
     const [x, top] = O.bigAt;
-    const at = (zoom) => ({ x, y: by.place === "top" ? top : play.h - top - h * zoom, w, h, zoom });
+    const at = (k) => ({ x, y: by.place === "top" ? top : play.h - top - w * shape * k, w: w * k, h: w * shape * k });
     const o = stage.el.play.getBoundingClientRect();
-    const touches = (b) => heads.some((hd) => hd.x - o.left - O.bigHeadGap < b.x + b.w * b.zoom && hd.x - o.left + hd.w + O.bigHeadGap > b.x && hd.y - o.top - O.bigHeadGap < b.y + b.h * b.zoom && hd.y - o.top + hd.h + O.bigHeadGap > b.y);
-    let zoom = Math.min(own.zoom, (play.h - 2 * top) / h);
-    while (zoom > O.bigMinZoom && touches(at(zoom))) zoom -= O.zoomStep;
+    const touches = (b) => heads.some((hd) => hd.x - o.left - O.bigHeadGap < b.x + b.w && hd.x - o.left + hd.w + O.bigHeadGap > b.x && hd.y - o.top - O.bigHeadGap < b.y + b.h && hd.y - o.top + hd.h + O.bigHeadGap > b.y);
+    let k = 1;
+    while (k > O.bigMinZoom && touches(at(k))) k -= O.zoomStep;
     // and smaller until the speaker's bubble, level with it, need only move a little aside
-    const aside = (b) => (bubble && bubble.y < b.y + b.h * b.zoom && bubble.y + bubble.h > b.y ? b.x + b.w * b.zoom + O.bubbleGap - bubble.x : 0);
-    while (zoom > O.bigMinZoom && aside(at(zoom)) > bubble.w * O.bubbleShift) zoom -= O.zoomStep;
-    place = at(zoom);
+    const aside = (b) => (bubble && bubble.y < b.y + b.h && bubble.y + bubble.h > b.y ? b.x + b.w + O.bubbleGap - bubble.x : 0);
+    while (k > O.bigMinZoom && aside(at(k)) > bubble.w * O.bubbleShift) k -= O.zoomStep;
+    place = at(k);
     return place;
   }
 
-  // the big cards showing now (one, or the dish's own card beside it), placed again at a new size unless already flying
+  // the big cards showing now (one, or the dish's own card beside it), placed again at a new size unless already flying;
+  // everything inside a big card is sized from its width (--pw), so it scales as one picture
   const showing = new Set();
   function setBig(el, b) {
-    // a zoomed card's own offsets are zoomed with it
-    Object.assign(el.style, { left: `${b.x / b.zoom}px`, top: `${b.y / b.zoom}px`, width: `${b.w}px`, height: `${b.h}px`, zoom: b.zoom });
+    Object.assign(el.style, { left: `${b.x}px`, top: `${b.y}px`, width: `${b.w}px`, height: `${b.h}px` });
     el.style.setProperty("--pw", `${b.w}px`);
   }
 
@@ -101,11 +137,8 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
     },
     open: (seat) => setOpen(seat, true),
     fold: (seat) => setOpen(seat, false),
-    /** A person's card comes into view in the panel. */
-    focus(seat) {
-      const s = seats[seat].el;
-      host.scrollTo({ top: s.offsetTop - host.offsetTop, behavior: "smooth" });
-    },
+    /** A person's card is kept whole in the panel's view from now on (the panel's rule), whatever opens or folds round it. */
+    focus: (seat) => panel.focus(seat == null ? null : seats[seat].el),
     land(seat, ids) {
       for (const id of ids) seats[seat].items.get(id).el.classList.remove("waiting");
     },
@@ -115,7 +148,6 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
         s.items.forEach((it) => it.el.classList.remove("waiting"));
         s.row.scrollTo({ left: 0, behavior: "smooth" });
       });
-      host.scrollTo({ top: 0, behavior: "smooth" });
     },
     tick(seat, id, done, cross = false) {
       const it = seats[seat].items.get(id);
@@ -150,13 +182,13 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       if (again) place = null;
       const b = bigBox(seats[0].items.values().next().value.el, heads, bubble);
       if (again) showing.forEach((el) => el.style.transform || setBig(el, b));
-      return { x: b.x, y: b.y, w: b.w * b.zoom, h: b.h * b.zoom };
+      return { x: b.x, y: b.y, w: b.w, h: b.h };
     },
     pop(seat, id, dish = null) {
       const src = dish || seats[seat].items.get(id);
       const slotEl = dish ? seats[seat].items.values().next().value.el : src.el;
       const el = document.createElement("div");
-      el.className = `pop in${src.el && src.el.classList.contains("no") ? " no" : ""}`;
+      el.className = `pop big in${src.el && src.el.classList.contains("no") ? " no" : ""}`;
       el.innerHTML = `${wordCard(src.line, src.pic, src.word)}<span class="speaker"></span>`;
       const b = bigBox(slotEl);
       setBig(el, b);
@@ -165,19 +197,34 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       const gone = () => (showing.delete(el), el.remove());
       return {
         el,
+        /**
+         * The card moves and shrinks in one go into its slot: one even scale, centre to centre, nothing faded, nothing
+         * stretched; on landing the slot's own card shows and the big one goes in the same frame, so nothing blinks.
+         */
         async fly() {
+          // its person's card is whole in the list's view first (the panel's rule, once nothing in it moves), so it lands where it is seen
+          await panel.still();
           const to = src.el.getBoundingClientRect();
           const from = el.getBoundingClientRect();
+          // it flies over the side panel, so it leaves the play area's layer (which clips) for the page's, in the same place
+          Object.assign(el.style, { position: "fixed", left: `${from.left}px`, top: `${from.top}px` });
+          document.body.appendChild(el);
+          void el.offsetWidth; // (its style there is settled first, so the move below is a move, not a jump)
+          const k = Math.min(to.width / from.width, to.height / from.height);
           el.classList.remove("in");
-          el.style.transition = `transform ${O.fly}ms cubic-bezier(.65,0,.35,1)`;
-          el.style.transform = `translate(${(to.left - from.left) / b.zoom}px, ${(to.top - from.top) / b.zoom}px) scale(${to.width / from.width}, ${to.height / from.height})`;
-          await stage.wait(O.fly);
+          el.style.transition = `transform ${O.fly}ms ${O.flyEase}`;
+          el.style.transform = `translate(${to.left + to.width / 2 - (from.left + from.width / 2)}px, ${to.top + to.height / 2 - (from.top + from.height / 2)}px) scale(${k})`;
+          // a new size of the screen mid-flight (a phone turned): its slot is somewhere else now, so it lands there at once
+          let off = null;
+          await Promise.race([stage.wait(O.fly), new Promise((res) => (off = stage.onResize(res)))]);
+          off();
+          src.el.classList.remove("waiting");
           gone();
         },
+        /** The order's own card stays where it stands and fades out. */
         async out() {
           el.classList.remove("in");
           el.classList.add("out");
-          el.style.transform = "scale(.6)";
           await stage.wait(O.dishCardOut);
           gone();
         },
@@ -187,6 +234,7 @@ export function createCards({ stage, say, kit, round, people, picOf, onFace, onP
       };
     },
     clear() {
+      panel.reset();
       host.innerHTML = "";
     },
   };

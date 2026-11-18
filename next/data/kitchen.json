@@ -47,7 +47,7 @@
   "servingTray": "serve.tray"
  },
  "layout": {
-  "_about": "The play area from above, in design px (a 1600 x 900 sheet; more worktop shows above it on a taller screen). play: the worktop the hob and serving spot are laid out in. hobK: the hob's scale. spot: the serving spot's widest, and gap: its distance from the hob. vesselR: a vessel's widest radius; rim: the rim's share of it. frontStrip: where the hob's front strip sits, by burners. pillRoom: screen px kept above the hob for the count pills. badge, knob, off: the face and knob on the front strip. band: the bottom row's band, base line and pill line; slot: a slot's width; groupGap: between groups; margin: from the view's sides. sizes: a thing's height by size class, as shares of the band's room.",
+  "_about": "The play area from above, in design px (a 1600 x 900 sheet; more worktop shows above it on a taller screen). play: the worktop the hob and serving spot are laid out in. hobK: the hob's scale. spot: the serving spot's widest, and gap: its distance from the hob. vesselR: a vessel's widest radius; rim: the rim's share of it. frontStrip: where the hob's front strip sits, by burners. pillRoom: screen px kept above the hob for the count pills where the play area has room (a short one keeps the hob's size and the pills overlap its top edge). badge, knob, off: the face and knob on the front strip. band: the bottom row's band, base line and pill line; slot: a slot's width; groupGap: between groups; margin: from the view's sides. sizes: a thing's height by size class, as shares of the band's room.",
   "play": {
    "x": 48,
    "top": 16,
@@ -169,7 +169,7 @@
   "stepBack": 0.88
  },
  "cook": {
-  "_about": "The cook scene's small numbers. pointMs: how long the thing the fire needs is pointed at. flameAfterMs: the flame's sound after the knob's click. vesselWiggle: a vessel refusing a tap. ground: the worktop's tiling and its warm wash. countPill: the count pills' place above the hob, in screen px.",
+  "_about": "The cook scene's small numbers. pointMs: how long the thing the fire needs is pointed at. flameAfterMs: the flame's sound after the knob's click. vesselWiggle: a vessel refusing a tap. ground: the worktop's tiling and its warm wash. countPill: the count pills' place above the hob, in screen px (between: the gap between two pills side by side). wordPop: a word's pop just above the hob (design px, at least so many screen px), or overPillsPx screen px above the count pills, or besidePillsPx beside them where the top has no room.",
   "pointMs": 1200,
   "flameAfterMs": 180,
   "vesselWiggle": {
@@ -185,13 +185,15 @@
   },
   "countPill": {
    "gap": 4,
-   "step": 116,
+   "between": 6,
    "margin": 6,
    "dotsMost": 12
   },
   "wordPop": {
    "aboveHob": 10,
-   "aboveHobPx": 7.5
+   "aboveHobPx": 7.5,
+   "overPillsPx": 6,
+   "besidePillsPx": 8
   }
  },
  "lights": {

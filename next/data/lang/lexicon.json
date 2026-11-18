@@ -4143,6 +4143,36 @@
    }
   },
   {
+   "id": "n.fear",
+   "pos": "N",
+   "gender": null,
+   "lemma": "dhiraj",
+   "gloss": "fear (the root of dhirji, afraid)",
+   "forms": {
+    "sg.dir": {
+     "t": "dhiraj",
+     "status": "confirmed",
+     "src": "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: the root word)"
+    },
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: dhirji, feminine afraid, from the root word dhiraj, fear)"
+   ],
+   "ask": {
+    "gender": [
+     "new"
+    ]
+   }
+  },
+  {
    "id": "n.feelings",
    "pos": "N",
    "gender": null,
@@ -5066,6 +5096,36 @@
    ],
    "ask": {
     "word": [
+     "new"
+    ]
+   }
+  },
+  {
+   "id": "n.heat",
+   "pos": "N",
+   "gender": null,
+   "lemma": "gharmi",
+   "gloss": "heat (inke gharmi peti: she is feeling hot)",
+   "forms": {
+    "sg.dir": {
+     "t": "gharmi",
+     "status": "confirmed",
+     "src": "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: inke gharmi peti)"
+    },
+    "pl.*": {
+     "status": "unknown",
+     "ask": [
+      "new"
+     ],
+     "src": "no plural heard yet (step 4b: nothing is guessed)"
+    }
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: Inke gharmi peti, she is feeling / finding it hot)"
+   ],
+   "ask": {
+    "gender": [
      "new"
     ]
    }
@@ -10696,6 +10756,29 @@
    ]
   },
   {
+   "id": "a.afraid",
+   "pos": "A",
+   "lemma": "dhirji",
+   "gloss": "afraid",
+   "forms": {
+    "she.*.dir": {
+     "t": "dhirji",
+     "status": "confirmed",
+     "src": "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: feminine)"
+    }
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: dhirji, feminine afraid; dh, not th (Mum's final word))"
+   ],
+   "open": [
+    {
+     "q": "He is afraid: is it e dhirjo? (not said; Mum said e bou dhirjeto, he is very scared). And is au dhirjati the same verb as e dhirji?",
+     "src": "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: dhirji)"
+    }
+   ]
+  },
+  {
    "id": "a.big",
    "pos": "A",
    "paradigm": "adj.o",
@@ -11531,6 +11614,11 @@
      "t": "lambi",
      "status": "confirmed",
      "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:36)"
+    },
+    "he.sg.dir": {
+     "t": "lambo",
+     "status": "confirmed",
+     "src": "grammar-notes §70 (Mum, 17 Nov, WhatsApp: a boy says au lambo aiya; not au lambo ayo)"
     }
    },
    "status": "confirmed",
@@ -11538,13 +11626,7 @@
     "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:36: au lambi aiya, I am tall)"
    ],
    "notes": [
-    "Mum said it of herself, a woman: kept as the she-form. Zafar wrote lumi."
-   ],
-   "open": [
-    {
-     "q": "I'm tall said by a man or a boy: the form of au lambi aiya (not said; not guessed).",
-     "src": "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:36)"
-    }
+    "Mum said lambi of herself, a woman; a boy says lambo (au lambo aiya: aiya stays, §70). Zafar wrote lumi."
    ]
   },
   {
@@ -14381,6 +14463,19 @@
    ]
   },
   {
+   "id": "adv.for-you-elder",
+   "pos": "Adv",
+   "lemma": "alai",
+   "gloss": "for you, an elder (a + lai)",
+   "forms": {
+    "-": "alai"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: alai = a + lai; a is you to an elder, lai is for)"
+   ]
+  },
+  {
    "id": "adv.joined-up",
    "pos": "Adv",
    "lemma": "bego",
@@ -14637,6 +14732,12 @@
    "src": [
     "grammar-notes §45 (maani bo fine ai)",
     "grammar-notes §33 S2"
+   ],
+   "open": [
+    {
+     "q": "Mum writes bou (e bou dhirjeto, §70); the engine has bo (§45). One word, which spelling?",
+     "src": "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: bou = very)"
+    }
    ]
   },
   {
@@ -14685,19 +14786,14 @@
    "id": "adv.with-you-awate",
    "pos": "Adv",
    "lemma": "awate",
-   "gloss": "with you (awate X ai)",
+   "gloss": "with you, an elder (awate X ai)",
    "forms": {
     "-": "awate"
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Towate / awate x ay / nay / ayn / nayn; read by Mum, who sent only corrections: Zafar, 17 Nov)"
-   ],
-   "open": [
-    {
-     "q": "Which 'you' is awate: an elder (aai, anke)?",
-     "src": "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: awate; read by Mum, who sent only corrections: Zafar, 17 Nov)"
-    }
+    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: Towate / awate x ay / nay / ayn / nayn; read by Mum, who sent only corrections: Zafar, 17 Nov)",
+    "grammar-notes §70 (Mum, 17 Nov, WhatsApp: awate = a + wate; a is you to an elder, wate is with)"
    ]
   },
   {
@@ -17653,6 +17749,38 @@
    ]
   },
   {
+   "id": "phrase.he-became-very-scared-he-was-very-scared",
+   "pos": "Phrase",
+   "lemma": "e bou dhirji vyo wo",
+   "gloss": "He became very scared (he was very scared).",
+   "forms": {
+    "-": "e bou dhirji vyo wo"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: E bou dhirji vyo wo, past)"
+   ],
+   "notes": [
+    "not analysed into words yet: bou is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.he-is-very-scared",
+   "pos": "Phrase",
+   "lemma": "e bou dhirjeto",
+   "gloss": "He is very scared.",
+   "forms": {
+    "-": "e bou dhirjeto"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: E bou dhirjeto, he is very (bou) scared)"
+   ],
+   "notes": [
+    "not analysed into words yet: bou, dhirjeto are not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
    "id": "phrase.he-ran-off",
    "pos": "Phrase",
    "gloss": "He ran off!",
@@ -17756,6 +17884,38 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §21"
+   ]
+  },
+  {
+   "id": "phrase.he-will-get-afraid",
+   "pos": "Phrase",
+   "lemma": "e dhirji wintho",
+   "gloss": "He will get afraid.",
+   "forms": {
+    "-": "e dhirji wintho"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: E dhirji wintho, future, male)"
+   ],
+   "notes": [
+    "not analysed into words yet: wintho is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.he-will-get-very-scared",
+   "pos": "Phrase",
+   "lemma": "e bou dhirji wintho",
+   "gloss": "He will get very scared.",
+   "forms": {
+    "-": "e bou dhirji wintho"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: E bou dhirji wintho, future)"
+   ],
+   "notes": [
+    "not analysed into words yet: bou, wintho are not in the lexicon (build/lang/phrases.mjs)"
    ]
   },
   {
@@ -18689,7 +18849,8 @@
    "status": "confirmed",
    "src": [
     "data/clinic/pipeline.json lines.feeling-cold: data/clinic/pipeline.json feelings: English placeholder, to record",
-    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:29: Muke thandi peti (not penti), I am feeling / finding it cold)"
+    "grammar-notes §68-§69 (Mum, 17 Nov 2026, by message, 17:29: Muke thandi peti (not penti), I am feeling / finding it cold)",
+    "grammar-notes §70 (Mum: muke thandi peti, I am feeling cold; peti is falling: the cold is falling on me)"
    ],
    "aliases": [
     "clinic.line.feeling-cold"
@@ -18700,7 +18861,7 @@
     ]
    },
    "notes": [
-    "Cold is thandi, not tundi (Mum, 17:27).",
+    "Cold is thandi, not tundi (Mum, 17:27). peti is 'falling': the cold falls on me (§70); peti is also a suitcase, a different word.",
     "not analysed into words yet: thandi, peti are not in the lexicon (build/lang/phrases.mjs)"
    ],
    "history": [
@@ -18941,17 +19102,18 @@
   {
    "id": "phrase.im-finding-it-cold-how-is-the-temperature-for-you",
    "pos": "Phrase",
-   "lemma": "muke thandi lage ti",
-   "gloss": "I'm finding it cold (how is the temperature for you?)",
+   "lemma": "muke thandi lageti",
+   "gloss": "I'm finding it cold.",
    "forms": {
-    "-": "muke thandi lage ti"
+    "-": "muke thandi lageti"
    },
    "status": "confirmed",
    "src": [
-    "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: mukhe tundi lage ti; read by Mum, who sent only corrections: Zafar, 17 Nov); with Mum's corrected root (grammar-notes §69)"
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: muke thandi lageti: to me, cold is striking)"
    ],
    "notes": [
-    "not analysed into words yet: thandi, lage, ti are not in the lexicon (build/lang/phrases.mjs)"
+    "Mum's spelling lageti (Zafar wrote lage ti); muke thandi peti is 'I am feeling cold'.",
+    "not analysed into words yet: thandi, lageti are not in the lexicon (build/lang/phrases.mjs)"
    ]
   },
   {
@@ -19170,6 +19332,22 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §68-§69 (Zafar's notes, 17 Nov 2026: au tuki aiya; read by Mum, who sent only corrections: Zafar, 17 Nov)"
+   ],
+   "notes": [
+    "not analysed into words yet: au is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.im-tall-a-boy",
+   "pos": "Phrase",
+   "lemma": "au lambo aiya",
+   "gloss": "I'm tall (as a boy or a man says it)",
+   "forms": {
+    "-": "au lambo aiya"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: a boy says au lambo aiya; not au lambo ayo)"
    ],
    "notes": [
     "not analysed into words yet: au is not in the lexicon (build/lang/phrases.mjs)"
@@ -19424,6 +19602,23 @@
      "new"
     ]
    }
+  },
+  {
+   "id": "phrase.it-seems-cold-outside",
+   "pos": "Phrase",
+   "lemma": "bare thandi lageti",
+   "gloss": "It seems cold outside.",
+   "forms": {
+    "-": "bare thandi lageti"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: bare thundi Lugeti: it seems cold outside)"
+   ],
+   "notes": [
+    "Mum wrote thundi Lugeti in this one line, thandi and lageti elsewhere: entered as thandi lageti; a spelling question for Zafar.",
+    "not analysed into words yet: thandi, lageti are not in the lexicon (build/lang/phrases.mjs)"
+   ]
   },
   {
    "id": "phrase.it-stopped-raining",
@@ -22738,6 +22933,74 @@
    "status": "confirmed",
    "src": [
     "grammar-notes §25 B16"
+   ]
+  },
+  {
+   "id": "phrase.she-is-afraid",
+   "pos": "Phrase",
+   "lemma": "e dhirji",
+   "gloss": "She is afraid.",
+   "parts": [
+    {
+     "lex": "pron.p3",
+     "cell": "dir"
+    },
+    {
+     "lex": "a.afraid",
+     "cell": "she.sg.dir"
+    }
+   ],
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: E dhirji, she is afraid)"
+   ]
+  },
+  {
+   "id": "phrase.she-is-feeling-hot",
+   "pos": "Phrase",
+   "lemma": "inke gharmi peti",
+   "gloss": "She is feeling hot.",
+   "forms": {
+    "-": "inke gharmi peti"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: Inke gharmi peti, she is feeling / finding it hot (a present tense))"
+   ],
+   "notes": [
+    "not analysed into words yet: peti is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.she-is-getting-afraid",
+   "pos": "Phrase",
+   "lemma": "e dhirji peti",
+   "gloss": "She is getting afraid.",
+   "forms": {
+    "-": "e dhirji peti"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: E dhirji peti, she is becoming / becomes / gets afraid (a present tense))"
+   ],
+   "notes": [
+    "not analysed into words yet: peti is not in the lexicon (build/lang/phrases.mjs)"
+   ]
+  },
+  {
+   "id": "phrase.she-will-get-afraid",
+   "pos": "Phrase",
+   "lemma": "e dhirji winthi",
+   "gloss": "She will get afraid.",
+   "forms": {
+    "-": "e dhirji winthi"
+   },
+   "status": "confirmed",
+   "src": [
+    "grammar-notes §70 (Mum, 17 Nov 2026, WhatsApp 18:25-18:56: E dhirji winthi, future, female)"
+   ],
+   "notes": [
+    "not analysed into words yet: winthi is not in the lexicon (build/lang/phrases.mjs)"
    ]
   },
   {

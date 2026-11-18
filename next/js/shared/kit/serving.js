@@ -18,10 +18,10 @@ export function createServing({ stage, kit, spot, people, art, dim, s }) {
   const veilL = stage.layer("worktop", "veil");
   const fx = stage.layer("worktop", "fx");
   const top = stage.layer("worktop", "labels");
-  stage.shadow(shadows, { x: spot.x + spot.w / 2, y: spot.y + spot.h / 2, w: spot.w, h: spot.h });
+  // its shadow and its dimming while cooking both follow the tray as drawn (its rounded corners), never its picture's box
+  stage.shapeShadow(shadows, art.base, { x: spot.x, y: spot.y, w: spot.w });
   stage.picture(base, art.base, { x: spot.x, y: spot.y, origin: [0, 0], w: spot.w });
-  const veil = stage.graphics(veilL);
-  veil.fillStyle(0xf4ecdf, dim).fillRect(spot.x, spot.y, spot.w, spot.h);
+  const veil = stage.silhouette(veilL, art.base, kit.serving.veil, { x: spot.x, y: spot.y, w: spot.w, alpha: dim }).obj;
 
   const V = kit.serving;
   const fd = Math.min(V.face.most, Math.max(V.face.least, V.face.px / s));

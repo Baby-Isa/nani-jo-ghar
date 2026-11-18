@@ -40,7 +40,8 @@ export function createNaniBox({ stage, say, kit, face }) {
     line(line, { speak: aloud = false, arrow: withArrow = false } = {}) {
       now = line;
       lineEl.classList.remove("saying");
-      lineEl.innerHTML = line ? lineHtml(line) : "";
+      // (inside its own span: the line box centres one line on her face and lets two fill the box)
+      lineEl.innerHTML = line ? `<span class="t">${lineHtml(line)}</span>` : "";
       arrow.hidden = !withArrow;
       return line && aloud ? speak(line) : Promise.resolve();
     },
@@ -52,7 +53,7 @@ export function createNaniBox({ stage, say, kit, face }) {
         arrow.classList.remove("open");
         return;
       }
-      helper.innerHTML = `<div class="helper-card"><div class="well"><img src="${stage.art.file(card.pic)}" alt=""></div><div class="words"><div class="ku">${esc(card.kutchi)}</div><div class="en">${esc(card.english)}</div></div><button class="speaker"></button></div>`;
+      helper.innerHTML = `<div class="helper-in"><div class="helper-card"><div class="well"><img src="${stage.art.file(card.pic)}" alt=""></div><div class="hwords"><div class="ku">${esc(card.kutchi)}</div><div class="en">${esc(card.english)}</div></div><button class="speaker"></button></div></div>`;
       helper.querySelector(".speaker").addEventListener("click", () => say.speak(card.line));
       helper.classList.add("open");
       arrow.classList.add("open");
